@@ -665,7 +665,12 @@ exports.handler = async function(event) {
   try { body = JSON.parse(event.body); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
 
-  const { message, messages, tool, context, system: clientSystem, userContext: clientUserCtx } = body;
+  const { message, messages, tool, context, system: clientSystem, userContext: clientUserCtx, lang: clientLang } = body;
+
+  // Detect language from: 1) explicit `lang` in request body, 2) Referer header containing /fr/
+  const referer = event.headers.referer || event.headers.Referer || '';
+  const isFrench = clientLang === 'fr' || referer.includes('/fr/') ||
+    (tool && tool.endsWith('-fr'));
 
   // Fetch user context (profile + history) in parallel with prompt construction
   const userId = extractUserId(event.headers.authorization || '');
@@ -680,9 +685,13 @@ exports.handler = async function(event) {
 
   let systemPrompt;
 
-  // If the client (site-assistant) sends its own system prompt with tool directory, use it
+  // If the client sends its own system prompt, use it (but still apply French if needed)
   if (clientSystem && isSiteAssistant) {
     systemPrompt = clientSystem;
+    // For French pages using the old inline pattern, force French response
+    if (isFrench && !systemPrompt.includes('français') && !systemPrompt.includes('French')) {
+      systemPrompt += " IMPORTANT: Vous êtes sur une page en français. Répondez TOUJOURS en français formel (utilisez 'vous'). Formatez les montants avec le format français : espace pour les milliers, virgule pour les décimales. Ne traduisez pas les acronymes officiels (KRA, GRA, FIRS, NSSF, SHIF, RSSB, CSS, DGID, etc.).";
+    }
   } else {
     systemPrompt = isMedical
       ? "You are the AfroTools Medical Report Interpreter — you help everyday people understand their lab results in simple, clear language. "
@@ -696,9 +705,9 @@ exports.handler = async function(event) {
       systemPrompt += TOOL_CONTEXT[tool] + " ";
     }
 
-    // French tool detection — ensure AI responds in French
-    if (tool && tool.endsWith('-fr')) {
-      systemPrompt += "IMPORTANT: Répondez TOUJOURS en français. Utilisez les termes fiscaux français appropriés. ";
+    // French tool or French page detection — ensure AI responds in French
+    if (isFrench) {
+      systemPrompt += "IMPORTANT: Vous êtes sur une page en français. Répondez TOUJOURS en français formel (utilisez 'vous'). Utilisez les termes fiscaux appropriés pour le pays concerné. Formatez les montants avec le format français : espace pour les milliers, virgule pour les décimales (ex : 1 234 567,89). Ne traduisez pas les acronymes officiels des organismes gouvernementaux (KRA, GRA, FIRS, NSSF, SHIF, RSSB, CSS, DGID, IRPP, etc.). ";
     }
 
     // Inject user context (country, currency, recent activity)

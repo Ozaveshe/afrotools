@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Service Charge Calculator for Africa 2026 — Estate, Strata & Body Corporate Levies | AfroTools</title>
+  <meta name="description" content="Calculate property service charges and body corporate levies in African estates. Nigeria, Kenya, South Africa, Ghana, Egypt. Generator, security, maintenance — see the full annual cost before you buy or rent.">
+  <link rel="canonical" href="https://afrotools.com/tools/service-charge/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Property Service Charge Calculator for Africa","url":"https://afrotools.com/tools/service-charge/","description":"Calculate estate service charges and body corporate levies across African property markets.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property/"},{"@type":"ListItem","position":3,"name":"Service Charge Calculator","item":"https://afrotools.com/tools/service-charge/"}]}]}</script>
+  <style>
+    .sc-result-hero { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0; }
+    .sc-hero-card { border-radius:16px;padding:22px;text-align:center; }
+    .sc-hero-card.monthly { background:linear-gradient(135deg,#e8f2ff,#f0f7ff);border:1px solid var(--primary); }
+    .sc-hero-card.annual { background:linear-gradient(135deg,#0d1117,#0a1628);color:#fff; }
+    .sc-hero-card .shc-label { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px; }
+    .sc-hero-card.monthly .shc-label { color:var(--primary); }
+    .sc-hero-card.annual .shc-label { color:#4DA3FF; }
+    .sc-hero-card .shc-value { font-size:1.9rem;font-weight:800; }
+    .sc-hero-card.monthly .shc-value { color:var(--primary-dark,#0063D1); }
+    .sc-hero-card.annual .shc-value { color:#fff; }
+    .sc-hero-card .shc-sub { font-size:.8rem;margin-top:4px; }
+    .sc-hero-card.monthly .shc-sub { color:var(--text-muted); }
+    .sc-hero-card.annual .shc-sub { color:rgba(255,255,255,.6); }
+    .service-list { list-style:none;padding:0;margin:12px 0; }
+    .service-list li { display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:.9rem; }
+    .service-list li:last-child{border-bottom:none;}
+    .service-list li .sl-cost { font-weight:700;color:var(--primary); }
+    .service-list li .sl-pct { font-size:.78rem;color:var(--text-muted);margin-left:8px; }
+    .tier-selector { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0; }
+    .tier-btn { border:2px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg); }
+    .tier-btn:hover{border-color:var(--primary);}
+    .tier-btn.active{border-color:var(--primary);background:var(--pale,#e8f2ff);}
+    .tier-btn .tb-name{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+    .tier-btn .tb-desc{font-size:.7rem;color:var(--text-muted);margin-top:3px;}
+    .tb-example{font-size:.68rem;color:var(--primary);margin-top:2px;font-weight:600;}
+    .gen-warning { background:#fff3cd;border:1px solid #ffc107;border-radius:12px;padding:14px;font-size:.85rem;margin:12px 0; }
+    .as-pct-rent { margin:14px 0; }
+    .apr-bar { height:12px;border-radius:100px;background:#e5e7eb;overflow:hidden;margin:6px 0; }
+    .apr-fill { height:100%;border-radius:100px;background:linear-gradient(90deg,var(--primary),var(--primary-light,#4DA3FF));transition:width .5s; }
+    @media(max-width:600px){.sc-result-hero{grid-template-columns:1fr;} .tier-selector{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> › <a href="/mortgage-property/">Mortgage &amp; Property</a> › Service Charge Calculator
+    </nav>
+    <div class="tl-category-label">🏠 MORTGAGE &amp; PROPERTY</div>
+    <h1 class="tl-title">Property Service Charge <span class="tl-accent">Calculator</span></h1>
+    <p class="tl-desc">Service charges in Ikoyi/VI can run ₦1.5M–₦5M per year — that's ₦125K–₦416K per month <strong>on top of</strong> your rent or mortgage. See the full breakdown: security, generator, maintenance, management before you buy or rent.</p>
+    <div class="tl-badges">
+      <span>🇳🇬 Nigeria estates</span><span>🇰🇪 Kenya gated</span><span>🇿🇦 Body corporate</span><span>🇬🇭 Ghana estates</span><span>🇪🇬 Egypt compounds</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">🏢</span>
+        <div>
+          <div class="tl-card-title">Service Charge Calculator</div>
+          <div class="tl-card-sub">Select country, estate tier, and apartment size to estimate charges</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field">
+          <label class="tl-label">COUNTRY</label>
+          <select id="country" onchange="onCountryChange()">
+            <option value="">— Select a country —</option>
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="ZA">🇿🇦 South Africa</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="EG">🇪🇬 Egypt</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+            <option value="RW">🇷🇼 Rwanda</option>
+          </select>
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">APARTMENT SIZE (SQM)</label>
+          <input type="number" id="sqm" value="120" min="30" max="1000" step="10" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">MONTHLY RENT / PROPERTY VALUE <span id="curr-label" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span> <span style="font-weight:400;font-size:.78rem;color:var(--text-muted)">(for % comparison)</span></label>
+          <input type="number" id="monthly-rent" value="0" min="0" oninput="calculate()">
+        </div>
+      </div>
+
+      <div class="tl-section-title">ESTATE / DEVELOPMENT TIER</div>
+      <div class="tier-selector" id="tier-selector">
+        <div class="tier-btn" onclick="selectTier('basic')" id="tb-basic">
+          <div class="tb-name">Basic Estate</div>
+          <div class="tb-desc">Simple gated community, minimal facilities</div>
+          <div class="tb-example" id="tbe-basic">—</div>
+        </div>
+        <div class="tier-btn active" onclick="selectTier('mid')" id="tb-mid">
+          <div class="tb-name">Mid-Range</div>
+          <div class="tb-desc">Security, generator, pool, gym</div>
+          <div class="tb-example" id="tbe-mid">—</div>
+        </div>
+        <div class="tier-btn" onclick="selectTier('luxury')" id="tb-luxury">
+          <div class="tb-name">Luxury Estate</div>
+          <div class="tb-desc">Full-service, concierge, multiple amenities</div>
+          <div class="tb-example" id="tbe-luxury">—</div>
+        </div>
+      </div>
+
+      <div id="empty-state" style="text-align:center;padding:40px 20px;color:var(--text-muted)">
+        <div style="font-size:2.5rem;margin-bottom:12px">🏢</div>
+        <div style="font-size:.95rem">Select a country to load service charge data</div>
+      </div>
+
+      <div id="results" style="display:none">
+        <div class="sc-result-hero">
+          <div class="sc-hero-card monthly">
+            <div class="shc-label">Monthly Service Charge</div>
+            <div class="shc-value" id="r-monthly">—</div>
+            <div class="shc-sub" id="r-monthly-sub">Estimated range</div>
+          </div>
+          <div class="sc-hero-card annual">
+            <div class="shc-label">Annual Service Charge</div>
+            <div class="shc-value" id="r-annual">—</div>
+            <div class="shc-sub" id="r-annual-sub">Per year</div>
+          </div>
+        </div>
+
+        <div id="rent-compare" style="display:none">
+          <div class="as-pct-rent">
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px">
+              <span>Service charge as % of monthly rent</span>
+              <span id="r-pct-rent" style="font-weight:700;color:var(--primary)">—</span>
+            </div>
+            <div class="apr-bar"><div class="apr-fill" id="r-pct-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <div id="gen-warning" class="gen-warning" style="display:none"></div>
+
+        <div class="tl-section-title" style="margin-top:16px">Service Charge Breakdown</div>
+        <ul class="service-list" id="service-breakdown"></ul>
+
+        <div class="tl-section-title" style="margin-top:16px">What Tenants / Owners Should Know</div>
+        <div id="sc-notes"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Smart Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country and estate tier to get AI-powered insights on service charges and what to look out for before signing.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔍 WHAT TO CHECK BEFORE BUYING</div>
+      <ul class="tl-info-list">
+        <li>Always ask for the last 3 years of service charge statements</li>
+        <li>Check if there are any outstanding special levies or arrears on the unit</li>
+        <li>Generator fuel can be 30–50% of total service charges in Nigerian estates</li>
+        <li>SA body corporate: special levies require 75% owner vote</li>
+        <li>Ask if the estate has a Sinking Fund for major repairs — if not, expect future special levies</li>
+        <li>Confirm if service charges are capped or can increase without notice</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔗 RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/property-mgmt-fees/">🏢 Management Fees</a> — Agent management costs</li>
+        <li><a href="/tools/rent-affordability/">💰 Rent Affordability</a> — Total cost of renting</li>
+        <li><a href="/tools/rental-yield/">🏠 Rental Yield</a> — Factor service charges into yield</li>
+        <li><a href="/tools/property-valuation/">🏘️ Property Valuation</a> — Check market value</li>
+        <li><a href="/mortgage-property/">🏠 All Property Tools</a> — Full toolkit</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="legal" current="service-charge"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var SC_DATA = {
+  NG: { name:'Nigeria', currency:'NGN', symbol:'₦', currLabel:'(NGN)',
+    tiers: {
+      basic: { label:'Basic Gated Estate', examples:'Surulere, Aguda, Iyana-Ipaja',
+        perSqmMonthMin:100, perSqmMonthMax:300,
+        services:[ {name:'Security (guards, CCTV)',pct:35}, {name:'Facility/estate management',pct:20}, {name:'Common area maintenance',pct:20}, {name:'Waste management',pct:15}, {name:'Lighting (common areas)',pct:10} ] },
+      mid: { label:'Mid-Range Gated Estate', examples:'Lekki Phase 1, Omole, Magodo',
+        perSqmMonthMin:300, perSqmMonthMax:800,
+        services:[ {name:'Security (24hr guards + CCTV)',pct:25}, {name:'Generator (diesel + maintenance)',pct:30}, {name:'Facility management fee',pct:15}, {name:'Pool & gym maintenance',pct:10}, {name:'Landscaping',pct:8}, {name:'Waste management',pct:7}, {name:'Sinking fund',pct:5} ] },
+      luxury: { label:'Premium/Luxury Estate', examples:'Ikoyi, Victoria Island, Eko Atlantic',
+        perSqmMonthMin:800, perSqmMonthMax:2500,
+        services:[ {name:'Security (armed guard + access control)',pct:20}, {name:'Generator (24hr uninterrupted supply)',pct:35}, {name:'Facility management + concierge',pct:15}, {name:'Pool, gym, club facilities',pct:12}, {name:'Landscaping & grounds',pct:8}, {name:'Lifts & M&E maintenance',pct:5}, {name:'Waste management',pct:3}, {name:'Sinking fund',pct:2} ] }
+    },
+    genNote:'⚡ Generator diesel alone can account for 30–40% of total service charges in mid-range/luxury Nigerian estates. Always ask for a fuel cost breakdown before committing. Some estates pass diesel costs directly — this can double during naira devaluation.',
+    legal:'Nigeria has no federal legislation governing estate service charges. Charges are set by the Estate Management Company. Always get the service charge schedule in writing before signing a lease or purchasing.',
+    law:'No specific federal law — governed by estate management agreements and case law.' },
+  KE: { name:'Kenya', currency:'KES', symbol:'KES ', currLabel:'(KES)',
+    tiers: {
+      basic: { label:'Basic Gated Community', examples:'Kasarani, Ruaka, Rongai',
+        perSqmMonthMin:30, perSqmMonthMax:80,
+        services:[ {name:'Security',pct:40}, {name:'Common area maintenance',pct:25}, {name:'Waste management',pct:20}, {name:'Management fee',pct:15} ] },
+      mid: { label:'Mid-Range Estate', examples:'Lavington, South C, Westlands',
+        perSqmMonthMin:80, perSqmMonthMax:200,
+        services:[ {name:'Security (24hr)',pct:30}, {name:'Generator / backup power',pct:20}, {name:'Common area maintenance',pct:20}, {name:'Management fee',pct:15}, {name:'Pool/gym (if present)',pct:8}, {name:'Landscaping',pct:7} ] },
+      luxury: { label:'Luxury Development', examples:'Runda, Karen, Kitisuru, Gigiri',
+        perSqmMonthMin:200, perSqmMonthMax:500,
+        services:[ {name:'Security (armed response + CCTV)',pct:25}, {name:'Backup power (generator/solar)',pct:20}, {name:'Professional management',pct:20}, {name:'Pool, gym, club facilities',pct:15}, {name:'Landscaping & grounds',pct:10}, {name:'Lifts & M&E',pct:5}, {name:'Sinking fund',pct:5} ] }
+    },
+    genNote:'',
+    legal:'Kenya Sectional Properties Act 2020 governs apartment management. A Sectional Property Association (Owners Corporation) manages shared facilities. Service charges must be approved at AGM.',
+    law:'Sectional Properties Act 2020 (Kenya)' },
+  ZA: { name:'South Africa', currency:'ZAR', symbol:'R', currLabel:'(ZAR)',
+    tiers: {
+      basic: { label:'Entry-Level Complex', examples:'Various suburbs, security estates',
+        perSqmMonthMin:15, perSqmMonthMax:40,
+        services:[ {name:'Security & access control',pct:35}, {name:'Building insurance (contribution)',pct:20}, {name:'Common area maintenance',pct:25}, {name:'Admin/management',pct:20} ] },
+      mid: { label:'Mid-Range Sectional Title', examples:'Sandton fringe, Claremont, Umhlanga',
+        perSqmMonthMin:40, perSqmMonthMax:100,
+        services:[ {name:'Security (guarded estate)',pct:30}, {name:'Building insurance',pct:20}, {name:'Pool & gym',pct:12}, {name:'Landscaping',pct:10}, {name:'Body corporate admin',pct:15}, {name:'Maintenance reserve',pct:8}, {name:'Lift maintenance',pct:5} ] },
+      luxury: { label:'Premium Lifestyle Estate', examples:'Waterfall, Steyn City, Paarl',
+        perSqmMonthMin:100, perSqmMonthMax:300,
+        services:[ {name:'Security (biometrics + armed response)',pct:25}, {name:'Building & complex insurance',pct:15}, {name:'Golf/tennis/club facilities',pct:15}, {name:'Body corporate management',pct:15}, {name:'Landscaping (extensive)',pct:12}, {name:'Roads & infrastructure',pct:8}, {name:'Reserve fund',pct:10} ] }
+    },
+    genNote:'',
+    legal:'SA body corporate levies are governed by the Sectional Titles Schemes Management Act 8 of 2011. Special levies (for major repairs) require approval by a 75% majority of owners at a general meeting. Every scheme must maintain a Reserve Fund for long-term maintenance.',
+    law:'Sectional Titles Schemes Management Act 8 of 2011 (South Africa)' },
+  GH: { name:'Ghana', currency:'GHS', symbol:'GHS ', currLabel:'(GHS)',
+    tiers: {
+      basic: { label:'Basic Gated Estate', examples:'Tema, Kasoa, Ashaiman',
+        perSqmMonthMin:5, perSqmMonthMax:15,
+        services:[ {name:'Security',pct:40}, {name:'Common area maintenance',pct:30}, {name:'Waste management',pct:20}, {name:'Management',pct:10} ] },
+      mid: { label:'Mid-Range Estate', examples:'Spintex, Haatso, Adenta',
+        perSqmMonthMin:15, perSqmMonthMax:40,
+        services:[ {name:'Security (24hr)',pct:30}, {name:'Generator backup',pct:25}, {name:'Common maintenance',pct:20}, {name:'Management fee',pct:15}, {name:'Landscaping',pct:10} ] },
+      luxury: { label:'Luxury Estate', examples:'East Legon, Trasacco Valley, Airport Hills',
+        perSqmMonthMin:40, perSqmMonthMax:120,
+        services:[ {name:'Security (armed + CCTV)',pct:25}, {name:'Generator (reliable backup)',pct:25}, {name:'Club/pool/gym facilities',pct:15}, {name:'Facilities management',pct:15}, {name:'Landscaping',pct:10}, {name:'Maintenance reserve',pct:10} ] }
+    },
+    genNote:'⚡ Dumsor (power outages) make generator backup a significant cost in Ghana. Luxury estates with reliable 24hr backup can charge significantly more per sqm.',
+    legal:'Ghana has no specific Sectional Titles Act equivalent yet (2026). Estate management is governed by Homeowners Associations and deed restrictions. Check HOA documents carefully before purchasing.',
+    law:'No specific sectional titles legislation — HOA agreements govern.' },
+  EG: { name:'Egypt', currency:'EGP', symbol:'EGP ', currLabel:'(EGP)',
+    tiers: {
+      basic: { label:'Standard Apartment Building', examples:'Nasr City, Shubra, Zamalek',
+        perSqmMonthMin:10, perSqmMonthMax:30,
+        services:[ {name:'Security/bawwab (doorman)',pct:30}, {name:'Common area cleaning',pct:30}, {name:'Elevator maintenance',pct:25}, {name:'Management',pct:15} ] },
+      mid: { label:'Gated Compound', examples:'New Cairo compounds, 6th of October',
+        perSqmMonthMin:30, perSqmMonthMax:80,
+        services:[ {name:'Security (24hr)',pct:30}, {name:'Backup generator',pct:20}, {name:'Common area maintenance',pct:20}, {name:'Landscaping',pct:15}, {name:'Management',pct:15} ] },
+      luxury: { label:'Premium Compound', examples:'Katameya Dunes, Palm Hills, Marassi',
+        perSqmMonthMin:80, perSqmMonthMax:250,
+        services:[ {name:'Security (biometric + guards)',pct:25}, {name:'Club facilities (multiple)',pct:20}, {name:'Backup power',pct:15}, {name:'Landscaping (extensive)',pct:15}, {name:'Facilities management',pct:15}, {name:'Roads maintenance',pct:10} ] }
+    },
+    genNote:'',
+    legal:'Egypt compound service charges are set by the developer/management company. New developments in New Cairo and the New Administrative Capital have formal HOAs. Older Cairo buildings rely on informal bawwab (doorman) arrangements.',
+    law:'Egyptian law regulates building maintenance through Article 42 of the Condominium Law.' },
+  TZ: { name:'Tanzania', currency:'TZS', symbol:'TZS ', currLabel:'(TZS)',
+    tiers: {
+      basic: { label:'Basic Gated Estate', examples:'Sinza, Kinondoni, Mbezi',
+        perSqmMonthMin:800, perSqmMonthMax:2000,
+        services:[ {name:'Security',pct:40}, {name:'Common maintenance',pct:35}, {name:'Management',pct:15}, {name:'Waste',pct:10} ] },
+      mid: { label:'Mid-Range Complex', examples:'Masaki fringe, Mikocheni',
+        perSqmMonthMin:2000, perSqmMonthMax:6000,
+        services:[ {name:'Security',pct:30}, {name:'Generator backup',pct:25}, {name:'Common maintenance',pct:20}, {name:'Management',pct:15}, {name:'Landscaping',pct:10} ] },
+      luxury: { label:'Premium Masaki Estate', examples:'Masaki, Oyster Bay',
+        perSqmMonthMin:6000, perSqmMonthMax:18000,
+        services:[ {name:'24hr security',pct:25}, {name:'Generator (full backup)',pct:25}, {name:'Club/pool',pct:15}, {name:'Management',pct:15}, {name:'Landscaping',pct:10}, {name:'Maintenance reserve',pct:10} ] }
+    },
+    genNote:'',
+    legal:'Tanzania service charges are governed by estate management agreements. No specific sectional properties legislation exists (2026).',
+    law:'Tanzania Land Act 1999 — service charges via estate agreements.' },
+  RW: { name:'Rwanda', currency:'RWF', symbol:'RWF ', currLabel:'(RWF)',
+    tiers: {
+      basic: { label:'Basic Estate', examples:'Kicukiro, Gasabo suburbs',
+        perSqmMonthMin:1000, perSqmMonthMax:3000,
+        services:[ {name:'Security',pct:40}, {name:'Common maintenance',pct:35}, {name:'Waste & cleaning',pct:15}, {name:'Management',pct:10} ] },
+      mid: { label:'Mid-Range Complex', examples:'Kimironko, Remera, Nyarutarama fringe',
+        perSqmMonthMin:3000, perSqmMonthMax:8000,
+        services:[ {name:'Security',pct:30}, {name:'Generator backup',pct:20}, {name:'Common maintenance',pct:25}, {name:'Management',pct:15}, {name:'Landscaping',pct:10} ] },
+      luxury: { label:'Premium Nyarutarama Estate', examples:'Nyarutarama, Kiyovu',
+        perSqmMonthMin:8000, perSqmMonthMax:25000,
+        services:[ {name:'24hr security + CCTV',pct:25}, {name:'Generator/solar backup',pct:20}, {name:'Club/pool facilities',pct:15}, {name:'Professional management',pct:20}, {name:'Landscaping',pct:10}, {name:'Reserve fund',pct:10} ] }
+    },
+    genNote:'',
+    legal:'Rwanda Kigali City has strict building and estate management standards. Service charge arrangements are typically included in the lease or sale agreement.',
+    law:'Rwanda Urban Planning and Building Act — estate management agreements.' }
+};
+
+var selectedTier = 'mid';
+
+function fmt(n, sym) {
+  if(n>=1e9)return sym+(n/1e9).toFixed(2)+'B';
+  if(n>=1e6)return sym+(n/1e6).toFixed(2)+'M';
+  if(n>=1000)return sym+Math.round(n).toLocaleString();
+  return sym+Math.round(n);
+}
+
+function selectTier(t) {
+  selectedTier = t;
+  ['basic','mid','luxury'].forEach(function(x){ document.getElementById('tb-'+x).className='tier-btn'+(x===t?' active':''); });
+  calculate();
+}
+
+function onCountryChange() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var d = SC_DATA[cc];
+  document.getElementById('curr-label').textContent = d.currLabel;
+  // Update tier examples
+  ['basic','mid','luxury'].forEach(function(t){
+    document.getElementById('tbe-'+t).textContent = d.tiers[t].label;
+  });
+  calculate();
+}
+
+function calculate() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var d = SC_DATA[cc];
+  var sqm = parseFloat(document.getElementById('sqm').value) || 120;
+  var monthlyRent = parseFloat(document.getElementById('monthly-rent').value) || 0;
+  var tier = d.tiers[selectedTier];
+  var sym = d.symbol;
+
+  var monthlyMin = tier.perSqmMonthMin * sqm;
+  var monthlyMax = tier.perSqmMonthMax * sqm;
+  var monthlyMid = (monthlyMin + monthlyMax) / 2;
+  var annualMin = monthlyMin * 12;
+  var annualMax = monthlyMax * 12;
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('r-monthly').textContent = fmt(monthlyMin,sym) + ' – ' + fmt(monthlyMax,sym);
+  document.getElementById('r-monthly-sub').textContent = tier.label + ' (' + sqm + ' sqm)';
+  document.getElementById('r-annual').textContent = fmt(annualMin,sym) + ' – ' + fmt(annualMax,sym);
+  document.getElementById('r-annual-sub').textContent = 'Annual total (' + fmt(tier.perSqmMonthMin,sym) + '–' + fmt(tier.perSqmMonthMax,sym) + '/sqm/month)';
+
+  if (monthlyRent > 0) {
+    var pctMin = monthlyMin/monthlyRent*100;
+    var pctMax = monthlyMax/monthlyRent*100;
+    document.getElementById('rent-compare').style.display = 'block';
+    document.getElementById('r-pct-rent').textContent = pctMin.toFixed(0) + '–' + pctMax.toFixed(0) + '% of rent';
+    document.getElementById('r-pct-bar').style.width = Math.min((pctMin+pctMax)/2/50*100, 100) + '%';
+  } else {
+    document.getElementById('rent-compare').style.display = 'none';
+  }
+
+  var genW = document.getElementById('gen-warning');
+  if (d.genNote) { genW.style.display='block'; genW.innerHTML=d.genNote; }
+  else genW.style.display='none';
+
+  var totalPct = tier.services.reduce(function(s,sv){return s+sv.pct;},0);
+  document.getElementById('service-breakdown').innerHTML = tier.services.map(function(sv){
+    var monthlyAmtMin = Math.round(monthlyMin * sv.pct / 100);
+    var monthlyAmtMax = Math.round(monthlyMax * sv.pct / 100);
+    return '<li><span>' + sv.name + '</span><span><span class="sl-cost">' + fmt(monthlyAmtMin,sym) + '–' + fmt(monthlyAmtMax,sym) + '/mo</span><span class="sl-pct">' + sv.pct + '%</span></span></li>';
+  }).join('');
+
+  document.getElementById('sc-notes').innerHTML =
+    '<div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:.85rem">' +
+    '<div style="font-weight:700;margin-bottom:6px">Legal Framework: ' + d.law + '</div>' +
+    '<p style="margin:0;color:var(--text-muted)">' + d.legal + '</p></div>';
+
+  // AI observations
+  var aiLines = [];
+  if (cc === 'NG' && selectedTier === 'luxury') aiLines.push('Service charges in Ikoyi/VI estates typically run ₦1.5M–₦5M per year. That\'s ₦125K–₦416K per month ON TOP of your rent or mortgage — a significant hidden cost many buyers overlook.');
+  else aiLines.push('Service charges for a ' + sqm + 'sqm ' + tier.label.toLowerCase() + ' in ' + d.name + ': ' + fmt(monthlyMin,sym) + '–' + fmt(monthlyMax,sym) + '/month (' + fmt(annualMin,sym) + '–' + fmt(annualMax,sym) + '/year). Budget for these ON TOP of rent or mortgage.');
+
+  if (cc === 'NG') aiLines.push('Tip: Ask for the service charge breakdown before buying. Generator fuel alone can be 40% of the total in Nigerian estates. During naira devaluation, fuel costs spike and service charges often increase without notice.');
+  if (cc === 'ZA') aiLines.push('In South Africa, body corporate levies are governed by the Sectional Titles Schemes Management Act. Special levies (for major repairs) require a 75% owner vote. Ask the agent for the last 2 AGM minutes and the Reserve Fund balance before purchasing.');
+  if (cc === 'GH') aiLines.push('Ghana\'s "dumsor" (load shedding) makes generator backup essential. Check if the estate has a reliable generator and whether fuel costs are included or billed separately. Separate fuel billing can double costs unexpectedly.');
+
+  if (monthlyRent > 0) {
+    var pctR = (monthlyMin+monthlyMax)/2 / monthlyRent * 100;
+    if (pctR > 20) aiLines.push('⚠️ Your service charges represent ' + pctR.toFixed(0) + '% of monthly rent — very high. Ensure this is factored into your rental affordability calculation and yield analysis.');
+  }
+  aiLines.push('Always ask for the last 3 years of service charge accounts before buying. Check for unpaid arrears, special levies in progress, and whether the Sinking/Reserve Fund is adequately funded.');
+
+  document.getElementById('ai-obs').innerHTML = aiLines.map(function(l){return '<p>'+l+'</p>';}).join('');
+}
+</script>
+</body>
+</html>

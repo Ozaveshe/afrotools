@@ -10,37 +10,101 @@
       id: 'financial', label: 'Salary & Tax', labelFr: 'Salaire & Impôts', labelSw: 'Mshahara & Kodi', icon: '💰',
       desc: 'PAYE, income tax, FX, crypto', descFr: 'PAYE, impôt, change, crypto', descSw: 'PAYE, kodi, sarafu, crypto',
       href: '/salary-tax/', hrefFr: '/fr/', hrefSw: '/sw/mshahara-na-kodi/', color: '#e8f0fd', accent: '#0062CC',
-      tools: []
+      tools: [
+        { label: 'Nigeria PAYE Calculator', href: '/nigeria/ng-salary-tax', emoji: '🇳🇬', badge: 'LIVE' },
+        { label: 'Kenya PAYE Calculator', href: '/kenya/ke-paye', emoji: '🇰🇪', badge: 'LIVE' },
+        { label: 'South Africa SARS Tax', href: '/south-africa/za-paye', emoji: '🇿🇦', badge: 'LIVE' },
+        { label: 'Ghana PAYE + SSNIT', href: '/ghana/gh-paye', emoji: '🇬🇭', badge: 'LIVE' },
+        { label: 'Egypt Income Tax', href: '/egypt/eg-paye', emoji: '🇪🇬', badge: 'LIVE' },
+        { label: 'AI Business Planner', href: '/tools/business-planner/', emoji: '📋', badge: 'LIVE' },
+        { label: 'Mortgage Calculator', href: '/tools/mortgage-calculator/', emoji: '🏠' },
+        { label: 'Bank Charges Comparator', href: '/tools/bank-charges/', emoji: '🏦' },
+        { label: 'FIRE Calculator for Africa', href: '/tools/retirement-planner/', emoji: '🏖️' },
+        { label: 'All 54 PAYE Calculators →', href: '/salary-tax/', emoji: '💰' },
+      ]
     },
     {
       id: 'document-pdf', label: 'Document & PDF', labelFr: 'Documents & PDF', labelSw: 'Nyaraka na PDF', icon: '📄',
       desc: 'Merge, split, compress, convert', descFr: 'Fusionner, diviser, compresser, convertir', descSw: 'Unganisha, gawanya, bana, badilisha',
       href: '/document-pdf/', hrefSw: '/sw/zana-za-pdf/', color: '#eff6ff', accent: '#3b82f6',
-      tools: []
+      tools: [
+        { label: 'CV / Resume Builder', href: '/tools/cv-builder/', emoji: '📝', badge: 'LIVE' },
+        { label: 'PDF Editor', href: '/tools/pdf-editor/', emoji: '✏️', badge: 'LIVE' },
+        { label: 'PDF Workspace', href: '/tools/pdf-workspace/', emoji: '📄', badge: 'LIVE' },
+        { label: 'Invoice Generator', href: '/tools/invoice-generator/', emoji: '🧾', badge: 'LIVE' },
+        { label: 'PDF Merge & Split', href: '/tools/pdf-merge-split/', emoji: '📑' },
+        { label: 'PDF Compressor', href: '/tools/pdf-compress/', emoji: '🗜️' },
+        { label: 'PDF Format Converter', href: '/tools/pdf-convert/', emoji: '🔄' },
+        { label: 'AI Chat with PDF', href: '/tools/pdf-chat/', emoji: '💬', badge: 'NEW' },
+        { label: 'PDF eSignature', href: '/tools/pdf-sign/', emoji: '✍️' },
+        { label: 'Cover Letter Generator', href: '/tools/cover-letter-generator/', emoji: '✉️' },
+        { label: 'All PDF Tools →', href: '/document-pdf/', emoji: '📄' },
+      ]
     },
     {
       id: 'image-design', label: 'Image & Design', labelFr: 'Image & Design', labelSw: 'Picha na Ubunifu', icon: '🖼️',
       desc: 'Compress, resize, QR codes', descFr: 'Compresser, redimensionner, codes QR', descSw: 'Bana, badilisha ukubwa, misimbo QR',
       href: '/image-design/', color: '#fdf2f8', accent: '#ec4899',
-      tools: []
+      tools: [
+        { label: 'Image Compressor', href: '/tools/image-compress/', emoji: '📷', badge: 'LIVE' },
+        { label: 'Background Remover', href: '/tools/background-remover/', emoji: '✂️', badge: 'LIVE' },
+        { label: 'Image Resizer & Converter', href: '/tools/image-resize/', emoji: '↔️' },
+        { label: 'QR Code Generator', href: '/tools/qr-generator/', emoji: '📲' },
+        { label: 'Passport Photo Tool', href: '/tools/passport-photo/', emoji: '📸' },
+        { label: 'Meme Generator', href: '/tools/meme-generator/', emoji: '😂' },
+        { label: 'Flyer & Poster Maker', href: '/tools/flyer-maker/', emoji: '📰' },
+        { label: 'Logo Maker', href: '/tools/logo-maker/', emoji: '🏷️' },
+        { label: 'Image to Text (OCR)', href: '/tools/image-to-text/', emoji: '🔤' },
+        { label: 'All Image Tools →', href: '/image-design/', emoji: '🖼️' },
+      ]
     },
     {
       id: 'developer', label: 'Developer Tools', labelFr: 'Outils Dev', labelSw: 'Zana za Dev', icon: '⌨️',
       desc: 'JSON, Base64, hash, regex', descFr: 'JSON, Base64, hachage, regex', descSw: 'JSON, Base64, hash, regex',
       href: '/developer-tools/', color: '#ede9fe', accent: '#8b5cf6',
-      tools: []
+      tools: [
+        { label: 'JSON Formatter & Validator', href: '/tools/json-formatter/', emoji: '{ }', badge: 'LIVE' },
+        { label: 'API Tester (Postman Lite)', href: '/tools/api-tester/', emoji: '🧪' },
+        { label: 'Regex Tester', href: '/tools/regex-tester/', emoji: '🔍' },
+        { label: 'Base64 Encoder/Decoder', href: '/tools/base64/', emoji: '🔐' },
+        { label: 'JWT Decoder', href: '/tools/jwt-decoder/', emoji: '🪙' },
+        { label: 'Text/Code Diff Checker', href: '/tools/diff-checker/', emoji: '🔀' },
+        { label: 'Markdown Editor', href: '/tools/markdown-editor/', emoji: '📝' },
+        { label: 'USSD Code Simulator', href: '/tools/ussd-simulator/', emoji: '📞' },
+        { label: 'All Developer Tools →', href: '/developer-tools/', emoji: '⌨️' },
+      ]
     },
     {
       id: 'education', label: 'Education', labelFr: 'Éducation', labelSw: 'Elimu', icon: '🎓',
       desc: 'GPA, WAEC, loans, fees', descFr: 'GPA, WAEC, prêts, frais scolaires', descSw: 'GPA, NECTA, mikopo, ada',
       href: '/education/', hrefSw: '/sw/zana-za-elimu/', color: '#EEF4FF', accent: '#3B82F6',
-      tools: []
+      tools: [
+        { label: 'WAEC/NECO Grade Calculator', href: '/tools/waec-calculator/', emoji: '📋', badge: 'LIVE' },
+        { label: 'JAMB Aggregate Calculator', href: '/tools/jamb-aggregate/', emoji: '🎓' },
+        { label: 'GPA/CGPA Calculator', href: '/tools/gpa-calculator/', emoji: '🎓' },
+        { label: 'Matric APS Score (SA)', href: '/tools/matric-points/', emoji: '🎓' },
+        { label: 'Exam Countdown Timer', href: '/tools/exam-countdown/', emoji: '⏳' },
+        { label: 'Flashcard Study Tool', href: '/tools/flashcard-maker/', emoji: '🃏' },
+        { label: 'Citation Generator', href: '/tools/citation-generator/', emoji: '📖' },
+        { label: 'Percentage Calculator', href: '/tools/percentage-calc/', emoji: '📊' },
+        { label: 'All Education Tools →', href: '/education/', emoji: '🎓' },
+      ]
     },
     {
       id: 'health', label: 'Health & Fitness', labelFr: 'Santé & Fitness', labelSw: 'Afya na Bima', icon: '🏥',
       desc: 'BMI, SHIF, pregnancy, calories', descFr: 'IMC, grossesse, calories', descSw: 'BMI, SHIF, ujauzito, kalori',
       href: '/health/', hrefSw: '/sw/afya-na-bima/', color: '#fce8e8', accent: '#dc2626',
-      tools: []
+      tools: [
+        { label: 'Medical Report Interpreter', href: '/tools/medical-report/', emoji: '🩺', badge: 'LIVE' },
+        { label: 'Sickle Cell Genotype Advisor', href: '/tools/sickle-cell/', emoji: '🧬', badge: 'LIVE' },
+        { label: 'Calorie Counter (African Foods)', href: '/health/calorie-counter/', emoji: '🍲' },
+        { label: 'BMI Calculator for Africans', href: '/health/bmi-calculator/', emoji: '⚕️' },
+        { label: 'Blood Pressure Tracker', href: '/tools/blood-pressure/', emoji: '❤️' },
+        { label: 'Child Vaccine Schedule', href: '/tools/vaccine-schedule/', emoji: '💉' },
+        { label: 'Hospital Cost Estimator', href: '/tools/hospital-cost/', emoji: '🏥' },
+        { label: 'Pregnancy Due Date', href: '/health/pregnancy-due-date/', emoji: '👶' },
+        { label: 'All Health Tools →', href: '/health/', emoji: '🏥' },
+      ]
     },
     {
       id: 'agriculture', label: 'Agriculture', labelFr: 'Agriculture', labelSw: 'Kilimo', icon: '🌾',
@@ -60,25 +124,63 @@
       id: 'ecommerce', label: 'VAT & Business Tax', labelFr: 'TVA & Fiscalité', labelSw: 'VAT na Kodi', icon: '🧾',
       desc: 'VAT, margins, break-even', descFr: 'TVA, marges, seuil de rentabilité', descSw: 'VAT, faida, hatua ya usawa',
       href: '/vat-business-tax/', hrefFr: '/fr/', hrefSw: '/sw/vat-na-kodi/', color: '#fff7ed', accent: '#f59e0b',
-      tools: []
+      tools: [
+        { label: 'Pan-African VAT Calculator', href: '/tools/vat-calculator/vat-calc', emoji: '💱', badge: 'LIVE' },
+        { label: 'Nigeria VAT (7.5%)', href: '/nigeria/ng-vat', emoji: '🇳🇬' },
+        { label: 'South Africa VAT (15%)', href: '/south-africa/za-vat', emoji: '🇿🇦' },
+        { label: 'Kenya VAT (16%)', href: '/kenya/ke-vat', emoji: '🇰🇪' },
+        { label: 'Ghana VAT + NHIL', href: '/ghana/gh-vat', emoji: '🇬🇭' },
+        { label: 'Egypt VAT (14%)', href: '/egypt/eg-vat', emoji: '🇪🇬' },
+        { label: 'All 50+ VAT Calculators →', href: '/vat-business-tax/', emoji: '🧾' },
+      ]
     },
     {
       id: 'legal', label: 'Mortgage & Property', labelFr: 'Immobilier', labelSw: 'Mali na Mikopo', icon: '🏠',
       desc: 'Registration, compliance, property', descFr: 'Enregistrement, conformité, propriété', descSw: 'Usajili, mali, mikopo ya nyumba',
       href: '/legal/', hrefSw: '/sw/mali-na-mikopo/', color: '#e0f2fe', accent: '#0ea5e9',
-      tools: []
+      tools: [
+        { label: 'Property Tax Calculator', href: '/tools/property-tax/', emoji: '🏠', badge: 'LIVE' },
+        { label: 'Rental Yield Calculator', href: '/tools/rental-yield/', emoji: '🏢', badge: 'LIVE' },
+        { label: 'Housing Fund Calculator', href: '/tools/ng-nhf/', emoji: '🏠', badge: 'LIVE' },
+        { label: 'Rental Agreement Generator', href: '/tools/rental-agreement/', emoji: '📄', badge: 'NEW' },
+        { label: 'Building Material Costs', href: '/tools/building-materials/', emoji: '🧱', badge: 'NEW' },
+        { label: 'Diaspora Property Investment', href: '/tools/diaspora-property/', emoji: '🌍', badge: 'NEW' },
+        { label: 'Construction Budget Planner', href: '/tools/construction-budget/', emoji: '🏗️', badge: 'NEW' },
+        { label: 'Property Valuation', href: '/tools/property-valuation/', emoji: '🏘️', badge: 'NEW' },
+        { label: 'Contract Generator', href: '/tools/contract-generator/', emoji: '📜' },
+        { label: 'Stamp Duty Calculator', href: '/tools/stamp-duty/', emoji: '🏷️' },
+        { label: 'All Property & Legal Tools →', href: '/mortgage-property/', emoji: '🏠' },
+      ]
     },
     {
       id: 'data-productivity', label: 'Business & ROI', labelFr: 'Business & ROI', labelSw: 'Biashara na Faida', icon: '📊',
       desc: 'Productivity, data, investment', descFr: 'Productivité, données, investissement', descSw: 'Tija, data, uwekezaji',
       href: '/data-productivity/', hrefSw: '/sw/biashara-na-faida/', color: '#eef2ff', accent: '#6366f1',
-      tools: []
+      tools: [
+        { label: 'Monthly Budget Planner', href: '/tools/budget-planner/', emoji: '📋', badge: 'LIVE' },
+        { label: 'Unit Converter (African)', href: '/tools/unit-converter/', emoji: '📏' },
+        { label: 'Public Holiday Calendar', href: '/tools/public-holidays/', emoji: '📅' },
+        { label: 'Working Days Calculator', href: '/tools/working-days/', emoji: '📆' },
+        { label: 'Time Zone Converter', href: '/tools/time-zone/', emoji: '🕐' },
+        { label: 'Age Calculator', href: '/tools/age-calculator/', emoji: '🎂' },
+        { label: 'Pomodoro Timer', href: '/tools/pomodoro/', emoji: '🍅' },
+        { label: 'All Business & ROI Tools →', href: '/data-productivity/', emoji: '📊' },
+      ]
     },
     {
       id: 'language', label: 'Language & Translation', labelFr: 'Langues & Traduction', labelSw: 'Lugha na Tafsiri', icon: '🗣️',
       desc: 'Yoruba, Swahili, Hausa, Amharic', descFr: 'Yoruba, Swahili, Haoussa, Amharique', descSw: 'Kiyoruba, Kiswahili, Kihausa, Kiamhari',
       href: '/language/', color: '#faf5ff', accent: '#a855f7',
-      tools: []
+      tools: [
+        { label: 'Nigerian Pidgin Translator', href: '/tools/pidgin-translator/', emoji: '🗣️', badge: 'LIVE' },
+        { label: 'Swahili Translator', href: '/tools/swahili-translator/', emoji: '🌍' },
+        { label: 'Yoruba Translator', href: '/tools/yoruba-translator/', emoji: '🇳🇬' },
+        { label: 'Hausa Translator', href: '/tools/hausa-translator/', emoji: '🇳🇬' },
+        { label: 'Amharic Translator', href: '/tools/amharic-translator/', emoji: '🇪🇹' },
+        { label: 'African Name Meaning', href: '/tools/african-name-meaning/', emoji: '✨' },
+        { label: 'Francophone Africa Translator', href: '/tools/french-african/', emoji: '🇨🇮' },
+        { label: 'All Language Tools →', href: '/language/', emoji: '🗣️' },
+      ]
     },
     {
       id: 'african', label: 'Uniquely African', labelFr: 'Spécialités Africaines', labelSw: 'Vya Kiafrika', icon: '🌍',
@@ -259,6 +361,38 @@
     }
     .mega-col-name { font-size: 0.83rem; font-weight: 800; color: #111827; line-height: 1.2; }
     .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #9ca3af; margin-top: 1px; }
+
+    /* MEGA TOOL SUB-PANEL */
+    .mega-tools {
+      display: none;
+      grid-column: 1 / -1;
+      padding: 8px 0 4px;
+      border-top: 1px solid #f3f4f6;
+      gap: 4px;
+    }
+    .mega-tools.open {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .mega-tool-link {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 8px;
+      text-decoration: none; color: #374151;
+      font-size: 0.78rem; font-weight: 500;
+      transition: background 0.13s, color 0.13s;
+    }
+    .mega-tool-link:hover { background: #EEF4FF; color: #0062CC; }
+    .mega-tool-emoji { font-size: 0.85rem; flex-shrink: 0; }
+    .mega-tool-badge {
+      font-size: 0.55rem; font-weight: 800; padding: 1px 5px;
+      border-radius: 4px; background: #DBEAFE; color: #1D4ED8;
+      margin-left: auto; flex-shrink: 0;
+    }
+    .mega-tool-badge.new { background: #D1FAE5; color: #065F46; }
+
+    @media (max-width: 900px) {
+      .mega-tools.open { grid-template-columns: repeat(2, 1fr); }
+    }
 
     .mega-footer {
       max-width: 1200px; margin: 0 auto;
@@ -657,14 +791,24 @@
         var href = isSw && cat.hrefSw ? cat.hrefSw : isFr && cat.hrefFr ? cat.hrefFr : cat.href;
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
         var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
-        return `
-        <a href="${href}" class="mega-col" style="--col-accent:${cat.accent}">
+        var hasTools = cat.tools && cat.tools.length > 0;
+        var colHTML = `
+        <a href="${href}" class="mega-col${hasTools ? ' has-tools' : ''}" data-cat="${cat.id}" style="--col-accent:${cat.accent}">
           <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
           <div>
             <div class="mega-col-name">${label}</div>
             <div class="mega-col-desc">${desc}</div>
           </div>
         </a>`;
+        if (hasTools) {
+          var toolsHTML = cat.tools.map(t => {
+            var badgeCls = t.badge === 'NEW' ? ' new' : '';
+            var badgeHTML = t.badge ? `<span class="mega-tool-badge${badgeCls}">${t.badge}</span>` : '';
+            return `<a href="${t.href}" class="mega-tool-link"><span class="mega-tool-emoji">${t.emoji || ''}</span>${t.label}${badgeHTML}</a>`;
+          }).join('');
+          colHTML += `<div class="mega-tools" data-for="${cat.id}">${toolsHTML}</div>`;
+        }
+        return colHTML;
       }).join('');
     }
 
@@ -878,6 +1022,33 @@
       navEl?.addEventListener('mouseleave', () => { hoverTimer = setTimeout(closeMega, 150); });
       mega?.addEventListener('mouseenter', () => clearTimeout(hoverTimer));
       mega?.addEventListener('mouseleave', () => { hoverTimer = setTimeout(closeMega, 150); });
+
+      // Tool sub-panels: show on hover/click of category cards
+      var megaCols = mega?.querySelectorAll('.mega-col.has-tools');
+      megaCols?.forEach(col => {
+        var catId = col.getAttribute('data-cat');
+        var panel = mega.querySelector('.mega-tools[data-for="' + catId + '"]');
+        if (!panel) return;
+        var hideTimer;
+        col.addEventListener('mouseenter', () => {
+          clearTimeout(hideTimer);
+          mega.querySelectorAll('.mega-tools.open').forEach(p => { if (p !== panel) p.classList.remove('open'); });
+          panel.classList.add('open');
+        });
+        col.addEventListener('mouseleave', () => {
+          hideTimer = setTimeout(() => panel.classList.remove('open'), 200);
+        });
+        panel.addEventListener('mouseenter', () => clearTimeout(hideTimer));
+        panel.addEventListener('mouseleave', () => {
+          hideTimer = setTimeout(() => panel.classList.remove('open'), 150);
+        });
+        col.addEventListener('click', e => {
+          if (panel.classList.contains('open')) return; // let link work if tools visible
+          e.preventDefault();
+          mega.querySelectorAll('.mega-tools.open').forEach(p => p.classList.remove('open'));
+          panel.classList.toggle('open');
+        });
+      });
 
       // Click outside
       if (this._outsideFn) document.removeEventListener('click', this._outsideFn);
@@ -1244,8 +1415,16 @@
           // Not logged in — show Sign in (i18n)
           var _lang = this._getLang();
           var _signLabel = _lang === 'sw' ? 'Ingia' : _lang === 'fr' ? 'Connexion' : 'Sign in';
-          if (loginBtn) { loginBtn.textContent = _signLabel; loginBtn.href = '/dashboard/'; }
-          if (mobLoginBtn) { mobLoginBtn.textContent = _signLabel; mobLoginBtn.href = '/dashboard/'; }
+          if (loginBtn) {
+            loginBtn.textContent = _signLabel;
+            loginBtn.href = '#';
+            loginBtn.onclick = function(e) { e.preventDefault(); if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) AfroAuth.openModal(); else window.location.href = '/dashboard/'; };
+          }
+          if (mobLoginBtn) {
+            mobLoginBtn.textContent = _signLabel;
+            mobLoginBtn.href = '#';
+            mobLoginBtn.onclick = function(e) { e.preventDefault(); if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) AfroAuth.openModal(); else window.location.href = '/dashboard/'; };
+          }
           if (mobVaultLink) mobVaultLink.style.display = 'none';
           return;
         }
@@ -1284,6 +1463,25 @@
   if (!customElements.get('afro-navbar')) {
     customElements.define('afro-navbar', AfroNavbar);
   }
+
+  /* ── LAZY-LOAD AUTH SYSTEM (every page gets login/signup capability) ── */
+  setTimeout(function() {
+    function _authLS(src, cb) {
+      if (document.querySelector('script[src*="' + src.split('/').pop() + '"]')) { if (cb) cb(); return; }
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = function() { if (cb) cb(); };
+      s.onerror = function() { if (cb) cb(); };
+      document.body.appendChild(s);
+    }
+    _authLS('/assets/js/data/african-countries.js', function() {
+      _authLS('/assets/js/afro-auth.js', function() {
+        _authLS('/assets/js/components/auth-modal.js', function() {
+          _authLS('/assets/js/auth-cookie-upgrade.js');
+        });
+      });
+    });
+  }, 800);
 
   /* ── PWA: inject manifest, theme-color & service worker from navbar (every page) ── */
   (function _pwa() {

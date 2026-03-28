@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Development Feasibility Calculator for Africa 2026 — ROI, Profit Margin | AfroTools</title>
+  <meta name="description" content="Check if your African property development is financially viable. Calculate profit margin, ROI, breakeven units, finance costs, and GDV for housing projects in Nigeria, Kenya, South Africa, Ghana.">
+  <link rel="canonical" href="https://afrotools.com/tools/dev-feasibility/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Property Development Feasibility Calculator for Africa","url":"https://afrotools.com/tools/dev-feasibility/","description":"Check property development feasibility in Africa. Profit margin, ROI, GDV, breakeven analysis.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property/"},{"@type":"ListItem","position":3,"name":"Property Development Feasibility","item":"https://afrotools.com/tools/dev-feasibility/"}]}]}</script>
+  <style>
+    .feasibility-verdict { border-radius: 16px; padding: 20px 24px; margin: 16px 0; display: flex; align-items: center; gap: 16px; }
+    .feasibility-verdict.go { background: #f0fdf4; border: 2px solid #16a34a; }
+    .feasibility-verdict.caution { background: #fffbeb; border: 2px solid #d97706; }
+    .feasibility-verdict.stop { background: #fff1f2; border: 2px solid #e11d48; }
+    .verdict-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .verdict-title { font-size: 1.1rem; font-weight: 800; }
+    .verdict-go { color: #16a34a; }
+    .verdict-caution { color: #d97706; }
+    .verdict-stop { color: #e11d48; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+    .kpi-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 14px; text-align: center; }
+    .kpi-card .kc-label { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: 4px; }
+    .kpi-card .kc-value { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    .kpi-card.highlight { background: linear-gradient(135deg,#e8f2ff,#f0f7ff); border-color: var(--primary); }
+    .cost-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: .9rem; }
+    .cost-row:last-child { border-bottom: none; }
+    .cost-row.subtotal { font-weight: 700; color: var(--primary); }
+    .cost-row.total { font-weight: 800; font-size: 1rem; border-top: 2px solid var(--border); padding-top: 12px; }
+    .margin-bar-wrap { margin: 12px 0; }
+    .margin-bar { height: 24px; border-radius: 100px; background: #e5e7eb; overflow: hidden; position: relative; }
+    .margin-bar-fill { height: 100%; border-radius: 100px; transition: width .5s; }
+    .margin-bar-fill.go { background: linear-gradient(90deg,#16a34a,#22c55e); }
+    .margin-bar-fill.caution { background: linear-gradient(90deg,#d97706,#f59e0b); }
+    .margin-bar-fill.stop { background: linear-gradient(90deg,#e11d48,#f43f5e); }
+    @media(max-width:600px){ .kpi-grid{grid-template-columns:1fr 1fr;} }
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> › <a href="/mortgage-property/">Mortgage &amp; Property</a> › Property Development Feasibility
+    </nav>
+    <div class="tl-category-label">🏠 MORTGAGE &amp; PROPERTY</div>
+    <h1 class="tl-title">Property Development <span class="tl-accent">Feasibility</span> Calculator</h1>
+    <p class="tl-desc">Before you build to sell, check the numbers. Profit margin, ROI, GDV, breakeven units, finance costs — everything a developer needs to know before committing capital to an African property project.</p>
+    <div class="tl-badges">
+      <span>📊 Profit Margin</span><span>💰 ROI Calculator</span><span>🏢 GDV Analysis</span><span>🔢 Breakeven Units</span><span>🏦 Finance Cost</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">📊</span>
+        <div>
+          <div class="tl-card-title">Development Feasibility Analysis</div>
+          <div class="tl-card-sub">Enter your project details for a full financial feasibility check</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field">
+          <label class="tl-label">CURRENCY</label>
+          <select id="currency" onchange="calculate()">
+            <option value="NGN">🇳🇬 Nigerian Naira (₦)</option>
+            <option value="KES">🇰🇪 Kenyan Shilling (KES)</option>
+            <option value="ZAR">🇿🇦 South African Rand (R)</option>
+            <option value="GHS">🇬🇭 Ghana Cedis (GHS)</option>
+            <option value="EGP">🇪🇬 Egyptian Pound (EGP)</option>
+            <option value="USD">🌍 US Dollar ($)</option>
+          </select>
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">NUMBER OF UNITS</label>
+          <input type="number" id="units" value="12" min="1" max="1000" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">LAND ACQUISITION COST <span id="curr-sub1" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span></label>
+          <input type="number" id="land-cost" value="50000000" min="0" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">CONSTRUCTION COST PER UNIT <span id="curr-sub2" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span></label>
+          <input type="number" id="construction-per-unit" value="25000000" min="0" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">SELLING PRICE PER UNIT <span id="curr-sub3" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span></label>
+          <input type="number" id="selling-price" value="45000000" min="0" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">PROFESSIONAL FEES <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(% of construction)</span></label>
+          <input type="number" id="prof-fees-pct" value="6" min="0" max="20" step="0.5" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">SALES &amp; MARKETING <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(% of GDV)</span></label>
+          <input type="number" id="sales-pct" value="4" min="0" max="15" step="0.5" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">FINANCE RATE <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(% per annum)</span></label>
+          <input type="number" id="finance-rate" value="20" min="0" max="50" step="0.5" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">CONSTRUCTION PERIOD <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(months)</span></label>
+          <input type="number" id="const-months" value="18" min="3" max="60" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">LOAN TO COST <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(% financed)</span></label>
+          <input type="number" id="ltc" value="60" min="0" max="100" oninput="calculate()">
+        </div>
+      </div>
+
+      <div id="results">
+        <div id="verdict-box"></div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card highlight"><div class="kc-label">Gross Development Profit</div><div class="kc-value" id="r-gdp">—</div></div>
+          <div class="kpi-card highlight"><div class="kc-label">Profit Margin</div><div class="kc-value" id="r-margin">—</div></div>
+          <div class="kpi-card highlight"><div class="kc-label">Return on Equity</div><div class="kc-value" id="r-roe">—</div></div>
+          <div class="kpi-card"><div class="kc-label">GDV (Total Revenue)</div><div class="kc-value" id="r-gdv">—</div></div>
+          <div class="kpi-card"><div class="kc-label">Total Project Cost</div><div class="kc-value" id="r-total-cost">—</div></div>
+          <div class="kpi-card"><div class="kc-label">Breakeven Units</div><div class="kc-value" id="r-breakeven">—</div></div>
+          <div class="kpi-card"><div class="kc-label">Finance Cost</div><div class="kc-value" id="r-finance">—</div></div>
+          <div class="kpi-card"><div class="kc-label">Equity Required</div><div class="kc-value" id="r-equity">—</div></div>
+          <div class="kpi-card"><div class="kc-label">Profit Per Unit</div><div class="kc-value" id="r-profit-unit">—</div></div>
+        </div>
+
+        <div class="margin-bar-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px"><span>Profit margin vs GDV</span><span id="r-margin-label">—</span></div>
+          <div class="margin-bar"><div class="margin-bar-fill" id="r-margin-bar" style="width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-muted);margin-top:4px"><span>0%</span><span>Danger &lt;15%</span><span>Good 20–30%</span><span>Excellent &gt;30%</span></div>
+        </div>
+
+        <div class="tl-section-title" style="margin-top:20px">Cost Breakdown</div>
+        <div id="cost-breakdown"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Smart Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Enter your development details to get AI-powered insights on viability, risk factors, and optimisation strategies.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">📊 VIABILITY BENCHMARKS</div>
+      <ul class="tl-info-list">
+        <li><strong>&gt;25% margin:</strong> Excellent — proceed with confidence</li>
+        <li><strong>20–25% margin:</strong> Good — viable for experienced developers</li>
+        <li><strong>15–20% margin:</strong> Marginal — risk mitigation needed</li>
+        <li><strong>&lt;15% margin:</strong> Danger zone — review assumptions</li>
+        <li>Nigerian market benchmark: 25%+ required given construction risk</li>
+        <li>SA benchmark: 15–20% acceptable given lower risk environment</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔗 RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/construction-budget/">🏗️ Construction Budget</a> — Estimate build cost</li>
+        <li><a href="/tools/building-materials/">🧱 Material Costs</a> — Bill of quantities</li>
+        <li><a href="/tools/property-cgt/">💰 Capital Gains Tax</a> — Tax on profits</li>
+        <li><a href="/tools/property-valuation/">🏘️ Property Valuation</a> — Check market values</li>
+        <li><a href="/tools/rental-yield/">🏠 Rental Yield</a> — If holding to rent</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="legal" current="dev-feasibility"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var CURRENCIES = {
+  NGN: { symbol: '₦', name: 'Naira', label: '(NGN)' },
+  KES: { symbol: 'KES ', name: 'Shilling', label: '(KES)' },
+  ZAR: { symbol: 'R', name: 'Rand', label: '(ZAR)' },
+  GHS: { symbol: 'GHS ', name: 'Cedis', label: '(GHS)' },
+  EGP: { symbol: 'EGP ', name: 'Pound', label: '(EGP)' },
+  USD: { symbol: '$', name: 'USD', label: '(USD)' }
+};
+
+function fmt(n, sym) {
+  var abs = Math.abs(n);
+  var sign = n < 0 ? '-' : '';
+  if (abs >= 1e9) return sign + sym + (abs/1e9).toFixed(2) + 'B';
+  if (abs >= 1e6) return sign + sym + (abs/1e6).toFixed(2) + 'M';
+  if (abs >= 1000) return sign + sym + Math.round(abs).toLocaleString();
+  return sign + sym + Math.round(abs);
+}
+
+function calculate() {
+  var cc = document.getElementById('currency').value;
+  var cur = CURRENCIES[cc];
+  var sym = cur.symbol;
+  ['curr-sub1','curr-sub2','curr-sub3'].forEach(function(id){ document.getElementById(id).textContent = cur.label; });
+
+  var units = parseFloat(document.getElementById('units').value) || 1;
+  var landCost = parseFloat(document.getElementById('land-cost').value) || 0;
+  var constPerUnit = parseFloat(document.getElementById('construction-per-unit').value) || 0;
+  var sellingPrice = parseFloat(document.getElementById('selling-price').value) || 0;
+  var profFeesPct = parseFloat(document.getElementById('prof-fees-pct').value) || 0;
+  var salesPct = parseFloat(document.getElementById('sales-pct').value) || 0;
+  var financeRate = parseFloat(document.getElementById('finance-rate').value) || 0;
+  var constMonths = parseFloat(document.getElementById('const-months').value) || 18;
+  var ltc = parseFloat(document.getElementById('ltc').value) || 0;
+
+  var totalConst = constPerUnit * units;
+  var profFees = totalConst * profFeesPct / 100;
+  var gdv = sellingPrice * units;
+  var salesCost = gdv * salesPct / 100;
+  var contingency = totalConst * 0.10;
+
+  var totalProjectCostPreFinance = landCost + totalConst + profFees + salesCost + contingency;
+  var loanAmount = totalProjectCostPreFinance * ltc / 100;
+  var equity = totalProjectCostPreFinance - loanAmount;
+  // Simple finance cost: assume average drawdown = 60% of loan over construction period
+  var financeCost = loanAmount * 0.60 * (financeRate/100) * (constMonths/12);
+
+  var totalCost = totalProjectCostPreFinance + financeCost;
+  var gdp = gdv - totalCost;
+  var margin = gdv > 0 ? gdp / gdv * 100 : 0;
+  var roe = equity > 0 ? gdp / equity * 100 : 0;
+  var profitPerUnit = gdp / units;
+  var breakevenUnits = totalCost / sellingPrice;
+
+  document.getElementById('r-gdv').textContent = fmt(gdv, sym);
+  document.getElementById('r-total-cost').textContent = fmt(totalCost, sym);
+  document.getElementById('r-gdp').textContent = fmt(gdp, sym);
+  document.getElementById('r-margin').textContent = margin.toFixed(1) + '%';
+  document.getElementById('r-roe').textContent = roe.toFixed(1) + '%';
+  document.getElementById('r-breakeven').textContent = Math.ceil(breakevenUnits) + ' of ' + units;
+  document.getElementById('r-finance').textContent = fmt(financeCost, sym);
+  document.getElementById('r-equity').textContent = fmt(equity, sym);
+  document.getElementById('r-profit-unit').textContent = fmt(profitPerUnit, sym);
+
+  var verdictClass, verdictIcon, verdictTitle, verdictText, barClass;
+  if (margin >= 25) {
+    verdictClass='go'; verdictIcon='✅'; barClass='go';
+    verdictTitle='Viable — Good to proceed'; verdictText='Margin of '+margin.toFixed(1)+'% meets the 25%+ benchmark for African property development. Ensure you have pre-sold at least 30% of units before breaking ground.';
+  } else if (margin >= 15) {
+    verdictClass='caution'; verdictIcon='⚠️'; barClass='caution';
+    verdictTitle='Marginal — Review your assumptions'; verdictText='Margin of '+margin.toFixed(1)+'% is below the recommended 25% threshold. Consider reducing land cost, increasing selling price, or pre-selling units off-plan to reduce finance costs.';
+  } else {
+    verdictClass='stop'; verdictIcon='🚫'; barClass='stop';
+    verdictTitle='Not viable at current assumptions'; verdictText='Margin of '+margin.toFixed(1)+'% is too low for the risks involved in African property development. Review all cost inputs and selling price assumptions carefully.';
+  }
+
+  document.getElementById('verdict-box').innerHTML =
+    '<div class="feasibility-verdict '+verdictClass+'"><div class="verdict-icon">'+verdictIcon+'</div><div><div class="verdict-title verdict-'+verdictClass+'">'+verdictTitle+'</div><div style="font-size:.85rem;margin-top:4px;color:var(--text-muted)">'+verdictText+'</div></div></div>';
+
+  var barWidth = Math.min(Math.max(margin, 0), 50) * 2;
+  document.getElementById('r-margin-bar').className = 'margin-bar-fill ' + barClass;
+  document.getElementById('r-margin-bar').style.width = barWidth + '%';
+  document.getElementById('r-margin-label').textContent = margin.toFixed(1) + '%';
+
+  var rows = [
+    ['Land acquisition', fmt(landCost,sym)],
+    ['Construction ('+units+' units × '+fmt(constPerUnit,sym)+')', fmt(totalConst,sym)],
+    ['Professional fees ('+profFeesPct+'%)', fmt(profFees,sym)],
+    ['Contingency (10%)', fmt(contingency,sym)],
+    ['Sales & marketing ('+salesPct+'% of GDV)', fmt(salesCost,sym)],
+    ['Finance cost ('+financeRate+'% p.a., '+constMonths+' months, '+ltc+'% LTC)', fmt(financeCost,sym), true],
+    ['TOTAL PROJECT COST', fmt(totalCost,sym), false, true],
+    ['Gross Development Value (GDV)', fmt(gdv,sym)],
+    ['GROSS DEVELOPMENT PROFIT', fmt(gdp,sym), false, true]
+  ];
+  document.getElementById('cost-breakdown').innerHTML = rows.map(function(r){
+    return '<div class="cost-row'+(r[3]?' total':'')+(r[2]?' subtotal':'')+'"><span>'+r[0]+'</span><span>'+r[1]+'</span></div>';
+  }).join('');
+
+  // AI observations
+  var aiLines = [];
+  if (margin >= 25) aiLines.push('This development shows a ' + margin.toFixed(0) + '% profit margin and ' + roe.toFixed(0) + '% ROE. For ' + (cc==='NGN'?'Nigerian':'African') + ' property development, 25%+ margin is considered viable given construction and sales risk.');
+  else aiLines.push('A ' + margin.toFixed(0) + '% margin is tight for African property development. ' + (cc==='NGN'?'Nigerian':'African') + ' developers typically target 25%+ to absorb unexpected costs and currency risk.');
+
+  var beM = Math.ceil(breakevenUnits);
+  aiLines.push('Your breakeven is at ' + beM + ' of ' + units + ' units sold. ' + (cc==='NGN'&&beM>6?'At current Lekki/Ikoyi absorption rates (2–3 sales/month), this could take ' + Math.ceil(beM/2.5) + ' months after launch.':'Plan pre-sales carefully — selling '+beM+' units before or during construction dramatically reduces your risk.'));
+
+  if (financeCost > totalCost * 0.12) aiLines.push('⚠️ Your finance cost is ' + fmt(financeCost,sym) + ' (' + (financeCost/totalCost*100).toFixed(0) + '% of total cost) — very high. Can you pre-sell 3–4 units off-plan to reduce the loan amount and lower finance costs?');
+  if (ltc > 70) aiLines.push('Loan-to-cost of ' + ltc + '% is aggressive. Most African development lenders cap at 60–70% LTC. Ensure you have strong pre-sales or existing relationships with your lender before proceeding.');
+  aiLines.push('Professional tip: Get a Quantity Surveyor (QS) to validate your construction cost estimate before approaching lenders. Banks in Nigeria, Kenya, and SA require a certified QS report for development finance.');
+
+  document.getElementById('ai-obs').innerHTML = aiLines.map(function(l){return '<p>'+l+'</p>';}).join('');
+}
+
+calculate();
+</script>
+</body>
+</html>

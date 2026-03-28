@@ -510,3 +510,34 @@ afro-navbar {
   line-height: var(--leading-relaxed);
   max-width: 360px;
 }
+
+/* ── French language mobile overrides ────────────────────────────────
+   French text is ~20-30% longer than English. These overrides prevent
+   button overflow and card label truncation on small viewports.
+   ─────────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  [lang="fr"] .calc-btn,
+  [lang="fr"] .btn-calculate {
+    font-size: 0.88rem;
+    padding: 0.75rem 1rem;
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  [lang="fr"] .res-hero-label,
+  [lang="fr"] .result-card h3,
+  [lang="fr"] .rate-card-label {
+    font-size: 0.78rem;
+  }
+
+  [lang="fr"] .tog-label {
+    font-size: 0.8rem;
+  }
+}
+
+/* French tax band tables — horizontal scroll on mobile */
+[lang="fr"] .tax-table-wrapper,
+[lang="fr"] .band-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}

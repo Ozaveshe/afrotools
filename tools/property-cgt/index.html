@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Capital Gains Tax Calculator for Africa 2026 — All 54 Countries | AfroTools</title>
+  <meta name="description" content="Calculate capital gains tax on property sales in any African country. CGT rates, primary residence exemptions, and tax-free countries (Namibia, Mauritius). Nigeria 10%, Kenya 15%, South Africa marginal, Egypt 2.5% on sale price.">
+  <link rel="canonical" href="https://afrotools.com/tools/property-cgt/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Property Capital Gains Tax Calculator for Africa","url":"https://afrotools.com/tools/property-cgt/","description":"Calculate property capital gains tax across African countries. CGT rates, exemptions, tax-free countries.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property/"},{"@type":"ListItem","position":3,"name":"Property Capital Gains Tax Calculator","item":"https://afrotools.com/tools/property-cgt/"}]}]}</script>
+  <style>
+    .cgt-result-hero { background: linear-gradient(135deg,#0d1117,#0a1628); border-radius:16px; padding:28px; margin:16px 0; color:#fff; }
+    .cgt-result-hero .crh-label { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#4DA3FF;margin-bottom:6px; }
+    .cgt-result-hero .crh-value { font-size:2.2rem;font-weight:800; }
+    .cgt-result-hero .crh-sub { font-size:.88rem;color:rgba(255,255,255,.6);margin-top:6px; }
+    .cgt-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0; }
+    .cgt-card { background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center; }
+    .cgt-card .cc-label { font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:4px; }
+    .cgt-card .cc-value { font-size:1.15rem;font-weight:800;color:var(--primary); }
+    .exempt-banner { background:#f0fdf4;border:2px solid #16a34a;border-radius:14px;padding:18px;text-align:center;margin:16px 0; }
+    .exempt-banner .eb-icon { font-size:2rem;margin-bottom:8px; }
+    .exempt-banner .eb-title { font-size:1.1rem;font-weight:800;color:#16a34a; }
+    .calc-row { display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:.9rem; }
+    .calc-row:last-child{border-bottom:none;}
+    .calc-row.positive .cr-value{color:#16a34a;font-weight:700;}
+    .calc-row.negative .cr-value{color:#e11d48;font-weight:700;}
+    .calc-row.total{font-weight:800;font-size:.95rem;}
+    .rate-badge { display:inline-block;padding:3px 10px;border-radius:100px;font-size:.75rem;font-weight:800; }
+    .rate-badge.zero { background:#f0fdf4;color:#16a34a; }
+    .rate-badge.low { background:#fffbeb;color:#d97706; }
+    .rate-badge.high { background:#fff1f2;color:#e11d48; }
+    .cgt-note-box { background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:14px;font-size:.85rem;margin:12px 0; }
+    @media(max-width:600px){.cgt-grid{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> › <a href="/mortgage-property/">Mortgage &amp; Property</a> › Property Capital Gains Tax Calculator
+    </nav>
+    <div class="tl-category-label">🏠 MORTGAGE &amp; PROPERTY</div>
+    <h1 class="tl-title">Property Capital Gains Tax <span class="tl-accent">Calculator</span></h1>
+    <p class="tl-desc">Know your CGT before you sell. African CGT rates range from 0% (Namibia, Mauritius) to 30% (Uganda). Egypt charges 2.5% on the <em>total selling price</em>, not just the gain. Calculate your exact liability.</p>
+    <div class="tl-badges">
+      <span>🇳🇬 Nigeria 10%</span><span>🇰🇪 Kenya 15%</span><span>🇿🇦 SA marginal rate</span><span>🇪🇬 Egypt 2.5% on sale</span><span>🇳🇦 Namibia 0%</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">💰</span>
+        <div>
+          <div class="tl-card-title">CGT Calculator</div>
+          <div class="tl-card-sub">Enter your property sale details to calculate capital gains tax</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field">
+          <label class="tl-label">COUNTRY</label>
+          <select id="country" onchange="onCountryChange()">
+            <option value="">— Select a country —</option>
+            <optgroup label="West Africa">
+              <option value="NG">🇳🇬 Nigeria (10%)</option>
+              <option value="GH">🇬🇭 Ghana (15%)</option>
+              <option value="CI">🇨🇮 Côte d'Ivoire (15%)</option>
+              <option value="SN">🇸🇳 Senegal (15%)</option>
+              <option value="CM">🇨🇲 Cameroon (10%)</option>
+            </optgroup>
+            <optgroup label="East Africa">
+              <option value="KE">🇰🇪 Kenya (15%)</option>
+              <option value="TZ">🇹🇿 Tanzania (10%)</option>
+              <option value="UG">🇺🇬 Uganda (30%)</option>
+              <option value="RW">🇷🇼 Rwanda (5%)</option>
+              <option value="ET">🇪🇹 Ethiopia (15%)</option>
+            </optgroup>
+            <optgroup label="North Africa">
+              <option value="EG">🇪🇬 Egypt (2.5% on sale price)</option>
+              <option value="MA">🇲🇦 Morocco (20%)</option>
+              <option value="TN">🇹🇳 Tunisia (10%)</option>
+            </optgroup>
+            <optgroup label="Southern Africa">
+              <option value="ZA">🇿🇦 South Africa (marginal rate)</option>
+              <option value="ZM">🇿🇲 Zambia (5–15%)</option>
+              <option value="BW">🇧🇼 Botswana (marginal)</option>
+              <option value="MU">🇲🇺 Mauritius (0% — No CGT)</option>
+              <option value="NA">🇳🇦 Namibia (0% — No CGT)</option>
+              <option value="ZW">🇿🇼 Zimbabwe (20%)</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">PURCHASE PRICE <span id="curr-label" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span></label>
+          <input type="number" id="purchase-price" value="10000000" min="0" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">IMPROVEMENTS COST <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(renovations added)</span></label>
+          <input type="number" id="improvements" value="0" min="0" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">SELLING PRICE <span id="curr-label2" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span></label>
+          <input type="number" id="selling-price" value="18000000" min="0" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">SELLING COSTS <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(agent, legal fees)</span></label>
+          <input type="number" id="selling-costs" value="0" min="0" oninput="calculate()">
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">YEARS HELD</label>
+          <input type="number" id="years-held" value="5" min="0" max="50" oninput="calculate()">
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin:4px 0 16px;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.9rem;">
+          <input type="checkbox" id="primary-residence" onchange="calculate()" style="width:16px;height:16px;">
+          <span>This is / was my primary residence</span>
+        </label>
+      </div>
+
+      <div id="empty-state" style="text-align:center;padding:40px 20px;color:var(--text-muted)">
+        <div style="font-size:2.5rem;margin-bottom:12px">💰</div>
+        <div style="font-size:.95rem">Select a country and enter property details to calculate CGT</div>
+      </div>
+
+      <div id="exempt-state" style="display:none">
+        <div class="exempt-banner">
+          <div class="eb-icon">🎉</div>
+          <div class="eb-title" id="exempt-title">No Capital Gains Tax</div>
+          <div style="color:var(--text-muted);font-size:.88rem;margin-top:6px" id="exempt-note">—</div>
+        </div>
+      </div>
+
+      <div id="results" style="display:none">
+        <div class="cgt-result-hero">
+          <div class="crh-label">Capital Gains Tax Payable</div>
+          <div class="crh-value" id="r-cgt">—</div>
+          <div class="crh-sub" id="r-cgt-sub">—</div>
+        </div>
+
+        <div class="cgt-grid">
+          <div class="cgt-card"><div class="cc-label">Capital Gain</div><div class="cc-value" id="r-gain">—</div></div>
+          <div class="cgt-card"><div class="cc-label">Effective Rate</div><div class="cc-value" id="r-eff-rate">—</div></div>
+          <div class="cgt-card"><div class="cc-label">Net Proceeds</div><div class="cc-value" id="r-net">—</div></div>
+        </div>
+
+        <div id="cgt-note-box" class="cgt-note-box" style="display:none"></div>
+
+        <div class="tl-section-title" style="margin-top:16px">Calculation Breakdown</div>
+        <div id="calc-breakdown"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Smart Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country and enter your property sale details to get AI-powered CGT insights and tax optimisation tips.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🗺️ AFRICAN CGT RATES AT A GLANCE</div>
+      <ul class="tl-info-list" style="font-size:.82rem">
+        <li><span class="rate-badge zero">0%</span> Namibia, Mauritius — no CGT</li>
+        <li><span class="rate-badge low">5%</span> Rwanda — very low</li>
+        <li><span class="rate-badge low">10%</span> Nigeria, Tanzania, Cameroon, Tunisia</li>
+        <li><span class="rate-badge low">15%</span> Kenya, Ghana, Côte d'Ivoire, Senegal, Ethiopia</li>
+        <li><span class="rate-badge high">20%</span> Morocco (exempt after 8 yrs), Zimbabwe</li>
+        <li><span class="rate-badge high">30%</span> Uganda — highest in East Africa</li>
+        <li><span class="rate-badge low">2.5%</span> Egypt — on TOTAL sale price (unusual)</li>
+        <li><span class="rate-badge low">~18%</span> South Africa — marginal (40% of gain included in income)</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔗 RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/property-valuation/">🏘️ Property Valuation</a> — Check your property value</li>
+        <li><a href="/tools/dev-feasibility/">📊 Development Feasibility</a> — Include CGT in project costs</li>
+        <li><a href="/tools/rental-yield/">🏠 Rental Yield</a> — Compare selling vs holding</li>
+        <li><a href="/tools/property-tax/">🏠 Property Tax</a> — Ongoing tax obligations</li>
+        <li><a href="/mortgage-property/">🏠 All Property Tools</a> — Full toolkit</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="legal" current="property-cgt"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var CGT_DATA = {
+  NG: { name:'Nigeria', currency:'NGN', symbol:'₦', rate:10, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    exemptionAmount:0, yearsForExemption:0,
+    note:'Nigeria PPT Act Section 22: 10% CGT on gains from property sales. Primary residence exemption: Nigeria does NOT provide a blanket primary residence exemption, but FIRS may allow for partial relief in certain circumstances. Consult a tax advisor.',
+    tip:'Always notify the FIRS (Federal Inland Revenue Service) of a CGT event within 90 days of the disposal. Failure to notify can result in penalties.' },
+  GH: { name:'Ghana', currency:'GHS', symbol:'GHS ', rate:15, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Ghana Capital Gains Tax Act: 15% on gains from property sales. No primary residence exemption for individuals.',
+    tip:'Ghana does not index cost for inflation. If you held the property during high inflation, your real gain may be lower than the nominal gain suggests.' },
+  CI: { name:"Côte d'Ivoire", currency:'XOF', symbol:'XOF ', rate:15, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:true,
+    note:"Côte d'Ivoire: 15% CGT on property gains. Primary residence may be exempt — confirm with a local tax advisor as conditions apply.",
+    tip:'Always consult a local notaire and fiscal advisor before selling. CGT in CI can be complex depending on property type and seller status.' },
+  SN: { name:'Senegal', currency:'XOF', symbol:'XOF ', rate:15, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Senegal: 15% CGT on property gains under the Code Général des Impôts.',
+    tip:'Senegal\'s property market is growing, especially in Dakar. CGT must be paid before the notaire can complete the transfer.' },
+  CM: { name:'Cameroon', currency:'XAF', symbol:'XAF ', rate:10, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Cameroon: 10% CGT on property gains under the General Tax Code.',
+    tip:'CGT is collected by the notaire at point of transfer in Cameroon. Ensure your notaire calculates and withholds the correct amount.' },
+  KE: { name:'Kenya', currency:'KES', symbol:'KES ', rate:15, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:true, exemptionAmount:3000000,
+    note:'Kenya Income Tax Amendment Act 2023 raised CGT from 5% to 15%. First KES 3M of gain is exempt for individuals. Primary residence exemption available with conditions.',
+    tip:'Kenya CGT raised to 15% in 2023 — a significant increase from the previous 5%. If you bought before 2015 when CGT was reintroduced, confirm the base cost rules with KRA.' },
+  TZ: { name:'Tanzania', currency:'TZS', symbol:'TZS ', rate:10, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Tanzania: 10% CGT on property gains. If the original cost is unknown, TRA uses 3% of the selling price as the deemed CGT.',
+    tip:'Tanzania Revenue Authority (TRA) uses the selling price method if cost cannot be proven. Keep all purchase documents safely.' },
+  UG: { name:'Uganda', currency:'UGX', symbol:'UGX ', rate:30, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:true,
+    note:'Uganda: CGT is taxed as part of income tax at 30% (highest effective rate in East Africa). Primary residence exemption available with conditions.',
+    tip:'Uganda has the highest CGT rate in East Africa at 30%. For investment properties, this significantly impacts returns. Rwanda (5%) is a more tax-efficient alternative for regional investors.' },
+  RW: { name:'Rwanda', currency:'RWF', symbol:'RWF ', rate:5, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Rwanda: 5% CGT on property gains — one of the lowest rates in Africa. Rwanda\'s investment-friendly tax regime makes it attractive for property investors.',
+    tip:'Rwanda has a flat 5% CGT — one of the most competitive in Africa. Combined with strong governance and land administration, it\'s increasingly attractive for investors.' },
+  ET: { name:'Ethiopia', currency:'ETB', symbol:'ETB ', rate:15, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Ethiopia: 15% CGT on property gains under the Income Tax Proclamation.',
+    tip:'Ethiopia\'s property market is growing rapidly with Addis Ababa being a major attraction for investors. However, foreign land ownership is prohibited — most investment is via leasehold.' },
+  EG: { name:'Egypt', currency:'EGP', symbol:'EGP ', rate:2.5, exempt:false,
+    rateType:'on_sale_price', primaryResidenceExempt:false,
+    note:'IMPORTANT: Egypt charges 2.5% on the TOTAL SELLING PRICE — NOT on the gain. This is unusual globally and can result in significant tax even when gains are small or there is a loss.',
+    tip:'Egypt\'s 2.5% tax on gross sale price is unusual — it acts more like a transfer tax than a capital gains tax. On a large property, this can significantly exceed what a percentage-of-gain system would produce.' },
+  MA: { name:'Morocco', currency:'MAD', symbol:'MAD ', rate:20, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:true, yearsForExemption:8,
+    note:'Morocco: 20% CGT on property gains. IMPORTANT: After 8 years of ownership, the gain is fully EXEMPT from CGT for primary residences.',
+    tip:'Morocco\'s 8-year exemption rule is a major incentive for long-term holding. If you have held your primary residence for 8+ years, you pay zero CGT. Confirm your ownership period carefully with a local notaire.' },
+  TN: { name:'Tunisia', currency:'TND', symbol:'TND ', rate:10, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Tunisia: 10% CGT on property gains under the Revenue Tax Code.',
+    tip:'Tunisia\'s 10% CGT rate is moderate. The property market in Tunis and Sfax has been recovering. Always engage a Tunisian notaire for property transactions.' },
+  ZA: { name:'South Africa', currency:'ZAR', symbol:'R', rate:40, exempt:false,
+    rateType:'inclusion_rate', inclusionRate:40, primaryResidenceExempt:true, exemptionAmount:2000000,
+    note:'South Africa: CGT inclusion rate of 40% for individuals (80% for companies). Only 40% of the gain is included in your income and taxed at your marginal income tax rate (up to 45%), giving an effective maximum CGT rate of 18% for individuals. First R2M of primary residence gain exempt.',
+    tip:'SA\'s primary residence exclusion of R2M means most middle-income homeowners pay very little CGT on their main home. Investment properties have no exclusion. Annual exclusion of R40,000 also applies.' },
+  ZM: { name:'Zambia', currency:'ZMW', symbol:'ZMW ', rate:5, exempt:false,
+    rateType:'sliding', slidingRates:[{max:9999, rate:5},{max:49999, rate:7.5},{max:Infinity, rate:15}],
+    note:'Zambia: Sliding scale CGT — 5% on gains up to ZMW 10K, 7.5% up to ZMW 50K, 15% above. Check current ZRA rates.',
+    tip:'Zambia\'s property market is primarily leasehold. CGT is payable to ZRA (Zambia Revenue Authority) before title transfer can occur.' },
+  BW: { name:'Botswana', currency:'BWP', symbol:'BWP ', rate:22, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Botswana: Property gains are taxed as income at standard income tax rates (effective ~22% for most taxpayers).',
+    tip:'Botswana\'s stable economy makes it a good long-term investment market. No specific CGT rate — gains are included in income and taxed at standard rates.' },
+  MU: { name:'Mauritius', currency:'MUR', symbol:'MUR ', rate:0, exempt:true,
+    rateType:'exempt', exemptReason:'Mauritius has NO capital gains tax. Property gains are fully exempt from CGT.',
+    note:'Mauritius: NO CGT. Property gains are completely exempt. Combined with No inheritance tax and low income tax, Mauritius is very tax-efficient for property investors.',
+    tip:'Mauritius has no CGT, no inheritance tax, and a flat 15% income tax. It\'s one of the most tax-efficient property investment environments in Africa. Smart: Namibia and Mauritius have no CGT — ideal if investing purely for capital appreciation.' },
+  NA: { name:'Namibia', currency:'NAD', symbol:'NAD ', rate:0, exempt:true,
+    rateType:'exempt', exemptReason:'Namibia has NO capital gains tax. Property gains are fully exempt from CGT.',
+    note:'Namibia: NO CGT. Property gains are completely exempt from capital gains tax.',
+    tip:'Namibia has no CGT and offers a stable, well-governed property market. Windhoek and coastal towns like Swakopmund offer good investment opportunities without CGT liability.' },
+  ZW: { name:'Zimbabwe', currency:'USD', symbol:'$', rate:20, exempt:false,
+    rateType:'percentage', primaryResidenceExempt:false,
+    note:'Zimbabwe: 20% CGT on property gains. Transactions are largely USD-denominated. Consult a local tax advisor given the complex fiscal environment.',
+    tip:'Zimbabwe\'s CGT at 20% is significant. The property market is primarily USD-denominated. Ensure proper legal title documentation before any transaction.' }
+};
+
+function fmt(n, sym) {
+  if (!n || isNaN(n)) return sym+'0';
+  var abs=Math.abs(n), sign=n<0?'-':'';
+  if(abs>=1e9)return sign+sym+(abs/1e9).toFixed(2)+'B';
+  if(abs>=1e6)return sign+sym+(abs/1e6).toFixed(2)+'M';
+  if(abs>=1000)return sign+sym+Math.round(abs).toLocaleString();
+  return sign+sym+Math.round(abs);
+}
+
+function onCountryChange() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var d = CGT_DATA[cc];
+  document.getElementById('curr-label').textContent = '(' + d.currency + ')';
+  document.getElementById('curr-label2').textContent = '(' + d.currency + ')';
+  calculate();
+}
+
+function calculate() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var d = CGT_DATA[cc];
+  var sym = d.symbol;
+
+  var purchasePrice = parseFloat(document.getElementById('purchase-price').value) || 0;
+  var improvements = parseFloat(document.getElementById('improvements').value) || 0;
+  var sellingPrice = parseFloat(document.getElementById('selling-price').value) || 0;
+  var sellingCosts = parseFloat(document.getElementById('selling-costs').value) || 0;
+  var yearsHeld = parseFloat(document.getElementById('years-held').value) || 0;
+  var isPrimary = document.getElementById('primary-residence').checked;
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('exempt-state').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+
+  // Zero CGT countries
+  if (d.rateType === 'exempt') {
+    document.getElementById('exempt-state').style.display = 'block';
+    document.getElementById('exempt-title').textContent = 'No Capital Gains Tax in ' + d.name;
+    document.getElementById('exempt-note').textContent = d.exemptReason;
+    document.getElementById('ai-obs').innerHTML = '<p>' + d.tip + '</p><p>Smart: Namibia and Mauritius have NO capital gains tax. If investing in African property purely for capital appreciation, these markets offer significant tax advantages over Nigeria (10%), Kenya (15%), or Uganda (30%).</p>';
+    return;
+  }
+
+  var costBase = purchasePrice + improvements;
+  var netProceeds = sellingPrice - sellingCosts;
+  var gain = netProceeds - costBase;
+
+  // Morocco 8-year exemption
+  var maExempt = (cc === 'MA' && isPrimary && yearsHeld >= 8);
+  if (maExempt) {
+    document.getElementById('exempt-state').style.display = 'block';
+    document.getElementById('exempt-title').textContent = 'Exempt — Primary Residence Held 8+ Years';
+    document.getElementById('exempt-note').textContent = 'Morocco: After 8 years, your primary residence gain is fully exempt from CGT. Your gain of ' + fmt(gain,sym) + ' is completely tax-free.';
+    document.getElementById('ai-obs').innerHTML = '<p>Morocco\'s 8-year exemption rule applies — your property gain of ' + fmt(gain,sym) + ' is fully exempt from CGT. This is one of Africa\'s most generous long-term holding incentives.</p><p>' + d.tip + '</p>';
+    return;
+  }
+
+  // Kenya primary residence / first KES 3M exempt
+  var keExemption = 0;
+  if (cc === 'KE' && d.exemptionAmount) keExemption = Math.min(gain, d.exemptionAmount);
+
+  // SA: only 40% of gain is taxable, R2M primary residence exclusion
+  var zaExemption = 0;
+  if (cc === 'ZA' && isPrimary) zaExemption = Math.min(gain, d.exemptionAmount || 0);
+  var saAnnualExclusion = cc === 'ZA' ? 40000 : 0;
+
+  var taxableGain;
+  var cgtAmount;
+  var effectiveRate;
+
+  if (d.rateType === 'on_sale_price') {
+    // Egypt: 2.5% of selling price
+    cgtAmount = sellingPrice * d.rate / 100;
+    taxableGain = gain;
+    effectiveRate = gain > 0 ? cgtAmount / gain * 100 : cgtAmount / sellingPrice * 100;
+  } else if (d.rateType === 'inclusion_rate') {
+    // South Africa
+    var gainAfterExclusion = Math.max(0, gain - zaExemption - saAnnualExclusion);
+    var includedGain = gainAfterExclusion * d.inclusionRate / 100;
+    // Use 36% marginal rate as representative for the calculator
+    var marginalRate = 36;
+    cgtAmount = includedGain * marginalRate / 100;
+    taxableGain = gainAfterExclusion;
+    effectiveRate = gain > 0 ? cgtAmount / gain * 100 : 0;
+  } else if (d.rateType === 'sliding') {
+    // Zambia
+    taxableGain = gain;
+    cgtAmount = 0;
+    var remaining = gain;
+    d.slidingRates.forEach(function(band,i){
+      var prev = i > 0 ? d.slidingRates[i-1].max : 0;
+      var bandGain = Math.min(remaining, band.max - prev);
+      if (bandGain > 0) { cgtAmount += bandGain * band.rate / 100; remaining -= bandGain; }
+    });
+    effectiveRate = gain > 0 ? cgtAmount / gain * 100 : 0;
+  } else {
+    // Standard percentage
+    taxableGain = Math.max(0, gain - keExemption);
+    if (isPrimary && d.primaryResidenceExempt && cc !== 'KE' && cc !== 'ZA' && cc !== 'MA') taxableGain = 0;
+    cgtAmount = taxableGain * d.rate / 100;
+    effectiveRate = gain > 0 ? cgtAmount / gain * 100 : 0;
+  }
+
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('r-cgt').textContent = fmt(cgtAmount, sym);
+  document.getElementById('r-cgt-sub').textContent = (d.rateType==='on_sale_price'?d.rate+'% of selling price':d.rateType==='inclusion_rate'?'40% inclusion × 36% marginal rate':d.rate+'% of taxable gain') + (isPrimary && d.primaryResidenceExempt?' (primary residence)':'');
+  document.getElementById('r-gain').textContent = fmt(gain, sym);
+  document.getElementById('r-eff-rate').textContent = effectiveRate.toFixed(1) + '%';
+  document.getElementById('r-net').textContent = fmt(netProceeds - cgtAmount, sym);
+
+  // Note box for special rules
+  var note = document.getElementById('cgt-note-box');
+  if (d.rateType === 'on_sale_price' || cc === 'ZA' || (cc==='KE'&&gain>0) || (cc==='MA'&&yearsHeld<8)) {
+    note.style.display = 'block';
+    note.innerHTML = '⚠️ <strong>Note:</strong> ' + d.note;
+  } else {
+    note.style.display = 'none';
+  }
+
+  // Breakdown
+  var rows = [
+    ['Purchase price', fmt(purchasePrice,sym), ''],
+    ['Improvements / improvements', fmt(improvements,sym), ''],
+    ['Cost base', fmt(costBase,sym), 'subtotal'],
+    ['Selling price', fmt(sellingPrice,sym), ''],
+    ['Selling costs', '– '+fmt(sellingCosts,sym), ''],
+    ['Net proceeds', fmt(netProceeds,sym), 'positive'],
+    ['Capital gain (proceeds – cost)', fmt(gain,sym), gain>=0?'positive':'negative'],
+  ];
+  if (keExemption > 0) rows.push(['KE exemption (first KES 3M)', '– '+fmt(keExemption,sym),'']);
+  if (zaExemption > 0) rows.push(['Primary residence exclusion', '– '+fmt(zaExemption,sym),'']);
+  if (saAnnualExclusion > 0 && cc==='ZA') rows.push(['Annual exclusion (R40K)','– '+fmt(saAnnualExclusion,sym),'']);
+  rows.push(['CAPITAL GAINS TAX PAYABLE', fmt(cgtAmount,sym), 'total negative']);
+  rows.push(['NET AFTER CGT', fmt(netProceeds-cgtAmount,sym), 'total positive']);
+
+  document.getElementById('calc-breakdown').innerHTML = rows.map(function(r){
+    return '<div class="calc-row '+r[2]+'"><span>'+r[0]+'</span><span class="cr-value">'+r[1]+'</span></div>';
+  }).join('');
+
+  // AI observations
+  var aiLines = [];
+  if (gain < 0) {
+    aiLines.push('You have a capital loss of ' + fmt(Math.abs(gain),sym) + ' on this sale. ' + (d.rateType==='on_sale_price'?'⚠️ In Egypt, you still owe ' + fmt(cgtAmount,sym) + ' (2.5% of the selling price) even though you sold at a loss — this is unusual and unique to Egypt.':'No CGT is payable on a capital loss.'));
+  } else {
+    aiLines.push('You\'ll owe ' + fmt(cgtAmount,sym) + ' in CGT on this sale in ' + d.name + ' (' + (d.rateType==='on_sale_price'?'2.5% of selling price':d.rate+'% of gain') + '). ' + (isPrimary&&d.primaryResidenceExempt&&d.rateType!=='on_sale_price'?'Primary residence exemption applied.':'Consult a tax advisor about available exemptions.'));
+  }
+  aiLines.push(d.tip);
+  if (cgtAmount > gain * 0.25) aiLines.push('⚠️ Your CGT represents ' + (cgtAmount/gain*100).toFixed(0) + '% of your gain — significant. Consider whether the timing of the sale can be optimised, and whether any deductible costs have been missed.');
+  if (cc==='MU'||cc==='NA') aiLines.push('Smart: Mauritius and Namibia are the only major African markets with no CGT. If you\'re a regional investor, these markets offer significant post-sale return advantages.');
+
+  document.getElementById('ai-obs').innerHTML = aiLines.map(function(l){return '<p>'+l+'</p>';}).join('');
+}
+
+// Calculate with defaults on load
+window.addEventListener('DOMContentLoaded', function(){ document.getElementById('empty-state').style.display='block'; });
+</script>
+</body>
+</html>

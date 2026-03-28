@@ -17,8 +17,8 @@
 <meta name="description" content="Calculateur d'Impot sur le Revenu (IR) au Maroc 2026. Baremes fiscaux DGI, cotisations CNSS, AMO et salaire net en MAD.">
 <link rel="canonical" href="https://afrotools.com/fr/morocco/ma-paye/">
 <meta property="og:title" content="Calculateur IR Maroc 2026 — Impot sur le Revenu">
-<meta property="og:description" content="Calculez votre Impot sur le Revenu au Maroc avec les barèmes DGI 2026. Cotisations CNSS, AMO et salaire net en MAD.">
-<meta property="og:image" content="https://afrotools.com/og-image?title=Calculateur%20IR%20Maroc%202026%20%E2%80%94%20Impot%20sur%20le%20Revenu&country=MA&sub=Calculateur%20fiscal%20gratuit%20%E2%80%94%20Afrique%20francophone&lang=fr">
+<meta property="og:description" content="Calculez votre Impot sur le Revenu au Maroc avec les baremes DGI 2026. Cotisations CNSS, AMO et salaire net en MAD.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="AfroTools">
@@ -72,12 +72,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@afrotools">
 <meta name="twitter:title" content="Calculateur IR Maroc 2026 — Impot sur le Revenu">
-<meta name="twitter:description" content="Calculez votre Impot sur le Revenu au Maroc avec les barèmes DGI 2026. Cotisations CNSS, AMO et salaire net en MAD.">
+<meta name="twitter:description" content="Calculez votre Impot sur le Revenu au Maroc avec les baremes DGI 2026. Cotisations CNSS, AMO et salaire net en MAD.">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Morocco PAYE Calculator 2026","description":"Calculate Morocco PAYE income tax with accurate tax bands and déductions. Free online calculator.","url":"https://afrotools.com/morocco/ma-paye","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Morocco PAYE Calculator 2026","description":"Calculate Morocco PAYE income tax with accurate tax bands and deductions. Free online calculator.","url":"https://afrotools.com/morocco/ma-paye","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Morocco PAYE Calculator 2026","url":"https://afrotools.com/morocco/ma-paye","description":"Calculate Morocco PAYE income tax with accurate tax bands and déductions. Free online calculator.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Morocco PAYE Calculator 2026","url":"https://afrotools.com/morocco/ma-paye","description":"Calculate Morocco PAYE income tax with accurate tax bands and deductions. Free online calculator.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Morocco","item":"https://afrotools.com/morocco"},{"@type":"ListItem","position":3,"name":"Morocco PAYE Calculator","item":"https://afrotools.com/morocco/ma-paye"}]}
@@ -87,20 +87,51 @@
 </script>
 <script src="/assets/js/lib/chart-config.js"></script>
 <meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/morocco/ma-paye/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/morocco/ma-paye/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/morocco/ma-paye/" />
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/morocco/ma-paye" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/morocco/ma-paye" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/morocco/ma-paye" />
-<meta property="og:locale:alternate" content="en_US">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
+<script>
+window.addEventListener('load', function() {
+  // Override share library copy toast text for French pages
+  if (window.AfroTools) {
+    var _origToast = window.AfroTools.toast;
+    if (_origToast && _origToast.success) {
+      var _origSuccess = _origToast.success.bind(_origToast);
+      _origToast.success = function(msg) {
+        if (msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origSuccess(msg);
+      };
+    }
+    if (typeof _origToast === 'function') {
+      window.AfroTools.toast = function(msg, type) {
+        if (msg === 'Link copied!' || msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origToast(msg, type);
+      };
+    }
+  }
+  // Patch window.open to replace WhatsApp share CTA text for French pages
+  var _origOpen = window.open;
+  window.open = function(url, target) {
+    if (url && typeof url === 'string' && url.startsWith('https://wa.me/?text=')) {
+      url = url.replace(encodeURIComponent('Calculate yours FREE 👇'),
+                        encodeURIComponent('Calculez le vôtre GRATUITEMENT 👇'));
+      url = url.replace(encodeURIComponent('My Result'), encodeURIComponent('Mon résultat'));
+    }
+    return _origOpen.apply(this, arguments);
+  };
+});
+</script>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
 <section class="tool-hero">
   <div class="tool-hero-inner">
     <nav class="breadcrumb">
-      <a href="/fr/">Accueil</a> / <a href="/fr/maroc/">🇲🇦 Morocco</a> / <span>PAYE Calculator</span>
+      <a href="/fr/">Home</a> / <a href="/fr/morocco/">🇲🇦 Morocco</a> / <span>Calculateur PAYE</span>
     </nav>
     <h1>Calculateur d'Impot sur le Revenu (IR) Maroc 2026</h1>
     <p class="hero-sub">DGI progressive tax (0%–38%), CNSS social security (4.48% employee, capped). Annual computation per DGI bands.</p>
@@ -110,7 +141,7 @@
       <span class="badge b-grey">MAD · Moroccan Dirham</span>
     </div>
     <p class="hero-meta">Last verified: January 2025 · Source: DGI (dgi.gov.ma)</p>
-    <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/fr/morocco/ma-vat" style="color:#007AFF;font-weight:600;">Morocco VAT Calculator</a></p>
+    <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Voir aussi : <a href="/fr/morocco/ma-vat" style="color:#007AFF;font-weight:600;">Morocco Calculateur TVA</a></p>
   </div>
 </section>
 <div class="amendment-bar">
@@ -123,20 +154,20 @@
     <div>
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Enter Your Details</span>
+          <span class="card-title">Vos informations</span>
           <span class="card-sub">Moroccan Dirham · MAD</span>
         </div>
         <div class="card-body">
           <div class="slider-wrap">
             <div class="slider-row">
-              <span class="slider-label">Annual Gross Salary</span>
+              <span class="slider-label">Salaire Brut Annuel</span>
               <span class="slider-val" id="sliderVal">MAD 300,000</span>
             </div>
             <input type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="300000" oninput="onSlider(this)">
             <div class="slider-limits"><span>MAD 50,000</span><span>MAD 5,000,000</span></div>
           </div>
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Or type exact annual amount</span><span class="f-hint">Before déductions</span></div>
+            <div class="f-label"><span class="f-label-text">Ou entrez le montant annuel exact</span><span class="f-hint">Avant déductions</span></div>
             <div class="f-wrap">
               <span class="f-prefix">MAD</span>
               <input type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" step="10000" value="300000" oninput="onInput(this)">
@@ -152,7 +183,7 @@
           </div>
 
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
+            <div class="f-label"><span class="f-label-text">Déductions actives</span><span class="f-hint">Activer / désactiver</span></div>
             <div class="toggles">
               <div class="tog on" data-tog="cnss" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -166,15 +197,15 @@
       </div>
       <div class="card results-card" id="resultsCard">
         <div class="res-hero">
-          <div class="res-hero-label">Annual Take-Home Pay</div>
+          <div class="res-hero-label">Salaire Net Annuel</div>
           <div class="res-hero-amount" id="resAmount">MAD 0</div>
-          <div class="res-hero-period">After DGI &amp; all déductions</div>
+          <div class="res-hero-period">After DGI &amp; all deductions</div>
           <div class="res-hero-gross" id="resGross"></div>
         </div>
         <div class="res-body">
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
-            <div class="rate-bar-hdr"><span class="rate-bar-lbl">Taux effectif d'imposition</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div>
+            <div class="rate-bar-hdr"><span class="rate-bar-lbl">Taux d'Imposition Effectif</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div>
             <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
           </div>
           <div class="info-strip" id="employerStrip"></div>
@@ -182,14 +213,14 @@
         <div class="chart-section">
           <div class="chart-tabs">
             <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
-            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
+            <button class="chart-tab" onclick="setChart('bar',this)">Tranches d'Imposition</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Coût Employeur</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
         <div class="action-row">
-          <button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Télécharger PDF</button>
-          <button class="act-btn act-share" id="maShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Partager</button>
+          <button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
+          <button class="act-btn act-share" id="maShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Result</button>
         </div>
       </div>
     </div>
@@ -197,17 +228,17 @@
       <div class="ai-card">
         <div class="ai-head">
           <div class="ai-dot"></div>
-          <span class="ai-head-title">Conseiller fiscal IA</span>
-          <span class="ai-head-by">Powered by Claude</span>
+          <span class="ai-head-title">Conseiller Fiscal IA</span>
+          <span class="ai-head-by">Propulsé par Claude</span>
         </div>
         <div class="ai-body">
-          <p class="ai-status" id="aiStatus">Calculez votre salaire pour débloquer l'analyse fiscale Maroc.</p>
+          <p class="ai-status" id="aiStatus">Calculate salary to unlock Morocco tax analysis.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord →</button>
+          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Posez une question de suivi…" onkeydown="if(event.key==='Enter')sendChat()">
+              <input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
               <button class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
@@ -228,7 +259,7 @@
           <div class="band-row"><span class="band-range">MAD 60,001 – 80,000</span><span class="band-rate">30%</span></div>
           <div class="band-row"><span class="band-range">MAD 80,001 – 180,000</span><span class="band-rate">34%</span></div>
           <div class="band-row"><span class="band-range">Above MAD 180,000</span><span class="band-rate">38%</span></div>
-          <p class="band-note">Applied annually to taxable income after CNSS déduction (capped MAD 72,000/year).</p>
+          <p class="band-note">Applied annually to taxable income after CNSS deduction (capped MAD 72,000/year).</p>
         </div>
       </div>
       <div class="card bands-card">
@@ -249,7 +280,7 @@
         <div class="tool-info-header">
           <img src="/assets/img/tools/ma-vat.webp" alt="Morocco PAYE Calculator" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
-            <div class="tool-info-name">Morocco PAYE Calculator</div>
+            <div class="tool-info-name">Morocco Calculateur PAYE</div>
             <div class="tool-info-cat">Tax &amp; Finance</div>
           </div>
         </div>
@@ -260,17 +291,17 @@
             <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
           </div>
           <div class="tool-info-features">
-            <span class="tool-feat">Net Pay Calc</span>
-            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">Salaire Net Calc</span>
+            <span class="tool-feat">Tranches d'Imposition</span>
             <span class="tool-feat">PDF Export</span>
             <span class="tool-feat">Conseiller IA</span>
-            <span class="tool-feat">Déductions</span>
+            <span class="tool-feat">Deductions</span>
           </div>
         </div>
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
             <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
           </div>
         </div>
@@ -286,27 +317,27 @@
     <div class="faq-grid">
       <div class="faq-item">
         <div class="faq-q">What are the Morocco income tax (IR) bands for 2025?</div>
-        <p class="faq-a">0% on first MAD 30,000; 10% on MAD 30,001–50,000; 20% on MAD 50,001–60,000; 30% on MAD 60,001–80,000; 34% on MAD 80,001–180,000; 38% above MAD 180,000. Applied annually to net taxable income after CNSS and professional expenses déduction. Source: DGI Morocco.</p>
+        <p class="faq-a">0% on first MAD 30,000; 10% on MAD 30,001–50,000; 20% on MAD 50,001–60,000; 30% on MAD 60,001–80,000; 34% on MAD 80,001–180,000; 38% above MAD 180,000. Applied annually to net taxable income after CNSS and professional expenses deduction. Source: DGI Morocco.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">Is CNSS capped in Morocco?</div>
-        <p class="faq-a">Yes — the CNSS employee contribution (4.48%) is capped at MAD 6,000/month (MAD 72,000/year). This means the maximum monthly CNSS déduction is MAD 268.80. The cap applies to the employee portion only.</p>
+        <p class="faq-a">Yes — the CNSS employee contribution (4.48%) is capped at MAD 6,000/month (MAD 72,000/year). This means the maximum monthly CNSS deduction is MAD 268.80. The cap applies to the employee portion only.</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">What is the professional expenses déduction?</div>
-        <p class="faq-a">Morocco allows a flat 20% déduction for professional expenses (frais professionnels), capped at MAD 30,000/year. This is automatically deducted from gross salary before calculating taxable income, reducing your effective tax rate.</p>
+        <div class="faq-q">What is the professional expenses deduction?</div>
+        <p class="faq-a">Morocco allows a flat 20% deduction for professional expenses (frais professionnels), capped at MAD 30,000/year. This is automatically deducted from gross salary before calculating taxable income, reducing your effective tax rate.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">How is PAYE (IR) calculated in Morocco?</div>
-        <p class="faq-a">Start with gross salary, deduct CNSS (4.48%, capped), deduct AMO (2.26%), apply the 20% professional expenses déduction (capped at MAD 30,000/yr), then apply the 6-band progressive tax table. Family déductions of MAD 360/dependent/year may also apply.</p>
+        <p class="faq-a">Start with gross salary, deduct CNSS (4.48%, capped), deduct AMO (2.26%), apply the 20% professional expenses deduction (capped at MAD 30,000/yr), then apply the 6-band progressive tax table. Family deductions of MAD 360/dependent/year may also apply.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">What is AMO in Morocco?</div>
         <p class="faq-a">AMO (Assurance Maladie Obligatoire) is Morocco's mandatory health insurance. Employees contribute 2.26% of gross salary with no cap. Employers contribute 4.11%. AMO provides coverage for medical expenses, hospitalization, and medication.</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Are there family déductions in Morocco?</div>
-        <p class="faq-a">Yes — married taxpayers and those with dependents can claim MAD 360 per dependent per year, up to 6 dependents (MAD 2,160 maximum). This déduction is applied directly against the calculated tax amount, not against taxable income.</p>
+        <div class="faq-q">Are there family deductions in Morocco?</div>
+        <p class="faq-a">Yes — married taxpayers and those with dependents can claim MAD 360 per dependent per year, up to 6 dependents (MAD 2,160 maximum). This deduction is applied directly against the calculated tax amount, not against taxable income.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">What is the employer cost of hiring in Morocco?</div>
@@ -323,7 +354,7 @@
   <div class="modal">
     <div id="modalForm">
       <h3>📄 Download Your PAYE Summary</h3>
-      <p>Enter your email to get a detailed PDF.</p>
+      <p>Entrez votre email pour obtenir un PDF détaillé.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
         <p style="display:none"><input name="bot-field"></p>
@@ -346,25 +377,56 @@
     </div>
   </div>
 </div>
+
+<!-- SEO Guide -->
+<section style="max-width:800px;margin:2.5rem auto;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+  <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">How Morocco Impôt sur le Revenu (IR) Is Calculated 2025</h2>
+  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1rem;">Morocco's personal income tax (Impôt sur le Revenu — IR) is administered by the Direction Générale des Impôts (DGI) under the General Tax Code (Code Général des Impôts). Employment income in Morocco (salaires et traitements) is subject to withholding by the employer through a PAYE-equivalent system called Retenue à la Source. Employers deduct IR monthly and remit it to DGI by the end of the following month. Morocco's tax year follows the calendar year (January to December).</p>
+  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1rem;">Morocco uses a six-band annual progressive tax structure. The first MAD 30,000 of annual taxable income is completely exempt. Income from MAD 30,001 to MAD 50,000 is taxed at 10%; MAD 50,001 to MAD 60,000 at 20%; MAD 60,001 to MAD 80,000 at 30%; MAD 80,001 to MAD 180,000 at 34%; and amounts above MAD 180,000 at 38%. Morocco's maximum marginal rate of 38% is moderate by North African standards. A deduction of MAD 28,000 per year for employees (professional expenses) is automatically applied before calculating taxable income.</p>
+  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1rem;">Social security contributions in Morocco are managed by the CNSS (Caisse Nationale de Sécurité Sociale). The employee CNSS contribution rate is 4.48% of gross salary, capped at a monthly income ceiling of MAD 6,000 (annual cap MAD 72,000) — meaning the maximum employee CNSS deduction is MAD 269/month. The CNSS contribution is fully deductible from taxable income before IR is calculated. The AMO (Assurance Maladie Obligatoire) health insurance contribution is an additional 2.26% for employees. Employers pay a higher rate comprising family allowances, professional training, and workplace accident insurance.</p>
+  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1.5rem;">Morocco uses the Moroccan Dirham (MAD, د.م.), which is managed under a controlled float regime by Bank Al-Maghrib. Morocco is the largest economy in Francophone Africa and the 5th largest on the continent, with a GDP exceeding $140 billion. The country has attracted significant foreign investment in automotive, aerospace, and renewable energy sectors. VAT in Morocco is 20% (standard rate), with reduced rates for certain essential goods. Morocco also has one of Africa's most comprehensive double taxation treaty networks, with agreements covering major European, Arab, and African trading partners.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.75rem;color:#1e293b;">Morocco IR Tranches d'Imposition 2025 (Annual)</h3>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-bottom:1rem;">
+      <thead>
+        <tr style="background:#F5F9FF;border-bottom:2px solid #DBEAFE;">
+          <th style="padding:10px 14px;text-align:left;font-weight:600;color:#1e293b;">Annual Band (MAD)</th>
+          <th style="padding:10px 14px;text-align:right;font-weight:600;color:#1e293b;">Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #EFF6FF;"><td style="padding:10px 14px;color:#475569;">0 &ndash; 30,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#16a34a;">0%</td></tr>
+        <tr style="border-bottom:1px solid #EFF6FF;background:#FAFBFF;"><td style="padding:10px 14px;color:#475569;">30,001 &ndash; 50,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">10%</td></tr>
+        <tr style="border-bottom:1px solid #EFF6FF;"><td style="padding:10px 14px;color:#475569;">50,001 &ndash; 60,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">20%</td></tr>
+        <tr style="border-bottom:1px solid #EFF6FF;background:#FAFBFF;"><td style="padding:10px 14px;color:#475569;">60,001 &ndash; 80,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">30%</td></tr>
+        <tr style="border-bottom:1px solid #EFF6FF;"><td style="padding:10px 14px;color:#475569;">80,001 &ndash; 180,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">34%</td></tr>
+        <tr><td style="padding:10px 14px;color:#475569;">Over 180,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#dc2626;">38%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:0.8rem;color:#94a3b8;"><!-- Rates as of 2025. Verify at DGI (tax.gov.ma) for the latest updates. --></p>
+</section>
+
 <section style="padding:48px 16px;background:#f8fafd">
   <div style="max-width:800px;margin:0 auto">
-    <h2 style="font-size:1.5rem;font-weight:700;color:#0a1628;margin-bottom:16px">Guide de l'impôt sur le revenu au Maroc 2025/26</h2>
-    <p style="color:#444;line-height:1.7;margin-bottom:16px">Le Maroc prélève l'<strong>IR (Impôt sur le Revenu)</strong> sur les revenus d'emploi selon le barème progressif du Code Général des Impôts, administré par la Direction Générale des Impôts (DGI). Le barème comporte six tranches annuelles en dirhams marocains (MAD), de 0 % jusqu'à 38 % sur les revenus dépassant MAD 180 000. Les salariés bénéficient d'une déduction pour frais professionnels de 20 % du salaire brut, plafonnée à MAD 30 000.</p>
-    <p style="color:#444;line-height:1.7;margin-bottom:16px">Les cotisations sociales se répartissent entre la <strong>CNSS</strong> (4,48 % employé / 8,98 % employeur) et l'assurance maladie obligatoire <strong>AMO</strong> (2,26 % employé / 4,11 % employeur).</p>
+    <h2 style="font-size:1.5rem;font-weight:700;color:#0a1628;margin-bottom:16px">Morocco PAYE Tax Guide 2025/26</h2>
+    <p style="color:#444;line-height:1.7;margin-bottom:16px">Morocco levies <strong>Impôt sur le Revenu (IR)</strong> on employment income under the General Tax Code, administered by the Direction Générale des Impôts (DGI). The scale runs across six annual bands denominated in Moroccan Dirhams (MAD), from 0% on the first MAD 30,000 annually to a top rate of 38% on income above MAD 180,000. Employees also benefit from professional expense deductions of 20% of gross salary (capped at MAD 30,000).</p>
+    <p style="color:#444;line-height:1.7;margin-bottom:16px">Social contributions are split between the <strong>CNSS (Caisse Nationale de Sécurité Sociale)</strong> — at 4.48% employee / 8.98% employer — and the AMO health insurance scheme at 2.26% employee / 4.11% employer.</p>
     <div style="overflow-x:auto;margin-bottom:16px">
       <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
-        <thead><tr style="background:#007AFF;color:#fff"><th style="padding:10px;text-align:left">Revenu annuel (MAD)</th><th style="padding:10px;text-align:right">Taux</th></tr></thead>
+        <thead><tr style="background:#007AFF;color:#fff"><th style="padding:10px;text-align:left">Annual Income (MAD)</th><th style="padding:10px;text-align:right">Rate</th></tr></thead>
         <tbody>
-          <tr style="background:#fff"><td style="padding:9px;border-bottom:1px solid #e2e8f0">0 – 30 000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">0 %</td></tr>
-          <tr style="background:#f8fafd"><td style="padding:9px;border-bottom:1px solid #e2e8f0">30 001 – 50 000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">10 %</td></tr>
-          <tr style="background:#fff"><td style="padding:9px;border-bottom:1px solid #e2e8f0">50 001 – 60 000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">20 %</td></tr>
-          <tr style="background:#f8fafd"><td style="padding:9px;border-bottom:1px solid #e2e8f0">60 001 – 80 000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">30 %</td></tr>
-          <tr style="background:#fff"><td style="padding:9px;border-bottom:1px solid #e2e8f0">80 001 – 180 000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">34 %</td></tr>
-          <tr style="background:#f8fafd"><td style="padding:9px">Au-dessus de 180 000</td><td style="padding:9px;text-align:right">38 %</td></tr>
+          <tr style="background:#fff"><td style="padding:9px;border-bottom:1px solid #e2e8f0">0 – 30,000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">0%</td></tr>
+          <tr style="background:#f8fafd"><td style="padding:9px;border-bottom:1px solid #e2e8f0">30,001 – 50,000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">10%</td></tr>
+          <tr style="background:#fff"><td style="padding:9px;border-bottom:1px solid #e2e8f0">50,001 – 60,000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">20%</td></tr>
+          <tr style="background:#f8fafd"><td style="padding:9px;border-bottom:1px solid #e2e8f0">60,001 – 80,000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">30%</td></tr>
+          <tr style="background:#fff"><td style="padding:9px;border-bottom:1px solid #e2e8f0">80,001 – 180,000</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e2e8f0">34%</td></tr>
+          <tr style="background:#f8fafd"><td style="padding:9px">Above 180,000</td><td style="padding:9px;text-align:right">38%</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="color:#444;line-height:1.7">Utilisez le calculateur ci-dessus pour estimer votre salaire net mensuel selon le barème IR 2025/26. L'outil intègre les cotisations CNSS et AMO, et affiche le coût employeur total pour une planification salariale à Casablanca, Rabat et partout au Maroc.</p>
+    <p style="color:#444;line-height:1.7">Use the calculator above to estimate net monthly salary under Morocco's IR scale. The tool factors in CNSS and AMO deductions and displays the full employer cost, making it useful for payroll planning in Casablanca, Rabat, and across Morocco.</p>
   </div>
 </section>
 
@@ -372,13 +434,13 @@
   <div class="more-tools-inner">
     <h2 class="more-tools-title">More African Tax Tools</h2>
     <div class="more-tools-grid">
-      <a href="/fr/algeria/dz-paye" class="more-tool-link">🇩🇿 Algeria PAYE Calculator</a>
-      <a href="/fr/tunisia/tn-paye" class="more-tool-link">🇹🇳 Tunisia PAYE Calculator</a>
-      <a href="/fr/egypt/eg-paye" class="more-tool-link">🇪🇬 Egypt PAYE Calculator</a>
-      <a href="/fr/nigeria/ng-salary-tax" class="more-tool-link">🇳🇬 Nigeria PAYE Calculator</a>
-      <a href="/fr/kenya/ke-paye" class="more-tool-link">🇰🇪 Kenya PAYE Calculator</a>
-      <a href="/fr/south-africa/za-paye" class="more-tool-link">🇿🇦 South Africa PAYE Calculator</a>
-      <a href="/fr/tools/vat-calculator/vat-calc" class="more-tool-link">🌍 Pan-African VAT Calculator</a>
+      <a href="/fr/algeria/dz-paye" class="more-tool-link">🇩🇿 Algeria Calculateur PAYE</a>
+      <a href="/fr/tunisia/tn-paye" class="more-tool-link">🇹🇳 Tunisia Calculateur PAYE</a>
+      <a href="/fr/egypt/eg-paye" class="more-tool-link">🇪🇬 Egypt Calculateur PAYE</a>
+      <a href="/fr/nigeria/ng-salary-tax" class="more-tool-link">🇳🇬 Nigeria Calculateur PAYE</a>
+      <a href="/fr/kenya/ke-paye" class="more-tool-link">🇰🇪 Kenya Calculateur PAYE</a>
+      <a href="/fr/south-africa/za-paye" class="more-tool-link">🇿🇦 South Africa Calculateur PAYE</a>
+      <a href="/fr/tools/vat-calculator/vat-calc" class="more-tool-link">🌍 Pan-African Calculateur TVA</a>
       <a href="/fr/tools/currency-converter/" class="more-tool-link">💱 African Currency Converter</a>
     </div>
   </div>
@@ -387,11 +449,11 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">Related African Tax Tools</h2>
   <div style="display:flex;flex-wrap:wrap;gap:10px;">
-    <a href="/fr/morocco/ma-vat" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Morocco VAT Calculator</a>
+    <a href="/fr/morocco/ma-vat" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Morocco Calculateur TVA</a>
     <a href="/fr/algeria/dz-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Algeria PAYE</a>
     <a href="/fr/tunisia/tn-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Tunisia PAYE</a>
-    <a href="/fr/tools/paye-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">All PAYE Calculators</a>
-    <a href="/fr/tools/vat-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">VAT Calculator Africa</a>
+    <a href="/fr/tools/paye-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">All Calculateur PAYEs</a>
+    <a href="/fr/tools/vat-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Calculateur TVA Africa</a>
   </div>
 </section>
 <afro-footer></afro-footer>
@@ -428,20 +490,20 @@ return{tax,bandBreakdown:bands.filter(b=>b.income>0)};}
   }
 
   function calculate(){const gross=parseFloat(document.getElementById('grossSalary').value)||0;if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{el.style.borderColor='';el.removeAttribute('placeholder')},3000);return;}
-const hasCNSS=isOn('cnss');const cnssRaw=gross*0.0448;const cnss=Math.min(cnssRaw,72000);const empCNSS=Math.min(gross*0.0898,72000);const taxableIncome=Math.max(0,gross-cnss);const result=calcAnnualDGI(taxableIncome);const annualDGI=result.tax;const totalDed=cnss+annualDGI;const net=gross-totalDed;const eff=gross>0?annualDGI/gross:0;const employerCNSS=Math.min(gross,72000)*0.064;const employerAMO=gross*0.0411;const employerProf=gross*0.016;const employerTotal=employerCNSS+employerAMO+employerProf;const totalEmployerCost=gross+employerTotal;RESULT={gross,cnss,empCNSS,annualDGI,bandBreakdown:result.bandBreakdown,totalDed,net,effectiveRate:eff,empCost:gross+empCNSS,employerCNSS,employerAMO,employerProf,employerTotal,totalEmployerCost};document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Gross</div><div class="res-row"><span class="res-row-lbl">Annual Gross</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Déductions</div>${hasCNSS?`<div class="res-row"><span class="res-row-lbl">CNSS (4.48%, capped)</span><span class="res-row-val c-red">${fmt(cnss)}</span></div>`:''}
-<div class="res-row"><span class="res-row-lbl">Net Taxable</span><span class="res-row-val c-mut">${fmt(gross-cnss)}</span></div></div><div class="res-section"><div class="res-section-title">DGI Tax</div><div class="res-row"><span class="res-row-lbl">Annual DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Total des déductions</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');renderChart(CHART_TYPE);var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost)+'/year</strong><br>Gross + CNSS (6.4%) '+fmt(RESULT.employerCNSS)+' + AMO (4.11%) '+fmt(RESULT.employerAMO)+' + Prof tax (1.6%) '+fmt(RESULT.employerProf)+'.';}document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Obtenir l'analyse fiscale IA →';}
+const hasCNSS=isOn('cnss');const cnssRaw=gross*0.0448;const cnss=Math.min(cnssRaw,72000);const empCNSS=Math.min(gross*0.0898,72000);const taxableIncome=Math.max(0,gross-cnss);const result=calcAnnualDGI(taxableIncome);const annualDGI=result.tax;const totalDed=cnss+annualDGI;const net=gross-totalDed;const eff=gross>0?annualDGI/gross:0;const employerCNSS=Math.min(gross,72000)*0.064;const employerAMO=gross*0.0411;const employerProf=gross*0.016;const employerTotal=employerCNSS+employerAMO+employerProf;const totalEmployerCost=gross+employerTotal;RESULT={gross,cnss,empCNSS,annualDGI,bandBreakdown:result.bandBreakdown,totalDed,net,effectiveRate:eff,empCost:gross+empCNSS,employerCNSS,employerAMO,employerProf,employerTotal,totalEmployerCost};document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Gross</div><div class="res-row"><span class="res-row-lbl">Annual Gross</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Deductions</div>${hasCNSS?`<div class="res-row"><span class="res-row-lbl">CNSS (4.48%, capped)</span><span class="res-row-val c-red">${fmt(cnss)}</span></div>`:''}
+<div class="res-row"><span class="res-row-lbl">Net Taxable</span><span class="res-row-val c-mut">${fmt(gross-cnss)}</span></div></div><div class="res-section"><div class="res-section-title">DGI Tax</div><div class="res-row"><span class="res-row-lbl">Annual DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Total Deductions</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');renderChart(CHART_TYPE);var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost)+'/year</strong><br>Gross + CNSS (6.4%) '+fmt(RESULT.employerCNSS)+' + AMO (4.11%) '+fmt(RESULT.employerAMO)+' + Prof tax (1.6%) '+fmt(RESULT.employerProf)+'.';}document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis →';}
 function toggleBands(h){const b=h.nextElementSibling;b.classList.toggle('open');h.querySelector('.tog-arrow').classList.toggle('open');}
 function setChart(t,b){CHART_TYPE=t;document.querySelectorAll('.chart-tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderChart(t);}
 function renderChart(type){if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
-if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Salaire net','DGI Tax','CNSS'],datasets:[{data:[R.net,R.annualDGI,R.cnss],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
-else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.length)CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (MAD)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10}}}}}});}else if(type==='employer'){CHART=new Chart(canvas,{type:'bar',data:{labels:['Salaire net','DGI Tax','CNSS (Employee)','CNSS (Employer)','AMO (Employer)','Prof Tax (Employer)'],datasets:[{label:'Amount',data:[R.net,R.annualDGI,R.cnss,R.employerCNSS,R.employerAMO,R.employerProf],backgroundColor:AfroChartColors.doughnut.slice(0,6),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid}},y:{ticks:{font:{size:10,weight:'600'}}}}}});}}
+if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','DGI Tax','CNSS'],datasets:[{data:[R.net,R.annualDGI,R.cnss],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
+else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.length)CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (MAD)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10}}}}}});}else if(type==='employer'){CHART=new Chart(canvas,{type:'bar',data:{labels:['Take-Home','DGI Tax','CNSS (Employee)','CNSS (Employer)','AMO (Employer)','Prof Tax (Employer)'],datasets:[{label:'Amount',data:[R.net,R.annualDGI,R.cnss,R.employerCNSS,R.employerAMO,R.employerProf],backgroundColor:AfroChartColors.doughnut.slice(0,6),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid}},y:{ticks:{font:{size:10,weight:'600'}}}}}});}}
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';}
 function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
 async function submitPdf(e){e.preventDefault();try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email:document.getElementById('pdfEmail').value,country:'Morocco',country_code:'MA',tool:'paye',tool_id:'ma-paye',currency:'MAD',gross_salary:RESULT.gross}).toString()});}catch(e){}
 document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
 function shareResult(){if(!RESULT)return;const text=`Morocco PAYE: Gross MAD ${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home MAD ${Math.round(RESULT.net).toLocaleString()}/yr. afrotools.com/morocco/ma-paye`;if(navigator.share){navigator.share({title:'My Morocco PAYE',text,url:'https://afrotools.com/morocco/ma-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('maShareBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='Share Result',2500);}}
-async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');btn.disabled=true;btn.textContent='Analyse en cours…';const prompt=`Morocco PAYE 2025: Gross MAD ${Math.round(R.gross).toLocaleString()}, CNSS MAD ${Math.round(R.cnss).toLocaleString()}, DGI MAD ${Math.round(R.annualDGI).toLocaleString()}, Take-home MAD ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor. Concise.',messages:[{role:'user',content:prompt}]})});const data=await res.json();const text=data.text||'Unable.';document.getElementById('aiResp').textContent=text;document.getElementById('aiResp').style.display='block';document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}catch(e){btn.disabled=false;btn.textContent='Réessayer';}}
+async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');btn.disabled=true;btn.textContent='Analysing…';const prompt=`Morocco PAYE 2025: Gross MAD ${Math.round(R.gross).toLocaleString()}, CNSS MAD ${Math.round(R.cnss).toLocaleString()}, DGI MAD ${Math.round(R.annualDGI).toLocaleString()}, Take-home MAD ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor. Concise.',messages:[{role:'user',content:prompt}]})});const data=await res.json();const text=data.text||'Unable.';document.getElementById('aiResp').textContent=text;document.getElementById('aiResp').style.display='block';document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}catch(e){btn.disabled=false;btn.textContent='Try Again';}}
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});}catch{aiEl.textContent='Error.';}}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 

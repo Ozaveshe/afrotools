@@ -360,6 +360,82 @@ function discoverExistingFrPages() {
 
 discoverExistingFrPages();
 
+// ── DISCOVER EXISTING SWAHILI PAGES ────────────────────────────────
+// Hand-crafted Swahili pages under /sw/ that predate the build system.
+// We map each to its English equivalent so hreflang/sitemap can reference them.
+
+const SW_SLUG_TO_EN = {
+  // Category hubs
+  'afya-na-bima': 'health',
+  'biashara-na-faida': 'data-productivity',
+  'kazi-na-nyaraka': 'document-pdf',
+  'kilimo': 'agriculture',
+  'mali-na-mikopo': 'mortgage-property',
+  'mshahara-na-kodi': 'salary-tax',
+  'sarafu': 'currency',
+  'vat-na-kodi': 'vat-business-tax',
+  'zana-za-ai': 'tools/ai-advisor',
+  'zana-za-elimu': 'education',
+  'zana-za-pdf': 'document-pdf',
+  'zana-zote': 'all-tools',
+  'nchi': 'countries',
+  'linganisha/kenya-vs-tanzania-kodi': 'compare/kenya-vs-tanzania-tax',
+  // Country PAYE tools
+  'kenya/kikokotoo-kodi-mshahara': 'kenya/ke-paye',
+  'tanzania/kikokotoo-kodi-mshahara': 'tanzania/tz-paye',
+};
+
+// existingSwPages: Map<enPagePath, swUrl>
+const existingSwPages = new Map();
+const existingSwToEn = new Map();
+
+function discoverExistingSwPages() {
+  const swDir = path.join(ROOT, 'sw');
+  if (!fs.existsSync(swDir)) return;
+
+  const walkSw = (dir, base) => {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(e => {
+      const rel = base ? base + '/' + e.name : e.name;
+      if (e.isDirectory()) walkSw(path.join(dir, e.name), rel);
+      else if (e.name.endsWith('.html')) {
+        let cleanRel = rel.replace(/\.html$/, '').replace(/\/index$/, '');
+        if (cleanRel === 'index') cleanRel = '';
+
+        // Lookup English equivalent
+        let enPage = SW_SLUG_TO_EN[cleanRel] || null;
+
+        // If not in explicit map, try direct match (same country/path in English)
+        if (!enPage) {
+          enPage = cleanRel;
+        }
+
+        if (enPage) {
+          enPage = enPage.replace(/\/+$/, '').replace(/^\//, '');
+        }
+
+        // Build Swahili URL
+        let swUrl = '/sw/' + (cleanRel || '');
+        if (swUrl !== '/sw/' && !swUrl.endsWith('/')) swUrl += '/';
+
+        // Verify English source exists
+        const enExists = enPage && resolveSourceFile(enPage);
+
+        if (enPage && enExists) {
+          existingSwPages.set(enPage, SITE_URL + swUrl);
+          existingSwToEn.set(swUrl, enPage);
+        } else {
+          existingSwPages.set('_swonly_' + rel, SITE_URL + swUrl);
+        }
+      }
+    });
+  };
+
+  walkSw(swDir, '');
+  console.log(`[existing-sw] ${existingSwPages.size} existing Swahili pages mapped`);
+}
+
+discoverExistingSwPages();
+
 // Get which languages have a translation for a given page path
 // Now considers both page-specific JSON files AND existing hand-crafted French pages
 function getAvailableLangs(pagePath) {
@@ -369,9 +445,12 @@ function getAvailableLangs(pagePath) {
     if (translatedPages[lang].has(clean)) {
       langs.push(lang);
     }
-    // Also check existing hand-crafted pages (currently only French)
+    // Also check existing hand-crafted pages
     if (lang === 'fr' && existingFrPages.has(clean) && !langs.includes('fr')) {
       langs.push('fr');
+    }
+    if (lang === 'sw' && existingSwPages.has(clean) && !langs.includes('sw')) {
+      langs.push('sw');
     }
   }
   return langs;
@@ -434,12 +513,23 @@ function buildOutputPath(pagePath, lang) {
 
 // ── GENERATE HREFLANG TAGS ──────────────────────────────────────────
 
+function getSwahiliUrl(pagePath) {
+  const clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
+  if (existingSwPages.has(clean)) {
+    return existingSwPages.get(clean);
+  }
+  return buildLangUrl(pagePath, 'sw');
+}
+
 function generateHreflangTags(pagePath, activeLangs) {
   const tags = [];
 
   for (const lang of activeLangs) {
-    // For French, use existing hand-crafted URL if available
-    const url = (lang === 'fr') ? getFrenchUrl(pagePath) : buildLangUrl(pagePath, lang);
+    // For French/Swahili, use existing hand-crafted URL if available
+    let url;
+    if (lang === 'fr') url = getFrenchUrl(pagePath);
+    else if (lang === 'sw') url = getSwahiliUrl(pagePath);
+    else url = buildLangUrl(pagePath, lang);
     tags.push(`<link rel="alternate" hreflang="${lang}" href="${url}" />`);
   }
 
@@ -472,7 +562,8 @@ function processHTML(html, lang, pagePath) {
   }
 
   // 1. Set <html lang="XX">
-  processed = processed.replace(/<html\s+lang="[^"]*"/, `<html lang="${lang}"`);
+  // Handle lang in any position in the opening <html> tag (e.g. after data-* attrs)
+  processed = processed.replace(/(<html\b[^<]*?)\slang="[^"]*"/, `$1 lang="${lang}"`);
 
   // 2. Update <meta property="og:locale">
   const ogLocale = t('seo.ogLocale') || `${lang}_${lang.toUpperCase()}`;
@@ -642,11 +733,188 @@ function processHTML(html, lang, pagePath) {
     }
   );
 
+  // 9b. For French pages, append "-fr" to the tool-id meta tag so the AI Advisor
+  // uses the correct French tool context (e.g. "ke-paye" → "ke-paye-fr")
+  if (lang === 'fr') {
+    processed = processed.replace(
+      /<meta\s+name="tool-id"\s+content="([^"-][^"]*)"/,
+      (match, toolId) => `<meta name="tool-id" content="${toolId}-fr"`
+    );
+  }
+
   // 10. Update JSON-LD structured data inLanguage
   processed = processed.replace(
     /"inLanguage"\s*:\s*"[^"]*"/g,
     `"inLanguage":"${lang}"`
   );
+
+  // 10b. UI string translation pass (fr only)
+  // Replaces known English UI strings in HTML text content and select attribute values,
+  // skipping <script> and <style> blocks. Uses phrase-level translations to preserve
+  // French word order — avoids single-word replacements that cause word-order issues.
+  if (lang === 'fr') {
+    const UI_TRANSLATIONS_FR = [
+      // ── Calculator input labels (compound phrases first) ──
+      ['Enter Your Details', 'Vos informations'],
+      ['Monthly Gross Salary', 'Salaire Brut Mensuel'],
+      ['Annual Gross Salary', 'Salaire Brut Annuel'],
+      ['Before any deductions', 'Avant toute déduction'],
+      ['Before any déductions', 'Avant toute déduction'],
+      ['Before deductions', 'Avant déductions'],
+      ['Or type exact annual amount', 'Ou entrez le montant annuel exact'],
+      ['Or type exact monthly amount', 'Ou entrez le montant mensuel exact'],
+      ['Leave blank = full gross', 'Laisser vide = salaire brut total'],
+      ['Active Deductions', 'Déductions actives'],
+      ['Toggle to include / exclude', 'Activer / désactiver'],
+      ['Statutory Deductions', 'Retenues légales'],
+      ['Optional Deductions', 'Déductions facultatives'],
+
+      // ── PAYE page labels / breadcrumbs ──
+      ['PAYE Calculator', 'Calculateur PAYE'],
+      ['Tax Calculator', 'Calculateur Fiscal'],
+      ['VAT Calculator', 'Calculateur TVA'],
+      ['Gross → Net', 'Brut → Net'],
+      ['Net → Gross', 'Net → Brut'],
+      ['Also see:', 'Voir aussi :'],
+      ['Last updated:', 'Dernière mise à jour :'],
+      ['See what changed', 'Voir les changements'],
+      ['Ask a follow-up below ↓', 'Posez une question ci-dessous ↓'],
+      ['Get AI Tax Analysis →', 'Obtenir une analyse IA →'],
+      ['Analysing…', 'Analyse en cours…'],
+      ['Calculate first to unlock →', "Calculez d'abord pour débloquer →"],
+
+      // ── Kenya specifics ──
+      ['Affordable Housing Levy', 'Prélèvement Logement Abordable'],
+      ['Housing Levy', 'Prélèvement Logement'],
+      ['Basic Salary (for NSSF)', 'Salaire de Base (pour NSSF)'],
+      ['Basic Salary (for SSNIT)', 'Salaire de Base (pour SSNIT)'],
+      ['NSSF Tier I + II', 'NSSF Niveaux I + II'],
+      ['NSSF Tier I+II', 'NSSF Niveaux I+II'],
+      ['Personal Relief', 'Abattement Personnel'],
+      ['Disability Exemption', 'Exonération Handicap'],
+      ['Mortgage Relief', 'Allègement Prêt Immobilier'],
+      ['Mortgage Interest Relief', 'Allègement Intérêts Immobiliers'],
+      ['Disabled (NCPWD registered)', 'Handicapé(e) (enregistré NCPWD)'],
+      ['Insurance Relief', 'Allègement Assurance'],
+      ['Monthly Insurance Premium', "Prime d'Assurance Mensuelle"],
+      ['Monthly Pension Contribution', 'Cotisation de Pension Mensuelle'],
+      ['Monthly Mortgage Interest', 'Intérêts Immobiliers Mensuels'],
+      ['Monthly PRMF Contribution', 'Cotisation PRMF Mensuelle'],
+
+      // ── Ghana specifics ──
+      ['SSNIT Tier I + II', 'SSNIT Niveaux I + II'],
+      ['SSNIT Tier I+II', 'SSNIT Niveaux I+II'],
+      ['SSNIT Tier III', 'SSNIT Niveau III'],
+      ['Voluntary, tax-deductible', 'Volontaire, déductible fiscalement'],
+      ['Marriage Relief', 'Abattement pour Mariage'],
+      ['1 Child Relief', 'Abattement 1 Enfant'],
+      ['2 Children Relief', 'Abattement 2 Enfants'],
+      ['Disability Relief', 'Abattement Handicap'],
+      ['Old Age (60+)', 'Troisième Âge (60+)'],
+      ['Dependent Relative', 'Parent à Charge'],
+      ['Pension (SSNIT)', 'Pension (SSNIT)'],
+      ['Tier III Contribution (Annual)', 'Cotisation Niveau III (Annuelle)'],
+      ['Personal Reliefs (GRA-registered)', 'Abattements Personnels (enregistrés GRA)'],
+
+      // ── Nigeria specifics ──
+      ['Consolidated Relief Allowance', 'Allocation de Réduction Consolidée'],
+      ['Voluntary Pension', 'Pension Volontaire'],
+      ['Life Assurance', 'Assurance Vie'],
+      ['National Housing Fund', 'Fonds National du Logement'],
+
+      // ── Rwanda specifics ──
+      ['RSSB Pension', 'Pension RSSB'],
+      ['Maternity Leave Contribution', 'Cotisation Congé Maternité'],
+      ['Community-Based Health Insurance', 'Mutuelle de Santé'],
+
+      // ── Common result labels ──
+      ['Monthly Take-Home Pay', 'Salaire Net Mensuel'],
+      ['Annual Take-Home Pay', 'Salaire Net Annuel'],
+      ['Effective Tax Rate', "Taux d'Imposition Effectif"],
+      ['Total Deductions', 'Total des Déductions'],
+      ['Tax Owed', 'Impôt Dû'],
+      ['Pension Contribution', 'Cotisation de Pension'],
+      ['Health Insurance', 'Assurance Maladie'],
+      ['Tax Bands', "Tranches d'Imposition"],
+      ['Employer Cost', 'Coût Employeur'],
+      ['Chargeable Income', 'Revenu Imposable'],
+      ['Tax Payable', 'Impôt Dû'],
+      ['Cumulative Tax', 'Impôt Cumulé'],
+      ['Cumulative Income', 'Revenu Cumulé'],
+      ['Tax-free threshold', "Seuil d'exonération"],
+      ['Gross Salary', 'Salaire Brut'],
+      ['Net Salary', 'Salaire Net'],
+      ['Take-Home Pay', 'Salaire Net'],
+      ['Net Pay', 'Salaire Net'],
+      ['Tax Rate', "Taux d'imposition"],
+      ['Income Tax', "Impôt sur le Revenu"],
+      ['Total Tax', 'Impôt Total'],
+
+      // ── Buttons ──
+      ['Calculate My Take-Home Pay', 'Calculer mon salaire net'],
+      ['Calculate My Net Salary', 'Calculer mon salaire net'],
+      ['Calculate My PAYE', 'Calculer mon PAYE'],
+
+      // ── Status / placeholders ──
+      ['Loading...', 'Chargement...'],
+      ['Calculating...', 'Calcul en cours...'],
+      ['Something went wrong', "Une erreur s'est produite"],
+      ['Try Again', 'Réessayer'],
+      ['No results found', 'Aucun résultat trouvé'],
+      ['Copied!', 'Copié !'],
+
+      // ── AI Advisor ──
+      ['Includes AI Advisor', 'Inclut le Conseiller IA'],
+      ['AI Tax Advisor', 'Conseiller Fiscal IA'],
+      ['AI Financial Advisor', 'Conseiller Financier IA'],
+      ['AI Advisor', 'Conseiller IA'],
+      ['Calculate first to unlock', "Calculez d'abord pour débloquer"],
+      ['Calculate your salary first to get personalised AI tax analysis.', "Calculez votre salaire pour obtenir une analyse fiscale IA personnalisée."],
+      ['Calculate your salary first', "Calculez d'abord votre salaire"],
+      ['Powered by Claude', 'Propulsé par Claude'],
+      ['Thinking...', 'Réflexion en cours...'],
+
+      // ── Footer ──
+      ['All rights reserved', 'Tous droits réservés'],
+      ['Made for Africa, by Africa', "Fait pour l'Afrique, par l'Afrique"],
+
+      // ── PDF modal ──
+      ['Enter your email to get a detailed PDF', 'Entrez votre email pour obtenir un PDF détaillé'],
+    ];
+
+    // Sort by string length descending so longer phrases match before their substrings
+    UI_TRANSLATIONS_FR.sort((a, b) => b[0].length - a[0].length);
+
+    // Split HTML at script/style block boundaries, only translate in non-code segments
+    const segments = processed.split(/(<(?:script|style)[^>]*>[\s\S]*?<\/(?:script|style)>)/i);
+    processed = segments.map((seg, i) => {
+      // Odd-indexed segments are script/style blocks — leave untouched
+      if (i % 2 === 1) return seg;
+      let s = seg;
+
+      // Replace in element text content (between > and <)
+      s = s.replace(/>([^<]+)</g, (match, text) => {
+        let t = text;
+        for (const [en, fr] of UI_TRANSLATIONS_FR) {
+          const escaped = en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          t = t.replace(new RegExp(escaped, 'g'), fr);
+        }
+        return `>${t}<`;
+      });
+
+      // Replace in placeholder and aria-label attribute values
+      s = s.replace(/(placeholder|aria-label)="([^"]*)"/g, (match, attr, val) => {
+        let v = val;
+        for (const [en, fr] of UI_TRANSLATIONS_FR) {
+          const escaped = en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          v = v.replace(new RegExp(escaped, 'g'), fr);
+        }
+        return `${attr}="${v}"`;
+      });
+
+      return s;
+    }).join('');
+  }
 
   // 11. Update internal navigation links to include language prefix
   // Only rewrite links that are absolute paths starting with / and pointing to known pages
@@ -671,6 +939,43 @@ function processHTML(html, lang, pagePath) {
       '</head>',
       `${langMetaTag}\n${i18nScript}\n</head>`
     );
+  }
+
+  // 13. For French pages: inject share/copy text overrides after <body>
+  // This patches the share library's hardcoded English strings at runtime.
+  if (lang === 'fr') {
+    const frShareOverride = `<script>
+window.addEventListener('load', function() {
+  // Override share library copy toast text for French pages
+  if (window.AfroTools) {
+    var _origToast = window.AfroTools.toast;
+    if (_origToast && _origToast.success) {
+      var _origSuccess = _origToast.success.bind(_origToast);
+      _origToast.success = function(msg) {
+        if (msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origSuccess(msg);
+      };
+    }
+    if (typeof _origToast === 'function') {
+      window.AfroTools.toast = function(msg, type) {
+        if (msg === 'Link copied!' || msg === 'Link copied to clipboard') msg = 'Lien copié !';
+        return _origToast(msg, type);
+      };
+    }
+  }
+  // Patch window.open to replace WhatsApp share CTA text for French pages
+  var _origOpen = window.open;
+  window.open = function(url, target) {
+    if (url && typeof url === 'string' && url.startsWith('https://wa.me/?text=')) {
+      url = url.replace(encodeURIComponent('Calculate yours FREE \uD83D\uDC47'),
+                        encodeURIComponent('Calculez le v\u00F4tre GRATUITEMENT \uD83D\uDC47'));
+      url = url.replace(encodeURIComponent('My Result'), encodeURIComponent('Mon r\u00E9sultat'));
+    }
+    return _origOpen.apply(this, arguments);
+  };
+});
+</script>`;
+    processed = processed.replace('<body', frShareOverride + '\n<body');
   }
 
   return processed;

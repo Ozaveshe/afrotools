@@ -1390,7 +1390,7 @@
             <!-- Unified Header (replaces old profile-header + mn-header) -->
             <div class="profile-header" id="unifiedHeader">
                 <div class="avatar-wrap" id="avatarWrap">
-                    <img id="profileAvatar" class="avatar-img" src="" alt="" style="display:none;">
+                    <img id="profileAvatar" class="avatar-img" src="" alt="User profile avatar" style="display:none;">
                 </div>
                 <div class="profile-info">
                     <h1 class="profile-name" id="profileName">Welcome back!</h1>
@@ -1757,6 +1757,7 @@
     <script src="/assets/js/components/tool-registry.js" defer></script>
     <script src="/assets/js/components/onboarding-modal.js"></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
+    <script src="/assets/js/components/auth-modal.js"></script>
     <script src="/assets/js/afro-history.js"></script>
     <script src="/assets/js/lib/saved-tools.js" defer></script>
     <script src="/assets/js/tax-calendar.js"></script>
@@ -2756,7 +2757,7 @@
             container.innerHTML = cards.map(function(c) {
                 var badgeHtml = c.badge ? '<span class="qc-badge">For you</span>' : '';
                 var iconHtml = c.toolId
-                    ? '<img class="qc-icon" src="/assets/img/tools/' + c.toolId + '.webp" alt="" width="36" height="36" onerror="this.onerror=null;this.src=\'/assets/img/tools/' + c.toolId + '.svg\';this.onerror=function(){this.outerHTML=\'<span class=qc-flag>' + (c.icon || '') + '</span>\'}">'
+                    ? '<img class="qc-icon" src="/assets/img/tools/' + c.toolId + '.webp" alt="' + (c.name || 'Tool icon') + '" width="36" height="36" onerror="this.onerror=null;this.src=\'/assets/img/tools/' + c.toolId + '.svg\';this.onerror=function(){this.outerHTML=\'<span class=qc-flag>' + (c.icon || '') + '</span>\'}">'
                     : '<span class="qc-flag">' + c.icon + '</span>';
                 return '<a href="' + c.href + '" class="qc-card">' + iconHtml + '<span class="qc-label">' + c.label + '</span>' + badgeHtml + '</a>';
             }).join('');
@@ -2965,7 +2966,7 @@
                     var imgSrc = '/assets/img/tools/' + toolId + '.webp';
                     var imgFb = '/assets/img/tools/' + toolId + '.svg';
                     return '<a href="' + href + '" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 12px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .18s;" onmouseover="this.style.borderColor=\'#007AFF\';this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 20px rgba(0,122,255,.10)\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
-                        '<div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;"><img src="' + imgSrc + '" alt="" width="36" height="36" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" onerror="this.onerror=function(){this.outerHTML=\'' + meta.icon + '\'};this.src=\'' + imgFb + '\'"></div>' +
+                        '<div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;"><img src="' + imgSrc + '" alt="' + (meta.name || 'Tool') + '" width="36" height="36" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" onerror="this.onerror=function(){this.outerHTML=\'' + meta.icon + '\'};this.src=\'' + imgFb + '\'"></div>' +
                         '<div style="font-size:.78rem;font-weight:700;color:#111827;line-height:1.3;">' + meta.name + '</div>' +
                     '</a>';
                 }).join('');

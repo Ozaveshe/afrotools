@@ -4,6 +4,13 @@
 # that block supabase.co (ad blockers, ISP restrictions) can still authenticate
 /supabase-proxy/*  https://zpclagtgczsygrgztlts.supabase.co/:splat  200
 
+# Secure Auth API (HttpOnly cookie sessions)
+/api/auth/login    /.netlify/functions/auth-session   200
+/api/auth/signup   /.netlify/functions/auth-session   200
+/api/auth/logout   /.netlify/functions/auth-session   200
+/api/auth/session  /.netlify/functions/auth-session   200
+/api/auth/refresh  /.netlify/functions/auth-session   200
+
 # Developer Portal & API
 /developers   /developers/index.html   200
 /developers/  /developers/index.html   200
@@ -434,8 +441,8 @@
 /sw/tools/currency-converter/ /tools/currency-converter/ 301
 /sw/tools/currency-converter  /tools/currency-converter/ 301
 /sw/tools/*                  /tools/:splat             301
-/sw/countries/               /countries/               301
-/sw/countries                /countries/               301
+/sw/countries/               /sw/nchi/                 301
+/sw/countries                /sw/nchi/                 301
 # Removed: was redirecting country-specific PAYE tool pages to generic hub
 # /sw/kenya/kikokotoo-kodi-mshahara/ and /sw/tanzania/kikokotoo-kodi-mshahara/
 # now serve their own index.html with country-specific calculators

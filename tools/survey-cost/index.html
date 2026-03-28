@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Land Survey Cost Estimator for Africa 2026 — 15 Countries | AfroTools</title>
+  <meta name="description" content="Estimate land survey costs across Africa. SURCON Nigeria, ISK Kenya, PLATO South Africa, GhIS Ghana and more. Standard plot, topographic, subdivision survey fees and professional bodies.">
+  <link rel="canonical" href="https://afrotools.com/tools/survey-cost/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Land Survey Cost Estimator for Africa","url":"https://afrotools.com/tools/survey-cost/","description":"Estimate land survey costs across 15 African countries with professional body information.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property/"},{"@type":"ListItem","position":3,"name":"Land Survey Cost Estimator","item":"https://afrotools.com/tools/survey-cost/"}]}]}</script>
+  <style>
+    .survey-result { background: linear-gradient(135deg,#e8f2ff,#f0f7ff); border: 1px solid var(--primary); border-radius: 16px; padding: 24px; text-align:center; margin:16px 0; }
+    .survey-result .sr-label { font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--primary);margin-bottom:6px; }
+    .survey-result .sr-range { font-size:1.8rem;font-weight:800;color:var(--primary-dark,#0063D1); }
+    .survey-result .sr-sub { font-size:.85rem;color:var(--text-muted);margin-top:4px; }
+    .includes-list { list-style:none;padding:0;margin:0; }
+    .includes-list li { padding:7px 0;border-bottom:1px solid var(--border);font-size:.88rem;display:flex;align-items:flex-start;gap:8px; }
+    .includes-list li::before { content:'✓';color:#16a34a;font-weight:800;flex-shrink:0; }
+    .body-card { background:var(--pale,#e8f2ff);border:1px solid var(--primary);border-radius:12px;padding:14px;margin:12px 0; }
+    .body-card .bc-title { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--primary);margin-bottom:4px; }
+    .body-card .bc-name { font-size:.95rem;font-weight:700; }
+    .time-row { display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.88rem; }
+    .time-row:last-child{border-bottom:none;}
+    .survey-type-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0; }
+    .st-card { border:2px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s; }
+    .st-card:hover{border-color:var(--primary);}
+    .st-card.active{border-color:var(--primary);background:var(--pale,#e8f2ff);}
+    .st-card .stc-icon{font-size:1.4rem;margin-bottom:4px;}
+    .st-card .stc-name{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+    .st-card .stc-mult{font-size:.7rem;color:var(--text-muted);margin-top:2px;}
+    @media(max-width:600px){.survey-type-grid{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> › <a href="/mortgage-property/">Mortgage &amp; Property</a> › Land Survey Cost Estimator
+    </nav>
+    <div class="tl-category-label">🏠 MORTGAGE &amp; PROPERTY</div>
+    <h1 class="tl-title">Land Survey <span class="tl-accent">Cost</span> Estimator</h1>
+    <p class="tl-desc">Know what to budget for a land survey before buying or building. Country-specific fees for 15 African countries — including the professional body that must certify your surveyor, and exactly what the survey includes.</p>
+    <div class="tl-badges">
+      <span>🇳🇬 SURCON Nigeria</span><span>🇰🇪 ISK Kenya</span><span>🇿🇦 PLATO South Africa</span><span>🇬🇭 GhIS Ghana</span><span>+ 11 more</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">📐</span>
+        <div>
+          <div class="tl-card-title">Land Survey Cost Estimator</div>
+          <div class="tl-card-sub">Select country, survey type, and plot size for a cost estimate</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field">
+          <label class="tl-label">COUNTRY</label>
+          <select id="country" onchange="calculate()">
+            <option value="">— Select a country —</option>
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="ZA">🇿🇦 South Africa</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+            <option value="EG">🇪🇬 Egypt</option>
+            <option value="UG">🇺🇬 Uganda</option>
+            <option value="RW">🇷🇼 Rwanda</option>
+            <option value="MA">🇲🇦 Morocco</option>
+            <option value="CI">🇨🇮 Côte d'Ivoire</option>
+            <option value="CM">🇨🇲 Cameroon</option>
+            <option value="ZM">🇿🇲 Zambia</option>
+            <option value="AO">🇦🇴 Angola</option>
+            <option value="BW">🇧🇼 Botswana</option>
+            <option value="NA">🇳🇦 Namibia</option>
+          </select>
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">PLOT SIZE (SQM)</label>
+          <input type="number" id="plot-sqm" value="600" min="50" step="50" oninput="calculate()">
+        </div>
+      </div>
+
+      <div class="tl-section-title">SURVEY TYPE</div>
+      <div class="survey-type-grid">
+        <div class="st-card active" onclick="selectType('boundary')" id="st-boundary">
+          <div class="stc-icon">📍</div>
+          <div class="stc-name">Boundary Survey</div>
+          <div class="stc-mult">Standard (1×)</div>
+        </div>
+        <div class="st-card" onclick="selectType('topo')" id="st-topo">
+          <div class="stc-icon">🗺️</div>
+          <div class="stc-name">Topographic</div>
+          <div class="stc-mult">More complex (2×)</div>
+        </div>
+        <div class="st-card" onclick="selectType('subdivision')" id="st-subdivision">
+          <div class="stc-icon">✂️</div>
+          <div class="stc-name">Subdivision</div>
+          <div class="stc-mult">Multiple plots (2.5×)</div>
+        </div>
+      </div>
+
+      <div id="empty-state" style="text-align:center;padding:40px 20px;color:var(--text-muted)">
+        <div style="font-size:2.5rem;margin-bottom:12px">📐</div>
+        <div style="font-size:.95rem">Select a country to load survey cost data</div>
+      </div>
+
+      <div id="results" style="display:none">
+        <div class="survey-result">
+          <div class="sr-label">Estimated Survey Cost</div>
+          <div class="sr-range" id="r-range">—</div>
+          <div class="sr-sub" id="r-type-label">Boundary survey for a standard plot</div>
+        </div>
+
+        <div class="body-card">
+          <div class="bc-title">Certifying Professional Body</div>
+          <div class="bc-name" id="r-body">—</div>
+          <div style="font-size:.8rem;color:var(--text-muted);margin-top:4px" id="r-body-note">—</div>
+        </div>
+
+        <div class="tl-section-title">What's Included in This Survey</div>
+        <ul class="includes-list" id="r-includes"></ul>
+
+        <div class="tl-section-title" style="margin-top:16px">Typical Timeline</div>
+        <div id="r-timeline"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Smart Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country to get AI-powered insights on land survey requirements and surveyor verification tips.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">⚠️ ALWAYS VERIFY YOUR SURVEYOR</div>
+      <ul class="tl-info-list">
+        <li>Ask for their registration number before engaging</li>
+        <li>Call the professional body to confirm they are licensed</li>
+        <li>Unlicensed surveys are legally worthless — titles built on them can be revoked</li>
+        <li>Get 3 quotes but choose based on registration, not just price</li>
+        <li>A signed survey plan must bear the surveyor's stamp and seal</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔗 RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/land-title-check/">📋 Land Title Verification</a> — Verify before buying</li>
+        <li><a href="/tools/construction-budget/">🏗️ Construction Budget</a> — Plan your build</li>
+        <li><a href="/tools/building-materials/">🧱 Material Costs</a> — Bill of quantities</li>
+        <li><a href="/tools/property-valuation/">🏘️ Property Valuation</a> — Check market value</li>
+        <li><a href="/mortgage-property/">🏠 All Property Tools</a> — Full toolkit</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="legal" current="survey-cost"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var SURVEY = {
+  NG: { name:'Nigeria', currency:'NGN', symbol:'₦', body:'SURCON (Surveyors Council of Nigeria)',
+    bodyNote:'Verify your surveyor\'s SURCON registration number at surcon.gov.ng before engaging.',
+    plotMin:50000, plotMax:200000, hectareMin:150000, hectareMax:500000,
+    includes:['Boundary demarcation with beacons','Survey plan drawing (to scale)','Coordinate report (state plane coordinates)','Beacon certificate','Area computation report'],
+    timeline:[['Survey commencement','1–3 days after engagement'],['Field work completion','1–5 days depending on size'],['Survey plan ready','2–4 weeks'],['Registration at Survey Authority','4–12 weeks (Lagos slower)']],
+    notes:'Lagos is the most expensive state for surveys. Confirm surveyor is SURCON-registered. Many title disputes arise from fraudulent survey plans — always verify independently.' },
+  KE: { name:'Kenya', currency:'KES', symbol:'KES ', body:'Institution of Surveyors of Kenya (ISK)',
+    bodyNote:'Check ISK registration at isk.or.ke. Licensed surveyors must provide a RIM (Registry Index Map) overlay.',
+    plotMin:15000, plotMax:50000, hectareMin:50000, hectareMax:150000,
+    includes:['Boundary survey & demarcation','RIM (Registry Index Map) overlay','Survey plan (RIM-compliant)','Beacon certificate','Coordinate computation'],
+    timeline:[['Engagement & site inspection','1–2 days'],['Field demarcation','1–3 days'],['Survey plan completion','2–3 weeks'],['Lands Registry processing','4–8 weeks']],
+    notes:'Kenya\'s digital land registry (Ardhisasa) is improving survey turnaround times significantly. ISK-registered surveyors are the only ones authorized to sign survey plans for title issuance.' },
+  ZA: { name:'South Africa', currency:'ZAR', symbol:'R', body:'PLATO (Professional Land and Technical Organization)',
+    bodyNote:'SA land surveyors must be registered with PLATO. Diagrams must be approved by the Surveyor-General\'s office.',
+    plotMin:5000, plotMax:20000, hectareMin:15000, hectareMax:50000,
+    includes:['Boundary beaconing','Diagram preparation','SG (Surveyor-General) approval','Data submission to Deeds Registry'],
+    timeline:[['Site work','1–2 days'],['Diagram preparation','1–2 weeks'],['SG office approval','2–6 weeks'],['Deeds Registry update','2–4 weeks']],
+    notes:'In SA, only PLATO-registered professional land surveyors can sign diagrams for registration. The Surveyor-General\'s office must approve all new diagrams before they can be used for transfer or registration.' },
+  GH: { name:'Ghana', currency:'GHS', symbol:'GHS ', body:'Ghana Institution of Surveyors (GhIS)',
+    bodyNote:'Ghana Lands Commission licensed surveyors only. Confirm registration with GhIS.',
+    plotMin:800, plotMax:3000, hectareMin:3000, hectareMax:10000,
+    includes:['Boundary demarcation','Site plan','Beacon placement','Coordinate survey report','Lands Commission submission support'],
+    timeline:[['Field work','1–3 days'],['Plan preparation','1–2 weeks'],['Lands Commission processing','4–12 weeks']],
+    notes:'Ghana\'s Lands Commission processing is slow (often 8–12+ weeks for plan approval). Use a licensed GhIS surveyor — unlicensed surveys are not accepted by the Lands Commission.' },
+  TZ: { name:'Tanzania', currency:'TZS', symbol:'TZS ', body:'Architects and Quantity Surveyors Registration Board (AQRB)',
+    bodyNote:'Tanzania land surveys must be carried out by AQRB-registered surveyors. Registration of Titles Act governs.',
+    plotMin:200000, plotMax:600000, hectareMin:500000, hectareMax:1500000,
+    includes:['Boundary beaconing','Survey plan','Coordinate computation','Block and plot identification'],
+    timeline:[['Site visit','1–3 days'],['Survey plan','2–4 weeks'],['Ministry of Lands processing','6–16 weeks']],
+    notes:'Tanzania land surveys must be approved by the Ministry of Lands. Rights of Occupancy (ROO) and Certificates of Occupancy (CO) are the main title documents — survey plans are a prerequisite.' },
+  EG: { name:'Egypt', currency:'EGP', symbol:'EGP ', body:'Egyptian Engineering Syndicate',
+    bodyNote:'Land surveys in Egypt must be certified by a licensed engineer registered with the Egyptian Engineering Syndicate.',
+    plotMin:3000, plotMax:10000, hectareMin:8000, hectareMax:25000,
+    includes:['Cadastral boundary survey','Engineering drawing','Coordinate computation','Real Estate Registry submission'],
+    timeline:[['Field work','1–2 days'],['Drawing preparation','1–2 weeks'],['Real Estate Registry','4–8 weeks']],
+    notes:'Egyptian cadastral surveys are linked to the Real Estate Registry (Sijil Aqari). Ensure your surveyor submits directly to the registry — this is required for the title to be updated.' },
+  UG: { name:'Uganda', currency:'UGX', symbol:'UGX ', body:'Uganda Institution of Professional Engineers (UIPE)',
+    bodyNote:'Uganda land surveys require surveyors registered with the Uganda Surveyors Registration Board (USRB).',
+    plotMin:300000, plotMax:800000, hectareMin:800000, hectareMax:2500000,
+    includes:['Boundary demarcation','Survey plan','Beacon placement','Ministry of Lands submission'],
+    timeline:[['Field work','1–3 days'],['Survey plan','2–3 weeks'],['Ministry of Lands','6–12 weeks']],
+    notes:'Uganda\'s Mailo land tenure system (especially in Buganda) has complex survey requirements. Ensure your surveyor understands the tenure type — freehold, leasehold, and Mailo surveys follow different processes.' },
+  RW: { name:'Rwanda', currency:'RWF', symbol:'RWF ', body:'Rwanda Natural Resources Authority (RNRA)',
+    bodyNote:'Rwanda LAIS (Land Administration Information System) makes verification fast. All surveys must be submitted through RNRA.',
+    plotMin:50000, plotMax:150000, hectareMin:150000, hectareMax:450000,
+    includes:['GPS boundary survey','LAIS data entry','Digital survey plan','Title update support'],
+    timeline:[['Field work','1–2 days'],['LAIS submission','1–2 weeks'],['Title update','2–4 weeks']],
+    notes:'Rwanda has one of Africa\'s best land administration systems. The digital LAIS system dramatically speeds up survey registration — one of the fastest in Africa for survey-to-title update.' },
+  MA: { name:'Morocco', currency:'MAD', symbol:'MAD ', body:'Ordre des Géomètres-Experts du Maroc',
+    bodyNote:'Morocco land surveys must be conducted by a registered géomètre-expert (land surveyor).',
+    plotMin:3000, plotMax:8000, hectareMin:8000, hectareMax:25000,
+    includes:['Cadastral boundary survey','Topographic plan','Conservation Foncière submission','Boundary certificate'],
+    timeline:[['Field work','1–2 days'],['Plan preparation','2–3 weeks'],['Conservation Foncière','4–10 weeks']],
+    notes:'Morocco\'s Conservation Foncière (land registry) is well-organized. Survey plans must be submitted through an approved géomètre-expert for immatriculation foncière (land registration).' },
+  CI: { name:"Côte d'Ivoire", currency:'XOF', symbol:'XOF ', body:"Direction des Domaines et du Patrimoine Foncier",
+    bodyNote:'All land surveys must be approved by the Direction de l\'Aménagement du Territoire et du Cadastre.',
+    plotMin:100000, plotMax:300000, hectareMin:300000, hectareMax:900000,
+    includes:['Boundary demarcation','Cadastral plan','Direction du Cadastre submission'],
+    timeline:[['Field work','2–4 days'],['Plan preparation','2–4 weeks'],['Cadastre office','6–14 weeks']],
+    notes:"Côte d'Ivoire land administration is in Abidjan primarily. Rural land surveys can take significantly longer. Urban (Abidjan) parcels are better documented than rural plots." },
+  CM: { name:'Cameroon', currency:'XAF', symbol:'XAF ', body:'Ordre National des Géomètres-Experts du Cameroun (ONGEC)',
+    bodyNote:'Cameroon surveys require an ONGEC-registered géomètre-expert.',
+    plotMin:100000, plotMax:300000, hectareMin:300000, hectareMax:900000,
+    includes:['Boundary survey','Survey plan','Conservation Foncière submission','Boundary markers'],
+    timeline:[['Field work','2–5 days'],['Plan preparation','3–6 weeks'],['Conservation Foncière','6–16 weeks']],
+    notes:'Cameroon has a complex land tenure system with both customary and statutory land rights. Ensure the land is under statutory (not customary) tenure before purchasing — statutory land is more secure.' },
+  ZM: { name:'Zambia', currency:'ZMW', symbol:'ZMW ', body:'Zambia Institute of Surveyors (ZIS)',
+    bodyNote:'All land surveys must be carried out by ZIS-registered surveyors and approved by the Surveyor-General.',
+    plotMin:3000, plotMax:10000, hectareMin:8000, hectareMax:30000,
+    includes:['Boundary demarcation','Survey diagram','SG approval','Deeds Registry update'],
+    timeline:[['Field work','1–3 days'],['Survey diagram','2–4 weeks'],['SG approval','4–10 weeks'],['Deeds Registry','2–4 weeks']],
+    notes:'Zambia\'s land tenure is primarily leasehold (99-year leases from the State). Survey diagrams must be approved by the Surveyor-General before a leasehold title can be issued or transferred.' },
+  AO: { name:'Angola', currency:'AOA', symbol:'AOA ', body:'Instituto Geográfico e Cadastral de Angola (IGCA)',
+    bodyNote:'Angola land surveys must be approved by IGCA. Land rights documentation varies significantly by province.',
+    plotMin:50000, plotMax:200000, hectareMin:150000, hectareMax:600000,
+    includes:['Cadastral survey','IGCA registration','Survey plan','Coordinate computation'],
+    timeline:[['Field work','2–5 days'],['Plan preparation','3–6 weeks'],['IGCA processing','8–20 weeks']],
+    notes:'Angola\'s land administration is improving post-civil war but remains complex in some provinces. Luanda surveys are generally faster. Ensure DUATs (land use rights) documentation is verified before purchase.' },
+  BW: { name:'Botswana', currency:'BWP', symbol:'BWP ', body:'Botswana Land Surveyors & Engineers Association (BLSEA)',
+    bodyNote:'Surveys must be approved by the Surveyor General\'s office, Botswana.',
+    plotMin:2000, plotMax:6000, hectareMin:6000, hectareMax:20000,
+    includes:['Boundary beaconing','Survey diagram','SG approval','Deeds Registry submission'],
+    timeline:[['Field work','1–2 days'],['Survey diagram','1–3 weeks'],['SG approval','3–8 weeks'],['Deeds completion','2–4 weeks']],
+    notes:'Botswana has a well-functioning land administration system. Tribal land (under Land Boards) and state land (freehold/leasehold) follow different procedures. Confirm land tenure type before engaging a surveyor.' },
+  NA: { name:'Namibia', currency:'NAD', symbol:'NAD ', body:'Namibia Council of Land Surveyors (NCLS)',
+    bodyNote:'All surveys must be conducted by NCLS-registered land surveyors and submitted to the Surveyor-General.',
+    plotMin:3000, plotMax:10000, hectareMin:8000, hectareMax:30000,
+    includes:['Boundary survey','Beacon placement','SG-approved diagram','Deeds Registry submission'],
+    timeline:[['Field work','1–2 days'],['Diagram preparation','2–4 weeks'],['SG approval','3–8 weeks'],['Deeds update','2–4 weeks']],
+    notes:'Namibia has one of the most modern land administration systems in Southern Africa. The Deeds Registry is digital and turnaround times are generally good. No capital gains tax — attractive for investors.' }
+};
+
+var TYPE_MULT = { boundary: 1, topo: 2, subdivision: 2.5 };
+var TYPE_NAMES = { boundary: 'Boundary demarcation', topo: 'Topographic survey', subdivision: 'Subdivision survey' };
+var selectedType = 'boundary';
+
+function selectType(t) {
+  selectedType = t;
+  ['boundary','topo','subdivision'].forEach(function(x){ document.getElementById('st-'+x).className='st-card'+(x===t?' active':''); });
+  calculate();
+}
+
+function fmt(n, sym) {
+  if (n >= 1e6) return sym + (n/1e6).toFixed(2) + 'M';
+  if (n >= 1000) return sym + Math.round(n).toLocaleString();
+  return sym + Math.round(n);
+}
+
+function calculate() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var d = SURVEY[cc];
+  var sqm = parseFloat(document.getElementById('plot-sqm').value) || 600;
+  var mult = TYPE_MULT[selectedType];
+  var ha = sqm / 10000;
+
+  // Blend between standard plot and per-hectare as size increases
+  var sizeFactor = Math.min(ha / 0.05, 1); // 0.05ha = 500sqm standard plot
+  var baseMin = d.plotMin + (d.hectareMin - d.plotMin) * sizeFactor * ha;
+  var baseMax = d.plotMax + (d.hectareMax - d.plotMax) * sizeFactor * ha;
+  var estMin = Math.round(baseMin * mult);
+  var estMax = Math.round(baseMax * mult);
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('r-range').textContent = fmt(estMin, d.symbol) + ' – ' + fmt(estMax, d.symbol);
+  document.getElementById('r-type-label').textContent = TYPE_NAMES[selectedType] + ' for ' + sqm.toLocaleString() + 'sqm (' + (ha<0.01?'<0.01':ha.toFixed(2))+ ' ha)';
+  document.getElementById('r-body').textContent = d.body;
+  document.getElementById('r-body-note').textContent = d.bodyNote;
+
+  document.getElementById('r-includes').innerHTML = d.includes.map(function(s){return '<li>'+s+'</li>';}).join('');
+
+  document.getElementById('r-timeline').innerHTML = d.timeline.map(function(t){
+    return '<div class="time-row"><span>'+t[0]+'</span><span style="color:var(--primary);font-weight:600">'+t[1]+'</span></div>';
+  }).join('');
+
+  // AI observations
+  var aiLines = [];
+  aiLines.push('Survey cost for ' + sqm.toLocaleString() + 'sqm in ' + d.name + ': ' + fmt(estMin,d.symbol) + '–' + fmt(estMax,d.symbol) + ' for a ' + TYPE_NAMES[selectedType].toLowerCase() + '. Always use a ' + d.body + '-registered surveyor.');
+  if (cc === 'NG') aiLines.push('Survey cost for a standard plot in Lagos: ₦50,000–₦200,000. Always use a SURCON-registered surveyor. Check the surveyor\'s registration on SURCON\'s registry before paying any fees — fraudulent surveys are a major problem in Lagos real estate.');
+  if (cc === 'KE') aiLines.push('In Kenya, a licensed ISK surveyor costs KES 15,000–50,000. Ensure they provide a RIM (Registry Index Map) overlay — this is required for title processing through Kenya\'s Ardhisasa digital system.');
+  if (cc === 'RW') aiLines.push('Rwanda\'s LAIS digital system makes survey verification very fast — often the quickest in East Africa for survey-to-title update. Ask your surveyor to show you the plot on LAIS before you pay any deposits.');
+  aiLines.push('Before paying, verify the surveyor\'s registration number with ' + d.body + '. An unregistered survey has no legal standing and cannot be used for title processing or mortgage applications.');
+  if (selectedType === 'subdivision') aiLines.push('Subdivision surveys require approval from the local planning authority before the surveyor can proceed. Budget extra time (4–8 additional weeks) and confirm that subdivision is permitted under the local planning scheme.');
+
+  document.getElementById('ai-obs').innerHTML = aiLines.map(function(l){return '<p>'+l+'</p>';}).join('');
+}
+</script>
+</body>
+</html>

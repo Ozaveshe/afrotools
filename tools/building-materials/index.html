@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building Material Cost Estimator for Africa 2026 — Cement, Blocks, Rods, Roofing Prices | AfroTools</title>
+  <meta name="description" content="Current building material prices across Africa. Cement, blocks, iron rods, roofing sheets, tiles, paint. Full bill of quantities for 2-bed to 5-bed houses. Nigeria, Kenya, South Africa, Ghana.">
+  <link rel="canonical" href="https://afrotools.com/tools/building-materials/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Building Material Cost Estimator for Africa","url":"https://afrotools.com/tools/building-materials/","description":"Current building material prices across Africa. Full bill of quantities for house construction.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property/"},{"@type":"ListItem","position":3,"name":"Building Material Cost Estimator","item":"https://afrotools.com/tools/building-materials/"}]}]}</script>
+  <style>
+    .boq-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .boq-table th { background: var(--bg-dark,#0a1628); color: #fff; padding: 10px 12px; text-align: left; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+    .boq-table th:last-child { text-align: right; }
+    .boq-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .boq-table td:last-child { text-align: right; font-weight: 700; color: var(--primary); }
+    .boq-table tr:hover td { background: var(--pale,#e8f2ff); }
+    .boq-table tfoot td { font-weight: 800; font-size: .95rem; border-top: 2px solid var(--border); }
+    .boq-table tfoot .grand-total td { background: var(--pale,#e8f2ff); color: var(--primary); font-size: 1.05rem; }
+    .mat-name { font-weight: 600; }
+    .mat-unit { font-size: .78rem; color: var(--text-muted); }
+    .qty-badge { display: inline-block; background: #f3f4f6; border-radius: 6px; padding: 2px 7px; font-size: .8rem; font-weight: 700; }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .summary-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px; text-align: center; }
+    .summary-card .sc-label { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: 4px; }
+    .summary-card .sc-value { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+    .summary-card.main { background: linear-gradient(135deg, #e8f2ff, #f0f7ff); border-color: var(--primary); grid-column: 1/-1; }
+    .summary-card.main .sc-value { font-size: 1.8rem; }
+    .price-note { display: inline-block; background: #fef9c3; color: #713f12; border-radius: 6px; padding: 8px 12px; font-size: .82rem; margin: 8px 0; }
+    @media(max-width:600px){ .summary-grid{grid-template-columns:1fr;} .boq-table{font-size:.8rem;} .boq-table td,.boq-table th{padding:8px;} }
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> › <a href="/mortgage-property/">Mortgage &amp; Property</a> › Building Material Cost Estimator
+    </nav>
+    <div class="tl-category-label">🏠 MORTGAGE &amp; PROPERTY</div>
+    <h1 class="tl-title">Building Material <span class="tl-accent">Cost</span> Estimator</h1>
+    <p class="tl-desc">Current African building material prices — cement, blocks, iron rods, roofing, tiles. Generate a full Bill of Quantities for your house project. Not renovation costs — raw construction materials from the ground up.</p>
+    <div class="tl-badges">
+      <span>🇳🇬 ₦7,000/bag cement</span><span>🇰🇪 KES 850/bag</span><span>🇿🇦 R180/bag</span><span>🇬🇭 GHS 90/bag</span><span>+ 5 more</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">🧱</span>
+        <div>
+          <div class="tl-card-title">Bill of Quantities Generator</div>
+          <div class="tl-card-sub">Select country and house size to generate your material cost estimate</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field">
+          <label class="tl-label">COUNTRY</label>
+          <select id="country" onchange="calculate()">
+            <option value="">— Select a country —</option>
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="ZA">🇿🇦 South Africa</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="EG">🇪🇬 Egypt</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+            <option value="UG">🇺🇬 Uganda</option>
+            <option value="RW">🇷🇼 Rwanda</option>
+            <option value="MA">🇲🇦 Morocco</option>
+          </select>
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">HOUSE SIZE</label>
+          <select id="house-size" onchange="calculate()">
+            <option value="2">2-Bedroom (~80 sqm)</option>
+            <option value="3" selected>3-Bedroom (~120 sqm)</option>
+            <option value="4">4-Bedroom (~180 sqm)</option>
+            <option value="5">5-Bedroom (~250 sqm)</option>
+          </select>
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">ROOF TYPE</label>
+          <select id="roof-type" onchange="calculate()">
+            <option value="longspan">Long span / zinc sheets</option>
+            <option value="tiles">Concrete roofing tiles</option>
+          </select>
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">FLOOR FINISH</label>
+          <select id="floor-type" onchange="calculate()">
+            <option value="tiles">Ceramic tiles</option>
+            <option value="marble">Marble / porcelain (2× premium)</option>
+            <option value="screed">Concrete screed only</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="empty-state" style="text-align:center;padding:40px 20px;color:var(--text-muted)">
+        <div style="font-size:2.5rem;margin-bottom:12px">🧱</div>
+        <div style="font-size:.95rem">Select a country and house size to generate your Bill of Quantities</div>
+      </div>
+
+      <div id="results" style="display:none">
+        <div class="summary-grid">
+          <div class="summary-card main">
+            <div class="sc-label">Total Material Cost (excl. labour)</div>
+            <div class="sc-value" id="r-mat-total">—</div>
+          </div>
+          <div class="summary-card">
+            <div class="sc-label">Labour Estimate (+35%)</div>
+            <div class="sc-value" id="r-labour">—</div>
+          </div>
+          <div class="summary-card">
+            <div class="sc-label">Total Project Estimate</div>
+            <div class="sc-value" id="r-grand">—</div>
+          </div>
+          <div class="summary-card">
+            <div class="sc-label">Per Sqm (materials only)</div>
+            <div class="sc-value" id="r-per-sqm">—</div>
+          </div>
+        </div>
+
+        <div class="price-note" id="price-note"></div>
+
+        <div class="tl-section-title" style="margin-top:20px">Bill of Quantities</div>
+        <div style="overflow-x:auto">
+          <table class="boq-table">
+            <thead>
+              <tr><th>Material</th><th>Qty</th><th>Unit</th><th>Unit Price</th><th>Total</th></tr>
+            </thead>
+            <tbody id="boq-body"></tbody>
+            <tfoot>
+              <tr><td colspan="4" style="font-weight:800">MATERIALS SUBTOTAL</td><td id="ft-subtotal" style="text-align:right;font-weight:800;color:var(--primary)">—</td></tr>
+              <tr><td colspan="4">Labour (35% of materials)</td><td id="ft-labour" style="text-align:right">—</td></tr>
+              <tr><td colspan="4">Contingency (10%)</td><td id="ft-contingency" style="text-align:right">—</td></tr>
+              <tr class="grand-total"><td colspan="4" style="font-weight:800;color:var(--primary)">GRAND TOTAL ESTIMATE</td><td id="ft-grand" style="text-align:right;font-weight:800;color:var(--primary)">—</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);margin-top:10px">* Prices are indicative estimates based on 2025-2026 market data. Get 3 quotes from local suppliers before purchasing. Material prices fluctuate with exchange rates and supply conditions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Smart Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country and house size to get AI-powered insights on building material costs and buying tips.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔗 RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/construction-budget/">🏗️ Construction Budget Planner</a> — Full build cost by quality tier</li>
+        <li><a href="/tools/home-renovation/">🔨 Home Renovation Estimator</a> — Remodeling existing property</li>
+        <li><a href="/tools/dev-feasibility/">📊 Development Feasibility</a> — Is your development viable?</li>
+        <li><a href="/tools/land-title-check/">📋 Land Title Verification</a> — Verify before you build</li>
+        <li><a href="/tools/survey-cost/">📐 Land Survey Cost</a> — Survey before construction</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">💡 BUYING TIPS</div>
+      <ul class="tl-info-list">
+        <li>Buy cement in bulk (≥100 bags) to get 5–10% discount from dealers</li>
+        <li>Iron rods & roofing: buy in dry season (Oct–Mar) when demand is lower</li>
+        <li>Always test blocks — a standard block should not crack when dropped from waist height</li>
+        <li>Get at least 3 supplier quotes; prices vary by up to 20% across suppliers</li>
+        <li>Factor in haulage costs — delivery can add 5–15% to material costs in rural areas</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="legal" current="building-materials"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var PRICES = {
+  NG: { name:'Nigeria', currency:'NGN', symbol:'₦', priceDate:'Q1 2026',
+    cement:7000, blocks:700, sand:90000, granite:130000, rods:850000,
+    roofing_zs:5000, roofing_tiles:8000, timber:18000, pvc:550000, electrical:650000,
+    tiles:8000, marble:18000, screed:0, paint:35000, windows:150000, doors:200000,
+    note:'Cement: Dangote 3X ₦6,500–₦7,500/bag. Prices rose 15% in Q4 2025. Iron rods (Y12): ₦800K–₦900K/ton.' },
+  KE: { name:'Kenya', currency:'KES', symbol:'KES ', priceDate:'Q1 2026',
+    cement:850, blocks:70, sand:8000, granite:12000, rods:110000,
+    roofing_zs:650, roofing_tiles:900, timber:2200, pvc:85000, electrical:110000,
+    tiles:1200, marble:2800, screed:0, paint:4500, windows:22000, doors:28000,
+    note:'East African Portland cement: KES 800–900/bag. NCA-regulated contractors add 10–15% overhead.' },
+  ZA: { name:'South Africa', currency:'ZAR', symbol:'R', priceDate:'Q1 2026',
+    cement:180, blocks:0, sand:600, granite:900, rods:22000,
+    roofing_zs:280, roofing_tiles:350, timber:450, pvc:18000, electrical:25000,
+    tiles:380, marble:850, screed:0, paint:900, windows:5500, doors:4500,
+    bricks:6, note:'PPC / Afrisam cement R170–190/bag. Face bricks R4–8 each. NHBRC-registered builders only.' },
+  GH: { name:'Ghana', currency:'GHS', symbol:'GHS ', priceDate:'Q1 2026',
+    cement:90, blocks:9, sand:1600, granite:2600, rods:16000,
+    roofing_zs:85, roofing_tiles:130, timber:280, pvc:9000, electrical:11000,
+    tiles:160, marble:380, screed:0, paint:650, windows:3200, doors:3800,
+    note:'Ghacem / Diamond cement: GHS 85–95/bag. Blocks (sandcrete): GHS 8–10 each. Prices in Accra.' },
+  EG: { name:'Egypt', currency:'EGP', symbol:'EGP ', priceDate:'Q1 2026',
+    cement:320, blocks:30, sand:3200, granite:5500, rods:90000,
+    roofing_zs:450, roofing_tiles:600, timber:600, pvc:22000, electrical:28000,
+    tiles:350, marble:750, screed:0, paint:1700, windows:9000, doors:11000,
+    note:'Egyptian cement prices rose sharply post-devaluation. Red bricks common in Upper Egypt; hollow blocks in Greater Cairo.' },
+  TZ: { name:'Tanzania', currency:'TZS', symbol:'TZS ', priceDate:'Q1 2026',
+    cement:32000, blocks:2800, sand:220000, granite:380000, rods:3800000,
+    roofing_zs:22000, roofing_tiles:32000, timber:65000, pvc:2800000, electrical:3200000,
+    tiles:38000, marble:90000, screed:0, paint:160000, windows:750000, doors:950000,
+    note:'Dar es Salaam prices. Mombasa Cement and Simba Cement are main brands. Allow 10% for upcountry haulage.' },
+  UG: { name:'Uganda', currency:'UGX', symbol:'UGX ', priceDate:'Q1 2026',
+    cement:29000, blocks:1600, sand:160000, granite:320000, rods:4200000,
+    roofing_zs:26000, roofing_tiles:38000, timber:75000, pvc:2200000, electrical:2700000,
+    tiles:42000, marble:100000, screed:0, paint:130000, windows:650000, doors:850000,
+    note:'Kampala prices. Hima Cement is the dominant brand. Prices in Gulu or Mbarara add 8–12% for transport.' },
+  RW: { name:'Rwanda', currency:'RWF', symbol:'RWF ', priceDate:'Q1 2026',
+    cement:13000, blocks:550, sand:90000, granite:160000, rods:1700000,
+    roofing_zs:9000, roofing_tiles:14000, timber:28000, pvc:900000, electrical:1100000,
+    tiles:13000, marble:32000, screed:0, paint:55000, windows:270000, doors:330000,
+    note:'CIMERWA cement: RWF 12,000–14,000/bag. Rwanda has strict building standards; RNRA approval required.' },
+  MA: { name:'Morocco', currency:'MAD', symbol:'MAD ', priceDate:'Q1 2026',
+    cement:130, blocks:9, sand:350, granite:600, rods:12000,
+    roofing_zs:170, roofing_tiles:250, timber:230, pvc:9000, electrical:12000,
+    tiles:220, marble:500, screed:0, paint:680, windows:4000, doors:4800,
+    note:'LafargeHolcim Morocco dominates cement market. Tile prices vary; Moroccan zellige handmade tiles cost significantly more.' }
+};
+
+var HOUSE_SIZES = {
+  '2': { sqm:80, beds:2,
+    cement:200, blocks:3500, bricks:8000, sand:14, granite:9, rods:0.5,
+    roofing_zs:90, roofing_tiles:90, timber:60, tiles_floor:80, marble_floor:80,
+    windows:8, doors:6, pvc_mult:0.75, elec_mult:0.75, paint_gal:15 },
+  '3': { sqm:120, beds:3,
+    cement:300, blocks:5500, bricks:12000, sand:20, granite:14, rods:0.8,
+    roofing_zs:140, roofing_tiles:140, timber:90, tiles_floor:120, marble_floor:120,
+    windows:12, doors:9, pvc_mult:1, elec_mult:1, paint_gal:22 },
+  '4': { sqm:180, beds:4,
+    cement:460, blocks:8000, bricks:18000, sand:30, granite:21, rods:1.2,
+    roofing_zs:200, roofing_tiles:200, timber:135, tiles_floor:180, marble_floor:180,
+    windows:16, doors:13, pvc_mult:1.5, elec_mult:1.5, paint_gal:32 },
+  '5': { sqm:250, beds:5,
+    cement:630, blocks:11000, bricks:25000, sand:42, granite:29, rods:1.7,
+    roofing_zs:270, roofing_tiles:270, timber:185, tiles_floor:250, marble_floor:250,
+    windows:22, doors:17, pvc_mult:2, elec_mult:2, paint_gal:45 }
+};
+
+function fmt(n, symbol) {
+  if (n >= 1e9) return symbol + (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return symbol + (n/1e6).toFixed(2) + 'M';
+  if (n >= 1000) return symbol + Math.round(n).toLocaleString();
+  return symbol + n.toFixed(0);
+}
+
+function calculate() {
+  var cc = document.getElementById('country').value;
+  var hs = document.getElementById('house-size').value;
+  var roofType = document.getElementById('roof-type').value;
+  var floorType = document.getElementById('floor-type').value;
+  if (!cc || !hs) return;
+
+  var p = PRICES[cc];
+  var h = HOUSE_SIZES[hs];
+  var sym = p.symbol;
+
+  // Determine wall material (bricks for ZA, blocks elsewhere)
+  var useBlocks = cc !== 'ZA';
+  var wallQty = useBlocks ? h.blocks : h.bricks;
+  var wallPrice = useBlocks ? p.blocks : (p.bricks || p.blocks);
+  var wallName = useBlocks ? 'Hollow blocks (sandcrete)' : 'Face bricks / plaster bricks';
+  var wallUnit = useBlocks ? 'pieces' : 'pieces';
+
+  var roofPrice = roofType === 'tiles' ? p.roofing_tiles : p.roofing_zs;
+  var roofQty = roofType === 'tiles' ? h.roofing_tiles : h.roofing_zs;
+  var roofName = roofType === 'tiles' ? 'Concrete roofing tiles' : 'Long span roofing sheets';
+
+  var tilePrice = floorType === 'marble' ? p.marble : floorType === 'screed' ? 0 : p.tiles;
+  var tileQty = floorType === 'marble' ? h.marble_floor : h.tiles_floor;
+  var tileName = floorType === 'marble' ? 'Marble / porcelain floor tiles' : floorType === 'screed' ? 'Concrete screed (included in sand/granite)' : 'Ceramic floor tiles';
+
+  var rows = [
+    { name: 'Cement (50kg bag)', qty: h.cement, unit: 'bags', price: p.cement },
+    { name: wallName, qty: wallQty, unit: wallUnit, price: wallPrice },
+    { name: 'River sand', qty: h.sand, unit: 'tons', price: p.sand },
+    { name: 'Granite / stone aggregate', qty: h.granite, unit: 'tons', price: p.granite },
+    { name: 'Iron rods / rebar (Y12–Y16)', qty: h.rods, unit: 'tons', price: p.rods },
+    { name: roofName, qty: roofQty, unit: 'sqm', price: roofPrice },
+    { name: 'Hardwood timber (formwork + joinery)', qty: h.timber, unit: 'planks', price: p.timber },
+  ];
+  if (floorType !== 'screed') rows.push({ name: tileName, qty: tileQty, unit: 'sqm', price: tilePrice });
+  rows.push(
+    { name: 'Interior & exterior paint', qty: h.paint_gal, unit: 'gallons', price: p.paint },
+    { name: 'PVC pipes & plumbing fittings (set)', qty: 1, unit: 'set', price: p.pvc * h.pvc_mult },
+    { name: 'Electrical wiring & fittings (set)', qty: 1, unit: 'set', price: p.electrical * h.elec_mult },
+    { name: 'Windows (casement)', qty: h.windows, unit: 'units', price: p.windows },
+    { name: 'Interior doors (panel/flush)', qty: h.doors, unit: 'units', price: p.doors }
+  );
+
+  var subtotal = rows.reduce(function(s,r){return s + r.qty*r.price;},0);
+  var labour = subtotal * 0.35;
+  var contingency = subtotal * 0.10;
+  var grand = subtotal + labour + contingency;
+  var perSqm = subtotal / h.sqm;
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('r-mat-total').textContent = fmt(subtotal, sym);
+  document.getElementById('r-labour').textContent = fmt(labour, sym);
+  document.getElementById('r-grand').textContent = fmt(grand, sym);
+  document.getElementById('r-per-sqm').textContent = fmt(perSqm, sym) + '/sqm';
+  document.getElementById('ft-subtotal').textContent = fmt(subtotal, sym);
+  document.getElementById('ft-labour').textContent = fmt(labour, sym);
+  document.getElementById('ft-contingency').textContent = fmt(contingency, sym);
+  document.getElementById('ft-grand').textContent = fmt(grand, sym);
+  document.getElementById('price-note').textContent = '📅 Prices: ' + p.priceDate + ' — ' + p.note;
+
+  var bodyHtml = rows.map(function(r) {
+    var rowTotal = r.qty * r.price;
+    return '<tr><td><div class="mat-name">' + r.name + '</div></td>' +
+      '<td><span class="qty-badge">' + (r.qty >= 1000 ? r.qty.toLocaleString() : r.qty % 1 !== 0 ? r.qty.toFixed(1) : r.qty) + '</span></td>' +
+      '<td class="mat-unit">' + r.unit + '</td>' +
+      '<td>' + (r.unit === 'set' ? '—' : fmt(r.price, sym)) + '</td>' +
+      '<td>' + fmt(rowTotal, sym) + '</td></tr>';
+  }).join('');
+  document.getElementById('boq-body').innerHTML = bodyHtml;
+
+  // AI observations
+  var aiLines = [];
+  aiLines.push('For a ' + h.beds + '-bedroom house (' + h.sqm + 'sqm) in ' + p.name + ', materials will cost approximately ' + fmt(subtotal, sym) + '. With labour (35%) and contingency (10%), budget around ' + fmt(grand, sym) + ' total.');
+  if (cc === 'NG') aiLines.push('Current cement price in Nigeria: ₦6,500–₦7,500/bag (Dangote 3X). Prices rose significantly in 2024–25 due to factory maintenance shutdowns and forex costs. Buy in bulk from a distributor, not retail.');
+  if (cc === 'KE') aiLines.push('For a ' + h.beds + '-bedroom bungalow in Kenya, you will need approximately ' + h.cement + ' bags of cement. At KES 850/bag, that\'s KES ' + (h.cement*850).toLocaleString() + ' for cement alone. Always verify NCA registration of your contractor.');
+  if (cc === 'ZA') aiLines.push('South Africa uses face bricks and mortar rather than hollow blocks. Ensure your builder is NHBRC-registered — it\'s a legal requirement for all new residential construction.');
+  aiLines.push('Tip: Buy iron rods (rebar) and roofing sheets in dry season (October–March in West Africa) when demand is lower and prices dip by 5–10%. Stock up before the rainy season construction rush.');
+  aiLines.push('Labour adds 30–40% on top of material costs. The 35% estimate here is conservative — get quotes from at least 3 NCA/SURCON-approved contractors before committing.');
+
+  document.getElementById('ai-obs').innerHTML = aiLines.map(function(l){return '<p>'+l+'</p>';}).join('');
+}
+</script>
+</body>
+</html>

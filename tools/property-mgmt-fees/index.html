@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Management Fee Calculator for Africa 2026 — True Cost of Letting Agents | AfroTools</title>
+  <meta name="description" content="Calculate the true cost of property management fees in Africa. Management %, letting fees, renewal fees, VAT. Nigeria, Kenya, South Africa, Ghana and 11 more countries.">
+  <link rel="canonical" href="https://afrotools.com/tools/property-mgmt-fees/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Property Management Fee Calculator for Africa","url":"https://afrotools.com/tools/property-mgmt-fees/","description":"Calculate property management fees across 15 African countries. Management %, letting fees, renewal fees, VAT-inclusive.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property/"},{"@type":"ListItem","position":3,"name":"Property Management Fee Calculator","item":"https://afrotools.com/tools/property-mgmt-fees/"}]}]}</script>
+  <style>
+    .fee-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .fee-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px; text-align: center; }
+    .fee-card .fc-label { font-size: .7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+    .fee-card .fc-value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+    .fee-card .fc-sub { font-size: .75rem; color: var(--text-muted); margin-top: 2px; }
+    .fee-card.highlight { background: linear-gradient(135deg, #e8f2ff, #f0f7ff); border-color: var(--primary); }
+    .fee-card.highlight .fc-value { font-size: 1.8rem; }
+    .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: .9rem; }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-row .br-label { color: var(--text-muted); }
+    .breakdown-row .br-value { font-weight: 700; }
+    .breakdown-row.total { font-weight: 800; font-size: 1rem; padding-top: 14px; }
+    .breakdown-row.total .br-value { color: var(--primary); }
+    .vat-badge { display: inline-block; background: #fff3cd; color: #856404; border-radius: 100px; padding: 2px 8px; font-size: .7rem; font-weight: 700; margin-left: 6px; }
+    .profit-bar-wrap { margin: 16px 0; }
+    .profit-bar-label { display: flex; justify-content: space-between; font-size: .8rem; margin-bottom: 6px; }
+    .profit-bar { height: 12px; border-radius: 100px; background: #e5e7eb; overflow: hidden; }
+    .profit-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--primary), var(--primary-light)); transition: width .5s; }
+    .rate-range { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+    .rate-chip { background: var(--pale); color: var(--primary); border-radius: 100px; padding: 3px 10px; font-size: .75rem; font-weight: 700; }
+    @media(max-width:600px){ .fee-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> › <a href="/mortgage-property/">Mortgage &amp; Property</a> › Property Management Fee Calculator
+    </nav>
+    <div class="tl-category-label">🏠 MORTGAGE &amp; PROPERTY</div>
+    <h1 class="tl-title">Property Management <span class="tl-accent">Fee</span> Calculator</h1>
+    <p class="tl-desc">Letting agents charge management %, letting fees, and renewal commissions. See the true annual cost across 15 African countries — including VAT where applicable.</p>
+    <div class="tl-badges">
+      <span>🇳🇬 Nigeria 7.5% VAT</span><span>🇿🇦 SA 15% VAT</span><span>🇰🇪 Kenya 16% VAT</span><span>🇬🇭 Ghana 15% VAT</span><span>+ 11 more</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">🏢</span>
+        <div>
+          <div class="tl-card-title">Property Management Fee Calculator</div>
+          <div class="tl-card-sub">Enter your rental details to see total agent costs</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field">
+          <label class="tl-label">COUNTRY</label>
+          <select id="country" onchange="onCountryChange()">
+            <option value="">— Select a country —</option>
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="ZA">🇿🇦 South Africa</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="EG">🇪🇬 Egypt</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+            <option value="UG">🇺🇬 Uganda</option>
+            <option value="RW">🇷🇼 Rwanda</option>
+            <option value="MA">🇲🇦 Morocco</option>
+            <option value="CI">🇨🇮 Côte d'Ivoire</option>
+            <option value="SN">🇸🇳 Senegal</option>
+            <option value="CM">🇨🇲 Cameroon</option>
+            <option value="ZM">🇿🇲 Zambia</option>
+            <option value="MU">🇲🇺 Mauritius</option>
+            <option value="BW">🇧🇼 Botswana</option>
+          </select>
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">MONTHLY RENT <span id="curr-label" style="font-weight:400;text-transform:none;color:var(--text-muted)"></span></label>
+          <input type="number" id="monthly-rent" value="150000" min="0" oninput="calculate()">
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">MANAGEMENT FEE <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(% of monthly rent)</span></label>
+          <input type="number" id="mgmt-pct" value="10" min="0" max="30" step="0.5" oninput="calculate()">
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">LETTING FEE <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(months of rent)</span></label>
+          <input type="number" id="letting-months" value="1" min="0" max="3" step="0.5" oninput="calculate()">
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">RENEWAL FEE <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(months of rent)</span></label>
+          <input type="number" id="renewal-months" value="0.5" min="0" max="2" step="0.5" oninput="calculate()">
+        </div>
+
+        <div class="tl-field">
+          <label class="tl-label">TENANCIES PER YEAR <span style="font-weight:400;text-transform:none;color:var(--text-muted)">(new lets)</span></label>
+          <input type="number" id="tenancies" value="1" min="0" max="4" step="1" oninput="calculate()">
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin:8px 0 16px;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.9rem;">
+          <input type="checkbox" id="incl-vat" onchange="calculate()" style="width:16px;height:16px;">
+          <span>Include VAT on agent fees <span id="vat-label" class="vat-badge" style="display:none"></span></span>
+        </label>
+      </div>
+
+      <div id="results" style="display:none">
+        <div class="fee-grid">
+          <div class="fee-card highlight" style="grid-column:1/-1">
+            <div class="fc-label">Total First-Year Agent Cost</div>
+            <div class="fc-value" id="r-total-yr1">—</div>
+            <div class="fc-sub" id="r-pct-rent">—% of annual rent</div>
+          </div>
+          <div class="fee-card">
+            <div class="fc-label">Annual Management Fee</div>
+            <div class="fc-value" id="r-annual-mgmt">—</div>
+            <div class="fc-sub">Ongoing each year</div>
+          </div>
+          <div class="fee-card">
+            <div class="fc-label">Letting Fee (per let)</div>
+            <div class="fc-value" id="r-letting">—</div>
+            <div class="fc-sub" id="r-letting-sub">—</div>
+          </div>
+          <div class="fee-card">
+            <div class="fc-label">Renewal Fee (per renewal)</div>
+            <div class="fc-value" id="r-renewal">—</div>
+            <div class="fc-sub">When tenant renews</div>
+          </div>
+          <div class="fee-card">
+            <div class="fc-label">Net Monthly Income</div>
+            <div class="fc-value" id="r-net-monthly">—</div>
+            <div class="fc-sub">After management fee</div>
+          </div>
+        </div>
+
+        <div class="tl-section-title" style="margin-top:20px">First-Year Cost Breakdown</div>
+        <div id="breakdown-list"></div>
+
+        <div class="profit-bar-wrap">
+          <div class="profit-bar-label">
+            <span>Agent costs</span>
+            <span id="r-bar-pct">—%</span>
+          </div>
+          <div class="profit-bar"><div class="profit-bar-fill" id="r-bar" style="width:0%"></div></div>
+          <div style="font-size:.75rem;color:var(--text-muted);margin-top:4px">Share of gross annual rent going to agents</div>
+        </div>
+      </div>
+
+      <div id="empty-state" style="text-align:center;padding:40px 20px;color:var(--text-muted)">
+        <div style="font-size:2.5rem;margin-bottom:12px">🏢</div>
+        <div style="font-size:.95rem">Select a country and enter your monthly rent to calculate management fees</div>
+      </div>
+    </div>
+
+    <div class="tl-card" id="market-rates-card" style="display:none">
+      <div class="tl-card-title" style="margin-bottom:12px">Typical Market Rates — <span id="country-name-rates">—</span></div>
+      <div id="market-rates-body"></div>
+    </div>
+
+  </div>
+
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Smart Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country and enter your rental details to get AI-powered insights on management fee optimisation.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">🔗 RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/rental-yield/">🏠 Rental Yield Calculator</a> — Check your net yield after fees</li>
+        <li><a href="/tools/rent-affordability/">💰 Rent Affordability</a> — Tenant-side affordability check</li>
+        <li><a href="/tools/tenant-screening/">🔍 Tenant Screening</a> — Screen tenants before letting</li>
+        <li><a href="/tools/rental-agreement/">📄 Rental Agreement</a> — Generate a tenancy agreement</li>
+        <li><a href="/tools/service-charge/">🏢 Service Charge Calculator</a> — Estate service charges</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">💡 NEGOTIATION TIPS</div>
+      <ul class="tl-info-list">
+        <li>Letting fee is most negotiable — try 50% of 1 month for renewals</li>
+        <li>For multi-property landlords, negotiate a lower management % (7–8%)</li>
+        <li>Ask agents to cap the monthly management fee for high-value properties</li>
+        <li>Full-service vs. tenant-find only — compare both options</li>
+        <li>Get quotes from 3 agents before signing any management agreement</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="legal" current="property-mgmt-fees"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+var MGMT_DATA = {
+  NG: { name: 'Nigeria', currency: 'NGN', symbol: '₦', vatRate: 7.5, vatName: 'VAT',
+    mgmtMin: 8, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant finding & vetting','Rent collection','Monthly reporting','Maintenance coordination','Tenancy agreement preparation'],
+    note: 'In Nigeria, agents typically charge 10% monthly management + 1 month letting fee. Lagos agents may charge up to 15% in premium areas.' },
+  KE: { name: 'Kenya', currency: 'KES', symbol: 'KES ', vatRate: 16, vatName: 'VAT',
+    mgmtMin: 8, mgmtMax: 10, mgmtDefault: 8,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant sourcing','Rent collection','Property inspections','Maintenance liaison','Lease management'],
+    note: 'Kenyan estate agents are regulated by the Estate Agents Registration Board (EARB). 16% VAT applies on agency fees.' },
+  ZA: { name: 'South Africa', currency: 'ZAR', symbol: 'R', vatRate: 15, vatName: 'VAT',
+    mgmtMin: 7, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant placement','Monthly rent collection','Property inspections (in & out)','Maintenance management','Annual rental review'],
+    note: 'South African agents must be registered with the PPRA. 15% VAT is charged on all agency fees. Fees are negotiable.' },
+  GH: { name: 'Ghana', currency: 'GHS', symbol: 'GHS ', vatRate: 15, vatName: 'VAT',
+    mgmtMin: 10, mgmtMax: 15, mgmtDefault: 12,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant finding','Rent collection','Property maintenance','Monthly reports','Tenancy documentation'],
+    note: 'Ghana Rent Act 2022 caps advance rent at 6 months. Factor this into tenant cash requirements.' },
+  EG: { name: 'Egypt', currency: 'EGP', symbol: 'EGP ', vatRate: 14, vatName: 'VAT',
+    mgmtMin: 5, mgmtMax: 10, mgmtDefault: 8,
+    lettingDefault: 1, renewalDefault: 0,
+    services: ['Tenant sourcing','Rent collection','Administrative support','Maintenance coordination'],
+    note: 'Egyptian property management fees are lower than West Africa. Agents typically charge 8-10% for high-end properties.' },
+  TZ: { name: 'Tanzania', currency: 'TZS', symbol: 'TZS ', vatRate: 18, vatName: 'VAT',
+    mgmtMin: 8, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant sourcing','Rent collection','Property inspection','Maintenance coordination'],
+    note: 'Tanzania Real Estate sector is growing. TREIA (Tanzania Real Estate Investment Association) members are preferred.' },
+  UG: { name: 'Uganda', currency: 'UGX', symbol: 'UGX ', vatRate: 18, vatName: 'VAT',
+    mgmtMin: 8, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant vetting','Rent collection','Property inspections','Maintenance management'],
+    note: 'Uganda management fees are typically 10%. Kampala agents may charge premium rates for serviced apartments.' },
+  RW: { name: 'Rwanda', currency: 'RWF', symbol: 'RWF ', vatRate: 18, vatName: 'VAT',
+    mgmtMin: 7, mgmtMax: 10, mgmtDefault: 8,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant placement','Rent collection','Kigali City compliance','Maintenance management'],
+    note: 'Rwanda has strict rental regulations. Kigali City Council requires rental properties to be registered.' },
+  MA: { name: 'Morocco', currency: 'MAD', symbol: 'MAD ', vatRate: 0, vatName: '',
+    mgmtMin: 5, mgmtMax: 8, mgmtDefault: 7,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant sourcing','Rent collection','Administrative management','Maintenance coordination'],
+    note: 'Morocco has a formalised real estate sector. FNAIM Morocco agents follow standard fee schedules.' },
+  CI: { name: "Côte d'Ivoire", currency: 'XOF', symbol: 'XOF ', vatRate: 18, vatName: 'TVA',
+    mgmtMin: 8, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant finding','Monthly rent collection','Property management','Maintenance coordination'],
+    note: "Management fees in Abidjan's Plateau and Cocody areas are 10-15% for furnished apartments." },
+  SN: { name: 'Senegal', currency: 'XOF', symbol: 'XOF ', vatRate: 18, vatName: 'TVA',
+    mgmtMin: 8, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant vetting','Rent collection','Property management'],
+    note: 'Dakar Almadies and Ngor areas command premium management fees (10-15%) due to expat tenant demand.' },
+  CM: { name: 'Cameroon', currency: 'XAF', symbol: 'XAF ', vatRate: 19.25, vatName: 'TVA',
+    mgmtMin: 8, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant finding','Rent collection','Property maintenance'],
+    note: 'Douala and Yaoundé agents typically charge 10% management. Negotiate for multi-property discounts.' },
+  ZM: { name: 'Zambia', currency: 'ZMW', symbol: 'ZMW ', vatRate: 16, vatName: 'VAT',
+    mgmtMin: 8, mgmtMax: 12, mgmtDefault: 10,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant sourcing','Rent collection','Maintenance management'],
+    note: 'Lusaka Kabulonga and Ibex Hill are prime rental areas. USD-denominated rentals are common for expat tenants.' },
+  MU: { name: 'Mauritius', currency: 'MUR', symbol: 'MUR ', vatRate: 15, vatName: 'VAT',
+    mgmtMin: 5, mgmtMax: 8, mgmtDefault: 6,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant placement','Rent collection','Maintenance coordination','Utility management'],
+    note: 'Mauritius has a very professional property management sector. Grand Baie and Tamarin command premium rates.' },
+  BW: { name: 'Botswana', currency: 'BWP', symbol: 'BWP ', vatRate: 14, vatName: 'VAT',
+    mgmtMin: 7, mgmtMax: 10, mgmtDefault: 8,
+    lettingDefault: 1, renewalDefault: 0.5,
+    services: ['Tenant vetting','Rent collection','Property inspections','Maintenance management'],
+    note: 'Gaborone CBD and Phakalane estate rentals command 8-10% management fees. 14% VAT applies.' }
+};
+
+function fmt(n, symbol) {
+  if (n >= 1e9) return symbol + (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return symbol + (n/1e6).toFixed(2) + 'M';
+  if (n >= 1000) return symbol + Math.round(n).toLocaleString();
+  return symbol + Math.round(n).toLocaleString();
+}
+
+function onCountryChange() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var d = MGMT_DATA[cc];
+  document.getElementById('mgmt-pct').value = d.mgmtDefault;
+  document.getElementById('letting-months').value = d.lettingDefault;
+  document.getElementById('renewal-months').value = d.renewalDefault;
+  document.getElementById('curr-label').textContent = '(' + d.currency + ')';
+  var vl = document.getElementById('vat-label');
+  if (d.vatRate > 0) {
+    vl.style.display = 'inline-block';
+    vl.textContent = d.vatRate + '% ' + d.vatName;
+    document.getElementById('incl-vat').disabled = false;
+  } else {
+    vl.style.display = 'none';
+    document.getElementById('incl-vat').disabled = true;
+    document.getElementById('incl-vat').checked = false;
+  }
+  calculate();
+}
+
+function calculate() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var d = MGMT_DATA[cc];
+  var monthly = parseFloat(document.getElementById('monthly-rent').value) || 0;
+  var mgmtPct = parseFloat(document.getElementById('mgmt-pct').value) || 0;
+  var lettingM = parseFloat(document.getElementById('letting-months').value) || 0;
+  var renewalM = parseFloat(document.getElementById('renewal-months').value) || 0;
+  var tenancies = parseFloat(document.getElementById('tenancies').value) || 1;
+  var inclVAT = document.getElementById('incl-vat').checked && d.vatRate > 0;
+  var vatMult = inclVAT ? (1 + d.vatRate/100) : 1;
+
+  var annual = monthly * 12;
+  var annualMgmt = annual * (mgmtPct/100) * vatMult;
+  var lettingFee = monthly * lettingM * tenancies * vatMult;
+  var renewalFee = monthly * renewalM * (12 - tenancies > 0 ? 1 : 0) * vatMult;
+  var totalYr1 = annualMgmt + lettingFee + renewalFee;
+  var pctRent = annual > 0 ? (totalYr1 / annual * 100) : 0;
+  var netMonthly = monthly - (annualMgmt / 12);
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  document.getElementById('r-total-yr1').textContent = fmt(totalYr1, d.symbol);
+  document.getElementById('r-pct-rent').textContent = pctRent.toFixed(1) + '% of annual rent';
+  document.getElementById('r-annual-mgmt').textContent = fmt(annualMgmt, d.symbol);
+  document.getElementById('r-letting').textContent = fmt(monthly * lettingM * vatMult, d.symbol);
+  document.getElementById('r-letting-sub').textContent = tenancies > 1 ? 'x' + tenancies + ' lets = ' + fmt(lettingFee, d.symbol) : 'Per new let';
+  document.getElementById('r-renewal').textContent = fmt(monthly * renewalM * vatMult, d.symbol);
+  document.getElementById('r-net-monthly').textContent = fmt(netMonthly, d.symbol);
+
+  var rows = [
+    ['Monthly rent', fmt(monthly, d.symbol)],
+    ['Annual gross rent', fmt(annual, d.symbol)],
+    ['Management fee (' + mgmtPct + '%/mo' + (inclVAT ? ' +VAT' : '') + ')', '-' + fmt(annualMgmt, d.symbol)],
+    ['Letting fee (' + lettingM + ' mo' + (tenancies>1?' x'+tenancies:'')+  (inclVAT?' +VAT':'')+  ')', '-' + fmt(lettingFee, d.symbol)],
+    ['Renewal fee (' + renewalM + ' mo' + (inclVAT?' +VAT':'') + ')', '-' + fmt(renewalFee, d.symbol)],
+    ['NET first-year income', fmt(annual - totalYr1, d.symbol)]
+  ];
+  var html = rows.map(function(r,i) {
+    return '<div class="breakdown-row' + (i===rows.length-1?' total':'') + '"><span class="br-label">' + r[0] + '</span><span class="br-value">' + r[1] + '</span></div>';
+  }).join('');
+  document.getElementById('breakdown-list').innerHTML = html;
+
+  var barPct = Math.min(pctRent, 50);
+  document.getElementById('r-bar').style.width = barPct * 2 + '%';
+  document.getElementById('r-bar-pct').textContent = pctRent.toFixed(1) + '%';
+
+  // Market rates card
+  document.getElementById('market-rates-card').style.display = 'block';
+  document.getElementById('country-name-rates').textContent = d.name;
+  document.getElementById('market-rates-body').innerHTML =
+    '<div class="rate-range"><span class="rate-chip">Mgmt: ' + d.mgmtMin + '–' + d.mgmtMax + '%</span>' +
+    '<span class="rate-chip">Letting: ' + d.lettingDefault + ' month</span>' +
+    (d.renewalDefault ? '<span class="rate-chip">Renewal: ' + d.renewalDefault + ' month</span>' : '') +
+    (d.vatRate ? '<span class="rate-chip">' + d.vatRate + '% ' + d.vatName + '</span>' : '') + '</div>' +
+    '<p style="font-size:.85rem;color:var(--text-muted);margin:8px 0 12px">' + d.note + '</p>' +
+    '<div style="font-size:.8rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Typical services included:</div>' +
+    '<ul style="margin:0;padding-left:18px;font-size:.85rem;color:var(--text-muted)">' +
+    d.services.map(function(s){return '<li>'+s+'</li>';}).join('') + '</ul>';
+
+  // AI observations
+  var aiLines = [];
+  if (pctRent > 20) aiLines.push('⚠️ Your agent costs are ' + pctRent.toFixed(0) + '% of gross rent — high. For a ' + d.name + ' property, aim to keep total agent fees under 15% of annual rent through negotiation.');
+  else if (pctRent > 12) aiLines.push('At ' + pctRent.toFixed(0) + '% of gross rent, your agent fees are within market range for ' + d.name + ' but there is room to negotiate, especially the letting fee.');
+  else aiLines.push('At ' + pctRent.toFixed(0) + '% of gross rent, your fee structure is lean for ' + d.name + '. ' + (mgmtPct < d.mgmtMin ? 'Ensure you are still getting full management services at this rate.' : 'Well negotiated.'));
+
+  if (inclVAT && d.vatRate) aiLines.push('Note: ' + d.vatRate + '% ' + d.vatName + ' is included in your calculation. ' + (cc === 'ZA' ? 'In SA, only VAT-registered agents can charge VAT — confirm your agent\'s registration status.' : 'Keep receipts for VAT-registered rental income tax calculations.'));
+  if (lettingM > 1) aiLines.push('Tip: Negotiate the letting fee down to 0.5–1 month. Many ' + d.name + ' agents accept lower fees for high-quality properties or repeat landlord clients.');
+  if (tenancies > 1) aiLines.push('With ' + tenancies + ' new lets per year (high turnover), reducing the letting fee is your biggest cost lever. Consider a longer-term tenancy to reduce churn.');
+  if (cc === 'NG') aiLines.push('Lagos tip: Some Lagos agents charge additional "inspection fees" of ₦10,000–₦30,000. Ensure your management agreement specifies all charges upfront.');
+  if (cc === 'ZA') aiLines.push('SA tip: Your monthly management fee should cover in-going and out-going inspections. Request a signed inspection report from your agent at every tenancy change.');
+
+  document.getElementById('ai-obs').innerHTML = aiLines.map(function(l){return '<p>'+l+'</p>';}).join('');
+}
+</script>
+</body>
+</html>

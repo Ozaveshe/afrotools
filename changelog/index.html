@@ -2,6 +2,7 @@
 <html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="manifest" href="/manifest.json">
 <meta charset="UTF-8">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
@@ -340,7 +341,7 @@
     <h1>AfroTools Changelog</h1>
     <p class="hero-sub">Every tool launch, feature update, bug fix, and improvement — tracked here as we ship. Updated daily.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><strong>1,070+</strong> tools shipped</div>
+      <div class="hero-stat"><strong>1,110+</strong> tools shipped</div>
       <div class="hero-stat">·</div>
       <div class="hero-stat"><strong>Daily</strong> updates</div>
       <div class="hero-stat">·</div>
@@ -369,7 +370,8 @@
   <aside>
     <nav class="version-nav">
       <div class="version-nav-title">Versions</div>
-      <a class="version-link active" href="#v2-8-0">v2.8.0 <span class="version-date">Mar 27</span></a>
+      <a class="version-link active" href="#v2-9-0">v2.9.0 <span class="version-date">Mar 28</span></a>
+      <a class="version-link" href="#v2-8-0">v2.8.0 <span class="version-date">Mar 27</span></a>
       <a class="version-link" href="#v2-7-0">v2.7.0 <span class="version-date">Mar 26</span></a>
       <a class="version-link" href="#v2-6-1">v2.6.1 <span class="version-date">Mar 26</span></a>
       <a class="version-link" href="#v2-6-0">v2.6.0 <span class="version-date">Mar 26</span></a>
@@ -396,6 +398,87 @@
 
   <!-- Changelog entries -->
   <div class="entries" id="entries">
+
+    <!-- ── v2.9.0 — COMPREHENSIVE SITE AUDIT + SECURITY + EXPANSION ── -->
+    <div class="entry" id="v2-9-0" data-tags="new,improve,fix,security">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v2.9.0 — Comprehensive Audit: Security, OG Images, Agriculture Expansion, 1,112 Tools</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">New</span>
+            <span class="tag tag-improve">Improved</span>
+            <span class="tag tag-fix">Fix</span>
+            <span class="tag tag-security">Security</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">March 28, 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">🔒</span>
+          <div class="change-body">
+            <div class="change-title">HttpOnly Cookie Auth Migration <span class="change-type ct-security">Security</span></div>
+            <div class="change-desc">Progressive enhancement from localStorage tokens to HttpOnly cookies. New <code>auth-session.js</code> Netlify function sets <code>afro_session</code> (1hr) and <code>afro_refresh</code> (30d) cookies with SameSite=Lax, HttpOnly, Secure. Auto-refreshes expired tokens. Falls back gracefully if cookie API fails — zero disruption to existing users.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔐</span>
+          <div class="change-body">
+            <div class="change-title">Auth Loads on Every Page <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Navbar now lazy-loads the full auth chain (african-countries.js &rarr; afro-auth.js &rarr; auth-modal.js &rarr; auth-cookie-upgrade.js) after 800ms on every page. Sign in/up from anywhere on the site. Minifier-safe scoping via setTimeout callbacks.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🖼️</span>
+          <div class="change-body">
+            <div class="change-title">OG Images: 23 Category + Country Images Generated <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Created <code>generate-og-images.js</code> script producing branded SVG &rarr; PNG OG images for all 15 categories, 6 major countries, homepage, and default fallback. Updated og:image references across 20 category pages in EN, FR, and SW.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🌾</span>
+          <div class="change-body">
+            <div class="change-title">Agriculture: Live Data Bridge + 634 Tools <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Created <code>agri-live-data.js</code> bridge module connecting static data files to live Netlify API endpoints. 30-minute sessionStorage cache with offline fallback. Visual source indicator (live/cached/static). Agriculture category now at 634 tools with hub sub-tools across 54 countries.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🏗️</span>
+          <div class="change-body">
+            <div class="change-title">Building Permit Tool: 5 &rarr; 10 Jurisdictions <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Expanded building permit checklist with Egypt (GOPP), Ethiopia (Construction Bureau), Rwanda (RHA + One-Stop Centre), Tanzania (Municipal Council + NHBRA), and Uganda (Physical Planning Committee). Each with full authority info, cost estimates, timelines, 8-10 steps, and penalty information.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📄</span>
+          <div class="change-body">
+            <div class="change-title">Shared PDF Library for 14 Tools <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Created <code>pdf-lib-utils.js</code> (AfroPdfLib) — shared utilities for lazy-loading pdf-lib/PDF.js, drag-and-drop, validation, page rendering, and downloads. Eliminates duplicated initialization code across 14 PDF tools. CDN fallback chain matches existing tool patterns.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">✉️</span>
+          <div class="change-body">
+            <div class="change-title">Branded Supabase Email Templates <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Created branded password reset and signup confirmation email templates with dark header (#0A1628), blue accent bar, CTA buttons (#007AFF), and fallback raw URLs. Ready to paste into Supabase Dashboard.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔢</span>
+          <div class="change-body">
+            <div class="change-title">Tool Count: 1,078 &rarr; 1,112 (Sitewide Update) <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Registry now at 920 entries (1,112 with hub sub-tools). Updated all hardcoded "1,070+" references to "1,110+" across 21 HTML files. Agriculture page counts corrected from stale 286/355 to actual 630+. Registry comment updated.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🌐</span>
+          <div class="change-body">
+            <div class="change-title">28 Country PAYE OG Images + 5 Blog Images <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Generated missing OG images for 28 country PAYE pages (Burkina Faso through Zimbabwe). Created blog image directory with 5 branded article hero images. Added manifest.json link to all main site pages for PWA support.</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ── v2.8.0 — REGISTRY OVERHAUL + SITEWIDE COUNT UPDATE ── -->
     <div class="entry" id="v2-8-0" data-tags="new,improve">
