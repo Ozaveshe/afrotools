@@ -360,39 +360,6 @@
       font-size: 1rem; flex-shrink: 0;
     }
     .mega-col-name { font-size: 0.83rem; font-weight: 800; color: #111827; line-height: 1.2; }
-    .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #9ca3af; margin-top: 1px; }
-
-    /* MEGA TOOL SUB-PANEL */
-    .mega-tools {
-      display: none;
-      grid-column: 1 / -1;
-      padding: 8px 0 4px;
-      border-top: 1px solid #f3f4f6;
-      gap: 4px;
-    }
-    .mega-tools.open {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .mega-tool-link {
-      display: flex; align-items: center; gap: 6px;
-      padding: 7px 12px; border-radius: 8px;
-      text-decoration: none; color: #374151;
-      font-size: 0.78rem; font-weight: 500;
-      transition: background 0.13s, color 0.13s;
-    }
-    .mega-tool-link:hover { background: #EEF4FF; color: #0062CC; }
-    .mega-tool-emoji { font-size: 0.85rem; flex-shrink: 0; }
-    .mega-tool-badge {
-      font-size: 0.55rem; font-weight: 800; padding: 1px 5px;
-      border-radius: 4px; background: #DBEAFE; color: #1D4ED8;
-      margin-left: auto; flex-shrink: 0;
-    }
-    .mega-tool-badge.new { background: #D1FAE5; color: #065F46; }
-
-    @media (max-width: 900px) {
-      .mega-tools.open { grid-template-columns: repeat(2, 1fr); }
-    }
 
     .mega-footer {
       max-width: 1200px; margin: 0 auto;
@@ -791,24 +758,11 @@
         var href = isSw && cat.hrefSw ? cat.hrefSw : isFr && cat.hrefFr ? cat.hrefFr : cat.href;
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
         var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
-        var hasTools = cat.tools && cat.tools.length > 0;
-        var colHTML = `
-        <a href="${href}" class="mega-col${hasTools ? ' has-tools' : ''}" data-cat="${cat.id}" style="--col-accent:${cat.accent}">
+        return `
+        <a href="${href}" class="mega-col" data-cat="${cat.id}" style="--col-accent:${cat.accent}">
           <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
-          <div>
-            <div class="mega-col-name">${label}</div>
-            <div class="mega-col-desc">${desc}</div>
-          </div>
+          <div class="mega-col-name">${label}</div>
         </a>`;
-        if (hasTools) {
-          var toolsHTML = cat.tools.map(t => {
-            var badgeCls = t.badge === 'NEW' ? ' new' : '';
-            var badgeHTML = t.badge ? `<span class="mega-tool-badge${badgeCls}">${t.badge}</span>` : '';
-            return `<a href="${t.href}" class="mega-tool-link"><span class="mega-tool-emoji">${t.emoji || ''}</span>${t.label}${badgeHTML}</a>`;
-          }).join('');
-          colHTML += `<div class="mega-tools" data-for="${cat.id}">${toolsHTML}</div>`;
-        }
-        return colHTML;
       }).join('');
     }
 
