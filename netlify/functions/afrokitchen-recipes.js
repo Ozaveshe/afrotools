@@ -2,7 +2,7 @@
 // Supabase CRUD for AfroKitchen recipes
 // Handles recipe fetching, filtering, and view count incrementing
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
 
 function getCorsHeaders(event) {

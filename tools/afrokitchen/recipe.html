@@ -178,24 +178,6 @@
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afrokitchen-engine.js?v=2"></script>
 <script>
-// ── Recipe image mapping (stored as Promise so init() can await it) ──
-var recipeImages = {};
-var recipeImagesReady = Promise.all([
-  fetch('/tools/afrokitchen/recipe-images.json')
-    .then(function (r) { return r.json(); })
-    .catch(function () { return { recipes: {} }; }),
-  fetch('/tools/afrokitchen/recipe-images-override.json')
-    .then(function (r) { return r.json(); })
-    .catch(function () { return { recipes: {} }; })
-]).then(function (results) {
-  var base      = (results[0] && results[0].recipes) || {};
-  var overrides = (results[1] && results[1].recipes) || {};
-  Object.keys(base).forEach(function (k) { recipeImages[k] = base[k]; });
-  Object.keys(overrides).forEach(function (k) {
-    if (k.charAt(0) !== '_') recipeImages[k] = overrides[k];
-  });
-}).catch(function () {});
-
 var AKPage = (function () {
   'use strict';
   var AK = AfroKitchenEngine;
@@ -218,23 +200,26 @@ var AKPage = (function () {
       await new Promise(function (res) { setTimeout(res, 1200); });
       recipe = await AK.fetchRecipeBySlug(slug);
     }
+    // Final fallback: server-side fetch via Netlify function
+    if (!recipe) {
+      try {
+        var res = await fetch('/.netlify/functions/afrokitchen-recipes?action=get&slug=' + encodeURIComponent(slug));
+        if (res.ok) {
+          var data = await res.json();
+          if (data && data.id) recipe = data;
+        }
+      } catch (e) {}
+    }
     if (!recipe) { show404(); return; }
 
     servings = recipe.default_servings;
-
-    // Wait for image map to be ready so hero photo appears on first render
-    await recipeImagesReady;
 
     // Update page title and meta
     document.title = recipe.name + ' — AfroKitchen | AfroTools';
     var metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.content = recipe.description;
 
-    // Structured data — use Unsplash full image if Supabase image_url not yet set
     var schema = AK.getStructuredData(recipe, servings);
-    if (!recipe.image_url && recipeImages[slug] && recipeImages[slug].full) {
-      schema.image = recipeImages[slug].full;
-    }
     document.getElementById('recipe-schema').textContent = JSON.stringify(schema);
 
     renderHero();
@@ -274,25 +259,11 @@ var AKPage = (function () {
 
   // ── Hero ──
   function renderHero() {
-    var hero    = document.getElementById('recipe-hero');
-    var imgData = recipeImages[recipe.slug] || null;
-    var heroImg = recipe.image_url || (imgData && imgData.full) || null;
-    if (heroImg) {
-      hero.style.backgroundImage = 'url(' + heroImg + ')';
+    var hero = document.getElementById('recipe-hero');
+    if (recipe.image_url) {
+      hero.style.backgroundImage = 'url(' + recipe.image_url + ')';
     } else {
       hero.style.background = '#1A1008';
-    }
-    // Photographer credit (Unsplash API requirement)
-    var creditEl = document.getElementById('recipe-hero-credit');
-    if (creditEl && imgData && imgData.photographer) {
-      var src = (imgData.source === 'pexels') ? 'Pexels' : 'Unsplash';
-      var siteUrl = (imgData.source === 'pexels')
-        ? 'https://www.pexels.com/?utm_source=afrotools&utm_medium=referral'
-        : 'https://unsplash.com/?utm_source=afrotools&utm_medium=referral';
-      creditEl.innerHTML = 'Photo by <a href="' + (imgData.photographer_url || '#') +
-        '" target="_blank" rel="noopener">' + imgData.photographer + '</a> on ' +
-        '<a href="' + siteUrl + '" target="_blank" rel="noopener">' + src + '</a>';
-      creditEl.style.display = '';
     }
     document.getElementById('hero-breadcrumb').textContent = recipe.name;
     document.getElementById('hero-title').textContent = recipe.name;
