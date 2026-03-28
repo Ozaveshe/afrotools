@@ -360,6 +360,7 @@
       font-size: 1rem; flex-shrink: 0;
     }
     .mega-col-name { font-size: 0.83rem; font-weight: 800; color: #111827; line-height: 1.2; }
+    .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #9ca3af; margin-top: 1px; }
 
     .mega-footer {
       max-width: 1200px; margin: 0 auto;
@@ -761,7 +762,10 @@
         return `
         <a href="${href}" class="mega-col" data-cat="${cat.id}" style="--col-accent:${cat.accent}">
           <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
-          <div class="mega-col-name">${label}</div>
+          <div>
+            <div class="mega-col-name">${label}</div>
+            <div class="mega-col-desc">${desc}</div>
+          </div>
         </a>`;
       }).join('');
     }
