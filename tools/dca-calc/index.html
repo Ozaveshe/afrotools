@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dollar-Cost Averaging Calculator | AfroTools</title>
+<meta name="description" content="Model dollar-cost averaging (DCA) investing: monthly contributions over time, average cost per unit, and portfolio value at various return scenarios.">
+<link rel="canonical" href="https://afrotools.com/tools/dca-calc/">
+<meta property="og:title" content="Dollar-Cost Averaging Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/dca-calc/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Dollar-Cost Averaging Calculator","url":"https://afrotools.com/tools/dca-calc/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"DCA Calculator","item":"https://afrotools.com/tools/dca-calc/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.scenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1rem}
+.scenario{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.scenario-label{font-size:.75rem;font-weight:700;text-transform:uppercase;color:#6b7280;margin-bottom:.35rem}
+.scenario-val{font-size:1.15rem;font-weight:800;color:#0f172a}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.scenario-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>DCA Calculator</nav>
+    <h1>Dollar-Cost Averaging Calculator</h1>
+    <p>Model DCA investing: monthly contributions, average cost per unit, and portfolio value at conservative, moderate, and aggressive return scenarios.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">3 Scenarios</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Dollar-Cost Averaging (DCA) Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="dca-monthly">Monthly Investment Amount</label>
+        <input type="number" id="dca-monthly" value="10000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="dca-initial">Initial Lump Sum (optional)</label>
+        <input type="number" id="dca-initial" value="0" min="0">
+      </div>
+      <div class="form-group">
+        <label for="dca-years">Investment Period (Years)</label>
+        <select id="dca-years">
+          <option value="1">1 Year</option>
+          <option value="3">3 Years</option>
+          <option value="5" selected>5 Years</option>
+          <option value="10">10 Years</option>
+          <option value="15">15 Years</option>
+          <option value="20">20 Years</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="dca-rate">Expected Annual Return (%)</label>
+        <input type="number" id="dca-rate" value="12" step="0.5">
+      </div>
+      <div class="form-group">
+        <label for="dca-price">Current Unit/Share Price</label>
+        <input type="number" id="dca-price" value="100" min="0.01" step="0.01">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcDCA()">Calculate DCA Returns</button>
+    <div class="results" id="dca-results">
+      <div class="res-hero">
+        <div class="res-label">Portfolio Value at Target Return</div>
+        <div class="res-val" id="dca-value"></div>
+        <div class="res-sub" id="dca-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="dca-total-invested"></div><div class="metric-label">Total Invested</div></div>
+        <div class="metric"><div class="metric-val" id="dca-total-return"></div><div class="metric-label">Investment Return</div></div>
+        <div class="metric"><div class="metric-val" id="dca-total-units"></div><div class="metric-label">Units Accumulated</div></div>
+        <div class="metric"><div class="metric-val" id="dca-avg-cost"></div><div class="metric-label">Avg Cost per Unit</div></div>
+      </div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Scenarios</h3>
+      <div class="scenario-grid">
+        <div class="scenario"><div class="scenario-label">Conservative (6%)</div><div class="scenario-val" id="dca-s1"></div></div>
+        <div class="scenario"><div class="scenario-label">Moderate (12%)</div><div class="scenario-val" id="dca-s2"></div></div>
+        <div class="scenario"><div class="scenario-label">Aggressive (18%)</div><div class="scenario-val" id="dca-s3"></div></div>
+        <div class="scenario"><div class="scenario-label">T-Bill Equivalent (24%)</div><div class="scenario-val" id="dca-s4"></div></div>
+      </div>
+      <div class="info-box">DCA reduces the impact of price volatility — you buy more units when prices are low and fewer when high. For African markets with higher volatility, DCA is especially powerful as a risk management strategy.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is Dollar-Cost Averaging?</summary><div class="faq-a">DCA is the strategy of investing a fixed amount at regular intervals (e.g., monthly), regardless of price. When prices fall, you buy more units; when prices rise, you buy fewer. Over time, this averages out your cost per unit and reduces the risk of investing a lump sum at a market peak. It is particularly effective for volatile African markets.</div></details></div>
+    <div class="faq-item"><details><summary>Is DCA better than lump sum investing?</summary><div class="faq-a">Research shows lump sum investing outperforms DCA in rising markets about 65-70% of the time. However, DCA is psychologically easier, reduces timing risk, and is the only practical option for most people who invest from monthly income. For high-volatility assets (African equities, crypto), DCA typically reduces risk significantly.</div></details></div>
+    <div class="faq-item"><details><summary>What should I DCA into in Africa?</summary><div class="faq-a">Common DCA targets in Africa: Money Market Funds (daily compounding, immediate liquidity), index ETFs on JSE or NSE Kenya, T-bills (if accessible), blue-chip stocks on local exchanges. Avoid putting your DCA into single stocks with limited liquidity. Diversify across asset classes where possible.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function calcDCA(){
+  var monthly=parseFloat(document.getElementById('dca-monthly').value)||0;
+  var initial=parseFloat(document.getElementById('dca-initial').value)||0;
+  var years=parseInt(document.getElementById('dca-years').value);
+  var rate=parseFloat(document.getElementById('dca-rate').value)/100;
+  var price=parseFloat(document.getElementById('dca-price').value)||100;
+  var months=years*12;
+  var monthlyRate=rate/12;
+  // FV of annuity + FV of initial lump sum
+  var fvAnnuity=monthly*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
+  var fvInitial=initial*Math.pow(1+monthlyRate,months);
+  var total=fvAnnuity+fvInitial;
+  var totalInvested=monthly*months+initial;
+  var totalReturn=total-totalInvested;
+  // Units: monthly buying, price assumed steady for simplicity
+  var totalUnits=(monthly*months)/price+(initial/price);
+  var avgCost=totalInvested/totalUnits;
+  function fmt(n){return (Math.round(n)).toLocaleString();}
+  function scenario(r){
+    var mr=r/12;
+    var fvA=monthly*((Math.pow(1+mr,months)-1)/mr);
+    var fvI=initial*Math.pow(1+mr,months);
+    return fmt(fvA+fvI);
+  }
+  document.getElementById('dca-value').textContent=fmt(total);
+  document.getElementById('dca-sub').textContent='Total invested: '+fmt(totalInvested)+' | Over '+years+' years';
+  document.getElementById('dca-total-invested').textContent=fmt(totalInvested);
+  document.getElementById('dca-total-return').textContent=fmt(totalReturn);
+  document.getElementById('dca-total-units').textContent=totalUnits.toFixed(0);
+  document.getElementById('dca-avg-cost').textContent=avgCost.toFixed(2);
+  document.getElementById('dca-s1').textContent=scenario(0.06);
+  document.getElementById('dca-s2').textContent=scenario(0.12);
+  document.getElementById('dca-s3').textContent=scenario(0.18);
+  document.getElementById('dca-s4').textContent=scenario(0.24);
+  document.getElementById('dca-results').classList.add('on');
+}
+</script>
+</body>
+</html>

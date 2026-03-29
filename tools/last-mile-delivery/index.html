@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Last-Mile Delivery Cost Optimizer Africa | AfroTools</title>
+<meta name="description" content="Optimize last-mile delivery cost per package for dense urban, suburban, and rural African areas. Compare vehicle types and find the most cost-effective last-mile logistics approach.">
+<link rel="canonical" href="https://afrotools.com/tools/last-mile-delivery/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Last-Mile Delivery Cost Optimizer Africa | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/last-mile-delivery/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="tool-id" content="last-mile-delivery">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+input[type=number],select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.vehicle-options{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.25rem}
+.vehicle-opt{border:1.5px solid #e5e7eb;border-radius:12px;padding:1.25rem;text-align:center}
+.vehicle-opt.best{border-color:var(--color-primary);background:#eff6ff}
+.vehicle-opt.worst{border-color:#fca5a5;background:#fef2f2}
+.vopt-icon{font-size:2rem;margin-bottom:.5rem}
+.vopt-name{font-size:.85rem;font-weight:700;color:#1a1a2e;margin-bottom:.25rem}
+.vopt-cost{font-size:1.2rem;font-weight:800;color:var(--color-primary)}
+.vopt-unit{font-size:.72rem;color:#6b7280;margin-top:2px}
+.vopt-badge{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:100px;margin-top:.25rem}
+.vopt-badge.best{background:#dcfce7;color:#15803d}
+.vopt-badge.worst{background:#fee2e2;color:#7f1d1d}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-top:1rem}
+.metric{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.1rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.72rem;color:#6b7280;margin-top:4px}
+.rec-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.vehicle-options{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Last-Mile Delivery Cost Optimizer
+    </nav>
+    <h1>Last-Mile Delivery <em>Cost Optimizer</em></h1>
+    <p class="tool-hero-sub">Optimize last-mile delivery cost per package for dense urban, suburban, and rural areas in Africa. Compare vehicle types and find the most cost-effective last-mile approach.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x1f3af; Pan-African</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x1f6f5; Multi-Vehicle</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>&#x1f4e6; Delivery Configuration</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Number of Deliveries per Day</label>
+        <input type="number" id="lmDeliveries" placeholder="e.g. 50" value="30" min="1">
+      </div>
+      <div class="field">
+        <label>Area Type</label>
+        <select id="lmArea">
+          <option value="dense_urban">Dense Urban (high-rise, narrow streets)</option>
+          <option value="urban">Urban / City (standard streets)</option>
+          <option value="suburban">Suburban (spread out, good roads)</option>
+          <option value="rural">Rural (poor roads, long distances)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Average Distance per Delivery (km)</label>
+        <input type="number" id="lmAvgDist" placeholder="e.g. 3" value="3" min="0.5" step="0.5">
+      </div>
+      <div class="field">
+        <label>Fuel Price (USD per litre)</label>
+        <input type="number" id="lmFuelPrice" placeholder="e.g. 1.20" value="1.20" step="0.01">
+      </div>
+      <div class="field">
+        <label>Driver Daily Wage (USD)</label>
+        <input type="number" id="lmWage" placeholder="e.g. 15" value="15" min="1">
+      </div>
+      <div class="field">
+        <label>Package Size / Weight</label>
+        <select id="lmPackageSize">
+          <option value="small">Small (under 5kg)</option>
+          <option value="medium">Medium (5-20kg)</option>
+          <option value="large">Large (20-50kg)</option>
+          <option value="bulky">Bulky / Oversized</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcLastMile()">Optimize Last-Mile Cost</button>
+
+    <div class="results" id="lmResults">
+      <div class="vehicle-options" id="lmVehicleOpts"></div>
+      <div class="metrics" id="lmMetrics"></div>
+      <div class="rec-box" id="lmRec"></div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>Why is last-mile delivery so expensive in Africa?</summary><div class="faq-body">Last-mile delivery in Africa is expensive due to: poor addressing systems (many areas have no formal addresses), poor road conditions in informal settlements, security concerns, failed deliveries requiring re-attempts, limited technology infrastructure, high fuel costs, and low delivery density in suburban/rural areas. The "last mile" can represent 40-60% of total logistics cost. Companies like Kobo360, Lori Systems, and Sendy are using technology to reduce these costs.</div></details>
+    <details><summary>Which vehicle is best for last-mile delivery in African cities?</summary><div class="faq-body">For dense urban areas (Lagos Island, Nairobi CBD, Accra central): motorcycles are fastest and cheapest per delivery due to traffic navigation. For suburban residential: small cargo bikes or cars with large boots work well. For rural last-mile: motorcycles or 4WD vehicles are more reliable on unpaved roads. For bulky goods: small vans with side doors for easy access. Motorcycles handle 20-40 deliveries/day in urban areas; vans 30-60 depending on size.</div></details>
+    <details><summary>What is the cost per delivery for African e-commerce?</summary><div class="faq-body">Last-mile delivery cost per package in Africa ranges from $1.50-8 depending on area type. Dense urban: $1.50-3 per delivery (motorcycle). Suburban: $3-6. Rural: $5-15+. This is significantly higher than the $0.50-1.50 US e-commerce benchmark, which is why many African e-commerce businesses struggle with profitability. Cluster delivery (dropping multiple packages per neighbourhood stop) is key to reducing costs.</div></details>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script>
+function calcLastMile() {
+  var deliveries = parseInt(document.getElementById('lmDeliveries').value) || 0;
+  var area = document.getElementById('lmArea').value;
+  var avgDist = parseFloat(document.getElementById('lmAvgDist').value) || 0;
+  var fuelPrice = parseFloat(document.getElementById('lmFuelPrice').value) || 1.2;
+  var wage = parseFloat(document.getElementById('lmWage').value) || 15;
+  var pkgSize = document.getElementById('lmPackageSize').value;
+
+  if (deliveries === 0 || avgDist === 0) { alert('Please enter deliveries per day and average distance.'); return; }
+
+  // Area multipliers for time/efficiency
+  var areaMult = {dense_urban: 0.6, urban: 0.8, suburban: 1.0, rural: 1.5};
+  var aMultiplier = areaMult[area] || 1;
+
+  // Vehicle types
+  var vehicles = [
+    {name: 'Motorcycle', icon: '&#x1f6f5;', fuelL: 2.5, capacity: 25, vehicleCost: 5, speedFactor: 1.3},
+    {name: 'Car / Sedan', icon: '&#x1f697;', fuelL: 8, capacity: 15, vehicleCost: 12, speedFactor: 1.0},
+    {name: 'Van', icon: '&#x1f690;', fuelL: 12, capacity: 60, vehicleCost: 18, speedFactor: 0.9}
+  ];
+
+  if (pkgSize === 'bulky' || pkgSize === 'large') {
+    vehicles = vehicles.filter(function(v){ return v.name !== 'Motorcycle'; });
+  }
+
+  var results = vehicles.map(function(v) {
+    var numVehicles = Math.ceil(deliveries / v.capacity);
+    var totalKm = deliveries * avgDist * aMultiplier;
+    var fuelCost = (totalKm / 100) * v.fuelL * fuelPrice;
+    var vehicleFee = v.vehicleCost * numVehicles; // depreciation/hire per vehicle per day
+    var totalWage = wage * numVehicles;
+    var totalCost = fuelCost + vehicleFee + totalWage;
+    var costPerDelivery = totalCost / deliveries;
+    return {
+      name: v.name,
+      icon: v.icon,
+      numVehicles: numVehicles,
+      totalCost: totalCost,
+      costPerDelivery: costPerDelivery
+    };
+  });
+
+  results.sort(function(a, b){ return a.costPerDelivery - b.costPerDelivery; });
+
+  document.getElementById('lmVehicleOpts').innerHTML = results.map(function(r, i) {
+    var cls = i === 0 ? 'best' : (i === results.length - 1 ? 'worst' : '');
+    var badge = i === 0 ? '<div class="vopt-badge best">Most Efficient</div>' : (i === results.length - 1 ? '<div class="vopt-badge worst">Highest Cost</div>' : '');
+    return '<div class="vehicle-opt ' + cls + '">' +
+      '<div class="vopt-icon">' + r.icon + '</div>' +
+      '<div class="vopt-name">' + r.name + '</div>' +
+      '<div class="vopt-cost">$' + r.costPerDelivery.toFixed(2) + '</div>' +
+      '<div class="vopt-unit">per delivery | ' + r.numVehicles + ' vehicle(s)</div>' + badge +
+      '</div>';
+  }).join('');
+
+  var best = results[0];
+  document.getElementById('lmMetrics').innerHTML = [
+    ['$' + best.costPerDelivery.toFixed(2), 'Best Cost/Delivery'],
+    ['$' + (best.totalCost).toFixed(0), 'Daily Total Cost'],
+    [deliveries + '', 'Deliveries/Day'],
+    [(deliveries * 22) + '', 'Monthly Volume']
+  ].map(function(m){
+    return '<div class="metric"><div class="metric-val">' + m[0] + '</div><div class="metric-label">' + m[1] + '</div></div>';
+  }).join('');
+
+  var areaName = {dense_urban:'dense urban', urban:'urban', suburban:'suburban', rural:'rural'}[area];
+  document.getElementById('lmRec').textContent = 'For ' + deliveries + ' deliveries/day in a ' + areaName + ' area, ' + best.name + ' is most cost-effective at $' + best.costPerDelivery.toFixed(2) + '/delivery using ' + best.numVehicles + ' vehicle(s). Cluster deliveries by neighbourhood to minimize backtracking and reduce cost by a further 15-25%.';
+
+  document.getElementById('lmResults').classList.add('on');
+}
+</script>
+</body>
+</html>

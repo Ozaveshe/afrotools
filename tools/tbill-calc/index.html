@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Treasury Bill Yield Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate T-bill returns for 91-day, 182-day, and 364-day Treasury Bills across African countries. Discount price, actual yield, annualized return, and after-tax return.">
+<link rel="canonical" href="https://afrotools.com/tools/tbill-calc/">
+<meta property="og:title" content="Treasury Bill Yield Calculator — Africa | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/tbill-calc/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Treasury Bill Yield Calculator","description":"Calculate T-bill returns across African countries.","url":"https://afrotools.com/tools/tbill-calc/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Treasury Bill Yield Calculator","item":"https://afrotools.com/tools/tbill-calc/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem;color:#0f172a}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+.faq-section h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#f9fafb;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>T-Bill Yield Calculator</nav>
+    <h1>Treasury Bill Yield Calculator</h1>
+    <p>Calculate returns on 91-day, 182-day, and 364-day African T-bills. See discount price, actual yield, annualized return, and after-tax payout.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">54 Countries</span>
+      <span class="hero-badge">Live Rates Pre-filled</span>
+      <span class="hero-badge">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>Calculate Treasury Bill Returns</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="tb-country">Country</label>
+        <select id="tb-country" onchange="fillTBRates()">
+          <option value="NG" data-91="25" data-182="26" data-364="27" data-tax="0" data-sym="&#x20A6;">Nigeria</option>
+          <option value="KE" data-91="13" data-182="14" data-364="15" data-tax="15" data-sym="KSh">Kenya</option>
+          <option value="ZA" data-91="8" data-182="8.5" data-364="9" data-tax="0" data-sym="R">South Africa</option>
+          <option value="GH" data-91="29" data-182="31" data-364="33" data-tax="0" data-sym="GH&#x20B5;">Ghana</option>
+          <option value="EG" data-91="22" data-182="23" data-364="24" data-tax="0" data-sym="E&#xa3;">Egypt</option>
+          <option value="TZ" data-91="11" data-182="12" data-364="13" data-tax="0" data-sym="TSh">Tanzania</option>
+          <option value="UG" data-91="15" data-182="16" data-364="17" data-tax="0" data-sym="USh">Uganda</option>
+          <option value="ZM" data-91="19" data-182="21" data-364="22" data-tax="0" data-sym="ZK">Zambia</option>
+          <option value="RW" data-91="6" data-182="7" data-364="8" data-tax="0" data-sym="FRw">Rwanda</option>
+          <option value="MA" data-91="3" data-182="3.2" data-364="3.5" data-tax="0" data-sym="MAD">Morocco</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tb-tenor">Bill Tenor</label>
+        <select id="tb-tenor" onchange="fillTBRates()">
+          <option value="91">91-Day (3 Month)</option>
+          <option value="182">182-Day (6 Month)</option>
+          <option value="364" selected>364-Day (1 Year)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tb-amount">Face Value (Investment Amount)</label>
+        <input type="number" id="tb-amount" value="1000000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="tb-rate">Yield / Discount Rate (%)</label>
+        <input type="number" id="tb-rate" value="27" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="tb-tax">Withholding Tax (%)</label>
+        <input type="number" id="tb-tax" value="0" step="0.5">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcTBill()">Calculate T-Bill Return</button>
+
+    <div class="results" id="tb-results">
+      <div class="res-hero">
+        <div class="res-label">Amount Received at Maturity</div>
+        <div class="res-val" id="tb-maturity"></div>
+        <div class="res-sub" id="tb-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="tb-price"></div><div class="metric-label">Purchase Price (Discounted)</div></div>
+        <div class="metric"><div class="metric-val" id="tb-return"></div><div class="metric-label">Gross Return</div></div>
+        <div class="metric"><div class="metric-val" id="tb-tax-amt"></div><div class="metric-label">Tax Withheld</div></div>
+        <div class="metric"><div class="metric-val" id="tb-net"></div><div class="metric-label">Net Return</div></div>
+        <div class="metric"><div class="metric-val" id="tb-actual-yield"></div><div class="metric-label">Actual Yield</div></div>
+        <div class="metric"><div class="metric-val" id="tb-annualized"></div><div class="metric-label">Annualized Return</div></div>
+      </div>
+      <div class="info-box">T-bills are backed by the government — they are among the safest investments available. Compare this yield to fixed deposit rates to see which offers better returns for your tenor.</div>
+    </div>
+  </div>
+
+  <div class="card faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>How do T-bills work in Africa?</summary><div class="faq-a">Treasury bills are short-term government debt instruments sold at a discount to face value. You buy at a lower price and receive the full face value at maturity. The difference is your return. In Nigeria, Kenya, Ghana, and most African countries, T-bills are auctioned weekly or bi-weekly by the central bank.</div></details>
+    <details><summary>Can individuals invest in T-bills in Africa?</summary><div class="faq-a">Yes. In Nigeria, you can invest through DMO, commercial banks, or stockbrokers. In Kenya, through the CBK DhowCSD platform or commercial banks (minimum KSh 50,000). In Ghana, through banks or licensed dealers. Minimum investment amounts vary by country (typically $1,000 equivalent).</div></details>
+    <details><summary>What is the difference between yield and discount rate for T-bills?</summary><div class="faq-a">The discount rate is the rate applied to face value to calculate purchase price. The yield (or effective yield) is the actual return you earn on what you paid — always higher than the discount rate since you paid less than face value. Our calculator shows both.</div></details>
+    <details><summary>Are T-bill returns taxable in Africa?</summary><div class="faq-a">It varies. Nigerian T-bill income is exempt from withholding tax. Kenyan T-bill income is subject to 15% withholding tax. South African T-bill income is included in normal taxable income. Always confirm with your bank or tax advisor.</div></details>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script>
+function fillTBRates(){
+  var csel=document.getElementById('tb-country');
+  var copt=csel.options[csel.selectedIndex];
+  var tenor=document.getElementById('tb-tenor').value;
+  document.getElementById('tb-rate').value=copt.getAttribute('data-'+tenor)||copt.getAttribute('data-364');
+  document.getElementById('tb-tax').value=copt.getAttribute('data-tax');
+}
+function calcTBill(){
+  var csel=document.getElementById('tb-country');
+  var copt=csel.options[csel.selectedIndex];
+  var sym=copt.getAttribute('data-sym');
+  var faceValue=parseFloat(document.getElementById('tb-amount').value)||0;
+  var discountRate=parseFloat(document.getElementById('tb-rate').value)/100;
+  var days=parseInt(document.getElementById('tb-tenor').value);
+  var taxRate=parseFloat(document.getElementById('tb-tax').value)/100;
+  // Price = Face / (1 + discount * days/365)
+  var price=faceValue/(1+discountRate*(days/365));
+  var grossReturn=faceValue-price;
+  var tax=grossReturn*taxRate;
+  var netReturn=grossReturn-tax;
+  var netMaturity=price+netReturn;
+  var actualYield=(grossReturn/price)*(365/days)*100;
+  var annualizedNet=(netReturn/price)*(365/days)*100;
+  function fmt(n){return sym+(Math.round(n)).toLocaleString();}
+  document.getElementById('tb-maturity').textContent=fmt(netMaturity);
+  document.getElementById('tb-sub').textContent='Face Value: '+fmt(faceValue)+' | You pay: '+fmt(price);
+  document.getElementById('tb-price').textContent=fmt(price);
+  document.getElementById('tb-return').textContent=fmt(grossReturn);
+  document.getElementById('tb-tax-amt').textContent=fmt(tax);
+  document.getElementById('tb-net').textContent=fmt(netReturn);
+  document.getElementById('tb-actual-yield').textContent=actualYield.toFixed(2)+'%';
+  document.getElementById('tb-annualized').textContent=annualizedNet.toFixed(2)+'%';
+  document.getElementById('tb-results').classList.add('on');
+}
+</script>
+</body>
+</html>

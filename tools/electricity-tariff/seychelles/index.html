@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seychelles Electricity Tariff Calculator | AfroTools</title>
+<meta name="description" content="Calculate your electricity bill in Seychelles. Check current electricity tariff rates, tier pricing, and monthly cost estimates for residential, commercial, and industrial customers.">
+<link rel="canonical" href="https://afrotools.com/tools/electricity-tariff/seychelles">
+<meta property="og:title" content="Seychelles Electricity Tariff Calculator | AfroTools">
+<meta property="og:description" content="Calculate your electricity bill in Seychelles. Check current electricity tariff rates, tier pricing, and monthly cost estimates for residential, commercial, and industrial customers.">
+<meta property="og:url" content="https://afrotools.com/tools/electricity-tariff/seychelles">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Seychelles Electricity Tariff Calculator | AfroTools","description":"Calculate your electricity bill in Seychelles. Check current electricity tariff rates, tier pricing, and monthly cost estimates for residential, commercial, and industrial customers.","url":"https://afrotools.com/tools/electricity-tariff/seychelles","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Energy & Utilities","item":"https://afrotools.com/energy/"},{"@type":"ListItem","position":3,"name":"Electricity Tariff Calculator","item":"https://afrotools.com/tools/electricity-tariff/"},{"@type":"ListItem","position":4,"name":"Seychelles","item":"https://afrotools.com/tools/electricity-tariff/seychelles"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> <a href="/tools/electricity-tariff/">Electricity Tariff Calculator</a> <span>›</span> Seychelles</nav>
+<h1>🇸🇨 Seychelles <em>Electricity Tariff Calculator</em></h1>
+<p class="en-tool-hero-sub">Calculate electricity bills and check current tariff rates in Seychelles. Residential, commercial, and industrial pricing.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>⚡</span><h2>Calculate Your Electricity Bill</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="monthlyUnits">Monthly Units Used (kWh)</label><input class="en-input" type="number" id="monthlyUnits" placeholder="e.g. 250" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="customerType">Customer Type</label><select class="en-select" id="customerType"><option value="residential">Residential (Home)</option><option value="commercial">Commercial (Business)</option><option value="industrial">Industrial</option></select></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Calculate</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Monthly Bill</div><div class="en-res-amount" id="rMonthly">—</div><div class="en-res-sub" id="rDaily">Daily: —</div></div>
+<table class="en-results-table"><thead><tr><th>Period</th><th>Estimated Bill</th></tr></thead><tbody>
+<tr><td>Daily</td><td id="rDailyRow">—</td></tr>
+<tr><td>Monthly</td><td id="rMonthlyRow">—</td></tr>
+<tr><td>Annual</td><td id="rAnnual">—</td></tr>
+<tr><td>Avg Rate (per kWh)</td><td id="rRate">—</td></tr>
+</tbody></table>
+<div class="en-tip" id="rTip"></div>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Seychelles Electricity Tariff Calculator — What You Need to Know</h2>
+<p>Check current electricity tariff rates in Seychelles and calculate your monthly bill. Our calculator covers residential, commercial, and industrial tariff bands, giving you an accurate cost estimate based on actual consumption.</p>
+<p>Seychelles is one of Africa's key markets for electricity access rates and grid infrastructure. Use this free tool to make informed energy decisions.</p>
+<p><strong>Disclaimer:</strong> These are estimates based on available market data and published tariff rates. Actual costs may vary. Always verify with your local utility provider.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/electricity-tariff-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var CC='SC';
+var E=window.AfroTools.ElectricityTariffEngine;
+function fv(id){var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;}
+function sv(id){var el=document.getElementById(id);return el?el.value:"";}
+document.getElementById("calcBtn").addEventListener("click",function(){
+var i={};
+i.units=fv("monthlyUnits");i.customerType=sv("customerType");
+var r=E.calculate(i,CC);
+if(r.error){alert(r.error);return;}
+document.getElementById("rMonthly").textContent=r.monthlyBill;
+document.getElementById("rDaily").textContent="Daily: "+r.dailyBill;
+document.getElementById("rDailyRow").textContent=r.dailyBill;
+document.getElementById("rMonthlyRow").textContent=r.monthlyBill;
+document.getElementById("rAnnual").textContent=r.annualBill;
+document.getElementById("rRate").textContent=r.avgRate;
+var tip=document.getElementById("rTip");if(r.savingTip){tip.textContent="💡 "+r.savingTip;tip.style.display="block";}
+var obs=document.getElementById("rObs");
+if(r.observations&&r.observations.length){
+  obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";
+  obs.style.display="block";
+}
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

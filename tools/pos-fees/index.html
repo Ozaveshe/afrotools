@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>POS Transaction Fee Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate POS terminal transaction fees across Africa. Compare card machine fees, MDR rates, and monthly costs for retail merchants.">
+<link rel="canonical" href="https://afrotools.com/tools/pos-fees/">
+<meta property="og:title" content="POS Transaction Fee Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/pos-fees/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"POS Transaction Fee Calculator","url":"https://afrotools.com/tools/pos-fees/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"POS Transaction Fee Calculator","item":"https://afrotools.com/tools/pos-fees/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.pos-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:1rem}
+.pos-table th{background:#0f172a;color:#fff;padding:9px 12px;font-weight:700;font-size:.75rem;text-transform:uppercase;text-align:left}
+.pos-table td{padding:9px 12px;border-bottom:1px solid #f1f5f9}
+.pos-table tr.best td{background:#ecfdf5;font-weight:700}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>POS Transaction Fee Calculator</nav>
+    <h1>POS Transaction Fee Calculator</h1>
+    <p>Calculate monthly POS card machine fees for your retail business. Compare MDR rates across banks and providers in Nigeria, Kenya, South Africa, and across Africa.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">8 Providers</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>POS Transaction Fee Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="pos-country">Country</label>
+        <select id="pos-country" onchange="fillPOS()">
+          <option value="NG" data-mdr="1.5" data-flat="100" data-cap="2000" data-monthly="2500">Nigeria</option>
+          <option value="KE" data-mdr="1.2" data-flat="0" data-cap="0" data-monthly="1500">Kenya</option>
+          <option value="GH" data-mdr="1.5" data-flat="0" data-cap="0" data-monthly="0">Ghana</option>
+          <option value="ZA" data-mdr="2.5" data-flat="0" data-cap="0" data-monthly="100">South Africa</option>
+          <option value="UG" data-mdr="2.0" data-flat="0" data-cap="0" data-monthly="0">Uganda</option>
+          <option value="TZ" data-mdr="2.0" data-flat="0" data-cap="0" data-monthly="0">Tanzania</option>
+          <option value="RW" data-mdr="1.8" data-flat="0" data-cap="0" data-monthly="0">Rwanda</option>
+          <option value="ET" data-mdr="1.0" data-flat="0" data-cap="0" data-monthly="0">Ethiopia</option>
+          <option value="EG" data-mdr="1.5" data-flat="0" data-cap="0" data-monthly="0">Egypt</option>
+          <option value="MA" data-mdr="1.2" data-flat="0" data-cap="0" data-monthly="0">Morocco</option>
+          <option value="ZM" data-mdr="1.8" data-flat="0" data-cap="0" data-monthly="0">Zambia</option>
+          <option value="CI" data-mdr="2.0" data-flat="0" data-cap="0" data-monthly="0">Côte d'Ivoire</option>
+          <option value="SN" data-mdr="2.0" data-flat="0" data-cap="0" data-monthly="0">Senegal</option>
+          <option value="CM" data-mdr="2.0" data-flat="0" data-cap="0" data-monthly="0">Cameroon</option>
+          <option value="MZ" data-mdr="2.0" data-flat="0" data-cap="0" data-monthly="0">Mozambique</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pos-mdr">MDR / Transaction Rate (%)</label>
+        <input type="number" id="pos-mdr" value="1.5" min="0" max="5" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="pos-flat">Flat Fee Per Transaction</label>
+        <input type="number" id="pos-flat" value="100" min="0">
+      </div>
+      <div class="form-group">
+        <label for="pos-cap">Fee Cap Per Transaction (0 = no cap)</label>
+        <input type="number" id="pos-cap" value="2000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="pos-monthly-fee">Monthly Terminal/Service Fee</label>
+        <input type="number" id="pos-monthly-fee" value="2500" min="0">
+      </div>
+      <div class="form-group">
+        <label for="pos-avg-txn">Average Transaction Value</label>
+        <input type="number" id="pos-avg-txn" value="8000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="pos-txn-count">Daily Transactions</label>
+        <input type="number" id="pos-txn-count" value="30" min="1">
+      </div>
+      <div class="form-group">
+        <label for="pos-card-pct">Card Transactions (%)</label>
+        <input type="number" id="pos-card-pct" value="60" min="0" max="100">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcPOS()">Calculate POS Fees</button>
+    <div class="results" id="pos-results">
+      <div class="res-hero">
+        <div class="res-label">Monthly POS Fees</div>
+        <div class="res-val" id="pos-total-monthly"></div>
+        <div class="res-sub" id="pos-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="pos-daily-vol"></div><div class="metric-label">Daily Card Volume</div></div>
+        <div class="metric"><div class="metric-val" id="pos-monthly-vol"></div><div class="metric-label">Monthly Card Volume</div></div>
+        <div class="metric"><div class="metric-val" id="pos-txn-fees"></div><div class="metric-label">Monthly Transaction Fees</div></div>
+        <div class="metric"><div class="metric-val" id="pos-terminal-fee"></div><div class="metric-label">Monthly Terminal Fee</div></div>
+        <div class="metric"><div class="metric-val" id="pos-effective-rate"></div><div class="metric-label">Effective Rate on Volume</div></div>
+        <div class="metric"><div class="metric-val" id="pos-annual-cost"></div><div class="metric-label">Annual POS Cost</div></div>
+      </div>
+      <div class="info-box">MDR varies by card type: local debit cards typically attract lower rates (0.8-1.5%) vs international credit cards (2.5-3.5%). Negotiate with your bank at volumes above 1M per month. Some providers offer flat monthly fees instead of per-transaction MDR for high-volume merchants.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is MDR (Merchant Discount Rate)?</summary><div class="faq-a">MDR is the fee charged to merchants for accepting card payments. It covers: interchange fee (paid to card-issuing bank, typically 0.5-1%), scheme fee (paid to Visa/Mastercard, typically 0.1-0.3%), and acquirer margin (bank/processor profit). In Nigeria, the CBN caps MDR at 0.5% for debit cards but overall POS fees average 1.5%+. In Kenya, local Visa debit is around 0.5-1%, credit cards 2-3%.</div></details></div>
+    <div class="faq-item"><details><summary>How do I get lower POS rates?</summary><div class="faq-a">Negotiate with your bank at higher volumes (monthly card volume > 500K). Ask for tiered pricing where rate drops as volume grows. Consider aggregator models (Paystack Terminal, Flutterwave POS, OPay, Moniepoint in Nigeria) which often have simpler flat-rate pricing. In South Africa, compare Yoco, iKhokha, and Peach Payments which offer competitive rates for SMEs.</div></details></div>
+    <div class="faq-item"><details><summary>Is mobile money cheaper than POS?</summary><div class="faq-a">For small transactions, mobile money (M-Pesa, MTN MoMo) merchant payments are often cheaper for merchants — 0-1% vs POS MDR of 1.5-2.5%. However, most mobile money merchant fees are borne by the customer (withdrawal fees). For business-to-business payments and large transactions, bank transfers may be the most cost-effective. Always compare total cost including settlement speed.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function fillPOS(){
+  var sel=document.getElementById('pos-country');
+  var opt=sel.options[sel.selectedIndex];
+  document.getElementById('pos-mdr').value=opt.getAttribute('data-mdr');
+  document.getElementById('pos-flat').value=opt.getAttribute('data-flat');
+  document.getElementById('pos-cap').value=opt.getAttribute('data-cap');
+  document.getElementById('pos-monthly-fee').value=opt.getAttribute('data-monthly');
+}
+function calcPOS(){
+  var mdr=parseFloat(document.getElementById('pos-mdr').value)/100;
+  var flat=parseFloat(document.getElementById('pos-flat').value)||0;
+  var cap=parseFloat(document.getElementById('pos-cap').value)||0;
+  var monthlyFee=parseFloat(document.getElementById('pos-monthly-fee').value)||0;
+  var avgTxn=parseFloat(document.getElementById('pos-avg-txn').value)||0;
+  var dailyTxns=parseInt(document.getElementById('pos-txn-count').value)||0;
+  var cardPct=parseFloat(document.getElementById('pos-card-pct').value)/100;
+  var dailyCardTxns=dailyTxns*cardPct;
+  var dailyCardVol=dailyCardTxns*avgTxn;
+  var monthlyCardVol=dailyCardVol*22;
+  var txnFee=avgTxn*mdr+flat;
+  if(cap>0) txnFee=Math.min(txnFee,cap);
+  var monthlyTxnFees=txnFee*dailyCardTxns*22;
+  var totalMonthly=monthlyTxnFees+monthlyFee;
+  var effectiveRate=(totalMonthly/monthlyCardVol)*100;
+  var annualCost=totalMonthly*12;
+  function fmt(n){return Math.round(n).toLocaleString();}
+  document.getElementById('pos-daily-vol').textContent=fmt(dailyCardVol);
+  document.getElementById('pos-monthly-vol').textContent=fmt(monthlyCardVol);
+  document.getElementById('pos-txn-fees').textContent=fmt(monthlyTxnFees);
+  document.getElementById('pos-terminal-fee').textContent=fmt(monthlyFee);
+  document.getElementById('pos-effective-rate').textContent=effectiveRate.toFixed(2)+'%';
+  document.getElementById('pos-annual-cost').textContent=fmt(annualCost);
+  document.getElementById('pos-total-monthly').textContent=fmt(totalMonthly);
+  document.getElementById('pos-sub').textContent='On '+fmt(monthlyCardVol)+' monthly card volume | '+Math.round(cardPct*100)+'% card acceptance';
+  document.getElementById('pos-results').classList.add('on');
+}
+</script>
+</body>
+</html>

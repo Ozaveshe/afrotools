@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diesel vs Solar Farm Pump Calculator Africa | AfroTools</title>
+<meta name="description" content="Compare diesel vs solar water pump costs for farms in Africa. See 10-year total cost, payback period, and CO₂ savings when switching to solar irrigation.">
+<link rel="canonical" href="https://afrotools.com/tools/diesel-vs-solar-farm/">
+<meta property="og:title" content="Diesel vs Solar Farm Pump Calculator Africa | AfroTools">
+<meta property="og:description" content="Compare diesel vs solar water pump costs for farms in Africa. 10-year cost comparison and payback period.">
+<meta property="og:url" content="https://afrotools.com/tools/diesel-vs-solar-farm/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Diesel vs Solar Farm</nav>
+<h1>🌾 <em>Diesel vs Solar Farm Calculator</em></h1>
+<p class="en-tool-hero-sub">Compare the 10-year total cost of diesel vs solar-powered water pumping for your farm in Africa. Calculate savings and payback period.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>⚡</span><h2>Your Farm Details</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect">
+<option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option><option value="AO">Angola</option><option value="ZM">Zambia</option><option value="MW">Malawi</option><option value="MZ">Mozambique</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="farmHa">Farm Size (hectares)</label><input class="en-input" type="number" id="farmHa" placeholder="e.g. 5" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="pumpKW">Pump Size (kW)</label><select class="en-select" id="pumpKW"><option value="1">1 kW (small garden / 0.5ha)</option><option value="2">2 kW (smallholder)</option><option value="3" selected>3 kW (3–5 ha farm)</option><option value="5">5 kW (5–10 ha farm)</option><option value="7.5">7.5 kW (10–20 ha farm)</option><option value="11">11 kW (20+ ha / commercial)</option></select></div>
+<div class="en-field"><label class="en-label" for="dailyPumpHrs">Daily Pumping Hours</label><input class="en-input" type="number" id="dailyPumpHrs" placeholder="e.g. 6" inputmode="numeric"></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Compare Costs</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">10-Year Savings with Solar</div><div class="en-res-amount" id="rSavings">—</div><div class="en-res-sub" id="rPayback">Payback: —</div></div>
+<table class="en-results-table"><thead><tr><th>Option</th><th>Capital Cost</th><th>10-Year Total</th></tr></thead><tbody>
+<tr><td>Diesel Pump</td><td id="rDieselCapex">—</td><td id="rDiesel10yr">—</td></tr>
+<tr><td>Solar Pump</td><td id="rSolarCapex">—</td><td id="rSolar10yr">—</td></tr>
+<tr class="en-total-row"><td colspan="2"><strong>10-Year Savings</strong></td><td id="rSavingsRow">—</td></tr>
+</tbody></table>
+<table class="en-results-table" style="margin-top:12px"><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Solar Array Needed</td><td id="rSolarKW">—</td></tr>
+<tr><td>Annual Diesel Cost</td><td id="rDieselAnnual">—</td></tr>
+<tr><td>Payback Period</td><td id="rPaybackRow">—</td></tr>
+<tr><td>CO₂ Saved / Year</td><td id="rCO2">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Solar vs Diesel Irrigation in Africa — The Business Case</h2>
+<p>Solar water pumping is the fastest-growing segment of agricultural solar in Africa. With diesel prices at record highs and panel costs falling, solar irrigation now pays back in 3–6 years in most African countries — and then runs virtually free for 20+ more years.</p>
+<p><strong>Disclaimer:</strong> Calculations use current fuel prices and solar installation costs. Prices vary by location and system configuration.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/diesel-vs-solar-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.DieselVsSolarEngine;
+document.getElementById("calcBtn").addEventListener("click",function(){
+var i={
+  country:document.getElementById("countrySelect").value,
+  farmHa:parseFloat(document.getElementById("farmHa").value)||0,
+  pumpKW:document.getElementById("pumpKW").value,
+  dailyPumpHrs:parseFloat(document.getElementById("dailyPumpHrs").value)||0
+};
+var r=E.calculate(i);
+if(r.error){alert(r.error);return;}
+document.getElementById("rSavings").textContent=r.savings10yr;
+document.getElementById("rPayback").textContent="Payback: "+r.paybackYrs;
+document.getElementById("rDieselCapex").textContent=r.dieselCapexLocal;
+document.getElementById("rDiesel10yr").textContent=r.diesel10yrTotal;
+document.getElementById("rSolarCapex").textContent=r.solarCapexLocal;
+document.getElementById("rSolar10yr").textContent=r.solar10yrTotal;
+document.getElementById("rSavingsRow").textContent=r.savings10yr;
+document.getElementById("rSolarKW").textContent=r.solarKW;
+document.getElementById("rDieselAnnual").textContent=r.dieselAnnualOpex;
+document.getElementById("rPaybackRow").textContent=r.paybackYrs;
+document.getElementById("rCO2").textContent=r.co2SavedAnnual;
+var obs=document.getElementById("rObs");
+if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

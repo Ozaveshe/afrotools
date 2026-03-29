@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Delivery Cost Estimator Africa — Lalamove, Sendy, Max.ng | AfroTools</title>
+<meta name="description" content="Estimate delivery costs from Lalamove, Sendy, Max.ng, Kobo360 and local couriers across Africa. Compare bike vs van vs truck delivery costs for any distance, weight, and urgency.">
+<link rel="canonical" href="https://afrotools.com/tools/delivery-cost/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Delivery Cost Estimator Africa | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/delivery-cost/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="tool-id" content="delivery-cost">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Delivery Cost Estimator Africa","description":"Estimate delivery costs from major African courier services and compare vehicle types.","url":"https://afrotools.com/tools/delivery-cost","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Transport & Logistics","item":"https://afrotools.com/transport/"},{"@type":"ListItem","position":3,"name":"Delivery Cost Estimator","item":"https://afrotools.com/tools/delivery-cost/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+.field.full{grid-column:1/-1}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+input[type=number],select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.provider-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.25rem}
+.provider-card{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:1.25rem}
+.provider-card.best{border-color:var(--color-primary);background:#eff6ff}
+.provider-icon{font-size:1.5rem;margin-bottom:.5rem}
+.provider-name{font-size:.88rem;font-weight:700;color:#1a1a2e}
+.provider-price{font-size:1.35rem;font-weight:800;color:var(--color-primary);margin:.25rem 0}
+.provider-range{font-size:.75rem;color:#6b7280}
+.provider-badge{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:100px;background:#dcfce7;color:#15803d;margin-top:.25rem}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-top:1rem}
+.metric{background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;padding:.85rem;text-align:center}
+.metric-val{font-size:1.1rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.72rem;color:#6b7280;margin-top:3px}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.provider-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Delivery Cost Estimator
+    </nav>
+    <h1>Delivery Cost <em>Estimator</em></h1>
+    <p class="tool-hero-sub">Estimate delivery costs from Lalamove, Sendy, Max.ng, and local couriers. Compare bike, car, and van options for any distance, weight, and urgency across 15 African countries.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x1f4ec; 15 Countries</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x1f6f5; Multi-Provider</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>&#x1f4e6; Delivery Details</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Country</label>
+        <select id="delCountry" onchange="updateDelProviders()">
+          <option value="kenya">Kenya</option>
+          <option value="nigeria">Nigeria</option>
+          <option value="ghana">Ghana</option>
+          <option value="southafrica">South Africa</option>
+          <option value="tanzania">Tanzania</option>
+          <option value="uganda">Uganda</option>
+          <option value="other">Other African Country</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Vehicle Type</label>
+        <select id="delVehicle">
+          <option value="bike">Motorcycle / Bike</option>
+          <option value="car">Car / Sedan</option>
+          <option value="van">Van / Minivan</option>
+          <option value="truck">Truck</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Distance (km)</label>
+        <input type="number" id="delDistance" placeholder="e.g. 10" value="10" min="1">
+      </div>
+      <div class="field">
+        <label>Package Weight (kg)</label>
+        <input type="number" id="delWeight" placeholder="e.g. 5" value="5" min="0.1" step="0.5">
+      </div>
+      <div class="field">
+        <label>Urgency</label>
+        <select id="delUrgency">
+          <option value="1.0">Normal (next day)</option>
+          <option value="1.3">Express (same day)</option>
+          <option value="1.6">Urgent (2-3 hours)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcDeliveryCost()">Estimate Delivery Cost</button>
+
+    <div class="results" id="delResults">
+      <div class="provider-grid" id="delProviderGrid"></div>
+      <div class="metrics" id="delMetrics"></div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>What is the cheapest delivery option in Nairobi?</summary><div class="faq-body">For small packages under 5kg within Nairobi, Sendy and local boda-boda couriers are typically cheapest at KSh 250-400 base. For larger items, Lalamove offers competitive van and truck rates starting at KSh 800. For e-commerce, Max Delivery offers competitive same-day rates. Prices depend heavily on distance, time of day, and whether it's a dedicated delivery or shared route.</div></details>
+    <details><summary>How does Lalamove pricing work in Africa?</summary><div class="faq-body">Lalamove charges a base fee plus a per-km rate. For motorcycles in Kenya: KSh 350 base + KSh 50/km. For vans: KSh 800 + KSh 80/km. For trucks: KSh 2,500+ depending on size. Express and same-day services have surge multipliers. Lalamove is currently available in Kenya, Nigeria, South Africa, and Ghana, with expansion ongoing.</div></details>
+    <details><summary>How is cross-border delivery priced in Africa?</summary><div class="faq-body">Cross-border delivery costs $0.50-2.00/km for trucks plus border fees, customs duties, agent fees, and waiting time. Nairobi to Kampala (650km) typically costs $600-1,200 for a 20-tonne truck including all fees. Regional logistics hubs like Nairobi, Lagos, and Johannesburg offer more competitive rates due to higher freight volumes and better return loads.</div></details>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script>
+var DEL_DATA = {
+  kenya: {
+    currency: 'KSh',
+    providers: {
+      bike: [{name:'Lalamove Bike', icon:'&#x1f6f5;', base:350, perKm:50}, {name:'Sendy Bike', icon:'&#x1f6f5;', base:250, perKm:40}, {name:'Max Delivery', icon:'&#x1f6f5;', base:280, perKm:35}],
+      car:  [{name:'Lalamove Car', icon:'&#x1f697;', base:600, perKm:70}, {name:'Sendy Car', icon:'&#x1f697;', base:550, perKm:65}],
+      van:  [{name:'Lalamove Van', icon:'&#x1f690;', base:800, perKm:80}, {name:'Sendy Van', icon:'&#x1f690;', base:750, perKm:75}],
+      truck:[{name:'Lalamove Truck', icon:'&#x1f69a;', base:2500, perKm:120}]
+    }
+  },
+  nigeria: {
+    currency: '₦',
+    providers: {
+      bike: [{name:'Max.ng Bike', icon:'&#x1f6f5;', base:500, perKm:80}, {name:'Gokada Bike', icon:'&#x1f6f5;', base:450, perKm:70}, {name:'InDriver Bike', icon:'&#x1f6f5;', base:400, perKm:65}],
+      car:  [{name:'Kobo360 Car', icon:'&#x1f697;', base:2000, perKm:150}, {name:'Lalamove Car', icon:'&#x1f697;', base:1800, perKm:140}],
+      van:  [{name:'Kobo360 Van', icon:'&#x1f690;', base:4000, perKm:200}],
+      truck:[{name:'Kobo360 Truck', icon:'&#x1f69a;', base:15000, perKm:350}]
+    }
+  },
+  ghana: {
+    currency: 'GH₵',
+    providers: {
+      bike: [{name:'Glovo Bike', icon:'&#x1f6f5;', base:15, perKm:2.5}, {name:'Bolt Food Bike', icon:'&#x1f6f5;', base:12, perKm:2}],
+      car:  [{name:'Lalamove Car', icon:'&#x1f697;', base:45, perKm:6}],
+      van:  [{name:'Lalamove Van', icon:'&#x1f690;', base:80, perKm:9}],
+      truck:[{name:'Freight Ghana', icon:'&#x1f69a;', base:300, perKm:20}]
+    }
+  },
+  southafrica: {
+    currency: 'R',
+    providers: {
+      bike: [{name:'Courier Guy Bike', icon:'&#x1f6f5;', base:75, perKm:8}, {name:'RAM Courier', icon:'&#x1f6f5;', base:80, perKm:9}],
+      car:  [{name:'Lalamove Car', icon:'&#x1f697;', base:120, perKm:12}, {name:'Picup Car', icon:'&#x1f697;', base:110, perKm:11}],
+      van:  [{name:'Lalamove Van', icon:'&#x1f690;', base:200, perKm:18}, {name:'Picup Van', icon:'&#x1f690;', base:185, perKm:16}],
+      truck:[{name:'Lalamove Truck', icon:'&#x1f69a;', base:600, perKm:35}]
+    }
+  },
+  tanzania: {
+    currency: 'TZS',
+    providers: {
+      bike: [{name:'Zigi Bike', icon:'&#x1f6f5;', base:3000, perKm:400}],
+      car:  [{name:'Zigi Car', icon:'&#x1f697;', base:6000, perKm:700}],
+      van:  [{name:'Local Van Hire', icon:'&#x1f690;', base:15000, perKm:1200}],
+      truck:[{name:'Freight TZ', icon:'&#x1f69a;', base:80000, perKm:3500}]
+    }
+  },
+  uganda: {
+    currency: 'UGX',
+    providers: {
+      bike: [{name:'Boda Delivery', icon:'&#x1f6f5;', base:5000, perKm:600}],
+      car:  [{name:'SafeBoda Car', icon:'&#x1f697;', base:10000, perKm:1000}],
+      van:  [{name:'Local Van', icon:'&#x1f690;', base:30000, perKm:2500}],
+      truck:[{name:'Freight UG', icon:'&#x1f69a;', base:200000, perKm:8000}]
+    }
+  },
+  other: {
+    currency: 'USD',
+    providers: {
+      bike: [{name:'Local Bike Courier', icon:'&#x1f6f5;', base:3, perKm:0.5}],
+      car:  [{name:'Local Car Courier', icon:'&#x1f697;', base:8, perKm:1}],
+      van:  [{name:'Local Van', icon:'&#x1f690;', base:15, perKm:1.5}],
+      truck:[{name:'Local Truck', icon:'&#x1f69a;', base:60, perKm:4}]
+    }
+  }
+};
+
+function calcDeliveryCost() {
+  var country = document.getElementById('delCountry').value;
+  var vehicle = document.getElementById('delVehicle').value;
+  var dist = parseFloat(document.getElementById('delDistance').value) || 0;
+  var weight = parseFloat(document.getElementById('delWeight').value) || 0;
+  var urgency = parseFloat(document.getElementById('delUrgency').value) || 1;
+
+  if (dist === 0) { alert('Please enter distance.'); return; }
+
+  var data = DEL_DATA[country];
+  var providers = data.providers[vehicle] || data.providers.bike;
+
+  var cards = providers.map(function(p, i) {
+    var base = (p.base + p.perKm * dist) * urgency;
+    var low = Math.round(base * 0.9);
+    var high = Math.round(base * 1.15);
+    var isBest = i === 0;
+    return '<div class="provider-card' + (isBest ? ' best' : '') + '"><div class="provider-icon">' + p.icon + '</div><div class="provider-name">' + p.name + (isBest ? ' <span class="provider-badge">Estimated Cheapest</span>' : '') + '</div><div class="provider-price">' + data.currency + ' ' + Math.round(base).toLocaleString() + '</div><div class="provider-range">Range: ' + data.currency + ' ' + low.toLocaleString() + ' – ' + data.currency + ' ' + high.toLocaleString() + '</div></div>';
+  }).join('');
+
+  document.getElementById('delProviderGrid').innerHTML = cards;
+
+  var cheapest = providers[0] ? (providers[0].base + providers[0].perKm * dist) * urgency : 0;
+  var perKg = weight > 0 ? cheapest / weight : 0;
+
+  document.getElementById('delMetrics').innerHTML = [
+    [data.currency + ' ' + Math.round(cheapest).toLocaleString(), 'Est. Best Price'],
+    [weight > 0 ? data.currency + ' ' + perKg.toFixed(1) : 'N/A', 'Cost per kg'],
+    [dist + ' km', 'Distance'],
+    [urgency === 1 ? 'Normal' : urgency === 1.3 ? 'Express' : 'Urgent', 'Urgency']
+  ].map(function(m){
+    return '<div class="metric"><div class="metric-val">' + m[0] + '</div><div class="metric-label">' + m[1] + '</div></div>';
+  }).join('');
+
+  document.getElementById('delResults').classList.add('on');
+}
+</script>
+</body>
+</html>

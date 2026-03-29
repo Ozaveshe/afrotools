@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dividend Yield Calculator | AfroTools</title>
+<meta name="description" content="Calculate dividend yield, payout ratio, and income from shareholdings. Compare dividend yield against inflation and fixed deposit rates in Africa.">
+<link rel="canonical" href="https://afrotools.com/tools/dividend-yield/">
+<meta property="og:title" content="Dividend Yield Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/dividend-yield/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Dividend Yield Calculator","url":"https://afrotools.com/tools/dividend-yield/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Dividend Yield Calculator","item":"https://afrotools.com/tools/dividend-yield/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Dividend Yield Calculator</nav>
+    <h1>Dividend Yield Calculator</h1>
+    <p>Calculate dividend yield, payout ratio, and annual income from your shareholdings. Compare against fixed deposit rates and inflation.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">Multi-Currency</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Calculate Dividend Yield &amp; Income</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="dv-price">Current Share Price</label>
+        <input type="number" id="dv-price" value="250" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="dv-dps">Annual Dividend per Share (DPS)</label>
+        <input type="number" id="dv-dps" value="20" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="dv-shares">Number of Shares Held</label>
+        <input type="number" id="dv-shares" value="1000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="dv-eps">Earnings per Share (EPS)</label>
+        <input type="number" id="dv-eps" value="40" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="dv-fd-rate">Current Fixed Deposit Rate (%)</label>
+        <input type="number" id="dv-fd-rate" value="10" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="dv-inflation">Inflation Rate (%)</label>
+        <input type="number" id="dv-inflation" value="5" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="dv-tax">Dividend Tax (%)</label>
+        <input type="number" id="dv-tax" value="10" step="0.5">
+      </div>
+      <div class="form-group">
+        <label for="dv-growth">Expected Dividend Growth Rate (%/yr)</label>
+        <input type="number" id="dv-growth" value="5" step="0.1">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcDividend()">Calculate Dividend Yield</button>
+    <div class="results" id="dv-results">
+      <div class="res-hero">
+        <div class="res-label">Dividend Yield</div>
+        <div class="res-val" id="dv-yield"></div>
+        <div class="res-sub" id="dv-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="dv-annual-income"></div><div class="metric-label">Annual Dividend Income</div></div>
+        <div class="metric"><div class="metric-val" id="dv-net-income"></div><div class="metric-label">After-Tax Income</div></div>
+        <div class="metric"><div class="metric-val" id="dv-payout-ratio"></div><div class="metric-label">Payout Ratio</div></div>
+        <div class="metric"><div class="metric-val" id="dv-pe-ratio"></div><div class="metric-label">P/E Ratio</div></div>
+        <div class="metric"><div class="metric-val" id="dv-vs-fd"></div><div class="metric-label">vs Fixed Deposit Rate</div></div>
+        <div class="metric"><div class="metric-val" id="dv-real-yield"></div><div class="metric-label">Real Yield (After Inflation)</div></div>
+        <div class="metric"><div class="metric-val" id="dv-5yr-income"></div><div class="metric-label">5-Year Cumulative Income</div></div>
+        <div class="metric"><div class="metric-val" id="dv-payback"></div><div class="metric-label">Dividend Payback Period (yrs)</div></div>
+      </div>
+      <div class="info-box" id="dv-verdict"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is a good dividend yield?</summary><div class="faq-a">In Africa, dividend yields of 3-8% are common for blue-chip stocks. A yield above 8% may signal either a very generous company or a depressed stock price (which can indicate risk). Compare against your country's fixed deposit rate — if the dividend yield exceeds the FD rate, you're being compensated for the added equity risk.</div></details></div>
+    <div class="faq-item"><details><summary>What is the payout ratio?</summary><div class="faq-a">The payout ratio is the percentage of earnings paid out as dividends. A ratio under 60% is generally sustainable — the company retains enough earnings for growth. A ratio over 80% may be unsustainable if earnings fall. Some mature utility and banking stocks pay out 70-90% of earnings.</div></details></div>
+    <div class="faq-item"><details><summary>Are dividends taxed in Africa?</summary><div class="faq-a">Yes, most African countries withhold dividend tax: Nigeria: 10%, Kenya: 5% (resident shareholders), 10% (non-resident), South Africa: 20% Dividends Tax, Ghana: 8%, Egypt: 10%. These are automatically deducted before payment. Your net yield shown uses this rate.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function calcDividend(){
+  var price=parseFloat(document.getElementById('dv-price').value)||1;
+  var dps=parseFloat(document.getElementById('dv-dps').value)||0;
+  var shares=parseFloat(document.getElementById('dv-shares').value)||0;
+  var eps=parseFloat(document.getElementById('dv-eps').value)||1;
+  var fdRate=parseFloat(document.getElementById('dv-fd-rate').value)/100;
+  var inflation=parseFloat(document.getElementById('dv-inflation').value)/100;
+  var taxRate=parseFloat(document.getElementById('dv-tax').value)/100;
+  var growth=parseFloat(document.getElementById('dv-growth').value)/100;
+  var divYield=(dps/price)*100;
+  var annualIncome=dps*shares;
+  var netIncome=annualIncome*(1-taxRate);
+  var payoutRatio=eps>0?(dps/eps)*100:0;
+  var pe=dps>0?price/(dps):0;
+  var netYield=divYield*(1-taxRate);
+  var realYield=((1+netYield/100)/(1+inflation*100/100)-1)*100;
+  var vsfd=netYield-fdRate*100;
+  var fiveYrIncome=0;
+  var d=dps;
+  for(var i=0;i<5;i++){fiveYrIncome+=d*shares*(1-taxRate);d*=(1+growth);}
+  var payback=annualIncome*(1-taxRate)>0?Math.round((price*shares)/(annualIncome*(1-taxRate))):999;
+  document.getElementById('dv-yield').textContent=divYield.toFixed(2)+'%';
+  document.getElementById('dv-sub').textContent='Net yield (after '+Math.round(taxRate*100)+'% tax): '+netYield.toFixed(2)+'%';
+  document.getElementById('dv-annual-income').textContent=Math.round(annualIncome).toLocaleString();
+  document.getElementById('dv-net-income').textContent=Math.round(netIncome).toLocaleString();
+  document.getElementById('dv-payout-ratio').textContent=payoutRatio.toFixed(1)+'%';
+  document.getElementById('dv-pe-ratio').textContent=eps>0?(price/eps).toFixed(1)+'x':'N/A';
+  document.getElementById('dv-vs-fd').textContent=(vsfd>=0?'+':'')+vsfd.toFixed(2)+'%';
+  document.getElementById('dv-real-yield').textContent=realYield.toFixed(2)+'%';
+  document.getElementById('dv-5yr-income').textContent=Math.round(fiveYrIncome).toLocaleString();
+  document.getElementById('dv-payback').textContent=payback>100?'100+':payback+' yrs';
+  var verdict=vsfd>=0?'Your dividend yield beats the fixed deposit rate by '+vsfd.toFixed(2)+'%. The stock provides income AND potential capital appreciation.':'Your dividend yield is '+Math.abs(vsfd).toFixed(2)+'% below the fixed deposit rate. Fixed deposits may offer a better risk-adjusted income unless you expect significant capital gains.';
+  document.getElementById('dv-verdict').textContent=verdict;
+  document.getElementById('dv-results').classList.add('on');
+}
+</script>
+</body>
+</html>

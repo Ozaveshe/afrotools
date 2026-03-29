@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Load & Credit Hour Planner | AfroTools</title>
+<meta name="description" content="Plan your university credit hours, track graduation timeline and avoid overload. Multi-semester course load planner for African university students.">
+<meta name="tool-id" content="course-load">
+<link rel="canonical" href="https://afrotools.com/tools/course-load/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/course-load/">
+<meta property="og:title" content="Course Load & Credit Hour Planner | AfroTools">
+<meta property="og:description" content="Plan your university credit hours, track graduation timeline and avoid overload. For African university students.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Course Load and Credit Hour Planner","description":"Plan university credit hours, track graduation timeline and avoid overload for African university students.","url":"https://afrotools.com/tools/course-load/","applicationCategory":"EducationalApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Course Load Credit Planner"}]}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:#0f1419;line-height:1.6;margin:0}
+.hero{background:linear-gradient(135deg,#1a1000 0%,#1e293b 40%,#1e3a5f 100%);padding:48px 0 40px;color:#fff}
+.container{max-width:860px;margin:0 auto;padding:0 24px}
+.bc{font-size:.72rem;color:rgba(255,255,255,.6);padding-bottom:16px}
+.bc a{color:rgba(255,255,255,.6);text-decoration:none}.bc a:hover{color:#fff}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{padding:4px 12px;border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.badge-study{background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);color:#c4b5fd}
+.badge-free{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7}
+h1{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;margin:0 0 10px;line-height:1.1}
+h1 em{color:#fbbf24;font-style:normal}
+.hero-sub{font-size:.93rem;color:rgba(255,255,255,.8);max-width:520px;margin:0}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem;color:#111}
+label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem;color:#374151}
+select,input[type=number]{width:100%;padding:.6rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.93rem;transition:border .2s;background:#fff}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.help{font-size:.75rem;color:#9ca3af;margin-top:.2rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.5rem;border:none;border-radius:10px;font-family:inherit;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .2s;background:var(--color-primary);color:#fff}
+.btn:hover{background:#0063D1;transform:translateY(-1px)}
+.result-box{display:none;margin-top:1rem}
+.result-box.show{display:block}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.75rem;margin-bottom:1rem}
+.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:center}
+.rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
+.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary)}
+.rs .sub{font-size:.75rem;color:#6b7280;margin-top:.1rem}
+.warn{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:1rem;font-size:.85rem;color:#991b1b;margin-bottom:.75rem}
+.ok{background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:1rem;font-size:.85rem;color:#166534;margin-bottom:.75rem}
+.timeline-table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:1rem}
+.timeline-table th{background:#f3f4f6;padding:.5rem .75rem;text-align:left;font-weight:700;font-size:.75rem;color:#374151;border-bottom:2px solid #e5e7eb}
+.timeline-table td{padding:.45rem .75rem;border-bottom:1px solid #f3f4f6}
+.timeline-table tr.current td{background:#EFF6FF;font-weight:700}
+.timeline-table tr.warning td{background:#fffbeb}
+.timeline-table tr.done td{background:#f0fdf4;color:#166534}
+.sec-body{padding:40px 0}
+@media(max-width:600px){.row{grid-template-columns:1fr}.row3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="education"></afro-navbar>
+<div class="hero">
+  <div class="container">
+    <nav class="bc"><a href="/">AfroTools</a> / <a href="/education/">Education</a> / Course Load Planner</nav>
+    <div class="badges">
+      <span class="badge badge-study">Study Tool</span>
+      <span class="badge badge-free">Free Tool</span>
+    </div>
+    <h1>Course Load &amp; <em>Credit Hour Planner</em></h1>
+    <p class="hero-sub">Plan your semester credit hours, project graduation timeline and get warnings if you are overloaded or at risk of missing graduation requirements.</p>
+  </div>
+</div>
+
+<div class="sec-body">
+<div class="container">
+
+<div class="card">
+  <h2>Plan Your Credit Hours</h2>
+  <div class="row">
+    <div>
+      <label for="cl-total">Total Credits Required for Graduation</label>
+      <input type="number" id="cl-total" placeholder="e.g. 120" min="60" max="300">
+      <div class="help">Total credit units for your degree programme</div>
+    </div>
+    <div>
+      <label for="cl-earned">Credits Already Earned</label>
+      <input type="number" id="cl-earned" placeholder="e.g. 45" min="0">
+      <div class="help">Credits completed so far</div>
+    </div>
+  </div>
+  <div class="row3">
+    <div>
+      <label for="cl-min">Min Credits Per Semester</label>
+      <input type="number" id="cl-min" value="12" min="1" max="30">
+    </div>
+    <div>
+      <label for="cl-max">Max Credits Per Semester</label>
+      <input type="number" id="cl-max" value="21" min="1" max="30">
+    </div>
+    <div>
+      <label for="cl-current">Current Semester Credits</label>
+      <input type="number" id="cl-current" placeholder="e.g. 18" min="1" max="30">
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label for="cl-semesters">Semesters Per Year</label>
+      <select id="cl-semesters">
+        <option value="2">2 semesters/year</option>
+        <option value="3">3 trimesters/year</option>
+      </select>
+    </div>
+    <div>
+      <label for="cl-year">Current Academic Year</label>
+      <input type="number" id="cl-year" value="2026" min="2024" max="2035">
+    </div>
+  </div>
+  <button class="btn" onclick="planCourseLoad()">Plan My Schedule</button>
+
+  <div class="result-box" id="cl-result">
+    <div id="cl-warnings"></div>
+    <div class="result-grid" id="cl-grid"></div>
+    <div id="cl-timeline"></div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<afro-footer></afro-footer>
+<script>
+function planCourseLoad(){
+  var total=parseInt(document.getElementById('cl-total').value)||120;
+  var earned=parseInt(document.getElementById('cl-earned').value)||0;
+  var min=parseInt(document.getElementById('cl-min').value)||12;
+  var max=parseInt(document.getElementById('cl-max').value)||21;
+  var current=parseInt(document.getElementById('cl-current').value)||0;
+  var semPerYear=parseInt(document.getElementById('cl-semesters').value)||2;
+  var startYear=parseInt(document.getElementById('cl-year').value)||2026;
+  var remaining=total-earned;
+  var optimal=Math.round((min+max)/2);
+  var semestersLeft=Math.ceil(remaining/optimal);
+  var yearsLeft=semestersLeft/semPerYear;
+  var gradYear=startYear+Math.ceil(yearsLeft);
+  var warnings=document.getElementById('cl-warnings');
+  var warnHtml='';
+  if(current>max){warnHtml+='<div class="warn"><strong>Overload Warning:</strong> You are taking '+current+' credits this semester, which exceeds your maximum of '+max+'. This is a heavy workload — consider dropping a course if you are struggling or if your GPA is at risk.</div>';}
+  else if(current<min){warnHtml+='<div class="warn"><strong>Under-loading Warning:</strong> You are taking only '+current+' credits, below the minimum of '+min+'. This may delay your graduation or affect your eligibility for financial aid.</div>';}
+  else{warnHtml+='<div class="ok"><strong>Course load looks good!</strong> Your current '+current+' credits is within the recommended range ('+min+'–'+max+'). Keep up this pace to stay on track for graduation.</div>';}
+  warnings.innerHTML=warnHtml;
+  document.getElementById('cl-grid').innerHTML=
+    '<div class="rs"><div class="lbl">Credits Remaining</div><div class="val">'+remaining+'</div><div class="sub">of '+total+' total required</div></div>'+
+    '<div class="rs"><div class="lbl">Progress</div><div class="val">'+(earned/total*100).toFixed(0)+'%</div><div class="sub">'+earned+' credits done</div></div>'+
+    '<div class="rs"><div class="lbl">Semesters Left</div><div class="val">'+semestersLeft+'</div><div class="sub">At '+optimal+' credits/sem</div></div>'+
+    '<div class="rs"><div class="lbl">Est. Graduation</div><div class="val">'+gradYear+'</div><div class="sub">'+semestersLeft+' semesters away</div></div>';
+  var tbl='<h3 style="font-size:.9rem;font-weight:700;margin:1.25rem 0 .5rem">Semester-by-Semester Plan</h3>'+
+    '<table class="timeline-table"><thead><tr><th>Semester</th><th>Year</th><th>Credits Target</th><th>Cumulative</th><th>Status</th></tr></thead><tbody>';
+  var cumulative=earned;
+  var sem=1;
+  var yr=startYear;
+  var semCount=0;
+  while(cumulative<total&&semCount<20){
+    semCount++;
+    var creditsThisSem=Math.min(optimal,total-cumulative);
+    cumulative+=creditsThisSem;
+    var isCurrentSem=semCount===1;
+    var isDone=cumulative>=total;
+    var cls=isDone?'done':isCurrentSem?'current':creditsThisSem>max?'warning':'';
+    var status=isDone?'Graduation':'On track';
+    if(semCount===1&&current>0){creditsThisSem=current;cumulative=earned+current;status='Current semester';}
+    tbl+='<tr class="'+cls+'"><td>Semester '+semCount+'</td><td>'+yr+'</td><td>'+creditsThisSem+' credits</td><td>'+cumulative+'</td><td>'+status+'</td></tr>';
+    if(semCount%semPerYear===0)yr++;
+    if(isDone)break;
+  }
+  tbl+='</tbody></table>';
+  document.getElementById('cl-timeline').innerHTML=tbl;
+  document.getElementById('cl-result').classList.add('show');
+}
+</script>
+</body>
+</html>

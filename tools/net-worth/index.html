@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Net Worth Tracker | AfroTools</title>
+<meta name="description" content="Calculate your net worth: total assets minus total liabilities. Track savings, investments, property, vehicles, and debts in your local African currency.">
+<link rel="canonical" href="https://afrotools.com/tools/net-worth/">
+<meta property="og:title" content="Net Worth Tracker | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/net-worth/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Net Worth Tracker","url":"https://afrotools.com/tools/net-worth/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Net Worth Tracker","item":"https://afrotools.com/tools/net-worth/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.currency-row{display:flex;gap:1rem;align-items:flex-end;margin-bottom:1.25rem;flex-wrap:wrap}
+.form-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"],input[type="text"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.section-title{font-size:.88rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:.75rem 0 .5rem;padding:.5rem .75rem;border-radius:8px}
+.section-title.assets{background:#ecfdf5;color:#065f46}
+.section-title.liabilities{background:#fef2f2;color:#991b1b}
+.item-row{display:flex;gap:.75rem;margin-bottom:.5rem;align-items:center}
+.item-row input:first-child{flex:2}
+.item-row input:last-of-type{flex:1}
+.btn-add-row{border:1.5px dashed #e5e7eb;border-radius:8px;background:#f9fafb;font-size:.8rem;font-weight:600;cursor:pointer;padding:.4rem .75rem;color:#6b7280;transition:all .2s}
+.btn-add-row:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.btn-del-row{background:none;border:none;cursor:pointer;color:#ef4444;font-size:.9rem;padding:0 4px;flex-shrink:0}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.75rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.nw-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:2rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.nw-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.nw-val{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;margin:.25rem 0}
+.nw-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.summary-box{border-radius:12px;padding:1.25rem;text-align:center}
+.summary-box.green{background:#ecfdf5;border:1.5px solid #86efac}
+.summary-box.red{background:#fef2f2;border:1.5px solid #fca5a5}
+.summary-val{font-size:1.5rem;font-weight:800}
+.summary-val.green{color:#059669}
+.summary-val.red{color:#dc2626}
+.summary-label{font-size:.78rem;color:#6b7280;margin-top:3px}
+.debt-ratio{margin-top:1rem}
+.dr-label{font-size:.82rem;font-weight:600;color:#374151;margin-bottom:.35rem}
+.dr-bar{height:14px;border-radius:8px;background:#e5e7eb;overflow:hidden;margin-bottom:.35rem}
+.dr-fill{height:100%;border-radius:8px;background:#dc2626;transition:width .6s}
+.dr-text{font-size:.8rem;color:#6b7280}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.summary-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Net Worth Tracker</nav>
+    <h1>Net Worth Tracker</h1>
+    <p>Calculate your net worth: assets minus liabilities. Track savings, investments, property, vehicles, business value, and all your debts in local currency.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">All Asset Types</span><span class="hero-badge">Free &amp; Private</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Net Worth Calculator</h2>
+    <div class="currency-row">
+      <div class="form-group" style="flex:0;min-width:200px">
+        <label for="nw-currency">Currency</label>
+        <select id="nw-currency">
+          <option value="&#x20A6;">Nigerian Naira (&#x20A6;)</option>
+          <option value="KSh">Kenyan Shilling (KSh)</option>
+          <option value="R">South African Rand (R)</option>
+          <option value="GH&#x20B5;">Ghanaian Cedi (GH&#x20B5;)</option>
+          <option value="$">US Dollar ($)</option>
+          <option value="TSh">Tanzanian Shilling (TSh)</option>
+          <option value="USh">Ugandan Shilling (USh)</option>
+          <option value="FRw">Rwandan Franc (FRw)</option>
+          <option value="E&#xa3;">Egyptian Pound (E&#xa3;)</option>
+          <option value="Br">Ethiopian Birr (Br)</option>
+          <option value="MAD">Moroccan Dirham (MAD)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title assets">Assets</div>
+    <div id="assets-list">
+      <div class="item-row"><input type="text" placeholder="Cash & bank savings" value="Cash & Savings"><input type="number" placeholder="0" value="500000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+      <div class="item-row"><input type="text" placeholder="Asset name" value="Investments (stocks/MMF/T-bills)"><input type="number" placeholder="0" value="1200000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+      <div class="item-row"><input type="text" placeholder="Asset name" value="Land / Property"><input type="number" placeholder="0" value="8000000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+      <div class="item-row"><input type="text" placeholder="Asset name" value="Vehicle(s)"><input type="number" placeholder="0" value="2500000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+      <div class="item-row"><input type="text" placeholder="Asset name" value="Business value / equity"><input type="number" placeholder="0" value="3000000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+    </div>
+    <button class="btn-add-row" onclick="addItemRow('assets-list')">+ Add Asset</button>
+
+    <div class="section-title liabilities" style="margin-top:1.25rem">Liabilities</div>
+    <div id="liabilities-list">
+      <div class="item-row"><input type="text" placeholder="Liability name" value="Home / Land Loan"><input type="number" placeholder="0" value="4000000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+      <div class="item-row"><input type="text" placeholder="Liability name" value="Car Loan"><input type="number" placeholder="0" value="1200000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+      <div class="item-row"><input type="text" placeholder="Liability name" value="Personal Loan"><input type="number" placeholder="0" value="300000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+      <div class="item-row"><input type="text" placeholder="Liability name" value="Credit Card / Digital Loan"><input type="number" placeholder="0" value="100000"><button class="btn-del-row" onclick="this.closest('.item-row').remove()">&#x2715;</button></div>
+    </div>
+    <button class="btn-add-row" onclick="addItemRow('liabilities-list')">+ Add Liability</button>
+
+    <button class="btn-calc" onclick="calcNetWorth()">Calculate Net Worth</button>
+    <div class="results" id="nw-results">
+      <div class="nw-hero">
+        <div class="nw-label">Your Net Worth</div>
+        <div class="nw-val" id="nw-total"></div>
+        <div class="nw-sub" id="nw-sub"></div>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-box green"><div class="summary-val green" id="nw-assets"></div><div class="summary-label">Total Assets</div></div>
+        <div class="summary-box red"><div class="summary-val red" id="nw-liabilities"></div><div class="summary-label">Total Liabilities</div></div>
+      </div>
+      <div class="debt-ratio">
+        <div class="dr-label">Debt-to-Assets Ratio: <span id="nw-dta">0%</span></div>
+        <div class="dr-bar"><div class="dr-fill" id="nw-dta-fill" style="width:0%"></div></div>
+        <div class="dr-text" id="nw-dta-text"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is a good net worth by age in Africa?</summary><div class="faq-a">A common rule of thumb: Net Worth should be approximately 1x annual salary by age 30, 3x by 40, 6x by 50. In African context, this varies widely by country, profession, and family obligations. More important than benchmarks: focus on the trend — is your net worth growing consistently each year?</div></details></div>
+    <div class="faq-item"><details><summary>Should I include my house in net worth?</summary><div class="faq-a">Yes, include the current market value of your home. However, your primary residence is an illiquid asset — you can't easily access that wealth without selling. It's useful to calculate both "total net worth" (including home) and "liquid net worth" (excluding home) to understand your financial flexibility.</div></details></div>
+    <div class="faq-item"><details><summary>How do I value my business for net worth calculation?</summary><div class="faq-a">A simple approach: annual profit x 2-5 (depending on business stability). A more accurate approach: use the Seller's Discretionary Earnings (SDE) or EBITDA x industry multiple. For informal businesses or early-stage companies, be conservative (1-2x annual net profit). Overvaluing your business inflates your net worth unrealistically.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function addItemRow(listId){
+  var list=document.getElementById(listId);
+  var row=document.createElement('div');
+  row.className='item-row';
+  row.innerHTML='<input type="text" placeholder="Item name"><input type="number" placeholder="0" value="0"><button class="btn-del-row" onclick="this.closest(\'.item-row\').remove()">&#x2715;</button>';
+  list.appendChild(row);
+}
+function calcNetWorth(){
+  var sym=document.getElementById('nw-currency').value;
+  function sumList(listId){
+    var rows=document.querySelectorAll('#'+listId+' .item-row');
+    var total=0;
+    rows.forEach(function(row){
+      var inputs=row.querySelectorAll('input');
+      total+=parseFloat(inputs[1].value)||0;
+    });
+    return total;
+  }
+  var assets=sumList('assets-list');
+  var liabilities=sumList('liabilities-list');
+  var netWorth=assets-liabilities;
+  var dta=assets>0?(liabilities/assets)*100:0;
+  function fmt(n){return sym+(Math.round(n)).toLocaleString();}
+  document.getElementById('nw-total').textContent=fmt(netWorth);
+  document.getElementById('nw-sub').textContent='Assets: '+fmt(assets)+' − Liabilities: '+fmt(liabilities);
+  document.getElementById('nw-assets').textContent=fmt(assets);
+  document.getElementById('nw-liabilities').textContent=fmt(liabilities);
+  document.getElementById('nw-dta').textContent=dta.toFixed(1)+'%';
+  document.getElementById('nw-dta-fill').style.width=Math.min(100,dta)+'%';
+  var dtaText=dta<20?'Excellent — low debt relative to assets':dta<40?'Good — manageable debt level':dta<60?'Moderate — consider reducing debt':dta<80?'High — focus on paying down debt':'Very high — debt reduction is urgent';
+  document.getElementById('nw-dta-text').textContent=dtaText;
+  document.getElementById('nw-results').classList.add('on');
+}
+</script>
+</body>
+</html>

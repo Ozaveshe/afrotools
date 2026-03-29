@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Government Bond Yield Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate yield-to-maturity, current yield, and price for African government bonds. Compare bond vs T-bill returns across 15 African countries.">
+<link rel="canonical" href="https://afrotools.com/tools/bond-yield/">
+<meta property="og:title" content="Government Bond Yield Calculator — Africa | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/bond-yield/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Government Bond Yield Calculator","url":"https://afrotools.com/tools/bond-yield/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Bond Yield Calculator","item":"https://afrotools.com/tools/bond-yield/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Bond Yield Calculator</nav>
+    <h1>Government Bond Yield Calculator</h1>
+    <p>Calculate yield-to-maturity (YTM), current yield, and bond price for African government bonds. Compare bond vs T-bill returns.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">YTM Calculation</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Bond Yield Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="by-country">Country</label>
+        <select id="by-country" onchange="fillBond()">
+          <option value="NG" data-coupon="17" data-sym="&#x20A6;" data-maturity="5">Nigeria</option>
+          <option value="KE" data-coupon="13.5" data-sym="KSh" data-maturity="10">Kenya</option>
+          <option value="ZA" data-coupon="9" data-sym="R" data-maturity="10">South Africa</option>
+          <option value="GH" data-coupon="21" data-sym="GH&#x20B5;" data-maturity="3">Ghana</option>
+          <option value="EG" data-coupon="17" data-sym="E&#xa3;" data-maturity="5">Egypt</option>
+          <option value="TZ" data-coupon="12" data-sym="TSh" data-maturity="5">Tanzania</option>
+          <option value="UG" data-coupon="15" data-sym="USh" data-maturity="5">Uganda</option>
+          <option value="ZM" data-coupon="18" data-sym="ZK" data-maturity="5">Zambia</option>
+          <option value="RW" data-coupon="10" data-sym="FRw" data-maturity="5">Rwanda</option>
+          <option value="MA" data-coupon="3.5" data-sym="MAD" data-maturity="10">Morocco</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="by-face">Face Value</label>
+        <input type="number" id="by-face" value="1000000">
+      </div>
+      <div class="form-group">
+        <label for="by-coupon">Coupon Rate (% per year)</label>
+        <input type="number" id="by-coupon" value="17" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="by-price">Market Price (% of face, e.g. 95)</label>
+        <input type="number" id="by-price" value="100" step="0.1" min="1" max="200">
+      </div>
+      <div class="form-group">
+        <label for="by-years">Years to Maturity</label>
+        <input type="number" id="by-years" value="5" min="1" max="30">
+      </div>
+      <div class="form-group">
+        <label for="by-freq">Coupon Frequency</label>
+        <select id="by-freq">
+          <option value="1">Annual</option>
+          <option value="2" selected>Semi-Annual</option>
+          <option value="4">Quarterly</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcBond()">Calculate Bond Yield</button>
+    <div class="results" id="by-results">
+      <div class="res-hero">
+        <div class="res-label">Yield to Maturity (YTM)</div>
+        <div class="res-val" id="by-ytm"></div>
+        <div class="res-sub" id="by-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="by-current-yield"></div><div class="metric-label">Current Yield</div></div>
+        <div class="metric"><div class="metric-val" id="by-annual-coupon"></div><div class="metric-label">Annual Coupon Income</div></div>
+        <div class="metric"><div class="metric-val" id="by-total-return"></div><div class="metric-label">Total Return to Maturity</div></div>
+        <div class="metric"><div class="metric-val" id="by-market-price"></div><div class="metric-label">Market Price</div></div>
+      </div>
+      <div class="info-box">YTM is the most important bond metric — it accounts for both coupon payments AND the price premium/discount to face value. A bond trading below face (discount) has a YTM higher than its coupon rate.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is Yield to Maturity (YTM)?</summary><div class="faq-a">YTM is the total return you earn if you hold the bond to maturity, accounting for coupon payments AND the gain/loss from buying at a premium or discount to face value. It assumes all coupons are reinvested at the same rate. YTM is the standard way to compare bonds with different prices and coupon rates.</div></details></div>
+    <div class="faq-item"><details><summary>How does bond price relate to yield in Africa?</summary><div class="faq-a">Bond prices and yields move inversely: when market interest rates rise, existing bond prices fall (and vice versa). In high-inflation African markets like Nigeria and Ghana, bond prices are more volatile because interest rates change more frequently. Buying bonds at a discount can significantly boost your YTM.</div></details></div>
+    <div class="faq-item"><details><summary>How can I buy government bonds in Africa?</summary><div class="faq-a">In Nigeria: through DMO's FGN savings bond portal or commercial banks. In Kenya: through CBK's DhowCSD online platform (min KSh 50,000). In South Africa: through RSA Retail Savings Bonds or stockbrokers. In Ghana: through banks and licensed dealers. Most require a brokerage/investment account.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function fillBond(){
+  var sel=document.getElementById('by-country');
+  var opt=sel.options[sel.selectedIndex];
+  document.getElementById('by-coupon').value=opt.getAttribute('data-coupon');
+  document.getElementById('by-years').value=opt.getAttribute('data-maturity');
+}
+function calcBond(){
+  var sel=document.getElementById('by-country');
+  var sym=sel.options[sel.selectedIndex].getAttribute('data-sym');
+  var face=parseFloat(document.getElementById('by-face').value)||0;
+  var couponRate=parseFloat(document.getElementById('by-coupon').value)/100;
+  var pricePercent=parseFloat(document.getElementById('by-price').value)/100;
+  var years=parseFloat(document.getElementById('by-years').value)||5;
+  var freq=parseInt(document.getElementById('by-freq').value);
+  var price=face*pricePercent;
+  var periodicCoupon=(face*couponRate)/freq;
+  var n=years*freq;
+  var totalCouponIncome=periodicCoupon*n;
+  var capitalGain=face-price;
+  var totalReturn=totalCouponIncome+capitalGain;
+  var currentYield=(face*couponRate)/price;
+  // Approximate YTM
+  var ytm=((face*couponRate)+(capitalGain/years))/((face+price)/2);
+  function fmt(v){return sym+(Math.round(v)).toLocaleString();}
+  document.getElementById('by-ytm').textContent=(ytm*100).toFixed(2)+'%';
+  document.getElementById('by-sub').textContent='Coupon: '+(couponRate*100).toFixed(1)+'% | Price: '+pricePercent*100+'% of face';
+  document.getElementById('by-current-yield').textContent=(currentYield*100).toFixed(2)+'%';
+  document.getElementById('by-annual-coupon').textContent=fmt(face*couponRate);
+  document.getElementById('by-total-return').textContent=fmt(totalReturn);
+  document.getElementById('by-market-price').textContent=fmt(price);
+  document.getElementById('by-results').classList.add('on');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solar System Sizing Calculator Africa — Size Your Solar PV System | AfroTools</title>
+<meta name="description" content="Calculate the correct solar panel, battery, and inverter size for your home or business in Africa. Add your appliances and get instant system recommendations.">
+<link rel="canonical" href="https://afrotools.com/tools/solar-sizing/">
+<meta property="og:title" content="Solar System Sizing Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate the correct solar panel, battery, and inverter size for your home or business in Africa.">
+<meta property="og:url" content="https://afrotools.com/tools/solar-sizing/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Solar System Sizing Calculator Africa","description":"Calculate the correct solar panel, battery, and inverter size for your home or business in Africa.","url":"https://afrotools.com/tools/solar-sizing/","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.appliance-row{display:grid;grid-template-columns:1fr 80px 80px 60px 32px;gap:8px;align-items:end;margin-bottom:10px}.appliance-row input,.appliance-row select{width:100%}.rm-btn{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;cursor:pointer;font-size:16px;height:38px;line-height:1;padding:0 8px}.add-btn{background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;font-size:14px}.en-app-header{display:grid;grid-template-columns:1fr 80px 80px 60px 32px;gap:8px;font-size:12px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:6px}@media(max-width:600px){.appliance-row,.en-app-header{grid-template-columns:1fr 70px 70px 50px 28px}}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Solar System Sizing</nav>
+<h1>☀️ <em>Solar System Sizing Calculator</em></h1>
+<p class="en-tool-hero-sub">Add your appliances to calculate the right solar panel size, battery capacity, and inverter for your home or business across Africa.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>⚡</span><h2>Your Appliance List</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body">
+<div class="en-form-grid" style="margin-bottom:16px">
+<div class="en-field"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect">
+<option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option><option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="AO">Angola</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option><option value="MZ">Mozambique</option><option value="MW">Malawi</option><option value="BW">Botswana</option><option value="NA">Namibia</option>
+</select></div>
+</div>
+<div class="en-app-header"><span>Appliance</span><span>Watts</span><span>Hrs/Day</span><span>Qty</span><span></span></div>
+<div id="appList"></div>
+<button class="add-btn" id="addBtn" type="button">+ Add Appliance</button>
+<button class="en-btn" id="calcBtn" type="button" style="margin-top:16px">Calculate System Size</button>
+</div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Solar Panel Array</div><div class="en-res-amount" id="rPanels">—</div><div class="en-res-sub" id="rBattery">Battery: —</div></div>
+<table class="en-results-table"><thead><tr><th>Component</th><th>Specification</th><th>Cost (est.)</th></tr></thead><tbody>
+<tr><td>Solar Panels</td><td id="rPanelSpec">—</td><td id="rPanelCost">—</td></tr>
+<tr><td>Battery Bank</td><td id="rBattSpec">—</td><td id="rBattCost">—</td></tr>
+<tr><td>Inverter</td><td id="rInvSpec">—</td><td id="rInvCost">—</td></tr>
+<tr><td>Installation</td><td>~20% of equipment</td><td id="rInstCost">—</td></tr>
+<tr class="en-total-row"><td colspan="2"><strong>Total Estimated Cost</strong></td><td id="rTotal">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Solar System Sizing for Africa — How It Works</h2>
+<p>Getting the right solar system size is critical. Too small and your batteries run out; too large and you overpay. Our calculator adds up your appliance wattage, accounts for your country's peak sun hours, and recommends the minimum viable system with 1.5 days backup storage.</p>
+<p><strong>Disclaimer:</strong> Cost estimates are indicative. Get formal quotes from certified installers for accurate pricing.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/solar-sizing-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.SolarSizingEngine;
+var PRESETS=[
+  {name:"LED Bulb (9W)",watts:9,hours:6,qty:4},
+  {name:"Fan (ceiling)",watts:75,hours:8,qty:1},
+  {name:"Smartphone charging",watts:10,hours:4,qty:2},
+  {name:"32\" LED TV",watts:60,hours:5,qty:1},
+  {name:"Laptop",watts:65,hours:6,qty:1},
+  {name:"Fridge (200L)",watts:120,hours:24,qty:1},
+  {name:"Satellite decoder",watts:20,hours:6,qty:1},
+  {name:"Standing fan",watts:50,hours:8,qty:1},
+  {name:"1.5HP Air conditioner",watts:1200,hours:8,qty:1},
+  {name:"Washing machine",watts:500,hours:1,qty:1},
+  {name:"Electric iron",watts:1000,hours:1,qty:1},
+  {name:"Water pump (0.5HP)",watts:400,hours:2,qty:1},
+  {name:"Microwave",watts:1100,hours:0.5,qty:1},
+  {name:"Router (WiFi)",watts:12,hours:24,qty:1}
+];
+var rows=[];
+function addRow(preset){
+  var idx=rows.length;
+  var p=preset||{name:"",watts:0,hours:1,qty:1};
+  rows.push(p);
+  renderRows();
+}
+function removeRow(idx){rows.splice(idx,1);renderRows();}
+function renderRows(){
+  var list=document.getElementById("appList");
+  list.innerHTML="";
+  rows.forEach(function(p,idx){
+    var div=document.createElement("div");
+    div.className="appliance-row";
+    div.innerHTML='<input type="text" class="en-input" placeholder="Appliance name" value="'+esc(p.name)+'" onchange="updateRow('+idx+',\'name\',this.value)">'
+      +'<input type="number" class="en-input" placeholder="Watts" value="'+(p.watts||'')+'" min="0" inputmode="numeric" onchange="updateRow('+idx+',\'watts\',this.value)">'
+      +'<input type="number" class="en-input" placeholder="Hours" value="'+(p.hours||'')+'" min="0.1" step="0.5" inputmode="numeric" onchange="updateRow('+idx+',\'hours\',this.value)">'
+      +'<input type="number" class="en-input" placeholder="Qty" value="'+(p.qty||1)+'" min="1" inputmode="numeric" onchange="updateRow('+idx+',\'qty\',this.value)">'
+      +'<button class="rm-btn" onclick="removeRow('+idx+')" aria-label="Remove">✕</button>';
+    list.appendChild(div);
+  });
+}
+window.updateRow=function(idx,field,val){
+  if(field==="name")rows[idx].name=val;
+  else rows[idx][field]=parseFloat(val)||0;
+};
+window.removeRow=removeRow;
+function esc(s){return (s||"").replace(/"/g,"&quot;");}
+
+// pre-load common defaults
+["LED Bulb (9W)","Fan (ceiling)","Smartphone charging","32\" LED TV","Fridge (200L)"].forEach(function(n){
+  var p=PRESETS.find(function(x){return x.name===n;});
+  if(p)addRow(Object.assign({},p));
+});
+
+document.getElementById("addBtn").addEventListener("click",function(){
+  var sel=document.getElementById("appList");
+  addRow({name:"",watts:0,hours:1,qty:1});
+});
+
+document.getElementById("calcBtn").addEventListener("click",function(){
+  var cc=document.getElementById("countrySelect").value;
+  var appliances=rows.filter(function(r){return r.watts>0;});
+  if(!appliances.length){alert("Please add at least one appliance with wattage.");return;}
+  var r=E.calculate({appliances:appliances,country:cc});
+  if(r.error){alert(r.error);return;}
+  document.getElementById("rPanels").textContent=r.solarKW;
+  document.getElementById("rBattery").textContent="Battery: "+r.batteryKWh;
+  document.getElementById("rPanelSpec").textContent=r.solarKW+" array";
+  document.getElementById("rBattSpec").textContent=r.batteryKWh+" / "+r.batteryAh;
+  document.getElementById("rInvSpec").textContent=r.inverterKVA;
+  document.getElementById("rPanelCost").textContent=r.breakdown.panels;
+  document.getElementById("rBattCost").textContent=r.breakdown.batteries;
+  document.getElementById("rInvCost").textContent=r.breakdown.inverter;
+  document.getElementById("rInstCost").textContent=r.breakdown.installation;
+  document.getElementById("rTotal").textContent=r.totalCostUSD;
+  var obs=document.getElementById("rObs");
+  if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+  document.getElementById("results").classList.add("on");
+  document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

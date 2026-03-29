@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loan Shark vs Bank Rate Comparator — Africa | AfroTools</title>
+<meta name="description" content="Compare informal lender rates vs bank loans in Africa. See the true cost difference, total interest, monthly payments, and how much you overpay to loan sharks.">
+<link rel="canonical" href="https://afrotools.com/tools/loan-shark-compare/">
+<meta property="og:title" content="Loan Shark vs Bank Rate Comparator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/loan-shark-compare/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Loan Shark vs Bank Rate Comparator","url":"https://afrotools.com/tools/loan-shark-compare/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Loan Shark vs Bank","item":"https://afrotools.com/tools/loan-shark-compare/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.compare-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.comp-card{border-radius:14px;padding:1.5rem;text-align:center}
+.comp-card.shark{background:#fef2f2;border:2px solid #fca5a5}
+.comp-card.bank{background:#ecfdf5;border:2px solid #86efac}
+.comp-title{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.comp-title.shark{color:#991b1b}
+.comp-title.bank{color:#065f46}
+.comp-val{font-size:1.5rem;font-weight:800;margin:.25rem 0}
+.comp-val.red{color:#dc2626}
+.comp-val.green{color:#059669}
+.comp-sub{font-size:.8rem;color:#6b7280}
+.overpay{background:linear-gradient(135deg,#7f1d1d,#dc2626);border-radius:14px;padding:1.5rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.overpay-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.75)}
+.overpay-val{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:.25rem 0}
+.overpay-sub{font-size:.85rem;color:rgba(255,255,255,.7)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.warn-box{background:#fef9c3;border:1px solid #fde68a;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#92400e;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.compare-cards{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Loan Shark vs Bank</nav>
+    <h1>Loan Shark vs Bank Rate Comparator</h1>
+    <p>Compare the true cost of informal lender (loan shark) rates vs bank loans. See exactly how much extra you pay — and why formal credit is almost always better.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">True Cost Comparison</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Compare Loan Costs</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="ls-amount">Loan Amount</label>
+        <input type="number" id="ls-amount" value="500000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="ls-tenor">Loan Tenor (Months)</label>
+        <select id="ls-tenor">
+          <option value="1">1 Month</option>
+          <option value="3">3 Months</option>
+          <option value="6">6 Months</option>
+          <option value="12" selected>12 Months</option>
+          <option value="24">24 Months</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="ls-shark-rate">Informal Lender Monthly Rate (%)</label>
+        <input type="number" id="ls-shark-rate" value="20" step="0.5" min="0">
+      </div>
+      <div class="form-group">
+        <label for="ls-bank-rate">Bank Annual Rate (%)</label>
+        <input type="number" id="ls-bank-rate" value="24" step="0.5" min="0">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcLoanShark()">Compare Costs</button>
+    <div class="results" id="ls-results">
+      <div class="overpay">
+        <div class="overpay-label">Extra Cost of Informal Lending</div>
+        <div class="overpay-val" id="ls-overpay"></div>
+        <div class="overpay-sub" id="ls-overpay-sub"></div>
+      </div>
+      <div class="compare-cards">
+        <div class="comp-card shark">
+          <div class="comp-title shark">Informal Lender (Loan Shark)</div>
+          <div class="comp-val red" id="ls-shark-total"></div>
+          <div class="comp-sub" id="ls-shark-monthly">Monthly repayment</div>
+          <div class="comp-sub" id="ls-shark-interest">Total interest</div>
+          <div class="comp-sub" id="ls-shark-apr">Effective APR</div>
+        </div>
+        <div class="comp-card bank">
+          <div class="comp-title bank">Bank Loan</div>
+          <div class="comp-val green" id="ls-bank-total"></div>
+          <div class="comp-sub" id="ls-bank-monthly">Monthly repayment</div>
+          <div class="comp-sub" id="ls-bank-interest">Total interest</div>
+          <div class="comp-sub" id="ls-bank-apr">Effective APR</div>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="ls-shark-apr-val"></div><div class="metric-label">Informal Lender APR</div></div>
+        <div class="metric"><div class="metric-val" id="ls-bank-apr-val"></div><div class="metric-label">Bank Loan APR</div></div>
+        <div class="metric"><div class="metric-val" id="ls-multiple"></div><div class="metric-label">Times More Expensive</div></div>
+      </div>
+      <div class="warn-box">Informal lenders often charge 20-50% per month — this is 240-600% APR. Even high-rate digital lending apps (Branch, FairMoney) at 30% APR are typically 8-20x cheaper than typical informal lenders. Always explore formal options first.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>How do African informal lenders charge interest?</summary><div class="faq-a">Most informal lenders charge a flat percentage per week or month on the original loan (not reducing balance). For example, "20% per month" on N500,000 means you pay N100,000/month in interest — forever until principal is repaid. This results in an effective APR of 240%+, many times higher than any formal lender.</div></details></div>
+    <div class="faq-item"><details><summary>Why do people still use loan sharks in Africa?</summary><div class="faq-a">Speed and accessibility: informal lenders offer cash within hours with no paperwork, no credit check, and accept any collateral. For someone without a bank account, salary slip, or credit history, formal credit is inaccessible. Improving your credit profile (maintaining a salary account, using digital wallets) is the first step toward accessing cheaper credit.</div></details></div>
+    <div class="faq-item"><details><summary>What are safer alternatives to informal lending?</summary><div class="faq-a">In order of cost (cheapest first): (1) SACCO/credit union loan (8-15%/yr), (2) Salary advance from employer, (3) Digital lending apps (Branch, Tala, Carbon — 20-50% APR, still high but formal), (4) Microfinance institution (36-60% APR), (5) Bank personal loan (18-30% APR). Any of these is better than informal lenders at 240-600% APR.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function calcLoanShark(){
+  var amount=parseFloat(document.getElementById('ls-amount').value)||0;
+  var months=parseInt(document.getElementById('ls-tenor').value);
+  var sharkMonthly=parseFloat(document.getElementById('ls-shark-rate').value)/100;
+  var bankAnnual=parseFloat(document.getElementById('ls-bank-rate').value)/100;
+  var bankMonthly=bankAnnual/12;
+  // Shark: flat interest on original principal each month
+  var sharkInterestPerMonth=amount*sharkMonthly;
+  var sharkTotalInterest=sharkInterestPerMonth*months;
+  var sharkTotal=amount+sharkTotalInterest;
+  var sharkMonthlyPayment=(amount/months)+sharkInterestPerMonth;
+  var sharkAPR=sharkMonthly*12*100;
+  // Bank: reducing balance amortized
+  var bankMonthlyPayment=bankMonthly>0?amount*(bankMonthly*Math.pow(1+bankMonthly,months))/(Math.pow(1+bankMonthly,months)-1):amount/months;
+  var bankTotalPayment=bankMonthlyPayment*months;
+  var bankTotalInterest=bankTotalPayment-amount;
+  var bankAPR=bankAnnual*100;
+  var overpay=sharkTotal-bankTotalPayment;
+  var multiple=bankTotalInterest>0?(sharkTotalInterest/bankTotalInterest).toFixed(1):'N/A';
+  function fmt(n){return (Math.round(n)).toLocaleString();}
+  document.getElementById('ls-overpay').textContent=fmt(overpay);
+  document.getElementById('ls-overpay-sub').textContent='You pay '+fmt(overpay)+' more with informal lending over '+months+' months';
+  document.getElementById('ls-shark-total').textContent=fmt(sharkTotal);
+  document.getElementById('ls-shark-monthly').textContent='Monthly: '+fmt(sharkMonthlyPayment);
+  document.getElementById('ls-shark-interest').textContent='Total interest: '+fmt(sharkTotalInterest);
+  document.getElementById('ls-shark-apr').textContent='APR: '+sharkAPR.toFixed(0)+'%';
+  document.getElementById('ls-bank-total').textContent=fmt(bankTotalPayment);
+  document.getElementById('ls-bank-monthly').textContent='Monthly: '+fmt(bankMonthlyPayment);
+  document.getElementById('ls-bank-interest').textContent='Total interest: '+fmt(bankTotalInterest);
+  document.getElementById('ls-bank-apr').textContent='APR: '+bankAPR.toFixed(1)+'%';
+  document.getElementById('ls-shark-apr-val').textContent=sharkAPR.toFixed(0)+'%';
+  document.getElementById('ls-bank-apr-val').textContent=bankAPR.toFixed(1)+'%';
+  document.getElementById('ls-multiple').textContent=multiple+'x';
+  document.getElementById('ls-results').classList.add('on');
+}
+</script>
+</body>
+</html>

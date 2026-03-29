@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini-Grid Feasibility Calculator Africa | AfroTools</title>
+<meta name="description" content="Assess the feasibility of a solar mini-grid for rural communities in Africa. Calculate CAPEX, demand, revenue, and payback period for off-grid solar projects.">
+<link rel="canonical" href="https://afrotools.com/tools/mini-grid-feasibility/">
+<meta property="og:title" content="Mini-Grid Feasibility Calculator Africa | AfroTools">
+<meta property="og:description" content="Assess solar mini-grid feasibility for rural Africa. Calculate CAPEX, revenue, and payback period.">
+<meta property="og:url" content="https://afrotools.com/tools/mini-grid-feasibility/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.viability-badge{display:inline-block;padding:4px 12px;border-radius:980px;font-weight:700;font-size:13px}.viable{background:#dcfce7;color:#166534}.marginal{background:#fef9c3;color:#713f12}.challenging{background:#fee2e2;color:#991b1b}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Mini-Grid Feasibility</nav>
+<h1>🏘️ <em>Mini-Grid Feasibility Calculator</em></h1>
+<p class="en-tool-hero-sub">Assess the technical and commercial feasibility of a solar mini-grid for rural communities across Africa. Get CAPEX estimates, demand projections, and revenue forecasts.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>⚡</span><h2>Community Details</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect">
+<option value="NG">Nigeria</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="KE">Kenya</option><option value="GH">Ghana</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option><option value="ML">Mali</option><option value="NE">Niger</option><option value="BF">Burkina Faso</option><option value="MZ">Mozambique</option><option value="MW">Malawi</option><option value="MG">Madagascar</option><option value="ZM">Zambia</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="households">Number of Households</label><input class="en-input" type="number" id="households" placeholder="e.g. 200" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="businesses">Number of Businesses / Anchors</label><input class="en-input" type="number" id="businesses" placeholder="e.g. 15" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="avgKWhHousehold">Avg kWh / Household / Month</label><select class="en-select" id="avgKWhHousehold">
+<option value="10">10 kWh — Tier 1 (lights + phone)</option>
+<option value="30" selected>30 kWh — Tier 2 (lights + TV + fan)</option>
+<option value="50">50 kWh — Tier 3 (full home)</option>
+<option value="100">100 kWh — Tier 4 (productive use)</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="avgKWhBusiness">Avg kWh / Business / Month</label><select class="en-select" id="avgKWhBusiness">
+<option value="50">50 kWh — small shop</option>
+<option value="100" selected>100 kWh — standard business</option>
+<option value="200">200 kWh — anchor (mill, clinic, school)</option>
+</select></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Assess Feasibility</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Viability Assessment</div><div class="en-res-amount" id="rViability">—</div><div class="en-res-sub" id="rPayback">Payback: —</div></div>
+<table class="en-results-table"><thead><tr><th>System Component</th><th>Value</th></tr></thead><tbody>
+<tr><td>Solar Array</td><td id="rSolar">—</td></tr>
+<tr><td>Battery Storage</td><td id="rBattery">—</td></tr>
+<tr><td>Peak Demand</td><td id="rPeak">—</td></tr>
+<tr><td>Monthly Generation</td><td id="rGen">—</td></tr>
+</tbody></table>
+<table class="en-results-table" style="margin-top:12px"><thead><tr><th>Financial Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Total CAPEX (USD)</td><td id="rCapexUSD">—</td></tr>
+<tr><td>CAPEX per Connection</td><td id="rPerConn">—</td></tr>
+<tr><td>Monthly Revenue</td><td id="rMonthly">—</td></tr>
+<tr><td>Annual Revenue</td><td id="rAnnual">—</td></tr>
+<tr><td>Payback Period</td><td id="rPaybackRow">—</td></tr>
+<tr><td>Grant Potential (DFI)</td><td id="rGrant">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Solar Mini-Grid Feasibility in Africa — Key Considerations</h2>
+<p>Rural Africa has over 600 million people without reliable electricity access. Solar mini-grids offer a faster and often cheaper path to electrification than grid extension. This calculator provides a first-pass feasibility assessment including CAPEX, revenue projections, and payback period — the starting point for any DFI or investor proposal.</p>
+<p><strong>Disclaimer:</strong> These are screening-level estimates. Full feasibility studies require site assessment, load surveys, and detailed engineering design.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/mini-grid-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.MiniGridEngine;
+document.getElementById("calcBtn").addEventListener("click",function(){
+var i={
+  country:document.getElementById("countrySelect").value,
+  households:parseInt(document.getElementById("households").value)||0,
+  businesses:parseInt(document.getElementById("businesses").value)||0,
+  avgKWhHousehold:document.getElementById("avgKWhHousehold").value,
+  avgKWhBusiness:document.getElementById("avgKWhBusiness").value
+};
+var r=E.calculate(i);
+if(r.error){alert(r.error);return;}
+var v=r.viability;
+document.getElementById("rViability").textContent=v;
+document.getElementById("rViability").className="en-res-amount "+( v==="VIABLE"?"viable":v==="MARGINAL"?"marginal":"challenging");
+document.getElementById("rPayback").textContent="Payback: "+r.paybackYrs;
+document.getElementById("rSolar").textContent=r.solarKW;
+document.getElementById("rBattery").textContent=r.batteryKWh;
+document.getElementById("rPeak").textContent=r.peakLoadKW;
+document.getElementById("rGen").textContent=r.monthlyGeneration;
+document.getElementById("rCapexUSD").textContent=r.totalCapexUSD;
+document.getElementById("rPerConn").textContent=r.capexPerConnection;
+document.getElementById("rMonthly").textContent=r.monthlyRevenue;
+document.getElementById("rAnnual").textContent=r.annualRevenue;
+document.getElementById("rPaybackRow").textContent=r.paybackYrs;
+document.getElementById("rGrant").textContent=r.grantPotentialUSD;
+var obs=document.getElementById("rObs");
+if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

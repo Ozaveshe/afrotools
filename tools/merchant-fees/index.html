@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Merchant Fee Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate total merchant payment acceptance costs across Africa. Card fees, mobile money, bank transfer — find your true cost of accepting payments.">
+<link rel="canonical" href="https://afrotools.com/tools/merchant-fees/">
+<meta property="og:title" content="Merchant Fee Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/merchant-fees/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Merchant Fee Calculator","url":"https://afrotools.com/tools/merchant-fees/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Merchant Fee Calculator","item":"https://afrotools.com/tools/merchant-fees/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.section-label{font-size:.85rem;font-weight:700;color:#374151;margin:.75rem 0 .5rem;grid-column:1/-1}
+.range-row{display:flex;align-items:center;gap:.5rem}
+.range-row input[type="range"]{flex:1;accent-color:var(--color-primary)}
+.range-val{font-size:.85rem;font-weight:600;color:var(--color-primary);min-width:40px;text-align:right}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:1rem}
+.breakdown-table th{background:#0f172a;color:#fff;padding:9px 12px;font-weight:700;font-size:.75rem;text-transform:uppercase;text-align:left}
+.breakdown-table td{padding:9px 12px;border-bottom:1px solid #f1f5f9}
+.breakdown-table tr.total-row td{background:#f8fafd;font-weight:700;border-top:2px solid #e5e7eb}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Merchant Fee Calculator</nav>
+    <h1>Merchant Fee Calculator</h1>
+    <p>Calculate your total cost of accepting payments — card, mobile money, cash, and bank transfers. See which payment mix minimizes your merchant fees across Africa.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">All Payment Types</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Merchant Fee Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="mf-monthly-vol">Monthly Revenue (Total Sales)</label>
+        <input type="number" id="mf-monthly-vol" value="2000000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="mf-avg-txn">Average Transaction Value</label>
+        <input type="number" id="mf-avg-txn" value="8000" min="0">
+      </div>
+      <div class="section-label">Payment Mix (must total 100%)</div>
+      <div class="form-group">
+        <label>Card / POS (%)</label>
+        <div class="range-row"><input type="range" id="mf-card-pct" min="0" max="100" value="30" oninput="updateRange('mf-card-pct','mf-card-val')"><span class="range-val" id="mf-card-val">30%</span></div>
+      </div>
+      <div class="form-group">
+        <label>Mobile Money (%)</label>
+        <div class="range-row"><input type="range" id="mf-mm-pct" min="0" max="100" value="40" oninput="updateRange('mf-mm-pct','mf-mm-val')"><span class="range-val" id="mf-mm-val">40%</span></div>
+      </div>
+      <div class="form-group">
+        <label>Bank Transfer (%)</label>
+        <div class="range-row"><input type="range" id="mf-bank-pct" min="0" max="100" value="20" oninput="updateRange('mf-bank-pct','mf-bank-val')"><span class="range-val" id="mf-bank-val">20%</span></div>
+      </div>
+      <div class="form-group">
+        <label>Cash (%)</label>
+        <div class="range-row"><input type="range" id="mf-cash-pct" min="0" max="100" value="10" oninput="updateRange('mf-cash-pct','mf-cash-val')"><span class="range-val" id="mf-cash-val">10%</span></div>
+      </div>
+      <div class="section-label">Fee Rates</div>
+      <div class="form-group">
+        <label for="mf-card-rate">Card MDR (%)</label>
+        <input type="number" id="mf-card-rate" value="1.5" min="0" max="5" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="mf-mm-rate">Mobile Money Merchant Fee (%)</label>
+        <input type="number" id="mf-mm-rate" value="0.8" min="0" max="5" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="mf-bank-rate">Bank Transfer Fee (%)</label>
+        <input type="number" id="mf-bank-rate" value="0.1" min="0" max="2" step="0.05">
+      </div>
+      <div class="form-group">
+        <label for="mf-cash-rate">Cash Handling Cost (%)</label>
+        <input type="number" id="mf-cash-rate" value="0.5" min="0" max="3" step="0.1">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcMerchantFees()">Calculate Merchant Fees</button>
+    <div class="results" id="mf-results">
+      <div class="res-hero">
+        <div class="res-label">Total Monthly Payment Fees</div>
+        <div class="res-val" id="mf-total-fee"></div>
+        <div class="res-sub" id="mf-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="mf-blended-rate"></div><div class="metric-label">Blended Fee Rate</div></div>
+        <div class="metric"><div class="metric-val" id="mf-net-revenue"></div><div class="metric-label">Net Revenue (after fees)</div></div>
+        <div class="metric"><div class="metric-val" id="mf-annual-fees"></div><div class="metric-label">Annual Fees Paid</div></div>
+        <div class="metric"><div class="metric-val" id="mf-transactions"></div><div class="metric-label">Monthly Transactions</div></div>
+      </div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Fee Breakdown by Method</h3>
+      <table class="breakdown-table" id="mf-table"></table>
+      <div class="info-box">Optimizing your payment mix matters. Shifting 10% of volume from card (1.5% MDR) to mobile money (0.8%) on 2M/month volume saves 14,000/month = 168,000/year. Bank transfers are the cheapest per-naira/shilling but limited by customer banking access. Cash has hidden costs: counting, theft risk, bank deposit fees.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is a merchant discount rate?</summary><div class="faq-a">A Merchant Discount Rate (MDR) is the percentage of each card transaction that the merchant pays to the acquiring bank/payment processor. It bundles interchange fees (to card-issuing bank), scheme fees (Visa/Mastercard), and acquirer margin. In Nigeria, the CBN guidelines set MDR at 0.5% for debit card transactions at POS, though processors often bundle additional charges. International credit cards attract higher MDR (2.5-3.5%).</div></details></div>
+    <div class="faq-item"><details><summary>How can merchants reduce payment fees?</summary><div class="faq-a">Strategies: (1) Negotiate enterprise rates at monthly volume > 1M, (2) Shift customers to cheaper payment methods — mobile money is cheaper than card for most amounts, (3) Use QR payments (0-0.5% vs 1.5% card), (4) For regular customers, offer bank transfer option (cheapest), (5) Bundle payment volumes across related businesses for better negotiating power, (6) Compare aggregators — startups often offer better rates than banks to gain market share.</div></details></div>
+    <div class="faq-item"><details><summary>Is cash really "free" for merchants?</summary><div class="faq-a">No. Cash has hidden costs: time counting, risk of counterfeit notes (significant in Nigeria, Ghana), cash deposit bank fees (0.1-0.5% of deposited cash), security/theft risk, reconciliation errors. In Nigeria, ATM withdrawals can cost NGN 35-100 per transaction passing through to consumers. When you include all costs, cash typically runs 0.3-1% of volume — comparable to mobile money merchant fees.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function updateRange(id,valId){
+  document.getElementById(valId).textContent=document.getElementById(id).value+'%';
+}
+function calcMerchantFees(){
+  var vol=parseFloat(document.getElementById('mf-monthly-vol').value)||0;
+  var avgTxn=parseFloat(document.getElementById('mf-avg-txn').value)||1;
+  var cardPct=parseFloat(document.getElementById('mf-card-pct').value)/100;
+  var mmPct=parseFloat(document.getElementById('mf-mm-pct').value)/100;
+  var bankPct=parseFloat(document.getElementById('mf-bank-pct').value)/100;
+  var cashPct=parseFloat(document.getElementById('mf-cash-pct').value)/100;
+  var cardRate=parseFloat(document.getElementById('mf-card-rate').value)/100;
+  var mmRate=parseFloat(document.getElementById('mf-mm-rate').value)/100;
+  var bankRate=parseFloat(document.getElementById('mf-bank-rate').value)/100;
+  var cashRate=parseFloat(document.getElementById('mf-cash-rate').value)/100;
+  var cardVol=vol*cardPct,mmVol=vol*mmPct,bankVol=vol*bankPct,cashVol=vol*cashPct;
+  var cardFee=cardVol*cardRate,mmFee=mmVol*mmRate,bankFee=bankVol*bankRate,cashFee=cashVol*cashRate;
+  var totalFee=cardFee+mmFee+bankFee+cashFee;
+  var blendedRate=(totalFee/vol)*100;
+  var totalTxns=Math.round(vol/avgTxn);
+  function fmt(n){return Math.round(n).toLocaleString();}
+  document.getElementById('mf-total-fee').textContent=fmt(totalFee);
+  document.getElementById('mf-sub').textContent='On '+fmt(vol)+' monthly revenue | Blended rate: '+blendedRate.toFixed(2)+'%';
+  document.getElementById('mf-blended-rate').textContent=blendedRate.toFixed(2)+'%';
+  document.getElementById('mf-net-revenue').textContent=fmt(vol-totalFee);
+  document.getElementById('mf-annual-fees').textContent=fmt(totalFee*12);
+  document.getElementById('mf-transactions').textContent=totalTxns.toLocaleString();
+  var rows=[
+    ['Card / POS',fmt(cardVol),Math.round(cardPct*100)+'%',fmt(cardFee),(cardVol>0?(cardFee/cardVol*100).toFixed(2):0)+'%'],
+    ['Mobile Money',fmt(mmVol),Math.round(mmPct*100)+'%',fmt(mmFee),(mmVol>0?(mmFee/mmVol*100).toFixed(2):0)+'%'],
+    ['Bank Transfer',fmt(bankVol),Math.round(bankPct*100)+'%',fmt(bankFee),(bankVol>0?(bankFee/bankVol*100).toFixed(2):0)+'%'],
+    ['Cash',fmt(cashVol),Math.round(cashPct*100)+'%',fmt(cashFee),(cashVol>0?(cashFee/cashVol*100).toFixed(2):0)+'%']
+  ];
+  var html='<tr><th>Method</th><th>Volume</th><th>Mix</th><th>Fees</th><th>Effective Rate</th></tr>';
+  for(var i=0;i<rows.length;i++){
+    html+='<tr><td>'+rows[i][0]+'</td><td>'+rows[i][1]+'</td><td>'+rows[i][2]+'</td><td>'+rows[i][3]+'</td><td>'+rows[i][4]+'</td></tr>';
+  }
+  html+='<tr class="total-row"><td>TOTAL</td><td>'+fmt(vol)+'</td><td>100%</td><td>'+fmt(totalFee)+'</td><td>'+blendedRate.toFixed(2)+'%</td></tr>';
+  document.getElementById('mf-table').innerHTML=html;
+  document.getElementById('mf-results').classList.add('on');
+}
+</script>
+</body>
+</html>

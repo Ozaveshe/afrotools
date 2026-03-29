@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Appliance Power Consumption Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate electricity consumption and cost for all your appliances in Africa. Find your biggest energy consumers and see monthly bill breakdown by appliance.">
+<link rel="canonical" href="https://afrotools.com/tools/appliance-power/">
+<meta property="og:title" content="Appliance Power Consumption Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate electricity consumption and cost for all your appliances in Africa.">
+<meta property="og:url" content="https://afrotools.com/tools/appliance-power/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.app-row{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;align-items:end;margin-bottom:8px}.app-row input{width:100%}.rm-btn{background:#fee2e2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;cursor:pointer;font-size:14px;height:36px;padding:0 6px}.add-btn{background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;font-size:14px}.app-header{display:grid;grid-template-columns:1fr 70px 70px 50px 70px 28px;gap:6px;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;margin-bottom:4px}.en-bar-wrap{background:#f3f4f6;border-radius:980px;height:8px;margin-top:4px}.en-bar-fill{height:8px;border-radius:980px;background:#F59E0B;transition:width 0.4s}@media(max-width:600px){.app-row,.app-header{grid-template-columns:1fr 60px 60px 40px 60px 24px}}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Appliance Power</nav>
+<h1>🔌 <em>Appliance Power Consumption Calculator</em></h1>
+<p class="en-tool-hero-sub">Calculate exactly how much electricity each appliance uses and costs. Find your top energy consumers and see where to cut your electricity bill in Africa.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>📋</span><h2>Your Appliances</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body">
+<div style="margin-bottom:12px"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect" style="max-width:220px">
+<option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option>
+</select></div>
+<div class="app-header"><span>Appliance</span><span>Watts</span><span>Hrs/Day</span><span>Qty</span><span>Standby W</span><span></span></div>
+<div id="appList"></div>
+<button class="add-btn" id="addBtn">+ Add Appliance</button>
+<button class="en-btn" id="calcBtn" style="margin-top:16px">Calculate Consumption</button>
+</div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Monthly Electricity Bill</div><div class="en-res-amount" id="rBill">—</div><div class="en-res-sub" id="rKwh">Usage: —</div></div>
+<table class="en-results-table"><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Daily Usage</td><td id="rDailyKwh">—</td></tr>
+<tr><td>Monthly Usage</td><td id="rMonthlyKwh">—</td></tr>
+<tr><td>Annual Usage</td><td id="rAnnualKwh">—</td></tr>
+<tr><td>Monthly Bill</td><td id="rMonthlyBill">—</td></tr>
+<tr><td>Annual Bill</td><td id="rAnnualBill">—</td></tr>
+<tr><td>Standby Cost / Month</td><td id="rStandby">—</td></tr>
+</tbody></table>
+<div class="en-card" style="margin-top:16px"><div class="en-card-body">
+<h3 style="font-size:15px;font-weight:700;margin-bottom:12px">Top Energy Consumers</h3>
+<div id="rTopList"></div>
+</div></div>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Appliance Power Usage in Africa — Know Your Consumers</h2>
+<p>Air conditioners, electric geysers, and old refrigerators are typically the top three electricity consumers in an African home — often accounting for 70%+ of your bill. This calculator breaks down usage appliance-by-appliance so you know exactly where your money goes.</p>
+<p><strong>Disclaimer:</strong> Wattage figures are typical values. Check your appliance's nameplate for exact rated power.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/appliance-power-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.AppliancePowerEngine;
+var PRESETS=[
+  {name:"LED Bulb (9W)",watts:9,hours:6,qty:6,standbyWatts:0},
+  {name:"Ceiling Fan",watts:75,hours:8,qty:2,standbyWatts:0},
+  {name:"32\" LED TV",watts:60,hours:5,qty:1,standbyWatts:3},
+  {name:"Smartphone Charger",watts:10,hours:4,qty:3,standbyWatts:0.5},
+  {name:"Fridge (200L)",watts:120,hours:24,qty:1,standbyWatts:0},
+  {name:"Laptop",watts:65,hours:6,qty:1,standbyWatts:2},
+  {name:"Router (WiFi)",watts:12,hours:24,qty:1,standbyWatts:0},
+  {name:"Satellite Decoder",watts:20,hours:6,qty:1,standbyWatts:8},
+  {name:"1.5HP Air Conditioner",watts:1200,hours:6,qty:1,standbyWatts:5},
+  {name:"Electric Iron",watts:1000,hours:1,qty:1,standbyWatts:0},
+  {name:"Water Pump (0.5HP)",watts:400,hours:2,qty:1,standbyWatts:0},
+  {name:"Microwave",watts:1100,hours:0.5,qty:1,standbyWatts:3},
+  {name:"Washing Machine",watts:500,hours:1,qty:1,standbyWatts:2}
+];
+var rows=[];
+function addRow(p){rows.push(p||{name:"",watts:0,hours:1,qty:1,standbyWatts:0});renderRows();}
+function removeRow(i){rows.splice(i,1);renderRows();}
+window.updateRow=function(i,f,v){if(f==="name")rows[i].name=v;else rows[i][f]=parseFloat(v)||0;};
+window.removeRow=removeRow;
+function renderRows(){
+  var list=document.getElementById("appList");
+  list.innerHTML="";
+  rows.forEach(function(p,i){
+    var d=document.createElement("div");d.className="app-row";
+    d.innerHTML='<input type="text" class="en-input" placeholder="Name" value="'+esc(p.name||"")+'" onchange="updateRow('+i+',\'name\',this.value)">'
+      +'<input type="number" class="en-input" placeholder="W" value="'+(p.watts||"")+'" min="0" inputmode="numeric" onchange="updateRow('+i+',\'watts\',this.value)">'
+      +'<input type="number" class="en-input" placeholder="Hrs" value="'+(p.hours||"")+'" min="0.1" step="0.5" inputmode="numeric" onchange="updateRow('+i+',\'hours\',this.value)">'
+      +'<input type="number" class="en-input" placeholder="Qty" value="'+(p.qty||1)+'" min="1" inputmode="numeric" onchange="updateRow('+i+',\'qty\',this.value)">'
+      +'<input type="number" class="en-input" placeholder="Stby W" value="'+(p.standbyWatts||"")+'" min="0" inputmode="numeric" onchange="updateRow('+i+',\'standbyWatts\',this.value)">'
+      +'<button class="rm-btn" onclick="removeRow('+i+')">✕</button>';
+    list.appendChild(d);
+  });
+}
+function esc(s){return s.replace(/"/g,"&quot;");}
+// Load defaults
+["LED Bulb (9W)","Ceiling Fan","32\" LED TV","Smartphone Charger","Fridge (200L)"].forEach(function(n){
+  var p=PRESETS.find(function(x){return x.name===n;});
+  if(p)addRow(Object.assign({},p));
+});
+document.getElementById("addBtn").addEventListener("click",function(){addRow({name:"",watts:0,hours:1,qty:1,standbyWatts:0});});
+document.getElementById("calcBtn").addEventListener("click",function(){
+  var cc=document.getElementById("countrySelect").value;
+  var appliances=rows.filter(function(r){return r.watts>0;});
+  if(!appliances.length){alert("Please add at least one appliance with wattage.");return;}
+  var r=E.calculate({appliances:appliances,country:cc});
+  if(r.error){alert(r.error);return;}
+  document.getElementById("rBill").textContent=r.monthlyBill;
+  document.getElementById("rKwh").textContent="Usage: "+r.monthlyKWh;
+  document.getElementById("rDailyKwh").textContent=r.dailyKWh;
+  document.getElementById("rMonthlyKwh").textContent=r.monthlyKWh;
+  document.getElementById("rAnnualKwh").textContent=r.annualKWh;
+  document.getElementById("rMonthlyBill").textContent=r.monthlyBill;
+  document.getElementById("rAnnualBill").textContent=r.annualBill;
+  document.getElementById("rStandby").textContent=r.standbyMonthlyCost;
+  var topList=document.getElementById("rTopList");
+  var totalKwh=parseFloat((r.monthlyKWh||"").replace(/[^0-9.]/g,""))||1;
+  topList.innerHTML=(r.appliances||[]).map(function(a){
+    var pct=Math.round(a.monthlyKWh/totalKwh*100);
+    return'<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>'+a.name+'</span><span style="font-weight:600">'+a.monthlyKWh+' kWh ('+pct+'%)</span></div><div class="en-bar-wrap"><div class="en-bar-fill" style="width:'+Math.min(pct,100)+'%"></div></div></div>';
+  }).join("");
+  var obs=document.getElementById("rObs");
+  if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+  document.getElementById("results").classList.add("on");
+  document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Invoice Factoring Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate invoice factoring costs across Africa. Advance amount, factoring fee, net proceeds, and effective APR for receivables financing.">
+<link rel="canonical" href="https://afrotools.com/tools/invoice-factoring/">
+<meta property="og:title" content="Invoice Factoring Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/invoice-factoring/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Invoice Factoring Calculator","url":"https://afrotools.com/tools/invoice-factoring/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Invoice Factoring Calculator","item":"https://afrotools.com/tools/invoice-factoring/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.flow-steps{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.flow-step{flex:1;min-width:140px;background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.flow-num{width:28px;height:28px;border-radius:50%;background:var(--color-primary);color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto .5rem}
+.flow-label{font-size:.72rem;font-weight:600;color:#6b7280;text-transform:uppercase}
+.flow-val{font-size:1rem;font-weight:800;color:#0f172a;margin-top:.2rem}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Invoice Factoring Calculator</nav>
+    <h1>Invoice Factoring Calculator</h1>
+    <p>Calculate your advance amount, factoring fees, net proceeds, and effective APR for invoice/receivables financing across Africa.</p>
+    <div class="hero-badges"><span class="hero-badge">20 Countries</span><span class="hero-badge">True APR</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Invoice Factoring Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="if-invoice">Invoice Value</label>
+        <input type="number" id="if-invoice" value="500000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="if-advance">Advance Rate (%)</label>
+        <input type="number" id="if-advance" value="80" min="10" max="95" step="1">
+      </div>
+      <div class="form-group">
+        <label for="if-fee">Factoring Fee (% of invoice)</label>
+        <input type="number" id="if-fee" value="3" min="0.5" max="15" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="if-days">Days Outstanding</label>
+        <input type="number" id="if-days" value="30" min="1" max="180">
+      </div>
+      <div class="form-group">
+        <label for="if-additional">Additional Fees (flat)</label>
+        <input type="number" id="if-additional" value="0" min="0">
+      </div>
+      <div class="form-group">
+        <label for="if-recourse">Recourse Type</label>
+        <select id="if-recourse">
+          <option value="recourse">With Recourse (lower fee)</option>
+          <option value="nonrecourse">Without Recourse (+1-3%)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcInvoiceFactoring()">Calculate Factoring Cost</button>
+    <div class="results" id="if-results">
+      <div class="res-hero">
+        <div class="res-label">Net Proceeds (Cash You Receive)</div>
+        <div class="res-val" id="if-net-proceeds"></div>
+        <div class="res-sub" id="if-sub"></div>
+      </div>
+      <div class="flow-steps" id="if-flow"></div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="if-advance-amt"></div><div class="metric-label">Advance Amount</div></div>
+        <div class="metric"><div class="metric-val" id="if-total-fee"></div><div class="metric-label">Total Factoring Fee</div></div>
+        <div class="metric"><div class="metric-val" id="if-reserve"></div><div class="metric-label">Reserve (held back)</div></div>
+        <div class="metric"><div class="metric-val" id="if-reserve-release"></div><div class="metric-label">Reserve Released After</div></div>
+        <div class="metric"><div class="metric-val" id="if-cost-pct"></div><div class="metric-label">Cost as % of Invoice</div></div>
+        <div class="metric"><div class="metric-val" id="if-apr"></div><div class="metric-label">Effective APR</div></div>
+      </div>
+      <div class="info-box">Invoice factoring lets you convert outstanding invoices to immediate cash. The factor advances 70-90% upfront and releases the reserve (minus fees) when your customer pays. Non-recourse factoring protects you if the customer defaults but costs more.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is invoice factoring?</summary><div class="faq-a">Invoice factoring is selling your accounts receivable (unpaid invoices) to a factoring company at a discount in exchange for immediate cash. The factor collects payment from your customer. Common in Nigeria, Kenya, South Africa, and Ghana for SMEs with long payment cycles from corporates or government.</div></details></div>
+    <div class="faq-item"><details><summary>Recourse vs non-recourse factoring?</summary><div class="faq-a">With recourse factoring: if your customer doesn't pay, YOU must buy back the invoice or repay the advance. Non-recourse: the factor absorbs the credit risk if the customer defaults (genuine insolvency). Non-recourse typically costs 1-3% more but protects your cash flow from bad debts.</div></details></div>
+    <div class="faq-item"><details><summary>Who offers invoice factoring in Africa?</summary><div class="faq-a">Major providers: Stanbic Bank (Pan-Africa), Standard Bank Invoice Factoring (SA), Nedbank (SA), ABSA (SA), First National Bank (SA/SADC). Fintechs: Pezesha (Kenya), Float (Ghana), Duplo (Nigeria), LiquidAfrica. Development banks: IFC-backed facilities through local partners. Invoice discounting (you keep collections) is also available.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function calcInvoiceFactoring(){
+  var invoice=parseFloat(document.getElementById('if-invoice').value)||0;
+  var advancePct=parseFloat(document.getElementById('if-advance').value)/100;
+  var feePct=parseFloat(document.getElementById('if-fee').value)/100;
+  var days=parseInt(document.getElementById('if-days').value)||30;
+  var additional=parseFloat(document.getElementById('if-additional').value)||0;
+  var advance=invoice*advancePct;
+  var totalFee=invoice*feePct+additional;
+  var reserve=invoice-advance;
+  var reserveRelease=reserve-totalFee;
+  var netProceeds=advance-totalFee;
+  var costPct=(totalFee/invoice)*100;
+  var apr=(totalFee/advance)*(365/days)*100;
+  function fmt(n){return Math.round(n).toLocaleString();}
+  document.getElementById('if-net-proceeds').textContent=fmt(netProceeds);
+  document.getElementById('if-sub').textContent='From invoice of '+fmt(invoice)+' | '+days+' day facility';
+  document.getElementById('if-advance-amt').textContent=fmt(advance);
+  document.getElementById('if-total-fee').textContent=fmt(totalFee);
+  document.getElementById('if-reserve').textContent=fmt(reserve);
+  document.getElementById('if-reserve-release').textContent=reserveRelease>0?fmt(reserveRelease):'0';
+  document.getElementById('if-cost-pct').textContent=costPct.toFixed(2)+'%';
+  document.getElementById('if-apr').textContent=apr.toFixed(1)+'%';
+  var flow=document.getElementById('if-flow');
+  flow.innerHTML='<div class="flow-step"><div class="flow-num">1</div><div class="flow-label">Invoice Value</div><div class="flow-val">'+fmt(invoice)+'</div></div>'
+    +'<div class="flow-step"><div class="flow-num">2</div><div class="flow-label">Advance ('+Math.round(advancePct*100)+'%)</div><div class="flow-val">'+fmt(advance)+'</div></div>'
+    +'<div class="flow-step"><div class="flow-num">3</div><div class="flow-label">Factor Fees</div><div class="flow-val">-'+fmt(totalFee)+'</div></div>'
+    +'<div class="flow-step"><div class="flow-num">4</div><div class="flow-label">Net Proceeds</div><div class="flow-val">'+fmt(netProceeds)+'</div></div>'
+    +'<div class="flow-step"><div class="flow-num">5</div><div class="flow-label">Reserve Released</div><div class="flow-val">'+fmt(Math.max(0,reserveRelease))+'</div></div>';
+  document.getElementById('if-results').classList.add('on');
+}
+</script>
+</body>
+</html>

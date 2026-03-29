@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Timetable Generator | AfroTools</title>
+<meta name="description" content="Generate a personalised exam timetable with study sessions, revision blocks and break reminders. Perfect for WAEC, KCSE, Matric and university exam prep.">
+<meta name="tool-id" content="exam-timetable">
+<link rel="canonical" href="https://afrotools.com/tools/exam-timetable/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/exam-timetable/">
+<meta property="og:title" content="Exam Timetable Generator | AfroTools">
+<meta property="og:description" content="Generate a personalised exam timetable with study sessions and revision blocks for African exams.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Exam Timetable Generator","description":"Generate personalised exam timetable with study sessions and revision blocks for African exams.","url":"https://afrotools.com/tools/exam-timetable/","applicationCategory":"EducationalApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Exam Timetable Generator"}]}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:#0f1419;line-height:1.6;margin:0}
+.hero{background:linear-gradient(135deg,#1a1000 0%,#1e293b 40%,#1e3a5f 100%);padding:48px 0 40px;color:#fff}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+.bc{font-size:.72rem;color:rgba(255,255,255,.6);padding-bottom:16px}
+.bc a{color:rgba(255,255,255,.6);text-decoration:none}.bc a:hover{color:#fff}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{padding:4px 12px;border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.badge-study{background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);color:#c4b5fd}
+.badge-free{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7}
+h1{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;margin:0 0 10px;line-height:1.1}
+h1 em{color:#fbbf24;font-style:normal}
+.hero-sub{font-size:.93rem;color:rgba(255,255,255,.8);max-width:520px;margin:0}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem;color:#111}
+label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem;color:#374151}
+select,input[type=number],input[type=date],input[type=text]{width:100%;padding:.6rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;transition:border .2s;background:#fff}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.5rem;border:none;border-radius:10px;font-family:inherit;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .2s;background:var(--color-primary);color:#fff}
+.btn:hover{background:#0063D1;transform:translateY(-1px)}
+.btn-add{background:#f3f4f6;color:#374151;border:1.5px solid #e5e7eb;font-size:.85rem;padding:.5rem 1rem}
+.btn-add:hover{background:#e5e7eb;transform:none}
+.subject-row{display:grid;grid-template-columns:1fr 100px 40px;gap:.5rem;margin-bottom:.5rem;align-items:center}
+.subject-row input{margin:0}
+.del-btn{background:#fee2e2;border:none;color:#dc2626;font-weight:700;border-radius:8px;padding:.4rem .6rem;cursor:pointer;font-size:.85rem}
+.result-box{display:none;margin-top:1rem}
+.result-box.show{display:block}
+.tt-week{margin-bottom:1.5rem}
+.tt-week-title{font-size:.9rem;font-weight:800;color:#111;margin-bottom:.75rem;padding:.5rem .75rem;background:#f3f4f6;border-radius:8px;display:flex;justify-content:space-between}
+.tt-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem}
+.tt-day{border-radius:8px;overflow:hidden;border:1px solid #e5e7eb}
+.tt-day-header{padding:.4rem;text-align:center;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.tt-day-header.weekday{background:#f3f4f6;color:#374151}
+.tt-day-header.weekend{background:#fef3c7;color:#92400e}
+.tt-slot{padding:.35rem .4rem;font-size:.7rem;border-top:1px solid #f3f4f6;line-height:1.4;min-height:32px}
+.tt-slot.study{background:#EFF6FF;color:#1e40af}
+.tt-slot.revision{background:#fef3c7;color:#92400e}
+.tt-slot.exam{background:#fee2e2;color:#991b1b;font-weight:700}
+.tt-slot.break{background:#f0fdf4;color:#166534}
+.tt-slot.rest{background:#f9fafb;color:#9ca3af}
+.print-btn{margin-top:1rem;background:#1e293b;color:#fff}
+.print-btn:hover{background:#0f172a}
+.sec-body{padding:40px 0}
+@media(max-width:700px){.tt-grid{grid-template-columns:repeat(7,1fr)}.tt-slot{font-size:.6rem;padding:.25rem}.tt-day-header{font-size:.55rem}}
+@media(max-width:500px){.tt-grid{grid-template-columns:1fr}.tt-day{display:flex;flex-wrap:wrap;align-items:center}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="education"></afro-navbar>
+<div class="hero">
+  <div class="container">
+    <nav class="bc"><a href="/">AfroTools</a> / <a href="/education/">Education</a> / Exam Timetable Generator</nav>
+    <div class="badges">
+      <span class="badge badge-study">Study Tool</span>
+      <span class="badge badge-free">Free Tool</span>
+    </div>
+    <h1>Exam Timetable <em>Generator</em></h1>
+    <p class="hero-sub">Generate a personalised study timetable with revision sessions, breaks and exam dates. Perfect for WAEC, KCSE, Matric and university exam preparation.</p>
+  </div>
+</div>
+
+<div class="sec-body">
+<div class="container">
+
+<div class="card">
+  <h2>Set Up Your Timetable</h2>
+  <div class="row">
+    <div>
+      <label for="et-start">Study Start Date</label>
+      <input type="date" id="et-start">
+    </div>
+    <div>
+      <label for="et-hours">Study Hours Per Day</label>
+      <select id="et-hours">
+        <option value="4">4 hours/day (light)</option>
+        <option value="6" selected>6 hours/day (moderate)</option>
+        <option value="8">8 hours/day (intensive)</option>
+        <option value="10">10 hours/day (exam crunch)</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label for="et-style">Study Style</label>
+      <select id="et-style">
+        <option value="balanced">Balanced (equal time per subject)</option>
+        <option value="weak-first">Focus on weak subjects first</option>
+        <option value="exam-order">Exam date order (nearest first)</option>
+      </select>
+    </div>
+    <div>
+      <label for="et-weeks">Duration (weeks)</label>
+      <input type="number" id="et-weeks" value="4" min="1" max="12">
+    </div>
+  </div>
+
+  <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem;color:#374151">Your Subjects</h3>
+  <div style="display:grid;grid-template-columns:1fr 100px 40px;gap:.5rem;padding:0 0 8px;font-size:.7rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em">
+    <span>Subject Name</span><span>Priority (1–5)</span><span></span>
+  </div>
+  <div id="subjects-list"></div>
+  <button class="btn btn-add" onclick="addSubject()" style="margin-top:.5rem">+ Add Subject</button>
+
+  <div style="margin-top:1rem">
+    <button class="btn" onclick="generateTimetable()">Generate Timetable</button>
+  </div>
+
+  <div class="result-box" id="et-result">
+    <div id="tt-summary" style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:.85rem 1rem;font-size:.85rem;color:#166534;margin-bottom:1.5rem"></div>
+    <div id="tt-weeks"></div>
+    <button class="btn print-btn" onclick="window.print()">Print Timetable</button>
+  </div>
+</div>
+
+</div>
+</div>
+
+<afro-footer></afro-footer>
+<script>
+var DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var DEFAULT_SUBJECTS=['Mathematics','English Language','Biology','Chemistry','Physics'];
+function addSubject(name,priority){
+  var list=document.getElementById('subjects-list');
+  var idx=list.children.length;
+  var div=document.createElement('div');div.className='subject-row';
+  div.innerHTML='<input type="text" placeholder="Subject name" value="'+(name||'')+'" class="subj-name">'+
+    '<input type="number" min="1" max="5" value="'+(priority||3)+'" class="subj-pri" style="text-align:center">'+
+    '<button class="del-btn" onclick="this.parentElement.remove()">✕</button>';
+  list.appendChild(div);
+}
+function generateTimetable(){
+  var subjects=[];
+  document.querySelectorAll('.subject-row').forEach(function(row){
+    var name=row.querySelector('.subj-name').value.trim();
+    var pri=parseInt(row.querySelector('.subj-pri').value)||3;
+    if(name)subjects.push({name:name,priority:pri});
+  });
+  if(!subjects.length){alert('Please add at least one subject.');return;}
+  var startDateStr=document.getElementById('et-start').value;
+  var startDate=startDateStr?new Date(startDateStr):new Date();
+  var hoursPerDay=parseInt(document.getElementById('et-hours').value)||6;
+  var weeks=parseInt(document.getElementById('et-weeks').value)||4;
+  var style=document.getElementById('et-style').value;
+  // Sort subjects by style
+  var sortedSubjects=subjects.slice();
+  if(style==='weak-first')sortedSubjects.sort(function(a,b){return b.priority-a.priority;});
+  else if(style==='exam-order')sortedSubjects.sort(function(a,b){return a.priority-b.priority;});
+  var COLORS=['#EFF6FF','#fef3c7','#f0fdf4','#fdf2f8','#f0f9ff','#fff7ed','#faf5ff'];
+  var TEXTCOLORS=['#1e40af','#92400e','#166534','#9d174d','#0369a1','#92400e','#6b21a8'];
+  var subjectColors={};
+  sortedSubjects.forEach(function(s,i){subjectColors[s.name]={bg:COLORS[i%COLORS.length],text:TEXTCOLORS[i%TEXTCOLORS.length]};});
+  // Time slots per day
+  var SLOTS=['Morning 1','Morning 2','Afternoon 1','Afternoon 2','Evening 1','Evening 2','Evening 3','Night'];
+  var usedSlots=Math.min(Math.ceil(hoursPerDay/1.5),SLOTS.length);
+  var totalDays=weeks*7;
+  var subjIdx=0;
+  var weekHtml='';
+  for(var w=0;w<weeks;w++){
+    var dayHtml='<div class="tt-week"><div class="tt-week-title"><span>Week '+(w+1)+'</span><span style="font-weight:400;font-size:.8rem;color:#6b7280">'+getWeekRange(startDate,w)+'</span></div><div class="tt-grid">';
+    for(var d=0;d<7;d++){
+      var isWeekend=d>=5;
+      var daySlots=isWeekend?Math.floor(usedSlots*0.5):usedSlots;
+      dayHtml+='<div class="tt-day"><div class="tt-day-header '+(isWeekend?'weekend':'weekday')+'">'+DAYS[d]+'</div>';
+      for(var sl=0;sl<Math.max(usedSlots,4);sl++){
+        if(sl===Math.floor(usedSlots/2)&&usedSlots>4){dayHtml+='<div class="tt-slot break">🍎 Break</div>';continue;}
+        if(sl>=daySlots||isWeekend&&sl>=daySlots){dayHtml+='<div class="tt-slot rest">'+(isWeekend&&sl===0?'Rest/Review':'—')+'</div>';continue;}
+        var subj=sortedSubjects[subjIdx%sortedSubjects.length];
+        var sc=subjectColors[subj.name];
+        dayHtml+='<div class="tt-slot study" style="background:'+sc.bg+';color:'+sc.text+'">'+subj.name+'</div>';
+        subjIdx++;
+      }
+      dayHtml+='</div>';
+    }
+    dayHtml+='</div></div>';
+    weekHtml+=dayHtml;
+  }
+  document.getElementById('tt-weeks').innerHTML=weekHtml;
+  var totalStudyDays=weeks*5+(weeks*2*Math.max(Math.floor(usedSlots/2)/usedSlots,0));
+  document.getElementById('tt-summary').innerHTML='<strong>Timetable Ready!</strong> '+weeks+' weeks · '+subjects.length+' subjects · '+hoursPerDay+' hours/day target · Color-coded blocks per subject. Print this page or take a screenshot for your wall.';
+  document.getElementById('et-result').classList.add('show');
+}
+function getWeekRange(startDate,weekOffset){
+  var d=new Date(startDate);d.setDate(d.getDate()+weekOffset*7);
+  var d2=new Date(d);d2.setDate(d2.getDate()+6);
+  var fmt=function(date){return date.toLocaleDateString('en-GB',{day:'numeric',month:'short'});};
+  return fmt(d)+' – '+fmt(d2);
+}
+document.addEventListener('DOMContentLoaded',function(){
+  DEFAULT_SUBJECTS.forEach(function(s){addSubject(s,3);});
+  var today=new Date();today.setDate(today.getDate()+1);
+  document.getElementById('et-start').value=today.toISOString().split('T')[0];
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EV Charging Cost Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate electric vehicle charging cost in Africa. Compare EV running costs vs petrol cars using local electricity tariffs. Find charging time and cost per km.">
+<link rel="canonical" href="https://afrotools.com/tools/ev-charging/">
+<meta property="og:title" content="EV Charging Cost Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate EV charging cost and compare against petrol cars using local electricity tariffs across Africa.">
+<meta property="og:url" content="https://afrotools.com/tools/ev-charging/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> EV Charging Cost</nav>
+<h1>🚗 <em>EV Charging Cost Calculator</em></h1>
+<p class="en-tool-hero-sub">Calculate electric vehicle charging cost using local electricity tariffs and compare against petrol running costs across Africa.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>⚡</span><h2>Your EV Details</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect">
+<option value="ZA">South Africa</option><option value="EG">Egypt</option><option value="MA">Morocco</option><option value="KE">Kenya</option><option value="NG">Nigeria</option><option value="GH">Ghana</option><option value="TN">Tunisia</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="batteryKWh">Battery Capacity (kWh)</label><select class="en-select" id="batteryKWh">
+<option value="24">24 kWh (entry — ~160km range)</option>
+<option value="40" selected>40 kWh (compact — ~270km range)</option>
+<option value="60">60 kWh (mid-size — ~400km range)</option>
+<option value="82">82 kWh (large — ~550km range)</option>
+<option value="100">100 kWh (performance)</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="chargingLevel">Charging Type</label><select class="en-select" id="chargingLevel"><option value="home" selected>Level 1/2 Home Charging (7.4kW)</option><option value="fast">DC Fast Charge (50kW)</option><option value="rapid">Rapid Charge (150kW)</option></select></div>
+<div class="en-field"><label class="en-label" for="dailyKm">Daily Driving Distance (km)</label><input class="en-input" type="number" id="dailyKm" placeholder="e.g. 50" value="50" inputmode="numeric"></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Calculate EV Cost</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Monthly EV Fuel Cost</div><div class="en-res-amount" id="rMonthly">—</div><div class="en-res-sub" id="rSaving">vs Petrol saving: —</div></div>
+<table class="en-results-table"><thead><tr><th>Metric</th><th>Electric</th><th>Petrol Equivalent</th></tr></thead><tbody>
+<tr><td>Cost per 100km</td><td id="rEvKm">—</td><td id="rIceKm">—</td></tr>
+<tr><td>Daily Cost</td><td id="rEvDay">—</td><td id="rIceDay" style="color:#dc2626">—</td></tr>
+<tr><td>Monthly Cost</td><td id="rEvMonth">—</td><td id="rIceMonth" style="color:#dc2626">—</td></tr>
+<tr><td>Annual Cost</td><td id="rEvYear">—</td><td id="rIceYear" style="color:#dc2626">—</td></tr>
+<tr><td>Annual Fuel Saving</td><td colspan="2" id="rAnnSaving" style="font-weight:700;color:#16a34a">—</td></tr>
+<tr><td>Full Charge Cost</td><td id="rCharge">—</td><td>N/A</td></tr>
+<tr><td>Charging Time</td><td id="rTime">—</td><td>~5 min (refuel)</td></tr>
+<tr><td>CO₂ Saved / Month</td><td colspan="2" id="rCO2">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>EV Adoption in Africa — Cost Analysis</h2>
+<p>Electric vehicles are gaining ground in South Africa, Egypt, Morocco, and Kenya. With local electricity tariffs typically far below the per-km equivalent of petrol, EVs offer significant running cost savings. This calculator uses real local tariff data to give you an accurate cost comparison.</p>
+<p><strong>Disclaimer:</strong> Calculations assume standard EV efficiency of 17kWh/100km. Actual consumption varies by model, driving style, and temperature.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/ev-charging-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.EVChargingEngine;
+var CD=ENERGY_DATA.countries;
+document.getElementById("calcBtn").addEventListener("click",function(){
+var cc=document.getElementById("countrySelect").value;
+var i={
+  batteryKWh:document.getElementById("batteryKWh").value,
+  chargingLevel:document.getElementById("chargingLevel").value,
+  country:cc,
+  dailyKm:parseFloat(document.getElementById("dailyKm").value)||50
+};
+var r=E.calculate(i);
+if(r.error){alert(r.error);return;}
+var cd=CD[cc];
+var sym=cd?cd.currencySymbol:"$";
+document.getElementById("rMonthly").textContent=r.monthlyCost;
+document.getElementById("rSaving").textContent="vs Petrol saving: "+r.monthlyFuelSaving+"/mo";
+document.getElementById("rEvKm").textContent=r.evCostPer100km;
+document.getElementById("rIceKm").textContent=r.iceCostPer100km;
+document.getElementById("rEvDay").textContent=r.dailyCost;
+document.getElementById("rIceDay").textContent="~"+r.annualCost.replace(r.annualCost,sym+Math.round(parseFloat(r.annualCost.replace(/[^0-9.]/g,""))/12).toLocaleString());
+document.getElementById("rEvMonth").textContent=r.monthlyCost;
+document.getElementById("rIceMonth").textContent=sym+Math.round((parseFloat(r.annualFuelSaving.replace(/[^0-9.]/g,""))+parseFloat(r.annualCost.replace(/[^0-9.]/g,"")))/12).toLocaleString();
+document.getElementById("rEvYear").textContent=r.annualCost;
+document.getElementById("rIceYear").textContent=sym+(parseFloat(r.annualFuelSaving.replace(/[^0-9.]/g,""))+parseFloat(r.annualCost.replace(/[^0-9.]/g,""))).toLocaleString();
+document.getElementById("rAnnSaving").textContent=r.annualFuelSaving+"/year";
+document.getElementById("rCharge").textContent=r.fullChargeCost;
+document.getElementById("rTime").textContent=r.chargingTimeHrs;
+document.getElementById("rCO2").textContent=r.co2SavingMonthly+" saved";
+var obs=document.getElementById("rObs");
+if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

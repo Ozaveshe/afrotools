@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Africa Domestic Flight Price Tracker | AfroTools</title>
+<meta name="description" content="Track and compare domestic flight prices across African countries. Understand price patterns for Ethiopian Airlines, Kenya Airways, FlySafair, and Air Côte d'Ivoire routes.">
+<link rel="canonical" href="https://afrotools.com/tools/africa-flight/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Africa Domestic Flight Price Tracker | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/africa-flight/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="tool-id" content="africa-flight">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.flight-hero{background:linear-gradient(135deg,#0f1419,#1a1f2e);border-radius:14px;padding:1.75rem;text-align:center;margin-bottom:1.25rem}
+.fh-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.65)}
+.fh-price{font-size:clamp(2rem,6vw,3.5rem);font-weight:800;color:#f59e0b;margin:.25rem 0}
+.fh-range{font-size:.85rem;color:rgba(255,255,255,.6)}
+.airline-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1.25rem}
+.airline-card{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:1.25rem}
+.airline-card.cheapest{border-color:var(--color-primary);background:#eff6ff}
+.airline-name{font-size:.88rem;font-weight:700;color:#1a1a2e;margin-bottom:.25rem}
+.airline-price{font-size:1.2rem;font-weight:800;color:var(--color-primary)}
+.airline-class{font-size:.72rem;color:#6b7280;margin-top:2px}
+.airline-badge{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:100px;background:#dcfce7;color:#15803d;margin-top:.35rem}
+.price-tips{background:#fefce8;border:1px solid #fde68a;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#92400e;line-height:1.7;margin-top:1rem}
+.route-details{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1rem}
+.rd-box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:.85rem;text-align:center}
+.rd-val{font-size:1rem;font-weight:800;color:#1a1a2e}
+.rd-label{font-size:.7rem;color:#9ca3af;margin-top:3px}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.airline-grid{grid-template-columns:1fr}.route-details{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Flight Price Tracker (Domestic Africa)
+    </nav>
+    <h1>Africa <em>Flight Price</em> Tracker</h1>
+    <p class="tool-hero-sub">Understand typical domestic flight price ranges across African countries. See airline options, price patterns by booking time, and tips to find the cheapest fares.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x2708;&#xfe0f; Pan-African</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x1f4ca; Price Patterns</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>&#x2708;&#xfe0f; Route &amp; Travel Details</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Country</label>
+        <select id="flightCountry" onchange="updateFlightRoutes()">
+          <option value="southafrica">South Africa</option>
+          <option value="kenya">Kenya</option>
+          <option value="nigeria">Nigeria</option>
+          <option value="ethiopia">Ethiopia</option>
+          <option value="ghana">Ghana</option>
+          <option value="tanzania">Tanzania</option>
+          <option value="egypt">Egypt</option>
+          <option value="morocco">Morocco</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Route</label>
+        <select id="flightRoute"></select>
+      </div>
+      <div class="field">
+        <label>Cabin Class</label>
+        <select id="flightClass">
+          <option value="economy">Economy</option>
+          <option value="business">Business Class</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Booking Window</label>
+        <select id="flightBooking">
+          <option value="advance">3+ weeks ahead</option>
+          <option value="week">1-2 weeks ahead</option>
+          <option value="lastminute">Last minute (≤3 days)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcFlightPrice()">Check Price Range</button>
+
+    <div class="results" id="flightResults">
+      <div class="flight-hero">
+        <div class="fh-label">Estimated Price Range (Economy)</div>
+        <div class="fh-price" id="flightPriceDisplay">$0</div>
+        <div class="fh-range" id="flightRangeSub">Typical market range</div>
+      </div>
+      <div class="airline-grid" id="flightAirlines"></div>
+      <div class="route-details" id="flightRouteDetails"></div>
+      <div class="price-tips" id="flightTips"></div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>Why are domestic flights so expensive in Africa?</summary><div class="faq-body">African domestic flights are expensive due to: limited competition (often monopoly or duopoly on routes), high airport taxes and fees, expensive fuel (African fuel prices are among the highest globally), small aircraft on thin routes, high maintenance costs, limited scale, and regulatory barriers. South Africa is the exception with strong low-cost carriers like FlySafair and Lift. Intra-African international flights are often more expensive than equivalent European routes due to bilateral air service agreements limiting competition.</div></details>
+    <details><summary>Which is the cheapest airline for domestic African travel?</summary><div class="faq-body">By country: South Africa — FlySafair consistently offers the cheapest domestic fares. Kenya — Jambojet (Kenya Airways subsidiary) offers budget fares. Nigeria — Air Peace and Ibom Air offer competitive rates. Ethiopia — Ethiopian Airlines dominates, with limited competition. Egypt — EgyptAir is the main domestic carrier. Ghana — Africa World Airlines competes with limited international carriers. The low-cost carrier model is growing but remains nascent outside South Africa.</div></details>
+    <details><summary>When is the best time to book domestic African flights?</summary><div class="faq-body">Book 3-6 weeks in advance for the best fares on most African routes. Last-minute fares can be very high as many African airlines revenue-manage aggressively. Avoid booking during: public holidays, school holiday periods, major events (African Cup of Nations, etc.), and end-of-month travel (when business travelers are at peak). Tuesday-Thursday departures are typically cheaper than Monday mornings or Friday afternoons. Early morning (5-7am) and late evening flights tend to be cheapest.</div></details>
+    <details><summary>Is it cheaper to fly or take the bus between African cities?</summary><div class="faq-body">Bus (or road) is almost always significantly cheaper — often 5-15x cheaper for equivalent routes. Johannesburg to Durban: flight ~R800-1,500, bus ~R200-350. Nairobi to Mombasa: flight ~$80-150, bus/train ~$10-25. The trade-off is time — a 5-hour bus ride vs 1-hour flight. For distances over 600km, flying often makes more economic sense when you factor in accommodation savings from arriving same-day.</div></details>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script>
+var FLIGHT_ROUTES = {
+  southafrica: {
+    currency: 'R', currencyCode: 'ZAR',
+    routes: [
+      {name:'JNB (Joburg) → CPT (Cape Town)', km:1268, duration:120, airlines:['FlySafair','Kulula','South African Airways','Airlink','Lift'], prices:{economy:{advance:[800,1800], week:[1200,2800], lastminute:[1500,4000]}, business:{advance:[3000,6000], week:[4000,8000], lastminute:[5000,12000]}}},
+      {name:'JNB → DUR (Durban)', km:498, duration:55, airlines:['FlySafair','Mango (Suspended)','SAA'], prices:{economy:{advance:[500,1200], week:[800,1800], lastminute:[1000,3000]}, business:{advance:[2000,4500], week:[2500,6000], lastminute:[3500,9000]}}},
+      {name:'CPT → DUR', km:1175, duration:110, airlines:['FlySafair','Kulula','SAA'], prices:{economy:{advance:[700,1600], week:[1100,2500], lastminute:[1400,3500]}, business:{advance:[2800,5500], week:[3500,7000], lastminute:[4500,11000]}}}
+    ]
+  },
+  kenya: {
+    currency: 'KSh', currencyCode: 'KES',
+    routes: [
+      {name:'NBO (Nairobi) → MBA (Mombasa)', km:440, duration:60, airlines:['Kenya Airways','Jambojet','Fly540'], prices:{economy:{advance:[5000,12000], week:[8000,18000], lastminute:[12000,28000]}, business:{advance:[18000,40000], week:[25000,55000], lastminute:[35000,80000]}}},
+      {name:'NBO → KIS (Kisumu)', km:280, duration:50, airlines:['Kenya Airways','Jambojet'], prices:{economy:{advance:[4500,10000], week:[7000,15000], lastminute:[10000,24000]}, business:{advance:[15000,35000], week:[20000,45000], lastminute:[28000,70000]}}},
+      {name:'NBO → EDB (Eldoret)', km:310, duration:55, airlines:['Kenya Airways','Jambojet'], prices:{economy:{advance:[5000,11000], week:[7500,16000], lastminute:[11000,26000]}, business:{advance:[16000,38000], week:[22000,50000], lastminute:[30000,75000]}}}
+    ]
+  },
+  nigeria: {
+    currency: '₦', currencyCode: 'NGN',
+    routes: [
+      {name:'LOS (Lagos) → ABV (Abuja)', km:538, duration:65, airlines:['Air Peace','Ibom Air','Arik Air','United Nigeria'], prices:{economy:{advance:[50000,120000], week:[80000,180000], lastminute:[120000,300000]}, business:{advance:[200000,450000], week:[280000,600000], lastminute:[400000,900000]}}},
+      {name:'LOS → PHC (Port Harcourt)', km:453, duration:55, airlines:['Air Peace','Ibom Air','Arik'], prices:{economy:{advance:[45000,110000], week:[70000,165000], lastminute:[110000,280000]}, business:{advance:[180000,400000], week:[250000,550000], lastminute:[350000,800000]}}},
+      {name:'ABV → KAN (Kano)', km:520, duration:60, airlines:['Air Peace','Arik Air'], prices:{economy:{advance:[40000,100000], week:[65000,155000], lastminute:[100000,260000]}, business:{advance:[160000,380000], week:[220000,520000], lastminute:[320000,750000]}}}
+    ]
+  },
+  ethiopia: {
+    currency: 'ETB', currencyCode: 'ETB',
+    routes: [
+      {name:'ADD (Addis) → DIR (Dire Dawa)', km:460, duration:60, airlines:['Ethiopian Airlines'], prices:{economy:{advance:[2000,4500], week:[3000,6500], lastminute:[4500,10000]}, business:{advance:[8000,18000], week:[11000,24000], lastminute:[16000,35000]}}},
+      {name:'ADD → LLI (Lalibela)', km:530, duration:75, airlines:['Ethiopian Airlines'], prices:{economy:{advance:[2500,5500], week:[3500,7500], lastminute:[5500,12000]}, business:{advance:[9000,20000], week:[12000,26000], lastminute:[18000,40000]}}}
+    ]
+  },
+  ghana: {
+    currency: 'GH₵', currencyCode: 'GHS',
+    routes: [
+      {name:'ACC (Accra) → KMS (Kumasi)', km:250, duration:50, airlines:['Africa World Airlines','PassionAir'], prices:{economy:{advance:[300,650], week:[450,900], lastminute:[600,1400]}, business:{advance:[1000,2200], week:[1400,3000], lastminute:[2000,4500]}}},
+      {name:'ACC → TML (Tamale)', km:590, duration:75, airlines:['Africa World Airlines'], prices:{economy:{advance:[400,850], week:[600,1200], lastminute:[800,1800]}, business:{advance:[1400,3000], week:[1800,3800], lastminute:[2500,5500]}}}
+    ]
+  },
+  tanzania: {
+    currency: 'TZS', currencyCode: 'TZS',
+    routes: [
+      {name:'DAR (Dar es Salaam) → ZNZ (Zanzibar)', km:75, duration:30, airlines:['Precision Air','Coastal Aviation','ZanAir'], prices:{economy:{advance:[60000,130000], week:[90000,190000], lastminute:[130000,280000]}, business:{advance:[200000,450000], week:[280000,600000], lastminute:[400000,850000]}}},
+      {name:'DAR → JRO (Kilimanjaro)', km:400, duration:65, airlines:['Precision Air','Ethiopian (via)'], prices:{economy:{advance:[100000,220000], week:[150000,310000], lastminute:[220000,500000]}, business:{advance:[350000,780000], week:[480000,1050000], lastminute:[700000,1500000]}}}
+    ]
+  },
+  egypt: {
+    currency: 'EGP', currencyCode: 'EGP',
+    routes: [
+      {name:'CAI (Cairo) → HRG (Hurghada)', km:470, duration:70, airlines:['EgyptAir','Nile Air','Air Cairo'], prices:{economy:{advance:[1500,3500], week:[2200,5000], lastminute:[3200,7500]}, business:{advance:[5000,12000], week:[7000,16000], lastminute:[10000,22000]}}},
+      {name:'CAI → SSH (Sharm el-Sheikh)', km:390, duration:60, airlines:['EgyptAir','Nile Air'], prices:{economy:{advance:[1400,3200], week:[2000,4500], lastminute:[3000,7000]}, business:{advance:[4500,11000], week:[6500,15000], lastminute:[9000,20000]}}}
+    ]
+  },
+  morocco: {
+    currency: 'MAD', currencyCode: 'MAD',
+    routes: [
+      {name:'CMN (Casablanca) → RAK (Marrakech)', km:240, duration:55, airlines:['Royal Air Maroc','Ryanair','easyJet'], prices:{economy:{advance:[200,600], week:[350,900], lastminute:[500,1500]}, business:{advance:[800,2000], week:[1100,2800], lastminute:[1500,4000]}}},
+      {name:'CMN → AGA (Agadir)', km:450, duration:75, airlines:['Royal Air Maroc','Transavia'], prices:{economy:{advance:[250,700], week:[400,1000], lastminute:[600,1800]}, business:{advance:[900,2200], week:[1200,3000], lastminute:[1700,4500]}}}
+    ]
+  }
+};
+
+function updateFlightRoutes() {
+  var country = document.getElementById('flightCountry').value;
+  var data = FLIGHT_ROUTES[country];
+  var routeEl = document.getElementById('flightRoute');
+  routeEl.innerHTML = (data ? data.routes : []).map(function(r, i){
+    return '<option value="' + i + '">' + r.name + '</option>';
+  }).join('');
+}
+updateFlightRoutes();
+
+function calcFlightPrice() {
+  var country = document.getElementById('flightCountry').value;
+  var routeIdx = parseInt(document.getElementById('flightRoute').value) || 0;
+  var cabinClass = document.getElementById('flightClass').value;
+  var booking = document.getElementById('flightBooking').value;
+
+  var data = FLIGHT_ROUTES[country];
+  if (!data) return;
+
+  var route = data.routes[routeIdx];
+  if (!route) return;
+
+  var prices = route.prices[cabinClass][booking];
+  var midPrice = Math.round((prices[0] + prices[1]) / 2);
+
+  var fmt = function(n){ return data.currency + ' ' + Math.round(n).toLocaleString(); };
+
+  document.getElementById('flightPriceDisplay').textContent = fmt(midPrice);
+  document.getElementById('flightRangeSub').textContent = 'Range: ' + fmt(prices[0]) + ' – ' + fmt(prices[1]) + ' | ' + (booking === 'advance' ? 'Best time to book' : booking === 'week' ? '1-2 weeks ahead' : 'Last minute premium');
+
+  var cheapest = route.airlines[0];
+  document.getElementById('flightAirlines').innerHTML = route.airlines.slice(0, 4).map(function(airline, i) {
+    var variance = (i === 0 ? 1.0 : (1 + i * 0.15));
+    var price = Math.round(midPrice * variance);
+    var isCheapest = i === 0;
+    return '<div class="airline-card' + (isCheapest ? ' cheapest' : '') + '">' +
+      '<div class="airline-name">&#x2708;&#xfe0f; ' + airline + '</div>' +
+      '<div class="airline-price">' + fmt(price) + '</div>' +
+      '<div class="airline-class">' + (cabinClass === 'economy' ? 'Economy' : 'Business') + ' class</div>' +
+      (isCheapest ? '<div class="airline-badge">Typically Cheapest</div>' : '') +
+      '</div>';
+  }).join('');
+
+  document.getElementById('flightRouteDetails').innerHTML = [
+    [route.km + ' km', 'Distance'],
+    [route.duration + ' min', 'Flight Time'],
+    [fmt(prices[0]), 'Minimum Fare'],
+    [route.airlines.length + ' airlines', 'Options']
+  ].map(function(d){
+    return '<div class="rd-box"><div class="rd-val">' + d[0] + '</div><div class="rd-label">' + d[1] + '</div></div>';
+  }).join('');
+
+  var tipText = booking === 'advance'
+    ? '&#x1f4a1; You\'re booking in advance — great for savings! Set fare alerts on Google Flights, Skyscanner, or Hopper. Tuesdays and Wednesdays often have cheaper fares. Consider flying early morning (before 8am) for lowest prices.'
+    : booking === 'week'
+    ? '&#x26a0;&#xfe0f; Booking 1-2 weeks ahead — prices are rising. Check multiple booking platforms (Jumia Travel, Travelstart, Duffel) and compare directly with the airline website. Some airlines offer last-seat discounts to loyalty members.'
+    : '&#x1f4b8; Last-minute booking premium: you\'re paying 30-100% more than advance booking prices. For future trips, aim to book 3-6 weeks ahead. Some low-cost carriers (FlySafair in SA) do offer last-minute deals — check their app directly.';
+
+  document.getElementById('flightTips').innerHTML = tipText;
+  document.getElementById('flightResults').classList.add('on');
+}
+</script>
+</body>
+</html>

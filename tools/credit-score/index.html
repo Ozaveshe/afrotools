@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Credit Score Explainer &amp; Simulator — Africa | AfroTools</title>
+<meta name="description" content="Understand and simulate your African credit score (CRB Kenya, TransUnion SA, CRC Nigeria). See what factors affect your score and how to improve it.">
+<link rel="canonical" href="https://afrotools.com/tools/credit-score/">
+<meta property="og:title" content="Credit Score Explainer & Simulator — Africa | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/credit-score/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"African Credit Score Simulator","url":"https://afrotools.com/tools/credit-score/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Credit Score Simulator","item":"https://afrotools.com/tools/credit-score/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.factor-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+.label-hint{font-size:.72rem;color:#9ca3af;font-weight:400}
+select,input[type="number"],input[type="range"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+input[type="range"]{padding:.3rem 0;border:none;accent-color:var(--color-primary)}
+select:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.score-display{text-align:center;padding:2rem;background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;color:#fff;margin-bottom:1.25rem}
+.score-num{font-size:clamp(3rem,8vw,5rem);font-weight:800;line-height:1;margin:.5rem 0}
+.score-grade{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.score-bar-wrap{max-width:400px;margin:.75rem auto}
+.score-bar{height:16px;border-radius:10px;background:linear-gradient(to right,#dc2626,#f59e0b,#84cc16,#059669);overflow:hidden;position:relative}
+.score-marker{position:absolute;top:-4px;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #0f172a;transform:translateX(-50%);transition:left .6s}
+.factor-list{margin-top:1.25rem}
+.factor-item{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid #f1f5f9}
+.factor-name{font-size:.88rem;color:#374151}
+.factor-weight{font-size:.8rem;color:#9ca3af}
+.factor-score{font-size:.88rem;font-weight:700}
+.factor-score.good{color:#059669}
+.factor-score.medium{color:#f59e0b}
+.factor-score.bad{color:#dc2626}
+.tips-list{margin-top:.75rem}
+.tip-item{display:flex;gap:.75rem;align-items:flex-start;padding:.65rem 0;border-bottom:1px solid #f1f5f9;font-size:.88rem}
+.tip-icon{font-size:1rem;flex-shrink:0}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.factor-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Credit Score Simulator</nav>
+    <h1>Credit Score Explainer &amp; Simulator</h1>
+    <p>Simulate your African credit score based on payment history, utilization, credit age, and more. See what improves or damages your score.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">CRB / TransUnion / CRC</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Credit Score Simulator</h2>
+    <div class="factor-grid">
+      <div class="form-group">
+        <label for="cs-payment">Payment History <span class="label-hint">(35% weight)</span></label>
+        <select id="cs-payment">
+          <option value="100">Always pays on time</option>
+          <option value="85">Mostly on time (1-2 late payments)</option>
+          <option value="65">Some late payments (30-60 days)</option>
+          <option value="40">Frequent late payments</option>
+          <option value="10">Defaulted on loans</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cs-utilization">Credit Utilization <span class="label-hint">(30% weight)</span></label>
+        <select id="cs-utilization">
+          <option value="100">0-10% (excellent)</option>
+          <option value="85">11-30% (good)</option>
+          <option value="65">31-50% (fair)</option>
+          <option value="40">51-75% (poor)</option>
+          <option value="20">76-100% (very poor)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cs-age">Credit History Age <span class="label-hint">(15% weight)</span></label>
+        <select id="cs-age">
+          <option value="100">5+ years</option>
+          <option value="80">3-5 years</option>
+          <option value="60">1-3 years</option>
+          <option value="40">6-12 months</option>
+          <option value="20">Less than 6 months</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cs-mix">Credit Mix <span class="label-hint">(10% weight)</span></label>
+        <select id="cs-mix">
+          <option value="100">Mortgage + car + personal + card</option>
+          <option value="80">2-3 types of credit</option>
+          <option value="60">Only one type (e.g. personal loans)</option>
+          <option value="40">Only digital loans / informal</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cs-inquiries">New Credit Inquiries <span class="label-hint">(10% weight)</span></label>
+        <select id="cs-inquiries">
+          <option value="100">None in past year</option>
+          <option value="80">1-2 in past year</option>
+          <option value="60">3-5 in past year</option>
+          <option value="30">6+ in past year</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcCreditScore()">Simulate My Credit Score</button>
+    <div class="results" id="cs-results">
+      <div class="score-display">
+        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;opacity:.7;margin-bottom:.5rem">Estimated Credit Score</div>
+        <div class="score-num" id="cs-score">---</div>
+        <div class="score-grade" id="cs-grade">---</div>
+        <div class="score-bar-wrap">
+          <div class="score-bar"><div class="score-marker" id="cs-marker" style="left:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:.7rem;opacity:.6;margin-top:.35rem"><span>300 (Poor)</span><span>850 (Excellent)</span></div>
+        </div>
+      </div>
+      <div class="factor-list" id="cs-factor-list"></div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:1rem 0 .5rem">Tips to Improve Your Score</h3>
+      <div class="tips-list" id="cs-tips"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What credit bureaus operate in Africa?</summary><div class="faq-a">Major African credit bureaus: Kenya — TransUnion Kenya, Metropol CRB, Creditinfo CRB; Nigeria — CRC Credit Bureau, First Central Credit Bureau, XDS Credit Bureau; South Africa — TransUnion SA, Experian SA, Equifax SA; Ghana — XDS Data, Hudson Price; Rwanda — BNR Credit Reference Bureau. Each uses slightly different scoring models.</div></details></div>
+    <div class="faq-item"><details><summary>What score do I need for a bank loan in Africa?</summary><div class="faq-a">Score requirements vary by lender. Typically: 700+ for prime rates and high loan amounts, 600-699 for standard rates, 500-599 for higher rates with stricter terms, below 500 is very difficult to get formal credit. Many African banks also weight income and employment stability heavily alongside credit scores.</div></details></div>
+    <div class="faq-item"><details><summary>How long does negative information stay on my credit report?</summary><div class="faq-a">In Kenya: adverse listings are removed after 5 years (cleared accounts) or 7 years (fraud). In South Africa: defaults for 1-5 years depending on resolution, adverse listings up to 5 years. In Nigeria: adverse credit information stays 5-7 years. Paid-off loans show positively forever. Always request a free credit report annually to check for errors.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function calcCreditScore(){
+  var payment=parseInt(document.getElementById('cs-payment').value);
+  var utilization=parseInt(document.getElementById('cs-utilization').value);
+  var age=parseInt(document.getElementById('cs-age').value);
+  var mix=parseInt(document.getElementById('cs-mix').value);
+  var inquiries=parseInt(document.getElementById('cs-inquiries').value);
+  var composite=(payment*0.35)+(utilization*0.30)+(age*0.15)+(mix*0.10)+(inquiries*0.10);
+  var score=Math.round(300+(composite/100)*550);
+  score=Math.max(300,Math.min(850,score));
+  var grade,gradeColor;
+  if(score>=750){grade='Excellent';gradeColor='#10b981';}
+  else if(score>=700){grade='Good';gradeColor='#84cc16';}
+  else if(score>=650){grade='Fair';gradeColor='#f59e0b';}
+  else if(score>=600){grade='Poor';gradeColor='#f97316';}
+  else{grade='Very Poor';gradeColor='#dc2626';}
+  document.getElementById('cs-score').textContent=score;
+  var gradeEl=document.getElementById('cs-grade');
+  gradeEl.textContent=grade;
+  gradeEl.style.color=gradeColor;
+  var pct=((score-300)/550)*100;
+  document.getElementById('cs-marker').style.left=pct+'%';
+  var factors=[
+    {name:'Payment History',weight:'35%',score:payment},
+    {name:'Credit Utilization',weight:'30%',score:utilization},
+    {name:'Credit History Age',weight:'15%',score:age},
+    {name:'Credit Mix',weight:'10%',score:mix},
+    {name:'New Inquiries',weight:'10%',score:inquiries}
+  ];
+  var factorList=document.getElementById('cs-factor-list');
+  factorList.innerHTML='';
+  factors.forEach(function(f){
+    var cls=f.score>=80?'good':f.score>=60?'medium':'bad';
+    var label=f.score>=80?'Good':f.score>=60?'Fair':'Poor';
+    factorList.innerHTML+='<div class="factor-item"><span class="factor-name">'+f.name+'</span><span class="factor-weight">'+f.weight+'</span><span class="factor-score '+cls+'">'+label+'</span></div>';
+  });
+  var tips=[];
+  if(payment<80)tips.push({icon:'&#x23F0;','tip':'Set up automatic payments or reminders — payment history is the single biggest factor (35%).'});
+  if(utilization<80)tips.push({icon:'&#x1F4B3;','tip':'Pay down credit card and loan balances. Try to keep utilization below 30% of your credit limit.'});
+  if(age<80)tips.push({icon:'&#x1F4C5;','tip':'Keep your oldest credit accounts open even if unused — credit age improves over time.'});
+  if(mix<80)tips.push({icon:'&#x1F4CB;','tip':'Diversify credit types. Having both a secured loan (car/property) and unsecured (personal) improves your mix.'});
+  if(inquiries<80)tips.push({icon:'&#x1F50D;','tip':'Avoid applying for multiple loans in a short period — each hard inquiry can lower your score by 5-10 points.'});
+  if(tips.length===0)tips.push({icon:'&#x2705;','tip':'Great profile! Maintain your current habits to keep your score high. Request your free annual credit report to check for errors.'});
+  var tipsEl=document.getElementById('cs-tips');
+  tipsEl.innerHTML='';
+  tips.forEach(function(t){
+    tipsEl.innerHTML+='<div class="tip-item"><span class="tip-icon">'+t.icon+'</span><span>'+t.tip+'</span></div>';
+  });
+  document.getElementById('cs-results').classList.add('on');
+}
+</script>
+</body>
+</html>

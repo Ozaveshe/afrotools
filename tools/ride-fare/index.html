@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ride-Hailing Fare Estimator Africa — Uber, Bolt Fares | AfroTools</title>
+<meta name="description" content="Estimate Uber, Bolt, and local ride-hailing fares across African cities. Compare economy, comfort, and XL categories with surge pricing for Nairobi, Lagos, Accra, Johannesburg and more.">
+<link rel="canonical" href="https://afrotools.com/tools/ride-fare/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Ride-Hailing Fare Estimator Africa | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/ride-fare/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="tool-id" content="ride-fare">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Ride-Hailing Fare Estimator Africa","description":"Estimate Uber and Bolt fares across 15 African countries with surge pricing.","url":"https://afrotools.com/tools/ride-fare","applicationCategory":"TravelApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Transport & Logistics","item":"https://afrotools.com/transport/"},{"@type":"ListItem","position":3,"name":"Ride-Hailing Fare Estimator","item":"https://afrotools.com/tools/ride-fare/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+.field.full{grid-column:1/-1}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+input[type=number],select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s,transform .1s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.btn-calc:active{transform:scale(.98)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.provider-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.25rem}
+.provider-card{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:1.25rem}
+.provider-name{font-size:.85rem;font-weight:700;color:#1a1a2e;margin-bottom:.25rem}
+.provider-fare{font-size:1.4rem;font-weight:800;color:var(--color-primary)}
+.provider-range{font-size:.78rem;color:#6b7280;margin-top:2px}
+.surge-warning{background:#fefce8;border:1px solid #fde68a;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#92400e;line-height:1.6;margin-bottom:1rem}
+.monthly-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.provider-cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Ride-Hailing Fare Estimator
+    </nav>
+    <h1>Ride-Hailing <em>Fare Estimator</em></h1>
+    <p class="tool-hero-sub">Estimate Uber, Bolt, and local app fares across African cities. Compare economy vs comfort, see surge pricing, and calculate monthly commute costs.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x1f695; 15 Countries</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x23f1;&#xfe0f; Instant Results</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>&#x1f4cd; Enter Your Trip Details</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Country</label>
+        <select id="rideCountry" onchange="updateRideCity()">
+          <option value="kenya">Kenya</option>
+          <option value="nigeria">Nigeria</option>
+          <option value="ghana">Ghana</option>
+          <option value="southafrica">South Africa</option>
+          <option value="tanzania">Tanzania</option>
+          <option value="uganda">Uganda</option>
+          <option value="ethiopia">Ethiopia</option>
+          <option value="senegal">Senegal</option>
+          <option value="cameroon">Cameroon</option>
+          <option value="egypt">Egypt</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>City</label>
+        <select id="rideCity"></select>
+      </div>
+      <div class="field">
+        <label>Distance (km)</label>
+        <input type="number" id="rideDistance" placeholder="e.g. 8" value="8" min="1">
+      </div>
+      <div class="field">
+        <label>Estimated Travel Time (minutes)</label>
+        <input type="number" id="rideTime" placeholder="e.g. 20" value="20" min="1">
+      </div>
+      <div class="field">
+        <label>Time of Day</label>
+        <select id="rideSurge">
+          <option value="1.0">Normal (Off-peak)</option>
+          <option value="1.5">Busy (Evening rush)</option>
+          <option value="2.0">Peak (Morning rush)</option>
+          <option value="2.5">Very Busy (Rain/events)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Daily Commute Trips per Month</label>
+        <input type="number" id="rideMonthly" placeholder="e.g. 44" value="44" min="0">
+        <span class="hint">2 trips/day × 22 working days = 44</span>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcRideFare()">Estimate Fares</button>
+
+    <div class="results" id="rideResults">
+      <div id="surgeBanner"></div>
+      <div class="provider-cards" id="rideProviders"></div>
+      <div class="monthly-box" id="rideMonthlyBox"></div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>How does surge pricing work on Uber/Bolt in Africa?</summary><div class="faq-body">When demand exceeds driver supply — during morning rush, evening rain, concerts, or public holidays — apps multiply the base fare by a surge factor. Uber's surge in Africa typically caps at 2.0x, while Bolt often goes to 1.8x. inDriver lets you negotiate, so you can sometimes avoid surge pricing by offering a fixed price.</div></details>
+    <details><summary>Which is cheaper — Uber or Bolt in Africa?</summary><div class="faq-body">Bolt is generally 10-20% cheaper than Uber in most African cities where both operate. Bolt entered African markets aggressively with lower rates. However, Uber often has more cars available, especially at night. In Nigeria, InDriver can be even cheaper as riders negotiate directly with drivers.</div></details>
+    <details><summary>Are ride-hailing fares in USD or local currency?</summary><div class="faq-body">All ride-hailing apps charge in local currency. Uber Kenya charges in KSh, Uber Nigeria in Naira, Uber Ghana in Cedis, Bolt South Africa in Rand. Our estimates show local currency values — divide by your exchange rate for USD equivalent.</div></details>
+    <details><summary>Why does the same distance cost more in Lagos than Nairobi?</summary><div class="faq-body">Fares reflect local cost of living, driver operating costs, fuel prices, competition level, and government regulations. Lagos traffic also typically means longer trip times, and time-based pricing adds significant cost. Per-km rates in Lagos are lower, but per-trip costs end up higher due to traffic.</div></details>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script>
+var RIDE_DATA = {
+  kenya: {
+    currency: 'KSh', cities: ['Nairobi','Mombasa','Kisumu'],
+    providers: [
+      {name:'Uber (UberX)', base:80, perKm:30, perMin:3},
+      {name:'Bolt Economy', base:50, perKm:28, perMin:2},
+      {name:'Little Cab', base:60, perKm:25, perMin:2.5}
+    ]
+  },
+  nigeria: {
+    currency: '₦', cities: ['Lagos','Abuja','Port Harcourt','Kano'],
+    providers: [
+      {name:'Uber (UberX)', base:200, perKm:35, perMin:5},
+      {name:'Bolt Economy', base:150, perKm:30, perMin:4},
+      {name:'InDriver (est)', base:180, perKm:28, perMin:3.5}
+    ]
+  },
+  ghana: {
+    currency: 'GH₵', cities: ['Accra','Kumasi','Tamale'],
+    providers: [
+      {name:'Uber Ghana', base:4, perKm:2, perMin:0.3},
+      {name:'Bolt Ghana', base:3.5, perKm:1.8, perMin:0.25},
+      {name:'Yango', base:3, perKm:1.9, perMin:0.28}
+    ]
+  },
+  southafrica: {
+    currency: 'R', cities: ['Johannesburg','Cape Town','Durban','Pretoria'],
+    providers: [
+      {name:'Uber (UberX)', base:8, perKm:8, perMin:0.8},
+      {name:'Bolt SA', base:6, perKm:7.5, perMin:0.7},
+      {name:'InDriver SA', base:7, perKm:7, perMin:0.7}
+    ]
+  },
+  tanzania: {
+    currency: 'TZS', cities: ['Dar es Salaam','Arusha','Mwanza'],
+    providers: [
+      {name:'Uber Tanzania', base:2000, perKm:500, perMin:50},
+      {name:'Bolt Tanzania', base:1500, perKm:450, perMin:40},
+      {name:'Yango', base:1800, perKm:480, perMin:45}
+    ]
+  },
+  uganda: {
+    currency: 'UGX', cities: ['Kampala','Jinja','Entebbe'],
+    providers: [
+      {name:'Uber Uganda', base:3000, perKm:800, perMin:70},
+      {name:'Bolt Uganda', base:2500, perKm:720, perMin:60}
+    ]
+  },
+  ethiopia: {
+    currency: 'ETB', cities: ['Addis Ababa','Dire Dawa'],
+    providers: [
+      {name:'Ride (Local)', base:30, perKm:15, perMin:2},
+      {name:'ZayRide', base:25, perKm:12, perMin:1.5}
+    ]
+  },
+  senegal: {
+    currency: 'FCFA', cities: ['Dakar','Saint-Louis'],
+    providers: [
+      {name:'Yango Senegal', base:500, perKm:200, perMin:20},
+      {name:'InDriver', base:450, perKm:180, perMin:18}
+    ]
+  },
+  cameroon: {
+    currency: 'FCFA', cities: ['Douala','Yaoundé'],
+    providers: [
+      {name:'Uber Cameroon', base:500, perKm:220, perMin:25},
+      {name:'Yango', base:450, perKm:200, perMin:22}
+    ]
+  },
+  egypt: {
+    currency: 'EGP', cities: ['Cairo','Alexandria','Giza'],
+    providers: [
+      {name:'Uber Egypt', base:10, perKm:5, perMin:0.8},
+      {name:'Careem', base:8, perKm:4.5, perMin:0.7},
+      {name:'inDriver', base:9, perKm:4.2, perMin:0.65}
+    ]
+  }
+};
+
+function updateRideCity() {
+  var country = document.getElementById('rideCountry').value;
+  var cityEl = document.getElementById('rideCity');
+  var cities = RIDE_DATA[country] ? RIDE_DATA[country].cities : ['Capital City'];
+  cityEl.innerHTML = cities.map(function(c){ return '<option>' + c + '</option>'; }).join('');
+}
+updateRideCity();
+
+function calcRideFare() {
+  var country = document.getElementById('rideCountry').value;
+  var dist = parseFloat(document.getElementById('rideDistance').value) || 0;
+  var time = parseFloat(document.getElementById('rideTime').value) || 0;
+  var surge = parseFloat(document.getElementById('rideSurge').value) || 1;
+  var monthlyTrips = parseFloat(document.getElementById('rideMonthly').value) || 0;
+
+  var data = RIDE_DATA[country];
+  if (!data || dist === 0) { alert('Please enter distance.'); return; }
+
+  var surgeEl = document.getElementById('surgeBanner');
+  if (surge > 1) {
+    surgeEl.innerHTML = '<div class="surge-warning">&#x26a0;&#xfe0f; Surge pricing active: ' + surge + 'x multiplier. Fares are ' + Math.round((surge-1)*100) + '% higher than normal. Consider waiting 15-20 minutes for surge to drop.</div>';
+  } else {
+    surgeEl.innerHTML = '';
+  }
+
+  var cards = data.providers.map(function(p) {
+    var base = (p.base + p.perKm * dist + p.perMin * time) * surge;
+    var low = (base * 0.9).toFixed(0);
+    var high = (base * 1.1).toFixed(0);
+    return '<div class="provider-card"><div class="provider-name">' + p.name + '</div><div class="provider-fare">' + data.currency + ' ' + base.toFixed(0) + '</div><div class="provider-range">Range: ' + data.currency + ' ' + low + ' – ' + data.currency + ' ' + high + '</div></div>';
+  }).join('');
+  document.getElementById('rideProviders').innerHTML = cards;
+
+  if (monthlyTrips > 0) {
+    var avgFare = data.providers.reduce(function(s,p){ return s + (p.base + p.perKm*dist + p.perMin*time)*surge; }, 0) / data.providers.length;
+    var monthly = (avgFare * monthlyTrips).toFixed(0);
+    document.getElementById('rideMonthlyBox').innerHTML = '&#x1f4c5; <strong>Monthly Commute Cost:</strong> Approximately ' + data.currency + ' ' + monthly + ' for ' + monthlyTrips + ' trips (' + data.currency + ' ' + avgFare.toFixed(0) + '/trip average). Consider a monthly pass or carpool to reduce costs.';
+  } else {
+    document.getElementById('rideMonthlyBox').innerHTML = '';
+  }
+
+  document.getElementById('rideResults').classList.add('on');
+}
+</script>
+</body>
+</html>

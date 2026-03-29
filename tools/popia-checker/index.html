@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POPIA Compliance Checker 2024 — South Africa Data Protection | AfroTools</title>
+<meta name="description" content="Free POPIA compliance checker for South African businesses. 20 questions covering all 8 conditions of the Protection of Personal Information Act. Get your score instantly.">
+<link rel="canonical" href="https://afrotools.com/tools/popia-checker/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="POPIA Compliance Checker — South Africa | AfroTools">
+<meta property="og:description" content="Assess your POPIA compliance across all 8 conditions. Free interactive checklist for South African businesses.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"POPIA Compliance Checker","description":"Interactive POPIA compliance checklist covering all 8 conditions of South Africa's Protection of Personal Information Act.","url":"https://afrotools.com/tools/popia-checker/","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"ZAR"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/legal.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+.condition-block{margin-bottom:1.5rem;border:1.5px solid #e5e7eb;border-radius:14px;overflow:hidden}
+.condition-header{background:linear-gradient(135deg,#f5f3ff,#ede9fe);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.condition-title{font-size:.9rem;font-weight:700;color:#4c1d95}
+.condition-score{font-size:.82rem;font-weight:600;color:#7c3aed;background:#fff;padding:3px 10px;border-radius:100px}
+.condition-body{padding:.5rem .75rem 1rem}
+.check-item{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem;margin:.35rem 0;border-radius:8px;background:#fff;border:1.5px solid #e5e7eb;cursor:pointer;transition:border-color .15s}
+.check-item:hover{border-color:#ddd6fe}
+.check-item.checked{border-color:#7c3aed;background:#faf5ff}
+.chk-box{width:22px;height:22px;border:2px solid #d1d5db;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .2s}
+.check-item.checked .chk-box{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.chk-text{flex:1;font-size:.85rem;color:#1a1a2e;line-height:1.4}
+.chk-ref{font-size:.7rem;color:#7c3aed;font-weight:600;margin-top:2px}
+.overall-score{text-align:center;padding:2rem 1rem;border-radius:18px;background:linear-gradient(135deg,#0A1628,#1e0a3c);color:#fff;margin-bottom:1.5rem}
+.os-pct{font-size:3rem;font-weight:800}
+.os-label{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:.25rem}
+.condition-progress{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin-top:1.5rem}
+.cp-item{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem}
+.cp-cond{font-size:.75rem;font-weight:700;color:#4c1d95;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.04em}
+.cp-bar{height:6px;background:#e5e7eb;border-radius:100px;overflow:hidden}
+.cp-fill{height:100%;background:#7c3aed;border-radius:100px;transition:width .4s}
+.cp-score{font-size:.78rem;color:#6b7280;margin-top:.35rem}
+.live-score{position:sticky;top:0;z-index:10;background:#fff;border-bottom:2px solid #e5e7eb;padding:.75rem 1.25rem;display:flex;align-items:center;gap:1rem}
+.live-num{font-size:1.4rem;font-weight:800;color:#7c3aed}
+.live-lbl{font-size:.78rem;color:#6b7280}
+.law-overview{background:linear-gradient(135deg,#0A1628,#1e0a3c);color:#fff;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem}
+.law-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin-top:.75rem}
+.lf-item{background:rgba(255,255,255,.08);border-radius:10px;padding:.75rem}
+.lf-label{font-size:.7rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em}
+.lf-val{font-size:.9rem;font-weight:700;color:#fff;margin-top:3px}
+@media(max-width:600px){.condition-progress{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="legal"></afro-navbar>
+
+<div class="leg-tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a> <span>›</span> <a href="/legal/">Legal &amp; Compliance</a> <span>›</span> POPIA Compliance Checker
+    </nav>
+    <h1>🇿🇦 <em>POPIA</em> Compliance Checker</h1>
+    <p class="leg-tool-hero-sub">Protection of Personal Information Act (POPIA) — South Africa's data protection law. 20 questions across all 8 conditions for lawful processing.</p>
+    <div class="leg-badges" style="margin-top:1rem">
+      <span class="leg-badge">POPIA 2013</span>
+      <span class="leg-badge">Effective July 2021</span>
+      <span class="leg-badge">8 Conditions</span>
+      <span class="leg-badge">Free Tool</span>
+    </div>
+  </div>
+</div>
+
+<div class="leg-main">
+
+  <div class="law-overview">
+    <h3 style="color:#a78bfa;font-size:1rem;font-weight:700;margin-bottom:.75rem">📋 About POPIA (Protection of Personal Information Act 4 of 2013)</h3>
+    <div class="law-facts">
+      <div class="lf-item"><div class="lf-label">Act Number</div><div class="lf-val">Act 4 of 2013</div></div>
+      <div class="lf-item"><div class="lf-label">Effective</div><div class="lf-val">1 July 2021</div></div>
+      <div class="lf-item"><div class="lf-label">Regulator</div><div class="lf-val">Information Regulator</div></div>
+      <div class="lf-item"><div class="lf-label">Max Fine</div><div class="lf-val">R10 Million</div></div>
+      <div class="lf-item"><div class="lf-label">Imprisonment</div><div class="lf-val">Up to 10 years</div></div>
+      <div class="lf-item"><div class="lf-label">Conditions</div><div class="lf-val">8 Conditions</div></div>
+    </div>
+  </div>
+
+  <div class="live-score">
+    <div>
+      <div class="live-num" id="liveNum">0/20</div>
+      <div class="live-lbl">answered yes</div>
+    </div>
+    <div style="flex:1;padding:0 1rem">
+      <div style="height:8px;background:#e5e7eb;border-radius:100px;overflow:hidden">
+        <div id="liveBar" style="height:100%;width:0%;background:#7c3aed;border-radius:100px;transition:width .4s"></div>
+      </div>
+    </div>
+    <div id="livePct" style="font-size:1rem;font-weight:700;color:#7c3aed">0%</div>
+  </div>
+
+  <div class="leg-card" style="margin-top:1.25rem">
+    <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+      <span style="font-size:1.2rem">✅</span>
+      <h2>POPIA 8-Condition Compliance Checklist</h2>
+      <span class="leg-card-toggle">▾</span>
+    </div>
+    <div class="leg-card-body">
+      <p style="font-size:.85rem;color:#6b7280;margin-bottom:1.25rem">Click each item to mark as compliant. Conditions are grouped per the Act.</p>
+      <div id="checklistContainer"></div>
+      <button class="leg-calc-btn" onclick="showResults()">Calculate My POPIA Score →</button>
+    </div>
+  </div>
+
+  <div class="leg-results" id="resultsSection">
+    <div class="leg-card">
+      <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+        <span style="font-size:1.2rem">📊</span>
+        <h2>Your POPIA Compliance Score</h2>
+        <span class="leg-card-toggle">▾</span>
+      </div>
+      <div class="leg-card-body">
+        <div id="overallScore"></div>
+        <h3 style="font-family:'Instrument Serif',serif;font-size:1.1rem;margin:1.5rem 0 .75rem">Score by Condition</h3>
+        <div class="condition-progress" id="conditionProgress"></div>
+        <div id="recoBlock" style="margin-top:1.5rem"></div>
+      </div>
+    </div>
+
+    <div class="leg-card">
+      <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+        <span>📅</span>
+        <h2>POPIA Key Obligations &amp; Contacts</h2>
+        <span class="leg-card-toggle">▾</span>
+      </div>
+      <div class="leg-card-body">
+        <table class="leg-summary-table">
+          <thead><tr><th>Obligation</th><th>Requirement</th></tr></thead>
+          <tbody>
+            <tr><td>Breach notification to Information Regulator</td><td>As soon as reasonably possible (no exact hours; aim for 72 hrs)</td></tr>
+            <tr><td>Notify data subjects of breach</td><td>As soon as reasonably possible after notifying Regulator</td></tr>
+            <tr><td>Information Officer registration</td><td>Mandatory — register at inforeg.org.za</td></tr>
+            <tr><td>PAIA Manual update</td><td>Mandatory for certain organisations</td></tr>
+            <tr><td>Cross-border transfer</td><td>To countries with adequate protection or with data subject consent</td></tr>
+            <tr><td>Regulator contact</td><td>inforeg.org.za / complaints@inforeg.org.za</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="leg-seo">
+    <h2>POPIA Compliance for South African Businesses</h2>
+    <p>The Protection of Personal Information Act (POPIA) came into full effect on 1 July 2021 and applies to any organisation that processes personal information of natural or juristic persons in South Africa. POPIA is modelled on the EU GDPR but tailored for the South African context.</p>
+    <p>POPIA establishes 8 conditions for lawful processing of personal information, which form the backbone of compliance obligations. These conditions cover accountability, processing limitation, purpose specification, further limitation, information quality, openness, security safeguards, and data subject participation.</p>
+    <ul>
+      <li><strong>Information Officers</strong> must be registered with the Information Regulator. This is a mandatory requirement for all responsible parties.</li>
+      <li><strong>Security breaches</strong> must be reported to the Information Regulator and affected data subjects as soon as reasonably possible.</li>
+      <li><strong>Special personal information</strong> (equivalent to GDPR special categories) requires additional safeguards, including health data, race, biometrics, and religious beliefs.</li>
+      <li>The <strong>Information Regulator</strong> can issue enforcement notices, impose fines up to R10 million, and refer cases for criminal prosecution with sentences up to 10 years.</li>
+    </ul>
+  </div>
+
+  <div class="leg-disclaimer">
+    <strong>Disclaimer</strong>
+    This tool provides general information and educational resources only. Not legal advice. Consult a qualified data protection attorney for advice specific to your organisation's circumstances under POPIA.
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script defer src="/assets/js/components/navbar.min.js"></script>
+<script defer src="/assets/js/components/footer.min.js"></script>
+<script src="/data/legal/country-legal-index.js"></script>
+<script src="/engines/legal-engine.js"></script>
+<script>
+var CONDITIONS = [
+  {
+    name:"Condition 1 — Accountability",
+    questions:[
+      {q:"Have you designated an Information Officer and registered them with the Information Regulator?", ref:"POPIA s.55 — Information Officer"},
+      {q:"Do you have internal policies and procedures to ensure POPIA compliance throughout your organisation?", ref:"POPIA s.8 — Accountability"},
+      {q:"Do you maintain records of all personal information processed and have an updated PAIA manual?", ref:"POPIA s.17 — Documentation"}
+    ]
+  },
+  {
+    name:"Condition 2 — Processing Limitation",
+    questions:[
+      {q:"Do you have a lawful basis (consent, contract, legal obligation, legitimate interest, etc.) for each processing activity?", ref:"POPIA s.11 — Lawful processing grounds"},
+      {q:"Do you only collect personal information that is adequate, relevant, and not excessive for the purpose?", ref:"POPIA s.10 — Minimality"},
+      {q:"Do you obtain informed, specific consent when consent is the lawful basis?", ref:"POPIA s.11(1)(a) — Consent"}
+    ]
+  },
+  {
+    name:"Condition 3 — Purpose Specification",
+    questions:[
+      {q:"Do you collect personal information for a defined, specific, and lawful purpose?", ref:"POPIA s.13 — Purpose specification"},
+      {q:"Do you inform data subjects of the purpose of collection at the time of collection?", ref:"POPIA s.18 — Notification to data subjects"}
+    ]
+  },
+  {
+    name:"Condition 4 — Further Processing Limitation",
+    questions:[
+      {q:"Do you ensure that personal information is not processed for a purpose incompatible with the original collection purpose?", ref:"POPIA s.15 — Further processing"},
+      {q:"Do you obtain fresh consent or have another ground when using data for a new purpose?", ref:"POPIA s.15 — Change of purpose"}
+    ]
+  },
+  {
+    name:"Condition 5 — Information Quality",
+    questions:[
+      {q:"Do you take reasonable steps to ensure personal information you hold is complete, accurate, and up to date?", ref:"POPIA s.16 — Information quality"},
+      {q:"Do you have a process for data subjects to correct inaccurate information?", ref:"POPIA s.24 — Correction of personal information"}
+    ]
+  },
+  {
+    name:"Condition 6 — Openness",
+    questions:[
+      {q:"Do you have a PAIA manual and privacy notice that data subjects can easily access?", ref:"POPIA s.18 — Openness"},
+      {q:"Do you notify data subjects when you collect their personal information, including purposes and recipients?", ref:"POPIA s.18(1) — Prior notification"}
+    ]
+  },
+  {
+    name:"Condition 7 — Security Safeguards",
+    questions:[
+      {q:"Do you have documented technical and organisational security measures (encryption, access controls, secure storage)?", ref:"POPIA s.19 — Security measures"},
+      {q:"Do you conduct due diligence on operators (processors) and have written contracts with them?", ref:"POPIA s.21 — Operator contracts"},
+      {q:"Do you have a documented breach response plan and can you notify the Regulator and data subjects of breaches?", ref:"POPIA s.22 — Breach notification"}
+    ]
+  },
+  {
+    name:"Condition 8 — Data Subject Participation",
+    questions:[
+      {q:"Can data subjects request access to their personal information held by you?", ref:"POPIA s.23 — Access to personal information"},
+      {q:"Can data subjects request correction or deletion of their personal information?", ref:"POPIA s.24 — Correction/deletion"},
+      {q:"Can data subjects object to the processing of their personal information and withdraw consent?", ref:"POPIA s.11(3) — Right to object / withdraw consent"}
+    ]
+  }
+];
+
+var checked = {};
+var globalIndex = 0;
+var qMap = {};
+
+function renderChecklist(){
+  var html = '';
+  var gi = 0;
+  CONDITIONS.forEach(function(cond, ci){
+    html += '<div class="condition-block"><div class="condition-header" onclick="toggleCondition(this)">' +
+      '<span class="condition-title">'+cond.name+'</span>' +
+      '<span class="condition-score" id="cscore'+ci+'">0/'+cond.questions.length+'</span>' +
+      '</div><div class="condition-body" id="cbody'+ci+'">';
+    cond.questions.forEach(function(item){
+      var idx = gi;
+      qMap[gi] = {ci:ci,q:item};
+      html += '<div class="check-item" id="qi'+idx+'" onclick="toggleCheck('+idx+')">' +
+        '<div class="chk-box" id="cb'+idx+'">✓</div>' +
+        '<div><div class="chk-text">'+item.q+'</div><div class="chk-ref">'+item.ref+'</div></div>' +
+        '</div>';
+      gi++;
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('checklistContainer').innerHTML = html;
+  globalIndex = gi;
+}
+
+function toggleCondition(hdr){
+  var body = hdr.nextElementSibling;
+  body.style.display = body.style.display === 'none' ? '' : 'none';
+}
+
+function toggleCheck(idx){
+  checked[idx] = !checked[idx];
+  var el = document.getElementById('qi'+idx);
+  var cb = document.getElementById('cb'+idx);
+  if(checked[idx]){
+    el.classList.add('checked');
+    cb.style.background='#7c3aed';cb.style.borderColor='#7c3aed';cb.style.color='#fff';
+  } else {
+    el.classList.remove('checked');
+    cb.style.background='';cb.style.borderColor='#d1d5db';cb.style.color='';
+  }
+  var ci = qMap[idx].ci;
+  var condTotal = CONDITIONS[ci].questions.length;
+  var condYes = Object.keys(qMap).filter(function(k){ return qMap[k].ci===ci && checked[k]; }).length;
+  document.getElementById('cscore'+ci).textContent = condYes+'/'+condTotal;
+  updateLive();
+}
+
+function updateLive(){
+  var yes = Object.values(checked).filter(Boolean).length;
+  var total = globalIndex||20;
+  var pct = Math.round(yes/total*100);
+  document.getElementById('liveNum').textContent = yes+'/'+total;
+  document.getElementById('livePct').textContent = pct+'%';
+  document.getElementById('liveBar').style.width = pct+'%';
+}
+
+function showResults(){
+  var yes = Object.values(checked).filter(Boolean).length;
+  var total = globalIndex||20;
+  var pct = Math.round(yes/total*100);
+  var level = pct>=80?'high':pct>=50?'medium':'low';
+  var color = level==='high'?'#22c55e':level==='medium'?'#f59e0b':'#ef4444';
+  var msg = {high:'Strong POPIA compliance. Keep up regular reviews and staff training.',medium:'Partial compliance. Address the gaps below before an Information Regulator investigation.',low:'Significant gaps. Immediate remediation required. Engage a POPIA compliance specialist.'}[level];
+
+  document.getElementById('overallScore').innerHTML = '<div class="overall-score"><div class="os-pct" style="color:'+color+'">'+pct+'%</div><div class="os-lbl">Overall POPIA Compliance Score</div><p style="font-size:.85rem;color:rgba(255,255,255,.7);margin-top:.75rem;max-width:400px;margin-left:auto;margin-right:auto">'+msg+'</p></div>';
+
+  var cpHtml = '';
+  CONDITIONS.forEach(function(cond,ci){
+    var keys = Object.keys(qMap).filter(function(k){ return +qMap[k].ci===ci; });
+    var condYes = keys.filter(function(k){ return checked[k]; }).length;
+    var condTotal = cond.questions.length;
+    var condPct = Math.round(condYes/condTotal*100);
+    cpHtml += '<div class="cp-item"><div class="cp-cond">'+cond.name.split(' — ')[1]||cond.name+'</div>' +
+      '<div class="cp-bar"><div class="cp-fill" style="width:'+condPct+'%"></div></div>' +
+      '<div class="cp-score">'+condYes+'/'+condTotal+' ('+condPct+'%)</div></div>';
+  });
+  document.getElementById('conditionProgress').innerHTML = cpHtml;
+
+  var missing = Object.keys(qMap).filter(function(k){ return !checked[k]; });
+  var recoHtml = '';
+  if(missing.length===0){
+    recoHtml = '<div class="leg-success">Perfect score. All 8 POPIA conditions are addressed. Maintain your programme with regular internal audits.</div>';
+  } else {
+    recoHtml = '<div class="leg-warn"><strong>'+missing.length+' gap'+(missing.length>1?'s':'')+' identified.</strong> Priority actions:</div><div style="margin-top:.75rem">';
+    missing.slice(0,8).forEach(function(k){
+      var item = qMap[k];
+      recoHtml += '<div class="reco-item"><span class="reco-num" style="background:#f5f3ff;color:#7c3aed;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:700">C'+(item.ci+1)+'</span><div><div style="font-size:.84rem;font-weight:600;color:#1a1a2e">'+item.q.q+'</div><div style="font-size:.72rem;color:#7c3aed;margin-top:2px">'+item.q.ref+'</div></div></div>';
+    });
+    recoHtml += '</div>';
+  }
+  document.getElementById('recoBlock').innerHTML = recoHtml;
+
+  var results = document.getElementById('resultsSection');
+  results.classList.add('on');
+  results.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleCard(head){
+  var body = head.nextElementSibling;
+  var exp = head.getAttribute('aria-expanded')==='true';
+  head.setAttribute('aria-expanded',String(!exp));
+  body.classList.toggle('collapsed',exp);
+}
+
+renderChecklist();
+</script>
+</body>
+</html>

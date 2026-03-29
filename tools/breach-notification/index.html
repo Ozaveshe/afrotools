@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Breach Notification Template Generator — Africa | AfroTools</title>
+<meta name="description" content="Generate data breach notification letters for African regulators and affected individuals. Covers Nigeria NDPC, South Africa Information Regulator, Kenya ODPC, and 13 more countries.">
+<link rel="canonical" href="https://afrotools.com/tools/breach-notification/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Data Breach Notification Template Generator — Africa | AfroTools">
+<meta property="og:description" content="Generate regulatory breach notifications for NDPC (Nigeria), Information Regulator (South Africa), ODPC (Kenya), and other African data authorities. Plus data subject notification letters.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Data Breach Notification Template Generator","description":"Generate data breach notification letters tailored to African data protection regulators and affected data subjects.","url":"https://afrotools.com/tools/breach-notification/","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/legal.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+.check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.45rem;margin-top:.4rem}
+.chk-pill{display:flex;align-items:center;gap:.45rem;padding:.45rem .7rem;border:1.5px solid #e5e7eb;border-radius:8px;cursor:pointer;font-size:.82rem;transition:border-color .15s}
+.chk-pill:has(input:checked){border-color:#7c3aed;background:#faf5ff}
+.chk-pill input{accent-color:#7c3aed;width:14px;height:14px}
+.timeline-alert{border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;display:flex;align-items:flex-start;gap:.75rem}
+.ta-urgent{background:#fef2f2;border:1.5px solid #fecaca;color:#991b1b}
+.ta-warning{background:#fefce8;border:1.5px solid #fde68a;color:#713f12}
+.ta-info{background:#eff6ff;border:1.5px solid #bfdbfe;color:#1e40af}
+.ta-icon{font-size:1.4rem;flex-shrink:0}
+.ta-title{font-weight:700;font-size:.88rem;margin-bottom:.25rem}
+.ta-body{font-size:.82rem;line-height:1.55}
+.template-tabs{display:flex;gap:4px;background:#f1f5f9;padding:4px;border-radius:8px;margin-bottom:1rem}
+.template-tab{flex:1;padding:8px;text-align:center;font-size:.8rem;font-weight:600;border-radius:5px;cursor:pointer;color:#64748b;transition:all .15s}
+.template-tab.on{background:#fff;color:#7c3aed;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tmpl-out{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;font-family:Georgia,serif;font-size:.87rem;line-height:1.85;color:#1a1a2e;white-space:pre-wrap;max-height:520px;overflow-y:auto}
+.out-toolbar{display:flex;gap:.75rem;justify-content:flex-end;margin-top:.75rem;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="legal"></afro-navbar>
+
+<div class="leg-tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">Home</a> <span>›</span> <a href="/legal/">Legal &amp; Compliance</a> <span>›</span> Breach Notification Generator
+    </nav>
+    <h1>Data Breach <em>Notification</em> Template Generator</h1>
+    <p class="leg-tool-hero-sub">Generate breach notification letters for African data regulators and affected individuals. Includes timeline alerts based on country-specific deadlines.</p>
+    <div class="leg-badges" style="margin-top:1rem">
+      <span class="leg-badge">16 Countries</span>
+      <span class="leg-badge">Regulator + Subject Letters</span>
+      <span class="leg-badge">Timeline Alerts</span>
+      <span class="leg-badge">Free Tool</span>
+    </div>
+  </div>
+</div>
+
+<div class="leg-main">
+  <div id="timelineAlert"></div>
+
+  <div class="leg-card">
+    <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+      <span>📋</span>
+      <h2>Breach Details</h2>
+      <span class="leg-card-toggle">▾</span>
+    </div>
+    <div class="leg-card-body">
+      <div class="leg-form-grid">
+        <div class="leg-field">
+          <label class="leg-f-label">Country</label>
+          <select class="leg-f-select" id="bCountry" onchange="updateTimeline()">
+            <option value="">— Select country —</option>
+            <option value="NG">Nigeria (NDPA 2023 — 72 hrs to NDPC)</option>
+            <option value="ZA">South Africa (POPIA — ASAP to Info Regulator)</option>
+            <option value="KE">Kenya (DPA 2019 — 72 hrs to ODPC)</option>
+            <option value="GH">Ghana (Act 843 — notify DPC)</option>
+            <option value="RW">Rwanda (Law 058/2021)</option>
+            <option value="MA">Morocco (CNDP)</option>
+            <option value="EG">Egypt (PDPC)</option>
+            <option value="MU">Mauritius (Data Protection Office)</option>
+            <option value="TZ">Tanzania (PDPA 2022)</option>
+            <option value="UG">Uganda (DPA 2019)</option>
+            <option value="TN">Tunisia (INPDP)</option>
+            <option value="SN">Senegal (CDP)</option>
+            <option value="CI">Côte d'Ivoire (ARTCI)</option>
+            <option value="CM">Cameroon</option>
+            <option value="AO">Angola (ANPD)</option>
+            <option value="EU">GDPR (EU/EEA — 72 hrs to SA)</option>
+          </select>
+        </div>
+        <div class="leg-field">
+          <label class="leg-f-label">Your Organisation Name</label>
+          <input class="leg-f-input" type="text" id="bOrgName" placeholder="e.g. Acme Financial Services Ltd">
+        </div>
+        <div class="leg-field">
+          <label class="leg-f-label">Date Breach Discovered</label>
+          <input class="leg-f-input" type="date" id="bDate">
+        </div>
+        <div class="leg-field">
+          <label class="leg-f-label">Number of Affected Individuals (approximate)</label>
+          <input class="leg-f-input" type="text" id="bCount" placeholder="e.g. approximately 1,200 customers">
+        </div>
+        <div class="leg-field full">
+          <label class="leg-f-label">Nature of Breach</label>
+          <div class="check-grid">
+            <div class="chk-pill"><input type="checkbox" id="bn_access" value="Unauthorised access to personal data"><label for="bn_access">Unauthorised Access</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bn_loss" value="Accidental loss of personal data"><label for="bn_loss">Data Loss</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bn_compromise" value="System compromise or hacking"><label for="bn_compromise">System Compromise</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bn_ransomware" value="Ransomware attack"><label for="bn_ransomware">Ransomware</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bn_insider" value="Insider threat or unauthorised disclosure by an employee"><label for="bn_insider">Insider Threat</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bn_other" value="Other security incident"><label for="bn_other">Other</label></div>
+          </div>
+        </div>
+        <div class="leg-field full">
+          <label class="leg-f-label">Categories of Data Affected</label>
+          <div class="check-grid">
+            <div class="chk-pill"><input type="checkbox" id="bd_names" value="Names and contact details"><label for="bd_names">Names</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bd_email" value="Email addresses"><label for="bd_email">Emails</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bd_passwords" value="Password hashes or credentials"><label for="bd_passwords">Passwords</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bd_financial" value="Financial or payment information"><label for="bd_financial">Financial Data</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bd_health" value="Health or medical records"><label for="bd_health">Health Data</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bd_id" value="National ID numbers, passport details, or other identity documents"><label for="bd_id">Identity Documents</label></div>
+            <div class="chk-pill"><input type="checkbox" id="bd_other" value="Other personal information"><label for="bd_other">Other</label></div>
+          </div>
+        </div>
+        <div class="leg-field full">
+          <label class="leg-f-label">Description of What Happened</label>
+          <textarea class="leg-f-textarea" id="bDescription" rows="4" placeholder="Describe the nature of the incident, how it was discovered, and the sequence of events..."></textarea>
+        </div>
+        <div class="leg-field full">
+          <label class="leg-f-label">Actions Taken / Immediate Remediation</label>
+          <textarea class="leg-f-textarea" id="bActions" rows="3" placeholder="e.g. Isolated affected systems, reset compromised credentials, engaged cybersecurity firm, notified law enforcement..."></textarea>
+        </div>
+      </div>
+      <button class="leg-calc-btn" onclick="generateNotices()">Generate Notification Letters →</button>
+    </div>
+  </div>
+
+  <div class="leg-results" id="noticeOutput">
+    <div class="leg-card">
+      <div class="leg-card-head" aria-expanded="true" onclick="toggleCard(this)">
+        <span>📧</span>
+        <h2>Generated Notification Letters</h2>
+        <span class="leg-card-toggle">▾</span>
+      </div>
+      <div class="leg-card-body">
+        <div class="leg-warn">These are template letters. Review and customise them before sending. Legal review is strongly recommended before formal regulatory notification.</div>
+        <div class="template-tabs" style="margin-top:1rem">
+          <div class="template-tab on" onclick="switchTab(0,this)">Letter 1: Regulator</div>
+          <div class="template-tab" onclick="switchTab(1,this)">Letter 2: Data Subjects</div>
+        </div>
+        <div id="tmplPanel0"><div class="tmpl-out" id="tmpl0"></div></div>
+        <div id="tmplPanel1" style="display:none"><div class="tmpl-out" id="tmpl1"></div></div>
+        <div class="out-toolbar">
+          <button class="leg-copy-btn" onclick="copyLetter()">Copy Current Letter</button>
+          <button class="leg-print-btn" onclick="window.print()">Print / Save PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="leg-seo">
+    <h2>Data Breach Notification Requirements in Africa</h2>
+    <p>When a personal data breach occurs, most African data protection laws require organisations to notify the relevant regulatory authority within a specified timeframe. Nigeria's NDPA 2023 and Kenya's DPA 2019 both specify 72-hour notification timelines matching the EU GDPR. South Africa's POPIA requires notification "as soon as reasonably possible" without specifying a fixed number of hours.</p>
+    <p>A regulatory notification must typically include: description of the breach, categories and approximate numbers of affected data subjects, categories of data affected, likely consequences, and measures taken to address the breach.</p>
+    <ul>
+      <li><strong>Nigeria (NDPA):</strong> Notify the NDPC within 72 hours of becoming aware of a breach. Notify affected data subjects without undue delay where the breach is likely to result in high risk.</li>
+      <li><strong>South Africa (POPIA):</strong> Notify the Information Regulator and affected data subjects as soon as reasonably possible after discovering a breach.</li>
+      <li><strong>Kenya (DPA 2019):</strong> Notify the ODPC within 72 hours. Notify data subjects promptly where the breach is likely to cause harm.</li>
+    </ul>
+  </div>
+
+  <div class="leg-disclaimer">
+    <strong>Disclaimer</strong>
+    This tool provides general information and educational resources only. Not legal advice. Generated letters are templates only and must be reviewed by qualified legal counsel before submission to regulatory authorities.
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script defer src="/assets/js/components/navbar.min.js"></script>
+<script defer src="/assets/js/components/footer.min.js"></script>
+<script src="/data/legal/country-legal-index.js"></script>
+<script src="/engines/legal-engine.js"></script>
+<script>
+var REGULATORS = {
+  NG:{name:"Nigeria",law:"NDPA 2023",regulator:"Nigeria Data Protection Commission (NDPC)",contact:"info@ndpc.gov.ng",hours:72},
+  ZA:{name:"South Africa",law:"POPIA",regulator:"Information Regulator",contact:"complaints@inforeg.org.za",hours:null,note:"As soon as reasonably possible"},
+  KE:{name:"Kenya",law:"DPA 2019",regulator:"Office of the Data Protection Commissioner (ODPC)",contact:"info@odpc.go.ke",hours:72},
+  GH:{name:"Ghana",law:"Act 843",regulator:"Data Protection Commission",contact:"info@dataprotection.org.gh",hours:null,note:"Without undue delay"},
+  RW:{name:"Rwanda",law:"Law 058/2021",regulator:"National Cyber Security Authority (NCSA)",contact:"info@ncsa.gov.rw",hours:null,note:"Without undue delay"},
+  MA:{name:"Morocco",law:"Law 09-08",regulator:"CNDP",contact:"infocndp@cndp.ma",hours:null,note:"Required under CNDP regulations"},
+  EG:{name:"Egypt",law:"Law 151/2020",regulator:"Personal Data Protection Centre (PDPC)",contact:"info@pdpc.gov.eg",hours:72},
+  MU:{name:"Mauritius",law:"DPA 2017",regulator:"Data Protection Office",contact:"dataprotection@govmu.org",hours:null,note:"Without undue delay"},
+  TZ:{name:"Tanzania",law:"PDPA 2022",regulator:"Personal Data Protection Commission",contact:"pdpc@pdpc.go.tz",hours:null,note:"Without undue delay"},
+  UG:{name:"Uganda",law:"DPA 2019",regulator:"Personal Data Protection Office (PDPO)",contact:"pdpo@pdpo.go.ug",hours:72},
+  TN:{name:"Tunisia",law:"Organic Law 63-2004",regulator:"Instance Nationale de Protection des Données Personnelles (INPDP)",contact:"inpdp@inpdp.nat.tn",hours:null,note:"Without undue delay"},
+  SN:{name:"Senegal",law:"Law 2008-12",regulator:"Commission de Protection des Données Personnelles (CDP)",contact:"cdp@cdp.sn",hours:null,note:"Without undue delay"},
+  CI:{name:"Côte d'Ivoire",law:"Ordinance 2013-451",regulator:"ARTCI",contact:"info@artci.ci",hours:null,note:"Without undue delay"},
+  CM:{name:"Cameroon",law:"General data protection obligations",regulator:"Ministry of Posts and Telecommunications",contact:"",hours:null,note:"Notify as required by applicable law"},
+  AO:{name:"Angola",law:"Law 22/11",regulator:"Agência Nacional de Protecção de Dados (ANPD)",contact:"info@anpd.gov.ao",hours:null,note:"Without undue delay"},
+  EU:{name:"EU/EEA",law:"GDPR",regulator:"Lead Supervisory Authority",contact:"[supervisory authority contact]",hours:72}
+};
+
+var activeTab = 0;
+
+function updateTimeline(){
+  var cc=document.getElementById('bCountry').value;
+  if(!cc){document.getElementById('timelineAlert').innerHTML='';return;}
+  var rd=REGULATORS[cc]||{};
+  var html='';
+  if(rd.hours===72){
+    html='<div class="timeline-alert ta-urgent"><div class="ta-icon">⏰</div><div><div class="ta-title">72-Hour Notification Deadline</div><div class="ta-body">Under the '+rd.law+', you must notify '+rd.regulator+' within <strong>72 hours</strong> of discovering this breach. The clock starts when your organisation becomes aware. Act immediately.</div></div></div>';
+  } else if(rd.note){
+    html='<div class="timeline-alert ta-warning"><div class="ta-icon">⚠️</div><div><div class="ta-title">Notification Required: '+rd.note+'</div><div class="ta-body">Under the '+rd.law+', notify '+rd.regulator+'. '+rd.note+'. Document your response timeline carefully.</div></div></div>';
+  }
+  document.getElementById('timelineAlert').innerHTML=html;
+}
+
+function getChecked(prefix){
+  var vals=[];
+  document.querySelectorAll('input[id^="'+prefix+'"]').forEach(function(el){if(el.checked)vals.push(el.value);});
+  return vals;
+}
+
+function generateNotices(){
+  var cc=document.getElementById('bCountry').value;
+  var org=document.getElementById('bOrgName').value.trim()||'[ORGANISATION NAME]';
+  var date=document.getElementById('bDate').value;
+  var count=document.getElementById('bCount').value.trim()||'[NUMBER OF AFFECTED INDIVIDUALS]';
+  var desc=document.getElementById('bDescription').value.trim()||'[DESCRIPTION OF INCIDENT]';
+  var actions=document.getElementById('bActions').value.trim()||'[ACTIONS TAKEN]';
+  var nature=getChecked('bn_');
+  var dataTypes=getChecked('bd_');
+  var rd=REGULATORS[cc]||{name:'[COUNTRY]',law:'[APPLICABLE LAW]',regulator:'[REGULATOR NAME]',contact:'[REGULATOR CONTACT]'};
+  var today=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var breachDate=date?new Date(date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):' [DATE OF BREACH]';
+
+  var natureList=nature.length>0?nature.map(function(n){return '  - '+n;}).join('\n'):'  - [Nature of breach]';
+  var dataList=dataTypes.length>0?dataTypes.map(function(d){return '  - '+d;}).join('\n'):'  - [Categories of data]';
+
+  var letter1=org.toUpperCase()+'\nDATA BREACH NOTIFICATION TO REGULATORY AUTHORITY\n\n'+today+'\n\nThe '+rd.regulator+'\n'+rd.contact+'\n\n──────────────────────────────────────────────────\n\nRE: PERSONAL DATA BREACH NOTIFICATION — '+rd.law.toUpperCase()+'\n\n──────────────────────────────────────────────────\n\n';
+  letter1+='Dear Sir / Madam,\n\nIn accordance with our obligations under the '+rd.law+', we hereby notify the '+rd.regulator+' of a personal data breach affecting data subjects under our control.\n\n1. NOTIFICATION DETAILS\n\nNotifying Organisation: '+org+'\nDate of Discovery: '+breachDate+'\nDate of This Notification: '+today+'\n\n2. NATURE OF THE BREACH\n\nThe following type(s) of breach occurred:\n'+natureList+'\n\n3. CATEGORIES OF PERSONAL DATA AFFECTED\n\nThe following categories of personal data were involved in the breach:\n'+dataList+'\n\n4. APPROXIMATE NUMBER OF DATA SUBJECTS AFFECTED\n\n'+count+'\n\n5. DESCRIPTION OF THE BREACH\n\n'+desc+'\n\n6. LIKELY CONSEQUENCES OF THE BREACH\n\nBased on our assessment, the likely consequences include risks to the rights and freedoms of affected data subjects, including potential exposure of personal data that may be used for identity fraud, phishing, or other harmful activities.\n\n7. MEASURES TAKEN AND PROPOSED\n\nWe have taken the following immediate actions:\n'+actions+'\n\nAdditional proposed measures include ongoing forensic investigation, enhanced security monitoring, staff awareness training, and review of data processing agreements with relevant processors.\n\n8. CONTACT DETAILS\n\nFor further information regarding this notification, please contact our Data Protection Officer:\n\nData Protection Officer / Privacy Officer\n'+org+'\nEmail: [dpo@'+org.replace(/\s+/g,'').toLowerCase()+'.com]\nPhone: [CONTACT NUMBER]\n\n──────────────────────────────────────────────────\n\nWe confirm that this notification is submitted in good faith and to the best of our current knowledge. We will provide updates as our investigation progresses.\n\nYours faithfully,\n\n[Authorised Signatory]\n[Title]\n'+org+'\nDate: '+today;
+
+  var letter2=org.toUpperCase()+'\nINFORMATION NOTICE TO AFFECTED INDIVIDUALS\n\n'+today+'\n\n──────────────────────────────────────────────────\n\nIMPORTANT NOTICE: YOUR PERSONAL DATA MAY HAVE BEEN AFFECTED\n\n──────────────────────────────────────────────────\n\n';
+  letter2+='Dear [Customer/User/Member],\n\nWe are writing to inform you of a security incident that may have affected your personal data held by '+org+'.\n\nWHAT HAPPENED\n\n'+desc+'\n\nWHAT DATA WAS INVOLVED\n\nThe following categories of personal data may have been affected:\n'+dataList+'\n\nWHO IS AFFECTED\n\nThis incident may have affected approximately '+count+'.\n\nWHAT WE ARE DOING\n\nAs soon as we discovered this incident, we took the following steps:\n'+actions+'\n\nWe have also reported this incident to the '+rd.regulator+' in accordance with the '+rd.law+'.\n\nWHAT YOU CAN DO TO PROTECT YOURSELF\n\nWe recommend you take the following precautions:\n\n  1. Change your password immediately on our platform and on any other platforms where you use the same password.\n  2. Be alert to suspicious emails, SMS messages, or phone calls that may attempt to use your information to deceive you.\n  3. Monitor your financial accounts for any unauthorised transactions.\n  4. Contact us immediately if you notice any suspicious activity.\n  5. Consider placing a fraud alert with your bank or relevant credit bureau.\n\nYOUR RIGHTS\n\nYou have the right to:\n  - Access the personal data we hold about you\n  - Request correction of inaccurate data\n  - Lodge a complaint with the '+rd.regulator+' at '+rd.contact+'\n\nHOW TO CONTACT US\n\nIf you have any questions or concerns about this incident, please contact:\n\nData Protection Officer / Privacy Team\n'+org+'\nEmail: [dpo@'+org.replace(/\s+/g,'').toLowerCase()+'.com]\nPhone: [CONTACT NUMBER]\n\nWe sincerely apologise for this incident and for any inconvenience or concern it may cause you. Your trust is extremely important to us and we remain committed to protecting your personal data.\n\nYours sincerely,\n\n[Chief Executive Officer / Data Protection Officer]\n'+org+'\nDate: '+today;
+
+  document.getElementById('tmpl0').textContent=letter1;
+  document.getElementById('tmpl1').textContent=letter2;
+  document.getElementById('noticeOutput').classList.add('on');
+  document.getElementById('noticeOutput').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function switchTab(idx,btn){
+  activeTab=idx;
+  document.querySelectorAll('.template-tab').forEach(function(b,i){b.classList.toggle('on',i===idx);});
+  document.getElementById('tmplPanel0').style.display=idx===0?'':'none';
+  document.getElementById('tmplPanel1').style.display=idx===1?'':'none';
+}
+
+function copyLetter(){
+  var txt=document.getElementById('tmpl'+activeTab).textContent;
+  navigator.clipboard.writeText(txt).then(function(){
+    var btn=event.target;btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy Current Letter';},2000);
+  });
+}
+
+function toggleCard(h){var b=h.nextElementSibling;var e=h.getAttribute('aria-expanded')==='true';h.setAttribute('aria-expanded',String(!e));b.classList.toggle('collapsed',e);}
+</script>
+</body>
+</html>

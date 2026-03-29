@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Payment Gateway Fee Comparator — Africa | AfroTools</title>
+<meta name="description" content="Compare payment gateway fees across Africa. Paystack, Flutterwave, Peach Payments, DPO, Pesapal — find the cheapest gateway for your transaction volume.">
+<link rel="canonical" href="https://afrotools.com/tools/payment-gateway/">
+<meta property="og:title" content="Payment Gateway Fee Comparator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/payment-gateway/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Payment Gateway Fee Comparator","url":"https://afrotools.com/tools/payment-gateway/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Payment Gateway Fee Comparator","item":"https://afrotools.com/tools/payment-gateway/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.gw-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:1rem}
+.gw-table th{background:#0f172a;color:#fff;padding:9px 12px;font-weight:700;font-size:.75rem;text-transform:uppercase;text-align:left}
+.gw-table td{padding:9px 12px;border-bottom:1px solid #f1f5f9}
+.gw-table tr.best td{background:#ecfdf5;font-weight:700}
+.gw-table .rank{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:100px}
+.gw-table .rank.gold{background:#fef3c7;color:#92400e}
+.gw-table .rank.silver{background:#f1f5f9;color:#475569}
+.gw-table .rank.bronze{background:#fef9f0;color:#9a3412}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.winner-card{background:linear-gradient(135deg,#064e3b,#065f46);border-radius:14px;padding:1.5rem;color:#fff;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.25rem}
+.winner-icon{font-size:2rem}
+.winner-name{font-size:1.2rem;font-weight:800}
+.winner-detail{font-size:.85rem;color:rgba(255,255,255,.75);margin-top:.2rem}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Payment Gateway Fee Comparator</nav>
+    <h1>Payment Gateway Fee Comparator</h1>
+    <p>Compare Paystack, Flutterwave, Peach Payments, DPO Pay, Pesapal, and more. Find the cheapest gateway for your transaction volume and country.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">8 Gateways</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Payment Gateway Fee Comparator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="pg-country">Country / Region</label>
+        <select id="pg-country">
+          <option value="NG">Nigeria</option>
+          <option value="KE">Kenya</option>
+          <option value="GH">Ghana</option>
+          <option value="ZA">South Africa</option>
+          <option value="UG">Uganda</option>
+          <option value="TZ">Tanzania</option>
+          <option value="RW">Rwanda</option>
+          <option value="CI">Côte d'Ivoire</option>
+          <option value="SN">Senegal</option>
+          <option value="EG">Egypt</option>
+          <option value="MA">Morocco</option>
+          <option value="ET">Ethiopia</option>
+          <option value="ZM">Zambia</option>
+          <option value="CM">Cameroon</option>
+          <option value="MZ">Mozambique</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pg-avg-txn">Average Transaction Value (local currency)</label>
+        <input type="number" id="pg-avg-txn" value="15000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="pg-monthly-txns">Monthly Transaction Count</label>
+        <input type="number" id="pg-monthly-txns" value="200" min="1">
+      </div>
+      <div class="form-group">
+        <label for="pg-type">Payment Method</label>
+        <select id="pg-type">
+          <option value="card">Card (Visa/Mastercard)</option>
+          <option value="mobile">Mobile Money</option>
+          <option value="bank">Bank Transfer</option>
+          <option value="ussd">USSD</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcGateway()">Compare Gateways</button>
+    <div class="results" id="pg-results">
+      <div class="winner-card" id="pg-winner">
+        <div class="winner-icon">🏆</div>
+        <div>
+          <div class="winner-name" id="pg-winner-name"></div>
+          <div class="winner-detail" id="pg-winner-detail"></div>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="pg-monthly-vol"></div><div class="metric-label">Monthly Volume</div></div>
+        <div class="metric"><div class="metric-val" id="pg-cheapest-fee"></div><div class="metric-label">Cheapest Monthly Fee</div></div>
+        <div class="metric"><div class="metric-val" id="pg-most-exp"></div><div class="metric-label">Most Expensive Fee</div></div>
+        <div class="metric"><div class="metric-val" id="pg-annual-saving"></div><div class="metric-label">Annual Saving (best vs worst)</div></div>
+      </div>
+      <table class="gw-table" id="pg-table"></table>
+      <div class="info-box">Rates shown are approximate standard published rates. Enterprise rates are typically lower at high volumes (>$50K/month). Always check the latest pricing on provider websites as rates change frequently.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>Which payment gateway is best for Nigeria?</summary><div class="faq-a">Paystack (acquired by Stripe) and Flutterwave are the most widely used in Nigeria. Paystack charges 1.5% + ₦100 (capped at ₦2,000) for local cards. Flutterwave charges similar rates. For high volumes, negotiate enterprise rates. Interswitch (Quickteller) is also popular for USSD and card payments targeting mass market.</div></details></div>
+    <div class="faq-item"><details><summary>Which gateway is best for East Africa?</summary><div class="faq-a">For Kenya, Pesapal and DPO Pay cover M-Pesa well. Flutterwave has expanded M-Pesa integration. Cellulant (Tingg) is strong across East Africa for mobile money. For Tanzania, Selcom and Azam Pay are popular. Pesapal covers Uganda, Rwanda, Tanzania, and Kenya with a single integration.</div></details></div>
+    <div class="faq-item"><details><summary>What is MDR (Merchant Discount Rate)?</summary><div class="faq-a">MDR is the fee the payment gateway or acquirer charges the merchant for processing card transactions. It's expressed as a % of the transaction value, often plus a flat fee. For example, 1.5% + ₦100 means on a ₦10,000 transaction the merchant pays ₦150 + ₦100 = ₦250. The MDR covers interchange fees paid to the card-issuing bank, scheme fees (Visa/Mastercard), and the acquirer's margin.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var GATEWAYS=[
+  {name:'Paystack',cardRate:0.015,cardFlat:100,mmRate:0.01,mmFlat:50,bankRate:0.0,bankFlat:100,ussdRate:0.015,ussdFlat:100,countries:['NG','GH','ZA','KE'],cap:2000},
+  {name:'Flutterwave',cardRate:0.014,cardFlat:0,mmRate:0.009,mmFlat:0,bankRate:0.0,bankFlat:50,ussdRate:0.014,ussdFlat:0,countries:['NG','GH','KE','UG','TZ','ZA','CI','SN','CM','ZM','ET','EG','MA','RW','MZ'],cap:0},
+  {name:'Peach Payments',cardRate:0.029,cardFlat:0,mmRate:0.02,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.02,ussdFlat:0,countries:['ZA','KE','NG','GH'],cap:0},
+  {name:'DPO Pay',cardRate:0.035,cardFlat:0,mmRate:0.025,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.025,ussdFlat:0,countries:['KE','UG','TZ','ZA','GH','NG','RW','ZM','ET','CM','MZ'],cap:0},
+  {name:'Pesapal',cardRate:0.025,cardFlat:0,mmRate:0.018,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.018,ussdFlat:0,countries:['KE','UG','TZ','RW','ZM'],cap:0},
+  {name:'Cellulant (Tingg)',cardRate:0.022,cardFlat:0,mmRate:0.015,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.015,ussdFlat:0,countries:['KE','NG','GH','TZ','UG','RW','ZM','CI','SN','CM','MZ'],cap:0},
+  {name:'Interswitch',cardRate:0.015,cardFlat:100,mmRate:0.015,mmFlat:100,bankRate:0.0,bankFlat:50,ussdRate:0.01,ussdFlat:50,countries:['NG','KE','GH','UG','TZ'],cap:2000},
+  {name:'PayGate (SA)',cardRate:0.025,cardFlat:0,mmRate:0.02,mmFlat:0,bankRate:0.0,bankFlat:0,ussdRate:0.02,ussdFlat:0,countries:['ZA'],cap:0}
+];
+function calcGateway(){
+  var country=document.getElementById('pg-country').value;
+  var avgTxn=parseFloat(document.getElementById('pg-avg-txn').value)||0;
+  var monthlyTxns=parseInt(document.getElementById('pg-monthly-txns').value)||1;
+  var type=document.getElementById('pg-type').value;
+  var monthlyVol=avgTxn*monthlyTxns;
+  var results=[];
+  for(var i=0;i<GATEWAYS.length;i++){
+    var gw=GATEWAYS[i];
+    if(!gw.countries.includes(country)) continue;
+    var rate=type==='card'?gw.cardRate:type==='mobile'?gw.mmRate:type==='bank'?gw.bankRate:gw.ussdRate;
+    var flat=type==='card'?gw.cardFlat:type==='mobile'?gw.mmFlat:type==='bank'?gw.bankFlat:gw.ussdFlat;
+    var txnFee=avgTxn*rate+flat;
+    if(gw.cap>0) txnFee=Math.min(txnFee,gw.cap);
+    var monthlyFee=txnFee*monthlyTxns;
+    var effectiveRate=(monthlyFee/monthlyVol)*100;
+    results.push({name:gw.name,txnFee:txnFee,monthlyFee:monthlyFee,effectiveRate:effectiveRate});
+  }
+  results.sort(function(a,b){return a.monthlyFee-b.monthlyFee;});
+  function fmt(n){return Math.round(n).toLocaleString();}
+  document.getElementById('pg-monthly-vol').textContent=fmt(monthlyVol);
+  if(results.length>0){
+    document.getElementById('pg-cheapest-fee').textContent=fmt(results[0].monthlyFee);
+    document.getElementById('pg-most-exp').textContent=fmt(results[results.length-1].monthlyFee);
+    document.getElementById('pg-annual-saving').textContent=fmt((results[results.length-1].monthlyFee-results[0].monthlyFee)*12);
+    document.getElementById('pg-winner-name').textContent=results[0].name+' — Cheapest';
+    document.getElementById('pg-winner-detail').textContent='Monthly fees: '+fmt(results[0].monthlyFee)+' | Effective rate: '+results[0].effectiveRate.toFixed(2)+'%';
+  }
+  var ranks=['gold','silver','bronze'];
+  var headers='<tr><th>#</th><th>Gateway</th><th>Per Txn Fee</th><th>Monthly Fee</th><th>Effective Rate</th></tr>';
+  var rows='';
+  for(var j=0;j<results.length;j++){
+    var r=results[j];
+    var rankClass=j<3?ranks[j]:'';
+    rows+='<tr'+(j===0?' class="best"':'')+'>'
+      +'<td>'+(rankClass?'<span class="rank '+rankClass+'">'+(j+1)+'</span>':j+1)+'</td>'
+      +'<td>'+r.name+'</td>'
+      +'<td>'+fmt(r.txnFee)+'</td>'
+      +'<td>'+fmt(r.monthlyFee)+'</td>'
+      +'<td>'+r.effectiveRate.toFixed(2)+'%</td>'
+      +'</tr>';
+  }
+  document.getElementById('pg-table').innerHTML=headers+rows;
+  document.getElementById('pg-results').classList.add('on');
+}
+</script>
+</body>
+</html>

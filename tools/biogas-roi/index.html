@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Biogas Digester ROI Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate biogas digester return on investment for farms and households in Africa. See gas output, LPG savings, bioslurry value, and payback period.">
+<link rel="canonical" href="https://afrotools.com/tools/biogas-roi/">
+<meta property="og:title" content="Biogas Digester ROI Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate biogas digester ROI in Africa. See gas output, LPG savings, and payback period.">
+<meta property="og:url" content="https://afrotools.com/tools/biogas-roi/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Biogas Digester ROI</nav>
+<h1>🐄 <em>Biogas Digester ROI Calculator</em></h1>
+<p class="en-tool-hero-sub">Calculate the return on investment for a biogas digester in Africa. Enter your livestock and cooking needs to see gas output, fuel savings, and payback period.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🌱</span><h2>Your Farm &amp; Cooking Details</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect">
+<option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ET">Ethiopia</option><option value="UG">Uganda</option><option value="TZ">Tanzania</option><option value="RW">Rwanda</option><option value="GH">Ghana</option><option value="ZA">South Africa</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option><option value="MA">Morocco</option><option value="ZM">Zambia</option><option value="MW">Malawi</option><option value="MZ">Mozambique</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="livestockType">Livestock Type</label><select class="en-select" id="livestockType">
+<option value="cattle">Cattle / Cows</option>
+<option value="pig">Pigs</option>
+<option value="goat">Goats / Sheep</option>
+<option value="chicken">Chickens (poultry)</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="livestockCount">Number of Animals</label><input class="en-input" type="number" id="livestockCount" placeholder="e.g. 5" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="cookingHours">Daily Cooking Hours</label><select class="en-select" id="cookingHours">
+<option value="1">1 hour (small household)</option>
+<option value="2">2 hours</option>
+<option value="3" selected>3 hours (average family)</option>
+<option value="4">4 hours</option>
+<option value="6">6 hours (large family / restaurant)</option>
+</select></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Calculate ROI</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Adjusted Payback Period</div><div class="en-res-amount" id="rPayback">—</div><div class="en-res-sub" id="rMeets">Cooking need: —</div></div>
+<table class="en-results-table"><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Daily Biogas Output</td><td id="rBiogas">—</td></tr>
+<tr><td>Meets Cooking Need?</td><td id="rMeetsCooking">—</td></tr>
+<tr><td>Digester Size</td><td id="rDigesterSize">—</td></tr>
+<tr><td>Digester Type</td><td id="rDigesterType">—</td></tr>
+<tr><td>Digester Cost</td><td id="rCost">—</td></tr>
+<tr><td>Monthly LPG Saving</td><td id="rLPGSaving">—</td></tr>
+<tr><td>Annual LPG Saving</td><td id="rAnnualSaving">—</td></tr>
+<tr><td>Bioslurry Value / Month</td><td id="rSlurry">—</td></tr>
+<tr><td>LPG-Only Payback</td><td id="rLPGPayback">—</td></tr>
+<tr><td>Full Payback (fuel + slurry)</td><td id="rFullPayback">—</td></tr>
+<tr><td>CO₂ Saved / Year</td><td id="rCO2">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Biogas Digesters in Africa — A Sustainable Energy Solution</h2>
+<p>Biogas digesters convert animal waste into cooking gas and organic fertilizer (bioslurry). In Kenya, Ethiopia, Rwanda, and Nigeria, household biogas has replaced LPG and firewood for millions of rural families. This calculator helps you assess whether a biogas digester makes financial sense for your livestock holding.</p>
+<p><strong>Disclaimer:</strong> Gas yield figures are averages based on livestock type. Actual output depends on feed quality, temperature, and digester design.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/biogas-roi-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.BiogasROIEngine;
+document.getElementById("calcBtn").addEventListener("click",function(){
+var i={
+  country:document.getElementById("countrySelect").value,
+  livestockType:document.getElementById("livestockType").value,
+  livestockCount:parseInt(document.getElementById("livestockCount").value)||0,
+  cookingHours:document.getElementById("cookingHours").value
+};
+var r=E.calculate(i);
+if(r.error){alert(r.error);return;}
+document.getElementById("rPayback").textContent=r.adjustedPayback;
+document.getElementById("rMeets").textContent="Cooking need: "+r.meetsCooking;
+document.getElementById("rBiogas").textContent=r.dailyBiogasM3;
+document.getElementById("rMeetsCooking").textContent=r.meetsCooking;
+document.getElementById("rDigesterSize").textContent=r.digesterSize;
+document.getElementById("rDigesterType").textContent=r.digesterType;
+document.getElementById("rCost").textContent=r.digesterCostLocal+" ("+r.digesterCostUSD+")";
+document.getElementById("rLPGSaving").textContent=r.monthlySaving;
+document.getElementById("rAnnualSaving").textContent=r.annualSaving;
+document.getElementById("rSlurry").textContent=r.monthlySlurryValue;
+document.getElementById("rLPGPayback").textContent=r.paybackYrs;
+document.getElementById("rFullPayback").textContent=r.adjustedPayback;
+document.getElementById("rCO2").textContent=r.co2SavedAnnual;
+var obs=document.getElementById("rObs");
+if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

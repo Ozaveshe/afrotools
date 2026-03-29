@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bill Split Calculator — Africa | AfroTools</title>
+<meta name="description" content="Split bills fairly with friends, colleagues, or groups in any African currency. Equal split, percentage split, or custom amounts with tip calculator.">
+<link rel="canonical" href="https://afrotools.com/tools/bill-split/">
+<meta property="og:title" content="Bill Split Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/bill-split/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Bill Split Calculator","url":"https://afrotools.com/tools/bill-split/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Bill Split Calculator","item":"https://afrotools.com/tools/bill-split/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"],input[type="text"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.btn-add{padding:.5rem 1rem;border:1.5px dashed #cbd5e1;border-radius:8px;background:transparent;color:#6b7280;font-size:.85rem;cursor:pointer;margin-top:.5rem}
+.btn-add:hover{background:#f8fafd}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.person-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.person-card{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.person-name{font-size:.8rem;font-weight:700;color:#374151;margin-bottom:.3rem}
+.person-amt{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.person-pct{font-size:.72rem;color:#6b7280;margin-top:.2rem}
+.person-row{display:flex;gap:.75rem;align-items:center;margin-bottom:.5rem}
+.person-row input{flex:1}
+.person-row .pct-input{width:80px;flex:none}
+.btn-rm{padding:.3rem .6rem;background:#fee2e2;border:none;border-radius:6px;color:#991b1b;font-size:.8rem;cursor:pointer}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Bill Split Calculator</nav>
+    <h1>Bill Split Calculator</h1>
+    <p>Split restaurant bills, rent, group travel, or shared expenses fairly. Equal split, custom percentage, or weighted by what each person ordered — in any African currency.</p>
+    <div class="hero-badges"><span class="hero-badge">Universal</span><span class="hero-badge">Tip Included</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Bill Split Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="bs-currency">Currency</label>
+        <select id="bs-currency">
+          <option value="NGN">Nigerian Naira (NGN)</option>
+          <option value="KES">Kenyan Shilling (KES)</option>
+          <option value="GHS">Ghanaian Cedi (GHS)</option>
+          <option value="ZAR">South African Rand (ZAR)</option>
+          <option value="UGX">Ugandan Shilling (UGX)</option>
+          <option value="TZS">Tanzanian Shilling (TZS)</option>
+          <option value="ETB">Ethiopian Birr (ETB)</option>
+          <option value="EGP">Egyptian Pound (EGP)</option>
+          <option value="MAD">Moroccan Dirham (MAD)</option>
+          <option value="XOF">West African CFA (XOF)</option>
+          <option value="USD">US Dollar (USD)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="bs-total">Total Bill Amount</label>
+        <input type="number" id="bs-total" value="45000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="bs-tip">Tip / Service Charge (%)</label>
+        <input type="number" id="bs-tip" value="10" min="0" max="50">
+      </div>
+      <div class="form-group">
+        <label for="bs-method">Split Method</label>
+        <select id="bs-method" onchange="toggleSplitMethod()">
+          <option value="equal">Equal Split</option>
+          <option value="custom">Custom % per Person</option>
+        </select>
+      </div>
+    </div>
+    <div id="bs-people-section" style="margin-top:1rem">
+      <label style="font-size:.82rem;font-weight:600;color:#374151;display:block;margin-bottom:.5rem">People</label>
+      <div id="bs-people">
+        <div class="person-row"><input type="text" placeholder="Person 1 name" value="Person 1"><input type="number" class="pct-input" placeholder="%" value="25" id="bs-p0-pct" style="display:none"><button class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input type="text" placeholder="Person 2 name" value="Person 2"><input type="number" class="pct-input" placeholder="%" value="25" id="bs-p1-pct" style="display:none"><button class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input type="text" placeholder="Person 3 name" value="Person 3"><input type="number" class="pct-input" placeholder="%" value="25" id="bs-p2-pct" style="display:none"><button class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input type="text" placeholder="Person 4 name" value="Person 4"><input type="number" class="pct-input" placeholder="%" value="25" id="bs-p3-pct" style="display:none"><button class="btn-rm" onclick="removePerson(this)">✕</button></div>
+      </div>
+      <button class="btn-add" onclick="addPerson()">+ Add Person</button>
+    </div>
+    <button class="btn-calc" onclick="calcBillSplit()">Calculate Split</button>
+    <div class="results" id="bs-results">
+      <div class="res-hero">
+        <div class="res-label">Per Person (Equal Split)</div>
+        <div class="res-val" id="bs-per-person"></div>
+        <div class="res-sub" id="bs-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="bs-subtotal"></div><div class="metric-label">Subtotal</div></div>
+        <div class="metric"><div class="metric-val" id="bs-tip-amt"></div><div class="metric-label">Tip Amount</div></div>
+        <div class="metric"><div class="metric-val" id="bs-grand-total"></div><div class="metric-label">Grand Total</div></div>
+        <div class="metric"><div class="metric-val" id="bs-people-count"></div><div class="metric-label">People Splitting</div></div>
+      </div>
+      <h3 style="font-size:.95rem;font-weight:700;margin:.5rem 0 .75rem">Individual Amounts</h3>
+      <div class="person-cards" id="bs-person-cards"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>Is tipping customary in Africa?</summary><div class="faq-a">Tipping customs vary widely: South Africa: 10-15% is standard at restaurants; not common for casual takeout. Nigeria: 5-10% at mid-range restaurants; not expected at fast food. Kenya: 10% at sit-down restaurants; "service charge" often already included. West Africa: Not traditionally common but growing in urban areas. Check your bill for service charge (usually 5-10%) before adding extra tip.</div></details></div>
+    <div class="faq-item"><details><summary>Best apps to split bills in Africa?</summary><div class="faq-a">Popular apps: SplitWise (global, widely used), Settle Up (Android/iOS), Nosh (Nigeria food delivery with split), M-Pesa Request Money (Kenya), Cowrywise (Nigeria). For quick informal splits, WhatsApp groups + mobile money (M-Pesa, MoMo, OPay) work well. Simply calculate each person's share, then request payment directly via mobile money — instant and traceable.</div></details></div>
+    <div class="faq-item"><details><summary>How to handle unequal contributions in a group?</summary><div class="faq-a">Use the Custom % method: assign each person their share percentage based on what they ordered or consumed. For accommodation splits, consider usage (who had the larger room?). For group travel, consider income levels and agree upfront on the fairness principle: strict equality, proportional to earnings, or weighted by consumption. Document the agreed amounts in WhatsApp to avoid disputes.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var personCount=4;
+function toggleSplitMethod(){
+  var method=document.getElementById('bs-method').value;
+  var pctInputs=document.querySelectorAll('#bs-people .pct-input');
+  for(var i=0;i<pctInputs.length;i++){
+    pctInputs[i].style.display=method==='custom'?'block':'none';
+  }
+}
+function addPerson(){
+  var div=document.createElement('div');
+  div.className='person-row';
+  var method=document.getElementById('bs-method').value;
+  div.innerHTML='<input type="text" placeholder="Person '+(personCount+1)+' name" value="Person '+(personCount+1)+'">'
+    +'<input type="number" class="pct-input" placeholder="%" value="0" style="display:'+(method==='custom'?'block':'none')+'">'
+    +'<button class="btn-rm" onclick="removePerson(this)">✕</button>';
+  document.getElementById('bs-people').appendChild(div);
+  personCount++;
+}
+function removePerson(btn){
+  var rows=document.querySelectorAll('#bs-people .person-row');
+  if(rows.length>2){btn.parentNode.remove();}
+}
+function calcBillSplit(){
+  var total=parseFloat(document.getElementById('bs-total').value)||0;
+  var tipPct=parseFloat(document.getElementById('bs-tip').value)/100;
+  var method=document.getElementById('bs-method').value;
+  var currency=document.getElementById('bs-currency').value;
+  var tipAmt=total*tipPct;
+  var grandTotal=total+tipAmt;
+  var rows=document.querySelectorAll('#bs-people .person-row');
+  var names=[],pcts=[];
+  for(var i=0;i<rows.length;i++){
+    var nameInput=rows[i].querySelector('input[type="text"]');
+    var pctInput=rows[i].querySelector('.pct-input');
+    names.push(nameInput?nameInput.value||('Person '+(i+1)):'Person '+(i+1));
+    pcts.push(pctInput&&method==='custom'?(parseFloat(pctInput.value)||0):0);
+  }
+  var n=names.length;
+  var amounts=[];
+  if(method==='equal'){
+    for(var j=0;j<n;j++) amounts.push(grandTotal/n);
+  } else {
+    var totalPct=pcts.reduce(function(a,b){return a+b;},0);
+    for(var k=0;k<n;k++) amounts.push(totalPct>0?grandTotal*(pcts[k]/totalPct):grandTotal/n);
+  }
+  function fmt(v){return v<100?v.toFixed(2):Math.round(v).toLocaleString();}
+  document.getElementById('bs-per-person').textContent=currency+' '+fmt(grandTotal/n);
+  document.getElementById('bs-sub').textContent='Total: '+currency+' '+fmt(grandTotal)+' | '+n+' people';
+  document.getElementById('bs-subtotal').textContent=currency+' '+fmt(total);
+  document.getElementById('bs-tip-amt').textContent=currency+' '+fmt(tipAmt);
+  document.getElementById('bs-grand-total').textContent=currency+' '+fmt(grandTotal);
+  document.getElementById('bs-people-count').textContent=n+' people';
+  var cards='';
+  for(var m=0;m<names.length;m++){
+    cards+='<div class="person-card"><div class="person-name">'+names[m]+'</div><div class="person-amt">'+fmt(amounts[m])+'</div><div class="person-pct">'+(amounts[m]/grandTotal*100).toFixed(0)+'% of total</div></div>';
+  }
+  document.getElementById('bs-person-cards').innerHTML=cards;
+  document.getElementById('bs-results').classList.add('on');
+}
+</script>
+</body>
+</html>

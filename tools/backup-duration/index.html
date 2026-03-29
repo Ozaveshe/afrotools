@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Power Backup Duration Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate how long your battery backup or inverter will last in Africa. Enter battery capacity, load, and battery type to get accurate backup hours.">
+<link rel="canonical" href="https://afrotools.com/tools/backup-duration/">
+<meta property="og:title" content="Power Backup Duration Calculator Africa | AfroTools">
+<meta property="og:description" content="Calculate how long your battery backup or inverter will last in Africa.">
+<meta property="og:url" content="https://afrotools.com/tools/backup-duration/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Backup Duration</nav>
+<h1>🔦 <em>Power Backup Duration Calculator</em></h1>
+<p class="en-tool-hero-sub">Find out exactly how long your battery backup or inverter system will power your loads during an outage in Africa.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🔋</span><h2>Your Battery System</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="batteryKWh">Battery Capacity (kWh)</label><input class="en-input" type="number" id="batteryKWh" placeholder="e.g. 5.12" step="0.1" inputmode="numeric"></div>
+<div class="en-notice" style="font-size:13px;color:#6b7280;padding:0 0 8px">— OR enter Ah + voltage —</div>
+<div class="en-field"><label class="en-label" for="batteryAh">Battery Capacity (Ah)</label><input class="en-input" type="number" id="batteryAh" placeholder="e.g. 200" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="systemVoltage">System Voltage</label><select class="en-select" id="systemVoltage"><option value="12">12V</option><option value="24" selected>24V</option><option value="48">48V</option></select></div>
+<div class="en-field"><label class="en-label" for="loadWatts">Total Load (Watts)</label><input class="en-input" type="number" id="loadWatts" placeholder="e.g. 800" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="batteryType">Battery Type</label><select class="en-select" id="batteryType"><option value="lithium" selected>LiFePO4 (Lithium — 85% DoD)</option><option value="lead">Lead-Acid / AGM (50% DoD)</option></select></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Calculate Backup Time</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Backup Duration</div><div class="en-res-amount" id="rHours">—</div><div class="en-res-sub" id="rCritical">Critical loads only: —</div></div>
+<table class="en-results-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
+<tr><td>Usable Capacity</td><td id="rUsable">—</td></tr>
+<tr><td>Total Capacity</td><td id="rTotal">—</td></tr>
+<tr><td>Battery Capacity (Ah)</td><td id="rAh">—</td></tr>
+<tr><td>System Voltage</td><td id="rVolt">—</td></tr>
+<tr><td>Depth of Discharge</td><td id="rDOD">—</td></tr>
+<tr><td>Battery Type</td><td id="rType">—</td></tr>
+</tbody></table>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Power Backup Duration in Africa — Planning Your Energy Independence</h2>
+<p>With frequent power cuts across Africa, knowing your backup duration is essential. This calculator accounts for inverter efficiency (90%) and battery depth of discharge limits — the two factors most people ignore when sizing their backup systems, leading to shorter-than-expected runtime.</p>
+<p><strong>Disclaimer:</strong> Actual backup time depends on real load profile, temperature, and battery age. New batteries perform closest to these estimates.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/backup-duration-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.BackupDurationEngine;
+document.getElementById("calcBtn").addEventListener("click",function(){
+var i={
+  batteryKWh:parseFloat(document.getElementById("batteryKWh").value)||0,
+  batteryAh:parseFloat(document.getElementById("batteryAh").value)||0,
+  systemVoltage:document.getElementById("systemVoltage").value,
+  loadWatts:parseFloat(document.getElementById("loadWatts").value)||0,
+  batteryType:document.getElementById("batteryType").value
+};
+var r=E.calculate(i);
+if(r.error){alert(r.error);return;}
+document.getElementById("rHours").textContent=r.backupHours;
+document.getElementById("rCritical").textContent="Critical loads only: "+r.criticalLoadHours;
+document.getElementById("rUsable").textContent=r.usableKWh;
+document.getElementById("rTotal").textContent=r.batteryKWh;
+document.getElementById("rAh").textContent=r.batteryAh;
+document.getElementById("rVolt").textContent=r.systemVoltage;
+document.getElementById("rDOD").textContent=r.dod;
+document.getElementById("rType").textContent=r.batteryType;
+var obs=document.getElementById("rObs");
+if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

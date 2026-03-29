@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Home Energy Audit Calculator Africa | AfroTools</title>
+<meta name="description" content="Run a free home energy audit for your house in Africa. Get an energy efficiency score, identify savings opportunities, and estimate monthly bill reduction.">
+<link rel="canonical" href="https://afrotools.com/tools/energy-audit/">
+<meta property="og:title" content="Home Energy Audit Calculator Africa | AfroTools">
+<meta property="og:description" content="Run a free home energy audit in Africa. Get efficiency score and identify savings opportunities.">
+<meta property="og:url" content="https://afrotools.com/tools/energy-audit/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}.en-score-bar{background:#e5e7eb;border-radius:980px;height:12px;margin:8px 0}.en-score-fill{height:12px;border-radius:980px;background:linear-gradient(90deg,#dc2626,#f59e0b,#22c55e);transition:width 0.6s ease}.en-opp-list{list-style:none;padding:0}.en-opp-list li{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}.en-opp-impact{font-size:12px;font-weight:700;padding:3px 8px;border-radius:980px;background:#FEF3C7;color:#92400E}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="energy"></afro-navbar>
+<section class="en-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/energy/">Energy &amp; Utilities</a> <span>›</span> Home Energy Audit</nav>
+<h1>🏠 <em>Home Energy Audit Calculator</em></h1>
+<p class="en-tool-hero-sub">Get an energy efficiency score for your home in Africa and discover exactly how to reduce your monthly electricity bill.</p>
+</div></section>
+<main class="en-main">
+<div class="en-card"><div class="en-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>📋</span><h2>Tell Us About Your Home</h2><span class="en-card-toggle">&#x25BE;</span></div>
+<div class="en-card-body"><div class="en-form-grid">
+<div class="en-field"><label class="en-label" for="countrySelect">Country</label><select class="en-select" id="countrySelect">
+<option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="CI">Côte d'Ivoire</option><option value="CM">Cameroon</option><option value="SN">Senegal</option><option value="AO">Angola</option>
+</select></div>
+<div class="en-field"><label class="en-label" for="monthlyBill">Current Monthly Electricity Bill</label><input class="en-input" type="number" id="monthlyBill" placeholder="e.g. 35000" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="homeSizeSqm">Home Size (m²)</label><input class="en-input" type="number" id="homeSizeSqm" placeholder="e.g. 120" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="occupants">Number of Occupants</label><input class="en-input" type="number" id="occupants" placeholder="e.g. 4" inputmode="numeric"></div>
+<div class="en-field"><label class="en-label" for="acUnits">Number of AC Units</label><select class="en-select" id="acUnits"><option value="0">0 — No air conditioning</option><option value="1">1 unit</option><option value="2">2 units</option><option value="3">3 or more units</option></select></div>
+<div class="en-field"><label class="en-label" for="lightingType">Lighting Type</label><select class="en-select" id="lightingType"><option value="led">All LED</option><option value="mix" selected>Mix of LED and CFL</option><option value="incandescent">Mostly incandescent / old bulbs</option></select></div>
+<div class="en-field"><label class="en-label" for="waterHeater">Water Heating</label><select class="en-select" id="waterHeater"><option value="electric" selected>Electric geyser / water heater</option><option value="solar_wh">Solar water heater</option><option value="gas">Gas water heater</option><option value="none">No water heating</option></select></div>
+</div>
+<button class="en-btn" id="calcBtn" type="button">Run Energy Audit</button></div></div>
+<div class="en-results" id="results">
+<div class="en-res-hero"><div class="en-res-label">Energy Efficiency Score</div><div class="en-res-amount" id="rScore">—</div><div class="en-res-sub" id="rRating">Rating: —</div></div>
+<div class="en-score-bar"><div class="en-score-fill" id="rScoreBar" style="width:0%"></div></div>
+<table class="en-results-table" style="margin-top:16px"><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>
+<tr><td>Your Monthly Usage (est.)</td><td id="rUsage">—</td></tr>
+<tr><td>Benchmark for Your Home</td><td id="rBench">—</td></tr>
+<tr><td>Savings Potential</td><td id="rPct">—</td></tr>
+<tr><td>Monthly Saving Possible</td><td id="rMSaving">—</td></tr>
+<tr><td>Annual Saving Possible</td><td id="rASaving">—</td></tr>
+</tbody></table>
+<div class="en-card" style="margin-top:16px"><div class="en-card-body">
+<h3 style="margin-bottom:12px;font-size:16px;font-weight:700">💡 Savings Opportunities</h3>
+<ul class="en-opp-list" id="rOpps"></ul>
+</div></div>
+<div class="en-observations" id="rObs"></div>
+</div>
+<section class="en-seo">
+<h2>Home Energy Audit in Africa — Why It Matters</h2>
+<p>African households typically overspend on electricity by 20–40% due to inefficient appliances, wrong AC settings, and standby power drain. A simple audit identifies the highest-impact changes — often LED bulbs and AC temperature adjustment — that pay for themselves within weeks.</p>
+<p><strong>Disclaimer:</strong> Savings estimates are based on statistical averages. Actual results vary by home and appliance usage.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/energy/country-energy-index.js"></script>
+<script src="/engines/energy-audit-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var E=window.AfroTools.EnergyAuditEngine;
+document.getElementById("calcBtn").addEventListener("click",function(){
+var i={
+  country:document.getElementById("countrySelect").value,
+  monthlyBill:parseFloat(document.getElementById("monthlyBill").value)||0,
+  homeSizeSqm:parseFloat(document.getElementById("homeSizeSqm").value)||0,
+  occupants:parseInt(document.getElementById("occupants").value)||4,
+  acUnits:parseInt(document.getElementById("acUnits").value)||0,
+  lightingType:document.getElementById("lightingType").value,
+  waterHeater:document.getElementById("waterHeater").value
+};
+var r=E.calculate(i);
+if(r.error){alert(r.error);return;}
+var score=parseInt(r.efficiencyScore)||0;
+document.getElementById("rScore").textContent=r.efficiencyScore;
+document.getElementById("rRating").textContent=r.rating;
+document.getElementById("rScoreBar").style.width=score+"%";
+document.getElementById("rUsage").textContent=r.monthlyKWh;
+document.getElementById("rBench").textContent=r.benchmarkKWh;
+document.getElementById("rPct").textContent=r.potentialSavingPct;
+document.getElementById("rMSaving").textContent=r.monthlySaving;
+document.getElementById("rASaving").textContent=r.annualSaving;
+var oppList=document.getElementById("rOpps");
+oppList.innerHTML=(r.opportunities||[]).map(function(o){
+  return'<li><span>'+o.action+'</span><span class="en-opp-impact">'+o.impact+' — '+o.effort+'</span></li>';
+}).join("");
+var obs=document.getElementById("rObs");
+if(r.observations&&r.observations.length){obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";obs.style.display="block";}
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>

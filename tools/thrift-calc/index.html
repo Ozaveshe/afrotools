@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thrift / Cooperative Returns Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate returns from African thrift societies, cooperatives, and rotating savings (Ajo/Esusu/Susu/Tontine). Compare vs commercial bank savings.">
+<link rel="canonical" href="https://afrotools.com/tools/thrift-calc/">
+<meta property="og:title" content="Thrift / Cooperative Returns Calculator | AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/thrift-calc/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Thrift Cooperative Returns Calculator","url":"https://afrotools.com/tools/thrift-calc/","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Fintech & Banking","item":"https://afrotools.com/fintech/"},{"@type":"ListItem","position":3,"name":"Thrift Calculator","item":"https://afrotools.com/tools/thrift-calc/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:2.5rem 1.5rem 3rem}
+.tool-hero .container{max-width:900px;margin:0 auto}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb span{margin:0 .35rem;opacity:.4}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:.25rem 0 .6rem;line-height:1.2}
+.tool-hero p{font-size:.95rem;color:rgba(255,255,255,.8);max-width:580px;line-height:1.65}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-badge{padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:4px}
+label{font-size:.82rem;font-weight:600;color:#374151}
+select,input[type="number"]{width:100%;padding:.65rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{outline:none;border-color:var(--color-primary)}
+.btn-calc{width:100%;padding:.85rem;border:none;border-radius:10px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:filter .2s}
+.btn-calc:hover{filter:brightness(1.1)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block}
+.res-hero{background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;margin-bottom:1.25rem}
+.res-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+.res-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:#fff;margin:.2rem 0}
+.res-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.3rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:3px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+details summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;background:#f9fafb;display:flex;justify-content:space-between}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-a{padding:.75rem 1.25rem 1rem;font-size:.88rem;color:#4b5563;line-height:1.65}
+.faq-item{border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="fintech"></afro-navbar>
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb"><a href="/">AfroTools</a><span>›</span><a href="/fintech/">Fintech &amp; Banking</a><span>›</span>Thrift Calculator</nav>
+    <h1>Thrift / Cooperative Returns Calculator</h1>
+    <p>Calculate returns from thrift societies, cooperatives, and rotating savings groups (Ajo, Esusu, Susu, Tontine, Chama). Compare against bank savings.</p>
+    <div class="hero-badges"><span class="hero-badge">15 Countries</span><span class="hero-badge">Rotating Savings</span><span class="hero-badge">Free</span></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <h2>Rotating Savings &amp; Cooperative Calculator</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="tc-type">Savings Type</label>
+        <select id="tc-type">
+          <option value="rotating">Rotating Savings (Ajo/Susu/Tontine)</option>
+          <option value="thrift">Thrift Society (Interest-Bearing)</option>
+          <option value="cooperative">Cooperative (Dividend)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tc-members">Number of Members</label>
+        <input type="number" id="tc-members" value="10" min="2" max="100">
+      </div>
+      <div class="form-group">
+        <label for="tc-monthly">Monthly Contribution per Member</label>
+        <input type="number" id="tc-monthly" value="10000" min="0">
+      </div>
+      <div class="form-group">
+        <label for="tc-your-pos">Your Position in Rotation (1 = first)</label>
+        <input type="number" id="tc-your-pos" value="5" min="1">
+      </div>
+      <div class="form-group">
+        <label for="tc-rate">Interest/Dividend Rate (%/yr)</label>
+        <input type="number" id="tc-rate" value="0" step="0.5">
+      </div>
+      <div class="form-group">
+        <label for="tc-bank-rate">Equivalent Bank Savings Rate (%/yr)</label>
+        <input type="number" id="tc-bank-rate" value="4" step="0.1">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcThrift()">Calculate Returns</button>
+    <div class="results" id="tc-results">
+      <div class="res-hero">
+        <div class="res-label">You Receive (Lump Sum)</div>
+        <div class="res-val" id="tc-lump"></div>
+        <div class="res-sub" id="tc-sub"></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="metric-val" id="tc-contributed"></div><div class="metric-label">Total You Contribute</div></div>
+        <div class="metric"><div class="metric-val" id="tc-receive"></div><div class="metric-label">Lump Sum Received</div></div>
+        <div class="metric"><div class="metric-val" id="tc-months-wait"></div><div class="metric-label">Months to Your Turn</div></div>
+        <div class="metric"><div class="metric-val" id="tc-implicit-return"></div><div class="metric-label">Implicit Annual Return</div></div>
+        <div class="metric"><div class="metric-val" id="tc-bank-equiv"></div><div class="metric-label">Bank Alternative Value</div></div>
+        <div class="metric"><div class="metric-val" id="tc-cycle-total"></div><div class="metric-label">Group Pot per Cycle</div></div>
+      </div>
+      <div class="info-box" id="tc-verdict"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><details><summary>What is Ajo/Esusu/Susu/Tontine?</summary><div class="faq-a">These are names for rotating savings and credit associations (ROSCAs) across Africa: Ajo (Yoruba Nigeria), Esusu (Igbo Nigeria), Susu (Ghana/West Africa), Tontine (Francophone Africa), Chama (East Africa), Stokvel (South Africa). Members contribute a fixed amount each period, and one member receives the full pot in rotation. It is essentially enforced savings and zero-interest short-term lending between members.</div></details></div>
+    <div class="faq-item"><details><summary>Is rotating savings (Ajo/Susu) better than a bank?</summary><div class="faq-a">It depends on your position. If you receive money first (position 1), you get an interest-free loan. If you're last (position N), you essentially provide interest-free loans to everyone else. The main benefit is the discipline of forced savings and community trust. For pure financial returns, a SACCO or MMF typically outperforms a ROSCA — but the social value of ROSCAs is significant.</div></details></div>
+    <div class="faq-item"><details><summary>What is a Stokvel (South Africa)?</summary><div class="faq-a">A Stokvel is a South African savings club where members make regular contributions to a pool. There are different types: rotating stokvels (one member gets pot per period), grocery stokvels (pool buys groceries in bulk), party stokvels (pool funds celebrations). South Africa's stokvel sector manages over R50 billion annually.</div></details></div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function calcThrift(){
+  var type=document.getElementById('tc-type').value;
+  var members=parseInt(document.getElementById('tc-members').value)||10;
+  var monthly=parseFloat(document.getElementById('tc-monthly').value)||0;
+  var yourPos=Math.min(parseInt(document.getElementById('tc-your-pos').value)||1,members);
+  var rate=parseFloat(document.getElementById('tc-rate').value)/100;
+  var bankRate=parseFloat(document.getElementById('tc-bank-rate').value)/100;
+  var lumpSum=monthly*members;
+  var monthsWait=yourPos;
+  var totalContributed=monthly*members;
+  var bankEquiv=monthly*(members/2)*(bankRate/12)*members+(monthly*members);
+  var cyclePot=monthly*members;
+  // Implicit return: if you get lump sum at month yourPos, you've paid yourPos*monthly
+  // You receive members*monthly — so net gain = (members-yourPos)*monthly
+  var netGain=(members-yourPos)*monthly;
+  var implicitReturn=(netGain/totalContributed)*(12/members)*100;
+  if(type==='thrift'||type==='cooperative'){
+    var bonus=totalContributed*rate*(members/12);
+    lumpSum=totalContributed+bonus;
+    implicitReturn=rate*100;
+  }
+  function fmt(n){return (Math.round(n)).toLocaleString();}
+  document.getElementById('tc-lump').textContent=fmt(lumpSum);
+  document.getElementById('tc-sub').textContent='At month '+monthsWait+' of '+members+' | Group total: '+fmt(cyclePot);
+  document.getElementById('tc-contributed').textContent=fmt(totalContributed);
+  document.getElementById('tc-receive').textContent=fmt(lumpSum);
+  document.getElementById('tc-months-wait').textContent=monthsWait+' months';
+  document.getElementById('tc-implicit-return').textContent=implicitReturn.toFixed(1)+'%';
+  document.getElementById('tc-bank-equiv').textContent=fmt(bankEquiv);
+  document.getElementById('tc-cycle-total').textContent=fmt(cyclePot);
+  var verdict='';
+  if(yourPos<=members/3)verdict='Early position: You receive an effective interest-free advance — great for capital needs. Your implicit return is positive.';
+  else if(yourPos>=members*2/3)verdict='Late position: You are effectively lending to earlier members interest-free. Consider negotiating a later position into a higher-interest contribution pool.';
+  else verdict='Mid position: Neutral position. Your total contributions equal what you receive (for simple rotating savings). The main benefit is the savings discipline.';
+  document.getElementById('tc-verdict').textContent=verdict;
+  document.getElementById('tc-results').classList.add('on');
+}
+</script>
+</body>
+</html>

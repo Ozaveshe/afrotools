@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marine &amp; Cargo Insurance Calculator for Africa | AfroTools</title>
+<meta name="description" content="Calculate cargo insurance premiums for African imports and exports. Estimate costs by CIF value, cargo type, and shipping route.">
+<link rel="canonical" href="https://afrotools.com/tools/marine-insurance/">
+<meta property="og:title" content="Marine &amp; Cargo Insurance Calculator for Africa | AfroTools">
+<meta property="og:description" content="Calculate cargo insurance premiums for African imports and exports. Estimate costs by CIF value, cargo type, and shipping route.">
+<meta property="og:url" content="https://afrotools.com/tools/marine-insurance/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Marine &amp; Cargo Insurance Calculator for Africa | AfroTools","description":"Calculate cargo insurance premiums for African imports and exports. Estimate costs by CIF value, cargo type, and shipping route.","url":"https://afrotools.com/tools/marine-insurance/","applicationCategory":"FinanceApplication","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Insurance","item":"https://afrotools.com/insurance/"},{"@type":"ListItem","position":3,"name":"Marine / Cargo Insurance Calculator","item":"https://afrotools.com/tools/marine-insurance/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/insurance.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="insurance"></afro-navbar>
+<section class="ins-tool-hero"><div class="container">
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/insurance/">Insurance</a> <span>›</span> Marine / Cargo Insurance Calculator</nav>
+<h1>🚢 <em>Marine / Cargo Insurance Calculator</em></h1>
+<p class="ins-tool-hero-sub">Calculate cargo insurance premiums for African imports and exports. Estimate costs by CIF value, cargo type, and shipping route.</p>
+</div></section>
+<main class="ins-main">
+<div class="ins-card"><div class="ins-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>🚢</span><h2>Calculate Your Estimate</h2><span class="ins-card-toggle">&#x25BE;</span></div>
+<div class="ins-card-body"><div class="ins-form-grid"><div class="ins-field"><label class="ins-f-label" for="country">Your Country</label><select class="ins-f-select" id="country"></select></div><div class="ins-field"><label class="ins-f-label" for="cifValue">CIF Value of Cargo</label><input class="ins-f-input" type="number" id="cifValue" placeholder="e.g. 100000" inputmode="numeric"></div><div class="ins-field"><label class="ins-f-label" for="cifCurrency">CIF Currency</label><select class="ins-f-select" id="cifCurrency"><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="Local Currency">Local Currency</option></select></div><div class="ins-field"><label class="ins-f-label" for="cargoType">Cargo Type</label><select class="ins-f-select" id="cargoType"><option value="Containerised (general)">Containerised (general)</option><option value="Bulk (grain, ore)">Bulk (grain, ore)</option><option value="Break-Bulk (palletised)">Break-Bulk (palletised)</option><option value="Refrigerated / Perishable">Refrigerated / Perishable</option><option value="Hazardous / Chemical">Hazardous / Chemical</option></select></div><div class="ins-field"><label class="ins-f-label" for="coverType">Cover Type</label><select class="ins-f-select" id="coverType"><option value="ICC(A) — All Risks">ICC(A) — All Risks</option><option value="ICC(B) — Named Perils">ICC(B) — Named Perils</option><option value="ICC(C) — Basic">ICC(C) — Basic</option></select></div><div class="ins-field"><label class="ins-f-label" for="route">Route</label><select class="ins-f-select" id="route"><option value="Intra-Africa">Intra-Africa</option><option value="Africa to Europe">Africa to Europe</option><option value="Africa to Asia">Africa to Asia</option><option value="Africa to Americas">Africa to Americas</option><option value="Worldwide">Worldwide</option></select></div></div>
+<button class="ins-calc-btn" id="calcBtn" type="button">Calculate Estimate</button></div></div>
+<div class="ins-results" id="results">
+<div class="ins-res-hero accent"><div class="ins-res-hero-label">Total Cargo Insurance Premium</div><div class="ins-res-hero-amount" id="resAmount">—</div><div class="ins-res-hero-sub" id="resSub">Including war risk surcharge</div></div>
+<div class="ins-card"><div class="ins-card-body">
+<table class="ins-summary-table"><thead><tr><th>Detail</th><th>Amount</th></tr></thead><tbody>
+<tr><td>CIF Value</td><td id="resCIF">—</td></tr>
+<tr><td>Sum Insured (CIF + 10%)</td><td id="resSI">—</td></tr>
+<tr><td>Base Premium</td><td id="resBase">—</td></tr>
+<tr><td>War Risk Surcharge</td><td id="resWar">—</td></tr>
+<tr><td>Rate Applied</td><td id="resRate">—</td></tr>
+</tbody></table></div></div></div>
+<section class="ins-seo">
+<h2>Marine / Cargo Insurance Calculator — What You Need to Know</h2>
+<p>Calculate cargo insurance premiums for African imports and exports. Estimate costs by CIF value, cargo type, and shipping route. Use this free calculator to get a quick estimate before contacting insurance providers.</p>
+<p>Marine and cargo insurance is essential for African trade, with import values frequently exceeding millions in local currency. Rates typically range from 0.3% to 1.5% of cargo value depending on route, goods type, and coverage level. Institute Cargo Clauses A (all risks), B (named perils), and C (major casualties) are the standard frameworks used across African markets.</p>
+<p><strong>Disclaimer:</strong> These are estimates based on market data and published rates. Actual premiums depend on individual circumstances, insurer assessment, and negotiation. Always get formal quotes from licensed providers.</p>
+</section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/insurance/country-insurance-index.js"></script>
+<script src="/engines/marine-insurance-engine.js"></script>
+<script>
+!function(){
+"use strict";
+var CC=null;
+var D=window.AfroTools.insuranceData;
+var E=window.AfroTools.MarineInsuranceEngine;
+
+var selFields=document.querySelectorAll("select");
+selFields.forEach(function(sel){
+  if(sel.id&&(sel.id==="country"||sel.id==="origin")){
+    var countries=D.countries;
+    for(var k in countries){
+      if(countries.hasOwnProperty(k)){
+        var o=document.createElement("option");
+        o.value=k;o.textContent=countries[k].flag+" "+countries[k].name;
+        sel.appendChild(o);
+      }
+    }
+  }
+});
+document.getElementById("calcBtn").addEventListener("click",function(){
+var inputs={};
+inputs.country=document.getElementById("country")?document.getElementById("country").value:"";
+inputs.cifValue=document.getElementById("cifValue")?document.getElementById("cifValue").value:"";
+inputs.cifCurrency=document.getElementById("cifCurrency")?document.getElementById("cifCurrency").value:"";
+inputs.cargoType=document.getElementById("cargoType")?document.getElementById("cargoType").value:"";
+inputs.coverType=document.getElementById("coverType")?document.getElementById("coverType").value:"";
+inputs.route=document.getElementById("route")?document.getElementById("route").value:"";
+var cc=CC||inputs.country||"NG";
+var r=E.calculate(inputs,cc);
+if(r.error){alert(r.error);return;}
+
+document.getElementById("resAmount").textContent=r.estimatedPremiumMin+" — "+r.estimatedPremiumMax;
+document.getElementById("resCIF").textContent=r.cifValue;
+document.getElementById("resSI").textContent=r.sumInsured;
+document.getElementById("resBase").textContent=r.basePremiumMin+" — "+r.basePremiumMax;
+document.getElementById("resWar").textContent=r.warRiskSurcharge;
+document.getElementById("resRate").textContent=r.rateApplied;
+document.getElementById("results").classList.add("on");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+});
+}();
+</script>
+</body>
+</html>
