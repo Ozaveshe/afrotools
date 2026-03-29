@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -587,7 +587,7 @@ function calcIS(grossAnnual) {
     taxableIncome: taxableIncome,
     annualIS: result.tax,
     bandBreakdown: result.bandBreakdown,
-    totalEmployeeDeductions: cnps + cn + result.tax,
+    totalEmployeeDéductions: cnps + cn + result.tax,
     netAnnual: grossAnnual - cnps - cn - result.tax,
     effectiveRate: grossAnnual > 0 ? result.tax / grossAnnual : 0,
     empCNPS: grossAnnual * 0.1575,
@@ -681,7 +681,7 @@ function renderRows(R) {
       row('Impôt sur les salaires (IS)', fmt(R.annualIS), 'c-red') +
     '</div>' +
     '<div class="res-section">' +
-      row('Total des retenues', fmt(R.totalEmployeeDeductions), 'c-red') +
+      row('Total des retenues', fmt(R.totalEmployeeDéductions), 'c-red') +
       '<div class="res-row total"><span class="res-row-lbl">Salaire net annuel</span><span class="res-row-val c-grn">' + fmt(R.netAnnual) + '</span></div>' +
       '<div class="res-row total"><span class="res-row-lbl">Salaire net mensuel</span><span class="res-row-val c-grn">' + fmt(R.netAnnual / 12) + '</span></div>' +
     '</div>';
@@ -825,7 +825,7 @@ function generatePdf() {
     (R.cnps > 0 ? '<tr><td>CNPS (salarié)</td><td class="num red">(' + Math.round(R.cnps).toLocaleString('fr-FR') + ' FCFA)</td></tr>' : '') +
     (R.cn > 0 ? '<tr><td>CN — Contribution Nationale</td><td class="num red">(' + Math.round(R.cn).toLocaleString('fr-FR') + ' FCFA)</td></tr>' : '') +
 '    <tr><td>IS (impôt sur les salaires)</td><td class="num red">(' + Math.round(R.annualIS).toLocaleString('fr-FR') + ' FCFA)</td></tr>' +
-'    <tr><td style="font-weight:700">Total retenues annuelles</td><td class="num red">(' + Math.round(R.totalEmployeeDeductions).toLocaleString('fr-FR') + ' FCFA)</td></tr>' +
+'    <tr><td style="font-weight:700">Total retenues annuelles</td><td class="num red">(' + Math.round(R.totalEmployeeDéductions).toLocaleString('fr-FR') + ' FCFA)</td></tr>' +
 '    <tr class="total"><td style="color:#009E49;font-weight:800">Salaire net annuel</td><td class="num green">' + Math.round(R.netAnnual).toLocaleString('fr-FR') + ' FCFA</td></tr>' +
 '    <tr class="total"><td style="color:#009E49;font-weight:800">Salaire net mensuel</td><td class="num green">' + Math.round(R.netAnnual / 12).toLocaleString('fr-FR') + ' FCFA</td></tr>' +
 '  </table>' +
@@ -956,8 +956,7 @@ window._grossToNet = function(g) {
   return r.netAnnual;
 };
 </script>
-<script src="/assets/js/lib/auto-email-gate.js" defer></script>
-<script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script><script src="/assets/js/share-image-inject.js" defer></script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body>
 </html>

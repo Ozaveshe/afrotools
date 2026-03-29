@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overtime Calculator for Africa 2026 — Country-Specific Labour Law Rates | AfroTools</title>
+  <meta name="description" content="Calculate overtime pay using country-specific African labour law rates. Weekday, weekend, public holiday and night shift multipliers for Nigeria, Kenya, South Africa, Ghana and 30+ countries.">
+  <link rel="canonical" href="https://afrotools.com/tools/overtime-calc/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <meta name="robots" content="index, follow">
+  <!-- OG:START -->
+  <meta property="og:title" content="Overtime Calculator for Africa 2026 — Country-Specific Labour Law Rates | AfroTools">
+  <meta property="og:description" content="Calculate overtime pay using African labour law rates. Weekday, weekend, holiday and night shift multipliers for 34 countries.">
+  <meta property="og:url" content="https://afrotools.com/tools/overtime-calc/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Overtime Calculator for Africa 2026 | AfroTools">
+  <meta name="twitter:description" content="Calculate overtime pay using African labour law rates. Weekday, weekend, holiday and night shift multipliers for 34 countries.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+  <!-- OG:END -->
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Overtime Calculator for Africa 2026","url":"https://afrotools.com/tools/overtime-calc/","description":"Calculate overtime pay using country-specific African labour law rates. Weekday, weekend, public holiday and night shift multipliers.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Salary & Tax","item":"https://afrotools.com/salary-tax/"},{"@type":"ListItem","position":3,"name":"Overtime Calculator","item":"https://afrotools.com/tools/overtime-calc/"}]}]}</script>
+  <style>
+    /* ---- Summary Result Cards ---- */
+    .ot-summary-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0; }
+    .ot-summary-card { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:16px;text-align:center; }
+    .ot-summary-card.wide { grid-column:1/-1; }
+    .ot-summary-card.highlight { background:linear-gradient(135deg,#0d1117,#0a1628);border-color:transparent;color:#fff; }
+    .ot-summary-card .os-label { font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted,#64748b);margin-bottom:4px; }
+    .ot-summary-card.highlight .os-label { color:rgba(255,255,255,.5); }
+    .ot-summary-card .os-value { font-size:1.3rem;font-weight:800;color:var(--primary,#007AFF); }
+    .ot-summary-card.highlight .os-value { color:#fff;font-size:1.6rem; }
+    .ot-summary-card .os-sub { font-size:.72rem;color:var(--text-muted,#94a3b8);margin-top:2px; }
+    .ot-summary-card.highlight .os-sub { color:rgba(255,255,255,.45); }
+
+    /* ---- Legal Notes ---- */
+    .ot-legal { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:14px;margin:16px 0;font-size:.85rem; }
+    .ot-legal .ol-title { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--primary,#007AFF);margin-bottom:8px; }
+    .ot-legal ul { padding-left:18px;margin:0;color:var(--text-muted,#475569);line-height:1.7; }
+    .ot-legal li { margin-bottom:4px; }
+    .ot-legal .ol-ref { margin-top:10px;font-size:.75rem;color:var(--text-muted,#94a3b8);font-style:italic; }
+
+    /* ---- Currency prefix inside input ---- */
+    .ot-input-wrap { position:relative; }
+    .ot-input-wrap .ot-prefix { position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:.85rem;font-weight:700;color:var(--text-muted,#64748b);pointer-events:none; }
+    .ot-input-wrap input { padding-left:52px; }
+
+    /* ---- Info Table ---- */
+    .ot-info-table { width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0; }
+    .ot-info-table th { background:var(--bg,#f1f5f9);padding:10px 12px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted,#64748b);border-bottom:1px solid var(--border,#e2e8f0); }
+    .ot-info-table td { padding:10px 12px;border-bottom:1px solid #f1f5f9;color:var(--text,#0f172a);font-weight:500; }
+    .ot-info-table tr:hover td { background:var(--bg,#f8fafc); }
+
+    /* ---- Responsive ---- */
+    @media(max-width:600px){
+      .ot-summary-grid { grid-template-columns:1fr 1fr; }
+      .ot-summary-card .os-value { font-size:1.1rem; }
+      .ot-summary-card.highlight .os-value { font-size:1.3rem; }
+    }
+    @media(max-width:400px){
+      .ot-summary-grid { grid-template-columns:1fr; }
+    }
+  </style>
+  <meta property="article:modified_time" content="2026-03-29">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/salary-tax/">Salary &amp; Tax</a> &rsaquo; Overtime Calculator
+    </nav>
+    <div class="tl-category-label">&#x1F4B0; SALARY &amp; TAX</div>
+    <h1 class="tl-title">Overtime <span class="tl-accent">Calculator</span></h1>
+    <p class="tl-desc">Calculate overtime pay using country-specific labour law rates across Africa. Every country has different multipliers for weekday OT, weekends, public holidays and night shifts. Enter your salary, pick your country, and get the exact legal rate.</p>
+    <div class="tl-badges">
+      <span>&#x1F1F3;&#x1F1EC; 1.5&times; weekday</span>
+      <span>&#x1F1FF;&#x1F1E6; BCEA rates</span>
+      <span>&#x1F1EC;&#x1F1ED; 2.5&times; holiday</span>
+      <span>&#x1F1E8;&#x1F1EE; Tiered OT</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+    <!-- ── INPUT CARD ── -->
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">&#x23F0;</span>
+        <div>
+          <div class="tl-card-title">Overtime Pay Calculator</div>
+          <div class="tl-card-sub">Select your country and enter your salary details</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field" style="grid-column:1/-1">
+          <label class="tl-label">COUNTRY</label>
+          <select id="country" onchange="onCountryChange()"></select>
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">MONTHLY SALARY</label>
+          <div class="ot-input-wrap">
+            <span class="ot-prefix" id="currency-prefix">&#x20A6;</span>
+            <input type="number" id="monthly-salary" placeholder="350000" min="0" step="any">
+          </div>
+        </div>
+        <div class="tl-field">
+          <label class="tl-label">OVERTIME HOURS</label>
+          <input type="number" id="ot-hours" placeholder="20" min="0" step="0.5">
+        </div>
+        <div class="tl-field" style="grid-column:1/-1">
+          <label class="tl-label">DAY TYPE</label>
+          <select id="day-type">
+            <option value="weekday">Weekday (Normal OT)</option>
+            <option value="weekend">Weekend / Rest Day</option>
+            <option value="holiday">Public Holiday</option>
+            <option value="night">Night Shift</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="tl-btn" onclick="calculate()">Calculate Overtime Pay</button>
+    </div>
+
+    <!-- ── RESULTS ── -->
+    <div class="tl-card" id="results" style="display:none">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">&#x1F4CA;</span>
+        <div>
+          <div class="tl-card-title">Overtime Calculation Results</div>
+          <div class="tl-card-sub" id="result-subtitle">-</div>
+        </div>
+      </div>
+
+      <div class="ot-summary-grid">
+        <div class="ot-summary-card">
+          <div class="os-label">Base Hourly Rate</div>
+          <div class="os-value" id="r-base-hourly">-</div>
+          <div class="os-sub">Monthly &div; standard hours</div>
+        </div>
+        <div class="ot-summary-card">
+          <div class="os-label">OT Multiplier</div>
+          <div class="os-value" id="r-multiplier">-</div>
+          <div class="os-sub" id="r-multiplier-type">-</div>
+        </div>
+        <div class="ot-summary-card">
+          <div class="os-label">Overtime Pay</div>
+          <div class="os-value" id="r-ot-pay" style="color:#16a34a">-</div>
+          <div class="os-sub" id="r-ot-hours-label">-</div>
+        </div>
+        <div class="ot-summary-card highlight wide">
+          <div class="os-label">Total Monthly Pay (with OT)</div>
+          <div class="os-value" id="r-total-pay">-</div>
+          <div class="os-sub" id="r-effective-rate">-</div>
+        </div>
+      </div>
+
+      <div class="ot-legal" id="legal-notes" style="display:none">
+        <div class="ol-title">Legal Notes</div>
+        <ul id="legal-list"></ul>
+        <div class="ol-ref" id="law-ref"></div>
+      </div>
+    </div>
+
+    <!-- ── INFO SECTION ── -->
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">&#x1F4D6;</span>
+        <div>
+          <div class="tl-card-title">Standard Working Hours by Country</div>
+          <div class="tl-card-sub">Key African labour law reference</div>
+        </div>
+      </div>
+      <table class="ot-info-table">
+        <thead>
+          <tr><th>Country</th><th>Weekly Hrs</th><th>Monthly Hrs</th><th>Weekday OT</th><th>Holiday OT</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>&#x1F1F3;&#x1F1EC; Nigeria</td><td>40</td><td>173.3</td><td>1.5&times;</td><td>2.0&times;</td></tr>
+          <tr><td>&#x1F1F0;&#x1F1EA; Kenya</td><td>52</td><td>225.3</td><td>1.5&times;</td><td>2.0&times;</td></tr>
+          <tr><td>&#x1F1FF;&#x1F1E6; South Africa</td><td>45</td><td>195.0</td><td>1.5&times;</td><td>2.0&times;</td></tr>
+          <tr><td>&#x1F1EC;&#x1F1ED; Ghana</td><td>40</td><td>173.3</td><td>1.5&times;</td><td>2.5&times;</td></tr>
+          <tr><td>&#x1F1EA;&#x1F1EC; Egypt</td><td>48</td><td>208.0</td><td>1.35&times;</td><td>1.7&times;</td></tr>
+          <tr><td>&#x1F1F9;&#x1F1FF; Tanzania</td><td>45</td><td>195.0</td><td>1.5&times;</td><td>2.0&times;</td></tr>
+          <tr><td>&#x1F1E8;&#x1F1EE; C&ocirc;te d'Ivoire</td><td>40</td><td>173.3</td><td>1.15&ndash;1.5&times;</td><td>2.0&times;</td></tr>
+          <tr><td>&#x1F1F2;&#x1F1E6; Morocco</td><td>44</td><td>190.7</td><td>1.25&times;</td><td>2.0&times;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SIDEBAR ── -->
+  <div class="tl-sidebar">
+    <div class="tl-ai-panel">
+      <div class="tl-ai-badge">AI OBSERVATIONS</div>
+      <div class="tl-ai-title">Country Insights</div>
+      <div class="tl-ai-body" id="ai-obs">Select a country and calculate overtime to see AI-powered insights on local labour law, maximum OT limits, exemptions and enforcement practices.</div>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">&#x2696;&#xFE0F; HOW IT WORKS</div>
+      <ul class="tl-info-list">
+        <li><strong>Base hourly rate</strong> = Monthly salary &div; standard monthly hours</li>
+        <li><strong>OT pay</strong> = Base hourly &times; multiplier &times; OT hours</li>
+        <li><strong>Multipliers</strong> vary by country and day type (weekday, weekend, holiday, night)</li>
+        <li><strong>Night shift</strong> premiums apply in addition to base OT in some jurisdictions</li>
+      </ul>
+    </div>
+
+    <div class="tl-info-card">
+      <div class="tl-info-title">&#x1F517; RELATED TOOLS</div>
+      <ul class="tl-info-list">
+        <li><a href="/tools/paye-calculator/">&#x1F4B0; PAYE Calculator</a> &mdash; Income tax after deductions</li>
+        <li><a href="/tools/leave-days/">&#x1F4C5; Leave Days Calculator</a> &mdash; Statutory leave entitlements</li>
+        <li><a href="/tools/staff-cost/">&#x1F465; Employee Cost Calculator</a> &mdash; True cost of hiring</li>
+        <li><a href="/tools/minimum-wage/">&#x1F4CA; Minimum Wage Reference</a> &mdash; All 54 countries</li>
+        <li><a href="/tools/working-days/">&#x1F4C6; Working Days Calculator</a> &mdash; Business days between dates</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="financial" current="overtime-calc"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script src="/data/hr/overtime-rules.js"></script>
+<script src="/engines/hr-engine.js"></script>
+<script>
+var countrySelect = document.getElementById('country');
+var currencyPrefix = document.getElementById('currency-prefix');
+var resultsEl = document.getElementById('results');
+
+/* ── Populate country dropdown from OVERTIME_RULES ── */
+(function init() {
+  if (typeof OVERTIME_RULES === 'undefined') return;
+  var codes = Object.keys(OVERTIME_RULES).sort(function(a, b) {
+    return OVERTIME_RULES[a].name.localeCompare(OVERTIME_RULES[b].name);
+  });
+  for (var i = 0; i < codes.length; i++) {
+    var rule = OVERTIME_RULES[codes[i]];
+    var opt = document.createElement('option');
+    opt.value = codes[i];
+    opt.textContent = rule.flag + ' ' + rule.name;
+    countrySelect.appendChild(opt);
+  }
+  /* Default to NG */
+  if (OVERTIME_RULES['NG']) countrySelect.value = 'NG';
+  onCountryChange();
+})();
+
+function onCountryChange() {
+  if (typeof OVERTIME_RULES === 'undefined') return;
+  var code = countrySelect.value;
+  var rule = OVERTIME_RULES[code];
+  if (!rule) return;
+  currencyPrefix.textContent = rule.currencySymbol || rule.currency;
+
+  /* Update AI Observations */
+  var obsEl = document.getElementById('ai-obs');
+  if (typeof OT_OBSERVATIONS !== 'undefined' && OT_OBSERVATIONS[code]) {
+    obsEl.innerHTML = OT_OBSERVATIONS[code];
+  } else {
+    obsEl.textContent = 'Select a country and calculate overtime to see insights on local labour law practices.';
+  }
+}
+
+function formatNumber(n, decimals) {
+  if (typeof decimals === 'undefined') decimals = 2;
+  return Number(n).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+}
+
+function calculate() {
+  if (typeof OVERTIME_RULES === 'undefined' || typeof AfroTools === 'undefined' || typeof AfroTools.HREngine === 'undefined') {
+    alert('Data is still loading. Please wait a moment and try again.');
+    return;
+  }
+
+  var country = countrySelect.value;
+  var monthlySalary = parseFloat(document.getElementById('monthly-salary').value);
+  var overtimeHours = parseFloat(document.getElementById('ot-hours').value);
+  var dayType = document.getElementById('day-type').value;
+
+  if (!monthlySalary || monthlySalary <= 0) {
+    alert('Please enter a valid monthly salary.');
+    return;
+  }
+  if (!overtimeHours || overtimeHours <= 0) {
+    alert('Please enter valid overtime hours.');
+    return;
+  }
+
+  var result = AfroTools.HREngine.calculateOvertime({
+    country: country,
+    monthlySalary: monthlySalary,
+    overtimeHours: overtimeHours,
+    dayType: dayType
+  });
+
+  if (!result || result.error) {
+    alert(result ? result.error : 'Calculation failed. Please check your inputs.');
+    return;
+  }
+
+  var rule = OVERTIME_RULES[country];
+  var cur = rule.currencySymbol || rule.currency;
+
+  /* Populate summary cards */
+  document.getElementById('r-base-hourly').textContent = cur + ' ' + formatNumber(result.baseHourlyRate);
+  document.getElementById('r-multiplier').textContent = result.multiplier + '\u00D7';
+  document.getElementById('r-multiplier-type').textContent = dayType.charAt(0).toUpperCase() + dayType.slice(1) + ' rate';
+  document.getElementById('r-ot-pay').textContent = cur + ' ' + formatNumber(result.overtimePay);
+  document.getElementById('r-ot-hours-label').textContent = overtimeHours + ' hour' + (overtimeHours !== 1 ? 's' : '') + ' of overtime';
+  document.getElementById('r-total-pay').textContent = cur + ' ' + formatNumber(result.totalMonthlyPay);
+
+  var effectiveRate = result.totalMonthlyPay / (rule.monthlyHours + overtimeHours);
+  document.getElementById('r-effective-rate').textContent = 'Effective hourly rate with OT: ' + cur + ' ' + formatNumber(effectiveRate);
+  document.getElementById('result-subtitle').textContent = rule.flag + ' ' + rule.name + ' \u2014 ' + dayType.charAt(0).toUpperCase() + dayType.slice(1) + ' Overtime';
+
+  /* Legal notes */
+  var legalEl = document.getElementById('legal-notes');
+  var legalList = document.getElementById('legal-list');
+  var lawRef = document.getElementById('law-ref');
+  legalList.innerHTML = '';
+
+  if (rule.legal) {
+    legalEl.style.display = '';
+    var notes = rule.legal;
+    if (notes.maxOTPerWeek) {
+      var li = document.createElement('li');
+      li.textContent = 'Maximum overtime allowed: ' + notes.maxOTPerWeek + ' hours per week';
+      legalList.appendChild(li);
+    }
+    if (notes.maxOTPerMonth) {
+      var li2 = document.createElement('li');
+      li2.textContent = 'Maximum overtime allowed: ' + notes.maxOTPerMonth + ' hours per month';
+      legalList.appendChild(li2);
+    }
+    if (notes.exemptions) {
+      var li3 = document.createElement('li');
+      li3.textContent = 'Exemptions: ' + notes.exemptions;
+      legalList.appendChild(li3);
+    }
+    if (notes.nightWorkDef) {
+      var li4 = document.createElement('li');
+      li4.textContent = 'Night work defined as: ' + notes.nightWorkDef;
+      legalList.appendChild(li4);
+    }
+    if (notes.nightPremium) {
+      var li5 = document.createElement('li');
+      li5.textContent = 'Night shift premium: ' + notes.nightPremium;
+      legalList.appendChild(li5);
+    }
+    if (notes.compulsoryRest) {
+      var li6 = document.createElement('li');
+      li6.textContent = 'Compulsory rest: ' + notes.compulsoryRest;
+      legalList.appendChild(li6);
+    }
+    lawRef.textContent = notes.lawReference || '';
+  } else {
+    legalEl.style.display = 'none';
+  }
+
+  resultsEl.style.display = '';
+  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

@@ -20,6 +20,11 @@
         { label: 'Mortgage Calculator', href: '/tools/mortgage-calculator/', emoji: '🏠' },
         { label: 'Bank Charges Comparator', href: '/tools/bank-charges/', emoji: '🏦' },
         { label: 'FIRE Calculator for Africa', href: '/tools/retirement-planner/', emoji: '🏖️' },
+        { label: 'Minimum Wage Checker', href: '/tools/minimum-wage/', emoji: '💰', badge: 'NEW' },
+        { label: 'Overtime Calculator', href: '/tools/overtime-calc/', emoji: '⏰', badge: 'NEW' },
+        { label: 'Leave & PTO Calculator', href: '/tools/leave-calculator/', emoji: '🏖️', badge: 'NEW' },
+        { label: 'Social Security Calculator', href: '/tools/social-security/', emoji: '🛡️', badge: 'NEW' },
+        { label: 'Pension Projection', href: '/tools/pension-projection/', emoji: '📈', badge: 'NEW' },
         { label: 'All 54 PAYE Calculators →', href: '/salary-tax/', emoji: '💰' },
       ]
     },
@@ -104,6 +109,25 @@
         { label: 'Hospital Cost Estimator', href: '/tools/hospital-cost/', emoji: '🏥' },
         { label: 'Pregnancy Due Date', href: '/health/pregnancy-due-date/', emoji: '👶' },
         { label: 'All Health Tools →', href: '/health/', emoji: '🏥' },
+      ]
+    },
+    {
+      id: 'insurance', label: 'Insurance', labelFr: 'Assurance', labelSw: 'Bima', icon: '🛡️',
+      desc: 'Car, health, life, funeral, business, travel — 54 countries',
+      descFr: 'Auto, santé, vie, obsèques, entreprise, voyage — 54 pays',
+      descSw: 'Gari, afya, maisha, mazishi, biashara, safari — nchi 54',
+      href: '/insurance/', color: '#fef2f2', accent: '#dc2626',
+      tools: [
+        { label: 'Car Insurance Estimator', href: '/tools/car-insurance/', emoji: '🚗', badge: 'LIVE' },
+        { label: 'Health Insurance Comparator', href: '/tools/health-insurance-compare/', emoji: '🏥', badge: 'LIVE' },
+        { label: 'Life Insurance Calculator', href: '/tools/life-insurance-calc/', emoji: '💚', badge: 'LIVE' },
+        { label: 'Funeral Insurance Calculator', href: '/tools/funeral-insurance/', emoji: '🕯️', badge: 'LIVE' },
+        { label: 'Motor Third-Party Premium', href: '/tools/motor-third-party/', emoji: '🛣️', badge: 'LIVE' },
+        { label: 'Business Insurance Estimator', href: '/tools/business-insurance/', emoji: '🏢', badge: 'LIVE' },
+        { label: 'Travel Insurance Estimator', href: '/tools/travel-insurance/', emoji: '✈️', badge: 'LIVE' },
+        { label: 'Workers Compensation', href: '/tools/workers-comp/', emoji: '👷', badge: 'LIVE' },
+        { label: 'Health Contribution (NHIF/SHIF)', href: '/tools/health-contribution/', emoji: '🩺', badge: 'LIVE' },
+        { label: 'All Insurance Tools →', href: '/insurance/', emoji: '🛡️' },
       ]
     },
     {
@@ -838,15 +862,6 @@
         srchEmpty:    isSw ? 'Zana 100+ za Afrika'          : isFr ? '100+ outils africains'                            : 'Search 100+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
       };
-      /* L3: Inject skip-to-main link into light DOM (outside shadow) */
-      if (!document.getElementById('skip-to-main')) {
-        var skipLink = document.createElement('a');
-        skipLink.id = 'skip-to-main';
-        skipLink.className = 'skip-to-main';
-        skipLink.href = '#main-content';
-        skipLink.textContent = isSw ? 'Ruka hadi maudhui' : isFr ? 'Aller au contenu' : 'Skip to main content';
-        document.body.insertBefore(skipLink, document.body.firstChild);
-      }
 
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>

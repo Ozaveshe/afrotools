@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -170,7 +170,7 @@
 
           <!-- CONTRIBUTION TOGGLES -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
+            <div class="f-label"><span class="f-label-text">Active Déductions</span><span class="f-hint">Toggle to include / exclude</span></div>
             <div class="toggles">
               <div class="tog on" data-tog="nssf" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -337,7 +337,7 @@
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
             <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
-            <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
+            <a class="tool-info-action" href="/fr/tools/paye-calculator/">Tous les pays</a>
           </div>
         </div>
       </div>
@@ -625,7 +625,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   let bandBreakdown = [];
 
   if (isSecondary) {
-    // Secondary employment: flat 30%, no deductions
+    // Secondary employment: flat 30%, no déductions
     monthlyPAYE = gross * 0.30;
     bandBreakdown = [{ rate: 0.30, income: gross, tax: monthlyPAYE, isFlat: true }];
   } else {
@@ -640,8 +640,8 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const wcf = 0; // No WCF in Burkina Faso
 
   // Net pay
-  const totalEmployeeDeductions = social + monthlyPAYE;
-  const netMonthly = gross - totalEmployeeDeductions;
+  const totalEmployeeDéductions = social + monthlyPAYE;
+  const netMonthly = gross - totalEmployeeDéductions;
   const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
 
   // Annual figures
@@ -651,7 +651,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
     gross, monthly: gross, social, socialRate, empSocial,
     monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
     sdl, wcf, empSocial,
-    totalEmployeeDeductions, netMonthly, effectiveRate,
+    totalEmployeeDéductions, netMonthly, effectiveRate,
     annualGross: annual(gross), annualNet: annual(netMonthly),
     annualTax: annual(monthlyPAYE), annualSocial: annual(social),
     totalEmployerCostMonthly: gross + empSocial,
@@ -707,7 +707,7 @@ function renderRows(R, period) {
   const social = isAnnual ? R.annualSocial  : R.social;
   const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
   const net    = isAnnual ? R.annualNet     : R.netMonthly;
-  const totalDeductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDeductions;
+  const totalDéductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDéductions;
   const lbl = isAnnual ? '/year' : '/month';
 
   const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
@@ -730,7 +730,7 @@ function renderRows(R, period) {
       ${row(`Impôt sur les salaires (IUTS)${lbl}`, fmt(paye), 'c-red')}
     </div>
     <div class="res-section">
-      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
+      ${row('Total Déductions', fmt(totalDéductions), 'c-red')}
       <div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
     </div>`;
 }
@@ -881,7 +881,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="shi"><div class="sh-lbl">Taux effectif</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
+  <div class="sec-head">Section 1 — Monthly Income &amp; Déductions</div>
   <table>
     <tr><td>Monthly Gross Salary</td><td class="num">XOF ${Math.round(R.gross).toLocaleString()}</td></tr>
     ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Cotisation CNSS salariale (${pct(R.socialRate)}, déductible)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
@@ -899,7 +899,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <table>
     ${R.social > 0 ? `<tr><td>CNSS (salarié)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     <tr><td>IUTS (impôt sur les salaires)</td><td class="num red">(XOF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total déductions mensuelles</td><td class="num red">(XOF ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total déductions mensuelles</td><td class="num red">(XOF ${Math.round(R.totalEmployeeDéductions).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire net mensuel</td><td class="num green">XOF ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire net annuel</td><td class="num green">XOF ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>

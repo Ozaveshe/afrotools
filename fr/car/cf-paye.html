@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
@@ -252,7 +252,7 @@ body{font-family:'DM Sans',Arial,sans-serif; }
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
             <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
-            <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
+            <a class="tool-info-action" href="/fr/tools/paye-calculator/">Tous les pays</a>
           </div>
         </div>
       </div>
@@ -370,7 +370,7 @@ function calcAnnualDGI(i){const n=Math.max(0,i),d=[];if(n<=200000)return d.push(
     calculate();
   }
 
-  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('cnss'),s=n?0.03:0,r=0.18,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualDGI(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,cnss:o,empCNSS:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualCNSS:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/mo · ${fmt(l)}/yr`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('employerStrip').innerHTML=`<strong>Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/mo</strong><br>Gross + CNSS ${fmt(a)}/mo`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart('donut'),document.getElementById('aiBtn').disabled=false,document.getElementById('aiBtn').textContent='Get AI Tax Analysis';
+  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('cnss'),s=n?0.03:0,r=0.18,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualDGI(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,cnss:o,empCNSS:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDéductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualCNSS:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/mo · ${fmt(l)}/yr`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('employerStrip').innerHTML=`<strong>Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/mo</strong><br>Gross + CNSS ${fmt(a)}/mo`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart('donut'),document.getElementById('aiBtn').disabled=false,document.getElementById('aiBtn').textContent='Get AI Tax Analysis';
   var _saveBtn = document.querySelector('save-result-button');
   if (_saveBtn) _saveBtn.setData({ inputs: { grossSalary: RESULT.gross }, outputs: { netPay: RESULT.netMonthly, tax: RESULT.monthlyPAYE, effectiveRate: RESULT.effectiveRate } });
   var _shareBtn = document.querySelector('share-result-button');

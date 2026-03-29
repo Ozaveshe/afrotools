@@ -5,8 +5,8 @@
 
 export const config = { schedule: '0 3 * * *' };
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const BASE_URL = process.env.URL || 'https://afrotools.com';
 
 async function sbUpsert(table, rows, onConflict, key) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -24,7 +24,6 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
-<script src="/assets/js/components/chat-panel.min.js" defer></script>
 <script src="/assets/js/components/tool-registry.min.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -219,6 +218,25 @@ h1 em{color:var(--em-light);font-style:normal}
 @media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:768px){.result-grid{grid-template-columns:repeat(2,1fr)}.field-row,.field-row-3{grid-template-columns:1fr}.comparison-cards{grid-template-columns:1fr}.mc-stats{grid-template-columns:repeat(3,1fr)}.chart-canvas-wrap{height:220px}.scenario-table{font-size:.7rem}.rates-table{font-size:.66rem}}
 @media(max-width:480px){.result-grid{grid-template-columns:1fr 1fr}.r-value{font-size:1.05rem}.progress-ring-wrap{flex-direction:column;gap:12px}.mc-stats{grid-template-columns:1fr 1fr 1fr}.export-row{flex-direction:column}.export-btn{width:100%;justify-content:center}}
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#007AFF;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#007AFF;background:#fff}
+.ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Pension Projection Calculator for Africa","description":"Project your pension fund value at retirement across 15 African countries. Monte Carlo simulations, inflation-adjusted projections, country-specific pension rules.","url":"https://afrotools.com/tools/pension-proj/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -227,7 +245,7 @@ h1 em{color:var(--em-light);font-style:normal}
 {"@context":"https://schema.org","@type":"WebPage","name":"Pension Projection Calculator for Africa","url":"https://afrotools.com/tools/pension-proj/","description":"Project your pension fund value at retirement across 15 African countries. Monte Carlo simulations, inflation-adjusted projections, country-specific pension rules.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What rate of return should I expect from my pension fund in Africa?","acceptedAnswer":{"@type":"Answer","text":"Returns vary by country and fund type. Nigerian PFAs have historically returned 8-12% annually. Kenya NSSF targets about 10%. South African retirement funds average 9-11% before fees. Ghana SSNIT targets around 10%. Use a conservative estimate of 8-10% for long-term planning."}},{"@type":"Question","name":"Can I add extra money to my pension fund?","acceptedAnswer":{"@type":"Answer","text":"Yes, most African pension schemes allow voluntary contributions. In Nigeria, you can make Additional Voluntary Contributions (AVC) on top of the mandatory 8%. Kenya NSSF allows voluntary top-ups. South Africa offers tax deductions up to 27.5% of taxable income for retirement fund contributions."}},{"@type":"Question","name":"At what age can I access my pension?","acceptedAnswer":{"@type":"Answer","text":"Retirement ages vary by country. Nigeria: age 50 or upon retirement. Kenya: age 50. South Africa: typically 55-65. Ghana: age 60. Some countries allow early access under specific conditions like unemployment or disability."}},{"@type":"Question","name":"Should I take a lump sum or buy an annuity at retirement?","acceptedAnswer":{"@type":"Answer","text":"This depends on your financial situation. In Nigeria, PenCom requires at least 25% to be used for a programmed withdrawal or annuity. In South Africa, you can take up to one-third as a lump sum. An annuity provides guaranteed income for life, while a lump sum gives flexibility but carries the risk of outliving your savings."}},{"@type":"Question","name":"How does inflation affect my pension projection?","acceptedAnswer":{"@type":"Answer","text":"Inflation reduces the purchasing power of your future pension. A pension of 50 million Naira in 30 years may only buy what 5 million buys today at 8% inflation. Always consider inflation-adjusted (real) values when planning for retirement."}},{"@type":"Question","name":"What happens to my pension if I change jobs in Africa?","acceptedAnswer":{"@type":"Answer","text":"In most African countries with defined contribution schemes, your pension is portable. In Nigeria, your RSA moves with you. In Kenya, you can transfer your NSSF balance. In South Africa, you can transfer between approved funds. Always check country-specific transfer rules and any penalties."}}]}</script>
-<script src="/assets/js/bundles/core.1f4e81f7.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
 <script src="/assets/js/components/save-result-button.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
@@ -264,6 +282,7 @@ h1 em{color:var(--em-light);font-style:normal}
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -512,6 +531,26 @@ Share
 
 <!-- Sidebar -->
 <div class="sidebar">
+
+    <!-- AI Advisor -->
+    <div class="ai-advisor-card" id="aiCard">
+      <div class="ai-advisor-head">
+        <span class="ai-dot"></span>
+        <span class="ai-title">AI Pension Proj Advisor</span>
+        <span class="ai-by">Powered by Claude</span>
+      </div>
+      <div class="ai-advisor-body">
+        <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+        <div class="ai-chat" id="aiChat">
+          <div class="ai-msgs" id="aiMsgs"></div>
+          <div class="ai-input-row">
+            <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+            <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 <div class="card">
 <div class="card-head"><span class="card-title">Pension Rates — 15 Countries</span></div>
 <div class="card-body" style="padding:12px">
@@ -615,7 +654,6 @@ Share
 
 <afro-related-tools category="financial" current="pension-proj"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<afro-chat tool-name="Pension Projection Calculator" system-prompt="You are an expert African pension and retirement planning advisor. You help users understand pension schemes across African countries including Nigeria PenCom, Kenya NSSF, South Africa retirement funds, Ghana SSNIT, and more. You can explain contribution rates, tax benefits, withdrawal rules, investment strategies, and retirement planning concepts. Always clarify that you provide educational guidance, not licensed financial advice."></afro-chat>
 <afro-footer></afro-footer>
 
 <script>
@@ -1355,6 +1393,34 @@ function init(){
 }
 
 document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<script>
+var AI_MSGS=[];
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var q=input.value.trim();
+  if(!q)return;
+  AI_MSGS.push({role:'user',content:q});
+  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'pension-proj',messages:AI_MSGS.slice(-6),context:''})});
+    var data=await res.json();
+    if(thinkEl.parentNode)thinkEl.remove();
+    var reply=data.reply||data.error||'Sorry, I could not get a response.';
+    AI_MSGS.push({role:'assistant',content:reply});
+    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+  }catch(e){
+    if(thinkEl.parentNode)thinkEl.remove();
+    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

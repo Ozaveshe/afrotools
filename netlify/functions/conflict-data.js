@@ -11,8 +11,8 @@
 // GET /api/stats                         → global KPIs for dashboard
 // GET /api/events/recent                 → last 30 days events across all conflicts
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 function getCorsHeaders(event) {
   const origin = event.headers?.origin || '';

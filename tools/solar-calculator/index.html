@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -113,6 +113,28 @@ select.field-input{cursor:pointer;}
 /* ── INFO BOX ── */
 .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;font-size:.8rem;color:#1e40af;line-height:1.6;margin-top:16px;}
 .info-box strong{font-weight:700;}
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#007AFF;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#007AFF;background:#fff}
+.ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+
+/* AI Advisor floating section */
+.ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
 </style>
 
 <script type="application/ld+json">
@@ -121,7 +143,7 @@ select.field-input{cursor:pointer;}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
-<script src="/assets/js/bundles/core.1f4e81f7.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
 <script src="/assets/js/components/save-result-button.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
@@ -140,6 +162,7 @@ select.field-input{cursor:pointer;}
 <meta property="og:title" content="Solar Panel Calculator - AfroTools">
 <meta property="og:description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
 <meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -388,11 +411,26 @@ select.field-input{cursor:pointer;}
 </div>
 
 
+<div class="ai-advisor-section">
+  <div class="ai-advisor-card" id="aiCard">
+    <div class="ai-advisor-head">
+      <span class="ai-dot"></span>
+      <span class="ai-title">AI Solar Calculator Advisor</span>
+      <span class="ai-by">Powered by Claude</span>
+    </div>
+    <div class="ai-advisor-body">
+      <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+      <div class="ai-chat" id="aiChat">
+        <div class="ai-msgs" id="aiMsgs"></div>
+        <div class="ai-input-row">
+          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <afro-related-tools category="engineering" current="solar-calculator"></afro-related-tools>
-<afro-chat
-  tool="solar-calculator"
-  system="You are an expert African solar and renewable energy advisor. Help users size solar systems, choose between inverter types (pure sine wave, modified), battery technologies (lithium vs lead-acid), and calculate ROI on solar investments. Be specific about African conditions — high sun hours (4.5–6 hrs/day), power outage frequency, NEPA/PHCN situation in Nigeria, Eskom load-shedding in South Africa, and real product prices in African markets."
-></afro-chat>
 <afro-footer></afro-footer>
 
 <script>
@@ -813,10 +851,38 @@ function formatNum(n){ return n.toLocaleString('en'); }
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
   var div = document.createElement('div');
   div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
   div.innerHTML = '<save-result-button tool-slug="solar-calculator" tool-name="Solar Calculator"></save-result-button><share-result-button tool-name="Solar Calculator" tool-slug="solar-calculator"></share-result-button>';
   target.appendChild(div);
 })();
+</script>
+
+<script>
+var AI_MSGS=[];
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var q=input.value.trim();
+  if(!q)return;
+  AI_MSGS.push({role:'user',content:q});
+  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'solar-calculator',messages:AI_MSGS.slice(-6),context:''})});
+    var data=await res.json();
+    if(thinkEl.parentNode)thinkEl.remove();
+    var reply=data.reply||data.error||'Sorry, I could not get a response.';
+    AI_MSGS.push({role:'assistant',content:reply});
+    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+  }catch(e){
+    if(thinkEl.parentNode)thinkEl.remove();
+    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

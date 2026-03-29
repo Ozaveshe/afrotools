@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Security Contribution Calculator for Africa 2026 &mdash; NSSF, SSNIT, UIF, CNPS | AfroTools</title>
+  <meta name="description" content="Calculate employee and employer social security contributions for all 54 African countries. NSSF, SSNIT, UIF, CNPS, PenCom rates with caps, tiers, and breakdowns in local currency.">
+  <link rel="canonical" href="https://afrotools.com/tools/social-security/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Social Security Contribution Calculator for Africa 2026 &mdash; NSSF, SSNIT, UIF, CNPS | AfroTools">
+  <meta property="og:description" content="Calculate employee and employer social security contributions for all 54 African countries. NSSF, SSNIT, UIF, CNPS, PenCom rates with caps, tiers, and breakdowns.">
+  <meta property="og:url" content="https://afrotools.com/tools/social-security/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Social Security Contribution Calculator for Africa 2026 | AfroTools">
+  <meta name="twitter:description" content="Calculate employee and employer social security contributions for all 54 African countries. NSSF, SSNIT, UIF, CNPS, PenCom rates with caps, tiers, and breakdowns.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/assets/js/components/related-tools.js" defer></script>
+  <script src="/data/hr/social-security-rates.js"></script>
+  <script src="/engines/hr-engine.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Social Security Contribution Calculator for Africa 2026","url":"https://afrotools.com/tools/social-security/","description":"Calculate employee and employer social security contributions for all 54 African countries. NSSF, SSNIT, UIF, CNPS, PenCom rates with caps, tiers, and breakdowns in local currency.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Salary & Tax","item":"https://afrotools.com/salary-tax/"},{"@type":"ListItem","position":3,"name":"Social Security Calculator","item":"https://afrotools.com/tools/social-security/"}]}]}</script>
+  <style>
+    /* ── Summary Cards Grid ── */
+    .ss-summary { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0; }
+    .ss-summary-card { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:18px 14px;text-align:center; }
+    .ss-summary-card.highlight { background:linear-gradient(135deg,#0d1117,#0a1628);border-color:transparent;color:#fff; }
+    .ss-summary-card.employee { background:linear-gradient(135deg,#e8f2ff,#f0f7ff);border-color:var(--color-primary,#007AFF); }
+    .ss-summary-card.employer { background:linear-gradient(135deg,#ecfdf5,#f0fdf4);border-color:#22c55e; }
+    .ss-summary-card .ss-label { font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted,#64748b);margin-bottom:4px; }
+    .ss-summary-card.highlight .ss-label { color:rgba(255,255,255,.5); }
+    .ss-summary-card.employee .ss-label { color:var(--color-primary,#007AFF); }
+    .ss-summary-card.employer .ss-label { color:#16a34a; }
+    .ss-summary-card .ss-value { font-size:1.4rem;font-weight:800;color:var(--color-primary,#007AFF);line-height:1.2; }
+    .ss-summary-card.highlight .ss-value { color:#fff;font-size:1.6rem; }
+    .ss-summary-card.employer .ss-value { color:#16a34a; }
+    .ss-summary-card .ss-sub { font-size:.72rem;color:var(--text-muted,#94a3b8);margin-top:3px; }
+    .ss-summary-card.highlight .ss-sub { color:rgba(255,255,255,.45); }
+
+    /* Wide card spanning full row */
+    .ss-summary-card.wide { grid-column:1/-1; }
+
+    /* ── Currency prefix inside input ── */
+    .ss-input-wrap { position:relative; }
+    .ss-input-wrap .ss-prefix { position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:.85rem;font-weight:700;color:var(--text-muted,#64748b);pointer-events:none; }
+    .ss-input-wrap input { padding-left:52px; }
+
+    /* ── Scheme Breakdown Table ── */
+    .ss-breakdown-table { width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0; }
+    .ss-breakdown-table th { background:var(--bg,#f1f5f9);padding:10px 12px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted,#64748b);border-bottom:1px solid var(--border,#e2e8f0); }
+    .ss-breakdown-table td { padding:10px 12px;border-bottom:1px solid #f1f5f9;color:var(--text,#0f172a);font-weight:500; }
+    .ss-breakdown-table tr:nth-child(even) td { background:#fafbfc; }
+    .ss-breakdown-table tr:hover td { background:var(--bg,#f8fafc); }
+    .ss-breakdown-table .col-employee { color:var(--color-primary,#007AFF);font-weight:700; }
+    .ss-breakdown-table .col-employer { color:#16a34a;font-weight:700; }
+
+    /* Cap badge */
+    .ss-cap-badge { display:inline-block;background:#fef3c7;color:#92400e;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.02em; }
+    .ss-no-cap { display:inline-block;background:#f0fdf4;color:#16a34a;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:100px; }
+
+    /* ── Annual Totals ── */
+    .ss-annual { display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px; }
+    .ss-annual-item { text-align:center; }
+    .ss-annual-item .sa-label { font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#64748b;margin-bottom:4px; }
+    .ss-annual-item .sa-value { font-size:1.1rem;font-weight:800; }
+    .ss-annual-item .sa-value.blue { color:var(--color-primary,#007AFF); }
+    .ss-annual-item .sa-value.green { color:#16a34a; }
+    .ss-annual-item .sa-value.dark { color:#0f172a; }
+
+    /* ── AI Observations ── */
+    .ss-obs-panel { background:var(--color-bg-subtle,#f8fafc);border:1px solid var(--color-border,#e5e7eb);border-radius:12px;padding:16px;margin:16px 0;font-size:.85rem;color:var(--color-text-muted,#6b7280);line-height:1.7; }
+    .ss-obs-panel .sop-title { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--color-primary,#007AFF);margin-bottom:8px; }
+
+    /* ── Scheme name + notes ── */
+    .ss-scheme-name { font-weight:700;color:#0f172a; }
+    .ss-scheme-note { font-size:.72rem;color:#94a3b8;display:block;margin-top:2px; }
+
+    /* ── Responsive ── */
+    @media(max-width:640px){
+      .ss-summary { grid-template-columns:1fr; }
+      .ss-annual { grid-template-columns:1fr; }
+      .ss-breakdown-table { font-size:.75rem; }
+      .ss-breakdown-table th, .ss-breakdown-table td { padding:8px 8px; }
+    }
+    @media(max-width:480px){
+      .ss-summary-card .ss-value { font-size:1.2rem; }
+      .ss-summary-card.highlight .ss-value { font-size:1.3rem; }
+    }
+  </style>
+  <meta property="article:modified_time" content="2026-03-29">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/social-security/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/social-security/">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tl-hero">
+  <div class="tl-hero-inner">
+    <nav class="tl-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/salary-tax/">Salary &amp; Tax</a> &rsaquo; Social Security Calculator
+    </nav>
+    <div class="tl-category-label">&#x1F4B0; SALARY &amp; TAX</div>
+    <h1 class="tl-title">Social Security <span class="tl-accent">Calculator</span></h1>
+    <p class="tl-desc">Calculate employee and employer social security contributions for any African country. Get a full breakdown of every scheme &mdash; pension, health insurance, work injury, housing fund &mdash; with caps, rates, and net-after-deduction figures in local currency.</p>
+    <div class="tl-badges">
+      <span>&#x1F1F3;&#x1F1EC; PenCom 18%</span>
+      <span>&#x1F1F0;&#x1F1EA; NSSF+SHIF+AHL</span>
+      <span>&#x1F1FF;&#x1F1E6; UIF+SDL</span>
+      <span>&#x1F1EC;&#x1F1ED; SSNIT 3-Tier</span>
+    </div>
+  </div>
+</div>
+
+<div class="tl-body">
+  <div class="tl-main">
+
+    <!-- ── INPUT CARD ── -->
+    <div class="tl-card">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">&#x1F4B0;</span>
+        <div>
+          <div class="tl-card-title">Social Security Contributions</div>
+          <div class="tl-card-sub">Select a country and enter monthly gross salary to calculate contributions</div>
+        </div>
+      </div>
+
+      <div class="tl-form-grid">
+        <div class="tl-field" style="grid-column:1/-1">
+          <label class="tl-label">COUNTRY</label>
+          <select id="country" onchange="onCountryChange()">
+            <option value="">&mdash; Select a country &mdash;</option>
+            <option value="DZ">&#x1F1E9;&#x1F1FF; Algeria</option>
+            <option value="AO">&#x1F1E6;&#x1F1F4; Angola</option>
+            <option value="BJ">&#x1F1E7;&#x1F1EF; Benin</option>
+            <option value="BF">&#x1F1E7;&#x1F1EB; Burkina Faso</option>
+            <option value="BW">&#x1F1E7;&#x1F1FC; Botswana</option>
+            <option value="CM">&#x1F1E8;&#x1F1F2; Cameroon</option>
+            <option value="CD">&#x1F1E8;&#x1F1E9; DR Congo</option>
+            <option value="CI">&#x1F1E8;&#x1F1EE; C&ocirc;te d'Ivoire</option>
+            <option value="EG">&#x1F1EA;&#x1F1EC; Egypt</option>
+            <option value="ET">&#x1F1EA;&#x1F1F9; Ethiopia</option>
+            <option value="GA">&#x1F1EC;&#x1F1E6; Gabon</option>
+            <option value="GH">&#x1F1EC;&#x1F1ED; Ghana</option>
+            <option value="GN">&#x1F1EC;&#x1F1F3; Guinea</option>
+            <option value="KE">&#x1F1F0;&#x1F1EA; Kenya</option>
+            <option value="LY">&#x1F1F1;&#x1F1FE; Libya</option>
+            <option value="MG">&#x1F1F2;&#x1F1EC; Madagascar</option>
+            <option value="MW">&#x1F1F2;&#x1F1FC; Malawi</option>
+            <option value="ML">&#x1F1F2;&#x1F1F1; Mali</option>
+            <option value="MA">&#x1F1F2;&#x1F1E6; Morocco</option>
+            <option value="MZ">&#x1F1F2;&#x1F1FF; Mozambique</option>
+            <option value="MU">&#x1F1F2;&#x1F1FA; Mauritius</option>
+            <option value="NA">&#x1F1F3;&#x1F1E6; Namibia</option>
+            <option value="NE">&#x1F1F3;&#x1F1EA; Niger</option>
+            <option value="NG">&#x1F1F3;&#x1F1EC; Nigeria</option>
+            <option value="RW">&#x1F1F7;&#x1F1FC; Rwanda</option>
+            <option value="SN">&#x1F1F8;&#x1F1F3; Senegal</option>
+            <option value="ZA">&#x1F1FF;&#x1F1E6; South Africa</option>
+            <option value="SD">&#x1F1F8;&#x1F1E9; Sudan</option>
+            <option value="TZ">&#x1F1F9;&#x1F1FF; Tanzania</option>
+            <option value="TG">&#x1F1F9;&#x1F1EC; Togo</option>
+            <option value="TN">&#x1F1F9;&#x1F1F3; Tunisia</option>
+            <option value="UG">&#x1F1FA;&#x1F1EC; Uganda</option>
+            <option value="ZM">&#x1F1FF;&#x1F1F2; Zambia</option>
+            <option value="ZW">&#x1F1FF;&#x1F1FC; Zimbabwe</option>
+          </select>
+        </div>
+        <div class="tl-field" style="grid-column:1/-1">
+          <label class="tl-label">MONTHLY GROSS SALARY</label>
+          <div class="ss-input-wrap">
+            <span class="ss-prefix" id="currency-prefix">&#x20A6;</span>
+            <input type="number" id="monthly-salary" placeholder="500000" min="0" step="any">
+          </div>
+        </div>
+      </div>
+
+      <button class="tl-btn" onclick="calculate()">Calculate Contributions</button>
+    </div>
+
+    <!-- ── RESULTS ── -->
+    <div class="tl-card" id="results" style="display:none">
+      <div class="tl-card-header">
+        <span class="tl-card-icon">&#x1F4CA;</span>
+        <div>
+          <div class="tl-card-title">Contribution Breakdown</div>
+          <div class="tl-card-sub" id="result-subtitle">&mdash;</div>
+        </div>
+      </div>
+
+      <!-- Summary Grid -->
+      <div class="ss-summary">
+        <div class="ss-summary-card employee">
+          <div class="ss-label">Employee Total</div>
+          <div class="ss-value" id="r-employee-total">&mdash;</div>
+          <div class="ss-sub" id="r-employee-pct"></div>
+        </div>
+        <div class="ss-summary-card employer">
+          <div class="ss-label">Employer Total</div>
+          <div class="ss-value" id="r-employer-total">&mdash;</div>
+          <div class="ss-sub" id="r-employer-pct"></div>
+        </div>
+        <div class="ss-summary-card">
+          <div class="ss-label">Total Contribution</div>
+          <div class="ss-value" id="r-total-contribution">&mdash;</div>
+          <div class="ss-sub" id="r-total-pct"></div>
+        </div>
+      </div>
+
+      <!-- Main highlight card -->
+      <div class="ss-summary" style="margin-top:0">
+        <div class="ss-summary-card highlight wide">
+          <div class="ss-label">Net After Deductions</div>
+          <div class="ss-value" id="r-net-salary">&mdash;</div>
+          <div class="ss-sub" id="r-net-sub">Monthly take-home after social security</div>
+        </div>
+      </div>
+
+      <!-- Cost to employer -->
+      <div class="ss-summary" style="margin-top:0">
+        <div class="ss-summary-card wide" style="background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#f59e0b;">
+          <div class="ss-label" style="color:#92400e">Cost to Employer</div>
+          <div class="ss-value" id="r-cost-employer" style="color:#92400e">&mdash;</div>
+          <div class="ss-sub" style="color:#b45309">Gross salary + employer contributions</div>
+        </div>
+      </div>
+
+      <!-- Scheme Breakdown Table -->
+      <div class="tl-section-title" style="margin-top:16px">Scheme-by-Scheme Breakdown</div>
+      <div style="overflow-x:auto">
+        <table class="ss-breakdown-table">
+          <thead>
+            <tr>
+              <th>Scheme</th>
+              <th>Employee</th>
+              <th>Employer</th>
+              <th>Cap</th>
+            </tr>
+          </thead>
+          <tbody id="r-schemes"></tbody>
+        </table>
+      </div>
+
+      <!-- Annual Totals -->
+      <div class="tl-section-title" style="margin-top:16px">Annual Totals</div>
+      <div class="ss-annual">
+        <div class="ss-annual-item">
+          <div class="sa-label">Employee / Year</div>
+          <div class="sa-value blue" id="r-annual-employee">&mdash;</div>
+        </div>
+        <div class="ss-annual-item">
+          <div class="sa-label">Employer / Year</div>
+          <div class="sa-value green" id="r-annual-employer">&mdash;</div>
+        </div>
+        <div class="ss-annual-item">
+          <div class="sa-label">Total / Year</div>
+          <div class="sa-value dark" id="r-annual-total">&mdash;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AI OBSERVATIONS ── -->
+    <div class="tl-card" id="ai-panel">
+      <div class="ss-obs-panel">
+        <div class="sop-title">AI Observations</div>
+        <div id="ai-obs">Select a country above and calculate to see AI-powered observations about social security schemes, compliance requirements, and how contributions compare across the region.</div>
+      </div>
+    </div>
+
+  </div><!-- /.tl-main -->
+</div><!-- /.tl-body -->
+
+<afro-related-tools category="financial" current="social-security"></afro-related-tools>
+
+<afro-footer></afro-footer>
+
+<script>
+/* ── Helpers ── */
+var CURRENCY_MAP = {
+  NG:'NGN', KE:'KES', ZA:'ZAR', GH:'GHS', EG:'EGP', TZ:'TZS', UG:'UGX',
+  RW:'RWF', CI:'XOF', SN:'XOF', CM:'XAF', MA:'MAD', TN:'TND', ZM:'ZMW',
+  BW:'BWP', MU:'MUR', NA:'NAD', DZ:'DZD', ET:'ETB', AO:'AOA', ZW:'ZWL',
+  MW:'MWK', MZ:'MZN', MG:'MGA', CD:'CDF', GA:'XAF', BJ:'XOF', BF:'XOF',
+  ML:'XOF', NE:'XOF', TG:'XOF', GN:'GNF', LY:'LYD', SD:'SDG'
+};
+var SYMBOL_MAP = {
+  NGN:'\u20A6', KES:'KES', ZAR:'R', GHS:'GH\u20B5', EGP:'E\u00A3', TZS:'TZS',
+  UGX:'UGX', RWF:'RWF', XOF:'CFA', XAF:'FCFA', MAD:'MAD', TND:'TND',
+  ZMW:'ZMW', BWP:'BWP', MUR:'MUR', NAD:'N$', DZD:'DA', ETB:'ETB',
+  AOA:'Kz', ZWL:'ZWL', MWK:'MK', MZN:'MT', MGA:'Ar', CDF:'CDF',
+  GNF:'GNF', LYD:'LYD', SDG:'SDG'
+};
+
+var SS_OBSERVATIONS = {
+  NG: 'Nigeria\'s social security is primarily managed by PenCom under the Contributory Pension Scheme (CPS). Employees contribute 8% and employers 10% of monthly emoluments. The National Health Insurance Scheme (NHIS) adds employer-only contributions. The Employee Compensation Scheme (ECS) covers work injury at 1% employer-only. Nigeria\'s total burden is moderate by African standards but enforcement varies significantly between formal and informal sectors.',
+  KE: 'Kenya has one of Africa\'s most layered social security systems. NSSF (Tier I and II) covers pension, SHIF (Social Health Insurance Fund, replacing NHIF) covers health at 2.75% of gross, and the Affordable Housing Levy (AHL) adds 1.5% each from employee and employer. The 2023 reforms significantly increased contribution ceilings. Total combined burden can reach 12-15% per side.',
+  ZA: 'South Africa uses UIF (Unemployment Insurance Fund) at 1% each side capped at R17,712/month, plus SDL (Skills Development Levy) at 1% employer-only with no cap. There is no mandatory pension fund at national level, though most formal employers provide occupational retirement funds. The relatively low statutory burden is offset by significant occupational scheme costs.',
+  GH: 'Ghana operates a 3-tier pension system under SSNIT. Tier 1 (SSNIT) is mandatory at 13% employer + 5.5% employee. Tier 2 is mandatory occupational at 5% employer. Tier 3 is voluntary. The total mandatory contribution of 23.5% of basic salary makes Ghana one of the higher-burden countries. SSNIT has a salary cap that is periodically adjusted.',
+  EG: 'Egypt\'s social insurance system was reformed in 2020. Contributions are split across old age/disability/death, work injury, sickness, and unemployment. Employee rates total around 11% and employer around 18.75% but with salary caps on different components. The system distinguishes between basic and variable salary components.',
+  TZ: 'Tanzania\'s NSSF requires 10% from each side (employee and employer) of gross salary. The relatively simple single-scheme structure makes compliance straightforward. NHIF contributions for health are additional. Tanzania\'s combined burden of 20%+ places it among the higher-cost countries in East Africa.',
+  UG: 'Uganda\'s NSSF collects 5% from employees and 10% from employers with no salary cap. This makes it straightforward but means high earners pay proportionally the same. There is no mandatory health insurance scheme yet at national level, though one has been proposed.',
+  RW: 'Rwanda\'s social security is managed by RSSB covering pension (3% employee + 5% employer), maternity leave fund (0.3% each), and CBHI/Mutuelle for health. The combined rates are among the lowest in East Africa, making Rwanda relatively employer-friendly for formal employment costs.',
+  CI: 'C\u00F4te d\'Ivoire\'s CNPS handles pension (6.3% employee + 7.7% employer), family allowances (5.75% employer), and work injury (2-5% employer based on risk). The system has salary caps. Total employer burden can reach 15-19% depending on industry risk classification.',
+  SN: 'Senegal\'s IPRES manages pension contributions (5.6% employee + 8.4% employer) with CSS handling family allowances (7% employer) and work injury (1-5% employer). The combined employer burden of 16-20% is significant. Salary caps apply to pension contributions.',
+  CM: 'Cameroon\'s CNPS covers old age pension (4.2% employee + 4.2% employer), family allowances (7% employer), and work injury (1.75-5% employer). Total employer cost ranges 13-16%. The salary cap for pension is relatively low compared to average formal sector wages.',
+  MA: 'Morocco\'s CNSS provides pension, short-term benefits, and family allowances. Employee contributes about 6.74% and employer about 21.09% (including AMO health insurance). Morocco has one of the highest employer burdens in Africa. Salary caps apply to different components.',
+  TN: 'Tunisia\'s CNSS system charges approximately 9.18% employee and 16.57% employer for the general regime. The high combined rate of nearly 26% makes Tunisia one of the most expensive countries for social security in Africa. Different regimes apply to different sectors.',
+  ZM: 'Zambia\'s NAPSA collects 5% each from employee and employer. The National Health Insurance scheme adds 1% each. The system is straightforward with moderate rates. NAPSA has a contribution ceiling that is periodically updated.',
+  BW: 'Botswana has no mandatory social security contribution scheme. There is no national pension fund or unemployment insurance. Employers may voluntarily provide pension and other benefits. This makes Botswana uniquely low-cost for statutory social security among Southern African nations.',
+  MU: 'Mauritius contributes to the NSF (National Savings Fund) and CSG (Contribution Sociale G\u00E9n\u00E9ralis\u00E9e). CSG replaced NPF in 2020 at 1.5% employee and 3% employer on earnings up to a threshold, with higher rates above. The system is relatively moderate.',
+  NA: 'Namibia\'s SSC (Social Security Commission) charges a flat N$81 per month each from employee and employer (2024 rates). This flat-rate system is unusual in Africa and means the burden is regressive \u2014 proportionally higher for low earners.',
+  DZ: 'Algeria\'s CNAS system has one of the highest rates in Africa. Employee contributes 9% and employer 26% of gross salary, covering pension, health, unemployment, and work injury. The total 35% combined rate places Algeria at the top of the continent for social security costs.',
+  ET: 'Ethiopia\'s pension scheme requires 7% from employees and 11% from employers. There is no salary cap, making contributions proportional at all income levels. A separate provident fund may apply to certain government employees.',
+  AO: 'Angola\'s INSS collects 3% from employees and 8% from employers. The relatively low rates make Angola one of the more affordable countries for social security. Work injury coverage is included in the employer rate.',
+  ZW: 'Zimbabwe\'s NSSA pension scheme charges 3.5% each from employee and employer on insurable earnings up to a ceiling. The rates are moderate and the cap means high earners have a limited burden. WCIF (Workers Compensation) is additional.',
+  MW: 'Malawi currently has no mandatory national social security scheme for private sector workers. A scheme has been under development. Employers may voluntarily provide pension benefits.',
+  MZ: 'Mozambique\'s INSS charges 3% from employees and 4% from employers. The low rates make Mozambique one of the cheapest countries for social security in Southern Africa.',
+  MG: 'Madagascar\'s CNaPS manages pension at 1% employee and 13% employer. The highly skewed employer burden is notable. Additional contributions may apply for work injury.',
+  CD: 'DR Congo\'s CNSS charges 3.5% employee and 6.5% employer for pension, plus 1.5% employer for family allowances and variable rates for work injury. Enforcement is limited outside major urban centres.',
+  GA: 'Gabon\'s CNSS covers pension (2.5% employee + 5% employer), family allowances (8% employer), and work injury (variable employer). The employer burden of 13%+ is significant for the region.',
+  BJ: 'Benin\'s CNSS charges 3.6% employee and 6.4% employer for pension, plus 9% employer for family allowances and 1-4% for work injury. The employer burden can reach 15-19%.',
+  BF: 'Burkina Faso\'s CNSS covers pension (5.5% employee + 5.5% employer), family allowances (7% employer), and work injury (2-5% employer). Combined employer burden reaches 14-17%.',
+  ML: 'Mali\'s INPS handles pension (3.6% employee + 5.4% employer), family allowances (8% employer), and work injury (1-4% employer). The employer total of 14-17% is typical for Francophone West Africa.',
+  NE: 'Niger\'s CNSS charges 1.6% employee and 6.4% employer for pension, plus 11% employer for family allowances and 2% for work injury. The high family allowance rate pushes employer burden to ~19%.',
+  TG: 'Togo\'s CNSS covers pension (4% employee + 8% employer), family allowances (6% employer), and work injury (variable). The combined employer rate of 14-17% is in line with regional norms.',
+  GN: 'Guinea\'s CNSS charges 2.5% employee + 5% employer for pension, plus 6% employer for family allowances and variable work injury rates. Enforcement challenges exist in the large informal sector.',
+  LY: 'Libya\'s social security system charges approximately 3.75% from employees and 11.25% from employers. The system covers pension, disability, and work injury. Enforcement has been disrupted by political instability.',
+  SD: 'Sudan\'s NSIF (National Social Insurance Fund) charges 8% from employees and 17% from employers. The combined 25% rate is among the highest in Africa. The system covers pension, work injury, and other benefits.'
+};
+
+function formatNumber(n) {
+  if (n === undefined || n === null || isNaN(n)) return '0';
+  return Number(n).toLocaleString('en', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function formatPct(n) {
+  if (n === undefined || n === null || isNaN(n)) return '0%';
+  return Number(n).toFixed(1) + '%';
+}
+
+function getCurrency(cc) {
+  var cur = CURRENCY_MAP[cc] || 'USD';
+  return SYMBOL_MAP[cur] || cur;
+}
+
+/* ── Country Change Handler ── */
+function onCountryChange() {
+  var cc = document.getElementById('country').value;
+  if (!cc) return;
+  var cur = getCurrency(cc);
+  document.getElementById('currency-prefix').textContent = cur;
+  document.getElementById('results').style.display = 'none';
+}
+
+/* ── Calculate ── */
+function calculate() {
+  var cc = document.getElementById('country').value;
+  var salaryInput = document.getElementById('monthly-salary').value;
+  if (!cc) { alert('Please select a country.'); return; }
+  var monthlySalary = parseFloat(salaryInput);
+  if (!monthlySalary || monthlySalary <= 0) { alert('Please enter a valid monthly salary.'); return; }
+
+  var cur = getCurrency(cc);
+  var result;
+
+  /* Try engine first, fallback to data-only calculation */
+  if (typeof AfroTools !== 'undefined' && AfroTools.HREngine && typeof AfroTools.HREngine.calculateSocialSecurity === 'function') {
+    result = AfroTools.HREngine.calculateSocialSecurity(cc, monthlySalary);
+  } else if (typeof SOCIAL_SECURITY !== 'undefined' && SOCIAL_SECURITY[cc]) {
+    result = fallbackCalculate(cc, monthlySalary);
+  } else {
+    alert('Social security data not available for this country.');
+    return;
+  }
+
+  if (!result) { alert('Could not calculate. Data may be unavailable for this country.'); return; }
+
+  /* Populate summary */
+  var employeeTotal = result.employeeTotal || 0;
+  var employerTotal = result.employerTotal || 0;
+  var totalContribution = employeeTotal + employerTotal;
+  var netSalary = monthlySalary - employeeTotal;
+  var costToEmployer = monthlySalary + employerTotal;
+
+  document.getElementById('r-employee-total').textContent = cur + ' ' + formatNumber(employeeTotal);
+  document.getElementById('r-employee-pct').textContent = formatPct((employeeTotal / monthlySalary) * 100) + ' of gross';
+  document.getElementById('r-employer-total').textContent = cur + ' ' + formatNumber(employerTotal);
+  document.getElementById('r-employer-pct').textContent = formatPct((employerTotal / monthlySalary) * 100) + ' of gross';
+  document.getElementById('r-total-contribution').textContent = cur + ' ' + formatNumber(totalContribution);
+  document.getElementById('r-total-pct').textContent = formatPct((totalContribution / monthlySalary) * 100) + ' combined';
+  document.getElementById('r-net-salary').textContent = cur + ' ' + formatNumber(netSalary);
+  document.getElementById('r-net-sub').textContent = 'Monthly take-home after ' + formatPct((employeeTotal / monthlySalary) * 100) + ' deductions';
+  document.getElementById('r-cost-employer').textContent = cur + ' ' + formatNumber(costToEmployer);
+
+  /* Country subtitle */
+  var countrySelect = document.getElementById('country');
+  var countryName = countrySelect.options[countrySelect.selectedIndex].textContent;
+  document.getElementById('result-subtitle').textContent = countryName + ' \u2014 ' + cur + ' ' + formatNumber(monthlySalary) + '/month';
+
+  /* Scheme breakdown table */
+  var tbody = document.getElementById('r-schemes');
+  tbody.innerHTML = '';
+  var breakdown = result.breakdown || [];
+  for (var i = 0; i < breakdown.length; i++) {
+    var s = breakdown[i];
+    var tr = document.createElement('tr');
+
+    /* Scheme name + note */
+    var tdName = document.createElement('td');
+    var nameSpan = document.createElement('span');
+    nameSpan.className = 'ss-scheme-name';
+    nameSpan.textContent = s.name || 'Scheme';
+    tdName.appendChild(nameSpan);
+    if (s.note) {
+      var noteSpan = document.createElement('span');
+      noteSpan.className = 'ss-scheme-note';
+      noteSpan.textContent = s.note;
+      tdName.appendChild(noteSpan);
+    }
+    tr.appendChild(tdName);
+
+    /* Employee column */
+    var tdEmp = document.createElement('td');
+    tdEmp.className = 'col-employee';
+    tdEmp.textContent = cur + ' ' + formatNumber(s.employeeAmount || 0);
+    if (s.employeeRate !== undefined) {
+      var empRate = document.createElement('span');
+      empRate.className = 'ss-scheme-note';
+      empRate.textContent = formatPct(s.employeeRate) + ' rate';
+      tdEmp.appendChild(empRate);
+    }
+    tr.appendChild(tdEmp);
+
+    /* Employer column */
+    var tdEr = document.createElement('td');
+    tdEr.className = 'col-employer';
+    tdEr.textContent = cur + ' ' + formatNumber(s.employerAmount || 0);
+    if (s.employerRate !== undefined) {
+      var erRate = document.createElement('span');
+      erRate.className = 'ss-scheme-note';
+      erRate.textContent = formatPct(s.employerRate) + ' rate';
+      tdEr.appendChild(erRate);
+    }
+    tr.appendChild(tdEr);
+
+    /* Cap column */
+    var tdCap = document.createElement('td');
+    if (s.cap) {
+      var capBadge = document.createElement('span');
+      capBadge.className = 'ss-cap-badge';
+      capBadge.textContent = 'Cap: ' + cur + ' ' + formatNumber(s.cap);
+      tdCap.appendChild(capBadge);
+    } else {
+      var noCap = document.createElement('span');
+      noCap.className = 'ss-no-cap';
+      noCap.textContent = 'No cap';
+      tdCap.appendChild(noCap);
+    }
+    tr.appendChild(tdCap);
+
+    tbody.appendChild(tr);
+  }
+
+  /* Annual totals */
+  document.getElementById('r-annual-employee').textContent = cur + ' ' + formatNumber(employeeTotal * 12);
+  document.getElementById('r-annual-employer').textContent = cur + ' ' + formatNumber(employerTotal * 12);
+  document.getElementById('r-annual-total').textContent = cur + ' ' + formatNumber(totalContribution * 12);
+
+  /* AI observations */
+  var obsEl = document.getElementById('ai-obs');
+  if (SS_OBSERVATIONS[cc]) {
+    obsEl.textContent = SS_OBSERVATIONS[cc];
+  } else {
+    obsEl.textContent = 'Social security data for this country is available. Review the breakdown above for detailed contribution rates and caps. Contact us if you need specific compliance guidance.';
+  }
+
+  /* Show results and scroll */
+  document.getElementById('results').style.display = '';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── Fallback calculator when engine is not loaded ── */
+function fallbackCalculate(cc, monthlySalary) {
+  var data = SOCIAL_SECURITY[cc];
+  if (!data) return null;
+
+  var schemes = data.schemes || [];
+  var breakdown = [];
+  var employeeTotal = 0;
+  var employerTotal = 0;
+
+  for (var i = 0; i < schemes.length; i++) {
+    var scheme = schemes[i];
+    var base = monthlySalary;
+
+    /* Apply cap if present */
+    if (scheme.cap && base > scheme.cap) {
+      base = scheme.cap;
+    }
+
+    var empAmt = base * ((scheme.employeeRate || 0) / 100);
+    var erAmt = base * ((scheme.employerRate || 0) / 100);
+
+    employeeTotal += empAmt;
+    employerTotal += erAmt;
+
+    breakdown.push({
+      name: scheme.name,
+      employeeRate: scheme.employeeRate || 0,
+      employerRate: scheme.employerRate || 0,
+      employeeAmount: empAmt,
+      employerAmount: erAmt,
+      cap: scheme.cap || null,
+      note: scheme.note || ''
+    });
+  }
+
+  return {
+    employeeTotal: employeeTotal,
+    employerTotal: employerTotal,
+    breakdown: breakdown
+  };
+}
+</script>
+
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

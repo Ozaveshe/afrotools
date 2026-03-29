@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -23,7 +23,6 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
-<script src="/assets/js/components/chat-panel.min.js" defer></script>
 <script src="/assets/js/components/tool-registry.min.js" defer></script>
 <style>
 :root{--pt-primary:#059669;--pt-primary-dark:#047857;--pt-primary-darker:#064e3b;--pt-accent:#a7f3d0;--pt-dark:#0f172a;--pt-bg:#f8fafc;--pt-border:#e2e8f0;--pt-muted:#64748b;--pt-red:#ef4444;--pt-amber:#f59e0b;--pt-blue:#3b82f6;--pt-purple:#8b5cf6;--pt-radius:10px}
@@ -164,6 +163,28 @@ h1 em{color:var(--pt-accent);font-style:normal}
 @media(max-width:900px){.pt-main-inner{grid-template-columns:1fr}.pt-sidebar{order:-1}}
 @media(max-width:600px){.pt-row,.pt-row-3{grid-template-columns:1fr}.pt-result-grid{grid-template-columns:1fr 1fr}.pt-haven-grid{grid-template-columns:1fr 1fr}.pt-tab{padding:12px 14px;font-size:.72rem}}
 @media(max-width:400px){.pt-result-grid{grid-template-columns:1fr}.pt-haven-grid{grid-template-columns:1fr}}
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#007AFF;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#007AFF;background:#fff}
+.ai-send{padding:9px 14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+
+/* AI Advisor floating section */
+.ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"African Property Tax Calculator","description":"Calculate property tax, stamp duty, transfer costs, rental income tax, and capital gains tax across 15+ African countries.","url":"https://afrotools.com/tools/property-tax/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -171,7 +192,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"African Property Tax Calculator","url":"https://afrotools.com/tools/property-tax/","description":"Calculate property tax, stamp duty, transfer costs, rental income tax, and capital gains tax across 15+ African countries.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
-<script src="/assets/js/bundles/core.1f4e81f7.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
 <script src="/assets/js/components/save-result-button.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
@@ -208,6 +229,7 @@ h1 em{color:var(--pt-accent);font-style:normal}
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -637,9 +659,27 @@ h1 em{color:var(--pt-accent);font-style:normal}
 </div>
 </section>
 
+<div class="ai-advisor-section">
+  <div class="ai-advisor-card" id="aiCard">
+    <div class="ai-advisor-head">
+      <span class="ai-dot"></span>
+      <span class="ai-title">AI Property Tax Advisor</span>
+      <span class="ai-by">Powered by Claude</span>
+    </div>
+    <div class="ai-advisor-body">
+      <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+      <div class="ai-chat" id="aiChat">
+        <div class="ai-msgs" id="aiMsgs"></div>
+        <div class="ai-input-row">
+          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <afro-related-tools category="mortgage-property" current="property-tax"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<afro-chat tool-name="African Property Tax Calculator" system-prompt="You are an expert on African property taxation, stamp duty, land use charges, and property investment. Help users understand property tax obligations across African countries. Provide specific rates, exemptions, and strategies for property investors."></afro-chat>
 <afro-footer></afro-footer>
 
 <script>
@@ -1355,10 +1395,38 @@ const CMP = {
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
   var div = document.createElement('div');
   div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
   div.innerHTML = '<save-result-button tool-slug="property-tax" tool-name="Property Tax"></save-result-button><share-result-button tool-name="Property Tax" tool-slug="property-tax"></share-result-button>';
   target.appendChild(div);
 })();
+</script>
+
+<script>
+var AI_MSGS=[];
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var q=input.value.trim();
+  if(!q)return;
+  AI_MSGS.push({role:'user',content:q});
+  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'property-tax',messages:AI_MSGS.slice(-6),context:''})});
+    var data=await res.json();
+    if(thinkEl.parentNode)thinkEl.remove();
+    var reply=data.reply||data.error||'Sorry, I could not get a response.';
+    AI_MSGS.push({role:'assistant',content:reply});
+    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+  }catch(e){
+    if(thinkEl.parentNode)thinkEl.remove();
+    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
@@ -686,12 +686,12 @@ body {
      3. HERO
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-hero">
-  <span class="badge-live"><span class="dot-live" style="width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s ease-in-out infinite"></span> Live Rates</span>
+  <span class="badge-live"><span class="dot-live" style="width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s ease-in-out infinite"></span> Taux en direct</span>
   <h1>Convertisseur de devises africaines</h1>
-  <p class="subtitle">Real-time exchange rates, interactive charts, and market intelligence for 42 African currencies.</p>
+  <p class="subtitle">Taux de change en temps réel, graphiques interactifs et veille marché pour 42 devises africaines.</p>
   <div class="updated-bar" id="updatedBar">
     <span class="dot-live"></span>
-    <span id="updatedText">Loading rates&hellip;</span>
+    <span id="updatedText">Chargement des taux&hellip;</span>
   </div>
 </section>
 
@@ -703,21 +703,21 @@ body {
     <div class="fx-main-grid">
       <!-- LEFT: Converter -->
       <div class="fx-card" id="converterCard">
-        <div class="converter-label">From</div>
+        <div class="converter-label">De</div>
         <div class="converter-select-wrap">
-          <select id="fromCurrency" aria-label="From currency"></select>
+          <select id="fromCurrency" aria-label="Devise source"></select>
         </div>
         <div class="converter-input-group">
           <input type="number" id="fromAmount" value="1" min="0" step="any" aria-label="Amount to convert" inputmode="decimal">
         </div>
 
         <div class="converter-swap">
-          <button id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies">&#8645;</button>
+          <button id="swapBtn" type="button" aria-label="Inverser les devises" title="Inverser les devises">&#8645;</button>
         </div>
 
-        <div class="converter-label">To</div>
+        <div class="converter-label">Vers</div>
         <div class="converter-select-wrap">
-          <select id="toCurrency" aria-label="To currency"></select>
+          <select id="toCurrency" aria-label="Devise cible"></select>
         </div>
         <div class="converter-input-group">
           <input type="text" id="toAmount" readonly aria-label="Converted amount" tabindex="-1">
@@ -725,7 +725,7 @@ body {
 
         <div class="converter-result" id="converterResult">
           <div class="result-value" id="resultValue">--</div>
-          <div class="result-rate" id="resultRate">Select currencies to convert</div>
+          <div class="result-rate" id="resultRate">Sélectionnez les devises à convertir</div>
         </div>
 
         <div class="converter-favorites" id="favoritesBar">
@@ -739,10 +739,10 @@ body {
           <span class="chart-pair-label" id="chartPairLabel">USD / NGN</span>
           <div class="chart-tabs" id="chartTabs">
             <button data-tf="24h">24h</button>
-            <button data-tf="7d">7d</button>
-            <button data-tf="30d" class="active">30d</button>
-            <button data-tf="90d">90d</button>
-            <button data-tf="1yr">1yr</button>
+            <button data-tf="7d">7j</button>
+            <button data-tf="30d" class="active">30j</button>
+            <button data-tf="90d">90j</button>
+            <button data-tf="1yr">1an</button>
           </div>
         </div>
         <div class="chart-canvas-wrap">
@@ -758,8 +758,8 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Currency Heatmap</h2>
-    <p class="fx-section-subtitle">24-hour performance of all 42 African currencies vs USD. Click any cell to load it in the converter.</p>
+    <h2 class="fx-section-title">Carte thermique des devises</h2>
+    <p class="fx-section-subtitle">Performance sur 24 heures des 42 devises africaines par rapport au USD. Cliquez sur une cellule pour la charger dans le convertisseur.</p>
     <div class="heatmap-grid" id="heatmapGrid">
       <!-- Populated by JS -->
     </div>
@@ -771,19 +771,19 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Popular Pairs</h2>
-    <p class="fx-section-subtitle">Most-traded African currency pairs with rate trends.</p>
+    <h2 class="fx-section-title">Paires populaires</h2>
+    <p class="fx-section-subtitle">Les paires de devises africaines les plus échangées avec tendances des taux.</p>
     <div class="fx-card">
       <div class="fx-table-wrap">
         <table class="fx-table" id="pairsTable">
           <thead>
             <tr>
-              <th data-col="pair">Pair <span class="sort-arrow"></span></th>
-              <th data-col="rate">Rate <span class="sort-arrow"></span></th>
-              <th data-col="change24h">24h Change <span class="sort-arrow"></span></th>
-              <th data-col="change7d">7d Change <span class="sort-arrow"></span></th>
-              <th data-col="change30d">30d Change <span class="sort-arrow"></span></th>
-              <th>Trend</th>
+              <th data-col="pair">Paire <span class="sort-arrow"></span></th>
+              <th data-col="rate">Taux <span class="sort-arrow"></span></th>
+              <th data-col="change24h">Variation 24h <span class="sort-arrow"></span></th>
+              <th data-col="change7d">Variation 7j <span class="sort-arrow"></span></th>
+              <th data-col="change30d">Variation 30j <span class="sort-arrow"></span></th>
+              <th>Tendance</th>
             </tr>
           </thead>
           <tbody id="pairsBody">
@@ -800,23 +800,23 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">CBN vs Parallel Rate</h2>
-    <p class="fx-section-subtitle">Official Central Bank of Nigeria rate versus the parallel (street) market rate for USD/NGN.</p>
+    <h2 class="fx-section-title">Taux CBN vs marché parallèle</h2>
+    <p class="fx-section-subtitle">Taux officiel de la Banque Centrale du Nigeria par rapport au taux du marché parallèle pour USD/NGN.</p>
     <div class="cbn-grid" id="cbnGrid">
       <div class="cbn-card">
-        <div class="cbn-label">CBN Official Rate</div>
+        <div class="cbn-label">Taux officiel CBN</div>
         <div class="cbn-value" id="cbnOfficial">&mdash;</div>
-        <div class="cbn-sub">Central Bank of Nigeria</div>
+        <div class="cbn-sub">Banque Centrale du Nigeria</div>
       </div>
       <div class="cbn-card">
-        <div class="cbn-label">Parallel Market Rate</div>
+        <div class="cbn-label">Taux du marché parallèle</div>
         <div class="cbn-value" id="cbnParallel">&mdash;</div>
-        <div class="cbn-sub">Street / Black Market</div>
+        <div class="cbn-sub">Marché de rue / marché noir</div>
       </div>
       <div class="cbn-card spread-card">
-        <div class="cbn-label">Spread</div>
+        <div class="cbn-label">Écart</div>
         <div class="cbn-value" id="cbnSpread">&mdash;</div>
-        <div class="cbn-sub">Premium over official rate</div>
+        <div class="cbn-sub">Prime sur le taux officiel</div>
       </div>
     </div>
   </div>
@@ -827,10 +827,10 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Crypto in Local Currency</h2>
-    <p class="fx-section-subtitle">Bitcoin, Ethereum, and USDT prices converted to your chosen African currency.</p>
+    <h2 class="fx-section-title">Crypto en monnaie locale</h2>
+    <p class="fx-section-subtitle">Prix du Bitcoin, Ethereum et USDT convertis dans la devise africaine de votre choix.</p>
     <div class="crypto-selector">
-      <label for="cryptoCurrency">Display in:</label>
+      <label for="cryptoCurrency">Afficher en :</label>
       <select id="cryptoCurrency"></select>
     </div>
     <div class="crypto-grid" id="cryptoGrid">
@@ -861,8 +861,8 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Cross-Rate Matrix</h2>
-    <p class="fx-section-subtitle">Live cross rates between the top 10 African currencies and 3 major global currencies.</p>
+    <h2 class="fx-section-title">Matrice de taux croisés</h2>
+    <p class="fx-section-subtitle">Taux croisés en direct entre les 10 premières devises africaines et 3 grandes devises mondiales.</p>
     <div class="fx-card">
       <div class="matrix-wrap">
         <table class="matrix-table" id="matrixTable">
@@ -892,45 +892,45 @@ body {
      ═══════════════════════════════════════════════════════════════════ -->
 <section class="fx-section">
   <div class="fx-container">
-    <h2 class="fx-section-title">Frequently Asked Questions</h2>
-    <p class="fx-section-subtitle">Everything you need to know about African forex rates and this dashboard.</p>
+    <h2 class="fx-section-title">Questions fréquemment posées</h2>
+    <p class="fx-section-subtitle">Tout ce que vous devez savoir sur les taux de change africains et ce tableau de bord.</p>
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>AfroFX is a powerful African currency converter and exchange rate dashboard covering all 42 African currencies plus nine major global currencies. Get instant conversions between Nigerian Naira, South African Rand, Kenyan Shilling, Ghanaian Cedi, and dozens more, with rates refreshed every five minutes from institutional-grade data providers. The dashboard includes historical charts, parallel market rates for select currencies, and a multi-currency comparison view. It is built for diaspora remittances, import-export businesses, travel budgeting, and anyone who needs reliable African forex data. Bookmark it as your go-to référénce for cross-border payments and currency planning.</p>
+    <p>AfroFX est un puissant convertisseur de devises africaines et tableau de bord des taux de change couvrant les 42 devises africaines plus neuf grandes devises mondiales. Obtenez des conversions instantanées entre le Naira nigérian, le Rand sud-africain, le Shilling kényan, le Cedi ghanéen et des dizaines d'autres, avec des taux actualisés toutes les cinq minutes à partir de fournisseurs de données institutionnels. Le tableau de bord inclut des graphiques historiques, des taux du marché parallèle pour certaines devises et une vue de comparaison multidevises. Il est conçu pour les transferts de la diaspora, les entreprises d'import-export, la planification de voyages et tous ceux qui ont besoin de données forex africaines fiables.</p>
   </div>
 </section>
     <div class="faq-list" id="faqList">
       <details class="faq-item">
-        <summary>What currencies does AfroFX cover?</summary>
-        <div class="faq-answer">AfroFX provides live exchange rates for all 42 African currencies, from the Nigerian Naira (NGN) and South African Rand (ZAR) to the Comorian Franc (KMF) and Sao Tomean Dobra (STN). We also include 9 major global currencies (USD, EUR, GBP, CNY, AED, INR, CAD, AUD, JPY) for cross-rate calculations and conversions, giving you comprehensive coverage of every currency pair that matters for African trade and commerce.</div>
+        <summary>Quelles devises AfroFX couvre-t-il ?</summary>
+        <div class="faq-answer">AfroFX fournit des taux de change en direct pour les 42 devises africaines, du Naira nigérian (NGN) et du Rand sud-africain (ZAR) au Franc comorien (KMF) et au Dobra santoméen (STN). Nous incluons également 9 grandes devises mondiales (USD, EUR, GBP, CNY, AED, INR, CAD, AUD, JPY) pour les calculs de taux croisés et les conversions, offrant une couverture complète de chaque paire de devises importante pour le commerce africain.</div>
       </details>
       <details class="faq-item">
-        <summary>How often are exchange rates updated?</summary>
-        <div class="faq-answer">Our exchange rates are refreshed every 5 minutes from multiple institutional-grade data providers. The dashboard displays a live countdown showing exactly when the last update occurred. If data becomes older than 30 minutes due to any connectivity issue, a warning indicator appears so you always know the freshness of the rates you are viewing. For API users, the same 5-minute cadence applies with timestamps in every response.</div>
+        <summary>À quelle fréquence les taux de change sont-ils mis à jour ?</summary>
+        <div class="faq-answer">Nos taux de change sont actualisés toutes les 5 minutes à partir de plusieurs fournisseurs de données institutionnels. Le tableau de bord affiche un compte à rebours en direct indiquant exactement quand la dernière mise à jour a eu lieu. Si les données deviennent plus anciennes que 30 minutes en raison d'un problème de connectivité, un indicateur d'avertissement apparaît pour que vous connaissiez toujours la fraîcheur des taux affichés. Pour les utilisateurs d'API, la même cadence de 5 minutes s'applique avec des horodatages dans chaque réponse.</div>
       </details>
       <details class="faq-item">
-        <summary>What is the difference between CBN and parallel market rates?</summary>
-        <div class="faq-answer">The CBN (Central Bank of Nigeria) rate is the official exchange rate determined by the Nigerian central bank through its managed float system. The parallel market rate, sometimes called the black market rate, is the price at which USD/NGN actually trades in informal currency markets across Nigeria. The spread between these two rates reflects market confidence, dollar liquidity, and monetary policy effectiveness. A widening spread often signals increased demand for dollars or reduced supply in official channels.</div>
+        <summary>Quelle est la différence entre les taux CBN et du marché parallèle ?</summary>
+        <div class="faq-answer">Le taux CBN (Banque Centrale du Nigeria) est le taux de change officiel déterminé par la banque centrale nigériane via son système de flottement géré. Le taux du marché parallèle, parfois appelé taux du marché noir, est le prix auquel l'USD/NGN s'échange réellement sur les marchés informels de devises au Nigeria. L'écart entre ces deux taux reflète la confiance du marché, la liquidité en dollars et l'efficacité de la politique monétaire. Un écart croissant signale souvent une demande accrue de dollars ou une offre réduite dans les canaux officiels.</div>
       </details>
       <details class="faq-item">
-        <summary>How is the currency heatmap calculated?</summary>
-        <div class="faq-answer">The heatmap displays the 24-hour percentage change of each of the 42 African currencies against the US Dollar. Blue-shaded cells indicate appreciation (the local currency gained value against USD), red-shaded cells indicate depreciation (the local currency lost value), and neutral-colored cells represent minimal change. The intensity of the color corresponds to the magnitude of the change, making it easy to spot which currencies are moving the most on any given day.</div>
+        <summary>Comment la carte thermique des devises est-elle calculée ?</summary>
+        <div class="faq-answer">La carte thermique affiche la variation en pourcentage sur 24 heures de chacune des 42 devises africaines par rapport au dollar américain. Les cellules en bleu indiquent une appréciation (la devise locale a gagné de la valeur par rapport au USD), les cellules en rouge indiquent une dépréciation (la devise locale a perdu de la valeur), et les cellules neutres représentent un changement minimal. L'intensité de la couleur correspond à l'ampleur du changement, facilitant l'identification des devises les plus volatiles du jour.</div>
       </details>
       <details class="faq-item">
-        <summary>How do cross rates work?</summary>
-        <div class="faq-answer">Cross rates are exchange rates between two currencies derived indirectly through a common base currency, typically the US Dollar. For instance, to find the NGN/KES exchange rate, we divide the USD/NGN rate by the USD/KES rate. This method is standard in forex markets and provides accurate conversions even for exotic pairs that are not directly traded. Our cross-rate matrix computes these in real time for the top African currencies, saving you from manual calculations.</div>
+        <summary>Comment fonctionnent les taux croisés ?</summary>
+        <div class="faq-answer">Les taux croisés sont des taux de change entre deux devises dérivés indirectement via une devise de base commune, généralement le dollar américain. Par exemple, pour trouver le taux NGN/KES, on divise le taux USD/NGN par le taux USD/KES. Cette méthode est standard sur les marchés forex et fournit des conversions précises même pour les paires exotiques non directement négociées. Notre matrice de taux croisés les calcule en temps réel pour les principales devises africaines.</div>
       </details>
       <details class="faq-item">
-        <summary>Can I access this data programmatically via API?</summary>
-        <div class="faq-answer">Yes. The AfroFX API provides RESTful endpoints for live rates, historical data, and currency conversion. The free tier includes 1,000 requests per month with 5-minute data freshness. Pro and Enterprise plans offer higher limits, sub-minute updates, and webhook support. Visit our API documentation page to generate your free API key and start integrating African forex data into your applications, trading bots, or financial models.</div>
+        <summary>Puis-je accéder à ces données par API ?</summary>
+        <div class="faq-answer">Oui. L'API AfroFX fournit des endpoints RESTful pour les taux en direct, les données historiques et la conversion de devises. Le niveau gratuit inclut 1 000 requêtes par mois avec une fraîcheur de données de 5 minutes. Les plans Pro et Enterprise offrent des limites plus élevées, des mises à jour infra-minute et le support webhook. Visitez notre page de documentation API pour générer votre clé API gratuite et commencer à intégrer les données forex africaines dans vos applications.</div>
       </details>
       <details class="faq-item">
-        <summary>Which African currency is the strongest against the dollar?</summary>
-        <div class="faq-answer">Measured by unit value, the Libyan Dinar (LYD) and Tunisian Dinar (TND) are typically the strongest African currencies against the US Dollar, each requiring fewer than five units per dollar. However, unit value alone does not indicate economic strength. The heatmap on this page shows real-time relative performance, letting you compare which currencies are gaining or losing ground on any given day regardless of their absolute value per dollar.</div>
+        <summary>Quelle est la devise africaine la plus forte face au dollar ?</summary>
+        <div class="faq-answer">Mesuré en valeur unitaire, le Dinar libyen (LYD) et le Dinar tunisien (TND) sont généralement les devises africaines les plus fortes face au dollar américain, chacune nécessitant moins de cinq unités par dollar. Cependant, la valeur unitaire seule n'indique pas la force économique. La carte thermique de cette page montre les performances relatives en temps réel, vous permettant de comparer quelles devises gagnent ou perdent du terrain quel que soit le jour.</div>
       </details>
       <details class="faq-item">
-        <summary>Can I view cryptocurrency prices in my local African currency?</summary>
-        <div class="faq-answer">Absolutely. The Crypto in Local Currency section lets you select any of the 42 African currencies to see live prices for Bitcoin (BTC), Ethereum (ETH), and Tether (USDT). These are computed by multiplying the USD crypto price by the latest exchange rate for your chosen currency. This is especially useful in markets like Nigeria, Kenya, and Ghana where crypto adoption is high and users need to know exact local-currency equivalents before buying or selling on local exchanges.</div>
+        <summary>Puis-je voir les prix des cryptomonnaies dans ma devise africaine locale ?</summary>
+        <div class="faq-answer">Absolument. La section Crypto en monnaie locale vous permet de sélectionner l'une des 42 devises africaines pour voir les prix en direct du Bitcoin (BTC), de l'Ethereum (ETH) et du Tether (USDT). Ceux-ci sont calculés en multipliant le prix crypto en USD par le dernier taux de change de la devise choisie. C'est particulièrement utile sur des marchés comme le Nigeria, le Kenya et le Ghana où l'adoption des cryptomonnaies est élevée et où les utilisateurs ont besoin de connaître les équivalents exacts en devise locale.</div>
       </details>
     </div>
   </div>

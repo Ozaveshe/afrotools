@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -40,7 +40,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Calculateur TVA","item":"https://afrotools.com/fr/tools/calculateur-tva/"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quel est le taux de TVA au Nigeria ?","acceptedAnswer":{"@type":"Answer","text":"Nigeria's VAT rate is 7.5%, one of the lowest in Africa. Basic food items were exempted from January 2026 under the new tax reform."}},{"@type":"Question","name":"Quel est le taux de TVA au Kenya ?","acceptedAnswer":{"@type":"Answer","text":"Kenya's standard VAT rate is 16%. Some goods and services are zero-rated or exempt."}},{"@type":"Question","name":"Quel est le taux de TVA en Afrique du Sud ?","acceptedAnswer":{"@type":"Answer","text":"South Africa's VAT rate is 15%, increased from 14% in April 2018. Basic foodstuffs are zero-rated."}},{"@type":"Question","name":"Quel pays africain a le taux de TVA le plus élevé ?","acceptedAnswer":{"@type":"Answer","text":"Morocco and Madagascar share the highest standard VAT rate in Africa at 20%. Cameroon follows at 19.25%."}},{"@type":"Question","name":"Quelle est la différence entre ajouter et extraire la TVA ?","acceptedAnswer":{"@type":"Answer","text":"Adding VAT calculates the total price from a net (before-tax) amount. Extracting VAT separates the tax portion from a VAT-inclusive price. For example, with 15% VAT: adding to 100 gives 115, extracting from 115 gives net 100 and VAT 15."}},{"@type":"Question","name":"Quels pays africains n'ont pas de TVA ?","acceptedAnswer":{"@type":"Answer","text":"Somalia, Eritrea, and Libya currently do not have operational VAT systems."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quel est le taux de TVA au Nigeria ?","acceptedAnswer":{"@type":"Answer","text":"Le taux de TVA du Nigeria est de 7,5 %, l'un des plus bas d'Afrique. Les produits alimentaires de base ont été exonérés à partir de janvier 2026 dans le cadre de la nouvelle réforme fiscale."}},{"@type":"Question","name":"Quel est le taux de TVA au Kenya ?","acceptedAnswer":{"@type":"Answer","text":"Le taux de TVA standard du Kenya est de 16 %. Certains biens et services sont à taux zéro ou exonérés."}},{"@type":"Question","name":"Quel est le taux de TVA en Afrique du Sud ?","acceptedAnswer":{"@type":"Answer","text":"Le taux de TVA en Afrique du Sud est de 15 %, augmenté depuis 14 % en avril 2018. Les denrées alimentaires de base sont à taux zéro."}},{"@type":"Question","name":"Quel pays africain a le taux de TVA le plus élevé ?","acceptedAnswer":{"@type":"Answer","text":"Le Maroc et Madagascar partagent le taux de TVA standard le plus élevé d'Afrique à 20 %. Le Cameroun suit à 19,25 %."}},{"@type":"Question","name":"Quelle est la différence entre ajouter et extraire la TVA ?","acceptedAnswer":{"@type":"Answer","text":"Ajouter la TVA calcule le prix total à partir d'un montant HT. Extraire la TVA isole la part de taxe d'un prix TTC. Par exemple, avec 15 % de TVA : ajouter à 100 donne 115, extraire de 115 donne un montant HT de 100 et une TVA de 15."}},{"@type":"Question","name":"Quels pays africains n'ont pas de TVA ?","acceptedAnswer":{"@type":"Answer","text":"La Somalie, l'Érythrée et la Libye ne disposent pas actuellement de système de TVA opérationnel."}}]}
 </script>
 <script src="/assets/js/lib/chart-config.js"></script>
 <script src="/assets/js/afro-history.js" defer></script>
@@ -63,7 +63,7 @@
     <h1>Calculateur TVA Panafricain</h1>
     <p>Calculez les prix TTC et HT pour 54 pays africains. Mode facture multi-articles, comparaison de pays et export PDF.</p>
     <div class="vat-badges">
-      <span class="vat-badge">🌍 54 Countries</span>
+      <span class="vat-badge">🌍 54 pays</span>
       <span class="vat-badge">➕ Ajouter / Extraire la TVA</span>
       <span class="vat-badge">📄 Facture multi-articles</span>
       <span class="vat-badge">✅ Taux vérifiés 2026</span>
@@ -101,7 +101,7 @@
         <div class="vat-card">
           <div class="vat-field">
             <label for="countrySelect">Pays</label>
-            <select class="vat-select" id="countrySelect"><option value="">-- Select a country --</option></select>
+            <select class="vat-select" id="countrySelect"><option value="">-- Sélectionner un pays --</option></select>
           </div>
 
           <div class="vat-mode-toggle">
@@ -143,7 +143,7 @@
           </button>
 
           <!-- Keyboard hint -->
-          <p class="vat-keyboard-hint">Press <kbd>Enter</kbd> to calculate</p>
+          <p class="vat-keyboard-hint">Appuyez sur <kbd>Entrée</kbd> pour calculer</p>
         </div>
 
         <!-- Results -->
@@ -187,13 +187,13 @@
 
           <!-- Country info card -->
           <div class="vat-country-detail" id="countryDetail" style="display:none;">
-            <h4 id="detailTitle">Country VAT Details</h4>
+            <h4 id="detailTitle">Détails TVA du pays</h4>
             <div class="vat-detail-grid">
-              <div class="vat-detail-row"><span>Standard Rate</span><strong id="detailRate">—</strong></div>
-              <div class="vat-detail-row"><span>Reduced Rate</span><strong id="detailReduced">—</strong></div>
-              <div class="vat-detail-row"><span>Registration Threshold</span><strong id="detailThreshold">—</strong></div>
-              <div class="vat-detail-row"><span>Filing Frequency</span><strong id="detailFiling">—</strong></div>
-              <div class="vat-detail-row"><span>Revenue Authority</span><strong id="detailAuthority">—</strong></div>
+              <div class="vat-detail-row"><span>Taux standard</span><strong id="detailRate">—</strong></div>
+              <div class="vat-detail-row"><span>Taux réduit</span><strong id="detailReduced">—</strong></div>
+              <div class="vat-detail-row"><span>Seuil d'immatriculation</span><strong id="detailThreshold">—</strong></div>
+              <div class="vat-detail-row"><span>Fréquence de déclaration</span><strong id="detailFiling">—</strong></div>
+              <div class="vat-detail-row"><span>Autorité fiscale</span><strong id="detailAuthority">—</strong></div>
             </div>
             <p class="vat-detail-note" id="detailNotes"></p>
           </div>
@@ -207,15 +207,15 @@
           <div class="vat-actions">
             <button class="vat-btn vat-btn--outline" id="pdfBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              Export PDF
+              Exporter PDF
             </button>
             <button class="vat-btn vat-btn--outline" id="shareBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-              Share
+              Partager
             </button>
             <button class="vat-btn vat-btn--outline" id="copyBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              Copy
+              Copier
             </button>
           </div>
         </div>
@@ -226,28 +226,28 @@
         <div class="vat-card">
           <div class="vat-field">
             <label for="invoiceCountry">Pays</label>
-            <select class="vat-select" id="invoiceCountry"><option value="">-- Select a country --</option></select>
+            <select class="vat-select" id="invoiceCountry"><option value="">-- Sélectionner un pays --</option></select>
           </div>
 
-          <h3 class="vat-card-title" style="margin-top:16px;">Line Items</h3>
+          <h3 class="vat-card-title" style="margin-top:16px;">Articles</h3>
           <div id="lineItems">
             <!-- Populated by JS -->
           </div>
-          <button class="vat-btn vat-btn--outline vat-btn--full" id="addLineBtn" style="margin-top:12px;">+ Add Line Item</button>
+          <button class="vat-btn vat-btn--outline vat-btn--full" id="addLineBtn" style="margin-top:12px;">+ Ajouter une ligne</button>
 
           <div class="vat-invoice-totals" id="invoiceTotals" style="display:none;">
-            <div class="vat-invoice-row"><span>Subtotal (excl. VAT)</span><strong id="invSubtotal">0.00</strong></div>
-            <div class="vat-invoice-row"><span>Total VAT</span><strong id="invVat">0.00</strong></div>
-            <div class="vat-invoice-row vat-invoice-row--total"><span>Grand Total</span><strong id="invTotal">0.00</strong></div>
+            <div class="vat-invoice-row"><span>Sous-total (HT)</span><strong id="invSubtotal">0.00</strong></div>
+            <div class="vat-invoice-row"><span>TVA totale</span><strong id="invVat">0.00</strong></div>
+            <div class="vat-invoice-row vat-invoice-row--total"><span>Total TTC</span><strong id="invTotal">0.00</strong></div>
           </div>
 
           <div class="vat-actions" style="margin-top:16px;">
-            <button class="vat-btn vat-btn--primary vat-btn--full" id="calcInvoiceBtn">Calculate Invoice</button>
+            <button class="vat-btn vat-btn--primary vat-btn--full" id="calcInvoiceBtn">Calculer la facture</button>
           </div>
           <div class="vat-actions" id="invoiceActions" style="display:none;margin-top:8px;">
             <button class="vat-btn vat-btn--outline" id="invoicePdfBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              Export Receipt PDF
+              Exporter en PDF
             </button>
           </div>
         </div>
@@ -262,11 +262,11 @@
             <input type="text" inputmode="decimal" class="vat-input" id="compareAmount" value="10000" autocomplete="off">
           </div>
           <div class="vat-compare-selects">
-            <div class="vat-field"><label for="cmp1">Country 1</label><select class="vat-select" id="cmp1"></select></div>
-            <div class="vat-field"><label for="cmp2">Country 2</label><select class="vat-select" id="cmp2"></select></div>
-            <div class="vat-field"><label for="cmp3">Country 3</label><select class="vat-select" id="cmp3"></select></div>
+            <div class="vat-field"><label for="cmp1">Pays 1</label><select class="vat-select" id="cmp1"></select></div>
+            <div class="vat-field"><label for="cmp2">Pays 2</label><select class="vat-select" id="cmp2"></select></div>
+            <div class="vat-field"><label for="cmp3">Pays 3</label><select class="vat-select" id="cmp3"></select></div>
           </div>
-          <button class="vat-btn vat-btn--primary vat-btn--full" id="compareBtn" style="margin-top:12px;">Compare</button>
+          <button class="vat-btn vat-btn--primary vat-btn--full" id="compareBtn" style="margin-top:12px;">Comparer</button>
         </div>
         <div id="compareResults" style="margin-top:20px;"></div>
       </div>
@@ -277,7 +277,7 @@
           <p class="vat-muted" style="margin-bottom:16px;">Calculez la retenue de TVA pour les transactions B2B. De nombreux pays africains exigent que les acheteurs retiennent une partie de la TVA et la remettent directement à l'autorité fiscale.</p>
           <div class="vat-field">
             <label for="whCountry">Pays</label>
-            <select class="vat-select" id="whCountry"><option value="">-- Select a country --</option></select>
+            <select class="vat-select" id="whCountry"><option value="">-- Sélectionner un pays --</option></select>
           </div>
           <div class="vat-field">
             <label for="whAmount">Montant de la facture (HT)</label>
@@ -287,18 +287,18 @@
             </div>
           </div>
           <div class="vat-field">
-            <label for="whRate">Withholding Rate</label>
+            <label for="whRate">Taux de retenue</label>
             <div class="vat-wh-rate-row">
               <select class="vat-select" id="whRate" style="flex:1;">
-                <option value="50">50% of VAT (standard)</option>
-                <option value="100">100% of VAT (full)</option>
-                <option value="33.33">33.33% of VAT</option>
-                <option value="custom">Custom rate...</option>
+                <option value="50">50 % de la TVA (standard)</option>
+                <option value="100">100 % de la TVA (intégrale)</option>
+                <option value="33.33">33,33 % de la TVA</option>
+                <option value="custom">Taux personnalisé...</option>
               </select>
               <input type="text" inputmode="decimal" class="vat-input" id="whCustomRate" placeholder="%" autocomplete="off" style="display:none;width:80px;text-align:center;">
             </div>
           </div>
-          <button class="vat-btn vat-btn--primary vat-btn--full" id="calcWhBtn">Calculate Withholding</button>
+          <button class="vat-btn vat-btn--primary vat-btn--full" id="calcWhBtn">Calculer la retenue</button>
         </div>
         <div id="whResults" style="margin-top:20px;"></div>
       </div>
@@ -307,30 +307,30 @@
     <!-- ═══ RIGHT: Sidebar ═══ -->
     <aside class="vat-sidebar">
       <div class="vat-card">
-        <h3 class="vat-card-title">Quick Stats</h3>
+        <h3 class="vat-card-title">Statistiques rapides</h3>
         <div class="vat-stats">
-          <div class="vat-stat"><span class="vat-stat-value">54</span><span class="vat-stat-label">Countries</span></div>
-          <div class="vat-stat"><span class="vat-stat-value" id="avgRate">15.5%</span><span class="vat-stat-label">Avg. Rate</span></div>
-          <div class="vat-stat"><span class="vat-stat-value" id="highRate">21.9%</span><span class="vat-stat-label">Highest</span></div>
-          <div class="vat-stat"><span class="vat-stat-value">0%</span><span class="vat-stat-label">Lowest</span></div>
+          <div class="vat-stat"><span class="vat-stat-value">54</span><span class="vat-stat-label">Pays</span></div>
+          <div class="vat-stat"><span class="vat-stat-value" id="avgRate">15.5%</span><span class="vat-stat-label">Taux moy.</span></div>
+          <div class="vat-stat"><span class="vat-stat-value" id="highRate">21.9%</span><span class="vat-stat-label">Le plus élevé</span></div>
+          <div class="vat-stat"><span class="vat-stat-value">0%</span><span class="vat-stat-label">Le plus bas</span></div>
         </div>
       </div>
 
       <!-- Calculation history -->
       <div class="vat-card">
         <div class="vat-card-header">
-          <h3 class="vat-card-title" style="margin-bottom:0;">Recent Calculations</h3>
-          <button class="vat-clear-history" id="clearHistoryBtn" title="Clear history">&times;</button>
+          <h3 class="vat-card-title" style="margin-bottom:0;">Calculs récents</h3>
+          <button class="vat-clear-history" id="clearHistoryBtn" title="Effacer l'historique">&times;</button>
         </div>
         <div id="historyList" class="vat-history-list">
-          <p class="vat-muted" style="text-align:center;padding:12px 0;">No calculations yet</p>
+          <p class="vat-muted" style="text-align:center;padding:12px 0;">Aucun calcul pour l'instant</p>
         </div>
       </div>
 
       <!-- Rates table with search -->
       <div class="vat-card">
-        <h3 class="vat-card-title">All African VAT Rates</h3>
-        <input type="text" class="vat-input vat-rates-search" id="ratesSearch" placeholder="Search country..." style="margin-bottom:12px;padding:8px 12px;font-size:0.85rem;">
+        <h3 class="vat-card-title">Tous les taux de TVA africains</h3>
+        <input type="text" class="vat-input vat-rates-search" id="ratesSearch" placeholder="Rechercher un pays..." style="margin-bottom:12px;padding:8px 12px;font-size:0.85rem;">
         <div class="vat-rates-list" id="ratesTableBody"></div>
       </div>
 
@@ -339,27 +339,27 @@
           <img src="/assets/img/tools/vat-calculator.webp" alt="Pan-African VAT Calculator" class="tool-info-img" loading="lazy" onerror="this.style.display='none'">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur TVA Panafricain</div>
-            <div class="tool-info-cat">Tax &amp; Finance</div>
+            <div class="tool-info-cat">Fiscalité</div>
           </div>
         </div>
         <div class="tool-info-body">
           <div class="tool-info-stats">
-            <div class="tool-stat"><div class="tool-stat-val">54</div><div class="tool-stat-lbl">Countries</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">4.9</div><div class="tool-stat-lbl">Rating</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">54</div><div class="tool-stat-lbl">Pays</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.9</div><div class="tool-stat-lbl">Note</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Gratuit</div><div class="tool-stat-lbl">Toujours</div></div>
           </div>
           <div class="tool-info-features">
-            <span class="tool-feat">Single &amp; Invoice</span>
+            <span class="tool-feat">Simple et facture</span>
             <span class="tool-feat">Comparer les pays</span>
-            <span class="tool-feat">Withholding VAT</span>
-            <span class="tool-feat">PDF Export</span>
-            <span class="tool-feat">Keyboard Shortcuts</span>
+            <span class="tool-feat">Retenue TVA</span>
+            <span class="tool-feat">Export PDF</span>
+            <span class="tool-feat">Raccourcis clavier</span>
           </div>
         </div>
         <div class="tool-info-footer">
-          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <span class="tool-info-updated">Mis à jour : mars 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="navigator.share?.({title:document.title,url:location.href})||navigator.clipboard?.writeText(location.href)">Share</button>
+            <button class="tool-info-action" onclick="navigator.share?.({title:document.title,url:location.href})||navigator.clipboard?.writeText(location.href)">Partager</button>
           </div>
         </div>
       </div>
@@ -400,7 +400,7 @@
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
-<script src="/assets/js/bundles/core.1f4e81f7.min.js" defer></script><script src="/assets/js/lib/share-state.js" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/lib/share-state.js" defer></script>
 <script src="/assets/js/lib/pdf-template.js" defer></script>
 
 <script>
@@ -1149,7 +1149,7 @@
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
   var div = document.createElement('div');
   div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
   div.innerHTML = '<save-result-button tool-slug="vat-calculator" tool-name="Vat Calculator"></save-result-button><share-result-button tool-name="Vat Calculator" tool-slug="vat-calculator"></share-result-button>';
   target.appendChild(div);
 })();

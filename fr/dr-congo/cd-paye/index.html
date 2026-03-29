@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -157,7 +157,7 @@
 
           <!-- CONTRIBUTION TOGGLES -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
+            <div class="f-label"><span class="f-label-text">Active Déductions</span><span class="f-hint">Toggle to include / exclude</span></div>
             <div class="toggles">
               <div class="tog on" data-tog="inss" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -319,7 +319,7 @@
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
             <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
-            <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
+            <a class="tool-info-action" href="/fr/tools/paye-calculator/">Tous les pays</a>
           </div>
         </div>
       </div>
@@ -599,14 +599,14 @@ function calcAnnualPAYE(annualTaxableIncome) {
   const bandBreakdown = result.bandBreakdown;
 
   // Net pay
-  const totalEmployeeDeductions = inss + annualPAYE;
-  const netAnnual = gross - totalEmployeeDeductions;
+  const totalEmployeeDéductions = inss + annualPAYE;
+  const netAnnual = gross - totalEmployeeDéductions;
   const effectiveRate = gross > 0 ? annualPAYE / gross : 0;
 
   RESULT = {
     gross, annual: gross, inss, inssRate, empINSS,
     annualPAYE, bandBreakdown,
-    totalEmployeeDeductions, netAnnual, effectiveRate,
+    totalEmployeeDéductions, netAnnual, effectiveRate,
     totalEmployerCostAnnual: gross + empINSS,
   };
 
@@ -658,7 +658,7 @@ function renderRows(R) {
   const inss   = R.inss;
   const paye   = R.annualPAYE;
   const net    = R.netAnnual;
-  const totalDeductions = R.totalEmployeeDeductions;
+  const totalDéductions = R.totalEmployeeDéductions;
 
   const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
 
@@ -677,7 +677,7 @@ function renderRows(R) {
       ${row(`Income tax (PAYE)`, fmt(paye), 'c-red')}
     </div>
     <div class="res-section">
-      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
+      ${row('Total Déductions', fmt(totalDéductions), 'c-red')}
       <div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-blu">${fmt(net)}</span></div>
     </div>`;
 }
@@ -810,7 +810,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="shi"><div class="sh-lbl">Taux effectif</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Section 1 — Annual Income &amp; Deductions</div>
+  <div class="sec-head">Section 1 — Annual Income &amp; Déductions</div>
   <table>
     <tr><td>Annual Gross Salary</td><td class="num">CDF ${Math.round(R.gross).toLocaleString()}</td></tr>
     ${R.inss > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">INSS employee contribution (${pct(R.inssRate)}, capped)</td><td class="num red">(CDF ${Math.round(R.inss).toLocaleString()})</td></tr>` : ''}
@@ -827,7 +827,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <table>
     ${R.inss > 0 ? `<tr><td>INSS (employee)</td><td class="num red">(CDF ${Math.round(R.inss).toLocaleString()})</td></tr>` : ''}
     <tr><td>PAYE income tax</td><td class="num red">(CDF ${Math.round(R.annualPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total Annual Deductions</td><td class="num red">(CDF ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total Annual Déductions</td><td class="num red">(CDF ${Math.round(R.totalEmployeeDéductions).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#007FFF;font-weight:800">Annual Take-Home Pay</td><td class="num blue">CDF ${Math.round(R.netAnnual).toLocaleString()}</td></tr>
   </table>
 

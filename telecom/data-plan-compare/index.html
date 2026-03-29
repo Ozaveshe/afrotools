@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Mobile Data Plan Comparator - Compare Data Bundles Across Africa | AfroTools</title>
+<meta name="description" content="Compare mobile data plans from MTN, Airtel, Safaricom, Vodacom and more across 12 African countries. Find the cheapest price per GB and best data deals.">
+<link rel="canonical" href="https://afrotools.com/telecom/data-plan-compare/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Mobile Data Plan Comparator | AfroTools">
+<meta property="og:description" content="Compare mobile data plans from MTN, Airtel, Safaricom, Vodacom and more across 12 African countries. Find the cheapest price per GB.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/telecom/data-plan-compare/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0c2340 50%,#06B6D4 200%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.tool-hero p{font-size:1.05rem;opacity:.85;max-width:580px;margin:0 auto}
+.tool-main{max-width:1100px;margin:0 auto;padding:1.5rem}
+.controls{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;align-items:end}
+.field{display:flex;flex-direction:column;gap:.35rem;flex:1;min-width:180px}
+.field label{font-size:.82rem;font-weight:600;color:#475569}
+.field select,.field input{padding:.65rem .85rem;border:1.5px solid #cbd5e1;border-radius:10px;font-size:.95rem;font-family:inherit;background:#fff;transition:border-color .2s}
+.field select:focus,.field input:focus{outline:none;border-color:#06B6D4;box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+.sort-label{font-size:.78rem;color:#64748b;margin-bottom:.5rem}
+.results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.results-header h2{font-size:1.15rem;font-weight:700;color:#0f172a}
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .65rem;border-radius:20px;font-size:.78rem;font-weight:600;background:#e0f7fa;color:#06B6D4}
+.plans-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;font-size:.88rem}
+.plans-table thead{background:#f1f5f9}
+.plans-table th{padding:.75rem .6rem;text-align:left;font-weight:700;color:#334155;cursor:pointer;user-select:none;white-space:nowrap;position:relative}
+.plans-table th:hover{color:#06B6D4}
+.plans-table th .sort-icon{margin-left:.25rem;font-size:.7rem;opacity:.5}
+.plans-table th.active .sort-icon{opacity:1;color:#06B6D4}
+.plans-table td{padding:.65rem .6rem;border-top:1px solid #f1f5f9;color:#334155}
+.plans-table tbody tr:hover{background:#f8fafc}
+.plans-table tbody tr.best-deal{background:#ecfdf5}
+.plans-table tbody tr.best-deal td:first-child{position:relative}
+.best-tag{display:inline-block;padding:.15rem .45rem;border-radius:6px;font-size:.68rem;font-weight:700;background:#06B6D4;color:#fff;margin-left:.4rem;vertical-align:middle}
+.price-gb{font-weight:700;color:#06B6D4}
+.code-chip{display:inline-block;padding:.15rem .5rem;background:#f1f5f9;border-radius:6px;font-family:monospace;font-size:.82rem;cursor:pointer;transition:background .2s}
+.code-chip:hover{background:#e0f7fa}
+.sidebar{margin-top:2rem;padding:1.5rem;background:#f0fdfa;border:1.5px solid #99f6e4;border-radius:14px}
+.sidebar h3{font-size:1rem;font-weight:700;color:#0f766e;margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
+.sidebar ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.sidebar li{position:relative;padding-left:1.2rem;font-size:.88rem;color:#334155;line-height:1.5}
+.sidebar li::before{content:"\2713";position:absolute;left:0;color:#06B6D4;font-weight:700}
+.empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8}
+.empty-state svg{width:48px;height:48px;margin-bottom:1rem;opacity:.4}
+details{margin-top:2rem;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden}
+details+details{margin-top:.75rem}
+summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;background:#f8fafc;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::after{content:"+";font-size:1.2rem;font-weight:300;color:#94a3b8;transition:transform .2s}
+details[open] summary::after{content:"\2212"}
+details .faq-body{padding:1rem 1.25rem;font-size:.88rem;line-height:1.7;color:#475569}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:.5rem 1.25rem;border-radius:10px;font-size:.85rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999}
+.toast.show{opacity:1}
+@media(max-width:700px){
+  .plans-table{font-size:.78rem}
+  .plans-table th,.plans-table td{padding:.5rem .35rem}
+  .controls{flex-direction:column}
+}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Mobile Data Plan Comparator","url":"https://afrotools.com/telecom/data-plan-compare/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","description":"Compare mobile data plans across African operators to find the cheapest price per GB.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar active="telecom"></afro-navbar>
+
+<div class="tool-hero">
+  <h1>Mobile Data Plan Comparator</h1>
+  <p>Compare data bundles from every major operator. Find the cheapest price per GB in your country.</p>
+</div>
+
+<div class="tool-main">
+  <div class="controls">
+    <div class="field">
+      <label for="countrySelect">Country</label>
+      <select id="countrySelect"><option value="">-- Select country --</option></select>
+    </div>
+    <div class="field">
+      <label for="operatorFilter">Operator</label>
+      <select id="operatorFilter"><option value="all">All operators</option></select>
+    </div>
+    <div class="field">
+      <label for="validityFilter">Validity</label>
+      <select id="validityFilter">
+        <option value="all">All durations</option>
+        <option value="1">Daily</option>
+        <option value="7">Weekly</option>
+        <option value="30">Monthly</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="resultsArea">
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 8h20M8 8v13"/></svg>
+      <p>Select a country above to compare data plans</p>
+    </div>
+  </div>
+
+  <div id="tipsArea"></div>
+
+  <div style="margin-top:2.5rem">
+    <details>
+      <summary>How is price per GB calculated?</summary>
+      <div class="faq-body">Price per GB is calculated by dividing the bundle price by the data volume in gigabytes. For example, a 10 GB bundle costing 3,000 NGN gives a price of 300 NGN per GB. Lower price per GB means better value for your money.</div>
+    </details>
+    <details>
+      <summary>Are these prices up to date?</summary>
+      <div class="faq-body">Prices are sourced from official operator websites and updated regularly. However, operators may run flash promotions not yet reflected here. Always confirm on the operator's app or USSD menu before purchasing.</div>
+    </details>
+    <details>
+      <summary>Should I always buy the cheapest per-GB plan?</summary>
+      <div class="faq-body">Not necessarily. Consider your actual usage pattern. If you only need data for one day, a daily bundle may be better even at a higher per-GB cost than committing to a monthly plan you will not fully use. Match the validity period to your needs.</div>
+    </details>
+    <details>
+      <summary>What about night and social media bundles?</summary>
+      <div class="faq-body">Many operators offer cheaper night-only or social-media-only bundles. These are not listed here because they are restricted. This comparator focuses on general-purpose data bundles usable at any time for any service.</div>
+    </details>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<div class="toast" id="toast"></div>
+
+<script src="/data/telecom/country-telecom-index.js"></script>
+<script>
+(function(){
+  'use strict';
+  var countrySelect = document.getElementById('countrySelect');
+  var operatorFilter = document.getElementById('operatorFilter');
+  var validityFilter = document.getElementById('validityFilter');
+  var resultsArea = document.getElementById('resultsArea');
+  var tipsArea = document.getElementById('tipsArea');
+  var toast = document.getElementById('toast');
+  var currentSort = { col: 'pricePerGB', dir: 'asc' };
+  var allPlans = [];
+
+  // populate countries
+  var codes = Object.keys(TELECOM_DATA.countries);
+  for (var i = 0; i < codes.length; i++) {
+    var c = TELECOM_DATA.countries[codes[i]];
+    var opt = document.createElement('option');
+    opt.value = codes[i];
+    opt.textContent = c.name;
+    countrySelect.appendChild(opt);
+  }
+
+  countrySelect.addEventListener('change', function() {
+    loadCountry(this.value);
+  });
+  operatorFilter.addEventListener('change', renderTable);
+  validityFilter.addEventListener('change', renderTable);
+
+  function loadCountry(code) {
+    allPlans = [];
+    operatorFilter.innerHTML = '<option value="all">All operators</option>';
+    if (!code || !TELECOM_DATA.countries[code]) {
+      resultsArea.innerHTML = '<div class="empty-state"><p>Select a country above to compare data plans</p></div>';
+      tipsArea.innerHTML = '';
+      return;
+    }
+    var country = TELECOM_DATA.countries[code];
+    var ops = country.operators;
+    for (var o = 0; o < ops.length; o++) {
+      var opOpt = document.createElement('option');
+      opOpt.value = ops[o].name;
+      opOpt.textContent = ops[o].name;
+      operatorFilter.appendChild(opOpt);
+
+      var bundles = ops[o].dataBundles || [];
+      for (var b = 0; b < bundles.length; b++) {
+        var gb = bundles[b].volumeMB / 1024;
+        allPlans.push({
+          operator: ops[o].name,
+          name: bundles[b].name,
+          volume: bundles[b].volume,
+          volumeMB: bundles[b].volumeMB,
+          volumeGB: gb,
+          validity: bundles[b].validity,
+          price: bundles[b].price,
+          pricePerGB: gb > 0 ? bundles[b].price / gb : 0,
+          code: bundles[b].code || '',
+          symbol: country.symbol
+        });
+      }
+    }
+    renderTable();
+    renderTips(country);
+  }
+
+  function getValidityDays(v) {
+    var s = String(v).toLowerCase();
+    if (s.indexOf('1 day') > -1 || s.indexOf('24') > -1 || s === 'daily') return 1;
+    if (s.indexOf('2 day') > -1) return 2;
+    if (s.indexOf('7') > -1 || s.indexOf('week') > -1) return 7;
+    if (s.indexOf('30') > -1 || s.indexOf('month') > -1) return 30;
+    return 0;
+  }
+
+  function renderTable() {
+    var opVal = operatorFilter.value;
+    var valVal = validityFilter.value;
+    var filtered = [];
+    for (var i = 0; i < allPlans.length; i++) {
+      var p = allPlans[i];
+      if (opVal !== 'all' && p.operator !== opVal) continue;
+      if (valVal !== 'all') {
+        var days = getValidityDays(p.validity);
+        if (valVal === '1' && days > 2) continue;
+        if (valVal === '7' && (days < 3 || days > 14)) continue;
+        if (valVal === '30' && days < 15) continue;
+      }
+      filtered.push(p);
+    }
+    // sort
+    filtered.sort(function(a, b) {
+      var av = a[currentSort.col];
+      var bv = b[currentSort.col];
+      if (typeof av === 'string') av = av.toLowerCase();
+      if (typeof bv === 'string') bv = bv.toLowerCase();
+      if (av < bv) return currentSort.dir === 'asc' ? -1 : 1;
+      if (av > bv) return currentSort.dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    // find best deal
+    var bestIdx = -1;
+    var bestPPG = Infinity;
+    for (var j = 0; j < filtered.length; j++) {
+      if (filtered[j].pricePerGB > 0 && filtered[j].pricePerGB < bestPPG) {
+        bestPPG = filtered[j].pricePerGB;
+        bestIdx = j;
+      }
+    }
+
+    if (filtered.length === 0) {
+      resultsArea.innerHTML = '<div class="empty-state"><p>No plans match your filters. Try adjusting the operator or validity filter.</p></div>';
+      return;
+    }
+
+    var sym = filtered[0].symbol;
+    var html = '<div class="results-header">' +
+      '<h2>Showing ' + filtered.length + ' data plan' + (filtered.length !== 1 ? 's' : '') + '</h2>' +
+      '<span class="badge">Best: ' + sym + bestPPG.toFixed(1) + '/GB</span></div>';
+
+    html += '<div style="overflow-x:auto"><table class="plans-table"><thead><tr>';
+    var cols = [
+      { key: 'operator', label: 'Operator' },
+      { key: 'name', label: 'Bundle' },
+      { key: 'volumeGB', label: 'Volume' },
+      { key: 'validity', label: 'Validity' },
+      { key: 'price', label: 'Price' },
+      { key: 'pricePerGB', label: 'Price/GB' }
+    ];
+    for (var c = 0; c < cols.length; c++) {
+      var isActive = currentSort.col === cols[c].key;
+      var arrow = isActive ? (currentSort.dir === 'asc' ? '\u25B2' : '\u25BC') : '\u25B2';
+      html += '<th class="' + (isActive ? 'active' : '') + '" data-col="' + cols[c].key + '">' +
+        cols[c].label + '<span class="sort-icon">' + arrow + '</span></th>';
+    }
+    html += '<th>USSD Code</th></tr></thead><tbody>';
+
+    for (var r = 0; r < filtered.length; r++) {
+      var plan = filtered[r];
+      var isBest = r === bestIdx;
+      html += '<tr class="' + (isBest ? 'best-deal' : '') + '">';
+      html += '<td>' + plan.operator + (isBest ? '<span class="best-tag">BEST VALUE</span>' : '') + '</td>';
+      html += '<td>' + plan.name + '</td>';
+      html += '<td>' + plan.volume + '</td>';
+      html += '<td>' + plan.validity + '</td>';
+      html += '<td>' + sym + plan.price.toLocaleString() + '</td>';
+      html += '<td class="price-gb">' + sym + plan.pricePerGB.toFixed(1) + '</td>';
+      html += '<td>' + (plan.code ? '<span class="code-chip" data-code="' + plan.code + '">' + plan.code + '</span>' : '-') + '</td>';
+      html += '</tr>';
+    }
+    html += '</tbody></table></div>';
+    resultsArea.innerHTML = html;
+
+    // bind sort
+    var ths = resultsArea.querySelectorAll('th[data-col]');
+    for (var t = 0; t < ths.length; t++) {
+      ths[t].addEventListener('click', function() {
+        var col = this.getAttribute('data-col');
+        if (currentSort.col === col) {
+          currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.col = col;
+          currentSort.dir = 'asc';
+        }
+        renderTable();
+      });
+    }
+    // bind copy
+    var chips = resultsArea.querySelectorAll('.code-chip');
+    for (var k = 0; k < chips.length; k++) {
+      chips[k].addEventListener('click', function() {
+        var code = this.getAttribute('data-code');
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code);
+        }
+        showToast('Copied: ' + code);
+      });
+    }
+  }
+
+  function renderTips(country) {
+    var tips = [];
+    tips.push('Average data cost in ' + country.name + ' is about ' + country.symbol + country.avgDataCostPerGB + ' per GB.');
+    tips.push('Larger bundles typically offer 30-60% better value per GB than daily bundles.');
+    tips.push('Check for night-only bundles which are often 50% cheaper (not listed here).');
+    tips.push('Auto-renewal plans can save you from expiring unused data on some operators.');
+    if (country.mobileMoneyOperators && country.mobileMoneyOperators.length) {
+      tips.push('Pay via mobile money (' + country.mobileMoneyOperators[0] + ') for instant activation.');
+    }
+    tips.push('Compare per-GB cost across operators before committing to a monthly plan.');
+    var html = '<div class="sidebar"><h3>&#x1f4a1; Data Saving Tips for ' + country.name + '</h3><ul>';
+    for (var i = 0; i < tips.length; i++) {
+      html += '<li>' + tips[i] + '</li>';
+    }
+    html += '</ul></div>';
+    tipsArea.innerHTML = html;
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 2000);
+  }
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

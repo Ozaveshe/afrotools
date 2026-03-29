@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>SIM Registration Status Checker | AfroTools</title>
+<meta name="description" content="Check SIM registration requirements across Africa. See methods, deadlines, penalties, and step-by-step guides for NIN linkage, RICA, and national ID registration.">
+<link rel="canonical" href="https://afrotools.com/telecom/sim-registration/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="SIM Registration Status Checker | AfroTools">
+<meta property="og:description" content="Check SIM registration requirements across Africa. See methods, deadlines, penalties, and step-by-step guides.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/telecom/sim-registration/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0e2a4a 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin:0 0 .5rem}
+.tool-hero p{color:#94a3b8;font-size:1.05rem;max-width:620px;margin:0 auto}
+.tool-hero .accent{color:#06B6D4}
+.tool-main{max-width:860px;margin:0 auto;padding:1.5rem}
+.ctrl-bar{display:flex;flex-wrap:wrap;gap:1rem;align-items:end;margin-bottom:1.5rem}
+.ctrl-group{display:flex;flex-direction:column;gap:.3rem}
+.ctrl-group label{font-size:.82rem;font-weight:600;color:#64748b}
+.ctrl-group select{padding:.55rem .8rem;border:1px solid #cbd5e1;border-radius:8px;font-size:.95rem;background:#fff;min-width:240px}
+.ctrl-group select:focus{outline:none;border-color:#06B6D4;box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+
+.alert-banner{padding:1rem 1.25rem;border-radius:12px;margin-bottom:1.5rem;display:flex;align-items:start;gap:.75rem}
+.alert-banner.mandatory{background:#fef2f2;border:1px solid #fecaca}
+.alert-banner.mandatory .ab-icon{background:#dc2626;color:#fff}
+.alert-banner .ab-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;font-weight:700}
+.alert-banner .ab-body h3{font-size:1rem;font-weight:700;margin:0 0 .15rem}
+.alert-banner.mandatory .ab-body h3{color:#991b1b}
+.alert-banner .ab-body p{font-size:.88rem;color:#334155;margin:0;line-height:1.45}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+@media(max-width:550px){.info-grid{grid-template-columns:1fr}}
+.info-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1rem}
+.info-card .ic-label{font-size:.78rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.25rem}
+.info-card .ic-val{font-size:1.05rem;font-weight:700;color:#0f172a}
+.info-card.warn .ic-val{color:#dc2626}
+.info-card.code{background:#f0f9ff;border-color:#bae6fd}
+.info-card.code .ic-val{font-family:monospace;font-size:1.2rem;color:#0284c7}
+
+.checklist-section{margin-bottom:1.5rem}
+.checklist-section h3{font-size:1.1rem;font-weight:700;color:#0f172a;margin:0 0 .75rem}
+.checklist{list-style:none;padding:0;margin:0}
+.checklist li{display:flex;align-items:start;gap:.6rem;padding:.65rem .8rem;background:#f8fafc;border-radius:8px;margin-bottom:.5rem;font-size:.9rem;color:#334155;line-height:1.45}
+.checklist li .ck-icon{width:22px;height:22px;border-radius:50%;background:#06B6D4;color:#fff;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-weight:700}
+
+.steps-section{margin-bottom:1.5rem}
+.steps-section h3{font-size:1.1rem;font-weight:700;color:#0f172a;margin:0 0 1rem}
+.step{display:flex;gap:1rem;margin-bottom:1rem;padding:1rem;background:#fff;border:1px solid #e2e8f0;border-radius:10px;border-left:3px solid #06B6D4}
+.step-num{width:32px;height:32px;border-radius:50%;background:#06B6D4;color:#fff;font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-body h4{font-size:.95rem;font-weight:600;color:#0f172a;margin:0 0 .2rem}
+.step-body p{font-size:.88rem;color:#475569;margin:0;line-height:1.5}
+
+.penalty-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:1.25rem;margin-bottom:1.5rem}
+.penalty-box h3{font-size:1rem;font-weight:700;color:#9a3412;margin:0 0 .5rem;display:flex;align-items:center;gap:.4rem}
+.penalty-box p{font-size:.9rem;color:#7c2d12;margin:0;line-height:1.5}
+
+.operators-section{margin-top:1.5rem}
+.operators-section h3{font-size:1rem;font-weight:700;color:#0f172a;margin:0 0 .75rem}
+.op-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem .8rem;background:#f8fafc;border-radius:8px;margin-bottom:.4rem;font-size:.88rem}
+.op-name{font-weight:600;color:#0f172a}
+.op-subs{color:#64748b}
+
+.empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"SIM Registration Status Checker","description":"Check SIM registration requirements and status across African countries.","url":"https://afrotools.com/telecom/sim-registration/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar active="telecom"></afro-navbar>
+
+<div class="tool-hero">
+  <h1>SIM Registration <span class="accent">Status Checker</span></h1>
+  <p>Check SIM registration requirements, deadlines, and what you need to stay connected in any African country.</p>
+</div>
+
+<div class="tool-main">
+  <div class="ctrl-bar">
+    <div class="ctrl-group">
+      <label for="country-sel">Country</label>
+      <select id="country-sel"><option value="">Select country...</option></select>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="empty-state"><p>Select a country to check SIM registration requirements</p></div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script src="/data/telecom/country-telecom-index.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var countrySel = document.getElementById('country-sel');
+  var contentEl = document.getElementById('content');
+
+  var REG_GUIDES = {
+    'NIN-SIM linkage': {
+      checklist: ['National Identification Number (NIN)', 'Active SIM card(s)', 'Phone used for registration', 'Visit NIMC centre if NIN not obtained'],
+      steps: [
+        { title: 'Obtain your NIN', desc: 'Visit a National Identity Management Commission (NIMC) enrolment centre with valid documents (birth certificate, passport, etc.).' },
+        { title: 'Dial the USSD Code', desc: 'Dial *346# from the SIM you want to register and follow prompts to submit your NIN.' },
+        { title: 'Biometric Verification', desc: 'If USSD fails, visit a provider-approved registration centre for biometric capture.' },
+        { title: 'Confirmation', desc: 'You will receive an SMS confirming successful NIN-SIM linkage.' }
+      ]
+    },
+    'RICA (Regulation of Interception of Communications Act)': {
+      checklist: ['Valid South African ID / Passport / Asylum permit', 'Proof of residence (utility bill, bank statement)', 'The SIM card to be registered'],
+      steps: [
+        { title: 'Gather Documents', desc: 'You need a valid ID and proof of address (utility bill, bank statement, or lease agreement not older than 3 months).' },
+        { title: 'Visit a RICA Point', desc: 'Go to any operator store, participating retailer, or register online via your provider app.' },
+        { title: 'Submit Documents', desc: 'Present your ID and proof of address. The agent will capture your details.' },
+        { title: 'Activation', desc: 'Your SIM is activated immediately after successful RICA registration.' }
+      ]
+    },
+    'default': {
+      checklist: ['National ID card or passport', 'Active SIM card', 'Proof of address (if required)', 'Visit operator service centre'],
+      steps: [
+        { title: 'Get Your National ID', desc: 'Ensure you have a valid national identification document as required by your country.' },
+        { title: 'Visit a Service Centre', desc: 'Go to your mobile operator service centre or approved agent with your ID and SIM card.' },
+        { title: 'Submit Registration', desc: 'Provide your ID for scanning/copying. Some countries require biometric data capture.' },
+        { title: 'Receive Confirmation', desc: 'You will get an SMS or verbal confirmation that your SIM is registered.' }
+      ]
+    }
+  };
+
+  function init() {
+    if (typeof TELECOM_DATA === 'undefined') return;
+    var codes = Object.keys(TELECOM_DATA.countries);
+    codes.sort(function(a, b) {
+      return TELECOM_DATA.countries[a].name.localeCompare(TELECOM_DATA.countries[b].name);
+    });
+    for (var i = 0; i < codes.length; i++) {
+      var opt = document.createElement('option');
+      opt.value = codes[i];
+      opt.textContent = TELECOM_DATA.countries[codes[i]].name;
+      countrySel.appendChild(opt);
+    }
+    countrySel.addEventListener('change', render);
+  }
+
+  function formatSubs(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(0) + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+    return n.toString();
+  }
+
+  function render() {
+    var code = countrySel.value;
+    if (!code) {
+      contentEl.innerHTML = '<div class="empty-state"><p>Select a country to check SIM registration requirements</p></div>';
+      return;
+    }
+    var country = TELECOM_DATA.countries[code];
+    var sr = country.simRegistration || {};
+    var method = sr.method || 'National ID';
+
+    var html = '';
+
+    /* Mandatory alert */
+    if (sr.mandatory !== false) {
+      html += '<div class="alert-banner mandatory">';
+      html += '<div class="ab-icon">!</div>';
+      html += '<div class="ab-body"><h3>SIM Registration is Mandatory</h3>';
+      html += '<p>All SIM cards in ' + country.name + ' must be registered using ' + method + '. Unregistered lines risk disconnection.</p></div></div>';
+    }
+
+    /* Info cards */
+    html += '<div class="info-grid">';
+    html += '<div class="info-card"><div class="ic-label">Registration Method</div><div class="ic-val">' + method + '</div></div>';
+    html += '<div class="info-card' + (sr.deadline ? ' warn' : '') + '"><div class="ic-label">Deadline</div><div class="ic-val">' + (sr.deadline || 'Ongoing') + '</div></div>';
+    if (sr.checkCode) {
+      html += '<div class="info-card code"><div class="ic-label">Check Status Code</div><div class="ic-val">' + sr.checkCode + '</div></div>';
+    }
+    html += '<div class="info-card"><div class="ic-label">Regulator</div><div class="ic-val">' + (country.regulator || 'N/A') + '</div></div>';
+    html += '</div>';
+
+    /* What you need checklist */
+    var guide = REG_GUIDES[method] || REG_GUIDES['default'];
+    html += '<div class="checklist-section"><h3>What You Need</h3><ul class="checklist">';
+    for (var i = 0; i < guide.checklist.length; i++) {
+      html += '<li><span class="ck-icon">&#10003;</span> ' + guide.checklist[i] + '</li>';
+    }
+    html += '</ul></div>';
+
+    /* Steps */
+    html += '<div class="steps-section"><h3>Registration Steps for ' + country.name + '</h3>';
+    for (var i = 0; i < guide.steps.length; i++) {
+      html += '<div class="step">';
+      html += '<div class="step-num">' + (i + 1) + '</div>';
+      html += '<div class="step-body"><h4>' + guide.steps[i].title + '</h4><p>' + guide.steps[i].desc + '</p></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    /* Penalty warning */
+    if (sr.penalty) {
+      html += '<div class="penalty-box">';
+      html += '<h3>&#9888; Penalty for Non-Compliance</h3>';
+      html += '<p>' + sr.penalty + '. Make sure to register all your SIM cards before the deadline to avoid losing your line and mobile money accounts.</p>';
+      html += '</div>';
+    }
+
+    /* Operators list */
+    if (country.operators && country.operators.length > 0) {
+      html += '<div class="operators-section"><h3>Operators in ' + country.name + '</h3>';
+      for (var i = 0; i < country.operators.length; i++) {
+        var op = country.operators[i];
+        html += '<div class="op-row">';
+        html += '<span class="op-name">' + op.name + '</span>';
+        html += '<span class="op-subs">' + formatSubs(op.subscribers) + ' subscribers</span>';
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+
+    contentEl.innerHTML = html;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

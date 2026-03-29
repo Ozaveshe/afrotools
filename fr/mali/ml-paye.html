@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://afrotools.com/fr/mali/ml-paye/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Calculateur ITS Mali 2026 — INPS">
-<meta property="og:description" content="Calculez votre ITS au Mali avec les baremes 2026. Cotisations INPS, deductions et salaire net en FCFA.">
+<meta property="og:description" content="Calculez votre ITS au Mali avec les baremes 2026. Cotisations INPS, déductions et salaire net en FCFA.">
 <meta property="og:type"        content="website">
 <meta property="og:url" content="https://afrotools.com/fr/mali/ml-paye/">
 <meta property="og:image"       content="https://afrotools.com/assets/img/og-ml-paye.png">
@@ -17,7 +17,7 @@
 <meta property="og:site_name"   content="AfroTools">
 <meta name="twitter:card"       content="summary_large_image">
 <meta name="twitter:title" content="Calculateur ITS Mali 2026 — INPS">
-<meta name="twitter:description" content="Calculez votre ITS au Mali avec les baremes 2026. Cotisations INPS, deductions et salaire net en FCFA.">
+<meta name="twitter:description" content="Calculez votre ITS au Mali avec les baremes 2026. Cotisations INPS, déductions et salaire net en FCFA.">
 <meta name="robots"             content="index, follow">
 <meta name="author"             content="AfroTools">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mali","item":"https://afrotools.com/mali"},{"@type":"ListItem","position":3,"name":"Mali PAYE Calculator","item":"https://afrotools.com/mali/ml-paye"}]}</script>
@@ -209,7 +209,7 @@ window.addEventListener('load', function() {
               </div>
               <div class="tog" data-tog="secondary" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label">Secondary Employment</div><div class="tog-rate">Flat 30% no deductions</div></div>
+                <div><div class="tog-label">Secondary Employment</div><div class="tog-rate">Flat 30% no déductions</div></div>
               </div>
             </div>
             <p class="f-note">INPS employee contribution (3.6%) is fully deductible from taxable income before ITS is calculated. Employer INPS (12%) is an additional cost. No SDL or WCF in Mali.</p>
@@ -224,7 +224,7 @@ window.addEventListener('load', function() {
         <div class="res-hero">
           <div class="res-hero-label">Salaire Net Mensuel</div>
           <div class="res-hero-amount" id="resAmount">XOF 0</div>
-          <div class="res-hero-period">After ITS, INPS &amp; all deductions</div>
+          <div class="res-hero-period">After ITS, INPS &amp; all déductions</div>
           <div class="res-hero-gross" id="resGross"></div>
         </div>
         <div class="res-body">
@@ -359,14 +359,14 @@ window.addEventListener('load', function() {
             <span class="tool-feat">Tranches d'Imposition</span>
             <span class="tool-feat">PDF Export</span>
             <span class="tool-feat">Conseiller IA</span>
-            <span class="tool-feat">Deductions</span>
+            <span class="tool-feat">Déductions</span>
           </div>
         </div>
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
             <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
-            <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
+            <a class="tool-info-action" href="/fr/tools/paye-calculator/">Tous les pays</a>
           </div>
         </div>
       </div>
@@ -632,7 +632,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   let bandBreakdown = [];
 
   if (isSecondary) {
-    // Secondary employment: flat 30%, no deductions
+    // Secondary employment: flat 30%, no déductions
     monthlyPAYE = gross * 0.30;
     bandBreakdown = [{ rate: 0.30, income: gross, tax: monthlyPAYE, isFlat: true }];
   } else {
@@ -647,8 +647,8 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const wcf = 0; // No WCF in Mali
 
   // Net pay
-  const totalEmployeeDeductions = social + monthlyPAYE;
-  const netMonthly = gross - totalEmployeeDeductions;
+  const totalEmployeeDéductions = social + monthlyPAYE;
+  const netMonthly = gross - totalEmployeeDéductions;
   const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
 
   // Annual figures
@@ -658,7 +658,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
     gross, monthly: gross, social, socialRate, empSocial,
     monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
     sdl, wcf, empSocial,
-    totalEmployeeDeductions, netMonthly, effectiveRate,
+    totalEmployeeDéductions, netMonthly, effectiveRate,
     annualGross: annual(gross), annualNet: annual(netMonthly),
     annualTax: annual(monthlyPAYE), annualSocial: annual(social),
     totalEmployerCostMonthly: gross + empSocial,
@@ -714,7 +714,7 @@ function renderRows(R, period) {
   const social = isAnnual ? R.annualSocial  : R.social;
   const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
   const net    = isAnnual ? R.annualNet     : R.netMonthly;
-  const totalDeductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDeductions;
+  const totalDéductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDéductions;
   const lbl = isAnnual ? '/year' : '/month';
 
   const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
@@ -725,7 +725,7 @@ function renderRows(R, period) {
       ${row(`Annual Gross Salary${lbl}`, fmt(gross))}
     </div>
     <div class="res-section">
-      <div class="res-section-title">Deductions</div>
+      <div class="res-section-title">Déductions</div>
       ${R.social > 0 ? row(`INPS (${pct(R.socialRate)})`, fmt(social), 'c-red') : ''}
       ${R.isSecondary
         ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">⚠ Secondary employment: flat 30% applied to full gross — no tax-free band, no INPS deduction for ITS purposes.</div>`
@@ -737,7 +737,7 @@ function renderRows(R, period) {
       ${row(`Income tax (ITS)${lbl}`, fmt(paye), 'c-red')}
     </div>
     <div class="res-section">
-      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
+      ${row('Total Déductions', fmt(totalDéductions), 'c-red')}
       <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
     </div>`;
 }
@@ -841,7 +841,7 @@ function generatePdf() {
     `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? 'Flat 30% (secondary employment)' : 'Rate ' + (b.rate*100) + '% on XOF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XOF ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
 <title>Mali PAYE Calculator 2026 | AfroTools</title>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
@@ -888,7 +888,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
+  <div class="sec-head">Section 1 — Monthly Income &amp; Déductions</div>
   <table>
     <tr><td>Salaire Brut Mensuel</td><td class="num">XOF ${Math.round(R.gross).toLocaleString()}</td></tr>
     ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">INPS employee contribution (${pct(R.socialRate)}, deductible)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
@@ -906,7 +906,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <table>
     ${R.social > 0 ? `<tr><td>INPS (employee, 3.6%)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     <tr><td>PAYE income tax</td><td class="num red">(XOF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(XOF ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total Monthly Déductions</td><td class="num red">(XOF ${Math.round(R.totalEmployeeDéductions).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire Net Mensuel</td><td class="num green">XOF ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire Net Annuel</td><td class="num green">XOF ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>
@@ -986,7 +986,7 @@ async function getAI() {
 - Employer INPS (12%): XOF ${Math.round(R.empSocial).toLocaleString()}/mo
 - Total employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
 
-Give: 1) Plain English summary of ITS position 2) Two specific legal ways to reduce Mali tax liability (INPS deductibility, approved pension deductions, approved housing benefit) 3) One DGI compliance point to know 4) One thing most Malian employees get wrong about INPS or ITS. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
+Give: 1) Plain English summary of ITS position 2) Two specific legal ways to reduce Mali tax liability (INPS deductibility, approved pension déductions, approved housing benefit) 3) One DGI compliance point to know 4) One thing most Malian employees get wrong about INPS or ITS. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {

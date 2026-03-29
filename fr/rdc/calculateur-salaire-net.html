@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -542,14 +542,14 @@ function calcAnnualIPR(annualTaxableIncome) {
   var bandBreakdown = result.bandBreakdown;
 
   // Salaire net
-  var totalEmployeeDeductions = cnss + annualIPR;
-  var netAnnual = gross - totalEmployeeDeductions;
+  var totalEmployeeDéductions = cnss + annualIPR;
+  var netAnnual = gross - totalEmployeeDéductions;
   var effectiveRate = gross > 0 ? annualIPR / gross : 0;
 
   RESULT = {
     gross: gross, annual: gross, cnss: cnss, cnssRate: cnssRate, empCNSS: empCNSS,
     annualIPR: annualIPR, bandBreakdown: bandBreakdown,
-    totalEmployeeDeductions: totalEmployeeDeductions, netAnnual: netAnnual, effectiveRate: effectiveRate,
+    totalEmployeeDéductions: totalEmployeeDéductions, netAnnual: netAnnual, effectiveRate: effectiveRate,
     totalEmployerCostAnnual: gross + empCNSS,
   };
 
@@ -601,7 +601,7 @@ function renderRows(R) {
   var cnss   = R.cnss;
   var ipr    = R.annualIPR;
   var net    = R.netAnnual;
-  var totalDeductions = R.totalEmployeeDeductions;
+  var totalDéductions = R.totalEmployeeDéductions;
 
   var row = function(l, v, cls) { return '<div class="res-row"><span class="res-row-lbl">' + l + '</span><span class="res-row-val ' + (cls||'') + '">' + v + '</span></div>'; };
 
@@ -620,7 +620,7 @@ function renderRows(R) {
       row('Imp\u00F4t sur le revenu (IPR)', fmt(ipr), 'c-red') +
     '</div>' +
     '<div class="res-section">' +
-      row('Total des d\u00E9ductions', fmt(totalDeductions), 'c-red') +
+      row('Total des d\u00E9ductions', fmt(totalDéductions), 'c-red') +
       '<div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-blu">' + fmt(net) + '</span></div>' +
     '</div>';
 }
@@ -770,7 +770,7 @@ function generatePdf() {
 '  <table>' +
     (R.cnss > 0 ? '<tr><td>CNSS (salari\u00E9)</td><td class="num red">(FC ' + Math.round(R.cnss).toLocaleString('fr-CD') + ')</td></tr>' : '') +
 '    <tr><td>Imp\u00F4t sur le revenu (IPR)</td><td class="num red">(FC ' + Math.round(R.annualIPR).toLocaleString('fr-CD') + ')</td></tr>' +
-'    <tr><td style="font-weight:700">Total d\u00E9ductions annuelles</td><td class="num red">(FC ' + Math.round(R.totalEmployeeDeductions).toLocaleString('fr-CD') + ')</td></tr>' +
+'    <tr><td style="font-weight:700">Total d\u00E9ductions annuelles</td><td class="num red">(FC ' + Math.round(R.totalEmployeeDéductions).toLocaleString('fr-CD') + ')</td></tr>' +
 '    <tr class="total"><td style="color:#007FFF;font-weight:800">Salaire net annuel</td><td class="num blue">FC ' + Math.round(R.netAnnual).toLocaleString('fr-CD') + '</td></tr>' +
 '  </table>' +
 '' +
@@ -907,8 +907,7 @@ window._grossToNet = function(g) {
   var d=isOn('cnss')?g*0.05:0;return g-(d+calcAnnualIPR(Math.max(0,g-d)).tax);
 };
 </script>
-<script src="/assets/js/lib/auto-email-gate.js" defer></script>
-<script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script><script src="/assets/js/share-image-inject.js" defer></script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>USSD Code Directory - All African Mobile Operator Codes | AfroTools</title>
+<meta name="description" content="Complete USSD code directory for MTN, Airtel, Safaricom, Vodacom and more across Africa. Check balance, buy data, transfer airtime, borrow credit and more.">
+<link rel="canonical" href="https://afrotools.com/telecom/ussd-directory/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="USSD Code Directory | AfroTools">
+<meta property="og:description" content="Complete USSD code directory for mobile operators across 12 African countries. Airtime, data, balance, transfer codes and more.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/telecom/ussd-directory/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0c2340 50%,#06B6D4 200%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.tool-hero p{font-size:1.05rem;opacity:.85;max-width:600px;margin:0 auto}
+.tool-main{max-width:1000px;margin:0 auto;padding:1.5rem}
+.controls{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;align-items:end}
+.field{display:flex;flex-direction:column;gap:.35rem;flex:1;min-width:180px}
+.field label{font-size:.82rem;font-weight:600;color:#475569}
+.field select,.field input{padding:.65rem .85rem;border:1.5px solid #cbd5e1;border-radius:10px;font-size:.95rem;font-family:inherit;background:#fff;transition:border-color .2s}
+.field select:focus,.field input:focus{outline:none;border-color:#06B6D4;box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+.cat-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.cat-tab{padding:.45rem 1rem;border-radius:20px;border:1.5px solid #e2e8f0;background:#fff;font-size:.82rem;font-weight:600;color:#64748b;cursor:pointer;transition:all .2s}
+.cat-tab:hover{border-color:#06B6D4;color:#06B6D4}
+.cat-tab.active{background:#06B6D4;color:#fff;border-color:#06B6D4}
+.codes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+.code-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:1rem;cursor:pointer;transition:all .2s;position:relative}
+.code-card:hover{border-color:#06B6D4;box-shadow:0 4px 12px rgba(6,182,212,.1);transform:translateY(-1px)}
+.code-card .cc-operator{font-size:.75rem;font-weight:700;color:#06B6D4;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem}
+.code-card .cc-code{font-family:monospace;font-size:1.3rem;font-weight:700;color:#0f172a;margin-bottom:.25rem}
+.code-card .cc-label{font-size:.8rem;color:#64748b}
+.code-card .cc-copy{position:absolute;top:.75rem;right:.75rem;width:28px;height:28px;border-radius:8px;background:#f1f5f9;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;font-size:.8rem}
+.code-card .cc-copy:hover{background:#e0f7fa}
+.section-title{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid #e2e8f0;display:flex;align-items:center;gap:.5rem}
+.section-title .st-icon{width:24px;height:24px;border-radius:6px;background:#e0f7fa;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.category-section{margin-bottom:2rem}
+.empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8}
+.count-badge{font-size:.75rem;font-weight:600;background:#f1f5f9;padding:.15rem .5rem;border-radius:10px;color:#64748b}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:.5rem 1.25rem;border-radius:10px;font-size:.85rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999}
+.toast.show{opacity:1}
+details{margin-top:2rem;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden}
+details+details{margin-top:.75rem}
+summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;background:#f8fafc;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::after{content:"+";font-size:1.2rem;font-weight:300;color:#94a3b8}
+details[open] summary::after{content:"\2212"}
+details .faq-body{padding:1rem 1.25rem;font-size:.88rem;line-height:1.7;color:#475569}
+@media(max-width:600px){
+  .codes-grid{grid-template-columns:1fr}
+  .controls{flex-direction:column}
+}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"USSD Code Directory","url":"https://afrotools.com/telecom/ussd-directory/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","description":"Complete USSD code directory for mobile operators across Africa.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar active="telecom"></afro-navbar>
+
+<div class="tool-hero">
+  <h1>USSD Code Directory</h1>
+  <p>Every mobile operator code in one place. Check balance, buy data, transfer airtime, borrow credit and more.</p>
+</div>
+
+<div class="tool-main">
+  <div class="controls">
+    <div class="field">
+      <label for="countrySelect">Country</label>
+      <select id="countrySelect"><option value="">-- Select country --</option></select>
+    </div>
+    <div class="field">
+      <label for="searchInput">Search codes</label>
+      <input type="text" id="searchInput" placeholder="e.g. balance, transfer, MTN...">
+    </div>
+  </div>
+
+  <div id="catTabs" class="cat-tabs"></div>
+  <div id="codesArea">
+    <div class="empty-state">
+      <p>Select a country to view USSD codes for all operators</p>
+    </div>
+  </div>
+
+  <div style="margin-top:2.5rem">
+    <details>
+      <summary>What is a USSD code?</summary>
+      <div class="faq-body">USSD (Unstructured Supplementary Service Data) is a protocol used by mobile phones to communicate with the operator's servers. You dial a short code like *123# to access services such as checking your balance, buying data, or transferring airtime — no internet connection needed.</div>
+    </details>
+    <details>
+      <summary>Do USSD codes cost money?</summary>
+      <div class="faq-body">Dialing a USSD code itself is free in most African countries. However, the services accessed through USSD (buying data, transferring airtime) will deduct from your balance as expected.</div>
+    </details>
+    <details>
+      <summary>Why does my USSD code not work?</summary>
+      <div class="faq-body">Common reasons include: the code is for a different operator, you have a SIM issue, network congestion, or the operator updated their codes. Try again later or call customer care using the numbers listed above.</div>
+    </details>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<div class="toast" id="toast"></div>
+
+<script src="/data/telecom/country-telecom-index.js"></script>
+<script>
+(function(){
+  'use strict';
+  var countrySelect = document.getElementById('countrySelect');
+  var searchInput = document.getElementById('searchInput');
+  var catTabs = document.getElementById('catTabs');
+  var codesArea = document.getElementById('codesArea');
+  var toast = document.getElementById('toast');
+  var currentCountry = null;
+  var activeCategory = 'all';
+
+  var categoryMeta = {
+    airtime: { label: 'Airtime', icon: '#' },
+    balance: { label: 'Balance', icon: '$' },
+    data: { label: 'Data', icon: 'D' },
+    transfer: { label: 'Transfer', icon: 'T' },
+    borrow: { label: 'Borrow', icon: 'B' },
+    mobileMoney: { label: 'Mobile Money', icon: 'M' },
+    mpesa: { label: 'M-Pesa', icon: 'M' },
+    customerCare: { label: 'Customer Care', icon: 'C' }
+  };
+
+  // populate countries
+  var codes = Object.keys(TELECOM_DATA.countries);
+  for (var i = 0; i < codes.length; i++) {
+    var c = TELECOM_DATA.countries[codes[i]];
+    var opt = document.createElement('option');
+    opt.value = codes[i];
+    opt.textContent = c.name;
+    countrySelect.appendChild(opt);
+  }
+
+  countrySelect.addEventListener('change', function() {
+    currentCountry = this.value;
+    activeCategory = 'all';
+    renderAll();
+  });
+  searchInput.addEventListener('input', renderAll);
+
+  function renderAll() {
+    if (!currentCountry || !TELECOM_DATA.countries[currentCountry]) {
+      catTabs.innerHTML = '';
+      codesArea.innerHTML = '<div class="empty-state"><p>Select a country to view USSD codes</p></div>';
+      return;
+    }
+    var country = TELECOM_DATA.countries[currentCountry];
+    var ussd = country.ussdCodes || {};
+    var cats = Object.keys(ussd);
+
+    // render tabs
+    var tabHtml = '<button class="cat-tab' + (activeCategory === 'all' ? ' active' : '') + '" data-cat="all">All</button>';
+    for (var t = 0; t < cats.length; t++) {
+      var meta = categoryMeta[cats[t]] || { label: cats[t], icon: '?' };
+      tabHtml += '<button class="cat-tab' + (activeCategory === cats[t] ? ' active' : '') + '" data-cat="' + cats[t] + '">' + meta.label + '</button>';
+    }
+    catTabs.innerHTML = tabHtml;
+
+    // bind tabs
+    var tabBtns = catTabs.querySelectorAll('.cat-tab');
+    for (var b = 0; b < tabBtns.length; b++) {
+      tabBtns[b].addEventListener('click', function() {
+        activeCategory = this.getAttribute('data-cat');
+        renderAll();
+      });
+    }
+
+    // render codes
+    var query = searchInput.value.toLowerCase().trim();
+    var html = '';
+    var totalCount = 0;
+
+    for (var ci = 0; ci < cats.length; ci++) {
+      var catKey = cats[ci];
+      if (activeCategory !== 'all' && activeCategory !== catKey) continue;
+      var meta2 = categoryMeta[catKey] || { label: catKey, icon: '?' };
+      var operators = ussd[catKey];
+      var opNames = Object.keys(operators);
+      var cardsHtml = '';
+      var catCount = 0;
+
+      for (var oi = 0; oi < opNames.length; oi++) {
+        var opName = opNames[oi];
+        var code = operators[opName];
+        var searchStr = (opName + ' ' + code + ' ' + meta2.label).toLowerCase();
+        if (query && searchStr.indexOf(query) === -1) continue;
+        catCount++;
+        totalCount++;
+        cardsHtml += '<div class="code-card" data-code="' + code + '">' +
+          '<button class="cc-copy" title="Copy code">&#x2398;</button>' +
+          '<div class="cc-operator">' + opName + '</div>' +
+          '<div class="cc-code">' + code + '</div>' +
+          '<div class="cc-label">' + meta2.label + '</div>' +
+          '</div>';
+      }
+
+      if (catCount > 0) {
+        html += '<div class="category-section">' +
+          '<div class="section-title"><span class="st-icon">' + meta2.icon + '</span>' +
+          meta2.label + ' <span class="count-badge">' + catCount + '</span></div>' +
+          '<div class="codes-grid">' + cardsHtml + '</div></div>';
+      }
+    }
+
+    if (totalCount === 0) {
+      codesArea.innerHTML = '<div class="empty-state"><p>No codes found' + (query ? ' for "' + query + '"' : '') + '. Try a different search or category.</p></div>';
+    } else {
+      codesArea.innerHTML = html;
+    }
+
+    // bind copy
+    var cards = codesArea.querySelectorAll('.code-card');
+    for (var k = 0; k < cards.length; k++) {
+      cards[k].addEventListener('click', function() {
+        var code = this.getAttribute('data-code');
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code);
+        }
+        showToast('Copied: ' + code);
+      });
+    }
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 2000);
+  }
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -391,8 +391,26 @@
   <p>Most African countries exempt or zero-rate essential items: basic unprocessed food, medical services and supplies, educational services, and agricultural inputs. Some countries like Nigeria have recently expanded exemptions to include more food items under 2026 tax reforms. Always check your specific country's revenue authority for the latest list of exempt and zero-rated supplies, as these change with annual budget announcements.</p>
 </section>
 
+<div class="ai-advisor-section">
+  <div class="ai-advisor-card" id="aiCard">
+    <div class="ai-advisor-head">
+      <span class="ai-dot"></span>
+      <span class="ai-title">AI Vat Calculator Advisor</span>
+      <span class="ai-by">Powered by Claude</span>
+    </div>
+    <div class="ai-advisor-body">
+      <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+      <div class="ai-chat" id="aiChat">
+        <div class="ai-msgs" id="aiMsgs"></div>
+        <div class="ai-input-row">
+          <input type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <afro-related-tools category="financial" current="vat-calculator"></afro-related-tools>
-<afro-chat tool="vat-calculator" system="You are an expert African tax and VAT advisor. Help with VAT rates across Africa, registration thresholds, exempt vs zero-rated supplies, input tax credits, and cross-border VAT."></afro-chat>
 <afro-footer></afro-footer>
 
 <!-- Scripts -->
@@ -400,7 +418,7 @@
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
-<script src="/assets/js/bundles/core.1f4e81f7.min.js" defer></script><script src="/assets/js/lib/share-state.js" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/lib/share-state.js" defer></script>
 <script src="/assets/js/lib/pdf-template.js" defer></script>
 
 <script>
@@ -1149,10 +1167,38 @@
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
   var div = document.createElement('div');
   div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
   div.innerHTML = '<save-result-button tool-slug="vat-calculator" tool-name="Vat Calculator"></save-result-button><share-result-button tool-name="Vat Calculator" tool-slug="vat-calculator"></share-result-button>';
   target.appendChild(div);
 })();
+</script>
+
+<script>
+var AI_MSGS=[];
+async function sendAI(){
+  var input=document.getElementById('aiInput');
+  var msgsEl=document.getElementById('aiMsgs');
+  var sendBtn=document.getElementById('aiSend');
+  var q=input.value.trim();
+  if(!q)return;
+  AI_MSGS.push({role:'user',content:q});
+  msgsEl.innerHTML+='<div class="ai-msg-u">'+q.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  input.value='';sendBtn.disabled=true;
+  var thinkEl=document.createElement('div');thinkEl.className='ai-thinking';thinkEl.textContent='Thinking\u2026';
+  msgsEl.appendChild(thinkEl);msgsEl.scrollTop=msgsEl.scrollHeight;
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'vat-calculator',messages:AI_MSGS.slice(-6),context:''})});
+    var data=await res.json();
+    if(thinkEl.parentNode)thinkEl.remove();
+    var reply=data.reply||data.error||'Sorry, I could not get a response.';
+    AI_MSGS.push({role:'assistant',content:reply});
+    msgsEl.innerHTML+='<div class="ai-msg-a">'+reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')+'</div>';
+  }catch(e){
+    if(thinkEl.parentNode)thinkEl.remove();
+    msgsEl.innerHTML+='<div class="ai-msg-a">Sorry, the AI advisor is temporarily unavailable.</div>';
+  }
+  sendBtn.disabled=false;msgsEl.scrollTop=msgsEl.scrollHeight;input.focus();
+}
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

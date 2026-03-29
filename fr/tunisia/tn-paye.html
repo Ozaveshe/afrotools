@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://afrotools.com/fr/tunisia/tn-paye/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Calculateur IRPP Tunisie 2026">
-<meta property="og:description" content="Calculez votre IRPP en Tunisie avec les baremes 2026. Cotisations CNSS, deductions et salaire net en TND.">
+<meta property="og:description" content="Calculez votre IRPP en Tunisie avec les baremes 2026. Cotisations CNSS, déductions et salaire net en TND.">
 <meta property="og:type"        content="website">
 <meta property="og:url" content="https://afrotools.com/fr/tunisia/tn-paye/">
 <meta property="og:image"       content="https://afrotools.com/assets/img/og-tn-paye.png">
@@ -17,7 +17,7 @@
 <meta property="og:site_name"   content="AfroTools">
 <meta name="twitter:card"       content="summary_large_image">
 <meta name="twitter:title" content="Calculateur IRPP Tunisie 2026">
-<meta name="twitter:description" content="Calculez votre IRPP en Tunisie avec les baremes 2026. Cotisations CNSS, deductions et salaire net en TND.">
+<meta name="twitter:description" content="Calculez votre IRPP en Tunisie avec les baremes 2026. Cotisations CNSS, déductions et salaire net en TND.">
 <meta name="robots"             content="index, follow">
 <meta name="author"             content="AfroTools">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Tunisia","item":"https://afrotools.com/tunisia"},{"@type":"ListItem","position":3,"name":"Tunisia PAYE Calculator","item":"https://afrotools.com/tunisia/tn-paye"}]}</script>
@@ -200,7 +200,7 @@ window.addEventListener('load', function() {
         <div class="res-hero">
           <div class="res-hero-label">Salaire Net Annuel</div>
           <div class="res-hero-amount" id="resAmount">TND 0</div>
-          <div class="res-hero-period">After DGI tax, CNPS &amp; all deductions</div>
+          <div class="res-hero-period">After DGI tax, CNPS &amp; all déductions</div>
           <div class="res-hero-gross" id="resGross"></div>
         </div>
         <div class="res-body">
@@ -337,14 +337,14 @@ window.addEventListener('load', function() {
             <span class="tool-feat">Tranches d'Imposition</span>
             <span class="tool-feat">PDF Export</span>
             <span class="tool-feat">Conseiller IA</span>
-            <span class="tool-feat">Deductions</span>
+            <span class="tool-feat">Déductions</span>
           </div>
         </div>
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
             <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
-            <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
+            <a class="tool-info-action" href="/fr/tools/paye-calculator/">Tous les pays</a>
           </div>
         </div>
       </div>
@@ -376,8 +376,8 @@ window.addEventListener('load', function() {
         <p class="faq-a">The total CNPS (Caisse Nationale de Prévoyance Sociale) contribution is 12% of gross salary: 2.5% paid by the employee (deductible from DGI taxable income) and 9.5% paid by the employer as an additional cost. There is no upper cap on CNPS contributions.</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Are there any other mandatory deductions in Tunisia?</div>
-        <p class="faq-a">Beyond DGI income tax and CNPS, Tunisia does not have separate levies equivalent to Tanzania's SDL or WCF. Employees may have deductions for pension contributions, health insurance, or trade union dues depending on their employment contract.</p>
+        <div class="faq-q">Are there any other mandatory déductions in Tunisia?</div>
+        <p class="faq-a">Beyond DGI income tax and CNPS, Tunisia does not have separate levies equivalent to Tanzania's SDL or WCF. Employees may have déductions for pension contributions, health insurance, or trade union dues depending on their employment contract.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">What is the salary in the calculator equivalent to in monthly terms?</div>
@@ -626,8 +626,8 @@ function calcAnnualDGI(annualTaxableIncome) {
   const bandBreakdown = result.bandBreakdown;
 
   // Net pay
-  const totalEmployeeDeductions = cnps + annualDGI;
-  const netAnnual = gross - totalEmployeeDeductions;
+  const totalEmployeeDéductions = cnps + annualDGI;
+  const netAnnual = gross - totalEmployeeDéductions;
   const effectiveRate = gross > 0 ? annualDGI / gross : 0;
 
   // Monthly equivalents
@@ -636,7 +636,7 @@ function calcAnnualDGI(annualTaxableIncome) {
   RESULT = {
     gross, annual: gross, cnps, cnpsRate, empCNPSCost,
     annualDGI, bandBreakdown,
-    totalEmployeeDeductions, netAnnual, effectiveRate,
+    totalEmployeeDéductions, netAnnual, effectiveRate,
     totalEmployerCostAnnual: gross + empCNPSCost,
   };
 
@@ -699,7 +699,7 @@ function renderRows(R, period) {
       ${row(`Gross Salary${lbl}`, fmt(gross))}
     </div>
     <div class="res-section">
-      <div class="res-section-title">Deductions</div>
+      <div class="res-section-title">Déductions</div>
       ${R.cnps > 0 ? row(`CNPS (${pct(R.cnpsRate)}, no cap)`, fmt(cnps), 'c-red') : ''}
       ${row(`Net taxable income${lbl}`, fmt(gross - (R.cnps > 0 ? R.cnps/12 : 0)), 'c-mut')}
     </div>
@@ -708,7 +708,7 @@ function renderRows(R, period) {
       ${row(`DGI tax${lbl}`, fmt(dgi), 'c-red')}
     </div>
     <div class="res-section">
-      ${row('Total Deductions', fmt(cnps + dgi), 'c-red')}
+      ${row('Total Déductions', fmt(cnps + dgi), 'c-red')}
       <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
     </div>`;
 }
@@ -812,7 +812,7 @@ function generatePdf() {
     `<tr><td style="padding-left:14px;color:#4b5563">Rate ${(b.rate*100)}% on TND ${Math.round(b.income).toLocaleString()}</td><td class="num red">(TND ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
 <title>AfroTools Tunisia PAYE — ${refNo}</title>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
@@ -859,7 +859,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Section 1 — Annual Income &amp; Deductions</div>
+  <div class="sec-head">Section 1 — Annual Income &amp; Déductions</div>
   <table>
     <tr><td>Salaire Brut Annuel</td><td class="num">TND ${Math.round(R.annual).toLocaleString()}</td></tr>
     ${R.cnps > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNPS employee contribution (${pct(R.cnpsRate)}, no cap)</td><td class="num red">(TND ${Math.round(R.cnps).toLocaleString()})</td></tr>` : ''}
@@ -876,7 +876,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <table>
     ${R.cnps > 0 ? `<tr><td>CNPS (employee)</td><td class="num red">(TND ${Math.round(R.cnps).toLocaleString()})</td></tr>` : ''}
     <tr><td>DGI income tax</td><td class="num red">(TND ${Math.round(R.annualDGI).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total Annual Deductions</td><td class="num red">(TND ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total Annual Déductions</td><td class="num red">(TND ${Math.round(R.totalEmployeeDéductions).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire Net Annuel</td><td class="num green">TND ${Math.round(R.netAnnual).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire Net Mensuel</td><td class="num green">TND ${Math.round(R.netAnnual/12).toLocaleString()}</td></tr>
   </table>

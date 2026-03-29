@@ -1,0 +1,157 @@
+// /data/hr/social-security-rates.js
+// Social security contribution rates for African countries
+// Source: National social security agencies, ILO (2024-2026)
+
+var SOCIAL_SECURITY = {
+  NG: {
+    name: "Nigeria", currency: "NGN", symbol: "\u20A6", flag: "\uD83C\uDDF3\uD83C\uDDEC",
+    schemes: [
+      { name: "Pension (PRA 2014)", employeeRate: 8, employerRate: 10, cap: null, law: "Pension Reform Act 2014", notes: "Contributory pension. RSA based. Min 8% EE + 10% ER of basic+housing+transport." },
+      { name: "NHF", employeeRate: 2.5, employerRate: 0, cap: null, law: "National Housing Fund Act", notes: "2.5% of basic salary. Deducted from employee." },
+      { name: "NHIS", employeeRate: 1.75, employerRate: 3.25, cap: null, notes: "National Health Insurance Scheme. 5% total." },
+      { name: "ITF", employeeRate: 0, employerRate: 1, cap: null, notes: "Industrial Training Fund. Employer only. Companies with 5+ employees or turnover >N50M." },
+      { name: "NSITF", employeeRate: 0, employerRate: 1, cap: null, notes: "Employee Compensation Act. Employer only. 1% of total emoluments." }
+    ]
+  },
+  KE: {
+    name: "Kenya", currency: "KES", symbol: "KES", flag: "\uD83C\uDDF0\uD83C\uDDEA",
+    schemes: [
+      { name: "NSSF (Tier I)", employeeRate: 6, employerRate: 6, cap: { monthly: 7000 }, law: "NSSF Act 2013", notes: "6% each up to KES 7,000/month. Tier I is mandatory." },
+      { name: "NSSF (Tier II)", employeeRate: 6, employerRate: 6, cap: { monthly: 36000, deductFromTierI: 7000 }, notes: "Additional 6% on earnings between KES 7,000 and KES 36,000." },
+      { name: "SHIF", employeeRate: 2.75, employerRate: 0, cap: null, law: "Social Health Insurance Act 2023", notes: "2.75% of gross salary. No cap. Replaced NHIF." },
+      { name: "AHL (Housing Levy)", employeeRate: 1.5, employerRate: 1.5, cap: null, law: "Affordable Housing Act 2024", notes: "1.5% each." }
+    ]
+  },
+  ZA: {
+    name: "South Africa", currency: "ZAR", symbol: "R", flag: "\uD83C\uDDFF\uD83C\uDDE6",
+    schemes: [
+      { name: "UIF", employeeRate: 1, employerRate: 1, cap: { monthly: 17712 }, law: "Unemployment Insurance Act", notes: "1% each capped at earnings of R17,712/month." },
+      { name: "SDL", employeeRate: 0, employerRate: 1, cap: null, law: "Skills Development Levies Act", notes: "1% of total remuneration. Employer only. Exempt if annual payroll <R500,000." },
+      { name: "COIDA", employeeRate: 0, employerRate: 1.5, cap: null, notes: "Compensation for Occupational Injuries. Rate depends on industry (0.11%-8.26%). Using 1.5% average." },
+      { name: "Retirement Fund", employeeRate: 7.5, employerRate: 7.5, notes: "Not legally mandatory but practically universal. Up to 27.5% tax deductible." }
+    ]
+  },
+  GH: {
+    name: "Ghana", currency: "GHS", symbol: "GHS", flag: "\uD83C\uDDEC\uD83C\uDDED",
+    schemes: [
+      { name: "SSNIT Tier 1", employeeRate: 5.5, employerRate: 13, cap: null, law: "National Pensions Act 766", notes: "Total 18.5%. Employee 5.5%, employer 13% (8% to SSNIT, 5% to Tier 2)." },
+      { name: "SSNIT Tier 2 (Occupational)", employeeRate: 0, employerRate: 5, cap: null, notes: "5% from employer's 13% goes to approved Tier 2 trustee." },
+      { name: "Tier 3 (Voluntary)", employeeRate: 0, employerRate: 0, notes: "Up to 16.5% tax-deductible. Voluntary." }
+    ]
+  },
+  EG: {
+    name: "Egypt", currency: "EGP", symbol: "EGP", flag: "\uD83C\uDDEA\uD83C\uDDEC",
+    schemes: [
+      { name: "Social Insurance (NOSI)", employeeRate: 11, employerRate: 18.75, cap: { monthly: 12600 }, law: "Social Insurance Law 148/2019", notes: "Employee 11% (pension 9.75% + health 1% + unemployment 0.25%). Employer 18.75%." }
+    ]
+  },
+  TZ: {
+    name: "Tanzania", currency: "TZS", symbol: "TZS", flag: "\uD83C\uDDF9\uD83C\uDDFF",
+    schemes: [
+      { name: "NSSF", employeeRate: 10, employerRate: 10, cap: null, notes: "Both 10% of gross salary. Mandatory for all formal employees." },
+      { name: "SDL", employeeRate: 0, employerRate: 3.5, notes: "Skills Development Levy. Employer pays 3.5%." },
+      { name: "WCF", employeeRate: 0, employerRate: 0.5, notes: "Workers Compensation Fund. 0.5% of payroll." }
+    ]
+  },
+  UG: {
+    name: "Uganda", currency: "UGX", symbol: "UGX", flag: "\uD83C\uDDFA\uD83C\uDDEC",
+    schemes: [
+      { name: "NSSF", employeeRate: 5, employerRate: 10, cap: null, law: "NSSF Act 1985", notes: "Employee 5% + employer 10% = 15% total." }
+    ]
+  },
+  RW: {
+    name: "Rwanda", currency: "RWF", symbol: "RWF", flag: "\uD83C\uDDF7\uD83C\uDDFC",
+    schemes: [
+      { name: "RSSB Pension", employeeRate: 6, employerRate: 6, notes: "Doubled from 3%+3% to 6%+6% in January 2025." },
+      { name: "RSSB Maternity", employeeRate: 0.3, employerRate: 0.3, notes: "Maternity benefits fund." },
+      { name: "RSSB Occupational Hazards", employeeRate: 0, employerRate: 2, notes: "Employer only." }
+    ]
+  },
+  CI: {
+    name: "C\u00F4te d'Ivoire", currency: "XOF", symbol: "FCFA", flag: "\uD83C\uDDE8\uD83C\uDDEE",
+    schemes: [
+      { name: "CNPS (Pension)", employeeRate: 6.3, employerRate: 7.7, cap: { monthly: 2700000, currency: "XOF" } },
+      { name: "CNPS (Family Allowances)", employeeRate: 0, employerRate: 5.75 },
+      { name: "CNPS (Work Accidents)", employeeRate: 0, employerRate: 3, notes: "2-5% depending on industry. Using 3% average." }
+    ]
+  },
+  SN: {
+    name: "Senegal", currency: "XOF", symbol: "FCFA", flag: "\uD83C\uDDF8\uD83C\uDDF3",
+    schemes: [
+      { name: "IPRES (Pension)", employeeRate: 5.6, employerRate: 8.4 },
+      { name: "CSS (Health)", employeeRate: 0, employerRate: 3, notes: "1-5% depending on risk. Using 3% average." }
+    ]
+  },
+  CM: {
+    name: "Cameroon", currency: "XAF", symbol: "FCFA", flag: "\uD83C\uDDE8\uD83C\uDDF2",
+    schemes: [
+      { name: "CNPS (Pension)", employeeRate: 4.2, employerRate: 4.2 },
+      { name: "CNPS (Family)", employeeRate: 0, employerRate: 7 },
+      { name: "CNPS (Work Accidents)", employeeRate: 0, employerRate: 3, notes: "1.75-5% depending on sector." }
+    ]
+  },
+  MA: {
+    name: "Morocco", currency: "MAD", symbol: "MAD", flag: "\uD83C\uDDF2\uD83C\uDDE6",
+    schemes: [
+      { name: "CNSS", employeeRate: 6.74, employerRate: 12.11, cap: { monthly: 6000 }, notes: "CNSS contribution on salary up to MAD 6,000. AMO (health) additional." }
+    ]
+  },
+  TN: {
+    name: "Tunisia", currency: "TND", symbol: "TND", flag: "\uD83C\uDDF9\uD83C\uDDF3",
+    schemes: [
+      { name: "CNSS", employeeRate: 9.18, employerRate: 16.57, notes: "Total ~25.75% \u2014 one of highest in Africa." }
+    ]
+  },
+  ZM: {
+    name: "Zambia", currency: "ZMW", symbol: "ZMW", flag: "\uD83C\uDDFF\uD83C\uDDF2",
+    schemes: [
+      { name: "NAPSA", employeeRate: 5, employerRate: 5, cap: { monthly: 28800 } },
+      { name: "NHIMA", employeeRate: 1, employerRate: 1 }
+    ]
+  },
+  BW: {
+    name: "Botswana", currency: "BWP", symbol: "BWP", flag: "\uD83C\uDDE7\uD83C\uDDFC",
+    schemes: [{ name: "No mandatory social security", employeeRate: 0, employerRate: 0, notes: "Botswana has no mandatory social security contributions. Severance pay acts as de facto social protection." }]
+  },
+  MU: {
+    name: "Mauritius", currency: "MUR", symbol: "MUR", flag: "\uD83C\uDDF2\uD83C\uDDFA",
+    schemes: [
+      { name: "NSF (National Savings Fund)", employeeRate: 1, employerRate: 2.5 },
+      { name: "Training Levy", employeeRate: 0, employerRate: 1.5 },
+      { name: "CSG", employeeRate: 3, employerRate: 6 }
+    ]
+  },
+  NA: {
+    name: "Namibia", currency: "NAD", symbol: "N$", flag: "\uD83C\uDDF3\uD83C\uDDE6",
+    schemes: [
+      { name: "SSC (Employees Compensation)", employeeRate: 0, employerRate: 3, notes: "Employer only. Rate depends on industry (0.14-9.68%). Using 3% average." }
+    ]
+  },
+  DZ: { name: "Algeria", currency: "DZD", symbol: "DZD", flag: "\uD83C\uDDE9\uD83C\uDDFF", schemes: [{ name: "CNAS/CNR", employeeRate: 9, employerRate: 26, notes: "Total 35%. One of highest in Africa." }] },
+  ET: { name: "Ethiopia", currency: "ETB", symbol: "ETB", flag: "\uD83C\uDDEA\uD83C\uDDF9", schemes: [{ name: "Pension", employeeRate: 7, employerRate: 11, cap: null, notes: "7% employee + 11% employer of basic salary." }] },
+  AO: { name: "Angola", currency: "AOA", symbol: "Kz", flag: "\uD83C\uDDE6\uD83C\uDDF4", schemes: [{ name: "INSS", employeeRate: 3, employerRate: 8, notes: "Social security 11% total." }] },
+  ZW: { name: "Zimbabwe", currency: "ZWG", symbol: "ZWG", flag: "\uD83C\uDDFF\uD83C\uDDFC", schemes: [{ name: "NSSA", employeeRate: 4.5, employerRate: 4.5, notes: "Workers' Compensation + Pension." }] },
+  MW: { name: "Malawi", currency: "MWK", symbol: "MWK", flag: "\uD83C\uDDF2\uD83C\uDDFC", schemes: [{ name: "No mandatory social security", employeeRate: 0, employerRate: 0, notes: "Malawi has no mandatory social security scheme for private sector." }] },
+  MZ: { name: "Mozambique", currency: "MZN", symbol: "MZN", flag: "\uD83C\uDDF2\uD83C\uDDFF", schemes: [{ name: "INSS", employeeRate: 3, employerRate: 4, notes: "7% total." }] },
+  MG: { name: "Madagascar", currency: "MGA", symbol: "MGA", flag: "\uD83C\uDDF2\uD83C\uDDEC", schemes: [{ name: "CNaPS", employeeRate: 1, employerRate: 13, notes: "14% total. Low employee share." }] },
+  CD: { name: "DR Congo", currency: "CDF", symbol: "CDF", flag: "\uD83C\uDDE8\uD83C\uDDE9", schemes: [{ name: "CNSS", employeeRate: 5, employerRate: 9.5, notes: "14.5% total." }] },
+  GA: { name: "Gabon", currency: "XAF", symbol: "FCFA", flag: "\uD83C\uDDEC\uD83C\uDDE6", schemes: [{ name: "CNSS", employeeRate: 2.5, employerRate: 16.6, notes: "19.1% total." }] },
+  BJ: { name: "Benin", currency: "XOF", symbol: "FCFA", flag: "\uD83C\uDDE7\uD83C\uDDEF", schemes: [{ name: "CNSS", employeeRate: 3.6, employerRate: 15.4, notes: "19% total." }] },
+  BF: { name: "Burkina Faso", currency: "XOF", symbol: "FCFA", flag: "\uD83C\uDDE7\uD83C\uDDEB", schemes: [{ name: "CNSS", employeeRate: 5.5, employerRate: 16, notes: "21.5% total." }] },
+  ML: { name: "Mali", currency: "XOF", symbol: "FCFA", flag: "\uD83C\uDDF2\uD83C\uDDF1", schemes: [{ name: "INPS", employeeRate: 3.6, employerRate: 22, notes: "25.6% total." }] },
+  NE: { name: "Niger", currency: "XOF", symbol: "FCFA", flag: "\uD83C\uDDF3\uD83C\uDDEA", schemes: [{ name: "CNSS", employeeRate: 5.25, employerRate: 16.5, notes: "21.75% total." }] },
+  TG: { name: "Togo", currency: "XOF", symbol: "FCFA", flag: "\uD83C\uDDF9\uD83C\uDDEC", schemes: [{ name: "CNSS", employeeRate: 4, employerRate: 17.5, notes: "21.5% total." }] },
+  GN: { name: "Guinea", currency: "GNF", symbol: "GNF", flag: "\uD83C\uDDEC\uD83C\uDDF3", schemes: [{ name: "CNSS", employeeRate: 5, employerRate: 18, notes: "23% total." }] },
+  LY: { name: "Libya", currency: "LYD", symbol: "LYD", flag: "\uD83C\uDDF1\uD83C\uDDFE", schemes: [{ name: "Social Security Fund", employeeRate: 3.75, employerRate: 11.25, notes: "15% total." }] },
+  SD: { name: "Sudan", currency: "SDG", symbol: "SDG", flag: "\uD83C\uDDF8\uD83C\uDDE9", schemes: [{ name: "NSIF", employeeRate: 8, employerRate: 17, notes: "25% total." }] }
+};
+
+var SS_OBSERVATIONS = {
+  NG: "Nigeria's social security has 5 separate schemes totaling ~13.25% employee + 15.25% employer. Pension (PRA 2014) is the largest at 8% + 10%.",
+  KE: "Kenya's social security landscape changed dramatically in 2023-2024 with SHIF replacing NHIF (2.75% uncapped) and the new Housing Levy at 1.5% each.",
+  ZA: "South Africa's UIF is modest at 1%+1% but the practical requirement for retirement fund contributions adds ~7.5%+7.5% for most employees.",
+  GH: "Ghana's SSNIT 3-tier system totals 18.5%. Employee pays 5.5%, employer pays 13% (split 8% SSNIT + 5% Tier 2). Voluntary Tier 3 adds up to 16.5% tax-deductible.",
+  TN: "Tunisia has one of Africa's highest total social security rates at ~25.75% (9.18% employee + 16.57% employer).",
+  DZ: "Algeria's combined rate of 35% (9% + 26%) is among the highest in Africa, reflecting its comprehensive social insurance system.",
+  BW: "Botswana is notable for having NO mandatory social security contributions. Severance pay acts as de facto social protection."
+};

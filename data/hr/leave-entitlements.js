@@ -1,0 +1,153 @@
+// /data/hr/leave-entitlements.js
+// Leave and PTO entitlements for African countries
+// Source: National labour laws, ILO (2024-2026)
+
+var LEAVE_ENTITLEMENTS = {
+  NG: {
+    name: "Nigeria", currency: "NGN", flag: "\uD83C\uDDF3\uD83C\uDDEC",
+    annualLeave: { days: 6, accrual: "After 12 months continuous service", law: "Labour Act S.18", notes: "6 working days minimum. Many employers offer 15-21 by contract." },
+    sickLeave: { days: 12, pay: "100% for first 12 days (with medical certificate)", law: "Labour Act S.16" },
+    maternityLeave: { weeks: 12, pay: "50% of wages", eligibility: "6 months continuous service", law: "Labour Act S.54" },
+    paternityLeave: { days: 0, notes: "No statutory paternity leave in Nigeria." },
+    publicHolidays: 11,
+    compassionateLeave: { days: null, notes: "Not statutory \u2014 depends on employer policy" }
+  },
+  KE: {
+    name: "Kenya", currency: "KES", flag: "\uD83C\uDDF0\uD83C\uDDEA",
+    annualLeave: { days: 21, accrual: "After 12 months", law: "Employment Act 2007, S.28" },
+    sickLeave: { days: 30, pay: "Full pay first 15 days, half pay next 15 days", law: "Employment Act S.30", notes: "Per year after 2 months of service" },
+    maternityLeave: { weeks: 13, pay: "100%", eligibility: "All female employees", law: "Employment Act S.29" },
+    paternityLeave: { days: 14, pay: "100%", law: "Employment Act S.29" },
+    publicHolidays: 10,
+    compassionateLeave: { days: null, notes: "Not statutory" }
+  },
+  ZA: {
+    name: "South Africa", currency: "ZAR", flag: "\uD83C\uDDFF\uD83C\uDDE6",
+    annualLeave: { days: 21, accrual: "Consecutive days per completed year", law: "BCEA S.20", notes: "21 consecutive days = 15 working days for 5-day workers" },
+    sickLeave: { days: 30, per: "3-year cycle", pay: "100%", law: "BCEA S.22-23", notes: "First 6 months: 1 day per 26 worked" },
+    maternityLeave: { weeks: 16, pay: "Unpaid by employer. UIF pays 66%.", law: "BCEA S.25", notes: "4 months consecutive. Cannot work 6 weeks after birth." },
+    paternityLeave: { days: 10, pay: "Unpaid by employer. UIF pays 66%.", law: "BCEA S.25A", notes: "10 consecutive days." },
+    publicHolidays: 13,
+    familyResponsibility: { days: 3, law: "BCEA S.27", notes: "Birth, illness, or death of immediate family. After 4 months employment." }
+  },
+  GH: {
+    name: "Ghana", currency: "GHS", flag: "\uD83C\uDDEC\uD83C\uDDED",
+    annualLeave: { days: 15, accrual: "After 12 months", law: "Labour Act S.20", notes: "15 working days minimum" },
+    sickLeave: { days: null, notes: "No statutory minimum specified. Typically governed by employer policy or collective agreement." },
+    maternityLeave: { weeks: 12, pay: "100%", eligibility: "All female employees", law: "Labour Act S.57" },
+    paternityLeave: { days: 0, notes: "No statutory provision" },
+    publicHolidays: 13
+  },
+  EG: {
+    name: "Egypt", currency: "EGP", flag: "\uD83C\uDDEA\uD83C\uDDEC",
+    annualLeave: { days: 21, notes: "21 days after 1 year. Increases to 30 days after 10 years or age 50+.", law: "Labour Law 12/2003" },
+    sickLeave: { notes: "Social insurance covers sick pay. Up to 180 days per year at 75% then 85%." },
+    maternityLeave: { weeks: 13, pay: "100%", eligibility: "10 months contribution to social insurance", notes: "3 times during employment. Cannot be dismissed during or after." },
+    paternityLeave: { days: 0, notes: "No statutory paternity leave" },
+    publicHolidays: 15
+  },
+  TZ: {
+    name: "Tanzania", currency: "TZS", flag: "\uD83C\uDDF9\uD83C\uDDFF",
+    annualLeave: { days: 28, law: "Employment and Labour Relations Act 2004", notes: "28 consecutive days including rest days = 20 working days" },
+    sickLeave: { days: 126, notes: "63 days full pay + 63 days half pay per 3-year cycle" },
+    maternityLeave: { weeks: 12, pay: "100%", notes: "84 days. Every 3 years." },
+    paternityLeave: { days: 3, pay: "100%" },
+    publicHolidays: 17
+  },
+  UG: {
+    name: "Uganda", currency: "UGX", flag: "\uD83C\uDDFA\uD83C\uDDEC",
+    annualLeave: { days: 21, notes: "7 working days per 4-month period = 21 days/year", law: "Employment Act 2006" },
+    sickLeave: { days: 30, notes: "1 month on full pay per year" },
+    maternityLeave: { weeks: 10, pay: "100%", notes: "60 working days" },
+    paternityLeave: { days: 4, pay: "100%" },
+    publicHolidays: 11
+  },
+  RW: {
+    name: "Rwanda", currency: "RWF", flag: "\uD83C\uDDF7\uD83C\uDDFC",
+    annualLeave: { days: 18, notes: "18 working days after 1 year continuous service" },
+    sickLeave: { days: null, notes: "Covered by social security. Employer pays first 15 days." },
+    maternityLeave: { weeks: 12, pay: "100% first 6 weeks (employer), then 20% (employer) + 80% (social security)", notes: "12 weeks total" },
+    paternityLeave: { days: 4, pay: "100%" },
+    publicHolidays: 11
+  },
+  CI: {
+    name: "C\u00F4te d'Ivoire", currency: "XOF", flag: "\uD83C\uDDE8\uD83C\uDDEE",
+    annualLeave: { days: 24, notes: "2 days per month of service = 24 days/year. Additional days for seniority." },
+    sickLeave: { days: 180, notes: "6 months: full pay first 3, half pay next 3 (varies by collective agreement)" },
+    maternityLeave: { weeks: 14, pay: "100% (social security CNPS)", notes: "6 weeks pre + 8 weeks post birth" },
+    paternityLeave: { days: 3, notes: "Birth of child" },
+    publicHolidays: 14
+  },
+  SN: {
+    name: "Senegal", currency: "XOF", flag: "\uD83C\uDDF8\uD83C\uDDF3",
+    annualLeave: { days: 24, notes: "2 days/month. Extra days for seniority and children." },
+    maternityLeave: { weeks: 14, pay: "100% (IPRES/CSS)" },
+    paternityLeave: { days: 1, notes: "1 day only" },
+    publicHolidays: 16
+  },
+  CM: {
+    name: "Cameroon", currency: "XAF", flag: "\uD83C\uDDE8\uD83C\uDDF2",
+    annualLeave: { days: 18, notes: "1.5 days/month. Extra for seniority." },
+    maternityLeave: { weeks: 14, pay: "100% (CNPS)" },
+    paternityLeave: { days: 3 },
+    publicHolidays: 10
+  },
+  MA: {
+    name: "Morocco", currency: "MAD", flag: "\uD83C\uDDF2\uD83C\uDDE6",
+    annualLeave: { days: 18, notes: "1.5 days/month after 6 months. +1.5 days per 5 years seniority." },
+    maternityLeave: { weeks: 14, pay: "100% (CNSS)" },
+    paternityLeave: { days: 3, notes: "3 paid days" },
+    publicHolidays: 16
+  },
+  TN: { name: "Tunisia", currency: "TND", flag: "\uD83C\uDDF9\uD83C\uDDF3", annualLeave: { days: 18, notes: "1 day per month first year, then 1.5/month" }, maternityLeave: { weeks: 9 }, publicHolidays: 13 },
+  AO: { name: "Angola", currency: "AOA", flag: "\uD83C\uDDE6\uD83C\uDDF4", annualLeave: { days: 22 }, maternityLeave: { weeks: 13 }, publicHolidays: 12 },
+  ZM: { name: "Zambia", currency: "ZMW", flag: "\uD83C\uDDFF\uD83C\uDDF2", annualLeave: { days: 24 }, maternityLeave: { weeks: 14, pay: "100%" }, publicHolidays: 11 },
+  ZW: { name: "Zimbabwe", currency: "ZWG", flag: "\uD83C\uDDFF\uD83C\uDDFC", annualLeave: { days: 22 }, maternityLeave: { weeks: 13 }, paternityLeave: { days: 2 }, publicHolidays: 12 },
+  MU: { name: "Mauritius", currency: "MUR", flag: "\uD83C\uDDF2\uD83C\uDDFA", annualLeave: { days: 22 }, maternityLeave: { weeks: 14, pay: "100%" }, paternityLeave: { days: 5 }, publicHolidays: 15 },
+  BW: { name: "Botswana", currency: "BWP", flag: "\uD83C\uDDE7\uD83C\uDDFC", annualLeave: { days: 15 }, maternityLeave: { weeks: 12, pay: "50% (employer) for 6 weeks" }, publicHolidays: 11 },
+  NA: { name: "Namibia", currency: "NAD", flag: "\uD83C\uDDF3\uD83C\uDDE6", annualLeave: { days: 24 }, maternityLeave: { weeks: 12 }, publicHolidays: 12 },
+  DZ: { name: "Algeria", currency: "DZD", flag: "\uD83C\uDDE9\uD83C\uDDFF", annualLeave: { days: 30, notes: "2.5 days/month" }, maternityLeave: { weeks: 14, pay: "100% (social security)" }, publicHolidays: 12 },
+  ET: { name: "Ethiopia", currency: "ETB", flag: "\uD83C\uDDEA\uD83C\uDDF9", annualLeave: { days: 16, notes: "16 days first year, +1 day per 2 additional years" }, maternityLeave: { weeks: 16, notes: "30 days pre + 90 days post" }, paternityLeave: { days: 5 }, publicHolidays: 13 },
+  MW: { name: "Malawi", currency: "MWK", flag: "\uD83C\uDDF2\uD83C\uDDFC", annualLeave: { days: 18 }, maternityLeave: { weeks: 8, notes: "Unpaid" }, publicHolidays: 12 },
+  MZ: { name: "Mozambique", currency: "MZN", flag: "\uD83C\uDDF2\uD83C\uDDFF", annualLeave: { days: 24, notes: "1 day per month first year, then 2/month" }, maternityLeave: { weeks: 8, pay: "100%" }, paternityLeave: { days: 1 }, publicHolidays: 10 },
+  MG: { name: "Madagascar", currency: "MGA", flag: "\uD83C\uDDF2\uD83C\uDDEC", annualLeave: { days: 30, notes: "2.5 days/month" }, maternityLeave: { weeks: 14, pay: "100% (social security)" }, publicHolidays: 13 },
+  LS: { name: "Lesotho", currency: "LSL", flag: "\uD83C\uDDF1\uD83C\uDDF8", annualLeave: { days: 12 }, maternityLeave: { weeks: 12 }, publicHolidays: 11 },
+  SZ: { name: "Eswatini", currency: "SZL", flag: "\uD83C\uDDF8\uD83C\uDDFF", annualLeave: { days: 14 }, maternityLeave: { weeks: 12 }, publicHolidays: 10 },
+  BJ: { name: "Benin", currency: "XOF", flag: "\uD83C\uDDE7\uD83C\uDDEF", annualLeave: { days: 24 }, maternityLeave: { weeks: 14 }, publicHolidays: 12 },
+  BF: { name: "Burkina Faso", currency: "XOF", flag: "\uD83C\uDDE7\uD83C\uDDEB", annualLeave: { days: 30, notes: "2.5 days/month" }, maternityLeave: { weeks: 14 }, publicHolidays: 14 },
+  ML: { name: "Mali", currency: "XOF", flag: "\uD83C\uDDF2\uD83C\uDDF1", annualLeave: { days: 30, notes: "2.5 days/month" }, maternityLeave: { weeks: 14 }, publicHolidays: 13 },
+  NE: { name: "Niger", currency: "XOF", flag: "\uD83C\uDDF3\uD83C\uDDEA", annualLeave: { days: 30, notes: "2.5 days/month" }, maternityLeave: { weeks: 14 }, publicHolidays: 12 },
+  TG: { name: "Togo", currency: "XOF", flag: "\uD83C\uDDF9\uD83C\uDDEC", annualLeave: { days: 30 }, maternityLeave: { weeks: 14 }, publicHolidays: 11 },
+  GN: { name: "Guinea", currency: "GNF", flag: "\uD83C\uDDEC\uD83C\uDDF3", annualLeave: { days: 22 }, maternityLeave: { weeks: 14 }, publicHolidays: 12 },
+  SL: { name: "Sierra Leone", currency: "SLE", flag: "\uD83C\uDDF8\uD83C\uDDF1", annualLeave: { days: 18 }, maternityLeave: { weeks: 12 }, publicHolidays: 10 },
+  LR: { name: "Liberia", currency: "LRD", flag: "\uD83C\uDDF1\uD83C\uDDF7", annualLeave: { days: 15 }, maternityLeave: { weeks: 12 }, publicHolidays: 11 },
+  GM: { name: "Gambia", currency: "GMD", flag: "\uD83C\uDDEC\uD83C\uDDF2", annualLeave: { days: 21 }, maternityLeave: { weeks: 12 }, publicHolidays: 12 },
+  GW: { name: "Guinea-Bissau", currency: "XOF", flag: "\uD83C\uDDEC\uD83C\uDDFC", annualLeave: { days: 30 }, maternityLeave: { weeks: 9 }, publicHolidays: 11 },
+  CV: { name: "Cabo Verde", currency: "CVE", flag: "\uD83C\uDDE8\uD83C\uDDFB", annualLeave: { days: 22 }, maternityLeave: { weeks: 9 }, publicHolidays: 12 },
+  MR: { name: "Mauritania", currency: "MRU", flag: "\uD83C\uDDF2\uD83C\uDDF7", annualLeave: { days: 18 }, maternityLeave: { weeks: 14 }, publicHolidays: 10 },
+  DJ: { name: "Djibouti", currency: "DJF", flag: "\uD83C\uDDE9\uD83C\uDDEF", annualLeave: { days: 30 }, maternityLeave: { weeks: 14 }, publicHolidays: 12 },
+  KM: { name: "Comoros", currency: "KMF", flag: "\uD83C\uDDF0\uD83C\uDDF2", annualLeave: { days: 18 }, maternityLeave: { weeks: 14 }, publicHolidays: 10 },
+  SC: { name: "Seychelles", currency: "SCR", flag: "\uD83C\uDDF8\uD83C\uDDE8", annualLeave: { days: 21 }, maternityLeave: { weeks: 14, pay: "100%" }, paternityLeave: { days: 4 }, publicHolidays: 12 },
+  SO: { name: "Somalia", currency: "SOS", flag: "\uD83C\uDDF8\uD83C\uDDF4", annualLeave: { days: 15 }, maternityLeave: { weeks: 14 }, publicHolidays: 12 },
+  SD: { name: "Sudan", currency: "SDG", flag: "\uD83C\uDDF8\uD83C\uDDE9", annualLeave: { days: 20 }, maternityLeave: { weeks: 8 }, publicHolidays: 11 },
+  SS: { name: "South Sudan", currency: "SSP", flag: "\uD83C\uDDF8\uD83C\uDDF8", annualLeave: { days: 20 }, maternityLeave: { weeks: 12 }, publicHolidays: 11 },
+  LY: { name: "Libya", currency: "LYD", flag: "\uD83C\uDDF1\uD83C\uDDFE", annualLeave: { days: 30 }, maternityLeave: { weeks: 14 }, publicHolidays: 11 },
+  TD: { name: "Chad", currency: "XAF", flag: "\uD83C\uDDF9\uD83C\uDDE9", annualLeave: { days: 24, notes: "2 days/month" }, maternityLeave: { weeks: 14 }, publicHolidays: 12 },
+  CF: { name: "Central African Republic", currency: "XAF", flag: "\uD83C\uDDE8\uD83C\uDDEB", annualLeave: { days: 24 }, maternityLeave: { weeks: 14 }, publicHolidays: 11 },
+  CG: { name: "Republic of Congo", currency: "XAF", flag: "\uD83C\uDDE8\uD83C\uDDEC", annualLeave: { days: 26 }, maternityLeave: { weeks: 15 }, publicHolidays: 10 },
+  CD: { name: "DR Congo", currency: "CDF", flag: "\uD83C\uDDE8\uD83C\uDDE9", annualLeave: { days: 12, notes: "1 day per month" }, maternityLeave: { weeks: 14, pay: "67% (social security)" }, publicHolidays: 10 },
+  GA: { name: "Gabon", currency: "XAF", flag: "\uD83C\uDDEC\uD83C\uDDE6", annualLeave: { days: 24 }, maternityLeave: { weeks: 14, pay: "100% (CNSS)" }, publicHolidays: 14 },
+  GQ: { name: "Equatorial Guinea", currency: "XAF", flag: "\uD83C\uDDEC\uD83C\uDDF6", annualLeave: { days: 30 }, maternityLeave: { weeks: 12 }, publicHolidays: 12 },
+  ST: { name: "S\u00E3o Tom\u00E9 & Pr\u00EDncipe", currency: "STN", flag: "\uD83C\uDDF8\uD83C\uDDF9", annualLeave: { days: 22 }, maternityLeave: { weeks: 9 }, publicHolidays: 12 },
+  BI: { name: "Burundi", currency: "BIF", flag: "\uD83C\uDDE7\uD83C\uDDEE", annualLeave: { days: 20, notes: "After 1 year" }, maternityLeave: { weeks: 12, pay: "50% (INSS)" }, publicHolidays: 12 },
+  ER: { name: "Eritrea", currency: "ERN", flag: "\uD83C\uDDEA\uD83C\uDDF7", annualLeave: { days: 14 }, maternityLeave: { weeks: 9 }, publicHolidays: 9 }
+};
+
+var LEAVE_OBSERVATIONS = {
+  NG: "Nigeria has one of Africa's lowest statutory annual leave entitlements at just 6 days. However, most employers offer 15-21 days by contract. No statutory paternity leave exists.",
+  KE: "Kenya leads East Africa with 21 days annual leave, 13 weeks maternity, and 14 days paternity leave \u2014 one of the most generous paternity provisions on the continent.",
+  ZA: "South Africa's 21 consecutive days annual leave equals 15 working days for 5-day workers. Maternity is 4 months but unpaid by employer \u2014 UIF pays 66%.",
+  TZ: "Tanzania offers 126 days of sick leave per 3-year cycle (63 full pay + 63 half pay) \u2014 one of the most generous sick leave provisions in Africa.",
+  CI: "Francophone African countries typically offer 24+ annual leave days and 14 weeks maternity. Seniority bonuses add extra leave days each year.",
+  DZ: "Algeria and other North African countries offer 30 days annual leave \u2014 among the highest in Africa, reflecting French labour law influence."
+};

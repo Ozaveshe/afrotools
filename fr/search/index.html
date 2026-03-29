@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Recherche | AfroTools</title>
+<meta name="description" content="Recherchez parmi 1 110+ outils africains gratuits : calculateurs PAYE, espace PDF, outils de devises, generateur CV et plus. 54 pays couverts.">
+<link rel="canonical" href="https://afrotools.com/fr/search/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/search/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/search/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/search/" />
+<meta property="og:title" content="Recherche AfroTools — 1 110+ outils africains gratuits">
+<meta property="og:url" content="https://afrotools.com/fr/search/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px}
+.search-hero{padding:48px 0 32px;text-align:center}
+.search-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#111827;margin:0 0 20px}
+.search-input{position:relative;max-width:600px;margin:0 auto}
+.search-input svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);pointer-events:none;color:#9ca3af}
+.search-input input{width:100%;padding:16px 20px 16px 52px;border:2px solid #e5e7eb;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:1.1rem;color:#111827;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s;box-sizing:border-box}
+.search-input input:focus{border-color:var(--color-primary);box-shadow:0 0 0 4px rgba(0,122,255,.1)}
+#results{padding:24px 0 48px}
+.no-query{text-align:center;color:#9ca3af;padding:40px 0;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<div class="wrap">
+<div class="search-hero">
+<h1>Rechercher un outil</h1>
+<div class="search-input">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input type="text" id="q" placeholder="Rechercher parmi 1 110+ outils..." autocomplete="off" autofocus>
+</div>
+</div>
+<div id="results"><div class="no-query">Tapez pour rechercher parmi tous les outils AfroTools.</div></div>
+</div>
+<afro-footer></afro-footer>
+<script>
+function _initSearchFr(){
+var input=document.getElementById('q');var container=document.getElementById('results');if(!input||!container)return;
+input.addEventListener('input',function(){var q=this.value.trim().toLowerCase();if(!q){container.innerHTML='<div class="no-query">Tapez pour rechercher parmi tous les outils AfroTools.</div>';return;}
+var matches=AFRO_TOOLS.filter(function(t){return(t.name||'').toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)||(t.id||'').toLowerCase().includes(q);});
+if(!matches.length){container.innerHTML='<div class="no-query">Aucun outil trouve pour <strong>"'+q+'"</strong>.</div>';return;}
+var html='<p style="font-size:.85rem;color:#6b7280;margin-bottom:16px">'+matches.length+' resultat'+(matches.length!==1?'s':'')+' pour "'+q+'"</p>';
+html+='<div style="display:flex;flex-direction:column;gap:8px">';
+matches.forEach(function(t){var ok=t.status==='live'||t.status==='new';var tag=ok?'a':'div';var href=ok?' href="'+t.href+'"':'';html+='<'+tag+href+' style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;text-decoration:none;color:inherit;transition:border-color .15s'+(ok?'':';opacity:.5')+'">'+'<span style="font-size:1.2rem">'+t.icon+'</span><div><div style="font-size:.9rem;font-weight:700;color:#111">'+t.name+'</div><div style="font-size:.78rem;color:#6b7280">'+t.desc+'</div></div></'+tag+'>';});
+html+='</div>';container.innerHTML=html;});
+}
+if(typeof onRegistryReady==='function'){onRegistryReady(_initSearchFr);}else{document.addEventListener('DOMContentLoaded',function(){if(typeof AFRO_TOOLS!=='undefined')_initSearchFr();else document.addEventListener('afrotools:registry-ready',_initSearchFr);});}
+</script>
+</body>
+</html>

@@ -13,8 +13,8 @@
 // POST   /api/admin/displacement        → add displacement record
 // POST   /api/admin/sync-trigger        → manually trigger sync
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const ADMIN_SECRET = process.env.ADMIN_SECRET;
 
 function getCorsHeaders(event) {

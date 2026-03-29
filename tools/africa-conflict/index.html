@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -27,6 +27,7 @@
 <script src="/assets/js/supabase-auth.js" defer></script>
 <script src="/engines/africa-conflict-engine.js" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -129,7 +130,6 @@
 (function () {
   'use strict';
 
-  var API = '/.netlify/functions/conflict-data';
   var map = null;
   var allConflicts = [];
 
@@ -227,82 +227,6 @@
         // Future: switch layers based on data-layer attribute
       });
     });
-  }
-
-  // Load all data
-  async function loadData() {
-    try {
-      // Stats
-      var statsRes = await fetch(API + '?action=stats');
-      var statsJson = await statsRes.json();
-      var stats = statsJson.data || {};
-      renderKPIs(stats);
-      q('#acd-last-updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
-
-      // Conflicts
-      var conflictsRes = await fetch(API + '?action=list');
-      var conflictsJson = await conflictsRes.json();
-      allConflicts = conflictsJson.data || [];
-      renderTopConflicts(allConflicts);
-
-      // Map (after Leaflet loads)
-      if (typeof L !== 'undefined') {
-        initMap(allConflicts);
-      } else {
-        window.addEventListener('load', function () { initMap(allConflicts); });
-      }
-
-      // Recent events
-      var eventsRes = await fetch(API + '?action=recent_events');
-      var eventsJson = await eventsRes.json();
-      renderEvents(eventsJson.data || []);
-
-    } catch (err) {
-      console.error('AfroConflict load error:', err);
-    }
-  }
-
-  // Wire up conflict-data.js to handle the action query param
-  // (The function reads ?action= via the URL rewrite path)
-  // Override fetch to map action params to the right path
-  var origFetch = window.fetch;
-  window.fetch = function(url, opts) {
-    if (typeof url === 'string' && url.includes('conflict-data') && url.includes('action=')) {
-      var u = new URL(url, window.location.href);
-      var action = u.searchParams.get('action');
-      var slug = u.searchParams.get('slug');
-      var newUrl = url;
-
-      var pathMap = {
-        'stats':         '/.netlify/functions/conflict-data',
-        'list':          '/.netlify/functions/conflict-data?is_published=eq.true',
-        'recent_events': '/.netlify/functions/conflict-data'
-      };
-
-      // For direct Supabase-style calls, we need to remap
-      // The function uses the original path routing — just pass through
-      return origFetch.call(this, url, opts);
-    }
-    return origFetch.apply(this, arguments);
-  };
-
-  // Simple direct approach — call the function with query params it understands
-  window.fetch = origFetch; // restore
-
-  // Use direct API endpoint paths
-  async function loadDataDirect() {
-    var BASE = '/.netlify/functions/conflict-data';
-    try {
-      // Stats — pass empty path (function routes to stats when path is empty)
-      var [statsRes, conflictsRes, eventsRes] = await Promise.all([
-        fetch(BASE),         // no params → stats (handled by function's path routing)
-        fetch(BASE + '?is_published=eq.true'),  // conflicts list
-        fetch(BASE + '?recent=1')  // recent events
-      ]);
-
-      // Since the function routes by URL path not query params,
-      // use the redirect-mapped paths instead
-    } catch(e) {}
   }
 
   // Use the /api/* redirected paths
