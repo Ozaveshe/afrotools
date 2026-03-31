@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hosting Cost Comparator for African Developers | AfroTools</title>
+<meta name="description" content="Compare web hosting costs for African developers. Netlify vs Vercel vs DigitalOcean vs Hetzner vs Afrihost vs WhoGoHost. See prices in Naira, Rand, KSh.">
+<link rel="canonical" href="https://afrotools.com/tools/hosting-compare/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Hosting Cost Comparator — African Developers | AfroTools">
+<meta property="og:description" content="Find the best hosting for your African web project. Compare 12+ providers with African-specific latency, payment methods and local currency pricing.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.host-card{background:#fff;border:1.5px solid var(--en-border);border-radius:14px;padding:20px;box-shadow:var(--en-shadow);transition:box-shadow .18s,border-color .18s,transform .18s;position:relative}
+.host-card:hover{box-shadow:var(--en-shadow-hover);transform:translateY(-2px)}
+.host-card.recommended{border-color:var(--en-accent);border-width:2px}
+.host-rec-badge{position:absolute;top:-10px;left:16px;background:var(--en-accent);color:#fff;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.05em}
+.host-name{font-size:1rem;font-weight:800;color:var(--en-text);margin-bottom:4px}
+.host-price{font-size:1.4rem;font-weight:900;color:var(--en-accent-dark);margin-bottom:6px}
+.host-price span{font-size:.8rem;font-weight:500;color:var(--en-muted)}
+.host-local{font-size:.82rem;color:var(--en-muted);margin-bottom:12px}
+.host-badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.hbadge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.72rem;font-weight:600}
+.hbadge-green{background:#d1fae5;color:#065f46}
+.hbadge-blue{background:#dbeafe;color:#1e40af}
+.hbadge-orange{background:#fef3c7;color:#92400e}
+.hbadge-gray{background:#f3f4f6;color:#374151}
+.host-features{font-size:.82rem;color:var(--en-muted);line-height:1.7;margin-bottom:12px}
+.host-link{display:inline-block;padding:8px 16px;background:var(--en-accent-pale);color:var(--en-accent-dark);border-radius:8px;font-size:.82rem;font-weight:700;text-decoration:none;transition:background .15s}
+.host-link:hover{background:var(--en-accent-light)}
+.host-latency{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--en-muted);margin-bottom:8px}
+.latency-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.lat-good{background:#22c55e}.lat-fair{background:#f59e0b}.lat-poor{background:#ef4444}
+.compare-table-wrap{overflow-x:auto;border-radius:12px;border:1.5px solid var(--en-border);margin-top:24px}
+.compare-table{width:100%;border-collapse:collapse;font-size:.82rem;background:#fff;min-width:600px}
+.compare-table thead tr{background:var(--en-accent-pale)}
+.compare-table th{padding:12px 14px;text-align:left;font-size:.74rem;font-weight:700;color:var(--en-accent-dark);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.compare-table td{padding:11px 14px;border-bottom:1px solid var(--en-border);vertical-align:middle;color:var(--en-text)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tbody tr:hover td{background:var(--en-accent-pale)}
+.check{color:#22c55e;font-weight:700}.cross{color:#ef4444;font-weight:700}
+.currency-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.currency-btn{padding:5px 12px;border:1.5px solid var(--en-border);border-radius:7px;background:#fff;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.currency-btn.active{border-color:var(--en-accent);background:var(--en-accent-pale);color:var(--en-accent-dark)}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Hosting Cost Comparator</span>
+    </nav>
+    <h1>Hosting <em>Cost Comparator</em></h1>
+    <p>Find the best hosting for your African web project. Compare global and African providers with latency, payment methods and local currency pricing.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">☁️ 12+ providers</span>
+      <span class="en-tool-hero-pill">🌍 African latency data</span>
+      <span class="en-tool-hero-pill">💵 Local currency prices</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout-wide">
+  <div class="en-card">
+    <div class="en-card-title"><span class="en-card-title-icon">⚙️</span> Your Requirements</div>
+    <div class="en-form-grid en-form-grid-2">
+      <div class="en-field">
+        <label class="en-label">Project Type</label>
+        <select class="en-select" id="project-type" onchange="filter()">
+          <option value="static">Static Site</option>
+          <option value="wordpress">WordPress</option>
+          <option value="nodejs">Node.js App</option>
+          <option value="django">Python/Django</option>
+          <option value="fullstack">Full-Stack App</option>
+          <option value="ecommerce">E-Commerce</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Monthly Traffic</label>
+        <select class="en-select" id="traffic" onchange="filter()">
+          <option value="low">Low (&lt;1,000 visits/mo)</option>
+          <option value="medium">Medium (1k–10k/mo)</option>
+          <option value="high">High (10k–100k/mo)</option>
+          <option value="enterprise">Enterprise (100k+/mo)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Max Budget (USD/month)</label>
+        <select class="en-select" id="budget" onchange="filter()">
+          <option value="0">Free only</option>
+          <option value="5">Up to $5/mo</option>
+          <option value="10" selected>Up to $10/mo</option>
+          <option value="20">Up to $20/mo</option>
+          <option value="50">Up to $50/mo</option>
+          <option value="100">Up to $100/mo</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Currency for local pricing</label>
+        <div class="currency-bar" id="currency-bar">
+          <button class="currency-btn active" onclick="setCurrency('NGN',this)">NGN ₦</button>
+          <button class="currency-btn" onclick="setCurrency('KES',this)">KES KSh</button>
+          <button class="currency-btn" onclick="setCurrency('ZAR',this)">ZAR R</button>
+          <button class="currency-btn" onclick="setCurrency('GHS',this)">GHS GH₵</button>
+          <button class="currency-btn" onclick="setCurrency('USD',this)">USD $</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="en-card" id="results-section">
+    <div class="en-card-title"><span class="en-card-title-icon">🏆</span> Recommended Providers</div>
+    <div class="results-grid" id="results-grid"></div>
+
+    <div class="en-card-title" style="margin-top:8px"><span class="en-card-title-icon">📊</span> Full Comparison Table</div>
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Price/mo</th>
+            <th>Bandwidth</th>
+            <th>African Latency</th>
+            <th>Cards (NG/KE)</th>
+            <th>Free SSL</th>
+            <th>Custom Domain</th>
+          </tr>
+        </thead>
+        <tbody id="compare-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="en-card" style="margin-top:0">
+    <div class="en-card-title"><span class="en-card-title-icon">💡</span> African Developer Hosting Tips</div>
+    <div class="en-form-grid" style="gap:16px">
+      <div class="en-tip" style="margin-bottom:0">
+        <div class="en-tip-icon">⚡</div>
+        <div><div class="en-tip-label">CDN matters most</div><div class="en-tip-text">For African users, a CDN with African PoPs (Cloudflare free tier, BunnyCDN, Fastly) reduces latency more than server location. Stack CDN in front of any host.</div></div>
+      </div>
+      <div class="en-tip" style="margin-bottom:0">
+        <div class="en-tip-icon">💳</div>
+        <div><div class="en-tip-label">Payment methods</div><div class="en-tip-text">Most global hosts only accept international cards. Netlify, Vercel and GitHub Pages have generous free tiers. Local hosts (WhoGoHost, Afrihost) accept local payment.</div></div>
+      </div>
+      <div class="en-tip" style="margin-bottom:0">
+        <div class="en-tip-icon">🌍</div>
+        <div><div class="en-tip-label">Hetzner sweet spot</div><div class="en-tip-text">Hetzner (EU) offers excellent price/performance for African developers: €3.79/mo for 2 vCPU, 4GB RAM. Fast enough from Lagos/Nairobi via Cloudflare CDN.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+var FX={NGN:1600,KES:130,ZAR:18.5,GHS:12,USD:1};
+var currSymbols={NGN:'₦',KES:'KSh',ZAR:'R',GHS:'GH₵',USD:'$'};
+var currentCurrency='NGN';
+
+var ALL_HOSTS=[
+  {name:'Netlify',price:0,bandwidth:'100GB',latency:'fair',latencyRating:'fair',cardNG:true,cardKE:true,ssl:true,domain:true,types:['static'],traffic:['low','medium'],tags:['free','git-deploy'],desc:'Best free static hosting. 100GB bandwidth, auto deploys from GitHub. Great for React/Vue/Angular.',link:'https://netlify.com'},
+  {name:'Vercel',price:0,bandwidth:'100GB',latency:'fair',latencyRating:'fair',cardNG:true,cardKE:true,ssl:true,domain:true,types:['static','nodejs'],traffic:['low','medium'],tags:['free','serverless'],desc:'Next.js-optimised free hosting. Serverless functions, edge network. Zero config deploys.',link:'https://vercel.com'},
+  {name:'GitHub Pages',price:0,bandwidth:'100GB soft',latency:'fair',latencyRating:'fair',cardNG:false,cardKE:false,ssl:true,domain:true,types:['static'],traffic:['low'],tags:['free','github'],desc:'Free static hosting for GitHub repos. Perfect for portfolios, docs and landing pages. No signup needed.',link:'https://pages.github.com'},
+  {name:'Hetzner Cloud',price:3.79,bandwidth:'20TB',latency:'good',latencyRating:'good',cardNG:false,cardKE:false,ssl:false,domain:false,types:['nodejs','django','fullstack','wordpress','ecommerce'],traffic:['medium','high','enterprise'],tags:['vps','best-value'],desc:'Best price/performance for African devs. EU servers with Cloudflare CDN. €3.79/mo = 2 vCPU + 4GB RAM.',link:'https://hetzner.com/cloud'},
+  {name:'DigitalOcean',price:6,bandwidth:'1TB',latency:'fair',latencyRating:'fair',cardNG:true,cardKE:true,ssl:false,domain:false,types:['nodejs','django','fullstack','wordpress','ecommerce'],traffic:['medium','high'],tags:['vps','managed'],desc:'Managed databases, App Platform, droplets. $6/mo for 1GB RAM. Popular with African startups. Accepts Naira/KSh cards.',link:'https://digitalocean.com'},
+  {name:'Linode (Akamai)',price:5,bandwidth:'1TB',latency:'fair',latencyRating:'fair',cardNG:true,cardKE:true,ssl:false,domain:false,types:['nodejs','django','fullstack','wordpress'],traffic:['medium','high'],tags:['vps','reliable'],desc:'$5/mo for 1GB RAM, 25GB SSD. Reliable VPS with good documentation. Accepts international cards.',link:'https://linode.com'},
+  {name:'AWS Lightsail',price:3.50,bandwidth:'1TB',latency:'fair',latencyRating:'fair',cardNG:true,cardKE:true,ssl:false,domain:false,types:['nodejs','django','fullstack','wordpress','ecommerce'],traffic:['medium','high','enterprise'],tags:['vps','aws'],desc:'Simplified AWS. $3.50/mo for 512MB RAM. Easy migration to full AWS. Good for growing apps.',link:'https://aws.amazon.com/lightsail'},
+  {name:'WhoGoHost',price:2,bandwidth:'Unlimited',latency:'excellent',latencyRating:'excellent',cardNG:true,cardKE:false,ssl:true,domain:true,types:['wordpress','static'],traffic:['low','medium'],tags:['local-ng','naira'],desc:"Nigeria's leading local host. Pay in Naira. cPanel shared hosting from ₦3,000/mo. Domain + SSL included.",link:'https://whogohost.com'},
+  {name:'Afrihost',price:3,bandwidth:'Unlimited',latency:'excellent',latencyRating:'excellent',cardNG:false,cardKE:false,ssl:true,domain:true,types:['wordpress','static'],traffic:['low','medium'],tags:['local-za','rand'],desc:'South Africa\'s largest host. Pay in Rand. cPanel, WordPress, email hosting. Local support team.',link:'https://afrihost.com'},
+  {name:'Fly.io',price:0,bandwidth:'160GB',latency:'good',latencyRating:'good',cardNG:true,cardKE:true,ssl:true,domain:true,types:['nodejs','django','fullstack'],traffic:['low','medium','high'],tags:['free-tier','docker'],desc:'Docker-based app hosting. Free tier = 256MB RAM. Runs close to users via anycast. Great for APIs.',link:'https://fly.io'},
+  {name:'Railway',price:5,bandwidth:'100GB',latency:'fair',latencyRating:'fair',cardNG:true,cardKE:true,ssl:true,domain:true,types:['nodejs','django','fullstack'],traffic:['low','medium'],tags:['easy','postgres'],desc:'One-click deploy for Node, Python, Ruby. Built-in Postgres, Redis. $5 credit free. African startup favourite.',link:'https://railway.app'},
+  {name:'Render',price:0,bandwidth:'100GB',latency:'fair',latencyRating:'fair',cardNG:true,cardKE:true,ssl:true,domain:true,types:['nodejs','django','static','fullstack'],traffic:['low','medium'],tags:['free','managed'],desc:'Free static + paid services. Free tier for web services (spins down). $7/mo for always-on. Postgres included.',link:'https://render.com'},
+];
+
+function setCurrency(cur,btn){
+  currentCurrency=cur;
+  document.querySelectorAll('.currency-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  filter();
+}
+
+function localPrice(usd){
+  if(usd===0)return'Free';
+  var sym=currSymbols[currentCurrency];
+  var rate=FX[currentCurrency];
+  var local=Math.round(usd*rate);
+  return sym+local.toLocaleString()+'/mo';
+}
+
+function filter(){
+  var type=document.getElementById('project-type').value;
+  var traffic=document.getElementById('traffic').value;
+  var budget=parseInt(document.getElementById('budget').value)||0;
+
+  var filtered=ALL_HOSTS.filter(function(h){
+    if(budget===0&&h.price>0)return false;
+    if(budget>0&&h.price>budget)return false;
+    if(!h.types.includes(type)&&type!=='static'){}
+    if(!h.types.includes(type))return false;
+    if(!h.traffic.includes(traffic))return false;
+    return true;
+  });
+
+  // sort by price
+  filtered.sort(function(a,b){return a.price-b.price;});
+
+  var grid=document.getElementById('results-grid');
+  if(!filtered.length){
+    grid.innerHTML='<p style="color:var(--en-muted);font-size:.9rem;grid-column:1/-1">No providers match your filters. Try a higher budget or different project type.</p>';
+  } else {
+    var latColors={'excellent':'#22c55e','good':'#22c55e','fair':'#f59e0b','poor':'#ef4444'};
+    grid.innerHTML=filtered.slice(0,6).map(function(h,i){
+      var isRec=i===0;
+      var tags=h.tags.map(function(t){return '<span class="hbadge hbadge-green">'+t+'</span>';}).join('');
+      return '<div class="host-card'+(isRec?' recommended':'')+'">'+
+        (isRec?'<span class="host-rec-badge">RECOMMENDED</span>':'')+
+        '<div class="host-name">'+h.name+'</div>'+
+        '<div class="host-price">'+(h.price===0?'Free':'$'+h.price)+' <span>USD/mo</span></div>'+
+        '<div class="host-local">'+localPrice(h.price)+'</div>'+
+        '<div class="host-badges">'+tags+'</div>'+
+        '<div class="host-latency"><span class="latency-dot lat-'+(h.latencyRating==='excellent'||h.latencyRating==='good'?'good':h.latencyRating==='fair'?'fair':'poor')+'"></span>African latency: '+h.latency+'</div>'+
+        '<div class="host-features">'+h.desc+'</div>'+
+        '<a class="host-link" href="'+h.link+'" target="_blank" rel="noopener">Visit →</a>'+
+      '</div>';
+    }).join('');
+  }
+
+  var tbody=document.getElementById('compare-tbody');
+  var allFiltered=ALL_HOSTS.filter(function(h){return h.types.includes(type)&&(budget===0?h.price===0:h.price<=budget);});
+  tbody.innerHTML=allFiltered.map(function(h){
+    return '<tr>'+
+      '<td style="font-weight:700">'+h.name+'</td>'+
+      '<td>'+(h.price===0?'<strong style="color:#15803d">Free</strong>':'$'+h.price+'/mo')+'</td>'+
+      '<td>'+h.bandwidth+'</td>'+
+      '<td><span class="latency-dot lat-'+(h.latencyRating==='excellent'||h.latencyRating==='good'?'good':h.latencyRating==='fair'?'fair':'poor')+'" style="display:inline-block;margin-right:5px"></span>'+h.latency+'</td>'+
+      '<td>'+(h.cardNG?'<span class="check">✓</span>':'<span class="cross">✕</span>')+'</td>'+
+      '<td>'+(h.ssl?'<span class="check">✓</span>':'<span class="cross">✕</span>')+'</td>'+
+      '<td>'+(h.domain?'<span class="check">✓</span>':'<span class="cross">✕</span>')+'</td>'+
+    '</tr>';
+  }).join('');
+}
+
+filter();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

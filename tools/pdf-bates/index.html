@@ -945,7 +945,7 @@
   });
 
   // Download
-  downloadBtn.addEventListener('click', function() {
+  function doActualDownload() {
     if (!resultPdf) return;
     var link = document.createElement('a');
     var url = URL.createObjectURL(new Blob([resultPdf], { type: 'application/pdf' }));
@@ -953,6 +953,11 @@
     link.download = currentFile.name.replace(/\.pdf$/i, '_bates.pdf');
     link.click();
     setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
   });
 
   // FAQ toggles
@@ -983,6 +988,8 @@
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

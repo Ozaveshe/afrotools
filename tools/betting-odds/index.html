@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Football Betting Odds Calculator — Decimal, Fractional, American, African | AfroTools</title>
+<meta name="description" content="Convert football betting odds between decimal, fractional, American and African local formats. Calculate potential profit, implied probability, house edge, and ROI for NGN, KES, GHS, ZAR bets.">
+<link rel="canonical" href="https://afrotools.com/tools/betting-odds/">
+<meta property="og:title" content="Football Betting Odds Calculator | AfroTools">
+<meta property="og:description" content="Convert odds formats and calculate potential profit, implied probability and house edge for African bettors.">
+<meta property="og:url" content="https://afrotools.com/tools/betting-odds/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Football Betting Odds Calculator","description":"Convert football betting odds between decimal, fractional, American and African formats. Calculate profit, implied probability and house edge.","url":"https://afrotools.com/tools/betting-odds/","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Sports & Entertainment","item":"https://afrotools.com/sports/"},{"@type":"ListItem","position":3,"name":"Betting Odds Calculator","item":"https://afrotools.com/tools/betting-odds/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+:root{--en-accent:#DC2626;--en-accent-dark:#B91C1C;--en-accent-light:#FEE2E2;--en-accent-pale:#FEF2F2;--en-shadow-hover:0 4px 16px rgba(220,38,38,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a0a 50%,#450a0a 100%)!important}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+.bet-verdict{padding:16px 20px;border-radius:10px;font-weight:700;margin-top:12px;font-size:1rem}
+.bet-good{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.bet-fair{background:#fef9c3;color:#854d0e;border:1px solid #fde047}
+.bet-bad{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+.odds-convert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
+.odds-convert-box{background:#fff;border:1.5px solid var(--en-border,#e2e8f0);border-radius:10px;padding:14px;text-align:center}
+.odds-convert-label{font-size:.72rem;font-weight:700;color:var(--en-muted,#64748b);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.odds-convert-value{font-size:1.4rem;font-weight:900;color:var(--en-accent-dark,#B91C1C)}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="sports"></afro-navbar>
+
+<section class="en-tool-hero">
+<div class="container">
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+<a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+<a href="/sports/">Sports &amp; Entertainment</a><span class="en-breadcrumb-sep">›</span>
+<span class="en-breadcrumb-current">Betting Odds Calculator</span>
+</nav>
+<h1>Football Betting Odds <em>Calculator</em></h1>
+<p>Convert between decimal, fractional, American, and African odds formats. Calculate your potential profit, implied probability, and whether the bet offers value.</p>
+<div class="en-tool-hero-meta">
+<span class="en-tool-hero-pill">⚽ All Formats</span>
+<span class="en-tool-hero-pill">💰 NGN / KES / GHS / ZAR / XOF</span>
+<span class="en-tool-hero-pill">📊 Implied Probability</span>
+</div>
+</div>
+</section>
+
+<main>
+<div class="en-tool-layout">
+
+<div class="en-card">
+<div class="en-card-title"><div class="en-card-title-icon">⚽</div>Enter Your Bet</div>
+<div class="en-form-grid">
+<div class="en-field">
+<label class="en-label" for="oddsFormat">Odds Format</label>
+<select class="en-select" id="oddsFormat" onchange="updateOddsPlaceholder()">
+<option value="decimal">Decimal (e.g. 2.50)</option>
+<option value="fractional">Fractional (e.g. 6/4)</option>
+<option value="american">American (e.g. +150 or -200)</option>
+<option value="african">African Local (e.g. 1.5x multiplier)</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label" for="oddsValue">Odds Value</label>
+<input class="en-input" type="text" id="oddsValue" placeholder="e.g. 2.50">
+</div>
+<div class="en-field">
+<label class="en-label" for="stakeAmount">Stake Amount</label>
+<input class="en-input" type="number" id="stakeAmount" placeholder="e.g. 5000" min="0">
+</div>
+<div class="en-field">
+<label class="en-label" for="currency">Currency</label>
+<select class="en-select" id="currency">
+<option value="NGN">NGN — Nigerian Naira</option>
+<option value="KES">KES — Kenyan Shilling</option>
+<option value="GHS">GHS — Ghanaian Cedi</option>
+<option value="ZAR">ZAR — South African Rand</option>
+<option value="XOF">XOF — CFA Franc (West Africa)</option>
+<option value="USD">USD — US Dollar</option>
+</select>
+</div>
+</div>
+<div class="en-form-actions">
+<button class="en-btn" onclick="calcOdds()">Calculate Bet ⚽</button>
+<button class="en-btn en-btn-secondary en-btn-sm" onclick="resetOdds()">Reset</button>
+</div>
+</div>
+
+<div class="en-results" id="oddsResults">
+<div class="en-results-hero">
+<div class="en-results-hero-inner">
+<div class="en-results-hero-grid">
+<div>
+<div class="en-results-hero-label">POTENTIAL PROFIT</div>
+<div class="en-results-hero-value" id="rProfit">—</div>
+<div class="en-results-hero-sub" id="rTotalReturn">Total return: —</div>
+</div>
+<div class="en-results-hero-aside">
+<div class="en-results-hero-label">IMPLIED PROBABILITY</div>
+<div style="font-size:2rem;font-weight:900;color:#FEE2E2" id="rImplied">—</div>
+<div class="en-results-hero-sub" id="rROI">ROI: —</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="en-metrics">
+<div class="en-metric"><div class="en-metric-label">Profit</div><div class="en-metric-value" id="m1">—</div><div class="en-metric-unit" id="m1u">—</div></div>
+<div class="en-metric"><div class="en-metric-label">Total Return</div><div class="en-metric-value" id="m2">—</div><div class="en-metric-unit" id="m2u">if win</div></div>
+<div class="en-metric"><div class="en-metric-label">Implied Prob.</div><div class="en-metric-value" id="m3">—</div><div class="en-metric-unit">% win chance</div></div>
+<div class="en-metric"><div class="en-metric-label">House Edge</div><div class="en-metric-value" id="m4">—</div><div class="en-metric-unit">% margin</div></div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><div class="en-card-title-icon">🔄</div>Odds Conversions</div>
+<div class="odds-convert-grid">
+<div class="odds-convert-box"><div class="odds-convert-label">Decimal</div><div class="odds-convert-value" id="cvDecimal">—</div></div>
+<div class="odds-convert-box"><div class="odds-convert-label">Fractional</div><div class="odds-convert-value" id="cvFractional">—</div></div>
+<div class="odds-convert-box"><div class="odds-convert-label">American</div><div class="odds-convert-value" id="cvAmerican">—</div></div>
+<div class="odds-convert-box"><div class="odds-convert-label">Implied %</div><div class="odds-convert-value" id="cvImplied">—</div></div>
+</div>
+</div>
+
+<div id="betVerdict" class="bet-verdict" style="display:none"></div>
+
+<div class="en-card">
+<div class="en-card-title"><div class="en-card-title-icon">📊</div>Bet Analysis</div>
+<table class="en-results-table">
+<thead><tr><th>Item</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td class="en-td-label">Stake</td><td class="en-td-value" id="tStake">—</td></tr>
+<tr><td class="en-td-label">Potential Profit</td><td class="en-td-value en-td-highlight" id="tProfit">—</td></tr>
+<tr><td class="en-td-label">Total Return (stake + profit)</td><td class="en-td-value" id="tReturn">—</td></tr>
+<tr><td class="en-td-label">Implied Win Probability</td><td class="en-td-value" id="tImplied">—</td></tr>
+<tr><td class="en-td-label">House Edge (bookmaker margin)</td><td class="en-td-value" id="tEdge">—</td></tr>
+<tr><td class="en-td-label">ROI (Return on Investment)</td><td class="en-td-value" id="tROI">—</td></tr>
+<tr><td class="en-td-label">Decimal Odds</td><td class="en-td-value" id="tDecimal">—</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<!-- FAQ -->
+<div class="en-faq">
+<h2 class="en-faq-title">Betting Odds — Explained for African Bettors</h2>
+<div class="en-faq-list">
+<div class="en-faq-item">
+<button class="en-faq-q">What is decimal odds format?</button>
+<div class="en-faq-a">Decimal odds (common in Nigeria, Kenya, Ghana) show your total return per unit staked, including your original stake. Odds of 2.50 mean you receive ₦2.50 for every ₦1 staked. Profit = (odds − 1) × stake. Implied probability = 1 ÷ decimal odds × 100.</div>
+</div>
+<div class="en-faq-item">
+<button class="en-faq-q">How do fractional odds work?</button>
+<div class="en-faq-a">Fractional odds (e.g., 6/4 or 3/2) show profit relative to stake. 6/4 means ₦6 profit for every ₦4 staked. Decimal equivalent = (numerator ÷ denominator) + 1. So 6/4 = 1.5 + 1 = 2.50 decimal.</div>
+</div>
+<div class="en-faq-item">
+<button class="en-faq-q">What is American/moneyline odds?</button>
+<div class="en-faq-a">Positive American odds (+150) show profit on a $100 stake. Negative American odds (-200) show the stake needed to win $100. To convert: +150 → decimal = (150/100) + 1 = 2.50. −200 → decimal = (100/200) + 1 = 1.50.</div>
+</div>
+<div class="en-faq-item">
+<button class="en-faq-q">What is a good bet according to implied probability?</button>
+<div class="en-faq-a">A "good bet" is when your estimated probability of the outcome is higher than the implied probability from the odds. E.g., if odds imply 40% chance but you believe the team has 55% chance — that's a positive expected value bet. The house edge (bookmaker margin) is typically 5–10% on football markets.</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<afro-footer></afro-footer>
+<script>
+(function(){
+'use strict';
+
+function updateOddsPlaceholder(){
+  var fmt=document.getElementById('oddsFormat').value;
+  var ph={'decimal':'e.g. 2.50','fractional':'e.g. 6/4 or 3/2','american':'e.g. +150 or -200','african':'e.g. 2.5'};
+  document.getElementById('oddsValue').placeholder=ph[fmt]||'Enter odds';
+}
+
+function parseDecimalOdds(format,value){
+  value=String(value).trim();
+  if(format==='decimal'){
+    var d=parseFloat(value);
+    return isNaN(d)||d<=1?null:d;
+  } else if(format==='fractional'){
+    var parts=value.split('/');
+    if(parts.length===2){
+      var num=parseFloat(parts[0]);
+      var den=parseFloat(parts[1]);
+      if(!isNaN(num)&&!isNaN(den)&&den!==0) return (num/den)+1;
+    }
+    return null;
+  } else if(format==='american'){
+    var n=parseFloat(value);
+    if(isNaN(n)) return null;
+    if(n>0) return (n/100)+1;
+    if(n<0) return (100/Math.abs(n))+1;
+    return null;
+  } else if(format==='african'){
+    var d=parseFloat(value);
+    return isNaN(d)||d<=1?null:d;
+  }
+  return null;
+}
+
+function toFractional(decimal){
+  var profit=decimal-1;
+  var bestNum=1,bestDen=1,bestDiff=Math.abs(profit-1);
+  for(var d=1;d<=20;d++){
+    var n=Math.round(profit*d);
+    var diff=Math.abs(profit-n/d);
+    if(diff<bestDiff){bestDiff=diff;bestNum=n;bestDen=d;}
+  }
+  return bestNum+'/'+bestDen;
+}
+
+function toAmerican(decimal){
+  if(decimal>=2) return '+'+(((decimal-1)*100).toFixed(0));
+  return '-'+(((100/(decimal-1)).toFixed(0)));
+}
+
+function fmtCurrency(amount, currency){
+  var sym={'NGN':'₦','KES':'KSh','GHS':'GH₵','ZAR':'R','XOF':'CFA','USD':'$'};
+  var s=sym[currency]||currency+' ';
+  return s+amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function calcOdds(){
+  var format=document.getElementById('oddsFormat').value;
+  var oddsRaw=document.getElementById('oddsValue').value;
+  var stake=parseFloat(document.getElementById('stakeAmount').value)||0;
+  var currency=document.getElementById('currency').value;
+
+  if(!oddsRaw){alert('Please enter odds value.');return;}
+  if(stake<=0){alert('Please enter a stake amount.');return;}
+
+  var decimal=parseDecimalOdds(format,oddsRaw);
+  if(!decimal){alert('Invalid odds format. Please check your input.');return;}
+
+  var profit=(decimal-1)*stake;
+  var totalReturn=decimal*stake;
+  var implied=(1/decimal)*100;
+  var houseEdge=100-implied; // simplified single-selection house edge
+  var roi=(profit/stake)*100;
+
+  var res=document.getElementById('oddsResults');
+  res.classList.add('on');
+
+  document.getElementById('rProfit').textContent=fmtCurrency(profit,currency);
+  document.getElementById('rTotalReturn').textContent='Total return: '+fmtCurrency(totalReturn,currency);
+  document.getElementById('rImplied').textContent=implied.toFixed(1)+'%';
+  document.getElementById('rROI').textContent='ROI: '+roi.toFixed(1)+'%';
+
+  document.getElementById('m1').textContent=fmtCurrency(profit,currency);
+  document.getElementById('m1u').textContent='potential profit';
+  document.getElementById('m2').textContent=fmtCurrency(totalReturn,currency);
+  document.getElementById('m3').textContent=implied.toFixed(1)+'%';
+  document.getElementById('m4').textContent=houseEdge.toFixed(1)+'%';
+
+  // Conversions
+  document.getElementById('cvDecimal').textContent=decimal.toFixed(2);
+  document.getElementById('cvFractional').textContent=toFractional(decimal);
+  document.getElementById('cvAmerican').textContent=toAmerican(decimal);
+  document.getElementById('cvImplied').textContent=implied.toFixed(1)+'%';
+
+  // Table
+  document.getElementById('tStake').textContent=fmtCurrency(stake,currency);
+  document.getElementById('tProfit').textContent=fmtCurrency(profit,currency);
+  document.getElementById('tReturn').textContent=fmtCurrency(totalReturn,currency);
+  document.getElementById('tImplied').textContent=implied.toFixed(1)+'%';
+  document.getElementById('tEdge').textContent=houseEdge.toFixed(1)+'%';
+  document.getElementById('tROI').textContent=roi.toFixed(1)+'%';
+  document.getElementById('tDecimal').textContent=decimal.toFixed(3);
+
+  // Verdict
+  var verdict=document.getElementById('betVerdict');
+  verdict.style.display='block';
+  if(implied<40){
+    verdict.className='bet-verdict bet-good';
+    verdict.innerHTML='✅ Good value bet — implied probability is '+implied.toFixed(1)+'%. This is an underdog bet with high potential return. Only bet what you can afford to lose.';
+  } else if(implied<65){
+    verdict.className='bet-verdict bet-fair';
+    verdict.innerHTML='⚠️ Fair odds — implied probability is '+implied.toFixed(1)+'%. This is a moderate-probability event. The '+houseEdge.toFixed(1)+'% house margin means you need to win more than 1 in '+(100/implied).toFixed(1)+' times to profit long-term.';
+  } else {
+    verdict.className='bet-verdict bet-bad';
+    verdict.innerHTML='🔴 Short odds — implied probability is '+implied.toFixed(1)+'%. The bookmaker thinks this is very likely. Low profit relative to risk. The house edge of '+houseEdge.toFixed(1)+'% eats into returns significantly.';
+  }
+}
+
+function resetOdds(){
+  document.getElementById('oddsValue').value='';
+  document.getElementById('stakeAmount').value='';
+  document.getElementById('oddsResults').classList.remove('on');
+}
+
+document.querySelectorAll('.en-faq-q').forEach(function(btn){
+  btn.addEventListener('click',function(){this.closest('.en-faq-item').classList.toggle('open');});
+});
+
+})();
+</script>
+</body>
+</html>

@@ -416,11 +416,15 @@ mergeBtn.addEventListener('click', async () => {
     actionRow.innerHTML = '<button class="act-btn act-download" id="downloadBtn">📥 Download Merged PDF</button>';
     actionRow.style.display = 'grid';
     document.getElementById('downloadBtn').addEventListener('click', () => {
-      if (!mergedPdf) return;
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(new Blob([mergedPdf], { type: 'application/pdf' }));
-      link.download = 'merged.pdf'; link.click();
-      setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+      function doMergeDownload() {
+        if (!mergedPdf) return;
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(new Blob([mergedPdf], { type: 'application/pdf' }));
+        link.download = 'merged.pdf'; link.click();
+        setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+      }
+      const gate = document.querySelector('email-gate-modal');
+      if (gate) { gate.show(doMergeDownload); } else { doMergeDownload(); }
     });
   } catch (err) {
     resultText.textContent = '✗ Error merging: ' + err.message; progressBar.style.display = 'none';
@@ -609,20 +613,28 @@ splitBtn.addEventListener('click', async () => {
     resultText.textContent = `✓ Split into ${files.length} files! Downloading ZIP...`;
 
     const blob = new Blob(parts, { type: 'application/zip' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `${baseName}_split.zip`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    function doSplitDownload() {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `${baseName}_split.zip`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doSplitDownload); } else { doSplitDownload(); }
 
     actionRow.innerHTML = '<button class="act-btn act-download" id="redownloadZip">📥 Download ZIP Again</button>';
     actionRow.style.display = 'grid';
     document.getElementById('redownloadZip').addEventListener('click', () => {
-      const u2 = URL.createObjectURL(blob);
-      const a2 = document.createElement('a');
-      a2.href = u2; a2.download = `${baseName}_split.zip`;
-      a2.click();
-      setTimeout(() => URL.revokeObjectURL(u2), 5000);
+      function doRedownload() {
+        const u2 = URL.createObjectURL(blob);
+        const a2 = document.createElement('a');
+        a2.href = u2; a2.download = `${baseName}_split.zip`;
+        a2.click();
+        setTimeout(() => URL.revokeObjectURL(u2), 5000);
+      }
+      const gate2 = document.querySelector('email-gate-modal');
+      if (gate2) { gate2.show(doRedownload); } else { doRedownload(); }
     });
 
     resultText.textContent = `✓ Split into ${files.length} files and downloaded as ZIP!`;
@@ -633,6 +645,8 @@ splitBtn.addEventListener('click', async () => {
   updateSplitBtn();
 });
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

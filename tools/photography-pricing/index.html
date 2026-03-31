@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Photography Session Pricing Tool — Africa | AfroTools</title>
+<meta name="description" content="Set profitable photography session prices in Africa. Portrait, wedding, commercial, events — cost-plus pricing with equipment, post-processing and overhead.">
+<link rel="canonical" href="https://afrotools.com/tools/photography-pricing/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Photography Session Pricing</span>
+    </nav>
+    <h1>Photography Session <em>Pricing Tool</em></h1>
+    <p>Cost-plus pricing for African photographers. Covers portrait, wedding, commercial, real estate, product, events and fashion — factoring in equipment value, post-processing, studio rent and overhead.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f4f7; Photography</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Pricing</span>
+      <span class="en-tool-hero-pill">&#x1f4c8; Income</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4f7;</div>Photographer Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+          <option value="TZ">Tanzania 🇹🇿 (TZS)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Speciality</label>
+        <select id="speciality" class="en-select">
+          <option value="portrait">Portrait</option>
+          <option value="wedding">Wedding</option>
+          <option value="commercial">Commercial</option>
+          <option value="realestate">Real Estate</option>
+          <option value="product">Product Photography</option>
+          <option value="events">Events</option>
+          <option value="fashion">Fashion / Editorial</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Experience Level</label>
+        <select id="experience" class="en-select">
+          <option value="new">New (0–1 yr)</option>
+          <option value="mid" selected>Experienced (2–5 yr)</option>
+          <option value="senior">Senior (5+ yr)</option>
+          <option value="established">Established / Brand</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Equipment Level</label>
+        <select id="equipment" class="en-select">
+          <option value="entry">Entry (kit lens, basic body)</option>
+          <option value="mid" selected>Mid-range (full-frame, 2+ lenses)</option>
+          <option value="pro">Professional (top-tier system)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4b0;</div>Cost Structure</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Shooting Hours per Session</label>
+        <input type="number" id="shootHours" class="en-input" value="4" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Post-Processing Hours</label>
+        <input type="number" id="editHours" class="en-input" value="3" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Monthly Studio Rent (0 if none)</label>
+        <input type="number" id="studioRent" class="en-input" value="0" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Monthly Working Days</label>
+        <input type="number" id="workDays" class="en-input" value="20" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Equipment Value (local currency)</label>
+        <input type="number" id="equipValue" class="en-input" value="500000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Prints / Albums Included?</label>
+        <select id="prints" class="en-select">
+          <option value="no">No — digital delivery only</option>
+          <option value="basic">Basic prints (+10%)</option>
+          <option value="album">Full album (+25%)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Calculate Session Price</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Suggested Session Price</div>
+            <div class="en-results-hero-value" id="sessionPrice">₦0</div>
+            <div class="en-results-hero-sub" id="dayRate"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Annual Income</div>
+            <div style="font-size:1.5rem;font-weight:800;color:var(--en-accent)" id="annualIncome">₦0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Market Rate Reference</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Experience</th><th>Session Price Range</th><th>Day Rate</th><th>Wedding Range</th></tr></thead>
+          <tbody id="marketTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Nigerian Wedding Photography Note</div>
+        <div class="en-tip-text">An experienced Nigerian wedding photographer charges ₦200,000–₦2,000,000+ per wedding depending on packages. Always charge a non-refundable booking deposit (minimum 50%) to secure dates. Delivery timeline should be clearly stated in contracts — aim for 2–4 weeks.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48,TZ:2600};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP ',TZ:'TZS '};
+var MARKET={
+  NG:{new:[15000,40000],mid:[50000,150000],senior:[150000,500000],established:[500000,2000000]},
+  KE:{new:[2000,5000],mid:[6000,18000],senior:[20000,60000],established:[60000,200000]},
+  ZA:{new:[500,1500],mid:[1500,5000],senior:[5000,15000],established:[15000,60000]},
+  GH:{new:[300,800],mid:[900,2500],senior:[2500,8000],established:[8000,25000]},
+  EG:{new:[1000,3000],mid:[3000,9000],senior:[9000,25000],established:[25000,80000]},
+  TZ:{new:[50000,100000],mid:[150000,400000],senior:[400000,1200000],established:[1200000,4000000]}
+};
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var speciality=document.getElementById('speciality').value;
+  var experience=document.getElementById('experience').value;
+  var equipLevel=document.getElementById('equipment').value;
+  var shootHrs=parseFloat(document.getElementById('shootHours').value)||4;
+  var editHrs=parseFloat(document.getElementById('editHours').value)||3;
+  var studioRent=parseFloat(document.getElementById('studioRent').value)||0;
+  var workDays=parseInt(document.getElementById('workDays').value)||20;
+  var equipValue=parseFloat(document.getElementById('equipValue').value)||500000;
+  var prints=document.getElementById('prints').value;
+  var sym=SYM[country];var rate=FX[country];
+  var mkt=MARKET[country]||MARKET['NG'];
+  var mktRange=mkt[experience];
+  var basePrice=(mktRange[0]+mktRange[1])/2;
+  var specialityMult={portrait:1,wedding:2.5,commercial:1.8,realestate:1.2,product:1.4,events:1.3,fashion:1.6}[speciality]||1;
+  var equipMult={entry:0.8,mid:1.0,pro:1.3}[equipLevel]||1;
+  var printMult={no:1,basic:1.1,album:1.25}[prints]||1;
+  var sessionPrice=basePrice*specialityMult*equipMult*printMult;
+  var dailyCost=(studioRent/workDays)+(equipValue*0.20/workDays/12);
+  sessionPrice=Math.max(sessionPrice,dailyCost*2);
+  var dayRate=sessionPrice*(8/shootHrs);
+  var monthly=workDays/5*sessionPrice;
+  var annual=monthly*12;
+  document.getElementById('sessionPrice').textContent=sym+fmt(sessionPrice);
+  document.getElementById('dayRate').textContent='Day rate: '+sym+fmt(dayRate)+' | '+sym+fmt(monthly)+'/month estimated';
+  document.getElementById('annualIncome').textContent=sym+fmt(annual/1000)+'k';
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Daily Overhead</div><div class="en-metric-value">'+sym+fmt(dailyCost)+'</div><div class="en-metric-unit">Rent + depreciation</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Session Hours</div><div class="en-metric-value">'+(shootHrs+editHrs)+'</div><div class="en-metric-unit">Shoot + editing</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Hourly Rate</div><div class="en-metric-value">'+sym+fmt(sessionPrice/(shootHrs+editHrs))+'</div><div class="en-metric-unit">Effective hourly</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Profit Margin</div><div class="en-metric-value">~60%</div><div class="en-metric-unit">After overhead</div></div>';
+  var mktLevels=['new','mid','senior','established'];
+  var mktLabels={new:'New (0–1yr)',mid:'Experienced (2–5yr)',senior:'Senior (5+yr)',established:'Established'};
+  document.getElementById('marketTable').innerHTML=mktLevels.map(function(lvl){
+    var r=mkt[lvl];
+    return '<tr'+(lvl===experience?' style="background:var(--en-accent-pale)"':'')+'>'+
+      '<td class="en-td-value">'+mktLabels[lvl]+(lvl===experience?' ←':''  )+'</td>'+
+      '<td>'+sym+fmt(r[0])+'–'+sym+fmt(r[1])+'</td>'+
+      '<td>'+sym+fmt((r[0]+r[1])/2*2)+'</td>'+
+      '<td>'+sym+fmt(r[1]*2.5)+'–'+sym+fmt(r[1]*5)+'</td></tr>';
+  }).join('');
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

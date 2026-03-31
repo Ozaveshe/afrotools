@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wedding Photography Package Builder — Africa | AfroTools</title>
+<meta name="description" content="Build itemized wedding photography packages for Nigeria, Kenya, South Africa and Ghana. Drone, same-day edit, album, 2nd photographer — full quote builder.">
+<link rel="canonical" href="https://afrotools.com/tools/wedding-photo-package/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+.addon-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--en-border);font-size:.9rem}
+.addon-item:last-child{border-bottom:none}
+.addon-item input[type="checkbox"]{width:18px;height:18px;accent-color:var(--en-accent);cursor:pointer;flex-shrink:0}
+.addon-label{flex:1;margin-left:10px;font-weight:600}
+.addon-price{color:var(--en-accent-dark);font-weight:700}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Wedding Photography Package Builder</span>
+    </nav>
+    <h1>Wedding Photography <em>Package Builder</em></h1>
+    <p>Build a full itemized wedding photography quote — coverage hours, drone, same-day edit, album, pre-wedding shoot. Nigeria, Kenya, South Africa, and Ghana pricing.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f492; Wedding</span>
+      <span class="en-tool-hero-pill">&#x1f4f7; Photography</span>
+      <span class="en-tool-hero-pill">&#x1f4cb; Quote Builder</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4f7;</div>Core Package</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select" onchange="updatePrices()">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Hours of Coverage</label>
+        <select id="hours" class="en-select" onchange="updatePrices()">
+          <option value="4">4 hours</option>
+          <option value="6">6 hours</option>
+          <option value="8" selected>8 hours (full day)</option>
+          <option value="10">10 hours</option>
+          <option value="12">12 hours</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Experience Level</label>
+        <select id="experience" class="en-select" onchange="updatePrices()">
+          <option value="new">New (0–2 yrs)</option>
+          <option value="mid" selected>Experienced (2–5 yrs)</option>
+          <option value="senior">Senior (5+ yrs)</option>
+          <option value="established">Top-Tier / Established</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x2795;</div>Add-On Services</div>
+    <div id="addonList"></div>
+  </div>
+
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Build Package Quote</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Total Package Price</div>
+            <div class="en-results-hero-value" id="totalPrice">₦0</div>
+            <div class="en-results-hero-sub" id="depositInfo"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">50% Deposit</div>
+            <div style="font-size:1.5rem;font-weight:800;color:var(--en-accent)" id="depositAmount">₦0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4cb;</div>Itemized Quote</div>
+      <div id="quoteItems"></div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Market Comparison</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Level</th><th>Price Range</th><th>Typical Inclusions</th></tr></thead>
+          <tbody id="compareTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4dc;</div>Contract Checklist</div>
+      <div id="contractChecklist"></div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Booking Protection</div>
+        <div class="en-tip-text">Always require a 50% non-refundable retainer to secure the date. This protects you from last-minute cancellations that leave gaps in your calendar. State your delivery timeline clearly in writing — typically 4–6 weeks for photos, 8–12 weeks if album is included.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var BASE_PRICES={
+  NG:{base_4h:100000,base_6h:150000,base_8h:200000,base_10h:270000,base_12h:350000,second_shooter:80000,drone:60000,sde:150000,album_40:120000,album_60:180000,pre_wedding:100000,prints:50000,online_gallery:0,extra_day:80000},
+  KE:{base_4h:10000,base_6h:15000,base_8h:20000,base_10h:27000,base_12h:35000,second_shooter:8000,drone:6000,sde:15000,album_40:12000,album_60:18000,pre_wedding:10000,prints:5000,online_gallery:0,extra_day:8000},
+  ZA:{base_4h:3000,base_6h:4500,base_8h:6000,base_10h:8000,base_12h:10500,second_shooter:2500,drone:1800,sde:4500,album_40:3500,album_60:5500,pre_wedding:3000,prints:1500,online_gallery:0,extra_day:2500},
+  GH:{base_4h:1800,base_6h:2700,base_8h:3600,base_10h:4800,base_12h:6300,second_shooter:1500,drone:1100,sde:2700,album_40:2100,album_60:3300,pre_wedding:1800,prints:900,online_gallery:0,extra_day:1500},
+  EG:{base_4h:5000,base_6h:7500,base_8h:10000,base_10h:13500,base_12h:17500,second_shooter:4000,drone:3000,sde:8000,album_40:6000,album_60:9000,pre_wedding:5000,prints:2500,online_gallery:0,extra_day:4000}
+};
+var EXP_MULT={new:0.6,mid:1.0,senior:1.6,established:2.5};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+var ADDONS=[
+  {id:'second_shooter',label:'2nd Photographer',desc:'Covers different angles, candids'},
+  {id:'drone',label:'Drone Coverage',desc:'Aerial shots and video'},
+  {id:'sde',label:'Same-Day Edit (SDE)',desc:'Highlight reel played at reception'},
+  {id:'album_40',label:'40-Page Wedding Album',desc:'Lay-flat premium print album'},
+  {id:'album_60',label:'60-Page Wedding Album',desc:'Premium lay-flat, coffee table size'},
+  {id:'pre_wedding',label:'Pre-Wedding Shoot',desc:'Engagement / pre-wedding session'},
+  {id:'prints',label:'Print Package (40 prints)',desc:'Fine art prints, various sizes'},
+  {id:'extra_day',label:'Additional Coverage Day',desc:'Traditional ceremony or after-party'}
+];
+function updatePrices(){
+  var country=document.getElementById('country').value;
+  var hours=document.getElementById('hours').value;
+  var exp=document.getElementById('experience').value;
+  var prices=BASE_PRICES[country]||BASE_PRICES['NG'];
+  var mult=EXP_MULT[exp]||1;
+  var sym=SYM[country];
+  var addonHtml='';
+  ADDONS.forEach(function(a){
+    var price=Math.round((prices[a.id]||0)*mult);
+    addonHtml+='<div class="addon-item"><input type="checkbox" id="cb_'+a.id+'"><div class="addon-label">'+a.label+'<div style="font-size:.78rem;color:#94a3b8;font-weight:400">'+a.desc+'</div></div><span class="addon-price">+'+sym+fmt(price)+'</span></div>';
+  });
+  document.getElementById('addonList').innerHTML=addonHtml;
+}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var hours=document.getElementById('hours').value;
+  var exp=document.getElementById('experience').value;
+  var prices=BASE_PRICES[country]||BASE_PRICES['NG'];
+  var mult=EXP_MULT[exp]||1;
+  var sym=SYM[country];var rate=FX[country];
+  var baseKey='base_'+hours+'h';
+  var base=Math.round((prices[baseKey]||prices['base_8h'])*mult);
+  var items=[{label:'Base Coverage ('+hours+' hours)',price:base,included:true}];
+  var total=base;
+  ADDONS.forEach(function(a){
+    if(document.getElementById('cb_'+a.id)&&document.getElementById('cb_'+a.id).checked){
+      var price=Math.round((prices[a.id]||0)*mult);
+      items.push({label:a.label,price:price,included:true});
+      total+=price;
+    }
+  });
+  var deposit=total*0.5;
+  document.getElementById('totalPrice').textContent=sym+fmt(total);
+  document.getElementById('depositInfo').textContent='Balance due: '+sym+fmt(deposit)+' on the wedding day';
+  document.getElementById('depositAmount').textContent=sym+fmt(deposit);
+  var quoteHtml=items.map(function(item){
+    return '<div class="addon-item"><span style="font-size:1.1rem;color:#16a34a">&#x2713;</span><div class="addon-label">'+item.label+'</div><span class="addon-price">'+sym+fmt(item.price)+'</span></div>';
+  }).join('');
+  quoteHtml+='<div style="background:var(--en-accent-pale);padding:14px 16px;border-top:2px solid var(--en-accent-light);display:flex;justify-content:space-between;font-weight:800;font-size:1rem"><span>TOTAL PACKAGE</span><span style="color:var(--en-accent-dark)">'+sym+fmt(total)+'</span></div>';
+  document.getElementById('quoteItems').innerHTML=quoteHtml;
+  var levels=['new','mid','senior','established'];
+  var labels={new:'New Photographer',mid:'Experienced',senior:'Senior',established:'Top-Tier'};
+  document.getElementById('compareTable').innerHTML=levels.map(function(lvl){
+    var p=Math.round((prices['base_8h']||0)*EXP_MULT[lvl]);
+    return '<tr'+(lvl===exp?' style="background:var(--en-accent-pale)"':'')+'>'+
+      '<td class="en-td-value">'+labels[lvl]+(lvl===exp?' ← You':'')+'</td>'+
+      '<td class="en-td-highlight">'+sym+fmt(p)+' – '+sym+fmt(p*2)+'</td>'+
+      '<td style="font-size:.82rem;color:#64748b">'+(lvl==='new'?'Basic package, digital only':lvl==='mid'?'Full day, 2nd shooter option':lvl==='senior'?'Album, drone, pre-wedding':'Full premium package')+'</td></tr>';
+  }).join('');
+  document.getElementById('contractChecklist').innerHTML=
+    '<ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:.88rem">'+
+    ['Client names and wedding date / venue','Exact hours of coverage (start and end time)','Package details: all inclusions listed explicitly','Payment schedule: deposit + balance due date','Cancellation / postponement policy (non-refundable deposit)','Photo delivery timeline and format (online gallery, USB, etc.)','Rights and usage — who owns the images','Copyright notice: photographer retains copyright, client gets licence to print/share','What happens if photographer is ill (backup plan)','Travel / accommodation costs if applicable'].map(function(item){return '<li style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--en-accent);flex-shrink:0">&#x25a1;</span>'+item+'</li>';}).join('')+
+    '</ul>';
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+updatePrices();
+</script>
+</body>
+</html>

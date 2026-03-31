@@ -16,13 +16,25 @@
 <meta property="og:url" content="https://afrotools.com/tools/sql-playground/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--sky:#0ea5e9;--sky-light:#e0f2fe;--sky-dark:#0284c7}
+:root{--sky:var(--color-primary,#007AFF);--sky-light:#E8F2FF;--sky-dark:#0063D1}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 
-.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 50%,#0ea5e9 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
-.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 50%,#007AFF 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 80%,rgba(77,163,255,.2),transparent 50%),radial-gradient(circle at 80% 20%,rgba(0,99,209,.15),transparent 50%);pointer-events:none}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem;position:relative}
+.hero h1 em{color:#4DA3FF;font-style:normal}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto;position:relative}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;position:relative}
+.hero-badges span{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:4px;font-size:.7rem;font-weight:700;letter-spacing:.04em;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9)}
+.stats-bar{display:flex;justify-content:center;gap:28px;margin-top:18px;position:relative}
+.stats-bar .stat{text-align:center}
+.stats-bar .stat-n{font-size:1.4rem;font-weight:800;color:#4DA3FF}
+.stats-bar .stat-l{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:2px}
+.loading-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#fff;font-weight:600}
+.loading-overlay.hidden{display:none}
+.spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#4DA3FF;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 .container{max-width:1100px;margin:0 auto;padding:1.5rem}
 
@@ -30,7 +42,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 @media(max-width:768px){.playground-grid{grid-template-columns:1fr}}
 
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0A1628}
 
 .editor-wrap{position:relative}
 #sql-editor{width:100%;min-height:200px;font-family:'Fira Code','Courier New',monospace;font-size:.9rem;line-height:1.5;padding:1rem;border:1.5px solid #cbd5e1;border-radius:7px;background:#0f172a;color:#e2e8f0;resize:vertical;tab-size:2}
@@ -47,7 +59,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .btn-danger:hover{background:#fee2e2}
 
 .sample-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.sample-btn{padding:.35rem .75rem;border:1px solid #bae6fd;background:#f0f9ff;color:#0369a1;border-radius:5px;font-size:.8rem;cursor:pointer;font-weight:500;transition:all .2s}
+.sample-btn{padding:.35rem .75rem;border:1px solid rgba(0,122,255,.2);background:#E8F2FF;color:#0063D1;border-radius:5px;font-size:.8rem;cursor:pointer;font-weight:500;transition:all .2s}
 .sample-btn:hover,.sample-btn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
 
 .db-selector{margin-bottom:1rem}
@@ -57,7 +69,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 
 .results-area{margin-top:1rem;overflow-x:auto}
 .results-table{width:100%;border-collapse:collapse;font-size:.85rem}
-.results-table th{background:#f0f9ff;color:#0c4a6e;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid #bae6fd;white-space:nowrap}
+.results-table th{background:#E8F2FF;color:#0A1628;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid rgba(0,122,255,.2);white-space:nowrap}
 .results-table td{padding:.5rem .75rem;border-bottom:1px solid #f1f5f9;white-space:nowrap}
 .results-table tr:hover td{background:#f8fafc}
 
@@ -69,23 +81,23 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 
 .schema-section{margin-top:1.5rem}
 .schema-table{margin-bottom:1rem}
-.schema-table h3{font-size:.95rem;font-weight:700;color:#0369a1;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.schema-table h3{font-size:.95rem;font-weight:700;color:#0063D1;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;cursor:pointer}
 .schema-table h3::before{content:'';display:inline-block;width:10px;height:10px;background:var(--sky);border-radius:2px}
 .schema-cols{font-size:.8rem;color:#475569;padding:.5rem .75rem;background:#f8fafc;border-radius:5px;border:1px solid #e2e8f0}
-.schema-cols code{font-family:'Fira Code','Courier New',monospace;color:#0369a1;font-size:.78rem}
+.schema-cols code{font-family:'Fira Code','Courier New',monospace;color:#0063D1;font-size:.78rem}
 
 .history-item{padding:.5rem .75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;margin-bottom:.4rem;font-size:.8rem;font-family:monospace;cursor:pointer;transition:all .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.history-item:hover{background:#e0f2fe;border-color:#bae6fd}
+.history-item:hover{background:#E8F2FF;border-color:rgba(0,122,255,.2)}
 
 .full-width{grid-column:1/-1}
 
 .seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
 .seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
 .seo-section p{color:#475569;margin-bottom:1rem}
 
 .faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
 .faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
 .faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
 .faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
@@ -135,9 +147,23 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <afro-navbar></afro-navbar>
 
 <section class="hero">
-<h1>SQL Playground</h1>
+<h1>SQL <em>Playground</em></h1>
 <p>Write and run SQL queries in your browser. Practice with sample African business databases — no setup required.</p>
+<div class="hero-badges">
+  <span>WebAssembly Powered</span>
+  <span>3 Sample Databases</span>
+  <span>100% Client-Side</span>
+</div>
+<div class="stats-bar">
+  <div class="stat"><div class="stat-n">12</div><div class="stat-l">Tables</div></div>
+  <div class="stat"><div class="stat-n">100+</div><div class="stat-l">Sample Rows</div></div>
+  <div class="stat"><div class="stat-n">15</div><div class="stat-l">Preset Queries</div></div>
+</div>
 </section>
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <div>Loading SQL engine...</div>
+</div>
 
 <div class="container">
 <div class="playground-grid">
@@ -216,7 +242,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
 <script src="/assets/js/components/navbar.js" defer></script>
 <script src="/assets/js/components/footer.js" defer></script>
 <script src="/assets/js/components/related-tools.js" defer></script>
@@ -377,8 +403,20 @@ let currentDb = 'ecommerce';
 let queryHistory = [];
 
 async function initSQL() {
-  const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}` });
-  loadDatabase(currentDb, SQL);
+  const overlay = document.getElementById('loadingOverlay');
+  try {
+    const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}` });
+    loadDatabase(currentDb, SQL);
+    if (overlay) overlay.classList.add('hidden');
+  } catch(e1) {
+    try {
+      const SQL = await initSqlJs({ locateFile: file => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${file}` });
+      loadDatabase(currentDb, SQL);
+      if (overlay) overlay.classList.add('hidden');
+    } catch(e2) {
+      if (overlay) overlay.innerHTML = '<div style="text-align:center;max-width:400px"><div style="font-size:2rem;margin-bottom:12px">Database Engine Error</div><p style="opacity:.8;margin-bottom:16px">Could not load the SQL engine. Please refresh the page or check your internet connection.</p><button onclick="location.reload()" style="padding:10px 24px;border:none;border-radius:8px;background:#007AFF;color:#fff;font-weight:700;cursor:pointer;font-size:.9rem">Retry</button></div>';
+    }
+  }
 }
 
 function loadDatabase(dbKey, SQLoverride) {
@@ -422,9 +460,12 @@ function loadSample(idx) {
   document.querySelectorAll('.sample-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
 }
 
+let queryCount = 0;
+
 function runQuery() {
   const sql = document.getElementById('sql-editor').value.trim();
   if (!sql) return;
+  if (!db) { document.getElementById('resultsArea').innerHTML = '<div class="error-msg">Database not loaded yet. Please wait or refresh.</div>'; return; }
 
   const area = document.getElementById('resultsArea');
   const start = performance.now();
@@ -432,10 +473,11 @@ function runQuery() {
   try {
     const results = db.exec(sql);
     const elapsed = (performance.now() - start).toFixed(1);
+    queryCount++;
 
     if (results.length === 0) {
       area.innerHTML = `<div class="success-msg">Query executed successfully. No rows returned.</div>
-        <div class="result-meta"><span>Time: ${elapsed}ms</span></div>`;
+        <div class="result-meta"><span>Time: ${elapsed}ms</span><span>Query #${queryCount}</span></div>`;
     } else {
       const res = results[0];
       const rowCount = res.values.length;
@@ -450,13 +492,29 @@ function runQuery() {
           <span>${rowCount} row${rowCount !== 1 ? 's' : ''}</span>
           <span>${res.columns.length} column${res.columns.length !== 1 ? 's' : ''}</span>
           <span>${elapsed}ms</span>
+          <span>Query #${queryCount}</span>
+          <button onclick="exportCSV()" style="margin-left:auto;padding:4px 12px;border:1px solid #e2e8f0;border-radius:5px;background:#fff;color:#475569;font-size:.78rem;cursor:pointer;font-weight:600">Export CSV</button>
         </div>`;
+      window._lastResult = res;
     }
 
     addToHistory(sql);
   } catch (e) {
     area.innerHTML = `<div class="error-msg"><strong>Error:</strong> ${e.message}</div>`;
   }
+}
+
+function exportCSV() {
+  if (!window._lastResult) return;
+  const res = window._lastResult;
+  let csv = res.columns.join(',') + '\n';
+  res.values.forEach(row => { csv += row.map(v => v === null ? '' : '"' + String(v).replace(/"/g, '""') + '"').join(',') + '\n'; });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'query-results.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 function addToHistory(sql) {

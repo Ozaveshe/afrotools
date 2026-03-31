@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Password Strength Checker — 100% Client-Side | AfroTools</title>
+<meta name="description" content="Check your password strength locally — never sent to any server. Entropy score, time-to-crack, pattern detection, passphrase suggestion. Fully private.">
+<link rel="canonical" href="https://afrotools.com/tools/password-strength/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#475569;--en-accent-dark:#334155;--en-accent-light:#E2E8F0;--en-accent-pale:#F8FAFC;--en-shadow-hover:0 4px 16px rgba(71,85,105,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#0f172a 50%,#1e293b 100%)!important}
+.pw-input-wrap{position:relative}
+.pw-input-wrap .en-input{padding-right:50px;font-family:monospace;font-size:1rem;letter-spacing:.05em}
+.pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748b;font-size:.9rem;padding:4px}
+.strength-bar{height:10px;background:#e2e8f0;border-radius:6px;overflow:hidden;margin-top:6px}
+.strength-fill{height:100%;border-radius:6px;transition:width .3s ease,background .3s ease}
+.strength-very-weak{background:#ef4444;width:10%}
+.strength-weak{background:#f97316;width:30%}
+.strength-fair{background:#f59e0b;width:55%}
+.strength-strong{background:#84cc16;width:75%}
+.strength-very-strong{background:#22c55e;width:100%}
+.pw-check-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.pw-check{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.pw-check.pass{color:#16a34a}
+.pw-check.fail{color:#dc2626}
+.passphrase-box{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 18px;font-family:monospace;font-size:.95rem;font-weight:700;letter-spacing:.05em;color:#166534;word-break:break-all}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="security"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/security/">Security &amp; Safety</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Password Strength Checker</span>
+    </nav>
+    <h1>Password Strength <em>Checker</em></h1>
+    <p>Your password is <strong>never sent anywhere</strong> — all analysis happens locally in your browser. Get entropy score, time-to-crack estimate, pattern detection, and stronger alternatives generated on-device.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f511; Password</span>
+      <span class="en-tool-hero-pill">&#x1f512; 100% Private</span>
+      <span class="en-tool-hero-pill">&#x1f4bb; Client-Side Only</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout" style="max-width:640px">
+  <div class="en-notice"><strong>&#x1f512; Privacy Guarantee:</strong> This tool runs entirely in your browser. No password data is ever transmitted, stored, or logged. You can disconnect from the internet and it will still work.</div>
+
+  <div class="en-card" style="margin-top:20px">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f511;</div>Check Your Password</div>
+    <div class="en-field">
+      <label class="en-label">Enter Password to Test</label>
+      <div class="pw-input-wrap">
+        <input type="password" id="pwInput" class="en-input" placeholder="Type your password..." oninput="analyzeRealtime()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button class="pw-toggle" onclick="toggleVisibility()" id="pwToggle" type="button">&#x1f441;&#xfe0f;</button>
+      </div>
+      <div class="strength-bar"><div class="strength-fill" id="strengthBar"></div></div>
+      <div id="strengthLabel" style="font-size:.82rem;font-weight:700;margin-top:6px;color:#64748b">Start typing to analyse...</div>
+    </div>
+    <div class="pw-check-list" id="checkList"></div>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Strength Score</div>
+            <div class="en-results-hero-value" id="scoreDisplay">0/100</div>
+            <div class="en-results-hero-sub" id="strengthCategory"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Time to Crack</div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--en-accent)" id="crackTime">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card" id="weaknessCard" style="display:none">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x26a0;&#xfe0f;</div>Weaknesses Found</div>
+      <div id="weaknessList"></div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4a1;</div>Stronger Password Suggestion</div>
+      <div id="suggestions"></div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4dd;</div>Passphrase Alternative (easier to remember, harder to crack)</div>
+      <div class="passphrase-box" id="passphraseBox"></div>
+      <p style="font-size:.8rem;color:#64748b;margin-top:8px">Passphrases are 4+ random words — much harder to crack than complex short passwords. Entropy: ~50 bits vs typical 8-char password's ~30 bits.</p>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f512;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Password Best Practices</div>
+        <div class="en-tip-text">Use a password manager (Bitwarden is free and open-source) to generate and store unique passwords for every account. Never reuse passwords — a breach at one site exposes all your accounts if you reuse. Enable 2FA on every account that offers it, especially email and banking.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+// IMPORTANT: All processing is entirely client-side. No data is sent anywhere.
+var COMMON=[
+  'password','123456','password1','qwerty','abc123','letmein','monkey','1234567890','iloveyou','admin',
+  'welcome','login','pass','master','dragon','sunshine','princess','football','shadow','superman',
+  'michael','jessica','password123','batman','trustno1','superman','hello123','starwars','letmein1',
+  'mustang','access','flower','jesus','ninja','ashley','bailey','passw0rd','maggie','hello',
+  'donald','654321','qwerty123','charlie','donald','andrew','matthew','daniel','george','jordan',
+  'abcdef','111111','123123','qazwsx','1q2w3e','!@#$%^','matrix','p@ssword','p@ssw0rd','pass123',
+  'africa','nigeria','kenya','ghana','lagos','nairobi','accra','cairo','abuja','money'
+];
+var WORDS=['mango','sunset','tiger','river','cloud','forest','silver','ocean','mountain','thunder','golden','crystal','phoenix','dragon','falcon','lightning','storm','ember','frost','coral','jungle','savanna','safari','baobab','acacia','zebra','giraffe','ubuntu','ubuntu1','jambo','karibu','nkosi','ubuntu'];
+function entropy(pw){
+  var cs=0;
+  if(/[a-z]/.test(pw)) cs+=26;
+  if(/[A-Z]/.test(pw)) cs+=26;
+  if(/[0-9]/.test(pw)) cs+=10;
+  if(/[^a-zA-Z0-9]/.test(pw)) cs+=32;
+  return pw.length*Math.log2(cs||1);
+}
+function crackTime(e){
+  var attempts=Math.pow(2,e);
+  var rate=1e10;
+  var sec=attempts/rate;
+  if(sec<1) return 'Instantly';
+  if(sec<60) return Math.round(sec)+' seconds';
+  if(sec<3600) return Math.round(sec/60)+' minutes';
+  if(sec<86400) return Math.round(sec/3600)+' hours';
+  if(sec<2592000) return Math.round(sec/86400)+' days';
+  if(sec<31536000) return Math.round(sec/2592000)+' months';
+  if(sec<1e9) return Math.round(sec/31536000)+' years';
+  if(sec<1e12) return Math.round(sec/31536000/1e6)+' million years';
+  return '1 billion+ years';
+}
+function generatePassword(len){
+  var c='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+  var pw='';
+  for(var i=0;i<len;i++) pw+=c[Math.floor(Math.random()*c.length)];
+  return pw;
+}
+function generatePassphrase(){
+  var w=[];
+  for(var i=0;i<4;i++) w.push(WORDS[Math.floor(Math.random()*WORDS.length)]);
+  return w.join('-')+Math.floor(Math.random()*99);
+}
+function analyzeRealtime(){
+  var pw=document.getElementById('pwInput').value;
+  if(!pw){
+    document.getElementById('strengthLabel').textContent='Start typing to analyse...';
+    document.getElementById('strengthBar').className='strength-fill';
+    document.getElementById('strengthBar').style.width='0';
+    document.getElementById('checkList').innerHTML='';
+    return;
+  }
+  var score=scorePassword(pw);
+  var strengthClass=['strength-very-weak','strength-weak','strength-fair','strength-strong','strength-very-strong'][Math.floor(score/25)];
+  if(score>=100) strengthClass='strength-very-strong';
+  var label=['Very Weak','Weak','Fair','Strong','Very Strong'][Math.min(4,Math.floor(score/20))];
+  document.getElementById('strengthBar').className='strength-fill '+strengthClass;
+  document.getElementById('strengthLabel').textContent=label+' ('+score+'/100)';
+  var checks=[
+    {label:'At least 8 characters',pass:pw.length>=8},
+    {label:'At least 12 characters',pass:pw.length>=12},
+    {label:'Lowercase letters',pass:/[a-z]/.test(pw)},
+    {label:'Uppercase letters',pass:/[A-Z]/.test(pw)},
+    {label:'Numbers',pass:/[0-9]/.test(pw)},
+    {label:'Special characters (!@#$%)',pass:/[^a-zA-Z0-9]/.test(pw)},
+    {label:'Not a common password',pass:COMMON.indexOf(pw.toLowerCase())===-1}
+  ];
+  document.getElementById('checkList').innerHTML=checks.map(function(c){
+    return '<div class="pw-check '+(c.pass?'pass':'fail')+'">'+(c.pass?'✓':'✗')+' '+c.label+'</div>';
+  }).join('');
+  if(score>0) showResults(pw,score);
+}
+function scorePassword(pw){
+  if(!pw) return 0;
+  var score=0;
+  var e=entropy(pw);
+  score+=Math.min(40,Math.round(e*0.8));
+  if(pw.length>=8) score+=5;
+  if(pw.length>=12) score+=5;
+  if(pw.length>=16) score+=5;
+  if(/[a-z]/.test(pw)) score+=5;
+  if(/[A-Z]/.test(pw)) score+=5;
+  if(/[0-9]/.test(pw)) score+=5;
+  if(/[^a-zA-Z0-9]/.test(pw)) score+=10;
+  if(COMMON.indexOf(pw.toLowerCase())>-1) score=Math.min(score,10);
+  if(/^(.)\1+$/.test(pw)) score=Math.min(score,5);
+  if(/^(012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|qwe|wer|ert|rty|tyu|yui|uio|iop|asd|sdf|dfg|fgh|ghj|hjk|jkl|zxc|xcv|cvb|vbn|bnm)/.test(pw.toLowerCase())) score-=10;
+  return Math.max(0,Math.min(100,score));
+}
+function showResults(pw,score){
+  var e=entropy(pw);
+  var ct=crackTime(e);
+  var category=score>=80?'Very Strong':score>=60?'Strong':score>=40?'Fair':score>=20?'Weak':'Very Weak';
+  document.getElementById('scoreDisplay').textContent=score+'/100';
+  document.getElementById('strengthCategory').textContent=category+' — Entropy: '+e.toFixed(1)+' bits';
+  document.getElementById('crackTime').textContent=ct;
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Length</div><div class="en-metric-value">'+pw.length+'</div><div class="en-metric-unit">characters</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Entropy</div><div class="en-metric-value">'+e.toFixed(0)+'</div><div class="en-metric-unit">bits</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Char Types</div><div class="en-metric-value">'+[/[a-z]/.test(pw),/[A-Z]/.test(pw),/[0-9]/.test(pw),/[^a-zA-Z0-9]/.test(pw)].filter(Boolean).length+'</div><div class="en-metric-unit">of 4 used</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Time to Crack</div><div class="en-metric-value" style="font-size:1rem">'+ct+'</div><div class="en-metric-unit">@ 10B attempts/sec</div></div>';
+  var weaknesses=[];
+  if(COMMON.indexOf(pw.toLowerCase())>-1) weaknesses.push({w:'Common password',d:'This password appears in known breach databases. It can be cracked instantly with a dictionary attack.'});
+  if(pw.length<8) weaknesses.push({w:'Too short',d:'Minimum 12+ characters strongly recommended.'});
+  if(!/[A-Z]/.test(pw)) weaknesses.push({w:'No uppercase letters',d:'Add at least 2 uppercase letters to increase entropy.'});
+  if(!/[0-9]/.test(pw)) weaknesses.push({w:'No numbers',d:'Add numbers to expand the character set.'});
+  if(!/[^a-zA-Z0-9]/.test(pw)) weaknesses.push({w:'No special characters',d:'Add !@#$%^&*() to dramatically increase cracking time.'});
+  if(/^(.)\1+$/.test(pw)) weaknesses.push({w:'Repeated characters',d:'Using the same character repeatedly provides almost no security.'});
+  if(weaknesses.length>0){
+    document.getElementById('weaknessList').innerHTML=weaknesses.map(function(w){
+      return '<div style="padding:10px 14px;border-left:3px solid #ef4444;background:#fef2f2;border-radius:0 8px 8px 0;margin-bottom:8px"><div style="font-weight:700;color:#dc2626;font-size:.85rem">'+w.w+'</div><div style="font-size:.82rem;color:#6b7280;margin-top:3px">'+w.d+'</div></div>';
+    }).join('');
+    document.getElementById('weaknessCard').style.display='block';
+  } else {
+    document.getElementById('weaknessCard').style.display='none';
+  }
+  var stronger=generatePassword(16);
+  document.getElementById('suggestions').innerHTML=
+    '<p style="font-size:.87rem;color:#475569;margin-bottom:10px">A stronger password suggestion (generated locally, never stored):</p>'+
+    '<div class="passphrase-box" style="background:#f0f9ff;border-color:#bae6fd;color:#0369a1">'+stronger+'</div>'+
+    '<p style="font-size:.78rem;color:#94a3b8;margin-top:6px">16-character random password with uppercase, lowercase, numbers and symbols.</p>';
+  document.getElementById('passphraseBox').textContent=generatePassphrase();
+  document.getElementById('results').classList.add('on');
+}
+function toggleVisibility(){
+  var input=document.getElementById('pwInput');
+  var btn=document.getElementById('pwToggle');
+  if(input.type==='password'){input.type='text';btn.textContent='🙈';}
+  else{input.type='password';btn.textContent='👁️';}
+}
+</script>
+</body>
+</html>

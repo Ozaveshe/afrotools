@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Personal Brand Audit Tool for African Professionals | AfroTools</title>
+<meta name="description" content="Score your personal brand 0–100. LinkedIn, Twitter, website, content, speaking, credentials. 90-day improvement plan and monetization readiness score for African professionals.">
+<link rel="canonical" href="https://afrotools.com/tools/personal-brand-audit/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Personal Brand Audit Tool | AfroTools">
+<meta property="og:description" content="Score your personal brand visibility. LinkedIn, social media, website, content, speaking engagements. 90-day action plan for African professionals.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/personal-brand-audit/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#6366F1;--en-accent-dark:#4F46E5;--en-accent-light:#E0E7FF;--en-accent-pale:#EEF2FF;--en-shadow-hover:0 4px 16px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)!important}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.score-ring{display:flex;align-items:center;justify-content:center;width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--en-accent) var(--pct,0%),#e2e8f0 var(--pct,0%));margin:0 auto 12px;position:relative}
+.score-ring-inner{width:88px;height:88px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.score-ring-num{font-size:1.8rem;font-weight:900;color:var(--en-accent-dark);line-height:1}
+.score-ring-label{font-size:.65rem;font-weight:700;color:#64748b;letter-spacing:.06em;text-transform:uppercase}
+.grade-badge{display:inline-block;padding:6px 18px;border-radius:980px;font-size:1.1rem;font-weight:800;letter-spacing:-.01em}
+.grade-A{background:#dcfce7;color:#15803d}
+.grade-B{background:#dbeafe;color:#1d4ed8}
+.grade-C{background:#fef9c3;color:#a16207}
+.grade-D{background:#fee2e2;color:#dc2626}
+.grade-F{background:#f1f5f9;color:#64748b}
+.action-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:12px;display:flex;gap:14px}
+.action-week{font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--en-accent-dark);background:var(--en-accent-pale);padding:3px 8px;border-radius:4px;white-space:nowrap;align-self:flex-start;margin-top:2px}
+.action-text{font-size:.88rem;color:#374151;line-height:1.6}
+.action-text strong{color:#0f172a}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="career"></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb"><a href="/">AfroTools</a><span class="en-breadcrumb-sep">/</span><a href="/career/">Career</a><span class="en-breadcrumb-sep">/</span><span class="en-breadcrumb-current">Personal Brand Audit</span></nav>
+    <h1>Personal Brand <em>Audit Tool</em></h1>
+    <p>Score your professional visibility 0–100. Based on LinkedIn presence, social following, content creation, offline reputation, and credentials. Includes a 90-day action plan.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">⭐ Brand Score</span>
+      <span class="en-tool-hero-pill">📅 90-Day Plan</span>
+      <span class="en-tool-hero-pill">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout">
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">⭐</div>Your Brand Signals</div>
+    <p style="font-size:.82rem;color:#64748b;margin-bottom:20px">Answer honestly — this is for your own benefit. Metrics are approximate.</p>
+
+    <div class="en-form-grid en-form-grid-2">
+      <div class="en-field">
+        <label class="en-label">Industry</label>
+        <select class="en-select" id="industry">
+          <option value="tech">Technology</option>
+          <option value="finance">Finance / Banking</option>
+          <option value="media">Media / Creative</option>
+          <option value="healthcare">Healthcare</option>
+          <option value="law">Law / Legal</option>
+          <option value="education">Education</option>
+          <option value="entrepreneurship">Entrepreneurship</option>
+          <option value="ngo">NGO / Development</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Years of Professional Experience</label>
+        <input class="en-input" type="number" id="yearsExp" value="5" min="0" max="40">
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #f1f5f9;margin:20px 0;padding-top:20px">
+      <p style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">LinkedIn (20 pts max)</p>
+      <div class="en-form-grid en-form-grid-2">
+        <div class="en-field"><label class="en-label">LinkedIn Connections</label>
+          <select class="en-select" id="liConnections"><option value="0">None / not on LinkedIn</option><option value="3">Under 100</option><option value="7">100–499</option><option value="13">500–999</option><option value="18">1,000–4,999</option><option value="20">5,000+ (max)</option></select></div>
+        <div class="en-field"><label class="en-label">Post Frequency</label>
+          <select class="en-select" id="liPosting"><option value="0">Never post</option><option value="2">Rarely (few per year)</option><option value="5">Monthly</option><option value="8">Weekly</option><option value="10">Multiple times/week</option></select></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #f1f5f9;margin-top:4px;padding-top:20px">
+      <p style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">Social Media (15 pts max)</p>
+      <div class="en-form-grid en-form-grid-2">
+        <div class="en-field"><label class="en-label">Twitter/X Followers</label>
+          <select class="en-select" id="twFollowers"><option value="0">None / not on Twitter</option><option value="2">Under 500</option><option value="5">500–1,999</option><option value="9">2,000–9,999</option><option value="12">10,000–49,999</option><option value="15">50,000+</option></select></div>
+        <div class="en-field"><label class="en-label">Instagram / Other Followers</label>
+          <select class="en-select" id="igFollowers"><option value="0">None</option><option value="1">Under 1,000</option><option value="3">1,000–4,999</option><option value="5">5,000–19,999</option><option value="7">20,000–99,999</option><option value="10">100,000+</option></select></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #f1f5f9;margin-top:4px;padding-top:20px">
+      <p style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">Digital Presence (15 pts max)</p>
+      <div class="en-form-grid en-form-grid-2">
+        <div class="en-field"><label class="en-label">Personal Website / Portfolio</label>
+          <select class="en-select" id="website"><option value="0">None</option><option value="7">Basic (Linktree / Carrd)</option><option value="12">Full website with bio</option><option value="15">SEO-optimised professional site</option></select></div>
+        <div class="en-field"><label class="en-label">Google Search Result (your name)</label>
+          <select class="en-select" id="googleResult"><option value="0">Not findable</option><option value="3">Found on page 2+</option><option value="7">Found on page 1</option><option value="10">Multiple page 1 results</option></select></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #f1f5f9;margin-top:4px;padding-top:20px">
+      <p style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">Content Creation (20 pts max)</p>
+      <div class="en-form-grid en-form-grid-2">
+        <div class="en-field"><label class="en-label">Published Articles / Blog Posts</label>
+          <select class="en-select" id="articles"><option value="0">None</option><option value="3">1–5</option><option value="7">6–20</option><option value="12">21–50</option><option value="15">50+</option></select></div>
+        <div class="en-field"><label class="en-label">Book / Book Chapter / Report</label>
+          <select class="en-select" id="book"><option value="0">None</option><option value="5">Chapter or report</option><option value="10">Self-published book</option><option value="15">Published by major publisher</option></select></div>
+        <div class="en-field"><label class="en-label">Podcast / Video Content</label>
+          <select class="en-select" id="podcast"><option value="0">None</option><option value="3">Guest on others' shows</option><option value="6">Own podcast/channel (&lt;1k subs)</option><option value="10">Own podcast/channel (1k+)</option></select></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #f1f5f9;margin-top:4px;padding-top:20px">
+      <p style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">Offline Reputation (15 pts max)</p>
+      <div class="en-form-grid en-form-grid-2">
+        <div class="en-field"><label class="en-label">Public Speaking / Panels</label>
+          <select class="en-select" id="speaking"><option value="0">Never spoken publicly</option><option value="3">1–3 small events</option><option value="7">Regular speaker at industry events</option><option value="12">Keynote / international conference</option></select></div>
+        <div class="en-field"><label class="en-label">Awards / Recognition</label>
+          <select class="en-select" id="awards"><option value="0">None</option><option value="2">Local/company award</option><option value="5">Industry award (national)</option><option value="8">International recognition</option></select></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #f1f5f9;margin-top:4px;padding-top:20px">
+      <p style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">Credentials (15 pts max)</p>
+      <div class="en-form-grid en-form-grid-2">
+        <div class="en-field"><label class="en-label">Highest Education</label>
+          <select class="en-select" id="education"><option value="2">Secondary / O-Level</option><option value="5">Bachelor's Degree</option><option value="9">Master's Degree</option><option value="12">PhD / Doctorate</option></select></div>
+        <div class="en-field"><label class="en-label">Professional Certifications</label>
+          <select class="en-select" id="certs"><option value="0">None</option><option value="2">1 local certification</option><option value="5">1–2 internationally recognised</option><option value="8">3+ internationally recognised (CFA, CISSP, PMP etc)</option></select></div>
+      </div>
+    </div>
+
+    <div class="en-form-actions">
+      <button class="en-btn en-btn-full" onclick="calcBrand()">Calculate Brand Score →</button>
+    </div>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div style="text-align:center;padding:8px 0">
+        <div class="en-results-hero-label" style="margin-bottom:12px">Your Personal Brand Score</div>
+        <div id="scoreRing"></div>
+        <div id="gradeBadge" style="margin-top:8px"></div>
+        <div class="en-results-hero-sub" id="brandSummary" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📊</div>Score Breakdown by Category</div>
+      <div id="scoreBreakdown"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📅</div>90-Day Action Plan</div>
+      <div id="actionPlan"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">💰</div>Monetisation Readiness</div>
+      <div id="monetisation" style="font-size:.88rem;color:#475569;line-height:1.8"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function calcBrand(){
+  var liConn=parseInt(document.getElementById('liConnections').value)||0;
+  var liPost=parseInt(document.getElementById('liPosting').value)||0;
+  var tw=parseInt(document.getElementById('twFollowers').value)||0;
+  var ig=parseInt(document.getElementById('igFollowers').value)||0;
+  var web=parseInt(document.getElementById('website').value)||0;
+  var goog=parseInt(document.getElementById('googleResult').value)||0;
+  var art=parseInt(document.getElementById('articles').value)||0;
+  var bk=parseInt(document.getElementById('book').value)||0;
+  var pod=parseInt(document.getElementById('podcast').value)||0;
+  var spk=parseInt(document.getElementById('speaking').value)||0;
+  var aw=parseInt(document.getElementById('awards').value)||0;
+  var edu=parseInt(document.getElementById('education').value)||0;
+  var cert=parseInt(document.getElementById('certs').value)||0;
+  var yrs=parseInt(document.getElementById('yearsExp').value)||0;
+  var ind=document.getElementById('industry').value;
+
+  var linkedin=Math.min(20,liConn+liPost);
+  var social=Math.min(15,Math.max(tw,ig*0.7));
+  var digital=Math.min(15,web+goog);
+  var content=Math.min(20,art+bk+pod);
+  var offline=Math.min(15,spk+aw);
+  var credentials=Math.min(15,edu+cert);
+
+  var total=Math.round(linkedin+social+digital+content+offline+credentials);
+  var pct=total+'%';
+
+  // Grade
+  var grade=total>=90?'A+':total>=80?'A':total>=70?'B+':total>=60?'B':total>=50?'C':total>=40?'D':'F';
+  var gradeClass=grade.startsWith('A')?'grade-A':grade.startsWith('B')?'grade-B':grade==='C'?'grade-C':grade==='D'?'grade-D':'grade-F';
+
+  var summary={
+    'A+':'World-class personal brand. You are a recognised authority in your field.',
+    'A':'Strong personal brand. Recruiters and clients find you easily. Keep building.',
+    'B+':'Good brand. You are visible and credible. A few focused efforts will break into the top tier.',
+    'B':'Developing brand. You have foundations. Consistent content creation is your next move.',
+    'C':'Emerging brand. Your offline reputation may be stronger than your digital presence.',
+    'D':'Early stage. Start with LinkedIn optimisation and one content channel.',
+    'F':'Brand building hasn\'t started. LinkedIn profile creation is your first action today.'
+  };
+
+  document.getElementById('scoreRing').innerHTML='<div class="score-ring" style="--pct:'+total+'%"><div class="score-ring-inner"><div class="score-ring-num">'+total+'</div><div class="score-ring-label">/ 100</div></div></div>';
+  document.getElementById('gradeBadge').innerHTML='<span class="grade-badge '+gradeClass+'">Grade '+grade+'</span>';
+  document.getElementById('brandSummary').textContent=summary[grade]||summary['C'];
+
+  // Breakdown
+  var cats=[
+    {name:'LinkedIn',score:linkedin,max:20,icon:'🔗'},
+    {name:'Social Media',score:social,max:15,icon:'📱'},
+    {name:'Digital / SEO',score:digital,max:15,icon:'🌐'},
+    {name:'Content Creation',score:content,max:20,icon:'✍️'},
+    {name:'Offline Reputation',score:offline,max:15,icon:'🎤'},
+    {name:'Credentials',score:credentials,max:15,icon:'🎓'}
+  ];
+  document.getElementById('scoreBreakdown').innerHTML=cats.map(function(c){
+    var pct2=Math.round(c.score/c.max*100);
+    return '<div class="en-progress-item" style="margin-bottom:12px">'+
+      '<div class="en-progress-label">'+c.icon+' '+c.name+'</div>'+
+      '<div class="en-progress-bar-wrap"><div class="en-progress-bar" style="width:'+pct2+'%"></div></div>'+
+      '<div class="en-progress-value">'+c.score+'/'+c.max+'</div>'+
+    '</div>';
+  }).join('');
+
+  // Find weakest categories for action plan
+  var sorted=cats.slice().sort(function(a,b){return (a.score/a.max)-(b.score/b.max);});
+  var actions=[
+    {week:'Days 1–7',text:'<strong>Quick wins:</strong> Update LinkedIn headline to include your top 3 keywords. Add a professional headshot if missing. Set posting schedule reminder (Tuesday + Thursday 8am is peak).'},
+    {week:'Days 8–21',text:'<strong>Content launch:</strong> Write and publish your first thought-leadership article on LinkedIn. Topic: your biggest lesson from '+yrs+' years in '+ind+'. Share across all your platforms.'},
+    {week:'Days 22–45',text:'<strong>Build '+sorted[0].name+':</strong> This is your lowest-scoring area. Specifically: '+getAction(sorted[0].name)+'.'},
+    {week:'Days 46–60',text:'<strong>Offline visibility:</strong> Apply to speak at one industry event or webinar. Guest appearances on podcasts count. Target 2 applications this period.'},
+    {week:'Days 61–90',text:'<strong>Consistency & systems:</strong> Schedule content 2 weeks ahead using Buffer or Hootsuite. Review score again. Track follower growth weekly. Set 6-month brand target.'}
+  ];
+  document.getElementById('actionPlan').innerHTML=actions.map(function(a){
+    return '<div class="action-card"><div class="action-week">'+a.week+'</div><div class="action-text">'+a.text+'</div></div>';
+  }).join('');
+
+  // Monetisation
+  var monScore=total>=70?'High':total>=50?'Medium':'Early Stage';
+  var monText=total>=70?
+    'Your brand score ('+total+'/100) indicates strong monetisation readiness. You can command: speaking fees (₦150k–₦2M+ per engagement), paid newsletter/community, consulting retainer (₦200k–₦1M+/month), book deal, brand ambassador partnerships, and premium courses.'
+    :total>=50?
+    'Your brand score ('+total+'/100) shows moderate monetisation potential. Focus on building one premium offering: a paid Whatsapp community, a signature online course (Selar or Gumroad), or consulting packages. At this stage, charge for your time: ₦20k–₦100k per consulting session.'
+    :
+    'Your brand score ('+total+'/100) means you\'re not yet ready for significant brand monetisation. Invest the next 6–12 months building visibility. Most brand revenue comes after crossing the 60/100 threshold. Start with free speaking, free content, free community — then monetise when you have an audience.';
+  document.getElementById('monetisation').innerHTML='<strong>Monetisation Readiness: '+monScore+'</strong><br><br>'+monText;
+
+  document.getElementById('results').className='en-results on';
+}
+
+function getAction(cat){
+  var actions={
+    'LinkedIn':'Complete every section of your LinkedIn profile. Request 3 recommendations from former colleagues. Turn on Creator Mode.',
+    'Social Media':'Pick ONE platform (Twitter or Instagram) and post daily for 30 days. Engage with 10 accounts in your industry every day.',
+    'Digital / SEO':'Create a free portfolio site on Carrd.co (30 mins). Add your name as a keyword in your LinkedIn headline and bio.',
+    'Content Creation':'Write one article per week on Medium, LinkedIn, or your blog. Repurpose each article into 5 Twitter/LinkedIn posts.',
+    'Offline Reputation':'Email 3 conference organisers requesting a speaking slot. Attend 2 industry events and introduce yourself to 10 people.',
+    'Credentials':'Research one internationally recognised certification relevant to your field. Start the prep course this week.'
+  };
+  return actions[cat]||'Focus on building your presence in this area through consistent effort.';
+}
+</script>
+
+<afro-footer></afro-footer>
+</body>
+</html>

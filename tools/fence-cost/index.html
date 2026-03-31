@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fence Cost Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate fence construction costs across Africa. Block wall, barbed wire, chain link, electric fence — with materials and labour breakdown.">
+<meta property="og:title" content="Fence Cost Calculator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/fence-cost/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/fence-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fence-cost/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fence-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.cost-breakdown { display:flex; flex-direction:column; gap:.5rem; margin-top:.75rem; }
+.cost-row { display:flex; justify-content:space-between; padding:.4rem .75rem; background:var(--en-accent-pale); border-radius:6px; }
+.cost-row.total-row { background:var(--en-accent-dark); color:white; font-weight:700; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Fence Cost Calculator","item":"https://afrotools.com/tools/fence-cost/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/engineering/">Engineering</a></li>
+    <li aria-current="page">Fence Cost Calculator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Fence Cost Calculator</h1>
+    <p>Get accurate fence construction estimates for block walls, chain link, electric fencing, and more — across 10 African countries.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Fence Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country</label>
+          <select class="en-select" id="fc-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">South Africa (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Egypt (EGP)</option><option value="ET">Ethiopia (ETB)</option><option value="TZ">Tanzania (TZS)</option><option value="UG">Uganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Morocco (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Total Perimeter Length (metres)</label>
+          <input type="number" class="en-input" id="fc-length" value="100" min="1">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Fence Height (metres)</label>
+          <select class="en-select" id="fc-height">
+            <option value="1.2">1.2m (low boundary)</option>
+            <option value="1.8" selected>1.8m (standard)</option>
+            <option value="2.4">2.4m (security)</option>
+            <option value="3.0">3.0m (high security)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Fence Type</label>
+          <select class="en-select" id="fc-type">
+            <option value="block_render">Block Wall + Render (most common)</option>
+            <option value="block_plain">Plain Block Wall</option>
+            <option value="chain_link">Chain Link Fence</option>
+            <option value="barbed_wire">Barbed Wire on Posts</option>
+            <option value="electric">Electric Fence</option>
+            <option value="wooden_palisade">Wooden Palisade</option>
+            <option value="metal_palisade">Metal Palisade</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Gates</label>
+          <input type="number" class="en-input" id="fc-gates" value="1" min="0" max="10">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Gate Type</label>
+          <select class="en-select" id="fc-gate-type">
+            <option value="manual_single">Manual Single Gate (3m)</option>
+            <option value="manual_double">Manual Double Gate (6m)</option>
+            <option value="sliding">Motorised Sliding Gate</option>
+            <option value="boom">Boom Barrier</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Add Barbed Wire / Razor Wire Topping?</label>
+          <select class="en-select" id="fc-topping">
+            <option value="none">None</option>
+            <option value="barbed">3-strand Barbed Wire</option>
+            <option value="razor">Razor Wire Coil</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcFence()">Calculate Fence Cost</button>
+    </div>
+
+    <div class="en-results" id="fc-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="fc-headline">Fence Cost Estimate</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Materials Cost</div><div class="en-stat-value" id="fc-mat">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Labour Cost</div><div class="en-stat-value" id="fc-lab">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Gates Total</div><div class="en-stat-value" id="fc-gate-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Grand Total</div><div class="en-stat-value" id="fc-grand">—</div></div>
+      </div>
+      <div class="en-results-grid" style="margin-top:1rem">
+        <div class="en-stat-card"><div class="en-stat-label">Cost per Linear Metre</div><div class="en-stat-value" id="fc-per-m">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Estimated Duration</div><div class="en-stat-value" id="fc-duration">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Cost Breakdown</h3>
+        <div class="cost-breakdown" id="fc-breakdown"></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Tips & Recommendations</h3>
+        <ul id="fc-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+// Cost per linear metre by fence type (materials only)
+var FC_RATES = {
+  NG:{ sym:'₦',
+    block_render:{mat:18000,lab:8000}, block_plain:{mat:13000,lab:6000},
+    chain_link:{mat:5500,lab:2000}, barbed_wire:{mat:1800,lab:800},
+    electric:{mat:9000,lab:4000}, wooden_palisade:{mat:4500,lab:2000},
+    metal_palisade:{mat:12000,lab:5000},
+    gate_manual_single:120000, gate_manual_double:200000, gate_sliding:650000, gate_boom:450000,
+    topping_barbed:900, topping_razor:2500
+  },
+  KE:{ sym:'KES',
+    block_render:{mat:7500,lab:3000}, block_plain:{mat:5500,lab:2200},
+    chain_link:{mat:2200,lab:800}, barbed_wire:{mat:700,lab:300},
+    electric:{mat:3500,lab:1500}, wooden_palisade:{mat:1800,lab:800},
+    metal_palisade:{mat:5000,lab:2000},
+    gate_manual_single:50000, gate_manual_double:85000, gate_sliding:280000, gate_boom:200000,
+    topping_barbed:350, topping_razor:1000
+  },
+  ZA:{ sym:'ZAR',
+    block_render:{mat:2200,lab:900}, block_plain:{mat:1600,lab:700},
+    chain_link:{mat:650,lab:250}, barbed_wire:{mat:200,lab:90},
+    electric:{mat:1100,lab:450}, wooden_palisade:{mat:550,lab:230},
+    metal_palisade:{mat:1500,lab:600},
+    gate_manual_single:15000, gate_manual_double:25000, gate_sliding:80000, gate_boom:55000,
+    topping_barbed:100, topping_razor:280
+  },
+  GH:{ sym:'GHS',
+    block_render:{mat:1800,lab:700}, block_plain:{mat:1300,lab:500},
+    chain_link:{mat:500,lab:200}, barbed_wire:{mat:160,lab:70},
+    electric:{mat:900,lab:350}, wooden_palisade:{mat:450,lab:180},
+    metal_palisade:{mat:1200,lab:480},
+    gate_manual_single:12000, gate_manual_double:20000, gate_sliding:65000, gate_boom:45000,
+    topping_barbed:80, topping_razor:220
+  },
+  EG:{ sym:'EGP',
+    block_render:{mat:2000,lab:800}, block_plain:{mat:1400,lab:550},
+    chain_link:{mat:600,lab:220}, barbed_wire:{mat:180,lab:75},
+    electric:{mat:950,lab:380}, wooden_palisade:{mat:480,lab:190},
+    metal_palisade:{mat:1300,lab:520},
+    gate_manual_single:13000, gate_manual_double:22000, gate_sliding:70000, gate_boom:48000,
+    topping_barbed:90, topping_razor:240
+  },
+  ET:{ sym:'ETB',
+    block_render:{mat:5000,lab:2000}, block_plain:{mat:3500,lab:1400},
+    chain_link:{mat:1500,lab:550}, barbed_wire:{mat:450,lab:180},
+    electric:{mat:2400,lab:950}, wooden_palisade:{mat:1200,lab:480},
+    metal_palisade:{mat:3200,lab:1280},
+    gate_manual_single:32000, gate_manual_double:55000, gate_sliding:175000, gate_boom:120000,
+    topping_barbed:220, topping_razor:600
+  },
+  TZ:{ sym:'TZS',
+    block_render:{mat:180000,lab:72000}, block_plain:{mat:130000,lab:52000},
+    chain_link:{mat:55000,lab:20000}, barbed_wire:{mat:17000,lab:7000},
+    electric:{mat:90000,lab:36000}, wooden_palisade:{mat:45000,lab:18000},
+    metal_palisade:{mat:120000,lab:48000},
+    gate_manual_single:1200000, gate_manual_double:2000000, gate_sliding:6500000, gate_boom:4500000,
+    topping_barbed:8500, topping_razor:23000
+  },
+  UG:{ sym:'UGX',
+    block_render:{mat:240000,lab:96000}, block_plain:{mat:170000,lab:68000},
+    chain_link:{mat:72000,lab:26000}, barbed_wire:{mat:22000,lab:9000},
+    electric:{mat:115000,lab:46000}, wooden_palisade:{mat:58000,lab:23000},
+    metal_palisade:{mat:155000,lab:62000},
+    gate_manual_single:1600000, gate_manual_double:2700000, gate_sliding:8500000, gate_boom:6000000,
+    topping_barbed:11000, topping_razor:30000
+  },
+  RW:{ sym:'RWF',
+    block_render:{mat:40000,lab:16000}, block_plain:{mat:28000,lab:11000},
+    chain_link:{mat:12000,lab:4500}, barbed_wire:{mat:3800,lab:1500},
+    electric:{mat:19000,lab:7600}, wooden_palisade:{mat:9600,lab:3800},
+    metal_palisade:{mat:26000,lab:10400},
+    gate_manual_single:260000, gate_manual_double:450000, gate_sliding:1400000, gate_boom:1000000,
+    topping_barbed:1900, topping_razor:5200
+  },
+  MA:{ sym:'MAD',
+    block_render:{mat:1000,lab:400}, block_plain:{mat:700,lab:280},
+    chain_link:{mat:300,lab:110}, barbed_wire:{mat:90,lab:38},
+    electric:{mat:480,lab:190}, wooden_palisade:{mat:240,lab:96},
+    metal_palisade:{mat:640,lab:256},
+    gate_manual_single:6500, gate_manual_double:11000, gate_sliding:35000, gate_boom:24000,
+    topping_barbed:45, topping_razor:120
+  }
+};
+
+function fmtCur(sym,n){ return sym + Math.round(n).toLocaleString(); }
+
+function calcFence(){
+  var country = document.getElementById('fc-country').value;
+  var length = +document.getElementById('fc-length').value;
+  var height = +document.getElementById('fc-height').value;
+  var ftype = document.getElementById('fc-type').value;
+  var gates = +document.getElementById('fc-gates').value;
+  var gateType = document.getElementById('fc-gate-type').value;
+  var topping = document.getElementById('fc-topping').value;
+  var r = FC_RATES[country], sym = r.sym;
+
+  // Height factor (base is 1.8m)
+  var heightFactor = height / 1.8;
+  var rates = r[ftype];
+  var matCost = rates.mat * length * heightFactor;
+  var labCost = rates.lab * length * heightFactor;
+  var gateCost = gates * r['gate_' + gateType];
+  var toppingCost = topping !== 'none' ? r['topping_' + topping] * length : 0;
+  var grandTotal = matCost + labCost + gateCost + toppingCost;
+
+  document.getElementById('fc-headline').textContent = length + 'm ' + ftype.replace(/_/g,' ') + ' — ' + height + 'm high';
+  document.getElementById('fc-mat').textContent = fmtCur(sym, matCost);
+  document.getElementById('fc-lab').textContent = fmtCur(sym, labCost);
+  document.getElementById('fc-gate-total').textContent = gates > 0 ? fmtCur(sym, gateCost) : 'No gates';
+  document.getElementById('fc-grand').textContent = fmtCur(sym, grandTotal);
+  document.getElementById('fc-per-m').textContent = fmtCur(sym, grandTotal / length) + '/m';
+  var workDays = Math.ceil(length / 10);
+  document.getElementById('fc-duration').textContent = workDays + ' days (est.)';
+
+  var items = [
+    { label:'Fence materials (' + length + 'm × ' + height + 'm)', val: matCost },
+    { label:'Labour', val: labCost },
+  ];
+  if (topping !== 'none') items.push({ label: (topping === 'razor' ? 'Razor' : 'Barbed') + ' wire topping (' + length + 'm)', val: toppingCost });
+  if (gates > 0) items.push({ label: gates + '× ' + gateType.replace(/_/g,' ') + ' gate(s)', val: gateCost });
+  items.push({ label:'TOTAL', val: grandTotal, total: true });
+
+  document.getElementById('fc-breakdown').innerHTML = items.map(function(i){
+    return '<div class="cost-row' + (i.total ? ' total-row' : '') + '"><span>' + i.label + '</span><span>' + fmtCur(sym, i.val) + '</span></div>';
+  }).join('');
+
+  var tips = [
+    ftype.includes('block') ? 'Block walls need 225mm (9-inch) width for walls above 1.8m height. Use hollow blocks for economy.' : '',
+    ftype === 'electric' ? 'Electric fence requires energiser, earth stakes, and insulated posts. Professional installation recommended for safety.' : '',
+    ftype === 'chain_link' ? 'Use galvanised chain link (not painted) for longer life. Bury bottom 150mm in concrete.' : '',
+    'Add 10% contingency for site irregularities, corners, and waste.',
+    'Foundation depth should be at least 600mm below ground level for all fence types.',
+    'Get at least 3 contractor quotes — fence costs can vary by 30–50% between contractors.'
+  ].filter(Boolean);
+  document.getElementById('fc-tips').innerHTML = tips.map(function(t){ return '<li>' + t + '</li>'; }).join('');
+  document.getElementById('fc-results').classList.add('on');
+  document.getElementById('fc-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

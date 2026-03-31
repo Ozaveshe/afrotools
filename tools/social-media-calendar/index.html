@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Social Media Content Calendar Generator — Africa | AfroTools</title>
+<meta name="description" content="Generate a 30-day social media content calendar with African timezone posting times. 20/30/50 content pillar rule, best times for WAT, EAT, CAT, SAST.">
+<link rel="canonical" href="https://afrotools.com/tools/social-media-calendar/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px}
+.cal-header{text-align:center;font-size:.75rem;font-weight:700;color:#64748b;padding:8px 4px;text-transform:uppercase;letter-spacing:.05em}
+.cal-day{background:#fff;border:1px solid var(--en-border);border-radius:10px;padding:10px 8px;min-height:100px;position:relative}
+.cal-day-num{font-size:.75rem;font-weight:800;color:var(--en-muted,#64748b);margin-bottom:6px}
+.cal-post{border-radius:6px;padding:4px 6px;font-size:.72rem;font-weight:600;margin-bottom:4px;line-height:1.3}
+.post-edu{background:#dbeafe;color:#1e40af}
+.post-ent{background:#fce7f3;color:#9d174d}
+.post-promo{background:#dcfce7;color:#166534}
+.post-personal{background:#fef3c7;color:#92400e}
+.cal-time{font-size:.68rem;color:#94a3b8;margin-top:2px}
+@media(max-width:600px){.cal-grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Social Media Content Calendar</span>
+    </nav>
+    <h1>Social Media <em>Content Calendar Generator</em></h1>
+    <p>Generate a full 30-day content calendar with African timezone posting times. Applies the 20/30/50 content pillar rule — 20% promotional, 30% educational, 50% entertaining/engaging content.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f4c5; Content Calendar</span>
+      <span class="en-tool-hero-pill">&#x1f4f1; Social Media</span>
+      <span class="en-tool-hero-pill">&#x23f0; Posting Times</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout-wide">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4f1;</div>Calendar Settings</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Brand / Niche</label>
+        <select id="niche" class="en-select">
+          <option value="fashion">Fashion / Style</option>
+          <option value="food">Food / Restaurant</option>
+          <option value="tech">Tech / Startups</option>
+          <option value="beauty">Beauty / Skincare</option>
+          <option value="finance">Finance / Money Tips</option>
+          <option value="fitness">Fitness / Health</option>
+          <option value="comedy">Comedy / Entertainment</option>
+          <option value="education">Education / Tutoring</option>
+          <option value="music">Music / Arts</option>
+          <option value="travel">Travel</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Primary Platform</label>
+        <select id="platform" class="en-select">
+          <option value="instagram" selected>Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="twitter">Twitter / X</option>
+          <option value="linkedin">LinkedIn</option>
+          <option value="facebook">Facebook</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Posting Frequency</label>
+        <select id="frequency" class="en-select">
+          <option value="daily">Daily (7x/week)</option>
+          <option value="3x" selected>3x per week</option>
+          <option value="weekly">Weekly (1x/week)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Timezone</label>
+        <select id="timezone" class="en-select">
+          <option value="WAT">WAT (Nigeria, Ghana — UTC+1)</option>
+          <option value="EAT">EAT (Kenya, Tanzania, Uganda — UTC+3)</option>
+          <option value="CAT">CAT (Zimbabwe, Zambia, DRC — UTC+2)</option>
+          <option value="SAST">SAST (South Africa — UTC+2)</option>
+          <option value="EET">EET (Egypt — UTC+2)</option>
+          <option value="GMT">GMT (Senegal, Ghana — UTC+0)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Starting Month</label>
+        <select id="startMonth" class="en-select">
+          <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+          <option value="3">April</option><option value="4">May</option><option value="5">June</option>
+          <option value="6">July</option><option value="7">August</option><option value="8">September</option>
+          <option value="9">October</option><option value="10">November</option><option value="11">December</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="generate()">Generate 30-Day Content Calendar</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Your Content Calendar</div>
+            <div class="en-results-hero-value" id="calTitle">30 Days</div>
+            <div class="en-results-hero-sub" id="calSub"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Total Posts</div>
+            <div style="font-size:1.8rem;font-weight:800;color:var(--en-accent)" id="postCount">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="en-card" style="margin-bottom:24px">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4cb;</div>Content Mix (20/30/50 Rule)</div>
+      <div class="en-metrics" id="mixMetrics"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4c5;</div>30-Day Calendar</div>
+      <div class="cal-grid" id="calHeaders"></div>
+      <div class="cal-grid" id="calendar"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4dd;</div>Caption Templates by Post Type</div>
+      <div id="captionTemplates"></div>
+    </div>
+
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x23f0;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Best Times for African Audiences</div>
+        <div class="en-tip-text">WAT (Nigeria/Ghana): Peak times are 7–9am, 12–2pm, 7–10pm. EAT (Kenya): 8–10am, 1–3pm, 8–10pm. SAST (South Africa): 7–9am, 12–1pm, 7–9pm. Avoid posting between 2–4am local time. Wednesday and Thursday consistently see highest engagement for business content in Africa.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var CONTENT_TYPES={
+  fashion:{edu:['Style tip of the week','How to style this piece','Trend report','Care guide for fabric'],ent:['OOTD reveal','Before/after styling','Fit check reel','Behind the scenes'],promo:['New collection drop','Limited sale','Client testimonial'],personal:['My styling journey','Throwback look','Day in my life']},
+  food:{edu:['Recipe of the week','Nutrition fact','Cooking technique','Ingredient spotlight'],ent:['Cook-along reel','Kitchen fail','Food review','Market haul'],promo:['Menu update','Catering special','Order now'],personal:['Chef story','My food journey','Kitchen tour']},
+  finance:{edu:['Money tip','Investment explainer','Budget breakdown','Debt paydown strategy'],ent:['Financial myth busted','Money meme','Rich vs broke'],promo:['Consultation booking','Course launch','Coaching offer'],personal:['My financial journey','First income story','Goal achieved']},
+  tech:{edu:['Tech tip','App recommendation','How-to tutorial','Digital tool review'],ent:['Tech unboxing','Funny tech fail','Gadget comparison'],promo:['Product launch','Service offer','Client result'],personal:['Behind the build','My tech setup','Startup journey']},
+  beauty:{edu:['Skincare routine','Ingredient explainer','Makeup tutorial','Hair care tip'],ent:['Transformation reel','Glow-up reveal','Product test'],promo:['Product launch','Bundle deal','Client result'],personal:['Skin story','Confidence journey','Day in my life']},
+  fitness:{edu:['Workout of week','Nutrition tip','Recovery technique','Form guide'],ent:['Transformation reel','Challenge video','Workout fail'],promo:['Program launch','Coaching offer','Success story'],personal:['Fitness journey','Rest day thoughts','Goal achieved']},
+  comedy:{edu:['Did you know (funny)','Lifestyle tip (comic)','Culture lesson','Phrase of the week'],ent:['Skit reel','Reaction video','Collaboration','Trend parody'],promo:['Merch drop','Show tickets','Brand deal'],personal:['Behind the scenes','Fan question','Day in my life']},
+  education:{edu:['Lesson of the week','Study tip','Subject explainer','Resources list'],ent:['Quiz','Debate topic','Student story'],promo:['Course launch','Tutoring offer','Free resource'],personal:['Teaching story','Student success','Journey update']},
+  music:{edu:['Music theory tip','Genre history','Instrument spotlight','Studio technique'],ent:['New track preview','Studio session','Freestyle clip'],promo:['Single release','Concert dates','Merchandise'],personal:['Artist journey','Inspiration story','Day in studio']},
+  travel:{edu:['Travel tip','Visa guide','Budget travel hack','Packing guide'],ent:['Destination reveal','Travel mishap','Culture experience'],promo:['Travel deal','Tour package','Itinerary service'],personal:['Travel story','Why I travel','Home vs abroad']}
+};
+var BEST_TIMES={WAT:['7:30am','12:30pm','8:00pm'],EAT:['8:00am','1:00pm','8:30pm'],CAT:['7:30am','12:00pm','8:00pm'],SAST:['7:30am','12:00pm','7:30pm'],EET:['8:00am','2:00pm','8:00pm'],GMT:['8:00am','1:00pm','8:00pm']};
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function generate(){
+  var niche=document.getElementById('niche').value;
+  var platform=document.getElementById('platform').value;
+  var freq=document.getElementById('frequency').value;
+  var tz=document.getElementById('timezone').value;
+  var month=parseInt(document.getElementById('startMonth').value);
+  var year=new Date().getFullYear();
+  var daysInMonth=new Date(year,month+1,0).getDate();
+  var postDays=freq==='daily'?[0,1,2,3,4,5,6]:freq==='3x'?[0,2,4]:freq==='weekly'?[0]:[];
+  var times=BEST_TIMES[tz]||BEST_TIMES['WAT'];
+  var content=CONTENT_TYPES[niche]||CONTENT_TYPES['fashion'];
+  var totalPosts=0;
+  var eduCount=0,entCount=0,promoCount=0,persCount=0;
+  document.getElementById('calTitle').textContent=MONTHS[month]+' '+year;
+  document.getElementById('calSub').textContent=freq==='daily'?'Daily posting':'Posting '+( freq==='3x'?'3x':'once')+' per week — '+tz+' timezone';
+  var headerHtml=DAYS.map(function(d){return '<div class="cal-header">'+d+'</div>'}).join('');
+  document.getElementById('calHeaders').innerHTML=headerHtml;
+  var startDay=new Date(year,month,1).getDay();
+  var calHtml='';
+  for(var pad=0;pad<startDay;pad++) calHtml+='<div></div>';
+  var typeRotation=['edu','ent','ent','promo','ent','edu','personal'];
+  var contentIndexes={edu:0,ent:0,promo:0,personal:0};
+  for(var d=1;d<=daysInMonth;d++){
+    var dayOfWeek=new Date(year,month,d).getDay();
+    var isPostDay=postDays.indexOf(dayOfWeek)>-1;
+    if(isPostDay){
+      totalPosts++;
+      var typeKey=typeRotation[totalPosts%7];
+      var arr=content[typeKey];
+      var topic=arr[contentIndexes[typeKey]%arr.length];
+      contentIndexes[typeKey]++;
+      var timeIdx=totalPosts%3;
+      var time=times[timeIdx];
+      var cls={edu:'post-edu',ent:'post-ent',promo:'post-promo',personal:'post-personal'}[typeKey];
+      var label={edu:'Educate',ent:'Entertain',promo:'Promote',personal:'Personal'}[typeKey];
+      if(typeKey==='edu') eduCount++;
+      else if(typeKey==='ent') entCount++;
+      else if(typeKey==='promo') promoCount++;
+      else persCount++;
+      calHtml+='<div class="cal-day"><div class="cal-day-num">'+d+'</div><div class="cal-post '+cls+'">'+label+'</div><div style="font-size:.72rem;color:#334155;line-height:1.3;margin-bottom:4px">'+topic+'</div><div class="cal-time">&#x23f0; '+time+'</div></div>';
+    } else {
+      calHtml+='<div class="cal-day"><div class="cal-day-num" style="color:#cbd5e1">'+d+'</div></div>';
+    }
+  }
+  document.getElementById('calendar').innerHTML=calHtml;
+  document.getElementById('postCount').textContent=totalPosts;
+  document.getElementById('mixMetrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Educational (30%)</div><div class="en-metric-value">'+eduCount+'</div><div class="en-metric-unit" style="background:#dbeafe;color:#1e40af;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px">Educate</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Entertainment (50%)</div><div class="en-metric-value">'+entCount+'</div><div class="en-metric-unit" style="background:#fce7f3;color:#9d174d;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px">Entertain</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Promotional (20%)</div><div class="en-metric-value">'+promoCount+'</div><div class="en-metric-unit" style="background:#dcfce7;color:#166534;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px">Promote</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Personal</div><div class="en-metric-value">'+persCount+'</div><div class="en-metric-unit" style="background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px">Connect</div></div>';
+
+  var captions={
+    edu:'📚 Did you know? [Insert fact about '+niche+']\\n\\nHere\'s why this matters for you: [explain in 2-3 sentences]\\n\\nSave this post and share with someone who needs to know this!\\n\\n#'+niche+' #Africa #AfricanCreatives #LearnSomethingNew',
+    ent:'✨ [Hook — ask a question or make a bold statement]\\n\\n[Story or experience — 3-4 sentences]\\n\\nDouble tap if you agree! Drop your thoughts below 👇\\n\\n#'+niche+' #AfricaIsNotACountry #ContentCreator',
+    promo:'🚀 [Product/Service Name] is here!\\n\\n[3 bullet points of key benefits]\\n\\n✅ [Call to action — e.g., "Link in bio" or "DM \'INFO\' to get started"]\\n\\nLimited spots available — don\'t miss out!',
+    personal:'I don\'t usually share this, but...\\n\\n[Personal story or lesson — 3-4 sentences]\\n\\nWhat\'s one thing you\'ve learned on your journey? Comment below!\\n\\n#MyJourney #Authentic #AfricanCreator'
+  };
+  var captionHtml=Object.keys(captions).map(function(type){
+    var label={edu:'Educational Post',ent:'Entertainment Post',promo:'Promotional Post',personal:'Personal/Story Post'}[type];
+    return '<div style="margin-bottom:16px"><div style="font-size:.85rem;font-weight:700;color:var(--en-accent-dark);margin-bottom:8px">'+label+'</div><div style="background:#f8fafd;border:1px solid var(--en-border);border-radius:10px;padding:14px;font-size:.83rem;line-height:1.7;color:#334155;white-space:pre-line">'+captions[type]+'</div></div>';
+  }).join('');
+  document.getElementById('captionTemplates').innerHTML=captionHtml;
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

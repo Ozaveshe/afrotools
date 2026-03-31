@@ -441,7 +441,15 @@
 
           <div class="field">
             <label class="f-label-text">Position</label>
-            <select class="f-input" id="positionSelect">
+            <div id="posGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px;">
+              <div class="pos-cell" data-pos="top-left" style="padding:10px;border:2px solid #e5e7eb;border-radius:8px;text-align:center;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:.15s;">Top Left</div>
+              <div class="pos-cell" data-pos="top-center" style="padding:10px;border:2px solid #e5e7eb;border-radius:8px;text-align:center;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:.15s;">Top Center</div>
+              <div class="pos-cell" data-pos="top-right" style="padding:10px;border:2px solid #e5e7eb;border-radius:8px;text-align:center;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:.15s;">Top Right</div>
+              <div class="pos-cell" data-pos="bottom-left" style="padding:10px;border:2px solid #e5e7eb;border-radius:8px;text-align:center;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:.15s;">Bottom Left</div>
+              <div class="pos-cell active" data-pos="bottom-center" style="padding:10px;border:2px solid var(--color-primary,#007AFF);border-radius:8px;text-align:center;font-size:.72rem;font-weight:700;color:var(--color-primary,#007AFF);cursor:pointer;transition:.15s;background:#EFF6FF;">Bottom Center</div>
+              <div class="pos-cell" data-pos="bottom-right" style="padding:10px;border:2px solid #e5e7eb;border-radius:8px;text-align:center;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:.15s;">Bottom Right</div>
+            </div>
+            <select class="f-input" id="positionSelect" style="display:none;">
               <option value="bottom-center">Bottom Center</option>
               <option value="bottom-left">Bottom Left</option>
               <option value="bottom-right">Bottom Right</option>
@@ -585,6 +593,21 @@
     numColorHex.textContent = e.target.value.toUpperCase();
   });
 
+  // Visual position grid
+  document.querySelectorAll('#posGrid .pos-cell').forEach(function(cell) {
+    cell.addEventListener('click', function() {
+      document.querySelectorAll('#posGrid .pos-cell').forEach(function(c) {
+        c.style.borderColor = '#e5e7eb'; c.style.color = '#6b7280'; c.style.background = '';
+        c.classList.remove('active');
+      });
+      cell.style.borderColor = 'var(--color-primary,#007AFF)';
+      cell.style.color = 'var(--color-primary,#007AFF)';
+      cell.style.background = '#EFF6FF';
+      cell.classList.add('active');
+      document.getElementById('positionSelect').value = cell.dataset.pos;
+    });
+  });
+
   pdfInput.addEventListener('change', (e) => {
     if (e.target.files[0]?.type === 'application/pdf') {
       currentFile = e.target.files[0];
@@ -716,7 +739,7 @@
     addBtn.disabled = false;
   });
 
-  downloadBtn.addEventListener('click', () => {
+  function doActualDownload() {
     if (resultPdf) {
       const link = document.createElement('a');
       const url = URL.createObjectURL(new Blob([resultPdf], { type: 'application/pdf' }));
@@ -725,8 +748,15 @@
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
+  }
+
+  downloadBtn.addEventListener('click', () => {
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
   });
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

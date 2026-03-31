@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Domain Checker — .ng .ke .za .gh TLDs Guide | AfroTools</title>
+<meta name="description" content="Check pricing, registrar and requirements for African country-code domains: .ng, .ke, .za, .gh, .et, .tz, .rw, .cm, .sn, .ma, .eg and more.">
+<link rel="canonical" href="https://afrotools.com/tools/african-domains/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Domain Checker | AfroTools">
+<meta property="og:description" content="African ccTLD pricing, registrars and requirements for .ng, .ke, .za, .gh and 20+ more African domains.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
+.domain-input-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:24px}
+.domain-input-row .en-input{flex:1;min-width:200px;font-size:1.1rem;font-weight:700;letter-spacing:.01em}
+.tld-selector{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.tld-chip{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border:2px solid var(--en-border);border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;background:#fff;user-select:none}
+.tld-chip.selected{border-color:var(--en-accent);background:var(--en-accent-pale);color:var(--en-accent-dark)}
+.tld-chip:hover{border-color:var(--en-accent-light)}
+.results-table-wrap{overflow-x:auto;border-radius:12px;border:1.5px solid var(--en-border)}
+.results-table{width:100%;border-collapse:collapse;font-size:.88rem;background:#fff}
+.results-table thead tr{background:var(--en-accent-pale)}
+.results-table th{padding:12px 16px;text-align:left;font-size:.76rem;font-weight:700;color:var(--en-accent-dark);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.results-table td{padding:13px 16px;border-bottom:1px solid var(--en-border);color:var(--en-text);vertical-align:middle}
+.results-table tr:last-child td{border-bottom:none}
+.results-table tbody tr:hover td{background:var(--en-accent-pale)}
+.price-badge{display:inline-block;background:#f0fdf4;color:#15803d;border-radius:6px;padding:3px 10px;font-size:.8rem;font-weight:700}
+.req-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:.75rem;font-weight:600}
+.req-open{background:#d1fae5;color:#065f46}
+.req-local{background:#fef3c7;color:#92400e}
+.req-strict{background:#fee2e2;color:#991b1b}
+.flag-large{font-size:1.4rem}
+.domain-preview{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--en-accent-dark);font-size:1rem}
+.whois-link{color:var(--en-accent);font-size:.8rem;text-decoration:none;font-weight:600}
+.whois-link:hover{text-decoration:underline}
+.select-all-row{display:flex;gap:8px;align-items:center;margin-bottom:12px;font-size:.82rem;color:var(--en-muted)}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">African Domain Checker</span>
+    </nav>
+    <h1>African <em>Domain Checker</em></h1>
+    <p>Check pricing, registrars and local-presence requirements for African country-code TLDs. Find the right .ng, .ke, .za or .gh domain for your project.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">🌐 25+ African TLDs</span>
+      <span class="en-tool-hero-pill">💰 Pricing info</span>
+      <span class="en-tool-hero-pill">✅ Requirements guide</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout-wide">
+  <div class="en-card">
+    <div class="en-card-title"><span class="en-card-title-icon">🔍</span> Check Your Domain</div>
+    <div class="domain-input-row">
+      <input class="en-input" id="domain-name" placeholder="yourdomain (without TLD)" oninput="update()">
+      <button class="en-btn en-btn-sm" onclick="selectAll()">Select All TLDs</button>
+      <button class="en-btn en-btn-sm en-btn-secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <p style="font-size:.84rem;color:var(--en-muted);margin-bottom:12px;font-weight:600">Select TLDs to check:</p>
+    <div class="tld-selector" id="tld-selector"></div>
+  </div>
+
+  <div class="en-card" id="results-card" style="display:none">
+    <div class="en-card-title"><span class="en-card-title-icon">📊</span> Domain Availability & Pricing</div>
+    <div class="results-table-wrap">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th>Country</th>
+            <th>Price/yr</th>
+            <th>Renewal</th>
+            <th>Requirements</th>
+            <th>Registrar</th>
+            <th>Whois</th>
+          </tr>
+        </thead>
+        <tbody id="results-tbody"></tbody>
+      </table>
+    </div>
+    <p style="font-size:.76rem;color:var(--en-muted);margin-top:12px">* Prices are approximate USD. Some registrars charge in local currency. Always verify current pricing on registrar websites. Local-presence requirements may have exceptions for trademark holders.</p>
+  </div>
+
+  <div class="en-card" style="margin-top:20px">
+    <div class="en-card-title"><span class="en-card-title-icon">💡</span> African Domain Quick Guide</div>
+    <div class="en-form-grid" style="gap:16px">
+      <div class="en-tip" style="margin-bottom:0">
+        <div class="en-tip-icon">🇳🇬</div>
+        <div><div class="en-tip-label">.ng / .com.ng</div><div class="en-tip-text">No local presence required for .ng. .com.ng is cheaper (~$10/yr). Registered via NiRA-accredited registrars like QServers, WhoGoHost.</div></div>
+      </div>
+      <div class="en-tip" style="margin-bottom:0">
+        <div class="en-tip-icon">🇰🇪</div>
+        <div><div class="en-tip-label">.ke / .co.ke</div><div class="en-tip-text">.co.ke is most popular ($15-20/yr). No local company required. Register via KENIC-accredited registrars like Truehost, Webmaster Kenya.</div></div>
+      </div>
+      <div class="en-tip" style="margin-bottom:0">
+        <div class="en-tip-icon">🇿🇦</div>
+        <div><div class="en-tip-label">.za / .co.za</div><div class="en-tip-text">.co.za requires registrant to be in SA or have SA company. $12-18/yr. Register via ZARC-accredited registrars: Afrihost, 1-grid, Hetzner SA.</div></div>
+      </div>
+      <div class="en-tip" style="margin-bottom:0">
+        <div class="en-tip-icon">🇬🇭</div>
+        <div><div class="en-tip-label">.gh / .com.gh</div><div class="en-tip-text">No local presence required for .com.gh. ~$25/yr. Register via NIC Ghana. Alternatives: .net.gh, .org.gh, .edu.gh (for institutions).</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+var TLDS=[
+  {tld:'.ng',country:'Nigeria',flag:'🇳🇬',price:30,renew:30,req:'open',registrar:'QServers / WhoGoHost',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.com.ng',country:'Nigeria',flag:'🇳🇬',price:10,renew:10,req:'open',registrar:'WhoGoHost / NiRA',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.ke',country:'Kenya',flag:'🇰🇪',price:25,renew:25,req:'open',registrar:'Truehost / KENIC',whoisBase:'https://www.kenic.or.ke/index.php/whois'},
+  {tld:'.co.ke',country:'Kenya',flag:'🇰🇪',price:18,renew:18,req:'open',registrar:'Truehost Kenya',whoisBase:'https://www.kenic.or.ke/index.php/whois'},
+  {tld:'.za',country:'South Africa',flag:'🇿🇦',price:20,renew:20,req:'local',registrar:'Afrihost / Hetzner SA',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.co.za',country:'South Africa',flag:'🇿🇦',price:15,renew:15,req:'local',registrar:'Afrihost / 1-grid',whoisBase:'https://co.za/whois'},
+  {tld:'.gh',country:'Ghana',flag:'🇬🇭',price:35,renew:35,req:'open',registrar:'NIC Ghana',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.com.gh',country:'Ghana',flag:'🇬🇭',price:25,renew:25,req:'open',registrar:'NIC Ghana / Surfline',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.et',country:'Ethiopia',flag:'🇪🇹',price:30,renew:30,req:'local',registrar:'EthioTelecom',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.tz',country:'Tanzania',flag:'🇹🇿',price:30,renew:30,req:'local',registrar:'TZNIC',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.ug',country:'Uganda',flag:'🇺🇬',price:35,renew:35,req:'open',registrar:'UIXC / Webline',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.rw',country:'Rwanda',flag:'🇷🇼',price:45,renew:45,req:'open',registrar:'RICTA Rwanda',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.cm',country:'Cameroon',flag:'🇨🇲',price:40,renew:40,req:'open',registrar:'Camtel',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.sn',country:'Senegal',flag:'🇸🇳',price:35,renew:35,req:'local',registrar:'NIC Sénégal',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.ma',country:'Morocco',flag:'🇲🇦',price:30,renew:30,req:'open',registrar:'ANRT Morocco',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.eg',country:'Egypt',flag:'🇪🇬',price:35,renew:35,req:'local',registrar:'NTRA Egypt',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.ci',country:"Côte d'Ivoire",flag:'🇨🇮',price:40,renew:40,req:'local',registrar:'ARTCI',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.tn',country:'Tunisia',flag:'🇹🇳',price:30,renew:30,req:'open',registrar:'ATI Tunisia',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.dz',country:'Algeria',flag:'🇩🇿',price:30,renew:30,req:'local',registrar:'ANIC Algeria',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.mu',country:'Mauritius',flag:'🇲🇺',price:50,renew:50,req:'open',registrar:'Mauritius Telecom',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.africa',country:'Pan-Africa',flag:'🌍',price:25,renew:25,req:'open',registrar:'ZACR / various',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.ao',country:'Angola',flag:'🇦🇴',price:50,renew:50,req:'strict',registrar:'DNS Angola',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.mz',country:'Mozambique',flag:'🇲🇿',price:40,renew:40,req:'local',registrar:'MozNIC',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.zm',country:'Zambia',flag:'🇿🇲',price:35,renew:35,req:'open',registrar:'ZICTA Zambia',whoisBase:'https://www.whois.com/whois/'},
+  {tld:'.zw',country:'Zimbabwe',flag:'🇿🇼',price:30,renew:30,req:'local',registrar:'POTRAZ',whoisBase:'https://www.whois.com/whois/'},
+];
+
+var selected=new Set(['.ng','.com.ng','.ke','.co.ke','.za','.co.za','.gh']);
+
+function renderChips(){
+  var el=document.getElementById('tld-selector');
+  el.innerHTML=TLDS.map(function(t){
+    var sel=selected.has(t.tld)?'selected':'';
+    return '<div class="tld-chip '+sel+'" onclick="toggleTld(\''+t.tld+'\')" title="'+t.country+'">'+t.flag+' '+t.tld+'</div>';
+  }).join('');
+}
+
+function toggleTld(tld){
+  if(selected.has(tld))selected.delete(tld);
+  else selected.add(tld);
+  renderChips();
+  update();
+}
+
+function selectAll(){TLDS.forEach(function(t){selected.add(t.tld);});renderChips();update();}
+function clearAll(){selected.clear();renderChips();update();}
+
+function update(){
+  var name=(document.getElementById('domain-name').value||'').toLowerCase().replace(/[^a-z0-9\-]/g,'');
+  var card=document.getElementById('results-card');
+  if(!selected.size||!name){card.style.display='none';return;}
+  card.style.display='block';
+
+  var list=TLDS.filter(function(t){return selected.has(t.tld);});
+  var reqMap={open:'<span class="req-badge req-open">Open</span>',local:'<span class="req-badge req-local">Local presence</span>',strict:'<span class="req-badge req-strict">Strict / local</span>'};
+  var tbody=document.getElementById('results-tbody');
+  tbody.innerHTML=list.map(function(t){
+    var domain=name+t.tld;
+    var whoisUrl=t.whoisBase+(t.whoisBase.includes('?')?'':domain);
+    return '<tr>'+
+      '<td><span class="domain-preview">'+domain+'</span></td>'+
+      '<td>'+t.flag+' '+t.country+'</td>'+
+      '<td><span class="price-badge">~$'+t.price+'/yr</span></td>'+
+      '<td style="color:var(--en-muted);font-size:.84rem">~$'+t.renew+'/yr</td>'+
+      '<td>'+reqMap[t.req]+'</td>'+
+      '<td style="font-size:.82rem;color:var(--en-text)">'+t.registrar+'</td>'+
+      '<td><a class="whois-link" href="'+whoisUrl+'" target="_blank" rel="noopener">Whois →</a></td>'+
+    '</tr>';
+  }).join('');
+}
+
+renderChips();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

@@ -695,7 +695,11 @@ async function convertWord() {
     document.getElementById('wordResultCard').classList.remove('hidden');
 
     var dlBtn = document.getElementById('wordDownloadBtn');
-    dlBtn.onclick = function() { downloadBlob(wordPdfBlob, outputName); };
+    dlBtn.onclick = function() {
+      function doWordDl() { downloadBlob(wordPdfBlob, outputName); }
+      var gate = document.querySelector('email-gate-modal');
+      if (gate) { gate.show(doWordDl); } else { doWordDl(); }
+    };
 
     fill.style.width = '100%';
     ptext.textContent = 'Done!';
@@ -940,7 +944,11 @@ async function convertExcel() {
     document.getElementById('excelResultCard').classList.remove('hidden');
 
     var dlBtn = document.getElementById('excelDownloadBtn');
-    dlBtn.onclick = function() { downloadBlob(excelPdfBlob, outputName); };
+    dlBtn.onclick = function() {
+      function doExcelDl() { downloadBlob(excelPdfBlob, outputName); }
+      var gate = document.querySelector('email-gate-modal');
+      if (gate) { gate.show(doExcelDl); } else { doExcelDl(); }
+    };
 
     fill.style.width = '100%';
     ptext.textContent = 'Done!';
@@ -1083,10 +1091,14 @@ function copyText() {
 }
 
 function downloadText() {
-  var output = document.getElementById('textOutput');
-  var blob = new Blob([output.value], { type: 'text/plain' });
-  var name = document.getElementById('textFileName').textContent.replace(/\.pdf$/i, '') + '.txt';
-  downloadBlob(blob, name);
+  function doTextDl() {
+    var output = document.getElementById('textOutput');
+    var blob = new Blob([output.value], { type: 'text/plain' });
+    var name = document.getElementById('textFileName').textContent.replace(/\.pdf$/i, '') + '.txt';
+    downloadBlob(blob, name);
+  }
+  var gate = document.querySelector('email-gate-modal');
+  if (gate) { gate.show(doTextDl); } else { doTextDl(); }
 }
 
 // ============================================================
@@ -1113,6 +1125,8 @@ setupDropZone('textDropZone', 'textFileInput', handlePdfTextFile);
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

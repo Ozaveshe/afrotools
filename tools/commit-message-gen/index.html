@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commit Message Generator — Conventional Commits | AfroTools</title>
+<meta name="description" content="Generate conventional commit messages instantly. Select type (feat/fix/docs), add scope, write description. Validates 72-char limit, gitmoji support, copy with one click.">
+<link rel="canonical" href="https://afrotools.com/tools/commit-message-gen/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Commit Message Generator | AfroTools">
+<meta property="og:description" content="Generate conventional commit messages. feat, fix, docs, refactor, chore and more. Includes gitmoji option and validation.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
+.type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:0}
+.type-card{border:2px solid var(--en-border);border-radius:10px;padding:10px 8px;cursor:pointer;transition:all .15s;background:#fff;text-align:center;user-select:none}
+.type-card.active{border-color:var(--en-accent);background:var(--en-accent-pale)}
+.type-card:hover:not(.active){border-color:var(--en-accent-light)}
+.type-card-label{font-size:.82rem;font-weight:700;color:var(--en-text);margin-bottom:2px}
+.type-card-desc{font-size:.68rem;color:var(--en-muted)}
+.type-card-emoji{font-size:1.2rem;margin-bottom:4px}
+.output-box{background:#0f0f1a;color:#c9d1d9;border-radius:12px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:.9rem;line-height:1.7;position:relative;min-height:80px;word-break:break-all}
+.output-main{font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px}
+.output-body{font-size:.85rem;color:#94a3b8}
+.output-footer{font-size:.8rem;color:#6272a4;margin-top:6px}
+.char-count{font-size:.76rem;font-weight:700;margin-top:6px}
+.char-ok{color:#22c55e}.char-warn{color:#f59e0b}.char-bad{color:#ef4444}
+.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:9px 18px;background:var(--en-accent);color:#fff;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:filter .15s;margin-top:12px}
+.copy-btn:hover{filter:brightness(1.1)}
+.copy-btn.copied{background:#22c55e}
+.copy-btn-sec{background:var(--en-accent-light);color:var(--en-accent-dark)}
+.copy-btn-sec:hover{filter:brightness(.97)}
+.validation-list{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+.val-row{display:flex;align-items:center;gap:8px;font-size:.82rem}
+.val-icon{font-size:.9rem;flex-shrink:0}
+.examples-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.example-card{background:#fff;border:1.5px solid var(--en-border);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s;position:relative}
+.example-card:hover{border-color:var(--en-accent);box-shadow:var(--en-shadow-hover)}
+.example-type{font-size:.7rem;font-weight:700;background:var(--en-accent-pale);color:var(--en-accent-dark);padding:2px 8px;border-radius:5px;margin-bottom:8px;display:inline-block}
+.example-msg{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--en-text);line-height:1.5}
+.example-hint{font-size:.7rem;color:var(--en-muted);margin-top:6px}
+.breaking-toggle{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--en-border);border-radius:9px;background:#fff;cursor:pointer;transition:all .15s;user-select:none}
+.breaking-toggle.on{border-color:#ef4444;background:#fee2e2}
+.breaking-toggle-label{font-size:.88rem;font-weight:600;color:var(--en-text)}
+.breaking-toggle-desc{font-size:.76rem;color:var(--en-muted)}
+.toggle-icon{font-size:1rem;flex-shrink:0}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Commit Message Generator</span>
+    </nav>
+    <h1>Commit Message <em>Generator</em></h1>
+    <p>Generate perfect conventional commit messages. Validate length, check imperative mood, add gitmoji and copy to clipboard instantly.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">📝 Conventional Commits</span>
+      <span class="en-tool-hero-pill">✅ Validation</span>
+      <span class="en-tool-hero-pill">😊 Gitmoji support</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout-wide" style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start">
+  <!-- Builder -->
+  <div>
+    <div class="en-card" style="margin-bottom:16px">
+      <div class="en-card-title"><span class="en-card-title-icon">🏷️</span> Commit Type</div>
+      <div class="type-grid" id="type-grid"></div>
+    </div>
+
+    <div class="en-card" style="margin-bottom:16px">
+      <div class="en-card-title"><span class="en-card-title-icon">✏️</span> Details</div>
+      <div class="en-form-grid en-form-grid-2">
+        <div class="en-field">
+          <label class="en-label">Scope <span class="en-label-hint">(optional)</span></label>
+          <input class="en-input" id="scope" placeholder="e.g. auth, api, ui, navbar…" oninput="generate()">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Issue / Ticket Reference <span class="en-label-hint">(optional)</span></label>
+          <input class="en-input" id="issue-ref" placeholder="e.g. #42, JIRA-123…" oninput="generate()">
+        </div>
+        <div class="en-field en-field-full">
+          <label class="en-label">Short Description <span class="en-label-hint">(imperative, present tense)</span></label>
+          <input class="en-input" id="description" placeholder="e.g. add user authentication endpoint" oninput="generate()" style="font-size:1rem">
+        </div>
+        <div class="en-field en-field-full">
+          <label class="en-label">Body <span class="en-label-hint">(optional — what and why)</span></label>
+          <textarea class="en-input" id="body" rows="3" placeholder="Explain motivation, context or more detail…" oninput="generate()" style="resize:vertical"></textarea>
+        </div>
+        <div class="en-field en-field-full">
+          <div class="breaking-toggle" id="breaking-toggle" onclick="toggleBreaking()">
+            <span class="toggle-icon" id="breaking-icon">⚪</span>
+            <div>
+              <div class="breaking-toggle-label">Breaking Change</div>
+              <div class="breaking-toggle-desc">Introduces a change that breaks backward compatibility (adds "!" and BREAKING CHANGE footer)</div>
+            </div>
+          </div>
+        </div>
+        <div class="en-field en-field-full" id="breaking-desc-field" style="display:none">
+          <label class="en-label">Breaking Change Description</label>
+          <input class="en-input" id="breaking-desc" placeholder="Describe what breaks and migration steps" oninput="generate()">
+        </div>
+        <div class="en-field en-field-full">
+          <label class="en-label" style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" id="gitmoji-toggle" onchange="generate()" style="width:16px;height:16px;accent-color:var(--en-accent)">
+            Include Gitmoji emoji
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div style="position:sticky;top:80px">
+    <div class="en-card" style="margin-bottom:16px">
+      <div class="en-card-title"><span class="en-card-title-icon">📋</span> Generated Message</div>
+      <div class="output-box" id="output-box">
+        <div class="output-main" id="output-main" style="color:#555">← Fill in the form</div>
+      </div>
+      <div class="char-count" id="char-count"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="copy-btn" onclick="copyMsg('oneline')">📋 Copy (one line)</button>
+        <button class="copy-btn copy-btn-sec" onclick="copyMsg('full')">📄 Copy (full)</button>
+      </div>
+    </div>
+
+    <!-- Validation -->
+    <div class="en-card">
+      <div class="en-card-title"><span class="en-card-title-icon">✅</span> Validation</div>
+      <div class="validation-list" id="validation-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Examples -->
+<div style="max-width:1100px;margin:0 auto;padding:0 24px 48px">
+  <div class="en-card">
+    <div class="en-card-title"><span class="en-card-title-icon">📚</span> Example Commits (click to use)</div>
+    <div class="examples-grid" id="examples-grid"></div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+var TYPES=[
+  {type:'feat',label:'feat',desc:'New feature',emoji:'✨',gitmoji:'✨'},
+  {type:'fix',label:'fix',desc:'Bug fix',emoji:'🐛',gitmoji:'🐛'},
+  {type:'docs',label:'docs',desc:'Documentation',emoji:'📚',gitmoji:'📚'},
+  {type:'style',label:'style',desc:'Formatting',emoji:'💅',gitmoji:'💄'},
+  {type:'refactor',label:'refactor',desc:'Code cleanup',emoji:'♻️',gitmoji:'♻️'},
+  {type:'test',label:'test',desc:'Add/fix tests',emoji:'✅',gitmoji:'✅'},
+  {type:'chore',label:'chore',desc:'Maintenance',emoji:'🔧',gitmoji:'🔧'},
+  {type:'perf',label:'perf',desc:'Performance',emoji:'⚡',gitmoji:'⚡'},
+  {type:'ci',label:'ci',desc:'CI/CD pipeline',emoji:'👷',gitmoji:'👷'},
+  {type:'build',label:'build',desc:'Build system',emoji:'📦',gitmoji:'📦'},
+  {type:'revert',label:'revert',desc:'Revert commit',emoji:'⏪',gitmoji:'⏪'},
+];
+
+var EXAMPLES=[
+  {type:'feat',scope:'auth',desc:'add OAuth2 login with Google and GitHub',body:'Implements OAuth2 flow for Google and GitHub providers.\nConfigured via environment variables.',issue:'#123'},
+  {type:'fix',scope:'api',desc:'handle null response from Paystack webhook',body:'Paystack sends null body on timeout. Added null check.',issue:''},
+  {type:'docs',scope:'',desc:'update README with Netlify deployment steps',body:'',issue:''},
+  {type:'feat',scope:'navbar',desc:'add dark mode toggle with system preference detection',body:'',issue:'#45'},
+  {type:'refactor',scope:'db',desc:'extract database connection to singleton class',body:'Reduces connection overhead and simplifies testing.',issue:''},
+  {type:'chore',scope:'deps',desc:'upgrade node from 18 to 20 LTS',body:'',issue:''},
+  {type:'feat',scope:'payments',desc:'integrate Flutterwave card payment',body:'Supports NGN, GHS, KES, ZAR. Adds webhook handler.',issue:'JIRA-55'},
+  {type:'fix',scope:'sms',desc:'retry failed Africa\'s Talking SMS 3 times',body:'Exponential backoff: 1s, 2s, 4s. Max 3 attempts.',issue:''},
+];
+
+var selectedType='feat';
+var isBreaking=false;
+
+function renderTypes(){
+  document.getElementById('type-grid').innerHTML=TYPES.map(function(t){
+    return '<div class="type-card'+(t.type===selectedType?' active':'')+'" onclick="selectType(\''+t.type+'\')">'+
+      '<div class="type-card-emoji">'+t.emoji+'</div>'+
+      '<div class="type-card-label">'+t.label+'</div>'+
+      '<div class="type-card-desc">'+t.desc+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+function selectType(type){selectedType=type;renderTypes();generate();}
+
+function toggleBreaking(){
+  isBreaking=!isBreaking;
+  document.getElementById('breaking-toggle').classList.toggle('on',isBreaking);
+  document.getElementById('breaking-icon').textContent=isBreaking?'🔴':'⚪';
+  document.getElementById('breaking-desc-field').style.display=isBreaking?'block':'none';
+  generate();
+}
+
+function generate(){
+  var scope=(document.getElementById('scope').value||'').trim();
+  var desc=(document.getElementById('description').value||'').trim();
+  var body=(document.getElementById('body').value||'').trim();
+  var issue=(document.getElementById('issue-ref').value||'').trim();
+  var breakDesc=(document.getElementById('breaking-desc').value||'').trim();
+  var useEmoji=document.getElementById('gitmoji-toggle').checked;
+  var t=TYPES.find(function(x){return x.type===selectedType;})||TYPES[0];
+
+  var prefix=(useEmoji?t.gitmoji+' ':'')+t.type+(isBreaking?'!':'')+(scope?'('+scope+')':'')+': ';
+  var firstLine=desc?prefix+desc:prefix+'<description>';
+  var charCount=firstLine.length;
+
+  var lines=[firstLine];
+  if(body){lines.push('');body.split('\n').forEach(function(l){lines.push(l);});}
+  if(isBreaking&&breakDesc){lines.push('');lines.push('BREAKING CHANGE: '+breakDesc);}
+  if(issue){lines.push('');lines.push('Closes '+issue);}
+
+  var outputMain=document.getElementById('output-main');
+  var outputBox=document.getElementById('output-box');
+
+  outputMain.textContent=firstLine;
+  outputMain.style.color=desc?'#fff':'#555';
+
+  // Show body/footer in output
+  var extra=lines.slice(1).join('\n');
+  if(extra.trim()){
+    outputBox.innerHTML='<div class="output-main" id="output-main" style="color:'+(desc?'#fff':'#555')+'">'+escHtml(firstLine)+'</div><div class="output-body">'+escHtml(extra)+'</div>';
+  } else {
+    outputBox.innerHTML='<div class="output-main" id="output-main" style="color:'+(desc?'#fff':'#555')+'">'+escHtml(firstLine)+'</div>';
+  }
+
+  // Char count
+  var ccEl=document.getElementById('char-count');
+  var cls=charCount<=50?'char-ok':charCount<=72?'char-warn':'char-bad';
+  ccEl.innerHTML='<span class="'+cls+'">'+charCount+' / 72 chars</span> '+(charCount<=72?'✓ OK':'⚠ Too long — shorten to ≤72 chars');
+
+  // Validation
+  var checks=[
+    {ok:!!desc,msg:'Has a description'},
+    {ok:charCount<=72,msg:'First line ≤ 72 characters'},
+    {ok:desc&&!desc[0].match(/[A-Z]/),msg:'Starts with lowercase'},
+    {ok:desc&&!desc.endsWith('.'),msg:'No trailing period'},
+    {ok:!desc.toLowerCase().startsWith('added')&&!desc.toLowerCase().startsWith('fixed')&&!desc.toLowerCase().startsWith('changed'),msg:'Imperative mood (add, fix, change — not added/fixed)'},
+    {ok:!scope||/^[a-z][a-z0-9\-]*$/.test(scope),msg:'Scope is lowercase kebab-case'},
+  ];
+  document.getElementById('validation-list').innerHTML=checks.map(function(c){
+    return '<div class="val-row"><span class="val-icon">'+(c.ok?'✅':'❌')+'</span><span style="color:'+(c.ok?'var(--en-muted)':'var(--en-text)')+'">'+c.msg+'</span></div>';
+  }).join('');
+
+  window._fullMsg=lines.join('\n');
+  window._onelineMsg=firstLine;
+}
+
+function copyMsg(mode){
+  var msg=mode==='full'?window._fullMsg||window._onelineMsg:window._onelineMsg||'';
+  if(!msg||msg.includes('<description>'))return;
+  navigator.clipboard.writeText(msg).then(function(){
+    var btn=event.target;
+    var orig=btn.textContent;btn.textContent='✅ Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
+  });
+}
+
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderExamples(){
+  var grid=document.getElementById('examples-grid');
+  grid.innerHTML=EXAMPLES.map(function(ex){
+    var t=TYPES.find(function(x){return x.type===ex.type;})||TYPES[0];
+    var msg=t.type+(ex.scope?'('+ex.scope+')':'')+': '+ex.desc;
+    return '<div class="example-card" onclick="useExample('+JSON.stringify(ex).replace(/"/g,'&quot;')+')">'+
+      '<span class="example-type">'+t.emoji+' '+t.type+'</span>'+
+      '<div class="example-msg">'+escHtml(msg)+'</div>'+
+      '<div class="example-hint">Click to use this template</div>'+
+    '</div>';
+  }).join('');
+}
+
+function useExample(ex){
+  selectType(ex.type);
+  document.getElementById('scope').value=ex.scope||'';
+  document.getElementById('description').value=ex.desc||'';
+  document.getElementById('body').value=ex.body||'';
+  document.getElementById('issue-ref').value=ex.issue||'';
+  generate();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderTypes();
+renderExamples();
+generate();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

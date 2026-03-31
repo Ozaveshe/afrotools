@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fashion Brand Startup Cost Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate startup costs for your African fashion brand. COGS per piece, retail pricing, gross margin, break-even units, and 6-month cashflow projection.">
+<link rel="canonical" href="https://afrotools.com/tools/fashion-brand-startup/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Fashion Brand Startup Cost</span>
+    </nav>
+    <h1>Fashion Brand <em>Startup Cost Calculator</em></h1>
+    <p>Full startup cost planner for African fashion brands — from home atelier to factory scale. Get COGS per piece, suggested retail price, gross margin, break-even units, and a 6-month cashflow projection.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f457; Fashion</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Startup Costs</span>
+      <span class="en-tool-hero-pill">&#x1f4c8; Pricing Guide</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f3ed;</div>Brand Setup</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+          <option value="TZ">Tanzania 🇹🇿 (TZS)</option>
+          <option value="CI">Côte d'Ivoire 🇨🇮 (XOF)</option>
+          <option value="CM">Cameroon 🇨🇲 (XAF)</option>
+          <option value="SN">Senegal 🇸🇳 (XOF)</option>
+          <option value="MA">Morocco 🇲🇦 (MAD)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Scale</label>
+        <select id="scale" class="en-select">
+          <option value="home">Home-Based (small)</option>
+          <option value="atelier" selected>Atelier (medium)</option>
+          <option value="factory">Factory (large)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">First Collection Pieces</label>
+        <input type="number" id="pieces" class="en-input" value="30" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Target Markup</label>
+        <select id="markup" class="en-select">
+          <option value="3">3x COGS (conservative)</option>
+          <option value="4" selected>4x COGS (standard)</option>
+          <option value="5">5x COGS (luxury)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f9f5;</div>Production Costs (per piece)</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Fabric Cost per Piece (local currency)</label>
+        <input type="number" id="fabricCost" class="en-input" value="3500" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Labour Cost per Piece</label>
+        <input type="number" id="labourCost" class="en-input" value="2000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Notions per Piece (zips, buttons, thread)</label>
+        <input type="number" id="notionsCost" class="en-input" value="500" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Packaging per Piece (bags, tags, boxes)</label>
+        <input type="number" id="packagingCost" class="en-input" value="800" min="0">
+      </div>
+    </div>
+  </div>
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4bc;</div>Brand Setup Costs (one-off)</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Logo &amp; Branding Design</label>
+        <input type="number" id="brandingCost" class="en-input" value="50000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Website / E-commerce Setup</label>
+        <input type="number" id="websiteCost" class="en-input" value="80000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Product Photography</label>
+        <input type="number" id="photoCost" class="en-input" value="40000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">First Trunk Show / Market Cost</label>
+        <input type="number" id="showCost" class="en-input" value="30000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Initial Marketing Budget</label>
+        <input type="number" id="marketingCost" class="en-input" value="60000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Equipment / Machines</label>
+        <input type="number" id="equipmentCost" class="en-input" value="0" min="0">
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Calculate Startup Costs</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Total Startup Investment</div>
+            <div class="en-results-hero-value" id="totalInvestment">₦0</div>
+            <div class="en-results-hero-sub" id="totalUSD"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Break-Even Units</div>
+            <div style="font-size:1.8rem;font-weight:800;color:var(--en-accent)" id="breakEven">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4b3;</div>Per-Piece Economics</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Item</th><th>Amount</th><th>Notes</th></tr></thead>
+          <tbody id="pieceTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4c6;</div>6-Month Cashflow Projection</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Month</th><th>Units Sold</th><th>Revenue</th><th>COGS</th><th>Gross Profit</th></tr></thead>
+          <tbody id="cashflowTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Funding Tip</div>
+        <div class="en-tip-text">Look into the Tony Elumelu Foundation (Nigeria), NIRSAL MFB fashion grants, Kenya's Youth Enterprise Fund, and South Africa's SEDA for startup funding. Many African development banks have SME fashion loans under 15% interest.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48,TZ:2600,CI:615,CM:615,SN:615,MA:10};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP ',TZ:'TZS ',CI:'XOF ',CM:'XAF ',SN:'XOF ',MA:'MAD '};
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var pieces=parseInt(document.getElementById('pieces').value)||30;
+  var markup=parseFloat(document.getElementById('markup').value)||4;
+  var sym=SYM[country];var rate=FX[country];
+  var fabric=parseFloat(document.getElementById('fabricCost').value)||0;
+  var labour=parseFloat(document.getElementById('labourCost').value)||0;
+  var notions=parseFloat(document.getElementById('notionsCost').value)||0;
+  var packaging=parseFloat(document.getElementById('packagingCost').value)||0;
+  var cogsPerPiece=fabric+labour+notions+packaging;
+  var retailPrice=cogsPerPiece*markup;
+  var grossMargin=((retailPrice-cogsPerPiece)/retailPrice*100).toFixed(1);
+  var branding=parseFloat(document.getElementById('brandingCost').value)||0;
+  var website=parseFloat(document.getElementById('websiteCost').value)||0;
+  var photo=parseFloat(document.getElementById('photoCost').value)||0;
+  var show=parseFloat(document.getElementById('showCost').value)||0;
+  var marketing=parseFloat(document.getElementById('marketingCost').value)||0;
+  var equipment=parseFloat(document.getElementById('equipmentCost').value)||0;
+  var setupCosts=branding+website+photo+show+marketing+equipment;
+  var inventoryCost=cogsPerPiece*pieces;
+  var totalInvestment=setupCosts+inventoryCost;
+  var totalUSD=totalInvestment/rate;
+  var profitPerPiece=retailPrice-cogsPerPiece;
+  var breakEven=Math.ceil(setupCosts/profitPerPiece);
+  document.getElementById('totalInvestment').textContent=sym+fmt(totalInvestment);
+  document.getElementById('totalUSD').textContent='≈ $'+fmt(totalUSD)+' USD';
+  document.getElementById('breakEven').textContent=fmt(breakEven)+' units';
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">COGS per Piece</div><div class="en-metric-value">'+sym+fmt(cogsPerPiece/1000)+'k</div><div class="en-metric-unit">All-in cost</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Retail Price</div><div class="en-metric-value">'+sym+fmt(retailPrice/1000)+'k</div><div class="en-metric-unit">'+markup+'x markup</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Gross Margin</div><div class="en-metric-value">'+grossMargin+'%</div><div class="en-metric-unit">Per piece</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Setup Costs</div><div class="en-metric-value">'+sym+fmt(setupCosts/1000)+'k</div><div class="en-metric-unit">One-off investment</div></div>';
+  document.getElementById('pieceTable').innerHTML=
+    '<tr><td>Fabric</td><td class="en-td-value">'+sym+fmt(fabric)+'</td><td>Raw material</td></tr>'+
+    '<tr><td>Labour</td><td class="en-td-value">'+sym+fmt(labour)+'</td><td>Sewing, finishing</td></tr>'+
+    '<tr><td>Notions</td><td class="en-td-value">'+sym+fmt(notions)+'</td><td>Zips, buttons, thread</td></tr>'+
+    '<tr><td>Packaging</td><td class="en-td-value">'+sym+fmt(packaging)+'</td><td>Bags, tags, boxes</td></tr>'+
+    '<tr><td><strong>COGS Total</strong></td><td class="en-td-highlight">'+sym+fmt(cogsPerPiece)+'</td><td>Cost per piece</td></tr>'+
+    '<tr><td><strong>Retail Price ('+markup+'x)</strong></td><td class="en-td-highlight">'+sym+fmt(retailPrice)+'</td><td>Suggested selling price</td></tr>'+
+    '<tr><td><strong>Gross Profit</strong></td><td class="en-td-highlight">'+sym+fmt(profitPerPiece)+'</td><td>'+grossMargin+'% margin</td></tr>';
+  var cfHtml='';
+  var rampUp=[0.3,0.5,0.7,0.9,1.0,1.2];
+  var cumProfit=0-setupCosts;
+  rampUp.forEach(function(r,i){
+    var units=Math.round(pieces*r*0.5);
+    var revenue=units*retailPrice;
+    var cogs=units*cogsPerPiece;
+    var gp=revenue-cogs;
+    cumProfit+=gp;
+    cfHtml+='<tr><td>Month '+(i+1)+'</td><td>'+fmt(units)+'</td><td>'+sym+fmt(revenue)+'</td><td>'+sym+fmt(cogs)+'</td><td class="en-td-highlight'+(cumProfit>=0?' en-text-accent':'')+'">'+sym+fmt(gp)+'</td></tr>';
+  });
+  document.getElementById('cashflowTable').innerHTML=cfHtml;
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

@@ -1536,7 +1536,9 @@ async function savePDF(){
 
     var outBytes=await pdfDoc.save();
     var outName=fileName.replace(/\.pdf$/i,'')+'_edited.pdf';
-    PdfUtils.downloadPdf(outBytes,outName);
+    function doEditorDownload(){PdfUtils.downloadPdf(outBytes,outName);}
+    var gate=document.querySelector('email-gate-modal');
+    if(gate){gate.show(doEditorDownload);}else{doEditorDownload();}
     hideProc();
     toast('PDF saved with '+operations.length+' edit'+(operations.length!==1?'s':''));
   }catch(e){
@@ -1809,6 +1811,8 @@ setupWheelZoom();
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

@@ -726,8 +726,14 @@ function hideProgress() {
 // Render a single PDF page to canvas and return data URL
 async function renderPdfPage(pdfDoc, pageNum) {
   const page = await pdfDoc.getPage(pageNum);
-  const scale = 2.0; // Higher scale = better OCR accuracy
-  const viewport = page.getViewport({ scale });
+  // Scale 1.5 balances speed vs accuracy (2.0 can be very slow on large pages)
+  var scale = 1.5;
+  var viewport = page.getViewport({ scale });
+  // Cap canvas size to prevent memory issues on large pages
+  if (viewport.width > 3000 || viewport.height > 3000) {
+    scale = Math.min(3000 / (viewport.width / scale), 3000 / (viewport.height / scale));
+    viewport = page.getViewport({ scale });
+  }
   renderCanvas.width = viewport.width;
   renderCanvas.height = viewport.height;
   const ctx = renderCanvas.getContext('2d');
@@ -748,13 +754,24 @@ extractBtn.addEventListener('click', async () => {
   const isPdf = currentFile.type === 'application/pdf' || currentFile.name.toLowerCase().endsWith('.pdf');
 
   try {
-    showProgress(5, 'Initializing OCR engine...');
+    showProgress(3, 'Initializing OCR engine...');
 
-    // Create Tesseract worker
+    // Create Tesseract worker with detailed progress
     const worker = await Tesseract.createWorker(language, 1, {
       logger: (m) => {
-        if (m.status === 'recognizing text' && typeof m.progress === 'number') {
-          // This fires per-page; we handle overall progress in the loop
+        if (m.status === 'loading tesseract core') {
+          showProgress(5, 'Loading OCR core...');
+        } else if (m.status === 'initializing tesseract') {
+          showProgress(6, 'Initializing OCR...');
+        } else if (m.status === 'loading language traineddata') {
+          var pct = typeof m.progress === 'number' ? Math.round(m.progress * 100) : 0;
+          showProgress(6 + pct * 0.04, 'Downloading language data... ' + pct + '%');
+        } else if (m.status === 'loaded language traineddata') {
+          showProgress(10, 'Language data loaded!');
+        } else if (m.status === 'initializing api') {
+          showProgress(11, 'Preparing OCR engine...');
+        } else if (m.status === 'recognizing text' && typeof m.progress === 'number') {
+          // per-page progress handled in the loop
         }
       }
     });

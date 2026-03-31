@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YouTube Revenue Estimator — African Audience | AfroTools</title>
+<meta name="description" content="Estimate YouTube AdSense earnings with African audience RPM rates. Nigeria $0.50–1.50, Kenya $0.80–2, South Africa $2–5, Egypt $0.60–1.50. 12-month projection.">
+<link rel="canonical" href="https://afrotools.com/tools/youtube-revenue/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+.aud-row{display:grid;grid-template-columns:1fr 80px 60px;gap:10px;align-items:end;margin-bottom:10px}
+.aud-total{font-size:.85rem;font-weight:600;padding:8px 12px;border-radius:8px;margin-top:8px}
+.aud-ok{background:#dcfce7;color:#166534}
+.aud-err{background:#fee2e2;color:#991b1b}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">YouTube Revenue Estimator</span>
+    </nav>
+    <h1>YouTube Revenue <em>Estimator (African Audience)</em></h1>
+    <p>Calculate blended RPM and AdSense earnings for YouTube channels with African audiences. Nigeria $0.50–1.50, Kenya $0.80–2.00, South Africa $2–5, Egypt $0.60–1.50 RPM — plus sponsorship and membership revenue.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x25b6;&#xfe0f; YouTube</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; AdSense</span>
+      <span class="en-tool-hero-pill">&#x1f4ca; RPM</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4f9;</div>Channel Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Monthly Views</label>
+        <input type="number" id="monthlyViews" class="en-input" value="100000" min="1000">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Content Type</label>
+        <select id="contentType" class="en-select">
+          <option value="entertainment">Entertainment / Vlogs</option>
+          <option value="education" selected>Education / Tutorials</option>
+          <option value="gaming">Gaming</option>
+          <option value="music">Music</option>
+          <option value="finance">Finance / Business</option>
+          <option value="comedy">Comedy</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Monthly Sponsorship Revenue (USD)</label>
+        <input type="number" id="sponsorship" class="en-input" value="0" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Channel Members (count)</label>
+        <input type="number" id="members" class="en-input" value="0" min="0">
+      </div>
+    </div>
+  </div>
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f30d;</div>Audience Location (must total 100%)</div>
+    <p style="font-size:.84rem;color:#64748b;margin-bottom:14px">Enter estimated % of your audience from each region.</p>
+    <div class="aud-row"><div style="font-size:.82rem;font-weight:700;color:#64748b">Region</div><div style="font-size:.82rem;font-weight:700;color:#64748b">%</div><div style="font-size:.82rem;font-weight:700;color:#64748b">RPM</div></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">Nigeria 🇳🇬</label></div><input type="number" id="pct_ng" class="en-input" value="40" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$1.00</span></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">Kenya 🇰🇪</label></div><input type="number" id="pct_ke" class="en-input" value="10" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$1.40</span></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">South Africa 🇿🇦</label></div><input type="number" id="pct_za" class="en-input" value="10" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$3.50</span></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">Ghana 🇬🇭</label></div><input type="number" id="pct_gh" class="en-input" value="5" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$1.00</span></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">Egypt 🇪🇬</label></div><input type="number" id="pct_eg" class="en-input" value="5" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$1.00</span></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">USA / Canada 🇺🇸</label></div><input type="number" id="pct_us" class="en-input" value="15" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$10.00</span></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">UK 🇬🇧</label></div><input type="number" id="pct_uk" class="en-input" value="10" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$13.00</span></div>
+    <div class="aud-row"><div class="en-field"><label class="en-label">Other</label></div><input type="number" id="pct_other" class="en-input" value="5" min="0" max="100" oninput="validateAud()"><span style="font-size:.8rem;color:#64748b;align-self:center">$2.00</span></div>
+    <div id="audValidation" class="aud-total"></div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Calculate YouTube Revenue</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Monthly AdSense Revenue</div>
+            <div class="en-results-hero-value" id="monthlyAdsense">$0</div>
+            <div class="en-results-hero-sub" id="totalMonthly"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Blended RPM</div>
+            <div style="font-size:1.8rem;font-weight:800;color:var(--en-accent)" id="blendedRPM">$0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4c6;</div>12-Month Projection</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Month</th><th>Views</th><th>AdSense</th><th>Sponsorship</th><th>Total</th></tr></thead>
+          <tbody id="projTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f3af;</div>Views Needed Per Income Target</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Income Target / Month</th><th>Views Needed</th><th>Gap from Current</th></tr></thead>
+          <tbody id="targetTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">RPM Reality Check</div>
+        <div class="en-tip-text">YouTube pays after their 45% cut (you earn ~55% of ad revenue). Nigerian channels average $0.50–$1.50 RPM. Finance and education channels earn 2–3x more than entertainment due to higher-value advertisers. Growing your US/UK diaspora audience from 10% to 30% can double your RPM overnight.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var RPM={ng:1.0,ke:1.4,za:3.5,gh:1.0,eg:1.0,us:10.0,uk:13.0,other:2.0};
+var CONTENT_MULT={entertainment:1.0,education:1.4,gaming:0.9,music:0.7,finance:2.0,comedy:0.95};
+function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d!==undefined?d:2,maximumFractionDigits:d!==undefined?d:2});}
+function validateAud(){
+  var total=['ng','ke','za','gh','eg','us','uk','other'].reduce(function(s,k){return s+(parseFloat(document.getElementById('pct_'+k).value)||0);},0);
+  var el=document.getElementById('audValidation');
+  if(Math.round(total)===100){el.className='aud-total aud-ok';el.textContent='✓ Audience totals 100%';}
+  else{el.className='aud-total aud-err';el.textContent='⚠ Currently '+total+'% — must total 100%';}
+}
+function calculate(){
+  var views=parseInt(document.getElementById('monthlyViews').value)||100000;
+  var contentType=document.getElementById('contentType').value;
+  var sponsorship=parseFloat(document.getElementById('sponsorship').value)||0;
+  var members=parseInt(document.getElementById('members').value)||0;
+  var contentMult=CONTENT_MULT[contentType]||1;
+  var pcts={ng:parseFloat(document.getElementById('pct_ng').value)||0,ke:parseFloat(document.getElementById('pct_ke').value)||0,za:parseFloat(document.getElementById('pct_za').value)||0,gh:parseFloat(document.getElementById('pct_gh').value)||0,eg:parseFloat(document.getElementById('pct_eg').value)||0,us:parseFloat(document.getElementById('pct_us').value)||0,uk:parseFloat(document.getElementById('pct_uk').value)||0,other:parseFloat(document.getElementById('pct_other').value)||0};
+  var total=Object.keys(pcts).reduce(function(s,k){return s+pcts[k];},0);
+  if(Math.round(total)!==100){alert('Audience percentages must total 100%. Currently '+total+'%.');return;}
+  var blendedRPM=Object.keys(pcts).reduce(function(s,k){return s+(pcts[k]/100)*RPM[k];},0)*contentMult;
+  var monthlyAdsense=views/1000*blendedRPM*0.55;
+  var memberRevenue=members*4.99;
+  var totalMonthly=monthlyAdsense+sponsorship+memberRevenue;
+  document.getElementById('monthlyAdsense').textContent='$'+fmt(monthlyAdsense,0);
+  document.getElementById('blendedRPM').textContent='$'+fmt(blendedRPM,2);
+  document.getElementById('totalMonthly').textContent='Total with sponsorship + members: $'+fmt(totalMonthly,0)+'/month';
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Blended RPM</div><div class="en-metric-value">$'+fmt(blendedRPM,2)+'</div><div class="en-metric-unit">After YouTube 45% cut</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">AdSense/Month</div><div class="en-metric-value">$'+fmt(monthlyAdsense,0)+'</div><div class="en-metric-unit">'+views.toLocaleString()+' views</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Sponsorship</div><div class="en-metric-value">$'+fmt(sponsorship,0)+'</div><div class="en-metric-unit">Brand deals</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Annual Total</div><div class="en-metric-value">$'+fmt(totalMonthly*12,0)+'</div><div class="en-metric-unit">All revenue streams</div></div>';
+  var projHtml='';
+  var monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var growthRate=0.05;
+  var cumViews=views;
+  for(var i=0;i<12;i++){
+    var v=Math.round(cumViews*(1+growthRate*i));
+    var ads=v/1000*blendedRPM*0.55;
+    var tot=ads+sponsorship+memberRevenue;
+    projHtml+='<tr><td>'+monthNames[i]+'</td><td>'+v.toLocaleString()+'</td><td>$'+fmt(ads,0)+'</td><td>$'+fmt(sponsorship,0)+'</td><td class="en-td-highlight">$'+fmt(tot,0)+'</td></tr>';
+  }
+  document.getElementById('projTable').innerHTML=projHtml;
+  var targets=[100,500,1000,2000,5000];
+  document.getElementById('targetTable').innerHTML=targets.map(function(t){
+    var needed=blendedRPM>0?Math.ceil(t/(blendedRPM*0.55/1000)):999999;
+    var gap=Math.max(0,needed-views);
+    return '<tr><td>$'+t+'/month</td><td>'+needed.toLocaleString()+' views</td><td class="'+(gap===0?'en-td-highlight':'')+'">'+( gap===0?'&#x2705; Already there!':'+'+gap.toLocaleString()+' views needed')+'</td></tr>';
+  }).join('');
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+validateAud();
+</script>
+</body>
+</html>

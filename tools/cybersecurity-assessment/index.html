@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cybersecurity Risk Assessment Tool — Africa | AfroTools</title>
+<meta name="description" content="Score your business cybersecurity risk 0–100. Network, data, access, endpoint, awareness, incident domains. NDPR Nigeria and POPIA South Africa compliance.">
+<link rel="canonical" href="https://afrotools.com/tools/cybersecurity-assessment/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#475569;--en-accent-dark:#334155;--en-accent-light:#E2E8F0;--en-accent-pale:#F8FAFC;--en-shadow-hover:0 4px 16px rgba(71,85,105,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#0f172a 50%,#1e293b 100%)!important}
+.check-group{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:8px}
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1.5px solid var(--en-border,#e2e8f0);border-radius:10px;cursor:pointer;transition:border-color .15s}
+.check-item:has(input:checked){border-color:var(--en-accent);background:var(--en-accent-pale)}
+.check-item input{width:16px;height:16px;accent-color:var(--en-accent);cursor:pointer;flex-shrink:0}
+.check-item label{font-size:.87rem;font-weight:600;cursor:pointer}
+.score-bar{height:16px;border-radius:8px;background:var(--en-border,#e2e8f0);overflow:hidden;margin-top:6px}
+.score-fill{height:100%;border-radius:8px;transition:width .5s ease}
+.grade-A{background:#22c55e}.grade-B{background:#84cc16}.grade-C{background:#f59e0b}.grade-D{background:#f97316}.grade-F{background:#ef4444}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="security"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/security/">Security &amp; Safety</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Cybersecurity Risk Assessment</span>
+    </nav>
+    <h1>Cybersecurity <em>Risk Assessment</em></h1>
+    <p>Score your business cybersecurity posture 0–100 across 6 domains: Network, Data, Access Control, Endpoint, Awareness, and Incident Response. Includes NDPR (Nigeria) and POPIA (South Africa) compliance check.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f512; Cybersecurity</span>
+      <span class="en-tool-hero-pill">&#x1f4cb; Assessment</span>
+      <span class="en-tool-hero-pill">&#x2696;&#xfe0f; NDPR / POPIA</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f3e2;</div>Business Profile</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬</option>
+          <option value="KE">Kenya 🇰🇪</option>
+          <option value="ZA">South Africa 🇿🇦</option>
+          <option value="GH">Ghana 🇬🇭</option>
+          <option value="EG">Egypt 🇪🇬</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Industry</label>
+        <select id="industry" class="en-select">
+          <option value="banking">Banking / Finance</option>
+          <option value="health">Healthcare</option>
+          <option value="retail" selected>Retail / E-commerce</option>
+          <option value="tech">Technology / Software</option>
+          <option value="government">Government</option>
+          <option value="education">Education</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Employees</label>
+        <select id="employees" class="en-select">
+          <option value="1-10">1–10 (micro)</option>
+          <option value="11-50" selected>11–50 (small)</option>
+          <option value="51-250">51–250 (medium)</option>
+          <option value="250+">250+ (large)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Data Sensitivity</label>
+        <select id="dataSensitivity" class="en-select">
+          <option value="low">Low (no personal data)</option>
+          <option value="medium" selected>Medium (customer data)</option>
+          <option value="high">High (financial / health data)</option>
+          <option value="critical">Critical (biometric / payments)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Recent Security Incidents?</label>
+        <select id="incidents" class="en-select">
+          <option value="no" selected>No recent incidents</option>
+          <option value="minor">Minor (phishing attempt)</option>
+          <option value="major">Major (breach / ransomware)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f310;</div>Domain 1: Network Security <span style="font-size:.78rem;color:#94a3b8;font-weight:400">(20 pts)</span></div>
+    <div class="check-group">
+      <div class="check-item"><input type="checkbox" id="firewall"><label for="firewall">Firewall deployed</label></div>
+      <div class="check-item"><input type="checkbox" id="vpn"><label for="vpn">VPN for remote access</label></div>
+      <div class="check-item"><input type="checkbox" id="wifi_secure"><label for="wifi_secure">WiFi encrypted (WPA3/WPA2)</label></div>
+      <div class="check-item"><input type="checkbox" id="network_monitor"><label for="network_monitor">Network traffic monitoring</label></div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f5c2;&#xfe0f;</div>Domain 2: Data Protection <span style="font-size:.78rem;color:#94a3b8;font-weight:400">(20 pts)</span></div>
+    <div class="check-group">
+      <div class="check-item"><input type="checkbox" id="encryption"><label for="encryption">Data encrypted at rest</label></div>
+      <div class="check-item"><input type="checkbox" id="backup"><label for="backup">Regular backups (tested)</label></div>
+      <div class="check-item"><input type="checkbox" id="data_policy"><label for="data_policy">Data retention policy</label></div>
+      <div class="check-item"><input type="checkbox" id="privacy_policy"><label for="privacy_policy">Published privacy policy</label></div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f511;</div>Domain 3: Access Control <span style="font-size:.78rem;color:#94a3b8;font-weight:400">(20 pts)</span></div>
+    <div class="check-group">
+      <div class="check-item"><input type="checkbox" id="mfa"><label for="mfa">Multi-factor authentication (2FA)</label></div>
+      <div class="check-item"><input type="checkbox" id="least_priv"><label for="least_priv">Least privilege access</label></div>
+      <div class="check-item"><input type="checkbox" id="pw_policy"><label for="pw_policy">Strong password policy</label></div>
+      <div class="check-item"><input type="checkbox" id="access_review"><label for="access_review">Regular access reviews</label></div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4bb;</div>Domain 4: Endpoint Security <span style="font-size:.78rem;color:#94a3b8;font-weight:400">(15 pts)</span></div>
+    <div class="check-group">
+      <div class="check-item"><input type="checkbox" id="antivirus"><label for="antivirus">Antivirus / EDR on all devices</label></div>
+      <div class="check-item"><input type="checkbox" id="os_updates"><label for="os_updates">OS and software updates current</label></div>
+      <div class="check-item"><input type="checkbox" id="device_policy"><label for="device_policy">Mobile device management</label></div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f393;</div>Domain 5: Security Awareness <span style="font-size:.78rem;color:#94a3b8;font-weight:400">(15 pts)</span></div>
+    <div class="check-group">
+      <div class="check-item"><input type="checkbox" id="sec_training"><label for="sec_training">Staff security training</label></div>
+      <div class="check-item"><input type="checkbox" id="phishing_sim"><label for="phishing_sim">Phishing simulation tests</label></div>
+      <div class="check-item"><input type="checkbox" id="sec_policy"><label for="sec_policy">Written security policy</label></div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f6a8;</div>Domain 6: Incident Response <span style="font-size:.78rem;color:#94a3b8;font-weight:400">(10 pts)</span></div>
+    <div class="check-group">
+      <div class="check-item"><input type="checkbox" id="incident_plan"><label for="incident_plan">Incident response plan documented</label></div>
+      <div class="check-item"><input type="checkbox" id="incident_drill"><label for="incident_drill">Incident drills conducted</label></div>
+    </div>
+  </div>
+
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Run Cybersecurity Assessment</button>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Overall Risk Score</div>
+            <div class="en-results-hero-value" id="overallScore">0/100</div>
+            <div class="en-results-hero-sub" id="riskLabel"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Grade</div>
+            <div style="font-size:2.5rem;font-weight:900;color:var(--en-accent)" id="gradeDisplay">F</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="domainScores"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x26a0;&#xfe0f;</div>Top 3 Vulnerabilities &amp; Recommended Actions</div>
+      <div id="vulnerabilities"></div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x2696;&#xfe0f;</div>Regulatory Compliance Status</div>
+      <div id="complianceStatus"></div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Quick Wins (Free Tools)</div>
+        <div class="en-tip-text">Most impactful free security tools: Bitwarden (password manager), Google Authenticator (2FA), Malwarebytes Free (antivirus), ProtonMail (encrypted email), Have I Been Pwned (breach checker at haveibeenpwned.com). These cost nothing and solve 60% of common SME cyber risks.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var DOMAINS=[
+  {label:'Network Security',max:20,checks:['firewall','vpn','wifi_secure','network_monitor'],pts:5},
+  {label:'Data Protection',max:20,checks:['encryption','backup','data_policy','privacy_policy'],pts:5},
+  {label:'Access Control',max:20,checks:['mfa','least_priv','pw_policy','access_review'],pts:5},
+  {label:'Endpoint Security',max:15,checks:['antivirus','os_updates','device_policy'],pts:5},
+  {label:'Security Awareness',max:15,checks:['sec_training','phishing_sim','sec_policy'],pts:5},
+  {label:'Incident Response',max:10,checks:['incident_plan','incident_drill'],pts:5}
+];
+var RECS={firewall:'Deploy a firewall (pfSense free, or router-level filtering). Priority: CRITICAL.',vpn:'Set up VPN for all remote workers (ProtonVPN free tier, or OpenVPN). Priority: HIGH.',wifi_secure:'Upgrade WiFi to WPA3/WPA2 and change default router password immediately. Priority: HIGH.',network_monitor:'Install basic network monitoring (free: Wireshark for analysis, Nagios for alerts). Priority: MEDIUM.',encryption:'Enable full-disk encryption on all computers (BitLocker/FileVault). Priority: HIGH.',backup:'Implement 3-2-1 backup rule: 3 copies, 2 media types, 1 offsite. Test monthly. Priority: CRITICAL.',data_policy:'Create a simple data retention and deletion policy. Priority: MEDIUM.',privacy_policy:'Publish a privacy policy — required under NDPR and POPIA. Priority: HIGH (legal requirement).',mfa:'Enable 2FA on all accounts immediately — especially email, banking, and cloud services. Free: Google Authenticator. Priority: CRITICAL.',least_priv:'Review who has access to what — remove unnecessary admin rights. Priority: HIGH.',pw_policy:'Enforce minimum 12-character passwords. Use a password manager (Bitwarden free). Priority: HIGH.',access_review:'Review all user accounts quarterly and deactivate former employees. Priority: MEDIUM.',antivirus:'Install antivirus on all devices (Malwarebytes Free, Windows Defender). Priority: HIGH.',os_updates:'Enable automatic OS updates on all devices — this patches most exploited vulnerabilities. Priority: HIGH.',device_policy:'Create a basic BYOD (Bring Your Own Device) policy and enable remote wipe capability. Priority: MEDIUM.',sec_training:'Run free security awareness training (Cybrary, Google Safety Centre). Priority: HIGH.',phishing_sim:'Run phishing simulation (free: GoPhish). Test staff awareness quarterly. Priority: MEDIUM.',sec_policy:'Document a one-page security policy — acceptable use, password rules, incident reporting. Priority: MEDIUM.',incident_plan:'Write a basic incident response plan (template available from NITDA Nigeria). Priority: HIGH.',incident_drill:'Run a tabletop incident drill once a year — simulate a phishing attack or ransomware. Priority: MEDIUM.'};
+var COMP={NG:'NDPR (Nigeria Data Protection Regulation)',KE:'Kenya Data Protection Act 2019',ZA:'POPIA (Protection of Personal Information Act)',GH:'Data Protection Act 2012',EG:'Personal Data Protection Law 2020'};
+function calculate(){
+  var country=document.getElementById('country').value;
+  var industry=document.getElementById('industry').value;
+  var dataSensitivity=document.getElementById('dataSensitivity').value;
+  var incidents=document.getElementById('incidents').value;
+  var totalScore=0;
+  var domainResults=[];
+  DOMAINS.forEach(function(d){
+    var checked=d.checks.filter(function(c){return document.getElementById(c)&&document.getElementById(c).checked;}).length;
+    var score=checked*d.pts;
+    totalScore+=score;
+    domainResults.push({label:d.label,score:score,max:d.max,missed:d.checks.filter(function(c){return !(document.getElementById(c)&&document.getElementById(c).checked);}),pct:Math.round(score/d.max*100)});
+  });
+  if(incidents==='minor') totalScore-=5;
+  if(incidents==='major') totalScore-=15;
+  totalScore=Math.max(0,Math.min(100,totalScore));
+  var grade=totalScore>=90?'A':totalScore>=75?'B':totalScore>=60?'C':totalScore>=45?'D':'F';
+  var riskLabel={A:'Low Risk — Strong security posture',B:'Moderate Risk — A few gaps to address',C:'Elevated Risk — Several critical gaps',D:'High Risk — Significant vulnerabilities',F:'Critical Risk — Immediate action required'}[grade];
+  document.getElementById('overallScore').textContent=totalScore+'/100';
+  document.getElementById('riskLabel').textContent=riskLabel;
+  document.getElementById('gradeDisplay').textContent=grade;
+  var domHtml=domainResults.map(function(d){
+    var gradeClass=d.pct>=80?'grade-A':d.pct>=60?'grade-B':d.pct>=40?'grade-C':d.pct>=20?'grade-D':'grade-F';
+    return '<div class="en-metric"><div class="en-metric-label">'+d.label+'</div><div class="en-metric-value">'+d.score+'/'+d.max+'</div><div class="score-bar"><div class="score-fill '+gradeClass+'" style="width:'+d.pct+'%"></div></div></div>';
+  }).join('');
+  document.getElementById('domainScores').innerHTML=domHtml;
+  var allMissed=[];
+  domainResults.forEach(function(d){d.missed.forEach(function(c){allMissed.push(c);});});
+  var top3=allMissed.slice(0,3);
+  var vulnHtml='<div style="display:flex;flex-direction:column;gap:14px">';
+  top3.forEach(function(c,i){
+    var rec=RECS[c]||'Review and implement this security control.';
+    vulnHtml+='<div style="padding:14px 16px;border:1px solid var(--en-border,#e2e8f0);border-radius:10px;border-left:4px solid '+(i===0?'#ef4444':i===1?'#f97316':'#f59e0b')+'">'+
+      '<div style="font-size:.8rem;font-weight:700;color:'+(i===0?'#dc2626':i===1?'#ea580c':'#d97706')+';margin-bottom:4px">#'+(i+1)+' '+(i===0?'CRITICAL':i===1?'HIGH':'MEDIUM')+' — Missing: '+c.replace(/_/g,' ').toUpperCase()+'</div>'+
+      '<div style="font-size:.87rem;color:#334155;line-height:1.5">'+rec+'</div></div>';
+  });
+  if(top3.length===0) vulnHtml+='<div class="en-notice">Excellent! No critical gaps found. Keep reviewing quarterly.</div>';
+  vulnHtml+='</div>';
+  document.getElementById('vulnerabilities').innerHTML=vulnHtml;
+  var compLaw=COMP[country]||'Local data protection regulation';
+  var hasPrivacy=document.getElementById('privacy_policy').checked;
+  var hasBackup=document.getElementById('backup').checked;
+  var hasMFA=document.getElementById('mfa').checked;
+  document.getElementById('complianceStatus').innerHTML=
+    '<div class="en-notice"><strong>Applicable Law: '+compLaw+'</strong><br>Minimum requirements include: data minimisation, purpose limitation, security safeguards, privacy notice, and breach notification within 72 hours.</div>'+
+    '<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;font-size:.87rem">'+
+    ['Privacy Policy published — required for public-facing websites','Backup and recovery procedures in place','Access control with 2FA on critical systems','Data encryption at rest and in transit','Breach notification procedure documented'].map(function(req,i){
+      var met=[hasPrivacy,hasBackup,hasMFA,document.getElementById('encryption').checked,document.getElementById('incident_plan').checked][i];
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--en-border,#e2e8f0)"><span>'+(met?'✅':'❌')+'</span><span>'+(met?'<strong>':'<span style="color:#64748b">')+req+(met?'</strong>':'</span>')+'</span></div>';
+    }).join('')+'</div>';
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

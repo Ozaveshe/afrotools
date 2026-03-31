@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Swimming Pool Cost Estimator Africa | AfroTools</title>
+<meta name="description" content="Estimate swimming pool construction and maintenance costs across Africa. Concrete, fibreglass, or liner pools for residential and commercial use.">
+<meta property="og:title" content="Swimming Pool Cost Estimator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/swimming-pool-cost/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/swimming-pool-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/swimming-pool-cost/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/swimming-pool-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Swimming Pool Cost Estimator","item":"https://afrotools.com/tools/swimming-pool-cost/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/engineering/">Engineering</a></li>
+    <li aria-current="page">Swimming Pool Cost Estimator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Swimming Pool Cost Estimator</h1>
+    <p>Get detailed construction and annual maintenance cost estimates for swimming pools in Africa. Concrete, fibreglass, or vinyl liner pools.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Pool Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country</label>
+          <select class="en-select" id="sp-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">South Africa (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Egypt (EGP)</option><option value="MA">Morocco (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Pool Length (metres)</label>
+          <input type="number" class="en-input" id="sp-length" value="8" min="3" max="50">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Pool Width (metres)</label>
+          <input type="number" class="en-input" id="sp-width" value="4" min="2" max="25">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Average Depth (metres)</label>
+          <select class="en-select" id="sp-depth">
+            <option value="1.2">1.2m (shallow/kids)</option>
+            <option value="1.5" selected>1.5m (standard)</option>
+            <option value="1.8">1.8m (deep end)</option>
+            <option value="2.0">2.0m (competition)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Pool Construction Type</label>
+          <select class="en-select" id="sp-type">
+            <option value="concrete">Concrete / Gunite (most common in Africa)</option>
+            <option value="fibreglass">Fibreglass (prefabricated)</option>
+            <option value="liner">Vinyl Liner</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Pool Finish</label>
+          <select class="en-select" id="sp-finish">
+            <option value="plaster">White Plaster</option>
+            <option value="tile">Full Ceramic Tile</option>
+            <option value="pebble">Pebble Finish</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Usage</label>
+          <select class="en-select" id="sp-use">
+            <option value="residential">Residential</option>
+            <option value="commercial">Hotel / Commercial</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Extras</label>
+          <select class="en-select" id="sp-extras" multiple style="height:100px">
+            <option value="heating">Solar Heating</option>
+            <option value="lighting">LED Underwater Lighting</option>
+            <option value="cover">Pool Cover / Roller</option>
+            <option value="fence">Pool Fence / Safety Barrier</option>
+            <option value="jacuzzi">Jacuzzi / Spa Section</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcPool()">Estimate Pool Cost</button>
+    </div>
+
+    <div class="en-results" id="sp-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="sp-headline">Pool Cost Estimate</div>
+        <div class="en-results-subtitle" id="sp-sub"></div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Construction Cost</div><div class="en-stat-value" id="sp-construct">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Finish & Tiles</div><div class="en-stat-value" id="sp-finish-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Equipment & Extras</div><div class="en-stat-value" id="sp-equip">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Total Build Cost</div><div class="en-stat-value" id="sp-total">—</div></div>
+      </div>
+      <div class="en-results-grid" style="margin-top:1rem">
+        <div class="en-stat-card"><div class="en-stat-label">Pool Volume</div><div class="en-stat-value" id="sp-volume">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Annual Maintenance</div><div class="en-stat-value" id="sp-maint">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Monthly Chemicals Cost</div><div class="en-stat-value" id="sp-chem">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Cost per m² Surface</div><div class="en-stat-value" id="sp-per-m2">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Considerations</h3>
+        <ul id="sp-notes" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+var SP_RATES = {
+  NG:{ sym:'₦', concrete_m3:120000, fibreglass_m3:95000, liner_m3:55000,
+    plaster_m2:8000, tile_m2:22000, pebble_m2:30000,
+    pump_filter:280000, chem_monthly:25000, maint_annual:400000,
+    extra_heating:350000, extra_lighting:180000, extra_cover:120000, extra_fence:200000, extra_jacuzzi:850000
+  },
+  KE:{ sym:'KES', concrete_m3:55000, fibreglass_m3:42000, liner_m3:25000,
+    plaster_m2:3500, tile_m2:9500, pebble_m2:13000,
+    pump_filter:120000, chem_monthly:10000, maint_annual:180000,
+    extra_heating:150000, extra_lighting:75000, extra_cover:50000, extra_fence:85000, extra_jacuzzi:380000
+  },
+  ZA:{ sym:'ZAR', concrete_m3:18000, fibreglass_m3:14000, liner_m3:8000,
+    plaster_m2:1200, tile_m2:3200, pebble_m2:4500,
+    pump_filter:40000, chem_monthly:3500, maint_annual:60000,
+    extra_heating:55000, extra_lighting:25000, extra_cover:18000, extra_fence:28000, extra_jacuzzi:130000
+  },
+  GH:{ sym:'GHS', concrete_m3:14000, fibreglass_m3:11000, liner_m3:6500,
+    plaster_m2:950, tile_m2:2600, pebble_m2:3500,
+    pump_filter:32000, chem_monthly:2800, maint_annual:48000,
+    extra_heating:44000, extra_lighting:20000, extra_cover:14000, extra_fence:22000, extra_jacuzzi:100000
+  },
+  EG:{ sym:'EGP', concrete_m3:15000, fibreglass_m3:12000, liner_m3:7000,
+    plaster_m2:1000, tile_m2:2800, pebble_m2:3800,
+    pump_filter:35000, chem_monthly:3000, maint_annual:52000,
+    extra_heating:48000, extra_lighting:22000, extra_cover:16000, extra_fence:24000, extra_jacuzzi:110000
+  },
+  MA:{ sym:'MAD', concrete_m3:8000, fibreglass_m3:6200, liner_m3:3600,
+    plaster_m2:520, tile_m2:1400, pebble_m2:1950,
+    pump_filter:18000, chem_monthly:1500, maint_annual:27000,
+    extra_heating:25000, extra_lighting:11000, extra_cover:8000, extra_fence:12000, extra_jacuzzi:58000
+  }
+};
+
+function calcPool(){
+  var country = document.getElementById('sp-country').value;
+  var L = +document.getElementById('sp-length').value;
+  var W = +document.getElementById('sp-width').value;
+  var D = +document.getElementById('sp-depth').value;
+  var ptype = document.getElementById('sp-type').value;
+  var finish = document.getElementById('sp-finish').value;
+  var use = document.getElementById('sp-use').value;
+  var extrasEl = document.getElementById('sp-extras');
+  var extras = [];
+  for (var i=0; i<extrasEl.options.length; i++) if (extrasEl.options[i].selected) extras.push(extrasEl.options[i].value);
+  var r = SP_RATES[country], sym = r.sym;
+
+  var surfaceArea = L * W;
+  var volume = L * W * D;
+  var wallArea = 2 * (L + W) * D;
+  var totalFinishArea = surfaceArea + wallArea;
+
+  var constructCost = volume * r[ptype + '_m3'];
+  var finishCost = totalFinishArea * r[finish + '_m2'];
+  var equipCost = r.pump_filter * (use === 'commercial' ? 2 : 1);
+  var extrasCost = extras.reduce(function(sum, e){ return sum + r['extra_' + e]; }, 0);
+  var useFactor = use === 'commercial' ? 1.3 : 1.0;
+  var totalBuild = (constructCost + finishCost + equipCost) * useFactor + extrasCost;
+  var annualMaint = r.maint_annual * (use === 'commercial' ? 2.5 : 1);
+
+  document.getElementById('sp-headline').textContent = L + 'm × ' + W + 'm Pool — ' + D + 'm Deep';
+  document.getElementById('sp-sub').textContent = surfaceArea.toFixed(0) + 'm² surface, ' + (volume * 1000).toFixed(0) + ' litres';
+  document.getElementById('sp-construct').textContent = sym + Math.round(constructCost * useFactor).toLocaleString();
+  document.getElementById('sp-finish-cost').textContent = sym + Math.round(finishCost * useFactor).toLocaleString();
+  document.getElementById('sp-equip').textContent = sym + Math.round(equipCost + extrasCost).toLocaleString();
+  document.getElementById('sp-total').textContent = sym + Math.round(totalBuild).toLocaleString();
+  document.getElementById('sp-volume').textContent = (volume * 1000).toFixed(0) + ' litres';
+  document.getElementById('sp-maint').textContent = sym + Math.round(annualMaint).toLocaleString() + '/yr';
+  document.getElementById('sp-chem').textContent = sym + Math.round(r.chem_monthly).toLocaleString() + '/mo';
+  document.getElementById('sp-per-m2').textContent = sym + Math.round(totalBuild / surfaceArea).toLocaleString() + '/m²';
+
+  var notes = [
+    'Concrete pools take 4–8 weeks to build; fibreglass can be installed in 1–2 weeks.',
+    finish === 'tile' ? 'Full tile finish is the most durable but requires skilled tilers and periodic re-grouting.' : finish === 'pebble' ? 'Pebble finish is long-lasting and slip-resistant — popular for tropical climates.' : 'Plaster finish needs re-plastering every 8–12 years.',
+    'Pool water must be treated with chlorine or salt-chlorine system. pH must stay 7.2–7.6.',
+    'Budget ' + sym + Math.round(r.chem_monthly * 12).toLocaleString() + '/year for chemicals alone.',
+    'Evaporation in tropical Africa can lose 30–50mm/week — a pool cover reduces this by 90%.',
+    'Always hire a licensed pool contractor and request their NHBRC registration in South Africa.'
+  ];
+  document.getElementById('sp-notes').innerHTML = notes.map(function(n){ return '<li>' + n + '</li>'; }).join('');
+  document.getElementById('sp-results').classList.add('on');
+  document.getElementById('sp-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

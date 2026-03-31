@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brand Collaboration ROI Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate ROI from influencer marketing campaigns in Africa. CPM, CPA, conversions, revenue. Compare vs Facebook and Google ads.">
+<link rel="canonical" href="https://afrotools.com/tools/brand-collab-roi/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Brand Collaboration ROI</span>
+    </nav>
+    <h1>Brand Collaboration <em>ROI Calculator</em></h1>
+    <p>For brands and marketers: calculate ROI, CPM, and CPA from influencer campaigns in Africa. Compare influencer marketing performance vs Facebook Ads and Google Ads.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f91d; Brands</span>
+      <span class="en-tool-hero-pill">&#x1f4ca; ROI</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Marketing</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4e3;</div>Campaign Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬</option>
+          <option value="KE">Kenya 🇰🇪</option>
+          <option value="ZA">South Africa 🇿🇦</option>
+          <option value="GH">Ghana 🇬🇭</option>
+          <option value="EG">Egypt 🇪🇬</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Campaign Budget (USD)</label>
+        <input type="number" id="budget" class="en-input" value="2000" min="100">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Influencer Tier</label>
+        <select id="tier" class="en-select">
+          <option value="nano">Nano (1k–10k followers)</option>
+          <option value="micro" selected>Micro (10k–100k followers)</option>
+          <option value="mid">Mid-Tier (100k–500k)</option>
+          <option value="macro">Macro (500k–1M)</option>
+          <option value="mega">Mega (1M+)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Platform</label>
+        <select id="platform" class="en-select">
+          <option value="instagram" selected>Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="youtube">YouTube</option>
+          <option value="twitter">Twitter / X</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Expected Engagement Rate (%)</label>
+        <input type="number" id="engRate" class="en-input" value="4.5" min="0.1" step="0.1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Product Price (USD)</label>
+        <input type="number" id="productPrice" class="en-input" value="25" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Expected Conversion Rate (%)</label>
+        <input type="number" id="convRate" class="en-input" value="1.5" min="0.1" step="0.1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Campaign Duration (weeks)</label>
+        <input type="number" id="duration" class="en-input" value="4" min="1">
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Calculate Campaign ROI</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Campaign ROI</div>
+            <div class="en-results-hero-value" id="roiDisplay">0%</div>
+            <div class="en-results-hero-sub" id="netRevenue"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Conversions Est.</div>
+            <div style="font-size:1.8rem;font-weight:800;color:var(--en-accent)" id="conversionsDisplay">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>vs Paid Advertising Comparison</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Channel</th><th>Est. Reach</th><th>CPM</th><th>CPA</th><th>ROI</th><th>Best For</th></tr></thead>
+          <tbody id="compareTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">African Influencer Marketing Insight</div>
+        <div class="en-tip-text">Micro-influencers (10k–100k followers) in Africa often outperform mega-influencers on ROI due to higher trust and engagement in tight-knit communities. A Nigerian food micro-influencer with 50k engaged followers can drive more product sales than a 1M-follower mega-influencer with low engagement.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var REACH_MULT={nano:0.5,micro:0.35,mid:0.25,macro:0.18,mega:0.12};
+var FOLLOWERS_MID={nano:5000,micro:55000,mid:300000,macro:750000,mega:2000000};
+function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d||0,maximumFractionDigits:d||2});}
+function calculate(){
+  var budget=parseFloat(document.getElementById('budget').value)||2000;
+  var tier=document.getElementById('tier').value;
+  var platform=document.getElementById('platform').value;
+  var engRate=parseFloat(document.getElementById('engRate').value)||4.5;
+  var productPrice=parseFloat(document.getElementById('productPrice').value)||25;
+  var convRate=parseFloat(document.getElementById('convRate').value)||1.5;
+  var followers=FOLLOWERS_MID[tier];
+  var reachRate=REACH_MULT[tier];
+  var reach=followers*reachRate;
+  var impressions=reach*1.5;
+  var engagements=impressions*(engRate/100);
+  var conversions=Math.floor(engagements*(convRate/100));
+  var revenue=conversions*productPrice;
+  var roi=budget>0?((revenue-budget)/budget*100):0;
+  var cpm=impressions>0?(budget/(impressions/1000)):0;
+  var cpa=conversions>0?(budget/conversions):0;
+  document.getElementById('roiDisplay').textContent=(roi>0?'+':'')+fmt(roi,1)+'%';
+  document.getElementById('netRevenue').textContent='Revenue: $'+fmt(revenue,0)+' | Net: $'+fmt(revenue-budget,0);
+  document.getElementById('conversionsDisplay').textContent=fmt(conversions,0);
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Estimated Reach</div><div class="en-metric-value">'+fmt(reach,0)+'</div><div class="en-metric-unit">Unique views est.</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">CPM</div><div class="en-metric-value">$'+fmt(cpm,2)+'</div><div class="en-metric-unit">Cost per 1,000 imp.</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">CPA</div><div class="en-metric-value">$'+fmt(cpa,2)+'</div><div class="en-metric-unit">Cost per conversion</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Revenue Generated</div><div class="en-metric-value">$'+fmt(revenue,0)+'</div><div class="en-metric-unit">'+conversions+' conversions × $'+productPrice+'</div></div>';
+  var channels=[
+    {name:'Influencer (this campaign)',reach:fmt(reach,0),cpm:'$'+fmt(cpm,2),cpa:'$'+fmt(cpa,2),roi:(roi>0?'+':'')+fmt(roi,1)+'%',best:'Brand awareness + trust'},
+    {name:'Facebook Ads (Nigeria)',reach:fmt(budget/0.5*1000,0),cpm:'$0.50',cpa:'$4–$8',roi:'Depends on product',best:'Targeted demographics'},
+    {name:'Google Ads (Nigeria)',reach:fmt(budget/1.2*1000,0),cpm:'$1.20',cpa:'$3–$10',roi:'High purchase intent',best:'Search + shopping'},
+    {name:'TikTok Ads (Africa)',reach:fmt(budget/0.8*1000,0),cpm:'$0.80',cpa:'$5–$15',roi:'High reach, low trust',best:'Gen Z audience'},
+  ];
+  document.getElementById('compareTable').innerHTML=channels.map(function(c,i){
+    return '<tr'+(i===0?' style="background:var(--en-accent-pale)"':'')+'>'+
+      '<td class="en-td-value">'+c.name+'</td><td>'+c.reach+'</td><td>'+c.cpm+'</td><td>'+c.cpa+'</td>'+
+      '<td class="en-td-highlight">'+c.roi+'</td><td style="font-size:.82rem;color:#64748b">'+c.best+'</td></tr>';
+  }).join('');
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

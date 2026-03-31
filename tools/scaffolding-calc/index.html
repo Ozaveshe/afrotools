@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scaffolding Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate scaffolding requirements and rental or purchase costs for African construction projects. Tube-and-coupler and system scaffolding.">
+<meta property="og:title" content="Scaffolding Calculator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/scaffolding-calc/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/scaffolding-calc/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scaffolding-calc/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scaffolding-calc/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Scaffolding Calculator","item":"https://afrotools.com/tools/scaffolding-calc/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/engineering/">Engineering</a></li>
+    <li aria-current="page">Scaffolding Calculator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Scaffolding Calculator</h1>
+    <p>Calculate scaffolding quantities (tubes, boards, couplers) and rental or purchase costs for your construction project in Africa.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Building & Scaffolding Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country</label>
+          <select class="en-select" id="sg-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">South Africa (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Egypt (EGP)</option><option value="ET">Ethiopia (ETB)</option><option value="TZ">Tanzania (TZS)</option><option value="UG">Uganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Morocco (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Building Perimeter (metres)</label>
+          <input type="number" class="en-input" id="sg-perimeter" value="60" min="4">
+          <span class="en-hint">Total length of walls requiring scaffolding</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Building Height (metres)</label>
+          <input type="number" class="en-input" id="sg-height" value="9" min="2" max="100">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Scaffolding Type</label>
+          <select class="en-select" id="sg-type">
+            <option value="tube_coupler">Tube and Coupler (most common in Africa)</option>
+            <option value="system">System / Kwikstage Scaffolding</option>
+            <option value="bamboo">Bamboo Scaffolding (W/E Africa informal)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Rental or Purchase?</label>
+          <select class="en-select" id="sg-mode">
+            <option value="rent">Rent (most common)</option>
+            <option value="buy">Purchase</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Rental Duration (weeks)</label>
+          <input type="number" class="en-input" id="sg-weeks" value="8" min="1" max="104">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Labour for Erect/Dismantle?</label>
+          <select class="en-select" id="sg-labour">
+            <option value="yes">Yes — include erection & dismantling</option>
+            <option value="no">No — materials only</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcScaffolding()">Calculate Scaffolding</button>
+    </div>
+
+    <div class="en-results" id="sg-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="sg-headline">Scaffolding Estimate</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Total Scaffold Area</div><div class="en-stat-value" id="sg-area">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Tubes Required</div><div class="en-stat-value" id="sg-tubes">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Boards / Decks</div><div class="en-stat-value" id="sg-boards">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Couplers / Fittings</div><div class="en-stat-value" id="sg-couplers">—</div></div>
+      </div>
+      <div class="en-results-grid" style="margin-top:1rem">
+        <div class="en-stat-card"><div class="en-stat-label">Materials Cost</div><div class="en-stat-value" id="sg-mat-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Labour (erect + dismantle)</div><div class="en-stat-value" id="sg-lab-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Total Cost</div><div class="en-stat-value" id="sg-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Cost per m² per week</div><div class="en-stat-value" id="sg-per-m2">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Safety Checklist</h3>
+        <ul style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem">
+          <li>Inspect all tubes for cracks, bends, or rust before use. Discard any damaged components.</li>
+          <li>All workers on scaffolding above 2m must wear a safety harness and hard hat.</li>
+          <li>Toe boards and guard rails are mandatory on all working platforms.</li>
+          <li>Load limit: standard scaffolding rated for 225 kg/m². Never exceed this — stack materials on floor, not on scaffold.</li>
+          <li>Scaffold must be inspected by a competent person before use, after modification, and after adverse weather.</li>
+          <li id="sg-bamboo-note" style="display:none">Bamboo scaffolding: use fresh, mature bamboo (3+ years), lash with sisal or nylon rope. Replace immediately if cracked or dry.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+var SG_RATES = {
+  NG:{ sym:'₦', tube_rent_wk:800, tube_buy:4500, board_rent_wk:400, board_buy:2200, coupler_rent_wk:120, coupler_buy:650, bamboo_rent_wk:200, labour_m2:3500 },
+  KE:{ sym:'KES', tube_rent_wk:320, tube_buy:1800, board_rent_wk:160, board_buy:880, coupler_rent_wk:48, coupler_buy:260, bamboo_rent_wk:80, labour_m2:1400 },
+  ZA:{ sym:'ZAR', tube_rent_wk:90, tube_buy:520, board_rent_wk:45, board_buy:260, coupler_rent_wk:14, coupler_buy:75, bamboo_rent_wk:0, labour_m2:420 },
+  GH:{ sym:'GHS', tube_rent_wk:70, tube_buy:400, board_rent_wk:35, board_buy:200, coupler_rent_wk:11, coupler_buy:58, bamboo_rent_wk:18, labour_m2:320 },
+  EG:{ sym:'EGP', tube_rent_wk:75, tube_buy:430, board_rent_wk:38, board_buy:215, coupler_rent_wk:12, coupler_buy:62, bamboo_rent_wk:0, labour_m2:350 },
+  ET:{ sym:'ETB', tube_rent_wk:180, tube_buy:1000, board_rent_wk:90, board_buy:500, coupler_rent_wk:27, coupler_buy:150, bamboo_rent_wk:45, labour_m2:850 },
+  TZ:{ sym:'TZS', tube_rent_wk:6500, tube_buy:36000, board_rent_wk:3200, board_buy:18000, coupler_rent_wk:960, coupler_buy:5400, bamboo_rent_wk:1600, labour_m2:30000 },
+  UG:{ sym:'UGX', tube_rent_wk:8500, tube_buy:47000, board_rent_wk:4200, board_buy:23000, coupler_rent_wk:1260, coupler_buy:7000, bamboo_rent_wk:2100, labour_m2:40000 },
+  RW:{ sym:'RWF', tube_rent_wk:1400, tube_buy:7800, board_rent_wk:700, board_buy:3900, coupler_rent_wk:210, coupler_buy:1170, bamboo_rent_wk:350, labour_m2:6500 },
+  MA:{ sym:'MAD', tube_rent_wk:35, tube_buy:200, board_rent_wk:18, board_buy:100, coupler_rent_wk:5, coupler_buy:29, bamboo_rent_wk:0, labour_m2:165 }
+};
+
+function fmtCur(sym,n){ return sym + Math.round(n).toLocaleString(); }
+
+function calcScaffolding(){
+  var country = document.getElementById('sg-country').value;
+  var perimeter = +document.getElementById('sg-perimeter').value;
+  var height = +document.getElementById('sg-height').value;
+  var stype = document.getElementById('sg-type').value;
+  var mode = document.getElementById('sg-mode').value;
+  var weeks = +document.getElementById('sg-weeks').value;
+  var inclLabour = document.getElementById('sg-labour').value === 'yes';
+  var r = SG_RATES[country], sym = r.sym;
+
+  var area = perimeter * height;
+  // Tube-and-coupler: 1 tube per 1.5m² roughly
+  var tubes = Math.ceil(area / 1.5);
+  // Boards: 1 per 2m² (every 2m lift height)
+  var boards = Math.ceil((perimeter * Math.ceil(height / 2)));
+  var couplers = Math.ceil(tubes * 2.5);
+
+  var matCost, rentMode;
+  if (stype === 'bamboo') {
+    matCost = mode === 'buy' ? 0 : tubes * r.bamboo_rent_wk * weeks;
+    rentMode = mode === 'rent';
+    document.getElementById('sg-bamboo-note').style.display = 'list-item';
+  } else {
+    if (mode === 'rent') {
+      matCost = tubes * r.tube_rent_wk * weeks + boards * r.board_rent_wk * weeks + couplers * r.coupler_rent_wk * weeks;
+    } else {
+      matCost = tubes * r.tube_buy + boards * r.board_buy + couplers * r.coupler_buy;
+    }
+    document.getElementById('sg-bamboo-note').style.display = 'none';
+  }
+
+  var labCost = inclLabour ? area * r.labour_m2 : 0;
+  var total = matCost + labCost;
+
+  document.getElementById('sg-headline').textContent = perimeter + 'm × ' + height + 'm — ' + area.toLocaleString() + 'm² scaffold';
+  document.getElementById('sg-area').textContent = area.toLocaleString() + ' m²';
+  document.getElementById('sg-tubes').textContent = tubes.toLocaleString() + ' tubes';
+  document.getElementById('sg-boards').textContent = boards.toLocaleString() + ' boards';
+  document.getElementById('sg-couplers').textContent = stype === 'bamboo' ? 'N/A (lashed)' : couplers.toLocaleString();
+  document.getElementById('sg-mat-cost').textContent = fmtCur(sym, matCost) + (mode === 'rent' ? ' (' + weeks + ' wks)' : ' (purchase)');
+  document.getElementById('sg-lab-cost').textContent = inclLabour ? fmtCur(sym, labCost) : 'Not included';
+  document.getElementById('sg-total').textContent = fmtCur(sym, total);
+  document.getElementById('sg-per-m2').textContent = mode === 'rent' ? fmtCur(sym, matCost / area / weeks) + '/m²/wk' : fmtCur(sym, matCost / area) + '/m² (purchase)';
+
+  document.getElementById('sg-results').classList.add('on');
+  document.getElementById('sg-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

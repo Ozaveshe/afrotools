@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ankara / Kente Pattern Cost Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate cost for Ankara, Kente, Kanga, Kitenge, Adinkra, Aso-Oke fabric by the yard. Export value estimates, quality tiers, customs duty guide.">
+<link rel="canonical" href="https://afrotools.com/tools/ankara-kente-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Ankara / Kente Cost Calculator</span>
+    </nav>
+    <h1>Ankara &amp; Kente <em>Pattern Cost Calculator</em></h1>
+    <p>Calculate the cost of Ankara, Kente, Kanga, Kitenge, Adinkra, Aso-Oke, and Isi-Agu fabric by the yard. Includes export value estimates, quality tier comparison, and customs duty guide.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f9f5; Ankara</span>
+      <span class="en-tool-hero-pill">&#x1f1ec;&#x1f1ed; Kente</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Fabric Cost</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f9f5;</div>Fabric Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country of Purchase</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="CI">Côte d'Ivoire 🇨🇮 (XOF)</option>
+          <option value="SN">Senegal 🇸🇳 (XOF)</option>
+          <option value="CM">Cameroon 🇨🇲 (XAF)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Fabric Type</label>
+        <select id="fabricType" class="en-select" onchange="setDefaultPrice()">
+          <option value="ankara">Ankara / Wax Print</option>
+          <option value="kente">Kente (hand-woven Ghana)</option>
+          <option value="kanga">Kanga / Leso (East Africa)</option>
+          <option value="kitenge">Kitenge (Central/East Africa)</option>
+          <option value="adinkra">Adinkra Cloth</option>
+          <option value="asooke">Aso-Oke (Nigeria)</option>
+          <option value="isiagu">Isi-Agu (Nigeria)</option>
+          <option value="bogolan">Bogolan / Mud Cloth (Mali)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Quality Tier</label>
+        <select id="quality" class="en-select" onchange="setDefaultPrice()">
+          <option value="factory">Factory/Budget</option>
+          <option value="premium" selected>Premium / Authentic</option>
+          <option value="handcrafted">Hand-Crafted / Artisanal</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Price per Yard (local currency)</label>
+        <input type="number" id="pricePerYard" class="en-input" value="4000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Yards Needed</label>
+        <input type="number" id="yards" class="en-input" value="6" min="0.5" step="0.5">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Purpose</label>
+        <select id="purpose" class="en-select">
+          <option value="outfit">Personal Outfit</option>
+          <option value="homedecor">Home Decor</option>
+          <option value="gifting">Gifting</option>
+          <option value="export">Export / Resale</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Calculate Fabric Cost</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Total Fabric Cost</div>
+            <div class="en-results-hero-value" id="totalCost">₦0</div>
+            <div class="en-results-hero-sub" id="usdCost"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Export Value</div>
+            <div style="font-size:1.5rem;font-weight:800;color:var(--en-accent)" id="exportValue">$0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Quality Tier Price Comparison</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Quality</th><th>Price/yard</th><th>Total Cost</th><th>Export Value</th><th>Best For</th></tr></thead>
+          <tbody id="qualityTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f30d;</div>Export &amp; Import Notes</div>
+      <div id="exportNotes"></div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f9f5;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Authentic Kente Tip</div>
+        <div class="en-tip-text">Authentic hand-woven Kente from Bonwire, Ghana costs GHS 250–1,500 per yard. Mass-produced "Kente-print" fabric from factories costs GHS 15–50. When buying for export or gifting, always specify "authentic hand-woven" and get a certificate of origin for customs purposes. Kente exported to the US or Europe commands 3–8x the local price.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var FX={NG:1660,GH:15.5,KE:130,ZA:18.5,CI:615,SN:615,CM:615};
+var SYM={NG:'₦',GH:'GHS ',KE:'KES ',ZA:'R',CI:'XOF ',SN:'XOF ',CM:'XAF '};
+var PRICES={
+  ankara:{NG:{factory:1500,premium:4000,handcrafted:8000},GH:{factory:12,premium:35,handcrafted:80},KE:{factory:200,premium:600,handcrafted:1200},ZA:{factory:35,premium:90,handcrafted:200}},
+  kente:{GH:{factory:50,premium:500,handcrafted:1200},NG:{factory:3000,premium:8000,handcrafted:20000},KE:{factory:600,premium:6000,handcrafted:15000}},
+  kanga:{KE:{factory:150,premium:400,handcrafted:800},NG:{factory:1500,premium:4000,handcrafted:8000}},
+  kitenge:{KE:{factory:200,premium:500,handcrafted:1000},NG:{factory:2000,premium:5000,handcrafted:12000},CI:{factory:1500,premium:4000,handcrafted:8000}},
+  asooke:{NG:{factory:2000,premium:8000,handcrafted:25000}},
+  isiagu:{NG:{factory:1500,premium:5000,handcrafted:15000}},
+  adinkra:{GH:{factory:30,premium:200,handcrafted:600}},
+  bogolan:{SN:{factory:2000,premium:6000,handcrafted:20000},CI:{factory:2000,premium:6000,handcrafted:20000}}
+};
+var EXPORT_MULT={factory:3,premium:5,handcrafted:8};
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function setDefaultPrice(){
+  var type=document.getElementById('fabricType').value;
+  var quality=document.getElementById('quality').value;
+  var country=document.getElementById('country').value;
+  var p=PRICES[type];
+  if(p&&(p[country]||p['NG']||p['GH'])){
+    var cp=p[country]||p['NG']||p['GH']||p[Object.keys(p)[0]];
+    if(cp&&cp[quality]) document.getElementById('pricePerYard').value=cp[quality];
+  }
+}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var type=document.getElementById('fabricType').value;
+  var quality=document.getElementById('quality').value;
+  var pricePerYard=parseFloat(document.getElementById('pricePerYard').value)||0;
+  var yards=parseFloat(document.getElementById('yards').value)||6;
+  var purpose=document.getElementById('purpose').value;
+  var sym=SYM[country];var rate=FX[country];
+  var totalLocal=pricePerYard*yards;
+  var totalUSD=totalLocal/rate;
+  var exportMult=EXPORT_MULT[quality]||5;
+  var exportUSD=totalUSD*exportMult;
+  document.getElementById('totalCost').textContent=sym+fmt(totalLocal);
+  document.getElementById('usdCost').textContent='≈ $'+fmt(totalUSD,2)+' USD';
+  document.getElementById('exportValue').textContent='$'+fmt(exportUSD,0);
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Price per Yard</div><div class="en-metric-value">'+sym+fmt(pricePerYard)+'</div><div class="en-metric-unit">'+quality+' quality</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Total Yards</div><div class="en-metric-value">'+yards+'</div><div class="en-metric-unit">'+type+' fabric</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">USD Value</div><div class="en-metric-value">$'+fmt(totalUSD,2)+'</div><div class="en-metric-unit">At current rate</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Export Premium</div><div class="en-metric-value">'+exportMult+'x</div><div class="en-metric-unit">Diaspora market value</div></div>';
+  var tiers=['factory','premium','handcrafted'];
+  var tierLabels={factory:'Factory/Budget',premium:'Premium/Authentic',handcrafted:'Hand-Crafted'};
+  var typePrices=PRICES[type];
+  var countryPrices=typePrices&&(typePrices[country]||typePrices['NG']||typePrices['GH']||typePrices[Object.keys(typePrices||{})[0]]);
+  document.getElementById('qualityTable').innerHTML=tiers.map(function(t){
+    var pp=countryPrices&&countryPrices[t]?countryPrices[t]:pricePerYard*(t==='factory'?0.4:t==='premium'?1:2.5);
+    var tot=pp*yards;
+    var exp=tot/rate*EXPORT_MULT[t];
+    return '<tr'+(t===quality?' style="background:var(--en-accent-pale)"':'')+'>'+
+      '<td class="en-td-value">'+tierLabels[t]+(t===quality?' ← Selected':'')+'</td>'+
+      '<td>'+sym+fmt(pp)+'/yd</td><td class="en-td-highlight">'+sym+fmt(tot)+'</td>'+
+      '<td>$'+fmt(exp,0)+'</td><td style="font-size:.82rem;color:#64748b">'+(t==='factory'?'Mass-produced, consistent':t==='premium'?'Authentic wax, vibrant':'One-of-a-kind, artisan')+'</td></tr>';
+  }).join('');
+  var customsDuty=purpose==='export'?Math.round(exportUSD*0.12):0;
+  document.getElementById('exportNotes').innerHTML=
+    '<div class="en-notice"><strong>Export Value:</strong> This fabric would sell for approximately $'+fmt(exportUSD,0)+' in the US, UK, or diaspora markets ('+exportMult+'x local price). Popular on Etsy, Depop, and African diaspora fashion marketplaces.</div>'+
+    (purpose==='export'?'<div class="en-notice en-notice-warning" style="margin-top:12px"><strong>Import Duty Estimate:</strong> Importing to US/UK — estimated customs duty ≈ $'+fmt(customsDuty,0)+' (12% of value). Always check the harmonized tariff code for textiles (HS code 5208–5212 for cotton fabrics) before shipping.</div>':'')+
+    '<div style="margin-top:12px;font-size:.87rem;color:#475569"><strong>Best Markets for African Fabric Export:</strong><br>&#x2022; US Etsy — Ankara prints sell for $15–$40/yd<br>&#x2022; UK markets — Kente sells for £30–£100/yd<br>&#x2022; Canada — Growing African diaspora demand<br>&#x2022; Germany — Large West African community<br>&#x2022; Instagram / TikTok direct sales — lowest fees</div>';
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+setDefaultPrice();
+</script>
+</body>
+</html>

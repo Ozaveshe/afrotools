@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Made in Africa Label Checker — AfCFTA Rules of Origin | AfroTools</title>
+<meta name="description" content="Check if your product qualifies as 'Made in Africa' under AfCFTA Rules of Origin. Calculate local content percentage and preferential tariff eligibility.">
+<meta property="og:title" content="Made in Africa Label Checker | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/made-in-africa-label/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/made-in-africa-label/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/made-in-africa-label/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/made-in-africa-label/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.roo-verdict { padding:1.5rem; border-radius:12px; text-align:center; margin:1rem 0; }
+.roo-pass { background:#dcfce7; border:2px solid #16a34a; color:#166534; }
+.roo-fail { background:#fee2e2; border:2px solid #dc2626; color:#991b1b; }
+.roo-borderline { background:#fef9c3; border:2px solid #f59e0b; color:#854d0e; }
+.tariff-badge { display:inline-block; background:#dcfce7; color:#166534; border-radius:99px; padding:.2rem .75rem; font-size:.82rem; font-weight:600; margin:.15rem; }
+.tariff-badge.no { background:#fee2e2; color:#991b1b; }
+.hs-section { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+@media(max-width:600px){ .hs-section { grid-template-columns:1fr; } }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Manufacturing","item":"https://afrotools.com/manufacturing/"},{"@type":"ListItem","position":3,"name":"Made in Africa Label Checker","item":"https://afrotools.com/tools/made-in-africa-label/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/manufacturing/">Manufacturing</a></li>
+    <li aria-current="page">Made in Africa Label Checker</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">AfCFTA</div>
+    <h1>Made in Africa Label Checker</h1>
+    <p>Does your product qualify as "Made in Africa" under AfCFTA Rules of Origin? Calculate local content, check preferential tariff eligibility, and understand export requirements.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Product & Cost Information</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country of Production</label>
+          <select class="en-select" id="mia-country">
+            <option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="CI">Côte d'Ivoire</option><option value="MA">Morocco</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Product Category (HS Chapter)</label>
+          <select class="en-select" id="mia-hs">
+            <option value="food_ag">Agricultural Products / Food (HS 01–24)</option>
+            <option value="chemicals">Chemicals / Pharma (HS 28–38)</option>
+            <option value="plastics_rubber">Plastics & Rubber (HS 39–40)</option>
+            <option value="textiles">Textiles & Garments (HS 50–63)</option>
+            <option value="metals">Metals & Metal Products (HS 72–83)</option>
+            <option value="machinery">Machinery & Equipment (HS 84–85)</option>
+            <option value="automotive">Vehicles & Parts (HS 87)</option>
+            <option value="other_manufactured">Other Manufactured Goods</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Ex-Works (EXW) Price per Unit</label>
+          <input type="number" class="en-input" id="mia-exw" value="0" min="0" placeholder="Factory gate price">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Value of African Raw Materials (per unit)</label>
+          <input type="number" class="en-input" id="mia-af-raw" value="0" min="0">
+          <span class="en-hint">Materials grown, mined, or made in Africa</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Value of Non-African Materials (per unit)</label>
+          <input type="number" class="en-input" id="mia-non-af" value="0" min="0">
+          <span class="en-hint">Imported inputs, components, ingredients</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">African Labour & Overhead (per unit)</label>
+          <input type="number" class="en-input" id="mia-labour" value="0" min="0">
+          <span class="en-hint">Direct labour, energy, rent in Africa</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Destination Country</label>
+          <select class="en-select" id="mia-dest">
+            <option value="AfCFTA">AfCFTA Member State (any AU country)</option>
+            <option value="EU">European Union (EPA)</option>
+            <option value="US">United States (AGOA)</option>
+            <option value="UK">United Kingdom (DCTS/EPA)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Production Process</label>
+          <select class="en-select" id="mia-process">
+            <option value="wholly_obtained">Wholly Obtained (100% African origin)</option>
+            <option value="substantially_transformed">Substantially Transformed (made from imported inputs)</option>
+            <option value="assembled">Assembled (mostly imported components)</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="checkMIA()">Check Origin Status</button>
+    </div>
+
+    <div class="en-results" id="mia-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="mia-headline">Rules of Origin Assessment</div>
+      </div>
+      <div id="mia-verdict-box"></div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Local Content %</div><div class="en-stat-value" id="mia-lc">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">AfCFTA Threshold</div><div class="en-stat-value" id="mia-threshold">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">AfCFTA Eligible</div><div class="en-stat-value" id="mia-afcfta">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Other Market Access</div><div class="en-stat-value" id="mia-other">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Tariff Preference Eligibility</h3>
+        <div id="mia-tariff-badges" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem"></div>
+        <p id="mia-tariff-note" style="font-size:.85rem;color:#64748b;margin:0"></p>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Certificate of Origin Requirements</h3>
+        <div class="hs-section">
+          <div>
+            <h4 style="font-size:.9rem;margin-bottom:.5rem">Documents Needed</h4>
+            <ul id="mia-docs" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.3rem;font-size:.85rem"></ul>
+          </div>
+          <div>
+            <h4 style="font-size:.9rem;margin-bottom:.5rem">Issuing Bodies</h4>
+            <ul id="mia-issuers" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.3rem;font-size:.85rem"></ul>
+          </div>
+        </div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">How to Increase Local Content</h3>
+        <ul id="mia-actions" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+// AfCFTA RoO thresholds by HS section (local value content %)
+var ROO_THRESHOLD = {
+  food_ag: 30, chemicals: 35, plastics_rubber: 35,
+  textiles: 35, metals: 40, machinery: 40,
+  automotive: 40, other_manufactured: 35
+};
+
+var ISSUING_BODIES = {
+  NG:'Nigerian Export Promotion Council (NEPC) or Chamber of Commerce',
+  KE:'Kenya National Chamber of Commerce and Industry (KNCCI)',
+  ZA:'Department of Trade, Industry and Competition (dtic) or SACCI',
+  GH:'Ghana Export Promotion Authority (GEPA)',
+  EG:'General Organisation for Export & Import Control (GOEIC)',
+  ET:'Ethiopian Chamber of Commerce',
+  TZ:'Tanzania Chamber of Commerce, Industry and Agriculture (TCCIA)',
+  UG:'Uganda National Chamber of Commerce and Industry',
+  RW:'Rwanda Development Board (RDB)',
+  CI:'Chambre de Commerce et d\'Industrie de Côte d\'Ivoire (CCI-CI)',
+  MA:'Fédération des Chambres de Commerce du Maroc'
+};
+
+var AGOA_SECTORS = ['textiles','automotive','food_ag'];
+var EPA_SECTORS = ['food_ag','chemicals','textiles','other_manufactured'];
+
+function checkMIA(){
+  var country = document.getElementById('mia-country').value;
+  var hs = document.getElementById('mia-hs').value;
+  var exw = +document.getElementById('mia-exw').value;
+  var afRaw = +document.getElementById('mia-af-raw').value;
+  var nonAf = +document.getElementById('mia-non-af').value;
+  var labour = +document.getElementById('mia-labour').value;
+  var dest = document.getElementById('mia-dest').value;
+  var process = document.getElementById('mia-process').value;
+
+  var totalLocal = afRaw + labour;
+  var lvc = exw > 0 ? (totalLocal / exw * 100) : 0;
+  var threshold = ROO_THRESHOLD[hs];
+
+  // Wholly obtained always qualifies
+  var qualifies = process === 'wholly_obtained' ? true : lvc >= threshold;
+  var borderline = !qualifies && lvc >= threshold * 0.85;
+
+  document.getElementById('mia-headline').textContent = 'Rules of Origin: ' + hs.replace(/_/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()});
+  document.getElementById('mia-lc').textContent = process === 'wholly_obtained' ? '100% (Wholly Obtained)' : lvc.toFixed(1) + '%';
+  document.getElementById('mia-threshold').textContent = threshold + '% LVC (AfCFTA)';
+
+  var verdictEl = document.getElementById('mia-verdict-box');
+  if (process === 'wholly_obtained' || qualifies) {
+    verdictEl.innerHTML = '<div class="roo-verdict roo-pass">✅ QUALIFIES as African Origin — Eligible for AfCFTA preferential tariff</div>';
+    document.getElementById('mia-afcfta').textContent = 'YES — Eligible';
+    document.getElementById('mia-afcfta').parentElement.style.color = '#16a34a';
+  } else if (borderline) {
+    verdictEl.innerHTML = '<div class="roo-verdict roo-borderline">⚠️ BORDERLINE — ' + lvc.toFixed(1) + '% LVC vs ' + threshold + '% required. Small improvements could qualify.</div>';
+    document.getElementById('mia-afcfta').textContent = 'NOT YET';
+    document.getElementById('mia-afcfta').parentElement.style.color = '#f59e0b';
+  } else {
+    verdictEl.innerHTML = '<div class="roo-verdict roo-fail">❌ DOES NOT QUALIFY — ' + lvc.toFixed(1) + '% local content vs ' + threshold + '% required</div>';
+    document.getElementById('mia-afcfta').textContent = 'NO — Below threshold';
+    document.getElementById('mia-afcfta').parentElement.style.color = '#dc2626';
+  }
+
+  // Other market access
+  var otherAccess = [];
+  if (AGOA_SECTORS.indexOf(hs) >= 0) otherAccess.push('AGOA (US) — check specific rules');
+  if (EPA_SECTORS.indexOf(hs) >= 0) otherAccess.push('EPA/EBA (EU/UK)');
+  document.getElementById('mia-other').textContent = otherAccess.length ? otherAccess.join(', ') : 'Check specific agreement';
+
+  // Tariff badges
+  var badges = [
+    { label:'AfCFTA', ok: qualifies || process === 'wholly_obtained' },
+    { label:'ECOWAS (W. Africa)', ok: qualifies || process === 'wholly_obtained' },
+    { label:'EAC (E. Africa)', ok: qualifies || process === 'wholly_obtained' },
+    { label:'AGOA (USA)', ok: (qualifies || process === 'wholly_obtained') && AGOA_SECTORS.indexOf(hs) >= 0 },
+    { label:'EU EPA / EBA', ok: (qualifies || process === 'wholly_obtained') && EPA_SECTORS.indexOf(hs) >= 0 },
+  ];
+  document.getElementById('mia-tariff-badges').innerHTML = badges.map(function(b){
+    return '<span class="tariff-badge'+(b.ok?'':' no')+'">'+b.label+': '+(b.ok?'✓ Eligible':'✗ N/A')+'</span>';
+  }).join('');
+  document.getElementById('mia-tariff-note').textContent = 'Note: Actual eligibility depends on current ratification status and HS code-specific annexes. Verify with your customs authority.';
+
+  // Documents
+  var docs = ['Form A (Generalised System of Preferences)','AfCFTA Certificate of Origin (Form AfCFTA-01)','Commercial Invoice','Packing List','Bill of Lading / Airway Bill','Supplier Declaration of Conformity'];
+  if (hs === 'food_ag') docs.push('Phytosanitary Certificate (for agricultural products)');
+  if (hs === 'textiles') docs.push('Fabric composition certificate');
+  document.getElementById('mia-docs').innerHTML = docs.map(function(d){ return '<li>'+d+'</li>'; }).join('');
+
+  var issuers = [ISSUING_BODIES[country] || 'National Chamber of Commerce', 'AU Mission in your country (AfCFTA forms)', 'National Revenue Authority / Customs for Form A'];
+  document.getElementById('mia-issuers').innerHTML = issuers.map(function(i){ return '<li>'+i+'</li>'; }).join('');
+
+  var actions = [];
+  if (!qualifies && process !== 'wholly_obtained') {
+    var gap = threshold - lvc;
+    actions.push('Gap to qualification: ' + gap.toFixed(1) + '% more local content needed. Consider local raw material sourcing first.');
+    actions.push('Source ' + hs.replace(/_/g,' ') + ' inputs from other AfCFTA member states — cumulation rules allow these to count as "local".');
+  }
+  actions.push('Increase local processing — even basic transformation (cutting, mixing, baking) adds local value.');
+  actions.push('Join industry association for your sector — members get preferential access to local supplier networks.');
+  actions.push('Apply for AfCFTA self-certification under the agreed exporter scheme once exports exceed threshold volumes.');
+  actions.push('Check the AU AfCFTA portal (afcfta-au.org) for HS-code specific RoO schedules for your exact product.');
+  document.getElementById('mia-actions').innerHTML = actions.map(function(a){ return '<li>'+a+'</li>'; }).join('');
+  document.getElementById('mia-results').classList.add('on');
+  document.getElementById('mia-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

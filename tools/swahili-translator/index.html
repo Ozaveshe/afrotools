@@ -50,6 +50,31 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+
+.skip-link{position:absolute;left:-9999px}
+.wotd{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #c4b5fd;border-radius:12px;padding:1.15rem 1.5rem;margin-bottom:1.5rem}
+.wotd-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#7c3aed;margin-bottom:.4rem}
+.wotd-en{font-size:.85rem;color:#475569;margin-bottom:.2rem}
+.wotd-lang{font-size:1.3rem;font-weight:800;color:#4c1d95}
+.wotd-pron{font-size:.82rem;color:#7c3aed;font-style:italic;margin-top:.2rem}
+.wotd-note{font-size:.75rem;color:#94a3b8;font-style:italic;margin-top:.2rem}
+.quiz-card{background:#fff;border:2px solid #c4b5fd;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.quiz-card h3{font-size:1rem;font-weight:700;color:#4c1d95;margin-bottom:.75rem}
+.quiz-q{font-size:1.05rem;color:#334155;font-weight:600;margin-bottom:1rem}
+.quiz-opts{display:grid;gap:.5rem;margin-bottom:.75rem}
+.quiz-opt{padding:.7rem 1rem;border:2px solid #e2e8f0;border-radius:8px;background:#fff;font-size:.9rem;cursor:pointer;text-align:left;font-family:inherit;font-weight:600;color:#334155;transition:all .15s}
+.quiz-opt:hover{border-color:#c4b5fd;background:#f5f3ff}
+.quiz-opt.correct{border-color:#16a34a;background:#dcfce7;color:#166534}
+.quiz-opt.wrong{border-color:#dc2626;background:#fef2f2;color:#991b1b}
+.quiz-opt.dimmed{opacity:.5;pointer-events:none}
+.quiz-score{font-size:.78rem;color:#7c3aed;font-weight:600}
+.quiz-next{padding:.5rem 1.25rem;background:var(--purple);color:#fff;border:none;border-radius:6px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:.5rem}
+.quiz-next:hover{background:var(--purple-dark)}
+.p-btn{background:none;border:none;font-size:.95rem;cursor:pointer;padding:.25rem;border-radius:4px;opacity:.4;transition:opacity .15s;line-height:1}
+.p-btn:hover{opacity:1}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:.55rem 1.15rem;border-radius:8px;font-size:.8rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
@@ -88,12 +113,14 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-03-31">
 </head>
 <body>
 <afro-navbar></afro-navbar>
+<main id="main">
 <section class="hero"><h1>Swahili Translator & Phrasebook</h1><p>500+ essential English-Swahili phrases for travel, greetings, business, and daily life across East Africa.</p></section>
 <div class="container">
+<div class="wotd" id="wotd"></div>
 <div class="card">
 <h2>Search Phrases <span class="count-badge" id="countBadge">0 phrases</span></h2>
 <div class="search-box"><input type="text" id="search" placeholder="Search in English or Swahili..." oninput="filter()"></div>
@@ -101,6 +128,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </div>
 <div class="card"><div class="phrase-list" id="phrases"></div></div>
 </div>
+<div class="quiz-card"><h3>Quick Quiz</h3><div id="quizArea"></div></div>
+</div>
+<div class="toast" id="toast"></div>
 <section class="seo-section">
 <h2>Learn Swahili — The Language of East Africa</h2>
 <p>Swahili (Kiswahili) is one of Africa's most widely spoken languages, with over 100 million speakers across East and Central Africa. It serves as the official language of Tanzania, Kenya, Uganda, Rwanda, and the Democratic Republic of Congo, and is recognized by the African Union as a continental lingua franca. Learning basic Swahili phrases opens doors across a vast region of the continent.</p>
@@ -118,6 +148,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>What does "Hakuna Matata" really mean?</summary><p>"Hakuna matata" literally translates to "there are no problems" or "no worries" in Swahili. It's a genuine phrase used in East Africa, though it became globally famous through the Disney film "The Lion King." In everyday Swahili, people more commonly say "hamna shida" or "hakuna shida" to express the same sentiment.</p></details>
 <details><summary>Is this a full translator?</summary><p>This is a phrasebook with 500+ curated phrases organized by category — not a machine translation tool. The phrases are verified by native speakers and include pronunciation guides. For full text translation, we recommend Google Translate or other dedicated translation services, but for travel and daily communication, these curated phrases are more reliable and natural-sounding.</p></details>
 </section>
+</main>
 <afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
 <script>
@@ -358,6 +389,78 @@ function speak(text){
   speechSynthesis.speak(u);
 }
 init();
+</script>
+<script>
+/* ── Word of the Day ── */
+function initWOTD(){
+  var day=new Date();var seed=day.getFullYear()*1000+day.getMonth()*32+day.getDate();
+  var p=PHRASES[seed%PHRASES.length];
+  var el=document.getElementById('wotd');
+  if(!el)return;
+  var langField=p.lang||p.sw||'';
+  var pronField=p.pron||p.roman||'';
+  var noteField=p.note||'';
+  el.innerHTML='<div class="wotd-label">Phrase of the Day</div>'+
+    '<div class="wotd-en">'+p.en+'</div>'+
+    '<div class="wotd-lang">'+langField+'</div>'+
+    (pronField?'<div class="wotd-pron">'+pronField+'</div>':'')+
+    (noteField?'<div class="wotd-note">'+noteField+'</div>':'');
+}
+
+/* ── Quick Quiz ── */
+var quizScore=0,quizTotal=0,quizAnswered=false;
+function initQuiz(){loadQuizQ();}
+function loadQuizQ(){
+  quizAnswered=false;
+  var pool=PHRASES.filter(function(p){return(p.lang||p.sw)&&(p.lang||p.sw).length>1;});
+  if(pool.length<4)return;
+  var idx=Math.floor(Math.random()*pool.length);
+  var correct=pool[idx];
+  var wrongs=[];
+  while(wrongs.length<3){
+    var r=pool[Math.floor(Math.random()*pool.length)];
+    if(r!==correct&&wrongs.indexOf(r)===-1)wrongs.push(r);
+  }
+  var opts=[correct].concat(wrongs);
+  for(var i=opts.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=opts[i];opts[i]=opts[j];opts[j]=t;}
+  var correctLang=correct.lang||correct.sw||'';
+  var qEl=document.getElementById('quizArea');
+  if(!qEl)return;
+  qEl.innerHTML='<div class="quiz-q">How do you say: "'+correct.en+'"?</div>'+
+    '<div class="quiz-opts">'+opts.map(function(o,i){
+      var oLang=o.lang||o.sw||'';
+      return '<button class="quiz-opt" onclick="checkQuiz(this,'+String(o===correct)+')">'+oLang+'</button>';
+    }).join('')+'</div>'+
+    '<div class="quiz-score" id="quizScoreEl">Score: '+quizScore+'/'+quizTotal+'</div>';
+}
+function checkQuiz(el,isCorrect){
+  if(quizAnswered)return;
+  quizAnswered=true;quizTotal++;
+  if(isCorrect){quizScore++;el.classList.add('correct');}
+  else{
+    el.classList.add('wrong');
+    var btns=el.parentNode.querySelectorAll('.quiz-opt');
+    btns.forEach(function(b){if(!b.classList.contains('wrong'))b.classList.add('dimmed');});
+    // find correct
+    var correctLang=(PHRASES.find(function(p){return p.en===document.querySelector('.quiz-q').textContent.replace('How do you say: "','').replace('"?','');})||{});
+    var cLang=correctLang.lang||correctLang.sw||'';
+    btns.forEach(function(b){if(b.textContent===cLang){b.classList.remove('dimmed');b.classList.add('correct');}});
+  }
+  document.getElementById('quizScoreEl').textContent='Score: '+quizScore+'/'+quizTotal;
+  var nextBtn=document.createElement('button');
+  nextBtn.className='quiz-next';
+  nextBtn.textContent='Next Question \u2192';
+  nextBtn.onclick=loadQuizQ;
+  el.parentNode.parentNode.appendChild(nextBtn);
+}
+
+/* ── Copy & Toast ── */
+function copyText(text){navigator.clipboard.writeText(text).then(function(){showToast('Copied!');});}
+function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);}
+
+initWOTD();
+initQuiz();
+
 </script>
 <script>window.TRANSLATOR_CONFIG={source:"en",target:"sw",langName:"Swahili",langCode:"sw"};</script>
 <script src="/assets/js/lib/live-translate.js" defer></script>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guard Service Cost Comparator — Africa | AfroTools</title>
+<meta name="description" content="Compare armed vs unarmed, company vs freelance security guard costs in Nigeria, Kenya, South Africa. NSCDC/PSC compliance and contract checklist.">
+<link rel="canonical" href="https://afrotools.com/tools/guard-service-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#475569;--en-accent-dark:#334155;--en-accent-light:#E2E8F0;--en-accent-pale:#F8FAFC;--en-shadow-hover:0 4px 16px rgba(71,85,105,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#0f172a 50%,#1e293b 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="security"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/security/">Security &amp; Safety</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Guard Service Cost Comparator</span>
+    </nav>
+    <h1>Guard Service <em>Cost Comparator</em></h1>
+    <p>Compare armed vs unarmed, company vs freelance security guard costs across Nigeria, Kenya, South Africa, and Ghana. Includes NSCDC / PSC licensing requirements and a contract checklist.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f46e; Security Guards</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Cost Comparison</span>
+      <span class="en-tool-hero-pill">&#x1f4dc; Contract</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f46e;</div>Guard Requirements</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Property Type</label>
+        <select id="propertyType" class="en-select">
+          <option value="residential">Residential Home</option>
+          <option value="commercial" selected>Commercial / Office</option>
+          <option value="industrial">Industrial / Warehouse</option>
+          <option value="estate">Housing Estate</option>
+          <option value="school">School / Institution</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Coverage Required</label>
+        <select id="coverage" class="en-select">
+          <option value="day">Day only (8–12 hrs)</option>
+          <option value="night">Night only (12 hrs)</option>
+          <option value="24hr" selected>24 hours</option>
+          <option value="12hr">12-hour shifts (2 guards)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Number of Posts / Gates</label>
+        <input type="number" id="posts" class="en-input" value="1" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Guard Type</label>
+        <select id="guardType" class="en-select">
+          <option value="unarmed" selected>Unarmed Guard</option>
+          <option value="armed">Armed Guard (VGN/MOPOL)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Provider Type</label>
+        <select id="providerType" class="en-select">
+          <option value="company" selected>Licensed Security Company</option>
+          <option value="freelance">Freelance / Direct Hire</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Compare Guard Costs</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Monthly Guard Cost</div>
+            <div class="en-results-hero-value" id="monthlyCost">₦0</div>
+            <div class="en-results-hero-sub" id="annualCost"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Per Guard/Month</div>
+            <div style="font-size:1.5rem;font-weight:800;color:var(--en-accent)" id="perGuard">₦0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Company vs Freelance Comparison</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Provider</th><th>Monthly Cost</th><th>Annual Cost</th><th>Pros</th><th>Cons</th></tr></thead>
+          <tbody id="compareTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4dc;</div>Compliance Requirements &amp; Contract Checklist</div>
+      <div id="complianceContent"></div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Important Legal Note (Nigeria)</div>
+        <div class="en-tip-text">All private security companies in Nigeria must be licensed by NSCDC (Nigeria Security and Civil Defence Corps). Armed guards must have written approval from the Inspector General of Police or State Commissioner. Unlicensed security operations attract penalties up to ₦500,000 and imprisonment. Always verify your security company's NSCDC licence number.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var RATES={
+  NG:{unarmed:{company:[60000,100000],freelance:[35000,60000]},armed:{company:[120000,200000],freelance:[80000,130000]}},
+  KE:{unarmed:{company:[15000,25000],freelance:[8000,15000]},armed:{company:[25000,40000],freelance:[18000,28000]}},
+  ZA:{unarmed:{company:[8000,14000],freelance:[5000,9000]},armed:{company:[14000,22000],freelance:[10000,16000]}},
+  GH:{unarmed:{company:[600,1200],freelance:[350,700]},armed:{company:[1200,2000],freelance:[800,1400]}},
+  EG:{unarmed:{company:[2500,4500],freelance:[1500,3000]},armed:{company:[4000,7000],freelance:[2800,5000]}}
+};
+var COVERAGE_GUARDS={day:1,night:1,'24hr':2,'12hr':2};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
+var COMPLIANCE={
+  NG:{company:'NSCDC licence required. All guards must be registered. Armed guards need IGP/State Commissioner approval. Minimum wage: ₦30,000/month (2024 guidelines).',freelance:'Individual guards must hold NIN + valid ID. Verify background check. Note: hiring unregistered guards is a legal grey area in Nigeria. Consider liability.'},
+  KE:{company:'Licensed under Kenya Security Industry Association (KSIA). PSC (Private Security Commission) registration mandatory.',freelance:'Individual guards must hold National ID + PSC individual registration. Kenya has strict PSC Act compliance.'},
+  ZA:{company:'Must be registered with Private Security Industry Regulatory Authority (PSIRA). Grade C–E training certificates required for guards.',freelance:'Individual guards must hold PSIRA registration and grade certificate. Unregistered security work is illegal.'},
+  GH:{company:'Licensed under Ghana Police Service Private Guard Department. Company must have valid permit.',freelance:'Individual guards should be vetted through Ghana Police. No formal individual licensing system.'},
+  EG:{company:'Licensed under Ministry of Interior regulations for private security.',freelance:'Private freelance armed security is highly restricted in Egypt. Unarmed only without company structure.'}
+};
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var coverage=document.getElementById('coverage').value;
+  var posts=parseInt(document.getElementById('posts').value)||1;
+  var guardType=document.getElementById('guardType').value;
+  var providerType=document.getElementById('providerType').value;
+  var sym=SYM[country];
+  var rates=RATES[country]||RATES['NG'];
+  var guardsPerPost=COVERAGE_GUARDS[coverage]||2;
+  var totalGuards=guardsPerPost*posts;
+  var companyRange=rates[guardType].company;
+  var freelanceRange=rates[guardType].freelance;
+  var companyPerGuard=(companyRange[0]+companyRange[1])/2;
+  var freelancePerGuard=(freelanceRange[0]+freelanceRange[1])/2;
+  var selectedPerGuard=providerType==='company'?companyPerGuard:freelancePerGuard;
+  var monthlyTotal=selectedPerGuard*totalGuards;
+  var annualTotal=monthlyTotal*12;
+  document.getElementById('monthlyCost').textContent=sym+fmt(monthlyTotal);
+  document.getElementById('annualCost').textContent='Annual: '+sym+fmt(annualTotal)+' | '+totalGuards+' guard'+(totalGuards>1?'s':'')+' total';
+  document.getElementById('perGuard').textContent=sym+fmt(selectedPerGuard);
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Guards Needed</div><div class="en-metric-value">'+totalGuards+'</div><div class="en-metric-unit">'+coverage+' coverage, '+posts+' post'+(posts>1?'s':'')+'</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Per Guard/Month</div><div class="en-metric-value">'+sym+fmt(selectedPerGuard/1000)+'k</div><div class="en-metric-unit">'+guardType+' ('+providerType+')</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Annual Cost</div><div class="en-metric-value">'+sym+fmt(annualTotal/1000)+'k</div><div class="en-metric-unit">All guards</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Savings (freelance)</div><div class="en-metric-value">'+sym+fmt((companyPerGuard-freelancePerGuard)*totalGuards/1000)+'k</div><div class="en-metric-unit">vs company rate/month</div></div>';
+  document.getElementById('compareTable').innerHTML=
+    '<tr><td class="en-td-value">Licensed Company</td><td class="en-td-highlight">'+sym+fmt(companyPerGuard*totalGuards)+'/mo</td><td>'+sym+fmt(companyPerGuard*totalGuards*12)+'/yr</td><td style="font-size:.82rem;color:#16a34a">Insurance, vetting, backup guard, legal</td><td style="font-size:.82rem;color:#dc2626">Higher cost</td></tr>'+
+    '<tr><td class="en-td-value">Freelance / Direct</td><td>'+sym+fmt(freelancePerGuard*totalGuards)+'/mo</td><td>'+sym+fmt(freelancePerGuard*totalGuards*12)+'/yr</td><td style="font-size:.82rem;color:#16a34a">Lower cost</td><td style="font-size:.82rem;color:#dc2626">No backup, liability risk, vetting on you</td></tr>';
+  var comp=COMPLIANCE[country]||COMPLIANCE['NG'];
+  document.getElementById('complianceContent').innerHTML=
+    '<div class="en-notice"><strong>Company Route:</strong> '+comp.company+'</div>'+
+    '<div class="en-notice en-notice-warning" style="margin-top:12px"><strong>Freelance Route:</strong> '+comp.freelance+'</div>'+
+    '<div style="margin-top:16px"><strong style="display:block;margin-bottom:10px;font-size:.9rem">Contract Checklist:</strong>'+
+    '<ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:.87rem;color:#475569">'+
+    ['Guard name, ID number, and background check documentation','Licensed company registration number (NSCDC/PSC/PSIRA)','Hours of duty, posts, and site coverage details','Salary/payment schedule (company handles payroll)','Armed guard: written weapon authorisation on file','Relief guard arrangement for sick leave and absence','Escalation procedure for incidents and emergencies','Termination and replacement terms','Uniform, equipment provision and maintenance responsibility','Monthly performance review process'].map(function(item){return '<li style="display:flex;gap:8px"><span>&#x25a1;</span>'+item+'</li>';}).join('')+
+    '</ul></div>';
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

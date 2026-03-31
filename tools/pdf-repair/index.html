@@ -906,7 +906,7 @@
   }
 
   // Download
-  downloadBtn.addEventListener('click', function() {
+  function doActualDownload() {
     if (!repairedBytes) return;
     var blob = new Blob([repairedBytes], { type: 'application/pdf' });
     var url = URL.createObjectURL(blob);
@@ -915,6 +915,11 @@
     a.download = currentFile.name.replace(/\.pdf$/i, '_repaired.pdf');
     a.click();
     setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
   });
 
   // FAQ toggles
@@ -935,6 +940,8 @@
 
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

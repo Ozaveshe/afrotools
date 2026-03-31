@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plumbing Material Calculator | AfroTools</title>
+<meta name="description" content="Calculate plumbing materials and costs for African construction projects. Covers pipes, fittings, tanks and labour across 15 countries.">
+<meta property="og:title" content="Plumbing Material Calculator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/plumbing-material/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/plumbing-material/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/plumbing-material/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/plumbing-material/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.bom-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.bom-table th { background:var(--en-accent-pale); color:var(--en-accent-dark); padding:.5rem .75rem; text-align:left; }
+.bom-table td { padding:.5rem .75rem; border-bottom:1px solid #e2e8f0; }
+.bom-total td { font-weight:700; background:#f0fdf4; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Plumbing Material Calculator","item":"https://afrotools.com/tools/plumbing-material/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/engineering/">Engineering</a></li>
+    <li aria-current="page">Plumbing Material Calculator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Plumbing Material Calculator</h1>
+    <p>Estimate pipes, fittings, water tanks, and labour costs for residential and commercial plumbing projects across Africa.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Project Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country</label>
+          <select class="en-select" id="pm-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">South Africa (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Egypt (EGP)</option><option value="ET">Ethiopia (ETB)</option><option value="TZ">Tanzania (TZS)</option><option value="UG">Uganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Morocco (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Building Type</label>
+          <select class="en-select" id="pm-type">
+            <option value="1bed">1-Bedroom Apartment</option>
+            <option value="2bed">2-Bedroom Apartment</option>
+            <option value="3bed">3-Bedroom House</option>
+            <option value="4bed">4-Bedroom House</option>
+            <option value="duplex">Duplex (2 floors)</option>
+            <option value="commercial">Commercial (per 100m²)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Pipe Material</label>
+          <select class="en-select" id="pm-pipe">
+            <option value="upvc">uPVC (most common)</option>
+            <option value="ppr">PPR (higher quality)</option>
+            <option value="copper">Copper (premium)</option>
+            <option value="galv">Galvanised Iron</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Bathrooms</label>
+          <input type="number" class="en-input" id="pm-baths" value="2" min="1" max="10">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Include Overhead Tank?</label>
+          <select class="en-select" id="pm-tank">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Tank Capacity (litres)</label>
+          <select class="en-select" id="pm-tank-size">
+            <option value="500">500L</option>
+            <option value="1000" selected>1,000L</option>
+            <option value="2000">2,000L</option>
+            <option value="5000">5,000L</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Include Labour?</label>
+          <select class="en-select" id="pm-labour">
+            <option value="yes">Yes</option>
+            <option value="no">No — materials only</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcPlumbing()">Calculate Materials & Cost</button>
+    </div>
+
+    <div class="en-results" id="pm-results">
+      <div class="en-results-hero">
+        <div class="en-results-title">Bill of Materials</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Total Materials Cost</div><div class="en-stat-value" id="pm-mat-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Labour Cost</div><div class="en-stat-value" id="pm-lab-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Grand Total</div><div class="en-stat-value" id="pm-grand">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Cost per Bathroom</div><div class="en-stat-value" id="pm-per-bath">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Bill of Materials</h3>
+        <div style="overflow-x:auto">
+          <table class="bom-table">
+            <thead><tr><th>Item</th><th>Qty</th><th>Unit</th><th>Unit Cost</th><th>Total</th></tr></thead>
+            <tbody id="pm-bom"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Tips</h3>
+        <ul id="pm-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+var PM_RATES = {
+  NG:{ sym:'₦', upvc:450, ppr:850, copper:2200, galv:700, fitting_mult:0.35, tank_1000:45000, labour_day:15000 },
+  KE:{ sym:'KES', upvc:180, ppr:320, copper:900, galv:280, fitting_mult:0.35, tank_1000:18000, labour_day:3000 },
+  ZA:{ sym:'ZAR', upvc:55, ppr:110, copper:350, galv:95, fitting_mult:0.40, tank_1000:5500, labour_day:800 },
+  GH:{ sym:'GHS', upvc:35, ppr:65, copper:200, galv:55, fitting_mult:0.35, tank_1000:3500, labour_day:600 },
+  EG:{ sym:'EGP', upvc:40, ppr:75, copper:250, galv:65, fitting_mult:0.35, tank_1000:4000, labour_day:700 },
+  ET:{ sym:'ETB', upvc:90, ppr:160, copper:500, galv:130, fitting_mult:0.35, tank_1000:9000, labour_day:1500 },
+  TZ:{ sym:'TZS', upvc:3500, ppr:6500, copper:20000, galv:5500, fitting_mult:0.35, tank_1000:350000, labour_day:60000 },
+  UG:{ sym:'UGX', upvc:5000, ppr:9000, copper:28000, galv:7500, fitting_mult:0.35, tank_1000:480000, labour_day:80000 },
+  RW:{ sym:'RWF', upvc:800, ppr:1500, copper:4800, galv:1200, fitting_mult:0.35, tank_1000:80000, labour_day:15000 },
+  MA:{ sym:'MAD', upvc:20, ppr:38, copper:120, galv:32, fitting_mult:0.40, tank_1000:2200, labour_day:400 }
+};
+var BUILDING_SIZES = { '1bed':{ pipeM:80, joints:40 }, '2bed':{ pipeM:130, joints:65 }, '3bed':{ pipeM:180, joints:90 }, '4bed':{ pipeM:240, joints:120 }, duplex:{ pipeM:350, joints:175 }, commercial:{ pipeM:200, joints:100 } };
+var PIPE_NAMES = { upvc:'uPVC Pipe', ppr:'PPR Pipe', copper:'Copper Pipe', galv:'Galvanised Pipe' };
+
+function fmtCur(sym, n){ return sym + Math.round(n).toLocaleString(); }
+
+function calcPlumbing(){
+  var country = document.getElementById('pm-country').value;
+  var btype = document.getElementById('pm-type').value;
+  var pipeType = document.getElementById('pm-pipe').value;
+  var baths = +document.getElementById('pm-baths').value;
+  var tankYes = document.getElementById('pm-tank').value === 'yes';
+  var tankSize = +document.getElementById('pm-tank-size').value;
+  var inclLabour = document.getElementById('pm-labour').value === 'yes';
+  var r = PM_RATES[country], sym = r.sym;
+  var bs = BUILDING_SIZES[btype];
+  var pipeM = bs.pipeM + baths * 20;
+  var joints = bs.joints + baths * 10;
+  var pipeRate = r[pipeType];
+  var pipeCost = pipeM * pipeRate;
+  var fittingCost = pipeCost * r.fitting_mult;
+  var sanitaryware = baths * pipeRate * 80; // approx per bathroom
+  var tankCost = tankYes ? r.tank_1000 * (tankSize / 1000) : 0;
+  var borehole_connect = pipeRate * 30; // short run to pump
+  var matTotal = pipeCost + fittingCost + sanitaryware + tankCost + borehole_connect;
+  var labourDays = baths * 3 + (btype === 'duplex' ? 8 : btype === 'commercial' ? 10 : 4);
+  var labourCost = inclLabour ? labourDays * r.labour_day : 0;
+  var grandTotal = matTotal + labourCost;
+
+  document.getElementById('pm-mat-total').textContent = fmtCur(sym, matTotal);
+  document.getElementById('pm-lab-total').textContent = inclLabour ? fmtCur(sym, labourCost) : 'Not included';
+  document.getElementById('pm-grand').textContent = fmtCur(sym, grandTotal);
+  document.getElementById('pm-per-bath').textContent = fmtCur(sym, grandTotal / baths);
+
+  var bom = [
+    { item: PIPE_NAMES[pipeType] + ' (15–32mm)', qty: pipeM, unit: 'metres', unit_cost: pipeRate, total: pipeCost },
+    { item: 'Fittings (elbows, tees, valves)', qty: joints, unit: 'pcs', unit_cost: Math.round(fittingCost/joints), total: fittingCost },
+    { item: 'Sanitary ware (per bathroom)', qty: baths, unit: 'sets', unit_cost: Math.round(sanitaryware/baths), total: sanitaryware },
+    { item: 'Pump/borehole connection pipe', qty: 30, unit: 'metres', unit_cost: pipeRate, total: borehole_connect }
+  ];
+  if (tankYes) bom.push({ item: 'Overhead Poly Tank (' + tankSize + 'L)', qty: 1, unit: 'unit', unit_cost: tankCost, total: tankCost });
+  if (inclLabour) bom.push({ item: 'Plumber Labour (' + labourDays + ' days)', qty: labourDays, unit: 'days', unit_cost: r.labour_day, total: labourCost });
+
+  var tbody = document.getElementById('pm-bom');
+  tbody.innerHTML = bom.map(function(b){ return '<tr><td>'+b.item+'</td><td>'+b.qty+'</td><td>'+b.unit+'</td><td>'+fmtCur(sym,b.unit_cost)+'</td><td>'+fmtCur(sym,b.total)+'</td></tr>'; }).join('') + '<tr class="bom-total"><td colspan="4">TOTAL</td><td>' + fmtCur(sym, grandTotal) + '</td></tr>';
+
+  document.getElementById('pm-tips').innerHTML = [
+    'Buy 10–15% extra pipe for offcuts and future repairs.',
+    pipeType === 'galv' ? 'Galvanised pipes rust over time — PPR or uPVC recommended for water supply.' : pipeType === 'copper' ? 'Copper is premium but highly resistant to corrosion and long-lasting.' : 'uPVC is the most cost-effective for hot and cold water systems.',
+    'Pressure test all connections before plastering walls.',
+    'Install gate valves at each bathroom to isolate faults without cutting supply to the whole building.'
+  ].map(function(t){ return '<li>' + t + '</li>'; }).join('');
+
+  document.getElementById('pm-results').classList.add('on');
+  document.getElementById('pm-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

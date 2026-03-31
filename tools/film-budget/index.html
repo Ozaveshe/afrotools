@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Film / Movie Budget Breakdown Tool — Nollywood & Africa | AfroTools</title>
+<meta name="description" content="Nollywood-calibrated film budget tool. Plan short film, feature, TV series, and web series budgets. Department breakdowns, funding sources, ROI projections.">
+<link rel="canonical" href="https://afrotools.com/tools/film-budget/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Film / Movie Budget Tool</span>
+    </nav>
+    <h1>Film &amp; Movie <em>Budget Breakdown Tool</em></h1>
+    <p>Nollywood-calibrated budget planner for short films, features, TV series, and web series. Standard above-the-line / production / post / marketing allocations with funding sources and ROI projections.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f3ac; Nollywood</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Film Budget</span>
+      <span class="en-tool-hero-pill">&#x1f4c8; ROI</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f3ac;</div>Production Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Production Type</label>
+        <select id="prodType" class="en-select">
+          <option value="short">Short Film (10–30 min)</option>
+          <option value="feature" selected>Feature Film (90–120 min)</option>
+          <option value="tvseries">TV Series (per episode)</option>
+          <option value="webseries">Web Series (per episode)</option>
+          <option value="documentary">Documentary</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Budget Tier</label>
+        <select id="budgetTier" class="en-select" onchange="updateBudget()">
+          <option value="micro">Micro (&lt;₦5M / $3k)</option>
+          <option value="low" selected>Low (₦5–50M / $3–30k)</option>
+          <option value="mid">Mid (₦50–500M / $30–300k)</option>
+          <option value="high">High (₦500M+ / $300k+)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Total Budget (local currency)</label>
+        <input type="number" id="totalBudget" class="en-input" value="20000000" min="100000">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Shooting Days</label>
+        <input type="number" id="shootDays" class="en-input" value="10" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Crew Size</label>
+        <select id="crewSize" class="en-select">
+          <option value="small">Small (5–10 crew)</option>
+          <option value="medium" selected>Medium (10–30 crew)</option>
+          <option value="large">Large (30–80 crew)</option>
+          <option value="studio">Studio (80+ crew)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Location Type</label>
+        <select id="location" class="en-select">
+          <option value="outdoor">Outdoor / Practical</option>
+          <option value="indoor" selected>Indoor / Mixed</option>
+          <option value="studio">Studio</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Cast Tier</label>
+        <select id="castTier" class="en-select">
+          <option value="noname">No-name / New Talent</option>
+          <option value="known" selected>Known Actors</option>
+          <option value="alist">A-List Stars</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">VFX Level</label>
+        <select id="vfx" class="en-select">
+          <option value="none" selected>None</option>
+          <option value="light">Light (titles, colour grade)</option>
+          <option value="heavy">Heavy (CGI, effects)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Generate Budget Breakdown</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Total Production Budget</div>
+            <div class="en-results-hero-value" id="totalDisplay">₦0</div>
+            <div class="en-results-hero-sub" id="usdDisplay"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Cost Per Day</div>
+            <div style="font-size:1.5rem;font-weight:800;color:var(--en-accent)" id="perDay">₦0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Department Budget Breakdown</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Department</th><th>Allocation %</th><th>Budget</th><th>Notes</th></tr></thead>
+          <tbody id="deptTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4b0;</div>Funding Sources &amp; ROI</div>
+      <div id="fundingContent"></div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f3ac;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Nollywood Budget Rule</div>
+        <div class="en-tip-text">Standard Nollywood allocations: Above-the-line 30% (cast, director, producers), Production 45% (crew, locations, equipment, catering), Post-production 15% (editing, sound, VFX, colour), Marketing 10%. A Nollywood feature that grosses 3x its production budget is considered a hit.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
+var TIER_DEFAULTS={NG:{micro:3000000,low:20000000,mid:150000000,high:700000000},KE:{micro:250000,low:1500000,mid:12000000,high:60000000},ZA:{micro:50000,low:300000,mid:2000000,high:10000000},GH:{micro:30000,low:200000,mid:1500000,high:7000000},EG:{micro:150000,low:1000000,mid:8000000,high:40000000}};
+function updateBudget(){
+  var c=document.getElementById('country').value;
+  var t=document.getElementById('budgetTier').value;
+  var defaults=TIER_DEFAULTS[c]||TIER_DEFAULTS['NG'];
+  document.getElementById('totalBudget').value=defaults[t];
+}
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var sym=SYM[country];var rate=FX[country];
+  var total=parseFloat(document.getElementById('totalBudget').value)||20000000;
+  var shootDays=parseInt(document.getElementById('shootDays').value)||10;
+  var castTier=document.getElementById('castTier').value;
+  var vfx=document.getElementById('vfx').value;
+  var atl_base=0.30,prod_base=0.45,post_base=0.15,mkt_base=0.10;
+  if(castTier==='alist'){atl_base=0.40;prod_base=0.40;}
+  if(castTier==='noname'){atl_base=0.20;prod_base=0.50;}
+  if(vfx==='heavy'){post_base=0.25;prod_base-=0.10;}
+  if(vfx==='light'){post_base=0.18;prod_base-=0.03;}
+  var atl=total*atl_base,prod=total*prod_base,post=total*post_base,mkt=total*mkt_base;
+  var perDay=total/shootDays;
+  var totalUSD=total/rate;
+  document.getElementById('totalDisplay').textContent=sym+fmt(total);
+  document.getElementById('usdDisplay').textContent='≈ $'+fmt(totalUSD)+' USD';
+  document.getElementById('perDay').textContent=sym+fmt(perDay);
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Above the Line</div><div class="en-metric-value">'+sym+fmt(atl/1000000)+'M</div><div class="en-metric-unit">Cast, Director, Script</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Production</div><div class="en-metric-value">'+sym+fmt(prod/1000000)+'M</div><div class="en-metric-unit">Crew, equipment, locations</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Post-Production</div><div class="en-metric-value">'+sym+fmt(post/1000000)+'M</div><div class="en-metric-unit">Edit, sound, VFX, colour</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Marketing</div><div class="en-metric-value">'+sym+fmt(mkt/1000000)+'M</div><div class="en-metric-unit">Promo, distribution, PR</div></div>';
+
+  var depts=[
+    {dept:'ABOVE THE LINE',items:[
+      {name:'Director Fee',pct:0.08},{name:'Lead Cast (all)',pct:castTier==='alist'?0.20:castTier==='known'?0.12:0.05},
+      {name:'Producers',pct:0.06},{name:'Screenplay / IP',pct:0.04}
+    ]},
+    {dept:'PRODUCTION',items:[
+      {name:'Crew Wages',pct:0.15},{name:'Locations / Permits',pct:0.08},
+      {name:'Equipment Rental',pct:0.10},{name:'Catering / Transport',pct:0.07},
+      {name:'Art Dept / Props / Costume',pct:0.05}
+    ]},
+    {dept:'POST-PRODUCTION',items:[
+      {name:'Editing',pct:0.05},{name:'Sound Design / Mix',pct:0.04},
+      {name:'VFX / CGI',pct:vfx==='heavy'?0.12:vfx==='light'?0.04:0.01},
+      {name:'Colour Grading',pct:0.02},{name:'Music / Score',pct:0.03}
+    ]},
+    {dept:'MARKETING & DISTRIBUTION',items:[
+      {name:'Theatrical/Festival Delivery',pct:0.04},{name:'Digital / Streaming Delivery',pct:0.02},
+      {name:'Press & Promo',pct:0.02},{name:'Poster / Trailer',pct:0.02}
+    ]}
+  ];
+  var tHtml='';
+  depts.forEach(function(section){
+    tHtml+='<tr style="background:#f8fafd"><td colspan="4" style="font-weight:800;font-size:.78rem;letter-spacing:.05em;color:#64748b;padding:10px 16px">'+section.dept+'</td></tr>';
+    section.items.forEach(function(item){
+      var amt=total*item.pct;
+      tHtml+='<tr><td>'+item.name+'</td><td>'+(item.pct*100).toFixed(0)+'%</td><td class="en-td-highlight">'+sym+fmt(amt)+'</td><td style="font-size:.8rem;color:#64748b">'+sym+fmt(amt/shootDays)+'/day</td></tr>';
+    });
+  });
+  document.getElementById('deptTable').innerHTML=tHtml;
+
+  var roiTarget=total*3;
+  document.getElementById('fundingContent').innerHTML=
+    '<div class="en-notice"><strong>ROI Target:</strong> To recoup investment, the film needs to earn '+sym+fmt(roiTarget)+' (3x budget). A Nollywood hit feature earns ₦50M–₦500M+ across cinema, streaming (Netflix, Prime, Showmax), broadcast and home video.</div>'+
+    '<div style="margin-top:16px"><strong style="display:block;margin-bottom:10px;font-size:.9rem">Recommended Funding Sources:</strong>'+
+    '<ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:.88rem;color:#475569">'+
+    '<li>&#x2022; <strong>NFVCB / NFVC</strong> — Nigerian Film Corporation grants and co-production deals</li>'+
+    '<li>&#x2022; <strong>Tony Elumelu Foundation</strong> — Up to $5,000 for creative businesses</li>'+
+    '<li>&#x2022; <strong>Netflix / Showmax / Prime</strong> — Commission / acquisition deals (pitch with a treatment + teaser)</li>'+
+    '<li>&#x2022; <strong>Diaspora Financing</strong> — Afrobeats investors, film equity crowdfunding via Funder or Indiegogo</li>'+
+    '<li>&#x2022; <strong>Co-Productions</strong> — Partner with SA, UK, or Canadian producers for co-financing</li>'+
+    '</ul></div>';
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

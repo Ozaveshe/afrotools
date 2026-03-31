@@ -101,11 +101,16 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
   <div class="tpl-picker" id="tplPicker">
     <h3>Choose an Industry Template (optional)</h3>
     <div class="tpl-grid">
-      <div class="tpl-card" onclick="pickTemplate('restaurant')"><div class="icon">🍽️</div><div class="name">Restaurant</div></div>
-      <div class="tpl-card" onclick="pickTemplate('tech')"><div class="icon">💻</div><div class="name">Tech Startup</div></div>
-      <div class="tpl-card" onclick="pickTemplate('retail')"><div class="icon">🏪</div><div class="name">Retail</div></div>
-      <div class="tpl-card" onclick="pickTemplate('agriculture')"><div class="icon">🌾</div><div class="name">Agriculture</div></div>
-      <div class="tpl-card" onclick="pickTemplate('manufacturing')"><div class="icon">🏭</div><div class="name">Manufacturing</div></div>
+      <div class="tpl-card" onclick="pickTemplate('restaurant',this)"><div class="icon">🍽️</div><div class="name">Restaurant</div></div>
+      <div class="tpl-card" onclick="pickTemplate('tech',this)"><div class="icon">💻</div><div class="name">Tech Startup</div></div>
+      <div class="tpl-card" onclick="pickTemplate('retail',this)"><div class="icon">🏪</div><div class="name">Retail</div></div>
+      <div class="tpl-card" onclick="pickTemplate('agriculture',this)"><div class="icon">🌾</div><div class="name">Agriculture</div></div>
+      <div class="tpl-card" onclick="pickTemplate('manufacturing',this)"><div class="icon">🏭</div><div class="name">Manufacturing</div></div>
+      <div class="tpl-card" onclick="pickTemplate('logistics',this)"><div class="icon">🚛</div><div class="name">Logistics</div></div>
+      <div class="tpl-card" onclick="pickTemplate('healthcare',this)"><div class="icon">🏥</div><div class="name">Healthcare</div></div>
+      <div class="tpl-card" onclick="pickTemplate('education',this)"><div class="icon">📚</div><div class="name">Education</div></div>
+      <div class="tpl-card" onclick="pickTemplate('fintech',this)"><div class="icon">💳</div><div class="name">Fintech</div></div>
+      <div class="tpl-card" onclick="pickTemplate('realestate',this)"><div class="icon">🏗️</div><div class="name">Real Estate</div></div>
     </div>
   </div>
 
@@ -298,16 +303,21 @@ function updateProgress() {
   document.getElementById('progText').textContent = pct+'%';
 }
 
-function pickTemplate(tpl) {
+function pickTemplate(tpl, el) {
   document.querySelectorAll('.tpl-card').forEach(function(c){c.classList.remove('on');});
-  event.currentTarget.classList.add('on');
+  if (el) el.classList.add('on');
   // Pre-fill hints based on template
   var hints = {
     restaurant: {mission:'To provide authentic African cuisine...',targetMarket:'Local professionals, families, and tourists...',offerings:'Dine-in, takeaway, and catering services...'},
     tech: {mission:'To solve X problem using technology...',targetMarket:'SMEs across West Africa...',offerings:'SaaS platform for...'},
     retail: {mission:'To provide affordable quality goods...',targetMarket:'Middle-income consumers in urban areas...',offerings:'Physical store and e-commerce...'},
     agriculture: {mission:'To modernise farming in...',targetMarket:'Local and export markets for...',offerings:'Farm produce, processed goods...'},
-    manufacturing: {mission:'To manufacture quality products locally...',targetMarket:'Construction firms, retailers...',offerings:'Building materials, consumer goods...'}
+    manufacturing: {mission:'To manufacture quality products locally...',targetMarket:'Construction firms, retailers...',offerings:'Building materials, consumer goods...'},
+    logistics: {mission:'To provide reliable logistics and delivery services across...',targetMarket:'E-commerce businesses, manufacturers, and retailers...',offerings:'Last-mile delivery, warehousing, fleet management...'},
+    healthcare: {mission:'To improve access to quality healthcare in...',targetMarket:'Hospitals, clinics, patients in underserved areas...',offerings:'Telemedicine, pharmacy, diagnostics, health insurance...'},
+    education: {mission:'To make quality education accessible and affordable in...',targetMarket:'Students, professionals, schools, and corporate training...',offerings:'Online courses, tutoring, EdTech platform, certifications...'},
+    fintech: {mission:'To democratise financial services for the unbanked and underbanked...',targetMarket:'Small businesses, mobile money users, diaspora remittances...',offerings:'Mobile payments, lending, savings, insurance, cross-border transfers...'},
+    realestate: {mission:'To develop affordable housing and commercial spaces in...',targetMarket:'Young professionals, growing families, SMEs seeking office space...',offerings:'Residential units, commercial leasing, property management...'}
   };
   var h = hints[tpl] || {};
   Object.keys(h).forEach(function(k){ if(!DATA[k]) DATA[k]=h[k]; });
@@ -333,6 +343,10 @@ function loadPlan(id) {
 }
 
 function exportPDF() {
+  var gate = document.querySelector('email-gate-modal');
+  if (gate) { gate.show(doExportBusinessPlan); } else { doExportBusinessPlan(); }
+}
+function doExportBusinessPlan() {
   var planName = DATA.legalName || 'Business Plan';
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + esc(planName) + '</title><style>'
     + 'body{font-family:Georgia,"Times New Roman",serif;max-width:700px;margin:40px auto;color:#333;font-size:13px;line-height:1.8;padding:40px}'
@@ -344,7 +358,6 @@ function exportPDF() {
     + '.calc{font-weight:700;text-align:right;color:#007AFF}'
     + '.footer{text-align:center;font-size:10px;color:#999;margin-top:40px;border-top:1px solid #eee;padding-top:12px}'
     + '@media print{body{margin:20px;padding:0}}'
-<meta property="article:modified_time" content="2026-03-28">
     + '</style></head><body>';
   html += '<h1>' + esc(planName) + '</h1>';
 
@@ -398,6 +411,8 @@ function exportPDF() {
 
 function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
 </script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
+<email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body>
 </html>

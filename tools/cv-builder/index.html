@@ -274,6 +274,7 @@ window.loadPdfLibs=function(){
 </section>
 
 <afro-related-tools category="document-pdf" current="cv-builder"></afro-related-tools>
+<email-gate-modal></email-gate-modal>
 <afro-footer></afro-footer>
 
 <!-- CV Builder Scripts (no React, no frameworks) -->
@@ -285,6 +286,34 @@ window.loadPdfLibs=function(){
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
+
+<script>
+// Wrap CV Builder PDF download with email gate
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    var pdfBtns = document.querySelectorAll('[data-action="pdf"]');
+    pdfBtns.forEach(function(btn){
+      var origListeners = btn.cloneNode(true);
+      btn.addEventListener('click', function gateIntercept(e){
+        var gate = document.querySelector('email-gate-modal');
+        if(!gate || typeof gate.show !== 'function') return; // let original handler run
+        try {
+          var stored = localStorage.getItem('afrotools-email-gate') || localStorage.getItem('afrotools_lead_email') || '';
+          if(stored) return; // already gated, let original handler run
+        } catch(err){ return; }
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        gate.show(function(){
+          // After gate completes, trigger the original PDF action
+          btn.removeEventListener('click', gateIntercept);
+          btn.click();
+          btn.addEventListener('click', gateIntercept);
+        });
+      }, true); // capture phase to run before the app's handler
+    });
+  });
+})();
+</script>
 
 <script>
 // Save/Share buttons — manual placement needed

@@ -1055,7 +1055,7 @@
   });
 
   /* ── Download Translated PDF (html2canvas for Unicode support) ── */
-  downloadPdfBtn.addEventListener('click', async function() {
+  async function doTranslatePdfDownload() {
     if (!translatedPages.length) return;
     downloadPdfBtn.disabled = true;
     downloadPdfBtn.textContent = 'Generating PDF...';
@@ -1126,21 +1126,29 @@
       downloadPdfBtn.disabled = false;
       downloadPdfBtn.textContent = 'Download Translated PDF';
     }
+  }
+
+  downloadPdfBtn.addEventListener('click', function() {
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doTranslatePdfDownload); } else { doTranslatePdfDownload(); }
   });
 
   /* ── Download as TXT ── */
   downloadTxtBtn.addEventListener('click', function() {
-    if (!translatedPages.length) return;
-
-    var parts = [];
-    for (var i = 0; i < translatedPages.length; i++) {
-      if (translatedPages[i]) {
-        parts.push('--- Page ' + (i + 1) + ' ---\n\n' + translatedPages[i]);
+    function doTxtDownload() {
+      if (!translatedPages.length) return;
+      var parts = [];
+      for (var i = 0; i < translatedPages.length; i++) {
+        if (translatedPages[i]) {
+          parts.push('--- Page ' + (i + 1) + ' ---\n\n' + translatedPages[i]);
+        }
       }
+      var blob = new Blob([parts.join('\n\n')], { type: 'text/plain' });
+      var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translated.txt';
+      PdfUtils.downloadBlob(blob, outputName);
     }
-    var blob = new Blob([parts.join('\n\n')], { type: 'text/plain' });
-    var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translated.txt';
-    PdfUtils.downloadBlob(blob, outputName);
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doTxtDownload); } else { doTxtDownload(); }
   });
 
 })();
@@ -1157,6 +1165,8 @@
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

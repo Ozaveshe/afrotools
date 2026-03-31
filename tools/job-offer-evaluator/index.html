@@ -131,7 +131,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="field"><label>Remote Work Days / Week</label><input type="number" id="remoteB" value="5" min="0" max="5"></div>
 </div>
 </div>
-<button class="btn btn-primary" onclick="evaluate()">Compare Offers</button>
+<button class="btn btn-primary" onclick="compareOffers()">Compare Offers</button>
 </div></div>
 
 <div class="card" id="resultCard" style="display:none">
@@ -151,6 +151,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>Should I always take the higher salary?</summary><p>Not necessarily. Compare total compensation (salary + benefits + allowances - costs). A lower salary with better health insurance, housing, pension, and remote work can be worth more overall. Also consider career growth — a lower salary at a company that will develop your skills may lead to much higher earnings within 2-3 years.</p></details>
 <details class="faq-item"><summary>How much are benefits really worth?</summary><p>In African markets, benefits can add 20-50% to your base salary value. Health insurance alone can be worth ₦30,000-₦100,000/month. Employer pension contributions of 10% add significant long-term value. Housing and transport allowances are often tax-advantaged, making them worth more than equivalent salary.</p></details>
+<details class="faq-item"><summary>How do I factor in commute costs?</summary><p>Calculate your monthly commute spending including fuel or public transport, tolls, and vehicle maintenance. In Lagos, a daily commute can cost ₦2,000-₦5,000. In Nairobi, KSh 200-500 each way. A fully remote job effectively adds that amount back to your take-home pay. Also factor in the time cost — 2-3 hours daily commuting is time you could spend earning or developing skills.</p></details>
+<details class="faq-item"><summary>What is the real value of remote work?</summary><p>Remote work saves commute costs, wardrobe expenses, and daily meals outside the home. In Nigeria, this can amount to ₦50,000-₦150,000 per month in savings. Beyond money, remote work gives back 2-3 hours daily, reduces stress, and offers flexibility. However, consider the trade-offs: in-office roles may offer faster promotion, better mentoring, and stronger professional networks.</p></details>
+<details class="faq-item"><summary>Should I negotiate after comparing offers?</summary><p>Absolutely. Use this comparison as a negotiation tool. If Offer A has a higher salary but Offer B has better benefits, ask Offer A to match the benefits or increase their package. In African markets, employers often have flexibility on allowances, signing bonuses, and leave days even when base salary is fixed. Always negotiate before accepting — most employers expect it.</p></details>
+<details class="faq-item"><summary>How important is the 13th month salary?</summary><p>A 13th month salary (annual bonus equal to one month's pay) adds roughly 8.3% to your annual compensation. In many African countries this is standard or even legally required. If one offer includes it and another doesn't, it can significantly change the comparison. Always ask whether the stated bonus is guaranteed or performance-based.</p></details>
+<details class="faq-item"><summary>What tax deductions should I expect?</summary><p>This calculator uses a simplified 20% effective tax rate estimate. Actual rates vary: Nigeria PAYE is 7-24%, Kenya 10-35%, South Africa 18-45%, Ghana 0-35%. Higher earners face higher rates. Pension contributions (8-10% in most countries), health insurance levies, and social security also reduce take-home pay. For precise figures, use AfroTools country-specific PAYE calculators.</p></details>
 </section>
 
 <afro-related-tools category="financial" current="job-offer-evaluator"></afro-related-tools>
@@ -158,7 +163,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-footer></afro-footer>
 
 <script>
-function evaluate(){
+function compareOffers(){
   const cur=document.getElementById('currency').value;
   const fmt=n=>cur+Math.round(n).toLocaleString('en');
 
@@ -235,6 +240,15 @@ function evaluate(){
 
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+
+  // Wire up save-result-button with data
+  var saveBtn = document.querySelector('save-result-button');
+  if (saveBtn && saveBtn.setData) {
+    saveBtn.setData({
+      inputs: { currency: cur, offerA: a.name, salaryA: a.salary, offerB: b.name, salaryB: b.salary },
+      outputs: { winnerName: winner.name, winnerTotalComp: Math.round(winner.totalComp), loserName: loser.name, loserTotalComp: Math.round(loser.totalComp), difference: Math.round(diff), differencePct: diffPct + '%' }
+    });
+  }
 }
 </script>
 

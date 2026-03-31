@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Septic Tank Size Calculator | AfroTools</title>
+<meta name="description" content="Calculate the correct septic tank size and construction cost for your African building. Based on occupancy, soil type, and local standards.">
+<meta property="og:title" content="Septic Tank Size Calculator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/septic-tank/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/septic-tank/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/septic-tank/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/septic-tank/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.dim-box { background:var(--en-accent-pale); border-radius:10px; padding:1rem; text-align:center; }
+.dim-val { font-size:1.4rem; font-weight:700; color:var(--en-accent-dark); }
+.dim-label { font-size:.8rem; color:#64748b; margin-top:.25rem; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Septic Tank Calculator","item":"https://afrotools.com/tools/septic-tank/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/engineering/">Engineering</a></li>
+    <li aria-current="page">Septic Tank Calculator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Septic Tank Size Calculator</h1>
+    <p>Determine the correct septic tank volume and dimensions for your building — plus construction cost estimates for Africa.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Site Information</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country</label>
+          <select class="en-select" id="st-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">South Africa (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Egypt (EGP)</option><option value="ET">Ethiopia (ETB)</option><option value="TZ">Tanzania (TZS)</option><option value="UG">Uganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Morocco (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Occupants (people)</label>
+          <input type="number" class="en-input" id="st-people" value="6" min="1" max="100">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Building Type</label>
+          <select class="en-select" id="st-btype">
+            <option value="residential">Residential</option>
+            <option value="office">Office</option>
+            <option value="school">School</option>
+            <option value="clinic">Clinic / Hospital</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Toilets / WCs</label>
+          <input type="number" class="en-input" id="st-toilets" value="2" min="1" max="20">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Soil Type</label>
+          <select class="en-select" id="st-soil">
+            <option value="sandy">Sandy (high percolation)</option>
+            <option value="loam" selected>Loamy (medium)</option>
+            <option value="clay">Clay (low percolation)</option>
+            <option value="laterite">Laterite (common in W/E Africa)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Tank Material</label>
+          <select class="en-select" id="st-material">
+            <option value="concrete">Reinforced Concrete (most common)</option>
+            <option value="block">Block/Brick Construction</option>
+            <option value="plastic">Plastic/Fibreglass (precast)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Include Soakaway / Leach Field?</label>
+          <select class="en-select" id="st-soak">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcSeptic()">Calculate Septic Tank</button>
+    </div>
+
+    <div class="en-results" id="st-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="st-headline">Septic Tank Specification</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Required Volume</div><div class="en-stat-value" id="st-vol">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Construction Cost (est.)</div><div class="en-stat-value" id="st-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Soakaway Cost</div><div class="en-stat-value" id="st-soak-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Total Project Cost</div><div class="en-stat-value" id="st-total">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:1rem">Recommended Dimensions</h3>
+        <div class="en-results-grid">
+          <div class="dim-box"><div class="dim-val" id="st-length">—</div><div class="dim-label">Length (m)</div></div>
+          <div class="dim-box"><div class="dim-val" id="st-width">—</div><div class="dim-label">Width (m)</div></div>
+          <div class="dim-box"><div class="dim-val" id="st-depth">—</div><div class="dim-label">Depth (m)</div></div>
+          <div class="dim-box"><div class="dim-val" id="st-chambers">—</div><div class="dim-label">Chambers</div></div>
+        </div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Construction Notes</h3>
+        <ul id="st-notes" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+var ST_RATES = {
+  NG:{ sym:'₦', conc_per_m3:85000, plastic_per_m3:60000, soak_per_m:12000, labour_pct:0.40 },
+  KE:{ sym:'KES', conc_per_m3:35000, plastic_per_m3:25000, soak_per_m:5000, labour_pct:0.40 },
+  ZA:{ sym:'ZAR', conc_per_m3:8000, plastic_per_m3:6000, soak_per_m:1500, labour_pct:0.45 },
+  GH:{ sym:'GHS', conc_per_m3:6000, plastic_per_m3:4500, soak_per_m:800, labour_pct:0.40 },
+  EG:{ sym:'EGP', conc_per_m3:7000, plastic_per_m3:5000, soak_per_m:1000, labour_pct:0.35 },
+  ET:{ sym:'ETB', conc_per_m3:18000, plastic_per_m3:13000, soak_per_m:2500, labour_pct:0.40 },
+  TZ:{ sym:'TZS', conc_per_m3:700000, plastic_per_m3:500000, soak_per_m:100000, labour_pct:0.40 },
+  UG:{ sym:'UGX', conc_per_m3:900000, plastic_per_m3:650000, soak_per_m:130000, labour_pct:0.40 },
+  RW:{ sym:'RWF', conc_per_m3:150000, plastic_per_m3:110000, soak_per_m:20000, labour_pct:0.40 },
+  MA:{ sym:'MAD', conc_per_m3:4000, plastic_per_m3:3000, soak_per_m:600, labour_pct:0.40 }
+};
+// Daily water use litres per person per building type
+var DAILY_USE = { residential:150, office:60, school:50, clinic:200 };
+// Soil percolation multiplier for soakaway length
+var SOIL_SOAK = { sandy:1.0, loam:1.5, clay:2.5, laterite:1.8 };
+
+function calcSeptic(){
+  var country = document.getElementById('st-country').value;
+  var people = +document.getElementById('st-people').value;
+  var btype = document.getElementById('st-btype').value;
+  var toilets = +document.getElementById('st-toilets').value;
+  var soil = document.getElementById('st-soil').value;
+  var matType = document.getElementById('st-material').value;
+  var inclSoak = document.getElementById('st-soak').value === 'yes';
+  var r = ST_RATES[country], sym = r.sym;
+
+  // Volume calculation: 2-day retention + sludge accumulation
+  var dailyWaste = people * DAILY_USE[btype] * 0.8; // 80% becomes wastewater
+  var retentionVol = dailyWaste * 2 / 1000; // m3, 2-day HRT
+  var sludgeVol = people * 0.04; // 40L sludge per person per year × 1yr
+  var totalVol = Math.ceil((retentionVol + sludgeVol) * 10) / 10;
+  totalVol = Math.max(totalVol, 2.0); // minimum 2m3
+
+  // Dimensions (rectangular)
+  var length = +(Math.ceil(totalVol * 0.4 * 10) / 10).toFixed(1);
+  var width = +(Math.max(1.2, length * 0.5)).toFixed(1);
+  var depth = +(totalVol / (length * width)).toFixed(1);
+  depth = Math.min(depth, 2.5);
+  var chambers = people <= 10 ? 2 : 3;
+
+  // Construction cost
+  var matRate = matType === 'plastic' ? r.plastic_per_m3 : r.conc_per_m3;
+  var constrCost = totalVol * matRate * (1 + r.labour_pct);
+
+  // Soakaway
+  var soakLength = people * DAILY_USE[btype] * 0.8 / 1000 * 10 * SOIL_SOAK[soil]; // metres
+  var soakCost = inclSoak ? soakLength * r.soak_per_m : 0;
+  var totalCost = constrCost + soakCost;
+
+  document.getElementById('st-headline').textContent = 'Specification for ' + people + ' people (' + btype + ')';
+  document.getElementById('st-vol').textContent = totalVol.toFixed(1) + ' m³';
+  document.getElementById('st-cost').textContent = sym + Math.round(constrCost).toLocaleString();
+  document.getElementById('st-soak-cost').textContent = inclSoak ? sym + Math.round(soakCost).toLocaleString() : 'Not included';
+  document.getElementById('st-total').textContent = sym + Math.round(totalCost).toLocaleString();
+  document.getElementById('st-length').textContent = length + 'm';
+  document.getElementById('st-width').textContent = width + 'm';
+  document.getElementById('st-depth').textContent = depth + 'm';
+  document.getElementById('st-chambers').textContent = chambers;
+
+  var notes = [
+    'Minimum setback: 3m from any building foundation, 6m from water wells.',
+    soil === 'clay' ? 'Clay soil has low percolation — consider a larger soakaway or lined leach field.' : 'Soil type affects drainage speed; percolation test recommended before construction.',
+    matType === 'plastic' ? 'Precast plastic tanks are quick to install but ensure anchoring in high water table areas.' : 'Concrete tanks must be properly waterproofed internally with bitumen or render.',
+    'De-sludge every 2–3 years. Access cover should be at ground level for easy pump-out.',
+    'Pumping cost: budget ' + sym + Math.round(totalVol * matRate * 0.05).toLocaleString() + ' annually for de-sludging.',
+    'Vent pipes (75mm dia, min 2m above tank) are mandatory to prevent odour and gas build-up.'
+  ];
+  document.getElementById('st-notes').innerHTML = notes.map(function(n){ return '<li>' + n + '</li>'; }).join('');
+  document.getElementById('st-results').classList.add('on');
+  document.getElementById('st-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

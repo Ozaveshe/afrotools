@@ -76,6 +76,14 @@
         { label: 'Text/Code Diff Checker', href: '/tools/diff-checker/', emoji: '🔀', badge: 'LIVE' },
         { label: 'Markdown Editor', href: '/tools/markdown-editor/', emoji: '📝', badge: 'LIVE' },
         { label: 'USSD Code Simulator', href: '/tools/ussd-simulator/', emoji: '📞', badge: 'LIVE' },
+        { label: 'African API Directory', href: '/tools/african-api-directory/', emoji: '🌍', badge: 'NEW' },
+        { label: 'USSD Flow Builder', href: '/tools/ussd-flow-builder/', emoji: '📞', badge: 'NEW' },
+        { label: 'African Domain Checker', href: '/tools/african-domains/', emoji: '🌐', badge: 'NEW' },
+        { label: 'PWA Manifest Generator', href: '/tools/pwa-manifest/', emoji: '📱', badge: 'NEW' },
+        { label: 'African Color Palette', href: '/tools/african-palette/', emoji: '🎨', badge: 'NEW' },
+        { label: 'Hosting Cost Comparator', href: '/tools/hosting-compare/', emoji: '☁️', badge: 'NEW' },
+        { label: 'Docker Compose Generator', href: '/tools/docker-compose-gen/', emoji: '🐳', badge: 'NEW' },
+        { label: 'Commit Message Generator', href: '/tools/commit-message-gen/', emoji: '📝', badge: 'NEW' },
         { label: 'All Developer Tools →', href: '/developer-tools/', emoji: '⌨️' },
       ]
     },
@@ -127,10 +135,10 @@
     },
     {
       id: 'insurance', label: 'Insurance', labelFr: 'Assurance', labelSw: 'Bima', icon: '🛡️',
-      desc: 'Car, health, life, funeral, business, travel — 54 countries',
-      descFr: 'Auto, santé, vie, obsèques, entreprise, voyage — 54 pays',
-      descSw: 'Gari, afya, maisha, mazishi, biashara, safari — nchi 54',
-      href: '/insurance/', color: '#fef2f2', accent: '#dc2626',
+      desc: 'Car, health, life, funeral, business, travel — 300+ calculators, 54 countries',
+      descFr: 'Auto, santé, vie, obsèques, entreprise, voyage — 300+ calculateurs, 54 pays',
+      descSw: 'Gari, afya, maisha, mazishi, biashara, safari — vikokotoo 300+, nchi 54',
+      href: '/insurance/', color: '#f0f4f8', accent: '#1e3a5f',
       tools: [
         { label: 'Car Insurance Estimator', href: '/tools/car-insurance/', emoji: '🚗', badge: 'LIVE' },
         { label: 'Health Insurance Comparator', href: '/tools/health-insurance-compare/', emoji: '🏥', badge: 'LIVE' },
@@ -149,7 +157,7 @@
       desc: 'Savings, loans, mobile money, remittance — 54 countries',
       descFr: 'Épargne, prêts, mobile money, transferts — 54 pays',
       descSw: 'Akiba, mikopo, pesa za simu, uhamisho — nchi 54',
-      href: '/fintech/', color: '#ecfdf5', accent: '#10b981',
+      href: '/fintech/', color: '#f5f3ff', accent: '#8b5cf6',
       tools: [
         { label: 'Remittance Fee Comparator', href: '/tools/remittance-compare/', emoji: '💸', badge: 'LIVE' },
         { label: 'Mobile Money vs Bank Transfer', href: '/tools/mobile-vs-bank/', emoji: '📱', badge: 'LIVE' },
@@ -349,13 +357,71 @@
     },
     {
       id: 'engineering', label: 'Engineering', labelFr: 'Ingénierie', labelSw: 'Uhandisi', icon: '🔧',
-      desc: 'BOQ, concrete, electrical, rebar, roofing', descFr: 'Métré, béton, électrique, ferraillage', descSw: 'BOQ, zege, umeme, nondo, paa',
+      desc: 'BOQ, concrete, electrical, rebar, roofing, construction budgets', descFr: 'Métré, béton, électrique, ferraillage', descSw: 'BOQ, zege, umeme, nondo, paa',
       href: '/engineering/', color: '#f5f5f4', accent: '#78716c',
       tools: [
         { label: 'BOQ Builder', href: '/tools/boq-builder/', emoji: '📋', badge: 'LIVE' },
         { label: 'Concrete Mix', href: '/tools/concrete-mix/', emoji: '🏗️', badge: 'LIVE' },
         { label: 'Electrical Load', href: '/tools/electrical-load/', emoji: '⚡', badge: 'LIVE' },
         { label: 'Rebar Calculator', href: '/tools/rebar-calculator/', emoji: '🔩', badge: 'NEW' },
+        { label: 'Roof Material Calculator', href: '/tools/roof-calculator/', emoji: '🏗️', badge: 'LIVE' },
+        { label: 'Tiles Calculator', href: '/tools/tiles-calc/', emoji: '🔲', badge: 'LIVE' },
+        { label: 'Paint Coverage Calculator', href: '/tools/paint-calculator/', emoji: '🎨', badge: 'LIVE' },
+        { label: 'Water Tank Size Calculator', href: '/tools/water-tank/', emoji: '💧', badge: 'LIVE' },
+        { label: 'Borehole Cost Estimator', href: '/tools/borehole-cost/', emoji: '🌊', badge: 'LIVE' },
+        { label: 'Home Renovation Budget', href: '/tools/home-renovation-cost/', emoji: '🏠', badge: 'LIVE' },
+        { label: 'Structural Load Calculator', href: '/tools/structural-calc/', emoji: '📐', badge: 'LIVE' },
+        { label: 'Septic Tank Size Calculator', href: '/tools/septic-tank/', emoji: '🚿', badge: 'NEW' },
+        { label: 'Fence Cost Calculator', href: '/tools/fence-cost/', emoji: '🧱', badge: 'NEW' },
+        { label: 'Swimming Pool Cost Estimator', href: '/tools/swimming-pool-cost/', emoji: '🏊', badge: 'NEW' },
+        { label: 'Architectural Drawing Fee Calc', href: '/tools/architectural-fee/', emoji: '📏', badge: 'NEW' },
+        { label: 'All Engineering Tools →', href: '/engineering/', emoji: '🔧' },
+      ]
+    },
+    {
+      id: 'government', label: 'Government & Civic', labelFr: 'Gouvernement & Civique', labelSw: 'Serikali na Uraia', icon: '🏛️',
+      desc: 'Passports, ID, voter registration, pensions, land fees — 20 tools',
+      descFr: 'Passeports, identité, vote, retraites, foncier — 20 outils',
+      descSw: 'Pasipoti, vitambulisho, upigaji kura, pensheni — zana 20',
+      href: '/government/', color: '#eff6ff', accent: '#1d4ed8',
+      tools: [
+        { label: 'Passport Application Checklist', href: '/tools/passport-checklist/', emoji: '🛂', badge: 'NEW' },
+        { label: 'Visa Requirement Checker (Africa)', href: '/tools/visa-checker/', emoji: '✈️', badge: 'NEW' },
+        { label: 'National ID Registration Guide', href: '/tools/national-id-guide/', emoji: '🪪', badge: 'NEW' },
+        { label: 'Voter Registration Guide', href: '/tools/voter-registration/', emoji: '🗳️', badge: 'NEW' },
+        { label: 'National Pension Estimator', href: '/tools/national-pension/', emoji: '📈', badge: 'NEW' },
+        { label: 'Land Registry Fee Calculator', href: '/tools/land-registry-fees/', emoji: '🏠', badge: 'NEW' },
+        { label: 'Birth/Death Certificate Guide', href: '/tools/birth-death-cert/', emoji: '📜', badge: 'NEW' },
+        { label: 'Marriage Certificate Guide', href: '/tools/marriage-cert/', emoji: '💍', badge: 'NEW' },
+        { label: 'FOI Request Template', href: '/tools/foi-template/', emoji: '📋', badge: 'NEW' },
+        { label: 'Government Scholarship Finder', href: '/tools/gov-scholarship/', emoji: '🎓', badge: 'NEW' },
+        { label: 'Social Welfare Eligibility Checker', href: '/tools/social-welfare/', emoji: '🤝', badge: 'NEW' },
+        { label: 'Public Holiday Calendar', href: '/tools/public-holidays/', emoji: '📅', badge: 'LIVE' },
+        { label: 'Budget Allocation Comparator', href: '/tools/budget-comparator/', emoji: '📊', badge: 'NEW' },
+        { label: 'All Government Tools →', href: '/government/', emoji: '🏛️' },
+      ]
+    },
+    {
+      id: 'small-business', label: 'Small Business', labelFr: 'Petites Entreprises', labelSw: 'Biashara Ndogo', icon: '🏪',
+      desc: 'POS agents, mini-importation, market stalls, e-commerce — 45 tools',
+      descFr: 'Agents POS, mini-import, marchés, e-commerce — 45 outils',
+      descSw: 'Wakala wa POS, uagizaji, masoko, e-commerce — zana 45',
+      href: '/small-business/', color: '#fff7ed', accent: '#ea580c',
+      tools: [
+        { label: 'Startup Runway Calculator', href: '/tools/startup-runway/', emoji: '🚀', badge: 'NEW' },
+        { label: 'Market Size (TAM/SAM/SOM)', href: '/tools/tam-sam-som/', emoji: '📊', badge: 'NEW' },
+        { label: 'Unit Economics Calculator', href: '/tools/unit-economics/', emoji: '💡', badge: 'NEW' },
+        { label: 'Burn Rate Calculator', href: '/tools/burn-rate/', emoji: '🔥', badge: 'NEW' },
+        { label: 'Cash Flow Forecast Tool', href: '/tools/cash-flow-forecast/', emoji: '💰', badge: 'NEW' },
+        { label: 'POS Agent Business Calculator', href: '/tools/pos-agent/', emoji: '📱', badge: 'NEW' },
+        { label: 'Mini-Importation Profit Calc', href: '/tools/mini-importation/', emoji: '📦', badge: 'NEW' },
+        { label: 'Mama Put / Food Vendor Calc', href: '/tools/mama-put/', emoji: '🍲', badge: 'NEW' },
+        { label: 'Marketplace Fee Comparator', href: '/tools/marketplace-fees/', emoji: '🛍️', badge: 'NEW' },
+        { label: 'Market Stall Profit Calculator', href: '/tools/market-stall-profit/', emoji: '🏪', badge: 'LIVE' },
+        { label: 'AI Business Planner', href: '/tools/business-planner/', emoji: '📋', badge: 'LIVE' },
+        { label: 'Break-Even Calculator', href: '/tools/break-even/', emoji: '📉', badge: 'LIVE' },
+        { label: 'Churn Rate Calculator', href: '/tools/churn-rate/', emoji: '🔄', badge: 'NEW' },
+        { label: 'All SME Tools →', href: '/small-business/', emoji: '🏪' },
       ]
     },
     {
@@ -378,6 +444,205 @@
         { label: 'All Transport Tools →', href: '/transport/', emoji: '🚛' },
       ]
     },
+    {
+      id: 'personal-finance', label: 'Personal Finance', labelFr: 'Finance Personnelle', labelSw: 'Fedha Binafsi', icon: '💼',
+      desc: 'Budgeting, life events, tax extensions — 25 tools for African realities',
+      descFr: 'Budget, événements de vie, impôts — 25 outils pour réalités africaines',
+      descSw: 'Bajeti, matukio ya maisha, kodi — zana 25 kwa hali ya Afrika',
+      href: '/personal-finance/', color: '#f0fdf4', accent: '#16a34a',
+      tools: [
+        { label: '50/30/20 Budget Calculator', href: '/tools/50-30-20-budget/', emoji: '💰', badge: 'NEW' },
+        { label: 'Zero-Based Budget Planner', href: '/tools/zero-based-budget/', emoji: '📋', badge: 'NEW' },
+        { label: 'Annual Financial Review', href: '/tools/annual-financial-review/', emoji: '📅', badge: 'NEW' },
+        { label: 'Multi-Income Tracker', href: '/tools/multi-income-tracker/', emoji: '💵', badge: 'NEW' },
+        { label: 'Baby Cost Estimator', href: '/tools/baby-cost/', emoji: '👶', badge: 'NEW' },
+        { label: 'Back-to-School Budget', href: '/tools/back-to-school/', emoji: '🎒', badge: 'NEW' },
+        { label: 'WHT Calculator', href: '/tools/wht-calculator/', emoji: '🧾', badge: 'NEW' },
+        { label: 'Side Hustle to Full-Time Calc', href: '/tools/side-hustle-to-fulltime/', emoji: '🚀', badge: 'NEW' },
+        { label: 'Funeral Savings Planner', href: '/tools/funeral-savings/', emoji: '🕊️', badge: 'NEW' },
+        { label: 'Wedding Budget (African)', href: '/tools/wedding-budget-african/', emoji: '💍', badge: 'NEW' },
+        { label: 'All Personal Finance Tools →', href: '/personal-finance/', emoji: '💼' },
+      ]
+    },
+    {
+      id: 'diaspora', label: 'Diaspora', labelFr: 'Diaspora', labelSw: 'Diaspora', icon: '✈️',
+      desc: 'Visa tracking, immigration, remittances — 17 tools for Africans abroad',
+      descFr: 'Visa, immigration, transferts — 17 outils pour Africains à l\'étranger',
+      descSw: 'Visa, uhamiaji, uhamisho — zana 17 kwa Waafrika nje',
+      href: '/diaspora/', color: '#eff6ff', accent: '#2563eb',
+      tools: [
+        { label: 'Japa Calculator', href: '/tools/japa-calculator/', emoji: '🌍', badge: 'NEW' },
+        { label: 'Visa Tracker', href: '/tools/visa-tracker/', emoji: '📝', badge: 'NEW' },
+        { label: 'Immigration Points Calculator', href: '/tools/immigration-points/', emoji: '📊', badge: 'NEW' },
+        { label: 'Cultural Adjustment Guide', href: '/tools/cultural-adjustment/', emoji: '🤝', badge: 'NEW' },
+        { label: 'IELTS/TOEFL Score Converter', href: '/tools/ielts-toefl-converter/', emoji: '📚', badge: 'NEW' },
+        { label: 'Embassy Wait Time Tracker', href: '/tools/embassy-wait-time/', emoji: '⏱️', badge: 'NEW' },
+        { label: 'Money Transfer Tracker', href: '/tools/money-transfer-tracker/', emoji: '💸', badge: 'NEW' },
+        { label: 'Cost of Living Comparator', href: '/tools/cost-of-living-compare/', emoji: '🏙️', badge: 'NEW' },
+        { label: 'Double Taxation Checker', href: '/tools/double-taxation/', emoji: '🧾', badge: 'NEW' },
+        { label: 'Diaspora Investment Calculator', href: '/tools/diaspora-investment/', emoji: '📈', badge: 'NEW' },
+        { label: 'All Diaspora Tools →', href: '/diaspora/', emoji: '✈️' },
+      ]
+    },
+    {
+      id: 'religious-cultural', label: 'Religious & Cultural', labelFr: 'Religieux & Culturel', labelSw: 'Dini na Utamaduni', icon: '🕌',
+      desc: 'Zakat, prayer times, Ramadan, halal, proverbs — Islamic, Christian & Traditional',
+      descFr: 'Zakat, heures de prière, Ramadan, halal, proverbes — Islam, Christianisme & Tradition',
+      descSw: 'Zaka, nyakati za sala, Ramadhan, halali, methali — Kiislamu, Kikristo & Jadi',
+      href: '/religious-cultural/', color: '#fffbeb', accent: '#d97706',
+      tools: [
+        { label: 'Zakat Calculator', href: '/tools/zakat-calculator/', emoji: '🌙', badge: 'NEW' },
+        { label: 'Prayer Times Calculator', href: '/tools/prayer-times/', emoji: '🕌', badge: 'NEW' },
+        { label: 'Ramadan Timetable', href: '/tools/ramadan-timetable/', emoji: '📅', badge: 'NEW' },
+        { label: 'Halal Compliance Checker', href: '/tools/halal-compliance/', emoji: '✅', badge: 'NEW' },
+        { label: 'Hajj Budget Planner', href: '/tools/hajj-budget/', emoji: '🕋', badge: 'NEW' },
+        { label: 'Islamic Calendar', href: '/tools/islamic-calendar/', emoji: '🗓️', badge: 'NEW' },
+        { label: 'Tithe Calculator', href: '/tools/tithe-calculator/', emoji: '⛪', badge: 'NEW' },
+        { label: 'Wedding Budget Planner', href: '/tools/wedding-budget/', emoji: '💒', badge: 'NEW' },
+        { label: 'African Proverbs Library', href: '/tools/african-proverbs/', emoji: '📖', badge: 'NEW' },
+        { label: 'Naming Ceremony Cost Calc', href: '/tools/naming-ceremony/', emoji: '🎉', badge: 'NEW' },
+        { label: 'All Religious & Cultural Tools →', href: '/religious-cultural/', emoji: '🕌' },
+      ]
+    },
+    {
+      id: 'climate', label: 'Climate & Environment', labelFr: 'Climat & Environnement', labelSw: 'Hali ya Hewa na Mazingira', icon: '🌿',
+      desc: 'Carbon credits, drought risk, flood risk, air quality, e-waste — 54 countries',
+      descFr: 'Crédits carbone, risque sécheresse, qualité air, déchets — 54 pays',
+      descSw: 'Mikopo ya kaboni, ukame, mafuriko, hali ya hewa — nchi 54',
+      href: '/climate/', color: '#f0fdf4', accent: '#059669',
+      tools: [
+        { label: 'Carbon Credit Calculator', href: '/tools/carbon-credit/', emoji: '🌱', badge: 'NEW' },
+        { label: 'Drought Risk Assessor', href: '/tools/drought-risk/', emoji: '☀️', badge: 'NEW' },
+        { label: 'Flood Risk Calculator', href: '/tools/flood-risk/', emoji: '🌊', badge: 'NEW' },
+        { label: 'Air Quality Index Tool', href: '/tools/air-quality/', emoji: '🌬️', badge: 'NEW' },
+        { label: 'Tree Planting ROI', href: '/tools/tree-planting-roi/', emoji: '🌳', badge: 'NEW' },
+        { label: 'E-Waste Value Calculator', href: '/tools/ewaste-value/', emoji: '♻️', badge: 'NEW' },
+        { label: 'Water Scarcity Estimator', href: '/tools/water-scarcity/', emoji: '💧', badge: 'NEW' },
+        { label: 'Recycling Revenue Calculator', href: '/tools/recycling-revenue/', emoji: '🗃️', badge: 'NEW' },
+        { label: 'Sustainability Scorecard', href: '/tools/sustainability-scorecard/', emoji: '📊', badge: 'NEW' },
+        { label: 'Charcoal vs Clean Energy', href: '/tools/charcoal-vs-clean/', emoji: '⚡', badge: 'NEW' },
+        { label: 'All Climate Tools →', href: '/climate/', emoji: '🌿' },
+      ]
+    },
+    {
+      id: 'sports', label: 'Sports & Entertainment', labelFr: 'Sports & Divertissement', labelSw: 'Michezo na Burudani', icon: '⚽',
+      desc: 'Betting odds, AFCON predictor, music royalties, Nollywood — 54 countries',
+      descFr: 'Cotes paris, prédicteur AFCON, redevances musicales, Nollywood — 54 pays',
+      descSw: 'Uwezekano wa kubeti, AFCON, mrabaha wa muziki — nchi 54',
+      href: '/sports/', color: '#fdf4ff', accent: '#9333ea',
+      tools: [
+        { label: 'Betting Odds Calculator', href: '/tools/betting-odds/', emoji: '🎲', badge: 'NEW' },
+        { label: 'AFCON Match Predictor', href: '/tools/afcon-predictor/', emoji: '🏆', badge: 'NEW' },
+        { label: 'Fantasy Football Value Calc', href: '/tools/fantasy-football/', emoji: '⚽', badge: 'NEW' },
+        { label: 'Betting Tax Calculator', href: '/tools/betting-tax/', emoji: '🧾', badge: 'NEW' },
+        { label: 'Streaming Royalties Estimator', href: '/tools/streaming-royalties/', emoji: '🎵', badge: 'NEW' },
+        { label: 'DJ Booking Rate Calculator', href: '/tools/dj-booking-rate/', emoji: '🎧', badge: 'NEW' },
+        { label: 'Concert Budget Planner', href: '/tools/concert-budget/', emoji: '🎤', badge: 'NEW' },
+        { label: 'Event Ticket Revenue Calc', href: '/tools/event-ticket-revenue/', emoji: '🎟️', badge: 'NEW' },
+        { label: 'Nollywood Box Office Tracker', href: '/tools/nollywood-box-office/', emoji: '🎬', badge: 'NEW' },
+        { label: 'Sports Scholarship Estimator', href: '/tools/sports-scholarship/', emoji: '🎓', badge: 'NEW' },
+        { label: 'All Sports & Entertainment Tools →', href: '/sports/', emoji: '⚽' },
+      ]
+    },
+    {
+      id: 'mining', label: 'Mining & Extractives', labelFr: 'Mines & Extractives', labelSw: 'Madini na Uchimbaji', icon: '⛏️',
+      desc: 'Gold, diamonds, oil, mining royalties — Africa holds 30% of world minerals',
+      descFr: 'Or, diamants, pétrole, redevances minières — l\'Afrique détient 30% des minéraux',
+      descSw: 'Dhahabu, almasi, mafuta, mrabaha wa madini — Afrika ina 30% ya madini',
+      href: '/mining/', color: '#fef9c3', accent: '#ca8a04',
+      tools: [
+        { label: 'Gold Price Tracker', href: '/tools/gold-price-tracker/', emoji: '🥇', badge: 'NEW' },
+        { label: 'Diamond Valuation Calculator', href: '/tools/diamond-valuation/', emoji: '💎', badge: 'NEW' },
+        { label: 'Mining Royalty Calculator', href: '/tools/mining-royalty/', emoji: '📊', badge: 'NEW' },
+        { label: 'Oil Production Estimator', href: '/tools/oil-production/', emoji: '🛢️', badge: 'NEW' },
+        { label: 'Oil & Gas Revenue Calc', href: '/tools/oil-gas-revenue/', emoji: '⚡', badge: 'NEW' },
+        { label: 'Artisanal Mining Income Calc', href: '/tools/artisanal-mining/', emoji: '⛏️', badge: 'NEW' },
+        { label: 'Mining License Fee Estimator', href: '/tools/mining-license-fee/', emoji: '📋', badge: 'NEW' },
+        { label: 'Mineral Export Duty Calc', href: '/tools/mineral-export-duty/', emoji: '🚢', badge: 'NEW' },
+        { label: 'Mining Env. Impact Assessor', href: '/tools/mining-env-impact/', emoji: '🌿', badge: 'NEW' },
+        { label: 'Petroleum Pricing Calculator', href: '/tools/petroleum-pricing/', emoji: '⛽', badge: 'NEW' },
+        { label: 'All Mining Tools →', href: '/mining/', emoji: '⛏️' },
+      ]
+    },
+    {
+      id: 'creative', label: 'Creative Economy', labelFr: 'Économie Créative', labelSw: 'Uchumi wa Ubunifu', icon: '🎨',
+      desc: 'Music royalties, Nollywood, African fashion, content creator tools',
+      descFr: 'Droits musicaux, Nollywood, mode africaine, créateurs de contenu',
+      descSw: 'Mrabaha wa muziki, Nollywood, mitindo ya Afrika, waundaji wa maudhui',
+      href: '/creative/', color: '#FDF4FF', accent: '#DB2777',
+      tools: [
+        { label: 'Music Royalty Splitter', href: '/tools/music-royalty-splitter/', emoji: '🎵', badge: 'NEW' },
+        { label: 'Album/EP Release Budget', href: '/tools/album-budget/', emoji: '💿', badge: 'NEW' },
+        { label: 'Fashion Brand Startup Cost', href: '/tools/fashion-brand-startup/', emoji: '👗', badge: 'NEW' },
+        { label: 'YouTube Revenue Estimator', href: '/tools/youtube-revenue/', emoji: '▶️', badge: 'NEW' },
+        { label: 'Influencer Rate Card Generator', href: '/tools/influencer-rate/', emoji: '📱', badge: 'NEW' },
+        { label: 'TikTok/IG Engagement Rate Calc', href: '/tools/engagement-rate/', emoji: '📊', badge: 'NEW' },
+        { label: 'Graphic Design Pricing', href: '/tools/graphic-design-pricing/', emoji: '🖼️', badge: 'NEW' },
+        { label: 'Event Decoration Cost Calc', href: '/tools/event-decoration-cost/', emoji: '🎪', badge: 'NEW' },
+        { label: 'Art Commission Price Calc', href: '/tools/art-commission/', emoji: '🎨', badge: 'NEW' },
+        { label: 'All Creative Economy Tools →', href: '/creative/', emoji: '🎨' },
+      ]
+    },
+    {
+      id: 'security', label: 'Security & Safety', labelFr: 'Sécurité & Sûreté', labelSw: 'Usalama na Ulinzi', icon: '🔒',
+      desc: 'Home security, cybersecurity, business continuity, risk',
+      descFr: 'Sécurité domicile, cybersécurité, continuité d\'activité',
+      descSw: 'Usalama wa nyumba, mtandao, uendelevu wa biashara',
+      href: '/security/', color: '#F8FAFC', accent: '#475569',
+      tools: [
+        { label: 'Home Security Cost Estimator', href: '/tools/home-security-cost/', emoji: '🏠', badge: 'NEW' },
+        { label: 'CCTV System Cost Calculator', href: '/tools/cctv-cost/', emoji: '📷', badge: 'NEW' },
+        { label: 'Cybersecurity Risk Assessment', href: '/tools/cybersecurity-assessment/', emoji: '💻', badge: 'NEW' },
+        { label: 'Password Strength Checker', href: '/tools/password-strength/', emoji: '🔐', badge: 'NEW' },
+        { label: 'Phishing Detection Quiz', href: '/tools/phishing-quiz/', emoji: '🎣', badge: 'NEW' },
+        { label: 'Data Breach Cost Estimator', href: '/tools/data-breach-cost/', emoji: '⚠️', badge: 'NEW' },
+        { label: 'Vehicle Tracker ROI Calculator', href: '/tools/vehicle-tracker-roi/', emoji: '🚗', badge: 'NEW' },
+        { label: 'Fire Safety Compliance Checklist', href: '/tools/fire-safety-checklist/', emoji: '🔥', badge: 'NEW' },
+        { label: 'All Security Tools →', href: '/security/', emoji: '🔒' },
+      ]
+    },
+    {
+      id: 'travel', label: 'Travel & Tourism', labelFr: 'Voyage & Tourisme', labelSw: 'Usafiri na Utalii', icon: '🌍',
+      desc: 'Safari cost, beach holidays, airport transfers, packing lists',
+      descFr: 'Coût safari, vacances plage, transferts aéroport, listes d\'emballage',
+      descSw: 'Gharama ya safari, likizo pwani, usafiri wa uwanja',
+      href: '/travel/', color: '#F0F9FF', accent: '#0EA5E9',
+      tools: [
+        { label: 'African Safari Cost Calculator', href: '/tools/safari-cost/', emoji: '🦁', badge: 'NEW' },
+        { label: 'Beach Holiday Budget (Africa)', href: '/tools/beach-holiday-budget/', emoji: '🏖️', badge: 'NEW' },
+        { label: 'Travel Vaccination Schedule', href: '/tools/travel-vaccination-cost/', emoji: '💉', badge: 'NEW' },
+        { label: 'Airport Transfer Comparator', href: '/tools/airport-transfer/', emoji: '🚗', badge: 'NEW' },
+        { label: 'Airbnb vs Hotel (Africa)', href: '/tools/airbnb-vs-hotel/', emoji: '🏨', badge: 'NEW' },
+        { label: 'Festival Travel Budget', href: '/tools/festival-travel-budget/', emoji: '🎪', badge: 'NEW' },
+        { label: 'Travel Packing List Generator', href: '/tools/travel-packing-list/', emoji: '🧳', badge: 'NEW' },
+        { label: 'All Travel Tools →', href: '/travel/', emoji: '🌍' },
+      ]
+    },
+    {
+      id: 'career', label: 'Career & Development', labelFr: 'Carrière & Développement', labelSw: 'Kazi na Maendeleo', icon: '📈',
+      desc: 'Salary negotiation, freelance, personal brand, retirement',
+      descFr: 'Négociation salaire, freelance, marque personnelle, retraite',
+      descSw: 'Mazungumzo ya mshahara, uhuru, chapa ya kibinafsi, kustaafu',
+      href: '/career/', color: '#EEF2FF', accent: '#6366F1',
+      tools: [
+        { label: 'Salary Negotiation Calculator', href: '/tools/salary-negotiation/', emoji: '💼', badge: 'NEW' },
+        { label: 'Career Switch Financial Impact', href: '/tools/career-switch/', emoji: '🔄', badge: 'NEW' },
+        { label: 'Side Hustle Profitability Ranker', href: '/tools/side-hustle-ranker/', emoji: '💡', badge: 'NEW' },
+        { label: 'Personal Brand Audit Tool', href: '/tools/personal-brand-audit/', emoji: '⭐', badge: 'NEW' },
+        { label: 'LinkedIn Profile Optimizer', href: '/tools/linkedin-optimizer/', emoji: '🔗', badge: 'NEW' },
+        { label: 'Interview Preparation Checklist', href: '/tools/interview-prep/', emoji: '✅', badge: 'NEW' },
+        { label: 'Retirement Readiness Score', href: '/tools/retirement-readiness/', emoji: '🏖️', badge: 'NEW' },
+        { label: 'Career Growth Trajectory Calc', href: '/tools/career-growth/', emoji: '📈', badge: 'NEW' },
+        { label: 'All Career Tools →', href: '/career/', emoji: '📈' },
+      ]
+    },
+  ];
+
+  // 11 main categories shown in the mega menu + "All Categories" card = 12 items (3 rows × 4)
+  const MEGA_IDS = [
+    'financial', 'document-pdf', 'image-design', 'developer',
+    'education', 'health', 'fintech', 'trade',
+    'energy', 'small-business', 'legal'
   ];
 
   const MARK = `<svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:30px;width:30px;flex-shrink:0">
@@ -883,7 +1148,8 @@
       var lang = this._getLang();
       var isFr = lang === 'fr';
       var isSw = lang === 'sw';
-      return this._navItems().map(cat => {
+      var featured = MEGA_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
+      var html = featured.map(cat => {
         var href = isSw && cat.hrefSw ? cat.hrefSw : isFr && cat.hrefFr ? cat.hrefFr : cat.href;
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
         var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
@@ -896,13 +1162,25 @@
           </div>
         </a>`;
       }).join('');
+      var allLabel = isSw ? 'Makundi Yote →' : isFr ? 'Toutes les catégories →' : 'All Categories →';
+      var allDesc = isSw ? 'Makundi 28 yote' : isFr ? '28 catégories' : 'All 28 categories';
+      html += `
+        <a href="/categories/" class="mega-col" style="--col-accent:#0062CC">
+          <div class="mega-col-icon" style="background:#EEF4FF">🧭</div>
+          <div>
+            <div class="mega-col-name">${allLabel}</div>
+            <div class="mega-col-desc">${allDesc}</div>
+          </div>
+        </a>`;
+      return html;
     }
 
     _mobileContent() {
       var lang = this._getLang();
       var isFr = lang === 'fr';
       var isSw = lang === 'sw';
-      return this._navItems().map(cat => {
+      var featured = MEGA_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
+      var html = featured.map(cat => {
         var href = isSw && cat.hrefSw ? cat.hrefSw : isFr && cat.hrefFr ? cat.hrefFr : cat.href;
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
         var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
@@ -916,6 +1194,18 @@
           <span class="mob-arr">›</span>
         </a>`;
       }).join('');
+      var allLabel = isSw ? 'Makundi Yote →' : isFr ? 'Toutes les catégories →' : 'All 28 Categories →';
+      var allDesc = isSw ? 'Tazama makundi yote' : isFr ? 'Voir toutes les catégories' : 'Browse every tool category';
+      html += `
+        <a href="/categories/" class="mob-cat" style="border-top:2px solid #e5e7eb;margin-top:4px">
+          <div class="mob-cat-icon" style="background:#EEF4FF">🧭</div>
+          <div>
+            <div class="mob-cat-label" style="color:#0062CC">${allLabel}</div>
+            <div class="mob-cat-desc">${allDesc}</div>
+          </div>
+          <span class="mob-arr">›</span>
+        </a>`;
+      return html;
     }
 
     _mobileLangHTML() {

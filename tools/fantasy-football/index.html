@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fantasy Football Points Calculator — FPL, BetKing, AFCON Fantasy | AfroTools</title>
+<meta name="description" content="Calculate fantasy football points for Premier League, AFCON, LaLiga, and BetKing Fantasy leagues. Goals, assists, clean sheets, cards, saves — full points system with captain analysis.">
+<link rel="canonical" href="https://afrotools.com/tools/fantasy-football/">
+<meta property="og:title" content="Fantasy Football Points Calculator | AfroTools">
+<meta property="og:description" content="Calculate FPL, AFCON, LaLiga, BetKing fantasy football points. Full Premier League points system.">
+<meta property="og:url" content="https://afrotools.com/tools/fantasy-football/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Fantasy Football Points Calculator","description":"Calculate fantasy football points for FPL, AFCON, LaLiga, and BetKing Fantasy leagues.","url":"https://afrotools.com/tools/fantasy-football/","applicationCategory":"SportsApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Sports & Entertainment","item":"https://afrotools.com/sports/"},{"@type":"ListItem","position":3,"name":"Fantasy Football Calculator","item":"https://afrotools.com/tools/fantasy-football/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+:root{--en-accent:#DC2626;--en-accent-dark:#B91C1C;--en-accent-light:#FEE2E2;--en-accent-pale:#FEF2F2;--en-shadow-hover:0 4px 16px rgba(220,38,38,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a0a 50%,#450a0a 100%)!important}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+.pts-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:.88rem}
+.pts-row:last-child{border-bottom:none}
+.pts-row-label{color:#64748b}
+.pts-row-value{font-weight:700;color:#0f172a}
+.pts-row-value.pos{color:#166534}
+.pts-row-value.neg{color:#991b1b}
+.pts-total{background:linear-gradient(135deg,#B91C1C,#7f1d1d);color:#fff;border-radius:12px;padding:24px;text-align:center;margin-bottom:20px}
+.pts-total-label{font-size:.8rem;letter-spacing:.07em;text-transform:uppercase;opacity:.75;margin-bottom:4px}
+.pts-total-value{font-size:4rem;font-weight:900;line-height:1}
+.pts-total-sub{font-size:.85rem;opacity:.7;margin-top:6px}
+.captain-banner{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:16px 20px;margin-bottom:16px;font-size:.9rem;color:#854d0e}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="sports"></afro-navbar>
+
+<section class="en-tool-hero">
+<div class="container">
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+<a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+<a href="/sports/">Sports &amp; Entertainment</a><span class="en-breadcrumb-sep">›</span>
+<span class="en-breadcrumb-current">Fantasy Football Calculator</span>
+</nav>
+<h1>Fantasy Football <em>Points Calculator</em></h1>
+<p>Calculate your fantasy football points for FPL, BetKing Fantasy, AFCON Fantasy, and LaLiga Fantasy. Full Premier League points system with captain analysis.</p>
+<div class="en-tool-hero-meta">
+<span class="en-tool-hero-pill">🏆 FPL / BetKing / AFCON</span>
+<span class="en-tool-hero-pill">👑 Captain Multiplier</span>
+<span class="en-tool-hero-pill">📊 Breakdown</span>
+</div>
+</div>
+</section>
+
+<main>
+<div class="en-tool-layout">
+
+<div class="en-card">
+<div class="en-card-title"><div class="en-card-title-icon">⚙️</div>League &amp; Player Setup</div>
+<div class="en-form-grid">
+<div class="en-field">
+<label class="en-label" for="leagueType">Fantasy League</label>
+<select class="en-select" id="leagueType" onchange="updateLeagueInfo()">
+<option value="fpl">Premier League (FPL)</option>
+<option value="afcon">AFCON Fantasy</option>
+<option value="laliga">LaLiga Fantasy</option>
+<option value="betking">BetKing Fantasy (Nigeria)</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label" for="playerRole">Player Position</label>
+<select class="en-select" id="playerRole">
+<option value="gk">Goalkeeper (GK)</option>
+<option value="def">Defender (DEF)</option>
+<option value="mid">Midfielder (MID)</option>
+<option value="fwd">Forward (FWD)</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label" for="minutesPlayed">Minutes Played</label>
+<input class="en-input" type="number" id="minutesPlayed" placeholder="e.g. 90" min="0" max="120">
+</div>
+<div class="en-field">
+<label class="en-label" for="isCaptain">Captain / Vice-Captain?</label>
+<select class="en-select" id="isCaptain">
+<option value="none">Normal player</option>
+<option value="captain">Captain (2× points)</option>
+<option value="vice">Vice-Captain (2× if captain blanked)</option>
+</select>
+</div>
+</div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><div class="en-card-title-icon">⚽</div>Performance Stats</div>
+<div class="en-form-grid en-form-grid-3">
+<div class="en-field">
+<label class="en-label" for="goals">Goals Scored</label>
+<input class="en-input" type="number" id="goals" placeholder="0" min="0" value="0">
+</div>
+<div class="en-field">
+<label class="en-label" for="assists">Assists</label>
+<input class="en-input" type="number" id="assists" placeholder="0" min="0" value="0">
+</div>
+<div class="en-field">
+<label class="en-label" for="cleanSheet">Clean Sheet?</label>
+<select class="en-select" id="cleanSheet">
+<option value="0">No clean sheet</option>
+<option value="1">Clean sheet ✅</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label" for="saves">Saves (GK only)</label>
+<input class="en-input" type="number" id="saves" placeholder="0" min="0" value="0">
+</div>
+<div class="en-field">
+<label class="en-label" for="yellowCards">Yellow Cards</label>
+<select class="en-select" id="yellowCards">
+<option value="0">None</option>
+<option value="1">1 Yellow card</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label" for="redCard">Red Card?</label>
+<select class="en-select" id="redCard">
+<option value="0">No red card</option>
+<option value="1">Red card 🟥</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label" for="penSave">Penalty Saves (GK)</label>
+<input class="en-input" type="number" id="penSave" placeholder="0" min="0" value="0">
+</div>
+<div class="en-field">
+<label class="en-label" for="penMiss">Penalty Missed</label>
+<input class="en-input" type="number" id="penMiss" placeholder="0" min="0" value="0">
+</div>
+<div class="en-field">
+<label class="en-label" for="bonus">Bonus Points (1–3)</label>
+<input class="en-input" type="number" id="bonus" placeholder="0" min="0" max="3" value="0">
+</div>
+</div>
+<div class="en-form-actions">
+<button class="en-btn" onclick="calcFantasy()">Calculate Points 🏆</button>
+<button class="en-btn en-btn-secondary en-btn-sm" onclick="resetFantasy()">Reset</button>
+</div>
+</div>
+
+<div class="en-results" id="fantasyResults">
+
+<div class="pts-total">
+<div class="pts-total-label">Gameweek Points</div>
+<div class="pts-total-value" id="rTotalPts">—</div>
+<div class="pts-total-sub" id="rCaptainNote">—</div>
+</div>
+
+<div class="captain-banner" id="captainBanner" style="display:none"></div>
+
+<div class="en-card">
+<div class="en-card-title"><div class="en-card-title-icon">📊</div>Points Breakdown</div>
+<div id="ptsBreakdown"></div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><div class="en-card-title-icon">💡</div>Captain Analysis</div>
+<div id="captainAnalysis" style="font-size:.9rem;color:#64748b;line-height:1.7"></div>
+</div>
+
+</div>
+
+</div>
+</main>
+
+<afro-footer></afro-footer>
+<script>
+(function(){
+'use strict';
+
+var PTS_SYSTEM={
+  fpl:{
+    appearance60:'2', appearance:'1',
+    goalGK:'6', goalDEF:'6', goalMID:'5', goalFWD:'4',
+    assist:'3',
+    csGK:'4', csDEF:'4', csMID:'1', csFWD:'0',
+    savePer3:'1',
+    yellow:'-1', red:'-3',
+    penSave:'5', penMiss:'-2',
+    bonus:'1'
+  }
+};
+
+function calcFantasy(){
+  var league=document.getElementById('leagueType').value;
+  var pos=document.getElementById('playerRole').value;
+  var mins=parseInt(document.getElementById('minutesPlayed').value)||0;
+  var goals=parseInt(document.getElementById('goals').value)||0;
+  var assists=parseInt(document.getElementById('assists').value)||0;
+  var cs=parseInt(document.getElementById('cleanSheet').value)||0;
+  var saves=parseInt(document.getElementById('saves').value)||0;
+  var yellow=parseInt(document.getElementById('yellowCards').value)||0;
+  var red=parseInt(document.getElementById('redCard').value)||0;
+  var penSave=parseInt(document.getElementById('penSave').value)||0;
+  var penMiss=parseInt(document.getElementById('penMiss').value)||0;
+  var bonus=parseInt(document.getElementById('bonus').value)||0;
+  var captain=document.getElementById('isCaptain').value;
+
+  var breakdown=[];
+  var pts=0;
+
+  // Appearance points
+  if(mins>=60){
+    pts+=2; breakdown.push({label:'Playing 60+ minutes',pts:2,sign:'pos'});
+  } else if(mins>=1){
+    pts+=1; breakdown.push({label:'Playing 1–59 minutes',pts:1,sign:'pos'});
+  } else {
+    breakdown.push({label:'Did not play',pts:0,sign:''});
+  }
+
+  // Goals
+  var goalPts={'gk':6,'def':6,'mid':5,'fwd':4};
+  if(goals>0){
+    var gp=(goalPts[pos]||4)*goals;
+    pts+=gp;
+    breakdown.push({label:'Goals scored ('+goals+'×'+goalPts[pos]+'pts)',pts:gp,sign:'pos'});
+  }
+
+  // Assists
+  if(assists>0){
+    var ap=3*assists;
+    pts+=ap;
+    breakdown.push({label:'Assists ('+assists+'×3pts)',pts:ap,sign:'pos'});
+  }
+
+  // Clean sheet
+  var csPts={'gk':4,'def':4,'mid':1,'fwd':0};
+  if(cs&&csPts[pos]>0&&mins>=60){
+    pts+=csPts[pos];
+    breakdown.push({label:'Clean sheet ('+pos.toUpperCase()+')',pts:csPts[pos],sign:'pos'});
+  }
+
+  // Saves (GK only, 1pt per 3 saves)
+  if(pos==='gk'&&saves>0){
+    var savePts=Math.floor(saves/3);
+    if(savePts>0){pts+=savePts;breakdown.push({label:'Saves ('+saves+' saves = '+savePts+'pts)',pts:savePts,sign:'pos'});}
+  }
+
+  // Penalty saves
+  if(penSave>0){var pp=5*penSave;pts+=pp;breakdown.push({label:'Penalty saved ('+penSave+'×5pts)',pts:pp,sign:'pos'});}
+
+  // Yellow card
+  if(yellow>0){pts-=1;breakdown.push({label:'Yellow card',pts:-1,sign:'neg'});}
+  // Red card
+  if(red>0){pts-=3;breakdown.push({label:'Red card',pts:-3,sign:'neg'});}
+  // Penalty missed
+  if(penMiss>0){var pm=-2*penMiss;pts+=pm;breakdown.push({label:'Penalty missed ('+penMiss+'×-2pts)',pts:pm,sign:'neg'});}
+
+  // Bonus
+  if(bonus>0){pts+=bonus;breakdown.push({label:'Bonus points',pts:bonus,sign:'pos'});}
+
+  // Captain multiplier
+  var displayPts=pts;
+  var captainNote='Standard player';
+  if(captain==='captain'){displayPts=pts*2;captainNote='Captain — points doubled ('+pts+' × 2)';}
+  else if(captain==='vice'){captainNote='Vice-captain — standard points (captain active)';}
+
+  // Render
+  document.getElementById('fantasyResults').classList.add('on');
+  document.getElementById('rTotalPts').textContent=displayPts;
+  document.getElementById('rCaptainNote').textContent=captainNote;
+
+  var html='';
+  breakdown.forEach(function(b){
+    html+='<div class="pts-row"><span class="pts-row-label">'+b.label+'</span><span class="pts-row-value '+(b.sign||'')+'">'+
+    (b.sign==='pos'?'+':b.sign==='neg'?'':'')+b.pts+' pts</span></div>';
+  });
+  html+='<div class="pts-row" style="border-top:2px solid #e2e8f0;margin-top:4px;padding-top:10px"><span class="pts-row-label" style="font-weight:700">Base Total</span><span class="pts-row-value">'+pts+' pts</span></div>';
+  if(captain==='captain'){
+    html+='<div class="pts-row"><span class="pts-row-label" style="font-weight:700;color:#B91C1C">👑 Captain ×2</span><span class="pts-row-value" style="color:#B91C1C;font-size:1.1rem">'+displayPts+' pts</span></div>';
+  }
+  document.getElementById('ptsBreakdown').innerHTML=html;
+
+  // Captain analysis
+  var analysis='';
+  if(displayPts>=15){analysis='Exceptional gameweek! This player delivered a captain-worthy performance. If captained, excellent decision.';}
+  else if(displayPts>=10){analysis='Good gameweek score. Above the average of 6 pts for outfield players. A reliable pick.';}
+  else if(displayPts>=6){analysis='Average gameweek. Check if this player has upcoming favourable fixtures before captaining.';}
+  else{analysis='Below-average week. Consider whether this player warrants a place in your squad or as captain going forward.';}
+  if(captain==='captain'&&pts<5){
+    var cb=document.getElementById('captainBanner');
+    cb.style.display='block';
+    cb.innerHTML='⚠️ <strong>Captain underperformed</strong> — consider transferring this player or switching captaincy for the next gameweek.';
+  }
+  document.getElementById('captainAnalysis').textContent=analysis;
+}
+
+function updateLeagueInfo(){}
+
+function resetFantasy(){
+  document.getElementById('fantasyResults').classList.remove('on');
+  ['goals','assists','saves','penSave','penMiss','bonus'].forEach(function(id){document.getElementById(id).value='0';});
+  document.getElementById('minutesPlayed').value='';
+  document.getElementById('captainBanner').style.display='none';
+}
+
+document.querySelectorAll('.en-faq-q').forEach(function(btn){
+  btn.addEventListener('click',function(){this.closest('.en-faq-item').classList.toggle('open');});
+});
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Road Construction Cost Estimator Africa | AfroTools</title>
+<meta name="description" content="Estimate road construction costs per kilometre across Africa. Asphalt, gravel, and concrete roads with earthworks and drainage included.">
+<meta property="og:title" content="Road Construction Cost Estimator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/road-construction-cost/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/road-construction-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/road-construction-cost/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/road-construction-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.comp-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.comp-table th { background:var(--en-accent-pale); padding:.5rem .75rem; text-align:left; }
+.comp-table td { padding:.5rem .75rem; border-bottom:1px solid #e2e8f0; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Road Construction Cost Estimator","item":"https://afrotools.com/tools/road-construction-cost/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/engineering/">Engineering</a></li>
+    <li aria-current="page">Road Construction Cost Estimator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Road Construction Cost Estimator</h1>
+    <p>Calculate road construction costs per kilometre and total project budget across Africa — asphalt, gravel, or concrete roads.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Road Project Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country</label>
+          <select class="en-select" id="rc-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">South Africa (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Egypt (EGP)</option><option value="ET">Ethiopia (ETB)</option><option value="TZ">Tanzania (TZS)</option><option value="UG">Uganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Morocco (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Road Length (km)</label>
+          <input type="number" class="en-input" id="rc-length" value="1" min="0.1" step="0.1">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Road Width (metres)</label>
+          <select class="en-select" id="rc-width">
+            <option value="3.5">3.5m — Single lane rural</option>
+            <option value="6.0" selected>6.0m — Two-lane (standard)</option>
+            <option value="7.3">7.3m — Two-lane with shoulders</option>
+            <option value="10.0">10.0m — Urban road / dual lane</option>
+            <option value="14.0">14.0m — Highway / major road</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Surface Type</label>
+          <select class="en-select" id="rc-surface">
+            <option value="gravel">Gravel / Laterite (budget)</option>
+            <option value="asphalt" selected>Asphalt / Bitumen (standard)</option>
+            <option value="concrete">Rigid Concrete (durable)</option>
+            <option value="interlocking">Interlocking Paving Blocks</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Terrain</label>
+          <select class="en-select" id="rc-terrain">
+            <option value="flat">Flat</option>
+            <option value="rolling" selected>Rolling / Undulating</option>
+            <option value="hilly">Hilly</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Location Type</label>
+          <select class="en-select" id="rc-location">
+            <option value="urban">Urban (access challenges, utility diversions)</option>
+            <option value="peri_urban" selected>Peri-urban</option>
+            <option value="rural">Rural (greenfield)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Include Drainage Works?</label>
+          <select class="en-select" id="rc-drainage">
+            <option value="yes" selected>Yes — side drains and culverts</option>
+            <option value="no">No — surface only</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Include Street Lighting?</label>
+          <select class="en-select" id="rc-lighting">
+            <option value="yes">Yes — solar or grid</option>
+            <option value="no" selected>No</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcRoad()">Estimate Road Cost</button>
+    </div>
+
+    <div class="en-results" id="rc-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="rc-headline">Road Construction Estimate</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Cost per km</div><div class="en-stat-value" id="rc-per-km">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Total Road Cost</div><div class="en-stat-value" id="rc-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Drainage & Culverts</div><div class="en-stat-value" id="rc-drainage-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Grand Total (incl. extras)</div><div class="en-stat-value" id="rc-grand">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Comparison: Surface Types (per km, same width)</h3>
+        <div style="overflow-x:auto">
+          <table class="comp-table">
+            <thead><tr><th>Surface</th><th>Cost/km</th><th>Life (years)</th><th>Maintenance</th><th>Best For</th></tr></thead>
+            <tbody id="rc-comp-table"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Notes</h3>
+        <ul id="rc-notes" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+// Base cost per km for 6m wide road (materials + labour)
+var RC_RATES = {
+  NG:{ sym:'₦', gravel:8000000, asphalt:45000000, concrete:80000000, interlocking:35000000, drainage_pct:0.20, lighting_km:5000000, terrain_rolling:1.25, terrain_hilly:1.65, urban_mult:1.35 },
+  KE:{ sym:'KES', gravel:3500000, asphalt:18000000, concrete:32000000, interlocking:14000000, drainage_pct:0.20, lighting_km:2000000, terrain_rolling:1.25, terrain_hilly:1.65, urban_mult:1.35 },
+  ZA:{ sym:'ZAR', gravel:900000, asphalt:5000000, concrete:9000000, interlocking:4000000, drainage_pct:0.22, lighting_km:600000, terrain_rolling:1.25, terrain_hilly:1.65, urban_mult:1.40 },
+  GH:{ sym:'GHS', gravel:700000, asphalt:3800000, concrete:6800000, interlocking:3000000, drainage_pct:0.20, lighting_km:450000, terrain_rolling:1.25, terrain_hilly:1.65, urban_mult:1.35 },
+  EG:{ sym:'EGP', gravel:750000, asphalt:4200000, concrete:7500000, interlocking:3300000, drainage_pct:0.18, lighting_km:500000, terrain_rolling:1.20, terrain_hilly:1.55, urban_mult:1.30 },
+  ET:{ sym:'ETB', gravel:1800000, asphalt:9500000, concrete:17000000, interlocking:7500000, drainage_pct:0.20, lighting_km:1200000, terrain_rolling:1.30, terrain_hilly:1.75, urban_mult:1.35 },
+  TZ:{ sym:'TZS', gravel:65000000, asphalt:350000000, concrete:620000000, interlocking:280000000, drainage_pct:0.20, lighting_km:45000000, terrain_rolling:1.25, terrain_hilly:1.65, urban_mult:1.35 },
+  UG:{ sym:'UGX', gravel:85000000, asphalt:450000000, concrete:800000000, interlocking:360000000, drainage_pct:0.20, lighting_km:58000000, terrain_rolling:1.25, terrain_hilly:1.65, urban_mult:1.35 },
+  RW:{ sym:'RWF', gravel:13000000, asphalt:72000000, concrete:128000000, interlocking:57000000, drainage_pct:0.20, lighting_km:9000000, terrain_rolling:1.35, terrain_hilly:1.80, urban_mult:1.35 },
+  MA:{ sym:'MAD', gravel:350000, asphalt:1900000, concrete:3400000, interlocking:1500000, drainage_pct:0.18, lighting_km:240000, terrain_rolling:1.20, terrain_hilly:1.55, urban_mult:1.30 }
+};
+var WIDTH_FACTOR = { '3.5':0.58, '6.0':1.0, '7.3':1.22, '10.0':1.67, '14.0':2.33 };
+var SURFACE_INFO = {
+  gravel:{ life:5, maint:'High (annual grading)', best:'Rural tracks, temporary' },
+  asphalt:{ life:15, maint:'Medium (every 5–7 yrs)', best:'General urban/rural' },
+  concrete:{ life:30, maint:'Low (crack sealing)', best:'Heavy traffic, ports, industrial' },
+  interlocking:{ life:20, maint:'Low (replace individual blocks)', best:'Urban streets, pedestrian' }
+};
+
+function fmtCur(sym,n){
+  if(n>=1000000000) return sym+(n/1000000000).toFixed(2)+'B';
+  if(n>=1000000) return sym+(n/1000000).toFixed(2)+'M';
+  return sym+Math.round(n).toLocaleString();
+}
+
+function calcRoad(){
+  var country = document.getElementById('rc-country').value;
+  var length = +document.getElementById('rc-length').value;
+  var width = document.getElementById('rc-width').value;
+  var surface = document.getElementById('rc-surface').value;
+  var terrain = document.getElementById('rc-terrain').value;
+  var location = document.getElementById('rc-location').value;
+  var drainage = document.getElementById('rc-drainage').value;
+  var lighting = document.getElementById('rc-lighting').value;
+  var r = RC_RATES[country], sym = r.sym;
+
+  var wFactor = WIDTH_FACTOR[width];
+  var tFactor = terrain === 'flat' ? 1.0 : terrain === 'rolling' ? r.terrain_rolling : r.terrain_hilly;
+  var lFactor = location === 'urban' ? r.urban_mult : location === 'peri_urban' ? 1.1 : 1.0;
+
+  var baseCostKm = r[surface] * wFactor * tFactor * lFactor;
+  var roadCost = baseCostKm * length;
+  var drainageCost = drainage === 'yes' ? roadCost * r.drainage_pct : 0;
+  var lightingCost = lighting === 'yes' ? r.lighting_km * length : 0;
+  var grandTotal = roadCost + drainageCost + lightingCost;
+
+  document.getElementById('rc-headline').textContent = length + ' km ' + surface.charAt(0).toUpperCase() + surface.slice(1) + ' Road (' + width + 'm wide)';
+  document.getElementById('rc-per-km').textContent = fmtCur(sym, baseCostKm);
+  document.getElementById('rc-total').textContent = fmtCur(sym, roadCost);
+  document.getElementById('rc-drainage-cost').textContent = drainage === 'yes' ? fmtCur(sym, drainageCost) : 'Not included';
+  document.getElementById('rc-grand').textContent = fmtCur(sym, grandTotal);
+
+  // Comparison table — all surface types at same width
+  var compRows = Object.keys(SURFACE_INFO).map(function(s){
+    var cKm = r[s] * wFactor * tFactor * lFactor;
+    var info = SURFACE_INFO[s];
+    return '<tr' + (s === surface ? ' style="background:var(--en-accent-pale);font-weight:600"' : '') + '><td>' + s.charAt(0).toUpperCase() + s.slice(1) + (s===surface ? ' ✓' : '') + '</td><td>' + fmtCur(sym, cKm) + '</td><td>' + info.life + '</td><td>' + info.maint + '</td><td>' + info.best + '</td></tr>';
+  });
+  document.getElementById('rc-comp-table').innerHTML = compRows.join('');
+
+  var notes = [
+    'These are contractor estimates — actual prices depend on site conditions, mobilisation distance, and market rates.',
+    terrain === 'hilly' ? 'Hilly terrain adds 65%+ to base cost due to cut-and-fill earthworks and slope stabilisation.' : '',
+    location === 'urban' ? 'Urban roads add 30–40% for utility diversions, traffic management, and access restrictions.' : '',
+    surface === 'asphalt' ? 'Asphalt prices are volatile (tied to crude oil prices). Lock in quotes close to construction start.' : '',
+    'Budget a 10–15% contingency on all road projects. Unexpected subgrade conditions are common.',
+    'Annual maintenance should be budgeted at 2–5% of construction cost per year to avoid premature failure.'
+  ].filter(Boolean);
+  document.getElementById('rc-notes').innerHTML = notes.map(function(n){ return '<li>' + n + '</li>'; }).join('');
+  document.getElementById('rc-results').classList.add('on');
+  document.getElementById('rc-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

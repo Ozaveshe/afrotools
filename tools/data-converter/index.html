@@ -28,6 +28,7 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <style>
 :root {
   --afro-green: var(--color-primary);
@@ -974,6 +975,7 @@ h1 em {
   </div>
 </div>
 
+<email-gate-modal></email-gate-modal>
 <afro-related-tools category="developer" current="data-converter"></afro-related-tools>
 <afro-footer></afro-footer>
 
@@ -1744,13 +1746,23 @@ h1 em {
       } else if (outFmt === 'tsv') {
         output = toTSV(parsed);
       } else if (outFmt === 'xml') {
-        output = toXML(parsed);
+        var xmlRaw = toXML(parsed);
+        output = isPretty ? xmlRaw : xmlRaw.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
       } else if (outFmt === 'yaml') {
-        output = toYAML(parsed);
+        var yamlRaw = toYAML(parsed);
+        if (isPretty) {
+          output = yamlRaw;
+        } else {
+          // Compact YAML: collapse to flow style via JSON round-trip
+          output = typeof jsyaml !== 'undefined'
+            ? jsyaml.dump(parsed, { flowLevel: 0, lineWidth: -1 })
+            : yamlRaw;
+        }
       } else if (outFmt === 'toml') {
         output = toTOML(parsed);
       } else if (outFmt === 'sql') {
-        output = toSQL(parsed, sqlName.value || 'my_table');
+        var sqlRaw = toSQL(parsed, sqlName.value || 'my_table');
+        output = isPretty ? sqlRaw : sqlRaw.replace(/\n/g, ' ');
       }
 
       outputData.value = output;
@@ -1870,8 +1882,8 @@ h1 em {
     });
   });
 
-  // Download
-  downloadBtn.addEventListener('click', function() {
+  // Download (with email gate)
+  function doDownload() {
     var data = outputData.value;
     if (!data) { showToast('Nothing to download'); return; }
     var fmt = outputFmt.value;
@@ -1885,6 +1897,16 @@ h1 em {
     a.click();
     URL.revokeObjectURL(url);
     showToast('Downloaded converted.' + ext);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    if (!outputData.value) { showToast('Nothing to download'); return; }
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) {
+      gate.show(doDownload);
+    } else {
+      doDownload();
+    }
   });
 
   // File upload

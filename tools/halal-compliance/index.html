@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Halal Business Compliance Checker — Africa | AfroTools</title>
+<meta name="description" content="Check your business halal compliance score. Identify violations, get certification guidance from NAFDAC, KEBS, SANHA. Free tool for African Muslim entrepreneurs.">
+<link rel="canonical" href="https://afrotools.com/tools/halal-compliance/">
+<meta property="og:title" content="Halal Business Compliance Checker | AfroTools">
+<meta property="og:description" content="Score your business 0-100 on halal compliance. Identify violations and get certification pathway.">
+<meta property="og:url" content="https://afrotools.com/tools/halal-compliance/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
+:root{--en-accent:#D97706;--en-accent-dark:#B45309;--en-accent-light:#FEF3C7;--en-accent-pale:#FFFBEB;--en-shadow-hover:0 4px 16px rgba(217,119,6,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1c1400 50%,#3b2800 100%)!important}
+.score-ring{width:140px;height:140px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;border:6px solid #e2e8f0;position:relative;background:#fff}
+.score-ring.good{border-color:#22c55e}
+.score-ring.fair{border-color:#f59e0b}
+.score-ring.poor{border-color:#ef4444}
+.score-num{font-size:2.8rem;font-weight:900;line-height:1}
+.score-num.good{color:#16a34a}
+.score-num.fair{color:#d97706}
+.score-num.poor{color:#dc2626}
+.score-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.violation-item{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;margin-bottom:10px}
+.violation-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.violation-body{}
+.violation-title{font-size:.88rem;font-weight:700;color:#7f1d1d;margin:0 0 3px}
+.violation-desc{font-size:.8rem;color:#991b1b;line-height:1.5;margin:0}
+.cert-card{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px;margin-bottom:10px}
+.cert-name{font-size:.95rem;font-weight:700;color:#14532d;margin:0 0 4px}
+.cert-body{font-size:.83rem;color:#166534;line-height:1.5}
+.cert-steps{margin-top:8px;padding-left:16px}
+.cert-steps li{font-size:.8rem;color:#15803d;line-height:1.7}
+.checkbox-group{display:flex;flex-direction:column;gap:8px}
+.checkbox-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8fafd;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s}
+.checkbox-item:hover{border-color:#D97706;background:#FFFBEB}
+.checkbox-item input[type="checkbox"]{width:16px;height:16px;accent-color:#D97706;cursor:pointer;flex-shrink:0}
+.checkbox-item label{font-size:.88rem;color:#0f172a;cursor:pointer;flex:1}
+.checkbox-item.checked{border-color:#ef4444;background:#fef2f2}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
+
+<section class="en-tool-hero">
+<div class="en-tool-hero-inner">
+<div class="en-breadcrumb">
+<a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+<a href="/religious-cultural/">Religious &amp; Cultural</a><span class="en-breadcrumb-sep">›</span>
+<span class="en-breadcrumb-current">Halal Compliance Checker</span>
+</div>
+<h1>Halal Business <em>Compliance Checker</em></h1>
+<p>Score your business 0–100 on Shariah compliance. Identify violations, understand your certification options, and get a clear path to halal certification in Africa.</p>
+<div class="en-tool-hero-meta">
+<span class="en-tool-hero-pill">☪️ Shariah-based</span>
+<span class="en-tool-hero-pill">✅ NAFDAC · KEBS · SANHA</span>
+<span class="en-tool-hero-pill">🌍 Africa-focused</span>
+</div>
+</div>
+</section>
+
+<div class="en-tool-layout">
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">🏢</span>Business Information</div>
+<div class="en-form-grid">
+<div class="en-field">
+<label class="en-label">Business Type</label>
+<select class="en-select" id="bizType">
+<option value="">— Select type —</option>
+<option value="food">Food Production / Restaurant</option>
+<option value="retail">Retail / Supermarket</option>
+<option value="finance">Financial Services</option>
+<option value="hospitality">Hospitality / Hotel</option>
+<option value="pharma">Pharmaceutical / Health</option>
+<option value="cosmetics">Cosmetics / Beauty</option>
+<option value="logistics">Logistics / Transport</option>
+<option value="tech">Technology / Software</option>
+<option value="agriculture">Agriculture / Farming</option>
+<option value="manufacturing">Manufacturing / Production</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Country</label>
+<select class="en-select" id="country">
+<option value="NG">Nigeria 🇳🇬</option>
+<option value="KE">Kenya 🇰🇪</option>
+<option value="ZA">South Africa 🇿🇦</option>
+<option value="GH">Ghana 🇬🇭</option>
+<option value="EG">Egypt 🇪🇬</option>
+<option value="ET">Ethiopia 🇪🇹</option>
+<option value="TZ">Tanzania 🇹🇿</option>
+<option value="UG">Uganda 🇺🇬</option>
+<option value="SN">Senegal 🇸🇳</option>
+<option value="MA">Morocco 🇲🇦</option>
+</select>
+</div>
+</div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">📋</span>Revenue Sources <small style="font-weight:400;color:#64748b;font-size:.78rem">(check all that apply)</small></div>
+<div class="checkbox-group" id="revenueGroup">
+<div class="checkbox-item" data-deduct="0">
+<input type="checkbox" id="r1"><label for="r1">Halal food sales (certified or clearly halal ingredients)</label>
+</div>
+<div class="checkbox-item" data-deduct="50">
+<input type="checkbox" id="r2"><label for="r2">Alcohol / pork products</label>
+</div>
+<div class="checkbox-item" data-deduct="50">
+<input type="checkbox" id="r3"><label for="r3">Gambling / lottery / sports betting</label>
+</div>
+<div class="checkbox-item" data-deduct="30">
+<input type="checkbox" id="r4"><label for="r4">Adult / entertainment content</label>
+</div>
+<div class="checkbox-item" data-deduct="20">
+<input type="checkbox" id="r5"><label for="r5">Conventional insurance (interest-based premiums)</label>
+</div>
+<div class="checkbox-item" data-deduct="0">
+<input type="checkbox" id="r6"><label for="r6">Halal-compliant trade / general merchandise</label>
+</div>
+<div class="checkbox-item" data-deduct="0">
+<input type="checkbox" id="r7"><label for="r7">Professional services (consulting, IT, engineering)</label>
+</div>
+<div class="checkbox-item" data-deduct="0">
+<input type="checkbox" id="r8"><label for="r8">Agriculture / food production (non-haram)</label>
+</div>
+</div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">🏦</span>Financing &amp; Operations</div>
+<div class="en-form-grid">
+<div class="en-field">
+<label class="en-label">Primary Financing Method</label>
+<select class="en-select" id="financing">
+<option value="halal">Islamic / Murabaha / Mudarabah financing</option>
+<option value="mixed">Mix of Islamic and conventional</option>
+<option value="interest">Conventional interest-bearing loan (riba)</option>
+<option value="equity">Equity / self-funded</option>
+<option value="grant">Grant / donor funding</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Supplier Screening</label>
+<select class="en-select" id="suppliers">
+<option value="full">All suppliers are halal-certified</option>
+<option value="partial">Some suppliers halal-certified</option>
+<option value="none">No supplier halal screening</option>
+<option value="na">Not applicable (service business)</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Products Sold</label>
+<select class="en-select" id="products">
+<option value="halal">Only halal / permissible products</option>
+<option value="mixed">Mixed (halal + non-halal, separate)</option>
+<option value="haram">Includes clearly haram products</option>
+<option value="na">Services only (no physical products)</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Staff Practices</label>
+<select class="en-select" id="staff">
+<option value="yes">Prayer times accommodated, halal food only at office</option>
+<option value="partial">Some accommodation but not formal policy</option>
+<option value="no">No specific Islamic workplace practices</option>
+</select>
+</div>
+</div>
+<div class="en-form-actions">
+<button class="en-btn en-btn-full" onclick="checkCompliance()">☪️ Check Compliance Score</button>
+</div>
+</div>
+
+<!-- RESULTS -->
+<div class="en-results" id="results">
+
+<div class="en-card" style="text-align:center">
+<div class="score-ring" id="scoreRing">
+<span class="score-num" id="scoreNum">0</span>
+<span class="score-label" id="scoreLabel">Checking</span>
+</div>
+<div style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:8px" id="scoreHeadline">Halal Compliance Score</div>
+<div style="font-size:.9rem;color:#64748b;line-height:1.6;max-width:480px;margin:0 auto" id="scoreSummary">Your score summary will appear here.</div>
+</div>
+
+<div class="en-card" id="violationsCard" style="display:none">
+<div class="en-card-title"><span class="en-card-title-icon">⚠️</span>Violations Found</div>
+<div id="violationsList"></div>
+</div>
+
+<div class="en-card" id="certCard">
+<div class="en-card-title"><span class="en-card-title-icon">📜</span>Certification Bodies for <span id="certCountry">Nigeria</span></div>
+<div id="certList"></div>
+</div>
+
+<div class="en-card">
+<div class="en-card-title"><span class="en-card-title-icon">🛤️</span>Certification Pathway</div>
+<div class="en-tip">
+<span class="en-tip-icon">💡</span>
+<div class="en-tip-body">
+<div class="en-tip-label">Key Steps to Halal Certification</div>
+<div class="en-tip-text" id="pathwayText">Complete your assessment to see the certification pathway.</div>
+</div>
+</div>
+</div>
+
+</div><!-- /results -->
+
+</div><!-- /tool-layout -->
+
+<afro-footer></afro-footer>
+<script>
+var CERT_BODIES = {
+  NG:{name:"Nigeria",bodies:[{n:"NAFDAC Halal Division",d:"National Agency for Food and Drug Administration and Control. Primary halal certification for food, drugs, and cosmetics in Nigeria.",steps:["Register business with NAFDAC (nafdac.gov.ng)","Submit ingredient list and production process","Factory inspection by NAFDAC Halal team","Annual renewal + ₦50,000–₦200,000 fee"]},{n:"MAN Halal Committee",d:"Muslim Association of Nigeria offers halal certification for food and beverage producers.",steps:["Contact MAN state chapter","Submit product samples for testing","In-plant inspection","Certificate valid 1 year"]}]},
+  KE:{name:"Kenya",bodies:[{n:"KEBS Halal Certification",d:"Kenya Bureau of Standards provides official halal certification for Kenyan businesses.",steps:["Apply at KEBS (kebs.go.ke)","Product/process audit","Laboratory testing of products","Certificate valid 2 years, KES 50,000+ fee"]}]},
+  ZA:{name:"South Africa",bodies:[{n:"SANHA — South African National Halaal Authority",d:"South Africa's leading halal certifier with international recognition.",steps:["Apply at sanha.co.za","Product ingredient review","Plant inspection","Monthly compliance monitoring","Annual certification fee"]},{n:"MJC Halal Trust",d:"Muslim Judicial Council Halal Trust, respected in Western Cape and internationally.",steps:["Apply via mjc.org.za","Ingredient and process audit","Annual fee + ongoing monitoring"]}]},
+  GH:{name:"Ghana",bodies:[{n:"Ghana Standards Authority",d:"GSA manages halal certification for food exports and domestic market.",steps:["Register at gsb.gov.gh","Submit product specification","Inspection and testing","Certification valid 2 years"]}]},
+  EG:{name:"Egypt",bodies:[{n:"Egyptian Islamic Affairs Authority",d:"Government body for halal certification in Egypt.",steps:["Apply through Ministry of Awqaf","Submit business documents","Inspection","Annual renewal"]}]},
+  ET:{name:"Ethiopia",bodies:[{n:"Ethiopian Islamic Affairs Supreme Council",d:"Issues halal certificates for Ethiopian businesses.",steps:["Contact EIASC in Addis Ababa","Product review and inspection","Certificate issuance"]}]},
+  TZ:{name:"Tanzania",bodies:[{n:"Halal Council of Tanzania",d:"National halal certification body.",steps:["Apply to HCT Dar es Salaam","Ingredient and facility review","Certification"]}]},
+  UG:{name:"Uganda",bodies:[{n:"Uganda Muslim Supreme Council",d:"Issues halal certificates for food businesses.",steps:["Apply to UMSC Kampala","Inspection","Certification"]}]},
+  SN:{name:"Senegal",bodies:[{n:"Comité Islamique du Sénégal",d:"Senegal's primary Islamic authority for halal certification.",steps:["Contact CIS Dakar","Application review","Certificate issuance"]}]},
+  MA:{name:"Morocco",bodies:[{n:"Imanor",d:"Institut Marocain de Normalisation handles halal standards.",steps:["Apply at imanor.gov.ma","Factory audit","Certification"]}]}
+};
+
+var VIOLATIONS = {
+  r2:{title:"Alcohol / Pork Products",desc:"Selling or producing alcohol or pork-derived products is haram (forbidden). This is a major violation that disqualifies halal status.",deduct:50},
+  r3:{title:"Gambling / Lottery Revenue",desc:"Income from gambling, lottery, or sports betting is haram. Any business with gambling revenue cannot be halal-certified.",deduct:50},
+  r4:{title:"Adult Entertainment Content",desc:"Revenue from adult content is haram. A business must eliminate this revenue stream entirely to pursue halal certification.",deduct:30},
+  r5:{title:"Conventional Insurance Revenue",desc:"Conventional interest-based insurance involves gharar (uncertainty) and riba (interest). Consider Takaful alternatives.",deduct:20},
+  interest:{title:"Interest-Bearing Financing (Riba)",desc:"Using conventional interest-bearing loans involves riba, which is strictly prohibited in Islam. Switch to Islamic financing (Murabaha, Ijarah, Musharakah).",deduct:30},
+  partialSupplier:{title:"Unscreened Suppliers",desc:"Some or all suppliers are not halal-certified. Contamination risk from non-halal sources. All ingredient suppliers must be screened.",deduct:15},
+  haramProducts:{title:"Haram Products in Inventory",desc:"Selling haram products directly disqualifies halal status. Products must be separated and haram lines eliminated.",deduct:40},
+  mixedProducts:{title:"Mixed Inventory (Halal + Non-Halal)",desc:"Co-mingling halal and non-halal products creates cross-contamination risk. Full separation required for halal certification.",deduct:15}
+};
+
+function checkCompliance(){
+  var score=100;
+  var found=[];
+  var checkboxes=document.querySelectorAll('#revenueGroup input[type="checkbox"]');
+  checkboxes.forEach(function(cb){
+    if(cb.checked){
+      var id=cb.id;
+      if(VIOLATIONS[id]){found.push(id);score-=VIOLATIONS[id].deduct;}
+    }
+  });
+  var financing=document.getElementById('financing').value;
+  if(financing==='interest'){found.push('interest');score-=30;}
+  else if(financing==='mixed'){score-=10;}
+  var suppliers=document.getElementById('suppliers').value;
+  if(suppliers==='none'){found.push('partialSupplier');score-=15;}
+  else if(suppliers==='partial'){score-=7;}
+  var products=document.getElementById('products').value;
+  if(products==='haram'){found.push('haramProducts');score-=40;}
+  else if(products==='mixed'){found.push('mixedProducts');score-=15;}
+  var staff=document.getElementById('staff').value;
+  if(staff==='yes'){score+=5;}
+  score=Math.max(0,Math.min(100,score));
+  displayResults(score,found);
+}
+
+function displayResults(score,found){
+  var results=document.getElementById('results');
+  results.classList.add('on');
+  var ring=document.getElementById('scoreRing');
+  var num=document.getElementById('scoreNum');
+  var lbl=document.getElementById('scoreLabel');
+  var headline=document.getElementById('scoreHeadline');
+  var summary=document.getElementById('scoreSummary');
+  ring.className='score-ring';
+  num.className='score-num';
+  num.textContent=score;
+  if(score>=80){
+    ring.classList.add('good');num.classList.add('good');
+    lbl.textContent='Halal Compliant';headline.textContent='Business is Halal-Compliant ✅';
+    summary.textContent='Your business practices align well with Shariah principles. Minor improvements may be needed before formal certification. Proceed to apply for halal certification with your country\'s authority.';
+  } else if(score>=50){
+    ring.classList.add('fair');num.classList.add('fair');
+    lbl.textContent='Needs Improvement';headline.textContent='Significant Improvements Required ⚠️';
+    summary.textContent='Your business has areas that need attention before it can be considered halal-compliant. Address the violations listed below, then apply for certification.';
+  } else {
+    ring.classList.add('poor');num.classList.add('poor');
+    lbl.textContent='Not Compliant';headline.textContent='Major Violations Found ❌';
+    summary.textContent='Your business currently has major Shariah violations. Significant restructuring is required before halal certification can be pursued. Review the violations and create an action plan.';
+  }
+  var vCard=document.getElementById('violationsCard');
+  var vList=document.getElementById('violationsList');
+  vList.innerHTML='';
+  if(found.length>0){
+    vCard.style.display='block';
+    found.forEach(function(k){
+      var v=VIOLATIONS[k];
+      if(!v)return;
+      vList.innerHTML+='<div class="violation-item"><span class="violation-icon">❌</span><div class="violation-body"><div class="violation-title">'+v.title+' (−'+v.deduct+' pts)</div><div class="violation-desc">'+v.desc+'</div></div></div>';
+    });
+  } else {
+    vCard.style.display='none';
+  }
+  var country=document.getElementById('country').value;
+  var certData=CERT_BODIES[country]||CERT_BODIES['NG'];
+  document.getElementById('certCountry').textContent=certData.name;
+  var certList=document.getElementById('certList');
+  certList.innerHTML='';
+  certData.bodies.forEach(function(b){
+    var stepsHtml=b.steps.map(function(s){return '<li>'+s+'</li>';}).join('');
+    certList.innerHTML+='<div class="cert-card"><div class="cert-name">'+b.n+'</div><div class="cert-body">'+b.d+'<ol class="cert-steps">'+stepsHtml+'</ol></div></div>';
+  });
+  var pathway='';
+  if(found.length===0){
+    pathway='Your business appears ready for halal certification. (1) Gather business registration documents and ingredient lists. (2) Contact your country\'s halal certification body. (3) Schedule a pre-audit inspection. (4) Apply formally and pay the certification fee. (5) Display your halal certificate prominently.';
+  } else {
+    pathway='Before applying for certification: (1) Address all violations listed above — eliminate haram revenue streams. (2) Switch to Islamic financing if using conventional loans. (3) Screen and certify all suppliers. (4) Once violations are resolved, contact your certification body. Estimated timeline: 3–9 months to full compliance.';
+  }
+  document.getElementById('pathwayText').textContent=pathway;
+  results.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.querySelectorAll('.checkbox-item').forEach(function(item){
+  var cb=item.querySelector('input[type="checkbox"]');
+  var deduct=parseInt(item.getAttribute('data-deduct')||'0');
+  cb.addEventListener('change',function(){
+    if(this.checked && deduct>0){item.classList.add('checked');}
+    else{item.classList.remove('checked');}
+  });
+});
+</script>
+</body>
+</html>

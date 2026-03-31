@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OEE Calculator — Overall Equipment Effectiveness | AfroTools</title>
+<meta name="description" content="Calculate Overall Equipment Effectiveness (OEE) for your manufacturing facility. Track Availability, Performance, and Quality losses.">
+<meta property="og:title" content="OEE Calculator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/oee-calculator/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/oee-calculator/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/oee-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/oee-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.oee-score { width:120px; height:120px; border-radius:50%;
+  background: conic-gradient(var(--score-color) calc(var(--pct) * 1%), #e2e8f0 0);
+  display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; position:relative; }
+.oee-score::after { content:attr(data-val); position:absolute; width:92px; height:92px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:700; }
+.oee-pillar { text-align:center; padding:1rem; border:1.5px solid #e2e8f0; border-radius:10px; }
+.oee-pillar .pil-val { font-size:1.6rem; font-weight:700; }
+.oee-pillar .pil-label { font-size:.8rem; color:#64748b; margin-top:.25rem; }
+.six-big { display:grid; grid-template-columns: repeat(3,1fr); gap:.75rem; }
+@media(max-width:600px){ .six-big { grid-template-columns:1fr 1fr; } }
+.loss-card { padding:.6rem .75rem; border-radius:8px; border-left:3px solid var(--en-accent-light); background:var(--en-accent-pale); font-size:.85rem; }
+.loss-card h5 { margin:0 0 .2rem; font-size:.82rem; color:var(--en-accent-dark); }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Manufacturing","item":"https://afrotools.com/manufacturing/"},{"@type":"ListItem","position":3,"name":"OEE Calculator","item":"https://afrotools.com/tools/oee-calculator/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/manufacturing/">Manufacturing</a></li>
+    <li aria-current="page">OEE Calculator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Manufacturing</div>
+    <h1>OEE Calculator</h1>
+    <p>Measure your Overall Equipment Effectiveness — the gold standard for manufacturing efficiency. Identify the Six Big Losses eating into your output.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Shift / Production Data</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Planned Production Time (minutes/shift)</label>
+          <input type="number" class="en-input" id="oee-planned" value="480" min="60" max="1440">
+          <span class="en-hint">e.g. 8-hr shift = 480 min</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Unplanned Downtime (minutes)</label>
+          <input type="number" class="en-input" id="oee-downtime" value="45" min="0">
+          <span class="en-hint">Breakdowns, material shortages, operator absence</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Planned Stops (minutes)</label>
+          <input type="number" class="en-input" id="oee-planned-stop" value="30" min="0">
+          <span class="en-hint">Changeovers, preventive maintenance, breaks</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Ideal Cycle Time (seconds per unit)</label>
+          <input type="number" class="en-input" id="oee-cycle" value="20" min="1">
+          <span class="en-hint">Theoretical maximum speed</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Total Units Produced</label>
+          <input type="number" class="en-input" id="oee-produced" value="1100" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Defective / Rejected Units</label>
+          <input type="number" class="en-input" id="oee-rejects" value="55" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Revenue per Good Unit</label>
+          <input type="number" class="en-input" id="oee-rev-unit" value="0" min="0">
+          <span class="en-hint">Optional — to calculate lost revenue</span>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcOEE()">Calculate OEE</button>
+    </div>
+
+    <div class="en-results" id="oee-results">
+      <div class="en-results-hero">
+        <div class="oee-score" id="oee-ring" style="--pct:0;--score-color:#78716c" data-val="—"></div>
+        <div class="en-results-title" id="oee-headline">OEE Score</div>
+        <div class="en-results-subtitle" id="oee-grade"></div>
+      </div>
+      <div class="en-results-grid" id="oee-pillars"></div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Six Big Losses Analysis</h3>
+        <div class="six-big" id="oee-six-big"></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Lost Opportunity</h3>
+        <div class="en-results-grid">
+          <div class="en-stat-card"><div class="en-stat-label">Good Units Produced</div><div class="en-stat-value" id="oee-good">—</div></div>
+          <div class="en-stat-card"><div class="en-stat-label">Max Possible Units (100% OEE)</div><div class="en-stat-value" id="oee-max">—</div></div>
+          <div class="en-stat-card"><div class="en-stat-label">Units Lost</div><div class="en-stat-value" id="oee-lost">—</div></div>
+          <div class="en-stat-card"><div class="en-stat-label">Revenue Lost (if priced)</div><div class="en-stat-value" id="oee-rev-lost">—</div></div>
+        </div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Improvement Priorities</h3>
+        <ol id="oee-actions" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.5rem;font-size:.9rem"></ol>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+function calcOEE(){
+  var planned = +document.getElementById('oee-planned').value;
+  var downtime = +document.getElementById('oee-downtime').value;
+  var plannedStop = +document.getElementById('oee-planned-stop').value;
+  var cycleTime = +document.getElementById('oee-cycle').value; // seconds
+  var produced = +document.getElementById('oee-produced').value;
+  var rejects = +document.getElementById('oee-rejects').value;
+  var revUnit = +document.getElementById('oee-rev-unit').value;
+
+  // OEE calculations
+  var operatingTime = planned - plannedStop;
+  var runTime = operatingTime - downtime;
+  var availability = runTime / operatingTime;
+
+  var idealOutput = (runTime * 60) / cycleTime; // runTime is minutes
+  var performance = idealOutput > 0 ? produced / idealOutput : 0;
+  performance = Math.min(performance, 1); // cap at 100%
+
+  var goodUnits = produced - rejects;
+  var quality = produced > 0 ? goodUnits / produced : 0;
+
+  var oee = availability * performance * quality * 100;
+  var maxPossible = Math.round((operatingTime * 60) / cycleTime);
+  var unitsLost = maxPossible - goodUnits;
+  var revLost = revUnit > 0 ? unitsLost * revUnit : 0;
+
+  // Colour coding
+  var scoreColor = oee >= 85 ? '#16a34a' : oee >= 65 ? '#2563eb' : oee >= 40 ? '#f59e0b' : '#dc2626';
+  var grade = oee >= 85 ? 'World Class (≥85%)' : oee >= 65 ? 'Typical (65–85%)' : oee >= 40 ? 'Developing (40–65%)' : 'Poor (<40%) — urgent action needed';
+
+  var ring = document.getElementById('oee-ring');
+  ring.style.setProperty('--pct', oee.toFixed(0));
+  ring.style.setProperty('--score-color', scoreColor);
+  ring.setAttribute('data-val', oee.toFixed(0) + '%');
+  document.getElementById('oee-headline').textContent = 'OEE: ' + oee.toFixed(1) + '%';
+  document.getElementById('oee-grade').textContent = grade;
+
+  document.getElementById('oee-pillars').innerHTML = [
+    { label:'Availability', val: availability*100, desc: operatingTime+'min → '+runTime+'min run' },
+    { label:'Performance', val: performance*100, desc: produced+' of '+Math.round(idealOutput)+' ideal' },
+    { label:'Quality', val: quality*100, desc: goodUnits+' good of '+produced+' produced' }
+  ].map(function(p){
+    var c = p.val >= 90 ? '#16a34a' : p.val >= 70 ? '#2563eb' : '#dc2626';
+    return '<div class="en-stat-card oee-pillar"><div class="pil-val" style="color:'+c+'">'+p.val.toFixed(1)+'%</div><div class="pil-label">'+p.label+'</div><div style="font-size:.78rem;color:#94a3b8;margin-top:.2rem">'+p.desc+'</div></div>';
+  }).join('');
+
+  var avLossPct = (1-availability)*100, perfLossPct = (1-performance)*availability*100, qualLossPct = (1-quality)*100;
+  var sixBig = [
+    { name:'Breakdowns', cat:'Availability', pct:(downtime/operatingTime*100).toFixed(1), desc: downtime+' min unplanned' },
+    { name:'Setup & Changeover', cat:'Availability', pct:(plannedStop/operatingTime*100).toFixed(1), desc: plannedStop+' min planned stops' },
+    { name:'Minor Stoppages', cat:'Performance', pct:(perfLossPct*0.4).toFixed(1), desc:'Micro-stops <5min' },
+    { name:'Reduced Speed', cat:'Performance', pct:(perfLossPct*0.6).toFixed(1), desc:'Running below ideal rate' },
+    { name:'Process Defects', cat:'Quality', pct:(rejects/produced*100*0.7).toFixed(1), desc: Math.round(rejects*0.7)+' defects in steady state' },
+    { name:'Startup Rejects', cat:'Quality', pct:(rejects/produced*100*0.3).toFixed(1), desc: Math.round(rejects*0.3)+' at startup / warmup' }
+  ];
+  document.getElementById('oee-six-big').innerHTML = sixBig.map(function(l){
+    return '<div class="loss-card"><h5>'+l.name+' <span style="font-weight:400;color:#94a3b8">('+l.cat+')</span></h5><strong>'+l.pct+'% loss</strong><div style="color:#64748b">'+l.desc+'</div></div>';
+  }).join('');
+
+  document.getElementById('oee-good').textContent = goodUnits.toLocaleString() + ' units';
+  document.getElementById('oee-max').textContent = maxPossible.toLocaleString() + ' units';
+  document.getElementById('oee-lost').textContent = unitsLost.toLocaleString() + ' units (' + ((unitsLost/maxPossible)*100).toFixed(0) + '%)';
+  document.getElementById('oee-rev-lost').textContent = revUnit > 0 ? '≈ ' + revLost.toLocaleString() + ' lost/shift' : 'Enter unit price above';
+
+  // Priorities based on biggest loss
+  var losses = [
+    { name:'Availability (downtime)', val: (1-availability)*100 },
+    { name:'Performance (speed)', val: (availability*(1-performance))*100 },
+    { name:'Quality (defects)', val: (availability*performance*(1-quality))*100 }
+  ].sort(function(a,b){ return b.val - a.val; });
+
+  var actions = [
+    'Biggest loss: ' + losses[0].name + ' (' + losses[0].val.toFixed(1) + '% OEE impact) — address first.',
+    losses[0].name.includes('Availability') ? 'Implement Preventive Maintenance (PM) schedule. Target MTBF improvement.' : '',
+    losses[0].name.includes('Performance') ? 'Time study the production process. Identify minor stoppages and speed-loss root causes.' : '',
+    losses[0].name.includes('Quality') ? 'Fishbone (Ishikawa) analysis on top defect types. Implement Statistical Process Control (SPC).' : '',
+    oee < 65 ? 'OEE below 65% — consider a Lean/Kaizen event to identify and eliminate top 3 waste sources.' : '',
+    'Track OEE daily by shift. Trend data over 4 weeks before major interventions.',
+    'World class OEE target: ≥85%. Your current path to 85%: +' + Math.max(0, (85 - oee)).toFixed(1) + ' percentage points.'
+  ].filter(Boolean);
+  document.getElementById('oee-actions').innerHTML = actions.map(function(a){ return '<li>'+a+'</li>'; }).join('');
+  document.getElementById('oee-results').classList.add('on');
+  document.getElementById('oee-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book Publishing Cost Calculator — Africa | AfroTools</title>
+<meta name="description" content="Calculate self-publishing vs traditional publishing costs for African authors. Editing, cover, print, distribution. Break-even copies and 3-year earnings projection.">
+<link rel="canonical" href="https://afrotools.com/tools/book-publishing-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Book Publishing Cost</span>
+    </nav>
+    <h1>Book Publishing <em>Cost Calculator</em></h1>
+    <p>Compare self-publishing vs traditional vs hybrid publishing costs for African authors. Get break-even sales numbers, per-copy cost, royalty comparisons, and a 3-year earnings projection.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f4da; Publishing</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Royalties</span>
+      <span class="en-tool-hero-pill">&#x1f4c8; Earnings</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4d6;</div>Book Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Book Type</label>
+        <select id="bookType" class="en-select">
+          <option value="fiction">Fiction / Novel</option>
+          <option value="nonfiction">Non-Fiction</option>
+          <option value="childrens">Children's Book</option>
+          <option value="academic">Academic / Textbook</option>
+          <option value="poetry">Poetry Collection</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Word Count</label>
+        <select id="wordCount" class="en-select">
+          <option value="20000">Short (10k–30k words)</option>
+          <option value="60000" selected>Standard (40k–80k words)</option>
+          <option value="100000">Long (80k–120k words)</option>
+          <option value="150000">Very Long (120k+ words)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Publishing Route</label>
+        <select id="pubRoute" class="en-select">
+          <option value="self" selected>Self-Publishing</option>
+          <option value="traditional">Traditional Publisher</option>
+          <option value="hybrid">Hybrid Publishing</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Retail Price (USD)</label>
+        <input type="number" id="retailPrice" class="en-input" value="12" min="1" step="0.5">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Monthly Sales Estimate</label>
+        <input type="number" id="monthlySales" class="en-input" value="50" min="1">
+      </div>
+    </div>
+  </div>
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x270f;&#xfe0f;</div>Publishing Costs</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Developmental Editing (USD)</label>
+        <input type="number" id="devEdit" class="en-input" value="300" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Copy Editing (USD)</label>
+        <input type="number" id="copyEdit" class="en-input" value="200" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Proofreading (USD)</label>
+        <input type="number" id="proofread" class="en-input" value="100" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Cover Design (USD)</label>
+        <input type="number" id="coverDesign" class="en-input" value="150" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Layout / Typesetting (USD)</label>
+        <input type="number" id="layout" class="en-input" value="100" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">ISBN + Copyright (USD)</label>
+        <input type="number" id="isbn" class="en-input" value="50" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Print Copies (qty)</label>
+        <input type="number" id="printQty" class="en-input" value="100" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Print Cost per Copy (USD)</label>
+        <input type="number" id="printCost" class="en-input" value="3" min="0" step="0.5">
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Calculate Publishing Costs</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Total Publishing Budget</div>
+            <div class="en-results-hero-value" id="totalBudget">$0</div>
+            <div class="en-results-hero-sub" id="localBudget"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Break-Even Copies</div>
+            <div style="font-size:1.8rem;font-weight:800;color:var(--en-accent)" id="breakEven">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Royalty Comparison by Platform</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Platform</th><th>Royalty %</th><th>Per Copy (USD)</th><th>Monthly (est.)</th><th>Annual (est.)</th></tr></thead>
+          <tbody id="royaltyTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4c6;</div>3-Year Earnings Projection</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Year</th><th>Copies Sold</th><th>Gross Revenue</th><th>Publishing Cost</th><th>Net Profit</th></tr></thead>
+          <tbody id="projTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">African Publishing Platforms</div>
+        <div class="en-tip-text">Consider Okadabooks and Bambooks for Nigerian ebook distribution (70% royalty). IngramSpark gives access to 39,000+ bookstores globally. Amazon KDP is still the largest ebook platform — price between $2.99–$9.99 to qualify for the 70% royalty tier.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
+function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var sym=SYM[country];var rate=FX[country];
+  var retailUSD=parseFloat(document.getElementById('retailPrice').value)||12;
+  var monthly=parseInt(document.getElementById('monthlySales').value)||50;
+  var devEdit=parseFloat(document.getElementById('devEdit').value)||0;
+  var copyEdit=parseFloat(document.getElementById('copyEdit').value)||0;
+  var proofread=parseFloat(document.getElementById('proofread').value)||0;
+  var coverDesign=parseFloat(document.getElementById('coverDesign').value)||0;
+  var layout=parseFloat(document.getElementById('layout').value)||0;
+  var isbn=parseFloat(document.getElementById('isbn').value)||0;
+  var printQty=parseInt(document.getElementById('printQty').value)||0;
+  var printCost=parseFloat(document.getElementById('printCost').value)||0;
+  var editingTotal=devEdit+copyEdit+proofread;
+  var setupTotal=editingTotal+coverDesign+layout+isbn;
+  var printTotal=printQty*printCost;
+  var totalUSD=setupTotal+printTotal;
+  var totalLocal=totalUSD*rate;
+  document.getElementById('totalBudget').textContent='$'+fmt(totalUSD,2);
+  document.getElementById('localBudget').textContent=sym+fmt(totalLocal)+' (at current exchange rate)';
+  var platforms=[
+    {name:'Amazon KDP (ebook)',royalty:retailUSD>=2.99&&retailUSD<=9.99?0.70:0.35,platform:'Amazon KDP'},
+    {name:'IngramSpark',royalty:0.60,platform:'IngramSpark'},
+    {name:'Okadabooks',royalty:0.70,platform:'Nigeria'},
+    {name:'Bambooks',royalty:0.70,platform:'Nigeria'},
+    {name:'Traditional Publisher',royalty:0.12,platform:'Publisher'}
+  ];
+  var kdpRoyalty=retailUSD>=2.99&&retailUSD<=9.99?0.70:0.35;
+  var royaltyPerCopy=retailUSD*kdpRoyalty;
+  var breakEven=royaltyPerCopy>0?Math.ceil(totalUSD/royaltyPerCopy):9999;
+  document.getElementById('breakEven').textContent=fmt(breakEven)+' copies';
+  var royaltyHtml=platforms.map(function(p){
+    var rpc=retailUSD*p.royalty;
+    var mo=rpc*monthly;
+    var yr=mo*12;
+    return '<tr><td class="en-td-value">'+p.name+'</td><td>'+(p.royalty*100).toFixed(0)+'%</td><td>$'+fmt(rpc,2)+'</td><td>$'+fmt(mo,0)+'</td><td class="en-td-highlight">$'+fmt(yr,0)+'</td></tr>';
+  }).join('');
+  document.getElementById('royaltyTable').innerHTML=royaltyHtml;
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Editing Costs</div><div class="en-metric-value">$'+fmt(editingTotal)+'</div><div class="en-metric-unit">Dev + Copy + Proof</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Setup Costs</div><div class="en-metric-value">$'+fmt(setupTotal)+'</div><div class="en-metric-unit">Cover, layout, ISBN</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Print Run</div><div class="en-metric-value">$'+fmt(printTotal)+'</div><div class="en-metric-unit">'+fmt(printQty)+' copies</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Monthly Revenue</div><div class="en-metric-value">$'+fmt(royaltyPerCopy*monthly)+'</div><div class="en-metric-unit">At '+fmt(monthly)+' sales/mo</div></div>';
+  var projHtml='';
+  [1,2,3].forEach(function(yr){
+    var salesMultiplier=[1,1.3,1.6][yr-1];
+    var copies=Math.round(monthly*12*salesMultiplier);
+    var gross=copies*retailUSD;
+    var pubCost=yr===1?totalUSD:0;
+    var net=copies*royaltyPerCopy-pubCost;
+    projHtml+='<tr><td>Year '+yr+'</td><td>'+fmt(copies)+'</td><td>$'+fmt(gross)+'</td><td>$'+fmt(pubCost)+'</td><td class="en-td-highlight'+(net>=0?' en-text-accent':'')+'">$'+fmt(net)+'</td></tr>';
+  });
+  document.getElementById('projTable').innerHTML=projHtml;
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

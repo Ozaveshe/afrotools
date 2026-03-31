@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maternal Health Risk & Antenatal Tracker | AfroTools</title>
+<meta name="description" content="Assess maternal health risk factors and track your antenatal care (ANC) schedule. Covers Nigeria, Kenya, South Africa, Ghana, Ethiopia and more. Includes WHO 8-contact ANC schedule and red flag warning signs.">
+<link rel="canonical" href="https://afrotools.com/tools/maternal-mortality/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Maternal Health Risk & Antenatal Tracker | AfroTools">
+<meta property="og:description" content="WHO ANC schedule tracker and maternal risk assessment for African pregnancies. Not a diagnostic tool — always consult a doctor.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/maternal-mortality/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Maternal Health Risk & Antenatal Tracker",
+      "url": "https://afrotools.com/tools/maternal-mortality/",
+      "description": "WHO ANC schedule tracker and maternal risk factor assessment for African pregnancies.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Health Tools", "item": "https://afrotools.com/health/" },
+        { "@type": "ListItem", "position": 3, "name": "Maternal Health Risk Tracker", "item": "https://afrotools.com/tools/maternal-mortality/" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+*{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+/* Critical disclaimer at very top */
+.crit-disclaimer{background:#dc2626;color:#fff;text-align:center;padding:10px 24px;font-size:.78rem;font-weight:600;line-height:1.5}
+.crit-disclaimer strong{font-size:.82rem}
+
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.5)}
+.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.15;margin:0 0 10px}
+h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.6;max-width:580px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:10px}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#7f1d1d,#dc2626);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.card-body{padding:20px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input[type=number]{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a;-webkit-appearance:none}
+select:focus,input:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.field{margin-bottom:13px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:16px;font-family:inherit;transition:all .15s}
+.btn-primary{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,.35)}
+
+/* Risk factors checkboxes */
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.risk-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:7px;cursor:pointer;transition:all .15s;background:#f8fafc}
+.risk-item:hover{border-color:#dc2626;background:#fef2f2}
+.risk-item input[type=checkbox]{margin-top:2px;accent-color:#dc2626;flex-shrink:0;width:14px;height:14px}
+.risk-item-text{font-size:.75rem;line-height:1.4;color:#475569}
+.risk-item-text strong{display:block;color:#0f172a;font-size:.78rem}
+.risk-item-text .pts{font-size:.65rem;background:#fee2e2;color:#dc2626;border-radius:3px;padding:1px 5px;font-weight:700}
+
+/* Gestational wheel */
+.gest-wheel{position:relative;width:120px;height:120px;border-radius:50%;margin:0 auto 12px;background:conic-gradient(#dc2626 0deg, #dc2626 var(--prog,0deg), #f1f5f9 var(--prog,0deg));display:flex;align-items:center;justify-content:center;flex-direction:column}
+.gest-inner{position:absolute;inset:12px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.gest-wk{font-size:1.4rem;font-weight:800;color:#dc2626}
+.gest-lbl{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#64748b}
+.gest-trimesters{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+.trim-badge{padding:3px 9px;border-radius:4px;font-size:.68rem;font-weight:700}
+.trim-1{background:#fef3c7;color:#92400e}
+.trim-2{background:#dcfce7;color:#166534}
+.trim-3{background:#fee2e2;color:#991b1b}
+.trim-active{opacity:1;box-shadow:0 0 0 2px currentColor}
+.trim-inactive{opacity:.4}
+
+/* Risk result */
+.risk-result{border-radius:10px;padding:18px;margin-bottom:16px;border:1px solid}
+.risk-result.low{background:#f0fdf4;border-color:#86efac}
+.risk-result.medium{background:#fffbeb;border-color:#fde68a}
+.risk-result.high{background:#fef2f2;border-color:#fca5a5}
+.risk-result.very-high{background:#fee2e2;border-color:#f87171}
+.risk-result .rl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.risk-result.low .rl{color:#166534}
+.risk-result.medium .rl{color:#92400e}
+.risk-result.high .rl{color:#991b1b}
+.risk-result.very-high .rl{color:#7f1d1d}
+.risk-result .rs{font-size:1.5rem;font-weight:800}
+.risk-result.low .rs{color:#16a34a}
+.risk-result.medium .rs{color:#d97706}
+.risk-result.high .rs{color:#dc2626}
+.risk-result.very-high .rs{color:#b91c1c}
+.risk-result .rd{font-size:.8rem;line-height:1.6;margin-top:6px}
+.risk-result.low .rd{color:#166534}
+.risk-result.medium .rd{color:#78350f}
+.risk-result.high .rd{color:#991b1b}
+.risk-result.very-high .rd{color:#7f1d1d}
+
+/* ANC schedule */
+.anc-contact{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9;position:relative}
+.anc-contact:last-child{border:none}
+.anc-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0;margin-top:2px}
+.anc-num.done{background:#dcfce7;color:#16a34a}
+.anc-num.due{background:#fee2e2;color:#dc2626}
+.anc-num.upcoming{background:#f1f5f9;color:#94a3b8}
+.anc-body{}
+.anc-when{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-bottom:2px}
+.anc-when.due-now{color:#dc2626}
+.anc-title{font-size:.82rem;font-weight:700;color:#0f172a;margin-bottom:3px}
+.anc-items{font-size:.75rem;color:#475569;line-height:1.5}
+.anc-badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.62rem;font-weight:700;margin-left:6px}
+.anc-badge.done-badge{background:#dcfce7;color:#16a34a}
+.anc-badge.due-badge{background:#fee2e2;color:#dc2626;animation:pulse .8s infinite}
+.anc-badge.up-badge{background:#f1f5f9;color:#94a3b8}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* Stats */
+.mmr-bar-section{margin-bottom:14px}
+.mmr-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.mmr-country{font-size:.72rem;font-weight:600;width:80px;flex-shrink:0}
+.mmr-bar-wrap{flex:1;height:10px;background:#f1f5f9;border-radius:5px;overflow:hidden}
+.mmr-fill{height:100%;border-radius:5px}
+.mmr-val{font-size:.68rem;color:#64748b;flex-shrink:0;width:55px;text-align:right}
+
+.disclaimer{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:12px 14px;font-size:.74rem;color:#991b1b;line-height:1.6;margin-top:14px}
+.disclaimer strong{display:block;margin-bottom:3px}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#dc2626;margin:16px 0 8px}
+.results-section{display:none}
+.results-section.visible{display:block}
+.faq-wrap{max-width:860px;margin:40px auto 0;padding:0 24px 48px}
+.faq-wrap h2{font-size:1.2rem;font-weight:800;margin-bottom:18px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;list-style:none;color:#0f172a}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin:8px 0 0;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:640px){
+  .tool-main-inner{grid-template-columns:1fr}
+  .risk-grid{grid-template-columns:1fr}
+  .row2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="crit-disclaimer">
+  ⚠️ <strong>Health Education Tool Only — Not a Diagnostic Tool.</strong> This tool does not replace professional medical advice. Always consult a qualified healthcare provider for any pregnancy concerns.
+</div>
+
+<afro-navbar theme="light" active="health"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/health/">Health</a> › <span>Maternal Health Tracker</span></div>
+    <h1>Maternal Health <em>Risk Assessment</em><br>& Antenatal Tracker</h1>
+    <p class="hero-sub">Track your antenatal care (ANC) contacts using the WHO 8-contact schedule, assess risk factors, and get personalised guidance. For educational purposes — always see a health worker.</p>
+    <div class="hero-badges">
+      <span class="badge">🤰 ANC Schedule</span>
+      <span class="badge">🌍 8 Countries</span>
+      <span class="badge">🆓 Always Free</span>
+      <span class="badge">⚕️ WHO 2016 Model</span>
+    </div>
+  </div>
+</section>
+
+<section class="tool-main">
+  <div class="tool-main-inner">
+    <!-- LEFT: Main -->
+    <div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📋</div><span class="card-title">Pregnancy Information</span></div>
+        <div class="card-body">
+          <div class="row2">
+            <div class="field">
+              <label for="mm-country">Country</label>
+              <select id="mm-country">
+                <option value="NG">🇳🇬 Nigeria</option>
+                <option value="KE">🇰🇪 Kenya</option>
+                <option value="ZA">🇿🇦 South Africa</option>
+                <option value="GH">🇬🇭 Ghana</option>
+                <option value="ET">🇪🇹 Ethiopia</option>
+                <option value="TZ">🇹🇿 Tanzania</option>
+                <option value="CD">🇨🇩 DR Congo</option>
+                <option value="UG">🇺🇬 Uganda</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="mm-week">Current Pregnancy Week (1–42)</label>
+              <input type="number" id="mm-week" value="20" min="1" max="42">
+            </div>
+          </div>
+
+          <div class="section-label">⚠️ Risk Factors (check all that apply)</div>
+          <p style="font-size:.74rem;color:#64748b;margin:0 0 10px;line-height:1.5">Each factor adds to your risk score. Check all that apply to your situation.</p>
+          <div class="risk-grid">
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="2" id="rf-age">
+              <div class="risk-item-text"><strong>Age under 18 or over 35</strong>Higher obstetric risk at extremes of reproductive age<span class="pts">+2 pts</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="1" id="rf-firstpreg">
+              <div class="risk-item-text"><strong>First pregnancy (primigravida)</strong>No previous labour experience<span class="pts">+1 pt</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="2" id="rf-prevcaesar">
+              <div class="risk-item-text"><strong>Previous C-section</strong>Uterine scar increases risks in this pregnancy<span class="pts">+2 pts</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="3" id="rf-htn">
+              <div class="risk-item-text"><strong>Hypertension / Pre-eclampsia</strong>High blood pressure before or during pregnancy<span class="pts">+3 pts</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="2" id="rf-diabetes">
+              <div class="risk-item-text"><strong>Diabetes</strong>Pre-existing or gestational diabetes<span class="pts">+2 pts</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="2" id="rf-anaemia">
+              <div class="risk-item-text"><strong>Anaemia (low blood)</strong>Haemoglobin below 11 g/dL<span class="pts">+2 pts</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="1" id="rf-hiv">
+              <div class="risk-item-text"><strong>HIV positive</strong>Manageable with ARVs — but requires specialist care<span class="pts">+1 pt</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="2" id="rf-multiple">
+              <div class="risk-item-text"><strong>Multiple pregnancy (twins/triplets)</strong>Higher risk for mother and babies<span class="pts">+2 pts</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="2" id="rf-remote">
+              <div class="risk-item-text"><strong>Remote area (2+ hours from hospital)</strong>Delay in emergency obstetric care<span class="pts">+2 pts</span></div>
+            </label>
+            <label class="risk-item">
+              <input type="checkbox" name="risk" value="3" id="rf-noanc">
+              <div class="risk-item-text"><strong>No or minimal ANC visits</strong>Fewer than 2 antenatal care visits so far<span class="pts">+3 pts</span></div>
+            </label>
+          </div>
+
+          <button class="btn btn-primary" onclick="assessRisk()">Assess My Risk & View ANC Schedule →</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="results-section" id="mm-results">
+        <!-- Risk result -->
+        <div class="card">
+          <div class="card-head"><div class="card-icon">📊</div><span class="card-title">Risk Assessment</span></div>
+          <div class="card-body">
+            <div class="risk-result" id="mm-risk-result"></div>
+
+            <!-- Gestational wheel -->
+            <div style="text-align:center;margin-bottom:14px">
+              <div class="gest-trimesters">
+                <span class="trim-badge trim-1" id="t1-badge">Trimester 1</span>
+                <span class="trim-badge trim-2" id="t2-badge">Trimester 2</span>
+                <span class="trim-badge trim-3" id="t3-badge">Trimester 3</span>
+              </div>
+              <div class="gest-wheel" id="gest-wheel">
+                <div class="gest-inner">
+                  <div class="gest-wk" id="gest-wk-display">—</div>
+                  <div class="gest-lbl">Week</div>
+                </div>
+              </div>
+              <div style="font-size:.75rem;color:#64748b" id="gest-desc">—</div>
+            </div>
+
+            <!-- Country MMR -->
+            <div id="mm-country-stat" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:14px;font-size:.82rem;line-height:1.6;color:#475569"></div>
+          </div>
+        </div>
+
+        <!-- ANC Schedule -->
+        <div class="card">
+          <div class="card-head"><div class="card-icon">📅</div><span class="card-title">WHO Antenatal Care Schedule (8 Contacts)</span></div>
+          <div class="card-body">
+            <p style="font-size:.78rem;color:#64748b;margin:0 0 14px">The WHO 2016 ANC model recommends at least 8 contacts with a skilled health provider during pregnancy. Contacts around your current week are highlighted.</p>
+            <div id="mm-anc-schedule"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar -->
+    <div>
+      <!-- Emergency warning signs -->
+      <div class="card" style="border:2px solid #dc2626">
+        <div class="card-head" style="background:#fef2f2"><div class="card-icon">🚨</div><span class="card-title" style="color:#dc2626">Emergency Warning Signs</span></div>
+        <div class="card-body">
+          <p style="font-size:.74rem;color:#991b1b;font-weight:600;margin:0 0 10px">GO TO HOSPITAL IMMEDIATELY if you experience any of these:</p>
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;border-bottom:1px solid #fee2e2;display:flex;gap:7px;line-height:1.4">🔴 Heavy vaginal bleeding (soaking more than 1 pad per hour)</li>
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;border-bottom:1px solid #fee2e2;display:flex;gap:7px;line-height:1.4">🔴 Severe persistent headache with vision changes or flashing lights</li>
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;border-bottom:1px solid #fee2e2;display:flex;gap:7px;line-height:1.4">🔴 Facial, hand or leg swelling that develops quickly</li>
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;border-bottom:1px solid #fee2e2;display:flex;gap:7px;line-height:1.4">🔴 Baby stops moving for more than 12 hours after week 28</li>
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;border-bottom:1px solid #fee2e2;display:flex;gap:7px;line-height:1.4">🔴 Fever above 38°C with chills (may be malaria or infection)</li>
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;border-bottom:1px solid #fee2e2;display:flex;gap:7px;line-height:1.4">🔴 Convulsions / fits (eclampsia — life-threatening)</li>
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;border-bottom:1px solid #fee2e2;display:flex;gap:7px;line-height:1.4">🔴 Waters breaking before 37 weeks (preterm rupture)</li>
+            <li style="font-size:.78rem;color:#991b1b;padding:5px 0;display:flex;gap:7px;line-height:1.4">🔴 Difficulty breathing or chest pain</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MMR stats -->
+      <div class="card">
+        <div class="card-head"><div class="card-icon">📊</div><span class="card-title">Maternal Mortality in Africa</span></div>
+        <div class="card-body">
+          <p style="font-size:.74rem;color:#64748b;margin:0 0 10px">Deaths per 100,000 live births (WHO 2020 estimates). Global average: 223.</p>
+          <div class="mmr-bar-section" id="mmr-bars"></div>
+          <p style="font-size:.72rem;color:#64748b;margin:8px 0 0;line-height:1.5">Sub-Saharan Africa accounts for 70% of global maternal deaths despite having ~16% of world births. Most deaths are preventable with quality ANC and skilled birth attendance.</p>
+        </div>
+      </div>
+
+      <!-- ANC benefits -->
+      <div class="card">
+        <div class="card-head"><div class="card-icon">💡</div><span class="card-title">Why ANC Matters</span></div>
+        <div class="card-body">
+          <ul style="list-style:none;padding:0;margin:0">
+            <li style="font-size:.78rem;color:#475569;padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;gap:7px;line-height:1.4"><span>✅</span>Women with 8+ ANC contacts have 39% lower maternal mortality risk</li>
+            <li style="font-size:.78rem;color:#475569;padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;gap:7px;line-height:1.4"><span>✅</span>ANC detects pre-eclampsia before it becomes eclampsia (life-threatening)</li>
+            <li style="font-size:.78rem;color:#475569;padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;gap:7px;line-height:1.4"><span>✅</span>HIV testing + ARVs in ANC reduces mother-to-child transmission to under 2%</li>
+            <li style="font-size:.78rem;color:#475569;padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;gap:7px;line-height:1.4"><span>✅</span>Iron + folic acid supplementation in ANC prevents anaemia-related deaths</li>
+            <li style="font-size:.78rem;color:#475569;padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;gap:7px;line-height:1.4"><span>✅</span>Tetanus toxoid in ANC eliminates neonatal tetanus</li>
+            <li style="font-size:.78rem;color:#475569;padding:6px 0;display:flex;gap:7px;line-height:1.4"><span>✅</span>Birth preparedness counselling increases skilled birth attendance by 30%</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>⚠️ Not a Diagnostic Tool</strong>
+        This tool provides health education only. Risk scores are general indicators, not medical diagnoses. Every pregnancy is unique. Always attend all ANC appointments and discuss any concerns with a qualified midwife, nurse, or doctor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="faq-wrap">
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item">
+    <summary>Why is maternal mortality so high in Africa?</summary>
+    <p>Africa's high maternal mortality — accounting for 70% of global maternal deaths — has multiple causes: low coverage of skilled birth attendants (only 59% of African births are attended by skilled personnel vs 99% in high-income countries); delays in recognising danger signs; delays in reaching care (the "three delays" model); poor quality of obstetric care at facilities; high rates of preventable conditions like haemorrhage, sepsis, hypertensive disorders, and unsafe abortion; and low contraceptive coverage leading to more high-risk pregnancies. The good news: maternal mortality in Africa fell by 38% between 2000–2017, proving these deaths are preventable.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What is the WHO 2016 ANC model and why 8 contacts?</summary>
+    <p>In 2016, WHO updated its recommendation from 4 to 8 antenatal care "contacts" (replacing "visits" to emphasise meaningful interaction, not just attendance). Evidence showed that 8 contacts provides significantly better outcomes than 4, particularly for detecting complications like pre-eclampsia, fetal growth restriction, and gestational diabetes. The contacts are timed to occur at key gestational stages when specific complications are most detectable and treatable. In Africa, only about 40–50% of pregnant women complete 4+ ANC visits, and far fewer reach 8 contacts.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Is ANC free in African countries?</summary>
+    <p>Most African governments offer free or subsidised ANC, though implementation varies. In Nigeria, free ANC is available at primary health centres under the Basic Health Care Provision Fund, though many women still face unofficial payments. In Kenya, the Linda Mama programme provides free maternity care including ANC at public facilities. South Africa provides free ANC and delivery at all public health facilities under the Uniform Patient Fee Schedule. Ghana's NHIA covers ANC at registered facilities. Ethiopia offers free ANC at government health centres. Despite free policies, costs of transport, lost income, and unofficial fees remain barriers.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What should I prepare for birth — the birth preparedness plan?</summary>
+    <p>A birth preparedness plan (discussed at ANC Contact 7 — 38 weeks) should cover: where you will deliver; identifying a skilled birth attendant; arranging transport to the facility (and an emergency backup); saving money for potential costs; identifying a blood donor with your blood group; choosing a support person; packing a hospital bag (including insurance card/documents, baby clothes, sanitary pads); and knowing the emergency warning signs to act on. In rural Africa, "three delays" (delay in recognising emergency, reaching facility, receiving care) cause the majority of preventable deaths — a plan addresses delays 1 and 2 directly.</p>
+  </details>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+var MMR_DATA = {
+  NG: {name:'Nigeria', flag:'🇳🇬', mmr:1047, anc4:67, skilled:43, note:'Nigeria has the highest total number of maternal deaths globally. Most occur in the North due to very low ANC and facility delivery rates.'},
+  KE: {name:'Kenya', flag:'🇰🇪', mmr:342, anc4:58, skilled:62, note:'Linda Mama programme provides free maternity care. Rural-urban disparities remain significant.'},
+  ZA: {name:'South Africa', flag:'🇿🇦', mmr:127, anc4:97, skilled:97, note:'Best maternal outcomes in sub-Saharan Africa. HIV/AIDS complication of pregnancy remains a key driver.'},
+  GH: {name:'Ghana', flag:'🇬🇭', mmr:310, anc4:87, skilled:84, note:'NHIA free delivery policy has improved outcomes. Haemorrhage and hypertension are leading causes.'},
+  ET: {name:'Ethiopia', flag:'🇪🇹', mmr:401, anc4:43, skilled:28, note:'Major improvements from Health Extension Programme. Remote mountainous regions have very low skilled attendance.'},
+  TZ: {name:'Tanzania', flag:'🇹🇿', mmr:524, anc4:98, skilled:64, note:'High ANC attendance but many deliveries still occur at home or with TBAs. Obstetric fistula remains a challenge.'},
+  CD: {name:'DR Congo', flag:'🇨🇩', mmr:547, anc4:79, skilled:80, note:'High mortality despite reasonable skilled attendance — reflects quality-of-care challenges at facilities.'},
+  UG: {name:'Uganda', flag:'🇺🇬', mmr:336, anc4:77, skilled:74, note:'Post-conflict recovery has improved maternal care. Teenage pregnancy rate among Africa\'s highest.'}
+};
+
+var MMR_ALL = [
+  {name:'Nigeria', mmr:1047, flag:'🇳🇬'},
+  {name:'DR Congo', mmr:547, flag:'🇨🇩'},
+  {name:'Tanzania', mmr:524, flag:'🇹🇿'},
+  {name:'Ethiopia', mmr:401, flag:'🇪🇹'},
+  {name:'Ghana', mmr:310, flag:'🇬🇭'},
+  {name:'Uganda', mmr:336, flag:'🇺🇬'},
+  {name:'Kenya', mmr:342, flag:'🇰🇪'},
+  {name:'South Africa', mmr:127, flag:'🇿🇦'}
+];
+
+var ANC_CONTACTS = [
+  {
+    num:1, week:'8–12', title:'First Contact — Booking Visit',
+    items:'Blood pressure, weight & BMI, blood group, full blood count, HIV test, syphilis test, urinalysis, tetanus toxoid (TT1), iron + folic acid supplements, nutrition counselling, birth plan discussion'
+  },
+  {
+    num:2, week:'20', title:'Fetal Anomaly Scan',
+    items:'Ultrasound anomaly scan (structural survey), blood pressure, urine test (proteinuria), iron supplements, counselling, review blood test results'
+  },
+  {
+    num:3, week:'26', title:'Third Contact',
+    items:'Blood pressure, urinalysis, symphysis-fundal height, fetal position, iron supplements, education on preterm labour signs'
+  },
+  {
+    num:4, week:'30', title:'Fourth Contact',
+    items:'Blood pressure, urinalysis, fetal movements education, symphysis-fundal height, iron supplements, repeat blood tests if indicated'
+  },
+  {
+    num:5, week:'34', title:'Fifth Contact',
+    items:'Blood pressure, urinalysis, fetal presentation, iron + calcium supplements, tetanus toxoid (TT2), birth preparedness review'
+  },
+  {
+    num:6, week:'36', title:'Sixth Contact',
+    items:'Blood pressure, fetal presentation (baby\'s position for birth), urine, discuss breastfeeding initiation, signs of labour'
+  },
+  {
+    num:7, week:'38', title:'Seventh Contact — Birth Planning',
+    items:'Blood pressure, fetal presentation, detailed birth plan finalisation: where to deliver, transport, blood donor, hospital bag, emergency contacts'
+  },
+  {
+    num:8, week:'40', title:'Eighth Contact — Post-Dates',
+    items:'Blood pressure, fetal wellbeing assessment, discussion of post-dates (overdue) options, membrane sweep if appropriate, induction planning if >41 weeks'
+  }
+];
+
+var RISK_CONFIG = [
+  {id:'rf-age', pts:2},
+  {id:'rf-firstpreg', pts:1},
+  {id:'rf-prevcaesar', pts:2},
+  {id:'rf-htn', pts:3},
+  {id:'rf-diabetes', pts:2},
+  {id:'rf-anaemia', pts:2},
+  {id:'rf-hiv', pts:1},
+  {id:'rf-multiple', pts:2},
+  {id:'rf-remote', pts:2},
+  {id:'rf-noanc', pts:3}
+];
+
+function getWeekRange(weekStr) {
+  var parts = weekStr.split('–');
+  return {lo: parseInt(parts[0]), hi: parseInt(parts.length > 1 ? parts[1] : parts[0])};
+}
+
+function assessRisk() {
+  var score = 0;
+  for (var i = 0; i < RISK_CONFIG.length; i++) {
+    var el = document.getElementById(RISK_CONFIG[i].id);
+    if (el && el.checked) score += RISK_CONFIG[i].pts;
+  }
+
+  var week = parseInt(document.getElementById('mm-week').value) || 20;
+  var country = document.getElementById('mm-country').value;
+  var cd = MMR_DATA[country];
+
+  // Risk level
+  var level, cls, icon, title, desc, actions;
+  if (score <= 2) {
+    level='LOW'; cls='low'; icon='✅'; title='Low Risk';
+    desc='Your pregnancy appears to be low risk based on the factors selected. Continue attending ANC contacts on schedule and maintain a healthy diet with iron-rich foods.';
+    actions='• Attend all 8 ANC contacts on schedule\n• Take iron + folic acid supplements daily\n• Eat a balanced diet with beans, leafy greens, meat/fish\n• Know the emergency warning signs (sidebar)\n• Prepare your birth plan by week 36';
+  } else if (score <= 5) {
+    level='MEDIUM'; cls='medium'; icon='⚠️'; title='Medium Risk';
+    desc='You have some risk factors that require closer monitoring. Ensure you attend all ANC contacts and inform your health worker of all your risk factors.';
+    actions='• Disclose all risk factors to your midwife/doctor at every visit\n• Do not miss any ANC contacts\n• If you have hypertension — monitor BP at home if possible\n• Plan delivery at a facility with at least basic emergency obstetric care\n• Identify your nearest hospital BEFORE going into labour';
+  } else if (score <= 8) {
+    level='HIGH'; cls='high'; icon='🚨'; title='High Risk';
+    desc='Multiple significant risk factors identified. You should be under specialist or hospital antenatal care — not only community health worker follow-up. Discuss with your doctor.';
+    actions='• Request referral to hospital-level specialist obstetric care\n• Do not plan a home birth\n• Ensure IV access and blood available at delivery facility\n• If you have pre-eclampsia symptoms: seek care immediately\n• Build your emergency fund for potential complications\n• Confirm blood donor of your group in advance';
+  } else {
+    level='VERY HIGH'; cls='very-high'; icon='🆘'; title='Very High Risk';
+    desc='Your risk profile requires specialist obstetric management throughout pregnancy. Please ensure you are under the care of a hospital obstetrics department as soon as possible.';
+    actions='• Seek referral to a tertiary hospital or specialist obstetric unit TODAY\n• Do not delay — high-risk pregnancies can deteriorate quickly\n• Every ANC contact must be with a qualified doctor, not only community health\n• Discuss your specific conditions (hypertension, diabetes etc.) with specialists\n• Emergency numbers should be saved in your phone now';
+  }
+
+  var resultEl = document.getElementById('mm-risk-result');
+  resultEl.className = 'risk-result ' + cls;
+  resultEl.innerHTML =
+    '<div class="rl">' + icon + ' Risk Level</div>' +
+    '<div class="rs">' + level + ' (Score: ' + score + '/18)</div>' +
+    '<div class="rd">' + desc + '</div>' +
+    '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.1);font-size:.76rem;line-height:1.7;white-space:pre-line">' + actions + '</div>';
+
+  // Gestational wheel
+  var progDeg = Math.round((week / 42) * 360);
+  document.getElementById('gest-wheel').style.setProperty('--prog', progDeg + 'deg');
+  document.getElementById('gest-wk-display').textContent = week;
+
+  var trimester = week <= 13 ? 1 : week <= 26 ? 2 : 3;
+  var trimDesc = week <= 13 ? 'First trimester — organogenesis, high miscarriage risk' :
+    week <= 26 ? 'Second trimester — fetal growth, anomaly screening' :
+    'Third trimester — lung maturation, birth preparation';
+  document.getElementById('gest-desc').textContent = trimDesc;
+  document.getElementById('t1-badge').className = 'trim-badge trim-1 ' + (trimester===1 ? 'trim-active' : 'trim-inactive');
+  document.getElementById('t2-badge').className = 'trim-badge trim-2 ' + (trimester===2 ? 'trim-active' : 'trim-inactive');
+  document.getElementById('t3-badge').className = 'trim-badge trim-3 ' + (trimester===3 ? 'trim-active' : 'trim-inactive');
+
+  // Country stat
+  document.getElementById('mm-country-stat').innerHTML =
+    '<strong style="color:#0f172a">' + cd.flag + ' ' + cd.name + ' Maternal Health Data</strong><br>' +
+    '• Maternal Mortality Ratio: <strong style="color:#dc2626">' + cd.mmr + ' per 100,000 live births</strong><br>' +
+    '• ANC 4+ coverage: <strong>' + cd.anc4 + '%</strong> of pregnant women<br>' +
+    '• Skilled birth attendance: <strong>' + cd.skilled + '%</strong><br>' +
+    '• Context: ' + cd.note;
+
+  // ANC schedule
+  var ancEl = document.getElementById('mm-anc-schedule');
+  var ancHtml = '';
+  for (var j = 0; j < ANC_CONTACTS.length; j++) {
+    var contact = ANC_CONTACTS[j];
+    var wr = getWeekRange(contact.week);
+    var isDue = (week >= wr.lo - 1 && week <= wr.hi + 1);
+    var isDone = week > wr.hi + 1;
+    var numCls = isDone ? 'done' : isDue ? 'due' : 'upcoming';
+    var badgeHtml = isDone ? '<span class="anc-badge done-badge">✓ PAST</span>' :
+                   isDue ? '<span class="anc-badge due-badge">📍 DUE NOW</span>' :
+                   '<span class="anc-badge up-badge">Upcoming</span>';
+
+    ancHtml += '<div class="anc-contact">';
+    ancHtml += '<div class="anc-num ' + numCls + '">' + contact.num + '</div>';
+    ancHtml += '<div class="anc-body">';
+    ancHtml += '<div class="anc-when' + (isDue ? ' due-now' : '') + '">Week ' + contact.week + badgeHtml + '</div>';
+    ancHtml += '<div class="anc-title">' + contact.title + '</div>';
+    ancHtml += '<div class="anc-items">' + contact.items + '</div>';
+    ancHtml += '</div></div>';
+  }
+  ancEl.innerHTML = ancHtml;
+
+  // MMR bar chart
+  var barsEl = document.getElementById('mmr-bars');
+  var maxMmr = 1100;
+  var barsHtml = '';
+  var sorted = MMR_ALL.slice().sort(function(a,b){return b.mmr-a.mmr});
+  for (var k = 0; k < sorted.length; k++) {
+    var r = sorted[k];
+    var barColor = r.mmr > 700 ? '#dc2626' : r.mmr > 400 ? '#f97316' : r.mmr > 200 ? '#eab308' : '#22c55e';
+    barsHtml += '<div class="mmr-row">';
+    barsHtml += '<div class="mmr-country">' + r.flag + ' ' + r.name.substring(0,7) + '.</div>';
+    barsHtml += '<div class="mmr-bar-wrap"><div class="mmr-fill" style="width:' + (r.mmr/maxMmr*100) + '%;background:' + barColor + '"></div></div>';
+    barsHtml += '<div class="mmr-val">' + r.mmr.toLocaleString() + '</div>';
+    barsHtml += '</div>';
+  }
+  barsEl.innerHTML = barsHtml;
+
+  document.getElementById('mm-results').classList.add('visible');
+  document.getElementById('mm-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+</body>
+</html>

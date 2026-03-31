@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Churn Rate Calculator — SaaS & Subscription Businesses | AfroTools</title>
+<meta name="description" content="Calculate customer churn rate, revenue churn (MRR churn), net revenue retention and customer lifetime for SaaS and subscription businesses in Africa.">
+<link rel="canonical" href="https://afrotools.com/tools/churn-rate/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Churn Rate Calculator | AfroTools">
+<meta property="og:description" content="Calculate churn rate, MRR churn, NRR and what-if scenarios for African SaaS and subscription businesses.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/churn-rate/">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Churn Rate Calculator","url":"https://afrotools.com/tools/churn-rate/","description":"Calculate customer churn, MRR churn, NRR and customer lifetime for SaaS businesses.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#78350f 0%,#ea580c 50%,#f97316 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3)}
+.breadcrumb span{color:#fed7aa}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fed7aa;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(253,186,116,.2);color:#fed7aa;border:1px solid rgba(253,186,116,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input[type="number"]{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a}
+select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px rgba(234,88,12,.1)}
+.field{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,#7c2d12,#ea580c);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,88,12,.35)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.res-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.res-num{font-size:1.3rem;font-weight:800;color:#ea580c}
+.res-lbl{font-size:.66rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.res-hero{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:10px;padding:20px;text-align:center;margin-bottom:12px}
+.res-hero .big{font-size:2rem;font-weight:800;color:#ea580c}
+.res-hero .lbl{font-size:.75rem;color:#9a3412;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.res-green{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac}
+.res-green .big{color:#15803d}
+.res-green .lbl{color:#166534}
+.res-red{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1px solid #fca5a5}
+.res-red .big{color:#dc2626}
+.res-red .lbl{color:#991b1b}
+.toggle-row{display:flex;gap:0;border:1.5px solid #cbd5e1;border-radius:7px;overflow:hidden;margin-bottom:18px}
+.toggle-btn{flex:1;padding:9px;border:none;background:#f8fafc;cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;color:#64748b}
+.toggle-btn.active{background:#ea580c;color:#fff}
+.scenario-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;background:#f8fafc;border-radius:8px;padding:10px 14px}
+.scenario-label{font-size:.78rem;font-weight:600;color:#64748b}
+.scenario-val{font-size:.88rem;font-weight:700;color:#15803d}
+.info-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:16px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7c2d12;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#9a3412;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
+#results-section{display:none}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/small-business/">Small Business</a> › <span>Churn Rate Calculator</span></div>
+    <h1>Churn Rate <em>Calculator</em></h1>
+    <p class="hero-sub">Calculate customer churn, MRR churn, net revenue retention and the revenue impact of reducing churn. Built for SaaS and subscription businesses across Africa.</p>
+    <div class="hero-badges">
+      <span class="badge">Customer Churn</span>
+      <span class="badge">MRR Churn</span>
+      <span class="badge">NRR</span>
+      <span class="badge">What-If Scenarios</span>
+    </div>
+  </div>
+</section>
+
+<section class="tool-main">
+  <div class="tool-main-inner">
+    <div class="main-col">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Input Method</div></div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <button class="toggle-btn active" id="method-a-btn" onclick="setMethod('A')">Method A: Know customers at end</button>
+            <button class="toggle-btn" id="method-b-btn" onclick="setMethod('B')">Method B: Know churned directly</button>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="NGN">NGN</option>
+                <option value="KES">KES</option>
+                <option value="ZAR">ZAR</option>
+                <option value="GHS">GHS</option>
+                <option value="USD">USD</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="period">Period</label>
+              <select id="period">
+                <option value="monthly">Monthly</option>
+                <option value="annual">Annual</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="cust-start">Customers at Start of Period</label>
+              <input type="number" id="cust-start" placeholder="e.g. 500" min="0">
+            </div>
+            <div class="field">
+              <label for="cust-new">New Customers Gained</label>
+              <input type="number" id="cust-new" placeholder="e.g. 50" min="0">
+            </div>
+          </div>
+
+          <div id="method-a-fields">
+            <div class="field">
+              <label for="cust-end">Customers at End of Period</label>
+              <input type="number" id="cust-end" placeholder="e.g. 480" min="0">
+            </div>
+          </div>
+
+          <div id="method-b-fields" style="display:none">
+            <div class="field">
+              <label for="cust-churned">Customers Who Churned</label>
+              <input type="number" id="cust-churned" placeholder="e.g. 70" min="0">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="mrr-start">MRR at Start of Period</label>
+              <input type="number" id="mrr-start" placeholder="e.g. 2500000" min="0">
+            </div>
+            <div class="field">
+              <label for="mrr-end">MRR at End of Period</label>
+              <input type="number" id="mrr-end" placeholder="e.g. 2300000" min="0">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="calculate()">Calculate Churn</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="card" id="results-section">
+        <div class="card-head"><div class="card-title">Churn Analysis</div></div>
+        <div class="card-body">
+          <div class="row">
+            <div id="cust-churn-hero" class="res-hero">
+              <div class="big" id="cust-churn-val">—</div>
+              <div class="lbl">Customer Churn Rate</div>
+            </div>
+            <div id="mrr-churn-hero" class="res-hero">
+              <div class="big" id="mrr-churn-val">—</div>
+              <div class="lbl">MRR Churn Rate</div>
+            </div>
+          </div>
+
+          <div class="result-grid">
+            <div class="res-item">
+              <div class="res-num" id="r-nrr">—</div>
+              <div class="res-lbl">Net Revenue Retention</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="r-lifetime">—</div>
+              <div class="res-lbl">Avg Customer Lifetime</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="r-churned-count">—</div>
+              <div class="res-lbl">Customers Lost</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="r-mrr-lost">—</div>
+              <div class="res-lbl">MRR Lost</div>
+            </div>
+          </div>
+
+          <div id="annual-churn-note" style="display:none;margin-top:12px;background:#f1f5f9;border-radius:8px;padding:12px;font-size:.82rem;color:#475569">
+            <strong>Annual equivalent:</strong> Monthly churn of <span id="annual-monthly-equiv">—</span>% = <span id="annual-annual-equiv">—</span>% annual churn.
+          </div>
+        </div>
+      </div>
+
+      <!-- What-if scenarios -->
+      <div class="card" id="scenario-section" style="display:none">
+        <div class="card-head"><div class="card-title">What-If: Revenue Impact of Reducing Churn</div></div>
+        <div class="card-body">
+          <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">If you reduce churn by X%, this is the additional annual revenue retained:</p>
+          <div class="scenario-row">
+            <span class="scenario-label">Reduce churn by 10% (relative)</span>
+            <span class="scenario-val" id="sc-10">—</span>
+          </div>
+          <div class="scenario-row">
+            <span class="scenario-label">Reduce churn by 25%</span>
+            <span class="scenario-val" id="sc-25">—</span>
+          </div>
+          <div class="scenario-row">
+            <span class="scenario-label">Reduce churn by 50%</span>
+            <span class="scenario-val" id="sc-50">—</span>
+          </div>
+          <div class="scenario-row">
+            <span class="scenario-label">Eliminate churn entirely</span>
+            <span class="scenario-val" id="sc-100">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">FAQ</div></div>
+        <div class="card-body">
+          <details class="faq-item">
+            <summary>What is a good monthly churn rate for African SaaS?</summary>
+            <p>Global SaaS benchmarks: 3–8% monthly churn for early-stage startups, &lt;2% for established companies. African SaaS businesses often face higher churn due to FX volatility (USD pricing with NGN/KES income), mobile money payment failures, and lower income predictability. Targeting &lt;5% monthly churn is a reasonable starting point for African B2C SaaS.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is Net Revenue Retention (NRR)?</summary>
+            <p>NRR measures how much revenue you retain from existing customers, including expansions (upsells, upgrades) minus contractions and churn. NRR &gt;100% means you grow revenue from existing customers without any new sales. World-class SaaS has NRR of 120%+. African SaaS benchmarks are still evolving but 85–95% NRR is a reasonable target for B2B SaaS in Nigeria and Kenya.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How do I reduce churn for African subscribers?</summary>
+            <p>Key strategies: (1) Offer NGN/KES local pricing instead of USD to reduce payment friction, (2) Enable bank transfer and USSD payment options for Nigerians without reliable card access, (3) Proactive customer success outreach, (4) Offer grace periods and pause plans (common need during salary delays), (5) Build a WhatsApp support channel — most users trust WhatsApp over email in Nigeria.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="side-col">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Churn Benchmarks</div></div>
+        <div class="card-body">
+          <div class="info-card">
+            <h4>Monthly Churn Rate Guide</h4>
+            <p>🟢 <strong>&lt;2%</strong> — Excellent. World-class retention.<br>
+            🟡 <strong>2–5%</strong> — Good. Work on reducing further.<br>
+            🟠 <strong>5–8%</strong> — Concerning. Address product-market fit.<br>
+            🔴 <strong>&gt;8%</strong> — Critical. Fix immediately before scaling.</p>
+          </div>
+          <div class="info-card" style="margin-top:12px">
+            <h4>NRR Benchmarks</h4>
+            <p>🟢 <strong>&gt;110%</strong> — Excellent. Growing from existing base.<br>
+            🟡 <strong>95–110%</strong> — Healthy. Some expansion revenue.<br>
+            🟠 <strong>80–95%</strong> — Needs improvement.<br>
+            🔴 <strong>&lt;80%</strong> — Serious churn problem.</p>
+          </div>
+          <div class="info-card" style="margin-top:12px">
+            <h4>Why African SaaS Churns</h4>
+            <ul>
+              <li>Payment failures (card issues, insufficient funds)</li>
+              <li>USD pricing vs. local currency income</li>
+              <li>Poor internet connectivity for web-based tools</li>
+              <li>Low switching cost / many free alternatives</li>
+              <li>Seasonal income fluctuations in SME segment</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Related Tools</div></div>
+        <div class="card-body" style="padding:14px">
+          <a href="/tools/unit-economics/" style="display:block;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;color:#ea580c;font-weight:600">→ Unit Economics Calculator</a>
+          <a href="/tools/startup-runway/" style="display:block;padding:9px 0;font-size:.82rem;color:#ea580c;font-weight:600">→ Startup Runway Calculator</a>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> Churn calculations are approximations. Actual churn depends on cohort behavior, expansion revenue, and seasonal factors.
+      </div>
+    </div>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+var CURR_SYMS = {NGN:"₦",KES:"KSh",ZAR:"R",GHS:"GH₵",USD:"$"};
+var currentMethod = 'A';
+
+function sym() { return CURR_SYMS[document.getElementById('currency').value] || ""; }
+function fmt(n) { return sym() + Math.round(n).toLocaleString('en-NG'); }
+function fmtPct(n) { return n.toFixed(2) + "%"; }
+
+function setMethod(m) {
+  currentMethod = m;
+  document.getElementById('method-a-fields').style.display = m === 'A' ? 'block' : 'none';
+  document.getElementById('method-b-fields').style.display = m === 'B' ? 'block' : 'none';
+  document.getElementById('method-a-btn').className = 'toggle-btn' + (m==='A'?' active':'');
+  document.getElementById('method-b-btn').className = 'toggle-btn' + (m==='B'?' active':'');
+}
+
+function calculate() {
+  var custStart = parseFloat(document.getElementById('cust-start').value)||0;
+  var custNew = parseFloat(document.getElementById('cust-new').value)||0;
+  var mrrStart = parseFloat(document.getElementById('mrr-start').value)||0;
+  var mrrEnd = parseFloat(document.getElementById('mrr-end').value)||0;
+
+  var churned;
+  if (currentMethod === 'A') {
+    var custEnd = parseFloat(document.getElementById('cust-end').value)||0;
+    churned = custStart + custNew - custEnd;
+  } else {
+    churned = parseFloat(document.getElementById('cust-churned').value)||0;
+  }
+
+  if (churned < 0) churned = 0;
+
+  var custChurnRate = custStart > 0 ? (churned / custStart) * 100 : 0;
+  var mrrLost = Math.max(0, mrrStart - mrrEnd);
+  var mrrChurnRate = mrrStart > 0 ? (mrrLost / mrrStart) * 100 : 0;
+  var nrr = mrrStart > 0 ? (mrrEnd / mrrStart) * 100 : 0;
+  var custLifetime = custChurnRate > 0 ? (1 / (custChurnRate/100)) : Infinity;
+
+  document.getElementById('results-section').style.display = 'block';
+  document.getElementById('scenario-section').style.display = 'block';
+
+  // Color churn heroes
+  function getChurnClass(pct) {
+    if (pct < 2) return 'res-hero res-green';
+    if (pct < 5) return 'res-hero';
+    return 'res-hero res-red';
+  }
+
+  var custHero = document.getElementById('cust-churn-hero');
+  custHero.className = getChurnClass(custChurnRate);
+  document.getElementById('cust-churn-val').textContent = fmtPct(custChurnRate);
+
+  var mrrHero = document.getElementById('mrr-churn-hero');
+  mrrHero.className = getChurnClass(mrrChurnRate);
+  document.getElementById('mrr-churn-val').textContent = fmtPct(mrrChurnRate);
+
+  document.getElementById('r-nrr').textContent = nrr.toFixed(1) + "%";
+  document.getElementById('r-lifetime').textContent = isFinite(custLifetime) ? custLifetime.toFixed(1) + " months" : "∞";
+  document.getElementById('r-churned-count').textContent = Math.round(churned).toLocaleString();
+  document.getElementById('r-mrr-lost').textContent = fmt(mrrLost);
+
+  // Annual note
+  var period = document.getElementById('period').value;
+  if (period === 'monthly') {
+    document.getElementById('annual-churn-note').style.display = 'block';
+    var annualChurn = (1 - Math.pow(1 - custChurnRate/100, 12)) * 100;
+    document.getElementById('annual-monthly-equiv').textContent = fmtPct(custChurnRate);
+    document.getElementById('annual-annual-equiv').textContent = annualChurn.toFixed(1);
+  } else {
+    document.getElementById('annual-churn-note').style.display = 'none';
+  }
+
+  // Scenarios — annual revenue impact
+  var annualMRR = mrrStart * 12;
+  [10, 25, 50, 100].forEach(function(pct, i) {
+    var ids = ['sc-10','sc-25','sc-50','sc-100'];
+    var reducedChurnRate = mrrChurnRate * (1 - pct/100);
+    var savedMRR = (mrrChurnRate - reducedChurnRate) / 100 * mrrStart;
+    var annualSaving = savedMRR * 12;
+    document.getElementById(ids[i]).textContent = fmt(annualSaving) + "/yr saved";
+  });
+
+  document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>

@@ -686,7 +686,9 @@
 
       const pdfBytes = await outDoc.save();
       const baseName = currentFile.name.replace(/\.pdf$/i, '');
-      PdfUtils.downloadPdf(pdfBytes, baseName + '_managed.pdf');
+      function doReorderDownload() { PdfUtils.downloadPdf(pdfBytes, baseName + '_managed.pdf'); }
+      const gate = document.querySelector('email-gate-modal');
+      if (gate) { gate.show(doReorderDownload); } else { doReorderDownload(); }
 
       resultBar.classList.remove('error');
       resultBar.classList.add('on');
@@ -814,6 +816,8 @@
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

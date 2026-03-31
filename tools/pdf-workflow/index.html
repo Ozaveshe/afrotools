@@ -113,6 +113,9 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   /* ── Cards ── */
@@ -759,6 +762,7 @@
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
+<meta name="tool-id" content="pdf-workflow">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -938,6 +942,8 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/lib/pdf-utils.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script>
@@ -1682,8 +1688,8 @@
     updateRunBtn();
   });
 
-  // ── Download ──
-  downloadBtn.addEventListener('click', function() {
+  // ── Download (with email gate) ──
+  function doActualDownload() {
     if (!resultBytes) return;
     var blob = new Blob([resultBytes], { type: 'application/pdf' });
     var url = URL.createObjectURL(blob);
@@ -1693,6 +1699,17 @@
     a.download = baseName + '-workflow.pdf';
     a.click();
     setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  }
+  window.downloadPdf = doActualDownload;
+
+  downloadBtn.addEventListener('click', function() {
+    if (!resultBytes) return;
+    var gate = document.querySelector('email-gate-modal');
+    if (gate && typeof gate.show === 'function') {
+      gate.show(doActualDownload);
+    } else {
+      doActualDownload();
+    }
   });
 
   // ── FAQ toggle ──

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>LinkedIn Profile Optimizer for African Professionals | AfroTools</title>
+<meta name="description" content="Check your LinkedIn All-Star status, score your profile completeness, get keyword recommendations and headline suggestions tailored for African professionals.">
+<link rel="canonical" href="https://afrotools.com/tools/linkedin-optimizer/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="LinkedIn Profile Optimizer — Africa | AfroTools">
+<meta property="og:description" content="LinkedIn All-Star status checker. Profile completeness, keyword gaps, headline generator, connection growth strategy for African professionals.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/linkedin-optimizer/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#6366F1;--en-accent-dark:#4F46E5;--en-accent-light:#E0E7FF;--en-accent-pale:#EEF2FF;--en-shadow-hover:0 4px 16px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)!important}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.check-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:6px;border:1.5px solid}
+.check-row.pass{background:#f0fdf4;border-color:#bbf7d0}
+.check-row.fail{background:#fef2f2;border-color:#fecaca}
+.check-icon{font-size:1rem;flex-shrink:0;width:20px;text-align:center}
+.check-label{flex:1;font-size:.88rem;font-weight:600}
+.check-pts{font-size:.78rem;font-weight:700;color:#64748b;white-space:nowrap}
+.headline-card{background:var(--en-accent-pale);border:1.5px solid var(--en-accent-light);border-radius:10px;padding:16px;margin-bottom:10px}
+.headline-text{font-size:.95rem;font-weight:700;color:#0f172a;line-height:1.4}
+.headline-why{font-size:.78rem;color:var(--en-accent-dark);margin-top:6px}
+.kw-tag{display:inline-block;background:var(--en-accent-pale);color:var(--en-accent-dark);border:1px solid var(--en-accent-light);padding:4px 10px;border-radius:6px;font-size:.78rem;font-weight:700;margin:3px}
+.allstar-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:980px;font-size:.95rem;font-weight:800}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="career"></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb"><a href="/">AfroTools</a><span class="en-breadcrumb-sep">/</span><a href="/career/">Career</a><span class="en-breadcrumb-sep">/</span><span class="en-breadcrumb-current">LinkedIn Optimizer</span></nav>
+    <h1>LinkedIn Profile <em>Optimizer</em></h1>
+    <p>Check your All-Star status, identify missing profile elements, and get industry-specific keyword and headline recommendations for African professionals.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">🔗 LinkedIn</span>
+      <span class="en-tool-hero-pill">⭐ All-Star Check</span>
+      <span class="en-tool-hero-pill">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout">
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">🔗</div>Your LinkedIn Profile Details</div>
+    <div class="en-form-grid en-form-grid-2">
+      <div class="en-field">
+        <label class="en-label">Industry / Role</label>
+        <select class="en-select" id="industry">
+          <option value="software">Software Engineer / Developer</option>
+          <option value="product">Product Manager</option>
+          <option value="marketing">Marketing / Digital Marketing</option>
+          <option value="finance">Finance / Accounting</option>
+          <option value="hr">Human Resources</option>
+          <option value="sales">Sales / Business Development</option>
+          <option value="data">Data Analyst / Data Scientist</option>
+          <option value="consulting">Consulting / Strategy</option>
+          <option value="healthcare">Healthcare / Medicine</option>
+          <option value="legal">Legal / Law</option>
+          <option value="creative">Creative / Design / Media</option>
+          <option value="operations">Operations / Supply Chain</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select class="en-select" id="country">
+          <option value="NG">Nigeria</option>
+          <option value="KE">Kenya</option>
+          <option value="ZA">South Africa</option>
+          <option value="GH">Ghana</option>
+          <option value="EG">Egypt</option>
+          <option value="RW">Rwanda</option>
+          <option value="ET">Ethiopia</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Career Level</label>
+        <select class="en-select" id="level">
+          <option value="student">Student / Recent Graduate</option>
+          <option value="junior">Junior (1–3 years)</option>
+          <option value="mid">Mid-Level (3–7 years)</option>
+          <option value="senior">Senior (7–12 years)</option>
+          <option value="manager">Manager / Director</option>
+          <option value="exec">Executive / Founder</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Current Connections</label>
+        <select class="en-select" id="connections">
+          <option value="0">0–99</option>
+          <option value="1">100–499</option>
+          <option value="2">500+</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #f1f5f9;margin:20px 0;padding-top:16px">
+      <p style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:14px">Profile Completeness Checklist</p>
+      <div class="en-form-grid en-form-grid-2" style="gap:10px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_photo" style="accent-color:var(--en-accent);width:16px;height:16px"> Professional photo</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_headline"> Custom headline (not just job title)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_about"> About / Summary section (150+ words)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_experience"> 3+ work experiences with descriptions</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_education"> Education section completed</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_skills"> 5+ skills listed</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_endorsements"> 10+ skill endorsements</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_recommendations"> 3+ recommendations received</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_featured"> Featured section (posts/projects)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_creator"> Creator Mode turned ON</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_banner"> Custom banner / header image</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer"><input type="checkbox" id="chk_location"> Location set to correct city</label>
+      </div>
+    </div>
+
+    <div class="en-form-actions">
+      <button class="en-btn en-btn-full" onclick="calcLinkedIn()">Optimise My Profile →</button>
+    </div>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div style="text-align:center;padding:8px 0">
+        <div class="en-results-hero-label" style="margin-bottom:12px">Profile Score</div>
+        <div class="en-results-hero-value" id="profileScore">0%</div>
+        <div id="allStarBadge" style="margin:12px 0"></div>
+        <div class="en-results-hero-sub" id="profileSummary"></div>
+      </div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">✓</div>Profile Checklist Status</div>
+      <div id="checklistStatus"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">💡</div>Suggested Headlines</div>
+      <div id="headlines"></div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">🔑</div>Keywords to Include</div>
+      <div id="keywords" style="padding:4px 0"></div>
+      <p style="font-size:.8rem;color:#64748b;margin-top:12px">Add these to your headline, About section, and experience descriptions to appear in recruiter searches.</p>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📈</div>Connection Growth Strategy</div>
+      <div id="growthStrategy" style="font-size:.88rem;color:#475569;line-height:1.8"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var KEYWORDS = {
+  software:['Software Engineer','Full Stack Developer','React','Node.js','Python','API Development','Cloud','AWS','DevOps','Agile','Fintech','Remote Work','Open Source'],
+  product:['Product Manager','Product Strategy','Roadmap','User Research','Agile','Scrum','OKRs','Go-to-Market','B2B SaaS','African Markets','Growth'],
+  marketing:['Digital Marketing','SEO','Social Media Strategy','Content Marketing','Google Analytics','Paid Ads','Brand Strategy','E-commerce','Growth Hacking','African Consumer'],
+  finance:['Finance','Financial Analysis','IFRS','Bloomberg','Excel','Financial Modelling','Investment Banking','Corporate Finance','Risk Management','CFA'],
+  hr:['Human Resources','Talent Acquisition','HR Business Partner','HRIS','Employee Relations','Organisational Development','Learning & Development','SHRM'],
+  sales:['Business Development','Sales Strategy','B2B Sales','Enterprise Sales','Account Management','CRM','Salesforce','Revenue Growth','Partnerships'],
+  data:['Data Analyst','Data Science','Python','SQL','Power BI','Tableau','Machine Learning','Data Visualisation','Big Data','Business Intelligence'],
+  consulting:['Management Consulting','Strategy','Business Transformation','Process Improvement','Stakeholder Management','Project Management','PMO'],
+  healthcare:['Healthcare','Clinical','Public Health','Medicine','Patient Care','Medical Research','Health Policy','WHO','Africa CDC'],
+  legal:['Legal Counsel','Corporate Law','Commercial Law','Contracts','Compliance','Regulatory Affairs','ADR','Nigerian Bar','ICPAK','LPCSA'],
+  creative:['Graphic Design','Brand Identity','UI/UX','Adobe Creative Suite','Art Direction','Visual Storytelling','Photography','Video Production'],
+  operations:['Operations Management','Supply Chain','Logistics','Procurement','Process Optimisation','Lean','Six Sigma','Inventory Management']
+};
+
+var HEADLINES = {
+  software:{student:'Aspiring Software Developer | Building African Fintech Solutions | BSc Computer Science',junior:'Software Engineer | React & Node.js | Building Scalable Solutions Across Africa',mid:'Senior Software Engineer | Full-Stack | 5+ Years Building Products Used by Millions in Africa',senior:'Engineering Lead | Architecting High-Impact Platforms | Fintech & E-commerce | Africa',manager:'VP Engineering | Scaling Tech Teams in Africa | 10+ Years | Board Advisor',exec:'CTO & Co-Founder | Building Africa\'s Tech Infrastructure | Angel Investor'},
+  marketing:{student:'Marketing Graduate | Digital Content Creator | Africa-Focused Brand Storyteller',junior:'Digital Marketer | SEO & Paid Social | Growing Brands Across West Africa',mid:'Marketing Manager | Brand Strategy | Scaled 3 Brands to 100k+ Followers | Nigeria & Kenya',senior:'Head of Marketing | Digital Strategy | Africa | Revenue Growth Expert',manager:'VP Marketing | African Consumer Brands | Ex-Unilever | ₦1B+ Revenue Impact',exec:'Chief Marketing Officer | Pan-African Brand Builder | Speaker | Investor'},
+  finance:{student:'Finance Graduate | CFA L1 Candidate | Passionate About African Capital Markets',junior:'Financial Analyst | Equity Research | Excel & Bloomberg | Sub-Saharan Africa Focus',mid:'Finance Manager | IFRS | Financial Modelling | 6 Years in Banking & FMCG | Nigeria',senior:'Head of Finance | CFO Track | FX Risk | 12+ Years | Listed Companies',manager:'CFO | Financial Transformation | Africa | IPO Experience | Board Director',exec:'Group CFO | Pan-African Operations | Corporate Governance | Capital Raising'},
+  data:{student:'Data Science Student | Python & SQL | Building Insights for Africa\'s Challenges',junior:'Data Analyst | Power BI & Python | Turning African Business Data Into Decisions',mid:'Senior Data Analyst | Business Intelligence | SQL, Tableau, Python | 5 Years',senior:'Data Science Lead | ML/AI | 8+ Years | Fintech & Telco | Africa',manager:'Head of Analytics | Data Strategy | AI & ML | Transforming African Enterprises',exec:'Chief Data Officer | Data-Driven Strategy | Pan-African Markets'},
+  hr:{student:'HR Graduate | People & Culture Enthusiast | Championing African Talent',junior:'HR Officer | Talent Acquisition | Employee Engagement | Nigeria/Kenya',mid:'HR Manager | Strategic HRBP | 5 Years | FMCG & Tech | West Africa',senior:'Senior HRBP | Organisational Design | Culture Transformation | 10+ Years',manager:'HR Director | Talent Strategy | Pan-African HR Leader | Board Advisor',exec:'Chief People Officer | Building Africa\'s Top Employers | DEI Champion'},
+  sales:{student:'Sales Graduate | Business Development Trainee | Passionate About African Entrepreneurship',junior:'Business Development Executive | B2B Sales | SaaS & Tech | Nigeria',mid:'Sales Manager | ₦500M+ Revenue Generated | B2B Enterprise | 5+ Years',senior:'Head of Sales | Revenue Growth | West & East Africa | Key Account Management',manager:'VP Sales | Go-To-Market Strategy | Pan-African Markets | $10M+ ARR',exec:'Chief Revenue Officer | Scaling African SaaS | Ex-Google Africa | Board Member'},
+  consulting:{student:'Strategy Intern | Aspiring Management Consultant | Africa-Focused',junior:'Management Consultant | Strategy & Operations | Big 4 Trained | West Africa',mid:'Senior Consultant | Business Transformation | 5 Years | Energy & Fintech | Africa',senior:'Principal Consultant | Strategy & Growth | 10+ Years | Pan-African Advisory',manager:'Partner | Management Consulting | Africa Practice Lead | Board Advisor',exec:'Managing Partner | Pan-African Consulting | Keynote Speaker | Author'},
+  healthcare:{student:'Medical Student | Global Health Advocate | Africa Health Innovation',junior:'Medical Officer | Public Health | Community Health | Nigeria/Kenya',mid:'Physician | Specialisation in [Field] | Healthcare Innovation | Africa',senior:'Senior Medical Consultant | 10+ Years | Healthcare Strategy | WHO Collaborator',manager:'Medical Director | Healthcare Leadership | Pan-African Health Systems',exec:'Chief Medical Officer | Africa\'s Healthcare Transformation | Policy Advisor'},
+  legal:{student:'Law Student | Commercial Law Focus | Young Bar Association Member',junior:'Solicitor & Barrister | Commercial Law | Corporate Transactions | Nigeria',mid:'Legal Counsel | Contracts & Compliance | 5+ Years | Fintech & Real Estate',senior:'Senior Legal Counsel | M&A | Regulatory Affairs | 10+ Years | Africa',manager:'Head of Legal | General Counsel | Corporate Governance | Pan-African',exec:'Group General Counsel | Pan-African Operations | Board Secretary | Speaker'},
+  creative:{student:'Creative Design Student | Visual Storyteller | African Aesthetics',junior:'Graphic Designer | Brand Identity | Adobe Suite | Pan-African Visual Stories',mid:'Senior Designer | Brand Strategy | UI/UX | 5 Years | Award-Winning Work',senior:'Creative Director | Brand & Identity | 10+ Years | Pan-African Campaigns',manager:'Head of Creative | Brand Transformation | Agency & In-House | Africa',exec:'Chief Creative Officer | Pan-African Brand Leader | Keynote Speaker | Jury Member'},
+  product:{student:'Product Management Student | Building for Africa | Design Thinking',junior:'Associate Product Manager | Fintech/E-commerce | User Research | Africa',mid:'Product Manager | 0-to-1 Product Builder | 5 Years | 100k+ Users | Nigeria',senior:'Senior PM | Product Strategy | Scaled to 1M+ Users | Africa & Diaspora',manager:'Head of Product | Platform Strategy | Pan-African Markets | Ex-Jumia/Flutterwave',exec:'Chief Product Officer | Pan-African Platforms | Board Advisor | Angel Investor'},
+  operations:{student:'Operations Graduate | Supply Chain Enthusiast | FMCG & Logistics',junior:'Operations Analyst | Supply Chain | Process Improvement | West Africa',mid:'Operations Manager | Lean & Six Sigma | FMCG & Manufacturing | 5 Years | Africa',senior:'Senior Operations Manager | Supply Chain Transformation | 10+ Years | Pan-Africa',manager:'Head of Operations | Pan-African Supply Chain | Cost Reduction | ₦1B+ Savings',exec:'COO | Operational Excellence | Pan-African | Board Director | Supply Chain Expert'}
+};
+
+var GROWTH_TIPS = {
+  '0':'You have under 100 connections. Priority actions: (1) Connect with all colleagues past and present. (2) Import email contacts. (3) Join 5 LinkedIn groups in your industry. Target 500 connections in 90 days.',
+  '1':'You have 100–499 connections. To reach the 500+ "social proof" threshold: (1) Send 10 personalised connection requests per day. (2) Comment meaningfully on 5 posts daily — this shows up in your connections\' feeds. (3) Attend virtual events and connect with attendees.',
+  '2':'You have 500+ connections. Focus on quality over quantity now. (1) Identify 20 influencers in your niche — engage daily with their content. (2) Post original thought leadership 2–3x per week. (3) Creator Mode + Newsletter builds a follower base beyond connections.'
+};
+
+function calcLinkedIn(){
+  var ind=document.getElementById('industry').value;
+  var level=document.getElementById('level').value;
+  var conn=document.getElementById('connections').value;
+
+  var checks=[
+    {id:'chk_photo',label:'Professional photo',pts:10,tip:'A photo makes profiles 14× more views. Use a clear headshot.'},
+    {id:'chk_headline',label:'Custom headline',pts:15,tip:'Replace your job title with a keyword-rich value statement. Use the templates below.'},
+    {id:'chk_about',label:'About section (150+ words)',pts:10,tip:'LinkedIn\'s algorithm ranks profiles with 150+ word About sections higher in search.'},
+    {id:'chk_experience',label:'3+ experiences with descriptions',pts:15,tip:'Add bullet points with achievements (numbers) in each role.'},
+    {id:'chk_education',label:'Education section',pts:5,tip:'Add degree, institution, graduation year. Add activities/societies.'},
+    {id:'chk_skills',label:'5+ skills listed',pts:5,tip:'Add your top 10 skills. Prioritise those recruiters search for.'},
+    {id:'chk_endorsements',label:'10+ endorsements',pts:5,tip:'Ask 5 colleagues to endorse your top 3 skills. Return the favour.'},
+    {id:'chk_recommendations',label:'3+ recommendations',pts:10,tip:'A written recommendation carries 10× the weight of an endorsement. Request from managers and clients.'},
+    {id:'chk_featured',label:'Featured section',pts:5,tip:'Pin your best post, article, or portfolio link here.'},
+    {id:'chk_creator',label:'Creator Mode ON',pts:5,tip:'Creator Mode adds a Follow button, topic hashtags, and improved algorithm reach.'},
+    {id:'chk_banner',label:'Custom banner image',pts:5,tip:'Add a banner showing your value prop, website, or professional photo.'},
+    {id:'chk_location',label:'Location set correctly',pts:10,tip:'Recruiter searches filter by location. Ensure yours is set to your city.'}
+  ];
+
+  var totalPts=0,maxPts=0,statusHTML='';
+  var missing=[];
+  checks.forEach(function(c){
+    maxPts+=c.pts;
+    var checked=document.getElementById(c.id).checked;
+    if(checked) totalPts+=c.pts;
+    else missing.push(c);
+    statusHTML+='<div class="check-row '+(checked?'pass':'fail')+'">'+
+      '<div class="check-icon">'+(checked?'✅':'❌')+'</div>'+
+      '<div class="check-label">'+c.label+(checked?'':' — <em style="font-weight:400;color:#64748b">'+c.tip+'</em>')+'</div>'+
+      '<div class="check-pts">'+c.pts+' pts</div>'+
+    '</div>';
+  });
+
+  var pct=Math.round(totalPts/maxPts*100);
+  var isAllStar=pct>=90;
+
+  document.getElementById('profileScore').textContent=pct+'%';
+  document.getElementById('allStarBadge').innerHTML='<span class="allstar-badge" style="background:'+(isAllStar?'#dcfce7':'#fef9c3')+';color:'+(isAllStar?'#15803d':'#a16207')+'">'+(isAllStar?'⭐ ALL-STAR STATUS':'🔶 Not All-Star Yet — needs '+Math.round((0.9*maxPts-totalPts))+' more pts')+'</span>';
+  document.getElementById('profileSummary').textContent=isAllStar?'Congratulations! Your profile appears in more recruiter searches and gets 2× more views.':'Complete the items below to reach All-Star status. All-Star profiles appear 2× more in searches.';
+  document.getElementById('checklistStatus').innerHTML=statusHTML;
+
+  // Headlines
+  var hl=HEADLINES[ind]||HEADLINES.software;
+  document.getElementById('headlines').innerHTML=['<p style="font-size:.82rem;color:#64748b;margin-bottom:12px">Choose or adapt one of these for your level:</p>'].concat(
+    Object.keys(hl).map(function(lvl){
+      var active=lvl===level;
+      return '<div class="headline-card" style="'+(active?'border-color:var(--en-accent)':'')+'">'+
+        (active?'<div style="font-size:.7rem;font-weight:800;color:var(--en-accent-dark);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">✓ RECOMMENDED FOR YOUR LEVEL</div>':'')+
+        '<div class="headline-text">'+hl[lvl]+'</div>'+
+        '<div class="headline-why">Level: '+lvl+'</div>'+
+      '</div>';
+    })
+  ).join('');
+
+  // Keywords
+  var kws=KEYWORDS[ind]||[];
+  document.getElementById('keywords').innerHTML=kws.map(function(k){
+    return '<span class="kw-tag">'+k+'</span>';
+  }).join('');
+
+  document.getElementById('growthStrategy').innerHTML=GROWTH_TIPS[conn]+'<br><br>'+
+    '<strong>Posting strategy for '+ind+':</strong> Post on Tuesday, Wednesday, and Thursday mornings (8–10am local time). Mix: 40% insights from your work, 30% opinions on industry trends, 20% personal wins/lessons, 10% questions to spark engagement. Avoid over-promoting — LinkedIn users mute promotional content.';
+
+  document.getElementById('results').className='en-results on';
+}
+</script>
+
+<afro-footer></afro-footer>
+</body>
+</html>

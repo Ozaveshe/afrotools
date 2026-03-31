@@ -993,7 +993,7 @@
   });
 
   // Download
-  downloadBtn.addEventListener('click', () => {
+  function doActualDownload() {
     if (watermarkedPdf) {
       const link = document.createElement('a');
       const url = URL.createObjectURL(new Blob([watermarkedPdf], { type: 'application/pdf' }));
@@ -1002,8 +1002,15 @@
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
+  }
+
+  downloadBtn.addEventListener('click', () => {
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
   });
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

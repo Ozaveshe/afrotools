@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini-Importation Profit Calculator — Alibaba to Nigeria, Ghana, Kenya | AfroTools</title>
+<meta name="description" content="Calculate landed cost, profit margin and ROI for mini-importation businesses buying from Alibaba or 1688.com and selling in Nigeria, Ghana or Kenya. Includes shipping, customs duty and clearing fees.">
+<link rel="canonical" href="https://afrotools.com/tools/mini-importation/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Mini-Importation Profit Calculator | AfroTools">
+<meta property="og:description" content="Calculate your landed cost and profit for importing goods from Alibaba/1688 and selling in Nigeria, Ghana or Kenya.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/mini-importation/">
+<meta property="og:site_name" content="AfroTools">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Mini-Importation Profit Calculator","url":"https://afrotools.com/tools/mini-importation/","description":"Calculate landed cost, profit and ROI for mini-importation from Alibaba to African markets.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#78350f 0%,#ea580c 50%,#f97316 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3)}
+.breadcrumb span{color:#fed7aa}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fed7aa;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(253,186,116,.2);color:#fed7aa;border:1px solid rgba(253,186,116,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input[type="number"],input[type="text"]{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a}
+select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px rgba(234,88,12,.1)}
+.field{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,#7c2d12,#ea580c);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,88,12,.35)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.res-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.res-num{font-size:1.3rem;font-weight:800;color:#ea580c}
+.res-lbl{font-size:.66rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.res-hero{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:10px;padding:20px;text-align:center;margin-bottom:12px}
+.res-hero .big{font-size:2rem;font-weight:800;color:#ea580c}
+.res-hero .lbl{font-size:.75rem;color:#9a3412;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.cost-breakdown{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-top:14px}
+.cost-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.cost-row:last-child{border-bottom:none;font-weight:700;padding-top:10px;font-size:.88rem}
+.cost-row .cost-label{color:#64748b}
+.cost-row .cost-value{font-weight:600;color:#0f172a}
+.cost-row.total-line .cost-label{color:#0f172a;font-weight:700}
+.cost-row.total-line .cost-value{color:#ea580c;font-size:.95rem}
+.info-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:16px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7c2d12;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#9a3412;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.tip-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px;margin-top:12px}
+.tip-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#166534;margin-bottom:8px}
+.tip-card p,.tip-card li{font-size:.78rem;color:#15803d;line-height:1.6}
+.tip-card ul{padding-left:16px;margin:6px 0}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
+#results-section{display:none}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/small-business/">Small Business</a> › <span>Mini-Importation Calculator</span></div>
+    <h1>Mini-Importation <em>Profit Calculator</em></h1>
+    <p class="hero-sub">Calculate your landed cost and profit for buying from Alibaba or 1688.com and selling in Nigeria, Ghana or Kenya. Includes shipping, customs duty, clearing fees and local selling margin.</p>
+    <div class="hero-badges">
+      <span class="badge">🇳🇬 Nigeria</span>
+      <span class="badge">🇬🇭 Ghana</span>
+      <span class="badge">🇰🇪 Kenya</span>
+      <span class="badge">Alibaba / 1688</span>
+      <span class="badge">Free</span>
+    </div>
+  </div>
+</section>
+
+<section class="tool-main">
+  <div class="tool-main-inner">
+    <div class="main-col">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Product & Destination</div></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="field">
+              <label for="dest-country">Destination Country</label>
+              <select id="dest-country" onchange="updateCountryDefaults()">
+                <option value="NG">Nigeria</option>
+                <option value="GH">Ghana</option>
+                <option value="KE">Kenya</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="product-name">Product Name</label>
+              <input type="text" id="product-name" placeholder="e.g. Bluetooth Earbuds">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="source-price-usd">Source Price (USD per unit, from Alibaba)</label>
+              <input type="number" id="source-price-usd" placeholder="e.g. 3.50" min="0" step="0.01">
+            </div>
+            <div class="field">
+              <label for="units">Number of Units</label>
+              <input type="number" id="units" placeholder="e.g. 100" min="1">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="weight-kg">Total Weight (kg)</label>
+              <input type="number" id="weight-kg" placeholder="e.g. 5" min="0" step="0.1">
+            </div>
+            <div class="field">
+              <label for="customs-duty">Customs Duty Rate %</label>
+              <select id="customs-duty">
+                <option value="5">5% — Food, drugs, books, raw materials</option>
+                <option value="10" selected>10% — General goods</option>
+                <option value="20">20% — Consumer electronics, cosmetics</option>
+                <option value="35">35% — Textiles, apparel, shoes</option>
+                <option value="custom">Custom %</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" id="custom-duty-field" style="display:none">
+            <label for="custom-duty-pct">Custom Duty Rate %</label>
+            <input type="number" id="custom-duty-pct" placeholder="Enter %" min="0" max="100">
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="clearing-fee">Clearing Agent Fee (local currency, optional)</label>
+              <input type="number" id="clearing-fee" value="0" min="0" placeholder="e.g. 15000">
+            </div>
+            <div class="field">
+              <label for="selling-price-local">Selling Price per Unit (local currency)</label>
+              <input type="number" id="selling-price-local" placeholder="e.g. 15000" min="0">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="calculate()">Calculate Profit</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="card" id="results-section">
+        <div class="card-head"><div class="card-title">Profitability Analysis</div></div>
+        <div class="card-body">
+          <div class="res-hero">
+            <div class="big" id="gross-profit">—</div>
+            <div class="lbl">Gross Profit (Total Order)</div>
+          </div>
+          <div class="result-grid">
+            <div class="res-item">
+              <div class="res-num" id="roi-pct">—</div>
+              <div class="res-lbl">ROI %</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="margin-pct">—</div>
+              <div class="res-lbl">Gross Margin %</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="profit-per-unit">—</div>
+              <div class="res-lbl">Profit per Unit</div>
+            </div>
+            <div class="res-item">
+              <div class="res-num" id="break-even-price">—</div>
+              <div class="res-lbl">Break-Even Selling Price</div>
+            </div>
+          </div>
+
+          <div class="cost-breakdown">
+            <div class="cost-row"><span class="cost-label">Product Cost (USD × FX)</span><span class="cost-value" id="cb-product">—</span></div>
+            <div class="cost-row"><span class="cost-label">Shipping Cost</span><span class="cost-value" id="cb-shipping">—</span></div>
+            <div class="cost-row"><span class="cost-label">Customs Duty</span><span class="cost-value" id="cb-duty">—</span></div>
+            <div class="cost-row"><span class="cost-label">Clearing Agent Fee</span><span class="cost-value" id="cb-clearing">—</span></div>
+            <div class="cost-row total-line"><span class="cost-label">TOTAL LANDED COST</span><span class="cost-value" id="cb-total">—</span></div>
+            <div class="cost-row" style="margin-top:8px"><span class="cost-label">Landed Cost per Unit</span><span class="cost-value" id="cb-per-unit">—</span></div>
+            <div class="cost-row"><span class="cost-label">Revenue (all units)</span><span class="cost-value" id="cb-revenue">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="card">
+        <div class="card-head"><div class="card-title">FAQ</div></div>
+        <div class="card-body">
+          <details class="faq-item">
+            <summary>What is mini-importation?</summary>
+            <p>Mini-importation is the business of buying products in small quantities from Chinese wholesale platforms (primarily Alibaba, 1688.com, DHgate or Taobao) and reselling them in African markets at a higher price. It is one of Nigeria's most popular SME business models — especially for electronics, fashion accessories, beauty products and household items. Most mini-importers ship via air cargo agents who operate out of Lagos, Accra and Nairobi.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is the current USD/NGN exchange rate?</summary>
+            <p>As of early 2026, the official NAFEX/CBN rate is approximately ₦1,580–₦1,700/USD. The parallel market rate is slightly higher. This calculator uses ₦1,660/USD — update the calculation if rates change significantly. FX volatility is the biggest risk in mini-importation: if naira depreciates between ordering and selling, your margins shrink.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How does customs duty work in Nigeria for mini-importation?</summary>
+            <p>Nigeria Customs Service charges duty on the CIF value (Cost + Insurance + Freight) of imported goods. Common rates: electronics 20%, fashion/clothing 35%, food 5–10%, general goods 10%. There are also levies and VAT (7.5%). Many mini-importers use air cargo agents who handle customs — their fees often include an estimate of duty costs. Always factor in a 15–20% buffer for unexpected charges.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Which platform is better — Alibaba or 1688.com?</summary>
+            <p>1688.com (domestic Chinese platform) typically has 20–40% lower prices than Alibaba but requires a Chinese-language agent (or use Google Translate). Alibaba is easier to use with English interface and international payment options (credit card, PayPal, Alipay). For serious mini-importers, 1688 + a sourcing agent is often the most profitable approach. Minimum order quantities (MOQ) are lower on both for small Nigerian importers.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="side-col">
+      <div class="card">
+        <div class="card-head"><div class="card-title">FX Rates (Approx.)</div></div>
+        <div class="card-body">
+          <div class="info-card">
+            <h4>USD Exchange Rates</h4>
+            <p>🇳🇬 USD/NGN: <strong>₦1,660</strong><br>
+            🇬🇭 USD/GHS: <strong>GH₵16.5</strong><br>
+            🇰🇪 USD/KES: <strong>KSh138</strong></p>
+            <p style="margin-top:8px;font-size:.72rem">Rates as of early 2026. Check current rates on <a href="/tools/afrorates/" style="color:#ea580c">AfroRates</a> before large orders.</p>
+          </div>
+          <div class="info-card" style="margin-top:12px">
+            <h4>Shipping Rates (Air Cargo)</h4>
+            <p>🇳🇬 Lagos: <strong>~₦5,000/kg</strong><br>
+            🇬🇭 Accra: <strong>~GH₵80/kg</strong><br>
+            🇰🇪 Nairobi: <strong>~KSh600/kg</strong></p>
+            <p style="margin-top:6px;font-size:.72rem">Rates vary by cargo agent. Sea freight is 60–70% cheaper but takes 30–45 days.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><div class="card-title">Sourcing Tips</div></div>
+        <div class="card-body">
+          <div class="tip-card">
+            <h4>Alibaba / 1688 Tips</h4>
+            <ul>
+              <li>Always order a sample before bulk order</li>
+              <li>Use Trade Assurance for payment protection</li>
+              <li>Search for "Trade Assurance" verified suppliers</li>
+              <li>Negotiate MOQ — most suppliers will reduce for good buyers</li>
+              <li>1688.com prices are 20–40% lower than Alibaba for same items</li>
+              <li>Check reviews and response rate before ordering</li>
+            </ul>
+          </div>
+          <div class="tip-card" style="margin-top:10px">
+            <h4>Popular Mini-Import Products</h4>
+            <ul>
+              <li>Bluetooth earbuds/headphones</li>
+              <li>Phone cases & accessories</li>
+              <li>Waist trainers & shapewear</li>
+              <li>Hair extensions & wigs</li>
+              <li>Kitchen gadgets</li>
+              <li>LED lights & home decor</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> FX rates, shipping costs and duty rates are estimates based on typical 2026 market conditions. Verify with your shipping agent before ordering. Customs duties can vary — always budget a buffer.
+      </div>
+    </div>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+var COUNTRY_DATA = {
+  NG: { sym: "₦", currency: "NGN", fx_usd: 1660, shipping_per_kg: 5000, name: "Nigeria" },
+  GH: { sym: "GH₵", currency: "GHS", fx_usd: 16.5, shipping_per_kg: 80, name: "Ghana" },
+  KE: { sym: "KSh", currency: "KES", fx_usd: 138, shipping_per_kg: 600, name: "Kenya" }
+};
+
+function updateCountryDefaults() {
+  // Just update the display; calculations use selected country
+}
+
+function fmt(n, sym) {
+  if (n < 0) return "-" + sym + Math.abs(Math.round(n)).toLocaleString('en-NG');
+  return sym + Math.round(n).toLocaleString('en-NG');
+}
+
+document.getElementById('customs-duty').addEventListener('change', function() {
+  document.getElementById('custom-duty-field').style.display = this.value === 'custom' ? 'block' : 'none';
+});
+
+function getDutyRate() {
+  var sel = document.getElementById('customs-duty').value;
+  if (sel === 'custom') return parseFloat(document.getElementById('custom-duty-pct').value)||0;
+  return parseFloat(sel)||0;
+}
+
+function calculate() {
+  var cc = document.getElementById('dest-country').value;
+  var d = COUNTRY_DATA[cc];
+  var sym = d.sym;
+
+  var sourcePriceUSD = parseFloat(document.getElementById('source-price-usd').value)||0;
+  var units = parseFloat(document.getElementById('units').value)||1;
+  var weightKg = parseFloat(document.getElementById('weight-kg').value)||0;
+  var dutyRate = getDutyRate() / 100;
+  var clearingFee = parseFloat(document.getElementById('clearing-fee').value)||0;
+  var sellingPriceLocal = parseFloat(document.getElementById('selling-price-local').value)||0;
+
+  // Product cost in local currency
+  var productCostLocal = sourcePriceUSD * units * d.fx_usd;
+
+  // Shipping
+  var shippingCost = weightKg * d.shipping_per_kg;
+
+  // Customs duty on (product cost + shipping)
+  var cifValue = productCostLocal + shippingCost;
+  var dutyAmount = cifValue * dutyRate;
+
+  // Total landed cost
+  var totalLandedCost = productCostLocal + shippingCost + dutyAmount + clearingFee;
+  var landedCostPerUnit = units > 0 ? totalLandedCost / units : 0;
+
+  // Revenue
+  var totalRevenue = sellingPriceLocal * units;
+  var grossProfit = totalRevenue - totalLandedCost;
+  var roi = totalLandedCost > 0 ? (grossProfit / totalLandedCost) * 100 : 0;
+  var marginPct = totalRevenue > 0 ? (grossProfit / totalRevenue) * 100 : 0;
+  var profitPerUnit = grossProfit / units;
+  var breakEvenPrice = landedCostPerUnit;
+
+  document.getElementById('results-section').style.display = 'block';
+
+  document.getElementById('gross-profit').textContent = fmt(grossProfit, sym);
+  document.getElementById('roi-pct').textContent = roi.toFixed(1) + "%";
+  document.getElementById('margin-pct').textContent = marginPct.toFixed(1) + "%";
+  document.getElementById('profit-per-unit').textContent = fmt(profitPerUnit, sym);
+  document.getElementById('break-even-price').textContent = fmt(breakEvenPrice, sym);
+
+  document.getElementById('cb-product').textContent = fmt(productCostLocal, sym);
+  document.getElementById('cb-shipping').textContent = fmt(shippingCost, sym);
+  document.getElementById('cb-duty').textContent = fmt(dutyAmount, sym) + " (" + (dutyRate*100).toFixed(0) + "%)";
+  document.getElementById('cb-clearing').textContent = fmt(clearingFee, sym);
+  document.getElementById('cb-total').textContent = fmt(totalLandedCost, sym);
+  document.getElementById('cb-per-unit').textContent = fmt(landedCostPerUnit, sym);
+  document.getElementById('cb-revenue').textContent = sellingPriceLocal > 0 ? fmt(totalRevenue, sym) : "—";
+
+  document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>

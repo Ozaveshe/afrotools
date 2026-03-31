@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>African Safari Cost Calculator — Budget to Luxury | AfroTools</title>
+<meta name="description" content="Calculate your African safari cost. Kenya, Tanzania, South Africa, Rwanda gorilla trekking, Uganda. Budget camping to luxury tented camps. Peak vs low season pricing.">
+<link rel="canonical" href="https://afrotools.com/tools/safari-cost/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Safari Cost Calculator | AfroTools">
+<meta property="og:description" content="Plan your African safari budget. Kenya, Tanzania, SA, Rwanda gorilla trekking. Budget to luxury pricing, seasonal comparison.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/safari-cost/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#0EA5E9;--en-accent-dark:#0284C7;--en-accent-light:#E0F2FE;--en-accent-pale:#F0F9FF;--en-shadow-hover:0 4px 16px rgba(14,165,233,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#0c1a2e 50%,#0c2340 100%)!important}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Travel Tools","item":"https://afrotools.com/travel/"},{"@type":"ListItem","position":3,"name":"African Safari Cost Calculator","item":"https://afrotools.com/tools/safari-cost/"}]}</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="travel"></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb"><a href="/">AfroTools</a><span class="en-breadcrumb-sep">/</span><a href="/travel/">Travel</a><span class="en-breadcrumb-sep">/</span><span class="en-breadcrumb-current">Safari Cost Calculator</span></nav>
+    <h1>African Safari <em>Cost Calculator</em></h1>
+    <p>Budget camping to luxury tented camps. Kenya, Tanzania, South Africa, Rwanda, Uganda, Botswana, Zambia, Zimbabwe. Seasonal pricing with per-person breakdown.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">🦁 8 Countries</span>
+      <span class="en-tool-hero-pill">📅 Seasonal Pricing</span>
+      <span class="en-tool-hero-pill">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout">
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">🦁</div>Safari Details</div>
+    <div class="en-form-grid en-form-grid-2">
+      <div class="en-field">
+        <label class="en-label">Safari Country</label>
+        <select class="en-select" id="safariCountry">
+          <option value="kenya">Kenya (Masai Mara / Amboseli)</option>
+          <option value="tanzania">Tanzania (Serengeti / Ngorongoro)</option>
+          <option value="sa">South Africa (Kruger / Private Reserves)</option>
+          <option value="rwanda">Rwanda (Gorilla Trekking)</option>
+          <option value="uganda">Uganda (Gorilla / Chimp Trekking)</option>
+          <option value="botswana">Botswana (Okavango / Chobe)</option>
+          <option value="zambia">Zambia (South Luangwa)</option>
+          <option value="zimbabwe">Zimbabwe (Hwange / Victoria Falls)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Safari Type</label>
+        <select class="en-select" id="safariType">
+          <option value="budget">Budget Camping</option>
+          <option value="mid" selected>Mid-Range Lodge</option>
+          <option value="luxury">Luxury Tented Camp</option>
+          <option value="gorilla">Gorilla Trekking</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Duration (Days) <span class="en-label-hint">in-country</span></label>
+        <input class="en-input" type="number" id="duration" value="7" min="1" max="30">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Group Size</label>
+        <input class="en-input" type="number" id="groupSize" value="2" min="1" max="20">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Season</label>
+        <select class="en-select" id="season">
+          <option value="peak">Peak (Jul–Oct / Dec–Jan)</option>
+          <option value="shoulder" selected>Shoulder (Nov / Apr–Jun)</option>
+          <option value="low">Low / Green (Feb–Mar)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Departure Region</label>
+        <select class="en-select" id="departure">
+          <option value="africa">Within Africa</option>
+          <option value="europe">Europe / UK</option>
+          <option value="usa">USA / Canada</option>
+          <option value="asia">Asia / Middle East</option>
+        </select>
+      </div>
+    </div>
+    <div class="en-form-actions">
+      <button class="en-btn en-btn-full" onclick="calcSafari()">Calculate Safari Cost →</button>
+    </div>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-grid">
+        <div>
+          <div class="en-results-hero-label">Total Trip Cost (USD)</div>
+          <div class="en-results-hero-value" id="totalCost">$0</div>
+          <div class="en-results-hero-sub" id="perPersonCost">Per person: $0</div>
+        </div>
+        <div class="en-results-hero-aside">
+          <div style="font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:4px">Per Day / Person</div>
+          <div style="font-size:2rem;font-weight:900;color:var(--en-accent)" id="perDayCost">$0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="en-metrics" id="metricsArea"></div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📊</div>Cost Breakdown</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Component</th><th>Cost (USD)</th><th>Notes</th></tr></thead>
+          <tbody id="breakdownBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📅</div>Seasonal Price Comparison</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Season</th><th>Daily Rate/Person</th><th>Total Trip</th><th>vs Your Choice</th></tr></thead>
+          <tbody id="seasonBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="en-tip" id="bestTimeTip">
+      <div class="en-tip-icon">💡</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">Best Time to Visit</div>
+        <div class="en-tip-text" id="bestTimeText"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var SAFARI_DATA = {
+  kenya: {
+    name: 'Kenya (Masai Mara)',
+    budget: {peak:180,shoulder:130,low:90},
+    mid: {peak:450,shoulder:320,low:220},
+    luxury: {peak:1400,shoulder:900,low:600},
+    gorilla: null,
+    flightBase: {africa:400,europe:800,usa:1200,asia:900},
+    visa: 50,
+    bestTime: 'July–October for the Great Migration wildebeest crossing. January–February for fewer crowds and green scenery.',
+    currency: 'KES', note: 'Includes park fees (KES 200 conservation fee/day), accommodation, game drives, meals, and local transport.'
+  },
+  tanzania: {
+    name: 'Tanzania (Serengeti)',
+    budget: {peak:220,shoulder:160,low:110},
+    mid: {peak:600,shoulder:420,low:280},
+    luxury: {peak:1800,shoulder:1200,low:750},
+    gorilla: null,
+    flightBase: {africa:450,europe:850,usa:1300,asia:950},
+    visa: 50,
+    bestTime: 'June–October for Serengeti. February for calving season. Year-round for Ngorongoro Crater.',
+    currency: 'TZS', note: 'Tanzania park fees are among the highest in Africa. Serengeti: $60/person/day. Includes all game drives, accommodation, park fees, meals.'
+  },
+  sa: {
+    name: 'South Africa (Kruger)',
+    budget: {peak:80,shoulder:60,low:40},
+    mid: {peak:280,shoulder:200,low:140},
+    luxury: {peak:1200,shoulder:800,low:500},
+    gorilla: null,
+    flightBase: {africa:300,europe:700,usa:1100,asia:800},
+    visa: 0,
+    bestTime: 'May–September (dry season) for best game viewing — animals gather around water sources. October–April for birdwatching.',
+    currency: 'ZAR', note: 'South Africa offers exceptional value. Kruger self-drive budget option available. Private game reserves cost significantly more.'
+  },
+  rwanda: {
+    name: 'Rwanda (Gorilla Trekking)',
+    budget: null,
+    mid: {peak:1700,shoulder:1700,low:1700},
+    luxury: {peak:2500,shoulder:2200,low:1900},
+    gorilla: {peak:1700,shoulder:1700,low:1700},
+    flightBase: {africa:350,europe:750,usa:1250,asia:900},
+    visa: 50,
+    bestTime: 'June–September and December–February for best trekking conditions. Gorilla permits cost $1,500/person and must be booked months in advance.',
+    currency: 'RWF', note: 'Gorilla permit: $1,500/person (included in rate). Rwanda Volcanoes NP. Maximum 1 hour with gorillas per permit.'
+  },
+  uganda: {
+    name: 'Uganda (Gorilla / Chimp)',
+    budget: {peak:120,shoulder:90,low:70},
+    mid: {peak:900,shoulder:650,low:450},
+    luxury: {peak:1800,shoulder:1300,low:950},
+    gorilla: {peak:900,shoulder:750,low:650},
+    flightBase: {africa:400,europe:780,usa:1280,asia:920},
+    visa: 50,
+    bestTime: 'June–August and December–February. Gorilla permits: $700/person (Bwindi). Chimp permits: $150 (Kibale). Bwindi Impenetrable Forest.',
+    currency: 'UGX', note: 'Uganda gorilla permit: $700/person. Best value gorilla trekking in Africa. Chimp tracking available at Kibale Forest.'
+  },
+  botswana: {
+    name: 'Botswana (Okavango)',
+    budget: null,
+    mid: {peak:750,shoulder:550,low:350},
+    luxury: {peak:2000,shoulder:1500,low:900},
+    gorilla: null,
+    flightBase: {africa:500,europe:900,usa:1400,asia:1050},
+    visa: 0,
+    bestTime: 'May–October for dry season, wildlife concentrates around water. July peak for Okavango Delta flooding (best canoe safaris).',
+    currency: 'BWP', note: 'Botswana is a high-cost, low-volume destination. Budget camping very limited. Most camps include all meals, game drives, and activities.'
+  },
+  zambia: {
+    name: 'Zambia (South Luangwa)',
+    budget: {peak:150,shoulder:110,low:75},
+    mid: {peak:500,shoulder:360,low:240},
+    luxury: {peak:1500,shoulder:1050,low:700},
+    gorilla: null,
+    flightBase: {africa:420,europe:820,usa:1320,asia:960},
+    visa: 50,
+    bestTime: 'June–October for dry season. South Luangwa famous for walking safaris and leopard sightings. Victoria Falls nearby.',
+    currency: 'ZMW', note: 'Zambia pioneered walking safaris. Night game drives allowed. South Luangwa is one of Africa\'s best wildlife sanctuaries.'
+  },
+  zimbabwe: {
+    name: 'Zimbabwe (Hwange / Victoria Falls)',
+    budget: {peak:130,shoulder:95,low:65},
+    mid: {peak:420,shoulder:300,low:200},
+    luxury: {peak:1300,shoulder:900,low:600},
+    gorilla: null,
+    flightBase: {africa:390,europe:800,usa:1280,asia:940},
+    visa: 30,
+    bestTime: 'May–October. Hwange National Park has Africa\'s largest elephant population. Victoria Falls best viewed Feb–May (peak flow).',
+    currency: 'USD', note: 'Zimbabwe uses USD. Victoria Falls package deals often include Hwange. Excellent elephant viewing year-round at Hwange.'
+  }
+};
+
+function fmt(n){return '$'+Math.round(n).toLocaleString();}
+
+function calcSafari(){
+  var country=document.getElementById('safariCountry').value;
+  var type=document.getElementById('safariType').value;
+  var days=parseInt(document.getElementById('duration').value)||7;
+  var grp=parseInt(document.getElementById('groupSize').value)||2;
+  var season=document.getElementById('season').value;
+  var dep=document.getElementById('departure').value;
+
+  var d=SAFARI_DATA[country];
+  // fallback if type unavailable
+  var rates=d[type];
+  if(!rates && type==='budget') rates=d.mid;
+  if(!rates && type==='gorilla') rates=d.mid;
+  if(!rates) rates=d.mid;
+
+  var dailyRate=rates[season];
+  var safariTotal=dailyRate*days*grp;
+  var flightCost=d.flightBase[dep]*grp;
+  var visaCost=d.visa*grp;
+  var miscCost=Math.round(safariTotal*0.08); // tips, souvenirs, extras
+
+  var grandTotal=safariTotal+flightCost+visaCost+miscCost;
+  var perPerson=grandTotal/grp;
+  var perDay=dailyRate;
+
+  document.getElementById('totalCost').textContent=fmt(grandTotal);
+  document.getElementById('perPersonCost').textContent='Per person: '+fmt(perPerson);
+  document.getElementById('perDayCost').textContent=fmt(perDay);
+
+  // metrics
+  var metrics=[
+    {label:'Safari Cost',value:fmt(safariTotal),unit:'all-in'},
+    {label:'Flights Est.',value:fmt(flightCost),unit:'return'},
+    {label:'Visas & Fees',value:fmt(visaCost),unit:'total'},
+    {label:'Extras & Tips',value:fmt(miscCost),unit:'est. 8%'}
+  ];
+  document.getElementById('metricsArea').innerHTML=metrics.map(function(m){
+    return '<div class="en-metric"><div class="en-metric-label">'+m.label+'</div><div class="en-metric-value">'+m.value+'</div><div class="en-metric-unit">'+m.unit+'</div></div>';
+  }).join('');
+
+  // breakdown
+  var rows=[
+    ['Safari Package ('+days+' days × '+grp+' pax)','$'+dailyRate+'/person/day',fmt(safariTotal)],
+    ['Flights (return, est.)','From '+dep,fmt(flightCost)],
+    ['Visa Fees','$'+d.visa+' per person',fmt(visaCost)],
+    ['Extras, Tips & Shopping','~8% of safari cost',fmt(miscCost)],
+    ['<strong>TOTAL</strong>','','<strong>'+fmt(grandTotal)+'</strong>']
+  ];
+  document.getElementById('breakdownBody').innerHTML=rows.map(function(r){
+    return '<tr><td>'+r[0]+'</td><td class="en-td-highlight">'+r[2]+'</td><td class="en-td-label">'+r[1]+'</td></tr>';
+  }).join('');
+
+  // season comparison
+  var seasons={peak:'Peak (Jul–Oct)',shoulder:'Shoulder (Nov/Apr–Jun)',low:'Low / Green (Feb–Mar)'};
+  var seasonRows=Object.keys(seasons).map(function(s){
+    var r2=rates[s];
+    var tot2=r2*days*grp+flightCost+visaCost+miscCost;
+    var diff=tot2-grandTotal;
+    var diffStr=diff===0?'Your choice':(diff>0?'+'+fmt(diff):'-'+fmt(Math.abs(diff)));
+    var highlight=s===season?' style="font-weight:800;color:var(--en-accent-dark)"':'';
+    return '<tr><td'+highlight+'>'+seasons[s]+(s===season?' ★':'')+'</td><td>'+fmt(r2)+'/person/night</td><td>'+fmt(tot2)+'</td><td>'+diffStr+'</td></tr>';
+  });
+  document.getElementById('seasonBody').innerHTML=seasonRows.join('');
+
+  document.getElementById('bestTimeText').textContent=d.bestTime;
+  document.getElementById('results').className='en-results on';
+}
+</script>
+
+<afro-footer></afro-footer>
+</body>
+</html>

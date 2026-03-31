@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Self-Publishing Royalty Calculator — Africa | AfroTools</title>
+<meta name="description" content="Compare royalties across Amazon KDP, IngramSpark, Okadabooks, and Bambooks. Find the best platform and pricing sweet spot for African authors.">
+<link rel="canonical" href="https://afrotools.com/tools/self-publishing-royalty/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+.winner-badge{background:var(--en-accent);color:#fff;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Self-Publishing Royalty Calculator</span>
+    </nav>
+    <h1>Self-Publishing <em>Royalty Calculator</em></h1>
+    <p>Compare royalty earnings across Amazon KDP, IngramSpark, Smashwords, Okadabooks, and Bambooks. Find the best platform for your book and the pricing sweet spot that maximises earnings.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f4d6; Self-Publishing</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Royalties</span>
+      <span class="en-tool-hero-pill">&#x1f4ca; Comparison</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4d6;</div>Book Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Book Price (USD)</label>
+        <input type="number" id="bookPrice" class="en-input" value="9.99" min="0.99" step="0.01">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Format</label>
+        <select id="format" class="en-select">
+          <option value="ebook" selected>Ebook</option>
+          <option value="paperback">Paperback (Print)</option>
+          <option value="hardcover">Hardcover</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Page Count</label>
+        <input type="number" id="pageCount" class="en-input" value="250" min="50">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Monthly Sales Estimate</label>
+        <input type="number" id="monthlySales" class="en-input" value="80" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Country (for local currency)</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Compare Platform Royalties</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Best Platform Monthly Earnings</div>
+            <div class="en-results-hero-value" id="bestMonthly">$0</div>
+            <div class="en-results-hero-sub" id="bestPlatform"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Annual Best-Case</div>
+            <div style="font-size:1.5rem;font-weight:800;color:var(--en-accent)" id="bestAnnual">$0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>Platform Comparison</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Platform</th><th>Royalty Rate</th><th>Per Copy</th><th>Monthly</th><th>Annual</th><th>Notes</th></tr></thead>
+          <tbody id="platformTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4b0;</div>Price Sweet Spot Analysis</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Price Point</th><th>KDP Royalty %</th><th>Monthly @ est. sales</th><th>Annual</th></tr></thead>
+          <tbody id="sweetSpotTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">KDP 70% Royalty Tip</div>
+        <div class="en-tip-text">To qualify for Amazon KDP's 70% royalty tier, price your ebook between $2.99–$9.99. Outside this range you earn only 35%. Most successful indie authors price at $2.99, $3.99, or $4.99 — balancing royalty rate vs volume of sales.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS '};
+function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d||2,maximumFractionDigits:d||2});}
+function calculate(){
+  var price=parseFloat(document.getElementById('bookPrice').value)||9.99;
+  var format=document.getElementById('format').value;
+  var pages=parseInt(document.getElementById('pageCount').value)||250;
+  var monthly=parseInt(document.getElementById('monthlySales').value)||80;
+  var country=document.getElementById('country').value;
+  var sym=SYM[country];var rate=FX[country];
+
+  // Print cost estimate for paperback (KDP formula approx)
+  var printCost=format==='paperback'?(1.00+pages*0.012):0;
+  var hardcoverPrint=format==='hardcover'?(6.00+pages*0.012):0;
+
+  var platforms=[];
+  if(format==='ebook'){
+    var kdpRate=price>=2.99&&price<=9.99?0.70:0.35;
+    platforms=[
+      {name:'Amazon KDP',rate:kdpRate,perCopy:price*kdpRate,note:kdpRate===0.70?'70% tier ($2.99–$9.99)':'35% tier (outside range)'},
+      {name:'IngramSpark',rate:0.65,perCopy:price*0.65,note:'60–70% standard'},
+      {name:'Smashwords',rate:0.60,perCopy:price*0.60,note:'60% net'},
+      {name:'Okadabooks',rate:0.70,perCopy:price*0.70,note:'70% — Nigeria focus'},
+      {name:'Bambooks',rate:0.70,perCopy:price*0.70,note:'70% — Nigeria/Africa'},
+    ];
+  } else if(format==='paperback'){
+    var kdpPbRate=0.60;
+    var kdpPbPerCopy=Math.max(0,(price-printCost)*kdpPbRate);
+    platforms=[
+      {name:'Amazon KDP',rate:kdpPbRate,perCopy:kdpPbPerCopy,note:'Price minus print cost ('+fmt(printCost)+'×60%)'},
+      {name:'IngramSpark',rate:0.55,perCopy:Math.max(0,(price-printCost)*0.55),note:'~55% after print cost'},
+      {name:'Local Print Run',rate:0.70,perCopy:price*0.70-printCost,note:'Higher margin, limited reach'},
+    ];
+  } else {
+    platforms=[
+      {name:'Amazon KDP (Hardcover)',rate:0.60,perCopy:Math.max(0,(price-hardcoverPrint)*0.60),note:'60% after print cost'},
+      {name:'IngramSpark',rate:0.55,perCopy:Math.max(0,(price-hardcoverPrint)*0.55),note:'55% after print cost'},
+    ];
+  }
+
+  platforms.sort(function(a,b){return b.perCopy-a.perCopy;});
+  var best=platforms[0];
+  document.getElementById('bestMonthly').textContent='$'+fmt(best.perCopy*monthly);
+  document.getElementById('bestPlatform').textContent='Best: '+best.name+' ('+sym+fmt(best.perCopy*monthly*rate,0)+'/month)';
+  document.getElementById('bestAnnual').textContent='$'+fmt(best.perCopy*monthly*12,0);
+
+  var tableHtml=platforms.map(function(p,i){
+    var mo=p.perCopy*monthly;
+    var yr=mo*12;
+    return '<tr><td class="en-td-value">'+p.name+(i===0?'<span class="winner-badge">BEST</span>':'')+'</td>'+
+      '<td>'+(p.rate*100).toFixed(0)+'%</td><td>$'+fmt(p.perCopy)+'</td><td>$'+fmt(mo,0)+'</td>'+
+      '<td class="en-td-highlight">$'+fmt(yr,0)+'</td><td style="font-size:.8rem;color:#64748b">'+p.note+'</td></tr>';
+  }).join('');
+  document.getElementById('platformTable').innerHTML=tableHtml;
+
+  // Sweet spot analysis
+  var prices=[0.99,1.99,2.99,3.99,4.99,6.99,9.99,12.99,14.99];
+  var ssHtml=prices.map(function(p){
+    var r=p>=2.99&&p<=9.99?0.70:0.35;
+    var rpc=p*r;
+    var mo=rpc*monthly;
+    return '<tr'+(p===price?' style="background:var(--en-accent-pale)"':'')+'>'+
+      '<td>$'+p.toFixed(2)+(p===price?' (current)':p===4.99?' ★ popular':'')+'</td>'+
+      '<td>'+(r*100).toFixed(0)+'%</td><td>$'+fmt(mo,0)+'</td><td class="en-td-highlight">$'+fmt(mo*12,0)+'</td></tr>';
+  }).join('');
+  document.getElementById('sweetSpotTable').innerHTML=ssHtml;
+
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

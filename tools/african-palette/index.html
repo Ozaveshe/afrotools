@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Color Palette Generator — Kente, Ankara, Savanna | AfroTools</title>
+<meta name="description" content="Generate African-inspired color palettes. Kente, Ankara, Savanna, Desert, Night Market, Ubuntu, Afrobeats, Nollywood. Export as CSS, Tailwind config or copy hex codes.">
+<link rel="canonical" href="https://afrotools.com/tools/african-palette/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Color Palette Generator | AfroTools">
+<meta property="og:description" content="Curated African color palettes for designers and developers. Kente, Ankara, Savanna and 10+ more styles.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
+.style-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.style-chip{border:2px solid var(--en-border);border-radius:10px;padding:10px;cursor:pointer;transition:all .15s;background:#fff;text-align:center;font-size:.82rem;font-weight:600}
+.style-chip.active{border-color:var(--en-accent);background:var(--en-accent-pale);color:var(--en-accent-dark)}
+.style-chip:hover:not(.active){border-color:var(--en-accent-light)}
+.style-chip-swatch{height:24px;border-radius:6px;margin-bottom:6px;display:flex;overflow:hidden}
+.style-chip-swatch span{flex:1}
+.palette-display{display:flex;gap:0;border-radius:14px;overflow:hidden;height:120px;margin-bottom:20px;box-shadow:var(--en-shadow)}
+.palette-swatch{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:10px;cursor:pointer;position:relative;transition:flex .2s}
+.palette-swatch:hover{flex:2}
+.palette-swatch-hex{font-size:.68rem;font-weight:700;background:rgba(0,0,0,.35);color:#fff;padding:3px 7px;border-radius:5px;backdrop-filter:blur(4px);opacity:0;transition:opacity .15s}
+.palette-swatch:hover .palette-swatch-hex{opacity:1}
+.palette-swatch-copy{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.2);border:none;border-radius:6px;color:#fff;font-size:.65rem;padding:3px 6px;cursor:pointer;opacity:0;transition:opacity .15s;font-family:'DM Sans',sans-serif;font-weight:600}
+.palette-swatch:hover .palette-swatch-copy{opacity:1}
+.palette-swatch-copy:hover{background:rgba(255,255,255,.4)}
+.color-list{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+.color-item{border-radius:10px;overflow:hidden;border:1.5px solid var(--en-border);background:#fff;box-shadow:var(--en-shadow)}
+.color-item-swatch{height:60px;cursor:pointer;position:relative;transition:transform .15s}
+.color-item-swatch:hover{transform:scale(1.03)}
+.color-item-body{padding:10px}
+.color-item-name{font-size:.72rem;font-weight:700;color:var(--en-text);margin-bottom:4px}
+.color-item-hex{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--en-muted);cursor:pointer}
+.color-item-rgb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--en-muted)}
+.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:var(--en-accent-light);color:var(--en-accent-dark);border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.copy-btn:hover{background:#ddd6fe}
+.copy-btn.copied{background:#d1fae5;color:#065f46}
+.code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:#0f0f1a;color:#c9d1d9;padding:16px;border-radius:10px;overflow-x:auto;white-space:pre;line-height:1.7;max-height:260px;overflow-y:auto}
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--en-border);margin-bottom:16px}
+.tab-btn{padding:9px 14px;font-size:.82rem;font-weight:600;color:var(--en-muted);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .15s}
+.tab-btn.active{color:var(--en-accent-dark);border-bottom-color:var(--en-accent)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+.contrast-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:1px solid var(--en-border);margin-bottom:8px;font-size:.84rem}
+.contrast-score{font-weight:800;min-width:44px}
+.contrast-badge{padding:2px 8px;border-radius:5px;font-size:.72rem;font-weight:700}
+.aa-pass{background:#d1fae5;color:#065f46}
+.aa-fail{background:#fee2e2;color:#991b1b}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">African Color Palette Generator</span>
+    </nav>
+    <h1>African <em>Color Palette</em></h1>
+    <p>Curated palettes inspired by African cultures, textiles and landscapes. Export as CSS variables, Tailwind config or copy individual hex codes.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">🎨 10 African styles</span>
+      <span class="en-tool-hero-pill">♿ Contrast checker</span>
+      <span class="en-tool-hero-pill">⬇️ CSS + Tailwind export</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout-wide">
+  <div class="en-card">
+    <div class="en-card-title"><span class="en-card-title-icon">🎭</span> Choose a Palette Style</div>
+    <div class="style-grid" id="style-grid"></div>
+
+    <!-- Palette display -->
+    <div class="en-card-title" style="margin-top:4px"><span class="en-card-title-icon">🎨</span> <span id="palette-title">Kente</span> Palette</div>
+    <div class="palette-display" id="palette-display"></div>
+    <div class="color-list" id="color-list"></div>
+  </div>
+
+  <!-- Code export -->
+  <div class="en-card" style="margin-top:0">
+    <div class="en-card-title"><span class="en-card-title-icon">📝</span> Export</div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('css',this)">CSS Variables</button>
+      <button class="tab-btn" onclick="showTab('tailwind',this)">Tailwind Config</button>
+      <button class="tab-btn" onclick="showTab('contrast',this)">Contrast Check</button>
+    </div>
+    <div class="tab-pane active" id="tab-css">
+      <button class="copy-btn" onclick="copyTabCode('css-code')" style="margin-bottom:10px">📋 Copy CSS</button>
+      <div class="code-block" id="css-code"></div>
+    </div>
+    <div class="tab-pane" id="tab-tailwind">
+      <button class="copy-btn" onclick="copyTabCode('tw-code')" style="margin-bottom:10px">📋 Copy Config</button>
+      <div class="code-block" id="tw-code"></div>
+    </div>
+    <div class="tab-pane" id="tab-contrast">
+      <div id="contrast-list"></div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+var PALETTES={
+  kente:{name:'Kente',emoji:'🟨',desc:'Bold geometric colors of Ghanaian Kente cloth',colors:[
+    {name:'Gold',hex:'#FFC107',role:'primary'},{name:'Crimson',hex:'#C0392B',role:'secondary'},
+    {name:'Forest',hex:'#27AE60',role:'accent'},{name:'Royal Blue',hex:'#2980B9',role:'dark'},
+    {name:'Ivory',hex:'#FFF8E1',role:'background'}
+  ]},
+  ankara:{name:'Ankara',emoji:'🦜',desc:'Vibrant wax print fabric inspired palette',colors:[
+    {name:'Tangerine',hex:'#FF6B35',role:'primary'},{name:'Teal',hex:'#007C77',role:'secondary'},
+    {name:'Mustard',hex:'#FFB30F',role:'accent'},{name:'Plum',hex:'#5C2751',role:'dark'},
+    {name:'Cream',hex:'#FFF5E6',role:'background'}
+  ]},
+  savanna:{name:'Savanna',emoji:'🌾',desc:'Warm earth tones of the African savanna',colors:[
+    {name:'Amber',hex:'#D4860A',role:'primary'},{name:'Sienna',hex:'#A0522D',role:'secondary'},
+    {name:'Sage',hex:'#8FAD62',role:'accent'},{name:'Charcoal',hex:'#2C2C2C',role:'dark'},
+    {name:'Sand',hex:'#F5E6C8',role:'background'}
+  ]},
+  desert:{name:'Desert',emoji:'🌵',desc:'Sahara and Kalahari desert tones',colors:[
+    {name:'Terracotta',hex:'#C1440E',role:'primary'},{name:'Burnt Orange',hex:'#E05C17',role:'secondary'},
+    {name:'Ocher',hex:'#CC8B3B',role:'accent'},{name:'Deep Brown',hex:'#3D1C02',role:'dark'},
+    {name:'Dune',hex:'#F8EFD4',role:'background'}
+  ]},
+  ocean:{name:'Ocean',emoji:'🌊',desc:'Indian Ocean and Atlantic coastal blues',colors:[
+    {name:'Cobalt',hex:'#0047AB',role:'primary'},{name:'Aqua',hex:'#00B4D8',role:'secondary'},
+    {name:'Coral',hex:'#FF6B6B',role:'accent'},{name:'Deep Sea',hex:'#03045E',role:'dark'},
+    {name:'Sea Foam',hex:'#E8F8FF',role:'background'}
+  ]},
+  'night-market':{name:'Night Market',emoji:'🌙',desc:'Night bazaar and souk ambience',colors:[
+    {name:'Saffron',hex:'#F4A261',role:'primary'},{name:'Crimson',hex:'#E63946',role:'secondary'},
+    {name:'Turquoise',hex:'#2EC4B6',role:'accent'},{name:'Midnight',hex:'#0D1117',role:'dark'},
+    {name:'Warm White',hex:'#FFF9F0',role:'background'}
+  ]},
+  ubuntu:{name:'Ubuntu',emoji:'🤝',desc:'Community, humanity, togetherness',colors:[
+    {name:'Ubuntu Green',hex:'#77216F',role:'primary'},{name:'Warm Orange',hex:'#E95420',role:'secondary'},
+    {name:'Amber',hex:'#EFB73E',role:'accent'},{name:'Dark',hex:'#2C001E',role:'dark'},
+    {name:'Light',hex:'#FBF0F5',role:'background'}
+  ]},
+  afrobeats:{name:'Afrobeats',emoji:'🎵',desc:'Energetic, vibrant Afrobeats music scene',colors:[
+    {name:'Hot Pink',hex:'#FF1493',role:'primary'},{name:'Electric Yellow',hex:'#FFE600',role:'secondary'},
+    {name:'Neon Green',hex:'#39FF14',role:'accent'},{name:'Deep Purple',hex:'#120024',role:'dark'},
+    {name:'Off White',hex:'#FFFFF0',role:'background'}
+  ]},
+  nollywood:{name:'Nollywood',emoji:'🎬',desc:'Bold, dramatic Nigerian cinema aesthetic',colors:[
+    {name:'Emerald',hex:'#008751',role:'primary'},{name:'Gold',hex:'#FFD700',role:'secondary'},
+    {name:'Royal Purple',hex:'#6A0DAD',role:'accent'},{name:'Ebony',hex:'#0A0A0A',role:'dark'},
+    {name:'Pearl',hex:'#F8F5F0',role:'background'}
+  ]},
+  'modern-african':{name:'Modern African',emoji:'🏙️',desc:'Contemporary African tech and business',colors:[
+    {name:'AfroBlue',hex:'#007AFF',role:'primary'},{name:'Success',hex:'#10B981',role:'secondary'},
+    {name:'Amber',hex:'#F59E0B',role:'accent'},{name:'Dark',hex:'#0A1628',role:'dark'},
+    {name:'Light',hex:'#F8FAFD',role:'background'}
+  ]},
+};
+
+var current='kente';
+
+function hexToRgb(hex){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return{r:r,g:g,b:b};
+}
+function luminance(hex){
+  var rgb=hexToRgb(hex);
+  var sRGB=[rgb.r,rgb.g,rgb.b].map(function(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);});
+  return 0.2126*sRGB[0]+0.7152*sRGB[1]+0.0722*sRGB[2];
+}
+function contrastRatio(hex1,hex2){
+  var l1=luminance(hex1),l2=luminance(hex2);
+  return(Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);
+}
+function isDark(hex){return luminance(hex)<0.3;}
+
+function renderStyleGrid(){
+  var el=document.getElementById('style-grid');
+  el.innerHTML=Object.keys(PALETTES).map(function(key){
+    var p=PALETTES[key];
+    var swatches=p.colors.map(function(c){return '<span style="background:'+c.hex+'"></span>';}).join('');
+    return '<div class="style-chip'+(key===current?' active':'')+'" onclick="selectPalette(\''+key+'\')">'+
+      '<div class="style-chip-swatch">'+swatches+'</div>'+
+      p.emoji+' '+p.name+
+    '</div>';
+  }).join('');
+}
+
+function selectPalette(key){
+  current=key;
+  renderStyleGrid();
+  renderPalette();
+}
+
+function renderPalette(){
+  var p=PALETTES[current];
+  document.getElementById('palette-title').textContent=p.name;
+
+  // Big display
+  var disp=document.getElementById('palette-display');
+  disp.innerHTML=p.colors.map(function(c){
+    return '<div class="palette-swatch" style="background:'+c.hex+'" title="'+c.name+'">'+
+      '<button class="palette-swatch-copy" onclick="copyHex(\''+c.hex+'\',event)">Copy</button>'+
+      '<span class="palette-swatch-hex">'+c.hex+'</span>'+
+    '</div>';
+  }).join('');
+
+  // Color list
+  var list=document.getElementById('color-list');
+  list.innerHTML=p.colors.map(function(c){
+    var rgb=hexToRgb(c.hex);
+    var textColor=isDark(c.hex)?'#fff':'#111';
+    return '<div class="color-item">'+
+      '<div class="color-item-swatch" style="background:'+c.hex+'" onclick="copyHex(\''+c.hex+'\',event)" title="Click to copy">'+
+        '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:'+textColor+';font-size:.68rem;opacity:0;transition:opacity .15s;font-weight:700" class="hover-copy-hint">📋 Copy</div>'+
+      '</div>'+
+      '<div class="color-item-body">'+
+        '<div class="color-item-name">'+c.name+'</div>'+
+        '<div class="color-item-hex" onclick="copyHex(\''+c.hex+'\',event)" style="cursor:pointer" title="Click to copy">'+c.hex+'</div>'+
+        '<div class="color-item-rgb">rgb('+rgb.r+', '+rgb.g+', '+rgb.b+')</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  // CSS output
+  var cssLines=['/* African Color Palette: '+p.name+' */','/* Generated by AfroTools — afrotools.com */','',':root {'];
+  p.colors.forEach(function(c){cssLines.push('  --color-'+c.role+': '+c.hex+';');});
+  cssLines.push('}');
+  p.colors.forEach(function(c){
+    cssLines.push('');
+    cssLines.push('/* '+c.name+' */');
+    cssLines.push('.bg-'+c.role+' { background-color: var(--color-'+c.role+'); }');
+    cssLines.push('.text-'+c.role+' { color: var(--color-'+c.role+'); }');
+    cssLines.push('.border-'+c.role+' { border-color: var(--color-'+c.role+'); }');
+  });
+  document.getElementById('css-code').textContent=cssLines.join('\n');
+
+  // Tailwind
+  var twObj={};
+  p.colors.forEach(function(c){twObj[c.role]=c.hex;});
+  var twLines=[
+    '// tailwind.config.js — '+p.name+' palette',
+    '// Generated by AfroTools',
+    '',
+    'module.exports = {',
+    '  theme: {',
+    '    extend: {',
+    '      colors: {',
+    '        african: {',
+  ];
+  p.colors.forEach(function(c){twLines.push("          '"+c.role+"': '"+c.hex+"',");});
+  twLines.push('        },');
+  twLines.push('      },');
+  twLines.push('    },');
+  twLines.push('  },');
+  twLines.push('};');
+  document.getElementById('tw-code').textContent=twLines.join('\n');
+
+  // Contrast
+  var bgColor=p.colors.find(function(c){return c.role==='background';});
+  var bg=bgColor?bgColor.hex:'#ffffff';
+  var contrastEl=document.getElementById('contrast-list');
+  contrastEl.innerHTML='<p style="font-size:.82rem;color:var(--en-muted);margin-bottom:12px">Contrast ratio against background ('+bg+')</p>'+
+    p.colors.filter(function(c){return c.role!=='background';}).map(function(c){
+    var ratio=contrastRatio(c.hex,bg);
+    var aa=ratio>=4.5;
+    var aaLg=ratio>=3;
+    return '<div class="contrast-row">'+
+      '<div style="width:24px;height:24px;border-radius:6px;background:'+c.hex+';border:1px solid rgba(0,0,0,.1);flex-shrink:0"></div>'+
+      '<span style="flex:1;font-size:.84rem;font-weight:600">'+c.name+' ('+c.hex+')</span>'+
+      '<span class="contrast-score">'+ratio.toFixed(2)+':1</span>'+
+      '<span class="contrast-badge '+(aa?'aa-pass':'aa-fail')+'">'+(aa?'AA Pass':'AA Fail')+'</span>'+
+      '<span class="contrast-badge '+(aaLg?'aa-pass':'aa-fail')+'">'+(aaLg?'AA Lg Pass':'AA Lg Fail')+'</span>'+
+    '</div>';
+  }).join('');
+}
+
+function copyHex(hex,e){
+  if(e)e.stopPropagation();
+  navigator.clipboard.writeText(hex).then(function(){
+    var el=e&&e.target;
+    if(el){var old=el.textContent;el.textContent='✅';setTimeout(function(){el.textContent=old;},1200);}
+  });
+}
+
+function copyTabCode(id){
+  var txt=document.getElementById(id).textContent;
+  navigator.clipboard.writeText(txt).then(function(){
+    var btn=event.target;btn.textContent='✅ Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='📋 Copy '+(id.includes('css')?'CSS':'Config');btn.classList.remove('copied');},2000);
+  });
+}
+
+function showTab(id,btn){
+  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+renderStyleGrid();
+renderPalette();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

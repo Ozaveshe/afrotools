@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Freelance Contract Generator for Africa | AfroTools</title>
+<meta name="description" content="Generate a professional freelance contract. Deliverables, payment milestones, IP ownership, revision limits, confidentiality, dispute resolution by African country jurisdiction.">
+<link rel="canonical" href="https://afrotools.com/tools/freelance-contract/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Freelance Contract Generator — Africa | AfroTools">
+<meta property="og:description" content="Professional freelance contracts for African freelancers. IP rights, milestones, revisions, confidentiality, Nigerian/Kenyan/SA jurisdiction clauses.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/freelance-contract/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#6366F1;--en-accent-dark:#4F46E5;--en-accent-light:#E0E7FF;--en-accent-pale:#EEF2FF;--en-shadow-hover:0 4px 16px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)!important}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.contract-doc{background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:40px;font-family:'DM Sans',sans-serif;font-size:.9rem;line-height:1.8;color:#1e293b;white-space:pre-wrap;word-wrap:break-word;max-height:600px;overflow-y:auto}
+.contract-title{font-size:1.4rem;font-weight:800;text-align:center;margin-bottom:8px;letter-spacing:-.01em}
+.contract-subtitle{font-size:.85rem;text-align:center;color:#64748b;margin-bottom:28px}
+@media print{.en-tool-hero,.en-card:not(#contractCard),.no-print{display:none!important}.contract-doc{border:none;max-height:none;overflow:visible}}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="career"></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb"><a href="/">AfroTools</a><span class="en-breadcrumb-sep">/</span><a href="/career/">Career</a><span class="en-breadcrumb-sep">/</span><span class="en-breadcrumb-current">Freelance Contract Generator</span></nav>
+    <h1>Freelance Contract <em>Generator</em></h1>
+    <p>Generate a complete, professional freelance service contract. IP rights, payment milestones, revision limits, confidentiality, and jurisdiction clauses for African markets.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">📄 Legal Contract</span>
+      <span class="en-tool-hero-pill">⚖️ African Jurisdictions</span>
+      <span class="en-tool-hero-pill">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout-wide">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" class="contract-grid">
+
+    <div>
+      <div class="en-card">
+        <div class="en-card-title"><div class="en-card-title-icon">👤</div>Parties</div>
+        <div class="en-form-grid">
+          <div class="en-field"><label class="en-label">Freelancer Full Name</label><input class="en-input" id="freelancerName" placeholder="Amara Diallo" oninput="buildContract()"></div>
+          <div class="en-field"><label class="en-label">Freelancer Business Name (optional)</label><input class="en-input" id="freelancerBiz" placeholder="Amara Designs" oninput="buildContract()"></div>
+          <div class="en-field"><label class="en-label">Client Full Name / Company</label><input class="en-input" id="clientName" placeholder="Bright Future Ltd" oninput="buildContract()"></div>
+          <div class="en-field"><label class="en-label">Client Contact Person (if company)</label><input class="en-input" id="clientContact" placeholder="Mr John Smith, CEO" oninput="buildContract()"></div>
+        </div>
+      </div>
+
+      <div class="en-card">
+        <div class="en-card-title"><div class="en-card-title-icon">📋</div>Project Details</div>
+        <div class="en-form-grid">
+          <div class="en-field"><label class="en-label">Project Title</label><input class="en-input" id="projectTitle" placeholder="Brand Identity Design Package" oninput="buildContract()"></div>
+          <div class="en-field en-field-full"><label class="en-label">Project Description</label><textarea class="en-input" id="projectDesc" rows="2" placeholder="Design of logo, business card, letterhead, and brand style guide" oninput="buildContract()"></textarea></div>
+          <div class="en-field en-field-full"><label class="en-label">Deliverables (comma separated)</label><textarea class="en-input" id="deliverables" rows="2" placeholder="Logo (3 concepts), Business card (front+back), Brand style guide PDF" oninput="buildContract()"></textarea></div>
+          <div class="en-field"><label class="en-label">Project Start Date</label><input class="en-input" type="date" id="startDate" oninput="buildContract()"></div>
+          <div class="en-field"><label class="en-label">Delivery Date</label><input class="en-input" type="date" id="deliveryDate" oninput="buildContract()"></div>
+        </div>
+      </div>
+
+      <div class="en-card">
+        <div class="en-card-title"><div class="en-card-title-icon">💰</div>Payment Terms</div>
+        <div class="en-form-grid en-form-grid-2">
+          <div class="en-field"><label class="en-label">Total Project Fee</label><input class="en-input" type="number" id="totalFee" placeholder="150000" oninput="buildContract()"></div>
+          <div class="en-field"><label class="en-label">Currency</label><select class="en-select" id="feeCurrency" onchange="buildContract()"><option value="NGN">₦ Naira</option><option value="KES">KES</option><option value="ZAR">R Rand</option><option value="GHS">GHS</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option></select></div>
+          <div class="en-field en-field-full">
+            <label class="en-label">Payment Schedule</label>
+            <select class="en-select" id="paySchedule" onchange="buildContract()">
+              <option value="50_50">50% upfront, 50% on delivery</option>
+              <option value="100_up">100% upfront (full payment)</option>
+              <option value="milestone">Milestone-based (33% / 33% / 34%)</option>
+              <option value="delivery">Full payment on delivery</option>
+              <option value="30_70">30% deposit, 70% on delivery</option>
+            </select>
+          </div>
+          <div class="en-field"><label class="en-label">Revisions Included</label><input class="en-input" type="number" id="revisions" value="2" min="0" max="20" oninput="buildContract()"></div>
+          <div class="en-field"><label class="en-label">Extra Revision Cost</label><input class="en-input" id="extraRevCost" placeholder="e.g. ₦10,000 per round" oninput="buildContract()"></div>
+        </div>
+      </div>
+
+      <div class="en-card">
+        <div class="en-card-title"><div class="en-card-title-icon">⚖️</div>Legal Terms</div>
+        <div class="en-form-grid en-form-grid-2">
+          <div class="en-field"><label class="en-label">IP Ownership</label><select class="en-select" id="ipOwner" onchange="buildContract()"><option value="client_on_payment">Client (after full payment)</option><option value="freelancer">Freelancer retains all rights</option><option value="shared">Shared / Licensed to client</option></select></div>
+          <div class="en-field"><label class="en-label">Confidentiality Clause</label><select class="en-select" id="confidentiality" onchange="buildContract()"><option value="yes">Yes — mutual NDA</option><option value="no">No confidentiality needed</option></select></div>
+          <div class="en-field"><label class="en-label">Governing Law (Jurisdiction)</label><select class="en-select" id="jurisdiction" onchange="buildContract()"><option value="NG">Federal Republic of Nigeria</option><option value="KE">Republic of Kenya</option><option value="ZA">Republic of South Africa</option><option value="GH">Republic of Ghana</option><option value="EG">Arab Republic of Egypt</option><option value="RW">Republic of Rwanda</option></select></div>
+          <div class="en-field"><label class="en-label">Dispute Resolution</label><select class="en-select" id="dispute" onchange="buildContract()"><option value="mediation">Mediation first, then court</option><option value="arbitration">Binding arbitration</option><option value="court">Court proceedings only</option></select></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="contractCard">
+      <div class="en-card" style="padding:0">
+        <div style="padding:16px 20px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b">Contract Preview</div>
+          <div class="no-print" style="display:flex;gap:8px">
+            <button class="en-btn en-btn-secondary en-btn-sm" onclick="window.print()">🖨️ Print</button>
+            <button class="en-btn en-btn-secondary en-btn-sm" onclick="copyContract()">📋 Copy</button>
+          </div>
+        </div>
+        <div class="contract-doc" id="contractDoc"></div>
+      </div>
+      <div class="en-notice en-notice-warning no-print" style="margin-top:12px">
+        <strong>Legal Notice:</strong> This contract template is provided as a starting point. For high-value projects, consult a qualified lawyer in your jurisdiction. AfroTools is not a law firm and this does not constitute legal advice.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@media(max-width:768px){.contract-grid{grid-template-columns:1fr!important}}
+</style>
+
+<script>
+var CURR_SYM={NGN:'₦',KES:'KES ',ZAR:'R',GHS:'GHS ',USD:'$',EUR:'€',GBP:'£'};
+var JURIS={NG:'the Federal Republic of Nigeria and disputes shall be resolved in the courts of Lagos State',KE:'the Republic of Kenya and disputes shall be resolved in the courts of Nairobi',ZA:'the Republic of South Africa and disputes shall be resolved in the courts of Johannesburg',GH:'the Republic of Ghana and disputes shall be resolved in the courts of Accra',EG:'the Arab Republic of Egypt and disputes shall be resolved in the courts of Cairo',RW:'the Republic of Rwanda and disputes shall be resolved in the courts of Kigali'};
+var PAY_SCHEDULES={
+  '50_50':'50% of the Total Fee (deposit) shall be paid upon signing of this Agreement. The remaining 50% shall be paid upon delivery of the final Deliverables.',
+  '100_up':'100% of the Total Fee shall be paid in advance upon signing of this Agreement before work commences.',
+  'milestone':'Payment shall be made in three milestones: 33% upon signing, 33% at mid-project review and approval of draft deliverables, and the remaining 34% upon final delivery.',
+  'delivery':'The full Total Fee shall be paid within 7 business days of delivery and acceptance of the final Deliverables.',
+  '30_70':'A non-refundable deposit of 30% shall be paid upon signing. The remaining 70% shall be paid upon delivery of the final Deliverables.'
+};
+var IP_CLAUSES={
+  client_on_payment:'Upon receipt of full payment, all intellectual property rights in the Deliverables shall transfer to the Client. Until full payment is received, the Freelancer retains all rights.',
+  freelancer:'The Freelancer retains all intellectual property rights in the Deliverables and grants the Client a non-exclusive, perpetual licence to use the Deliverables for the stated purpose only.',
+  shared:'Intellectual property rights in the Deliverables shall be jointly owned by both parties, with each party free to use the Deliverables without accounting to the other.'
+};
+
+document.getElementById('startDate').value=new Date().toISOString().split('T')[0];
+var d2=new Date();d2.setDate(d2.getDate()+30);
+document.getElementById('deliveryDate').value=d2.toISOString().split('T')[0];
+
+function buildContract(){
+  var fn=document.getElementById('freelancerName').value||'[FREELANCER NAME]';
+  var fb=document.getElementById('freelancerBiz').value;
+  var cn=document.getElementById('clientName').value||'[CLIENT NAME]';
+  var cc=document.getElementById('clientContact').value;
+  var pt=document.getElementById('projectTitle').value||'[PROJECT TITLE]';
+  var pd=document.getElementById('projectDesc').value||'[PROJECT DESCRIPTION]';
+  var del=document.getElementById('deliverables').value||'[DELIVERABLES]';
+  var sd=document.getElementById('startDate').value||'[START DATE]';
+  var dd=document.getElementById('deliveryDate').value||'[DELIVERY DATE]';
+  var fee=parseFloat(document.getElementById('totalFee').value)||0;
+  var sym=CURR_SYM[document.getElementById('feeCurrency').value];
+  var rev=document.getElementById('revisions').value;
+  var extRev=document.getElementById('extraRevCost').value||'additional charges as agreed';
+  var ip=document.getElementById('ipOwner').value;
+  var conf=document.getElementById('confidentiality').value==='yes';
+  var jur=JURIS[document.getElementById('jurisdiction').value];
+  var disp=document.getElementById('dispute').value;
+  var ps=document.getElementById('paySchedule').value;
+
+  var freelancerFull=fn+(fb?' (trading as '+fb+')':'');
+  var clientFull=cn+(cc?', represented by '+cc:'');
+
+  var contract=`FREELANCE SERVICES AGREEMENT
+
+This Freelance Services Agreement ("Agreement") is entered into as of ${formatDate(sd)}, by and between:
+
+FREELANCER: ${freelancerFull}
+CLIENT: ${clientFull}
+
+Collectively referred to as "the Parties."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. SERVICES
+
+The Freelancer agrees to provide the following services:
+
+Project: ${pt}
+Description: ${pd}
+
+Deliverables:
+${del.split(',').map(function(d,i){return '  '+(i+1)+'. '+d.trim();}).join('\n')}
+
+2. PROJECT TIMELINE
+
+Commencement Date: ${formatDate(sd)}
+Delivery Date: ${formatDate(dd)}
+
+The Freelancer shall deliver the Deliverables on or before the Delivery Date, subject to timely feedback and approvals from the Client.
+
+3. COMPENSATION
+
+Total Project Fee: ${sym}${fee?fee.toLocaleString():'[AMOUNT]'}
+
+Payment Schedule: ${PAY_SCHEDULES[ps]}
+
+Payment shall be made via the agreed payment method. If payment is not received within 7 business days of the due date, the Freelancer reserves the right to suspend work and charge a late fee of 2% per month on outstanding balances.
+
+4. REVISIONS
+
+This Agreement includes ${rev} round(s) of revisions at no additional charge. Additional revisions beyond this limit will be charged at ${extRev}. A "revision" is defined as modifications within the agreed scope. New or significantly different requirements constitute a scope change and may require a new agreement.
+
+5. INTELLECTUAL PROPERTY
+
+${IP_CLAUSES[ip]}
+
+6. CONFIDENTIALITY${conf?`
+
+Both Parties agree to keep confidential all non-public information obtained in connection with this Agreement, including but not limited to business strategies, client lists, pricing, and technical information. This obligation survives termination of this Agreement for a period of two (2) years.`:`
+
+No confidentiality obligations apply under this Agreement.`}
+
+7. CANCELLATION AND TERMINATION
+
+Either Party may terminate this Agreement with 7 days' written notice. In the event of termination:
+• If terminated by the Client: The Client shall pay for all work completed to date, plus 30% of the remaining balance as a cancellation fee.
+• If terminated by the Freelancer: The Freelancer shall refund any deposit less the value of work completed.
+
+8. LIMITATION OF LIABILITY
+
+The Freelancer's total liability under this Agreement shall not exceed the Total Fee paid. The Freelancer is not liable for indirect, consequential, or incidental damages.
+
+9. INDEPENDENT CONTRACTOR
+
+The Freelancer is an independent contractor, not an employee of the Client. The Freelancer is responsible for their own taxes, social security contributions, and other obligations.
+
+10. DISPUTE RESOLUTION
+
+${disp==='mediation'?'The Parties shall attempt to resolve any dispute through good-faith mediation within 30 days. If mediation fails, disputes shall be subject to the courts of the governing jurisdiction.':disp==='arbitration'?'Any dispute shall be settled by binding arbitration in accordance with the applicable arbitration rules of the governing jurisdiction. The arbitrator\'s decision shall be final.':'Any dispute arising from this Agreement shall be submitted to the courts of the governing jurisdiction.'}
+
+11. GOVERNING LAW
+
+This Agreement shall be governed by and construed in accordance with the laws of ${jur}.
+
+12. ENTIRE AGREEMENT
+
+This Agreement constitutes the entire agreement between the Parties and supersedes all prior discussions. Any modifications must be in writing and signed by both Parties.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SIGNATURES
+
+FREELANCER: ${fn}
+Signature: _________________________ Date: _____________
+
+CLIENT: ${cn}
+Signature: _________________________ Date: _____________
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generated with AfroTools.com | This is a template — consult a lawyer for high-value projects.`;
+
+  document.getElementById('contractDoc').textContent=contract;
+}
+
+function formatDate(s){
+  if(!s)return '[DATE]';
+  return new Date(s).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+}
+
+function copyContract(){
+  navigator.clipboard.writeText(document.getElementById('contractDoc').textContent).then(function(){alert('Contract copied to clipboard!');});
+}
+
+buildContract();
+</script>
+
+<afro-footer></afro-footer>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Career Switch Financial Impact Calculator Africa | AfroTools</title>
+<meta name="description" content="Calculate the true financial cost of switching careers in Africa. Foregone income during retraining, break-even timeline, transition budget, alternative paths analysis.">
+<link rel="canonical" href="https://afrotools.com/tools/career-switch/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Career Switch Financial Impact Tool — Africa | AfroTools">
+<meta property="og:description" content="Cost of switching careers: retraining, job search gap, foregone income. Break-even timeline and risk assessment for African professionals.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/career-switch/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#6366F1;--en-accent-dark:#4F46E5;--en-accent-light:#E0E7FF;--en-accent-pale:#EEF2FF;--en-shadow-hover:0 4px 16px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)!important}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Career Tools","item":"https://afrotools.com/career/"},{"@type":"ListItem","position":3,"name":"Career Switch Calculator","item":"https://afrotools.com/tools/career-switch/"}]}</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="career"></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb"><a href="/">AfroTools</a><span class="en-breadcrumb-sep">/</span><a href="/career/">Career</a><span class="en-breadcrumb-sep">/</span><span class="en-breadcrumb-current">Career Switch Calculator</span></nav>
+    <h1>Career Switch <em>Financial Impact Tool</em></h1>
+    <p>Calculate the true financial cost of changing careers. Foregone income, retraining, job search gap, break-even timeline and alternative faster paths.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">🔀 Career Planning</span>
+      <span class="en-tool-hero-pill">📊 Break-Even Analysis</span>
+      <span class="en-tool-hero-pill">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout">
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">💼</div>Your Current Career</div>
+    <div class="en-form-grid en-form-grid-2">
+      <div class="en-field">
+        <label class="en-label">Current Monthly Salary</label>
+        <input class="en-input" type="number" id="currentSal" placeholder="e.g. 500000">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Currency</label>
+        <select class="en-select" id="currency">
+          <option value="NGN">Nigerian Naira (₦)</option>
+          <option value="KES">Kenyan Shilling (KES)</option>
+          <option value="ZAR">South African Rand (R)</option>
+          <option value="GHS">Ghanaian Cedi (GHS)</option>
+          <option value="USD">US Dollar ($)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Monthly Benefits Value (pension, health, allowances)</label>
+        <input class="en-input" type="number" id="currentBenefits" value="0" placeholder="Optional">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Current Role Satisfaction (1–10)</label>
+        <input class="en-input" type="number" id="satisfaction" value="4" min="1" max="10">
+      </div>
+    </div>
+  </div>
+
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">🎯</div>Target Career</div>
+    <div class="en-form-grid en-form-grid-2">
+      <div class="en-field">
+        <label class="en-label">Expected New Monthly Salary</label>
+        <input class="en-input" type="number" id="newSal" placeholder="Starting salary in new career">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Retraining Cost (total)</label>
+        <input class="en-input" type="number" id="retrainCost" placeholder="Course fees, bootcamp, degree etc">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Time to Retrain (Months)</label>
+        <input class="en-input" type="number" id="retrainMonths" value="6" min="0" max="48">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Job Search Time After Training (Months)</label>
+        <input class="en-input" type="number" id="searchMonths" value="3" min="0" max="18">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Will you earn during retraining?</label>
+        <select class="en-select" id="partTimeIncome">
+          <option value="0">No income during retraining</option>
+          <option value="0.5">50% income (part-time study)</option>
+          <option value="0.75">75% income (evening classes)</option>
+          <option value="1">Full income (online/self-paced)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Annual Salary Growth in New Career (%)</label>
+        <input class="en-input" type="number" id="growthRate" value="12" min="0" max="50">
+      </div>
+    </div>
+    <div class="en-form-actions">
+      <button class="en-btn en-btn-full" onclick="calcSwitch()">Calculate Career Switch Impact →</button>
+    </div>
+  </div>
+
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-grid">
+        <div>
+          <div class="en-results-hero-label">Total Cost of Switching</div>
+          <div class="en-results-hero-value" id="totalCost">₦0</div>
+          <div class="en-results-hero-sub" id="breakEvenLabel">Break-even in 0 months</div>
+        </div>
+        <div class="en-results-hero-aside">
+          <div style="font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:4px">Monthly Gain After Switch</div>
+          <div style="font-size:1.8rem;font-weight:900;color:var(--en-accent)" id="monthlyGain">₦0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="en-metrics" id="metricsArea"></div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">📊</div>5-Year Financial Projection</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Year</th><th>Current Career Cumulative</th><th>New Career Cumulative</th><th>New vs Current</th></tr></thead>
+          <tbody id="projectionBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">💡</div>Alternative Faster Paths</div>
+      <div id="alternativePaths" style="font-size:.88rem;color:#475569;line-height:1.8"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var CURR_SYM={NGN:'₦',KES:'KES ',ZAR:'R',GHS:'GHS ',USD:'$'};
+
+function fmt(n,sym){return sym+Math.round(Math.abs(n)).toLocaleString();}
+
+function calcSwitch(){
+  var sym=CURR_SYM[document.getElementById('currency').value];
+  var cur=parseFloat(document.getElementById('currentSal').value)||0;
+  var ben=parseFloat(document.getElementById('currentBenefits').value)||0;
+  var newSal=parseFloat(document.getElementById('newSal').value)||0;
+  var retrainCost=parseFloat(document.getElementById('retrainCost').value)||0;
+  var retrainMos=parseInt(document.getElementById('retrainMonths').value)||0;
+  var searchMos=parseInt(document.getElementById('searchMonths').value)||0;
+  var partTime=parseFloat(document.getElementById('partTimeIncome').value)||0;
+  var growth=parseFloat(document.getElementById('growthRate').value)/100;
+  var satisfaction=parseInt(document.getElementById('satisfaction').value)||4;
+
+  var curTotal=cur+ben;
+  var forfeited=curTotal*retrainMos*(1-partTime); // income lost during training
+  var searchGap=curTotal*searchMos; // no income during job search
+  var totalCost=retrainCost+forfeited+searchGap;
+  var monthlyGain=newSal-curTotal;
+  var breakEven=monthlyGain>0?Math.ceil(totalCost/monthlyGain):999;
+
+  document.getElementById('totalCost').textContent=fmt(totalCost,sym);
+  document.getElementById('breakEvenLabel').textContent=monthlyGain>0?'Break-even in '+breakEven+' months after starting new role':'New salary is lower — only worth it for job satisfaction';
+  document.getElementById('monthlyGain').textContent=(monthlyGain>=0?'+':'-')+fmt(Math.abs(monthlyGain),sym);
+
+  var metrics=[
+    {label:'Retraining Cost',value:fmt(retrainCost,sym),unit:'direct cost'},
+    {label:'Foregone Income',value:fmt(forfeited,sym),unit:retrainMos+' months training'},
+    {label:'Job Search Gap',value:fmt(searchGap,sym),unit:searchMos+' months searching'},
+    {label:'Break-Even Time',value:breakEven<900?breakEven+' months':'N/A',unit:breakEven<900?'after starting':'lower salary'}
+  ];
+  document.getElementById('metricsArea').innerHTML=metrics.map(function(m){
+    return '<div class="en-metric"><div class="en-metric-label">'+m.label+'</div><div class="en-metric-value">'+m.value+'</div><div class="en-metric-unit">'+m.unit+'</div></div>';
+  }).join('');
+
+  // 5-year projection
+  var gap=retrainMos+searchMos;
+  var rows='';
+  var cumCurrent=0,cumNew=-totalCost;
+  for(var yr=1;yr<=5;yr++){
+    var moStart=(yr-1)*12;
+    var moEnd=yr*12;
+    for(var mo=moStart;mo<moEnd;mo++){
+      cumCurrent+=curTotal;
+      if(mo>=gap){
+        var newSalNow=newSal*Math.pow(1+growth/12,mo-gap);
+        cumNew+=newSalNow;
+      }
+    }
+    var diff=cumNew-cumCurrent;
+    rows+='<tr>'+
+      '<td>Year '+yr+'</td>'+
+      '<td>'+fmt(cumCurrent,sym)+'</td>'+
+      '<td>'+fmt(Math.max(0,cumNew),sym)+'</td>'+
+      '<td style="color:'+(diff>0?'#16a34a':'#dc2626');
+    rows+='">'+( diff>0?'+'+fmt(diff,sym):'-'+fmt(Math.abs(diff),sym))+'</td></tr>';
+  }
+  document.getElementById('projectionBody').innerHTML=rows;
+
+  var altPaths='<strong>Faster alternative paths to consider:</strong><br><br>'+
+    '1. <strong>Part-time study</strong> — Take evening/online courses while employed. Cost: same, time: 50% longer, income impact: minimal. Best for professional certifications.<br><br>'+
+    '2. <strong>Internal pivot</strong> — Move to adjacent role within current company. No job search gap, may offer retraining budget. Timeline: 3–6 months vs '+gap+' months.<br><br>'+
+    '3. <strong>Bootcamp (intensive)</strong> — Tech/digital marketing/finance bootcamps compress learning to 3–6 months with job placement support. Cost higher but faster break-even.<br><br>'+
+    '4. <strong>Freelance bridge</strong> — Take freelance projects in new field while employed to build portfolio before full switch. Reduces risk significantly.<br><br>'+
+    (satisfaction<5?'<strong>Note:</strong> Your satisfaction score ('+satisfaction+'/10) suggests switching is worth pursuing even with financial cost. Low satisfaction reduces productivity and affects long-term earnings anyway.':'<strong>Note:</strong> Your satisfaction score ('+satisfaction+'/10) suggests current role isn\'t critical to escape. Weigh financial impact carefully.');
+
+  document.getElementById('alternativePaths').innerHTML=altPaths;
+  document.getElementById('results').className='en-results on';
+}
+</script>
+
+<afro-footer></afro-footer>
+</body>
+</html>

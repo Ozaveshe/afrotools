@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Graphic Design Pricing Calculator — Africa | AfroTools</title>
+<meta name="description" content="Set profitable freelance graphic design prices in Africa. Logo, brand identity, UI design, packaging — NGN market rates with international benchmarks.">
+<link rel="canonical" href="https://afrotools.com/tools/graphic-design-pricing/">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+:root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+</style>
+</head>
+<body>
+<afro-navbar theme="dark" active="creative"></afro-navbar>
+<section class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/creative/">Creative Economy</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">Graphic Design Pricing</span>
+    </nav>
+    <h1>Graphic Design <em>Pricing Calculator</em></h1>
+    <p>Set profitable prices for graphic design projects in Africa. Logo, brand identity, UI/UX, packaging, social media content — African market rates with international benchmark comparison.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">&#x1f58c;&#xfe0f; Design</span>
+      <span class="en-tool-hero-pill">&#x1f4b0; Freelance</span>
+      <span class="en-tool-hero-pill">&#x1f4ca; Quote Builder</span>
+    </div>
+  </div>
+</section>
+<div class="en-tool-layout">
+  <div class="en-card">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f3a8;</div>Project Details</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Country</label>
+        <select id="country" class="en-select">
+          <option value="NG">Nigeria 🇳🇬 (NGN)</option>
+          <option value="KE">Kenya 🇰🇪 (KES)</option>
+          <option value="ZA">South Africa 🇿🇦 (ZAR)</option>
+          <option value="GH">Ghana 🇬🇭 (GHS)</option>
+          <option value="EG">Egypt 🇪🇬 (EGP)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Project Type</label>
+        <select id="projectType" class="en-select" onchange="setDefaults()">
+          <option value="logo">Logo Design</option>
+          <option value="brand_identity">Brand Identity (full)</option>
+          <option value="flyer">Flyer / Poster</option>
+          <option value="social_post">Social Media Post</option>
+          <option value="banner">Banner / Billboard</option>
+          <option value="book_cover">Book Cover</option>
+          <option value="packaging">Packaging Design</option>
+          <option value="ui_design">UI / App Design</option>
+          <option value="illustration">Custom Illustration</option>
+          <option value="pitch_deck">Pitch Deck / Presentation</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Experience Level</label>
+        <select id="experience" class="en-select">
+          <option value="junior">Junior (0–2 yrs)</option>
+          <option value="mid" selected>Mid-Level (2–5 yrs)</option>
+          <option value="senior">Senior (5+ yrs)</option>
+          <option value="expert">Expert / Award-winning</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Concepts Included</label>
+        <select id="concepts" class="en-select">
+          <option value="1">1 concept</option>
+          <option value="2" selected>2 concepts</option>
+          <option value="3">3 concepts</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Revisions</label>
+        <select id="revisions" class="en-select">
+          <option value="2">2 revisions</option>
+          <option value="3" selected>3 revisions</option>
+          <option value="unlimited">Unlimited (+20%)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Timeline</label>
+        <select id="timeline" class="en-select">
+          <option value="standard">Standard (5–10 days)</option>
+          <option value="rush">Rush (1–2 days) +40%</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Commercial License Required?</label>
+        <select id="license" class="en-select">
+          <option value="no">No — internal use</option>
+          <option value="yes">Yes (+30%)</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Estimated Hours</label>
+        <input type="number" id="hours" class="en-input" value="8" min="1">
+      </div>
+    </div>
+  </div>
+  <div class="en-form-actions">
+    <button class="en-btn en-btn-full" onclick="calculate()">Calculate Design Price</button>
+  </div>
+  <div class="en-results" id="results">
+    <div class="en-results-hero">
+      <div class="en-results-hero-inner">
+        <div class="en-results-hero-grid">
+          <div>
+            <div class="en-results-hero-label">Recommended Price</div>
+            <div class="en-results-hero-value" id="recPrice">₦0</div>
+            <div class="en-results-hero-sub" id="priceRange"></div>
+          </div>
+          <div class="en-results-hero-aside">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Hourly Rate</div>
+            <div style="font-size:1.5rem;font-weight:800;color:var(--en-accent)" id="hourlyRate">₦0/hr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="en-metrics" id="metrics"></div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4ca;</div>International Rate Benchmark</div>
+      <div class="en-results-table-wrap">
+        <table class="en-results-table">
+          <thead><tr><th>Market</th><th>Typical Range</th><th>Your Price</th><th>vs International</th></tr></thead>
+          <tbody id="benchmarkTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="en-tip">
+      <div class="en-tip-icon">&#x1f4a1;</div>
+      <div class="en-tip-body">
+        <div class="en-tip-label">International Client Tip</div>
+        <div class="en-tip-text">Nigerian designers charging international clients on Upwork, Fiverr, or direct can earn 3–5x local rates in USD. A Nigerian logo designer charging ₦50,000 locally can charge $150–$400 for the same work from a US client. Build your portfolio with 5–10 strong projects and start applying to international job boards.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+var BASE={
+  NG:{logo:[20000,80000],brand_identity:[150000,600000],flyer:[5000,20000],social_post:[3000,12000],banner:[10000,35000],book_cover:[25000,80000],packaging:[80000,300000],ui_design:[150000,600000],illustration:[30000,150000],pitch_deck:[50000,200000]},
+  KE:{logo:[2000,8000],brand_identity:[15000,60000],flyer:[500,2000],social_post:[300,1200],banner:[1000,3500],book_cover:[2500,8000],packaging:[8000,30000],ui_design:[15000,60000],illustration:[3000,15000],pitch_deck:[5000,20000]},
+  ZA:{logo:[500,2500],brand_identity:[4000,18000],flyer:[200,700],social_post:[100,400],banner:[300,1200],book_cover:[700,2500],packaging:[2500,10000],ui_design:[4000,18000],illustration:[900,4500],pitch_deck:[1500,6000]},
+  GH:{logo:[300,1200],brand_identity:[2000,9000],flyer:[100,400],social_post:[80,300],banner:[200,700],book_cover:[400,1500],packaging:[1500,6000],ui_design:[2000,9000],illustration:[500,2500],pitch_deck:[800,3500]},
+  EG:{logo:[800,3500],brand_identity:[6000,25000],flyer:[300,1200],social_post:[200,800],banner:[600,2500],book_cover:[1200,5000],packaging:[4000,18000],ui_design:[6000,25000],illustration:[1500,7000],pitch_deck:[2500,10000]}
+};
+var EXP_MULT={junior:0.6,mid:1.0,senior:1.5,expert:2.5};
+var INT_RATES={logo:'$150–$800',brand_identity:'$1,500–$8,000',flyer:'$50–$300',social_post:'$30–$150',banner:'$100–$500',book_cover:'$200–$800',packaging:'$500–$3,000',ui_design:'$2,000–$15,000',illustration:'$200–$1,500',pitch_deck:'$500–$3,000'};
+var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
+var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function setDefaults(){
+  var hrs={logo:8,brand_identity:24,flyer:2,social_post:1,banner:3,book_cover:6,packaging:20,ui_design:40,illustration:12,pitch_deck:16};
+  var type=document.getElementById('projectType').value;
+  if(hrs[type]) document.getElementById('hours').value=hrs[type];
+}
+function calculate(){
+  var country=document.getElementById('country').value;
+  var type=document.getElementById('projectType').value;
+  var exp=document.getElementById('experience').value;
+  var concepts=parseInt(document.getElementById('concepts').value)||2;
+  var revisions=document.getElementById('revisions').value;
+  var timeline=document.getElementById('timeline').value;
+  var license=document.getElementById('license').value;
+  var hours=parseFloat(document.getElementById('hours').value)||8;
+  var sym=SYM[country];var rate=FX[country];
+  var baseRange=BASE[country]&&BASE[country][type]?BASE[country][type]:[10000,50000];
+  var expMult=EXP_MULT[exp]||1;
+  var conceptsMult=1+(concepts-1)*0.3;
+  var revMult=revisions==='unlimited'?1.2:1;
+  var timelineMult=timeline==='rush'?1.4:1;
+  var licenseMult=license==='yes'?1.3:1;
+  var price=(baseRange[0]+baseRange[1])/2*expMult*conceptsMult*revMult*timelineMult*licenseMult;
+  var min=baseRange[0]*expMult*conceptsMult;
+  var max=baseRange[1]*expMult*conceptsMult*timelineMult*licenseMult;
+  var hourly=price/hours;
+  document.getElementById('recPrice').textContent=sym+fmt(price);
+  document.getElementById('priceRange').textContent='Range: '+sym+fmt(min)+' – '+sym+fmt(max);
+  document.getElementById('hourlyRate').textContent=sym+fmt(hourly)+'/hr';
+  document.getElementById('metrics').innerHTML=
+    '<div class="en-metric"><div class="en-metric-label">Base Price</div><div class="en-metric-value">'+sym+fmt((baseRange[0]+baseRange[1])/2)+'</div><div class="en-metric-unit">'+exp+' level</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Experience Premium</div><div class="en-metric-value">'+expMult+'x</div><div class="en-metric-unit">'+exp+' multiplier</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Add-ons</div><div class="en-metric-value">+'+(Math.round((conceptsMult*revMult*timelineMult*licenseMult-1)*100))+'%</div><div class="en-metric-unit">Concepts/rush/license</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">USD Equivalent</div><div class="en-metric-value">$'+fmt(price/rate)+'</div><div class="en-metric-unit">At current FX</div></div>';
+  var intRate=INT_RATES[type]||'$200–$2,000';
+  var intMidUSD=parseInt(intRate.replace(/[^0-9–]/g,'').split('–')[1]||500);
+  var yourUSD=price/rate;
+  var pctOfInt=Math.round(yourUSD/intMidUSD*100);
+  document.getElementById('benchmarkTable').innerHTML=
+    '<tr><td class="en-td-value">Nigeria / Africa (local)</td><td>'+sym+fmt(baseRange[0])+' – '+sym+fmt(baseRange[1])+'</td><td class="en-td-highlight">'+sym+fmt(price)+'</td><td>Your local rate</td></tr>'+
+    '<tr><td class="en-td-value">International (USD)</td><td>'+intRate+'</td><td>$'+fmt(yourUSD)+'</td><td>'+pctOfInt+'% of intl rate</td></tr>'+
+    '<tr><td class="en-td-value">International (local equiv.)</td><td>'+sym+fmt(intMidUSD*0.5*rate)+'+</td><td></td><td>Charge this for intl clients</td></tr>';
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

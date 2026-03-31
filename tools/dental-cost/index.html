@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Dental Cost Calculator | AfroTools</title>
+<meta name="description" content="Estimate dental care costs across Africa. Compare prices for consultations, fillings, root canals, braces, and more in Nigeria, Kenya, South Africa, Ghana. See insurance savings and dental tourism options.">
+<link rel="canonical" href="https://afrotools.com/tools/dental-cost/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Dental Cost Calculator | AfroTools">
+<meta property="og:description" content="Estimate dental procedure costs in Nigeria, Kenya, South Africa, Ghana with or without insurance. Compare public vs private hospitals.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/dental-cost/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "African Dental Cost Calculator",
+      "url": "https://afrotools.com/tools/dental-cost/",
+      "description": "Estimate dental procedure costs across Africa with insurance comparison and dental tourism options.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Health Tools", "item": "https://afrotools.com/health/" },
+        { "@type": "ListItem", "position": 3, "name": "Dental Cost Calculator", "item": "https://afrotools.com/tools/dental-cost/" }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+*{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.5)}
+.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.15;margin:0 0 10px}
+h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:10px}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.card-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#7f1d1d,#dc2626);display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input[type=text],input[type=number]{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a;-webkit-appearance:none;appearance:none}
+select:focus,input:focus{outline:none;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.field{margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.toggle-group{display:flex;gap:0;border:1.5px solid #cbd5e1;border-radius:7px;overflow:hidden}
+.toggle-btn{flex:1;padding:8px 10px;border:none;background:#f8fafc;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;color:#64748b;transition:all .15s}
+.toggle-btn.active{background:#dc2626;color:#fff}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit;transition:all .15s}
+.btn-primary{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,.35)}
+.results-section{display:none}
+.results-section.visible{display:block}
+.cost-hero{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1px solid #fca5a5;border-radius:10px;padding:22px;text-align:center;margin-bottom:16px}
+.cost-hero .range{font-size:2rem;font-weight:800;color:#dc2626;line-height:1}
+.cost-hero .label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#991b1b;margin-top:6px}
+.cost-hero .note{font-size:.72rem;color:#b91c1c;margin-top:4px}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.compare-card{border-radius:8px;padding:16px;border:1px solid}
+.compare-card.public{background:#f0fdf4;border-color:#bbf7d0}
+.compare-card.private{background:#fef2f2;border-color:#fca5a5}
+.compare-card .ct{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.compare-card.public .ct{color:#166534}
+.compare-card.private .ct{color:#991b1b}
+.compare-card .cv{font-size:1.1rem;font-weight:800}
+.compare-card.public .cv{color:#16a34a}
+.compare-card.private .cv{color:#dc2626}
+.compare-card .cs{font-size:.72rem;color:#64748b;margin-top:2px}
+.insurance-box{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-bottom:16px}
+.insurance-box .ib-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#92400e;margin-bottom:8px}
+.insurance-box .ib-row{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;padding:4px 0;border-bottom:1px dashed #fde68a}
+.insurance-box .ib-row:last-child{border:none;font-weight:700;color:#92400e}
+.tourism-section{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-bottom:16px}
+.tourism-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#0369a1;margin-bottom:12px}
+.tourism-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #e0f2fe;font-size:.82rem}
+.tourism-row:last-child{border:none}
+.tourism-flag{font-size:1.1rem;margin-right:6px}
+.verdict-box{border-radius:8px;padding:14px;margin-top:8px;font-size:.82rem;line-height:1.6}
+.verdict-box.save{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.verdict-box.stay{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b}
+.section-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#dc2626;margin:18px 0 10px;display:flex;align-items:center;gap:6px}
+.tip-list{list-style:none;padding:0;margin:0}
+.tip-list li{font-size:.82rem;color:#475569;padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.tip-list li::before{content:"💡";flex-shrink:0;font-size:.85rem}
+.tip-list li:last-child{border:none}
+.faq-wrap{max-width:800px;margin:0 auto;padding:48px 24px}
+.faq-wrap h2{font-size:1.2rem;font-weight:800;margin-bottom:20px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"＋";font-size:1rem;color:#dc2626}
+details[open] .faq-item summary::after{content:"−"}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7;margin-bottom:0}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:12px 14px;font-size:.74rem;color:#78350f;line-height:1.6;margin-top:14px}
+.disclaimer strong{display:block;margin-bottom:3px}
+.proc-info{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-top:14px}
+.proc-info h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:0 0 8px}
+.proc-info p{font-size:.8rem;color:#475569;margin:0;line-height:1.6}
+@media(max-width:640px){
+  .tool-main-inner{grid-template-columns:1fr}
+  .compare-grid{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<afro-navbar theme="light" active="health"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> › <a href="/health/">Health</a> › <span>Dental Cost Calculator</span></div>
+    <h1>African <em>Dental Cost</em> Calculator</h1>
+    <p class="hero-sub">Estimate dental care costs across Africa. Compare public vs private hospitals, insurance savings, and dental tourism options — all in local currency.</p>
+    <div class="hero-badges">
+      <span class="badge">🦷 10 Procedures</span>
+      <span class="badge">🌍 6 Countries</span>
+      <span class="badge">🆓 Always Free</span>
+      <span class="badge">✅ Insurance Comparison</span>
+    </div>
+  </div>
+</section>
+
+<section class="tool-main">
+  <div class="tool-main-inner">
+    <!-- LEFT: Calculator -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">🦷</div>
+          <span class="card-title">Dental Cost Estimator</span>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="field">
+              <label for="dc-country">Country</label>
+              <select id="dc-country">
+                <option value="NG">🇳🇬 Nigeria (₦)</option>
+                <option value="KE">🇰🇪 Kenya (KSh)</option>
+                <option value="ZA">🇿🇦 South Africa (R)</option>
+                <option value="GH">🇬🇭 Ghana (GH₵)</option>
+                <option value="EG">🇪🇬 Egypt (EGP)</option>
+                <option value="TZ">🇹🇿 Tanzania (TZS)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="dc-procedure">Dental Procedure</label>
+              <select id="dc-procedure">
+                <option value="consultation">Consultation / Exam</option>
+                <option value="xray">Dental X-Ray</option>
+                <option value="scaling">Scaling & Polish (Cleaning)</option>
+                <option value="extraction">Tooth Extraction</option>
+                <option value="filling">Tooth Filling (Composite)</option>
+                <option value="rootCanal">Root Canal Treatment</option>
+                <option value="crown">Dental Crown</option>
+                <option value="dentures">Dentures (per plate)</option>
+                <option value="braces">Braces / Orthodontics</option>
+                <option value="whitening">Teeth Whitening</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Insurance / Coverage</label>
+            <div class="toggle-group">
+              <button class="toggle-btn active" onclick="setInsurance('none',this)">No Insurance</button>
+              <button class="toggle-btn" onclick="setInsurance('nhis',this)">NHIS / Public</button>
+              <button class="toggle-btn" onclick="setInsurance('private',this)">Private Insurance</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Hospital Type</label>
+            <div class="toggle-group">
+              <button class="toggle-btn active" onclick="setHospital('private',this)">Private Clinic</button>
+              <button class="toggle-btn" onclick="setHospital('public',this)">Public Hospital</button>
+              <button class="toggle-btn" onclick="setHospital('teaching',this)">Teaching Hospital</button>
+            </div>
+          </div>
+
+          <div class="disclaimer">
+            <strong>⚠️ Disclaimer</strong>
+            These are estimated ranges based on market surveys. Actual costs vary by location, dentist experience, and facility quality. Always get a written quote before treatment.
+          </div>
+
+          <button class="btn btn-primary" onclick="calculateDental()">Calculate Dental Cost →</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="results-section card" id="dc-results" style="margin-top:18px">
+        <div class="card-head">
+          <div class="card-icon">📊</div>
+          <span class="card-title">Cost Estimate</span>
+        </div>
+        <div class="card-body">
+          <div class="cost-hero">
+            <div class="range" id="dc-range">—</div>
+            <div class="label" id="dc-proc-label">Estimated cost range</div>
+            <div class="note" id="dc-hospital-note">Based on private clinic pricing</div>
+          </div>
+
+          <div class="compare-grid">
+            <div class="compare-card public">
+              <div class="ct">Public Hospital</div>
+              <div class="cv" id="dc-public-cost">—</div>
+              <div class="cs">Government subsidised</div>
+            </div>
+            <div class="compare-card private">
+              <div class="ct">Private Clinic</div>
+              <div class="cv" id="dc-private-cost">—</div>
+              <div class="cs">Market rate</div>
+            </div>
+          </div>
+
+          <div class="insurance-box" id="dc-insurance-box" style="display:none">
+            <div class="ib-title">💳 Insurance Savings Breakdown</div>
+            <div class="ib-row"><span>Full cost (no insurance)</span><span id="dc-ins-full">—</span></div>
+            <div class="ib-row"><span>Insurance covers</span><span id="dc-ins-covers">—</span></div>
+            <div class="ib-row"><span>Your out-of-pocket</span><span id="dc-ins-oop">—</span></div>
+          </div>
+
+          <div class="tourism-section" id="dc-tourism">
+            <div class="tourism-title">✈️ Dental Tourism Comparison (Average Procedure Cost in USD)</div>
+            <div class="tourism-row" id="dt-local"><span>🌍 <strong>Africa (your country)</strong></span><span id="dt-local-val">—</span></div>
+            <div class="tourism-row"><span><span class="tourism-flag">🇮🇳</span>India (dental tourism hub)</span><span id="dt-india">—</span></div>
+            <div class="tourism-row"><span><span class="tourism-flag">🇹🇷</span>Turkey (dental tourism hub)</span><span id="dt-turkey">—</span></div>
+            <div class="tourism-row"><span><span class="tourism-flag">🇹🇭</span>Thailand (dental tourism hub)</span><span id="dt-thailand">—</span></div>
+            <div class="verdict-box" id="dt-verdict"></div>
+          </div>
+
+          <div class="proc-info" id="dc-proc-info"></div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-wrap" style="padding:32px 0 0">
+        <h2>Frequently Asked Questions</h2>
+        <details class="faq-item">
+          <summary>Why is dental care so expensive in Africa?</summary>
+          <p>Dental care costs in Africa are driven by a shortage of trained dentists (Nigeria has ~1 dentist per 40,000 people vs WHO recommended 1 per 7,500), high cost of imported dental equipment and materials, limited dental insurance penetration (under 10% coverage in most countries), and concentration of practices in urban areas. Many Africans delay dental treatment until pain is severe, which leads to more expensive interventions like extractions or root canals instead of simple fillings.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does NHIS cover dental treatment in Nigeria/Ghana?</summary>
+          <p>In Nigeria, the National Health Insurance Scheme (NHIS) covers basic dental services including extractions and simple fillings at registered facilities, but cosmetic procedures (whitening, braces) are excluded. In Ghana, the National Health Insurance Authority (NHIA) covers basic oral health services. Coverage limits apply — always confirm with your HMO/insurance provider which procedures are included in your specific plan.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is dental tourism to India or Turkey worth it for Africans?</summary>
+          <p>For expensive procedures like implants, full-mouth rehabilitation, or braces, dental tourism can save 50–70% even after accounting for flights and accommodation. India (particularly Chennai and Delhi) and Turkey (Istanbul) are popular destinations with JCI-accredited dental hospitals. However, consider: follow-up care difficulties, warranty/guarantee concerns, and travel risks. Dental tourism makes most financial sense for procedures costing over $1,000 locally.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How often should I visit the dentist in Africa?</summary>
+          <p>WHO recommends dental check-ups every 6 months, but given cost constraints, most African oral health experts recommend at minimum once per year. Many people avoid the dentist until pain is unbearable — this typically turns a ₦10,000 filling into a ₦120,000 root canal. Regular scaling and polishing (every 6–12 months) prevents most serious dental diseases and is the most cost-effective dental investment.</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- RIGHT: Tips Sidebar -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">💡</div>
+          <span class="card-title">Dental Savings Tips</span>
+        </div>
+        <div class="card-body">
+          <ul class="tip-list">
+            <li>Teaching hospital dental schools offer 40–60% discounts — procedures done by supervised students</li>
+            <li>Ask for a <strong>treatment plan</strong> before agreeing. Get quotes from 2–3 dentists for major work</li>
+            <li>Scaling & polishing every 6 months prevents expensive root canals and extractions</li>
+            <li>Many private dental clinics offer payment plans (installments) for expensive procedures like braces</li>
+            <li>Check if your employer's group health plan includes dental — even basic coverage saves significantly</li>
+            <li>Early morning or weekday appointments sometimes attract 10–20% discounts at private clinics</li>
+            <li>HMO dental plans in Nigeria cost ₦5,000–20,000/year and can save hundreds of thousands on major work</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon">📋</div>
+          <span class="card-title">Procedure Guide</span>
+        </div>
+        <div class="card-body">
+          <div style="font-size:.78rem;line-height:1.7;color:#475569">
+            <p style="margin:0 0 10px"><strong style="color:#0f172a">Consultation:</strong> Initial exam, assessment. Always needed before other procedures.</p>
+            <p style="margin:0 0 10px"><strong style="color:#0f172a">Scaling & Polish:</strong> Removes tartar build-up. Prevents gum disease. Do every 6 months.</p>
+            <p style="margin:0 0 10px"><strong style="color:#0f172a">Filling:</strong> Repairs cavities. Composite (white) fillings cost more than amalgam (silver).</p>
+            <p style="margin:0 0 10px"><strong style="color:#0f172a">Root Canal:</strong> Removes infected tooth pulp. Saves the tooth from extraction.</p>
+            <p style="margin:0 0 10px"><strong style="color:#0f172a">Crown:</strong> Cap placed over damaged tooth. Usually follows root canal treatment.</p>
+            <p style="margin:0"><strong style="color:#0f172a">Braces:</strong> Orthodontic treatment. Duration 18–36 months. Metal braces cheapest.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head">
+          <div class="card-icon">🌍</div>
+          <span class="card-title">Africa Dental Facts</span>
+        </div>
+        <div class="card-body">
+          <div style="font-size:.78rem;color:#475569;line-height:1.7">
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9"><span>Nigeria dentist ratio</span><strong style="color:#dc2626">1:40,000</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9"><span>Kenya dentist ratio</span><strong style="color:#dc2626">1:14,000</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9"><span>S. Africa dentist ratio</span><strong style="color:#16a34a">1:5,200</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9"><span>Africans with dental ins.</span><strong style="color:#dc2626">&lt;8%</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9"><span>Adults with tooth decay</span><strong style="color:#dc2626">~60%</strong></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0"><span>WHO recommended visits</span><strong>2/year</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+var DENTAL_DATA = {
+  NG: {
+    currency: '₦', name: 'Nigeria', usdRate: 1600,
+    consultation: [3000,8000], xray: [3000,8000], scaling: [5000,15000],
+    extraction: [8000,25000], filling: [10000,30000], rootCanal: [40000,120000],
+    crown: [60000,200000], dentures: [80000,250000], braces: [300000,800000], whitening: [20000,60000],
+    public_discount: 0.5, teaching_discount: 0.4, insurance_nhis: 0.5, insurance_private: 0.4
+  },
+  KE: {
+    currency: 'KSh', name: 'Kenya', usdRate: 130,
+    consultation: [500,2000], xray: [500,2000], scaling: [1500,5000],
+    extraction: [1500,5000], filling: [2000,8000], rootCanal: [8000,25000],
+    crown: [15000,50000], dentures: [20000,60000], braces: [80000,200000], whitening: [5000,20000],
+    public_discount: 0.45, teaching_discount: 0.35, insurance_nhis: 0.4, insurance_private: 0.3
+  },
+  ZA: {
+    currency: 'R', name: 'South Africa', usdRate: 18.5,
+    consultation: [400,800], xray: [200,500], scaling: [500,1500],
+    extraction: [600,1500], filling: [800,2000], rootCanal: [3000,8000],
+    crown: [5000,15000], dentures: [8000,25000], braces: [30000,80000], whitening: [2000,8000],
+    public_discount: 0.7, teaching_discount: 0.5, insurance_nhis: 0.6, insurance_private: 0.5
+  },
+  GH: {
+    currency: 'GH₵', name: 'Ghana', usdRate: 13.5,
+    consultation: [50,150], xray: [50,150], scaling: [80,250],
+    extraction: [100,400], filling: [150,600], rootCanal: [600,2000],
+    crown: [1000,4000], dentures: [1500,5000], braces: [5000,15000], whitening: [400,1500],
+    public_discount: 0.5, teaching_discount: 0.4, insurance_nhis: 0.35, insurance_private: 0.3
+  },
+  EG: {
+    currency: 'EGP', name: 'Egypt', usdRate: 48,
+    consultation: [200,500], xray: [100,300], scaling: [300,800],
+    extraction: [400,1500], filling: [500,2000], rootCanal: [2000,8000],
+    crown: [3000,12000], dentures: [5000,20000], braces: [15000,50000], whitening: [2000,8000],
+    public_discount: 0.6, teaching_discount: 0.45, insurance_nhis: 0.45, insurance_private: 0.35
+  },
+  TZ: {
+    currency: 'TZS', name: 'Tanzania', usdRate: 2550,
+    consultation: [10000,30000], xray: [10000,25000], scaling: [20000,60000],
+    extraction: [20000,80000], filling: [30000,100000], rootCanal: [150000,400000],
+    crown: [200000,700000], dentures: [300000,900000], braces: [1000000,3000000], whitening: [80000,250000],
+    public_discount: 0.55, teaching_discount: 0.4, insurance_nhis: 0.4, insurance_private: 0.3
+  }
+};
+
+var PROC_INFO = {
+  consultation: 'Initial dental examination. The dentist checks all teeth, gums, and oral tissues. Usually required before any other procedure.',
+  xray: 'Dental radiograph to detect decay between teeth, under fillings, bone loss, or impacted teeth. OPG (panoramic) X-rays show all teeth at once.',
+  scaling: 'Professional removal of plaque and tartar (calculus) that cannot be removed by brushing. Includes polishing. Most important preventive treatment.',
+  extraction: 'Tooth removal. Simple extraction for visible teeth; surgical extraction for impacted or broken teeth (costs more).',
+  filling: 'Repairs a cavity (decayed area). Composite (white) resin fillings are tooth-coloured. Amalgam (silver) fillings are cheaper but less aesthetic.',
+  rootCanal: 'Removes infected pulp from inside the tooth to save it. Usually requires 2–3 visits. A crown is typically recommended afterwards.',
+  crown: 'Ceramic or metal cap placed over a weakened or root-canal-treated tooth to restore function and appearance.',
+  dentures: 'Removable false teeth. Complete dentures replace all teeth; partial dentures replace some. Cost shown is per arch (upper or lower).',
+  braces: 'Orthodontic treatment to straighten teeth and correct bite. Metal braces cheapest; ceramic and invisible aligners cost more. Treatment takes 18–36 months.',
+  whitening: 'Professional bleaching to lighten tooth colour. In-office whitening is faster and stronger than take-home kits.'
+};
+
+var TOURISM_DATA = {
+  consultation: {india:20, turkey:25, thailand:22},
+  xray: {india:15, turkey:20, thailand:18},
+  scaling: {india:30, turkey:40, thailand:35},
+  extraction: {india:30, turkey:50, thailand:40},
+  filling: {india:40, turkey:60, thailand:50},
+  rootCanal: {india:150, turkey:200, thailand:180},
+  crown: {india:250, turkey:350, thailand:300},
+  dentures: {india:400, turkey:600, thailand:500},
+  braces: {india:1200, turkey:1800, thailand:1500},
+  whitening: {india:150, turkey:250, thailand:200}
+};
+
+var selectedInsurance = 'none';
+var selectedHospital = 'private';
+
+function setInsurance(val, btn) {
+  selectedInsurance = val;
+  var btns = btn.parentNode.querySelectorAll('.toggle-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  btn.classList.add('active');
+}
+
+function setHospital(val, btn) {
+  selectedHospital = val;
+  var btns = btn.parentNode.querySelectorAll('.toggle-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  btn.classList.add('active');
+}
+
+function fmt(n, currency) {
+  return currency + n.toLocaleString();
+}
+
+function calculateDental() {
+  var country = document.getElementById('dc-country').value;
+  var procedure = document.getElementById('dc-procedure').value;
+  var d = DENTAL_DATA[country];
+  var range = d[procedure];
+  var lo = range[0], hi = range[1];
+
+  // Apply hospital discount
+  var loAdj = lo, hiAdj = hi;
+  var hospitalNote = 'Based on private clinic pricing';
+  if (selectedHospital === 'public') {
+    loAdj = Math.round(lo * (1 - d.public_discount));
+    hiAdj = Math.round(hi * (1 - d.public_discount));
+    hospitalNote = 'Based on public hospital pricing (subsidised)';
+  } else if (selectedHospital === 'teaching') {
+    loAdj = Math.round(lo * (1 - d.teaching_discount));
+    hiAdj = Math.round(hi * (1 - d.teaching_discount));
+    hospitalNote = 'Based on teaching hospital pricing';
+  }
+
+  // Public vs private comparison (always show private as reference)
+  var pubLo = Math.round(lo * (1 - d.public_discount));
+  var pubHi = Math.round(hi * (1 - d.public_discount));
+
+  document.getElementById('dc-range').textContent = d.currency + loAdj.toLocaleString() + ' – ' + d.currency + hiAdj.toLocaleString();
+
+  var procLabels = {
+    consultation:'Consultation / Exam', xray:'Dental X-Ray', scaling:'Scaling & Polish',
+    extraction:'Tooth Extraction', filling:'Tooth Filling', rootCanal:'Root Canal Treatment',
+    crown:'Dental Crown', dentures:'Dentures (per plate)', braces:'Braces / Orthodontics', whitening:'Teeth Whitening'
+  };
+  document.getElementById('dc-proc-label').textContent = procLabels[procedure];
+  document.getElementById('dc-hospital-note').textContent = hospitalNote;
+  document.getElementById('dc-public-cost').textContent = d.currency + pubLo.toLocaleString() + ' – ' + d.currency + pubHi.toLocaleString();
+  document.getElementById('dc-private-cost').textContent = d.currency + lo.toLocaleString() + ' – ' + d.currency + hi.toLocaleString();
+
+  // Insurance
+  var insBox = document.getElementById('dc-insurance-box');
+  if (selectedInsurance !== 'none') {
+    insBox.style.display = 'block';
+    var discount = selectedInsurance === 'nhis' ? d.insurance_nhis : d.insurance_private;
+    var midCost = Math.round((loAdj + hiAdj) / 2);
+    var covered = Math.round(midCost * discount);
+    var oop = midCost - covered;
+    document.getElementById('dc-ins-full').textContent = d.currency + midCost.toLocaleString();
+    document.getElementById('dc-ins-covers').textContent = d.currency + covered.toLocaleString() + ' (' + Math.round(discount*100) + '%)';
+    document.getElementById('dc-ins-oop').textContent = d.currency + oop.toLocaleString();
+  } else {
+    insBox.style.display = 'none';
+  }
+
+  // Tourism comparison
+  var t = TOURISM_DATA[procedure];
+  var midUSD = Math.round(((lo + hi) / 2) / d.usdRate);
+  document.getElementById('dt-local-val').textContent = '$' + midUSD + ' USD';
+  document.getElementById('dt-india').textContent = '$' + t.india + ' USD';
+  document.getElementById('dt-turkey').textContent = '$' + t.turkey + ' USD';
+  document.getElementById('dt-thailand').textContent = '$' + t.thailand + ' USD';
+
+  var verdictEl = document.getElementById('dt-verdict');
+  if (midUSD > t.india * 1.5) {
+    verdictEl.className = 'verdict-box save';
+    verdictEl.textContent = '✈️ Dental tourism could save you money on this procedure — especially when combined with other treatments. Factor in flights (~$400–800 from West Africa to India/Turkey).';
+  } else {
+    verdictEl.className = 'verdict-box stay';
+    verdictEl.textContent = '✅ Local treatment is cost-effective for this procedure. Dental tourism is not worth the hassle and travel costs for this type of work.';
+  }
+
+  // Procedure info
+  var procInfoEl = document.getElementById('dc-proc-info');
+  procInfoEl.innerHTML = '<h4>About: ' + procLabels[procedure] + '</h4><p>' + PROC_INFO[procedure] + '</p>';
+
+  var resultsEl = document.getElementById('dc-results');
+  resultsEl.classList.add('visible');
+  resultsEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>

@@ -1283,7 +1283,7 @@
   });
 
   // Download
-  downloadBtn.addEventListener('click', () => {
+  function doActualDownload() {
     if (!resultPdfBytes) return;
     const blob = new Blob([resultPdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
@@ -1293,6 +1293,11 @@
     a.download = baseName + '-header-footer.pdf';
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+
+  downloadBtn.addEventListener('click', () => {
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
   });
 </script>
 
@@ -1307,6 +1312,8 @@
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

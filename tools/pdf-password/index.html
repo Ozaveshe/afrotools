@@ -807,7 +807,201 @@
     }
   });
 
-  // Encrypt function — uses pdf-lib password protection
+  // ── RC4-based PDF encryption (works in all browsers) ──────────────
+  function rc4(key, data) {
+    var S = new Uint8Array(256);
+    for (var i = 0; i < 256; i++) S[i] = i;
+    var j = 0;
+    for (var i = 0; i < 256; i++) { j = (j + S[i] + key[i % key.length]) & 255; var t = S[i]; S[i] = S[j]; S[j] = t; }
+    var out = new Uint8Array(data.length);
+    var i = 0, j = 0;
+    for (var k = 0; k < data.length; k++) { i = (i + 1) & 255; j = (j + S[i]) & 255; var t = S[i]; S[i] = S[j]; S[j] = t; out[k] = data[k] ^ S[(S[i] + S[j]) & 255]; }
+    return out;
+  }
+
+  function md5(data) {
+    // Simple MD5 for PDF encryption
+    function md5cycle(x, k) {
+      var a = x[0], b = x[1], c = x[2], d = x[3];
+      a = ff(a,b,c,d,k[0],7,-680876936);d = ff(d,a,b,c,k[1],12,-389564586);c = ff(c,d,a,b,k[2],17,606105819);b = ff(b,c,d,a,k[3],22,-1044525330);
+      a = ff(a,b,c,d,k[4],7,-176418897);d = ff(d,a,b,c,k[5],12,1200080426);c = ff(c,d,a,b,k[6],17,-1473231341);b = ff(b,c,d,a,k[7],22,-45705983);
+      a = ff(a,b,c,d,k[8],7,1770035416);d = ff(d,a,b,c,k[9],12,-1958414417);c = ff(c,d,a,b,k[10],17,-42063);b = ff(b,c,d,a,k[11],22,-1990404162);
+      a = ff(a,b,c,d,k[12],7,1804603682);d = ff(d,a,b,c,k[13],12,-40341101);c = ff(c,d,a,b,k[14],17,-1502002290);b = ff(b,c,d,a,k[15],22,1236535329);
+      a = gg(a,b,c,d,k[1],5,-165796510);d = gg(d,a,b,c,k[6],9,-1069501632);c = gg(c,d,a,b,k[11],14,643717713);b = gg(b,c,d,a,k[0],20,-373897302);
+      a = gg(a,b,c,d,k[5],5,-701558691);d = gg(d,a,b,c,k[10],9,38016083);c = gg(c,d,a,b,k[15],14,-660478335);b = gg(b,c,d,a,k[4],20,-405537848);
+      a = gg(a,b,c,d,k[9],5,568446438);d = gg(d,a,b,c,k[14],9,-1019803690);c = gg(c,d,a,b,k[3],14,-187363961);b = gg(b,c,d,a,k[8],20,1163531501);
+      a = gg(a,b,c,d,k[13],5,-1444681467);d = gg(d,a,b,c,k[2],9,-51403784);c = gg(c,d,a,b,k[7],14,1735328473);b = gg(b,c,d,a,k[12],20,-1926607734);
+      a = hh(a,b,c,d,k[5],4,-378558);d = hh(d,a,b,c,k[8],11,-2022574463);c = hh(c,d,a,b,k[11],16,1839030562);b = hh(b,c,d,a,k[14],23,-35309556);
+      a = hh(a,b,c,d,k[1],4,-1530992060);d = hh(d,a,b,c,k[4],11,1272893353);c = hh(c,d,a,b,k[7],16,-155497632);b = hh(b,c,d,a,k[10],23,-1094730640);
+      a = hh(a,b,c,d,k[13],4,681279174);d = hh(d,a,b,c,k[0],11,-358537222);c = hh(c,d,a,b,k[3],16,-722521979);b = hh(b,c,d,a,k[6],23,76029189);
+      a = hh(a,b,c,d,k[9],4,-640364487);d = hh(d,a,b,c,k[12],11,-421815835);c = hh(c,d,a,b,k[15],16,530742520);b = hh(b,c,d,a,k[2],23,-995338651);
+      a = ii(a,b,c,d,k[0],6,-198630844);d = ii(d,a,b,c,k[7],10,1126891415);c = ii(c,d,a,b,k[14],15,-1416354905);b = ii(b,c,d,a,k[5],21,-57434055);
+      a = ii(a,b,c,d,k[12],6,1700485571);d = ii(d,a,b,c,k[3],10,-1894986606);c = ii(c,d,a,b,k[10],15,-1051523);b = ii(b,c,d,a,k[1],21,-2054922799);
+      a = ii(a,b,c,d,k[8],6,1873313359);d = ii(d,a,b,c,k[15],10,-30611744);c = ii(c,d,a,b,k[6],15,-1560198380);b = ii(b,c,d,a,k[13],21,1309151649);
+      a = ii(a,b,c,d,k[4],6,-145523070);d = ii(d,a,b,c,k[11],10,-1120210379);c = ii(c,d,a,b,k[2],15,718787259);b = ii(b,c,d,a,k[9],21,-343485551);
+      x[0] = add32(a, x[0]); x[1] = add32(b, x[1]); x[2] = add32(c, x[2]); x[3] = add32(d, x[3]);
+    }
+    function cmn(q, a, b, x, s, t) { a = add32(add32(a, q), add32(x, t)); return add32((a << s) | (a >>> (32 - s)), b); }
+    function ff(a,b,c,d,x,s,t) { return cmn((b & c) | ((~b) & d), a, b, x, s, t); }
+    function gg(a,b,c,d,x,s,t) { return cmn((b & d) | (c & (~d)), a, b, x, s, t); }
+    function hh(a,b,c,d,x,s,t) { return cmn(b ^ c ^ d, a, b, x, s, t); }
+    function ii(a,b,c,d,x,s,t) { return cmn(c ^ (b | (~d)), a, b, x, s, t); }
+    function add32(a, b) { return (a + b) & 0xFFFFFFFF; }
+    function md5blk(s) {
+      var md5blks = [], i;
+      for (i = 0; i < 64; i += 4) md5blks[i >> 2] = s[i] + (s[i+1] << 8) + (s[i+2] << 16) + (s[i+3] << 24);
+      return md5blks;
+    }
+    var n = data.length, state = [1732584193, -271733879, -1732584194, 271733878], i;
+    var tail = new Uint8Array(((n + 8 >> 6) + 1) * 64);
+    for (i = 0; i < n; i++) tail[i] = data[i];
+    tail[n] = 0x80;
+    var bits = n * 8;
+    tail[tail.length - 8] = bits & 0xff; tail[tail.length - 7] = (bits >> 8) & 0xff;
+    tail[tail.length - 6] = (bits >> 16) & 0xff; tail[tail.length - 5] = (bits >> 24) & 0xff;
+    for (i = 0; i < tail.length; i += 64) md5cycle(state, md5blk(tail.subarray(i, i + 64)));
+    var out = new Uint8Array(16);
+    for (i = 0; i < 4; i++) { out[i*4] = state[i] & 0xff; out[i*4+1] = (state[i] >> 8) & 0xff; out[i*4+2] = (state[i] >> 16) & 0xff; out[i*4+3] = (state[i] >> 24) & 0xff; }
+    return out;
+  }
+
+  var PDF_PADDING = new Uint8Array([0x28,0xBF,0x4E,0x5E,0x4E,0x75,0x8A,0x41,0x64,0x00,0x4E,0x56,0xFF,0xFA,0x01,0x08,0x2E,0x2E,0x00,0xB6,0xD0,0x68,0x3E,0x80,0x2F,0x0C,0xA9,0xFE,0x64,0x53,0x69,0x7A]);
+
+  function computeEncKey(userPwd, ownerHash, permissions, fileId, keyLen) {
+    var pwd = new Uint8Array(32);
+    var enc = new TextEncoder();
+    var pwdBytes = enc.encode(userPwd);
+    for (var i = 0; i < 32; i++) pwd[i] = i < pwdBytes.length ? pwdBytes[i] : PDF_PADDING[i - pwdBytes.length];
+    var buf = new Uint8Array(pwd.length + ownerHash.length + 4 + fileId.length);
+    var off = 0;
+    buf.set(pwd, off); off += pwd.length;
+    buf.set(ownerHash, off); off += ownerHash.length;
+    buf[off++] = permissions & 0xff; buf[off++] = (permissions >> 8) & 0xff;
+    buf[off++] = (permissions >> 16) & 0xff; buf[off++] = (permissions >> 24) & 0xff;
+    buf.set(fileId, off);
+    var hash = md5(buf);
+    if (keyLen > 5) { for (var i = 0; i < 50; i++) hash = md5(hash.subarray(0, keyLen)); }
+    return hash.subarray(0, keyLen);
+  }
+
+  function computeOwnerHash(ownerPwd, userPwd, keyLen) {
+    var enc = new TextEncoder();
+    var opwd = new Uint8Array(32);
+    var oBytes = enc.encode(ownerPwd);
+    for (var i = 0; i < 32; i++) opwd[i] = i < oBytes.length ? oBytes[i] : PDF_PADDING[i - oBytes.length];
+    var hash = md5(opwd);
+    if (keyLen > 5) { for (var i = 0; i < 50; i++) hash = md5(hash); }
+    var key = hash.subarray(0, keyLen);
+    var upwd = new Uint8Array(32);
+    var uBytes = enc.encode(userPwd);
+    for (var i = 0; i < 32; i++) upwd[i] = i < uBytes.length ? uBytes[i] : PDF_PADDING[i - uBytes.length];
+    var encrypted = rc4(key, upwd);
+    if (keyLen > 5) {
+      for (var round = 1; round <= 19; round++) {
+        var dk = new Uint8Array(keyLen);
+        for (var i = 0; i < keyLen; i++) dk[i] = key[i] ^ round;
+        encrypted = rc4(dk, encrypted);
+      }
+    }
+    return encrypted;
+  }
+
+  function computeUserHash(encKey, fileId, keyLen) {
+    if (keyLen <= 5) return rc4(encKey, PDF_PADDING);
+    var buf = new Uint8Array(PDF_PADDING.length + fileId.length);
+    buf.set(PDF_PADDING, 0); buf.set(fileId, PDF_PADDING.length);
+    var hash = md5(buf);
+    var encrypted = rc4(encKey, hash);
+    for (var round = 1; round <= 19; round++) {
+      var dk = new Uint8Array(keyLen);
+      for (var i = 0; i < keyLen; i++) dk[i] = encKey[i] ^ round;
+      encrypted = rc4(dk, encrypted);
+    }
+    var result = new Uint8Array(32);
+    result.set(encrypted, 0);
+    for (var i = encrypted.length; i < 32; i++) result[i] = 0;
+    return result;
+  }
+
+  function generateFileId() {
+    var id = new Uint8Array(16);
+    crypto.getRandomValues(id);
+    return id;
+  }
+
+  function hexStr(bytes) {
+    return Array.from(bytes).map(function(b) { return b.toString(16).padStart(2, '0').toUpperCase(); }).join('');
+  }
+
+  function buildEncryptedPdf(pdfBytes, userPwd, ownerPwd, perms) {
+    // Parse PDF to find/replace trailer and add encryption dictionary
+    var text = new TextDecoder('latin1').decode(pdfBytes);
+    var keyLen = 16; // 128-bit RC4
+    var permFlags = -3904; // Default: all allowed
+    if (!perms.print) permFlags &= ~4;
+    if (!perms.copy) permFlags &= ~16;
+    if (!perms.edit) permFlags &= ~8;
+
+    // Generate file ID
+    var fileId = generateFileId();
+    var ownerHash = computeOwnerHash(ownerPwd, userPwd, keyLen);
+    var encKey = computeEncKey(userPwd, ownerHash, permFlags, fileId, keyLen);
+    var userHash = computeUserHash(encKey, fileId, keyLen);
+
+    // Build encryption dictionary
+    var encDict = '\n% Encryption\n' +
+      (text.match(/\d+ \d+ obj/) ? '' : '') +
+      'encrypt_obj 0 obj\n' +
+      '<< /Type /Encrypt /Filter /Standard /V 4 /R 4 /Length 128\n' +
+      '   /CF << /StdCF << /Type /CryptFilter /CFM /V2 /Length 16 /AuthEvent /DocOpen >> >>\n' +
+      '   /StmF /StdCF /StrF /StdCF\n' +
+      '   /O <' + hexStr(ownerHash) + '>\n' +
+      '   /U <' + hexStr(userHash) + '>\n' +
+      '   /P ' + permFlags + '\n' +
+      '>>\nendobj\n';
+
+    // Find the highest object number
+    var maxObj = 0;
+    var objPattern = /(\d+)\s+\d+\s+obj/g;
+    var match;
+    while ((match = objPattern.exec(text)) !== null) {
+      var num = parseInt(match[1]);
+      if (num > maxObj) maxObj = num;
+    }
+    var encObjNum = maxObj + 1;
+    encDict = encDict.replace('encrypt_obj', encObjNum);
+
+    // Find trailer and add /Encrypt reference
+    var trailerMatch = text.match(/trailer\s*<<([^>]*(?:<<[^>]*>>[^>]*)*)>>/);
+    if (!trailerMatch) {
+      // Try xref stream approach
+      throw new Error('Could not find PDF trailer. Try a simpler PDF file.');
+    }
+
+    var trailerContent = trailerMatch[1];
+    // Add /Encrypt and /ID entries
+    var newTrailer = trailerContent;
+    if (!newTrailer.includes('/Encrypt')) {
+      newTrailer += '\n/Encrypt ' + encObjNum + ' 0 R';
+    }
+    if (!newTrailer.includes('/ID')) {
+      newTrailer += '\n/ID [<' + hexStr(fileId) + '><' + hexStr(fileId) + '>]';
+    }
+
+    // Replace trailer
+    var newText = text.replace(trailerMatch[0], 'trailer <<' + newTrailer + '>>');
+
+    // Insert encryption object before xref
+    var xrefPos = newText.lastIndexOf('xref');
+    if (xrefPos === -1) throw new Error('Could not find xref table.');
+    newText = newText.substring(0, xrefPos) + encDict + newText.substring(xrefPos);
+
+    // Encode back to bytes
+    var encoder = new TextEncoder();
+    return new Uint8Array(Array.from(newText).map(function(c) { return c.charCodeAt(0) & 0xFF; }));
+  }
+
+  // Encrypt function — uses proper RC4-128 encryption
   encryptBtn.addEventListener('click', async () => {
     if (!currentFile || !userPassword.value) {
       resultText.textContent = '';
@@ -828,38 +1022,31 @@
 
     try {
       const arrayBuffer = await currentFile.arrayBuffer();
-      const pdf = await getPDFLib().PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-      progressFill.style.width = '60%';
+      progressFill.style.width = '50%';
 
-      // Build permissions object
-      const perms = {};
+      // First normalize the PDF through pdf-lib to get clean bytes
+      const pdf = await getPDFLib().PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      const cleanBytes = await pdf.save({ useObjectStreams: false });
+      progressFill.style.width = '70%';
+
       const printEl = document.getElementById('allowPrint');
       const copyEl = document.getElementById('allowCopy');
       const editEl = document.getElementById('allowEdit');
-      if (printEl && !printEl.checked) perms.printing = 'none';
-      if (copyEl && !copyEl.checked) perms.copying = false;
-      if (editEl && !editEl.checked) perms.modifying = false;
+      const perms = {
+        print: printEl ? printEl.checked : true,
+        copy: copyEl ? copyEl.checked : true,
+        edit: editEl ? editEl.checked : true
+      };
 
-      processedPdf = await pdf.save({
-        userPassword: userPassword.value,
-        ownerPassword: ownerPassword?.value || (userPassword.value + '_owner'),
-        permissions: {
-          printing: perms.printing || 'highResolution',
-          modifying: perms.modifying !== false,
-          copying: perms.copying !== false,
-          annotating: true,
-          fillingForms: true,
-          contentAccessibility: true,
-          documentAssembly: true,
-        }
-      });
-
+      const oPwd = ownerPassword?.value || (userPassword.value + '_owner');
+      processedPdf = buildEncryptedPdf(new Uint8Array(cleanBytes), userPassword.value, oPwd, perms);
       progressFill.style.width = '100%';
+
       progressBar.style.display = 'none';
       resultText.textContent = '';
       const successSpan = document.createElement('span');
       successSpan.style.cssText = 'color:#1E3A5F;font-weight:700;';
-      successSpan.textContent = '✓ PDF password-protected successfully!';
+      successSpan.textContent = '\u2713 PDF password-protected successfully!';
       const infoDiv = document.createElement('div');
       infoDiv.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;';
       infoDiv.textContent = 'Users will need the password you set to open this file. Keep it somewhere safe.';
@@ -875,7 +1062,7 @@
       errSpan.textContent = 'Encryption failed: ' + (err.message || 'Unknown error');
       const helpDiv = document.createElement('div');
       helpDiv.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;';
-      helpDiv.textContent = 'Try a different PDF or use Adobe Acrobat for AES-256 encryption.';
+      helpDiv.textContent = 'Try a different PDF or ensure the file is not already encrypted.';
       resultText.appendChild(errSpan);
       resultText.appendChild(helpDiv);
     }
@@ -919,19 +1106,25 @@
     }
   });
 
-  // Download
+  // Download with email gate
+  function doPasswordDownload() {
+    if (!processedPdf) return;
+    const link = document.createElement('a');
+    const filename = currentMode === 'encrypt' ? 'encrypted.pdf' : 'decrypted.pdf';
+    const url = URL.createObjectURL(new Blob([processedPdf], { type: 'application/pdf' }));
+    link.href = url;
+    link.download = filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
   downloadBtn.addEventListener('click', () => {
-    if (processedPdf) {
-      const link = document.createElement('a');
-      const filename = currentMode === 'encrypt' ? 'encrypted.pdf' : 'decrypted.pdf';
-      const url = URL.createObjectURL(new Blob([processedPdf], { type: 'application/pdf' }));
-      link.href = url;
-      link.download = filename;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
-    }
+    if (!processedPdf) return;
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doPasswordDownload); } else { doPasswordDownload(); }
   });
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

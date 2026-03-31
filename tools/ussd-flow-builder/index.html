@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USSD Flow Builder — Visual USSD Menu Designer | AfroTools</title>
+<meta name="description" content="Build USSD menus visually. Add menu items, sub-menus, input fields. Preview on a simulated phone. Generate Africa's Talking API code snippet.">
+<link rel="canonical" href="https://afrotools.com/tools/ussd-flow-builder/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="USSD Flow Builder | AfroTools">
+<meta property="og:description" content="Visual USSD menu builder for African developers. Generate code for Africa's Talking API.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
+.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
+.builder-layout{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+@media(max-width:900px){.builder-layout{grid-template-columns:1fr}}
+.phone-wrap{position:sticky;top:80px}
+.phone{width:220px;margin:0 auto;background:#111;border-radius:28px;padding:10px;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.phone-screen{background:#1a1a2e;border-radius:20px;padding:16px 14px;min-height:280px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#e0e0e0;position:relative}
+.phone-header{text-align:center;color:#888;font-size:.65rem;margin-bottom:12px;border-bottom:1px solid #333;padding-bottom:8px}
+.phone-content{line-height:1.7;white-space:pre-wrap;word-break:break-all;color:#d4d4d4}
+.phone-input-line{display:flex;align-items:center;gap:6px;margin-top:10px;border-top:1px solid #333;padding-top:8px}
+.phone-prompt{color:#888;font-size:.7rem}
+.phone-cursor{display:inline-block;width:8px;height:14px;background:#8b5cf6;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.menu-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1.5px solid var(--en-border);border-radius:10px;margin-bottom:8px;background:#fff;cursor:move;transition:box-shadow .15s}
+.menu-item:hover{box-shadow:var(--en-shadow-hover);border-color:rgba(139,92,246,.35)}
+.menu-item-drag{color:#ccc;cursor:grab;flex-shrink:0}
+.menu-item-num{width:22px;height:22px;border-radius:6px;background:var(--en-accent-light);color:var(--en-accent-dark);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.menu-item-text{flex:1;font-size:.88rem;font-weight:600;color:var(--en-text)}
+.menu-item-type{font-size:.72rem;color:var(--en-muted);background:var(--en-border);padding:2px 6px;border-radius:5px}
+.menu-item-del{width:24px;height:24px;border-radius:6px;border:none;background:none;color:#ef4444;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;padding:0}
+.menu-item-del:hover{background:#fee2e2}
+.add-item-row{display:flex;gap:8px;flex-wrap:wrap}
+.add-item-row .en-input{flex:1;min-width:160px}
+.code-output{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:#0f0f1a;color:#c9d1d9;padding:18px;border-radius:10px;overflow-x:auto;white-space:pre;line-height:1.7;margin-top:0}
+.kw{color:#ff79c6}.fn{color:#8be9fd}.str{color:#50fa7b}.cmt{color:#6272a4}.num{color:#bd93f9}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--en-accent-light);color:var(--en-accent-dark);border:1.5px solid var(--en-accent-light);border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .15s;margin-bottom:12px}
+.copy-btn:hover{background:#ddd6fe}
+.copy-btn.copied{background:#d1fae5;color:#065f46;border-color:#d1fae5}
+.flow-diagram{display:flex;flex-direction:column;gap:0;align-items:flex-start}
+.flow-node{background:#fff;border:2px solid var(--en-accent-light);border-radius:10px;padding:10px 16px;font-size:.84rem;font-weight:600;color:var(--en-text);position:relative;min-width:180px}
+.flow-node.root{border-color:var(--en-accent);background:var(--en-accent-pale)}
+.flow-arrow{width:2px;height:20px;background:var(--en-accent-light);margin-left:16px;position:relative}
+.flow-arrow::after{content:'▼';position:absolute;bottom:-8px;left:-5px;color:var(--en-accent-light);font-size:.7rem}
+.flow-children{margin-left:32px;border-left:2px dashed var(--en-border);padding-left:16px;padding-top:8px}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="en-tool-hero">
+  <div class="en-tool-hero-inner">
+    <nav class="en-breadcrumb">
+      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
+      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
+      <span class="en-breadcrumb-current">USSD Flow Builder</span>
+    </nav>
+    <h1>USSD <em>Flow Builder</em></h1>
+    <p>Design USSD menus visually. Add menu items, sub-menus and input fields — then export the Africa's Talking API code with one click.</p>
+    <div class="en-tool-hero-meta">
+      <span class="en-tool-hero-pill">📞 USSD Designer</span>
+      <span class="en-tool-hero-pill">⚡ Africa's Talking snippet</span>
+      <span class="en-tool-hero-pill">📱 Phone simulator</span>
+    </div>
+  </div>
+</div>
+
+<div class="en-tool-layout-wide">
+  <div class="builder-layout">
+    <div>
+      <!-- Settings -->
+      <div class="en-card" style="margin-bottom:20px">
+        <div class="en-card-title"><span class="en-card-title-icon">⚙️</span> Menu Settings</div>
+        <div class="en-form-grid en-form-grid-2">
+          <div class="en-field">
+            <label class="en-label">USSD Code</label>
+            <input class="en-input" id="ussd-code" value="*384*123#" placeholder="e.g. *384*123#">
+          </div>
+          <div class="en-field">
+            <label class="en-label">Menu Title / Header</label>
+            <input class="en-input" id="menu-title" value="Welcome to MyApp" placeholder="Welcome text">
+          </div>
+          <div class="en-field">
+            <label class="en-label">Timeout (seconds)</label>
+            <input class="en-input" type="number" id="menu-timeout" value="20" min="5" max="120">
+          </div>
+          <div class="en-field">
+            <label class="en-label">Back Option Text</label>
+            <input class="en-input" id="back-text" value="0. Back" placeholder="e.g. 0. Back">
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu Items -->
+      <div class="en-card" style="margin-bottom:20px">
+        <div class="en-card-title"><span class="en-card-title-icon">📋</span> Menu Items</div>
+        <div id="menu-items-list"></div>
+        <div class="add-item-row" style="margin-top:12px">
+          <input class="en-input" id="new-item-text" placeholder="Menu item label…">
+          <select class="en-select" id="new-item-type" style="width:140px">
+            <option value="menu">Sub-menu</option>
+            <option value="input">Input field</option>
+            <option value="action">Action/End</option>
+          </select>
+          <button class="en-btn en-btn-sm" onclick="addItem()">+ Add</button>
+        </div>
+      </div>
+
+      <!-- Code Output -->
+      <div class="en-card">
+        <div class="en-card-title"><span class="en-card-title-icon">📝</span> Generated Code (Africa's Talking)</div>
+        <button class="copy-btn" id="copy-code-btn" onclick="copyCode()">📋 Copy Code</button>
+        <div class="code-output" id="code-output"></div>
+      </div>
+    </div>
+
+    <!-- Phone Preview -->
+    <div class="phone-wrap">
+      <div class="en-card" style="margin-bottom:12px;text-align:center">
+        <div class="en-card-title" style="justify-content:center"><span class="en-card-title-icon">📱</span> Live Preview</div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-header" id="phone-header">*384*123#</div>
+            <div class="phone-content" id="phone-content">Welcome to MyApp
+
+1. Check Balance
+2. Send Money
+3. Buy Airtime
+
+0. Exit</div>
+            <div class="phone-input-line">
+              <span class="phone-prompt">Reply:</span>
+              <span class="phone-cursor"></span>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:.72rem;color:var(--en-muted);margin-top:10px">Simulated USSD screen</p>
+      </div>
+
+      <!-- Flow Diagram -->
+      <div class="en-card">
+        <div class="en-card-title"><span class="en-card-title-icon">🗂️</span> Flow Diagram</div>
+        <div class="flow-diagram" id="flow-diagram"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+var items=[
+  {id:1,text:'Check Balance',type:'action'},
+  {id:2,text:'Send Money',type:'input'},
+  {id:3,text:'Buy Airtime',type:'menu'},
+];
+var nextId=4;
+
+function renderItems(){
+  var el=document.getElementById('menu-items-list');
+  if(!items.length){el.innerHTML='<p style="color:var(--en-muted);font-size:.88rem;text-align:center;padding:16px">No menu items yet. Add one below.</p>';return;}
+  el.innerHTML=items.map(function(item,i){
+    return '<div class="menu-item" data-id="'+item.id+'">'+
+      '<span class="menu-item-drag">⠿</span>'+
+      '<span class="menu-item-num">'+(i+1)+'</span>'+
+      '<input class="en-input" style="flex:1;padding:6px 10px;font-size:.88rem" value="'+escHtml(item.text)+'" onchange="updateItemText('+item.id+',this.value)">'+
+      '<span class="menu-item-type">'+item.type+'</span>'+
+      '<button class="menu-item-del" onclick="deleteItem('+item.id+')" title="Remove">✕</button>'+
+    '</div>';
+  }).join('');
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function addItem(){
+  var t=document.getElementById('new-item-text').value.trim();
+  if(!t)return;
+  items.push({id:nextId++,text:t,type:document.getElementById('new-item-type').value});
+  document.getElementById('new-item-text').value='';
+  update();
+}
+
+function deleteItem(id){items=items.filter(function(x){return x.id!==id;});update();}
+function updateItemText(id,val){var i=items.find(function(x){return x.id===id;});if(i)i.text=val;update();}
+
+function getTitle(){return document.getElementById('menu-title').value||'Welcome';}
+function getCode(){return document.getElementById('ussd-code').value||'*000#';}
+function getTimeout(){return document.getElementById('menu-timeout').value||'20';}
+function getBackText(){return document.getElementById('back-text').value||'0. Back';}
+
+function renderPreview(){
+  document.getElementById('phone-header').textContent=getCode();
+  var lines=[getTitle(),''];
+  items.forEach(function(item,i){lines.push((i+1)+'. '+item.text);});
+  lines.push('');
+  lines.push(getBackText().replace(/^0\./,'0.'));
+  document.getElementById('phone-content').textContent=lines.join('\n');
+}
+
+function renderFlow(){
+  var el=document.getElementById('flow-diagram');
+  var html='<div class="flow-node root">'+escHtml(getTitle())+' <small style="color:var(--en-muted)">['+getCode()+']</small></div>';
+  if(items.length){
+    html+='<div class="flow-arrow"></div>';
+    html+='<div class="flow-children">';
+    items.forEach(function(item,i){
+      var typeColor=item.type==='menu'?'var(--en-accent)':item.type==='input'?'#f59e0b':'#22c55e';
+      html+='<div class="flow-node" style="border-color:'+typeColor+';margin-bottom:8px"><span style="color:var(--en-muted);font-size:.75rem">'+(i+1)+'.</span> '+escHtml(item.text)+' <span style="font-size:.7rem;color:'+typeColor+';background:#f3f4f6;padding:1px 6px;border-radius:5px">'+item.type+'</span></div>';
+    });
+    html+='</div>';
+  }
+  el.innerHTML=html;
+}
+
+function renderCode(){
+  var title=getTitle();
+  var code=getCode();
+  var timeout=getTimeout();
+  var menuText=[title,''];
+  items.forEach(function(item,i){menuText.push((i+1)+'. '+item.text);});
+  menuText.push('');
+  menuText.push(getBackText());
+
+  var inputItems=items.filter(function(x){return x.type==='input';});
+  var codeLines=[
+    '<span class="cmt">// Africa\'s Talking USSD handler — Generated by AfroTools</span>',
+    '<span class="cmt">// USSD Code: '+code+' | Timeout: '+timeout+'s</span>',
+    '',
+    '<span class="kw">const</span> AfricasTalking = <span class="fn">require</span>(<span class="str">\'africastalking\'</span>);',
+    '<span class="kw">const</span> credentials = { apiKey: <span class="str">\'YOUR_API_KEY\'</span>, username: <span class="str">\'YOUR_USERNAME\'</span> };',
+    '<span class="kw">const</span> AT = <span class="fn">AfricasTalking</span>(credentials);',
+    '',
+    '<span class="cmt">// Express route handler</span>',
+    'app.<span class="fn">post</span>(<span class="str">\'/ussd\'</span>, (req, res) => {',
+    '  <span class="kw">const</span> { sessionId, serviceCode, phoneNumber, text } = req.body;',
+    '  <span class="kw">const</span> parts = text.<span class="fn">split</span>(<span class="str">\'*\'</span>);',
+    '  <span class="kw">const</span> level = parts.<span class="fn">filter</span>(p => p !== <span class="str">\'\'</span>).length;',
+    '  <span class="kw">let</span> response = <span class="str">\'\'</span>;',
+    '',
+    '  <span class="kw">if</span> (!text || text === <span class="str">\'\'</span>) {',
+    '    <span class="cmt">// Initial menu</span>',
+    '    response = <span class="str">\'CON '+menuText.map(function(l){return l.replace(/'/g,"\\'");}).join('\\n')+' \'</span>;',
+    '  }',
+  ];
+
+  items.forEach(function(item,i){
+    var n=i+1;
+    if(item.type==='action'){
+      codeLines.push('  <span class="kw">else if</span> (text === <span class="str">\''+n+'\'</span>) {');
+      codeLines.push('    <span class="cmt">// '+escHtml(item.text)+'</span>');
+      codeLines.push('    response = <span class="str">\'END '+escHtml(item.text)+' processed successfully.\'</span>;');
+      codeLines.push('  }');
+    } else if(item.type==='input'){
+      codeLines.push('  <span class="kw">else if</span> (text === <span class="str">\''+n+'\'</span>) {');
+      codeLines.push('    response = <span class="str">\'CON Enter value for '+escHtml(item.text)+':\'</span>;');
+      codeLines.push('  }');
+      codeLines.push('  <span class="kw">else if</span> (text.<span class="fn">startsWith</span>(<span class="str">\''+n+'*\'</span>)) {');
+      codeLines.push('    <span class="kw">const</span> inputVal = parts[<span class="num">1</span>];');
+      codeLines.push('    <span class="cmt">// Process inputVal for: '+escHtml(item.text)+'</span>');
+      codeLines.push('    response = <span class="str">\'END Received: \'</span> + inputVal;');
+      codeLines.push('  }');
+    } else {
+      codeLines.push('  <span class="kw">else if</span> (text === <span class="str">\''+n+'\'</span>) {');
+      codeLines.push('    response = <span class="str">\'CON '+escHtml(item.text)+' sub-menu:\\n1. Option A\\n2. Option B\\n0. Back\'</span>;');
+      codeLines.push('  }');
+    }
+  });
+
+  codeLines=codeLines.concat([
+    '  <span class="kw">else</span> {',
+    '    response = <span class="str">\'END Invalid selection. Please try again.\'</span>;',
+    '  }',
+    '',
+    '  res.<span class="fn">set</span>(<span class="str">\'Content-Type\'</span>, <span class="str">\'text/plain\'</span>);',
+    '  res.<span class="fn">send</span>(response);',
+    '});',
+  ]);
+
+  document.getElementById('code-output').innerHTML=codeLines.join('\n');
+}
+
+function update(){
+  renderItems();
+  renderPreview();
+  renderFlow();
+  renderCode();
+}
+
+function copyCode(){
+  var code=document.getElementById('code-output').innerText||document.getElementById('code-output').textContent;
+  navigator.clipboard.writeText(code).then(function(){
+    var btn=document.getElementById('copy-code-btn');
+    btn.textContent='✅ Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='📋 Copy Code';btn.classList.remove('copied');},2000);
+  });
+}
+
+document.getElementById('new-item-text').addEventListener('keydown',function(e){if(e.key==='Enter')addItem();});
+['menu-title','ussd-code','menu-timeout','back-text'].forEach(function(id){
+  document.getElementById(id).addEventListener('input',function(){update();});
+});
+
+update();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

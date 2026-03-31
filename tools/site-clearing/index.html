@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Clearing Cost Estimator Africa | AfroTools</title>
+<meta name="description" content="Estimate land clearing and site preparation costs across Africa. Bush clearing, tree felling, topsoil removal, and earthworks.">
+<meta property="og:title" content="Site Clearing Cost Estimator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/site-clearing/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/site-clearing/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/site-clearing/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/site-clearing/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Site Clearing Cost Estimator","item":"https://afrotools.com/tools/site-clearing/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/engineering/">Engineering</a></li>
+    <li aria-current="page">Site Clearing Cost Estimator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Site Clearing Cost Estimator</h1>
+    <p>Calculate land clearing, tree felling, topsoil removal, and site preparation costs before construction begins across Africa.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Site Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Country</label>
+          <select class="en-select" id="sc-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">South Africa (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Egypt (EGP)</option><option value="ET">Ethiopia (ETB)</option><option value="TZ">Tanzania (TZS)</option><option value="UG">Uganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Morocco (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Site Area (m²)</label>
+          <input type="number" class="en-input" id="sc-area" value="1000" min="50">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Vegetation Density</label>
+          <select class="en-select" id="sc-veg">
+            <option value="light">Light — grass and shrubs only</option>
+            <option value="medium" selected>Medium — scattered trees and bush</option>
+            <option value="dense">Dense — forest / thick bush</option>
+            <option value="cleared">Already cleared — no vegetation</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Terrain Type</label>
+          <select class="en-select" id="sc-terrain">
+            <option value="flat">Flat (0–5% slope)</option>
+            <option value="gentle">Gentle slope (5–15%)</option>
+            <option value="steep">Steep (15–30%)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Topsoil Removal Required?</label>
+          <select class="en-select" id="sc-topsoil">
+            <option value="yes" selected>Yes — 150–300mm depth</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Large Trees to Fell (>300mm dia)</label>
+          <input type="number" class="en-input" id="sc-trees" value="3" min="0" max="500">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Old Structure / Demolition on Site?</label>
+          <select class="en-select" id="sc-demo">
+            <option value="none">None</option>
+            <option value="small">Small structure (shed / wall)</option>
+            <option value="medium">Medium building (&lt;200m²)</option>
+            <option value="large">Large building (&gt;200m²)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Waste Disposal Method</label>
+          <select class="en-select" id="sc-waste">
+            <option value="burn">Burn on site (common, check local bylaws)</option>
+            <option value="haul">Haul to dump</option>
+            <option value="chip">Chip / compost trees on site</option>
+          </select>
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcSiteClearing()">Calculate Clearing Cost</button>
+    </div>
+
+    <div class="en-results" id="sc-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="sc-headline">Site Clearing Cost Estimate</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Vegetation Clearing</div><div class="en-stat-value" id="sc-veg-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Tree Felling</div><div class="en-stat-value" id="sc-tree-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Topsoil Removal</div><div class="en-stat-value" id="sc-top-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Demolition</div><div class="en-stat-value" id="sc-demo-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Waste Disposal</div><div class="en-stat-value" id="sc-waste-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Total Site Clearing</div><div class="en-stat-value" id="sc-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Cost per m²</div><div class="en-stat-value" id="sc-per-m2">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Estimated Duration</div><div class="en-stat-value" id="sc-duration">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Site Preparation Notes</h3>
+        <ul id="sc-notes" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+var SC_RATES = {
+  NG:{ sym:'₦', veg_light:500, veg_medium:1200, veg_dense:2800, tree_each:8000, topsoil_m3:3500, demo_m2:8000, waste_haul_m3:2500, waste_chip_m3:800 },
+  KE:{ sym:'KES', veg_light:200, veg_medium:500, veg_dense:1100, tree_each:3200, topsoil_m3:1400, demo_m2:3200, waste_haul_m3:1000, waste_chip_m3:320 },
+  ZA:{ sym:'ZAR', veg_light:55, veg_medium:140, veg_dense:320, tree_each:950, topsoil_m3:420, demo_m2:950, waste_haul_m3:280, waste_chip_m3:90 },
+  GH:{ sym:'GHS', veg_light:45, veg_medium:110, veg_dense:260, tree_each:750, topsoil_m3:320, demo_m2:750, waste_haul_m3:220, waste_chip_m3:70 },
+  EG:{ sym:'EGP', veg_light:50, veg_medium:120, veg_dense:280, tree_each:800, topsoil_m3:350, demo_m2:800, waste_haul_m3:240, waste_chip_m3:75 },
+  ET:{ sym:'ETB', veg_light:120, veg_medium:290, veg_dense:670, tree_each:2000, topsoil_m3:850, demo_m2:2000, waste_haul_m3:580, waste_chip_m3:185 },
+  TZ:{ sym:'TZS', veg_light:4500, veg_medium:11000, veg_dense:25000, tree_each:75000, topsoil_m3:32000, demo_m2:75000, waste_haul_m3:22000, waste_chip_m3:7000 },
+  UG:{ sym:'UGX', veg_light:5800, veg_medium:14000, veg_dense:32000, tree_each:95000, topsoil_m3:42000, demo_m2:95000, waste_haul_m3:28000, waste_chip_m3:9000 },
+  RW:{ sym:'RWF', veg_light:950, veg_medium:2300, veg_dense:5400, tree_each:16000, topsoil_m3:6800, demo_m2:16000, waste_haul_m3:4700, waste_chip_m3:1500 },
+  MA:{ sym:'MAD', veg_light:22, veg_medium:55, veg_dense:125, tree_each:380, topsoil_m3:165, demo_m2:380, waste_haul_m3:110, waste_chip_m3:35 }
+};
+var TERRAIN_MULT = { flat:1.0, gentle:1.25, steep:1.65 };
+var DEMO_M2 = { none:0, small:30, medium:150, large:350 };
+
+function fmtCur(sym,n){ return sym + Math.round(n).toLocaleString(); }
+
+function calcSiteClearing(){
+  var country = document.getElementById('sc-country').value;
+  var area = +document.getElementById('sc-area').value;
+  var veg = document.getElementById('sc-veg').value;
+  var terrain = document.getElementById('sc-terrain').value;
+  var topsoil = document.getElementById('sc-topsoil').value;
+  var trees = +document.getElementById('sc-trees').value;
+  var demo = document.getElementById('sc-demo').value;
+  var waste = document.getElementById('sc-waste').value;
+  var r = SC_RATES[country], sym = r.sym;
+  var terrFactor = TERRAIN_MULT[terrain];
+
+  var vegCost = veg === 'cleared' ? 0 : area * r['veg_' + veg] * terrFactor;
+  var treeCost = trees * r.tree_each;
+  var topDepth = 0.225; // 225mm average
+  var topVol = area * topDepth;
+  var topCost = topsoil === 'yes' ? topVol * r.topsoil_m3 : 0;
+  var demoArea = DEMO_M2[demo];
+  var demoCost = demoArea * r.demo_m2;
+  var wasteVol = veg === 'cleared' ? 0 : area * 0.05; // 5% vol estimate
+  var wasteCost = waste === 'burn' ? 0 : waste === 'haul' ? wasteVol * r.waste_haul_m3 : wasteVol * r.waste_chip_m3;
+  var total = vegCost + treeCost + topCost + demoCost + wasteCost;
+  var daysEst = Math.ceil(area / 500) + Math.ceil(trees / 5) + (demo !== 'none' ? 3 : 0);
+
+  document.getElementById('sc-headline').textContent = 'Site Clearing — ' + (area/10000).toFixed(2) + ' ha (' + area.toLocaleString() + ' m²)';
+  document.getElementById('sc-veg-cost').textContent = veg === 'cleared' ? 'N/A' : fmtCur(sym, vegCost);
+  document.getElementById('sc-tree-cost').textContent = trees > 0 ? fmtCur(sym, treeCost) : 'N/A';
+  document.getElementById('sc-top-cost').textContent = topsoil === 'yes' ? fmtCur(sym, topCost) : 'N/A';
+  document.getElementById('sc-demo-cost').textContent = demo !== 'none' ? fmtCur(sym, demoCost) : 'N/A';
+  document.getElementById('sc-waste-cost').textContent = waste === 'burn' ? 'Nil (burn on site)' : fmtCur(sym, wasteCost);
+  document.getElementById('sc-total').textContent = fmtCur(sym, total);
+  document.getElementById('sc-per-m2').textContent = fmtCur(sym, total / area) + '/m²';
+  document.getElementById('sc-duration').textContent = daysEst + ' working days';
+
+  var notes = [
+    'Get 3 equipment quotes (excavator, bulldozer). Daily hire rates vary by 40–60% between operators.',
+    veg === 'dense' ? 'Dense forest clearing may require environmental impact assessment (EIA) approval in your country.' : '',
+    terrain === 'steep' ? 'Steep sites may require cut-and-fill earthworks beyond basic clearing — budget extra 20–40%.' : '',
+    waste === 'burn' ? 'Check local bylaws before burning on site — prohibited in many urban areas. Violations attract fines.' : waste === 'haul' ? 'Confirm the dumping site is legal. Illegal dumping can result in contractor prosecution.' : '',
+    'Survey and peg the site before clearing to avoid clearing beyond plot boundaries.',
+    'Topsoil removed can be sold or stockpiled — quality topsoil for landscaping may offset clearing costs by 10–20%.'
+  ].filter(Boolean);
+  document.getElementById('sc-notes').innerHTML = notes.map(function(n){ return '<li>' + n + '</li>'; }).join('');
+  document.getElementById('sc-results').classList.add('on');
+  document.getElementById('sc-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

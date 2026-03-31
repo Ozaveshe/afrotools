@@ -1257,7 +1257,7 @@ applyBtn.addEventListener('click', async () => {
 });
 
 // === Download ===
-downloadBtn.addEventListener('click', () => {
+function doActualDownload() {
   if (!redactedPdfBytes) return;
   const blob = new Blob([redactedPdfBytes], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
@@ -1266,6 +1266,11 @@ downloadBtn.addEventListener('click', () => {
   a.download = 'redacted.pdf';
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+downloadBtn.addEventListener('click', () => {
+  const gate = document.querySelector('email-gate-modal');
+  if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
 });
 
 // === Window resize handler ===
@@ -1290,6 +1295,8 @@ window.addEventListener('resize', () => {
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

@@ -383,78 +383,117 @@ function loadFromUrl() {
   renderActions();
 }
 
+// Lazy-load jsPDF + html2canvas for proper PDF generation
+var _pdfLibsLoaded = false;
+function loadPdfLibs() {
+  if (_pdfLibsLoaded) return Promise.resolve();
+  return Promise.all([
+    new Promise(function(r,j){ var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s); }),
+    new Promise(function(r,j){ var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s); })
+  ]).then(function(){ _pdfLibsLoaded = true; });
+}
+
 function exportPDF() {
+  // Email gate for non-signed-up users
+  var gate = document.querySelector('email-gate-modal');
+  if (gate) { gate.show(doExportPDF); } else { doExportPDF(); }
+}
+
+async function doExportPDF() {
   const title = gv('meetingTitle') || 'Meeting Minutes';
   const date = gv('meetingDate') ? new Date(gv('meetingDate')).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
   const time = gv('meetingTime');
   const loc = gv('location');
   const calledBy = gv('calledBy');
 
-  let html = `<h1>${title}</h1>`;
-  html += `<div class="meta">`;
-  if (date) html += `<strong>Date:</strong> ${date}`;
-  if (time) html += ` | <strong>Time:</strong> ${time}`;
-  if (loc) html += ` | <strong>Location:</strong> ${loc}`;
-  if (calledBy) html += ` | <strong>Called by:</strong> ${calledBy}`;
-  html += `</div>`;
+  // Build HTML content for PDF rendering
+  let html = '<div style="font-family:Arial,sans-serif;padding:40px;color:#333;font-size:13px;line-height:1.7;max-width:700px;margin:0 auto;">';
+  html += '<h1 style="font-size:22px;margin-bottom:8px;">' + esc(title) + '</h1>';
+  html += '<div style="font-size:12px;color:#666;margin-bottom:20px;">';
+  if (date) html += '<strong>Date:</strong> ' + esc(date);
+  if (time) html += ' | <strong>Time:</strong> ' + esc(time);
+  if (loc) html += ' | <strong>Location:</strong> ' + esc(loc);
+  if (calledBy) html += ' | <strong>Called by:</strong> ' + esc(calledBy);
+  html += '</div>';
 
-  // Attendees
   if (attendees.length) {
-    html += `<h2>Attendees</h2><table><thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead><tbody>`;
-    attendees.forEach(a => {
-      html += `<tr><td>${a.name}</td><td>${a.role || '--'}</td><td>${a.status}</td></tr>`;
-    });
-    html += `</tbody></table>`;
+    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Attendees</h2><table style="width:100%;border-collapse:collapse;margin:10px 0 16px;"><thead><tr><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;border-bottom:2px solid #ddd;">Name</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;border-bottom:2px solid #ddd;">Role</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;border-bottom:2px solid #ddd;">Status</th></tr></thead><tbody>';
+    attendees.forEach(function(a) { html += '<tr><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.name) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.role || '--') + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.status) + '</td></tr>'; });
+    html += '</tbody></table>';
   }
 
-  // Agenda
   if (agendaItems.length) {
-    html += `<h2>Agenda & Discussion</h2>`;
-    agendaItems.forEach((item, i) => {
-      html += `<h3>${i + 1}. ${item.title || 'Untitled'}</h3>`;
-      if (item.discussion) html += `<p><strong>Discussion:</strong> ${item.discussion}</p>`;
-      if (item.decision) html += `<p><strong>Decision:</strong> ${item.decision}</p>`;
+    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Agenda &amp; Discussion</h2>';
+    agendaItems.forEach(function(item, i) {
+      html += '<h3 style="font-size:14px;margin:12px 0 6px;color:#374151;">' + (i+1) + '. ' + esc(item.title || 'Untitled') + '</h3>';
+      if (item.discussion) html += '<p style="margin-bottom:8px;"><strong>Discussion:</strong> ' + esc(item.discussion) + '</p>';
+      if (item.decision) html += '<p style="margin-bottom:8px;"><strong>Decision:</strong> ' + esc(item.decision) + '</p>';
     });
   }
 
-  // Actions
   if (actions.length) {
-    html += `<h2>Action Items</h2><table><thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Priority</th><th>Status</th></tr></thead><tbody>`;
-    actions.forEach(a => {
-      const due = a.due ? new Date(a.due).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '--';
-      html += `<tr><td>${a.text}</td><td>${a.owner || '--'}</td><td>${due}</td><td>${a.priority}</td><td>${a.done ? 'Done' : 'Pending'}</td></tr>`;
+    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Action Items</h2><table style="width:100%;border-collapse:collapse;margin:10px 0 16px;"><thead><tr><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Action</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Owner</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Due</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Priority</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Status</th></tr></thead><tbody>';
+    actions.forEach(function(a) {
+      var due = a.due ? new Date(a.due).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '--';
+      html += '<tr><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.text) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.owner || '--') + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(due) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.priority) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + (a.done ? 'Done' : 'Pending') + '</td></tr>';
     });
-    html += `</tbody></table>`;
+    html += '</tbody></table>';
   }
 
-  // Next meeting
-  const nextDate = gv('nextDate');
-  const nextTime = gv('nextTime');
-  const nextAgenda = gv('nextAgenda');
+  var nextDate = gv('nextDate'), nextTime = gv('nextTime'), nextAgenda = gv('nextAgenda');
   if (nextDate || nextAgenda) {
-    html += `<h2>Next Meeting</h2>`;
-    if (nextDate) html += `<p><strong>Date:</strong> ${new Date(nextDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}${nextTime ? ` at ${nextTime}` : ''}</p>`;
-    if (nextAgenda) html += `<p><strong>Proposed Agenda:</strong> ${nextAgenda}</p>`;
+    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Next Meeting</h2>';
+    if (nextDate) html += '<p style="margin-bottom:8px;"><strong>Date:</strong> ' + new Date(nextDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + (nextTime ? ' at ' + esc(nextTime) : '') + '</p>';
+    if (nextAgenda) html += '<p style="margin-bottom:8px;"><strong>Proposed Agenda:</strong> ' + esc(nextAgenda) + '</p>';
   }
+  html += '<div style="margin-top:30px;padding-top:12px;border-top:1px solid #eee;font-size:10px;color:#999;text-align:center;">Generated by AfroTools Meeting Minutes Generator</div>';
+  html += '</div>';
 
-  const w = window.open('', '_blank');
-  w.document.write(`<!DOCTYPE html><html><head><title>${title}</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;padding:40px;color:#333;font-size:13px;line-height:1.7}
-h1{font-size:22px;margin-bottom:8px}h2{font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb}
-h3{font-size:14px;margin:12px 0 6px;color:#374151}
-.meta{font-size:12px;color:#666;margin-bottom:20px}
-table{width:100%;border-collapse:collapse;margin:10px 0 16px}
-th{background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid #ddd}
-td{padding:6px 10px;border-bottom:1px solid #eee;font-size:12px}
-p{margin-bottom:8px}
-@media print{body{padding:20px}}
-<meta property="article:modified_time" content="2026-03-28">
-</style></head><body>${html}</body></html>`);
-  w.document.close();
-  setTimeout(() => w.print(), 300);
+  try {
+    await loadPdfLibs();
+    // Render HTML to a hidden div
+    var container = document.createElement('div');
+    container.style.cssText = 'position:absolute;left:-9999px;top:0;width:700px;background:#fff;';
+    container.innerHTML = html;
+    document.body.appendChild(container);
+
+    var canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#fff' });
+    document.body.removeChild(container);
+
+    var imgData = canvas.toDataURL('image/jpeg', 0.95);
+    var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth - 20;
+    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    var y = 10;
+    if (imgHeight <= pageHeight - 20) {
+      pdf.addImage(imgData, 'JPEG', 10, y, imgWidth, imgHeight);
+    } else {
+      // Multi-page
+      var remaining = imgHeight;
+      var srcY = 0;
+      while (remaining > 0) {
+        var sliceH = Math.min(remaining, pageHeight - 20);
+        pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight, undefined, 'FAST', 0);
+        remaining -= sliceH;
+        if (remaining > 0) { pdf.addPage(); }
+        srcY += sliceH;
+      }
+    }
+    pdf.save((title.replace(/[^a-zA-Z0-9]/g, '_') || 'Meeting_Minutes') + '.pdf');
+  } catch (err) {
+    console.error('PDF export error:', err);
+    // Fallback to print
+    var w = window.open('', '_blank');
+    w.document.write('<!DOCTYPE html><html><head><title>' + esc(title) + '</title></head><body>' + html + '</body></html>');
+    w.document.close();
+    setTimeout(function(){ w.print(); }, 300);
+  }
 }
+
+function esc(s) { return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
 
 // Init
 loadFromUrl();
@@ -462,5 +501,7 @@ renderAttendees();
 renderAgenda();
 renderActions();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body>
 </html>

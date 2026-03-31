@@ -567,12 +567,16 @@ function addThumb(url, name, pageNum, size) {
 }
 
 function downloadSingle(index) {
-  const img = convertedImages[index];
-  if (!img) return;
-  const a = document.createElement('a');
-  a.href = img.url;
-  a.download = img.name;
-  a.click();
+  function doSingleDownload() {
+    const img = convertedImages[index];
+    if (!img) return;
+    const a = document.createElement('a');
+    a.href = img.url;
+    a.download = img.name;
+    a.click();
+  }
+  const gate = document.querySelector('email-gate-modal');
+  if (gate) { gate.show(doSingleDownload); } else { doSingleDownload(); }
 }
 
 async function downloadAllAsZip() {
@@ -590,11 +594,15 @@ async function downloadAllAsZip() {
       // optional progress
     });
     const baseName = document.getElementById('pdfFileName').textContent.replace(/\.pdf$/i, '');
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(zipBlob);
-    a.download = `${baseName}_images.zip`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    function doZipDownload() {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(zipBlob);
+      a.download = `${baseName}_images.zip`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doZipDownload); } else { doZipDownload(); }
   } catch (err) {
     alert('Error creating ZIP: ' + err.message);
   }
@@ -770,11 +778,15 @@ async function convertImg2Pdf() {
 
     const dlBtn = document.getElementById('i2pDownloadBtn');
     dlBtn.onclick = () => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(pdfBlob);
-      a.download = pdfName;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      function doI2pDownload() {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(pdfBlob);
+        a.download = pdfName;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      }
+      const gate = document.querySelector('email-gate-modal');
+      if (gate) { gate.show(doI2pDownload); } else { doI2pDownload(); }
     };
   } catch (err) {
     ptxt.textContent = 'Error: ' + err.message;
@@ -828,6 +840,8 @@ function formatSize(bytes) {
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Production Cost Calculator | AfroTools</title>
+<meta name="description" content="Calculate cost of goods manufactured (COGM) and unit production costs. Materials, labour, overhead, and profit margins for African manufacturers.">
+<meta property="og:title" content="Production Cost Calculator | AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/production-cost/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://afrotools.com/tools/production-cost/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/production-cost/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/production-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/energy.css">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.cost-waterfall { display:flex; flex-direction:column; gap:.35rem; margin-top:.75rem; }
+.waterfall-row { display:flex; justify-content:space-between; align-items:center; padding:.4rem .75rem; border-radius:6px; font-size:.88rem; }
+.waterfall-row.wf-mat { background:#fef9c3; }
+.waterfall-row.wf-lab { background:#dbeafe; }
+.waterfall-row.wf-oh { background:#f3e8ff; }
+.waterfall-row.wf-total { background:#dcfce7; font-weight:700; font-size:.95rem; }
+.waterfall-row.wf-price { background:#0f172a; color:white; font-weight:700; }
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Manufacturing","item":"https://afrotools.com/manufacturing/"},{"@type":"ListItem","position":3,"name":"Production Cost Calculator","item":"https://afrotools.com/tools/production-cost/"}]}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</head>
+<body>
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Home</a></li><li><a href="/manufacturing/">Manufacturing</a></li>
+    <li aria-current="page">Production Cost Calculator</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Manufacturing</div>
+    <h1>Production Cost Calculator</h1>
+    <p>Calculate your Cost of Goods Manufactured (COGM), unit cost, and profit margins. Know what it truly costs to make your product in Africa.</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Production Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label">Currency</label>
+          <select class="en-select" id="pc-currency">
+            <option value="NGN">NGN — Nigerian Naira (₦)</option>
+            <option value="KES">KES — Kenyan Shilling</option>
+            <option value="ZAR">ZAR — South African Rand (R)</option>
+            <option value="GHS">GHS — Ghanaian Cedi</option>
+            <option value="USD">USD — US Dollar</option>
+            <option value="EUR">EUR — Euro</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Units Produced per Month</label>
+          <input type="number" class="en-input" id="pc-units" value="1000" min="1">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Raw Materials Cost (total/month)</label>
+          <input type="number" class="en-input" id="pc-raw" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Packaging Cost (total/month)</label>
+          <input type="number" class="en-input" id="pc-pack" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Direct Labour Cost (total/month)</label>
+          <input type="number" class="en-input" id="pc-labour" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Electricity / Energy (monthly)</label>
+          <input type="number" class="en-input" id="pc-energy" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Factory Rent / Lease (monthly)</label>
+          <input type="number" class="en-input" id="pc-rent" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Equipment Depreciation (monthly)</label>
+          <input type="number" class="en-input" id="pc-deprec" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Transport / Logistics (monthly)</label>
+          <input type="number" class="en-input" id="pc-transport" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Other Overheads (monthly)</label>
+          <input type="number" class="en-input" id="pc-other" value="0" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Waste / Reject Rate (%)</label>
+          <input type="number" class="en-input" id="pc-waste" value="5" min="0" max="50">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Target Selling Price per Unit</label>
+          <input type="number" class="en-input" id="pc-price" value="0" min="0">
+        </div>
+      </div>
+      <button class="en-btn" onclick="calcProduction()">Calculate Production Cost</button>
+    </div>
+
+    <div class="en-results" id="pc-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="pc-headline">Cost of Goods Manufactured</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Cost per Unit (COGM)</div><div class="en-stat-value" id="pc-unit-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Monthly COGM (total)</div><div class="en-stat-value" id="pc-total-cogm">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Gross Margin</div><div class="en-stat-value" id="pc-margin">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Monthly Gross Profit</div><div class="en-stat-value" id="pc-gross-profit">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Cost Waterfall</h3>
+        <div class="cost-waterfall" id="pc-waterfall"></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Price Sensitivity</h3>
+        <div id="pc-sensitivity" style="overflow-x:auto"></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Cost Reduction Opportunities</h3>
+        <ul id="pc-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script>
+var CURR_SYM = { NGN:'₦', KES:'KES ', ZAR:'R', GHS:'GHS ', USD:'$', EUR:'€' };
+
+function fmtCur(sym,n){ return sym + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+function calcProduction(){
+  var currency = document.getElementById('pc-currency').value;
+  var sym = CURR_SYM[currency];
+  var units = +document.getElementById('pc-units').value;
+  var raw = +document.getElementById('pc-raw').value;
+  var pack = +document.getElementById('pc-pack').value;
+  var labour = +document.getElementById('pc-labour').value;
+  var energy = +document.getElementById('pc-energy').value;
+  var rent = +document.getElementById('pc-rent').value;
+  var deprec = +document.getElementById('pc-deprec').value;
+  var transport = +document.getElementById('pc-transport').value;
+  var other = +document.getElementById('pc-other').value;
+  var waste = +document.getElementById('pc-waste').value / 100;
+  var price = +document.getElementById('pc-price').value;
+
+  // Effective units after waste
+  var effectiveUnits = units * (1 - waste);
+  var matCost = raw + pack;
+  var labCost = labour;
+  var ohCost = energy + rent + deprec + transport + other;
+  var totalCOGM = matCost + labCost + ohCost;
+  var unitCost = effectiveUnits > 0 ? totalCOGM / effectiveUnits : 0;
+  var grossMargin = price > 0 ? (price - unitCost) / price * 100 : 0;
+  var monthlyRevenue = price * effectiveUnits;
+  var grossProfit = monthlyRevenue - totalCOGM;
+
+  document.getElementById('pc-headline').textContent = 'COGM for ' + units.toLocaleString() + ' units / month';
+  document.getElementById('pc-unit-cost').textContent = fmtCur(sym, unitCost);
+  document.getElementById('pc-total-cogm').textContent = fmtCur(sym, totalCOGM);
+  var marginEl = document.getElementById('pc-margin');
+  marginEl.textContent = price > 0 ? grossMargin.toFixed(1) + '%' : 'Set price above';
+  marginEl.style.color = grossMargin >= 30 ? '#16a34a' : grossMargin >= 15 ? '#2563eb' : '#dc2626';
+  document.getElementById('pc-gross-profit').textContent = price > 0 ? fmtCur(sym, grossProfit) + '/mo' : '—';
+
+  var matPct = matCost/totalCOGM*100, labPct = labCost/totalCOGM*100, ohPct = ohCost/totalCOGM*100;
+  var waterfall = [
+    { label:'Raw Materials', val: raw, cls:'wf-mat', pct: raw/totalCOGM*100 },
+    { label:'Packaging', val: pack, cls:'wf-mat', pct: pack/totalCOGM*100 },
+    { label:'Direct Labour', val: labour, cls:'wf-lab', pct: labour/totalCOGM*100 },
+    { label:'Energy / Electricity', val: energy, cls:'wf-oh', pct: energy/totalCOGM*100 },
+    { label:'Rent / Lease', val: rent, cls:'wf-oh', pct: rent/totalCOGM*100 },
+    { label:'Equipment Depreciation', val: deprec, cls:'wf-oh', pct: deprec/totalCOGM*100 },
+    { label:'Transport / Logistics', val: transport, cls:'wf-oh', pct: transport/totalCOGM*100 },
+    { label:'Other Overhead', val: other, cls:'wf-oh', pct: other/totalCOGM*100 },
+    { label:'Total COGM ('+units.toLocaleString()+' units, '+(waste*100).toFixed(0)+'% waste)', val: totalCOGM, cls:'wf-total' },
+  ];
+  if (price > 0) waterfall.push({ label:'Selling Price × Units = Revenue', val: monthlyRevenue, cls:'wf-price' });
+  document.getElementById('pc-waterfall').innerHTML = waterfall.filter(function(w){ return w.val > 0 || w.cls.includes('total') || w.cls.includes('price'); }).map(function(w){
+    return '<div class="waterfall-row '+w.cls+'"><span>'+w.label+'</span><span>'+fmtCur(sym,w.val)+'/mo'+(w.pct>0?' ('+w.pct.toFixed(0)+'%)':''+(w.cls==='wf-total'?' — '+fmtCur(sym,unitCost)+'/unit':''))+'</span></div>';
+  }).join('');
+
+  // Sensitivity table
+  var margins = [-20,-10,0,10,20,30,40];
+  var rows = margins.map(function(m){
+    var p = unitCost * (1 + m/100);
+    var gm = ((p - unitCost)/p*100).toFixed(0);
+    var highlight = price > 0 && Math.abs(p - price) < unitCost * 0.05;
+    return '<tr'+(highlight?' style="background:var(--en-accent-pale);font-weight:600"':'')+'><td style="padding:.4rem .6rem">'+(m>=0?'+':'')+m+'%</td><td style="padding:.4rem .6rem">'+fmtCur(sym,p)+'</td><td style="padding:.4rem .6rem;color:'+(+gm>=30?'#16a34a':+gm>=15?'#2563eb':'#dc2626')+'">'+gm+'%</td><td style="padding:.4rem .6rem">'+fmtCur(sym,p*effectiveUnits-totalCOGM)+'</td></tr>';
+  });
+  document.getElementById('pc-sensitivity').innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr style="background:var(--en-accent-pale)"><th style="padding:.4rem .6rem;text-align:left">Markup</th><th style="padding:.4rem .6rem;text-align:left">Unit Price</th><th style="padding:.4rem .6rem;text-align:left">Gross Margin</th><th style="padding:.4rem .6rem;text-align:left">Monthly Profit</th></tr></thead><tbody>'+rows.join('')+'</tbody></table>';
+
+  var tips = [];
+  if (matCost/totalCOGM > 0.55) tips.push('Materials are ' + matPct.toFixed(0) + '% of cost — negotiate bulk discounts or source locally to reduce by 10–20%.');
+  if (labCost/totalCOGM > 0.35) tips.push('Labour is ' + labPct.toFixed(0) + '% of cost — consider semi-automation for repetitive tasks.');
+  if (energy/totalCOGM > 0.15) tips.push('Energy is ' + (energy/totalCOGM*100).toFixed(0) + '% of cost — install solar panels for payback in 3–5 years.');
+  if (waste > 0.08) tips.push('Waste rate of ' + (waste*100).toFixed(0) + '% is high — improving this by 50% would save ' + fmtCur(sym, (totalCOGM*waste*0.5/units)) + ' per unit.');
+  tips.push('Review overhead allocation quarterly — fixed costs should reduce as a % as volume increases.');
+  if (grossMargin < 20 && price > 0) tips.push('Gross margin of ' + grossMargin.toFixed(0) + '% is below the 30% minimum recommended for manufacturing businesses.');
+  document.getElementById('pc-tips').innerHTML = tips.map(function(t){ return '<li>'+t+'</li>'; }).join('');
+  document.getElementById('pc-results').classList.add('on');
+  document.getElementById('pc-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

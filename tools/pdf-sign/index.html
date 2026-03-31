@@ -1441,7 +1441,11 @@
         const { width, height } = page.getSize();
 
         if (signatureType === 'draw' || signatureType === 'image') {
-          const imgBytes = await fetch(signatureData).then(r => r.arrayBuffer());
+          const b64 = signatureData.split(',')[1];
+          const bin = atob(b64);
+          const imgBytes = new Uint8Array(bin.length);
+          for (let ci = 0; ci < bin.length; ci++) imgBytes[ci] = bin.charCodeAt(ci);
+          const imgBuf = imgBytes.buffer;
           const image = await pdfDoc.embedPng(imgBytes);
           const ratio = overlayWidth / overlayHeight;
           const scaledHeight = 50;
@@ -1484,17 +1488,23 @@
     }
   });
 
+  function doSignDownload() {
+    if (!finalPdfBytes) return;
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(new Blob([finalPdfBytes], { type: 'application/pdf' }));
+    link.href = url;
+    link.download = currentPdfFile.name.replace('.pdf', '_signed.pdf');
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
   document.getElementById('finalDownloadBtn').addEventListener('click', () => {
-    if (finalPdfBytes) {
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(new Blob([finalPdfBytes], { type: 'application/pdf' }));
-      link.href = url;
-      link.download = currentPdfFile.name.replace('.pdf', '_signed.pdf');
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
-    }
+    if (!finalPdfBytes) return;
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doSignDownload); } else { doSignDownload(); }
   });
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

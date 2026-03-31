@@ -642,7 +642,7 @@
   });
 
   // ─── Download filled PDF ──────────────────────────
-  downloadBtn.addEventListener('click', async () => {
+  async function doFormDownload() {
     downloadBtn.disabled = true;
     downloadBtn.textContent = 'Processing...';
     statusMsg.innerHTML = '';
@@ -699,6 +699,11 @@
 
     downloadBtn.disabled = false;
     downloadBtn.textContent = 'Download Filled PDF';
+  }
+
+  downloadBtn.addEventListener('click', () => {
+    const gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doFormDownload); } else { doFormDownload(); }
   });
 
   // ─── Helpers ──────────────────────────────────────
@@ -723,6 +728,8 @@
   target.appendChild(div);
 })();
 </script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>
