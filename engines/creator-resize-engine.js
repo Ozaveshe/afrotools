@@ -1,6 +1,25 @@
 (function() {
   'use strict';
 
+  // ── AUTH HELPERS ──
+  var supabaseClient = null;
+  function getSupabase() {
+    if (supabaseClient) return supabaseClient;
+    if (window.AfroAuth && typeof AfroAuth.getSupabase === 'function') {
+      supabaseClient = AfroAuth.getSupabase();
+      return supabaseClient;
+    }
+    return null;
+  }
+  function getUserId() {
+    if (window.AfroAuth && AfroAuth.user) return AfroAuth.user.id;
+    return null;
+  }
+  function scopedKey(base) {
+    var uid = getUserId();
+    return uid ? base + '_' + uid : base;
+  }
+
   /* ── SIZE DEFINITIONS ── */
   var SIZES = [
     { id: 'ig-square',   name: 'IG Square',      w: 1080, h: 1080, group: 'instagram', slug: 'instagram-square' },

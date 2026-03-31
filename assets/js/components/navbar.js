@@ -590,6 +590,7 @@
         { label: 'CaptionCraft — AI Caption Writer', href: '/tools/creator-captions/', emoji: '✍️', badge: 'NEW' },
         { label: 'ScriptPad — Video Script Generator', href: '/tools/creator-scripts/', emoji: '📝', badge: 'NEW' },
         { label: 'Repurpose — Content Repurposer', href: '/tools/creator-repurpose/', emoji: '♻️', badge: 'NEW' },
+        { label: 'ResizeKit — Social Image Resizer', href: '/tools/creator-resize/', emoji: '✂️', badge: 'NEW' },
         { label: 'Music Royalty Splitter', href: '/tools/music-royalty-splitter/', emoji: '🎵', badge: 'NEW' },
         { label: 'Album/EP Release Budget', href: '/tools/album-budget/', emoji: '💿', badge: 'NEW' },
         { label: 'Fashion Brand Startup Cost', href: '/tools/fashion-brand-startup/', emoji: '👗', badge: 'NEW' },

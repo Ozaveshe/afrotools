@@ -4,6 +4,25 @@
  */
 !function(){"use strict";
 
+// ── AUTH HELPERS ──
+var supabaseClient = null;
+function getSupabase() {
+  if (supabaseClient) return supabaseClient;
+  if (window.AfroAuth && typeof AfroAuth.getSupabase === 'function') {
+    supabaseClient = AfroAuth.getSupabase();
+    return supabaseClient;
+  }
+  return null;
+}
+function getUserId() {
+  if (window.AfroAuth && AfroAuth.user) return AfroAuth.user.id;
+  return null;
+}
+function scopedKey(base) {
+  var uid = getUserId();
+  return uid ? base + '_' + uid : base;
+}
+
 var PLATFORMS = {
   instagram:         { icon: '&#128247;', label: 'Instagram',        limit: 150,  field: 'Bio' },
   tiktok:            { icon: '&#127925;', label: 'TikTok',           limit: 80,   field: 'Bio' },

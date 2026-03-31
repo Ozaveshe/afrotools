@@ -4,6 +4,25 @@
  */
 !function(){"use strict";
 
+// ── AUTH HELPERS ──
+var supabaseClient = null;
+function getSupabase() {
+  if (supabaseClient) return supabaseClient;
+  if (window.AfroAuth && typeof AfroAuth.getSupabase === 'function') {
+    supabaseClient = AfroAuth.getSupabase();
+    return supabaseClient;
+  }
+  return null;
+}
+function getUserId() {
+  if (window.AfroAuth && AfroAuth.user) return AfroAuth.user.id;
+  return null;
+}
+function scopedKey(base) {
+  var uid = getUserId();
+  return uid ? base + '_' + uid : base;
+}
+
 var SCRIPT_FORMATS = {
   youtube: { label: 'YouTube Standard', icon: '\uD83C\uDFAC', desc: 'Hook \u2192 Intro \u2192 Points \u2192 CTA \u2192 Outro' },
   podcast: { label: 'Podcast / Audio', icon: '\uD83C\uDFA7', desc: 'Cold open \u2192 Welcome \u2192 Discussion \u2192 Takeaways' },

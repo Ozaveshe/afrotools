@@ -4,6 +4,25 @@
  */
 !function(){"use strict";
 
+// ── AUTH HELPERS ──
+var supabaseClient = null;
+function getSupabase() {
+  if (supabaseClient) return supabaseClient;
+  if (window.AfroAuth && typeof AfroAuth.getSupabase === 'function') {
+    supabaseClient = AfroAuth.getSupabase();
+    return supabaseClient;
+  }
+  return null;
+}
+function getUserId() {
+  if (window.AfroAuth && AfroAuth.user) return AfroAuth.user.id;
+  return null;
+}
+function scopedKey(base) {
+  var uid = getUserId();
+  return uid ? base + '_' + uid : base;
+}
+
 var TEMPLATES = {
   bold: { id: 'bold', name: 'Bold', icon: '🔥', desc: 'Large hero, minimal text, high-impact', colors: { bg: '#0A0A0A', accent: '#F5A623', text: '#fff' }, fonts: { heading: 'Instrument Serif', body: 'DM Sans' }, niche: ['photography','videography','visual-art'] },
   editorial: { id: 'editorial', name: 'Editorial', icon: '📰', desc: 'Magazine layout, text-rich, multi-column', colors: { bg: '#FAFAF8', accent: '#1a1a1a', text: '#111' }, fonts: { heading: 'Instrument Serif', body: 'DM Sans' }, niche: ['writing','journalism','blogging'] },

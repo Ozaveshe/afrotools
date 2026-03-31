@@ -5,6 +5,25 @@
 (function() {
   'use strict';
 
+  // ── AUTH HELPERS ──
+  var supabaseClient = null;
+  function getSupabase() {
+    if (supabaseClient) return supabaseClient;
+    if (window.AfroAuth && typeof AfroAuth.getSupabase === 'function') {
+      supabaseClient = AfroAuth.getSupabase();
+      return supabaseClient;
+    }
+    return null;
+  }
+  function getUserId() {
+    if (window.AfroAuth && AfroAuth.user) return AfroAuth.user.id;
+    return null;
+  }
+  function scopedKey(base) {
+    var uid = getUserId();
+    return uid ? base + '_' + uid : base;
+  }
+
   var _slides = [];
   var _activeIndex = 0;
   var _branding = { primaryColor: '#AF52DE', secondaryColor: '#1a1a1a', font: 'Montserrat', handle: '' };

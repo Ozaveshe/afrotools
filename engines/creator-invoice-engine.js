@@ -5,6 +5,25 @@
 (function() {
   'use strict';
 
+  // ── AUTH HELPERS ──
+  var supabaseClient = null;
+  function getSupabase() {
+    if (supabaseClient) return supabaseClient;
+    if (window.AfroAuth && typeof AfroAuth.getSupabase === 'function') {
+      supabaseClient = AfroAuth.getSupabase();
+      return supabaseClient;
+    }
+    return null;
+  }
+  function getUserId() {
+    if (window.AfroAuth && AfroAuth.user) return AfroAuth.user.id;
+    return null;
+  }
+  function scopedKey(base) {
+    var uid = getUserId();
+    return uid ? base + '_' + uid : base;
+  }
+
   var CreatorInvoice = {
     id: 'creator-invoice',
     version: '1.0.0',
