@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Repurpose Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+</head>
+<body class="crp-app">
+
+  <!-- TOPBAR -->
+  <div class="crp-topbar">
+    <a href="index.html" class="crp-topbar-back">&larr; Back</a>
+    <a href="index.html" class="crp-topbar-brand">&#9889; Repurpose</a>
+    <div class="crp-topbar-actions">
+      <button class="crp-topbar-btn" id="crpCopyAll" style="display:none;">&#128203; Copy All</button>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="crp-workspace">
+    <div class="crp-split">
+
+      <!-- LEFT: SOURCE INPUT -->
+      <div class="crp-brief">
+        <div class="crp-brief-title">&#9889; Source Content</div>
+
+        <div class="crp-form-group">
+          <label class="crp-form-label">Source Type</label>
+          <div class="crp-pills" id="crpSourceType">
+            <span class="crp-pill active" data-val="youtube_script">YT Script</span>
+            <span class="crp-pill" data-val="blog_post">Blog Post</span>
+            <span class="crp-pill" data-val="tweet_thread">Tweet Thread</span>
+            <span class="crp-pill" data-val="newsletter">Newsletter</span>
+            <span class="crp-pill" data-val="podcast_notes">Podcast</span>
+            <span class="crp-pill" data-val="ig_caption">IG Caption</span>
+          </div>
+        </div>
+
+        <div class="crp-form-group">
+          <label class="crp-form-label">Paste your content</label>
+          <textarea class="crp-form-textarea" id="crpSource" placeholder="Paste your YouTube script, blog post, thread, newsletter, or any content you want to repurpose..."></textarea>
+          <div class="crp-word-count" id="crpWordCount">0 words</div>
+        </div>
+
+        <div class="crp-form-group">
+          <label class="crp-form-label">Generate for</label>
+          <div class="crp-targets" id="crpTargets">
+            <div class="crp-target-row active" data-platform="instagram">
+              <div class="crp-target-check">&#10003;</div>
+              <span class="crp-target-icon">&#128247;</span>
+              <span class="crp-target-label">Instagram Caption</span>
+            </div>
+            <div class="crp-target-row active" data-platform="twitter">
+              <div class="crp-target-check">&#10003;</div>
+              <span class="crp-target-icon">&#120143;</span>
+              <span class="crp-target-label">X Thread</span>
+            </div>
+            <div class="crp-target-row active" data-platform="linkedin">
+              <div class="crp-target-check">&#10003;</div>
+              <span class="crp-target-icon">&#128188;</span>
+              <span class="crp-target-label">LinkedIn Post</span>
+            </div>
+            <div class="crp-target-row active" data-platform="tiktok">
+              <div class="crp-target-check">&#10003;</div>
+              <span class="crp-target-icon">&#127925;</span>
+              <span class="crp-target-label">TikTok Scripts</span>
+            </div>
+            <div class="crp-target-row active" data-platform="newsletter">
+              <div class="crp-target-check">&#10003;</div>
+              <span class="crp-target-icon">&#9993;</span>
+              <span class="crp-target-label">Newsletter Snippet</span>
+            </div>
+            <div class="crp-target-row" data-platform="facebook">
+              <div class="crp-target-check"></div>
+              <span class="crp-target-icon">&#128077;</span>
+              <span class="crp-target-label">Facebook Post</span>
+            </div>
+            <div class="crp-target-row" data-platform="blog">
+              <div class="crp-target-check"></div>
+              <span class="crp-target-icon">&#128221;</span>
+              <span class="crp-target-label">Blog Summary</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="crp-generate-btn" id="crpGenerate">
+          <span class="crp-spinner"></span>Repurpose &#9889;
+        </button>
+      </div>
+
+      <!-- RIGHT: OUTPUTS -->
+      <div class="crp-outputs" id="crpResults"></div>
+
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="crp-toast" id="crpToast"></div>
+
+<script src="/engines/creator-repurpose-engine.js"></script>
+<script>
+!function() {
+  "use strict";
+
+  var E = window.AfroTools && window.AfroTools.RepurposeEngine;
+  if (!E) { console.error('Repurpose engine not loaded'); return; }
+
+  var API = '/.netlify/functions/creator-repurpose';
+  var currentOutputs = null;
+
+  // ── AUTH ──
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  // ── TOAST ──
+  function toast(msg) {
+    var el = document.getElementById('crpToast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  // ── WORD COUNTER ──
+  var sourceArea = document.getElementById('crpSource');
+  var wordCountEl = document.getElementById('crpWordCount');
+  sourceArea.addEventListener('input', function() {
+    var words = this.value.trim().split(/\s+/).filter(function(w) { return w.length > 0; });
+    var count = words.length;
+    wordCountEl.textContent = count + ' word' + (count !== 1 ? 's' : '') + (count > 0 ? ' · ~' + Math.ceil(count / 200) + ' min read' : '');
+  });
+
+  // ── SOURCE TYPE PILLS ──
+  document.getElementById('crpSourceType').addEventListener('click', function(e) {
+    var pill = e.target.closest('.crp-pill');
+    if (!pill) return;
+    this.querySelectorAll('.crp-pill').forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+  });
+
+  // ── TARGET PLATFORM TOGGLES ──
+  document.getElementById('crpTargets').addEventListener('click', function(e) {
+    var row = e.target.closest('.crp-target-row');
+    if (!row) return;
+    row.classList.toggle('active');
+    var check = row.querySelector('.crp-target-check');
+    check.innerHTML = row.classList.contains('active') ? '&#10003;' : '';
+  });
+
+  // ── GET SELECTED PLATFORMS ──
+  function getSelectedPlatforms() {
+    var platforms = [];
+    document.querySelectorAll('#crpTargets .crp-target-row.active').forEach(function(row) {
+      platforms.push(row.getAttribute('data-platform'));
+    });
+    return platforms;
+  }
+
+  // ── GENERATE ──
+  document.getElementById('crpGenerate').addEventListener('click', function() {
+    var source = sourceArea.value.trim();
+    var sourceTypePill = document.querySelector('#crpSourceType .crp-pill.active');
+    var sourceType = sourceTypePill ? sourceTypePill.getAttribute('data-val') : 'youtube_script';
+    var platforms = getSelectedPlatforms();
+
+    if (!source) { toast('Paste your content first!'); return; }
+    if (source.split(/\s+/).length < 10) { toast('Content too short — paste at least a paragraph'); return; }
+    if (!platforms.length) { toast('Select at least one output platform'); return; }
+
+    generate(source, sourceType, platforms);
+  });
+
+  function generate(source, sourceType, platforms) {
+    var btn = document.getElementById('crpGenerate');
+    btn.classList.add('loading'); btn.disabled = true;
+    document.getElementById('crpCopyAll').style.display = 'none';
+
+    var resultsArea = document.getElementById('crpResults');
+
+    // Show shimmer
+    var shimmerHtml = '';
+    for (var i = 0; i < platforms.length; i++) {
+      shimmerHtml += '<div class="crp-shimmer-card"><div class="crp-shimmer-line" style="width:35%"></div><div class="crp-shimmer-line" style="width:90%"></div><div class="crp-shimmer-line" style="width:75%"></div><div class="crp-shimmer-line" style="width:55%"></div><div class="crp-shimmer-line" style="width:40%"></div></div>';
+    }
+    resultsArea.innerHTML = shimmerHtml;
+
+    var prompt = E.buildPrompt(source, sourceType, platforms);
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({
+        source: source,
+        sourceType: sourceType,
+        platforms: platforms,
+        prompt: prompt
+      })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      if (!res.ok) {
+        resultsArea.innerHTML = '<div class="crp-output-card"><div class="crp-output-body"><div class="crp-output-text" style="color:#ef4444;">' + (res.data.error || 'Generation failed') + '</div></div></div>';
+        return;
+      }
+
+      currentOutputs = E.parseOutput(res.data.output);
+      renderOutputs(currentOutputs, source);
+      document.getElementById('crpCopyAll').style.display = '';
+
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      }
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      resultsArea.innerHTML = '<div class="crp-output-card"><div class="crp-output-body"><div class="crp-output-text" style="color:#ef4444;">Connection error. Please try again.</div></div></div>';
+    });
+  }
+
+  // ── RENDER OUTPUTS ──
+  function renderOutputs(data, sourceText) {
+    var resultsArea = document.getElementById('crpResults');
+    var outputs = data.outputs || [];
+    if (!outputs.length) {
+      resultsArea.innerHTML = '<div class="crp-output-card"><div class="crp-output-body"><div class="crp-output-text" style="color:#ef4444;">Could not parse outputs. Try again.</div></div></div>';
+      return;
+    }
+
+    var html = '';
+
+    outputs.forEach(function(out, idx) {
+      var pInfo = E.PLATFORMS[out.platform] || { icon: '&#127760;', label: out.platform, class: 'blog' };
+      html += '<div class="crp-output-card" style="animation-delay:' + (idx * 100) + 'ms">';
+      html += '<div class="crp-output-header">';
+      html += '<div class="crp-output-platform-icon ' + pInfo.class + '">' + pInfo.icon + '</div>';
+      html += '<div class="crp-output-platform-name">' + pInfo.label + '</div>';
+      html += '<div class="crp-output-format">' + (out.format || pInfo.format) + '</div>';
+      if (out.charCount) html += '<div class="crp-output-charcount">' + out.charCount + ' chars</div>';
+      html += '</div>';
+
+      html += '<div class="crp-output-body">';
+
+      // Platform-specific rendering
+      if (out.platform === 'twitter' && out.tweets && out.tweets.length) {
+        out.tweets.forEach(function(tweet) {
+          html += '<div class="crp-thread-tweet">';
+          html += '<div class="crp-thread-num">' + tweet.number + '/' + out.tweets.length + '</div>';
+          html += '<div class="crp-thread-text">' + escapeHtml(tweet.text) + '</div>';
+          html += '<div class="crp-thread-chars">' + (tweet.text || '').length + '/280</div>';
+          html += '</div>';
+        });
+      } else if (out.platform === 'tiktok' && out.scripts && out.scripts.length) {
+        out.scripts.forEach(function(script) {
+          html += '<div class="crp-tiktok-script">';
+          html += '<div class="crp-tiktok-angle">' + (script.angle || 'Script') + '</div>';
+          html += '<div class="crp-tiktok-text">' + escapeHtml(script.text) + '</div>';
+          if (script.duration) html += '<div class="crp-tiktok-duration">~' + script.duration + '</div>';
+          html += '</div>';
+        });
+      } else if (out.platform === 'newsletter') {
+        if (out.subjectLine) html += '<div style="margin-bottom:8px;"><strong style="color:var(--crp-primary);">Subject:</strong> ' + escapeHtml(out.subjectLine) + '</div>';
+        html += '<div class="crp-output-text">' + escapeHtml(out.text || '') + '</div>';
+      } else {
+        html += '<div class="crp-output-text">' + escapeHtml(out.text || '') + '</div>';
+      }
+
+      // Hashtags
+      if (out.hashtags && out.hashtags.length) {
+        html += '<div class="crp-hashtags">' + out.hashtags.join(' ') + '</div>';
+      }
+
+      html += '</div>';
+
+      // Actions
+      html += '<div class="crp-output-actions">';
+      html += '<button class="crp-action-btn" onclick="window._crpCopy(\'' + out.platform + '\')">&#128203; Copy</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+
+    // Value card
+    var sourceWords = (sourceText || '').split(/\s+/).length;
+    var platformCount = outputs.length;
+    html += '<div class="crp-value-card">';
+    html += '<div class="crp-value-title">&#9889; Content Multiplied</div>';
+    html += '<div class="crp-value-stats">';
+    html += '<div class="crp-value-stat"><span class="crp-value-stat-val">' + platformCount + '</span><span class="crp-value-stat-label">Pieces Created</span></div>';
+    html += '<div class="crp-value-stat"><span class="crp-value-stat-val">~' + Math.max(2, platformCount) + 'h</span><span class="crp-value-stat-label">Time Saved</span></div>';
+    html += '<div class="crp-value-stat"><span class="crp-value-stat-val">' + platformCount + 'x</span><span class="crp-value-stat-label">Content Multiplier</span></div>';
+    html += '</div></div>';
+
+    // Copy all
+    html += '<div class="crp-copy-all" onclick="window._crpCopyAll()">&#128203; Copy All Outputs</div>';
+
+    resultsArea.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  }
+
+  // ── ACTIONS ──
+  window._crpCopy = function(platform) {
+    if (!currentOutputs || !currentOutputs.outputs) return;
+    var out = currentOutputs.outputs.find(function(o) { return o.platform === platform; });
+    if (!out) return;
+
+    var text = '';
+    if (out.platform === 'twitter' && out.tweets) {
+      text = out.tweets.map(function(t) { return t.number + '/' + out.tweets.length + ' ' + t.text; }).join('\n\n');
+    } else if (out.platform === 'tiktok' && out.scripts) {
+      text = out.scripts.map(function(s) { return '--- ' + (s.angle || 'Script').toUpperCase() + ' ---\n' + s.text; }).join('\n\n');
+    } else if (out.platform === 'newsletter') {
+      text = (out.subjectLine ? 'Subject: ' + out.subjectLine + '\n\n' : '') + (out.text || '');
+    } else {
+      text = out.text || '';
+    }
+    if (out.hashtags && out.hashtags.length) text += '\n\n' + out.hashtags.join(' ');
+
+    var pInfo = E.PLATFORMS[platform] || { label: platform };
+    navigator.clipboard.writeText(text).then(function() { toast(pInfo.label + ' copied!'); });
+  };
+
+  window._crpCopyAll = function() {
+    if (!currentOutputs || !currentOutputs.outputs) return;
+    var text = currentOutputs.outputs.map(function(out) {
+      var pInfo = E.PLATFORMS[out.platform] || { label: out.platform };
+      var section = '=== ' + pInfo.label.toUpperCase() + ' ===\n\n';
+      if (out.platform === 'twitter' && out.tweets) {
+        section += out.tweets.map(function(t) { return t.number + '/' + out.tweets.length + ' ' + t.text; }).join('\n\n');
+      } else if (out.platform === 'tiktok' && out.scripts) {
+        section += out.scripts.map(function(s) { return '--- ' + (s.angle || 'Script').toUpperCase() + ' ---\n' + s.text; }).join('\n\n');
+      } else if (out.platform === 'newsletter') {
+        section += (out.subjectLine ? 'Subject: ' + out.subjectLine + '\n\n' : '') + (out.text || '');
+      } else {
+        section += out.text || '';
+      }
+      if (out.hashtags && out.hashtags.length) section += '\n\n' + out.hashtags.join(' ');
+      return section;
+    }).join('\n\n\n');
+    navigator.clipboard.writeText(text).then(function() { toast('All outputs copied!'); });
+  };
+
+  // Wire topbar copy-all button
+  document.getElementById('crpCopyAll').addEventListener('click', function() {
+    window._crpCopyAll();
+  });
+
+}();
+</script>
+</body>
+</html>

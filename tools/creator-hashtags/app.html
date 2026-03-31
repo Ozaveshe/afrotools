@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>TagWave Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+</head>
+<body class="cht-app">
+
+  <!-- TOPBAR -->
+  <div class="cht-topbar">
+    <a href="index.html" class="cht-topbar-back">&larr; Back</a>
+    <a href="index.html" class="cht-topbar-brand">#&#xFE0F;&#x20E3; TagWave</a>
+    <div class="cht-topbar-actions">
+      <button class="cht-topbar-btn" id="historyBtn">History</button>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="cht-workspace">
+
+    <!-- INPUT CARD -->
+    <div class="cht-input-card">
+      <label class="cht-input-label">What's the post about?</label>
+      <textarea class="cht-input-field" id="topicInput" placeholder="Behind the scenes of a Lagos wedding photoshoot..." rows="2"></textarea>
+
+      <label class="cht-input-label" style="margin-top:16px">Platform</label>
+      <div class="cht-platforms" id="platformPills"></div>
+
+      <button class="cht-generate-btn" id="generateBtn" onclick="window._chtGenerate()">
+        <span class="cht-spinner"></span>Generate Tags &#127991;&#65039;
+      </button>
+    </div>
+
+    <!-- REACH LEGEND -->
+    <div class="cht-legend" id="legend" style="display:none">
+      <div class="cht-legend-item"><span class="cht-legend-dot high"></span>High Reach (1M+)</div>
+      <div class="cht-legend-item"><span class="cht-legend-dot mid"></span>Mid Reach (100K–1M)</div>
+      <div class="cht-legend-item"><span class="cht-legend-dot niche"></span>Niche (&lt;100K)</div>
+    </div>
+
+    <!-- OUTPUT AREA -->
+    <div class="cht-output" id="outputArea"></div>
+
+    <!-- MIX BUILDER (shown after generation) -->
+    <div class="cht-mix-card" id="mixCard" style="display:none">
+      <div class="cht-mix-header">
+        <div class="cht-mix-title">&#128295; BUILD YOUR OWN MIX</div>
+        <div class="cht-mix-count" id="mixCount">0 of 30 max</div>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:12px">Tap tags above to add/remove from your mix</p>
+      <div class="cht-mix-tags" id="mixTags">
+        <span class="cht-mix-empty">Tap tags above to start building</span>
+      </div>
+      <div class="cht-mix-warn" id="mixWarn">&#9888;&#65039; You've exceeded the recommended tag count for this platform</div>
+      <div class="cht-mix-actions">
+        <button class="cht-copy-set-btn" onclick="window._chtCopyMix()">&#128203; Copy Mix</button>
+        <button class="cht-copy-set-btn" onclick="window._chtClearMix()">&#128465; Clear</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HISTORY PANEL -->
+  <div id="historyPanel" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)">
+    <div style="position:absolute;right:0;top:0;bottom:0;width:100%;max-width:400px;background:#1a1a1a;border-left:1px solid rgba(255,255,255,.08);overflow-y:auto;padding:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h3 style="font-size:16px;font-weight:700">History</h3>
+        <button onclick="document.getElementById('historyPanel').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer">&times;</button>
+      </div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="cht-toast" id="toast"></div>
+
+<script src="/engines/creator-hashtags-engine.js"></script>
+<script>
+!function() {
+  "use strict";
+
+  var E = window.AfroTools && window.AfroTools.TagWaveEngine;
+  if (!E) { console.error('TagWave engine not loaded'); return; }
+
+  var API = '/.netlify/functions/creator-hashtags';
+  var activePlatform = E.DEFAULT_PLATFORM;
+  var currentSets = null;
+  var customMix = [];
+
+  // ── AUTH ──
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  // ── TOAST ──
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  // ── PLATFORM PILLS ──
+  function renderPlatforms() {
+    var container = document.getElementById('platformPills');
+    var html = '';
+    Object.keys(E.PLATFORMS).forEach(function(key) {
+      var p = E.PLATFORMS[key];
+      var cls = key === activePlatform ? ' active' : '';
+      html += '<button class="cht-platform-pill' + cls + '" data-platform="' + key + '">' + p.icon + ' ' + p.label + '</button>';
+    });
+    container.innerHTML = html;
+    container.querySelectorAll('.cht-platform-pill').forEach(function(pill) {
+      pill.onclick = function() {
+        activePlatform = pill.getAttribute('data-platform');
+        container.querySelectorAll('.cht-platform-pill').forEach(function(p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        updateMixCount();
+      };
+    });
+  }
+
+  // ── GENERATE ──
+  window._chtGenerate = function() {
+    var topic = document.getElementById('topicInput').value.trim();
+    if (!topic) { toast('Describe what the post is about'); return; }
+
+    var btn = document.getElementById('generateBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    var outputArea = document.getElementById('outputArea');
+    outputArea.innerHTML = '<div class="cht-shimmer-card"><div class="cht-shimmer-line" style="width:80%"></div><div class="cht-shimmer-line" style="width:50%"></div><div class="cht-shimmer-line" style="width:90%"></div><div class="cht-shimmer-line" style="width:40%"></div></div>';
+    document.getElementById('mixCard').style.display = 'none';
+    document.getElementById('legend').style.display = 'none';
+
+    var prompt = E.buildPrompt(topic, activePlatform);
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ topic: topic, platform: activePlatform, prompt: prompt })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      if (!res.ok) {
+        outputArea.innerHTML = '<div class="cht-set-card" style="border-color:rgba(239,68,68,.3)"><p style="color:#ef4444">' + (res.data.error || 'Generation failed') + '</p></div>';
+        return;
+      }
+      var parsed = typeof res.data.output === 'object' ? res.data.output : E.parseSets(res.data.output);
+      if (!parsed || !parsed.sets) {
+        outputArea.innerHTML = '<div class="cht-set-card"><p style="color:rgba(255,255,255,.6)">Could not parse hashtag sets. Please try again.</p></div>';
+        return;
+      }
+      currentSets = parsed;
+      customMix = [];
+      renderSets(parsed);
+      saveLocalHistory(topic, activePlatform, parsed);
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      }
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      outputArea.innerHTML = '<div class="cht-set-card" style="border-color:rgba(239,68,68,.3)"><p style="color:#ef4444">Connection error. Please try again.</p></div>';
+    });
+  };
+
+  // ── RENDER SETS ──
+  function renderSets(data) {
+    var outputArea = document.getElementById('outputArea');
+    var html = '';
+
+    data.sets.forEach(function(set, si) {
+      html += '<div class="cht-set-card">';
+      html += '<div class="cht-set-header"><div class="cht-set-name">' + escapeHtml(set.name) + '</div>';
+      html += '<button class="cht-copy-set-btn" onclick="window._chtCopySet(' + si + ')">&#128203; Copy Set</button></div>';
+      if (set.strategy) html += '<div class="cht-set-strategy">' + escapeHtml(set.strategy) + '</div>';
+      html += '<div class="cht-tags" style="margin-top:12px">';
+      set.tags.forEach(function(tag) {
+        var reach = tag.reach || 'mid';
+        var est = tag.estimatedPosts ? ' (' + tag.estimatedPosts + ')' : '';
+        html += '<span class="cht-tag" data-reach="' + reach + '" data-tag="' + escapeAttr(tag.tag) + '" onclick="window._chtToggleTag(this)" title="' + E.REACH_LEVELS[reach].label + est + '">' + escapeHtml(tag.tag) + '</span>';
+      });
+      html += '</div>';
+      html += '<div class="cht-set-meta"><span>' + (set.totalTags || set.tags.length) + ' tags</span>';
+      if (set.estimatedReach) html += '<span>est. reach: ' + set.estimatedReach + '</span>';
+      html += '</div></div>';
+    });
+
+    // Trending note
+    if (data.trendingNote) {
+      html += '<div class="cht-trending-note">&#128293; ' + escapeHtml(data.trendingNote) + '</div>';
+    }
+
+    // Avoid list
+    if (data.avoidList && data.avoidList.length) {
+      html += '<div class="cht-avoid-list"><div class="cht-avoid-title">&#9940; Avoid These</div>';
+      data.avoidList.forEach(function(item) {
+        html += '<div>' + escapeHtml(item) + '</div>';
+      });
+      html += '</div>';
+    }
+
+    outputArea.innerHTML = html;
+    document.getElementById('legend').style.display = 'flex';
+    document.getElementById('mixCard').style.display = '';
+    renderMix();
+  }
+
+  // ── TAG TOGGLE ──
+  window._chtToggleTag = function(el) {
+    var tag = el.getAttribute('data-tag');
+    var reach = el.getAttribute('data-reach');
+    var idx = -1;
+    for (var i = 0; i < customMix.length; i++) {
+      if (customMix[i].tag === tag) { idx = i; break; }
+    }
+    if (idx >= 0) {
+      customMix.splice(idx, 1);
+      el.classList.remove('selected');
+    } else {
+      customMix.push({ tag: tag, reach: reach });
+      el.classList.add('selected');
+    }
+    renderMix();
+  };
+
+  // ── MIX RENDERING ──
+  function renderMix() {
+    var container = document.getElementById('mixTags');
+    var countEl = document.getElementById('mixCount');
+    var warnEl = document.getElementById('mixWarn');
+    var plat = E.PLATFORMS[activePlatform] || E.PLATFORMS.instagram;
+
+    if (!customMix.length) {
+      container.innerHTML = '<span class="cht-mix-empty">Tap tags above to start building</span>';
+      countEl.textContent = '0 of ' + plat.maxTags + ' max';
+      warnEl.classList.remove('show');
+      return;
+    }
+
+    var html = '';
+    customMix.forEach(function(t) {
+      html += '<span class="cht-tag" data-reach="' + t.reach + '" style="font-size:12px;padding:4px 10px">' + escapeHtml(t.tag) + '</span>';
+    });
+    container.innerHTML = html;
+    countEl.textContent = customMix.length + ' of ' + plat.maxTags + ' max';
+
+    if (customMix.length > plat.recommended) {
+      warnEl.classList.add('show');
+    } else {
+      warnEl.classList.remove('show');
+    }
+  }
+
+  function updateMixCount() {
+    if (!document.getElementById('mixCard').style.display || document.getElementById('mixCard').style.display === 'none') return;
+    renderMix();
+  }
+
+  // ── COPY ACTIONS ──
+  window._chtCopySet = function(setIndex) {
+    if (!currentSets || !currentSets.sets[setIndex]) return;
+    var text = E.tagsToString(currentSets.sets[setIndex].tags);
+    navigator.clipboard.writeText(text).then(function() { toast('Copied ' + currentSets.sets[setIndex].tags.length + ' tags!'); });
+  };
+
+  window._chtCopyMix = function() {
+    if (!customMix.length) { toast('Add tags to your mix first'); return; }
+    var text = customMix.map(function(t) { return t.tag; }).join(' ');
+    navigator.clipboard.writeText(text).then(function() { toast('Copied ' + customMix.length + ' tags!'); });
+  };
+
+  window._chtClearMix = function() {
+    customMix = [];
+    document.querySelectorAll('.cht-tag.selected').forEach(function(el) { el.classList.remove('selected'); });
+    renderMix();
+  };
+
+  // ── LOCAL HISTORY ──
+  function saveLocalHistory(topic, platform, parsed) {
+    var history = JSON.parse(localStorage.getItem('cht-history') || '[]');
+    history.unshift(E.createHistoryEntry(topic, platform, parsed.sets, []));
+    if (history.length > 50) history = history.slice(0, 50);
+    localStorage.setItem('cht-history', JSON.stringify(history));
+  }
+
+  // ── HISTORY PANEL ──
+  document.getElementById('historyBtn').onclick = function() {
+    var panel = document.getElementById('historyPanel');
+    panel.style.display = '';
+    renderHistory();
+  };
+
+  function renderHistory() {
+    var list = document.getElementById('historyList');
+    var history = JSON.parse(localStorage.getItem('cht-history') || '[]');
+    if (!history.length) {
+      list.innerHTML = '<p style="color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:40px 0">No history yet. Generate some tags!</p>';
+      return;
+    }
+    var html = '';
+    history.forEach(function(h, i) {
+      var platInfo = E.PLATFORMS[h.platform] || E.PLATFORMS.instagram;
+      html += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer" onclick="window._chtLoadHistory(' + i + ')">';
+      html += '<div style="font-size:12px;color:var(--cht-primary);font-weight:700;margin-bottom:4px">' + platInfo.icon + ' ' + platInfo.label + '</div>';
+      html += '<div style="font-size:14px;color:rgba(255,255,255,.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escapeHtml(h.topic) + '</div>';
+      html += '<div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:4px">' + E.formatTimestamp(h.createdAt) + '</div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+  }
+
+  window._chtLoadHistory = function(index) {
+    var history = JSON.parse(localStorage.getItem('cht-history') || '[]');
+    var h = history[index];
+    if (!h) return;
+    document.getElementById('topicInput').value = h.topic;
+    activePlatform = h.platform || 'instagram';
+    renderPlatforms();
+    currentSets = { sets: h.sets };
+    customMix = [];
+    renderSets(currentSets);
+    document.getElementById('historyPanel').style.display = 'none';
+  };
+
+  // ── ENTER KEY ──
+  document.getElementById('topicInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window._chtGenerate(); }
+  });
+
+  // ── HELPERS ──
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escapeAttr(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // ── INIT ──
+  renderPlatforms();
+
+}();
+</script>
+</body>
+</html>

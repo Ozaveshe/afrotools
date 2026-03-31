@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>BioForge Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+</head>
+<body class="cb-app">
+
+  <!-- TOPBAR -->
+  <div class="cb-topbar">
+    <a href="index.html" class="cb-topbar-back">&larr; Back</a>
+    <a href="index.html" class="cb-topbar-brand">&#127807; BioForge</a>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="cb-workspace">
+
+    <!-- INPUT SECTION -->
+    <div class="cb-input-section">
+      <div class="cb-section-title">&#127807; Generate Your Bios</div>
+
+      <div class="cb-form-group">
+        <label class="cb-form-label">Who are you?</label>
+        <textarea class="cb-form-textarea" id="cbWho" placeholder="e.g. Adaeze, photographer & visual storyteller based in Lagos" rows="2"></textarea>
+      </div>
+
+      <div class="cb-form-group">
+        <label class="cb-form-label">What do you do?</label>
+        <textarea class="cb-form-textarea" id="cbWhat" placeholder="e.g. Brand photography, content creation, visual branding for African companies" rows="2"></textarea>
+      </div>
+
+      <div class="cb-form-group">
+        <label class="cb-form-label">Your vibe</label>
+        <div class="cb-pills" id="cbVibes">
+          <span class="cb-pill active" data-val="professional">Professional</span>
+          <span class="cb-pill" data-val="bold">Bold</span>
+          <span class="cb-pill" data-val="playful">Playful</span>
+          <span class="cb-pill" data-val="minimalist">Minimalist</span>
+          <span class="cb-pill" data-val="motivational">Motivational</span>
+        </div>
+      </div>
+
+      <button class="cb-generate-btn" id="cbGenerate">
+        <span class="cb-spinner"></span>Generate All Bios &#127807;
+      </button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="cbResults"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="cb-toast" id="cbToast"></div>
+
+<script src="/engines/creator-bios-engine.js"></script>
+<script>
+!function() {
+  "use strict";
+
+  var E = window.AfroTools && window.AfroTools.BioForgeEngine;
+  if (!E) { console.error('BioForge engine not loaded'); return; }
+
+  var API = '/.netlify/functions/creator-bios';
+  var currentBios = null;
+
+  // ── AUTH ──
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  // ── TOAST ──
+  function toast(msg) {
+    var el = document.getElementById('cbToast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  // ── VIBE PILLS ──
+  document.getElementById('cbVibes').addEventListener('click', function(e) {
+    var pill = e.target.closest('.cb-pill');
+    if (!pill) return;
+    this.querySelectorAll('.cb-pill').forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+  });
+
+  // ── GENERATE ──
+  document.getElementById('cbGenerate').addEventListener('click', function() {
+    var who = document.getElementById('cbWho').value.trim();
+    var what = document.getElementById('cbWhat').value.trim();
+    var vibePill = document.querySelector('#cbVibes .cb-pill.active');
+    var vibe = vibePill ? vibePill.getAttribute('data-val') : 'professional';
+
+    if (!who) { toast('Tell us who you are!'); return; }
+    if (!what) { toast('Tell us what you do!'); return; }
+
+    generateBios(who, what, vibe);
+  });
+
+  function generateBios(who, what, vibe, singlePlatform) {
+    var btn = document.getElementById('cbGenerate');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    var resultsArea = document.getElementById('cbResults');
+
+    // Show shimmer loading
+    if (!singlePlatform) {
+      var shimmerHtml = '';
+      for (var i = 0; i < 4; i++) {
+        shimmerHtml += '<div class="cb-shimmer-card"><div class="cb-shimmer-line" style="width:40%"></div><div class="cb-shimmer-line" style="width:90%"></div><div class="cb-shimmer-line" style="width:70%"></div><div class="cb-shimmer-line" style="width:50%"></div></div>';
+      }
+      resultsArea.innerHTML = '<div style="margin-top:24px">' + shimmerHtml + '</div>';
+    }
+
+    var prompt = E.buildPrompt(who, what, vibe, singlePlatform);
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({
+        who: who,
+        what: what,
+        tone: vibe,
+        prompt: prompt,
+        singlePlatform: singlePlatform || null
+      })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      if (!res.ok) {
+        resultsArea.innerHTML = '<div class="cb-bio-card" style="margin-top:24px"><div class="cb-bio-text" style="color:#ef4444;">' + (res.data.error || 'Generation failed') + '</div></div>';
+        return;
+      }
+
+      var parsed = E.parseResponse(res.data.output);
+
+      if (singlePlatform && currentBios) {
+        // Replace just one platform
+        var newBios = parsed.bios || [];
+        if (newBios.length) {
+          for (var i = 0; i < currentBios.bios.length; i++) {
+            if (currentBios.bios[i].platform === singlePlatform) {
+              currentBios.bios[i] = newBios[0];
+              break;
+            }
+          }
+        }
+      } else {
+        currentBios = parsed;
+      }
+
+      renderBios(currentBios);
+
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      }
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      resultsArea.innerHTML = '<div class="cb-bio-card" style="margin-top:24px"><div class="cb-bio-text" style="color:#ef4444;">Connection error. Please try again.</div></div>';
+    });
+  }
+
+  // ── RENDER BIOS ──
+  function renderBios(data) {
+    var resultsArea = document.getElementById('cbResults');
+    var bios = data.bios || [];
+    if (!bios.length) {
+      resultsArea.innerHTML = '<div class="cb-bio-card" style="margin-top:24px"><div class="cb-bio-text" style="color:#ef4444;">Could not parse bios. Try again.</div></div>';
+      return;
+    }
+
+    var html = '<div class="cb-results" style="margin-top:24px;">';
+    html += '<div class="cb-results-header">';
+    html += '<div class="cb-results-title">Your Bio Sheet &#127807;</div>';
+    html += '<div style="display:flex;gap:8px;">';
+    html += '<button class="cb-refresh-btn" onclick="window._cbRefresh()">&#128260; Refresh All</button>';
+    html += '<button class="cb-copy-all-btn" onclick="window._cbCopyAll()">&#128203; Copy All</button>';
+    html += '</div></div>';
+
+    bios.forEach(function(bio) {
+      var pInfo = E.PLATFORMS[bio.platform] || { icon: '&#127760;', label: bio.platform, limit: 150 };
+      var charCount = (bio.text || '').length;
+      var limit = bio.charLimit || pInfo.limit;
+      var pct = charCount / limit;
+      var countClass = pct > 1 ? 'over' : pct > 0.9 ? 'warn' : 'ok';
+      var checkMark = pct <= 1 ? ' &#10003;' : ' &#10007;';
+
+      html += '<div class="cb-bio-card" data-platform="' + bio.platform + '">';
+      html += '<div class="cb-bio-card-header">';
+      html += '<div class="cb-platform-badge"><span class="cb-platform-icon">' + pInfo.icon + '</span> ' + pInfo.label + '</div>';
+      html += '</div>';
+      html += '<div class="cb-bio-text" contenteditable="true" data-platform="' + bio.platform + '" data-limit="' + limit + '">' + escapeHtml(bio.text || '') + '</div>';
+      html += '<div class="cb-bio-footer">';
+      html += '<div class="cb-char-count ' + countClass + '" data-counter="' + bio.platform + '">' + charCount + '/' + limit + ' chars' + checkMark + '</div>';
+      html += '<div class="cb-bio-actions">';
+      html += '<button class="cb-bio-btn" onclick="window._cbCopySingle(\'' + bio.platform + '\')">&#128203; Copy</button>';
+      html += '<button class="cb-bio-btn" onclick="window._cbRegenSingle(\'' + bio.platform + '\')">&#128260; Redo</button>';
+      html += '</div></div></div>';
+    });
+
+    // Brand tip
+    if (data.personalBrandTip) {
+      html += '<div class="cb-brand-tip">';
+      html += '<div class="cb-brand-tip-label">&#128161; Personal Brand Tip</div>';
+      html += '<div class="cb-brand-tip-text">' + escapeHtml(data.personalBrandTip) + '</div>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+    resultsArea.innerHTML = html;
+
+    // Wire inline editing character counters
+    resultsArea.querySelectorAll('.cb-bio-text[contenteditable]').forEach(function(el) {
+      el.addEventListener('input', function() {
+        var platform = this.getAttribute('data-platform');
+        var limit = parseInt(this.getAttribute('data-limit'), 10);
+        var count = this.innerText.length;
+        var pct = count / limit;
+        var cls = pct > 1 ? 'over' : pct > 0.9 ? 'warn' : 'ok';
+        var check = pct <= 1 ? ' &#10003;' : ' &#10007;';
+        var counter = resultsArea.querySelector('[data-counter="' + platform + '"]');
+        if (counter) {
+          counter.className = 'cb-char-count ' + cls;
+          counter.innerHTML = count + '/' + limit + ' chars' + check;
+        }
+        // Update currentBios
+        if (currentBios && currentBios.bios) {
+          for (var i = 0; i < currentBios.bios.length; i++) {
+            if (currentBios.bios[i].platform === platform) {
+              currentBios.bios[i].text = this.innerText;
+              currentBios.bios[i].charCount = count;
+              break;
+            }
+          }
+        }
+      });
+    });
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  }
+
+  // ── ACTIONS ──
+  window._cbCopySingle = function(platform) {
+    if (!currentBios || !currentBios.bios) return;
+    var bio = currentBios.bios.find(function(b) { return b.platform === platform; });
+    if (bio) {
+      navigator.clipboard.writeText(bio.text).then(function() {
+        var pInfo = E.PLATFORMS[platform] || { label: platform };
+        toast(pInfo.label + ' bio copied!');
+      });
+    }
+  };
+
+  window._cbRegenSingle = function(platform) {
+    var who = document.getElementById('cbWho').value.trim();
+    var what = document.getElementById('cbWhat').value.trim();
+    var vibePill = document.querySelector('#cbVibes .cb-pill.active');
+    var vibe = vibePill ? vibePill.getAttribute('data-val') : 'professional';
+    if (!who || !what) { toast('Fill in your details first'); return; }
+    generateBios(who, what, vibe, platform);
+  };
+
+  window._cbRefresh = function() {
+    var who = document.getElementById('cbWho').value.trim();
+    var what = document.getElementById('cbWhat').value.trim();
+    var vibePill = document.querySelector('#cbVibes .cb-pill.active');
+    var vibe = vibePill ? vibePill.getAttribute('data-val') : 'professional';
+    if (!who || !what) { toast('Fill in your details first'); return; }
+    generateBios(who, what, vibe);
+  };
+
+  window._cbCopyAll = function() {
+    if (!currentBios || !currentBios.bios) return;
+    var text = currentBios.bios.map(function(bio) {
+      var pInfo = E.PLATFORMS[bio.platform] || { label: bio.platform };
+      return '--- ' + pInfo.label.toUpperCase() + ' ---\n' + bio.text;
+    }).join('\n\n');
+    navigator.clipboard.writeText(text).then(function() { toast('All bios copied!'); });
+  };
+
+}();
+</script>
+</body>
+</html>

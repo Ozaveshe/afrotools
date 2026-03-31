@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Reports — CreatorMoney | AfroTools</title>
+  <meta name="description" content="Monthly P&L, annual summary, tax estimates for African creative professionals.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/engines/creator-money-engine.js"></script>
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+
+  <div class="cm-app">
+    <div class="cm-app-inner" style="padding-top:24px">
+      <div class="cm-app-header">
+        <a href="app.html" style="font-size:.78rem;color:rgba(255,255,255,.4);text-decoration:none">← Dashboard</a>
+        <div class="cm-app-title">Reports</div>
+      </div>
+
+      <!-- MONTH SELECTOR -->
+      <div class="cm-month-nav" style="margin-bottom:24px">
+        <button class="cm-month-btn" id="prev-month">‹</button>
+        <div class="cm-month-label" id="month-label"></div>
+        <button class="cm-month-btn" id="next-month">›</button>
+      </div>
+
+      <!-- MONTHLY P&L -->
+      <div class="cm-report-card" id="monthly-pnl">
+        <div class="cm-report-title">Monthly P&L Statement</div>
+        <div id="pnl-content"></div>
+      </div>
+
+      <!-- ANNUAL SUMMARY -->
+      <div class="cm-report-card">
+        <div class="cm-report-title">Annual Summary — <span id="year-label"></span></div>
+        <div class="cm-annual-chart" id="annual-chart"></div>
+        <div id="annual-content"></div>
+      </div>
+
+      <!-- TAX SUMMARY -->
+      <div class="cm-report-card">
+        <div class="cm-report-title">Tax Estimate</div>
+        <div id="tax-content"></div>
+      </div>
+
+      <!-- EXPORT -->
+      <div class="cm-export-btns">
+        <button class="cm-export-btn" id="export-csv">Export CSV</button>
+        <button class="cm-export-btn" id="export-text">Copy as Text</button>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="cm-bottom-nav">
+      <a href="app.html" class="cm-nav-item"><span class="cm-nav-icon">📊</span>Dashboard</a>
+      <a href="reports.html" class="cm-nav-item active"><span class="cm-nav-icon">📄</span>Reports</a>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+    var CM = CreatorMoneyEngine;
+    var currency = 'NGN';
+    var currentMonth = new Date().toISOString().slice(0, 7);
+
+    CM.loadDemoData(currency);
+
+    // Month nav
+    document.getElementById('prev-month').addEventListener('click', function() { shiftMonth(-1); });
+    document.getElementById('next-month').addEventListener('click', function() { shiftMonth(1); });
+    function shiftMonth(d) {
+      var parts = currentMonth.split('-');
+      var dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1 + d, 1);
+      currentMonth = dt.toISOString().slice(0, 7);
+      render();
+    }
+
+    function render() {
+      document.getElementById('month-label').textContent = CM.formatMonthLabel(currentMonth);
+      var year = currentMonth.slice(0, 4);
+      document.getElementById('year-label').textContent = year;
+
+      renderPnL();
+      renderAnnual(year);
+      renderTax();
+    }
+
+    function renderPnL() {
+      var s = CM.getMonthSummary(currentMonth, currency);
+      var html = '';
+
+      // Income section
+      html += '<div style="font-size:.75rem;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Income</div>';
+      CM.INCOME_SOURCES.forEach(function(src) {
+        var amt = s.incomeBySource[src.id] || 0;
+        if (amt === 0) return;
+        html += '<div class="cm-report-row"><span>' + src.icon + ' ' + src.label + '</span><span style="color:#22C55E">' + CM.formatMoney(amt, currency) + '</span></div>';
+      });
+      html += '<div class="cm-report-row" style="font-weight:900;border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:10px"><span>Total Income</span><span style="color:#22C55E">' + CM.formatMoney(s.income, currency) + '</span></div>';
+
+      // Expenses section
+      html += '<div style="font-size:.75rem;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin:20px 0 8px">Expenses</div>';
+      CM.EXPENSE_CATEGORIES.forEach(function(cat) {
+        var amt = s.expenseByCategory[cat.id] || 0;
+        if (amt === 0) return;
+        html += '<div class="cm-report-row"><span>' + cat.icon + ' ' + cat.label + '</span><span style="color:#EF4444">' + CM.formatMoney(amt, currency) + '</span></div>';
+      });
+      html += '<div class="cm-report-row" style="font-weight:900;border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:10px"><span>Total Expenses</span><span style="color:#EF4444">' + CM.formatMoney(s.expenses, currency) + '</span></div>';
+
+      // Net
+      html += '<div class="cm-report-total"><span>Net Profit</span><span style="color:' + (s.profit >= 0 ? '#14B8A6' : '#EF4444') + '">' + (s.profit >= 0 ? '+' : '') + CM.formatMoney(s.profit, currency) + '</span></div>';
+      html += '<div class="cm-report-row"><span>Profit Margin</span><span style="color:#F5A623">' + s.margin + '%</span></div>';
+
+      document.getElementById('pnl-content').innerHTML = html;
+    }
+
+    function renderAnnual(year) {
+      var annual = CM.getYearSummary(year, currency);
+      var chartEl = document.getElementById('annual-chart');
+
+      // Bar chart (pure CSS)
+      var maxVal = Math.max.apply(null, annual.months.map(function(m) { return Math.max(m.income, m.expenses, 1); }));
+      var barHTML = '<div style="display:flex;align-items:flex-end;gap:4px;height:160px;padding:0 4px">';
+      annual.months.forEach(function(m, i) {
+        var ih = Math.max(2, Math.round((m.income / maxVal) * 140));
+        var eh = Math.max(2, Math.round((m.expenses / maxVal) * 140));
+        var label = new Date(parseInt(year), i, 1).toLocaleDateString('en-US', { month: 'short' }).charAt(0);
+        barHTML += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">' +
+          '<div style="display:flex;gap:2px;align-items:flex-end;height:140px">' +
+            '<div style="width:8px;height:' + ih + 'px;background:#22C55E;border-radius:3px 3px 0 0;opacity:.7" title="Income: ' + CM.formatMoney(m.income, currency) + '"></div>' +
+            '<div style="width:8px;height:' + eh + 'px;background:#EF4444;border-radius:3px 3px 0 0;opacity:.7" title="Expenses: ' + CM.formatMoney(m.expenses, currency) + '"></div>' +
+          '</div>' +
+          '<span style="font-size:.5rem;color:rgba(255,255,255,.3)">' + label + '</span></div>';
+      });
+      barHTML += '</div>';
+      barHTML += '<div style="display:flex;gap:16px;justify-content:center;margin-top:8px;font-size:.6rem">' +
+        '<span style="color:#22C55E">■ Income</span><span style="color:#EF4444">■ Expenses</span></div>';
+      chartEl.innerHTML = barHTML;
+
+      // Annual totals
+      var html = '<div class="cm-report-total"><span>Total Income</span><span style="color:#22C55E">' + CM.formatMoney(annual.totalIncome, currency) + '</span></div>' +
+        '<div class="cm-report-total" style="border-color:rgba(255,255,255,.1)"><span>Total Expenses</span><span style="color:#EF4444">' + CM.formatMoney(annual.totalExpenses, currency) + '</span></div>' +
+        '<div class="cm-report-total" style="border-color:var(--cm-primary)"><span>Net Profit</span><span style="color:' + (annual.totalProfit >= 0 ? '#14B8A6' : '#EF4444') + '">' + CM.formatMoney(annual.totalProfit, currency) + '</span></div>' +
+        '<div class="cm-report-row"><span>Profit Margin</span><span style="color:#F5A623">' + annual.margin + '%</span></div>';
+
+      if (annual.bestMonth && annual.bestMonth.income > 0) {
+        html += '<div class="cm-report-row"><span>Best Month</span><span style="color:#14B8A6">' + CM.formatMonthLabel(annual.bestMonth.month) + ' (' + CM.formatMoney(annual.bestMonth.profit, currency) + ')</span></div>';
+      }
+      if (annual.worstMonth && (annual.worstMonth.income > 0 || annual.worstMonth.expenses > 0)) {
+        html += '<div class="cm-report-row"><span>Worst Month</span><span style="color:#EF4444">' + CM.formatMonthLabel(annual.worstMonth.month) + ' (' + CM.formatMoney(annual.worstMonth.profit, currency) + ')</span></div>';
+      }
+
+      document.getElementById('annual-content').innerHTML = html;
+    }
+
+    function renderTax() {
+      var year = currentMonth.slice(0, 4);
+      var annual = CM.getYearSummary(year, currency);
+      var income = annual.totalIncome;
+      var deductible = annual.totalExpenses; // Simplified: all business expenses are deductible
+
+      // Nigeria freelance tax estimate (simplified)
+      var taxableIncome = Math.max(0, income - deductible);
+      var estimatedTax = 0;
+      if (currency === 'NGN') {
+        // Simplified PITA bands
+        if (taxableIncome > 3200000) estimatedTax = taxableIncome * 0.24;
+        else if (taxableIncome > 1600000) estimatedTax = taxableIncome * 0.19;
+        else if (taxableIncome > 800000) estimatedTax = taxableIncome * 0.15;
+        else if (taxableIncome > 300000) estimatedTax = taxableIncome * 0.11;
+        else estimatedTax = taxableIncome * 0.07;
+        var vat = income * 0.075; // 7.5% VAT on turnover above threshold
+        var html = '<div class="cm-report-row"><span>Total Income (' + year + ')</span><span>' + CM.formatMoney(income, currency) + '</span></div>' +
+          '<div class="cm-report-row"><span>Deductible Expenses</span><span style="color:#22C55E">-' + CM.formatMoney(deductible, currency) + '</span></div>' +
+          '<div class="cm-report-row" style="font-weight:900"><span>Taxable Income</span><span>' + CM.formatMoney(taxableIncome, currency) + '</span></div>' +
+          '<div style="height:12px"></div>' +
+          '<div class="cm-report-row"><span>Estimated Income Tax</span><span style="color:#F5A623">' + CM.formatMoney(Math.round(estimatedTax), currency) + '</span></div>' +
+          '<div class="cm-report-row"><span>VAT Estimate (7.5%)</span><span style="color:#F5A623">' + CM.formatMoney(Math.round(vat), currency) + '</span></div>' +
+          '<div class="cm-report-total"><span>Total Tax Estimate</span><span style="color:#EF4444">' + CM.formatMoney(Math.round(estimatedTax + vat), currency) + '</span></div>' +
+          '<div style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:10px;line-height:1.5">⚠️ This is a simplified estimate for Nigerian freelancers. Consult a tax professional for accurate filing. VAT applies if turnover exceeds ₦25M/year.</div>';
+      } else {
+        var html = '<div style="font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.6">Tax estimates are currently available for NGN (Nigeria). Support for KES, ZAR, GHS coming soon. Total income: ' + CM.formatMoney(income, currency) + ', deductible expenses: ' + CM.formatMoney(deductible, currency) + '.</div>';
+      }
+      document.getElementById('tax-content').innerHTML = html;
+    }
+
+    // ── EXPORT ──
+    document.getElementById('export-csv').addEventListener('click', function() {
+      var txs = CM.getTransactions({ month: currentMonth });
+      var csv = 'Date,Type,Description,Category/Source,Amount,Currency\n';
+      txs.forEach(function(t) {
+        csv += t.date + ',' + t.type + ',"' + (t.description || '').replace(/"/g, '""') + '",' +
+          (t.type === 'income' ? (t.source || '') : (t.category || '')) + ',' +
+          (t.type === 'expense' ? '-' : '') + t.amount + ',' + (t.currency || currency) + '\n';
+      });
+      var blob = new Blob([csv], { type: 'text/csv' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'creator-money-' + currentMonth + '.csv';
+      a.click(); URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('export-text').addEventListener('click', function() {
+      var s = CM.getMonthSummary(currentMonth, currency);
+      var text = 'FINANCIAL REPORT — ' + CM.formatMonthLabel(currentMonth) + '\n\n';
+      text += 'Income: ' + CM.formatMoney(s.income, currency) + '\n';
+      text += 'Expenses: ' + CM.formatMoney(s.expenses, currency) + '\n';
+      text += 'Net Profit: ' + CM.formatMoney(s.profit, currency) + ' (' + s.margin + '% margin)\n\n';
+      text += 'Generated by AfroTools CreatorMoney';
+      navigator.clipboard.writeText(text).then(function() {
+        var btn = document.getElementById('export-text');
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy as Text'; }, 2000);
+      });
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>

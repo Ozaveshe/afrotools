@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice Dashboard — CreatorInvoice | AfroTools</title>
+<meta name="description" content="Manage all your invoices, quotes, and clients in one place. Track payments, send reminders, and see your earnings at a glance.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="ci-app">
+
+  <!-- HEADER -->
+  <header class="ci-app-header">
+    <a href="/tools/creator-invoice/" class="ci-app-logo">
+      <span>CI</span> CreatorInvoice
+    </a>
+    <nav class="ci-app-nav">
+      <a href="app.html" class="active">Invoices</a>
+      <a href="app.html?view=clients">Clients</a>
+      <a href="quote.html">Quotes</a>
+    </nav>
+  </header>
+
+  <div class="ci-app-inner wide">
+
+    <!-- STATS BAR -->
+    <div class="ci-stats-bar" id="stats-bar">
+      <div class="ci-stat-card">
+        <div class="ci-stat-label">Outstanding</div>
+        <div class="ci-stat-value emerald" id="stat-outstanding">—</div>
+      </div>
+      <div class="ci-stat-card">
+        <div class="ci-stat-label">Paid This Month</div>
+        <div class="ci-stat-value" id="stat-paid">—</div>
+      </div>
+      <div class="ci-stat-card">
+        <div class="ci-stat-label">Overdue</div>
+        <div class="ci-stat-value" id="stat-overdue">—</div>
+      </div>
+      <div class="ci-stat-card">
+        <div class="ci-stat-label">Avg Payment Time</div>
+        <div class="ci-stat-value" id="stat-avg-days">—</div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="ci-quick-actions">
+      <a href="create.html" class="ci-btn ci-btn-primary ci-btn-sm">+ New Invoice</a>
+      <a href="quote.html?new=1" class="ci-btn ci-btn-outline ci-btn-sm">+ New Quote</a>
+      <button class="ci-btn ci-btn-secondary ci-btn-sm" id="btn-send-reminders" style="display:none">
+        Send Reminders <span class="ci-badge ci-badge-overdue" id="overdue-count"></span>
+      </button>
+    </div>
+
+    <!-- INVOICE VIEW -->
+    <div id="invoices-view">
+      <!-- FILTER TABS -->
+      <div class="ci-filter-tabs" id="filter-tabs">
+        <button class="ci-filter-tab active" data-filter="all">All</button>
+        <button class="ci-filter-tab" data-filter="draft">Draft</button>
+        <button class="ci-filter-tab" data-filter="sent">Sent</button>
+        <button class="ci-filter-tab" data-filter="paid">Paid</button>
+        <button class="ci-filter-tab" data-filter="overdue">Overdue</button>
+      </div>
+
+      <!-- INVOICE LIST -->
+      <div class="ci-invoice-list" id="invoice-list">
+        <!-- Skeleton loading -->
+        <div class="ci-invoice-card"><div class="ci-skeleton" style="width:60%;height:16px;margin-bottom:8px"></div><div class="ci-skeleton" style="width:40%;height:12px"></div></div>
+        <div class="ci-invoice-card"><div class="ci-skeleton" style="width:50%;height:16px;margin-bottom:8px"></div><div class="ci-skeleton" style="width:35%;height:12px"></div></div>
+        <div class="ci-invoice-card"><div class="ci-skeleton" style="width:55%;height:16px;margin-bottom:8px"></div><div class="ci-skeleton" style="width:45%;height:12px"></div></div>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div class="ci-empty" id="empty-state" style="display:none">
+        <div class="ci-empty-icon">🧾</div>
+        <h3>No invoices yet</h3>
+        <p>Create your first invoice — it takes 30 seconds</p>
+        <a href="create.html" class="ci-btn ci-btn-primary ci-btn-sm">+ Create Invoice</a>
+      </div>
+    </div>
+
+    <!-- CLIENT VIEW -->
+    <div id="clients-view" style="display:none">
+      <div class="ci-section-title" style="margin-bottom:20px">YOUR CLIENTS</div>
+      <div class="ci-client-grid" id="client-grid">
+        <div class="ci-client-card"><div class="ci-skeleton" style="width:60%;height:16px;margin-bottom:8px"></div><div class="ci-skeleton" style="width:40%;height:12px"></div></div>
+      </div>
+      <div class="ci-empty" id="clients-empty" style="display:none">
+        <div class="ci-empty-icon">👤</div>
+        <h3>No clients yet</h3>
+        <p>Clients are saved automatically when you create invoices</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="ci-toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/creator-invoice-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorInvoice;
+  var invoices = [];
+  var clients = [];
+  var currentFilter = 'all';
+  var currentView = new URLSearchParams(location.search).get('view') || 'invoices';
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init() {
+    setupTabs();
+    setupView();
+
+    if (typeof AfroAuth !== 'undefined') {
+      AfroAuth.onReady(function() {
+        if (!AfroAuth.isLoggedIn()) {
+          showToast('Sign in to manage your invoices', 'error');
+          return;
+        }
+        loadData();
+      });
+    }
+  }
+
+  function setupView() {
+    if (currentView === 'clients') {
+      document.getElementById('invoices-view').style.display = 'none';
+      document.getElementById('clients-view').style.display = '';
+      var navLinks = document.querySelectorAll('.ci-app-nav a');
+      navLinks.forEach(function(a) { a.classList.remove('active'); });
+      navLinks[1].classList.add('active');
+    }
+  }
+
+  function setupTabs() {
+    document.getElementById('filter-tabs').addEventListener('click', function(e) {
+      var tab = e.target.closest('.ci-filter-tab');
+      if (!tab) return;
+      document.querySelectorAll('.ci-filter-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      currentFilter = tab.dataset.filter;
+      renderInvoices();
+    });
+  }
+
+  async function loadData() {
+    try {
+      var sb = AfroAuth.getSupabase();
+      var user = AfroAuth.getUser();
+      if (!sb || !user) return;
+
+      var [invRes, clientRes] = await Promise.all([
+        sb.from('creator_invoices').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+        sb.from('creator_clients').select('*').eq('user_id', user.id).order('name')
+      ]);
+
+      invoices = (invRes.data || []);
+      clients = (clientRes.data || []);
+
+      updateStats();
+      renderInvoices();
+      renderClients();
+    } catch(e) {
+      // Fallback to local data
+      try {
+        var local = await AfroData.load('creator-invoice', 100);
+        invoices = (local || []).map(function(d) { return d.data || d; });
+        renderInvoices();
+      } catch(e2) { /* silent */ }
+    }
+  }
+
+  function updateStats() {
+    var user = AfroAuth.getUser();
+    var profile = AfroAuth.getCachedProfile && AfroAuth.getCachedProfile();
+    var currency = (profile && profile.currency) || 'NGN';
+    var now = new Date();
+    var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    var outstanding = 0, paidThisMonth = 0, overdueTotal = 0, overdueCount = 0;
+    var payDays = [];
+
+    invoices.forEach(function(inv) {
+      if (inv.status === 'sent' || inv.status === 'viewed') {
+        outstanding += inv.total || 0;
+        if (inv.due_date && new Date(inv.due_date) < now) {
+          overdueTotal += inv.total || 0;
+          overdueCount++;
+        }
+      }
+      if (inv.status === 'paid') {
+        if (inv.paid_date && new Date(inv.paid_date) >= monthStart) {
+          paidThisMonth += inv.total || 0;
+        }
+        if (inv.issued_date && inv.paid_date) {
+          var days = Math.round((new Date(inv.paid_date) - new Date(inv.issued_date)) / 86400000);
+          if (days >= 0) payDays.push(days);
+        }
+      }
+    });
+
+    var fmt = engine ? engine.formatCurrency.bind(engine) : function(a) { return currency + ' ' + (a/100).toLocaleString(); };
+    document.getElementById('stat-outstanding').textContent = fmt(outstanding, currency);
+    document.getElementById('stat-paid').textContent = fmt(paidThisMonth, currency);
+
+    var overdueEl = document.getElementById('stat-overdue');
+    overdueEl.textContent = fmt(overdueTotal, currency);
+    if (overdueTotal > 0) overdueEl.classList.add('danger');
+
+    var avgDays = payDays.length ? Math.round(payDays.reduce(function(a,b){return a+b;},0) / payDays.length) : 0;
+    document.getElementById('stat-avg-days').textContent = avgDays ? avgDays + ' days' : '—';
+
+    if (overdueCount > 0) {
+      var reminderBtn = document.getElementById('btn-send-reminders');
+      reminderBtn.style.display = '';
+      document.getElementById('overdue-count').textContent = overdueCount;
+    }
+  }
+
+  function renderInvoices() {
+    var list = document.getElementById('invoice-list');
+    var empty = document.getElementById('empty-state');
+
+    var filtered = currentFilter === 'all' ? invoices : invoices.filter(function(inv) {
+      if (currentFilter === 'overdue') {
+        return (inv.status === 'sent' || inv.status === 'viewed') && inv.due_date && new Date(inv.due_date) < new Date();
+      }
+      return inv.status === currentFilter;
+    });
+
+    if (!filtered.length) {
+      list.innerHTML = '';
+      empty.style.display = '';
+      return;
+    }
+
+    empty.style.display = 'none';
+    var currency = 'NGN';
+    try { var p = AfroAuth.getCachedProfile(); if (p && p.currency) currency = p.currency; } catch(e) {}
+
+    list.innerHTML = filtered.map(function(inv) {
+      var status = inv.status || 'draft';
+      var isOverdue = (status === 'sent' || status === 'viewed') && inv.due_date && new Date(inv.due_date) < new Date();
+      var badgeClass = isOverdue ? 'ci-badge-overdue' : 'ci-badge-' + status;
+      var badgeText = isOverdue ? 'OVERDUE' : status.toUpperCase();
+      var fmt = engine ? engine.formatCurrency(inv.total || 0, inv.currency || currency) : (inv.currency || currency) + ' ' + ((inv.total||0)/100).toLocaleString();
+      var dueText = inv.due_date ? 'Due ' + new Date(inv.due_date).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
+
+      return '<div class="ci-invoice-card" data-id="' + inv.id + '" onclick="openInvoice(\'' + inv.id + '\')">' +
+        '<div class="ci-invoice-info">' +
+          '<div class="ci-invoice-client">' + escHtml(inv.client_name || 'Unknown Client') + '</div>' +
+          '<div class="ci-invoice-meta">' +
+            '<span class="ci-badge ' + badgeClass + '">' + badgeText + '</span>' +
+            '<span>' + (inv.invoice_number || '') + '</span>' +
+            '<span>' + dueText + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ci-invoice-amount">' + fmt + '</div>' +
+        '<button class="ci-invoice-menu" onclick="event.stopPropagation();toggleMenu(this,\'' + inv.id + '\')">&#8942;</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderClients() {
+    var grid = document.getElementById('client-grid');
+    var empty = document.getElementById('clients-empty');
+
+    if (!clients.length) {
+      grid.innerHTML = '';
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+
+    var currency = 'NGN';
+    try { var p = AfroAuth.getCachedProfile(); if (p && p.currency) currency = p.currency; } catch(e) {}
+    var fmt = engine ? engine.formatCurrency.bind(engine) : function(a) { return currency + ' ' + (a/100).toLocaleString(); };
+
+    grid.innerHTML = clients.map(function(c) {
+      return '<div class="ci-client-card">' +
+        '<div class="ci-client-card-name">' + escHtml(c.name) + '</div>' +
+        '<div class="ci-client-card-company">' + escHtml(c.company || '') + '</div>' +
+        '<div class="ci-client-card-stats">' +
+          '<div class="ci-client-card-stat"><span>Invoiced</span>' + fmt(c.total_invoiced || 0, currency) + '</div>' +
+          '<div class="ci-client-card-stat"><span>Paid</span>' + fmt(c.total_paid || 0, currency) + '</div>' +
+        '</div>' +
+        '<a href="create.html?client_id=' + c.id + '" class="ci-btn ci-btn-primary ci-btn-sm" style="width:100%">+ New Invoice</a>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.openInvoice = function(id) {
+    location.href = 'create.html?id=' + id;
+  };
+
+  window.toggleMenu = function(btn, id) {
+    var existing = document.querySelector('.ci-dropdown.open');
+    if (existing) { existing.remove(); }
+
+    var inv = invoices.find(function(i) { return i.id === id; });
+    if (!inv) return;
+
+    var dd = document.createElement('div');
+    dd.className = 'ci-dropdown open';
+    dd.innerHTML =
+      '<button class="ci-dropdown-item" onclick="editInvoice(\'' + id + '\')">✏️ Edit</button>' +
+      '<button class="ci-dropdown-item" onclick="duplicateInvoice(\'' + id + '\')">📋 Duplicate</button>' +
+      (inv.status !== 'paid' ? '<button class="ci-dropdown-item" onclick="markPaid(\'' + id + '\')">✅ Mark Paid</button>' : '') +
+      (inv.status !== 'paid' ? '<button class="ci-dropdown-item" onclick="sendReminder(\'' + id + '\')">🔔 Send Reminder</button>' : '') +
+      '<div class="ci-dropdown-divider"></div>' +
+      '<button class="ci-dropdown-item danger" onclick="deleteInvoice(\'' + id + '\')">🗑️ Delete</button>';
+
+    btn.parentElement.style.position = 'relative';
+    btn.parentElement.appendChild(dd);
+
+    setTimeout(function() {
+      document.addEventListener('click', function closeDD() {
+        dd.remove();
+        document.removeEventListener('click', closeDD);
+      }, { once: true });
+    }, 10);
+  };
+
+  window.editInvoice = function(id) { location.href = 'create.html?id=' + id; };
+
+  window.duplicateInvoice = function(id) {
+    var inv = invoices.find(function(i) { return i.id === id; });
+    if (inv) {
+      sessionStorage.setItem('ci-duplicate', JSON.stringify(inv));
+      location.href = 'create.html?duplicate=1';
+    }
+  };
+
+  window.markPaid = async function(id) {
+    try {
+      var sb = AfroAuth.getSupabase();
+      await sb.from('creator_invoices').update({
+        status: 'paid',
+        paid_date: new Date().toISOString().split('T')[0],
+        updated_at: new Date().toISOString()
+      }).eq('id', id);
+      showToast('Invoice marked as paid!', 'success');
+      loadData();
+    } catch(e) { showToast('Error updating invoice', 'error'); }
+  };
+
+  window.sendReminder = function(id) {
+    var inv = invoices.find(function(i) { return i.id === id; });
+    if (!inv) return;
+    var msg = engine ? engine.generateWhatsAppMessage(inv) : 'Payment reminder for invoice ' + (inv.invoice_number || '');
+    var phone = inv.client_phone || '';
+    var url = 'https://wa.me/' + phone.replace(/\D/g,'') + '?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+  };
+
+  window.deleteInvoice = async function(id) {
+    if (!confirm('Delete this invoice? This cannot be undone.')) return;
+    try {
+      var sb = AfroAuth.getSupabase();
+      await sb.from('creator_invoice_items').delete().eq('invoice_id', id);
+      await sb.from('creator_invoices').delete().eq('id', id);
+      showToast('Invoice deleted', 'success');
+      loadData();
+    } catch(e) { showToast('Error deleting invoice', 'error'); }
+  };
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'ci-toast show ' + (type || '');
+    setTimeout(function() { t.className = 'ci-toast'; }, 3000);
+  }
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+})();
+</script>
+</body>
+</html>

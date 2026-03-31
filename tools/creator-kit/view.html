@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Kit | CreatorKit by AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Instrument+Serif&display=swap"></noscript>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #fff; color: #111827; }
+    .ck-view-loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; font-size: 1rem; color: #6b7280; }
+    @media print { .ck-view-fab, .ck-view-sticky-bar { display: none !important; } }
+    .ck-view-sticky-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,22,40,.95); backdrop-filter: blur(12px);
+      padding: 12px 20px; display: flex; justify-content: center; gap: 12px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .ck-view-sticky-bar a {
+      padding: 10px 20px; border-radius: 10px; font-size: .8rem; font-weight: 700;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="kitView" class="ck-view">
+  <div class="ck-view-loading" id="loading">Loading media kit...</div>
+</div>
+
+<script>
+var CURRENCY_SYMBOLS = {
+  NGN: '₦', KES: 'KSh ', ZAR: 'R', GHS: 'GH₵', USD: '$', GBP: '£', EUR: '€',
+  EGP: 'E£', TZS: 'TSh ', UGX: 'USh ', RWF: 'RF ', XOF: 'CFA ', XAF: 'FCFA ', MAD: 'MAD '
+};
+
+function formatPrice(val, currency) {
+  if (!val) return '';
+  var sym = CURRENCY_SYMBOLS[currency] || currency + ' ';
+  var num = parseInt(val.toString().replace(/[^0-9]/g, ''), 10);
+  if (isNaN(num)) return val;
+  return sym + num.toLocaleString();
+}
+
+function renderKit(DATA) {
+  var accent = DATA.accentColor || '#F5A623';
+  var hidden = DATA.hiddenSections || [];
+  var html = '';
+
+  // Hero
+  if (hidden.indexOf('hero') === -1) {
+    html += '<div class="ck-view-hero" style="background:linear-gradient(135deg,#0A1628,#111827)">';
+    if (DATA.heroImage) {
+      html += '<img class="ck-view-avatar" src="' + DATA.heroImage + '" alt="' + (DATA.name || '') + '">';
+    }
+    html += '<h1>' + escHtml(DATA.name || 'Creator Name') + '</h1>';
+    if (DATA.tagline) html += '<p class="ck-view-tagline">' + escHtml(DATA.tagline) + '</p>';
+    var socials = DATA.socials || {};
+    var hasSocial = Object.values(socials).some(function(v) { return v; });
+    if (hasSocial) {
+      html += '<div class="ck-view-socials">';
+      if (socials.instagram) html += '<a href="https://instagram.com/' + socials.instagram.replace('@','') + '" target="_blank">IG</a>';
+      if (socials.twitter) html += '<a href="https://x.com/' + socials.twitter.replace('@','') + '" target="_blank">X</a>';
+      if (socials.tiktok) html += '<a href="https://tiktok.com/@' + socials.tiktok.replace('@','') + '" target="_blank">TT</a>';
+      if (socials.youtube) html += '<a href="https://youtube.com/' + encodeURIComponent(socials.youtube) + '" target="_blank">YT</a>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
+  html += '<div class="ck-view-body">';
+
+  // About
+  if (hidden.indexOf('about') === -1 && (DATA.bioMedium || DATA.bioShort || DATA.bioLong)) {
+    html += '<div class="ck-view-section">';
+    html += '<h2 style="border-bottom-color:' + accent + '">About</h2>';
+    html += '<div class="ck-view-bio">' + escHtml(DATA.bioMedium || DATA.bioLong || DATA.bioShort) + '</div>';
+    html += '</div>';
+  }
+
+  // Portfolio
+  if (hidden.indexOf('portfolio') === -1 && DATA.portfolioImages && DATA.portfolioImages.length) {
+    html += '<div class="ck-view-section">';
+    html += '<h2 style="border-bottom-color:' + accent + '">Portfolio</h2>';
+    html += '<div class="ck-view-gallery">';
+    DATA.portfolioImages.forEach(function(img) {
+      html += '<img src="' + img.src + '" alt="Portfolio work" loading="lazy">';
+    });
+    html += '</div></div>';
+  }
+
+  // Stats
+  if (hidden.indexOf('stats') === -1) {
+    var stats = DATA.stats || {};
+    var hasStats = Object.values(stats).some(function(v) { return v; });
+    if (hasStats) {
+      html += '<div class="ck-view-section">';
+      html += '<h2 style="border-bottom-color:' + accent + '">Audience</h2>';
+      if (DATA.statsInsight) {
+        html += '<p style="font-size:.9rem;color:#374151;line-height:1.7;margin-bottom:20px">' + escHtml(DATA.statsInsight) + '</p>';
+      }
+      html += '<div class="ck-view-stats">';
+      if (stats.totalFollowers) html += '<div class="ck-view-stat-card"><div class="ck-stat-val" style="color:' + accent + '">' + formatNumber(stats.totalFollowers) + '</div><div class="ck-stat-lbl">Followers</div></div>';
+      if (stats.engagementRate) html += '<div class="ck-view-stat-card"><div class="ck-stat-val" style="color:' + accent + '">' + escHtml(stats.engagementRate) + '</div><div class="ck-stat-lbl">Engagement Rate</div></div>';
+      if (stats.monthlyReach) html += '<div class="ck-view-stat-card"><div class="ck-stat-val" style="color:' + accent + '">' + formatNumber(stats.monthlyReach) + '</div><div class="ck-stat-lbl">Monthly Reach</div></div>';
+      if (stats.projectsCompleted) html += '<div class="ck-view-stat-card"><div class="ck-stat-val" style="color:' + accent + '">' + formatNumber(stats.projectsCompleted) + '+</div><div class="ck-stat-lbl">Projects</div></div>';
+      if (stats.primaryPlatform) html += '<div class="ck-view-stat-card"><div class="ck-stat-val" style="color:' + accent + ';font-size:1.1rem;text-transform:capitalize">' + escHtml(stats.primaryPlatform) + '</div><div class="ck-stat-lbl">Primary Platform</div></div>';
+      if (stats.topCities) html += '<div class="ck-view-stat-card"><div class="ck-stat-val" style="color:' + accent + ';font-size:.9rem">' + escHtml(stats.topCities) + '</div><div class="ck-stat-lbl">Top Cities</div></div>';
+      html += '</div></div>';
+    }
+  }
+
+  // Services
+  if (hidden.indexOf('services') === -1 && ((DATA.services && DATA.services.length) || (DATA.packages && DATA.packages.some(function(p){return p.name && p.price;})))) {
+    html += '<div class="ck-view-section">';
+    html += '<h2 style="border-bottom-color:' + accent + '">Services & Rates</h2>';
+
+    // Service list
+    if (DATA.services && DATA.services.length) {
+      html += '<ul class="ck-view-services">';
+      DATA.services.forEach(function(svc) {
+        html += '<li><span class="ck-svc-name">' + escHtml(svc.name) + '</span>';
+        if (DATA.showPrices !== false && svc.price) {
+          html += '<span class="ck-svc-price" style="color:' + accent + '">' + formatPrice(svc.price, DATA.currency) + '</span>';
+        } else if (DATA.showPrices === false) {
+          html += '<span style="font-size:.8rem;color:#9ca3af">Contact for pricing</span>';
+        }
+        html += '</li>';
+      });
+      html += '</ul>';
+    }
+
+    // Packages
+    if (DATA.packages && DATA.packages.some(function(p){return p.name && p.price;})) {
+      html += '<div class="ck-view-packages" style="margin-top:24px">';
+      DATA.packages.forEach(function(pkg, i) {
+        if (!pkg.name || !pkg.price) return;
+        var featured = i === 1 ? ' featured' : '';
+        html += '<div class="ck-view-pkg' + featured + '">';
+        html += '<h4>' + escHtml(pkg.name) + '</h4>';
+        if (DATA.showPrices !== false) {
+          html += '<div class="ck-pkg-price" style="color:' + accent + '">' + formatPrice(pkg.price, DATA.currency) + '</div>';
+        }
+        if (pkg.includes) {
+          html += '<ul>';
+          pkg.includes.split('\n').filter(Boolean).forEach(function(item) {
+            html += '<li>' + escHtml(item.trim()) + '</li>';
+          });
+          html += '</ul>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
+  // Clients
+  if (hidden.indexOf('clients') === -1 && DATA.clients) {
+    var clientList = DATA.clients.split('\n').filter(Boolean);
+    if (clientList.length) {
+      html += '<div class="ck-view-section">';
+      html += '<h2 style="border-bottom-color:' + accent + '">Past Clients</h2>';
+      html += '<div class="ck-view-clients">';
+      clientList.forEach(function(c) {
+        html += '<span class="ck-client-name">' + escHtml(c.trim()) + '</span>';
+      });
+      html += '</div></div>';
+    }
+  }
+
+  // Testimonials
+  if (hidden.indexOf('testimonials') === -1 && DATA.testimonials && DATA.testimonials.some(function(t){return t.quote;})) {
+    html += '<div class="ck-view-section">';
+    html += '<h2 style="border-bottom-color:' + accent + '">What Clients Say</h2>';
+    DATA.testimonials.forEach(function(t) {
+      if (!t.quote) return;
+      html += '<div class="ck-view-testimonial" style="border-left-color:' + accent + '">';
+      html += '<div class="ck-tquote">"' + escHtml(t.quote) + '"</div>';
+      if (t.name) html += '<div class="ck-tattr" style="color:' + accent + '">— ' + escHtml(t.name) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Contact
+  if (hidden.indexOf('contact') === -1 && (DATA.contactEmail || DATA.contactWhatsapp || DATA.contactPhone)) {
+    html += '<div class="ck-view-section">';
+    html += '<div class="ck-view-contact">';
+    html += '<h2 style="border-bottom-color:' + accent + '">' + escHtml(DATA.ctaText || "Let's Work Together") + '</h2>';
+    html += '<div class="ck-contact-btns">';
+    if (DATA.contactWhatsapp) {
+      var waNum = DATA.contactWhatsapp.replace(/[^0-9+]/g, '');
+      html += '<a class="ck-contact-btn whatsapp" href="https://wa.me/' + waNum.replace('+','') + '">💬 WhatsApp</a>';
+    }
+    if (DATA.contactEmail) {
+      html += '<a class="ck-contact-btn email" href="mailto:' + encodeURIComponent(DATA.contactEmail) + '">✉️ Email</a>';
+    }
+    if (DATA.contactPhone) {
+      html += '<a class="ck-contact-btn email" href="tel:' + DATA.contactPhone.replace(/\s/g,'') + '">📞 Call</a>';
+    }
+    if (DATA.bookingUrl) {
+      html += '<a class="ck-contact-btn email" href="' + escHtml(DATA.bookingUrl) + '" target="_blank" rel="noopener">📅 Book</a>';
+    }
+    html += '</div></div></div>';
+  }
+
+  html += '</div>'; // close body
+
+  // Footer
+  html += '<div class="ck-view-footer">Made with <a href="https://afrotools.com/tools/creator-kit/">CreatorKit by AfroTools</a></div>';
+
+  // Sticky bar
+  html += '<div class="ck-view-sticky-bar">';
+  if (DATA.contactWhatsapp) {
+    var waNum2 = DATA.contactWhatsapp.replace(/[^0-9+]/g, '');
+    html += '<a href="https://wa.me/' + waNum2.replace('+','') + '" style="background:#25D366;color:#fff">💬 WhatsApp</a>';
+  }
+  if (DATA.contactEmail) {
+    html += '<a href="mailto:' + encodeURIComponent(DATA.contactEmail) + '" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)">✉️ Email</a>';
+  }
+  html += '</div>';
+
+  return html;
+}
+
+function formatNumber(val) {
+  var n = parseInt(val.toString().replace(/[^0-9]/g,''), 10);
+  if (isNaN(n)) return val;
+  if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0','') + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace('.0','') + 'K';
+  return n.toString();
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(s));
+  return div.innerHTML;
+}
+
+// Load data and render
+(function() {
+  var DATA = null;
+
+  // Try localStorage (preview mode)
+  try {
+    var saved = localStorage.getItem('ck-kit-data');
+    if (saved) DATA = JSON.parse(saved);
+  } catch(e) {}
+
+  if (!DATA) {
+    document.getElementById('loading').textContent = 'No kit data found. Build your kit first.';
+    return;
+  }
+
+  // Update page title
+  if (DATA.name) document.title = DATA.name + ' — Media Kit | CreatorKit';
+
+  // Render
+  document.getElementById('kitView').innerHTML = renderKit(DATA);
+
+  // Print mode
+  if (new URLSearchParams(window.location.search).get('print') === '1') {
+    setTimeout(function() { window.print(); }, 500);
+  }
+})();
+</script>
+</body>
+</html>

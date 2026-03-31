@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template Gallery — CreatorCanvas | AfroTools</title>
+<meta name="description" content="Browse 50+ African-designed templates for social media, YouTube thumbnails, event flyers, and more.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="cv-app">
+
+  <!-- HEADER -->
+  <header class="cv-app-header">
+    <a href="/tools/creator-canvas/" class="cv-app-logo">
+      <span>CC</span> CreatorCanvas
+    </a>
+    <nav class="cv-app-nav">
+      <a href="app.html" class="active">Templates</a>
+      <a href="app.html?view=gallery">My Designs</a>
+      <a href="app.html?view=brand">Brand Kit</a>
+    </nav>
+  </header>
+
+  <div class="cv-app-inner">
+
+    <!-- TEMPLATES VIEW -->
+    <div id="templates-view">
+      <!-- Format pills -->
+      <div class="cv-format-pills" id="format-pills">
+        <button class="cv-pill active" data-format="all">All Formats</button>
+        <button class="cv-pill" data-format="ig-post" data-w="1080" data-h="1080">IG Post</button>
+        <button class="cv-pill" data-format="ig-story" data-w="1080" data-h="1920">IG Story</button>
+        <button class="cv-pill" data-format="ig-carousel" data-w="1080" data-h="1080">IG Carousel</button>
+        <button class="cv-pill" data-format="yt-thumb" data-w="1280" data-h="720">YT Thumbnail</button>
+        <button class="cv-pill" data-format="tiktok" data-w="1080" data-h="1920">TikTok Cover</button>
+        <button class="cv-pill" data-format="x-post" data-w="1200" data-h="675">X Post</button>
+        <button class="cv-pill" data-format="fb-cover" data-w="820" data-h="312">FB Cover</button>
+        <button class="cv-pill" data-format="wa-status" data-w="1080" data-h="1920">WhatsApp</button>
+        <button class="cv-pill" data-format="event-flyer" data-w="1080" data-h="1350">Event Flyer</button>
+        <button class="cv-pill" data-format="a4" data-w="2480" data-h="3508">A4 Poster</button>
+        <button class="cv-pill" data-format="custom">Custom Size</button>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="cv-cat-tabs" id="cat-tabs">
+        <button class="cv-cat-tab active" data-cat="all">All</button>
+        <button class="cv-cat-tab" data-cat="quotes">Quotes</button>
+        <button class="cv-cat-tab" data-cat="promo">Promotional</button>
+        <button class="cv-cat-tab" data-cat="announcement">Announcement</button>
+        <button class="cv-cat-tab" data-cat="event">Event</button>
+        <button class="cv-cat-tab" data-cat="music">Music</button>
+        <button class="cv-cat-tab" data-cat="photography">Photography</button>
+        <button class="cv-cat-tab" data-cat="food">Food</button>
+        <button class="cv-cat-tab" data-cat="fashion">Fashion</button>
+        <button class="cv-cat-tab" data-cat="business">Business</button>
+        <button class="cv-cat-tab" data-cat="minimalist">Minimalist</button>
+      </div>
+
+      <!-- AI Design card + Template grid -->
+      <div class="cv-template-grid" id="template-grid">
+        <!-- AI Card -->
+        <div class="cv-ai-card" onclick="openAIDesign()">
+          <div class="cv-ai-card-icon">✨</div>
+          <div class="cv-ai-card-title">AI Design Brief</div>
+          <div class="cv-ai-card-desc">Describe what you need — AI picks the template and customizes it for you</div>
+        </div>
+
+        <!-- Templates loaded by JS -->
+      </div>
+
+      <div class="cv-empty" id="templates-empty" style="display:none">
+        <div class="cv-empty-icon">🎨</div>
+        <h3>No templates match</h3>
+        <p>Try a different format or category</p>
+      </div>
+    </div>
+
+    <!-- MY DESIGNS VIEW -->
+    <div id="gallery-view" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <div style="font-size:1.1rem;font-weight:900">My Designs</div>
+        <button class="cv-btn cv-btn-primary cv-btn-sm" onclick="showTemplates()">+ New Design</button>
+      </div>
+      <div class="cv-gallery-grid" id="gallery-grid"></div>
+      <div class="cv-empty" id="gallery-empty">
+        <div class="cv-empty-icon">🖼️</div>
+        <h3>No designs yet</h3>
+        <p>Start from a template to create your first design</p>
+        <button class="cv-btn cv-btn-primary cv-btn-sm" onclick="showTemplates()">Browse Templates</button>
+      </div>
+    </div>
+
+    <!-- BRAND KIT VIEW -->
+    <div id="brand-view" style="display:none">
+      <div style="font-size:1.1rem;font-weight:900;margin-bottom:20px">Brand Kit</div>
+
+      <div class="cv-brand-section">
+        <div class="cv-brand-title">BRAND COLORS</div>
+        <div class="cv-brand-colors" id="brand-colors">
+          <button class="cv-brand-color-add" onclick="addBrandColor()">+</button>
+        </div>
+      </div>
+
+      <div class="cv-brand-section">
+        <div class="cv-brand-title">BRAND FONTS</div>
+        <div class="cv-brand-fonts">
+          <div class="cv-brand-font">
+            <div><div class="cv-brand-font-label">Primary</div><div class="cv-brand-font-name" id="brand-font-primary">DM Sans</div></div>
+            <button class="cv-btn cv-btn-secondary cv-btn-sm" onclick="changeBrandFont('primary')">Change</button>
+          </div>
+          <div class="cv-brand-font">
+            <div><div class="cv-brand-font-label">Secondary</div><div class="cv-brand-font-name" id="brand-font-secondary">Instrument Serif</div></div>
+            <button class="cv-btn cv-btn-secondary cv-btn-sm" onclick="changeBrandFont('secondary')">Change</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-brand-section">
+        <div class="cv-brand-title">LOGO</div>
+        <div style="display:flex;gap:12px">
+          <div style="flex:1;text-align:center;padding:24px;background:rgba(255,255,255,.04);border:1.5px dashed rgba(255,255,255,.12);border-radius:12px;cursor:pointer" onclick="uploadLogo('light')">
+            <div style="font-size:1.5rem;margin-bottom:6px;opacity:.4">☀️</div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.4)">Light version</div>
+          </div>
+          <div style="flex:1;text-align:center;padding:24px;background:rgba(255,255,255,.04);border:1.5px dashed rgba(255,255,255,.12);border-radius:12px;cursor:pointer" onclick="uploadLogo('dark')">
+            <div style="font-size:1.5rem;margin-bottom:6px;opacity:.4">🌙</div>
+            <div style="font-size:.7rem;color:rgba(255,255,255,.4)">Dark version</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="cv-btn cv-btn-primary" onclick="saveBrandKit()" style="width:100%;margin-top:12px">Save Brand Kit</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- AI Design Modal -->
+<div class="cv-panel-sheet" id="ai-design-panel">
+  <div class="cv-panel-sheet-handle"></div>
+  <div class="cv-panel-sheet-content">
+    <div class="cv-panel-sheet-title">AI DESIGN BRIEF</div>
+    <p style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:14px">Describe what you need and AI will pick the best template and customize it for you.</p>
+    <div class="cv-ai-input-row" style="margin-bottom:12px">
+      <input type="text" class="cv-ai-input" id="ai-brief-input" placeholder="e.g. YouTube thumbnail for my Lagos food vlog about jollof rice">
+      <button class="cv-ai-send" onclick="runAIBrief()">Go</button>
+    </div>
+    <div class="cv-ai-chat" id="ai-brief-chat"></div>
+  </div>
+</div>
+
+<!-- Custom Size Modal -->
+<div class="cv-panel-sheet" id="custom-size-panel">
+  <div class="cv-panel-sheet-handle"></div>
+  <div class="cv-panel-sheet-content">
+    <div class="cv-panel-sheet-title">CUSTOM SIZE</div>
+    <div style="display:flex;gap:12px;margin-bottom:16px">
+      <div style="flex:1">
+        <label style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.5);display:block;margin-bottom:6px">WIDTH (PX)</label>
+        <input type="number" class="cv-ai-input" id="custom-w" value="1080" min="100" max="4000" style="width:100%">
+      </div>
+      <div style="flex:1">
+        <label style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.5);display:block;margin-bottom:6px">HEIGHT (PX)</label>
+        <input type="number" class="cv-ai-input" id="custom-h" value="1080" min="100" max="4000" style="width:100%">
+      </div>
+    </div>
+    <button class="cv-btn cv-btn-primary" onclick="createCustomSize()" style="width:100%">Create Design</button>
+  </div>
+</div>
+
+<div class="cv-toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/creator-canvas-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorCanvas;
+  var currentFormat = 'all';
+  var currentCat = 'all';
+  var templates = [];
+  var designs = [];
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init() {
+    setupView();
+    setupFilters();
+    loadTemplates();
+
+    if (typeof AfroAuth !== 'undefined') {
+      AfroAuth.onReady(function() {
+        if (AfroAuth.isLoggedIn()) {
+          loadDesigns();
+          loadBrandKit();
+        }
+      });
+    }
+  }
+
+  function setupView() {
+    var params = new URLSearchParams(location.search);
+    var view = params.get('view');
+    if (view === 'gallery') {
+      showGallery();
+    } else if (view === 'brand') {
+      showBrand();
+    }
+  }
+
+  function setupFilters() {
+    document.getElementById('format-pills').addEventListener('click', function(e) {
+      var pill = e.target.closest('.cv-pill');
+      if (!pill) return;
+      document.querySelectorAll('.cv-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      currentFormat = pill.dataset.format;
+
+      if (currentFormat === 'custom') {
+        document.getElementById('custom-size-panel').classList.add('open');
+        return;
+      }
+      renderTemplates();
+    });
+
+    document.getElementById('cat-tabs').addEventListener('click', function(e) {
+      var tab = e.target.closest('.cv-cat-tab');
+      if (!tab) return;
+      document.querySelectorAll('.cv-cat-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      currentCat = tab.dataset.cat;
+      renderTemplates();
+    });
+  }
+
+  function loadTemplates() {
+    // Built-in seed templates (JSON)
+    templates = engine ? engine.getTemplates() : getSeedTemplates();
+    renderTemplates();
+  }
+
+  function getSeedTemplates() {
+    var t = [];
+    var formats = [
+      { format: 'yt-thumb', w: 1280, h: 720, label: 'YouTube' },
+      { format: 'ig-post', w: 1080, h: 1080, label: 'IG Post' },
+      { format: 'ig-story', w: 1080, h: 1920, label: 'IG Story' },
+      { format: 'event-flyer', w: 1080, h: 1350, label: 'Flyer' },
+      { format: 'x-post', w: 1200, h: 675, label: 'X Post' },
+      { format: 'wa-status', w: 1080, h: 1920, label: 'WhatsApp' }
+    ];
+    var cats = ['quotes','promo','announcement','event','music','photography','food','fashion','business','minimalist'];
+    var colors = [
+      ['#E65100','#FF9800'], ['#1B5E20','#4CAF50'], ['#4A148C','#AB47BC'],
+      ['#0D47A1','#42A5F5'], ['#B71C1C','#EF5350'], ['#F57F17','#FFEE58'],
+      ['#004D40','#26A69A'], ['#1A237E','#7986CB'], ['#3E2723','#8D6E63'],
+      ['#263238','#78909C']
+    ];
+    var titles = [
+      'Bold Statement', 'Clean Promo', 'Modern Announcement', 'Event Night',
+      'Music Drop', 'Photo Showcase', 'Food Feature', 'Fashion Forward',
+      'Business Pro', 'Minimal Quote', 'Hot Take', 'Motivation Monday',
+      'Product Launch', 'Sale Alert', 'Behind the Scenes', 'Tutorial Thumb',
+      'Reaction Face', 'Top 10 List', 'Before & After', 'Testimonial'
+    ];
+    var emojis = ['🔥','💡','📢','🎉','🎵','📸','🍲','👗','💼','✨','🗣️','💪','🚀','🏷️','🎬','📚','😱','🏆','✅','⭐'];
+
+    for (var i = 0; i < 50; i++) {
+      var fIdx = i % formats.length;
+      var cIdx = i % cats.length;
+      var colIdx = i % colors.length;
+      t.push({
+        id: 'tmpl_' + (i + 1),
+        name: titles[i % titles.length],
+        format: formats[fIdx].format,
+        width: formats[fIdx].w,
+        height: formats[fIdx].h,
+        formatLabel: formats[fIdx].label,
+        category: cats[cIdx],
+        colors: colors[colIdx],
+        emoji: emojis[i % emojis.length],
+        canvas_data: {
+          background: { type: 'gradient', colors: colors[colIdx], angle: 135 },
+          elements: [
+            { id: 'e1', type: 'text', content: titles[i % titles.length].toUpperCase(), x: 50, y: 50, width: formats[fIdx].w - 100, height: 120, style: { fontFamily: 'DM Sans', fontSize: 64, fontWeight: 900, color: '#ffffff', textAlign: 'center' } }
+          ]
+        }
+      });
+    }
+    return t;
+  }
+
+  function renderTemplates() {
+    var grid = document.getElementById('template-grid');
+    var empty = document.getElementById('templates-empty');
+
+    var filtered = templates.filter(function(t) {
+      if (currentFormat !== 'all' && t.format !== currentFormat) return false;
+      if (currentCat !== 'all' && t.category !== currentCat) return false;
+      return true;
+    });
+
+    // Keep AI card
+    var aiCard = grid.querySelector('.cv-ai-card');
+    grid.innerHTML = '';
+    if (aiCard) grid.appendChild(aiCard);
+
+    if (!filtered.length) {
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+
+    filtered.forEach(function(t) {
+      var card = document.createElement('div');
+      card.className = 'cv-template-card';
+      card.onclick = function() { useTemplate(t); };
+      card.innerHTML =
+        '<div class="cv-template-thumb" style="background:linear-gradient(135deg,' + t.colors[0] + ',' + t.colors[1] + ')">' +
+          '<div class="cv-placeholder">' + t.emoji + '</div>' +
+          '<div class="cv-template-badges">' +
+            '<span class="cv-template-badge cv-template-badge-format">' + t.formatLabel + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cv-template-info">' +
+          '<div class="cv-template-name">' + esc(t.name) + '</div>' +
+          '<div class="cv-template-cat">' + t.category + ' · ' + t.width + '×' + t.height + '</div>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  function useTemplate(template) {
+    // Save template to sessionStorage and navigate to editor
+    sessionStorage.setItem('cv-template', JSON.stringify(template));
+    location.href = 'edit.html?template=' + template.id;
+  }
+
+  // Gallery
+  async function loadDesigns() {
+    try {
+      var data = await AfroData.load('creator-canvas', 50);
+      designs = (data || []);
+      renderGallery();
+    } catch(e) { /* silent */ }
+  }
+
+  function renderGallery() {
+    var grid = document.getElementById('gallery-grid');
+    var empty = document.getElementById('gallery-empty');
+    if (!designs.length) { grid.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+
+    grid.innerHTML = designs.map(function(d) {
+      var data = d.data || d;
+      return '<div class="cv-gallery-card" onclick="location.href=\'edit.html?id=' + (d.id || '') + '\'">' +
+        '<div class="cv-gallery-thumb" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">' +
+          '<div style="font-size:2rem;opacity:.3">🖼️</div>' +
+        '</div>' +
+        '<div class="cv-gallery-info">' +
+          '<div class="cv-gallery-name">' + esc(data.name || 'Untitled') + '</div>' +
+          '<div class="cv-gallery-meta"><span>' + (data.format || '') + '</span></div>' +
+        '</div>' +
+        '<div class="cv-gallery-actions">' +
+          '<button class="cv-gallery-action" title="Duplicate" onclick="event.stopPropagation()">📋</button>' +
+          '<button class="cv-gallery-action" title="Delete" onclick="event.stopPropagation();deleteDesign(\'' + (d.id || '') + '\')">🗑️</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.deleteDesign = async function(id) {
+    if (!confirm('Delete this design?')) return;
+    // Remove from local
+    designs = designs.filter(function(d) { return (d.id || '') !== id; });
+    renderGallery();
+    showToast('Design deleted', 'success');
+  };
+
+  // Brand Kit
+  var brandKit = { colors: [], primaryFont: 'DM Sans', secondaryFont: 'Instrument Serif' };
+
+  function loadBrandKit() {
+    try {
+      var saved = localStorage.getItem('cv-brand-kit');
+      if (saved) {
+        brandKit = JSON.parse(saved);
+        renderBrandKit();
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  function renderBrandKit() {
+    var container = document.getElementById('brand-colors');
+    container.innerHTML = brandKit.colors.map(function(c, i) {
+      return '<div class="cv-brand-color" style="background:' + c + '" onclick="removeBrandColor(' + i + ')"></div>';
+    }).join('') + '<button class="cv-brand-color-add" onclick="addBrandColor()">+</button>';
+
+    document.getElementById('brand-font-primary').textContent = brandKit.primaryFont || 'DM Sans';
+    document.getElementById('brand-font-secondary').textContent = brandKit.secondaryFont || 'Instrument Serif';
+  }
+
+  window.addBrandColor = function() {
+    var color = prompt('Enter hex color (e.g. #FF6B6B):');
+    if (color && /^#[0-9a-fA-F]{3,6}$/.test(color)) {
+      if (brandKit.colors.length >= 6) { showToast('Max 6 brand colors', 'error'); return; }
+      brandKit.colors.push(color);
+      renderBrandKit();
+    }
+  };
+
+  window.removeBrandColor = function(idx) {
+    brandKit.colors.splice(idx, 1);
+    renderBrandKit();
+  };
+
+  window.changeBrandFont = function(which) {
+    var fonts = ['DM Sans','Inter','Poppins','Nunito','Instrument Serif','Playfair Display','Space Grotesk','Bebas Neue','Righteous','Archivo Black'];
+    var choice = prompt('Choose a font:\n' + fonts.join('\n'));
+    if (choice && fonts.some(function(f) { return f.toLowerCase() === choice.toLowerCase(); })) {
+      if (which === 'primary') brandKit.primaryFont = choice;
+      else brandKit.secondaryFont = choice;
+      renderBrandKit();
+    }
+  };
+
+  window.saveBrandKit = function() {
+    localStorage.setItem('cv-brand-kit', JSON.stringify(brandKit));
+    showToast('Brand kit saved!', 'success');
+  };
+
+  window.uploadLogo = function(type) { showToast('Logo upload coming soon', 'success'); };
+
+  // View switching
+  window.showTemplates = function() {
+    document.getElementById('templates-view').style.display = '';
+    document.getElementById('gallery-view').style.display = 'none';
+    document.getElementById('brand-view').style.display = 'none';
+    setActiveNav(0);
+  };
+
+  window.showGallery = function() {
+    document.getElementById('templates-view').style.display = 'none';
+    document.getElementById('gallery-view').style.display = '';
+    document.getElementById('brand-view').style.display = 'none';
+    setActiveNav(1);
+  };
+
+  window.showBrand = function() {
+    document.getElementById('templates-view').style.display = 'none';
+    document.getElementById('gallery-view').style.display = 'none';
+    document.getElementById('brand-view').style.display = '';
+    setActiveNav(2);
+  };
+
+  function setActiveNav(idx) {
+    var links = document.querySelectorAll('.cv-app-nav a');
+    links.forEach(function(a, i) { a.classList.toggle('active', i === idx); });
+  }
+
+  // AI Brief
+  window.openAIDesign = function() {
+    document.getElementById('ai-design-panel').classList.add('open');
+  };
+
+  window.runAIBrief = async function() {
+    var input = document.getElementById('ai-brief-input');
+    var desc = input.value.trim();
+    if (!desc) return;
+
+    var chat = document.getElementById('ai-brief-chat');
+    chat.innerHTML += '<div class="cv-ai-msg user">' + esc(desc) + '</div>';
+    input.value = '';
+
+    try {
+      var token = (typeof AfroAuth !== 'undefined' && AfroAuth.getSessionToken) ? AfroAuth.getSessionToken() : '';
+      var res = await fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tool: 'creator-canvas',
+          question: desc,
+          token: token
+        })
+      });
+      var data = await res.json();
+      chat.innerHTML += '<div class="cv-ai-msg assistant">' + esc(data.answer || 'Try describing your design in more detail.').replace(/\n/g, '<br>') + '</div>';
+      chat.scrollTop = chat.scrollHeight;
+    } catch(e) {
+      chat.innerHTML += '<div class="cv-ai-msg assistant">AI is unavailable right now. Browse templates to get started!</div>';
+    }
+  };
+
+  window.createCustomSize = function() {
+    var w = parseInt(document.getElementById('custom-w').value) || 1080;
+    var h = parseInt(document.getElementById('custom-h').value) || 1080;
+    w = Math.max(100, Math.min(4000, w));
+    h = Math.max(100, Math.min(4000, h));
+    sessionStorage.setItem('cv-template', JSON.stringify({
+      id: 'custom', name: 'Custom Design', format: 'custom',
+      width: w, height: h, formatLabel: w + '×' + h, category: 'custom',
+      colors: ['#1a1a2e', '#16213e'],
+      canvas_data: { background: { type: 'solid', color: '#ffffff' }, elements: [] }
+    }));
+    location.href = 'edit.html?template=custom';
+  };
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'cv-toast show ' + (type || '');
+    setTimeout(function() { t.className = 'cv-toast'; }, 3000);
+  }
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+})();
+</script>
+</body>
+</html>

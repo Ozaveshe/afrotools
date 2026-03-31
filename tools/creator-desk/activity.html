@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Feed — CreatorDesk | AfroTools</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="cd-app">
+  <div class="cd-topbar">
+    <a href="index.html" class="cd-topbar-back">&larr; Back</a>
+    <a href="index.html" class="cd-topbar-brand"><span>📊</span> Activity</a>
+    <span class="cd-topbar-title">Recent Activity</span>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;padding:20px">
+    <!-- Today -->
+    <div style="font-size:.7rem;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Today</div>
+    <div id="todayActivity"></div>
+
+    <!-- Older -->
+    <div style="font-size:.7rem;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin:24px 0 12px">Earlier</div>
+    <div id="olderActivity"></div>
+  </div>
+
+  <div class="cd-bottom-nav">
+    <div class="cd-bottom-nav-inner">
+      <a href="app.html" class="cd-bottom-nav-item"><span class="cd-nav-icon">📋</span>Pipeline</a>
+      <a href="clients.html" class="cd-bottom-nav-item"><span class="cd-nav-icon">👥</span>Clients</a>
+      <a href="activity.html" class="cd-bottom-nav-item active"><span class="cd-nav-icon">📊</span>Activity</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var STATUS_LABELS = { lead:'Lead', quoted:'Quoted', active:'Active', review:'Review', completed:'Completed', on_hold:'On Hold' };
+var STATUS_COLORS = { lead:'#94a3b8', quoted:'#f59e0b', active:'#0EA5E9', review:'#8b5cf6', completed:'#10b981', on_hold:'#9ca3af' };
+
+function escHtml(s) { if(!s)return''; var d=document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function buildActivity(projects) {
+  var events = [];
+
+  projects.forEach(function(p) {
+    // Project created
+    events.push({
+      text: 'Project created: <strong>' + escHtml(p.name) + '</strong>' + (p.client ? ' for ' + escHtml(p.client) : ''),
+      time: p.createdAt,
+      color: STATUS_COLORS[p.status] || '#94a3b8',
+      projectId: p.id
+    });
+
+    // Task completions
+    (p.tasks || []).forEach(function(t) {
+      if (t.done && t.completedAt) {
+        events.push({
+          text: 'Task completed: <em>' + escHtml(t.text) + '</em> in <strong>' + escHtml(p.name) + '</strong>',
+          time: t.completedAt,
+          color: '#10b981',
+          projectId: p.id
+        });
+      }
+    });
+
+    // Notes
+    (p.notes || []).forEach(function(n) {
+      events.push({
+        text: (n.type === 'system' ? '🔄 ' : '📝 ') + escHtml(n.text) + ' — <strong>' + escHtml(p.name) + '</strong>',
+        time: n.time,
+        color: n.type === 'system' ? '#94a3b8' : '#0EA5E9',
+        projectId: p.id
+      });
+    });
+
+    // Completed projects
+    if (p.status === 'completed' && p.completedDate) {
+      events.push({
+        text: '✅ Project completed: <strong>' + escHtml(p.name) + '</strong>',
+        time: new Date(p.completedDate).getTime(),
+        color: '#10b981',
+        projectId: p.id
+      });
+    }
+  });
+
+  events.sort(function(a, b) { return (b.time || 0) - (a.time || 0); });
+  return events;
+}
+
+function renderTimeline(events, container) {
+  if (!events.length) {
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;font-size:.85rem">No activity yet</div>';
+    return;
+  }
+  var html = '';
+  events.forEach(function(ev) {
+    html += '<div class="cd-timeline-item" onclick="window.location.href=\'project.html?id=' + ev.projectId + '\'" style="cursor:pointer">';
+    html += '<div class="cd-timeline-dot" style="background:' + ev.color + '"></div>';
+    html += '<div class="cd-timeline-content"><div class="cd-timeline-text">' + ev.text + '</div>';
+    html += '<div class="cd-timeline-time">' + new Date(ev.time).toLocaleDateString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) + '</div></div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// ── INIT ──
+(function() {
+  var projects = [];
+  try { var s = localStorage.getItem('cd-projects'); if (s) projects = JSON.parse(s); } catch(e) {}
+
+  var events = buildActivity(projects);
+  var now = new Date(); now.setHours(0,0,0,0);
+  var todayStart = now.getTime();
+
+  var today = events.filter(function(e) { return (e.time || 0) >= todayStart; });
+  var older = events.filter(function(e) { return (e.time || 0) < todayStart; });
+
+  renderTimeline(today, document.getElementById('todayActivity'));
+  renderTimeline(older, document.getElementById('olderActivity'));
+})();
+</script>
+</body>
+</html>

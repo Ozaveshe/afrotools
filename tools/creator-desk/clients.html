@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Directory — CreatorDesk | AfroTools</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="cd-app">
+  <div class="cd-topbar">
+    <a href="index.html" class="cd-topbar-back">&larr; Back</a>
+    <a href="index.html" class="cd-topbar-brand"><span>👥</span> Clients</a>
+    <input type="text" class="cd-topbar-search" placeholder="Search clients..." oninput="filterClients(this.value)">
+    <button class="cd-btn cd-btn-primary" onclick="openNewClient()">+ Add Client</button>
+  </div>
+
+  <div id="clientsArea" style="padding:20px">
+    <div class="cd-clients-grid" id="clientsGrid"></div>
+  </div>
+
+  <button class="cd-fab" onclick="openNewClient()">+</button>
+
+  <div class="cd-bottom-nav">
+    <div class="cd-bottom-nav-inner">
+      <a href="app.html" class="cd-bottom-nav-item"><span class="cd-nav-icon">📋</span>Pipeline</a>
+      <a href="clients.html" class="cd-bottom-nav-item active"><span class="cd-nav-icon">👥</span>Clients</a>
+      <a href="activity.html" class="cd-bottom-nav-item"><span class="cd-nav-icon">📊</span>Activity</a>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CLIENT MODAL -->
+<div class="cd-modal-overlay" id="clientModal" onclick="if(event.target===this)closeClientModal()">
+  <div class="cd-modal">
+    <h3>Add Client</h3>
+    <div class="cd-field"><label>Name *</label><input type="text" id="ncName" placeholder="e.g. Tola Bakare"></div>
+    <div class="cd-field"><label>Company</label><input type="text" id="ncCompany" placeholder="e.g. Bakare Studios"></div>
+    <div class="cd-field"><label>Email</label><input type="email" id="ncEmail" placeholder="tola@example.com"></div>
+    <div class="cd-field"><label>Phone</label><input type="tel" id="ncPhone" placeholder="+234 812 345 6789"></div>
+    <div class="cd-field"><label>WhatsApp</label><input type="tel" id="ncWhatsapp" placeholder="+234 812 345 6789"></div>
+    <div class="cd-field"><label>Country</label><input type="text" id="ncCountry" placeholder="e.g. Nigeria"></div>
+    <div class="cd-field"><label>Notes</label><textarea id="ncNotes" rows="3" placeholder="How did you meet? What are they interested in?"></textarea></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="cd-btn cd-btn-primary" onclick="createClient()" style="flex:1">Add Client</button>
+      <button class="cd-btn cd-btn-ghost" onclick="closeClientModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT DETAIL MODAL -->
+<div class="cd-modal-overlay" id="detailModal" onclick="if(event.target===this)closeDetailModal()">
+  <div class="cd-modal" id="detailContent" style="max-width:560px"></div>
+</div>
+
+<script>
+var AVATAR_COLORS = ['#0EA5E9','#8b5cf6','#f59e0b','#10b981','#ef4444','#ec4899','#f97316','#06b6d4','#6366f1','#84cc16'];
+var CURRENCY_SYMBOLS = { NGN:'₦', KES:'KSh ', ZAR:'R', GHS:'GH₵', USD:'$', GBP:'£' };
+var clients = [];
+var projects = [];
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function getInitials(n) { return (n||'?').split(/\s+/).map(function(w){return w[0];}).join('').toUpperCase().slice(0,2); }
+function getAvatarColor(n) { var h=0; for(var i=0;i<(n||'').length;i++) h=n.charCodeAt(i)+((h<<5)-h); return AVATAR_COLORS[Math.abs(h)%AVATAR_COLORS.length]; }
+function escHtml(s) { if(!s)return''; var d=document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function getClientStats(clientName) {
+  var clientProjects = projects.filter(function(p) { return p.client === clientName; });
+  var total = clientProjects.length;
+  var active = clientProjects.filter(function(p) { return p.status === 'active' || p.status === 'review'; }).length;
+  var revenue = clientProjects.filter(function(p) { return p.status === 'completed'; })
+    .reduce(function(s, p) { return s + (parseInt((p.value||'0').toString().replace(/[^0-9]/g,''),10)||0); }, 0);
+  var lastProject = clientProjects.sort(function(a,b) { return (b.createdAt||0)-(a.createdAt||0); })[0];
+  return { total: total, active: active, revenue: revenue, lastProject: lastProject };
+}
+
+function renderClients() {
+  var grid = document.getElementById('clientsGrid');
+  if (!clients.length) {
+    grid.innerHTML = '<div class="cd-empty" style="grid-column:1/-1"><div class="cd-empty-icon">👥</div>' +
+      '<div class="cd-empty-title">Your first client is waiting</div>' +
+      '<div class="cd-empty-desc">Add a client to start tracking your projects and relationships.</div>' +
+      '<button class="cd-btn cd-btn-primary" onclick="openNewClient()">+ Add First Client</button></div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  clients.forEach(function(c) {
+    var stats = getClientStats(c.name);
+    var card = document.createElement('div');
+    card.className = 'cd-client-card';
+    card.onclick = function() { openClientDetail(c.id); };
+
+    card.innerHTML = '<div class="cd-cc-top">' +
+      '<div class="cd-cc-avatar" style="background:' + getAvatarColor(c.name) + '">' + getInitials(c.name) + '</div>' +
+      '<div><div class="cd-cc-name">' + escHtml(c.name) + '</div>' +
+      (c.company ? '<div class="cd-cc-company">' + escHtml(c.company) + '</div>' : '') +
+      '</div></div>' +
+      '<div class="cd-cc-stats">' +
+      '<div class="cd-cc-stat"><div class="cd-cc-stat-val">' + stats.total + '</div><div class="cd-cc-stat-lbl">Projects</div></div>' +
+      '<div class="cd-cc-stat"><div class="cd-cc-stat-val">' + stats.active + '</div><div class="cd-cc-stat-lbl">Active</div></div>' +
+      '<div class="cd-cc-stat"><div class="cd-cc-stat-val">₦' + (stats.revenue > 0 ? (stats.revenue/1000).toFixed(0)+'K' : '0') + '</div><div class="cd-cc-stat-lbl">Revenue</div></div>' +
+      '<div class="cd-cc-stat"><div class="cd-cc-stat-val">' + (stats.lastProject ? new Date(stats.lastProject.createdAt).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : '—') + '</div><div class="cd-cc-stat-lbl">Last Project</div></div>' +
+      '</div>' +
+      '<div class="cd-cc-actions">' +
+      (c.whatsapp ? '<a class="cd-cc-action-btn" href="https://wa.me/' + c.whatsapp.replace(/[^0-9+]/g,'').replace('+','') + '" onclick="event.stopPropagation()">💬 WhatsApp</a>' : '') +
+      (c.email ? '<a class="cd-cc-action-btn" href="mailto:' + encodeURIComponent(c.email) + '" onclick="event.stopPropagation()">✉️ Email</a>' : '') +
+      (c.phone ? '<a class="cd-cc-action-btn" href="tel:' + c.phone.replace(/\s/g,'') + '" onclick="event.stopPropagation()">📞 Call</a>' : '') +
+      '</div>';
+
+    grid.appendChild(card);
+  });
+}
+
+function openNewClient() { document.getElementById('clientModal').classList.add('open'); }
+function closeClientModal() {
+  document.getElementById('clientModal').classList.remove('open');
+  ['ncName','ncCompany','ncEmail','ncPhone','ncWhatsapp','ncCountry','ncNotes'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+}
+
+function createClient() {
+  var name = document.getElementById('ncName').value.trim();
+  if (!name) { alert('Client name is required'); return; }
+
+  clients.push({
+    id: uid(), name: name,
+    company: document.getElementById('ncCompany').value.trim(),
+    email: document.getElementById('ncEmail').value.trim(),
+    phone: document.getElementById('ncPhone').value.trim(),
+    whatsapp: document.getElementById('ncWhatsapp').value.trim(),
+    country: document.getElementById('ncCountry').value.trim(),
+    notes: document.getElementById('ncNotes').value.trim(),
+    createdAt: Date.now()
+  });
+
+  saveClients();
+  closeClientModal();
+  renderClients();
+  showToast('Client added!');
+}
+
+function openClientDetail(id) {
+  var c = clients.find(function(cl) { return cl.id === id; });
+  if (!c) return;
+  var stats = getClientStats(c.name);
+  var content = document.getElementById('detailContent');
+
+  var html = '<h3>' + escHtml(c.name) + '</h3>';
+  if (c.company) html += '<p style="color:#64748b;margin-bottom:16px">' + escHtml(c.company) + '</p>';
+
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">' +
+    '<div class="cd-cc-stat"><div class="cd-cc-stat-val">' + stats.total + '</div><div class="cd-cc-stat-lbl">Total Projects</div></div>' +
+    '<div class="cd-cc-stat"><div class="cd-cc-stat-val">₦' + stats.revenue.toLocaleString() + '</div><div class="cd-cc-stat-lbl">Revenue</div></div></div>';
+
+  if (c.email) html += '<div style="font-size:.85rem;margin-bottom:6px">✉️ ' + escHtml(c.email) + '</div>';
+  if (c.phone) html += '<div style="font-size:.85rem;margin-bottom:6px">📞 ' + escHtml(c.phone) + '</div>';
+  if (c.whatsapp) html += '<div style="font-size:.85rem;margin-bottom:6px">💬 ' + escHtml(c.whatsapp) + '</div>';
+  if (c.country) html += '<div style="font-size:.85rem;margin-bottom:6px">📍 ' + escHtml(c.country) + '</div>';
+  if (c.notes) html += '<div style="font-size:.85rem;margin-top:12px;padding:12px;background:#f8fafc;border-radius:8px;color:#374151">' + escHtml(c.notes) + '</div>';
+
+  html += '<div style="margin-top:16px"><button class="cd-ai-btn" onclick="aiCheckin(\'' + id + '\')">✨ Draft a check-in message</button></div>';
+  html += '<button class="cd-btn cd-btn-ghost" onclick="closeDetailModal()" style="margin-top:12px;width:100%">Close</button>';
+
+  content.innerHTML = html;
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeDetailModal() { document.getElementById('detailModal').classList.remove('open'); }
+
+function aiCheckin(clientId) {
+  var c = clients.find(function(cl) { return cl.id === clientId; });
+  if (!c) return;
+  var btn = event.target;
+  btn.classList.add('loading');
+  btn.textContent = '⏳ Writing...';
+
+  fetch('/.netlify/functions/ai-advisor', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      tool: 'creator-desk',
+      message: 'Draft a friendly WhatsApp check-in message for my client ' + c.name + (c.company ? ' at ' + c.company : '') + '. Keep it short, warm, and natural. Not too corporate.'
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) { alert('Message draft:\n\n' + (data.response || data.message || '')); })
+  .catch(function() { alert('Failed to generate.'); })
+  .finally(function() { btn.classList.remove('loading'); btn.textContent = '✨ Draft a check-in message'; });
+}
+
+function filterClients(q) {
+  if (!q) { renderClients(); return; }
+  var lower = q.toLowerCase();
+  var orig = clients;
+  clients = clients.filter(function(c) {
+    return (c.name||'').toLowerCase().indexOf(lower) !== -1 ||
+           (c.company||'').toLowerCase().indexOf(lower) !== -1;
+  });
+  renderClients();
+  clients = orig;
+}
+
+function saveClients() { try { localStorage.setItem('cd-clients', JSON.stringify(clients)); } catch(e) {} }
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#10b981;color:#fff;padding:10px 24px;border-radius:10px;font-size:13px;font-weight:700;z-index:9999';
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 2500);
+}
+
+// ── INIT ──
+(function() {
+  try { var s = localStorage.getItem('cd-clients'); if (s) clients = JSON.parse(s); } catch(e) {}
+  try { var p = localStorage.getItem('cd-projects'); if (p) projects = JSON.parse(p); } catch(e) {}
+  renderClients();
+})();
+</script>
+</body>
+</html>

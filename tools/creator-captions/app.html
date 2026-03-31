@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CaptionCraft Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+</head>
+<body class="ccr-app">
+
+  <!-- TOPBAR -->
+  <div class="ccr-topbar">
+    <a href="index.html" class="ccr-topbar-back">&larr;</a>
+    <a href="index.html" class="ccr-topbar-brand">&#9997;&#65039; CaptionCraft</a>
+    <div class="ccr-topbar-actions">
+      <button class="ccr-topbar-btn" id="historyBtn">History</button>
+    </div>
+  </div>
+
+  <!-- MODE TABS -->
+  <div class="ccr-mode-tabs">
+    <button class="ccr-mode-tab active" data-mode="write">Write New</button>
+    <button class="ccr-mode-tab" data-mode="rewrite">Rewrite Existing</button>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="ccr-workspace">
+
+    <!-- WRITE NEW MODE -->
+    <div id="writeView">
+      <div class="ccr-split">
+
+        <!-- LEFT: BRIEF PANEL -->
+        <div class="ccr-brief">
+          <div class="ccr-brief-title">&#128221; Your Brief</div>
+
+          <div class="ccr-form-group">
+            <label class="ccr-form-label">What's the post about?</label>
+            <textarea class="ccr-form-textarea" id="topicInput" placeholder="Launching my new preset pack, celebrating 10k followers, behind-the-scenes of a shoot..." rows="3"></textarea>
+          </div>
+
+          <div class="ccr-form-group">
+            <label class="ccr-form-label">Platform</label>
+            <div class="ccr-pills" id="platformPills">
+              <span class="ccr-pill active" data-val="instagram">&#128247; IG</span>
+              <span class="ccr-pill" data-val="x">&#120143; X</span>
+              <span class="ccr-pill" data-val="linkedin">&#128188; LI</span>
+              <span class="ccr-pill" data-val="tiktok">&#127925; TikTok</span>
+              <span class="ccr-pill" data-val="facebook">&#128077; FB</span>
+            </div>
+          </div>
+
+          <div class="ccr-form-group">
+            <label class="ccr-form-label">Tone</label>
+            <div class="ccr-pills" id="tonePills">
+              <span class="ccr-pill active" data-val="casual">Casual</span>
+              <span class="ccr-pill" data-val="professional">Professional</span>
+              <span class="ccr-pill" data-val="bold">Bold</span>
+              <span class="ccr-pill" data-val="playful">Playful</span>
+              <span class="ccr-pill" data-val="inspirational">Inspirational</span>
+              <span class="ccr-pill" data-val="educational">Educational</span>
+            </div>
+          </div>
+
+          <div class="ccr-form-group">
+            <label class="ccr-form-label">Include</label>
+            <div class="ccr-toggle-row" style="margin-bottom:10px">
+              <label class="ccr-form-label" style="margin-bottom:0;text-transform:none;font-size:13px;color:rgba(255,255,255,.7)">&#128227; CTA</label>
+              <button class="ccr-toggle on" data-field="cta"></button>
+            </div>
+            <div class="ccr-toggle-row" style="margin-bottom:10px">
+              <label class="ccr-form-label" style="margin-bottom:0;text-transform:none;font-size:13px;color:rgba(255,255,255,.7)">#&#65039;&#8419; Hashtags</label>
+              <button class="ccr-toggle on" data-field="hashtags"></button>
+            </div>
+            <div class="ccr-toggle-row" style="margin-bottom:10px">
+              <label class="ccr-form-label" style="margin-bottom:0;text-transform:none;font-size:13px;color:rgba(255,255,255,.7)">&#128522; Emoji</label>
+              <button class="ccr-toggle on" data-field="emoji"></button>
+            </div>
+            <div class="ccr-toggle-row">
+              <label class="ccr-form-label" style="margin-bottom:0;text-transform:none;font-size:13px;color:rgba(255,255,255,.7)">&#10067; Question at end</label>
+              <button class="ccr-toggle" data-field="question"></button>
+            </div>
+          </div>
+
+          <button class="ccr-generate-btn" id="generateBtn">
+            <span class="ccr-spinner"></span>Generate &#10024;
+          </button>
+        </div>
+
+        <!-- RIGHT: OUTPUT PANEL -->
+        <div class="ccr-outputs" id="outputArea">
+          <div style="text-align:center;padding:80px 20px;color:rgba(255,255,255,.3);">
+            <div style="font-size:48px;margin-bottom:16px;">&#9997;&#65039;</div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Your captions will appear here</div>
+            <div style="font-size:14px;max-width:280px;margin:0 auto;line-height:1.5;">Describe your post, pick a platform, and hit Generate.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REWRITE MODE -->
+    <div id="rewriteView" style="display:none;">
+      <div class="ccr-split">
+        <div class="ccr-brief">
+          <div class="ccr-brief-title">&#9851;&#65039; Rewrite Caption</div>
+
+          <div class="ccr-form-group">
+            <label class="ccr-form-label">Paste your existing caption</label>
+            <textarea class="ccr-form-textarea" id="rewriteInput" placeholder="Paste the caption you want to improve..." rows="8"></textarea>
+          </div>
+
+          <div class="ccr-form-group">
+            <label class="ccr-form-label">Platform</label>
+            <div class="ccr-pills" id="rewritePlatformPills">
+              <span class="ccr-pill active" data-val="instagram">&#128247; IG</span>
+              <span class="ccr-pill" data-val="x">&#120143; X</span>
+              <span class="ccr-pill" data-val="linkedin">&#128188; LI</span>
+              <span class="ccr-pill" data-val="tiktok">&#127925; TikTok</span>
+              <span class="ccr-pill" data-val="facebook">&#128077; FB</span>
+            </div>
+          </div>
+
+          <button class="ccr-generate-btn" id="rewriteBtn">
+            <span class="ccr-spinner"></span>Rewrite This &#10024;
+          </button>
+        </div>
+
+        <div class="ccr-outputs" id="rewriteOutputArea">
+          <div style="text-align:center;padding:80px 20px;color:rgba(255,255,255,.3);">
+            <div style="font-size:48px;margin-bottom:16px;">&#9851;&#65039;</div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Paste a caption to rewrite</div>
+            <div style="font-size:14px;max-width:280px;margin:0 auto;line-height:1.5;">Get 3 improved versions with better hooks, formatting, and CTAs.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECENT CAPTIONS STRIP -->
+  <div class="ccr-recent" id="recentStrip" style="display:none;">
+    <div class="ccr-recent-label">Recent Captions</div>
+    <div class="ccr-recent-list" id="recentList"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="ccr-bottom-nav">
+    <a href="app.html" class="active"><span class="ccr-bnav-icon">&#9997;&#65039;</span>Write</a>
+    <a href="/tools/creator-mind/app.html"><span class="ccr-bnav-icon">&#128302;</span>CreatorMind</a>
+    <a href="index.html"><span class="ccr-bnav-icon">&#8505;&#65039;</span>About</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="ccr-toast" id="toast"></div>
+
+<script src="/engines/creator-captions-engine.js"></script>
+<script>
+!function() {
+  "use strict";
+
+  var E = window.AfroTools && window.AfroTools.CaptionCraftEngine;
+  if (!E) { console.error('CaptionCraft engine not loaded'); return; }
+
+  var API = '/.netlify/functions/creator-captions';
+
+  // -- AUTH --
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  // -- TOAST --
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  // -- HELPERS --
+  function getActivePill(containerId) {
+    var el = document.getElementById(containerId);
+    var active = el && el.querySelector('.ccr-pill.active');
+    return active ? active.getAttribute('data-val') : '';
+  }
+
+  function getToggles() {
+    var result = {};
+    document.querySelectorAll('#writeView .ccr-toggle').forEach(function(tog) {
+      result[tog.getAttribute('data-field')] = tog.classList.contains('on');
+    });
+    return result;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  }
+
+  // -- PILL CLICK WIRING --
+  function wirePills(container) {
+    var el = typeof container === 'string' ? document.getElementById(container) : container;
+    if (!el) return;
+    el.querySelectorAll('.ccr-pill').forEach(function(pill) {
+      pill.onclick = function() {
+        el.querySelectorAll('.ccr-pill').forEach(function(p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+      };
+    });
+  }
+
+  wirePills('platformPills');
+  wirePills('tonePills');
+  wirePills('rewritePlatformPills');
+
+  // -- TOGGLE WIRING --
+  document.querySelectorAll('.ccr-toggle').forEach(function(tog) {
+    tog.onclick = function() { tog.classList.toggle('on'); };
+  });
+
+  // -- MODE SWITCHING --
+  document.querySelectorAll('.ccr-mode-tab').forEach(function(tab) {
+    tab.onclick = function() {
+      document.querySelectorAll('.ccr-mode-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var mode = tab.getAttribute('data-mode');
+      document.getElementById('writeView').style.display = mode === 'write' ? '' : 'none';
+      document.getElementById('rewriteView').style.display = mode === 'rewrite' ? '' : 'none';
+    };
+  });
+
+  // -- PLATFORM MOCKUP RENDERERS --
+  function renderMockup(platform, caption) {
+    var text = escapeHtml(caption.text || '');
+    var hashtags = (caption.hashtags || []).map(function(h) { return h; }).join(' ');
+
+    switch (platform) {
+      case 'instagram':
+        return '<div class="ccr-mockup-body">' +
+          '<div class="ccr-ig-header"><div class="ccr-ig-avatar"></div><span class="ccr-ig-handle">@yourhandle</span><span class="ccr-ig-time">2m</span></div>' +
+          '<div class="ccr-ig-actions"><span>&#9825;</span><span>&#128172;</span><span>&#8599;&#65039;</span><span>&#128278;</span></div>' +
+          '<div class="ccr-ig-caption"><strong>yourhandle</strong> ' + text + '</div>' +
+          (hashtags ? '<div class="ccr-ig-hashtags">' + escapeHtml(hashtags) + '</div>' : '') +
+          '</div>';
+
+      case 'x':
+        return '<div class="ccr-mockup-body">' +
+          '<div class="ccr-x-header"><div class="ccr-x-avatar"></div><div><div class="ccr-x-name">Your Name</div><div class="ccr-x-handle">@yourhandle</div></div></div>' +
+          '<div class="ccr-x-text">' + text + '</div>' +
+          '<div class="ccr-x-footer"><span>&#128172; 0</span><span>&#128257; 0</span><span>&#10084;&#65039; 0</span><span>&#128200; 0</span></div>' +
+          '</div>';
+
+      case 'linkedin':
+        return '<div class="ccr-mockup-body">' +
+          '<div class="ccr-li-header"><div class="ccr-li-avatar"></div><div><div class="ccr-li-name">Your Name</div><div class="ccr-li-headline">Creator &bull; Content Strategist</div></div></div>' +
+          '<div class="ccr-li-text">' + text + '</div>' +
+          (hashtags ? '<div class="ccr-ig-hashtags" style="margin-top:12px">' + escapeHtml(hashtags) + '</div>' : '') +
+          '</div>';
+
+      case 'tiktok':
+        return '<div class="ccr-mockup-body">' +
+          '<div class="ccr-tt-body"><div class="ccr-tt-text-area"><div class="ccr-tt-handle">@yourhandle</div><div class="ccr-tt-text">' + text + '</div>' +
+          (hashtags ? '<div class="ccr-tt-hashtags">' + escapeHtml(hashtags) + '</div>' : '') +
+          '</div><div class="ccr-tt-actions"><span>&#10084;&#65039;</span><span>&#128172;</span><span>&#128278;</span></div></div>' +
+          '</div>';
+
+      case 'facebook':
+        return '<div class="ccr-mockup-body">' +
+          '<div class="ccr-fb-header"><div class="ccr-fb-avatar"></div><div><div class="ccr-fb-name">Your Name</div><div class="ccr-fb-time">Just now &bull; &#127760;</div></div></div>' +
+          '<div class="ccr-fb-text">' + text + '</div>' +
+          '</div>';
+
+      default:
+        return '<div class="ccr-mockup-body"><div style="font-size:14px;line-height:1.7;color:rgba(255,255,255,.9);white-space:pre-wrap;">' + text + '</div></div>';
+    }
+  }
+
+  function getPlatformIconClass(platform) {
+    var map = { instagram: 'ig', x: 'x', linkedin: 'li', tiktok: 'tt', facebook: 'fb' };
+    return map[platform] || 'ig';
+  }
+
+  function getPlatformIcon(platform) {
+    var p = E.PLATFORMS[platform];
+    return p ? p.icon : '&#128247;';
+  }
+
+  // -- RENDER CAPTIONS --
+  function renderCaptions(data, platform, targetId) {
+    var area = document.getElementById(targetId);
+    var captions = data.captions || [];
+    var html = '';
+
+    captions.forEach(function(cap, i) {
+      var charCount = cap.charCount || (cap.text || '').length;
+      var maxChars = E.PLATFORMS[platform] ? E.PLATFORMS[platform].maxChars : 2200;
+      var withinLimit = charCount <= maxChars;
+
+      html += '<div class="ccr-preview-card">';
+      html += '<div class="ccr-preview-header">';
+      html += '<div class="ccr-preview-platform-icon ' + getPlatformIconClass(platform) + '">' + getPlatformIcon(platform) + '</div>';
+      html += '<div class="ccr-preview-variation">' + (cap.label || 'Variation ' + (i + 1)) + '</div>';
+      html += '<div class="ccr-preview-chars" style="' + (withinLimit ? '' : 'color:#ef4444') + '">' + charCount + '/' + maxChars + '</div>';
+      html += '</div>';
+
+      html += renderMockup(platform, cap);
+
+      // Actions
+      html += '<div class="ccr-caption-actions">';
+      html += '<button class="ccr-action-btn" data-action="copy" data-idx="' + i + '">&#128203; Copy</button>';
+      html += '<button class="ccr-action-btn" data-action="copy-no-tags" data-idx="' + i + '">&#128203; No Tags</button>';
+      if (cap.hashtags && cap.hashtags.length) {
+        html += '<button class="ccr-action-btn" data-action="copy-tags" data-idx="' + i + '"># Tags Only</button>';
+      }
+      html += '<button class="ccr-action-btn" data-action="whatsapp" data-idx="' + i + '">&#128172; Share</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+
+    if (data.platformTip) {
+      html += '<div style="background:rgba(90,200,250,.06);border:1px solid rgba(90,200,250,.15);border-radius:12px;padding:14px 16px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.5;"><strong style="color:var(--ccr-primary)">&#128161; Tip:</strong> ' + escapeHtml(data.platformTip) + '</div>';
+    }
+
+    area.innerHTML = html;
+
+    // Wire action buttons
+    area.querySelectorAll('.ccr-action-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        var idx = parseInt(btn.getAttribute('data-idx'));
+        var action = btn.getAttribute('data-action');
+        var cap = captions[idx];
+        if (!cap) return;
+
+        var text = cap.text || '';
+        var hashtags = (cap.hashtags || []).join(' ');
+
+        switch (action) {
+          case 'copy':
+            navigator.clipboard.writeText(text + (hashtags ? '\n\n' + hashtags : '')).then(function() { toast('Copied with hashtags!'); });
+            break;
+          case 'copy-no-tags':
+            navigator.clipboard.writeText(text).then(function() { toast('Copied without hashtags!'); });
+            break;
+          case 'copy-tags':
+            navigator.clipboard.writeText(hashtags).then(function() { toast('Hashtags copied!'); });
+            break;
+          case 'whatsapp':
+            window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+            break;
+        }
+      };
+    });
+
+    // Store for history
+    return captions;
+  }
+
+  // -- SHIMMER --
+  function showShimmer(targetId) {
+    var area = document.getElementById(targetId);
+    var html = '';
+    for (var i = 0; i < 3; i++) {
+      html += '<div class="ccr-shimmer-card"><div class="ccr-shimmer-line" style="width:80%"></div><div class="ccr-shimmer-line" style="width:60%"></div><div class="ccr-shimmer-line" style="width:90%"></div><div class="ccr-shimmer-line" style="width:45%"></div></div>';
+    }
+    area.innerHTML = html;
+  }
+
+  function showError(targetId, msg) {
+    document.getElementById(targetId).innerHTML = '<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:20px;color:#ef4444;font-size:14px;text-align:center;">' + escapeHtml(msg) + '</div>';
+  }
+
+  // -- GENERATE --
+  document.getElementById('generateBtn').onclick = function() {
+    var topic = document.getElementById('topicInput').value.trim();
+    if (!topic) { toast('Describe your post first'); return; }
+
+    var platform = getActivePill('platformPills');
+    var tone = getActivePill('tonePills');
+    var includes = getToggles();
+
+    var prompt = E.buildPrompt(platform, topic, tone, includes, false, '');
+
+    var btn = document.getElementById('generateBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+    showShimmer('outputArea');
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ prompt: prompt, brief: topic, platform: platform, tone: tone })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      if (!res.ok) { showError('outputArea', res.data.error || 'Generation failed'); return; }
+
+      var parsed = E.parseOutput(res.data.output);
+      var captions = renderCaptions(parsed, platform, 'outputArea');
+
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      }
+
+      // Save to local history
+      saveLocal(platform, topic, tone, captions);
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      showError('outputArea', 'Connection error. Please try again.');
+    });
+  };
+
+  // -- REWRITE --
+  document.getElementById('rewriteBtn').onclick = function() {
+    var caption = document.getElementById('rewriteInput').value.trim();
+    if (!caption) { toast('Paste a caption to rewrite'); return; }
+
+    var platform = getActivePill('rewritePlatformPills');
+
+    var btn = document.getElementById('rewriteBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+    showShimmer('rewriteOutputArea');
+
+    fetch(API + '/rewrite', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ caption: caption, platform: platform })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      if (!res.ok) { showError('rewriteOutputArea', res.data.error || 'Rewrite failed'); return; }
+
+      var parsed = E.parseOutput(res.data.output);
+      renderCaptions(parsed, platform, 'rewriteOutputArea');
+
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      }
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      showError('rewriteOutputArea', 'Connection error. Please try again.');
+    });
+  };
+
+  // -- LOCAL HISTORY --
+  function saveLocal(platform, topic, tone, captions) {
+    var history = JSON.parse(localStorage.getItem('ccr-history') || '[]');
+    history.unshift(E.createHistoryEntry(platform, topic, tone, captions));
+    if (history.length > 50) history = history.slice(0, 50);
+    localStorage.setItem('ccr-history', JSON.stringify(history));
+    renderRecent();
+  }
+
+  function renderRecent() {
+    var history = JSON.parse(localStorage.getItem('ccr-history') || '[]');
+    var strip = document.getElementById('recentStrip');
+    var list = document.getElementById('recentList');
+    if (!history.length) { strip.style.display = 'none'; return; }
+
+    strip.style.display = '';
+    list.innerHTML = '';
+    history.slice(0, 10).forEach(function(entry) {
+      var item = document.createElement('div');
+      item.className = 'ccr-recent-item';
+      var platformLabel = E.PLATFORMS[entry.platform] ? E.PLATFORMS[entry.platform].label : entry.platform;
+      item.innerHTML = '<div class="ccr-recent-item-platform">' + platformLabel + ' &bull; ' + E.formatTimestamp(entry.createdAt) + '</div>' +
+        '<div class="ccr-recent-item-text">' + escapeHtml(entry.topic || '').replace(/<br>/g, ' ') + '</div>';
+      list.appendChild(item);
+    });
+  }
+
+  // -- HISTORY BUTTON --
+  document.getElementById('historyBtn').onclick = function() {
+    var history = JSON.parse(localStorage.getItem('ccr-history') || '[]');
+    if (!history.length) { toast('No history yet'); return; }
+    var strip = document.getElementById('recentStrip');
+    strip.style.display = strip.style.display === 'none' ? '' : 'none';
+  };
+
+  // -- ENTER KEY --
+  document.getElementById('topicInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      document.getElementById('generateBtn').click();
+    }
+  });
+
+  document.getElementById('rewriteInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      e.preventDefault();
+      document.getElementById('rewriteBtn').click();
+    }
+  });
+
+  // -- INIT --
+  renderRecent();
+
+}();
+</script>
+</body>
+</html>

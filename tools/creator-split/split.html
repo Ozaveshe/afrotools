@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Split Detail — CreatorSplit | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/engines/creator-split-engine.js"></script>
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+
+  <div class="cs-app">
+    <div class="cs-app-inner">
+      <div class="cs-app-header">
+        <a href="app.html" style="font-size:.78rem;color:rgba(255,255,255,.4);text-decoration:none">&larr; All Splits</a>
+        <div class="cs-app-title" id="split-title"></div>
+      </div>
+
+      <div id="split-content"></div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="cs-bottom-nav">
+      <a href="app.html" class="cs-nav-item"><span class="cs-nav-icon">🤝</span>Splits</a>
+      <a href="create.html" class="cs-nav-item"><span class="cs-nav-icon">➕</span>Create</a>
+    </div>
+  </div>
+
+  <!-- ADD EARNING MODAL -->
+  <div class="cs-modal-overlay" id="earning-modal">
+    <div class="cs-modal" style="position:relative">
+      <button class="cs-modal-close" id="close-earning">&times;</button>
+      <div class="cs-modal-title">Log Earning</div>
+      <div class="cs-field"><label class="cs-label">Amount</label><input type="number" class="cs-input" id="earn-amount" placeholder="0"></div>
+      <div class="cs-field"><label class="cs-label">Source</label><select class="cs-select" id="earn-source"></select></div>
+      <div class="cs-field"><label class="cs-label">Description</label><input type="text" class="cs-input" id="earn-desc" placeholder="e.g. Spotify January payout"></div>
+      <div class="cs-field"><label class="cs-label">Date</label><input type="date" class="cs-input" id="earn-date"></div>
+      <button class="cs-btn cs-btn-primary" id="save-earning">Save Earning</button>
+    </div>
+  </div>
+
+  <!-- ADD PAYOUT MODAL -->
+  <div class="cs-modal-overlay" id="payout-modal">
+    <div class="cs-modal" style="position:relative">
+      <button class="cs-modal-close" id="close-payout">&times;</button>
+      <div class="cs-modal-title">Log Payout</div>
+      <div class="cs-field"><label class="cs-label">To</label><select class="cs-select" id="pay-member"></select></div>
+      <div class="cs-field"><label class="cs-label">Amount</label><input type="number" class="cs-input" id="pay-amount" placeholder="0"></div>
+      <div class="cs-field"><label class="cs-label">Method</label><select class="cs-select" id="pay-method"></select></div>
+      <div class="cs-field"><label class="cs-label">Date</label><input type="date" class="cs-input" id="pay-date"></div>
+      <div class="cs-field"><label class="cs-label">Notes</label><input type="text" class="cs-input" id="pay-notes" placeholder="Optional notes"></div>
+      <button class="cs-btn cs-btn-primary" id="save-payout">Save Payout</button>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+    var CS = CreatorSplitEngine;
+    var params = new URLSearchParams(window.location.search);
+    var splitId = params.get('id');
+
+    if (!splitId) { window.location.href = 'app.html'; return; }
+
+    CS.loadDemoData('NGN');
+
+    var split = CS.getSplit(splitId);
+    if (!split) { window.location.href = 'app.html'; return; }
+
+    document.getElementById('split-title').textContent = split.name;
+
+    function render() {
+      split = CS.getSplit(splitId);
+      var members = CS.getMembers(splitId);
+      var earnings = CS.getEarnings(splitId);
+      var payouts = CS.getPayouts(splitId);
+      var totalEarned = CS.getTotalEarnings(splitId);
+      var memberEarnings = CS.calculateMemberEarnings(splitId);
+      var typeObj = CS.PROJECT_TYPES.find(function(t) { return t.id === split.project_type; }) || {};
+      var currency = split.currency || 'NGN';
+      var el = document.getElementById('split-content');
+
+      var html = '';
+
+      // Status badge
+      html += '<div style="margin-bottom:20px;display:flex;align-items:center;gap:10px"><span class="cs-split-badge ' + split.status + '" style="font-size:.7rem;padding:5px 14px">' + split.status + '</span><span style="font-size:.72rem;color:rgba(255,255,255,.4)">' + typeObj.icon + ' ' + typeObj.label + '</span></div>';
+
+      // Donut chart
+      html += '<div class="cs-donut-wrap" style="margin-bottom:24px"><div>' + CS.renderDonutSVG(members) + '</div>';
+      html += '<div class="cs-donut-legend">';
+      members.forEach(function(m) {
+        html += '<div class="cs-legend-item"><div class="cs-legend-dot" style="background:' + m.color + '"></div><span class="cs-legend-name">' + m.name + ' <span style="color:rgba(255,255,255,.35)">(' + m.role + ')</span></span><span class="cs-legend-pct">' + m.percentage + '%</span></div>';
+      });
+      html += '</div></div>';
+
+      // Acknowledgment status
+      var ackCount = members.filter(function(m) { return m.has_acknowledged; }).length;
+      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Agreement Status</div><span style="font-size:.72rem;font-weight:800;color:' + (ackCount === members.length ? '#22C55E' : '#F5A623') + '">' + ackCount + '/' + members.length + ' acknowledged</span></div>';
+      members.forEach(function(m) {
+        html += '<div class="cs-ack-status"><div class="cs-ack-dot ' + (m.has_acknowledged ? 'yes' : 'no') + '"></div><span style="font-size:.72rem;color:rgba(255,255,255,.6)">' + m.name + '</span><span style="font-size:.65rem;color:rgba(255,255,255,.3);margin-left:auto">' + (m.has_acknowledged ? 'Agreed' : 'Pending') + '</span></div>';
+      });
+      html += '</div>';
+
+      // Earnings section
+      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Earnings</div><button class="cs-section-action" id="add-earning-btn">+ Log Earning</button></div>';
+      html += '<div style="font-size:1.3rem;font-weight:900;color:#22C55E;margin-bottom:16px">' + CS.formatMoney(totalEarned, currency) + ' <span style="font-size:.7rem;color:rgba(255,255,255,.4);font-weight:600">total earned</span></div>';
+
+      if (earnings.length > 0) {
+        earnings.forEach(function(e) {
+          var sourceObj = CS.EARNING_SOURCES.find(function(s) { return s.id === e.source; }) || { icon: '💰' };
+          html += '<div class="cs-earning-item"><div class="cs-earning-icon">' + sourceObj.icon + '</div><div class="cs-earning-body"><div class="cs-earning-desc">' + (e.description || e.source) + '</div><div class="cs-earning-meta">' + e.earning_date + '</div></div><div class="cs-earning-amount">' + CS.formatMoney(e.amount, currency) + '</div></div>';
+        });
+      } else {
+        html += '<div style="font-size:.78rem;color:rgba(255,255,255,.35);text-align:center;padding:20px">No earnings logged yet</div>';
+      }
+      html += '</div>';
+
+      // Balances
+      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Balances</div><button class="cs-section-action" id="add-payout-btn">+ Log Payout</button></div>';
+      html += '<div class="cs-balance-list">';
+      memberEarnings.forEach(function(me) {
+        var initials = me.member.name.split(' ').map(function(w) { return w.charAt(0); }).join('').slice(0, 2);
+        var balanceClass = me.balance === 0 ? 'settled' : (me.member.is_self ? 'owed' : 'owe');
+        var label = me.balance === 0 ? 'Settled' : (me.member.is_self ? 'You are owed' : 'Owed to ' + me.member.name.split(' ')[0]);
+        html += '<div class="cs-balance-card"><div class="cs-balance-avatar" style="background:' + me.member.color + '">' + initials + '</div><div class="cs-balance-info"><div class="cs-balance-name">' + me.member.name + '</div><div class="cs-balance-label">' + label + '</div></div><div class="cs-balance-amount ' + balanceClass + '">' + CS.formatMoney(Math.abs(me.balance), currency) + '</div></div>';
+      });
+      html += '</div></div>';
+
+      // Recent payouts
+      if (payouts.length > 0) {
+        html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Recent Payouts</div></div>';
+        payouts.slice(0, 5).forEach(function(p) {
+          var member = members.find(function(m) { return m.id === p.member_id; }) || { name: 'Unknown' };
+          html += '<div class="cs-payout-item"><div class="cs-payout-body"><div class="cs-payout-name">Paid ' + member.name + '</div><div class="cs-payout-meta">' + p.payout_date + ' &middot; ' + (p.method || '').replace('_', ' ') + (p.notes ? ' &middot; ' + p.notes : '') + '</div></div><div class="cs-payout-amount">' + CS.formatMoney(p.amount, currency) + '</div></div>';
+        });
+        html += '</div>';
+      }
+
+      // Projection calculator
+      html += '<div class="cs-section"><div class="cs-section-head"><div class="cs-section-title">Projection Calculator</div></div>';
+      html += '<div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:12px">See what each person earns for a hypothetical amount</div>';
+      html += '<div class="cs-proj-input-row"><input type="number" class="cs-proj-input" id="proj-amount" placeholder="Enter amount e.g. 1000000"><button class="cs-proj-btn" id="proj-calc">Calculate</button></div>';
+      html += '<div id="proj-result"></div>';
+      html += '</div>';
+
+      // Share buttons
+      html += '<div class="cs-share-btns" style="margin-bottom:20px">';
+      html += '<button class="cs-share-btn whatsapp" id="share-wa">Share via WhatsApp</button>';
+      html += '<button class="cs-share-btn copy" id="copy-agreement">Copy Agreement</button>';
+      html += '</div>';
+
+      el.innerHTML = html;
+
+      // Event listeners
+      document.getElementById('add-earning-btn').addEventListener('click', openEarningModal);
+      document.getElementById('add-payout-btn').addEventListener('click', openPayoutModal);
+
+      document.getElementById('proj-calc').addEventListener('click', function() {
+        var amount = parseInt(document.getElementById('proj-amount').value) || 0;
+        if (amount <= 0) return;
+        var projections = CS.projectEarnings(splitId, amount);
+        var projHTML = '';
+        projections.forEach(function(p) {
+          projHTML += '<div class="cs-proj-row"><span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + p.member.color + ';margin-right:8px"></span>' + p.member.name + ' <span style="color:rgba(255,255,255,.4)">(' + p.member.percentage + '%)</span></span><span style="font-weight:900;color:#22C55E">' + CS.formatMoney(p.amount, currency) + '</span></div>';
+        });
+        document.getElementById('proj-result').innerHTML = projHTML;
+      });
+
+      document.getElementById('share-wa').addEventListener('click', function() {
+        var msg = CS.generateWhatsAppMessage(splitId);
+        window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+      });
+
+      document.getElementById('copy-agreement').addEventListener('click', function() {
+        var text = CS.generateAgreement(splitId);
+        navigator.clipboard.writeText(text).then(function() {
+          var btn = document.getElementById('copy-agreement');
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy Agreement'; }, 2000);
+        });
+      });
+    }
+
+    // ── EARNING MODAL ──
+    function openEarningModal() {
+      var modal = document.getElementById('earning-modal');
+      var sourceSelect = document.getElementById('earn-source');
+      sourceSelect.innerHTML = '';
+      CS.EARNING_SOURCES.forEach(function(s) {
+        sourceSelect.innerHTML += '<option value="' + s.id + '">' + s.icon + ' ' + s.label + '</option>';
+      });
+      document.getElementById('earn-date').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('earn-amount').value = '';
+      document.getElementById('earn-desc').value = '';
+      modal.classList.add('open');
+    }
+
+    document.getElementById('close-earning').addEventListener('click', function() {
+      document.getElementById('earning-modal').classList.remove('open');
+    });
+
+    document.getElementById('save-earning').addEventListener('click', function() {
+      var amount = parseInt(document.getElementById('earn-amount').value) || 0;
+      if (amount <= 0) return;
+      CS.addEarning({
+        split_id: splitId,
+        amount: amount,
+        currency: split.currency || 'NGN',
+        source: document.getElementById('earn-source').value,
+        description: document.getElementById('earn-desc').value,
+        earning_date: document.getElementById('earn-date').value
+      });
+      document.getElementById('earning-modal').classList.remove('open');
+      render();
+    });
+
+    // ── PAYOUT MODAL ──
+    function openPayoutModal() {
+      var modal = document.getElementById('payout-modal');
+      var members = CS.getMembers(splitId);
+      var memberSelect = document.getElementById('pay-member');
+      memberSelect.innerHTML = '';
+      members.forEach(function(m) {
+        memberSelect.innerHTML += '<option value="' + m.id + '">' + m.name + ' (' + m.role + ')</option>';
+      });
+      var methodSelect = document.getElementById('pay-method');
+      methodSelect.innerHTML = '';
+      CS.PAYOUT_METHODS.forEach(function(m) {
+        methodSelect.innerHTML += '<option value="' + m.id + '">' + m.label + '</option>';
+      });
+      document.getElementById('pay-date').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('pay-amount').value = '';
+      document.getElementById('pay-notes').value = '';
+      modal.classList.add('open');
+    }
+
+    document.getElementById('close-payout').addEventListener('click', function() {
+      document.getElementById('payout-modal').classList.remove('open');
+    });
+
+    document.getElementById('save-payout').addEventListener('click', function() {
+      var amount = parseInt(document.getElementById('pay-amount').value) || 0;
+      if (amount <= 0) return;
+      CS.addPayout({
+        split_id: splitId,
+        member_id: document.getElementById('pay-member').value,
+        amount: amount,
+        currency: split.currency || 'NGN',
+        method: document.getElementById('pay-method').value,
+        payout_date: document.getElementById('pay-date').value,
+        notes: document.getElementById('pay-notes').value
+      });
+      document.getElementById('payout-modal').classList.remove('open');
+      render();
+    });
+
+    // Close modals on overlay click
+    document.querySelectorAll('.cs-modal-overlay').forEach(function(overlay) {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) overlay.classList.remove('open');
+      });
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>

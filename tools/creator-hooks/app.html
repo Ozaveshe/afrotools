@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HookFactory — Generate Video Hooks | AfroTools</title>
+<meta name="description" content="Generate scroll-stopping video hooks with teleprompter mode. 6 hook categories, platform-optimized.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="ch-app">
+
+  <!-- HEADER -->
+  <header class="ch-app-header">
+    <a href="/tools/creator-hooks/" class="ch-app-logo">
+      <span>HF</span> HookFactory
+    </a>
+    <nav class="ch-app-nav">
+      <a href="app.html" class="active">Generate</a>
+      <a href="#" id="nav-history">History</a>
+    </nav>
+  </header>
+
+  <div class="ch-app-inner">
+
+    <!-- INPUT SECTION -->
+    <div class="ch-input-group">
+      <label class="ch-input-label" for="topic-input">What's the video about?</label>
+      <textarea class="ch-textarea" id="topic-input" rows="3" placeholder='e.g. "Why most Nigerian startups fail in the first year"'></textarea>
+    </div>
+
+    <!-- PLATFORM PILLS -->
+    <div class="ch-input-group">
+      <div class="ch-input-label">Platform</div>
+      <div class="ch-pills" id="platform-pills">
+        <button class="ch-pill active" data-platform="tiktok">TikTok</button>
+        <button class="ch-pill" data-platform="reels">Reels</button>
+        <button class="ch-pill" data-platform="shorts">Shorts</button>
+        <button class="ch-pill" data-platform="youtube">YouTube</button>
+      </div>
+    </div>
+
+    <!-- CONTENT TYPE PILLS -->
+    <div class="ch-input-group">
+      <div class="ch-input-label">Content Type</div>
+      <div class="ch-pills" id="type-pills">
+        <button class="ch-pill active" data-type="educational">Educational</button>
+        <button class="ch-pill" data-type="story">Story</button>
+        <button class="ch-pill" data-type="review">Review</button>
+        <button class="ch-pill" data-type="tutorial">Tutorial</button>
+        <button class="ch-pill" data-type="reaction">Reaction</button>
+        <button class="ch-pill" data-type="entertainment">Entertainment</button>
+      </div>
+    </div>
+
+    <!-- GENERATE BUTTON -->
+    <button class="ch-generate" id="generate-btn" onclick="generateHooks()">
+      Generate Hooks
+    </button>
+
+    <!-- HOOKS OUTPUT -->
+    <div class="ch-hooks-list" id="hooks-list"></div>
+
+    <!-- EMPTY STATE (shown initially) -->
+    <div class="ch-empty" id="empty-state">
+      <div class="ch-empty-icon">&#128293;</div>
+      <h3>Your hooks will appear here</h3>
+      <p>Describe your video topic, pick a platform, and hit Generate.</p>
+    </div>
+
+    <!-- HISTORY SECTION -->
+    <div class="ch-history-section" id="history-section" style="display:none">
+      <div class="ch-history-title">RECENT GENERATIONS</div>
+      <div id="history-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TELEPROMPTER OVERLAY (inserted by JS) -->
+
+<div class="ch-toast" id="toast"></div>
+
+<script src="/engines/creator-hooks-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorHooks;
+  var currentPlatform = 'tiktok';
+  var currentType = 'educational';
+  var currentHooks = null;
+  var favorites = [];
+  var isGenerating = false;
+
+  // ── INIT ──────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init() {
+    setupPills();
+    setupNav();
+    loadFavorites();
+    loadHistory();
+
+    // Enter key in textarea
+    document.getElementById('topic-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        generateHooks();
+      }
+    });
+  }
+
+  // ── PILL SELECTORS ────────────────────────────────────────────────
+  function setupPills() {
+    document.getElementById('platform-pills').addEventListener('click', function(e) {
+      var pill = e.target.closest('.ch-pill');
+      if (!pill) return;
+      this.querySelectorAll('.ch-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      currentPlatform = pill.dataset.platform;
+    });
+
+    document.getElementById('type-pills').addEventListener('click', function(e) {
+      var pill = e.target.closest('.ch-pill');
+      if (!pill) return;
+      this.querySelectorAll('.ch-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+      currentType = pill.dataset.type;
+    });
+  }
+
+  // ── NAV ───────────────────────────────────────────────────────────
+  function setupNav() {
+    document.getElementById('nav-history').addEventListener('click', function(e) {
+      e.preventDefault();
+      var hs = document.getElementById('history-section');
+      if (hs.style.display === 'none') {
+        hs.style.display = '';
+        hs.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        hs.style.display = 'none';
+      }
+    });
+  }
+
+  // ── GENERATE HOOKS ────────────────────────────────────────────────
+  window.generateHooks = async function() {
+    var topic = document.getElementById('topic-input').value.trim();
+    if (!topic) {
+      showToast('Enter a video topic first', 'error');
+      document.getElementById('topic-input').focus();
+      return;
+    }
+    if (isGenerating) return;
+    isGenerating = true;
+
+    var btn = document.getElementById('generate-btn');
+    var list = document.getElementById('hooks-list');
+    var empty = document.getElementById('empty-state');
+
+    btn.disabled = true;
+    btn.textContent = 'Generating...';
+    empty.style.display = 'none';
+
+    // Show skeleton
+    list.innerHTML = '';
+    for (var i = 0; i < 6; i++) {
+      list.innerHTML += '<div class="ch-skeleton-card"><div class="ch-skeleton-line"></div><div class="ch-skeleton-line"></div><div class="ch-skeleton-line"></div><div class="ch-skeleton-line"></div></div>';
+    }
+
+    try {
+      var token = (typeof AfroAuth !== 'undefined' && AfroAuth.getSessionToken) ? AfroAuth.getSessionToken() : '';
+      var res = await fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tool: 'creator-hooks',
+          question: 'Generate hooks for: ' + topic + '\nPlatform: ' + currentPlatform + '\nContent type: ' + currentType,
+          token: token
+        })
+      });
+
+      var data = await res.json();
+      var answer = data.answer || '';
+
+      // Parse JSON from AI response
+      var hooks = parseHooksFromResponse(answer);
+
+      if (hooks && hooks.length) {
+        currentHooks = hooks;
+        renderHooks(hooks);
+        saveToHistory(topic, currentPlatform, currentType, hooks);
+      } else {
+        list.innerHTML = '';
+        empty.style.display = '';
+        showToast('Could not parse hooks. Try again.', 'error');
+      }
+    } catch(e) {
+      list.innerHTML = '';
+      empty.style.display = '';
+      showToast('Generation failed. Check your connection.', 'error');
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Generate Hooks';
+    isGenerating = false;
+  };
+
+  // ── PARSE AI RESPONSE ─────────────────────────────────────────────
+  function parseHooksFromResponse(text) {
+    // Try to find JSON in response
+    var jsonMatch = text.match(/\{[\s\S]*"hooks"[\s\S]*\}/);
+    if (jsonMatch) {
+      try {
+        var parsed = JSON.parse(jsonMatch[0]);
+        if (parsed.hooks && Array.isArray(parsed.hooks)) return parsed.hooks;
+      } catch(e) { /* fall through */ }
+    }
+
+    // Try to find JSON array directly
+    var arrMatch = text.match(/\[[\s\S]*\]/);
+    if (arrMatch) {
+      try {
+        var arr = JSON.parse(arrMatch[0]);
+        if (Array.isArray(arr) && arr.length && arr[0].text) return arr;
+      } catch(e) { /* fall through */ }
+    }
+
+    return null;
+  }
+
+  // ── RENDER HOOKS ──────────────────────────────────────────────────
+  function renderHooks(hooks) {
+    var list = document.getElementById('hooks-list');
+    list.innerHTML = '';
+
+    hooks.forEach(function(hook, idx) {
+      var readTime = hook.readTimeSeconds || calcReadTime(hook.text);
+      var wordCount = hook.wordCount || countWords(hook.text);
+      var timeClass = readTime <= 3 ? '' : (readTime <= 4 ? 'warn' : 'long');
+      var isFav = favorites.indexOf(hook.text) !== -1;
+
+      var card = document.createElement('div');
+      card.className = 'ch-hook-card';
+      card.innerHTML =
+        '<div class="ch-hook-category">' + esc(hook.categoryLabel || hook.category || 'HOOK ' + (idx + 1)) + '</div>' +
+        '<div class="ch-hook-text">"' + esc(hook.text) + '"</div>' +
+        '<div class="ch-hook-meta">' +
+          '<span class="ch-hook-badge ch-hook-badge-time ' + timeClass + '">' + readTime.toFixed(1) + 's read time</span>' +
+          '<span class="ch-hook-badge ch-hook-badge-words">' + wordCount + ' words</span>' +
+        '</div>' +
+        (hook.deliveryTip ? '<div class="ch-hook-tip"><div class="ch-hook-tip-label">Delivery Tip</div>' + esc(hook.deliveryTip) + '</div>' : '') +
+        (hook.whyItWorks ? '<div class="ch-hook-why">' + esc(hook.whyItWorks) + '</div>' : '') +
+        '<div class="ch-hook-actions">' +
+          '<button class="ch-hook-btn" onclick="copyHook(' + idx + ')" title="Copy hook text">Copy</button>' +
+          '<button class="ch-hook-btn ch-hook-btn-tele" onclick="startTeleprompter(' + idx + ')" title="Open in Teleprompter">Teleprompter</button>' +
+          '<button class="ch-hook-btn ch-hook-btn-fav' + (isFav ? ' active' : '') + '" onclick="toggleFavorite(' + idx + ')" title="Save to favorites">' + (isFav ? '&#10084;' : '&#9825;') + '</button>' +
+        '</div>';
+
+      list.appendChild(card);
+    });
+  }
+
+  // ── COPY ──────────────────────────────────────────────────────────
+  window.copyHook = function(idx) {
+    if (!currentHooks || !currentHooks[idx]) return;
+    var text = currentHooks[idx].text;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('Hook copied!', 'success');
+      });
+    } else {
+      // Fallback
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Hook copied!', 'success');
+    }
+  };
+
+  // ── FAVORITES ─────────────────────────────────────────────────────
+  function loadFavorites() {
+    try {
+      var saved = localStorage.getItem('ch-favorites');
+      if (saved) favorites = JSON.parse(saved);
+    } catch(e) { /* silent */ }
+  }
+
+  window.toggleFavorite = function(idx) {
+    if (!currentHooks || !currentHooks[idx]) return;
+    var text = currentHooks[idx].text;
+    var pos = favorites.indexOf(text);
+    if (pos === -1) {
+      favorites.push(text);
+      showToast('Hook saved!', 'success');
+    } else {
+      favorites.splice(pos, 1);
+      showToast('Hook removed', 'success');
+    }
+    localStorage.setItem('ch-favorites', JSON.stringify(favorites));
+    renderHooks(currentHooks);
+  };
+
+  // ── TELEPROMPTER ──────────────────────────────────────────────────
+  var teleOverlay = null;
+  var teleAnimation = null;
+  var telePaused = false;
+  var teleSpeed = 1;
+  var teleMirror = false;
+
+  window.startTeleprompter = function(idx) {
+    if (!currentHooks || !currentHooks[idx]) return;
+    var text = currentHooks[idx].text;
+    teleSpeed = 1;
+    telePaused = false;
+    teleMirror = false;
+    launchTeleprompter(text);
+  };
+
+  function launchTeleprompter(text) {
+    // Create overlay
+    teleOverlay = document.createElement('div');
+    teleOverlay.className = 'ch-teleprompter';
+    teleOverlay.setAttribute('role', 'dialog');
+    teleOverlay.setAttribute('aria-label', 'Teleprompter');
+
+    // Close button
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'ch-tele-btn-close';
+    closeBtn.innerHTML = '&#10005;';
+    closeBtn.onclick = stopTeleprompter;
+    teleOverlay.appendChild(closeBtn);
+
+    // Text
+    var textEl = document.createElement('div');
+    textEl.className = 'ch-tele-text';
+    textEl.textContent = text;
+    teleOverlay.appendChild(textEl);
+
+    // Paused indicator
+    var pausedEl = document.createElement('div');
+    pausedEl.className = 'ch-tele-paused';
+    pausedEl.id = 'tele-paused';
+    pausedEl.textContent = 'PAUSED';
+    teleOverlay.appendChild(pausedEl);
+
+    // Controls
+    var controls = document.createElement('div');
+    controls.className = 'ch-tele-controls';
+    controls.innerHTML =
+      '<button class="ch-tele-btn" onclick="teleSlower()">Slower</button>' +
+      '<div class="ch-tele-speed" id="tele-speed-label">1.0x</div>' +
+      '<button class="ch-tele-btn" onclick="teleFaster()">Faster</button>' +
+      '<button class="ch-tele-btn" onclick="teleMirrorToggle()">' + 'Mirror' + '</button>' +
+      '<button class="ch-tele-btn" onclick="teleRestart()">Restart</button>';
+    teleOverlay.appendChild(controls);
+
+    // Tap to pause
+    teleOverlay.addEventListener('click', function(e) {
+      if (e.target.closest('.ch-tele-controls') || e.target.closest('.ch-tele-btn-close')) return;
+      toggleTelePause();
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', teleKeyHandler);
+
+    document.body.appendChild(teleOverlay);
+    document.body.style.overflow = 'hidden';
+
+    // Try fullscreen
+    if (teleOverlay.requestFullscreen) {
+      teleOverlay.requestFullscreen().catch(function() { /* non-critical */ });
+    }
+
+    // Start countdown then scroll
+    startCountdown(textEl);
+  }
+
+  function startCountdown(textEl) {
+    textEl.style.display = 'none';
+    var count = 3;
+
+    var countdownEl = document.createElement('div');
+    countdownEl.className = 'ch-tele-countdown';
+    countdownEl.textContent = count;
+    teleOverlay.appendChild(countdownEl);
+
+    var interval = setInterval(function() {
+      count--;
+      if (count > 0) {
+        countdownEl.textContent = count;
+        countdownEl.style.animation = 'none';
+        countdownEl.offsetHeight; // reflow
+        countdownEl.style.animation = 'chPulse .6s ease-in-out';
+      } else {
+        clearInterval(interval);
+        countdownEl.remove();
+        textEl.style.display = '';
+        startScroll(textEl);
+      }
+    }, 800);
+  }
+
+  function startScroll(textEl) {
+    // Calculate duration based on text length and speed
+    var words = textEl.textContent.split(/\s+/).length;
+    var baseDuration = (words / 150) * 60; // seconds at 150 wpm
+    var duration = Math.max(baseDuration * 2 / teleSpeed, 3); // give 2x reading time
+
+    textEl.style.transition = 'transform ' + duration + 's linear';
+    textEl.style.transform = 'translateY(-20vh)';
+
+    teleAnimation = {
+      element: textEl,
+      duration: duration,
+      startTime: Date.now()
+    };
+  }
+
+  function toggleTelePause() {
+    telePaused = !telePaused;
+    var pausedEl = document.getElementById('tele-paused');
+    if (pausedEl) pausedEl.classList.toggle('show', telePaused);
+
+    if (teleAnimation && teleAnimation.element) {
+      if (telePaused) {
+        var computed = getComputedStyle(teleAnimation.element);
+        teleAnimation.element.style.transition = 'none';
+        teleAnimation.element.style.transform = computed.transform;
+      } else {
+        var elapsed = (Date.now() - teleAnimation.startTime) / 1000;
+        var remaining = Math.max(teleAnimation.duration - elapsed, 1);
+        teleAnimation.element.style.transition = 'transform ' + remaining + 's linear';
+        teleAnimation.element.style.transform = 'translateY(-20vh)';
+        teleAnimation.startTime = Date.now() - (elapsed * 1000);
+      }
+    }
+  }
+
+  window.teleSlower = function() {
+    teleSpeed = Math.max(0.25, teleSpeed - 0.25);
+    updateSpeedLabel();
+  };
+
+  window.teleFaster = function() {
+    teleSpeed = Math.min(3, teleSpeed + 0.25);
+    updateSpeedLabel();
+  };
+
+  function updateSpeedLabel() {
+    var label = document.getElementById('tele-speed-label');
+    if (label) label.textContent = teleSpeed.toFixed(2).replace(/0$/, '') + 'x';
+  }
+
+  window.teleMirrorToggle = function() {
+    teleMirror = !teleMirror;
+    var textEl = teleOverlay && teleOverlay.querySelector('.ch-tele-text');
+    if (textEl) textEl.classList.toggle('mirror', teleMirror);
+  };
+
+  window.teleRestart = function() {
+    if (teleAnimation && teleAnimation.element) {
+      teleAnimation.element.style.transition = 'none';
+      teleAnimation.element.style.transform = 'translateY(0)';
+      teleAnimation.element.offsetHeight; // reflow
+      telePaused = false;
+      var pausedEl = document.getElementById('tele-paused');
+      if (pausedEl) pausedEl.classList.remove('show');
+      startScroll(teleAnimation.element);
+    }
+  };
+
+  function stopTeleprompter() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(function() {});
+    }
+    if (teleOverlay) {
+      teleOverlay.remove();
+      teleOverlay = null;
+    }
+    teleAnimation = null;
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', teleKeyHandler);
+  }
+
+  function teleKeyHandler(e) {
+    if (e.key === 'Escape') { stopTeleprompter(); return; }
+    if (e.key === ' ') { e.preventDefault(); toggleTelePause(); return; }
+    if (e.key === 'ArrowUp') { e.preventDefault(); window.teleFaster(); return; }
+    if (e.key === 'ArrowDown') { e.preventDefault(); window.teleSlower(); return; }
+    if (e.key === 'm' || e.key === 'M') { window.teleMirrorToggle(); return; }
+    if (e.key === 'r' || e.key === 'R') { window.teleRestart(); return; }
+  }
+
+  // ── HISTORY ───────────────────────────────────────────────────────
+  var LS_KEY = 'ch-history';
+
+  function saveToHistory(topic, platform, contentType, hooks) {
+    try {
+      var history = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+      history.unshift({
+        topic: topic,
+        platform: platform,
+        contentType: contentType,
+        hooks: hooks,
+        date: new Date().toISOString()
+      });
+      // Keep last 20
+      if (history.length > 20) history = history.slice(0, 20);
+      localStorage.setItem(LS_KEY, JSON.stringify(history));
+    } catch(e) { /* silent */ }
+  }
+
+  function loadHistory() {
+    try {
+      var history = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+      if (!history.length) return;
+
+      var list = document.getElementById('history-list');
+      list.innerHTML = history.map(function(h, idx) {
+        var d = new Date(h.date);
+        var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return '<div class="ch-history-item" onclick="loadHistoryItem(' + idx + ')">' +
+          '<div class="ch-history-topic">' + esc(h.topic) + '</div>' +
+          '<div class="ch-history-meta">' + esc(h.platform) + ' / ' + esc(h.contentType) + ' &middot; ' + dateStr + '</div>' +
+        '</div>';
+      }).join('');
+    } catch(e) { /* silent */ }
+  }
+
+  window.loadHistoryItem = function(idx) {
+    try {
+      var history = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+      var item = history[idx];
+      if (!item) return;
+
+      document.getElementById('topic-input').value = item.topic;
+
+      // Set platform pill
+      var platPills = document.querySelectorAll('#platform-pills .ch-pill');
+      platPills.forEach(function(p) {
+        p.classList.toggle('active', p.dataset.platform === item.platform);
+      });
+      currentPlatform = item.platform;
+
+      // Set type pill
+      var typePills = document.querySelectorAll('#type-pills .ch-pill');
+      typePills.forEach(function(p) {
+        p.classList.toggle('active', p.dataset.type === item.contentType);
+      });
+      currentType = item.contentType;
+
+      // Show hooks
+      if (item.hooks && item.hooks.length) {
+        currentHooks = item.hooks;
+        renderHooks(item.hooks);
+        document.getElementById('empty-state').style.display = 'none';
+      }
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch(e) { /* silent */ }
+  };
+
+  // ── HELPERS ───────────────────────────────────────────────────────
+  function calcReadTime(text) {
+    var words = countWords(text);
+    return Math.round((words / 150) * 60 * 10) / 10; // seconds, 1 decimal
+  }
+
+  function countWords(text) {
+    return (text || '').trim().split(/\s+/).filter(Boolean).length;
+  }
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'ch-toast show ' + (type || '');
+    setTimeout(function() { t.className = 'ch-toast'; }, 3000);
+  }
+
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Splits Dashboard — CreatorSplit | AfroTools</title>
+  <meta name="description" content="Manage your collaboration splits. Track earnings, payouts, and agreements for all your creative projects.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/engines/creator-split-engine.js"></script>
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+
+  <div class="cs-app">
+    <div class="cs-app-inner">
+      <div class="cs-app-header">
+        <a href="index.html" style="font-size:.78rem;color:rgba(255,255,255,.4);text-decoration:none">&larr; CreatorSplit</a>
+        <div class="cs-app-title">My Splits</div>
+      </div>
+
+      <!-- STATS ROW -->
+      <div class="cs-stats" id="stats-row"></div>
+
+      <!-- NEW SPLIT BUTTON -->
+      <a href="create.html" class="cs-new-btn">+ New Split</a>
+
+      <!-- SPLITS LIST -->
+      <div id="splits-list"></div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="cs-bottom-nav">
+      <a href="app.html" class="cs-nav-item active"><span class="cs-nav-icon">🤝</span>Splits</a>
+      <a href="create.html" class="cs-nav-item"><span class="cs-nav-icon">➕</span>Create</a>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+    var CS = CreatorSplitEngine;
+    var currency = 'NGN';
+
+    CS.loadDemoData(currency);
+
+    function render() {
+      renderStats();
+      renderSplits();
+    }
+
+    function renderStats() {
+      var stats = CS.getStats();
+      var el = document.getElementById('stats-row');
+      el.innerHTML =
+        '<div class="cs-stat-card"><div class="cs-stat-val">' + stats.activeSplits + '</div><div class="cs-stat-label">Active Splits</div></div>' +
+        '<div class="cs-stat-card"><div class="cs-stat-val" style="color:#22C55E">' + CS.formatMoney(stats.totalEarned, currency) + '</div><div class="cs-stat-label">Total Earned</div></div>' +
+        '<div class="cs-stat-card"><div class="cs-stat-val" style="color:#F5A623">' + CS.formatMoney(stats.pendingPayouts, currency) + '</div><div class="cs-stat-label">Pending Payouts</div></div>' +
+        '<div class="cs-stat-card"><div class="cs-stat-val">' + stats.collaborators + '</div><div class="cs-stat-label">Collaborators</div></div>';
+    }
+
+    function renderSplits() {
+      var splits = CS.getSplits();
+      var el = document.getElementById('splits-list');
+
+      if (splits.length === 0) {
+        el.innerHTML =
+          '<div class="cs-empty">' +
+            '<div class="cs-empty-icon">🤝</div>' +
+            '<div class="cs-empty-title">No splits yet</div>' +
+            '<div class="cs-empty-desc">Create your first collaboration split to start tracking earnings and agreements.</div>' +
+            '<a href="create.html" class="cs-btn cs-btn-primary" style="max-width:280px;margin:0 auto;display:block;text-align:center;text-decoration:none">Create First Split</a>' +
+          '</div>';
+        return;
+      }
+
+      var html = '<div class="cs-split-list">';
+      splits.forEach(function(split) {
+        var members = CS.getMembers(split.id);
+        var totalEarned = CS.getTotalEarnings(split.id);
+        var selfMember = members.find(function(m) { return m.is_self; });
+        var myPct = selfMember ? selfMember.percentage : 0;
+        var myShare = Math.round(totalEarned * (myPct / 100));
+
+        // Avatars
+        var avatarsHTML = '<div class="cs-split-avatars">';
+        members.forEach(function(m) {
+          var initials = m.name.split(' ').map(function(w) { return w.charAt(0); }).join('').slice(0, 2);
+          avatarsHTML += '<div class="cs-avatar" style="background:' + m.color + '">' + initials + '</div>';
+        });
+        avatarsHTML += '</div>';
+
+        var typeObj = CS.PROJECT_TYPES.find(function(t) { return t.id === split.project_type; }) || {};
+
+        html += '<a href="split.html?id=' + split.id + '" class="cs-split-card">' +
+          '<div class="cs-split-card-head">' +
+            '<div class="cs-split-name">' + typeObj.icon + ' ' + split.name + '</div>' +
+            '<span class="cs-split-badge ' + split.status + '">' + split.status + '</span>' +
+          '</div>' +
+          avatarsHTML +
+          '<div class="cs-split-meta">' +
+            '<span>Your cut: <span class="cs-split-cut">' + myPct + '%</span></span>' +
+            '<span>Earned: <strong>' + CS.formatMoney(totalEarned, split.currency) + '</strong></span>' +
+            (myShare > 0 ? '<span>Your share: <strong style="color:#22C55E">' + CS.formatMoney(myShare, split.currency) + '</strong></span>' : '') +
+          '</div>' +
+        '</a>';
+      });
+      html += '</div>';
+      el.innerHTML = html;
+    }
+
+    render();
+  })();
+  </script>
+</body>
+</html>

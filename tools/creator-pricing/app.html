@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculate Your Rate — CreatorPricing | AfroTools</title>
+  <meta name="description" content="Calculate your market rate as an African creative professional. Photography, videography, design, music, writing and development rates across 15+ countries.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="/engines/creator-pricing-engine.js"></script>
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+
+  <div class="cp-app">
+    <div class="cp-app-inner">
+      <!-- PROGRESS -->
+      <div class="cp-progress">
+        <div class="cp-progress-step active" data-step="1"></div>
+        <div class="cp-progress-step" data-step="2"></div>
+        <div class="cp-progress-step" data-step="3"></div>
+        <div class="cp-progress-step" data-step="4"></div>
+      </div>
+
+      <!-- STEP 1: YOUR CRAFT -->
+      <div class="cp-step active" id="step-1">
+        <div class="cp-step-label">Step 1 of 3</div>
+        <h1 class="cp-step-title">What's your craft?</h1>
+        <p class="cp-step-sub">Select your primary creative discipline</p>
+        <div class="cp-craft-grid" id="craft-grid"></div>
+      </div>
+
+      <!-- STEP 2: SPECIALTY -->
+      <div class="cp-step" id="step-2">
+        <div class="cp-step-label">Step 2 of 3</div>
+        <h1 class="cp-step-title">What's your specialty?</h1>
+        <p class="cp-step-sub">Select one or more areas you focus on</p>
+        <div class="cp-chips" id="specialty-chips"></div>
+        <button class="cp-chip" id="all-rounder-chip" style="margin-top:12px;opacity:.7">I do a bit of everything</button>
+      </div>
+
+      <!-- STEP 3: DETAILS -->
+      <div class="cp-step" id="step-3">
+        <div class="cp-step-label">Step 3 of 3</div>
+        <h1 class="cp-step-title">A few details</h1>
+        <p class="cp-step-sub">We'll use this to calibrate your rate to your market</p>
+
+        <div class="cp-field">
+          <label class="cp-label" for="cp-country">Country</label>
+          <select class="cp-select" id="cp-country"></select>
+        </div>
+        <div class="cp-field">
+          <label class="cp-label" for="cp-city">City</label>
+          <select class="cp-select" id="cp-city">
+            <option value="">Select city (optional)</option>
+          </select>
+        </div>
+        <div class="cp-field">
+          <label class="cp-label">Experience Level</label>
+          <div class="cp-slider-wrap">
+            <input type="range" class="cp-slider" id="cp-experience" min="0" max="4" step="1" value="2">
+            <div class="cp-slider-val" id="cp-exp-label">Established (3–5 years)</div>
+            <div class="cp-slider-labels">
+              <span>Beginner</span><span>Developing</span><span>Established</span><span>Expert</span><span>Master</span>
+            </div>
+          </div>
+        </div>
+        <div class="cp-field">
+          <label class="cp-label" for="cp-currency">Currency</label>
+          <select class="cp-select" id="cp-currency"></select>
+        </div>
+      </div>
+
+      <!-- STEP 4: RESULTS -->
+      <div class="cp-step" id="step-4">
+        <div class="cp-results" id="results-container"></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="cp-bottom-bar" id="bottom-bar">
+      <button class="cp-btn cp-btn-secondary" id="btn-back" style="display:none">Back</button>
+      <button class="cp-btn cp-btn-primary" id="btn-next" disabled>Next →</button>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+    var CP = CreatorPricingEngine;
+    var state = { step: 1, craft: '', specialty: '', country: 'NG', city: '', experience: 'established', currency: 'NGN' };
+    var chatHistory = [];
+
+    // ── DOM refs ──
+    var steps = document.querySelectorAll('.cp-step');
+    var progressSteps = document.querySelectorAll('.cp-progress-step');
+    var btnNext = document.getElementById('btn-next');
+    var btnBack = document.getElementById('btn-back');
+    var bottomBar = document.getElementById('bottom-bar');
+
+    // ── STEP NAVIGATION ──
+    function goToStep(n) {
+      state.step = n;
+      steps.forEach(function(s, i) {
+        s.classList.toggle('active', i === n - 1);
+      });
+      progressSteps.forEach(function(p, i) {
+        p.classList.toggle('active', i === n - 1);
+        p.classList.toggle('done', i < n - 1);
+      });
+      btnBack.style.display = n > 1 && n < 4 ? '' : 'none';
+      if (n === 4) {
+        bottomBar.style.display = 'none';
+        renderResults();
+      } else {
+        bottomBar.style.display = '';
+        btnNext.textContent = n === 3 ? 'Calculate My Rate →' : 'Next →';
+      }
+      validateStep();
+      window.scrollTo(0, 0);
+    }
+
+    function validateStep() {
+      var valid = false;
+      if (state.step === 1) valid = !!state.craft;
+      else if (state.step === 2) valid = !!state.specialty;
+      else if (state.step === 3) valid = !!state.country;
+      btnNext.disabled = !valid;
+    }
+
+    btnNext.addEventListener('click', function() {
+      if (state.step < 4) goToStep(state.step + 1);
+    });
+    btnBack.addEventListener('click', function() {
+      if (state.step > 1) goToStep(state.step - 1);
+    });
+
+    // ── STEP 1: CRAFTS ──
+    var craftGrid = document.getElementById('craft-grid');
+    CP.getCrafts().forEach(function(c) {
+      var btn = document.createElement('button');
+      btn.className = 'cp-craft-btn';
+      btn.setAttribute('data-craft', c.id);
+      btn.innerHTML = '<span class="cp-craft-icon">' + c.icon + '</span><span class="cp-craft-label">' + c.label + '</span>';
+      btn.addEventListener('click', function() {
+        state.craft = c.id;
+        craftGrid.querySelectorAll('.cp-craft-btn').forEach(function(b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        loadSpecialties(c.id);
+        validateStep();
+        // Auto-advance after short delay
+        setTimeout(function() { goToStep(2); }, 300);
+      });
+      craftGrid.appendChild(btn);
+    });
+
+    // ── STEP 2: SPECIALTIES ──
+    var specChips = document.getElementById('specialty-chips');
+    var allRounder = document.getElementById('all-rounder-chip');
+
+    function loadSpecialties(craftId) {
+      var specs = CP.getSpecialties(craftId);
+      specChips.innerHTML = '';
+      state.specialty = '';
+      if (specs.length === 0) {
+        state.specialty = 'General';
+        validateStep();
+        return;
+      }
+      specs.forEach(function(s) {
+        var chip = document.createElement('button');
+        chip.className = 'cp-chip';
+        chip.textContent = s;
+        chip.addEventListener('click', function() {
+          specChips.querySelectorAll('.cp-chip').forEach(function(c) { c.classList.remove('selected'); });
+          allRounder.classList.remove('selected');
+          chip.classList.add('selected');
+          state.specialty = s;
+          validateStep();
+        });
+        specChips.appendChild(chip);
+      });
+    }
+
+    allRounder.addEventListener('click', function() {
+      specChips.querySelectorAll('.cp-chip').forEach(function(c) { c.classList.remove('selected'); });
+      allRounder.classList.add('selected');
+      state.specialty = 'General';
+      validateStep();
+    });
+
+    // ── STEP 3: DETAILS ──
+    var countrySelect = document.getElementById('cp-country');
+    var citySelect = document.getElementById('cp-city');
+    var expSlider = document.getElementById('cp-experience');
+    var expLabel = document.getElementById('cp-exp-label');
+    var currencySelect = document.getElementById('cp-currency');
+    var countries = CP.getCountries();
+
+    // Populate countries
+    Object.keys(countries).sort(function(a, b) { return countries[a].name.localeCompare(countries[b].name); })
+      .forEach(function(code) {
+        var c = countries[code];
+        var opt = document.createElement('option');
+        opt.value = code; opt.textContent = c.flag + ' ' + c.name;
+        countrySelect.appendChild(opt);
+      });
+    countrySelect.value = 'NG';
+
+    // Populate currencies
+    var seenCurrencies = {};
+    Object.keys(countries).forEach(function(code) {
+      var c = countries[code];
+      if (!seenCurrencies[c.currency]) {
+        seenCurrencies[c.currency] = true;
+        var opt = document.createElement('option');
+        opt.value = c.currency; opt.textContent = c.currency + ' (' + c.symbol.trim() + ')';
+        currencySelect.appendChild(opt);
+      }
+    });
+    currencySelect.value = 'NGN';
+
+    countrySelect.addEventListener('change', function() {
+      state.country = countrySelect.value;
+      var c = countries[state.country];
+      if (c) {
+        currencySelect.value = c.currency;
+        state.currency = c.currency;
+      }
+      // Update cities
+      citySelect.innerHTML = '<option value="">Select city (optional)</option>';
+      CP.getCities(state.country).forEach(function(city) {
+        var opt = document.createElement('option');
+        opt.value = city; opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+      validateStep();
+    });
+    // Trigger initial city load
+    countrySelect.dispatchEvent(new Event('change'));
+
+    citySelect.addEventListener('change', function() { state.city = citySelect.value; });
+    currencySelect.addEventListener('change', function() { state.currency = currencySelect.value; });
+
+    var levels = CP.getExperienceLevels();
+    expSlider.addEventListener('input', function() {
+      var lvl = levels[parseInt(expSlider.value)];
+      state.experience = lvl.id;
+      expLabel.textContent = lvl.label + ' (' + lvl.desc + ')';
+    });
+
+    // ── STEP 4: RESULTS ──
+    function renderResults() {
+      var profile = {
+        craft: state.craft,
+        specialty: state.specialty,
+        country: state.country,
+        city: state.city,
+        experience: state.experience,
+        currency: state.currency
+      };
+      var rate = CP.calculateRate(profile);
+      var comparison = CP.getComparison(profile, rate);
+      var breakdown = CP.getBreakdown(state.craft, rate);
+
+      var craftObj = CP.getCrafts().find(function(c) { return c.id === state.craft; });
+      var craftLabel = craftObj ? craftObj.label : state.craft;
+      var cityLabel = state.city || countries[state.country].name;
+      var expObj = levels.find(function(l) { return l.id === state.experience; });
+      var expLabel = expObj ? expObj.label : state.experience;
+      var contextLine = 'For ' + (expLabel === 'Established' ? 'an' : 'a') + ' ' + expLabel + ' ' + (state.specialty !== 'General' ? state.specialty + ' ' : '') + craftLabel + ' in ' + cityLabel;
+
+      var container = document.getElementById('results-container');
+      container.innerHTML = '';
+
+      // ── Section A: Rate Range ──
+      var heroHTML = '<div class="cp-rate-hero">' +
+        '<div class="cp-rate-ctx">' + contextLine + '</div>' +
+        '<div class="cp-rate-range" id="rate-display">' + CP.formatRange(rate.daily.min, rate.daily.max, rate.currency) + '</div>' +
+        '<div style="font-size:.85rem;color:rgba(255,255,255,.5)">per day</div>' +
+        '<div class="cp-rate-type-tabs">' +
+          '<button class="cp-rate-tab active" data-type="daily">Per Day</button>' +
+          '<button class="cp-rate-tab" data-type="hourly">Per Hour</button>' +
+          '<button class="cp-rate-tab" data-type="project">Per Project</button>' +
+        '</div></div>';
+
+      // ── Section B: Market Comparison ──
+      var maxVal = comparison.top10pct;
+      var barW = function(v) { return Math.max(Math.round((v / maxVal) * 100), 15); };
+      var compHTML = '<div class="cp-section"><div class="cp-section-title">Market Comparison</div>' +
+        '<div class="cp-bar-chart">' +
+          '<div class="cp-bar-row"><div class="cp-bar-label">Your Rate</div><div class="cp-bar-track"><div class="cp-bar-fill yours" style="width:' + barW(comparison.yourEstimate) + '%">' + CP.formatRate(comparison.yourEstimate, rate.currency) + '</div></div></div>' +
+          '<div class="cp-bar-row"><div class="cp-bar-label">City Avg</div><div class="cp-bar-track"><div class="cp-bar-fill city" style="width:' + barW(comparison.cityAvg) + '%">' + CP.formatRate(comparison.cityAvg, rate.currency) + '</div></div></div>' +
+          '<div class="cp-bar-row"><div class="cp-bar-label">National Avg</div><div class="cp-bar-track"><div class="cp-bar-fill national" style="width:' + barW(comparison.nationalAvg) + '%">' + CP.formatRate(comparison.nationalAvg, rate.currency) + '</div></div></div>' +
+          '<div class="cp-bar-row"><div class="cp-bar-label">Top 10%</div><div class="cp-bar-track"><div class="cp-bar-fill top" style="width:' + barW(comparison.top10pct) + '%">' + CP.formatRate(comparison.top10pct, rate.currency) + '</div></div></div>' +
+        '</div>' +
+        '<div class="cp-bar-pctile">You\'re in the top ' + (100 - comparison.percentileRank) + '% of ' + cityLabel + ' ' + craftLabel.toLowerCase() + 's</div>' +
+        '</div>';
+
+      // ── Section C: Rate Breakdown ──
+      var breakdownHTML = '<div class="cp-section"><div class="cp-section-title">Rate Breakdown</div><div class="cp-breakdown-grid">';
+      breakdown.forEach(function(b) {
+        breakdownHTML += '<div class="cp-breakdown-card"><div class="cp-breakdown-name">' + b.name + '</div><div class="cp-breakdown-rate">' + CP.formatRange(b.min, b.max, rate.currency) + '</div></div>';
+      });
+      breakdownHTML += '</div></div>';
+
+      // ── Section D: AI Advisor ──
+      var aiHTML = '<div class="cp-section cp-ai-section">' +
+        '<div class="cp-section-title">AI Pricing Advisor</div>' +
+        '<div class="cp-ai-presets">' +
+          '<button class="cp-ai-preset" data-q="Based on my profile, what should I charge and why?">What should I charge?</button>' +
+          '<button class="cp-ai-preset" data-q="A client says my rate is too high. How do I respond?">Negotiation tactics</button>' +
+          '<button class="cp-ai-preset" data-q="What should I start charging for that I probably am not?">Hidden charges</button>' +
+          '<button class="cp-ai-preset" data-q="Should I offer packages or charge per project?">Packaging advice</button>' +
+        '</div>' +
+        '<div class="cp-ai-chat" id="ai-chat"></div>' +
+        '<div class="cp-ai-input-row">' +
+          '<input class="cp-ai-input" id="ai-input" placeholder="Ask about pricing, negotiation, packages...">' +
+          '<button class="cp-ai-send" id="ai-send">Send</button>' +
+        '</div></div>';
+
+      // ── Section E: Shareable Rate Card ──
+      var cardHTML = '<div class="cp-section">' +
+        '<div class="cp-section-title">Your Rate Card</div>' +
+        '<div class="cp-ratecard" id="rate-card">' +
+          '<div class="cp-ratecard-name" contenteditable="true" style="outline:none">Your Name</div>' +
+          '<div class="cp-ratecard-craft">' + (state.specialty !== 'General' ? state.specialty + ' ' : '') + craftLabel + ' · ' + cityLabel + '</div>' +
+          '<div class="cp-ratecard-rates">';
+      breakdown.slice(0, 4).forEach(function(b) {
+        cardHTML += '<div class="cp-ratecard-rate"><span class="cp-ratecard-label">' + b.name + '</span><span class="cp-ratecard-val">' + CP.formatRange(b.min, b.max, rate.currency) + '</span></div>';
+      });
+      cardHTML += '</div><div class="cp-ratecard-powered">Powered by AfroTools CreatorPricing</div></div>' +
+        '<div class="cp-share-btns">' +
+          '<button class="cp-share-btn cp-share-wa" id="share-wa">Share to WhatsApp</button>' +
+          '<button class="cp-share-btn cp-share-copy" id="share-copy">Copy Link</button>' +
+        '</div></div>';
+
+      // Navigation
+      var navHTML = '<div style="display:flex;gap:10px;margin-top:24px">' +
+        '<button class="cp-btn cp-btn-secondary" id="results-back" style="flex:1">← Recalculate</button>' +
+        '<a href="quote.html" class="cp-btn cp-btn-primary" style="flex:1;text-align:center;text-decoration:none">Quote a Project →</a></div>';
+
+      container.innerHTML = heroHTML + compHTML + breakdownHTML + aiHTML + cardHTML + navHTML;
+
+      // ── Rate type tabs ──
+      container.querySelectorAll('.cp-rate-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          container.querySelectorAll('.cp-rate-tab').forEach(function(t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+          var type = tab.getAttribute('data-type');
+          var r = rate[type];
+          document.getElementById('rate-display').textContent = CP.formatRange(r.min, r.max, rate.currency);
+          var labels = { daily: 'per day', hourly: 'per hour', project: 'per project' };
+          container.querySelector('.cp-rate-hero > div:nth-child(3)').textContent = labels[type];
+        });
+      });
+
+      // ── Back button ──
+      document.getElementById('results-back').addEventListener('click', function() {
+        bottomBar.style.display = '';
+        goToStep(3);
+      });
+
+      // ── AI Chat ──
+      var aiChat = document.getElementById('ai-chat');
+      var aiInput = document.getElementById('ai-input');
+      var aiSend = document.getElementById('ai-send');
+
+      function appendMsg(role, text) {
+        var div = document.createElement('div');
+        div.className = 'cp-ai-msg ' + role;
+        div.textContent = text;
+        aiChat.appendChild(div);
+        aiChat.scrollTop = aiChat.scrollHeight;
+      }
+
+      function sendAI(q) {
+        appendMsg('user', q);
+        chatHistory.push({ role: 'user', content: q });
+        var systemCtx = 'Creator profile: ' + craftLabel + ', specialty: ' + state.specialty +
+          ', experience: ' + state.experience + ', city: ' + cityLabel + ', country: ' + state.country +
+          ', daily rate range: ' + CP.formatRange(rate.daily.min, rate.daily.max, rate.currency) + '.';
+
+        // Show loading
+        var loadDiv = document.createElement('div');
+        loadDiv.className = 'cp-ai-msg assistant';
+        loadDiv.textContent = 'Thinking...';
+        loadDiv.id = 'ai-loading';
+        aiChat.appendChild(loadDiv);
+        aiChat.scrollTop = aiChat.scrollHeight;
+
+        fetch('/.netlify/functions/ai-advisor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tool: 'creator-pricing',
+            system: systemCtx,
+            messages: chatHistory,
+            maxTokens: 600
+          })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var el = document.getElementById('ai-loading');
+          if (el) el.remove();
+          var reply = data.reply || data.content || 'Sorry, I could not process that request. Please try again.';
+          appendMsg('assistant', reply);
+          chatHistory.push({ role: 'assistant', content: reply });
+        })
+        .catch(function() {
+          var el = document.getElementById('ai-loading');
+          if (el) el.remove();
+          appendMsg('assistant', 'Sorry, something went wrong. Please try again.');
+        });
+      }
+
+      aiSend.addEventListener('click', function() {
+        var q = aiInput.value.trim();
+        if (!q) return;
+        aiInput.value = '';
+        sendAI(q);
+      });
+      aiInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { aiSend.click(); }
+      });
+      container.querySelectorAll('.cp-ai-preset').forEach(function(btn) {
+        btn.addEventListener('click', function() { sendAI(btn.getAttribute('data-q')); });
+      });
+
+      // ── Share ──
+      document.getElementById('share-wa').addEventListener('click', function() {
+        var text = 'My Rate Card\n' + (state.specialty !== 'General' ? state.specialty + ' ' : '') + craftLabel + ' in ' + cityLabel + '\n\n';
+        breakdown.slice(0, 4).forEach(function(b) {
+          text += b.name + ': ' + CP.formatRange(b.min, b.max, rate.currency) + '\n';
+        });
+        text += '\nGenerated on AfroTools CreatorPricing\nhttps://afrotools.com/tools/creator-pricing/';
+        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+      });
+
+      document.getElementById('share-copy').addEventListener('click', function() {
+        navigator.clipboard.writeText(window.location.href).then(function() {
+          var btn = document.getElementById('share-copy');
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy Link'; }, 2000);
+        });
+      });
+    }
+
+    // ── INIT ──
+    goToStep(1);
+  })();
+  </script>
+</body>
+</html>

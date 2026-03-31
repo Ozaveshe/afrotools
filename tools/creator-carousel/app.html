@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CarouselStudio | AfroTools</title>
+<meta name="description" content="Create Instagram and LinkedIn carousel posts with the CarouselStudio dark studio workspace.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@700;900&family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@700;900&family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="car-app">
+
+  <!-- HEADER -->
+  <header class="car-app-header">
+    <a href="/tools/creator-carousel/" class="car-app-logo">
+      <span>CS</span> CarouselStudio
+    </a>
+    <div class="car-header-actions">
+      <button class="car-btn-icon" id="btn-undo" title="Undo">↩</button>
+      <button class="car-btn-icon" id="btn-redo" title="Redo">↪</button>
+      <button class="car-btn-icon" id="btn-preview" title="Swipe Preview">👁</button>
+      <button class="car-btn car-btn-primary" id="btn-export">↓ Export All</button>
+    </div>
+  </header>
+
+  <!-- WORKSPACE -->
+  <div class="car-workspace-layout">
+
+    <!-- SIDEBAR (desktop) -->
+    <aside class="car-sidebar" id="sidebar">
+      <!-- Tool Tabs -->
+      <div class="car-tool-tabs">
+        <button class="car-tool-tab active" data-panel="text">Text</button>
+        <button class="car-tool-tab" data-panel="bg">BG</button>
+        <button class="car-tool-tab" data-panel="image">Image</button>
+        <button class="car-tool-tab" data-panel="brand">Brand</button>
+        <button class="car-tool-tab" data-panel="layout">Layout</button>
+      </div>
+
+      <!-- TEXT PANEL -->
+      <div class="car-tool-panel active" id="panel-text">
+        <div class="car-sidebar-section">
+          <button class="car-btn car-btn-secondary" style="width:100%;margin-bottom:12px" id="btn-add-text">+ Add Text</button>
+          <div class="car-sidebar-title">Font</div>
+          <div class="car-font-list" id="font-list"></div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Size</div>
+          <div class="car-slider-row">
+            <input type="range" class="car-slider" id="text-size" min="16" max="200" value="48">
+            <span class="car-slider-val" id="text-size-val">48</span>
+          </div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Color</div>
+          <div class="car-color-swatches" id="text-colors"></div>
+          <input type="color" id="text-color-custom" value="#ffffff" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Style</div>
+          <div class="car-toggle-row">
+            <span class="car-toggle-label">UPPERCASE</span>
+            <div class="car-toggle" id="text-uppercase"></div>
+          </div>
+          <div style="display:flex;gap:4px;margin-top:8px">
+            <button class="car-btn car-btn-secondary car-btn-sm" data-align="left">←</button>
+            <button class="car-btn car-btn-secondary car-btn-sm" data-align="center">↔</button>
+            <button class="car-btn car-btn-secondary car-btn-sm" data-align="right">→</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BG PANEL -->
+      <div class="car-tool-panel" id="panel-bg">
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Background Color</div>
+          <div class="car-color-swatches" id="bg-colors"></div>
+          <input type="color" id="bg-color-custom" value="#1a1a1a" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Gradient</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px" id="bg-gradients"></div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-upload-zone" id="bg-upload-zone">
+            <div class="car-upload-icon">🖼</div>
+            <div class="car-upload-text">Upload Background Image</div>
+          </div>
+          <input type="file" id="bg-upload" accept="image/*" style="display:none">
+        </div>
+      </div>
+
+      <!-- IMAGE PANEL -->
+      <div class="car-tool-panel" id="panel-image">
+        <div class="car-sidebar-section">
+          <div class="car-upload-zone" id="img-upload-zone">
+            <div class="car-upload-icon">📷</div>
+            <div class="car-upload-text">Upload Image to Slide</div>
+          </div>
+          <input type="file" id="img-upload" accept="image/*" style="display:none">
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Opacity</div>
+          <div class="car-slider-row">
+            <input type="range" class="car-slider" id="img-opacity" min="10" max="100" value="100">
+            <span class="car-slider-val" id="img-opacity-val">100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BRAND PANEL -->
+      <div class="car-tool-panel" id="panel-brand">
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Brand Color</div>
+          <input type="color" id="brand-color" value="#AF52DE" style="width:100%;height:36px;border:none;border-radius:8px;cursor:pointer;background:transparent;margin-bottom:8px">
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Handle / Username</div>
+          <input class="car-brand-input" id="brand-handle" type="text" placeholder="@yourhandle">
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Font</div>
+          <div class="car-font-list" id="brand-font-list"></div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-toggle-row">
+            <span class="car-toggle-label">Slide Numbers</span>
+            <div class="car-toggle on" id="toggle-slide-numbers"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYOUT PANEL -->
+      <div class="car-tool-panel" id="panel-layout">
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Format</div>
+          <div class="car-format-picker" id="format-picker"></div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Layers</div>
+          <div class="car-layer-list" id="layer-list"></div>
+        </div>
+        <div class="car-sidebar-section">
+          <button class="car-btn car-btn-secondary car-btn-sm" id="btn-duplicate-slide" style="width:100%;margin-bottom:6px">Duplicate Slide</button>
+          <button class="car-btn car-btn-secondary car-btn-sm" id="btn-delete-layer" style="width:100%">Delete Selected Layer</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CANVAS -->
+    <div class="car-canvas-area" id="canvas-area">
+      <div class="car-canvas-container" id="canvas-container">
+        <div class="car-canvas" id="canvas">
+          <!-- Elements rendered here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILMSTRIP -->
+  <div class="car-filmstrip" id="filmstrip">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- TEMPLATE STRIP -->
+  <div class="car-template-strip" id="template-strip">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- MOBILE TOOLBAR -->
+  <div class="car-mobile-toolbar">
+    <button class="car-mobile-btn active" data-mobile-panel="text">
+      <span class="car-mobile-icon">T</span>
+      <span class="car-mobile-label">Text</span>
+    </button>
+    <button class="car-mobile-btn" data-mobile-panel="bg">
+      <span class="car-mobile-icon">🎨</span>
+      <span class="car-mobile-label">BG</span>
+    </button>
+    <button class="car-mobile-btn" data-mobile-panel="image">
+      <span class="car-mobile-icon">📷</span>
+      <span class="car-mobile-label">Image</span>
+    </button>
+    <button class="car-mobile-btn" data-mobile-panel="brand">
+      <span class="car-mobile-icon">✦</span>
+      <span class="car-mobile-label">Brand</span>
+    </button>
+    <button class="car-mobile-btn" data-mobile-panel="layout">
+      <span class="car-mobile-icon">☰</span>
+      <span class="car-mobile-label">Layout</span>
+    </button>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM SHEET -->
+<div class="car-sheet" id="mobile-sheet">
+  <div class="car-sheet-handle"></div>
+  <div class="car-sheet-content" id="mobile-sheet-content"></div>
+</div>
+
+<!-- EXPORT PANEL -->
+<div class="car-sheet" id="export-panel">
+  <div class="car-sheet-handle"></div>
+  <div class="car-sheet-content">
+    <div class="car-sheet-title">EXPORT CAROUSEL</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="car-btn car-btn-primary" id="export-all-png" style="flex:1">All Slides (PNG)</button>
+      <button class="car-btn car-btn-secondary" id="export-all-jpg" style="flex:1">All Slides (JPEG)</button>
+    </div>
+    <button class="car-btn car-btn-secondary" id="export-single" style="width:100%;margin-bottom:12px">Export Current Slide Only</button>
+    <div style="font-size:.65rem;color:rgba(255,255,255,.3);text-align:center;margin-top:8px" id="export-resolution-label">1080 × 1350 px — Instagram Portrait</div>
+  </div>
+</div>
+
+<!-- SWIPE PREVIEW OVERLAY -->
+<div class="car-preview-overlay" id="preview-overlay">
+  <button class="car-preview-close" id="preview-close">✕</button>
+  <div class="car-preview-slide-area" id="preview-slide-area">
+    <canvas id="preview-canvas" style="max-width:100%;max-height:80vh;border-radius:8px"></canvas>
+  </div>
+  <div class="car-preview-dots" id="preview-dots"></div>
+</div>
+
+<div class="car-toast" id="toast"></div>
+
+<!-- Hidden export canvas -->
+<canvas id="export-canvas" style="display:none"></canvas>
+
+<script src="/engines/creator-carousel-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorCarousel;
+  if (!engine) { console.error('CarouselStudio engine not loaded'); return; }
+
+  var scale = 0.5;
+  var canvasEl = document.getElementById('canvas');
+  var containerEl = document.getElementById('canvas-container');
+  var selectedLayerId = null;
+  var isDragging = false;
+  var dragOffset = { x: 0, y: 0 };
+  var showSlideNumbers = true;
+
+  var FONTS = [
+    { name: 'Montserrat', family: '"Montserrat", sans-serif' },
+    { name: 'DM Sans', family: '"DM Sans", sans-serif' },
+    { name: 'Bebas Neue', family: '"Bebas Neue", sans-serif' },
+    { name: 'Playfair Display', family: '"Playfair Display", serif' },
+    { name: 'Space Grotesk', family: '"Space Grotesk", sans-serif' },
+    { name: 'Anton', family: '"Anton", sans-serif' }
+  ];
+
+  var COLORS = ['#FFFFFF','#000000','#AF52DE','#5B21B6','#FF3B30','#FF9500','#FFD60A','#34C759','#007AFF','#5856D6','#FF2D55','#1C1C1E'];
+  var GRADIENTS = [
+    ['#AF52DE','#5B21B6'], ['#5856D6','#AF52DE'], ['#007AFF','#5856D6'],
+    ['#FF3B30','#FF6B3B'], ['#34C759','#30D158'], ['#FFD60A','#FF9500'],
+    ['#FF2D55','#FF6B81'], ['#1a1a1a','#AF52DE']
+  ];
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init() {
+    engine.init();
+    setupTabs();
+    setupFonts();
+    setupColors();
+    setupGradients();
+    setupSliders();
+    setupFormats();
+    setupTemplateStrip();
+    setupExport();
+    setupPreview();
+    setupFileUploads();
+    setupToggles();
+    setupButtons();
+    setupMobileToolbar();
+
+    // Try load saved project, otherwise load default template
+    if (!engine.loadLocal()) {
+      engine.loadTemplate('edu-tips-01');
+    }
+    fitCanvas();
+    renderAll();
+    window.addEventListener('resize', function() { fitCanvas(); renderAll(); });
+
+    // Auto-save every 30s
+    setInterval(function() { engine.saveLocal(); }, 30000);
+  }
+
+  // ── FIT CANVAS ──
+  function fitCanvas() {
+    var format = engine.getFormat();
+    var area = document.getElementById('canvas-area');
+    var aw = area.clientWidth - 40;
+    var ah = area.clientHeight - 40;
+    var sw = aw / format.w;
+    var sh = ah / format.h;
+    scale = Math.min(sw, sh, 1);
+    canvasEl.style.width = (format.w * scale) + 'px';
+    canvasEl.style.height = (format.h * scale) + 'px';
+  }
+
+  // ── RENDER ──
+  function renderAll() {
+    renderSlide();
+    renderFilmstrip();
+    updateLayerList();
+    updateUndoRedo();
+  }
+
+  function renderSlide() {
+    var slide = engine.getActiveSlide();
+    if (!slide) return;
+    canvasEl.innerHTML = '';
+
+    // Background
+    var bg = slide.bg || { type: 'solid', color: '#1a1a1a' };
+    if (bg.type === 'gradient' && bg.colors) {
+      canvasEl.style.background = 'linear-gradient(' + (bg.angle || 135) + 'deg, ' + bg.colors[0] + ', ' + bg.colors[1] + ')';
+    } else if (bg.type === 'image' && bg.dataUrl) {
+      canvasEl.style.background = 'url(' + bg.dataUrl + ') center/cover';
+    } else {
+      canvasEl.style.background = bg.color || '#1a1a1a';
+    }
+
+    // Layers
+    slide.layers.forEach(function(layer) {
+      if (layer.type === 'text') {
+        var el = document.createElement('div');
+        el.className = 'car-element car-element-text';
+        if (layer.id === selectedLayerId) el.classList.add('selected');
+        el.dataset.layerId = layer.id;
+
+        var format = engine.getFormat();
+        var text = layer.content || '';
+        if (layer.uppercase) text = text.toUpperCase();
+        el.textContent = text;
+
+        el.style.position = 'absolute';
+        el.style.left = ((layer.x || format.w / 2) * scale) + 'px';
+        el.style.top = ((layer.y || format.h / 2) * scale) + 'px';
+        el.style.transform = 'translate(-50%, -50%)';
+        el.style.fontSize = ((layer.fontSize || 48) * scale) + 'px';
+        el.style.fontFamily = layer.fontFamily || '"DM Sans", sans-serif';
+        el.style.fontWeight = layer.fontWeight || 400;
+        el.style.color = layer.color || '#fff';
+        el.style.textAlign = layer.textAlign || 'center';
+        el.style.maxWidth = ((layer.maxWidth || format.w - 100) * scale) + 'px';
+        el.style.lineHeight = layer.lineHeight || 1.2;
+        el.style.wordWrap = 'break-word';
+
+        el.addEventListener('mousedown', startDrag);
+        el.addEventListener('touchstart', startDrag, { passive: false });
+        el.addEventListener('dblclick', function() { editTextInline(el, layer.id); });
+        el.addEventListener('click', function(e) {
+          e.stopPropagation();
+          selectLayer(layer.id);
+        });
+        canvasEl.appendChild(el);
+      } else if (layer.type === 'image' && layer.dataUrl) {
+        var imgEl = document.createElement('div');
+        imgEl.className = 'car-element car-element-image';
+        if (layer.id === selectedLayerId) imgEl.classList.add('selected');
+        imgEl.dataset.layerId = layer.id;
+
+        var format = engine.getFormat();
+        imgEl.style.position = 'absolute';
+        imgEl.style.left = ((layer.x || 0) * scale) + 'px';
+        imgEl.style.top = ((layer.y || 0) * scale) + 'px';
+        imgEl.style.width = ((layer.w || 300) * scale) + 'px';
+        imgEl.style.height = ((layer.h || 300) * scale) + 'px';
+        imgEl.style.opacity = (layer.opacity || 100) / 100;
+
+        var img = document.createElement('img');
+        img.src = layer.dataUrl;
+        imgEl.appendChild(img);
+
+        imgEl.addEventListener('mousedown', startDrag);
+        imgEl.addEventListener('touchstart', startDrag, { passive: false });
+        imgEl.addEventListener('click', function(e) {
+          e.stopPropagation();
+          selectLayer(layer.id);
+        });
+        canvasEl.appendChild(imgEl);
+      }
+    });
+
+    // Slide number overlay
+    if (showSlideNumbers) {
+      var format = engine.getFormat();
+      var numEl = document.createElement('div');
+      numEl.style.cssText = 'position:absolute;bottom:' + (16 * scale) + 'px;right:' + (20 * scale) + 'px;font-size:' + (18 * scale) + 'px;font-weight:700;color:rgba(255,255,255,.3);font-family:"DM Sans",sans-serif;pointer-events:none';
+      numEl.textContent = (engine.getActiveIndex() + 1) + '/' + engine.getSlideCount();
+      canvasEl.appendChild(numEl);
+    }
+  }
+
+  function renderFilmstrip() {
+    var strip = document.getElementById('filmstrip');
+    strip.innerHTML = '';
+    var slides = engine.getSlides();
+    var activeIdx = engine.getActiveIndex();
+    var exportCanvas = document.getElementById('export-canvas');
+
+    slides.forEach(function(slide, idx) {
+      var card = document.createElement('div');
+      card.className = 'car-filmstrip-slide' + (idx === activeIdx ? ' active' : '');
+      engine.renderSlideToCanvas(idx, exportCanvas);
+      var thumbDiv = document.createElement('div');
+      thumbDiv.className = 'car-filmstrip-thumb';
+      thumbDiv.style.background = 'url(' + exportCanvas.toDataURL('image/jpeg', 0.4) + ') center/cover';
+      card.appendChild(thumbDiv);
+
+      var num = document.createElement('div');
+      num.className = 'car-filmstrip-num';
+      num.textContent = idx + 1;
+      card.appendChild(num);
+
+      card.addEventListener('click', function() {
+        engine.setActiveSlide(idx);
+        selectedLayerId = null;
+        renderAll();
+      });
+      strip.appendChild(card);
+    });
+
+    // Add button
+    if (slides.length < 10) {
+      var addBtn = document.createElement('div');
+      addBtn.className = 'car-filmstrip-add';
+      addBtn.textContent = '+';
+      addBtn.addEventListener('click', function() {
+        engine.addSlide(engine.getActiveIndex());
+        renderAll();
+        toast('Slide added', 'success');
+      });
+      strip.appendChild(addBtn);
+    }
+
+    // Remove button
+    if (slides.length > 2) {
+      var rmBtn = document.createElement('div');
+      rmBtn.className = 'car-filmstrip-remove';
+      rmBtn.textContent = '−';
+      rmBtn.addEventListener('click', function() {
+        engine.removeSlide(engine.getActiveIndex());
+        selectedLayerId = null;
+        renderAll();
+        toast('Slide removed', 'success');
+      });
+      strip.appendChild(rmBtn);
+    }
+  }
+
+  // ── LAYER MANAGEMENT ──
+  function selectLayer(layerId) {
+    selectedLayerId = layerId;
+    renderSlide();
+    updateLayerList();
+  }
+
+  function updateLayerList() {
+    var list = document.getElementById('layer-list');
+    list.innerHTML = '';
+    var slide = engine.getActiveSlide();
+    if (!slide) return;
+    slide.layers.forEach(function(layer) {
+      var item = document.createElement('div');
+      item.className = 'car-layer-item' + (layer.id === selectedLayerId ? ' active' : '');
+      var icon = layer.type === 'text' ? 'T' : '🖼';
+      var name = layer.type === 'text' ? (layer.content || 'Text').substring(0, 20) : 'Image';
+      item.innerHTML = '<span class="car-layer-icon">' + icon + '</span><span class="car-layer-name">' + name + '</span>';
+      item.addEventListener('click', function() { selectLayer(layer.id); });
+      list.appendChild(item);
+    });
+  }
+
+  function updateUndoRedo() {
+    document.getElementById('btn-undo').style.opacity = engine.canUndo() ? '1' : '.3';
+    document.getElementById('btn-redo').style.opacity = engine.canRedo() ? '1' : '.3';
+  }
+
+  // ── INLINE TEXT EDITING ──
+  function editTextInline(el, layerId) {
+    el.contentEditable = 'true';
+    el.focus();
+    var sel = window.getSelection();
+    sel.selectAllChildren(el);
+
+    function finish() {
+      el.contentEditable = 'false';
+      var newText = el.textContent.trim();
+      engine.updateSlideLayer(engine.getActiveIndex(), layerId, { content: newText });
+      renderSlide();
+    }
+    el.addEventListener('blur', finish, { once: true });
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); finish(); }
+    });
+  }
+
+  // ── DRAG ──
+  function startDrag(e) {
+    var el = e.currentTarget;
+    var layerId = el.dataset.layerId;
+    selectLayer(layerId);
+    isDragging = true;
+    var rect = el.getBoundingClientRect();
+    var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    dragOffset.x = clientX - rect.left - rect.width / 2;
+    dragOffset.y = clientY - rect.top - rect.height / 2;
+    if (e.touches) e.preventDefault();
+
+    function onMove(ev) {
+      if (!isDragging) return;
+      var cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      var cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
+      var canvasRect = canvasEl.getBoundingClientRect();
+      var newX = (cx - dragOffset.x - canvasRect.left) / scale;
+      var newY = (cy - dragOffset.y - canvasRect.top) / scale;
+      engine.updateSlideLayer(engine.getActiveIndex(), layerId, { x: Math.round(newX), y: Math.round(newY) });
+      renderSlide();
+    }
+
+    function onEnd() {
+      isDragging = false;
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+    }
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onEnd);
+  }
+
+  // Click canvas to deselect
+  canvasEl.addEventListener('click', function(e) {
+    if (e.target === canvasEl) { selectedLayerId = null; renderSlide(); updateLayerList(); }
+  });
+
+  // ── TABS ──
+  function setupTabs() {
+    document.querySelectorAll('.car-tool-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.car-tool-tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.car-tool-panel').forEach(function(p) { p.classList.remove('active'); });
+        tab.classList.add('active');
+        var panel = document.getElementById('panel-' + tab.dataset.panel);
+        if (panel) panel.classList.add('active');
+      });
+    });
+  }
+
+  // ── FONTS ──
+  function setupFonts() {
+    var list = document.getElementById('font-list');
+    var brandList = document.getElementById('brand-font-list');
+    FONTS.forEach(function(f) {
+      var btn = document.createElement('button');
+      btn.className = 'car-font-item';
+      btn.style.fontFamily = f.family;
+      btn.textContent = f.name;
+      btn.onclick = function() {
+        list.querySelectorAll('.car-font-item').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        if (selectedLayerId) {
+          engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { fontFamily: f.family });
+          renderSlide();
+        }
+      };
+      list.appendChild(btn);
+
+      // Brand font list
+      var btn2 = document.createElement('button');
+      btn2.className = 'car-font-item';
+      btn2.style.fontFamily = f.family;
+      btn2.textContent = f.name;
+      btn2.onclick = function() {
+        brandList.querySelectorAll('.car-font-item').forEach(function(b) { b.classList.remove('active'); });
+        btn2.classList.add('active');
+        engine.setBranding({ font: f.name });
+      };
+      brandList.appendChild(btn2);
+    });
+  }
+
+  // ── COLORS ──
+  function setupColors() {
+    setupSwatchGroup('text-colors', function(c) {
+      if (selectedLayerId) { engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { color: c }); renderSlide(); }
+    });
+    setupSwatchGroup('bg-colors', function(c) {
+      engine.setSlideBg(engine.getActiveIndex(), { type: 'solid', color: c });
+      renderSlide();
+      renderFilmstrip();
+    });
+
+    document.getElementById('text-color-custom').addEventListener('input', function(e) {
+      if (selectedLayerId) { engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { color: e.target.value }); renderSlide(); }
+    });
+    document.getElementById('bg-color-custom').addEventListener('input', function(e) {
+      engine.setSlideBg(engine.getActiveIndex(), { type: 'solid', color: e.target.value });
+      renderSlide();
+      renderFilmstrip();
+    });
+    document.getElementById('brand-color').addEventListener('input', function(e) {
+      engine.setBranding({ primaryColor: e.target.value });
+    });
+  }
+
+  function setupSwatchGroup(id, onClick) {
+    var container = document.getElementById(id);
+    COLORS.forEach(function(c) {
+      var swatch = document.createElement('div');
+      swatch.className = 'car-color-swatch';
+      swatch.style.background = c;
+      if (c === '#FFFFFF') swatch.style.border = '2px solid rgba(255,255,255,.2)';
+      swatch.onclick = function() { onClick(c); };
+      container.appendChild(swatch);
+    });
+  }
+
+  // ── GRADIENTS ──
+  function setupGradients() {
+    var container = document.getElementById('bg-gradients');
+    GRADIENTS.forEach(function(g) {
+      var btn = document.createElement('button');
+      btn.className = 'car-btn car-btn-secondary car-btn-sm';
+      btn.style.background = 'linear-gradient(135deg, ' + g[0] + ', ' + g[1] + ')';
+      btn.style.width = '40px';
+      btn.style.height = '28px';
+      btn.style.border = '1px solid rgba(255,255,255,.1)';
+      btn.onclick = function() {
+        engine.setSlideBg(engine.getActiveIndex(), { type: 'gradient', colors: [g[0], g[1]], angle: 135 });
+        renderSlide();
+        renderFilmstrip();
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  // ── SLIDERS ──
+  function setupSliders() {
+    var sizeSlider = document.getElementById('text-size');
+    var sizeVal = document.getElementById('text-size-val');
+    sizeSlider.addEventListener('input', function() {
+      sizeVal.textContent = sizeSlider.value;
+      if (selectedLayerId) {
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { fontSize: parseInt(sizeSlider.value) });
+        renderSlide();
+      }
+    });
+
+    var opacitySlider = document.getElementById('img-opacity');
+    var opacityVal = document.getElementById('img-opacity-val');
+    opacitySlider.addEventListener('input', function() {
+      opacityVal.textContent = opacitySlider.value;
+      if (selectedLayerId) {
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { opacity: parseInt(opacitySlider.value) });
+        renderSlide();
+      }
+    });
+  }
+
+  // ── FORMATS ──
+  function setupFormats() {
+    var picker = document.getElementById('format-picker');
+    var formats = engine.FORMATS;
+    for (var key in formats) {
+      var f = formats[key];
+      var btn = document.createElement('button');
+      btn.className = 'car-format-btn' + (key === '1080x1350' ? ' active' : '');
+      btn.textContent = f.label;
+      btn.dataset.format = key;
+      btn.addEventListener('click', function() {
+        picker.querySelectorAll('.car-format-btn').forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        engine.setFormat(this.dataset.format);
+        var fmt = engine.getFormat();
+        document.getElementById('export-resolution-label').textContent = fmt.w + ' × ' + fmt.h + ' px — ' + fmt.label;
+        fitCanvas();
+        renderAll();
+      });
+      picker.appendChild(btn);
+    }
+  }
+
+  // ── TEMPLATE STRIP ──
+  function setupTemplateStrip() {
+    var strip = document.getElementById('template-strip');
+    engine.TEMPLATES.forEach(function(tpl) {
+      var card = document.createElement('div');
+      card.className = 'car-template-card';
+      var thumb = document.createElement('div');
+      thumb.className = 'car-template-thumb';
+      var colors = tpl.slides[0].bg.colors || [tpl.slides[0].bg.color || '#1a1a1a', '#AF52DE'];
+      thumb.style.background = 'linear-gradient(135deg, ' + (colors[0] || '#AF52DE') + ', ' + (colors[1] || colors[0]) + ')';
+      thumb.textContent = tpl.slides.length + ' slides';
+      card.appendChild(thumb);
+      var name = document.createElement('div');
+      name.className = 'car-template-name';
+      name.textContent = tpl.name;
+      card.appendChild(name);
+      card.addEventListener('click', function() {
+        strip.querySelectorAll('.car-template-card').forEach(function(c) { c.classList.remove('active'); });
+        card.classList.add('active');
+        engine.loadTemplate(tpl.id);
+        var fmt = engine.getFormat();
+        // Update format picker
+        document.querySelectorAll('.car-format-btn').forEach(function(b) {
+          b.classList.toggle('active', b.dataset.format === fmt.name);
+        });
+        document.getElementById('export-resolution-label').textContent = fmt.w + ' × ' + fmt.h + ' px — ' + fmt.label;
+        selectedLayerId = null;
+        fitCanvas();
+        renderAll();
+        toast('Template loaded', 'success');
+      });
+      strip.appendChild(card);
+    });
+  }
+
+  // ── TOGGLES ──
+  function setupToggles() {
+    document.getElementById('text-uppercase').addEventListener('click', function() {
+      this.classList.toggle('on');
+      if (selectedLayerId) {
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { uppercase: this.classList.contains('on') });
+        renderSlide();
+      }
+    });
+
+    document.getElementById('toggle-slide-numbers').addEventListener('click', function() {
+      this.classList.toggle('on');
+      showSlideNumbers = this.classList.contains('on');
+      renderSlide();
+    });
+
+    // Alignment buttons
+    document.querySelectorAll('[data-align]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (selectedLayerId) {
+          engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { textAlign: btn.dataset.align });
+          renderSlide();
+        }
+      });
+    });
+  }
+
+  // ── BUTTONS ──
+  function setupButtons() {
+    document.getElementById('btn-add-text').addEventListener('click', function() {
+      var format = engine.getFormat();
+      engine.addLayerToSlide(engine.getActiveIndex(), {
+        type: 'text', role: 'body', content: 'New Text',
+        x: format.w / 2, y: format.h / 2,
+        fontSize: 36, fontFamily: '"DM Sans", sans-serif',
+        color: '#fff', textAlign: 'center',
+        maxWidth: format.w - 200, fontWeight: 700
+      });
+      renderAll();
+    });
+
+    document.getElementById('btn-duplicate-slide').addEventListener('click', function() {
+      engine.duplicateSlide(engine.getActiveIndex());
+      renderAll();
+      toast('Slide duplicated', 'success');
+    });
+
+    document.getElementById('btn-delete-layer').addEventListener('click', function() {
+      if (selectedLayerId) {
+        engine.removeLayerFromSlide(engine.getActiveIndex(), selectedLayerId);
+        selectedLayerId = null;
+        renderAll();
+      }
+    });
+
+    document.getElementById('btn-undo').addEventListener('click', function() {
+      engine.undo(); selectedLayerId = null; fitCanvas(); renderAll();
+    });
+
+    document.getElementById('btn-redo').addEventListener('click', function() {
+      engine.redo(); selectedLayerId = null; fitCanvas(); renderAll();
+    });
+
+    // Brand handle
+    document.getElementById('brand-handle').addEventListener('input', function() {
+      engine.setBranding({ handle: this.value });
+    });
+  }
+
+  // ── FILE UPLOADS ──
+  function setupFileUploads() {
+    document.getElementById('bg-upload-zone').addEventListener('click', function() {
+      document.getElementById('bg-upload').click();
+    });
+    document.getElementById('bg-upload').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        engine.setSlideBg(engine.getActiveIndex(), { type: 'image', dataUrl: ev.target.result });
+        renderSlide();
+        renderFilmstrip();
+        toast('Background set', 'success');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('img-upload-zone').addEventListener('click', function() {
+      document.getElementById('img-upload').click();
+    });
+    document.getElementById('img-upload').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var format = engine.getFormat();
+        engine.addLayerToSlide(engine.getActiveIndex(), {
+          type: 'image', dataUrl: ev.target.result,
+          x: format.w / 4, y: format.h / 4,
+          w: format.w / 2, h: format.w / 2,
+          opacity: 100
+        });
+        renderAll();
+        toast('Image added', 'success');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ── EXPORT ──
+  function setupExport() {
+    document.getElementById('btn-export').addEventListener('click', function() {
+      document.getElementById('export-panel').classList.add('open');
+    });
+    document.getElementById('export-panel').querySelector('.car-sheet-handle').addEventListener('click', function() {
+      document.getElementById('export-panel').classList.remove('open');
+    });
+
+    document.getElementById('export-all-png').addEventListener('click', function() { exportAll('png'); });
+    document.getElementById('export-all-jpg').addEventListener('click', function() { exportAll('jpeg'); });
+    document.getElementById('export-single').addEventListener('click', function() { exportSingle('png'); });
+  }
+
+  function exportAll(format) {
+    var count = engine.getSlideCount();
+    var title = engine.getTitle().replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    for (var i = 0; i < count; i++) {
+      var dataUrl = engine.exportSlide(i, format);
+      downloadDataUrl(dataUrl, 'carousel-' + title + '-slide-' + (i + 1) + '.' + (format === 'jpeg' ? 'jpg' : 'png'));
+    }
+    document.getElementById('export-panel').classList.remove('open');
+    toast(count + ' slides exported', 'success');
+  }
+
+  function exportSingle(format) {
+    var idx = engine.getActiveIndex();
+    var title = engine.getTitle().replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    var dataUrl = engine.exportSlide(idx, format);
+    downloadDataUrl(dataUrl, 'carousel-' + title + '-slide-' + (idx + 1) + '.' + (format === 'jpeg' ? 'jpg' : 'png'));
+    document.getElementById('export-panel').classList.remove('open');
+    toast('Slide ' + (idx + 1) + ' exported', 'success');
+  }
+
+  function downloadDataUrl(dataUrl, filename) {
+    var a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  // ── SWIPE PREVIEW ──
+  function setupPreview() {
+    var overlay = document.getElementById('preview-overlay');
+    var previewCanvas = document.getElementById('preview-canvas');
+    var dotsContainer = document.getElementById('preview-dots');
+    var previewIdx = 0;
+
+    document.getElementById('btn-preview').addEventListener('click', function() {
+      previewIdx = engine.getActiveIndex();
+      overlay.classList.add('open');
+      renderPreview();
+    });
+
+    document.getElementById('preview-close').addEventListener('click', function() {
+      overlay.classList.remove('open');
+    });
+
+    function renderPreview() {
+      engine.renderSlideToCanvas(previewIdx, previewCanvas);
+      previewCanvas.style.maxWidth = '100%';
+      previewCanvas.style.maxHeight = '80vh';
+      // Dots
+      dotsContainer.innerHTML = '';
+      var count = engine.getSlideCount();
+      for (var i = 0; i < count; i++) {
+        var dot = document.createElement('div');
+        dot.className = 'car-preview-dot' + (i === previewIdx ? ' active' : '');
+        dot.dataset.idx = i;
+        dot.addEventListener('click', function() {
+          previewIdx = parseInt(this.dataset.idx);
+          renderPreview();
+        });
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    // Swipe navigation in preview
+    var startX = 0;
+    var previewArea = document.getElementById('preview-slide-area');
+    previewArea.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+    previewArea.addEventListener('touchend', function(e) {
+      var diff = startX - e.changedTouches[0].clientX;
+      var count = engine.getSlideCount();
+      if (diff > 50 && previewIdx < count - 1) { previewIdx++; renderPreview(); }
+      else if (diff < -50 && previewIdx > 0) { previewIdx--; renderPreview(); }
+    }, { passive: true });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (!overlay.classList.contains('open')) return;
+      var count = engine.getSlideCount();
+      if (e.key === 'ArrowRight' && previewIdx < count - 1) { previewIdx++; renderPreview(); }
+      else if (e.key === 'ArrowLeft' && previewIdx > 0) { previewIdx--; renderPreview(); }
+      else if (e.key === 'Escape') { overlay.classList.remove('open'); }
+    });
+  }
+
+  // ── MOBILE TOOLBAR ──
+  function setupMobileToolbar() {
+    document.querySelectorAll('[data-mobile-panel]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('[data-mobile-panel]').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var panelId = 'panel-' + btn.dataset.mobilePanel;
+        var panel = document.getElementById(panelId);
+        if (!panel) return;
+        var sheet = document.getElementById('mobile-sheet');
+        var sheetContent = document.getElementById('mobile-sheet-content');
+        sheetContent.innerHTML = panel.innerHTML;
+        sheet.classList.add('open');
+      });
+    });
+    document.getElementById('mobile-sheet').querySelector('.car-sheet-handle').addEventListener('click', function() {
+      document.getElementById('mobile-sheet').classList.remove('open');
+    });
+  }
+
+  // ── TOAST ──
+  function toast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'car-toast show ' + (type || '');
+    setTimeout(function() { t.className = 'car-toast'; }, 2000);
+  }
+
+  // Expose toast globally
+  window.carToast = toast;
+})();
+</script>
+</body>
+</html>

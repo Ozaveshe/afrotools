@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>TitleSmith Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+</head>
+<body class="cts-app">
+
+  <!-- TOPBAR -->
+  <div class="cts-topbar">
+    <a href="index.html" class="cts-topbar-back">&larr; Back</a>
+    <a href="index.html" class="cts-topbar-brand">&#9889; TitleSmith</a>
+    <div class="cts-topbar-actions">
+      <button class="cts-topbar-btn" id="historyBtn" onclick="window._ctsToggleHistory()">&#128214; History</button>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="cts-workspace">
+    <!-- Input -->
+    <div class="cts-input-wrap">
+      <textarea class="cts-input" id="topicInput" placeholder="What's your content about?&#10;&#10;e.g. &quot;How I grew from 0 to 100K on YouTube as a Nigerian creator&quot;" rows="3"></textarea>
+    </div>
+
+    <!-- Platform Pills -->
+    <div class="cts-platforms" id="platformPills"></div>
+
+    <!-- Generate Button -->
+    <button class="cts-generate-btn" id="generateBtn" onclick="window._ctsGenerate()">
+      <span class="cts-spinner"></span>Generate &#128293;
+    </button>
+
+    <!-- Results -->
+    <div class="cts-results" id="resultsArea"></div>
+  </div>
+
+  <!-- History Panel -->
+  <div class="cts-history-overlay" id="historyOverlay" onclick="window._ctsToggleHistory()"></div>
+  <div class="cts-history-panel" id="historyPanel">
+    <div class="cts-history-header">
+      <h3>&#128214; History</h3>
+      <button class="cts-history-close" onclick="window._ctsToggleHistory()">&times;</button>
+    </div>
+    <div class="cts-history-list" id="historyList"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="cts-toast" id="toast"></div>
+
+<script src="/engines/creator-titles-engine.js"></script>
+<script>
+!function() {
+  "use strict";
+
+  var E = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorTitles;
+  if (!E) { console.error('TitleSmith engine not loaded'); return; }
+
+  var API = '/.netlify/functions/creator-titles';
+  var currentPlatform = 'youtube';
+  var currentTopic = '';
+  var currentTitles = [];
+  var favorites = JSON.parse(localStorage.getItem('cts-favorites') || '[]');
+
+  // ── AUTH ──
+  function getToken() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+    } catch(e) {}
+    return '';
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
+  }
+
+  // ── TOAST ──
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  // ── PLATFORM PILLS ──
+  function renderPlatforms() {
+    var container = document.getElementById('platformPills');
+    var html = '';
+    E.PLATFORMS.forEach(function(p) {
+      html += '<button class="cts-platform' + (p.id === currentPlatform ? ' active' : '') + '" data-platform="' + p.id + '">' + p.label + '</button>';
+    });
+    container.innerHTML = html;
+
+    container.querySelectorAll('.cts-platform').forEach(function(btn) {
+      btn.onclick = function() {
+        currentPlatform = btn.getAttribute('data-platform');
+        container.querySelectorAll('.cts-platform').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      };
+    });
+  }
+
+  // ── GENERATE ──
+  window._ctsGenerate = function() {
+    var input = document.getElementById('topicInput');
+    var topic = input.value.trim();
+    if (!topic) { toast('Enter a topic first'); input.focus(); return; }
+
+    currentTopic = topic;
+    var prompt = E.buildPrompt(topic, currentPlatform);
+
+    var btn = document.getElementById('generateBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    // Show shimmer cards
+    var resultsArea = document.getElementById('resultsArea');
+    var shimmerHtml = '';
+    for (var i = 0; i < 4; i++) {
+      shimmerHtml += '<div class="cts-shimmer-card"><div class="cts-shimmer-line" style="width:30%"></div><div class="cts-shimmer-line" style="width:85%"></div><div class="cts-shimmer-line" style="width:60%"></div></div>';
+    }
+    resultsArea.innerHTML = shimmerHtml;
+
+    fetch(API + '/generate', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ topic: topic, platform: currentPlatform, prompt: prompt })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      btn.classList.remove('loading'); btn.disabled = false;
+      if (!res.ok) {
+        resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#ef4444;">' + (res.data.error || 'Generation failed') + '</div></div>';
+        return;
+      }
+      var parsed = E.parseResponse(res.data.output);
+      if (parsed && parsed.titles) {
+        currentTitles = parsed.titles;
+        renderTitles(parsed);
+        saveLocalHistory(topic, currentPlatform, parsed);
+      } else {
+        resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#ef4444;">Could not parse titles. Please try again.</div></div>';
+      }
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      }
+    })
+    .catch(function() {
+      btn.classList.remove('loading'); btn.disabled = false;
+      resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#ef4444;">Connection error. Please try again.</div></div>';
+    });
+  };
+
+  // ── RENDER TITLES ──
+  function renderTitles(data) {
+    var resultsArea = document.getElementById('resultsArea');
+    var html = '';
+
+    data.titles.forEach(function(t, idx) {
+      var styleInfo = E.TITLE_STYLES.find(function(s) { return s.id === t.style; });
+      var icon = styleInfo ? styleInfo.icon : '';
+      var label = styleInfo ? styleInfo.label : t.style.toUpperCase();
+      var charCount = t.charCount || t.title.length;
+      var status = E.getCharStatus(charCount, currentPlatform);
+      var statusClass = status === 'ok' ? 'cts-char-ok' : (status === 'warn' ? 'cts-char-warn' : 'cts-char-over');
+      var statusIcon = status === 'ok' ? '&#10003;' : (status === 'warn' ? '&#9888;' : '&#10007;');
+      var isFav = favorites.indexOf(t.title) !== -1;
+
+      html += '<div class="cts-title-card" style="animation-delay:' + (idx * 0.08) + 's">';
+      html += '<div class="cts-card-style">' + icon + ' ' + label + '</div>';
+      html += '<div class="cts-card-title" contenteditable="true" data-idx="' + idx + '">' + escapeHtml(t.title) + '</div>';
+      html += '<div class="cts-card-meta"><span class="' + statusClass + '">' + charCount + ' chars ' + statusIcon + '</span></div>';
+      if (t.whyItWorks) {
+        html += '<div class="cts-card-why">' + escapeHtml(t.whyItWorks) + '</div>';
+      }
+      html += '<div class="cts-card-actions">';
+      html += '<button class="cts-card-btn" onclick="window._ctsCopy(this, ' + idx + ')">&#128203; Copy</button>';
+      html += '<button class="cts-card-btn' + (isFav ? ' favorited' : '') + '" onclick="window._ctsFavorite(this, ' + idx + ')">&#9734; Fave</button>';
+      html += '<button class="cts-card-btn" onclick="window._ctsMore(\'' + t.style + '\')">&#128260; More</button>';
+      html += '</div></div>';
+    });
+
+    // A/B Test card
+    if (data.abTest) {
+      var ab = data.abTest;
+      var titleA = data.titles[ab.titleA] || data.titles[0];
+      var titleB = data.titles[ab.titleB] || data.titles[1];
+      var winnerIsA = ab.winner === 'A' || ab.winner === 'a';
+
+      html += '<div class="cts-ab-card">';
+      html += '<div class="cts-ab-label">&#9889; A/B TEST</div>';
+      html += '<div class="cts-ab-titles">';
+      html += '<div class="cts-ab-title' + (winnerIsA ? ' winner' : '') + '"><div class="cts-ab-title-tag">Title A' + (winnerIsA ? ' &#127942; WINNER' : '') + '</div>' + escapeHtml(titleA.title) + '</div>';
+      html += '<div class="cts-ab-title' + (!winnerIsA ? ' winner' : '') + '"><div class="cts-ab-title-tag">Title B' + (!winnerIsA ? ' &#127942; WINNER' : '') + '</div>' + escapeHtml(titleB.title) + '</div>';
+      html += '</div>';
+      if (ab.reason) {
+        html += '<div class="cts-ab-reason"><strong>Why:</strong> ' + escapeHtml(ab.reason) + '</div>';
+      }
+      html += '</div>';
+    }
+
+    resultsArea.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // ── CARD ACTIONS ──
+  window._ctsCopy = function(btn, idx) {
+    var card = btn.closest('.cts-title-card');
+    var text = card.querySelector('.cts-card-title').innerText;
+    navigator.clipboard.writeText(text).then(function() {
+      btn.innerHTML = '&#10003; Copied';
+      setTimeout(function() { btn.innerHTML = '&#128203; Copy'; }, 2000);
+      toast('Copied to clipboard!');
+    });
+  };
+
+  window._ctsFavorite = function(btn, idx) {
+    var card = btn.closest('.cts-title-card');
+    var text = card.querySelector('.cts-card-title').innerText;
+    var i = favorites.indexOf(text);
+    if (i !== -1) {
+      favorites.splice(i, 1);
+      btn.classList.remove('favorited');
+      toast('Removed from favorites');
+    } else {
+      favorites.push(text);
+      btn.classList.add('favorited');
+      toast('Added to favorites!');
+    }
+    localStorage.setItem('cts-favorites', JSON.stringify(favorites));
+  };
+
+  window._ctsMore = function(style) {
+    if (!currentTopic) return;
+    var resultsArea = document.getElementById('resultsArea');
+
+    // Add shimmer at the end
+    var shimmer = document.createElement('div');
+    shimmer.className = 'cts-shimmer-card';
+    shimmer.innerHTML = '<div class="cts-shimmer-line" style="width:30%"></div><div class="cts-shimmer-line" style="width:85%"></div><div class="cts-shimmer-line" style="width:60%"></div>';
+    resultsArea.appendChild(shimmer);
+
+    fetch(API + '/variations', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ style: style, topic: currentTopic, platform: currentPlatform })
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      shimmer.remove();
+      if (!res.ok) { toast(res.data.error || 'Failed to get variations'); return; }
+      var parsed = E.parseResponse(res.data.output);
+      if (parsed && parsed.titles) {
+        parsed.titles.forEach(function(t) {
+          var styleInfo = E.TITLE_STYLES.find(function(s) { return s.id === t.style; });
+          var icon = styleInfo ? styleInfo.icon : '';
+          var label = styleInfo ? styleInfo.label : t.style.toUpperCase();
+          var charCount = t.charCount || t.title.length;
+          var status = E.getCharStatus(charCount, currentPlatform);
+          var statusClass = status === 'ok' ? 'cts-char-ok' : (status === 'warn' ? 'cts-char-warn' : 'cts-char-over');
+          var statusIcon = status === 'ok' ? '&#10003;' : (status === 'warn' ? '&#9888;' : '&#10007;');
+
+          var card = document.createElement('div');
+          card.className = 'cts-title-card';
+          card.innerHTML =
+            '<div class="cts-card-style">' + icon + ' ' + label + ' (VARIATION)</div>' +
+            '<div class="cts-card-title" contenteditable="true">' + escapeHtml(t.title) + '</div>' +
+            '<div class="cts-card-meta"><span class="' + statusClass + '">' + charCount + ' chars ' + statusIcon + '</span></div>' +
+            (t.whyItWorks ? '<div class="cts-card-why">' + escapeHtml(t.whyItWorks) + '</div>' : '') +
+            '<div class="cts-card-actions">' +
+            '<button class="cts-card-btn" onclick="window._ctsCopyText(this)">&#128203; Copy</button>' +
+            '<button class="cts-card-btn" onclick="window._ctsFavText(this)">&#9734; Fave</button>' +
+            '</div>';
+
+          // Insert before the A/B card if it exists, else append
+          var abCard = resultsArea.querySelector('.cts-ab-card');
+          if (abCard) resultsArea.insertBefore(card, abCard);
+          else resultsArea.appendChild(card);
+        });
+      } else {
+        toast('Could not parse variations');
+      }
+    })
+    .catch(function() {
+      shimmer.remove();
+      toast('Connection error');
+    });
+  };
+
+  window._ctsCopyText = function(btn) {
+    var text = btn.closest('.cts-title-card').querySelector('.cts-card-title').innerText;
+    navigator.clipboard.writeText(text).then(function() {
+      btn.innerHTML = '&#10003; Copied';
+      setTimeout(function() { btn.innerHTML = '&#128203; Copy'; }, 2000);
+      toast('Copied!');
+    });
+  };
+
+  window._ctsFavText = function(btn) {
+    var text = btn.closest('.cts-title-card').querySelector('.cts-card-title').innerText;
+    var i = favorites.indexOf(text);
+    if (i !== -1) {
+      favorites.splice(i, 1); btn.classList.remove('favorited'); toast('Removed');
+    } else {
+      favorites.push(text); btn.classList.add('favorited'); toast('Favorited!');
+    }
+    localStorage.setItem('cts-favorites', JSON.stringify(favorites));
+  };
+
+  // ── HISTORY ──
+  function saveLocalHistory(topic, platform, data) {
+    var history = JSON.parse(localStorage.getItem('cts-history') || '[]');
+    history.unshift(E.createHistoryEntry(topic, platform, data.titles));
+    if (history.length > 20) history = history.slice(0, 20);
+    localStorage.setItem('cts-history', JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    var list = document.getElementById('historyList');
+    var history = JSON.parse(localStorage.getItem('cts-history') || '[]');
+    if (!history.length) {
+      list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:rgba(255,255,255,.35)"><div style="font-size:32px;margin-bottom:12px">&#128214;</div><div style="font-size:14px;font-weight:600">No history yet</div><div style="font-size:13px;margin-top:4px">Your generated titles will appear here</div></div>';
+      return;
+    }
+    var html = '';
+    history.forEach(function(item, idx) {
+      html += '<div class="cts-history-item" onclick="window._ctsLoadHistory(' + idx + ')">';
+      html += '<div class="cts-history-topic">' + escapeHtml(item.topic) + '</div>';
+      html += '<div class="cts-history-meta"><span>' + (item.platform || 'youtube').toUpperCase() + '</span><span>' + E.formatTimestamp(item.createdAt) + '</span></div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+  }
+
+  window._ctsLoadHistory = function(idx) {
+    var history = JSON.parse(localStorage.getItem('cts-history') || '[]');
+    var item = history[idx];
+    if (!item) return;
+
+    document.getElementById('topicInput').value = item.topic;
+    currentTopic = item.topic;
+    currentPlatform = item.platform || 'youtube';
+
+    // Update platform pills
+    document.querySelectorAll('.cts-platform').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-platform') === currentPlatform);
+    });
+
+    if (item.titles && item.titles.length) {
+      currentTitles = item.titles;
+      renderTitles({ titles: item.titles });
+    }
+
+    window._ctsToggleHistory();
+    toast('Loaded from history');
+  };
+
+  window._ctsToggleHistory = function() {
+    var panel = document.getElementById('historyPanel');
+    var overlay = document.getElementById('historyOverlay');
+    var isOpen = panel.classList.contains('open');
+    panel.classList.toggle('open');
+    overlay.classList.toggle('open');
+    if (!isOpen) renderHistory();
+  };
+
+  // ── KEYBOARD ──
+  document.getElementById('topicInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      window._ctsGenerate();
+    }
+  });
+
+  // ── INIT ──
+  renderPlatforms();
+  renderHistory();
+
+}();
+</script>
+</body>
+</html>

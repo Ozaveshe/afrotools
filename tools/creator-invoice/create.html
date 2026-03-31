@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Invoice — CreatorInvoice | AfroTools</title>
+<meta name="description" content="Create a professional invoice in 30 seconds. Multi-currency, VAT, line items, PDF export, and WhatsApp sharing.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="ci-app">
+
+  <!-- HEADER -->
+  <header class="ci-app-header">
+    <a href="/tools/creator-invoice/" class="ci-app-logo">
+      <span>CI</span> CreatorInvoice
+    </a>
+    <nav class="ci-app-nav">
+      <a href="app.html">Dashboard</a>
+      <a href="create.html" class="active">New Invoice</a>
+    </nav>
+  </header>
+
+  <div class="ci-app-inner">
+
+    <!-- PROGRESS -->
+    <div class="ci-progress" id="progress">
+      <div class="ci-progress-step active"></div>
+      <div class="ci-progress-step"></div>
+      <div class="ci-progress-step"></div>
+      <div class="ci-progress-step"></div>
+    </div>
+
+    <!-- STEP 1: CLIENT -->
+    <div class="ci-step active" id="step-1">
+      <div class="ci-step-label">Step 1 of 4</div>
+      <div class="ci-step-title">Who's this for?</div>
+      <div class="ci-step-sub">Select an existing client or add a new one. Their details auto-fill next time.</div>
+
+      <div class="ci-selected-client" id="selected-client" style="display:none">
+        <div class="ci-selected-client-info">
+          <div class="ci-selected-client-name" id="sel-client-name"></div>
+          <div class="ci-selected-client-detail" id="sel-client-detail"></div>
+        </div>
+        <button class="ci-selected-client-change" onclick="changeClient()">Change</button>
+      </div>
+
+      <div id="client-selector">
+        <div class="ci-client-search">
+          <input type="text" class="ci-input" id="client-search" placeholder="Search clients or type a new name..." autocomplete="off">
+          <div class="ci-client-results" id="client-results"></div>
+        </div>
+
+        <div class="ci-client-form" id="client-form" style="display:none">
+          <div class="ci-step-label" style="margin-bottom:16px">NEW CLIENT</div>
+          <div class="ci-field">
+            <label class="ci-label">Name *</label>
+            <input type="text" class="ci-input" id="client-name" placeholder="Client full name">
+          </div>
+          <div class="ci-field-row">
+            <div class="ci-field">
+              <label class="ci-label">Company</label>
+              <input type="text" class="ci-input" id="client-company" placeholder="Optional">
+            </div>
+            <div class="ci-field">
+              <label class="ci-label">Email</label>
+              <input type="email" class="ci-input" id="client-email" placeholder="client@email.com">
+            </div>
+          </div>
+          <div class="ci-field-row">
+            <div class="ci-field">
+              <label class="ci-label">Phone / WhatsApp</label>
+              <input type="tel" class="ci-input" id="client-phone" placeholder="+234 801 234 5678">
+            </div>
+            <div class="ci-field">
+              <label class="ci-label">Country</label>
+              <select class="ci-select" id="client-country">
+                <option value="">Select country</option>
+                <option value="NG">Nigeria</option>
+                <option value="KE">Kenya</option>
+                <option value="ZA">South Africa</option>
+                <option value="GH">Ghana</option>
+                <option value="EG">Egypt</option>
+                <option value="TZ">Tanzania</option>
+                <option value="RW">Rwanda</option>
+                <option value="UG">Uganda</option>
+                <option value="ET">Ethiopia</option>
+                <option value="SN">Senegal</option>
+                <option value="CI">Cote d'Ivoire</option>
+                <option value="CM">Cameroon</option>
+                <option value="MA">Morocco</option>
+                <option value="TN">Tunisia</option>
+              </select>
+            </div>
+          </div>
+          <div class="ci-field">
+            <label class="ci-label">Billing Address</label>
+            <input type="text" class="ci-input" id="client-address" placeholder="Optional">
+          </div>
+          <div class="ci-toggle-row">
+            <div class="ci-toggle-label">Save client for future invoices</div>
+            <div class="ci-toggle on" id="toggle-save-client" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: LINE ITEMS -->
+    <div class="ci-step" id="step-2">
+      <div class="ci-step-label">Step 2 of 4</div>
+      <div class="ci-step-title">What did you do?</div>
+      <div class="ci-step-sub">Add line items for each service or product. Or describe the work and let AI break it down.</div>
+
+      <!-- AI Assist -->
+      <div class="ci-ai-assist">
+        <div class="ci-ai-assist-title">🤖 AI Line Item Generator</div>
+        <div class="ci-ai-input-row">
+          <input type="text" class="ci-ai-input" id="ai-describe" placeholder="e.g. Shot a 2-day wedding, delivered 300 edited photos, 1 highlight reel">
+          <button class="ci-ai-send" id="ai-generate" onclick="generateLineItems()">Generate</button>
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="ci-line-labels">
+        <span>Description</span>
+        <span>Qty</span>
+        <span>Unit Price</span>
+        <span>Total</span>
+        <span></span>
+      </div>
+      <div class="ci-line-items" id="line-items">
+        <!-- Items added dynamically -->
+      </div>
+      <button class="ci-add-line" onclick="addLineItem()">+ Add Line Item</button>
+
+      <div class="ci-subtotal-row">
+        <span class="ci-subtotal-label">Subtotal</span>
+        <span class="ci-subtotal-value" id="subtotal">0</span>
+      </div>
+    </div>
+
+    <!-- STEP 3: DETAILS -->
+    <div class="ci-step" id="step-3">
+      <div class="ci-step-label">Step 3 of 4</div>
+      <div class="ci-step-title">The Details</div>
+      <div class="ci-step-sub">Invoice number, dates, currency, and tax — most of this is auto-configured for you.</div>
+
+      <div class="ci-field-row">
+        <div class="ci-field">
+          <label class="ci-label">Invoice Number</label>
+          <input type="text" class="ci-input" id="invoice-number" placeholder="INV-001">
+        </div>
+        <div class="ci-field">
+          <label class="ci-label">Currency</label>
+          <select class="ci-select" id="invoice-currency">
+            <option value="NGN">NGN — Nigerian Naira</option>
+            <option value="KES">KES — Kenyan Shilling</option>
+            <option value="ZAR">ZAR — South African Rand</option>
+            <option value="GHS">GHS — Ghanaian Cedi</option>
+            <option value="EGP">EGP — Egyptian Pound</option>
+            <option value="TZS">TZS — Tanzanian Shilling</option>
+            <option value="UGX">UGX — Ugandan Shilling</option>
+            <option value="RWF">RWF — Rwandan Franc</option>
+            <option value="ETB">ETB — Ethiopian Birr</option>
+            <option value="XOF">XOF — CFA Franc (West)</option>
+            <option value="XAF">XAF — CFA Franc (Central)</option>
+            <option value="MAD">MAD — Moroccan Dirham</option>
+            <option value="USD">USD — US Dollar</option>
+            <option value="EUR">EUR — Euro</option>
+            <option value="GBP">GBP — British Pound</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ci-field-row">
+        <div class="ci-field">
+          <label class="ci-label">Invoice Date</label>
+          <input type="date" class="ci-input" id="invoice-date">
+        </div>
+        <div class="ci-field">
+          <label class="ci-label">Due Date</label>
+          <select class="ci-select" id="due-date-preset" onchange="handleDueDate()">
+            <option value="receipt">On Receipt</option>
+            <option value="7">7 Days</option>
+            <option value="14" selected>14 Days</option>
+            <option value="30">30 Days</option>
+            <option value="custom">Custom Date</option>
+          </select>
+        </div>
+      </div>
+      <div class="ci-field" id="custom-due-wrap" style="display:none">
+        <label class="ci-label">Custom Due Date</label>
+        <input type="date" class="ci-input" id="custom-due-date">
+      </div>
+
+      <!-- VAT -->
+      <div class="ci-toggle-row">
+        <div class="ci-toggle-label">Add VAT / Tax</div>
+        <div class="ci-toggle" id="toggle-vat" onclick="toggleVat()"></div>
+      </div>
+      <div id="vat-fields" style="display:none">
+        <div class="ci-field-row">
+          <div class="ci-field">
+            <label class="ci-label">Tax Rate (%)</label>
+            <input type="number" class="ci-input" id="tax-rate" placeholder="7.5" step="0.1">
+          </div>
+          <div class="ci-field">
+            <label class="ci-label">VAT Registration #</label>
+            <input type="text" class="ci-input" id="tax-number" placeholder="Optional">
+          </div>
+        </div>
+      </div>
+
+      <!-- Discount -->
+      <div class="ci-toggle-row">
+        <div class="ci-toggle-label">Add Discount</div>
+        <div class="ci-toggle" id="toggle-discount" onclick="toggleDiscount()"></div>
+      </div>
+      <div id="discount-fields" style="display:none">
+        <div class="ci-field-row">
+          <div class="ci-field">
+            <label class="ci-label">Discount Type</label>
+            <select class="ci-select" id="discount-type">
+              <option value="percentage">Percentage (%)</option>
+              <option value="fixed">Fixed Amount</option>
+            </select>
+          </div>
+          <div class="ci-field">
+            <label class="ci-label">Discount Value</label>
+            <input type="number" class="ci-input" id="discount-value" placeholder="0" step="0.01">
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="ci-field">
+        <label class="ci-label">Notes / Payment Instructions</label>
+        <textarea class="ci-textarea" id="invoice-notes" placeholder="Payment instructions, bank details, thank you message..."></textarea>
+      </div>
+    </div>
+
+    <!-- STEP 4: PREVIEW & SEND -->
+    <div class="ci-step" id="step-4">
+      <div class="ci-step-label">Step 4 of 4</div>
+      <div class="ci-step-title">Preview & Send</div>
+      <div class="ci-step-sub">Your invoice is ready. Review it, then send or download.</div>
+
+      <div class="ci-preview-wrap" id="invoice-preview">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="ci-bottom-bar" id="bottom-bar">
+    <button class="ci-btn ci-btn-secondary" id="btn-back" onclick="prevStep()" style="display:none">Back</button>
+    <button class="ci-btn ci-btn-primary" id="btn-next" onclick="nextStep()">Next →</button>
+  </div>
+</div>
+
+<div class="ci-toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/creator-invoice-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorInvoice;
+  var currentStep = 1;
+  var totalSteps = 4;
+  var clients = [];
+  var selectedClient = null;
+  var lineItems = [];
+  var editingInvoiceId = null;
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  function init() {
+    setupClientSearch();
+    addLineItem();
+    setDefaultDates();
+    loadProfileDefaults();
+
+    var params = new URLSearchParams(location.search);
+    if (params.get('id')) {
+      editingInvoiceId = params.get('id');
+      loadInvoice(editingInvoiceId);
+    } else if (params.get('duplicate')) {
+      loadDuplicate();
+    } else if (params.get('client_id')) {
+      loadClientById(params.get('client_id'));
+    }
+  }
+
+  function setDefaultDates() {
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById('invoice-date').value = today;
+  }
+
+  function loadProfileDefaults() {
+    if (typeof AfroAuth === 'undefined') return;
+    AfroAuth.onReady(function() {
+      if (!AfroAuth.isLoggedIn()) return;
+      var profile = AfroAuth.getCachedProfile && AfroAuth.getCachedProfile();
+      if (profile) {
+        if (profile.currency) {
+          var sel = document.getElementById('invoice-currency');
+          for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === profile.currency) { sel.selectedIndex = i; break; }
+          }
+        }
+        if (profile.country_code && engine) {
+          var tax = engine.TAX_RATES[profile.country_code];
+          if (tax) document.getElementById('tax-rate').value = tax.rate;
+          var notes = engine.getPaymentTemplate(profile.country_code);
+          if (notes && !document.getElementById('invoice-notes').value) {
+            document.getElementById('invoice-notes').value = notes;
+          }
+        }
+      }
+      loadClients();
+      loadNextInvoiceNumber();
+    });
+  }
+
+  async function loadClients() {
+    try {
+      var sb = AfroAuth.getSupabase();
+      var user = AfroAuth.getUser();
+      if (!sb || !user) return;
+      var res = await sb.from('creator_clients').select('*').eq('user_id', user.id).order('name');
+      clients = res.data || [];
+    } catch(e) { /* silent */ }
+  }
+
+  async function loadNextInvoiceNumber() {
+    try {
+      var sb = AfroAuth.getSupabase();
+      var user = AfroAuth.getUser();
+      if (!sb || !user) return;
+      var res = await sb.from('creator_invoices').select('invoice_number').eq('user_id', user.id).order('created_at', {ascending: false}).limit(10);
+      var existing = (res.data || []).map(function(r) { return r.invoice_number; });
+      if (engine) {
+        document.getElementById('invoice-number').value = engine.getNextInvoiceNumber(existing);
+      } else {
+        document.getElementById('invoice-number').value = 'INV-001';
+      }
+    } catch(e) {
+      document.getElementById('invoice-number').value = 'INV-001';
+    }
+  }
+
+  async function loadInvoice(id) {
+    try {
+      var sb = AfroAuth.getSupabase();
+      var [invRes, itemsRes] = await Promise.all([
+        sb.from('creator_invoices').select('*').eq('id', id).single(),
+        sb.from('creator_invoice_items').select('*').eq('invoice_id', id).order('sort_order')
+      ]);
+      var inv = invRes.data;
+      if (!inv) return;
+
+      // Populate fields
+      selectedClient = { name: inv.client_name, email: inv.client_email, id: inv.client_id };
+      showSelectedClient(inv.client_name, inv.client_email || '');
+      document.getElementById('invoice-number').value = inv.invoice_number || '';
+      document.getElementById('invoice-date').value = inv.issued_date || '';
+      if (inv.currency) {
+        var sel = document.getElementById('invoice-currency');
+        for (var i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === inv.currency) { sel.selectedIndex = i; break; }
+        }
+      }
+      if (inv.notes) document.getElementById('invoice-notes').value = inv.notes;
+      if (inv.tax_rate > 0) {
+        document.getElementById('toggle-vat').classList.add('on');
+        document.getElementById('vat-fields').style.display = '';
+        document.getElementById('tax-rate').value = inv.tax_rate;
+        if (inv.tax_number) document.getElementById('tax-number').value = inv.tax_number;
+      }
+      if (inv.discount_value > 0) {
+        document.getElementById('toggle-discount').classList.add('on');
+        document.getElementById('discount-fields').style.display = '';
+        document.getElementById('discount-type').value = inv.discount_type || 'percentage';
+        document.getElementById('discount-value').value = inv.discount_value;
+      }
+
+      // Load line items
+      var items = itemsRes.data || [];
+      if (items.length) {
+        document.getElementById('line-items').innerHTML = '';
+        lineItems = [];
+        items.forEach(function(item) {
+          addLineItem(item.description, item.quantity, item.unit_price / 100);
+        });
+      }
+      updateSubtotal();
+    } catch(e) { showToast('Error loading invoice', 'error'); }
+  }
+
+  function loadDuplicate() {
+    try {
+      var raw = sessionStorage.getItem('ci-duplicate');
+      if (!raw) return;
+      var inv = JSON.parse(raw);
+      sessionStorage.removeItem('ci-duplicate');
+      if (inv.client_name) {
+        selectedClient = { name: inv.client_name, email: inv.client_email };
+        showSelectedClient(inv.client_name, inv.client_email || '');
+      }
+      if (inv.currency) {
+        var sel = document.getElementById('invoice-currency');
+        for (var i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === inv.currency) { sel.selectedIndex = i; break; }
+        }
+      }
+      if (inv.notes) document.getElementById('invoice-notes').value = inv.notes;
+    } catch(e) { /* silent */ }
+  }
+
+  async function loadClientById(id) {
+    try {
+      var sb = AfroAuth.getSupabase();
+      var res = await sb.from('creator_clients').select('*').eq('id', id).single();
+      if (res.data) {
+        selectedClient = res.data;
+        showSelectedClient(res.data.name, res.data.company || res.data.email || '');
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  // Client search
+  function setupClientSearch() {
+    var input = document.getElementById('client-search');
+    var results = document.getElementById('client-results');
+
+    input.addEventListener('input', function() {
+      var q = input.value.trim().toLowerCase();
+      if (!q) { results.classList.remove('open'); return; }
+
+      var matches = clients.filter(function(c) {
+        return (c.name || '').toLowerCase().includes(q) || (c.company || '').toLowerCase().includes(q);
+      }).slice(0, 5);
+
+      var html = matches.map(function(c) {
+        return '<div class="ci-client-option" onclick="selectExistingClient(\'' + c.id + '\')">' +
+          '<div class="ci-client-name">' + escHtml(c.name) + '</div>' +
+          (c.company ? '<div class="ci-client-company">' + escHtml(c.company) + '</div>' : '') +
+        '</div>';
+      }).join('');
+
+      html += '<div class="ci-client-new" onclick="showNewClientForm()">+ Add "' + escHtml(input.value.trim()) + '" as new client</div>';
+      results.innerHTML = html;
+      results.classList.add('open');
+    });
+
+    input.addEventListener('blur', function() {
+      setTimeout(function() { results.classList.remove('open'); }, 200);
+    });
+  }
+
+  window.selectExistingClient = function(id) {
+    var c = clients.find(function(cl) { return cl.id === id; });
+    if (!c) return;
+    selectedClient = c;
+    showSelectedClient(c.name, c.company || c.email || '');
+    document.getElementById('client-results').classList.remove('open');
+  };
+
+  window.showNewClientForm = function() {
+    var name = document.getElementById('client-search').value.trim();
+    document.getElementById('client-form').style.display = '';
+    document.getElementById('client-name').value = name;
+    document.getElementById('client-results').classList.remove('open');
+    document.getElementById('client-search').style.display = 'none';
+  };
+
+  window.changeClient = function() {
+    selectedClient = null;
+    document.getElementById('selected-client').style.display = 'none';
+    document.getElementById('client-selector').style.display = '';
+    document.getElementById('client-search').style.display = '';
+    document.getElementById('client-search').value = '';
+    document.getElementById('client-form').style.display = 'none';
+  };
+
+  function showSelectedClient(name, detail) {
+    document.getElementById('sel-client-name').textContent = name;
+    document.getElementById('sel-client-detail').textContent = detail;
+    document.getElementById('selected-client').style.display = '';
+    document.getElementById('client-selector').style.display = 'none';
+  }
+
+  // Line items
+  window.addLineItem = function(desc, qty, price) {
+    var idx = lineItems.length;
+    lineItems.push({ description: desc || '', quantity: qty || 1, unitPrice: price || 0 });
+    var container = document.getElementById('line-items');
+    var div = document.createElement('div');
+    div.className = 'ci-line-item';
+    div.dataset.idx = idx;
+    div.innerHTML =
+      '<input type="text" class="ci-input" placeholder="Description" value="' + escAttr(desc || '') + '" oninput="updateLineItem(' + idx + ',\'description\',this.value)">' +
+      '<input type="number" class="ci-input" placeholder="1" value="' + (qty || 1) + '" min="0" step="0.5" oninput="updateLineItem(' + idx + ',\'quantity\',this.value)">' +
+      '<input type="number" class="ci-input" placeholder="0" value="' + (price || '') + '" min="0" step="100" oninput="updateLineItem(' + idx + ',\'unitPrice\',this.value)">' +
+      '<div class="ci-line-total-cell" id="line-total-' + idx + '">0</div>' +
+      '<button class="ci-line-delete" onclick="removeLineItem(' + idx + ')">×</button>';
+    container.appendChild(div);
+    updateSubtotal();
+  };
+
+  window.updateLineItem = function(idx, field, value) {
+    if (!lineItems[idx]) return;
+    lineItems[idx][field] = field === 'description' ? value : parseFloat(value) || 0;
+    var total = (lineItems[idx].quantity || 0) * (lineItems[idx].unitPrice || 0);
+    var el = document.getElementById('line-total-' + idx);
+    if (el) el.textContent = engine ? engine.formatCurrency(Math.round(total * 100), getCurrency()) : total.toLocaleString();
+    updateSubtotal();
+  };
+
+  window.removeLineItem = function(idx) {
+    lineItems[idx] = null;
+    var el = document.querySelector('.ci-line-item[data-idx="' + idx + '"]');
+    if (el) el.remove();
+    updateSubtotal();
+  };
+
+  function updateSubtotal() {
+    var subtotal = 0;
+    lineItems.forEach(function(item) {
+      if (item) subtotal += (item.quantity || 0) * (item.unitPrice || 0);
+    });
+    var el = document.getElementById('subtotal');
+    el.textContent = engine ? engine.formatCurrency(Math.round(subtotal * 100), getCurrency()) : subtotal.toLocaleString();
+  }
+
+  function getCurrency() {
+    return document.getElementById('invoice-currency').value || 'NGN';
+  }
+
+  // Toggles
+  window.toggleVat = function() {
+    var toggle = document.getElementById('toggle-vat');
+    toggle.classList.toggle('on');
+    document.getElementById('vat-fields').style.display = toggle.classList.contains('on') ? '' : 'none';
+  };
+
+  window.toggleDiscount = function() {
+    var toggle = document.getElementById('toggle-discount');
+    toggle.classList.toggle('on');
+    document.getElementById('discount-fields').style.display = toggle.classList.contains('on') ? '' : 'none';
+  };
+
+  window.handleDueDate = function() {
+    var val = document.getElementById('due-date-preset').value;
+    document.getElementById('custom-due-wrap').style.display = val === 'custom' ? '' : 'none';
+  };
+
+  // AI line item generation
+  window.generateLineItems = async function() {
+    var desc = document.getElementById('ai-describe').value.trim();
+    if (!desc) return;
+    var btn = document.getElementById('ai-generate');
+    btn.textContent = 'Generating...';
+    btn.disabled = true;
+
+    try {
+      var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : '';
+      var res = await fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tool: 'creator-invoice',
+          question: 'Generate invoice line items for this work: ' + desc + '. Return ONLY a JSON array of objects with fields: description, quantity, unitPrice (in the smallest currency unit). No markdown, just JSON.',
+          token: token
+        })
+      });
+      var data = await res.json();
+      var answer = data.answer || data.response || '';
+      // Extract JSON from response
+      var match = answer.match(/\[[\s\S]*\]/);
+      if (match) {
+        var items = JSON.parse(match[0]);
+        items.forEach(function(item) {
+          addLineItem(item.description, item.quantity || 1, (item.unitPrice || 0) / 100);
+        });
+        showToast('AI generated ' + items.length + ' line items', 'success');
+      } else {
+        showToast('Could not parse AI response', 'error');
+      }
+    } catch(e) {
+      showToast('AI generation failed — add items manually', 'error');
+    }
+    btn.textContent = 'Generate';
+    btn.disabled = false;
+  };
+
+  // Navigation
+  window.nextStep = function() {
+    if (currentStep === 1 && !validateStep1()) return;
+    if (currentStep === 2 && !validateStep2()) return;
+    if (currentStep < totalSteps) {
+      goToStep(currentStep + 1);
+    } else {
+      saveInvoice();
+    }
+  };
+
+  window.prevStep = function() {
+    if (currentStep > 1) goToStep(currentStep - 1);
+  };
+
+  function goToStep(step) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    currentStep = step;
+    document.getElementById('step-' + step).classList.add('active');
+
+    // Update progress
+    document.querySelectorAll('.ci-progress-step').forEach(function(el, i) {
+      el.classList.remove('active', 'done');
+      if (i + 1 < step) el.classList.add('done');
+      if (i + 1 === step) el.classList.add('active');
+    });
+
+    // Button states
+    document.getElementById('btn-back').style.display = step > 1 ? '' : 'none';
+    var nextBtn = document.getElementById('btn-next');
+    if (step === 4) {
+      renderPreview();
+      nextBtn.innerHTML = '💾 Save Invoice';
+      // Replace with action buttons
+      document.getElementById('bottom-bar').innerHTML =
+        '<button class="ci-btn ci-btn-secondary" onclick="prevStep()">Back</button>' +
+        '<button class="ci-btn ci-btn-secondary" onclick="saveDraft()">Save Draft</button>' +
+        '<button class="ci-btn ci-btn-outline" onclick="downloadPDF()">📄 PDF</button>' +
+        '<button class="ci-btn ci-btn-whatsapp" onclick="shareWhatsApp()">📱 WhatsApp</button>' +
+        '<button class="ci-btn ci-btn-primary" onclick="saveInvoice(\'sent\')">Send →</button>';
+    }
+  }
+
+  function validateStep1() {
+    if (selectedClient) return true;
+    var name = document.getElementById('client-name').value.trim();
+    if (!name) {
+      showToast('Please select or add a client', 'error');
+      return false;
+    }
+    selectedClient = {
+      name: name,
+      company: document.getElementById('client-company').value.trim(),
+      email: document.getElementById('client-email').value.trim(),
+      phone: document.getElementById('client-phone').value.trim(),
+      country_code: document.getElementById('client-country').value,
+      billing_address: document.getElementById('client-address').value.trim(),
+      isNew: true,
+      saveForLater: document.getElementById('toggle-save-client').classList.contains('on')
+    };
+    showSelectedClient(selectedClient.name, selectedClient.company || selectedClient.email || '');
+    return true;
+  }
+
+  function validateStep2() {
+    var validItems = lineItems.filter(function(i) { return i && i.description; });
+    if (!validItems.length) {
+      showToast('Add at least one line item', 'error');
+      return false;
+    }
+    return true;
+  }
+
+  // Preview
+  function renderPreview() {
+    var data = gatherInvoiceData();
+    var preview = document.getElementById('invoice-preview');
+    var user = (typeof AfroAuth !== 'undefined' && AfroAuth.isLoggedIn()) ? AfroAuth.getUser() : {};
+    var profile = (typeof AfroAuth !== 'undefined' && AfroAuth.getCachedProfile) ? AfroAuth.getCachedProfile() || {} : {};
+    var fmt = engine ? function(a) { return engine.formatCurrency(a, data.currency); } : function(a) { return data.currency + ' ' + (a/100).toLocaleString(); };
+
+    var itemsHtml = (data.items || []).map(function(item) {
+      return '<tr><td>' + escHtml(item.description) + '</td><td>' + item.quantity + '</td><td>' + fmt(item.unitPrice) + '</td><td>' + fmt(item.total) + '</td></tr>';
+    }).join('');
+
+    var totalsHtml = '<div class="ci-preview-total-row"><span class="ci-preview-total-label">Subtotal</span><span class="ci-preview-total-val">' + fmt(data.subtotal) + '</span></div>';
+    if (data.discount > 0) {
+      totalsHtml += '<div class="ci-preview-total-row"><span class="ci-preview-total-label">Discount</span><span class="ci-preview-total-val">-' + fmt(data.discount) + '</span></div>';
+    }
+    if (data.taxRate > 0) {
+      totalsHtml += '<div class="ci-preview-total-row"><span class="ci-preview-total-label">VAT (' + data.taxRate + '%)</span><span class="ci-preview-total-val">' + fmt(data.tax) + '</span></div>';
+    }
+    totalsHtml += '<div class="ci-preview-total-row grand"><span>Total</span><span>' + fmt(data.total) + '</span></div>';
+
+    preview.innerHTML =
+      '<div class="ci-preview"><div class="ci-preview-border"></div>' +
+        '<div class="ci-preview-header">' +
+          '<div class="ci-preview-from">' +
+            '<div class="ci-preview-logo">' + escHtml(profile.display_name || profile.full_name || user.name || 'Your Name') + '</div>' +
+            '<div class="ci-preview-contact">' + escHtml(user.email || '') + '</div>' +
+          '</div>' +
+          '<div class="ci-preview-title">INVOICE</div>' +
+        '</div>' +
+        '<div class="ci-preview-parties">' +
+          '<div><div class="ci-preview-party-label">Bill To</div><div class="ci-preview-party-name">' + escHtml(selectedClient.name) + '</div><div class="ci-preview-party-detail">' + escHtml(selectedClient.company || selectedClient.email || '') + '</div></div>' +
+          '<div><div class="ci-preview-party-label">Invoice Details</div><div class="ci-preview-party-name">' + escHtml(data.invoiceNumber) + '</div><div class="ci-preview-party-detail">Issued: ' + formatDate(data.issuedDate) + '</div><div class="ci-preview-party-detail">Due: ' + formatDate(data.dueDate) + '</div></div>' +
+        '</div>' +
+        '<table class="ci-preview-table"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead><tbody>' + itemsHtml + '</tbody></table>' +
+        '<div class="ci-preview-totals">' + totalsHtml + '</div>' +
+        (data.notes ? '<div class="ci-preview-notes"><strong>Notes</strong><br>' + escHtml(data.notes).replace(/\n/g, '<br>') + '</div>' : '') +
+        '<div class="ci-preview-footer">Created with AfroTools CreatorInvoice</div>' +
+      '</div>';
+  }
+
+  function gatherInvoiceData() {
+    var items = lineItems.filter(function(i) { return i && i.description; }).map(function(item) {
+      var total = Math.round((item.quantity || 0) * (item.unitPrice || 0) * 100);
+      return {
+        description: item.description,
+        quantity: item.quantity || 1,
+        unitPrice: Math.round((item.unitPrice || 0) * 100),
+        total: total
+      };
+    });
+
+    var subtotal = items.reduce(function(sum, i) { return sum + i.total; }, 0);
+    var discountType = document.getElementById('discount-type').value;
+    var discountValue = parseFloat(document.getElementById('discount-value').value) || 0;
+    var discount = 0;
+    if (document.getElementById('toggle-discount').classList.contains('on') && discountValue > 0) {
+      discount = discountType === 'percentage' ? Math.round(subtotal * discountValue / 100) : Math.round(discountValue * 100);
+    }
+
+    var taxRate = 0;
+    if (document.getElementById('toggle-vat').classList.contains('on')) {
+      taxRate = parseFloat(document.getElementById('tax-rate').value) || 0;
+    }
+    var taxable = subtotal - discount;
+    var tax = Math.round(taxable * taxRate / 100);
+    var total = taxable + tax;
+
+    var dueDatePreset = document.getElementById('due-date-preset').value;
+    var issuedDate = document.getElementById('invoice-date').value;
+    var dueDate = issuedDate;
+    if (dueDatePreset === 'custom') {
+      dueDate = document.getElementById('custom-due-date').value || issuedDate;
+    } else if (dueDatePreset !== 'receipt') {
+      var d = new Date(issuedDate);
+      d.setDate(d.getDate() + parseInt(dueDatePreset));
+      dueDate = d.toISOString().split('T')[0];
+    }
+
+    return {
+      invoiceNumber: document.getElementById('invoice-number').value.trim(),
+      currency: getCurrency(),
+      issuedDate: issuedDate,
+      dueDate: dueDate,
+      items: items,
+      subtotal: subtotal,
+      discountType: discountType,
+      discountValue: discountValue,
+      discount: discount,
+      taxRate: taxRate,
+      taxNumber: document.getElementById('tax-number').value.trim(),
+      tax: tax,
+      total: total,
+      notes: document.getElementById('invoice-notes').value.trim()
+    };
+  }
+
+  // Save
+  window.saveDraft = function() { saveInvoice('draft'); };
+
+  window.saveInvoice = async function(status) {
+    status = status || 'draft';
+    if (!AfroAuth.isLoggedIn()) { showToast('Please sign in to save', 'error'); return; }
+
+    var data = gatherInvoiceData();
+    var user = AfroAuth.getUser();
+    var sb = AfroAuth.getSupabase();
+
+    try {
+      // Save new client if needed
+      var clientId = selectedClient.id || null;
+      if (selectedClient.isNew && selectedClient.saveForLater) {
+        var clientRes = await sb.from('creator_clients').insert({
+          user_id: user.id,
+          name: selectedClient.name,
+          company: selectedClient.company || null,
+          email: selectedClient.email || null,
+          phone: selectedClient.phone || null,
+          whatsapp: selectedClient.phone || null,
+          country_code: selectedClient.country_code || null,
+          billing_address: selectedClient.billing_address || null
+        }).select().single();
+        if (clientRes.data) clientId = clientRes.data.id;
+      }
+
+      var invoicePayload = {
+        user_id: user.id,
+        client_id: clientId,
+        invoice_number: data.invoiceNumber,
+        status: status,
+        currency: data.currency,
+        subtotal: data.subtotal,
+        discount_type: data.discount > 0 ? data.discountType : null,
+        discount_value: data.discountValue || null,
+        tax_rate: data.taxRate || 0,
+        tax_number: data.taxNumber || null,
+        total: data.total,
+        issued_date: data.issuedDate,
+        due_date: data.dueDate,
+        notes: data.notes || null,
+        payment_instructions: data.notes || null,
+        client_name: selectedClient.name,
+        client_email: selectedClient.email || null,
+        updated_at: new Date().toISOString()
+      };
+
+      var invoiceId;
+      if (editingInvoiceId) {
+        await sb.from('creator_invoices').update(invoicePayload).eq('id', editingInvoiceId);
+        invoiceId = editingInvoiceId;
+        // Delete old items
+        await sb.from('creator_invoice_items').delete().eq('invoice_id', invoiceId);
+      } else {
+        var invRes = await sb.from('creator_invoices').insert(invoicePayload).select().single();
+        invoiceId = invRes.data.id;
+      }
+
+      // Save line items
+      if (data.items.length) {
+        var itemRows = data.items.map(function(item, i) {
+          return {
+            invoice_id: invoiceId,
+            description: item.description,
+            quantity: item.quantity,
+            unit_price: item.unitPrice,
+            total: item.total,
+            sort_order: i
+          };
+        });
+        await sb.from('creator_invoice_items').insert(itemRows);
+      }
+
+      // Also save to AfroData for cross-tool access
+      AfroData.save('creator-invoice', {
+        invoice_number: data.invoiceNumber,
+        client_name: selectedClient.name,
+        currency: data.currency,
+        total: data.total,
+        status: status
+      });
+
+      showToast(status === 'sent' ? 'Invoice sent!' : 'Invoice saved!', 'success');
+      setTimeout(function() { location.href = 'app.html'; }, 1500);
+    } catch(e) {
+      showToast('Error saving: ' + (e.message || 'Unknown error'), 'error');
+    }
+  };
+
+  // PDF
+  window.downloadPDF = async function() {
+    if (engine && engine.generatePDF) {
+      try {
+        var data = gatherInvoiceData();
+        data.clientName = selectedClient.name;
+        data.clientCompany = selectedClient.company || '';
+        data.clientEmail = selectedClient.email || '';
+        var blob = await engine.generatePDF(data);
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = (data.invoiceNumber || 'invoice') + '.pdf';
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch(e) {
+        showToast('PDF generation failed', 'error');
+      }
+    } else {
+      window.print();
+    }
+  };
+
+  // WhatsApp
+  window.shareWhatsApp = function() {
+    var data = gatherInvoiceData();
+    var msg = engine ? engine.generateWhatsAppMessage({
+      client_name: selectedClient.name,
+      invoice_number: data.invoiceNumber,
+      total: data.total,
+      currency: data.currency,
+      due_date: data.dueDate
+    }) : 'Hi ' + selectedClient.name + ', here\'s your invoice ' + data.invoiceNumber + ' for ' + data.currency + ' ' + (data.total/100).toLocaleString() + '. Due by ' + data.dueDate + '.';
+
+    var phone = (selectedClient.phone || selectedClient.whatsapp || '').replace(/\D/g, '');
+    var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+  };
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '—';
+    return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'ci-toast show ' + (type || '');
+    setTimeout(function() { t.className = 'ci-toast'; }, 3000);
+  }
+
+  function escHtml(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+  function escAttr(s) { return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+})();
+</script>
+</body>
+</html>
