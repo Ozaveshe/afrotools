@@ -29,13 +29,16 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Namibia","item":"https://afrotools.com/namibia"},{"@type":"ListItem","position":3,"name":"Namibia PAYE Calculator","item":"https://afrotools.com/namibia/na-paye"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Namibia PAYE tax bands?","acceptedAnswer":{"@type":"Answer","text":"Seven annual bands from 0% on first N$100,000 up to 37% above N$1,500,000. Rates increase progressively with income. SSC contribution (N$972/year) is deductible from taxable income."}},{"@type":"Question","name":"What is SSC in Namibia?","acceptedAnswer":{"@type":"Answer","text":"Social Security Commission contribution: N$81/month flat (N$972/year) for both employee and employer. Employee contribution is deductible from taxable income for PAYE purposes."}},{"@type":"Question","name":"Is SSC deductible from taxable income?","acceptedAnswer":{"@type":"Answer","text":"Yes, the employee SSC contribution (N$81/month) is deductible from gross pay before calculating PAYE. This reduces your taxable income and PAYE liability."}},{"@type":"Question","name":"When must employers remit PAYE and SSC?","acceptedAnswer":{"@type":"Answer","text":"PAYE must be filed and paid by the 20th of the month following payroll. SSC contributions are due by the same date. Late payments attract penalties and interest."}},{"@type":"Question","name":"What is the tax-free threshold in Namibia?","acceptedAnswer":{"@type":"Answer","text":"The first N$100,000 of annual taxable income (after SSC deduction) is taxed at 0%. Employees earning below this threshold pay no income tax — only the flat N$81/month SSC contribution."}},{"@type":"Question","name":"How is Namibia PAYE calculated?","acceptedAnswer":{"@type":"Answer","text":"Annually: first deduct the N$972/year SSC employee contribution from gross salary. The resulting taxable income is then run through seven progressive NamRA bands (0%–37%). Take-home pay equals gross minus SSC minus PAYE tax."}},{"@type":"Question","name":"What is the total employer cost in Namibia?","acceptedAnswer":{"@type":"Answer","text":"Employers pay the gross salary plus a flat N$81/month SSC contribution (N$972/year). Unlike percentage-based systems, the employer SSC cost is the same regardless of salary level."}},{"@type":"Question","name":"Is the AfroTools Namibia PAYE calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes — the AfroTools Namibia PAYE calculator is completely free with no account required. It includes real-time NamRA tax computation, SSC deductions, employer cost breakdown, interactive charts, AI tax analysis, and downloadable PDF summaries."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/calculator.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+  <script src="/assets/js/components/tool-registry.min.js" defer></script>
+  <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -65,7 +68,7 @@
   .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
   .tool-info-updated{font-size:.62rem;color:#6B8CAE}
   .tool-info-actions{display:flex;gap:6px}
-  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
   .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
@@ -196,32 +199,7 @@
   </div>
   <p style="font-size:0.82rem;color:#6b7280;margin-top:0.75rem;">SSC employee: flat N$81/month (N$972/year, deductible). Employer SSC: flat N$81/month. Applied annually. Currency: NAD (pegged 1:1 to ZAR).</p>
 </section>
-
-<section class="more-tools-sec">
-  <div class="more-tools-inner">
-    <h2 class="more-tools-title">More African Tax Tools</h2>
-    <div class="more-tools-grid">
-      <a href="/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
-      <a href="/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
-      <a href="/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
-      <a href="/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
-      <a href="/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
-      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">Pan-African VAT Calculator</a>
-      <a href="/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
-    </div>
-  </div>
-</section>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">Related African Tax Tools</h2>
-  <div style="display:flex;flex-wrap:wrap;gap:10px;">
-    <a href="/namibia/na-vat" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Namibia VAT Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">South Africa PAYE</a>
-    <a href="/botswana/bw-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Botswana PAYE</a>
-    <a href="/tools/paye-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">All PAYE Calculators</a>
-    <a href="/tools/vat-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">VAT Calculator Africa</a>
-  </div>
-</section>
+<afro-related-tools category="financial" current="na-paye"></afro-related-tools>
 <afro-footer></afro-footer>
 <script>
 var RESULT=null,PERIOD='annual',CHART=null,CHART_TYPE='donut';
