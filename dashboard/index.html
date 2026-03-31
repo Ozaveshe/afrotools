@@ -1447,60 +1447,6 @@
                         <label for="editCountry">Country</label>
                         <select id="editCountry" required>
                             <option value="">Select your African country</option>
-                            <option value="Algeria">Algeria</option>
-                            <option value="Angola">Angola</option>
-                            <option value="Benin">Benin</option>
-                            <option value="Botswana">Botswana</option>
-                            <option value="Burkina Faso">Burkina Faso</option>
-                            <option value="Burundi">Burundi</option>
-                            <option value="Cabo Verde">Cabo Verde</option>
-                            <option value="Cameroon">Cameroon</option>
-                            <option value="Central African Republic">Central African Republic</option>
-                            <option value="Chad">Chad</option>
-                            <option value="Comoros">Comoros</option>
-                            <option value="C&#244;te d'Ivoire">C&#244;te d'Ivoire</option>
-                            <option value="DR Congo">DR Congo</option>
-                            <option value="Djibouti">Djibouti</option>
-                            <option value="Egypt">Egypt</option>
-                            <option value="Equatorial Guinea">Equatorial Guinea</option>
-                            <option value="Eritrea">Eritrea</option>
-                            <option value="Eswatini">Eswatini</option>
-                            <option value="Ethiopia">Ethiopia</option>
-                            <option value="Gabon">Gabon</option>
-                            <option value="Gambia">Gambia</option>
-                            <option value="Ghana">Ghana</option>
-                            <option value="Guinea">Guinea</option>
-                            <option value="Guinea-Bissau">Guinea-Bissau</option>
-                            <option value="Kenya">Kenya</option>
-                            <option value="Lesotho">Lesotho</option>
-                            <option value="Liberia">Liberia</option>
-                            <option value="Libya">Libya</option>
-                            <option value="Madagascar">Madagascar</option>
-                            <option value="Malawi">Malawi</option>
-                            <option value="Mali">Mali</option>
-                            <option value="Mauritania">Mauritania</option>
-                            <option value="Mauritius">Mauritius</option>
-                            <option value="Morocco">Morocco</option>
-                            <option value="Mozambique">Mozambique</option>
-                            <option value="Namibia">Namibia</option>
-                            <option value="Niger">Niger</option>
-                            <option value="Nigeria">Nigeria</option>
-                            <option value="Republic of the Congo">Republic of the Congo</option>
-                            <option value="Rwanda">Rwanda</option>
-                            <option value="S&#227;o Tom&#233; and Pr&#237;ncipe">S&#227;o Tom&#233; and Pr&#237;ncipe</option>
-                            <option value="Senegal">Senegal</option>
-                            <option value="Seychelles">Seychelles</option>
-                            <option value="Sierra Leone">Sierra Leone</option>
-                            <option value="Somalia">Somalia</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="South Sudan">South Sudan</option>
-                            <option value="Sudan">Sudan</option>
-                            <option value="Tanzania">Tanzania</option>
-                            <option value="Togo">Togo</option>
-                            <option value="Tunisia">Tunisia</option>
-                            <option value="Uganda">Uganda</option>
-                            <option value="Zambia">Zambia</option>
-                            <option value="Zimbabwe">Zimbabwe</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1740,11 +1686,9 @@
     </main>
 
     <afro-footer></afro-footer>
-    <onboarding-modal></onboarding-modal>
 
     <script src="/assets/js/data/african-countries.js"></script>
     <script src="/assets/js/components/tool-registry.js" defer></script>
-    <script src="/assets/js/components/onboarding-modal.js"></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js"></script>
     <script src="/assets/js/afro-history.js"></script>
@@ -1787,7 +1731,7 @@
         };
 
         function resolveCountry() {
-            var c = (currentUser && currentUser.country) || (extendedProfile && extendedProfile.country) || '';
+            var c = (extendedProfile && extendedProfile.country_code) || (currentUser && currentUser.country) || (extendedProfile && extendedProfile.country) || '';
             if (!c) return { code: null, currency: null, name: null };
             if (c.length === 2 && c === c.toUpperCase()) return { code: c, currency: COUNTRY_CURRENCY_MAP[c] || null, name: c };
             var code = COUNTRY_CODE_MAP[c.toLowerCase()] || null;
@@ -1796,21 +1740,30 @@
 
         // ===================== INTEREST DEFINITIONS =====================
         var INTEREST_OPTIONS = window.INTEREST_OPTIONS = [
-            { id: 'tax-salary',      emoji: '\uD83D\uDCB0', label: 'Tax & Salary',          categories: ['financial'] },
-            { id: 'documents',       emoji: '\uD83D\uDCC4', label: 'Documents & PDF',       categories: ['document-pdf'] },
-            { id: 'crypto',          emoji: '\u20BF',        label: 'Crypto & Web3',         categories: ['crypto'] },
-            { id: 'vat-business',    emoji: '\uD83E\uDDFE', label: 'VAT & Business Tax',    categories: ['ecommerce'] },
-            { id: 'property',        emoji: '\uD83C\uDFE0', label: 'Property & Mortgage',   categories: ['legal'] },
-            { id: 'engineering',     emoji: '\uD83D\uDD27', label: 'Engineering & CAD',     categories: ['engineering'] },
-            { id: 'health',          emoji: '\uD83C\uDFE5', label: 'Health & Wellness',     categories: ['health'] },
-            { id: 'developer',       emoji: '\u2328\uFE0F', label: 'Developer Tools',       categories: ['developer'] },
-            { id: 'education',       emoji: '\uD83C\uDF93', label: 'Education',             categories: ['education'] },
-            { id: 'business-roi',    emoji: '\uD83D\uDCCA', label: 'Business & ROI',        categories: ['data-productivity'] },
-            { id: 'design',          emoji: '\uD83D\uDDBC\uFE0F', label: 'Design & Images', categories: ['image-design'] },
-            { id: 'currency-fx',     emoji: '\uD83D\uDCB1', label: 'Currency & FX',         categories: ['financial'] },
-            { id: 'african-culture', emoji: '\uD83C\uDF0D', label: 'African Culture',       categories: ['african'] },
-            { id: 'language',        emoji: '\uD83D\uDDE3\uFE0F', label: 'Language & Translation', categories: ['language'] },
-            { id: 'investment',      emoji: '\uD83D\uDCC8', label: 'Investment & Savings',  categories: ['financial'] }
+            { id: 'tax-salary',      emoji: '💰', label: 'Tax & Salary',          categories: ['financial'] },
+            { id: 'documents',       emoji: '📄', label: 'Documents & PDF',       categories: ['document-pdf'] },
+            { id: 'currency-fx',     emoji: '💱', label: 'Currency & FX',         categories: ['financial'] },
+            { id: 'investment',      emoji: '📈', label: 'Investment & Savings',  categories: ['financial'] },
+            { id: 'personal-finance',emoji: '💼', label: 'Personal Finance',     categories: ['personal-finance'] },
+            { id: 'fintech',         emoji: '💳', label: 'Fintech & Banking',    categories: ['fintech'] },
+            { id: 'crypto',          emoji: '₿',  label: 'Crypto & Web3',         categories: ['crypto'] },
+            { id: 'vat-business',    emoji: '🧾', label: 'VAT & Business Tax',    categories: ['ecommerce'] },
+            { id: 'small-business',  emoji: '🏪', label: 'Small Business',        categories: ['small-business'] },
+            { id: 'business-roi',    emoji: '📊', label: 'Business & ROI',        categories: ['data-productivity'] },
+            { id: 'trade-import',    emoji: '🚢', label: 'Trade & Import',        categories: ['trade'] },
+            { id: 'property',        emoji: '🏠', label: 'Property & Mortgage',   categories: ['legal'] },
+            { id: 'insurance',       emoji: '🛡️', label: 'Insurance',             categories: ['insurance'] },
+            { id: 'agriculture',     emoji: '🌾', label: 'Agriculture',           categories: ['agriculture'] },
+            { id: 'energy',          emoji: '⚡', label: 'Energy & Utilities',    categories: ['energy'] },
+            { id: 'health',          emoji: '🏥', label: 'Health & Wellness',     categories: ['health'] },
+            { id: 'education',       emoji: '🎓', label: 'Education',             categories: ['education'] },
+            { id: 'developer',       emoji: '⌨️', label: 'Developer Tools',       categories: ['developer'] },
+            { id: 'engineering',     emoji: '🔧', label: 'Engineering',           categories: ['engineering'] },
+            { id: 'design',          emoji: '🖼️', label: 'Design & Images',       categories: ['image-design'] },
+            { id: 'transport',       emoji: '🚛', label: 'Transport & Logistics', categories: ['transport'] },
+            { id: 'travel',          emoji: '✈️', label: 'Travel & Diaspora',     categories: ['travel', 'diaspora'] },
+            { id: 'african-culture', emoji: '🌍', label: 'African Culture',       categories: ['african', 'religious-cultural'] },
+            { id: 'language',        emoji: '🗣️', label: 'Language & Translation', categories: ['language'] }
         ];
 
         // ===================== TOOL METADATA =====================
@@ -2070,7 +2023,21 @@
             document.getElementById('editEmail').value = currentUser.email || '';
             document.getElementById('editPhone').value = p.phone || '';
             document.getElementById('editCity').value = p.city || '';
-            document.getElementById('editCountry').value = currentUser.country || (p && p.country) || '';
+            var countrySel = document.getElementById('editCountry');
+            if (countrySel.options.length <= 1 && typeof AFRICAN_COUNTRIES !== 'undefined') {
+                AFRICAN_COUNTRIES.forEach(function(c) {
+                    var opt = document.createElement('option');
+                    opt.value = c.code;
+                    opt.textContent = c.flag + ' ' + c.name;
+                    countrySel.appendChild(opt);
+                });
+            }
+            var editCountryVal = (p && p.country_code) || currentUser.country || (p && p.country) || '';
+            if (editCountryVal && editCountryVal.length > 2) {
+                var cc = COUNTRY_CODE_MAP[editCountryVal.toLowerCase()];
+                if (cc) editCountryVal = cc;
+            }
+            countrySel.value = editCountryVal;
             document.getElementById('editBio').value = p.bio || '';
             updateBioCounter();
             document.getElementById('editJobTitle').value = p.job_title || '';
@@ -2160,14 +2127,10 @@
                 updated_at: new Date().toISOString()
             };
 
-            // Also save country_code and mark onboarding complete
+            // Country select already uses 2-letter codes
             var countryCode = country;
-            if (country && country.length > 2) {
-                var cc = COUNTRY_CODE_MAP[country.toLowerCase()];
-                if (cc) countryCode = cc;
-            }
-            profileData.country_code = countryCode || country;
-            profileData.currency = COUNTRY_CURRENCY_MAP[countryCode] || COUNTRY_CURRENCY_MAP[country] || '';
+            profileData.country_code = countryCode;
+            profileData.currency = COUNTRY_CURRENCY_MAP[countryCode] || '';
             profileData.onboarding_completed = true;
 
             // Sync name/country to auth user metadata so it persists across sessions
@@ -2583,26 +2546,40 @@
                 return;
             }
             container.style.display = '';
-            var missing = [];
             var p = extendedProfile || {};
-            if ((!currentUser || !currentUser.country) && !p.country) missing.push('country');
-            if (!p.job_title) missing.push('job title');
-            if (!p.industry) missing.push('industry');
-            var interests = p.interests || [];
-            if (interests.length < 3) missing.push('interests');
-            if (!p.bio) missing.push('bio');
+            var loc = resolveCountry();
+            var isNewUser = !loc.code && !p.job_title;
+            var nudgeIcon = isNewUser ? '👋' : '💡';
+            var nudgeTitle, nudgeDesc, nudgeBtnText;
 
-            var missingText = missing.length > 0 ? 'Add your <strong>' + missing.slice(0, 3).join(', ') + '</strong>' : 'Fill in a few more fields';
+            if (isNewUser) {
+                nudgeTitle = 'Welcome! Set up your dashboard';
+                nudgeDesc = 'Select your <strong>country</strong> and <strong>interests</strong> to unlock personalized tax tools, live FX rates, and smart recommendations tailored to you.';
+                nudgeBtnText = 'Get Started';
+            } else {
+                var missing = [];
+                if (!loc.code && !p.country_code) missing.push('country');
+                if (!p.job_title) missing.push('job title');
+                if (!p.industry) missing.push('industry');
+                var interests = p.interests || [];
+                if (interests.length < 3) missing.push('interests');
+                if (!p.bio) missing.push('bio');
+                var missingText = missing.length > 0 ? 'Add your <strong>' + missing.slice(0, 3).join(', ') + '</strong>' : 'Fill in a few more fields';
+                nudgeTitle = 'Your profile is ' + pct + '% complete';
+                nudgeDesc = missingText + ' to get personalized tax deadlines, currency rates, and tool recommendations.';
+                nudgeBtnText = 'Complete Profile';
+            }
+
             container.innerHTML = '<div class="nudge-card">' +
                 '<div class="nudge-content">' +
-                    '<div class="nudge-icon">&#x1F4A1;</div>' +
+                    '<div class="nudge-icon">' + nudgeIcon + '</div>' +
                     '<div>' +
-                        '<div class="nudge-title">Your profile is ' + pct + '% complete</div>' +
-                        '<div class="nudge-desc">' + missingText + ' to get personalized tax deadlines, currency rates, and tool recommendations.</div>' +
+                        '<div class="nudge-title">' + nudgeTitle + '</div>' +
+                        '<div class="nudge-desc">' + nudgeDesc + '</div>' +
                     '</div>' +
                 '</div>' +
                 '<div class="nudge-actions">' +
-                    '<button class="nudge-btn" onclick="openProfileEditor()">Complete Profile</button>' +
+                    '<button class="nudge-btn" onclick="openProfileEditor()">' + nudgeBtnText + '</button>' +
                     '<button class="nudge-dismiss" onclick="this.closest(\'#profileNudge\').style.display=\'none\';localStorage.setItem(\'afro_nudge_dismissed\',\'1\')">Dismiss</button>' +
                 '</div>' +
             '</div>';
