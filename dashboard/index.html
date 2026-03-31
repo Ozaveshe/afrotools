@@ -2016,6 +2016,22 @@
             document.getElementById('profileEditor').classList.remove('open');
         }
 
+        function setSelectFuzzy(selId, val) {
+            var sel = document.getElementById(selId);
+            if (!sel || !val) return;
+            sel.value = val;
+            if (sel.value === val) return;
+            // Case-insensitive or partial match
+            var lv = val.toLowerCase();
+            for (var i = 0; i < sel.options.length; i++) {
+                var ov = sel.options[i].value.toLowerCase();
+                if (ov === lv || ov.indexOf(lv) > -1 || lv.indexOf(ov) > -1) {
+                    sel.value = sel.options[i].value;
+                    return;
+                }
+            }
+        }
+
         function hydrateEditorForms() {
             if (!currentUser) return;
             var p = extendedProfile || {};
@@ -2042,9 +2058,9 @@
             updateBioCounter();
             document.getElementById('editJobTitle').value = p.job_title || '';
             document.getElementById('editCompany').value = p.company || '';
-            document.getElementById('editIndustry').value = p.industry || '';
-            document.getElementById('editCompanySize').value = p.company_size || '';
-            document.getElementById('editExperience').value = p.experience_level || '';
+            setSelectFuzzy('editIndustry', p.industry);
+            setSelectFuzzy('editCompanySize', p.company_size);
+            setSelectFuzzy('editExperience', p.experience_level);
             document.getElementById('editLinkedIn').value = p.linkedin_url || '';
             document.getElementById('editWebsite').value = p.website_url || '';
             // Interests
