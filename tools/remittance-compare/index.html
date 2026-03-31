@@ -30,6 +30,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/wise-cta.js" defer></script>
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"African Remittance Comparator 2026","description":"Compare remittance costs across 9 providers for 20+ African corridors. Find the cheapest way to send money to Africa.","url":"https://afrotools.com/tools/remittance-compare/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -604,6 +605,11 @@
     </div>
   </section>
 
+  <!-- Wise Affiliate CTA -->
+  <section style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+    <wise-cta context="remittance"></wise-cta>
+  </section>
+
   <!-- FAQ -->
   <section class="rc-faq">
     <h2>Frequently Asked Questions</h2>
@@ -1094,13 +1100,29 @@
     $('rcCount').textContent = filtered.length + ' provider' + (filtered.length > 1 ? 's' : '') + ' available';
 
     // Provider cards
+    const selectedFrom = $('rcFrom').value;
+    const selectedTo   = $('rcTo').value;
+    const sendCurVal   = filtered[0] ? filtered[0].sendCur  : '';
+    const destCurVal   = filtered[0] ? filtered[0].destCur  : '';
     let html = '';
     filtered.forEach(r => {
       const isBest = r === best;
+      const isWise = r.key === 'wise';
       const methodTags = r.methods.map(m => {
         const labels = { bank: 'Bank', mobile: 'Mobile Money', cash: 'Cash Pickup' };
         return '<span class="rc-method-tag">' + (labels[m] || m) + '</span>';
       }).join('');
+
+      // Wise gets affiliate link + "★ AfroTools Pick" badge when best value, or just link otherwise
+      const wiseBadge = isWise && isBest
+        ? '<span style="display:inline-block;background:#007AFF;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:980px;text-transform:uppercase;letter-spacing:0.05em;margin-left:6px;vertical-align:middle;">&#9733; AfroTools Pick</span>'
+        : '';
+      const wiseBtn = isWise
+        ? `<a href="https://wise.prf.hn/click/camref:1011l5EEWt"
+               target="_blank" rel="sponsored noopener"
+               style="display:inline-block;margin-top:10px;background:#007AFF;color:#fff;font-size:12px;font-weight:600;padding:7px 18px;border-radius:980px;text-decoration:none;"
+               onclick="if(typeof gtag==='function')gtag('event','affiliate_click',{partner:'wise',tool:'remittance-comparator-table',country:'${selectedTo}',corridor:'${sendCurVal}-${destCurVal}',position:'provider-table'});">Send with Wise &#8594;</a>`
+        : '';
 
       html += `
         <div class="rc-provider-card${isBest ? ' best' : ''}">
@@ -1108,7 +1130,7 @@
           <div class="rc-provider-top">
             <div class="rc-provider-logo" style="background:${r.color}20;color:${r.color};font-weight:800;font-size:0.75rem;">${r.logo}</div>
             <div>
-              <div class="rc-provider-name">${r.name}</div>
+              <div class="rc-provider-name">${r.name}${wiseBadge}</div>
               <div class="rc-provider-speed">${r.speed} delivery</div>
             </div>
           </div>
@@ -1131,6 +1153,7 @@
             </div>
           </div>
           <div class="rc-provider-methods">${methodTags}</div>
+          ${wiseBtn}
         </div>`;
     });
     $('rcProviderList').innerHTML = html;

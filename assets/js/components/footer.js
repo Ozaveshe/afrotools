@@ -30,6 +30,11 @@
                   sw: 'Zana za AfroTools ni kwa madhumuni ya taarifa pekee. Hakikisha na mtaalamu aliyeidhinishwa kabla ya maamuzi ya kifedha.',
                   yo: 'Àwọn iṣẹ́ AfroTools jẹ́ fún ìfitónilétí nìkan. Ṣe ìjẹ́rìísí pẹ̀lú ọ̀jọ̀gbọ́n kí o tó ṣe ìpinnu owó.',
                   ha: "Kayan aikin AfroTools don bayani ne kawai. Tabbatar da ƙwararru kafin yanke shawarar kuɗi." },
+    affDisc:    { en: 'Some tools include affiliate links to trusted partners. AfroTools may earn a commission at no extra cost to you.',
+                  fr: "Certains outils contiennent des liens d'affiliation vers des partenaires de confiance. AfroTools peut percevoir une commission sans frais supplémentaires pour vous.",
+                  sw: 'Baadhi ya zana zina viungo vya washirika kwa washirika wanaoaminiwa. AfroTools inaweza kupata tume bila gharama zaidi kwako.',
+                  yo: 'Àwọn iṣẹ́ kan ní àwọn ọ̀nà ìsopọ̀ afilieti sí àwọn alábàáṣiṣẹ́pọ̀ tí a gbẹ́kẹ̀lé. AfroTools lè ní èrè láì ní idiyele àfikún fún ọ.',
+                  ha: "Wasu kayan aiki na ƙunsar hanyoyin haɗin gwiwa na abokan tarayya masu aminci. AfroTools na iya samun kuɗin abokin tarayya ba tare da ƙarin kuɗi a gare ku ba." },
     stats:      { countries: { en: 'African countries', fr: 'Pays africains', sw: 'Nchi za Afrika', yo: 'Orílẹ̀-èdè Áfíríkà', ha: 'Ƙasashen Afirka' },
                   categories: { en: 'Tool categories', fr: 'Catégories', sw: 'Kategoria', yo: 'Ẹ̀ka', ha: 'Rukunoni' },
                   paye:       { en: 'PAYE calculators', fr: 'Calculateurs PAYE', sw: 'Vikokotoo vya PAYE', yo: 'Àṣeàṣe PAYE', ha: "Na'urorin PAYE" },
@@ -318,6 +323,7 @@
       const note      = this._l(L.note);
       const tagline   = this._l(L.tagline);
       const disc      = this._l(L.disc);
+      const affDisc   = this._l(L.affDisc);
 
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>
@@ -378,6 +384,7 @@
                 <a href="${this._prefixHref('/contact/')}">Contact</a>
               </div>
               <p class="disc">${disc}</p>
+              <p class="disc">${affDisc}</p>
             </div>
 
           </div>
