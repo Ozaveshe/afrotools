@@ -134,7 +134,7 @@
 <!-- MAIN -->
 <main class="tool-main">
   <div class="container">
-    <p class="last-updated" style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:1rem;">Last updated: March 2026 · <a href="/blog/tax-updates-2026/" style="color:var(--color-brand);">See what changed</a></p>
+    <p class="last-updated" style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:1rem;">Last updated: March 2026</p>
     <div class="tool-grid">
 
       <!-- LEFT COL -->
@@ -354,7 +354,7 @@
           <!-- Detailed Band Breakdown (collapsible) -->
           <div style="padding: 0 22px 16px;">
             <details id="bandDetails">
-              <summary style="font-size:0.75rem;font-weight:700;color:#3d6349;cursor:pointer;padding:8px 0;">Detailed Band-by-Band Breakdown</summary>
+              <summary style="font-size:0.75rem;font-weight:700;color:#475569;cursor:pointer;padding:8px 0;">Detailed Band-by-Band Breakdown</summary>
               <div id="bandDetailContent"></div>
             </details>
           </div>
@@ -434,7 +434,7 @@
         <!-- DEV LEVY INFO (FYI for business owners) -->
         <div class="card" style="padding:14px 18px">
           <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#93A3B8;margin-bottom:6px;">FYI: Development Levy</div>
-          <p style="font-size:0.78rem;color:#3d6349;line-height:1.6;">Under NTA 2026, companies pay a <strong>4% Development Levy</strong> on assessable profit. This is an employer/company-level charge, not deducted from employee salary. Shown here for HR professionals calculating total employment cost.</p>
+          <p style="font-size:0.78rem;color:#475569;line-height:1.6;">Under NTA 2026, companies pay a <strong>4% Development Levy</strong> on assessable profit. This is an employer/company-level charge, not deducted from employee salary. Shown here for HR professionals calculating total employment cost.</p>
         </div>
 
         <!-- DISCLAIMER -->
@@ -464,6 +464,12 @@
               <span class="tool-feat">Employer Cost</span>
             </div>
           </div>
+          <div class="tool-info-save">
+            <button class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              <span id="sidebarSaveLabel">Save to My Tools</span>
+            </button>
+          </div>
           <div class="tool-info-footer">
             <span class="tool-info-updated">Updated: Mar 2026</span>
             <div class="tool-info-actions">
@@ -478,138 +484,279 @@
   </div>
 </main>
 
-<!-- SEO CONTENT -->
-<section style="max-width:800px;margin:2rem auto;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">Nigeria Tax Calculator &mdash; How PAYE Works</h2>
-  <p style="font-size:0.95rem;color:#475569;line-height:1.7;">This Nigeria tax calculator computes your PAYE (Pay As You Earn) income tax using both the old PITA system (2025) and the new Nigeria Tax Act (NTA 2026). Enter your salary to see your exact take-home pay, effective tax rate, marginal tax rate, and a full breakdown of deductions including pension, NHF, NHIS, and rent relief. Supports both gross-to-net and net-to-gross reverse calculation. Nigerian businesses should also review the country's <a href="/nigeria/ng-vat" style="color:var(--color-brand,#007AFF);">7.5% VAT obligations</a> and use our <a href="/tools/import-duty/" style="color:var(--color-brand,#007AFF);">Import Duty Calculator</a> when planning landed costs.</p>
-  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-top:1rem;">Whether you need a salary calculator for Nigeria, want to compare PITA vs NTA, calculate employer cost to company, or find your net-to-gross salary, enter your amount above and get instant, <a href="https://www.firs.gov.ng/" target="_blank" rel="noopener" style="color:var(--color-brand,#007AFF);">FIRS</a>-accurate results. Also known as: Nigeria salary calculator, Nigeria income tax calculator, FIRS PAYE calculator, net pay calculator Nigeria, take-home pay calculator Nigeria.</p>
+<!-- SAVE TOOL CTA -->
+<section class="ng-save-sec">
+  <div class="container">
+    <div class="ng-save-card">
+      <div class="ng-save-left">
+        <div class="ng-save-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <h3 class="ng-save-title">Save this calculator</h3>
+          <p class="ng-save-desc">Bookmark Nigeria PAYE to your personal dashboard for quick access anytime.</p>
+        </div>
+      </div>
+      <div class="ng-save-actions">
+        <button class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Save to My Tools
+        </button>
+        <button class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- TWO-COLUMN GUIDE -->
+<section class="ng-guide-sec">
+  <div class="container">
+    <div class="ng-guide-header">
+      <span class="eyebrow">Understanding Nigeria Tax</span>
+      <h2 class="ng-guide-title">How PAYE Works Under NTA 2026</h2>
+      <p class="ng-guide-lead">Everything you need to know about Nigeria's new tax system &mdash; from the &#8358;800K threshold to rent relief.</p>
+    </div>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+    <div class="ng-guide-grid">
+      <!-- Left column: overview -->
+      <div class="ng-guide-col">
+        <div class="ng-guide-card">
+          <div class="ng-guide-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>What changed?</h3>
+          <p>The Nigeria Tax Act (NTA) replaced PITA effective January 1, 2026. The biggest change: CRA is <strong>abolished</strong>. In its place, everyone gets an &#8358;800,000 tax-free threshold &mdash; meaning if you earn below &#8358;800K/year, you pay <strong>zero income tax</strong>.</p>
+        </div>
+
+        <div class="ng-guide-card">
+          <div class="ng-guide-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3>Rent Relief</h3>
+          <p>Replaces CRA as the primary non-pension deduction. Calculated as the <strong>lower of 20% of rent actually paid</strong> or &#8358;500,000/year. If you own your home and don't pay rent, you cannot claim this relief.</p>
+        </div>
+
+        <div class="ng-guide-card">
+          <div class="ng-guide-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <h3>Pension &amp; NHF</h3>
+          <p>Employee pension stays at <strong>8%</strong>, but now applies only to Basic + Housing + Transport (pensionable emoluments), not total gross. Employers contribute 10%. <a href="/tools/ng-nhf/">NHF</a> is 2.5% of basic salary and remains tax-deductible.</p>
+        </div>
+      </div>
+
+      <!-- Right column: bands table + key numbers -->
+      <div class="ng-guide-col">
+        <div class="ng-guide-card ng-guide-card-table">
+          <h3>NTA 2026 vs PITA 2025 Tax Bands</h3>
+          <div class="ng-bands-table-wrap">
+            <table class="ng-bands-table">
+              <thead>
+                <tr>
+                  <th>NTA 2026 Band</th>
+                  <th>Rate</th>
+                  <th>PITA 2025 Band</th>
+                  <th>Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>0 &ndash; 800K</td><td class="ng-rate-green">0%</td><td>First 300K</td><td>7%</td></tr>
+                <tr><td>800K &ndash; 3M</td><td>15%</td><td>Next 300K</td><td>11%</td></tr>
+                <tr><td>3M &ndash; 12M</td><td>18%</td><td>Next 500K</td><td>15%</td></tr>
+                <tr><td>12M &ndash; 25M</td><td>21%</td><td>Next 500K</td><td>19%</td></tr>
+                <tr><td>25M &ndash; 50M</td><td>23%</td><td>Next 1.6M</td><td>21%</td></tr>
+                <tr><td>Above 50M</td><td class="ng-rate-red">25%</td><td>Above 3.2M</td><td class="ng-rate-red">24%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="ng-guide-card ng-guide-card-numbers">
+          <h3>Key numbers at a glance</h3>
+          <div class="ng-key-grid">
+            <div class="ng-key-item">
+              <span class="ng-key-val">&#8358;800K</span>
+              <span class="ng-key-lbl">Tax-free threshold</span>
+            </div>
+            <div class="ng-key-item">
+              <span class="ng-key-val">25%</span>
+              <span class="ng-key-lbl">Top NTA rate</span>
+            </div>
+            <div class="ng-key-item">
+              <span class="ng-key-val">8%</span>
+              <span class="ng-key-lbl">Employee pension</span>
+            </div>
+            <div class="ng-key-item">
+              <span class="ng-key-val">&#8358;500K</span>
+              <span class="ng-key-lbl">Max rent relief</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ng-guide-footer-note">
+      <p>Nigerian businesses should also review <a href="/nigeria/ng-vat">7.5% VAT obligations</a> and use our <a href="/tools/import-duty/">Import Duty Calculator</a> when planning landed costs. Professionals considering international opportunities can use the <a href="/tools/japa-calculator/">Japa Cost Calculator</a> to plan relocation finances.</p>
+    </div>
+  </div>
+</section>
+
+<div class="container" style="max-width:760px;margin-inline:auto;padding:0 20px;">
   <wise-cta context="paye" country="Nigeria"></wise-cta>
 </div>
-<!-- FAQ -->
-<section class="faq-sec">
-  <div class="faq-inner">
-    <span class="eyebrow">Nigeria Tax FAQ</span>
-    <h2 class="sec-title">Common PAYE Questions</h2>
-    <div class="faq-grid">
-      <div class="faq-item">
-        <div class="faq-q">What are the new Nigeria PAYE tax bands for 2026?</div>
-        <p class="faq-a">Under NTA 2026: 0% on first &#8358;800,000; 15% on &#8358;800,001&ndash;&#8358;3M; 18% on &#8358;3M&ndash;&#8358;12M; 21% on &#8358;12M&ndash;&#8358;25M; 23% on &#8358;25M&ndash;&#8358;50M; 25% above &#8358;50M.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What happened to CRA under the new tax law?</div>
-        <p class="faq-a">CRA is abolished under NTA 2026. Replaced by Rent Relief &mdash; the lower of 20% of annual rent paid or &#8358;500,000. If you own your home, you cannot claim Rent Relief.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">When does the Nigeria Tax Act take effect?</div>
-        <p class="faq-a">Signed June 26 2025. Takes effect January 1 2026. Your 2025 payslip still uses PITA with CRA. Select &ldquo;Old System &mdash; PITA&rdquo; above for 2025 calculations.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">How is pension calculated under NTA 2026?</div>
-        <p class="faq-a">Under NTA 2026, employee pension (8%) applies only to Basic Salary + Housing + Transport &mdash; not total gross. Enter your pensionable emoluments separately.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Can I do a net-to-gross calculation?</div>
-        <p class="faq-a">Yes. Switch to &ldquo;Net &rarr; Gross&rdquo; mode at the top of the input card. Enter your desired take-home pay and we'll compute the gross salary needed under either PITA or NTA.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What is the employer cost for hiring in Nigeria?</div>
-        <p class="faq-a">Employers pay 10% pension contribution plus optional NHF (2.5%) and NHIS (varies). Our employer cost section below the results shows total cost to company including all employer obligations.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What is the effective vs marginal tax rate?</div>
-        <p class="faq-a">Effective rate = total tax paid / gross income. Marginal rate = the tax rate on your next naira earned. A higher earner has a higher marginal rate but may have a moderate effective rate due to progressive bands.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Is there a minimum tax in Nigeria?</div>
-        <p class="faq-a">Under PITA, minimum tax is 1% of gross income when calculated PAYE is less. Under NTA 2026, the &#8358;800,000 tax-free threshold replaces the minimum tax concept for individuals.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What is the Consolidated Relief Allowance (CRA) under PITA?</div>
-        <p class="faq-a">Under the old PITA system (2025 and earlier), CRA equals 20% of gross income plus the higher of &#8358;200,000 or 1% of gross income. This is deducted from gross income before applying the six graduated tax bands (7%&ndash;24%). CRA was the primary tax reduction mechanism under PITA and is abolished under NTA 2026.</p>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What is the NHF contribution and is it mandatory?</div>
-        <p class="faq-a">The National Housing Fund (NHF) requires employees earning &#8358;3,000 or more per year to contribute 2.5% of their basic salary. Contributions are tax-deductible and entitle you to access the NHF mortgage scheme. Enforcement varies by employer, but it is technically mandatory for all salaried workers under the NHF Act.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- SEO Guide -->
-<section style="max-width:800px;margin:2.5rem auto;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.35rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">Nigeria PAYE Tax Under NTA 2026</h2>
-  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1rem;">Nigeria&rsquo;s Pay As You Earn (PAYE) system underwent a major overhaul with the Nigeria Tax Act (NTA), signed into law on June 26, 2025, and effective from January 1, 2026. The NTA replaces the Personal Income Tax Act (PITA) that had governed individual taxation for decades. The Federal Inland Revenue Service (FIRS) administers tax for residents of the FCT, while State Internal Revenue Services handle PAYE for employees in their respective states.</p>
-  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1rem;">Under the old PITA system, the key relief was the Consolidated Relief Allowance (CRA), calculated as 20% of gross income plus the higher of &#8358;200,000 or 1% of gross income. After deducting CRA, pension, NHF, and other allowable items, the remaining chargeable income was taxed at six graduated rates from 7% to 24%. The NTA abolishes CRA entirely and introduces a generous &#8358;800,000 annual tax-free threshold, meaning anyone earning below &#8358;800,000 per year pays zero income tax.</p>
-  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1rem;">The NTA tax bands are: 0% on the first &#8358;800,000, 15% on &#8358;800,001 to &#8358;3,000,000, 18% on &#8358;3,000,001 to &#8358;12,000,000, 21% on &#8358;12,000,001 to &#8358;25,000,000, 23% on &#8358;25,000,001 to &#8358;50,000,000, and 25% on amounts above &#8358;50,000,000. This represents a significant reduction in the top marginal rate from 24% (PITA) to 25% (NTA), but with wider bands that benefit middle-income earners substantially.</p>
-  <p style="font-size:0.95rem;color:#475569;line-height:1.7;margin-bottom:1.5rem;">Mandatory pension contributions remain at 8% of pensionable emoluments (Basic + Housing + Transport) for employees, with employers contributing 10%. The National Housing Fund (<a href="/tools/ng-nhf/" style="color:var(--color-brand,#007AFF);">NHF contribution calculator</a>) is 2.5% of basic salary and is tax-deductible. Under NTA, Rent Relief replaces CRA as the primary non-pension deduction, calculated as the lower of 20% of rent actually paid or &#8358;500,000 per year. Homeowners who do not pay rent cannot claim this relief. Nigerian professionals considering international opportunities can use our <a href="/tools/japa-calculator/" style="color:var(--color-brand,#007AFF);">Japa Cost Calculator</a> to plan relocation finances.</p>
-
-  <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.75rem;color:#1e293b;">Nigeria PAYE Tax Bands &mdash; NTA 2026 vs PITA 2025</h3>
-  <div style="overflow-x:auto;">
-    <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-bottom:1rem;">
-      <thead>
-        <tr style="background:#F5F9FF;border-bottom:2px solid #DBEAFE;">
-          <th style="padding:10px 14px;text-align:left;font-weight:600;color:#1e293b;">NTA 2026 Band (Annual &#8358;)</th>
-          <th style="padding:10px 14px;text-align:right;font-weight:600;color:#1e293b;">NTA Rate</th>
-          <th style="padding:10px 14px;text-align:left;font-weight:600;color:#1e293b;">PITA 2025 Band (Annual &#8358;)</th>
-          <th style="padding:10px 14px;text-align:right;font-weight:600;color:#1e293b;">PITA Rate</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom:1px solid #EFF6FF;"><td style="padding:10px 14px;color:#475569;">0 &ndash; 800,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#16a34a;">0%</td><td style="padding:10px 14px;color:#475569;">First 300,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">7%</td></tr>
-        <tr style="border-bottom:1px solid #EFF6FF;background:#FAFBFF;"><td style="padding:10px 14px;color:#475569;">800,001 &ndash; 3,000,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">15%</td><td style="padding:10px 14px;color:#475569;">Next 300,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">11%</td></tr>
-        <tr style="border-bottom:1px solid #EFF6FF;"><td style="padding:10px 14px;color:#475569;">3,000,001 &ndash; 12,000,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">18%</td><td style="padding:10px 14px;color:#475569;">Next 500,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">15%</td></tr>
-        <tr style="border-bottom:1px solid #EFF6FF;background:#FAFBFF;"><td style="padding:10px 14px;color:#475569;">12,000,001 &ndash; 25,000,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">21%</td><td style="padding:10px 14px;color:#475569;">Next 500,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">19%</td></tr>
-        <tr style="border-bottom:1px solid #EFF6FF;"><td style="padding:10px 14px;color:#475569;">25,000,001 &ndash; 50,000,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">23%</td><td style="padding:10px 14px;color:#475569;">Next 1,600,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#475569;">21%</td></tr>
-        <tr><td style="padding:10px 14px;color:#475569;">Over 50,000,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#dc2626;">25%</td><td style="padding:10px 14px;color:#475569;">Above 3,200,000</td><td style="padding:10px 14px;text-align:right;font-weight:600;color:#dc2626;">24%</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- MORE TOOLS -->
-<section class="more-tools-sec">
-  <div class="more-tools-inner">
-    <h2 class="more-tools-title">More African Tax Tools</h2>
-    <div class="more-tools-grid">
-      <a href="/ghana/gh-paye" class="more-tool-link">🇬🇭 Ghana PAYE Calculator</a>
-      <a href="/cameroon/cm-paye" class="more-tool-link">🇨🇲 Cameroon PAYE Calculator</a>
-      <a href="/egypt/eg-paye" class="more-tool-link">🇪🇬 Egypt PAYE Calculator</a>
-      <a href="/kenya/ke-paye" class="more-tool-link">🇰🇪 Kenya PAYE Calculator</a>
-      <a href="/south-africa/za-paye" class="more-tool-link">🇿🇦 South Africa PAYE Calculator</a>
-      <a href="/senegal/sn-paye" class="more-tool-link">🇸🇳 Senegal PAYE Calculator</a>
-      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">🌍 Pan-African VAT Calculator</a>
-      <a href="/tools/currency-converter/" class="more-tool-link">💱 African Currency Converter</a>
-    </div>
-  </div>
-</section>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">Related African Tax Tools</h2>
-  <div style="display:flex;flex-wrap:wrap;gap:10px;">
-    <a href="/nigeria/ng-vat" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;transition:background 0.15s;">Nigeria VAT Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;transition:background 0.15s;">Ghana PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;transition:background 0.15s;">Kenya PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;transition:background 0.15s;">South Africa PAYE Calculator</a>
-    <a href="/tools/paye-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;transition:background 0.15s;">All PAYE Calculators</a>
-  </div>
-</section>
-
-<style>.rt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}.rt-card{display:block;padding:1.25rem;background:#fff;border:1px solid #DBEAFE;border-radius:.875rem;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s}.rt-card:hover{box-shadow:0 4px 16px rgba(0,122,255,.12);transform:translateY(-2px)}.rt-icon{font-size:2rem;margin-bottom:.75rem}.rt-name{font-weight:700;color:#0f172a;margin-bottom:.25rem;font-size:.95rem}.rt-desc{font-size:.82rem;color:#64748b;line-height:1.4;margin:0}</style>
-<section class="related-tools" style="padding:3rem 0;background:var(--color-bg-subtle,#F8FAFD);">
+<!-- FAQ — two-column -->
+<section class="ng-faq-sec">
   <div class="container">
-    <h2 style="font-family:'DM Sans',sans-serif;font-weight:800;text-transform:uppercase;font-size:.75rem;letter-spacing:2px;color:var(--color-text-muted,#64748b);margin-bottom:1rem;">Related Tools</h2>
-    <div class="rt-grid">
-      <a href="/nigeria/ng-vat" class="rt-card"><div class="rt-icon">🧾</div><div class="rt-name">Nigeria VAT Calculator</div><p class="rt-desc">Calculate 7.5% VAT on goods and services in Nigeria. Inclusive and exclusive modes.</p></a>
-      <a href="/tools/import-duty/" class="rt-card"><div class="rt-icon">📦</div><div class="rt-name">Import Duty Calculator</div><p class="rt-desc">Estimate customs duties and total landed cost for goods imported into Nigeria.</p></a>
-      <a href="/ghana/gh-paye" class="rt-card"><div class="rt-icon">🇬🇭</div><div class="rt-name">Ghana PAYE Calculator</div><p class="rt-desc">Calculate Ghana net salary with GRA's 7-band tax, SSNIT Tier I/II/III, and reliefs.</p></a>
-      <a href="/tools/japa-calculator/" class="rt-card"><div class="rt-icon">✈️</div><div class="rt-name">Japa Cost Calculator</div><p class="rt-desc">Estimate the total financial cost of relocating from Nigeria to the UK, Canada, or USA.</p></a>
+    <div class="ng-faq-header">
+      <span class="eyebrow">Nigeria Tax FAQ</span>
+      <h2 class="ng-faq-title">Common PAYE Questions</h2>
+    </div>
+    <div class="ng-faq-grid">
+      <div class="ng-faq-col">
+        <details class="ng-faq-item" open>
+          <summary>What are the new PAYE tax bands for 2026?</summary>
+          <p>Under NTA 2026: 0% on first &#8358;800,000; 15% on &#8358;800,001&ndash;&#8358;3M; 18% on &#8358;3M&ndash;&#8358;12M; 21% on &#8358;12M&ndash;&#8358;25M; 23% on &#8358;25M&ndash;&#8358;50M; 25% above &#8358;50M.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What happened to CRA under the new tax law?</summary>
+          <p>CRA is abolished under NTA 2026. Replaced by Rent Relief &mdash; the lower of 20% of annual rent paid or &#8358;500,000. If you own your home, you cannot claim Rent Relief.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>When does the Nigeria Tax Act take effect?</summary>
+          <p>Signed June 26 2025. Takes effect January 1 2026. Your 2025 payslip still uses PITA with CRA. Select &ldquo;Old System &mdash; PITA&rdquo; above for 2025 calculations.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>How is pension calculated under NTA 2026?</summary>
+          <p>Under NTA 2026, employee pension (8%) applies only to Basic Salary + Housing + Transport &mdash; not total gross. Enter your pensionable emoluments separately.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Can I do a net-to-gross calculation?</summary>
+          <p>Yes. Switch to &ldquo;Net &rarr; Gross&rdquo; mode at the top of the input card. Enter your desired take-home pay and we'll compute the gross salary needed under either PITA or NTA.</p>
+        </details>
+      </div>
+      <div class="ng-faq-col">
+        <details class="ng-faq-item">
+          <summary>What is the employer cost for hiring in Nigeria?</summary>
+          <p>Employers pay 10% pension contribution plus optional NHF (2.5%) and NHIS (varies). Our employer cost section below the results shows total cost to company including all employer obligations.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is the effective vs marginal tax rate?</summary>
+          <p>Effective rate = total tax paid / gross income. Marginal rate = the tax rate on your next naira earned. A higher earner has a higher marginal rate but may have a moderate effective rate due to progressive bands.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Is there a minimum tax in Nigeria?</summary>
+          <p>Under PITA, minimum tax is 1% of gross income when calculated PAYE is less. Under NTA 2026, the &#8358;800,000 tax-free threshold replaces the minimum tax concept for individuals.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is CRA under PITA?</summary>
+          <p>Consolidated Relief Allowance = 20% of gross income plus the higher of &#8358;200,000 or 1% of gross income. Deducted before applying the six graduated bands (7%&ndash;24%). Abolished under NTA 2026.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Is NHF mandatory?</summary>
+          <p>The National Housing Fund requires employees earning &#8358;3,000+ per year to contribute 2.5% of basic salary. Contributions are tax-deductible. Enforcement varies by employer, but it&rsquo;s technically mandatory under the NHF Act.</p>
+        </details>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- MORE AFRICAN TAX TOOLS — redesigned cards -->
+<section class="ng-more-sec">
+  <div class="container">
+    <div class="ng-more-header">
+      <h2 class="ng-more-title">More African Tax Tools</h2>
+      <a href="/tools/paye-calculator/" class="ng-more-all">View all calculators &rarr;</a>
+    </div>
+    <div class="ng-more-grid">
+      <a href="/ghana/gh-paye" class="ng-more-card">
+        <span class="ng-more-flag">GH</span>
+        <div class="ng-more-body">
+          <span class="ng-more-name">Ghana PAYE Calculator</span>
+          <span class="ng-more-desc">GRA 7-band tax, SSNIT Tier I/II/III, and reliefs</span>
+        </div>
+        <svg class="ng-more-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="/cameroon/cm-paye" class="ng-more-card">
+        <span class="ng-more-flag">CM</span>
+        <div class="ng-more-body">
+          <span class="ng-more-name">Cameroon PAYE Calculator</span>
+          <span class="ng-more-desc">IRPP progressive bands, CNPS, and CFC deductions</span>
+        </div>
+        <svg class="ng-more-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="/kenya/ke-paye" class="ng-more-card">
+        <span class="ng-more-flag">KE</span>
+        <div class="ng-more-body">
+          <span class="ng-more-name">Kenya PAYE Calculator</span>
+          <span class="ng-more-desc">KRA tax bands, NSSF, NHIF, housing levy</span>
+        </div>
+        <svg class="ng-more-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="/south-africa/za-paye" class="ng-more-card">
+        <span class="ng-more-flag">ZA</span>
+        <div class="ng-more-body">
+          <span class="ng-more-name">South Africa PAYE Calculator</span>
+          <span class="ng-more-desc">SARS tax tables, UIF, medical aid credits</span>
+        </div>
+        <svg class="ng-more-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="/egypt/eg-paye" class="ng-more-card">
+        <span class="ng-more-flag">EG</span>
+        <div class="ng-more-body">
+          <span class="ng-more-name">Egypt PAYE Calculator</span>
+          <span class="ng-more-desc">Progressive tax, social insurance, exemptions</span>
+        </div>
+        <svg class="ng-more-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="/senegal/sn-paye" class="ng-more-card">
+        <span class="ng-more-flag">SN</span>
+        <div class="ng-more-body">
+          <span class="ng-more-name">Senegal PAYE Calculator</span>
+          <span class="ng-more-desc">IR progressive bands, IPRES, CSS deductions</span>
+        </div>
+        <svg class="ng-more-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ALSO USEFUL FOR NIGERIA -->
+<section class="ng-also-sec">
+  <div class="container">
+    <span class="eyebrow">Also useful for Nigeria</span>
+    <div class="ng-also-grid">
+      <a href="/nigeria/ng-vat" class="ng-also-chip">
+        <span class="ng-also-icon">🧾</span>
+        <div><strong>VAT Calculator</strong><span>Sales tax for Nigeria</span></div>
+      </a>
+      <a href="/tools/currency-converter/" class="ng-also-chip">
+        <span class="ng-also-icon">💱</span>
+        <div><strong>Currency Converter</strong><span>Live FX rates</span></div>
+      </a>
+      <a href="/tools/invoice-generator/" class="ng-also-chip">
+        <span class="ng-also-icon">📄</span>
+        <div><strong>Invoice Generator</strong><span>Send professional invoices</span></div>
+      </a>
+      <a href="/tools/budget-planner/" class="ng-also-chip">
+        <span class="ng-also-icon">📊</span>
+        <div><strong>Budget Planner</strong><span>Monthly budget tracker</span></div>
+      </a>
+      <a href="/tools/remittance/" class="ng-also-chip">
+        <span class="ng-also-icon">🔄</span>
+        <div><strong>Remittance Comparator</strong><span>Best money transfer rates</span></div>
+      </a>
+      <a href="/tools/pdf-workspace/" class="ng-also-chip">
+        <span class="ng-also-icon">📁</span>
+        <div><strong>PDF Workspace</strong><span>Export your payslip</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
@@ -1475,7 +1622,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
-<script src="/assets/js/favorites-widget.js" defer></script>
+<script>
+// Save tool — replaces floating favorites button
+var SAVE_KEY = 'afro_favs_v2';
+var TOOL_ID = 'ng-paye';
+function getSavedTools() { try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || []; } catch(e) { return []; } }
+function isToolSaved() { return getSavedTools().indexOf(TOOL_ID) >= 0; }
+function toggleSaveTool() {
+  var list = getSavedTools(), idx = list.indexOf(TOOL_ID), saved;
+  if (idx >= 0) { list.splice(idx, 1); saved = false; } else { list.unshift(TOOL_ID); if (list.length > 50) list = list.slice(0, 50); saved = true; }
+  localStorage.setItem(SAVE_KEY, JSON.stringify(list));
+  updateSaveUI(saved);
+  if (window._savedToolsInstance) {
+    if (saved) _savedToolsInstance.save(TOOL_ID, document.title.split('|')[0].trim(), location.pathname, '').catch(function(){});
+    else _savedToolsInstance.remove(TOOL_ID).catch(function(){});
+  }
+}
+function updateSaveUI(saved) {
+  var sideLabel = document.getElementById('sidebarSaveLabel');
+  var sideBtn = document.getElementById('sidebarSaveBtn');
+  var inlineBtn = document.getElementById('inlineSaveBtn');
+  if (sideLabel) sideLabel.textContent = saved ? 'Saved' : 'Save to My Tools';
+  if (sideBtn) { sideBtn.classList.toggle('saved', saved); }
+  if (inlineBtn) { inlineBtn.innerHTML = saved
+    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Saved'
+    : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save to My Tools';
+  }
+}
+document.addEventListener('DOMContentLoaded', function() { updateSaveUI(isToolSaved()); });
+</script>
 <script src="/assets/js/share-image-inject.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
