@@ -271,7 +271,7 @@ def remove_afro_chat(html):
 
 
 def add_save_js(html, tool_id):
-    if 'toggleSaveTool' in html:
+    if 'function toggleSaveTool' in html:
         return html
     js = f'''<script>
 function toggleSaveTool(){{

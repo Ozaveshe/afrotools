@@ -970,6 +970,25 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 <script src="/assets/js/components/salary-benchmark-widget.js" defer><\/script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"><\/script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');<\/script>
+<script>
+function toggleSaveTool(){
+  var KEY='afro_favs_v2',id='mu-paye';
+  var favs=JSON.parse(localStorage.getItem(KEY)||'[]');
+  var idx=favs.indexOf(id);
+  if(idx>-1){favs.splice(idx,1)}else{favs.push(id)}
+  localStorage.setItem(KEY,JSON.stringify(favs));
+  updateSaveUI();
+}
+function updateSaveUI(){
+  var KEY='afro_favs_v2',id='mu-paye';
+  var saved=JSON.parse(localStorage.getItem(KEY)||'[]').indexOf(id)>-1;
+  var btn=document.getElementById('inlineSaveBtn');
+  if(btn){btn.innerHTML=saved?'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Saved':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save to My Tools';btn.classList.toggle('saved',saved);}
+  var sb=document.querySelector('.tool-info-save-btn');
+  if(sb){sb.textContent=saved?'Saved':'Save';sb.classList.toggle('saved',saved);}
+}
+document.addEventListener('DOMContentLoaded',updateSaveUI);
+</script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -1082,5 +1101,24 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script><script src="/assets/js/share-image-inject.js" defer></script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
+<script>
+function toggleSaveTool(){
+  var KEY='afro_favs_v2',id='mu-paye';
+  var favs=JSON.parse(localStorage.getItem(KEY)||'[]');
+  var idx=favs.indexOf(id);
+  if(idx>-1){favs.splice(idx,1)}else{favs.push(id)}
+  localStorage.setItem(KEY,JSON.stringify(favs));
+  updateSaveUI();
+}
+function updateSaveUI(){
+  var KEY='afro_favs_v2',id='mu-paye';
+  var saved=JSON.parse(localStorage.getItem(KEY)||'[]').indexOf(id)>-1;
+  var btn=document.getElementById('inlineSaveBtn');
+  if(btn){btn.innerHTML=saved?'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Saved':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save to My Tools';btn.classList.toggle('saved',saved);}
+  var sb=document.querySelector('.tool-info-save-btn');
+  if(sb){sb.textContent=saved?'Saved':'Save';sb.classList.toggle('saved',saved);}
+}
+document.addEventListener('DOMContentLoaded',updateSaveUI);
+</script>
 </body>
 </html>
