@@ -725,6 +725,20 @@ let selectedProviders = new Set();
   document.getElementById('mmAmount').value = '5000';
   onCountryChange();
   renderHistory();
+
+  // Auto-compare on input changes
+  var debounceTimer;
+  document.getElementById('mmAmount').addEventListener('input', function(){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function(){
+      var amt = parseFloat(document.getElementById('mmAmount').value);
+      if(amt > 0) compare();
+    }, 400);
+  });
+  document.getElementById('mmTxType').addEventListener('change', function(){
+    var amt = parseFloat(document.getElementById('mmAmount').value);
+    if(amt > 0) compare();
+  });
 })();
 
 function getFlagEmoji(code){
@@ -757,13 +771,15 @@ function onCountryChange(){
 
 function toggleProvider(key, btn){
   if(selectedProviders.has(key)){
-    if(selectedProviders.size <= 1) return; // keep at least one
+    if(selectedProviders.size <= 1) return;
     selectedProviders.delete(key);
     btn.classList.remove('active');
   } else {
     selectedProviders.add(key);
     btn.classList.add('active');
   }
+  var amt = parseFloat(document.getElementById('mmAmount').value);
+  if(amt > 0) compare();
 }
 
 function getFee(feeBands, amount){
@@ -782,7 +798,7 @@ function compare(){
   const amount = parseFloat(document.getElementById('mmAmount').value);
   const txType = document.getElementById('mmTxType').value;
 
-  if(!amount || amount <= 0){ alert('Please enter a valid transfer amount.'); return; }
+  if(!amount || amount <= 0){ alert('Veuillez entrer un montant valide.'); return; }
 
   const countryData = FEE_TABLES[code];
   if(!countryData){ alert('Country data not available.'); return; }
@@ -835,7 +851,7 @@ function compare(){
     tr.className = r.fee === 0 ? 'cheapest' : isCheapest ? 'cheapest' : '';
     tr.innerHTML = `
       <td><span class="prov-badge"><span class="p-dot" style="background:${r.color}"></span>${r.name}</span></td>
-      <td class="right">${r.fee === 0 ? '<span style="color:#2563EB;font-weight:800;">FREE</span>' : sym + fmtN(r.fee)}</td>
+      <td class="right">${r.fee === 0 ? '<span style="color:#2563EB;font-weight:800;">GRATUIT</span>' : sym + fmtN(r.fee)}</td>
       <td class="right">${r.fee === 0 ? '0%' : r.pct.toFixed(2)+'%'}</td>
       <td class="right">${sym}${fmtN(r.youSend)}</td>
       <td class="right">${sym}${fmtN(r.theyReceive)}</td>
@@ -856,20 +872,20 @@ function compare(){
   const savingsVsWorst = results[results.length-1].fee - cheapest.fee;
   document.getElementById('mmTips').innerHTML = `
     <div class="mm-tip">
-      <h4>💰 Your Savings</h4>
-      <p>By choosing ${cheapest.name} over the most expensive option, you save <strong>${sym}${fmtN(savingsVsWorst)}</strong> on this transfer.</p>
+      <h4>💰 Vos \u00c9conomies</h4>
+      <p>En choisissant ${cheapest.name} au lieu de l\u2019option la plus ch\u00e8re, vous \u00e9conomisez <strong>${sym}${fmtN(savingsVsWorst)}</strong> sur ce transfert.</p>
     </div>
     <div class="mm-tip">
-      <h4>📅 When Fees Change</h4>
-      <p>Mobile money fees are revised periodically. Always check the provider's USSD menu (**** codes) for the most current rates before large transfers.</p>
+      <h4>📅 Changement de Frais</h4>
+      <p>Les frais de mobile money sont r\u00e9vis\u00e9s p\u00e9riodiquement. V\u00e9rifiez toujours le menu USSD du prestataire pour les tarifs les plus r\u00e9cents avant les gros transferts.</p>
     </div>
     <div class="mm-tip">
-      <h4>⚡ Transfer Limits</h4>
-      <p>Daily/monthly limits apply per provider and regulatory tier. For large amounts, consider bank transfer or multiple smaller transactions.</p>
+      <h4>⚡ Limites de Transfert</h4>
+      <p>Des limites quotidiennes/mensuelles s\u2019appliquent par prestataire et niveau r\u00e9glementaire. Pour les gros montants, envisagez un virement bancaire ou plusieurs transactions plus petites.</p>
     </div>
     <div class="mm-tip">
-      <h4>🔒 Safety Tips</h4>
-      <p>Always confirm recipient number before sending. Mobile money transfers cannot be reversed once confirmed. Use PIN never share it.</p>
+      <h4>🔒 Conseils de S\u00e9curit\u00e9</h4>
+      <p>Confirmez toujours le num\u00e9ro du destinataire avant d\u2019envoyer. Les transferts mobile money ne peuvent pas \u00eatre annul\u00e9s une fois confirm\u00e9s. Ne partagez jamais votre code PIN.</p>
     </div>
   `;
 
@@ -892,14 +908,14 @@ function compare(){
     var kwh = Math.floor(savingsVsWorst / kwhPrice);
 
     funTarget.innerHTML = '<div class="mfun">'
-      + '<div class="mfun-card gold"><div class="mfun-emoji">\u2615</div><div class="mfun-title">Caf\u00E9 Visits</div><div class="mfun-text">' + coffees + ' cups of coffee</div></div>'
-      + '<div class="mfun-card blue"><div class="mfun-emoji">🎬</div><div class="mfun-title">Movies</div><div class="mfun-text">' + movies + ' movie tickets</div></div>'
-      + '<div class="mfun-card rose"><div class="mfun-emoji">🍕</div><div class="mfun-title">Street Food</div><div class="mfun-text">' + meals + ' plates of street food</div></div>'
-      + '<div class="mfun-card green"><div class="mfun-emoji">💡</div><div class="mfun-title">Electricity</div><div class="mfun-text">' + kwh + ' kWh of power</div></div>'
+      + '<div class="mfun-card gold"><div class="mfun-emoji">\u2615</div><div class="mfun-title">Caf\u00e9s</div><div class="mfun-text">' + coffees + ' tasses de caf\u00e9</div></div>'
+      + '<div class="mfun-card blue"><div class="mfun-emoji">🎬</div><div class="mfun-title">Cin\u00e9ma</div><div class="mfun-text">' + movies + ' billets de cin\u00e9ma</div></div>'
+      + '<div class="mfun-card rose"><div class="mfun-emoji">🍕</div><div class="mfun-title">Street Food</div><div class="mfun-text">' + meals + ' plats de rue</div></div>'
+      + '<div class="mfun-card green"><div class="mfun-emoji">💡</div><div class="mfun-title">\u00c9lectricit\u00e9</div><div class="mfun-text">' + kwh + ' kWh d\u2019\u00e9lectricit\u00e9</div></div>'
       + '</div>'
-      + '<div class="mfun-dyk"><div class="mfun-dyk-title">💡 Did You Know?</div><div class="mfun-dyk-text">M-Pesa launched in Kenya in 2007 and now processes more transactions per day than PayPal does globally! Over 50 million Africans use mobile money daily. Africa invented fintech. 📱💚</div></div>';
+      + '<div class="mfun-dyk"><div class="mfun-dyk-title">💡 Le Saviez-Vous ?</div><div class="mfun-dyk-text">M-Pesa a \u00e9t\u00e9 lanc\u00e9 au Kenya en 2007 et traite d\u00e9sormais plus de transactions par jour que PayPal dans le monde entier ! Plus de 50 millions d\u2019Africains utilisent le mobile money chaque jour. L\u2019Afrique a invent\u00e9 la fintech. 📱💚</div></div>';
   } else {
-    funTarget.innerHTML = '<div class="mfun-dyk" style="margin-top:16px"><div class="mfun-dyk-title">💡 Did You Know?</div><div class="mfun-dyk-text">M-Pesa launched in Kenya in 2007 and now processes more transactions per day than PayPal does globally! Over 50 million Africans use mobile money daily. Africa invented fintech. 📱💚</div></div>';
+    funTarget.innerHTML = '<div class="mfun-dyk" style="margin-top:16px"><div class="mfun-dyk-title">💡 Le Saviez-Vous ?</div><div class="mfun-dyk-text">M-Pesa a \u00e9t\u00e9 lanc\u00e9 au Kenya en 2007 et traite d\u00e9sormais plus de transactions par jour que PayPal dans le monde entier ! Plus de 50 millions d\u2019Africains utilisent le mobile money chaque jour. L\u2019Afrique a invent\u00e9 la fintech. 📱💚</div></div>';
   }
 
   // Save to history

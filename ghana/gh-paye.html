@@ -237,7 +237,7 @@
 
           <!-- Actions -->
           <div class="action-row">
-            <button class="act-btn" id="pdfBtn">
+            <button class="act-btn act-pdf" id="pdfBtn" onclick="exportPdf()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Download PDF
             </button>
@@ -910,7 +910,7 @@
     });
 
     // Actions
-    $('pdfBtn').addEventListener('click', exportPdf);
+    // PDF button uses onclick="exportPdf()" — handled by auto-email-gate
     $('waBtn').addEventListener('click', () => {
       if (!R || !window.AfroTools?.shareState) return;
       window.AfroTools.shareState.whatsappShare({
@@ -956,6 +956,9 @@
     if (p.get('m') === 'net') { calcMode = 'net'; $('modeNet').classList.add('on'); $('modeGross').classList.remove('on'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; }
     if (p.has('g')) setTimeout(calculate, 300);
   });
+
+  // Expose for auto-email-gate.js interception
+  window.exportPdf = exportPdf;
 })();
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>

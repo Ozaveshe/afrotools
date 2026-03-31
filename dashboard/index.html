@@ -2054,12 +2054,7 @@
             document.querySelector('.editor-tab[data-tab="personal"]').classList.add('active');
             document.querySelectorAll('.editor-panel').forEach(function(p) { p.classList.remove('active'); });
             document.querySelector('.editor-panel[data-panel="personal"]').classList.add('active');
-            // Hide security tab for OAuth users
-            var secTab = document.getElementById('securityTab');
-            if (secTab && currentUser) {
-                var isOAuth = currentUser.provider === 'google' || currentUser.provider === 'oauth';
-                secTab.style.display = isOAuth ? 'none' : '';
-            }
+            // Security tab always visible (email/password auth only)
             renderInterestGrid();
         }
 

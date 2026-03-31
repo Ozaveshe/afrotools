@@ -121,6 +121,16 @@
         <div class="res-body">
           <div id="resContent"></div>
         </div>
+        <div class="action-row">
+          <afro-email-gate tool-name="TVA Calculator"><button class="act-btn act-pdf" onclick="exportPdf()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            T&#233;l&#233;charger le PDF
+          </button></afro-email-gate>
+          <button class="act-btn act-share" onclick="if(navigator.share)navigator.share({title:document.title,url:location.href}).catch(function(){});else{navigator.clipboard.writeText(location.href);alert('Lien copi\u00e9 !');}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
       </div>
     </div>
     <div class="sidebar">
@@ -184,6 +194,7 @@
 <afro-footer></afro-footer>
 <script>
 var MODE = 'add';
+var RESULT = null;
 var fmt = function(n) { return Math.round(Math.abs(n)).toLocaleString('fr-FR') + '\u00A0DA'; };
 
 function setMode(mode, btn) {
@@ -234,7 +245,36 @@ function calculate() {
     '</div>';
 
   document.getElementById('resultsCard').classList.add('on');
+
+  if (typeof RESULT === 'undefined') RESULT = {};
+  RESULT = { netAmount: ht, vatAmount: tva, totalInclusive: ttc, rate: rate, mode: MODE, rateLabel: 'Standard' };
 }
+
+function exportPdf() {
+  if (window.AfroTools && window.AfroTools.pdf) {
+    var r = RESULT || {};
+    window.AfroTools.pdf.generate({
+      title: 'Calcul TVA',
+      subtitle: document.title,
+      toolId: 'tva-calc',
+      heroStats: [
+        { label: 'Montant HT', value: fmt(r.netAmount || 0) },
+        { label: 'TVA', value: fmt(r.vatAmount || 0), color: 'red' },
+        { label: 'Montant TTC', value: fmt(r.totalInclusive || 0), highlight: true }
+      ],
+      sections: [{ title: 'D\u00e9tail', rows: [
+        { label: 'Montant HT', value: fmt(r.netAmount || 0) },
+        { label: 'Taux TVA', value: ((r.rate || 0) * 100) + '%' },
+        { label: 'TVA', value: fmt(r.vatAmount || 0), type: 'deduction' },
+        { label: 'Montant TTC', value: fmt(r.totalInclusive || 0), type: 'total' }
+      ]}],
+      disclaimer: 'Ce rapport est fourni \u00e0 titre informatif uniquement.'
+    });
+  } else {
+    window.print();
+  }
+}
+window.exportPdf = exportPdf;
 
 function toggleBands(h) {
   var b = h.nextElementSibling;
@@ -243,7 +283,11 @@ function toggleBands(h) {
 }
 
 document.getElementById('amount').addEventListener('keydown', function(e) { if (e.key === 'Enter') calculate(); });
+document.addEventListener('DOMContentLoaded', function() { calculate(); });
 </script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script>
+<script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

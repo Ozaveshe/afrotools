@@ -49,11 +49,11 @@
 <style>
   :root {
     --calc-accent: #2563EB;
-    --calc-accent-rgb: 30,181,58;
+    --calc-accent-rgb: 37,99,235;
     --calc-accent-subtle: #2563EB12;
   }
   .tool-hero::after { content: '🇹🇿'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
-  .tool-hero { background: #071a0d; }
+  .tool-hero { background: #0A1628; }
   .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
   .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
   .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
@@ -104,10 +104,10 @@
 
 <div class="tool-main">
   <div class="tool-main-inner">
-  <p class="last-updated" style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:1rem;">Imesasishwa mwisho: Machi 2026 · <a href="/blog/tax-updates-2026/" style="color:var(--color-brand);">Angalia mabadiliko</a></p>
 
     <!-- LEFT COLUMN -->
     <div>
+      <p class="last-updated" style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:1rem;">Imesasishwa mwisho: Machi 2026 · <a href="/blog/tax-updates-2026/" style="color:var(--color-brand);">Angalia mabadiliko</a></p>
       <div class="card">
         <div class="card-head">
           <span class="card-title">Ingiza Maelezo Yako</span>
@@ -812,8 +812,9 @@ function shareResult() {
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzShareBtn');
+    const origHTML = btn.innerHTML;
     btn.textContent = '\u2713 Imenakiliwa!';
-    setTimeout(()=>btn.textContent='Shiriki Matokeo',2500);
+    setTimeout(()=>btn.innerHTML=origHTML,2500);
   }
 }
 

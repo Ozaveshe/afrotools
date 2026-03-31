@@ -201,6 +201,56 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 .dm-ok{background:var(--green)}
 .dm-empty{background:var(--red)}
 
+/* ── REVIEW PAGE ── */
+.rv-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.rv-search{flex:1;min-width:200px;padding:9px 14px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;font-family:var(--sans);outline:none;background:var(--card)}
+.rv-search:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
+.rv-select{padding:8px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:11px;font-family:var(--sans);background:var(--card);outline:none;cursor:pointer}
+.rv-count{font-size:11px;color:var(--text3);font-family:var(--mono);margin-left:auto}
+.rv-table{width:100%;border-collapse:collapse;font-size:11px}
+.rv-table th{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);padding:8px 8px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2);position:sticky;top:0;z-index:2}
+.rv-table td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+.rv-table tr:hover td{background:var(--brand-l)}
+.rv-table .rv-comment{width:100%;padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:10px;font-family:var(--sans);resize:vertical;min-height:28px;outline:none}
+.rv-table .rv-comment:focus{border-color:var(--brand)}
+.rv-save-btn{padding:3px 10px;border:none;border-radius:5px;background:var(--brand);color:#fff;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+.rv-save-btn:hover{background:var(--brand-d)}
+.rv-saved{color:var(--green);font-size:10px;font-weight:600}
+.rv-open{color:var(--brand);text-decoration:none;font-size:10px;font-weight:600}
+.rv-open:hover{text-decoration:underline}
+.rv-status{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap}
+.rv-done{background:var(--green-l);color:var(--green)}
+.rv-pending{background:var(--card2);color:var(--text4)}
+
+/* Daily Review */
+.dr-progress{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:var(--r)}
+.dr-bar-wrap{flex:1;height:10px;background:var(--card2);border-radius:5px;overflow:hidden;border:1px solid var(--border)}
+.dr-bar{height:100%;background:var(--brand);border-radius:5px;transition:width .4s ease}
+.dr-label{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap}
+.dr-sub{font-size:10px;color:var(--text3);font-family:var(--mono)}
+.dr-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;position:relative}
+.dr-card.reviewed{border-left:3px solid var(--green)}
+.dr-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.dr-card-name{font-size:13px;font-weight:700;color:var(--text)}
+.dr-card-cat{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--card2);border:1px solid var(--border)}
+.dr-card-path{font-size:10px;font-family:var(--mono);color:var(--brand);margin-bottom:10px;word-break:break-all}
+.dr-card-path a{color:var(--brand);text-decoration:none}
+.dr-card-path a:hover{text-decoration:underline}
+.dr-card textarea{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:11px;font-family:var(--sans);resize:vertical;min-height:60px;outline:none;margin-bottom:8px}
+.dr-card textarea:focus{border-color:var(--brand)}
+.dr-card-actions{display:flex;gap:8px;align-items:center}
+.dr-mark-btn{padding:6px 14px;border:none;border-radius:6px;background:var(--green);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.dr-mark-btn:hover{background:#047857}
+.dr-mark-btn.done{background:var(--card2);color:var(--text3);cursor:default}
+.dr-nav{display:flex;gap:8px;align-items:center;justify-content:center;margin:16px 0}
+.dr-nav-btn{padding:8px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.dr-nav-btn:hover{border-color:var(--brand);color:var(--brand)}
+.dr-nav-btn:disabled{opacity:.4;cursor:not-allowed}
+.dr-page-info{font-size:11px;font-family:var(--mono);color:var(--text3)}
+.rv-export-bar{display:flex;gap:8px;margin-bottom:16px}
+.rv-export-btn{padding:7px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--card);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.rv-export-btn:hover{border-color:var(--brand);color:var(--brand)}
+
 /* ── RESPONSIVE ── */
 @media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
@@ -245,6 +295,9 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
     <button class="rail-btn" onclick="showPage('seo')" title="SEO & Sitemaps">🔍</button>
     <button class="rail-btn" onclick="showPage('i18n')" title="Languages">🌍</button>
     <button class="rail-btn" onclick="showPage('livedata')" title="Live Data Management">🗄️</button>
+    <div class="rail-sep"></div>
+    <button class="rail-btn" onclick="showPage('allpages')" title="All Pages Review">📋</button>
+    <button class="rail-btn" onclick="showPage('dailyreview')" title="Daily Review (200/day)">🔀</button>
     <div class="rail-bottom">
       <button class="rail-btn" onclick="showPage('scripts')" title="Scripts & Commands">⚡</button>
       <a class="rail-btn" href="/" title="Back to Site" style="text-decoration:none;color:inherit">↗</a>
@@ -312,6 +365,14 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
               <div class="check-body">
                 <div class="check-title">Review Supabase logs for errors</div>
                 <div class="check-freq">Daily — check auth, fx_snapshots, scholarships</div>
+              </div>
+            </div>
+            <div class="check-item">
+              <div class="check-box" onclick="toggleCheck(this)">✓</div>
+              <div class="check-body">
+                <div class="check-title">Review 200 pages (Daily Review)</div>
+                <span class="check-cmd" onclick="document.querySelectorAll('.rail-btn')[9].click()">Open Daily Review →</span>
+                <div class="check-freq">Daily — review 200 random pages, add comments, track progress</div>
               </div>
             </div>
           </div>
@@ -682,11 +743,85 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════
+         PAGE: ALL PAGES REVIEW
+         ═══════════════════════════════════════════════════ -->
+    <div class="page" id="page-allpages">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title">📋 All Pages Review</div>
+          <div class="page-sub" id="rv-subtitle">Loading pages...</div>
+        </div>
+      </div>
+
+      <div class="rv-export-bar">
+        <button class="rv-export-btn" onclick="exportComments()">📥 Export Comments JSON</button>
+        <button class="rv-export-btn" onclick="document.getElementById('rv-import-file').click()">📤 Import Comments JSON</button>
+        <input type="file" id="rv-import-file" accept=".json" style="display:none" onchange="importComments(this)">
+      </div>
+
+      <div class="rv-toolbar">
+        <input class="rv-search" id="rv-search" placeholder="Search pages by path..." oninput="filterAllPages()">
+        <select class="rv-select" id="rv-cat-filter" onchange="filterAllPages()">
+          <option value="">All folders</option>
+        </select>
+        <select class="rv-select" id="rv-status-filter" onchange="filterAllPages()">
+          <option value="">All status</option>
+          <option value="reviewed">Reviewed</option>
+          <option value="pending">Pending</option>
+        </select>
+        <div class="rv-count" id="rv-showing">—</div>
+      </div>
+
+      <div style="max-height:calc(100vh - 280px);overflow-y:auto">
+        <table class="rv-table">
+          <thead><tr><th style="width:40px">#</th><th>Page Path</th><th style="width:80px">Folder</th><th style="width:70px">Status</th><th style="width:280px">Comment</th><th style="width:60px"></th></tr></thead>
+          <tbody id="rv-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         PAGE: DAILY REVIEW (200/day)
+         ═══════════════════════════════════════════════════ -->
+    <div class="page" id="page-dailyreview">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title">🔀 Daily Review</div>
+          <div class="page-sub">200 random pages per day — no repeats until all pages reviewed</div>
+        </div>
+        <div class="date-badge" id="dr-date"></div>
+      </div>
+
+      <div class="dr-progress">
+        <div class="dr-label" id="dr-progress-label">0 / 200</div>
+        <div class="dr-bar-wrap"><div class="dr-bar" id="dr-bar" style="width:0%"></div></div>
+        <div class="dr-sub" id="dr-cycle-info"></div>
+      </div>
+
+      <div class="rv-export-bar">
+        <button class="rv-export-btn" onclick="exportComments()">📥 Export Comments</button>
+        <select class="rv-select" id="dr-jump" onchange="drJumpTo(this.value)" style="min-width:120px">
+          <option value="">Jump to page...</option>
+        </select>
+        <div style="margin-left:auto;font-size:11px;color:var(--text3)" id="dr-day-info"></div>
+      </div>
+
+      <div id="dr-cards"></div>
+
+      <div class="dr-nav">
+        <button class="dr-nav-btn" id="dr-prev" onclick="drNav(-10)">← Prev 10</button>
+        <span class="dr-page-info" id="dr-range">1–10 of 200</span>
+        <button class="dr-nav-btn" id="dr-next" onclick="drNav(10)">Next 10 →</button>
+      </div>
+    </div>
+
   </div><!-- /main -->
 </div><!-- /layout -->
 
 <!-- ── TOOL REGISTRY DATA ── -->
 <script src="/assets/js/components/tool-registry.js"></script>
+<script src="/admin/all-pages.js"></script>
 
 <script>
 // ══════════════════════════════════════════════════════════
@@ -781,10 +916,30 @@ function buildDashStats(){
     '<div class="stat-card c-purple"><div class="sc-label">Languages</div><div class="sc-value" style="color:var(--purple)">3</div><div class="sc-sub">English · French · Swahili</div></div>',
     '<div class="stat-card c-amber"><div class="sc-label">Countries</div><div class="sc-value" style="color:var(--amber)">54</div><div class="sc-sub">All African nations covered</div></div>',
     '<div class="stat-card c-blue"><div class="sc-label">Sitemaps</div><div class="sc-value" style="color:var(--blue)">3</div><div class="sc-sub">sitemap.xml · i18n · sw</div></div>',
+    '<div class="stat-card c-red" id="dash-review-stat" style="cursor:pointer" onclick="document.querySelectorAll(\'.rail-btn\')[8].click()"><div class="sc-label">Page Review</div><div class="sc-value" style="color:var(--red)" id="rv-stat-value">—</div><div class="sc-sub" id="rv-stat-sub">Loading...</div></div>',
   ].join('');
 
-  // Greeting sub
-  document.getElementById('greeting-sub').textContent = total + ' tools registered · ' + live + ' live · 3 languages · 54 countries';
+  // Review stats
+  setTimeout(function(){
+    try {
+      var rc = JSON.parse(localStorage.getItem('mc_review_comments')) || {};
+      var ds = JSON.parse(localStorage.getItem('mc_review_daily')) || {};
+      var reviewed = Object.keys(rc).length;
+      var totalP = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES.length : 0;
+      var todayKey = new Date().toISOString().slice(0,10);
+      var todayDone = (ds.reviewedToday && ds.reviewedToday[todayKey]) ? ds.reviewedToday[todayKey].length : 0;
+      var el = document.getElementById('rv-stat-value');
+      var sub = document.getElementById('rv-stat-sub');
+      if(el) el.textContent = reviewed + '/' + totalP;
+      if(sub) sub.textContent = todayDone + '/200 today · click to review';
+    } catch(e){}
+  }, 200);
+
+  // Greeting sub — include review progress
+  var reviewedCount = 0;
+  try { reviewedCount = Object.keys(JSON.parse(localStorage.getItem(RV_COMMENTS_KEY)) || {}).length; } catch(e){}
+  var pagesTotal = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES.length : '?';
+  document.getElementById('greeting-sub').textContent = total + ' tools · ' + live + ' live · ' + pagesTotal + ' pages · ' + reviewedCount + ' reviewed';
 
   // Language coverage bars
   var langEl = document.getElementById('lang-coverage');
@@ -1480,6 +1635,336 @@ function buildLiveDataPage(){
 }
 
 // ══════════════════════════════════════════════════════════
+//  ALL PAGES REVIEW
+// ══════════════════════════════════════════════════════════
+var RV_COMMENTS_KEY = 'mc_review_comments';
+var RV_DAILY_KEY = 'mc_review_daily';
+var rvPages = [];
+var rvComments = {};
+var drOffset = 0;
+var drTodayPages = [];
+
+function loadComments(){
+  try { rvComments = JSON.parse(localStorage.getItem(RV_COMMENTS_KEY)) || {}; } catch(e){ rvComments = {}; }
+}
+
+function saveComments(){
+  localStorage.setItem(RV_COMMENTS_KEY, JSON.stringify(rvComments));
+}
+
+function buildAllPagesReview(){
+  rvPages = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES : [];
+  loadComments();
+
+  document.getElementById('rv-subtitle').textContent = rvPages.length + ' pages across the site — add comments, track review status';
+
+  // Build folder filter
+  var folders = {};
+  rvPages.forEach(function(p){
+    var parts = p.split('/').filter(Boolean);
+    var folder = parts.length > 1 ? parts[0] : '(root)';
+    folders[folder] = (folders[folder]||0) + 1;
+  });
+  var sel = document.getElementById('rv-cat-filter');
+  Object.keys(folders).sort().forEach(function(f){
+    var opt = document.createElement('option');
+    opt.value = f;
+    opt.textContent = f + ' (' + folders[f] + ')';
+    sel.appendChild(opt);
+  });
+
+  renderAllPages();
+}
+
+function filterAllPages(){ renderAllPages(); }
+
+function renderAllPages(){
+  var search = (document.getElementById('rv-search').value || '').toLowerCase();
+  var folder = document.getElementById('rv-cat-filter').value;
+  var status = document.getElementById('rv-status-filter').value;
+
+  var filtered = rvPages.filter(function(p){
+    if(search && p.toLowerCase().indexOf(search) === -1) return false;
+    if(folder){
+      var parts = p.split('/').filter(Boolean);
+      var f = parts.length > 1 ? parts[0] : '(root)';
+      if(f !== folder) return false;
+    }
+    if(status === 'reviewed' && !rvComments[p]) return false;
+    if(status === 'pending' && rvComments[p]) return false;
+    return true;
+  });
+
+  document.getElementById('rv-showing').textContent = filtered.length + ' / ' + rvPages.length + ' pages';
+
+  // Only render first 500 to avoid lag
+  var limit = Math.min(filtered.length, 500);
+  var html = '';
+  for(var i = 0; i < limit; i++){
+    var p = filtered[i];
+    var c = rvComments[p] || {};
+    var hasComment = c.comment && c.comment.trim();
+    var parts = p.split('/').filter(Boolean);
+    var folderName = parts.length > 1 ? parts[0] : '(root)';
+    html += '<tr data-path="'+p+'">'
+      + '<td style="color:var(--text4);font-family:var(--mono);font-size:10px">' + (i+1) + '</td>'
+      + '<td><a class="rv-open" href="'+p+'" target="_blank">'+p+'</a></td>'
+      + '<td><span class="rv-status" style="background:var(--card2);color:var(--text3)">'+folderName+'</span></td>'
+      + '<td>' + (hasComment ? '<span class="rv-status rv-done">Reviewed</span>' : '<span class="rv-status rv-pending">Pending</span>') + '</td>'
+      + '<td><textarea class="rv-comment" id="rvc-'+i+'" placeholder="Add comment...">'+(c.comment||'')+'</textarea></td>'
+      + '<td><button class="rv-save-btn" onclick="savePageComment(\''+p.replace(/'/g,"\\'")+'\','+i+')">Save</button></td>'
+      + '</tr>';
+  }
+  if(limit < filtered.length){
+    html += '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3);font-size:11px">Showing '+limit+' of '+filtered.length+' — use search to narrow results</td></tr>';
+  }
+  document.getElementById('rv-tbody').innerHTML = html;
+}
+
+function savePageComment(path, idx){
+  var ta = document.getElementById('rvc-'+idx);
+  if(!ta) return;
+  var val = ta.value.trim();
+  if(val){
+    rvComments[path] = { comment: val, date: new Date().toISOString().slice(0,10) };
+  } else {
+    delete rvComments[path];
+  }
+  saveComments();
+  // Flash save confirmation
+  var btn = ta.closest('tr').querySelector('.rv-save-btn');
+  btn.textContent = 'Saved!';
+  btn.style.background = 'var(--green)';
+  setTimeout(function(){ btn.textContent = 'Save'; btn.style.background = ''; }, 1200);
+}
+
+function exportComments(){
+  loadComments();
+  var data = { exported: new Date().toISOString(), totalComments: Object.keys(rvComments).length, comments: rvComments };
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'review-comments-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importComments(input){
+  var file = input.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      var data = JSON.parse(e.target.result);
+      var imported = data.comments || data;
+      var count = 0;
+      Object.keys(imported).forEach(function(k){
+        if(imported[k] && typeof imported[k] === 'object'){
+          rvComments[k] = imported[k];
+          count++;
+        }
+      });
+      saveComments();
+      renderAllPages();
+      alert('Imported ' + count + ' comments successfully.');
+    } catch(err){
+      alert('Invalid JSON file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+// ══════════════════════════════════════════════════════════
+//  DAILY REVIEW — 200 random pages/day, no repeats
+// ══════════════════════════════════════════════════════════
+function seededRandom(seed){
+  var x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function hashDateString(str){
+  var hash = 0;
+  for(var i = 0; i < str.length; i++){
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function getDailyState(){
+  try { return JSON.parse(localStorage.getItem(RV_DAILY_KEY)) || {}; } catch(e){ return {}; }
+}
+
+function saveDailyState(state){
+  localStorage.setItem(RV_DAILY_KEY, JSON.stringify(state));
+}
+
+function buildDailyReview(){
+  if(!rvPages.length) rvPages = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES : [];
+  loadComments();
+
+  var today = new Date().toISOString().slice(0,10);
+  document.getElementById('dr-date').textContent = today;
+
+  var state = getDailyState();
+
+  // Check if we already assigned pages for today
+  if(state.date === today && state.pages && state.pages.length > 0){
+    drTodayPages = state.pages;
+  } else {
+    // Build pool: exclude pages already reviewed in this cycle
+    var reviewed = state.reviewedInCycle || [];
+    var pool = rvPages.filter(function(p){ return reviewed.indexOf(p) === -1; });
+
+    // If pool is too small, start a new cycle
+    if(pool.length < 200){
+      reviewed = [];
+      pool = rvPages.slice();
+      state.cycle = (state.cycle || 0) + 1;
+    }
+
+    // Deterministic shuffle using date seed
+    var seed = hashDateString(today);
+    var shuffled = pool.slice();
+    for(var i = shuffled.length - 1; i > 0; i--){
+      seed++;
+      var j = Math.floor(seededRandom(seed) * (i + 1));
+      var tmp = shuffled[i];
+      shuffled[i] = shuffled[j];
+      shuffled[j] = tmp;
+    }
+
+    drTodayPages = shuffled.slice(0, 200);
+    state.date = today;
+    state.pages = drTodayPages;
+    state.reviewedInCycle = reviewed.concat(drTodayPages);
+    state.reviewedToday = state.reviewedToday || {};
+    state.reviewedToday[today] = [];
+    saveDailyState(state);
+  }
+
+  // Cycle info
+  var totalPages = rvPages.length;
+  var daysInCycle = Math.ceil(totalPages / 200);
+  var cycleNum = state.cycle || 1;
+  document.getElementById('dr-cycle-info').textContent = 'Cycle ' + cycleNum + ' — ~' + daysInCycle + ' days to cover all ' + totalPages + ' pages';
+
+  // Day info
+  var reviewedInCycle = (state.reviewedInCycle || []).length;
+  document.getElementById('dr-day-info').textContent = reviewedInCycle + ' / ' + totalPages + ' covered this cycle';
+
+  // Jump dropdown
+  var jumpSel = document.getElementById('dr-jump');
+  jumpSel.innerHTML = '<option value="">Jump to page...</option>';
+  for(var g = 0; g < drTodayPages.length; g += 10){
+    var opt = document.createElement('option');
+    opt.value = g;
+    opt.textContent = (g+1) + '–' + Math.min(g+10, drTodayPages.length);
+    jumpSel.appendChild(opt);
+  }
+
+  drOffset = 0;
+  renderDailyCards();
+}
+
+function renderDailyCards(){
+  var state = getDailyState();
+  var today = new Date().toISOString().slice(0,10);
+  var todayReviewed = (state.reviewedToday && state.reviewedToday[today]) || [];
+
+  // Progress
+  var doneCount = todayReviewed.length;
+  var total = drTodayPages.length;
+  document.getElementById('dr-progress-label').textContent = doneCount + ' / ' + total + ' reviewed today';
+  document.getElementById('dr-bar').style.width = (total ? (doneCount/total*100) : 0) + '%';
+
+  // Cards for current batch of 10
+  var start = drOffset;
+  var end = Math.min(start + 10, total);
+  var html = '';
+  for(var i = start; i < end; i++){
+    var p = drTodayPages[i];
+    var isReviewed = todayReviewed.indexOf(p) !== -1;
+    var c = rvComments[p] || {};
+    var parts = p.split('/').filter(Boolean);
+    var folderName = parts.length > 1 ? parts[0] : '(root)';
+    html += '<div class="dr-card'+(isReviewed?' reviewed':'')+'" id="drc-'+i+'">'
+      + '<div class="dr-card-hdr">'
+      + '<div class="dr-card-name">'+(i+1)+'. '+p.split('/').filter(Boolean).pop().replace('.html','')+'</div>'
+      + '<span class="dr-card-cat">'+folderName+'</span>'
+      + '</div>'
+      + '<div class="dr-card-path"><a href="'+p+'" target="_blank">'+p+' ↗</a></div>'
+      + '<textarea placeholder="Add review comment..." id="drt-'+i+'">'+(c.comment||'')+'</textarea>'
+      + '<div class="dr-card-actions">'
+      + '<button class="dr-mark-btn'+(isReviewed?' done':'')+'" onclick="drMarkReviewed('+i+')">'+(isReviewed?'✓ Reviewed':'Mark Reviewed')+'</button>'
+      + '<button class="rv-save-btn" onclick="drSaveComment('+i+')">Save Comment</button>'
+      + (c.date ? '<span class="rv-saved">Last: '+c.date+'</span>' : '')
+      + '</div>'
+      + '</div>';
+  }
+  document.getElementById('dr-cards').innerHTML = html;
+
+  // Nav
+  document.getElementById('dr-range').textContent = (start+1) + '–' + end + ' of ' + total;
+  document.getElementById('dr-prev').disabled = start === 0;
+  document.getElementById('dr-next').disabled = end >= total;
+}
+
+function drNav(delta){
+  drOffset = Math.max(0, Math.min(drOffset + delta, drTodayPages.length - 1));
+  drOffset = Math.floor(drOffset / 10) * 10;
+  renderDailyCards();
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function drJumpTo(val){
+  if(val === '') return;
+  drOffset = parseInt(val);
+  renderDailyCards();
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function drSaveComment(idx){
+  var p = drTodayPages[idx];
+  var ta = document.getElementById('drt-'+idx);
+  if(!ta || !p) return;
+  var val = ta.value.trim();
+  if(val){
+    rvComments[p] = { comment: val, date: new Date().toISOString().slice(0,10) };
+  } else {
+    delete rvComments[p];
+  }
+  saveComments();
+  var btn = ta.closest('.dr-card').querySelector('.rv-save-btn');
+  btn.textContent = 'Saved!';
+  btn.style.background = 'var(--green)';
+  setTimeout(function(){ btn.textContent = 'Save Comment'; btn.style.background = ''; }, 1200);
+}
+
+function drMarkReviewed(idx){
+  var p = drTodayPages[idx];
+  if(!p) return;
+  var state = getDailyState();
+  var today = new Date().toISOString().slice(0,10);
+  if(!state.reviewedToday) state.reviewedToday = {};
+  if(!state.reviewedToday[today]) state.reviewedToday[today] = [];
+  if(state.reviewedToday[today].indexOf(p) === -1){
+    state.reviewedToday[today].push(p);
+  }
+  saveDailyState(state);
+
+  // Also save comment if textarea has content
+  var ta = document.getElementById('drt-'+idx);
+  if(ta && ta.value.trim()){
+    rvComments[p] = { comment: ta.value.trim(), date: today };
+    saveComments();
+  }
+
+  renderDailyCards();
+}
+
+// ══════════════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════════════
 function initAll(){
@@ -1491,6 +1976,16 @@ function initAll(){
   buildScriptsPage();
   buildChecklistPage();
   buildLiveDataPage();
+  // Review pages depend on ALL_PAGES which may load async
+  function initReviewPages(){
+    if(typeof ALL_PAGES !== 'undefined' && ALL_PAGES.length > 0){
+      buildAllPagesReview();
+      buildDailyReview();
+    } else {
+      setTimeout(initReviewPages, 100);
+    }
+  }
+  initReviewPages();
   loadChecklist();
   checkPipelines();
 }

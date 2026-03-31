@@ -591,7 +591,7 @@ function calcAnnualIPR(annualTaxableIncome) {
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = 'Obtenir l\u2019analyse IA \u2192';
+  document.getElementById('aiBtn').textContent = 'Obtenir l’analyse IA →';
   document.getElementById('aiStatus').textContent = 'Brut : ' + fmt(gross) + '/an \u00B7 Net : ' + fmt(netAnnual) + '/an \u00B7 IPR : ' + fmt(annualIPR) + '/an \u00B7 Taux effectif : ' + pct(effectiveRate);
 }
 
@@ -735,7 +735,7 @@ function generatePdf() {
 '</style></head><body>' +
 '<div class="cover">' +
 '  <div class="cover-top">' +
-'    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">La plateforme num\u00E9rique de l\u2019Afrique</div></div>' +
+'    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">La plateforme num\u00E9rique de l’Afrique</div></div>' +
 '    <div><div class="ref-label">R\u00E9f\u00E9rence</div><div class="ref-val">' + refNo + '</div></div>' +
 '  </div>' +
 '  <div class="doc-title">IPR RD Congo<br><span>R\u00E9sum\u00E9 2026</span></div>' +
@@ -783,15 +783,15 @@ function generatePdf() {
 '' +
 '  <div class="sec-head">Section 5 \u2014 Base l\u00E9gale et sources</div>' +
 '  <table>' +
-'    <tr><td style="width:30%"><span class="src">Code</span>Code des Imp\u00F4ts</td><td style="color:#6b7280;font-size:8pt">IPR progressif de la DGI sur les revenus d\u2019emploi. Cotisation CNSS salari\u00E9 (5%) int\u00E9gralement d\u00E9ductible.</td></tr>' +
+'    <tr><td style="width:30%"><span class="src">Code</span>Code des Imp\u00F4ts</td><td style="color:#6b7280;font-size:8pt">IPR progressif de la DGI sur les revenus d’emploi. Cotisation CNSS salari\u00E9 (5%) int\u00E9gralement d\u00E9ductible.</td></tr>' +
 '    <tr><td><span class="src">CNSS</span>S\u00E9curit\u00E9 sociale</td><td style="color:#6b7280;font-size:8pt">Total 10% (salari\u00E9 5% + employeur 5%). Versement mensuel \u00E0 la CNSS.</td></tr>' +
 '  </table>' +
 '</div>' +
 '<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">' +
 '  <div style="display:flex;justify-content:space-between;align-items:flex-start">' +
 '    <div>' +
-'      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#007FFF">TOOLS</b>.COM \u2014 La plateforme financi\u00E8re de l\u2019Afrique</div>' +
-'      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">\u00C0 titre informatif uniquement. Ne constitue pas un conseil fiscal professionnel. V\u00E9rifiez aupr\u00E8s de la DGI ou d\u2019un conseiller fiscal congolais qualifi\u00E9.</div>' +
+'      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#007FFF">TOOLS</b>.COM \u2014 La plateforme financi\u00E8re de l’Afrique</div>' +
+'      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">\u00C0 titre informatif uniquement. Ne constitue pas un conseil fiscal professionnel. V\u00E9rifiez aupr\u00E8s de la DGI ou d’un conseiller fiscal congolais qualifi\u00E9.</div>' +
 '    </div>' +
 '    <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">' +
 '      <div>R\u00E9f : ' + refNo + '</div><div style="margin-top:2px">' + dateStr + '</div><div style="margin-top:2px">afrotools.com</div>' +
@@ -814,7 +814,7 @@ function generatePdf() {
 // ── PARTAGER ─────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  var text = 'Mon calcul IPR RDC : Brut FC ' + Math.round(RESULT.gross).toLocaleString('fr-CD') + '/an \u2192 Net FC ' + Math.round(RESULT.netAnnual).toLocaleString('fr-CD') + '/an (' + pct(RESULT.effectiveRate) + ' taux effectif). Calcul\u00E9 sur afrotools.com/fr/rdc/calculateur-salaire-net';
+  var text = 'Mon calcul IPR RDC : Brut FC ' + Math.round(RESULT.gross).toLocaleString('fr-CD') + '/an → Net FC ' + Math.round(RESULT.netAnnual).toLocaleString('fr-CD') + '/an (' + pct(RESULT.effectiveRate) + ' taux effectif). Calcul\u00E9 sur afrotools.com/fr/rdc/calculateur-salaire-net';
   if (navigator.share) {
     navigator.share({title:'Mon IPR RDC',text:text,url:'https://afrotools.com/fr/rdc/calculateur-salaire-net'});
   } else if (navigator.clipboard) {
@@ -845,13 +845,13 @@ async function getAI() {
 '- Taux effectif : ' + pct(R.effectiveRate) + '\n' +
 '- CNSS patronale (5%) : FC ' + Math.round(R.empCNSS).toLocaleString('fr-CD') + '/an\n' +
 '- Co\u00FBt total employeur : FC ' + Math.round(R.totalEmployerCostAnnual).toLocaleString('fr-CD') + '/an\n\n' +
-'Donnez en fran\u00E7ais : 1) R\u00E9sum\u00E9 clair de la situation IPR 2) Deux moyens l\u00E9gaux sp\u00E9cifiques pour r\u00E9duire l\u2019imp\u00F4t en RDC 3) Un point de conformit\u00E9 DGI \u00E0 conna\u00EEtre 4) Une erreur courante sur la d\u00E9ductibilit\u00E9 CNSS. Moins de 200 mots. Pas de markdown, pas d\u2019ast\u00E9risques, pas de puces.';
+'Donnez en fran\u00E7ais : 1) R\u00E9sum\u00E9 clair de la situation IPR 2) Deux moyens l\u00E9gaux sp\u00E9cifiques pour r\u00E9duire l’imp\u00F4t en RDC 3) Un point de conformit\u00E9 DGI \u00E0 conna\u00EEtre 4) Une erreur courante sur la d\u00E9ductibilit\u00E9 CNSS. Moins de 200 mots. Pas de markdown, pas d’ast\u00E9risques, pas de puces.';
 
   try {
     var res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'Vous \u00EAtes le Conseiller Fiscal IA d\u2019AfroTools sp\u00E9cialis\u00E9 en IPR de la RD Congo \u2014 bar\u00E8me DGI progressif, CNSS, Code des Imp\u00F4ts. Soyez concis, sp\u00E9cifique, pratique. R\u00E9pondez en fran\u00E7ais. Pas de markdown, pas d\u2019ast\u00E9risques.',
+        system:'Vous \u00EAtes le Conseiller Fiscal IA d’AfroTools sp\u00E9cialis\u00E9 en IPR de la RD Congo \u2014 bar\u00E8me DGI progressif, CNSS, Code des Imp\u00F4ts. Soyez concis, sp\u00E9cifique, pratique. R\u00E9pondez en fran\u00E7ais. Pas de markdown, pas d’ast\u00E9risques.',
         messages:[{role:'user',content:prompt}]
       })
     });

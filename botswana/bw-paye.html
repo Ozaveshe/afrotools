@@ -559,7 +559,7 @@ function generatePdf() {
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b => `<tr><td style="padding-left:14px;color:#4b5563">Rate ${(b.rate*100)}% on P${Math.round(b.income).toLocaleString()}</td><td class="num red">(P${Math.round(b.tax).toLocaleString()})</td></tr>`).join('');
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <script src="/assets/js/components/salary-benchmark-widget.js" defer><\/script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"><\/script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');<\/script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});

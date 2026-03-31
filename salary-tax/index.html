@@ -229,48 +229,99 @@ function _initSalaryTax(){
       + '</div></'+tag+'>';
   }
 
-  function renderGrid(filteredLive, filteredPipe, query){
+  var PAGE_SIZE = 35;
+  var currentPage = 1;
+  var currentLive = live;
+  var currentPipe = pipe;
+  var currentQuery = '';
+
+  function renderGrid(filteredLive, filteredPipe, query, page){
+    page = page || 1;
+    currentLive = filteredLive;
+    currentPipe = filteredPipe;
+    currentQuery = query;
+    currentPage = page;
+
     var html='';
     var label=document.getElementById('search-label');
+
+    // Combine all tools: live first, then pipeline
+    var allItems = [];
+    filteredLive.forEach(function(t){ allItems.push({t:t,ok:true}); });
+    filteredPipe.forEach(function(t){ allItems.push({t:t,ok:false}); });
+    var totalItems = allItems.length;
+    var totalPages = Math.ceil(totalItems / PAGE_SIZE);
+    if (page > totalPages) page = totalPages || 1;
+
     if(query){
-      var total=filteredLive.length+filteredPipe.length;
       label.style.display='block';
-      label.textContent=total+' result'+(total!==1?'s':'')+' for "'+query+'"';
+      label.textContent=totalItems+' result'+(totalItems!==1?'s':'')+' for "'+query+'"';
     } else {
       label.style.display='none';
     }
-    if(filteredLive.length){
-      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> Available Now <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredLive.length+')</span></h2>';
+
+    // If searching, show all results (no pagination)
+    var startIdx = query ? 0 : (page - 1) * PAGE_SIZE;
+    var endIdx = query ? totalItems : Math.min(page * PAGE_SIZE, totalItems);
+    var pageItems = allItems.slice(startIdx, endIdx);
+
+    // Split page items back into live and pipe
+    var pageLive = pageItems.filter(function(i){return i.ok;});
+    var pagePipe = pageItems.filter(function(i){return !i.ok;});
+
+    if(pageLive.length){
+      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> Available Now <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredLive.length+' total)</span></h2>';
       html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
-      filteredLive.forEach(function(t){html+=card(t,true);});html+='</div>';
+      pageLive.forEach(function(i){html+=card(i.t,true);});html+='</div>';
     }
-    if(filteredPipe.length){
-      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> Coming Soon <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredPipe.length+')</span></h2>';
+    if(pagePipe.length){
+      html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> Coming Soon <span style="font-size:13px;font-weight:500;color:#6b7280;">('+filteredPipe.length+' total)</span></h2>';
       html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
-      filteredPipe.forEach(function(t){html+=card(t,false);});html+='</div>';
+      pagePipe.forEach(function(i){html+=card(i.t,false);});html+='</div>';
     }
-    if(!filteredLive.length && !filteredPipe.length){
+    if(!pageLive.length && !pagePipe.length){
       html='<div class="no-results">No tools found for <strong>"'+query+'"</strong>.<br>Try a country name (e.g. Kenya) or tool type (e.g. VAT, PAYE).</div>';
     }
+
+    // Pagination controls (only when not searching)
+    if(!query && totalPages > 1){
+      html+='<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:32px;padding:16px 0">';
+      html+='<button onclick="goPage('+(page-1)+')" style="padding:8px 16px;border:1.5px solid '+(page>1?'var(--color-primary)':'#e5e7eb')+';border-radius:8px;background:'+(page>1?'#fff':'#f9fafb')+';color:'+(page>1?'var(--color-primary)':'#d1d5db')+';font-weight:700;font-size:.82rem;cursor:'+(page>1?'pointer':'default')+';font-family:DM Sans,sans-serif"'+(page<=1?' disabled':'')+'>← Previous</button>';
+      for(var p=1;p<=totalPages;p++){
+        html+='<button onclick="goPage('+p+')" style="width:36px;height:36px;border:1.5px solid '+(p===page?'var(--color-primary)':'#e5e7eb')+';border-radius:8px;background:'+(p===page?'var(--color-primary)':'#fff')+';color:'+(p===page?'#fff':'#374151')+';font-weight:700;font-size:.82rem;cursor:pointer;font-family:DM Sans,sans-serif">'+p+'</button>';
+      }
+      html+='<button onclick="goPage('+(page+1)+')" style="padding:8px 16px;border:1.5px solid '+(page<totalPages?'var(--color-primary)':'#e5e7eb')+';border-radius:8px;background:'+(page<totalPages?'#fff':'#f9fafb')+';color:'+(page<totalPages?'var(--color-primary)':'#d1d5db')+';font-weight:700;font-size:.82rem;cursor:'+(page<totalPages?'pointer':'default')+';font-family:DM Sans,sans-serif"'+(page>=totalPages?' disabled':'')+'>Next →</button>';
+      html+='</div>';
+      html+='<div style="text-align:center;font-size:.75rem;color:#9ca3af;margin-top:4px">Showing '+(startIdx+1)+'–'+endIdx+' of '+totalItems+' tools</div>';
+    }
+
     container.innerHTML=html;
   }
 
+  window.goPage = function(p) {
+    var totalItems = currentLive.length + currentPipe.length;
+    var totalPages = Math.ceil(totalItems / PAGE_SIZE);
+    if (p < 1 || p > totalPages) return;
+    renderGrid(currentLive, currentPipe, currentQuery, p);
+    document.getElementById('tool-grid').scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
   // Initial render
-  renderGrid(live, pipe, '');
+  renderGrid(live, pipe, '', 1);
 
   // Search handler
   var searchInput=document.getElementById('tool-search');
   if(searchInput){
     searchInput.addEventListener('input',function(){
       var q=this.value.trim().toLowerCase();
-      if(!q){renderGrid(live,pipe,'');return;}
+      if(!q){renderGrid(live,pipe,'',1);return;}
       function match(t){
         return (t.name||'').toLowerCase().includes(q)||
                (t.desc||'').toLowerCase().includes(q)||
                (t.id||'').toLowerCase().includes(q)||
                (Array.isArray(t.countries)?t.countries.join(' ').toLowerCase().includes(q):false);
       }
-      renderGrid(live.filter(match), pipe.filter(match), this.value.trim());
+      renderGrid(live.filter(match), pipe.filter(match), this.value.trim(), 1);
     });
   }
 }
