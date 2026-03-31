@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Creator Rankings — AfroStream | AfroTools</title>
+<meta name="description" content="Live leaderboard of the most-watched, most-gifted, and fastest-growing African creators across YouTube, Twitch, TikTok, Instagram, and Kick.">
+<link rel="canonical" href="https://afrotools.com/tools/afrostream/rankings.html">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Creator Rankings — AfroStream | AfroTools">
+<meta property="og:description" content="Live leaderboard of the most-watched, most-gifted, and fastest-growing African creators across all platforms.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/afrostream/rankings.html">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Creator Rankings — AfroStream | AfroTools">
+<meta name="twitter:description" content="Live leaderboard of the most-watched African creators across all platforms.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+</head>
+<body class="as-body">
+<afro-navbar></afro-navbar>
+
+<!-- SUB-NAV -->
+<nav class="as-subnav">
+  <div class="as-subnav-inner">
+    <a href="/tools/afrostream/" class="as-subnav-logo">&#127916; AfroStream</a>
+    <div class="as-subnav-links">
+      <a href="/tools/afrostream/">Live Now</a>
+      <a href="/tools/afrostream/rankings.html" class="active">Rankings</a>
+      <a href="/tools/afrostream/news.html">News</a>
+      <a href="/tools/afrostream/calendar.html">Calendar</a>
+    </div>
+    <div class="as-subnav-actions">
+      <div class="as-subnav-search">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="M11 11l3 3"/></svg>
+        <input type="text" placeholder="Search creators..." id="navSearch">
+      </div>
+      <a href="#" class="as-btn as-btn-sm as-btn-outline">Sign In</a>
+    </div>
+  </div>
+</nav>
+
+<main class="as-main">
+
+  <!-- HERO -->
+  <section class="as-rankings-hero rv">
+    <div class="as-container">
+      <div class="as-rankings-hero-badge">LEADERBOARD</div>
+      <h1 class="as-rankings-title">&#127942; Creator Rankings</h1>
+      <p class="as-rankings-subtitle">The most-watched, most-gifted, fastest-growing African creators across all platforms.</p>
+      <p class="as-rankings-updated" id="lastUpdated"></p>
+    </div>
+  </section>
+
+  <!-- FILTER BAR -->
+  <section class="as-filters rv">
+    <div class="as-container">
+      <div class="as-filter-row">
+        <!-- Period -->
+        <div class="as-filter-group">
+          <label class="as-filter-label">Period</label>
+          <div class="as-pills" id="periodPills">
+            <button class="as-pill" data-value="week">This Week</button>
+            <button class="as-pill active" data-value="month">This Month</button>
+            <button class="as-pill" data-value="all">All Time</button>
+          </div>
+        </div>
+        <!-- Category -->
+        <div class="as-filter-group">
+          <label class="as-filter-label">Category</label>
+          <div class="as-pills as-pills-scroll" id="categoryPills">
+            <button class="as-pill active" data-value="all">All</button>
+            <button class="as-pill" data-value="gaming">Gaming</button>
+            <button class="as-pill" data-value="music">Music</button>
+            <button class="as-pill" data-value="comedy">Comedy</button>
+            <button class="as-pill" data-value="tech">Tech</button>
+            <button class="as-pill" data-value="fashion">Fashion</button>
+            <button class="as-pill" data-value="food">Food</button>
+            <button class="as-pill" data-value="education">Education</button>
+            <button class="as-pill" data-value="lifestyle">Lifestyle</button>
+          </div>
+        </div>
+        <!-- Country -->
+        <div class="as-filter-group">
+          <label class="as-filter-label">Country</label>
+          <select class="as-select" id="countryFilter">
+            <option value="all">All Countries</option>
+            <option value="NG">&#127475;&#127468; Nigeria</option>
+            <option value="KE">&#127472;&#127466; Kenya</option>
+            <option value="ZA">&#127487;&#127462; South Africa</option>
+            <option value="GH">&#127468;&#127469; Ghana</option>
+            <option value="EG">&#127466;&#127468; Egypt</option>
+            <option value="TZ">&#127481;&#127487; Tanzania</option>
+            <option value="UG">&#127482;&#127468; Uganda</option>
+            <option value="SN">&#127480;&#127475; Senegal</option>
+            <option value="CM">&#127464;&#127474; Cameroon</option>
+            <option value="ET">&#127466;&#127481; Ethiopia</option>
+            <option value="RW">&#127479;&#127484; Rwanda</option>
+            <option value="MA">&#127474;&#127462; Morocco</option>
+          </select>
+        </div>
+        <!-- Platform -->
+        <div class="as-filter-group">
+          <label class="as-filter-label">Platform</label>
+          <div class="as-pills" id="platformPills">
+            <button class="as-pill active" data-value="all">All</button>
+            <button class="as-pill" data-value="youtube">YouTube</button>
+            <button class="as-pill" data-value="twitch">Twitch</button>
+            <button class="as-pill" data-value="tiktok">TikTok</button>
+            <button class="as-pill" data-value="instagram">Instagram</button>
+            <button class="as-pill" data-value="kick">Kick</button>
+          </div>
+        </div>
+        <!-- Sort -->
+        <div class="as-filter-group">
+          <label class="as-filter-label">Sort by</label>
+          <select class="as-select" id="sortFilter">
+            <option value="score">Total Score</option>
+            <option value="followers">Followers</option>
+            <option value="gifts">Gift Revenue</option>
+            <option value="peak">Peak Viewers</option>
+            <option value="growth">Growth Rate</option>
+          </select>
+        </div>
+        <!-- Search -->
+        <div class="as-filter-group">
+          <label class="as-filter-label">Search</label>
+          <input class="as-input" type="text" id="searchFilter" placeholder="Filter by name...">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP 3 PODIUM -->
+  <section class="as-podium rv" id="podiumSection">
+    <div class="as-container">
+      <div class="as-podium-grid" id="podiumGrid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- RANKINGS TABLE -->
+  <section class="as-table-section rv">
+    <div class="as-container">
+      <div class="as-table-wrap">
+        <table class="as-table" id="rankingsTable">
+          <thead>
+            <tr>
+              <th class="as-th-rank" data-sort="rank">Rank</th>
+              <th class="as-th-creator" data-sort="name">Creator</th>
+              <th data-sort="country">Country</th>
+              <th>Platforms</th>
+              <th data-sort="followers">Followers</th>
+              <th data-sort="gifts">Gift Rev.</th>
+              <th data-sort="peak">Peak Viewers</th>
+              <th data-sort="growth">Growth</th>
+              <th data-sort="score">Score</th>
+            </tr>
+          </thead>
+          <tbody id="rankingsBody"></tbody>
+        </table>
+      </div>
+      <div class="as-pagination" id="pagination">
+        <button class="as-btn as-btn-outline" id="loadMoreBtn">Load More</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+/* ===== DEMO DATA (fallback) ===== */
+var DEMO_CREATORS = [
+  {id:1,name:"TechTunde",avatar:"TT",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"tech",platforms:["youtube","twitch"],followers:2870000,gifts:98200,peak:487000,growth:42,avgDuration:185,frequency:5,bio:"Nigeria's #1 tech reviewer. Unboxing, coding, and African tech startup coverage.",streams:[],upcoming:[]},
+  {id:2,name:"GamerNaija",avatar:"GN",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"gaming",platforms:["twitch","youtube","kick"],followers:2340000,gifts:87500,peak:412000,growth:65,avgDuration:240,frequency:6,bio:"West Africa's biggest gaming streamer. COD, FIFA, and African indie games.",streams:[],upcoming:[]},
+  {id:3,name:"ChefAmara",avatar:"CA",country:"KE",flag:"\u{1F1F0}\u{1F1EA}",countryName:"Kenya",category:"food",platforms:["youtube","instagram","tiktok"],followers:1950000,gifts:54300,peak:298000,growth:38,avgDuration:95,frequency:4,bio:"Award-winning chef bringing East African cuisine to the world. Mama's recipes, modern twist.",streams:[],upcoming:[]},
+  {id:4,name:"ComedyQueenKE",avatar:"CQ",country:"KE",flag:"\u{1F1F0}\u{1F1EA}",countryName:"Kenya",category:"comedy",platforms:["youtube","tiktok","instagram"],followers:1820000,gifts:67800,peak:356000,growth:55,avgDuration:65,frequency:5,bio:"Kenya's funniest woman. Skits, stand-up clips, and live comedy roasts.",streams:[],upcoming:[]},
+  {id:5,name:"DJMixtapeGH",avatar:"DM",country:"GH",flag:"\u{1F1EC}\u{1F1ED}",countryName:"Ghana",category:"music",platforms:["twitch","youtube","instagram"],followers:1650000,gifts:102400,peak:389000,growth:28,avgDuration:210,frequency:4,bio:"Live Afrobeats, Amapiano, and Highlife mixes from Accra every weekend.",streams:[],upcoming:[]},
+  {id:6,name:"FashionFatimaEG",avatar:"FF",country:"EG",flag:"\u{1F1EA}\u{1F1EC}",countryName:"Egypt",category:"fashion",platforms:["instagram","tiktok","youtube"],followers:1580000,gifts:45600,peak:198000,growth:72,avgDuration:55,frequency:3,bio:"Cairo-based modest fashion icon. Styling tips, hauls, and designer collabs.",streams:[],upcoming:[]},
+  {id:7,name:"BeatsByBode",avatar:"BB",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"music",platforms:["twitch","youtube"],followers:1420000,gifts:76300,peak:267000,growth:33,avgDuration:180,frequency:5,bio:"Afrobeats producer making hits live on stream. Grammy-nominated.",streams:[],upcoming:[]},
+  {id:8,name:"NairobiNomad",avatar:"NN",country:"KE",flag:"\u{1F1F0}\u{1F1EA}",countryName:"Kenya",category:"lifestyle",platforms:["youtube","instagram","tiktok"],followers:1350000,gifts:32100,peak:178000,growth:48,avgDuration:75,frequency:3,bio:"Travel vlogger exploring Africa one city at a time. 30 countries and counting.",streams:[],upcoming:[]},
+  {id:9,name:"AccraTechie",avatar:"AT",country:"GH",flag:"\u{1F1EC}\u{1F1ED}",countryName:"Ghana",category:"tech",platforms:["youtube","twitch"],followers:1280000,gifts:41200,peak:198000,growth:52,avgDuration:120,frequency:4,bio:"Software engineer teaching coding to Africa. Free bootcamps every Saturday.",streams:[],upcoming:[]},
+  {id:10,name:"LagosFoodie",avatar:"LF",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"food",platforms:["youtube","instagram","tiktok"],followers:1190000,gifts:28700,peak:165000,growth:61,avgDuration:80,frequency:4,bio:"Street food tours across Lagos and West Africa. 500+ spots reviewed.",streams:[],upcoming:[]},
+  {id:11,name:"ZuluGamerZA",avatar:"ZG",country:"ZA",flag:"\u{1F1FF}\u{1F1E6}",countryName:"South Africa",category:"gaming",platforms:["twitch","kick","youtube"],followers:1150000,gifts:92100,peak:345000,growth:19,avgDuration:270,frequency:6,bio:"South Africa's Valorant king. Pro player turned full-time streamer.",streams:[],upcoming:[]},
+  {id:12,name:"MamaRecipesUG",avatar:"MR",country:"UG",flag:"\u{1F1FA}\u{1F1EC}",countryName:"Uganda",category:"food",platforms:["youtube","tiktok"],followers:980000,gifts:18900,peak:134000,growth:88,avgDuration:90,frequency:3,bio:"Traditional Ugandan recipes passed down 4 generations. Cook with Mama every Sunday.",streams:[],upcoming:[]},
+  {id:13,name:"AfroCodeSN",avatar:"AC",country:"SN",flag:"\u{1F1F8}\u{1F1F3}",countryName:"Senegal",category:"tech",platforms:["youtube","twitch"],followers:920000,gifts:35600,peak:156000,growth:44,avgDuration:150,frequency:4,bio:"Teaching Python and web dev in French and Wolof. Africa's tech future starts here.",streams:[],upcoming:[]},
+  {id:14,name:"KomediKingCM",avatar:"KK",country:"CM",flag:"\u{1F1E8}\u{1F1F2}",countryName:"Cameroon",category:"comedy",platforms:["youtube","tiktok"],followers:870000,gifts:42300,peak:210000,growth:36,avgDuration:45,frequency:5,bio:"Bilingual comedy from Douala. Pidgin English + French = maximum chaos.",streams:[],upcoming:[]},
+  {id:15,name:"QueenNefertiti",avatar:"QN",country:"EG",flag:"\u{1F1EA}\u{1F1EC}",countryName:"Egypt",category:"lifestyle",platforms:["instagram","youtube","tiktok"],followers:840000,gifts:29400,peak:145000,growth:58,avgDuration:60,frequency:3,bio:"Egyptian lifestyle and beauty. Ancient beauty secrets meet modern skincare.",streams:[],upcoming:[]},
+  {id:16,name:"DarBoyTZ",avatar:"DB",country:"TZ",flag:"\u{1F1F9}\u{1F1FF}",countryName:"Tanzania",category:"gaming",platforms:["twitch","youtube"],followers:780000,gifts:56700,peak:234000,growth:82,avgDuration:200,frequency:5,bio:"Dar es Salaam's top gamer. Bongo Flava + gaming = the vibe.",streams:[],upcoming:[]},
+  {id:17,name:"CryptoChioma",avatar:"CC",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"education",platforms:["youtube","tiktok","instagram"],followers:760000,gifts:22100,peak:98000,growth:105,avgDuration:45,frequency:4,bio:"Making crypto simple for Africans. No jargon, just gains. 0 to blockchain in 30 days.",streams:[],upcoming:[]},
+  {id:18,name:"JoziBeats",avatar:"JB",country:"ZA",flag:"\u{1F1FF}\u{1F1E6}",countryName:"South Africa",category:"music",platforms:["twitch","youtube","instagram"],followers:720000,gifts:68900,peak:278000,growth:15,avgDuration:195,frequency:4,bio:"Amapiano & house music from Johannesburg. Live DJ sets every Thursday and Saturday.",streams:[],upcoming:[]},
+  {id:19,name:"WanjikuFit",avatar:"WF",country:"KE",flag:"\u{1F1F0}\u{1F1EA}",countryName:"Kenya",category:"lifestyle",platforms:["youtube","instagram","tiktok"],followers:690000,gifts:15800,peak:87000,growth:67,avgDuration:55,frequency:5,bio:"Fitness coach keeping East Africa healthy. Free workouts, meal plans, and motivation.",streams:[],upcoming:[]},
+  {id:20,name:"SahelStyle",avatar:"SS",country:"SN",flag:"\u{1F1F8}\u{1F1F3}",countryName:"Senegal",category:"fashion",platforms:["instagram","tiktok","youtube"],followers:650000,gifts:19200,peak:76000,growth:93,avgDuration:40,frequency:3,bio:"West African fashion from Dakar. Bazin, wax print, and contemporary Sahel drip.",streams:[],upcoming:[]},
+  {id:21,name:"PixelPrince",avatar:"PP",country:"GH",flag:"\u{1F1EC}\u{1F1ED}",countryName:"Ghana",category:"gaming",platforms:["twitch","kick"],followers:620000,gifts:71200,peak:298000,growth:27,avgDuration:255,frequency:6,bio:"Competitive FPS gamer from Accra. Ranked #1 in West Africa.",streams:[],upcoming:[]},
+  {id:22,name:"AbujaBaker",avatar:"AB",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"food",platforms:["youtube","instagram"],followers:590000,gifts:12400,peak:67000,growth:45,avgDuration:70,frequency:3,bio:"Pastry chef making Nigerian-fusion desserts. Suya cheesecake, anyone?",streams:[],upcoming:[]},
+  {id:23,name:"KigaliCode",avatar:"KC",country:"RW",flag:"\u{1F1F7}\u{1F1FC}",countryName:"Rwanda",category:"tech",platforms:["youtube","twitch"],followers:560000,gifts:28900,peak:112000,growth:76,avgDuration:130,frequency:4,bio:"Rwanda's coding community builder. Kinyarwanda tech tutorials.",streams:[],upcoming:[]},
+  {id:24,name:"MarrakechVibes",avatar:"MV",country:"MA",flag:"\u{1F1F2}\u{1F1E6}",countryName:"Morocco",category:"lifestyle",platforms:["youtube","instagram","tiktok"],followers:540000,gifts:21300,peak:89000,growth:41,avgDuration:65,frequency:3,bio:"Moroccan lifestyle, food, and travel. The magic of the Maghreb.",streams:[],upcoming:[]},
+  {id:25,name:"NaijaLaughs",avatar:"NL",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"comedy",platforms:["youtube","tiktok","instagram"],followers:1050000,gifts:51200,peak:287000,growth:31,avgDuration:35,frequency:6,bio:"Daily comedy skits. 10M+ views per month. Nigeria's class clown went pro.",streams:[],upcoming:[]},
+  {id:26,name:"AddisBeats",avatar:"AB",country:"ET",flag:"\u{1F1EA}\u{1F1F9}",countryName:"Ethiopia",category:"music",platforms:["youtube","twitch"],followers:510000,gifts:38700,peak:167000,growth:54,avgDuration:175,frequency:3,bio:"Ethiopian jazz meets electronic. Live production sessions from Addis Ababa.",streams:[],upcoming:[]},
+  {id:27,name:"CapeTownFit",avatar:"CF",country:"ZA",flag:"\u{1F1FF}\u{1F1E6}",countryName:"South Africa",category:"lifestyle",platforms:["youtube","instagram"],followers:480000,gifts:14200,peak:65000,growth:29,avgDuration:50,frequency:4,bio:"Outdoor fitness from Table Mountain to Camps Bay. Adventure + wellness.",streams:[],upcoming:[]},
+  {id:28,name:"TechAmina",avatar:"TA",country:"TZ",flag:"\u{1F1F9}\u{1F1FF}",countryName:"Tanzania",category:"tech",platforms:["youtube","tiktok"],followers:460000,gifts:16800,peak:78000,growth:112,avgDuration:40,frequency:3,bio:"Swahili-language tech reviews and coding tutorials. Women in tech advocate.",streams:[],upcoming:[]},
+  {id:29,name:"KampalaKween",avatar:"KW",country:"UG",flag:"\u{1F1FA}\u{1F1EC}",countryName:"Uganda",category:"fashion",platforms:["instagram","tiktok","youtube"],followers:430000,gifts:11500,peak:54000,growth:84,avgDuration:35,frequency:4,bio:"East African fashion curator. Kampala street style meets runway looks.",streams:[],upcoming:[]},
+  {id:30,name:"GamerOsei",avatar:"GO",country:"GH",flag:"\u{1F1EC}\u{1F1ED}",countryName:"Ghana",category:"gaming",platforms:["twitch","youtube"],followers:410000,gifts:48900,peak:198000,growth:22,avgDuration:230,frequency:5,bio:"Retro gaming enthusiast. Speedruns, nostalgia, and African gaming history.",streams:[],upcoming:[]},
+  {id:31,name:"CairoComedy",avatar:"CC",country:"EG",flag:"\u{1F1EA}\u{1F1EC}",countryName:"Egypt",category:"comedy",platforms:["youtube","tiktok"],followers:950000,gifts:39800,peak:245000,growth:18,avgDuration:30,frequency:5,bio:"Arabic comedy sketches with English subtitles. 200M+ total views.",streams:[],upcoming:[]},
+  {id:32,name:"BongoFlavaLive",avatar:"BF",country:"TZ",flag:"\u{1F1F9}\u{1F1FF}",countryName:"Tanzania",category:"music",platforms:["youtube","instagram"],followers:380000,gifts:25600,peak:134000,growth:37,avgDuration:150,frequency:3,bio:"Live Bongo Flava performances and artist interviews from Dar.",streams:[],upcoming:[]},
+  {id:33,name:"SafariSarah",avatar:"SS",country:"KE",flag:"\u{1F1F0}\u{1F1EA}",countryName:"Kenya",category:"education",platforms:["youtube","tiktok"],followers:360000,gifts:8900,peak:56000,growth:95,avgDuration:25,frequency:4,bio:"Wildlife educator. Live safari streams from Maasai Mara and Amboseli.",streams:[],upcoming:[]},
+  {id:34,name:"LagosInk",avatar:"LI",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"lifestyle",platforms:["instagram","youtube"],followers:340000,gifts:9800,peak:43000,growth:51,avgDuration:45,frequency:3,bio:"Tattoo artist and body art culture in Lagos. Live inking sessions.",streams:[],upcoming:[]},
+  {id:35,name:"ProGamerET",avatar:"PG",country:"ET",flag:"\u{1F1EA}\u{1F1F9}",countryName:"Ethiopia",category:"gaming",platforms:["twitch","kick"],followers:320000,gifts:42100,peak:176000,growth:128,avgDuration:220,frequency:6,bio:"Ethiopia's rising esports star. PUBG Mobile champion.",streams:[],upcoming:[]},
+  {id:36,name:"DoualaChef",avatar:"DC",country:"CM",flag:"\u{1F1E8}\u{1F1F2}",countryName:"Cameroon",category:"food",platforms:["youtube","tiktok"],followers:305000,gifts:14700,peak:89000,growth:63,avgDuration:85,frequency:3,bio:"Central African cuisine specialist. Ndole, Eru, and Cameroon pepper soup.",streams:[],upcoming:[]},
+  {id:37,name:"RwandaTech",avatar:"RT",country:"RW",flag:"\u{1F1F7}\u{1F1FC}",countryName:"Rwanda",category:"education",platforms:["youtube"],followers:290000,gifts:11200,peak:45000,growth:89,avgDuration:60,frequency:3,bio:"STEM education for Rwandan youth. Free coding classes in Kinyarwanda.",streams:[],upcoming:[]},
+  {id:38,name:"PretoriaPlug",avatar:"PP",country:"ZA",flag:"\u{1F1FF}\u{1F1E6}",countryName:"South Africa",category:"comedy",platforms:["youtube","tiktok","instagram"],followers:275000,gifts:18300,peak:112000,growth:46,avgDuration:25,frequency:5,bio:"South African township comedy. Relatable content for every Mzansi youth.",streams:[],upcoming:[]},
+  {id:39,name:"DakarDrip",avatar:"DD",country:"SN",flag:"\u{1F1F8}\u{1F1F3}",countryName:"Senegal",category:"fashion",platforms:["instagram","tiktok"],followers:260000,gifts:7800,peak:34000,growth:102,avgDuration:30,frequency:4,bio:"French-speaking fashion influencer. Dakar Fashion Week insider.",streams:[],upcoming:[]},
+  {id:40,name:"AbujaGamer",avatar:"AG",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"gaming",platforms:["twitch","youtube","kick"],followers:248000,gifts:55400,peak:210000,growth:35,avgDuration:245,frequency:5,bio:"Nigeria's Fortnite king. Content creator house founder.",streams:[],upcoming:[]},
+  {id:41,name:"TunisianTalks",avatar:"TT",country:"MA",flag:"\u{1F1F2}\u{1F1E6}",countryName:"Morocco",category:"education",platforms:["youtube","tiktok"],followers:235000,gifts:9400,peak:41000,growth:57,avgDuration:35,frequency:3,bio:"North African history and culture explained. Darija + English.",streams:[],upcoming:[]},
+  {id:42,name:"KumbiaDance",avatar:"KD",country:"CM",flag:"\u{1F1E8}\u{1F1F2}",countryName:"Cameroon",category:"lifestyle",platforms:["tiktok","instagram","youtube"],followers:220000,gifts:6200,peak:29000,growth:145,avgDuration:20,frequency:5,bio:"African dance challenges that went viral. 50M+ TikTok likes.",streams:[],upcoming:[]},
+  {id:43,name:"NakuruNerd",avatar:"NN",country:"KE",flag:"\u{1F1F0}\u{1F1EA}",countryName:"Kenya",category:"tech",platforms:["youtube","twitch"],followers:205000,gifts:19800,peak:67000,growth:71,avgDuration:110,frequency:4,bio:"Hardware hacker from Nakuru. Building drones and robots in Kenya.",streams:[],upcoming:[]},
+  {id:44,name:"JollofWars",avatar:"JW",country:"GH",flag:"\u{1F1EC}\u{1F1ED}",countryName:"Ghana",category:"food",platforms:["youtube","tiktok"],followers:195000,gifts:8100,peak:78000,growth:53,avgDuration:60,frequency:3,bio:"The Jollof Rice Championship. Ghana vs Nigeria, streamed LIVE.",streams:[],upcoming:[]},
+  {id:45,name:"EntebbeVibes",avatar:"EV",country:"UG",flag:"\u{1F1FA}\u{1F1EC}",countryName:"Uganda",category:"music",platforms:["youtube","instagram"],followers:180000,gifts:13400,peak:56000,growth:69,avgDuration:140,frequency:3,bio:"Ugandan Afrobeat and Kidandali live sessions from Lake Victoria.",streams:[],upcoming:[]},
+  {id:46,name:"CasablancaCoder",avatar:"CC",country:"MA",flag:"\u{1F1F2}\u{1F1E6}",countryName:"Morocco",category:"tech",platforms:["youtube","twitch"],followers:168000,gifts:15600,peak:52000,growth:81,avgDuration:125,frequency:4,bio:"Full-stack dev from Casablanca. Teaching JavaScript in Arabic and French.",streams:[],upcoming:[]},
+  {id:47,name:"SowetoSkater",avatar:"SK",country:"ZA",flag:"\u{1F1FF}\u{1F1E6}",countryName:"South Africa",category:"lifestyle",platforms:["youtube","tiktok","instagram"],followers:155000,gifts:5400,peak:31000,growth:178,avgDuration:30,frequency:4,bio:"Skateboarding culture in South African townships. Breaking barriers on four wheels.",streams:[],upcoming:[]},
+  {id:48,name:"KanoDrummer",avatar:"KD",country:"NG",flag:"\u{1F1F3}\u{1F1EC}",countryName:"Nigeria",category:"music",platforms:["youtube","twitch"],followers:142000,gifts:21700,peak:89000,growth:42,avgDuration:160,frequency:3,bio:"Traditional Hausa drumming meets modern beats. Preserving culture through rhythm.",streams:[],upcoming:[]},
+  {id:49,name:"MombasaMerch",avatar:"MM",country:"KE",flag:"\u{1F1F0}\u{1F1EA}",countryName:"Kenya",category:"fashion",platforms:["instagram","tiktok"],followers:128000,gifts:4200,peak:22000,growth:196,avgDuration:25,frequency:4,bio:"Coastal Kenyan fashion. Kanga, Kikoi, and Swahili-inspired streetwear.",streams:[],upcoming:[]},
+  {id:50,name:"AddisLaugh",avatar:"AL",country:"ET",flag:"\u{1F1EA}\u{1F1F9}",countryName:"Ethiopia",category:"comedy",platforms:["youtube","tiktok"],followers:115000,gifts:7600,peak:48000,growth:134,avgDuration:20,frequency:5,bio:"Amharic comedy for the diaspora. Cultural clashes and family humor.",streams:[],upcoming:[]}
+];
+
+/* ===== COUNTRY FLAG + NAME LOOKUP ===== */
+var COUNTRY_META = {
+  NG:{flag:"\u{1F1F3}\u{1F1EC}",name:"Nigeria"},KE:{flag:"\u{1F1F0}\u{1F1EA}",name:"Kenya"},
+  ZA:{flag:"\u{1F1FF}\u{1F1E6}",name:"South Africa"},GH:{flag:"\u{1F1EC}\u{1F1ED}",name:"Ghana"},
+  EG:{flag:"\u{1F1EA}\u{1F1EC}",name:"Egypt"},TZ:{flag:"\u{1F1F9}\u{1F1FF}",name:"Tanzania"},
+  UG:{flag:"\u{1F1FA}\u{1F1EC}",name:"Uganda"},SN:{flag:"\u{1F1F8}\u{1F1F3}",name:"Senegal"},
+  CM:{flag:"\u{1F1E8}\u{1F1F2}",name:"Cameroon"},ET:{flag:"\u{1F1EA}\u{1F1F9}",name:"Ethiopia"},
+  RW:{flag:"\u{1F1F7}\u{1F1FC}",name:"Rwanda"},MA:{flag:"\u{1F1F2}\u{1F1E6}",name:"Morocco"}
+};
+
+/* ===== FETCH REAL DATA WITH DEMO FALLBACK ===== */
+function mapApiCreator(r) {
+  var n = r.creator_name || r.creatorName || r.name || 'Unknown';
+  var cc = (r.country_code || r.countryCode || r.country || '').toUpperCase();
+  var meta = COUNTRY_META[cc] || {flag:'',name:cc};
+  var plats = r.platforms || [];
+  if (typeof plats === 'string') { try { plats = JSON.parse(plats); } catch(e) { plats = [plats]; } }
+  return {
+    id: r.id,
+    name: n,
+    avatar: r.avatar || n.replace(/[a-z\s]/g,'').slice(0,2) || n.slice(0,2).toUpperCase(),
+    country: cc,
+    flag: r.flag || meta.flag,
+    countryName: r.country_name || r.countryName || meta.name,
+    category: (r.category || 'lifestyle').toLowerCase(),
+    platforms: plats,
+    followers: r.followers || 0,
+    gifts: r.gifts || r.gift_revenue || r.giftRevenue || r.net_worth || r.netWorth || 0,
+    peak: r.peak || r.peak_viewers || r.peakViewers || 0,
+    growth: r.growth || r.growth_rate || r.growthRate || 0,
+    avgDuration: r.avg_duration || r.avgDuration || 0,
+    frequency: r.frequency || 0,
+    bio: r.bio || '',
+    streams: r.streams || [],
+    upcoming: r.upcoming || []
+  };
+}
+
+async function fetchCreators() {
+  try {
+    var res = await fetch('/api/admin/afrostream/public/creators');
+    var json = await res.json();
+    if (json.success && json.data && json.data.length) {
+      return json.data.map(mapApiCreator);
+    }
+  } catch(e) { /* API unavailable — use demo data */ }
+  return DEMO_CREATORS;
+}
+
+/* ===== INIT: load creators then boot the page ===== */
+var CREATORS = [];
+
+(async function initCreators() {
+  CREATORS = await fetchCreators();
+
+  /* Compute score */
+  CREATORS.forEach(function(c){
+    c.score = Math.round(
+      (c.followers / 50000) * 10 +
+      (c.gifts / 1000) * 5 +
+      (c.peak / 10000) * 8 +
+      c.growth * 2
+    );
+  });
+  CREATORS.sort(function(a,b){ return b.score - a.score; });
+  CREATORS.forEach(function(c,i){ c.rank = i + 1; });
+
+  /* Render once data is ready */
+  renderAll();
+})();
+
+/* ===== UTILS ===== */
+function fmtNum(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/,'') + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/,'') + 'K';
+  return n.toString();
+}
+function fmtUSD(n) {
+  if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/,'') + 'M';
+  if (n >= 1000) return '$' + (n / 1000).toFixed(1).replace(/\.0$/,'') + 'K';
+  return '$' + n;
+}
+
+var PLATFORM_ICONS = {
+  youtube: '<span class="as-platform-icon as-pi-yt" title="YouTube">&#9654;</span>',
+  twitch: '<span class="as-platform-icon as-pi-tw" title="Twitch">&#9670;</span>',
+  tiktok: '<span class="as-platform-icon as-pi-tt" title="TikTok">&#9835;</span>',
+  instagram: '<span class="as-platform-icon as-pi-ig" title="Instagram">&#9673;</span>',
+  kick: '<span class="as-platform-icon as-pi-kk" title="Kick">K</span>'
+};
+
+function platformIcons(arr) {
+  return arr.map(function(p){ return PLATFORM_ICONS[p] || ''; }).join('');
+}
+
+function growthHTML(g) {
+  if (g > 0) return '<span class="as-growth as-growth-up">&#9650; +' + g + '%</span>';
+  if (g < 0) return '<span class="as-growth as-growth-down">&#9660; ' + g + '%</span>';
+  return '<span class="as-growth">0%</span>';
+}
+
+function avatarGradient(name) {
+  var h = 0;
+  for (var i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+  var hue = Math.abs(h) % 360;
+  return 'linear-gradient(135deg, hsl(' + hue + ',80%,60%), hsl(' + ((hue + 60) % 360) + ',70%,50%))';
+}
+
+/* ===== FILTERING ===== */
+var currentPage = 1;
+var PAGE_SIZE = 20;
+var currentSort = 'score';
+var sortDir = -1;
+
+function getFiltered() {
+  var period = document.querySelector('#periodPills .as-pill.active').dataset.value;
+  var category = document.querySelector('#categoryPills .as-pill.active').dataset.value;
+  var country = document.getElementById('countryFilter').value;
+  var platform = document.querySelector('#platformPills .as-pill.active').dataset.value;
+  var search = document.getElementById('searchFilter').value.toLowerCase().trim();
+
+  var list = CREATORS.filter(function(c) {
+    if (category !== 'all' && c.category !== category) return false;
+    if (country !== 'all' && c.country !== country) return false;
+    if (platform !== 'all' && c.platforms.indexOf(platform) === -1) return false;
+    if (search && c.name.toLowerCase().indexOf(search) === -1) return false;
+    return true;
+  });
+
+  list.sort(function(a, b) {
+    var va, vb;
+    switch (currentSort) {
+      case 'name': va = a.name.toLowerCase(); vb = b.name.toLowerCase(); return sortDir * (va < vb ? -1 : va > vb ? 1 : 0);
+      case 'country': va = a.countryName; vb = b.countryName; return sortDir * (va < vb ? -1 : va > vb ? 1 : 0);
+      case 'followers': va = a.followers; vb = b.followers; break;
+      case 'gifts': va = a.gifts; vb = b.gifts; break;
+      case 'peak': va = a.peak; vb = b.peak; break;
+      case 'growth': va = a.growth; vb = b.growth; break;
+      case 'rank': va = a.rank; vb = b.rank; return sortDir * (va - vb);
+      default: va = a.score; vb = b.score;
+    }
+    return sortDir * (vb - va);
+  });
+
+  return list;
+}
+
+/* ===== RENDER PODIUM ===== */
+function renderPodium(list) {
+  var grid = document.getElementById('podiumGrid');
+  if (list.length < 3) { grid.innerHTML = '<p style="color:var(--as-text-muted);text-align:center;width:100%">Not enough creators for podium.</p>'; return; }
+  var order = [1, 0, 2]; // silver, gold, bronze
+  var medals = ['as-podium-gold', 'as-podium-silver', 'as-podium-bronze'];
+  var medalLabels = ['#1', '#2', '#3'];
+  var borderColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
+  var html = '';
+  order.forEach(function(displayIdx) {
+    var dataIdx = displayIdx;
+    var c = list[dataIdx];
+    var cls = medals[dataIdx];
+    html += '<a href="creator.html?id=' + c.id + '" class="as-podium-card ' + cls + '">' +
+      '<div class="as-podium-rank">' + medalLabels[dataIdx] + '</div>' +
+      '<div class="as-podium-avatar" style="background:' + avatarGradient(c.name) + ';border-color:' + borderColors[dataIdx] + '">' + c.avatar + '</div>' +
+      '<h3 class="as-podium-name">' + c.name + '</h3>' +
+      '<div class="as-podium-country">' + c.flag + ' ' + c.countryName + '</div>' +
+      '<div class="as-podium-platforms">' + platformIcons(c.platforms) + '</div>' +
+      '<div class="as-podium-stats">' +
+        '<div class="as-podium-stat"><span class="as-podium-stat-val">' + fmtNum(c.followers) + '</span><span class="as-podium-stat-lbl">Followers</span></div>' +
+        '<div class="as-podium-stat"><span class="as-podium-stat-val">' + fmtUSD(c.gifts) + '</span><span class="as-podium-stat-lbl">Gifts</span></div>' +
+        '<div class="as-podium-stat"><span class="as-podium-stat-val">' + fmtNum(c.peak) + '</span><span class="as-podium-stat-lbl">Peak</span></div>' +
+      '</div>' +
+      '<span class="as-podium-cta">View Profile &rarr;</span>' +
+    '</a>';
+  });
+  grid.innerHTML = html;
+}
+
+/* ===== RENDER TABLE ===== */
+function renderTable(list) {
+  var body = document.getElementById('rankingsBody');
+  var show = list.slice(3, 3 + currentPage * PAGE_SIZE);
+  var html = '';
+  show.forEach(function(c, i) {
+    var rankClass = '';
+    if (c.rank <= 3) rankClass = ' as-row-top3';
+    html += '<tr class="as-table-row' + rankClass + '" onclick="window.location.href=\'creator.html?id=' + c.id + '\'" style="cursor:pointer">' +
+      '<td class="as-td-rank"><span class="as-rank-badge">' + c.rank + '</span></td>' +
+      '<td class="as-td-creator"><div class="as-creator-cell"><div class="as-creator-avatar-sm" style="background:' + avatarGradient(c.name) + '">' + c.avatar + '</div><span>' + c.name + '</span></div></td>' +
+      '<td>' + c.flag + ' ' + c.countryName + '</td>' +
+      '<td>' + platformIcons(c.platforms) + '</td>' +
+      '<td>' + fmtNum(c.followers) + '</td>' +
+      '<td>' + fmtUSD(c.gifts) + '</td>' +
+      '<td>' + fmtNum(c.peak) + '</td>' +
+      '<td>' + growthHTML(c.growth) + '</td>' +
+      '<td><span class="as-score-badge">' + c.score + '</span></td>' +
+    '</tr>';
+  });
+  body.innerHTML = html;
+
+  var btn = document.getElementById('loadMoreBtn');
+  if (3 + currentPage * PAGE_SIZE >= list.length) {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = '';
+  }
+}
+
+function renderAll() {
+  var list = getFiltered();
+  renderPodium(list);
+  renderTable(list);
+}
+
+/* ===== EVENT LISTENERS ===== */
+function setupPills(containerId) {
+  var container = document.getElementById(containerId);
+  container.addEventListener('click', function(e) {
+    var pill = e.target.closest('.as-pill');
+    if (!pill) return;
+    container.querySelectorAll('.as-pill').forEach(function(p){ p.classList.remove('active'); });
+    pill.classList.add('active');
+    currentPage = 1;
+    renderAll();
+  });
+}
+setupPills('periodPills');
+setupPills('categoryPills');
+setupPills('platformPills');
+
+document.getElementById('countryFilter').addEventListener('change', function(){ currentPage = 1; renderAll(); });
+document.getElementById('sortFilter').addEventListener('change', function(){
+  currentSort = this.value; currentPage = 1; renderAll();
+});
+document.getElementById('searchFilter').addEventListener('input', function(){ currentPage = 1; renderAll(); });
+document.getElementById('navSearch').addEventListener('input', function(){
+  document.getElementById('searchFilter').value = this.value; currentPage = 1; renderAll();
+});
+document.getElementById('loadMoreBtn').addEventListener('click', function(){ currentPage++; renderAll(); });
+
+/* Sortable headers */
+document.querySelectorAll('.as-table th[data-sort]').forEach(function(th) {
+  th.style.cursor = 'pointer';
+  th.addEventListener('click', function() {
+    var s = this.dataset.sort;
+    if (currentSort === s) { sortDir *= -1; } else { currentSort = s; sortDir = -1; }
+    document.getElementById('sortFilter').value = currentSort === 'name' || currentSort === 'country' || currentSort === 'rank' ? 'score' : currentSort;
+    currentPage = 1;
+    renderAll();
+  });
+});
+
+/* Last updated */
+document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+/* Scroll reveal */
+(function () {
+  var els = document.querySelectorAll('.rv');
+  if (!els.length) return;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(function (el) { obs.observe(el); });
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

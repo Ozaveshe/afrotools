@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stream Calendar — AfroStream | AfroTools</title>
+<meta name="description" content="Never miss a stream. See who's going live and when across YouTube, Twitch, TikTok, Instagram, and Kick.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+</head>
+<body class="as-dark">
+<afro-navbar></afro-navbar>
+
+<!-- ── SUB-NAV ─────────────────────────────────────────── -->
+<nav class="as-subnav">
+  <div class="as-subnav-inner">
+    <a href="/tools/afrostream/" class="as-subnav-logo">
+      <span class="as-logo-icon">&#9655;</span> AfroStream
+    </a>
+    <div class="as-subnav-links">
+      <a href="/tools/afrostream/">Live Now</a>
+      <a href="/tools/afrostream/#rankings">Rankings</a>
+      <a href="/tools/afrostream/news.html">News</a>
+      <a href="/tools/afrostream/calendar.html" class="active">Calendar</a>
+    </div>
+    <div class="as-subnav-actions">
+      <a href="/tools/afrostream/admin.html" class="as-btn as-btn-outline as-btn-sm">Sign In</a>
+    </div>
+  </div>
+</nav>
+
+<main class="as-main">
+
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <section class="as-news-hero">
+    <h1 class="as-news-title">&#128197; Stream Calendar</h1>
+    <p class="as-news-subtitle">Never miss a stream. See who's going live and when.</p>
+  </section>
+
+  <!-- ── FILTER BAR ────────────────────────────────────── -->
+  <div class="as-cal-filters">
+    <div class="as-cal-filter-group">
+      <label class="as-filter-label">Platform</label>
+      <div class="as-filter-row" id="platformFilter">
+        <button class="as-filter-pill active" data-val="all">All</button>
+        <button class="as-filter-pill" data-val="youtube" style="--pill-color:#FF0000">YouTube</button>
+        <button class="as-filter-pill" data-val="twitch" style="--pill-color:#9146FF">Twitch</button>
+        <button class="as-filter-pill" data-val="tiktok" style="--pill-color:#06D6A0">TikTok</button>
+        <button class="as-filter-pill" data-val="instagram" style="--pill-color:#E1306C">Instagram</button>
+        <button class="as-filter-pill" data-val="kick" style="--pill-color:#53FC18">Kick</button>
+      </div>
+    </div>
+    <div class="as-cal-filter-group">
+      <label class="as-filter-label">Category</label>
+      <div class="as-filter-row" id="catFilter">
+        <button class="as-filter-pill active" data-val="all">All</button>
+        <button class="as-filter-pill" data-val="gaming">Gaming</button>
+        <button class="as-filter-pill" data-val="music">Music</button>
+        <button class="as-filter-pill" data-val="comedy">Comedy</button>
+        <button class="as-filter-pill" data-val="tech">Tech</button>
+        <button class="as-filter-pill" data-val="fashion">Fashion</button>
+        <button class="as-filter-pill" data-val="food">Food</button>
+      </div>
+    </div>
+    <div class="as-cal-filter-group">
+      <label class="as-filter-label">View</label>
+      <div class="as-filter-row" id="viewToggle">
+        <button class="as-filter-pill active" data-val="month">Month</button>
+        <button class="as-filter-pill" data-val="week">Week</button>
+        <button class="as-filter-pill" data-val="list">List</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CALENDAR HEADER ──────────────────────────────── -->
+  <div class="as-cal-header">
+    <button class="as-btn as-btn-ghost" id="prevMonth">&larr;</button>
+    <h2 class="as-cal-month" id="calMonth"></h2>
+    <button class="as-btn as-btn-ghost" id="nextMonth">&rarr;</button>
+    <button class="as-btn as-btn-outline as-btn-sm" id="todayBtn">Today</button>
+  </div>
+
+  <!-- ── CALENDAR VIEWS ──────────────────────────────── -->
+  <div id="calendarContainer"></div>
+
+  <!-- ── DAY DETAIL PANEL ────────────────────────────── -->
+  <div class="as-day-panel" id="dayPanel">
+    <div class="as-day-panel-header">
+      <h3 id="dayPanelTitle"></h3>
+      <button class="as-btn as-btn-ghost" id="closeDayPanel">&times;</button>
+    </div>
+    <div id="dayPanelStreams"></div>
+  </div>
+
+  <!-- ── ADD YOUR STREAM CTA ─────────────────────────── -->
+  <section class="as-cta-section">
+    <div class="as-cta-card">
+      <h3>Going live?</h3>
+      <p>Add your stream and get discovered by thousands of African content fans.</p>
+      <a href="/tools/afrostream/admin.html#streams" class="as-btn as-btn-primary">Add Your Stream</a>
+    </div>
+  </section>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+/* ================================================================
+   AfroStream — Stream Calendar
+   ================================================================ */
+(function() {
+  'use strict';
+
+  /* ── PLATFORM CONFIG ───────────────────────────────── */
+  var PLAT = {
+    youtube:   { label: 'YouTube',   color: '#FF0000', dot: 'as-dot-yt' },
+    twitch:    { label: 'Twitch',    color: '#9146FF', dot: 'as-dot-tw' },
+    tiktok:    { label: 'TikTok',    color: '#06D6A0', dot: 'as-dot-tt' },
+    instagram: { label: 'Instagram', color: '#E1306C', dot: 'as-dot-ig' },
+    kick:      { label: 'Kick',      color: '#53FC18', dot: 'as-dot-kk' }
+  };
+
+  var FLAG = {
+    'Nigeria': '\uD83C\uDDF3\uD83C\uDDEC', 'Kenya': '\uD83C\uDDF0\uD83C\uDDEA',
+    'Ghana': '\uD83C\uDDEC\uD83C\uDDED', 'South Africa': '\uD83C\uDDFF\uD83C\uDDE6',
+    'Egypt': '\uD83C\uDDEA\uD83C\uDDEC', 'Tanzania': '\uD83C\uDDF9\uD83C\uDDFF',
+    'Cameroon': '\uD83C\uDDE8\uD83C\uDDF2', 'Ethiopia': '\uD83C\uDDEA\uD83C\uDDF9',
+    'Senegal': '\uD83C\uDDF8\uD83C\uDDF3', 'Rwanda': '\uD83C\uDDF7\uD83C\uDDFC',
+    'Uganda': '\uD83C\uDDFA\uD83C\uDDEC', 'Morocco': '\uD83C\uDDF2\uD83C\uDDE6'
+  };
+
+  /* ── DEMO STREAM DATA (fallback) ───────────────────── */
+  var now = new Date();
+  var y = now.getFullYear();
+  var m = now.getMonth();
+
+  function d(day, hour, min) {
+    return new Date(y, m, day, hour, min || 0);
+  }
+
+  var DEMO_STREAMS = [
+    { id:1,  creator:'NaijaTech', title:'Weekly Tech News Roundup', platform:'youtube', cat:'tech', country:'Nigeria', time:d(1,14,0), duration:90, url:'#' },
+    { id:2,  creator:'GamerQueenKE', title:'Call of Duty Warzone — Road to 100K', platform:'twitch', cat:'gaming', country:'Kenya', time:d(2,18,0), duration:180, url:'#' },
+    { id:3,  creator:'AccraTechie', title:'Building a SaaS in Public — Day 47', platform:'youtube', cat:'tech', country:'Ghana', time:d(3,15,0), duration:120, url:'#' },
+    { id:4,  creator:'StyleQueenLagos', title:'Live Fashion Drop — AfroChic Vol.3', platform:'tiktok', cat:'fashion', country:'Nigeria', time:d(4,19,0), duration:120, url:'#' },
+    { id:5,  creator:'BeatsByKojo', title:'Afrobeats Production Session', platform:'twitch', cat:'music', country:'Ghana', time:d(5,20,0), duration:180, url:'#' },
+    { id:6,  creator:'NairobiLaughs', title:'Comedy Night Live from Nairobi', platform:'youtube', cat:'comedy', country:'Kenya', time:d(5,21,0), duration:60, url:'#' },
+    { id:7,  creator:'Injera Queen', title:'Cooking Ethiopian Doro Wat Live', platform:'instagram', cat:'food', country:'Ethiopia', time:d(6,16,0), duration:90, url:'#' },
+    { id:8,  creator:'DarDarVlogs', title:'Exploring Joburg Day 12', platform:'youtube', cat:'comedy', country:'Tanzania', time:d(7,12,0), duration:60, url:'#' },
+    { id:9,  creator:'PyroGamerNG', title:'Fortnite Friday Tournament', platform:'kick', cat:'gaming', country:'Nigeria', time:d(8,19,0), duration:240, url:'#' },
+    { id:10, creator:'FashionByAminata', title:'Dakar Street Style Haul', platform:'instagram', cat:'fashion', country:'Senegal', time:d(8,15,0), duration:60, url:'#' },
+    { id:11, creator:'KenyanGamer254', title:'EA FC 26 — Ultimate Team Grind', platform:'twitch', cat:'gaming', country:'Kenya', time:d(9,17,0), duration:180, url:'#' },
+    { id:12, creator:'ComedyChef254', title:'Cooking While Roasting Subscribers', platform:'youtube', cat:'food', country:'Kenya', time:d(10,13,0), duration:90, url:'#' },
+    { id:13, creator:'CapeTownClutch', title:'Valorant Ranked Climb', platform:'twitch', cat:'gaming', country:'South Africa', time:d(11,20,0), duration:180, url:'#' },
+    { id:14, creator:'NaijaTech', title:'Samsung Galaxy S27 Ultra — First Look', platform:'youtube', cat:'tech', country:'Nigeria', time:d(12,14,0), duration:30, url:'#' },
+    { id:15, creator:'WairimuComedy', title:'Stand-Up Practice Session', platform:'tiktok', cat:'comedy', country:'Kenya', time:d(12,21,0), duration:45, url:'#' },
+    { id:16, creator:'AccraTechie', title:'Code Review Live — Viewer Projects', platform:'youtube', cat:'tech', country:'Ghana', time:d(13,15,0), duration:120, url:'#' },
+    { id:17, creator:'BilingualBoss', title:'French vs English Challenge', platform:'tiktok', cat:'comedy', country:'Cameroon', time:d(14,18,0), duration:60, url:'#' },
+    { id:18, creator:'GamerQueenKE', title:'Apex Legends Marathon', platform:'twitch', cat:'gaming', country:'Kenya', time:d(15,17,0), duration:240, url:'#' },
+    { id:19, creator:'StyleQueenLagos', title:'How I Style Ankara for Work', platform:'instagram', cat:'fashion', country:'Nigeria', time:d(15,11,0), duration:45, url:'#' },
+    { id:20, creator:'BeatsByKojo', title:'Making a Beat from Scratch — Viewer Picks Sounds', platform:'twitch', cat:'music', country:'Ghana', time:d(16,20,0), duration:180, url:'#' },
+    { id:21, creator:'CairoGamer', title:'League of Legends — Bronze to Diamond', platform:'twitch', cat:'gaming', country:'Egypt', time:d(17,19,0), duration:180, url:'#' },
+    { id:22, creator:'KigaliKitchen', title:'Rwandan Isombe Tutorial', platform:'youtube', cat:'food', country:'Rwanda', time:d(17,13,0), duration:60, url:'#' },
+    { id:23, creator:'JoziLifestyle', title:'Exploring Dar es Salaam Day 8', platform:'youtube', cat:'comedy', country:'South Africa', time:d(18,12,0), duration:60, url:'#' },
+    { id:24, creator:'NaijaTech', title:'Budget Laptop Showdown 2026', platform:'youtube', cat:'tech', country:'Nigeria', time:d(19,14,0), duration:45, url:'#' },
+    { id:25, creator:'FunnyFredKE', title:'Improv Night — Chat Picks the Scenes', platform:'youtube', cat:'comedy', country:'Kenya', time:d(20,21,0), duration:90, url:'#' },
+    { id:26, creator:'TechBroSA', title:'AI Tools Every African Creator Needs', platform:'youtube', cat:'tech', country:'South Africa', time:d(20,16,0), duration:60, url:'#' },
+    { id:27, creator:'GamerQueenKE', title:'Mobile Legends Championship Prep', platform:'kick', cat:'gaming', country:'Kenya', time:d(21,18,0), duration:120, url:'#' },
+    { id:28, creator:'Injera Queen', title:'Ethiopian Coffee Ceremony Live', platform:'instagram', cat:'food', country:'Ethiopia', time:d(22,15,0), duration:60, url:'#' },
+    { id:29, creator:'PyroGamerNG', title:'GTA 6 — First 24 Hours', platform:'twitch', cat:'gaming', country:'Nigeria', time:d(23,10,0), duration:480, url:'#' },
+    { id:30, creator:'AccraTechie', title:'Saturday Community Build Session', platform:'youtube', cat:'tech', country:'Ghana', time:d(23,14,0), duration:120, url:'#' },
+    { id:31, creator:'NairobiLaughs', title:'Sketch Comedy Marathon', platform:'youtube', cat:'comedy', country:'Kenya', time:d(24,19,0), duration:120, url:'#' },
+    { id:32, creator:'MoroccoBeats', title:'Gnawa Music Production Live', platform:'twitch', cat:'music', country:'Morocco', time:d(24,21,0), duration:120, url:'#' },
+    { id:33, creator:'CapeTownClutch', title:'CS2 Tournament Qualifier', platform:'twitch', cat:'gaming', country:'South Africa', time:d(25,18,0), duration:180, url:'#' },
+    { id:34, creator:'BilingualBoss', title:'Q&A — Ask Me Anything Bilingual Edition', platform:'tiktok', cat:'comedy', country:'Cameroon', time:d(26,17,0), duration:60, url:'#' },
+    { id:35, creator:'UgandanFoodie', title:'Rolex (Chapati Wrap) Masterclass', platform:'youtube', cat:'food', country:'Uganda', time:d(26,13,0), duration:45, url:'#' },
+    { id:36, creator:'NaijaTech', title:'Creator Gear Guide 2026', platform:'youtube', cat:'tech', country:'Nigeria', time:d(27,14,0), duration:60, url:'#' },
+    { id:37, creator:'StyleQueenLagos', title:'End of Month Mega Sale LIVE', platform:'tiktok', cat:'fashion', country:'Nigeria', time:d(28,19,0), duration:180, url:'#' },
+    { id:38, creator:'BeatsByKojo', title:'Collab Beat Session with MoroccoBeats', platform:'twitch', cat:'music', country:'Ghana', time:d(28,20,0), duration:120, url:'#' },
+    { id:39, creator:'KenyanGamer254', title:'Weekend Warzone Grind', platform:'kick', cat:'gaming', country:'Kenya', time:d(29,16,0), duration:240, url:'#' },
+    { id:40, creator:'DarDarVlogs', title:'Month End Recap — Best Moments', platform:'youtube', cat:'comedy', country:'Tanzania', time:d(30,12,0), duration:30, url:'#' }
+  ];
+
+  /* ── FETCH LIVE DATA (fallback to demo) ────────────── */
+  var STREAMS = [];
+
+  function mapApiStream(s) {
+    return {
+      id:       s.id || 0,
+      creator:  s.creator_name || s.creator || '',
+      title:    s.title || '',
+      platform: (s.platform || 'youtube').toLowerCase(),
+      cat:      s.category || s.cat || 'tech',
+      country:  s.country || '',
+      time:     new Date(s.stream_date || s.datetime || s.time),
+      duration: s.duration || 60,
+      url:      s.stream_url || s.url || '#',
+      live:     s.is_live || s.live || false
+    };
+  }
+
+  async function fetchStreams() {
+    try {
+      var res = await fetch('/api/admin/afrostream/public/streams');
+      var json = await res.json();
+      if (json.success && json.data && json.data.length) {
+        return json.data.map(mapApiStream);
+      }
+    } catch(e) {}
+    return DEMO_STREAMS; // fallback
+  }
+
+  async function loadStreams() {
+    STREAMS = await fetchStreams();
+
+    // Merge admin-saved streams from localStorage
+    try {
+      var saved = JSON.parse(localStorage.getItem('as_streams') || '[]');
+      saved.forEach(function(s, i) {
+        STREAMS.push({
+          id: 1000 + i,
+          creator: s.creator,
+          title: s.title,
+          platform: s.platform,
+          cat: s.category,
+          country: s.country,
+          time: new Date(s.datetime),
+          duration: 60,
+          url: s.url || '#'
+        });
+      });
+    } catch(e) {}
+
+    render();
+  }
+
+  /* ── STATE ─────────────────────────────────────────── */
+  var viewMonth = m;
+  var viewYear = y;
+  var filterPlatform = 'all';
+  var filterCat = 'all';
+  var currentView = 'month';
+
+  /* ── HELPERS ────────────────────────────────────────── */
+  function daysInMonth(yr, mo) { return new Date(yr, mo + 1, 0).getDate(); }
+  function firstDayOfMonth(yr, mo) { var d = new Date(yr, mo, 1).getDay(); return d === 0 ? 6 : d - 1; } // Mon=0
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function formatTime(dt) { return pad(dt.getHours()) + ':' + pad(dt.getMinutes()); }
+  function isToday(yr, mo, day) { return yr === y && mo === m && day === now.getDate(); }
+
+  function monthName(mo, yr) {
+    return new Date(yr, mo, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  function filtered() {
+    return STREAMS.filter(function(s) {
+      if (filterPlatform !== 'all' && s.platform !== filterPlatform) return false;
+      if (filterCat !== 'all' && s.cat !== filterCat) return false;
+      return true;
+    });
+  }
+
+  function streamsOnDay(yr, mo, day) {
+    return filtered().filter(function(s) {
+      return s.time.getFullYear() === yr && s.time.getMonth() === mo && s.time.getDate() === day;
+    }).sort(function(a, b) { return a.time - b.time; });
+  }
+
+  function streamCard(s) {
+    var p = PLAT[s.platform] || PLAT.youtube;
+    var fl = FLAG[s.country] || '';
+    return '<div class="as-stream-item">' +
+      '<div class="as-stream-time">' + formatTime(s.time) + '</div>' +
+      '<div class="as-stream-info">' +
+        '<div class="as-stream-creator">' + fl + ' ' + s.creator + '</div>' +
+        '<div class="as-stream-title">' + s.title + '</div>' +
+        '<div class="as-stream-tags">' +
+          '<span class="as-platform-badge" style="background:' + p.color + '">' + p.label + '</span>' +
+          '<span class="as-cat-pill">' + s.cat + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="as-stream-actions">' +
+        '<button class="as-btn as-btn-outline as-btn-xs as-reminder-btn" data-id="' + s.id + '">Set Reminder</button>' +
+        '<a href="' + s.url + '" class="as-btn as-btn-primary as-btn-xs" target="_blank">Watch &rarr;</a>' +
+      '</div>' +
+    '</div>';
+  }
+
+  /* ── MONTH VIEW ────────────────────────────────────── */
+  function renderMonth() {
+    var days = daysInMonth(viewYear, viewMonth);
+    var start = firstDayOfMonth(viewYear, viewMonth);
+    var html = '<div class="as-cal-grid">';
+    html += '<div class="as-cal-dow">Mon</div><div class="as-cal-dow">Tue</div><div class="as-cal-dow">Wed</div><div class="as-cal-dow">Thu</div><div class="as-cal-dow">Fri</div><div class="as-cal-dow">Sat</div><div class="as-cal-dow">Sun</div>';
+
+    // Empty cells before day 1
+    for (var e = 0; e < start; e++) {
+      html += '<div class="as-cal-cell as-cal-empty"></div>';
+    }
+
+    for (var day = 1; day <= days; day++) {
+      var streams = streamsOnDay(viewYear, viewMonth, day);
+      var todayCls = isToday(viewYear, viewMonth, day) ? ' as-cal-today' : '';
+      var hasCls = streams.length > 0 ? ' as-cal-has-streams' : '';
+      html += '<div class="as-cal-cell' + todayCls + hasCls + '" data-day="' + day + '">';
+      html += '<span class="as-cal-day-num">' + day + '</span>';
+      if (streams.length > 0) {
+        html += '<div class="as-cal-dots">';
+        streams.slice(0, 5).forEach(function(s) {
+          var p = PLAT[s.platform] || PLAT.youtube;
+          html += '<span class="as-cal-dot" style="background:' + p.color + '" title="' + s.creator + ': ' + s.title + '"></span>';
+        });
+        if (streams.length > 5) html += '<span class="as-cal-more">+' + (streams.length - 5) + '</span>';
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  /* ── WEEK VIEW ─────────────────────────────────────── */
+  function renderWeek() {
+    // Show current week (Mon-Sun around today or first of view month)
+    var ref = (viewYear === y && viewMonth === m) ? now : new Date(viewYear, viewMonth, 1);
+    var dayOfWeek = ref.getDay() === 0 ? 6 : ref.getDay() - 1; // Mon=0
+    var weekStart = new Date(ref);
+    weekStart.setDate(ref.getDate() - dayOfWeek);
+
+    var slots = ['Morning (6-12)', 'Afternoon (12-18)', 'Evening (18-24)'];
+    var html = '<div class="as-week-grid">';
+    html += '<div class="as-week-slot-label"></div>';
+    for (var wd = 0; wd < 7; wd++) {
+      var dd = new Date(weekStart);
+      dd.setDate(weekStart.getDate() + wd);
+      var todayCls = (dd.getDate() === now.getDate() && dd.getMonth() === m && dd.getFullYear() === y) ? ' as-week-today' : '';
+      html += '<div class="as-week-day-header' + todayCls + '">' +
+        dd.toLocaleDateString('en-US', { weekday: 'short' }) + ' ' + dd.getDate() +
+      '</div>';
+    }
+
+    slots.forEach(function(slotName, si) {
+      var hourMin = si === 0 ? 6 : (si === 1 ? 12 : 18);
+      var hourMax = si === 0 ? 12 : (si === 1 ? 18 : 24);
+      html += '<div class="as-week-slot-label">' + slotName + '</div>';
+      for (var wd = 0; wd < 7; wd++) {
+        var dd = new Date(weekStart);
+        dd.setDate(weekStart.getDate() + wd);
+        var dayStreams = streamsOnDay(dd.getFullYear(), dd.getMonth(), dd.getDate()).filter(function(s) {
+          var h = s.time.getHours();
+          return h >= hourMin && h < hourMax;
+        });
+        html += '<div class="as-week-cell">';
+        dayStreams.forEach(function(s) {
+          var p = PLAT[s.platform] || PLAT.youtube;
+          html += '<div class="as-week-block" style="border-left:3px solid ' + p.color + '">' +
+            '<span class="as-week-time">' + formatTime(s.time) + '</span> ' +
+            '<span class="as-week-creator">' + s.creator + '</span>' +
+            '<div class="as-week-title">' + s.title + '</div>' +
+          '</div>';
+        });
+        html += '</div>';
+      }
+    });
+    html += '</div>';
+    return html;
+  }
+
+  /* ── LIST VIEW ─────────────────────────────────────── */
+  function renderList() {
+    var days = daysInMonth(viewYear, viewMonth);
+    var html = '<div class="as-list-view">';
+    var hasAny = false;
+    for (var day = 1; day <= days; day++) {
+      var streams = streamsOnDay(viewYear, viewMonth, day);
+      if (streams.length === 0) continue;
+      hasAny = true;
+      var dt = new Date(viewYear, viewMonth, day);
+      var todayCls = isToday(viewYear, viewMonth, day) ? ' as-list-today' : '';
+      html += '<div class="as-list-day-group' + todayCls + '">';
+      html += '<h4 class="as-list-date">' + dt.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) + '</h4>';
+      streams.forEach(function(s) { html += streamCard(s); });
+      html += '</div>';
+    }
+    if (!hasAny) html += '<p class="as-empty-state">No streams scheduled this month matching your filters.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  /* ── RENDER ────────────────────────────────────────── */
+  function render() {
+    document.getElementById('calMonth').textContent = monthName(viewMonth, viewYear);
+    var container = document.getElementById('calendarContainer');
+    if (currentView === 'month') container.innerHTML = renderMonth();
+    else if (currentView === 'week') container.innerHTML = renderWeek();
+    else container.innerHTML = renderList();
+  }
+
+  /* ── DAY PANEL ─────────────────────────────────────── */
+  function openDayPanel(day) {
+    var streams = streamsOnDay(viewYear, viewMonth, day);
+    var dt = new Date(viewYear, viewMonth, day);
+    document.getElementById('dayPanelTitle').textContent = dt.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    var body = document.getElementById('dayPanelStreams');
+    if (streams.length === 0) {
+      body.innerHTML = '<p class="as-empty-state">No streams scheduled for this day.</p>';
+    } else {
+      body.innerHTML = streams.map(streamCard).join('');
+    }
+    document.getElementById('dayPanel').classList.add('open');
+  }
+
+  /* ── EVENTS ────────────────────────────────────────── */
+  function setupFilterRow(id, setter) {
+    document.getElementById(id).addEventListener('click', function(e) {
+      var btn = e.target.closest('.as-filter-pill');
+      if (!btn) return;
+      this.querySelectorAll('.as-filter-pill').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      setter(btn.dataset.val);
+      render();
+    });
+  }
+
+  setupFilterRow('platformFilter', function(v) { filterPlatform = v; });
+  setupFilterRow('catFilter', function(v) { filterCat = v; });
+  setupFilterRow('viewToggle', function(v) { currentView = v; });
+
+  document.getElementById('prevMonth').addEventListener('click', function() {
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    render();
+  });
+  document.getElementById('nextMonth').addEventListener('click', function() {
+    viewMonth++;
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    render();
+  });
+  document.getElementById('todayBtn').addEventListener('click', function() {
+    viewMonth = m; viewYear = y;
+    render();
+  });
+
+  // Click day cell → open panel (month view)
+  document.getElementById('calendarContainer').addEventListener('click', function(e) {
+    var cell = e.target.closest('.as-cal-cell[data-day]');
+    if (cell) openDayPanel(parseInt(cell.dataset.day, 10));
+  });
+
+  document.getElementById('closeDayPanel').addEventListener('click', function() {
+    document.getElementById('dayPanel').classList.remove('open');
+  });
+
+  // Reminder buttons
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.as-reminder-btn');
+    if (!btn) return;
+    btn.textContent = 'Reminder Set!';
+    btn.disabled = true;
+    btn.classList.add('as-btn-success');
+  });
+
+  /* ── INIT ──────────────────────────────────────────── */
+  loadStreams();
+
+})();
+</script>
+</body>
+</html>

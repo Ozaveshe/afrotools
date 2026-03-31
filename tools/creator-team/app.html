@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CreatorTeam Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js" defer></script>
+</head>
+<body class="ctm-app">
+
+  <!-- TOPBAR -->
+  <div class="ctm-topbar">
+    <a href="index.html" class="ctm-topbar-back">&larr;</a>
+    <a href="index.html" class="ctm-topbar-brand">&#128101; CreatorTeam</a>
+    <div class="ctm-topbar-actions">
+      <button class="ctm-topbar-btn" id="inviteBtn" style="display:none">Invite</button>
+      <button class="ctm-topbar-btn primary" id="newCardBtnTop" style="display:none">+ Card</button>
+    </div>
+  </div>
+
+  <!-- TEAM SETUP (shown when no team exists) -->
+  <div id="setupView">
+    <div class="ctm-setup">
+      <div style="font-size:48px;margin-bottom:16px">&#128101;</div>
+      <h2>Create Your Team</h2>
+      <p>Name your team to get started. You'll be the owner.</p>
+      <input type="text" class="ctm-setup-input" id="teamNameInput" placeholder="e.g. Naija Creators, Accra Content Co." maxlength="40">
+      <input type="text" class="ctm-setup-input" id="ownerNameInput" placeholder="Your name" maxlength="30">
+      <button class="ctm-btn" id="createTeamBtn">Create Team &rarr;</button>
+    </div>
+  </div>
+
+  <!-- MAIN APP (hidden until team created) -->
+  <div id="appMain" style="display:none">
+    <!-- TEAM BAR -->
+    <div class="ctm-team-bar" id="teamBar"></div>
+
+    <!-- VIEW TABS -->
+    <div class="ctm-view-tabs" id="viewTabs">
+      <button class="ctm-view-tab active" data-view="board">&#128203; Board</button>
+      <button class="ctm-view-tab" data-view="briefs">&#128221; Briefs</button>
+      <button class="ctm-view-tab" data-view="calendar">&#128197; Calendar</button>
+      <button class="ctm-view-tab" data-view="assets">&#128194; Assets</button>
+      <button class="ctm-view-tab" data-view="activity">&#128172; Activity</button>
+    </div>
+
+    <!-- WORKSPACE -->
+    <div class="ctm-workspace">
+
+      <!-- ===== BOARD VIEW ===== -->
+      <div id="boardView">
+        <div class="ctm-filter-bar">
+          <select class="ctm-filter-select" id="filterAssignee"><option value="">All members</option></select>
+          <select class="ctm-filter-select" id="filterPlatform">
+            <option value="">All platforms</option>
+            <option value="instagram">Instagram</option>
+            <option value="youtube">YouTube</option>
+            <option value="tiktok">TikTok</option>
+            <option value="x">X / Twitter</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="blog">Blog</option>
+            <option value="podcast">Podcast</option>
+            <option value="other">Other</option>
+          </select>
+          <select class="ctm-filter-select" id="filterDue">
+            <option value="">Any date</option>
+            <option value="overdue">Overdue</option>
+            <option value="today">Due today</option>
+            <option value="week">This week</option>
+          </select>
+        </div>
+        <div class="ctm-kanban" id="kanbanBoard"></div>
+      </div>
+
+      <!-- ===== BRIEFS VIEW ===== -->
+      <div id="briefsView" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 0 4px">
+          <h3 style="font-size:16px;font-weight:700">Content Briefs</h3>
+          <button class="ctm-btn sm" id="newBriefBtn">+ New Brief</button>
+        </div>
+        <div class="ctm-brief-template-list" id="briefTemplates"></div>
+        <div class="ctm-briefs-grid" id="briefsGrid"></div>
+        <div class="ctm-empty" id="briefsEmpty" style="display:none">
+          <div class="ctm-empty-icon">&#128221;</div>
+          <p>No briefs yet. Create one or pick a template above.</p>
+        </div>
+      </div>
+
+      <!-- ===== CALENDAR VIEW ===== -->
+      <div id="calendarView" style="display:none">
+        <div class="ctm-calendar" id="calendarContainer"></div>
+      </div>
+
+      <!-- ===== ASSETS VIEW ===== -->
+      <div id="assetsView" style="display:none">
+        <div class="ctm-assets-toolbar">
+          <input type="text" class="ctm-filter-search" id="assetSearch" placeholder="Search assets...">
+          <select class="ctm-filter-select" id="assetTypeFilter">
+            <option value="">All types</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="doc">Document</option>
+            <option value="other">Other</option>
+          </select>
+          <button class="ctm-btn sm" id="addAssetBtn">+ Add Asset</button>
+        </div>
+        <div class="ctm-assets-grid" id="assetsGrid"></div>
+        <div class="ctm-empty" id="assetsEmpty" style="display:none">
+          <div class="ctm-empty-icon">&#128194;</div>
+          <p>No shared assets yet. Add links to images, videos, and docs.</p>
+        </div>
+      </div>
+
+      <!-- ===== ACTIVITY VIEW ===== -->
+      <div id="activityView" style="display:none">
+        <div class="ctm-activity">
+          <h3 style="font-size:16px;font-weight:700;padding:16px 0 8px">Activity Feed</h3>
+          <div class="ctm-activity-list" id="activityList"></div>
+          <div class="ctm-empty" id="activityEmpty" style="display:none">
+            <div class="ctm-empty-icon">&#128172;</div>
+            <p>No activity yet. Start creating cards and moving them through your workflow.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <div class="ctm-modal-overlay" id="modalOverlay">
+    <div class="ctm-modal" id="modalContent" style="position:relative"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="ctm-bottom-nav" id="bottomNav" style="display:none">
+    <a href="#" data-view="board" class="active"><span class="ctm-bnav-icon">&#128203;</span>Board</a>
+    <a href="#" data-view="briefs"><span class="ctm-bnav-icon">&#128221;</span>Briefs</a>
+    <a href="#" data-view="calendar"><span class="ctm-bnav-icon">&#128197;</span>Calendar</a>
+    <a href="#" data-view="assets"><span class="ctm-bnav-icon">&#128194;</span>Assets</a>
+    <a href="#" data-view="activity"><span class="ctm-bnav-icon">&#128172;</span>Activity</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="ctm-toast" id="toast"></div>
+
+<script>
+/* =============================================
+   CreatorTeam — Full Collaboration Workspace
+   All data in localStorage. All JS inline.
+   ============================================= */
+(function() {
+  'use strict';
+
+  /* ---------- CONSTANTS ---------- */
+  var STORAGE_KEY = 'ctm_data';
+  var COLUMNS = [
+    { id: 'ideas', name: 'Ideas', dot: 'ideas' },
+    { id: 'progress', name: 'In Progress', dot: 'progress' },
+    { id: 'review', name: 'Review', dot: 'review' },
+    { id: 'approved', name: 'Approved', dot: 'approved' },
+    { id: 'published', name: 'Published', dot: 'published' }
+  ];
+  var PLATFORMS = ['instagram','youtube','tiktok','x','linkedin','blog','podcast','other'];
+  var BRIEF_TEMPLATES = [
+    { name: 'Social Post', icon: '&#128241;', platform: 'instagram', tone: 'Casual', audience: 'Gen Z / Millennials', points: ['Hook in first line','Strong CTA','Relevant hashtags'] },
+    { name: 'Blog Article', icon: '&#128221;', platform: 'blog', tone: 'Educational', audience: 'Professionals', points: ['SEO keyword in title','Subheadings every 300 words','Internal links'] },
+    { name: 'Video Script', icon: '&#127909;', platform: 'youtube', tone: 'Engaging', audience: 'Subscribers', points: ['Hook in first 5 seconds','Mid-roll CTA','End screen prompt'] },
+    { name: 'Podcast Episode', icon: '&#127897;', platform: 'podcast', tone: 'Conversational', audience: 'Listeners', points: ['Intro hook','Guest questions prep','Outro CTA'] },
+    { name: 'Email Newsletter', icon: '&#128231;', platform: 'other', tone: 'Personal', audience: 'Email subscribers', points: ['Subject line A/B','One clear CTA','P.S. line'] }
+  ];
+  var MEMBER_COLORS = ['#EC4899','#6366f1','#f59e0b','#10b981','#ef4444','#8b5cf6','#14b8a6','#f97316','#06b6d4','#e11d48'];
+
+  /* ---------- STATE ---------- */
+  var state = loadState();
+
+  function defaultState() {
+    return { team: null, members: [], cards: [], briefs: [], assets: [], activity: [] };
+  }
+  function loadState() {
+    try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY)); return s && s.team ? s : defaultState(); }
+    catch(e) { return defaultState(); }
+  }
+  function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function genId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 6); }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  /* ---------- TOAST ---------- */
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 2200);
+  }
+
+  /* ---------- MODAL HELPERS ---------- */
+  function openModal(html) {
+    var o = document.getElementById('modalOverlay');
+    document.getElementById('modalContent').innerHTML = html;
+    o.classList.add('open');
+  }
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  /* ---------- ACTIVITY LOG ---------- */
+  function logActivity(text) {
+    state.activity.unshift({ id: genId(), text: text, time: Date.now() });
+    if (state.activity.length > 200) state.activity = state.activity.slice(0, 200);
+    saveState();
+  }
+
+  /* ---------- TEAM SETUP ---------- */
+  var setupView = document.getElementById('setupView');
+  var appMain = document.getElementById('appMain');
+  var bottomNav = document.getElementById('bottomNav');
+
+  if (state.team) { showApp(); } else { setupView.style.display = ''; }
+
+  document.getElementById('createTeamBtn').addEventListener('click', function() {
+    var name = document.getElementById('teamNameInput').value.trim();
+    var owner = document.getElementById('ownerNameInput').value.trim();
+    if (!name) { toast('Enter a team name'); return; }
+    if (!owner) { toast('Enter your name'); return; }
+    state.team = { id: genId(), name: name, created: Date.now() };
+    state.members = [{ id: genId(), name: owner, role: 'owner', color: MEMBER_COLORS[0] }];
+    logActivity(owner + ' created the team "' + name + '"');
+    saveState();
+    showApp();
+  });
+
+  function showApp() {
+    setupView.style.display = 'none';
+    appMain.style.display = '';
+    bottomNav.style.display = '';
+    document.getElementById('inviteBtn').style.display = '';
+    document.getElementById('newCardBtnTop').style.display = '';
+    renderTeamBar();
+    renderBoard();
+    populateFilterAssignee();
+  }
+
+  /* ---------- TEAM BAR ---------- */
+  function renderTeamBar() {
+    var bar = document.getElementById('teamBar');
+    var html = '';
+    state.members.forEach(function(m) {
+      html += '<div class="ctm-member-pill">';
+      html += '<div class="ctm-member-avatar" style="background:' + m.color + '">' + m.name.charAt(0).toUpperCase() + '</div>';
+      html += '<span>' + esc(m.name) + '</span>';
+      html += '<span class="ctm-member-role ' + m.role + '">' + m.role + '</span>';
+      html += '</div>';
+    });
+    html += '<div class="ctm-team-add" id="addMemberBtn" title="Add member">+</div>';
+    html += '<span class="ctm-invite-link" id="copyInvite" title="Copy invite link">&#128279; Copy invite</span>';
+    bar.innerHTML = html;
+    document.getElementById('addMemberBtn').addEventListener('click', showAddMemberModal);
+    document.getElementById('copyInvite').addEventListener('click', function() {
+      var link = window.location.origin + '/tools/creator-team/app.html?team=' + state.team.id;
+      if (navigator.clipboard) { navigator.clipboard.writeText(link); }
+      toast('Invite link copied!');
+    });
+  }
+
+  document.getElementById('inviteBtn').addEventListener('click', function() {
+    var link = window.location.origin + '/tools/creator-team/app.html?team=' + state.team.id;
+    if (navigator.clipboard) { navigator.clipboard.writeText(link); }
+    toast('Invite link copied!');
+  });
+
+  function showAddMemberModal() {
+    if (state.members.length >= 10) { toast('Max 10 members'); return; }
+    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    html += '<h3>Add Team Member</h3>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Name</label><input type="text" class="ctm-form-input" id="mName" placeholder="Team member name" maxlength="30"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Role</label><select class="ctm-form-select" id="mRole"><option value="editor">Editor</option><option value="viewer">Viewer</option></select></div>';
+    html += '<button class="ctm-btn" id="saveMemberBtn">Add Member</button>';
+    openModal(html);
+    document.getElementById('saveMemberBtn').addEventListener('click', function() {
+      var n = document.getElementById('mName').value.trim();
+      if (!n) { toast('Enter a name'); return; }
+      var m = { id: genId(), name: n, role: document.getElementById('mRole').value, color: MEMBER_COLORS[state.members.length % MEMBER_COLORS.length] };
+      state.members.push(m);
+      logActivity(n + ' was added to the team as ' + m.role);
+      saveState();
+      renderTeamBar();
+      populateFilterAssignee();
+      closeModal();
+      toast(n + ' added!');
+    });
+  }
+
+  /* ---------- VIEW TABS ---------- */
+  var views = ['board','briefs','calendar','assets','activity'];
+  var viewEls = { board: 'boardView', briefs: 'briefsView', calendar: 'calendarView', assets: 'assetsView', activity: 'activityView' };
+
+  function switchView(v) {
+    views.forEach(function(vv) {
+      document.getElementById(viewEls[vv]).style.display = vv === v ? '' : 'none';
+    });
+    document.querySelectorAll('.ctm-view-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.view === v); });
+    document.querySelectorAll('.ctm-bottom-nav a').forEach(function(a) { a.classList.toggle('active', a.dataset.view === v); });
+    if (v === 'board') renderBoard();
+    if (v === 'briefs') renderBriefs();
+    if (v === 'calendar') renderCalendar();
+    if (v === 'assets') renderAssets();
+    if (v === 'activity') renderActivity();
+  }
+  document.getElementById('viewTabs').addEventListener('click', function(e) {
+    var tab = e.target.closest('.ctm-view-tab');
+    if (tab) switchView(tab.dataset.view);
+  });
+  document.getElementById('bottomNav').addEventListener('click', function(e) {
+    e.preventDefault();
+    var a = e.target.closest('a');
+    if (a && a.dataset.view) switchView(a.dataset.view);
+  });
+
+  /* ---------- FILTER ---------- */
+  function populateFilterAssignee() {
+    var sel = document.getElementById('filterAssignee');
+    var val = sel.value;
+    sel.innerHTML = '<option value="">All members</option>';
+    state.members.forEach(function(m) {
+      sel.innerHTML += '<option value="' + m.id + '">' + esc(m.name) + '</option>';
+    });
+    sel.value = val;
+  }
+  document.getElementById('filterAssignee').addEventListener('change', renderBoard);
+  document.getElementById('filterPlatform').addEventListener('change', renderBoard);
+  document.getElementById('filterDue').addEventListener('change', renderBoard);
+
+  function passesFilter(card) {
+    var fa = document.getElementById('filterAssignee').value;
+    var fp = document.getElementById('filterPlatform').value;
+    var fd = document.getElementById('filterDue').value;
+    if (fa && card.assignee !== fa) return false;
+    if (fp && card.platform !== fp) return false;
+    if (fd) {
+      var now = new Date(); var due = card.due ? new Date(card.due) : null;
+      if (fd === 'overdue' && (!due || due >= new Date(now.getFullYear(), now.getMonth(), now.getDate()))) return false;
+      if (fd === 'today' && (!due || due.toDateString() !== now.toDateString())) return false;
+      if (fd === 'week') {
+        if (!due) return false;
+        var weekEnd = new Date(now); weekEnd.setDate(weekEnd.getDate() + 7);
+        if (due > weekEnd || due < now) return false;
+      }
+    }
+    return true;
+  }
+
+  /* =============================================
+     KANBAN BOARD
+     ============================================= */
+  function renderBoard() {
+    var board = document.getElementById('kanbanBoard');
+    board.innerHTML = '';
+    COLUMNS.forEach(function(col) {
+      var cards = state.cards.filter(function(c) { return c.status === col.id && passesFilter(c); });
+      var colEl = document.createElement('div');
+      colEl.className = 'ctm-column';
+      colEl.innerHTML = '<div class="ctm-column-header"><div class="ctm-column-dot ' + col.dot + '"></div><span class="ctm-column-title">' + col.name + '</span><span class="ctm-column-count">' + cards.length + '</span></div>';
+      var cardsEl = document.createElement('div');
+      cardsEl.className = 'ctm-column-cards';
+      cardsEl.dataset.col = col.id;
+      // Drag events
+      cardsEl.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('drag-over'); });
+      cardsEl.addEventListener('dragleave', function(e) { this.classList.remove('drag-over'); });
+      cardsEl.addEventListener('drop', function(e) {
+        e.preventDefault(); this.classList.remove('drag-over');
+        var cardId = e.dataTransfer.getData('text/plain');
+        var card = state.cards.find(function(c) { return c.id === cardId; });
+        if (card && card.status !== this.dataset.col) {
+          var oldStatus = card.status;
+          card.status = this.dataset.col;
+          card.updated = Date.now();
+          var member = state.members.find(function(m) { return m.id === card.assignee; });
+          var who = member ? member.name : 'Someone';
+          logActivity(who + ' moved "' + card.title + '" from ' + colName(oldStatus) + ' to ' + colName(card.status));
+          saveState();
+          renderBoard();
+        }
+      });
+      cards.forEach(function(card) {
+        cardsEl.appendChild(buildCardEl(card));
+      });
+      var addBtn = document.createElement('button');
+      addBtn.className = 'ctm-add-card';
+      addBtn.textContent = '+ Add card';
+      addBtn.addEventListener('click', function() { showCardModal(null, col.id); });
+      cardsEl.appendChild(addBtn);
+      colEl.appendChild(cardsEl);
+      board.appendChild(colEl);
+    });
+  }
+
+  function colName(id) { var c = COLUMNS.find(function(x) { return x.id === id; }); return c ? c.name : id; }
+
+  function buildCardEl(card) {
+    var el = document.createElement('div');
+    el.className = 'ctm-card';
+    el.draggable = true;
+    el.dataset.id = card.id;
+    el.dataset.col = card.status;
+    el.addEventListener('dragstart', function(e) { e.dataTransfer.setData('text/plain', card.id); this.classList.add('dragging'); });
+    el.addEventListener('dragend', function() { this.classList.remove('dragging'); });
+    el.addEventListener('click', function(e) { if (!e.target.closest('.ctm-card-wa')) showCardModal(card.id); });
+
+    var member = state.members.find(function(m) { return m.id === card.assignee; });
+    var isOverdue = card.due && new Date(card.due) < new Date() && card.status !== 'published';
+    var html = '';
+    if (card.priority) html += '<div class="ctm-card-priority ' + card.priority + '"></div>';
+    html += '<div class="ctm-card-title">' + esc(card.title) + '</div>';
+    html += '<div class="ctm-card-meta">';
+    if (member) html += '<span class="ctm-card-assignee"><span class="ctm-card-assignee-dot" style="background:' + member.color + '">' + member.name.charAt(0).toUpperCase() + '</span>' + esc(member.name) + '</span>';
+    if (card.due) html += '<span class="ctm-card-due' + (isOverdue ? ' overdue' : '') + '">' + formatDate(card.due) + '</span>';
+    if (card.platform) html += '<span class="ctm-card-platform">' + card.platform + '</span>';
+    html += '</div>';
+    html += '<button class="ctm-card-wa" title="Share on WhatsApp" onclick="event.stopPropagation()">&#128172;</button>';
+    el.innerHTML = html;
+
+    el.querySelector('.ctm-card-wa').addEventListener('click', function(e) {
+      e.stopPropagation();
+      shareCardWhatsApp(card);
+    });
+    return el;
+  }
+
+  /* ---------- CARD MODAL ---------- */
+  document.getElementById('newCardBtnTop').addEventListener('click', function() { showCardModal(null, 'ideas'); });
+
+  function showCardModal(cardId, defaultCol) {
+    var card = cardId ? state.cards.find(function(c) { return c.id === cardId; }) : null;
+    var isEdit = !!card;
+    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    html += '<h3>' + (isEdit ? 'Edit Card' : 'New Card') + '</h3>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input type="text" class="ctm-form-input" id="cTitle" value="' + (card ? esc(card.title) : '') + '" placeholder="Content title" maxlength="80"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Description</label><textarea class="ctm-form-textarea" id="cDesc" placeholder="What is this content about?" rows="3">' + (card ? esc(card.description || '') : '') + '</textarea></div>';
+    html += '<div class="ctm-form-row">';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Assignee</label><select class="ctm-form-select" id="cAssignee"><option value="">Unassigned</option>';
+    state.members.forEach(function(m) { html += '<option value="' + m.id + '"' + (card && card.assignee === m.id ? ' selected' : '') + '>' + esc(m.name) + '</option>'; });
+    html += '</select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Due Date</label><input type="date" class="ctm-form-input" id="cDue" value="' + (card && card.due ? card.due : '') + '"></div>';
+    html += '</div>';
+    html += '<div class="ctm-form-row">';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="cPlatform"><option value="">Select</option>';
+    PLATFORMS.forEach(function(p) { html += '<option value="' + p + '"' + (card && card.platform === p ? ' selected' : '') + '>' + p + '</option>'; });
+    html += '</select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Priority</label><select class="ctm-form-select" id="cPriority"><option value="">None</option><option value="high"' + (card && card.priority === 'high' ? ' selected' : '') + '>High</option><option value="medium"' + (card && card.priority === 'medium' ? ' selected' : '') + '>Medium</option><option value="low"' + (card && card.priority === 'low' ? ' selected' : '') + '>Low</option></select></div>';
+    html += '</div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Status</label><select class="ctm-form-select" id="cStatus">';
+    COLUMNS.forEach(function(col) { html += '<option value="' + col.id + '"' + ((card && card.status === col.id) || (!card && defaultCol === col.id) ? ' selected' : '') + '>' + col.name + '</option>'; });
+    html += '</select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Notes</label><textarea class="ctm-form-textarea" id="cNotes" placeholder="Additional notes, links, references..." rows="2">' + (card ? esc(card.notes || '') : '') + '</textarea></div>';
+    html += '<div style="display:flex;gap:8px;margin-top:8px">';
+    html += '<button class="ctm-btn" id="saveCardBtn">' + (isEdit ? 'Save Changes' : 'Add Card') + '</button>';
+    if (isEdit) {
+      html += '<button class="ctm-btn secondary" id="waCardBtn" style="background:#25D366;border-color:#25D366;flex-shrink:0">&#128172; WhatsApp</button>';
+      html += '<button class="ctm-btn danger" id="delCardBtn" style="flex-shrink:0;width:auto;padding:12px 18px">&times;</button>';
+    }
+    html += '</div>';
+    openModal(html);
+    document.getElementById('saveCardBtn').addEventListener('click', function() {
+      var title = document.getElementById('cTitle').value.trim();
+      if (!title) { toast('Enter a title'); return; }
+      var data = {
+        title: title,
+        description: document.getElementById('cDesc').value.trim(),
+        assignee: document.getElementById('cAssignee').value,
+        due: document.getElementById('cDue').value,
+        platform: document.getElementById('cPlatform').value,
+        priority: document.getElementById('cPriority').value,
+        status: document.getElementById('cStatus').value,
+        notes: document.getElementById('cNotes').value.trim(),
+        updated: Date.now()
+      };
+      if (isEdit) {
+        var oldStatus = card.status;
+        Object.assign(card, data);
+        if (oldStatus !== data.status) {
+          var who = getMemberName(data.assignee);
+          logActivity(who + ' moved "' + title + '" from ' + colName(oldStatus) + ' to ' + colName(data.status));
+        }
+      } else {
+        data.id = genId();
+        data.created = Date.now();
+        state.cards.push(data);
+        var who2 = getMemberName(data.assignee);
+        logActivity(who2 + ' created "' + title + '" in ' + colName(data.status));
+      }
+      saveState(); closeModal(); renderBoard();
+      toast(isEdit ? 'Card updated' : 'Card added!');
+    });
+    if (isEdit) {
+      document.getElementById('delCardBtn').addEventListener('click', function() {
+        state.cards = state.cards.filter(function(c) { return c.id !== card.id; });
+        logActivity('Deleted "' + card.title + '"');
+        saveState(); closeModal(); renderBoard();
+        toast('Card deleted');
+      });
+      document.getElementById('waCardBtn').addEventListener('click', function() {
+        shareCardWhatsApp(card); closeModal();
+      });
+    }
+  }
+
+  function getMemberName(id) {
+    var m = state.members.find(function(x) { return x.id === id; });
+    return m ? m.name : 'Someone';
+  }
+
+  /* ---------- WHATSAPP SHARE ---------- */
+  function shareCardWhatsApp(card) {
+    var member = state.members.find(function(m) { return m.id === card.assignee; });
+    var text = '*' + card.title + '*\n';
+    text += 'Status: ' + colName(card.status) + '\n';
+    if (member) text += 'Assignee: ' + member.name + '\n';
+    if (card.due) text += 'Due: ' + formatDate(card.due) + '\n';
+    if (card.platform) text += 'Platform: ' + card.platform + '\n';
+    if (card.priority) text += 'Priority: ' + card.priority + '\n';
+    if (card.description) text += '\n' + card.description + '\n';
+    if (card.notes) text += '\nNotes: ' + card.notes + '\n';
+    text += '\n-- Sent from CreatorTeam (AfroTools)';
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  }
+
+  /* =============================================
+     CONTENT BRIEFS
+     ============================================= */
+  function renderBriefTemplates() {
+    var container = document.getElementById('briefTemplates');
+    container.innerHTML = '';
+    BRIEF_TEMPLATES.forEach(function(t, i) {
+      var el = document.createElement('div');
+      el.className = 'ctm-brief-template';
+      el.innerHTML = '<div class="ctm-brief-template-icon">' + t.icon + '</div><div class="ctm-brief-template-name">' + t.name + '</div>';
+      el.addEventListener('click', function() { showBriefModal(null, i); });
+      container.appendChild(el);
+    });
+  }
+  renderBriefTemplates();
+
+  function renderBriefs() {
+    var grid = document.getElementById('briefsGrid');
+    var empty = document.getElementById('briefsEmpty');
+    grid.innerHTML = '';
+    if (!state.briefs.length) { empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    state.briefs.forEach(function(b) {
+      var el = document.createElement('div');
+      el.className = 'ctm-brief-card';
+      var member = state.members.find(function(m) { return m.id === b.assignee; });
+      el.innerHTML = '<div class="ctm-brief-card-header"><span class="ctm-brief-card-topic">' + esc(b.topic) + '</span><span class="ctm-brief-card-status ' + (b.status || 'draft') + '">' + (b.status || 'draft') + '</span></div><div class="ctm-brief-card-meta"><span>' + (b.platform || '') + '</span><span>' + (member ? esc(member.name) : 'Unassigned') + '</span><span>' + (b.deadline ? formatDate(b.deadline) : '') + '</span></div>';
+      el.addEventListener('click', function() { showBriefModal(b.id); });
+      grid.appendChild(el);
+    });
+  }
+
+  document.getElementById('newBriefBtn').addEventListener('click', function() { showBriefModal(null); });
+
+  function showBriefModal(briefId, templateIdx) {
+    var brief = briefId ? state.briefs.find(function(b) { return b.id === briefId; }) : null;
+    var tmpl = typeof templateIdx === 'number' ? BRIEF_TEMPLATES[templateIdx] : null;
+    var isEdit = !!brief;
+    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    html += '<h3>' + (isEdit ? 'Edit Brief' : tmpl ? tmpl.name + ' Brief' : 'New Brief') + '</h3>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Topic</label><input type="text" class="ctm-form-input" id="bTopic" value="' + esc(brief ? brief.topic : '') + '" placeholder="What is this content about?" maxlength="100"></div>';
+    html += '<div class="ctm-form-row">';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Platform</label><select class="ctm-form-select" id="bPlatform"><option value="">Select</option>';
+    PLATFORMS.forEach(function(p) { html += '<option value="' + p + '"' + ((brief && brief.platform === p) || (tmpl && tmpl.platform === p) ? ' selected' : '') + '>' + p + '</option>'; });
+    html += '</select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Assign to</label><select class="ctm-form-select" id="bAssignee"><option value="">Unassigned</option>';
+    state.members.forEach(function(m) { html += '<option value="' + m.id + '"' + (brief && brief.assignee === m.id ? ' selected' : '') + '>' + esc(m.name) + '</option>'; });
+    html += '</select></div></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Target Audience</label><input type="text" class="ctm-form-input" id="bAudience" value="' + esc(brief ? brief.audience || '' : (tmpl ? tmpl.audience : '')) + '" placeholder="Who is this for?"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Key Points (one per line)</label><textarea class="ctm-form-textarea" id="bPoints" rows="4" placeholder="Main points to cover">' + esc(brief ? (brief.points || []).join('\n') : (tmpl ? tmpl.points.join('\n') : '')) + '</textarea></div>';
+    html += '<div class="ctm-form-row">';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Tone</label><input type="text" class="ctm-form-input" id="bTone" value="' + esc(brief ? brief.tone || '' : (tmpl ? tmpl.tone : '')) + '" placeholder="Casual, bold, educational..."></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Deadline</label><input type="date" class="ctm-form-input" id="bDeadline" value="' + (brief && brief.deadline ? brief.deadline : '') + '"></div>';
+    html += '</div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">References (URLs, one per line)</label><textarea class="ctm-form-textarea" id="bRefs" rows="2" placeholder="https://...">' + esc(brief ? (brief.refs || []).join('\n') : '') + '</textarea></div>';
+    html += '<div style="display:flex;gap:8px;margin-top:8px">';
+    html += '<button class="ctm-btn" id="saveBriefBtn">' + (isEdit ? 'Save Changes' : 'Create Brief') + '</button>';
+    if (isEdit) html += '<button class="ctm-btn danger" id="delBriefBtn" style="flex-shrink:0;width:auto;padding:12px 18px">&times;</button>';
+    html += '</div>';
+    openModal(html);
+    document.getElementById('saveBriefBtn').addEventListener('click', function() {
+      var topic = document.getElementById('bTopic').value.trim();
+      if (!topic) { toast('Enter a topic'); return; }
+      var data = {
+        topic: topic,
+        platform: document.getElementById('bPlatform').value,
+        assignee: document.getElementById('bAssignee').value,
+        audience: document.getElementById('bAudience').value.trim(),
+        points: document.getElementById('bPoints').value.split('\n').map(function(l) { return l.trim(); }).filter(Boolean),
+        tone: document.getElementById('bTone').value.trim(),
+        deadline: document.getElementById('bDeadline').value,
+        refs: document.getElementById('bRefs').value.split('\n').map(function(l) { return l.trim(); }).filter(Boolean),
+        status: brief ? brief.status : 'draft',
+        updated: Date.now()
+      };
+      if (isEdit) {
+        Object.assign(brief, data);
+      } else {
+        data.id = genId();
+        data.created = Date.now();
+        state.briefs.push(data);
+        logActivity(getMemberName(data.assignee) + ' created brief "' + topic + '"');
+      }
+      saveState(); closeModal(); renderBriefs();
+      toast(isEdit ? 'Brief updated' : 'Brief created!');
+    });
+    if (isEdit) {
+      document.getElementById('delBriefBtn').addEventListener('click', function() {
+        state.briefs = state.briefs.filter(function(b) { return b.id !== brief.id; });
+        logActivity('Deleted brief "' + brief.topic + '"');
+        saveState(); closeModal(); renderBriefs();
+        toast('Brief deleted');
+      });
+    }
+  }
+
+  /* =============================================
+     CALENDAR VIEW
+     ============================================= */
+  var calMonth = new Date().getMonth();
+  var calYear = new Date().getFullYear();
+
+  function renderCalendar() {
+    var container = document.getElementById('calendarContainer');
+    var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var html = '<div class="ctm-cal-header"><span class="ctm-cal-title">' + monthNames[calMonth] + ' ' + calYear + '</span><div class="ctm-cal-nav"><button id="calPrev">&larr;</button><button id="calNext">&rarr;</button></div></div>';
+    html += '<div class="ctm-cal-grid">';
+    dayNames.forEach(function(d) { html += '<div class="ctm-cal-day-label">' + d + '</div>'; });
+    var first = new Date(calYear, calMonth, 1);
+    var startDay = first.getDay();
+    var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    var today = new Date();
+    // Previous month padding
+    var prevDays = new Date(calYear, calMonth, 0).getDate();
+    for (var p = startDay - 1; p >= 0; p--) {
+      html += '<div class="ctm-cal-cell other-month"><div class="ctm-cal-num">' + (prevDays - p) + '</div></div>';
+    }
+    for (var d = 1; d <= daysInMonth; d++) {
+      var dateStr = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      var isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
+      var dueCards = state.cards.filter(function(c) { return c.due === dateStr; });
+      html += '<div class="ctm-cal-cell' + (isToday ? ' today' : '') + '" data-date="' + dateStr + '">';
+      html += '<div class="ctm-cal-num">' + d + '</div>';
+      if (dueCards.length) {
+        html += '<div class="ctm-cal-dots">';
+        dueCards.forEach(function(c) {
+          var m = state.members.find(function(x) { return x.id === c.assignee; });
+          html += '<div class="ctm-cal-dot" style="background:' + (m ? m.color : 'rgba(255,255,255,.3)') + '" title="' + esc(c.title) + '"></div>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+    // Next month padding
+    var totalCells = startDay + daysInMonth;
+    var remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+    for (var n = 1; n <= remaining; n++) {
+      html += '<div class="ctm-cal-cell other-month"><div class="ctm-cal-num">' + n + '</div></div>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+    document.getElementById('calPrev').addEventListener('click', function() {
+      calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
+    });
+    document.getElementById('calNext').addEventListener('click', function() {
+      calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
+    });
+    container.querySelectorAll('.ctm-cal-cell:not(.other-month)').forEach(function(cell) {
+      cell.addEventListener('click', function() {
+        var date = this.dataset.date;
+        var cards = state.cards.filter(function(c) { return c.due === date; });
+        if (cards.length) {
+          var mhtml = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+          mhtml += '<h3>Due ' + formatDate(date) + '</h3>';
+          cards.forEach(function(c) {
+            mhtml += '<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">';
+            mhtml += '<div style="font-weight:700;font-size:14px">' + esc(c.title) + '</div>';
+            mhtml += '<div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px">' + colName(c.status) + (c.platform ? ' &middot; ' + c.platform : '') + '</div>';
+            mhtml += '</div>';
+          });
+          openModal(mhtml);
+        }
+      });
+    });
+  }
+
+  /* =============================================
+     ASSET LIBRARY
+     ============================================= */
+  document.getElementById('addAssetBtn').addEventListener('click', showAddAssetModal);
+  document.getElementById('assetSearch').addEventListener('input', renderAssets);
+  document.getElementById('assetTypeFilter').addEventListener('change', renderAssets);
+
+  function renderAssets() {
+    var grid = document.getElementById('assetsGrid');
+    var empty = document.getElementById('assetsEmpty');
+    var search = document.getElementById('assetSearch').value.toLowerCase();
+    var typeF = document.getElementById('assetTypeFilter').value;
+    var filtered = state.assets.filter(function(a) {
+      if (typeF && a.type !== typeF) return false;
+      if (search && a.title.toLowerCase().indexOf(search) === -1 && (a.tag || '').toLowerCase().indexOf(search) === -1) return false;
+      return true;
+    });
+    grid.innerHTML = '';
+    if (!filtered.length) { empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    var typeIcons = { image: '&#128444;', video: '&#127909;', doc: '&#128196;', other: '&#128279;' };
+    filtered.forEach(function(a) {
+      var el = document.createElement('div');
+      el.className = 'ctm-asset-card';
+      el.innerHTML = '<div class="ctm-asset-preview">' + (typeIcons[a.type] || typeIcons.other) + '</div><div class="ctm-asset-info"><div class="ctm-asset-title">' + esc(a.title) + '</div>' + (a.tag ? '<span class="ctm-asset-tag">' + esc(a.tag) + '</span>' : '') + '<span class="ctm-asset-tag">' + (a.type || 'other') + '</span></div>';
+      el.addEventListener('click', function() {
+        if (a.url) window.open(a.url, '_blank');
+      });
+      grid.appendChild(el);
+    });
+  }
+
+  function showAddAssetModal() {
+    var html = '<button class="ctm-modal-close" onclick="document.getElementById(\'modalOverlay\').classList.remove(\'open\')">&times;</button>';
+    html += '<h3>Add Shared Asset</h3>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Title</label><input type="text" class="ctm-form-input" id="aTitle" placeholder="Asset name" maxlength="60"></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">URL</label><input type="url" class="ctm-form-input" id="aUrl" placeholder="https://..."></div>';
+    html += '<div class="ctm-form-row">';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Type</label><select class="ctm-form-select" id="aType"><option value="image">Image</option><option value="video">Video</option><option value="doc">Document</option><option value="other">Other</option></select></div>';
+    html += '<div class="ctm-form-group"><label class="ctm-form-label">Tag</label><input type="text" class="ctm-form-input" id="aTag" placeholder="e.g. branding, ep12" maxlength="20"></div>';
+    html += '</div>';
+    html += '<button class="ctm-btn" id="saveAssetBtn">Add Asset</button>';
+    openModal(html);
+    document.getElementById('saveAssetBtn').addEventListener('click', function() {
+      var title = document.getElementById('aTitle').value.trim();
+      if (!title) { toast('Enter a title'); return; }
+      state.assets.push({
+        id: genId(),
+        title: title,
+        url: document.getElementById('aUrl').value.trim(),
+        type: document.getElementById('aType').value,
+        tag: document.getElementById('aTag').value.trim(),
+        created: Date.now()
+      });
+      logActivity('Added asset "' + title + '"');
+      saveState(); closeModal(); renderAssets();
+      toast('Asset added!');
+    });
+  }
+
+  /* =============================================
+     ACTIVITY FEED
+     ============================================= */
+  function renderActivity() {
+    var list = document.getElementById('activityList');
+    var empty = document.getElementById('activityEmpty');
+    if (!state.activity.length) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    list.innerHTML = '';
+    state.activity.slice(0, 50).forEach(function(a) {
+      var el = document.createElement('div');
+      el.className = 'ctm-activity-item';
+      // Try to match a member name at start
+      var memberMatch = null;
+      state.members.forEach(function(m) {
+        if (a.text.indexOf(m.name) === 0) memberMatch = m;
+      });
+      var color = memberMatch ? memberMatch.color : 'rgba(255,255,255,.15)';
+      var initial = memberMatch ? memberMatch.name.charAt(0).toUpperCase() : '?';
+      var displayText = a.text;
+      if (memberMatch) {
+        displayText = '<strong>' + esc(memberMatch.name) + '</strong>' + esc(a.text.substring(memberMatch.name.length));
+      }
+      el.innerHTML = '<div class="ctm-activity-avatar" style="background:' + color + '">' + initial + '</div><div class="ctm-activity-body"><div class="ctm-activity-text">' + displayText + '</div><div class="ctm-activity-time">' + timeAgo(a.time) + '</div></div>';
+      list.appendChild(el);
+    });
+  }
+
+  /* ---------- REVIEW & APPROVAL (via board cards) ---------- */
+  /* Reviews are integrated into the board workflow:
+     - Moving a card to "review" column = submitting for review
+     - Moving to "approved" = approval
+     - Moving back to "progress" = requesting changes
+     Activity feed tracks all these moves automatically */
+
+  /* ---------- HELPERS ---------- */
+  function formatDate(d) {
+    if (!d) return '';
+    var parts = d.split('-');
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return months[parseInt(parts[1], 10) - 1] + ' ' + parseInt(parts[2], 10);
+  }
+
+  function timeAgo(ts) {
+    var diff = Date.now() - ts;
+    var mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return mins + 'm ago';
+    var hrs = Math.floor(mins / 60);
+    if (hrs < 24) return hrs + 'h ago';
+    var days = Math.floor(hrs / 24);
+    if (days < 7) return days + 'd ago';
+    return formatDate(new Date(ts).toISOString().split('T')[0]);
+  }
+
+})();
+</script>
+
+</body>
+</html>

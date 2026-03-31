@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CreatorSchedule Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js" defer></script>
+</head>
+<body class="csc-app">
+
+  <!-- REMINDER BAR (injected by JS) -->
+  <div id="reminderBar"></div>
+
+  <!-- TOPBAR -->
+  <div class="csc-topbar">
+    <a href="index.html" class="csc-topbar-back">&larr;</a>
+    <a href="index.html" class="csc-topbar-brand">&#128197; CreatorSchedule</a>
+    <div class="csc-topbar-actions">
+      <button class="csc-topbar-btn" id="bulkBtn">Bulk</button>
+      <button class="csc-topbar-btn accent" id="newPostBtn">+ New Post</button>
+    </div>
+  </div>
+
+  <!-- VIEW TABS -->
+  <div class="csc-view-tabs">
+    <button class="csc-view-tab active" data-view="calendar">&#128197; Calendar</button>
+    <button class="csc-view-tab" data-view="queue">&#128203; Queue</button>
+    <button class="csc-view-tab" data-view="compose">&#9997;&#65039; Compose</button>
+    <button class="csc-view-tab" data-view="templates">&#128196; Templates</button>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="csc-workspace">
+
+    <!-- ====== CALENDAR VIEW ====== -->
+    <div id="calendarView">
+      <!-- Analytics Summary -->
+      <div class="csc-analytics" id="analyticsBar">
+        <div class="csc-stat-card"><div class="csc-stat-val" id="statWeek">0</div><div class="csc-stat-label">This Week</div></div>
+        <div class="csc-stat-card"><div class="csc-stat-val" id="statMonth">0</div><div class="csc-stat-label">This Month</div></div>
+        <div class="csc-stat-card"><div class="csc-stat-val" id="statStreak">0</div><div class="csc-stat-label">Day Streak</div></div>
+        <div class="csc-stat-card"><div class="csc-mini-pie" id="miniPie"></div><div class="csc-stat-label">Platforms</div></div>
+      </div>
+
+      <!-- Calendar Nav -->
+      <div class="csc-calendar-header">
+        <button class="csc-cal-nav-btn" id="calPrev">&larr;</button>
+        <button class="csc-cal-nav-btn today" id="calToday">Today</button>
+        <button class="csc-cal-nav-btn" id="calNext">&rarr;</button>
+        <div class="csc-calendar-title" id="calTitle">April 2026</div>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="csc-calendar-grid" id="calGrid"></div>
+
+      <!-- Smart Queue Section -->
+      <div class="csc-smart-section">
+        <div class="csc-smart-title">&#9889; Smart Queue</div>
+        <div class="csc-smart-desc">Get optimal posting times based on platform best practices.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="csc-smart-btn" id="suggestTimesBtn">Suggest Best Times</button>
+          <button class="csc-smart-btn" id="autoFillBtn">Auto-fill My Week</button>
+        </div>
+        <div class="csc-smart-suggestions" id="smartSuggestions"></div>
+      </div>
+    </div>
+
+    <!-- ====== QUEUE VIEW ====== -->
+    <div id="queueView" style="display:none;">
+      <div class="csc-queue-list" id="queueList"></div>
+    </div>
+
+    <!-- ====== COMPOSE VIEW ====== -->
+    <div id="composeView" style="display:none;">
+      <div class="csc-composer">
+        <div class="csc-composer-card">
+          <div class="csc-composer-title">&#9997;&#65039; New Post</div>
+
+          <!-- Text -->
+          <div class="csc-form-group">
+            <label class="csc-form-label">Post Text</label>
+            <textarea class="csc-form-textarea" id="postText" placeholder="What do you want to share with your audience?"></textarea>
+            <div class="csc-char-counter" id="charCounter">0 characters</div>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="csc-form-group">
+            <label class="csc-form-label">Images (up to 4)</label>
+            <div class="csc-image-upload" id="imageUploadArea">
+              <input type="file" id="imageInput" accept="image/*" multiple style="display:none">
+              <div class="csc-image-upload-label">&#128247; Click or drag to add images</div>
+            </div>
+            <div class="csc-image-thumbs" id="imageThumbs"></div>
+          </div>
+
+          <!-- Platforms (multi-select) -->
+          <div class="csc-form-group">
+            <label class="csc-form-label">Platforms</label>
+            <div class="csc-platform-pills" id="platformPills">
+              <span class="csc-platform-pill" data-val="ig"><span class="csc-pill-check">&#10003; </span>&#128247; IG</span>
+              <span class="csc-platform-pill" data-val="x"><span class="csc-pill-check">&#10003; </span>&#120143; X</span>
+              <span class="csc-platform-pill" data-val="tt"><span class="csc-pill-check">&#10003; </span>&#127925; TikTok</span>
+              <span class="csc-platform-pill" data-val="yt"><span class="csc-pill-check">&#10003; </span>&#9654;&#65039; YT</span>
+              <span class="csc-platform-pill" data-val="li"><span class="csc-pill-check">&#10003; </span>&#128188; LI</span>
+              <span class="csc-platform-pill" data-val="fb"><span class="csc-pill-check">&#10003; </span>&#128077; FB</span>
+              <span class="csc-platform-pill" data-val="threads"><span class="csc-pill-check">&#10003; </span>&#128172; Threads</span>
+            </div>
+          </div>
+
+          <!-- Date / Time -->
+          <div class="csc-form-group">
+            <label class="csc-form-label">Schedule</label>
+            <div class="csc-form-row">
+              <input type="date" class="csc-form-input" id="postDate">
+              <input type="time" class="csc-form-input" id="postTime" value="12:00">
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="csc-form-group">
+            <label class="csc-form-label">Status</label>
+            <div class="csc-status-pills" id="statusPills">
+              <span class="csc-status-pill draft active" data-val="draft">Draft</span>
+              <span class="csc-status-pill queued" data-val="queued">Queued</span>
+            </div>
+          </div>
+
+          <!-- Recurring -->
+          <div class="csc-form-group">
+            <label class="csc-form-label">Recurring</label>
+            <div class="csc-recurring-row">
+              <span style="font-size:13px;color:rgba(255,255,255,.6)">Repeat this post</span>
+              <button class="csc-toggle" id="recurringToggle"></button>
+            </div>
+            <div class="csc-recurring-options" id="recurringOptions" style="display:none;">
+              <span class="csc-recurring-pill" data-val="daily">Daily</span>
+              <span class="csc-recurring-pill" data-val="weekly">Weekly</span>
+              <span class="csc-recurring-pill" data-val="biweekly">Biweekly</span>
+              <span class="csc-recurring-pill" data-val="monthly">Monthly</span>
+            </div>
+          </div>
+
+          <!-- Hidden edit ID -->
+          <input type="hidden" id="editPostId" value="">
+
+          <button class="csc-save-btn" id="savePostBtn">Save Post</button>
+        </div>
+
+        <!-- Platform Preview -->
+        <div class="csc-preview-panel" id="previewPanel">
+          <div class="csc-form-label" style="margin-bottom:12px">PLATFORM PREVIEW</div>
+          <div class="csc-preview-tabs" id="previewTabs"></div>
+          <div class="csc-preview-mockup" id="previewMockup">
+            <div class="csc-preview-placeholder">Select a platform and start typing to see a preview</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bulk Composer -->
+      <div class="csc-bulk-section" id="bulkSection" style="display:none;">
+        <div class="csc-composer-title">&#128203; Bulk Composer</div>
+        <p style="font-size:13px;margin-bottom:12px;">Paste multiple posts separated by <code style="background:rgba(255,255,255,.1);padding:2px 6px;border-radius:4px;">---</code>. Each block becomes a separate draft.</p>
+        <textarea class="csc-bulk-textarea" id="bulkText" placeholder="My first post about the new collection...
+---
+Second post — behind the scenes of the shoot...
+---
+Third post — customer testimonial spotlight..."></textarea>
+        <div class="csc-bulk-hint">Separate posts with --- on its own line</div>
+        <div class="csc-bulk-actions">
+          <button class="csc-save-btn" style="width:auto;padding:10px 24px;font-size:13px;" id="bulkCreateBtn">Create All Posts</button>
+          <button class="csc-smart-btn" id="bulkCancelBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== TEMPLATES VIEW ====== -->
+    <div id="templatesView" style="display:none;">
+      <div class="csc-templates-header">
+        <div class="csc-templates-title">&#128196; Content Templates</div>
+        <button class="csc-topbar-btn accent" id="newTemplateBtn">+ New Template</button>
+      </div>
+
+      <!-- Template Form (hidden by default) -->
+      <div class="csc-template-form" id="templateForm" style="display:none;">
+        <div class="csc-form-group">
+          <label class="csc-form-label">Template Name</label>
+          <input type="text" class="csc-form-input" id="tplName" placeholder="e.g., Weekly Product Feature">
+        </div>
+        <div class="csc-form-group">
+          <label class="csc-form-label">Template Text (use &#123;&#123;placeholder&#125;&#125; for variables)</label>
+          <textarea class="csc-form-textarea" id="tplText" placeholder="Introducing {{product_name}} — our newest {{category}}. Available now at {{link}}. What do you think? &#128071;"></textarea>
+        </div>
+        <div class="csc-form-group">
+          <label class="csc-form-label">Default Platform</label>
+          <div class="csc-platform-pills" id="tplPlatformPills">
+            <span class="csc-platform-pill" data-val="ig">&#128247; IG</span>
+            <span class="csc-platform-pill" data-val="x">&#120143; X</span>
+            <span class="csc-platform-pill" data-val="tt">&#127925; TT</span>
+            <span class="csc-platform-pill" data-val="yt">&#9654;&#65039; YT</span>
+            <span class="csc-platform-pill" data-val="li">&#128188; LI</span>
+            <span class="csc-platform-pill" data-val="fb">&#128077; FB</span>
+            <span class="csc-platform-pill" data-val="threads">&#128172; Th</span>
+          </div>
+        </div>
+        <input type="hidden" id="editTplId" value="">
+        <div style="display:flex;gap:8px;">
+          <button class="csc-save-btn" style="width:auto;padding:10px 24px;font-size:13px;" id="saveTplBtn">Save Template</button>
+          <button class="csc-smart-btn" id="cancelTplBtn">Cancel</button>
+        </div>
+      </div>
+
+      <div class="csc-template-list" id="templateList"></div>
+    </div>
+
+  </div>
+
+  <!-- DAY DETAIL MODAL -->
+  <div class="csc-day-modal-overlay" id="dayModal">
+    <div class="csc-day-modal">
+      <button class="csc-day-modal-close" id="dayModalClose">&times;</button>
+      <div class="csc-day-modal-title" id="dayModalTitle">Posts for April 12</div>
+      <div id="dayModalContent"></div>
+      <button class="csc-save-btn" style="margin-top:16px;font-size:13px;padding:10px 20px;" id="dayModalAdd">+ Add Post for This Day</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="csc-bottom-nav">
+    <a href="#" class="active" data-bnav="calendar"><span class="csc-bnav-icon">&#128197;</span>Calendar</a>
+    <a href="#" data-bnav="queue"><span class="csc-bnav-icon">&#128203;</span>Queue</a>
+    <a href="#" data-bnav="compose"><span class="csc-bnav-icon">&#9997;&#65039;</span>Compose</a>
+    <a href="index.html"><span class="csc-bnav-icon">&#8505;&#65039;</span>About</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="csc-toast" id="toast"></div>
+
+<script>
+!function() {
+  "use strict";
+
+  /* ============================================================
+     DATA LAYER — localStorage
+     ============================================================ */
+  var STORAGE_KEY = 'csc_posts';
+  var TPL_KEY = 'csc_templates';
+
+  function loadPosts() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; }
+  }
+  function savePosts(posts) { localStorage.setItem(STORAGE_KEY, JSON.stringify(posts)); }
+  function loadTemplates() {
+    try { return JSON.parse(localStorage.getItem(TPL_KEY)) || []; } catch(e) { return []; }
+  }
+  function saveTemplates(tpls) { localStorage.setItem(TPL_KEY, JSON.stringify(tpls)); }
+
+  function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  /* ============================================================
+     PLATFORM CONFIG
+     ============================================================ */
+  var PLATFORMS = {
+    ig:      { name: 'Instagram', icon: '&#128247;', maxChars: 2200, color: '#E1306C', css: 'ig',
+               deepLink: 'https://www.instagram.com/', bestTimes: ['11:00','13:00','19:00'] },
+    x:       { name: 'X', icon: '&#120143;', maxChars: 280, color: '#000', css: 'x',
+               deepLink: 'https://x.com/compose/tweet', bestTimes: ['08:00','12:00','17:00'] },
+    tt:      { name: 'TikTok', icon: '&#127925;', maxChars: 150, color: '#00F2EA', css: 'tt',
+               deepLink: 'https://www.tiktok.com/', bestTimes: ['07:00','12:00','19:00'] },
+    yt:      { name: 'YouTube', icon: '&#9654;&#65039;', maxChars: 5000, color: '#FF0000', css: 'yt',
+               deepLink: 'https://studio.youtube.com/', bestTimes: ['14:00','17:00'] },
+    li:      { name: 'LinkedIn', icon: '&#128188;', maxChars: 3000, color: '#0A66C2', css: 'li',
+               deepLink: 'https://www.linkedin.com/feed/', bestTimes: ['08:00','12:00'] },
+    fb:      { name: 'Facebook', icon: '&#128077;', maxChars: 63206, color: '#1877F2', css: 'fb',
+               deepLink: 'https://www.facebook.com/', bestTimes: ['13:00','15:00'] },
+    threads: { name: 'Threads', icon: '&#128172;', maxChars: 500, color: '#000', css: 'threads',
+               deepLink: 'https://www.threads.net/', bestTimes: ['10:00','14:00'] }
+  };
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function $(id) { return document.getElementById(id); }
+  function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function toast(msg) {
+    var el = $('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  function formatDate(d) {
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  }
+  function formatTime12(timeStr) {
+    var parts = timeStr.split(':');
+    var h = parseInt(parts[0]); var m = parts[1];
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return h + ':' + m + ' ' + ampm;
+  }
+  function dayStr(d) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  function todayStr() { return dayStr(new Date()); }
+
+  /* ============================================================
+     STATE
+     ============================================================ */
+  var currentView = 'calendar';
+  var calYear = new Date().getFullYear();
+  var calMonth = new Date().getMonth();
+  var selectedDayForModal = null;
+  var uploadedImages = [];
+
+  /* ============================================================
+     VIEW SWITCHING
+     ============================================================ */
+  function switchView(view) {
+    currentView = view;
+    ['calendar','queue','compose','templates'].forEach(function(v) {
+      var el = $(v + 'View');
+      if (el) el.style.display = v === view ? '' : 'none';
+    });
+    document.querySelectorAll('.csc-view-tab').forEach(function(t) {
+      t.classList.toggle('active', t.getAttribute('data-view') === view);
+    });
+    document.querySelectorAll('.csc-bottom-nav a[data-bnav]').forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('data-bnav') === view);
+    });
+    if (view === 'calendar') renderCalendar();
+    if (view === 'queue') renderQueue();
+    if (view === 'templates') renderTemplates();
+  }
+
+  document.querySelectorAll('.csc-view-tab').forEach(function(tab) {
+    tab.onclick = function() { switchView(tab.getAttribute('data-view')); };
+  });
+  document.querySelectorAll('.csc-bottom-nav a[data-bnav]').forEach(function(a) {
+    a.onclick = function(e) { e.preventDefault(); switchView(a.getAttribute('data-bnav')); };
+  });
+
+  $('newPostBtn').onclick = function() { resetComposer(); switchView('compose'); };
+  $('bulkBtn').onclick = function() {
+    switchView('compose');
+    $('bulkSection').style.display = '';
+  };
+
+  /* ============================================================
+     CALENDAR VIEW
+     ============================================================ */
+  function renderCalendar() {
+    var d = new Date(calYear, calMonth, 1);
+    var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    $('calTitle').textContent = monthNames[calMonth] + ' ' + calYear;
+
+    var grid = $('calGrid');
+    var html = '';
+    var dayLabels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    dayLabels.forEach(function(l) { html += '<div class="csc-cal-day-label">' + l + '</div>'; });
+
+    var firstDay = (d.getDay() + 6) % 7; // Monday=0
+    var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    var prevMonthDays = new Date(calYear, calMonth, 0).getDate();
+
+    var posts = loadPosts();
+    var today = todayStr();
+
+    // Previous month days
+    for (var i = firstDay - 1; i >= 0; i--) {
+      var dn = prevMonthDays - i;
+      html += '<div class="csc-cal-day other-month"><div class="csc-cal-day-num">' + dn + '</div></div>';
+    }
+
+    // Current month days
+    for (var day = 1; day <= daysInMonth; day++) {
+      var ds = calYear + '-' + String(calMonth + 1).padStart(2,'0') + '-' + String(day).padStart(2,'0');
+      var isToday = ds === today;
+      var dayPosts = posts.filter(function(p) { return p.date === ds; });
+
+      html += '<div class="csc-cal-day' + (isToday ? ' today' : '') + '" data-date="' + ds + '">';
+      html += '<div class="csc-cal-day-num">' + day + '</div>';
+      if (dayPosts.length > 0) {
+        html += '<div class="csc-cal-day-posts">';
+        dayPosts.forEach(function(p) {
+          (p.platforms || []).forEach(function(plat) {
+            html += '<div class="csc-cal-dot ' + plat + '"></div>';
+          });
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+
+    // Next month days
+    var totalCells = firstDay + daysInMonth;
+    var remaining = (7 - (totalCells % 7)) % 7;
+    for (var r = 1; r <= remaining; r++) {
+      html += '<div class="csc-cal-day other-month"><div class="csc-cal-day-num">' + r + '</div></div>';
+    }
+
+    grid.innerHTML = html;
+
+    // Click handlers on day cells
+    grid.querySelectorAll('.csc-cal-day:not(.other-month)').forEach(function(cell) {
+      cell.onclick = function() { openDayModal(cell.getAttribute('data-date')); };
+    });
+
+    updateAnalytics(posts);
+  }
+
+  $('calPrev').onclick = function() {
+    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  };
+  $('calNext').onclick = function() {
+    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  };
+  $('calToday').onclick = function() {
+    var now = new Date();
+    calYear = now.getFullYear(); calMonth = now.getMonth();
+    renderCalendar();
+  };
+
+  /* -- Day Modal -- */
+  function openDayModal(dateStr) {
+    selectedDayForModal = dateStr;
+    var d = new Date(dateStr + 'T00:00:00');
+    $('dayModalTitle').textContent = 'Posts for ' + formatDate(d);
+
+    var posts = loadPosts().filter(function(p) { return p.date === dateStr; });
+    var content = $('dayModalContent');
+
+    if (posts.length === 0) {
+      content.innerHTML = '<div class="csc-empty" style="padding:30px 10px;"><div class="csc-empty-icon">&#128197;</div><div class="csc-empty-desc">No posts scheduled for this day</div></div>';
+    } else {
+      var html = '';
+      posts.forEach(function(p) {
+        html += '<div class="csc-queue-card" style="margin-bottom:8px;">';
+        html += '<div class="csc-queue-time"><div class="csc-queue-hour">' + formatTime12(p.time || '12:00') + '</div></div>';
+        html += '<div class="csc-queue-body">';
+        html += '<div class="csc-queue-platforms">';
+        (p.platforms || []).forEach(function(pl) {
+          html += '<div class="csc-queue-platform-dot ' + pl + '" title="' + (PLATFORMS[pl] ? PLATFORMS[pl].name : pl) + '"></div>';
+        });
+        html += '</div>';
+        html += '<div class="csc-queue-text">' + escHtml(p.text || '') + '</div>';
+        html += '<div class="csc-queue-meta"><span class="csc-badge ' + (p.status || 'draft') + '">' + (p.status || 'draft') + '</span>';
+        if (p.recurring) html += '<span class="csc-badge recurring">' + p.recurring + '</span>';
+        html += '</div></div>';
+        html += '<div class="csc-queue-actions">';
+        html += '<button class="csc-queue-action" data-edit="' + p.id + '">Edit</button>';
+        html += '<button class="csc-queue-action danger" data-del="' + p.id + '">Del</button>';
+        html += '</div></div>';
+      });
+      content.innerHTML = html;
+      wireQueueActions(content);
+    }
+
+    $('dayModal').classList.add('open');
+  }
+
+  $('dayModalClose').onclick = function() { $('dayModal').classList.remove('open'); };
+  $('dayModal').onclick = function(e) { if (e.target === $('dayModal')) $('dayModal').classList.remove('open'); };
+  $('dayModalAdd').onclick = function() {
+    $('dayModal').classList.remove('open');
+    resetComposer();
+    if (selectedDayForModal) $('postDate').value = selectedDayForModal;
+    switchView('compose');
+  };
+
+  /* -- Analytics -- */
+  function updateAnalytics(posts) {
+    var now = new Date();
+    var weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay());
+    var ws = dayStr(weekStart);
+    var ms = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+
+    var weekCount = 0, monthCount = 0;
+    var platCounts = {};
+    posts.forEach(function(p) {
+      if (p.date >= ws) weekCount++;
+      if (p.date && p.date.substring(0,7) === ms) monthCount++;
+      (p.platforms || []).forEach(function(pl) { platCounts[pl] = (platCounts[pl] || 0) + 1; });
+    });
+
+    $('statWeek').textContent = weekCount;
+    $('statMonth').textContent = monthCount;
+
+    // Streak
+    var streak = 0;
+    var checkDate = new Date(now);
+    while (true) {
+      var cs = dayStr(checkDate);
+      var hasPost = posts.some(function(p) { return p.date === cs && p.status === 'posted'; });
+      if (hasPost) { streak++; checkDate.setDate(checkDate.getDate() - 1); }
+      else break;
+    }
+    $('statStreak').textContent = streak;
+
+    // Mini pie
+    var total = Object.values(platCounts).reduce(function(a,b) { return a+b; }, 0) || 1;
+    var gradient = '';
+    var pctSoFar = 0;
+    var platOrder = ['ig','x','tt','yt','li','fb','threads'];
+    platOrder.forEach(function(pl) {
+      if (platCounts[pl]) {
+        var pct = (platCounts[pl] / total) * 100;
+        var color = PLATFORMS[pl] ? PLATFORMS[pl].color : '#666';
+        gradient += (gradient ? ', ' : '') + color + ' ' + pctSoFar + '% ' + (pctSoFar + pct) + '%';
+        pctSoFar += pct;
+      }
+    });
+    if (gradient) {
+      $('miniPie').style.background = 'conic-gradient(' + gradient + ')';
+    }
+  }
+
+  /* ============================================================
+     QUEUE VIEW
+     ============================================================ */
+  function renderQueue() {
+    var posts = loadPosts();
+    posts.sort(function(a,b) {
+      var da = (a.date || '') + (a.time || ''); var db = (b.date || '') + (b.time || '');
+      return da < db ? -1 : da > db ? 1 : 0;
+    });
+
+    var today = todayStr();
+    var upcoming = posts.filter(function(p) { return (p.date >= today || !p.date) && p.status !== 'posted'; });
+    var posted = posts.filter(function(p) { return p.status === 'posted'; });
+
+    var list = $('queueList');
+
+    if (upcoming.length === 0 && posted.length === 0) {
+      list.innerHTML = '<div class="csc-empty"><div class="csc-empty-icon">&#128203;</div><div class="csc-empty-title">No posts yet</div><div class="csc-empty-desc">Create your first post to see it in the queue.</div></div>';
+      return;
+    }
+
+    var html = '';
+    if (upcoming.length > 0) {
+      html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,.3);letter-spacing:.5px;margin-bottom:6px;">UPCOMING</div>';
+      upcoming.forEach(function(p) { html += renderQueueCard(p); });
+    }
+    if (posted.length > 0) {
+      html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,.3);letter-spacing:.5px;margin:16px 0 6px;">POSTED</div>';
+      posted.forEach(function(p) { html += renderQueueCard(p); });
+    }
+
+    list.innerHTML = html;
+    wireQueueActions(list);
+  }
+
+  function renderQueueCard(p) {
+    var d = p.date ? new Date(p.date + 'T00:00:00') : null;
+    var dateLabel = d ? formatDate(d) : 'No date';
+    var timeLabel = p.time ? formatTime12(p.time) : '';
+    var html = '<div class="csc-queue-card">';
+    html += '<div class="csc-queue-time"><div class="csc-queue-date">' + dateLabel + '</div>';
+    if (timeLabel) html += '<div class="csc-queue-hour">' + timeLabel + '</div>';
+    html += '</div>';
+    html += '<div class="csc-queue-body">';
+    html += '<div class="csc-queue-platforms">';
+    (p.platforms || []).forEach(function(pl) {
+      html += '<div class="csc-queue-platform-dot ' + pl + '" title="' + (PLATFORMS[pl] ? PLATFORMS[pl].name : pl) + '"></div>';
+    });
+    html += '</div>';
+    html += '<div class="csc-queue-text">' + escHtml(p.text || '') + '</div>';
+    html += '<div class="csc-queue-meta"><span class="csc-badge ' + (p.status || 'draft') + '">' + (p.status || 'draft') + '</span>';
+    if (p.recurring) html += '<span class="csc-badge recurring">' + p.recurring + '</span>';
+    html += '</div></div>';
+    html += '<div class="csc-queue-actions">';
+    html += '<button class="csc-queue-action" data-edit="' + p.id + '">Edit</button>';
+    html += '<button class="csc-queue-action" data-copy="' + p.id + '">Copy</button>';
+    if (p.platforms && p.platforms.length > 0) {
+      html += '<button class="csc-queue-action" data-open="' + p.id + '">Open</button>';
+    }
+    if (p.status !== 'posted') {
+      html += '<button class="csc-queue-action" data-posted="' + p.id + '">&#10003; Posted</button>';
+    }
+    html += '<button class="csc-queue-action danger" data-del="' + p.id + '">Del</button>';
+    html += '</div></div>';
+    return html;
+  }
+
+  function wireQueueActions(container) {
+    container.querySelectorAll('[data-edit]').forEach(function(btn) {
+      btn.onclick = function() {
+        var id = btn.getAttribute('data-edit');
+        editPost(id);
+      };
+    });
+    container.querySelectorAll('[data-copy]').forEach(function(btn) {
+      btn.onclick = function() {
+        var id = btn.getAttribute('data-copy');
+        var posts = loadPosts();
+        var p = posts.find(function(x) { return x.id === id; });
+        if (p) { navigator.clipboard.writeText(p.text || '').then(function() { toast('Copied!'); }); }
+      };
+    });
+    container.querySelectorAll('[data-open]').forEach(function(btn) {
+      btn.onclick = function() {
+        var id = btn.getAttribute('data-open');
+        var posts = loadPosts();
+        var p = posts.find(function(x) { return x.id === id; });
+        if (p && p.platforms && p.platforms[0]) {
+          var plat = PLATFORMS[p.platforms[0]];
+          if (plat) window.open(plat.deepLink, '_blank');
+        }
+      };
+    });
+    container.querySelectorAll('[data-posted]').forEach(function(btn) {
+      btn.onclick = function() {
+        var id = btn.getAttribute('data-posted');
+        var posts = loadPosts();
+        var p = posts.find(function(x) { return x.id === id; });
+        if (p) { p.status = 'posted'; savePosts(posts); toast('Marked as posted!'); renderQueue(); renderCalendar(); }
+      };
+    });
+    container.querySelectorAll('[data-del]').forEach(function(btn) {
+      btn.onclick = function() {
+        var id = btn.getAttribute('data-del');
+        if (!confirm('Delete this post?')) return;
+        var posts = loadPosts().filter(function(x) { return x.id !== id; });
+        savePosts(posts);
+        toast('Deleted');
+        $('dayModal').classList.remove('open');
+        renderQueue(); renderCalendar();
+      };
+    });
+  }
+
+  /* ============================================================
+     COMPOSER
+     ============================================================ */
+  function resetComposer() {
+    $('postText').value = '';
+    $('postDate').value = todayStr();
+    $('postTime').value = '12:00';
+    $('editPostId').value = '';
+    $('charCounter').textContent = '0 characters';
+    $('charCounter').className = 'csc-char-counter';
+    uploadedImages = [];
+    $('imageThumbs').innerHTML = '';
+    document.querySelectorAll('#platformPills .csc-platform-pill').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('#statusPills .csc-status-pill').forEach(function(p) {
+      p.classList.toggle('active', p.getAttribute('data-val') === 'draft');
+    });
+    $('recurringToggle').classList.remove('on');
+    $('recurringOptions').style.display = 'none';
+    document.querySelectorAll('#recurringOptions .csc-recurring-pill').forEach(function(p) { p.classList.remove('active'); });
+    $('bulkSection').style.display = 'none';
+    $('previewTabs').innerHTML = '';
+    $('previewMockup').innerHTML = '<div class="csc-preview-placeholder">Select a platform and start typing to see a preview</div>';
+  }
+
+  function editPost(id) {
+    var posts = loadPosts();
+    var p = posts.find(function(x) { return x.id === id; });
+    if (!p) return;
+
+    $('dayModal').classList.remove('open');
+    switchView('compose');
+
+    $('postText').value = p.text || '';
+    $('postDate').value = p.date || todayStr();
+    $('postTime').value = p.time || '12:00';
+    $('editPostId').value = p.id;
+    uploadedImages = p.images || [];
+    renderImageThumbs();
+    updateCharCounter();
+
+    // Set platforms
+    document.querySelectorAll('#platformPills .csc-platform-pill').forEach(function(pill) {
+      var val = pill.getAttribute('data-val');
+      pill.classList.toggle('active', (p.platforms || []).indexOf(val) !== -1);
+    });
+
+    // Set status
+    document.querySelectorAll('#statusPills .csc-status-pill').forEach(function(pill) {
+      pill.classList.toggle('active', pill.getAttribute('data-val') === (p.status || 'draft'));
+    });
+
+    // Set recurring
+    if (p.recurring) {
+      $('recurringToggle').classList.add('on');
+      $('recurringOptions').style.display = '';
+      document.querySelectorAll('#recurringOptions .csc-recurring-pill').forEach(function(pill) {
+        pill.classList.toggle('active', pill.getAttribute('data-val') === p.recurring);
+      });
+    } else {
+      $('recurringToggle').classList.remove('on');
+      $('recurringOptions').style.display = 'none';
+    }
+
+    updatePreview();
+  }
+
+  /* -- Platform pills (multi-select) -- */
+  document.querySelectorAll('#platformPills .csc-platform-pill').forEach(function(pill) {
+    pill.onclick = function() {
+      pill.classList.toggle('active');
+      updateCharCounter();
+      updatePreview();
+    };
+  });
+
+  /* -- Status pills (single select) -- */
+  document.querySelectorAll('#statusPills .csc-status-pill').forEach(function(pill) {
+    pill.onclick = function() {
+      document.querySelectorAll('#statusPills .csc-status-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+    };
+  });
+
+  /* -- Recurring toggle -- */
+  $('recurringToggle').onclick = function() {
+    this.classList.toggle('on');
+    $('recurringOptions').style.display = this.classList.contains('on') ? '' : 'none';
+  };
+  document.querySelectorAll('#recurringOptions .csc-recurring-pill').forEach(function(pill) {
+    pill.onclick = function() {
+      document.querySelectorAll('#recurringOptions .csc-recurring-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+    };
+  });
+
+  /* -- Character Counter -- */
+  function updateCharCounter() {
+    var text = $('postText').value;
+    var len = text.length;
+    var activePlats = getSelectedPlatforms();
+    var minMax = Infinity;
+    activePlats.forEach(function(pl) {
+      if (PLATFORMS[pl] && PLATFORMS[pl].maxChars < minMax) minMax = PLATFORMS[pl].maxChars;
+    });
+
+    var label = len + ' characters';
+    if (minMax < Infinity) label = len + ' / ' + minMax;
+
+    var counter = $('charCounter');
+    counter.textContent = label;
+    counter.className = 'csc-char-counter' + (minMax < Infinity && len > minMax ? ' over' : '');
+  }
+
+  $('postText').oninput = function() {
+    updateCharCounter();
+    updatePreview();
+  };
+
+  function getSelectedPlatforms() {
+    var result = [];
+    document.querySelectorAll('#platformPills .csc-platform-pill.active').forEach(function(p) {
+      result.push(p.getAttribute('data-val'));
+    });
+    return result;
+  }
+
+  function getSelectedStatus() {
+    var el = document.querySelector('#statusPills .csc-status-pill.active');
+    return el ? el.getAttribute('data-val') : 'draft';
+  }
+
+  function getRecurring() {
+    if (!$('recurringToggle').classList.contains('on')) return null;
+    var el = document.querySelector('#recurringOptions .csc-recurring-pill.active');
+    return el ? el.getAttribute('data-val') : null;
+  }
+
+  /* -- Image Upload -- */
+  $('imageUploadArea').onclick = function() { $('imageInput').click(); };
+  $('imageInput').onchange = function() {
+    var files = this.files;
+    if (!files || !files.length) return;
+    var remaining = 4 - uploadedImages.length;
+    for (var i = 0; i < Math.min(files.length, remaining); i++) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedImages.push(e.target.result);
+        renderImageThumbs();
+      };
+      reader.readAsDataURL(files[i]);
+    }
+    if (files.length > remaining) toast('Max 4 images allowed');
+    this.value = '';
+  };
+
+  function renderImageThumbs() {
+    var container = $('imageThumbs');
+    var html = '';
+    uploadedImages.forEach(function(src, i) {
+      html += '<div class="csc-image-thumb-wrap">';
+      html += '<img src="' + src + '" class="csc-image-thumb">';
+      html += '<button class="csc-image-thumb-remove" data-idx="' + i + '">&times;</button>';
+      html += '</div>';
+    });
+    container.innerHTML = html;
+    container.querySelectorAll('.csc-image-thumb-remove').forEach(function(btn) {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        uploadedImages.splice(parseInt(btn.getAttribute('data-idx')), 1);
+        renderImageThumbs();
+      };
+    });
+  }
+
+  /* -- Platform Preview -- */
+  function updatePreview() {
+    var plats = getSelectedPlatforms();
+    var text = $('postText').value;
+
+    if (!plats.length || !text.trim()) {
+      $('previewTabs').innerHTML = '';
+      $('previewMockup').innerHTML = '<div class="csc-preview-placeholder">Select a platform and start typing to see a preview</div>';
+      return;
+    }
+
+    var tabsHtml = '';
+    plats.forEach(function(pl, i) {
+      var p = PLATFORMS[pl];
+      tabsHtml += '<button class="csc-preview-tab' + (i === 0 ? ' active' : '') + '" data-plat="' + pl + '">' + (p ? p.name : pl) + '</button>';
+    });
+    $('previewTabs').innerHTML = tabsHtml;
+
+    document.querySelectorAll('#previewTabs .csc-preview-tab').forEach(function(tab) {
+      tab.onclick = function() {
+        document.querySelectorAll('#previewTabs .csc-preview-tab').forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        renderPlatformPreview(tab.getAttribute('data-plat'));
+      };
+    });
+
+    renderPlatformPreview(plats[0]);
+  }
+
+  function renderPlatformPreview(plat) {
+    var text = escHtml($('postText').value).replace(/\n/g, '<br>');
+    var p = PLATFORMS[plat];
+    if (!p) { $('previewMockup').innerHTML = '<div class="csc-preview-text">' + text + '</div>'; return; }
+
+    var html = '';
+    switch (plat) {
+      case 'ig':
+        html = '<div class="csc-preview-ig-header"><div class="csc-preview-avatar"></div><div><div class="csc-preview-name">yourhandle</div></div></div>';
+        html += '<div style="font-size:18px;margin-bottom:8px;">&#9825; &#128172; &#8599;&#65039; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#128278;</div>';
+        html += '<div class="csc-preview-text"><strong>yourhandle</strong> ' + text + '</div>';
+        break;
+      case 'x':
+        html = '<div class="csc-preview-x-header"><div class="csc-preview-avatar"></div><div><div class="csc-preview-name">Your Name</div><div class="csc-preview-handle">@yourhandle</div></div></div>';
+        html += '<div class="csc-preview-text">' + text + '</div>';
+        html += '<div style="display:flex;gap:24px;margin-top:10px;font-size:12px;color:rgba(255,255,255,.3);">&#128172; 0 &nbsp; &#128257; 0 &nbsp; &#10084;&#65039; 0 &nbsp; &#128200; 0</div>';
+        break;
+      case 'li':
+        html = '<div class="csc-preview-li-header"><div class="csc-preview-avatar"></div><div><div class="csc-preview-name">Your Name</div><div class="csc-preview-handle">Creator &bull; Content Strategist</div></div></div>';
+        html += '<div class="csc-preview-text">' + text + '</div>';
+        break;
+      case 'tt':
+        html = '<div style="display:flex;align-items:flex-end;gap:12px;"><div style="flex:1;"><div class="csc-preview-name" style="margin-bottom:4px;">@yourhandle</div><div class="csc-preview-text" style="font-size:13px;">' + text + '</div></div>';
+        html += '<div style="display:flex;flex-direction:column;gap:14px;font-size:18px;">&#10084;&#65039;<br>&#128172;<br>&#128278;</div></div>';
+        break;
+      case 'yt':
+        html = '<div style="background:rgba(255,0,0,.1);border-radius:8px;padding:12px;margin-bottom:10px;font-size:12px;color:rgba(255,255,255,.4);">&#9654;&#65039; Video Thumbnail</div>';
+        html += '<div class="csc-preview-name" style="margin-bottom:6px;">Video Title</div>';
+        html += '<div class="csc-preview-text" style="font-size:13px;">' + text + '</div>';
+        break;
+      case 'fb':
+        html = '<div class="csc-preview-fb-header"><div class="csc-preview-avatar"></div><div><div class="csc-preview-name">Your Name</div><div class="csc-preview-handle">Just now &bull; &#127760;</div></div></div>';
+        html += '<div class="csc-preview-text">' + text + '</div>';
+        break;
+      case 'threads':
+        html = '<div class="csc-preview-x-header"><div class="csc-preview-avatar"></div><div><div class="csc-preview-name">yourhandle</div><div class="csc-preview-handle">Just now</div></div></div>';
+        html += '<div class="csc-preview-text">' + text + '</div>';
+        break;
+    }
+
+    var charLen = $('postText').value.length;
+    var overLimit = charLen > p.maxChars;
+    html += '<div style="text-align:right;margin-top:8px;font-size:11px;color:' + (overLimit ? '#ef4444' : 'rgba(255,255,255,.3)') + ';">' + charLen + '/' + p.maxChars + '</div>';
+
+    $('previewMockup').innerHTML = html;
+  }
+
+  /* -- Save Post -- */
+  $('savePostBtn').onclick = function() {
+    var text = $('postText').value.trim();
+    if (!text) { toast('Write something first'); return; }
+
+    var platforms = getSelectedPlatforms();
+    if (!platforms.length) { toast('Select at least one platform'); return; }
+
+    var posts = loadPosts();
+    var editId = $('editPostId').value;
+    var post = {
+      id: editId || genId(),
+      text: text,
+      platforms: platforms,
+      date: $('postDate').value,
+      time: $('postTime').value,
+      status: getSelectedStatus(),
+      recurring: getRecurring(),
+      images: uploadedImages.slice(0, 4),
+      createdAt: editId ? undefined : new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (editId) {
+      var idx = posts.findIndex(function(p) { return p.id === editId; });
+      if (idx !== -1) {
+        post.createdAt = posts[idx].createdAt;
+        posts[idx] = post;
+      }
+      toast('Post updated!');
+    } else {
+      // Handle recurring: create future copies
+      if (post.recurring) {
+        var copies = generateRecurringPosts(post);
+        posts.push(post);
+        copies.forEach(function(c) { posts.push(c); });
+        toast('Post saved with ' + copies.length + ' recurring copies!');
+      } else {
+        posts.push(post);
+        toast('Post saved!');
+      }
+    }
+
+    savePosts(posts);
+    resetComposer();
+    switchView('calendar');
+  };
+
+  function generateRecurringPosts(basePost) {
+    var copies = [];
+    var intervals = { daily: 1, weekly: 7, biweekly: 14, monthly: 30 };
+    var days = intervals[basePost.recurring] || 7;
+    var baseDate = new Date(basePost.date + 'T00:00:00');
+
+    for (var i = 1; i <= 4; i++) {
+      var nextDate = new Date(baseDate);
+      nextDate.setDate(nextDate.getDate() + (days * i));
+      var copy = JSON.parse(JSON.stringify(basePost));
+      copy.id = genId();
+      copy.date = dayStr(nextDate);
+      copy.status = 'queued';
+      copies.push(copy);
+    }
+    return copies;
+  }
+
+  /* ============================================================
+     BULK COMPOSER
+     ============================================================ */
+  $('bulkCreateBtn').onclick = function() {
+    var raw = $('bulkText').value.trim();
+    if (!raw) { toast('Paste some posts first'); return; }
+
+    var blocks = raw.split(/\n---\n|\n---$|^---\n/).filter(function(b) { return b.trim(); });
+    if (blocks.length === 0) { toast('No posts found'); return; }
+
+    var posts = loadPosts();
+    var date = todayStr();
+    blocks.forEach(function(block, i) {
+      posts.push({
+        id: genId(),
+        text: block.trim(),
+        platforms: [],
+        date: date,
+        time: String(9 + i).padStart(2, '0') + ':00',
+        status: 'draft',
+        recurring: null,
+        images: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+    });
+
+    savePosts(posts);
+    toast(blocks.length + ' drafts created!');
+    $('bulkText').value = '';
+    $('bulkSection').style.display = 'none';
+    switchView('queue');
+  };
+  $('bulkCancelBtn').onclick = function() { $('bulkSection').style.display = 'none'; };
+
+  /* ============================================================
+     TEMPLATES
+     ============================================================ */
+  function renderTemplates() {
+    var tpls = loadTemplates();
+    var list = $('templateList');
+
+    if (tpls.length === 0) {
+      list.innerHTML = '<div class="csc-empty"><div class="csc-empty-icon">&#128196;</div><div class="csc-empty-title">No templates yet</div><div class="csc-empty-desc">Save reusable content templates with {{placeholder}} tags.</div></div>';
+      return;
+    }
+
+    var html = '';
+    tpls.forEach(function(t) {
+      html += '<div class="csc-template-card" data-tpl-use="' + t.id + '">';
+      html += '<div class="csc-template-name">' + escHtml(t.name || 'Untitled') + '</div>';
+      html += '<div class="csc-template-text">' + escHtml(t.text || '') + '</div>';
+      html += '<div class="csc-template-footer">';
+      if (t.platform) html += '<span class="csc-template-platform">' + (PLATFORMS[t.platform] ? PLATFORMS[t.platform].name : t.platform) + '</span>';
+      html += '<div class="csc-template-actions">';
+      html += '<button class="csc-template-action" data-tpl-edit="' + t.id + '">Edit</button>';
+      html += '<button class="csc-template-action" data-tpl-del="' + t.id + '">Del</button>';
+      html += '</div></div></div>';
+    });
+    list.innerHTML = html;
+
+    // Wire clicks
+    list.querySelectorAll('[data-tpl-use]').forEach(function(card) {
+      card.onclick = function(e) {
+        if (e.target.closest('[data-tpl-edit]') || e.target.closest('[data-tpl-del]')) return;
+        var id = card.getAttribute('data-tpl-use');
+        var tpl = loadTemplates().find(function(t) { return t.id === id; });
+        if (tpl) {
+          resetComposer();
+          $('postText').value = tpl.text || '';
+          if (tpl.platform) {
+            document.querySelectorAll('#platformPills .csc-platform-pill').forEach(function(p) {
+              p.classList.toggle('active', p.getAttribute('data-val') === tpl.platform);
+            });
+          }
+          updateCharCounter();
+          updatePreview();
+          switchView('compose');
+          toast('Template loaded!');
+        }
+      };
+    });
+    list.querySelectorAll('[data-tpl-edit]').forEach(function(btn) {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-tpl-edit');
+        var tpl = loadTemplates().find(function(t) { return t.id === id; });
+        if (tpl) {
+          $('tplName').value = tpl.name || '';
+          $('tplText').value = tpl.text || '';
+          $('editTplId').value = tpl.id;
+          document.querySelectorAll('#tplPlatformPills .csc-platform-pill').forEach(function(p) {
+            p.classList.toggle('active', p.getAttribute('data-val') === tpl.platform);
+          });
+          $('templateForm').style.display = '';
+        }
+      };
+    });
+    list.querySelectorAll('[data-tpl-del]').forEach(function(btn) {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        if (!confirm('Delete this template?')) return;
+        var id = btn.getAttribute('data-tpl-del');
+        var tpls = loadTemplates().filter(function(t) { return t.id !== id; });
+        saveTemplates(tpls);
+        toast('Template deleted');
+        renderTemplates();
+      };
+    });
+  }
+
+  $('newTemplateBtn').onclick = function() {
+    $('tplName').value = '';
+    $('tplText').value = '';
+    $('editTplId').value = '';
+    document.querySelectorAll('#tplPlatformPills .csc-platform-pill').forEach(function(p) { p.classList.remove('active'); });
+    $('templateForm').style.display = '';
+  };
+  $('cancelTplBtn').onclick = function() { $('templateForm').style.display = 'none'; };
+
+  // Template platform pills (single select)
+  document.querySelectorAll('#tplPlatformPills .csc-platform-pill').forEach(function(pill) {
+    pill.onclick = function() {
+      document.querySelectorAll('#tplPlatformPills .csc-platform-pill').forEach(function(p) { p.classList.remove('active'); });
+      pill.classList.add('active');
+    };
+  });
+
+  $('saveTplBtn').onclick = function() {
+    var name = $('tplName').value.trim();
+    var text = $('tplText').value.trim();
+    if (!name || !text) { toast('Name and text required'); return; }
+
+    var platEl = document.querySelector('#tplPlatformPills .csc-platform-pill.active');
+    var platform = platEl ? platEl.getAttribute('data-val') : null;
+
+    var tpls = loadTemplates();
+    var editId = $('editTplId').value;
+
+    if (editId) {
+      var idx = tpls.findIndex(function(t) { return t.id === editId; });
+      if (idx !== -1) { tpls[idx] = { id: editId, name: name, text: text, platform: platform }; }
+      toast('Template updated!');
+    } else {
+      tpls.push({ id: genId(), name: name, text: text, platform: platform });
+      toast('Template saved!');
+    }
+
+    saveTemplates(tpls);
+    $('templateForm').style.display = 'none';
+    renderTemplates();
+  };
+
+  /* ============================================================
+     SMART QUEUE
+     ============================================================ */
+  var BEST_TIMES = {
+    ig: [{ time: '11:00', reason: 'Peak IG engagement' }, { time: '13:00', reason: 'Lunch break scroll' }, { time: '19:00', reason: 'Evening wind-down' }],
+    x:  [{ time: '08:00', reason: 'Morning news cycle' }, { time: '12:00', reason: 'Midday engagement' }, { time: '17:00', reason: 'End of workday' }],
+    tt: [{ time: '07:00', reason: 'Early morning FYP' }, { time: '12:00', reason: 'Lunch break' }, { time: '19:00', reason: 'Prime time views' }],
+    yt: [{ time: '14:00', reason: 'Afternoon viewing' }, { time: '17:00', reason: 'After school/work' }],
+    li: [{ time: '08:00', reason: 'Pre-work professionals' }, { time: '12:00', reason: 'Lunch networking' }],
+    fb: [{ time: '13:00', reason: 'Afternoon engagement' }, { time: '15:00', reason: 'Mid-afternoon peak' }],
+    threads: [{ time: '10:00', reason: 'Mid-morning activity' }, { time: '14:00', reason: 'Afternoon conversations' }]
+  };
+
+  $('suggestTimesBtn').onclick = function() {
+    var container = $('smartSuggestions');
+    var html = '';
+    Object.keys(BEST_TIMES).forEach(function(pl) {
+      var p = PLATFORMS[pl];
+      BEST_TIMES[pl].forEach(function(slot) {
+        html += '<div class="csc-smart-slot">';
+        html += '<div class="csc-smart-slot-time">' + formatTime12(slot.time) + '</div>';
+        html += '<div class="csc-smart-slot-platform">' + (p ? p.name : pl) + ' &mdash; ' + slot.reason + '</div>';
+        html += '<button class="csc-smart-slot-btn" data-smart-plat="' + pl + '" data-smart-time="' + slot.time + '">Use</button>';
+        html += '</div>';
+      });
+    });
+    container.innerHTML = html;
+    container.querySelectorAll('.csc-smart-slot-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        resetComposer();
+        $('postDate').value = todayStr();
+        $('postTime').value = btn.getAttribute('data-smart-time');
+        var pl = btn.getAttribute('data-smart-plat');
+        document.querySelectorAll('#platformPills .csc-platform-pill').forEach(function(p) {
+          p.classList.toggle('active', p.getAttribute('data-val') === pl);
+        });
+        updateCharCounter();
+        switchView('compose');
+        toast('Time slot selected!');
+      };
+    });
+  };
+
+  $('autoFillBtn').onclick = function() {
+    var posts = loadPosts();
+    var today = new Date();
+    var dayOfWeek = today.getDay(); // 0=Sun
+    var startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - ((dayOfWeek + 6) % 7)); // Monday
+
+    var schedule = [
+      { day: 0, plat: 'ig', time: '11:00' },
+      { day: 0, plat: 'x', time: '08:00' },
+      { day: 1, plat: 'li', time: '08:00' },
+      { day: 1, plat: 'tt', time: '19:00' },
+      { day: 2, plat: 'ig', time: '13:00' },
+      { day: 2, plat: 'fb', time: '13:00' },
+      { day: 3, plat: 'x', time: '12:00' },
+      { day: 3, plat: 'yt', time: '14:00' },
+      { day: 4, plat: 'ig', time: '19:00' },
+      { day: 4, plat: 'li', time: '12:00' },
+      { day: 5, plat: 'tt', time: '12:00' },
+      { day: 6, plat: 'fb', time: '15:00' }
+    ];
+
+    var created = 0;
+    schedule.forEach(function(slot) {
+      var d = new Date(startOfWeek);
+      d.setDate(startOfWeek.getDate() + slot.day);
+      var ds = dayStr(d);
+      // Skip if already has a post for this platform on this day
+      var exists = posts.some(function(p) {
+        return p.date === ds && p.platforms && p.platforms.indexOf(slot.plat) !== -1;
+      });
+      if (!exists) {
+        posts.push({
+          id: genId(),
+          text: '',
+          platforms: [slot.plat],
+          date: ds,
+          time: slot.time,
+          status: 'draft',
+          recurring: null,
+          images: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+        created++;
+      }
+    });
+
+    savePosts(posts);
+    toast(created + ' slots added to your week!');
+    renderCalendar();
+  };
+
+  /* ============================================================
+     REMINDERS
+     ============================================================ */
+  function checkReminders() {
+    var posts = loadPosts();
+    var now = new Date();
+    var nowDate = dayStr(now);
+    var nowHour = String(now.getHours()).padStart(2,'0');
+    var nowMin = String(now.getMinutes()).padStart(2,'0');
+    var nowTime = nowHour + ':' + nowMin;
+
+    var due = posts.filter(function(p) {
+      return p.status === 'queued' && p.date === nowDate && p.time && p.time <= nowTime && !p._reminded;
+    });
+
+    if (due.length > 0) {
+      var p = due[0];
+      var barHtml = '<div class="csc-reminder-bar">';
+      barHtml += '<span>&#128276; Time to post!</span>';
+      barHtml += '<span class="csc-reminder-text">' + escHtml((p.text || '').substring(0, 80)) + '</span>';
+      barHtml += '<button data-rem-copy="' + p.id + '">Copy Text</button>';
+      if (p.platforms && p.platforms[0]) {
+        barHtml += '<button data-rem-open="' + p.id + '">Open ' + (PLATFORMS[p.platforms[0]] ? PLATFORMS[p.platforms[0]].name : '') + '</button>';
+      }
+      barHtml += '<button data-rem-posted="' + p.id + '">&#10003; Posted</button>';
+      barHtml += '<button class="csc-reminder-dismiss" data-rem-dismiss="' + p.id + '">&times;</button>';
+      barHtml += '</div>';
+      $('reminderBar').innerHTML = barHtml;
+
+      // Mark as reminded so we don't show again
+      p._reminded = true;
+      savePosts(posts);
+
+      // Wire buttons
+      var bar = $('reminderBar');
+      var copyBtn = bar.querySelector('[data-rem-copy]');
+      if (copyBtn) copyBtn.onclick = function() {
+        navigator.clipboard.writeText(p.text || '').then(function() { toast('Copied!'); });
+      };
+      var openBtn = bar.querySelector('[data-rem-open]');
+      if (openBtn) openBtn.onclick = function() {
+        if (p.platforms && p.platforms[0] && PLATFORMS[p.platforms[0]]) {
+          window.open(PLATFORMS[p.platforms[0]].deepLink, '_blank');
+        }
+      };
+      var postedBtn = bar.querySelector('[data-rem-posted]');
+      if (postedBtn) postedBtn.onclick = function() {
+        var posts2 = loadPosts();
+        var pp = posts2.find(function(x) { return x.id === p.id; });
+        if (pp) { pp.status = 'posted'; savePosts(posts2); }
+        $('reminderBar').innerHTML = '';
+        toast('Marked as posted!');
+        if (currentView === 'queue') renderQueue();
+        if (currentView === 'calendar') renderCalendar();
+      };
+      var dismissBtn = bar.querySelector('[data-rem-dismiss]');
+      if (dismissBtn) dismissBtn.onclick = function() { $('reminderBar').innerHTML = ''; };
+    }
+  }
+
+  // Check reminders every 30 seconds
+  setInterval(checkReminders, 30000);
+  checkReminders();
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  // Set default date
+  $('postDate').value = todayStr();
+
+  // Render initial view
+  renderCalendar();
+
+}();
+</script>
+</body>
+</html>

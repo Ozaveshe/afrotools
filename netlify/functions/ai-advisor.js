@@ -849,6 +849,7 @@ exports.handler = async function(event) {
 
     const data = await response.json();
     const reply = data?.content?.[0]?.text ?? "Sorry, I could not generate a response. Please try again.";
+    const usage = data?.usage || null;
 
     // Only count against rate limit after a successful AI call
     await commitRateLimit(rateResult);
@@ -859,7 +860,7 @@ exports.handler = async function(event) {
     return {
       statusCode: 200, headers,
       // Return both 'reply' and 'text' — some pages read data.reply, others data.text
-      body: JSON.stringify({ reply, text: reply, remaining: rateResult.remaining, suggestedTools })
+      body: JSON.stringify({ reply, text: reply, remaining: rateResult.remaining, suggestedTools, usage })
     };
 
   } catch (err) {

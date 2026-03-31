@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CreatorMail Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js" defer></script>
+</head>
+<body class="cml-app">
+
+  <!-- TOPBAR -->
+  <div class="cml-topbar">
+    <a href="index.html" class="cml-topbar-back">&larr;</a>
+    <a href="index.html" class="cml-topbar-brand">&#9993;&#65039; CreatorMail</a>
+    <div class="cml-topbar-actions">
+      <button class="cml-topbar-btn" id="savedBtn">Saved</button>
+      <button class="cml-topbar-btn" id="spamBtn">Spam Score</button>
+      <button class="cml-topbar-btn primary" id="exportBtn">Export</button>
+    </div>
+  </div>
+
+  <!-- TEMPLATE GALLERY (shown first, hidden after picking) -->
+  <div class="cml-gallery" id="galleryView">
+    <div class="cml-gallery-header">
+      <div class="cml-gallery-title">&#127912; Pick a Template</div>
+      <button class="cml-topbar-btn" id="blankBtn">Start Blank</button>
+    </div>
+    <div class="cml-gallery-grid" id="templateGrid"></div>
+  </div>
+
+  <!-- BUILDER WORKSPACE (hidden until template picked) -->
+  <div class="cml-workspace" id="builderView" style="display:none;">
+
+    <!-- LEFT: BLOCK PALETTE -->
+    <div class="cml-palette" id="blockPalette">
+      <div class="cml-palette-title">Blocks</div>
+      <div class="cml-block-item" draggable="true" data-type="header"><span class="cml-block-item-icon">H</span>Header</div>
+      <div class="cml-block-item" draggable="true" data-type="text"><span class="cml-block-item-icon">&#128196;</span>Text</div>
+      <div class="cml-block-item" draggable="true" data-type="image"><span class="cml-block-item-icon">&#128247;</span>Image</div>
+      <div class="cml-block-item" draggable="true" data-type="button"><span class="cml-block-item-icon">&#128073;</span>Button</div>
+      <div class="cml-block-item" draggable="true" data-type="divider"><span class="cml-block-item-icon">&mdash;</span>Divider</div>
+      <div class="cml-block-item" draggable="true" data-type="quote"><span class="cml-block-item-icon">&#10077;</span>Quote</div>
+      <div class="cml-block-item" draggable="true" data-type="social"><span class="cml-block-item-icon">&#128279;</span>Social Links</div>
+      <div class="cml-block-item" draggable="true" data-type="two-col"><span class="cml-block-item-icon">&#9638;&#9638;</span>Two Column</div>
+      <div class="cml-block-item" draggable="true" data-type="three-col"><span class="cml-block-item-icon">&#9638;&#9638;&#9638;</span>Three Column</div>
+      <div class="cml-block-item" draggable="true" data-type="video"><span class="cml-block-item-icon">&#9654;</span>Video Thumb</div>
+      <div class="cml-block-item" draggable="true" data-type="countdown"><span class="cml-block-item-icon">&#9201;</span>Countdown</div>
+      <div class="cml-block-item" draggable="true" data-type="footer"><span class="cml-block-item-icon">&#9601;</span>Footer</div>
+
+      <!-- GLOBAL STYLES -->
+      <div class="cml-global-section">
+        <div class="cml-global-title">Global Styles</div>
+        <div class="cml-global-row">
+          <span class="cml-global-label">Email BG</span>
+          <div class="cml-color-swatch"><input type="color" id="globalBg" value="#ffffff"></div>
+        </div>
+        <div class="cml-global-row">
+          <span class="cml-global-label">Width</span>
+          <input class="cml-global-input" type="number" id="globalWidth" value="600" min="320" max="800" step="10">
+        </div>
+        <div class="cml-global-row">
+          <span class="cml-global-label">Font</span>
+          <select class="cml-global-select" id="globalFont">
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+            <option value="'Times New Roman', serif">Times</option>
+            <option value="Tahoma, sans-serif">Tahoma</option>
+          </select>
+        </div>
+        <div class="cml-global-row">
+          <span class="cml-global-label">Brand Color</span>
+          <div class="cml-color-swatch"><input type="color" id="globalBrand" value="#6366F1"></div>
+        </div>
+        <div class="cml-global-row">
+          <span class="cml-global-label">Radius</span>
+          <input class="cml-global-input" type="number" id="globalRadius" value="8" min="0" max="24" step="2">
+        </div>
+        <div class="cml-global-row">
+          <span class="cml-global-label">Logo URL</span>
+          <input class="cml-global-input" type="text" id="globalLogo" placeholder="https://..." style="width:140px;text-align:left;">
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER: CANVAS -->
+    <div class="cml-canvas-wrap">
+      <div class="cml-canvas-toolbar">
+        <button class="cml-canvas-toolbar-btn active" data-view="desktop" id="viewDesktop">&#128421; Desktop</button>
+        <button class="cml-canvas-toolbar-btn" data-view="mobile" id="viewMobile">&#128241; Mobile</button>
+        <div class="cml-canvas-toolbar-sep"></div>
+        <button class="cml-canvas-toolbar-btn" id="darkToggle">&#127761; Dark Mode</button>
+        <div class="cml-canvas-toolbar-sep"></div>
+        <button class="cml-canvas-toolbar-btn" id="undoBtn">&#8617; Undo</button>
+      </div>
+      <div class="cml-canvas" id="emailCanvas">
+        <div class="cml-canvas-empty" id="canvasEmpty">
+          <div class="cml-canvas-empty-icon">&#128233;</div>
+          <div class="cml-canvas-empty-text">Drag blocks here to build</div>
+          <div class="cml-canvas-empty-sub">Or pick a template from the gallery</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: SETTINGS PANEL -->
+    <div class="cml-settings" id="settingsPanel">
+      <div class="cml-settings-title">Block Settings</div>
+      <div class="cml-settings-empty" id="settingsEmpty">
+        Click a block on the canvas to edit its settings.
+      </div>
+      <div id="settingsContent" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- EXPORT OVERLAY -->
+  <div class="cml-export-overlay" id="exportOverlay">
+    <div class="cml-export-modal">
+      <div class="cml-export-title">Export Newsletter</div>
+      <div class="cml-export-desc">Your email HTML is ready. Choose an export method.</div>
+      <button class="cml-export-btn" id="exportCopyHtml">
+        <span class="cml-export-btn-icon">&#128203;</span>
+        <span class="cml-export-btn-text">Copy HTML<span class="cml-export-btn-sub">Inline-styled, table-based for email</span></span>
+      </button>
+      <button class="cml-export-btn" id="exportDownload">
+        <span class="cml-export-btn-icon">&#128229;</span>
+        <span class="cml-export-btn-text">Download .html<span class="cml-export-btn-sub">Save file to your computer</span></span>
+      </button>
+      <button class="cml-export-btn" id="exportPlainText">
+        <span class="cml-export-btn-icon">&#128221;</span>
+        <span class="cml-export-btn-text">Copy Plain Text<span class="cml-export-btn-sub">Text-only version for fallback</span></span>
+      </button>
+      <button class="cml-export-close" id="exportClose">Close</button>
+    </div>
+  </div>
+
+  <!-- SAVED NEWSLETTERS OVERLAY -->
+  <div class="cml-saved-overlay" id="savedOverlay">
+    <div class="cml-saved-modal">
+      <div class="cml-export-title">Saved Newsletters</div>
+      <div class="cml-export-desc" id="savedDesc">Your newsletters are saved in this browser.</div>
+      <div id="savedList"></div>
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button class="cml-topbar-btn primary" id="saveCurrentBtn" style="flex:1;">Save Current</button>
+        <button class="cml-export-close" id="savedClose" style="margin:0;flex:1;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPAM SCORE OVERLAY -->
+  <div class="cml-export-overlay" id="spamOverlay">
+    <div class="cml-export-modal">
+      <div class="cml-export-title">Spam Score Check</div>
+      <div class="cml-export-desc">Analyzing your newsletter for spam triggers...</div>
+      <div id="spamResults"></div>
+      <button class="cml-export-close" id="spamClose">Close</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="cml-bottom-nav">
+    <a href="app.html" class="active"><span class="cml-bnav-icon">&#9993;&#65039;</span>Build</a>
+    <a href="/tools/creator-mind/app.html"><span class="cml-bnav-icon">&#128302;</span>CreatorMind</a>
+    <a href="index.html"><span class="cml-bnav-icon">&#8505;&#65039;</span>About</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="cml-toast" id="toast"></div>
+
+<script>
+!function() {
+  "use strict";
+
+  // ============================================================
+  // TEMPLATES
+  // ============================================================
+  var TEMPLATES = [
+    { id: 'weekly-update', icon: '&#128240;', name: 'Creator Weekly Update', desc: 'Roundup of your latest content, wins, and links',
+      blocks: [
+        { type: 'header', data: { text: 'This Week in [Your Name]', align: 'center' } },
+        { type: 'text', data: { html: 'Hey {{first_name}},<br><br>Here is what happened this week. Three things worth your time:' } },
+        { type: 'text', data: { html: '<strong>1. New content drop</strong><br>Quick summary of your latest post or video.<br><br><strong>2. Behind the scenes</strong><br>Something interesting from your process.<br><br><strong>3. What I am reading</strong><br>A link or recommendation your audience will love.' } },
+        { type: 'button', data: { text: 'Read the Full Post', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'divider', data: {} },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'product-launch', icon: '&#128640;', name: 'Product Launch', desc: 'Announce a new product, course, or service',
+      blocks: [
+        { type: 'header', data: { text: 'It Is Finally Here.', align: 'center' } },
+        { type: 'image', data: { src: '', alt: 'Product hero image' } },
+        { type: 'text', data: { html: 'After months of work, I am excited to share <strong>[Product Name]</strong> with you.<br><br>Here is what it does and why it matters to you:' } },
+        { type: 'two-col', data: { col1: '<strong>What you get</strong><br>Feature 1<br>Feature 2<br>Feature 3', col2: '<strong>Why it matters</strong><br>Benefit 1<br>Benefit 2<br>Benefit 3' } },
+        { type: 'button', data: { text: 'Get It Now', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'event-invite', icon: '&#127881;', name: 'Event Invite', desc: 'Invite subscribers to a webinar, workshop, or meetup',
+      blocks: [
+        { type: 'header', data: { text: 'You Are Invited', align: 'center' } },
+        { type: 'text', data: { html: 'Join me for <strong>[Event Name]</strong> — a live session on [topic].<br><br>&#128197; <strong>Date:</strong> [Date]<br>&#128336; <strong>Time:</strong> [Time]<br>&#128205; <strong>Where:</strong> [Location/Zoom link]' } },
+        { type: 'countdown', data: { label: 'Starts in' } },
+        { type: 'text', data: { html: 'What you will learn:<br>&#10003; Point one<br>&#10003; Point two<br>&#10003; Point three' } },
+        { type: 'button', data: { text: 'Reserve My Spot', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'course-announce', icon: '&#127891;', name: 'Course Announcement', desc: 'Launch an online course or program',
+      blocks: [
+        { type: 'header', data: { text: 'New Course: [Course Name]', align: 'center' } },
+        { type: 'text', data: { html: 'I built the course I wished existed when I was starting out.<br><br><strong>[Course Name]</strong> is a [X]-week program covering everything from [topic A] to [topic B].' } },
+        { type: 'three-col', data: { col1: '<strong>Module 1</strong><br>Foundation basics', col2: '<strong>Module 2</strong><br>Advanced strategies', col3: '<strong>Module 3</strong><br>Real-world projects' } },
+        { type: 'quote', data: { text: 'This course changed how I approach my work. — Previous student' } },
+        { type: 'button', data: { text: 'Enroll Now', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'personal-story', icon: '&#128172;', name: 'Personal Story', desc: 'Share a personal narrative or lesson',
+      blocks: [
+        { type: 'header', data: { text: 'A Story I Have Never Told', align: 'center' } },
+        { type: 'text', data: { html: 'Hey {{first_name}},<br><br>I do not usually share this, but I think it will resonate with you.<br><br>[Write your story here. Keep paragraphs short. Use line breaks for readability.]<br><br>Here is what I learned from that experience:' } },
+        { type: 'quote', data: { text: 'The lesson in one sentence goes here.' } },
+        { type: 'text', data: { html: 'If this resonated, hit reply and tell me your version. I read every email.' } },
+        { type: 'divider', data: {} },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'digest', icon: '&#128218;', name: 'Digest / Roundup', desc: 'Curated links, news, or resources',
+      blocks: [
+        { type: 'header', data: { text: 'The Weekly Digest — Issue #{{subscriber_count}}', align: 'center' } },
+        { type: 'text', data: { html: 'Good morning {{first_name}},<br><br>Here are the 5 best things I found this week:' } },
+        { type: 'text', data: { html: '<strong>1. [Link Title]</strong><br>One-line summary. <a href="#">Read it &rarr;</a><br><br><strong>2. [Link Title]</strong><br>One-line summary. <a href="#">Read it &rarr;</a><br><br><strong>3. [Link Title]</strong><br>One-line summary. <a href="#">Read it &rarr;</a><br><br><strong>4. [Link Title]</strong><br>One-line summary. <a href="#">Read it &rarr;</a><br><br><strong>5. [Link Title]</strong><br>One-line summary. <a href="#">Read it &rarr;</a>' } },
+        { type: 'divider', data: {} },
+        { type: 'social', data: {} },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'sale-promo', icon: '&#127991;&#65039;', name: 'Sale / Promo', desc: 'Announce a sale, discount, or special offer',
+      blocks: [
+        { type: 'header', data: { text: '&#128293; Flash Sale — 48 Hours Only', align: 'center' } },
+        { type: 'image', data: { src: '', alt: 'Sale banner' } },
+        { type: 'text', data: { html: 'For the next 48 hours, get <strong>[X]% off</strong> everything in the shop.<br><br>Use code: <strong>FLASH48</strong> at checkout.' } },
+        { type: 'countdown', data: { label: 'Sale ends in' } },
+        { type: 'button', data: { text: 'Shop Now', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'text', data: { html: '<em>No minimum order. Free shipping on orders above [amount].</em>' } },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'welcome', icon: '&#128075;', name: 'Welcome Email', desc: 'First email to new subscribers',
+      blocks: [
+        { type: 'header', data: { text: 'Welcome to the Family, {{first_name}}!', align: 'center' } },
+        { type: 'text', data: { html: 'I am so glad you are here. Here is what to expect:<br><br>&#128231; <strong>Every [frequency]</strong>, you will get [what they get].<br>&#127919; <strong>My goal</strong> is to help you [outcome].<br>&#128172; <strong>Hit reply</strong> any time — I read every message.' } },
+        { type: 'text', data: { html: '<strong>Start here:</strong><br>These are my 3 most popular pieces:' } },
+        { type: 'button', data: { text: 'Read My Best Post', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'social', data: {} },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'milestone', icon: '&#127942;', name: 'Milestone Celebration', desc: 'Celebrate a follower milestone or achievement',
+      blocks: [
+        { type: 'header', data: { text: 'We Hit {{subscriber_count}} Subscribers!', align: 'center' } },
+        { type: 'text', data: { html: '{{first_name}}, I cannot believe it. When I started this newsletter, I was writing to 12 people.<br><br>Today, there are {{subscriber_count}} of you reading this. That is wild.' } },
+        { type: 'text', data: { html: 'To celebrate, I am doing something special:<br><br>&#127873; <strong>[Your gift/offer]</strong><br>Available for the next 7 days. No catch.' } },
+        { type: 'button', data: { text: 'Claim Your Gift', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'text', data: { html: 'Thank you for being part of this. Seriously.' } },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'bts', icon: '&#127909;', name: 'Behind-the-Scenes', desc: 'Show your process, workspace, or journey',
+      blocks: [
+        { type: 'header', data: { text: 'Behind the Scenes This Week', align: 'center' } },
+        { type: 'text', data: { html: 'Hey {{first_name}},<br><br>I wanted to pull back the curtain on what I have been working on:' } },
+        { type: 'image', data: { src: '', alt: 'Behind the scenes photo' } },
+        { type: 'text', data: { html: '<strong>What I am building:</strong><br>[Description]<br><br><strong>The challenge:</strong><br>[Honest struggle]<br><br><strong>The lesson:</strong><br>[What you learned]' } },
+        { type: 'divider', data: {} },
+        { type: 'text', data: { html: 'What are you working on? Hit reply, I would love to hear.' } },
+        { type: 'footer', data: { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' } }
+      ]
+    },
+    { id: 'collab-pitch', icon: '&#129309;', name: 'Collaboration Pitch', desc: 'Reach out for partnerships or collaborations',
+      blocks: [
+        { type: 'header', data: { text: 'Let Us Work Together', align: 'center' } },
+        { type: 'text', data: { html: 'Hi [Name],<br><br>I have been following your work on [platform/topic] and love what you are doing with [specific detail].<br><br>I think there is a natural overlap between our audiences, and I would love to explore a collaboration.' } },
+        { type: 'two-col', data: { col1: '<strong>My audience</strong><br>[Size]<br>[Demographics]<br>[Engagement rate]', col2: '<strong>Collaboration ideas</strong><br>Joint newsletter<br>IG Live together<br>Shared resource' } },
+        { type: 'text', data: { html: 'Would you be open to a 15-minute chat? I am flexible on timing.' } },
+        { type: 'button', data: { text: 'Book a Quick Call', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'footer', data: { html: 'Sent with CreatorMail by AfroTools' } }
+      ]
+    },
+    { id: 'sponsor-report', icon: '&#128200;', name: 'Sponsorship Report', desc: 'Performance report for your sponsors',
+      blocks: [
+        { type: 'header', data: { text: 'Sponsorship Report — {{date}}', align: 'center' } },
+        { type: 'text', data: { html: 'Hi [Sponsor Name],<br><br>Thank you for sponsoring [Newsletter Name]. Here are the results from your campaign:' } },
+        { type: 'three-col', data: { col1: '<strong style="font-size:24px;">12,450</strong><br>Emails sent', col2: '<strong style="font-size:24px;">48.2%</strong><br>Open rate', col3: '<strong style="font-size:24px;">6.8%</strong><br>Click rate' } },
+        { type: 'text', data: { html: '<strong>Key highlights:</strong><br>&#10003; [X] unique clicks to your landing page<br>&#10003; [X] replies mentioning your product<br>&#10003; [X] social media mentions<br><br>The audience response was very positive. I would love to discuss a follow-up campaign.' } },
+        { type: 'button', data: { text: 'Renew Sponsorship', url: '#', bgColor: '', textColor: '#ffffff' } },
+        { type: 'footer', data: { html: 'Report generated with CreatorMail by AfroTools' } }
+      ]
+    }
+  ];
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  var state = {
+    blocks: [],
+    selectedIdx: -1,
+    globalBg: '#ffffff',
+    globalWidth: 600,
+    globalFont: 'Arial, sans-serif',
+    globalBrand: '#6366F1',
+    globalRadius: 8,
+    globalLogo: '',
+    darkPreview: false,
+    mobilePreview: false,
+    undoStack: []
+  };
+
+  var BLOCK_TYPES = {
+    header: { label: 'Header', icon: 'H' },
+    text: { label: 'Text', icon: '&#128196;' },
+    image: { label: 'Image', icon: '&#128247;' },
+    button: { label: 'Button', icon: '&#128073;' },
+    divider: { label: 'Divider', icon: '&mdash;' },
+    quote: { label: 'Quote', icon: '&#10077;' },
+    social: { label: 'Social', icon: '&#128279;' },
+    'two-col': { label: '2-Column', icon: '&#9638;&#9638;' },
+    'three-col': { label: '3-Column', icon: '&#9638;&#9638;&#9638;' },
+    video: { label: 'Video', icon: '&#9654;' },
+    countdown: { label: 'Countdown', icon: '&#9201;' },
+    footer: { label: 'Footer', icon: '&#9601;' }
+  };
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  function uid() { return 'b' + Math.random().toString(36).substr(2, 9); }
+
+  function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+  function saveUndo() {
+    state.undoStack.push(deepClone(state.blocks));
+    if (state.undoStack.length > 30) state.undoStack.shift();
+  }
+
+  function escHtml(s) { return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function highlightMergeTags(html) {
+    return (html || '').replace(/\{\{(\w+)\}\}/g, '<span class="cml-merge-tag">{{$1}}</span>');
+  }
+
+  // ============================================================
+  // TEMPLATE GALLERY
+  // ============================================================
+  var tGrid = document.getElementById('templateGrid');
+  TEMPLATES.forEach(function(t, i) {
+    var card = document.createElement('div');
+    card.className = 'cml-template-card';
+    card.innerHTML = '<div class="cml-template-icon">' + t.icon + '</div>' +
+      '<div class="cml-template-name">' + t.name + '</div>' +
+      '<div class="cml-template-desc">' + t.desc + '</div>';
+    card.onclick = function() { loadTemplate(i); };
+    tGrid.appendChild(card);
+  });
+
+  document.getElementById('blankBtn').onclick = function() { loadTemplate(-1); };
+
+  function loadTemplate(idx) {
+    state.blocks = [];
+    state.selectedIdx = -1;
+    if (idx >= 0 && TEMPLATES[idx]) {
+      TEMPLATES[idx].blocks.forEach(function(b) {
+        state.blocks.push({ id: uid(), type: b.type, data: deepClone(b.data) });
+      });
+    }
+    document.getElementById('galleryView').style.display = 'none';
+    document.getElementById('builderView').style.display = '';
+    renderCanvas();
+    renderSettings();
+  }
+
+  // ============================================================
+  // CANVAS RENDERING
+  // ============================================================
+  function renderCanvas() {
+    var canvas = document.getElementById('emailCanvas');
+    canvas.style.fontFamily = state.globalFont;
+    canvas.style.background = state.darkPreview ? '#1a1a2e' : state.globalBg;
+    canvas.style.width = (state.mobilePreview ? 375 : state.globalWidth) + 'px';
+    canvas.className = 'cml-canvas' + (state.mobilePreview ? ' mobile' : '') + (state.darkPreview ? ' dark-preview' : '');
+
+    if (!state.blocks.length) {
+      canvas.innerHTML = '<div class="cml-canvas-empty" id="canvasEmpty"><div class="cml-canvas-empty-icon">&#128233;</div><div class="cml-canvas-empty-text">Drag blocks here to build</div><div class="cml-canvas-empty-sub">Or pick a template from the gallery</div></div>';
+      setupCanvasDrop(canvas);
+      return;
+    }
+
+    var html = '';
+    state.blocks.forEach(function(block, i) {
+      html += renderBlock(block, i);
+    });
+    canvas.innerHTML = html;
+    setupCanvasDrop(canvas);
+
+    // Wire block clicks
+    canvas.querySelectorAll('.cml-block').forEach(function(el) {
+      var idx = parseInt(el.getAttribute('data-idx'));
+      el.onclick = function(e) {
+        if (e.target.classList.contains('cml-block-delete')) return;
+        state.selectedIdx = idx;
+        renderCanvas();
+        renderSettings();
+      };
+    });
+
+    // Wire delete buttons
+    canvas.querySelectorAll('.cml-block-delete').forEach(function(btn) {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        var idx = parseInt(btn.closest('.cml-block').getAttribute('data-idx'));
+        saveUndo();
+        state.blocks.splice(idx, 1);
+        if (state.selectedIdx === idx) state.selectedIdx = -1;
+        else if (state.selectedIdx > idx) state.selectedIdx--;
+        renderCanvas();
+        renderSettings();
+      };
+    });
+
+    // Wire block drag-to-reorder
+    canvas.querySelectorAll('.cml-block').forEach(function(el) {
+      el.setAttribute('draggable', 'true');
+      el.addEventListener('dragstart', function(e) {
+        e.dataTransfer.setData('text/plain', 'reorder:' + el.getAttribute('data-idx'));
+        el.style.opacity = '0.4';
+      });
+      el.addEventListener('dragend', function() { el.style.opacity = '1'; });
+      el.addEventListener('dragover', function(e) { e.preventDefault(); el.classList.add('drag-over'); });
+      el.addEventListener('dragleave', function() { el.classList.remove('drag-over'); });
+      el.addEventListener('drop', function(e) {
+        e.preventDefault();
+        el.classList.remove('drag-over');
+        var data = e.dataTransfer.getData('text/plain');
+        var toIdx = parseInt(el.getAttribute('data-idx'));
+
+        if (data.indexOf('reorder:') === 0) {
+          var fromIdx = parseInt(data.split(':')[1]);
+          if (fromIdx === toIdx) return;
+          saveUndo();
+          var moved = state.blocks.splice(fromIdx, 1)[0];
+          state.blocks.splice(toIdx, 0, moved);
+          state.selectedIdx = toIdx;
+        } else if (data.indexOf('newblock:') === 0) {
+          var type = data.split(':')[1];
+          saveUndo();
+          state.blocks.splice(toIdx, 0, { id: uid(), type: type, data: getDefaultData(type) });
+          state.selectedIdx = toIdx;
+        }
+        renderCanvas();
+        renderSettings();
+      });
+    });
+  }
+
+  function renderBlock(block, idx) {
+    var sel = idx === state.selectedIdx ? ' selected' : '';
+    var d = block.data || {};
+    var brand = state.globalBrand;
+    var radius = state.globalRadius;
+    var html = '<div class="cml-block' + sel + '" data-idx="' + idx + '">';
+    html += '<div class="cml-block-handle">&#8942;</div>';
+    html += '<button class="cml-block-delete">&times;</button>';
+
+    switch (block.type) {
+      case 'header':
+        html += '<div class="cml-block-header" style="text-align:' + (d.align || 'center') + ';"><h1 style="color:' + (state.darkPreview ? '#e5e7eb' : (d.textColor || 'inherit')) + ';">' + highlightMergeTags(d.text || 'Your Headline') + '</h1></div>';
+        break;
+      case 'text':
+        html += '<div class="cml-block-text" style="color:' + (state.darkPreview ? '#cbd5e1' : (d.textColor || '#333')) + ';">' + highlightMergeTags(d.html || 'Your text goes here...') + '</div>';
+        break;
+      case 'image':
+        if (d.src) {
+          html += '<div class="cml-block-image"><img src="' + escHtml(d.src) + '" alt="' + escHtml(d.alt || '') + '" style="border-radius:' + radius + 'px;"></div>';
+        } else {
+          html += '<div class="cml-block-image"><div class="cml-img-placeholder">&#128247; Click to add image URL</div></div>';
+        }
+        break;
+      case 'button':
+        html += '<div class="cml-block-button"><a href="' + escHtml(d.url || '#') + '" style="background:' + (d.bgColor || brand) + ';color:' + (d.textColor || '#fff') + ';border-radius:' + radius + 'px;display:inline-block;padding:14px 32px;font-size:16px;font-weight:700;text-decoration:none;">' + highlightMergeTags(d.text || 'Click Here') + '</a></div>';
+        break;
+      case 'divider':
+        html += '<div class="cml-block-divider"><hr style="border:none;border-top:1px solid ' + (state.darkPreview ? '#374151' : '#e5e7eb') + ';"></div>';
+        break;
+      case 'quote':
+        html += '<div class="cml-block-quote" style="border-left-color:' + brand + ';color:' + (state.darkPreview ? '#94a3b8' : '#4b5563') + ';">' + highlightMergeTags(d.text || 'Your quote here...') + '</div>';
+        break;
+      case 'social':
+        html += '<div class="cml-block-social" style="font-size:24px;"><a href="#" style="margin:0 6px;">&#120143;</a><a href="#" style="margin:0 6px;">&#128247;</a><a href="#" style="margin:0 6px;">&#128279;</a><a href="#" style="margin:0 6px;">&#127909;</a></div>';
+        break;
+      case 'two-col':
+        html += '<div class="cml-block-columns"><div style="color:' + (state.darkPreview ? '#cbd5e1' : 'inherit') + ';">' + highlightMergeTags(d.col1 || 'Column 1') + '</div><div style="color:' + (state.darkPreview ? '#cbd5e1' : 'inherit') + ';">' + highlightMergeTags(d.col2 || 'Column 2') + '</div></div>';
+        break;
+      case 'three-col':
+        html += '<div class="cml-block-columns"><div style="color:' + (state.darkPreview ? '#cbd5e1' : 'inherit') + ';">' + highlightMergeTags(d.col1 || 'Col 1') + '</div><div style="color:' + (state.darkPreview ? '#cbd5e1' : 'inherit') + ';">' + highlightMergeTags(d.col2 || 'Col 2') + '</div><div style="color:' + (state.darkPreview ? '#cbd5e1' : 'inherit') + ';">' + highlightMergeTags(d.col3 || 'Col 3') + '</div></div>';
+        break;
+      case 'video':
+        html += '<div class="cml-block-video"><div class="cml-video-thumb" style="border-radius:' + radius + 'px;">&#9654;&#65039; Video Thumbnail — click to set URL</div></div>';
+        break;
+      case 'countdown':
+        html += '<div class="cml-block-countdown"><div style="font-size:13px;color:' + (state.darkPreview ? '#94a3b8' : '#6b7280') + ';margin-bottom:8px;">' + (d.label || 'Starts in') + '</div><div class="cml-cd-digits"><div class="cml-cd-unit"><span class="cml-cd-num" style="color:' + brand + ';">07</span><span class="cml-cd-label">Days</span></div><div class="cml-cd-unit"><span class="cml-cd-num" style="color:' + brand + ';">12</span><span class="cml-cd-label">Hours</span></div><div class="cml-cd-unit"><span class="cml-cd-num" style="color:' + brand + ';">45</span><span class="cml-cd-label">Min</span></div></div></div>';
+        break;
+      case 'footer':
+        html += '<div class="cml-block-footer" style="color:' + (state.darkPreview ? '#64748b' : '#9ca3af') + ';">' + highlightMergeTags(d.html || 'Footer text. <a href="#">Unsubscribe</a>') + '</div>';
+        break;
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  function getDefaultData(type) {
+    switch (type) {
+      case 'header': return { text: 'Your Headline', align: 'center', textColor: '' };
+      case 'text': return { html: 'Your text goes here. Click to edit in the settings panel.', textColor: '' };
+      case 'image': return { src: '', alt: '' };
+      case 'button': return { text: 'Click Here', url: '#', bgColor: '', textColor: '#ffffff' };
+      case 'divider': return {};
+      case 'quote': return { text: 'Your quote here...' };
+      case 'social': return { twitter: '#', instagram: '#', linkedin: '#', youtube: '#' };
+      case 'two-col': return { col1: 'Column 1 content', col2: 'Column 2 content' };
+      case 'three-col': return { col1: 'Col 1', col2: 'Col 2', col3: 'Col 3' };
+      case 'video': return { url: '', thumbnailUrl: '' };
+      case 'countdown': return { label: 'Starts in' };
+      case 'footer': return { html: 'You received this because you subscribed. <a href="#">Unsubscribe</a>' };
+      default: return {};
+    }
+  }
+
+  // ============================================================
+  // DRAG & DROP FROM PALETTE
+  // ============================================================
+  document.querySelectorAll('.cml-block-item[draggable]').forEach(function(el) {
+    el.addEventListener('dragstart', function(e) {
+      e.dataTransfer.setData('text/plain', 'newblock:' + el.getAttribute('data-type'));
+    });
+  });
+
+  function setupCanvasDrop(canvas) {
+    canvas.addEventListener('dragover', function(e) { e.preventDefault(); });
+    canvas.addEventListener('drop', function(e) {
+      if (e.target.closest('.cml-block')) return; // handled by block drop
+      e.preventDefault();
+      var data = e.dataTransfer.getData('text/plain');
+      if (data.indexOf('newblock:') === 0) {
+        var type = data.split(':')[1];
+        saveUndo();
+        state.blocks.push({ id: uid(), type: type, data: getDefaultData(type) });
+        state.selectedIdx = state.blocks.length - 1;
+        renderCanvas();
+        renderSettings();
+      }
+    });
+  }
+
+  // ============================================================
+  // SETTINGS PANEL
+  // ============================================================
+  function renderSettings() {
+    var empty = document.getElementById('settingsEmpty');
+    var content = document.getElementById('settingsContent');
+
+    if (state.selectedIdx < 0 || !state.blocks[state.selectedIdx]) {
+      empty.style.display = '';
+      content.style.display = 'none';
+      return;
+    }
+
+    empty.style.display = 'none';
+    content.style.display = '';
+
+    var block = state.blocks[state.selectedIdx];
+    var d = block.data || {};
+    var html = '<div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:14px;">' + (BLOCK_TYPES[block.type] ? BLOCK_TYPES[block.type].label : block.type) + ' Block</div>';
+
+    switch (block.type) {
+      case 'header':
+        html += settingInput('Heading Text', 'settText', d.text || '', 'text');
+        html += settingSelect('Alignment', 'settAlign', d.align || 'center', [['left','Left'],['center','Center'],['right','Right']]);
+        html += settingColor('Text Color', 'settTextColor', d.textColor || '');
+        break;
+      case 'text':
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Content</label>';
+        html += '<div class="cml-format-bar">';
+        html += '<button class="cml-format-btn" data-cmd="bold"><b>B</b></button>';
+        html += '<button class="cml-format-btn" data-cmd="italic"><i>I</i></button>';
+        html += '<button class="cml-format-btn" data-cmd="link">&#128279;</button>';
+        html += '<button class="cml-format-btn" data-cmd="ul">&#8226; List</button>';
+        html += '</div>';
+        html += '<textarea class="cml-setting-input" id="settHtml" rows="8" style="min-height:120px;resize:vertical;">' + escHtml(d.html || '') + '</textarea></div>';
+        html += settingColor('Text Color', 'settTextColor', d.textColor || '');
+        html += aiWriteButton();
+        break;
+      case 'image':
+        html += settingInput('Image URL', 'settSrc', d.src || '', 'url');
+        html += settingInput('Alt Text', 'settAlt', d.alt || '', 'text');
+        break;
+      case 'button':
+        html += settingInput('Button Text', 'settText', d.text || '', 'text');
+        html += settingInput('Link URL', 'settUrl', d.url || '', 'url');
+        html += settingColor('BG Color', 'settBgColor', d.bgColor || '');
+        html += settingColor('Text Color', 'settBtnTextColor', d.textColor || '#ffffff');
+        break;
+      case 'quote':
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Quote Text</label><textarea class="cml-setting-input" id="settText" rows="4">' + escHtml(d.text || '') + '</textarea></div>';
+        html += aiWriteButton();
+        break;
+      case 'social':
+        html += settingInput('Twitter/X', 'settTwitter', (d.twitter || ''), 'url');
+        html += settingInput('Instagram', 'settInstagram', (d.instagram || ''), 'url');
+        html += settingInput('LinkedIn', 'settLinkedin', (d.linkedin || ''), 'url');
+        html += settingInput('YouTube', 'settYoutube', (d.youtube || ''), 'url');
+        break;
+      case 'two-col':
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 1</label><textarea class="cml-setting-input" id="settCol1" rows="4">' + escHtml(d.col1 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 2</label><textarea class="cml-setting-input" id="settCol2" rows="4">' + escHtml(d.col2 || '') + '</textarea></div>';
+        break;
+      case 'three-col':
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 1</label><textarea class="cml-setting-input" id="settCol1" rows="3">' + escHtml(d.col1 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 2</label><textarea class="cml-setting-input" id="settCol2" rows="3">' + escHtml(d.col2 || '') + '</textarea></div>';
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Column 3</label><textarea class="cml-setting-input" id="settCol3" rows="3">' + escHtml(d.col3 || '') + '</textarea></div>';
+        break;
+      case 'video':
+        html += settingInput('Video URL', 'settUrl', d.url || '', 'url');
+        html += settingInput('Thumbnail URL', 'settThumb', d.thumbnailUrl || '', 'url');
+        break;
+      case 'countdown':
+        html += settingInput('Label', 'settLabel', d.label || '', 'text');
+        break;
+      case 'footer':
+        html += '<div class="cml-setting-group"><label class="cml-setting-label">Footer HTML</label><textarea class="cml-setting-input" id="settHtml" rows="4">' + escHtml(d.html || '') + '</textarea></div>';
+        break;
+    }
+
+    // Merge tags
+    html += '<div class="cml-setting-group" style="margin-top:16px;"><label class="cml-setting-label">Insert Merge Tag</label>';
+    html += '<div class="cml-merge-tags">';
+    html += '<button class="cml-merge-tag-btn" data-tag="{{first_name}}">{{first_name}}</button>';
+    html += '<button class="cml-merge-tag-btn" data-tag="{{subscriber_count}}">{{subscriber_count}}</button>';
+    html += '<button class="cml-merge-tag-btn" data-tag="{{date}}">{{date}}</button>';
+    html += '</div></div>';
+
+    // Common: padding, bg color
+    html += '<div class="cml-setting-group" style="margin-top:12px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;"><label class="cml-setting-label">Block Padding</label>';
+    html += '<input class="cml-setting-input" type="number" id="settPadding" value="' + (d.padding || 16) + '" min="0" max="60" step="4" style="width:80px;"></div>';
+    html += settingColor('Block BG', 'settBlockBg', d.bgColor2 || '');
+
+    content.innerHTML = html;
+    wireSettings(block);
+  }
+
+  function settingInput(label, id, value, type) {
+    return '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><input class="cml-setting-input" type="' + (type || 'text') + '" id="' + id + '" value="' + escHtml(value) + '"></div>';
+  }
+
+  function settingSelect(label, id, value, options) {
+    var html = '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><select class="cml-setting-select" id="' + id + '">';
+    options.forEach(function(o) {
+      html += '<option value="' + o[0] + '"' + (o[0] === value ? ' selected' : '') + '>' + o[1] + '</option>';
+    });
+    html += '</select></div>';
+    return html;
+  }
+
+  function settingColor(label, id, value) {
+    return '<div class="cml-setting-group"><label class="cml-setting-label">' + label + '</label><div class="cml-setting-row"><div class="cml-setting-color"><input type="color" id="' + id + '" value="' + (value || '#333333') + '"></div><input class="cml-setting-input" type="text" id="' + id + 'Hex" value="' + (value || '') + '" placeholder="inherit" style="flex:1;"></div></div>';
+  }
+
+  function aiWriteButton() {
+    return '<button class="cml-ai-btn" id="aiWriteBtn"><span class="cml-ai-spinner"></span>&#10024; Write This For Me</button>';
+  }
+
+  function wireSettings(block) {
+    var content = document.getElementById('settingsContent');
+    var d = block.data;
+
+    // Generic input sync
+    function syncField(elId, field, prop) {
+      var el = content.querySelector('#' + elId);
+      if (!el) return;
+      el.addEventListener('input', function() {
+        saveUndo();
+        d[field] = el.value;
+        renderCanvas();
+      });
+    }
+
+    switch (block.type) {
+      case 'header':
+        syncField('settText', 'text'); syncField('settAlign', 'align'); syncField('settTextColor', 'textColor'); syncField('settTextColorHex', 'textColor');
+        break;
+      case 'text':
+        syncField('settHtml', 'html'); syncField('settTextColor', 'textColor'); syncField('settTextColorHex', 'textColor');
+        wireFormatBar(block);
+        break;
+      case 'image':
+        syncField('settSrc', 'src'); syncField('settAlt', 'alt');
+        break;
+      case 'button':
+        syncField('settText', 'text'); syncField('settUrl', 'url'); syncField('settBgColor', 'bgColor'); syncField('settBgColorHex', 'bgColor'); syncField('settBtnTextColor', 'textColor'); syncField('settBtnTextColorHex', 'textColor');
+        break;
+      case 'quote':
+        syncField('settText', 'text');
+        break;
+      case 'social':
+        syncField('settTwitter', 'twitter'); syncField('settInstagram', 'instagram'); syncField('settLinkedin', 'linkedin'); syncField('settYoutube', 'youtube');
+        break;
+      case 'two-col':
+        syncField('settCol1', 'col1'); syncField('settCol2', 'col2');
+        break;
+      case 'three-col':
+        syncField('settCol1', 'col1'); syncField('settCol2', 'col2'); syncField('settCol3', 'col3');
+        break;
+      case 'video':
+        syncField('settUrl', 'url'); syncField('settThumb', 'thumbnailUrl');
+        break;
+      case 'countdown':
+        syncField('settLabel', 'label');
+        break;
+      case 'footer':
+        syncField('settHtml', 'html');
+        break;
+    }
+
+    // Padding & block bg
+    syncField('settPadding', 'padding');
+    syncField('settBlockBg', 'bgColor2'); syncField('settBlockBgHex', 'bgColor2');
+
+    // Color input sync (color picker <-> hex text)
+    content.querySelectorAll('.cml-setting-color').forEach(function(wrap) {
+      var picker = wrap.querySelector('input[type="color"]');
+      var hex = wrap.parentElement.querySelector('input[type="text"]');
+      if (picker && hex) {
+        picker.addEventListener('input', function() { hex.value = picker.value; hex.dispatchEvent(new Event('input')); });
+        hex.addEventListener('input', function() { if (/^#[0-9a-f]{6}$/i.test(hex.value)) picker.value = hex.value; });
+      }
+    });
+
+    // Merge tags
+    content.querySelectorAll('.cml-merge-tag-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        var tag = btn.getAttribute('data-tag');
+        // Try to insert into active textarea
+        var textarea = content.querySelector('textarea');
+        if (textarea) {
+          var start = textarea.selectionStart;
+          var val = textarea.value;
+          textarea.value = val.substring(0, start) + tag + val.substring(textarea.selectionEnd);
+          textarea.dispatchEvent(new Event('input'));
+          textarea.focus();
+          textarea.setSelectionRange(start + tag.length, start + tag.length);
+        } else {
+          // Insert into first text input
+          var input = content.querySelector('#settText');
+          if (input) { input.value += tag; input.dispatchEvent(new Event('input')); }
+        }
+        toast('Tag inserted');
+      };
+    });
+
+    // AI Write button
+    var aiBtn = document.getElementById('aiWriteBtn');
+    if (aiBtn) {
+      aiBtn.onclick = function() {
+        var textarea = content.querySelector('textarea');
+        if (!textarea) return;
+        aiBtn.classList.add('loading'); aiBtn.disabled = true;
+        var prompt = 'Write newsletter copy for an email block. Context: ' + (block.type === 'quote' ? 'an inspiring quote' : 'a newsletter paragraph') + '. Keep it concise, engaging, and professional. 2-3 sentences max. Return ONLY the text, no HTML tags.';
+
+        fetch('/.netlify/functions/ai-advisor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tool: 'creator-mail', message: prompt })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+          aiBtn.classList.remove('loading'); aiBtn.disabled = false;
+          if (res.reply) {
+            textarea.value = res.reply;
+            textarea.dispatchEvent(new Event('input'));
+            toast('AI copy generated');
+          } else {
+            toast('AI unavailable, try again');
+          }
+        })
+        .catch(function() {
+          aiBtn.classList.remove('loading'); aiBtn.disabled = false;
+          toast('Connection error');
+        });
+      };
+    }
+  }
+
+  function wireFormatBar(block) {
+    var content = document.getElementById('settingsContent');
+    content.querySelectorAll('.cml-format-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        var cmd = btn.getAttribute('data-cmd');
+        var textarea = content.querySelector('#settHtml');
+        if (!textarea) return;
+
+        var start = textarea.selectionStart;
+        var end = textarea.selectionEnd;
+        var val = textarea.value;
+        var selected = val.substring(start, end);
+
+        var replacement = selected;
+        switch (cmd) {
+          case 'bold': replacement = '<strong>' + selected + '</strong>'; break;
+          case 'italic': replacement = '<em>' + selected + '</em>'; break;
+          case 'link':
+            var url = prompt('Enter URL:');
+            if (url) replacement = '<a href="' + url + '">' + (selected || 'link text') + '</a>';
+            break;
+          case 'ul': replacement = selected.split('\n').map(function(l) { return l ? '&#8226; ' + l : l; }).join('\n'); break;
+        }
+        textarea.value = val.substring(0, start) + replacement + val.substring(end);
+        textarea.dispatchEvent(new Event('input'));
+      };
+    });
+  }
+
+  // ============================================================
+  // TOOLBAR CONTROLS
+  // ============================================================
+  document.getElementById('viewDesktop').onclick = function() {
+    state.mobilePreview = false;
+    document.getElementById('viewDesktop').classList.add('active');
+    document.getElementById('viewMobile').classList.remove('active');
+    renderCanvas();
+  };
+
+  document.getElementById('viewMobile').onclick = function() {
+    state.mobilePreview = true;
+    document.getElementById('viewMobile').classList.add('active');
+    document.getElementById('viewDesktop').classList.remove('active');
+    renderCanvas();
+  };
+
+  document.getElementById('darkToggle').onclick = function() {
+    state.darkPreview = !state.darkPreview;
+    document.getElementById('darkToggle').classList.toggle('active', state.darkPreview);
+    renderCanvas();
+  };
+
+  document.getElementById('undoBtn').onclick = function() {
+    if (!state.undoStack.length) { toast('Nothing to undo'); return; }
+    state.blocks = state.undoStack.pop();
+    state.selectedIdx = -1;
+    renderCanvas();
+    renderSettings();
+    toast('Undone');
+  };
+
+  // ============================================================
+  // GLOBAL STYLES SYNC
+  // ============================================================
+  document.getElementById('globalBg').addEventListener('input', function() { state.globalBg = this.value; renderCanvas(); });
+  document.getElementById('globalWidth').addEventListener('input', function() { state.globalWidth = parseInt(this.value) || 600; renderCanvas(); });
+  document.getElementById('globalFont').addEventListener('change', function() { state.globalFont = this.value; renderCanvas(); });
+  document.getElementById('globalBrand').addEventListener('input', function() { state.globalBrand = this.value; renderCanvas(); });
+  document.getElementById('globalRadius').addEventListener('input', function() { state.globalRadius = parseInt(this.value) || 0; renderCanvas(); });
+  document.getElementById('globalLogo').addEventListener('input', function() { state.globalLogo = this.value; });
+
+  // ============================================================
+  // EXPORT
+  // ============================================================
+  document.getElementById('exportBtn').onclick = function() {
+    if (!state.blocks.length) { toast('Add some blocks first'); return; }
+    document.getElementById('exportOverlay').classList.add('open');
+  };
+  document.getElementById('exportClose').onclick = function() { document.getElementById('exportOverlay').classList.remove('open'); };
+  document.getElementById('exportOverlay').onclick = function(e) { if (e.target === this) this.classList.remove('open'); };
+
+  function generateEmailHtml() {
+    var w = state.globalWidth;
+    var bg = state.globalBg;
+    var font = state.globalFont;
+    var brand = state.globalBrand;
+    var radius = state.globalRadius;
+    var logo = state.globalLogo;
+
+    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Newsletter</title></head>';
+    html += '<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:' + font + ';">';
+    html += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;">';
+    html += '<tr><td align="center" style="padding:24px 16px;">';
+    html += '<table role="presentation" width="' + w + '" cellpadding="0" cellspacing="0" style="max-width:' + w + 'px;width:100%;background-color:' + bg + ';border-radius:' + radius + 'px;">';
+
+    if (logo) {
+      html += '<tr><td style="padding:20px 24px;text-align:center;"><img src="' + escHtml(logo) + '" alt="Logo" style="max-height:48px;"></td></tr>';
+    }
+
+    state.blocks.forEach(function(block) {
+      var d = block.data || {};
+      var pad = (d.padding || 16) + 'px 24px';
+      var blockBg = d.bgColor2 ? 'background-color:' + d.bgColor2 + ';' : '';
+
+      html += '<tr><td style="padding:' + pad + ';' + blockBg + '">';
+
+      switch (block.type) {
+        case 'header':
+          html += '<h1 style="margin:0;font-size:28px;font-weight:700;line-height:1.3;text-align:' + (d.align || 'center') + ';color:' + (d.textColor || '#111827') + ';font-family:' + font + ';">' + (d.text || '') + '</h1>';
+          break;
+        case 'text':
+          html += '<div style="font-size:15px;line-height:1.7;color:' + (d.textColor || '#333333') + ';font-family:' + font + ';">' + (d.html || '') + '</div>';
+          break;
+        case 'image':
+          if (d.src) html += '<img src="' + escHtml(d.src) + '" alt="' + escHtml(d.alt || '') + '" style="max-width:100%;border-radius:' + radius + 'px;display:block;margin:0 auto;">';
+          break;
+        case 'button':
+          html += '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:' + (d.bgColor || brand) + ';border-radius:' + radius + 'px;"><a href="' + escHtml(d.url || '#') + '" style="display:inline-block;padding:14px 32px;color:' + (d.textColor || '#ffffff') + ';font-size:16px;font-weight:700;text-decoration:none;font-family:' + font + ';">' + (d.text || 'Click Here') + '</a></td></tr></table>';
+          break;
+        case 'divider':
+          html += '<hr style="border:none;border-top:1px solid #e5e7eb;margin:0;">';
+          break;
+        case 'quote':
+          html += '<div style="border-left:4px solid ' + brand + ';padding-left:20px;font-style:italic;color:#4b5563;font-size:16px;line-height:1.7;font-family:' + font + ';">' + (d.text || '') + '</div>';
+          break;
+        case 'social':
+          html += '<div style="text-align:center;font-size:14px;">';
+          if (d.twitter && d.twitter !== '#') html += '<a href="' + escHtml(d.twitter) + '" style="margin:0 8px;color:' + brand + ';text-decoration:none;">Twitter</a>';
+          if (d.instagram && d.instagram !== '#') html += '<a href="' + escHtml(d.instagram) + '" style="margin:0 8px;color:' + brand + ';text-decoration:none;">Instagram</a>';
+          if (d.linkedin && d.linkedin !== '#') html += '<a href="' + escHtml(d.linkedin) + '" style="margin:0 8px;color:' + brand + ';text-decoration:none;">LinkedIn</a>';
+          if (d.youtube && d.youtube !== '#') html += '<a href="' + escHtml(d.youtube) + '" style="margin:0 8px;color:' + brand + ';text-decoration:none;">YouTube</a>';
+          if (!d.twitter || d.twitter === '#') html += '<a href="#" style="margin:0 8px;color:' + brand + ';text-decoration:none;">Twitter</a><a href="#" style="margin:0 8px;color:' + brand + ';text-decoration:none;">Instagram</a><a href="#" style="margin:0 8px;color:' + brand + ';text-decoration:none;">LinkedIn</a>';
+          html += '</div>';
+          break;
+        case 'two-col':
+          html += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>';
+          html += '<td width="48%" style="vertical-align:top;font-size:14px;line-height:1.6;color:#333;font-family:' + font + ';">' + (d.col1 || '') + '</td>';
+          html += '<td width="4%"></td>';
+          html += '<td width="48%" style="vertical-align:top;font-size:14px;line-height:1.6;color:#333;font-family:' + font + ';">' + (d.col2 || '') + '</td>';
+          html += '</tr></table>';
+          break;
+        case 'three-col':
+          html += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>';
+          html += '<td width="31%" style="vertical-align:top;font-size:14px;line-height:1.6;color:#333;text-align:center;font-family:' + font + ';">' + (d.col1 || '') + '</td>';
+          html += '<td width="3%"></td>';
+          html += '<td width="31%" style="vertical-align:top;font-size:14px;line-height:1.6;color:#333;text-align:center;font-family:' + font + ';">' + (d.col2 || '') + '</td>';
+          html += '<td width="3%"></td>';
+          html += '<td width="31%" style="vertical-align:top;font-size:14px;line-height:1.6;color:#333;text-align:center;font-family:' + font + ';">' + (d.col3 || '') + '</td>';
+          html += '</tr></table>';
+          break;
+        case 'video':
+          var thumb = d.thumbnailUrl || '';
+          var vUrl = d.url || '#';
+          if (thumb) {
+            html += '<a href="' + escHtml(vUrl) + '" style="display:block;text-decoration:none;text-align:center;"><img src="' + escHtml(thumb) + '" alt="Video" style="max-width:100%;border-radius:' + radius + 'px;"></a>';
+          } else {
+            html += '<a href="' + escHtml(vUrl) + '" style="display:block;text-align:center;background:#111;color:#fff;padding:40px;border-radius:' + radius + 'px;text-decoration:none;font-family:' + font + ';">&#9654; Watch Video</a>';
+          }
+          break;
+        case 'countdown':
+          html += '<div style="text-align:center;"><div style="font-size:13px;color:#6b7280;margin-bottom:8px;">' + escHtml(d.label || '') + '</div>';
+          html += '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>';
+          html += '<td style="text-align:center;padding:0 8px;"><span style="font-size:32px;font-weight:800;color:' + brand + ';display:block;">07</span><span style="font-size:11px;text-transform:uppercase;color:#9ca3af;">Days</span></td>';
+          html += '<td style="text-align:center;padding:0 8px;"><span style="font-size:32px;font-weight:800;color:' + brand + ';display:block;">12</span><span style="font-size:11px;text-transform:uppercase;color:#9ca3af;">Hours</span></td>';
+          html += '<td style="text-align:center;padding:0 8px;"><span style="font-size:32px;font-weight:800;color:' + brand + ';display:block;">45</span><span style="font-size:11px;text-transform:uppercase;color:#9ca3af;">Min</span></td>';
+          html += '</tr></table></div>';
+          break;
+        case 'footer':
+          html += '<div style="text-align:center;font-size:12px;color:#9ca3af;font-family:' + font + ';">' + (d.html || '') + '</div>';
+          break;
+      }
+
+      html += '</td></tr>';
+    });
+
+    html += '</table>';
+    html += '</td></tr></table>';
+    html += '</body></html>';
+    return html;
+  }
+
+  function generatePlainText() {
+    var lines = [];
+    state.blocks.forEach(function(block) {
+      var d = block.data || {};
+      switch (block.type) {
+        case 'header': lines.push((d.text || '').toUpperCase()); lines.push(''); break;
+        case 'text': lines.push((d.html || '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')); lines.push(''); break;
+        case 'button': lines.push('[' + (d.text || 'Link') + '] ' + (d.url || '')); lines.push(''); break;
+        case 'divider': lines.push('---'); lines.push(''); break;
+        case 'quote': lines.push('> ' + (d.text || '')); lines.push(''); break;
+        case 'footer': lines.push((d.html || '').replace(/<[^>]+>/g, '')); break;
+        case 'two-col': lines.push((d.col1 || '').replace(/<[^>]+>/g, '')); lines.push(''); lines.push((d.col2 || '').replace(/<[^>]+>/g, '')); lines.push(''); break;
+        case 'three-col': lines.push((d.col1 || '').replace(/<[^>]+>/g, '')); lines.push((d.col2 || '').replace(/<[^>]+>/g, '')); lines.push((d.col3 || '').replace(/<[^>]+>/g, '')); lines.push(''); break;
+        case 'countdown': lines.push((d.label || 'Countdown') + ': 07 Days 12 Hours 45 Min'); lines.push(''); break;
+      }
+    });
+    return lines.join('\n');
+  }
+
+  document.getElementById('exportCopyHtml').onclick = function() {
+    navigator.clipboard.writeText(generateEmailHtml()).then(function() {
+      toast('Email HTML copied!');
+      document.getElementById('exportOverlay').classList.remove('open');
+    });
+  };
+
+  document.getElementById('exportDownload').onclick = function() {
+    var blob = new Blob([generateEmailHtml()], { type: 'text/html' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'newsletter-' + Date.now() + '.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('Downloaded!');
+    document.getElementById('exportOverlay').classList.remove('open');
+  };
+
+  document.getElementById('exportPlainText').onclick = function() {
+    navigator.clipboard.writeText(generatePlainText()).then(function() {
+      toast('Plain text copied!');
+      document.getElementById('exportOverlay').classList.remove('open');
+    });
+  };
+
+  // ============================================================
+  // SPAM SCORE
+  // ============================================================
+  document.getElementById('spamBtn').onclick = function() {
+    if (!state.blocks.length) { toast('Add some blocks first'); return; }
+    var results = analyzeSpam();
+    document.getElementById('spamOverlay').classList.add('open');
+    renderSpamResults(results);
+  };
+  document.getElementById('spamClose').onclick = function() { document.getElementById('spamOverlay').classList.remove('open'); };
+  document.getElementById('spamOverlay').onclick = function(e) { if (e.target === this) this.classList.remove('open'); };
+
+  function analyzeSpam() {
+    var allText = '';
+    var imageCount = 0;
+    var linkCount = 0;
+    var tips = [];
+
+    state.blocks.forEach(function(b) {
+      var d = b.data || {};
+      if (d.text) allText += ' ' + d.text;
+      if (d.html) allText += ' ' + d.html;
+      if (d.col1) allText += ' ' + d.col1;
+      if (d.col2) allText += ' ' + d.col2;
+      if (d.col3) allText += ' ' + d.col3;
+      if (b.type === 'image') imageCount++;
+      var linkMatches = (JSON.stringify(d)).match(/href/g);
+      if (linkMatches) linkCount += linkMatches.length;
+    });
+
+    var plainText = allText.replace(/<[^>]+>/g, '');
+    var words = plainText.trim().split(/\s+/).filter(function(w) { return w.length > 0; });
+    var totalChars = plainText.length;
+
+    // Caps check
+    var capsChars = (plainText.match(/[A-Z]/g) || []).length;
+    var capsPercent = totalChars > 0 ? (capsChars / totalChars * 100) : 0;
+
+    // Trigger words
+    var triggerWords = ['free', 'act now', 'limited time', 'buy now', 'click here', 'urgent', 'winner', 'congratulations', 'guarantee', 'no obligation', 'risk free', 'order now', 'special promotion', 'amazing', 'incredible offer'];
+    var triggerFound = [];
+    triggerWords.forEach(function(tw) {
+      if (plainText.toLowerCase().indexOf(tw) !== -1) triggerFound.push(tw);
+    });
+
+    // Score 1-10 (1 = clean, 10 = spammy)
+    var score = 1;
+
+    if (capsPercent > 30) { score += 2; tips.push('&#9888; Too many CAPS (' + Math.round(capsPercent) + '%). Keep under 20%.'); }
+    else if (capsPercent > 20) { score += 1; tips.push('&#128312; CAPS usage (' + Math.round(capsPercent) + '%) is slightly high. Aim for under 20%.'); }
+    else { tips.push('&#9989; CAPS usage is fine (' + Math.round(capsPercent) + '%).'); }
+
+    if (imageCount > 0 && words.length < 50) { score += 2; tips.push('&#9888; High image-to-text ratio. Add more text content.'); }
+    else if (imageCount === 0) { tips.push('&#9989; Text-focused email (good for deliverability).'); }
+    else { tips.push('&#9989; Image-to-text ratio looks balanced.'); }
+
+    if (linkCount > 8) { score += 2; tips.push('&#9888; Too many links (' + linkCount + '). Keep under 8 for best deliverability.'); }
+    else if (linkCount > 5) { score += 1; tips.push('&#128312; ' + linkCount + ' links is on the higher side. Consider reducing.'); }
+    else { tips.push('&#9989; Link count (' + linkCount + ') is reasonable.'); }
+
+    if (triggerFound.length > 3) { score += 3; tips.push('&#9888; Found ' + triggerFound.length + ' spam trigger words: ' + triggerFound.join(', ')); }
+    else if (triggerFound.length > 0) { score += 1; tips.push('&#128312; Found trigger words: ' + triggerFound.join(', ') + '. Use sparingly.'); }
+    else { tips.push('&#9989; No spam trigger words detected.'); }
+
+    if (words.length < 20) { score += 1; tips.push('&#128312; Very short email. Short emails can look suspicious.'); }
+    else { tips.push('&#9989; Email length looks good (' + words.length + ' words).'); }
+
+    score = Math.min(score, 10);
+
+    return { score: score, tips: tips };
+  }
+
+  function renderSpamResults(results) {
+    var scoreColor = results.score <= 3 ? '#22c55e' : results.score <= 6 ? '#eab308' : '#ef4444';
+    var scoreLabel = results.score <= 3 ? 'Excellent' : results.score <= 6 ? 'Fair' : 'Needs Work';
+    var pct = (results.score - 1) / 9 * 100;
+
+    var html = '<div class="cml-spam-panel">';
+    html += '<div class="cml-spam-meter"><div class="cml-spam-meter-dot" style="left:' + pct + '%;"></div></div>';
+    html += '<div class="cml-spam-score-val" style="color:' + scoreColor + ';">' + results.score + '/10</div>';
+    html += '<div class="cml-spam-score-label">' + scoreLabel + '</div>';
+    html += '<ul class="cml-spam-tips">';
+    results.tips.forEach(function(tip) { html += '<li>' + tip + '</li>'; });
+    html += '</ul></div>';
+
+    document.getElementById('spamResults').innerHTML = html;
+  }
+
+  // ============================================================
+  // SAVED NEWSLETTERS
+  // ============================================================
+  document.getElementById('savedBtn').onclick = function() {
+    document.getElementById('savedOverlay').classList.add('open');
+    renderSaved();
+  };
+  document.getElementById('savedClose').onclick = function() { document.getElementById('savedOverlay').classList.remove('open'); };
+  document.getElementById('savedOverlay').onclick = function(e) { if (e.target === this) this.classList.remove('open'); };
+
+  document.getElementById('saveCurrentBtn').onclick = function() {
+    if (!state.blocks.length) { toast('Nothing to save'); return; }
+    var name = prompt('Newsletter name:', 'My Newsletter');
+    if (!name) return;
+    var saved = JSON.parse(localStorage.getItem('cml-saved') || '[]');
+    saved.unshift({
+      id: uid(),
+      name: name,
+      date: new Date().toISOString(),
+      blocks: deepClone(state.blocks),
+      globals: {
+        bg: state.globalBg, width: state.globalWidth, font: state.globalFont,
+        brand: state.globalBrand, radius: state.globalRadius, logo: state.globalLogo
+      }
+    });
+    if (saved.length > 20) saved = saved.slice(0, 20);
+    localStorage.setItem('cml-saved', JSON.stringify(saved));
+    toast('Newsletter saved!');
+    renderSaved();
+  };
+
+  function renderSaved() {
+    var saved = JSON.parse(localStorage.getItem('cml-saved') || '[]');
+    var list = document.getElementById('savedList');
+    if (!saved.length) {
+      list.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,.3);font-size:13px;">No saved newsletters yet.</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    saved.forEach(function(item, i) {
+      var el = document.createElement('div');
+      el.className = 'cml-saved-item';
+      el.innerHTML = '<div class="cml-saved-item-info">' +
+        '<div class="cml-saved-item-name">' + escHtml(item.name) + '</div>' +
+        '<div class="cml-saved-item-date">' + new Date(item.date).toLocaleDateString() + '</div>' +
+        '<div class="cml-saved-item-blocks">' + item.blocks.length + ' blocks</div></div>' +
+        '<div class="cml-saved-item-actions">' +
+        '<button class="cml-saved-action" data-action="load" data-idx="' + i + '">Load</button>' +
+        '<button class="cml-saved-action" data-action="dupe" data-idx="' + i + '">Dupe</button>' +
+        '<button class="cml-saved-action delete" data-action="delete" data-idx="' + i + '">Del</button></div>';
+      list.appendChild(el);
+    });
+
+    list.querySelectorAll('.cml-saved-action').forEach(function(btn) {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        var idx = parseInt(btn.getAttribute('data-idx'));
+        var action = btn.getAttribute('data-action');
+        var saved = JSON.parse(localStorage.getItem('cml-saved') || '[]');
+
+        switch (action) {
+          case 'load':
+            if (!saved[idx]) return;
+            state.blocks = deepClone(saved[idx].blocks);
+            state.selectedIdx = -1;
+            var g = saved[idx].globals || {};
+            if (g.bg) { state.globalBg = g.bg; document.getElementById('globalBg').value = g.bg; }
+            if (g.width) { state.globalWidth = g.width; document.getElementById('globalWidth').value = g.width; }
+            if (g.font) { state.globalFont = g.font; document.getElementById('globalFont').value = g.font; }
+            if (g.brand) { state.globalBrand = g.brand; document.getElementById('globalBrand').value = g.brand; }
+            if (g.radius !== undefined) { state.globalRadius = g.radius; document.getElementById('globalRadius').value = g.radius; }
+            if (g.logo) { state.globalLogo = g.logo; document.getElementById('globalLogo').value = g.logo; }
+            document.getElementById('galleryView').style.display = 'none';
+            document.getElementById('builderView').style.display = '';
+            document.getElementById('savedOverlay').classList.remove('open');
+            renderCanvas(); renderSettings();
+            toast('Loaded: ' + saved[idx].name);
+            break;
+          case 'dupe':
+            if (!saved[idx]) return;
+            var copy = deepClone(saved[idx]);
+            copy.id = uid();
+            copy.name = copy.name + ' (copy)';
+            copy.date = new Date().toISOString();
+            saved.splice(idx + 1, 0, copy);
+            localStorage.setItem('cml-saved', JSON.stringify(saved));
+            toast('Duplicated');
+            renderSaved();
+            break;
+          case 'delete':
+            saved.splice(idx, 1);
+            localStorage.setItem('cml-saved', JSON.stringify(saved));
+            toast('Deleted');
+            renderSaved();
+            break;
+        }
+      };
+    });
+  }
+
+  // ============================================================
+  // KEYBOARD SHORTCUTS
+  // ============================================================
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 'z') { e.preventDefault(); document.getElementById('undoBtn').click(); }
+    if (e.ctrlKey && e.key === 's') { e.preventDefault(); document.getElementById('saveCurrentBtn').click(); }
+    if (e.ctrlKey && e.key === 'e') { e.preventDefault(); document.getElementById('exportBtn').click(); }
+    if (e.key === 'Delete' && state.selectedIdx >= 0 && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      saveUndo();
+      state.blocks.splice(state.selectedIdx, 1);
+      state.selectedIdx = -1;
+      renderCanvas(); renderSettings();
+    }
+  });
+
+}();
+</script>
+</body>
+</html>

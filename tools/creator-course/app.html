@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CreatorCourse Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="/assets/js/supabase-auth.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js" defer></script>
+</head>
+<body class="cco-app">
+
+  <!-- TOPBAR -->
+  <div class="cco-topbar">
+    <a href="index.html" class="cco-topbar-back">&larr;</a>
+    <a href="index.html" class="cco-topbar-brand">&#127891; CreatorCourse</a>
+    <div class="cco-topbar-actions">
+      <button class="cco-topbar-btn" id="exportBtn">Export</button>
+      <button class="cco-topbar-btn primary" id="saveBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- LAYOUT: SIDEBAR + MAIN -->
+  <div class="cco-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="cco-sidebar">
+      <ul class="cco-sidebar-nav">
+        <li><a href="#" class="active" data-view="courses"><span class="cco-nav-icon">&#128218;</span> My Courses</a></li>
+        <li><a href="#" data-view="builder"><span class="cco-nav-icon">&#128295;</span> Course Builder</a></li>
+        <li><a href="#" data-view="sales"><span class="cco-nav-icon">&#128176;</span> Sales Page</a></li>
+        <li><a href="#" data-view="students"><span class="cco-nav-icon">&#128101;</span> Students</a></li>
+        <li><a href="#" data-view="analytics"><span class="cco-nav-icon">&#128200;</span> Analytics</a></li>
+      </ul>
+      <div class="cco-sidebar-credit">Built with <a href="/creative/">Creator Studio</a></div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="cco-main">
+
+      <!-- ========== MY COURSES ========== -->
+      <section class="cco-view active" id="viewCourses">
+        <div class="cco-section-header">
+          <div>
+            <h1 class="cco-section-title">My Courses</h1>
+            <p class="cco-section-desc">All your courses in one place.</p>
+          </div>
+          <button class="cco-btn" id="newCourseBtn">+ New Course</button>
+        </div>
+        <div class="cco-cards" id="coursesList"></div>
+        <div class="cco-empty" id="coursesEmpty">
+          <div class="cco-empty-icon">&#127891;</div>
+          <div class="cco-empty-title">No courses yet</div>
+          <div class="cco-empty-desc">Create your first course and start teaching what you know.</div>
+          <button class="cco-btn" onclick="document.getElementById('newCourseBtn').click()">+ Create Course</button>
+        </div>
+      </section>
+
+      <!-- ========== COURSE BUILDER ========== -->
+      <section class="cco-view" id="viewBuilder">
+        <div class="cco-section-header">
+          <div>
+            <h1 class="cco-section-title">Course Builder</h1>
+            <p class="cco-section-desc">Edit course details, modules, and lessons.</p>
+          </div>
+          <button class="cco-btn secondary" id="backToCoursesBtn">&larr; All Courses</button>
+        </div>
+
+        <!-- Course Details -->
+        <div class="cco-lesson-editor" style="margin-top:0;margin-bottom:20px;">
+          <div class="cco-lesson-editor-title">&#128203; Course Details</div>
+          <div class="cco-form-group">
+            <label class="cco-form-label">Course Title</label>
+            <input class="cco-form-input" id="courseTitle" placeholder="e.g., Mobile Photography Masterclass">
+          </div>
+          <div class="cco-form-group">
+            <label class="cco-form-label">Description</label>
+            <textarea class="cco-form-textarea" id="courseDesc" placeholder="What will students learn? Why should they take this course?" rows="3"></textarea>
+          </div>
+          <div class="cco-form-group">
+            <label class="cco-form-label">Cover Image URL</label>
+            <input class="cco-form-input" id="courseCover" placeholder="https://example.com/cover.jpg">
+          </div>
+          <div class="cco-form-row">
+            <div class="cco-form-group">
+              <label class="cco-form-label">Category</label>
+              <select class="cco-form-select" id="courseCategory">
+                <option value="business">Business</option>
+                <option value="tech">Technology</option>
+                <option value="creative">Creative Arts</option>
+                <option value="marketing">Marketing</option>
+                <option value="finance">Finance</option>
+                <option value="health">Health & Wellness</option>
+                <option value="language">Language</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="cco-form-group">
+              <label class="cco-form-label">Status</label>
+              <select class="cco-form-select" id="courseStatus">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+          </div>
+          <div class="cco-form-row">
+            <div class="cco-form-group">
+              <label class="cco-form-label">Price</label>
+              <input class="cco-form-input" id="coursePrice" type="number" min="0" step="100" placeholder="0 = Free">
+            </div>
+            <div class="cco-form-group">
+              <label class="cco-form-label">Currency</label>
+              <select class="cco-form-select" id="courseCurrency">
+                <option value="NGN">NGN - Naira</option>
+                <option value="KES">KES - Shilling</option>
+                <option value="ZAR">ZAR - Rand</option>
+                <option value="GHS">GHS - Cedi</option>
+                <option value="USD">USD - Dollar</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modules -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <h2 style="font-size:16px;font-weight:700;">Modules &amp; Lessons</h2>
+          <button class="cco-btn sm" id="addModuleBtn">+ Add Module</button>
+        </div>
+        <div class="cco-module-list" id="moduleList"></div>
+        <div class="cco-empty" id="modulesEmpty" style="padding:30px;">
+          <div class="cco-empty-desc">No modules yet. Add your first module to start building curriculum.</div>
+        </div>
+
+        <!-- Lesson Editor (shown when a lesson is selected) -->
+        <div class="cco-lesson-editor" id="lessonEditor" style="display:none;">
+          <div class="cco-lesson-editor-title" id="lessonEditorTitle">Edit Lesson</div>
+          <div class="cco-form-group">
+            <label class="cco-form-label">Lesson Title</label>
+            <input class="cco-form-input" id="lessonTitle" placeholder="Lesson title">
+          </div>
+          <div class="cco-form-row">
+            <div class="cco-form-group">
+              <label class="cco-form-label">Lesson Type</label>
+              <select class="cco-form-select" id="lessonType">
+                <option value="video">Video</option>
+                <option value="text">Text</option>
+                <option value="pdf">PDF</option>
+                <option value="quiz">Quiz</option>
+                <option value="assignment">Assignment</option>
+              </select>
+            </div>
+            <div class="cco-form-group">
+              <label class="cco-form-label">Drip Day</label>
+              <input class="cco-form-input" id="lessonDrip" type="number" min="0" placeholder="0 = Available immediately">
+              <div class="cco-form-hint">Available from Day X after enrollment</div>
+            </div>
+          </div>
+
+          <!-- Type-specific fields -->
+          <div id="lessonVideoFields" style="display:none;">
+            <div class="cco-form-group">
+              <label class="cco-form-label">Video URL (YouTube or Vimeo)</label>
+              <input class="cco-form-input" id="lessonVideoUrl" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div id="videoPreview" style="margin-top:10px;"></div>
+          </div>
+
+          <div id="lessonTextFields" style="display:none;">
+            <label class="cco-form-label">Content</label>
+            <div class="cco-rte-toolbar">
+              <button class="cco-rte-btn" data-cmd="bold"><b>B</b></button>
+              <button class="cco-rte-btn" data-cmd="italic"><i>I</i></button>
+              <button class="cco-rte-btn" data-cmd="insertUnorderedList">&#8226; List</button>
+              <button class="cco-rte-btn" data-cmd="insertOrderedList">1. List</button>
+              <button class="cco-rte-btn" data-cmd="formatBlock" data-val="h2">H2</button>
+              <button class="cco-rte-btn" data-cmd="formatBlock" data-val="h3">H3</button>
+              <button class="cco-rte-btn" data-cmd="createLink">Link</button>
+            </div>
+            <div class="cco-rte-editor" id="lessonTextEditor" contenteditable="true"></div>
+          </div>
+
+          <div id="lessonPdfFields" style="display:none;">
+            <div class="cco-form-group">
+              <label class="cco-form-label">PDF URL</label>
+              <input class="cco-form-input" id="lessonPdfUrl" placeholder="https://example.com/document.pdf">
+            </div>
+          </div>
+
+          <div id="lessonQuizFields" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <label class="cco-form-label" style="margin:0">Questions</label>
+              <button class="cco-btn sm" id="addQuestionBtn">+ Add Question</button>
+            </div>
+            <div class="cco-quiz-questions" id="quizQuestions"></div>
+            <div class="cco-quiz-pass-row">
+              <label class="cco-form-label" style="margin:0;white-space:nowrap;">Pass Mark (%)</label>
+              <input class="cco-form-input" id="quizPassMark" type="number" min="0" max="100" value="70" style="width:80px;">
+              <label class="cco-form-label" style="margin:0;white-space:nowrap;">Show Answers</label>
+              <button class="cco-topbar-btn" id="quizShowAnswers" style="min-width:50px;">Yes</button>
+            </div>
+          </div>
+
+          <div id="lessonAssignmentFields" style="display:none;">
+            <div class="cco-form-group">
+              <label class="cco-form-label">Assignment Prompt</label>
+              <textarea class="cco-form-textarea" id="lessonAssignmentPrompt" placeholder="Describe what the student should do..." rows="4"></textarea>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:18px;">
+            <button class="cco-btn" id="saveLessonBtn">Save Lesson</button>
+            <button class="cco-btn secondary" id="cancelLessonBtn">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Discount Codes -->
+        <div class="cco-lesson-editor" style="margin-top:20px;">
+          <div class="cco-lesson-editor-title">&#127915; Discount Codes</div>
+          <div class="cco-discount-list" id="discountList"></div>
+          <div class="cco-discount-form" id="discountForm">
+            <div class="cco-form-group" style="margin:0;">
+              <label class="cco-form-label">Code</label>
+              <input class="cco-form-input" id="discountCode" placeholder="LAUNCH20">
+            </div>
+            <div class="cco-form-group" style="margin:0;">
+              <label class="cco-form-label">Type</label>
+              <select class="cco-form-select" id="discountType">
+                <option value="percentage">Percentage</option>
+                <option value="fixed">Fixed Amount</option>
+              </select>
+            </div>
+            <div class="cco-form-group" style="margin:0;">
+              <label class="cco-form-label">Value</label>
+              <input class="cco-form-input" id="discountValue" type="number" min="0" placeholder="20">
+            </div>
+            <div class="cco-form-group" style="margin:0;">
+              <label class="cco-form-label">Expiry</label>
+              <input class="cco-form-input" id="discountExpiry" type="date">
+            </div>
+            <button class="cco-btn sm" id="addDiscountBtn" style="align-self:end;margin-bottom:0;">Add</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== SALES PAGE ========== -->
+      <section class="cco-view" id="viewSales">
+        <div class="cco-section-header">
+          <div>
+            <h1 class="cco-section-title">Sales Page</h1>
+            <p class="cco-section-desc">Auto-generated from your course. Customize additional sections below.</p>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="cco-btn secondary" id="salesEditBtn">Edit Sections</button>
+            <button class="cco-btn" id="salesPreviewBtn">Preview</button>
+          </div>
+        </div>
+
+        <!-- Sales Page Editor -->
+        <div id="salesEditor">
+          <div class="cco-sp-editor-section">
+            <h3>&#128100; Instructor Bio</h3>
+            <div class="cco-form-group">
+              <label class="cco-form-label">Your Name</label>
+              <input class="cco-form-input" id="spInstructorName" placeholder="Your full name">
+            </div>
+            <div class="cco-form-group">
+              <label class="cco-form-label">Bio</label>
+              <textarea class="cco-form-textarea" id="spInstructorBio" placeholder="Tell students about yourself..." rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="cco-sp-editor-section">
+            <h3>&#9989; What You'll Learn (bullet points)</h3>
+            <div class="cco-form-group">
+              <textarea class="cco-form-textarea" id="spLearnPoints" placeholder="One point per line. e.g.:&#10;Master mobile photography basics&#10;Edit photos like a pro&#10;Build a consistent Instagram feed" rows="5"></textarea>
+            </div>
+          </div>
+
+          <div class="cco-sp-editor-section">
+            <h3>&#11088; Testimonials</h3>
+            <div id="spTestimonialsList"></div>
+            <div class="cco-sp-testimonial-form">
+              <div>
+                <input class="cco-form-input" id="spTestQuote" placeholder="&quot;This course changed my content game...&quot;" style="margin-bottom:6px;">
+                <input class="cco-form-input" id="spTestAuthor" placeholder="Student Name, Location">
+              </div>
+              <button class="cco-btn sm" id="addTestimonialBtn">Add</button>
+            </div>
+          </div>
+
+          <div class="cco-sp-editor-section">
+            <h3>&#10067; FAQ</h3>
+            <div id="spFaqList"></div>
+            <div class="cco-sp-faq-form">
+              <div class="cco-form-group" style="margin:0;">
+                <input class="cco-form-input" id="spFaqQ" placeholder="Question">
+              </div>
+              <div class="cco-form-group" style="margin:0;">
+                <input class="cco-form-input" id="spFaqA" placeholder="Answer">
+              </div>
+              <button class="cco-btn sm" id="addFaqBtn">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sales Page Preview -->
+        <div id="salesPreview" style="display:none;">
+          <div class="cco-sales-preview-wrap">
+            <div class="cco-sales-preview-bar">
+              <div class="cco-sales-preview-dot"></div>
+              <div class="cco-sales-preview-dot"></div>
+              <div class="cco-sales-preview-dot"></div>
+              <div class="cco-sales-preview-url" id="salesPreviewUrl">afrotools.com/course/your-course</div>
+            </div>
+            <div class="cco-sales-preview-body" id="salesPreviewBody"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== STUDENTS ========== -->
+      <section class="cco-view" id="viewStudents">
+        <div class="cco-section-header">
+          <div>
+            <h1 class="cco-section-title">Students</h1>
+            <p class="cco-section-desc">Everyone enrolled in your course.</p>
+          </div>
+          <button class="cco-btn sm secondary" id="addDemoStudentsBtn">+ Add Demo Students</button>
+        </div>
+        <div class="cco-table-wrap">
+          <table class="cco-table" id="studentsTable">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Enrolled</th><th>Progress</th><th>Last Active</th></tr>
+            </thead>
+            <tbody id="studentsBody"></tbody>
+          </table>
+        </div>
+        <div class="cco-empty" id="studentsEmpty">
+          <div class="cco-empty-icon">&#128101;</div>
+          <div class="cco-empty-title">No students yet</div>
+          <div class="cco-empty-desc">Share your course link to start getting enrollments. Or add demo students to preview this section.</div>
+        </div>
+        <div class="cco-student-detail" id="studentDetail" style="display:none;">
+          <div class="cco-student-detail-header">
+            <div class="cco-student-avatar" id="studentDetailAvatar"></div>
+            <div>
+              <h3 id="studentDetailName" style="font-size:16px;"></h3>
+              <p id="studentDetailEmail" style="font-size:13px;"></p>
+            </div>
+            <button class="cco-btn sm secondary" style="margin-left:auto;" onclick="document.getElementById('studentDetail').style.display='none'">Close</button>
+          </div>
+          <div class="cco-student-lessons" id="studentDetailLessons"></div>
+        </div>
+      </section>
+
+      <!-- ========== ANALYTICS ========== -->
+      <section class="cco-view" id="viewAnalytics">
+        <div class="cco-section-header">
+          <div>
+            <h1 class="cco-section-title">Analytics</h1>
+            <p class="cco-section-desc">Course performance at a glance.</p>
+          </div>
+        </div>
+        <div class="cco-stats-row" id="analyticsStats"></div>
+        <div class="cco-charts-grid">
+          <div class="cco-chart-card">
+            <h3>Enrollment Trend</h3>
+            <canvas id="enrollmentChart" height="200"></canvas>
+          </div>
+          <div class="cco-chart-card">
+            <h3>Lesson Completion</h3>
+            <canvas id="completionChart" height="200"></canvas>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <nav class="cco-bottom-nav">
+    <a href="#" class="active" data-view="courses"><span class="cco-bnav-icon">&#128218;</span>Courses</a>
+    <a href="#" data-view="builder"><span class="cco-bnav-icon">&#128295;</span>Builder</a>
+    <a href="#" data-view="sales"><span class="cco-bnav-icon">&#128176;</span>Sales</a>
+    <a href="#" data-view="students"><span class="cco-bnav-icon">&#128101;</span>Students</a>
+    <a href="#" data-view="analytics"><span class="cco-bnav-icon">&#128200;</span>Stats</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="cco-toast" id="toast"></div>
+
+  <!-- CERTIFICATE MODAL (hidden) -->
+  <div id="certModal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);padding:20px;overflow-y:auto;">
+    <div style="max-width:660px;margin:40px auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h2 style="font-size:18px;font-weight:700;color:#fff;">Certificate Preview</h2>
+        <button class="cco-btn sm secondary" onclick="document.getElementById('certModal').style.display='none'">Close</button>
+      </div>
+      <div style="margin-bottom:14px;display:flex;gap:8px;">
+        <button class="cco-btn sm" data-border="classic" onclick="setCertBorder('classic')">Classic</button>
+        <button class="cco-btn sm secondary" data-border="modern" onclick="setCertBorder('modern')">Modern</button>
+        <button class="cco-btn sm secondary" data-border="elegant" onclick="setCertBorder('elegant')">Elegant</button>
+        <button class="cco-btn sm" id="downloadCertBtn" style="margin-left:auto;">Download PDF</button>
+      </div>
+      <div id="certPreviewArea"></div>
+    </div>
+  </div>
+
+<script>
+!function() {
+  "use strict";
+
+  /* ======================================================
+     DATA LAYER — localStorage
+     ====================================================== */
+  var STORAGE_KEY = 'cco-courses';
+  var ACTIVE_KEY = 'cco-active-course';
+
+  function loadCourses() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; }
+  }
+  function saveCourses(courses) { localStorage.setItem(STORAGE_KEY, JSON.stringify(courses)); }
+  function getActiveCourseId() { return localStorage.getItem(ACTIVE_KEY) || ''; }
+  function setActiveCourseId(id) { localStorage.setItem(ACTIVE_KEY, id); }
+
+  function getActiveCourse() {
+    var courses = loadCourses();
+    var id = getActiveCourseId();
+    return courses.find(function(c) { return c.id === id; }) || null;
+  }
+  function updateActiveCourse(fn) {
+    var courses = loadCourses();
+    var id = getActiveCourseId();
+    var idx = courses.findIndex(function(c) { return c.id === id; });
+    if (idx === -1) return null;
+    fn(courses[idx]);
+    saveCourses(courses);
+    return courses[idx];
+  }
+
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  function createCourse() {
+    return {
+      id: uid(), title: '', description: '', cover: '', category: 'business',
+      price: 0, currency: 'NGN', status: 'draft',
+      modules: [], students: [], discounts: [],
+      salesPage: { instructorName: '', instructorBio: '', learnPoints: '', testimonials: [], faqs: [] },
+      createdAt: new Date().toISOString()
+    };
+  }
+
+  /* ======================================================
+     TOAST
+     ====================================================== */
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  /* ======================================================
+     NAVIGATION
+     ====================================================== */
+  var currentView = 'courses';
+  var editingLessonRef = null; // { moduleIdx, lessonIdx }
+
+  function switchView(name) {
+    currentView = name;
+    document.querySelectorAll('.cco-view').forEach(function(v) { v.classList.remove('active'); });
+    var target = document.getElementById('view' + name.charAt(0).toUpperCase() + name.slice(1));
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('.cco-sidebar-nav a').forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('data-view') === name);
+    });
+    document.querySelectorAll('.cco-bottom-nav a').forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('data-view') === name);
+    });
+
+    if (name === 'courses') renderCoursesList();
+    if (name === 'builder') renderBuilder();
+    if (name === 'sales') renderSalesEditor();
+    if (name === 'students') renderStudents();
+    if (name === 'analytics') renderAnalytics();
+  }
+
+  // Wire sidebar + bottom nav
+  document.querySelectorAll('[data-view]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      switchView(el.getAttribute('data-view'));
+    });
+  });
+
+  /* ======================================================
+     MY COURSES VIEW
+     ====================================================== */
+  function renderCoursesList() {
+    var courses = loadCourses();
+    var list = document.getElementById('coursesList');
+    var empty = document.getElementById('coursesEmpty');
+    if (!courses.length) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+
+    var html = '';
+    courses.forEach(function(c) {
+      var lessonCount = 0;
+      c.modules.forEach(function(m) { lessonCount += m.lessons.length; });
+      var studentCount = (c.students || []).length;
+      var revenue = 0;
+      (c.students || []).forEach(function(s) { if (s.paid) revenue += (c.price || 0); });
+
+      html += '<div class="cco-course-card" data-id="' + c.id + '">';
+      html += '<div class="cco-course-card-cover">';
+      if (c.cover) { html += '<img src="' + escHtml(c.cover) + '" alt="">'; }
+      else { html += '&#127891;'; }
+      html += '</div>';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
+      html += '<span class="cco-badge ' + c.status + '">' + c.status + '</span>';
+      html += '<span style="font-size:11px;color:rgba(255,255,255,.3);">' + (c.category || '') + '</span>';
+      html += '</div>';
+      html += '<div class="cco-course-card-title">' + escHtml(c.title || 'Untitled Course') + '</div>';
+      html += '<div class="cco-course-card-meta">';
+      html += '<span>&#128218; ' + c.modules.length + ' modules</span>';
+      html += '<span>&#128196; ' + lessonCount + ' lessons</span>';
+      html += '<span>&#128101; ' + studentCount + ' students</span>';
+      if (c.price > 0) html += '<span>&#128176; ' + formatCurrency(revenue, c.currency) + '</span>';
+      html += '</div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+
+    list.querySelectorAll('.cco-course-card').forEach(function(card) {
+      card.onclick = function() {
+        setActiveCourseId(card.getAttribute('data-id'));
+        switchView('builder');
+      };
+    });
+  }
+
+  document.getElementById('newCourseBtn').onclick = function() {
+    var courses = loadCourses();
+    var c = createCourse();
+    c.title = 'Untitled Course';
+    courses.push(c);
+    saveCourses(courses);
+    setActiveCourseId(c.id);
+    switchView('builder');
+    toast('New course created!');
+  };
+
+  /* ======================================================
+     COURSE BUILDER
+     ====================================================== */
+  function renderBuilder() {
+    var course = getActiveCourse();
+    if (!course) { switchView('courses'); return; }
+
+    document.getElementById('courseTitle').value = course.title || '';
+    document.getElementById('courseDesc').value = course.description || '';
+    document.getElementById('courseCover').value = course.cover || '';
+    document.getElementById('courseCategory').value = course.category || 'business';
+    document.getElementById('coursePrice').value = course.price || '';
+    document.getElementById('courseCurrency').value = course.currency || 'NGN';
+    document.getElementById('courseStatus').value = course.status || 'draft';
+
+    renderModules();
+    renderDiscounts();
+    document.getElementById('lessonEditor').style.display = 'none';
+    editingLessonRef = null;
+  }
+
+  document.getElementById('backToCoursesBtn').onclick = function() { switchView('courses'); };
+
+  // Auto-save course details on change
+  ['courseTitle','courseDesc','courseCover','courseCategory','coursePrice','courseCurrency','courseStatus'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', saveCourseDetails);
+    document.getElementById(id).addEventListener('input', debounce(saveCourseDetails, 500));
+  });
+
+  function saveCourseDetails() {
+    updateActiveCourse(function(c) {
+      c.title = document.getElementById('courseTitle').value.trim();
+      c.description = document.getElementById('courseDesc').value.trim();
+      c.cover = document.getElementById('courseCover').value.trim();
+      c.category = document.getElementById('courseCategory').value;
+      c.price = parseFloat(document.getElementById('coursePrice').value) || 0;
+      c.currency = document.getElementById('courseCurrency').value;
+      c.status = document.getElementById('courseStatus').value;
+    });
+  }
+
+  /* ======================================================
+     MODULES
+     ====================================================== */
+  function renderModules() {
+    var course = getActiveCourse();
+    if (!course) return;
+    var list = document.getElementById('moduleList');
+    var empty = document.getElementById('modulesEmpty');
+
+    if (!course.modules.length) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+
+    var html = '';
+    course.modules.forEach(function(mod, mi) {
+      var open = mod._open ? ' open' : '';
+      html += '<div class="cco-module' + open + '" data-mi="' + mi + '">';
+      html += '<div class="cco-module-header">';
+      html += '<span class="cco-module-drag" title="Drag to reorder">&#9776;</span>';
+      html += '<span class="cco-module-chevron">&#9654;</span>';
+      html += '<span class="cco-module-title">' + escHtml(mod.title || 'Module ' + (mi + 1)) + '</span>';
+      html += '<span class="cco-module-count">' + mod.lessons.length + ' lessons</span>';
+      html += '<div class="cco-module-actions">';
+      html += '<button title="Rename" data-action="rename" data-mi="' + mi + '">&#9998;</button>';
+      html += '<button title="Delete" data-action="delete-module" data-mi="' + mi + '">&#128465;</button>';
+      html += '</div>';
+      html += '</div>';
+      html += '<div class="cco-module-body">';
+      html += '<div class="cco-lesson-list">';
+      mod.lessons.forEach(function(les, li) {
+        var typeIcons = { video: '&#9654;', text: '&#128196;', pdf: '&#128462;', quiz: '&#10067;', assignment: '&#128221;' };
+        var isActive = editingLessonRef && editingLessonRef.moduleIdx === mi && editingLessonRef.lessonIdx === li;
+        html += '<div class="cco-lesson-item' + (isActive ? ' active' : '') + '" data-mi="' + mi + '" data-li="' + li + '">';
+        html += '<span class="cco-lesson-drag">&#8942;</span>';
+        html += '<span class="cco-lesson-type-icon ' + les.type + '">' + (typeIcons[les.type] || '&#128196;') + '</span>';
+        html += '<span class="cco-lesson-title">' + escHtml(les.title || 'Untitled') + '</span>';
+        if (les.dripDay > 0) html += '<span class="cco-lesson-drip">Day ' + les.dripDay + '</span>';
+        html += '<button class="cco-lesson-del" data-mi="' + mi + '" data-li="' + li + '">&#10005;</button>';
+        html += '</div>';
+      });
+      html += '</div>';
+      html += '<button class="cco-btn sm secondary" data-action="add-lesson" data-mi="' + mi + '">+ Add Lesson</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+
+    // Wire module toggles
+    list.querySelectorAll('.cco-module-header').forEach(function(hdr) {
+      hdr.onclick = function(e) {
+        if (e.target.closest('.cco-module-actions')) return;
+        var mod = hdr.parentElement;
+        mod.classList.toggle('open');
+        var mi = parseInt(mod.getAttribute('data-mi'));
+        updateActiveCourse(function(c) { c.modules[mi]._open = mod.classList.contains('open'); });
+      };
+    });
+
+    // Wire module actions
+    list.querySelectorAll('[data-action="rename"]').forEach(function(btn) {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        var mi = parseInt(btn.getAttribute('data-mi'));
+        var name = prompt('Module name:', getActiveCourse().modules[mi].title || '');
+        if (name !== null) {
+          updateActiveCourse(function(c) { c.modules[mi].title = name; });
+          renderModules();
+        }
+      };
+    });
+
+    list.querySelectorAll('[data-action="delete-module"]').forEach(function(btn) {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        if (!confirm('Delete this module and all its lessons?')) return;
+        var mi = parseInt(btn.getAttribute('data-mi'));
+        updateActiveCourse(function(c) { c.modules.splice(mi, 1); });
+        editingLessonRef = null;
+        document.getElementById('lessonEditor').style.display = 'none';
+        renderModules();
+        toast('Module deleted');
+      };
+    });
+
+    // Wire lesson clicks
+    list.querySelectorAll('.cco-lesson-item').forEach(function(item) {
+      item.onclick = function(e) {
+        if (e.target.closest('.cco-lesson-del')) return;
+        var mi = parseInt(item.getAttribute('data-mi'));
+        var li = parseInt(item.getAttribute('data-li'));
+        openLessonEditor(mi, li);
+      };
+    });
+
+    // Wire lesson delete
+    list.querySelectorAll('.cco-lesson-del').forEach(function(btn) {
+      btn.onclick = function() {
+        var mi = parseInt(btn.getAttribute('data-mi'));
+        var li = parseInt(btn.getAttribute('data-li'));
+        updateActiveCourse(function(c) { c.modules[mi].lessons.splice(li, 1); });
+        if (editingLessonRef && editingLessonRef.moduleIdx === mi && editingLessonRef.lessonIdx === li) {
+          editingLessonRef = null;
+          document.getElementById('lessonEditor').style.display = 'none';
+        }
+        renderModules();
+        toast('Lesson deleted');
+      };
+    });
+
+    // Wire add lesson
+    list.querySelectorAll('[data-action="add-lesson"]').forEach(function(btn) {
+      btn.onclick = function() {
+        var mi = parseInt(btn.getAttribute('data-mi'));
+        updateActiveCourse(function(c) {
+          c.modules[mi].lessons.push({ id: uid(), title: 'New Lesson', type: 'video', dripDay: 0, content: {} });
+          c.modules[mi]._open = true;
+        });
+        var course = getActiveCourse();
+        var li = course.modules[mi].lessons.length - 1;
+        renderModules();
+        openLessonEditor(mi, li);
+      };
+    });
+
+    // Simple drag reorder for modules
+    makeSortable(list, '.cco-module', '.cco-module-drag', function(oldIdx, newIdx) {
+      updateActiveCourse(function(c) {
+        var item = c.modules.splice(oldIdx, 1)[0];
+        c.modules.splice(newIdx, 0, item);
+      });
+      renderModules();
+    });
+  }
+
+  document.getElementById('addModuleBtn').onclick = function() {
+    var num = (getActiveCourse() || { modules: [] }).modules.length + 1;
+    updateActiveCourse(function(c) {
+      c.modules.push({ id: uid(), title: 'Module ' + num, lessons: [], _open: true });
+    });
+    renderModules();
+    toast('Module added');
+  };
+
+  /* ======================================================
+     LESSON EDITOR
+     ====================================================== */
+  function openLessonEditor(mi, li) {
+    editingLessonRef = { moduleIdx: mi, lessonIdx: li };
+    var course = getActiveCourse();
+    var lesson = course.modules[mi].lessons[li];
+    if (!lesson) return;
+
+    var ed = document.getElementById('lessonEditor');
+    ed.style.display = '';
+
+    document.getElementById('lessonEditorTitle').textContent = 'Edit: ' + (lesson.title || 'Untitled');
+    document.getElementById('lessonTitle').value = lesson.title || '';
+    document.getElementById('lessonType').value = lesson.type || 'video';
+    document.getElementById('lessonDrip').value = lesson.dripDay || 0;
+
+    showLessonTypeFields(lesson.type, lesson.content || {});
+    renderModules(); // highlight active
+    ed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showLessonTypeFields(type, content) {
+    ['lessonVideoFields','lessonTextFields','lessonPdfFields','lessonQuizFields','lessonAssignmentFields'].forEach(function(id) {
+      document.getElementById(id).style.display = 'none';
+    });
+
+    switch (type) {
+      case 'video':
+        document.getElementById('lessonVideoFields').style.display = '';
+        document.getElementById('lessonVideoUrl').value = content.videoUrl || '';
+        updateVideoPreview(content.videoUrl || '');
+        break;
+      case 'text':
+        document.getElementById('lessonTextFields').style.display = '';
+        document.getElementById('lessonTextEditor').innerHTML = content.html || '';
+        break;
+      case 'pdf':
+        document.getElementById('lessonPdfFields').style.display = '';
+        document.getElementById('lessonPdfUrl').value = content.pdfUrl || '';
+        break;
+      case 'quiz':
+        document.getElementById('lessonQuizFields').style.display = '';
+        document.getElementById('quizPassMark').value = content.passMark || 70;
+        document.getElementById('quizShowAnswers').textContent = content.showAnswers !== false ? 'Yes' : 'No';
+        renderQuizQuestions(content.questions || []);
+        break;
+      case 'assignment':
+        document.getElementById('lessonAssignmentFields').style.display = '';
+        document.getElementById('lessonAssignmentPrompt').value = content.prompt || '';
+        break;
+    }
+  }
+
+  document.getElementById('lessonType').onchange = function() {
+    showLessonTypeFields(this.value, {});
+  };
+
+  // Video preview
+  document.getElementById('lessonVideoUrl').addEventListener('input', debounce(function() {
+    updateVideoPreview(this.value);
+  }, 400));
+
+  function updateVideoPreview(url) {
+    var container = document.getElementById('videoPreview');
+    var embedUrl = getEmbedUrl(url);
+    if (embedUrl) {
+      container.innerHTML = '<iframe src="' + embedUrl + '" style="width:100%;aspect-ratio:16/9;border:none;border-radius:10px;" allowfullscreen></iframe>';
+    } else {
+      container.innerHTML = url ? '<p style="font-size:12px;color:rgba(255,255,255,.3);">Paste a YouTube or Vimeo URL to see preview</p>' : '';
+    }
+  }
+
+  function getEmbedUrl(url) {
+    if (!url) return '';
+    var yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (yt) return 'https://www.youtube.com/embed/' + yt[1];
+    var vm = url.match(/vimeo\.com\/(\d+)/);
+    if (vm) return 'https://player.vimeo.com/video/' + vm[1];
+    return '';
+  }
+
+  // Rich text toolbar
+  document.querySelectorAll('.cco-rte-btn').forEach(function(btn) {
+    btn.onclick = function(e) {
+      e.preventDefault();
+      var cmd = btn.getAttribute('data-cmd');
+      if (cmd === 'createLink') {
+        var href = prompt('Enter URL:', 'https://');
+        if (href) document.execCommand('createLink', false, href);
+      } else if (cmd === 'formatBlock') {
+        document.execCommand('formatBlock', false, '<' + btn.getAttribute('data-val') + '>');
+      } else {
+        document.execCommand(cmd, false, null);
+      }
+    };
+  });
+
+  // Quiz show answers toggle
+  document.getElementById('quizShowAnswers').onclick = function() {
+    this.textContent = this.textContent === 'Yes' ? 'No' : 'Yes';
+  };
+
+  // Quiz questions
+  var tempQuizQuestions = [];
+
+  function renderQuizQuestions(questions) {
+    tempQuizQuestions = questions || [];
+    var container = document.getElementById('quizQuestions');
+    if (!tempQuizQuestions.length) { container.innerHTML = '<p style="font-size:13px;color:rgba(255,255,255,.3);">No questions yet. Add one below.</p>'; return; }
+
+    var html = '';
+    tempQuizQuestions.forEach(function(q, qi) {
+      html += '<div class="cco-quiz-card">';
+      html += '<div class="cco-quiz-card-header">';
+      html += '<span class="cco-quiz-q-num">Q' + (qi + 1) + '</span>';
+      html += '<input class="cco-form-input cco-quiz-q-input" data-qi="' + qi + '" value="' + escAttr(q.question || '') + '" placeholder="Question text">';
+      html += '<button class="cco-quiz-del" data-qi="' + qi + '">&#10005;</button>';
+      html += '</div>';
+      html += '<div class="cco-quiz-options">';
+      for (var oi = 0; oi < 4; oi++) {
+        var isCorrect = q.correct === oi;
+        html += '<div class="cco-quiz-option">';
+        html += '<button class="cco-quiz-option-radio' + (isCorrect ? ' correct' : '') + '" data-qi="' + qi + '" data-oi="' + oi + '"></button>';
+        html += '<input class="cco-form-input" data-qi="' + qi + '" data-oi="' + oi + '" value="' + escAttr((q.options && q.options[oi]) || '') + '" placeholder="Option ' + String.fromCharCode(65 + oi) + '">';
+        html += '</div>';
+      }
+      html += '</div>';
+      html += '</div>';
+    });
+    container.innerHTML = html;
+
+    // Wire option radios
+    container.querySelectorAll('.cco-quiz-option-radio').forEach(function(radio) {
+      radio.onclick = function() {
+        var qi = parseInt(radio.getAttribute('data-qi'));
+        var oi = parseInt(radio.getAttribute('data-oi'));
+        tempQuizQuestions[qi].correct = oi;
+        renderQuizQuestions(tempQuizQuestions);
+      };
+    });
+
+    // Wire question text
+    container.querySelectorAll('.cco-quiz-q-input').forEach(function(inp) {
+      inp.oninput = function() {
+        var qi = parseInt(inp.getAttribute('data-qi'));
+        tempQuizQuestions[qi].question = inp.value;
+      };
+    });
+
+    // Wire option text
+    container.querySelectorAll('.cco-quiz-option input').forEach(function(inp) {
+      inp.oninput = function() {
+        var qi = parseInt(inp.getAttribute('data-qi'));
+        var oi = parseInt(inp.getAttribute('data-oi'));
+        if (!tempQuizQuestions[qi].options) tempQuizQuestions[qi].options = ['','','',''];
+        tempQuizQuestions[qi].options[oi] = inp.value;
+      };
+    });
+
+    // Wire delete
+    container.querySelectorAll('.cco-quiz-del').forEach(function(btn) {
+      btn.onclick = function() {
+        var qi = parseInt(btn.getAttribute('data-qi'));
+        tempQuizQuestions.splice(qi, 1);
+        renderQuizQuestions(tempQuizQuestions);
+      };
+    });
+  }
+
+  document.getElementById('addQuestionBtn').onclick = function() {
+    tempQuizQuestions.push({ question: '', options: ['','','',''], correct: 0 });
+    renderQuizQuestions(tempQuizQuestions);
+  };
+
+  // Save lesson
+  document.getElementById('saveLessonBtn').onclick = function() {
+    if (!editingLessonRef) return;
+    var mi = editingLessonRef.moduleIdx;
+    var li = editingLessonRef.lessonIdx;
+    var type = document.getElementById('lessonType').value;
+
+    var content = {};
+    switch (type) {
+      case 'video': content.videoUrl = document.getElementById('lessonVideoUrl').value.trim(); break;
+      case 'text': content.html = document.getElementById('lessonTextEditor').innerHTML; break;
+      case 'pdf': content.pdfUrl = document.getElementById('lessonPdfUrl').value.trim(); break;
+      case 'quiz':
+        content.questions = tempQuizQuestions;
+        content.passMark = parseInt(document.getElementById('quizPassMark').value) || 70;
+        content.showAnswers = document.getElementById('quizShowAnswers').textContent === 'Yes';
+        break;
+      case 'assignment': content.prompt = document.getElementById('lessonAssignmentPrompt').value.trim(); break;
+    }
+
+    updateActiveCourse(function(c) {
+      var les = c.modules[mi].lessons[li];
+      les.title = document.getElementById('lessonTitle').value.trim() || 'Untitled';
+      les.type = type;
+      les.dripDay = parseInt(document.getElementById('lessonDrip').value) || 0;
+      les.content = content;
+    });
+
+    document.getElementById('lessonEditor').style.display = 'none';
+    editingLessonRef = null;
+    renderModules();
+    toast('Lesson saved!');
+  };
+
+  document.getElementById('cancelLessonBtn').onclick = function() {
+    document.getElementById('lessonEditor').style.display = 'none';
+    editingLessonRef = null;
+    renderModules();
+  };
+
+  /* ======================================================
+     DISCOUNT CODES
+     ====================================================== */
+  function renderDiscounts() {
+    var course = getActiveCourse();
+    if (!course) return;
+    var list = document.getElementById('discountList');
+    if (!course.discounts || !course.discounts.length) { list.innerHTML = ''; return; }
+
+    var html = '';
+    course.discounts.forEach(function(d, i) {
+      html += '<div class="cco-discount-row">';
+      html += '<span class="cco-discount-code">' + escHtml(d.code) + '</span>';
+      html += '<span class="cco-discount-val">' + (d.type === 'percentage' ? d.value + '%' : formatCurrency(d.value, course.currency)) + ' off</span>';
+      html += '<span class="cco-discount-exp">' + (d.expiry ? 'Expires ' + d.expiry : 'No expiry') + '</span>';
+      html += '<button class="cco-discount-del" data-di="' + i + '">&#10005;</button>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+
+    list.querySelectorAll('.cco-discount-del').forEach(function(btn) {
+      btn.onclick = function() {
+        var di = parseInt(btn.getAttribute('data-di'));
+        updateActiveCourse(function(c) { c.discounts.splice(di, 1); });
+        renderDiscounts();
+        toast('Discount removed');
+      };
+    });
+  }
+
+  document.getElementById('addDiscountBtn').onclick = function() {
+    var code = document.getElementById('discountCode').value.trim().toUpperCase();
+    var type = document.getElementById('discountType').value;
+    var value = parseFloat(document.getElementById('discountValue').value) || 0;
+    var expiry = document.getElementById('discountExpiry').value;
+    if (!code || !value) { toast('Enter code and value'); return; }
+
+    updateActiveCourse(function(c) {
+      if (!c.discounts) c.discounts = [];
+      c.discounts.push({ code: code, type: type, value: value, expiry: expiry });
+    });
+
+    document.getElementById('discountCode').value = '';
+    document.getElementById('discountValue').value = '';
+    document.getElementById('discountExpiry').value = '';
+    renderDiscounts();
+    toast('Discount code added!');
+  };
+
+  /* ======================================================
+     SALES PAGE
+     ====================================================== */
+  var salesMode = 'edit'; // edit | preview
+
+  function renderSalesEditor() {
+    var course = getActiveCourse();
+    if (!course) { switchView('courses'); return; }
+    var sp = course.salesPage || {};
+
+    document.getElementById('spInstructorName').value = sp.instructorName || '';
+    document.getElementById('spInstructorBio').value = sp.instructorBio || '';
+    document.getElementById('spLearnPoints').value = sp.learnPoints || '';
+    renderSpTestimonials(sp.testimonials || []);
+    renderSpFaqs(sp.faqs || []);
+
+    salesMode = 'edit';
+    document.getElementById('salesEditor').style.display = '';
+    document.getElementById('salesPreview').style.display = 'none';
+  }
+
+  // Auto-save sales page on input
+  ['spInstructorName','spInstructorBio','spLearnPoints'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', debounce(function() {
+      updateActiveCourse(function(c) {
+        if (!c.salesPage) c.salesPage = {};
+        c.salesPage.instructorName = document.getElementById('spInstructorName').value.trim();
+        c.salesPage.instructorBio = document.getElementById('spInstructorBio').value.trim();
+        c.salesPage.learnPoints = document.getElementById('spLearnPoints').value.trim();
+      });
+    }, 500));
+  });
+
+  function renderSpTestimonials(testimonials) {
+    var list = document.getElementById('spTestimonialsList');
+    if (!testimonials.length) { list.innerHTML = ''; return; }
+    var html = '';
+    testimonials.forEach(function(t, i) {
+      html += '<div class="cco-sp-testimonial" style="margin-bottom:8px;display:flex;align-items:start;gap:10px;">';
+      html += '<div style="flex:1;"><p>"' + escHtml(t.quote) + '"</p><cite>- ' + escHtml(t.author) + '</cite></div>';
+      html += '<button class="cco-lesson-del" data-ti="' + i + '">&#10005;</button>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+
+    list.querySelectorAll('.cco-lesson-del').forEach(function(btn) {
+      btn.onclick = function() {
+        var ti = parseInt(btn.getAttribute('data-ti'));
+        updateActiveCourse(function(c) { c.salesPage.testimonials.splice(ti, 1); });
+        renderSpTestimonials(getActiveCourse().salesPage.testimonials);
+      };
+    });
+  }
+
+  document.getElementById('addTestimonialBtn').onclick = function() {
+    var quote = document.getElementById('spTestQuote').value.trim();
+    var author = document.getElementById('spTestAuthor').value.trim();
+    if (!quote) { toast('Enter a testimonial'); return; }
+    updateActiveCourse(function(c) {
+      if (!c.salesPage.testimonials) c.salesPage.testimonials = [];
+      c.salesPage.testimonials.push({ quote: quote, author: author || 'Anonymous' });
+    });
+    document.getElementById('spTestQuote').value = '';
+    document.getElementById('spTestAuthor').value = '';
+    renderSpTestimonials(getActiveCourse().salesPage.testimonials);
+    toast('Testimonial added');
+  };
+
+  function renderSpFaqs(faqs) {
+    var list = document.getElementById('spFaqList');
+    if (!faqs.length) { list.innerHTML = ''; return; }
+    var html = '';
+    faqs.forEach(function(f, i) {
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;">';
+      html += '<strong style="flex:1;color:rgba(255,255,255,.7);">' + escHtml(f.q) + '</strong>';
+      html += '<span style="color:rgba(255,255,255,.35);flex:1;">' + escHtml(f.a) + '</span>';
+      html += '<button class="cco-lesson-del" data-fi="' + i + '">&#10005;</button>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+
+    list.querySelectorAll('.cco-lesson-del').forEach(function(btn) {
+      btn.onclick = function() {
+        var fi = parseInt(btn.getAttribute('data-fi'));
+        updateActiveCourse(function(c) { c.salesPage.faqs.splice(fi, 1); });
+        renderSpFaqs(getActiveCourse().salesPage.faqs);
+      };
+    });
+  }
+
+  document.getElementById('addFaqBtn').onclick = function() {
+    var q = document.getElementById('spFaqQ').value.trim();
+    var a = document.getElementById('spFaqA').value.trim();
+    if (!q || !a) { toast('Enter question and answer'); return; }
+    updateActiveCourse(function(c) {
+      if (!c.salesPage.faqs) c.salesPage.faqs = [];
+      c.salesPage.faqs.push({ q: q, a: a });
+    });
+    document.getElementById('spFaqQ').value = '';
+    document.getElementById('spFaqA').value = '';
+    renderSpFaqs(getActiveCourse().salesPage.faqs);
+    toast('FAQ added');
+  };
+
+  // Preview / Edit toggle
+  document.getElementById('salesPreviewBtn').onclick = function() {
+    salesMode = salesMode === 'preview' ? 'edit' : 'preview';
+    document.getElementById('salesEditor').style.display = salesMode === 'edit' ? '' : 'none';
+    document.getElementById('salesPreview').style.display = salesMode === 'preview' ? '' : 'none';
+    document.getElementById('salesPreviewBtn').textContent = salesMode === 'preview' ? 'Edit' : 'Preview';
+    if (salesMode === 'preview') renderSalesPreview();
+  };
+  document.getElementById('salesEditBtn').onclick = function() {
+    salesMode = 'edit';
+    document.getElementById('salesEditor').style.display = '';
+    document.getElementById('salesPreview').style.display = 'none';
+    document.getElementById('salesPreviewBtn').textContent = 'Preview';
+  };
+
+  function renderSalesPreview() {
+    var course = getActiveCourse();
+    if (!course) return;
+    var sp = course.salesPage || {};
+    var slug = (course.title || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    document.getElementById('salesPreviewUrl').textContent = 'afrotools.com/course/' + slug;
+
+    var html = '';
+
+    // Hero
+    html += '<div class="cco-sp-hero">';
+    if (course.cover) html += '<img class="cco-sp-cover" src="' + escHtml(course.cover) + '" alt="">';
+    html += '<h1>' + escHtml(course.title || 'Your Course Title') + '</h1>';
+    html += '<p>' + escHtml(course.description || 'Course description goes here.') + '</p>';
+    html += '</div>';
+
+    // Instructor
+    if (sp.instructorName) {
+      html += '<div class="cco-sp-section">';
+      html += '<h2>Your Instructor</h2>';
+      html += '<div class="cco-sp-instructor">';
+      html += '<div class="cco-sp-instructor-avatar">' + (sp.instructorName.charAt(0) || '?') + '</div>';
+      html += '<div><strong style="color:#fff;">' + escHtml(sp.instructorName) + '</strong>';
+      if (sp.instructorBio) html += '<p style="margin-top:4px;">' + escHtml(sp.instructorBio) + '</p>';
+      html += '</div></div></div>';
+    }
+
+    // What you'll learn
+    var points = (sp.learnPoints || '').split('\n').filter(function(l) { return l.trim(); });
+    if (points.length) {
+      html += '<div class="cco-sp-section"><h2>What You\'ll Learn</h2><ul class="cco-sp-learn-list">';
+      points.forEach(function(p) { html += '<li>' + escHtml(p.trim()) + '</li>'; });
+      html += '</ul></div>';
+    }
+
+    // Curriculum
+    if (course.modules.length) {
+      html += '<div class="cco-sp-section"><h2>Curriculum</h2>';
+      course.modules.forEach(function(mod) {
+        html += '<div class="cco-sp-curriculum-module">';
+        html += '<h3>&#128218; ' + escHtml(mod.title || 'Module') + ' <span>' + mod.lessons.length + ' lessons</span></h3>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Pricing
+    html += '<div class="cco-sp-section">';
+    html += '<div class="cco-sp-price-box">';
+    if (course.price > 0) {
+      html += '<div class="cco-sp-price-amount">' + formatNumber(course.price) + '<span class="cco-sp-price-currency">' + course.currency + '</span></div>';
+    } else {
+      html += '<div class="cco-sp-price-amount">FREE</div>';
+    }
+    html += '<button class="cco-sp-cta">Enroll Now</button>';
+    html += '</div></div>';
+
+    // Testimonials
+    if (sp.testimonials && sp.testimonials.length) {
+      html += '<div class="cco-sp-section"><h2>What Students Say</h2>';
+      sp.testimonials.forEach(function(t) {
+        html += '<div class="cco-sp-testimonial"><p>"' + escHtml(t.quote) + '"</p><cite>- ' + escHtml(t.author) + '</cite></div>';
+      });
+      html += '</div>';
+    }
+
+    // FAQ
+    if (sp.faqs && sp.faqs.length) {
+      html += '<div class="cco-sp-section cco-sp-faq"><h2>FAQ</h2>';
+      sp.faqs.forEach(function(f) {
+        html += '<details><summary>' + escHtml(f.q) + '</summary><p>' + escHtml(f.a) + '</p></details>';
+      });
+      html += '</div>';
+    }
+
+    document.getElementById('salesPreviewBody').innerHTML = html;
+  }
+
+  /* ======================================================
+     STUDENTS
+     ====================================================== */
+  function renderStudents() {
+    var course = getActiveCourse();
+    if (!course) { switchView('courses'); return; }
+    var students = course.students || [];
+    var tbody = document.getElementById('studentsBody');
+    var empty = document.getElementById('studentsEmpty');
+    var table = document.getElementById('studentsTable');
+    document.getElementById('studentDetail').style.display = 'none';
+
+    if (!students.length) { tbody.innerHTML = ''; empty.style.display = ''; table.style.display = 'none'; return; }
+    empty.style.display = 'none';
+    table.style.display = '';
+
+    var totalLessons = 0;
+    course.modules.forEach(function(m) { totalLessons += m.lessons.length; });
+
+    var html = '';
+    students.forEach(function(s, si) {
+      var completed = (s.completedLessons || []).length;
+      var pct = totalLessons > 0 ? Math.round((completed / totalLessons) * 100) : 0;
+      html += '<tr data-si="' + si + '" style="cursor:pointer;">';
+      html += '<td class="cco-student-name">' + escHtml(s.name) + '</td>';
+      html += '<td>' + escHtml(s.email) + '</td>';
+      html += '<td>' + formatDate(s.enrolledAt) + '</td>';
+      html += '<td><div style="display:flex;align-items:center;gap:8px;"><div class="cco-progress" style="width:80px;"><div class="cco-progress-fill" style="width:' + pct + '%;"></div></div><span style="font-size:12px;">' + pct + '%</span></div></td>';
+      html += '<td>' + formatDate(s.lastActive) + '</td>';
+      html += '</tr>';
+    });
+    tbody.innerHTML = html;
+
+    tbody.querySelectorAll('tr').forEach(function(row) {
+      row.onclick = function() {
+        var si = parseInt(row.getAttribute('data-si'));
+        showStudentDetail(si);
+      };
+    });
+  }
+
+  function showStudentDetail(si) {
+    var course = getActiveCourse();
+    if (!course) return;
+    var student = course.students[si];
+    if (!student) return;
+
+    var panel = document.getElementById('studentDetail');
+    panel.style.display = '';
+    document.getElementById('studentDetailAvatar').textContent = student.name.charAt(0);
+    document.getElementById('studentDetailName').textContent = student.name;
+    document.getElementById('studentDetailEmail').textContent = student.email;
+
+    var lessons = [];
+    course.modules.forEach(function(mod) {
+      mod.lessons.forEach(function(les) { lessons.push({ moduleTitle: mod.title, lesson: les }); });
+    });
+
+    var completedIds = student.completedLessons || [];
+    var quizScores = student.quizScores || {};
+
+    var html = '';
+    lessons.forEach(function(item) {
+      var done = completedIds.indexOf(item.lesson.id) !== -1;
+      html += '<div class="cco-student-lesson-row">';
+      html += '<span class="cco-student-lesson-status' + (done ? ' done' : '') + '">' + (done ? '&#10003;' : '') + '</span>';
+      html += '<span style="flex:1;">' + escHtml(item.lesson.title) + '</span>';
+      html += '<span style="font-size:11px;color:rgba(255,255,255,.3);">' + escHtml(item.moduleTitle) + '</span>';
+      if (item.lesson.type === 'quiz' && quizScores[item.lesson.id] !== undefined) {
+        html += '<span style="font-size:12px;color:var(--cco-primary);font-weight:700;">' + quizScores[item.lesson.id] + '%</span>';
+      }
+      html += '</div>';
+    });
+    document.getElementById('studentDetailLessons').innerHTML = html;
+    panel.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Add demo students
+  document.getElementById('addDemoStudentsBtn').onclick = function() {
+    var names = [
+      { name: 'Amara Okafor', email: 'amara@gmail.com' },
+      { name: 'Kwame Mensah', email: 'kwame@outlook.com' },
+      { name: 'Fatima Hassan', email: 'fatima@yahoo.com' },
+      { name: 'Tunde Bakare', email: 'tunde@gmail.com' },
+      { name: 'Naledi Mokoena', email: 'naledi@icloud.com' }
+    ];
+
+    updateActiveCourse(function(c) {
+      if (!c.students) c.students = [];
+      var allLessonIds = [];
+      c.modules.forEach(function(m) { m.lessons.forEach(function(l) { allLessonIds.push(l.id); }); });
+
+      names.forEach(function(n) {
+        var completedCount = Math.floor(Math.random() * (allLessonIds.length + 1));
+        var completed = allLessonIds.slice(0, completedCount);
+        var quizScores = {};
+        c.modules.forEach(function(m) {
+          m.lessons.forEach(function(l) {
+            if (l.type === 'quiz' && completed.indexOf(l.id) !== -1) {
+              quizScores[l.id] = 50 + Math.floor(Math.random() * 51);
+            }
+          });
+        });
+
+        c.students.push({
+          id: uid(), name: n.name, email: n.email, paid: true,
+          enrolledAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000).toISOString(),
+          lastActive: new Date(Date.now() - Math.floor(Math.random() * 7) * 86400000).toISOString(),
+          completedLessons: completed,
+          quizScores: quizScores
+        });
+      });
+    });
+
+    renderStudents();
+    toast('5 demo students added!');
+  };
+
+  /* ======================================================
+     ANALYTICS
+     ====================================================== */
+  var enrollmentChart = null;
+  var completionChart = null;
+
+  function renderAnalytics() {
+    var course = getActiveCourse();
+    if (!course) { switchView('courses'); return; }
+    var students = course.students || [];
+
+    var totalLessons = 0;
+    course.modules.forEach(function(m) { totalLessons += m.lessons.length; });
+
+    var enrolled = students.length;
+    var completedStudents = 0;
+    var totalPct = 0;
+    var totalQuizScore = 0;
+    var quizCount = 0;
+    var revenue = 0;
+
+    students.forEach(function(s) {
+      var completed = (s.completedLessons || []).length;
+      var pct = totalLessons > 0 ? (completed / totalLessons) * 100 : 0;
+      totalPct += pct;
+      if (pct >= 100) completedStudents++;
+      if (s.paid) revenue += (course.price || 0);
+
+      var qs = s.quizScores || {};
+      Object.keys(qs).forEach(function(k) { totalQuizScore += qs[k]; quizCount++; });
+    });
+
+    var completionRate = enrolled > 0 ? Math.round(completedStudents / enrolled * 100) : 0;
+    var avgQuiz = quizCount > 0 ? Math.round(totalQuizScore / quizCount) : 0;
+
+    var statsHtml = '';
+    statsHtml += '<div class="cco-stat-card"><div class="cco-stat-val">' + enrolled + '</div><div class="cco-stat-label">Enrolled</div></div>';
+    statsHtml += '<div class="cco-stat-card"><div class="cco-stat-val">' + completionRate + '%</div><div class="cco-stat-label">Completion Rate</div></div>';
+    statsHtml += '<div class="cco-stat-card"><div class="cco-stat-val">' + formatCurrency(revenue, course.currency) + '</div><div class="cco-stat-label">Revenue</div></div>';
+    statsHtml += '<div class="cco-stat-card"><div class="cco-stat-val">' + avgQuiz + '%</div><div class="cco-stat-label">Avg Quiz Score</div></div>';
+    document.getElementById('analyticsStats').innerHTML = statsHtml;
+
+    // Charts
+    if (typeof Chart === 'undefined') return;
+
+    // Enrollment by day (last 14 days)
+    var days = [];
+    var enrollData = [];
+    for (var i = 13; i >= 0; i--) {
+      var d = new Date(Date.now() - i * 86400000);
+      var label = d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+      days.push(label);
+      var count = 0;
+      students.forEach(function(s) {
+        var ed = new Date(s.enrolledAt);
+        if (ed.toDateString() === d.toDateString()) count++;
+      });
+      enrollData.push(count);
+    }
+
+    var ctx1 = document.getElementById('enrollmentChart').getContext('2d');
+    if (enrollmentChart) enrollmentChart.destroy();
+    enrollmentChart = new Chart(ctx1, {
+      type: 'bar',
+      data: { labels: days, datasets: [{ label: 'Enrollments', data: enrollData, backgroundColor: 'rgba(132,204,22,0.4)', borderColor: '#84CC16', borderWidth: 1, borderRadius: 4 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: 'rgba(255,255,255,.3)', font: { size: 10 } }, grid: { display: false } }, y: { beginAtZero: true, ticks: { color: 'rgba(255,255,255,.3)', stepSize: 1 }, grid: { color: 'rgba(255,255,255,.05)' } } } }
+    });
+
+    // Lesson completion
+    var lessonLabels = [];
+    var lessonCompletions = [];
+    course.modules.forEach(function(mod) {
+      mod.lessons.forEach(function(les) {
+        lessonLabels.push(les.title || 'Untitled');
+        var count = 0;
+        students.forEach(function(s) { if ((s.completedLessons || []).indexOf(les.id) !== -1) count++; });
+        lessonCompletions.push(count);
+      });
+    });
+
+    var ctx2 = document.getElementById('completionChart').getContext('2d');
+    if (completionChart) completionChart.destroy();
+    completionChart = new Chart(ctx2, {
+      type: 'bar',
+      data: { labels: lessonLabels, datasets: [{ label: 'Completed', data: lessonCompletions, backgroundColor: 'rgba(132,204,22,0.3)', borderColor: '#65A30D', borderWidth: 1, borderRadius: 4 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { color: 'rgba(255,255,255,.3)', stepSize: 1 }, grid: { color: 'rgba(255,255,255,.05)' } }, y: { ticks: { color: 'rgba(255,255,255,.4)', font: { size: 11 } }, grid: { display: false } } } }
+    });
+  }
+
+  /* ======================================================
+     CERTIFICATE
+     ====================================================== */
+  window.setCertBorder = function(style) {
+    var area = document.getElementById('certPreviewArea');
+    var cert = area.querySelector('.cco-cert-preview');
+    if (!cert) return;
+    cert.className = 'cco-cert-preview border-' + style;
+    document.querySelectorAll('[data-border]').forEach(function(btn) {
+      btn.className = btn.getAttribute('data-border') === style ? 'cco-btn sm' : 'cco-btn sm secondary';
+    });
+  };
+
+  function showCertificate(studentName) {
+    var course = getActiveCourse();
+    if (!course) return;
+    var sp = course.salesPage || {};
+    var today = new Date().toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    var html = '<div class="cco-cert-preview border-classic">';
+    html += '<div class="cco-cert-ornament">&#127942;</div>';
+    html += '<div class="cco-cert-heading">Certificate of Completion</div>';
+    html += '<div class="cco-cert-subheading">This certifies that</div>';
+    html += '<div class="cco-cert-name">' + escHtml(studentName) + '</div>';
+    html += '<div class="cco-cert-course">has successfully completed<br><strong>' + escHtml(course.title || 'Untitled Course') + '</strong></div>';
+    html += '<div class="cco-cert-date">' + today + '</div>';
+    html += '<div class="cco-cert-instructor">Instructor: <strong>' + escHtml(sp.instructorName || 'Instructor') + '</strong></div>';
+    html += '<div class="cco-cert-footer">Powered by AfroTools CreatorCourse</div>';
+    html += '</div>';
+
+    document.getElementById('certPreviewArea').innerHTML = html;
+    document.getElementById('certModal').style.display = '';
+  }
+
+  // Download cert as image (canvas fallback)
+  document.getElementById('downloadCertBtn').onclick = function() {
+    var cert = document.querySelector('#certPreviewArea .cco-cert-preview');
+    if (!cert) return;
+
+    // Use html2canvas-like approach with canvas
+    var canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 600;
+    var ctx = canvas.getContext('2d');
+
+    // White background
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, 800, 600);
+
+    // Border
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(20, 20, 760, 560);
+    ctx.lineWidth = 2;
+    ctx.strokeRect(30, 30, 740, 540);
+
+    // Content
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#d4af37';
+    ctx.font = '28px serif';
+    ctx.fillText('\u{1F3C6}', 400, 80);
+
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 24px Sora, sans-serif';
+    ctx.fillText('Certificate of Completion', 400, 130);
+
+    ctx.fillStyle = '#888';
+    ctx.font = '13px sans-serif';
+    ctx.fillText('THIS CERTIFIES THAT', 400, 170);
+
+    var course = getActiveCourse();
+    var certName = cert.querySelector('.cco-cert-name');
+    ctx.fillStyle = '#111';
+    ctx.font = '32px "Instrument Serif", serif';
+    ctx.fillText(certName ? certName.textContent : '', 400, 230);
+
+    ctx.fillStyle = '#555';
+    ctx.font = '14px sans-serif';
+    ctx.fillText('has successfully completed', 400, 280);
+
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillText(course ? course.title : '', 400, 320);
+
+    var certDate = cert.querySelector('.cco-cert-date');
+    ctx.fillStyle = '#999';
+    ctx.font = '13px sans-serif';
+    ctx.fillText(certDate ? certDate.textContent : '', 400, 380);
+
+    var certInst = cert.querySelector('.cco-cert-instructor');
+    ctx.fillStyle = '#666';
+    ctx.font = '14px sans-serif';
+    ctx.fillText(certInst ? certInst.textContent : '', 400, 420);
+
+    ctx.fillStyle = '#bbb';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('Powered by AfroTools CreatorCourse', 400, 540);
+
+    // Download
+    var link = document.createElement('a');
+    link.download = 'certificate.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    toast('Certificate downloaded!');
+  };
+
+  /* ======================================================
+     SAVE / EXPORT
+     ====================================================== */
+  document.getElementById('saveBtn').onclick = function() {
+    saveCourseDetails();
+    toast('Course saved!');
+  };
+
+  document.getElementById('exportBtn').onclick = function() {
+    var course = getActiveCourse();
+    if (!course) { toast('No active course'); return; }
+    var blob = new Blob([JSON.stringify(course, null, 2)], { type: 'application/json' });
+    var link = document.createElement('a');
+    link.download = (course.title || 'course').replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.json';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    toast('Course exported!');
+  };
+
+  /* ======================================================
+     UTILITY FUNCTIONS
+     ====================================================== */
+  function escHtml(str) { var d = document.createElement('div'); d.textContent = str || ''; return d.innerHTML; }
+  function escAttr(str) { return (str || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function formatCurrency(amount, currency) {
+    var sym = { NGN: '\u20A6', KES: 'KSh', ZAR: 'R', GHS: 'GH\u20B5', USD: '$' };
+    return (sym[currency] || '') + formatNumber(amount);
+  }
+  function formatNumber(n) { return (n || 0).toLocaleString(); }
+
+  function formatDate(iso) {
+    if (!iso) return '-';
+    var d = new Date(iso);
+    return d.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function debounce(fn, ms) {
+    var timer;
+    return function() {
+      var args = arguments, self = this;
+      clearTimeout(timer);
+      timer = setTimeout(function() { fn.apply(self, args); }, ms);
+    };
+  }
+
+  // Simple sortable (basic drag reorder)
+  function makeSortable(container, itemSelector, handleSelector, onReorder) {
+    var dragging = null;
+    var items;
+
+    container.addEventListener('mousedown', function(e) {
+      var handle = e.target.closest(handleSelector);
+      if (!handle) return;
+      var item = handle.closest(itemSelector);
+      if (!item) return;
+      e.preventDefault();
+      dragging = item;
+      item.style.opacity = '0.5';
+      items = Array.from(container.querySelectorAll(itemSelector));
+
+      function onMove(e2) {
+        var y = e2.clientY;
+        items.forEach(function(other) {
+          if (other === dragging) return;
+          var rect = other.getBoundingClientRect();
+          var mid = rect.top + rect.height / 2;
+          if (y < mid && other.previousElementSibling === dragging) {
+            container.insertBefore(dragging, other);
+          } else if (y > mid && other.nextElementSibling === dragging) {
+            container.insertBefore(other, dragging);
+          }
+        });
+      }
+
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        if (!dragging) return;
+        dragging.style.opacity = '';
+        var newItems = Array.from(container.querySelectorAll(itemSelector));
+        var oldIdx = items.indexOf(dragging);
+        var newIdx = newItems.indexOf(dragging);
+        dragging = null;
+        if (oldIdx !== newIdx) onReorder(oldIdx, newIdx);
+      }
+
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  }
+
+  /* ======================================================
+     INIT
+     ====================================================== */
+  renderCoursesList();
+
+}();
+</script>
+</body>
+</html>

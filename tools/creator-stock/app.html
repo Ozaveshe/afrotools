@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CreatorStock Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/assets/js/supabase-auth.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js" defer></script>
+</head>
+<body class="csk-app">
+
+  <!-- TOPBAR -->
+  <div class="csk-topbar">
+    <a href="index.html" class="csk-topbar-back">&larr;</a>
+    <a href="index.html" class="csk-topbar-brand">&#128247; CreatorStock</a>
+    <div class="csk-topbar-actions">
+      <button class="csk-topbar-btn" id="collectionsBtn">&#128194; Collections</button>
+      <button class="csk-topbar-btn" id="dlCounterBtn">&#11015;&#65039; <span class="csk-dl-count" id="dlCount">0</span></button>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="csk-search-wrap">
+    <div class="csk-search-bar">
+      <span class="csk-search-icon">&#128269;</span>
+      <input type="text" class="csk-search-input" id="searchInput" placeholder="Search free photos, videos, music..." autocomplete="off">
+      <button class="csk-search-clear" id="searchClear">&times;</button>
+    </div>
+  </div>
+
+  <!-- RECENT SEARCHES -->
+  <div class="csk-recent-searches" id="recentSearches"></div>
+
+  <!-- SOURCE TABS -->
+  <div class="csk-source-tabs" id="sourceTabs">
+    <button class="csk-source-tab active" data-source="all">All <span class="csk-source-count" id="countAll"></span></button>
+    <button class="csk-source-tab" data-source="unsplash">Unsplash <span class="csk-source-count" id="countUnsplash"></span></button>
+    <button class="csk-source-tab" data-source="pexels">Pexels <span class="csk-source-count" id="countPexels"></span></button>
+    <button class="csk-source-tab" data-source="pixabay">Pixabay <span class="csk-source-count" id="countPixabay"></span></button>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="csk-filter-bar">
+    <div class="csk-filter-pills" id="mediaTypePills">
+      <button class="csk-filter-pill active" data-media="photo">&#128247; Photos</button>
+      <button class="csk-filter-pill" data-media="video">&#127909; Videos</button>
+    </div>
+    <div class="csk-filter-sep"></div>
+    <div class="csk-filter-pills" id="orientationPills">
+      <button class="csk-filter-pill active" data-orient="all">All</button>
+      <button class="csk-filter-pill" data-orient="landscape">Landscape</button>
+      <button class="csk-filter-pill" data-orient="portrait">Portrait</button>
+      <button class="csk-filter-pill" data-orient="squarish">Square</button>
+    </div>
+    <div class="csk-filter-sep"></div>
+    <div class="csk-color-picker-wrap">
+      <input type="color" class="csk-color-input" id="colorPicker" value="#F43F5E" title="Filter by color">
+    </div>
+    <div class="csk-safe-toggle">
+      <span>Safe</span>
+      <button class="csk-toggle on" id="safeToggle"></button>
+    </div>
+  </div>
+
+  <!-- AFRICAN CREATORS SPOTLIGHT -->
+  <div class="csk-spotlight" id="spotlightSection">
+    <div class="csk-spotlight-title"><span>&#127758;</span> African Creators Spotlight</div>
+    <div class="csk-spotlight-grid" id="spotlightGrid"></div>
+  </div>
+
+  <!-- MASONRY GRID -->
+  <div class="csk-grid-wrap">
+    <div class="csk-grid" id="photoGrid"></div>
+    <div class="csk-sentinel" id="sentinel"></div>
+    <div class="csk-status" id="statusBar"></div>
+  </div>
+
+  <!-- PHOTO DETAIL MODAL -->
+  <div class="csk-modal-overlay" id="modalOverlay">
+    <div class="csk-modal" id="modalContent">
+      <button class="csk-modal-close" id="modalClose">&times;</button>
+      <div class="csk-modal-img-wrap" id="modalImgWrap"></div>
+      <div class="csk-modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- COLLECTIONS PANEL -->
+  <div class="csk-collections-overlay" id="collectionsOverlay"></div>
+  <div class="csk-collections-panel" id="collectionsPanel">
+    <div class="csk-collections-header">
+      <div class="csk-collections-title">&#128194; Collections</div>
+      <button class="csk-collections-close" id="collectionsClose">&times;</button>
+    </div>
+    <div class="csk-new-collection">
+      <input type="text" id="newCollectionInput" placeholder="New collection name...">
+      <button id="newCollectionBtn">Create</button>
+    </div>
+    <div id="collectionsBody"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="csk-bottom-nav">
+    <a href="app.html" class="active"><span class="csk-bnav-icon">&#128247;</span>Browse</a>
+    <a href="/tools/creator-captions/app.html"><span class="csk-bnav-icon">&#9997;&#65039;</span>Captions</a>
+    <a href="index.html"><span class="csk-bnav-icon">&#8505;&#65039;</span>About</a>
+  </nav>
+
+  <!-- TOAST -->
+  <div class="csk-toast" id="toast"></div>
+
+<script>
+!function() {
+  "use strict";
+
+  var API = '/.netlify/functions/stock-search';
+  var DEMO_MODE = true; // Fallback to mock data when API unavailable
+
+  // ── STATE ─────────────────────────────────────────────
+  var state = {
+    query: '',
+    source: 'all',
+    mediaType: 'photo',
+    orientation: 'all',
+    color: '',
+    safeSearch: true,
+    page: 1,
+    perPage: 30,
+    loading: false,
+    hasMore: true,
+    results: [],
+    counts: { all: 0, unsplash: 0, pexels: 0, pixabay: 0 },
+    downloads: parseInt(localStorage.getItem('csk-downloads') || '0'),
+    recentSearches: JSON.parse(localStorage.getItem('csk-recent') || '[]'),
+    collections: JSON.parse(localStorage.getItem('csk-collections') || '[]'),
+    currentPhoto: null,
+    collectionsView: 'list', // list | detail
+    activeCollectionIdx: -1
+  };
+
+  // ── AFRICAN CREATORS SPOTLIGHT ────────────────────────
+  var SPOTLIGHT = [
+    { name: 'Omotayo Tajudeen', initials: 'OT', specialty: 'Street Photography', search: 'African street photography' },
+    { name: 'Nappy.co', initials: 'NA', specialty: 'Black Lifestyle', search: 'beautiful Black people' },
+    { name: 'Muhammadtaha Ibrahim', initials: 'MI', specialty: 'Culture & Heritage', search: 'African culture heritage' },
+    { name: 'Hian Oliveira', initials: 'HO', specialty: 'Afro-Brazilian', search: 'Afro-Brazilian people' },
+    { name: 'Iwaria Studio', initials: 'IW', specialty: 'African Business', search: 'African business professional' },
+    { name: 'Tope Asokere', initials: 'TA', specialty: 'Lagos Life', search: 'Lagos Nigeria city' },
+    { name: 'Cottonbro Studio', initials: 'CS', specialty: 'Creative Lifestyle', search: 'creative lifestyle studio' },
+    { name: 'Savanna Manners', initials: 'SM', specialty: 'Wildlife & Nature', search: 'African savanna wildlife' },
+    { name: 'Kampala Creatives', initials: 'KC', specialty: 'East Africa', search: 'East Africa Kampala' },
+    { name: 'Joburg Lens', initials: 'JL', specialty: 'South Africa', search: 'Johannesburg South Africa urban' }
+  ];
+
+  // ── MOCK DATA (demo mode) ─────────────────────────────
+  var MOCK_PHOTOS = [];
+  var mockSubjects = [
+    { title: 'African market scene', photographer: 'Omotayo Tajudeen', w: 640, h: 427, color: '#8B4513' },
+    { title: 'Lagos skyline at sunset', photographer: 'Tope Asokere', w: 640, h: 360, color: '#FF6347' },
+    { title: 'Cocoa beans drying', photographer: 'Iwaria Studio', w: 640, h: 480, color: '#654321' },
+    { title: 'Nairobi business district', photographer: 'Kampala Creatives', w: 640, h: 426, color: '#4682B4' },
+    { title: 'Traditional fabric patterns', photographer: 'Muhammadtaha Ibrahim', w: 640, h: 640, color: '#DAA520' },
+    { title: 'Cape Town mountains', photographer: 'Joburg Lens', w: 640, h: 360, color: '#2E8B57' },
+    { title: 'Street food vendor', photographer: 'Savanna Manners', w: 640, h: 427, color: '#CD853F' },
+    { title: 'African fashion model', photographer: 'Nappy.co', w: 640, h: 800, color: '#8B008B' },
+    { title: 'Safari wildlife', photographer: 'Savanna Manners', w: 640, h: 427, color: '#556B2F' },
+    { title: 'Accra nightlife', photographer: 'Hian Oliveira', w: 640, h: 480, color: '#191970' },
+    { title: 'Children playing', photographer: 'Cottonbro Studio', w: 640, h: 427, color: '#FF8C00' },
+    { title: 'Tropical beach', photographer: 'Kampala Creatives', w: 640, h: 360, color: '#00CED1' },
+    { title: 'Urban graffiti art', photographer: 'Tope Asokere', w: 640, h: 640, color: '#DC143C' },
+    { title: 'Coffee ceremony', photographer: 'Muhammadtaha Ibrahim', w: 640, h: 480, color: '#8B4513' },
+    { title: 'Desert landscape', photographer: 'Joburg Lens', w: 640, h: 360, color: '#F4A460' },
+    { title: 'Fishing boats', photographer: 'Omotayo Tajudeen', w: 640, h: 427, color: '#4169E1' },
+    { title: 'Market spices', photographer: 'Iwaria Studio', w: 640, h: 480, color: '#B22222' },
+    { title: 'Modern African architecture', photographer: 'Joburg Lens', w: 640, h: 427, color: '#708090' },
+    { title: 'Traditional dance', photographer: 'Nappy.co', w: 640, h: 640, color: '#FF4500' },
+    { title: 'Tropical fruits', photographer: 'Cottonbro Studio', w: 640, h: 480, color: '#32CD32' },
+    { title: 'Sunset over savanna', photographer: 'Savanna Manners', w: 640, h: 360, color: '#FF6347' },
+    { title: 'Kente cloth weaving', photographer: 'Muhammadtaha Ibrahim', w: 640, h: 427, color: '#FFD700' },
+    { title: 'African tech hub', photographer: 'Tope Asokere', w: 640, h: 480, color: '#4682B4' },
+    { title: 'Zanzibar doorways', photographer: 'Kampala Creatives', w: 640, h: 800, color: '#CD853F' },
+    { title: 'Portrait photography', photographer: 'Nappy.co', w: 640, h: 800, color: '#8B4513' },
+    { title: 'Victoria Falls', photographer: 'Savanna Manners', w: 640, h: 360, color: '#00BFFF' },
+    { title: 'Street musicians', photographer: 'Omotayo Tajudeen', w: 640, h: 427, color: '#8B0000' },
+    { title: 'Fresh produce market', photographer: 'Iwaria Studio', w: 640, h: 480, color: '#228B22' },
+    { title: 'African jewelry', photographer: 'Hian Oliveira', w: 640, h: 640, color: '#FFD700' },
+    { title: 'Motorcycle taxi', photographer: 'Tope Asokere', w: 640, h: 427, color: '#696969' }
+  ];
+
+  function generateMockPhotos(query, page, perPage) {
+    var filtered = query ? mockSubjects.filter(function(s) {
+      return s.title.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+             s.photographer.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    }) : mockSubjects;
+
+    if (filtered.length === 0) filtered = mockSubjects;
+
+    var results = [];
+    var sources = ['unsplash', 'pexels', 'pixabay'];
+    var start = (page - 1) * perPage;
+
+    for (var i = 0; i < perPage; i++) {
+      var idx = (start + i) % filtered.length;
+      var subj = filtered[idx];
+      var src = sources[(start + i) % 3];
+      var id = 'mock-' + page + '-' + i;
+
+      results.push({
+        id: id,
+        source: src,
+        title: subj.title,
+        photographer: subj.photographer,
+        photographerUrl: '#',
+        thumbUrl: 'data:image/svg+xml,' + encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="' + subj.w + '" height="' + subj.h + '">' +
+          '<rect width="100%" height="100%" fill="' + subj.color + '"/>' +
+          '<text x="50%" y="45%" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="16" font-family="sans-serif">' + subj.title + '</text>' +
+          '<text x="50%" y="60%" text-anchor="middle" fill="rgba(255,255,255,.4)" font-size="12" font-family="sans-serif">' + subj.photographer + '</text>' +
+          '</svg>'
+        ),
+        fullUrl: 'data:image/svg+xml,' + encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1280">' +
+          '<rect width="100%" height="100%" fill="' + subj.color + '"/>' +
+          '<text x="50%" y="45%" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="28" font-family="sans-serif">' + subj.title + '</text>' +
+          '<text x="50%" y="55%" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="18" font-family="sans-serif">by ' + subj.photographer + '</text>' +
+          '</svg>'
+        ),
+        downloadUrls: {
+          small: '#', medium: '#', large: '#'
+        },
+        width: subj.w * 3,
+        height: subj.h * 3,
+        color: subj.color,
+        colors: [subj.color, '#333333', '#666666', '#999999', '#cccccc'],
+        license: 'Free to use',
+        mediaType: 'photo'
+      });
+    }
+
+    return {
+      results: results,
+      total: filtered.length * 10,
+      counts: {
+        unsplash: Math.floor(filtered.length * 3.3),
+        pexels: Math.floor(filtered.length * 3.3),
+        pixabay: Math.floor(filtered.length * 3.4)
+      }
+    };
+  }
+
+  // ── HELPERS ───────────────────────────────────────────
+  function $(id) { return document.getElementById(id); }
+
+  function toast(msg) {
+    var el = $('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2500);
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // ── RECENT SEARCHES ──────────────────────────────────
+  function addRecentSearch(q) {
+    if (!q) return;
+    state.recentSearches = state.recentSearches.filter(function(s) { return s !== q; });
+    state.recentSearches.unshift(q);
+    if (state.recentSearches.length > 10) state.recentSearches = state.recentSearches.slice(0, 10);
+    localStorage.setItem('csk-recent', JSON.stringify(state.recentSearches));
+    renderRecentSearches();
+  }
+
+  function renderRecentSearches() {
+    var wrap = $('recentSearches');
+    if (!state.recentSearches.length) { wrap.innerHTML = ''; return; }
+    var html = '';
+    state.recentSearches.forEach(function(s) {
+      html += '<span class="csk-recent-chip" data-q="' + escapeHtml(s) + '">' + escapeHtml(s) + ' <span class="csk-recent-chip-x">&times;</span></span>';
+    });
+    wrap.innerHTML = html;
+
+    wrap.querySelectorAll('.csk-recent-chip').forEach(function(chip) {
+      chip.onclick = function(e) {
+        if (e.target.classList.contains('csk-recent-chip-x')) {
+          var q = chip.getAttribute('data-q');
+          state.recentSearches = state.recentSearches.filter(function(s) { return s !== q; });
+          localStorage.setItem('csk-recent', JSON.stringify(state.recentSearches));
+          renderRecentSearches();
+          return;
+        }
+        $('searchInput').value = chip.getAttribute('data-q');
+        doSearch(chip.getAttribute('data-q'));
+      };
+    });
+  }
+
+  // ── SPOTLIGHT ─────────────────────────────────────────
+  function renderSpotlight() {
+    var grid = $('spotlightGrid');
+    var html = '';
+    SPOTLIGHT.forEach(function(c) {
+      html += '<div class="csk-spotlight-card" data-search="' + escapeHtml(c.search) + '">' +
+        '<div class="csk-spotlight-avatar">' + c.initials + '</div>' +
+        '<div class="csk-spotlight-name">' + escapeHtml(c.name) + '</div>' +
+        '<div class="csk-spotlight-spec">' + escapeHtml(c.specialty) + '</div>' +
+        '</div>';
+    });
+    grid.innerHTML = html;
+
+    grid.querySelectorAll('.csk-spotlight-card').forEach(function(card) {
+      card.onclick = function() {
+        var q = card.getAttribute('data-search');
+        $('searchInput').value = q;
+        doSearch(q);
+      };
+    });
+  }
+
+  // ── SEARCH / FETCH ────────────────────────────────────
+  var searchTimer = null;
+
+  function doSearch(query) {
+    if (searchTimer) clearTimeout(searchTimer);
+    state.query = query || '';
+    state.page = 1;
+    state.results = [];
+    state.hasMore = true;
+
+    if (state.query) {
+      addRecentSearch(state.query);
+      $('spotlightSection').style.display = 'none';
+    } else {
+      $('spotlightSection').style.display = '';
+    }
+
+    $('searchClear').classList.toggle('visible', !!state.query);
+    fetchResults(false);
+  }
+
+  function fetchResults(append) {
+    if (state.loading) return;
+    state.loading = true;
+
+    if (!append) {
+      $('photoGrid').innerHTML = renderShimmer(12);
+    }
+    $('statusBar').textContent = 'Loading...';
+
+    // Try API first, fallback to demo
+    fetchFromAPI()
+      .then(function(data) {
+        state.loading = false;
+        handleResults(data, append);
+      })
+      .catch(function() {
+        // Fallback to mock
+        state.loading = false;
+        var mockData = generateMockPhotos(state.query, state.page, state.perPage);
+        handleResults(mockData, append);
+      });
+  }
+
+  function fetchFromAPI() {
+    if (DEMO_MODE) return Promise.reject('demo');
+
+    var params = new URLSearchParams({
+      q: state.query,
+      source: state.source,
+      type: state.mediaType,
+      orientation: state.orientation,
+      color: state.color,
+      safe: state.safeSearch ? '1' : '0',
+      page: state.page,
+      per_page: state.perPage
+    });
+
+    return fetch(API + '?' + params.toString())
+      .then(function(r) {
+        if (!r.ok) throw new Error('API error');
+        return r.json();
+      });
+  }
+
+  function handleResults(data, append) {
+    var newResults = data.results || [];
+
+    // Filter by source tab
+    if (state.source !== 'all') {
+      newResults = newResults.filter(function(r) { return r.source === state.source; });
+    }
+
+    if (append) {
+      state.results = state.results.concat(newResults);
+    } else {
+      state.results = newResults;
+    }
+
+    state.hasMore = newResults.length >= state.perPage;
+
+    // Update counts
+    if (data.counts) {
+      state.counts.unsplash = data.counts.unsplash || 0;
+      state.counts.pexels = data.counts.pexels || 0;
+      state.counts.pixabay = data.counts.pixabay || 0;
+      state.counts.all = state.counts.unsplash + state.counts.pexels + state.counts.pixabay;
+    }
+    updateSourceCounts();
+
+    if (!append) {
+      renderGrid();
+    } else {
+      appendGrid(newResults);
+    }
+
+    if (!state.results.length) {
+      $('photoGrid').innerHTML = '<div class="csk-empty"><div class="csk-empty-icon">&#128269;</div>' +
+        '<div class="csk-empty-title">No results found</div>' +
+        '<div class="csk-empty-desc">Try a different search term or adjust your filters.</div></div>';
+    }
+
+    $('statusBar').textContent = state.results.length + ' results' + (state.hasMore ? '' : ' (all loaded)');
+  }
+
+  function updateSourceCounts() {
+    var c = state.counts;
+    $('countAll').textContent = c.all ? '(' + c.all + ')' : '';
+    $('countUnsplash').textContent = c.unsplash ? '(' + c.unsplash + ')' : '';
+    $('countPexels').textContent = c.pexels ? '(' + c.pexels + ')' : '';
+    $('countPixabay').textContent = c.pixabay ? '(' + c.pixabay + ')' : '';
+  }
+
+  // ── GRID RENDERING ────────────────────────────────────
+  function renderShimmer(count) {
+    var html = '';
+    var heights = [180, 220, 260, 200, 240, 280, 190, 210, 250, 230, 270, 195];
+    for (var i = 0; i < count; i++) {
+      html += '<div class="csk-shimmer-item" style="height:' + heights[i % heights.length] + 'px"></div>';
+    }
+    return html;
+  }
+
+  function buildCardHtml(photo) {
+    return '<div class="csk-grid-item" data-id="' + photo.id + '">' +
+      '<img src="' + photo.thumbUrl + '" alt="' + escapeHtml(photo.title || 'Stock photo') + '" loading="lazy" width="' + (photo.width || 640) + '" height="' + (photo.height || 427) + '">' +
+      '<span class="csk-source-badge">' + escapeHtml(photo.source) + '</span>' +
+      '<button class="csk-add-btn" data-id="' + photo.id + '" title="Add to collection">+</button>' +
+      (photo.mediaType === 'video' ? '<div class="csk-video-badge">&#9654;</div>' : '') +
+      '<div class="csk-grid-overlay">' +
+        '<span class="csk-grid-photographer">' +
+          '<span class="csk-grid-photographer-avatar">' + (photo.photographer ? photo.photographer.charAt(0) : '?') + '</span>' +
+          escapeHtml(photo.photographer || 'Unknown') +
+        '</span>' +
+      '</div>' +
+      '</div>';
+  }
+
+  function renderGrid() {
+    var grid = $('photoGrid');
+    var html = '';
+    state.results.forEach(function(photo) {
+      html += buildCardHtml(photo);
+    });
+    grid.innerHTML = html;
+    wireGridItems();
+  }
+
+  function appendGrid(newPhotos) {
+    var grid = $('photoGrid');
+    var frag = document.createDocumentFragment();
+    newPhotos.forEach(function(photo) {
+      var div = document.createElement('div');
+      div.innerHTML = buildCardHtml(photo);
+      frag.appendChild(div.firstChild);
+    });
+    grid.appendChild(frag);
+    wireGridItems();
+  }
+
+  function wireGridItems() {
+    $('photoGrid').querySelectorAll('.csk-grid-item').forEach(function(item) {
+      item.onclick = function(e) {
+        if (e.target.classList.contains('csk-add-btn') || e.target.closest('.csk-add-btn')) {
+          e.stopPropagation();
+          var id = (e.target.closest('.csk-add-btn') || e.target).getAttribute('data-id');
+          addToCollectionPrompt(id);
+          return;
+        }
+        var id = item.getAttribute('data-id');
+        openModal(id);
+      };
+    });
+  }
+
+  // ── INFINITE SCROLL ───────────────────────────────────
+  var observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !state.loading && state.hasMore && state.query) {
+      state.page++;
+      fetchResults(true);
+    }
+  }, { rootMargin: '200px' });
+  observer.observe($('sentinel'));
+
+  // ── PHOTO DETAIL MODAL ────────────────────────────────
+  function openModal(id) {
+    var photo = state.results.find(function(p) { return p.id === id; });
+    if (!photo) return;
+    state.currentPhoto = photo;
+
+    var overlay = $('modalOverlay');
+    var imgWrap = $('modalImgWrap');
+    var body = $('modalBody');
+
+    imgWrap.innerHTML = '<img src="' + photo.fullUrl + '" alt="' + escapeHtml(photo.title || '') + '">';
+
+    var colorsHtml = '';
+    if (photo.colors && photo.colors.length) {
+      colorsHtml = '<div class="csk-modal-colors">';
+      photo.colors.forEach(function(c) {
+        colorsHtml += '<div class="csk-modal-swatch" style="background:' + c + '" title="' + c + '" data-color="' + c + '"></div>';
+      });
+      colorsHtml += '</div>';
+    }
+
+    var attrText = 'Photo by ' + (photo.photographer || 'Unknown') + ' on ' + photo.source.charAt(0).toUpperCase() + photo.source.slice(1);
+
+    body.innerHTML =
+      '<div class="csk-modal-photographer">' +
+        '<div class="csk-modal-avatar">' + (photo.photographer ? photo.photographer.charAt(0) : '?') + '</div>' +
+        '<div><div class="csk-modal-name">' + escapeHtml(photo.photographer || 'Unknown') + '</div>' +
+        '<div class="csk-modal-source">via ' + escapeHtml(photo.source) + '</div></div>' +
+      '</div>' +
+      '<div class="csk-modal-meta">' +
+        '<div class="csk-modal-meta-item"><strong>' + (photo.width || '?') + ' x ' + (photo.height || '?') + '</strong> px</div>' +
+        '<div class="csk-modal-meta-item"><strong>' + escapeHtml(photo.license || 'Free') + '</strong></div>' +
+        '<div class="csk-modal-meta-item"><strong>' + escapeHtml(photo.mediaType || 'photo') + '</strong></div>' +
+      '</div>' +
+      colorsHtml +
+      '<div class="csk-attr-row">' +
+        '<div class="csk-attr-text">' + escapeHtml(attrText) + '</div>' +
+        '<button class="csk-attr-copy" id="copyAttrBtn">Copy Attribution</button>' +
+      '</div>' +
+      '<div class="csk-modal-downloads">' +
+        '<button class="csk-dl-btn" data-size="small">&#11015;&#65039; Small</button>' +
+        '<button class="csk-dl-btn" data-size="medium">&#11015;&#65039; Medium</button>' +
+        '<button class="csk-dl-btn" data-size="large">&#11015;&#65039; Large</button>' +
+        '<button class="csk-dl-btn outline" id="addToCollBtn">&#128194; Add to Collection</button>' +
+      '</div>';
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Wire modal buttons
+    $('copyAttrBtn').onclick = function() {
+      navigator.clipboard.writeText(attrText).then(function() { toast('Attribution copied!'); });
+    };
+
+    body.querySelectorAll('.csk-dl-btn[data-size]').forEach(function(btn) {
+      btn.onclick = function() {
+        var size = btn.getAttribute('data-size');
+        var url = photo.downloadUrls && photo.downloadUrls[size] ? photo.downloadUrls[size] : photo.fullUrl;
+        if (url === '#') {
+          toast('Demo mode: download not available');
+          return;
+        }
+        window.open(url, '_blank');
+        state.downloads++;
+        localStorage.setItem('csk-downloads', state.downloads);
+        $('dlCount').textContent = state.downloads;
+        toast('Download started!');
+      };
+    });
+
+    $('addToCollBtn').onclick = function() {
+      addToCollectionPrompt(photo.id);
+    };
+
+    body.querySelectorAll('.csk-modal-swatch').forEach(function(swatch) {
+      swatch.onclick = function() {
+        var c = swatch.getAttribute('data-color');
+        navigator.clipboard.writeText(c).then(function() { toast('Color ' + c + ' copied!'); });
+      };
+    });
+  }
+
+  function closeModal() {
+    $('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    state.currentPhoto = null;
+  }
+
+  $('modalClose').onclick = closeModal;
+  $('modalOverlay').onclick = function(e) {
+    if (e.target === $('modalOverlay')) closeModal();
+  };
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      if ($('modalOverlay').classList.contains('open')) closeModal();
+      if ($('collectionsPanel').classList.contains('open')) closeCollections();
+    }
+  });
+
+  // ── COLLECTIONS ───────────────────────────────────────
+  function saveCollections() {
+    localStorage.setItem('csk-collections', JSON.stringify(state.collections));
+  }
+
+  function openCollections() {
+    state.collectionsView = 'list';
+    $('collectionsPanel').classList.add('open');
+    $('collectionsOverlay').classList.add('open');
+    renderCollections();
+  }
+
+  function closeCollections() {
+    $('collectionsPanel').classList.remove('open');
+    $('collectionsOverlay').classList.remove('open');
+  }
+
+  function renderCollections() {
+    var body = $('collectionsBody');
+
+    if (state.collectionsView === 'list') {
+      if (!state.collections.length) {
+        body.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,.3);">No collections yet. Create one above.</div>';
+        return;
+      }
+      var html = '';
+      state.collections.forEach(function(col, i) {
+        var thumbsHtml = '';
+        (col.photos || []).slice(0, 4).forEach(function(p) {
+          thumbsHtml += '<img class="csk-collection-thumb" src="' + p.thumbUrl + '" alt="">';
+        });
+        html += '<div class="csk-collection-card" data-idx="' + i + '">' +
+          '<div class="csk-collection-name">' + escapeHtml(col.name) + '</div>' +
+          '<div class="csk-collection-count">' + (col.photos ? col.photos.length : 0) + ' photos</div>' +
+          (thumbsHtml ? '<div class="csk-collection-thumbs">' + thumbsHtml + '</div>' : '') +
+          '</div>';
+      });
+      body.innerHTML = html;
+
+      body.querySelectorAll('.csk-collection-card').forEach(function(card) {
+        card.onclick = function() {
+          state.activeCollectionIdx = parseInt(card.getAttribute('data-idx'));
+          state.collectionsView = 'detail';
+          renderCollections();
+        };
+      });
+    } else if (state.collectionsView === 'detail') {
+      var col = state.collections[state.activeCollectionIdx];
+      if (!col) { state.collectionsView = 'list'; renderCollections(); return; }
+
+      var html = '<div class="csk-collection-detail-header">' +
+        '<button class="csk-collection-back" id="collBack">&larr;</button>' +
+        '<div class="csk-collection-name">' + escapeHtml(col.name) + '</div>' +
+        '</div>';
+
+      if (col.photos && col.photos.length) {
+        html += '<div class="csk-collection-items">';
+        col.photos.forEach(function(p, pi) {
+          html += '<div style="position:relative;display:inline-block;">' +
+            '<img class="csk-collection-item-thumb" src="' + p.thumbUrl + '" alt="">' +
+            '<button class="csk-collection-remove" data-pi="' + pi + '">&times;</button>' +
+            '</div>';
+        });
+        html += '</div>';
+      } else {
+        html += '<div style="text-align:center;padding:20px 0;color:rgba(255,255,255,.3);font-size:13px;">Empty collection. Add photos from the grid.</div>';
+      }
+
+      html += '<button class="csk-export-btn" id="exportCollBtn">&#128230; Export Collection (requires JSZip)</button>';
+      html += '<button class="csk-export-btn" style="margin-top:8px;color:#ef4444;border-color:rgba(239,68,68,.25);" id="deleteCollBtn">&#128465; Delete Collection</button>';
+
+      body.innerHTML = html;
+
+      $('collBack').onclick = function() { state.collectionsView = 'list'; renderCollections(); };
+
+      body.querySelectorAll('.csk-collection-remove').forEach(function(btn) {
+        btn.onclick = function() {
+          var pi = parseInt(btn.getAttribute('data-pi'));
+          col.photos.splice(pi, 1);
+          saveCollections();
+          renderCollections();
+          toast('Photo removed');
+        };
+      });
+
+      $('exportCollBtn').onclick = function() {
+        if (typeof JSZip === 'undefined') {
+          toast('JSZip CDN needed for export. Add <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"> to page.');
+          return;
+        }
+        toast('Export feature requires JSZip library');
+      };
+
+      $('deleteCollBtn').onclick = function() {
+        if (confirm('Delete "' + col.name + '"?')) {
+          state.collections.splice(state.activeCollectionIdx, 1);
+          saveCollections();
+          state.collectionsView = 'list';
+          renderCollections();
+          toast('Collection deleted');
+        }
+      };
+    }
+  }
+
+  function addToCollectionPrompt(photoId) {
+    var photo = state.results.find(function(p) { return p.id === photoId; });
+    if (!photo) { toast('Photo not found'); return; }
+
+    if (!state.collections.length) {
+      state.collections.push({ name: 'My Collection', photos: [] });
+      saveCollections();
+    }
+
+    if (state.collections.length === 1) {
+      addPhotoToCollection(0, photo);
+      return;
+    }
+
+    // Show collections panel to pick
+    openCollections();
+    toast('Click a collection to add this photo');
+
+    // Temporarily override card clicks
+    setTimeout(function() {
+      $('collectionsBody').querySelectorAll('.csk-collection-card').forEach(function(card) {
+        card.onclick = function() {
+          var idx = parseInt(card.getAttribute('data-idx'));
+          addPhotoToCollection(idx, photo);
+          closeCollections();
+        };
+      });
+    }, 100);
+  }
+
+  function addPhotoToCollection(colIdx, photo) {
+    var col = state.collections[colIdx];
+    if (!col) return;
+    if (!col.photos) col.photos = [];
+
+    var exists = col.photos.some(function(p) { return p.id === photo.id; });
+    if (exists) { toast('Already in "' + col.name + '"'); return; }
+
+    col.photos.push({
+      id: photo.id,
+      thumbUrl: photo.thumbUrl,
+      fullUrl: photo.fullUrl,
+      photographer: photo.photographer,
+      source: photo.source
+    });
+    saveCollections();
+    toast('Added to "' + col.name + '"');
+  }
+
+  $('collectionsBtn').onclick = openCollections;
+  $('collectionsClose').onclick = closeCollections;
+  $('collectionsOverlay').onclick = closeCollections;
+
+  $('newCollectionBtn').onclick = function() {
+    var name = $('newCollectionInput').value.trim();
+    if (!name) { toast('Enter a collection name'); return; }
+    state.collections.push({ name: name, photos: [] });
+    saveCollections();
+    $('newCollectionInput').value = '';
+    renderCollections();
+    toast('Collection "' + name + '" created');
+  };
+
+  $('newCollectionInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') $('newCollectionBtn').click();
+  });
+
+  // ── SEARCH INPUT WIRING ───────────────────────────────
+  $('searchInput').addEventListener('input', function() {
+    var val = this.value.trim();
+    $('searchClear').classList.toggle('visible', !!val);
+    if (searchTimer) clearTimeout(searchTimer);
+    searchTimer = setTimeout(function() { doSearch(val); }, 300);
+  });
+
+  $('searchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      if (searchTimer) clearTimeout(searchTimer);
+      doSearch(this.value.trim());
+    }
+  });
+
+  $('searchClear').onclick = function() {
+    $('searchInput').value = '';
+    $('searchClear').classList.remove('visible');
+    doSearch('');
+  };
+
+  // ── SOURCE TABS ───────────────────────────────────────
+  $('sourceTabs').querySelectorAll('.csk-source-tab').forEach(function(tab) {
+    tab.onclick = function() {
+      $('sourceTabs').querySelectorAll('.csk-source-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      state.source = tab.getAttribute('data-source');
+      state.page = 1;
+      state.results = [];
+      if (state.query) fetchResults(false);
+    };
+  });
+
+  // ── FILTER PILLS ──────────────────────────────────────
+  function wirePillGroup(containerId, stateKey, callback) {
+    $(containerId).querySelectorAll('.csk-filter-pill').forEach(function(pill) {
+      pill.onclick = function() {
+        $(containerId).querySelectorAll('.csk-filter-pill').forEach(function(p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        state[stateKey] = pill.getAttribute('data-media') || pill.getAttribute('data-orient') || '';
+        if (callback) callback();
+        if (state.query) { state.page = 1; state.results = []; fetchResults(false); }
+      };
+    });
+  }
+
+  wirePillGroup('mediaTypePills', 'mediaType');
+  wirePillGroup('orientationPills', 'orientation');
+
+  // Color picker
+  var colorTimer = null;
+  $('colorPicker').addEventListener('input', function() {
+    if (colorTimer) clearTimeout(colorTimer);
+    var val = this.value;
+    colorTimer = setTimeout(function() {
+      state.color = val;
+      if (state.query) { state.page = 1; state.results = []; fetchResults(false); }
+    }, 500);
+  });
+
+  // Safe search toggle
+  $('safeToggle').onclick = function() {
+    this.classList.toggle('on');
+    state.safeSearch = this.classList.contains('on');
+  };
+
+  // ── DOWNLOAD COUNTER ──────────────────────────────────
+  $('dlCount').textContent = state.downloads;
+
+  // ── INIT ──────────────────────────────────────────────
+  renderRecentSearches();
+  renderSpotlight();
+
+  // Show initial curated content
+  if (!state.query) {
+    doSearch('Africa');
+    $('searchInput').value = '';
+    $('searchClear').classList.remove('visible');
+    $('spotlightSection').style.display = '';
+  }
+
+}();
+</script>
+</body>
+</html>

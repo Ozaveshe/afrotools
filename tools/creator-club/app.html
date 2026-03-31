@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CreatorClub Workspace | AfroTools</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="/assets/js/supabase-auth.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js" defer></script>
+</head>
+<body class="ccb-app">
+
+  <!-- TOPBAR -->
+  <div class="ccb-topbar">
+    <a href="index.html" class="ccb-topbar-back">&larr;</a>
+    <a href="index.html" class="ccb-topbar-brand">&#127775; CreatorClub</a>
+    <div class="ccb-topbar-actions">
+      <button class="ccb-topbar-btn" id="previewPageBtn">Preview Page</button>
+      <button class="ccb-topbar-btn primary" id="shareBtn">Share Link</button>
+    </div>
+  </div>
+
+  <!-- SHELL: sidebar + main -->
+  <div class="ccb-shell">
+
+    <!-- SIDEBAR -->
+    <nav class="ccb-sidebar" id="sidebar">
+      <span class="ccb-sidebar-label">Manage</span>
+      <button class="ccb-sidebar-item active" data-view="dashboard">
+        <span class="ccb-nav-icon">&#128202;</span> Dashboard
+      </button>
+      <button class="ccb-sidebar-item" data-view="page-builder">
+        <span class="ccb-nav-icon">&#128196;</span> Page Builder
+      </button>
+      <button class="ccb-sidebar-item" data-view="tiers">
+        <span class="ccb-nav-icon">&#127969;</span> Tiers
+        <span class="ccb-nav-badge" id="tierCount">0</span>
+      </button>
+      <button class="ccb-sidebar-item" data-view="content">
+        <span class="ccb-nav-icon">&#128274;</span> Content
+      </button>
+      <button class="ccb-sidebar-item" data-view="members">
+        <span class="ccb-nav-icon">&#128101;</span> Members
+      </button>
+      <span class="ccb-sidebar-label">Grow</span>
+      <button class="ccb-sidebar-item" data-view="community">
+        <span class="ccb-nav-icon">&#128172;</span> Community
+      </button>
+      <button class="ccb-sidebar-item" data-view="analytics">
+        <span class="ccb-nav-icon">&#128200;</span> Analytics
+      </button>
+      <span class="ccb-sidebar-label">Configure</span>
+      <button class="ccb-sidebar-item" data-view="payments">
+        <span class="ccb-nav-icon">&#128179;</span> Payments
+      </button>
+      <button class="ccb-sidebar-item" data-view="settings">
+        <span class="ccb-nav-icon">&#9881;&#65039;</span> Settings
+      </button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="ccb-main">
+      <div class="ccb-main-inner">
+
+        <!-- ===== DASHBOARD ===== -->
+        <div class="ccb-view" id="view-dashboard">
+          <div class="ccb-page-header">
+            <h2>Dashboard</h2>
+            <p>Your membership overview at a glance.</p>
+          </div>
+          <div class="ccb-stats" id="dashStats"></div>
+          <div class="ccb-chart-row">
+            <div class="ccb-chart-card">
+              <div class="ccb-chart-title">&#128200; Revenue Trend (6 months)</div>
+              <div class="ccb-chart-wrap"><canvas id="revenueChart"></canvas></div>
+            </div>
+            <div class="ccb-chart-card">
+              <div class="ccb-chart-title">&#127856; Tier Breakdown</div>
+              <div class="ccb-chart-wrap"><canvas id="tierChart"></canvas></div>
+            </div>
+          </div>
+          <h3 style="font-size:15px;margin-bottom:12px;">Recent Activity</h3>
+          <div class="ccb-feed" id="activityFeed"></div>
+        </div>
+
+        <!-- ===== PAGE BUILDER ===== -->
+        <div class="ccb-view" id="view-page-builder" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Page Builder</h2>
+            <p>Design your public membership page.</p>
+          </div>
+          <div class="ccb-builder-split">
+            <div class="ccb-builder-editor">
+              <div class="ccb-builder-panel-header">&#9998;&#65039; Editor</div>
+              <div class="ccb-builder-panel-body">
+                <div class="ccb-builder-section">
+                  <div class="ccb-builder-section-title">Hero Section</div>
+                  <div class="ccb-form-group">
+                    <label class="ccb-form-label">Creator Name</label>
+                    <input class="ccb-form-input" id="pbName" placeholder="Your name or brand">
+                  </div>
+                  <div class="ccb-form-group">
+                    <label class="ccb-form-label">Tagline</label>
+                    <input class="ccb-form-input" id="pbTagline" placeholder="A short tagline for your page">
+                  </div>
+                  <div class="ccb-form-group">
+                    <label class="ccb-form-label">Profile Photo URL</label>
+                    <input class="ccb-form-input" id="pbPhoto" placeholder="https://...">
+                  </div>
+                </div>
+                <div class="ccb-builder-section">
+                  <div class="ccb-builder-section-title">About</div>
+                  <div class="ccb-form-group">
+                    <label class="ccb-form-label">About You</label>
+                    <textarea class="ccb-form-textarea" id="pbAbout" rows="4" placeholder="Tell your audience who you are and what they get by joining..."></textarea>
+                  </div>
+                </div>
+                <div class="ccb-builder-section">
+                  <div class="ccb-builder-section-title">FAQ (Optional)</div>
+                  <div id="pbFaqList"></div>
+                  <button class="ccb-btn sm" id="addPbFaq">+ Add FAQ</button>
+                </div>
+                <div class="ccb-builder-section">
+                  <div class="ccb-builder-section-title">Testimonials (Optional)</div>
+                  <div id="pbTestimonialList"></div>
+                  <button class="ccb-btn sm" id="addPbTestimonial">+ Add Testimonial</button>
+                </div>
+                <button class="ccb-btn primary" id="savePage" style="width:100%;margin-top:8px;">Save Page</button>
+              </div>
+            </div>
+            <div class="ccb-builder-preview">
+              <div class="ccb-builder-panel-header">&#128065;&#65039; Live Preview</div>
+              <div class="ccb-builder-panel-body">
+                <div class="ccb-preview-frame" id="livePreview">
+                  <div style="text-align:center;padding:40px 0;color:#9ca3af;">
+                    <div style="font-size:32px;margin-bottom:8px;">&#128196;</div>
+                    <div style="font-size:14px;">Start filling in the editor to see your page preview.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TIERS ===== -->
+        <div class="ccb-view" id="view-tiers" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Membership Tiers</h2>
+            <p>Create up to 5 tiers. Drag to reorder.</p>
+          </div>
+          <div class="ccb-tier-list" id="tierList"></div>
+          <div style="margin-top:16px;">
+            <button class="ccb-btn primary" id="addTierBtn">+ Add Tier</button>
+          </div>
+        </div>
+
+        <!-- ===== CONTENT VAULT ===== -->
+        <div class="ccb-view" id="view-content" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Content Vault</h2>
+            <p>Gate exclusive content behind tiers.</p>
+          </div>
+          <div style="margin-bottom:16px;">
+            <button class="ccb-btn primary" id="addContentBtn">+ Add Content</button>
+          </div>
+          <div class="ccb-content-list" id="contentList"></div>
+        </div>
+
+        <!-- ===== MEMBERS ===== -->
+        <div class="ccb-view" id="view-members" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Members</h2>
+            <p>Track and manage your community members.</p>
+          </div>
+          <div class="ccb-table-wrap">
+            <div class="ccb-table-toolbar">
+              <select class="ccb-table-filter" id="memberTierFilter">
+                <option value="all">All Tiers</option>
+              </select>
+              <select class="ccb-table-filter" id="memberStatusFilter">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="churned">Churned</option>
+              </select>
+              <div style="flex:1"></div>
+              <button class="ccb-btn sm" id="exportCsvBtn">Export CSV</button>
+            </div>
+            <table class="ccb-table">
+              <thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Joined</th><th>Status</th></tr></thead>
+              <tbody id="memberTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== COMMUNITY ===== -->
+        <div class="ccb-view" id="view-community" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Community Feed</h2>
+            <p>Post updates for your members.</p>
+          </div>
+          <div style="margin-bottom:20px;">
+            <div class="ccb-form-group">
+              <textarea class="ccb-form-textarea" id="newPostText" rows="3" placeholder="Write an update for your community..."></textarea>
+            </div>
+            <div class="ccb-form-row" style="margin-bottom:12px;">
+              <div class="ccb-form-group" style="margin-bottom:0;">
+                <label class="ccb-form-label">Image URL (optional)</label>
+                <input class="ccb-form-input" id="newPostImage" placeholder="https://...">
+              </div>
+              <div class="ccb-form-group" style="margin-bottom:0;">
+                <label class="ccb-form-label">Tier Access</label>
+                <select class="ccb-form-select" id="newPostTier">
+                  <option value="all">All Members</option>
+                </select>
+              </div>
+            </div>
+            <button class="ccb-btn primary" id="publishPostBtn">Publish Post</button>
+          </div>
+          <div class="ccb-community-feed" id="communityFeed"></div>
+          <h3 style="font-size:15px;margin-top:24px;margin-bottom:12px;">Community Links</h3>
+          <div class="ccb-community-links">
+            <div class="ccb-community-link-card">
+              <div class="ccb-community-link-icon">&#128172;</div>
+              <div class="ccb-community-link-info">
+                <div class="ccb-community-link-name">WhatsApp Group</div>
+                <div class="ccb-community-link-desc">Invite link for members</div>
+              </div>
+              <input class="ccb-form-input" id="whatsappLink" placeholder="https://chat.whatsapp.com/..." style="width:180px;">
+            </div>
+            <div class="ccb-community-link-card">
+              <div class="ccb-community-link-icon">&#9992;&#65039;</div>
+              <div class="ccb-community-link-info">
+                <div class="ccb-community-link-name">Telegram Group</div>
+                <div class="ccb-community-link-desc">Invite link for members</div>
+              </div>
+              <input class="ccb-form-input" id="telegramLink" placeholder="https://t.me/..." style="width:180px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== ANALYTICS ===== -->
+        <div class="ccb-view" id="view-analytics" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Analytics</h2>
+            <p>Track your membership growth and revenue.</p>
+          </div>
+          <div class="ccb-analytics-grid" id="analyticsCards"></div>
+          <div class="ccb-chart-row">
+            <div class="ccb-chart-card">
+              <div class="ccb-chart-title">&#128200; MRR Over Time</div>
+              <div class="ccb-chart-wrap"><canvas id="mrrChart"></canvas></div>
+            </div>
+            <div class="ccb-chart-card">
+              <div class="ccb-chart-title">&#128176; Revenue by Currency</div>
+              <div class="ccb-chart-wrap"><canvas id="currencyChart"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PAYMENTS ===== -->
+        <div class="ccb-view" id="view-payments" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Payment Integration</h2>
+            <p>Connect your payment gateways.</p>
+          </div>
+          <div class="ccb-form-group">
+            <div class="ccb-toggle-row">
+              <label class="ccb-form-label" style="margin-bottom:0;text-transform:none;font-size:14px;color:rgba(255,255,255,.8);">&#9888;&#65039; Test Mode</label>
+              <button class="ccb-toggle on" id="testModeToggle"></button>
+            </div>
+          </div>
+          <div class="ccb-payment-grid">
+            <div class="ccb-payment-card">
+              <div class="ccb-payment-card-header">
+                <span class="ccb-payment-card-icon">&#128154;</span>
+                <span class="ccb-payment-card-name">Paystack</span>
+                <span class="ccb-payment-card-status pending" id="paystackStatus">Not Connected</span>
+              </div>
+              <div class="ccb-form-group">
+                <label class="ccb-form-label">Public Key</label>
+                <input class="ccb-form-input" id="paystackKey" placeholder="pk_test_...">
+              </div>
+              <button class="ccb-btn sm" onclick="CCB.savePayment('paystack')">Save</button>
+            </div>
+            <div class="ccb-payment-card">
+              <div class="ccb-payment-card-header">
+                <span class="ccb-payment-card-icon">&#128310;</span>
+                <span class="ccb-payment-card-name">Flutterwave</span>
+                <span class="ccb-payment-card-status pending" id="flutterwaveStatus">Not Connected</span>
+              </div>
+              <div class="ccb-form-group">
+                <label class="ccb-form-label">Public Key</label>
+                <input class="ccb-form-input" id="flutterwaveKey" placeholder="FLWPUBK_TEST-...">
+              </div>
+              <button class="ccb-btn sm" onclick="CCB.savePayment('flutterwave')">Save</button>
+            </div>
+            <div class="ccb-payment-card">
+              <div class="ccb-payment-card-header">
+                <span class="ccb-payment-card-icon">&#128241;</span>
+                <span class="ccb-payment-card-name">M-Pesa</span>
+                <span class="ccb-payment-card-status pending" id="mpesaStatus">Not Connected</span>
+              </div>
+              <div class="ccb-form-group">
+                <label class="ccb-form-label">Till Number</label>
+                <input class="ccb-form-input" id="mpesaTill" placeholder="123456">
+              </div>
+              <button class="ccb-btn sm" onclick="CCB.savePayment('mpesa')">Save</button>
+            </div>
+          </div>
+          <div style="margin-top:20px;">
+            <label class="ccb-form-label">Webhook URL</label>
+            <div class="ccb-webhook-url">
+              <code id="webhookUrl">https://afrotools.com/api/webhook/club/your-club-id</code>
+              <span class="copy-btn" onclick="CCB.copyWebhook()">&#128203;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SETTINGS ===== -->
+        <div class="ccb-view" id="view-settings" style="display:none">
+          <div class="ccb-page-header">
+            <h2>Settings</h2>
+            <p>Configure your club and welcome email.</p>
+          </div>
+          <div class="ccb-chart-card" style="margin-bottom:20px;">
+            <div class="ccb-chart-title">&#127760; Public Page URL</div>
+            <div class="ccb-form-row">
+              <div class="ccb-form-group" style="margin-bottom:0;">
+                <label class="ccb-form-label">Slug</label>
+                <input class="ccb-form-input" id="clubSlug" placeholder="my-club">
+              </div>
+              <div style="display:flex;align-items:flex-end;padding-bottom:2px;">
+                <span style="font-size:13px;color:rgba(255,255,255,.4);font-family:monospace;">afrotools.com/club/<span id="slugPreview" style="color:var(--ccb-primary);">my-club</span></span>
+              </div>
+            </div>
+          </div>
+          <div class="ccb-chart-card" style="margin-bottom:20px;">
+            <div class="ccb-chart-title">&#9993;&#65039; Welcome Email Template</div>
+            <div class="ccb-form-group">
+              <label class="ccb-form-label">Subject</label>
+              <input class="ccb-form-input" id="emailSubject" value="Welcome to the club, {{name}}!">
+            </div>
+            <div class="ccb-form-group">
+              <label class="ccb-form-label">Body</label>
+              <textarea class="ccb-form-textarea" id="emailBody" rows="6">Hey {{name}},
+
+Welcome to the {{tier}} tier! Here's what you get:
+
+{{benefits}}
+
+Thanks for joining. Let's build something great together.</textarea>
+            </div>
+            <p style="font-size:12px;margin-top:8px;">Merge tags: <span class="ccb-email-merge-tag">{{name}}</span> <span class="ccb-email-merge-tag">{{tier}}</span> <span class="ccb-email-merge-tag">{{benefits}}</span></p>
+            <div style="margin-top:16px;">
+              <button class="ccb-btn sm" id="previewEmailBtn">Preview Email</button>
+              <button class="ccb-btn primary sm" id="saveSettingsBtn" style="margin-left:8px;">Save Settings</button>
+            </div>
+            <div class="ccb-email-preview" id="emailPreview" style="display:none;margin-top:16px;"></div>
+          </div>
+
+          <!-- Public Page Preview -->
+          <div class="ccb-public-preview-wrap">
+            <div class="ccb-public-preview-bar">
+              <div class="ccb-public-preview-dots"><span></span><span></span><span></span></div>
+              <div class="ccb-public-preview-url" id="publicPreviewUrl">afrotools.com/club/my-club</div>
+            </div>
+            <div style="padding:20px;">
+              <div class="ccb-preview-frame" id="publicPagePreview">
+                <div style="text-align:center;padding:40px 0;color:#9ca3af;">
+                  <div style="font-size:32px;margin-bottom:8px;">&#127760;</div>
+                  <div style="font-size:14px;">Configure your page builder to see a preview here.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <div class="ccb-bottom-nav" id="bottomNav">
+    <button class="active" data-view="dashboard"><span class="ccb-bnav-icon">&#128202;</span>Dashboard</button>
+    <button data-view="tiers"><span class="ccb-bnav-icon">&#127969;</span>Tiers</button>
+    <button data-view="content"><span class="ccb-bnav-icon">&#128274;</span>Content</button>
+    <button data-view="members"><span class="ccb-bnav-icon">&#128101;</span>Members</button>
+    <button data-view="analytics"><span class="ccb-bnav-icon">&#128200;</span>Analytics</button>
+  </div>
+
+  <!-- TOAST -->
+  <div class="ccb-toast" id="toast"></div>
+
+  <!-- TIER MODAL -->
+  <div class="ccb-modal-overlay" id="tierModal">
+    <div class="ccb-modal">
+      <div class="ccb-modal-header">
+        <h3 id="tierModalTitle">Add Tier</h3>
+        <button class="ccb-modal-close" onclick="CCB.closeTierModal()">&times;</button>
+      </div>
+      <div class="ccb-form-group">
+        <label class="ccb-form-label">Tier Name</label>
+        <input class="ccb-form-input" id="tierNameInput" placeholder="e.g. Inner Circle">
+      </div>
+      <div class="ccb-form-row">
+        <div class="ccb-form-group">
+          <label class="ccb-form-label">Price</label>
+          <input class="ccb-form-input" id="tierPriceInput" type="number" placeholder="0" min="0">
+        </div>
+        <div class="ccb-form-group">
+          <label class="ccb-form-label">Currency</label>
+          <select class="ccb-form-select" id="tierCurrencyInput">
+            <option value="NGN">NGN - Naira</option>
+            <option value="KES">KES - Shilling</option>
+            <option value="ZAR">ZAR - Rand</option>
+            <option value="GHS">GHS - Cedi</option>
+            <option value="USD">USD - Dollar</option>
+          </select>
+        </div>
+      </div>
+      <div class="ccb-form-group">
+        <label class="ccb-form-label">Billing Cycle</label>
+        <select class="ccb-form-select" id="tierCycleInput">
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+          <option value="one-time">One-time</option>
+        </select>
+      </div>
+      <div class="ccb-form-group">
+        <label class="ccb-form-label">Tier Color</label>
+        <input type="color" id="tierColorInput" value="#F59E0B" style="width:48px;height:36px;border:none;background:none;cursor:pointer;">
+      </div>
+      <div class="ccb-form-group">
+        <label class="ccb-form-label">Benefits</label>
+        <div id="tierBenefitsEditor"></div>
+        <button class="ccb-btn sm" id="addBenefitBtn" style="margin-top:8px;">+ Add Benefit</button>
+      </div>
+      <div class="ccb-form-group">
+        <div class="ccb-toggle-row">
+          <label class="ccb-form-label" style="margin-bottom:0;text-transform:none;font-size:13px;color:rgba(255,255,255,.7);">Member Limit</label>
+          <button class="ccb-toggle" id="tierLimitToggle"></button>
+        </div>
+        <input class="ccb-form-input" id="tierLimitInput" type="number" placeholder="Max members" min="1" style="margin-top:8px;display:none;">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button class="ccb-btn" onclick="CCB.closeTierModal()">Cancel</button>
+        <button class="ccb-btn primary" id="saveTierBtn" style="flex:1;">Save Tier</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT MODAL -->
+  <div class="ccb-modal-overlay" id="contentModal">
+    <div class="ccb-modal">
+      <div class="ccb-modal-header">
+        <h3 id="contentModalTitle">Add Content</h3>
+        <button class="ccb-modal-close" onclick="CCB.closeContentModal()">&times;</button>
+      </div>
+      <div class="ccb-form-group">
+        <label class="ccb-form-label">Content Type</label>
+        <select class="ccb-form-select" id="contentTypeInput">
+          <option value="pdf">PDF Link</option>
+          <option value="video">Video Link</option>
+          <option value="audio">Audio Link</option>
+          <option value="text">Text Post</option>
+          <option value="download">Download Link</option>
+        </select>
+      </div>
+      <div class="ccb-form-group">
+        <label class="ccb-form-label">Title</label>
+        <input class="ccb-form-input" id="contentTitleInput" placeholder="Content title">
+      </div>
+      <div class="ccb-form-group">
+        <label class="ccb-form-label">Description</label>
+        <textarea class="ccb-form-textarea" id="contentDescInput" rows="3" placeholder="Brief description..."></textarea>
+      </div>
+      <div class="ccb-form-group" id="contentUrlGroup">
+        <label class="ccb-form-label">URL</label>
+        <input class="ccb-form-input" id="contentUrlInput" placeholder="https://...">
+      </div>
+      <div class="ccb-form-group" id="contentBodyGroup" style="display:none">
+        <label class="ccb-form-label">Content Body</label>
+        <textarea class="ccb-form-textarea" id="contentBodyInput" rows="6" placeholder="Write your post content here..."></textarea>
+      </div>
+      <div class="ccb-form-row">
+        <div class="ccb-form-group">
+          <label class="ccb-form-label">Tier Access</label>
+          <select class="ccb-form-select" id="contentTierInput"></select>
+        </div>
+        <div class="ccb-form-group">
+          <label class="ccb-form-label">Drip Date (optional)</label>
+          <input class="ccb-form-input" id="contentDripInput" type="date">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button class="ccb-btn" onclick="CCB.closeContentModal()">Cancel</button>
+        <button class="ccb-btn primary" id="saveContentBtn" style="flex:1;">Save Content</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ============================================================
+   CreatorClub — Membership & Community Platform
+   All JS inline. localStorage for demo. ccb- prefix.
+   ============================================================ */
+var CCB = (function() {
+  'use strict';
+
+  /* ---------- STORAGE ---------- */
+  var KEYS = {
+    tiers: 'ccb_tiers',
+    content: 'ccb_content',
+    members: 'ccb_members',
+    posts: 'ccb_posts',
+    page: 'ccb_page',
+    payments: 'ccb_payments',
+    settings: 'ccb_settings',
+    activity: 'ccb_activity'
+  };
+
+  function load(k) { try { return JSON.parse(localStorage.getItem(k)) || null; } catch(e) { return null; } }
+  function save(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+  /* ---------- STATE ---------- */
+  var state = {
+    tiers: load(KEYS.tiers) || [],
+    content: load(KEYS.content) || [],
+    members: load(KEYS.members) || generateDemoMembers(),
+    posts: load(KEYS.posts) || [],
+    page: load(KEYS.page) || { name: '', tagline: '', photo: '', about: '', faqs: [], testimonials: [] },
+    payments: load(KEYS.payments) || { paystack: '', flutterwave: '', mpesa: '', testMode: true },
+    settings: load(KEYS.settings) || { slug: 'my-club', emailSubject: 'Welcome to the club, {{name}}!', emailBody: 'Hey {{name}},\n\nWelcome to the {{tier}} tier! Here\'s what you get:\n\n{{benefits}}\n\nThanks for joining.' },
+    activity: load(KEYS.activity) || generateDemoActivity(),
+    editTierIdx: -1,
+    editContentIdx: -1
+  };
+
+  function persist() {
+    save(KEYS.tiers, state.tiers);
+    save(KEYS.content, state.content);
+    save(KEYS.members, state.members);
+    save(KEYS.posts, state.posts);
+    save(KEYS.page, state.page);
+    save(KEYS.payments, state.payments);
+    save(KEYS.settings, state.settings);
+    save(KEYS.activity, state.activity);
+  }
+
+  /* ---------- DEMO DATA ---------- */
+  function generateDemoMembers() {
+    var names = ['Amina Bello','Kofi Mensah','Thabo Ndlovu','Wanjiku Kamau','Ngozi Okafor','Yaw Asante','Fatima Diallo','Sipho Dlamini','Adeola Bakare','Chiamaka Eze','Kwame Boateng','Zanele Mkhize'];
+    var tiers = ['Free','Supporter','Inner Circle','Free','Supporter','Inner Circle','Supporter','Free','Inner Circle','Supporter','Free','Supporter'];
+    var statuses = ['active','active','active','active','active','churned','active','active','active','active','churned','active'];
+    var members = [];
+    for (var i = 0; i < names.length; i++) {
+      var d = new Date(); d.setDate(d.getDate() - Math.floor(Math.random() * 90));
+      members.push({ name: names[i], email: names[i].toLowerCase().replace(/\s/g,'.') + '@email.com', tier: tiers[i], joined: d.toISOString().split('T')[0], status: statuses[i] });
+    }
+    return members;
+  }
+
+  function generateDemoActivity() {
+    var acts = [
+      { icon: '&#128100;', text: '<strong>Amina Bello</strong> joined Inner Circle', time: '2 hours ago' },
+      { icon: '&#128176;', text: '<strong>NGN 5,000</strong> payment received', time: '3 hours ago' },
+      { icon: '&#128100;', text: '<strong>Kofi Mensah</strong> joined Supporter', time: '5 hours ago' },
+      { icon: '&#128274;', text: 'New content added: <strong>Video Tutorial #4</strong>', time: '1 day ago' },
+      { icon: '&#128100;', text: '<strong>Thabo Ndlovu</strong> upgraded to Inner Circle', time: '2 days ago' },
+      { icon: '&#128176;', text: '<strong>KES 1,200</strong> payment received', time: '2 days ago' }
+    ];
+    return acts;
+  }
+
+  /* ---------- CURRENCY SYMBOLS ---------- */
+  var SYMBOLS = { NGN: '\u20A6', KES: 'KSh', ZAR: 'R', GHS: 'GH\u20B5', USD: '$' };
+
+  /* ---------- TOAST ---------- */
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 2200);
+  }
+
+  /* ---------- NAVIGATION ---------- */
+  var currentView = 'dashboard';
+  function switchView(view) {
+    currentView = view;
+    document.querySelectorAll('.ccb-view').forEach(function(v) { v.style.display = 'none'; });
+    var target = document.getElementById('view-' + view);
+    if (target) target.style.display = '';
+    document.querySelectorAll('.ccb-sidebar-item').forEach(function(b) { b.classList.toggle('active', b.dataset.view === view); });
+    document.querySelectorAll('.ccb-bottom-nav button').forEach(function(b) { b.classList.toggle('active', b.dataset.view === view); });
+    if (view === 'dashboard') renderDashboard();
+    if (view === 'tiers') renderTiers();
+    if (view === 'content') renderContent();
+    if (view === 'members') renderMembers();
+    if (view === 'community') renderCommunity();
+    if (view === 'analytics') renderAnalytics();
+    if (view === 'payments') renderPayments();
+    if (view === 'settings') renderSettings();
+    if (view === 'page-builder') renderPageBuilder();
+  }
+
+  /* ---------- DASHBOARD ---------- */
+  function renderDashboard() {
+    var total = state.members.length;
+    var active = state.members.filter(function(m) { return m.status === 'active'; }).length;
+    var churned = state.members.filter(function(m) { return m.status === 'churned'; }).length;
+    var mrr = computeMRR();
+
+    var html = '';
+    html += '<div class="ccb-stat-card"><div class="ccb-stat-label">Total Members</div><div class="ccb-stat-value amber">' + total + '</div><div class="ccb-stat-change up">+3 this month</div></div>';
+    html += '<div class="ccb-stat-card"><div class="ccb-stat-label">Monthly Revenue (MRR)</div><div class="ccb-stat-value green">' + SYMBOLS.NGN + formatNum(mrr) + '</div><div class="ccb-stat-change up">+12% vs last month</div></div>';
+    html += '<div class="ccb-stat-card"><div class="ccb-stat-label">Active Members</div><div class="ccb-stat-value">' + active + '</div></div>';
+    html += '<div class="ccb-stat-card"><div class="ccb-stat-label">Churned</div><div class="ccb-stat-value red">' + churned + '</div></div>';
+    document.getElementById('dashStats').innerHTML = html;
+
+    // Activity feed
+    var feedHtml = '';
+    state.activity.forEach(function(a) {
+      feedHtml += '<div class="ccb-feed-item"><div class="ccb-feed-avatar">' + a.icon + '</div><div class="ccb-feed-text">' + a.text + '</div><div class="ccb-feed-time">' + a.time + '</div></div>';
+    });
+    document.getElementById('activityFeed').innerHTML = feedHtml || '<div class="ccb-empty"><div class="ccb-empty-icon">&#128203;</div><div class="ccb-empty-title">No activity yet</div></div>';
+
+    renderRevenueChart();
+    renderTierPieChart();
+  }
+
+  function computeMRR() {
+    var mrr = 0;
+    state.members.forEach(function(m) {
+      if (m.status !== 'active') return;
+      var tier = state.tiers.find(function(t) { return t.name === m.tier; });
+      if (tier && tier.cycle === 'monthly') mrr += tier.price;
+      else if (tier && tier.cycle === 'yearly') mrr += tier.price / 12;
+    });
+    return Math.round(mrr);
+  }
+
+  function formatNum(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+  var revenueChartInstance = null;
+  function renderRevenueChart() {
+    var ctx = document.getElementById('revenueChart');
+    if (!ctx) return;
+    if (revenueChartInstance) revenueChartInstance.destroy();
+    var labels = ['Nov','Dec','Jan','Feb','Mar','Apr'];
+    var data = [12000, 18000, 22000, 28000, 35000, computeMRR() || 42000];
+    revenueChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: [{ label: 'MRR', data: data, borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,.1)', fill: true, tension: .4, pointRadius: 4, pointBackgroundColor: '#F59E0B' }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: 'rgba(255,255,255,.4)', font: { size: 11 } } }, y: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: 'rgba(255,255,255,.4)', font: { size: 11 }, callback: function(v) { return SYMBOLS.NGN + formatNum(v); } } } } }
+    });
+  }
+
+  var tierChartInstance = null;
+  function renderTierPieChart() {
+    var ctx = document.getElementById('tierChart');
+    if (!ctx) return;
+    if (tierChartInstance) tierChartInstance.destroy();
+    var counts = {};
+    state.members.forEach(function(m) { counts[m.tier] = (counts[m.tier] || 0) + 1; });
+    var labels = Object.keys(counts);
+    var data = Object.values(counts);
+    var colors = ['#F59E0B','#D97706','#92400E','#FDE68A','#78350F'];
+    tierChartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: { labels: labels, datasets: [{ data: data, backgroundColor: colors.slice(0, labels.length), borderWidth: 0 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,.6)', font: { size: 11 }, padding: 12 } } }, cutout: '60%' }
+    });
+  }
+
+  /* ---------- PAGE BUILDER ---------- */
+  function renderPageBuilder() {
+    var pg = state.page;
+    document.getElementById('pbName').value = pg.name || '';
+    document.getElementById('pbTagline').value = pg.tagline || '';
+    document.getElementById('pbPhoto').value = pg.photo || '';
+    document.getElementById('pbAbout').value = pg.about || '';
+    renderPbFaqs();
+    renderPbTestimonials();
+    updateLivePreview();
+  }
+
+  function renderPbFaqs() {
+    var html = '';
+    (state.page.faqs || []).forEach(function(f, i) {
+      html += '<div style="margin-bottom:10px;display:flex;gap:8px;align-items:start;"><div style="flex:1;"><input class="ccb-form-input pb-faq-q" data-idx="' + i + '" placeholder="Question" value="' + escHtml(f.q) + '" style="margin-bottom:4px;"><input class="ccb-form-input pb-faq-a" data-idx="' + i + '" placeholder="Answer" value="' + escHtml(f.a) + '"></div><button class="ccb-btn sm danger" onclick="CCB.removePbFaq(' + i + ')">&#128465;</button></div>';
+    });
+    document.getElementById('pbFaqList').innerHTML = html;
+  }
+
+  function renderPbTestimonials() {
+    var html = '';
+    (state.page.testimonials || []).forEach(function(t, i) {
+      html += '<div style="margin-bottom:10px;display:flex;gap:8px;align-items:start;"><div style="flex:1;"><input class="ccb-form-input pb-test-name" data-idx="' + i + '" placeholder="Name" value="' + escHtml(t.name) + '" style="margin-bottom:4px;"><input class="ccb-form-input pb-test-text" data-idx="' + i + '" placeholder="What they said..." value="' + escHtml(t.text) + '"></div><button class="ccb-btn sm danger" onclick="CCB.removePbTestimonial(' + i + ')">&#128465;</button></div>';
+    });
+    document.getElementById('pbTestimonialList').innerHTML = html;
+  }
+
+  function updateLivePreview() {
+    var pg = state.page;
+    var name = pg.name || 'Your Name';
+    var tagline = pg.tagline || 'Your tagline here';
+    var about = pg.about || 'Tell your audience about yourself and what they get by joining your community.';
+
+    var html = '<div style="text-align:center;margin-bottom:20px;">';
+    if (pg.photo) html += '<img src="' + escHtml(pg.photo) + '" style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin-bottom:12px;" onerror="this.style.display=\'none\'">';
+    else html += '<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#D97706);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;">&#127775;</div>';
+    html += '<h2 style="margin-bottom:4px;">' + escHtml(name) + '</h2>';
+    html += '<p style="color:#6b7280;font-size:14px;">' + escHtml(tagline) + '</p></div>';
+    html += '<p style="margin-bottom:16px;">' + escHtml(about) + '</p>';
+
+    if (state.tiers.length) {
+      html += '<div class="ccb-preview-tier-cards">';
+      state.tiers.forEach(function(t) {
+        var sym = SYMBOLS[t.currency] || t.currency;
+        html += '<div class="ccb-preview-tier" style="border-color:' + t.color + ';">';
+        html += '<div class="ccb-preview-tier-name">' + escHtml(t.name) + '</div>';
+        html += '<div class="ccb-preview-tier-price">' + sym + formatNum(t.price) + '</div>';
+        html += '<div class="ccb-preview-tier-cycle">/' + t.cycle + '</div>';
+        if (t.benefits && t.benefits.length) {
+          html += '<ul class="ccb-preview-tier-benefits">';
+          t.benefits.forEach(function(b) { html += '<li>' + escHtml(b) + '</li>'; });
+          html += '</ul>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    if (pg.faqs && pg.faqs.length) {
+      html += '<h3 style="margin-top:20px;font-size:16px;color:#111;">FAQ</h3>';
+      pg.faqs.forEach(function(f) {
+        if (f.q) html += '<div style="margin-top:8px;"><strong style="color:#111;font-size:13px;">' + escHtml(f.q) + '</strong><p style="font-size:13px;">' + escHtml(f.a) + '</p></div>';
+      });
+    }
+
+    if (pg.testimonials && pg.testimonials.length) {
+      html += '<h3 style="margin-top:20px;font-size:16px;color:#111;">What Members Say</h3>';
+      pg.testimonials.forEach(function(t) {
+        if (t.name) html += '<div style="margin-top:8px;padding:12px;background:#f9fafb;border-radius:8px;"><p style="font-size:13px;font-style:italic;margin-bottom:4px;">"' + escHtml(t.text) + '"</p><p style="font-size:12px;font-weight:700;color:#111;">— ' + escHtml(t.name) + '</p></div>';
+      });
+    }
+
+    document.getElementById('livePreview').innerHTML = html;
+  }
+
+  function savePage() {
+    state.page.name = document.getElementById('pbName').value.trim();
+    state.page.tagline = document.getElementById('pbTagline').value.trim();
+    state.page.photo = document.getElementById('pbPhoto').value.trim();
+    state.page.about = document.getElementById('pbAbout').value.trim();
+
+    state.page.faqs = [];
+    document.querySelectorAll('.pb-faq-q').forEach(function(el) {
+      var idx = parseInt(el.dataset.idx);
+      var aEl = document.querySelector('.pb-faq-a[data-idx="' + idx + '"]');
+      state.page.faqs.push({ q: el.value.trim(), a: aEl ? aEl.value.trim() : '' });
+    });
+
+    state.page.testimonials = [];
+    document.querySelectorAll('.pb-test-name').forEach(function(el) {
+      var idx = parseInt(el.dataset.idx);
+      var tEl = document.querySelector('.pb-test-text[data-idx="' + idx + '"]');
+      state.page.testimonials.push({ name: el.value.trim(), text: tEl ? tEl.value.trim() : '' });
+    });
+
+    persist();
+    updateLivePreview();
+    toast('Page saved');
+  }
+
+  /* ---------- TIERS ---------- */
+  function renderTiers() {
+    var html = '';
+    if (!state.tiers.length) {
+      html = '<div class="ccb-empty"><div class="ccb-empty-icon">&#127969;</div><div class="ccb-empty-title">No tiers yet</div><div class="ccb-empty-desc">Create your first membership tier to get started.</div></div>';
+    } else {
+      state.tiers.forEach(function(t, i) {
+        var sym = SYMBOLS[t.currency] || t.currency;
+        html += '<div class="ccb-tier-card" draggable="true" data-idx="' + i + '">';
+        html += '<div class="ccb-tier-color-strip" style="background:' + t.color + ';"></div>';
+        html += '<div class="ccb-tier-drag-handle">&#9776;</div>';
+        html += '<div class="ccb-tier-body">';
+        html += '<div class="ccb-tier-header"><span class="ccb-tier-name">' + escHtml(t.name) + '</span><span class="ccb-tier-price">' + sym + formatNum(t.price) + '</span><span class="ccb-tier-cycle">/' + t.cycle + '</span></div>';
+        if (t.benefits && t.benefits.length) {
+          html += '<div class="ccb-tier-benefits-list">';
+          t.benefits.forEach(function(b) { html += '<div class="ccb-tier-benefit-item">&#10003; ' + escHtml(b) + '</div>'; });
+          html += '</div>';
+        }
+        if (t.limit) html += '<div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:6px;">Limit: ' + t.limit + ' members</div>';
+        html += '<div class="ccb-tier-actions"><button class="ccb-btn sm" onclick="CCB.editTier(' + i + ')">Edit</button><button class="ccb-btn sm danger" onclick="CCB.deleteTier(' + i + ')">Delete</button></div>';
+        html += '</div></div>';
+      });
+    }
+    document.getElementById('tierList').innerHTML = html;
+    document.getElementById('tierCount').textContent = state.tiers.length;
+    initTierDrag();
+    updateTierSelectors();
+  }
+
+  function initTierDrag() {
+    var cards = document.querySelectorAll('.ccb-tier-card[draggable]');
+    var dragIdx = null;
+    cards.forEach(function(card) {
+      card.addEventListener('dragstart', function(e) {
+        dragIdx = parseInt(card.dataset.idx);
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      card.addEventListener('dragend', function() { card.classList.remove('dragging'); });
+      card.addEventListener('dragover', function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+      card.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var dropIdx = parseInt(card.dataset.idx);
+        if (dragIdx !== null && dragIdx !== dropIdx) {
+          var item = state.tiers.splice(dragIdx, 1)[0];
+          state.tiers.splice(dropIdx, 0, item);
+          persist();
+          renderTiers();
+        }
+      });
+    });
+  }
+
+  function openTierModal(idx) {
+    state.editTierIdx = idx === undefined ? -1 : idx;
+    var tier = idx >= 0 ? state.tiers[idx] : { name: '', price: 0, currency: 'NGN', cycle: 'monthly', color: '#F59E0B', benefits: [], limit: null };
+    document.getElementById('tierModalTitle').textContent = idx >= 0 ? 'Edit Tier' : 'Add Tier';
+    document.getElementById('tierNameInput').value = tier.name;
+    document.getElementById('tierPriceInput').value = tier.price || '';
+    document.getElementById('tierCurrencyInput').value = tier.currency;
+    document.getElementById('tierCycleInput').value = tier.cycle;
+    document.getElementById('tierColorInput').value = tier.color;
+    document.getElementById('tierLimitInput').value = tier.limit || '';
+    document.getElementById('tierLimitInput').style.display = tier.limit ? '' : 'none';
+    var tog = document.getElementById('tierLimitToggle');
+    tog.className = 'ccb-toggle' + (tier.limit ? ' on' : '');
+    renderBenefitsEditor(tier.benefits || []);
+    document.getElementById('tierModal').classList.add('open');
+  }
+
+  function closeTierModal() { document.getElementById('tierModal').classList.remove('open'); }
+
+  function renderBenefitsEditor(benefits) {
+    var html = '';
+    benefits.forEach(function(b, i) {
+      html += '<div style="display:flex;gap:6px;margin-bottom:6px;"><input class="ccb-form-input tier-benefit-input" value="' + escHtml(b) + '" placeholder="Benefit"><button class="ccb-btn sm danger" onclick="this.parentElement.remove()">&#128465;</button></div>';
+    });
+    document.getElementById('tierBenefitsEditor').innerHTML = html;
+  }
+
+  function saveTier() {
+    var name = document.getElementById('tierNameInput').value.trim();
+    if (!name) { toast('Tier name is required'); return; }
+    if (state.tiers.length >= 5 && state.editTierIdx < 0) { toast('Maximum 5 tiers allowed'); return; }
+
+    var benefits = [];
+    document.querySelectorAll('.tier-benefit-input').forEach(function(el) {
+      if (el.value.trim()) benefits.push(el.value.trim());
+    });
+
+    var limitToggle = document.getElementById('tierLimitToggle');
+    var limitVal = limitToggle.classList.contains('on') ? parseInt(document.getElementById('tierLimitInput').value) || null : null;
+
+    var tier = {
+      name: name,
+      price: parseFloat(document.getElementById('tierPriceInput').value) || 0,
+      currency: document.getElementById('tierCurrencyInput').value,
+      cycle: document.getElementById('tierCycleInput').value,
+      color: document.getElementById('tierColorInput').value,
+      benefits: benefits,
+      limit: limitVal
+    };
+
+    if (state.editTierIdx >= 0) {
+      state.tiers[state.editTierIdx] = tier;
+    } else {
+      state.tiers.push(tier);
+    }
+
+    persist();
+    closeTierModal();
+    renderTiers();
+    toast(state.editTierIdx >= 0 ? 'Tier updated' : 'Tier created');
+  }
+
+  function editTier(idx) { openTierModal(idx); }
+  function deleteTier(idx) {
+    if (!confirm('Delete this tier?')) return;
+    state.tiers.splice(idx, 1);
+    persist();
+    renderTiers();
+    toast('Tier deleted');
+  }
+
+  function updateTierSelectors() {
+    var opts = '<option value="all">All Tiers</option>';
+    state.tiers.forEach(function(t) { opts += '<option value="' + escHtml(t.name) + '">' + escHtml(t.name) + '</option>'; });
+    var selectors = ['memberTierFilter', 'newPostTier', 'contentTierInput'];
+    selectors.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        var prev = el.value;
+        el.innerHTML = opts;
+        if (prev) el.value = prev;
+      }
+    });
+  }
+
+  /* ---------- CONTENT VAULT ---------- */
+  function renderContent() {
+    var html = '';
+    if (!state.content.length) {
+      html = '<div class="ccb-empty"><div class="ccb-empty-icon">&#128274;</div><div class="ccb-empty-title">No content yet</div><div class="ccb-empty-desc">Add exclusive content and gate it behind your membership tiers.</div></div>';
+    } else {
+      state.content.forEach(function(c, i) {
+        var icons = { pdf: '&#128196;', video: '&#127909;', audio: '&#127911;', text: '&#128221;', download: '&#128229;' };
+        html += '<div class="ccb-content-item">';
+        html += '<div class="ccb-content-type-icon">' + (icons[c.type] || '&#128196;') + '</div>';
+        html += '<div class="ccb-content-info"><div class="ccb-content-title">' + escHtml(c.title) + '</div><div class="ccb-content-meta">' + c.type.toUpperCase() + (c.drip ? ' &middot; Drips ' + c.drip : '') + '</div></div>';
+        html += '<span class="ccb-tier-badge">' + escHtml(c.tier) + '</span>';
+        html += '<div class="ccb-content-actions"><button class="ccb-btn sm" onclick="CCB.editContent(' + i + ')">Edit</button><button class="ccb-btn sm danger" onclick="CCB.deleteContent(' + i + ')">&#128465;</button></div>';
+        html += '</div>';
+      });
+    }
+    document.getElementById('contentList').innerHTML = html;
+  }
+
+  function openContentModal(idx) {
+    state.editContentIdx = idx === undefined ? -1 : idx;
+    var c = idx >= 0 ? state.content[idx] : { type: 'pdf', title: '', desc: '', url: '', body: '', tier: 'all', drip: '' };
+    document.getElementById('contentModalTitle').textContent = idx >= 0 ? 'Edit Content' : 'Add Content';
+    document.getElementById('contentTypeInput').value = c.type;
+    document.getElementById('contentTitleInput').value = c.title;
+    document.getElementById('contentDescInput').value = c.desc;
+    document.getElementById('contentUrlInput').value = c.url || '';
+    document.getElementById('contentBodyInput').value = c.body || '';
+    document.getElementById('contentTierInput').value = c.tier;
+    document.getElementById('contentDripInput').value = c.drip || '';
+    toggleContentFields(c.type);
+    document.getElementById('contentModal').classList.add('open');
+  }
+
+  function closeContentModal() { document.getElementById('contentModal').classList.remove('open'); }
+
+  function toggleContentFields(type) {
+    document.getElementById('contentUrlGroup').style.display = type === 'text' ? 'none' : '';
+    document.getElementById('contentBodyGroup').style.display = type === 'text' ? '' : 'none';
+  }
+
+  function saveContent() {
+    var title = document.getElementById('contentTitleInput').value.trim();
+    if (!title) { toast('Content title is required'); return; }
+    var type = document.getElementById('contentTypeInput').value;
+    var c = {
+      type: type,
+      title: title,
+      desc: document.getElementById('contentDescInput').value.trim(),
+      url: type !== 'text' ? document.getElementById('contentUrlInput').value.trim() : '',
+      body: type === 'text' ? document.getElementById('contentBodyInput').value.trim() : '',
+      tier: document.getElementById('contentTierInput').value,
+      drip: document.getElementById('contentDripInput').value
+    };
+    if (state.editContentIdx >= 0) {
+      state.content[state.editContentIdx] = c;
+    } else {
+      state.content.push(c);
+    }
+    persist();
+    closeContentModal();
+    renderContent();
+    toast(state.editContentIdx >= 0 ? 'Content updated' : 'Content added');
+  }
+
+  function editContent(idx) { openContentModal(idx); }
+  function deleteContent(idx) {
+    if (!confirm('Delete this content?')) return;
+    state.content.splice(idx, 1);
+    persist();
+    renderContent();
+    toast('Content deleted');
+  }
+
+  /* ---------- MEMBERS ---------- */
+  function renderMembers() {
+    var tierFilter = document.getElementById('memberTierFilter').value;
+    var statusFilter = document.getElementById('memberStatusFilter').value;
+    var filtered = state.members.filter(function(m) {
+      if (tierFilter !== 'all' && m.tier !== tierFilter) return false;
+      if (statusFilter !== 'all' && m.status !== statusFilter) return false;
+      return true;
+    });
+    var html = '';
+    if (!filtered.length) {
+      html = '<tr><td colspan="5" style="text-align:center;padding:40px;color:rgba(255,255,255,.3);">No members found</td></tr>';
+    } else {
+      filtered.forEach(function(m) {
+        html += '<tr>';
+        html += '<td><strong>' + escHtml(m.name) + '</strong></td>';
+        html += '<td>' + escHtml(m.email) + '</td>';
+        html += '<td><span class="ccb-tier-badge">' + escHtml(m.tier) + '</span></td>';
+        html += '<td>' + m.joined + '</td>';
+        html += '<td><span class="ccb-status-badge ' + m.status + '">' + m.status + '</span></td>';
+        html += '</tr>';
+      });
+    }
+    document.getElementById('memberTableBody').innerHTML = html;
+  }
+
+  function exportCSV() {
+    var rows = [['Name','Email','Tier','Joined','Status']];
+    state.members.forEach(function(m) { rows.push([m.name, m.email, m.tier, m.joined, m.status]); });
+    var csv = rows.map(function(r) { return r.map(function(c) { return '"' + c + '"'; }).join(','); }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'creatorclub-members.csv';
+    a.click();
+    toast('CSV exported');
+  }
+
+  /* ---------- COMMUNITY ---------- */
+  function renderCommunity() {
+    var html = '';
+    if (!state.posts.length) {
+      html = '<div class="ccb-empty"><div class="ccb-empty-icon">&#128172;</div><div class="ccb-empty-title">No posts yet</div><div class="ccb-empty-desc">Write your first community update above.</div></div>';
+    } else {
+      state.posts.forEach(function(p, i) {
+        html += '<div class="ccb-post-card">';
+        html += '<div class="ccb-post-header"><div class="ccb-post-avatar">&#127775;</div><div class="ccb-post-author">You</div><span class="ccb-tier-badge" style="margin-right:8px;">' + escHtml(p.tier) + '</span><div class="ccb-post-time">' + p.date + '</div></div>';
+        if (p.image) html += '<div class="ccb-post-image"><img src="' + escHtml(p.image) + '" style="width:100%;border-radius:10px;" onerror="this.parentElement.innerHTML=\'&#128247; Image\'"></div>';
+        html += '<div class="ccb-post-body">' + escHtml(p.text) + '</div>';
+        html += '<div class="ccb-post-footer"><button class="ccb-btn sm danger" onclick="CCB.deletePost(' + i + ')">Delete</button></div>';
+        html += '</div>';
+      });
+    }
+    document.getElementById('communityFeed').innerHTML = html;
+    document.getElementById('whatsappLink').value = state.settings.whatsapp || '';
+    document.getElementById('telegramLink').value = state.settings.telegram || '';
+  }
+
+  function publishPost() {
+    var text = document.getElementById('newPostText').value.trim();
+    if (!text) { toast('Write something first'); return; }
+    var post = {
+      text: text,
+      image: document.getElementById('newPostImage').value.trim(),
+      tier: document.getElementById('newPostTier').value,
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+    };
+    state.posts.unshift(post);
+    persist();
+    document.getElementById('newPostText').value = '';
+    document.getElementById('newPostImage').value = '';
+    renderCommunity();
+    toast('Post published');
+  }
+
+  function deletePost(idx) {
+    if (!confirm('Delete this post?')) return;
+    state.posts.splice(idx, 1);
+    persist();
+    renderCommunity();
+    toast('Post deleted');
+  }
+
+  /* ---------- ANALYTICS ---------- */
+  function renderAnalytics() {
+    var mrr = computeMRR();
+    var total = state.members.length;
+    var churned = state.members.filter(function(m) { return m.status === 'churned'; }).length;
+    var churnRate = total ? Math.round((churned / total) * 100) : 0;
+
+    var tierConversions = {};
+    state.tiers.forEach(function(t) {
+      var count = state.members.filter(function(m) { return m.tier === t.name && m.status === 'active'; }).length;
+      tierConversions[t.name] = count;
+    });
+
+    var html = '';
+    html += '<div class="ccb-analytics-card"><div class="ccb-analytics-label">MRR</div><div class="ccb-analytics-value" style="color:var(--ccb-primary);">' + SYMBOLS.NGN + formatNum(mrr) + '</div></div>';
+    html += '<div class="ccb-analytics-card"><div class="ccb-analytics-label">Churn Rate</div><div class="ccb-analytics-value" style="color:' + (churnRate > 10 ? '#ef4444' : '#22c55e') + ';">' + churnRate + '%</div></div>';
+    html += '<div class="ccb-analytics-card"><div class="ccb-analytics-label">Active Members</div><div class="ccb-analytics-value">' + (total - churned) + '</div></div>';
+    html += '<div class="ccb-analytics-card"><div class="ccb-analytics-label">Total Content</div><div class="ccb-analytics-value">' + state.content.length + '</div></div>';
+    document.getElementById('analyticsCards').innerHTML = html;
+
+    renderMRRChart();
+    renderCurrencyChart();
+  }
+
+  var mrrChartInstance = null;
+  function renderMRRChart() {
+    var ctx = document.getElementById('mrrChart');
+    if (!ctx) return;
+    if (mrrChartInstance) mrrChartInstance.destroy();
+    var labels = ['Oct','Nov','Dec','Jan','Feb','Mar','Apr'];
+    var data = [8000, 12000, 18000, 22000, 28000, 35000, computeMRR() || 42000];
+    mrrChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: [{ label: 'MRR', data: data, borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,.1)', fill: true, tension: .4, pointRadius: 4, pointBackgroundColor: '#F59E0B' }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: 'rgba(255,255,255,.4)', font: { size: 11 } } }, y: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: 'rgba(255,255,255,.4)', font: { size: 11 }, callback: function(v) { return SYMBOLS.NGN + formatNum(v); } } } } }
+    });
+  }
+
+  var currencyChartInstance = null;
+  function renderCurrencyChart() {
+    var ctx = document.getElementById('currencyChart');
+    if (!ctx) return;
+    if (currencyChartInstance) currencyChartInstance.destroy();
+    currencyChartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: { labels: ['NGN','KES','ZAR','GHS','USD'], datasets: [{ data: [65, 15, 10, 7, 3], backgroundColor: ['#F59E0B','#D97706','#92400E','#FDE68A','#78350F'], borderWidth: 0 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,.6)', font: { size: 11 }, padding: 12 } } }, cutout: '60%' }
+    });
+  }
+
+  /* ---------- PAYMENTS ---------- */
+  function renderPayments() {
+    var p = state.payments;
+    document.getElementById('paystackKey').value = p.paystack || '';
+    document.getElementById('flutterwaveKey').value = p.flutterwave || '';
+    document.getElementById('mpesaTill').value = p.mpesa || '';
+    var testTog = document.getElementById('testModeToggle');
+    testTog.className = 'ccb-toggle' + (p.testMode ? ' on' : '');
+
+    ['paystack','flutterwave','mpesa'].forEach(function(gw) {
+      var statusEl = document.getElementById(gw + 'Status');
+      var val = gw === 'mpesa' ? p.mpesa : p[gw];
+      if (val) {
+        statusEl.textContent = 'Connected';
+        statusEl.className = 'ccb-payment-card-status connected';
+      } else {
+        statusEl.textContent = 'Not Connected';
+        statusEl.className = 'ccb-payment-card-status pending';
+      }
+    });
+  }
+
+  function savePayment(gw) {
+    if (gw === 'paystack') state.payments.paystack = document.getElementById('paystackKey').value.trim();
+    if (gw === 'flutterwave') state.payments.flutterwave = document.getElementById('flutterwaveKey').value.trim();
+    if (gw === 'mpesa') state.payments.mpesa = document.getElementById('mpesaTill').value.trim();
+    persist();
+    renderPayments();
+    toast(gw.charAt(0).toUpperCase() + gw.slice(1) + ' saved');
+  }
+
+  function copyWebhook() {
+    var url = document.getElementById('webhookUrl').textContent;
+    navigator.clipboard.writeText(url).then(function() { toast('Webhook URL copied'); });
+  }
+
+  /* ---------- SETTINGS ---------- */
+  function renderSettings() {
+    var s = state.settings;
+    document.getElementById('clubSlug').value = s.slug || 'my-club';
+    document.getElementById('slugPreview').textContent = s.slug || 'my-club';
+    document.getElementById('emailSubject').value = s.emailSubject || '';
+    document.getElementById('emailBody').value = s.emailBody || '';
+    document.getElementById('publicPreviewUrl').textContent = 'afrotools.com/club/' + (s.slug || 'my-club');
+    renderPublicPagePreview();
+  }
+
+  function renderPublicPagePreview() {
+    var pg = state.page;
+    var name = pg.name || 'Your Name';
+    var tagline = pg.tagline || 'Your tagline here';
+
+    var html = '<div style="text-align:center;margin-bottom:16px;">';
+    html += '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#D97706);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px;">&#127775;</div>';
+    html += '<h2 style="font-size:18px;margin-bottom:2px;">' + escHtml(name) + '</h2>';
+    html += '<p style="font-size:13px;">' + escHtml(tagline) + '</p></div>';
+
+    if (state.tiers.length) {
+      html += '<div class="ccb-preview-tier-cards">';
+      state.tiers.forEach(function(t) {
+        var sym = SYMBOLS[t.currency] || t.currency;
+        html += '<div class="ccb-preview-tier" style="border-color:' + t.color + ';"><div class="ccb-preview-tier-name">' + escHtml(t.name) + '</div><div class="ccb-preview-tier-price">' + sym + formatNum(t.price) + '</div><div class="ccb-preview-tier-cycle">/' + t.cycle + '</div></div>';
+      });
+      html += '</div>';
+    } else {
+      html += '<p style="text-align:center;font-size:13px;color:#9ca3af;">Add tiers to see them here</p>';
+    }
+
+    document.getElementById('publicPagePreview').innerHTML = html;
+  }
+
+  function saveSettings() {
+    state.settings.slug = document.getElementById('clubSlug').value.trim().replace(/[^a-z0-9-]/gi, '').toLowerCase() || 'my-club';
+    state.settings.emailSubject = document.getElementById('emailSubject').value.trim();
+    state.settings.emailBody = document.getElementById('emailBody').value.trim();
+    state.settings.whatsapp = document.getElementById('whatsappLink') ? document.getElementById('whatsappLink').value.trim() : '';
+    state.settings.telegram = document.getElementById('telegramLink') ? document.getElementById('telegramLink').value.trim() : '';
+    persist();
+    renderSettings();
+    toast('Settings saved');
+  }
+
+  function previewEmail() {
+    var subject = document.getElementById('emailSubject').value;
+    var body = document.getElementById('emailBody').value;
+    var tier = state.tiers.length ? state.tiers[0] : { name: 'Supporter', benefits: ['Exclusive content', 'Monthly Q&A'] };
+    var benefitsList = (tier.benefits || []).join('\n- ');
+    if (benefitsList) benefitsList = '- ' + benefitsList;
+
+    var rendered = body.replace(/\{\{name\}\}/g, 'Amina').replace(/\{\{tier\}\}/g, tier.name).replace(/\{\{benefits\}\}/g, benefitsList);
+    var renderedSubject = subject.replace(/\{\{name\}\}/g, 'Amina').replace(/\{\{tier\}\}/g, tier.name);
+
+    var el = document.getElementById('emailPreview');
+    el.style.display = '';
+    el.innerHTML = '<h3>' + escHtml(renderedSubject) + '</h3><p style="white-space:pre-wrap;">' + escHtml(rendered) + '</p>';
+  }
+
+  /* ---------- UTILS ---------- */
+  function escHtml(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+  /* ---------- INIT ---------- */
+  function init() {
+    // Sidebar nav
+    document.querySelectorAll('.ccb-sidebar-item').forEach(function(btn) {
+      btn.addEventListener('click', function() { switchView(btn.dataset.view); });
+    });
+    // Bottom nav
+    document.querySelectorAll('.ccb-bottom-nav button').forEach(function(btn) {
+      btn.addEventListener('click', function() { switchView(btn.dataset.view); });
+    });
+
+    // Tier modal
+    document.getElementById('addTierBtn').addEventListener('click', function() { openTierModal(); });
+    document.getElementById('saveTierBtn').addEventListener('click', saveTier);
+    document.getElementById('addBenefitBtn').addEventListener('click', function() {
+      var wrap = document.getElementById('tierBenefitsEditor');
+      var div = document.createElement('div');
+      div.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;';
+      div.innerHTML = '<input class="ccb-form-input tier-benefit-input" placeholder="Benefit"><button class="ccb-btn sm danger" onclick="this.parentElement.remove()">&#128465;</button>';
+      wrap.appendChild(div);
+    });
+    document.getElementById('tierLimitToggle').addEventListener('click', function() {
+      this.classList.toggle('on');
+      document.getElementById('tierLimitInput').style.display = this.classList.contains('on') ? '' : 'none';
+    });
+
+    // Content modal
+    document.getElementById('addContentBtn').addEventListener('click', function() { openContentModal(); });
+    document.getElementById('saveContentBtn').addEventListener('click', saveContent);
+    document.getElementById('contentTypeInput').addEventListener('change', function() { toggleContentFields(this.value); });
+
+    // Members
+    document.getElementById('memberTierFilter').addEventListener('change', renderMembers);
+    document.getElementById('memberStatusFilter').addEventListener('change', renderMembers);
+    document.getElementById('exportCsvBtn').addEventListener('click', exportCSV);
+
+    // Community
+    document.getElementById('publishPostBtn').addEventListener('click', publishPost);
+
+    // Page Builder
+    document.getElementById('savePage').addEventListener('click', savePage);
+    document.getElementById('addPbFaq').addEventListener('click', function() {
+      state.page.faqs = state.page.faqs || [];
+      state.page.faqs.push({ q: '', a: '' });
+      renderPbFaqs();
+    });
+    document.getElementById('addPbTestimonial').addEventListener('click', function() {
+      state.page.testimonials = state.page.testimonials || [];
+      state.page.testimonials.push({ name: '', text: '' });
+      renderPbTestimonials();
+    });
+
+    // Live preview updates
+    ['pbName','pbTagline','pbPhoto','pbAbout'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', function() {
+        state.page[id.replace('pb','').toLowerCase()] = this.value;
+        // Map field names properly
+        if (id === 'pbName') state.page.name = this.value;
+        if (id === 'pbTagline') state.page.tagline = this.value;
+        if (id === 'pbPhoto') state.page.photo = this.value;
+        if (id === 'pbAbout') state.page.about = this.value;
+        updateLivePreview();
+      });
+    });
+
+    // Settings
+    document.getElementById('clubSlug').addEventListener('input', function() {
+      var slug = this.value.replace(/[^a-z0-9-]/gi, '').toLowerCase();
+      document.getElementById('slugPreview').textContent = slug || 'my-club';
+      document.getElementById('publicPreviewUrl').textContent = 'afrotools.com/club/' + (slug || 'my-club');
+    });
+    document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+    document.getElementById('previewEmailBtn').addEventListener('click', previewEmail);
+    document.getElementById('testModeToggle').addEventListener('click', function() {
+      this.classList.toggle('on');
+      state.payments.testMode = this.classList.contains('on');
+      persist();
+    });
+
+    // Topbar
+    document.getElementById('previewPageBtn').addEventListener('click', function() { switchView('settings'); });
+    document.getElementById('shareBtn').addEventListener('click', function() {
+      var slug = state.settings.slug || 'my-club';
+      var url = 'https://afrotools.com/club/' + slug;
+      navigator.clipboard.writeText(url).then(function() { toast('Link copied: ' + url); });
+    });
+
+    // Modal close on overlay click
+    document.querySelectorAll('.ccb-modal-overlay').forEach(function(overlay) {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) overlay.classList.remove('open');
+      });
+    });
+
+    // Initial render
+    renderDashboard();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+
+  /* ---------- PUBLIC API ---------- */
+  return {
+    editTier: editTier,
+    deleteTier: deleteTier,
+    closeTierModal: closeTierModal,
+    editContent: editContent,
+    deleteContent: deleteContent,
+    closeContentModal: closeContentModal,
+    deletePost: deletePost,
+    savePayment: savePayment,
+    copyWebhook: copyWebhook,
+    removePbFaq: function(idx) { state.page.faqs.splice(idx, 1); persist(); renderPbFaqs(); updateLivePreview(); },
+    removePbTestimonial: function(idx) { state.page.testimonials.splice(idx, 1); persist(); renderPbTestimonials(); updateLivePreview(); }
+  };
+
+})();
+</script>
+</body>
+</html>

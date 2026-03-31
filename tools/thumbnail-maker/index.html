@@ -25,7 +25,7 @@
 </script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
 .editor{display:grid;grid-template-columns:1fr 320px;gap:1.5rem}
 @media(max-width:800px){.editor{grid-template-columns:1fr}}
 .canvas-wrap{position:relative;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}
@@ -223,7 +223,7 @@ function draw(){
   const textColor=document.getElementById('textColor').value;
   const hasShadow=document.getElementById('textShadow').checked;
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.font=`900 ${textSize}px DM Sans,Impact,sans-serif`;
+  ctx.font=`900 ${textSize}px Inter,Impact,sans-serif`;
   if(hasShadow){ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=12;ctx.shadowOffsetX=4;ctx.shadowOffsetY=4;}
   const lines=mainText.split('\n');
   const lineH=textSize*1.15;
@@ -242,7 +242,7 @@ function draw(){
   // Subtitle
   const subText=document.getElementById('subText').value;
   if(subText){
-    ctx.font=`700 ${Math.round(textSize*0.4)}px DM Sans,sans-serif`;
+    ctx.font=`700 ${Math.round(textSize*0.4)}px Inter,sans-serif`;
     ctx.fillStyle=document.getElementById('subColor').value;
     ctx.fillText(subText,w/2,startY+lines.length*lineH+10);
   }
@@ -250,7 +250,7 @@ function draw(){
   // Channel name branding
   const channelName=document.getElementById('channelName').value;
   if(channelName){
-    ctx.font='600 28px DM Sans,sans-serif';
+    ctx.font='600 28px Inter,sans-serif';
     ctx.fillStyle='rgba(255,255,255,0.75)';
     ctx.textAlign='right';
     ctx.fillText(channelName,w-40,h-36);

@@ -600,7 +600,33 @@
         { label: 'Graphic Design Pricing', href: '/tools/graphic-design-pricing/', emoji: '🖼️', badge: 'NEW' },
         { label: 'Event Decoration Cost Calc', href: '/tools/event-decoration-cost/', emoji: '🎪', badge: 'NEW' },
         { label: 'Art Commission Price Calc', href: '/tools/art-commission/', emoji: '🎨', badge: 'NEW' },
+        { label: 'CreatorStock — Stock Media Browser', href: '/tools/creator-stock/', emoji: '🖼️', badge: 'NEW' },
+        { label: 'CreatorAnalytics — Performance Tracker', href: '/tools/creator-analytics/', emoji: '📈', badge: 'NEW' },
+        { label: 'CreatorRecord — Screen Recorder', href: '/tools/creator-record/', emoji: '🎬', badge: 'NEW' },
+        { label: 'CreatorPolish — AI Writing Tool', href: '/tools/creator-polish/', emoji: '✏️', badge: 'NEW' },
+        { label: 'CreatorClip — Video Clipper', href: '/tools/creator-clip/', emoji: '🎞️', badge: 'NEW' },
+        { label: 'CreatorVoice — Audio Recorder', href: '/tools/creator-voice/', emoji: '🎙️', badge: 'NEW' },
+        { label: 'CreatorMail — Newsletter Builder', href: '/tools/creator-mail/', emoji: '📧', badge: 'NEW' },
+        { label: 'CreatorClub — Membership Platform', href: '/tools/creator-club/', emoji: '🏆', badge: 'NEW' },
+        { label: 'CreatorCourse — Course Builder', href: '/tools/creator-course/', emoji: '🎓', badge: 'NEW' },
+        { label: 'CreatorResearch — AI Research', href: '/tools/creator-research/', emoji: '🔍', badge: 'NEW' },
+        { label: 'CreatorTeam — Collaboration', href: '/tools/creator-team/', emoji: '👥', badge: 'NEW' },
+        { label: 'CreatorBrand — Brand Kit Manager', href: '/tools/creator-brand/', emoji: '💎', badge: 'NEW' },
+        { label: 'CreatorSchedule — Social Scheduler', href: '/tools/creator-schedule/', emoji: '📅', badge: 'NEW' },
         { label: 'All Creative Economy Tools →', href: '/creative/', emoji: '🎨' },
+      ]
+    },
+    {
+      id: 'afrostream', label: 'AfroStream', labelFr: 'AfroStream', labelSw: 'AfroStream', icon: '🎬',
+      desc: 'African creator streaming hub — live streams, rankings, net worth, news',
+      descFr: 'Hub de streaming pour créateurs africains — lives, classements, actualités',
+      descSw: 'Kituo cha utiririshaji wa waundaji wa Afrika — moja kwa moja, viwango',
+      href: '/tools/afrostream/', color: '#FAF5FF', accent: '#A855F7',
+      tools: [
+        { label: 'AfroStream — Live Now', href: '/tools/afrostream/', emoji: '🔴', badge: 'NEW' },
+        { label: 'Creator Rankings', href: '/tools/afrostream/rankings.html', emoji: '🏆', badge: 'NEW' },
+        { label: 'Creator News', href: '/tools/afrostream/news.html', emoji: '📰', badge: 'NEW' },
+        { label: 'Stream Calendar', href: '/tools/afrostream/calendar.html', emoji: '📅', badge: 'NEW' },
       ]
     },
     {
@@ -1822,6 +1848,9 @@
     }
   }
 
+  /* Expose NAV_ITEMS globally for command palette + other consumers */
+  window.__AFRO_NAV_ITEMS = NAV_ITEMS;
+
   if (!customElements.get('afro-navbar')) {
     customElements.define('afro-navbar', AfroNavbar);
   }
@@ -1886,6 +1915,13 @@
       var eb = document.createElement('script'); eb.id = 'afro-error-boundary-js';
       eb.src = '/assets/js/lib/error-boundary.js'; eb.defer = true;
       document.head.appendChild(eb);
+    }
+
+    /* Command Palette (Ctrl+K search) */
+    if (!document.getElementById('afro-cmd-palette-js')) {
+      var cp = document.createElement('script'); cp.id = 'afro-cmd-palette-js';
+      cp.src = '/assets/js/components/command-palette.js'; cp.defer = true;
+      document.head.appendChild(cp);
     }
 
     /* Pro gate */

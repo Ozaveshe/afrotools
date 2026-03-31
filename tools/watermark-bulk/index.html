@@ -25,7 +25,7 @@
 </script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
 .drop-zone{border:2px dashed #cbd5e1;border-radius:10px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:#f8fafc}
 .drop-zone:hover,.drop-zone.active{border-color:var(--sky);background:var(--sky-light)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
@@ -99,7 +99,7 @@
 <div class="form-group"><label>Position</label><select id="wmPos" onchange="updatePreview()"><option value="center">Center</option><option value="bottom-right">Bottom Right</option><option value="bottom-left">Bottom Left</option><option value="top-right">Top Right</option><option value="top-left">Top Left</option><option value="tile">Tiled (Repeat)</option></select></div>
 <div class="form-group"><label>Opacity (%)</label><input type="range" id="wmOpacity" min="5" max="100" value="30" oninput="updatePreview();document.getElementById('opVal').textContent=this.value+'%'"><span id="opVal" style="font-size:.82rem;color:#64748b">30%</span></div>
 <div class="form-group"><label>Color</label><input type="color" id="wmColor" value="#ffffff" oninput="updatePreview()"></div>
-<div class="form-group"><label>Font</label><select id="wmFont" onchange="updatePreview()"><option value="DM Sans,sans-serif">DM Sans (default)</option><option value="Impact,sans-serif">Impact (bold)</option><option value="Georgia,serif">Georgia (serif)</option><option value="'Courier New',monospace">Courier (mono)</option><option value="Arial Black,sans-serif">Arial Black</option></select></div>
+<div class="form-group"><label>Font</label><select id="wmFont" onchange="updatePreview()"><option value="Inter,sans-serif">Inter (default)</option><option value="Impact,sans-serif">Impact (bold)</option><option value="Georgia,serif">Georgia (serif)</option><option value="'Courier New',monospace">Courier (mono)</option><option value="Arial Black,sans-serif">Arial Black</option></select></div>
 <div class="form-group"><label>Rotation</label><select id="wmRot" onchange="updatePreview()"><option value="0">0 degrees</option><option value="-30">-30 degrees</option><option value="-45" selected>-45 degrees</option><option value="30">30 degrees</option><option value="45">45 degrees</option></select></div>
 <div class="form-group" style="grid-column:1/-1"><label style="display:flex;align-items:center;gap:.5rem;font-weight:600;font-size:.85rem;color:#475569"><input type="checkbox" id="wmShadow" checked onchange="updatePreview()"> Drop shadow (improves visibility on any background)</label></div>
 <div class="form-group" style="grid-column:1/-1"><label style="font-weight:600;font-size:.85rem;color:#475569;margin-bottom:.3rem">Quick Insert</label><div style="display:flex;gap:.4rem;flex-wrap:wrap"><button onclick="document.getElementById('wmText').value='© 2025 '+document.getElementById('wmText').value;updatePreview()" style="padding:.3rem .7rem;font-size:.8rem;border:1.5px solid #cbd5e1;border-radius:5px;background:#f8fafc;cursor:pointer">© 2025</button><button onclick="document.getElementById('wmText').value='Confidential';updatePreview()" style="padding:.3rem .7rem;font-size:.8rem;border:1.5px solid #cbd5e1;border-radius:5px;background:#f8fafc;cursor:pointer">Confidential</button><button onclick="document.getElementById('wmText').value='AfroTools.com';updatePreview()" style="padding:.3rem .7rem;font-size:.8rem;border:1.5px solid #cbd5e1;border-radius:5px;background:#f8fafc;cursor:pointer">AfroTools.com</button><button onclick="document.getElementById('wmText').value='DRAFT';updatePreview()" style="padding:.3rem .7rem;font-size:.8rem;border:1.5px solid #cbd5e1;border-radius:5px;background:#f8fafc;cursor:pointer">DRAFT</button></div></div>
@@ -183,7 +183,7 @@ function applyWatermark(canvas,img){
   const opacity=parseInt(document.getElementById('wmOpacity').value)/100;
   const color=document.getElementById('wmColor').value;
   const rot=parseInt(document.getElementById('wmRot').value)*Math.PI/180;
-  const font=document.getElementById('wmFont')?.value||'DM Sans,sans-serif';
+  const font=document.getElementById('wmFont')?.value||'Inter,sans-serif';
   const hasShadow=document.getElementById('wmShadow')?.checked;
   ctx.globalAlpha=opacity;ctx.fillStyle=color;ctx.font=`bold ${size}px ${font}`;ctx.textAlign='center';ctx.textBaseline='middle';
   if(hasShadow){ctx.shadowColor='rgba(0,0,0,0.55)';ctx.shadowBlur=3;ctx.shadowOffsetX=2;ctx.shadowOffsetY=2;}
@@ -218,7 +218,7 @@ function downloadCurrent(){
   const opacity=parseInt(document.getElementById('wmOpacity').value)/100;
   const color=document.getElementById('wmColor').value;
   const rot=parseInt(document.getElementById('wmRot').value)*Math.PI/180;
-  const font2=document.getElementById('wmFont')?.value||'DM Sans,sans-serif';
+  const font2=document.getElementById('wmFont')?.value||'Inter,sans-serif';
   const hasSh2=document.getElementById('wmShadow')?.checked;
   ctx.globalAlpha=opacity;ctx.fillStyle=color;ctx.font=`bold ${size}px ${font2}`;ctx.textAlign='center';ctx.textBaseline='middle';
   if(hasSh2){ctx.shadowColor='rgba(0,0,0,0.55)';ctx.shadowBlur=3;ctx.shadowOffsetX=2;ctx.shadowOffsetY=2;}
