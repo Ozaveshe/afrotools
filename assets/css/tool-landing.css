@@ -327,6 +327,34 @@
 .tl-card-sub { font-size: .72rem; color: #94a3b8; }
 .tl-card-body { padding: 20px; }
 
+/* Form grid */
+.tl-form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  padding: 20px;
+}
+@media (max-width: 600px) { .tl-form-grid { grid-template-columns: 1fr; } }
+
+/* Content inside card without .tl-card-body */
+.tl-card > .tl-field,
+.tl-card > .tl-section-title,
+.tl-card > div:not(.tl-card-header):not(.tl-form-grid) {
+  padding-left: 20px; padding-right: 20px;
+}
+.tl-card > div:not(.tl-card-header):not(.tl-form-grid):first-of-type { padding-top: 20px; }
+.tl-card > div:not(.tl-card-header):last-child { padding-bottom: 20px; }
+
+/* Button */
+.tl-btn {
+  display: block; width: 100%; padding: 13px 24px;
+  background: var(--color-primary, #007AFF); color: #fff;
+  border: none; border-radius: 10px;
+  font-family: inherit; font-size: .9rem; font-weight: 700;
+  cursor: pointer; transition: background .15s, transform .1s;
+  margin-top: 6px;
+}
+.tl-btn:hover { background: #0063D1; }
+.tl-btn:active { transform: scale(.98); }
+
 /* Fields */
 .tl-field { margin-bottom: 14px; }
 .tl-label {
@@ -388,6 +416,44 @@
   padding: 16px 18px; font-size: .84rem; color: #475569; line-height: 1.7;
 }
 
+/* Input with prefix (e.g. currency symbol) */
+.ot-input-wrap {
+  display: flex; align-items: center;
+  border: 1.5px solid #e2e8f0; border-radius: 10px;
+  overflow: hidden; transition: border-color .15s;
+}
+.ot-input-wrap:focus-within {
+  border-color: var(--color-primary, #007AFF);
+  box-shadow: 0 0 0 3px rgba(0,122,255,.08);
+}
+.ot-prefix {
+  padding: 10px 12px; background: #f8fafc;
+  font-size: .82rem; font-weight: 700; color: #475569;
+  border-right: 1px solid #e2e8f0; white-space: nowrap;
+}
+.ot-input-wrap input {
+  flex: 1; padding: 10px 14px; border: none; outline: none;
+  font-family: inherit; font-size: .9rem; color: #0f172a;
+  background: transparent;
+}
+
+/* Results table */
+.tl-card table {
+  width: 100%; border-collapse: collapse; margin: 0;
+}
+.tl-card table th {
+  padding: 10px 16px; text-align: left;
+  font-size: .68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em; color: #64748b; background: #fafbfc;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tl-card table td {
+  padding: 10px 16px; font-size: .85rem; color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+}
+.tl-card table tr:last-child td { border-bottom: none; }
+.tl-card table tr:hover td { background: #f8fafc; }
+
 /* Responsive */
 @media (max-width: 800px) {
   .tl-body { grid-template-columns: 1fr; }
@@ -396,4 +462,5 @@
 @media (max-width: 480px) {
   .tl-hero { padding: 32px 16px 28px; }
   .tl-body { padding: 20px 16px 40px; }
+  .tl-form-grid { padding: 16px; }
 }
