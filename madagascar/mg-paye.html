@@ -71,6 +71,7 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js" defer></script>
+<link rel="stylesheet" href="/assets/css/paye-tool.css">
 </head><body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
 <section class="tool-hero"><div class="tool-hero-inner"><nav class="breadcrumb"><a href="/">Home</a> / <a href="/madagascar/">🇲🇬 Madagascar</a> / <span>PAYE Calculator</span></nav><h1>Madagascar PAYE<br><em>Calculator 2025/26</em></h1><p class="hero-sub">Progressive tax 0%–20% on monthly income. CNAPS pension (1%+13%, capped MGA 1.61M/mo). Monthly calculation.</p><div class="hero-badges"><span class="badge b-white">✦ Includes AI Advisor</span><span class="badge b-white">MGA · Malagasy Ariary</span></div>
@@ -135,30 +136,129 @@
       </div>
 </div></div></div>
 
+<div class="modal-bg" id="pdfModal"><div class="modal"><div id="modalForm"><h3>📄 Download Your PAYE Summary</h3><p>Enter your email to get a detailed PDF.</p><form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)"><input type="hidden" name="form-name" value="pdf-leads"><input type="hidden" name="country" value="Madagascar"><input type="hidden" name="country_code" value="MG"><input type="hidden" name="tool" value="paye"><input type="hidden" name="tool_id" value="mg-paye"><input type="hidden" name="currency" value="MGA"><input type="hidden" name="gross_salary" id="hiddenGross" value=""><input class="modal-input" type="text" name="name" id="pdfName" placeholder="Your name (optional)" autocomplete="name"><input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" required><button class="modal-submit" type="submit">Get My PDF →</button></form><button class="modal-cancel" onclick="closePdfModal()">No thanks</button></div><div class="modal-success" id="modalSuccess" style="display:none"><div class="big-check">✅</div><h4>PDF opening</h4></div></div></div>
+        <p style="display:none"><input name="bot-field"></p>
 
 
+<!-- SAVE TOOL CTA -->
+<section class="ng-save-sec">
+  <div class="container">
+    <div class="ng-save-card">
+      <div class="ng-save-left">
+        <div class="ng-save-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <h3 class="ng-save-title">Save this calculator</h3>
+          <p class="ng-save-desc">Bookmark Madagascar PAYE to your personal dashboard for quick access anytime.</p>
+        </div>
+      </div>
+      <div class="ng-save-actions">
+        <button class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Save to My Tools
+        </button>
+        <button class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO-COLUMN GUIDE -->
+<section class="ng-guide-sec">
+  <div class="container">
+    <div class="ng-guide-header">
+      <h2 class="ng-guide-title">Madagascar PAYE Tax Guide 2025/26</h2>
+    </div>
+    <div class="ng-guide-grid">
+      <div class="ng-guide-col">
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Madagascar uses a two-band income tax system administered by DGID (Direction Générale des Impôts et des Domaines). The first MGA 350,000 of monthly taxable income is exempt at 0%, and all income above that threshold is taxed at a flat 20%. CNAPS pension (1% employee, capped) is deductible before tax calculation.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Madagascar uses the Malagasy ariary (MGA). CNAPS (Caisse Nationale de Prévoyance Sociale) employee contribution is capped at MGA 1,610,000/month gross — meaning the maximum CNAPS deduction is MGA 16,100/month. The employer CNAPS is 13% up to the same cap. Salaries above the cap incur no additional CNAPS.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">The simplicity of Madagascar's binary system (0% / 20%) means compliance is straightforward. Effective tax rates range from 0% (for those below MGA 350k/month) up to just under 20% for very high earners. Madagascar is an island nation east of mainland Africa, not part of WAEMU or CEMAC, using the independent ariary since 2005.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Compared to most African countries with 4–9 progressive bands, Madagascar's two-band system is among the simplest on the continent. The 20% flat rate above threshold compares to Mauritius (up to 20%), Namibia (up to 37%), and South Africa (up to 45%), making Madagascar relatively competitive for higher-income earners.</p>
+        </div>
+      </div>
+      <div class="ng-guide-col">
+        <div class="ng-guide-card ng-guide-card-table">
+          <h3>Madagascar Tax Bands</h3>
+          <div class="ng-bands-table-wrap"><table class="ng-bands-table">
+    <thead><tr><th>Monthly Taxable Income (MGA)</th><th>Rate</th></tr></thead>
+    <tbody>
+      <tr><td>0 – 350,000</td><td>0%</td></tr>
+      <tr><td>Above 350,000</td><td>20%</td></tr>
+    </tbody>
+  </table></div>
+        </div>
+      </div>
+    </div>
+    <div class="ng-guide-footer-note">
+      <p>CNAPS employee: 1% of gross, capped at MGA 1,610,000/month. Employer CNAPS: 13% (same cap). Currency: Malagasy ariary (MGA).</p>
+    </div>
+  </div>
+</section>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="paye" country="Madagascar"></wise-cta>
 </div>
-<section class="faq-sec"><div class="faq-inner"><span class="eyebrow">Madagascar Tax FAQ</span><h2 class="sec-title">Common Questions</h2><div class="faq-grid"><div class="faq-item"><div class="faq-q">What is Madagascar's PAYE structure?</div><p class="faq-a">Two bands: 0% on first MGA 350,000/month, and 20% on income above that. CNAPS pension is 1% employee + 13% employer, capped at MGA 1.61M/month.</p></div><div class="faq-item"><div class="faq-q">Is CNAPS deductible from taxable income?</div><p class="faq-a">Yes. The 1% CNAPS employee contribution is deductible from gross before calculating PAYE tax. Only 1% is deductible; above-cap amounts are not.</p></div><div class="faq-item"><div class="faq-q">What is the CNAPS cap?</div><p class="faq-a">CNAPS contributions are capped at MGA 1.61M per month. Once your gross salary reaches this contribution ceiling, no further CNAPS is deducted.</p></div><div class="faq-item"><div class="faq-q">How is Madagascar PAYE calculated?</div><p class="faq-a">Monthly: deduct CNAPS (1%, capped), then apply 0% band (first 350k) and 20% band (above 350k) to the remaining taxable income.</p></div><div class="faq-item"><div class="faq-q">What is the tax-free threshold in Madagascar?</div><p class="faq-a">The first MGA 350,000 of monthly taxable income (after CNAPS deduction) is taxed at 0%. Employees earning below this threshold pay no income tax — only the CNAPS pension contribution.</p></div><div class="faq-item"><div class="faq-q">What is the total employer cost in Madagascar?</div><p class="faq-a">Employers pay the gross salary plus a 13% CNAPS contribution (capped at MGA 1.61M/month). For example, on a monthly salary of MGA 2,000,000, the employer CNAPS is MGA 209,300 (13% of the cap), making the total employer cost MGA 2,209,300 per month.</p></div><div class="faq-item"><div class="faq-q">What does CNAPS cover in Madagascar?</div><p class="faq-a">The Caisse Nationale de Prévoyance Sociale (CNAPS) covers retirement pensions, disability benefits, and survivor benefits. The combined rate is 14% of gross salary (capped) — 1% from the employee and 13% from the employer.</p></div><div class="faq-item"><div class="faq-q">Is the AfroTools Madagascar PAYE calculator free?</div><p class="faq-a">Yes — the AfroTools Madagascar PAYE calculator is completely free with no account required. It includes real-time tax computation, CNAPS deductions, employer cost breakdown, interactive charts, AI tax analysis, and downloadable PDF summaries.</p></div></div></div></section>
-<div class="modal-bg" id="pdfModal"><div class="modal"><div id="modalForm"><h3>📄 Download Your PAYE Summary</h3><p>Enter your email to get a detailed PDF.</p><form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)"><input type="hidden" name="form-name" value="pdf-leads"><input type="hidden" name="country" value="Madagascar"><input type="hidden" name="country_code" value="MG"><input type="hidden" name="tool" value="paye"><input type="hidden" name="tool_id" value="mg-paye"><input type="hidden" name="currency" value="MGA"><input type="hidden" name="gross_salary" id="hiddenGross" value=""><input class="modal-input" type="text" name="name" id="pdfName" placeholder="Your name (optional)" autocomplete="name"><input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" required><button class="modal-submit" type="submit">Get My PDF →</button></form><button class="modal-cancel" onclick="closePdfModal()">No thanks</button></div><div class="modal-success" id="modalSuccess" style="display:none"><div class="big-check">✅</div><h4>PDF opening</h4></div></div></div>
-        <p style="display:none"><input name="bot-field"></p>
-<section style="max-width:800px;margin:0 auto 2.5rem;padding:0 1rem;font-size:0.95rem;line-height:1.7;color:#1e293b;">
-  <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:0.75rem;">Madagascar PAYE Tax Guide 2025/26</h2>
-  <p>Madagascar uses a two-band income tax system administered by DGID (Direction Générale des Impôts et des Domaines). The first MGA 350,000 of monthly taxable income is exempt at 0%, and all income above that threshold is taxed at a flat 20%. CNAPS pension (1% employee, capped) is deductible before tax calculation.</p>
-  <p>Madagascar uses the Malagasy ariary (MGA). CNAPS (Caisse Nationale de Prévoyance Sociale) employee contribution is capped at MGA 1,610,000/month gross — meaning the maximum CNAPS deduction is MGA 16,100/month. The employer CNAPS is 13% up to the same cap. Salaries above the cap incur no additional CNAPS.</p>
-  <p>The simplicity of Madagascar's binary system (0% / 20%) means compliance is straightforward. Effective tax rates range from 0% (for those below MGA 350k/month) up to just under 20% for very high earners. Madagascar is an island nation east of mainland Africa, not part of WAEMU or CEMAC, using the independent ariary since 2005.</p>
-  <p>Compared to most African countries with 4–9 progressive bands, Madagascar's two-band system is among the simplest on the continent. The 20% flat rate above threshold compares to Mauritius (up to 20%), Namibia (up to 37%), and South Africa (up to 45%), making Madagascar relatively competitive for higher-income earners.</p>
-  <table style="width:100%;border-collapse:collapse;margin-top:1rem;font-size:0.88rem;">
-    <thead><tr style="background:#f1f5f9;"><th style="padding:8px;text-align:left;border:1px solid #e2e8f0;">Monthly Taxable Income (MGA)</th><th style="padding:8px;text-align:right;border:1px solid #e2e8f0;">Rate</th></tr></thead>
-    <tbody>
-      <tr><td style="padding:7px 8px;border:1px solid #e2e8f0;">0 – 350,000</td><td style="padding:7px 8px;text-align:right;border:1px solid #e2e8f0;">0%</td></tr>
-      <tr style="background:#f8fafc;"><td style="padding:7px 8px;border:1px solid #e2e8f0;">Above 350,000</td><td style="padding:7px 8px;text-align:right;border:1px solid #e2e8f0;">20%</td></tr>
-    </tbody>
-  </table>
-  <p style="font-size:0.82rem;color:#64748b;margin-top:0.5rem;">CNAPS employee: 1% of gross, capped at MGA 1,610,000/month. Employer CNAPS: 13% (same cap). Currency: Malagasy ariary (MGA).</p>
+
+<!-- FAQ -->
+<section class="ng-faq-sec">
+  <div class="container">
+    <div class="ng-faq-header">
+      <span class="eyebrow">Madagascar Tax FAQ</span>
+      <h2 class="ng-faq-title">Common PAYE Questions</h2>
+    </div>
+    <div class="ng-faq-grid">
+      <div class="ng-faq-col">
+        <details class="ng-faq-item" open>
+          <summary>What is Madagascar's PAYE structure?</summary>
+          <p>Two bands: 0% on first MGA 350,000/month, and 20% on income above that. CNAPS pension is 1% employee + 13% employer, capped at MGA 1.61M/month.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Is CNAPS deductible from taxable income?</summary>
+          <p>Yes. The 1% CNAPS employee contribution is deductible from gross before calculating PAYE tax. Only 1% is deductible; above-cap amounts are not.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is the CNAPS cap?</summary>
+          <p>CNAPS contributions are capped at MGA 1.61M per month. Once your gross salary reaches this contribution ceiling, no further CNAPS is deducted.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>How is Madagascar PAYE calculated?</summary>
+          <p>Monthly: deduct CNAPS (1%, capped), then apply 0% band (first 350k) and 20% band (above 350k) to the remaining taxable income.</p>
+        </details>
+      </div>
+      <div class="ng-faq-col">
+        <details class="ng-faq-item">
+          <summary>What is the tax-free threshold in Madagascar?</summary>
+          <p>The first MGA 350,000 of monthly taxable income (after CNAPS deduction) is taxed at 0%. Employees earning below this threshold pay no income tax — only the CNAPS pension contribution.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is the total employer cost in Madagascar?</summary>
+          <p>Employers pay the gross salary plus a 13% CNAPS contribution (capped at MGA 1.61M/month). For example, on a monthly salary of MGA 2,000,000, the employer CNAPS is MGA 209,300 (13% of the cap), making the total employer cost MGA 2,209,300 per month.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What does CNAPS cover in Madagascar?</summary>
+          <p>The Caisse Nationale de Prévoyance Sociale (CNAPS) covers retirement pensions, disability benefits, and survivor benefits. The combined rate is 14% of gross salary (capped) — 1% from the employee and 13% from the employer.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Is the AfroTools Madagascar PAYE calculator free?</summary>
+          <p>Yes — the AfroTools Madagascar PAYE calculator is completely free with no account required. It includes real-time tax computation, CNAPS deductions, employer cost breakdown, interactive charts, AI tax analysis, and downloadable PDF summaries.</p>
+        </details>
+      </div>
+    </div>
+  </div>
 </section>
+
 <afro-related-tools category="financial" current="mg-paye"></afro-related-tools>
 <afro-footer></afro-footer>
 <script>

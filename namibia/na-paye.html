@@ -85,6 +85,7 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js" defer></script>
+<link rel="stylesheet" href="/assets/css/paye-tool.css">
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -163,42 +164,138 @@
       </div>
 </div></div></div>
 
+<div class="modal-bg" id="pdfModal"><div class="modal"><div id="modalForm"><h3>📄 Download Your PAYE Summary</h3><p>Enter your email to get a detailed PDF.</p><form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)"><input type="hidden" name="form-name" value="pdf-leads"><input type="hidden" name="country" value="Namibia"><input type="hidden" name="country_code" value="NA"><input type="hidden" name="tool" value="paye"><input type="hidden" name="tool_id" value="na-paye"><input type="hidden" name="currency" value="NAD"><input type="hidden" name="gross_salary" id="hiddenGross" value=""><input class="modal-input" type="text" name="name" id="pdfName" placeholder="Your name (optional)" autocomplete="name"><input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required><button class="modal-submit" type="submit">Get My PDF →</button></form><button class="modal-cancel" onclick="closePdfModal()">No thanks</button></div><div class="modal-success" id="modalSuccess"><button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;"><span>✕</span></button><div class="big-check">✅</div><h4>PDF opening now</h4><p>Click <strong>Save as PDF</strong> in print dialog.</p><button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button></div></div></div>
+        <p style="display:none"><input name="bot-field"></p>
 
+<!-- SAVE TOOL CTA -->
+<section class="ng-save-sec">
+  <div class="container">
+    <div class="ng-save-card">
+      <div class="ng-save-left">
+        <div class="ng-save-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <h3 class="ng-save-title">Save this calculator</h3>
+          <p class="ng-save-desc">Bookmark Namibia PAYE to your personal dashboard for quick access anytime.</p>
+        </div>
+      </div>
+      <div class="ng-save-actions">
+        <button class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Save to My Tools
+        </button>
+        <button class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- TWO-COLUMN GUIDE -->
+<section class="ng-guide-sec">
+  <div class="container">
+    <div class="ng-guide-header">
+      <h2 class="ng-guide-title">How Namibia PAYE Tax Is Calculated 2025/26</h2>
+    </div>
+    <div class="ng-guide-grid">
+      <div class="ng-guide-col">
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Namibia's PAYE income tax is administered by the <strong>Namibia Revenue Agency (NamRA)</strong> and assessed on an <strong>annual basis</strong>, with employers withholding monthly proportionate amounts. Namibia uses seven progressive bands from 0% up to <strong>37% above N$1,500,000/year</strong>. The employee's SSC contribution (N$81/month flat) is deductible before NamRA bands are applied. Employees earning below N$100,000/year gross pay only the flat SSC — no income tax.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Social security is administered by the <strong>Social Security Commission (SSC)</strong>. Unlike percentage-based systems across Africa, Namibia's SSC contribution is a <strong>flat N$81/month (N$972/year)</strong> for both employee and employer — the same amount regardless of salary level. This fixed amount covers maternity, sick leave, and death benefits. Employee SSC (N$972/year) is deductible from gross before PAYE is calculated. Employers also pay a flat N$81/month SSC contribution per employee.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Namibia's seven annual NamRA PAYE bands: 0% on first N$100,000; <strong>18%</strong> on N$100,001–150,000; <strong>25%</strong> on N$150,001–250,000; <strong>28%</strong> on N$250,001–500,000; <strong>30%</strong> on N$500,001–1,000,000; <strong>32%</strong> on N$1,000,001–1,500,000; and <strong>37%</strong> above N$1,500,000. PAYE returns and payments are due to NamRA by the <strong>20th of the following month</strong>.</p>
+        </div>
+        <div class="ng-guide-card">
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Namibia uses the <strong>NAD (Namibian Dollar)</strong>, which is pegged 1:1 to the South African Rand (ZAR). Both currencies are accepted in Namibia. The country shares a customs union with South Africa (SACU) but has its own independent tax authority, NamRA. Employers in Namibia should also check for Social Security Act amendments. Verify current rates at <a href="https://www.namra.org.na">namra.org.na</a>.</p>
+        </div>
+      </div>
+      <div class="ng-guide-col">
+        <div class="ng-guide-card ng-guide-card-table">
+          <h3>Namibia NamRA PAYE Tax Bands 2025/26 (Annual)</h3>
+          <div class="ng-bands-table-wrap"><div>
+    <table class="ng-bands-table">
+      <thead><tr>
+        <th>Annual Taxable Income (NAD)</th>
+        <th>Tax Rate</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>0 – 100,000</td><td>0%</td></tr>
+        <tr><td>100,001 – 150,000</td><td>18%</td></tr>
+        <tr><td>150,001 – 250,000</td><td>25%</td></tr>
+        <tr><td>250,001 – 500,000</td><td>28%</td></tr>
+        <tr><td>500,001 – 1,000,000</td><td>30%</td></tr>
+        <tr><td>1,000,001 – 1,500,000</td><td>32%</td></tr>
+        <tr><td>Above 1,500,000</td><td>37%</td></tr>
+      </tbody>
+    </table>
+  </div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ng-guide-footer-note">
+      <p>SSC employee: flat N$81/month (N$972/year, deductible). Employer SSC: flat N$81/month. Applied annually. Currency: NAD (pegged 1:1 to ZAR).</p>
+    </div>
+  </div>
+</section>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="paye" country="Namibia"></wise-cta>
 </div>
-<section class="faq-sec"><div class="faq-inner"><span class="eyebrow">Namibia Tax FAQ</span><h2 class="sec-title">Common PAYE Questions</h2><div class="faq-grid"><div class="faq-item"><div class="faq-q">What are the Namibia PAYE tax bands?</div><p class="faq-a">Seven annual bands from 0% on first N$100,000 up to 37% above N$1,500,000. Rates increase progressively with income. SSC contribution (N$972/year) is deductible from taxable income.</p></div><div class="faq-item"><div class="faq-q">What is SSC in Namibia?</div><p class="faq-a">Social Security Commission contribution: N$81/month flat (N$972/year) for both employee and employer. Employee contribution is deductible from taxable income for PAYE purposes.</p></div><div class="faq-item"><div class="faq-q">Is SSC deductible from taxable income?</div><p class="faq-a">Yes, the employee SSC contribution (N$81/month) is deductible from gross pay before calculating PAYE. This reduces your taxable income and PAYE liability.</p></div><div class="faq-item"><div class="faq-q">When must employers remit PAYE and SSC?</div><p class="faq-a">PAYE must be filed and paid by the 20th of the month following payroll. SSC contributions are due by the same date. Late payments attract penalties and interest.</p></div><div class="faq-item"><div class="faq-q">What is the tax-free threshold in Namibia?</div><p class="faq-a">The first N$100,000 of annual taxable income (after SSC deduction) is taxed at 0%. Employees earning below this threshold pay no income tax — only the flat N$81/month SSC contribution.</p></div><div class="faq-item"><div class="faq-q">How is Namibia PAYE calculated?</div><p class="faq-a">Annually: first deduct the N$972/year SSC employee contribution from gross salary. The resulting taxable income is then run through seven progressive NamRA bands (0%–37%). Take-home pay equals gross minus SSC minus PAYE tax.</p></div><div class="faq-item"><div class="faq-q">What is the total employer cost in Namibia?</div><p class="faq-a">Employers pay the gross salary plus a flat N$81/month SSC contribution (N$972/year). Unlike percentage-based systems, the employer SSC cost is the same regardless of salary level. Employers must also withhold and remit employee SSC and PAYE tax to NamRA.</p></div><div class="faq-item"><div class="faq-q">Is the AfroTools Namibia PAYE calculator free?</div><p class="faq-a">Yes — the AfroTools Namibia PAYE calculator is completely free with no account required. It includes real-time NamRA tax computation, SSC deductions, employer cost breakdown, interactive charts, AI tax analysis, and downloadable PDF summaries.</p></div></div></div></section>
-<div class="modal-bg" id="pdfModal"><div class="modal"><div id="modalForm"><h3>📄 Download Your PAYE Summary</h3><p>Enter your email to get a detailed PDF.</p><form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)"><input type="hidden" name="form-name" value="pdf-leads"><input type="hidden" name="country" value="Namibia"><input type="hidden" name="country_code" value="NA"><input type="hidden" name="tool" value="paye"><input type="hidden" name="tool_id" value="na-paye"><input type="hidden" name="currency" value="NAD"><input type="hidden" name="gross_salary" id="hiddenGross" value=""><input class="modal-input" type="text" name="name" id="pdfName" placeholder="Your name (optional)" autocomplete="name"><input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required><button class="modal-submit" type="submit">Get My PDF →</button></form><button class="modal-cancel" onclick="closePdfModal()">No thanks</button></div><div class="modal-success" id="modalSuccess"><button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;"><span>✕</span></button><div class="big-check">✅</div><h4>PDF opening now</h4><p>Click <strong>Save as PDF</strong> in print dialog.</p><button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button></div></div></div>
-        <p style="display:none"><input name="bot-field"></p>
 
-<section style="max-width:800px;margin:2.5rem auto;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.35rem;font-weight:700;color:#0f172a;margin-bottom:1rem;">How Namibia PAYE Tax Is Calculated 2025/26</h2>
-  <p style="font-size:0.95rem;line-height:1.7;color:#374151;margin-bottom:0.9rem;">Namibia's PAYE income tax is administered by the <strong>Namibia Revenue Agency (NamRA)</strong> and assessed on an <strong>annual basis</strong>, with employers withholding monthly proportionate amounts. Namibia uses seven progressive bands from 0% up to <strong>37% above N$1,500,000/year</strong>. The employee's SSC contribution (N$81/month flat) is deductible before NamRA bands are applied. Employees earning below N$100,000/year gross pay only the flat SSC — no income tax.</p>
-  <p style="font-size:0.95rem;line-height:1.7;color:#374151;margin-bottom:0.9rem;">Social security is administered by the <strong>Social Security Commission (SSC)</strong>. Unlike percentage-based systems across Africa, Namibia's SSC contribution is a <strong>flat N$81/month (N$972/year)</strong> for both employee and employer — the same amount regardless of salary level. This fixed amount covers maternity, sick leave, and death benefits. Employee SSC (N$972/year) is deductible from gross before PAYE is calculated. Employers also pay a flat N$81/month SSC contribution per employee.</p>
-  <p style="font-size:0.95rem;line-height:1.7;color:#374151;margin-bottom:0.9rem;">Namibia's seven annual NamRA PAYE bands: 0% on first N$100,000; <strong>18%</strong> on N$100,001–150,000; <strong>25%</strong> on N$150,001–250,000; <strong>28%</strong> on N$250,001–500,000; <strong>30%</strong> on N$500,001–1,000,000; <strong>32%</strong> on N$1,000,001–1,500,000; and <strong>37%</strong> above N$1,500,000. PAYE returns and payments are due to NamRA by the <strong>20th of the following month</strong>.</p>
-  <p style="font-size:0.95rem;line-height:1.7;color:#374151;margin-bottom:1.25rem;">Namibia uses the <strong>NAD (Namibian Dollar)</strong>, which is pegged 1:1 to the South African Rand (ZAR). Both currencies are accepted in Namibia. The country shares a customs union with South Africa (SACU) but has its own independent tax authority, NamRA. Employers in Namibia should also check for Social Security Act amendments. Verify current rates at <a href="https://www.namra.org.na" style="color:#007AFF;">namra.org.na</a>.</p>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:0.6rem;">Namibia NamRA PAYE Tax Bands 2025/26 (Annual)</h3>
-  <div style="overflow-x:auto;">
-    <table style="width:100%;border-collapse:collapse;font-size:0.88rem;">
-      <thead><tr style="background:#EFF6FF;">
-        <th style="padding:8px 12px;text-align:left;font-weight:600;color:#1e40af;border-bottom:2px solid #DBEAFE;">Annual Taxable Income (NAD)</th>
-        <th style="padding:8px 12px;text-align:center;font-weight:600;color:#1e40af;border-bottom:2px solid #DBEAFE;">Tax Rate</th>
-      </tr></thead>
-      <tbody>
-        <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:7px 12px;color:#374151;">0 – 100,000</td><td style="padding:7px 12px;text-align:center;font-weight:600;color:#16a34a;">0%</td></tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fafafa;"><td style="padding:7px 12px;color:#374151;">100,001 – 150,000</td><td style="padding:7px 12px;text-align:center;font-weight:600;color:#374151;">18%</td></tr>
-        <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:7px 12px;color:#374151;">150,001 – 250,000</td><td style="padding:7px 12px;text-align:center;font-weight:600;color:#374151;">25%</td></tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fafafa;"><td style="padding:7px 12px;color:#374151;">250,001 – 500,000</td><td style="padding:7px 12px;text-align:center;font-weight:600;color:#374151;">28%</td></tr>
-        <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:7px 12px;color:#374151;">500,001 – 1,000,000</td><td style="padding:7px 12px;text-align:center;font-weight:600;color:#374151;">30%</td></tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fafafa;"><td style="padding:7px 12px;color:#374151;">1,000,001 – 1,500,000</td><td style="padding:7px 12px;text-align:center;font-weight:600;color:#374151;">32%</td></tr>
-        <tr style="background:#fef2f2;"><td style="padding:7px 12px;color:#374151;">Above 1,500,000</td><td style="padding:7px 12px;text-align:center;font-weight:600;color:#dc2626;">37%</td></tr>
-      </tbody>
-    </table>
+<!-- FAQ -->
+<section class="ng-faq-sec">
+  <div class="container">
+    <div class="ng-faq-header">
+      <span class="eyebrow">Namibia Tax FAQ</span>
+      <h2 class="ng-faq-title">Common PAYE Questions</h2>
+    </div>
+    <div class="ng-faq-grid">
+      <div class="ng-faq-col">
+        <details class="ng-faq-item" open>
+          <summary>What are the Namibia PAYE tax bands?</summary>
+          <p>Seven annual bands from 0% on first N$100,000 up to 37% above N$1,500,000. Rates increase progressively with income. SSC contribution (N$972/year) is deductible from taxable income.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is SSC in Namibia?</summary>
+          <p>Social Security Commission contribution: N$81/month flat (N$972/year) for both employee and employer. Employee contribution is deductible from taxable income for PAYE purposes.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Is SSC deductible from taxable income?</summary>
+          <p>Yes, the employee SSC contribution (N$81/month) is deductible from gross pay before calculating PAYE. This reduces your taxable income and PAYE liability.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>When must employers remit PAYE and SSC?</summary>
+          <p>PAYE must be filed and paid by the 20th of the month following payroll. SSC contributions are due by the same date. Late payments attract penalties and interest.</p>
+        </details>
+      </div>
+      <div class="ng-faq-col">
+        <details class="ng-faq-item">
+          <summary>What is the tax-free threshold in Namibia?</summary>
+          <p>The first N$100,000 of annual taxable income (after SSC deduction) is taxed at 0%. Employees earning below this threshold pay no income tax — only the flat N$81/month SSC contribution.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>How is Namibia PAYE calculated?</summary>
+          <p>Annually: first deduct the N$972/year SSC employee contribution from gross salary. The resulting taxable income is then run through seven progressive NamRA bands (0%–37%). Take-home pay equals gross minus SSC minus PAYE tax.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>What is the total employer cost in Namibia?</summary>
+          <p>Employers pay the gross salary plus a flat N$81/month SSC contribution (N$972/year). Unlike percentage-based systems, the employer SSC cost is the same regardless of salary level. Employers must also withhold and remit employee SSC and PAYE tax to NamRA.</p>
+        </details>
+        <details class="ng-faq-item">
+          <summary>Is the AfroTools Namibia PAYE calculator free?</summary>
+          <p>Yes — the AfroTools Namibia PAYE calculator is completely free with no account required. It includes real-time NamRA tax computation, SSC deductions, employer cost breakdown, interactive charts, AI tax analysis, and downloadable PDF summaries.</p>
+        </details>
+      </div>
+    </div>
   </div>
-  <p style="font-size:0.82rem;color:#6b7280;margin-top:0.75rem;">SSC employee: flat N$81/month (N$972/year, deductible). Employer SSC: flat N$81/month. Applied annually. Currency: NAD (pegged 1:1 to ZAR).</p>
 </section>
+
 <afro-related-tools category="financial" current="na-paye"></afro-related-tools>
 <afro-footer></afro-footer>
 <script>
