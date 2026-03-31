@@ -82,6 +82,9 @@ exports.handler = async function (event) {
       'name', 'country', 'phone', 'city', 'bio', 'job_title', 'company',
       'industry', 'company_size', 'experience_level', 'linkedin_url',
       'website_url', 'interests',
+      // Onboarding & preferences
+      'onboarding_completed', 'country_code', 'currency',
+      'employment_type', 'preferred_tools', 'email_digest_enabled',
       // Education fields
       'education_level', 'institution', 'gpa_value', 'gpa_scale',
       'target_study_level', 'target_countries', 'target_fields',

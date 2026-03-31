@@ -2160,28 +2160,41 @@
                 updated_at: new Date().toISOString()
             };
 
+            // Also save country_code and mark onboarding complete
+            var countryCode = country;
+            if (country && country.length > 2) {
+                var cc = COUNTRY_CODE_MAP[country.toLowerCase()];
+                if (cc) countryCode = cc;
+            }
+            profileData.country_code = countryCode || country;
+            profileData.currency = COUNTRY_CURRENCY_MAP[countryCode] || COUNTRY_CURRENCY_MAP[country] || '';
+            profileData.onboarding_completed = true;
+
+            // Sync name/country to auth user metadata so it persists across sessions
+            if (AfroAuth.updateProfile) {
+                await AfroAuth.updateProfile({ name: name, country: countryCode || country });
+            }
+
             var result = await saveFullProfile(profileData);
             btn.classList.remove('saving');
             btn.disabled = false;
 
             if (result.ok) {
                 extendedProfile = Object.assign(extendedProfile || {}, profileData);
-                // Update localStorage with merged profile (keeps id, email, tier etc.)
                 localStorage.setItem('afro_profile_extended', JSON.stringify(extendedProfile));
                 currentUser = AfroAuth.getUser() || currentUser;
-                // Update currentUser with new name/country in case AfroAuth.updateProfile updated it
                 currentUser.name = name;
-                currentUser.country = country;
+                currentUser.country = countryCode || country;
                 loadProfileDisplay();
                 updateCompletenessRing(calculateCompleteness(currentUser, extendedProfile));
                 closeProfileEditor();
-                if (result.synced) {
-                    showToast('Profile saved and synced across devices');
-                } else {
-                    showToast('Saved locally. Connect without ad-blocker to sync across devices.', 'info');
-                }
-                // Re-render recommendations with new interests
+                showToast('Profile saved successfully');
                 renderSmartRecommendations();
+                // Refresh FX and country data with new country
+                if (countryCode) {
+                    loadCountrySnapshot();
+                    renderQuickCalculate();
+                }
             } else {
                 showToast(result.error || 'Failed to save profile', 'error');
             }
@@ -2448,7 +2461,13 @@
             }
 
             document.getElementById('profileEmail').textContent = currentUser.email || '-';
-            document.getElementById('profileCountry').textContent = currentUser.country || (extendedProfile && extendedProfile.country) || '-';
+            var rawCountry = currentUser.country || (extendedProfile && (extendedProfile.country_code || extendedProfile.country)) || '-';
+            var displayCountry = rawCountry;
+            if (rawCountry && rawCountry.length === 2 && typeof AFRICAN_COUNTRIES !== 'undefined') {
+                var found = AFRICAN_COUNTRIES.find(function(c){ return c.code === rawCountry; });
+                if (found) displayCountry = found.flag + ' ' + found.name;
+            }
+            document.getElementById('profileCountry').textContent = displayCountry;
 
             var createdDate = new Date(currentUser.createdAt);
             document.getElementById('profileMemberSince').textContent = isNaN(createdDate.getTime()) ? '-' : createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
