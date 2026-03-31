@@ -335,9 +335,9 @@
                 </a>
                 <p class="tagline">${tagline}</p>
                 <div class="social">
-                  <a href="https://twitter.com/afrotools" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">&#120143;</a>
-                  <a href="https://linkedin.com/company/afrotools" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
-                  <a href="https://github.com/Ozaveshe/afrotools" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GH</a>
+                  <a href="https://x.com/afrotoolsHQ" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">&#120143;</a>
+                  <a href="https://www.linkedin.com/company/afrotools/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
+                  <a href="https://www.facebook.com/afrotoolsHQ" target="_blank" rel="noopener noreferrer" aria-label="Facebook">f</a>
                 </div>
                 <p class="built-with">${this._l(L.builtWith)}</p>
               </div>

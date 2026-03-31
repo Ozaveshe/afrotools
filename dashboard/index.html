@@ -2285,8 +2285,10 @@
                 currentUser = AfroAuth.getUser();
                 showDashboard();
             } else {
-                showAuth();
+                var isOAuthCallback = new URLSearchParams(window.location.search).get('auth') === 'callback' || window.location.hash.indexOf('access_token') > -1;
+                if (!isOAuthCallback) showAuth();
                 var retries = 0;
+                var maxRetries = isOAuthCallback ? 20 : 8;
                 var recheck = setInterval(function() {
                     retries++;
                     if (AfroAuth.isLoggedIn()) {
@@ -2294,8 +2296,13 @@
                         isLoggedIn = true;
                         currentUser = AfroAuth.getUser();
                         showDashboard();
-                    } else if (retries >= 8) {
+                        if (isOAuthCallback) {
+                            var cleanUrl = window.location.pathname;
+                            window.history.replaceState({}, '', cleanUrl);
+                        }
+                    } else if (retries >= maxRetries) {
                         clearInterval(recheck);
+                        if (isOAuthCallback) showAuth();
                     }
                 }, 500);
             }
