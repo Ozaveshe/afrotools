@@ -25,6 +25,84 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="style.css">
+<style>
+/* ── Live Counter Styles ──────────────────────────── */
+.as-live-counters{padding:32px 0 40px}
+.as-lc-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.as-lc-header .as-section-title{display:flex;align-items:center;gap:10px;margin:0}
+.as-lc-badge{
+  background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;
+  font-size:.6rem;font-weight:800;letter-spacing:.1em;
+  padding:4px 12px;border-radius:20px;text-transform:uppercase;
+  animation:lcPulseGlow 2s ease-in-out infinite;
+}
+.as-lc-pulse{
+  width:10px;height:10px;border-radius:50%;background:#ef4444;
+  display:inline-block;position:relative;
+}
+.as-lc-pulse::after{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid #ef4444;animation:lcRing 1.5s ease-out infinite;
+}
+@keyframes lcRing{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.8);opacity:0}}
+@keyframes lcPulseGlow{0%,100%{box-shadow:0 0 8px rgba(239,68,68,.4)}50%{box-shadow:0 0 20px rgba(239,68,68,.8)}}
+
+/* Total counter */
+.as-lc-total{
+  text-align:center;margin-bottom:32px;padding:28px 24px;
+  background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(34,211,238,.06));
+  border:1px solid rgba(124,58,237,.15);border-radius:16px;
+}
+.as-lc-total-label{color:#94a3b8;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.as-lc-total-num{
+  font-family:'DM Sans',sans-serif;font-size:3.2rem;font-weight:800;
+  background:linear-gradient(135deg,#A855F7,#22D3EE);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.02em;line-height:1.1;
+  font-variant-numeric:tabular-nums;
+}
+.as-lc-total-delta{
+  margin-top:6px;font-size:.8rem;font-weight:600;color:#22c55e;
+}
+.as-lc-total-delta::before{content:'\25B2 ';font-size:.6rem}
+
+/* Platform counter cards */
+.as-lc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.as-lc-card{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;padding:20px;position:relative;overflow:hidden;
+  transition:all .25s;
+}
+.as-lc-card:hover{border-color:var(--plat-color,#7c3aed);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.as-lc-card-icon{font-size:1.5rem;margin-bottom:8px}
+.as-lc-card-platform{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.as-lc-card-count{
+  font-family:'DM Sans',sans-serif;font-size:1.8rem;font-weight:800;
+  color:#fff;line-height:1.1;font-variant-numeric:tabular-nums;
+  margin-bottom:4px;
+}
+.as-lc-card-delta{font-size:.7rem;font-weight:600;color:#22c55e}
+.as-lc-card-delta.down{color:#ef4444}
+.as-lc-card-rate{font-size:.65rem;color:#64748b;margin-top:6px}
+.as-lc-card-bar{
+  position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--plat-color,#7c3aed),transparent);
+  opacity:.6;
+}
+.as-lc-card-spark{
+  display:flex;align-items:flex-end;gap:2px;height:30px;margin-top:10px;
+}
+.as-lc-card-spark span{
+  flex:1;min-width:3px;background:var(--plat-color,#7c3aed);
+  border-radius:2px 2px 0 0;opacity:.5;transition:height .3s;
+}
+
+@media(max-width:640px){
+  .as-lc-total-num{font-size:2.2rem}
+  .as-lc-card-count{font-size:1.3rem}
+  .as-lc-grid{grid-template-columns:1fr 1fr}
+}
+</style>
 <script src="/assets/js/components/navbar.js" defer></script>
 <script src="/assets/js/components/footer.js" defer></script>
 </head>
@@ -79,6 +157,22 @@
   <section class="as-profile-stats rv">
     <div class="as-container">
       <div class="as-stats-grid" id="statsGrid"></div>
+    </div>
+  </section>
+
+  <!-- LIVE COUNTERS -->
+  <section class="as-live-counters rv" id="liveCounters">
+    <div class="as-container">
+      <div class="as-lc-header">
+        <h2 class="as-section-title"><span class="as-lc-pulse"></span> Live Follower Count</h2>
+        <span class="as-lc-badge">REAL-TIME</span>
+      </div>
+      <div class="as-lc-total" id="lcTotal">
+        <div class="as-lc-total-label">Total Followers</div>
+        <div class="as-lc-total-num" id="lcTotalNum">0</div>
+        <div class="as-lc-total-delta" id="lcTotalDelta"></div>
+      </div>
+      <div class="as-lc-grid" id="lcGrid"></div>
     </div>
   </section>
 
@@ -564,6 +658,137 @@ function generateNews(c) {
       '</div>';
     });
     document.getElementById('statsGrid').innerHTML = html;
+  })();
+
+  /* ===== RENDER LIVE COUNTERS ===== */
+  (function renderLiveCounters() {
+    var PLAT_CONFIG = {
+      youtube:   { name:'YouTube',   color:'#FF0000', icon:'\u25B6\uFE0F' },
+      twitch:    { name:'Twitch',    color:'#9146FF', icon:'\uD83D\uDD2E' },
+      tiktok:    { name:'TikTok',    color:'#00F2EA', icon:'\uD83C\uDFB5' },
+      instagram: { name:'Instagram', color:'#E1306C', icon:'\uD83D\uDCF7' },
+      kick:      { name:'Kick',      color:'#53FC18', icon:'\u26A1' },
+      rumble:    { name:'Rumble',    color:'#85C742', icon:'\uD83C\uDFA5' }
+    };
+
+    var totalFollowers = creator.followers;
+    var growthPct = creator.growth || 25;
+
+    /* Distribute followers across platforms (weighted to primary) */
+    var platData = [];
+    creator.platforms.forEach(function(p, idx) {
+      var conf = PLAT_CONFIG[p];
+      if (!conf) return;
+      var share = idx === 0 ? 0.55 : (idx === 1 ? 0.28 : 0.17);
+      if (creator.platforms.length === 1) share = 1;
+      var count = Math.floor(totalFollowers * share);
+      var dailyGain = Math.floor(count * (growthPct / 100) / 365);
+
+      /* Generate mini sparkline data (last 12 data points) */
+      var spark = [];
+      for (var s = 0; s < 12; s++) {
+        spark.push(50 + Math.floor(Math.random() * 50));
+      }
+
+      platData.push({
+        platform: p,
+        name: conf.name,
+        color: conf.color,
+        icon: conf.icon,
+        count: count,
+        dailyGain: dailyGain,
+        ratePerMin: Math.max(1, Math.floor(dailyGain / 1440)),
+        spark: spark
+      });
+    });
+
+    /* Render total counter */
+    var totalEl = document.getElementById('lcTotalNum');
+    var deltaEl = document.getElementById('lcTotalDelta');
+    var totalDailyGain = platData.reduce(function(s, p) { return s + p.dailyGain; }, 0);
+    deltaEl.textContent = '+' + totalDailyGain.toLocaleString() + ' today (est.)';
+
+    /* Render platform cards */
+    var grid = document.getElementById('lcGrid');
+    var html = '';
+    platData.forEach(function(pd) {
+      var sparkHTML = '<div class="as-lc-card-spark">';
+      pd.spark.forEach(function(h) {
+        sparkHTML += '<span style="height:' + h + '%;background:' + pd.color + '"></span>';
+      });
+      sparkHTML += '</div>';
+
+      html += '<div class="as-lc-card" style="--plat-color:' + pd.color + '" data-platform="' + pd.platform + '" data-count="' + pd.count + '" data-rate="' + pd.ratePerMin + '">' +
+        '<div class="as-lc-card-icon">' + pd.icon + '</div>' +
+        '<div class="as-lc-card-platform" style="color:' + pd.color + '">' + pd.name + '</div>' +
+        '<div class="as-lc-card-count" id="lc-' + pd.platform + '">' + pd.count.toLocaleString() + '</div>' +
+        '<div class="as-lc-card-delta">+' + pd.dailyGain.toLocaleString() + '/day</div>' +
+        '<div class="as-lc-card-rate">\u2248 ' + pd.ratePerMin + ' new follower' + (pd.ratePerMin > 1 ? 's' : '') + '/min</div>' +
+        sparkHTML +
+        '<div class="as-lc-card-bar"></div>' +
+      '</div>';
+    });
+    grid.innerHTML = html;
+
+    /* ── ANIMATE: Odometer-style counting ─────────────── */
+    /* Animate total from 0 to actual */
+    var totalTarget = totalFollowers;
+    var totalCurrent = 0;
+    var totalStep = Math.max(1, Math.floor(totalTarget / 80));
+    function animateTotal() {
+      totalCurrent += totalStep;
+      if (totalCurrent >= totalTarget) { totalCurrent = totalTarget; totalEl.textContent = totalTarget.toLocaleString(); return; }
+      totalEl.textContent = totalCurrent.toLocaleString();
+      requestAnimationFrame(animateTotal);
+    }
+    /* Start animation when section scrolls into view */
+    var lcSection = document.getElementById('liveCounters');
+    var lcAnimated = false;
+    var lcObs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !lcAnimated) {
+        lcAnimated = true;
+        animateTotal();
+        lcObs.disconnect();
+      }
+    }, { threshold: 0.2 });
+    lcObs.observe(lcSection);
+
+    /* ── LIVE TICK: Increment counters every few seconds ── */
+    var tickAccum = {};
+    platData.forEach(function(pd) { tickAccum[pd.platform] = pd.count; });
+    var totalAccum = totalFollowers;
+
+    setInterval(function() {
+      platData.forEach(function(pd) {
+        /* Random chance to tick (based on rate) */
+        if (Math.random() < 0.4 + pd.ratePerMin * 0.05) {
+          var bump = Math.ceil(Math.random() * Math.max(1, pd.ratePerMin));
+          tickAccum[pd.platform] += bump;
+          totalAccum += bump;
+
+          var el = document.getElementById('lc-' + pd.platform);
+          if (el) {
+            el.textContent = tickAccum[pd.platform].toLocaleString();
+            el.style.transition = 'transform .15s,color .15s';
+            el.style.transform = 'scale(1.04)';
+            el.style.color = pd.color;
+            setTimeout(function() { el.style.transform = ''; el.style.color = ''; }, 300);
+          }
+        }
+      });
+      if (lcAnimated) {
+        totalEl.textContent = totalAccum.toLocaleString();
+      }
+    }, 2000 + Math.floor(Math.random() * 1500));
+
+    /* Update sparkline bars randomly */
+    setInterval(function() {
+      document.querySelectorAll('.as-lc-card-spark').forEach(function(spark) {
+        var bars = spark.querySelectorAll('span');
+        var idx = Math.floor(Math.random() * bars.length);
+        bars[idx].style.height = (40 + Math.floor(Math.random() * 60)) + '%';
+      });
+    }, 3000);
   })();
 
   /* ===== RENDER NET WORTH ===== */
