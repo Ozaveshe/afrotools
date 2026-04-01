@@ -343,8 +343,8 @@
   <section class="as-rankings-hero rv">
     <div class="as-container">
       <div class="as-rankings-hero-badge">LEADERBOARD</div>
-      <h1 class="as-rankings-title">&#127942; Creator Rankings</h1>
-      <p class="as-rankings-subtitle">The most-watched, most-gifted, fastest-growing African creators across all platforms.</p>
+      <h1 class="as-rankings-title">&#127942; Streamers Rank</h1>
+      <p class="as-rankings-subtitle">The most-watched, most-gifted, fastest-growing African streamers across all platforms.</p>
       <p class="as-rankings-updated" id="lastUpdated"></p>
     </div>
   </section>
@@ -442,16 +442,19 @@
   <!-- RANKINGS TABLE -->
   <section class="as-table-section rv">
     <div class="as-container">
+      <h2 style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#fff;margin-bottom:16px">Full Streamers Ranking</h2>
+      <p style="color:#94a3b8;font-size:.85rem;margin-bottom:20px">Complete ranked list of African streamers sorted by overall score. Click any row to view the full creator profile.</p>
       <div class="as-table-wrap">
         <table class="as-table" id="rankingsTable">
           <thead>
             <tr>
-              <th class="as-td-rank" data-sort="rank">Rank</th>
+              <th class="as-td-rank" data-sort="rank">#</th>
               <th class="as-td-creator" data-sort="name">Creator</th>
               <th data-sort="country">Country</th>
-              <th>Platforms</th>
+              <th>Platform</th>
+              <th>Type</th>
               <th data-sort="followers">Subscribers</th>
-              <th data-sort="gifts">Gift Rev.</th>
+              <th data-sort="gifts">Gifts</th>
               <th data-sort="peak">Views</th>
               <th data-sort="networth">Est. Net Worth</th>
               <th data-sort="growth">Growth</th>
@@ -571,11 +574,12 @@ function mapApiCreator(r) {
   var cats = (r.categories || '').toLowerCase().split(',').map(function(s){ return s.trim(); }).filter(Boolean);
   var category = cats[0] || 'lifestyle';
 
-  /* numeric fields */
-  var followers = r.subscribers || 0;
-  var gifts = r.gift_revenue || 0;
-  var peak = r.total_views || 0;
-  var networth = r.net_worth || 0;
+  /* numeric fields — Supabase may store as text with $ prefix */
+  function pNum(v) { if (typeof v === 'number') return v; if (!v) return 0; return parseInt(String(v).replace(/[^0-9.-]/g, ''), 10) || 0; }
+  var followers = pNum(r.subscribers);
+  var gifts = pNum(r.gift_revenue);
+  var peak = pNum(r.total_views);
+  var networth = pNum(r.net_worth);
   var growth = Math.floor(Math.random() * 141) + 10; /* 10-150, not in DB yet */
 
   return {
@@ -761,7 +765,7 @@ function renderPodium(list) {
 /* ===== RENDER TABLE ===== */
 function renderTable(list) {
   var body = document.getElementById('rankingsBody');
-  var show = list.slice(3, 3 + currentPage * PAGE_SIZE);
+  var show = list.slice(0, currentPage * PAGE_SIZE);
   var html = '';
   show.forEach(function(c) {
     var rankColorClass = '';
@@ -777,6 +781,7 @@ function renderTable(list) {
       '<td class="as-td-creator"><div class="as-creator-cell"><div class="as-creator-avatar-sm" style="' + avStyle + '">' + avContent + '</div><span>' + c.name + '</span></div></td>' +
       '<td>' + c.flag + ' ' + c.countryName + '</td>' +
       '<td>' + platformIcons(c.platforms) + '</td>' +
+      '<td style="font-size:.8rem;color:#94a3b8">' + (c.categories && c.categories.length ? c.categories.slice(0,2).map(function(s){ return s.charAt(0).toUpperCase()+s.slice(1); }).join(' & ') : 'Creator') + '</td>' +
       '<td>' + fmtNum(c.followers) + '</td>' +
       '<td>' + fmtUSD(c.gifts) + '</td>' +
       '<td>' + fmtNum(c.peak) + '</td>' +
@@ -788,7 +793,7 @@ function renderTable(list) {
   body.innerHTML = html;
 
   var btn = document.getElementById('loadMoreBtn');
-  if (3 + currentPage * PAGE_SIZE >= list.length) {
+  if (currentPage * PAGE_SIZE >= list.length) {
     btn.style.display = 'none';
   } else {
     btn.style.display = '';
