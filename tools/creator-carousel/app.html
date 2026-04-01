@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CarouselStudio | AfroTools</title>
-<meta name="description" content="Create Instagram and LinkedIn carousel posts with the CarouselStudio dark studio workspace.">
+<title>CarouselStudio — Multi-Platform Carousel Maker | AfroTools</title>
+<meta name="description" content="Create carousels for Instagram, TikTok, LinkedIn, Facebook, Pinterest & more. 14 Afrocentric templates, save & resume, batch export — free for African creators.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,12 +26,19 @@
       <span>CS</span> CarouselStudio
     </a>
     <div class="car-header-actions">
+      <button class="car-btn-icon" id="btn-files" title="My Files">📁</button>
+      <button class="car-btn-icon" id="btn-save" title="Save">💾</button>
       <button class="car-btn-icon" id="btn-undo" title="Undo">↩</button>
       <button class="car-btn-icon" id="btn-redo" title="Redo">↪</button>
       <button class="car-btn-icon" id="btn-preview" title="Swipe Preview">👁</button>
       <button class="car-btn car-btn-primary" id="btn-export">↓ Export All</button>
     </div>
   </header>
+
+  <!-- SIZE PICKER BAR -->
+  <div class="car-size-bar" id="size-bar">
+    <!-- Populated by JS -->
+  </div>
 
   <!-- WORKSPACE -->
   <div class="car-workspace-layout">
@@ -43,6 +50,7 @@
         <button class="car-tool-tab active" data-panel="text">Text</button>
         <button class="car-tool-tab" data-panel="bg">BG</button>
         <button class="car-tool-tab" data-panel="image">Image</button>
+        <button class="car-tool-tab" data-panel="assets">Assets</button>
         <button class="car-tool-tab" data-panel="brand">Brand</button>
         <button class="car-tool-tab" data-panel="layout">Layout</button>
       </div>
@@ -65,6 +73,8 @@
           <div class="car-sidebar-title">Color</div>
           <div class="car-color-swatches" id="text-colors"></div>
           <input type="color" id="text-color-custom" value="#ffffff" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+          <div class="car-sidebar-title" style="margin-top:12px">Afro Palettes</div>
+          <div class="car-palette-list" id="text-palettes"></div>
         </div>
         <div class="car-sidebar-section">
           <div class="car-sidebar-title">Style</div>
@@ -118,6 +128,23 @@
         </div>
       </div>
 
+      <!-- ASSETS PANEL (NEW) -->
+      <div class="car-tool-panel" id="panel-assets">
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">African Stickers</div>
+          <div class="car-sticker-tabs" id="sticker-tabs"></div>
+          <div class="car-sticker-grid" id="sticker-grid"></div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Afro Color Palettes</div>
+          <div class="car-palette-list" id="afro-palettes"></div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Cross-Tool</div>
+          <a href="/tools/creator-thumb/app.html" class="car-btn car-btn-secondary" style="width:100%;text-align:center;text-decoration:none;display:block">Open ThumbnailForge →</a>
+        </div>
+      </div>
+
       <!-- BRAND PANEL -->
       <div class="car-tool-panel" id="panel-brand">
         <div class="car-sidebar-section">
@@ -143,10 +170,6 @@
       <!-- LAYOUT PANEL -->
       <div class="car-tool-panel" id="panel-layout">
         <div class="car-sidebar-section">
-          <div class="car-sidebar-title">Format</div>
-          <div class="car-format-picker" id="format-picker"></div>
-        </div>
-        <div class="car-sidebar-section">
           <div class="car-sidebar-title">Layers</div>
           <div class="car-layer-list" id="layer-list"></div>
         </div>
@@ -159,6 +182,7 @@
 
     <!-- CANVAS -->
     <div class="car-canvas-area" id="canvas-area">
+      <div class="car-canvas-info" id="canvas-info">1080 × 1350 — IG Portrait</div>
       <div class="car-canvas-container" id="canvas-container">
         <div class="car-canvas" id="canvas">
           <!-- Elements rendered here -->
@@ -173,8 +197,21 @@
   </div>
 
   <!-- TEMPLATE STRIP -->
-  <div class="car-template-strip" id="template-strip">
-    <!-- Populated by JS -->
+  <div class="car-template-strip-wrapper">
+    <div class="car-filter-bar" id="template-filter">
+      <button class="car-filter-btn active" data-cat="all">All</button>
+      <button class="car-filter-btn" data-cat="afrocentric">Afrocentric</button>
+      <button class="car-filter-btn" data-cat="educational">Educational</button>
+      <button class="car-filter-btn" data-cat="storytelling">Story</button>
+      <button class="car-filter-btn" data-cat="quote">Quote</button>
+      <button class="car-filter-btn" data-cat="brand">Brand</button>
+      <button class="car-filter-btn" data-cat="product">Product</button>
+      <button class="car-filter-btn" data-cat="data">Data</button>
+      <button class="car-filter-btn" data-cat="food">Food</button>
+    </div>
+    <div class="car-template-strip" id="template-strip">
+      <!-- Populated by JS -->
+    </div>
   </div>
 
   <!-- MOBILE TOOLBAR -->
@@ -190,6 +227,10 @@
     <button class="car-mobile-btn" data-mobile-panel="image">
       <span class="car-mobile-icon">📷</span>
       <span class="car-mobile-label">Image</span>
+    </button>
+    <button class="car-mobile-btn" data-mobile-panel="assets">
+      <span class="car-mobile-icon">🌍</span>
+      <span class="car-mobile-label">Afro</span>
     </button>
     <button class="car-mobile-btn" data-mobile-panel="brand">
       <span class="car-mobile-icon">✦</span>
@@ -218,7 +259,41 @@
       <button class="car-btn car-btn-secondary" id="export-all-jpg" style="flex:1">All Slides (JPEG)</button>
     </div>
     <button class="car-btn car-btn-secondary" id="export-single" style="width:100%;margin-bottom:12px">Export Current Slide Only</button>
-    <div style="font-size:.65rem;color:rgba(255,255,255,.3);text-align:center;margin-top:8px" id="export-resolution-label">1080 × 1350 px — Instagram Portrait</div>
+    <div style="font-size:.65rem;color:rgba(255,255,255,.3);text-align:center;margin-top:8px" id="export-resolution-label">1080 × 1350 px — IG Portrait</div>
+  </div>
+</div>
+
+<!-- FILES OVERLAY -->
+<div class="car-modal-overlay" id="files-overlay">
+  <div class="car-modal">
+    <div class="car-modal-header">
+      <div class="car-sheet-title">MY CAROUSEL FILES</div>
+      <button class="car-modal-close" id="files-close">✕</button>
+    </div>
+    <div class="car-files-grid" id="files-grid">
+      <!-- Populated by JS -->
+    </div>
+    <div style="margin-top:16px">
+      <button class="car-btn car-btn-primary" id="btn-new-design" style="width:100%">+ New Carousel</button>
+    </div>
+  </div>
+</div>
+
+<!-- SAVE OVERLAY -->
+<div class="car-modal-overlay" id="save-overlay">
+  <div class="car-modal" style="max-width:400px">
+    <div class="car-modal-header">
+      <div class="car-sheet-title">SAVE CAROUSEL</div>
+      <button class="car-modal-close" id="save-close">✕</button>
+    </div>
+    <div>
+      <label style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:6px;display:block">Carousel Name</label>
+      <input class="car-input" id="save-name" type="text" placeholder="My Carousel" value="">
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button class="car-btn car-btn-primary" id="btn-save-new" style="flex:1">Save as New</button>
+        <button class="car-btn car-btn-secondary" id="btn-save-update" style="flex:1">Update Current</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -251,6 +326,7 @@
   var isDragging = false;
   var dragOffset = { x: 0, y: 0 };
   var showSlideNumbers = true;
+  var currentProjectId = null;
 
   var FONTS = [
     { name: 'Montserrat', family: '"Montserrat", sans-serif' },
@@ -261,12 +337,15 @@
     { name: 'Anton', family: '"Anton", sans-serif' }
   ];
 
-  var COLORS = ['#FFFFFF','#000000','#AF52DE','#5B21B6','#FF3B30','#FF9500','#FFD60A','#34C759','#007AFF','#5856D6','#FF2D55','#1C1C1E'];
+  var COLORS = ['#FFFFFF','#000000','#AF52DE','#5B21B6','#FF3B30','#FF9500','#FFD60A','#34C759','#007AFF','#5856D6','#FF2D55','#1C1C1E','#D4AF37','#C41E3A','#006B3C','#1B1464'];
   var GRADIENTS = [
     ['#AF52DE','#5B21B6'], ['#5856D6','#AF52DE'], ['#007AFF','#5856D6'],
     ['#FF3B30','#FF6B3B'], ['#34C759','#30D158'], ['#FFD60A','#FF9500'],
-    ['#FF2D55','#FF6B81'], ['#1a1a1a','#AF52DE']
+    ['#FF2D55','#FF6B81'], ['#1a1a1a','#AF52DE'],
+    ['#D4AF37','#1B1464'], ['#2C1810','#D4AF37'], ['#006B3C','#D4AF37'], ['#E066FF','#FF2D55']
   ];
+
+  var AFRO_CATS = ['educational','quote','brand','food','listicle'];
 
   document.addEventListener('DOMContentLoaded', init);
 
@@ -277,14 +356,19 @@
     setupColors();
     setupGradients();
     setupSliders();
-    setupFormats();
-    setupTemplateStrip();
+    setupSizePicker();
+    setupTemplateStrip('all');
+    setupTemplateFilter();
+    setupAfroAssets();
+    setupAfroPalettes();
     setupExport();
     setupPreview();
     setupFileUploads();
     setupToggles();
     setupButtons();
     setupMobileToolbar();
+    setupFileManager();
+    setupSaveProject();
 
     // Try load saved project, otherwise load default template
     if (!engine.loadLocal()) {
@@ -292,6 +376,7 @@
     }
     fitCanvas();
     renderAll();
+    updateCanvasInfo();
     window.addEventListener('resize', function() { fitCanvas(); renderAll(); });
 
     // Auto-save every 30s
@@ -309,6 +394,13 @@
     scale = Math.min(sw, sh, 1);
     canvasEl.style.width = (format.w * scale) + 'px';
     canvasEl.style.height = (format.h * scale) + 'px';
+  }
+
+  function updateCanvasInfo() {
+    var fmt = engine.getFormat();
+    var label = fmt.w + ' × ' + fmt.h + ' — ' + (fmt.label || fmt.name);
+    document.getElementById('canvas-info').textContent = label;
+    document.getElementById('export-resolution-label').textContent = fmt.w + ' × ' + fmt.h + ' px — ' + (fmt.label || fmt.name);
   }
 
   // ── RENDER ──
@@ -393,6 +485,28 @@
           selectLayer(layer.id);
         });
         canvasEl.appendChild(imgEl);
+      } else if (layer.type === 'emoji') {
+        var emoEl = document.createElement('div');
+        emoEl.className = 'car-element car-element-emoji';
+        if (layer.id === selectedLayerId) emoEl.classList.add('selected');
+        emoEl.dataset.layerId = layer.id;
+
+        var format = engine.getFormat();
+        emoEl.style.position = 'absolute';
+        emoEl.style.left = ((layer.x || format.w / 2) * scale) + 'px';
+        emoEl.style.top = ((layer.y || format.h / 2) * scale) + 'px';
+        emoEl.style.transform = 'translate(-50%, -50%)';
+        emoEl.style.fontSize = ((layer.size || 64) * scale) + 'px';
+        emoEl.style.lineHeight = '1';
+        emoEl.textContent = layer.content || '';
+
+        emoEl.addEventListener('mousedown', startDrag);
+        emoEl.addEventListener('touchstart', startDrag, { passive: false });
+        emoEl.addEventListener('click', function(e) {
+          e.stopPropagation();
+          selectLayer(layer.id);
+        });
+        canvasEl.appendChild(emoEl);
       }
     });
 
@@ -478,8 +592,8 @@
     slide.layers.forEach(function(layer) {
       var item = document.createElement('div');
       item.className = 'car-layer-item' + (layer.id === selectedLayerId ? ' active' : '');
-      var icon = layer.type === 'text' ? 'T' : '🖼';
-      var name = layer.type === 'text' ? (layer.content || 'Text').substring(0, 20) : 'Image';
+      var icon = layer.type === 'text' ? 'T' : layer.type === 'emoji' ? '😀' : '🖼';
+      var name = layer.type === 'text' ? (layer.content || 'Text').substring(0, 20) : layer.type === 'emoji' ? layer.content : 'Image';
       item.innerHTML = '<span class="car-layer-icon">' + icon + '</span><span class="car-layer-name">' + name + '</span>';
       item.addEventListener('click', function() { selectLayer(layer.id); });
       list.appendChild(item);
@@ -585,7 +699,6 @@
       };
       list.appendChild(btn);
 
-      // Brand font list
       var btn2 = document.createElement('button');
       btn2.className = 'car-font-item';
       btn2.style.fontFamily = f.family;
@@ -677,33 +790,44 @@
     });
   }
 
-  // ── FORMATS ──
-  function setupFormats() {
-    var picker = document.getElementById('format-picker');
+  // ── SIZE PICKER ──
+  function setupSizePicker() {
+    var bar = document.getElementById('size-bar');
     var formats = engine.FORMATS;
     for (var key in formats) {
       var f = formats[key];
       var btn = document.createElement('button');
-      btn.className = 'car-format-btn' + (key === '1080x1350' ? ' active' : '');
-      btn.textContent = f.label;
+      btn.className = 'car-size-btn' + (key === '1080x1350' ? ' active' : '');
+      btn.innerHTML = '<span class="car-size-label">' + f.label + '</span><span class="car-size-dim">' + f.w + '×' + f.h + '</span>';
       btn.dataset.format = key;
       btn.addEventListener('click', function() {
-        picker.querySelectorAll('.car-format-btn').forEach(function(b) { b.classList.remove('active'); });
+        bar.querySelectorAll('.car-size-btn').forEach(function(b) { b.classList.remove('active'); });
         this.classList.add('active');
         engine.setFormat(this.dataset.format);
-        var fmt = engine.getFormat();
-        document.getElementById('export-resolution-label').textContent = fmt.w + ' × ' + fmt.h + ' px — ' + fmt.label;
         fitCanvas();
         renderAll();
+        updateCanvasInfo();
       });
-      picker.appendChild(btn);
+      bar.appendChild(btn);
     }
   }
 
   // ── TEMPLATE STRIP ──
-  function setupTemplateStrip() {
+  function setupTemplateStrip(cat) {
     var strip = document.getElementById('template-strip');
-    engine.TEMPLATES.forEach(function(tpl) {
+    strip.innerHTML = '';
+    var templates = engine.TEMPLATES;
+
+    templates.forEach(function(tpl) {
+      // Filter by category
+      if (cat && cat !== 'all') {
+        if (cat === 'afrocentric') {
+          if (tpl.id.indexOf('afro-') !== 0) return;
+        } else {
+          if (tpl.category !== cat) return;
+        }
+      }
+
       var card = document.createElement('div');
       card.className = 'car-template-card';
       var thumb = document.createElement('div');
@@ -711,6 +835,15 @@
       var colors = tpl.slides[0].bg.colors || [tpl.slides[0].bg.color || '#1a1a1a', '#AF52DE'];
       thumb.style.background = 'linear-gradient(135deg, ' + (colors[0] || '#AF52DE') + ', ' + (colors[1] || colors[0]) + ')';
       thumb.textContent = tpl.slides.length + ' slides';
+
+      // Afro badge
+      if (tpl.id.indexOf('afro-') === 0) {
+        var badge = document.createElement('span');
+        badge.className = 'car-afro-badge';
+        badge.textContent = 'AFRO';
+        thumb.appendChild(badge);
+      }
+
       card.appendChild(thumb);
       var name = document.createElement('div');
       name.className = 'car-template-name';
@@ -721,17 +854,229 @@
         card.classList.add('active');
         engine.loadTemplate(tpl.id);
         var fmt = engine.getFormat();
-        // Update format picker
-        document.querySelectorAll('.car-format-btn').forEach(function(b) {
+        // Update size picker
+        document.querySelectorAll('.car-size-btn').forEach(function(b) {
           b.classList.toggle('active', b.dataset.format === fmt.name);
         });
-        document.getElementById('export-resolution-label').textContent = fmt.w + ' × ' + fmt.h + ' px — ' + fmt.label;
         selectedLayerId = null;
         fitCanvas();
         renderAll();
+        updateCanvasInfo();
         toast('Template loaded', 'success');
       });
       strip.appendChild(card);
+    });
+  }
+
+  // ── TEMPLATE FILTER ──
+  function setupTemplateFilter() {
+    document.querySelectorAll('.car-filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.car-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        setupTemplateStrip(btn.dataset.cat);
+      });
+    });
+  }
+
+  // ── AFRO ASSETS ──
+  function setupAfroAssets() {
+    var stickers = engine.getAfroStickers();
+    var tabs = document.getElementById('sticker-tabs');
+    var grid = document.getElementById('sticker-grid');
+
+    // Build tabs
+    stickers.forEach(function(group, idx) {
+      var tab = document.createElement('button');
+      tab.className = 'car-sticker-tab' + (idx === 0 ? ' active' : '');
+      tab.textContent = group.cat.charAt(0).toUpperCase() + group.cat.slice(1);
+      tab.addEventListener('click', function() {
+        tabs.querySelectorAll('.car-sticker-tab').forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        renderStickerGrid(group.items);
+      });
+      tabs.appendChild(tab);
+    });
+
+    function renderStickerGrid(items) {
+      grid.innerHTML = '';
+      items.forEach(function(emoji) {
+        var btn = document.createElement('button');
+        btn.className = 'car-sticker-btn';
+        btn.textContent = emoji;
+        btn.addEventListener('click', function() {
+          var format = engine.getFormat();
+          engine.addLayerToSlide(engine.getActiveIndex(), {
+            type: 'emoji', content: emoji,
+            x: format.w / 2, y: format.h / 2,
+            size: 64
+          });
+          renderAll();
+          toast('Sticker added', 'success');
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    // Show first category
+    if (stickers.length > 0) renderStickerGrid(stickers[0].items);
+  }
+
+  // ── AFRO PALETTES ──
+  function setupAfroPalettes() {
+    var palettes = engine.getAfroPalettes();
+    var containers = [document.getElementById('afro-palettes'), document.getElementById('text-palettes')];
+
+    containers.forEach(function(container) {
+      if (!container) return;
+      palettes.forEach(function(pal) {
+        var row = document.createElement('div');
+        row.className = 'car-palette-row';
+        var label = document.createElement('span');
+        label.className = 'car-palette-label';
+        label.textContent = pal.name;
+        row.appendChild(label);
+        var dots = document.createElement('div');
+        dots.className = 'car-palette-dots';
+        pal.colors.forEach(function(c) {
+          var dot = document.createElement('div');
+          dot.className = 'car-palette-dot';
+          dot.style.background = c;
+          dot.addEventListener('click', function() {
+            if (selectedLayerId) {
+              engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { color: c });
+              renderSlide();
+            }
+          });
+          dots.appendChild(dot);
+        });
+        row.appendChild(dots);
+        container.appendChild(row);
+      });
+    });
+  }
+
+  // ── FILE MANAGER ──
+  function setupFileManager() {
+    document.getElementById('btn-files').addEventListener('click', function() {
+      renderFilesGrid();
+      document.getElementById('files-overlay').classList.add('open');
+    });
+    document.getElementById('files-close').addEventListener('click', function() {
+      document.getElementById('files-overlay').classList.remove('open');
+    });
+    document.getElementById('btn-new-design').addEventListener('click', function() {
+      engine.init();
+      engine.loadTemplate('edu-tips-01');
+      currentProjectId = null;
+      selectedLayerId = null;
+      fitCanvas();
+      renderAll();
+      updateCanvasInfo();
+      document.getElementById('files-overlay').classList.remove('open');
+      toast('New carousel created', 'success');
+    });
+  }
+
+  function renderFilesGrid() {
+    var grid = document.getElementById('files-grid');
+    grid.innerHTML = '';
+    var projects = engine.listProjects();
+
+    if (projects.length === 0) {
+      grid.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,.3);padding:40px;font-size:.8rem">No saved carousels yet.<br>Click Save to store your first design.</div>';
+      return;
+    }
+
+    projects.sort(function(a, b) { return (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0); });
+
+    projects.forEach(function(proj) {
+      var card = document.createElement('div');
+      card.className = 'car-file-card' + (proj.id === currentProjectId ? ' active' : '');
+
+      var preview = document.createElement('div');
+      preview.className = 'car-file-preview';
+      if (proj.slides && proj.slides[0] && proj.slides[0].bg) {
+        var bg = proj.slides[0].bg;
+        if (bg.type === 'gradient' && bg.colors) {
+          preview.style.background = 'linear-gradient(135deg, ' + bg.colors[0] + ', ' + bg.colors[1] + ')';
+        } else {
+          preview.style.background = bg.color || '#1a1a1a';
+        }
+      }
+      preview.innerHTML = '<span>' + (proj.slides ? proj.slides.length : 0) + ' slides</span>';
+
+      var info = document.createElement('div');
+      info.className = 'car-file-info';
+      info.innerHTML = '<div class="car-file-name">' + (proj.name || 'Untitled') + '</div><div class="car-file-date">' + new Date(proj.updatedAt || proj.createdAt).toLocaleDateString() + '</div>';
+
+      var actions = document.createElement('div');
+      actions.className = 'car-file-actions';
+      actions.innerHTML = '<button class="car-file-action" data-act="load" title="Open">📂</button><button class="car-file-action" data-act="dup" title="Duplicate">📋</button><button class="car-file-action car-btn-danger" data-act="del" title="Delete">🗑</button>';
+
+      actions.querySelector('[data-act="load"]').addEventListener('click', function(e) {
+        e.stopPropagation();
+        engine.loadProject(proj.id);
+        currentProjectId = proj.id;
+        selectedLayerId = null;
+        fitCanvas();
+        renderAll();
+        updateCanvasInfo();
+        document.getElementById('files-overlay').classList.remove('open');
+        toast('Carousel loaded', 'success');
+      });
+      actions.querySelector('[data-act="dup"]').addEventListener('click', function(e) {
+        e.stopPropagation();
+        engine.duplicateProject(proj.id);
+        renderFilesGrid();
+        toast('Carousel duplicated', 'success');
+      });
+      actions.querySelector('[data-act="del"]').addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (confirm('Delete "' + (proj.name || 'Untitled') + '"?')) {
+          engine.deleteProject(proj.id);
+          if (proj.id === currentProjectId) currentProjectId = null;
+          renderFilesGrid();
+          toast('Carousel deleted', 'success');
+        }
+      });
+
+      card.appendChild(preview);
+      card.appendChild(info);
+      card.appendChild(actions);
+      grid.appendChild(card);
+    });
+  }
+
+  // ── SAVE PROJECT ──
+  function setupSaveProject() {
+    document.getElementById('btn-save').addEventListener('click', function() {
+      document.getElementById('save-name').value = engine.getTitle();
+      document.getElementById('btn-save-update').style.display = currentProjectId ? 'block' : 'none';
+      document.getElementById('save-overlay').classList.add('open');
+    });
+    document.getElementById('save-close').addEventListener('click', function() {
+      document.getElementById('save-overlay').classList.remove('open');
+    });
+    document.getElementById('btn-save-new').addEventListener('click', function() {
+      var name = document.getElementById('save-name').value.trim() || 'Untitled Carousel';
+      engine.setTitle(name);
+      var id = engine.saveProject(name);
+      if (id) {
+        currentProjectId = id;
+        document.getElementById('save-overlay').classList.remove('open');
+        toast('Carousel saved!', 'success');
+      } else {
+        toast('Save failed', 'error');
+      }
+    });
+    document.getElementById('btn-save-update').addEventListener('click', function() {
+      if (!currentProjectId) return;
+      var name = document.getElementById('save-name').value.trim() || 'Untitled Carousel';
+      engine.setTitle(name);
+      engine.updateProject(currentProjectId, name);
+      document.getElementById('save-overlay').classList.remove('open');
+      toast('Carousel updated!', 'success');
     });
   }
 
@@ -860,10 +1205,11 @@
 
   function exportAll(format) {
     var count = engine.getSlideCount();
+    var fmt = engine.getFormat();
     var title = engine.getTitle().replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
     for (var i = 0; i < count; i++) {
       var dataUrl = engine.exportSlide(i, format);
-      downloadDataUrl(dataUrl, 'carousel-' + title + '-slide-' + (i + 1) + '.' + (format === 'jpeg' ? 'jpg' : 'png'));
+      downloadDataUrl(dataUrl, 'carousel-' + title + '-' + fmt.w + 'x' + fmt.h + '-slide-' + (i + 1) + '.' + (format === 'jpeg' ? 'jpg' : 'png'));
     }
     document.getElementById('export-panel').classList.remove('open');
     toast(count + ' slides exported', 'success');
@@ -871,9 +1217,10 @@
 
   function exportSingle(format) {
     var idx = engine.getActiveIndex();
+    var fmt = engine.getFormat();
     var title = engine.getTitle().replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
     var dataUrl = engine.exportSlide(idx, format);
-    downloadDataUrl(dataUrl, 'carousel-' + title + '-slide-' + (idx + 1) + '.' + (format === 'jpeg' ? 'jpg' : 'png'));
+    downloadDataUrl(dataUrl, 'carousel-' + title + '-' + fmt.w + 'x' + fmt.h + '-slide-' + (idx + 1) + '.' + (format === 'jpeg' ? 'jpg' : 'png'));
     document.getElementById('export-panel').classList.remove('open');
     toast('Slide ' + (idx + 1) + ' exported', 'success');
   }
@@ -908,7 +1255,6 @@
       engine.renderSlideToCanvas(previewIdx, previewCanvas);
       previewCanvas.style.maxWidth = '100%';
       previewCanvas.style.maxHeight = '80vh';
-      // Dots
       dotsContainer.innerHTML = '';
       var count = engine.getSlideCount();
       for (var i = 0; i < count; i++) {
@@ -923,7 +1269,7 @@
       }
     }
 
-    // Swipe navigation in preview
+    // Swipe navigation
     var startX = 0;
     var previewArea = document.getElementById('preview-slide-area');
     previewArea.addEventListener('touchstart', function(e) {
@@ -974,7 +1320,6 @@
     setTimeout(function() { t.className = 'car-toast'; }, 2000);
   }
 
-  // Expose toast globally
   window.carToast = toast;
 })();
 </script>

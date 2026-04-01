@@ -5,7 +5,7 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ThumbnailForge Studio | AfroTools</title>
-<meta name="description" content="Design YouTube thumbnails with the ThumbnailForge dark studio workspace.">
+<meta name="description" content="Design thumbnails for YouTube, TikTok, Instagram, Facebook & more with Afrocentric templates and assets.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,11 +26,20 @@
       <span>TF</span> ThumbnailForge
     </a>
     <div class="ct-header-actions">
+      <button class="ct-btn ct-btn-secondary ct-btn-sm" id="btn-files" title="My Designs">📁 Files</button>
+      <button class="ct-btn ct-btn-secondary ct-btn-sm" id="btn-save-project" title="Save Design">💾 Save</button>
       <button class="ct-btn-icon" id="btn-undo" title="Undo">↩</button>
       <button class="ct-btn-icon" id="btn-redo" title="Redo">↪</button>
       <button class="ct-btn ct-btn-primary" id="btn-export">↓ Export</button>
     </div>
   </header>
+
+  <!-- SIZE PICKER BAR -->
+  <div class="ct-size-bar" id="size-bar">
+    <div class="ct-size-scroll">
+      <!-- Populated by JS -->
+    </div>
+  </div>
 
   <!-- WORKSPACE -->
   <div class="ct-workspace-layout">
@@ -42,6 +51,7 @@
         <button class="ct-tool-tab active" data-panel="text">Text</button>
         <button class="ct-tool-tab" data-panel="image">Image</button>
         <button class="ct-tool-tab" data-panel="shape">Shape</button>
+        <button class="ct-tool-tab" data-panel="assets">Assets</button>
         <button class="ct-tool-tab" data-panel="bg">BG</button>
         <button class="ct-tool-tab" data-panel="layers">Layers</button>
       </div>
@@ -64,6 +74,10 @@
           <div class="ct-sidebar-title">Color</div>
           <div class="ct-color-swatches" id="text-colors"></div>
           <input type="color" id="text-color-custom" value="#ffffff" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Afro Palettes</div>
+          <div class="ct-palette-list" id="text-palettes"></div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Style</div>
@@ -126,6 +140,8 @@
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('rect')">▬ Rectangle</button>
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('circle')">● Circle</button>
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('arrow')">→ Arrow</button>
+            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('line')">— Line</button>
+            <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addShape('triangle')">△ Triangle</button>
           </div>
         </div>
         <div class="ct-sidebar-section">
@@ -149,6 +165,29 @@
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('💰')">💰</button>
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="addEmoji('🎯')">🎯</button>
           </div>
+        </div>
+      </div>
+
+      <!-- ASSETS PANEL (NEW - Afrocentric) -->
+      <div class="ct-tool-panel" id="panel-assets">
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">African Patterns (Background)</div>
+          <div class="ct-pattern-grid" id="pattern-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">African Stickers</div>
+          <div class="ct-sticker-tabs" id="sticker-tabs">
+            <!-- Populated by JS -->
+          </div>
+          <div class="ct-sticker-grid" id="sticker-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Afro Color Palettes</div>
+          <div class="ct-palette-list" id="afro-palettes"></div>
         </div>
       </div>
 
@@ -195,12 +234,24 @@
           <!-- Elements rendered here -->
         </div>
       </div>
+      <div class="ct-canvas-info" id="canvas-info">1280 × 720 — YouTube Thumbnail</div>
     </div>
   </div>
 
   <!-- TEMPLATE STRIP -->
-  <div class="ct-template-strip" id="template-strip">
-    <!-- Populated by JS -->
+  <div class="ct-template-strip-wrapper">
+    <div class="ct-template-filter" id="template-filter">
+      <button class="ct-filter-btn active" data-cat="all">All</button>
+      <button class="ct-filter-btn" data-cat="afro">Afrocentric</button>
+      <button class="ct-filter-btn" data-cat="reaction">Reaction</button>
+      <button class="ct-filter-btn" data-cat="tutorial">Tutorial</button>
+      <button class="ct-filter-btn" data-cat="vlog">Vlog</button>
+      <button class="ct-filter-btn" data-cat="podcast">Podcast</button>
+      <button class="ct-filter-btn" data-cat="gaming">Gaming</button>
+    </div>
+    <div class="ct-template-strip" id="template-strip">
+      <!-- Populated by JS -->
+    </div>
   </div>
 
   <!-- MOBILE TOOLBAR -->
@@ -216,6 +267,10 @@
     <button class="ct-mobile-btn" onclick="openMobilePanel('shape')">
       <span class="ct-mobile-icon">⬛</span>
       <span class="ct-mobile-label">Shape</span>
+    </button>
+    <button class="ct-mobile-btn" onclick="openMobilePanel('assets')">
+      <span class="ct-mobile-icon">🌍</span>
+      <span class="ct-mobile-label">Afro</span>
     </button>
     <button class="ct-mobile-btn" onclick="openMobilePanel('bg')">
       <span class="ct-mobile-icon">🎨</span>
@@ -235,22 +290,66 @@
 </div>
 
 <!-- EXPORT MODAL -->
-<div class="ct-sheet" id="export-panel">
-  <div class="ct-sheet-handle"></div>
-  <div class="ct-sheet-content">
-    <div class="ct-sheet-title">EXPORT THUMBNAIL</div>
-    <div style="display:flex;gap:8px;margin-bottom:16px">
-      <button class="ct-btn ct-btn-primary" id="export-png" style="flex:1">PNG (Best Quality)</button>
-      <button class="ct-btn ct-btn-secondary" id="export-jpg" style="flex:1">JPEG (Smaller)</button>
+<div class="ct-modal-overlay" id="export-overlay" style="display:none">
+  <div class="ct-modal">
+    <div class="ct-modal-header">
+      <div class="ct-sheet-title">EXPORT THUMBNAIL</div>
+      <button class="ct-btn-icon ct-modal-close" onclick="closeExport()">✕</button>
     </div>
-    <div id="jpeg-quality-row" style="display:none">
-      <div class="ct-sidebar-title">JPEG Quality</div>
-      <div class="ct-slider-row">
-        <input type="range" class="ct-slider" id="jpeg-quality" min="70" max="100" value="90">
-        <span class="ct-slider-val" id="jpeg-quality-val">90%</span>
+    <div class="ct-modal-body">
+      <div class="ct-export-size-info" id="export-size-info">1280 × 720 — YouTube Thumbnail</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="ct-btn ct-btn-primary" id="export-png" style="flex:1">PNG (Best Quality)</button>
+        <button class="ct-btn ct-btn-secondary" id="export-jpg" style="flex:1">JPEG (Smaller)</button>
+      </div>
+      <div id="jpeg-quality-row" style="display:none">
+        <div class="ct-sidebar-title">JPEG Quality</div>
+        <div class="ct-slider-row">
+          <input type="range" class="ct-slider" id="jpeg-quality" min="70" max="100" value="90">
+          <span class="ct-slider-val" id="jpeg-quality-val">90%</span>
+        </div>
       </div>
     </div>
-    <div style="font-size:.65rem;color:rgba(255,255,255,.3);text-align:center;margin-top:8px">1280 × 720 px — YouTube recommended</div>
+  </div>
+</div>
+
+<!-- FILE MANAGER MODAL -->
+<div class="ct-modal-overlay" id="files-overlay" style="display:none">
+  <div class="ct-modal ct-modal-lg">
+    <div class="ct-modal-header">
+      <div class="ct-sheet-title">MY DESIGNS</div>
+      <button class="ct-btn-icon ct-modal-close" onclick="closeFiles()">✕</button>
+    </div>
+    <div class="ct-modal-body">
+      <div class="ct-files-actions">
+        <button class="ct-btn ct-btn-primary ct-btn-sm" onclick="newDesign()">+ New Design</button>
+      </div>
+      <div class="ct-files-grid" id="files-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="ct-files-empty" id="files-empty" style="display:none">
+        <div style="font-size:2rem;margin-bottom:8px">📁</div>
+        <div>No saved designs yet. Create your first one!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SAVE MODAL -->
+<div class="ct-modal-overlay" id="save-overlay" style="display:none">
+  <div class="ct-modal">
+    <div class="ct-modal-header">
+      <div class="ct-sheet-title">SAVE DESIGN</div>
+      <button class="ct-btn-icon ct-modal-close" onclick="closeSave()">✕</button>
+    </div>
+    <div class="ct-modal-body">
+      <label class="ct-input-label">Design Name</label>
+      <input type="text" class="ct-input" id="save-name" placeholder="My Awesome Thumbnail" maxlength="60">
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button class="ct-btn ct-btn-primary" id="save-new-btn" style="flex:1" onclick="doSaveNew()">Save as New</button>
+        <button class="ct-btn ct-btn-secondary" id="save-update-btn" style="flex:1;display:none" onclick="doSaveUpdate()">Update Current</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -267,13 +366,16 @@
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorThumb;
   if (!engine) { console.error('ThumbnailForge engine not loaded'); return; }
 
-  var CANVAS_W = 1280, CANVAS_H = 720;
-  var scale = 0.5; // Display scale
+  var scale = 0.5;
   var canvasEl = document.getElementById('canvas');
   var containerEl = document.getElementById('canvas-container');
   var selectedId = null;
   var isDragging = false;
+  var isResizing = false;
+  var resizeDir = null;
   var dragOffset = { x: 0, y: 0 };
+  var resizeStart = { x:0, y:0, w:0, h:0, lx:0, ly:0 };
+  var currentProjectId = null;
 
   // ── FONTS ──
   var FONTS = [
@@ -286,17 +388,22 @@
   ];
 
   // ── COLORS ──
-  var COLORS = ['#FFFFFF','#000000','#FF3B30','#FF9500','#FFCC00','#34C759','#007AFF','#5856D6','#AF52DE','#FF2D55','#E5E5EA','#1C1C1E'];
+  var COLORS = ['#FFFFFF','#000000','#FF3B30','#FF9500','#FFCC00','#34C759','#007AFF','#5856D6','#AF52DE','#FF2D55','#D4AF37','#006B3C','#C41E3A','#1B1464','#E5E5EA','#1C1C1E'];
   var GRADIENTS = [
     ['#FF3B30','#FF6B3B'], ['#FF9500','#FFD60A'], ['#007AFF','#5856D6'],
     ['#34C759','#30D158'], ['#AF52DE','#FF2D55'], ['#1C1C1E','#3A3A3C'],
-    ['#0f0f0f','#FF3B30'], ['#000000','#FFFFFF']
+    ['#0f0f0f','#FF3B30'], ['#000000','#FFFFFF'],
+    // Afrocentric gradients
+    ['#D4AF37','#C41E3A'], ['#006B3C','#D4AF37'], ['#1B1464','#D4AF37'],
+    ['#C41E3A','#FF6B00'], ['#0A1628','#007AFF'], ['#E066FF','#FF2D55'],
+    ['#2C1810','#D4AF37'], ['#C19A6B','#556B2F']
   ];
 
   document.addEventListener('DOMContentLoaded', init);
 
   function init() {
     engine.init();
+    setupSizePicker();
     fitCanvas();
     setupTabs();
     setupFonts();
@@ -307,20 +414,88 @@
     setupExport();
     setupFileUploads();
     setupCanvasInteraction();
+    setupAfroAssets();
+    setupAfroPalettes();
+    setupFileManager();
+    setupSaveProject();
     loadDefaultTemplate();
     window.addEventListener('resize', fitCanvas);
+  }
+
+  // ── CANVAS SIZE ──
+  function getCanvasW() { return engine.getSizeObj().w; }
+  function getCanvasH() { return engine.getSizeObj().h; }
+
+  // ── SIZE PICKER ──
+  function setupSizePicker() {
+    var bar = document.querySelector('.ct-size-scroll');
+    var sizes = engine.getSizes();
+    var platforms = {};
+    // Group by platform
+    Object.keys(sizes).forEach(function(key) {
+      var s = sizes[key];
+      if (!platforms[s.platform]) platforms[s.platform] = [];
+      platforms[s.platform].push({ key: key, data: s });
+    });
+
+    Object.keys(platforms).forEach(function(plat) {
+      platforms[plat].forEach(function(item) {
+        var btn = document.createElement('button');
+        btn.className = 'ct-size-btn' + (item.key === engine.getSize() ? ' active' : '');
+        btn.dataset.size = item.key;
+        btn.innerHTML = '<span class="ct-size-icon">' + item.data.icon + '</span>' +
+          '<span class="ct-size-label">' + item.data.label + '</span>' +
+          '<span class="ct-size-dim">' + item.data.w + '×' + item.data.h + '</span>';
+        btn.onclick = function() {
+          if (item.key === 'custom') {
+            var w = prompt('Width (px):', '1280');
+            var h = prompt('Height (px):', '720');
+            if (w && h) {
+              w = Math.max(200, Math.min(4096, parseInt(w) || 1280));
+              h = Math.max(200, Math.min(4096, parseInt(h) || 720));
+              engine.setCustomSize(w, h);
+            } else return;
+          } else {
+            engine.setSize(item.key);
+          }
+          bar.querySelectorAll('.ct-size-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          onSizeChange();
+        };
+        bar.appendChild(btn);
+      });
+    });
+  }
+
+  function onSizeChange() {
+    var s = engine.getSizeObj();
+    var ec = document.getElementById('export-canvas');
+    ec.width = s.w;
+    ec.height = s.h;
+    fitCanvas();
+    updateCanvasInfo();
+    renderLayers();
+    engine.pushHistory();
+  }
+
+  function updateCanvasInfo() {
+    var s = engine.getSizeObj();
+    document.getElementById('canvas-info').textContent = s.w + ' × ' + s.h + ' — ' + s.label;
+    var expInfo = document.getElementById('export-size-info');
+    if (expInfo) expInfo.textContent = s.w + ' × ' + s.h + ' — ' + s.label;
   }
 
   // ── FIT CANVAS TO VIEWPORT ──
   function fitCanvas() {
     var area = document.getElementById('canvas-area');
+    var CW = getCanvasW(), CH = getCanvasH();
     var aw = area.clientWidth - 40;
-    var ah = area.clientHeight - 40;
-    var sw = aw / CANVAS_W;
-    var sh = ah / CANVAS_H;
+    var ah = area.clientHeight - 60;
+    var sw = aw / CW;
+    var sh = ah / CH;
     scale = Math.min(sw, sh, 1);
-    canvasEl.style.width = (CANVAS_W * scale) + 'px';
-    canvasEl.style.height = (CANVAS_H * scale) + 'px';
+    canvasEl.style.width = (CW * scale) + 'px';
+    canvasEl.style.height = (CH * scale) + 'px';
   }
 
   // ── TOOL TABS ──
@@ -437,11 +612,116 @@
     });
   }
 
+  // ── AFRO ASSETS ──
+  function setupAfroAssets() {
+    // Patterns
+    var patternGrid = document.getElementById('pattern-grid');
+    var patterns = engine.getAfroPatterns();
+    patterns.forEach(function(p) {
+      var btn = document.createElement('button');
+      btn.className = 'ct-pattern-btn';
+      btn.title = p.name;
+      var dataUrl = p.generate();
+      btn.style.backgroundImage = 'url(' + dataUrl + ')';
+      btn.style.backgroundSize = '40px 40px';
+      btn.innerHTML = '<span class="ct-pattern-name">' + esc(p.name) + '</span>';
+      btn.onclick = function() {
+        engine.setBackground({ type: 'image', imageData: dataUrl });
+        renderLayers();
+        engine.pushHistory();
+        showToast('Pattern applied!', 'success');
+      };
+      patternGrid.appendChild(btn);
+    });
+
+    // Sticker tabs
+    var stickers = engine.getAfroStickers();
+    var tabsEl = document.getElementById('sticker-tabs');
+    var gridEl = document.getElementById('sticker-grid');
+    var catNames = { flags:'Flags', culture:'Culture', food:'Food', music:'Music', business:'Business' };
+
+    function showStickerCat(cat) {
+      gridEl.innerHTML = '';
+      var group = stickers.find(function(g) { return g.cat === cat; });
+      if (!group) return;
+      group.items.forEach(function(emoji) {
+        var btn = document.createElement('button');
+        btn.className = 'ct-sticker-btn';
+        btn.textContent = emoji;
+        btn.onclick = function() {
+          addEmoji(emoji);
+          showToast('Sticker added!', 'success');
+        };
+        gridEl.appendChild(btn);
+      });
+    }
+
+    stickers.forEach(function(group, idx) {
+      var btn = document.createElement('button');
+      btn.className = 'ct-sticker-tab' + (idx === 0 ? ' active' : '');
+      btn.textContent = catNames[group.cat] || group.cat;
+      btn.onclick = function() {
+        tabsEl.querySelectorAll('.ct-sticker-tab').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        showStickerCat(group.cat);
+      };
+      tabsEl.appendChild(btn);
+    });
+    showStickerCat('flags');
+  }
+
+  // ── AFRO PALETTES ──
+  function setupAfroPalettes() {
+    var palettes = engine.getAfroPalettes();
+    ['afro-palettes', 'text-palettes'].forEach(function(containerId) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+      palettes.forEach(function(pal) {
+        var row = document.createElement('div');
+        row.className = 'ct-palette-row';
+        row.innerHTML = '<span class="ct-palette-name">' + esc(pal.name) + '</span>' +
+          '<span class="ct-palette-colors">' +
+          pal.colors.map(function(c) {
+            return '<span class="ct-palette-dot" style="background:' + c + '" data-color="' + c + '"></span>';
+          }).join('') + '</span>';
+        row.querySelectorAll('.ct-palette-dot').forEach(function(dot) {
+          dot.onclick = function(e) {
+            e.stopPropagation();
+            var color = dot.dataset.color;
+            if (containerId === 'text-palettes') {
+              if (selectedId) { engine.updateLayer(selectedId, { color: color }); renderLayers(); }
+            } else {
+              engine.setBackground({ type: 'solid', color: color });
+              renderLayers();
+            }
+          };
+        });
+        container.appendChild(row);
+      });
+    });
+  }
+
   // ── TEMPLATES ──
   function setupTemplates() {
+    renderTemplateStrip('all');
+
+    // Filter buttons
+    document.querySelectorAll('.ct-filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.ct-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderTemplateStrip(btn.dataset.cat);
+      });
+    });
+  }
+
+  function renderTemplateStrip(cat) {
     var strip = document.getElementById('template-strip');
+    strip.innerHTML = '';
     var templates = engine.getTemplates();
-    templates.forEach(function(t) {
+    var filtered = cat === 'all' ? templates : templates.filter(function(t) { return t.category === cat; });
+
+    filtered.forEach(function(t) {
       var card = document.createElement('div');
       card.className = 'ct-template-card';
       card.onclick = function() {
@@ -451,8 +731,10 @@
         renderLayers();
         engine.pushHistory();
       };
+      var isAfro = t.category === 'afro';
       card.innerHTML =
         '<div class="ct-template-thumb" style="background:linear-gradient(135deg,' + t.colors[0] + ',' + t.colors[1] + ')">' +
+          (isAfro ? '<span class="ct-afro-badge">AFRO</span>' : '') +
           '<span>' + esc(t.name) + '</span>' +
         '</div>' +
         '<div class="ct-template-name">' + esc(t.name) + '</div>';
@@ -464,6 +746,7 @@
     var templates = engine.getTemplates();
     if (templates.length) {
       engine.loadTemplate(templates[0].id);
+      updateCanvasInfo();
       renderLayers();
       engine.pushHistory();
       var first = document.querySelector('.ct-template-card');
@@ -485,12 +768,10 @@
       canvasEl.style.background = bg.color || '#FF3B30';
     }
 
-    // Clear old elements (keep overlay)
-    canvasEl.querySelectorAll('.ct-element').forEach(function(el) { el.remove(); });
+    // Clear old elements
+    canvasEl.querySelectorAll('.ct-element,.ct-overlay').forEach(function(el) { el.remove(); });
 
     // Render overlay
-    var existingOverlay = canvasEl.querySelector('.ct-overlay');
-    if (existingOverlay) existingOverlay.remove();
     if (bg.overlay && bg.overlay > 0) {
       var overlay = document.createElement('div');
       overlay.className = 'ct-overlay';
@@ -526,9 +807,8 @@
         }
         el.textContent = layer.content || 'YOUR TEXT';
 
-        // Double-click to edit
-        el.addEventListener('dblclick', function(e) {
-          e.stopPropagation();
+        el.addEventListener('dblclick', function(ev) {
+          ev.stopPropagation();
           el.contentEditable = 'true';
           el.focus();
           selectRange(el);
@@ -558,7 +838,18 @@
         el.style.height = ((layer.h || 100) * scale) + 'px';
         el.style.background = layer.fill || '#FF3B30';
         if (layer.shape === 'circle') el.style.borderRadius = '50%';
-        else el.style.borderRadius = (4 * scale) + 'px';
+        else if (layer.shape === 'triangle') {
+          el.style.background = 'transparent';
+          el.style.borderLeft = ((layer.w || 200) * scale / 2) + 'px solid transparent';
+          el.style.borderRight = ((layer.w || 200) * scale / 2) + 'px solid transparent';
+          el.style.borderBottom = ((layer.h || 100) * scale) + 'px solid ' + (layer.fill || '#FF3B30');
+          el.style.width = '0'; el.style.height = '0';
+        } else if (layer.shape === 'line') {
+          el.style.height = (4 * scale) + 'px';
+          el.style.borderRadius = '2px';
+        } else {
+          el.style.borderRadius = (4 * scale) + 'px';
+        }
 
       } else if (layer.type === 'emoji') {
         el.style.fontSize = ((layer.size || 80) * scale) + 'px';
@@ -569,7 +860,6 @@
 
       if (layer.id === selectedId) {
         el.classList.add('selected');
-        // Add resize handles
         var handles = document.createElement('div');
         handles.className = 'ct-handles';
         handles.innerHTML = '<div class="ct-handle ct-handle-tl" data-dir="tl"></div>' +
@@ -627,7 +917,7 @@
 
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Delete' || e.key === 'Backspace') {
-        if (selectedId && document.activeElement.contentEditable !== 'true') {
+        if (selectedId && document.activeElement.contentEditable !== 'true' && document.activeElement.tagName !== 'INPUT') {
           engine.removeLayer(selectedId);
           selectedId = null;
           renderLayers();
@@ -648,6 +938,25 @@
   }
 
   function onPointerDown(e) {
+    // Check for resize handle
+    var handle = e.target.closest('.ct-handle');
+    if (handle && selectedId) {
+      e.preventDefault();
+      isResizing = true;
+      resizeDir = handle.dataset.dir;
+      var layer = engine.getLayer(selectedId);
+      if (layer) {
+        resizeStart = {
+          x: e.clientX, y: e.clientY,
+          w: layer.w || 200, h: layer.h || 200,
+          lx: layer.x, ly: layer.y,
+          fontSize: layer.fontSize || 72,
+          size: layer.size || 80
+        };
+      }
+      return;
+    }
+
     var el = e.target.closest('.ct-element');
     if (!el) return;
     if (el.contentEditable === 'true') return;
@@ -656,13 +965,31 @@
     selectLayer(el.dataset.id);
 
     isDragging = true;
-    var rect = canvasEl.getBoundingClientRect();
     var elRect = el.getBoundingClientRect();
     dragOffset.x = e.clientX - elRect.left;
     dragOffset.y = e.clientY - elRect.top;
   }
 
   function onTouchStart(e) {
+    var handle = e.target.closest('.ct-handle');
+    if (handle && selectedId) {
+      e.preventDefault();
+      isResizing = true;
+      resizeDir = handle.dataset.dir;
+      var layer = engine.getLayer(selectedId);
+      var touch = e.touches[0];
+      if (layer) {
+        resizeStart = {
+          x: touch.clientX, y: touch.clientY,
+          w: layer.w || 200, h: layer.h || 200,
+          lx: layer.x, ly: layer.y,
+          fontSize: layer.fontSize || 72,
+          size: layer.size || 80
+        };
+      }
+      return;
+    }
+
     var el = e.target.closest('.ct-element');
     if (!el) return;
     if (el.contentEditable === 'true') return;
@@ -678,10 +1005,33 @@
   }
 
   function onPointerMove(e) {
-    if (!isDragging || !selectedId) return;
-    var rect = canvasEl.getBoundingClientRect();
     var clientX = e.clientX || (e.touches && e.touches[0].clientX);
     var clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+    if (isResizing && selectedId) {
+      var dx = (clientX - resizeStart.x) / scale;
+      var dy = (clientY - resizeStart.y) / scale;
+      var layer = engine.getLayer(selectedId);
+      if (!layer) return;
+
+      if (layer.type === 'text') {
+        // For text, resize = change font size
+        var newSize = Math.max(16, Math.min(300, resizeStart.fontSize + dy));
+        engine.updateLayer(selectedId, { fontSize: Math.round(newSize) });
+      } else if (layer.type === 'emoji') {
+        var newESize = Math.max(20, Math.min(300, resizeStart.size + dy));
+        engine.updateLayer(selectedId, { size: Math.round(newESize) });
+      } else {
+        var newW = Math.max(20, resizeStart.w + dx);
+        var newH = Math.max(20, resizeStart.h + dy);
+        engine.updateLayer(selectedId, { w: Math.round(newW), h: Math.round(newH) });
+      }
+      renderLayers();
+      return;
+    }
+
+    if (!isDragging || !selectedId) return;
+    var rect = canvasEl.getBoundingClientRect();
     var x = (clientX - rect.left - dragOffset.x) / scale;
     var y = (clientY - rect.top - dragOffset.y) / scale;
     engine.updateLayer(selectedId, { x: Math.round(x), y: Math.round(y) });
@@ -689,24 +1039,25 @@
   }
 
   function onTouchMove(e) {
-    if (!isDragging) return;
+    if (!isDragging && !isResizing) return;
     e.preventDefault();
     var touch = e.touches[0];
     onPointerMove({ clientX: touch.clientX, clientY: touch.clientY });
   }
 
   function onPointerUp() {
-    if (isDragging && selectedId) {
+    if ((isDragging || isResizing) && selectedId) {
       engine.pushHistory();
     }
     isDragging = false;
+    isResizing = false;
+    resizeDir = null;
   }
 
   // ── SELECT / DESELECT ──
   function selectLayer(id) {
     selectedId = id;
     renderLayers();
-    // Update sidebar controls to match selected layer
     var layer = engine.getLayer(id);
     if (!layer) return;
     if (layer.type === 'text') {
@@ -725,11 +1076,12 @@
 
   // ── ADD ELEMENTS ──
   window.addText = function() {
+    var CW = getCanvasW();
     var id = engine.addLayer({
       type: 'text', content: 'YOUR TEXT', x: 100, y: 200,
       fontFamily: 'Impact, sans-serif', fontName: 'Impact',
       fontSize: 72, fontWeight: 900, color: '#FFFFFF',
-      textAlign: 'left', maxWidth: 600,
+      textAlign: 'left', maxWidth: Math.min(600, CW - 120),
       outline: true, outlineWidth: 3, outlineColor: '#000000',
       shadow: false, uppercase: true
     });
@@ -739,11 +1091,11 @@
   };
 
   window.addShape = function(shape) {
+    var w = shape === 'circle' ? 200 : shape === 'line' ? 300 : shape === 'triangle' ? 200 : 300;
+    var h = shape === 'circle' ? 200 : shape === 'line' ? 4 : shape === 'triangle' ? 200 : 100;
     var id = engine.addLayer({
       type: 'shape', shape: shape, x: 200, y: 200,
-      w: shape === 'circle' ? 200 : 300,
-      h: shape === 'circle' ? 200 : 100,
-      fill: '#FF3B30'
+      w: w, h: h, fill: '#FF3B30'
     });
     selectedId = id;
     renderLayers();
@@ -838,38 +1190,54 @@
   // ── EXPORT ──
   function setupExport() {
     document.getElementById('btn-export').addEventListener('click', function() {
-      // Desktop: export PNG directly. Mobile: show panel
-      if (window.innerWidth > 768) {
-        doExport('png');
-      } else {
-        document.getElementById('export-panel').classList.add('open');
-      }
+      updateCanvasInfo();
+      document.getElementById('export-overlay').style.display = 'flex';
     });
     document.getElementById('export-png').addEventListener('click', function() { doExport('png'); });
-    document.getElementById('export-jpg').addEventListener('click', function() { doExport('jpeg'); });
+    document.getElementById('export-jpg').addEventListener('click', function() {
+      document.getElementById('jpeg-quality-row').style.display = 'block';
+      doExport('jpeg');
+    });
   }
 
+  window.closeExport = function() {
+    document.getElementById('export-overlay').style.display = 'none';
+  };
+
   function doExport(format) {
+    var CW = getCanvasW(), CH = getCanvasH();
     var exportCanvas = document.getElementById('export-canvas');
+    exportCanvas.width = CW;
+    exportCanvas.height = CH;
     var ctx = exportCanvas.getContext('2d');
     var bg = engine.getBackground();
     var layers = engine.getLayers();
 
     // Draw background
     if (bg.type === 'gradient' && bg.colors) {
-      var grad = ctx.createLinearGradient(0, 0, CANVAS_W, CANVAS_H);
+      var grad = ctx.createLinearGradient(0, 0, CW, CH);
       grad.addColorStop(0, bg.colors[0]);
       grad.addColorStop(1, bg.colors[1]);
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+      ctx.fillRect(0, 0, CW, CH);
     } else if (bg.type === 'image' && bg.imageData) {
-      // Draw image asynchronously
       var bgImg = new Image();
       bgImg.onload = function() {
-        ctx.drawImage(bgImg, 0, 0, CANVAS_W, CANVAS_H);
+        // Cover fit
+        var imgRatio = bgImg.width / bgImg.height;
+        var canRatio = CW / CH;
+        var sx, sy, sw, sh;
+        if (imgRatio > canRatio) {
+          sh = bgImg.height; sw = sh * canRatio;
+          sx = (bgImg.width - sw) / 2; sy = 0;
+        } else {
+          sw = bgImg.width; sh = sw / canRatio;
+          sx = 0; sy = (bgImg.height - sh) / 2;
+        }
+        ctx.drawImage(bgImg, sx, sy, sw, sh, 0, 0, CW, CH);
         if (bg.overlay && bg.overlay > 0) {
           ctx.fillStyle = 'rgba(0,0,0,' + bg.overlay + ')';
-          ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+          ctx.fillRect(0, 0, CW, CH);
         }
         drawLayersAndExport(ctx, exportCanvas, layers, format);
       };
@@ -877,13 +1245,12 @@
       return;
     } else {
       ctx.fillStyle = bg.color || '#FF3B30';
-      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+      ctx.fillRect(0, 0, CW, CH);
     }
 
-    // Overlay
     if (bg.overlay && bg.overlay > 0) {
       ctx.fillStyle = 'rgba(0,0,0,' + bg.overlay + ')';
-      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+      ctx.fillRect(0, 0, CW, CH);
     }
 
     drawLayersAndExport(ctx, exportCanvas, layers, format);
@@ -900,7 +1267,6 @@
         ctx.textAlign = layer.textAlign || 'left';
         ctx.textBaseline = 'top';
 
-        // Wrap text
         var maxW = layer.maxWidth || 600;
         var lines = wrapText(ctx, text, maxW);
         var lineHeight = fontSize * 1.15;
@@ -943,6 +1309,15 @@
           ctx.beginPath();
           ctx.arc(cx, cy, r, 0, Math.PI * 2);
           ctx.fill();
+        } else if (layer.shape === 'triangle') {
+          ctx.beginPath();
+          ctx.moveTo(layer.x + (layer.w || 200) / 2, layer.y);
+          ctx.lineTo(layer.x, layer.y + (layer.h || 200));
+          ctx.lineTo(layer.x + (layer.w || 200), layer.y + (layer.h || 200));
+          ctx.closePath();
+          ctx.fill();
+        } else if (layer.shape === 'line') {
+          ctx.fillRect(layer.x, layer.y, layer.w || 300, 4);
         } else {
           ctx.fillRect(layer.x, layer.y, layer.w || 300, layer.h || 100);
         }
@@ -957,7 +1332,6 @@
       }
     });
 
-    // Handle images
     if (imagePromises.length) {
       var loaded = 0;
       imagePromises.forEach(function(item) {
@@ -995,18 +1369,19 @@
   function finishExport(exportCanvas, format) {
     var quality = parseInt(document.getElementById('jpeg-quality').value) / 100;
     var mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
+    var s = engine.getSizeObj();
 
     exportCanvas.toBlob(function(blob) {
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'thumbnail-' + Date.now() + '.' + (format === 'jpeg' ? 'jpg' : 'png');
+      a.download = 'thumbnail-' + s.w + 'x' + s.h + '-' + Date.now() + '.' + (format === 'jpeg' ? 'jpg' : 'png');
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast('Thumbnail exported!', 'success');
-      document.getElementById('export-panel').classList.remove('open');
+      showToast('Exported ' + s.w + '×' + s.h + ' ' + format.toUpperCase() + '!', 'success');
+      closeExport();
     }, mimeType, format === 'jpeg' ? quality : undefined);
   }
 
@@ -1045,6 +1420,130 @@
   document.getElementById('btn-undo').addEventListener('click', function() { engine.undo(); renderLayers(); });
   document.getElementById('btn-redo').addEventListener('click', function() { engine.redo(); renderLayers(); });
 
+  // ── FILE MANAGER ──
+  function setupFileManager() {
+    document.getElementById('btn-files').addEventListener('click', function() {
+      renderFilesGrid();
+      document.getElementById('files-overlay').style.display = 'flex';
+    });
+  }
+
+  window.closeFiles = function() {
+    document.getElementById('files-overlay').style.display = 'none';
+  };
+
+  function renderFilesGrid() {
+    var projects = engine.listProjects();
+    var grid = document.getElementById('files-grid');
+    var empty = document.getElementById('files-empty');
+
+    if (!projects.length) {
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+
+    grid.innerHTML = projects.map(function(p) {
+      var sizeInfo = SIZES[p.size] ? SIZES[p.size].label : 'Custom';
+      var date = new Date(p.updatedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+      var isActive = currentProjectId === p.id;
+      var bgStyle = '';
+      if (p.background) {
+        if (p.background.type === 'gradient' && p.background.colors) {
+          bgStyle = 'background:linear-gradient(135deg,' + p.background.colors[0] + ',' + p.background.colors[1] + ')';
+        } else if (p.background.color) {
+          bgStyle = 'background:' + p.background.color;
+        }
+      }
+      return '<div class="ct-file-card' + (isActive ? ' active' : '') + '" data-id="' + p.id + '">' +
+        '<div class="ct-file-preview" style="' + bgStyle + '">' +
+          (p.layers && p.layers.length ? '<span class="ct-file-count">' + p.layers.length + ' layers</span>' : '') +
+        '</div>' +
+        '<div class="ct-file-info">' +
+          '<div class="ct-file-name">' + esc(p.name) + '</div>' +
+          '<div class="ct-file-meta">' + sizeInfo + ' · ' + date + '</div>' +
+        '</div>' +
+        '<div class="ct-file-actions">' +
+          '<button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="event.stopPropagation();loadProjectFile(\'' + p.id + '\')">Open</button>' +
+          '<button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="event.stopPropagation();dupProject(\'' + p.id + '\')">Dup</button>' +
+          '<button class="ct-btn ct-btn-secondary ct-btn-sm ct-btn-danger" onclick="event.stopPropagation();delProject(\'' + p.id + '\')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.loadProjectFile = function(id) {
+    var proj = engine.loadProject(id);
+    if (proj) {
+      currentProjectId = id;
+      // Update size bar
+      document.querySelectorAll('.ct-size-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.size === engine.getSize());
+      });
+      onSizeChange();
+      renderLayers();
+      engine.pushHistory();
+      closeFiles();
+      showToast('Loaded: ' + proj.name, 'success');
+    }
+  };
+
+  window.dupProject = function(id) {
+    var newId = engine.duplicateProject(id);
+    if (newId) {
+      renderFilesGrid();
+      showToast('Duplicated!', 'success');
+    }
+  };
+
+  window.delProject = function(id) {
+    if (!confirm('Delete this design?')) return;
+    engine.deleteProject(id);
+    if (currentProjectId === id) currentProjectId = null;
+    renderFilesGrid();
+    showToast('Deleted', 'success');
+  };
+
+  window.newDesign = function() {
+    engine.init();
+    currentProjectId = null;
+    loadDefaultTemplate();
+    closeFiles();
+    showToast('New design created', 'success');
+  };
+
+  // ── SAVE PROJECT ──
+  function setupSaveProject() {
+    document.getElementById('btn-save-project').addEventListener('click', function() {
+      document.getElementById('save-name').value = '';
+      document.getElementById('save-update-btn').style.display = currentProjectId ? 'block' : 'none';
+      document.getElementById('save-overlay').style.display = 'flex';
+      document.getElementById('save-name').focus();
+    });
+  }
+
+  window.closeSave = function() {
+    document.getElementById('save-overlay').style.display = 'none';
+  };
+
+  window.doSaveNew = function() {
+    var name = document.getElementById('save-name').value.trim() || 'Untitled Design';
+    var id = engine.saveProject(name);
+    currentProjectId = id;
+    closeSave();
+    showToast('Saved: ' + name, 'success');
+  };
+
+  window.doSaveUpdate = function() {
+    if (!currentProjectId) return;
+    var name = document.getElementById('save-name').value.trim();
+    engine.updateProject(currentProjectId, name || undefined);
+    closeSave();
+    showToast('Updated!', 'success');
+  };
+
   // ── MOBILE PANEL ──
   window.openMobilePanel = function(panel) {
     document.querySelectorAll('.ct-mobile-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -1057,7 +1556,6 @@
     sheetContent.innerHTML = content.innerHTML;
     sheet.classList.add('open');
 
-    // Close on tap outside
     sheet.querySelector('.ct-sheet-handle').onclick = function() { sheet.classList.remove('open'); };
   };
 

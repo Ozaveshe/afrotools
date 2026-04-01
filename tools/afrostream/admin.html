@@ -462,7 +462,8 @@
 
   var API = '/api/admin/afrostream';
   var ADMIN_PASS = 'afrostream2026';
-  var TOKEN = ''; // set on login via sessionStorage
+  var MC_TOKEN = localStorage.getItem('afrostream_admin_token') || sessionStorage.getItem('admin_key');
+  var TOKEN = MC_TOKEN || ''; // set on login via sessionStorage or Mission Control
   var LS_KEY = {
     auth: 'as_admin_auth',
     token: 'as_admin_token',
@@ -543,7 +544,7 @@
   var gateErr = document.getElementById('gateError');
 
   function checkAuth() {
-    var saved = lsVal(LS_KEY.token);
+    var saved = lsVal(LS_KEY.token) || MC_TOKEN;
     if (saved) {
       TOKEN = saved;
       gate.style.display = 'none';

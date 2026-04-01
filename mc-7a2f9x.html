@@ -964,6 +964,8 @@ function buildDashStats(){
       {icon:'💰',name:'Wages',href:'/admin/wages.html'},
       {icon:'💸',name:'Remittance',href:'/admin/remittance.html'},
       {icon:'🚨',name:'Alerts',href:'/admin/alerts.html'},
+      {icon:'📺',name:'AfroStream',href:'/tools/afrostream/admin.html'},
+      {icon:'⚔️',name:'Conflict',href:'/admin/conflict.html'},
     ].map(function(d){
       return '<a class="qa-btn" href="'+d.href+'" target="_blank" style="text-decoration:none"><span class="qa-icon">'+d.icon+'</span><div>'+d.name+'</div></a>';
     }).join('');
@@ -1389,8 +1391,10 @@ function authenticate(){
   var val = input.value.trim();
   if(val === MC_VALID_HASH || sessionStorage.getItem(MC_KEY) === 'granted'){
     sessionStorage.setItem(MC_KEY, 'granted');
-    // Also set admin_key so admin pages don't re-prompt
-    sessionStorage.setItem('admin_key', val);
+    // Set admin_key so /admin/ sub-pages don't re-prompt
+    sessionStorage.setItem('admin_key', 'Moly7174');
+    // Set AfroStream token so its admin page doesn't re-prompt
+    localStorage.setItem('afrostream_admin_token', 'Moly7174');
     unlockDashboard();
   } else {
     input.classList.add('error');
@@ -1449,6 +1453,8 @@ function buildLiveDataPage(){
     {name:'Minimum Wages',icon:'💰',href:'/admin/wages.html',desc:'54 countries, low/mid/high',freq:'Annual'},
     {name:'Remittance',icon:'💸',href:'/admin/remittance.html',desc:'9 providers × corridors',freq:'Monthly'},
     {name:'Alerts',icon:'🚨',href:'/admin/alerts.html',desc:'Tax & regulatory changes',freq:'As needed'},
+    {name:'AfroStream',icon:'📺',href:'/tools/afrostream/admin.html',desc:'Creators, streams, news, featured',freq:'Weekly'},
+    {name:'Conflict Monitor',icon:'⚔️',href:'/admin/conflict.html',desc:'Africa conflict events admin',freq:'As needed'},
   ];
   document.getElementById('dm-grid').innerHTML = adminPages.map(function(p){
     return '<a class="dm-card" href="'+p.href+'" target="_blank"><div class="dm-icon">'+p.icon+'</div><div class="dm-body"><div class="dm-name">'+p.name+'</div><div class="dm-desc">'+p.desc+'</div><div class="dm-freq">'+p.freq+'</div></div><div class="dm-status dm-needs" title="Needs periodic update"></div></a>';
