@@ -27,8 +27,8 @@
 //
 // GET    /api/admin/afrostream/stats        → dashboard stats
 
-var SUPABASE_URL = 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-var SUPABASE_SERVICE_KEY = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 var ADMIN_SECRET = process.env.ADMIN_SECRET;
 
 function getCorsHeaders(event) {
@@ -96,7 +96,7 @@ exports.handler = async function(event) {
 
   // Public reads — allow anonymous SELECT (RLS handles is_published filter)
   if (method === 'GET' && path === 'public/creators') {
-    var creators = await sb('GET', 'as_creators?is_published=eq.true&order=name.asc', null);
+    var creators = await sb('GET', 'as_creators?is_published=eq.true&order=subscribers.desc', null);
     return ok(headers, creators);
   }
   if (method === 'GET' && path === 'public/streams') {

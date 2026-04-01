@@ -38,6 +38,7 @@
 <!-- Components -->
 <script src="/assets/js/components/navbar.js" defer></script>
 <script src="/assets/js/components/footer.js" defer></script>
+<script src="/engines/afrostream-engine.js" defer></script>
 
 <!-- JSON-LD -->
 <script type="application/ld+json">
@@ -756,47 +757,53 @@ document.getElementById('asMobileMenu').addEventListener('click', function(){
 
 /* ---------- ASYNC DATA LOADING ---------- */
 
-async function fetchOrFallback(endpoint, fallback) {
-  try {
-    var res = await fetch(endpoint);
-    var json = await res.json();
-    if (json.success && json.data && json.data.length) return json.data;
-  } catch(e) {}
-  return fallback;
-}
-
 async function init() {
   renderHeroStats();
   renderFeatures();
   renderFAQ();
 
-  var results = await Promise.all([
-    fetchOrFallback('/api/admin/afrostream/public/creators', CREATORS),
-    fetchOrFallback('/api/admin/afrostream/public/streams',  LIVE_STREAMS),
-    fetchOrFallback('/api/admin/afrostream/public/news',     NEWS),
-    fetchOrFallback('/api/admin/afrostream/public/featured',  UPCOMING)
-  ]);
+  // Try loading from Supabase via engine, fall back to hardcoded data
+  if (window.AfroStreamEngine) {
+    try {
+      var data = await AfroStreamEngine.loadAll();
 
-  var liveCreators = results[0];
-  var liveStreams  = results[1];
-  var liveNews     = results[2];
-  var liveUpcoming = results[3];
+      if (data.creators && data.creators.length) {
+        CREATORS.length = 0;
+        data.creators.forEach(function(c){ CREATORS.push(c); });
+      }
+      if (data.streams) {
+        if (data.streams.live && data.streams.live.length) {
+          LIVE_STREAMS.length = 0;
+          data.streams.live.forEach(function(s){ LIVE_STREAMS.push(s); });
+        }
+        if (data.streams.upcoming && data.streams.upcoming.length) {
+          UPCOMING.length = 0;
+          data.streams.upcoming.forEach(function(u){ UPCOMING.push(u); });
+        }
+      }
+      if (data.news && data.news.length) {
+        NEWS.length = 0;
+        data.news.forEach(function(n){ NEWS.push(n); });
+      }
 
-  if (liveCreators !== CREATORS) {
-    CREATORS.length = 0;
-    liveCreators.forEach(function(c){ CREATORS.push(c); });
-  }
-  if (liveStreams !== LIVE_STREAMS) {
-    LIVE_STREAMS.length = 0;
-    liveStreams.forEach(function(s){ LIVE_STREAMS.push(s); });
-  }
-  if (liveNews !== NEWS) {
-    NEWS.length = 0;
-    liveNews.forEach(function(n){ NEWS.push(n); });
-  }
-  if (liveUpcoming !== UPCOMING) {
-    UPCOMING.length = 0;
-    liveUpcoming.forEach(function(u){ UPCOMING.push(u); });
+      // Update hero stats with real count
+      if (data.creators) {
+        var statsEl = document.getElementById('heroStats');
+        var stats = [
+          { val: data.creators.length + '', label:'Creators' },
+          { val: LIVE_STREAMS.length + '', label:'Live Now' },
+          { val:'6', label:'Platforms' },
+          { val: Object.keys(data.creators.reduce(function(m,c){ m[c._raw ? c._raw.country : '']=1; return m; },{})).length + '', label:'Countries' }
+        ];
+        statsEl.innerHTML = stats.map(function(s){
+          return '<div class="as-hero-stat"><span class="as-hero-stat-val">'+s.val+'</span><span class="as-hero-stat-label">'+s.label+'</span></div>';
+        }).join('');
+      }
+
+      console.log('[AfroStream] Loaded from Supabase — ' + CREATORS.length + ' creators, ' + LIVE_STREAMS.length + ' live, ' + NEWS.length + ' news');
+    } catch(e) {
+      console.warn('[AfroStream] Engine fetch failed, using demo data:', e.message);
+    }
   }
 
   renderLive(LIVE_STREAMS);
