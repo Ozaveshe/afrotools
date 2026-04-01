@@ -9,12 +9,35 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@900&family=Oswald:wght@700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@900&family=Oswald:wght@700&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@900&family=Oswald:wght@700&family=Playfair+Display:wght@400;700;900&family=Righteous&family=Permanent+Marker&family=Bangers&family=Luckiest+Guy&family=Press+Start+2P&family=Pacifico&family=Black+Ops+One&family=Russo+One&family=Bungee&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@900&family=Oswald:wght@700&family=Playfair+Display:wght@400;700;900&family=Righteous&family=Permanent+Marker&family=Bangers&family=Luckiest+Guy&family=Press+Start+2P&family=Pacifico&family=Black+Ops+One&family=Russo+One&family=Bungee&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="style.css">
 <script src="/assets/js/lib/creator-profile.js" defer></script>
+<style>
+/* --- Rotation / Opacity / Outline-width / Shadow-blur / Letter-spacing sliders --- */
+.ct-slider-row-inline { display:flex; align-items:center; gap:8px; margin-top:6px; }
+.ct-slider-row-inline .ct-slider { flex:1; }
+.ct-slider-row-inline .ct-slider-val { min-width:28px; text-align:right; font-size:12px; color:rgba(255,255,255,.6); }
+.ct-outline-extras, .ct-shadow-extras, .ct-letter-spacing-row { margin-top:6px; }
+.ct-outline-extras[hidden], .ct-shadow-extras[hidden], .ct-letter-spacing-row[hidden] { display:none; }
+
+/* --- Center helpers bar --- */
+.ct-center-bar { display:none; gap:4px; padding:6px 0; justify-content:center; }
+.ct-center-bar.visible { display:flex; }
+.ct-center-bar .ct-btn { font-size:12px; padding:4px 10px; }
+
+/* --- Duplicate button in layer list --- */
+.ct-layer-action.ct-dup-action { color:#007AFF; }
+
+/* --- Sticker grid flag images --- */
+.ct-sticker-btn img { display:block; margin:0 auto; }
+.ct-sticker-tabs { flex-wrap:wrap; gap:4px; }
+
+/* --- Fit-to-canvas button --- */
+.ct-fit-canvas-row { margin-top:8px; }
+</style>
 </head>
 <body>
 <div class="ct-app">
@@ -84,9 +107,25 @@
             <span class="ct-toggle-label">Outline</span>
             <div class="ct-toggle" id="text-outline" onclick="toggleOutline()"></div>
           </div>
+          <div class="ct-outline-extras" id="outline-extras" hidden>
+            <div class="ct-sidebar-title">Outline Width</div>
+            <div class="ct-slider-row">
+              <input type="range" class="ct-slider" id="text-outline-width" min="1" max="10" value="3">
+              <span class="ct-slider-val" id="text-outline-width-val">3</span>
+            </div>
+            <div class="ct-sidebar-title">Outline Color</div>
+            <input type="color" id="text-outline-color" value="#000000" style="width:100%;height:28px;border:none;border-radius:6px;cursor:pointer;background:transparent">
+          </div>
           <div class="ct-toggle-row">
             <span class="ct-toggle-label">Shadow</span>
             <div class="ct-toggle" id="text-shadow" onclick="toggleShadow()"></div>
+          </div>
+          <div class="ct-shadow-extras" id="shadow-extras" hidden>
+            <div class="ct-sidebar-title">Shadow Blur</div>
+            <div class="ct-slider-row">
+              <input type="range" class="ct-slider" id="text-shadow-blur" min="0" max="20" value="0">
+              <span class="ct-slider-val" id="text-shadow-blur-val">0</span>
+            </div>
           </div>
           <div class="ct-toggle-row">
             <span class="ct-toggle-label">UPPERCASE</span>
@@ -96,6 +135,27 @@
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('left')">←</button>
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('center')">↔</button>
             <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="setAlign('right')">→</button>
+          </div>
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Letter Spacing</div>
+          <div class="ct-slider-row">
+            <input type="range" class="ct-slider" id="text-letter-spacing" min="0" max="20" value="0">
+            <span class="ct-slider-val" id="text-letter-spacing-val">0</span>
+          </div>
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Rotation</div>
+          <div class="ct-slider-row">
+            <input type="range" class="ct-slider" id="text-rotation" min="0" max="360" value="0">
+            <span class="ct-slider-val" id="text-rotation-val">0</span>
+          </div>
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Opacity</div>
+          <div class="ct-slider-row">
+            <input type="range" class="ct-slider" id="text-opacity" min="10" max="100" value="100">
+            <span class="ct-slider-val" id="text-opacity-val">100%</span>
           </div>
         </div>
       </div>
@@ -129,6 +189,23 @@
             <span class="ct-slider-val" id="img-contrast-val">100</span>
           </div>
         </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Rotation</div>
+          <div class="ct-slider-row">
+            <input type="range" class="ct-slider" id="img-rotation" min="0" max="360" value="0">
+            <span class="ct-slider-val" id="img-rotation-val">0</span>
+          </div>
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Opacity</div>
+          <div class="ct-slider-row">
+            <input type="range" class="ct-slider" id="img-opacity" min="10" max="100" value="100">
+            <span class="ct-slider-val" id="img-opacity-val">100%</span>
+          </div>
+        </div>
+        <div class="ct-sidebar-section ct-fit-canvas-row">
+          <button class="ct-btn ct-btn-secondary" style="width:100%" onclick="fitImageToCanvas()">Fit to Canvas</button>
+        </div>
       </div>
 
       <!-- SHAPE PANEL -->
@@ -147,6 +224,20 @@
           <div class="ct-sidebar-title">Fill Color</div>
           <div class="ct-color-swatches" id="shape-colors"></div>
           <input type="color" id="shape-color-custom" value="#FF3B30" style="width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:transparent">
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Rotation</div>
+          <div class="ct-slider-row">
+            <input type="range" class="ct-slider" id="shape-rotation" min="0" max="360" value="0">
+            <span class="ct-slider-val" id="shape-rotation-val">0</span>
+          </div>
+        </div>
+        <div class="ct-sidebar-section">
+          <div class="ct-sidebar-title">Opacity</div>
+          <div class="ct-slider-row">
+            <input type="range" class="ct-slider" id="shape-opacity" min="10" max="100" value="100">
+            <span class="ct-slider-val" id="shape-opacity-val">100%</span>
+          </div>
         </div>
         <div class="ct-sidebar-section">
           <div class="ct-sidebar-title">Emoji</div>
@@ -228,6 +319,11 @@
 
     <!-- CANVAS -->
     <div class="ct-canvas-area" id="canvas-area">
+      <div class="ct-center-bar" id="center-bar">
+        <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('h')">Center H</button>
+        <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('v')">Center V</button>
+        <button class="ct-btn ct-btn-secondary ct-btn-sm" onclick="centerLayer('both')">Center Both</button>
+      </div>
       <div class="ct-canvas-container" id="canvas-container">
         <div class="ct-canvas" id="canvas" style="width:640px;height:360px;background:#FF3B30">
           <!-- Elements rendered here -->
@@ -365,6 +461,264 @@
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.creatorThumb;
   if (!engine) { console.error('ThumbnailForge engine not loaded'); return; }
 
+  // ── EXTEND ENGINE: Add more patterns at larger sizes ──
+  (function extendPatterns() {
+    var origPatterns = engine.getAfroPatterns();
+
+    // Upgrade existing pattern canvas sizes to 160+
+    var upgradedPatterns = origPatterns.map(function(p) {
+      return {
+        id: p.id,
+        name: p.name,
+        colors: p.colors,
+        generate: function() {
+          var small = p.generate();
+          // Re-render at 2x by drawing small pattern into larger canvas
+          var img = new Image();
+          var c = document.createElement('canvas');
+          c.width = 160; c.height = 160;
+          var cx = c.getContext('2d');
+          img.src = small;
+          // Synchronous since data URL
+          cx.drawImage(img, 0, 0, 160, 160);
+          return c.toDataURL();
+        }
+      };
+    });
+
+    var newPatterns = [
+      {
+        id: 'adire-01', name: 'Adire Indigo', colors: ['#1a237e','#e8eaf6','#283593','#c5cae9'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#1a237e'; x.fillRect(0, 0, 160, 160);
+          x.strokeStyle = '#e8eaf6'; x.lineWidth = 2;
+          // Diamond grid
+          for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 4; j++) {
+              var cx = 20 + i * 40, cy = 20 + j * 40;
+              x.beginPath();
+              x.moveTo(cx, cy - 16); x.lineTo(cx + 16, cy);
+              x.lineTo(cx, cy + 16); x.lineTo(cx - 16, cy);
+              x.closePath(); x.stroke();
+              x.beginPath(); x.arc(cx, cy, 4, 0, Math.PI * 2); x.stroke();
+            }
+          }
+          // Horizontal tie-dye lines
+          x.strokeStyle = '#7986cb'; x.lineWidth = 1;
+          for (var r = 0; r < 8; r++) {
+            x.beginPath(); x.moveTo(0, r * 20 + 10); x.lineTo(160, r * 20 + 10); x.stroke();
+          }
+          return c.toDataURL();
+        }
+      },
+      {
+        id: 'shweshwe-dots-01', name: 'Shweshwe Dots', colors: ['#1565c0','#e3f2fd','#0d47a1','#bbdefb'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#1565c0'; x.fillRect(0, 0, 160, 160);
+          x.fillStyle = '#e3f2fd';
+          for (var i = 0; i < 8; i++) {
+            for (var j = 0; j < 8; j++) {
+              var ox = (j % 2 === 0) ? 0 : 10;
+              x.beginPath(); x.arc(10 + i * 20 + ox, 10 + j * 20, 6, 0, Math.PI * 2); x.fill();
+            }
+          }
+          x.strokeStyle = '#bbdefb'; x.lineWidth = 1;
+          for (var i = 0; i < 8; i++) {
+            for (var j = 0; j < 8; j++) {
+              var ox = (j % 2 === 0) ? 0 : 10;
+              x.beginPath(); x.arc(10 + i * 20 + ox, 10 + j * 20, 9, 0, Math.PI * 2); x.stroke();
+            }
+          }
+          return c.toDataURL();
+        }
+      },
+      {
+        id: 'kitenge-swirl-01', name: 'Kitenge Swirl', colors: ['#ff6f00','#f44336','#4caf50','#ffeb3b'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#ff6f00'; x.fillRect(0, 0, 160, 160);
+          var centers = [[40,40],[120,40],[40,120],[120,120],[80,80]];
+          var cols = ['#f44336','#4caf50','#ffeb3b','#e91e63','#ff9800'];
+          centers.forEach(function(pt, idx) {
+            x.strokeStyle = cols[idx % cols.length]; x.lineWidth = 3;
+            x.beginPath();
+            for (var a = 0; a < Math.PI * 4; a += 0.1) {
+              var r = 2 + a * 3;
+              var px = pt[0] + Math.cos(a) * r;
+              var py = pt[1] + Math.sin(a) * r;
+              if (a === 0) x.moveTo(px, py); else x.lineTo(px, py);
+            }
+            x.stroke();
+          });
+          return c.toDataURL();
+        }
+      },
+      {
+        id: 'bogolan-earth-01', name: 'Bogolan Earth', colors: ['#3e2723','#d7ccc8','#795548','#a1887f'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#3e2723'; x.fillRect(0, 0, 160, 160);
+          x.strokeStyle = '#d7ccc8'; x.lineWidth = 3;
+          // Horizontal bands
+          for (var i = 0; i < 4; i++) {
+            var y = 20 + i * 40;
+            x.beginPath(); x.moveTo(0, y); x.lineTo(160, y); x.stroke();
+          }
+          // Zigzag in bands
+          x.strokeStyle = '#a1887f'; x.lineWidth = 2;
+          for (var b = 0; b < 3; b++) {
+            var by = 30 + b * 40;
+            x.beginPath();
+            for (var s = 0; s <= 8; s++) {
+              var px = s * 20, py = by + (s % 2 === 0 ? -8 : 8);
+              if (s === 0) x.moveTo(px, py); else x.lineTo(px, py);
+            }
+            x.stroke();
+          }
+          // Dots
+          x.fillStyle = '#d7ccc8';
+          [[30,10],[80,10],[130,10],[30,50],[80,50],[130,50],[30,90],[80,90],[130,90],[30,130],[80,130],[130,130]].forEach(function(p) {
+            x.beginPath(); x.arc(p[0], p[1], 3, 0, Math.PI * 2); x.fill();
+          });
+          return c.toDataURL();
+        }
+      },
+      {
+        id: 'zulu-bead-01', name: 'Zulu Beadwork', colors: ['#000000','#f44336','#2196f3','#ffeb3b','#4caf50'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#000'; x.fillRect(0, 0, 160, 160);
+          var beadColors = ['#f44336','#2196f3','#ffeb3b','#4caf50','#ff9800','#e91e63','#00bcd4','#fff'];
+          for (var row = 0; row < 16; row++) {
+            for (var col = 0; col < 16; col++) {
+              var ci = (row + col * 3) % beadColors.length;
+              x.fillStyle = beadColors[ci];
+              x.beginPath(); x.arc(5 + col * 10, 5 + row * 10, 3.5, 0, Math.PI * 2); x.fill();
+            }
+          }
+          // Triangle motif overlay
+          x.strokeStyle = '#fff'; x.lineWidth = 1.5;
+          x.beginPath(); x.moveTo(80, 20); x.lineTo(140, 80); x.lineTo(20, 80); x.closePath(); x.stroke();
+          x.beginPath(); x.moveTo(80, 140); x.lineTo(20, 80); x.lineTo(140, 80); x.closePath(); x.stroke();
+          return c.toDataURL();
+        }
+      },
+      {
+        id: 'ndop-stitch-01', name: 'Ndop Stitch', colors: ['#1a237e','#e8eaf6','#3949ab','#c5cae9'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#1a237e'; x.fillRect(0, 0, 160, 160);
+          // Grid of squares
+          x.fillStyle = '#e8eaf6';
+          for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 4; j++) {
+              if ((i + j) % 2 === 0) {
+                x.fillRect(i * 40 + 4, j * 40 + 4, 32, 32);
+              }
+            }
+          }
+          // Stitch lines
+          x.strokeStyle = '#c5cae9'; x.lineWidth = 1; x.setLineDash([4, 4]);
+          for (var i = 0; i < 5; i++) {
+            x.beginPath(); x.moveTo(i * 40, 0); x.lineTo(i * 40, 160); x.stroke();
+            x.beginPath(); x.moveTo(0, i * 40); x.lineTo(160, i * 40); x.stroke();
+          }
+          x.setLineDash([]);
+          // Inner diamonds in white squares
+          x.strokeStyle = '#3949ab'; x.lineWidth = 2;
+          for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 4; j++) {
+              if ((i + j) % 2 === 0) {
+                var mx = i * 40 + 20, my = j * 40 + 20;
+                x.beginPath(); x.moveTo(mx, my - 10); x.lineTo(mx + 10, my); x.lineTo(mx, my + 10); x.lineTo(mx - 10, my); x.closePath(); x.stroke();
+              }
+            }
+          }
+          return c.toDataURL();
+        }
+      },
+      {
+        id: 'ethiopian-cross-01', name: 'Ethiopian Cross', colors: ['#bf360c','#ffecb3','#e65100','#ffe0b2'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#bf360c'; x.fillRect(0, 0, 160, 160);
+          // Draw Coptic cross motif at center and corners
+          function drawCross(cx, cy, sz) {
+            x.strokeStyle = '#ffecb3'; x.lineWidth = 2;
+            x.fillStyle = '#e65100';
+            // Vertical bar
+            x.fillRect(cx - sz * 0.15, cy - sz * 0.5, sz * 0.3, sz);
+            // Horizontal bar
+            x.fillRect(cx - sz * 0.5, cy - sz * 0.15, sz, sz * 0.3);
+            // Circle at center
+            x.beginPath(); x.arc(cx, cy, sz * 0.18, 0, Math.PI * 2); x.fillStyle = '#ffecb3'; x.fill();
+            // Decorative arms
+            x.beginPath(); x.arc(cx, cy - sz * 0.5, sz * 0.12, 0, Math.PI * 2); x.stroke();
+            x.beginPath(); x.arc(cx, cy + sz * 0.5, sz * 0.12, 0, Math.PI * 2); x.stroke();
+            x.beginPath(); x.arc(cx - sz * 0.5, cy, sz * 0.12, 0, Math.PI * 2); x.stroke();
+            x.beginPath(); x.arc(cx + sz * 0.5, cy, sz * 0.12, 0, Math.PI * 2); x.stroke();
+          }
+          drawCross(80, 80, 60);
+          drawCross(0, 0, 40); drawCross(160, 0, 40);
+          drawCross(0, 160, 40); drawCross(160, 160, 40);
+          return c.toDataURL();
+        }
+      },
+      {
+        id: 'adinkra-repeat-01', name: 'Ghanaian Adinkra', colors: ['#2c1810','#d4af37','#8b4513','#f5e6c8'],
+        generate: function() {
+          var c = document.createElement('canvas'); c.width = 160; c.height = 160;
+          var x = c.getContext('2d');
+          x.fillStyle = '#2c1810'; x.fillRect(0, 0, 160, 160);
+          // Draw Gye Nyame-inspired symbol in grid
+          function drawSymbol(cx, cy) {
+            x.strokeStyle = '#d4af37'; x.lineWidth = 2;
+            // Spiral
+            x.beginPath();
+            for (var a = 0; a < Math.PI * 2.5; a += 0.15) {
+              var r = 4 + a * 3;
+              var px = cx + Math.cos(a) * r;
+              var py = cy + Math.sin(a) * r;
+              if (a === 0) x.moveTo(px, py); else x.lineTo(px, py);
+            }
+            x.stroke();
+            // Dots around
+            x.fillStyle = '#d4af37';
+            for (var d = 0; d < 4; d++) {
+              var da = d * Math.PI / 2;
+              x.beginPath(); x.arc(cx + Math.cos(da) * 18, cy + Math.sin(da) * 18, 2.5, 0, Math.PI * 2); x.fill();
+            }
+          }
+          // Grid pattern with separator lines
+          x.strokeStyle = '#8b4513'; x.lineWidth = 1;
+          for (var i = 0; i < 5; i++) {
+            x.beginPath(); x.moveTo(i * 40, 0); x.lineTo(i * 40, 160); x.stroke();
+            x.beginPath(); x.moveTo(0, i * 40); x.lineTo(160, i * 40); x.stroke();
+          }
+          for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 4; j++) {
+              drawSymbol(20 + i * 40, 20 + j * 40);
+            }
+          }
+          return c.toDataURL();
+        }
+      }
+    ];
+
+    // Override getAfroPatterns to return combined list
+    var combined = upgradedPatterns.concat(newPatterns);
+    engine.getAfroPatterns = function() { return combined; };
+  })();
+
   var scale = 0.5;
   var canvasEl = document.getElementById('canvas');
   var containerEl = document.getElementById('canvas-container');
@@ -383,7 +737,17 @@
     { name: 'Montserrat Black', family: '"Montserrat", sans-serif' },
     { name: 'Anton', family: '"Anton", sans-serif' },
     { name: 'Oswald', family: '"Oswald", sans-serif' },
-    { name: 'DM Sans', family: '"DM Sans", sans-serif' }
+    { name: 'DM Sans', family: '"DM Sans", sans-serif' },
+    { name: 'Playfair Display', family: '"Playfair Display", serif' },
+    { name: 'Righteous', family: '"Righteous", cursive' },
+    { name: 'Permanent Marker', family: '"Permanent Marker", cursive' },
+    { name: 'Bangers', family: '"Bangers", cursive' },
+    { name: 'Luckiest Guy', family: '"Luckiest Guy", cursive' },
+    { name: 'Press Start 2P', family: '"Press Start 2P", monospace' },
+    { name: 'Pacifico', family: '"Pacifico", cursive' },
+    { name: 'Black Ops One', family: '"Black Ops One", cursive' },
+    { name: 'Russo One', family: '"Russo One", sans-serif' },
+    { name: 'Bungee', family: '"Bungee", cursive' }
   ];
 
   // ── COLORS ──
@@ -588,11 +952,41 @@
     bindSlider('text-size', 'text-size-val', '', function(v) {
       if (selectedId) { engine.updateLayer(selectedId, { fontSize: parseInt(v) }); renderLayers(); }
     });
+    bindSlider('text-rotation', 'text-rotation-val', '', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { rotation: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('text-opacity', 'text-opacity-val', '%', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { opacity: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('text-outline-width', 'text-outline-width-val', '', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { outlineWidth: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('text-shadow-blur', 'text-shadow-blur-val', '', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { shadowBlur: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('text-letter-spacing', 'text-letter-spacing-val', '', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { letterSpacing: parseInt(v) }); renderLayers(); }
+    });
+    document.getElementById('text-outline-color').addEventListener('input', function(e) {
+      if (selectedId) { engine.updateLayer(selectedId, { outlineColor: e.target.value }); renderLayers(); }
+    });
     bindSlider('img-brightness', 'img-brightness-val', '', function(v) {
       if (selectedId) { engine.updateLayer(selectedId, { brightness: parseInt(v) }); renderLayers(); }
     });
     bindSlider('img-contrast', 'img-contrast-val', '', function(v) {
       if (selectedId) { engine.updateLayer(selectedId, { contrast: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('img-rotation', 'img-rotation-val', '', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { rotation: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('img-opacity', 'img-opacity-val', '%', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { opacity: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('shape-rotation', 'shape-rotation-val', '', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { rotation: parseInt(v) }); renderLayers(); }
+    });
+    bindSlider('shape-opacity', 'shape-opacity-val', '%', function(v) {
+      if (selectedId) { engine.updateLayer(selectedId, { opacity: parseInt(v) }); renderLayers(); }
     });
     bindSlider('bg-overlay', 'bg-overlay-val', '%', function(v) {
       engine.setBackground({ overlay: parseInt(v) / 100 });
@@ -625,7 +1019,7 @@
       btn.style.backgroundSize = '40px 40px';
       btn.innerHTML = '<span class="ct-pattern-name">' + esc(p.name) + '</span>';
       btn.onclick = function() {
-        engine.setBackground({ type: 'image', imageData: dataUrl });
+        engine.setBackground({ type: 'pattern', imageData: dataUrl });
         renderLayers();
         engine.pushHistory();
         showToast('Pattern applied!', 'success');
@@ -637,7 +1031,36 @@
     var stickers = engine.getAfroStickers();
     var tabsEl = document.getElementById('sticker-tabs');
     var gridEl = document.getElementById('sticker-grid');
-    var catNames = { flags:'Flags', culture:'Culture', food:'Food', music:'Music', business:'Business' };
+    // Extra sticker categories (extend engine data)
+    var extraStickers = [
+      { cat:'sports', items:['26BD','1F3C6','1F94A','1F3C3-1F3FF','1F3CB-1F3FF','26F3','1F3BE','1F3C8','1F94B','1F3BD','1F947','1F948','1F949','1F3AF','1F6B4-1F3FF','1F93C','1F3CF','1FA83','2693','1F6A3-1F3FF'] },
+      { cat:'celebration', items:['1F389','1F38A','1F973','1F386','1F387','1F388','1F380','1F381','1F390','2728','1F31F','1F4AB','1F3B6','1F3B5','1F3A4','1F941','1FA85','1F9E8','1FA94','1F3A0'] },
+      { cat:'nature', items:['1F30D','1F335','1F334','1F333','1F3D4','1F305','1F304','1F307','26C5','2600','1F308','1F30A','1F40A','1F99B','1F98F','1F9AC','1F985','1F99C','1FAB6','1F98E'] },
+      { cat:'tech', items:['1F4BB','1F4F1','1F3AE','1F916','1F4F7','1F4F9','1F399','1F3A7','2328','1F5A5','1F4E1','1F50B','1F4A1','2699','1F527','1F6E0','1F310','1F4E6','1F4CA','1F5C3'] }
+    ];
+    // Convert codepoints to emoji and add
+    extraStickers.forEach(function(group) {
+      var items = group.items.map(function(cp) {
+        return cp.split('-').map(function(hex) {
+          return String.fromCodePoint(parseInt(hex, 16));
+        }).join('');
+      });
+      stickers.push({ cat: group.cat, items: items });
+    });
+
+    var catNames = { flags:'Flags', culture:'Culture', food:'Food', music:'Music', business:'Business', sports:'Sports', celebration:'Party', nature:'Nature', tech:'Tech' };
+
+    // Map flag emoji to 2-letter codes for image rendering
+    function flagEmojiToCode(emoji) {
+      var chars = Array.from(emoji);
+      if (chars.length < 2) return null;
+      var first = chars[0].codePointAt(0);
+      var second = chars[1].codePointAt(0);
+      if (first >= 0x1F1E6 && first <= 0x1F1FF && second >= 0x1F1E6 && second <= 0x1F1FF) {
+        return String.fromCharCode(first - 0x1F1E6 + 65) + String.fromCharCode(second - 0x1F1E6 + 65);
+      }
+      return null;
+    }
 
     function showStickerCat(cat) {
       gridEl.innerHTML = '';
@@ -646,11 +1069,51 @@
       group.items.forEach(function(emoji) {
         var btn = document.createElement('button');
         btn.className = 'ct-sticker-btn';
-        btn.textContent = emoji;
-        btn.onclick = function() {
-          addEmoji(emoji);
-          showToast('Sticker added!', 'success');
-        };
+
+        // For flags, use image-based rendering (Windows doesn't show flag emoji)
+        var code = (cat === 'flags') ? flagEmojiToCode(emoji) : null;
+        if (code) {
+          var flagImg = document.createElement('img');
+          flagImg.src = 'https://flagcdn.com/w80/' + code.toLowerCase() + '.png';
+          flagImg.alt = code;
+          flagImg.style.cssText = 'width:32px;height:24px;object-fit:contain;pointer-events:none';
+          flagImg.loading = 'lazy';
+          btn.appendChild(flagImg);
+          btn.title = code;
+          btn.onclick = function() {
+            // Add flag as image layer for cross-platform support
+            var flagUrl = 'https://flagcdn.com/w320/' + code.toLowerCase() + '.png';
+            var img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+              var flagCanvas = document.createElement('canvas');
+              flagCanvas.width = img.width;
+              flagCanvas.height = img.height;
+              flagCanvas.getContext('2d').drawImage(img, 0, 0);
+              var id = engine.addLayer({
+                type: 'image', src: flagCanvas.toDataURL(),
+                x: 200, y: 200, w: 200, h: 140,
+                clip: 'rounded', brightness: 100, contrast: 100
+              });
+              selectedId = id;
+              renderLayers();
+              engine.pushHistory();
+              showToast('Flag added!', 'success');
+            };
+            img.onerror = function() {
+              // Fallback to emoji if image fails
+              addEmoji(emoji);
+              showToast('Sticker added!', 'success');
+            };
+            img.src = flagUrl;
+          };
+        } else {
+          btn.textContent = emoji;
+          btn.onclick = function() {
+            addEmoji(emoji);
+            showToast('Sticker added!', 'success');
+          };
+        }
         gridEl.appendChild(btn);
       });
     }
@@ -759,13 +1222,21 @@
     var bg = engine.getBackground();
 
     // Render background
+    canvasEl.style.backgroundSize = '';
     if (bg.type === 'gradient' && bg.colors) {
       canvasEl.style.background = 'linear-gradient(' + (bg.angle || 135) + 'deg,' + bg.colors[0] + ',' + bg.colors[1] + ')';
+    } else if (bg.type === 'pattern' && bg.imageData) {
+      canvasEl.style.background = 'url(' + bg.imageData + ') repeat';
+      canvasEl.style.backgroundSize = (160 * scale) + 'px ' + (160 * scale) + 'px';
     } else if (bg.type === 'image' && bg.imageData) {
       canvasEl.style.background = 'url(' + bg.imageData + ') center/cover';
     } else {
       canvasEl.style.background = bg.color || '#FF3B30';
     }
+
+    // Show/hide center bar
+    var centerBar = document.getElementById('center-bar');
+    if (centerBar) centerBar.classList.toggle('visible', !!selectedId);
 
     // Clear old elements
     canvasEl.querySelectorAll('.ct-element,.ct-overlay').forEach(function(el) { el.remove(); });
@@ -787,6 +1258,12 @@
       el.style.top = (layer.y * scale) + 'px';
       el.style.zIndex = layer.z || 1;
 
+      // Apply rotation and opacity to all layer types
+      var layerRotation = layer.rotation || 0;
+      var layerOpacity = layer.opacity != null ? layer.opacity : 100;
+      if (layerRotation) el.style.transform = 'rotate(' + layerRotation + 'deg)';
+      if (layerOpacity < 100) el.style.opacity = layerOpacity / 100;
+
       if (layer.type === 'text') {
         el.classList.add('ct-element-text');
         el.style.fontFamily = layer.fontFamily || 'Impact, sans-serif';
@@ -796,6 +1273,7 @@
         el.style.textAlign = layer.textAlign || 'left';
         el.style.textTransform = layer.uppercase ? 'uppercase' : 'none';
         el.style.maxWidth = ((layer.maxWidth || 600) * scale) + 'px';
+        if (layer.letterSpacing) el.style.letterSpacing = (layer.letterSpacing * scale) + 'px';
         if (layer.outline) {
           el.style.webkitTextStroke = (layer.outlineWidth || 3) * scale + 'px ' + (layer.outlineColor || '#000');
         }
@@ -887,6 +1365,7 @@
         '<span class="ct-layer-actions">' +
           '<button class="ct-layer-action" onclick="event.stopPropagation();moveLayerUp(\'' + l.id + '\')" title="Move up">↑</button>' +
           '<button class="ct-layer-action" onclick="event.stopPropagation();moveLayerDown(\'' + l.id + '\')" title="Move down">↓</button>' +
+          '<button class="ct-layer-action ct-dup-action" onclick="event.stopPropagation();duplicateLayer(\'' + l.id + '\')" title="Duplicate">+</button>' +
           '<button class="ct-layer-action" onclick="event.stopPropagation();deleteLayer(\'' + l.id + '\')" title="Delete">✕</button>' +
         '</span>' +
       '</div>';
@@ -1060,13 +1539,52 @@
     renderLayers();
     var layer = engine.getLayer(id);
     if (!layer) return;
+
+    // Auto-switch to appropriate tab
+    var tabName = layer.type === 'text' ? 'text' : layer.type === 'image' ? 'image' : (layer.type === 'shape' || layer.type === 'emoji') ? 'shape' : null;
+    if (tabName) {
+      document.querySelectorAll('.ct-tool-tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.ct-tool-panel').forEach(function(p) { p.classList.remove('active'); });
+      var tabBtn = document.querySelector('.ct-tool-tab[data-panel="' + tabName + '"]');
+      if (tabBtn) tabBtn.classList.add('active');
+      var panel = document.getElementById('panel-' + tabName);
+      if (panel) panel.classList.add('active');
+    }
+
     if (layer.type === 'text') {
       var sizeSlider = document.getElementById('text-size');
       if (sizeSlider) { sizeSlider.value = layer.fontSize || 72; document.getElementById('text-size-val').textContent = sizeSlider.value; }
       setToggle('text-outline', !!layer.outline);
       setToggle('text-shadow', !!layer.shadow);
       setToggle('text-uppercase', !!layer.uppercase);
+      syncSlider('text-rotation', 'text-rotation-val', '', layer.rotation || 0);
+      syncSlider('text-opacity', 'text-opacity-val', '%', layer.opacity != null ? layer.opacity : 100);
+      syncSlider('text-outline-width', 'text-outline-width-val', '', layer.outlineWidth || 3);
+      syncSlider('text-shadow-blur', 'text-shadow-blur-val', '', layer.shadowBlur || 0);
+      syncSlider('text-letter-spacing', 'text-letter-spacing-val', '', layer.letterSpacing || 0);
+      var olcPick = document.getElementById('text-outline-color');
+      if (olcPick) olcPick.value = layer.outlineColor || '#000000';
+      // Show/hide outline and shadow extras
+      var olExtras = document.getElementById('outline-extras');
+      if (olExtras) olExtras.hidden = !layer.outline;
+      var shExtras = document.getElementById('shadow-extras');
+      if (shExtras) shExtras.hidden = !layer.shadow;
+    } else if (layer.type === 'image') {
+      syncSlider('img-brightness', 'img-brightness-val', '', layer.brightness || 100);
+      syncSlider('img-contrast', 'img-contrast-val', '', layer.contrast || 100);
+      syncSlider('img-rotation', 'img-rotation-val', '', layer.rotation || 0);
+      syncSlider('img-opacity', 'img-opacity-val', '%', layer.opacity != null ? layer.opacity : 100);
+    } else if (layer.type === 'shape') {
+      syncSlider('shape-rotation', 'shape-rotation-val', '', layer.rotation || 0);
+      syncSlider('shape-opacity', 'shape-opacity-val', '%', layer.opacity != null ? layer.opacity : 100);
     }
+  }
+
+  function syncSlider(sliderId, valId, suffix, value) {
+    var s = document.getElementById(sliderId);
+    var v = document.getElementById(valId);
+    if (s) s.value = value;
+    if (v) v.textContent = value + suffix;
   }
 
   function deselectAll() {
@@ -1115,12 +1633,18 @@
   window.toggleOutline = function() {
     var tog = document.getElementById('text-outline');
     tog.classList.toggle('on');
-    if (selectedId) { engine.updateLayer(selectedId, { outline: tog.classList.contains('on') }); renderLayers(); engine.pushHistory(); }
+    var isOn = tog.classList.contains('on');
+    var olExtras = document.getElementById('outline-extras');
+    if (olExtras) olExtras.hidden = !isOn;
+    if (selectedId) { engine.updateLayer(selectedId, { outline: isOn }); renderLayers(); engine.pushHistory(); }
   };
   window.toggleShadow = function() {
     var tog = document.getElementById('text-shadow');
     tog.classList.toggle('on');
-    if (selectedId) { engine.updateLayer(selectedId, { shadow: tog.classList.contains('on') }); renderLayers(); engine.pushHistory(); }
+    var isOn = tog.classList.contains('on');
+    var shExtras = document.getElementById('shadow-extras');
+    if (shExtras) shExtras.hidden = !isOn;
+    if (selectedId) { engine.updateLayer(selectedId, { shadow: isOn }); renderLayers(); engine.pushHistory(); }
   };
   window.toggleUppercase = function() {
     var tog = document.getElementById('text-uppercase');
@@ -1149,6 +1673,46 @@
     if (selectedId === id) selectedId = null;
     renderLayers();
     engine.pushHistory();
+  };
+
+  window.duplicateLayer = function(id) {
+    var layer = engine.getLayer(id);
+    if (!layer) return;
+    var clone = JSON.parse(JSON.stringify(layer));
+    delete clone.id;
+    delete clone.z;
+    clone.x = (clone.x || 0) + 20;
+    clone.y = (clone.y || 0) + 20;
+    var newId = engine.addLayer(clone);
+    selectedId = newId;
+    renderLayers();
+    engine.pushHistory();
+    showToast('Layer duplicated', 'success');
+  };
+
+  window.centerLayer = function(dir) {
+    if (!selectedId) return;
+    var layer = engine.getLayer(selectedId);
+    if (!layer) return;
+    var CW = getCanvasW(), CH = getCanvasH();
+    var lw = layer.w || (layer.type === 'text' ? (layer.maxWidth || 600) : layer.type === 'emoji' ? (layer.size || 80) : 200);
+    var lh = layer.h || (layer.type === 'text' ? ((layer.fontSize || 72) * 1.2) : layer.type === 'emoji' ? (layer.size || 80) : 100);
+    var updates = {};
+    if (dir === 'h' || dir === 'both') updates.x = Math.round((CW - lw) / 2);
+    if (dir === 'v' || dir === 'both') updates.y = Math.round((CH - lh) / 2);
+    engine.updateLayer(selectedId, updates);
+    renderLayers();
+    engine.pushHistory();
+  };
+
+  window.fitImageToCanvas = function() {
+    if (!selectedId) return;
+    var layer = engine.getLayer(selectedId);
+    if (!layer || layer.type !== 'image') { showToast('Select an image layer first', 'error'); return; }
+    engine.updateLayer(selectedId, { x: 0, y: 0, w: getCanvasW(), h: getCanvasH() });
+    renderLayers();
+    engine.pushHistory();
+    showToast('Image fit to canvas', 'success');
   };
 
   // ── FILE UPLOADS ──
@@ -1220,6 +1784,20 @@
       grad.addColorStop(1, bg.colors[1]);
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, CW, CH);
+    } else if (bg.type === 'pattern' && bg.imageData) {
+      var patImg = new Image();
+      patImg.onload = function() {
+        var pat = ctx.createPattern(patImg, 'repeat');
+        ctx.fillStyle = pat;
+        ctx.fillRect(0, 0, CW, CH);
+        if (bg.overlay && bg.overlay > 0) {
+          ctx.fillStyle = 'rgba(0,0,0,' + bg.overlay + ')';
+          ctx.fillRect(0, 0, CW, CH);
+        }
+        drawLayersAndExport(ctx, exportCanvas, layers, format);
+      };
+      patImg.src = bg.imageData;
+      return;
     } else if (bg.type === 'image' && bg.imageData) {
       var bgImg = new Image();
       bgImg.onload = function() {
@@ -1260,6 +1838,12 @@
     var imagePromises = [];
 
     layers.forEach(function(layer) {
+      var layerRotation = layer.rotation || 0;
+      var layerOpacity = layer.opacity != null ? layer.opacity : 100;
+
+      ctx.save();
+      ctx.globalAlpha = layerOpacity / 100;
+
       if (layer.type === 'text') {
         var text = layer.uppercase ? (layer.content || '').toUpperCase() : (layer.content || '');
         var fontSize = layer.fontSize || 72;
@@ -1270,8 +1854,20 @@
         var maxW = layer.maxWidth || 600;
         var lines = wrapText(ctx, text, maxW);
         var lineHeight = fontSize * 1.15;
-        var yOffset = 0;
 
+        if (layerRotation) {
+          var rcx = layer.x + maxW / 2;
+          var rcy = layer.y + (lines.length * lineHeight) / 2;
+          ctx.translate(rcx, rcy);
+          ctx.rotate(layerRotation * Math.PI / 180);
+          ctx.translate(-rcx, -rcy);
+        }
+
+        if (layer.letterSpacing) {
+          ctx.canvas.style.letterSpacing = layer.letterSpacing + 'px';
+        }
+
+        var yOffset = 0;
         lines.forEach(function(line) {
           var tx = layer.x;
           if (layer.textAlign === 'center') tx = layer.x + maxW / 2;
@@ -1301,6 +1897,13 @@
         });
 
       } else if (layer.type === 'shape') {
+        if (layerRotation) {
+          var sw = layer.w || 200, sh = layer.h || 100;
+          var scx = layer.x + sw / 2, scy = layer.y + sh / 2;
+          ctx.translate(scx, scy);
+          ctx.rotate(layerRotation * Math.PI / 180);
+          ctx.translate(-scx, -scy);
+        }
         ctx.fillStyle = layer.fill || '#FF3B30';
         if (layer.shape === 'circle') {
           var cx = layer.x + (layer.w || 200) / 2;
@@ -1323,6 +1926,13 @@
         }
 
       } else if (layer.type === 'emoji') {
+        if (layerRotation) {
+          var esz = layer.size || 80;
+          var ecx = layer.x + esz / 2, ecy = layer.y + esz / 2;
+          ctx.translate(ecx, ecy);
+          ctx.rotate(layerRotation * Math.PI / 180);
+          ctx.translate(-ecx, -ecy);
+        }
         ctx.font = (layer.size || 80) + 'px serif';
         ctx.textBaseline = 'top';
         ctx.fillText(layer.content || '', layer.x, layer.y);
@@ -1330,6 +1940,8 @@
       } else if (layer.type === 'image') {
         imagePromises.push({ layer: layer });
       }
+
+      ctx.restore();
     });
 
     if (imagePromises.length) {
@@ -1338,21 +1950,31 @@
         var img = new Image();
         img.onload = function() {
           ctx.save();
+          var imgOpacity = item.layer.opacity != null ? item.layer.opacity : 100;
+          ctx.globalAlpha = imgOpacity / 100;
+          var imgRot = item.layer.rotation || 0;
+          var iw = item.layer.w || 300, ih = item.layer.h || 300;
+          if (imgRot) {
+            var icx = item.layer.x + iw / 2, icy = item.layer.y + ih / 2;
+            ctx.translate(icx, icy);
+            ctx.rotate(imgRot * Math.PI / 180);
+            ctx.translate(-icx, -icy);
+          }
           if (item.layer.clip === 'circle') {
-            var cx = item.layer.x + (item.layer.w || 300) / 2;
-            var cy = item.layer.y + (item.layer.h || 300) / 2;
-            var r = Math.min(item.layer.w || 300, item.layer.h || 300) / 2;
+            var cx = item.layer.x + iw / 2;
+            var cy = item.layer.y + ih / 2;
+            var r = Math.min(iw, ih) / 2;
             ctx.beginPath();
             ctx.arc(cx, cy, r, 0, Math.PI * 2);
             ctx.clip();
           } else if (item.layer.clip === 'rounded') {
-            roundRect(ctx, item.layer.x, item.layer.y, item.layer.w || 300, item.layer.h || 300, 16);
+            roundRect(ctx, item.layer.x, item.layer.y, iw, ih, 16);
             ctx.clip();
           }
           var b = (item.layer.brightness || 100) / 100;
           var c = (item.layer.contrast || 100) / 100;
           ctx.filter = 'brightness(' + b + ') contrast(' + c + ')';
-          ctx.drawImage(img, item.layer.x, item.layer.y, item.layer.w || 300, item.layer.h || 300);
+          ctx.drawImage(img, item.layer.x, item.layer.y, iw, ih);
           ctx.restore();
           loaded++;
           if (loaded === imagePromises.length) {
