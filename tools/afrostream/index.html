@@ -521,7 +521,7 @@ function renderTopThree(creators){
         '<a href="#" style="font-size:.65rem">'+cr.freq+'</a>' +
         '<a href="#" style="font-size:.65rem">Since '+cr.since+'</a>' +
       '</div>' +
-      '<a href="creator.html?slug='+cr.name.toLowerCase().replace(/\s+/g,'-')+'" class="as-btn as-btn-sm as-btn-primary" style="margin-top:8px">View Profile &rarr;</a>' +
+      '<a href="creator.html?id='+(cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-'))+'" class="as-btn as-btn-sm as-btn-primary" style="margin-top:8px">View Profile &rarr;</a>' +
     '</div>';
   }).join('');
 }
@@ -532,7 +532,8 @@ function renderRankTable(creators){
     var rank = i+4;
     var c = COUNTRIES[cr.country];
     var p = PLATFORMS[cr.platform];
-    return '<tr>' +
+    var slug = cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-');
+    return '<tr onclick="window.location.href=\'creator.html?id='+slug+'\'" style="cursor:pointer">' +
       '<td class="as-rank-num">'+rank+'</td>' +
       '<td><div class="as-table-user"><div class="as-avatar as-avatar-sm '+gradClass(i)+'">'+cr.name.charAt(0)+'</div><span class="as-table-user-name">'+cr.name+'</span></div></td>' +
       '<td>'+c.flag+' '+c.name+'</td>' +
@@ -548,15 +549,33 @@ function renderRankTable(creators){
 
 function renderNews(){
   var el = document.getElementById('newsGrid');
+  var catGrads = {
+    'Milestone':'linear-gradient(135deg,#A855F7,#6D28D9)',
+    'milestones':'linear-gradient(135deg,#A855F7,#6D28D9)',
+    'Industry':'linear-gradient(135deg,#06B6D4,#0891B2)',
+    'platform':'linear-gradient(135deg,#06B6D4,#0891B2)',
+    'Platform':'linear-gradient(135deg,#06B6D4,#0891B2)',
+    'Deals':'linear-gradient(135deg,#F97316,#EA580C)',
+    'business':'linear-gradient(135deg,#F97316,#EA580C)',
+    'Business':'linear-gradient(135deg,#F97316,#EA580C)',
+    'Data':'linear-gradient(135deg,#10B981,#059669)',
+    'rising':'linear-gradient(135deg,#10B981,#059669)',
+    'collabs':'linear-gradient(135deg,#EC4899,#DB2777)',
+    'drama':'linear-gradient(135deg,#EF4444,#DC2626)'
+  };
   el.innerHTML = NEWS.map(function(n,i){
-    return '<div class="as-news-card as-animate-in" style="animation-delay:'+(i*0.08)+'s">' +
-      '<div class="as-news-thumb '+gradClass(i)+'">&#128240;</div>' +
+    var href = n.slug ? 'news.html#'+n.slug : 'news.html';
+    var bg = catGrads[n.cat] || '';
+    var thumbCls = 'as-news-thumb' + (bg ? '' : ' '+gradClass(i));
+    var thumbSty = bg ? ' style="background:'+bg+'"' : '';
+    return '<a href="'+href+'" class="as-news-card as-animate-in" style="animation-delay:'+(i*0.08)+'s;text-decoration:none;color:inherit">' +
+      '<div class="'+thumbCls+'"'+thumbSty+'>&#128240;</div>' +
       '<div class="as-news-body">' +
         '<div class="as-news-meta"><span class="as-category">'+n.cat+'</span><span>'+n.date+'</span></div>' +
         '<div class="as-news-title">'+n.title+'</div>' +
         '<div class="as-news-excerpt">'+n.excerpt+'</div>' +
       '</div>' +
-    '</div>';
+    '</a>';
   }).join('');
 }
 
