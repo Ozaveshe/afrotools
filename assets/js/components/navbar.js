@@ -1335,12 +1335,6 @@
             </ul>
 
             <div class="right">
-              <button class="search-btn" id="searchBtn" type="button" aria-label="${T.ariaSearch}">
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
-                </svg>
-                <span class="search-kbd">Ctrl K</span>
-              </button>
               ${this._langSwitcherHTML()}
               <span class="pill-54">${T.countries54}</span>
               <a href="/dashboard/" class="btn-login">${T.signIn}</a>
@@ -1381,31 +1375,7 @@
           </div>
         </div>
 
-        <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="${T.ariaSearch}">
-          <div class="search-modal">
-            <div class="search-input-wrap">
-              <svg viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
-              </svg>
-              <input class="search-input" id="searchInput" type="text" placeholder="${T.searchPh}" aria-label="${T.ariaSearch}" autocomplete="off"/>
-              <span class="search-esc" id="searchEsc">ESC</span>
-            </div>
-            <div class="search-results" id="searchResults">
-              <div class="search-empty">
-                <div class="search-empty-icon">🔍</div>
-                <div class="search-empty-text">${T.srchEmpty}</div>
-                <div class="search-empty-hint">${T.srchHint}</div>
-              </div>
-            </div>
-            <div class="search-footer">
-              <div class="search-footer-hint">
-                <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-                <span><kbd>↵</kbd> open</span>
-                <span><kbd>esc</kbd> close</span>
-              </div>
-            </div>
-          </div>
-        </div>`;
+`;
     }
 
     _bind() {
@@ -1510,20 +1480,10 @@
         }
       }
 
-      // ── SEARCH ──
-      const searchBtn     = sr.querySelector('#searchBtn');
-      const searchOverlay = sr.querySelector('#searchOverlay');
-      const searchInput   = sr.querySelector('#searchInput');
-      const searchResults = sr.querySelector('#searchResults');
-      const searchEsc     = sr.querySelector('#searchEsc');
+      // ── SEARCH (desktop handled by command-palette.js) ──
       const mobSearchInput   = sr.querySelector('.mob-search-input');
       const mobSearchResults = sr.querySelector('#mobSearchResults');
       const mobCategoriesWrap = sr.querySelector('#mobCategoriesWrap');
-
-      // Mac detection for shortcut label
-      const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
-      const kbdEl = sr.querySelector('.search-kbd');
-      if (kbdEl) kbdEl.textContent = isMac ? '⌘ K' : 'Ctrl K';
 
       let _activeIdx = -1;
 
@@ -1650,93 +1610,7 @@
           </a>`).join('');
       };
 
-      const openSearch = () => {
-        searchOverlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        _activeIdx = -1;
-        setTimeout(() => searchInput.focus(), 60);
-      };
-
-      const closeSearch = () => {
-        searchOverlay.classList.remove('open');
-        document.body.style.overflow = this._menuOpen ? 'hidden' : '';
-        searchInput.value = '';
-        searchResults.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,300+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
-        _activeIdx = -1;
-      };
-
-      // Open search
-      searchBtn?.addEventListener('click', e => { e.stopPropagation(); openSearch(); });
-      searchEsc?.addEventListener('click', closeSearch);
-
-      // Click overlay to close
-      searchOverlay?.addEventListener('click', e => { if (e.target === searchOverlay) closeSearch(); });
-
-      // Search input handler
-      let _debounce;
-      searchInput?.addEventListener('input', () => {
-        clearTimeout(_debounce);
-        _debounce = setTimeout(() => {
-          const q = searchInput.value.trim();
-          const results = searchTools(q);
-          renderResults(results, q, searchResults);
-          if (q && q.length >= 2 && window.AfroTools?.analytics) {
-            const count = results ? results.length : 0;
-            window.AfroTools.analytics.trackSearch(q, count, 'navbar');
-            if (count === 0) {
-              window.AfroTools.analytics.trackSearchNoResults(q, 'navbar');
-            }
-          }
-          captureSearch(q, results ? results.length : 0, 'navbar');
-        }, 80);
-      });
-
-      // Keyboard nav in search
-      searchInput?.addEventListener('keydown', e => {
-        const items = searchResults.querySelectorAll('.search-result');
-        if (!items.length) return;
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          _activeIdx = Math.min(_activeIdx + 1, items.length - 1);
-          items.forEach((el, i) => el.classList.toggle('active', i === _activeIdx));
-          items[_activeIdx]?.scrollIntoView({ block: 'nearest' });
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          _activeIdx = Math.max(_activeIdx - 1, 0);
-          items.forEach((el, i) => el.classList.toggle('active', i === _activeIdx));
-          items[_activeIdx]?.scrollIntoView({ block: 'nearest' });
-        } else if (e.key === 'Enter') {
-          e.preventDefault();
-          if (_activeIdx >= 0 && items[_activeIdx]) {
-            const href = items[_activeIdx].getAttribute('href');
-            if (href) window.location.href = href;
-          }
-        }
-      });
-
-      // Click on result
-      searchResults?.addEventListener('click', e => {
-        const result = e.target.closest('.search-result');
-        if (result) {
-          closeSearch();
-        }
-      });
-
-      // Global keyboard shortcuts (Ctrl+K / Cmd+K and Escape)
-      if (this._searchKeyFn) document.removeEventListener('keydown', this._searchKeyFn);
-      this._searchKeyFn = e => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-          e.preventDefault();
-          if (searchOverlay.classList.contains('open')) closeSearch();
-          else openSearch();
-        }
-        if (e.key === 'Escape' && searchOverlay.classList.contains('open')) {
-          closeSearch();
-        }
-      };
-      document.addEventListener('keydown', this._searchKeyFn);
-
-      // ── MOBILE SEARCH ──
+      // ── MOBILE SEARCH (desktop search handled by command-palette.js) ──
       let _mobDebounce;
       mobSearchInput?.addEventListener('input', () => {
         clearTimeout(_mobDebounce);
