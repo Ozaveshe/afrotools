@@ -441,22 +441,81 @@ async function sendChat() {
 <script src="/assets/js/components/salary-benchmark-widget.js" defer><\/script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <script>
-function toggleSaveTool(){
-  var KEY='afro_favs_v2',id='ly-paye';
-  var favs=JSON.parse(localStorage.getItem(KEY)||'[]');
-  var idx=favs.indexOf(id);
-  if(idx>-1){favs.splice(idx,1)}else{favs.push(id)}
-  localStorage.setItem(KEY,JSON.stringify(favs));
-  updateSaveUI();
-}
-function updateSaveUI(){
-  var KEY='afro_favs_v2',id='ly-paye';
-  var saved=JSON.parse(localStorage.getItem(KEY)||'[]').indexOf(id)>-1;
-  var btn=document.getElementById('inlineSaveBtn');
-  if(btn){btn.innerHTML=saved?'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Saved':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save to My Tools';btn.classList.toggle('saved',saved);}
-  var sb=document.querySelector('.tool-info-save-btn');
-  if(sb){sb.textContent=saved?'Saved':'Save';sb.classList.toggle('saved',saved);}
-}
-document.addEventListener('DOMContentLoaded',updateSaveUI);
+(function(){
+  var KEY='afro_favs_v2',TOOL_ID='ly-paye',LIMIT=10;
+  function isLoggedIn(){return typeof AfroAuth!=='undefined'&&AfroAuth.isLoggedIn();}
+  function isPro(){return typeof AfroAuth!=='undefined'&&AfroAuth.isPro();}
+  function getFavs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[];}}
+  function isSaved(){return getFavs().indexOf(TOOL_ID)>-1;}
+
+  window.toggleSaveTool=function(){
+    if(!isLoggedIn()){
+      if(typeof AfroAuth!=='undefined'&&AfroAuth.openModal){
+        AfroAuth.openModal('login',function(){updateSaveUI();});
+      }else{window.location.href='/dashboard/';}
+      return;
+    }
+    var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
+    if(idx>-1){favs.splice(idx,1);}else{
+      if(!isPro()&&favs.length>=LIMIT){
+        showSaveToast('Free accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        return;
+      }
+      favs.push(TOOL_ID);
+    }
+    localStorage.setItem(KEY,JSON.stringify(favs));
+    updateSaveUI();
+  };
+
+  function showSaveToast(msg){
+    var t=document.createElement('div');
+    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 24px;border-radius:10px;font-size:.85rem;font-family:DM Sans,sans-serif;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:400px;text-align:center';
+    t.textContent=msg;document.body.appendChild(t);
+    setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},4000);
+  }
+
+  function updateSaveUI(){
+    var loggedIn=isLoggedIn(),saved=loggedIn&&isSaved();
+    var svgSaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+    var svgUnsaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+
+    // Inline save button
+    var btn=document.getElementById('inlineSaveBtn');
+    if(btn){
+      if(!loggedIn){btn.innerHTML=svgUnsaved+' Sign in to Save';btn.classList.remove('saved');}
+      else if(saved){btn.innerHTML=svgSaved+' Saved';btn.classList.add('saved');}
+      else{btn.innerHTML=svgUnsaved+' Save to My Tools';btn.classList.remove('saved');}
+    }
+
+    // Sidebar save button
+    var sb=document.getElementById('sidebarSaveBtn');
+    if(sb){
+      var lbl=document.getElementById('sidebarSaveLabel');
+      if(!loggedIn){
+        if(lbl)lbl.textContent='Sign in to Save';
+        sb.classList.remove('saved');
+      }else if(saved){
+        if(lbl)lbl.textContent='Saved';
+        sb.classList.add('saved');
+      }else{
+        if(lbl)lbl.textContent='Save to My Tools';
+        sb.classList.remove('saved');
+      }
+    }
+
+    // Save CTA banner text
+    var title=document.querySelector('.ng-save-title');
+    var desc=document.querySelector('.ng-save-desc');
+    if(!loggedIn){
+      if(title)title.textContent='Sign in to save this calculator';
+      if(desc)desc.textContent='Create a free account to bookmark tools, track calculations, and access your dashboard.';
+    }
+  }
+  window.updateSaveUI=updateSaveUI;
+
+  // Run on load + auth changes
+  document.addEventListener('DOMContentLoaded',updateSaveUI);
+  window.addEventListener('afro-auth-change',updateSaveUI);
+})();
 </script>
 </body></html>

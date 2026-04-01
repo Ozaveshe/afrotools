@@ -1299,7 +1299,7 @@
         searchPh:     isSw ? 'Tafuta zana...'               : isFr ? 'Rechercher des outils...'                         : 'Search tools...',
         mobSignIn:    isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign In',
         mobNote:      isSw ? '🌍 Nchi 54 · bure · bila usajili'                 : isFr ? '🌍 54 pays · gratuit · sans inscription'          : '🌍 54 countries · always free · no sign-up required',
-        srchEmpty:    isSw ? 'Zana 100+ za Afrika'          : isFr ? '100+ outils africains'                            : 'Search 100+ African tools',
+        srchEmpty:    isSw ? 'Zana 1,300+ za Afrika'          : isFr ? '1 300+ outils africains'                            : 'Search 1,300+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
       };
 
@@ -1622,16 +1622,16 @@
                   </div>
                 </a>`).join('') +
               '<div class="search-section-label" style="padding-top:16px">All Tools</div>' +
-              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 400+ tools</div></div>';
+              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 1,300+ tools</div></div>';
             _activeIdx = 0;
             container.querySelector('#clearRecent')?.addEventListener('click', e => {
               e.preventDefault(); e.stopPropagation();
               try { localStorage.removeItem(RECENT_KEY); } catch {}
-              container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 100+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+              container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,300+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
             });
             return;
           }
-          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 100+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,300+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
           return;
         }
         if (tools.length === 0) {
@@ -1661,7 +1661,7 @@
         searchOverlay.classList.remove('open');
         document.body.style.overflow = this._menuOpen ? 'hidden' : '';
         searchInput.value = '';
-        searchResults.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 100+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+        searchResults.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,300+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
         _activeIdx = -1;
       };
 
@@ -1680,7 +1680,6 @@
           const q = searchInput.value.trim();
           const results = searchTools(q);
           renderResults(results, q, searchResults);
-          // Analytics: track search events
           if (q && q.length >= 2 && window.AfroTools?.analytics) {
             const count = results ? results.length : 0;
             window.AfroTools.analytics.trackSearch(q, count, 'navbar');
@@ -1688,7 +1687,6 @@
               window.AfroTools.analytics.trackSearchNoResults(q, 'navbar');
             }
           }
-          // Capture search for product intelligence (debounced 500ms in captureSearch)
           captureSearch(q, results ? results.length : 0, 'navbar');
         }, 80);
       });
