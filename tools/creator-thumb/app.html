@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="style.css">
-<script src="/assets/js/supabase-auth.js" defer></script>
 <script src="/assets/js/lib/creator-profile.js" defer></script>
 </head>
 <body>
@@ -414,10 +413,10 @@
     setupExport();
     setupFileUploads();
     setupCanvasInteraction();
-    setupAfroAssets();
-    setupAfroPalettes();
     setupFileManager();
     setupSaveProject();
+    setupAfroAssets();
+    setupAfroPalettes();
     loadDefaultTemplate();
     window.addEventListener('resize', fitCanvas);
   }
@@ -1056,6 +1055,7 @@
 
   // ── SELECT / DESELECT ──
   function selectLayer(id) {
+    if (selectedId === id) return;
     selectedId = id;
     renderLayers();
     var layer = engine.getLayer(id);
@@ -1446,7 +1446,8 @@
     empty.style.display = 'none';
 
     grid.innerHTML = projects.map(function(p) {
-      var sizeInfo = SIZES[p.size] ? SIZES[p.size].label : 'Custom';
+      var sizes = engine.getSizes();
+      var sizeInfo = sizes[p.size] ? sizes[p.size].label : 'Custom';
       var date = new Date(p.updatedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
       var isActive = currentProjectId === p.id;
       var bgStyle = '';

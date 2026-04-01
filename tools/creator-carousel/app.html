@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="style.css">
-<script src="/assets/js/supabase-auth.js" defer></script>
 <script src="/assets/js/lib/creator-profile.js" defer></script>
 </head>
 <body>
@@ -359,8 +358,6 @@
     setupSizePicker();
     setupTemplateStrip('all');
     setupTemplateFilter();
-    setupAfroAssets();
-    setupAfroPalettes();
     setupExport();
     setupPreview();
     setupFileUploads();
@@ -369,6 +366,8 @@
     setupMobileToolbar();
     setupFileManager();
     setupSaveProject();
+    setupAfroAssets();
+    setupAfroPalettes();
 
     // Try load saved project, otherwise load default template
     if (!engine.loadLocal()) {
@@ -579,6 +578,7 @@
 
   // ── LAYER MANAGEMENT ──
   function selectLayer(layerId) {
+    if (selectedLayerId === layerId) return;
     selectedLayerId = layerId;
     renderSlide();
     updateLayerList();
