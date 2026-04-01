@@ -45,9 +45,20 @@
     var cats = categories.split(',');
     for (var i = 0; i < cats.length; i++) {
       var c = cats[i].trim();
+      // Try exact match first, then title-case
       if (CATEGORY_INDEX[c] !== undefined) return CATEGORY_INDEX[c];
+      var titled = c.charAt(0).toUpperCase() + c.slice(1).toLowerCase();
+      if (CATEGORY_INDEX[titled] !== undefined) return CATEGORY_INDEX[titled];
     }
     return 0;
+  }
+
+  // Parse currency/number strings like "$50,000" or "12000" → number
+  function parseNumeric(val) {
+    if (typeof val === 'number') return val;
+    if (!val) return 0;
+    var cleaned = String(val).replace(/[^0-9.\-]/g, '');
+    return parseFloat(cleaned) || 0;
   }
 
   function getCountryIndex(name) {
@@ -65,9 +76,9 @@
       cat:       getCatIndex(c.categories),
       type:      c.categories ? c.categories.split(',').slice(0,2).join(' & ') : 'Creator',
       followers: c.subscribers || 0,
-      gifts:     parseInt(c.gift_revenue) || 0,
+      gifts:     parseNumeric(c.gift_revenue),
       views:     c.total_views || 0,
-      nw:        parseInt(c.net_worth) || 0,
+      nw:        parseNumeric(c.net_worth),
       freq:      c.frequency || '3x/week',
       since:     c.streaming_since || '2023',
       subs:      c.subscribers || 0,

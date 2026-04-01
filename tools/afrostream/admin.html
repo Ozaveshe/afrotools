@@ -531,7 +531,7 @@
   'use strict';
 
   var API = '/api/admin/afrostream';
-  var ADMIN_PASS = 'afrostream2026';
+  var ADMIN_PASS = 'Moly7174';
   var MC_TOKEN = localStorage.getItem('afrostream_admin_token') || sessionStorage.getItem('admin_key');
   var TOKEN = MC_TOKEN || ''; // set on login via sessionStorage or Mission Control
   var LS_KEY = {
@@ -615,7 +615,13 @@
 
   function checkAuth() {
     var saved = lsVal(LS_KEY.token) || MC_TOKEN;
-    if (saved) {
+    // Clear stale tokens that don't match current ADMIN_PASS
+    if (saved && saved !== ADMIN_PASS) {
+      localStorage.removeItem(LS_KEY.token);
+      localStorage.removeItem(LS_KEY.auth);
+      saved = MC_TOKEN; // try MC token as fallback
+    }
+    if (saved && saved === ADMIN_PASS) {
       TOKEN = saved;
       gate.style.display = 'none';
       panel.style.display = '';
@@ -952,7 +958,8 @@
       gift_revenue: fd.get('giftRevenue'),
       streaming_since: fd.get('streamingSince'),
       verified: false,
-      flagged: false
+      flagged: false,
+      is_published: true
     };
     // Build legacy platforms field from individual URLs
     var pUrls = [creator.youtube_url, creator.twitch_url, creator.tiktok_url, creator.instagram_url, creator.twitter_url, creator.kick_url].filter(Boolean);

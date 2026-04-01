@@ -100,7 +100,11 @@ exports.handler = async function(event) {
     return ok(headers, creators);
   }
   if (method === 'GET' && path === 'public/streams') {
-    var streams = await sb('GET', 'as_streams?is_published=eq.true&order=stream_date.desc&limit=100', null);
+    var now = new Date().toISOString();
+    var upcoming = sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + now + '&order=stream_date.asc', null);
+    var recent  = sb('GET', 'as_streams?is_published=eq.true&stream_date=lt.' + now + '&order=stream_date.desc&limit=50', null);
+    var results = await Promise.all([upcoming, recent]);
+    var streams = (results[0] || []).concat(results[1] || []);
     return ok(headers, streams);
   }
   if (method === 'GET' && path === 'public/news') {
