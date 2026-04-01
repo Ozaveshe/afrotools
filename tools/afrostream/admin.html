@@ -1,66 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AfroStream Admin | AfroTools</title>
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="robots" content="noindex, nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<link rel="stylesheet" href="style.css">
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
+<title>AfroStream — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #E8D5F5; color: #7c3aed; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #007AFF; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  /* Gate */
+  .gate { position: fixed; inset: 0; z-index: 200; background: #F5F9FF; display: flex; align-items: center; justify-content: center; }
+  .gate-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 16px; padding: 40px 32px; text-align: center; max-width: 380px; width: 90%; box-shadow: 0 4px 24px rgba(0,0,0,.06); }
+  .gate-card h1 { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+  .gate-card p { font-size: .85rem; color: #6B7F99; margin-bottom: 20px; }
+  .gate-error { font-size: .8rem; color: #dc2626; margin-top: 10px; }
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.6rem; font-weight: 800; color: #7c3aed; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  /* Tabs */
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid #E8F0FE; margin-bottom: 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border: none; background: none; color: #6B7F99; font-size: .82rem; font-weight: 600; font-family: inherit; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .15s, border-color .15s; white-space: nowrap; }
+  .tab:hover { color: #1a2e22; }
+  .tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+  /* Section */
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  .section h3 { font-size: .9rem; font-weight: 700; margin-bottom: 12px; color: #374151; }
+  .muted { font-size: .82rem; color: #6B7F99; margin-bottom: 12px; }
+  .group-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #94a3b8; margin: 20px 0 10px; padding-top: 16px; border-top: 1px solid #E8F0FE; }
+  .group-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+  /* Forms */
+  .form-row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .form-group { flex: 1; min-width: 140px; margin-bottom: 14px; }
+  .form-grow { flex: 2; }
+  .form-group label { display: block; font-size: .78rem; font-weight: 600; color: #6B7F99; margin-bottom: 5px; }
+  .input { width: 100%; padding: 9px 12px; border: 1.5px solid #E5E7EB; border-radius: 8px; font-family: inherit; font-size: .85rem; color: #1a2e22; background: #fff; outline: none; transition: border-color .15s; }
+  .input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,.08); }
+  .input::placeholder { color: #94a3b8; }
+  select.input { cursor: pointer; }
+  textarea.input { resize: vertical; min-height: 100px; }
+  .input:disabled { background: #F5F9FF; color: #94a3b8; }
+  /* Buttons */
+  .btn { padding: 8px 18px; border: none; border-radius: 8px; font-family: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: #7c3aed; color: #fff; }
+  .btn-primary:hover { background: #6d28d9; }
+  .btn-outline { background: #fff; color: #374151; border: 1.5px solid #E5E7EB; }
+  .btn-outline:hover { border-color: #7c3aed; color: #7c3aed; }
+  .btn-ghost { background: none; color: #6B7F99; }
+  .btn-ghost:hover { color: #1a2e22; }
+  .btn-sm { padding: 5px 12px; font-size: .75rem; }
+  .btn-danger { color: #dc2626; }
+  .btn-danger:hover { color: #b91c1c; }
+  .form-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  /* List items */
+  .admin-list { display: flex; flex-direction: column; gap: 10px; }
+  .admin-list:empty::after { content: 'No items yet.'; display: block; color: #94a3b8; font-size: .85rem; padding: 12px 0; }
+  /* Preview */
+  .admin-preview { margin-top: 20px; padding: 20px; background: #F5F9FF; border: 1px solid #E8F0FE; border-radius: 10px; }
+  .admin-preview h3 { font-size: .85rem; font-weight: 600; margin-bottom: 10px; color: #6B7F99; }
+  /* Settings grid */
+  .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  /* Toggle */
+  .toggle-label { display: flex; align-items: center; gap: 10px; font-size: .85rem; cursor: pointer; }
+  .toggle-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: #7c3aed; }
+  /* Toast */
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  /* Responsive */
+  @media (max-width: 640px) {
+    .dash { padding: 20px 16px; }
+    .form-row { flex-direction: column; }
+    .form-group, .form-grow { flex: none; min-width: 0; }
+    .tab { padding: 8px 14px; font-size: .75rem; }
+    .gate-card { padding: 28px 20px; }
+  }
+</style>
 </head>
-<body class="as-dark">
-<afro-navbar></afro-navbar>
+<body>
 
 <!-- ── PASSWORD GATE ───────────────────────────────────── -->
-<div class="as-gate" id="passwordGate">
-  <div class="as-gate-card">
-    <h1 class="as-gate-title">&#128274; AfroStream Admin</h1>
-    <p class="as-gate-text">Enter the admin password to continue.</p>
-    <input type="password" id="gatePassword" class="as-input" placeholder="Password" autofocus>
-    <button class="as-btn as-btn-primary" id="gateSubmit" style="margin-top:12px;width:100%">Enter</button>
-    <p class="as-gate-error" id="gateError" style="display:none">Incorrect password. Try again.</p>
+<div class="gate" id="passwordGate">
+  <div class="gate-card">
+    <h1>AfroStream Admin</h1>
+    <p>Enter the admin password to continue.</p>
+    <input type="password" id="gatePassword" class="input" placeholder="Password" autofocus>
+    <button class="btn btn-primary" id="gateSubmit" style="margin-top:12px;width:100%">Unlock</button>
+    <p class="gate-error" id="gateError" style="display:none">Incorrect password. Try again.</p>
   </div>
 </div>
 
 <!-- ── ADMIN PANEL (hidden until auth) ─────────────────── -->
-<main class="as-main as-admin-main" id="adminPanel" style="display:none">
-
-  <!-- ADMIN HEADER -->
-  <div class="as-admin-header">
-    <h1>&#128274; AfroStream Admin</h1>
-    <button class="as-btn as-btn-ghost as-btn-sm" id="logoutBtn">Logout</button>
+<div class="dash" id="adminPanel" style="display:none">
+  <a href="/mc-7a2f9x.html" class="back-link">&larr; Mission Control</a>
+  <div class="dash-header">
+    <h1>AfroStream</h1>
+    <span class="badge">Admin</span>
+    <button class="btn btn-ghost btn-sm" id="logoutBtn" style="margin-left:auto">Logout</button>
   </div>
 
   <!-- TABS -->
-  <div class="as-admin-tabs" id="adminTabs">
-    <button class="as-admin-tab active" data-tab="news">News</button>
-    <button class="as-admin-tab" data-tab="streams">Streams</button>
-    <button class="as-admin-tab" data-tab="featured">Featured</button>
-    <button class="as-admin-tab" data-tab="creators">Creators</button>
-    <button class="as-admin-tab" data-tab="settings">Settings</button>
+  <div class="tabs" id="adminTabs">
+    <button class="tab active" data-tab="news">News</button>
+    <button class="tab" data-tab="streams">Streams</button>
+    <button class="tab" data-tab="featured">Featured</button>
+    <button class="tab" data-tab="creators">Creators</button>
+    <button class="tab" data-tab="settings">Settings</button>
   </div>
 
   <!-- ═══════════════════════════════════════════════════
        TAB: NEWS
        ═══════════════════════════════════════════════════ -->
-  <section class="as-admin-section" id="tab-news">
-    <h2 class="as-admin-section-title">Post New Article</h2>
-    <form class="as-admin-form" id="newsForm">
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+  <section class="section" id="tab-news">
+    <h2 class="section-title">Post New Article</h2>
+    <form class="admin-form" id="newsForm">
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>Title</label>
-          <input type="text" name="title" class="as-input" required placeholder="Article headline...">
+          <input type="text" name="title" class="input" required placeholder="Article headline...">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Category</label>
-          <select name="category" class="as-input" required>
+          <select name="category" class="input" required>
             <option value="milestones">Milestones</option>
             <option value="platform">Platform Updates</option>
             <option value="collabs">Collabs</option>
@@ -70,61 +142,61 @@
           </select>
         </div>
       </div>
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>Image URL</label>
-          <input type="url" name="imageUrl" class="as-input" placeholder="https://...">
+          <input type="url" name="imageUrl" class="input" placeholder="https://...">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Author</label>
-          <input type="text" name="author" class="as-input" value="AfroStream Team">
+          <input type="text" name="author" class="input" value="AfroStream Team">
         </div>
       </div>
-      <div class="as-form-group">
+      <div class="form-group">
         <label>Excerpt (1-2 sentences)</label>
-        <input type="text" name="excerpt" class="as-input" required placeholder="Short summary...">
+        <input type="text" name="excerpt" class="input" required placeholder="Short summary...">
       </div>
-      <div class="as-form-group">
+      <div class="form-group">
         <label>Full Body (HTML allowed)</label>
-        <textarea name="body" class="as-input as-textarea" rows="8" required placeholder="<p>Article body...</p>"></textarea>
+        <textarea name="body" class="input" rows="8" required placeholder="<p>Article body...</p>"></textarea>
       </div>
-      <div class="as-form-actions">
-        <button type="button" class="as-btn as-btn-outline" id="previewNewsBtn">Preview</button>
-        <button type="submit" class="as-btn as-btn-primary">Publish Article</button>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" id="previewNewsBtn">Preview</button>
+        <button type="submit" class="btn btn-primary">Publish Article</button>
       </div>
     </form>
 
     <!-- Preview -->
-    <div class="as-admin-preview" id="newsPreview" style="display:none">
+    <div class="admin-preview" id="newsPreview" style="display:none">
       <h3>Preview</h3>
       <div id="newsPreviewContent"></div>
     </div>
 
     <!-- Published Articles -->
-    <h2 class="as-admin-section-title" style="margin-top:40px">Published Articles</h2>
-    <div id="newsList" class="as-admin-list"></div>
+    <h2 class="section-title" style="margin-top:40px">Published Articles</h2>
+    <div id="newsList" class="admin-list"></div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════
        TAB: STREAMS
        ═══════════════════════════════════════════════════ -->
-  <section class="as-admin-section" id="tab-streams" style="display:none">
-    <h2 class="as-admin-section-title">Add Stream</h2>
-    <form class="as-admin-form" id="streamForm">
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+  <section class="section" id="tab-streams" style="display:none">
+    <h2 class="section-title">Add Stream</h2>
+    <form class="admin-form" id="streamForm">
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>Creator Name</label>
-          <input type="text" name="creator" class="as-input" required placeholder="Creator name...">
+          <input type="text" name="creator" class="input" required placeholder="Creator name...">
         </div>
-        <div class="as-form-group as-form-grow">
+        <div class="form-group form-grow">
           <label>Stream Title</label>
-          <input type="text" name="title" class="as-input" required placeholder="Stream title...">
+          <input type="text" name="title" class="input" required placeholder="Stream title...">
         </div>
       </div>
-      <div class="as-form-row">
-        <div class="as-form-group">
+      <div class="form-row">
+        <div class="form-group">
           <label>Platform</label>
-          <select name="platform" class="as-input" required>
+          <select name="platform" class="input" required>
             <option value="youtube">YouTube</option>
             <option value="twitch">Twitch</option>
             <option value="tiktok">TikTok</option>
@@ -132,9 +204,9 @@
             <option value="kick">Kick</option>
           </select>
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Category</label>
-          <select name="category" class="as-input" required>
+          <select name="category" class="input" required>
             <option value="gaming">Gaming</option>
             <option value="music">Music</option>
             <option value="comedy">Comedy</option>
@@ -143,9 +215,9 @@
             <option value="food">Food</option>
           </select>
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Country</label>
-          <select name="country" class="as-input" required>
+          <select name="country" class="input" required>
             <option value="Nigeria">Nigeria</option>
             <option value="Kenya">Kenya</option>
             <option value="Ghana">Ghana</option>
@@ -161,74 +233,74 @@
           </select>
         </div>
       </div>
-      <div class="as-form-row">
-        <div class="as-form-group">
+      <div class="form-row">
+        <div class="form-group">
           <label>Date &amp; Time</label>
-          <input type="datetime-local" name="datetime" class="as-input" required>
+          <input type="datetime-local" name="datetime" class="input" required>
         </div>
-        <div class="as-form-group as-form-grow">
+        <div class="form-group form-grow">
           <label>Stream URL</label>
-          <input type="url" name="url" class="as-input" placeholder="https://youtube.com/live/...">
+          <input type="url" name="url" class="input" placeholder="https://youtube.com/live/...">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Thumbnail URL</label>
-          <input type="url" name="thumbnail" class="as-input" placeholder="https://...">
+          <input type="url" name="thumbnail" class="input" placeholder="https://...">
         </div>
       </div>
-      <div class="as-form-actions">
-        <button type="submit" class="as-btn as-btn-primary">Add Stream</button>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add Stream</button>
       </div>
     </form>
 
-    <h2 class="as-admin-section-title" style="margin-top:40px">Upcoming Streams</h2>
-    <div id="streamList" class="as-admin-list"></div>
+    <h2 class="section-title" style="margin-top:40px">Upcoming Streams</h2>
+    <div id="streamList" class="admin-list"></div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════
        TAB: FEATURED
        ═══════════════════════════════════════════════════ -->
-  <section class="as-admin-section" id="tab-featured" style="display:none">
-    <h2 class="as-admin-section-title">Featured Creators</h2>
-    <p class="as-muted">Select creators to feature on the homepage. Drag to reorder.</p>
+  <section class="section" id="tab-featured" style="display:none">
+    <h2 class="section-title">Featured Creators</h2>
+    <p class="muted">Select creators to feature on the homepage. Drag to reorder.</p>
 
-    <div class="as-form-group" style="margin-top:16px">
+    <div class="form-group" style="margin-top:16px">
       <label>Creator of the Week</label>
-      <select class="as-input" id="creatorOfWeek">
+      <select class="input" id="creatorOfWeek">
         <option value="">-- Select --</option>
       </select>
-      <button class="as-btn as-btn-primary as-btn-sm" id="saveCreatorOfWeek" style="margin-top:8px">Save</button>
+      <button class="btn btn-primary btn-sm" id="saveCreatorOfWeek" style="margin-top:8px">Save</button>
     </div>
 
     <h3 style="margin-top:32px">Featured List</h3>
-    <div id="featuredList" class="as-admin-list"></div>
+    <div id="featuredList" class="admin-list"></div>
 
-    <div class="as-form-group" style="margin-top:16px">
+    <div class="form-group" style="margin-top:16px">
       <label>Add to Featured</label>
-      <select class="as-input" id="addFeaturedSelect">
+      <select class="input" id="addFeaturedSelect">
         <option value="">-- Select Creator --</option>
       </select>
-      <button class="as-btn as-btn-outline as-btn-sm" id="addFeaturedBtn" style="margin-top:8px">Add</button>
+      <button class="btn btn-outline btn-sm" id="addFeaturedBtn" style="margin-top:8px">Add</button>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════
        TAB: CREATORS
        ═══════════════════════════════════════════════════ -->
-  <section class="as-admin-section" id="tab-creators" style="display:none">
-    <h2 class="as-admin-section-title">Creator Management</h2>
-    <form class="as-admin-form" id="creatorForm">
+  <section class="section" id="tab-creators" style="display:none">
+    <h2 class="section-title">Creator Management</h2>
+    <form class="admin-form" id="creatorForm">
       <input type="hidden" name="editId" value="">
 
       <!-- Basic Info -->
-      <p class="as-form-label-group">Basic Info</p>
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+      <p class="group-label">Basic Info</p>
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>Name</label>
-          <input type="text" name="name" class="as-input" required placeholder="Creator name...">
+          <input type="text" name="name" class="input" required placeholder="Creator name...">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Country</label>
-          <select name="country" class="as-input" required>
+          <select name="country" class="input" required>
             <option value="Nigeria">Nigeria</option>
             <option value="Kenya">Kenya</option>
             <option value="Ghana">Ghana</option>
@@ -256,9 +328,9 @@
             <option value="Gabon">Gabon</option>
           </select>
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Primary Platform</label>
-          <select name="primaryPlatform" class="as-input">
+          <select name="primaryPlatform" class="input">
             <option value="youtube">YouTube</option>
             <option value="twitch">Twitch</option>
             <option value="tiktok">TikTok</option>
@@ -267,93 +339,93 @@
           </select>
         </div>
       </div>
-      <div class="as-form-group">
+      <div class="form-group">
         <label>Bio</label>
-        <textarea name="bio" class="as-input as-textarea" rows="3" placeholder="Short bio..."></textarea>
+        <textarea name="bio" class="input" rows="3" placeholder="Short bio..."></textarea>
       </div>
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>Categories</label>
-          <input type="text" name="categories" class="as-input" placeholder="gaming, tech, comedy, music">
+          <input type="text" name="categories" class="input" placeholder="gaming, tech, comedy, music">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Languages</label>
-          <input type="text" name="languages" class="as-input" placeholder="English, Yoruba, French">
+          <input type="text" name="languages" class="input" placeholder="English, Yoruba, French">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Tags</label>
-          <input type="text" name="tags" class="as-input" placeholder="IRL, Just Chatting, Afrobeats">
+          <input type="text" name="tags" class="input" placeholder="IRL, Just Chatting, Afrobeats">
         </div>
       </div>
 
       <!-- Platform Links -->
-      <p class="as-form-label-group" style="margin-top:24px">Platform Links</p>
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+      <p class="group-label" style="margin-top:24px">Platform Links</p>
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>YouTube</label>
-          <input type="url" name="youtubeUrl" class="as-input" placeholder="https://youtube.com/@name">
+          <input type="url" name="youtubeUrl" class="input" placeholder="https://youtube.com/@name">
         </div>
-        <div class="as-form-group as-form-grow">
+        <div class="form-group form-grow">
           <label>Twitch</label>
-          <input type="url" name="twitchUrl" class="as-input" placeholder="https://twitch.tv/name">
+          <input type="url" name="twitchUrl" class="input" placeholder="https://twitch.tv/name">
         </div>
-        <div class="as-form-group as-form-grow">
+        <div class="form-group form-grow">
           <label>TikTok</label>
-          <input type="url" name="tiktokUrl" class="as-input" placeholder="https://tiktok.com/@name">
+          <input type="url" name="tiktokUrl" class="input" placeholder="https://tiktok.com/@name">
         </div>
       </div>
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>Instagram</label>
-          <input type="url" name="instagramUrl" class="as-input" placeholder="https://instagram.com/name">
+          <input type="url" name="instagramUrl" class="input" placeholder="https://instagram.com/name">
         </div>
-        <div class="as-form-group as-form-grow">
+        <div class="form-group form-grow">
           <label>X / Twitter</label>
-          <input type="url" name="twitterUrl" class="as-input" placeholder="https://x.com/name">
+          <input type="url" name="twitterUrl" class="input" placeholder="https://x.com/name">
         </div>
-        <div class="as-form-group as-form-grow">
+        <div class="form-group form-grow">
           <label>Kick</label>
-          <input type="url" name="kickUrl" class="as-input" placeholder="https://kick.com/name">
+          <input type="url" name="kickUrl" class="input" placeholder="https://kick.com/name">
         </div>
       </div>
 
       <!-- Media -->
-      <p class="as-form-label-group" style="margin-top:24px">Media</p>
-      <div class="as-form-row">
-        <div class="as-form-group as-form-grow">
+      <p class="group-label" style="margin-top:24px">Media</p>
+      <div class="form-row">
+        <div class="form-group form-grow">
           <label>Avatar URL</label>
-          <input type="url" name="avatar" class="as-input" placeholder="https://...">
+          <input type="url" name="avatar" class="input" placeholder="https://...">
         </div>
-        <div class="as-form-group as-form-grow">
+        <div class="form-group form-grow">
           <label>Cover URL</label>
-          <input type="url" name="cover" class="as-input" placeholder="https://...">
+          <input type="url" name="cover" class="input" placeholder="https://...">
         </div>
       </div>
 
       <!-- Stats & Numbers -->
-      <p class="as-form-label-group" style="margin-top:24px">Stats &amp; Numbers</p>
-      <div class="as-form-row">
-        <div class="as-form-group">
+      <p class="group-label" style="margin-top:24px">Stats &amp; Numbers</p>
+      <div class="form-row">
+        <div class="form-group">
           <label>Subscribers / Followers</label>
-          <input type="number" name="subscribers" class="as-input" placeholder="150000">
+          <input type="number" name="subscribers" class="input" placeholder="150000">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Total Views</label>
-          <input type="number" name="totalViews" class="as-input" placeholder="5000000">
+          <input type="number" name="totalViews" class="input" placeholder="5000000">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Peak Viewers</label>
-          <input type="number" name="peakViewers" class="as-input" placeholder="25000">
+          <input type="number" name="peakViewers" class="input" placeholder="25000">
         </div>
       </div>
-      <div class="as-form-row">
-        <div class="as-form-group">
+      <div class="form-row">
+        <div class="form-group">
           <label>Avg Stream Duration</label>
-          <input type="text" name="avgDuration" class="as-input" placeholder="2h 30m">
+          <input type="text" name="avgDuration" class="input" placeholder="2h 30m">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Stream Frequency</label>
-          <select name="frequency" class="as-input">
+          <select name="frequency" class="input">
             <option value="">-- Select --</option>
             <option value="Daily">Daily</option>
             <option value="3-5x/week">3-5x/week</option>
@@ -364,93 +436,91 @@
             <option value="Irregular">Irregular</option>
           </select>
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Growth Rate</label>
-          <input type="text" name="growthRate" class="as-input" placeholder="+15%">
+          <input type="text" name="growthRate" class="input" placeholder="+15%">
         </div>
       </div>
 
       <!-- Financials -->
-      <p class="as-form-label-group" style="margin-top:24px">Financials</p>
-      <div class="as-form-row">
-        <div class="as-form-group">
+      <p class="group-label" style="margin-top:24px">Financials</p>
+      <div class="form-row">
+        <div class="form-group">
           <label>Est. Net Worth</label>
-          <input type="text" name="netWorth" class="as-input" placeholder="$50,000">
+          <input type="text" name="netWorth" class="input" placeholder="$50,000">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Gift Revenue (est.)</label>
-          <input type="text" name="giftRevenue" class="as-input" placeholder="$12,000">
+          <input type="text" name="giftRevenue" class="input" placeholder="$12,000">
         </div>
-        <div class="as-form-group">
+        <div class="form-group">
           <label>Streaming Since</label>
-          <input type="text" name="streamingSince" class="as-input" placeholder="2021 or March 2022">
+          <input type="text" name="streamingSince" class="input" placeholder="2021 or March 2022">
         </div>
       </div>
 
-      <div class="as-form-actions">
-        <button type="submit" class="as-btn as-btn-primary" id="creatorSubmitBtn">Add Creator</button>
-        <button type="button" class="as-btn as-btn-ghost" id="cancelEditCreator" style="display:none">Cancel Edit</button>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="creatorSubmitBtn">Add Creator</button>
+        <button type="button" class="btn btn-ghost" id="cancelEditCreator" style="display:none">Cancel Edit</button>
       </div>
     </form>
 
-    <h2 class="as-admin-section-title" style="margin-top:40px">All Creators</h2>
-    <div id="creatorList" class="as-admin-list"></div>
+    <h2 class="section-title" style="margin-top:40px">All Creators</h2>
+    <div id="creatorList" class="admin-list"></div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════
        TAB: SETTINGS
        ═══════════════════════════════════════════════════ -->
-  <section class="as-admin-section" id="tab-settings" style="display:none">
-    <h2 class="as-admin-section-title">Settings</h2>
+  <section class="section" id="tab-settings" style="display:none">
+    <h2 class="section-title">Settings</h2>
 
-    <div class="as-settings-grid">
-      <div class="as-stat-card">
-        <span class="as-stat-num" id="statArticles">0</span>
-        <span class="as-stat-label">Published Articles</span>
+    <div class="settings-grid stats">
+      <div class="stat-card">
+        <span class="stat-value" id="statArticles">0</span>
+        <span class="stat-label">Published Articles</span>
       </div>
-      <div class="as-stat-card">
-        <span class="as-stat-num" id="statStreams">0</span>
-        <span class="as-stat-label">Scheduled Streams</span>
+      <div class="stat-card">
+        <span class="stat-value" id="statStreams">0</span>
+        <span class="stat-label">Scheduled Streams</span>
       </div>
-      <div class="as-stat-card">
-        <span class="as-stat-num" id="statCreators">0</span>
-        <span class="as-stat-label">Creators</span>
+      <div class="stat-card">
+        <span class="stat-value" id="statCreators">0</span>
+        <span class="stat-label">Creators</span>
       </div>
-      <div class="as-stat-card">
-        <span class="as-stat-num" id="statFeatured">0</span>
-        <span class="as-stat-label">Featured</span>
+      <div class="stat-card">
+        <span class="stat-value" id="statFeatured">0</span>
+        <span class="stat-label">Featured</span>
       </div>
     </div>
 
-    <div class="as-form-group" style="margin-top:32px">
-      <label class="as-toggle-label">
+    <div class="form-group" style="margin-top:32px">
+      <label class="toggle-label">
         <input type="checkbox" id="afroPointsToggle">
         <span>Enable AfroPoints integration</span>
       </label>
     </div>
 
-    <div class="as-form-group" style="margin-top:16px">
+    <div class="form-group" style="margin-top:16px">
       <label>YouTube API Key (future)</label>
-      <input type="text" class="as-input" placeholder="Not configured" disabled>
+      <input type="text" class="input" placeholder="Not configured" disabled>
     </div>
-    <div class="as-form-group">
+    <div class="form-group">
       <label>Twitch Client ID (future)</label>
-      <input type="text" class="as-input" placeholder="Not configured" disabled>
+      <input type="text" class="input" placeholder="Not configured" disabled>
     </div>
-    <div class="as-form-group">
+    <div class="form-group">
       <label>TikTok API Key (future)</label>
-      <input type="text" class="as-input" placeholder="Not configured" disabled>
+      <input type="text" class="input" placeholder="Not configured" disabled>
     </div>
 
-    <div class="as-form-actions" style="margin-top:24px">
-      <button class="as-btn as-btn-outline" id="exportDataBtn">Export All Data (JSON)</button>
-      <button class="as-btn as-btn-ghost" id="clearDataBtn" style="color:#ef4444">Clear All Data</button>
+    <div class="form-actions" style="margin-top:24px">
+      <button class="btn btn-outline" id="exportDataBtn">Export All Data (JSON)</button>
+      <button class="btn btn-ghost" id="clearDataBtn" style="color:#ef4444">Clear All Data</button>
     </div>
   </section>
 
-</main>
-
-<afro-footer></afro-footer>
+</div><!-- /dash -->
 
 <script>
 /* ================================================================
@@ -584,18 +654,18 @@
 
   /* ── TABS ──────────────────────────────────────────── */
   document.getElementById('adminTabs').addEventListener('click', function(e) {
-    var tab = e.target.closest('.as-admin-tab');
+    var tab = e.target.closest('.tab');
     if (!tab) return;
-    this.querySelectorAll('.as-admin-tab').forEach(function(t) { t.classList.remove('active'); });
+    this.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
     tab.classList.add('active');
-    document.querySelectorAll('.as-admin-section').forEach(function(s) { s.style.display = 'none'; });
+    document.querySelectorAll('.section').forEach(function(s) { s.style.display = 'none'; });
     document.getElementById('tab-' + tab.dataset.tab).style.display = '';
   });
 
   function activateTabFromHash() {
     var hash = window.location.hash.replace('#', '');
     if (hash) {
-      var tabBtn = document.querySelector('.as-admin-tab[data-tab="' + hash + '"]');
+      var tabBtn = document.querySelector('.tab[data-tab="' + hash + '"]');
       if (tabBtn) tabBtn.click();
     }
   }
@@ -604,7 +674,7 @@
   async function initAdmin() {
     // Show loading state
     ['newsList','streamList','creatorList','featuredList'].forEach(function(id) {
-      document.getElementById(id).innerHTML = '<p class="as-muted">Loading from Supabase...</p>';
+      document.getElementById(id).innerHTML = '<p class="muted">Loading from Supabase...</p>';
     });
     await syncFromSupabase();
     if (!SB_OK) toast('Supabase offline — using local backup', true);
@@ -703,7 +773,7 @@
         '<div class="as-admin-list-info">' +
           '<strong>' + a.title + '</strong>' +
           '<span class="as-cat-badge as-badge-sm" style="background:#A855F7;margin-left:8px">' + (CAT_LABELS[a.category] || a.category) + '</span>' +
-          '<span class="as-muted" style="margin-left:8px">' + new Date(dateStr).toLocaleDateString() + '</span>' +
+          '<span class="muted" style="margin-left:8px">' + new Date(dateStr).toLocaleDateString() + '</span>' +
           (a.is_featured ? ' <span style="color:#F59E0B;margin-left:4px">&#9733;</span>' : '') +
         '</div>' +
         '<div class="as-admin-list-actions">' +
@@ -814,7 +884,7 @@
         '<div class="as-admin-list-info">' +
           '<span class="as-platform-badge" style="background:' + (PLAT_COLORS[s.platform] || '#A855F7') + ';font-size:11px;padding:2px 8px;border-radius:20px;color:#fff;margin-right:8px">' + (PLAT_LABELS[s.platform] || s.platform) + '</span>' +
           '<strong>' + name + '</strong> — ' + s.title +
-          '<span class="as-muted" style="margin-left:8px">' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) + '</span>' +
+          '<span class="muted" style="margin-left:8px">' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) + '</span>' +
           (isLive ? ' <span style="color:#22C55E;font-weight:700;margin-left:8px">LIVE</span>' : '') +
         '</div>' +
         '<div class="as-admin-list-actions">' +
@@ -951,12 +1021,12 @@
         '<div class="as-admin-list-info">' +
           '<span style="background:' + (PLAT_CLR[pp]||'#A855F7') + ';color:#fff;font-size:10px;padding:2px 6px;border-radius:4px;margin-right:6px;font-weight:700">' + (PLAT_ICON[pp]||pp) + '</span>' +
           '<strong>' + c.name + '</strong>' +
-          '<span class="as-muted" style="margin-left:8px">' + c.country + '</span>' +
+          '<span class="muted" style="margin-left:8px">' + c.country + '</span>' +
           (c.verified ? ' <span style="color:#22C55E;margin-left:4px" title="Verified">&#10003;</span>' : '') +
           (c.flagged ? ' <span style="color:#ef4444;margin-left:4px" title="Flagged">&#9888;</span>' : '') +
-          (subs ? ' <span class="as-muted" style="margin-left:8px">' + subs + ' subs</span>' : '') +
-          (nw ? ' <span class="as-muted" style="margin-left:6px">~' + nw + '</span>' : '') +
-          (c.categories ? ' <span class="as-muted" style="margin-left:6px;font-size:11px">' + c.categories + '</span>' : '') +
+          (subs ? ' <span class="muted" style="margin-left:8px">' + subs + ' subs</span>' : '') +
+          (nw ? ' <span class="muted" style="margin-left:6px">~' + nw + '</span>' : '') +
+          (c.categories ? ' <span class="muted" style="margin-left:6px;font-size:11px">' + c.categories + '</span>' : '') +
         '</div>' +
         '<div class="as-admin-list-actions">' +
           '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asEditCreator(' + c.id + ')">Edit</button>' +
@@ -1063,9 +1133,9 @@
       var fid = f.id || idx;
       return '<div class="as-admin-list-item">' +
         '<div class="as-admin-list-info">' +
-          '<span class="as-muted" style="margin-right:8px">#' + (idx + 1) + '</span>' +
+          '<span class="muted" style="margin-right:8px">#' + (idx + 1) + '</span>' +
           '<strong>' + c.name + '</strong>' +
-          '<span class="as-muted" style="margin-left:8px">' + c.country + '</span>' +
+          '<span class="muted" style="margin-left:8px">' + c.country + '</span>' +
           (f.is_cotw ? ' <span style="color:#F59E0B;margin-left:4px">&#9733; COTW</span>' : '') +
         '</div>' +
         '<div class="as-admin-list-actions">' +
