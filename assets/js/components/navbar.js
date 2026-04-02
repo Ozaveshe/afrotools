@@ -1347,14 +1347,11 @@
               <li><a href="/developer-tools/" class="lnk">${T.devTools}</a></li>
               <li><a href="/african/" class="lnk">${T.african}</a></li>
               <li><a href="${isSw ? '/sw/zana-za-elimu/' : '/education/'}" class="lnk">${T.education}</a></li>
-              <li><a href="${isSw ? '/blog/' : isFr ? '/fr/blog/' : '/blog/'}" class="lnk">Blog</a></li>
-              <li><a href="/api/" class="lnk">API</a></li>
               <li><a href="/pro/" class="lnk" style="color:#F5A623;font-weight:700">Pro</a></li>
             </ul>
 
             <div class="right">
               ${this._langSwitcherHTML()}
-              <span class="pill-54">${T.countries54}</span>
               <a href="/dashboard/" class="btn-login">${T.signIn}</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
