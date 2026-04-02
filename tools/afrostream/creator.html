@@ -614,15 +614,20 @@ function generateNews(c) {
     var primaryPlatform = creator.platforms[0];
     var borderColor = PLATFORM_META[primaryPlatform] ? PLATFORM_META[primaryPlatform].color : '#007AFF';
     var avEl = document.getElementById('profileAvatar');
+    avEl.style.borderColor = borderColor;
     if (creator.avatarUrl) {
-      avEl.style.backgroundImage = 'url(' + creator.avatarUrl + ')';
-      avEl.style.backgroundSize = 'cover';
-      avEl.style.backgroundPosition = 'center';
-      avEl.style.borderColor = borderColor;
-      avEl.innerHTML = '';
+      avEl.style.background = avatarGradient(creator.name);
+      var avImg = new Image();
+      avImg.onload = function() {
+        avEl.style.backgroundImage = 'url(' + creator.avatarUrl + ')';
+        avEl.style.backgroundSize = 'cover';
+        avEl.style.backgroundPosition = 'center';
+        avEl.innerHTML = '';
+      };
+      avImg.src = creator.avatarUrl;
+      avEl.innerHTML = '<span>' + creator.avatar + '</span>';
     } else {
       avEl.style.background = avatarGradient(creator.name);
-      avEl.style.borderColor = borderColor;
       avEl.innerHTML = '<span>' + creator.avatar + '</span>';
     }
 
