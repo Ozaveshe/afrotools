@@ -1717,14 +1717,15 @@
         // AfroPoints badge — show points balance next to avatar
         (function loadPointsBadge() {
           try {
-            var existing = sr.querySelector('.ap-nav-badge');
-            if (existing) existing.remove();
+            if (sr.querySelector('.ap-nav-badge')) return; // already loaded
             var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
             if (!token) return;
             fetch('/.netlify/functions/afropoints-profile', { headers: { Authorization: 'Bearer ' + token } })
               .then(function(r) { return r.json(); })
               .then(function(p) {
                 if (!p || p.error || !(p.current_balance >= 0)) return;
+                // Remove any existing badges first (prevent duplicates from concurrent calls)
+                sr.querySelectorAll('.ap-nav-badge').forEach(function(el) { el.remove(); });
                 var badge = document.createElement('a');
                 badge.href = '/tools/afropoints/';
                 badge.className = 'ap-nav-badge';

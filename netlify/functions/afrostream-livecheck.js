@@ -76,8 +76,8 @@ async function getKickToken() {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'grant_type=client_credentials' +
-            '&client_id=' + KICK_CLIENT_ID +
-            '&client_secret=' + secrets[s]
+            '&client_id=' + encodeURIComponent(KICK_CLIENT_ID) +
+            '&client_secret=' + encodeURIComponent(secrets[s])
     });
     if (res.ok) {
       var data = await res.json();

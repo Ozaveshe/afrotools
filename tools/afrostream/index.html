@@ -187,13 +187,51 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-creator-card .as-creator-links{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap}
 .as-creator-card .as-creator-links a{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;font-weight:600;padding:4px 10px;border-radius:980px;border:1px solid #e5e7eb;color:#64748b;transition:all .15s}
 .as-creator-card .as-creator-links a:hover{border-color:var(--as-primary);color:var(--as-primary)}
+.as-profile-btn:hover{box-shadow:0 4px 16px rgba(0,122,255,.35);transform:translateY(-1px)}
+.as-profile-btn:hover span{transform:translateX(3px)}
 
 /* ═══ NEW: Rank table subs column ═══ */
 .as-rank-table .as-subs-cell{font-weight:600;color:var(--as-primary)}
 
+/* ═══ Emoji sizing — prevent twemoji from breaking layout ═══ */
+.as-chip img.emoji,.as-filter-row img.emoji,.as-live-meta img.emoji,.as-creator-card img.emoji,
+.as-platform img.emoji,.as-category img.emoji,.as-cal-meta img.emoji{
+  height:.85em!important;width:.85em!important;vertical-align:-.1em!important;margin:0 2px 0 0!important;display:inline!important
+}
+.as-live-thumb img.emoji,.as-news-thumb img.emoji,.as-avatar img.emoji,.as-feature-icon img.emoji{
+  height:1.5em!important;width:1.5em!important;vertical-align:middle!important;display:inline!important
+}
+
 /* ═══ Responsive tweaks for light mode ═══ */
 @media(max-width:640px){
   .as-header{background:rgba(255,255,255,.96)}
+  /* Subnav scroll */
+  .as-subnav{overflow:visible!important}
+  .as-subnav-inner{gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-right:12px}
+  .as-subnav-inner::-webkit-scrollbar{display:none}
+  .as-subnav-links{display:flex!important;flex-shrink:0}
+  .as-subnav-links a{padding:6px 12px;font-size:.75rem}
+  .as-subnav .as-subnav-logo{font-size:1.05rem}
+  .as-subnav-inner>div:last-child{display:none!important}
+  /* Filter rows — ensure scroll works */
+  .as-filters{overflow:visible}
+  .as-filter-row{-ms-overflow-style:none}
+  .as-chip{padding:4px 10px;font-size:.72rem}
+  /* Section containers — prevent horizontal page overflow */
+  .as-section{overflow-x:hidden}
+  .as-container{overflow-x:visible}
+  /* Platform badges in cards — compact */
+  .as-platform{font-size:.65rem!important;padding:2px 6px}
+  .as-category{font-size:.65rem!important;padding:2px 6px}
+  /* Live cards — prevent overflow */
+  .as-live-grid{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:8px;scroll-snap-type:x mandatory}
+  .as-live-grid::-webkit-scrollbar{display:none}
+  .as-live-card{min-width:260px;scroll-snap-align:start}
+  /* Creator cards — single column */
+  .as-creator-featured-grid{grid-template-columns:1fr!important}
+  /* Rank table — smaller text */
+  .as-rank-table{font-size:.72rem}
+  .as-rank-table th,.as-rank-table td{padding:8px 6px}
 }
 </style>
 </head>
@@ -412,10 +450,20 @@ function renderHeroStats(){
 function renderLive(streams){
   var el = document.getElementById('liveGrid');
   document.getElementById('liveCount').textContent = '('+streams.length+')';
+  if(!streams.length){
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
+      '<div style="font-size:2.5rem;margin-bottom:12px">&#128308;</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No one is live right now</div>' +
+      '<div style="font-size:.85rem">Check back soon or browse the <a href="calendar.html" style="color:var(--as-primary);text-decoration:underline">upcoming schedule</a></div>' +
+    '</div>';
+    return;
+  }
   el.innerHTML = streams.map(function(s,i){
     var p = PLATFORMS[s.platform];
     var c = COUNTRIES[s.country];
-    return '<a href="#" class="as-live-card">' +
+    var href = s.url || '#';
+    var target = s.url ? ' target="_blank" rel="noopener"' : '';
+    return '<a href="'+href+'"'+target+' class="as-live-card">' +
       '<div class="as-live-thumb '+gradClass(i)+'">' +
         s.name.charAt(0) +
         '<span class="as-live-badge">LIVE</span>' +
@@ -457,7 +505,7 @@ function renderTopThree(creators){
         '<a href="#" style="font-size:.65rem">'+cr.freq+'</a>' +
         '<a href="#" style="font-size:.65rem">Since '+cr.since+'</a>' +
       '</div>' +
-      '<a href="creator.html?id='+(cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-'))+'" class="as-btn as-btn-sm as-btn-primary" style="margin-top:8px">View Profile &rarr;</a>' +
+      '<a href="creator.html?id='+(cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-'))+'" class="as-profile-btn" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:980px;background:linear-gradient(135deg,#007AFF,#0063D1);color:#fff;font-size:.78rem;font-weight:600;text-decoration:none;letter-spacing:.02em;transition:all .2s;box-shadow:0 2px 8px rgba(0,122,255,.25)">View Profile <span style="font-size:.7rem;transition:transform .2s">&rarr;</span></a>' +
     '</div>';
   }).join('');
 }
@@ -485,6 +533,14 @@ function renderRankTable(creators){
 
 function renderNews(){
   var el = document.getElementById('newsGrid');
+  if(!NEWS.length){
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
+      '<div style="font-size:2.5rem;margin-bottom:12px">&#128240;</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No news yet</div>' +
+      '<div style="font-size:.85rem">Creator news and updates coming soon</div>' +
+    '</div>';
+    return;
+  }
   var catGrads = {
     'Milestone':'linear-gradient(135deg,#007AFF,#0063CC)',
     'milestones':'linear-gradient(135deg,#007AFF,#0063CC)',
@@ -499,7 +555,8 @@ function renderNews(){
     'collabs':'linear-gradient(135deg,#EC4899,#DB2777)',
     'drama':'linear-gradient(135deg,#EF4444,#DC2626)'
   };
-  el.innerHTML = NEWS.map(function(n,i){
+  var shown = NEWS.slice(0,6);
+  el.innerHTML = shown.map(function(n,i){
     var href = n.slug ? '/tools/afrostream/news/'+n.slug : 'news.html';
     var bg = catGrads[n.cat] || '';
     var thumbCls = 'as-news-thumb' + (bg ? '' : ' '+gradClass(i));
@@ -517,6 +574,14 @@ function renderNews(){
 
 function renderCalendar(){
   var el = document.getElementById('calGrid');
+  if(!UPCOMING.length){
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--as-muted)">' +
+      '<div style="font-size:2.5rem;margin-bottom:12px">&#128197;</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:var(--as-text);margin-bottom:4px">No upcoming streams</div>' +
+      '<div style="font-size:.85rem">Scheduled streams will appear here. <a href="submit.html" style="color:var(--as-primary);text-decoration:underline">Submit a creator</a> to grow the directory</div>' +
+    '</div>';
+    return;
+  }
   el.innerHTML = UPCOMING.map(function(u,i){
     var parts = u.date.split(' ');
     var p = PLATFORMS[u.platform];
