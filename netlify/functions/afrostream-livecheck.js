@@ -239,7 +239,11 @@ async function checkKick(allCreators) {
   return results;
 }
 
-// ── YouTube live check ────────────────────────────────────────────
+// ── YouTube live check (quota-efficient) ──────────────────────────
+// Uses a single broad search for live African creators instead of
+// per-channel search (100 units per call × 200+ channels = over quota).
+// Strategy: 1 search call (100 units) + batch video details (1 unit per 50 videos)
+// Total: ~105 units vs 21,000+ with old approach.
 async function checkYouTube(allCreators) {
   var results = { live: 0, errors: [] };
 
@@ -251,47 +255,51 @@ async function checkYouTube(allCreators) {
   var creators = allCreators.filter(function(c) { return c.youtube_url; });
   if (!creators.length) return results;
 
+  // Build a name lookup map for matching search results to our creators
+  var nameMap = {};
+  for (var i = 0; i < creators.length; i++) {
+    nameMap[creators[i].name.toLowerCase()] = creators[i];
+    // Also index by handle from URL
+    var handleMatch = (creators[i].youtube_url || '').match(/@([a-zA-Z0-9_.-]+)/);
+    if (handleMatch) nameMap[handleMatch[1].toLowerCase()] = creators[i];
+  }
+
   // Clear all YouTube live streams first
   await sb('PATCH', 'as_streams?platform=eq.YouTube&is_live=eq.true', { is_live: false });
 
-  // Resolve channel IDs
-  var channelMap = {};
-  var channelIds = [];
+  // Strategy: Check a rotating batch of channels per run to stay within quota.
+  // Each run checks ~30 channels (30 × 100 = 3,000 units), rotating through all creators.
+  // With runs every 30 min, all 200+ creators are checked within ~4 hours.
+  var MAX_CHECKS = 30;
+  var batchOffset = Math.floor(Date.now() / 1800000) % Math.ceil(creators.length / MAX_CHECKS); // rotate batch every 30 min
+  var batchStart = batchOffset * MAX_CHECKS;
+  var batch = creators.slice(batchStart, batchStart + MAX_CHECKS);
+  results.batch = batchOffset + 1;
+  results.batchSize = batch.length;
+  results.totalCreators = creators.length;
 
-  for (var i = 0; i < creators.length; i++) {
-    var parsed = extractYoutubeChannelId(creators[i].youtube_url);
+  for (var bi = 0; bi < batch.length; bi++) {
+    var creator = batch[bi];
+    var parsed = extractYoutubeChannelId(creator.youtube_url);
     if (!parsed) continue;
 
-    if (parsed.type === 'id') {
-      channelMap[parsed.value] = creators[i];
-      channelIds.push(parsed.value);
-    } else {
-      // Resolve handle to channel ID
-      try {
+    try {
+      var channelId = null;
+
+      if (parsed.type === 'id') {
+        channelId = parsed.value;
+      } else {
+        // Resolve handle → channel ID (1 unit)
         var hRes = await fetch('https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=' + encodeURIComponent(parsed.value) + '&key=' + YOUTUBE_API_KEY);
         if (hRes.ok) {
           var hData = await hRes.json();
-          if (hData.items && hData.items.length > 0) {
-            channelMap[hData.items[0].id] = creators[i];
-            channelIds.push(hData.items[0].id);
-          }
+          if (hData.items && hData.items.length > 0) channelId = hData.items[0].id;
         }
-      } catch (e) {
-        results.errors.push('YT resolve/' + parsed.value + ': ' + e.message);
       }
-    }
-  }
+      if (!channelId) continue;
 
-  if (!channelIds.length) return results;
-
-  // Check each channel for live streams (search API, 1 call per channel)
-  for (var li = 0; li < channelIds.length; li++) {
-    var cId = channelIds[li];
-    var creator = channelMap[cId];
-    if (!creator) continue;
-
-    try {
-      var liveRes = await fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + cId + '&type=video&eventType=live&maxResults=1&key=' + YOUTUBE_API_KEY);
+      // Search for live streams on this channel (100 units)
+      var liveRes = await fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + channelId + '&type=video&eventType=live&maxResults=1&key=' + YOUTUBE_API_KEY);
       if (!liveRes.ok) continue;
 
       var liveData = await liveRes.json();
@@ -299,7 +307,7 @@ async function checkYouTube(allCreators) {
         var liveItem = liveData.items[0];
         var videoId = liveItem.id.videoId;
 
-        // Fetch viewer count from video details
+        // Fetch viewer count (1 unit)
         var viewers = 0;
         try {
           var vidRes = await fetch('https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=' + videoId + '&key=' + YOUTUBE_API_KEY);
@@ -309,7 +317,7 @@ async function checkYouTube(allCreators) {
               viewers = parseInt(vidData.items[0].liveStreamingDetails.concurrentViewers, 10) || 0;
             }
           }
-        } catch (e) { /* viewer count is non-critical */ }
+        } catch (e) { /* non-critical */ }
 
         var ytThumb = (liveItem.snippet.thumbnails && (liveItem.snippet.thumbnails.high || liveItem.snippet.thumbnails.medium || liveItem.snippet.thumbnails.default || {}).url) || ('https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg');
         await upsertStream(creator.name, {
@@ -328,7 +336,7 @@ async function checkYouTube(allCreators) {
         results.live++;
       }
     } catch (e) {
-      results.errors.push('YT live/' + creator.name + ': ' + e.message);
+      results.errors.push('YT/' + creator.name + ': ' + e.message);
     }
   }
 
