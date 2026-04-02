@@ -117,8 +117,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-creator-card:hover{box-shadow:0 6px 24px rgba(0,122,255,.12);border-color:var(--as-primary-border)}
 .as-creator-name{color:#0f172a}
 .as-creator-country{color:#64748b}
-.as-creator-stat-val{color:#0f172a}
-.as-creator-stat-label{color:#94a3b8}
+.as-creator-stat-val{color:#0f172a;display:block;margin-bottom:2px}
+.as-creator-stat-label{color:#94a3b8;display:block;font-size:.6rem;margin-top:2px}
 
 /* Table — light */
 .as-rank-table-wrap{border:1px solid #e5e7eb;background:#fff}
@@ -519,9 +519,13 @@ function renderTopThree(creators){
       '<div class="as-creator-type">'+cr.type+'</div>' +
       '<div class="as-creator-country">'+c.flag+' '+c.name+'</div>' +
       '<div class="as-creator-stats">' +
+        '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtK(cr.followers)+'</span><span class="as-creator-stat-label">Subs</span></div>' +
         '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtUSD(cr.gifts)+'</span><span class="as-creator-stat-label">Gifts</span></div>' +
         '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtK(cr.views)+'</span><span class="as-creator-stat-label">Views</span></div>' +
-        '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtUSD(cr.nw)+'</span><span class="as-creator-stat-label">Net Worth</span></div>' +
+      '</div>' +
+      '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9;text-align:center">' +
+        '<span style="font-size:1.1rem;font-weight:700;color:#0f172a">'+fmtUSD(cr.nw)+'</span>' +
+        '<span style="font-size:.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-left:6px">Est. Net Worth</span>' +
       '</div>' +
       '<div class="as-creator-links">' +
         '<a href="#"><span class="as-platform '+p.cls+'" style="font-size:.6rem">'+p.icon+' '+p.name+'</span></a>' +
