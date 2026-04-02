@@ -8,11 +8,530 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <style>
+    /* ── APP SHELL ── */
+    .cts-app {
+      background: #FAFAF8;
+      min-height: 100vh;
+      color: #1a1a1a;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    .cts-app h1, .cts-app h2, .cts-app h3, .cts-app h4 {
+      color: #111827;
+      font-family: 'Sora', sans-serif;
+    }
+
+    /* ── TOPBAR ── */
+    .cts-topbar {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    }
+    .cts-topbar-back {
+      font-size: 13px;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color .2s;
+    }
+    .cts-topbar-back:hover { color: #111827; }
+    .cts-topbar-brand {
+      font-size: 14px;
+      font-weight: 800;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex: 1;
+    }
+    .cts-topbar-actions { display: flex; gap: 8px; }
+    .cts-topbar-btn {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      color: #374151;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cts-topbar-btn:hover { background: #e5e7eb; }
+
+    /* ── WORKSPACE ── */
+    .cts-workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 100px;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ── AI BADGE ── */
+    .cts-ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #f0f4ff, #e8f2ff);
+      border: 1px solid rgba(0,122,255,.15);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #007AFF;
+      margin-bottom: 24px;
+      letter-spacing: .3px;
+    }
+    .cts-ai-badge svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── INPUT ── */
+    .cts-input-wrap { width: 100%; margin-bottom: 16px; }
+    .cts-input {
+      width: 100%;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px 20px;
+      color: #111827;
+      font-size: 16px;
+      font-family: 'DM Sans', sans-serif;
+      resize: none;
+      min-height: 70px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .cts-input:focus {
+      outline: none;
+      border-color: #007AFF;
+      box-shadow: 0 0 0 3px rgba(0,122,255,.1);
+    }
+    .cts-input::placeholder { color: #9ca3af; }
+
+    /* ── PLATFORM PILLS ── */
+    .cts-platforms {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .cts-platforms::-webkit-scrollbar { display: none; }
+    .cts-platform {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cts-platform:hover {
+      background: #f0f4ff;
+      border-color: rgba(0,122,255,.3);
+      color: #007AFF;
+    }
+    .cts-platform.active {
+      background: #007AFF;
+      border-color: #007AFF;
+      color: #fff;
+    }
+
+    /* ── GENERATE BUTTON ── */
+    .cts-generate-btn {
+      background: linear-gradient(135deg, #007AFF, #0063D1);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+      box-shadow: 0 4px 14px rgba(0,122,255,.2);
+    }
+    .cts-generate-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,122,255,.3);
+    }
+    .cts-generate-btn:active {
+      transform: translateY(0);
+    }
+    .cts-generate-btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── SPINNER ── */
+    .cts-spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: ctsSpin .8s linear infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .cts-generate-btn.loading .cts-spinner {
+      display: inline-block;
+    }
+    @keyframes ctsSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── LOADING STATUS TEXT ── */
+    .cts-loading-status {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #007AFF;
+      opacity: 0;
+      transition: opacity .3s;
+      height: 24px;
+    }
+    .cts-loading-status.active {
+      opacity: 1;
+    }
+    .cts-loading-dot {
+      display: inline-block;
+      animation: ctsPulse 1.4s ease-in-out infinite;
+    }
+    .cts-loading-dot:nth-child(2) { animation-delay: .2s; }
+    .cts-loading-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes ctsPulse {
+      0%, 80%, 100% { opacity: .3; }
+      40% { opacity: 1; }
+    }
+
+    /* ── RESULTS ── */
+    .cts-results {
+      width: 100%;
+      margin-top: 24px;
+    }
+    .cts-title-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 14px;
+      animation: ctsSlideUp .4s ease;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .cts-title-card:hover {
+      border-color: rgba(0,122,255,.3);
+      box-shadow: 0 4px 16px rgba(0,122,255,.06);
+    }
+    @keyframes ctsSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cts-card-style {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #007AFF;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cts-card-title {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #111827;
+      font-weight: 600;
+      cursor: text;
+      outline: none;
+      min-height: 1.5em;
+    }
+    .cts-card-title:focus {
+      border-bottom: 1px dashed rgba(0,122,255,.3);
+    }
+    .cts-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    .cts-char-ok { color: #16a34a; }
+    .cts-char-warn { color: #d97706; }
+    .cts-char-over { color: #dc2626; }
+    .cts-card-why {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 6px;
+      font-style: italic;
+    }
+    .cts-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: 1px solid #f3f4f6;
+    }
+    .cts-card-btn {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cts-card-btn:hover {
+      background: #f0f4ff;
+      border-color: rgba(0,122,255,.3);
+      color: #007AFF;
+    }
+    .cts-card-btn.favorited {
+      color: #f59e0b;
+      border-color: rgba(245,158,11,.3);
+      background: #fffbeb;
+    }
+
+    /* ── A/B TEST CARD ── */
+    .cts-ab-card {
+      background: #f0f4ff;
+      border: 1px solid rgba(0,122,255,.2);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 20px;
+      animation: ctsSlideUp .5s ease;
+    }
+    .cts-ab-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #007AFF;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cts-ab-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .cts-ab-title {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #374151;
+    }
+    .cts-ab-title.winner {
+      border-color: #007AFF;
+      background: #f0f4ff;
+    }
+    .cts-ab-title-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+    .cts-ab-reason {
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.5;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0,122,255,.1);
+    }
+
+    /* ── SHIMMER ── */
+    .cts-shimmer-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+    .cts-shimmer-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,122,255,.05), transparent);
+      animation: ctsShimmer 1.5s ease infinite;
+    }
+    @keyframes ctsShimmer { to { left: 100%; } }
+    .cts-shimmer-line {
+      height: 14px;
+      border-radius: 6px;
+      background: #f3f4f6;
+      margin-bottom: 10px;
+    }
+    .cts-shimmer-line:last-child { margin-bottom: 0; }
+
+    /* ── HISTORY PANEL ── */
+    .cts-history-panel {
+      position: fixed;
+      top: 0;
+      right: -360px;
+      width: 360px;
+      height: 100vh;
+      background: #fff;
+      border-left: 1px solid #e5e7eb;
+      z-index: 100;
+      transition: right .3s ease;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -4px 0 20px rgba(0,0,0,.08);
+    }
+    .cts-history-panel.open { right: 0; }
+    .cts-history-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cts-history-header h3 { font-size: 16px; font-weight: 700; }
+    .cts-history-close {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 20px;
+      cursor: pointer;
+      transition: color .2s;
+    }
+    .cts-history-close:hover { color: #111827; }
+    .cts-history-list { flex: 1; padding: 12px; overflow-y: auto; }
+    .cts-history-item {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .cts-history-item:hover {
+      border-color: rgba(0,122,255,.3);
+      background: #f0f4ff;
+    }
+    .cts-history-topic {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .cts-history-meta {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 4px;
+      display: flex;
+      gap: 10px;
+    }
+    .cts-history-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 99;
+      display: none;
+    }
+    .cts-history-overlay.open { display: block; }
+
+    /* ── TOAST ── */
+    .cts-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #111827;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all .3s;
+      z-index: 999;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .cts-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .cts-workspace { padding: 24px 14px 80px; }
+      .cts-input { font-size: 15px; padding: 16px; min-height: 60px; }
+      .cts-title-card { padding: 16px; border-radius: 12px; }
+      .cts-card-title { font-size: 15px; }
+      .cts-history-panel { width: 100%; right: -100%; }
+    }
+    @media (min-width: 768px) {
+      .cts-workspace { padding: 48px 24px 60px; }
+      .cts-input { font-size: 18px; padding: 22px 24px; min-height: 80px; }
+    }
+  </style>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="cts-app">
 
@@ -27,6 +546,17 @@
 
   <!-- WORKSPACE -->
   <div class="cts-workspace">
+
+    <!-- AI Badge -->
+    <div class="cts-ai-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+      AI-Enhanced Title Generation
+    </div>
+
     <!-- Input -->
     <div class="cts-input-wrap">
       <textarea class="cts-input" id="topicInput" placeholder="What's your content about?&#10;&#10;e.g. &quot;How I grew from 0 to 100K on YouTube as a Nigerian creator&quot;" rows="3"></textarea>
@@ -37,8 +567,11 @@
 
     <!-- Generate Button -->
     <button class="cts-generate-btn" id="generateBtn" onclick="window._ctsGenerate()">
-      <span class="cts-spinner"></span>Generate &#128293;
+      <span class="cts-spinner"></span><span id="generateBtnText">Generate Titles</span>
     </button>
+
+    <!-- Loading Status -->
+    <div class="cts-loading-status" id="loadingStatus"></div>
 
     <!-- Results -->
     <div class="cts-results" id="resultsArea"></div>
@@ -57,7 +590,7 @@
   <!-- Toast -->
   <div class="cts-toast" id="toast"></div>
 
-<script src="/engines/creator-titles-engine.js"></script>
+<script src="/engines/creator-titles-engine.js?v=e9c4a694"></script>
 <script>
 !function() {
   "use strict";
@@ -70,6 +603,64 @@
   var currentTopic = '';
   var currentTitles = [];
   var favorites = JSON.parse(localStorage.getItem('cts-favorites') || '[]');
+
+  // ── ACTION VERBS (cycling status messages during generation) ──
+  var ACTION_VERBS = [
+    "Crafting your titles",
+    "Brainstorming hooks",
+    "Analyzing trends",
+    "Optimizing for clicks",
+    "Generating variations",
+    "Polishing phrasing",
+    "Refining word choice",
+    "Sculpting headlines",
+    "Composing title options",
+    "Engineering engagement",
+    "Distilling your message",
+    "Synthesizing ideas",
+    "Calibrating tone",
+    "Amplifying impact",
+    "Sharpening the hook",
+    "Forging power phrases",
+    "Weaving curiosity gaps",
+    "Architecting scroll-stoppers",
+    "Curating top performers",
+    "Designing click magnets",
+    "Transforming your concept",
+    "Elevating your angle",
+    "Perfecting the pitch",
+    "Channeling viral energy",
+    "Igniting curiosity",
+    "Unlocking engagement",
+    "Conjuring title magic",
+    "Discovering winning formats",
+    "Illuminating your story",
+    "Supercharging your reach"
+  ];
+  var verbTimer = null;
+  var verbIndex = 0;
+
+  function startVerbCycling() {
+    var statusEl = document.getElementById('loadingStatus');
+    verbIndex = Math.floor(Math.random() * ACTION_VERBS.length);
+    statusEl.classList.add('active');
+    updateVerb();
+    verbTimer = setInterval(updateVerb, 2200);
+  }
+
+  function updateVerb() {
+    var statusEl = document.getElementById('loadingStatus');
+    var verb = ACTION_VERBS[verbIndex % ACTION_VERBS.length];
+    statusEl.innerHTML = verb + '<span class="cts-loading-dot">.</span><span class="cts-loading-dot">.</span><span class="cts-loading-dot">.</span>';
+    verbIndex++;
+  }
+
+  function stopVerbCycling() {
+    if (verbTimer) { clearInterval(verbTimer); verbTimer = null; }
+    var statusEl = document.getElementById('loadingStatus');
+    statusEl.classList.remove('active');
+    statusEl.innerHTML = '';
+  }
 
   // ── AUTH ──
   function getToken() {
@@ -120,7 +711,12 @@
     var prompt = E.buildPrompt(topic, currentPlatform);
 
     var btn = document.getElementById('generateBtn');
+    var btnText = document.getElementById('generateBtnText');
     btn.classList.add('loading'); btn.disabled = true;
+    btnText.textContent = 'Generating';
+
+    // Start verb cycling
+    startVerbCycling();
 
     // Show shimmer cards
     var resultsArea = document.getElementById('resultsArea');
@@ -138,8 +734,10 @@
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(res) {
       btn.classList.remove('loading'); btn.disabled = false;
+      btnText.textContent = 'Generate Titles';
+      stopVerbCycling();
       if (!res.ok) {
-        resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#ef4444;">' + (res.data.error || 'Generation failed') + '</div></div>';
+        resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#dc2626;">' + (res.data.error || 'Generation failed') + '</div></div>';
         return;
       }
       var parsed = E.parseResponse(res.data.output);
@@ -148,7 +746,7 @@
         renderTitles(parsed);
         saveLocalHistory(topic, currentPlatform, parsed);
       } else {
-        resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#ef4444;">Could not parse titles. Please try again.</div></div>';
+        resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#dc2626;">Could not parse titles. Please try again.</div></div>';
       }
       if (res.data.remaining !== undefined) {
         toast(res.data.remaining + ' generations remaining today');
@@ -156,7 +754,9 @@
     })
     .catch(function() {
       btn.classList.remove('loading'); btn.disabled = false;
-      resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#ef4444;">Connection error. Please try again.</div></div>';
+      btnText.textContent = 'Generate Titles';
+      stopVerbCycling();
+      resultsArea.innerHTML = '<div class="cts-title-card"><div class="cts-card-title" style="color:#dc2626;">Connection error. Please try again.</div></div>';
     });
   };
 
@@ -332,7 +932,7 @@
     var list = document.getElementById('historyList');
     var history = JSON.parse(localStorage.getItem('cts-history') || '[]');
     if (!history.length) {
-      list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:rgba(255,255,255,.35)"><div style="font-size:32px;margin-bottom:12px">&#128214;</div><div style="font-size:14px;font-weight:600">No history yet</div><div style="font-size:13px;margin-top:4px">Your generated titles will appear here</div></div>';
+      list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#9ca3af"><div style="font-size:32px;margin-bottom:12px">&#128214;</div><div style="font-size:14px;font-weight:600">No history yet</div><div style="font-size:13px;margin-top:4px;color:#b0b5be">Your generated titles will appear here</div></div>';
       return;
     }
     var html = '';

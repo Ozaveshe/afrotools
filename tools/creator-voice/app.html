@@ -8,27 +8,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=3041f035">
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js" defer></script>
 </head>
 <body class="cvo-app">
 
-  <!-- TOPBAR -->
-  <div class="cvo-topbar">
-    <a href="index.html" class="cvo-topbar-back">&larr;</a>
-    <a href="index.html" class="cvo-topbar-brand">&#127897; CreatorVoice</a>
-    <div class="cvo-topbar-project">
-      <input type="text" id="projectName" value="Untitled Project" spellcheck="false">
+  <!-- HEADER (Carousel-style) -->
+  <header class="cvo-app-header">
+    <a href="index.html" class="cvo-app-logo">
+      <span>&#127897;</span> CreatorVoice
+    </a>
+    <div class="cvo-header-center">
+      <input type="text" class="cvo-project-input" id="projectName" value="Untitled Project" spellcheck="false">
     </div>
-    <div class="cvo-topbar-actions">
-      <button class="cvo-topbar-btn" id="projectsBtn">Projects</button>
-      <button class="cvo-topbar-btn primary" id="saveBtn">Save</button>
+    <div class="cvo-header-actions">
+      <button class="cvo-btn-icon" id="projectsBtn" title="Projects">&#128193;</button>
+      <button class="cvo-btn-primary" id="saveBtn">&#128190; Save</button>
     </div>
-  </div>
+  </header>
 
   <!-- MODE TABS -->
   <div class="cvo-mode-tabs">
@@ -116,6 +117,13 @@
             <button class="cvo-tool-btn" id="normalizeBtn">&#128200; Normalize</button>
             <div class="cvo-tool-sep"></div>
             <button class="cvo-tool-btn" id="noiseBtn">&#128263; Noise Reduce</button>
+            <button class="cvo-tool-btn" id="reverseBtn">&#128260; Reverse</button>
+            <button class="cvo-tool-btn" id="silenceBtn">&#9723; Insert Silence</button>
+            <div class="cvo-tool-sep"></div>
+            <button class="cvo-tool-btn" id="reverbBtn">&#127748; Reverb</button>
+            <button class="cvo-tool-btn" id="eqBtn">&#127926; EQ</button>
+            <button class="cvo-tool-btn" id="compressorBtn">&#128296; Compressor</button>
+            <button class="cvo-tool-btn" id="pitchBtn">&#127925; Pitch Shift</button>
             <div class="cvo-tool-sep"></div>
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.5);">Speed
               <select class="cvo-speed-select" id="speedSelect">
@@ -129,6 +137,7 @@
             </label>
             <div class="cvo-tool-sep"></div>
             <button class="cvo-tool-btn" id="undoBtn">&#8630; Undo</button>
+            <button class="cvo-tool-btn" id="redoBtn">&#8631; Redo</button>
           </div>
 
           <!-- Multi-Track Panel -->
@@ -1074,13 +1083,179 @@
     toast('Noise reduction applied');
   };
 
+  // REVERSE
+  document.getElementById('reverseBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var ch = mainBuffer.getChannelData(c);
+      Array.prototype.reverse.call(ch);
+    }
+    tracks[0].buffer = mainBuffer;
+    drawEditorWaveform();
+    toast('Audio reversed');
+  };
+
+  // INSERT SILENCE
+  document.getElementById('silenceBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var silenceDur = 1; // 1 second of silence
+    var insertAt = Math.floor(cursorPos * sr);
+    var silenceSamples = Math.floor(silenceDur * sr);
+    var newLen = mainBuffer.length + silenceSamples;
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var old = mainBuffer.getChannelData(c);
+      var arr = new Float32Array(newLen);
+      arr.set(old.subarray(0, insertAt), 0);
+      // silence gap is already zeros
+      arr.set(old.subarray(insertAt), insertAt + silenceSamples);
+      channels.push(arr);
+    }
+    replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
+    toast('1s silence inserted at ' + formatTime(cursorPos));
+  };
+
+  // REVERB
+  document.getElementById('reverbBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var decay = 1.5; // reverb tail in seconds
+    var tailSamples = Math.floor(decay * sr);
+    var newLen = mainBuffer.length + tailSamples;
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var old = mainBuffer.getChannelData(c);
+      // Simple convolution-style reverb: layer delayed copies with decay
+      var out = new Float32Array(newLen);
+      out.set(old);
+      var delays = [0.03, 0.07, 0.12, 0.18, 0.25, 0.35, 0.5, 0.7, 1.0];
+      var gains = [0.6, 0.45, 0.35, 0.28, 0.22, 0.16, 0.11, 0.07, 0.04];
+      for (var d = 0; d < delays.length; d++) {
+        var offset = Math.floor(delays[d] * sr);
+        var g = gains[d];
+        for (var i = 0; i < old.length; i++) {
+          out[i + offset] += old[i] * g;
+        }
+      }
+      // Normalize if clipping
+      var peak = 0;
+      for (var j = 0; j < out.length; j++) { if (Math.abs(out[j]) > peak) peak = Math.abs(out[j]); }
+      if (peak > 1) { for (var k = 0; k < out.length; k++) out[k] /= peak; }
+      // Create new buffer with tail
+      if (c === 0) {
+        var newBuf = audioCtx.createBuffer(mainBuffer.numberOfChannels, newLen, sr);
+      }
+      newBuf.getChannelData(c).set(out);
+    }
+    replaceMainBuffer(newBuf);
+    toast('Reverb applied');
+  };
+
+  // EQ (3-band: boost mids, cut lows slightly)
+  document.getElementById('eqBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    // Simple EQ via offline processing
+    var offCtx = new OfflineAudioContext(mainBuffer.numberOfChannels, mainBuffer.length, sr);
+    var src = offCtx.createBufferSource();
+    src.buffer = mainBuffer;
+
+    var low = offCtx.createBiquadFilter();
+    low.type = 'lowshelf'; low.frequency.value = 200; low.gain.value = -3;
+
+    var mid = offCtx.createBiquadFilter();
+    mid.type = 'peaking'; mid.frequency.value = 1500; mid.Q.value = 1; mid.gain.value = 4;
+
+    var high = offCtx.createBiquadFilter();
+    high.type = 'highshelf'; high.frequency.value = 6000; high.gain.value = 2;
+
+    src.connect(low); low.connect(mid); mid.connect(high); high.connect(offCtx.destination);
+    src.start(0);
+    offCtx.startRendering().then(function(rendered) {
+      replaceMainBuffer(rendered);
+      toast('EQ applied (voice boost preset)');
+    });
+  };
+
+  // COMPRESSOR
+  document.getElementById('compressorBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var sr = mainBuffer.sampleRate;
+    var offCtx = new OfflineAudioContext(mainBuffer.numberOfChannels, mainBuffer.length, sr);
+    var src = offCtx.createBufferSource();
+    src.buffer = mainBuffer;
+
+    var comp = offCtx.createDynamicsCompressor();
+    comp.threshold.value = -24;
+    comp.knee.value = 12;
+    comp.ratio.value = 4;
+    comp.attack.value = 0.003;
+    comp.release.value = 0.25;
+
+    var makeup = offCtx.createGain();
+    makeup.gain.value = 1.5;
+
+    src.connect(comp); comp.connect(makeup); makeup.connect(offCtx.destination);
+    src.start(0);
+    offCtx.startRendering().then(function(rendered) {
+      replaceMainBuffer(rendered);
+      toast('Compressor applied');
+    });
+  };
+
+  // PITCH SHIFT (simple resample approach)
+  document.getElementById('pitchBtn').onclick = function() {
+    if (!mainBuffer) return;
+    pushUndo();
+    var semitones = 2; // shift up 2 semitones
+    var rate = Math.pow(2, semitones / 12);
+    var sr = mainBuffer.sampleRate;
+    var newLen = Math.floor(mainBuffer.length / rate);
+    var channels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      var old = mainBuffer.getChannelData(c);
+      var arr = new Float32Array(newLen);
+      for (var i = 0; i < newLen; i++) {
+        var srcIdx = i * rate;
+        var idx = Math.floor(srcIdx);
+        var frac = srcIdx - idx;
+        arr[i] = idx + 1 < old.length ? old[idx] * (1 - frac) + old[idx + 1] * frac : old[Math.min(idx, old.length - 1)];
+      }
+      channels.push(arr);
+    }
+    replaceMainBuffer(bufferFromChannels(channels, sr, mainBuffer.numberOfChannels));
+    toast('Pitch shifted +2 semitones');
+  };
+
   // UNDO
+  var redoStack = [];
   document.getElementById('undoBtn').onclick = function() {
     if (!undoStack.length) { toast('Nothing to undo'); return; }
+    // Save current state for redo
+    var curChannels = [];
+    for (var c = 0; c < mainBuffer.numberOfChannels; c++) {
+      curChannels.push(new Float32Array(mainBuffer.getChannelData(c)));
+    }
+    redoStack.push({ channels: curChannels, sampleRate: mainBuffer.sampleRate, numberOfChannels: mainBuffer.numberOfChannels });
     var state = undoStack.pop();
     var buf = bufferFromChannels(state.channels, state.sampleRate, state.numberOfChannels);
     replaceMainBuffer(buf);
     toast('Undo');
+  };
+
+  // REDO
+  document.getElementById('redoBtn').onclick = function() {
+    if (!redoStack.length) { toast('Nothing to redo'); return; }
+    pushUndo();
+    var state = redoStack.pop();
+    var buf = bufferFromChannels(state.channels, state.sampleRate, state.numberOfChannels);
+    replaceMainBuffer(buf);
+    toast('Redo');
   };
 
   // ========================================

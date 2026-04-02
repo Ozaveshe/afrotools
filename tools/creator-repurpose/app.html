@@ -7,23 +7,32 @@
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=e0c07c90">
+  <style>
+    .crp-loading-status{display:none;text-align:center;padding:18px 0 0;font:600 1.05rem/1.5 'DM Sans',sans-serif;color:var(--crp-primary,#007AFF)}
+    .crp-loading-status.active{display:block}
+    .crp-loading-status .crp-verb{transition:opacity .3s}
+    .crp-loading-dots{display:inline-block;min-width:1.4em;text-align:left}
+    .crp-loading-dots::after{content:'';animation:crpDots 1.4s steps(4,end) infinite}
+    @keyframes crpDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+  </style>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="crp-app">
 
-  <!-- TOPBAR -->
-  <div class="crp-topbar">
-    <a href="index.html" class="crp-topbar-back">&larr; Back</a>
-    <a href="index.html" class="crp-topbar-brand">&#9889; Repurpose</a>
-    <div class="crp-topbar-actions">
-      <button class="crp-topbar-btn" id="crpCopyAll" style="display:none;">&#128203; Copy All</button>
+  <!-- HEADER (Carousel-style) -->
+  <header class="crp-app-header">
+    <a href="index.html" class="crp-app-logo">
+      <span>&#9889;</span> Repurpose
+    </a>
+    <div class="crp-header-actions">
+      <button class="crp-btn-icon" id="crpCopyAll" style="display:none;" title="Copy All">&#128203;</button>
     </div>
-  </div>
+  </header>
 
   <!-- WORKSPACE -->
   <div class="crp-workspace">
@@ -95,6 +104,9 @@
         <button class="crp-generate-btn" id="crpGenerate">
           <span class="crp-spinner"></span>Repurpose &#9889;
         </button>
+        <div class="crp-loading-status" id="crpLoadingStatus">
+          <span class="crp-verb" id="crpVerb"></span><span class="crp-loading-dots"></span>
+        </div>
       </div>
 
       <!-- RIGHT: OUTPUTS -->
@@ -106,7 +118,7 @@
   <!-- TOAST -->
   <div class="crp-toast" id="crpToast"></div>
 
-<script src="/engines/creator-repurpose-engine.js"></script>
+<script src="/engines/creator-repurpose-engine.js?v=d4f2a5fe"></script>
 <script>
 !function() {
   "use strict";
@@ -116,6 +128,50 @@
 
   var API = '/.netlify/functions/creator-repurpose';
   var currentOutputs = null;
+
+  // ── VERB SPINNER ──
+  var ACTION_VERBS = [
+    "Repurposing your content",
+    "Adapting for new platforms",
+    "Reformatting your message",
+    "Extracting key moments",
+    "Optimizing for each channel",
+    "Transforming your content",
+    "Reshaping the narrative",
+    "Generating platform variants",
+    "Tailoring for different audiences",
+    "Maximizing content mileage",
+    "Converting formats",
+    "Distilling core ideas",
+    "Expanding reach potential",
+    "Crafting cross-platform hooks",
+    "Engineering multi-format output",
+    "Polishing repurposed drafts"
+  ];
+  var verbTimer = null;
+  var verbIndex = 0;
+
+  function startVerbCycling() {
+    var statusEl = document.getElementById('crpLoadingStatus');
+    var verbEl = document.getElementById('crpVerb');
+    verbIndex = Math.floor(Math.random() * ACTION_VERBS.length);
+    verbEl.textContent = ACTION_VERBS[verbIndex];
+    statusEl.classList.add('active');
+    verbTimer = setInterval(function() {
+      verbEl.style.opacity = '0';
+      setTimeout(function() {
+        verbIndex = (verbIndex + 1) % ACTION_VERBS.length;
+        verbEl.textContent = ACTION_VERBS[verbIndex];
+        verbEl.style.opacity = '1';
+      }, 300);
+    }, 2400);
+  }
+
+  function stopVerbCycling() {
+    if (verbTimer) { clearInterval(verbTimer); verbTimer = null; }
+    var statusEl = document.getElementById('crpLoadingStatus');
+    statusEl.classList.remove('active');
+  }
 
   // ── AUTH ──
   function getToken() {
@@ -191,6 +247,7 @@
     var btn = document.getElementById('crpGenerate');
     btn.classList.add('loading'); btn.disabled = true;
     document.getElementById('crpCopyAll').style.display = 'none';
+    startVerbCycling();
 
     var resultsArea = document.getElementById('crpResults');
 
@@ -216,6 +273,7 @@
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(res) {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       if (!res.ok) {
         resultsArea.innerHTML = '<div class="crp-output-card"><div class="crp-output-body"><div class="crp-output-text" style="color:#ef4444;">' + (res.data.error || 'Generation failed') + '</div></div></div>';
         return;
@@ -231,6 +289,7 @@
     })
     .catch(function() {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       resultsArea.innerHTML = '<div class="crp-output-card"><div class="crp-output-body"><div class="crp-output-text" style="color:#ef4444;">Connection error. Please try again.</div></div></div>';
     });
   }

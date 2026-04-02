@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard — AfroPoints | AfroTools</title>
+<meta name="description" content="See the top data contributors across Africa. Filter by country, city, category, and time period.">
+<link rel="canonical" href="https://afrotools.com/tools/afropoints/leaderboard.html">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AfroPoints Leaderboard">
+<meta property="og:description" content="Top data contributors across 54 African countries.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=8d93e37c">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="ap-hero" style="padding-bottom:24px;">
+  <div class="ap-hero-inner">
+    <nav class="ap-breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="./">AfroPoints</a> <span>/</span> <span>Leaderboard</span></nav>
+    <h1>🏆 Leaderboard</h1>
+    <p class="ap-hero-sub">Top data contributors across Africa</p>
+  </div>
+</section>
+
+<div class="ap-main" style="max-width:900px;">
+
+  <!-- Filters -->
+  <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:20px; align-items:center;">
+    <div>
+      <div class="ap-tabs" id="periodTabs">
+        <button class="ap-tab active" data-period="all_time">All Time</button>
+        <button class="ap-tab" data-period="monthly">This Month</button>
+        <button class="ap-tab" data-period="weekly">This Week</button>
+      </div>
+    </div>
+    <div style="margin-left:auto;">
+      <select class="ap-select" id="scopeSelect" style="font-size:0.8rem; padding:7px 14px;">
+        <option value="global">🌍 Global</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="ap-card">
+    <div class="ap-card-body" style="padding:0; overflow-x:auto;">
+      <table class="ap-lb-table" id="fullTable">
+        <thead>
+          <tr>
+            <th style="width:50px;">Rank</th>
+            <th>Contributor</th>
+            <th>Points</th>
+            <th>Submissions</th>
+            <th>Trust</th>
+            <th>Country</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="6" style="text-align:center; padding:40px; color:var(--color-text-muted);">Loading leaderboard...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js?v=da613fd9" defer></script>
+<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+  var AP = window.AfroPointsEngine;
+  if (!AP) return;
+
+  var currentPeriod = 'all_time';
+  var currentScope = 'global';
+
+  // Populate country filter
+  var scopeSelect = document.getElementById('scopeSelect');
+  var codes = Object.keys(AP.COUNTRIES).sort(function (a, b) { return AP.COUNTRIES[a].localeCompare(AP.COUNTRIES[b]); });
+  codes.forEach(function (c) {
+    var opt = document.createElement('option');
+    opt.value = 'country:' + c;
+    opt.textContent = AP.COUNTRIES[c];
+    scopeSelect.appendChild(opt);
+  });
+
+  function loadLeaderboard() {
+    var body = document.getElementById('tableBody');
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px; color:var(--color-text-muted);">Loading...</td></tr>';
+
+    AP.getLeaderboard(currentScope, currentPeriod).then(function (entries) {
+      body.innerHTML = '';
+      if (!Array.isArray(entries) || entries.length === 0) {
+        body.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px; color:var(--color-text-muted);">No data yet. Be the first to contribute!</td></tr>';
+        return;
+      }
+
+      entries.forEach(function (e, i) {
+        var rankCls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        var rankInfo = AP.getRankInfo(e.rank);
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td><span class="ap-lb-rank ' + rankCls + '">' + (i + 1) + '</span></td>' +
+          '<td><span style="font-weight:600;">' + e.display_name + '</span> <span class="ap-rank-badge" style="background:' + rankInfo.color + '22;color:' + rankInfo.color + ';font-size:0.58rem;">' + rankInfo.label + '</span></td>' +
+          '<td style="font-weight:700; color:#F59E0B;">' + AP.formatPoints(e.total_points) + '</td>' +
+          '<td>' + (e.contributions_count || 0) + '</td>' +
+          '<td>' + Math.round(e.trust_score || 50) + '</td>' +
+          '<td>' + (e.country ? AP.getCountryName(e.country) : '—') + '</td>';
+        body.appendChild(tr);
+      });
+    });
+  }
+
+  // Period tabs
+  document.getElementById('periodTabs').addEventListener('click', function (e) {
+    if (e.target.classList.contains('ap-tab')) {
+      document.querySelectorAll('#periodTabs .ap-tab').forEach(function (t) { t.classList.remove('active'); });
+      e.target.classList.add('active');
+      currentPeriod = e.target.getAttribute('data-period');
+      loadLeaderboard();
+    }
+  });
+
+  // Scope select
+  scopeSelect.addEventListener('change', function () {
+    currentScope = this.value;
+    loadLeaderboard();
+  });
+
+  loadLeaderboard();
+})();
+</script>
+</body>
+</html>

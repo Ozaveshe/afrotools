@@ -9,23 +9,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=63ba4854">
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="csk-app">
 
-  <!-- TOPBAR -->
-  <div class="csk-topbar">
-    <a href="index.html" class="csk-topbar-back">&larr;</a>
-    <a href="index.html" class="csk-topbar-brand">&#128247; CreatorStock</a>
-    <div class="csk-topbar-actions">
-      <button class="csk-topbar-btn" id="collectionsBtn">&#128194; Collections</button>
-      <button class="csk-topbar-btn" id="dlCounterBtn">&#11015;&#65039; <span class="csk-dl-count" id="dlCount">0</span></button>
+  <!-- HEADER -->
+  <header class="csk-app-header">
+    <a href="index.html" class="csk-app-logo">
+      <span>&#128247;</span> CreatorStock
+    </a>
+    <div class="csk-header-actions">
+      <button class="csk-btn-icon" id="uploadBtn" title="Upload Image">&#128228;</button>
+      <button class="csk-btn-icon" id="collectionsBtn" title="Collections">&#128194;</button>
+      <button class="csk-btn-icon" id="dlCounterBtn" title="Downloads">&#11015;&#65039; <span class="csk-dl-count" id="dlCount">0</span></button>
     </div>
-  </div>
+  </header>
 
   <!-- SEARCH BAR -->
   <div class="csk-search-wrap">
@@ -74,6 +76,25 @@
   <div class="csk-spotlight" id="spotlightSection">
     <div class="csk-spotlight-title"><span>&#127758;</span> African Creators Spotlight</div>
     <div class="csk-spotlight-grid" id="spotlightGrid"></div>
+  </div>
+
+  <!-- UPLOAD SECTION (logged-in only) -->
+  <div class="csk-upload-section" id="uploadSection" style="display:none">
+    <div class="csk-upload-card">
+      <div class="csk-upload-title">&#128228; Upload Your Work</div>
+      <div class="csk-upload-desc">Share your photography with the AfroTools community</div>
+      <div class="csk-upload-drop" id="uploadDrop">
+        <span>&#128247;</span>
+        <div>Drop image here or click to browse</div>
+        <input type="file" id="uploadFileInput" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer">
+      </div>
+      <div class="csk-upload-form" id="uploadForm" style="display:none">
+        <img id="uploadPreview" class="csk-upload-preview" alt="Preview">
+        <input type="text" class="csk-control-input" id="uploadTitle" placeholder="Image title..." style="margin-bottom:8px">
+        <input type="text" class="csk-control-input" id="uploadTags" placeholder="Tags (comma separated)..." style="margin-bottom:8px">
+        <button class="csk-upload-submit-btn" id="uploadSubmitBtn">&#128228; Upload to Community</button>
+      </div>
+    </div>
   </div>
 
   <!-- MASONRY GRID -->
@@ -253,6 +274,79 @@
         pixabay: Math.floor(filtered.length * 3.4)
       }
     };
+  }
+
+  // ── DOWNLOAD GATE ────────────────────────────────────
+  var DAILY_LIMIT = 3;
+
+  function getDownloadCount() {
+    var today = new Date().toISOString().slice(0, 10);
+    var stored = JSON.parse(localStorage.getItem('csk-dl-today') || '{}');
+    if (stored.date !== today) return 0;
+    return stored.count || 0;
+  }
+
+  function incrementDownload() {
+    var today = new Date().toISOString().slice(0, 10);
+    var stored = JSON.parse(localStorage.getItem('csk-dl-today') || '{}');
+    if (stored.date !== today) stored = { date: today, count: 0 };
+    stored.count++;
+    localStorage.setItem('csk-dl-today', JSON.stringify(stored));
+    return stored.count;
+  }
+
+  function isLoggedIn() {
+    try {
+      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (raw) { var d = JSON.parse(raw); return !!d.access_token; }
+    } catch(e) {}
+    return false;
+  }
+
+  function canDownload() {
+    if (isLoggedIn()) return true;
+    return getDownloadCount() < DAILY_LIMIT;
+  }
+
+  // ── UPLOAD (signed-in users) ──────────────────
+  function initUpload() {
+    if (!isLoggedIn()) return;
+    var section = document.getElementById('uploadSection');
+    if (section) section.style.display = '';
+
+    document.getElementById('uploadBtn').onclick = function() {
+      var section = document.getElementById('uploadSection');
+      section.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    var uploadInput = document.getElementById('uploadFileInput');
+
+    uploadInput.onchange = function() {
+      if (uploadInput.files.length) previewUpload(uploadInput.files[0]);
+    };
+
+    function previewUpload(file) {
+      if (!file.type.startsWith('image/')) { toast('Please select an image file'); return; }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('uploadPreview').src = e.target.result;
+        document.getElementById('uploadForm').style.display = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('uploadSubmitBtn').onclick = function() {
+      toast('Upload feature coming soon! Your image has been saved locally.');
+    };
+  }
+
+  function updateDlDisplay() {
+    var el = document.getElementById('dlCount');
+    if (isLoggedIn()) {
+      el.textContent = '\u221E';
+    } else {
+      el.textContent = (DAILY_LIMIT - getDownloadCount());
+    }
   }
 
   // ── HELPERS ───────────────────────────────────────────
@@ -564,6 +658,10 @@
 
     body.querySelectorAll('.csk-dl-btn[data-size]').forEach(function(btn) {
       btn.onclick = function() {
+        if (!canDownload()) {
+          toast('Daily limit reached (3/day). Sign up for unlimited downloads!');
+          return;
+        }
         var size = btn.getAttribute('data-size');
         var url = photo.downloadUrls && photo.downloadUrls[size] ? photo.downloadUrls[size] : photo.fullUrl;
         if (url === '#') {
@@ -571,9 +669,10 @@
           return;
         }
         window.open(url, '_blank');
+        incrementDownload();
         state.downloads++;
         localStorage.setItem('csk-downloads', state.downloads);
-        $('dlCount').textContent = state.downloads;
+        updateDlDisplay();
         toast('Download started!');
       };
     });
@@ -845,10 +944,9 @@
     state.safeSearch = this.classList.contains('on');
   };
 
-  // ── DOWNLOAD COUNTER ──────────────────────────────────
-  $('dlCount').textContent = state.downloads;
-
   // ── INIT ──────────────────────────────────────────────
+  updateDlDisplay();
+  initUpload();
   renderRecentSearches();
   renderSpotlight();
 

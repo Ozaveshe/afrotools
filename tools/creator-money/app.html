@@ -6,14 +6,14 @@
   <title>Finance Dashboard — CreatorMoney | AfroTools</title>
   <meta name="description" content="Track your creative income and expenses. See your real profitability at a glance.">
   <meta name="robots" content="noindex">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="/assets/js/components/navbar.js" defer></script>
-  <script src="/assets/js/components/footer.js" defer></script>
-  <script src="/engines/creator-money-engine.js"></script>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=694b79d6">
+  <script src="/assets/js/components/navbar.js?v=e55f3c7d" defer></script>
+  <script src="/assets/js/components/footer.js?v=2df4a28a" defer></script>
+  <script src="/engines/creator-money-engine.js?v=a7ac9402"></script>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body>
   <afro-navbar></afro-navbar>
@@ -498,6 +498,39 @@
     var aiInput = document.getElementById('ai-input');
     var aiSend = document.getElementById('ai-send');
 
+    var ACTION_VERBS = [
+      "Calculating revenue potential",
+      "Analyzing monetization paths",
+      "Estimating earnings",
+      "Mapping income streams",
+      "Evaluating sponsorship value",
+      "Crunching profit numbers",
+      "Optimizing revenue strategy",
+      "Benchmarking creator earnings",
+      "Projecting growth trajectory",
+      "Assessing brand deal rates",
+      "Building financial forecast",
+      "Discovering revenue opportunities",
+      "Structuring pricing strategy",
+      "Modeling income scenarios",
+      "Maximizing earning potential",
+      "Generating money insights"
+    ];
+    var verbInterval = null;
+
+    function startVerbCycle(el) {
+      var idx = Math.floor(Math.random() * ACTION_VERBS.length);
+      el.textContent = ACTION_VERBS[idx] + '...';
+      verbInterval = setInterval(function() {
+        idx = (idx + 1) % ACTION_VERBS.length;
+        el.textContent = ACTION_VERBS[idx] + '...';
+      }, 2200);
+    }
+
+    function stopVerbCycle() {
+      if (verbInterval) { clearInterval(verbInterval); verbInterval = null; }
+    }
+
     function appendMsg(role, text) {
       var div = document.createElement('div');
       div.className = 'cm-ai-msg ' + role;
@@ -531,8 +564,9 @@
       if (catDetails.length) systemCtx += 'Expenses by category: ' + catDetails.join(', ') + '.';
 
       var loadDiv = document.createElement('div');
-      loadDiv.className = 'cm-ai-msg assistant'; loadDiv.textContent = 'Thinking...'; loadDiv.id = 'ai-loading';
+      loadDiv.className = 'cm-ai-msg assistant'; loadDiv.id = 'ai-loading';
       aiChat.appendChild(loadDiv); aiChat.scrollTop = aiChat.scrollHeight;
+      startVerbCycle(loadDiv);
 
       fetch('/.netlify/functions/ai-advisor', {
         method: 'POST',
@@ -541,12 +575,14 @@
       })
       .then(function(r) { return r.json(); })
       .then(function(data) {
+        stopVerbCycle();
         var el = document.getElementById('ai-loading'); if (el) el.remove();
         var reply = data.reply || data.content || 'Sorry, could not process that. Try again.';
         appendMsg('assistant', reply);
         chatHistory.push({ role: 'assistant', content: reply });
       })
       .catch(function() {
+        stopVerbCycle();
         var el = document.getElementById('ai-loading'); if (el) el.remove();
         appendMsg('assistant', 'Could not reach the advisor. Check your connection.');
       });

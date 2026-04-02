@@ -8,61 +8,627 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=694eaa11">
+  <style>
+    /* ── BioForge SaaS Dashboard ── */
+    :root {
+      --bf-green: #34C759;
+      --bf-green-dark: #28a745;
+      --bf-green-light: #e6f9ec;
+      --bf-green-glow: rgba(52,199,89,.15);
+      --bf-bg: #f5f7fa;
+      --bf-card: #fff;
+      --bf-border: #e5e7eb;
+      --bf-text: #111827;
+      --bf-text2: #6b7280;
+      --bf-radius: 14px;
+      --bf-radius-sm: 10px;
+      --bf-shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --bf-shadow-lg: 0 4px 24px rgba(0,0,0,.08);
+    }
+
+    body.cb-app {
+      background: var(--bf-bg);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      margin: 0; padding: 0;
+      color: var(--bf-text);
+      min-height: 100vh;
+    }
+
+    /* ── AUTH GATE ── */
+    .bf-auth-gate {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 24px;
+      background: linear-gradient(135deg, #f0fdf4 0%, #f5f7fa 50%, #ecfdf5 100%);
+    }
+    .bf-auth-card {
+      background: #fff; border-radius: 20px; padding: 48px 40px;
+      max-width: 420px; width: 100%; text-align: center;
+      box-shadow: var(--bf-shadow-lg);
+    }
+    .bf-auth-icon { font-size: 48px; margin-bottom: 16px; }
+    .bf-auth-card h1 {
+      font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 700;
+      margin: 0 0 8px;
+    }
+    .bf-auth-card p { color: var(--bf-text2); margin: 0 0 28px; font-size: 15px; line-height: 1.5; }
+    .bf-auth-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bf-green); color: #fff; border: none; border-radius: 12px;
+      padding: 14px 32px; font-size: 16px; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: all .2s;
+    }
+    .bf-auth-btn:hover { background: var(--bf-green-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(52,199,89,.3); }
+    .bf-auth-features { margin-top: 32px; text-align: left; }
+    .bf-auth-features div {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; font-size: 14px; color: var(--bf-text2);
+    }
+    .bf-auth-features span.bf-check { color: var(--bf-green); font-weight: 700; font-size: 16px; }
+
+    /* ── TOPBAR ── */
+    .bf-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 60px;
+      background: #fff; border-bottom: 1px solid var(--bf-border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .bf-topbar-left { display: flex; align-items: center; gap: 16px; }
+    .bf-topbar-logo {
+      font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700;
+      color: var(--bf-green); text-decoration: none; display: flex; align-items: center; gap: 6px;
+    }
+    .bf-topbar-back {
+      font-size: 13px; color: var(--bf-text2); text-decoration: none;
+      padding: 6px 12px; border-radius: 8px; transition: background .15s;
+    }
+    .bf-topbar-back:hover { background: #f3f4f6; }
+
+    /* Tabs */
+    .bf-tabs {
+      display: flex; gap: 4px; background: #f3f4f6; border-radius: 12px; padding: 4px;
+    }
+    .bf-tab {
+      padding: 8px 18px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      cursor: pointer; color: var(--bf-text2); transition: all .2s; border: none; background: none;
+      white-space: nowrap;
+    }
+    .bf-tab:hover { color: var(--bf-text); }
+    .bf-tab.active { background: #fff; color: var(--bf-text); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+    /* User area */
+    .bf-topbar-right { display: flex; align-items: center; gap: 12px; }
+    .bf-user-pill {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px 6px 8px; border-radius: 20px; background: #f3f4f6;
+      font-size: 13px; font-weight: 500;
+    }
+    .bf-user-avatar {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--bf-green);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+    .bf-signout-btn {
+      padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      border: 1px solid var(--bf-border); background: #fff; color: var(--bf-text2);
+      cursor: pointer; transition: all .15s;
+    }
+    .bf-signout-btn:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+
+    /* ── STATS BAR ── */
+    .bf-stats-bar {
+      display: flex; align-items: center; gap: 20px; padding: 12px 24px;
+      background: var(--bf-green-light); border-bottom: 1px solid #d1fae5;
+      font-size: 13px; color: #065f46; font-weight: 500;
+    }
+    .bf-stat { display: flex; align-items: center; gap: 6px; }
+    .bf-stat-num { font-weight: 700; color: var(--bf-green-dark); }
+
+    /* ── MAIN LAYOUT ── */
+    .bf-main {
+      display: flex; gap: 24px; padding: 24px; max-width: 1400px; margin: 0 auto;
+      min-height: calc(100vh - 120px);
+    }
+
+    /* ── INPUT PANEL ── */
+    .bf-input-panel {
+      width: 380px; flex-shrink: 0;
+      position: sticky; top: 84px; align-self: flex-start;
+      max-height: calc(100vh - 108px); overflow-y: auto;
+    }
+    .bf-panel-card {
+      background: var(--bf-card); border-radius: var(--bf-radius);
+      box-shadow: var(--bf-shadow); overflow: hidden;
+    }
+    .bf-panel-header {
+      padding: 20px 20px 0; font-family: 'Sora', sans-serif;
+      font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+    }
+    .bf-panel-body { padding: 16px 20px 20px; }
+
+    .bf-field { margin-bottom: 16px; }
+    .bf-label {
+      display: block; font-size: 12px; font-weight: 600; color: var(--bf-text2);
+      text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;
+    }
+    .bf-textarea {
+      width: 100%; border: 1.5px solid var(--bf-border); border-radius: var(--bf-radius-sm);
+      padding: 12px; font-size: 14px; font-family: inherit;
+      resize: vertical; transition: border-color .2s; background: #fafafa;
+      box-sizing: border-box;
+    }
+    .bf-textarea:focus { outline: none; border-color: var(--bf-green); background: #fff; box-shadow: 0 0 0 3px var(--bf-green-glow); }
+    .bf-input {
+      width: 100%; border: 1.5px solid var(--bf-border); border-radius: var(--bf-radius-sm);
+      padding: 10px 12px; font-size: 14px; font-family: inherit;
+      transition: border-color .2s; background: #fafafa; box-sizing: border-box;
+    }
+    .bf-input:focus { outline: none; border-color: var(--bf-green); background: #fff; box-shadow: 0 0 0 3px var(--bf-green-glow); }
+
+    /* Pills */
+    .bf-pill-group {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .bf-pill-scroll {
+      display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; padding-bottom: 2px;
+    }
+    .bf-pill-scroll::-webkit-scrollbar { display: none; }
+    .bf-pill {
+      padding: 7px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 600;
+      border: 1.5px solid var(--bf-border); background: #fff; color: var(--bf-text2);
+      cursor: pointer; transition: all .15s; white-space: nowrap; flex-shrink: 0;
+    }
+    .bf-pill:hover { border-color: var(--bf-green); color: var(--bf-green); }
+    .bf-pill.active {
+      background: var(--bf-green); color: #fff; border-color: var(--bf-green);
+    }
+
+    /* Generate button */
+    .bf-generate-btn {
+      width: 100%; padding: 14px; border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700; color: #fff; cursor: pointer;
+      background: linear-gradient(135deg, #34C759, #28a745);
+      transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 8px; position: relative; overflow: hidden;
+    }
+    .bf-generate-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(52,199,89,.35); }
+    .bf-generate-btn:disabled { opacity: .7; cursor: not-allowed; }
+    .bf-generate-btn .bf-spin {
+      display: none; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.3);
+      border-top-color: #fff; border-radius: 50%; animation: bf-spin .7s linear infinite;
+    }
+    .bf-generate-btn.loading .bf-spin { display: block; }
+    .bf-generate-btn.loading .bf-btn-text { display: none; }
+    .bf-generate-btn.loading .bf-btn-loading { display: inline; }
+    .bf-generate-btn .bf-btn-loading { display: none; }
+    @keyframes bf-spin { to { transform: rotate(360deg); } }
+
+    /* ── OUTPUT AREA ── */
+    .bf-output { flex: 1; min-width: 0; }
+
+    /* Tab panels */
+    .bf-tab-panel { display: none; }
+    .bf-tab-panel.active { display: block; }
+
+    /* ── BIO SHEET ── */
+    .bf-sheet-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+    }
+    .bf-sheet-title {
+      font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700;
+    }
+    .bf-sheet-actions { display: flex; gap: 8px; }
+    .bf-action-btn {
+      padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      border: 1.5px solid var(--bf-border); background: #fff; color: var(--bf-text);
+      cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px;
+    }
+    .bf-action-btn:hover { border-color: var(--bf-green); color: var(--bf-green); }
+    .bf-action-btn.primary { background: var(--bf-green); color: #fff; border-color: var(--bf-green); }
+    .bf-action-btn.primary:hover { background: var(--bf-green-dark); }
+
+    /* Bio grid */
+    .bf-bio-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .bf-bio-card {
+      background: var(--bf-card); border-radius: var(--bf-radius);
+      box-shadow: var(--bf-shadow); overflow: hidden; transition: box-shadow .2s;
+    }
+    .bf-bio-card:hover { box-shadow: var(--bf-shadow-lg); }
+    .bf-bio-card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px 10px;
+    }
+    .bf-platform-badge {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 700;
+    }
+    .bf-platform-icon { font-size: 18px; }
+    .bf-card-actions { display: flex; gap: 4px; }
+    .bf-card-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: none;
+      background: #f3f4f6; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+    .bf-card-btn:hover { background: var(--bf-green-light); }
+    .bf-card-btn.fav-active { background: #fef3c7; }
+    .bf-bio-text {
+      padding: 0 16px; font-size: 14px; line-height: 1.6; min-height: 60px;
+      outline: none; color: var(--bf-text); white-space: pre-wrap;
+    }
+    .bf-bio-text:focus { background: #fafffe; }
+    .bf-char-bar {
+      margin: 12px 16px 0; height: 3px; border-radius: 2px; background: #e5e7eb;
+      overflow: hidden;
+    }
+    .bf-char-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; }
+    .bf-char-fill.ok { background: var(--bf-green); }
+    .bf-char-fill.warn { background: #f59e0b; }
+    .bf-char-fill.over { background: #ef4444; }
+    .bf-bio-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 16px 14px; font-size: 12px; color: var(--bf-text2);
+    }
+    .bf-char-label { font-weight: 500; }
+    .bf-char-label.ok { color: var(--bf-green-dark); }
+    .bf-char-label.warn { color: #d97706; }
+    .bf-char-label.over { color: #dc2626; }
+
+    /* Brand tip */
+    .bf-brand-tip {
+      margin-top: 16px; padding: 20px; border-radius: var(--bf-radius);
+      background: linear-gradient(135deg, var(--bf-green-light), #f0fdf4);
+      border: 1px solid #bbf7d0;
+    }
+    .bf-brand-tip-label {
+      font-size: 13px; font-weight: 700; color: var(--bf-green-dark); margin-bottom: 6px;
+    }
+    .bf-brand-tip-text { font-size: 14px; line-height: 1.6; color: #065f46; }
+
+    /* ── EMPTY STATES ── */
+    .bf-empty {
+      text-align: center; padding: 60px 24px; color: var(--bf-text2);
+    }
+    .bf-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: .5; }
+    .bf-empty h3 {
+      font-family: 'Sora', sans-serif; font-size: 18px; color: var(--bf-text);
+      margin: 0 0 8px;
+    }
+    .bf-empty p { font-size: 14px; margin: 0; }
+
+    /* ── SHIMMER ── */
+    .bf-shimmer-card {
+      background: var(--bf-card); border-radius: var(--bf-radius);
+      padding: 20px; box-shadow: var(--bf-shadow);
+    }
+    .bf-shimmer-line {
+      height: 14px; border-radius: 6px; margin-bottom: 12px;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%; animation: bf-shimmer 1.5s infinite;
+    }
+    @keyframes bf-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* ── HISTORY TAB ── */
+    .bf-history-list { display: flex; flex-direction: column; gap: 12px; }
+    .bf-history-item {
+      background: var(--bf-card); border-radius: var(--bf-radius-sm);
+      padding: 16px; box-shadow: var(--bf-shadow);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .bf-history-info { flex: 1; min-width: 0; }
+    .bf-history-who { font-weight: 700; font-size: 14px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bf-history-what { font-size: 13px; color: var(--bf-text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bf-history-meta { font-size: 11px; color: var(--bf-text2); margin-top: 4px; }
+    .bf-history-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* ── COMPARE TAB ── */
+    .bf-compare-wrap { display: flex; gap: 16px; }
+    .bf-compare-col {
+      flex: 1; background: var(--bf-card); border-radius: var(--bf-radius);
+      padding: 20px; box-shadow: var(--bf-shadow); min-width: 0;
+    }
+    .bf-compare-label {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .5px; color: var(--bf-text2); margin-bottom: 12px;
+    }
+    .bf-compare-bio { font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+    .bf-compare-stats { font-size: 12px; color: var(--bf-text2); }
+    .bf-compare-select {
+      width: 100%; padding: 8px 12px; border: 1.5px solid var(--bf-border);
+      border-radius: 8px; font-size: 13px; font-family: inherit; margin-bottom: 12px;
+      background: #fafafa;
+    }
+
+    /* ── PREVIEW MODAL ── */
+    .bf-preview-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .bf-preview-overlay.open { display: flex; }
+    .bf-preview-modal {
+      background: #fff; border-radius: 20px; max-width: 400px; width: 100%;
+      overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    }
+    .bf-preview-head {
+      padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--bf-border);
+    }
+    .bf-preview-head h3 { margin: 0; font-size: 16px; font-family: 'Sora', sans-serif; }
+    .bf-preview-close {
+      width: 32px; height: 32px; border-radius: 50%; border: none; background: #f3f4f6;
+      font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .bf-preview-body { padding: 20px; }
+    /* IG mockup */
+    .bf-mock-ig { text-align: center; }
+    .bf-mock-ig-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; font-weight: 700; }
+    .bf-mock-ig-name { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+    .bf-mock-ig-bio { font-size: 13px; line-height: 1.5; color: var(--bf-text); white-space: pre-wrap; }
+    .bf-mock-ig-stats { display: flex; justify-content: center; gap: 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--bf-border); }
+    .bf-mock-ig-stats div { text-align: center; }
+    .bf-mock-ig-stats strong { display: block; font-size: 16px; }
+    .bf-mock-ig-stats span { font-size: 11px; color: var(--bf-text2); }
+    /* X mockup */
+    .bf-mock-x { padding: 4px 0; }
+    .bf-mock-x-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .bf-mock-x-avatar { width: 48px; height: 48px; border-radius: 50%; background: #1da1f2; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; font-weight: 700; }
+    .bf-mock-x-name { font-weight: 700; font-size: 15px; }
+    .bf-mock-x-handle { font-size: 13px; color: var(--bf-text2); }
+    .bf-mock-x-bio { font-size: 14px; line-height: 1.5; }
+    /* LinkedIn mockup */
+    .bf-mock-li { padding: 4px 0; }
+    .bf-mock-li-banner { height: 60px; background: linear-gradient(135deg, #0077b5, #00a0dc); border-radius: 8px 8px 0 0; margin-bottom: -20px; }
+    .bf-mock-li-avatar { width: 56px; height: 56px; border-radius: 50%; background: #0077b5; border: 3px solid #fff; margin-left: 16px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; font-weight: 700; position: relative; z-index: 1; }
+    .bf-mock-li-name { font-weight: 700; font-size: 15px; margin: 8px 0 2px; }
+    .bf-mock-li-headline { font-size: 13px; color: var(--bf-text2); line-height: 1.4; }
+    /* Generic mockup */
+    .bf-mock-generic { padding: 4px 0; }
+    .bf-mock-generic-bio { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+
+    /* ── TOAST ── */
+    .bf-toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #111827; color: #fff; padding: 12px 24px; border-radius: 12px;
+      font-size: 14px; font-weight: 500; z-index: 2000;
+      transition: transform .3s cubic-bezier(.4,0,.2,1), opacity .3s;
+      opacity: 0; pointer-events: none;
+    }
+    .bf-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .bf-main { flex-direction: column; padding: 16px; }
+      .bf-input-panel { width: 100%; position: static; max-height: none; }
+      .bf-bio-grid { grid-template-columns: 1fr; }
+      .bf-compare-wrap { flex-direction: column; }
+      .bf-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .bf-pill-group { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .bf-pill-group::-webkit-scrollbar { display: none; }
+      .bf-topbar { padding: 0 12px; }
+      .bf-user-pill span.bf-user-name { display: none; }
+      .bf-stats-bar { overflow-x: auto; scrollbar-width: none; }
+      .bf-stats-bar::-webkit-scrollbar { display: none; }
+    }
+    @media (max-width: 520px) {
+      .bf-topbar-back { display: none; }
+      .bf-sheet-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body class="cb-app">
 
-  <!-- TOPBAR -->
-  <div class="cb-topbar">
-    <a href="index.html" class="cb-topbar-back">&larr; Back</a>
-    <a href="index.html" class="cb-topbar-brand">&#127807; BioForge</a>
+  <!-- AUTH GATE (hidden when signed in) -->
+  <div class="bf-auth-gate" id="bfAuthGate" style="display:none;">
+    <div class="bf-auth-card">
+      <div class="bf-auth-icon">&#127807;</div>
+      <h1>Sign in to BioForge</h1>
+      <p>Generate professional bios for 7 platforms at once. Free for AfroTools members.</p>
+      <a href="/auth/login.html?redirect=/tools/creator-bios/app.html" class="bf-auth-btn">
+        Sign In to Get Started &#8594;
+      </a>
+      <div class="bf-auth-features">
+        <div><span class="bf-check">&#10003;</span> 7 platform bios in one click</div>
+        <div><span class="bf-check">&#10003;</span> AI-powered, African-context aware</div>
+        <div><span class="bf-check">&#10003;</span> Edit, compare, and export bios</div>
+        <div><span class="bf-check">&#10003;</span> Save history and favorites</div>
+      </div>
+    </div>
   </div>
 
-  <!-- WORKSPACE -->
-  <div class="cb-workspace">
+  <!-- DASHBOARD (hidden when signed out) -->
+  <div id="bfDashboard" style="display:none;">
 
-    <!-- INPUT SECTION -->
-    <div class="cb-input-section">
-      <div class="cb-section-title">&#127807; Generate Your Bios</div>
-
-      <div class="cb-form-group">
-        <label class="cb-form-label">Who are you?</label>
-        <textarea class="cb-form-textarea" id="cbWho" placeholder="e.g. Adaeze, photographer & visual storyteller based in Lagos" rows="2"></textarea>
+    <!-- TOPBAR -->
+    <div class="bf-topbar">
+      <div class="bf-topbar-left">
+        <a href="index.html" class="bf-topbar-back">&#8592; Back</a>
+        <a href="index.html" class="bf-topbar-logo">&#127807; BioForge</a>
       </div>
-
-      <div class="cb-form-group">
-        <label class="cb-form-label">What do you do?</label>
-        <textarea class="cb-form-textarea" id="cbWhat" placeholder="e.g. Brand photography, content creation, visual branding for African companies" rows="2"></textarea>
+      <div class="bf-tabs" id="bfTabs">
+        <button class="bf-tab active" data-tab="generate">Generate</button>
+        <button class="bf-tab" data-tab="biosheet">Bio Sheet</button>
+        <button class="bf-tab" data-tab="history">History</button>
+        <button class="bf-tab" data-tab="compare">Compare</button>
       </div>
+      <div class="bf-topbar-right">
+        <div class="bf-user-pill" id="bfUserPill">
+          <div class="bf-user-avatar" id="bfUserAvatar">?</div>
+          <span class="bf-user-name" id="bfUserName"></span>
+        </div>
+        <button class="bf-signout-btn" id="bfSignOut">Sign Out</button>
+      </div>
+    </div>
 
-      <div class="cb-form-group">
-        <label class="cb-form-label">Your vibe</label>
-        <div class="cb-pills" id="cbVibes">
-          <span class="cb-pill active" data-val="professional">Professional</span>
-          <span class="cb-pill" data-val="bold">Bold</span>
-          <span class="cb-pill" data-val="playful">Playful</span>
-          <span class="cb-pill" data-val="minimalist">Minimalist</span>
-          <span class="cb-pill" data-val="motivational">Motivational</span>
+    <!-- STATS BAR -->
+    <div class="bf-stats-bar" id="bfStatsBar">
+      <div class="bf-stat"><span class="bf-stat-num" id="bfStatGen">0</span> bios generated</div>
+      <div class="bf-stat"><span class="bf-stat-num" id="bfStatSaved">0</span> saved</div>
+      <div class="bf-stat" id="bfStatComplete" style="display:none;">Bio sheet complete &#10003;</div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="bf-main">
+
+      <!-- INPUT PANEL -->
+      <div class="bf-input-panel" id="bfInputPanel">
+        <div class="bf-panel-card">
+          <div class="bf-panel-header">&#9997;&#65039; Craft Your Bios</div>
+          <div class="bf-panel-body">
+
+            <div class="bf-field">
+              <label class="bf-label">Who are you?</label>
+              <textarea class="bf-textarea" id="bfWho" rows="2" placeholder="e.g. Adaeze, photographer & visual storyteller based in Lagos"></textarea>
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">What do you do?</label>
+              <textarea class="bf-textarea" id="bfWhat" rows="2" placeholder="e.g. Brand photography, content creation, visual branding for African companies"></textarea>
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Key Achievement</label>
+              <input class="bf-input" id="bfAchievement" placeholder="e.g. Shot campaigns for 50+ African brands" />
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Location</label>
+              <input class="bf-input" id="bfLocation" placeholder="e.g. Lagos, Nigeria" />
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Vibe / Tone</label>
+              <div class="bf-pill-group" id="bfVibes">
+                <span class="bf-pill active" data-val="professional">Professional</span>
+                <span class="bf-pill" data-val="bold">Bold</span>
+                <span class="bf-pill" data-val="playful">Playful</span>
+                <span class="bf-pill" data-val="minimalist">Minimalist</span>
+                <span class="bf-pill" data-val="motivational">Motivational</span>
+                <span class="bf-pill" data-val="casual">Casual</span>
+                <span class="bf-pill" data-val="witty">Witty</span>
+              </div>
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Industry</label>
+              <div class="bf-pill-group" id="bfIndustry">
+                <span class="bf-pill active" data-val="creator">Creator</span>
+                <span class="bf-pill" data-val="tech">Tech</span>
+                <span class="bf-pill" data-val="fashion">Fashion</span>
+                <span class="bf-pill" data-val="music">Music</span>
+                <span class="bf-pill" data-val="business">Business</span>
+                <span class="bf-pill" data-val="education">Education</span>
+                <span class="bf-pill" data-val="health">Health</span>
+                <span class="bf-pill" data-val="food">Food</span>
+                <span class="bf-pill" data-val="sports">Sports</span>
+                <span class="bf-pill" data-val="other">Other</span>
+              </div>
+            </div>
+
+            <div class="bf-field">
+              <label class="bf-label">Language</label>
+              <div class="bf-pill-scroll" id="bfLang">
+                <span class="bf-pill active" data-val="english">English</span>
+                <span class="bf-pill" data-val="pidgin">Pidgin</span>
+                <span class="bf-pill" data-val="french">French</span>
+                <span class="bf-pill" data-val="swahili">Swahili</span>
+                <span class="bf-pill" data-val="portuguese">Portuguese</span>
+              </div>
+            </div>
+
+            <button class="bf-generate-btn" id="bfGenerate" type="button">
+              <div class="bf-spin"></div>
+              <span class="bf-btn-text">Generate All Bios &#127807;</span>
+              <span class="bf-btn-loading">Crafting your bios...</span>
+            </button>
+
+            <button class="bf-generate-btn" id="bfABTest" type="button" style="margin-top:8px; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+              <span class="bf-btn-text">A/B Test: Generate 2 Sets</span>
+            </button>
+
+          </div>
         </div>
       </div>
 
-      <button class="cb-generate-btn" id="cbGenerate">
-        <span class="cb-spinner"></span>Generate All Bios &#127807;
-      </button>
-    </div>
+      <!-- OUTPUT AREA -->
+      <div class="bf-output">
 
-    <!-- RESULTS -->
-    <div id="cbResults"></div>
+        <!-- GENERATE TAB (shows results or empty) -->
+        <div class="bf-tab-panel active" id="panelGenerate">
+          <div id="bfResults">
+            <div class="bf-empty">
+              <div class="bf-empty-icon">&#127807;</div>
+              <h3>Ready to forge your bios</h3>
+              <p>Fill in your details and hit Generate to create bios for all 7 platforms at once.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BIO SHEET TAB -->
+        <div class="bf-tab-panel" id="panelBiosheet">
+          <div id="bfBioSheet">
+            <div class="bf-empty">
+              <div class="bf-empty-icon">&#128196;</div>
+              <h3>No bio sheet yet</h3>
+              <p>Generate your first set of bios to see them here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY TAB -->
+        <div class="bf-tab-panel" id="panelHistory">
+          <div class="bf-sheet-header">
+            <div class="bf-sheet-title">Generation History</div>
+            <button class="bf-action-btn" id="bfClearHistory">Clear All</button>
+          </div>
+          <div id="bfHistoryList">
+            <div class="bf-empty">
+              <div class="bf-empty-icon">&#128337;</div>
+              <h3>No history yet</h3>
+              <p>Your past generations will appear here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPARE TAB -->
+        <div class="bf-tab-panel" id="panelCompare">
+          <div class="bf-sheet-header">
+            <div class="bf-sheet-title">Compare Bios</div>
+          </div>
+          <div id="bfCompareArea">
+            <div class="bf-empty">
+              <div class="bf-empty-icon">&#9878;&#65039;</div>
+              <h3>Nothing to compare</h3>
+              <p>Use A/B Test or generate multiple sets to compare bios side by side.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW MODAL -->
+  <div class="bf-preview-overlay" id="bfPreviewOverlay">
+    <div class="bf-preview-modal">
+      <div class="bf-preview-head">
+        <h3 id="bfPreviewTitle">Bio Preview</h3>
+        <button class="bf-preview-close" id="bfPreviewClose">&times;</button>
+      </div>
+      <div class="bf-preview-body" id="bfPreviewBody"></div>
+    </div>
   </div>
 
   <!-- TOAST -->
-  <div class="cb-toast" id="cbToast"></div>
+  <div class="bf-toast" id="bfToast"></div>
 
-<script src="/engines/creator-bios-engine.js"></script>
+<script src="/engines/creator-bios-engine.js?v=68abe263"></script>
 <script>
 !function() {
   "use strict";
@@ -71,15 +637,72 @@
   if (!E) { console.error('BioForge engine not loaded'); return; }
 
   var API = '/.netlify/functions/creator-bios';
+  var STORAGE_KEY = 'bioforge_history';
+  var FAVS_KEY = 'bioforge_favorites';
+  var STATS_KEY = 'bioforge_stats';
   var currentBios = null;
+  var abSetA = null;
+  var abSetB = null;
+  var generationSets = []; // for compare
+
+  // ── LOADING VERBS ──
+  var LOADING_VERBS = [
+    'Crafting your bios...',
+    'Optimizing for Instagram...',
+    'Tailoring your LinkedIn...',
+    'Writing your TikTok hook...',
+    'Sharpening your X bio...',
+    'Composing for YouTube...',
+    'Polishing for Threads...',
+    'Analyzing your brand voice...',
+    'Adding African flair...',
+    'Checking character limits...',
+    'Making it memorable...',
+    'Injecting personality...',
+    'Balancing keywords...',
+    'Fine-tuning the tone...'
+  ];
+  var verbIdx = 0;
+  var verbInterval = null;
+
+  function startLoadingVerbs() {
+    verbIdx = 0;
+    var el = document.querySelector('.bf-btn-loading');
+    verbInterval = setInterval(function() {
+      verbIdx = (verbIdx + 1) % LOADING_VERBS.length;
+      if (el) el.textContent = LOADING_VERBS[verbIdx];
+    }, 2200);
+  }
+  function stopLoadingVerbs() {
+    if (verbInterval) { clearInterval(verbInterval); verbInterval = null; }
+  }
 
   // ── AUTH ──
-  function getToken() {
+  var AUTH_KEY = 'sb-zpclagtgczsygrgztlts-auth-token';
+
+  function getAuthData() {
     try {
-      var raw = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
-      if (raw) { var d = JSON.parse(raw); return d.access_token || ''; }
+      var raw = localStorage.getItem(AUTH_KEY);
+      if (raw) return JSON.parse(raw);
     } catch(e) {}
-    return '';
+    return null;
+  }
+
+  function getToken() {
+    var d = getAuthData();
+    return d && d.access_token ? d.access_token : '';
+  }
+
+  function getUserInfo() {
+    var d = getAuthData();
+    if (!d || !d.user) return null;
+    var u = d.user;
+    var meta = u.user_metadata || {};
+    return {
+      email: u.email || '',
+      name: meta.full_name || meta.name || meta.display_name || '',
+      initials: ''
+    };
   }
 
   function authHeaders() {
@@ -87,58 +710,173 @@
     return { 'Content-Type': 'application/json', 'Authorization': t ? 'Bearer ' + t : '' };
   }
 
+  function checkAuth() {
+    var token = getToken();
+    if (!token) {
+      document.getElementById('bfAuthGate').style.display = '';
+      document.getElementById('bfDashboard').style.display = 'none';
+      return false;
+    }
+    document.getElementById('bfAuthGate').style.display = 'none';
+    document.getElementById('bfDashboard').style.display = '';
+
+    var info = getUserInfo();
+    if (info) {
+      var name = info.name || info.email.split('@')[0] || 'User';
+      var initials = name.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().slice(0, 2);
+      document.getElementById('bfUserAvatar').textContent = initials;
+      document.getElementById('bfUserName').textContent = name;
+    }
+    return true;
+  }
+
+  // Sign out
+  document.getElementById('bfSignOut').addEventListener('click', function() {
+    localStorage.removeItem(AUTH_KEY);
+    window.location.href = '/auth/login.html?redirect=/tools/creator-bios/app.html';
+  });
+
   // ── TOAST ──
   function toast(msg) {
-    var el = document.getElementById('cbToast');
+    var el = document.getElementById('bfToast');
     el.textContent = msg; el.classList.add('show');
     setTimeout(function() { el.classList.remove('show'); }, 2500);
   }
 
-  // ── VIBE PILLS ──
-  document.getElementById('cbVibes').addEventListener('click', function(e) {
-    var pill = e.target.closest('.cb-pill');
-    if (!pill) return;
-    this.querySelectorAll('.cb-pill').forEach(function(p) { p.classList.remove('active'); });
-    pill.classList.add('active');
+  // ── STATS ──
+  function getStats() {
+    try { return JSON.parse(localStorage.getItem(STATS_KEY)) || { generated: 0, saved: 0 }; }
+    catch(e) { return { generated: 0, saved: 0 }; }
+  }
+  function saveStats(s) { localStorage.setItem(STATS_KEY, JSON.stringify(s)); }
+  function updateStatsUI() {
+    var s = getStats();
+    document.getElementById('bfStatGen').textContent = s.generated;
+    document.getElementById('bfStatSaved').textContent = s.saved;
+    document.getElementById('bfStatComplete').style.display = currentBios && currentBios.bios && currentBios.bios.length >= 7 ? '' : 'none';
+  }
+
+  // ── TABS ──
+  document.getElementById('bfTabs').addEventListener('click', function(e) {
+    var tab = e.target.closest('.bf-tab');
+    if (!tab) return;
+    var target = tab.getAttribute('data-tab');
+    this.querySelectorAll('.bf-tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    document.querySelectorAll('.bf-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    var panel = document.getElementById('panel' + target.charAt(0).toUpperCase() + target.slice(1));
+    if (panel) panel.classList.add('active');
+
+    // Show/hide input panel based on tab
+    var inputPanel = document.getElementById('bfInputPanel');
+    if (target === 'generate') {
+      inputPanel.style.display = '';
+    } else {
+      inputPanel.style.display = 'none';
+    }
+
+    if (target === 'biosheet') renderBioSheet();
+    if (target === 'history') renderHistory();
+    if (target === 'compare') renderCompare();
   });
+
+  // ── PILL GROUPS ──
+  function setupPills(containerId, multi) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    container.addEventListener('click', function(e) {
+      var pill = e.target.closest('.bf-pill');
+      if (!pill) return;
+      if (!multi) {
+        this.querySelectorAll('.bf-pill').forEach(function(p) { p.classList.remove('active'); });
+      }
+      pill.classList.toggle('active');
+    });
+  }
+  setupPills('bfVibes');
+  setupPills('bfIndustry');
+  setupPills('bfLang');
+
+  function getActivePill(containerId) {
+    var el = document.querySelector('#' + containerId + ' .bf-pill.active');
+    return el ? el.getAttribute('data-val') : '';
+  }
 
   // ── GENERATE ──
-  document.getElementById('cbGenerate').addEventListener('click', function() {
-    var who = document.getElementById('cbWho').value.trim();
-    var what = document.getElementById('cbWhat').value.trim();
-    var vibePill = document.querySelector('#cbVibes .cb-pill.active');
-    var vibe = vibePill ? vibePill.getAttribute('data-val') : 'professional';
-
+  document.getElementById('bfGenerate').addEventListener('click', function() {
+    var who = document.getElementById('bfWho').value.trim();
+    var what = document.getElementById('bfWhat').value.trim();
     if (!who) { toast('Tell us who you are!'); return; }
     if (!what) { toast('Tell us what you do!'); return; }
-
-    generateBios(who, what, vibe);
+    generateBios(who, what, buildFullContext());
   });
 
-  function generateBios(who, what, vibe, singlePlatform) {
-    var btn = document.getElementById('cbGenerate');
+  // A/B Test
+  document.getElementById('bfABTest').addEventListener('click', function() {
+    var who = document.getElementById('bfWho').value.trim();
+    var what = document.getElementById('bfWhat').value.trim();
+    if (!who) { toast('Tell us who you are!'); return; }
+    if (!what) { toast('Tell us what you do!'); return; }
+    abSetA = null; abSetB = null;
+    generateBios(who, what, buildFullContext(), null, function(data) {
+      abSetA = data;
+      generateBios(who, what, buildFullContext(), null, function(data2) {
+        abSetB = data2;
+        generationSets = [
+          { label: 'Set A', data: abSetA, date: new Date().toISOString(), who: who, what: what },
+          { label: 'Set B', data: abSetB, date: new Date().toISOString(), who: who, what: what }
+        ];
+        // Switch to compare tab
+        document.querySelector('.bf-tab[data-tab="compare"]').click();
+        toast('A/B test complete! Compare your sets.');
+      });
+    });
+  });
+
+  function buildFullContext() {
+    var vibe = getActivePill('bfVibes') || 'professional';
+    var industry = getActivePill('bfIndustry') || 'creator';
+    var lang = getActivePill('bfLang') || 'english';
+    var achievement = document.getElementById('bfAchievement').value.trim();
+    var location = document.getElementById('bfLocation').value.trim();
+    return { vibe: vibe, industry: industry, lang: lang, achievement: achievement, location: location };
+  }
+
+  function generateBios(who, what, ctx, singlePlatform, onDone) {
+    var btn = document.getElementById('bfGenerate');
     btn.classList.add('loading'); btn.disabled = true;
+    startLoadingVerbs();
 
-    var resultsArea = document.getElementById('cbResults');
+    var resultsArea = document.getElementById('bfResults');
 
-    // Show shimmer loading
     if (!singlePlatform) {
       var shimmerHtml = '';
       for (var i = 0; i < 4; i++) {
-        shimmerHtml += '<div class="cb-shimmer-card"><div class="cb-shimmer-line" style="width:40%"></div><div class="cb-shimmer-line" style="width:90%"></div><div class="cb-shimmer-line" style="width:70%"></div><div class="cb-shimmer-line" style="width:50%"></div></div>';
+        shimmerHtml += '<div class="bf-shimmer-card" style="margin-bottom:12px;"><div class="bf-shimmer-line" style="width:40%"></div><div class="bf-shimmer-line" style="width:90%"></div><div class="bf-shimmer-line" style="width:70%"></div><div class="bf-shimmer-line" style="width:50%"></div></div>';
       }
-      resultsArea.innerHTML = '<div style="margin-top:24px">' + shimmerHtml + '</div>';
+      resultsArea.innerHTML = shimmerHtml;
     }
 
-    var prompt = E.buildPrompt(who, what, vibe, singlePlatform);
+    // Build enriched prompt
+    var enrichedWho = who;
+    if (ctx.location) enrichedWho += ', based in ' + ctx.location;
+    if (ctx.achievement) enrichedWho += '. Key achievement: ' + ctx.achievement;
+
+    var enrichedWhat = what;
+    if (ctx.industry && ctx.industry !== 'creator') enrichedWhat += ' (Industry: ' + ctx.industry + ')';
+
+    var vibeStr = ctx.vibe;
+    if (ctx.lang && ctx.lang !== 'english') vibeStr += ', write in ' + ctx.lang;
+
+    var prompt = E.buildPrompt(enrichedWho, enrichedWhat, vibeStr, singlePlatform);
 
     fetch(API + '/generate', {
       method: 'POST',
       headers: authHeaders(),
       body: JSON.stringify({
-        who: who,
-        what: what,
-        tone: vibe,
+        who: enrichedWho,
+        what: enrichedWhat,
+        tone: ctx.vibe,
         prompt: prompt,
         singlePlatform: singlePlatform || null
       })
@@ -146,15 +884,16 @@
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(res) {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopLoadingVerbs();
+
       if (!res.ok) {
-        resultsArea.innerHTML = '<div class="cb-bio-card" style="margin-top:24px"><div class="cb-bio-text" style="color:#ef4444;">' + (res.data.error || 'Generation failed') + '</div></div>';
+        resultsArea.innerHTML = '<div class="bf-bio-card" style="padding:20px;"><div style="color:#ef4444; font-size:14px;">' + escapeHtml(res.data.error || 'Generation failed. Please try again.') + '</div></div>';
         return;
       }
 
       var parsed = E.parseResponse(res.data.output);
 
       if (singlePlatform && currentBios) {
-        // Replace just one platform
         var newBios = parsed.bios || [];
         if (newBios.length) {
           for (var i = 0; i < currentBios.bios.length; i++) {
@@ -168,82 +907,98 @@
         currentBios = parsed;
       }
 
-      renderBios(currentBios);
+      renderResults(currentBios);
+      saveToHistory(who, what, ctx, currentBios);
+
+      var stats = getStats();
+      stats.generated += (currentBios.bios ? currentBios.bios.length : 0);
+      saveStats(stats);
+      updateStatsUI();
 
       if (res.data.remaining !== undefined) {
         toast(res.data.remaining + ' generations remaining today');
       }
+
+      if (onDone) onDone(currentBios);
     })
-    .catch(function() {
+    .catch(function(err) {
       btn.classList.remove('loading'); btn.disabled = false;
-      resultsArea.innerHTML = '<div class="cb-bio-card" style="margin-top:24px"><div class="cb-bio-text" style="color:#ef4444;">Connection error. Please try again.</div></div>';
+      stopLoadingVerbs();
+      resultsArea.innerHTML = '<div class="bf-bio-card" style="padding:20px;"><div style="color:#ef4444; font-size:14px;">Connection error. Please try again.</div></div>';
     });
   }
 
-  // ── RENDER BIOS ──
-  function renderBios(data) {
-    var resultsArea = document.getElementById('cbResults');
+  // ── RENDER RESULTS (Generate tab) ──
+  function renderResults(data) {
+    var resultsArea = document.getElementById('bfResults');
     var bios = data.bios || [];
     if (!bios.length) {
-      resultsArea.innerHTML = '<div class="cb-bio-card" style="margin-top:24px"><div class="cb-bio-text" style="color:#ef4444;">Could not parse bios. Try again.</div></div>';
+      resultsArea.innerHTML = '<div class="bf-bio-card" style="padding:20px;"><div style="color:#ef4444;">Could not parse bios. Try again.</div></div>';
       return;
     }
 
-    var html = '<div class="cb-results" style="margin-top:24px;">';
-    html += '<div class="cb-results-header">';
-    html += '<div class="cb-results-title">Your Bio Sheet &#127807;</div>';
-    html += '<div style="display:flex;gap:8px;">';
-    html += '<button class="cb-refresh-btn" onclick="window._cbRefresh()">&#128260; Refresh All</button>';
-    html += '<button class="cb-copy-all-btn" onclick="window._cbCopyAll()">&#128203; Copy All</button>';
+    var html = '';
+    html += '<div class="bf-sheet-header">';
+    html += '<div class="bf-sheet-title">Your Bio Sheet</div>';
+    html += '<div class="bf-sheet-actions">';
+    html += '<button class="bf-action-btn" onclick="window._bfCopyAll()">&#128203; Copy All</button>';
+    html += '<button class="bf-action-btn" onclick="window._bfExport()">&#128229; Export</button>';
+    html += '<button class="bf-action-btn primary" onclick="window._bfRefresh()">&#8635; Refresh All</button>';
     html += '</div></div>';
+    html += '<div class="bf-bio-grid">';
 
     bios.forEach(function(bio) {
       var pInfo = E.PLATFORMS[bio.platform] || { icon: '&#127760;', label: bio.platform, limit: 150 };
       var charCount = (bio.text || '').length;
       var limit = bio.charLimit || pInfo.limit;
-      var pct = charCount / limit;
-      var countClass = pct > 1 ? 'over' : pct > 0.9 ? 'warn' : 'ok';
-      var checkMark = pct <= 1 ? ' &#10003;' : ' &#10007;';
+      var pct = Math.min(charCount / limit, 1.2);
+      var cls = (charCount > limit) ? 'over' : (charCount / limit > 0.9) ? 'warn' : 'ok';
+      var widthPct = Math.min(pct * 100, 100);
+      var isFav = isFavorite(bio.platform);
 
-      html += '<div class="cb-bio-card" data-platform="' + bio.platform + '">';
-      html += '<div class="cb-bio-card-header">';
-      html += '<div class="cb-platform-badge"><span class="cb-platform-icon">' + pInfo.icon + '</span> ' + pInfo.label + '</div>';
-      html += '</div>';
-      html += '<div class="cb-bio-text" contenteditable="true" data-platform="' + bio.platform + '" data-limit="' + limit + '">' + escapeHtml(bio.text || '') + '</div>';
-      html += '<div class="cb-bio-footer">';
-      html += '<div class="cb-char-count ' + countClass + '" data-counter="' + bio.platform + '">' + charCount + '/' + limit + ' chars' + checkMark + '</div>';
-      html += '<div class="cb-bio-actions">';
-      html += '<button class="cb-bio-btn" onclick="window._cbCopySingle(\'' + bio.platform + '\')">&#128203; Copy</button>';
-      html += '<button class="cb-bio-btn" onclick="window._cbRegenSingle(\'' + bio.platform + '\')">&#128260; Redo</button>';
-      html += '</div></div></div>';
+      html += '<div class="bf-bio-card" data-platform="' + bio.platform + '">';
+      html += '<div class="bf-bio-card-head">';
+      html += '<div class="bf-platform-badge"><span class="bf-platform-icon">' + pInfo.icon + '</span> ' + pInfo.label + '</div>';
+      html += '<div class="bf-card-actions">';
+      html += '<button class="bf-card-btn' + (isFav ? ' fav-active' : '') + '" onclick="window._bfToggleFav(\'' + bio.platform + '\')" title="Favorite">&#9733;</button>';
+      html += '<button class="bf-card-btn" onclick="window._bfPreview(\'' + bio.platform + '\')" title="Preview">&#128065;</button>';
+      html += '<button class="bf-card-btn" onclick="window._bfCopySingle(\'' + bio.platform + '\')" title="Copy">&#128203;</button>';
+      html += '<button class="bf-card-btn" onclick="window._bfRegenSingle(\'' + bio.platform + '\')" title="Redo">&#8635;</button>';
+      html += '</div></div>';
+      html += '<div class="bf-bio-text" contenteditable="true" data-platform="' + bio.platform + '" data-limit="' + limit + '">' + escapeHtml(bio.text || '') + '</div>';
+      html += '<div class="bf-char-bar"><div class="bf-char-fill ' + cls + '" style="width:' + widthPct + '%"></div></div>';
+      html += '<div class="bf-bio-footer">';
+      html += '<span class="bf-char-label ' + cls + '" data-counter="' + bio.platform + '">' + charCount + '/' + limit + (charCount <= limit ? ' &#10003;' : ' &#10007;') + '</span>';
+      html += '</div></div>';
     });
 
-    // Brand tip
+    html += '</div>';
+
     if (data.personalBrandTip) {
-      html += '<div class="cb-brand-tip">';
-      html += '<div class="cb-brand-tip-label">&#128161; Personal Brand Tip</div>';
-      html += '<div class="cb-brand-tip-text">' + escapeHtml(data.personalBrandTip) + '</div>';
+      html += '<div class="bf-brand-tip">';
+      html += '<div class="bf-brand-tip-label">&#128161; Personal Brand Tip</div>';
+      html += '<div class="bf-brand-tip-text">' + escapeHtml(data.personalBrandTip) + '</div>';
       html += '</div>';
     }
 
-    html += '</div>';
     resultsArea.innerHTML = html;
 
-    // Wire inline editing character counters
-    resultsArea.querySelectorAll('.cb-bio-text[contenteditable]').forEach(function(el) {
+    // Wire up inline editing
+    resultsArea.querySelectorAll('.bf-bio-text[contenteditable]').forEach(function(el) {
       el.addEventListener('input', function() {
         var platform = this.getAttribute('data-platform');
         var limit = parseInt(this.getAttribute('data-limit'), 10);
         var count = this.innerText.length;
-        var pct = count / limit;
-        var cls = pct > 1 ? 'over' : pct > 0.9 ? 'warn' : 'ok';
-        var check = pct <= 1 ? ' &#10003;' : ' &#10007;';
-        var counter = resultsArea.querySelector('[data-counter="' + platform + '"]');
-        if (counter) {
-          counter.className = 'cb-char-count ' + cls;
-          counter.innerHTML = count + '/' + limit + ' chars' + check;
-        }
-        // Update currentBios
+        var pctVal = count / limit;
+        var cls = (count > limit) ? 'over' : (pctVal > 0.9) ? 'warn' : 'ok';
+        var widthPct = Math.min(pctVal * 100, 100);
+
+        var card = this.closest('.bf-bio-card');
+        var fill = card.querySelector('.bf-char-fill');
+        if (fill) { fill.className = 'bf-char-fill ' + cls; fill.style.width = widthPct + '%'; }
+        var counter = card.querySelector('.bf-char-label');
+        if (counter) { counter.className = 'bf-char-label ' + cls; counter.innerHTML = count + '/' + limit + (count <= limit ? ' &#10003;' : ' &#10007;'); }
+
         if (currentBios && currentBios.bios) {
           for (var i = 0; i < currentBios.bios.length; i++) {
             if (currentBios.bios[i].platform === platform) {
@@ -257,14 +1012,281 @@
     });
   }
 
-  function escapeHtml(str) {
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  // ── RENDER BIO SHEET (separate tab — same data, just for quick reference) ──
+  function renderBioSheet() {
+    var area = document.getElementById('bfBioSheet');
+    if (!currentBios || !currentBios.bios || !currentBios.bios.length) {
+      area.innerHTML = '<div class="bf-empty"><div class="bf-empty-icon">&#128196;</div><h3>No bio sheet yet</h3><p>Generate your first set of bios to see them here.</p></div>';
+      return;
+    }
+    // Reuse same render
+    var bios = currentBios.bios;
+    var html = '<div class="bf-sheet-header"><div class="bf-sheet-title">Complete Bio Sheet</div>';
+    html += '<div class="bf-sheet-actions"><button class="bf-action-btn" onclick="window._bfCopyAll()">&#128203; Copy All</button>';
+    html += '<button class="bf-action-btn" onclick="window._bfExport()">&#128229; Export</button></div></div>';
+    html += '<div style="display:flex;flex-direction:column;gap:12px;">';
+
+    bios.forEach(function(bio) {
+      var pInfo = E.PLATFORMS[bio.platform] || { icon: '&#127760;', label: bio.platform, limit: 150 };
+      var charCount = (bio.text || '').length;
+      var limit = bio.charLimit || pInfo.limit;
+      var cls = (charCount > limit) ? 'over' : (charCount / limit > 0.9) ? 'warn' : 'ok';
+
+      html += '<div class="bf-bio-card">';
+      html += '<div class="bf-bio-card-head"><div class="bf-platform-badge"><span class="bf-platform-icon">' + pInfo.icon + '</span> ' + pInfo.label + '</div>';
+      html += '<span class="bf-char-label ' + cls + '">' + charCount + '/' + limit + '</span></div>';
+      html += '<div style="padding:0 16px 14px; font-size:14px; line-height:1.6; white-space:pre-wrap;">' + escapeHtml(bio.text || '') + '</div>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+    area.innerHTML = html;
   }
 
+  // ── HISTORY ──
+  function getHistory() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch(e) { return []; }
+  }
+  function saveToHistory(who, what, ctx, data) {
+    var history = getHistory();
+    history.unshift({
+      id: Date.now(),
+      who: who, what: what,
+      vibe: ctx.vibe, industry: ctx.industry, lang: ctx.lang,
+      date: new Date().toISOString(),
+      data: data
+    });
+    if (history.length > 50) history = history.slice(0, 50);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  }
+
+  function renderHistory() {
+    var area = document.getElementById('bfHistoryList');
+    var history = getHistory();
+    if (!history.length) {
+      area.innerHTML = '<div class="bf-empty"><div class="bf-empty-icon">&#128337;</div><h3>No history yet</h3><p>Your past generations will appear here.</p></div>';
+      return;
+    }
+    var html = '<div class="bf-history-list">';
+    history.forEach(function(item, idx) {
+      var date = new Date(item.date);
+      var dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      var timeStr = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      var bioCount = item.data && item.data.bios ? item.data.bios.length : 0;
+
+      html += '<div class="bf-history-item">';
+      html += '<div class="bf-history-info">';
+      html += '<div class="bf-history-who">' + escapeHtml(item.who) + '</div>';
+      html += '<div class="bf-history-what">' + escapeHtml(item.what) + '</div>';
+      html += '<div class="bf-history-meta">' + dateStr + ' ' + timeStr + ' &middot; ' + bioCount + ' bios &middot; ' + (item.vibe || 'professional') + '</div>';
+      html += '</div>';
+      html += '<div class="bf-history-actions">';
+      html += '<button class="bf-action-btn" onclick="window._bfRestoreHistory(' + idx + ')">Restore</button>';
+      html += '<button class="bf-action-btn" onclick="window._bfCompareHistory(' + idx + ')">Compare</button>';
+      html += '</div></div>';
+    });
+    html += '</div>';
+    area.innerHTML = html;
+  }
+
+  document.getElementById('bfClearHistory').addEventListener('click', function() {
+    localStorage.removeItem(STORAGE_KEY);
+    renderHistory();
+    toast('History cleared');
+  });
+
+  window._bfRestoreHistory = function(idx) {
+    var history = getHistory();
+    if (!history[idx]) return;
+    var item = history[idx];
+    currentBios = item.data;
+    document.getElementById('bfWho').value = item.who || '';
+    document.getElementById('bfWhat').value = item.what || '';
+    renderResults(currentBios);
+    updateStatsUI();
+    document.querySelector('.bf-tab[data-tab="generate"]').click();
+    toast('Bios restored!');
+  };
+
+  window._bfCompareHistory = function(idx) {
+    var history = getHistory();
+    if (!history[idx]) return;
+    generationSets.push({
+      label: 'History ' + (idx + 1),
+      data: history[idx].data,
+      date: history[idx].date,
+      who: history[idx].who,
+      what: history[idx].what
+    });
+    if (generationSets.length > 2) generationSets = generationSets.slice(-2);
+    document.querySelector('.bf-tab[data-tab="compare"]').click();
+    toast('Added to compare');
+  };
+
+  // ── COMPARE ──
+  function renderCompare() {
+    var area = document.getElementById('bfCompareArea');
+    if (generationSets.length < 2) {
+      // If we have current bios and at least 1 history, allow compare
+      if (currentBios && generationSets.length === 1) {
+        generationSets.unshift({ label: 'Current', data: currentBios, date: new Date().toISOString(), who: '', what: '' });
+      } else if (generationSets.length < 2) {
+        area.innerHTML = '<div class="bf-empty"><div class="bf-empty-icon">&#9878;&#65039;</div><h3>Nothing to compare</h3><p>Use A/B Test or select 2 history items to compare side by side.</p></div>';
+        return;
+      }
+    }
+
+    var setA = generationSets[generationSets.length - 2];
+    var setB = generationSets[generationSets.length - 1];
+
+    var html = '<div style="margin-bottom:16px;font-size:13px;color:var(--bf-text2);">Showing: <strong>' + escapeHtml(setA.label) + '</strong> vs <strong>' + escapeHtml(setB.label) + '</strong></div>';
+
+    // Platform selector
+    html += '<div style="margin-bottom:16px;">';
+    html += '<select class="bf-compare-select" id="bfComparePlatform">';
+    E.PLATFORM_ORDER.forEach(function(key) {
+      var p = E.PLATFORMS[key];
+      html += '<option value="' + key + '">' + p.label + '</option>';
+    });
+    html += '</select></div>';
+
+    html += '<div class="bf-compare-wrap" id="bfCompareColumns"></div>';
+    area.innerHTML = html;
+
+    // Re-render columns when platform changes
+    document.getElementById('bfComparePlatform').addEventListener('change', function() {
+      renderCompareColumns(setA, setB, this.value);
+    });
+    renderCompareColumns(setA, setB, E.PLATFORM_ORDER[0]);
+  }
+
+  function renderCompareColumns(setA, setB, platform) {
+    var colArea = document.getElementById('bfCompareColumns');
+    if (!colArea) return;
+
+    var bioA = findBio(setA.data, platform);
+    var bioB = findBio(setB.data, platform);
+    var pInfo = E.PLATFORMS[platform] || { label: platform, limit: 150 };
+
+    var html = '';
+    // Column A
+    html += '<div class="bf-compare-col">';
+    html += '<div class="bf-compare-label">' + escapeHtml(setA.label) + '</div>';
+    if (bioA) {
+      html += '<div class="bf-compare-bio">' + escapeHtml(bioA.text || '') + '</div>';
+      html += '<div class="bf-compare-stats">' + (bioA.text || '').length + '/' + pInfo.limit + ' chars</div>';
+    } else {
+      html += '<div class="bf-compare-bio" style="color:var(--bf-text2);">No bio for this platform</div>';
+    }
+    html += '</div>';
+
+    // Column B
+    html += '<div class="bf-compare-col">';
+    html += '<div class="bf-compare-label">' + escapeHtml(setB.label) + '</div>';
+    if (bioB) {
+      html += '<div class="bf-compare-bio">' + escapeHtml(bioB.text || '') + '</div>';
+      html += '<div class="bf-compare-stats">' + (bioB.text || '').length + '/' + pInfo.limit + ' chars</div>';
+    } else {
+      html += '<div class="bf-compare-bio" style="color:var(--bf-text2);">No bio for this platform</div>';
+    }
+    html += '</div>';
+
+    colArea.innerHTML = html;
+  }
+
+  function findBio(data, platform) {
+    if (!data || !data.bios) return null;
+    for (var i = 0; i < data.bios.length; i++) {
+      if (data.bios[i].platform === platform) return data.bios[i];
+    }
+    return null;
+  }
+
+  // ── FAVORITES ──
+  function getFavorites() {
+    try { return JSON.parse(localStorage.getItem(FAVS_KEY)) || {}; }
+    catch(e) { return {}; }
+  }
+  function isFavorite(platform) {
+    var favs = getFavorites();
+    return !!favs[platform];
+  }
+  window._bfToggleFav = function(platform) {
+    var favs = getFavorites();
+    if (favs[platform]) {
+      delete favs[platform];
+      toast('Removed from favorites');
+    } else {
+      var bio = findBio(currentBios, platform);
+      if (bio) {
+        favs[platform] = { text: bio.text, date: new Date().toISOString() };
+        var stats = getStats();
+        stats.saved++;
+        saveStats(stats);
+        updateStatsUI();
+        toast('Saved to favorites!');
+      }
+    }
+    localStorage.setItem(FAVS_KEY, JSON.stringify(favs));
+    if (currentBios) renderResults(currentBios);
+  };
+
+  // ── PREVIEW ──
+  window._bfPreview = function(platform) {
+    if (!currentBios) return;
+    var bio = findBio(currentBios, platform);
+    if (!bio) return;
+    var pInfo = E.PLATFORMS[platform] || { label: platform };
+    var who = document.getElementById('bfWho').value.trim() || 'Creator';
+    var name = who.split(',')[0].trim();
+    var initials = name.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().slice(0, 2);
+
+    document.getElementById('bfPreviewTitle').textContent = pInfo.label + ' Preview';
+    var body = document.getElementById('bfPreviewBody');
+    var html = '';
+
+    if (platform === 'instagram' || platform === 'threads') {
+      html += '<div class="bf-mock-ig">';
+      html += '<div class="bf-mock-ig-avatar">' + initials + '</div>';
+      html += '<div class="bf-mock-ig-name">' + escapeHtml(name) + '</div>';
+      html += '<div class="bf-mock-ig-bio">' + escapeHtml(bio.text || '') + '</div>';
+      html += '<div class="bf-mock-ig-stats"><div><strong>1.2K</strong><span>Posts</span></div><div><strong>48K</strong><span>Followers</span></div><div><strong>892</strong><span>Following</span></div></div>';
+      html += '</div>';
+    } else if (platform === 'x') {
+      html += '<div class="bf-mock-x">';
+      html += '<div class="bf-mock-x-header"><div class="bf-mock-x-avatar">' + initials + '</div><div><div class="bf-mock-x-name">' + escapeHtml(name) + '</div><div class="bf-mock-x-handle">@' + name.toLowerCase().replace(/\s/g, '') + '</div></div></div>';
+      html += '<div class="bf-mock-x-bio">' + escapeHtml(bio.text || '') + '</div>';
+      html += '</div>';
+    } else if (platform === 'linkedin_headline' || platform === 'linkedin_about') {
+      html += '<div class="bf-mock-li">';
+      html += '<div class="bf-mock-li-banner"></div>';
+      html += '<div class="bf-mock-li-avatar">' + initials + '</div>';
+      html += '<div class="bf-mock-li-name">' + escapeHtml(name) + '</div>';
+      html += '<div class="bf-mock-li-headline">' + escapeHtml(bio.text || '') + '</div>';
+      html += '</div>';
+    } else {
+      html += '<div class="bf-mock-generic">';
+      html += '<div style="font-weight:700; margin-bottom:8px;">' + pInfo.icon + ' ' + pInfo.label + '</div>';
+      html += '<div class="bf-mock-generic-bio">' + escapeHtml(bio.text || '') + '</div>';
+      html += '</div>';
+    }
+
+    body.innerHTML = html;
+    document.getElementById('bfPreviewOverlay').classList.add('open');
+  };
+
+  document.getElementById('bfPreviewClose').addEventListener('click', function() {
+    document.getElementById('bfPreviewOverlay').classList.remove('open');
+  });
+  document.getElementById('bfPreviewOverlay').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+
   // ── ACTIONS ──
-  window._cbCopySingle = function(platform) {
+  window._bfCopySingle = function(platform) {
     if (!currentBios || !currentBios.bios) return;
-    var bio = currentBios.bios.find(function(b) { return b.platform === platform; });
+    var bio = findBio(currentBios, platform);
     if (bio) {
       navigator.clipboard.writeText(bio.text).then(function() {
         var pInfo = E.PLATFORMS[platform] || { label: platform };
@@ -273,25 +1295,21 @@
     }
   };
 
-  window._cbRegenSingle = function(platform) {
-    var who = document.getElementById('cbWho').value.trim();
-    var what = document.getElementById('cbWhat').value.trim();
-    var vibePill = document.querySelector('#cbVibes .cb-pill.active');
-    var vibe = vibePill ? vibePill.getAttribute('data-val') : 'professional';
+  window._bfRegenSingle = function(platform) {
+    var who = document.getElementById('bfWho').value.trim();
+    var what = document.getElementById('bfWhat').value.trim();
     if (!who || !what) { toast('Fill in your details first'); return; }
-    generateBios(who, what, vibe, platform);
+    generateBios(who, what, buildFullContext(), platform);
   };
 
-  window._cbRefresh = function() {
-    var who = document.getElementById('cbWho').value.trim();
-    var what = document.getElementById('cbWhat').value.trim();
-    var vibePill = document.querySelector('#cbVibes .cb-pill.active');
-    var vibe = vibePill ? vibePill.getAttribute('data-val') : 'professional';
+  window._bfRefresh = function() {
+    var who = document.getElementById('bfWho').value.trim();
+    var what = document.getElementById('bfWhat').value.trim();
     if (!who || !what) { toast('Fill in your details first'); return; }
-    generateBios(who, what, vibe);
+    generateBios(who, what, buildFullContext());
   };
 
-  window._cbCopyAll = function() {
+  window._bfCopyAll = function() {
     if (!currentBios || !currentBios.bios) return;
     var text = currentBios.bios.map(function(bio) {
       var pInfo = E.PLATFORMS[bio.platform] || { label: bio.platform };
@@ -299,6 +1317,41 @@
     }).join('\n\n');
     navigator.clipboard.writeText(text).then(function() { toast('All bios copied!'); });
   };
+
+  window._bfExport = function() {
+    if (!currentBios || !currentBios.bios) return;
+    var text = 'BIOFORGE EXPORT\n';
+    text += 'Generated: ' + new Date().toLocaleString() + '\n';
+    text += '='.repeat(50) + '\n\n';
+    currentBios.bios.forEach(function(bio) {
+      var pInfo = E.PLATFORMS[bio.platform] || { label: bio.platform, limit: 150 };
+      text += pInfo.label.toUpperCase() + ' (' + (bio.text || '').length + '/' + pInfo.limit + ' chars)\n';
+      text += '-'.repeat(30) + '\n';
+      text += (bio.text || '') + '\n\n';
+    });
+    if (currentBios.personalBrandTip) {
+      text += '='.repeat(50) + '\n';
+      text += 'BRAND TIP: ' + currentBios.personalBrandTip + '\n';
+    }
+
+    var blob = new Blob([text], { type: 'text/plain' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'bioforge-export-' + Date.now() + '.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Exported!');
+  };
+
+  // ── UTILS ──
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  }
+
+  // ── INIT ──
+  if (checkAuth()) {
+    updateStatsUI();
+  }
 
 }();
 </script>

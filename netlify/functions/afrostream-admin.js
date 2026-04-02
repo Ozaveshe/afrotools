@@ -282,6 +282,126 @@ exports.handler = async function(event) {
     }
 
     // ══════════════════════════════════════════════════════════════
+    // SUBMISSIONS (admin review queue)
+    // ══════════════════════════════════════════════════════════════
+
+    if (path === 'submissions' && method === 'GET') {
+      var statusFilter = event.queryStringParameters?.status || 'pending';
+      var subs = await sb('GET', 'as_submissions?status=eq.' + statusFilter + '&order=created_at.desc&limit=100', null);
+      return ok(headers, subs);
+    }
+
+    var subMatch = path.match(/^submissions\/(\d+)$/);
+    var subAction = path.match(/^submissions\/(\d+)\/(approve|reject)$/);
+
+    // APPROVE a submission → write to live tables
+    if (subAction && method === 'PUT' && subAction[2] === 'approve') {
+      var subId = subAction[1];
+      // Fetch the submission
+      var subArr = await sb('GET', 'as_submissions?id=eq.' + subId, null);
+      if (!subArr || !subArr[0]) return err(headers, 'Submission not found', 404);
+      var sub = subArr[0];
+      if (sub.status !== 'pending') return err(headers, 'Already ' + sub.status);
+
+      var payload = sub.payload || {};
+
+      // Write to the appropriate live table based on type
+      if (sub.type === 'creator') {
+        if (!payload.name || !payload.country) return err(headers, 'Invalid creator payload');
+        if (!payload.slug) payload.slug = slugify(payload.name);
+        payload.is_published = true;
+        await sb('POST', 'as_creators', payload);
+      } else if (sub.type === 'stream') {
+        if (!payload.creator_name || !payload.title || !payload.stream_date) return err(headers, 'Invalid stream payload');
+        payload.is_published = true;
+        await sb('POST', 'as_streams', payload);
+      } else if (sub.type === 'news_tip') {
+        if (!payload.title || !payload.excerpt || !payload.body) return err(headers, 'Invalid news payload');
+        if (!payload.slug) payload.slug = slugify(payload.title);
+        payload.is_published = true;
+        payload.published_at = new Date().toISOString();
+        await sb('POST', 'as_news', payload);
+      }
+      // type === 'correction' → admin manually edits, no auto-write
+
+      // Mark submission as approved
+      await sb('PATCH', 'as_submissions?id=eq.' + subId, {
+        status: 'approved',
+        admin_note: body.admin_note || '',
+        reviewed_at: new Date().toISOString(),
+        reviewed_by: 'admin'
+      });
+
+      // Award points to submitter if they have a user_id
+      if (sub.user_id) {
+        var pointsEarned = sub.type === 'creator' ? 10 : sub.type === 'stream' ? 5 : sub.type === 'news_tip' ? 8 : 3;
+        await sb('POST', 'as_points_ledger', {
+          user_id: sub.user_id,
+          points: pointsEarned,
+          reason: 'submission_approved',
+          reference_id: parseInt(subId),
+          reference_type: 'submission'
+        });
+        // Update points profile
+        var profiles = await sb('GET', 'as_points_profiles?user_id=eq.' + sub.user_id, null);
+        if (profiles && profiles[0]) {
+          await sb('PATCH', 'as_points_profiles?user_id=eq.' + sub.user_id, {
+            total_points: (profiles[0].total_points || 0) + pointsEarned,
+            approved_count: (profiles[0].approved_count || 0) + 1,
+            last_active: new Date().toISOString()
+          });
+        }
+      }
+
+      console.log('[afrostream-admin] Approved submission #' + subId + ' (' + sub.type + ')');
+      return ok(headers, { message: 'Submission approved and published', type: sub.type });
+    }
+
+    // REJECT a submission
+    if (subAction && method === 'PUT' && subAction[2] === 'reject') {
+      var rejId = subAction[1];
+      var rejArr = await sb('GET', 'as_submissions?id=eq.' + rejId, null);
+      if (!rejArr || !rejArr[0]) return err(headers, 'Submission not found', 404);
+      if (rejArr[0].status !== 'pending') return err(headers, 'Already ' + rejArr[0].status);
+
+      await sb('PATCH', 'as_submissions?id=eq.' + rejId, {
+        status: 'rejected',
+        admin_note: body.admin_note || 'Rejected by admin',
+        reviewed_at: new Date().toISOString(),
+        reviewed_by: 'admin'
+      });
+
+      // Penalize trust score if user exists
+      if (rejArr[0].user_id) {
+        var rejProfiles = await sb('GET', 'as_points_profiles?user_id=eq.' + rejArr[0].user_id, null);
+        if (rejProfiles && rejProfiles[0]) {
+          await sb('PATCH', 'as_points_profiles?user_id=eq.' + rejArr[0].user_id, {
+            rejected_count: (rejProfiles[0].rejected_count || 0) + 1,
+            trust_score: Math.max(0, (rejProfiles[0].trust_score || 50) - 2)
+          });
+        }
+      }
+
+      console.log('[afrostream-admin] Rejected submission #' + rejId);
+      return ok(headers, { message: 'Submission rejected' });
+    }
+
+    // DELETE a submission
+    if (subMatch && method === 'DELETE') {
+      await sb('DELETE', 'as_submissions?id=eq.' + subMatch[1], null);
+      return ok(headers, { message: 'Submission deleted' });
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // POINTS (admin view)
+    // ══════════════════════════════════════════════════════════════
+
+    if (path === 'points/leaderboard' && method === 'GET') {
+      var leaders = await sb('GET', 'as_points_profiles?order=total_points.desc&limit=50', null);
+      return ok(headers, leaders);
+    }
+
+    // ══════════════════════════════════════════════════════════════
     // STATS
     // ══════════════════════════════════════════════════════════════
 
@@ -290,13 +410,15 @@ exports.handler = async function(event) {
         sb('GET', 'as_creators?select=id&is_published=eq.true', null),
         sb('GET', 'as_streams?select=id', null),
         sb('GET', 'as_news?select=id&is_published=eq.true', null),
-        sb('GET', 'as_featured?select=id', null)
+        sb('GET', 'as_featured?select=id', null),
+        sb('GET', 'as_submissions?select=id&status=eq.pending', null)
       ]);
       return ok(headers, {
         creators: counts[0] ? counts[0].length : 0,
         streams: counts[1] ? counts[1].length : 0,
         news: counts[2] ? counts[2].length : 0,
-        featured: counts[3] ? counts[3].length : 0
+        featured: counts[3] ? counts[3].length : 0,
+        pending_submissions: counts[4] ? counts[4].length : 0
       });
     }
 

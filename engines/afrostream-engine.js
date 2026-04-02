@@ -19,7 +19,11 @@
     'Cameroon':     { code:'CM', flag:'\u{1F1E8}\u{1F1F2}' },
     'Ethiopia':     { code:'ET', flag:'\u{1F1EA}\u{1F1F9}' },
     'Morocco':      { code:'MA', flag:'\u{1F1F2}\u{1F1E6}' },
-    'Rwanda':       { code:'RW', flag:'\u{1F1F7}\u{1F1FC}' }
+    'Rwanda':       { code:'RW', flag:'\u{1F1F7}\u{1F1FC}' },
+    'Algeria':      { code:'DZ', flag:'\u{1F1E9}\u{1F1FF}' },
+    'DR Congo':     { code:'CD', flag:'\u{1F1E8}\u{1F1E9}' },
+    "Cote d'Ivoire":{ code:'CI', flag:'\u{1F1E8}\u{1F1EE}' },
+    'Tunisia':      { code:'TN', flag:'\u{1F1F9}\u{1F1F3}' }
   };
 
   // ── Platform key mapping ────────────────────────────────────────
@@ -37,7 +41,10 @@
     'Gaming':0, 'Music':1, 'Comedy':2, 'Tech':3, 'Fashion':4,
     'Food':5, 'Education':6, 'Lifestyle':7, 'IRL':8, 'Just Chatting':9,
     'Entertainment':2, 'Coding':3, 'DJ':1, 'Cooking':5, 'Production':1,
-    'Skits':2, 'Reviews':3
+    'Skits':2, 'Reviews':3, 'Variety':9, 'Reaction':2, 'Dance':1,
+    'Faith':6, 'Prayer':6, 'DIY':3, 'Crafts':3, 'Matchmaking':9,
+    'Community':9, 'Esports':0, 'RPG':0, 'Survival':0, 'Health':6,
+    'Design':4, 'Business':3, 'Shoutcasting':0, 'MTG':0
   };
 
   function getCatIndex(categories) {

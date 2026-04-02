@@ -6,22 +6,33 @@
   <title>TagWave Workspace | AfroTools</title>
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=a532a35a">
+  <style>
+    .cht-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
+    .cht-loading-status.active { opacity:1; }
+    .cht-loading-dot { display:inline-block; animation:cht-dot-bounce .6s ease-in-out infinite; }
+    .cht-loading-dot:nth-child(2) { animation-delay:.2s; }
+    .cht-loading-dot:nth-child(3) { animation-delay:.4s; }
+    @keyframes cht-dot-bounce { 0%,100%{opacity:.3} 50%{opacity:1} }
+  </style>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="cht-app">
 
-  <!-- TOPBAR -->
-  <div class="cht-topbar">
-    <a href="index.html" class="cht-topbar-back">&larr; Back</a>
-    <a href="index.html" class="cht-topbar-brand">#&#xFE0F;&#x20E3; TagWave</a>
-    <div class="cht-topbar-actions">
-      <button class="cht-topbar-btn" id="historyBtn">History</button>
+  <!-- HEADER (Carousel-style) -->
+  <header class="cht-app-header">
+    <a href="index.html" class="cht-app-logo">
+      <span>#</span> TagWave
+    </a>
+    <div class="cht-header-actions">
+      <button class="cht-btn-icon" id="historyBtn" title="History">&#128197;</button>
     </div>
-  </div>
+  </header>
 
   <!-- WORKSPACE -->
   <div class="cht-workspace">
@@ -37,6 +48,7 @@
       <button class="cht-generate-btn" id="generateBtn" onclick="window._chtGenerate()">
         <span class="cht-spinner"></span>Generate Tags &#127991;&#65039;
       </button>
+      <div class="cht-loading-status" id="loadingStatus"></div>
     </div>
 
     <!-- REACH LEGEND -->
@@ -55,25 +67,25 @@
         <div class="cht-mix-title">&#128295; BUILD YOUR OWN MIX</div>
         <div class="cht-mix-count" id="mixCount">0 of 30 max</div>
       </div>
-      <p style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:12px">Tap tags above to add/remove from your mix</p>
+      <p style="font-size:13px;color:var(--cht-muted);margin-bottom:12px">Tap tags above to add/remove from your mix</p>
       <div class="cht-mix-tags" id="mixTags">
         <span class="cht-mix-empty">Tap tags above to start building</span>
       </div>
       <div class="cht-mix-warn" id="mixWarn">&#9888;&#65039; You've exceeded the recommended tag count for this platform</div>
       <div class="cht-mix-actions">
-        <button class="cht-copy-set-btn" onclick="window._chtCopyMix()">&#128203; Copy Mix</button>
-        <button class="cht-copy-set-btn" onclick="window._chtClearMix()">&#128465; Clear</button>
+        <button class="cht-action-btn" onclick="window._chtCopyMix()">&#128203; Copy Mix</button>
+        <button class="cht-action-btn" onclick="window._chtClearMix()">&#128465; Clear</button>
       </div>
     </div>
 
   </div>
 
   <!-- HISTORY PANEL -->
-  <div id="historyPanel" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)">
-    <div style="position:absolute;right:0;top:0;bottom:0;width:100%;max-width:400px;background:#1a1a1a;border-left:1px solid rgba(255,255,255,.08);overflow-y:auto;padding:20px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-        <h3 style="font-size:16px;font-weight:700">History</h3>
-        <button onclick="document.getElementById('historyPanel').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer">&times;</button>
+  <div id="historyPanel" class="cht-history-overlay" style="display:none">
+    <div class="cht-history-panel">
+      <div class="cht-history-header">
+        <h3>History</h3>
+        <button class="cht-btn-icon" onclick="document.getElementById('historyPanel').style.display='none'">&times;</button>
       </div>
       <div id="historyList"></div>
     </div>
@@ -82,7 +94,7 @@
   <!-- TOAST -->
   <div class="cht-toast" id="toast"></div>
 
-<script src="/engines/creator-hashtags-engine.js"></script>
+<script src="/engines/creator-hashtags-engine.js?v=38937689"></script>
 <script>
 !function() {
   "use strict";
@@ -94,6 +106,50 @@
   var activePlatform = E.DEFAULT_PLATFORM;
   var currentSets = null;
   var customMix = [];
+
+  // ── VERB SPINNER ──
+  var ACTION_VERBS = [
+    "Researching trending hashtags",
+    "Analyzing hashtag performance",
+    "Mining viral tags",
+    "Mapping hashtag reach",
+    "Curating niche tags",
+    "Optimizing discoverability",
+    "Generating tag clusters",
+    "Scoring engagement potential",
+    "Filtering low-competition gems",
+    "Building your hashtag strategy",
+    "Discovering trending topics",
+    "Analyzing competitor tags",
+    "Crafting hashtag sets",
+    "Calibrating reach vs engagement",
+    "Selecting power hashtags",
+    "Refining tag combinations"
+  ];
+  var verbTimer = null;
+  var verbIndex = 0;
+
+  function updateVerb() {
+    var el = document.getElementById('loadingStatus');
+    if (!el) return;
+    el.innerHTML = ACTION_VERBS[verbIndex] + ' <span class="cht-loading-dot">.</span><span class="cht-loading-dot">.</span><span class="cht-loading-dot">.</span>';
+    verbIndex = (verbIndex + 1) % ACTION_VERBS.length;
+  }
+
+  function startVerbCycling() {
+    var el = document.getElementById('loadingStatus');
+    if (!el) return;
+    verbIndex = Math.floor(Math.random() * ACTION_VERBS.length);
+    updateVerb();
+    el.classList.add('active');
+    verbTimer = setInterval(updateVerb, 2400);
+  }
+
+  function stopVerbCycling() {
+    if (verbTimer) { clearInterval(verbTimer); verbTimer = null; }
+    var el = document.getElementById('loadingStatus');
+    if (el) { el.classList.remove('active'); el.innerHTML = ''; }
+  }
 
   // ── AUTH ──
   function getToken() {
@@ -143,6 +199,7 @@
 
     var btn = document.getElementById('generateBtn');
     btn.classList.add('loading'); btn.disabled = true;
+    startVerbCycling();
 
     var outputArea = document.getElementById('outputArea');
     outputArea.innerHTML = '<div class="cht-shimmer-card"><div class="cht-shimmer-line" style="width:80%"></div><div class="cht-shimmer-line" style="width:50%"></div><div class="cht-shimmer-line" style="width:90%"></div><div class="cht-shimmer-line" style="width:40%"></div></div>';
@@ -159,6 +216,7 @@
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(res) {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       if (!res.ok) {
         outputArea.innerHTML = '<div class="cht-set-card" style="border-color:rgba(239,68,68,.3)"><p style="color:#ef4444">' + (res.data.error || 'Generation failed') + '</p></div>';
         return;
@@ -178,6 +236,7 @@
     })
     .catch(function() {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       outputArea.innerHTML = '<div class="cht-set-card" style="border-color:rgba(239,68,68,.3)"><p style="color:#ef4444">Connection error. Please try again.</p></div>';
     });
   };
@@ -190,7 +249,7 @@
     data.sets.forEach(function(set, si) {
       html += '<div class="cht-set-card">';
       html += '<div class="cht-set-header"><div class="cht-set-name">' + escapeHtml(set.name) + '</div>';
-      html += '<button class="cht-copy-set-btn" onclick="window._chtCopySet(' + si + ')">&#128203; Copy Set</button></div>';
+      html += '<button class="cht-action-btn" onclick="window._chtCopySet(' + si + ')">&#128203; Copy Set</button></div>';
       if (set.strategy) html += '<div class="cht-set-strategy">' + escapeHtml(set.strategy) + '</div>';
       html += '<div class="cht-tags" style="margin-top:12px">';
       set.tags.forEach(function(tag) {
@@ -313,16 +372,16 @@
     var list = document.getElementById('historyList');
     var history = JSON.parse(localStorage.getItem('cht-history') || '[]');
     if (!history.length) {
-      list.innerHTML = '<p style="color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:40px 0">No history yet. Generate some tags!</p>';
+      list.innerHTML = '<p class="cht-history-empty">No history yet. Generate some tags!</p>';
       return;
     }
     var html = '';
     history.forEach(function(h, i) {
       var platInfo = E.PLATFORMS[h.platform] || E.PLATFORMS.instagram;
-      html += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer" onclick="window._chtLoadHistory(' + i + ')">';
-      html += '<div style="font-size:12px;color:var(--cht-primary);font-weight:700;margin-bottom:4px">' + platInfo.icon + ' ' + platInfo.label + '</div>';
-      html += '<div style="font-size:14px;color:rgba(255,255,255,.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escapeHtml(h.topic) + '</div>';
-      html += '<div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:4px">' + E.formatTimestamp(h.createdAt) + '</div>';
+      html += '<div class="cht-history-item" onclick="window._chtLoadHistory(' + i + ')">';
+      html += '<div class="cht-history-plat">' + platInfo.icon + ' ' + platInfo.label + '</div>';
+      html += '<div class="cht-history-topic">' + escapeHtml(h.topic) + '</div>';
+      html += '<div class="cht-history-time">' + E.formatTimestamp(h.createdAt) + '</div>';
       html += '</div>';
     });
     list.innerHTML = html;

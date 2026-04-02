@@ -9,10 +9,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Instrument+Serif&display=swap"></noscript>
-  <link rel="stylesheet" href="style.css">
-  <script src="/assets/js/lib/save-state.js"></script>
+  <link rel="stylesheet" href="style.css?v=91e03f24">
+  <style>
+    .ck-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
+    .ck-loading-status.active { opacity:1; }
+    .ck-loading-dot { display:inline-block; animation:ck-dot-bounce .6s ease-in-out infinite; }
+    .ck-loading-dot:nth-child(2) { animation-delay:.2s; }
+    .ck-loading-dot:nth-child(3) { animation-delay:.4s; }
+    @keyframes ck-dot-bounce { 0%,100%{opacity:.3} 50%{opacity:1} }
+  </style>
+  <script src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body>
 
@@ -385,6 +393,9 @@
         </div>
       </div>
 
+      <!-- Loading Status -->
+      <div class="ck-loading-status" id="loadingStatus"></div>
+
       <!-- Nav Buttons -->
       <div class="ck-nav-btns">
         <button class="ck-btn ck-btn-ghost" id="prevBtn" onclick="prevSection()" style="display:none">&larr; Previous</button>
@@ -638,6 +649,47 @@ document.querySelectorAll('[data-toggle]').forEach(function(el) {
   });
 });
 
+// ── VERB SPINNER ──
+var ACTION_VERBS = [
+  "Building your media kit",
+  "Compiling creator stats",
+  "Designing kit layout",
+  "Formatting brand assets",
+  "Generating rate cards",
+  "Curating your highlights",
+  "Structuring collaboration info",
+  "Polishing your portfolio",
+  "Crafting your pitch deck",
+  "Analyzing audience demographics",
+  "Assembling press materials",
+  "Optimizing presentation",
+  "Packaging your brand story",
+  "Refining professional profile",
+  "Engineering sponsor appeal",
+  "Finalizing your kit"
+];
+var verbTimer = null;
+var verbIndex = 0;
+function startVerbCycling() {
+  var el = document.getElementById('loadingStatus');
+  el.classList.add('active');
+  verbIndex = Math.floor(Math.random() * ACTION_VERBS.length);
+  updateVerb();
+  verbTimer = setInterval(updateVerb, 2200);
+}
+function updateVerb() {
+  var el = document.getElementById('loadingStatus');
+  var verb = ACTION_VERBS[verbIndex % ACTION_VERBS.length];
+  el.innerHTML = verb + '<span class="ck-loading-dot">.</span><span class="ck-loading-dot">.</span><span class="ck-loading-dot">.</span>';
+  verbIndex++;
+}
+function stopVerbCycling() {
+  if (verbTimer) { clearInterval(verbTimer); verbTimer = null; }
+  var el = document.getElementById('loadingStatus');
+  el.classList.remove('active');
+  el.innerHTML = '';
+}
+
 // ── AI INTEGRATION ──
 function aiGenerate(type) {
   var btn = event.target;
@@ -662,6 +714,8 @@ function aiGenerate(type) {
       'Use price anchoring — make the middle tier the obvious best value. Format as JSON array.';
   }
 
+  startVerbCycling();
+
   fetch('/.netlify/functions/ai-advisor', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -669,6 +723,7 @@ function aiGenerate(type) {
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
+    stopVerbCycling();
     var text = data.response || data.message || '';
     if (type === 'tagline') {
       document.getElementById('tagline').value = text.split('\n').filter(Boolean)[0].replace(/^\d+[\.\)]\s*/, '');
@@ -689,7 +744,7 @@ function aiGenerate(type) {
     }
     autoSave();
   })
-  .catch(function() { alert('AI generation failed. Please try again.'); })
+  .catch(function() { stopVerbCycling(); alert('AI generation failed. Please try again.'); })
   .finally(function() {
     btn.classList.remove('loading');
     btn.textContent = '✨ ' + (type === 'tagline' ? 'Write my tagline' : type === 'bio' ? 'Write all 3 bios' : type === 'stats' ? 'Turn stats into brand-friendly insights' : 'Suggest packages for my craft');
@@ -708,6 +763,8 @@ function aiPolishTestimonial(btn) {
   var prompt = 'Transform this casual client feedback into a professional testimonial. Keep the authentic sentiment, elevate the language, never fabricate details. ' +
     'Original: "' + quoteEl.value + '" — ' + (nameEl.value || 'Client') + '. Return only the polished quote.';
 
+  startVerbCycling();
+
   fetch('/.netlify/functions/ai-advisor', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -715,10 +772,11 @@ function aiPolishTestimonial(btn) {
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
+    stopVerbCycling();
     quoteEl.value = (data.response || data.message || quoteEl.value).replace(/^["']|["']$/g, '');
     updateTestimonials();
   })
-  .catch(function() { alert('Polish failed. Please try again.'); })
+  .catch(function() { stopVerbCycling(); alert('Polish failed. Please try again.'); })
   .finally(function() {
     btn.classList.remove('loading');
     btn.textContent = '✨ Polish this testimonial';

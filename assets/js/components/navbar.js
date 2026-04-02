@@ -256,6 +256,7 @@
       desc: 'Japa, generator, ajo, mobile money', descFr: 'Épargne collective, mobile money, recettes', descSw: 'Japa, jenereta, chama, pesa za simu',
       href: '/african/', color: '#fef2f2', accent: '#dc2626',
       tools: [
+        { label: 'AfroPoints — Earn Money', href: '/tools/afropoints/', emoji: '🎯', badge: 'NEW' },
         { label: 'AfroAtlas Explorer', href: '/tools/afroatlas/', emoji: '🌍', badge: 'NEW' },
         { label: 'AfroKitchen Recipes', href: '/tools/afrokitchen/', emoji: '🍲', badge: 'LIVE' },
         { label: 'AfroConflict', href: '/tools/africa-conflict/', emoji: '⚔️', badge: 'LIVE' },
@@ -627,6 +628,7 @@
         { label: 'Creator Rankings', href: '/tools/afrostream/rankings.html', emoji: '🏆', badge: 'NEW' },
         { label: 'Creator News', href: '/tools/afrostream/news.html', emoji: '📰', badge: 'NEW' },
         { label: 'Stream Calendar', href: '/tools/afrostream/calendar.html', emoji: '📅', badge: 'NEW' },
+        { label: 'Community Hub', href: '/tools/afrostream/community.html', emoji: '🤝', badge: 'NEW' },
       ]
     },
     {
@@ -1696,6 +1698,30 @@
           loginBtn.href = '/dashboard/';
           loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0062CC;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + name + '</span>';
         }
+        // AfroPoints badge — show points balance next to avatar
+        (function loadPointsBadge() {
+          try {
+            var existing = sr.querySelector('.ap-nav-badge');
+            if (existing) existing.remove();
+            var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
+            if (!token) return;
+            fetch('/.netlify/functions/afropoints-profile', { headers: { Authorization: 'Bearer ' + token } })
+              .then(function(r) { return r.json(); })
+              .then(function(p) {
+                if (!p || p.error || !(p.current_balance >= 0)) return;
+                var badge = document.createElement('a');
+                badge.href = '/tools/afropoints/';
+                badge.className = 'ap-nav-badge';
+                badge.title = 'AfroPoints Balance';
+                badge.style.cssText = 'display:inline-flex;align-items:center;gap:3px;background:rgba(245,158,11,0.12);color:#F59E0B;font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:100px;margin-left:6px;text-decoration:none;white-space:nowrap;';
+                var pts = p.current_balance || 0;
+                var display = pts >= 10000 ? (pts / 1000).toFixed(1) + 'k' : pts.toLocaleString();
+                badge.textContent = '🎯 ' + display;
+                if (p.current_streak > 0) badge.textContent += ' 🔥';
+                if (loginBtn && loginBtn.parentNode) loginBtn.parentNode.insertBefore(badge, loginBtn.nextSibling);
+              }).catch(function() {});
+          } catch(e) {}
+        })();
         // Mobile: show name + vault link
         if (mobLoginBtn) {
           mobLoginBtn.href = '/dashboard/';

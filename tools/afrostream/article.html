@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading Article — AfroStream | AfroTools</title>
+<meta name="description" content="African creator and streaming news on AfroStream.">
+<link rel="canonical" href="https://afrotools.com/tools/afrostream/article.html">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AfroStream News Article">
+<meta property="og:description" content="African creator and streaming news.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=2fc66542">
+<link rel="alternate" type="application/rss+xml" title="AfroStream News RSS" href="/tools/afrostream/feed.xml">
+<script src="/assets/js/components/navbar.js?v=e55f3c7d" defer></script>
+<script src="/assets/js/components/footer.js?v=2df4a28a" defer></script>
+<style>
+.as-article-page{background:#FAFAF8;color:#1e293b;min-height:100vh;font-family:'DM Sans',system-ui,sans-serif}
+.as-article-wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px}
+.as-article-back{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:#64748b;text-decoration:none;margin-bottom:24px;transition:color .2s}
+.as-article-back:hover{color:#007AFF}
+.as-article-cat{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:20px;background:#007AFF;color:#fff;margin-bottom:16px}
+.as-article-title{font-family:'Syne',Georgia,serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.2;color:#111827;margin:0 0 16px}
+.as-article-meta{display:flex;align-items:center;gap:16px;font-size:.82rem;color:#6b7280;margin-bottom:32px;flex-wrap:wrap}
+.as-article-meta span{display:flex;align-items:center;gap:4px}
+.as-article-img{width:100%;border-radius:12px;margin-bottom:32px;aspect-ratio:16/9;object-fit:cover;background:#e5e7eb}
+.as-article-body{font-size:1.05rem;line-height:1.8;color:#374151}
+.as-article-body p{margin:0 0 20px}
+.as-article-body h2{font-family:'Syne',Georgia,serif;font-size:1.4rem;font-weight:700;color:#111827;margin:36px 0 12px}
+.as-article-body h3{font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px}
+.as-article-body blockquote{border-left:3px solid #007AFF;padding:12px 20px;margin:24px 0;background:#f1f5f9;border-radius:0 8px 8px 0;color:#374151;font-style:italic}
+.as-article-body a{color:#007AFF;text-decoration:underline}
+.as-article-share{display:flex;gap:10px;margin-top:40px;padding-top:24px;border-top:1px solid #e5e7eb;flex-wrap:wrap}
+.as-share-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;border:1px solid #e5e7eb;background:#fff;color:#374151;cursor:pointer;transition:all .15s;text-decoration:none}
+.as-share-btn:hover{border-color:#007AFF;color:#007AFF}
+.as-article-related{margin-top:48px;padding-top:32px;border-top:1px solid #e5e7eb}
+.as-article-related h2{font-family:'Syne',Georgia,serif;font-size:1.3rem;font-weight:700;margin-bottom:20px}
+.as-related-articles{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.as-related-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;text-decoration:none;color:inherit;transition:border-color .2s,box-shadow .2s}
+.as-related-card:hover{border-color:#007AFF;box-shadow:0 4px 16px rgba(0,122,255,.1)}
+.as-related-card-cat{font-size:.65rem;font-weight:700;text-transform:uppercase;color:#007AFF;margin-bottom:6px}
+.as-related-card-title{font-weight:700;font-size:.9rem;color:#111827;line-height:1.3;margin-bottom:6px}
+.as-related-card-date{font-size:.75rem;color:#6b7280}
+.as-article-404{text-align:center;padding:80px 20px}
+.as-article-404 h1{font-family:'Syne',Georgia,serif;font-size:2rem;margin-bottom:12px}
+.as-article-404 p{color:#6b7280;margin-bottom:24px}
+
+/* Subnav */
+.as-subnav{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:60px;z-index:90}
+.as-subnav-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:20px;height:48px}
+.as-subnav-logo{display:flex;align-items:center;gap:6px;font-family:'Syne',Georgia,serif;font-size:1.1rem;color:#111827;text-decoration:none;white-space:nowrap}
+.as-logo-icon{color:#007AFF;font-size:.9rem}
+.as-subnav-links{display:flex;gap:2px;margin-left:auto}
+.as-subnav-links a{padding:6px 12px;border-radius:6px;color:#6b7280;text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s}
+.as-subnav-links a:hover{color:#111827;background:#f5f5f7}
+.as-subnav-links a.active{color:#fff;background:#007AFF}
+@media(max-width:640px){
+  .as-article-wrap{padding:24px 16px 60px}
+  .as-article-meta{gap:8px}
+}
+</style>
+</head>
+<body class="as-article-page">
+<afro-navbar></afro-navbar>
+
+<nav class="as-subnav">
+  <div class="as-subnav-inner">
+    <a href="/tools/afrostream/" class="as-subnav-logo"><span class="as-logo-icon">&#9655;</span> AfroStream</a>
+    <div class="as-subnav-links">
+      <a href="/tools/afrostream/">Live Now</a>
+      <a href="/tools/afrostream/rankings.html">Rankings</a>
+      <a href="/tools/afrostream/news.html" class="active">News</a>
+      <a href="/tools/afrostream/calendar.html">Calendar</a>
+      <a href="/tools/afrostream/submit.html">Submit</a>
+    </div>
+  </div>
+</nav>
+
+<main class="as-article-wrap" id="articleMain">
+  <div style="text-align:center;padding:60px 0;color:#94a3b8">Loading article...</div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+(async function() {
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+  var main = document.getElementById('articleMain');
+
+  if (!slug) {
+    main.innerHTML = '<div class="as-article-404"><h1>Article Not Found</h1><p>No article slug provided.</p><a href="news.html" class="as-share-btn">&larr; Back to News</a></div>';
+    return;
+  }
+
+  var article = null;
+  try {
+    var res = await fetch('/api/afrostream/news?slug=' + encodeURIComponent(slug));
+    var json = await res.json();
+    if (json.success && json.data) article = json.data;
+  } catch(e) {}
+
+  if (!article) {
+    main.innerHTML = '<div class="as-article-404"><h1>Article Not Found</h1><p>We couldn\'t find that article.</p><a href="news.html" class="as-share-btn">&larr; Back to News</a></div>';
+    return;
+  }
+
+  /* Update meta */
+  document.title = article.title + ' — AfroStream | AfroTools';
+  var metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.setAttribute('content', article.excerpt || article.title);
+  var ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', article.title);
+  var ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', article.excerpt || '');
+
+  /* JSON-LD */
+  var ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    'headline': article.title,
+    'description': article.excerpt,
+    'datePublished': article.published_at,
+    'dateModified': article.created_at,
+    'author': { '@type': 'Organization', 'name': 'AfroStream', 'url': 'https://afrotools.com/tools/afrostream/' },
+    'publisher': { '@type': 'Organization', 'name': 'AfroTools', 'url': 'https://afrotools.com' },
+    'mainEntityOfPage': window.location.href
+  });
+  document.head.appendChild(ld);
+
+  /* Format date */
+  var pubDate = new Date(article.published_at);
+  var dateStr = pubDate.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
+
+  /* Estimate read time */
+  var bodyText = article.body || article.excerpt || '';
+  var wordCount = bodyText.split(/\s+/).length;
+  var readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+  /* Render body — support basic markdown-like formatting */
+  var bodyHTML = bodyText
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+  if (!bodyHTML.startsWith('<')) bodyHTML = '<p>' + bodyHTML + '</p>';
+
+  var imgHTML = article.image_url
+    ? '<img class="as-article-img" src="' + article.image_url + '" alt="' + article.title.replace(/"/g,'') + '">'
+    : '';
+
+  var shareURL = encodeURIComponent(window.location.href);
+  var shareTitle = encodeURIComponent(article.title);
+
+  var html = '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +
+    '<span class="as-article-cat">' + (article.category || 'News') + '</span>' +
+    '<h1 class="as-article-title">' + article.title + '</h1>' +
+    '<div class="as-article-meta">' +
+      '<span>' + dateStr + '</span>' +
+      '<span>' + readTime + ' min read</span>' +
+    '</div>' +
+    imgHTML +
+    '<div class="as-article-body">' + bodyHTML + '</div>' +
+    '<div class="as-article-share">' +
+      '<a href="https://twitter.com/intent/tweet?text=' + shareTitle + '&url=' + shareURL + '" target="_blank" rel="noopener" class="as-share-btn">Share on X</a>' +
+      '<a href="https://wa.me/?text=' + shareTitle + '%20' + shareURL + '" target="_blank" rel="noopener" class="as-share-btn">WhatsApp</a>' +
+      '<button class="as-share-btn" onclick="navigator.clipboard.writeText(window.location.href);this.textContent=\'Copied!\'">Copy Link</button>' +
+    '</div>' +
+    '<div class="as-article-related" id="relatedArticles"></div>';
+
+  main.innerHTML = html;
+
+  /* Fetch related articles */
+  try {
+    var relRes = await fetch('/api/afrostream/news?category=' + encodeURIComponent(article.category || '') + '&limit=4');
+    var relJson = await relRes.json();
+    if (relJson.success && relJson.data && relJson.data.length > 1) {
+      var related = relJson.data.filter(function(a){ return a.slug !== article.slug; }).slice(0, 3);
+      if (related.length) {
+        var rhtml = '<h2>Related Articles</h2><div class="as-related-articles">';
+        related.forEach(function(r) {
+          var d = new Date(r.published_at).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+          rhtml += '<a href="article.html?slug=' + r.slug + '" class="as-related-card">' +
+            '<div class="as-related-card-cat">' + (r.category || 'News') + '</div>' +
+            '<div class="as-related-card-title">' + r.title + '</div>' +
+            '<div class="as-related-card-date">' + d + '</div>' +
+          '</a>';
+        });
+        rhtml += '</div>';
+        document.getElementById('relatedArticles').innerHTML = rhtml;
+      }
+    }
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>

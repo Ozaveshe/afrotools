@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contribute Data — AfroPoints | AfroTools</title>
+<meta name="description" content="Submit real-world African data — prices, rates, salaries, costs — and earn points. Takes under 30 seconds. Cash out via mobile money.">
+<link rel="canonical" href="https://afrotools.com/tools/afropoints/contribute.html">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Contribute Data — AfroPoints | AfroTools">
+<meta property="og:description" content="Submit African market data and earn points redeemable for cash.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=8d93e37c">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="ap-hero" style="padding-bottom:24px;">
+  <div class="ap-hero-inner">
+    <nav class="ap-breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="./">AfroPoints</a> <span>/</span> <span>Contribute</span></nav>
+    <h1>Submit Data &amp; Earn Points</h1>
+    <p class="ap-hero-sub">Choose a category, fill in the details from your city, and earn points instantly.</p>
+  </div>
+</section>
+
+<div class="ap-main" style="max-width:800px;">
+
+  <!-- Step indicator -->
+  <div class="ap-steps" id="steps">
+    <div class="ap-step active" data-step="1"><div class="ap-step-num">1</div><div class="ap-step-label">Category</div></div>
+    <div class="ap-step" data-step="2"><div class="ap-step-num">2</div><div class="ap-step-label">Details</div></div>
+    <div class="ap-step" data-step="3"><div class="ap-step-num">3</div><div class="ap-step-label">Location</div></div>
+    <div class="ap-step" data-step="4"><div class="ap-step-num">4</div><div class="ap-step-label">Submit</div></div>
+  </div>
+
+  <!-- Step 1: Category -->
+  <div class="ap-card" id="step1">
+    <div class="ap-card-header">Select a Category</div>
+    <div class="ap-card-body">
+      <div class="ap-cat-grid" id="catGrid"></div>
+    </div>
+  </div>
+
+  <!-- Step 2: Dynamic fields -->
+  <div class="ap-card" id="step2" style="display:none;">
+    <div class="ap-card-header" id="step2Header">Enter Details</div>
+    <div class="ap-card-body">
+      <div class="ap-form" id="dynamicFields"></div>
+      <div style="display:flex; gap:10px; margin-top:18px;">
+        <button class="ap-cta ap-cta--ghost ap-cta--sm" onclick="goStep(1)">&#8592; Back</button>
+        <button class="ap-cta ap-cta--sm" id="step2Next" onclick="goStep(3)">Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Location -->
+  <div class="ap-card" id="step3" style="display:none;">
+    <div class="ap-card-header">Your Location</div>
+    <div class="ap-card-body">
+      <div class="ap-form">
+        <div class="ap-form-grid">
+          <div class="ap-field">
+            <label class="ap-label" for="apCountry">Country</label>
+            <select class="ap-select" id="apCountry"></select>
+          </div>
+          <div class="ap-field">
+            <label class="ap-label" for="apCity">City</label>
+            <input class="ap-input" id="apCity" type="text" placeholder="e.g. Lagos, Nairobi, Accra" required>
+          </div>
+        </div>
+        <div class="ap-field">
+          <label class="ap-label" for="apNeighborhood">Neighborhood (optional)</label>
+          <input class="ap-input" id="apNeighborhood" type="text" placeholder="e.g. Ikeja, Westlands">
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:18px;">
+        <button class="ap-cta ap-cta--ghost ap-cta--sm" onclick="goStep(2)">&#8592; Back</button>
+        <button class="ap-cta ap-cta--sm" onclick="goStep(4)">Review &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Review & Submit -->
+  <div class="ap-card" id="step4" style="display:none;">
+    <div class="ap-card-header">Review &amp; Submit</div>
+    <div class="ap-card-body">
+      <div id="reviewSummary" style="font-size:0.85rem; line-height:1.8; margin-bottom:18px;"></div>
+      <div style="display:flex; align-items:center; gap:10px; padding:12px 16px; background:rgba(245,158,11,0.08); border-radius:10px; margin-bottom:18px;">
+        <span style="font-size:1.2rem;">🎯</span>
+        <span style="font-size:0.85rem; font-weight:600;">You'll earn <strong id="reviewPts" style="color:#F59E0B;">0</strong> points for this submission</span>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="ap-cta ap-cta--ghost ap-cta--sm" onclick="goStep(3)">&#8592; Back</button>
+        <button class="ap-cta ap-cta--sm" id="submitBtn" onclick="submitData()">Submit &amp; Earn Points</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success overlay -->
+<div class="ap-success-overlay" id="successOverlay">
+  <div class="ap-success-box">
+    <div class="ap-success-emoji">🎉</div>
+    <div class="ap-success-title">Points Earned!</div>
+    <div class="ap-success-pts" id="successPts">+5</div>
+    <div class="ap-success-desc" id="successDesc">Your data has been submitted and is awaiting verification.</div>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button class="ap-cta ap-cta--sm" onclick="resetForm()">Submit Another</button>
+      <a href="./" class="ap-cta ap-cta--ghost ap-cta--sm">Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="ap-toast" id="toast"></div>
+
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js?v=da613fd9" defer></script>
+<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=1"></script>
+<script>
+var selectedCategory = null;
+var currentStep = 1;
+
+(function () {
+  'use strict';
+  var AP = window.AfroPointsEngine;
+  if (!AP) return;
+
+  function $(id) { return document.getElementById(id); }
+
+  // Populate country dropdown
+  var countrySelect = $('apCountry');
+  var codes = Object.keys(AP.COUNTRIES).sort(function (a, b) { return AP.COUNTRIES[a].localeCompare(AP.COUNTRIES[b]); });
+  codes.forEach(function (c) {
+    var opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = AP.COUNTRIES[c];
+    countrySelect.appendChild(opt);
+  });
+  // Default to user's country if available
+  if (window.AfroAuth && AfroAuth.onReady) {
+    AfroAuth.onReady(function () {
+      var u = AfroAuth.getUser && AfroAuth.getUser();
+      if (u && u.country) countrySelect.value = u.country;
+    });
+  }
+
+  // Render category cards
+  var grid = $('catGrid');
+  AP.CATEGORIES.forEach(function (cat) {
+    var card = document.createElement('div');
+    card.className = 'ap-cat-card';
+    card.setAttribute('data-cat', cat.id);
+    card.innerHTML = '<span class="ap-cat-emoji">' + cat.emoji + '</span>' +
+      '<span class="ap-cat-label">' + cat.label + '</span>' +
+      '<span class="ap-cat-pts">+' + cat.points + ' pts</span>';
+    card.onclick = function () { selectCategory(cat.id); };
+    grid.appendChild(card);
+  });
+})();
+
+function selectCategory(catId) {
+  var AP = window.AfroPointsEngine;
+  selectedCategory = catId;
+  // Highlight
+  document.querySelectorAll('.ap-cat-card').forEach(function (c) { c.classList.toggle('active', c.getAttribute('data-cat') === catId); });
+  // Build dynamic fields
+  var fields = AP.getFieldsForCategory(catId);
+  var cat = AP.getCategoryById(catId);
+  document.getElementById('step2Header').textContent = (cat ? cat.emoji + ' ' : '') + (cat ? cat.label : 'Details');
+  var container = document.getElementById('dynamicFields');
+  container.innerHTML = '';
+  var isGrid = fields.length > 2;
+  var wrap = document.createElement('div');
+  if (isGrid) { wrap.className = 'ap-form-grid'; }
+
+  fields.forEach(function (f) {
+    var field = document.createElement('div');
+    field.className = 'ap-field';
+    var label = '<label class="ap-label" for="f_' + f.key + '">' + f.label + '</label>';
+    var input;
+    if (f.type === 'select') {
+      input = '<select class="ap-select" id="f_' + f.key + '"' + (f.required ? ' required' : '') + '><option value="">Select...</option>';
+      f.options.forEach(function (o) { input += '<option value="' + o + '">' + o + '</option>'; });
+      input += '</select>';
+    } else {
+      input = '<input class="ap-input" id="f_' + f.key + '" type="' + (f.type || 'text') + '"' +
+        (f.placeholder ? ' placeholder="' + f.placeholder + '"' : '') +
+        (f.required ? ' required' : '') +
+        (f.min !== undefined ? ' min="' + f.min + '"' : '') + '>';
+    }
+    field.innerHTML = label + input;
+    if (isGrid) { wrap.appendChild(field); }
+    else { container.appendChild(field); }
+  });
+  if (isGrid) container.appendChild(wrap);
+
+  goStep(2);
+}
+
+function goStep(n) {
+  currentStep = n;
+  for (var i = 1; i <= 4; i++) {
+    var el = document.getElementById('step' + i);
+    if (el) el.style.display = i === n ? '' : 'none';
+  }
+  // Update step indicators
+  document.querySelectorAll('.ap-step').forEach(function (s) {
+    var sn = parseInt(s.getAttribute('data-step'));
+    s.classList.remove('active', 'done');
+    if (sn === n) s.classList.add('active');
+    else if (sn < n) s.classList.add('done');
+  });
+
+  // Build review on step 4
+  if (n === 4) buildReview();
+}
+
+function buildReview() {
+  var AP = window.AfroPointsEngine;
+  var cat = AP.getCategoryById(selectedCategory);
+  var fields = AP.getFieldsForCategory(selectedCategory);
+  var country = document.getElementById('apCountry').value;
+  var city = document.getElementById('apCity').value;
+
+  var html = '<div style="display:grid; grid-template-columns:140px 1fr; gap:6px 12px;">';
+  html += '<span style="color:var(--color-text-muted);font-weight:600;">Category</span><span>' + (cat ? cat.emoji + ' ' + cat.label : selectedCategory) + '</span>';
+  html += '<span style="color:var(--color-text-muted);font-weight:600;">Country</span><span>' + AP.getCountryName(country) + '</span>';
+  html += '<span style="color:var(--color-text-muted);font-weight:600;">City</span><span>' + city + '</span>';
+
+  fields.forEach(function (f) {
+    var el = document.getElementById('f_' + f.key);
+    if (el && el.value) {
+      html += '<span style="color:var(--color-text-muted);font-weight:600;">' + f.label + '</span><span>' + el.value + '</span>';
+    }
+  });
+  html += '</div>';
+
+  document.getElementById('reviewSummary').innerHTML = html;
+  document.getElementById('reviewPts').textContent = '+' + AP.getSubmissionPoints(selectedCategory) + ' points';
+}
+
+function getPayload() {
+  var AP = window.AfroPointsEngine;
+  var fields = AP.getFieldsForCategory(selectedCategory);
+  var payload = {};
+  fields.forEach(function (f) {
+    var el = document.getElementById('f_' + f.key);
+    if (el) {
+      var val = el.value;
+      if (f.type === 'number' && val) val = parseFloat(val);
+      if (val !== '' && val !== null) payload[f.key] = val;
+    }
+  });
+  return payload;
+}
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'ap-toast show' + (type ? ' ' + type : '');
+  setTimeout(function () { t.className = 'ap-toast'; }, 3500);
+}
+
+async function submitData() {
+  var AP = window.AfroPointsEngine;
+  if (!window.AfroAuth || !AfroAuth.isLoggedIn()) {
+    showToast('Please sign in to submit data', 'error');
+    return;
+  }
+
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  var country = document.getElementById('apCountry').value;
+  var city = document.getElementById('apCity').value.trim();
+  var neighborhood = document.getElementById('apNeighborhood').value.trim();
+
+  if (!country || !city) {
+    showToast('Country and city are required', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Submit & Earn Points';
+    return;
+  }
+
+  try {
+    var result = await AP.submitContribution({
+      category: selectedCategory,
+      country_code: country,
+      city: city,
+      neighborhood: neighborhood || undefined,
+      currency_code: AP.getCurrency(country),
+      payload: getPayload()
+    });
+
+    if (result.error) {
+      showToast(result.error, 'error');
+      btn.disabled = false;
+      btn.textContent = 'Submit & Earn Points';
+      return;
+    }
+
+    // Show success
+    var total = (result.points_awarded || 0) + (result.streak_bonus || 0);
+    document.getElementById('successPts').textContent = '+' + total + ' pts';
+    var desc = 'Data submitted! ';
+    if (result.streak_bonus) desc += 'Streak bonus: +' + result.streak_bonus + ' pts. ';
+    desc += 'New balance: ' + AP.formatPoints(result.new_balance || 0) + ' pts.';
+    document.getElementById('successDesc').textContent = desc;
+    document.getElementById('successOverlay').classList.add('show');
+
+  } catch (err) {
+    showToast('Something went wrong. Please try again.', 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Submit & Earn Points';
+}
+
+function resetForm() {
+  document.getElementById('successOverlay').classList.remove('show');
+  selectedCategory = null;
+  document.querySelectorAll('.ap-cat-card').forEach(function (c) { c.classList.remove('active'); });
+  goStep(1);
+}
+</script>
+</body>
+</html>

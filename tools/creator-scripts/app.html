@@ -8,11 +8,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=6e6231be">
+  <style>
+    .csc-loading-status{text-align:center;padding:18px 0 0;min-height:32px;font-size:1.05rem;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;letter-spacing:.01em;opacity:0;transition:opacity .3s}
+    .csc-loading-status.active{opacity:1}
+    .csc-loading-dots::after{content:'';display:inline-block;animation:cscDots 1.4s steps(4,end) infinite}
+    @keyframes cscDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+  </style>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="csc-app">
 
@@ -31,7 +37,7 @@
   <div class="csc-workspace">
     <!-- GENERATION FORM -->
     <div id="genForm" class="csc-gen-form">
-      <div class="csc-form-title">&#128396; Write My Script</div>
+      <div class="csc-form-title">&#9998; Write My Script</div>
 
       <div class="csc-form-group">
         <label class="csc-form-label">What's the video about?</label>
@@ -61,6 +67,7 @@
       <button class="csc-generate-btn" id="generateBtn" onclick="window._cscGenerate()">
         <span class="csc-spinner"></span>Write My Script &#9998;
       </button>
+      <div class="csc-loading-status" id="loadingStatus"><span id="loadingVerb"></span><span class="csc-loading-dots"></span></div>
     </div>
 
     <!-- SCRIPT OUTPUT AREA -->
@@ -94,7 +101,7 @@
   <!-- TOAST -->
   <div class="csc-toast" id="toast"></div>
 
-<script src="/engines/creator-scripts-engine.js"></script>
+<script src="/engines/creator-scripts-engine.js?v=02c0ff58"></script>
 <script>
 !function() {
   "use strict";
@@ -173,6 +180,46 @@
     });
   }
 
+  // ── VERB SPINNER ──
+  var ACTION_VERBS = [
+    "Writing your script",
+    "Crafting the opening hook",
+    "Structuring the narrative",
+    "Building scene transitions",
+    "Polishing dialogue",
+    "Adding dramatic beats",
+    "Refining the pacing",
+    "Optimizing for retention",
+    "Engineering the climax",
+    "Shaping your story arc",
+    "Weaving in call-to-actions",
+    "Calibrating the tone",
+    "Composing compelling lines",
+    "Architecting viewer flow",
+    "Generating script variations",
+    "Perfecting the outro"
+  ];
+  var _verbTimer = null;
+  var _verbIndex = 0;
+
+  function startVerbCycling() {
+    var statusEl = document.getElementById('loadingStatus');
+    var verbEl = document.getElementById('loadingVerb');
+    _verbIndex = 0;
+    verbEl.textContent = ACTION_VERBS[_verbIndex];
+    statusEl.classList.add('active');
+    _verbTimer = setInterval(function() {
+      _verbIndex = (_verbIndex + 1) % ACTION_VERBS.length;
+      verbEl.textContent = ACTION_VERBS[_verbIndex];
+    }, 2400);
+  }
+
+  function stopVerbCycling() {
+    if (_verbTimer) { clearInterval(_verbTimer); _verbTimer = null; }
+    var statusEl = document.getElementById('loadingStatus');
+    statusEl.classList.remove('active');
+  }
+
   // ── GENERATE ──
   window._cscGenerate = function() {
     var topic = document.getElementById('topicInput').value.trim();
@@ -194,6 +241,8 @@
     var outputArea = document.getElementById('scriptOutput');
     outputArea.innerHTML = '<div class="csc-shimmer-card"><div class="csc-shimmer-line" style="width:90%"></div><div class="csc-shimmer-line" style="width:70%"></div><div class="csc-shimmer-line" style="width:85%"></div><div class="csc-shimmer-line" style="width:50%"></div><div class="csc-shimmer-line" style="width:75%"></div><div class="csc-shimmer-line" style="width:60%"></div></div>';
 
+    startVerbCycling();
+
     fetch(API + '/generate', {
       method: 'POST',
       headers: authHeaders(),
@@ -202,6 +251,7 @@
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
     .then(function(res) {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       if (!res.ok) {
         outputArea.innerHTML = '<div class="csc-gen-form" style="border-color:rgba(239,68,68,.3);"><p style="color:#ef4444;margin:0;">' + (res.data.error || 'Generation failed. Please try again.') + '</p></div>';
         return;
@@ -220,6 +270,7 @@
     })
     .catch(function() {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       outputArea.innerHTML = '<div class="csc-gen-form" style="border-color:rgba(239,68,68,.3);"><p style="color:#ef4444;margin:0;">Connection error. Please try again.</p></div>';
     });
   };

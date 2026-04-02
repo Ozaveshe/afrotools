@@ -17,12 +17,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="/assets/css/tool-landing.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="/assets/js/components/navbar.js" defer></script>
-  <script src="/assets/js/components/footer.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="/assets/css/tool-landing.css?v=a1337e17">
+  <link rel="stylesheet" href="style.css?v=694eaa11">
+  <script src="/assets/js/components/navbar.js?v=e55f3c7d" defer></script>
+  <script src="/assets/js/components/footer.js?v=2df4a28a" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -46,10 +46,235 @@
       { "@type": "Question", "name": "Can I edit individual bios after generation?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. Click any bio to edit it inline, or hit 'Regenerate' on just that one platform to get a fresh version while keeping all others. You can also refresh all bios at once." }},
       { "@type": "Question", "name": "What tones are available?", "acceptedAnswer": { "@type": "Answer", "text": "BioForge supports Professional, Bold, Playful, Minimalist, and Motivational tones. Each tone is applied consistently across all platforms while respecting each platform's cultural norms." }},
       { "@type": "Question", "name": "Is this free to use?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. BioForge is free with 5 generations per day. Each generation creates bios for all platforms at once, so one generation is all you need." }},
-      { "@type": "Question", "name": "Does it understand African creator contexts?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. BioForge is built with African cultural intelligence — it naturally incorporates location references, local achievements, and culturally relevant language without forcing stereotypes." }}
+      { "@type": "Question", "name": "Does it understand African creator contexts?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. BioForge is built with African cultural intelligence — it naturally incorporates location references, local achievements, and culturally relevant language without forcing stereotypes." }},
+      { "@type": "Question", "name": "Can I save my generated bios for later?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. BioForge saves your most recent generation locally so you can return and copy bios anytime. Sign in with your AfroTools account to sync across devices." }},
+      { "@type": "Question", "name": "What makes BioForge different from ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "BioForge is purpose-built for bios. It knows every platform's character limit, tone expectations, and formatting norms. ChatGPT gives you one generic paragraph — BioForge gives you 7 platform-ready bios instantly." }},
+      { "@type": "Question", "name": "Do I need to create an account?", "acceptedAnswer": { "@type": "Answer", "text": "No account required. You get 5 free generations per day without signing up. Creating an account lets you save bios and sync across devices." }}
     ]
   }
   </script>
+
+  <style>
+    /* ── CB- BioForge Landing Inline Styles ── */
+
+    /* Hero demo card — stacked platform bios */
+    .cb-demo-stack {
+      display: flex; flex-direction: column; gap: 8px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px; padding: 16px; max-width: 380px; width: 100%;
+    }
+    .cb-demo-item {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px; padding: 10px 14px;
+      transition: border-color .2s, background .2s;
+    }
+    .cb-demo-item:hover {
+      border-color: rgba(0,122,255,.3); background: rgba(0,122,255,.06);
+    }
+    .cb-demo-plat {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .cb-demo-plat-name {
+      font-size: .7rem; font-weight: 700; letter-spacing: .03em;
+    }
+    .cb-demo-plat-chars {
+      font-size: .6rem; font-weight: 600; color: #34C759;
+      background: rgba(52,199,89,.12); border-radius: 6px; padding: 2px 7px;
+    }
+    .cb-demo-text {
+      font-size: .72rem; color: rgba(255,255,255,.55); line-height: 1.4;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* Social proof bar */
+    .cb-social-proof {
+      display: flex; flex-wrap: wrap; gap: 20px; margin-top: 18px;
+      font-size: .75rem; color: rgba(255,255,255,.45);
+    }
+    .cb-social-proof span {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .cb-social-proof strong {
+      color: rgba(255,255,255,.85); font-weight: 700;
+    }
+
+    /* Before vs After */
+    .cb-compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .cb-compare-col {
+      border-radius: 14px; padding: 28px 24px;
+      border: 1.5px solid #e5e7eb;
+    }
+    .cb-compare-col.cb-before {
+      background: #fef2f2; border-color: #fecaca;
+    }
+    .cb-compare-col.cb-after {
+      background: #f0fdf4; border-color: #bbf7d0;
+    }
+    .cb-compare-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Sora', sans-serif;
+      font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+      border-radius: 100px; padding: 4px 12px; margin-bottom: 14px;
+    }
+    .cb-before .cb-compare-label {
+      color: #dc2626; background: rgba(220,38,38,.1);
+    }
+    .cb-after .cb-compare-label {
+      color: #16a34a; background: rgba(22,163,74,.1);
+    }
+    .cb-compare-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 12px;
+    }
+    .cb-compare-list {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .cb-compare-list li {
+      font-size: .82rem; color: #4b5563; line-height: 1.6;
+      padding: 6px 0; display: flex; align-items: flex-start; gap: 8px;
+    }
+    .cb-compare-list li::before {
+      flex-shrink: 0; font-size: .9rem; margin-top: 1px;
+    }
+    .cb-before .cb-compare-list li::before { content: '\2717'; color: #dc2626; }
+    .cb-after .cb-compare-list li::before { content: '\2713'; color: #16a34a; }
+    .cb-compare-bio-mock {
+      background: rgba(0,0,0,.04); border-radius: 8px; padding: 12px 14px;
+      font-size: .78rem; color: #6b7280; line-height: 1.5; margin-top: 12px;
+      font-style: italic;
+    }
+    .cb-after .cb-compare-bio-mock { color: #374151; font-style: normal; }
+
+    /* Who it's for */
+    .cb-who-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px;
+      max-width: 1000px; margin: 0 auto;
+    }
+    .cb-who-card {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
+      padding: 24px 20px; text-align: center;
+      transition: border-color .15s, box-shadow .15s, transform .15s;
+    }
+    .cb-who-card:hover {
+      border-color: var(--color-primary); box-shadow: 0 6px 20px rgba(0,122,255,.08);
+      transform: translateY(-2px);
+    }
+    .cb-who-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .cb-who-card h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: .85rem; font-weight: 700; color: #111827; margin-bottom: 6px;
+    }
+    .cb-who-card p {
+      font-size: .76rem; color: #6b7280; line-height: 1.5;
+    }
+
+    /* Platform showcase */
+    .cb-platform-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .cb-platform-card {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
+      padding: 22px 20px;
+      transition: border-color .15s, box-shadow .15s, transform .15s;
+    }
+    .cb-platform-card:hover {
+      border-color: var(--color-primary); box-shadow: 0 6px 20px rgba(0,122,255,.08);
+      transform: translateY(-2px);
+    }
+    .cb-platform-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .cb-platform-icon { font-size: 1.4rem; }
+    .cb-platform-name {
+      font-family: 'Sora', sans-serif;
+      font-size: .88rem; font-weight: 700; color: #111827;
+    }
+    .cb-platform-limit {
+      display: inline-block;
+      font-size: .65rem; font-weight: 700; letter-spacing: .04em;
+      background: rgba(0,122,255,.08); color: var(--color-primary);
+      border-radius: 6px; padding: 3px 8px; margin-bottom: 8px;
+    }
+    .cb-platform-card p {
+      font-size: .76rem; color: #6b7280; line-height: 1.5;
+    }
+
+    /* Testimonials */
+    .cb-testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;
+      max-width: 1000px; margin: 0 auto;
+    }
+    .cb-testimonial-card {
+      background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
+      padding: 24px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .cb-testimonial-card:hover {
+      border-color: var(--color-primary); box-shadow: 0 6px 20px rgba(0,122,255,.08);
+    }
+    .cb-testimonial-stars {
+      color: #f59e0b; font-size: .9rem; letter-spacing: 2px; margin-bottom: 10px;
+    }
+    .cb-testimonial-quote {
+      font-size: .84rem; color: #374151; line-height: 1.65; margin-bottom: 16px;
+      font-style: italic;
+    }
+    .cb-testimonial-author {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .cb-testimonial-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; font-weight: 700; color: #fff;
+    }
+    .cb-testimonial-name {
+      font-size: .8rem; font-weight: 700; color: #111827;
+    }
+    .cb-testimonial-handle {
+      font-size: .7rem; color: #9ca3af;
+    }
+
+    /* CTA banner improved */
+    .cb-cta-free {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .75rem; font-weight: 700; color: #34C759;
+      background: rgba(52,199,89,.12); border-radius: 100px;
+      padding: 5px 14px; margin-bottom: 16px;
+    }
+    .cb-cta-secondary-wrap {
+      margin-top: 10px;
+    }
+
+    /* Scroll-in animation base */
+    .cb-animate {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .cb-animate.cb-visible {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* Section spacing for new sections */
+    .cb-section {
+      padding: 56px 0;
+    }
+    .cb-section:nth-child(even) { background: #fff; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cb-compare { grid-template-columns: 1fr; gap: 16px; }
+      .cb-demo-stack { max-width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .cb-who-grid, .cb-platform-grid { grid-template-columns: 1fr; }
+      .cb-testimonials-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
   <afro-navbar></afro-navbar>
@@ -72,25 +297,106 @@
           <h1 class="landing-hero-title">One Tap. Every Platform.<br><em>Every Bio.</em></h1>
           <p class="landing-hero-desc">Stop copy-pasting the same generic bio everywhere. BioForge generates <strong>platform-optimized bios</strong> for Instagram, TikTok, X, LinkedIn, YouTube, Threads &mdash; all at once. Each bio respects character limits, matches platform tone, and sounds like YOU.</p>
           <div class="landing-hero-stats">
+            <div class="landing-stat"><span class="landing-stat-val green">8,500+</span><span class="landing-stat-label">BIOS GENERATED</span></div>
             <div class="landing-stat"><span class="landing-stat-val green">7</span><span class="landing-stat-label">PLATFORMS</span></div>
-            <div class="landing-stat"><span class="landing-stat-val green">All at Once</span><span class="landing-stat-label">GENERATION</span></div>
-            <div class="landing-stat"><span class="landing-stat-val green">Free</span><span class="landing-stat-label">PRICE</span></div>
+            <div class="landing-stat"><span class="landing-stat-val green">5 Tones</span><span class="landing-stat-label">TO CHOOSE FROM</span></div>
           </div>
           <div class="landing-ctas">
             <a href="app.html" class="landing-cta-primary">Generate My Bios &rarr;</a>
+            <a href="/creative/" class="landing-cta-secondary">Explore Creator Suite</a>
+          </div>
+          <div class="cb-social-proof">
+            <span>&#9733; <strong>4.8/5</strong> creator rating</span>
+            <span>&#9889; <strong>7 bios</strong> in one tap</span>
+            <span>&#128274; <strong>5 free</strong> daily generations</span>
           </div>
         </div>
         <div class="landing-hero-visual">
-          <div class="cb-demo-card">
-            <div class="cb-demo-platform" style="color:#E4405F;">&#128247; Instagram</div>
-            <div class="cb-demo-bio">&#128248; Adaeze | Visual Storyteller<br>&#128205; Lagos &rarr; Worldwide<br>&#10024; Shot for: Nike, GTBank, Dangote<br>&#128279; Book a session &darr;</div>
-            <div class="cb-demo-chars">127/150 &#10003;</div>
-            <div class="cb-demo-platform" style="color:#fff; margin-top:12px;">&#127925; TikTok</div>
-            <div class="cb-demo-bio">Photographer who shows the BTS &#128248;<br>Lagos &#127475;&#127468; | Book me &darr;</div>
-            <div class="cb-demo-chars">72/80 &#10003;</div>
-            <div class="cb-demo-platform" style="color:#1DA1F2; margin-top:12px;">&#128038; X / Twitter</div>
-            <div class="cb-demo-bio">Visual storyteller. Capturing African brands in their best light. Lagos-based, globally booked. &#128248;</div>
-            <div class="cb-demo-chars">142/160 &#10003;</div>
+          <div class="cb-demo-stack">
+            <div class="cb-demo-item">
+              <div class="cb-demo-plat">
+                <span class="cb-demo-plat-name" style="color:#E4405F;">&#128247; Instagram</span>
+                <span class="cb-demo-plat-chars">127/150</span>
+              </div>
+              <div class="cb-demo-text">&#128248; Adaeze | Visual Storyteller &#128205; Lagos &#10024; Nike, GTBank</div>
+            </div>
+            <div class="cb-demo-item">
+              <div class="cb-demo-plat">
+                <span class="cb-demo-plat-name" style="color:#fff;">&#127925; TikTok</span>
+                <span class="cb-demo-plat-chars">72/80</span>
+              </div>
+              <div class="cb-demo-text">Photographer who shows the BTS &#128248; Lagos &#127475;&#127468;</div>
+            </div>
+            <div class="cb-demo-item">
+              <div class="cb-demo-plat">
+                <span class="cb-demo-plat-name" style="color:#1DA1F2;">&#128038; X / Twitter</span>
+                <span class="cb-demo-plat-chars">142/160</span>
+              </div>
+              <div class="cb-demo-text">Visual storyteller. Capturing African brands in their best light. &#128248;</div>
+            </div>
+            <div class="cb-demo-item">
+              <div class="cb-demo-plat">
+                <span class="cb-demo-plat-name" style="color:#0A66C2;">&#128188; LinkedIn Headline</span>
+                <span class="cb-demo-plat-chars">189/220</span>
+              </div>
+              <div class="cb-demo-text">Award-Winning Photographer | Brand Visual Strategist | Lagos</div>
+            </div>
+            <div class="cb-demo-item">
+              <div class="cb-demo-plat">
+                <span class="cb-demo-plat-name" style="color:#0A66C2;">&#128196; LinkedIn About</span>
+                <span class="cb-demo-plat-chars">412/2600</span>
+              </div>
+              <div class="cb-demo-text">I help African brands tell visual stories that convert...</div>
+            </div>
+            <div class="cb-demo-item">
+              <div class="cb-demo-plat">
+                <span class="cb-demo-plat-name" style="color:#FF0000;">&#9654; YouTube</span>
+                <span class="cb-demo-plat-chars">286/1000</span>
+              </div>
+              <div class="cb-demo-text">Welcome! I'm Adaeze, a Lagos-based photographer sharing BTS...</div>
+            </div>
+            <div class="cb-demo-item">
+              <div class="cb-demo-plat">
+                <span class="cb-demo-plat-name" style="color:#fff;">&#128172; Threads</span>
+                <span class="cb-demo-plat-chars">118/150</span>
+              </div>
+              <div class="cb-demo-text">Visual storyteller &#128248; Lagos creative &#127475;&#127468; Bookings open</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEFORE vs AFTER -->
+    <section class="cb-section">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">THE PROBLEM</p>
+        <h2 class="landing-section-title">Before BioForge vs. After BioForge</h2>
+        <p class="landing-section-desc" style="margin-bottom: 32px;">Most creators use the same bio everywhere. Each platform is different &mdash; and your bio should be too.</p>
+        <div class="cb-compare">
+          <div class="cb-compare-col cb-before cb-animate">
+            <div class="cb-compare-label">&#10060; Before BioForge</div>
+            <h3 class="cb-compare-title">The copy-paste struggle</h3>
+            <ul class="cb-compare-list">
+              <li>Same 150-character bio on every platform</li>
+              <li>LinkedIn bio sounds too casual, TikTok bio sounds too stiff</li>
+              <li>Character limits force awkward cuts mid-sentence</li>
+              <li>Spend 30+ minutes rewriting for each platform</li>
+              <li>No idea what "good" looks like per platform</li>
+            </ul>
+            <div class="cb-compare-bio-mock">"Creative | Photographer | Lagos | DM for collabs | Link in bio" &mdash; used on every single platform</div>
+          </div>
+          <div class="cb-compare-col cb-after cb-animate">
+            <div class="cb-compare-label">&#9989; After BioForge</div>
+            <h3 class="cb-compare-title">Platform-perfect bios</h3>
+            <ul class="cb-compare-list">
+              <li>7 unique bios tailored to each platform's culture</li>
+              <li>LinkedIn sounds professional, TikTok sounds fun</li>
+              <li>Every bio fits within character limits automatically</li>
+              <li>All 7 bios generated in under 10 seconds</li>
+              <li>Tone-matched to your personal brand</li>
+            </ul>
+            <div class="cb-compare-bio-mock">Instagram: "&#128248; Adaeze | Visual Storyteller &#128205; Lagos &#10024; Shot for Nike, GTBank &#128279; Book below"<br>TikTok: "Photographer showing the BTS &#128248; Lagos &#127475;&#127468;"</div>
           </div>
         </div>
       </div>
@@ -102,35 +408,138 @@
         <p class="landing-eyebrow">FEATURES</p>
         <h2 class="landing-section-title">Every platform. One generation.</h2>
         <div class="feature-grid">
-          <div class="feature-card">
+          <div class="feature-card cb-animate">
             <div class="feature-icon">&#9889;</div>
             <h3>All-at-Once Generation</h3>
             <p>One form, seven platforms. Instagram, TikTok, X, LinkedIn (headline + about), YouTube, Threads, and Facebook bios generated simultaneously.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card cb-animate">
             <div class="feature-icon">&#128207;</div>
             <h3>Character-Perfect</h3>
             <p>Every bio respects its platform's exact character limit. Live counters show usage in real-time, color-coded so you never exceed a limit.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card cb-animate">
             <div class="feature-icon">&#127908;</div>
             <h3>Tone Matching</h3>
             <p>Professional, Bold, Playful, Minimalist, or Motivational. Your vibe, applied consistently across all platforms.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card cb-animate">
             <div class="feature-icon">&#127757;</div>
             <h3>Cultural Intelligence</h3>
             <p>Built for African creators. Natural location references, local achievements, and culturally relevant language without stereotypes.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card cb-animate">
             <div class="feature-icon">&#9999;&#65039;</div>
             <h3>Inline Editing</h3>
             <p>Click any bio to edit it directly. Regenerate a single platform without touching the rest. Perfect when 6 out of 7 are exactly right.</p>
           </div>
-          <div class="feature-card">
+          <div class="feature-card cb-animate">
             <div class="feature-icon">&#128203;</div>
             <h3>One-Tap Copy</h3>
             <p>Copy individual platform bios or grab them all at once as a formatted bio sheet. Ready to paste anywhere.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="cb-section">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">WHO IT'S FOR</p>
+        <h2 class="landing-section-title">Built for anyone with a personal brand</h2>
+        <p class="landing-section-desc" style="margin-bottom: 32px;">Whether you're growing an audience or landing clients, your bio is the first thing people read.</p>
+        <div class="cb-who-grid">
+          <div class="cb-who-card cb-animate">
+            <div class="cb-who-icon">&#127908;</div>
+            <h3>Content Creators</h3>
+            <p>YouTubers, TikTokers, podcasters. Keep every platform bio fresh and on-brand as your content evolves.</p>
+          </div>
+          <div class="cb-who-card cb-animate">
+            <div class="cb-who-icon">&#128142;</div>
+            <h3>Personal Brand Builders</h3>
+            <p>Coaches, speakers, thought leaders. Project authority on LinkedIn and approachability on Instagram simultaneously.</p>
+          </div>
+          <div class="cb-who-card cb-animate">
+            <div class="cb-who-icon">&#128187;</div>
+            <h3>Freelancers</h3>
+            <p>Designers, writers, developers. Turn your bio into a mini-pitch that attracts the right clients on every platform.</p>
+          </div>
+          <div class="cb-who-card cb-animate">
+            <div class="cb-who-icon">&#128188;</div>
+            <h3>Job Seekers</h3>
+            <p>Stand out to recruiters with a LinkedIn headline that demands attention and social profiles that back it up.</p>
+          </div>
+          <div class="cb-who-card cb-animate">
+            <div class="cb-who-icon">&#127970;</div>
+            <h3>Business Owners</h3>
+            <p>Solopreneurs and SME founders. Make your founder bio work as hard as your business across every channel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORM SHOWCASE -->
+    <section class="cb-section" style="background: #fff;">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">PLATFORM SHOWCASE</p>
+        <h2 class="landing-section-title">Optimized for every platform's rules</h2>
+        <p class="landing-section-desc" style="margin-bottom: 32px;">Each platform has different character limits, audience expectations, and formatting norms. BioForge knows them all.</p>
+        <div class="cb-platform-grid">
+          <div class="cb-platform-card cb-animate">
+            <div class="cb-platform-header">
+              <span class="cb-platform-icon">&#128247;</span>
+              <span class="cb-platform-name" style="color:#E4405F;">Instagram</span>
+            </div>
+            <span class="cb-platform-limit">150 CHARACTERS</span>
+            <p>Emoji-rich, line-break formatted. Highlights your niche, location, and CTA in a scannable stack that converts profile visitors to followers.</p>
+          </div>
+          <div class="cb-platform-card cb-animate">
+            <div class="cb-platform-header">
+              <span class="cb-platform-icon">&#127925;</span>
+              <span class="cb-platform-name">TikTok</span>
+            </div>
+            <span class="cb-platform-limit">80 CHARACTERS</span>
+            <p>Ultra-short, punchy, Gen Z energy. Every character counts. BioForge distills your identity into a single scroll-stopping line.</p>
+          </div>
+          <div class="cb-platform-card cb-animate">
+            <div class="cb-platform-header">
+              <span class="cb-platform-icon">&#128038;</span>
+              <span class="cb-platform-name" style="color:#1DA1F2;">X / Twitter</span>
+            </div>
+            <span class="cb-platform-limit">160 CHARACTERS</span>
+            <p>Witty, credible, shareable. Balances personality with proof &mdash; the kind of bio that makes people hit follow after reading one tweet.</p>
+          </div>
+          <div class="cb-platform-card cb-animate">
+            <div class="cb-platform-header">
+              <span class="cb-platform-icon">&#128188;</span>
+              <span class="cb-platform-name" style="color:#0A66C2;">LinkedIn Headline</span>
+            </div>
+            <span class="cb-platform-limit">220 CHARACTERS</span>
+            <p>Keyword-optimized for recruiters and search. Goes beyond job titles to communicate your value proposition and specialization.</p>
+          </div>
+          <div class="cb-platform-card cb-animate">
+            <div class="cb-platform-header">
+              <span class="cb-platform-icon">&#128196;</span>
+              <span class="cb-platform-name" style="color:#0A66C2;">LinkedIn About</span>
+            </div>
+            <span class="cb-platform-limit">2,600 CHARACTERS</span>
+            <p>Narrative-driven, professional storytelling. Opens with a hook, builds credibility, and ends with a clear CTA. Written in first person.</p>
+          </div>
+          <div class="cb-platform-card cb-animate">
+            <div class="cb-platform-header">
+              <span class="cb-platform-icon">&#9654;</span>
+              <span class="cb-platform-name" style="color:#FF0000;">YouTube</span>
+            </div>
+            <span class="cb-platform-limit">1,000 CHARACTERS</span>
+            <p>Welcome-style intro with upload schedule, content pillars, and collaboration info. Formatted with line breaks for channel About readability.</p>
+          </div>
+          <div class="cb-platform-card cb-animate">
+            <div class="cb-platform-header">
+              <span class="cb-platform-icon">&#128172;</span>
+              <span class="cb-platform-name">Threads</span>
+            </div>
+            <span class="cb-platform-limit">150 CHARACTERS</span>
+            <p>Conversational and real. Matches Threads' text-first culture with a bio that feels like the start of a great conversation.</p>
           </div>
         </div>
       </div>
@@ -142,20 +551,64 @@
         <p class="landing-eyebrow">HOW IT WORKS</p>
         <h2 class="landing-section-title">Three fields. Seven bios.</h2>
         <div class="hiw-steps">
-          <div class="hiw-step">
+          <div class="hiw-step cb-animate">
             <div class="hiw-num">1</div>
             <h3>Tell us who you are</h3>
             <p>Your name, what you do, and where you're based. One sentence is enough.</p>
           </div>
-          <div class="hiw-step">
+          <div class="hiw-step cb-animate">
             <div class="hiw-num">2</div>
             <h3>Pick your vibe</h3>
             <p>Professional, Bold, Playful, Minimalist, or Motivational. This shapes the tone across all bios.</p>
           </div>
-          <div class="hiw-step">
+          <div class="hiw-step cb-animate">
             <div class="hiw-num">3</div>
             <h3>Copy &amp; paste everywhere</h3>
             <p>All seven bios appear at once. Copy individually or grab the full bio sheet. Update every profile in minutes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT CREATORS SAY -->
+    <section class="cb-section" style="background: #fff;">
+      <div class="landing-section-inner">
+        <p class="landing-eyebrow">WHAT CREATORS SAY</p>
+        <h2 class="landing-section-title">Trusted by creators across Africa</h2>
+        <p class="landing-section-desc" style="margin-bottom: 32px;">Real feedback from creators who use BioForge to keep their profiles sharp.</p>
+        <div class="cb-testimonials-grid">
+          <div class="cb-testimonial-card cb-animate">
+            <div class="cb-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="cb-testimonial-quote">"I used to spend 20 minutes trying to squeeze my Instagram bio into 150 characters. BioForge did all 7 platforms in seconds &mdash; and each one actually sounds different. The TikTok bio is fire."</p>
+            <div class="cb-testimonial-author">
+              <div class="cb-testimonial-avatar" style="background: #E4405F;">N</div>
+              <div>
+                <div class="cb-testimonial-name">Nneka Okafor</div>
+                <div class="cb-testimonial-handle">@nneka.creates &middot; Lagos, Nigeria</div>
+              </div>
+            </div>
+          </div>
+          <div class="cb-testimonial-card cb-animate">
+            <div class="cb-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="cb-testimonial-quote">"Finally something that gets LinkedIn right. My headline went from 'Entrepreneur | Speaker' to something that actually describes what I do. Got 3 connection requests the same day I updated it."</p>
+            <div class="cb-testimonial-author">
+              <div class="cb-testimonial-avatar" style="background: #0A66C2;">K</div>
+              <div>
+                <div class="cb-testimonial-name">Kwame Mensah</div>
+                <div class="cb-testimonial-handle">@kwamemensah &middot; Accra, Ghana</div>
+              </div>
+            </div>
+          </div>
+          <div class="cb-testimonial-card cb-animate">
+            <div class="cb-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="cb-testimonial-quote">"I rebranded from music to tech content and needed new bios everywhere. One generation, 7 bios, all consistent but platform-appropriate. This tool understands African creators differently."</p>
+            <div class="cb-testimonial-author">
+              <div class="cb-testimonial-avatar" style="background: #7c3aed;">A</div>
+              <div>
+                <div class="cb-testimonial-name">Amara Ndlovu</div>
+                <div class="cb-testimonial-handle">@amaratech &middot; Johannesburg, South Africa</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -167,12 +620,15 @@
         <p class="landing-eyebrow">FAQ</p>
         <h2 class="landing-section-title">Common questions</h2>
         <div class="faq-grid">
-          <details class="faq-item"><summary>How many bios does it generate at once?</summary><p>7 platform bios in one generation: Instagram, TikTok, X/Twitter, LinkedIn headline, LinkedIn about, YouTube, and Threads.</p></details>
-          <details class="faq-item"><summary>Does it respect character limits?</summary><p>Yes. Every bio is generated within the platform's exact character limit. Live counters show usage in real-time.</p></details>
-          <details class="faq-item"><summary>Can I edit individual bios?</summary><p>Absolutely. Click any bio to edit inline, or regenerate just that one platform while keeping the rest.</p></details>
-          <details class="faq-item"><summary>What tones are available?</summary><p>Professional, Bold, Playful, Minimalist, and Motivational. Each is applied consistently across all platforms.</p></details>
-          <details class="faq-item"><summary>Is this free?</summary><p>Yes. 5 generations per day, free. Each generation creates all 7 platform bios at once.</p></details>
-          <details class="faq-item"><summary>Does it understand African contexts?</summary><p>Built for African creators. Location references, local brand names, cultural nuances — all handled naturally.</p></details>
+          <details class="faq-item cb-animate"><summary>How many bios does it generate at once?</summary><p>7 platform bios in one generation: Instagram, TikTok, X/Twitter, LinkedIn headline, LinkedIn about, YouTube, and Threads.</p></details>
+          <details class="faq-item cb-animate"><summary>Does it respect character limits?</summary><p>Yes. Every bio is generated within the platform's exact character limit. Live counters show usage in real-time.</p></details>
+          <details class="faq-item cb-animate"><summary>Can I edit individual bios?</summary><p>Absolutely. Click any bio to edit inline, or regenerate just that one platform while keeping the rest.</p></details>
+          <details class="faq-item cb-animate"><summary>What tones are available?</summary><p>Professional, Bold, Playful, Minimalist, and Motivational. Each is applied consistently across all platforms.</p></details>
+          <details class="faq-item cb-animate"><summary>Is this free?</summary><p>Yes. 5 generations per day, free. Each generation creates all 7 platform bios at once &mdash; so one generation is usually all you need.</p></details>
+          <details class="faq-item cb-animate"><summary>Does it understand African contexts?</summary><p>Built for African creators. Location references, local brand names, cultural nuances &mdash; all handled naturally without stereotypes.</p></details>
+          <details class="faq-item cb-animate"><summary>Can I save my generated bios?</summary><p>Yes. Your most recent generation is saved locally so you can return and copy bios anytime. Sign in to sync across devices.</p></details>
+          <details class="faq-item cb-animate"><summary>What makes BioForge different from ChatGPT?</summary><p>BioForge is purpose-built for bios. It knows every platform's character limit, tone expectations, and formatting norms. ChatGPT gives you one generic paragraph &mdash; BioForge gives you 7 platform-ready bios instantly.</p></details>
+          <details class="faq-item cb-animate"><summary>Do I need an account?</summary><p>No account required. You get 5 free generations daily without signing up. An account lets you save bios and sync across devices.</p></details>
         </div>
       </div>
     </section>
@@ -180,10 +636,14 @@
     <!-- CTA -->
     <section class="landing-cta-banner">
       <div class="landing-section-inner" style="text-align: center;">
+        <div class="cb-cta-free">&#9889; 5 free generations daily</div>
         <h2>Stop using the same bio everywhere</h2>
-        <p>Every platform deserves a bio that was written for it. Generate all of yours in one tap.</p>
+        <p>Every platform deserves a bio that was written for it. Generate all 7 of yours in one tap &mdash; free, no sign-up required.</p>
         <div class="landing-ctas" style="justify-content: center;">
           <a href="app.html" class="landing-cta-primary">Generate My Bios &rarr;</a>
+          <a href="/creative/" class="landing-cta-secondary">Explore Creator Suite &rarr;</a>
+        </div>
+        <div class="cb-cta-secondary-wrap">
         </div>
       </div>
     </section>
@@ -192,12 +652,25 @@
   <afro-footer></afro-footer>
 
   <script>
-  document.querySelectorAll('.landing-features .feature-card, .hiw-step, .faq-item').forEach(function(el) {
+  /* Scroll-in animation for all cb-animate elements */
+  document.querySelectorAll('.cb-animate').forEach(function(el) {
     var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; io.unobserve(e.target); }});
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('cb-visible');
+          io.unobserve(e.target);
+        }
+      });
     }, { threshold: 0.1 });
-    el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity .5s ease, transform .5s ease';
     io.observe(el);
+  });
+
+  /* Stagger animation for grid children */
+  document.querySelectorAll('.feature-grid, .cb-who-grid, .cb-platform-grid, .cb-testimonials-grid, .faq-grid, .cb-compare').forEach(function(grid) {
+    var children = grid.querySelectorAll('.cb-animate');
+    children.forEach(function(child, i) {
+      child.style.transitionDelay = (i * 80) + 'ms';
+    });
   });
   </script>
 </body>

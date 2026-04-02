@@ -8,23 +8,33 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=c711c382">
+  <style>
+    .crh-loading-status{text-align:center;padding:10px 0 2px;min-height:28px}
+    .crh-loading-status:empty{display:none}
+    .crh-loading-status .crh-status-text{font-size:13px;color:var(--blue,#007AFF);font-family:'DM Sans',sans-serif;font-weight:500}
+    .crh-loading-status .crh-status-dots{display:inline-block;min-width:18px;text-align:left}
+    .crh-loading-status .crh-status-dots::after{content:'';animation:crh-dots 1.4s steps(4,end) infinite}
+    @keyframes crh-dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+  </style>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="crh-app">
 
-  <!-- TOPBAR -->
-  <div class="crh-topbar">
-    <a href="index.html" class="crh-topbar-back">&larr;</a>
-    <a href="index.html" class="crh-topbar-brand">&#128270; CreatorResearch</a>
-    <div class="crh-topbar-actions">
-      <button class="crh-topbar-btn" id="libraryBtn">&#128218; Library</button>
-      <button class="crh-topbar-btn desktop-only" id="sidebarToggleBtn">&#9776; Panel</button>
+  <!-- HEADER -->
+  <header class="crh-app-header">
+    <a href="index.html" class="crh-app-logo">
+      <span>&#128270;</span> CreatorResearch
+    </a>
+    <div class="crh-header-actions">
+      <button class="crh-btn-icon" id="newChatBtn" title="New Chat">&#10133;</button>
+      <button class="crh-btn-icon" id="libraryBtn" title="Library">&#128218;</button>
+      <button class="crh-btn-icon desktop-only" id="sidebarToggleBtn" title="Toggle Panel">&#9776;</button>
     </div>
-  </div>
+  </header>
 
   <!-- WORKSPACE -->
   <div class="crh-workspace">
@@ -65,6 +75,9 @@
         <button class="crh-mode-pill" data-mode="thread-carousel">&#128241; Thread / Carousel</button>
         <button class="crh-mode-pill" data-mode="deep-dive">&#128214; Deep Dive</button>
         <button class="crh-mode-pill" data-mode="fact-check">&#9989; Fact Check</button>
+        <button class="crh-mode-pill" data-mode="comparison">&#9878; Compare</button>
+        <button class="crh-mode-pill" data-mode="swot">&#128202; SWOT</button>
+        <button class="crh-mode-pill" data-mode="script">&#127908; Script</button>
       </div>
 
       <!-- CHAT AREA -->
@@ -82,6 +95,7 @@
           <textarea class="crh-input" id="chatInput" placeholder="Ask a research question..." rows="1"></textarea>
           <button class="crh-send-btn" id="sendBtn"><span class="crh-spinner"></span>Send</button>
         </div>
+        <div class="crh-loading-status" id="loadingStatus"></div>
       </div>
     </div>
   </div>
@@ -156,6 +170,44 @@
     { title: "Stokvel and Ajo: informal savings revolution", cat: "business" },
     { title: "Mental health awareness in African workplaces", cat: "lifestyle" }
   ];
+
+  // -- VERB SPINNER --
+  var ACTION_VERBS = [
+    "Researching your topic",
+    "Scanning trending content",
+    "Analyzing competitor strategies",
+    "Mining audience insights",
+    "Gathering market data",
+    "Mapping content gaps",
+    "Discovering opportunities",
+    "Compiling key findings",
+    "Evaluating engagement patterns",
+    "Synthesizing research data",
+    "Identifying growth angles",
+    "Cross-referencing sources",
+    "Building your research brief",
+    "Extracting actionable insights",
+    "Benchmarking performance",
+    "Finalizing recommendations"
+  ];
+  var verbInterval = null;
+  var verbIndex = 0;
+
+  function startVerbCycling() {
+    verbIndex = 0;
+    var el = document.getElementById('loadingStatus');
+    el.innerHTML = '<span class="crh-status-text">' + ACTION_VERBS[0] + '<span class="crh-status-dots"></span></span>';
+    verbInterval = setInterval(function() {
+      verbIndex = (verbIndex + 1) % ACTION_VERBS.length;
+      el.innerHTML = '<span class="crh-status-text">' + ACTION_VERBS[verbIndex] + '<span class="crh-status-dots"></span></span>';
+    }, 2200);
+  }
+
+  function stopVerbCycling() {
+    if (verbInterval) { clearInterval(verbInterval); verbInterval = null; }
+    var el = document.getElementById('loadingStatus');
+    el.innerHTML = '';
+  }
 
   // -- MOCK RESPONSES --
   var MOCK_RESPONSES = {
@@ -242,6 +294,86 @@
       nuance: 'The claim was accurate around 2019-2020 but has become outdated due to rapid growth in other regions. Africa still leads in active usage rates and transaction volumes relative to GDP.',
       sources: ['GSMA State of the Industry Report on Mobile Money 2024', 'World Bank Global Findex Database', 'Central Bank of Kenya — Mobile Money Statistics'],
       africanContext: 'Mobile money remains transformative in Africa in ways it isn\'t elsewhere. In Kenya, mobile money transactions equal 87% of GDP. In West Africa, mobile money is filling gaps left by limited banking infrastructure. Nigeria\'s approach differs — bank-led fintech (Opay, Moniepoint) has outpaced telco-led mobile money.'
+    },
+    'comparison': {
+      mode: 'Compare',
+      sections: [
+        {
+          heading: 'Overview',
+          bullets: [
+            '<strong>Side A:</strong> Represents the established approach with proven track record in traditional markets.',
+            '<strong>Side B:</strong> Represents the emerging alternative with higher growth potential but less certainty.'
+          ]
+        },
+        {
+          heading: 'Comparison',
+          bullets: [
+            '<strong>Market Size:</strong> Side A dominates current market (65% share) vs Side B growing at 40% YoY',
+            '<strong>Accessibility:</strong> Side A requires infrastructure vs Side B works with mobile-first approach',
+            '<strong>Cost:</strong> Side A has higher upfront but lower ongoing vs Side B has low entry but variable costs',
+            '<strong>Trust:</strong> Side A has regulatory backing vs Side B relies on peer-to-peer trust',
+            '<strong>Scalability:</strong> Side A limited by physical infrastructure vs Side B scales digitally'
+          ]
+        }
+      ],
+      africanContext: 'In African markets, the comparison often comes down to infrastructure availability. Mobile-first solutions consistently outperform infrastructure-dependent ones across the continent.',
+      sources: ['Industry comparison reports', 'Market analysis data']
+    },
+    'swot': {
+      mode: 'SWOT Analysis',
+      sections: [
+        {
+          heading: 'Strengths',
+          bullets: [
+            '<strong>Large addressable market:</strong> 1.4 billion people across 54 countries',
+            '<strong>Young demographic:</strong> Median age of 19 years drives digital adoption',
+            '<strong>Mobile penetration:</strong> 495 million unique mobile subscribers',
+            '<strong>Cultural richness:</strong> Unique content angles that stand out globally'
+          ]
+        },
+        {
+          heading: 'Weaknesses',
+          bullets: [
+            '<strong>Infrastructure gaps:</strong> Internet penetration still at 43% continent-wide',
+            '<strong>Payment friction:</strong> Cross-border payments remain complex',
+            '<strong>Talent retention:</strong> Brain drain to Western markets continues',
+            '<strong>Fragmented markets:</strong> 54 countries with different regulations'
+          ]
+        },
+        {
+          heading: 'Opportunities',
+          bullets: [
+            '<strong>Untapped audiences:</strong> Millions coming online for the first time',
+            '<strong>Creator economy growth:</strong> African creator market growing 3x faster than global average',
+            '<strong>Diaspora engagement:</strong> 170M African diaspora seeking local content',
+            '<strong>AI tools:</strong> Lowering barriers to professional content creation'
+          ]
+        },
+        {
+          heading: 'Threats',
+          bullets: [
+            '<strong>Platform dependency:</strong> Reliance on Western social platforms for distribution',
+            '<strong>Currency volatility:</strong> Monetization eroded by exchange rate fluctuations',
+            '<strong>Regulation:</strong> Increasing social media taxes and content regulations',
+            '<strong>Competition:</strong> Global creators entering African content spaces'
+          ]
+        }
+      ],
+      africanContext: 'SWOT analysis for African content markets must account for the continent\'s diversity. What works in Nigeria may not apply to Kenya or South Africa. Regional strategies consistently outperform continent-wide approaches.',
+      sources: ['GSMA Mobile Economy Africa 2025', 'African Development Bank Reports', 'Creator Economy Research']
+    },
+    'script': {
+      mode: 'Script',
+      slides: [
+        { num: 1, text: '[HOOK - First 3 seconds]\n"Did you know that..." + surprising stat\n[GRAPHIC: Bold stat on screen]' },
+        { num: 2, text: '[INTRO - 10 seconds]\nIntroduce the topic and why it matters right now.\nSet up the "journey" you\'re taking the viewer on.\n[B-ROLL: Relevant visuals]' },
+        { num: 3, text: '[SECTION 1 - The Problem]\nExplain the core issue with specific examples.\nUse data to establish credibility.\n[GRAPHIC: Key stat or comparison]' },
+        { num: 4, text: '[SECTION 2 - The Solution/Insight]\nReveal the key insight or solution.\nInclude a relatable analogy or story.\n[B-ROLL: Real-world examples]' },
+        { num: 5, text: '[SECTION 3 - The Evidence]\nBack up your point with 2-3 specific data points.\nInclude African-specific examples.\n[GRAPHIC: Data visualization]' },
+        { num: 6, text: '[CTA - Final 10 seconds]\n"If you found this valuable, follow for more African business insights."\nAsk a question to drive comments.\n[GRAPHIC: Follow + subscribe]' }
+      ],
+      africanContext: 'Video scripts targeting African audiences perform best when they include local examples within the first 10 seconds. Engagement data shows that scripts mentioning specific African cities or countries get 2.5x more shares.',
+      sources: ['Content performance analytics', 'African creator engagement data']
     }
   };
 
@@ -589,6 +721,13 @@
       case 'fact-check':
         html += renderFactCheck(data);
         break;
+      case 'comparison':
+      case 'swot':
+        html += renderTalkingPoints(data); // reuse sections format
+        break;
+      case 'script':
+        html += renderThreadCarousel(data); // reuse slides format
+        break;
       default:
         html += renderTalkingPoints(data);
     }
@@ -821,6 +960,7 @@
     btn.classList.add('loading');
     btn.disabled = true;
     appendShimmer();
+    startVerbCycling();
 
     // Build AI prompt
     var modeLabel = currentMode.replace(/-/g, ' ');
@@ -843,6 +983,15 @@
       case 'fact-check':
         systemPrompt += 'Provide a verdict (true/partially true/false/unverifiable), the claim restated, detailed analysis, nuance notes, and 3+ suggested verification sources.';
         break;
+      case 'comparison':
+        systemPrompt += 'Provide a structured comparison with: overview of both sides, a comparison table with 5-6 criteria, pros/cons for each, and a balanced conclusion. Format with clear headings.';
+        break;
+      case 'swot':
+        systemPrompt += 'Provide a SWOT analysis with: 4-5 Strengths, 4-5 Weaknesses, 4-5 Opportunities, and 4-5 Threats. Each point should be specific and data-driven where possible.';
+        break;
+      case 'script':
+        systemPrompt += 'Provide a video/podcast script with: an attention-grabbing intro (first 5 seconds hook), 3-4 main sections with transitions, key stats to show on screen, and a strong CTA ending. Include [B-ROLL] and [GRAPHIC] cues.';
+        break;
     }
 
     // Try API call, fall back to mock
@@ -858,6 +1007,7 @@
     .then(function(res) {
       btn.classList.remove('loading'); btn.disabled = false;
       removeShimmer();
+      stopVerbCycling();
 
       // Try to parse structured response from AI
       var data;
@@ -875,6 +1025,7 @@
     .catch(function() {
       btn.classList.remove('loading'); btn.disabled = false;
       removeShimmer();
+      stopVerbCycling();
 
       // Use mock response
       var data = getMockResponse(currentMode);
@@ -948,6 +1099,17 @@
 
   // -- NEW CONVERSATION on empty input focus --
   // If user starts typing after loading old conversation, that's fine — it continues the thread.
+
+  // -- NEW CHAT --
+  document.getElementById('newChatBtn').onclick = function() {
+    conversation = [];
+    currentConversationId = null;
+    var chat = document.getElementById('chatArea');
+    chat.innerHTML = '<div class="crh-empty"><div class="crh-empty-icon">&#128270;</div><div class="crh-empty-title">Ask anything. Get structured research.</div><div class="crh-empty-desc">Pick an output mode above, type your question below, and get research with African context built in.</div></div>';
+    document.getElementById('chatInput').value = '';
+    document.getElementById('chatInput').focus();
+    toast('New conversation started');
+  };
 
 }();
 </script>

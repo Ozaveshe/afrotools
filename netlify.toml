@@ -2,7 +2,7 @@
   publish = "."
   functions = "netlify/functions"
   edge_functions = "netlify/edge-functions"
-  command = "node scripts/indexnow.js --git || true"
+  command = "npm run build && node scripts/indexnow.js --git || true"
 
 [[edge_functions]]
   function = "og-image"
@@ -57,6 +57,9 @@
 
 [functions."scheduled-verify-scholarships"]
   schedule = "0 4 * * *"
+
+[functions."afrostream-sync"]
+  schedule = "0 */6 * * *"
 
 # --- Live Monitoring API Redirects ---
 
@@ -276,6 +279,22 @@
 
 [[headers]]
   for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Tool-specific CSS/JS (cache-busted via ?v=hash query strings)
+[[headers]]
+  for = "/tools/*/style.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/tools/*/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/engines/*.js"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 

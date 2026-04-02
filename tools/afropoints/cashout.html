@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Out — AfroPoints | AfroTools</title>
+<meta name="description" content="Redeem your AfroPoints for real cash via mobile money, bank transfer, or convert to AfroTools Pro credit.">
+<link rel="canonical" href="https://afrotools.com/tools/afropoints/cashout.html">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Cash Out AfroPoints">
+<meta property="og:description" content="Redeem points for real cash via mobile money or bank transfer.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=8d93e37c">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="ap-hero" style="padding-bottom:24px;">
+  <div class="ap-hero-inner">
+    <nav class="ap-breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="./">AfroPoints</a> <span>/</span> <span>Cash Out</span></nav>
+    <h1>💸 Cash Out Your Points</h1>
+    <p class="ap-hero-sub">Redeem your earned points for real money or AfroTools Pro credit.</p>
+  </div>
+</section>
+
+<div class="ap-main" style="max-width:700px;">
+
+  <!-- Balance card -->
+  <div class="ap-card" style="margin-bottom:20px;">
+    <div class="ap-card-body" style="text-align:center; padding:28px 20px;">
+      <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--color-text-muted); margin-bottom:4px;">Your Balance</div>
+      <div style="font-size:2.2rem; font-weight:800; color:#F59E0B;" id="balanceDisplay">0</div>
+      <div style="font-size:0.82rem; color:var(--color-text-muted); margin-top:2px;">= $<span id="cashEquiv">0.00</span> USD</div>
+      <div class="ap-progress-wrap" style="max-width:400px; margin:16px auto 0;">
+        <div class="ap-progress-bar"><div class="ap-progress-fill" id="cashoutProgress" style="width:0%"></div></div>
+        <div class="ap-progress-label"><span>0 / 2,000 pts minimum</span><span>$20</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cashout options -->
+  <div class="ap-card" id="optionsCard">
+    <div class="ap-card-header">Choose Payout Method</div>
+    <div class="ap-card-body" style="display:flex; flex-direction:column; gap:10px;">
+      <div class="ap-cashout-option" data-method="mobile_money" onclick="selectMethod(this)">
+        <span class="ap-cashout-icon">📱</span>
+        <div class="ap-cashout-info">
+          <div class="ap-cashout-label">Mobile Money</div>
+          <div class="ap-cashout-desc">M-Pesa, MTN MoMo, Airtel Money, OPay — minimum 2,000 pts ($20)</div>
+        </div>
+      </div>
+      <div class="ap-cashout-option" data-method="bank_transfer" onclick="selectMethod(this)">
+        <span class="ap-cashout-icon">🏦</span>
+        <div class="ap-cashout-info">
+          <div class="ap-cashout-label">Bank Transfer</div>
+          <div class="ap-cashout-desc">Direct to your bank account — minimum 2,000 pts ($20)</div>
+        </div>
+      </div>
+      <div class="ap-cashout-option" data-method="pro_credit" onclick="selectMethod(this)">
+        <span class="ap-cashout-icon">⭐</span>
+        <div class="ap-cashout-info">
+          <div class="ap-cashout-label">AfroTools Pro Credit</div>
+          <div class="ap-cashout-desc">Convert 500 pts to 1 month of AfroTools Pro ($5 value)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payout details form -->
+  <div class="ap-card" id="detailsCard" style="display:none; margin-top:20px;">
+    <div class="ap-card-header" id="detailsHeader">Enter Details</div>
+    <div class="ap-card-body">
+      <div class="ap-form" id="detailsForm"></div>
+      <div class="ap-field" style="margin-top:14px;">
+        <label class="ap-label" for="cashoutAmount">Points to Redeem</label>
+        <input class="ap-input" id="cashoutAmount" type="number" min="500" step="100" placeholder="e.g. 2000">
+        <div style="font-size:0.72rem; color:var(--color-text-muted); margin-top:4px;">= $<span id="amountEquiv">0.00</span> USD</div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:18px;">
+        <button class="ap-cta ap-cta--ghost ap-cta--sm" onclick="hideDetails()">Cancel</button>
+        <button class="ap-cta ap-cta--sm" id="confirmBtn" onclick="confirmCashout()">Confirm Cashout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cashout history -->
+  <div class="ap-card" style="margin-top:20px;">
+    <div class="ap-card-header">📋 Cashout History</div>
+    <div class="ap-card-body" id="historyBody">
+      <div class="ap-empty"><div class="ap-empty-icon">📋</div><div class="ap-empty-text">No cashouts yet</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="ap-toast" id="toast"></div>
+
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js?v=da613fd9" defer></script>
+<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=1"></script>
+<script>
+var selectedMethod = null;
+var userBalance = 0;
+
+function $(id) { return document.getElementById(id); }
+function showToast(msg, type) {
+  var t = $('toast');
+  t.textContent = msg;
+  t.className = 'ap-toast show' + (type ? ' ' + type : '');
+  setTimeout(function () { t.className = 'ap-toast'; }, 3500);
+}
+
+function selectMethod(el) {
+  document.querySelectorAll('.ap-cashout-option').forEach(function (o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  selectedMethod = el.getAttribute('data-method');
+  showDetailsForm();
+}
+
+function showDetailsForm() {
+  var form = $('detailsForm');
+  form.innerHTML = '';
+  var header = $('detailsHeader');
+
+  if (selectedMethod === 'mobile_money') {
+    header.textContent = '📱 Mobile Money Details';
+    form.innerHTML =
+      '<div class="ap-form-grid">' +
+      '<div class="ap-field"><label class="ap-label" for="momoProvider">Provider</label><select class="ap-select" id="momoProvider"><option>M-Pesa</option><option>MTN MoMo</option><option>Airtel Money</option><option>OPay</option><option>PalmPay</option><option>Other</option></select></div>' +
+      '<div class="ap-field"><label class="ap-label" for="momoPhone">Phone Number</label><input class="ap-input" id="momoPhone" type="tel" placeholder="+234..." required></div>' +
+      '</div>';
+    $('cashoutAmount').min = 2000;
+    $('cashoutAmount').value = Math.max(2000, userBalance);
+  } else if (selectedMethod === 'bank_transfer') {
+    header.textContent = '🏦 Bank Transfer Details';
+    form.innerHTML =
+      '<div class="ap-field"><label class="ap-label" for="bankName">Bank Name</label><input class="ap-input" id="bankName" type="text" placeholder="e.g. First Bank, Equity Bank" required></div>' +
+      '<div class="ap-form-grid">' +
+      '<div class="ap-field"><label class="ap-label" for="bankAccount">Account Number</label><input class="ap-input" id="bankAccount" type="text" placeholder="Account number" required></div>' +
+      '<div class="ap-field"><label class="ap-label" for="bankHolder">Account Holder</label><input class="ap-input" id="bankHolder" type="text" placeholder="Full name" required></div>' +
+      '</div>';
+    $('cashoutAmount').min = 2000;
+    $('cashoutAmount').value = Math.max(2000, userBalance);
+  } else if (selectedMethod === 'pro_credit') {
+    header.textContent = '⭐ Convert to Pro Credit';
+    form.innerHTML = '<p style="font-size:0.85rem; color:var(--color-text-muted);">500 points = 1 month of AfroTools Pro ($5 value). Pro credit will be applied to your account immediately.</p>';
+    $('cashoutAmount').min = 500;
+    $('cashoutAmount').value = 500;
+  }
+
+  $('detailsCard').style.display = '';
+  updateEquiv();
+}
+
+function hideDetails() {
+  $('detailsCard').style.display = 'none';
+  selectedMethod = null;
+  document.querySelectorAll('.ap-cashout-option').forEach(function (o) { o.classList.remove('selected'); });
+}
+
+function updateEquiv() {
+  var amt = parseInt($('cashoutAmount').value) || 0;
+  $('amountEquiv').textContent = (amt / 100).toFixed(2);
+}
+
+$('cashoutAmount').addEventListener('input', updateEquiv);
+
+async function confirmCashout() {
+  var AP = window.AfroPointsEngine;
+  if (!window.AfroAuth || !AfroAuth.isLoggedIn()) { showToast('Please sign in', 'error'); return; }
+
+  var amount = parseInt($('cashoutAmount').value) || 0;
+  var minRequired = selectedMethod === 'pro_credit' ? 500 : 2000;
+  if (amount < minRequired) { showToast('Minimum ' + minRequired + ' points required', 'error'); return; }
+  if (amount > userBalance) { showToast('Insufficient balance', 'error'); return; }
+
+  var details = {};
+  if (selectedMethod === 'mobile_money') {
+    details = { provider: $('momoProvider').value, phone: $('momoPhone').value };
+    if (!details.phone) { showToast('Phone number required', 'error'); return; }
+  } else if (selectedMethod === 'bank_transfer') {
+    details = { bank: $('bankName').value, account: $('bankAccount').value, holder: $('bankHolder').value };
+    if (!details.bank || !details.account || !details.holder) { showToast('All bank details required', 'error'); return; }
+  }
+
+  var btn = $('confirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  try {
+    var result = await AP.requestCashout(selectedMethod, details, amount);
+    if (result.error) { showToast(result.error, 'error'); }
+    else {
+      showToast('Cashout request submitted!', 'success');
+      hideDetails();
+      loadData();
+    }
+  } catch (err) {
+    showToast('Something went wrong', 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Confirm Cashout';
+}
+
+function loadData() {
+  var AP = window.AfroPointsEngine;
+  if (!window.AfroAuth || !AfroAuth.isLoggedIn()) return;
+
+  AP.getProfile().then(function (p) {
+    if (!p || p.error) return;
+    userBalance = p.current_balance || 0;
+    $('balanceDisplay').textContent = AP.formatPoints(userBalance);
+    $('cashEquiv').textContent = (userBalance / 100).toFixed(2);
+    var pct = Math.min(100, (userBalance / 2000) * 100);
+    $('cashoutProgress').style.width = pct + '%';
+
+    if (userBalance < 500) {
+      $('optionsCard').querySelector('.ap-card-body').insertAdjacentHTML('afterbegin',
+        '<div style="background:rgba(245,158,11,0.08); padding:12px 16px; border-radius:10px; margin-bottom:12px; font-size:0.82rem; color:var(--color-text-muted);">You need at least 500 points to convert to Pro, or 2,000 points to cash out. <a href="contribute.html" style="color:#F59E0B; font-weight:600;">Start contributing &rarr;</a></div>'
+      );
+    }
+  });
+
+  AP.getCashoutHistory().then(function (history) {
+    if (!Array.isArray(history) || history.length === 0) return;
+    var body = $('historyBody');
+    body.innerHTML = '';
+    history.forEach(function (h) {
+      var statusColor = h.status === 'completed' ? '#22c55e' : h.status === 'pending' ? '#F59E0B' : h.status === 'processing' ? '#3b82f6' : '#ef4444';
+      var d = document.createElement('div');
+      d.className = 'ap-activity-item';
+      d.innerHTML =
+        '<div class="ap-activity-icon spend">💸</div>' +
+        '<div class="ap-activity-text">' + h.payout_method.replace(/_/g, ' ') + ' — $' + (h.cash_amount || 0).toFixed(2) + '<br><span style="font-size:0.7rem;">' + new Date(h.created_at).toLocaleDateString() + '</span></div>' +
+        '<span class="ap-rank-badge" style="background:' + statusColor + '22;color:' + statusColor + ';">' + h.status + '</span>';
+      body.appendChild(d);
+    });
+  });
+}
+
+if (window.AfroAuth && AfroAuth.onReady) {
+  AfroAuth.onReady(loadData);
+} else {
+  document.addEventListener('DOMContentLoaded', function () { setTimeout(loadData, 500); });
+}
+document.addEventListener('afro-auth-change', loadData);
+</script>
+</body>
+</html>

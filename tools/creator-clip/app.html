@@ -8,24 +8,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=99d038a1">
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="ccl-app">
 
-  <!-- TOPBAR -->
-  <div class="ccl-topbar">
-    <a href="index.html" class="ccl-topbar-back">&larr;</a>
-    <a href="index.html" class="ccl-topbar-brand">&#127916; CreatorClip</a>
-    <div class="ccl-topbar-actions">
-      <button class="ccl-topbar-btn" id="saveProjectBtn">Save</button>
-      <button class="ccl-topbar-btn" id="loadProjectBtn">Load</button>
-      <button class="ccl-topbar-btn primary" id="newVideoBtn">New Video</button>
+  <!-- HEADER -->
+  <header class="ccl-app-header">
+    <a href="index.html" class="ccl-app-logo">
+      <span>&#127916;</span> CreatorClip
+    </a>
+    <div class="ccl-header-actions">
+      <button class="ccl-btn-icon" id="saveProjectBtn" title="Save Project">&#128190;</button>
+      <button class="ccl-btn-icon" id="loadProjectBtn" title="Load Project">&#128194;</button>
+      <button class="ccl-btn-primary" id="newVideoBtn">+ New Video</button>
     </div>
-  </div>
+  </header>
 
   <!-- WORKSPACE -->
   <div class="ccl-workspace">
@@ -86,6 +87,9 @@
         <button class="ccl-tab" data-tab="resize">Resize</button>
         <button class="ccl-tab" data-tab="overlays">Text</button>
         <button class="ccl-tab" data-tab="export">Export</button>
+        <button class="ccl-tab" data-tab="filters">Filters</button>
+        <button class="ccl-tab" data-tab="speed">Speed</button>
+        <button class="ccl-tab" data-tab="audio">Audio</button>
       </div>
 
       <!-- TAB: CAPTIONS -->
@@ -252,6 +256,93 @@
             <div class="ccl-progress-bar"><div class="ccl-progress-fill" id="progressFill"></div></div>
             <div class="ccl-progress-text" id="progressText">Preparing...</div>
           </div>
+        </div>
+      </div>
+
+      <!-- TAB: FILTERS -->
+      <div class="ccl-tab-panel" id="panel-filters">
+        <div class="ccl-section-title">&#127912; Video Filters</div>
+        <div class="ccl-style-grid" id="filterGrid">
+          <div class="ccl-style-card active" data-filter="none">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#333,#555);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">None</div>
+          </div>
+          <div class="ccl-style-card" data-filter="grayscale">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#888,#aaa);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">Grayscale</div>
+          </div>
+          <div class="ccl-style-card" data-filter="sepia">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#704214,#a0522d);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">Sepia</div>
+          </div>
+          <div class="ccl-style-card" data-filter="warm">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#FF6347,#FFD700);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">Warm</div>
+          </div>
+          <div class="ccl-style-card" data-filter="cool">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#4682B4,#87CEEB);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">Cool</div>
+          </div>
+          <div class="ccl-style-card" data-filter="vintage">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#8B7355,#BC8F8F);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">Vintage</div>
+          </div>
+          <div class="ccl-style-card" data-filter="highcontrast">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#000,#fff);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">High Contrast</div>
+          </div>
+          <div class="ccl-style-card" data-filter="cinematic">
+            <div class="ccl-style-preview" style="background:linear-gradient(135deg,#1a1a2e,#16213e);height:48px;border-radius:8px"></div>
+            <div class="ccl-style-name">Cinematic</div>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <div class="ccl-section-title">Adjustments</div>
+          <div class="ccl-control-row" style="margin-bottom:8px">
+            <span class="ccl-control-label">Brightness</span>
+            <input type="range" class="ccl-control-input" id="brightnessSlider" min="50" max="200" value="100" style="flex:1">
+            <span id="brightnessVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
+          </div>
+          <div class="ccl-control-row" style="margin-bottom:8px">
+            <span class="ccl-control-label">Contrast</span>
+            <input type="range" class="ccl-control-input" id="contrastSlider" min="50" max="200" value="100" style="flex:1">
+            <span id="contrastVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
+          </div>
+          <div class="ccl-control-row">
+            <span class="ccl-control-label">Saturation</span>
+            <input type="range" class="ccl-control-input" id="saturationSlider" min="0" max="200" value="100" style="flex:1">
+            <span id="saturationVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: SPEED -->
+      <div class="ccl-tab-panel" id="panel-speed">
+        <div class="ccl-section-title">&#9201; Playback Speed</div>
+        <div class="ccl-pills" id="speedPills">
+          <span class="ccl-pill" data-speed="0.25">0.25x</span>
+          <span class="ccl-pill" data-speed="0.5">0.5x</span>
+          <span class="ccl-pill" data-speed="0.75">0.75x</span>
+          <span class="ccl-pill active" data-speed="1">1x</span>
+          <span class="ccl-pill" data-speed="1.25">1.25x</span>
+          <span class="ccl-pill" data-speed="1.5">1.5x</span>
+          <span class="ccl-pill" data-speed="2">2x</span>
+        </div>
+        <p style="font-size:12px;color:rgba(255,255,255,.4);margin-top:12px">Adjust video playback speed. Speed changes apply to the preview only — export uses original speed unless trimmed.</p>
+      </div>
+
+      <!-- TAB: AUDIO -->
+      <div class="ccl-tab-panel" id="panel-audio">
+        <div class="ccl-section-title">&#127925; Audio Controls</div>
+        <div class="ccl-control-row" style="margin-bottom:12px">
+          <span class="ccl-control-label">Volume</span>
+          <input type="range" class="ccl-control-input" id="audioVolume" min="0" max="200" value="100" style="flex:1">
+          <span id="audioVolumeVal" style="font-size:12px;color:rgba(255,255,255,.5);min-width:36px">100%</span>
+        </div>
+        <div class="ccl-pills" style="margin-bottom:16px">
+          <span class="ccl-pill" id="muteBtn">&#128263; Mute</span>
+          <span class="ccl-pill" id="fadeInAudioBtn">Fade In</span>
+          <span class="ccl-pill" id="fadeOutAudioBtn">Fade Out</span>
         </div>
       </div>
 
@@ -1244,6 +1335,88 @@
       };
     });
   });
+
+  /* ================================================
+     FILTERS
+  ================================================ */
+  var currentFilter = 'none';
+  var FILTERS = {
+    none: 'none',
+    grayscale: 'grayscale(100%)',
+    sepia: 'sepia(80%)',
+    warm: 'saturate(130%) hue-rotate(-10deg) brightness(105%)',
+    cool: 'saturate(80%) hue-rotate(20deg) brightness(98%)',
+    vintage: 'sepia(40%) contrast(90%) brightness(95%)',
+    highcontrast: 'contrast(150%) brightness(105%)',
+    cinematic: 'contrast(120%) brightness(90%) saturate(80%)'
+  };
+
+  document.getElementById('filterGrid').addEventListener('click', function(e) {
+    var card = e.target.closest('.ccl-style-card');
+    if (!card) return;
+    var filter = card.getAttribute('data-filter');
+    if (!filter) return;
+    currentFilter = filter;
+    document.querySelectorAll('#filterGrid .ccl-style-card').forEach(function(c) { c.classList.remove('active'); });
+    card.classList.add('active');
+    applyVideoFilter();
+  });
+
+  ['brightnessSlider', 'contrastSlider', 'saturationSlider'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', function() {
+        var valEl = document.getElementById(id.replace('Slider', 'Val'));
+        if (valEl) valEl.textContent = el.value + '%';
+        applyVideoFilter();
+      });
+    }
+  });
+
+  function applyVideoFilter() {
+    var b = (document.getElementById('brightnessSlider') || {}).value || 100;
+    var c = (document.getElementById('contrastSlider') || {}).value || 100;
+    var s = (document.getElementById('saturationSlider') || {}).value || 100;
+    var base = 'brightness(' + (b / 100) + ') contrast(' + (c / 100) + ') saturate(' + (s / 100) + ')';
+    var filterStr = FILTERS[currentFilter] || 'none';
+    videoEl.style.filter = filterStr === 'none' ? base : base + ' ' + filterStr;
+  }
+
+  /* ================================================
+     SPEED
+  ================================================ */
+  document.getElementById('speedPills').addEventListener('click', function(e) {
+    var pill = e.target.closest('.ccl-pill');
+    if (!pill) return;
+    var speed = parseFloat(pill.getAttribute('data-speed'));
+    if (isNaN(speed)) return;
+    videoEl.playbackRate = speed;
+    document.querySelectorAll('#speedPills .ccl-pill').forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+    toast('Speed: ' + speed + 'x');
+  });
+
+  /* ================================================
+     AUDIO
+  ================================================ */
+  var audioVol = document.getElementById('audioVolume');
+  if (audioVol) {
+    audioVol.addEventListener('input', function() {
+      var v = parseInt(audioVol.value);
+      document.getElementById('audioVolumeVal').textContent = v + '%';
+      videoEl.volume = Math.min(v / 100, 1);
+    });
+  }
+
+  var muteBtn = document.getElementById('muteBtn');
+  if (muteBtn) {
+    muteBtn.addEventListener('click', function() {
+      videoEl.muted = !videoEl.muted;
+      muteBtn.classList.toggle('active', videoEl.muted);
+      muteBtn.innerHTML = videoEl.muted ? '&#128264; Unmute' : '&#128263; Mute';
+      toast(videoEl.muted ? 'Audio muted' : 'Audio unmuted');
+    });
+  }
 
   /* ================================================
      INIT

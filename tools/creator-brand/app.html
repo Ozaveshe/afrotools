@@ -8,11 +8,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+  <link rel="stylesheet" href="style.css?v=f2f6d061">
+  <style>
+    .cbk-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
+    .cbk-loading-status.active { opacity:1; }
+    .cbk-loading-dot { display:inline-block; animation:cbk-dot-bounce .6s ease-in-out infinite; }
+    .cbk-loading-dot:nth-child(2) { animation-delay:.2s; }
+    .cbk-loading-dot:nth-child(3) { animation-delay:.4s; }
+    @keyframes cbk-dot-bounce { 0%,100%{opacity:.3} 50%{opacity:1} }
+  </style>
   <script src="/assets/js/supabase-auth.js" defer></script>
-  <script src="/assets/js/lib/creator-profile.js" defer></script>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
 </head>
 <body class="cbk-app">
 
@@ -192,6 +200,7 @@
           <div class="cbk-card-title">&#10024; AI Sample Posts</div>
           <p style="font-size:13px;margin-bottom:14px;">Generate 3 sample social posts that match your tone of voice.</p>
           <button class="cbk-btn" id="generateVoiceBtn"><span class="cbk-spinner"></span>Generate Samples</button>
+          <div class="cbk-loading-status" id="loadingStatus"></div>
           <div class="cbk-ai-samples" id="aiSamples"></div>
         </div>
       </div>
@@ -310,6 +319,49 @@
 
   function saveKit() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(kit));
+  }
+
+  /* ========================================
+     VERB SPINNER
+  ======================================== */
+  var ACTION_VERBS = [
+    "Crafting your brand identity",
+    "Analyzing brand positioning",
+    "Generating color palettes",
+    "Defining your voice",
+    "Building brand guidelines",
+    "Selecting typography",
+    "Designing visual identity",
+    "Mapping brand personality",
+    "Curating brand elements",
+    "Structuring your brand story",
+    "Refining brand aesthetics",
+    "Engineering brand consistency",
+    "Composing brand messaging",
+    "Forging your brand DNA",
+    "Architecting brand presence",
+    "Polishing brand details"
+  ];
+
+  var verbTimer = null;
+  var verbIndex = 0;
+  function startVerbCycling() {
+    var el = document.getElementById('loadingStatus');
+    el.classList.add('active');
+    verbIndex = Math.floor(Math.random() * ACTION_VERBS.length);
+    updateVerb();
+    verbTimer = setInterval(updateVerb, 2200);
+  }
+  function updateVerb() {
+    var el = document.getElementById('loadingStatus');
+    var verb = ACTION_VERBS[verbIndex % ACTION_VERBS.length];
+    el.innerHTML = verb + '<span class="cbk-loading-dot">.</span><span class="cbk-loading-dot">.</span><span class="cbk-loading-dot">.</span>';
+    verbIndex++;
+  }
+  function stopVerbCycling() {
+    if (verbTimer) { clearInterval(verbTimer); verbTimer = null; }
+    var el = document.getElementById('loadingStatus');
+    el.classList.remove('active');
   }
 
   /* ========================================
@@ -800,6 +852,7 @@
   document.getElementById('generateVoiceBtn').onclick = function() {
     var btn = document.getElementById('generateVoiceBtn');
     btn.classList.add('loading'); btn.disabled = true;
+    startVerbCycling();
 
     var scaleDescs = [];
     VOICE_SCALES.forEach(function(scale) {
@@ -824,6 +877,7 @@
     .then(function(r) { return r.json(); })
     .then(function(data) {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       var text = data.reply || data.output || data.message || '';
       var posts = text.split('---').map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 10; });
       if (!posts.length) posts = [text];
@@ -839,6 +893,7 @@
     })
     .catch(function() {
       btn.classList.remove('loading'); btn.disabled = false;
+      stopVerbCycling();
       toast('AI generation failed. Try again.');
     });
   };

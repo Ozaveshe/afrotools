@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroPoints — Earn Money by Contributing African Data | AfroTools</title>
+<meta name="description" content="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute data, earn points, cash out via mobile money. Join 54 countries.">
+<link rel="canonical" href="https://afrotools.com/tools/afropoints/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AfroPoints — Earn Money by Contributing African Data">
+<meta property="og:description" content="Submit prices, rates, and salaries from your city. Earn points redeemable for real cash via mobile money.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/afropoints/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=8d93e37c">
+<script src="/assets/js/components/tool-registry.js?v=0ab85031" defer></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AfroPoints — Crowdsourced Data Rewards","description":"Earn money by contributing real-world African market data. Prices, rates, salaries — earn points, cash out via mobile money.","url":"https://afrotools.com/tools/afropoints/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afropoints/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afropoints/">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="ap-hero">
+  <div class="ap-hero-inner">
+    <nav class="ap-breadcrumb"><a href="/">AfroTools</a> <span>/</span> <span>AfroPoints</span></nav>
+    <div class="ap-hero-eyebrow">🎯 Earn Real Money</div>
+    <h1>Earn Money by Sharing What You Know</h1>
+    <p class="ap-hero-sub">Contribute real-world African data — prices, rates, salaries — and earn points redeemable for cash via mobile money.</p>
+    <a href="contribute.html" class="ap-cta" id="heroCta">Submit Data &rarr; Earn Points</a>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="ap-stats-row" id="statsRow">
+  <div class="ap-stat-card"><div class="ap-stat-val gold" id="statBalance">0</div><div class="ap-stat-label">Points Balance</div></div>
+  <div class="ap-stat-card"><div class="ap-stat-val" id="statEarned">0</div><div class="ap-stat-label">Total Earned</div></div>
+  <div class="ap-stat-card"><div class="ap-stat-val blue" id="statRank">Newcomer</div><div class="ap-stat-label">Rank</div></div>
+  <div class="ap-stat-card"><div class="ap-stat-val" id="statTrust">50</div><div class="ap-stat-label">Trust Score</div></div>
+  <div class="ap-stat-card"><div class="ap-stat-val" id="statStreak">0</div><div class="ap-stat-label">Day Streak</div></div>
+  <div class="ap-stat-card"><div class="ap-stat-val" id="statContribs">0</div><div class="ap-stat-label">Contributions</div></div>
+</section>
+
+<!-- Main grid -->
+<div class="ap-main">
+  <div class="ap-grid">
+
+    <!-- Left column -->
+    <div class="ap-col-main">
+
+      <!-- Quick CTA (logged out) -->
+      <div class="ap-card" id="authPrompt" style="display:none">
+        <div class="ap-card-body" style="text-align:center; padding:32px 20px;">
+          <div style="font-size:2.4rem; margin-bottom:12px;">🎯</div>
+          <h2 style="font-size:1.1rem; font-weight:800; margin:0 0 8px;">Start Earning Points</h2>
+          <p style="font-size:0.85rem; color:var(--color-text-muted); margin:0 0 18px; max-width:360px; margin-inline:auto;">Sign in to contribute data from your city and earn points redeemable for real cash.</p>
+          <button class="ap-cta" onclick="AfroAuth.login && AfroAuth.login()">Sign In to Start</button>
+        </div>
+      </div>
+
+      <!-- Activity feed -->
+      <div class="ap-card" id="activityCard">
+        <div class="ap-card-header">📋 Recent Activity</div>
+        <div class="ap-card-body" id="activityFeed">
+          <div class="ap-empty"><div class="ap-empty-icon">📋</div><div class="ap-empty-text">No activity yet. Submit your first data point!</div></div>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="ap-card">
+        <div class="ap-card-header">🏅 Badges</div>
+        <div class="ap-card-body">
+          <div class="ap-badges-grid" id="badgesGrid">
+            <div class="ap-empty"><div class="ap-empty-icon">🏅</div><div class="ap-empty-text">Loading badges...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cashout progress -->
+      <div class="ap-card" id="cashoutCard">
+        <div class="ap-card-header">💸 Cash Out</div>
+        <div class="ap-card-body" id="cashoutBody">
+          <div class="ap-progress-wrap">
+            <div class="ap-progress-bar"><div class="ap-progress-fill" id="cashoutBar" style="width:0%"></div></div>
+            <div class="ap-progress-label"><span id="cashoutCurrent">0 pts</span><span>2,000 pts = $20</span></div>
+          </div>
+          <a href="cashout.html" class="ap-cta ap-cta--sm ap-cta--ghost ap-cta--full" id="cashoutBtn" style="margin-top:12px;">View Cashout Options</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column / sidebar -->
+    <div class="ap-col-side">
+
+      <!-- Contribute CTA -->
+      <a href="contribute.html" class="ap-cta ap-cta--full" style="font-size:0.92rem; padding:14px 24px;">🎯 Submit Data &rarr; Earn Points</a>
+
+      <!-- Mini leaderboard -->
+      <div class="ap-card">
+        <div class="ap-card-header">🏆 Top Contributors</div>
+        <div class="ap-card-body" style="padding:0;">
+          <table class="ap-lb-table" id="miniLeaderboard">
+            <thead><tr><th>#</th><th>Contributor</th><th>Points</th></tr></thead>
+            <tbody id="lbBody">
+              <tr><td colspan="3" style="text-align:center; padding:20px; color:var(--color-text-muted); font-size:0.8rem;">Loading...</td></tr>
+            </tbody>
+          </table>
+          <div style="padding:10px 12px; text-align:center;">
+            <a href="leaderboard.html" style="font-size:0.75rem; font-weight:600; color:var(--color-primary); text-decoration:none;">View Full Leaderboard &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="ap-card">
+        <div class="ap-card-header">ℹ️ How It Works</div>
+        <div class="ap-card-body" style="font-size:0.8rem; color:var(--color-text-muted); line-height:1.6;">
+          <p style="margin:0 0 10px;"><strong style="color:var(--color-text);">1. Share data</strong> — Report prices, rates, or costs from your city</p>
+          <p style="margin:0 0 10px;"><strong style="color:var(--color-text);">2. Earn points</strong> — Get 5-15 points per submission + bonuses</p>
+          <p style="margin:0 0 10px;"><strong style="color:var(--color-text);">3. Get verified</strong> — Earn bonus points when others confirm your data</p>
+          <p style="margin:0;"><strong style="color:var(--color-text);">4. Cash out</strong> — Redeem 2,000 points for $20 via mobile money</p>
+        </div>
+      </div>
+
+      <!-- Rank progression -->
+      <div class="ap-card">
+        <div class="ap-card-header">📊 Ranks</div>
+        <div class="ap-card-body" id="ranksBody" style="display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js?v=da613fd9" defer></script>
+<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+  var AP = window.AfroPointsEngine;
+  if (!AP) return;
+
+  function $(id) { return document.getElementById(id); }
+  function fmt(n) { return AP.formatPoints(n); }
+
+  // Render rank badges in sidebar
+  var ranksBody = $('ranksBody');
+  AP.RANKS.forEach(function (r) {
+    var d = document.createElement('div');
+    d.style.cssText = 'display:flex;align-items:center;gap:10px;padding:6px 0;';
+    d.innerHTML = '<span class="ap-rank-badge" style="background:' + r.color + '22;color:' + r.color + ';">' + r.label + '</span>' +
+      '<span style="font-size:0.7rem;color:var(--color-text-muted);">' + (r.min_points > 0 ? r.min_points.toLocaleString() + '+ pts' : 'Start') + (r.min_trust > 0 ? ', trust ' + r.min_trust + '+' : '') + '</span>';
+    ranksBody.appendChild(d);
+  });
+
+  // Load badges (public, no auth needed)
+  AP.getBadges().then(function (badges) {
+    if (!Array.isArray(badges) || badges.length === 0) return;
+    var grid = $('badgesGrid');
+    grid.innerHTML = '';
+    badges.forEach(function (b) {
+      var el = document.createElement('div');
+      el.className = 'ap-badge locked';
+      el.setAttribute('data-badge', b.id);
+      el.title = b.description;
+      el.innerHTML = '<span class="ap-badge-emoji">' + b.icon_emoji + '</span><span class="ap-badge-name">' + b.name + '</span>';
+      grid.appendChild(el);
+    });
+  });
+
+  // Load leaderboard (public)
+  AP.getLeaderboard('global', 'all_time').then(function (entries) {
+    if (!Array.isArray(entries) || entries.length === 0) return;
+    var body = $('lbBody');
+    body.innerHTML = '';
+    entries.slice(0, 10).forEach(function (e, i) {
+      var cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td><span class="ap-lb-rank ' + cls + '">' + (i + 1) + '</span></td>' +
+        '<td>' + e.display_name + '</td>' +
+        '<td style="font-weight:700;color:#F59E0B;">' + fmt(e.total_points) + '</td>';
+      body.appendChild(tr);
+    });
+  });
+
+  // Auth-dependent loading
+  function loadUserData() {
+    if (!window.AfroAuth || !AfroAuth.isLoggedIn()) {
+      $('authPrompt').style.display = '';
+      $('activityCard').style.display = 'none';
+      return;
+    }
+    $('authPrompt').style.display = 'none';
+    $('activityCard').style.display = '';
+
+    // Load profile
+    AP.getProfile().then(function (p) {
+      if (!p || p.error) return;
+      $('statBalance').textContent = fmt(p.current_balance || 0);
+      $('statEarned').textContent = fmt(p.total_earned || 0);
+      $('statRank').textContent = (AP.getRankInfo(p.rank) || {}).label || 'Newcomer';
+      $('statTrust').textContent = Math.round(p.trust_score || 50);
+      $('statStreak').textContent = (p.current_streak || 0) + (p.current_streak > 0 ? ' 🔥' : '');
+      $('statContribs').textContent = p.contributions_count || 0;
+
+      // Cashout progress
+      var bal = p.current_balance || 0;
+      var pct = Math.min(100, (bal / 2000) * 100);
+      $('cashoutBar').style.width = pct + '%';
+      $('cashoutCurrent').textContent = fmt(bal) + ' pts';
+      if (bal >= 2000) {
+        $('cashoutBtn').textContent = 'Cash Out $' + (bal / 100).toFixed(0) + ' Now';
+        $('cashoutBtn').classList.remove('ap-cta--ghost');
+      }
+
+      // Mark earned badges
+      var earned = p.badges || [];
+      earned.forEach(function (bid) {
+        var el = document.querySelector('[data-badge="' + bid + '"]');
+        if (el) { el.classList.remove('locked'); el.classList.add('earned'); }
+      });
+
+      // Highlight user on leaderboard
+      var rows = $('lbBody').querySelectorAll('tr');
+      // (would need user_id match — simplified for now)
+    });
+
+    // Load activity
+    AP.getActivity(8).then(function (items) {
+      if (!Array.isArray(items) || items.length === 0) return;
+      var feed = $('activityFeed');
+      feed.innerHTML = '';
+      items.forEach(function (item) {
+        var isPos = item.amount > 0;
+        var iconClass = item.reason === 'streak_bonus' || item.reason === 'confirmation_bonus' ? 'bonus' : isPos ? 'earn' : 'spend';
+        var emoji = item.reason === 'streak_bonus' ? '🔥' : item.reason === 'confirmation_bonus' ? '✅' : item.reason === 'cashout' ? '💸' : isPos ? '🎯' : '📤';
+        var d = document.createElement('div');
+        d.className = 'ap-activity-item';
+        d.innerHTML = '<div class="ap-activity-icon ' + iconClass + '">' + emoji + '</div>' +
+          '<div class="ap-activity-text">' + (item.description || item.reason.replace(/_/g, ' ')) + '</div>' +
+          '<div class="ap-activity-pts ' + (isPos ? 'pos' : 'neg') + '">' + (isPos ? '+' : '') + item.amount + ' pts</div>';
+        feed.appendChild(d);
+      });
+    });
+  }
+
+  // Init
+  if (window.AfroAuth && AfroAuth.onReady) {
+    AfroAuth.onReady(loadUserData);
+  } else {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(loadUserData, 500);
+    });
+  }
+  document.addEventListener('afro-auth-change', loadUserData);
+})();
+</script>
+</body>
+</html>

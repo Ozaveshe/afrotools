@@ -4,35 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
-<title>Creator Rankings — AfroStream | AfroTools</title>
-<meta name="description" content="Live leaderboard of the most-watched, most-gifted, and fastest-growing African creators across YouTube, Twitch, TikTok, Instagram, and Kick.">
+<title>Top African Streamers Rankings 2026 — Twitch, Kick, YouTube | AfroStream</title>
+<meta name="description" content="Ranked list of Africa's biggest streamers by followers across Twitch and Kick. Filter by country, platform, category. Updated every 6 hours via live API data.">
 <link rel="canonical" href="https://afrotools.com/tools/afrostream/rankings.html">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Creator Rankings — AfroStream | AfroTools">
+<meta property="og:title" content="Top African Streamers Rankings 2026 | AfroStream">
 <meta property="og:description" content="Live leaderboard of the most-watched, most-gifted, and fastest-growing African creators across all platforms.">
 <meta property="og:image" content="https://afrotools.com/assets/images/og/afrostream.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/afrostream/rankings.html">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Creator Rankings — AfroStream | AfroTools">
+<meta name="twitter:title" content="Top African Streamers Rankings 2026 | AfroStream">
 <meta name="twitter:description" content="Live leaderboard of the most-watched African creators across all platforms.">
 <meta name="twitter:image" content="https://afrotools.com/assets/images/og/afrostream.png">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap"></noscript>
 
 <!-- CSS -->
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=2fc66542">
 
 <!-- Components -->
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/navbar.js?v=e55f3c7d" defer></script>
+<script src="/assets/js/components/footer.js?v=2df4a28a" defer></script>
 
 <!-- JSON-LD -->
 <script type="application/ld+json">
@@ -52,11 +52,20 @@
 </script>
 
 <style>
+/* ── Light theme overrides ── */
+.as-page {
+  --as-bg: #FAFAF8; --as-text: #1e293b; --as-muted: #64748b;
+  --as-border: #e5e7eb; --as-bg-card: #ffffff; --as-bg-card-hover: #f8fafc;
+  --as-glass: rgba(255,255,255,0.7); --as-primary-light: rgba(0,122,255,0.06);
+  --as-primary-border: rgba(0,122,255,0.25); --as-primary-glow: rgba(0,122,255,0.08);
+  background: #FAFAF8; color: #1e293b;
+}
+
 /* ── Rankings page-specific styles ── */
 .as-subnav{
   position:sticky;top:var(--nav-height,62px);z-index:140;
-  background:rgba(10,10,15,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--as-border);
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid #e5e7eb;
 }
 .as-subnav-inner{
   max-width:1240px;margin:0 auto;padding:0 20px;
@@ -98,25 +107,25 @@
 }
 .as-rankings-hero::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 50% at 50% 20%,rgba(124,58,237,.15),transparent),
-             radial-gradient(ellipse 50% 40% at 80% 80%,rgba(34,211,238,.08),transparent),
-             var(--as-bg);
+  background:radial-gradient(ellipse 70% 50% at 50% 20%,rgba(0,122,255,.08),transparent),
+             radial-gradient(ellipse 50% 40% at 80% 80%,rgba(52,170,255,.05),transparent),
+             #FAFAF8;
   z-index:0;
 }
 .as-rankings-hero>*{position:relative;z-index:1}
 .as-rankings-hero-badge{
   display:inline-block;padding:4px 16px;border-radius:var(--as-radius-pill);
   font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
-  background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(34,211,238,.1));
-  border:1px solid rgba(124,58,237,.3);color:var(--as-primary);
+  background:linear-gradient(135deg,rgba(0,122,255,.1),rgba(52,170,255,.06));
+  border:1px solid rgba(0,122,255,.25);color:var(--as-primary);
   margin-bottom:16px;
 }
 .as-rankings-title{
   font-family:var(--as-font-heading);font-size:clamp(1.75rem,4vw,3rem);
-  font-weight:400;margin:0 0 12px;line-height:1.15;
+  font-weight:400;margin:0 0 12px;line-height:1.15;color:#1e293b;
 }
 .as-rankings-subtitle{
-  color:var(--as-muted);font-size:1rem;max-width:540px;margin:0 auto 12px;line-height:1.6;
+  color:#64748b;font-size:1rem;max-width:540px;margin:0 auto 12px;line-height:1.6;
 }
 .as-rankings-updated{
   font-size:.75rem;color:var(--as-muted);opacity:.7;
@@ -125,7 +134,7 @@
 /* Filter bar */
 .as-filter-bar{
   padding:20px 0;border-bottom:1px solid var(--as-border);
-  background:rgba(10,10,15,.5);backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);
 }
 .as-filter-row-wrap{
   display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;
@@ -173,23 +182,23 @@
 }
 .as-podium-card{
   display:flex;flex-direction:column;align-items:center;
-  background:var(--as-bg-card);border:1px solid var(--as-border);
+  background:#ffffff;border:1px solid var(--as-border);
   border-radius:var(--as-radius-lg);padding:28px 20px 24px;
   text-align:center;position:relative;overflow:hidden;
   transition:border-color .25s,box-shadow .25s,transform .25s;
-  cursor:pointer;text-decoration:none;color:var(--as-text);
+  cursor:pointer;text-decoration:none;color:#1e293b;
 }
 .as-podium-card:hover{
   transform:translateY(-4px);
   box-shadow:0 8px 32px var(--as-primary-glow);
 }
-.as-podium-gold{border-color:rgba(234,179,8,.3);order:2}
+.as-podium-gold{border-color:rgba(234,179,8,.35);order:2}
 .as-podium-gold:hover{box-shadow:0 8px 32px rgba(234,179,8,.15)}
 .as-podium-gold .as-podium-avatar{border-color:var(--as-gold)}
-.as-podium-silver{border-color:rgba(148,163,184,.3);order:1}
+.as-podium-silver{border-color:rgba(148,163,184,.35);order:1}
 .as-podium-silver:hover{box-shadow:0 8px 32px rgba(148,163,184,.15)}
 .as-podium-silver .as-podium-avatar{border-color:var(--as-silver)}
-.as-podium-bronze{border-color:rgba(217,119,6,.3);order:3}
+.as-podium-bronze{border-color:rgba(217,119,6,.35);order:3}
 .as-podium-bronze:hover{box-shadow:0 8px 32px rgba(217,119,6,.15)}
 .as-podium-bronze .as-podium-avatar{border-color:var(--as-bronze)}
 .as-podium-rank{
@@ -198,9 +207,9 @@
   display:flex;align-items:center;justify-content:center;
   font-size:.75rem;font-weight:700;
 }
-.as-podium-gold .as-podium-rank{background:rgba(234,179,8,.15);color:var(--as-gold)}
-.as-podium-silver .as-podium-rank{background:rgba(148,163,184,.15);color:var(--as-silver)}
-.as-podium-bronze .as-podium-rank{background:rgba(217,119,6,.15);color:var(--as-bronze)}
+.as-podium-gold .as-podium-rank{background:rgba(234,179,8,.18);color:#b8860b}
+.as-podium-silver .as-podium-rank{background:rgba(148,163,184,.18);color:#64748b}
+.as-podium-bronze .as-podium-rank{background:rgba(217,119,6,.18);color:#b45309}
 .as-podium-avatar{
   width:72px;height:72px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -208,12 +217,12 @@
   border:3px solid var(--as-border);margin-bottom:12px;
   background-size:cover;background-position:center;
 }
-.as-podium-name{font-weight:600;font-size:1rem;margin:0 0 4px}
+.as-podium-name{font-weight:600;font-size:1rem;margin:0 0 4px;color:#1e293b}
 .as-podium-country{font-size:.8125rem;color:var(--as-muted);margin-bottom:8px}
 .as-podium-platforms{display:flex;gap:4px;justify-content:center;margin-bottom:14px}
 .as-podium-stats{display:flex;gap:16px;margin-bottom:14px}
 .as-podium-stat{text-align:center}
-.as-podium-stat-val{font-size:.9375rem;font-weight:700;display:block}
+.as-podium-stat-val{font-size:.9375rem;font-weight:700;display:block;color:#1e293b}
 .as-podium-stat-lbl{font-size:.625rem;color:var(--as-muted);text-transform:uppercase;letter-spacing:.06em}
 .as-podium-cta{
   font-size:.75rem;color:var(--as-primary);font-weight:500;
@@ -234,18 +243,19 @@
   color:var(--as-muted);font-weight:600;font-size:.6875rem;
   text-transform:uppercase;letter-spacing:.06em;
   border-bottom:1px solid var(--as-border);
-  background:var(--as-bg-card);white-space:nowrap;
+  background:#ffffff;white-space:nowrap;
   cursor:pointer;user-select:none;transition:color .2s;
 }
 .as-table th:hover{color:var(--as-primary)}
 .as-table td{
   padding:10px 14px;border-bottom:1px solid var(--as-border);
   vertical-align:middle;white-space:nowrap;
+  background:#ffffff;color:#1e293b;
 }
 .as-table-row{cursor:pointer;transition:background .15s}
 .as-table-row:hover td{background:var(--as-bg-card-hover)}
 .as-td-rank{width:50px;text-align:center}
-.as-rank-num{font-weight:700;font-size:.875rem}
+.as-rank-num{font-weight:700;font-size:.875rem;color:#1e293b}
 .as-rank-num.gold{color:var(--as-gold)}
 .as-rank-num.silver{color:var(--as-silver)}
 .as-rank-num.bronze{color:var(--as-bronze)}
@@ -258,12 +268,12 @@
   background-size:cover;background-position:center;
   vertical-align:middle;
 }
-.as-creator-cell span{font-weight:600;vertical-align:middle}
+.as-creator-cell span{font-weight:600;vertical-align:middle;color:#1e293b}
 .as-score-badge{
   display:inline-block;padding:2px 10px;border-radius:var(--as-radius-pill);
   font-size:.75rem;font-weight:700;
-  background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(34,211,238,.1));
-  color:var(--as-primary);border:1px solid rgba(124,58,237,.2);
+  background:linear-gradient(135deg,rgba(0,122,255,.15),rgba(52,170,255,.1));
+  color:var(--as-primary);border:1px solid rgba(0,122,255,.2);
 }
 .as-growth{font-size:.75rem;font-weight:600}
 .as-growth-up{color:#22c55e}
@@ -273,14 +283,18 @@
   width:20px;height:20px;border-radius:50%;font-size:.5625rem;font-weight:700;
 }
 .as-pi-yt{background:rgba(255,0,0,.12);color:#f44}
-.as-pi-tw{background:rgba(145,70,255,.12);color:#9146FF}
-.as-pi-tt{background:rgba(34,211,238,.1);color:var(--as-cyan)}
+.as-pi-tw{background:rgba(0,122,255,.12);color:#9146FF}
+.as-pi-tt{background:rgba(52,170,255,.1);color:var(--as-cyan)}
 .as-pi-ig{background:linear-gradient(135deg,rgba(253,29,29,.1),rgba(131,58,180,.1));color:#E1306C}
 .as-pi-kk{background:rgba(83,252,24,.1);color:#53fc18}
 .as-pi-rm{background:rgba(133,181,59,.12);color:#85b53b}
 
 /* Pagination */
-.as-pagination{display:flex;justify-content:center;padding:28px 0}
+.as-pagination{display:flex;justify-content:center;gap:6px;padding:28px 0}
+.as-page-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;border:1px solid var(--as-border);background:var(--as-bg-card);color:var(--as-text);font-size:.8125rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;}
+.as-page-btn:hover{border-color:var(--as-primary-border);color:var(--as-primary);}
+.as-page-btn.active{background:var(--as-primary);border-color:var(--as-primary);color:#fff;}
+.as-page-btn:disabled{opacity:.35;pointer-events:none;}
 
 /* Net worth column */
 .as-networth-cell{
@@ -327,6 +341,7 @@
       <a href="/tools/afrostream/rankings.html" class="active">Rankings</a>
       <a href="/tools/afrostream/news.html">News</a>
       <a href="/tools/afrostream/calendar.html">Calendar</a>
+      <a href="/tools/afrostream/submit.html">Submit</a>
     </div>
     <div class="as-subnav-actions">
       <div class="as-subnav-search">
@@ -443,8 +458,8 @@
   <!-- RANKINGS TABLE -->
   <section class="as-table-section rv">
     <div class="as-container">
-      <h2 style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#fff;margin-bottom:16px">Full Streamers Ranking</h2>
-      <p style="color:#94a3b8;font-size:.85rem;margin-bottom:20px">Complete ranked list of African streamers sorted by overall score. Click any row to view the full creator profile.</p>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#1e293b;margin-bottom:16px">Full Streamers Ranking</h2>
+      <p style="color:#64748b;font-size:.85rem;margin-bottom:20px">Complete ranked list of African streamers sorted by overall score. Click any row to view the full creator profile.</p>
       <div class="as-table-wrap">
         <table class="as-table" id="rankingsTable">
           <thead>
@@ -465,9 +480,7 @@
           <tbody id="rankingsBody"></tbody>
         </table>
       </div>
-      <div class="as-pagination" id="pagination">
-        <button class="as-btn as-btn-outline" id="loadMoreBtn">Load More</button>
-      </div>
+      <div class="as-pagination" id="pagination"></div>
     </div>
   </section>
 
@@ -537,7 +550,8 @@ var COUNTRY_META = {
   EG:{flag:"\u{1F1EA}\u{1F1EC}",name:"Egypt"},TZ:{flag:"\u{1F1F9}\u{1F1FF}",name:"Tanzania"},
   UG:{flag:"\u{1F1FA}\u{1F1EC}",name:"Uganda"},SN:{flag:"\u{1F1F8}\u{1F1F3}",name:"Senegal"},
   CM:{flag:"\u{1F1E8}\u{1F1F2}",name:"Cameroon"},ET:{flag:"\u{1F1EA}\u{1F1F9}",name:"Ethiopia"},
-  RW:{flag:"\u{1F1F7}\u{1F1FC}",name:"Rwanda"},MA:{flag:"\u{1F1F2}\u{1F1E6}",name:"Morocco"}
+  RW:{flag:"\u{1F1F7}\u{1F1FC}",name:"Rwanda"},MA:{flag:"\u{1F1F2}\u{1F1E6}",name:"Morocco"},
+  DZ:{flag:"\u{1F1E9}\u{1F1FF}",name:"Algeria"}
 };
 
 /* Reverse lookup: country name -> code */
@@ -559,10 +573,17 @@ function mapApiCreator(r) {
     : (COUNTRY_NAME_TO_CODE[rawCountry.toLowerCase()] || '').toUpperCase();
   var meta = COUNTRY_META[cc] || {flag:'', name: rawCountry || 'Unknown'};
 
-  /* platforms — Supabase stores primary_platform as single string like "youtube".
-     Build a one-element array from it. */
-  var plat = (r.primary_platform || '').toLowerCase().trim();
-  var platforms = plat ? [plat] : [];
+  /* platforms — derive from URL fields, fallback to primary_platform */
+  var platforms = [];
+  if (r.youtube_url) platforms.push('youtube');
+  if (r.twitch_url) platforms.push('twitch');
+  if (r.tiktok_url) platforms.push('tiktok');
+  if (r.instagram_url) platforms.push('instagram');
+  if (r.kick_url) platforms.push('kick');
+  if (!platforms.length) {
+    var plat = (r.primary_platform || '').toLowerCase().trim();
+    if (plat) platforms.push(plat);
+  }
 
   /* slug — use slug field, or derive from name */
   var slug = r.slug || n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -766,7 +787,7 @@ function renderPodium(list) {
 /* ===== RENDER TABLE ===== */
 function renderTable(list) {
   var body = document.getElementById('rankingsBody');
-  var show = list.slice(3, 3 + currentPage * PAGE_SIZE);
+  var show = list.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
   var html = '';
   show.forEach(function(c) {
     var rankColorClass = '';
@@ -782,7 +803,7 @@ function renderTable(list) {
       '<td class="as-td-creator"><div class="as-creator-cell"><div class="as-creator-avatar-sm" style="' + avStyle + '">' + avContent + '</div><span>' + c.name + '</span></div></td>' +
       '<td>' + c.flag + ' ' + c.countryName + '</td>' +
       '<td>' + platformIcons(c.platforms) + '</td>' +
-      '<td style="font-size:.8rem;color:#94a3b8">' + (c.categories && c.categories.length ? c.categories.slice(0,2).map(function(s){ return s.charAt(0).toUpperCase()+s.slice(1); }).join(' & ') : 'Creator') + '</td>' +
+      '<td style="font-size:.8rem;color:#64748b">' + (c.categories && c.categories.length ? c.categories.slice(0,2).map(function(s){ return s.charAt(0).toUpperCase()+s.slice(1); }).join(' & ') : 'Creator') + '</td>' +
       '<td>' + fmtNum(c.followers) + '</td>' +
       '<td>' + fmtUSD(c.gifts) + '</td>' +
       '<td>' + fmtNum(c.peak) + '</td>' +
@@ -792,19 +813,33 @@ function renderTable(list) {
     '</tr>';
   });
   body.innerHTML = html;
+}
 
-  var btn = document.getElementById('loadMoreBtn');
-  if (3 + currentPage * PAGE_SIZE >= list.length) {
-    btn.style.display = 'none';
-  } else {
-    btn.style.display = '';
+/* ===== RENDER PAGINATION ===== */
+function renderPagination(list) {
+  var totalPages = Math.ceil(list.length / PAGE_SIZE);
+  if (totalPages <= 1) { document.getElementById('pagination').innerHTML = ''; return; }
+  var maxShow = Math.min(totalPages, 5);
+  var html = '';
+  html += '<button class="as-page-btn" onclick="goPage(1)" ' + (currentPage === 1 ? 'disabled' : '') + '>&laquo;</button>';
+  for (var p = 1; p <= maxShow; p++) {
+    html += '<button class="as-page-btn' + (p === currentPage ? ' active' : '') + '" onclick="goPage(' + p + ')">' + p + '</button>';
   }
+  html += '<button class="as-page-btn" onclick="goPage(' + totalPages + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>&raquo;</button>';
+  document.getElementById('pagination').innerHTML = html;
+}
+
+function goPage(p) {
+  currentPage = p;
+  renderAll();
+  window.scrollTo({top: document.querySelector('.as-table-section').offsetTop - 100, behavior: 'smooth'});
 }
 
 function renderAll() {
   var list = getFiltered();
   renderPodium(list);
   renderTable(list);
+  renderPagination(list);
 }
 
 /* ===== EVENT LISTENERS ===== */
@@ -832,7 +867,6 @@ document.getElementById('searchFilter').addEventListener('input', function() { c
 document.getElementById('navSearch').addEventListener('input', function() {
   document.getElementById('searchFilter').value = this.value; currentPage = 1; renderAll();
 });
-document.getElementById('loadMoreBtn').addEventListener('click', function() { currentPage++; renderAll(); });
 
 /* Sortable headers */
 document.querySelectorAll('.as-table th[data-sort]').forEach(function(th) {
@@ -847,6 +881,55 @@ document.querySelectorAll('.as-table th[data-sort]').forEach(function(th) {
     renderAll();
   });
 });
+
+/* ===== URL QUERY STRING SYNC ===== */
+function syncFiltersToURL() {
+  var params = new URLSearchParams();
+  var period = document.querySelector('#periodPills .as-pill.active');
+  var category = document.querySelector('#categoryPills .as-pill.active');
+  var platform = document.querySelector('#platformPills .as-pill.active');
+  var country = document.getElementById('countryFilter').value;
+  var search = document.getElementById('searchFilter').value.trim();
+
+  if (period && period.dataset.value !== 'all') params.set('period', period.dataset.value);
+  if (category && category.dataset.value !== 'all') params.set('category', category.dataset.value);
+  if (platform && platform.dataset.value !== 'all') params.set('platform', platform.dataset.value);
+  if (country !== 'all') params.set('country', country);
+  if (search) params.set('q', search);
+  if (currentSort !== 'score') params.set('sort', currentSort);
+  if (currentPage > 1) params.set('page', currentPage);
+
+  var qs = params.toString();
+  var newURL = window.location.pathname + (qs ? '?' + qs : '');
+  history.replaceState(null, '', newURL);
+}
+
+function loadFiltersFromURL() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('period')) {
+    var pill = document.querySelector('#periodPills .as-pill[data-value="' + params.get('period') + '"]');
+    if (pill) { document.querySelectorAll('#periodPills .as-pill').forEach(function(p){p.classList.remove('active')}); pill.classList.add('active'); }
+  }
+  if (params.get('category')) {
+    var pill2 = document.querySelector('#categoryPills .as-pill[data-value="' + params.get('category') + '"]');
+    if (pill2) { document.querySelectorAll('#categoryPills .as-pill').forEach(function(p){p.classList.remove('active')}); pill2.classList.add('active'); }
+  }
+  if (params.get('platform')) {
+    var pill3 = document.querySelector('#platformPills .as-pill[data-value="' + params.get('platform') + '"]');
+    if (pill3) { document.querySelectorAll('#platformPills .as-pill').forEach(function(p){p.classList.remove('active')}); pill3.classList.add('active'); }
+  }
+  if (params.get('country')) document.getElementById('countryFilter').value = params.get('country');
+  if (params.get('q')) document.getElementById('searchFilter').value = params.get('q');
+  if (params.get('sort')) { currentSort = params.get('sort'); document.getElementById('sortFilter').value = currentSort; }
+  if (params.get('page')) currentPage = parseInt(params.get('page')) || 1;
+}
+
+/* Override renderAll to also sync URL */
+var _origRenderAll = renderAll;
+renderAll = function() { _origRenderAll(); syncFiltersToURL(); };
+
+/* Load filters from URL on page load */
+loadFiltersFromURL();
 
 /* Last updated */
 document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit'});

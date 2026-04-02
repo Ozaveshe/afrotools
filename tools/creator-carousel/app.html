@@ -9,12 +9,21 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@700;900&family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&family=Montserrat:wght@700;900&family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<link rel="stylesheet" href="style.css">
-<script src="/assets/js/lib/creator-profile.js" defer></script>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Black+Ops+One&family=Bungee&family=DM+Sans:wght@400;500;700;800&family=Luckiest+Guy&family=Montserrat:wght@700;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Press+Start+2P&family=Righteous&family=Russo+One&family=Space+Grotesk:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Black+Ops+One&family=Bungee&family=DM+Sans:wght@400;500;700;800&family=Luckiest+Guy&family=Montserrat:wght@700;900&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@400;700&family=Press+Start+2P&family=Righteous&family=Russo+One&family=Space+Grotesk:wght@400;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=69779683">
+<script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+<style>
+.car-extra-controls { display:flex;flex-wrap:wrap;gap:4px;margin-top:8px; }
+.car-extra-controls .car-btn { font-size:.65rem;padding:4px 8px; }
+.car-slider-row-mini { display:flex;align-items:center;gap:6px;margin-top:6px; }
+.car-slider-row-mini .car-slider { flex:1; }
+.car-slider-row-mini .car-slider-val { min-width:28px;text-align:right;font-size:.65rem;color:rgba(255,255,255,.5); }
+.car-slider-row-mini .car-slider-label { font-size:.6rem;color:rgba(255,255,255,.4);min-width:54px; }
+.car-sticker-btn img { width:32px;height:24px;object-fit:contain;pointer-events:none; }
+</style>
 </head>
 <body>
 <div class="car-app">
@@ -76,15 +85,43 @@
           <div class="car-palette-list" id="text-palettes"></div>
         </div>
         <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Rotation</div>
+          <div class="car-slider-row">
+            <input type="range" class="car-slider" id="text-rotation" min="0" max="360" value="0">
+            <span class="car-slider-val" id="text-rotation-val">0</span>
+          </div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Opacity</div>
+          <div class="car-slider-row">
+            <input type="range" class="car-slider" id="text-opacity" min="10" max="100" value="100">
+            <span class="car-slider-val" id="text-opacity-val">100</span>
+          </div>
+        </div>
+        <div class="car-sidebar-section">
+          <div class="car-sidebar-title">Letter Spacing</div>
+          <div class="car-slider-row">
+            <input type="range" class="car-slider" id="text-letter-spacing" min="0" max="20" value="0">
+            <span class="car-slider-val" id="text-letter-spacing-val">0</span>
+          </div>
+        </div>
+        <div class="car-sidebar-section">
           <div class="car-sidebar-title">Style</div>
           <div class="car-toggle-row">
             <span class="car-toggle-label">UPPERCASE</span>
             <div class="car-toggle" id="text-uppercase"></div>
           </div>
+          <div class="car-toggle-row" style="margin-top:6px">
+            <span class="car-toggle-label">BOLD</span>
+            <div class="car-toggle" id="text-bold"></div>
+          </div>
           <div style="display:flex;gap:4px;margin-top:8px">
-            <button class="car-btn car-btn-secondary car-btn-sm" data-align="left">←</button>
-            <button class="car-btn car-btn-secondary car-btn-sm" data-align="center">↔</button>
-            <button class="car-btn car-btn-secondary car-btn-sm" data-align="right">→</button>
+            <button class="car-btn car-btn-secondary car-btn-sm" data-align="left">L</button>
+            <button class="car-btn car-btn-secondary car-btn-sm" data-align="center">C</button>
+            <button class="car-btn car-btn-secondary car-btn-sm" data-align="right">R</button>
+          </div>
+          <div class="car-extra-controls">
+            <button class="car-btn car-btn-secondary car-btn-sm" id="btn-center-layer" style="width:100%;margin-top:6px">Center on Slide</button>
           </div>
         </div>
       </div>
@@ -310,7 +347,7 @@
 <!-- Hidden export canvas -->
 <canvas id="export-canvas" style="display:none"></canvas>
 
-<script src="/engines/creator-carousel-engine.js"></script>
+<script src="/engines/creator-carousel-engine.js?v=1cd34776"></script>
 <script>
 (function() {
   'use strict';
@@ -333,7 +370,16 @@
     { name: 'Bebas Neue', family: '"Bebas Neue", sans-serif' },
     { name: 'Playfair Display', family: '"Playfair Display", serif' },
     { name: 'Space Grotesk', family: '"Space Grotesk", sans-serif' },
-    { name: 'Anton', family: '"Anton", sans-serif' }
+    { name: 'Anton', family: '"Anton", sans-serif' },
+    { name: 'Righteous', family: '"Righteous", sans-serif' },
+    { name: 'Permanent Marker', family: '"Permanent Marker", cursive' },
+    { name: 'Bangers', family: '"Bangers", cursive' },
+    { name: 'Luckiest Guy', family: '"Luckiest Guy", cursive' },
+    { name: 'Press Start 2P', family: '"Press Start 2P", monospace' },
+    { name: 'Pacifico', family: '"Pacifico", cursive' },
+    { name: 'Black Ops One', family: '"Black Ops One", sans-serif' },
+    { name: 'Russo One', family: '"Russo One", sans-serif' },
+    { name: 'Bungee', family: '"Bungee", sans-serif' }
   ];
 
   var COLORS = ['#FFFFFF','#000000','#AF52DE','#5B21B6','#FF3B30','#FF9500','#FFD60A','#34C759','#007AFF','#5856D6','#FF2D55','#1C1C1E','#D4AF37','#C41E3A','#006B3C','#1B1464'];
@@ -441,7 +487,8 @@
         el.style.position = 'absolute';
         el.style.left = ((layer.x || format.w / 2) * scale) + 'px';
         el.style.top = ((layer.y || format.h / 2) * scale) + 'px';
-        el.style.transform = 'translate(-50%, -50%)';
+        var rot = layer.rotation || 0;
+        el.style.transform = 'translate(-50%, -50%)' + (rot ? ' rotate(' + rot + 'deg)' : '');
         el.style.fontSize = ((layer.fontSize || 48) * scale) + 'px';
         el.style.fontFamily = layer.fontFamily || '"DM Sans", sans-serif';
         el.style.fontWeight = layer.fontWeight || 400;
@@ -450,6 +497,8 @@
         el.style.maxWidth = ((layer.maxWidth || format.w - 100) * scale) + 'px';
         el.style.lineHeight = layer.lineHeight || 1.2;
         el.style.wordWrap = 'break-word';
+        if (typeof layer.opacity === 'number' && layer.opacity < 100) el.style.opacity = layer.opacity / 100;
+        if (layer.letterSpacing) el.style.letterSpacing = (layer.letterSpacing * scale) + 'px';
 
         el.addEventListener('mousedown', startDrag);
         el.addEventListener('touchstart', startDrag, { passive: false });
@@ -472,6 +521,8 @@
         imgEl.style.width = ((layer.w || 300) * scale) + 'px';
         imgEl.style.height = ((layer.h || 300) * scale) + 'px';
         imgEl.style.opacity = (layer.opacity || 100) / 100;
+        var imgRot = layer.rotation || 0;
+        if (imgRot) imgEl.style.transform = 'rotate(' + imgRot + 'deg)';
 
         var img = document.createElement('img');
         img.src = layer.dataUrl;
@@ -494,9 +545,11 @@
         emoEl.style.position = 'absolute';
         emoEl.style.left = ((layer.x || format.w / 2) * scale) + 'px';
         emoEl.style.top = ((layer.y || format.h / 2) * scale) + 'px';
-        emoEl.style.transform = 'translate(-50%, -50%)';
+        var emoRot = layer.rotation || 0;
+        emoEl.style.transform = 'translate(-50%, -50%)' + (emoRot ? ' rotate(' + emoRot + 'deg)' : '');
         emoEl.style.fontSize = ((layer.size || 64) * scale) + 'px';
         emoEl.style.lineHeight = '1';
+        if (typeof layer.opacity === 'number' && layer.opacity < 100) emoEl.style.opacity = layer.opacity / 100;
         emoEl.textContent = layer.content || '';
 
         emoEl.addEventListener('mousedown', startDrag);
@@ -788,6 +841,36 @@
         renderSlide();
       }
     });
+
+    var rotSlider = document.getElementById('text-rotation');
+    var rotVal = document.getElementById('text-rotation-val');
+    rotSlider.addEventListener('input', function() {
+      rotVal.textContent = rotSlider.value;
+      if (selectedLayerId) {
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { rotation: parseInt(rotSlider.value) });
+        renderSlide();
+      }
+    });
+
+    var textOpSlider = document.getElementById('text-opacity');
+    var textOpVal = document.getElementById('text-opacity-val');
+    textOpSlider.addEventListener('input', function() {
+      textOpVal.textContent = textOpSlider.value;
+      if (selectedLayerId) {
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { opacity: parseInt(textOpSlider.value) });
+        renderSlide();
+      }
+    });
+
+    var lsSlider = document.getElementById('text-letter-spacing');
+    var lsVal = document.getElementById('text-letter-spacing-val');
+    lsSlider.addEventListener('input', function() {
+      lsVal.textContent = lsSlider.value;
+      if (selectedLayerId) {
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { letterSpacing: parseInt(lsSlider.value) });
+        renderSlide();
+      }
+    });
   }
 
   // ── SIZE PICKER ──
@@ -882,44 +965,104 @@
   // ── AFRO ASSETS ──
   function setupAfroAssets() {
     var stickers = engine.getAfroStickers();
+
+    // Extend with 3 new categories
+    stickers.push({cat:"sports",items:["\u26BD","\uD83C\uDFC0","\uD83C\uDFC6","\uD83E\uDD4A","\uD83C\uDFC3","\uD83C\uDFCB\uFE0F","\u26F3","\uD83C\uDFBE","\uD83C\uDFCF","\uD83E\uDD45","\uD83C\uDFC5","\uD83E\uDD3C","\uD83D\uDEB4","\uD83C\uDFCA","\uD83E\uDD3E"]});
+    stickers.push({cat:"celebration",items:["\uD83C\uDF89","\uD83C\uDF8A","\u2728","\uD83C\uDF86","\uD83C\uDF87","\uD83E\uDD73","\uD83C\uDF88","\uD83C\uDF80","\uD83C\uDF96\uFE0F","\uD83D\uDCAB","\uD83C\uDF1F","\uD83D\uDD25","\uD83C\uDF81","\uD83C\uDF8E","\uD83C\uDF8F"]});
+    stickers.push({cat:"nature",items:["\uD83C\uDF0D","\uD83C\uDF33","\u2600\uFE0F","\uD83C\uDFD4\uFE0F","\uD83E\uDD81","\uD83D\uDC18","\uD83E\uDD92","\uD83E\uDD93","\uD83D\uDC06","\uD83E\uDD8D","\uD83D\uDC2B","\uD83E\uDD85","\uD83C\uDF34","\uD83C\uDF3A","\uD83C\uDF3B","\uD83E\uDEB6","\uD83C\uDF0A","\uD83C\uDF05","\uD83C\uDF04","\uD83E\uDDA9"]});
+
+    var catNames = { flags:'Flags', culture:'Culture', food:'Food', music:'Music', business:'Business', sports:'Sports', celebration:'Party', nature:'Nature' };
     var tabs = document.getElementById('sticker-tabs');
     var grid = document.getElementById('sticker-grid');
+
+    // Flag emoji to country code helper
+    function flagEmojiToCode(emoji) {
+      var chars = Array.from(emoji);
+      if (chars.length < 2) return null;
+      var first = chars[0].codePointAt(0);
+      var second = chars[1].codePointAt(0);
+      if (first >= 0x1F1E6 && first <= 0x1F1FF && second >= 0x1F1E6 && second <= 0x1F1FF) {
+        return String.fromCharCode(first - 0x1F1E6 + 65) + String.fromCharCode(second - 0x1F1E6 + 65);
+      }
+      return null;
+    }
 
     // Build tabs
     stickers.forEach(function(group, idx) {
       var tab = document.createElement('button');
       tab.className = 'car-sticker-tab' + (idx === 0 ? ' active' : '');
-      tab.textContent = group.cat.charAt(0).toUpperCase() + group.cat.slice(1);
+      tab.textContent = catNames[group.cat] || group.cat.charAt(0).toUpperCase() + group.cat.slice(1);
       tab.addEventListener('click', function() {
         tabs.querySelectorAll('.car-sticker-tab').forEach(function(t) { t.classList.remove('active'); });
         tab.classList.add('active');
-        renderStickerGrid(group.items);
+        renderStickerGrid(group.cat, group.items);
       });
       tabs.appendChild(tab);
     });
 
-    function renderStickerGrid(items) {
+    function renderStickerGrid(cat, items) {
       grid.innerHTML = '';
       items.forEach(function(emoji) {
         var btn = document.createElement('button');
         btn.className = 'car-sticker-btn';
-        btn.textContent = emoji;
-        btn.addEventListener('click', function() {
-          var format = engine.getFormat();
-          engine.addLayerToSlide(engine.getActiveIndex(), {
-            type: 'emoji', content: emoji,
-            x: format.w / 2, y: format.h / 2,
-            size: 64
+
+        // Flag emoji detection — use images on all platforms for consistency
+        var code = (cat === 'flags') ? flagEmojiToCode(emoji) : null;
+        if (code) {
+          var flagImg = document.createElement('img');
+          flagImg.src = 'https://flagcdn.com/w80/' + code.toLowerCase() + '.png';
+          flagImg.alt = code;
+          flagImg.loading = 'lazy';
+          btn.appendChild(flagImg);
+          btn.title = code;
+          btn.addEventListener('click', function() {
+            var flagUrl = 'https://flagcdn.com/w320/' + code.toLowerCase() + '.png';
+            var img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+              var fc = document.createElement('canvas');
+              fc.width = img.width;
+              fc.height = img.height;
+              fc.getContext('2d').drawImage(img, 0, 0);
+              var format = engine.getFormat();
+              engine.addLayerToSlide(engine.getActiveIndex(), {
+                type: 'image', dataUrl: fc.toDataURL(),
+                x: format.w / 2 - 100, y: format.h / 2 - 70,
+                w: 200, h: 140, opacity: 100
+              });
+              renderAll();
+              toast('Flag added', 'success');
+            };
+            img.onerror = function() {
+              var format = engine.getFormat();
+              engine.addLayerToSlide(engine.getActiveIndex(), {
+                type: 'emoji', content: emoji,
+                x: format.w / 2, y: format.h / 2, size: 64
+              });
+              renderAll();
+              toast('Sticker added', 'success');
+            };
+            img.src = flagUrl;
           });
-          renderAll();
-          toast('Sticker added', 'success');
-        });
+        } else {
+          btn.textContent = emoji;
+          btn.addEventListener('click', function() {
+            var format = engine.getFormat();
+            engine.addLayerToSlide(engine.getActiveIndex(), {
+              type: 'emoji', content: emoji,
+              x: format.w / 2, y: format.h / 2,
+              size: 64
+            });
+            renderAll();
+            toast('Sticker added', 'success');
+          });
+        }
         grid.appendChild(btn);
       });
     }
 
     // Show first category
-    if (stickers.length > 0) renderStickerGrid(stickers[0].items);
+    if (stickers.length > 0) renderStickerGrid(stickers[0].cat, stickers[0].items);
   }
 
   // ── AFRO PALETTES ──
@@ -1090,6 +1233,14 @@
       }
     });
 
+    document.getElementById('text-bold').addEventListener('click', function() {
+      this.classList.toggle('on');
+      if (selectedLayerId) {
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { fontWeight: this.classList.contains('on') ? 900 : 400 });
+        renderSlide();
+      }
+    });
+
     document.getElementById('toggle-slide-numbers').addEventListener('click', function() {
       this.classList.toggle('on');
       showSlideNumbers = this.classList.contains('on');
@@ -1132,6 +1283,14 @@
         engine.removeLayerFromSlide(engine.getActiveIndex(), selectedLayerId);
         selectedLayerId = null;
         renderAll();
+      }
+    });
+
+    document.getElementById('btn-center-layer').addEventListener('click', function() {
+      if (selectedLayerId) {
+        var format = engine.getFormat();
+        engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, { x: Math.round(format.w / 2), y: Math.round(format.h / 2) });
+        renderSlide();
       }
     });
 
@@ -1319,6 +1478,185 @@
     t.className = 'car-toast show ' + (type || '');
     setTimeout(function() { t.className = 'car-toast'; }, 2000);
   }
+
+  // ── KEYBOARD SHORTCUTS ──
+  document.addEventListener('keydown', function(e) {
+    // Skip if preview is open or editing text
+    if (document.getElementById('preview-overlay').classList.contains('open')) return;
+    if (document.activeElement && (document.activeElement.contentEditable === 'true' || document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) return;
+
+    // Delete/Backspace: delete selected layer
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedLayerId) {
+      e.preventDefault();
+      engine.removeLayerFromSlide(engine.getActiveIndex(), selectedLayerId);
+      selectedLayerId = null;
+      renderAll();
+    }
+
+    // Ctrl+Z: undo
+    if (e.key === 'z' && (e.ctrlKey || e.metaKey) && !e.shiftKey) {
+      e.preventDefault();
+      engine.undo(); selectedLayerId = null; fitCanvas(); renderAll();
+    }
+
+    // Ctrl+Y or Ctrl+Shift+Z: redo
+    if ((e.key === 'y' && (e.ctrlKey || e.metaKey)) || (e.key === 'z' && (e.ctrlKey || e.metaKey) && e.shiftKey)) {
+      e.preventDefault();
+      engine.redo(); selectedLayerId = null; fitCanvas(); renderAll();
+    }
+
+    // Arrow keys: nudge selected layer by 5px
+    if (selectedLayerId && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.key) !== -1) {
+      e.preventDefault();
+      var nudge = e.shiftKey ? 20 : 5;
+      var slide = engine.getActiveSlide();
+      if (!slide) return;
+      var layer = null;
+      for (var li = 0; li < slide.layers.length; li++) {
+        if (slide.layers[li].id === selectedLayerId) { layer = slide.layers[li]; break; }
+      }
+      if (!layer) return;
+      var dx = 0, dy = 0;
+      if (e.key === 'ArrowLeft') dx = -nudge;
+      if (e.key === 'ArrowRight') dx = nudge;
+      if (e.key === 'ArrowUp') dy = -nudge;
+      if (e.key === 'ArrowDown') dy = nudge;
+      engine.updateSlideLayer(engine.getActiveIndex(), selectedLayerId, {
+        x: (layer.x || 0) + dx,
+        y: (layer.y || 0) + dy
+      });
+      renderSlide();
+    }
+  });
+
+  // ── MONKEY-PATCH renderSlideToCanvas for rotation, opacity, letterSpacing, images, emoji ──
+  var _origRender = engine.renderSlideToCanvas.bind(engine);
+  engine.renderSlideToCanvas = function(slideIdx, canvas) {
+    var slides = engine.getSlides();
+    var slide = slides[slideIdx];
+    if (!slide) return;
+    var fmt = engine.getFormat();
+    var ctx = canvas.getContext('2d');
+    canvas.width = fmt.w;
+    canvas.height = fmt.h;
+
+    // Draw background
+    var bg = slide.bg || { type: 'solid', color: '#1a1a1a' };
+    if (bg.type === 'gradient' && bg.colors) {
+      var angle = (bg.angle || 135) * Math.PI / 180;
+      var gx1 = fmt.w / 2 - Math.cos(angle) * fmt.w;
+      var gy1 = fmt.h / 2 - Math.sin(angle) * fmt.h;
+      var gx2 = fmt.w / 2 + Math.cos(angle) * fmt.w;
+      var gy2 = fmt.h / 2 + Math.sin(angle) * fmt.h;
+      var grad = ctx.createLinearGradient(gx1, gy1, gx2, gy2);
+      grad.addColorStop(0, bg.colors[0]);
+      grad.addColorStop(1, bg.colors[1]);
+      ctx.fillStyle = grad;
+    } else if (bg.type === 'image' && bg.dataUrl) {
+      ctx.fillStyle = '#1a1a1a';
+    } else {
+      ctx.fillStyle = bg.color || '#1a1a1a';
+    }
+    ctx.fillRect(0, 0, fmt.w, fmt.h);
+
+    // Draw bg image if present
+    if (bg.type === 'image' && bg.dataUrl) {
+      try {
+        var bgImg = new Image();
+        bgImg.src = bg.dataUrl;
+        if (bgImg.complete && bgImg.naturalWidth) {
+          var bgScale = Math.max(fmt.w / bgImg.naturalWidth, fmt.h / bgImg.naturalHeight);
+          var bw = bgImg.naturalWidth * bgScale;
+          var bh = bgImg.naturalHeight * bgScale;
+          ctx.drawImage(bgImg, (fmt.w - bw) / 2, (fmt.h - bh) / 2, bw, bh);
+        }
+      } catch(ignored) {}
+    }
+
+    // Draw layers
+    slide.layers.forEach(function(layer) {
+      var layerOpacity = (typeof layer.opacity === 'number') ? layer.opacity / 100 : 1;
+      var layerRotation = (layer.rotation || 0) * Math.PI / 180;
+
+      if (layer.type === 'text') {
+        ctx.save();
+        ctx.globalAlpha = layerOpacity;
+        var tx = layer.x || fmt.w / 2;
+        var ty = layer.y || fmt.h / 2;
+        if (layerRotation) {
+          ctx.translate(tx, ty);
+          ctx.rotate(layerRotation);
+          ctx.translate(-tx, -ty);
+        }
+        var fs = layer.fontSize || 48;
+        var fw = layer.fontWeight || 400;
+        var ff = layer.fontFamily || '"DM Sans", sans-serif';
+        ctx.font = fw + ' ' + fs + 'px ' + ff;
+        ctx.fillStyle = layer.color || '#fff';
+        ctx.textAlign = layer.textAlign || 'center';
+        ctx.textBaseline = 'middle';
+        var content = layer.content || '';
+        if (layer.uppercase) content = content.toUpperCase();
+        var mw = layer.maxWidth || fmt.w - 100;
+        var words = content.split(' ');
+        var lines = [];
+        var curLine = '';
+        for (var wi = 0; wi < words.length; wi++) {
+          var testLine = curLine ? curLine + ' ' + words[wi] : words[wi];
+          if (ctx.measureText(testLine).width > mw && curLine) {
+            lines.push(curLine);
+            curLine = words[wi];
+          } else {
+            curLine = testLine;
+          }
+        }
+        if (curLine) lines.push(curLine);
+        var lh = fs * (layer.lineHeight || 1.2);
+        var totalH = lines.length * lh;
+        var startY = ty - totalH / 2 + lh / 2;
+        for (var li = 0; li < lines.length; li++) {
+          ctx.fillText(lines[li], tx, startY + li * lh);
+        }
+        ctx.restore();
+      } else if (layer.type === 'image' && layer.dataUrl) {
+        ctx.save();
+        ctx.globalAlpha = layerOpacity;
+        var ix = layer.x || 0;
+        var iy = layer.y || 0;
+        var iw = layer.w || 300;
+        var ih = layer.h || 300;
+        if (layerRotation) {
+          ctx.translate(ix + iw / 2, iy + ih / 2);
+          ctx.rotate(layerRotation);
+          ctx.translate(-(ix + iw / 2), -(iy + ih / 2));
+        }
+        try {
+          var layerImg = new Image();
+          layerImg.src = layer.dataUrl;
+          if (layerImg.complete && layerImg.naturalWidth) {
+            ctx.drawImage(layerImg, ix, iy, iw, ih);
+          }
+        } catch(ignored) {}
+        ctx.restore();
+      } else if (layer.type === 'emoji') {
+        ctx.save();
+        ctx.globalAlpha = layerOpacity;
+        var ex = layer.x || fmt.w / 2;
+        var ey = layer.y || fmt.h / 2;
+        if (layerRotation) {
+          ctx.translate(ex, ey);
+          ctx.rotate(layerRotation);
+          ctx.translate(-ex, -ey);
+        }
+        var eSize = layer.size || 64;
+        ctx.font = eSize + 'px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(layer.content || '', ex, ey);
+        ctx.restore();
+      }
+    });
+  };
 
   window.carToast = toast;
 })();

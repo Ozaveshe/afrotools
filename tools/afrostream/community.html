@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Hub — Submit Creators, Streams & Tips | AfroStream</title>
+<meta name="description" content="Help build Africa's creator directory. Submit creators, upcoming streams, and news tips. Earn AfroPoints for every approved contribution.">
+<link rel="canonical" href="https://afrotools.com/tools/afrostream/community.html">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrostream/community.html">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrostream/community.html">
+
+<!-- OG -->
+<meta property="og:title" content="AfroStream Community — Submit Creators & Earn Points">
+<meta property="og:description" content="Help build Africa's creator directory. Submit creators, streams, news tips and earn AfroPoints.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/afrostream/community.html">
+<meta property="og:site_name" content="AfroTools">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="style.css?v=2fc66542">
+
+<!-- Components -->
+<script src="/assets/js/components/navbar.js?v=e55f3c7d" defer></script>
+<script src="/assets/js/components/footer.js?v=2df4a28a" defer></script>
+
+<style>
+  .ch-wrap { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
+  .ch-hero { text-align: center; margin-bottom: 40px; }
+  .ch-hero h1 { font-family: 'Syne', Georgia, serif; font-size: 2.2rem; color: #0f172a; margin-bottom: 8px; }
+  .ch-hero p { font-size: 1rem; color: #6B7F99; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+  .ch-points-banner { background: linear-gradient(135deg, #0063CC 0%, #007AFF 100%); color: #fff; border-radius: 14px; padding: 20px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ch-points-banner .emoji { font-size: 2rem; }
+  .ch-points-banner h3 { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+  .ch-points-banner p { font-size: .82rem; opacity: .9; }
+  .ch-points-info { flex: 1; min-width: 200px; }
+  .ch-points-table { display: flex; gap: 16px; flex-wrap: wrap; }
+  .ch-pt { text-align: center; background: rgba(255,255,255,.15); padding: 8px 14px; border-radius: 8px; }
+  .ch-pt-val { font-size: 1.1rem; font-weight: 800; }
+  .ch-pt-label { font-size: .65rem; opacity: .8; }
+
+  /* Type selector */
+  .ch-type-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .ch-type-tab { padding: 10px 20px; border: 2px solid #E8F0FE; border-radius: 12px; background: #fff; font-family: inherit; font-size: .85rem; font-weight: 600; color: #6B7F99; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 8px; }
+  .ch-type-tab:hover { border-color: #007AFF; color: #0063CC; }
+  .ch-type-tab.active { border-color: #0063CC; background: #E8F2FF; color: #0063CC; }
+  .ch-type-tab .pts { font-size: .65rem; background: #0063CC; color: #fff; padding: 2px 6px; border-radius: 6px; }
+
+  /* Forms */
+  .ch-form { background: #fff; border: 1.5px solid #E8F0FE; border-radius: 16px; padding: 28px 24px; }
+  .ch-form h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; color: #0f172a; }
+  .ch-form .desc { font-size: .82rem; color: #6B7F99; margin-bottom: 20px; }
+  .ch-row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .ch-group { flex: 1; min-width: 160px; }
+  .ch-group-wide { flex: 2; min-width: 240px; }
+  .ch-group label { display: block; font-size: .78rem; font-weight: 600; color: #6B7F99; margin-bottom: 5px; }
+  .ch-group label .req { color: #ef4444; }
+  .ch-input { width: 100%; padding: 10px 14px; border: 1.5px solid #E5E7EB; border-radius: 10px; font-family: inherit; font-size: .85rem; color: #0f172a; background: #fff; outline: none; transition: border-color .15s; }
+  .ch-input:focus { border-color: #0063CC; box-shadow: 0 0 0 3px rgba(0,122,255,.08); }
+  .ch-input::placeholder { color: #94a3b8; }
+  select.ch-input { cursor: pointer; }
+  textarea.ch-input { resize: vertical; min-height: 90px; }
+
+  .ch-submit-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: #0063CC; color: #fff; font-family: inherit; font-size: .95rem; font-weight: 700; cursor: pointer; transition: background .15s; margin-top: 8px; }
+  .ch-submit-btn:hover { background: #0063CC; }
+  .ch-submit-btn:disabled { background: #99C2FF; cursor: not-allowed; }
+
+  /* Success state */
+  .ch-success { text-align: center; padding: 40px 20px; }
+  .ch-success .emoji { font-size: 3rem; margin-bottom: 12px; }
+  .ch-success h3 { font-size: 1.2rem; font-weight: 800; color: #059669; margin-bottom: 8px; }
+  .ch-success p { font-size: .9rem; color: #6B7F99; margin-bottom: 20px; }
+  .ch-success .btn-again { padding: 10px 24px; border: 2px solid #0063CC; border-radius: 10px; background: #fff; color: #0063CC; font-family: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
+
+  /* Error */
+  .ch-error { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 12px 16px; font-size: .85rem; color: #991B1B; margin-bottom: 16px; display: none; }
+
+  /* My submissions */
+  .ch-my-subs { margin-top: 40px; }
+  .ch-my-subs h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; }
+  .ch-sub-item { background: #FAFBFC; border: 1.5px solid #E8F0FE; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .ch-sub-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ch-sub-title { font-size: .9rem; font-weight: 700; }
+  .ch-badge { font-size: .6rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; }
+  .ch-badge-pending { background: #FEF3C7; color: #92400E; }
+  .ch-badge-approved { background: #D1FAE5; color: #065F46; }
+  .ch-badge-rejected { background: #FEE2E2; color: #991B1B; }
+  .ch-sub-meta { font-size: .75rem; color: #6B7F99; margin-top: 4px; }
+
+  /* Logged out prompt */
+  .ch-auth-prompt { background: #E8F2FF; border: 1.5px solid #B3D4FF; border-radius: 14px; padding: 24px; text-align: center; margin-bottom: 24px; }
+  .ch-auth-prompt p { font-size: .85rem; color: #6B7F99; margin-bottom: 12px; }
+  .ch-auth-prompt .btn-signin { padding: 10px 28px; border: none; border-radius: 10px; background: #0063CC; color: #fff; font-family: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
+
+  @media (max-width: 640px) {
+    .ch-hero h1 { font-size: 1.6rem; }
+    .ch-row { flex-direction: column; }
+    .ch-group, .ch-group-wide { min-width: 0; }
+    .ch-type-tabs { gap: 6px; }
+    .ch-type-tab { padding: 8px 14px; font-size: .78rem; }
+    .ch-points-banner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="ch-wrap">
+
+  <!-- HERO -->
+  <div class="ch-hero">
+    <h1>Community Hub</h1>
+    <p>Help us build Africa's biggest creator directory. Submit a creator, upcoming stream, or news tip — earn AfroPoints for every approved contribution.</p>
+  </div>
+
+  <!-- POINTS BANNER -->
+  <div class="ch-points-banner">
+    <span class="emoji">🏆</span>
+    <div class="ch-points-info">
+      <h3>Earn AfroPoints</h3>
+      <p>Every approved submission earns you points. Climb the leaderboard!</p>
+    </div>
+    <div class="ch-points-table">
+      <div class="ch-pt"><div class="ch-pt-val">+10</div><div class="ch-pt-label">Creator</div></div>
+      <div class="ch-pt"><div class="ch-pt-val">+8</div><div class="ch-pt-label">News Tip</div></div>
+      <div class="ch-pt"><div class="ch-pt-val">+5</div><div class="ch-pt-label">Stream</div></div>
+      <div class="ch-pt"><div class="ch-pt-val">+3</div><div class="ch-pt-label">Correction</div></div>
+    </div>
+  </div>
+
+  <!-- AUTH PROMPT (shown if not logged in) -->
+  <div class="ch-auth-prompt" id="authPrompt" style="display:none">
+    <p>Sign in to track your submissions and earn AfroPoints. You can still submit anonymously!</p>
+    <button class="btn-signin" onclick="if(window.AfroAuth)AfroAuth.showLoginModal()">Sign In</button>
+  </div>
+
+  <!-- ERROR -->
+  <div class="ch-error" id="formError"></div>
+
+  <!-- TYPE SELECTOR -->
+  <div class="ch-type-tabs" id="typeTabs">
+    <button class="ch-type-tab active" data-type="creator">🎬 Creator <span class="pts">+10 pts</span></button>
+    <button class="ch-type-tab" data-type="stream">📡 Stream <span class="pts">+5 pts</span></button>
+    <button class="ch-type-tab" data-type="news_tip">📰 News Tip <span class="pts">+8 pts</span></button>
+    <button class="ch-type-tab" data-type="correction">✏️ Correction <span class="pts">+3 pts</span></button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       FORM: CREATOR
+       ═══════════════════════════════════════════════════ -->
+  <div class="ch-form" id="form-creator">
+    <h2>Submit a Creator</h2>
+    <p class="desc">Know an African creator who should be on AfroStream? Tell us about them.</p>
+    <form id="creatorSubmitForm">
+      <div class="ch-row">
+        <div class="ch-group ch-group-wide">
+          <label>Creator Name <span class="req">*</span></label>
+          <input type="text" name="name" class="ch-input" required placeholder="e.g. Peller" maxlength="100">
+        </div>
+        <div class="ch-group">
+          <label>Country <span class="req">*</span></label>
+          <select name="country" class="ch-input" required>
+            <option value="">Select...</option>
+            <option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option>
+            <option value="South Africa">South Africa</option><option value="Egypt">Egypt</option><option value="Tanzania">Tanzania</option>
+            <option value="Cameroon">Cameroon</option><option value="Ethiopia">Ethiopia</option><option value="Senegal">Senegal</option>
+            <option value="Rwanda">Rwanda</option><option value="Uganda">Uganda</option><option value="Morocco">Morocco</option>
+            <option value="Angola">Angola</option><option value="Algeria">Algeria</option><option value="Tunisia">Tunisia</option>
+            <option value="Cote d'Ivoire">Cote d'Ivoire</option><option value="DR Congo">DR Congo</option><option value="Mozambique">Mozambique</option>
+            <option value="Zimbabwe">Zimbabwe</option><option value="Zambia">Zambia</option><option value="Botswana">Botswana</option>
+            <option value="Namibia">Namibia</option><option value="Mauritius">Mauritius</option><option value="Libya">Libya</option><option value="Gabon">Gabon</option>
+          </select>
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>Primary Platform <span class="req">*</span></label>
+          <select name="primary_platform" class="ch-input" required>
+            <option value="youtube">YouTube</option><option value="twitch">Twitch</option>
+            <option value="tiktok">TikTok</option><option value="instagram">Instagram</option><option value="kick">Kick</option>
+          </select>
+        </div>
+        <div class="ch-group">
+          <label>Categories</label>
+          <input type="text" name="categories" class="ch-input" placeholder="gaming, music, comedy...">
+        </div>
+        <div class="ch-group">
+          <label>Languages</label>
+          <input type="text" name="languages" class="ch-input" placeholder="English, Yoruba...">
+        </div>
+      </div>
+      <div class="ch-group" style="margin-bottom:14px">
+        <label>Short Bio</label>
+        <textarea name="bio" class="ch-input" rows="2" maxlength="500" placeholder="What are they known for?"></textarea>
+      </div>
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>YouTube URL</label>
+          <input type="url" name="youtube_url" class="ch-input" placeholder="https://youtube.com/@...">
+        </div>
+        <div class="ch-group">
+          <label>Twitch URL</label>
+          <input type="url" name="twitch_url" class="ch-input" placeholder="https://twitch.tv/...">
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>TikTok URL</label>
+          <input type="url" name="tiktok_url" class="ch-input" placeholder="https://tiktok.com/@...">
+        </div>
+        <div class="ch-group">
+          <label>Instagram URL</label>
+          <input type="url" name="instagram_url" class="ch-input" placeholder="https://instagram.com/...">
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>Subscribers / Followers</label>
+          <input type="number" name="subscribers" class="ch-input" placeholder="150000">
+        </div>
+        <div class="ch-group">
+          <label>Est. Net Worth</label>
+          <input type="text" name="net_worth" class="ch-input" placeholder="$50,000">
+        </div>
+      </div>
+      <div class="ch-group" style="margin-bottom:14px">
+        <label>Your Name (for credit)</label>
+        <input type="text" name="user_name" class="ch-input" placeholder="Your name or handle">
+      </div>
+      <button type="submit" class="ch-submit-btn">Submit Creator for Review</button>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       FORM: STREAM
+       ═══════════════════════════════════════════════════ -->
+  <div class="ch-form" id="form-stream" style="display:none">
+    <h2>Submit an Upcoming Stream</h2>
+    <p class="desc">Know about an upcoming stream? Let us know so we can add it to the calendar.</p>
+    <form id="streamSubmitForm">
+      <div class="ch-row">
+        <div class="ch-group ch-group-wide">
+          <label>Creator Name <span class="req">*</span></label>
+          <input type="text" name="creator_name" class="ch-input" required placeholder="Who's streaming?">
+        </div>
+        <div class="ch-group ch-group-wide">
+          <label>Stream Title <span class="req">*</span></label>
+          <input type="text" name="title" class="ch-input" required placeholder="Stream title..." maxlength="200">
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>Platform <span class="req">*</span></label>
+          <select name="platform" class="ch-input" required>
+            <option value="youtube">YouTube</option><option value="twitch">Twitch</option>
+            <option value="tiktok">TikTok</option><option value="instagram">Instagram</option><option value="kick">Kick</option>
+          </select>
+        </div>
+        <div class="ch-group">
+          <label>Category</label>
+          <select name="category" class="ch-input">
+            <option value="gaming">Gaming</option><option value="music">Music</option><option value="comedy">Comedy</option>
+            <option value="tech">Tech</option><option value="fashion">Fashion</option><option value="food">Food</option>
+            <option value="education">Education</option><option value="lifestyle">Lifestyle</option>
+          </select>
+        </div>
+        <div class="ch-group">
+          <label>Country</label>
+          <select name="country" class="ch-input">
+            <option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option>
+            <option value="South Africa">South Africa</option><option value="Egypt">Egypt</option><option value="Tanzania">Tanzania</option>
+            <option value="Cameroon">Cameroon</option><option value="Ethiopia">Ethiopia</option><option value="Senegal">Senegal</option>
+            <option value="Rwanda">Rwanda</option><option value="Uganda">Uganda</option><option value="Morocco">Morocco</option>
+          </select>
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>Date & Time <span class="req">*</span></label>
+          <input type="datetime-local" name="stream_date" class="ch-input" required>
+        </div>
+        <div class="ch-group ch-group-wide">
+          <label>Stream URL</label>
+          <input type="url" name="url" class="ch-input" placeholder="https://youtube.com/live/...">
+        </div>
+      </div>
+      <div class="ch-group" style="margin-bottom:14px">
+        <label>Your Name</label>
+        <input type="text" name="user_name" class="ch-input" placeholder="Your name or handle">
+      </div>
+      <button type="submit" class="ch-submit-btn">Submit Stream for Review</button>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       FORM: NEWS TIP
+       ═══════════════════════════════════════════════════ -->
+  <div class="ch-form" id="form-news_tip" style="display:none">
+    <h2>Submit a News Tip</h2>
+    <p class="desc">Got news about an African creator? Milestone, collab, drama — we want to hear it.</p>
+    <form id="newsTipSubmitForm">
+      <div class="ch-row">
+        <div class="ch-group ch-group-wide">
+          <label>Headline <span class="req">*</span></label>
+          <input type="text" name="title" class="ch-input" required placeholder="What happened?" maxlength="200">
+        </div>
+        <div class="ch-group">
+          <label>Category</label>
+          <select name="category" class="ch-input">
+            <option value="milestones">Milestones</option><option value="platform">Platform Updates</option>
+            <option value="collabs">Collabs</option><option value="drama">Drama</option>
+            <option value="business">Business</option><option value="rising">Rising Stars</option>
+          </select>
+        </div>
+      </div>
+      <div class="ch-group" style="margin-bottom:14px">
+        <label>Summary <span class="req">*</span></label>
+        <input type="text" name="excerpt" class="ch-input" required placeholder="1-2 sentence summary..." maxlength="300">
+      </div>
+      <div class="ch-group" style="margin-bottom:14px">
+        <label>Full Details <span class="req">*</span></label>
+        <textarea name="body" class="ch-input" rows="6" required placeholder="Tell us everything..." maxlength="5000"></textarea>
+      </div>
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>Source URL</label>
+          <input type="url" name="source_url" class="ch-input" placeholder="https://...">
+        </div>
+        <div class="ch-group">
+          <label>Your Name</label>
+          <input type="text" name="user_name" class="ch-input" placeholder="Your name or handle">
+        </div>
+      </div>
+      <button type="submit" class="ch-submit-btn">Submit News Tip for Review</button>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       FORM: CORRECTION
+       ═══════════════════════════════════════════════════ -->
+  <div class="ch-form" id="form-correction" style="display:none">
+    <h2>Suggest a Correction</h2>
+    <p class="desc">Spotted wrong info on a creator page, stream, or article? Help us fix it.</p>
+    <form id="correctionSubmitForm">
+      <div class="ch-row">
+        <div class="ch-group">
+          <label>What needs fixing? <span class="req">*</span></label>
+          <select name="target_type" class="ch-input" required>
+            <option value="creator">Creator Profile</option>
+            <option value="stream">Stream Info</option>
+            <option value="news">News Article</option>
+          </select>
+        </div>
+        <div class="ch-group ch-group-wide">
+          <label>Name / Title of item <span class="req">*</span></label>
+          <input type="text" name="target_id" class="ch-input" required placeholder="Which creator/stream/article?">
+        </div>
+      </div>
+      <div class="ch-group" style="margin-bottom:14px">
+        <label>What's wrong & what's correct? <span class="req">*</span></label>
+        <textarea name="description" class="ch-input" rows="4" required placeholder="e.g. The subscriber count for Peller should be 5.2M not 3.1M. Source: youtube.com/..." maxlength="1000"></textarea>
+      </div>
+      <div class="ch-group" style="margin-bottom:14px">
+        <label>Your Name</label>
+        <input type="text" name="user_name" class="ch-input" placeholder="Your name or handle">
+      </div>
+      <button type="submit" class="ch-submit-btn">Submit Correction for Review</button>
+    </form>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="ch-success" id="successState" style="display:none">
+    <div class="emoji">🎉</div>
+    <h3>Submitted Successfully!</h3>
+    <p>Our team will review your submission shortly. If approved, it'll go live on AfroStream and you'll earn AfroPoints!</p>
+    <button class="btn-again" id="submitAnotherBtn">Submit Another</button>
+  </div>
+
+  <!-- MY SUBMISSIONS (logged in users) -->
+  <div class="ch-my-subs" id="mySubsSection" style="display:none">
+    <h2>My Submissions</h2>
+    <div id="mySubsList"></div>
+  </div>
+
+</div>
+
+<afro-footer></afro-footer>
+
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+
+<script>
+(function() {
+  'use strict';
+
+  var API = '/api/community';
+  var currentType = 'creator';
+  var authToken = null;
+
+  // Try to get auth token from AfroAuth
+  function getToken() {
+    try {
+      var session = JSON.parse(localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token'));
+      return session?.access_token || null;
+    } catch(e) { return null; }
+  }
+
+  function initAuth() {
+    authToken = getToken();
+    if (authToken) {
+      document.getElementById('authPrompt').style.display = 'none';
+      loadMySubmissions();
+    } else {
+      document.getElementById('authPrompt').style.display = '';
+    }
+  }
+
+  // ── TYPE TABS ──────────────────────────────────────────
+  document.getElementById('typeTabs').addEventListener('click', function(e) {
+    var tab = e.target.closest('.ch-type-tab');
+    if (!tab) return;
+    this.querySelectorAll('.ch-type-tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    currentType = tab.dataset.type;
+
+    // Show correct form, hide others
+    ['creator', 'stream', 'news_tip', 'correction'].forEach(function(t) {
+      var el = document.getElementById('form-' + t);
+      if (el) el.style.display = t === currentType ? '' : 'none';
+    });
+    document.getElementById('successState').style.display = 'none';
+    hideError();
+  });
+
+  // ── ERROR HANDLING ─────────────────────────────────────
+  function showError(msg) {
+    var el = document.getElementById('formError');
+    el.textContent = msg;
+    el.style.display = '';
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function hideError() {
+    document.getElementById('formError').style.display = 'none';
+  }
+
+  // ── API CALL ───────────────────────────────────────────
+  async function submitToAPI(type, payload, userName) {
+    var headers = { 'Content-Type': 'application/json' };
+    if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+
+    var res = await fetch(API + '/submit', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ type: type, payload: payload, user_name: userName })
+    });
+    var json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Submission failed');
+    return json;
+  }
+
+  // ── FORM HANDLERS ─────────────────────────────────────
+
+  // Creator form
+  document.getElementById('creatorSubmitForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    hideError();
+    var fd = new FormData(this);
+    var userName = fd.get('user_name') || 'Anonymous';
+    var payload = {
+      name: fd.get('name'),
+      country: fd.get('country'),
+      primary_platform: fd.get('primary_platform'),
+      categories: fd.get('categories'),
+      languages: fd.get('languages'),
+      bio: fd.get('bio'),
+      youtube_url: fd.get('youtube_url'),
+      twitch_url: fd.get('twitch_url'),
+      tiktok_url: fd.get('tiktok_url'),
+      instagram_url: fd.get('instagram_url'),
+      subscribers: fd.get('subscribers') ? parseInt(fd.get('subscribers')) : null,
+      net_worth: fd.get('net_worth')
+    };
+    await handleSubmit(this, 'creator', payload, userName);
+  });
+
+  // Stream form
+  document.getElementById('streamSubmitForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    hideError();
+    var fd = new FormData(this);
+    var userName = fd.get('user_name') || 'Anonymous';
+    var payload = {
+      creator_name: fd.get('creator_name'),
+      title: fd.get('title'),
+      platform: fd.get('platform'),
+      category: fd.get('category'),
+      country: fd.get('country'),
+      stream_date: fd.get('stream_date') ? new Date(fd.get('stream_date')).toISOString() : null,
+      url: fd.get('url')
+    };
+    await handleSubmit(this, 'stream', payload, userName);
+  });
+
+  // News tip form
+  document.getElementById('newsTipSubmitForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    hideError();
+    var fd = new FormData(this);
+    var userName = fd.get('user_name') || 'Anonymous';
+    var payload = {
+      title: fd.get('title'),
+      category: fd.get('category'),
+      excerpt: fd.get('excerpt'),
+      body: fd.get('body'),
+      source_url: fd.get('source_url')
+    };
+    await handleSubmit(this, 'news_tip', payload, userName);
+  });
+
+  // Correction form
+  document.getElementById('correctionSubmitForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    hideError();
+    var fd = new FormData(this);
+    var userName = fd.get('user_name') || 'Anonymous';
+    var payload = {
+      target_type: fd.get('target_type'),
+      target_id: fd.get('target_id'),
+      description: fd.get('description')
+    };
+    await handleSubmit(this, 'correction', payload, userName);
+  });
+
+  async function handleSubmit(form, type, payload, userName) {
+    var btn = form.querySelector('.ch-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    try {
+      await submitToAPI(type, payload, userName);
+      form.reset();
+      form.parentElement.style.display = 'none';
+      document.getElementById('successState').style.display = '';
+      // Refresh submissions list
+      if (authToken) loadMySubmissions();
+    } catch(e) {
+      showError(e.message);
+    }
+    btn.disabled = false;
+    btn.textContent = form.querySelector('.ch-submit-btn').dataset.origText || 'Submit for Review';
+  }
+
+  // Store original button text
+  document.querySelectorAll('.ch-submit-btn').forEach(function(btn) {
+    btn.dataset.origText = btn.textContent;
+  });
+
+  // Submit another
+  document.getElementById('submitAnotherBtn').addEventListener('click', function() {
+    document.getElementById('successState').style.display = 'none';
+    document.getElementById('form-' + currentType).style.display = '';
+  });
+
+  // ── MY SUBMISSIONS ────────────────────────────────────
+  async function loadMySubmissions() {
+    if (!authToken) return;
+    document.getElementById('mySubsSection').style.display = '';
+    var list = document.getElementById('mySubsList');
+    list.innerHTML = '<p style="color:#6B7F99;font-size:.85rem">Loading...</p>';
+    try {
+      var res = await fetch(API + '/my-submissions', {
+        headers: { 'Authorization': 'Bearer ' + authToken }
+      });
+      var json = await res.json();
+      if (!res.ok) throw new Error(json.error);
+      var subs = json.data || [];
+      if (subs.length === 0) {
+        list.innerHTML = '<p style="color:#6B7F99;font-size:.85rem">No submissions yet. Be the first!</p>';
+        return;
+      }
+      var html = '';
+      subs.forEach(function(s) {
+        var p = s.payload || {};
+        var title = p.name || p.title || p.description || 'Untitled';
+        var date = new Date(s.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+        html += '<div class="ch-sub-item">';
+        html += '<div class="ch-sub-head">';
+        html += '<span class="ch-sub-title">' + title + '</span>';
+        html += '<span class="ch-badge ch-badge-' + s.status + '">' + s.status + '</span>';
+        html += '</div>';
+        html += '<div class="ch-sub-meta">' + s.type.replace('_', ' ') + ' &middot; ' + date;
+        if (s.admin_note) html += ' &middot; <em>' + s.admin_note + '</em>';
+        html += '</div></div>';
+      });
+      list.innerHTML = html;
+    } catch(e) {
+      list.innerHTML = '<p style="color:#ef4444;font-size:.85rem">Could not load submissions</p>';
+    }
+  }
+
+  // ── INIT ──────────────────────────────────────────────
+  initAuth();
+
+  // Listen for auth changes
+  window.addEventListener('storage', function(e) {
+    if (e.key && e.key.includes('auth-token')) initAuth();
+  });
+
+})();
+</script>
+</body>
+</html>
