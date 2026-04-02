@@ -105,16 +105,25 @@ function extractKickSlug(url) {
 // ── Kick API ─────────────────────────────────────────────────────
 
 async function getKickToken() {
-  var res = await fetch('https://id.kick.com/oauth/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: 'grant_type=client_credentials' +
-          '&client_id=' + KICK_CLIENT_ID +
-          '&client_secret=' + KICK_CLIENT_SECRET
-  });
-  if (!res.ok) throw new Error('Kick auth failed: ' + res.status);
-  var data = await res.json();
-  return data.access_token;
+  // Try with the secret as-is first, then strip 0x prefix if it fails
+  var secrets = [KICK_CLIENT_SECRET];
+  if (KICK_CLIENT_SECRET && KICK_CLIENT_SECRET.startsWith('0x')) {
+    secrets.push(KICK_CLIENT_SECRET.slice(2));
+  }
+  for (var s = 0; s < secrets.length; s++) {
+    var res = await fetch('https://id.kick.com/oauth/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'grant_type=client_credentials' +
+            '&client_id=' + KICK_CLIENT_ID +
+            '&client_secret=' + secrets[s]
+    });
+    if (res.ok) {
+      var data = await res.json();
+      return data.access_token;
+    }
+  }
+  throw new Error('Kick auth failed with all secret variants');
 }
 
 async function syncKick() {
