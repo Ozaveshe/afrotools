@@ -173,9 +173,9 @@ async function syncKick() {
       var updates = { updated_at: new Date().toISOString() };
       var kickFollowers = channelData.follower_count || channelData.followers_count || 0;
 
-      // Only update if Kick followers > current (don't downgrade cross-platform)
-      if (kickFollowers > 0 && (!creator.subscribers || kickFollowers > creator.subscribers)) {
-        updates.subscribers = kickFollowers;
+      // Store per-platform follower count
+      if (kickFollowers > 0) {
+        updates.kick_followers = kickFollowers;
       }
 
       // Update avatar if available and no existing avatar
@@ -322,13 +322,12 @@ async function syncYouTube() {
           var ytViews = parseInt(ch.statistics.viewCount, 10) || 0;
           var updates = { updated_at: new Date().toISOString() };
 
-          // Update subscribers — always use fresh API data
+          // Store per-platform data
           if (ytSubs > 0) {
-            updates.subscribers = ytSubs;
+            updates.yt_subscribers = ytSubs;
           }
-
-          // Update total views — always use fresh API data
           if (ytViews > 0) {
+            updates.yt_views = ytViews;
             updates.total_views = ytViews;
           }
 
@@ -460,13 +459,13 @@ async function syncTwitch() {
     var twitchFollowers = followerCounts[twitchUser.id] || 0;
     var updates = { updated_at: new Date().toISOString() };
 
-    // Only update subscribers if Twitch followers > current (don't downgrade cross-platform)
-    if (twitchFollowers > 0 && (!creator.subscribers || twitchFollowers > creator.subscribers)) {
-      updates.subscribers = twitchFollowers;
+    // Store per-platform follower count
+    if (twitchFollowers > 0) {
+      updates.twitch_followers = twitchFollowers;
     }
 
-    // Always update avatar from Twitch if available
-    if (twitchUser.profile_image_url) {
+    // Always update avatar from Twitch if available and no YouTube avatar
+    if (twitchUser.profile_image_url && (!creator.avatar || creator.avatar.includes('ui-avatars.com'))) {
       updates.avatar = twitchUser.profile_image_url;
     }
 
@@ -521,6 +520,148 @@ async function syncTwitch() {
   return results;
 }
 
+// ── AfroStream Score Computation ─────────────────────────────────
+// Score (0-100) = weighted composite of:
+//   Total Followers (25%) — log-scaled
+//   Total Views (20%) — log-scaled
+//   Growth Rate (20%) — week-over-week follower change
+//   Streaming Consistency (15%) — streams in last 30 days
+//   Engagement (10%) — views-per-follower ratio
+//   Multi-Platform (10%) — bonus for presence on 3+ platforms
+//
+// Tiers: Rising (0-19), Trending (20-39), Established (40-59), Elite (60-79), Legend (80-100)
+
+function logScore(value, max) {
+  // Log-scale a value to 0-100 range. max = value that maps to 100.
+  if (value <= 0) return 0;
+  return Math.min(100, Math.round(Math.log10(value) / Math.log10(max) * 100));
+}
+
+function getTier(score) {
+  if (score >= 80) return 'legend';
+  if (score >= 60) return 'elite';
+  if (score >= 40) return 'established';
+  if (score >= 20) return 'trending';
+  return 'rising';
+}
+
+async function computeScores() {
+  var results = { scored: 0, snapshots: 0, errors: [] };
+
+  try {
+    // Fetch all creators with their per-platform data
+    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
+    if (!Array.isArray(creators) || !creators.length) return results;
+
+    // Fetch stream activity (last 30 days)
+    var thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString();
+    var streams = await sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + thirtyDaysAgo + '&select=creator_name');
+    var streamCounts = {};
+    if (Array.isArray(streams)) {
+      streams.forEach(function(s) {
+        streamCounts[s.creator_name] = (streamCounts[s.creator_name] || 0) + 1;
+      });
+    }
+
+    // Fetch last week's snapshot for growth calc
+    var oneWeekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+    var prevSnapshots = await sb('GET', 'as_creator_snapshots?snapshot_date=eq.' + oneWeekAgo + '&select=creator_id,total_followers');
+    var prevFollowers = {};
+    if (Array.isArray(prevSnapshots)) {
+      prevSnapshots.forEach(function(s) { prevFollowers[s.creator_id] = s.total_followers; });
+    }
+
+    var today = new Date().toISOString().slice(0, 10);
+
+    for (var i = 0; i < creators.length; i++) {
+      var cr = creators[i];
+
+      // 1. Compute total followers
+      var totalFollowers = (cr.yt_subscribers || 0) + (cr.twitch_followers || 0) + (cr.kick_followers || 0) + (cr.tiktok_followers || 0) + (cr.ig_followers || 0) + (cr.fb_followers || 0);
+
+      // 2. Total views
+      var totalViews = cr.total_views || cr.yt_views || 0;
+
+      // 3. Growth rate (week-over-week)
+      var prev = prevFollowers[cr.id] || 0;
+      var growthPct = (prev > 0 && totalFollowers > 0) ? ((totalFollowers - prev) / prev * 100) : 0;
+      growthPct = Math.max(-100, Math.min(500, growthPct)); // clamp
+
+      // 4. Platform count
+      var platformCount = 0;
+      if (cr.youtube_url) platformCount++;
+      if (cr.twitch_url) platformCount++;
+      if (cr.kick_url) platformCount++;
+      if (cr.tiktok_url) platformCount++;
+      if (cr.instagram_url) platformCount++;
+      if (cr.twitter_url) platformCount++;
+
+      // 5. Engagement (views per follower)
+      var engagement = totalFollowers > 0 ? totalViews / totalFollowers : 0;
+
+      // 6. Stream consistency (streams in last 30 days — not easily tied by ID here, skip for now)
+
+      // ── SCORE CALCULATION ──
+      var followerScore = logScore(totalFollowers, 200000000); // 200M = max (Khaby-level)
+      var viewScore = logScore(totalViews, 10000000000);       // 10B = max
+      var growthScore = Math.min(100, Math.max(0, growthPct * 5)); // 20% growth = 100
+      var consistencyScore = Math.min(100, (streamCounts[cr.id] || 0) * 10); // 10 streams/month = 100
+      var engagementScore = logScore(engagement, 100);         // 100 views/follower = max
+      var multiPlatScore = Math.min(100, Math.round(platformCount / 4 * 100)); // 4+ = 100
+
+      var afroScore = Math.round(
+        followerScore * 0.25 +
+        viewScore * 0.20 +
+        growthScore * 0.20 +
+        consistencyScore * 0.15 +
+        engagementScore * 0.10 +
+        multiPlatScore * 0.10
+      );
+      afroScore = Math.max(0, Math.min(100, afroScore));
+
+      var tier = getTier(afroScore);
+
+      // Update creator
+      try {
+        await sb('PATCH', 'as_creators?id=eq.' + cr.id, {
+          total_followers: totalFollowers,
+          afro_score: afroScore,
+          afro_tier: tier,
+          growth_pct: Math.round(growthPct * 100) / 100,
+          subscribers: totalFollowers, // total cross-platform count
+          updated_at: new Date().toISOString()
+        });
+        results.scored++;
+      } catch (e) {
+        results.errors.push('Score update/' + cr.id + ': ' + e.message);
+      }
+
+      // Save daily snapshot (upsert)
+      try {
+        await sb('POST', 'as_creator_snapshots?on_conflict=creator_id,snapshot_date', {
+          creator_id: cr.id,
+          total_followers: totalFollowers,
+          yt_subscribers: cr.yt_subscribers || 0,
+          twitch_followers: cr.twitch_followers || 0,
+          kick_followers: cr.kick_followers || 0,
+          tiktok_followers: cr.tiktok_followers || 0,
+          ig_followers: cr.ig_followers || 0,
+          total_views: totalViews,
+          afro_score: afroScore,
+          snapshot_date: today
+        });
+        results.snapshots++;
+      } catch (e) {
+        // Snapshot is non-critical
+      }
+    }
+  } catch (e) {
+    results.errors.push('Score compute: ' + e.message);
+  }
+
+  return results;
+}
+
 // ── Handler ──────────────────────────────────────────────────────
 
 exports.handler = async function(event) {
@@ -566,6 +707,9 @@ exports.handler = async function(event) {
       youtubeResults = await syncYouTube();
     }
 
+    // ── Compute scores + snapshots after all syncs ──
+    var scoreResults = await computeScores();
+
     return {
       statusCode: 200,
       headers: cors,
@@ -575,7 +719,8 @@ exports.handler = async function(event) {
         data: {
           twitch: twitchResults,
           kick: kickResults,
-          youtube: youtubeResults
+          youtube: youtubeResults,
+          scoring: scoreResults
         }
       })
     };
