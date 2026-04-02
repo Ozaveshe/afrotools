@@ -1688,6 +1688,7 @@
       const mobLoginBtn = sr.querySelector('.mob-login');
       const mobVaultLink = sr.querySelector('.mob-vault-link');
 
+      var _apBadgeLoaded = false;
       const updateAuthUI = () => {
         if (typeof AfroAuth === 'undefined' || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
           // Not logged in — show Sign in (i18n)
@@ -1714,31 +1715,31 @@
           loginBtn.href = '/dashboard/';
           loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0062CC;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + name + '</span>';
         }
-        // AfroPoints badge — show points balance next to avatar
-        (function loadPointsBadge() {
+        // AfroPoints badge — show points balance next to avatar (once only)
+        if (!_apBadgeLoaded) {
+          _apBadgeLoaded = true;
           try {
-            if (sr.querySelector('.ap-nav-badge')) return; // already loaded
             var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
-            if (!token) return;
-            fetch('/.netlify/functions/afropoints-profile', { headers: { Authorization: 'Bearer ' + token } })
-              .then(function(r) { return r.json(); })
-              .then(function(p) {
-                if (!p || p.error || !(p.current_balance >= 0)) return;
-                // Remove any existing badges first (prevent duplicates from concurrent calls)
-                sr.querySelectorAll('.ap-nav-badge').forEach(function(el) { el.remove(); });
-                var badge = document.createElement('a');
-                badge.href = '/tools/afropoints/';
-                badge.className = 'ap-nav-badge';
-                badge.title = 'AfroPoints Balance';
-                badge.style.cssText = 'display:inline-flex;align-items:center;gap:3px;background:rgba(245,158,11,0.12);color:#F59E0B;font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:100px;margin-left:6px;text-decoration:none;white-space:nowrap;';
-                var pts = p.current_balance || 0;
-                var display = pts >= 10000 ? (pts / 1000).toFixed(1) + 'k' : pts.toLocaleString();
-                badge.textContent = '🎯 ' + display;
-                if (p.current_streak > 0) badge.textContent += ' 🔥';
-                if (loginBtn && loginBtn.parentNode) loginBtn.parentNode.insertBefore(badge, loginBtn.nextSibling);
-              }).catch(function() {});
+            if (token) {
+              fetch('/.netlify/functions/afropoints-profile', { headers: { Authorization: 'Bearer ' + token } })
+                .then(function(r) { return r.json(); })
+                .then(function(p) {
+                  if (!p || p.error || !(p.current_balance >= 0)) return;
+                  sr.querySelectorAll('.ap-nav-badge').forEach(function(el) { el.remove(); });
+                  var badge = document.createElement('a');
+                  badge.href = '/tools/afropoints/';
+                  badge.className = 'ap-nav-badge';
+                  badge.title = 'AfroPoints Balance';
+                  badge.style.cssText = 'display:inline-flex;align-items:center;gap:3px;background:rgba(245,158,11,0.12);color:#F59E0B;font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:100px;margin-left:6px;text-decoration:none;white-space:nowrap;';
+                  var pts = p.current_balance || 0;
+                  var display = pts >= 10000 ? (pts / 1000).toFixed(1) + 'k' : pts.toLocaleString();
+                  badge.textContent = '🎯 ' + display;
+                  if (p.current_streak > 0) badge.textContent += ' 🔥';
+                  if (loginBtn && loginBtn.parentNode) loginBtn.parentNode.insertBefore(badge, loginBtn.nextSibling);
+                }).catch(function() {});
+            }
           } catch(e) {}
-        })();
+        }
         // Mobile: show name + vault link
         if (mobLoginBtn) {
           mobLoginBtn.href = '/dashboard/';
