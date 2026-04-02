@@ -1,7 +1,7 @@
 // netlify/functions/afropoints-verify.js
 // Consensus verification — confirms contributions when enough independent reports agree
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 function cors(event) {

@@ -1,7 +1,7 @@
 // netlify/functions/afropoints-submit.js
 // Handle data submissions — validate, store, award points, check badges
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 function cors(event) {

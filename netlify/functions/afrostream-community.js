@@ -91,7 +91,7 @@ var VALID_COUNTRIES = [
   'DR Congo','Mozambique','Zimbabwe','Zambia','Botswana','Namibia','Mauritius','Libya','Gabon'
 ];
 
-var VALID_PLATFORMS = ['youtube','twitch','tiktok','instagram','kick'];
+var VALID_PLATFORMS = ['youtube','twitch','tiktok','instagram','kick','rumble'];
 
 function validateCreatorPayload(p) {
   if (!p.name || typeof p.name !== 'string' || p.name.length < 2) return 'Creator name required (min 2 chars)';

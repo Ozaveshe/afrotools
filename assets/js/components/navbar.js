@@ -1,6 +1,6 @@
 /**
  * AFROTOOLS NAVBAR — Everything Platform Edition
- * Mega-menu with 12 categories from tool registry. Mobile drawer. Web Component.
+ * Mega-menu with 34 categories from tool registry. Mobile drawer. Web Component.
  */
 (function () {
   'use strict';
@@ -26,6 +26,22 @@
         { label: 'Social Security Calculator', href: '/tools/social-security/', emoji: '🛡️', badge: 'NEW' },
         { label: 'Pension Projection', href: '/tools/pension-projection/', emoji: '📈', badge: 'NEW' },
         { label: 'All 54 PAYE Calculators →', href: '/salary-tax/', emoji: '💰' },
+      ]
+    },
+    {
+      id: 'hr-payroll', label: 'HR & Payroll', labelFr: 'RH & Paie', labelSw: 'Rasilimali Watu', icon: '💼',
+      desc: 'Employee cost, leave, severance', descFr: 'Coût employé, congés, licenciement', descSw: 'Gharama, likizo, fidia',
+      href: '/hr-payroll/', color: '#f0fdfa', accent: '#0d9488',
+      tools: [
+        { label: 'Employee Cost Calculator', href: '/tools/employee-cost/', emoji: '💸', badge: 'NEW' },
+        { label: 'Contractor vs Employee', href: '/tools/contractor-vs-employee/', emoji: '⚖️', badge: 'NEW' },
+        { label: 'Maternity/Paternity Leave', href: '/tools/maternity-leave/', emoji: '🤰', badge: 'NEW' },
+        { label: 'Gratuity & Severance', href: '/tools/gratuity-calculator/', emoji: '💵', badge: 'NEW' },
+        { label: 'Retrenchment Package', href: '/tools/retrenchment-calculator/', emoji: '📦', badge: 'NEW' },
+        { label: 'Work Permit Cost Guide', href: '/tools/work-permit-cost/', emoji: '🛂', badge: 'NEW' },
+        { label: 'Freelancer Rate Card', href: '/tools/freelancer-rate/', emoji: '📋', badge: 'NEW' },
+        { label: 'Domestic Worker Guide', href: '/tools/domestic-worker/', emoji: '🏠', badge: 'NEW' },
+        { label: 'All HR & Payroll Tools →', href: '/hr-payroll/', emoji: '💼' },
       ]
     },
     {
@@ -1301,7 +1317,7 @@
         searchPh:     isSw ? 'Tafuta zana...'               : isFr ? 'Rechercher des outils...'                         : 'Search tools...',
         mobSignIn:    isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign In',
         mobNote:      isSw ? '🌍 Nchi 54 · bure · bila usajili'                 : isFr ? '🌍 54 pays · gratuit · sans inscription'          : '🌍 54 countries · always free · no sign-up required',
-        srchEmpty:    isSw ? 'Zana 1,300+ za Afrika'          : isFr ? '1 300+ outils africains'                            : 'Search 1,300+ African tools',
+        srchEmpty:    isSw ? 'Zana 1,390+ za Afrika'          : isFr ? '1 390+ outils africains'                            : 'Search 1,390+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
       };
 
@@ -1584,16 +1600,16 @@
                   </div>
                 </a>`).join('') +
               '<div class="search-section-label" style="padding-top:16px">All Tools</div>' +
-              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 1,300+ tools</div></div>';
+              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 1,390+ tools</div></div>';
             _activeIdx = 0;
             container.querySelector('#clearRecent')?.addEventListener('click', e => {
               e.preventDefault(); e.stopPropagation();
               try { localStorage.removeItem(RECENT_KEY); } catch {}
-              container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,300+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+              container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,390+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
             });
             return;
           }
-          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,300+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 1,390+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
           return;
         }
         if (tools.length === 0) {

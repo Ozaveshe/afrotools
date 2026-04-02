@@ -20,7 +20,8 @@ exports.handler = async function(event) {
   if (qs.country) parts.push('country=eq.' + qs.country);
   if (qs.category) parts.push('categories=cs.{' + qs.category + '}');
   if (qs.platform) {
-    var col = 'platform_' + qs.platform.toLowerCase();
+    var col = qs.platform.toLowerCase() + '_url';
+    parts.push(col + '=not.is.null');
     parts.push(col + '=neq.');
   }
 

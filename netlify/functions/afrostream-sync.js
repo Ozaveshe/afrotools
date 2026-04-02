@@ -144,7 +144,7 @@ async function syncKick() {
   }
 
   // 2. Query creators with kick_url
-  var creators = await sb('GET', 'as_creators?kick_url=not.is.null&kick_url=not.eq.&select=id,name,slug,kick_url,subscribers,avatar&is_published=eq.true');
+  var creators = await sb('GET', 'as_creators?kick_url=not.is.null&kick_url=not.eq.&select=id,name,slug,kick_url,subscribers,avatar,country&is_published=eq.true');
   if (!Array.isArray(creators) || creators.length === 0) {
     results.errors.push('No creators with Kick URLs found');
     return results;
@@ -160,7 +160,7 @@ async function syncKick() {
     if (!slug) { results.errors.push('Bad Kick URL: ' + creator.kick_url); continue; }
 
     try {
-      var res = await fetch('https://api.kick.com/public/v1/channels/' + slug, {
+      var res = await fetch('https://api.kick.com/public/v1/channels?slug=' + encodeURIComponent(slug), {
         headers: { 'Authorization': 'Bearer ' + token }
       });
       if (!res.ok) {
@@ -196,14 +196,14 @@ async function syncKick() {
           title: streamTitle,
           platform: 'Kick',
           category: (channelData.livestream && channelData.livestream.categories && channelData.livestream.categories[0] && channelData.livestream.categories[0].name) || '',
-          country: '',
+          country: creator.country || '',
           stream_date: new Date().toISOString(),
           url: 'https://kick.com/' + slug,
           is_live: true,
           is_published: true
         };
 
-        var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(creator.name) + '&platform=eq.Kick&is_live=eq.true&limit=1');
+        var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(creator.name) + '&platform=eq.Kick&limit=1&order=stream_date.desc');
         if (Array.isArray(existing) && existing.length > 0) {
           await sb('PATCH', 'as_streams?id=eq.' + existing[0].id, streamData);
         } else {
@@ -251,7 +251,7 @@ async function syncYouTube() {
   }
 
   // Get creators with youtube_url
-  var creators = await sb('GET', 'as_creators?youtube_url=not.is.null&youtube_url=not.eq.&select=id,name,slug,youtube_url,subscribers,avatar&is_published=eq.true');
+  var creators = await sb('GET', 'as_creators?youtube_url=not.is.null&youtube_url=not.eq.&select=id,name,slug,youtube_url,subscribers,avatar,country&is_published=eq.true');
   if (!Array.isArray(creators) || creators.length === 0) {
     results.errors.push('No creators with YouTube URLs found');
     return results;
@@ -349,14 +349,14 @@ async function syncYouTube() {
           title: liveItem.snippet.title || 'Live on YouTube',
           platform: 'YouTube',
           category: '',
-          country: '',
+          country: liveCreator.country || '',
           stream_date: new Date().toISOString(),
           url: 'https://youtube.com/watch?v=' + liveItem.id.videoId,
           is_live: true,
           is_published: true
         };
 
-        var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(liveCreator.name) + '&platform=eq.YouTube&is_live=eq.true&limit=1');
+        var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(liveCreator.name) + '&platform=eq.YouTube&limit=1&order=stream_date.desc');
         if (Array.isArray(existing) && existing.length > 0) {
           await sb('PATCH', 'as_streams?id=eq.' + existing[0].id, streamData);
         } else {
@@ -383,7 +383,7 @@ async function syncTwitch() {
   var token = await getTwitchToken();
 
   // 2. Query Supabase for creators with twitch_url
-  var creators = await sb('GET', 'as_creators?twitch_url=not.is.null&twitch_url=not.eq.&select=id,name,slug,twitch_url,subscribers,avatar&is_published=eq.true');
+  var creators = await sb('GET', 'as_creators?twitch_url=not.is.null&twitch_url=not.eq.&select=id,name,slug,twitch_url,subscribers,avatar,country&is_published=eq.true');
   if (!Array.isArray(creators) || creators.length === 0) {
     results.errors.push('No creators with Twitch URLs found');
     results.duration_ms = Date.now() - startTime;
@@ -516,7 +516,7 @@ async function syncTwitch() {
       title: liveStream.title || 'Live on Twitch',
       platform: 'Twitch',
       category: liveStream.game_name || '',
-      country: '',
+      country: liveCreator.country || '',
       stream_date: new Date().toISOString(),
       url: 'https://twitch.tv/' + liveUname,
       is_live: true,
@@ -525,7 +525,7 @@ async function syncTwitch() {
 
     try {
       // Check if a live stream record already exists for this creator
-      var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(liveCreator.name) + '&platform=eq.Twitch&is_live=eq.true&limit=1');
+      var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(liveCreator.name) + '&platform=eq.Twitch&limit=1&order=stream_date.desc');
       if (Array.isArray(existing) && existing.length > 0) {
         await sb('PATCH', 'as_streams?id=eq.' + existing[0].id, streamData);
       } else {

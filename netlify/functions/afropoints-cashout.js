@@ -1,7 +1,7 @@
 // netlify/functions/afropoints-cashout.js
 // Handle cashout requests and history
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const MIN_CASHOUT = 2000;
 const PRO_COST = 500;

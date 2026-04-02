@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS as_streams (
   stream_date   TIMESTAMPTZ NOT NULL,
   url           TEXT,
   thumbnail     TEXT,
+  viewer_count  INTEGER DEFAULT 0,
   is_live       BOOLEAN DEFAULT FALSE,
   is_published  BOOLEAN DEFAULT TRUE,
   created_at    TIMESTAMPTZ DEFAULT NOW(),
