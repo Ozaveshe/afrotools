@@ -251,37 +251,46 @@ async function syncYouTube() {
   }
 
   // Get creators with youtube_url
-  var creators = await sb('GET', 'as_creators?youtube_url=not.is.null&youtube_url=not.eq.&select=id,name,slug,youtube_url,subscribers,avatar,country&is_published=eq.true');
+  var creators = await sb('GET', 'as_creators?youtube_url=not.is.null&youtube_url=not.eq.&select=id,name,slug,youtube_url,subscribers,total_views,avatar,country&is_published=eq.true');
   if (!Array.isArray(creators) || creators.length === 0) {
     results.errors.push('No creators with YouTube URLs found');
     return results;
   }
 
+  // Rotate through creators in batches to stay within YouTube quota (10K/day).
+  // Handle resolution: ~1 unit each. Channel stats: 1 unit per 50. Live search: 100 each.
+  // Budget per sync run (~12 runs/day): ~800 units → resolve 50 handles + stats + 0 live checks.
+  // Live checking is handled by afrostream-livecheck.js separately.
+  var MAX_RESOLVE = 50;
+  var syncBatch = Math.floor(Date.now() / 7200000) % Math.ceil(creators.length / MAX_RESOLVE);
+  var batchCreators = creators.slice(syncBatch * MAX_RESOLVE, (syncBatch + 1) * MAX_RESOLVE);
+  results.batch = syncBatch + 1;
+  results.batchSize = batchCreators.length;
+  results.totalCreators = creators.length;
+
   // Resolve channel IDs
   var channelMap = {}; // channelId -> creator
   var channelIds = [];
 
-  for (var i = 0; i < creators.length; i++) {
-    var parsed = extractYoutubeId(creators[i].youtube_url);
-    if (!parsed) { results.errors.push('Bad YouTube URL: ' + creators[i].youtube_url); continue; }
+  for (var i = 0; i < batchCreators.length; i++) {
+    var parsed = extractYoutubeId(batchCreators[i].youtube_url);
+    if (!parsed) { results.errors.push('Bad YouTube URL: ' + batchCreators[i].youtube_url); continue; }
 
     if (parsed.type === 'id') {
-      channelMap[parsed.value] = creators[i];
+      channelMap[parsed.value] = batchCreators[i];
       channelIds.push(parsed.value);
     } else {
-      // Resolve handle/custom URL to channel ID
       try {
         var searchData = await ytGet('channels?part=id&forHandle=' + encodeURIComponent(parsed.value));
         if (searchData.items && searchData.items.length > 0) {
           var cid = searchData.items[0].id;
-          channelMap[cid] = creators[i];
+          channelMap[cid] = batchCreators[i];
           channelIds.push(cid);
         } else {
-          // Try search as fallback
           var searchRes = await ytGet('search?part=snippet&type=channel&q=' + encodeURIComponent(parsed.value) + '&maxResults=1');
           if (searchRes.items && searchRes.items.length > 0) {
             var cid2 = searchRes.items[0].snippet.channelId;
-            channelMap[cid2] = creators[i];
+            channelMap[cid2] = batchCreators[i];
             channelIds.push(cid2);
           } else {
             results.errors.push('YouTube channel not found for handle: ' + parsed.value);
@@ -298,7 +307,7 @@ async function syncYouTube() {
     return results;
   }
 
-  // Batch fetch channel stats (max 50 per request)
+  // Batch fetch channel stats (max 50 per request, 1 unit per 50)
   for (var batch = 0; batch < channelIds.length; batch += 50) {
     var chunk = channelIds.slice(batch, batch + 50);
     try {
@@ -310,11 +319,17 @@ async function syncYouTube() {
           if (!creator) continue;
 
           var ytSubs = parseInt(ch.statistics.subscriberCount, 10) || 0;
+          var ytViews = parseInt(ch.statistics.viewCount, 10) || 0;
           var updates = { updated_at: new Date().toISOString() };
 
-          // Update subscribers if YouTube count is higher
-          if (ytSubs > 0 && (!creator.subscribers || ytSubs > creator.subscribers)) {
+          // Update subscribers — always use fresh API data
+          if (ytSubs > 0) {
             updates.subscribers = ytSubs;
+          }
+
+          // Update total views — always use fresh API data
+          if (ytViews > 0) {
+            updates.total_views = ytViews;
           }
 
           // Update avatar if available and no real avatar
@@ -332,43 +347,8 @@ async function syncYouTube() {
     }
   }
 
-  // Check live status via search API
-  await sb('PATCH', 'as_streams?platform=eq.YouTube&is_live=eq.true', { is_live: false });
-
-  for (var li = 0; li < channelIds.length; li++) {
-    var cId = channelIds[li];
-    var liveCreator = channelMap[cId];
-    if (!liveCreator) continue;
-
-    try {
-      var liveData = await ytGet('search?part=snippet&channelId=' + cId + '&type=video&eventType=live&maxResults=1');
-      if (liveData.items && liveData.items.length > 0) {
-        var liveItem = liveData.items[0];
-        var streamData = {
-          creator_name: liveCreator.name,
-          title: liveItem.snippet.title || 'Live on YouTube',
-          platform: 'YouTube',
-          category: '',
-          country: liveCreator.country || '',
-          stream_date: new Date().toISOString(),
-          url: 'https://youtube.com/watch?v=' + liveItem.id.videoId,
-          is_live: true,
-          is_published: true
-        };
-
-        var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(liveCreator.name) + '&platform=eq.YouTube&limit=1&order=stream_date.desc');
-        if (Array.isArray(existing) && existing.length > 0) {
-          await sb('PATCH', 'as_streams?id=eq.' + existing[0].id, streamData);
-        } else {
-          await sb('POST', 'as_streams', streamData);
-        }
-        results.live_count++;
-      }
-    } catch (e) {
-      // Live check is non-critical, just log
-      results.errors.push('YouTube live check failed for ' + liveCreator.name + ': ' + e.message);
-    }
-  }
+  // NOTE: Live checking is done by afrostream-livecheck.js (every 30 min).
+  // No live search calls here to save quota.
 
   return results;
 }
