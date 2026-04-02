@@ -494,7 +494,7 @@ function renderLive(streams){
         (s.title ? '<div style="font-size:.72rem;color:var(--as-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px">'+s.title+'</div>' : '') +
         '<div class="as-live-meta">' +
           '<span class="as-platform '+p.cls+'">'+p.icon+' '+p.name+'</span>' +
-          '<span class="as-category">'+CATEGORIES[s.cat]+'</span>' +
+          '<span class="as-category">'+(CATEGORIES[s.cat]||'Creator')+'</span>' +
           '<span>'+c.flag+'</span>' +
           '<span style="color:var(--as-primary);font-weight:600;font-size:.7rem">'+fmtK(s.subs)+' subs</span>' +
         '</div>' +
@@ -692,7 +692,7 @@ function renderFilters(){
 
 function applyFilters(){
   var filtered = CREATORS.filter(function(cr){
-    if(activeCat!=='All' && CATEGORIES[cr.cat]!==activeCat) return false;
+    if(activeCat!=='All' && (CATEGORIES[cr.cat]||'')!==activeCat) return false;
     if(activeCountry!=='All' && (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name!==activeCountry) return false;
     return true;
   });
@@ -712,14 +712,14 @@ document.getElementById('asSearch').addEventListener('input', function(){
   }
   var filteredLive = LIVE_STREAMS.filter(function(s){
     return s.name.toLowerCase().indexOf(q)!==-1 ||
-           CATEGORIES[s.cat].toLowerCase().indexOf(q)!==-1 ||
+           (CATEGORIES[s.cat]||'').toLowerCase().indexOf(q)!==-1 ||
            (COUNTRIES[s.country]||COUNTRY_FALLBACK).name.toLowerCase().indexOf(q)!==-1;
   });
   renderLive(filteredLive);
 
   var filteredCreators = CREATORS.filter(function(cr){
     return cr.name.toLowerCase().indexOf(q)!==-1 ||
-           CATEGORIES[cr.cat].toLowerCase().indexOf(q)!==-1 ||
+           (CATEGORIES[cr.cat]||'').toLowerCase().indexOf(q)!==-1 ||
            (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name.toLowerCase().indexOf(q)!==-1 ||
            (cr.type && cr.type.toLowerCase().indexOf(q)!==-1);
   });
@@ -824,7 +824,7 @@ async function init() {
           { val: data.creators.length + '', label:'Creators' },
           { val: LIVE_STREAMS.length + '', label:'Live Now' },
           { val:'6', label:'Platforms' },
-          { val: Object.keys(data.creators.reduce(function(m,c){ m[c._raw ? c._raw.country : '']=1; return m; },{})).length + '', label:'Countries' }
+          { val: Object.keys(data.creators.reduce(function(m,c){ var k=c._raw?c._raw.country:''; if(k)m[k]=1; return m; },{})).length + '', label:'Countries' }
         ];
         statsEl.innerHTML = stats.map(function(s){
           return '<div class="as-hero-stat"><span class="as-hero-stat-val">'+s.val+'</span><span class="as-hero-stat-label">'+s.label+'</span></div>';

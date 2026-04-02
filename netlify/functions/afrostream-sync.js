@@ -40,14 +40,14 @@ function isAuthorized(event) {
   return auth === 'Bearer ' + ADMIN_SECRET;
 }
 
-async function sb(method, path, body) {
+async function sb(method, path, body, upsert) {
   var opts = {
     method: method,
     headers: {
       apikey: SUPABASE_SERVICE_KEY,
       Authorization: 'Bearer ' + SUPABASE_SERVICE_KEY,
       'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
+      'Prefer': upsert ? 'return=representation,resolution=merge-duplicates' : 'return=representation'
     }
   };
   if (body) opts.body = JSON.stringify(body);
@@ -550,7 +550,7 @@ async function computeScores() {
 
   try {
     // Fetch all creators with their per-platform data
-    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
+    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
     if (!Array.isArray(creators) || !creators.length) return results;
 
     // Fetch stream activity (last 30 days)
@@ -605,7 +605,7 @@ async function computeScores() {
       var followerScore = logScore(totalFollowers, 200000000); // 200M = max (Khaby-level)
       var viewScore = logScore(totalViews, 10000000000);       // 10B = max
       var growthScore = Math.min(100, Math.max(0, growthPct * 5)); // 20% growth = 100
-      var consistencyScore = Math.min(100, (streamCounts[cr.id] || 0) * 10); // 10 streams/month = 100
+      var consistencyScore = Math.min(100, (streamCounts[cr.name] || 0) * 10); // 10 streams/month = 100
       var engagementScore = logScore(engagement, 100);         // 100 views/follower = max
       var multiPlatScore = Math.min(100, Math.round(platformCount / 4 * 100)); // 4+ = 100
 
@@ -638,7 +638,7 @@ async function computeScores() {
 
       // Save daily snapshot (upsert)
       try {
-        await sb('POST', 'as_creator_snapshots?on_conflict=creator_id,snapshot_date', {
+        await sb('POST', 'as_creator_snapshots', {
           creator_id: cr.id,
           total_followers: totalFollowers,
           yt_subscribers: cr.yt_subscribers || 0,
@@ -649,7 +649,7 @@ async function computeScores() {
           total_views: totalViews,
           afro_score: afroScore,
           snapshot_date: today
-        });
+        }, true);
         results.snapshots++;
       } catch (e) {
         // Snapshot is non-critical
