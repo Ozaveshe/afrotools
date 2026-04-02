@@ -501,7 +501,9 @@ function renderTopThree(creators){
     var p = PLATFORMS[cr.platform] || PLATFORMS.yt;
     return '<div class="as-creator-card as-rank-'+(i+1)+' as-animate-in" style="animation-delay:'+(i*0.1)+'s">' +
       '<span class="as-rank-badge '+medals[i]+'">#'+(i+1)+'</span>' +
-      '<div class="as-avatar '+gradClass(i)+'">'+cr.name.charAt(0)+'</div>' +
+      (cr.avatar && !cr.avatar.includes('ui-avatars.com')
+        ? '<img src="'+cr.avatar+'" alt="'+cr.name+'" class="as-avatar" style="object-fit:cover">'
+        : '<div class="as-avatar '+gradClass(i)+'">'+cr.name.charAt(0)+'</div>') +
       '<div class="as-creator-name">'+cr.name+'</div>' +
       '<div class="as-creator-subs">'+fmtK(cr.followers)+' subscribers</div>' +
       '<div class="as-creator-type">'+cr.type+'</div>' +
@@ -528,9 +530,12 @@ function renderRankTable(creators){
     var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
     var p = PLATFORMS[cr.platform] || PLATFORMS.yt;
     var slug = cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-');
+    var avatarHtml = cr.avatar && !cr.avatar.includes('ui-avatars.com')
+      ? '<img src="'+cr.avatar+'" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0">'
+      : '<div class="as-avatar as-avatar-sm '+gradClass(i)+'" style="width:32px;height:32px;min-width:32px;font-size:.75rem;line-height:32px;text-align:center">'+cr.name.charAt(0)+'</div>';
     return '<tr onclick="window.location.href=\'creator.html?id='+slug+'\'" style="cursor:pointer">' +
       '<td class="as-rank-num">'+rank+'</td>' +
-      '<td><div class="as-table-user"><div class="as-avatar as-avatar-sm '+gradClass(i)+'">'+cr.name.charAt(0)+'</div><span class="as-table-user-name">'+cr.name+'</span></div></td>' +
+      '<td><div style="display:inline-flex;align-items:center;gap:10px">'+avatarHtml+'<span class="as-table-user-name">'+cr.name+'</span></div></td>' +
       '<td>'+c.flag+' '+c.name+'</td>' +
       '<td><span class="as-platform '+p.cls+'">'+p.icon+' '+p.name+'</span></td>' +
       '<td style="font-size:.75rem;color:#64748b">'+cr.type+'</td>' +
