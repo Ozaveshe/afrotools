@@ -398,8 +398,13 @@ var COUNTRIES = [
   { code:'CM', flag:'\u{1F1E8}\u{1F1F2}', name:'Cameroon' },
   { code:'ET', flag:'\u{1F1EA}\u{1F1F9}', name:'Ethiopia' },
   { code:'MA', flag:'\u{1F1F2}\u{1F1E6}', name:'Morocco' },
-  { code:'RW', flag:'\u{1F1F7}\u{1F1FC}', name:'Rwanda' }
+  { code:'RW', flag:'\u{1F1F7}\u{1F1FC}', name:'Rwanda' },
+  { code:'DZ', flag:'\u{1F1E9}\u{1F1FF}', name:'Algeria' },
+  { code:'CD', flag:'\u{1F1E8}\u{1F1E9}', name:'DR Congo' },
+  { code:'CI', flag:'\u{1F1E8}\u{1F1EE}', name:"C\u00f4te d'Ivoire" },
+  { code:'TN', flag:'\u{1F1F9}\u{1F1F3}', name:'Tunisia' }
 ];
+var COUNTRY_FALLBACK = { code:'--', flag:'\u{1F30D}', name:'Africa' };
 
 function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function fmtK(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+'K':n.toString(); }
@@ -459,21 +464,27 @@ function renderLive(streams){
     return;
   }
   el.innerHTML = streams.map(function(s,i){
-    var p = PLATFORMS[s.platform];
-    var c = COUNTRIES[s.country];
+    var p = PLATFORMS[s.platform] || PLATFORMS.yt;
+    var c = COUNTRIES[s.country] || COUNTRY_FALLBACK;
     var href = s.url || '#';
     var target = s.url ? ' target="_blank" rel="noopener"' : '';
+    var thumbStyle = s.thumbnail
+      ? 'background:url(\''+s.thumbnail+'\') center/cover no-repeat'
+      : '';
+    var thumbCls = 'as-live-thumb' + (s.thumbnail ? '' : ' '+gradClass(i));
+    var initial = s.thumbnail ? '' : s.name.charAt(0);
     return '<a href="'+href+'"'+target+' class="as-live-card">' +
-      '<div class="as-live-thumb '+gradClass(i)+'">' +
-        s.name.charAt(0) +
+      '<div class="'+thumbCls+'" style="'+thumbStyle+'">' +
+        initial +
         '<span class="as-live-badge">LIVE</span>' +
         '<span class="as-live-viewers">'+fmtK(s.viewers)+' watching</span>' +
       '</div>' +
       '<div class="as-live-info">' +
         '<div class="as-live-name">'+s.name+'</div>' +
+        (s.title ? '<div style="font-size:.72rem;color:var(--as-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px">'+s.title+'</div>' : '') +
         '<div class="as-live-meta">' +
           '<span class="as-platform '+p.cls+'">'+p.icon+' '+p.name+'</span>' +
-          '<span class="as-category">'+CAT_ICONS[s.cat]+' '+CATEGORIES[s.cat]+'</span>' +
+          '<span class="as-category">'+CATEGORIES[s.cat]+'</span>' +
           '<span>'+c.flag+'</span>' +
           '<span style="color:var(--as-primary);font-weight:600;font-size:.7rem">'+fmtK(s.subs)+' subs</span>' +
         '</div>' +
@@ -486,8 +497,8 @@ function renderTopThree(creators){
   var el = document.getElementById('topThree');
   var medals = ['gold','silver','bronze'];
   el.innerHTML = creators.slice(0,3).map(function(cr,i){
-    var c = COUNTRIES[cr.country];
-    var p = PLATFORMS[cr.platform];
+    var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
+    var p = PLATFORMS[cr.platform] || PLATFORMS.yt;
     return '<div class="as-creator-card as-rank-'+(i+1)+' as-animate-in" style="animation-delay:'+(i*0.1)+'s">' +
       '<span class="as-rank-badge '+medals[i]+'">#'+(i+1)+'</span>' +
       '<div class="as-avatar '+gradClass(i)+'">'+cr.name.charAt(0)+'</div>' +
@@ -514,8 +525,8 @@ function renderRankTable(creators){
   var el = document.getElementById('rankBody');
   el.innerHTML = creators.slice(3,22).map(function(cr,i){
     var rank = i+4;
-    var c = COUNTRIES[cr.country];
-    var p = PLATFORMS[cr.platform];
+    var c = COUNTRIES[cr.country] || COUNTRY_FALLBACK;
+    var p = PLATFORMS[cr.platform] || PLATFORMS.yt;
     var slug = cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-');
     return '<tr onclick="window.location.href=\'creator.html?id='+slug+'\'" style="cursor:pointer">' +
       '<td class="as-rank-num">'+rank+'</td>' +
@@ -584,8 +595,8 @@ function renderCalendar(){
   }
   el.innerHTML = UPCOMING.map(function(u,i){
     var parts = u.date.split(' ');
-    var p = PLATFORMS[u.platform];
-    var c = COUNTRIES[u.country];
+    var p = PLATFORMS[u.platform] || PLATFORMS.yt;
+    var c = COUNTRIES[u.country] || COUNTRY_FALLBACK;
     return '<div class="as-cal-card as-animate-in" style="animation-delay:'+(i*0.06)+'s">' +
       '<div class="as-cal-date"><div class="as-cal-date-month">'+parts[0]+'</div><div class="as-cal-date-day">'+parts[1]+'</div></div>' +
       '<div class="as-cal-info">' +
@@ -663,7 +674,7 @@ function renderFilters(){
 function applyFilters(){
   var filtered = CREATORS.filter(function(cr){
     if(activeCat!=='All' && CATEGORIES[cr.cat]!==activeCat) return false;
-    if(activeCountry!=='All' && COUNTRIES[cr.country].name!==activeCountry) return false;
+    if(activeCountry!=='All' && (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name!==activeCountry) return false;
     return true;
   });
   renderTopThree(filtered);
@@ -683,14 +694,14 @@ document.getElementById('asSearch').addEventListener('input', function(){
   var filteredLive = LIVE_STREAMS.filter(function(s){
     return s.name.toLowerCase().indexOf(q)!==-1 ||
            CATEGORIES[s.cat].toLowerCase().indexOf(q)!==-1 ||
-           COUNTRIES[s.country].name.toLowerCase().indexOf(q)!==-1;
+           (COUNTRIES[s.country]||COUNTRY_FALLBACK).name.toLowerCase().indexOf(q)!==-1;
   });
   renderLive(filteredLive);
 
   var filteredCreators = CREATORS.filter(function(cr){
     return cr.name.toLowerCase().indexOf(q)!==-1 ||
            CATEGORIES[cr.cat].toLowerCase().indexOf(q)!==-1 ||
-           COUNTRIES[cr.country].name.toLowerCase().indexOf(q)!==-1 ||
+           (COUNTRIES[cr.country]||COUNTRY_FALLBACK).name.toLowerCase().indexOf(q)!==-1 ||
            (cr.type && cr.type.toLowerCase().indexOf(q)!==-1);
   });
   renderTopThree(filteredCreators);

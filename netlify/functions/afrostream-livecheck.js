@@ -147,6 +147,7 @@ async function checkTwitch(allCreators) {
           var creator = usernameMap[stream.user_login.toLowerCase()];
           if (!creator) continue;
 
+          var thumb = stream.thumbnail_url ? stream.thumbnail_url.replace('{width}', '440').replace('{height}', '248') : null;
           await upsertStream(creator.name, {
             creator_name: creator.name,
             title: stream.title || 'Live on Twitch',
@@ -155,6 +156,7 @@ async function checkTwitch(allCreators) {
             country: creator.country || '',
             stream_date: new Date().toISOString(),
             url: 'https://twitch.tv/' + stream.user_login,
+            thumbnail: thumb,
             viewer_count: stream.viewer_count || 0,
             is_live: true,
             is_published: true
@@ -212,6 +214,7 @@ async function checkKick(allCreators) {
         var title = (ch.livestream && ch.livestream.session_title) || ch.stream_title || 'Live on Kick';
         var viewers = (ch.livestream && ch.livestream.viewer_count) || ch.viewer_count || 0;
         var category = (ch.livestream && ch.livestream.categories && ch.livestream.categories[0] && ch.livestream.categories[0].name) || '';
+        var kickThumb = (ch.livestream && ch.livestream.thumbnail) || ch.banner_image || null;
 
         await upsertStream(creator.name, {
           creator_name: creator.name,
@@ -221,6 +224,7 @@ async function checkKick(allCreators) {
           country: creator.country || '',
           stream_date: new Date().toISOString(),
           url: 'https://kick.com/' + slug,
+          thumbnail: kickThumb,
           viewer_count: viewers,
           is_live: true,
           is_published: true
@@ -307,6 +311,7 @@ async function checkYouTube(allCreators) {
           }
         } catch (e) { /* viewer count is non-critical */ }
 
+        var ytThumb = (liveItem.snippet.thumbnails && (liveItem.snippet.thumbnails.high || liveItem.snippet.thumbnails.medium || liveItem.snippet.thumbnails.default || {}).url) || ('https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg');
         await upsertStream(creator.name, {
           creator_name: creator.name,
           title: liveItem.snippet.title || 'Live on YouTube',
@@ -315,6 +320,7 @@ async function checkYouTube(allCreators) {
           country: creator.country || '',
           stream_date: new Date().toISOString(),
           url: 'https://youtube.com/watch?v=' + videoId,
+          thumbnail: ytThumb,
           viewer_count: viewers,
           is_live: true,
           is_published: true
