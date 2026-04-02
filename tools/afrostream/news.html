@@ -319,8 +319,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 </style>
 
 <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </head>
 <body class="as-news-page">
 <afro-navbar></afro-navbar>
@@ -844,6 +844,21 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   }
 
   /* -- ARTICLE PAGE --------------------------------------------- */
+  function parseMarkdown(text) {
+    if (!text) return '';
+    return text
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>')
+      .replace(/^(?!<)/, '<p>')
+      .replace(/(?!>)$/, '</p>');
+  }
+
   function renderArticlePage(slug) {
     var article = NEWS.find(function(n) { return n.slug === slug; });
     if (!article) {
@@ -893,7 +908,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         '</div>' +
       '</div>' +
       '<div class="as-article-banner"><div class="as-article-banner-inner" style="' + imgStyle(article) + '"></div></div>' +
-      '<div class="as-article-body">' + article.body + '</div>' +
+      '<div class="as-article-body">' + parseMarkdown(article.body) + '</div>' +
       '<div class="as-article-share">' +
         '<div class="as-article-share-label">Share this article</div>' +
         '<div class="as-share-btns">' +
