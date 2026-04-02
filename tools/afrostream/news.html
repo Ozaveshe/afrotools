@@ -182,7 +182,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-sidebar-card {
   background: var(--news-surface); border: 1px solid var(--news-border);
   border-radius: var(--news-radius); padding: 20px; position: relative;
-  border-left: 3px solid var(--news-accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
 }
 .as-sidebar-title {
   font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--news-text);
@@ -416,11 +416,9 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   'use strict';
 
   /* -- DEMO / FALLBACK NEWS DATA -------------------------------- */
-  var DEMO_NEWS = [
-    {
-      id: 1, slug: 'naija-tech-1m',
-      cat: 'milestones', catLabel: 'Milestones',
-      headline: 'NaijaTech Hits 1M Subscribers \u2014 First Nigerian Tech Creator to Reach the Milestone',
+  var DEMO_NEWS = [];
+  /* demo removed */
+  var _SKIP_PLACEHOLDER_ = [{_:"x",
       excerpt: 'The Lagos-based tech reviewer became the first Nigerian tech-only channel to cross one million subscribers on YouTube.',
       date: new Date(Date.now() - 2*3600000),
       readTime: 4, author: 'AfroStream Team',
@@ -620,7 +618,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   ];
 
   /* -- FETCH LIVE NEWS (fallback to demo) ----------------------- */
-  var NEWS = DEMO_NEWS;
+  var NEWS = [];
 
   async function fetchNews() {
     try {
@@ -646,7 +644,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         });
       }
     } catch(e) { /* use fallback */ }
-    return DEMO_NEWS;
+    return [];
   }
 
   /* -- FETCH CREATORS FOR SIDEBAR ------------------------------- */

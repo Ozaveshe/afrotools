@@ -368,74 +368,12 @@ function fmtK(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(n>
 function fmtUSD(n){ return '$'+fmtK(n); }
 function gradClass(i){ return 'as-grad-'+(i%8+1); }
 
-/* ---------- RICHER DEMO DATA ---------- */
+/* ---------- DATA — populated from Supabase API, no demo fallback ---------- */
 
-var LIVE_STREAMS = [
-  { name:'GamerNaija',       country:0,  platform:'yt',     cat:0, viewers:4200,  subs:1420000 },
-  { name:'ChefAmara',        country:3,  platform:'tiktok', cat:5, viewers:1800,  subs:650000  },
-  { name:'TechWithTunde',    country:0,  platform:'twitch', cat:3, viewers:3100,  subs:870000  },
-  { name:'ComedyQueenKE',    country:1,  platform:'yt',     cat:2, viewers:7600,  subs:1850000 },
-  { name:'MusicManAccra',    country:3,  platform:'ig',     cat:1, viewers:2400,  subs:580000  },
-  { name:'FashionFatima',    country:4,  platform:'tiktok', cat:4, viewers:5200,  subs:980000  },
-  { name:'SavannaGaming',    country:5,  platform:'kick',   cat:0, viewers:890,   subs:490000  },
-  { name:'NaijaCodeGirl',    country:0,  platform:'twitch', cat:3, viewers:1500,  subs:420000  },
-  { name:'DJKairo',          country:1,  platform:'ig',     cat:1, viewers:11200, subs:1200000 },
-  { name:'LagosLaughs',      country:0,  platform:'yt',     cat:2, viewers:6400,  subs:760000  },
-  { name:'CookWithNana',     country:3,  platform:'tiktok', cat:5, viewers:3300,  subs:380000  },
-  { name:'CapeTownVibes',    country:2,  platform:'kick',   cat:7, viewers:970,   subs:310000  },
-  { name:'EduWithEmeka',     country:0,  platform:'yt',     cat:6, viewers:2100,  subs:280000  },
-  { name:'DakarBeats',       country:7,  platform:'ig',     cat:1, viewers:1700,  subs:340000  },
-  { name:'AddisStyle',       country:9,  platform:'tiktok', cat:4, viewers:4800,  subs:250000  },
-  { name:'MoroccanGamer',    country:10, platform:'rumble', cat:0, viewers:1200,  subs:185000  },
-  { name:'KigaliTechGirl',   country:11, platform:'rumble', cat:3, viewers:680,   subs:92000   }
-];
-
-var CREATORS = [
-  { name:'ComedyQueenKE',    country:1,  platform:'yt',     cat:2, type:'Entertainment', followers:1850000, gifts:48200,  views:42000000, nw:320000, freq:'Daily', since:'2020' },
-  { name:'GamerNaija',       country:0,  platform:'twitch', cat:0, type:'Gaming',        followers:1420000, gifts:38500,  views:35000000, nw:275000, freq:'5x/week', since:'2019' },
-  { name:'DJKairo',          country:1,  platform:'ig',     cat:1, type:'Music & DJ',    followers:1200000, gifts:32000,  views:28000000, nw:245000, freq:'3x/week', since:'2021' },
-  { name:'FashionFatima',    country:4,  platform:'tiktok', cat:4, type:'Fashion & Lifestyle', followers:980000,  gifts:27500,  views:24000000, nw:198000, freq:'Daily', since:'2021' },
-  { name:'TechWithTunde',    country:0,  platform:'yt',     cat:3, type:'Tech & Coding',  followers:870000,  gifts:22000,  views:19000000, nw:175000, freq:'3x/week', since:'2020' },
-  { name:'LagosLaughs',      country:0,  platform:'yt',     cat:2, type:'Comedy & Skits', followers:760000,  gifts:19800,  views:16500000, nw:152000, freq:'4x/week', since:'2020' },
-  { name:'ChefAmara',        country:3,  platform:'tiktok', cat:5, type:'Food & Cooking', followers:650000,  gifts:16400,  views:14000000, nw:128000, freq:'Daily', since:'2021' },
-  { name:'MusicManAccra',    country:3,  platform:'ig',     cat:1, type:'Music Production', followers:580000,  gifts:14200,  views:12000000, nw:112000, freq:'3x/week', since:'2020' },
-  { name:'SavannaGaming',    country:5,  platform:'kick',   cat:0, type:'Gaming',        followers:490000,  gifts:11500,  views:9800000,  nw:95000,  freq:'5x/week', since:'2022' },
-  { name:'NaijaCodeGirl',    country:0,  platform:'twitch', cat:3, type:'Tech & Coding',  followers:420000,  gifts:9800,   views:8200000,  nw:82000,  freq:'4x/week', since:'2022' },
-  { name:'CookWithNana',     country:3,  platform:'tiktok', cat:5, type:'Food & Cooking', followers:380000,  gifts:8600,   views:7100000,  nw:71000,  freq:'Daily', since:'2022' },
-  { name:'DakarBeats',       country:7,  platform:'ig',     cat:1, type:'Music & DJ',    followers:340000,  gifts:7500,   views:6300000,  nw:64000,  freq:'2x/week', since:'2021' },
-  { name:'CapeTownVibes',    country:2,  platform:'yt',     cat:7, type:'Lifestyle & IRL', followers:310000,  gifts:6800,   views:5500000,  nw:58000,  freq:'3x/week', since:'2021' },
-  { name:'EduWithEmeka',     country:0,  platform:'yt',     cat:6, type:'Education',     followers:280000,  gifts:5200,   views:4800000,  nw:48000,  freq:'2x/week', since:'2020' },
-  { name:'AddisStyle',       country:9,  platform:'tiktok', cat:4, type:'Fashion',       followers:250000,  gifts:4600,   views:4200000,  nw:42000,  freq:'Daily', since:'2022' },
-  { name:'KampalaKing',      country:6,  platform:'kick',   cat:0, type:'Gaming',        followers:220000,  gifts:3900,   views:3500000,  nw:36000,  freq:'4x/week', since:'2023' },
-  { name:'JoziGamer',        country:2,  platform:'twitch', cat:0, type:'Gaming',        followers:195000,  gifts:3400,   views:3000000,  nw:31000,  freq:'5x/week', since:'2022' },
-  { name:'AbujaBaker',       country:0,  platform:'ig',     cat:5, type:'Food & Cooking', followers:170000,  gifts:2800,   views:2600000,  nw:27000,  freq:'3x/week', since:'2023' },
-  { name:'TanzanianTech',    country:5,  platform:'yt',     cat:3, type:'Tech Reviews',  followers:145000,  gifts:2200,   views:2100000,  nw:22000,  freq:'2x/week', since:'2023' },
-  { name:'MoroccanGamer',    country:10, platform:'rumble', cat:0, type:'Gaming',        followers:185000,  gifts:2900,   views:2800000,  nw:28000,  freq:'Daily', since:'2023' },
-  { name:'KigaliTechGirl',   country:11, platform:'rumble', cat:3, type:'Tech & Coding',  followers:92000,   gifts:1400,   views:1200000,  nw:15000,  freq:'3x/week', since:'2024' },
-  { name:'CasaBeats',        country:8,  platform:'tiktok', cat:1, type:'Music',         followers:120000,  gifts:1800,   views:1700000,  nw:18000,  freq:'4x/week', since:'2023' }
-];
-
-var NEWS = [
-  { title:'ComedyQueenKE Hits 1M YouTube Subscribers',           cat:'Milestone', date:'Mar 30, 2026', excerpt:'Kenyan comedy creator becomes one of the fastest African streamers to reach the million-subscriber mark on YouTube.' },
-  { title:'TikTok Africa Creator Fund Expands to 15 Countries',  cat:'Industry',  date:'Mar 28, 2026', excerpt:'TikTok announces expansion of its African creator monetization program, adding support for Kenya, Ghana, and five more countries.' },
-  { title:'GamerNaija Signs $50K Sponsorship with MTN',          cat:'Deals',     date:'Mar 26, 2026', excerpt:'Nigerian gaming creator lands biggest sponsorship deal in West African streaming history with telecom giant MTN.' },
-  { title:'Rumble Launches African Creator Program',             cat:'Platform',  date:'Mar 25, 2026', excerpt:'Rumble rolls out dedicated monetization and discovery features for creators based in Africa, with guaranteed CPM floors.' },
-  { title:'African Twitch Streamers Up 340% Year-over-Year',     cat:'Data',      date:'Mar 24, 2026', excerpt:'New report shows explosive growth of African creators on Twitch, with Nigeria and South Africa leading the surge.' },
-  { title:'DJKairo Live Set Breaks Instagram Live Record',       cat:'Milestone', date:'Mar 22, 2026', excerpt:'Kenyan DJ\'s 8-hour Afrobeats marathon set draws 180K concurrent viewers, setting new African Instagram Live record.' },
-  { title:'Kick Opens African Creator Applications',             cat:'Platform',  date:'Mar 20, 2026', excerpt:'Streaming platform Kick launches dedicated onboarding program for African creators with guaranteed minimum payouts.' }
-];
-
-var UPCOMING = [
-  { name:'GamerNaija',       title:'Call of Duty Africa Tournament Finals',  platform:'twitch', date:'Apr 2',  time:'8:00 PM WAT', country:0 },
-  { name:'ComedyQueenKE',    title:'Friday Night Comedy Roast',             platform:'yt',     date:'Apr 3',  time:'9:00 PM EAT', country:1 },
-  { name:'DJKairo',          title:'Afrobeats Saturday Mix',                platform:'ig',     date:'Apr 4',  time:'10:00 PM EAT',country:1 },
-  { name:'FashionFatima',    title:'Spring Collection Reveal',              platform:'tiktok', date:'Apr 5',  time:'7:00 PM EET', country:4 },
-  { name:'TechWithTunde',    title:'Build an App Live with AI',             platform:'yt',     date:'Apr 6',  time:'3:00 PM WAT', country:0 },
-  { name:'MoroccanGamer',    title:'FIFA Africa Cup — Rumble Exclusive',    platform:'rumble', date:'Apr 7',  time:'9:00 PM WET', country:10 },
-  { name:'CookWithNana',     title:'Jollof Wars: Ghana vs Nigeria',         platform:'tiktok', date:'Apr 7',  time:'6:00 PM GMT', country:3 },
-  { name:'SavannaGaming',    title:'FIFA Africa Cup Qualifier Stream',      platform:'kick',   date:'Apr 8',  time:'8:00 PM EAT', country:5 },
-  { name:'DakarBeats',       title:'Mbalax Fusion Live Session',            platform:'ig',     date:'Apr 9',  time:'9:00 PM GMT', country:7 }
-];
+var LIVE_STREAMS = [];
+var CREATORS = [];
+var NEWS = [];
+var UPCOMING = [];
 
 var FEATURES = [
   { icon:'\u{1F534}', title:'Live Discovery',     desc:'Find who\'s streaming right now across YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble.' },
