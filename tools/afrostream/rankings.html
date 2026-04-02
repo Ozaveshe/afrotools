@@ -335,7 +335,7 @@
 <!-- SUB-NAV -->
 <nav class="as-subnav">
   <div class="as-subnav-inner">
-    <a href="/tools/afrostream/" class="as-subnav-logo">&#127916; AfroStream</a>
+    <a href="/tools/afrostream/" class="as-subnav-logo"><span class="as-logo-icon">&#9655;</span> AfroStream</a>
     <div class="as-subnav-links">
       <a href="/tools/afrostream/">Live Now</a>
       <a href="/tools/afrostream/rankings.html" class="active">Rankings</a>
@@ -458,7 +458,7 @@
   <!-- RANKINGS TABLE -->
   <section class="as-table-section rv">
     <div class="as-container">
-      <h2 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#1e293b;margin-bottom:16px">Full Streamers Ranking</h2>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:600;color:#1e293b;margin-bottom:16px">Full Streamers Ranking</h2>
       <p style="color:#64748b;font-size:.85rem;margin-bottom:20px">Complete ranked list of African streamers sorted by overall score. Click any row to view the full creator profile.</p>
       <div class="as-table-wrap">
         <table class="as-table" id="rankingsTable">
@@ -602,7 +602,7 @@ function mapApiCreator(r) {
   var gifts = pNum(r.gift_revenue);
   var peak = pNum(r.total_views);
   var networth = pNum(r.net_worth);
-  var growth = Math.floor(Math.random() * 141) + 10; /* 10-150, not in DB yet */
+  var growth = parseFloat(r.growth_rate) || 0;
 
   return {
     id: r.id || slug,
@@ -712,7 +712,7 @@ function avatarStyle(c) {
 var currentPage = 1;
 var PAGE_SIZE = 20;
 var currentSort = 'score';
-var sortDir = -1;
+var sortDir = 1;
 
 function getFiltered() {
   var period = document.querySelector('#periodPills .as-pill.active').dataset.value;
@@ -873,7 +873,7 @@ document.querySelectorAll('.as-table th[data-sort]').forEach(function(th) {
   th.style.cursor = 'pointer';
   th.addEventListener('click', function() {
     var s = this.dataset.sort;
-    if (currentSort === s) { sortDir *= -1; } else { currentSort = s; sortDir = -1; }
+    if (currentSort === s) { sortDir *= -1; } else { currentSort = s; sortDir = 1; }
     /* Sync dropdown where possible */
     var dd = document.getElementById('sortFilter');
     if (dd.querySelector('option[value="' + currentSort + '"]')) dd.value = currentSort;
