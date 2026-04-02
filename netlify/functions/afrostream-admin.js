@@ -96,38 +96,52 @@ exports.handler = async function(event) {
 
   // Public reads — allow anonymous SELECT (RLS handles is_published filter)
   if (method === 'GET' && path === 'public/creators') {
-    var creators = await sb('GET', 'as_creators?is_published=eq.true&order=subscribers.desc', null);
-    return ok(headers, creators);
+    try {
+      var creators = await sb('GET', 'as_creators?is_published=eq.true&order=subscribers.desc', null);
+      return ok(headers, creators);
+    } catch(e) { return ok(headers, []); }
   }
   if (method === 'GET' && path === 'public/streams') {
-    var now = new Date().toISOString();
-    var upcoming = sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + now + '&order=stream_date.asc', null);
-    var recent  = sb('GET', 'as_streams?is_published=eq.true&stream_date=lt.' + now + '&order=stream_date.desc&limit=50', null);
-    var results = await Promise.all([upcoming, recent]);
-    var streams = (results[0] || []).concat(results[1] || []);
-    return ok(headers, streams);
+    try {
+      var now = new Date().toISOString();
+      var upcoming = sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + now + '&order=stream_date.asc', null);
+      var recent  = sb('GET', 'as_streams?is_published=eq.true&stream_date=lt.' + now + '&order=stream_date.desc&limit=50', null);
+      var results = await Promise.all([upcoming, recent]);
+      var streams = (results[0] || []).concat(results[1] || []);
+      return ok(headers, streams);
+    } catch(e) { return ok(headers, []); }
   }
   if (method === 'GET' && path === 'public/news') {
-    var news = await sb('GET', 'as_news?is_published=eq.true&order=published_at.desc&limit=50', null);
-    return ok(headers, news);
+    try {
+      var news = await sb('GET', 'as_news?is_published=eq.true&order=published_at.desc&limit=50', null);
+      return ok(headers, news);
+    } catch(e) { return ok(headers, []); }
   }
   if (method === 'GET' && path === 'public/featured') {
-    var feat = await sb('GET', 'as_featured?select=*,as_creators(*)&order=sort_order.asc', null);
-    return ok(headers, feat);
+    try {
+      var feat = await sb('GET', 'as_featured?select=*,as_creators(*)&order=sort_order.asc', null);
+      return ok(headers, feat);
+    } catch(e) { return ok(headers, []); }
   }
   if (method === 'GET' && path === 'public/settings') {
-    var sets = await sb('GET', 'as_settings?select=key,value', null);
-    return ok(headers, sets);
+    try {
+      var sets = await sb('GET', 'as_settings?select=key,value', null);
+      return ok(headers, sets);
+    } catch(e) { return ok(headers, []); }
   }
   if (method === 'GET' && path.match(/^public\/creators\/[\w-]+$/)) {
-    var cSlug = path.replace('public/creators/', '');
-    var cp = await sb('GET', 'as_creators?slug=eq.' + cSlug + '&is_published=eq.true', null);
-    return ok(headers, cp && cp[0] ? cp[0] : null);
+    try {
+      var cSlug = path.replace('public/creators/', '');
+      var cp = await sb('GET', 'as_creators?slug=eq.' + cSlug + '&is_published=eq.true', null);
+      return ok(headers, cp && cp[0] ? cp[0] : null);
+    } catch(e) { return ok(headers, null); }
   }
   if (method === 'GET' && path.match(/^public\/news\/[\w-]+$/)) {
-    var nSlug = path.replace('public/news/', '');
-    var np = await sb('GET', 'as_news?slug=eq.' + nSlug + '&is_published=eq.true', null);
-    return ok(headers, np && np[0] ? np[0] : null);
+    try {
+      var nSlug = path.replace('public/news/', '');
+      var np = await sb('GET', 'as_news?slug=eq.' + nSlug + '&is_published=eq.true', null);
+      return ok(headers, np && np[0] ? np[0] : null);
+    } catch(e) { return ok(headers, null); }
   }
 
   // ── ADMIN ROUTES (auth required) ──────────────────────────────

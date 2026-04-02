@@ -105,25 +105,31 @@ function extractKickSlug(url) {
 // ── Kick API ─────────────────────────────────────────────────────
 
 async function getKickToken() {
-  // Try with the secret as-is first, then strip 0x prefix if it fails
   var secrets = [KICK_CLIENT_SECRET];
   if (KICK_CLIENT_SECRET && KICK_CLIENT_SECRET.startsWith('0x')) {
     secrets.push(KICK_CLIENT_SECRET.slice(2));
   }
+  var scopes = ['public', ''];
   for (var s = 0; s < secrets.length; s++) {
-    var res = await fetch('https://id.kick.com/oauth/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'grant_type=client_credentials' +
-            '&client_id=' + encodeURIComponent(KICK_CLIENT_ID) +
-            '&client_secret=' + encodeURIComponent(secrets[s])
-    });
-    if (res.ok) {
-      var data = await res.json();
-      return data.access_token;
+    for (var sc = 0; sc < scopes.length; sc++) {
+      var body = 'grant_type=client_credentials' +
+        '&client_id=' + encodeURIComponent(KICK_CLIENT_ID) +
+        '&client_secret=' + encodeURIComponent(secrets[s]);
+      if (scopes[sc]) body += '&scope=' + scopes[sc];
+      try {
+        var res = await fetch('https://id.kick.com/oauth/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body
+        });
+        if (res.ok) {
+          var data = await res.json();
+          if (data.access_token) return data.access_token;
+        }
+      } catch(e) { /* try next variant */ }
     }
   }
-  throw new Error('Kick auth failed with all secret variants');
+  throw new Error('Kick auth failed with all secret/scope variants');
 }
 
 async function syncKick() {

@@ -71,20 +71,28 @@ async function getKickToken() {
   if (KICK_CLIENT_SECRET && KICK_CLIENT_SECRET.startsWith('0x')) {
     secrets.push(KICK_CLIENT_SECRET.slice(2));
   }
+  // Try with and without scope=public (Kick requires scope in some environments)
+  var scopes = ['public', ''];
   for (var s = 0; s < secrets.length; s++) {
-    var res = await fetch('https://id.kick.com/oauth/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'grant_type=client_credentials' +
-            '&client_id=' + encodeURIComponent(KICK_CLIENT_ID) +
-            '&client_secret=' + encodeURIComponent(secrets[s])
-    });
-    if (res.ok) {
-      var data = await res.json();
-      return data.access_token;
+    for (var sc = 0; sc < scopes.length; sc++) {
+      var body = 'grant_type=client_credentials' +
+        '&client_id=' + encodeURIComponent(KICK_CLIENT_ID) +
+        '&client_secret=' + encodeURIComponent(secrets[s]);
+      if (scopes[sc]) body += '&scope=' + scopes[sc];
+      try {
+        var res = await fetch('https://id.kick.com/oauth/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body
+        });
+        if (res.ok) {
+          var data = await res.json();
+          if (data.access_token) return data.access_token;
+        }
+      } catch(e) { /* try next */ }
     }
   }
-  throw new Error('Kick auth failed with all secret variants');
+  return null; // Don't throw — fall back to unofficial API
 }
 
 // ── Upsert stream helper ─────────────────────────────────────────
@@ -172,24 +180,65 @@ async function checkTwitch(allCreators) {
   return results;
 }
 
+// ── Kick channel data helper (tries official API, falls back to unofficial) ────
+async function fetchKickChannel(slug, token) {
+  // 1. Try official API v1 (requires token)
+  if (token) {
+    try {
+      var r1 = await fetch('https://api.kick.com/public/v1/channels?slug=' + encodeURIComponent(slug), {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+      });
+      if (r1.ok) {
+        var d1 = await r1.json();
+        var ch1 = d1.data && d1.data[0] ? d1.data[0] : null;
+        if (ch1) return ch1;
+      }
+    } catch(e) { /* fall through */ }
+  }
+
+  // 2. Try unofficial v2 API (no auth required — used by Kick web client)
+  try {
+    var r2 = await fetch('https://kick.com/api/v2/channels/' + encodeURIComponent(slug), {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0' }
+    });
+    if (r2.ok) {
+      var d2 = await r2.json();
+      // v2 response: { id, slug, is_banned, livestream: { is_live, viewer_count, session_title, ... }, following_count }
+      return {
+        is_live: !!(d2.livestream && d2.livestream.is_live),
+        follower_count: d2.following_count || 0,
+        profile_image: d2.user && d2.user.profile_pic,
+        livestream: d2.livestream || null,
+        _v2: true
+      };
+    }
+  } catch(e) { /* fall through */ }
+
+  // 3. Try official API v1 search endpoint
+  try {
+    var r3 = await fetch('https://api.kick.com/public/v1/video/livestreams?channel_name=' + encodeURIComponent(slug), {
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    });
+    if (r3.ok) {
+      var d3 = await r3.json();
+      if (d3.data) return { is_live: true, livestream: d3.data };
+    }
+  } catch(e) { /* fall through */ }
+
+  return null;
+}
+
 // ── Kick live check ───────────────────────────────────────────────
 async function checkKick(allCreators) {
   var results = { live: 0, errors: [] };
 
-  if (!KICK_CLIENT_ID || !KICK_CLIENT_SECRET) {
-    results.errors.push('Kick credentials not configured');
-    return results;
-  }
-
   var creators = allCreators.filter(function(c) { return c.kick_url; });
   if (!creators.length) return results;
 
-  var token;
-  try {
-    token = await getKickToken();
-  } catch (e) {
-    results.errors.push('Kick auth: ' + e.message);
-    return results;
+  // Try to get OAuth token (optional — we have unofficial fallback)
+  var token = null;
+  if (KICK_CLIENT_ID && KICK_CLIENT_SECRET) {
+    try { token = await getKickToken(); } catch(e) { /* use unofficial API */ }
   }
 
   // Clear all Kick live streams first
@@ -201,20 +250,15 @@ async function checkKick(allCreators) {
     if (!slug) continue;
 
     try {
-      var res = await fetch('https://api.kick.com/public/v1/channels?slug=' + encodeURIComponent(slug), {
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
-      if (!res.ok) continue;
-
-      var data = await res.json();
-      var ch = data.data && data.data[0] ? data.data[0] : data.data || data;
+      var ch = await fetchKickChannel(slug, token);
+      if (!ch) { results.errors.push('Kick/' + slug + ': no data from any API'); continue; }
 
       var isLive = ch.is_live || (ch.livestream && ch.livestream.is_live);
       if (isLive) {
-        var title = (ch.livestream && ch.livestream.session_title) || ch.stream_title || 'Live on Kick';
+        var title = (ch.livestream && (ch.livestream.session_title || ch.livestream.slug)) || 'Live on Kick';
         var viewers = (ch.livestream && ch.livestream.viewer_count) || ch.viewer_count || 0;
         var category = (ch.livestream && ch.livestream.categories && ch.livestream.categories[0] && ch.livestream.categories[0].name) || '';
-        var kickThumb = (ch.livestream && ch.livestream.thumbnail) || ch.banner_image || null;
+        var kickThumb = (ch.livestream && ch.livestream.thumbnail && (ch.livestream.thumbnail.url || ch.livestream.thumbnail)) || ch.banner_image || null;
 
         await upsertStream(creator.name, {
           creator_name: creator.name,
@@ -239,11 +283,13 @@ async function checkKick(allCreators) {
   return results;
 }
 
-// ── YouTube live check (quota-efficient) ──────────────────────────
-// Uses a single broad search for live African creators instead of
-// per-channel search (100 units per call × 200+ channels = over quota).
-// Strategy: 1 search call (100 units) + batch video details (1 unit per 50 videos)
-// Total: ~105 units vs 21,000+ with old approach.
+// ── YouTube live check (quota-safe) ───────────────────────────────
+// QUOTA MATH:
+//   Budget: 10,000 units/day
+//   Per-channel live search = 100 units (the killer)
+//   OLD: 30 channels × 100 = 3,000 units × 48 runs/day = 144,000 units → quota gone by 1:30am
+//   NEW: 8 channels × 101 units = ~808 units × 12 runs/day (time-gated to every 2h) = ~9,700 units ✓
+//   Smart: DON'T clear existing live data if quota is exceeded — preserve last known state
 async function checkYouTube(allCreators) {
   var results = { live: 0, errors: [] };
 
@@ -252,31 +298,56 @@ async function checkYouTube(allCreators) {
     return results;
   }
 
+  // ── QUOTA TIME GATE ────────────────────────────────────────────
+  // Only run YouTube checks every 2 hours (4 × 30-min slots per 2-hour window).
+  // livecheck runs every 30 min → 48 runs/day → we gate to 12 YouTube runs/day.
+  // thirtyMinSlot % 4 === 0 means: only the first slot of each 2-hour block runs.
+  var thirtyMinSlot = Math.floor(Date.now() / 1800000);
+  if (thirtyMinSlot % 4 !== 0) {
+    results.skipped = true;
+    results.reason = 'YouTube gated to every 2h (quota preservation)';
+    return results;
+  }
+
   var creators = allCreators.filter(function(c) { return c.youtube_url; });
   if (!creators.length) return results;
 
-  // Build a name lookup map for matching search results to our creators
-  var nameMap = {};
-  for (var i = 0; i < creators.length; i++) {
-    nameMap[creators[i].name.toLowerCase()] = creators[i];
-    // Also index by handle from URL
-    var handleMatch = (creators[i].youtube_url || '').match(/@([a-zA-Z0-9_.-]+)/);
-    if (handleMatch) nameMap[handleMatch[1].toLowerCase()] = creators[i];
-  }
-
-  // Clear all YouTube live streams first
-  await sb('PATCH', 'as_streams?platform=eq.YouTube&is_live=eq.true', { is_live: false });
-
-  // Strategy: Check a rotating batch of channels per run to stay within quota.
-  // Each run checks ~30 channels (30 × 100 = 3,000 units), rotating through all creators.
-  // With runs every 30 min, all 200+ creators are checked within ~4 hours.
-  var MAX_CHECKS = 30;
-  var batchOffset = Math.floor(Date.now() / 1800000) % Math.ceil(creators.length / MAX_CHECKS); // rotate batch every 30 min
+  // ── SMALL ROTATING BATCH ──────────────────────────────────────
+  // 8 channels × ~101 units = ~808 units/run × 12 runs/day = ~9,700 units ✓
+  var MAX_CHECKS = 8;
+  var batchOffset = Math.floor(Date.now() / 7200000) % Math.ceil(creators.length / MAX_CHECKS);
   var batchStart = batchOffset * MAX_CHECKS;
   var batch = creators.slice(batchStart, batchStart + MAX_CHECKS);
   results.batch = batchOffset + 1;
   results.batchSize = batch.length;
   results.totalCreators = creators.length;
+
+  // ── QUOTA PROBE — check before clearing ──────────────────────
+  // Make one cheap call first. If quota is exceeded, abort WITHOUT clearing
+  // existing live data (preserves last known state instead of showing 0 YouTube streams).
+  var quotaOk = true;
+  try {
+    var probeRes = await fetch('https://www.googleapis.com/youtube/v3/i18nRegions?part=snippet&key=' + YOUTUBE_API_KEY);
+    if (!probeRes.ok) {
+      var probeData = await probeRes.json();
+      var reason = probeData.error && probeData.error.errors && probeData.error.errors[0] && probeData.error.errors[0].reason;
+      if (reason === 'quotaExceeded' || reason === 'dailyLimitExceeded' || probeRes.status === 429) {
+        results.errors.push('YouTube quota exceeded — preserving existing live data, skipping clear');
+        results.quotaExceeded = true;
+        quotaOk = false;
+      }
+    }
+  } catch(e) { /* probe failed, assume ok and continue */ }
+
+  if (!quotaOk) return results;
+
+  // Quota ok — safe to clear this batch's streams and re-check
+  // Note: only clear streams for creators IN this batch (not all YouTube streams)
+  // This way creators in other batches retain their last known live status
+  var batchNames = batch.map(function(c) { return encodeURIComponent(c.name); });
+  for (var bn = 0; bn < batch.length; bn++) {
+    await sb('PATCH', 'as_streams?platform=eq.YouTube&is_live=eq.true&creator_name=eq.' + encodeURIComponent(batch[bn].name), { is_live: false });
+  }
 
   for (var bi = 0; bi < batch.length; bi++) {
     var creator = batch[bi];
@@ -291,16 +362,33 @@ async function checkYouTube(allCreators) {
       } else {
         // Resolve handle → channel ID (1 unit)
         var hRes = await fetch('https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=' + encodeURIComponent(parsed.value) + '&key=' + YOUTUBE_API_KEY);
-        if (hRes.ok) {
-          var hData = await hRes.json();
-          if (hData.items && hData.items.length > 0) channelId = hData.items[0].id;
+        if (!hRes.ok) {
+          var hErr = await hRes.json();
+          var hReason = hErr.error && hErr.error.errors && hErr.error.errors[0] && hErr.error.errors[0].reason;
+          if (hReason === 'quotaExceeded' || hReason === 'dailyLimitExceeded') {
+            results.errors.push('YouTube quota exceeded mid-run, stopping');
+            results.quotaExceeded = true;
+            break;
+          }
+          continue;
         }
+        var hData = await hRes.json();
+        if (hData.items && hData.items.length > 0) channelId = hData.items[0].id;
       }
       if (!channelId) continue;
 
-      // Search for live streams on this channel (100 units)
+      // Search for live streams on this channel (100 units each — the expensive call)
       var liveRes = await fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + channelId + '&type=video&eventType=live&maxResults=1&key=' + YOUTUBE_API_KEY);
-      if (!liveRes.ok) continue;
+      if (!liveRes.ok) {
+        var liveErr = await liveRes.json();
+        var liveReason = liveErr.error && liveErr.error.errors && liveErr.error.errors[0] && liveErr.error.errors[0].reason;
+        if (liveReason === 'quotaExceeded' || liveReason === 'dailyLimitExceeded') {
+          results.errors.push('YouTube quota exceeded mid-run, stopping');
+          results.quotaExceeded = true;
+          break;
+        }
+        continue;
+      }
 
       var liveData = await liveRes.json();
       if (liveData.items && liveData.items.length > 0) {

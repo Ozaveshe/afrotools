@@ -593,11 +593,17 @@ function renderNews(){
   var shown = NEWS.slice(0,6);
   el.innerHTML = shown.map(function(n,i){
     var href = n.slug ? '/tools/afrostream/news/'+n.slug : 'news.html';
+    var imgUrl = n._raw && n._raw.image_url ? n._raw.image_url : '';
     var bg = catGrads[n.cat] || '';
-    var thumbCls = 'as-news-thumb' + (bg ? '' : ' '+gradClass(i));
-    var thumbSty = bg ? ' style="background:'+bg+'"' : '';
+    var thumbCls = 'as-news-thumb' + (!imgUrl && !bg ? ' '+gradClass(i) : '');
+    var thumbSty = '';
+    if (imgUrl) {
+      thumbSty = ' style="background-image:url(\''+imgUrl+'\');background-size:cover;background-position:center;background-color:#e5e7eb"';
+    } else if (bg) {
+      thumbSty = ' style="background:'+bg+'"';
+    }
     return '<a href="'+href+'" class="as-news-card as-animate-in" style="animation-delay:'+(i*0.08)+'s;text-decoration:none;color:inherit">' +
-      '<div class="'+thumbCls+'"'+thumbSty+'>&#128240;</div>' +
+      '<div class="'+thumbCls+'"'+thumbSty+'></div>' +
       '<div class="as-news-body">' +
         '<div class="as-news-meta"><span class="as-category">'+n.cat+'</span><span>'+n.date+'</span></div>' +
         '<div class="as-news-title">'+n.title+'</div>' +

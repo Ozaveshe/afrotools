@@ -104,11 +104,22 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   }
 
   var article = null;
+
+  // Try admin public slug endpoint first (same function that powers working news list)
   try {
-    var res = await fetch('/api/afrostream/news?slug=' + encodeURIComponent(slug));
-    var json = await res.json();
-    if (json.success && json.data) article = json.data;
+    var r1 = await fetch('/api/admin/afrostream/public/news/' + encodeURIComponent(slug));
+    var j1 = await r1.json();
+    if (j1.success && j1.data) article = j1.data;
   } catch(e) {}
+
+  // Fallback: dedicated news function
+  if (!article) {
+    try {
+      var r2 = await fetch('/api/afrostream/news?slug=' + encodeURIComponent(slug));
+      var j2 = await r2.json();
+      if (j2.success && j2.data) article = j2.data;
+    } catch(e) {}
+  }
 
   if (!article) {
     main.innerHTML = '<div class="as-article-404"><h1>Article Not Found</h1><p>We couldn\'t find that article.</p><a href="news.html" class="as-share-btn">&larr; Back to News</a></div>';

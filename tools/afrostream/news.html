@@ -865,19 +865,56 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   function renderArticlePage(slug) {
     var article = NEWS.find(function(n) { return n.slug === slug; });
     if (!article) {
+      // Show loading state while we try fetching directly from API
       document.getElementById('articlePage').innerHTML =
         '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +
-        '<div class="as-empty-state"><p>Article not found.</p></div>';
+        '<div class="as-empty-state"><p style="color:#94a3b8">Loading article...</p></div>';
       document.getElementById('articlePage').style.display = '';
       document.getElementById('newsFeed').style.display = 'none';
+      // Attempt direct API fetch as fallback
+      fetch('/api/afrostream/news?slug=' + encodeURIComponent(slug))
+        .then(function(r){ return r.json(); })
+        .then(function(json){
+          if (json.success && json.data) {
+            var row = json.data;
+            var mapped = {
+              id:       row.id,
+              slug:     row.slug || slug,
+              cat:      (row.category || 'milestones').toLowerCase(),
+              catLabel: row.category_label || capitalize(row.category || 'News'),
+              headline: row.headline || row.title || '',
+              excerpt:  row.excerpt || '',
+              date:     new Date(row.published_at || row.created_at || Date.now()),
+              readTime: row.read_time || 3,
+              author:   row.author || 'AfroStream Team',
+              gradient: row.gradient || CAT_GRADIENTS[(row.category||'milestones').toLowerCase()] || 'linear-gradient(135deg,#007AFF,#0063CC)',
+              imageUrl: row.image_url || '',
+              body:     row.body || row.content || row.excerpt || ''
+            };
+            if (!NEWS.length) NEWS.push(mapped);
+            renderArticleHTML(mapped, []);
+          } else {
+            document.getElementById('articlePage').innerHTML =
+              '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +
+              '<div class="as-empty-state"><p>Article not found.</p></div>';
+          }
+        })
+        .catch(function(){
+          document.getElementById('articlePage').innerHTML =
+            '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +
+            '<div class="as-empty-state"><p>Could not load article. Please try again.</p></div>';
+        });
       return;
     }
 
     // Related articles: same category, exclude current, max 3
     var related = NEWS.filter(function(n) { return n.cat === article.cat && n.slug !== article.slug; }).slice(0, 3);
+    renderArticleHTML(article, related);
+  }
 
+  function renderArticleHTML(article, related) {
     var relatedHtml = '';
-    if (related.length) {
+    if (related && related.length) {
       relatedHtml = '<div class="as-related-section">' +
         '<h3 class="as-related-title">Related Articles</h3>' +
         '<div class="as-related-grid">' +
