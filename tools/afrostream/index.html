@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="style.css?v=2fc66542">
 
 <!-- Components -->
-<script src="/assets/js/components/navbar.js?v=e55f3c7d" defer></script>
+<script src="/assets/js/components/navbar.js?v=79e40887" defer></script>
 <script src="/assets/js/components/footer.js?v=2df4a28a" defer></script>
 <script src="/engines/afrostream-engine.js?v=358146fe" defer></script>
 
@@ -420,6 +420,13 @@ function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function fmtK(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+'K':n.toString(); }
 function fmtUSD(n){ return '$'+fmtK(n); }
 function gradClass(i){ return 'as-grad-'+(i%8+1); }
+function platformBadges(cr){
+  var list = cr.platforms || [cr.platform];
+  return list.map(function(key){
+    var p = PLATFORMS[key] || PLATFORMS.yt;
+    return '<span class="as-platform '+p.cls+'" style="font-size:.65rem;padding:2px 8px">'+p.icon+' '+p.name+'</span>';
+  }).join(' ');
+}
 
 /* ---------- DATA — populated from Supabase API, no demo fallback ---------- */
 
@@ -528,9 +535,7 @@ function renderTopThree(creators){
         '<span style="font-size:.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-left:6px">Est. Net Worth</span>' +
       '</div>' +
       '<div class="as-creator-links">' +
-        '<a href="#"><span class="as-platform '+p.cls+'" style="font-size:.6rem">'+p.icon+' '+p.name+'</span></a>' +
-        '<a href="#" style="font-size:.65rem">'+cr.freq+'</a>' +
-        '<a href="#" style="font-size:.65rem">Since '+cr.since+'</a>' +
+        platformBadges(cr) +
       '</div>' +
       '<a href="creator.html?id='+(cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-'))+'" class="as-profile-btn" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:980px;background:linear-gradient(135deg,#007AFF,#0063D1);color:#fff;font-size:.78rem;font-weight:600;text-decoration:none;letter-spacing:.02em;transition:all .2s;box-shadow:0 2px 8px rgba(0,122,255,.25)">View Profile <span style="font-size:.7rem;transition:transform .2s">&rarr;</span></a>' +
     '</div>';
@@ -551,7 +556,7 @@ function renderRankTable(creators){
       '<td class="as-rank-num">'+rank+'</td>' +
       '<td><div style="display:inline-flex;align-items:center;gap:10px">'+avatarHtml+'<span class="as-table-user-name">'+cr.name+'</span></div></td>' +
       '<td>'+c.flag+' '+c.name+'</td>' +
-      '<td><span class="as-platform '+p.cls+'">'+p.icon+' '+p.name+'</span></td>' +
+      '<td><div style="display:flex;gap:4px;flex-wrap:wrap">'+platformBadges(cr)+'</div></td>' +
       '<td style="font-size:.75rem;color:#64748b">'+cr.type+'</td>' +
       '<td class="as-subs-cell">'+fmtK(cr.followers)+'</td>' +
       '<td>'+fmtUSD(cr.gifts)+'</td>' +
