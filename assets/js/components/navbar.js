@@ -1386,6 +1386,7 @@
           <div class="mob-footer">
             <a href="/dashboard/" class="mob-login">${T.mobSignIn}</a>
             <a href="/dashboard/vault/" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 My Vault</a>
+            <a href="/tools/afropoints/" class="mob-points-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#F59E0B;border:1.5px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);text-align:center;">🎯 AfroPoints</a>
             <p class="mob-note">${T.mobNote}</p>
           </div>
         </div>
@@ -1684,6 +1685,7 @@
       const loginBtn = sr.querySelector('.btn-login');
       const mobLoginBtn = sr.querySelector('.mob-login');
       const mobVaultLink = sr.querySelector('.mob-vault-link');
+      const mobPointsLink = sr.querySelector('.mob-points-link');
 
       var _apBadgeLoaded = false;
       const updateAuthUI = () => {
@@ -1702,6 +1704,7 @@
             mobLoginBtn.onclick = function(e) { e.preventDefault(); if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) AfroAuth.openModal(); else window.location.href = '/dashboard/'; };
           }
           if (mobVaultLink) mobVaultLink.style.display = 'none';
+          if (mobPointsLink) mobPointsLink.style.display = 'none';
           return;
         }
         const user = AfroAuth.getUser();
@@ -1733,6 +1736,8 @@
                   badge.textContent = '🎯 ' + display;
                   if (p.current_streak > 0) badge.textContent += ' 🔥';
                   if (loginBtn && loginBtn.parentNode) loginBtn.parentNode.insertBefore(badge, loginBtn.nextSibling);
+                  // Update mobile points link with balance
+                  if (mobPointsLink) mobPointsLink.textContent = '🎯 AfroPoints — ' + display + (p.current_streak > 0 ? ' 🔥' : '');
                 }).catch(function() {});
             }
           } catch(e) {}
@@ -1743,6 +1748,7 @@
           mobLoginBtn.textContent = name + ' \u2014 Dashboard';
         }
         if (mobVaultLink) mobVaultLink.style.display = '';
+        if (mobPointsLink) mobPointsLink.style.display = '';
       };
 
       // Run on initial load (auth may already be ready)
