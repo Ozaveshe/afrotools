@@ -395,25 +395,29 @@
       this.shadowRoot.querySelector('form')?.addEventListener('submit', async e => {
         e.preventDefault();
         const btn = e.target.querySelector('button');
-        const inp = e.target.querySelector('input');
-        if (inp.value && inp.checkValidity()) {
-          btn.disabled = true;
-          btn.textContent = '…';
-          try {
-            // Submit to Netlify Forms via POST (Shadow DOM forms are invisible to Netlify's build-time parser)
-            const formData = new URLSearchParams();
-            formData.append('form-name', 'newsletter');
-            formData.append('email', inp.value);
-            await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formData.toString() });
-            btn.textContent = '✓ Done';
+        const inp = e.target.querySelector('input[type="email"]');
+        if (!inp || !inp.value || !inp.checkValidity()) return;
+        btn.disabled = true;
+        btn.textContent = '…';
+        try {
+          // Submit to Netlify Forms via POST (Shadow DOM forms are invisible to Netlify's build-time parser)
+          const body = new URLSearchParams({
+            'form-name': 'newsletter',
+            'email': inp.value,
+            'source': 'footer'
+          }).toString();
+          const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+          if (res.ok) {
+            btn.textContent = '✓ Subscribed!';
             inp.value = '';
-          } catch {
-            btn.textContent = '✓ Done';
-            inp.value = '';
+          } else {
+            btn.textContent = '✗ Try again';
           }
-          btn.disabled = false;
-          setTimeout(() => { btn.textContent = this._l(L.btnLabel); }, 3000);
+        } catch {
+          btn.textContent = '✗ Try again';
         }
+        btn.disabled = false;
+        setTimeout(() => { btn.textContent = this._l(L.btnLabel); }, 3000);
       });
     }
   }

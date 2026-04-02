@@ -265,6 +265,38 @@ a, button {
   100% { box-shadow: 0 0 20px rgba(93, 219, 158, 0.08); }
 }
 
+/* ── MOBILE — lighter hover effects for performance ────── */
+@media (max-width: 768px) {
+  .tc:hover,
+  .ut:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1) !important;
+  }
+  .tc:hover .tc-thumb img,
+  .ut:hover .ut-thumb img,
+  .tc--wide:hover .tc-thumb--wide img {
+    transform: none;
+  }
+  .cat-card:hover {
+    transform: translateY(-2px) !important;
+  }
+  .tc--wide:hover {
+    transform: translateY(-2px) !important;
+  }
+  .hero::before {
+    animation: none;
+    opacity: 0.8;
+  }
+}
+
+/* ── LANDSCAPE PHONES — shorter hero ───────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    padding-top: 32px !important;
+    padding-bottom: 24px !important;
+  }
+}
+
 /* ── REDUCED MOTION — respect user preference ───────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

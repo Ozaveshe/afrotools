@@ -906,7 +906,7 @@
     .mob.open { opacity: 1; pointer-events: all; }
 
     .mob-section-label {
-      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
       color: #9ca3af; padding: 14px 20px 6px;
     }
     .mob-cat {
@@ -974,7 +974,7 @@
     .search-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
     .search-btn svg { width: 16px; height: 16px; }
     .search-kbd {
-      font-size: 0.55rem; font-weight: 600; color: #9ca3af;
+      font-size: 0.65rem; font-weight: 600; color: #9ca3af;
       margin-left: 4px; background: #f3f4f6; border-radius: 4px;
       padding: 1px 5px; border: 1px solid #e5e7eb;
       display: none;
@@ -1023,7 +1023,7 @@
     }
     .search-input::placeholder { color: #c4c8cc; }
     .search-esc {
-      font-size: 0.6rem; font-weight: 600; color: #9ca3af;
+      font-size: 0.68rem; font-weight: 600; color: #9ca3af;
       background: #f3f4f6; border-radius: 4px;
       padding: 2px 7px; border: 1px solid #e5e7eb;
       cursor: pointer; flex-shrink: 0;
@@ -1066,7 +1066,7 @@
       display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
     }
     .search-result-cat {
-      font-size: 0.55rem; font-weight: 600; color: #9ca3af;
+      font-size: 0.65rem; font-weight: 600; color: #9ca3af;
       text-transform: uppercase; letter-spacing: 0.06em;
       margin-top: 2px;
     }
@@ -1084,23 +1084,23 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .search-footer-hint {
-      font-size: 0.62rem; color: #9ca3af; font-weight: 500;
+      font-size: 0.68rem; color: #9ca3af; font-weight: 500;
       display: flex; align-items: center; gap: 8px;
     }
     .search-footer-hint kbd {
       background: #f3f4f6; border: 1px solid #e5e7eb;
       border-radius: 3px; padding: 1px 5px;
-      font-size: 0.58rem; font-weight: 600; font-family: inherit;
+      font-size: 0.65rem; font-weight: 600; font-family: inherit;
     }
 
     /* RECENT TOOLS in search */
     .search-section-label {
-      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
       text-transform: uppercase; color: #9ca3af;
       padding: 10px 12px 4px;
     }
     .recent-clear {
-      font-size: 0.58rem; font-weight: 600; color: #0062CC;
+      font-size: 0.68rem; font-weight: 600; color: #0062CC;
       cursor: pointer; float: right; background: none; border: none;
       font-family: inherit; padding: 0;
     }
@@ -1377,7 +1377,7 @@
             </svg>
             <input class="mob-search-input" type="text" placeholder="${T.searchPh}" aria-label="${T.ariaSearch}" autocomplete="off"/>
           </div>
-          <div class="mob-search-results" id="mobSearchResults"></div>
+          <div class="mob-search-results" id="mobSearchResults" role="listbox" aria-label="Search results"></div>
           <div id="mobCategoriesWrap">
             <div class="mob-section-label">${T.allCats}</div>
             ${this._mobileContent()}
@@ -1591,7 +1591,7 @@
           if (recent.length > 0) {
             container.innerHTML = '<div class="search-section-label">Recently Used <button class="recent-clear" id="clearRecent">Clear</button></div>' +
               recent.map((t, i) => `
-                <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}">
+                <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}" role="option" aria-selected="${i === 0}">
                   <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
                   <div>
                     <div class="search-result-name">${escapeHtml(t.name)}</div>
@@ -1616,7 +1616,7 @@
         }
         _activeIdx = 0;
         container.innerHTML = tools.map((t, i) => `
-          <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}">
+          <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}" role="option" aria-selected="${i === 0}">
             <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
             <div>
               <div class="search-result-name">${highlightMatch(t.name, query)}</div>
@@ -1656,7 +1656,7 @@
           }
           mobCategoriesWrap.style.display = 'none';
           mobSearchResults.innerHTML = results.map(t => `
-            <a href="${t.href}" class="search-result">
+            <a href="${t.href}" class="search-result" role="option">
               <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
               <div>
                 <div class="search-result-name">${highlightMatch(t.name, q)}</div>
