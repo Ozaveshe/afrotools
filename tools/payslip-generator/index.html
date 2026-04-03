@@ -3,51 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Payslip Generator | AfroTools</title>
-<meta name="description" content="Generate professional payslips for Nigerian, Kenyan, South African, Ghanaian, Tanzanian, and Ugandan employees. Includes PAYE, pension, NHF, NHIF, UIF, NSSF deductions. Print-ready A4 PDF.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Payslip Generator — All 54 Countries | AfroTools</title>
+<meta name="description" content="Generate professional payslips for all 54 African countries. Automatic PAYE, pension, and statutory deductions. Batch generate from CSV, custom deductions, multi-currency support. Free.">
 <link rel="canonical" href="https://afrotools.com/tools/payslip-generator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Payslip Generator | AfroTools">
-<meta property="og:description" content="Generate professional payslips with automatic African tax deductions.">
+<meta property="og:title" content="African Payslip Generator — All 54 Countries | AfroTools">
+<meta property="og:description" content="Generate professional payslips with automatic African tax deductions for all 54 countries.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/payslip-generator/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/payslip-generator/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
-<script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
 <style>
-:root{--afro-dark:#0f1419;--accent:#007AFF}
-.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#007AFF 50%,#0056b3 100%);padding:44px 0 36px}
+:root{--accent:#007AFF;--afro-dark:#0f1419}
+/* ── Skip Link ── */
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{position:fixed;top:12px;left:12px;z-index:9999;width:auto;height:auto;padding:10px 18px;background:#0056b3;color:#fff;font-size:.875rem;font-weight:700;border-radius:6px;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+/* ── Layout ── */
+.tool-hero{background:linear-gradient(135deg,#1a3254 0%,#0056b3 55%,#003d8a 100%);padding:44px 0 36px}
 .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.9);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.9);text-decoration:none;padding:6px 3px;margin:-6px -3px}.breadcrumb span{color:#e0edff}
 h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#bfdbfe;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+h1 em{color:#c7e0ff;font-style:normal}
+.hero-sub{font-size:.88rem;color:#fff;line-height:1.6;max-width:560px;margin-bottom:14px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.b-em{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35)}
 .tool-main{padding:28px 0 72px}
 .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 400px;gap:22px;align-items:start}
+/* ── Cards ── */
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
 .card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
 .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
 .card-body{padding:22px}
 label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
 input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
 input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
-.btn-primary{background:linear-gradient(135deg,#0056b3,#007AFF);color:#fff}
-/* Payslip Preview */
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.field-gap{margin-bottom:14px}
+/* ── Mode Tabs ── */
+.ps-tabs{display:flex;border-radius:9px;overflow:hidden;border:1.5px solid #e2e8f0;margin-bottom:22px}
+.ps-tab{flex:1;padding:14px 8px;border:none;background:#f8fafc;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;color:#64748b;transition:all .15s;min-height:44px}
+.ps-tab.active{background:#0056b3;color:#fff}
+/* ── PDF Templates ── */
+.style-selector{display:flex;gap:8px;margin:4px 0 0}
+.style-opt{flex:1;padding:10px 8px;border:2px solid #e2e8f0;border-radius:8px;cursor:pointer;text-align:center;transition:all .15s;background:#fff}
+.style-opt:hover{border-color:#007AFF;background:#f0f7ff}
+.style-opt.active{border-color:#007AFF;background:#e8f2ff;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.style-opt-name{font-size:.72rem;font-weight:700;color:var(--afro-dark)}
+.style-opt-desc{font-size:.62rem;color:#64748b;margin-top:2px}
+/* ── Actions ── */
+.action-row{display:flex;gap:10px;margin-top:14px}
+.action-btn{flex:1;padding:14px 12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:all .15s;min-height:44px}
+.action-btn:hover{transform:translateY(-1px)}
+.btn-pdf{background:linear-gradient(135deg,#003d8a,#0056b3);color:#fff}
+.btn-vault{background:#fff;border:1.5px solid #e2e8f0;color:var(--afro-dark)}
+.btn-vault:hover{border-color:#007AFF;color:#007AFF}
+/* ── Payslip Preview ── */
 .payslip{background:#fff;border:2px solid #1e293b;border-radius:8px;padding:24px;font-family:'DM Sans',sans-serif;font-size:.78rem}
 .payslip .ps-header{text-align:center;border-bottom:2px solid #1e293b;padding-bottom:12px;margin-bottom:14px}
 .payslip .ps-company{font-size:1.1rem;font-weight:800;color:#1e293b;text-transform:uppercase}
+.payslip .ps-addr{font-size:.68rem;color:#64748b;margin-top:2px}
 .payslip .ps-title{font-size:.82rem;font-weight:700;color:#64748b;margin-top:2px}
 .payslip .ps-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;font-size:.72rem;color:#475569;line-height:1.6}
 .payslip .ps-info strong{color:#1e293b}
@@ -59,636 +82,1125 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .payslip .ps-net{text-align:center;padding:14px;background:#f8fafc;border-radius:6px;margin-top:14px}
 .payslip .ps-net .big{font-size:1.4rem;font-weight:900;color:#007AFF}
 .payslip .ps-net .lbl{font-size:.68rem;color:#64748b;font-weight:600;text-transform:uppercase}
-/* PDF Style Selector */
-.style-selector{display:flex;gap:8px;margin:14px 0}
-.style-opt{flex:1;padding:10px 8px;border:2px solid #e2e8f0;border-radius:8px;cursor:pointer;text-align:center;transition:all .15s;background:#fff}
-.style-opt:hover{border-color:#007AFF;background:#f0f7ff}
-.style-opt.active{border-color:#007AFF;background:#e8f2ff;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
-.style-opt-name{font-size:.72rem;font-weight:700;color:var(--afro-dark)}
-.style-opt-desc{font-size:.62rem;color:#64748b;margin-top:2px}
-/* Action Buttons */
-.action-row{display:flex;gap:10px;margin-top:14px}
-.action-btn{flex:1;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:all .15s}
-.action-btn:hover{transform:translateY(-1px)}
-.btn-pdf{background:linear-gradient(135deg,#0056b3,#007AFF);color:#fff}
-.btn-vault{background:#fff;border:1.5px solid #e2e8f0;color:var(--afro-dark)}
-.btn-vault:hover{border-color:#007AFF;color:#007AFF}
+.payslip .ps-fx{font-size:.68rem;color:#64748b;margin-top:3px}
+.payslip .ps-leave{font-size:.72rem;color:#475569;text-align:center;margin-top:8px;padding:6px;background:#f0f7ff;border-radius:4px}
+.payslip .ps-serial{font-size:.58rem;color:#94a3b8;text-align:center;margin-top:10px;padding-top:8px;border-top:1px solid #f1f5f9}
+/* ── Custom Deductions ── */
+.ded-row{display:grid;grid-template-columns:1fr 120px 28px;gap:8px;margin-bottom:8px;align-items:center}
+.ded-row input{margin:0}
+.ded-del{background:none;border:1.5px solid #fca5a5;border-radius:6px;color:#ef4444;font-size:.82rem;font-weight:700;cursor:pointer;padding:0;height:36px;width:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.add-ded-btn{background:none;border:1.5px solid #cbd5e1;border-radius:6px;padding:10px 14px;font-size:.72rem;font-weight:700;cursor:pointer;color:#007AFF;font-family:inherit;min-height:44px;min-width:44px}
+.add-ded-btn:hover{border-color:#007AFF}
+/* ── Options Card ── */
+.opt-toggles{display:flex;gap:10px;flex-wrap:wrap}
+.opt-pill{display:inline-flex;align-items:center;gap:7px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.8rem;font-weight:600;color:#475569;transition:all .15s}
+.opt-pill:has(input:checked){background:#e8f2ff;border-color:#007AFF;color:#0063d1}
+.opt-pill input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#007AFF}
+/* ── Optimizer ── */
+.optimizer-banner{background:linear-gradient(135deg,#ecfdf5,#e8f2ff);border:1.5px solid #6ee7b7;border-radius:8px;padding:14px;margin-top:14px;display:none}
+.optimizer-banner.show{display:block}
+.opt-savings{font-size:1.1rem;font-weight:800;color:#059669}
+.opt-apply-btn{background:#059669;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+/* ── Batch Mode ── */
+#batchPanel{display:none}
+.csv-zone{border:2px dashed #cbd5e1;border-radius:8px;padding:36px 24px;text-align:center;cursor:pointer;background:#f8fafc;transition:all .2s}
+.csv-zone:hover,.csv-zone.drag{border-color:#007AFF;background:#f0f7ff}
+.csv-zone-icon{font-size:2.2rem;margin-bottom:8px}
+.csv-zone p{font-size:.84rem;color:#64748b;margin:4px 0 0}
+.csv-zone strong{color:#007AFF}
+.batch-preview{overflow-x:auto;margin-top:14px;border:1px solid #e2e8f0;border-radius:8px}
+.batch-preview table{width:100%;border-collapse:collapse;font-size:.75rem}
+.batch-preview th{background:#f1f5f9;padding:7px 10px;text-align:left;font-weight:700;font-size:.68rem;text-transform:uppercase;color:#64748b}
+.batch-preview td{padding:7px 10px;border-bottom:1px solid #f8fafc;color:#1e293b}
+.batch-preview tr:last-child td{border-bottom:none}
+.progress-wrap{margin-top:14px;display:none}
+.progress-bar{height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#007AFF,#4DA3FF);width:0;transition:width .2s}
+.progress-label{font-size:.78rem;color:#64748b;margin-top:6px}
+.batch-gen-btn{display:block;width:100%;margin-top:14px;padding:13px;background:linear-gradient(135deg,#0056b3,#007AFF);color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit}
+.batch-gen-btn:disabled{opacity:.5;cursor:not-allowed}
+/* ── SEO Section ── */
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
 .seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.action-row{flex-direction:column}}
+@media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.action-row{flex-direction:column}}
+@media(max-width:600px){.row,.row-3{grid-template-columns:1fr}}
+/* ── Hover & Active States ── */
+.ps-tab:not(.active):hover{background:#f1f5f9;color:#374151}
+.style-opt:focus-visible,.ps-tab:focus-visible,.action-btn:focus-visible{outline:2px solid #007AFF;outline-offset:2px}
+.action-btn:active:not(:disabled){transform:none;opacity:.85}
+.batch-gen-btn:hover:not(:disabled){background:linear-gradient(135deg,#004494,#0063d1);transform:translateY(-1px)}
+.batch-gen-btn:active:not(:disabled){transform:none;opacity:.85}
+.ded-del:hover{background:#fee2e2}
+.opt-apply-btn:hover{background:#047857}
+.add-ded-btn:active{opacity:.8}
+.opt-apply-btn:focus-visible,.add-ded-btn:focus-visible,.ded-del:focus-visible,.batch-gen-btn:focus-visible{outline:2px solid #007AFF;outline-offset:2px}
+/* ── Loading State ── */
+.btn-loading{opacity:.7;cursor:wait!important;pointer-events:none}
+.btn-loading svg{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ── Inline Error ── */
+.inline-error{background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:10px 14px;font-size:.8rem;color:#dc2626;margin-top:10px;display:flex;align-items:flex-start;gap:8px}
+.inline-error svg{flex-shrink:0;margin-top:1px}
+/* ── Reduced Motion ── */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
 <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/payslip-generator/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/payslip-generator/" />
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/payslip-generator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/payslip-generator/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Payslip Generator | AfroTools">
-<meta name="twitter:description" content="Generate professional payslips with automatic African tax deductions.">
+<meta name="twitter:title" content="African Payslip Generator — All 54 Countries | AfroTools">
+<meta name="twitter:description" content="Generate professional payslips with automatic African tax deductions for all 54 countries.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {"@type": "ListItem","position": 1,"name": "AfroTools","item": "https://afrotools.com/"},
-    {"@type": "ListItem","position": 2,"name": "Tools","item": "https://afrotools.com/tools/"},
-    {"@type": "ListItem","position": 3,"name": "Payslip Generator","item": "https://afrotools.com/tools/payslip-generator/"}
-  ]
-}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},
+{"@type":"ListItem","position":3,"name":"Payslip Generator","item":"https://afrotools.com/tools/payslip-generator/"}
+]}
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Is a payslip legally required in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, in all major African economies. Nigeria's Labour Act, Kenya's Employment Act, South Africa's BCEA, and Ghana's Labour Act all require employers to provide itemised pay statements to employees. Failure to provide payslips can result in penalties during labour inspections."}},
-{"@type":"Question","name":"Are these tax calculations exact?","acceptedAnswer":{"@type":"Answer","text":"The deductions use simplified versions of each country's tax rules — Nigeria PITA rates, Kenya KRA PAYE bands, SA SARS tables, Ghana GRA rates. Actual deductions may vary based on individual reliefs, allowances, and employer arrangements. Consult a payroll professional for exact figures."}},
-{"@type":"Question","name":"Which deductions are included?","acceptedAnswer":{"@type":"Answer","text":"Nigeria: PAYE, Pension 8%, NHF 2.5%. Kenya: PAYE, NSSF 6%, SHIF 2.75%, AHL 1.5%. South Africa: PAYE, UIF 1%. Ghana: PAYE, SSNIT 5.5%. Tanzania: PAYE, NSSF 10%. Uganda: PAYE, NSSF 5%."}},
-{"@type":"Question","name":"Can I customise the payslip PDF design?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose from three professional templates: Corporate (formal business style), Modern (clean minimal design), or Classic (traditional payslip layout). All generate A4-sized PDFs ready for printing or emailing to employees."}},
-{"@type":"Question","name":"How do I save payslips for my records?","acceptedAnswer":{"@type":"Answer","text":"Create a free AfroTools account to save payslips to your vault. This gives you a searchable archive of all generated payslips, making it easy to retrieve past records for audits, employee requests, or tax filing."}},
-{"@type":"Question","name":"What currencies are supported?","acceptedAnswer":{"@type":"Answer","text":"The generator supports Nigerian Naira, Kenyan Shilling, South African Rand, Ghanaian Cedi, Tanzanian Shilling, and Ugandan Shilling. Currency symbols and default salary ranges adjust automatically when you select a country."}},
-{"@type":"Question","name":"Can I generate payslips in bulk?","acceptedAnswer":{"@type":"Answer","text":"This tool generates one payslip at a time. For bulk payroll processing, consider dedicated payroll software. However, you can quickly generate multiple payslips by changing the employee details and downloading each one — the company and tax settings remain."}}
+{"@type":"Question","name":"Is a payslip legally required in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, in virtually all African countries. Nigeria's Labour Act, Kenya's Employment Act, South Africa's BCEA, Ghana's Labour Act, and equivalent laws across all 54 African nations require employers to provide employees with itemised pay statements."}},
+{"@type":"Question","name":"Can I generate payslips in bulk?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use Batch Generate mode — upload a CSV with columns for Name, BasicSalary, Housing, Transport, Bonus, etc. The tool generates a PDF for each employee and bundles them into a ZIP file for download."}},
+{"@type":"Question","name":"Which deductions are included for each country?","acceptedAnswer":{"@type":"Answer","text":"All 54 African countries are supported with country-specific PAYE tax bands, pension contributions, health insurance, and social security deductions. Examples: Nigeria (PAYE, Pension 8%, NHF 2.5%), Kenya (PAYE, NSSF, SHIF 2.75%, AHL 1.5%), South Africa (PAYE, UIF 1%)."}},
+{"@type":"Question","name":"Can I add custom deductions like staff loans?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the Custom Deductions section to add staff loans, salary advances, canteen deductions, uniform costs, or any other deduction. Each shows as a separate labelled line on the payslip."}},
+{"@type":"Question","name":"Does it support multi-currency payslips?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enable Multi-currency in the Options section. Enter the base currency (USD/GBP/EUR) and exchange rate. The payslip will show gross in both currencies and all deductions in local currency."}},
+{"@type":"Question","name":"How does the housing allowance optimizer work?","acceptedAnswer":{"@type":"Answer","text":"Click 'Optimize for Tax Savings' in the Earnings section. The tool tests different basic/housing salary splits and finds the combination that minimises your monthly PAYE. In many countries, a higher housing allowance reduces taxable income."}},
+{"@type":"Question","name":"What is the payslip serial number?","acceptedAnswer":{"@type":"Answer","text":"Each generated payslip gets a unique serial number for authentication purposes. This can be used to verify the payslip is genuine — useful when employees need to provide proof of income to banks or landlords."}}
 ]}</script>
-<meta property="article:modified_time" content="2026-03-31">
+<meta property="article:modified_time" content="2026-04-03">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Payslip Generator</span></div>
-<h1>African <em>Payslip Generator</em></h1>
-<p class="hero-sub">Generate professional payslips with automatic PAYE, pension, and statutory deductions for Nigeria, Kenya, South Africa, Ghana, Tanzania, and Uganda.</p>
-<div class="hero-badges"><span class="badge b-em">6 Countries</span><span class="badge b-em">Auto Deductions</span><span class="badge b-em">A4 PDF Export</span></div>
-</div></section>
 
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Company & Employee Details</span></div>
-<div class="card-body">
-<div class="row" style="margin-bottom:14px">
-<div><label>Company Name</label><input type="text" id="company" value="ABC Company Ltd" oninput="gen()"></div>
-<div><label>Country</label>
-<select id="country" onchange="setCountryDefaults();gen()">
-<option value="NG">Nigeria</option>
-<option value="KE">Kenya</option>
-<option value="ZA">South Africa</option>
-<option value="GH">Ghana</option>
-<option value="TZ">Tanzania</option>
-<option value="UG">Uganda</option>
-</select></div>
-</div>
-<div class="row" style="margin-bottom:14px">
-<div><label>Employee Name</label><input type="text" id="empName" value="John Doe" oninput="gen()"></div>
-<div><label>Employee ID / Staff No.</label><input type="text" id="empId" value="EMP-001" oninput="gen()"></div>
-</div>
-<div class="row" style="margin-bottom:14px">
-<div><label>Pay Period</label>
-<select id="period" onchange="gen()">
-<option value="Jan 2026">January 2026</option>
-<option value="Feb 2026">February 2026</option>
-<option value="Mar 2026" selected>March 2026</option>
-<option value="Apr 2026">April 2026</option>
-<option value="May 2026">May 2026</option>
-<option value="Jun 2026">June 2026</option>
-<option value="Jul 2026">July 2026</option>
-<option value="Aug 2026">August 2026</option>
-<option value="Sep 2026">September 2026</option>
-<option value="Oct 2026">October 2026</option>
-<option value="Nov 2026">November 2026</option>
-<option value="Dec 2026">December 2026</option>
-</select></div>
-<div><label>Department</label><input type="text" id="dept" value="Operations" oninput="gen()"></div>
-</div>
-<div class="row" style="margin-bottom:14px">
-<div><label>Job Title / Position</label><input type="text" id="jobTitle" value="Staff" oninput="gen()"></div>
-<div><label>Tax / ID Number</label><input type="text" id="taxId" value="" placeholder="Optional" oninput="gen()"></div>
-</div>
-</div></div>
-
-<div class="card">
-<div class="card-head"><span class="card-title">Earnings</span></div>
-<div class="card-body">
-<div class="row" style="margin-bottom:14px">
-<div><label>Basic Salary</label><input type="number" id="basic" value="500000" min="0" step="10000" oninput="gen()"></div>
-<div><label>Housing Allowance</label><input type="number" id="housing" value="100000" min="0" step="10000" oninput="gen()"></div>
-</div>
-<div class="row" style="margin-bottom:14px">
-<div><label>Transport Allowance</label><input type="number" id="transport" value="50000" min="0" step="5000" oninput="gen()"></div>
-<div><label>Other Allowances</label><input type="number" id="other" value="0" min="0" step="5000" oninput="gen()"></div>
-</div>
-<div class="row">
-<div><label>Overtime</label><input type="number" id="overtime" value="0" min="0" step="5000" oninput="gen()"></div>
-<div><label>Bonus</label><input type="number" id="bonus" value="0" min="0" step="10000" oninput="gen()"></div>
-</div>
-</div></div>
-
-<div class="card">
-<div class="card-head"><span class="card-title">PDF Template</span></div>
-<div class="card-body">
-<div class="style-selector">
-<div class="style-opt active" onclick="setStyle('corporate',this)">
-<div class="style-opt-name">Corporate</div>
-<div class="style-opt-desc">Formal business</div>
-</div>
-<div class="style-opt" onclick="setStyle('modern',this)">
-<div class="style-opt-name">Modern</div>
-<div class="style-opt-desc">Clean & minimal</div>
-</div>
-<div class="style-opt" onclick="setStyle('classic',this)">
-<div class="style-opt-name">Classic</div>
-<div class="style-opt-desc">Traditional layout</div>
-</div>
-</div>
-</div></div>
-</div>
-
-<div style="position:sticky;top:20px">
-<div class="payslip" id="payslipPreview"></div>
-<div class="action-row">
-<button class="action-btn btn-pdf" onclick="downloadPayslipPdf()">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-Download PDF
-</button>
-<button class="action-btn btn-vault" onclick="saveToVault()">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-Save to Vault
-</button>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Generating Payslips in Africa</h2>
-<p>Every employer in Africa is legally required to provide employees with payslips showing their earnings and deductions. In Nigeria, the Labour Act requires employers to provide itemised pay statements. South Africa's BCEA mandates written payslips. Kenya's Employment Act and Ghana's Labour Act have similar requirements.</p>
-<p>A proper payslip should show: gross earnings (basic salary plus all allowances), all statutory deductions (PAYE tax, pension contributions, health insurance), any voluntary deductions (loans, union dues), and the net pay. Our generator automatically calculates the major statutory deductions based on the selected country's current tax laws.</p>
-<p>For Nigerian employers, deductions include PAYE (7-24%), pension (8% employee contribution), NHF (2.5%), and NHIS. Kenyan payslips show PAYE (10-35%), NSSF, SHIF (2.75%), and AHL (1.5%). South African payslips include PAYE (18-45%), UIF (1%), and retirement fund contributions. Ghanaian payslips show PAYE and SSNIT Tier 1 (5.5% employee).</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Is a payslip legally required?</summary><p>Yes, in all six countries covered. Nigeria's Labour Act, Kenya's Employment Act, South Africa's BCEA, Ghana's Labour Act, Tanzania's Employment and Labour Relations Act, and Uganda's Employment Act all require employers to provide itemised pay statements to employees. Failure to provide payslips can result in penalties during labour inspections.</p></details>
-<details class="faq-item"><summary>Are these calculations exact?</summary><p>The deductions are calculated using simplified versions of each country's tax rules. For Nigeria, we use the PITA progressive rates; for Kenya, the KRA PAYE bands; for SA, the SARS tax tables; and for Ghana, the GRA PAYE rates. Actual deductions may vary based on individual reliefs, allowances, and specific employer arrangements. Consult a payroll professional for exact figures.</p></details>
-<details class="faq-item"><summary>Which statutory deductions are included?</summary><p>Nigeria: PAYE, Pension (8%), NHF (2.5%). Kenya: PAYE, NSSF (6%), SHIF (2.75%), AHL (1.5%). South Africa: PAYE, UIF (1%). Ghana: PAYE, SSNIT Tier 1 (5.5%). Tanzania: PAYE, NSSF (10%). Uganda: PAYE, NSSF (5%). These cover the main mandatory deductions in each country.</p></details>
-<details class="faq-item"><summary>Can I customise the PDF design?</summary><p>Yes. Choose from three professional templates — Corporate (formal business style with dark header), Modern (clean minimal with accent colours), or Classic (traditional payslip layout with bordered sections). All generate properly formatted A4-sized PDFs suitable for printing or emailing.</p></details>
-<details class="faq-item"><summary>How do I save payslips for my records?</summary><p>Click "Save to Vault" to store the payslip in your AfroTools account. You'll need a free account to use this feature. Your vault provides a searchable archive of all saved payslips, making it easy to retrieve past records for audits, employee requests, or tax filing purposes.</p></details>
-<details class="faq-item"><summary>What currencies are supported?</summary><p>The generator supports Nigerian Naira (NGN), Kenyan Shilling (KES), South African Rand (ZAR), Ghanaian Cedi (GHS), Tanzanian Shilling (TZS), and Ugandan Shilling (UGX). Currency symbols and default salary ranges adjust automatically when you select a country.</p></details>
-<details class="faq-item"><summary>Can I generate payslips for multiple employees?</summary><p>This tool generates one payslip at a time. For bulk payroll processing, consider dedicated payroll software. However, you can quickly generate multiple payslips by changing the employee details and downloading each one — the company details, country, and pay period settings are preserved between downloads.</p></details>
+<main id="main-content">
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Payslip Generator</span></div>
+    <h1>African <em>Payslip Generator</em></h1>
+    <p class="hero-sub">Professional payslips for all 54 African countries. Automatic PAYE, pension, and social security deductions. Batch generate, custom deductions, multi-currency.</p>
+    <div class="hero-badges">
+      <span class="badge b-em">54 Countries</span>
+      <span class="badge b-em">Auto Deductions</span>
+      <span class="badge b-em">Batch Generate</span>
+      <span class="badge b-em">A4 PDF Export</span>
+      <span class="badge b-em">Tax Optimizer</span>
+    </div>
+  </div>
 </section>
 
+<section class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div class="calculator">
+
+      <!-- Mode Tabs -->
+      <div class="ps-tabs">
+        <button class="ps-tab active" onclick="setMode('single',this)">Single Payslip</button>
+        <button class="ps-tab" onclick="setMode('batch',this)">Batch Generate</button>
+      </div>
+
+      <!-- ═══ SINGLE MODE ═══ -->
+      <div id="singlePanel">
+
+        <!-- Company & Employee -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Company & Employee Details</span></div>
+          <div class="card-body">
+            <div class="row field-gap">
+              <div><label for="company">Company Name</label><input type="text" id="company" value="ABC Company Ltd" autocomplete="organization" oninput="gen()"></div>
+              <div>
+                <label for="country">Country</label>
+                <select id="country" onchange="setCountryDefaults();gen()">
+                  <optgroup label="West Africa">
+                    <option value="NG">🇳🇬 Nigeria</option>
+                    <option value="GH">🇬🇭 Ghana</option>
+                    <option value="SN">🇸🇳 Senegal</option>
+                    <option value="CI">🇨🇮 Côte d'Ivoire</option>
+                    <option value="ML">🇲🇱 Mali</option>
+                    <option value="BF">🇧🇫 Burkina Faso</option>
+                    <option value="NE">🇳🇪 Niger</option>
+                    <option value="GN">🇬🇳 Guinea</option>
+                    <option value="TG">🇹🇬 Togo</option>
+                    <option value="BJ">🇧🇯 Benin</option>
+                    <option value="SL">🇸🇱 Sierra Leone</option>
+                    <option value="LR">🇱🇷 Liberia</option>
+                    <option value="GM">🇬🇲 Gambia</option>
+                    <option value="GW">🇬🇼 Guinea-Bissau</option>
+                    <option value="CV">🇨🇻 Cabo Verde</option>
+                    <option value="MR">🇲🇷 Mauritania</option>
+                    <option value="ST">🇸🇹 São Tomé &amp; Príncipe</option>
+                  </optgroup>
+                  <optgroup label="East Africa">
+                    <option value="KE">🇰🇪 Kenya</option>
+                    <option value="ET">🇪🇹 Ethiopia</option>
+                    <option value="UG">🇺🇬 Uganda</option>
+                    <option value="TZ">🇹🇿 Tanzania</option>
+                    <option value="RW">🇷🇼 Rwanda</option>
+                    <option value="BI">🇧🇮 Burundi</option>
+                    <option value="SO">🇸🇴 Somalia</option>
+                    <option value="SS">🇸🇸 South Sudan</option>
+                    <option value="ER">🇪🇷 Eritrea</option>
+                    <option value="DJ">🇩🇯 Djibouti</option>
+                    <option value="KM">🇰🇲 Comoros</option>
+                  </optgroup>
+                  <optgroup label="North Africa">
+                    <option value="EG">🇪🇬 Egypt</option>
+                    <option value="MA">🇲🇦 Morocco</option>
+                    <option value="DZ">🇩🇿 Algeria</option>
+                    <option value="TN">🇹🇳 Tunisia</option>
+                    <option value="LY">🇱🇾 Libya</option>
+                    <option value="SD">🇸🇩 Sudan</option>
+                  </optgroup>
+                  <optgroup label="Southern Africa">
+                    <option value="ZA">🇿🇦 South Africa</option>
+                    <option value="BW">🇧🇼 Botswana</option>
+                    <option value="NA">🇳🇦 Namibia</option>
+                    <option value="ZM">🇿🇲 Zambia</option>
+                    <option value="ZW">🇿🇼 Zimbabwe</option>
+                    <option value="MW">🇲🇼 Malawi</option>
+                    <option value="MZ">🇲🇿 Mozambique</option>
+                    <option value="SZ">🇸🇿 Eswatini</option>
+                    <option value="LS">🇱🇸 Lesotho</option>
+                    <option value="MU">🇲🇺 Mauritius</option>
+                    <option value="MG">🇲🇬 Madagascar</option>
+                    <option value="SC">🇸🇨 Seychelles</option>
+                  </optgroup>
+                  <optgroup label="Central Africa">
+                    <option value="CM">🇨🇲 Cameroon</option>
+                    <option value="CD">🇨🇩 DR Congo</option>
+                    <option value="CG">🇨🇬 Congo</option>
+                    <option value="GA">🇬🇦 Gabon</option>
+                    <option value="GQ">🇬🇶 Equatorial Guinea</option>
+                    <option value="CF">🇨🇫 Central African Rep.</option>
+                    <option value="TD">🇹🇩 Chad</option>
+                    <option value="AO">🇦🇴 Angola</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="field-gap">
+              <label for="address">Company Address (optional)</label>
+              <input type="text" id="address" placeholder="e.g. 12 Lagos Street, Victoria Island, Lagos" autocomplete="street-address" oninput="gen()">
+            </div>
+            <div class="row field-gap">
+              <div><label for="empName">Employee Name</label><input type="text" id="empName" value="John Doe" autocomplete="name" oninput="gen()"></div>
+              <div><label for="empId">Employee ID / Staff No.</label><input type="text" id="empId" value="EMP-001" oninput="gen()"></div>
+            </div>
+            <div class="row field-gap">
+              <div>
+                <label for="period">Pay Period</label>
+                <select id="period" onchange="gen()">
+                  <option value="Jan 2026">January 2026</option>
+                  <option value="Feb 2026">February 2026</option>
+                  <option value="Mar 2026">March 2026</option>
+                  <option value="Apr 2026" selected>April 2026</option>
+                  <option value="May 2026">May 2026</option>
+                  <option value="Jun 2026">June 2026</option>
+                  <option value="Jul 2026">July 2026</option>
+                  <option value="Aug 2026">August 2026</option>
+                  <option value="Sep 2026">September 2026</option>
+                  <option value="Oct 2026">October 2026</option>
+                  <option value="Nov 2026">November 2026</option>
+                  <option value="Dec 2026">December 2026</option>
+                </select>
+              </div>
+              <div><label for="dept">Department</label><input type="text" id="dept" value="Operations" oninput="gen()"></div>
+            </div>
+            <div class="row">
+              <div><label for="jobTitle">Job Title / Position</label><input type="text" id="jobTitle" value="Staff" oninput="gen()"></div>
+              <div><label for="taxId">Tax / ID Number</label><input type="text" id="taxId" placeholder="Optional" oninput="gen()"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Earnings -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Earnings</span></div>
+          <div class="card-body">
+            <div class="row field-gap">
+              <div><label for="basic">Basic Salary</label><input type="number" id="basic" value="500000" min="0" step="10000" oninput="gen()"></div>
+              <div><label for="housing">Housing Allowance</label><input type="number" id="housing" value="100000" min="0" step="10000" oninput="gen()"></div>
+            </div>
+            <div class="row field-gap">
+              <div><label for="transport">Transport Allowance</label><input type="number" id="transport" value="50000" min="0" step="5000" oninput="gen()"></div>
+              <div><label for="other">Other Allowances</label><input type="number" id="other" value="0" min="0" step="5000" oninput="gen()"></div>
+            </div>
+            <div class="row">
+              <div><label for="overtime">Overtime</label><input type="number" id="overtime" value="0" min="0" step="5000" oninput="gen()"></div>
+              <div><label for="bonus">Bonus</label><input type="number" id="bonus" value="0" min="0" step="10000" oninput="gen()"></div>
+            </div>
+            <!-- Optimizer -->
+            <button onclick="runOptimizer()" style="margin-top:14px;background:#f0fdf4;border:1.5px solid #6ee7b7;border-radius:7px;padding:13px 16px;font-size:.78rem;font-weight:700;color:#059669;cursor:pointer;font-family:inherit;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;min-height:44px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Optimize for Tax Savings
+            </button>
+            <div class="optimizer-banner" id="optimizerBanner">
+              <div style="font-size:.78rem;color:#374151;font-weight:600;margin-bottom:6px">Optimal salary structure found</div>
+              <div style="font-size:.82rem;color:#475569" id="optimizerDetails"></div>
+              <div class="opt-savings" id="optimizerSavings"></div>
+              <button class="opt-apply-btn" onclick="applyOptimizer()">Apply optimized structure</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PDF Template -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">PDF Template</span></div>
+          <div class="card-body">
+            <div class="style-selector">
+              <div class="style-opt active" onclick="setStyle('corporate',this)">
+                <div class="style-opt-name">Corporate</div><div class="style-opt-desc">Formal business</div>
+              </div>
+              <div class="style-opt" onclick="setStyle('modern',this)">
+                <div class="style-opt-name">Modern</div><div class="style-opt-desc">Clean & minimal</div>
+              </div>
+              <div class="style-opt" onclick="setStyle('classic',this)">
+                <div class="style-opt-name">Classic</div><div class="style-opt-desc">Traditional layout</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Deductions -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Custom Deductions</span>
+            <button class="add-ded-btn" onclick="addCustomDed()">+ Add</button>
+          </div>
+          <div class="card-body" id="customDedsBody">
+            <p style="font-size:.8rem;color:#94a3b8;text-align:center;margin:0" id="customDedsEmpty">
+              No custom deductions. Click + Add to add staff loans, advances, uniform, canteen, etc.
+            </p>
+          </div>
+        </div>
+
+        <!-- Options -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Options</span></div>
+          <div class="card-body">
+            <div class="opt-toggles">
+              <label class="opt-pill">
+                <input type="checkbox" id="fxToggle" onchange="toggleFX()"> Multi-currency
+              </label>
+              <label class="opt-pill">
+                <input type="checkbox" id="leaveToggle" onchange="toggleLeave()"> Leave balance
+              </label>
+            </div>
+
+            <div id="fxPanel" style="display:none;margin-top:16px">
+              <div class="row">
+                <div>
+                  <label for="fxBase">Base Currency</label>
+                  <select id="fxBase" onchange="gen()">
+                    <option>USD</option><option>GBP</option><option>EUR</option>
+                    <option>AED</option><option>CAD</option><option>AUD</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="fxRate">Exchange Rate (to local)</label>
+                  <input type="number" id="fxRate" placeholder="e.g. 1600" min="0.01" step="1" oninput="gen()">
+                </div>
+              </div>
+              <p style="font-size:.74rem;color:#94a3b8;margin:6px 0 0">Payslip will show gross in both currencies.</p>
+            </div>
+
+            <div id="leavePanel" style="display:none;margin-top:16px">
+              <label for="leaveDays">Annual leave days remaining</label>
+              <div style="display:flex;align-items:center;gap:10px">
+                <input type="number" id="leaveDays" value="15" min="0" max="365" style="width:100px" oninput="gen()">
+                <span style="font-size:.82rem;color:#64748b">days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /singlePanel -->
+
+      <!-- ═══ BATCH MODE ═══ -->
+      <div id="batchPanel">
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">Batch Payslip Generation</span></div>
+          <div class="card-body">
+            <p style="font-size:.84rem;color:#475569;margin:0 0 16px">Upload a CSV with one employee per row. Download a ZIP of individual PDFs.</p>
+
+            <div class="csv-zone" id="csvDrop"
+              onclick="document.getElementById('csvFile').click()"
+              ondragover="event.preventDefault();this.classList.add('drag')"
+              ondragleave="this.classList.remove('drag')"
+              ondrop="event.preventDefault();this.classList.remove('drag');handleCsvDrop(event.dataTransfer.files[0])">
+              <div class="csv-zone-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+              <p><strong>Drop CSV here</strong> or click to browse</p>
+              <p style="font-size:.74rem;margin-top:4px">Required: Name, BasicSalary &nbsp;|&nbsp; Optional: ID, Department, JobTitle, Housing, Transport, Other, Overtime, Bonus, Country, Period</p>
+            </div>
+            <input type="file" id="csvFile" accept=".csv,.tsv,.txt" style="display:none" onchange="handleCsvFile(this)">
+
+            <div id="csvPreview" style="display:none">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 8px">
+                <span style="font-size:.82rem;font-weight:700;color:#1e293b" id="csvCount"></span>
+                <button onclick="clearCsv()" style="background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer">✕ Clear</button>
+              </div>
+              <div class="batch-preview" id="csvTable"></div>
+            </div>
+
+            <div id="batchCountryRow" style="display:none;margin-top:14px">
+              <div class="row">
+                <div>
+                  <label for="batchCountry">Default Country (if no Country column)</label>
+                  <select id="batchCountry">
+                    <option value="NG">🇳🇬 Nigeria</option>
+                    <option value="KE">🇰🇪 Kenya</option>
+                    <option value="ZA">🇿🇦 South Africa</option>
+                    <option value="GH">🇬🇭 Ghana</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="batchPeriod">Default Pay Period</label>
+                  <select id="batchPeriod">
+                    <option value="Jan 2026">January 2026</option>
+                    <option value="Feb 2026">February 2026</option>
+                    <option value="Mar 2026">March 2026</option>
+                    <option value="Apr 2026" selected>April 2026</option>
+                    <option value="May 2026">May 2026</option>
+                    <option value="Jun 2026">June 2026</option>
+                    <option value="Jul 2026">July 2026</option>
+                    <option value="Aug 2026">August 2026</option>
+                    <option value="Sep 2026">September 2026</option>
+                    <option value="Oct 2026">October 2026</option>
+                    <option value="Nov 2026">November 2026</option>
+                    <option value="Dec 2026">December 2026</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top:12px">
+                <label for="batchCompany">Company Name (for all payslips)</label>
+                <input type="text" id="batchCompany" value="ABC Company Ltd">
+              </div>
+            </div>
+
+            <button class="batch-gen-btn" id="batchGenBtn" style="display:none" onclick="generateBatch()">
+              Generate Payslips →
+            </button>
+
+            <div class="progress-wrap" id="progressWrap">
+              <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+              <div class="progress-label" id="progressLabel">Preparing...</div>
+            </div>
+
+            <div id="batchCsvError" class="inline-error" style="display:none" role="alert" aria-live="assertive"></div>
+            <div id="batchErrorLog" style="display:none;margin-top:12px;font-size:.75rem;color:#ef4444;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:10px 14px" role="alert" aria-live="polite"></div>
+
+            <div style="margin-top:18px;padding-top:16px;border-top:1px solid #f1f5f9">
+              <p style="font-size:.78rem;font-weight:700;color:#374151;margin:0 0 6px">CSV Format Example</p>
+              <code style="display:block;font-size:.72rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 14px;color:#475569;line-height:1.7;overflow-x:auto;white-space:nowrap">
+                Name,ID,Department,JobTitle,BasicSalary,Housing,Transport,Bonus<br>
+                Amara Diallo,EMP-001,Finance,Accountant,450000,90000,45000,0<br>
+                Kofi Mensah,EMP-002,Engineering,Developer,700000,140000,70000,50000
+              </code>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /batchPanel -->
+
+    </div><!-- /calculator -->
+
+    <!-- ── RIGHT COLUMN: Preview ── -->
+    <div style="position:sticky;top:20px">
+      <div class="payslip" id="payslipPreview"></div>
+      <div class="action-row">
+        <button class="action-btn btn-pdf" id="pdfBtn" onclick="downloadPayslipPdf()" aria-label="Download payslip as PDF">
+          <svg id="pdfBtnIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span id="pdfBtnText">Download PDF</span>
+        </button>
+        <button class="action-btn btn-vault" onclick="saveToVault()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Save to Vault
+        </button>
+      </div>
+      <p style="font-size:.72rem;color:#94a3b8;text-align:center;margin-top:10px">
+        Deductions are estimates. Consult a payroll professional for exact figures.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- SEO / FAQ -->
+<section class="seo-section">
+  <h2>Payslips for All 54 African Countries</h2>
+  <p>Every African employee is legally entitled to a payslip showing their earnings and deductions. This generator covers all 54 African Union member states — from Nigeria's PITA-based PAYE system to Morocco's IR tax, from Kenya's new SHIF health deduction to Rwanda's RSSB pension. The correct tax bands, pension rates, and social security contributions are applied automatically.</p>
+  <p>For <strong>batch payroll</strong>, upload a CSV with your employee roster. The tool calculates deductions for each employee, generates individual PDFs, and delivers a ZIP file. Perfect for SMEs running monthly payroll without expensive payroll software.</p>
+  <p>The <strong>housing allowance optimizer</strong> finds the basic/housing split that minimises PAYE in countries where housing allowances are tax-advantaged (e.g. Nigeria, Kenya, Uganda). This is one of the most underused legal tax savings tools available to African employees.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item"><summary>Is a payslip legally required in Africa?</summary><p>Yes, across all major African economies. Nigeria's Labour Act, Kenya's Employment Act, South Africa's BCEA, Ghana's Labour Act, Tanzania's Employment and Labour Relations Act, and equivalent legislation across the continent require employers to provide itemised pay statements. Failure to provide payslips can result in penalties during labour inspections.</p></details>
+  <details class="faq-item"><summary>How do I generate payslips in bulk?</summary><p>Switch to "Batch Generate" mode. Prepare a CSV with columns: Name, BasicSalary (required). Optional: ID, Department, JobTitle, Housing, Transport, Other, Overtime, Bonus, Country, Period. Upload the file, set default country and period, then click Generate. Individual PDFs are bundled into a ZIP download. Row errors are reported in the error log.</p></details>
+  <details class="faq-item"><summary>Which statutory deductions are included?</summary><p>Nigeria: PAYE (PITA 7-24%), Pension 8%, NHF 2.5%. Kenya: PAYE (KRA 10-35%), NSSF, SHIF 2.75%, AHL 1.5%. South Africa: PAYE (SARS 18-45%), UIF 1%. Ghana: PAYE, SSNIT 5.5%. Tanzania: PAYE, NSSF 10%. Uganda: PAYE, NSSF 5%. All 54 countries have their primary deductions implemented.</p></details>
+  <details class="faq-item"><summary>How does the tax optimizer work?</summary><p>Click "Optimize for Tax Savings" in the Earnings section. The tool tests different basic/housing salary splits across 17 combinations and finds the one that minimises your PAYE. In Nigeria, increasing the housing allowance reduces the taxable base under PITA. Monthly savings of 5-15% are common for mid-senior employees.</p></details>
+  <details class="faq-item"><summary>Can I add custom deductions like staff loans?</summary><p>Yes. Use the Custom Deductions section to add any number of extra deduction lines. Staff loans, salary advances, canteen fees, uniform costs — each appears on the payslip with your chosen label and is included in the net pay calculation.</p></details>
+  <details class="faq-item"><summary>What is multi-currency mode?</summary><p>Enables payslips for employees paid in a foreign currency (USD, GBP, EUR, AED, CAD, AUD). Enter the exchange rate and the payslip shows gross earnings in both the base currency and the local currency equivalent. All deductions are calculated in local currency.</p></details>
+  <details class="faq-item"><summary>What is the payslip serial number?</summary><p>Each generated payslip receives a unique serial number (e.g. PS-A3F9-2026-04). This is printed on the payslip footer. Employees can quote this number when presenting payslips to banks, landlords, or visa offices. A full verification endpoint is coming to afrotools.com/verify/.</p></details>
+  <details class="faq-item"><summary>Are these calculations exact?</summary><p>Calculations use current published tax bands and contribution rates for each country. For complex situations — multiple income sources, special allowances, dependant reliefs, or employment benefits — actual deductions may differ. Always verify with a licensed payroll professional or your country's revenue authority before using for compliance purposes.</p></details>
+</section>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
 <afro-related-tools category="financial" current="payslip-generator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
+</main>
 <afro-footer></afro-footer>
 
+<!-- Engine must load before inline script -->
+<script src="/engines/payslip-engine.js"></script>
 <script>
+// ─── STATE ────────────────────────────────────────────────────────────────────
 var PAYSLIP_STYLE = 'corporate';
 var LAST_CALC = null;
+var CUSTOM_DEDS = [];
+var OPTIMIZER_RESULT = null;
+var BATCH_ROWS = [];
+var CSV_HAS_COUNTRY = false;
 
-var SYMS = {NG:'\u20A6',KE:'KES',ZA:'R',GH:'GH\u20B5',TZ:'TSh',UG:'USh'};
-var COUNTRY_NAMES = {NG:'Nigeria',KE:'Kenya',ZA:'South Africa',GH:'Ghana',TZ:'Tanzania',UG:'Uganda'};
-var DEFAULTS_PAY = {NG:{basic:500000,housing:100000,transport:50000},KE:{basic:80000,housing:20000,transport:10000},ZA:{basic:25000,housing:5000,transport:2500},GH:{basic:4000,housing:800,transport:400},TZ:{basic:1200000,housing:300000,transport:150000},UG:{basic:1800000,housing:400000,transport:200000}};
+// ─── MODE TOGGLE ──────────────────────────────────────────────────────────────
+function setMode(mode, el) {
+  document.querySelectorAll('.ps-tab').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');
+  document.getElementById('singlePanel').style.display = mode === 'single' ? '' : 'none';
+  document.getElementById('batchPanel').style.display  = mode === 'batch'  ? '' : 'none';
+}
 
-function setCountryDefaults(){var c=document.getElementById('country').value;var d=DEFAULTS_PAY[c];if(!d)return;document.getElementById('basic').value=d.basic;document.getElementById('housing').value=d.housing;document.getElementById('transport').value=d.transport;}
+// ─── COUNTRY DEFAULTS ─────────────────────────────────────────────────────────
+function setCountryDefaults() {
+  var c = document.getElementById('country').value;
+  var PE = window.AfroTools && window.AfroTools.PayslipEngine;
+  if (!PE || !PE.COUNTRIES[c]) return;
+  var d = PE.COUNTRIES[c].defaults;
+  document.getElementById('basic').value     = d.basic;
+  document.getElementById('housing').value   = d.housing;
+  document.getElementById('transport').value = d.transport;
+  document.getElementById('optimizerBanner').classList.remove('show');
+  OPTIMIZER_RESULT = null;
+}
 
+// ─── STYLE ────────────────────────────────────────────────────────────────────
 function setStyle(style, el) {
   PAYSLIP_STYLE = style;
   document.querySelectorAll('.style-opt').forEach(function(o){o.classList.remove('active');});
   el.classList.add('active');
 }
 
-var TAX = {
-  NG: {
-    calcPAYE: function(annual) {
-      var cra = 200000 + annual*0.01;
-      var taxable = Math.max(0, annual - cra - annual*0.08);
-      var tax = 0;
-      var bands = [[300000,.07],[300000,.11],[500000,.15],[500000,.19],[1600000,.21],[Infinity,.24]];
-      var rem = taxable;
-      for (var i = 0; i < bands.length; i++) {
-        var t = Math.min(rem, bands[i][0]);
-        tax += t * bands[i][1];
-        rem -= t;
-        if (rem <= 0) break;
-      }
-      return tax / 12;
-    },
-    deductions: function(gross) {
-      var annual = gross * 12;
-      return [
-        { name: 'PAYE Tax', amount: TAX.NG.calcPAYE(annual) },
-        { name: 'Pension (8%)', amount: gross * 0.08 },
-        { name: 'NHF (2.5%)', amount: gross * 0.025 }
-      ];
-    }
-  },
-  KE: {
-    calcPAYE: function(monthly) {
-      var tax = 0, rem = monthly;
-      var bands = [[24000,.10],[8333,.25],[467778,.30],[300000,.325],[Infinity,.35]];
-      for (var i = 0; i < bands.length; i++) {
-        var t = Math.min(rem, bands[i][0]);
-        tax += t * bands[i][1];
-        rem -= t;
-        if (rem <= 0) break;
-      }
-      return Math.max(0, tax - 2400);
-    },
-    deductions: function(gross) {
-      return [
-        { name: 'PAYE Tax', amount: TAX.KE.calcPAYE(gross) },
-        { name: 'NSSF (6%)', amount: Math.min(gross * 0.06, 2160) },
-        { name: 'SHIF (2.75%)', amount: gross * 0.0275 },
-        { name: 'AHL (1.5%)', amount: gross * 0.015 }
-      ];
-    }
-  },
-  ZA: {
-    calcPAYE: function(monthly) {
-      var annual = monthly * 12;
-      var tax = 0, prev = 0;
-      var bands = [[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[Infinity,.45]];
-      for (var i = 0; i < bands.length; i++) {
-        var t = Math.min(annual, bands[i][0]) - prev;
-        if (t > 0) tax += t * bands[i][1];
-        prev = bands[i][0];
-        if (annual <= bands[i][0]) break;
-      }
-      tax = Math.max(0, tax - 17235);
-      return tax / 12;
-    },
-    deductions: function(gross) {
-      return [
-        { name: 'PAYE Tax', amount: TAX.ZA.calcPAYE(gross) },
-        { name: 'UIF (1%)', amount: Math.min(gross * 0.01, 177.12) }
-      ];
-    }
-  },
-  GH: {
-    calcPAYE: function(monthly) {
-      var tax = 0, rem = monthly;
-      var bands = [[402,0],[110,.05],[130,.10],[3034,.175],[16000,.25],[Infinity,.30]];
-      for (var i = 0; i < bands.length; i++) {
-        var t = Math.min(rem, bands[i][0]);
-        tax += t * bands[i][1];
-        rem -= t;
-        if (rem <= 0) break;
-      }
-      return tax;
-    },
-    deductions: function(gross) {
-      return [
-        { name: 'PAYE Tax', amount: TAX.GH.calcPAYE(gross) },
-        { name: 'SSNIT Tier 1 (5.5%)', amount: gross * 0.055 }
-      ];
-    }
-  },
-  TZ: {
-    calcPAYE: function(monthly) {
-      var tax = 0, rem = monthly;
-      var bands = [[270000,0],[250000,.08],[240000,.20],[240000,.25],[Infinity,.30]];
-      for (var i = 0; i < bands.length; i++) {
-        var t = Math.min(rem, bands[i][0]);
-        tax += t * bands[i][1];
-        rem -= t;
-        if (rem <= 0) break;
-      }
-      return tax;
-    },
-    deductions: function(gross) {
-      return [
-        { name: 'PAYE Tax', amount: TAX.TZ.calcPAYE(gross) },
-        { name: 'NSSF (10%)', amount: Math.min(gross * 0.10, 7200000/12) }
-      ];
-    }
-  },
-  UG: {
-    calcPAYE: function(monthly) {
-      var tax = 0, rem = monthly;
-      var bands = [[235000,0],[100000,.10],[75000,.20],[13423333,.30],[Infinity,.40]];
-      for (var i = 0; i < bands.length; i++) {
-        var t = Math.min(rem, bands[i][0]);
-        tax += t * bands[i][1];
-        rem -= t;
-        if (rem <= 0) break;
-      }
-      return tax;
-    },
-    deductions: function(gross) {
-      return [
-        { name: 'PAYE Tax', amount: TAX.UG.calcPAYE(gross) },
-        { name: 'NSSF (5%)', amount: gross * 0.05 }
-      ];
-    }
+// ─── CUSTOM DEDUCTIONS ────────────────────────────────────────────────────────
+function addCustomDed() {
+  var id = Date.now();
+  CUSTOM_DEDS.push({ id: id, label: '', amount: 0 });
+  renderCustomDeds();
+}
+
+function removeCustomDed(id) {
+  CUSTOM_DEDS = CUSTOM_DEDS.filter(function(d){ return d.id !== id; });
+  renderCustomDeds();
+  gen();
+}
+
+function renderCustomDeds() {
+  var body = document.getElementById('customDedsBody');
+  if (CUSTOM_DEDS.length === 0) {
+    body.innerHTML = '<p style="font-size:.8rem;color:#94a3b8;text-align:center;margin:0" id="customDedsEmpty">No custom deductions. Click + Add to add staff loans, advances, etc.</p>';
+    return;
   }
-};
+  var html = '';
+  CUSTOM_DEDS.forEach(function(d) {
+    html += '<div class="ded-row">' +
+      '<input type="text" placeholder="Label (e.g. Staff Loan)" value="' + escHtml(d.label) + '" aria-label="Deduction label" oninput="updateDed(' + d.id + ',\'label\',this.value)">' +
+      '<input type="number" placeholder="Amount" value="' + (d.amount || '') + '" min="0" aria-label="Deduction amount" oninput="updateDed(' + d.id + ',\'amount\',this.value)" style="text-align:right">' +
+      '<button class="ded-del" onclick="removeCustomDed(' + d.id + ')" aria-label="Remove deduction">' +
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+      '</button>' +
+    '</div>';
+  });
+  body.innerHTML = html;
+}
 
-function gen() {
-  var c = document.getElementById('country').value;
-  var sym = SYMS[c];
-  var fmt = function(n) { return sym + ' ' + Math.round(n).toLocaleString('en'); };
+function updateDed(id, field, val) {
+  CUSTOM_DEDS.forEach(function(d){ if (d.id === id) d[field] = field === 'amount' ? +val : val; });
+  gen();
+}
 
-  var basic = +document.getElementById('basic').value;
-  var housing = +document.getElementById('housing').value;
-  var transport = +document.getElementById('transport').value;
-  var other = +document.getElementById('other').value;
-  var overtime = +document.getElementById('overtime').value;
-  var bonus = +document.getElementById('bonus').value;
-  var gross = basic + housing + transport + other + overtime + bonus;
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
-  var deductions = TAX[c].deductions(gross);
-  var totalDed = deductions.reduce(function(s, d) { return s + d.amount; }, 0);
-  var net = gross - totalDed;
+// ─── OPTIONS TOGGLES ─────────────────────────────────────────────────────────
+function toggleFX() {
+  var on = document.getElementById('fxToggle').checked;
+  document.getElementById('fxPanel').style.display = on ? '' : 'none';
+  gen();
+}
 
-  var earnings = [
-    { name: 'Basic Salary', amount: basic },
-    { name: 'Housing Allowance', amount: housing },
-    { name: 'Transport Allowance', amount: transport }
-  ];
-  if (other > 0) earnings.push({ name: 'Other Allowances', amount: other });
-  if (overtime > 0) earnings.push({ name: 'Overtime', amount: overtime });
-  if (bonus > 0) earnings.push({ name: 'Bonus', amount: bonus });
+function toggleLeave() {
+  var on = document.getElementById('leaveToggle').checked;
+  document.getElementById('leavePanel').style.display = on ? '' : 'none';
+  gen();
+}
 
-  LAST_CALC = {
-    country: c, countryName: COUNTRY_NAMES[c], sym: sym, fmt: fmt,
-    company: document.getElementById('company').value,
-    empName: document.getElementById('empName').value,
-    empId: document.getElementById('empId').value,
-    period: document.getElementById('period').value,
-    dept: document.getElementById('dept').value,
-    jobTitle: document.getElementById('jobTitle').value,
-    taxId: document.getElementById('taxId').value,
-    earnings: earnings, deductions: deductions,
-    gross: gross, totalDed: totalDed, net: net
+// ─── OPTIMIZER ────────────────────────────────────────────────────────────────
+function runOptimizer() {
+  var PE = window.AfroTools && window.AfroTools.PayslipEngine;
+  if (!PE) return;
+  var inputs = gatherInputs();
+  var result = PE.optimizeHousing(inputs);
+  OPTIMIZER_RESULT = result;
+  var banner = document.getElementById('optimizerBanner');
+  if (!result) {
+    banner.classList.remove('show');
+    if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Your current structure is already optimal.');
+    return;
+  }
+  var sym = (PE.COUNTRIES[inputs.country] || {}).symbol || '';
+  document.getElementById('optimizerDetails').innerHTML =
+    'Basic: ' + sym + ' ' + Math.round(result.optimalBasic).toLocaleString('en-US') +
+    ' &nbsp;|&nbsp; Housing: ' + sym + ' ' + Math.round(result.optimalHousing).toLocaleString('en-US') +
+    '<br>Current PAYE: ' + sym + ' ' + Math.round(result.currentPAYE).toLocaleString('en-US') +
+    ' → Optimized PAYE: ' + sym + ' ' + Math.round(result.optimalPAYE).toLocaleString('en-US');
+  document.getElementById('optimizerSavings').textContent =
+    'Saves ' + sym + ' ' + Math.round(result.monthlySavings).toLocaleString('en-US') + '/month (' +
+    sym + ' ' + Math.round(result.annualSavings).toLocaleString('en-US') + '/year)';
+  banner.classList.add('show');
+}
+
+function applyOptimizer() {
+  if (!OPTIMIZER_RESULT) return;
+  document.getElementById('basic').value   = OPTIMIZER_RESULT.optimalBasic;
+  document.getElementById('housing').value = OPTIMIZER_RESULT.optimalHousing;
+  document.getElementById('optimizerBanner').classList.remove('show');
+  OPTIMIZER_RESULT = null;
+  gen();
+  if (window.AfroTools && AfroTools.toast) AfroTools.toast.success('Optimized structure applied');
+}
+
+// ─── GATHER INPUTS ────────────────────────────────────────────────────────────
+function gatherInputs() {
+  return {
+    country:   document.getElementById('country').value,
+    company:   document.getElementById('company').value,
+    address:   document.getElementById('address').value,
+    empName:   document.getElementById('empName').value,
+    empId:     document.getElementById('empId').value,
+    period:    document.getElementById('period').value,
+    dept:      document.getElementById('dept').value,
+    jobTitle:  document.getElementById('jobTitle').value,
+    taxId:     document.getElementById('taxId').value,
+    basic:     +document.getElementById('basic').value,
+    housing:   +document.getElementById('housing').value,
+    transport: +document.getElementById('transport').value,
+    other:     +document.getElementById('other').value,
+    overtime:  +document.getElementById('overtime').value,
+    bonus:     +document.getElementById('bonus').value,
+    customDeductions: CUSTOM_DEDS,
+    fxEnabled: document.getElementById('fxToggle').checked,
+    fxBase:    document.getElementById('fxBase').value,
+    fxRate:    +document.getElementById('fxRate').value || 1,
+    leaveEnabled: document.getElementById('leaveToggle').checked,
+    leaveDays: +document.getElementById('leaveDays').value || 0,
+    style: PAYSLIP_STYLE
   };
+}
 
+// ─── GENERATE PREVIEW ─────────────────────────────────────────────────────────
+function gen() {
+  var PE = window.AfroTools && window.AfroTools.PayslipEngine;
+  if (!PE) return;
+  var inputs = gatherInputs();
+  var R = PE.calculate(inputs);
+  if (!R) return;
+  LAST_CALC = R;
+  var fmt = R.fmt;
+
+  // Build preview HTML
   var html = '<div class="ps-header">' +
-    '<div class="ps-company">' + LAST_CALC.company + '</div>' +
-    '<div class="ps-title">PAYSLIP \u2014 ' + LAST_CALC.period + '</div>' +
-  '</div>' +
-  '<div class="ps-info">' +
-    '<div><strong>Employee:</strong> ' + LAST_CALC.empName + '<br><strong>Staff No:</strong> ' + LAST_CALC.empId + '<br><strong>Position:</strong> ' + LAST_CALC.jobTitle + '</div>' +
-    '<div><strong>Department:</strong> ' + LAST_CALC.dept + '<br><strong>Pay Date:</strong> ' + new Date().toLocaleDateString('en-GB') + (LAST_CALC.taxId ? '<br><strong>Tax ID:</strong> ' + LAST_CALC.taxId : '') + '</div>' +
-  '</div>' +
-  '<table class="ps-table"><thead><tr><th>Earnings</th><th>Amount</th></tr></thead><tbody>';
-  earnings.forEach(function(e) { if (e.amount > 0) html += '<tr><td>' + e.name + '</td><td>' + fmt(e.amount) + '</td></tr>'; });
-  html += '<tr class="total"><td>Gross Earnings</td><td>' + fmt(gross) + '</td></tr></tbody></table>' +
-  '<table class="ps-table"><thead><tr><th>Deductions</th><th>Amount</th></tr></thead><tbody>';
-  deductions.forEach(function(d) { html += '<tr><td>' + d.name + '</td><td>' + fmt(d.amount) + '</td></tr>'; });
-  html += '<tr class="total"><td>Total Deductions</td><td>' + fmt(totalDed) + '</td></tr></tbody></table>' +
-  '<div class="ps-net"><div class="lbl">Net Pay</div><div class="big">' + fmt(net) + '</div></div>';
+    '<div class="ps-company">' + escHtml(R.company) + '</div>';
+  if (R.address) html += '<div class="ps-addr">' + escHtml(R.address) + '</div>';
+  html += '<div class="ps-title">PAYSLIP — ' + escHtml(R.period) + '</div></div>';
+
+  html += '<div class="ps-info">' +
+    '<div><strong>Employee:</strong> ' + escHtml(R.empName) +
+    '<br><strong>Staff No:</strong> ' + escHtml(R.empId) +
+    '<br><strong>Position:</strong> ' + escHtml(R.jobTitle) + '</div>' +
+    '<div><strong>Dept:</strong> ' + escHtml(R.dept) +
+    '<br><strong>Pay Date:</strong> ' + new Date().toLocaleDateString('en-GB') +
+    (R.taxId ? '<br><strong>Tax ID:</strong> ' + escHtml(R.taxId) : '') + '</div>' +
+  '</div>';
+
+  // Earnings table
+  html += '<table class="ps-table"><thead><tr><th>Earnings</th><th>Amount</th></tr></thead><tbody>';
+  R.earnings.forEach(function(e){ html += '<tr><td>' + escHtml(e.name) + '</td><td>' + fmt(e.amount) + '</td></tr>'; });
+  html += '<tr class="total"><td>Gross Earnings</td><td>' + fmt(R.gross) + '</td></tr></tbody></table>';
+
+  // Deductions table
+  html += '<table class="ps-table"><thead><tr><th>Deductions</th><th>Amount</th></tr></thead><tbody>';
+  R.deductions.forEach(function(d){ html += '<tr><td>' + escHtml(d.name) + '</td><td>' + fmt(d.amount) + '</td></tr>'; });
+  html += '<tr class="total"><td>Total Deductions</td><td>' + fmt(R.totalDeductions) + '</td></tr></tbody></table>';
+
+  // Net pay
+  html += '<div class="ps-net"><div class="lbl">Net Pay</div><div class="big">' + fmt(R.net) + '</div>';
+  if (R.fxEnabled && R.fxRate > 0) {
+    var netFX = R.net / R.fxRate;
+    html += '<div class="ps-fx">' + R.fxBase + ' ' + netFX.toFixed(2) + ' @ ' + R.fxRate + ' ' + R.currency + '/' + R.fxBase + '</div>';
+  }
+  html += '</div>';
+
+  if (R.leaveEnabled) {
+    html += '<div class="ps-leave">Annual Leave Balance: <strong>' + R.leaveDays + ' days</strong> remaining</div>';
+  }
+
+  // Serial
+  html += '<div class="ps-serial">AfroTools Payslip · afrotools.com · Verify: ' + genSerial() + '</div>';
 
   document.getElementById('payslipPreview').innerHTML = html;
 }
 
-// ── PDF GENERATION (A4, jsPDF) ───────────────────────
-var jsPdfLoaded = false;
+// Simple serial: consistent per session (not truly unique across downloads)
+var _serial = null;
+function genSerial() {
+  if (!_serial) _serial = 'PS-' + Math.random().toString(36).slice(2,6).toUpperCase() + '-' + new Date().getFullYear();
+  return _serial;
+}
+function newSerial() { _serial = 'PS-' + Math.random().toString(36).slice(2,6).toUpperCase() + '-' + new Date().getFullYear(); return _serial; }
+
+// ─── PDF GENERATION ───────────────────────────────────────────────────────────
+var _jsPdfLoaded = false;
 function loadJsPdf() {
-  if (jsPdfLoaded && window.jspdf) return Promise.resolve();
+  if (_jsPdfLoaded && window.jspdf) return Promise.resolve();
   return new Promise(function(resolve, reject) {
     var s = document.createElement('script');
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    s.onload = function() { jsPdfLoaded = true; resolve(); };
+    s.onload = function(){ _jsPdfLoaded = true; resolve(); };
     s.onerror = reject;
     document.head.appendChild(s);
   });
 }
 
+function buildPdf(R, serial) {
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  var W = 210, H = 297, ml = 20, mr = 190;
+  var y = 0;
+  var style = R.style || 'corporate';
+  var colors = {
+    corporate: { headerBg:[15,23,42], headerText:[255,255,255], accent:[0,122,255], sectionBg:[248,250,252], border:[226,232,240] },
+    modern:    { headerBg:[0,122,255], headerText:[255,255,255], accent:[0,86,179], sectionBg:[232,242,255], border:[191,219,254] },
+    classic:   { headerBg:[255,255,255], headerText:[15,23,42], accent:[71,85,105], sectionBg:[248,250,252], border:[30,41,59] }
+  };
+  var C = colors[style] || colors.corporate;
+
+  // Header
+  if (style === 'classic') {
+    doc.setDrawColor.apply(doc, C.border); doc.setLineWidth(0.8);
+    doc.rect(ml, 15, 170, 28); y = 28;
+  } else {
+    doc.setFillColor.apply(doc, C.headerBg); doc.rect(0, 0, W, 40, 'F');
+    doc.setFillColor.apply(doc, C.accent); doc.rect(0, 40, W, 1.5, 'F');
+    y = 18;
+  }
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  doc.setTextColor.apply(doc, C.headerText);
+  doc.text(R.company.toUpperCase(), W/2, y, { align: 'center' });
+  if (R.address) {
+    doc.setFontSize(7); doc.setFont('helvetica','normal');
+    doc.setTextColor(style==='classic'?100:180, style==='classic'?116:180, style==='classic'?139:180);
+    doc.text(R.address, W/2, y+5, { align:'center' });
+    y += 5;
+  }
+  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(style==='classic'?100:200, style==='classic'?116:200, style==='classic'?139:200);
+  doc.text('PAYSLIP — ' + R.period, W/2, y+7, { align: 'center' });
+  y = style === 'classic' ? 52 : 54;
+
+  // Employee info box
+  doc.setFillColor.apply(doc, C.sectionBg); doc.setDrawColor.apply(doc, C.border);
+  doc.roundedRect(ml, y, 170, R.address ? 33 : 28, 2, 2, 'FD');
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(100,116,139);
+  doc.text('EMPLOYEE DETAILS', ml+6, y+6);
+  var iy = y+13; doc.setFontSize(8); doc.setTextColor(15,23,42);
+  doc.setFont('helvetica','normal'); doc.text('Name: ', ml+6, iy);
+  doc.setFont('helvetica','bold'); doc.text(R.empName, ml+22, iy);
+  doc.setFont('helvetica','normal'); doc.text('Staff No: ', ml+90, iy);
+  doc.setFont('helvetica','bold'); doc.text(R.empId, ml+110, iy);
+  iy += 6;
+  doc.setFont('helvetica','normal'); doc.text('Position: ', ml+6, iy);
+  doc.setFont('helvetica','bold'); doc.text(R.jobTitle, ml+26, iy);
+  doc.setFont('helvetica','normal'); doc.text('Dept: ', ml+90, iy);
+  doc.setFont('helvetica','bold'); doc.text(R.dept, ml+106, iy);
+  iy += 6;
+  doc.setFont('helvetica','normal');
+  doc.text('Pay Date: ' + new Date().toLocaleDateString('en-GB'), ml+6, iy);
+  if (R.taxId) doc.text('Tax ID: ' + R.taxId, ml+90, iy);
+  y += R.address ? 41 : 36;
+
+  // Earnings table
+  doc.setFillColor.apply(doc, C.accent); doc.rect(ml, y, 170, 7, 'F');
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text('EARNINGS', ml+4, y+5); doc.text('AMOUNT', mr-4, y+5, {align:'right'});
+  y += 10; doc.setTextColor(15,23,42);
+  R.earnings.forEach(function(e,i){
+    if (!e.amount) return;
+    if (i%2===0){ doc.setFillColor(248,250,252); doc.rect(ml, y-3.5, 170, 6,'F'); }
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.text(e.name, ml+4, y);
+    doc.setFont('helvetica','bold'); doc.text(R.fmt(e.amount), mr-4, y, {align:'right'});
+    y += 6;
+  });
+  doc.setDrawColor.apply(doc,C.border); doc.line(ml,y,mr,y); y += 5;
+  doc.setFontSize(9); doc.setFont('helvetica','bold');
+  doc.text('Gross Earnings', ml+4, y);
+  doc.setTextColor.apply(doc,C.accent); doc.text(R.fmt(R.gross), mr-4, y, {align:'right'});
+  y += 10;
+
+  // Deductions table
+  doc.setFillColor(220,38,38); doc.rect(ml, y, 170, 7, 'F');
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text('DEDUCTIONS', ml+4, y+5); doc.text('AMOUNT', mr-4, y+5, {align:'right'});
+  y += 10; doc.setTextColor(15,23,42);
+  R.deductions.forEach(function(d,i){
+    if (i%2===0){ doc.setFillColor(248,250,252); doc.rect(ml, y-3.5, 170, 6,'F'); }
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.text(d.name, ml+4, y);
+    doc.setFont('helvetica','bold'); doc.setTextColor(220,38,38);
+    doc.text(R.fmt(d.amount), mr-4, y, {align:'right'});
+    doc.setTextColor(15,23,42); y += 6;
+  });
+  doc.setDrawColor.apply(doc,C.border); doc.line(ml,y,mr,y); y += 5;
+  doc.setFontSize(9); doc.setFont('helvetica','bold');
+  doc.text('Total Deductions', ml+4, y); doc.setTextColor(220,38,38);
+  doc.text(R.fmt(R.totalDeductions), mr-4, y, {align:'right'});
+  y += 14;
+
+  // Net pay box
+  doc.setFillColor.apply(doc,C.sectionBg); doc.setDrawColor.apply(doc,C.accent); doc.setLineWidth(1);
+  var netH = R.fxEnabled ? 28 : 22;
+  doc.roundedRect(ml, y, 170, netH, 3, 3, 'FD'); doc.setLineWidth(0.2);
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(100,116,139);
+  doc.text('NET PAY', W/2, y+7, {align:'center'});
+  doc.setFontSize(16); doc.setFont('helvetica','bold'); doc.setTextColor.apply(doc,C.accent);
+  doc.text(R.fmt(R.net), W/2, y+17, {align:'center'});
+  if (R.fxEnabled && R.fxRate > 0) {
+    var netFX = R.net / R.fxRate;
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(100,116,139);
+    doc.text(R.fxBase + ' ' + netFX.toFixed(2) + ' at ' + R.fxRate + ' ' + R.currency + '/' + R.fxBase, W/2, y+23, {align:'center'});
+  }
+  y += netH + 8;
+
+  // Leave balance
+  if (R.leaveEnabled && R.leaveDays) {
+    doc.setFillColor(240,247,255); doc.roundedRect(ml, y, 170, 10, 2, 2, 'F');
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(100,116,139);
+    doc.text('Annual Leave Balance: ', ml+6, y+6.5);
+    doc.setFont('helvetica','bold'); doc.setTextColor(0,86,179);
+    doc.text(R.leaveDays + ' days remaining', ml+52, y+6.5);
+    y += 15;
+  }
+
+  // Footer
+  doc.setFillColor.apply(doc,C.accent); doc.rect(0, H-18, W, 0.8,'F');
+  doc.setFontSize(6); doc.setFont('helvetica','normal'); doc.setTextColor(148,163,184);
+  doc.text('Generated by AfroTools · afrotools.com/tools/payslip-generator/', W/2, H-12, {align:'center'});
+  doc.text('Serial: ' + serial + ' · For informational purposes only.', W/2, H-8, {align:'center'});
+
+  return doc;
+}
+
 function downloadPayslipPdf() {
-  if (!LAST_CALC) return;
-  var R = LAST_CALC;
-  var style = PAYSLIP_STYLE;
-
-  loadJsPdf().then(function() {
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    var W = 210, H = 297;
-    var ml = 20, mr = 190;
-    var y = 0;
-
-    // ── STYLE COLOURS ──
-    var colors = {
-      corporate: { headerBg: [15,23,42], headerText: [255,255,255], accent: [0,122,255], sectionBg: [248,250,252], border: [226,232,240] },
-      modern:    { headerBg: [0,122,255], headerText: [255,255,255], accent: [0,86,179], sectionBg: [232,242,255], border: [191,219,254] },
-      classic:   { headerBg: [255,255,255], headerText: [15,23,42], accent: [71,85,105], sectionBg: [248,250,252], border: [30,41,59] }
-    };
-    var C = colors[style] || colors.corporate;
-
-    // ── HEADER ──
-    if (style === 'classic') {
-      doc.setDrawColor.apply(doc, C.border);
-      doc.setLineWidth(0.8);
-      doc.rect(ml, 15, 170, 24);
-      y = 28;
-    } else {
-      doc.setFillColor.apply(doc, C.headerBg);
-      doc.rect(0, 0, W, 40, 'F');
-      doc.setFillColor.apply(doc, C.accent);
-      doc.rect(0, 40, W, 1.5, 'F');
-      y = 18;
-    }
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor.apply(doc, C.headerText);
-    doc.text(R.company.toUpperCase(), W/2, y, { align: 'center' });
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(style === 'classic' ? 100 : 200, style === 'classic' ? 116 : 200, style === 'classic' ? 139 : 200);
-    doc.text('PAYSLIP \u2014 ' + R.period, W/2, y + 7, { align: 'center' });
-
-    y = style === 'classic' ? 50 : 52;
-
-    // ── EMPLOYEE INFO ──
-    doc.setFillColor.apply(doc, C.sectionBg);
-    doc.setDrawColor.apply(doc, C.border);
-    doc.roundedRect(ml, y, 170, 28, 2, 2, 'FD');
-
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(100, 116, 139);
-    doc.text('EMPLOYEE DETAILS', ml + 6, y + 6);
-
-    doc.setFontSize(8);
-    doc.setTextColor(15, 23, 42);
-    var infoY = y + 12;
-    doc.setFont('helvetica', 'normal');
-    doc.text('Name: ', ml + 6, infoY);
-    doc.setFont('helvetica', 'bold');
-    doc.text(R.empName, ml + 22, infoY);
-
-    doc.setFont('helvetica', 'normal');
-    doc.text('Staff No: ', ml + 90, infoY);
-    doc.setFont('helvetica', 'bold');
-    doc.text(R.empId, ml + 110, infoY);
-
-    infoY += 6;
-    doc.setFont('helvetica', 'normal');
-    doc.text('Position: ', ml + 6, infoY);
-    doc.setFont('helvetica', 'bold');
-    doc.text(R.jobTitle, ml + 26, infoY);
-
-    doc.setFont('helvetica', 'normal');
-    doc.text('Department: ', ml + 90, infoY);
-    doc.setFont('helvetica', 'bold');
-    doc.text(R.dept, ml + 116, infoY);
-
-    infoY += 6;
-    doc.setFont('helvetica', 'normal');
-    doc.text('Pay Date: ' + new Date().toLocaleDateString('en-GB'), ml + 6, infoY);
-    if (R.taxId) doc.text('Tax ID: ' + R.taxId, ml + 90, infoY);
-
-    y += 36;
-
-    // ── EARNINGS TABLE ──
-    doc.setFillColor.apply(doc, C.accent);
-    doc.rect(ml, y, 170, 7, 'F');
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(255, 255, 255);
-    doc.text('EARNINGS', ml + 4, y + 5);
-    doc.text('AMOUNT', mr - 4, y + 5, { align: 'right' });
-    y += 10;
-
-    doc.setTextColor(15, 23, 42);
-    R.earnings.forEach(function(e, i) {
-      if (e.amount <= 0) return;
-      if (i % 2 === 0) { doc.setFillColor(248, 250, 252); doc.rect(ml, y - 3.5, 170, 6, 'F'); }
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text(e.name, ml + 4, y);
-      doc.setFont('helvetica', 'bold');
-      doc.text(R.fmt(e.amount), mr - 4, y, { align: 'right' });
-      y += 6;
-    });
-
-    // Gross total
-    doc.setDrawColor.apply(doc, C.border);
-    doc.line(ml, y, mr, y);
-    y += 5;
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Gross Earnings', ml + 4, y);
-    doc.setTextColor.apply(doc, C.accent);
-    doc.text(R.fmt(R.gross), mr - 4, y, { align: 'right' });
-    y += 10;
-
-    // ── DEDUCTIONS TABLE ──
-    doc.setFillColor(220, 38, 38);
-    doc.rect(ml, y, 170, 7, 'F');
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(255, 255, 255);
-    doc.text('DEDUCTIONS', ml + 4, y + 5);
-    doc.text('AMOUNT', mr - 4, y + 5, { align: 'right' });
-    y += 10;
-
-    doc.setTextColor(15, 23, 42);
-    R.deductions.forEach(function(d, i) {
-      if (i % 2 === 0) { doc.setFillColor(248, 250, 252); doc.rect(ml, y - 3.5, 170, 6, 'F'); }
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.text(d.name, ml + 4, y);
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(220, 38, 38);
-      doc.text(R.fmt(d.amount), mr - 4, y, { align: 'right' });
-      doc.setTextColor(15, 23, 42);
-      y += 6;
-    });
-
-    doc.setDrawColor.apply(doc, C.border);
-    doc.line(ml, y, mr, y);
-    y += 5;
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Total Deductions', ml + 4, y);
-    doc.setTextColor(220, 38, 38);
-    doc.text(R.fmt(R.totalDed), mr - 4, y, { align: 'right' });
-    y += 14;
-
-    // ── NET PAY BOX ──
-    doc.setFillColor.apply(doc, C.sectionBg);
-    doc.setDrawColor.apply(doc, C.accent);
-    doc.setLineWidth(1);
-    doc.roundedRect(ml, y, 170, 22, 3, 3, 'FD');
-    doc.setLineWidth(0.2);
-
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(100, 116, 139);
-    doc.text('NET PAY', W/2, y + 7, { align: 'center' });
-
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor.apply(doc, C.accent);
-    doc.text(R.fmt(R.net), W/2, y + 17, { align: 'center' });
-
-    y += 30;
-
-    // ── FOOTER ──
-    doc.setFillColor.apply(doc, C.accent);
-    doc.rect(0, H - 18, W, 0.8, 'F');
-
-    doc.setFontSize(6);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(148, 163, 184);
-    doc.text('Generated by AfroTools \u00b7 afrotools.com/tools/payslip-generator/', W/2, H - 12, { align: 'center' });
-    doc.text('This payslip is computer-generated. For informational purposes only.', W/2, H - 8, { align: 'center' });
-
-    var filename = 'payslip-' + R.empName.replace(/\s+/g, '-').toLowerCase() + '-' + R.period.replace(/\s+/g, '-').toLowerCase() + '.pdf';
-    doc.save(filename);
-
-    if (window.gtag) gtag('event', 'pdf_download', { tool_name: 'payslip-generator', country: R.country });
+  if (!LAST_CALC) { if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Generate a payslip first'); return; }
+  var btn = document.getElementById('pdfBtn');
+  var icon = document.getElementById('pdfBtnIcon');
+  var txt  = document.getElementById('pdfBtnText');
+  if (btn) { btn.classList.add('btn-loading'); }
+  if (icon) { icon.innerHTML = '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5" fill="none" stroke-dasharray="31.4" stroke-dashoffset="10"/>'; }
+  if (txt) txt.textContent = 'Generating…';
+  loadJsPdf().then(function(){
+    var serial = newSerial();
+    LAST_CALC.serial = serial;
+    var doc = buildPdf(LAST_CALC, serial);
+    var fname = 'payslip-' + LAST_CALC.empName.replace(/\s+/g,'-').toLowerCase() + '-' + LAST_CALC.period.replace(/\s+/g,'-').toLowerCase() + '.pdf';
+    doc.save(fname);
+    if (window.gtag) gtag('event','pdf_download',{tool_name:'payslip-generator',country:LAST_CALC.country});
     if (window.AfroTools && AfroTools.toast) AfroTools.toast.success('PDF downloaded');
+  }).catch(function(){
+    if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Could not load PDF library. Check your connection and try again.');
+  }).finally(function(){
+    if (btn) btn.classList.remove('btn-loading');
+    if (icon) { icon.innerHTML = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>'; }
+    if (txt) txt.textContent = 'Download PDF';
   });
 }
 
-// ── VAULT SAVE (requires signup) ────────────────────
+// ─── VAULT SAVE ───────────────────────────────────────────────────────────────
 function saveToVault() {
-  if (!LAST_CALC) {
-    if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Generate a payslip first');
-    return;
-  }
-  // Check if user is logged in
+  if (!LAST_CALC) { if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Generate a payslip first'); return; }
   if (!window.AfroAuth || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
-    if (window.AfroAuthModal && AfroAuthModal.open) {
-      AfroAuthModal.open('Sign up to save payslips to your vault');
-    } else if (window.AfroTools && AfroTools.toast) {
-      AfroTools.toast.info('Sign up to save payslips to your vault. <a href="/signup/" style="color:inherit;text-decoration:underline;">Create free account</a>');
-    }
+    if (window.AfroAuthModal && AfroAuthModal.open) AfroAuthModal.open('Sign up to save payslips to your vault');
+    else if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Sign up to save payslips. <a href="/signup/" style="color:inherit;text-decoration:underline">Create free account →</a>');
     return;
   }
-  // User is logged in — save via AfroHistory
-  if (!window.AfroHistory) {
-    if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Save feature unavailable');
-    return;
-  }
+  if (!window.AfroHistory) { if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Save feature unavailable'); return; }
   var R = LAST_CALC;
   window.AfroHistory.save({
-    toolSlug: 'payslip-generator',
-    toolName: 'Payslip Generator',
-    countryCode: R.country,
-    currency: R.sym,
-    inputs: { company: R.company, employee: R.empName, empId: R.empId, country: R.countryName, period: R.period, gross: R.gross },
-    outputs: { grossPay: R.gross, totalDeductions: R.totalDed, netPay: R.net, deductionItems: R.deductions.map(function(d){ return d.name + ': ' + R.fmt(d.amount); }).join(', ') }
-  }).then(function(result) {
-    if (result.saved) {
-      if (window.AfroTools && AfroTools.toast) AfroTools.toast.success('Saved! <a href="/dashboard/" style="color:inherit;text-decoration:underline;">View in dashboard \u2192</a>');
-    } else if (result.reason === 'limit_reached') {
-      if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Free limit reached (' + result.limit + '/month). <a href="/pricing/" style="color:inherit;text-decoration:underline;">Upgrade to Pro</a>');
-    } else {
-      if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Could not save. Please try again.');
-    }
+    toolSlug: 'payslip-generator', toolName: 'Payslip Generator',
+    countryCode: R.country, currency: R.symbol,
+    inputs: { company:R.company, employee:R.empName, empId:R.empId, country:R.countryName, period:R.period, gross:R.gross },
+    outputs: { grossPay:R.gross, totalDeductions:R.totalDeductions, netPay:R.net,
+               deductionItems:R.deductions.map(function(d){return d.name+': '+R.fmt(d.amount);}).join(', ') }
+  }).then(function(result){
+    if (result.saved) { if (window.AfroTools && AfroTools.toast) AfroTools.toast.success('Saved! <a href="/dashboard/" style="color:inherit;text-decoration:underline">View dashboard →</a>'); }
+    else if (result.reason==='limit_reached') { if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Free limit reached. <a href="/pricing/" style="color:inherit;text-decoration:underline">Upgrade to Pro</a>'); }
+    else { if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Could not save. Please try again.'); }
   });
 }
 
+// ─── BATCH MODE ───────────────────────────────────────────────────────────────
+var _jsZipLoaded = false;
+function loadJsZip() {
+  if (_jsZipLoaded && window.JSZip) return Promise.resolve();
+  return new Promise(function(resolve, reject){
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload = function(){ _jsZipLoaded = true; resolve(); };
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+var _papaParsed = false;
+function loadPapaParse() {
+  if (_papaParsed && window.Papa) return Promise.resolve();
+  return new Promise(function(resolve, reject){
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js';
+    s.onload = function(){ _papaParsed = true; resolve(); };
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+function handleCsvFile(input) {
+  if (input.files && input.files[0]) handleCsvDrop(input.files[0]);
+}
+
+function handleCsvDrop(file) {
+  if (!file) return;
+  loadPapaParse().then(function(){
+    Papa.parse(file, {
+      header: true, skipEmptyLines: true,
+      complete: function(result){ showCsvPreview(result.data); }
+    });
+  });
+}
+
+// Column aliases for flexible CSV headers
+var COL_MAP = {
+  name:['name','employee','employeename','employee_name','full_name','fullname'],
+  empId:['id','empid','employee_id','staff_no','staffno','staffnumber'],
+  dept:['department','dept','division'],
+  jobTitle:['jobtitle','job_title','title','position','role'],
+  basic:['basic','basicsalary','basic_salary','salary','gross_basic'],
+  housing:['housing','housingallowance','housing_allowance'],
+  transport:['transport','transportallowance','transport_allowance','travel'],
+  other:['other','otherallowances','other_allowances','allowances'],
+  overtime:['overtime','ot'],
+  bonus:['bonus','incentive'],
+  country:['country','countrycode','country_code'],
+  period:['period','payperiod','pay_period','month']
+};
+
+function resolveCol(headers, field) {
+  var aliases = COL_MAP[field] || [field];
+  for (var i=0; i<headers.length; i++){
+    if (aliases.indexOf(headers[i].toLowerCase().replace(/\s+/g,'')) !== -1) return headers[i];
+  }
+  return null;
+}
+
+function showCsvError(msg) {
+  var el = document.getElementById('batchCsvError');
+  if (!el) return;
+  el.style.display = 'flex';
+  el.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' + escHtml(msg);
+}
+
+function hideCsvError() {
+  var el = document.getElementById('batchCsvError');
+  if (el) el.style.display = 'none';
+}
+
+function showCsvPreview(rows) {
+  hideCsvError();
+  if (!rows || rows.length === 0) {
+    showCsvError('CSV appears to be empty or could not be parsed. Check the file and try again.');
+    return;
+  }
+  BATCH_ROWS = rows;
+  var headers = Object.keys(rows[0]);
+  CSV_HAS_COUNTRY = !!resolveCol(headers, 'country');
+
+  var nameCol = resolveCol(headers, 'name');
+  var basicCol = resolveCol(headers, 'basic');
+  if (!nameCol || !basicCol) {
+    showCsvError('CSV must have columns for Name and BasicSalary (or Salary). Columns found: ' + headers.join(', '));
+    BATCH_ROWS = []; return;
+  }
+
+  var preview = rows.slice(0, 5);
+  var previewCols = [nameCol, resolveCol(headers,'empId'), basicCol,
+    resolveCol(headers,'housing'), resolveCol(headers,'transport'),
+    resolveCol(headers,'country')].filter(Boolean);
+
+  var html = '<table><thead><tr>' + previewCols.map(function(c){ return '<th>'+escHtml(c)+'</th>'; }).join('') + '</tr></thead><tbody>';
+  preview.forEach(function(row){
+    html += '<tr>' + previewCols.map(function(c){ return '<td>'+(row[c]||'—')+'</td>'; }).join('') + '</tr>';
+  });
+  if (rows.length > 5) html += '<tr><td colspan="'+previewCols.length+'" style="color:#64748b;font-style:italic">...and '+(rows.length-5)+' more rows</td></tr>';
+  html += '</tbody></table>';
+
+  document.getElementById('csvCount').textContent = rows.length + ' employees detected — preview (first 5):';
+  document.getElementById('csvTable').innerHTML = html;
+  document.getElementById('csvPreview').style.display = '';
+  document.getElementById('batchCountryRow').style.display = '';
+  document.getElementById('batchGenBtn').style.display = '';
+  document.getElementById('batchGenBtn').textContent = 'Generate ' + rows.length + ' Payslips →';
+  document.getElementById('batchErrorLog').style.display = 'none';
+}
+
+function clearCsv() {
+  BATCH_ROWS = [];
+  hideCsvError();
+  document.getElementById('csvPreview').style.display = 'none';
+  document.getElementById('batchCountryRow').style.display = 'none';
+  document.getElementById('batchGenBtn').style.display = 'none';
+  document.getElementById('batchErrorLog').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('csvFile').value = '';
+}
+
+function generateBatch() {
+  if (BATCH_ROWS.length === 0) return;
+  var PE = window.AfroTools && window.AfroTools.PayslipEngine;
+  if (!PE) return;
+
+  var btn = document.getElementById('batchGenBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+
+  var progressWrap = document.getElementById('progressWrap');
+  var progressFill = document.getElementById('progressFill');
+  var progressLabel = document.getElementById('progressLabel');
+  progressWrap.style.display = '';
+  progressFill.style.width = '0%';
+
+  var defCountry = document.getElementById('batchCountry').value;
+  var defPeriod  = document.getElementById('batchPeriod').value;
+  var defCompany = document.getElementById('batchCompany').value;
+
+  var headers = Object.keys(BATCH_ROWS[0]);
+  var cols = {};
+  ['name','empId','dept','jobTitle','basic','housing','transport','other','overtime','bonus','country','period'].forEach(function(f){
+    cols[f] = resolveCol(headers, f);
+  });
+
+  var errors = [];
+
+  Promise.all([loadJsPdf(), loadJsZip()]).then(function(){
+    var zip = new JSZip();
+    var total = BATCH_ROWS.length;
+    var done = 0;
+
+    function processNext(i) {
+      if (i >= total) {
+        progressFill.style.width = '100%';
+        progressLabel.textContent = 'Preparing ZIP...';
+        zip.generateAsync({ type:'blob' }).then(function(blob){
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'payslips-' + defPeriod.replace(/\s+/g,'-').toLowerCase() + '.zip';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(function(){ URL.revokeObjectURL(a.href); }, 5000);
+          btn.disabled = false;
+          btn.textContent = 'Generate ' + total + ' Payslips →';
+          progressLabel.textContent = total + ' payslips generated. Check your downloads.';
+          if (errors.length > 0) {
+            var errEl = document.getElementById('batchErrorLog');
+            errEl.style.display = '';
+            errEl.textContent = errors.join('\n');
+          }
+          if (window.gtag) gtag('event','batch_download',{tool_name:'payslip-generator',count:total});
+        });
+        return;
+      }
+
+      var row = BATCH_ROWS[i];
+      var rowNum = i + 2; // 1 = header
+      var name = cols.name ? row[cols.name] || '' : '';
+      var basic = cols.basic ? +row[cols.basic] || 0 : 0;
+      if (!name || !basic) {
+        errors.push('Row ' + rowNum + ': ' + (!name ? 'Name missing' : 'BasicSalary missing') + ' — skipped');
+        done++; progressFill.style.width = Math.round(done/total*100) + '%';
+        processNext(i+1); return;
+      }
+
+      var c = (cols.country && row[cols.country] ? row[cols.country].trim().toUpperCase() : defCountry);
+      if (!PE.COUNTRIES[c]) { c = defCountry; }
+
+      var inputs = {
+        country:   c,
+        company:   defCompany,
+        empName:   name,
+        empId:     cols.empId   && row[cols.empId]   ? row[cols.empId]   : '',
+        dept:      cols.dept    && row[cols.dept]    ? row[cols.dept]    : '',
+        jobTitle:  cols.jobTitle && row[cols.jobTitle] ? row[cols.jobTitle] : '',
+        period:    cols.period  && row[cols.period]  ? row[cols.period]  : defPeriod,
+        basic:     basic,
+        housing:   cols.housing   && row[cols.housing]   ? +row[cols.housing]   : 0,
+        transport: cols.transport && row[cols.transport] ? +row[cols.transport] : 0,
+        other:     cols.other     && row[cols.other]     ? +row[cols.other]     : 0,
+        overtime:  cols.overtime  && row[cols.overtime]  ? +row[cols.overtime]  : 0,
+        bonus:     cols.bonus     && row[cols.bonus]     ? +row[cols.bonus]     : 0,
+        style: 'corporate'
+      };
+
+      try {
+        var R = PE.calculate(inputs);
+        if (!R) throw new Error('Calculation failed');
+        var serial = 'PS-' + Math.random().toString(36).slice(2,6).toUpperCase() + '-' + new Date().getFullYear();
+        var doc = buildPdf(R, serial);
+        var fname = 'payslip-' + name.replace(/[^a-z0-9]/gi,'-').toLowerCase() + '.pdf';
+        zip.file(fname, doc.output('arraybuffer'));
+      } catch(e) {
+        errors.push('Row ' + rowNum + ' (' + name + '): ' + e.message + ' — skipped');
+      }
+
+      done++;
+      progressFill.style.width = Math.round(done/total*100) + '%';
+      progressLabel.textContent = done + ' / ' + total + ' payslips generated...';
+      setTimeout(function(){ processNext(i+1); }, 0); // yield to browser
+    }
+
+    processNext(0);
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 gen();
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

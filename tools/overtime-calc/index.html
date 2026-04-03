@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Overtime Calculator for Africa 2026 — Country-Specific Labour Law Rates | AfroTools</title>
-  <meta name="description" content="Calculate overtime pay using country-specific African labour law rates. Weekday, weekend, public holiday and night shift multipliers for Nigeria, Kenya, South Africa, Ghana and 30+ countries.">
+  <title>Overtime Calculator for Africa 2026 — All 54 Countries Labour Law Rates | AfroTools</title>
+  <meta name="description" content="Calculate overtime pay using country-specific African labour law rates. Weekday, weekend, public holiday and night shift multipliers for all 54 African countries. Includes TOIL comparison and OT dispute letter.">
   <link rel="canonical" href="https://afrotools.com/tools/overtime-calc/">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <meta name="robots" content="index, follow">
   <!-- OG:START -->
-  <meta property="og:title" content="Overtime Calculator for Africa 2026 — Country-Specific Labour Law Rates | AfroTools">
-  <meta property="og:description" content="Calculate overtime pay using African labour law rates. Weekday, weekend, holiday and night shift multipliers for 34 countries.">
+  <meta property="og:title" content="Overtime Calculator for Africa 2026 — All 54 Countries | AfroTools">
+  <meta property="og:description" content="Calculate overtime pay using African labour law rates. Weekday, weekend, holiday and night shift multipliers for all 54 African countries. TOIL comparison and dispute letter included.">
   <meta property="og:url" content="https://afrotools.com/tools/overtime-calc/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -18,8 +18,8 @@
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Overtime Calculator for Africa 2026 | AfroTools">
-  <meta name="twitter:description" content="Calculate overtime pay using African labour law rates. Weekday, weekend, holiday and night shift multipliers for 34 countries.">
+  <meta name="twitter:title" content="Overtime Calculator for Africa 2026 — All 54 Countries | AfroTools">
+  <meta name="twitter:description" content="Calculate overtime pay using African labour law rates. All 54 countries. TOIL comparison and dispute letter included.">
   <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
   <!-- OG:END -->
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
@@ -30,24 +30,30 @@
   <script src="/assets/js/components/related-tools.js?v=744f454f" defer></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Overtime Calculator for Africa 2026","url":"https://afrotools.com/tools/overtime-calc/","description":"Calculate overtime pay using country-specific African labour law rates. Weekday, weekend, public holiday and night shift multipliers.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Salary & Tax","item":"https://afrotools.com/salary-tax/"},{"@type":"ListItem","position":3,"name":"Overtime Calculator","item":"https://afrotools.com/tools/overtime-calc/"}]}]}</script>
   <style>
+    /* ---- Results reveal animation ---- */
+    @keyframes ot-fadein { from { opacity:0;transform:translateY(12px); } to { opacity:1;transform:translateY(0); } }
+    #results.is-visible { animation:ot-fadein .3s ease both; }
+    @media(prefers-reduced-motion:reduce){#results.is-visible{animation:none;}}
+
     /* ---- Summary Result Cards ---- */
     .ot-summary-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0; }
-    .ot-summary-card { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:16px;text-align:center; }
+    .ot-summary-card { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:16px;text-align:center;transition:box-shadow .2s,transform .2s;cursor:default; }
+    .ot-summary-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-1px); }
     .ot-summary-card.wide { grid-column:1/-1; }
     .ot-summary-card.highlight { background:linear-gradient(135deg,#0d1117,#0a1628);border-color:transparent;color:#fff; }
     .ot-summary-card .os-label { font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted,#64748b);margin-bottom:4px; }
     .ot-summary-card.highlight .os-label { color:rgba(255,255,255,.5); }
     .ot-summary-card .os-value { font-size:1.3rem;font-weight:800;color:var(--primary,#007AFF); }
     .ot-summary-card.highlight .os-value { color:#fff;font-size:1.6rem; }
-    .ot-summary-card .os-sub { font-size:.72rem;color:var(--text-muted,#94a3b8);margin-top:2px; }
-    .ot-summary-card.highlight .os-sub { color:rgba(255,255,255,.45); }
+    .ot-summary-card .os-sub { font-size:.75rem;color:#475569;margin-top:2px; } /* #475569 = 6.4:1 on #f8fafc ✅ */
+    .ot-summary-card.highlight .os-sub { color:rgba(255,255,255,.75); } /* boosted from .45 → 4.5:1+ ✅ */
 
     /* ---- Legal Notes ---- */
     .ot-legal { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:14px;margin:16px 0;font-size:.85rem; }
     .ot-legal .ol-title { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--primary,#007AFF);margin-bottom:8px; }
     .ot-legal ul { padding-left:18px;margin:0;color:var(--text-muted,#475569);line-height:1.7; }
     .ot-legal li { margin-bottom:4px; }
-    .ot-legal .ol-ref { margin-top:10px;font-size:.75rem;color:var(--text-muted,#94a3b8);font-style:italic; }
+    .ot-legal .ol-ref { margin-top:10px;font-size:.75rem;color:#475569;font-style:italic; } /* #475569 = 6.4:1 ✅ */
 
     /* ---- Currency prefix inside input ---- */
     .ot-input-wrap { position:relative; }
@@ -59,6 +65,52 @@
     .ot-info-table th { background:var(--bg,#f1f5f9);padding:10px 12px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted,#64748b);border-bottom:1px solid var(--border,#e2e8f0); }
     .ot-info-table td { padding:10px 12px;border-bottom:1px solid #f1f5f9;color:var(--text,#0f172a);font-weight:500; }
     .ot-info-table tr:hover td { background:var(--bg,#f8fafc); }
+
+    /* ---- Payment type toggle ---- */
+    .ot-toggle-group { display:flex;gap:8px;flex-wrap:wrap; }
+    .ot-toggle { flex:1;min-height:44px;padding:10px 14px;border:2px solid #6b7280;border-radius:10px;background:#fff;font-size:.82rem;font-weight:700;cursor:pointer;color:#374151;transition:border-color .2s,background .2s,color .2s,box-shadow .2s; } /* #6b7280 border = 4.3:1 on #fff ✅ WCAG 1.4.11 */
+    .ot-toggle:hover:not(.active) { border-color:#EA580C55;background:#FFF7ED88;color:#EA580C; }
+    .ot-toggle.active { border-color:#EA580C;background:#FFF7ED;color:#EA580C;box-shadow:0 2px 8px rgba(234,88,12,.15); }
+    .ot-toggle:focus-visible { outline:2px solid #EA580C;outline-offset:2px; }
+
+    /* ---- TOIL result block ---- */
+    .ot-toil-block { background:#FFF7ED;border:1px solid #fed7aa;border-radius:12px;padding:16px;margin:12px 0; }
+    .ot-toil-block .otb-title { font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#EA580C;margin-bottom:10px; }
+    .ot-toil-block .otb-row { display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #fed7aa;font-size:.85rem; }
+    .ot-toil-block .otb-row:last-child { border-bottom:none;font-weight:700;padding-top:10px; }
+    .ot-toil-block .otb-label { color:var(--text-muted,#64748b); }
+    .ot-toil-block .otb-val { font-weight:700;color:#EA580C; }
+    .ot-toil-block .otb-verdict { margin-top:10px;font-size:.8rem;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #fed7aa;color:#92400e; }
+
+    /* ---- WhatsApp share button ---- */
+    .ot-wa-btn { display:flex;align-items:center;gap:8px;background:#25D366;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:12px;text-decoration:none;width:100%;justify-content:center; }
+    .ot-wa-btn:hover { background:#128C7E; }
+
+    /* ---- Dispute letter ---- */
+    .ot-dispute { margin-top:16px; }
+    .ot-dispute summary { cursor:pointer;font-size:.82rem;font-weight:700;color:#9A3412;padding:10px 14px;background:#FFF7ED;border:1px solid #fed7aa;border-radius:10px;list-style:none;display:flex;align-items:center;gap:8px; } /* #9A3412 = 6.4:1 on #FFF7ED ✅ */
+    .ot-dispute summary::before { content:"⚖️ "; }
+    .ot-dispute-body { background:var(--bg,#f8fafc);border:1px solid var(--border,#e2e8f0);border-top:none;border-radius:0 0 10px 10px;padding:16px; }
+    .ot-dispute-letter { font-family:Georgia,serif;font-size:.82rem;line-height:1.8;white-space:pre-wrap;color:var(--text,#0f172a);border:1px solid var(--border,#e2e8f0);padding:16px;border-radius:8px;background:#fff;margin-bottom:10px; }
+    .ot-dispute-copy { font-size:.78rem;font-weight:700;cursor:pointer;padding:12px 16px;min-height:44px;border:1px solid var(--border,#e2e8f0);border-radius:8px;background:#fff;color:#0063D1; } /* #0063D1 = 5.2:1 on #fff ✅, min-height 44px touch target ✅ */
+
+    /* ---- Focus-visible rings for accessibility ---- */
+    #monthly-salary:focus-visible,#ot-hours:focus-visible,#country:focus-visible,#day-type:focus-visible {
+      outline:2px solid var(--primary,#007AFF);outline-offset:2px;border-color:var(--primary,#007AFF);
+    }
+
+    /* ---- Calculate button loading state ---- */
+    .tl-btn.ot-loading { opacity:.75;pointer-events:none;display:flex;align-items:center;justify-content:center;gap:8px; }
+    .tl-btn.ot-loading::before {
+      content:'';display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);
+      border-top-color:#fff;border-radius:50%;animation:ot-spin .6s linear infinite;
+    }
+    @keyframes ot-spin { to { transform:rotate(360deg); } }
+    @media(prefers-reduced-motion:reduce){ .tl-btn.ot-loading::before { animation:none; } }
+
+    /* ---- Copy button success state ---- */
+    .ot-dispute-copy { transition:background .2s,color .2s; }
+    .ot-dispute-copy.copied { background:var(--primary,#007AFF);color:#fff;border-color:var(--primary,#007AFF); }
 
     /* ---- Responsive ---- */
     @media(max-width:600px){
@@ -83,12 +135,13 @@
     </nav>
     <div class="tl-category-label">&#x1F4B0; SALARY &amp; TAX</div>
     <h1 class="tl-title">Overtime <span class="tl-accent">Calculator</span></h1>
-    <p class="tl-desc">Calculate overtime pay using country-specific labour law rates across Africa. Every country has different multipliers for weekday OT, weekends, public holidays and night shifts. Enter your salary, pick your country, and get the exact legal rate.</p>
+    <p class="tl-desc">Calculate overtime pay using country-specific labour law rates across all 54 African countries. Every country has different multipliers for weekday OT, weekends, public holidays and night shifts. Includes TOIL comparison and an OT dispute letter generator.</p>
     <div class="tl-badges">
-      <span>&#x1F1F3;&#x1F1EC; 1.5&times; weekday</span>
+      <span>&#x1F30D; All 54 countries</span>
       <span>&#x1F1FF;&#x1F1E6; BCEA rates</span>
       <span>&#x1F1EC;&#x1F1ED; 2.5&times; holiday</span>
-      <span>&#x1F1E8;&#x1F1EE; Tiered OT</span>
+      <span>&#x23F0; TOIL calculator</span>
+      <span>&#x2696;&#xFE0F; Dispute letter</span>
     </div>
   </div>
 </div>
@@ -98,7 +151,7 @@
     <!-- ── INPUT CARD ── -->
     <div class="tl-card">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x23F0;</span>
+        <span class="tl-card-icon" aria-hidden="true">&#x23F0;</span>
         <div>
           <div class="tl-card-title">Overtime Pay Calculator</div>
           <div class="tl-card-sub">Select your country and enter your salary details</div>
@@ -107,22 +160,22 @@
 
       <div class="tl-form-grid">
         <div class="tl-field" style="grid-column:1/-1">
-          <label class="tl-label">COUNTRY</label>
+          <label class="tl-label" for="country">COUNTRY</label>
           <select id="country" onchange="onCountryChange()"></select>
         </div>
         <div class="tl-field">
-          <label class="tl-label">MONTHLY SALARY</label>
+          <label class="tl-label" for="monthly-salary">MONTHLY SALARY</label>
           <div class="ot-input-wrap">
-            <span class="ot-prefix" id="currency-prefix">&#x20A6;</span>
-            <input type="number" id="monthly-salary" placeholder="350000" min="0" step="any">
+            <span class="ot-prefix" id="currency-prefix" aria-hidden="true">&#x20A6;</span>
+            <input type="number" id="monthly-salary" placeholder="350000" min="0" step="any" aria-label="Monthly salary amount">
           </div>
         </div>
         <div class="tl-field">
-          <label class="tl-label">OVERTIME HOURS</label>
+          <label class="tl-label" for="ot-hours">OVERTIME HOURS</label>
           <input type="number" id="ot-hours" placeholder="20" min="0" step="0.5">
         </div>
         <div class="tl-field" style="grid-column:1/-1">
-          <label class="tl-label">DAY TYPE</label>
+          <label class="tl-label" for="day-type">DAY TYPE</label>
           <select id="day-type">
             <option value="weekday">Weekday (Normal OT)</option>
             <option value="weekend">Weekend / Rest Day</option>
@@ -130,15 +183,22 @@
             <option value="night">Night Shift</option>
           </select>
         </div>
+        <div class="tl-field" style="grid-column:1/-1">
+          <label class="tl-label" id="payment-type-label">PAYMENT TYPE</label>
+          <div class="ot-toggle-group" role="group" aria-labelledby="payment-type-label">
+            <button type="button" class="ot-toggle active" id="tog-pay" aria-pressed="true" onclick="setPayType('pay')">&#x1F4B5; Cash Payment</button>
+            <button type="button" class="ot-toggle" id="tog-toil" aria-pressed="false" onclick="setPayType('toil')">&#x23F0; TOIL (Time Off In Lieu)</button>
+          </div>
+        </div>
       </div>
 
       <button class="tl-btn" onclick="calculate()">Calculate Overtime Pay</button>
     </div>
 
     <!-- ── RESULTS ── -->
-    <div class="tl-card" id="results" style="display:none">
+    <div class="tl-card" id="results" style="display:none" aria-live="polite" aria-atomic="true">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x1F4CA;</span>
+        <span class="tl-card-icon" aria-hidden="true">&#x1F4CA;</span>
         <div>
           <div class="tl-card-title">Overtime Calculation Results</div>
           <div class="tl-card-sub" id="result-subtitle">-</div>
@@ -173,12 +233,37 @@
         <ul id="legal-list"></ul>
         <div class="ol-ref" id="law-ref"></div>
       </div>
+
+      <!-- TOIL block (shown when TOIL mode active) -->
+      <div class="ot-toil-block" id="toil-block" style="display:none">
+        <div class="otb-title">&#x23F0; Time Off In Lieu (TOIL) Comparison</div>
+        <div class="otb-row"><span class="otb-label">Cash OT value</span><span class="otb-val" id="toil-cash">-</span></div>
+        <div class="otb-row"><span class="otb-label">TOIL hours equivalent</span><span class="otb-val" id="toil-hours">-</span></div>
+        <div class="otb-row"><span class="otb-label">TOIL days equivalent</span><span class="otb-val" id="toil-days">-</span></div>
+        <div class="otb-row"><span class="otb-label">Daily rate (8hrs)</span><span class="otb-val" id="toil-daily-rate">-</span></div>
+        <div class="otb-verdict" id="toil-verdict">-</div>
+      </div>
+
+      <!-- WhatsApp share -->
+      <a class="ot-wa-btn" id="wa-share-btn" href="#" target="_blank" rel="noopener" style="display:none">
+        &#x1F4AC; Share via WhatsApp
+      </a>
+
+      <!-- Dispute letter -->
+      <details class="ot-dispute" id="dispute-section" style="display:none">
+        <summary>Generate OT Dispute Letter</summary>
+        <div class="ot-dispute-body">
+          <p style="font-size:.8rem;color:var(--text-muted,#64748b);margin:0 0 12px">Use this if your employer has refused to pay your overtime. Edit the bracketed fields before sending.</p>
+          <div class="ot-dispute-letter" id="dispute-letter">-</div>
+          <button class="ot-dispute-copy" onclick="copyLetter()">&#x1F4CB; Copy Letter</button>
+        </div>
+      </details>
     </div>
 
     <!-- ── INFO SECTION ── -->
     <div class="tl-card">
       <div class="tl-card-header">
-        <span class="tl-card-icon">&#x1F4D6;</span>
+        <span class="tl-card-icon" aria-hidden="true">&#x1F4D6;</span>
         <div>
           <div class="tl-card-title">Standard Working Hours by Country</div>
           <div class="tl-card-sub">Key African labour law reference</div>
@@ -240,14 +325,18 @@
 <afro-related-tools category="financial" current="overtime-calc"></afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="/data/hr/overtime-rules.js?v=339d178c"></script>
+<script src="/data/hr/overtime-rules.js?v=54countries"></script>
 <script src="/engines/hr-engine.js?v=56a65972"></script>
 <script>
 var countrySelect = document.getElementById('country');
 var currencyPrefix = document.getElementById('currency-prefix');
 var resultsEl = document.getElementById('results');
+var payType = 'pay'; /* 'pay' or 'toil' */
+var lastResult = null;
+var lastRule = null;
+var lastInputs = null;
 
-/* ── Populate country dropdown from OVERTIME_RULES ── */
+/* ── Populate country dropdown ── */
 (function init() {
   if (typeof OVERTIME_RULES === 'undefined') return;
   var codes = Object.keys(OVERTIME_RULES).sort(function(a, b) {
@@ -260,7 +349,6 @@ var resultsEl = document.getElementById('results');
     opt.textContent = rule.flag + ' ' + rule.name;
     countrySelect.appendChild(opt);
   }
-  /* Default to NG */
   if (OVERTIME_RULES['NG']) countrySelect.value = 'NG';
   onCountryChange();
 })();
@@ -270,9 +358,7 @@ function onCountryChange() {
   var code = countrySelect.value;
   var rule = OVERTIME_RULES[code];
   if (!rule) return;
-  currencyPrefix.textContent = rule.currencySymbol || rule.currency;
-
-  /* Update AI Observations */
+  currencyPrefix.textContent = rule.symbol || rule.currency;
   var obsEl = document.getElementById('ai-obs');
   if (typeof OT_OBSERVATIONS !== 'undefined' && OT_OBSERVATIONS[code]) {
     obsEl.innerHTML = OT_OBSERVATIONS[code];
@@ -281,9 +367,20 @@ function onCountryChange() {
   }
 }
 
-function formatNumber(n, decimals) {
-  if (typeof decimals === 'undefined') decimals = 2;
-  return Number(n).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+function setPayType(type) {
+  payType = type;
+  var payBtn = document.getElementById('tog-pay');
+  var toilBtn = document.getElementById('tog-toil');
+  payBtn.classList.toggle('active', type === 'pay');
+  payBtn.setAttribute('aria-pressed', type === 'pay' ? 'true' : 'false');
+  toilBtn.classList.toggle('active', type === 'toil');
+  toilBtn.setAttribute('aria-pressed', type === 'toil' ? 'true' : 'false');
+  if (lastResult) renderResults(lastResult, lastRule, lastInputs);
+}
+
+function fmt(n, d) {
+  if (typeof d === 'undefined') d = 2;
+  return Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 }
 
 function calculate() {
@@ -291,94 +388,134 @@ function calculate() {
     alert('Data is still loading. Please wait a moment and try again.');
     return;
   }
-
   var country = countrySelect.value;
   var monthlySalary = parseFloat(document.getElementById('monthly-salary').value);
   var overtimeHours = parseFloat(document.getElementById('ot-hours').value);
   var dayType = document.getElementById('day-type').value;
 
-  if (!monthlySalary || monthlySalary <= 0) {
-    alert('Please enter a valid monthly salary.');
-    return;
-  }
-  if (!overtimeHours || overtimeHours <= 0) {
-    alert('Please enter valid overtime hours.');
-    return;
-  }
+  if (!monthlySalary || monthlySalary <= 0) { alert('Please enter a valid monthly salary.'); return; }
+  if (!overtimeHours || overtimeHours <= 0) { alert('Please enter valid overtime hours.'); return; }
 
-  var result = AfroTools.HREngine.calculateOvertime({
-    country: country,
-    monthlySalary: monthlySalary,
-    overtimeHours: overtimeHours,
-    dayType: dayType
-  });
+  var calcBtn = document.querySelector('.tl-btn');
+  var origText = calcBtn.textContent;
+  calcBtn.classList.add('ot-loading');
+  calcBtn.textContent = 'Calculating\u2026';
 
-  if (!result || result.error) {
-    alert(result ? result.error : 'Calculation failed. Please check your inputs.');
-    return;
-  }
+  setTimeout(function() {
+    var result = AfroTools.HREngine.calculateOvertime({ country: country, monthlySalary: monthlySalary, overtimeHours: overtimeHours, dayType: dayType });
+    calcBtn.classList.remove('ot-loading');
+    calcBtn.textContent = origText;
 
-  var rule = OVERTIME_RULES[country];
-  var cur = rule.currencySymbol || rule.currency;
+    if (!result || result.error) { alert(result ? result.error : 'Calculation failed.'); return; }
 
-  /* Populate summary cards */
-  document.getElementById('r-base-hourly').textContent = cur + ' ' + formatNumber(result.baseHourlyRate);
-  document.getElementById('r-multiplier').textContent = result.multiplier + '\u00D7';
-  document.getElementById('r-multiplier-type').textContent = dayType.charAt(0).toUpperCase() + dayType.slice(1) + ' rate';
-  document.getElementById('r-ot-pay').textContent = cur + ' ' + formatNumber(result.overtimePay);
-  document.getElementById('r-ot-hours-label').textContent = overtimeHours + ' hour' + (overtimeHours !== 1 ? 's' : '') + ' of overtime';
-  document.getElementById('r-total-pay').textContent = cur + ' ' + formatNumber(result.totalMonthlyPay);
+    var rule = OVERTIME_RULES[country];
+    lastResult = result;
+    lastRule = rule;
+    lastInputs = { country: country, monthlySalary: monthlySalary, overtimeHours: overtimeHours, dayType: dayType };
+    renderResults(result, rule, lastInputs);
+  }, 120);
+}
 
-  var effectiveRate = result.totalMonthlyPay / (rule.monthlyHours + overtimeHours);
-  document.getElementById('r-effective-rate').textContent = 'Effective hourly rate with OT: ' + cur + ' ' + formatNumber(effectiveRate);
-  document.getElementById('result-subtitle').textContent = rule.flag + ' ' + rule.name + ' \u2014 ' + dayType.charAt(0).toUpperCase() + dayType.slice(1) + ' Overtime';
+function renderResults(result, rule, inputs) {
+  var cur = rule.symbol || rule.currency;
+  var dayLabel = inputs.dayType.charAt(0).toUpperCase() + inputs.dayType.slice(1);
+
+  /* Summary cards */
+  document.getElementById('r-base-hourly').textContent = cur + ' ' + fmt(result.hourlyRate);
+  document.getElementById('r-multiplier').textContent = result.otMultiplier + '\u00D7';
+  document.getElementById('r-multiplier-type').textContent = dayLabel + ' rate';
+  document.getElementById('r-ot-pay').textContent = cur + ' ' + fmt(result.overtimePay);
+  document.getElementById('r-ot-hours-label').textContent = inputs.overtimeHours + ' hour' + (inputs.overtimeHours !== 1 ? 's' : '') + ' of overtime';
+  document.getElementById('r-total-pay').textContent = cur + ' ' + fmt(result.totalPay);
+  document.getElementById('r-effective-rate').textContent = 'Effective hourly rate with OT: ' + cur + ' ' + fmt(result.effectiveHourly);
+  document.getElementById('result-subtitle').textContent = rule.flag + ' ' + rule.name + ' \u2014 ' + dayLabel + ' Overtime';
 
   /* Legal notes */
   var legalEl = document.getElementById('legal-notes');
   var legalList = document.getElementById('legal-list');
   var lawRef = document.getElementById('law-ref');
   legalList.innerHTML = '';
+  var maxOT = result.maxOvertime;
+  if (maxOT && maxOT.weekly) { var li = document.createElement('li'); li.textContent = 'Max overtime: ' + maxOT.weekly + ' hours/week'; legalList.appendChild(li); }
+  if (maxOT && maxOT.daily) { var li2 = document.createElement('li'); li2.textContent = 'Max overtime: ' + maxOT.daily + ' hours/day'; legalList.appendChild(li2); }
+  if (maxOT && maxOT.monthly) { var li3 = document.createElement('li'); li3.textContent = 'Max overtime: ' + maxOT.monthly + ' hours/month'; legalList.appendChild(li3); }
+  if (rule.nightWork && rule.nightWork.definition) { var li4 = document.createElement('li'); li4.textContent = 'Night work: ' + rule.nightWork.definition; legalList.appendChild(li4); }
+  if (result.exemptions && result.exemptions.length) { var li5 = document.createElement('li'); li5.textContent = 'Exemptions: ' + result.exemptions.join('; '); legalList.appendChild(li5); }
+  if (result.timeOff) { var li6 = document.createElement('li'); li6.textContent = result.timeOff; legalList.appendChild(li6); }
+  if (rule.notes) { var li7 = document.createElement('li'); li7.textContent = rule.notes; legalList.appendChild(li7); }
+  var lawText = (rule.standardHours && rule.standardHours.law) ? 'Law: ' + rule.standardHours.law : '';
+  lawRef.textContent = lawText;
+  legalEl.style.display = legalList.children.length ? '' : 'none';
 
-  if (rule.legal) {
-    legalEl.style.display = '';
-    var notes = rule.legal;
-    if (notes.maxOTPerWeek) {
-      var li = document.createElement('li');
-      li.textContent = 'Maximum overtime allowed: ' + notes.maxOTPerWeek + ' hours per week';
-      legalList.appendChild(li);
-    }
-    if (notes.maxOTPerMonth) {
-      var li2 = document.createElement('li');
-      li2.textContent = 'Maximum overtime allowed: ' + notes.maxOTPerMonth + ' hours per month';
-      legalList.appendChild(li2);
-    }
-    if (notes.exemptions) {
-      var li3 = document.createElement('li');
-      li3.textContent = 'Exemptions: ' + notes.exemptions;
-      legalList.appendChild(li3);
-    }
-    if (notes.nightWorkDef) {
-      var li4 = document.createElement('li');
-      li4.textContent = 'Night work defined as: ' + notes.nightWorkDef;
-      legalList.appendChild(li4);
-    }
-    if (notes.nightPremium) {
-      var li5 = document.createElement('li');
-      li5.textContent = 'Night shift premium: ' + notes.nightPremium;
-      legalList.appendChild(li5);
-    }
-    if (notes.compulsoryRest) {
-      var li6 = document.createElement('li');
-      li6.textContent = 'Compulsory rest: ' + notes.compulsoryRest;
-      legalList.appendChild(li6);
-    }
-    lawRef.textContent = notes.lawReference || '';
+  /* TOIL block */
+  var toilBlock = document.getElementById('toil-block');
+  if (payType === 'toil') {
+    var toilHours = inputs.overtimeHours * result.otMultiplier; /* fair TOIL = OT hours × multiplier */
+    var toilDays = toilHours / 8;
+    var dailyRate = inputs.monthlySalary / (4.33 * (rule.standardHours.weekly || 40)) * 8;
+    var toilCashEquiv = toilDays * dailyRate;
+    var cashIsBetter = result.overtimePay > toilCashEquiv;
+    var diff = Math.abs(result.overtimePay - toilCashEquiv);
+    var pct = toilCashEquiv > 0 ? Math.round((diff / toilCashEquiv) * 100) : 0;
+    document.getElementById('toil-cash').textContent = cur + ' ' + fmt(result.overtimePay);
+    document.getElementById('toil-hours').textContent = fmt(toilHours, 1) + ' hrs';
+    document.getElementById('toil-days').textContent = fmt(toilDays, 1) + ' days';
+    document.getElementById('toil-daily-rate').textContent = cur + ' ' + fmt(dailyRate) + '/day';
+    document.getElementById('toil-verdict').textContent = cashIsBetter
+      ? 'Cash is worth ' + pct + '% more than TOIL at your daily rate. Negotiate cash if possible.'
+      : 'TOIL equivalent value (' + cur + ' ' + fmt(toilCashEquiv) + ') is similar to cash. TOIL is a fair deal.';
+    toilBlock.style.display = '';
   } else {
-    legalEl.style.display = 'none';
+    toilBlock.style.display = 'none';
   }
 
+  /* WhatsApp share */
+  var month = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  var waText = '*Overtime Calculation \u2014 ' + rule.name + '*\nMonth: ' + month + '\nSalary: ' + cur + fmt(inputs.monthlySalary, 0) + '/month\nOT hours: ' + inputs.overtimeHours + ' (' + inputs.dayType + ')\nOT rate: ' + result.otMultiplier + '\u00D7\n*OT pay: ' + cur + fmt(result.overtimePay) + '*\n*Total pay: ' + cur + fmt(result.totalPay) + '*\n' + (lawText ? lawText : '');
+  var waBtn = document.getElementById('wa-share-btn');
+  waBtn.href = 'https://wa.me/?text=' + encodeURIComponent(waText);
+  waBtn.style.display = '';
+
+  /* Dispute letter */
+  var lawRef2 = (rule.standardHours && rule.standardHours.law) ? rule.standardHours.law : '[Labour Act]';
+  var letter = 'Date: ' + new Date().toLocaleDateString('en-GB') + '\n\nTo: [Employer / HR Manager Name]\n[Company Name]\n[Company Address]\n\nFrom: [Your Full Name]\n[Your Job Title]\n[Your Employee ID]\n\nSubject: Unpaid Overtime — Formal Request for Payment\n\nDear [Manager Name],\n\nI am writing to formally request payment of overtime wages that I am owed for work performed in ' + month + '.\n\nAs documented, I worked ' + inputs.overtimeHours + ' hours of overtime during this period (' + inputs.dayType + ' work). Under ' + lawRef2 + ', overtime is payable at ' + result.otMultiplier + '\u00D7 the standard hourly rate.\n\nCalculation:\n  Monthly salary: ' + cur + fmt(inputs.monthlySalary, 0) + '\n  Standard hourly rate: ' + cur + fmt(result.hourlyRate) + '\n  OT multiplier: ' + result.otMultiplier + '\u00D7\n  OT hours: ' + inputs.overtimeHours + '\n  Amount owed: ' + cur + fmt(result.overtimePay) + '\n\nI respectfully request that this amount be included in my next payroll or paid within [14] days of this letter.\n\nIf this matter is not resolved, I will be compelled to file a formal complaint with [Ministry of Labour / relevant authority].\n\nYours faithfully,\n[Your Signature]\n[Your Full Name]\n[Date]';
+  document.getElementById('dispute-letter').textContent = letter;
+  document.getElementById('dispute-section').style.display = '';
+
   resultsEl.style.display = '';
+  resultsEl.classList.remove('is-visible');
+  void resultsEl.offsetWidth; /* force reflow to restart animation */
+  resultsEl.classList.add('is-visible');
   resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyLetter() {
+  var text = document.getElementById('dispute-letter').textContent;
+  var btn = document.querySelector('.ot-dispute-copy');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '\u2713 Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = '\uD83D\uDCCB Copy Letter';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(function() {
+    /* Fallback for browsers that block clipboard */
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '\u2713 Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = '\uD83D\uDCCB Copy Letter';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
 }
 </script>
 </body>
