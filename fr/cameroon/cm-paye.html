@@ -444,8 +444,14 @@ window.addEventListener('load', function() {
 var RESULT=null, CHART = null, CHART_TYPE = 'donut', CHAT_HISTORY = [];
 const fmt = n => 'XAF\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-CM');
 const pct = r => ((r*100)%1===0 ? (r*100).toFixed(0) : (r*100).toFixed(2))+'%';
-function onSlider(el) {const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);}
-function onInput(el) {const v=Math.min(Math.max(parseInt(el.value)||0,1000000),200000000);document.getElementById('salarySlider').value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(el.value)||0);updateSliderFill(document.getElementById('salarySlider'));}
+function onSlider(el) {const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
+}
+function onInput(el) {const v=Math.min(Math.max(parseInt(el.value)||0,1000000),200000000);document.getElementById('salarySlider').value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(el.value)||0);updateSliderFill(document.getElementById('salarySlider'));
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
+}
 function updateSliderFill(el) {
   var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
   var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');

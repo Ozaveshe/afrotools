@@ -460,6 +460,8 @@ function onSlider(el) {
   document.getElementById('grossSalary').value = v;
   document.getElementById('sliderVal').textContent = 'XOF ' + Math.round(v/12).toLocaleString('en-TG') + '/mo';
   updateSliderFill(el);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
 }
 function onInput(el) {
   const v = Math.min(Math.max(parseInt(el.value) || 0, 100000), 20000000);
@@ -467,6 +469,8 @@ function onInput(el) {
   s.value = v;
   document.getElementById('sliderVal').textContent = 'XOF ' + Math.round(v/12).toLocaleString('en-TG') + '/mo';
   updateSliderFill(s);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
 }
 function updateSliderFill(el) {
   var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;

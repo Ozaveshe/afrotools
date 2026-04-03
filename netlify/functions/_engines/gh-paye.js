@@ -2,7 +2,7 @@
 // Source: Ghana Revenue Authority (GRA)
 
 // GRA monthly bands: 0% first 490 → 5% to 600 → 10% to 730 → 17.5% to 3,896.67 → 25% to 20K → 30% to 50K → 35% above
-const MONTHLY_BANDS = [[490,0],[110,0.05],[130,0.10],[3166.67,0.175],[16103.33,0.25],[30000,0.30],[Infinity,0.35]];
+const MONTHLY_BANDS = [[490,0],[110,0.05],[130,0.10],[3166.67,0.175],[16000,0.25],[30520,0.30],[Infinity,0.35]];
 
 function calcBands(monthly, bands) {
   let tax = 0, rem = monthly, detail = [], cumFrom = 0;

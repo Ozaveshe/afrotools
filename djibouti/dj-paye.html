@@ -94,8 +94,14 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
+<style>
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+.skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
+@media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
+</style>
 </head>
 <body class="tool-page">
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <afro-navbar active="tools"></afro-navbar>
 
 <div class="tool-hero">
@@ -114,7 +120,7 @@
   </div>
 </div>
 
-<div class="tool-main">
+<div class="tool-main" id="main-content">
   <div class="tool-main-inner">
     <div>
       <div class="card">
@@ -448,8 +454,14 @@ var RESULT=null, PERIOD='monthly', CHART=null, CHART_TYPE='donut', CHAT_HISTORY=
 const fmt=n=>'DJF\u00A0'+Math.round(Math.abs(n)).toLocaleString('en-DJ');
 const pct=r=>{const v=r*100;return(v%1===0?v.toFixed(0):parseFloat(v.toFixed(2)).toString())+'%'};
 
-function onSlider(el){const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);}
-function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,1000),10000000);const s=document.getElementById('salarySlider');s.value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(s);}
+function onSlider(el){const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
+}
+function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,1000),10000000);const s=document.getElementById('salarySlider');s.value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(s);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
+}
 function updateSliderFill(el) {
   var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
   var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');

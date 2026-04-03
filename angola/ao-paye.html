@@ -22,10 +22,10 @@
 <meta name="author"             content="AfroTools">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Angola","item":"https://afrotools.com/angola"},{"@type":"ListItem","position":3,"name":"Angola PAYE Calculator","item":"https://afrotools.com/angola/ao-paye"}]}</script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Angola PAYE Calculator 2026","description":"Calculate Angola take-home pay using 2026 AGT PAYE rates and INSS contributions.","url":"https://afrotools.com/angola/ao-paye","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Angola PAYE Calculator 2026","description":"Calculate Angola take-home pay using 2026 AGT PAYE rates and INSS contributions.","url":"https://afrotools.com/angola/ao-paye","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"},"dateModified":"2026-03-26","datePublished":"2025-01-15"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Angola PAYE Calculator 2026","url":"https://afrotools.com/angola/ao-paye","description":"Calculate Angola take-home pay using 2026 AGT PAYE rates and INSS contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Angola PAYE Calculator 2026","url":"https://afrotools.com/angola/ao-paye","description":"Calculate Angola take-home pay using 2026 AGT PAYE rates and INSS contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"},"dateModified":"2026-03-26","datePublished":"2025-01-15"}
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Angola AGT PAYE tax bands for 2026?","acceptedAnswer":{"@type":"Answer","text":"Nine monthly bands: 0% on AOA 0–100,000; 10%–15% on AOA 100,001–200,000; 20%–21.5% on AOA 200,001–500,000; 22.5%–23.5% on AOA 500,001–1,500,000; 24.5%–25% on AOA 1,500,001–2,000,000+. Applied monthly to taxable income (after INSS deduction)."}},{"@type":"Question","name":"Is INSS contribution deductible from PAYE taxable income?","acceptedAnswer":{"@type":"Answer","text":"Yes — the employee's mandatory 3% INSS contribution is fully deductible from gross pay before calculating PAYE. This reduces your taxable income and therefore your PAYE tax. The employer's matching 8% contribution is a separate employer cost, not deducted from your pay."}},{"@type":"Question","name":"What does INSS cover in Angola?","acceptedAnswer":{"@type":"Answer","text":"The Instituto Nacional de Segurança Social (INSS) provides social security coverage for employees, including pension, disability, and survivor benefits. Total contribution is 11% (employee 3% + employer 8%)."}},{"@type":"Question","name":"How is the effective tax rate calculated?","acceptedAnswer":{"@type":"Answer","text":"Effective tax rate = (Total PAYE tax / Gross salary) × 100%. This shows the average percentage of gross salary paid in income tax. The marginal rate (on the next AOA earned) may be higher due to progressive tax bands."}},{"@type":"Question","name":"What is the difference between marginal and effective tax rates?","acceptedAnswer":{"@type":"Answer","text":"Marginal rate is the tax rate on your next AOA of income (the highest band you're in). Effective rate is your total tax divided by total income. Because of progressive bands, your marginal rate is typically higher than your effective rate."}},{"@type":"Question","name":"Are there other payroll deductions in Angola?","acceptedAnswer":{"@type":"Answer","text":"Beyond INSS, there may be union dues, pension scheme contributions, and other statutory deductions depending on employer policy. Always consult your employer payroll department or a qualified Angolan tax professional for comprehensive deduction information."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,8 +89,14 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
+<style>
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+.skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
+@media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
+</style>
 </head>
 <body class="tool-page">
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <afro-navbar active="tools"></afro-navbar>
 
 <!-- HERO -->
@@ -120,7 +126,7 @@
 </div>
 
 <!-- MAIN -->
-<div class="tool-main">
+<div class="tool-main" id="main-content">
   <div class="tool-main-inner">
 
     <!-- LEFT COLUMN -->
@@ -521,6 +527,8 @@ function onSlider(el) {
   document.getElementById('grossSalary').value = v;
   document.getElementById('sliderVal').textContent = fmt(v);
   updateSliderFill(el);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
 }
 function onInput(el) {
   const v = Math.min(Math.max(parseInt(el.value) || 0, 50000), 10000000);
@@ -528,6 +536,8 @@ function onInput(el) {
   s.value = v;
   document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
   updateSliderFill(s);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
 }
 function updateSliderFill(el) {
   var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;

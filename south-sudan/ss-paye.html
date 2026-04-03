@@ -27,7 +27,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"South Sudan PAYE Calculator 2025/26","url":"https://afrotools.com/south-sudan/ss-paye","description":"Calculate South Sudan take-home pay using 2025/26 NRA PAYE rates and social security contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the South Sudan PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Three monthly bands with no tax-free threshold: 10% on first SSP 30,000; 15% on SSP 30,001–60,000; 20% above SSP 60,000. All employment income is taxable from the first pound — there is no exempt band."}},{"@type":"Question","name":"What is the social security contribution in South Sudan?","acceptedAnswer":{"@type":"Answer","text":"South Sudan operates a social security fund with an 8% employee contribution and 17% employer contribution on gross salary. Contributions are remitted to the National Social Insurance Fund (NSIF)."}},{"@type":"Question","name":"When must employers remit PAYE to NRA in South Sudan?","acceptedAnswer":{"@type":"Answer","text":"Employers must file and pay PAYE to the National Revenue Authority (NRA) by the 15th of the month following the payroll month. Late payment attracts penalty interest. Employers must submit a monthly return even when no tax is due."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the South Sudan PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Four monthly bands: 0% on first SSP 20,000 (exempt); 10% on SSP 20,001–40,000; 15% on SSP 40,001–57,000; 20% above SSP 57,000. Tax-free threshold of SSP 20,000/month per Financial Act 2023/2024."}},{"@type":"Question","name":"What is the social security contribution in South Sudan?","acceptedAnswer":{"@type":"Answer","text":"South Sudan operates a social security fund with an 8% employee contribution and 17% employer contribution on gross salary. Contributions are remitted to the National Social Insurance Fund (NSIF)."}},{"@type":"Question","name":"When must employers remit PAYE to NRA in South Sudan?","acceptedAnswer":{"@type":"Answer","text":"Employers must file and pay PAYE to the National Revenue Authority (NRA) by the 15th of the month following the payroll month. Late payment attracts penalty interest. Employers must submit a monthly return even when no tax is due."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -90,8 +90,14 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
+<style>
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+.skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#007AFF;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
+@media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
+</style>
 </head>
 <body class="tool-page">
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <afro-navbar active="tools"></afro-navbar>
 
 <!-- HERO -->
@@ -101,7 +107,7 @@
       <a href="/">Home</a> / <a href="/south-sudan/">🇸🇸 South Sudan</a> / <span>PAYE Calculator</span>
     </nav>
     <h1>South Sudan PAYE<br><em>Calculator 2025/26</em></h1>
-    <p class="hero-sub">NRA progressive tax (10%–20%) on all employment income with no exempt threshold. Social security 8% (employee). Monthly computation per NRA bands.</p>
+    <p class="hero-sub">NRA progressive tax (0%–20%) with SSP 20,000/month exempt threshold. Social security 8% (employee). Monthly computation per NRA bands.</p>
     <div class="hero-badges">
       <span class="badge b-gold">✦ Includes AI Advisor</span>
       <span class="badge b-green">NRA 2025/26 Verified</span>
@@ -116,12 +122,12 @@
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
   <div class="amendment-bar-inner">
-    <p><strong>2025/26 Key Facts:</strong> No tax-free threshold — all employment income taxable from <strong>SSP 1</strong>. Three monthly bands: <strong>10%</strong> on first SSP 30,000; <strong>15%</strong> on SSP 30,001–60,000; <strong>20%</strong> above SSP 60,000. Social security: <strong>8% employee</strong> + 17% employer. Remit PAYE to NRA by 15th of following month.</p>
+    <p><strong>2025/26 Key Facts:</strong> Tax-free threshold <strong>SSP 20,000/month</strong> (Financial Act 2023/2024). Four bands: <strong>0%</strong> up to SSP 20,000; <strong>10%</strong> on SSP 20,001–40,000; <strong>15%</strong> on SSP 40,001–57,000; <strong>20%</strong> above SSP 57,000. Social security: <strong>8% employee</strong> + 17% employer (NSIF).</p>
   </div>
 </div>
 
 <!-- MAIN -->
-<div class="tool-main">
+<div class="tool-main" id="main-content">
   <div class="tool-main-inner">
 
     <!-- LEFT COLUMN -->
@@ -129,7 +135,7 @@
       <div class="card">
         <div class="card-head">
           <span class="card-title">Enter Your Details</span>
-          <span class="card-sub">South Sudann Shilling · SSP</span>
+          <span class="card-sub">South Sudanese Pound · SSP</span>
         </div>
         <div class="card-body">
 
@@ -283,10 +289,11 @@
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">SSP 0 – 30,000</span><span class="band-rate">10% on full amount</span></div>
-          <div class="band-row"><span class="band-range">SSP 30,001 – 60,000</span><span class="band-rate">SSP 3,000 + 15% on excess above 30k</span></div>
-          <div class="band-row"><span class="band-range">Above SSP 60,000</span><span class="band-rate">SSP 7,500 + 20% on excess above 60k</span></div>
-          <p class="band-note">No tax-free threshold — all employment income is taxable from the first SSP. Calculated monthly on gross salary (social security not deductible for PAYE purposes).</p>
+          <div class="band-row"><span class="band-range">SSP 0 – 20,000</span><span class="band-zero">0% — exempt</span></div>
+          <div class="band-row"><span class="band-range">SSP 20,001 – 40,000</span><span class="band-rate">10% on excess above 20k</span></div>
+          <div class="band-row"><span class="band-range">SSP 40,001 – 57,000</span><span class="band-rate">15% on excess above 40k</span></div>
+          <div class="band-row"><span class="band-range">Above SSP 57,000</span><span class="band-rate">20% on excess above 57k</span></div>
+          <p class="band-note">Tax-free threshold: SSP 20,000/month per Financial Act 2023/2024. NSIF employee contributions (8%) are deducted from gross salary before PAYE is calculated.</p>
         </div>
       </div>
 
@@ -299,7 +306,7 @@
         <div class="bands-body">
           <div class="band-row"><span class="band-range">Employee social security</span><span class="band-rate">8% of gross salary</span></div>
           <div class="band-row"><span class="band-range">Employer social security</span><span class="band-rate">17% of gross salary</span></div>
-          <p class="band-note">Social security contributions are remitted to the National Social Insurance Fund (NSIF). Employee contributions are not deductible from PAYE taxable income. PAYE due to NRA by 15th of the following month.</p>
+          <p class="band-note">Social security contributions are remitted to the National Social Insurance Fund (NSIF). Employee NSIF contributions (8%) are deducted from gross before PAYE tax bands are applied. PAYE due to NRA by 15th of the following month.</p>
         </div>
       </div>
 
@@ -530,6 +537,8 @@ function onSlider(el) {
   document.getElementById('grossSalary').value = v;
   document.getElementById('sliderVal').textContent = fmt(v);
   updateSliderFill(el);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
 }
 function onInput(el) {
   const v = Math.min(Math.max(parseInt(el.value) || 0, 100000), 20000000);
@@ -537,6 +546,8 @@ function onInput(el) {
   s.value = v;
   document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
   updateSliderFill(s);
+  clearTimeout(window._sliderDebounce);
+  window._sliderDebounce = setTimeout(calculate, 280);
 }
 function updateSliderFill(el) {
   var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
@@ -552,40 +563,46 @@ function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.cla
 
 // ══════════════════════════════════════════════════════════════
 //  NRA PAYE TAX ENGINE (MONTHLY)
-//  Bands on MONTHLY TAXABLE INCOME (no exempt threshold):
-//  10%   on first  SSP 30,000
-//  15%   on next   SSP 30,000   (30,001–60,000)
-//  20%   above     SSP 60,000
+//  Bands on MONTHLY TAXABLE INCOME (after NSIF deduction):
+//  0%    on first  SSP 20,000  (exempt)
+//  10%   on next   SSP 20,000  (20,001–40,000)
+//  15%   on next   SSP 17,000  (40,001–57,000)
+//  20%   above     SSP 57,000
 // ══════════════════════════════════════════════════════════════
 
 function calcMonthlyPAYE(monthlyTaxableIncome) {
   const income = Math.max(0, monthlyTaxableIncome);
   const bandBreakdown = [];
 
-  if (income <= 30000) {
-    const tax = income * 0.10;
-    bandBreakdown.push({ rate: 0.10, income, tax });
-    return { tax, bandBreakdown };
+  if (income <= 20000) {
+    bandBreakdown.push({ rate: 0, income, tax: 0 });
+    return { tax: 0, bandBreakdown };
   }
 
   let tax = 0;
 
-  // Band 1: 10% on first 30,000
-  const b1 = 30000 * 0.10;
-  tax += b1;
-  bandBreakdown.push({ rate: 0.10, income: 30000, tax: b1 });
+  // Band 1: 0% on first 20,000
+  bandBreakdown.push({ rate: 0, income: 20000, tax: 0 });
 
-  // Band 2: 15% on 30,001–60,000
-  if (income > 30000) {
-    const chunk = Math.min(income - 30000, 30000);
+  // Band 2: 10% on 20,001–40,000
+  if (income > 20000) {
+    const chunk = Math.min(income - 20000, 20000);
+    const t = chunk * 0.10;
+    tax += t;
+    bandBreakdown.push({ rate: 0.10, income: chunk, tax: t });
+  }
+
+  // Band 3: 15% on 40,001–57,000
+  if (income > 40000) {
+    const chunk = Math.min(income - 40000, 17000);
     const t = chunk * 0.15;
     tax += t;
     bandBreakdown.push({ rate: 0.15, income: chunk, tax: t });
   }
 
-  // Band 3: 20% above 60,000
-  if (income > 60000) {
-    const chunk = income - 60000;
+  // Band 4: 20% above 57,000
+  if (income > 57000) {
+    const chunk = income - 57000;
     const t = chunk * 0.20;
     tax += t;
     bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });

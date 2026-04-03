@@ -39,9 +39,9 @@ module.exports = {
     } = params;
     const monthly = grossAnnual / 12;
 
-    // NSSF: Tier I = 6% of first KES 8,000; Tier II = 6% of KES 8,001–72,000
-    const nssfTier1 = inclNssf ? Math.min(monthly, 8000) * 0.06 : 0;
-    const nssfTier2 = inclNssf ? Math.max(0, Math.min(monthly, 72000) - 8000) * 0.06 : 0;
+    // NSSF: Tier I = 6% of first KES 9,000; Tier II = 6% of KES 9,001–108,000 (Feb 2025 gazette)
+    const nssfTier1 = inclNssf ? Math.min(monthly, 9000) * 0.06 : 0;
+    const nssfTier2 = inclNssf ? Math.max(0, Math.min(monthly, 108000) - 9000) * 0.06 : 0;
     const nssfMonthly = nssfTier1 + nssfTier2;
     const nssfAmt = nssfMonthly * 12;
 
@@ -52,8 +52,8 @@ module.exports = {
     // Affordable Housing Levy: 1.5% of gross
     const ahlAmt = inclAhl ? monthly * 0.015 * 12 : 0;
 
-    // Taxable income = gross minus NSSF (SHIF and AHL are NOT pre-tax deductions for PAYE)
-    const taxableMonthly = monthly - nssfMonthly;
+    // Taxable income = gross minus NSSF, SHIF, AHL (Tax Laws Amendment Act No. 2 of 2024: AHL now allowable deduction)
+    const taxableMonthly = monthly - nssfMonthly - shifMonthly - (inclAhl ? monthly * 0.015 : 0);
 
     // Voluntary pension: max KES 30,000/month deductible
     const voluntaryPension = Math.min(prmf, 30000);

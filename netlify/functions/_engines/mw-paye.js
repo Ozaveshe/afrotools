@@ -1,10 +1,10 @@
-// Malawi PAYE — Source: Malawi Revenue Authority (MRA)
+// Malawi PAYE — Source: Malawi Revenue Authority (MRA), effective Jan 2026
 const { createEngine } = require('./_factory');
 module.exports = createEngine({
   country: 'MW', countryName: 'Malawi', currency: 'MWK',
   source: 'Malawi Revenue Authority (MRA)',
   isMonthly: true,
-  bands: [[100000,0],[150000,0.25],[2750000,0.30],[Infinity,0.35]],
+  bands: [[170000,0],[1400000,0.30],[8430000,0.35],[Infinity,0.40]],
   socialSecurity: [],
   employerSS: []
 });
