@@ -22,6 +22,25 @@ const STATIC_PATHS = {
   'fuel-history-ng-12m': '/data/fuel/history/ng-12m.json',
   // Education
   'scholarships-latest': null, // No static fallback — API-only
+  // Scraped data — Phase 1+ (no static fallback; populated by scheduled scrapers)
+  'commodity-prices-latest': null,
+  'electricity-latest': null,
+  'telecom-latest': null,
+  'insurance-rates-latest': null,
+  'property-prices-latest': null,
+  'salary-benchmarks-latest': null,
+  'stock-indices-latest': null,
+  'shipping-rates-latest': null,
+  // Change detection snapshots (no static fallback)
+  'prev-fuel': null,
+  'prev-electricity': null,
+  'prev-commodities': null,
+  // New scrapers — Phase 4B+
+  'agri-inputs-latest': null,
+  'crypto-latest': null,
+  // Gazette scanner snapshots
+  'gazette-last-ilo': null,
+  'gazette-last-wb-tax': null,
 };
 
 /**

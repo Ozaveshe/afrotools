@@ -180,9 +180,11 @@ async function checkTwitch(allCreators) {
   return results;
 }
 
-// ── Kick channel data helper (tries official API, falls back to unofficial) ────
+// ── Kick channel data helper (tries multiple endpoints with logging) ────
 async function fetchKickChannel(slug, token) {
-  // 1. Try official API v1 (requires token)
+  var attempts = [];
+
+  // 1. Try official API v1 channels endpoint (requires token)
   if (token) {
     try {
       var r1 = await fetch('https://api.kick.com/public/v1/channels?slug=' + encodeURIComponent(slug), {
@@ -192,18 +194,52 @@ async function fetchKickChannel(slug, token) {
         var d1 = await r1.json();
         var ch1 = d1.data && d1.data[0] ? d1.data[0] : null;
         if (ch1) return ch1;
+        attempts.push('v1-channels: ok but no data');
+      } else {
+        attempts.push('v1-channels: ' + r1.status);
       }
-    } catch(e) { /* fall through */ }
+    } catch(e) { attempts.push('v1-channels: ' + e.message); }
   }
 
-  // 2. Try unofficial v2 API (no auth required — used by Kick web client)
+  // 2. Try official API v1 livestreams endpoint (live status check)
+  try {
+    var headers3 = { 'Accept': 'application/json' };
+    if (token) headers3['Authorization'] = 'Bearer ' + token;
+    var r3 = await fetch('https://api.kick.com/public/v1/video/livestreams?channel_name=' + encodeURIComponent(slug), {
+      headers: headers3
+    });
+    if (r3.ok) {
+      var d3 = await r3.json();
+      if (d3.data && d3.data.length > 0) {
+        var ls = d3.data[0];
+        return {
+          is_live: true,
+          livestream: {
+            is_live: true,
+            session_title: ls.title || ls.session_title || 'Live on Kick',
+            viewer_count: ls.viewer_count || ls.viewers || 0,
+            categories: ls.categories || [],
+            thumbnail: ls.thumbnail || null
+          },
+          _v1_livestreams: true
+        };
+      }
+      attempts.push('v1-livestreams: ok but empty');
+    } else {
+      attempts.push('v1-livestreams: ' + r3.status);
+    }
+  } catch(e) { attempts.push('v1-livestreams: ' + e.message); }
+
+  // 3. Try unofficial v2 API (used by Kick web client — may be geo-blocked)
   try {
     var r2 = await fetch('https://kick.com/api/v2/channels/' + encodeURIComponent(slug), {
-      headers: { 'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0' }
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
     });
     if (r2.ok) {
       var d2 = await r2.json();
-      // v2 response: { id, slug, is_banned, livestream: { is_live, viewer_count, session_title, ... }, following_count }
       return {
         is_live: !!(d2.livestream && d2.livestream.is_live),
         follower_count: d2.following_count || 0,
@@ -212,18 +248,44 @@ async function fetchKickChannel(slug, token) {
         _v2: true
       };
     }
-  } catch(e) { /* fall through */ }
+    attempts.push('v2-channels: ' + r2.status);
+  } catch(e) { attempts.push('v2-channels: ' + e.message); }
 
-  // 3. Try official API v1 search endpoint
+  // 4. Try Kick channel page and look for live indicator in HTML
   try {
-    var r3 = await fetch('https://api.kick.com/public/v1/video/livestreams?channel_name=' + encodeURIComponent(slug), {
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    var r4 = await fetch('https://kick.com/' + encodeURIComponent(slug), {
+      headers: {
+        'Accept': 'text/html',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
     });
-    if (r3.ok) {
-      var d3 = await r3.json();
-      if (d3.data) return { is_live: true, livestream: d3.data };
+    if (r4.ok) {
+      var html = await r4.text();
+      // Kick SSR includes JSON state with livestream info
+      var stateMatch = html.match(/"is_live"\s*:\s*(true|false)/);
+      if (stateMatch && stateMatch[1] === 'true') {
+        var titleMatch = html.match(/"session_title"\s*:\s*"([^"]+)"/);
+        var viewerMatch = html.match(/"viewer_count"\s*:\s*(\d+)/);
+        return {
+          is_live: true,
+          livestream: {
+            is_live: true,
+            session_title: titleMatch ? titleMatch[1] : 'Live on Kick',
+            viewer_count: viewerMatch ? parseInt(viewerMatch[1], 10) : 0
+          },
+          _html_scrape: true
+        };
+      }
+      attempts.push('html-scrape: ok but not live');
+    } else {
+      attempts.push('html-scrape: ' + r4.status);
     }
-  } catch(e) { /* fall through */ }
+  } catch(e) { attempts.push('html-scrape: ' + e.message); }
+
+  // Log all attempts for debugging
+  if (attempts.length) {
+    console.log('[Kick/' + slug + '] all attempts failed:', attempts.join(', '));
+  }
 
   return null;
 }
@@ -283,15 +345,107 @@ async function checkKick(allCreators) {
   return results;
 }
 
-// ── YouTube live check (quota-safe) ───────────────────────────────
-// QUOTA MATH:
-//   Budget: 10,000 units/day
-//   Per-channel live search = 100 units (the killer)
-//   OLD: 30 channels × 100 = 3,000 units × 48 runs/day = 144,000 units → quota gone by 1:30am
-//   NEW: 8 channels × 101 units = ~808 units × 12 runs/day (time-gated to every 2h) = ~9,700 units ✓
+// ── YouTube live check (two-phase: free RSS pre-filter + paid API confirm) ─────
+// PHASE 1: YouTube RSS feeds are FREE (no quota). Check ALL creators via RSS
+//   to find who MIGHT be live (RSS includes recent uploads + sometimes live).
+// PHASE 2: Only spend API quota on creators that RSS flagged as potentially live.
+//   This turns 306 creators × 100 units = disaster into ~5-15 API calls/run.
+//
+// QUOTA MATH (after optimization):
+//   Phase 1: 0 units (RSS is free, unlimited)
+//   Phase 2: ~5-15 live candidates × 102 units = ~500-1500 units/run
+//   Time gate: every 1h = 24 runs/day × ~1000 units = ~24,000 → still tight
+//   Keep 2h gate: 12 runs/day × ~1000 = ~12,000 units (safe with 10K buffer)
 //   Smart: DON'T clear existing live data if quota is exceeded — preserve last known state
+
+// Helper: resolve YouTube handle → channel ID (cached in DB column yt_channel_id)
+async function resolveYTChannelId(creator) {
+  // 1. Check if we already stored the channel ID
+  if (creator.yt_channel_id) return creator.yt_channel_id;
+
+  var parsed = extractYoutubeChannelId(creator.youtube_url);
+  if (!parsed) return null;
+
+  if (parsed.type === 'id') {
+    // Cache it for next time
+    try { await sb('PATCH', 'as_creators?id=eq.' + creator.id, { yt_channel_id: parsed.value }); } catch(e) {}
+    return parsed.value;
+  }
+
+  // Resolve handle → channel ID via API (1 unit)
+  var hRes = await fetch('https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=' + encodeURIComponent(parsed.value) + '&key=' + YOUTUBE_API_KEY);
+  if (!hRes.ok) return null;
+  var hData = await hRes.json();
+  if (hData.items && hData.items.length > 0) {
+    var cid = hData.items[0].id;
+    // Cache for future runs
+    try { await sb('PATCH', 'as_creators?id=eq.' + creator.id, { yt_channel_id: cid }); } catch(e) {}
+    return cid;
+  }
+  return null;
+}
+
+// Phase 1: Free RSS check for all YouTube creators
+async function checkYouTubeRSS(creators) {
+  var candidates = [];
+  var checked = 0;
+
+  // Process in parallel batches of 20 (RSS is free but we don't want 306 concurrent fetches)
+  for (var batch = 0; batch < creators.length; batch += 20) {
+    var chunk = creators.slice(batch, batch + 20);
+    var promises = chunk.map(async function(creator) {
+      var parsed = extractYoutubeChannelId(creator.youtube_url);
+      if (!parsed) return null;
+
+      // Build RSS URL — works for both channel IDs and handles
+      var rssUrl;
+      if (parsed.type === 'id') {
+        rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + parsed.value;
+      } else {
+        // For handles, we need channel ID. Try cached first.
+        if (creator.yt_channel_id) {
+          rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + creator.yt_channel_id;
+        } else {
+          // Skip RSS for un-resolved handles — they'll get resolved in Phase 2 API batch
+          return { creator: creator, reason: 'unresolved_handle' };
+        }
+      }
+
+      try {
+        var res = await fetch(rssUrl, { headers: { 'User-Agent': 'AfroStream/1.0' } });
+        if (!res.ok) return null;
+        var text = await res.text();
+
+        // Check for live indicators in RSS/page
+        // YouTube RSS doesn't directly show live status, but we can check the channel page
+        // Alternative: check yt:videoId entries published in last 2 hours (likely live)
+        var recentMatch = text.match(/<published>([^<]+)<\/published>/);
+        if (recentMatch) {
+          var pubDate = new Date(recentMatch[1]);
+          var ageMs = Date.now() - pubDate.getTime();
+          // If most recent video published < 6 hours ago, flag as candidate
+          if (ageMs < 6 * 3600 * 1000) {
+            return { creator: creator, reason: 'recent_activity' };
+          }
+        }
+        return null;
+      } catch(e) {
+        return null;
+      }
+    });
+
+    var results = await Promise.allSettled(promises);
+    results.forEach(function(r) {
+      if (r.status === 'fulfilled' && r.value) candidates.push(r.value);
+    });
+    checked += chunk.length;
+  }
+
+  return { candidates: candidates, checked: checked };
+}
+
 async function checkYouTube(allCreators) {
-  var results = { live: 0, errors: [] };
+  var results = { live: 0, errors: [], phase1: 0, phase2: 0 };
 
   if (!YOUTUBE_API_KEY) {
     results.errors.push('YouTube API key not configured');
@@ -299,9 +453,7 @@ async function checkYouTube(allCreators) {
   }
 
   // ── QUOTA TIME GATE ────────────────────────────────────────────
-  // Only run YouTube checks every 2 hours (4 × 30-min slots per 2-hour window).
-  // livecheck runs every 30 min → 48 runs/day → we gate to 12 YouTube runs/day.
-  // thirtyMinSlot % 4 === 0 means: only the first slot of each 2-hour block runs.
+  // Only run YouTube checks every 2 hours to stay within 10K units/day.
   var thirtyMinSlot = Math.floor(Date.now() / 1800000);
   if (thirtyMinSlot % 4 !== 0) {
     results.skipped = true;
@@ -312,19 +464,31 @@ async function checkYouTube(allCreators) {
   var creators = allCreators.filter(function(c) { return c.youtube_url; });
   if (!creators.length) return results;
 
-  // ── SMALL ROTATING BATCH ──────────────────────────────────────
-  // 8 channels × ~101 units = ~808 units/run × 12 runs/day = ~9,700 units ✓
-  var MAX_CHECKS = 8;
-  var batchOffset = Math.floor(Date.now() / 7200000) % Math.ceil(creators.length / MAX_CHECKS);
-  var batchStart = batchOffset * MAX_CHECKS;
-  var batch = creators.slice(batchStart, batchStart + MAX_CHECKS);
-  results.batch = batchOffset + 1;
-  results.batchSize = batch.length;
+  // ── PHASE 1: RSS pre-filter (FREE, all creators) ──────────────
+  var rssResult = await checkYouTubeRSS(creators);
+  results.phase1 = rssResult.checked;
+  var candidates = rssResult.candidates;
+
+  // Also include a small rotating batch of unchecked creators to catch missed ones
+  var MAX_EXTRA = 6;
+  var batchOffset = Math.floor(Date.now() / 7200000) % Math.ceil(creators.length / MAX_EXTRA);
+  var extraBatch = creators.slice(batchOffset * MAX_EXTRA, (batchOffset + 1) * MAX_EXTRA);
+  // Add extras that aren't already candidates
+  var candidateNames = {};
+  candidates.forEach(function(c) { candidateNames[c.creator.name] = true; });
+  extraBatch.forEach(function(c) {
+    if (!candidateNames[c.name]) {
+      candidates.push({ creator: c, reason: 'rotating_batch' });
+      candidateNames[c.name] = true;
+    }
+  });
+
+  results.candidates = candidates.length;
   results.totalCreators = creators.length;
 
-  // ── QUOTA PROBE — check before clearing ──────────────────────
-  // Make one cheap call first. If quota is exceeded, abort WITHOUT clearing
-  // existing live data (preserves last known state instead of showing 0 YouTube streams).
+  if (!candidates.length) return results;
+
+  // ── QUOTA PROBE ───────────────────────────────────────────────
   var quotaOk = true;
   try {
     var probeRes = await fetch('https://www.googleapis.com/youtube/v3/i18nRegions?part=snippet&key=' + YOUTUBE_API_KEY);
@@ -332,52 +496,30 @@ async function checkYouTube(allCreators) {
       var probeData = await probeRes.json();
       var reason = probeData.error && probeData.error.errors && probeData.error.errors[0] && probeData.error.errors[0].reason;
       if (reason === 'quotaExceeded' || reason === 'dailyLimitExceeded' || probeRes.status === 429) {
-        results.errors.push('YouTube quota exceeded — preserving existing live data, skipping clear');
+        results.errors.push('YouTube quota exceeded — preserving existing live data');
         results.quotaExceeded = true;
         quotaOk = false;
       }
     }
-  } catch(e) { /* probe failed, assume ok and continue */ }
+  } catch(e) { /* probe failed, assume ok */ }
 
   if (!quotaOk) return results;
 
-  // Quota ok — safe to clear this batch's streams and re-check
-  // Note: only clear streams for creators IN this batch (not all YouTube streams)
-  // This way creators in other batches retain their last known live status
-  var batchNames = batch.map(function(c) { return encodeURIComponent(c.name); });
-  for (var bn = 0; bn < batch.length; bn++) {
-    await sb('PATCH', 'as_streams?platform=eq.YouTube&is_live=eq.true&creator_name=eq.' + encodeURIComponent(batch[bn].name), { is_live: false });
+  // ── PHASE 2: API check only for candidates (PAID, targeted) ───
+  // Clear only these candidates' live status
+  for (var bn = 0; bn < candidates.length; bn++) {
+    await sb('PATCH', 'as_streams?platform=eq.YouTube&is_live=eq.true&creator_name=eq.' + encodeURIComponent(candidates[bn].creator.name), { is_live: false });
   }
 
-  for (var bi = 0; bi < batch.length; bi++) {
-    var creator = batch[bi];
-    var parsed = extractYoutubeChannelId(creator.youtube_url);
-    if (!parsed) continue;
+  for (var bi = 0; bi < candidates.length; bi++) {
+    var creator = candidates[bi].creator;
+    results.phase2++;
 
     try {
-      var channelId = null;
-
-      if (parsed.type === 'id') {
-        channelId = parsed.value;
-      } else {
-        // Resolve handle → channel ID (1 unit)
-        var hRes = await fetch('https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=' + encodeURIComponent(parsed.value) + '&key=' + YOUTUBE_API_KEY);
-        if (!hRes.ok) {
-          var hErr = await hRes.json();
-          var hReason = hErr.error && hErr.error.errors && hErr.error.errors[0] && hErr.error.errors[0].reason;
-          if (hReason === 'quotaExceeded' || hReason === 'dailyLimitExceeded') {
-            results.errors.push('YouTube quota exceeded mid-run, stopping');
-            results.quotaExceeded = true;
-            break;
-          }
-          continue;
-        }
-        var hData = await hRes.json();
-        if (hData.items && hData.items.length > 0) channelId = hData.items[0].id;
-      }
+      var channelId = await resolveYTChannelId(creator);
       if (!channelId) continue;
 
-      // Search for live streams on this channel (100 units each — the expensive call)
+      // Search for live streams on this channel (100 units each)
       var liveRes = await fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + channelId + '&type=video&eventType=live&maxResults=1&key=' + YOUTUBE_API_KEY);
       if (!liveRes.ok) {
         var liveErr = await liveRes.json();
@@ -438,7 +580,7 @@ exports.handler = async function(event) {
 
   try {
     // Fetch all published creators once (shared across all platform checks)
-    var allCreators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,country,twitch_url,kick_url,youtube_url,subscribers');
+    var allCreators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,country,twitch_url,kick_url,youtube_url,subscribers,yt_channel_id');
     if (!Array.isArray(allCreators) || allCreators.length === 0) {
       summary.duration_ms = Date.now() - start;
       return { statusCode: 200, body: JSON.stringify({ success: true, message: 'No creators found', data: summary }) };

@@ -3,271 +3,1365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Job Offer Evaluator | AfroTools</title>
-<meta name="description" content="Compare job offers in Africa — calculate net salary after tax, pension, and deductions. Compare total compensation including benefits, commute costs, and career value.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Offer Evaluator | AfroTools — Beyond the Number</title>
+<meta name="description" content="Compare up to 4 job offers in Africa. Calculate net pay after PAYE, value equity/ESOP, model 5-year career trajectories, simulate counter-offers, and score culture vs money trade-offs.">
 <link rel="canonical" href="https://afrotools.com/tools/job-offer-evaluator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Job Offer Evaluator | AfroTools"><meta property="og:description" content="Compare job offers — net pay, benefits, total compensation.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/job-offer-evaluator/">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<meta property="og:title" content="Job Offer Evaluator | AfroTools">
+<meta property="og:description" content="Compare up to 4 job offers — net pay, equity, benefits, 5-year projection, counter-offer scripts.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/job-offer-evaluator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
-<script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script><script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#16a34a}
-.tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#bbf7d0;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
-.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
-.offers-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.offer-col{border:1.5px solid #e2e8f0;border-radius:10px;padding:18px}
-.offer-col h3{font-size:.82rem;font-weight:700;color:var(--afro-dark);margin-bottom:14px;text-align:center}
-.offer-a{border-color:#16a34a;background:#fafffe}.offer-b{border-color:#2563eb;background:#fafbff}
-.offer-a h3{color:#16a34a}.offer-b h3{color:#2563eb}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
-.compare-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:14px}
-.compare-table th,.compare-table td{padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center}
-.compare-table th{background:#f8fafc;font-weight:700;font-size:.7rem;text-transform:uppercase}
-.compare-table td:first-child{text-align:left;font-weight:600;color:var(--afro-dark)}
-.winner{background:#f0fdf4;font-weight:700;color:#16a34a}
-.verdict{text-align:center;padding:22px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:10px;margin-top:18px}
-.verdict .title{font-size:.72rem;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:.08em}.verdict .pick{font-size:1.4rem;font-weight:800;color:#16a34a;margin:6px 0}.verdict .reason{font-size:.82rem;color:#475569}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.offers-grid{grid-template-columns:1fr}}
-</style>
-<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/job-offer-evaluator/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/job-offer-evaluator/" />
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
+<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/job-offer-evaluator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/job-offer-evaluator/">
 <meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Job Offer Evaluator | AfroTools">
-<meta name="twitter:description" content="Compare job offers — net pay, benefits, total compensation.">
+<meta name="twitter:description" content="Compare up to 4 job offers — net pay, equity, 5-year projection, counter-offer scripts.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Job Offer Evaluator",
-      "item": "https://afrotools.com/tools/job-offer-evaluator/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-04">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
+<script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Job Offer Evaluator","item":"https://afrotools.com/tools/job-offer-evaluator/"}]}</script>
+<style>
+:root{--joe:#6D28D9;--joe-dk:#4C1D95;--joe-lt:#7C3AED;--joe-pale:#F5F3FF;--joe-mid:#8B5CF6;--joe-c0:#6D28D9;--joe-c1:#2563EB;--joe-c2:#059669;--joe-c3:#D97706;--t:#0f172a;--m:#64748b;--bd:#e2e8f0;--bg:#f8fafc}
+
+/* ── Hero ── */
+.joe-hero{background:linear-gradient(135deg,#2e1065 0%,#4C1D95 40%,#6D28D9 80%,#7C3AED 100%);padding:44px 0 36px}
+.joe-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.joe-bc{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.joe-bc a{color:rgba(255,255,255,.35);text-decoration:none}.joe-bc span{color:#ddd6fe}
+.joe-h1{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.joe-h1 em{color:#ddd6fe;font-style:normal}
+.joe-sub{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.65;max-width:580px;margin-bottom:16px}
+.joe-badges{display:flex;flex-wrap:wrap;gap:6px}
+.joe-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:4px;font-size:.66rem;font-weight:700;letter-spacing:.05em;background:rgba(221,214,254,.18);color:#ddd6fe;border:1px solid rgba(221,214,254,.3)}
+
+/* ── Tab bar ── */
+.joe-tab-bar{background:#fff;border-bottom:2px solid var(--bd);position:sticky;top:0;z-index:100;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.joe-tab-bar::-webkit-scrollbar{display:none}
+.joe-tab-btn{flex:0 0 auto;padding:14px 22px;font-size:.78rem;font-weight:700;color:var(--m);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;letter-spacing:.04em;transition:color .15s,border-color .15s;white-space:nowrap}
+.joe-tab-btn:hover{color:var(--joe)}
+.joe-tab-btn.active{color:var(--joe);border-bottom-color:var(--joe)}
+
+/* ── Wrap / Pane ── */
+.joe-wrap{max-width:1200px;margin:0 auto;padding:24px 20px 60px}
+.joe-pane{display:none}.joe-pane.active{display:block}
+
+/* ── Settings row ── */
+.joe-settings-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px;align-items:flex-end}
+.joe-settings-row .joe-field{margin:0;min-width:140px}
+
+/* ── Form fields ── */
+.joe-field{margin-bottom:12px}
+.joe-label{display:block;font-size:.7rem;font-weight:700;color:var(--m);letter-spacing:.04em;margin-bottom:4px;text-transform:uppercase}
+.joe-input,.joe-select{width:100%;padding:8px 11px;border:1.5px solid var(--bd);border-radius:7px;font-size:.82rem;background:var(--bg);font-family:inherit;box-sizing:border-box;color:var(--t)}
+.joe-input:focus,.joe-select:focus{outline:none;border-color:var(--joe);box-shadow:0 0 0 3px rgba(109,40,217,.12)}
+.joe-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ── Offers rail ── */
+.joe-offers-rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+.joe-offers-rail::-webkit-scrollbar{display:none}
+.joe-offer-card{scroll-snap-align:start;background:#fff;border:2px solid var(--bd);border-radius:12px;flex:0 0 min(300px,85vw);overflow:hidden}
+@media(min-width:769px){.joe-offer-card{flex:1 1 0;min-width:240px}}
+.joe-card-hd{padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.joe-card-name{font-size:.78rem;font-weight:800;color:#fff;letter-spacing:.02em}
+.joe-remove-btn{background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:50%;width:22px;height:22px;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.joe-card-bd{padding:16px}
+.joe-deadline-badge{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:20px;margin-bottom:10px}
+.joe-dl-ok{background:#dcfce7;color:#166534}
+.joe-dl-warn{background:#fef9c3;color:#854d0e}
+.joe-dl-urgent{background:#fee2e2;color:#991b1b}
+.joe-dl-expired{background:#f1f5f9;color:#64748b}
+
+/* Toggle row */
+.joe-toggle-row{display:flex;align-items:center;gap:8px;margin:10px 0 4px;cursor:pointer}
+.joe-toggle-row input[type=checkbox]{width:14px;height:14px;accent-color:var(--joe);cursor:pointer}
+.joe-toggle-label{font-size:.75rem;font-weight:600;color:var(--t)}
+.joe-collapsible{display:none;border-top:1px dashed var(--bd);margin-top:10px;padding-top:12px}
+.joe-collapsible.open{display:block}
+.joe-section-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--joe);margin-bottom:10px}
+
+/* ── Offer card color bands ── */
+.joe-hd-0{background:linear-gradient(135deg,var(--joe-c0),#7C3AED)}.joe-bd-0{border-color:var(--joe-c0)}
+.joe-hd-1{background:linear-gradient(135deg,var(--joe-c1),#3B82F6)}.joe-bd-1{border-color:var(--joe-c1)}
+.joe-hd-2{background:linear-gradient(135deg,var(--joe-c2),#10B981)}.joe-bd-2{border-color:var(--joe-c2)}
+.joe-hd-3{background:linear-gradient(135deg,var(--joe-c3),#F59E0B)}.joe-bd-3{border-color:var(--joe-c3)}
+
+/* ── Dots / Add / Compare ── */
+.joe-dots{display:flex;justify-content:center;gap:6px;margin:10px 0}
+.joe-dot{width:7px;height:7px;border-radius:50%;background:var(--bd);transition:background .2s}
+.joe-dot.active{background:var(--joe)}
+@media(min-width:769px){.joe-dots{display:none}}
+.joe-add-btn{display:block;width:100%;margin-top:14px;padding:10px;border:2px dashed var(--joe);border-radius:8px;background:var(--joe-pale);color:var(--joe);font-size:.8rem;font-weight:700;cursor:pointer;transition:background .15s}
+.joe-add-btn:hover{background:#ede9fe}
+.joe-add-btn:disabled{opacity:.4;cursor:not-allowed}
+.joe-compare-btn{display:block;width:100%;margin-top:12px;padding:14px;border:none;border-radius:9px;background:linear-gradient(135deg,var(--joe-dk),var(--joe));color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;letter-spacing:.01em;transition:opacity .15s}
+.joe-compare-btn:hover{opacity:.9}
+
+/* ── Culture tab ── */
+.joe-culture-grid{display:grid;gap:20px}
+.joe-culture-offer{background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:18px}
+.joe-culture-name{font-size:.82rem;font-weight:800;color:var(--t);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--joe-pale)}
+.joe-slider-row{margin-bottom:12px;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}
+.joe-slider-label{font-size:.72rem;font-weight:600;color:var(--t)}
+.joe-slider{width:100%;accent-color:var(--joe)}
+.joe-slider-val{font-size:.82rem;font-weight:800;color:var(--joe);min-width:24px;text-align:right}
+.joe-culture-score-display{text-align:center;padding:14px;background:var(--joe-pale);border-radius:8px;margin-top:14px}
+.joe-culture-score-num{font-size:2rem;font-weight:900;color:var(--joe)}
+.joe-culture-score-lbl{font-size:.7rem;font-weight:700;color:var(--m);text-transform:uppercase;letter-spacing:.06em}
+@media(min-width:769px){.joe-culture-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}}
+
+/* ── Counter-offer tab ── */
+.joe-counter-card{background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:22px;max-width:600px;margin:0 auto}
+.joe-counter-out{background:var(--joe-pale);border:1.5px solid #ddd6fe;border-radius:10px;padding:18px;margin-top:18px;display:none}
+.joe-counter-out.show{display:block}
+.joe-script-box{background:#fff;border:1.5px solid var(--bd);border-radius:8px;padding:14px;font-size:.82rem;line-height:1.7;color:var(--t);margin:10px 0;white-space:pre-line}
+.joe-copy-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:6px;background:var(--joe);color:#fff;font-size:.75rem;font-weight:700;cursor:pointer}
+.joe-prob-badge{display:inline-flex;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700}
+.joe-prob-high{background:#dcfce7;color:#166534}
+.joe-prob-mid{background:#fef9c3;color:#854d0e}
+.joe-prob-low{background:#fee2e2;color:#991b1b}
+.joe-counter-pct{font-size:1.6rem;font-weight:900;color:var(--joe);margin:6px 0}
+
+/* ── Results section ── */
+#joe-results{background:#f1f5f9;border-top:1px solid var(--bd);padding-bottom:40px}
+.joe-result-bar{background:#fff;border-bottom:2px solid var(--bd);display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.joe-result-bar::-webkit-scrollbar{display:none}
+.joe-rt-btn{flex:0 0 auto;padding:13px 20px;font-size:.75rem;font-weight:700;color:var(--m);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;letter-spacing:.04em;transition:color .15s,border-color .15s;white-space:nowrap}
+.joe-rt-btn:hover{color:var(--joe)}.joe-rt-btn.active{color:var(--joe);border-bottom-color:var(--joe)}
+.joe-rpane{display:none}.joe-rpane.active{display:block}
+.joe-result-wrap{max-width:1200px;margin:0 auto;padding:24px 20px}
+
+/* Winner card */
+.joe-winner-card{background:linear-gradient(135deg,var(--joe-dk),var(--joe));border-radius:12px;padding:22px 24px;color:#fff;margin-bottom:18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.joe-winner-medal{font-size:2.4rem;line-height:1}
+.joe-winner-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#ddd6fe;margin-bottom:4px}
+.joe-winner-name{font-size:1.4rem;font-weight:900;margin-bottom:4px}
+.joe-winner-detail{font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.5}
+.joe-winner-amount{margin-left:auto;text-align:right}
+.joe-winner-comp-lbl{font-size:.68rem;font-weight:600;color:#ddd6fe;text-transform:uppercase;letter-spacing:.06em}
+.joe-winner-comp-val{font-size:1.6rem;font-weight:900}
+
+/* Comparison table */
+.joe-comp-table-wrap{background:#fff;border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:18px;overflow-x:auto}
+.joe-ctbl{width:100%;border-collapse:collapse;font-size:.78rem;min-width:480px}
+.joe-ctbl th{padding:10px 14px;background:var(--bg);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--m);text-align:center;border-bottom:2px solid var(--bd)}
+.joe-ctbl th:first-child{text-align:left}
+.joe-ctbl td{padding:9px 14px;border-bottom:1px solid var(--bd);text-align:center;color:var(--t)}
+.joe-ctbl td:first-child{text-align:left;font-weight:600;color:var(--t);font-size:.75rem}
+.joe-ctbl tr:last-child td{border-bottom:none}
+.joe-ctbl .joe-win{background:#F5F3FF;font-weight:800;color:var(--joe)}
+.joe-ctbl .joe-total-row td{font-weight:800;font-size:.84rem;background:var(--bg);border-top:2px solid var(--joe)}
+.joe-ctbl .joe-neg{color:#dc2626}
+.joe-section-hd{padding:8px 14px;background:var(--joe-pale);font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--joe);border-bottom:1px solid #ddd6fe}
+
+/* Verdict */
+.joe-verdict{background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:20px 22px;text-align:center;margin-bottom:18px}
+.joe-verdict-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--m);margin-bottom:6px}
+.joe-verdict-pick{font-size:1.3rem;font-weight:900;color:var(--joe);margin-bottom:8px}
+.joe-verdict-reason{font-size:.84rem;color:#475569;line-height:1.6}
+.joe-ranked-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.joe-rank-row{background:#fff;border:1.5px solid var(--bd);border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:14px}
+.joe-rank-medal{font-size:1.4rem;flex:0 0 28px}
+.joe-rank-name{font-weight:800;font-size:.88rem;color:var(--t);flex:1}
+.joe-rank-type{font-size:.7rem;color:var(--m);margin-top:2px}
+.joe-rank-comp{font-weight:800;font-size:.88rem;color:var(--joe);text-align:right}
+.joe-rank-comp span{display:block;font-size:.68rem;font-weight:600;color:var(--m)}
+
+/* Result actions */
+.joe-result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+
+/* 5-Year */
+.joe-chart-wrap{background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:20px;margin-bottom:18px}
+.joe-chart-title{font-size:.78rem;font-weight:800;color:var(--t);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em}
+.joe-5yr-table{background:#fff;border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;overflow-x:auto;margin-bottom:18px}
+.joe-5yr-offer-hd{padding:10px 16px;font-size:.75rem;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.joe-5yr-tbl{width:100%;border-collapse:collapse;font-size:.76rem;min-width:500px}
+.joe-5yr-tbl th{padding:8px 12px;background:var(--bg);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--m);text-align:right;border-bottom:1px solid var(--bd)}
+.joe-5yr-tbl th:first-child{text-align:left}
+.joe-5yr-tbl td{padding:8px 12px;border-bottom:1px solid var(--bd);text-align:right;color:var(--t)}
+.joe-5yr-tbl td:first-child{text-align:left;font-weight:600;color:var(--t)}
+.joe-5yr-tbl tr:last-child td{background:var(--joe-pale);font-weight:800;border-bottom:none}
+.joe-5yr-profile{padding:12px 16px;font-size:.78rem;color:#475569;line-height:1.6;border-top:1px solid var(--bd)}
+.joe-5yr-winner{background:var(--joe-pale);border:1.5px solid #ddd6fe;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-size:.84rem;color:var(--joe-dk);font-weight:700}
+
+/* Equity */
+.joe-equity-card{background:#fff;border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:18px}
+.joe-equity-hd{padding:13px 18px;display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:800;color:#fff}
+.joe-equity-bd{padding:18px}
+.joe-equity-stat{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);font-size:.78rem}
+.joe-equity-stat:last-child{border-bottom:none}
+.joe-equity-stat-lbl{color:var(--m);font-weight:600}
+.joe-equity-stat-val{color:var(--t);font-weight:800}
+.joe-scenarios{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
+.joe-scenario{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:12px;text-align:center}
+.joe-scenario-val{font-size:.88rem;font-weight:800;color:var(--joe);margin-bottom:3px}
+.joe-scenario-lbl{font-size:.68rem;color:var(--m);font-weight:600}
+.joe-ev-box{background:var(--joe-pale);border:1.5px solid #ddd6fe;border-radius:8px;padding:14px;text-align:center;margin-top:14px}
+.joe-ev-num{font-size:1.2rem;font-weight:900;color:var(--joe)}
+.joe-ev-lbl{font-size:.7rem;color:var(--m);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.joe-vesting-info{font-size:.78rem;color:#475569;line-height:1.6;margin-top:12px;padding:10px;background:var(--bg);border-radius:6px}
+.joe-no-equity{text-align:center;padding:40px;color:var(--m);font-size:.84rem}
+
+/* Regret test */
+.joe-regret-intro{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:20px;padding:16px;background:#fff;border:1.5px solid var(--bd);border-radius:10px}
+.joe-regret-offers{display:grid;gap:14px;margin-bottom:20px}
+@media(min-width:600px){.joe-regret-offers{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}}
+.joe-regret-offer{background:#fff;border:2px solid var(--bd);border-radius:10px;padding:18px;cursor:pointer;transition:border-color .2s,transform .1s;text-align:left}
+.joe-regret-offer:hover{border-color:var(--joe);transform:translateY(-2px)}
+.joe-regret-offer.selected{border-color:var(--joe);background:var(--joe-pale)}
+.joe-regret-ofname{font-size:.88rem;font-weight:800;color:var(--t);margin-bottom:10px}
+.joe-regret-upside{font-size:.78rem;color:var(--m);line-height:1.6}
+.joe-regret-upside strong{color:var(--joe)}
+.joe-regret-result{background:var(--joe-pale);border:1.5px solid #ddd6fe;border-radius:10px;padding:20px;display:none;font-size:.84rem;line-height:1.7;color:var(--joe-dk)}
+.joe-regret-result.show{display:block}
+.joe-regret-result p{margin:0 0 10px}
+.joe-regret-result p:last-child{margin:0}
+
+/* Deadline badge */
+.joe-dl-none{display:none}
+
+/* ── UX Pro Max Enhancements ─────────────────────────────── */
+
+/* Fix hero subtitle contrast (was 0.5 → 0.78 for 4.5:1) */
+.joe-sub{color:rgba(255,255,255,.78)}
+
+/* cursor:pointer on all interactive non-button elements */
+.joe-tab-btn,.joe-rt-btn,.joe-regret-offer,.joe-rank-row,
+.joe-scenario,.joe-faq summary,.joe-dot{cursor:pointer}
+.joe-add-btn:disabled{cursor:not-allowed}
+
+/* Tab bar shadow for visual separation */
+.joe-tab-bar,.joe-result-bar{box-shadow:0 2px 10px rgba(0,0,0,.07)}
+
+/* Offer card hover elevation */
+.joe-offer-card{transition:box-shadow .18s,transform .15s}
+@media(min-width:769px){.joe-offer-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.1);transform:translateY(-2px)}}
+
+/* Rank rows — hover + first-place highlight */
+.joe-rank-row{transition:background .15s,box-shadow .15s,transform .12s}
+.joe-rank-row:hover{background:#f8f5ff;box-shadow:0 2px 10px rgba(109,40,217,.1);transform:translateX(4px)}
+.joe-rank-row:first-child{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#ddd6fe}
+
+/* Scenario cards */
+.joe-scenario{transition:background .15s,box-shadow .15s}
+.joe-scenario:hover{background:#ede9fe;box-shadow:0 2px 8px rgba(109,40,217,.14)}
+
+/* 5-year table row hover */
+.joe-5yr-tbl tbody tr:hover td{background:#f8f5ff}
+
+/* Culture offer card hover */
+.joe-culture-offer{transition:box-shadow .15s}
+.joe-culture-offer:hover{box-shadow:0 4px 14px rgba(0,0,0,.09)}
+
+/* Equity card hover */
+.joe-equity-card{transition:box-shadow .2s}
+.joe-equity-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.1)}
+
+/* Glassmorphism depth on winner card */
+.joe-winner-card{box-shadow:0 8px 32px rgba(76,29,149,.35),inset 0 1px 0 rgba(255,255,255,.18)}
+
+/* Compare button — loading state */
+.joe-compare-btn{transition:opacity .15s,transform .1s}
+.joe-compare-btn:hover:not(:disabled){transform:translateY(-1px)}
+.joe-compare-btn.joe-loading{opacity:.7;cursor:not-allowed;pointer-events:none}
+
+/* Sticky compare button on mobile (hard to reach otherwise) */
+@media(max-width:640px){
+  .joe-compare-btn{position:sticky;bottom:14px;z-index:50;box-shadow:0 6px 24px rgba(109,40,217,.45)}
+}
+
+/* Remove button — 44×44px touch target on mobile */
+@media(max-width:768px){.joe-remove-btn{width:36px;height:36px;font-size:1rem;border-radius:8px}}
+
+/* Focus-visible rings for keyboard navigation */
+:focus-visible{outline:3px solid rgba(109,40,217,.55);outline-offset:2px;border-radius:4px}
+.joe-tab-btn:focus-visible,.joe-rt-btn:focus-visible{outline-offset:0;border-radius:0}
+button:focus-visible input:focus-visible,select:focus-visible{outline:none}
+.joe-input:focus-visible,.joe-select:focus-visible{outline:none} /* already has box-shadow */
+
+/* Text cursor on script box for easy select */
+.joe-script-box{cursor:text;user-select:text}
+
+/* Smooth regret card selection pulse */
+.joe-regret-offer.selected{animation:joe-pulse .3s ease}
+@keyframes joe-pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+/* Comparison table sticky header */
+.joe-ctbl thead{position:sticky;top:0;z-index:1}
+
+/* prefers-reduced-motion — respects accessibility settings */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}
+  .joe-compare-btn{position:static} /* un-sticky on reduced motion */
+}
+
+/* SEO */
+.joe-seo{max-width:800px;margin:0 auto;padding:48px 24px}
+.joe-seo h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--t)}
+.joe-seo p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.joe-faq{border-bottom:1px solid var(--bd);padding:14px 0}
+.joe-faq summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--t)}
+.joe-faq p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+
+/* Relocation card in results */
+.joe-reloc-result{background:#fff;border:1.5px solid var(--bd);border-radius:8px;padding:14px 18px;font-size:.82rem;line-height:1.6;margin-bottom:10px}
+.joe-reloc-result strong{color:var(--joe)}
+
+@media(max-width:640px){
+  .joe-row{grid-template-columns:1fr}
+  .joe-settings-row{flex-direction:column}
+  .joe-winner-card{flex-direction:column;align-items:flex-start}
+  .joe-winner-amount{margin-left:0}
+}
+</style>
+<script src="/assets/js/lib/auto-email-gate.js?v=97c0a5e8" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Job Offer Evaluator</span></div>
-<h1>Job Offer <em>Evaluator</em></h1>
-<p class="hero-sub">Compare two job offers side-by-side. See net pay after tax, value of benefits, commute costs, and a total compensation score to help you make the right career decision.</p>
-<div class="hero-badges"><span class="badge b-em">Side-by-Side</span><span class="badge b-em">Net Pay</span><span class="badge b-em">Total Compensation</span></div>
-</div></section>
 
-<section class="tool-main"><div class="tool-main-inner">
-<div class="card">
-<div class="card-head"><span class="card-title">Compare Two Offers</span></div>
-<div class="card-body">
-<div class="field" style="max-width:200px"><label>Currency</label>
-<select id="currency"><option value="₦">₦ (NGN)</option><option value="KSh ">KSh (KES)</option><option value="R ">R (ZAR)</option><option value="GH₵">GH₵ (GHS)</option><option value="$">$ (USD)</option></select></div>
-<div class="offers-grid">
-<div class="offer-col offer-a">
-<h3>Offer A</h3>
-<div class="field"><label>Company Name</label><input type="text" id="nameA" placeholder="Company A" value="TechCorp"></div>
-<div class="field"><label>Monthly Gross Salary</label><input type="number" id="salaryA" value="800000" min="0" step="10000"></div>
-<div class="field"><label>Annual Bonus (%)</label><input type="number" id="bonusA" value="13" min="0" max="100" step="1"></div>
-<div class="field"><label>Monthly Transport Allowance</label><input type="number" id="transportA" value="50000" min="0" step="5000"></div>
-<div class="field"><label>Monthly Housing Benefit</label><input type="number" id="housingA" value="100000" min="0" step="10000"></div>
-<div class="field"><label>Health Insurance (monthly value)</label><input type="number" id="healthA" value="30000" min="0" step="5000"></div>
-<div class="field"><label>Pension Employer Contribution (%)</label><input type="number" id="pensionA" value="10" min="0" max="30" step="1"></div>
-<div class="field"><label>Leave Days / Year</label><input type="number" id="leaveA" value="20" min="0" max="60"></div>
-<div class="field"><label>Monthly Commute Cost</label><input type="number" id="commuteA" value="15000" min="0" step="1000"></div>
-<div class="field"><label>Remote Work Days / Week</label><input type="number" id="remoteA" value="2" min="0" max="5"></div>
-</div>
-<div class="offer-col offer-b">
-<h3>Offer B</h3>
-<div class="field"><label>Company Name</label><input type="text" id="nameB" placeholder="Company B" value="StartupNG"></div>
-<div class="field"><label>Monthly Gross Salary</label><input type="number" id="salaryB" value="650000" min="0" step="10000"></div>
-<div class="field"><label>Annual Bonus (%)</label><input type="number" id="bonusB" value="20" min="0" max="100" step="1"></div>
-<div class="field"><label>Monthly Transport Allowance</label><input type="number" id="transportB" value="0" min="0" step="5000"></div>
-<div class="field"><label>Monthly Housing Benefit</label><input type="number" id="housingB" value="0" min="0" step="10000"></div>
-<div class="field"><label>Health Insurance (monthly value)</label><input type="number" id="healthB" value="50000" min="0" step="5000"></div>
-<div class="field"><label>Pension Employer Contribution (%)</label><input type="number" id="pensionB" value="10" min="0" max="30" step="1"></div>
-<div class="field"><label>Leave Days / Year</label><input type="number" id="leaveB" value="25" min="0" max="60"></div>
-<div class="field"><label>Monthly Commute Cost</label><input type="number" id="commuteB" value="0" min="0" step="1000"></div>
-<div class="field"><label>Remote Work Days / Week</label><input type="number" id="remoteB" value="5" min="0" max="5"></div>
+<!-- ── Hero ────────────────────────────────────────────── -->
+<section class="joe-hero">
+<div class="joe-hero-inner">
+<div class="joe-bc"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Job Offer Evaluator</span></div>
+<h1 class="joe-h1">Job Offer <em>Evaluator</em></h1>
+<p class="joe-sub">Beyond the number. Compare up to 4 offers — net pay after PAYE, equity valuation, 5-year career projection, relocation break-even, and a counter-offer negotiation script.</p>
+<div class="joe-badges">
+  <span class="joe-badge">Up to 4 Offers</span>
+  <span class="joe-badge">Equity / ESOP</span>
+  <span class="joe-badge">5-Year Projection</span>
+  <span class="joe-badge">Counter-Offer Script</span>
+  <span class="joe-badge">Culture Score</span>
+  <span class="joe-badge">Relocation Calculator</span>
 </div>
 </div>
-<button class="btn btn-primary" onclick="compareOffers()">Compare Offers</button>
-</div></div>
-
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Comparison Results</span></div>
-<div class="card-body">
-<table class="compare-table" id="compareTable"></table>
-<div class="verdict" id="verdict"></div>
-</div></div>
-</div></section>
-
-<section class="seo-section">
-<h2>How to Evaluate a Job Offer in Africa</h2>
-<p>Choosing between job offers is one of the most important financial decisions you'll make. In African job markets, where compensation structures can be complex — with significant portions of pay coming through allowances, benefits, and bonuses — comparing offers on gross salary alone is misleading. Two offers with identical gross salaries can differ by 30-50% in total compensation value once you account for housing, transport, health insurance, pension, bonuses, and non-monetary benefits.</p>
-<p>Net pay after deductions is the first thing to compare. Depending on the country, tax and social security deductions can take 15-35% of your gross salary. Then add back the monetary value of benefits: employer pension contributions, health insurance premiums (which can be worth ₦30,000-₦100,000/month in Nigeria), housing allowances, transport allowances, and annual bonuses. Don't forget to subtract commute costs — in Lagos or Nairobi, commuting can cost ₦30,000-₦60,000 or KSh 5,000-15,000 per month.</p>
-<p>Non-monetary factors matter too. Remote work flexibility saves commute time and costs. More leave days have a monetary value (each day is roughly 1/260th of your annual salary). Career growth potential, company stability, learning opportunities, and work-life balance all affect long-term earnings and satisfaction. A slightly lower-paying job at a high-growth company can be more valuable than a higher salary at a stagnant organization.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Should I always take the higher salary?</summary><p>Not necessarily. Compare total compensation (salary + benefits + allowances - costs). A lower salary with better health insurance, housing, pension, and remote work can be worth more overall. Also consider career growth — a lower salary at a company that will develop your skills may lead to much higher earnings within 2-3 years.</p></details>
-<details class="faq-item"><summary>How much are benefits really worth?</summary><p>In African markets, benefits can add 20-50% to your base salary value. Health insurance alone can be worth ₦30,000-₦100,000/month. Employer pension contributions of 10% add significant long-term value. Housing and transport allowances are often tax-advantaged, making them worth more than equivalent salary.</p></details>
-<details class="faq-item"><summary>How do I factor in commute costs?</summary><p>Calculate your monthly commute spending including fuel or public transport, tolls, and vehicle maintenance. In Lagos, a daily commute can cost ₦2,000-₦5,000. In Nairobi, KSh 200-500 each way. A fully remote job effectively adds that amount back to your take-home pay. Also factor in the time cost — 2-3 hours daily commuting is time you could spend earning or developing skills.</p></details>
-<details class="faq-item"><summary>What is the real value of remote work?</summary><p>Remote work saves commute costs, wardrobe expenses, and daily meals outside the home. In Nigeria, this can amount to ₦50,000-₦150,000 per month in savings. Beyond money, remote work gives back 2-3 hours daily, reduces stress, and offers flexibility. However, consider the trade-offs: in-office roles may offer faster promotion, better mentoring, and stronger professional networks.</p></details>
-<details class="faq-item"><summary>Should I negotiate after comparing offers?</summary><p>Absolutely. Use this comparison as a negotiation tool. If Offer A has a higher salary but Offer B has better benefits, ask Offer A to match the benefits or increase their package. In African markets, employers often have flexibility on allowances, signing bonuses, and leave days even when base salary is fixed. Always negotiate before accepting — most employers expect it.</p></details>
-<details class="faq-item"><summary>How important is the 13th month salary?</summary><p>A 13th month salary (annual bonus equal to one month's pay) adds roughly 8.3% to your annual compensation. In many African countries this is standard or even legally required. If one offer includes it and another doesn't, it can significantly change the comparison. Always ask whether the stated bonus is guaranteed or performance-based.</p></details>
-<details class="faq-item"><summary>What tax deductions should I expect?</summary><p>This calculator uses a simplified 20% effective tax rate estimate. Actual rates vary: Nigeria PAYE is 7-24%, Kenya 10-35%, South Africa 18-45%, Ghana 0-35%. Higher earners face higher rates. Pension contributions (8-10% in most countries), health insurance levies, and social security also reduce take-home pay. For precise figures, use AfroTools country-specific PAYE calculators.</p></details>
 </section>
 
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-  <wise-cta context="general"></wise-cta>
+<!-- ── Main Tabs ─────────────────────────────────────────── -->
+<div class="joe-tab-bar">
+  <button class="joe-tab-btn active" onclick="switchTab('offers')">Offers Setup</button>
+  <button class="joe-tab-btn" onclick="switchTab('culture')">Culture Score</button>
+  <button class="joe-tab-btn" onclick="switchTab('counter')">Counter-Offer</button>
 </div>
+
+<!-- ── Tab: Offers ──────────────────────────────────────── -->
+<div id="joe-pane-offers" class="joe-pane active">
+<div class="joe-wrap">
+
+  <!-- Country / Currency row -->
+  <div class="joe-settings-row">
+    <div class="joe-field">
+      <label class="joe-label">Country (for tax estimate)</label>
+      <select class="joe-select" id="joe-country" onchange="onCountryChange(this.value)" style="max-width:200px">
+        <option value="NG">Nigeria (NGN)</option>
+        <option value="KE">Kenya (KES)</option>
+        <option value="ZA">South Africa (ZAR)</option>
+        <option value="GH">Ghana (GHS)</option>
+        <option value="EG">Egypt (EGP)</option>
+        <option value="TZ">Tanzania (TZS)</option>
+        <option value="UG">Uganda (UGX)</option>
+        <option value="RW">Rwanda (RWF)</option>
+        <option value="ET">Ethiopia (ETB)</option>
+        <option value="MA">Morocco (MAD)</option>
+        <option value="SN">Senegal (XOF)</option>
+        <option value="CI">Côte d'Ivoire (XOF)</option>
+        <option value="CM">Cameroon (XAF)</option>
+        <option value="TZ">Tanzania (TZS)</option>
+        <option value="BW">Botswana (BWP)</option>
+        <option value="MU">Mauritius (MUR)</option>
+        <option value="OTHER">Other Africa</option>
+      </select>
+    </div>
+    <div class="joe-field">
+      <label class="joe-label">Currency symbol</label>
+      <select class="joe-select" id="joe-currency" onchange="joe.currency=this.value" style="max-width:140px">
+        <option value="₦">₦ (NGN)</option>
+        <option value="KSh ">KSh (KES)</option>
+        <option value="R ">R (ZAR)</option>
+        <option value="GH₵">GH₵ (GHS)</option>
+        <option value="E£">E£ (EGP)</option>
+        <option value="TSh ">TSh (TZS)</option>
+        <option value="USh ">USh (UGX)</option>
+        <option value="RWF ">RWF (RWF)</option>
+        <option value="Br ">Br (ETB)</option>
+        <option value="MAD ">MAD</option>
+        <option value="FCFA ">FCFA</option>
+        <option value="$">$ (USD)</option>
+      </select>
+    </div>
+    <div style="font-size:.74rem;color:var(--m);line-height:1.5;max-width:280px;padding-bottom:4px">
+      Tax is a simplified estimate. Use our <a href="/tools/salary-tax/" style="color:var(--joe)">PAYE calculators</a> for exact figures.
+    </div>
+  </div>
+
+  <!-- Offer cards rail -->
+  <div class="joe-offers-rail" id="joe-rail"></div>
+  <div class="joe-dots" id="joe-dots"></div>
+
+  <!-- Add offer / Compare -->
+  <button class="joe-add-btn" id="joe-add-btn" onclick="addOffer()">+ Add Another Offer (up to 4)</button>
+  <button class="joe-compare-btn" onclick="runCompare()">Compare All Offers →</button>
+</div>
+</div>
+
+<!-- ── Tab: Culture Score ─────────────────────────────── -->
+<div id="joe-pane-culture" class="joe-pane">
+<div class="joe-wrap">
+  <p style="font-size:.84rem;color:var(--m);margin-bottom:20px;line-height:1.6">Rate each offer on 7 dimensions (1 = poor, 10 = excellent). The culture score is weighted and shown out of 100. Use the slider below to see how much a culture score difference is worth to you in salary.</p>
+  <div class="joe-culture-grid" id="joe-culture-grid"></div>
+
+  <div style="background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:18px;margin-top:18px;max-width:500px">
+    <div class="joe-section-title">Culture Premium Slider</div>
+    <p style="font-size:.78rem;color:var(--m);margin-bottom:12px">How much monthly salary is a 10-point culture score improvement worth to you?</p>
+    <div style="display:flex;align-items:center;gap:12px">
+      <input type="range" class="joe-slider" id="joe-culture-premium" min="0" max="200000" step="5000" value="30000" oninput="calcCulturePremium()">
+      <span id="joe-culture-premium-val" style="font-size:.88rem;font-weight:800;color:var(--joe);min-width:80px"></span>
+    </div>
+    <div id="joe-culture-premium-result" style="margin-top:12px;font-size:.82rem;color:#475569;line-height:1.7"></div>
+  </div>
+</div>
+</div>
+
+<!-- ── Tab: Counter-Offer ─────────────────────────────── -->
+<div id="joe-pane-counter" class="joe-pane">
+<div class="joe-wrap">
+  <div class="joe-counter-card">
+    <div class="joe-section-title">Counter-Offer Simulator</div>
+    <p style="font-size:.82rem;color:var(--m);margin-bottom:16px;line-height:1.6">Enter the offer you received and the amount you want to counter at. We'll generate a negotiation script and probability assessment.</p>
+    <div class="joe-row">
+      <div class="joe-field">
+        <label class="joe-label">Your Current Salary (monthly)</label>
+        <input type="number" class="joe-input" id="joe-c-current" value="400000" step="10000" placeholder="Current salary">
+      </div>
+      <div class="joe-field">
+        <label class="joe-label">Offered Amount (monthly)</label>
+        <input type="number" class="joe-input" id="joe-c-offered" value="550000" step="10000" placeholder="Offered salary">
+      </div>
+    </div>
+    <div class="joe-row">
+      <div class="joe-field">
+        <label class="joe-label">Your Counter Amount (monthly)</label>
+        <input type="number" class="joe-input" id="joe-c-counter" value="620000" step="10000" placeholder="Your counter">
+      </div>
+      <div class="joe-field">
+        <label class="joe-label">Your Role / Title</label>
+        <input type="text" class="joe-input" id="joe-c-role" value="Senior Software Engineer" placeholder="e.g. Senior Engineer">
+      </div>
+    </div>
+    <div class="joe-row">
+      <div class="joe-field">
+        <label class="joe-label">City</label>
+        <input type="text" class="joe-input" id="joe-c-city" value="Lagos" placeholder="e.g. Lagos, Nairobi">
+      </div>
+      <div class="joe-field">
+        <label class="joe-label">Years of Experience</label>
+        <input type="number" class="joe-input" id="joe-c-years" value="5" min="0" max="40">
+      </div>
+    </div>
+    <button class="joe-compare-btn" style="margin-top:4px" onclick="generateCounterScript()">Generate Negotiation Script</button>
+
+    <div class="joe-counter-out" id="joe-counter-out">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px">
+        <div>
+          <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--m)">Counter is</div>
+          <div class="joe-counter-pct" id="joe-c-pct"></div>
+          <span class="joe-prob-badge" id="joe-c-prob-badge"></span>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:.82rem;font-weight:700;color:var(--t);margin-bottom:4px" id="joe-c-assessment"></div>
+          <div style="font-size:.78rem;color:var(--m)" id="joe-c-probability-lbl"></div>
+        </div>
+      </div>
+
+      <div class="joe-section-title">Negotiation Script</div>
+      <div class="joe-script-box" id="joe-c-script"></div>
+      <button class="joe-copy-btn" onclick="copyScript()">Copy to Clipboard</button>
+
+      <div class="joe-section-title" style="margin-top:16px">Walk-Away Line</div>
+      <div class="joe-script-box" id="joe-c-walkaway"></div>
+
+      <div style="margin-top:14px;padding:12px;background:var(--bg);border-radius:8px;font-size:.78rem;color:var(--m);line-height:1.6" id="joe-c-tip"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── Results Section ────────────────────────────────── -->
+<div id="joe-results" style="display:none">
+<div class="joe-result-bar">
+  <button class="joe-rt-btn active" onclick="switchResultTab('overview')">Overview</button>
+  <button class="joe-rt-btn" onclick="switchResultTab('fiveyear')">5-Year Projection</button>
+  <button class="joe-rt-btn" id="joe-rt-equity-btn" onclick="switchResultTab('equity')">Equity</button>
+  <button class="joe-rt-btn" onclick="switchResultTab('regret')">Regret Test</button>
+</div>
+
+<!-- Overview -->
+<div id="joe-rpane-overview" class="joe-rpane active">
+<div class="joe-result-wrap">
+  <div id="joe-winner-card"></div>
+  <div id="joe-ranked-list"></div>
+  <div id="joe-comp-table-wrap"></div>
+  <div id="joe-verdict"></div>
+  <div id="joe-reloc-results"></div>
+  <div class="joe-result-actions" id="joe-result-actions"></div>
+</div>
+</div>
+
+<!-- 5-Year Projection -->
+<div id="joe-rpane-fiveyear" class="joe-rpane">
+<div class="joe-result-wrap">
+  <div id="joe-5yr-winner"></div>
+  <div class="joe-chart-wrap"><div class="joe-chart-title">5-Year Total Compensation Trajectory</div><canvas id="joe-chart" height="100"></canvas></div>
+  <div id="joe-5yr-tables"></div>
+</div>
+</div>
+
+<!-- Equity -->
+<div id="joe-rpane-equity" class="joe-rpane">
+<div class="joe-result-wrap">
+  <div id="joe-equity-body"></div>
+</div>
+</div>
+
+<!-- Regret Test -->
+<div id="joe-rpane-regret" class="joe-rpane">
+<div class="joe-result-wrap">
+  <div class="joe-regret-intro">
+    <strong style="color:var(--joe-dk)">The 80-Year Test</strong> — Jeff Bezos' Regret Minimization Framework<br>
+    Imagine yourself at 80, looking back on your career. Which choice would you most regret <em>not</em> making? Money is necessary but not sufficient. This test helps you surface the emotional decision beneath the financial one.
+  </div>
+  <p style="font-size:.82rem;color:var(--m);margin-bottom:14px;font-weight:700">Which offer would you regret NOT taking?</p>
+  <div class="joe-regret-offers" id="joe-regret-offers"></div>
+  <div class="joe-regret-result" id="joe-regret-result"></div>
+</div>
+</div>
+
+</div><!-- end #joe-results -->
+
+<!-- ── SEO / FAQ ───────────────────────────────────────── -->
+<section class="joe-seo">
+<h2>How to Evaluate a Job Offer in Africa</h2>
+<p>Choosing between job offers is one of the most consequential financial decisions you'll make. In African job markets — where significant pay comes through allowances, benefits, and equity — comparing on gross salary alone is deeply misleading. Two offers with identical gross salaries can differ by 30–50% in total compensation once you account for housing, transport, health insurance, pension, equity, and commute costs.</p>
+<p>Net pay after PAYE and pension deductions is the starting point. Then monetise benefits: employer pension contributions, health insurance (worth ₦30,000–₦100,000/month in Nigeria), housing and transport allowances, and expected bonuses. Subtract commute costs — in Lagos or Nairobi, commuting can cost ₦30,000–₦60,000/month. Finally, look beyond year one: a startup at 60% of a bank salary may be worth more in 5 years through equity upside and salary acceleration.</p>
+<h2>Frequently Asked Questions</h2>
+<details class="joe-faq"><summary>Should I always take the higher salary?</summary><p>Not necessarily. Total compensation (salary + benefits + equity - commute costs) is what matters. A lower gross salary with better health insurance, housing, pension, remote flexibility, and equity can be worth significantly more. Also consider the 5-year trajectory — a startup at lower base pay may triple your earnings if it succeeds.</p></details>
+<details class="joe-faq"><summary>How do I value startup equity in Africa?</summary><p>African startup equity carries higher binary risk than Silicon Valley options — most African startups either get acquired or shut down rather than IPO. Use the probability-weighted model: assume ~40% chance of zero, ~35% of a modest $5-10M exit, ~20% of a $50M exit, and ~5% of $100M+. Calculate what your options are worth in each scenario, multiply by the probability, and compare the expected value to a cash signing bonus from an alternative offer.</p></details>
+<details class="joe-faq"><summary>How do I counter a job offer without being aggressive?</summary><p>Use market data, competing offers, or your unique value as justification. Avoid personal reasons ("I need more money"). Frame it as: "Based on market benchmarks for [role] in [city], and my [X years / specific skill], I'm targeting [amount]. Is there flexibility there?" Always express genuine enthusiasm for the role first — you're negotiating because you want to make it work, not because you're looking for an exit.</p></details>
+<details class="joe-faq"><summary>What is the real value of remote work?</summary><p>Remote work saves commute costs (₦15,000–₦60,000/month in Lagos), wardrobe, and daily meals — effectively adding ₦50,000–₦150,000/month in Lagos. Beyond money, it gives back 2-3 hours daily and reduces stress. Factor it into your total compensation as a real cash equivalent when comparing offers.</p></details>
+<details class="joe-faq"><summary>How important is the 13th month salary?</summary><p>A guaranteed 13th month adds 8.3% to annual compensation and is standard in many Nigerian corporates and legally mandated in some sectors. Always clarify whether any stated bonus is guaranteed or performance-based — a "20% annual bonus" that requires exceptional performance is worth far less than a guaranteed 13th month.</p></details>
+<details class="joe-faq"><summary>How do I calculate relocation break-even?</summary><p>Add up: one-way flights + freight, first month's rent deposit in the new city, settling-in costs (furniture, connection fees), and temporary accommodation. Divide by your monthly salary increase. If break-even is under 12 months, relocation is generally financially worthwhile — beyond 24 months, be cautious unless non-financial factors strongly favour the move.</p></details>
+</section>
+
+<div style="padding:0 20px;max-width:760px;margin:0 auto"><wise-cta context="general"></wise-cta></div>
 <afro-related-tools category="financial" current="job-offer-evaluator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<!-- ── Engine + UI Script ─────────────────────────────── -->
+<script src="/engines/job-offer-engine.js?v=3eb0b727"></script>
 <script>
-function compareOffers(){
-  const cur=document.getElementById('currency').value;
-  const fmt=n=>cur+Math.round(n).toLocaleString('en');
+var joe = {
+  offers: [],
+  country: 'NG',
+  currency: '₦',
+  chart: null,
+  lastRanked: null
+};
 
-  function getOffer(suffix){
-    const salary=+document.getElementById('salary'+suffix).value;
-    const bonus=+document.getElementById('bonus'+suffix).value;
-    const transport=+document.getElementById('transport'+suffix).value;
-    const housing=+document.getElementById('housing'+suffix).value;
-    const health=+document.getElementById('health'+suffix).value;
-    const pension=+document.getElementById('pension'+suffix).value;
-    const leave=+document.getElementById('leave'+suffix).value;
-    const commute=+document.getElementById('commute'+suffix).value;
-    const remote=+document.getElementById('remote'+suffix).value;
-    const name=document.getElementById('name'+suffix).value||'Offer '+suffix;
+var OFFER_COLORS = ['#6D28D9','#2563EB','#059669','#D97706'];
+var MEDALS = ['🥇','🥈','🥉','🏅'];
 
-    const annualGross=salary*12;
-    const annualBonus=annualGross*(bonus/100);
-    const annualTransport=transport*12;
-    const annualHousing=housing*12;
-    const annualHealth=health*12;
-    const annualPensionEr=salary*(pension/100)*12;
-    const annualCommute=commute*12;
-    const leaveValue=salary*(leave/260); // per month value
+function fmt(n) { return joe.currency + Math.round(n).toLocaleString('en'); }
+function fmtRaw(n) { return Math.round(n).toLocaleString('en'); }
 
-    // Simplified tax estimate (~20% effective rate)
-    const effectiveTax=0.20;
-    const annualTax=annualGross*effectiveTax;
-    const annualNet=annualGross-annualTax;
+// ── Default offer ───────────────────────────────────────
+function defaultOffer(n) {
+  var isFirst = n === 1;
+  return {
+    name: 'Offer ' + n,
+    role: '',
+    salary: isFirst ? 800000 : 650000,
+    bonusPct: isFirst ? 13 : 20,
+    companyType: isFirst ? 'corporate' : 'startup',
+    transport: isFirst ? 50000 : 0,
+    housing: isFirst ? 100000 : 0,
+    health: isFirst ? 30000 : 50000,
+    pensionEr: 10,
+    leave: isFirst ? 20 : 25,
+    commute: isFirst ? 15000 : 0,
+    remote: isFirst ? 2 : 5,
+    gym: false, gymValue: 5000,
+    bonus13th: false,
+    deadline: '',
+    hasEquity: !isFirst,
+    shares: 10000, fullyDiluted: 10000000, valuation: 2000000,
+    strikePrice: 0.20, vestingYears: 4, cliffMonths: 12,
+    hasRelocation: false,
+    fromCity: 'Lagos', toCity: 'Nairobi',
+    movingCost: 0, deposit: 0, settling: 0, tempAccom: 0, allowance: 0
+  };
+}
 
-    const totalCash=annualNet+annualBonus+annualTransport+annualHousing-annualCommute;
-    const totalComp=totalCash+annualHealth+annualPensionEr;
-
-    return{name,salary,annualGross,annualBonus,annualTransport,annualHousing,annualHealth,annualPensionEr,annualTax,annualNet,annualCommute,totalCash,totalComp,leave,remote,leaveValue};
-  }
-
-  const a=getOffer('A');
-  const b=getOffer('B');
-
-  const rows=[
-    ['Monthly Gross Salary',a.salary,b.salary],
-    ['Annual Gross Salary',a.annualGross,b.annualGross],
-    ['Estimated Tax (~20%)',a.annualTax,b.annualTax,'lower'],
-    ['Annual Net Salary',a.annualNet,b.annualNet],
-    ['Annual Bonus',a.annualBonus,b.annualBonus],
-    ['Transport Allowance (annual)',a.annualTransport,b.annualTransport],
-    ['Housing Benefit (annual)',a.annualHousing,b.annualHousing],
-    ['Health Insurance (annual)',a.annualHealth,b.annualHealth],
-    ['Pension Employer (annual)',a.annualPensionEr,b.annualPensionEr],
-    ['Commute Cost (annual)',a.annualCommute,b.annualCommute,'lower'],
-    ['Leave Days',a.leave,b.leave],
-    ['Remote Days/Week',a.remote,b.remote],
-  ];
-
-  let tbl=`<tr><th>Component</th><th style="color:#16a34a">${a.name}</th><th style="color:#2563eb">${b.name}</th></tr>`;
-  rows.forEach(([label,valA,valB,prefer])=>{
-    const higher=prefer==='lower'?(valA<valB?'a':'b'):(valA>valB?'a':'b');
-    const clsA=higher==='a'?'winner':'';
-    const clsB=higher==='b'?'winner':'';
-    const isNum=typeof valA==='number'&&valA>100;
-    tbl+=`<tr><td>${label}</td><td class="${clsA}">${isNum?fmt(valA):valA}</td><td class="${clsB}">${isNum?fmt(valB):valB}</td></tr>`;
+// ── Tab switching ───────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.joe-tab-btn').forEach(function(b, i) {
+    var tabs = ['offers','culture','counter'];
+    b.classList.toggle('active', tabs[i] === name);
   });
+  document.querySelectorAll('.joe-pane').forEach(function(p) { p.classList.remove('active'); });
+  var pane = document.getElementById('joe-pane-' + name);
+  if (pane) pane.classList.add('active');
+  if (name === 'culture') renderCultureTab();
+}
 
-  // Totals
-  tbl+=`<tr style="border-top:2px solid #16a34a;font-weight:800;font-size:.88rem"><td>Total Cash (Net + Benefits - Commute)</td><td class="${a.totalCash>=b.totalCash?'winner':''}">${fmt(a.totalCash)}</td><td class="${b.totalCash>=a.totalCash?'winner':''}">${fmt(b.totalCash)}</td></tr>`;
-  tbl+=`<tr style="font-weight:800;font-size:.88rem;background:#f8fafc"><td>Total Compensation Value</td><td class="${a.totalComp>=b.totalComp?'winner':''}">${fmt(a.totalComp)}</td><td class="${b.totalComp>=a.totalComp?'winner':''}">${fmt(b.totalComp)}</td></tr>`;
+function switchResultTab(name) {
+  document.querySelectorAll('.joe-rt-btn').forEach(function(b) {
+    var names = ['overview','fiveyear','equity','regret'];
+    b.classList.toggle('active', names.indexOf(name) === Array.from(document.querySelectorAll('.joe-rt-btn')).indexOf(b));
+  });
+  document.querySelectorAll('.joe-rpane').forEach(function(p) { p.classList.remove('active'); });
+  var pane = document.getElementById('joe-rpane-' + name);
+  if (pane) pane.classList.add('active');
+}
 
-  const diff=Math.abs(a.totalComp-b.totalComp);
-  const diffPct=(diff/Math.min(a.totalComp,b.totalComp)*100).toFixed(0);
-  const winner=a.totalComp>=b.totalComp?a:b;
-  const loser=a.totalComp>=b.totalComp?b:a;
+// ── Render one offer card HTML ──────────────────────────
+function cityOptions() {
+  var cities = JoeEngine.RELOCATION_CITIES;
+  return cities.map(function(c) { return '<option value="'+c+'">'+c+'</option>'; }).join('');
+}
 
-  document.getElementById('compareTable').innerHTML=tbl;
-  document.getElementById('verdict').innerHTML=`<div class="title">Recommended</div><div class="pick">${winner.name}</div><div class="reason">Total compensation is ${fmt(diff)} higher (${diffPct}% more) than ${loser.name}. ${winner.remote>loser.remote?'Plus more remote work flexibility.':''} ${winner.leave>loser.leave?'Plus more leave days.':''}</div>`;
+function deadlineBadge(dateStr) {
+  if (!dateStr) return '';
+  var days = JoeEngine.daysUntilDeadline(dateStr);
+  if (days === null) return '';
+  if (days < 0) return '<div class="joe-deadline-badge joe-dl-expired">⏰ Offer may have expired</div>';
+  if (days === 0) return '<div class="joe-deadline-badge joe-dl-urgent">⚠️ Deadline: Today!</div>';
+  if (days <= 2) return '<div class="joe-deadline-badge joe-dl-urgent">⚠️ Deadline in ' + days + ' day(s)</div>';
+  if (days <= 5) return '<div class="joe-deadline-badge joe-dl-warn">⏳ Deadline in ' + days + ' days</div>';
+  return '<div class="joe-deadline-badge joe-dl-ok">✓ Deadline in ' + days + ' days</div>';
+}
 
-  document.getElementById('resultCard').style.display='block';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+function renderOfferCard(o, idx) {
+  var col = OFFER_COLORS[idx] || OFFER_COLORS[0];
+  var gprofiles = JoeEngine.GROWTH_PROFILES;
+  var typeOpts = Object.keys(gprofiles).map(function(k) {
+    return '<option value="'+k+'"'+(o.companyType===k?' selected':'')+'>'+gprofiles[k].label+'</option>';
+  }).join('');
 
-  // Wire up save-result-button with data
-  var saveBtn = document.querySelector('save-result-button');
-  if (saveBtn && saveBtn.setData) {
-    saveBtn.setData({
-      inputs: { currency: cur, offerA: a.name, salaryA: a.salary, offerB: b.name, salaryB: b.salary },
-      outputs: { winnerName: winner.name, winnerTotalComp: Math.round(winner.totalComp), loserName: loser.name, loserTotalComp: Math.round(loser.totalComp), difference: Math.round(diff), differencePct: diffPct + '%' }
-    });
+  return '<div class="joe-offer-card joe-bd-'+idx+'" id="joe-card-'+idx+'">' +
+    '<div class="joe-card-hd joe-hd-'+idx+'">' +
+      '<span class="joe-card-name">Offer '+(idx+1)+'</span>' +
+      (joe.offers.length > 2 ? '<button class="joe-remove-btn" onclick="removeOffer('+idx+')" title="Remove">×</button>' : '<span></span>') +
+    '</div>' +
+    '<div class="joe-card-bd">' +
+      deadlineBadge(o.deadline) +
+      '<div class="joe-field"><label class="joe-label">Company Name</label>' +
+        '<input type="text" class="joe-input" id="jn-name-'+idx+'" value="'+escHtml(o.name)+'" placeholder="Company name"></div>' +
+      '<div class="joe-field"><label class="joe-label">Role / Position</label>' +
+        '<input type="text" class="joe-input" id="jn-role-'+idx+'" value="'+escHtml(o.role)+'" placeholder="e.g. Senior Engineer"></div>' +
+      '<div class="joe-row">' +
+        '<div class="joe-field"><label class="joe-label">Monthly Gross Salary</label>' +
+          '<input type="number" class="joe-input" id="jn-salary-'+idx+'" value="'+o.salary+'" min="0" step="10000"></div>' +
+        '<div class="joe-field"><label class="joe-label">Annual Bonus %</label>' +
+          '<input type="number" class="joe-input" id="jn-bonus-'+idx+'" value="'+o.bonusPct+'" min="0" max="200" step="1"></div>' +
+      '</div>' +
+      '<div class="joe-field"><label class="joe-label">Company Type</label>' +
+        '<select class="joe-select" id="jn-type-'+idx+'">'+typeOpts+'</select></div>' +
+      '<div class="joe-section-title" style="margin-top:14px">Benefits</div>' +
+      '<div class="joe-row">' +
+        '<div class="joe-field"><label class="joe-label">Transport Allowance / mo</label>' +
+          '<input type="number" class="joe-input" id="jn-transport-'+idx+'" value="'+o.transport+'" min="0" step="5000"></div>' +
+        '<div class="joe-field"><label class="joe-label">Housing Benefit / mo</label>' +
+          '<input type="number" class="joe-input" id="jn-housing-'+idx+'" value="'+o.housing+'" min="0" step="10000"></div>' +
+      '</div>' +
+      '<div class="joe-row">' +
+        '<div class="joe-field"><label class="joe-label">Health Insurance / mo</label>' +
+          '<input type="number" class="joe-input" id="jn-health-'+idx+'" value="'+o.health+'" min="0" step="5000"></div>' +
+        '<div class="joe-field"><label class="joe-label">Pension Employer %</label>' +
+          '<input type="number" class="joe-input" id="jn-pensioner-'+idx+'" value="'+o.pensionEr+'" min="0" max="30" step="0.5"></div>' +
+      '</div>' +
+      '<label class="joe-toggle-row"><input type="checkbox" id="jn-gym-'+idx+'"'+(o.gym?' checked':'')+' onchange="toggleGym('+idx+')"> <span class="joe-toggle-label">Gym membership included</span></label>' +
+      '<div id="jn-gymval-wrap-'+idx+'" style="'+(o.gym?'':'display:none')+'"><div class="joe-field" style="padding-left:22px"><label class="joe-label">Monthly gym value</label><input type="number" class="joe-input" id="jn-gymval-'+idx+'" value="'+o.gymValue+'" min="0" step="1000" style="max-width:180px"></div></div>' +
+      '<label class="joe-toggle-row"><input type="checkbox" id="jn-13th-'+idx+'"'+(o.bonus13th?' checked':'')+'>  <span class="joe-toggle-label">13th month / guaranteed bonus</span></label>' +
+      '<div class="joe-section-title" style="margin-top:14px">Lifestyle</div>' +
+      '<div class="joe-row">' +
+        '<div class="joe-field"><label class="joe-label">Leave Days / Year</label>' +
+          '<input type="number" class="joe-input" id="jn-leave-'+idx+'" value="'+o.leave+'" min="0" max="60"></div>' +
+        '<div class="joe-field"><label class="joe-label">Commute Cost / mo</label>' +
+          '<input type="number" class="joe-input" id="jn-commute-'+idx+'" value="'+o.commute+'" min="0" step="1000"></div>' +
+      '</div>' +
+      '<div class="joe-row">' +
+        '<div class="joe-field"><label class="joe-label">Remote Days / Week</label>' +
+          '<input type="number" class="joe-input" id="jn-remote-'+idx+'" value="'+o.remote+'" min="0" max="5"></div>' +
+        '<div class="joe-field"><label class="joe-label">Offer Deadline</label>' +
+          '<input type="date" class="joe-input" id="jn-deadline-'+idx+'" value="'+o.deadline+'" onchange="refreshDeadline('+idx+')"></div>' +
+      '</div>' +
+
+      '<!-- Equity -->' +
+      '<label class="joe-toggle-row"><input type="checkbox" id="jn-equity-'+idx+'"'+(o.hasEquity?' checked':'')+' onchange="toggleSection('+idx+',\'equity\')"> <span class="joe-toggle-label" style="color:var(--joe);font-weight:800">This offer includes equity / ESOP</span></label>' +
+      '<div class="joe-collapsible'+(o.hasEquity?' open':'')+'" id="jn-equity-sec-'+idx+'">' +
+        '<div class="joe-section-title">Equity / ESOP Details</div>' +
+        '<div class="joe-row">' +
+          '<div class="joe-field"><label class="joe-label">Options / Shares Granted</label><input type="number" class="joe-input" id="jn-shares-'+idx+'" value="'+o.shares+'" min="0" step="100"></div>' +
+          '<div class="joe-field"><label class="joe-label">Fully Diluted Shares</label><input type="number" class="joe-input" id="jn-fdshares-'+idx+'" value="'+o.fullyDiluted+'" min="1" step="100000"></div>' +
+        '</div>' +
+        '<div class="joe-row">' +
+          '<div class="joe-field"><label class="joe-label">Current Company Valuation</label><input type="number" class="joe-input" id="jn-valuation-'+idx+'" value="'+o.valuation+'" min="0" step="100000"></div>' +
+          '<div class="joe-field"><label class="joe-label">Strike / Exercise Price</label><input type="number" class="joe-input" id="jn-strike-'+idx+'" value="'+o.strikePrice+'" min="0" step="0.01"></div>' +
+        '</div>' +
+        '<div class="joe-row">' +
+          '<div class="joe-field"><label class="joe-label">Vesting Period (years)</label><select class="joe-select" id="jn-vesting-'+idx+'"><option value="2"'+(o.vestingYears===2?' selected':'')+'>2 years</option><option value="3"'+(o.vestingYears===3?' selected':'')+'>3 years</option><option value="4"'+(o.vestingYears===4?' selected':'')+'>4 years (standard)</option><option value="5"'+(o.vestingYears===5?' selected':'')+'>5 years</option></select></div>' +
+          '<div class="joe-field"><label class="joe-label">Cliff (months)</label><select class="joe-select" id="jn-cliff-'+idx+'"><option value="3"'+(o.cliffMonths===3?' selected':'')+'>3 months</option><option value="6"'+(o.cliffMonths===6?' selected':'')+'>6 months</option><option value="12"'+(o.cliffMonths===12?' selected':'')+'>12 months (standard)</option></select></div>' +
+        '</div>' +
+      '</div>' +
+
+      '<!-- Relocation -->' +
+      '<label class="joe-toggle-row"><input type="checkbox" id="jn-reloc-'+idx+'"'+(o.hasRelocation?' checked':'')+' onchange="toggleSection('+idx+',\'reloc\')"> <span class="joe-toggle-label" style="color:#059669;font-weight:800">This role requires relocation</span></label>' +
+      '<div class="joe-collapsible'+(o.hasRelocation?' open':'')+'" id="jn-reloc-sec-'+idx+'">' +
+        '<div class="joe-section-title" style="color:#059669">Relocation Details</div>' +
+        '<div class="joe-row">' +
+          '<div class="joe-field"><label class="joe-label">From City</label><select class="joe-select" id="jn-from-'+idx+'">'+cityOptions()+'</select></div>' +
+          '<div class="joe-field"><label class="joe-label">To City</label><select class="joe-select" id="jn-to-'+idx+'">'+cityOptions()+'</select></div>' +
+        '</div>' +
+        '<div class="joe-row">' +
+          '<div class="joe-field"><label class="joe-label">Moving Costs (flight + freight)</label><input type="number" class="joe-input" id="jn-moving-'+idx+'" value="'+o.movingCost+'" min="0" step="10000"></div>' +
+          '<div class="joe-field"><label class="joe-label">First Month Rent Deposit</label><input type="number" class="joe-input" id="jn-deposit-'+idx+'" value="'+o.deposit+'" min="0" step="10000"></div>' +
+        '</div>' +
+        '<div class="joe-row">' +
+          '<div class="joe-field"><label class="joe-label">Settling-In Costs</label><input type="number" class="joe-input" id="jn-settling-'+idx+'" value="'+o.settling+'" min="0" step="5000"></div>' +
+          '<div class="joe-field"><label class="joe-label">Relocation Allowance (deducted)</label><input type="number" class="joe-input" id="jn-relocallow-'+idx+'" value="'+o.allowance+'" min="0" step="10000"></div>' +
+        '</div>' +
+      '</div>' +
+
+    '</div></div>';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Render all cards ────────────────────────────────────
+function renderOfferCards() {
+  var rail = document.getElementById('joe-rail');
+  rail.innerHTML = joe.offers.map(function(o, i) { return renderOfferCard(o, i); }).join('');
+  document.getElementById('joe-add-btn').disabled = joe.offers.length >= 4;
+  renderDots();
+  // scroll snap position tracking
+  rail.addEventListener('scroll', updateDots, {passive:true});
+}
+
+// ── Pagination dots ─────────────────────────────────────
+function renderDots() {
+  var dotsEl = document.getElementById('joe-dots');
+  dotsEl.innerHTML = joe.offers.map(function(_, i) {
+    return '<div class="joe-dot'+(i===0?' active':'')+'" onclick="scrollToCard('+i+')"></div>';
+  }).join('');
+}
+
+function updateDots() {
+  var rail = document.getElementById('joe-rail');
+  var cards = rail.querySelectorAll('.joe-offer-card');
+  if (!cards.length) return;
+  var railLeft = rail.getBoundingClientRect().left;
+  var dots = document.querySelectorAll('.joe-dot');
+  var closest = 0, minDist = Infinity;
+  cards.forEach(function(c, i) {
+    var dist = Math.abs(c.getBoundingClientRect().left - railLeft);
+    if (dist < minDist) { minDist = dist; closest = i; }
+  });
+  dots.forEach(function(d, i) { d.classList.toggle('active', i === closest); });
+}
+
+function scrollToCard(idx) {
+  var card = document.getElementById('joe-card-' + idx);
+  if (card) card.scrollIntoView({behavior:'smooth', inline:'start', block:'nearest'});
+}
+
+// ── Add / Remove offers ─────────────────────────────────
+function addOffer() {
+  if (joe.offers.length >= 4) return;
+  joe.offers.push(defaultOffer(joe.offers.length + 1));
+  renderOfferCards();
+}
+
+function removeOffer(idx) {
+  if (joe.offers.length <= 2) return;
+  joe.offers.splice(idx, 1);
+  renderOfferCards();
+}
+
+// ── Read offer values from DOM ──────────────────────────
+function readOffer(idx) {
+  function gv(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+  function gn(id) { return parseFloat(gv(id)) || 0; }
+  function gb(id) { var el = document.getElementById(id); return el ? el.checked : false; }
+  return {
+    name:         gv('jn-name-'+idx) || 'Offer '+(idx+1),
+    role:         gv('jn-role-'+idx),
+    salary:       gn('jn-salary-'+idx),
+    bonusPct:     gn('jn-bonus-'+idx),
+    companyType:  gv('jn-type-'+idx) || 'corporate',
+    transport:    gn('jn-transport-'+idx),
+    housing:      gn('jn-housing-'+idx),
+    health:       gn('jn-health-'+idx),
+    pensionEr:    gn('jn-pensioner-'+idx),
+    leave:        gn('jn-leave-'+idx),
+    commute:      gn('jn-commute-'+idx),
+    remote:       gn('jn-remote-'+idx),
+    gym:          gb('jn-gym-'+idx),
+    gymValue:     gn('jn-gymval-'+idx),
+    bonus13th:    gb('jn-13th-'+idx),
+    deadline:     gv('jn-deadline-'+idx),
+    hasEquity:    gb('jn-equity-'+idx),
+    shares:       gn('jn-shares-'+idx),
+    fullyDiluted: gn('jn-fdshares-'+idx),
+    valuation:    gn('jn-valuation-'+idx),
+    strikePrice:  gn('jn-strike-'+idx),
+    vestingYears: gn('jn-vesting-'+idx) || 4,
+    cliffMonths:  gn('jn-cliff-'+idx) || 12,
+    hasRelocation:gb('jn-reloc-'+idx),
+    movingCost:   gn('jn-moving-'+idx),
+    deposit:      gn('jn-deposit-'+idx),
+    settling:     gn('jn-settling-'+idx),
+    tempAccom:    gn('jn-tempaccom-'+idx) || 0,
+    allowance:    gn('jn-relocallow-'+idx)
+  };
+}
+
+// ── Toggle helpers ──────────────────────────────────────
+function toggleSection(idx, type) {
+  var sec = document.getElementById('jn-' + type + '-sec-' + idx);
+  var chk = document.getElementById('jn-' + (type === 'equity' ? 'equity' : 'reloc') + '-' + idx);
+  if (sec) sec.classList.toggle('open', chk.checked);
+}
+
+function toggleGym(idx) {
+  var chk = document.getElementById('jn-gym-' + idx);
+  var wrap = document.getElementById('jn-gymval-wrap-' + idx);
+  if (wrap) wrap.style.display = chk.checked ? 'block' : 'none';
+}
+
+function refreshDeadline(idx) {
+  var dateVal = document.getElementById('jn-deadline-' + idx).value;
+  var card = document.getElementById('joe-card-' + idx);
+  var badge = card.querySelector('.joe-deadline-badge');
+  var newBadge = deadlineBadge(dateVal);
+  if (badge) badge.outerHTML = newBadge || '';
+  else if (newBadge) {
+    var bd = card.querySelector('.joe-card-bd');
+    bd.insertAdjacentHTML('afterbegin', newBadge);
   }
 }
+
+function onCountryChange(val) {
+  joe.country = val;
+  var curr = { NG:'₦', KE:'KSh ', ZA:'R ', GH:'GH₵', EG:'E£', TZ:'TSh ', UG:'USh ', RW:'RWF ', ET:'Br ', MA:'MAD ', SN:'FCFA ', CI:'FCFA ', CM:'FCFA ', BW:'P ', MU:'Rs ' };
+  var sym = curr[val] || joe.currency;
+  var cs = document.getElementById('joe-currency');
+  if (cs) {
+    for (var i = 0; i < cs.options.length; i++) {
+      if (cs.options[i].value === sym) { cs.selectedIndex = i; joe.currency = sym; break; }
+    }
+  }
+}
+
+// ── Main compare ────────────────────────────────────────
+function runCompare() {
+  var btn = document.querySelector('.joe-compare-btn');
+  if (btn) { btn.classList.add('joe-loading'); btn.textContent = 'Comparing offers…'; }
+  // Defer to next tick so UI updates before calculation
+  setTimeout(function() { _doCompare(); }, 16);
+}
+function _doCompare() {
+  var btn = document.querySelector('.joe-compare-btn');
+  var offerData = joe.offers.map(function(_, i) { return readOffer(i); });
+  var ranked = JoeEngine.compareOffers(offerData, joe.country);
+  joe.lastRanked = ranked;
+
+  // Check if any offer has equity
+  var hasAnyEquity = offerData.some(function(o) { return o.hasEquity; });
+  var equityBtn = document.getElementById('joe-rt-equity-btn');
+  if (equityBtn) equityBtn.style.display = hasAnyEquity ? '' : 'none';
+
+  renderWinnerCard(ranked);
+  renderRankedList(ranked);
+  renderCompTable(ranked, offerData);
+  renderVerdict(ranked);
+  renderRelocResults(offerData, ranked);
+  renderResultActions(ranked);
+  render5Year(ranked, offerData);
+  renderEquityResults(offerData);
+  renderRegretTest(ranked, offerData);
+
+  document.getElementById('joe-results').style.display = 'block';
+  document.getElementById('joe-results').scrollIntoView({ behavior: 'smooth' });
+  switchResultTab('overview');
+  if (btn) { btn.classList.remove('joe-loading'); btn.textContent = 'Compare All Offers →'; }
+}
+
+// ── Winner card ─────────────────────────────────────────
+function renderWinnerCard(ranked) {
+  var w = ranked[0];
+  var diff = ranked.length > 1 ? w.totalComp - ranked[1].totalComp : 0;
+  document.getElementById('joe-winner-card').innerHTML =
+    '<div class="joe-winner-card">' +
+      '<div class="joe-winner-medal">🏆</div>' +
+      '<div style="flex:1">' +
+        '<div class="joe-winner-label">Total Compensation Winner</div>' +
+        '<div class="joe-winner-name">' + escHtml(w.name) + '</div>' +
+        '<div class="joe-winner-detail">' +
+          (w.companyType ? (JoeEngine.GROWTH_PROFILES[w.companyType] || {}).label || '' : '') +
+          (w.leave ? ' · ' + w.leave + ' leave days' : '') +
+          (w.remote === 5 ? ' · Fully remote' : w.remote > 0 ? ' · ' + w.remote + 'd/wk remote' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="joe-winner-amount">' +
+        '<div class="joe-winner-comp-lbl">True Total Comp / yr</div>' +
+        '<div class="joe-winner-comp-val">' + fmt(w.totalComp) + '</div>' +
+        (diff > 0 && ranked.length > 1 ? '<div style="font-size:.75rem;color:#ddd6fe;margin-top:4px">' + fmt(diff) + ' more than #2</div>' : '') +
+      '</div>' +
+    '</div>';
+}
+
+// ── Ranked list ─────────────────────────────────────────
+function renderRankedList(ranked) {
+  var html = '<div class="joe-ranked-list">';
+  ranked.forEach(function(r, i) {
+    html += '<div class="joe-rank-row">' +
+      '<div class="joe-rank-medal">' + (MEDALS[i] || '·') + '</div>' +
+      '<div><div class="joe-rank-name">' + escHtml(r.name) + '</div>' +
+        '<div class="joe-rank-type">' + ((JoeEngine.GROWTH_PROFILES[r.companyType] || {}).label || '') + (r.role ? ' · ' + escHtml(r.role) : '') + '</div>' +
+      '</div>' +
+      '<div class="joe-rank-comp">' + fmt(r.totalComp) + '<span>Annual total comp</span>' +
+        '<span style="color:var(--m)">' + fmt(r.netMonthly) + '/mo net</span>' +
+      '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  document.getElementById('joe-ranked-list').innerHTML = html;
+}
+
+// ── Comparison table ─────────────────────────────────────
+function renderCompTable(ranked, offerData) {
+  var winIdx = function(vals, lower) {
+    var best = lower ? Math.min.apply(null, vals) : Math.max.apply(null, vals);
+    return vals.indexOf(best);
+  };
+
+  var hdr = '<tr><th>Component</th>' + ranked.map(function(r, i) {
+    return '<th style="color:' + OFFER_COLORS[i] + '">' + escHtml(r.name) + '</th>';
+  }).join('') + '</tr>';
+
+  function row(label, vals, lower, isNeg, suffix) {
+    var wi = winIdx(vals, lower || false);
+    var cells = vals.map(function(v, i) {
+      var cls = i === wi ? 'joe-win' : '';
+      var neg = isNeg ? ' joe-neg' : '';
+      var display = suffix ? v + suffix : fmt(v);
+      return '<td class="' + cls + neg + '">' + display + '</td>';
+    });
+    return '<tr><td>' + label + '</td>' + cells.join('') + '</tr>';
+  }
+
+  function section(label) {
+    return '<tr><td class="joe-section-hd" colspan="'+(ranked.length+1)+'">'+label+'</td></tr>';
+  }
+
+  var r = ranked;
+  var html = '<div class="joe-comp-table-wrap"><table class="joe-ctbl">' + hdr +
+    section('Gross & Tax') +
+    row('Monthly Gross Salary', r.map(function(x){return x.salary;})) +
+    row('Effective Deductions', r.map(function(x){return parseFloat(x.effectivePct);}), false, false, '%') +
+    row('Monthly Net Take-Home', r.map(function(x){return x.netMonthly;})) +
+    row('Annual Net Salary', r.map(function(x){return x.annualNet;})) +
+    section('Bonuses & Allowances') +
+    row('Annual Bonus', r.map(function(x){return x.annualBonus;})) +
+    row('Transport Allowance (annual)', r.map(function(x){return x.transport;})) +
+    row('Housing Benefit (annual)', r.map(function(x){return x.housing;})) +
+    section('Benefits') +
+    row('Health Insurance (annual)', r.map(function(x){return x.health;})) +
+    row('Pension Employer Contrib (annual)', r.map(function(x){return x.pensionEr;})) +
+    row('Gym / Wellness (annual)', r.map(function(x){return x.gym;})) +
+    row('13th Month / Guaranteed Bonus', r.map(function(x){return x.bonus13th;})) +
+    section('Costs & Lifestyle') +
+    row('Commute Cost (annual)', r.map(function(x){return x.annualCommute;}), true, true) +
+    row('Leave Days / Year', r.map(function(x){return x.leave;}), false, false, ' days') +
+    row('Remote Days / Week', r.map(function(x){return x.remote;}), false, false, ' days') +
+    '<tr class="joe-total-row"><td>TOTAL BENEFITS VALUE</td>' +
+      r.map(function(x, i){ return '<td class="'+(i===winIdx(r.map(function(y){return y.totalBenefits;}))? 'joe-win':'')+'">' + fmt(x.totalBenefits) + '</td>'; }).join('') +
+    '</tr>' +
+    '<tr class="joe-total-row" style="background:var(--joe-pale)"><td>TRUE TOTAL COMPENSATION</td>' +
+      r.map(function(x, i){ return '<td class="'+(i===0? 'joe-win':'')+'">' + fmt(x.totalComp) + '</td>'; }).join('') +
+    '</tr>' +
+    '</table></div>';
+
+  document.getElementById('joe-comp-table-wrap').innerHTML = html;
+}
+
+// ── Verdict ─────────────────────────────────────────────
+function renderVerdict(ranked) {
+  var w = ranked[0], l = ranked.length > 1 ? ranked[ranked.length-1] : null;
+  var diff = l ? w.totalComp - l.totalComp : 0;
+  var pct = l && l.totalComp > 0 ? (diff / l.totalComp * 100).toFixed(0) : 0;
+  var extras = [];
+  if (w.remote > (l ? l.remote : 0)) extras.push('more remote flexibility');
+  if (w.leave > (l ? l.leave : 0)) extras.push('more leave days');
+  if (w.hasEquity) extras.push('equity upside');
+
+  document.getElementById('joe-verdict').innerHTML =
+    '<div class="joe-verdict">' +
+      '<div class="joe-verdict-label">Recommended Offer</div>' +
+      '<div class="joe-verdict-pick">' + escHtml(w.name) + '</div>' +
+      '<div class="joe-verdict-reason">Total compensation is <strong>' + fmt(diff) + '</strong> higher (' + pct + '% more) than the lowest-ranked offer.' +
+        (extras.length ? ' Plus: ' + extras.join(', ') + '.' : '') +
+        '<br><small style="color:var(--m)">This is financial analysis only. See the Regret Test tab for the full picture.</small>' +
+      '</div>' +
+    '</div>';
+}
+
+// ── Relocation results ──────────────────────────────────
+function renderRelocResults(offerData, ranked) {
+  var hasReloc = offerData.some(function(o) { return o.hasRelocation; });
+  if (!hasReloc) { document.getElementById('joe-reloc-results').innerHTML = ''; return; }
+  var html = '<div class="joe-section-title" style="margin-top:6px">Relocation Analysis</div>';
+  offerData.forEach(function(o, idx) {
+    if (!o.hasRelocation) return;
+    var found = ranked.find(function(r) { return r.name === o.name; });
+    var baseSalaryIncrease = found ? found.netMonthly - (ranked[ranked.length-1].netMonthly) : 0;
+    var result = JoeEngine.calcRelocation(o, Math.max(0, baseSalaryIncrease));
+    html += '<div class="joe-reloc-result"><strong>' + escHtml(o.name) + '</strong> — Relocation to ' + escHtml(o.toCity || '?') +
+      '<br>Total relocation cost: <strong>' + fmt(result.totalCost) + '</strong>' +
+      (result.breakEvenMonths ? ' · Break-even: <strong>' + result.breakEvenMonths + ' months</strong>' : '') +
+      '<br><span style="color:#059669">' + result.label + '</span></div>';
+  });
+  document.getElementById('joe-reloc-results').innerHTML = html;
+}
+
+// ── Save / share actions ─────────────────────────────────
+function renderResultActions(ranked) {
+  var w = ranked[0];
+  var el = document.getElementById('joe-result-actions');
+  el.innerHTML = '<save-result-button tool-slug="job-offer-evaluator" tool-name="Job Offer Evaluator"></save-result-button>' +
+    '<share-result-button tool-name="Job Offer Evaluator" tool-slug="job-offer-evaluator"></share-result-button>';
+  var btn = el.querySelector('save-result-button');
+  if (btn && btn.setData) btn.setData({ inputs: { offers: ranked.length, country: joe.country }, outputs: { winner: w.name, winnerComp: w.totalComp } });
+}
+
+// ── 5-Year Projection ───────────────────────────────────
+function render5Year(ranked, offerData) {
+  var allProj = offerData.map(function(o, idx) {
+    var r = ranked.find(function(x) { return x.name === o.name; }) || ranked[idx] || ranked[0];
+    var offerWithType = Object.assign({}, o, { companyType: r.companyType || o.companyType });
+    return { proj: JoeEngine.project5Year(offerWithType, joe.country), name: r.name, color: OFFER_COLORS[ranked.indexOf(r)] || OFFER_COLORS[0] };
+  });
+
+  // Winner banner
+  var best = allProj.slice().sort(function(a,b){return b.proj.totalEarnings - a.proj.totalEarnings;})[0];
+  var worst = allProj.slice().sort(function(a,b){return a.proj.totalEarnings - b.proj.totalEarnings;})[0];
+  var diff5 = best.proj.totalEarnings - worst.proj.totalEarnings;
+  document.getElementById('joe-5yr-winner').innerHTML =
+    '<div class="joe-5yr-winner">5-Year Financial Winner: <strong>' + escHtml(best.name) + '</strong> — ' +
+      fmt(best.proj.totalEarnings) + ' total earnings vs ' + fmt(worst.proj.totalEarnings) +
+      (diff5 > 0 ? ' (' + fmt(diff5) + ' more over 5 years)' : '') +
+    '</div>';
+
+  // Chart
+  setTimeout(function() {
+    if (typeof Chart === 'undefined') return;
+    var ctx = document.getElementById('joe-chart');
+    if (!ctx) return;
+    if (joe.chart) { joe.chart.destroy(); joe.chart = null; }
+    joe.chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Year 1','Year 2','Year 3','Year 4','Year 5'],
+        datasets: allProj.map(function(p) {
+          return {
+            label: p.name,
+            data: p.proj.years.map(function(y) { return y.yearTotal; }),
+            borderColor: p.color,
+            backgroundColor: p.color + '22',
+            borderWidth: 2.5,
+            tension: 0.3,
+            pointRadius: 4,
+            fill: false
+          };
+        })
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + joe.currency + Math.round(ctx.raw).toLocaleString('en'); }}}},
+        scales: { y: { ticks: { callback: function(v) { return joe.currency + Math.round(v/1000) + 'K'; }}, grid: { color: '#f1f5f9' }}}
+      }
+    });
+  }, 100);
+
+  // Tables per offer
+  var tablesHtml = '';
+  allProj.forEach(function(p) {
+    tablesHtml += '<div class="joe-5yr-table" style="margin-bottom:16px">' +
+      '<div class="joe-5yr-offer-hd" style="background:' + p.color + '">' +
+        '<span>' + escHtml(p.name) + ' — ' + p.proj.profileLabel + '</span>' +
+        '<span>' + fmt(p.proj.totalEarnings) + ' over 5 years</span>' +
+      '</div>' +
+      '<table class="joe-5yr-tbl"><tr><th>Year</th><th>Title</th><th>Monthly Salary</th><th>Annual Net</th><th>Bonus</th><th>Benefits</th><th>Year Total</th></tr>' +
+      p.proj.years.map(function(y) {
+        return '<tr><td>Yr ' + y.year + '</td><td>' + y.title + '</td><td>' + fmt(y.salary) + '</td><td>' + fmt(y.annualNet) + '</td><td>' + fmt(y.annualBonus) + '</td><td>' + fmt(y.annualBenefits) + '</td><td>' + fmt(y.yearTotal) + '</td></tr>';
+      }).join('') +
+      '<tr><td colspan="6" style="text-align:right;font-weight:800">5-Year Total</td><td>' + fmt(p.proj.totalEarnings) + '</td></tr>' +
+      '</table>' +
+      '<div class="joe-5yr-profile">' + p.proj.note + '</div>' +
+    '</div>';
+  });
+  document.getElementById('joe-5yr-tables').innerHTML = tablesHtml;
+}
+
+// ── Equity results ──────────────────────────────────────
+function renderEquityResults(offerData) {
+  var equityOffers = offerData.filter(function(o) { return o.hasEquity; });
+  if (!equityOffers.length) {
+    document.getElementById('joe-equity-body').innerHTML = '<div class="joe-no-equity">No offers with equity selected. Go back to Offers Setup and enable "This offer includes equity" on a card to see ESOP analysis.</div>';
+    return;
+  }
+
+  var html = '';
+  equityOffers.forEach(function(o, i) {
+    var eq = JoeEngine.calcEquity(o);
+    if (!eq) return;
+    var col = OFFER_COLORS[offerData.indexOf(o)] || OFFER_COLORS[0];
+    html += '<div class="joe-equity-card">' +
+      '<div class="joe-equity-hd" style="background:' + col + '">' +
+        '<span>⚖️</span><span>' + escHtml(o.name) + ' — Equity Analysis</span>' +
+      '</div>' +
+      '<div class="joe-equity-bd">' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Shares / Options Granted</span><span class="joe-equity-stat-val">' + fmtRaw(eq.shares) + '</span></div>' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Your Ownership</span><span class="joe-equity-stat-val">' + eq.ownership + '%</span></div>' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Current Valuation</span><span class="joe-equity-stat-val">$' + fmtRaw(eq.valuation) + '</span></div>' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Strike / Exercise Price</span><span class="joe-equity-stat-val">$' + eq.strikePrice + ' / share</span></div>' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Vesting</span><span class="joe-equity-stat-val">' + eq.vestingYears + ' years · ' + eq.cliffMonths + '-month cliff</span></div>' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Cliff Date</span><span class="joe-equity-stat-val">' + eq.cliffDate + '</span></div>' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Monthly Vest (after cliff)</span><span class="joe-equity-stat-val">' + parseFloat(eq.monthlyVestAfterCliff).toFixed(1) + ' shares/mo</span></div>' +
+        '<div class="joe-equity-stat"><span class="joe-equity-stat-lbl">Current Value (if exercised now)</span><span class="joe-equity-stat-val">$' + fmtRaw(eq.currentValue) + '</span></div>' +
+        '<div class="joe-section-title" style="margin-top:16px">Exit Scenario Modeling</div>' +
+        '<div class="joe-scenarios">' +
+          eq.scenarios.map(function(s, si) {
+            var labels = ['$5M exit','$10M exit','$50M exit','$100M exit'];
+            return '<div class="joe-scenario">' +
+              '<div class="joe-scenario-val">$' + fmtRaw(s.value) + '</div>' +
+              '<div class="joe-scenario-lbl">' + labels[si] + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+        '<div class="joe-ev-box">' +
+          '<div class="joe-ev-lbl">Probability-Weighted Expected Value</div>' +
+          '<div class="joe-ev-num">$' + fmtRaw(eq.probEV) + '</div>' +
+          '<div style="font-size:.72rem;color:var(--m);margin-top:4px">Based on: 40% zero · 35% $10M exit · 20% $50M exit · 5% $100M exit — conservative African startup model</div>' +
+        '</div>' +
+        '<div class="joe-vesting-info">⏰ <strong>Cliff:</strong> You receive no shares until ' + eq.cliffDate + '. After the cliff, ' + parseFloat(eq.monthlyVestAfterCliff).toFixed(1) + ' shares vest each month until fully vested.<br>💡 If the company fails before your cliff date, you receive nothing. Factor this binary risk into your decision.</div>' +
+      '</div></div>';
+  });
+  document.getElementById('joe-equity-body').innerHTML = html;
+}
+
+// ── Regret test ─────────────────────────────────────────
+function renderRegretTest(ranked, offerData) {
+  var html = '';
+  ranked.forEach(function(r, i) {
+    var upsides = [];
+    if (r.hasEquity) upsides.push('<strong>Equity upside</strong> — potential for outsized financial return if company succeeds');
+    if (r.totalComp === ranked[0].totalComp) upsides.push('<strong>Highest total compensation</strong> — ' + fmt(r.totalComp) + '/yr');
+    if (r.remote === 5) upsides.push('<strong>Fully remote</strong> — maximum flexibility and commute savings');
+    if (r.leave >= 25) upsides.push('<strong>' + r.leave + ' leave days</strong> — above-average rest and recovery');
+    if (r.companyType === 'startup' || r.companyType === 'fintech') upsides.push('<strong>High-growth environment</strong> — faster skill development and career acceleration');
+    if (r.companyType === 'mnc') upsides.push('<strong>International exposure</strong> — global brand and cross-border opportunities');
+    if (!upsides.length) upsides.push('<strong>Stability and structure</strong> — predictable progression and job security');
+
+    html += '<div class="joe-regret-offer" onclick="selectRegret(' + i + ', \'' + escHtml(r.name) + '\', \'' + (r.companyType||'') + '\')" id="joe-regret-card-'+i+'">' +
+      '<div class="joe-regret-ofname">' + (MEDALS[i]||'·') + ' ' + escHtml(r.name) + '</div>' +
+      '<div class="joe-regret-upside">' + upsides.slice(0,3).join('<br>') + '</div>' +
+    '</div>';
+  });
+  document.getElementById('joe-regret-offers').innerHTML = html;
+}
+
+function selectRegret(idx, name, companyType) {
+  document.querySelectorAll('.joe-regret-offer').forEach(function(c, i) { c.classList.toggle('selected', i === idx); });
+  var messages = {
+    startup: 'The most likely regret scenario if you choose ' + name + ': <em>not taking the equity bet when you had the chance.</em> Most people overestimate the safety of "playing it safe" — African tech is moving fast. The startup bet may be the defining career decision of your 30s.',
+    fintech: 'If you choose ' + name + ': you are betting on Africa\'s fastest-growing sector. The regret scenario on the other side — staying in a slower role — is watching colleagues who took the fintech jump build significantly larger careers.',
+    corporate: 'If you choose ' + name + ': you are choosing structure, predictability, and institutional brand. The regret risk: watching peers who took more risk build equity and accelerate faster. Counter-balance: the corporate network and training often compound quietly.',
+    mnc: 'If you choose ' + name + ': you gain global brand, international transfers, and structured progression. The regret risk: that you didn\'t build something of your own when you had the energy and optionality. MNCs are excellent launchpads — just don\'t let the launchpad become the destination.',
+    government: 'If you choose ' + name + ': you are betting on stability and public-sector pension. The regret risk: watching private-sector peers build wealth significantly faster in nominal terms. The counter-argument: inflation erodes private-sector savings too, and the pension is real.',
+    ngo: 'If you choose ' + name + ': you are betting on mission and impact. The regret risk: the pay gap widens over time if you stay without building skills that transfer to higher-paying sectors. The counter-argument: purpose-driven work is deeply protective against burnout.',
+    default: 'At 80, you will not regret the choices that aligned with your values and built toward the life you actually wanted. The financial winner and the regret minimizer are often different answers — and that\'s OK.'
+  };
+  var msg = messages[companyType] || messages.default;
+  var box = document.getElementById('joe-regret-result');
+  box.innerHTML = '<p>' + msg + '</p><p style="color:var(--m);font-size:.8rem">This is not prescriptive — it\'s designed to surface the emotional decision beneath the financial analysis. The numbers are necessary but not sufficient.</p>';
+  box.classList.add('show');
+}
+
+// ── Culture tab ─────────────────────────────────────────
+var CULTURE_DIMS = [
+  { key: 'wlb',       label: 'Work-life balance expected',    weight: 20 },
+  { key: 'manager',   label: 'Manager quality (from interview)', weight: 15 },
+  { key: 'growth',    label: 'Growth potential',              weight: 20 },
+  { key: 'stability', label: 'Company stability / runway',    weight: 15 },
+  { key: 'mission',   label: 'Mission alignment',             weight: 10 },
+  { key: 'team',      label: 'Team quality',                  weight: 10 },
+  { key: 'remote',    label: 'Remote / office flexibility',   weight: 10 }
+];
+
+function renderCultureTab() {
+  var offerData = joe.offers.map(function(_, i) { return readOffer(i); });
+  var html = '';
+  offerData.forEach(function(o, idx) {
+    html += '<div class="joe-culture-offer">' +
+      '<div class="joe-culture-name" style="border-bottom-color:' + OFFER_COLORS[idx] + '">' + escHtml(o.name || 'Offer '+(idx+1)) + '</div>' +
+      CULTURE_DIMS.map(function(d) {
+        return '<div class="joe-slider-row">' +
+          '<label class="joe-slider-label">' + d.label + ' <span style="font-size:.65rem;color:var(--m)">(' + d.weight + '%)</span></label>' +
+          '<input type="range" class="joe-slider" id="jc-'+d.key+'-'+idx+'" min="1" max="10" value="5" oninput="updateCultureScore('+idx+')">' +
+          '<span class="joe-slider-val" id="jc-'+d.key+'-val-'+idx+'">5</span>' +
+        '</div>';
+      }).join('') +
+      '<div class="joe-culture-score-display">' +
+        '<div class="joe-culture-score-num" id="jc-score-'+idx+'">50</div>' +
+        '<div class="joe-culture-score-lbl">Culture Score / 100</div>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('joe-culture-grid').innerHTML = html;
+  // wire up slider labels
+  offerData.forEach(function(_, idx) {
+    CULTURE_DIMS.forEach(function(d) {
+      var sl = document.getElementById('jc-'+d.key+'-'+idx);
+      if (sl) sl.addEventListener('input', function() {
+        document.getElementById('jc-'+d.key+'-val-'+idx).textContent = sl.value;
+      });
+    });
+  });
+  calcCulturePremium();
+}
+
+function updateCultureScore(idx) {
+  var ratings = {};
+  CULTURE_DIMS.forEach(function(d) {
+    var el = document.getElementById('jc-'+d.key+'-'+idx);
+    if (el) ratings[d.key] = parseFloat(el.value);
+  });
+  var score = JoeEngine.calcCultureScore(ratings);
+  var el = document.getElementById('jc-score-'+idx);
+  if (el) el.textContent = score;
+  calcCulturePremium();
+}
+
+function calcCulturePremium() {
+  var premSlider = document.getElementById('joe-culture-premium');
+  if (!premSlider) return;
+  var prem = parseFloat(premSlider.value) || 0;
+  document.getElementById('joe-culture-premium-val').textContent = fmt(prem) + '/mo per 10pts';
+
+  var n = joe.offers.length;
+  if (n < 2) { document.getElementById('joe-culture-premium-result').textContent = 'Add at least 2 offers to compare culture scores.'; return; }
+
+  var scores = joe.offers.map(function(_, idx) {
+    var ratings = {};
+    CULTURE_DIMS.forEach(function(d) {
+      var el = document.getElementById('jc-'+d.key+'-'+idx);
+      ratings[d.key] = el ? parseFloat(el.value) : 5;
+    });
+    return JoeEngine.calcCultureScore(ratings);
+  });
+
+  var maxScore = Math.max.apply(null, scores);
+  var minScore = Math.min.apply(null, scores);
+  var maxIdx = scores.indexOf(maxScore);
+  var minIdx = scores.indexOf(minScore);
+
+  if (maxIdx === minIdx) { document.getElementById('joe-culture-premium-result').textContent = 'Rate the offers differently to see the culture comparison.'; return; }
+
+  var offerA = readOffer(maxIdx), offerB = readOffer(minIdx);
+  var scoreDiff = maxScore - minScore;
+  var premiumValue = (scoreDiff / 10) * prem;
+
+  document.getElementById('joe-culture-premium-result').innerHTML =
+    '<strong>' + escHtml(offerA.name) + '</strong> scores ' + scoreDiff + ' points higher on culture than <strong>' + escHtml(offerB.name) + '</strong>.<br>' +
+    'At your stated premium of ' + fmt(prem) + '/mo per 10 culture points, that difference is worth <strong>' + fmt(premiumValue) + '/mo</strong> (' + fmt(premiumValue*12) + '/yr) to you.<br>' +
+    '<span style="color:var(--joe)">Adjust the salary figures accordingly when comparing total compensation.</span>';
+}
+
+// ── Counter-offer ───────────────────────────────────────
+function generateCounterScript() {
+  var current = parseFloat(document.getElementById('joe-c-current').value) || 0;
+  var offered = parseFloat(document.getElementById('joe-c-offered').value) || 0;
+  var counter = parseFloat(document.getElementById('joe-c-counter').value) || 0;
+  var role    = document.getElementById('joe-c-role').value || 'my role';
+  var city    = document.getElementById('joe-c-city').value || 'the city';
+  var years   = document.getElementById('joe-c-years').value || '5';
+  var curr    = joe.currency;
+
+  var result = JoeEngine.assessCounter(offered, counter);
+  if (!result) return;
+
+  var increase = offered - current;
+  var increaseStr = increase > 0 ? ' — an increase of ' + fmt(increase) + ' over my current salary' : '';
+
+  // Negotiation script
+  var script = 'Thank you so much for this offer. I\'m genuinely excited about this opportunity and the team at [Company Name].\n\nI\'ve done careful research on market benchmarks for ' + role + ' in ' + city + ', and based on ' + years + ' years of experience, I was targeting ' + fmt(counter) + ' per month.\n\nThe offer of ' + fmt(offered) + increaseStr + ' is competitive and I appreciate it. To bridge the gap, I\'m asking for ' + fmt(counter) + ' — which is ' + result.pct + '% above the current offer and well within the ' + (city) + ' market range for this role.\n\n' + result.tip;
+
+  var walkaway = 'I want to be transparent: the minimum I\'d need to make this move work is ' + fmt(Math.max(offered, current * 1.1)) + ' per month. Below that, the financial case for leaving my current role doesn\'t add up — and I\'d rather tell you that now than accept an offer I\'m not fully committed to.';
+
+  // Render
+  document.getElementById('joe-c-pct').textContent = result.pct + '% above offer';
+  var badge = document.getElementById('joe-c-prob-badge');
+  badge.textContent = 'Accept probability: ' + result.probability;
+  badge.className = 'joe-prob-badge ' + (parseFloat(result.pct) <= 10 ? 'joe-prob-high' : parseFloat(result.pct) <= 20 ? 'joe-prob-mid' : 'joe-prob-low');
+  document.getElementById('joe-c-assessment').textContent = result.assessment;
+  document.getElementById('joe-c-probability-lbl').textContent = 'Probability: ' + result.probability;
+  document.getElementById('joe-c-script').textContent = script;
+  document.getElementById('joe-c-walkaway').textContent = walkaway;
+  document.getElementById('joe-c-tip').innerHTML = '<strong>Pro tip:</strong> ' + result.tip;
+  document.getElementById('joe-counter-out').classList.add('show');
+}
+
+function copyScript() {
+  var script = document.getElementById('joe-c-script').textContent;
+  if (navigator.clipboard) navigator.clipboard.writeText(script);
+  else { var t = document.createElement('textarea'); t.value = script; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); }
+  var btn = document.querySelector('.joe-copy-btn');
+  if (btn) { btn.textContent = 'Copied!'; setTimeout(function(){ btn.textContent = 'Copy to Clipboard'; }, 2000); }
+}
+
+// ── Init ────────────────────────────────────────────────
+function init() {
+  joe.offers = [defaultOffer(1), defaultOffer(2)];
+  renderOfferCards();
+  // Set today + 14 days as default deadline for offer 1
+  var d = new Date(); d.setDate(d.getDate() + 14);
+  var el = document.getElementById('jn-deadline-0');
+  if (el) { el.value = d.toISOString().slice(0,10); refreshDeadline(0); }
+}
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
 
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="job-offer-evaluator" tool-name="Job Offer Evaluator"></save-result-button><share-result-button tool-name="Job Offer Evaluator" tool-slug="job-offer-evaluator"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

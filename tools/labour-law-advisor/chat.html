@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Labour Law Advisor — Chat | AfroTools</title>
+<meta name="description" content="Ask African labour law questions and get real, cited answers powered by Claude AI.">
+<link rel="canonical" href="https://afrotools.com/tools/labour-law-advisor/chat.html">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
+<style>
+:root{--lla:#7C3AED;--lla-dk:#4C1D95;--lla-mid:#6D28D9;--lla-lt:#8B5CF6;--lla-pale:#F5F3FF;--lla-bdr:#DDD6FE;--t:#0f172a;--m:#64748b;--bd:#e2e8f0;--bg:#f8fafc}
+
+/* ── Full-height layout ── */
+html,body{height:100%;margin:0;overflow:hidden}
+body{display:flex;flex-direction:column;font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--t)}
+afro-navbar{flex-shrink:0}
+.lla-layout{flex:1;display:flex;min-height:0;overflow:hidden}
+
+/* ── Sidebar ── */
+.lla-sidebar{width:256px;flex-shrink:0;background:#fff;border-right:1.5px solid var(--bd);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.lla-sb-header{padding:16px 18px 12px;border-bottom:1px solid var(--bd)}
+.lla-sb-back{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--m);text-decoration:none;margin-bottom:10px;transition:color .15s}
+.lla-sb-back:hover{color:var(--lla)}
+.lla-sb-title{font-size:.84rem;font-weight:800;color:var(--t)}
+.lla-sb-sub{font-size:.7rem;color:var(--m);margin-top:2px}
+.lla-sb-section{padding:14px 18px;border-bottom:1px solid var(--bd)}
+.lla-sb-label{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--m);margin-bottom:8px}
+.lla-sb-country{width:100%;padding:8px 10px;border:1.5px solid var(--bd);border-radius:7px;font-size:.8rem;background:#fff;font-family:inherit;color:var(--t);cursor:pointer}
+.lla-sb-country:focus{outline:none;border-color:var(--lla);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.lla-topics{display:flex;flex-direction:column;gap:4px}
+.lla-topic-btn{width:100%;text-align:left;padding:7px 10px;border:1.5px solid var(--bd);border-radius:7px;font-size:.76rem;font-weight:500;color:var(--t);background:none;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s,color .15s}
+.lla-topic-btn:hover{background:var(--lla-pale);border-color:var(--lla-bdr);color:var(--lla)}
+.lla-sb-disclaimer{padding:14px 18px;font-size:.66rem;color:var(--m);line-height:1.55;border-top:1px solid var(--bd);margin-top:auto}
+
+/* ── Main chat area ── */
+.lla-chat-main{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--bg)}
+
+/* ── Mobile top bar ── */
+.lla-mobile-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--bd);flex-shrink:0}
+.lla-mb-back{font-size:.8rem;font-weight:600;color:var(--lla);text-decoration:none}
+.lla-mb-title{font-size:.84rem;font-weight:800;color:var(--t);flex:1}
+.lla-mb-country-btn{padding:5px 10px;border:1.5px solid var(--lla-bdr);border-radius:20px;font-size:.72rem;font-weight:600;color:var(--lla);background:var(--lla-pale);cursor:pointer;font-family:inherit}
+
+/* ── Empty state ── */
+.lla-empty{flex:1;overflow-y:auto;padding:28px 24px;display:flex;flex-direction:column;align-items:center}
+.lla-empty-hero{text-align:center;margin-bottom:32px;max-width:520px}
+.lla-empty-icon{font-size:2.8rem;margin-bottom:12px;line-height:1}
+.lla-empty-h2{font-size:1.3rem;font-weight:800;color:var(--t);letter-spacing:-.02em;margin-bottom:8px}
+.lla-empty-sub{font-size:.84rem;color:var(--m);line-height:1.65}
+.lla-empty-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;width:100%;max-width:780px}
+.lla-starter{background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:16px;cursor:pointer;text-align:left;font-family:inherit;transition:border-color .2s,box-shadow .18s;display:flex;flex-direction:column;gap:6px}
+.lla-starter:hover{border-color:var(--lla-bdr);box-shadow:0 4px 14px rgba(124,58,237,.1)}
+.lla-starter-icon{font-size:1.3rem;line-height:1}
+.lla-starter-cat{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--lla)}
+.lla-starter-q{font-size:.78rem;font-weight:600;color:var(--t);line-height:1.45}
+
+/* ── Messages ── */
+.lla-messages{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:18px;scroll-behavior:smooth}
+.lla-msg{display:flex;gap:10px;max-width:800px;animation:lla-fadein .2s ease}
+@keyframes lla-fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lla-msg-user{flex-direction:row-reverse;margin-left:auto}
+.lla-msg-ai{margin-right:auto}
+.lla-msg-avatar{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.lla-msg-ai .lla-msg-avatar{background:var(--lla-pale);border:1.5px solid var(--lla-bdr)}
+.lla-msg-user .lla-msg-avatar{background:var(--lla);color:#fff}
+.lla-msg-body{flex:1;min-width:0}
+.lla-msg-bubble{padding:14px 16px;border-radius:12px;font-size:.85rem;line-height:1.7;word-break:break-word}
+.lla-msg-user .lla-msg-bubble{background:linear-gradient(135deg,var(--lla-mid),var(--lla));color:#fff;border-bottom-right-radius:4px}
+.lla-msg-ai .lla-msg-bubble{background:#fff;border:1.5px solid var(--bd);color:var(--t);border-bottom-left-radius:4px}
+.lla-msg-ai .lla-msg-bubble strong{color:var(--lla-dk)}
+.lla-msg-ai .lla-msg-bubble h3{font-size:.84rem;font-weight:800;color:var(--t);margin:10px 0 4px}
+.lla-msg-ai .lla-msg-bubble ul,.lla-msg-ai .lla-msg-bubble ol{padding-left:18px;margin:6px 0}
+.lla-msg-ai .lla-msg-bubble li{margin-bottom:3px}
+.lla-msg-ai .lla-msg-bubble code{background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:.82em}
+.lla-msg-time{font-size:.64rem;color:var(--m);margin-top:4px}
+.lla-msg-user .lla-msg-time{text-align:right}
+
+/* ── Related tools chips ── */
+.lla-related{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.lla-related-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--lla-pale);border:1.5px solid var(--lla-bdr);color:var(--lla);font-size:.72rem;font-weight:600;text-decoration:none;transition:background .15s}
+.lla-related-chip:hover{background:#ede9fe}
+.lla-related-chip-icon{font-size:.8rem}
+
+/* ── Follow-ups ── */
+.lla-followups{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.lla-followup-btn{padding:6px 13px;border-radius:20px;border:1.5px solid var(--bd);background:#f8fafc;font-size:.74rem;font-weight:500;color:var(--t);cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s;text-align:left}
+.lla-followup-btn:hover{border-color:var(--lla-bdr);background:var(--lla-pale);color:var(--lla)}
+
+/* ── Thumbs ── */
+.lla-thumbs{display:flex;align-items:center;gap:8px;margin-top:8px}
+.lla-thumb-lbl{font-size:.68rem;color:var(--m)}
+.lla-thumb-btn{background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:.8rem;transition:background .15s,border-color .15s}
+.lla-thumb-btn:hover{background:var(--lla-pale);border-color:var(--lla-bdr)}
+.lla-thumb-btn.voted{background:var(--lla-pale);border-color:var(--lla-bdr)}
+
+/* ── Typing indicator ── */
+.lla-typing{display:flex;gap:10px;align-items:flex-start;max-width:800px;animation:lla-fadein .2s ease}
+.lla-typing-avatar{width:34px;height:34px;border-radius:50%;background:var(--lla-pale);border:1.5px solid var(--lla-bdr);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.lla-typing-bubble{background:#fff;border:1.5px solid var(--bd);border-radius:12px;border-bottom-left-radius:4px;padding:14px 18px;display:flex;gap:5px;align-items:center}
+.lla-dot{width:7px;height:7px;border-radius:50%;background:var(--m);animation:lla-bounce .9s infinite}
+.lla-dot:nth-child(2){animation-delay:.15s}.lla-dot:nth-child(3){animation-delay:.3s}
+@keyframes lla-bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+/* ── Input bar ── */
+.lla-input-bar{flex-shrink:0;background:#fff;border-top:1.5px solid var(--bd);padding:12px 20px 14px}
+.lla-input-wrap{display:flex;gap:10px;align-items:flex-end;max-width:820px;margin:0 auto}
+.lla-textarea{flex:1;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:.88rem;font-family:inherit;color:var(--t);resize:none;min-height:44px;max-height:140px;line-height:1.5;overflow-y:auto}
+.lla-textarea:focus{outline:none;border-color:var(--lla);box-shadow:0 0 0 3px rgba(124,58,237,.08)}
+.lla-textarea::placeholder{color:#94a3b8}
+.lla-send-btn{flex-shrink:0;padding:11px 22px;border:none;border-radius:10px;background:var(--lla);color:#fff;font-size:.86rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s,opacity .15s;align-self:flex-end}
+.lla-send-btn:hover{background:var(--lla-mid)}
+.lla-send-btn:disabled{opacity:.45;cursor:not-allowed}
+.lla-input-meta{display:flex;align-items:center;gap:10px;margin-top:8px;max-width:820px;margin-left:auto;margin-right:auto}
+.lla-country-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:var(--lla-pale);border:1.5px solid var(--lla-bdr);color:var(--lla);font-size:.7rem;font-weight:600;cursor:pointer}
+.lla-counter{font-size:.7rem;color:var(--m);margin-left:auto}
+.lla-counter.warn{color:#b45309}
+.lla-counter.out{color:#dc2626;font-weight:600}
+
+/* ── Rate-limit wall ── */
+.lla-limit-wall{text-align:center;padding:24px;background:var(--lla-pale);border:1.5px solid var(--lla-bdr);border-radius:12px;max-width:440px;margin:0 auto}
+.lla-limit-wall h3{font-size:.95rem;font-weight:800;color:var(--lla-dk);margin-bottom:8px}
+.lla-limit-wall p{font-size:.8rem;color:#5b21b6;line-height:1.6;margin-bottom:16px}
+.lla-limit-login-btn{display:inline-block;padding:10px 24px;border-radius:8px;background:var(--lla);color:#fff;font-size:.84rem;font-weight:700;text-decoration:none;margin-right:8px}
+.lla-limit-back-btn{font-size:.8rem;color:var(--m);text-decoration:none}
+
+/* ── Country modal (mobile) ── */
+.lla-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end}
+.lla-modal-bg.open{display:flex}
+.lla-modal{background:#fff;border-radius:16px 16px 0 0;padding:24px 20px 32px;width:100%;max-height:70dvh;overflow-y:auto}
+.lla-modal-title{font-size:.9rem;font-weight:800;color:var(--t);margin-bottom:16px}
+.lla-modal-country{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:.88rem;font-family:inherit;color:var(--t);margin-bottom:12px}
+.lla-modal-close{width:100%;padding:12px;border:none;background:var(--lla);color:#fff;font-size:.88rem;font-weight:700;border-radius:9px;cursor:pointer;font-family:inherit}
+
+@media(max-width:768px){
+  .lla-sidebar{display:none}
+  .lla-mobile-bar{display:flex}
+  .lla-messages,.lla-empty{padding:16px}
+  .lla-empty-grid{grid-template-columns:1fr 1fr}
+  .lla-input-bar{padding:10px 14px 12px}
+  .lla-msg{max-width:100%}
+}
+@media(max-width:480px){
+  .lla-empty-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="lla-layout">
+
+  <!-- ── SIDEBAR (desktop) ── -->
+  <aside class="lla-sidebar">
+    <div class="lla-sb-header">
+      <a href="index.html" class="lla-sb-back">← Labour Law Advisor</a>
+      <div class="lla-sb-title">⚖️ Ask a Question</div>
+      <div class="lla-sb-sub">All 54 African countries</div>
+    </div>
+
+    <div class="lla-sb-section">
+      <div class="lla-sb-label">I'm asking about</div>
+      <select class="lla-sb-country" id="lla-sidebar-country" aria-label="Select country">
+        <option value="">Any country</option>
+      </select>
+    </div>
+
+    <div class="lla-sb-section">
+      <div class="lla-sb-label">Quick topics</div>
+      <div class="lla-topics">
+        <button class="lla-topic-btn" data-q="What are my rights if I am dismissed from my job?">⚡ Dismissal &amp; Retrenchment</button>
+        <button class="lla-topic-btn" data-q="What salary deductions can my employer legally make?">💰 Pay &amp; Deductions</button>
+        <button class="lla-topic-btn" data-q="How many days of annual and sick leave am I entitled to?">📅 Leave Entitlements</button>
+        <button class="lla-topic-btn" data-q="What are my rights regarding maternity and paternity leave?">🤱 Maternity &amp; Paternity</button>
+        <button class="lla-topic-btn" data-q="What should an employment contract legally include?">📄 Contracts &amp; Probation</button>
+        <button class="lla-topic-btn" data-q="What are the laws protecting employees from discrimination?">⚖️ Discrimination</button>
+        <button class="lla-topic-btn" data-q="What pension and social security contributions am I entitled to?">🏦 Pensions &amp; Benefits</button>
+        <button class="lla-topic-btn" data-q="How do I file a formal labour complaint against my employer?">📋 Filing a Complaint</button>
+      </div>
+    </div>
+
+    <div class="lla-sb-disclaimer">
+      This tool provides general legal information, not legal advice. For complex disputes, consult a qualified labour attorney.
+    </div>
+  </aside>
+
+  <!-- ── MAIN CHAT ── -->
+  <div class="lla-chat-main">
+
+    <!-- Mobile top bar -->
+    <div class="lla-mobile-bar">
+      <a href="index.html" class="lla-mb-back">← Back</a>
+      <span class="lla-mb-title">⚖️ Labour Law Advisor</span>
+      <button class="lla-mb-country-btn" id="lla-mb-country-btn">🌍 Country</button>
+    </div>
+
+    <!-- Empty state (shown before first message) -->
+    <div id="lla-empty" class="lla-empty">
+      <div class="lla-empty-hero">
+        <div class="lla-empty-icon">⚖️</div>
+        <h2 class="lla-empty-h2">Your rights. Your country. Plain language.</h2>
+        <p class="lla-empty-sub">Ask any African employment law question — from dismissal rights to pay deductions, maternity leave to non-compete clauses. Every answer cites the exact law.</p>
+      </div>
+      <div class="lla-empty-grid">
+        <button class="lla-starter" data-q="I was dismissed without notice after 4 years of service. What am I owed?">
+          <span class="lla-starter-icon">⚡</span>
+          <span class="lla-starter-cat">Dismissal</span>
+          <span class="lla-starter-q">Dismissed without notice after 4 years. What am I owed?</span>
+        </button>
+        <button class="lla-starter" data-q="Can my employer legally deduct money from my salary for mistakes or damage?">
+          <span class="lla-starter-icon">💰</span>
+          <span class="lla-starter-cat">Pay Deductions</span>
+          <span class="lla-starter-q">Can my employer deduct my salary for mistakes or damage?</span>
+        </button>
+        <button class="lla-starter" data-q="How many weeks of maternity leave am I entitled to, and does my employer or the government pay?">
+          <span class="lla-starter-icon">🤱</span>
+          <span class="lla-starter-cat">Maternity Leave</span>
+          <span class="lla-starter-q">How many weeks of maternity leave, and who pays?</span>
+        </button>
+        <button class="lla-starter" data-q="What is the maximum probation period allowed by law in my country?">
+          <span class="lla-starter-icon">📋</span>
+          <span class="lla-starter-cat">Probation</span>
+          <span class="lla-starter-q">What is the maximum probation period allowed by law?</span>
+        </button>
+        <button class="lla-starter" data-q="My employer hasn't paid my salary for 6 weeks. What are my legal options?">
+          <span class="lla-starter-icon">⏰</span>
+          <span class="lla-starter-cat">Unpaid Wages</span>
+          <span class="lla-starter-q">My employer hasn't paid me in 6 weeks. What can I do?</span>
+        </button>
+        <button class="lla-starter" data-q="Is my restraint of trade or non-compete clause legally enforceable?">
+          <span class="lla-starter-icon">🔒</span>
+          <span class="lla-starter-cat">Non-Compete</span>
+          <span class="lla-starter-q">Is my restraint of trade clause legally enforceable?</span>
+        </button>
+        <button class="lla-starter" data-q="Can I be fired for being pregnant or taking maternity leave?">
+          <span class="lla-starter-icon">⚖️</span>
+          <span class="lla-starter-cat">Discrimination</span>
+          <span class="lla-starter-q">Can I be fired for being pregnant or on maternity leave?</span>
+        </button>
+        <button class="lla-starter" data-q="What must an employment contract legally include in my country?">
+          <span class="lla-starter-icon">📄</span>
+          <span class="lla-starter-cat">Contracts</span>
+          <span class="lla-starter-q">What must an employment contract legally include?</span>
+        </button>
+        <button class="lla-starter" data-q="I work remotely for a foreign company. Which country's labour law applies to me?">
+          <span class="lla-starter-icon">🌍</span>
+          <span class="lla-starter-cat">Cross-Border</span>
+          <span class="lla-starter-q">Remote work for a foreign company — which law applies?</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages (hidden until first message) -->
+    <div id="lla-messages" class="lla-messages" style="display:none" aria-live="polite" aria-label="Conversation"></div>
+
+    <!-- Input bar -->
+    <div class="lla-input-bar">
+      <div class="lla-input-wrap">
+        <textarea class="lla-textarea" id="lla-input" rows="1" placeholder="Ask a labour law question..." aria-label="Your question"></textarea>
+        <button class="lla-send-btn" id="lla-send" aria-label="Send question">Ask</button>
+      </div>
+      <div class="lla-input-meta">
+        <button class="lla-country-chip" id="lla-country-chip" aria-label="Change country">🌍 <span id="lla-chip-label">Select country</span></button>
+        <span class="lla-counter" id="lla-counter">3 free questions remaining</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile country modal -->
+<div class="lla-modal-bg" id="lla-modal" role="dialog" aria-label="Select country">
+  <div class="lla-modal">
+    <div class="lla-modal-title">I'm asking about…</div>
+    <select class="lla-modal-country" id="lla-modal-country" aria-label="Select country">
+      <option value="">Any country</option>
+    </select>
+    <button class="lla-modal-close" id="lla-modal-close">Done</button>
+  </div>
+</div>
+
+<script src="/engines/labour-law-engine.js?v=cc12d090"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── State ──────────────────────────────────────────────────────────────
+  var ENG = null;
+  var state = {
+    country: '',
+    countryName: 'any country',
+    history: [],        // [{role:'user'|'assistant', content:'...'}]
+    freeUsed: 0,
+    FREE_LIMIT: 3,
+    sending: false
+  };
+
+  var SESSION_KEY = 'lla_free_count';
+
+  // ── Helpers ────────────────────────────────────────────────────────────
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Basic Markdown → HTML (bold, italic, headings, bullets, line breaks)
+  function renderMd(text) {
+    if (!text) return '';
+    var html = escHtml(text);
+    // Headings
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+    // Bold
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Bullet lists (lines starting with - or *)
+    html = html.replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+    // Numbered lists
+    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+    // Paragraphs / line breaks
+    html = html.replace(/\n\n+/g, '</p><p>');
+    html = html.replace(/\n/g, '<br>');
+    html = '<p>' + html + '</p>';
+    // Clean up empty paragraphs
+    html = html.replace(/<p><\/p>/g, '');
+    html = html.replace(/<p>(<\/?[hul])/g, '$1');
+    html = html.replace(/(<\/[hul][^>]*>)<\/p>/g, '$1');
+    return html;
+  }
+
+  function now() {
+    var d = new Date();
+    var h = d.getHours(), m = d.getMinutes();
+    var ampm = h >= 12 ? 'pm' : 'am';
+    h = h % 12 || 12;
+    return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+  }
+
+  function loadSession() {
+    try { state.freeUsed = parseInt(sessionStorage.getItem(SESSION_KEY) || '0', 10) || 0; } catch (e) {}
+  }
+
+  function saveSession() {
+    try { sessionStorage.setItem(SESSION_KEY, String(state.freeUsed)); } catch (e) {}
+  }
+
+  function remaining() { return Math.max(0, state.FREE_LIMIT - state.freeUsed); }
+
+  function updateCounter() {
+    var el = document.getElementById('lla-counter');
+    if (!el) return;
+    var rem = remaining();
+    el.className = 'lla-counter' + (rem === 0 ? ' out' : rem === 1 ? ' warn' : '');
+    el.textContent = rem === 0
+      ? 'No free questions left — sign in for unlimited'
+      : rem === 1
+      ? '1 free question remaining'
+      : rem + ' free questions remaining';
+  }
+
+  function updateCountryChip() {
+    var lbl = document.getElementById('lla-chip-label');
+    if (lbl) lbl.textContent = state.country && state.countryName ? state.countryName : 'Select country';
+  }
+
+  // ── Country population ─────────────────────────────────────────────────
+  function populateSelect(sel, includeAny) {
+    if (!ENG) return;
+    if (sel.options.length > (includeAny ? 1 : 0)) return; // already done
+    ENG.COUNTRIES.forEach(function (c) {
+      var opt = document.createElement('option');
+      opt.value = c.code;
+      opt.textContent = c.flag + ' ' + c.name;
+      sel.appendChild(opt);
+    });
+  }
+
+  function applyCountry(code) {
+    state.country = code;
+    var c = ENG ? ENG.getCountry(code) : null;
+    state.countryName = c ? c.name : 'any country';
+
+    // Sync all selects
+    ['lla-sidebar-country', 'lla-modal-country'].forEach(function (id) {
+      var sel = document.getElementById(id);
+      if (sel) sel.value = code;
+    });
+    updateCountryChip();
+  }
+
+  // ── Render messages ────────────────────────────────────────────────────
+  var msgWrap = null;
+  var emptyEl  = null;
+
+  function showMessages() {
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (msgWrap) msgWrap.style.display = 'flex';
+  }
+
+  function scrollToBottom() {
+    if (msgWrap) msgWrap.scrollTop = msgWrap.scrollHeight;
+  }
+
+  function appendUserBubble(text) {
+    showMessages();
+    var div = document.createElement('div');
+    div.className = 'lla-msg lla-msg-user';
+    div.innerHTML =
+      '<div class="lla-msg-avatar">👤</div>' +
+      '<div class="lla-msg-body">' +
+        '<div class="lla-msg-bubble">' + escHtml(text) + '</div>' +
+        '<div class="lla-msg-time">' + now() + '</div>' +
+      '</div>';
+    msgWrap.appendChild(div);
+    scrollToBottom();
+  }
+
+  function appendTyping() {
+    var div = document.createElement('div');
+    div.className = 'lla-typing';
+    div.id = 'lla-typing';
+    div.innerHTML =
+      '<div class="lla-typing-avatar">⚖️</div>' +
+      '<div class="lla-typing-bubble">' +
+        '<span class="lla-dot"></span><span class="lla-dot"></span><span class="lla-dot"></span>' +
+      '</div>';
+    msgWrap.appendChild(div);
+    scrollToBottom();
+  }
+
+  function removeTyping() {
+    var t = document.getElementById('lla-typing');
+    if (t) t.remove();
+  }
+
+  function appendAiBubble(text, question) {
+    removeTyping();
+    var intent = ENG ? ENG.detectCalculationIntent(question) : null;
+    var relTool = ENG && intent ? ENG.getRelatedTool(intent) : null;
+    var followUps = ENG ? ENG.getFollowUps(question) : [];
+
+    var msgId = 'msg-' + Date.now();
+    var div = document.createElement('div');
+    div.className = 'lla-msg lla-msg-ai';
+    div.id = msgId;
+
+    // Related tool chip
+    var relHtml = relTool
+      ? '<div class="lla-related"><a class="lla-related-chip" href="' + relTool.href + '"><span class="lla-related-chip-icon">🧮</span>' + escHtml(relTool.label) + ' →</a></div>'
+      : '';
+
+    // Follow-up suggestions
+    var fuHtml = '';
+    if (followUps.length) {
+      fuHtml = '<div class="lla-followups">' +
+        followUps.map(function (q) {
+          return '<button class="lla-followup-btn" data-q="' + escHtml(q) + '">' + escHtml(q) + '</button>';
+        }).join('') +
+      '</div>';
+    }
+
+    // Thumbs
+    var thumbsHtml =
+      '<div class="lla-thumbs">' +
+        '<span class="lla-thumb-lbl">Was this helpful?</span>' +
+        '<button class="lla-thumb-btn" data-id="' + msgId + '" data-vote="up" aria-label="Helpful">👍</button>' +
+        '<button class="lla-thumb-btn" data-id="' + msgId + '" data-vote="down" aria-label="Not helpful">👎</button>' +
+      '</div>';
+
+    div.innerHTML =
+      '<div class="lla-msg-avatar">⚖️</div>' +
+      '<div class="lla-msg-body">' +
+        '<div class="lla-msg-bubble">' + renderMd(text) + '</div>' +
+        relHtml +
+        fuHtml +
+        thumbsHtml +
+        '<div class="lla-msg-time">' + now() + '</div>' +
+      '</div>';
+
+    msgWrap.appendChild(div);
+
+    // Follow-up click handlers
+    div.querySelectorAll('.lla-followup-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        sendMessage(this.dataset.q);
+      });
+    });
+
+    // Thumb click handlers
+    div.querySelectorAll('.lla-thumb-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var already = this.classList.contains('voted');
+        div.querySelectorAll('.lla-thumb-btn').forEach(function (b) { b.classList.remove('voted'); });
+        if (!already) this.classList.add('voted');
+      });
+    });
+
+    scrollToBottom();
+  }
+
+  function showLimitWall() {
+    var bar = document.querySelector('.lla-input-bar');
+    if (!bar) return;
+    bar.innerHTML =
+      '<div class="lla-limit-wall">' +
+        '<h3>You\'ve used your 3 free questions</h3>' +
+        '<p>Sign in to AfroTools for unlimited AI labour law questions across all 54 African countries.</p>' +
+        '<a href="/login?redirect=' + encodeURIComponent(window.location.pathname) + '" class="lla-limit-login-btn">Sign in for unlimited →</a>' +
+        '<a href="index.html" class="lla-limit-back-btn">← Back to overview</a>' +
+      '</div>';
+  }
+
+  // ── API call ───────────────────────────────────────────────────────────
+  function sendMessage(text) {
+    text = (text || '').trim();
+    if (!text || state.sending) return;
+
+    if (state.freeUsed >= state.FREE_LIMIT) {
+      showLimitWall();
+      return;
+    }
+
+    state.sending = true;
+    var sendBtn = document.getElementById('lla-send');
+    var inputEl = document.getElementById('lla-input');
+    if (sendBtn) sendBtn.disabled = true;
+    if (inputEl) { inputEl.value = ''; autoResize(inputEl); }
+
+    // Add to history and render user bubble
+    state.history.push({ role: 'user', content: text });
+    appendUserBubble(text);
+    appendTyping();
+
+    // Build user context
+    var userCtx = {};
+    if (state.country) userCtx.country = state.country;
+
+    fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tool: 'labour-law-advisor',
+        messages: state.history.slice(), // full conversation
+        userContext: userCtx
+      })
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var reply = data.reply || 'Sorry, I could not get a response. Please try again.';
+      state.history.push({ role: 'assistant', content: reply });
+      state.freeUsed++;
+      saveSession();
+      appendAiBubble(reply, text);
+      updateCounter();
+
+      // Show limit wall after the last free question is displayed
+      if (state.freeUsed >= state.FREE_LIMIT) {
+        setTimeout(showLimitWall, 400);
+      }
+    })
+    .catch(function () {
+      removeTyping();
+      appendAiBubble('Sorry, something went wrong. Please check your connection and try again.', text);
+    })
+    .finally(function () {
+      state.sending = false;
+      if (sendBtn) sendBtn.disabled = false;
+      if (inputEl) inputEl.focus();
+    });
+  }
+
+  // ── Auto-resize textarea ───────────────────────────────────────────────
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+  }
+
+  // ── Init ───────────────────────────────────────────────────────────────
+  function init() {
+    ENG = (window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.labourLaw) || null;
+
+    msgWrap = document.getElementById('lla-messages');
+    emptyEl = document.getElementById('lla-empty');
+
+    loadSession();
+    updateCounter();
+
+    // Populate country selects
+    populateSelect(document.getElementById('lla-sidebar-country'), true);
+    populateSelect(document.getElementById('lla-modal-country'), true);
+
+    // Read URL params
+    var params = new URLSearchParams(window.location.search);
+    var initQ = params.get('q') || '';
+    var initCountry = params.get('country') || '';
+
+    if (initCountry) applyCountry(initCountry);
+    updateCountryChip();
+
+    // ── Event listeners ────────────────────────────────────────────────
+
+    // Sidebar country
+    var sbCountry = document.getElementById('lla-sidebar-country');
+    if (sbCountry) sbCountry.addEventListener('change', function () { applyCountry(this.value); });
+
+    // Send button
+    var sendBtn = document.getElementById('lla-send');
+    if (sendBtn) sendBtn.addEventListener('click', function () {
+      sendMessage(document.getElementById('lla-input').value);
+    });
+
+    // Textarea: Enter to send (Shift+Enter = newline), auto-resize
+    var inputEl = document.getElementById('lla-input');
+    if (inputEl) {
+      inputEl.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage(this.value);
+        }
+      });
+      inputEl.addEventListener('input', function () { autoResize(this); });
+    }
+
+    // Starter cards
+    document.querySelectorAll('.lla-starter').forEach(function (btn) {
+      btn.addEventListener('click', function () { sendMessage(this.dataset.q); });
+    });
+
+    // Sidebar topic buttons
+    document.querySelectorAll('.lla-topic-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { sendMessage(this.dataset.q); });
+    });
+
+    // Country chip → open mobile modal
+    var chip = document.getElementById('lla-country-chip');
+    if (chip) chip.addEventListener('click', function () {
+      var modal = document.getElementById('lla-modal');
+      if (modal) modal.classList.add('open');
+    });
+
+    // Mobile bar country button
+    var mbBtn = document.getElementById('lla-mb-country-btn');
+    if (mbBtn) mbBtn.addEventListener('click', function () {
+      var modal = document.getElementById('lla-modal');
+      if (modal) modal.classList.add('open');
+    });
+
+    // Modal close
+    var modalClose = document.getElementById('lla-modal-close');
+    if (modalClose) modalClose.addEventListener('click', function () {
+      var code = document.getElementById('lla-modal-country').value;
+      applyCountry(code);
+      document.getElementById('lla-modal').classList.remove('open');
+    });
+
+    // Modal country change
+    var modalCountry = document.getElementById('lla-modal-country');
+    if (modalCountry) modalCountry.addEventListener('change', function () { applyCountry(this.value); });
+
+    // Close modal on backdrop click
+    var modal = document.getElementById('lla-modal');
+    if (modal) modal.addEventListener('click', function (e) {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+
+    // Fire initial question from URL if present
+    if (initQ) {
+      // Small delay to let layout settle
+      setTimeout(function () { sendMessage(initQ); }, 120);
+    }
+  }
+
+  // Engine is synchronous (no defer here), so DOMContentLoaded is sufficient
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+}());
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+</body>
+</html>

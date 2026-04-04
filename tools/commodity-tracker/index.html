@@ -85,6 +85,8 @@
   <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
+<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
 </head>
 <body>
 <afro-navbar active="trade"></afro-navbar>
@@ -164,6 +166,8 @@
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=4701dd1d" defer></script>
 <script src="/data/trade/commodity-trade-data.js?v=92753c11"></script>
 <script src="/engines/commodity-engine.js?v=92bc3ff7"></script>
+<script defer src="/assets/js/lib/data-freshness.js?v=ab79d040" data-category="commodities"></script>
+<script defer src="/assets/js/lib/crowdsource-bridge.js?v=3a0b35b6" data-category="product_price"></script>
 <script>
 var activeCountry = 'NG';
 var activeCategory = 'all';
@@ -313,10 +317,45 @@ function buildPriceTable() {
   }).join('');
 }
 
+/* ── Live Price Overlay ──────────────────────────────── */
+function overlayLivePrices() {
+  fetch('/.netlify/functions/api-commodity-prices?source=live')
+    .then(function(res) { return res.ok ? res.json() : null; })
+    .then(function(data) {
+      if (!data || !data.commodities) return;
+      // Update the price table with live data
+      var nameMap = {};
+      data.commodities.forEach(function(c) { nameMap[c.name] = c; nameMap[c.id] = c; });
+      var rows = document.querySelectorAll('#priceBody tr');
+      rows.forEach(function(row) {
+        var nameCell = row.querySelector('td:first-child strong');
+        if (!nameCell) return;
+        var name = nameCell.textContent.trim();
+        var match = null;
+        data.commodities.forEach(function(c) {
+          if (name.toLowerCase().includes(c.name.toLowerCase().split('(')[0].trim()) ||
+              c.name.toLowerCase().includes(name.toLowerCase().split('(')[0].trim())) {
+            match = c;
+          }
+        });
+        if (match) {
+          var priceCell = row.querySelector('td:nth-child(2) strong');
+          if (priceCell) {
+            priceCell.textContent = '$' + match.price.toLocaleString();
+            priceCell.style.color = '#34C759';
+            priceCell.title = 'Live price — updated ' + new Date(data.lastUpdated).toLocaleDateString();
+          }
+        }
+      });
+    })
+    .catch(function(e) { console.log('[commodity] Live overlay failed:', e.message); });
+}
+
 /* ── init ─────────────────────────────────────────────── */
 buildCountryGrid();
 buildPriceTable();
 selectCountry('NG');
+overlayLivePrices();
 </script>
 </body>
 </html>

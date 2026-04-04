@@ -97,17 +97,19 @@ exports.handler = async function(event) {
   // Public reads — allow anonymous SELECT (RLS handles is_published filter)
   if (method === 'GET' && path === 'public/creators') {
     try {
-      var creators = await sb('GET', 'as_creators?is_published=eq.true&order=subscribers.desc', null);
+      var creators = await sb('GET', 'as_creators?is_published=eq.true&order=afro_score.desc.nullslast,subscribers.desc', null);
       return ok(headers, creators);
     } catch(e) { return ok(headers, []); }
   }
   if (method === 'GET' && path === 'public/streams') {
     try {
       var now = new Date().toISOString();
-      var upcoming = sb('GET', 'as_streams?is_published=eq.true&stream_date=gte.' + now + '&order=stream_date.asc', null);
-      var recent  = sb('GET', 'as_streams?is_published=eq.true&stream_date=lt.' + now + '&order=stream_date.desc&limit=50', null);
-      var results = await Promise.all([upcoming, recent]);
-      var streams = (results[0] || []).concat(results[1] || []);
+      // Fetch live, upcoming, and recent in parallel — live streams always returned
+      var live     = sb('GET', 'as_streams?is_published=eq.true&is_live=eq.true&order=viewer_count.desc', null);
+      var upcoming = sb('GET', 'as_streams?is_published=eq.true&is_live=eq.false&stream_date=gte.' + now + '&order=stream_date.asc&limit=50', null);
+      var recent   = sb('GET', 'as_streams?is_published=eq.true&is_live=eq.false&stream_date=lt.' + now + '&order=stream_date.desc&limit=20', null);
+      var results = await Promise.all([live, upcoming, recent]);
+      var streams = (results[0] || []).concat(results[1] || []).concat(results[2] || []);
       return ok(headers, streams);
     } catch(e) { return ok(headers, []); }
   }

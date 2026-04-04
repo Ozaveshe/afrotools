@@ -700,6 +700,24 @@
         { label: 'All Career Tools →', href: '/career/', emoji: '📈' },
       ]
     },
+    {
+      id: 'afrowork', label: 'AfroWork Suite', labelFr: 'Suite AfroWork', labelSw: 'Mfumo wa AfroWork', icon: '⚙️',
+      desc: 'Payroll OS, compliance calendar, salary database, AI labour law advisor, document generator',
+      descFr: 'OS de paie, calendrier conformité, base salaires, conseiller juridique IA, générateur docs',
+      descSw: 'Mfumo wa mishahara, kalenda ya uzingatifu, hifadhidata ya mishahara, mshauri wa kisheria AI',
+      href: '/afrowork/', color: '#FFFBEB', accent: '#D97706',
+      tools: [
+        { label: 'AfroPayroll OS — Hire-to-Retire Workflow', href: '/tools/afropayroll-os/', emoji: '🔄', badge: 'LIVE' },
+        { label: 'Compliance Calendar — Statutory Deadlines', href: '/tools/compliance-calendar/', emoji: '📅', badge: 'SOON' },
+        { label: 'Regulatory Change Alerts', href: '/tools/regulatory-alerts/', emoji: '🔔', badge: 'NEW' },
+        { label: 'AI Labour Law Advisor', href: '/tools/labour-law-advisor/', emoji: '⚖️', badge: 'SOON' },
+        { label: 'AfroSalary Database', href: '/tools/afrosalary-db/', emoji: '📊', badge: 'SOON' },
+        { label: 'Document Generator Suite', href: '/tools/doc-generator/', emoji: '📄', badge: 'LIVE' },
+        { label: 'Payroll API — B2B', href: '/afrowork/api/', emoji: '🔌', badge: 'SOON' },
+        { label: 'WhatsApp Payroll Bot', href: '/afrowork/whatsapp/', emoji: '💬', badge: 'SOON' },
+        { label: 'All AfroWork Features →', href: '/afrowork/', emoji: '⚙️' },
+      ]
+    },
   ];
 
   // 11 main categories shown in the mega menu + "All Categories" card = 12 items (3 rows × 4)
@@ -1305,6 +1323,7 @@
         devTools:     isSw ? 'Zana za Dev'                  : isFr ? 'Outils Dev'                                       : 'Dev Tools',
         african:      isSw ? 'Kiafrika'                     : isFr ? 'Africain'                                         : 'African',
         education:    isSw ? 'Elimu'                        : isFr ? 'Éducation'                                        : 'Education',
+        insurance:    isSw ? 'Bima'                         : isFr ? 'Assurance'                                        : 'Insurance',
         countries54:  isSw ? '🌍 Nchi 54'                   : isFr ? '🌍 54 pays'                                       : '🌍 54 countries',
         signIn:       isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign in',
         ariaNav:      isSw ? 'Urambazaji mkuu'              : isFr ? 'Navigation principale'                            : 'Main navigation',
@@ -1347,6 +1366,7 @@
               <li><a href="/developer-tools/" class="lnk">${T.devTools}</a></li>
               <li><a href="/african/" class="lnk">${T.african}</a></li>
               <li><a href="${isSw ? '/sw/zana-za-elimu/' : '/education/'}" class="lnk">${T.education}</a></li>
+              <li><a href="/insurance/" class="lnk">${T.insurance}</a></li>
               <li><a href="/pro/" class="lnk" style="color:#F5A623;font-weight:700">Pro</a></li>
             </ul>
 

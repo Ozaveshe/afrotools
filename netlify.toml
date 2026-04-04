@@ -2,7 +2,7 @@
   publish = "."
   functions = "netlify/functions"
   edge_functions = "netlify/edge-functions"
-  command = "npm run build && node scripts/indexnow.js --git || true"
+  command = "npm run build && node scripts/inject-internal-links.js && node scripts/generate-sitemaps.js && node scripts/indexnow.js --git || true"
 
 [[edge_functions]]
   function = "og-image"
@@ -64,6 +64,48 @@
 [functions."afrostream-livecheck"]
   schedule = "*/30 * * * *"
 
+[functions."scheduled-fetch-commodity-prices"]
+  schedule = "0 2 * * *"
+
+[functions."scheduled-fetch-electricity-tariffs"]
+  schedule = "0 3 * * *"
+
+[functions."scheduled-fetch-telecom-plans"]
+  schedule = "0 */12 * * *"
+
+[functions."scheduled-detect-changes"]
+  schedule = "0 */6 * * *"
+
+[functions."scheduled-fetch-insurance"]
+  schedule = "0 3 * * 1"
+
+[functions."scheduled-fetch-property"]
+  schedule = "0 3 * * 3"
+
+[functions."scheduled-fetch-salaries"]
+  schedule = "0 3 * * 5"
+
+[functions."scheduled-fetch-stocks"]
+  schedule = "0 * * * 1-5"
+
+[functions."scheduled-fetch-shipping"]
+  schedule = "0 4 * * *"
+
+[functions."scheduled-scan-gazette"]
+  schedule = "0 5 * * *"
+
+[functions."scheduled-cleanup-scraper-runs"]
+  schedule = "0 6 1 * *"
+
+[functions."scheduled-fetch-bank-rates"]
+  schedule = "0 3 * * 2"
+
+[functions."scheduled-fetch-agri-inputs"]
+  schedule = "0 3 * * 4"
+
+[functions."scheduled-fetch-crypto"]
+  schedule = "0 * * * *"
+
 # --- Live Monitoring API Redirects ---
 
 [[redirects]]
@@ -84,6 +126,42 @@
 [[redirects]]
   from = "/api/translate"
   to = "/.netlify/functions/translate"
+  status = 200
+
+[[redirects]]
+  from = "/api/commodity-prices"
+  to = "/.netlify/functions/api-commodity-prices"
+  status = 200
+
+[[redirects]]
+  from = "/api/electricity"
+  to = "/.netlify/functions/api-electricity"
+  status = 200
+
+[[redirects]]
+  from = "/api/telecom"
+  to = "/.netlify/functions/api-telecom"
+  status = 200
+
+[[redirects]]
+  from = "/api/data-freshness"
+  to = "/.netlify/functions/api-data-freshness"
+  status = 200
+
+[[redirects]]
+  from = "/api/scraper-health"
+  to = "/.netlify/functions/api-scraper-health"
+  status = 200
+
+[[redirects]]
+  from = "/api/gazette-review"
+  to = "/.netlify/functions/api-gazette-review"
+  status = 200
+
+# Public AfroData API v1
+[[redirects]]
+  from = "/api/v1/*"
+  to = "/.netlify/functions/api-v1"
   status = 200
 
 # --- Tax API Redirects ---

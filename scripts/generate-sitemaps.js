@@ -12,13 +12,14 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
-const TODAY = '2026-03-28';
+const TODAY = new Date().toISOString().slice(0, 10);
 
-// Directories/patterns to exclude entirely
+// Directories to exclude entirely (non-content)
 const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
-  '.git', '.claude', 'supabase', 'netlify', 'assets', 'engines',
-  'lang', 'pro', 'sw'
+  '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
+  'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
+  'afrotools-sentinel', 'prompts', 'docs'
 ]);
 
 // Files to exclude
@@ -71,6 +72,7 @@ function fileToUrl(filePath) {
  * Determine which sub-sitemap a URL belongs to
  */
 function categorize(relPath) {
+  if (relPath.startsWith('sw/')) return 'sw';
   if (relPath.startsWith('agriculture/')) return 'agriculture';
   if (relPath.startsWith('blog/')) return 'blog';
   if (relPath.startsWith('tools/')) return 'tools';
@@ -87,7 +89,7 @@ function categorize(relPath) {
     'guinea', 'guinea-bissau', 'kenya', 'lesotho', 'liberia', 'libya',
     'madagascar', 'malawi', 'mali', 'mauritania', 'mauritius', 'morocco',
     'mozambique', 'namibia', 'niger', 'nigeria', 'rwanda',
-    'sao-tome-and-principe', 'senegal', 'seychelles', 'sierra-leone',
+    'sao-tome', 'sao-tome-and-principe', 'senegal', 'seychelles', 'sierra-leone',
     'somalia', 'south-africa', 'south-sudan', 'sudan', 'tanzania', 'togo',
     'tunisia', 'uganda', 'zambia', 'zimbabwe',
     // Regional hub pages
@@ -148,6 +150,7 @@ const groups = {
   tools: [],
   blog: [],
   fr: [],
+  sw: [],
   misc: []
 };
 
@@ -170,6 +173,7 @@ const categoryToFile = {
   tools: 'sitemap-tools.xml',
   blog: 'sitemap-blog.xml',
   fr: 'sitemap-fr.xml',
+  sw: 'sitemap-sw.xml',
   misc: 'sitemap-misc.xml'
 };
 
@@ -188,19 +192,68 @@ for (const [cat, fileName] of Object.entries(categoryToFile)) {
   console.log(`  ${fileName}: ${urls.length} URLs`);
 }
 
-// Also include the existing hand-curated sitemaps
-sitemapFileNames.push('sitemap-i18n.xml');
-sitemapFileNames.push('sitemap-sw.xml');
+// ── Generate sitemap-i18n.xml with hreflang cross-references ──
+// Match EN pages to their FR/SW equivalents by path pattern
+const enUrls = [...groups.agriculture, ...groups.countries, ...groups.tools,
+                ...groups.blog, ...groups.misc];
+const frUrlSet = new Set(groups.fr.map(u => {
+  try { return new URL(u).pathname; } catch { return u; }
+}));
+const swUrlSet = new Set(groups.sw.map(u => {
+  try { return new URL(u).pathname; } catch { return u; }
+}));
+
+const i18nEntries = [];
+for (const enUrl of enUrls) {
+  let enPath;
+  try { enPath = new URL(enUrl).pathname; } catch { enPath = enUrl; }
+
+  const frPath = '/fr' + enPath;
+  const swPath = '/sw' + enPath;
+  const hasFr = frUrlSet.has(frPath);
+  const hasSw = swUrlSet.has(swPath);
+
+  if (hasFr || hasSw) {
+    const langs = { en: enPath };
+    if (hasFr) langs.fr = frPath;
+    if (hasSw) langs.sw = swPath;
+    i18nEntries.push(langs);
+  }
+}
+
+if (i18nEntries.length > 0) {
+  let i18nXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  i18nXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
+  i18nXml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
+
+  for (const langs of i18nEntries) {
+    for (const [lang, urlPath] of Object.entries(langs)) {
+      i18nXml += '  <url>\n';
+      i18nXml += `    <loc>${BASE_URL}${urlPath}</loc>\n`;
+      i18nXml += `    <lastmod>${TODAY}</lastmod>\n`;
+      for (const [hl, hp] of Object.entries(langs)) {
+        i18nXml += `    <xhtml:link rel="alternate" hreflang="${hl}" href="${BASE_URL}${hp}" />\n`;
+      }
+      i18nXml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${langs.en}" />\n`;
+      i18nXml += '  </url>\n';
+    }
+  }
+  i18nXml += '</urlset>\n';
+
+  fs.writeFileSync(path.join(ROOT, 'sitemap-i18n.xml'), i18nXml, 'utf8');
+  sitemapFileNames.push('sitemap-i18n.xml');
+  const i18nCount = (i18nXml.match(/<url>/g) || []).length;
+  console.log(`  sitemap-i18n.xml: ${i18nCount} hreflang entries (${i18nEntries.length} page pairs)`);
+}
 
 // Write sitemap index
 const indexXml = generateSitemapIndex(sitemapFileNames);
 fs.writeFileSync(path.join(ROOT, 'sitemap-index.xml'), indexXml, 'utf8');
 
-console.log(`\n  sitemap-index.xml: ${sitemapFileNames.length} sub-sitemaps`);
-console.log(`  Total URLs across generated sitemaps: ${totalUrls}`);
-console.log(`  (plus sitemap-i18n.xml and sitemap-sw.xml which are kept as-is)\n`);
+// Replace sitemap.xml with the index — crawlers check both /sitemap.xml and /sitemap-index.xml
+fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), indexXml, 'utf8');
 
-// Keep existing sitemap.xml as a backup but don't delete it
-// (it may be referenced by search engines already)
-console.log('  Note: existing sitemap.xml left intact for backwards compatibility.');
+console.log(`\n  sitemap-index.xml: ${sitemapFileNames.length} sub-sitemaps`);
+console.log(`  sitemap.xml: replaced with sitemap index (was broken — had dupes & bad URLs)`);
+console.log(`  Total unique URLs: ${totalUrls}`);
 console.log('  Done!');

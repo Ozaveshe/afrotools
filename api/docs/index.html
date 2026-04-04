@@ -158,6 +158,18 @@ pre .num{color:#FBBF24}
     <a href="#fx-rates">FX Rates</a>
     <a href="#salary-data">Salary Data</a>
     <a href="#countries">Countries</a>
+    <h3>AfroData API v1</h3>
+    <a href="#v1-forex">Forex</a>
+    <a href="#v1-fuel">Fuel Prices</a>
+    <a href="#v1-commodities">Commodities</a>
+    <a href="#v1-electricity">Electricity</a>
+    <a href="#v1-telecom">Telecom</a>
+    <a href="#v1-insurance">Insurance</a>
+    <a href="#v1-property">Property</a>
+    <a href="#v1-stocks">Stocks</a>
+    <a href="#v1-shipping">Shipping</a>
+    <a href="#v1-crypto">Crypto</a>
+    <a href="#v1-health">Health Check</a>
     <h3>Resources</h3>
     <a href="#get-key">Get API Key</a>
     <a href="/developers/">Developer Portal</a>
@@ -552,6 +564,43 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
   }
 })();
 </script>
+
+<!-- AfroData API v1 Endpoint Documentation (injected by build) -->
+<script>
+(function() {
+  var main = document.querySelector('.docs-content');
+  if (!main) return;
+
+  var endpoints = [
+    { id: 'v1-forex', title: 'Forex Rates', method: 'GET', path: '/api/v1/forex', params: 'base, target', example: 'curl "https://afrotools.com/api/v1/forex?base=NGN&target=KES"', desc: 'Live exchange rates for all African + major global currencies. Supports single pair, base conversion, or full rate table.' },
+    { id: 'v1-fuel', title: 'Fuel Prices', method: 'GET', path: '/api/v1/fuel', params: 'country, region', example: 'curl "https://afrotools.com/api/v1/fuel?country=NG"', desc: 'Petrol, diesel, and LPG prices for 54 African countries in local currency and USD. Updated every 6 hours.' },
+    { id: 'v1-commodities', title: 'Commodity Prices', method: 'GET', path: '/api/v1/commodities', params: 'id, category', example: 'curl "https://afrotools.com/api/v1/commodities?id=gold"', desc: 'Live prices for 20+ commodities: crude oil, gold, cocoa, coffee, tea, cotton, copper, platinum, and more. Updated daily.' },
+    { id: 'v1-electricity', title: 'Electricity Tariffs', method: 'GET', path: '/api/v1/electricity', params: 'country, region, sort', example: 'curl "https://afrotools.com/api/v1/electricity?country=KE"', desc: 'Residential electricity tariffs in local currency and USD/kWh. 46+ African countries. Sort by cheapest or most expensive.' },
+    { id: 'v1-telecom', title: 'Telecom Plans', method: 'GET', path: '/api/v1/telecom', params: 'country, provider, sort', example: 'curl "https://afrotools.com/api/v1/telecom?country=GH&provider=MTN"', desc: 'Mobile data plan pricing by country and provider. Average and cheapest cost per GB. 30 countries, all major MNOs.' },
+    { id: 'v1-insurance', title: 'Insurance Premiums', method: 'GET', path: '/api/v1/insurance', params: 'country', example: 'curl "https://afrotools.com/api/v1/insurance?country=ZA"', desc: 'Average premiums for car, health, life, funeral, and home insurance across 15 African markets.' },
+    { id: 'v1-property', title: 'Property Prices', method: 'GET', path: '/api/v1/property', params: 'country', example: 'curl "https://afrotools.com/api/v1/property?country=KE"', desc: 'Rent and purchase prices per city. 1BR/3BR center/outside rates in USD and local currency. 15 countries, 50+ cities.' },
+    { id: 'v1-stocks', title: 'Stock Indices', method: 'GET', path: '/api/v1/stocks', params: 'exchange, country', example: 'curl "https://afrotools.com/api/v1/stocks?exchange=NGX"', desc: 'Live African stock exchange indices: NGX, JSE, NSE, GSE, EGX, BRVM, and more. Price, change, volume. Updated hourly on weekdays.' },
+    { id: 'v1-shipping', title: 'Shipping Rates', method: 'GET', path: '/api/v1/shipping', params: 'port, route_to, route_from', example: 'curl "https://afrotools.com/api/v1/shipping?route_to=lagos&route_from=Shanghai"', desc: 'Container shipping rates (20ft/40ft), transit days, and port demurrage for 15 African ports and 20 trade routes.' },
+    { id: 'v1-crypto', title: 'Crypto Prices', method: 'GET', path: '/api/v1/crypto', params: 'id', example: 'curl "https://afrotools.com/api/v1/crypto?id=bitcoin"', desc: 'Cryptocurrency prices in USD + 5 African currencies (NGN, KES, ZAR, GHS, EGP). 24h change and market cap. Updated hourly.' },
+    { id: 'v1-health', title: 'Health Check', method: 'GET', path: '/api/v1/health', params: '', example: 'curl "https://afrotools.com/api/v1/health"', desc: 'Returns freshness status for all data categories. Use to check if data is live, stale, or offline.' },
+  ];
+
+  var html = '<h2 style="margin-top:48px;padding-top:24px;border-top:2px solid #e2e8f0">AfroData API v1</h2>' +
+    '<p style="color:#64748b;margin-bottom:24px">Live African data across 14 categories. Base URL: <code>https://afrotools.com/api/v1/</code></p>';
+
+  endpoints.forEach(function(ep) {
+    html += '<div class="endpoint-block" id="' + ep.id + '" style="margin-bottom:32px">' +
+      '<h3 style="display:flex;align-items:center;gap:8px"><span style="background:#34C759;color:#fff;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:800">' + ep.method + '</span> ' + ep.title + '</h3>' +
+      '<code style="display:block;background:#0f172a;color:#4DA3FF;padding:12px 16px;border-radius:8px;font-size:13px;margin:8px 0">' + ep.path + (ep.params ? '<span style="color:#94a3b8">?' + ep.params + '</span>' : '') + '</code>' +
+      '<p style="font-size:13px;color:#64748b;margin:8px 0">' + ep.desc + '</p>' +
+      '<pre style="background:#1e293b;color:#e2e8f0;padding:12px 16px;border-radius:8px;font-size:12px;overflow-x:auto"><code>' + ep.example + '</code></pre>' +
+    '</div>';
+  });
+
+  main.insertAdjacentHTML('beforeend', html);
+})();
+</script>
+
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

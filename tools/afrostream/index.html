@@ -87,6 +87,15 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   background:var(--as-bg);color:var(--as-text);
 }
 
+/* ═══ SKELETON LOADING ═══ */
+.as-skeleton{background:#e5e7eb;border-radius:8px;position:relative;overflow:hidden}
+.as-skeleton::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:as-shimmer 1.5s infinite}
+@keyframes as-shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.as-skel-card{height:200px;border-radius:12px}
+.as-skel-row{height:48px;border-radius:8px;margin-bottom:8px}
+.as-skel-text{height:14px;border-radius:4px;margin-bottom:8px}
+.as-skel-text.w-60{width:60%}.as-skel-text.w-40{width:40%}.as-skel-text.w-80{width:80%}
+
 /* Subnav links — light */
 .as-subnav-links a{color:#64748b;text-decoration:none;transition:background .2s,color .2s}
 .as-subnav-links a:hover{background:rgba(0,122,255,.08);color:#007AFF}
@@ -108,7 +117,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
 /* Live cards — light */
 .as-live-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.as-live-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 20px rgba(0,122,255,.12);transform:scale(1.02)}
+.as-live-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 20px rgba(0,122,255,.12);transform:translateY(-2px)}
 .as-live-name{color:#0f172a}
 .as-live-meta{color:#64748b}
 
@@ -121,21 +130,26 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-creator-stat-label{color:#94a3b8;display:block;font-size:.6rem;margin-top:2px}
 
 /* Table — light */
-.as-rank-table-wrap{border:1px solid #e5e7eb;background:#fff}
-.as-rank-table th{background:#f8fafd;color:#64748b;border-bottom:1px solid #e5e7eb}
+.as-rank-table-wrap{border:1px solid #e5e7eb;background:#fff;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+.as-rank-table{min-width:700px}
+.as-rank-table th{background:#f8fafd;color:#64748b;border-bottom:1px solid #e5e7eb;cursor:pointer;user-select:none;transition:background .15s,color .15s;white-space:nowrap}
+.as-rank-table th:hover{background:#eef2f7;color:#0f172a}
+.as-rank-table th.sorted{color:var(--as-primary)}
+.as-rank-table th .sort-arrow{display:inline-block;margin-left:4px;font-size:.6rem;opacity:.4;transition:opacity .15s}
+.as-rank-table th.sorted .sort-arrow{opacity:1;color:var(--as-primary)}
 .as-rank-table td{border-bottom:1px solid #f1f5f9;color:#0f172a}
 .as-rank-table tr:hover td{background:#f8fafd}
 .as-table-user-name{color:#0f172a}
 
 /* News — light */
 .as-news-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.as-news-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 16px rgba(0,122,255,.1)}
+.as-news-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 16px rgba(0,122,255,.1);transform:translateY(-2px)}
 .as-news-title{color:#0f172a}
 .as-news-excerpt{color:#64748b}
 
 /* Calendar — light */
 .as-cal-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.as-cal-card:hover{border-color:var(--as-primary-border)}
+.as-cal-card:hover{border-color:var(--as-primary-border);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,122,255,.08)}
 .as-cal-title{color:#0f172a}
 .as-cal-date{background:#E8F2FF}
 .as-cal-date-month{color:var(--as-primary)}
@@ -143,20 +157,25 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
 /* Explain/feature — light */
 .as-feature-card{background:#fff;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.as-feature-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 16px rgba(0,122,255,.1)}
+.as-feature-card:hover{border-color:var(--as-primary-border);box-shadow:0 4px 16px rgba(0,122,255,.1);transform:translateY(-2px)}
 .as-feature-title{color:#0f172a}
 .as-feature-desc{color:#64748b}
 .as-explain-title{color:#0f172a;font-family:var(--as-font-heading)}
 .as-explain-sub{color:#64748b}
 
+/* Feature icon — SVG container */
+.as-feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;flex-shrink:0}
+.as-feature-icon svg{width:24px;height:24px}
+
 /* FAQ — light */
 .as-faq-item{border-bottom:1px solid #e5e7eb}
+button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-family:inherit;font-size:inherit;padding:inherit;margin:0}
 .as-faq-q{color:#0f172a}
 .as-faq-q::after{color:#94a3b8}
 .as-faq-a{color:#64748b}
 
 /* Filter chips — light */
-.as-chip{background:#f1f5f9;border:1px solid #e5e7eb;color:#64748b}
+.as-chip{background:#f1f5f9;border:1px solid #e5e7eb;color:#64748b;cursor:pointer;min-height:36px;display:inline-flex;align-items:center}
 .as-chip:hover{border-color:var(--as-primary-border);color:#0f172a}
 .as-chip.active{background:var(--as-primary);border-color:var(--as-primary);color:#fff}
 
@@ -170,7 +189,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-platform-twitch{background:rgba(145,70,255,.1);color:#9146FF}
 .as-platform-tiktok{background:rgba(0,0,0,.06);color:#0f172a}
 .as-platform-ig{background:linear-gradient(135deg,rgba(131,58,180,.08),rgba(253,29,29,.08),rgba(252,176,69,.08));color:#c13584}
-.as-platform-kick{background:rgba(83,252,24,.1);color:#53fc18}
+.as-platform-kick{background:rgba(83,252,24,.1);color:#16a34a}
 .as-platform-rumble{background:rgba(133,208,69,.1);color:#558b2f}
 
 /* Stat cards in hero — keep glassmorphism */
@@ -183,7 +202,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 /* Footer override for light bg */
 .as-page afro-footer{--color-bg-dark:#0f172a}
 
-/* ═══ NEW: Creator profile cards — richer info ═══ */
+/* ═══ Creator profile cards — richer info ═══ */
 .as-creator-card .as-creator-subs{font-size:.75rem;color:var(--as-primary);font-weight:700;margin-bottom:4px}
 .as-creator-card .as-creator-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:6px;display:inline-block;margin-bottom:12px}
 .as-creator-card .as-creator-links{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap}
@@ -192,8 +211,20 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-profile-btn:hover{box-shadow:0 4px 16px rgba(0,122,255,.35);transform:translateY(-1px)}
 .as-profile-btn:hover span{transform:translateX(3px)}
 
-/* ═══ NEW: Rank table subs column ═══ */
+/* ═══ Rank table subs column ═══ */
 .as-rank-table .as-subs-cell{font-weight:600;color:var(--as-primary)}
+
+/* ═══ AfroScore & Tier badges ═══ */
+.as-afro-score{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0 8px;padding:8px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9}
+.as-score-num{font-size:1.25rem;font-weight:800;background:linear-gradient(135deg,#007AFF,#34AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.as-score-label{font-size:.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em}
+.as-score-badge{font-weight:700;color:var(--as-primary)}
+.as-tier{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.as-tier-legend{background:rgba(234,179,8,.12);color:#b45309}
+.as-tier-elite{background:rgba(139,92,246,.1);color:#7c3aed}
+.as-tier-established{background:rgba(0,122,255,.08);color:#007AFF}
+.as-tier-trending{background:rgba(16,185,129,.1);color:#059669}
+.as-tier-rising{background:rgba(148,163,184,.1);color:#64748b}
 
 /* ═══ Emoji sizing — prevent twemoji from breaking layout ═══ */
 .as-chip img.emoji,.as-filter-row img.emoji,.as-live-meta img.emoji,.as-creator-card img.emoji,
@@ -204,9 +235,32 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   height:1.5em!important;width:1.5em!important;vertical-align:middle!important;display:inline!important
 }
 
+/* ═══ ACCESSIBILITY — focus-visible states ═══ */
+.as-live-card:focus-visible,.as-creator-card:focus-visible,.as-news-card:focus-visible,
+.as-cal-card:focus-visible,.as-feature-card:focus-visible,.as-chip:focus-visible,
+.as-btn:focus-visible,.as-faq-q:focus-visible,.as-profile-btn:focus-visible,
+.as-subnav-links a:focus-visible,.as-section-link:focus-visible{
+  outline:2px solid var(--as-primary);outline-offset:2px;box-shadow:0 0 0 4px rgba(0,122,255,.15)
+}
+.as-rank-table tr:focus-visible td{outline:2px solid var(--as-primary);outline-offset:-2px}
+.as-faq-q{cursor:pointer}
+.as-chip{cursor:pointer}
+
+/* ═══ prefers-reduced-motion ═══ */
+@media(prefers-reduced-motion:reduce){
+  .as-hero::after{animation:none!important}
+  .as-live-badge::before{animation:none!important}
+  .as-pulse-dot{animation:none!important}
+  .as-animate-in{animation:none!important;opacity:1!important}
+  .as-live-card,.as-creator-card,.as-news-card,.as-cal-card,.as-feature-card,.as-btn,.as-chip,.as-profile-btn{transition:none!important}
+  .as-skeleton::after{animation:none!important}
+}
+
 /* ═══ Responsive tweaks for light mode ═══ */
 @media(max-width:640px){
   .as-header{background:rgba(255,255,255,.96)}
+  /* Hero grid animation off on mobile for perf */
+  .as-hero::after{animation:none}
   /* Subnav scroll */
   .as-subnav{overflow:visible!important}
   .as-subnav-inner{gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-right:12px}
@@ -218,7 +272,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   /* Filter rows — ensure scroll works */
   .as-filters{overflow:visible}
   .as-filter-row{-ms-overflow-style:none}
-  .as-chip{padding:4px 10px;font-size:.72rem}
+  .as-chip{padding:4px 10px;font-size:.72rem;min-height:32px}
   /* Section containers — prevent horizontal page overflow */
   .as-section{overflow-x:hidden}
   .as-container{overflow-x:visible}
@@ -231,9 +285,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   .as-live-card{min-width:260px;scroll-snap-align:start}
   /* Creator cards — single column */
   .as-creator-featured-grid{grid-template-columns:1fr!important}
-  /* Rank table — smaller text */
+  /* Rank table — scrollable + smaller text */
   .as-rank-table{font-size:.72rem}
   .as-rank-table th,.as-rank-table td{padding:8px 6px}
+  .as-rank-table-wrap{margin-left:-20px;margin-right:-20px;border-radius:0;border-left:0;border-right:0}
 }
 </style>
 </head>
@@ -242,22 +297,22 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 <afro-navbar></afro-navbar>
 
 <!-- ===== Sub-Nav ===== -->
-<nav class="as-subnav" style="position:sticky;top:var(--nav-height,62px);z-index:150;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid #e5e7eb;height:56px">
-  <div class="as-subnav-inner" style="max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:20px;height:100%">
-    <a href="/tools/afrostream/" class="as-subnav-logo" style="font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:600;background:linear-gradient(135deg,#007AFF,#34AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;display:inline-flex;align-items:center;gap:6px"><span class="as-logo-icon">&#9655;</span> AfroStream</a>
-    <div class="as-subnav-links" style="display:flex;gap:4px">
-      <a href="#live" class="active" style="padding:6px 14px;border-radius:100px;font-size:.8125rem;font-weight:500;white-space:nowrap">Live Now</a>
-      <a href="rankings.html" style="padding:6px 14px;border-radius:100px;font-size:.8125rem;font-weight:500;white-space:nowrap">Rankings</a>
-      <a href="news.html" style="padding:6px 14px;border-radius:100px;font-size:.8125rem;font-weight:500;white-space:nowrap">News</a>
-      <a href="calendar.html" style="padding:6px 14px;border-radius:100px;font-size:.8125rem;font-weight:500;white-space:nowrap">Calendar</a>
-      <a href="submit.html" style="padding:6px 14px;border-radius:100px;font-size:.8125rem;font-weight:500;white-space:nowrap">Submit</a>
+<nav class="as-subnav" aria-label="AfroStream navigation">
+  <div class="as-subnav-inner">
+    <a href="/tools/afrostream/" class="as-subnav-logo"><span class="as-logo-icon">&#9655;</span> AfroStream</a>
+    <div class="as-subnav-links">
+      <a href="#live" class="active">Live Now</a>
+      <a href="rankings.html">Rankings</a>
+      <a href="news.html">News</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="submit.html">Submit</a>
     </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <div style="position:relative">
-        <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:.875rem;pointer-events:none">&#128269;</span>
-        <input type="search" id="asSearch" placeholder="Search creators..." autocomplete="off" style="padding:7px 14px 7px 32px;border-radius:100px;border:1px solid #e5e7eb;background:#f1f5f9;color:#0f172a;font-size:.8125rem;font-family:'DM Sans',sans-serif;outline:none;width:180px">
+    <div class="as-subnav-actions">
+      <div class="as-subnav-search">
+        <svg class="as-search-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+        <input type="search" id="asSearch" placeholder="Search creators..." autocomplete="off" aria-label="Search creators">
       </div>
-      <a href="submit.html" style="border:1px solid #e5e7eb;background:#fff;color:#64748b;padding:5px 14px;border-radius:6px;font-size:.78rem;font-weight:600;text-decoration:none">Submit Creator</a>
+      <a href="submit.html" class="as-btn as-btn-sm as-btn-outline">Submit Creator</a>
     </div>
   </div>
 </nav>
@@ -280,9 +335,13 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   <div class="as-container">
     <div class="as-section-header">
       <h2 class="as-section-title"><span class="as-pulse-dot"></span> Live Now <span id="liveCount" style="font-size:.875rem;color:var(--as-muted);font-family:var(--as-font-body);font-weight:500"></span></h2>
-      <a href="#" class="as-section-link">See All Live &#8594;</a>
+      <a href="#" class="as-section-link">See All Live <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
     </div>
-    <div class="as-live-grid" id="liveGrid"></div>
+    <div class="as-live-grid" id="liveGrid">
+      <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
+      <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
+      <div class="as-skeleton as-skel-card" style="flex:0 0 280px"></div>
+    </div>
   </div>
 </section>
 
@@ -291,36 +350,42 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   <div class="as-container">
     <div class="as-section-header">
       <h2 class="as-section-title">Top African Creators</h2>
-      <a href="rankings.html" class="as-section-link">Full Rankings &#8594;</a>
+      <a href="rankings.html" class="as-section-link">Full Rankings <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
     </div>
 
     <!-- Filters -->
-    <div class="as-filters">
-      <div class="as-filter-row" id="timeFilter"></div>
-      <div class="as-filter-row" id="catFilter"></div>
-      <div class="as-filter-row" id="countryFilter"></div>
+    <div class="as-filters" role="group" aria-label="Filter creators">
+      <div class="as-filter-row" id="timeFilter" role="radiogroup" aria-label="Time period"></div>
+      <div class="as-filter-row" id="catFilter" role="radiogroup" aria-label="Category"></div>
+      <div class="as-filter-row" id="countryFilter" role="radiogroup" aria-label="Country"></div>
     </div>
 
     <!-- Top 3 Featured -->
-    <div class="as-creator-featured-grid" id="topThree"></div>
+    <div class="as-creator-featured-grid" id="topThree">
+      <div class="as-skeleton as-skel-card" style="height:320px"></div>
+      <div class="as-skeleton as-skel-card" style="height:320px"></div>
+      <div class="as-skeleton as-skel-card" style="height:320px"></div>
+    </div>
 
     <!-- Ranked Table #4-20 -->
     <div class="as-rank-table-wrap">
-      <table class="as-rank-table" id="rankTable">
+      <table class="as-rank-table" id="rankTable" role="table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Creator</th>
-            <th>Country</th>
-            <th>Platform</th>
-            <th>Type</th>
-            <th>Subscribers</th>
-            <th>Gifts</th>
-            <th>Views</th>
-            <th>Est. Net Worth</th>
+            <th scope="col">#</th>
+            <th scope="col">Creator</th>
+            <th scope="col">Country</th>
+            <th scope="col">Platform</th>
+            <th scope="col">Type</th>
+            <th scope="col" data-sort="score">Score <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
+            <th scope="col" data-sort="followers">Subscribers <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
+            <th scope="col" data-sort="views">Views <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
+            <th scope="col" data-sort="nw">Est. Net Worth <span class="sort-arrow" aria-hidden="true">&#9660;</span></th>
           </tr>
         </thead>
-        <tbody id="rankBody"></tbody>
+        <tbody id="rankBody">
+          <tr><td colspan="9"><div class="as-skeleton as-skel-row"></div><div class="as-skeleton as-skel-row"></div><div class="as-skeleton as-skel-row"></div></td></tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -331,9 +396,13 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   <div class="as-container">
     <div class="as-section-header">
       <h2 class="as-section-title">Creator News</h2>
-      <a href="news.html" class="as-section-link">All News &#8594;</a>
+      <a href="news.html" class="as-section-link">All News <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
     </div>
-    <div class="as-news-grid" id="newsGrid"></div>
+    <div class="as-news-grid" id="newsGrid">
+      <div class="as-skeleton as-skel-card"></div>
+      <div class="as-skeleton as-skel-card"></div>
+      <div class="as-skeleton as-skel-card"></div>
+    </div>
   </div>
 </section>
 
@@ -342,9 +411,12 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   <div class="as-container">
     <div class="as-section-header">
       <h2 class="as-section-title">Coming Up</h2>
-      <a href="calendar.html" class="as-section-link">Full Calendar &#8594;</a>
+      <a href="calendar.html" class="as-section-link">Full Calendar <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02z"/></svg></a>
     </div>
-    <div class="as-calendar-grid" id="calGrid"></div>
+    <div class="as-calendar-grid" id="calGrid">
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+      <div class="as-skeleton as-skel-row" style="height:72px"></div>
+    </div>
   </div>
 </section>
 
@@ -366,6 +438,12 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   </div>
 </section>
 
+<!-- seo-internal-links -->
+<nav class="seo-links" aria-label="Afrostream — All Pages">
+<h2 class="seo-links-title">Afrostream — All Pages</h2>
+<ul class="seo-links-list"><li><a href="/tools/afrostream/admin.html">Afrostream — Admin</a></li><li><a href="/tools/afrostream/article.html">Afrostream — Article</a></li><li><a href="/tools/afrostream/calendar.html">Afrostream — Calendar</a></li><li><a href="/tools/afrostream/community.html">Afrostream — Community</a></li><li><a href="/tools/afrostream/creator.html">Afrostream — Creator</a></li><li><a href="/tools/afrostream/news.html">Afrostream — News</a></li><li><a href="/tools/afrostream/rankings.html">Afrostream — Rankings</a></li><li><a href="/tools/afrostream/submit.html">Afrostream — Submit</a></li></ul>
+</nav>
+<!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
 <script>
@@ -435,18 +513,27 @@ var CREATORS = [];
 var NEWS = [];
 var UPCOMING = [];
 
+var FEATURE_SVGS = {
+  live: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>',
+  trophy: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6m12 5h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22m7-7.34V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
+  dollar: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  user: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  grid: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>'
+};
+var FEATURE_COLORS = ['#EF4444','#EAB308','#10B981','#007AFF','#8B5CF6','#06B6D4'];
 var FEATURES = [
-  { icon:'\u{1F534}', title:'Live Discovery',     desc:'Find who\'s streaming right now across YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble.' },
-  { icon:'\u{1F3C6}', title:'Creator Rankings',   desc:'See who\'s rising. Rankings updated weekly by subscribers, views, gifts, growth, and engagement.' },
-  { icon:'\u{1F4B0}', title:'Net Worth Tracker',  desc:'Estimated earnings from streams, sponsorships, and brand deals. Crowdsourced + AI-powered.' },
-  { icon:'\u{1F4C5}', title:'Stream Calendar',    desc:'Never miss a stream. See upcoming schedules from your favorite African creators.' },
-  { icon:'\u{1F464}', title:'Creator Profiles',   desc:'Detailed profiles with subscriber counts, channel type, streaming frequency, platform links, and growth stats.' },
-  { icon:'\u{1F4CA}', title:'6 Platforms',         desc:'YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble. All in one discovery hub.' }
+  { icon:'live',     bg:'rgba(239,68,68,.1)',  title:'Live Discovery',     desc:'Find who\'s streaming right now across YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble.' },
+  { icon:'trophy',   bg:'rgba(234,179,8,.1)',  title:'Creator Rankings',   desc:'See who\'s rising. Rankings updated weekly by subscribers, views, gifts, growth, and engagement.' },
+  { icon:'dollar',   bg:'rgba(16,185,129,.1)', title:'Net Worth Tracker',  desc:'Estimated earnings from streams, sponsorships, and brand deals. Crowdsourced + AI-powered.' },
+  { icon:'calendar', bg:'rgba(0,122,255,.1)',  title:'Stream Calendar',    desc:'Never miss a stream. See upcoming schedules from your favorite African creators.' },
+  { icon:'user',     bg:'rgba(139,92,246,.1)', title:'Creator Profiles',   desc:'Detailed profiles with subscriber counts, channel type, streaming frequency, platform links, and growth stats.' },
+  { icon:'grid',     bg:'rgba(6,182,212,.1)',  title:'6 Platforms',         desc:'YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble. All in one discovery hub.' }
 ];
 
 var FAQS = [
   { q:'How does AfroStream work?', a:'AfroStream is a discovery hub, not a streaming platform. We aggregate live streams, creator rankings, and news from YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble so you can discover African creators in one place.' },
-  { q:'How are rankings calculated?', a:'Rankings use a weighted algorithm considering subscriber count, total views, gift revenue, follower growth rate, streaming consistency, and audience engagement across all platforms.' },
+  { q:'How are rankings calculated?', a:'Rankings use the AfroScore (0\u2013100), a weighted algorithm that combines cross-platform followers (25%), total views (20%), week-over-week growth (20%), streaming consistency (15%), engagement ratio (10%), and multi-platform presence (10%). All platforms are aggregated together using log-scaling so smaller creators with high growth can compete with mega-channels.' },
   { q:'How is net worth estimated?', a:'Net worth estimates combine publicly available data (gift totals, subscriber counts, known sponsorship deals) with AI-assisted projections. These are estimates and may not reflect actual earnings.' },
   { q:'Can I add my stream?', a:'Yes! Submit your creator profile through our form. Once verified, your streams appear in the live feed and you become eligible for rankings.' },
   { q:'Is it free?', a:'Yes, AfroStream is 100% free. It\'s part of the AfroTools suite of 1,390+ free tools for Africa.' },
@@ -485,14 +572,15 @@ function renderLive(streams){
     var c = COUNTRIES[s.country] || COUNTRY_FALLBACK;
     var href = s.url || '#';
     var target = s.url ? ' target="_blank" rel="noopener"' : '';
-    var thumbStyle = s.thumbnail
-      ? 'background:url(\''+s.thumbnail+'\') center/cover no-repeat'
-      : '';
-    var thumbCls = 'as-live-thumb' + (s.thumbnail ? '' : ' '+gradClass(i));
-    var initial = s.thumbnail ? '' : s.name.charAt(0);
+    var hasThumb = s.thumbnail && s.thumbnail.length > 5;
+    var thumbCls = 'as-live-thumb' + (hasThumb ? '' : ' '+gradClass(i));
+    var initial = hasThumb ? '' : s.name.charAt(0);
+    var thumbInner = hasThumb
+      ? '<img src="'+s.thumbnail+'" alt="'+s.name+' live stream" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\';this.parentNode.classList.add(\''+gradClass(i)+'\');this.parentNode.insertAdjacentText(\'afterbegin\',\''+s.name.charAt(0)+'\')">'
+      : initial;
     return '<a href="'+href+'"'+target+' class="as-live-card">' +
-      '<div class="'+thumbCls+'" style="'+thumbStyle+'">' +
-        initial +
+      '<div class="'+thumbCls+'">' +
+        thumbInner +
         '<span class="as-live-badge">LIVE</span>' +
         '<span class="as-live-viewers">'+fmtK(s.viewers)+' watching</span>' +
       '</div>' +
@@ -519,12 +607,13 @@ function renderTopThree(creators){
     return '<div class="as-creator-card as-rank-'+(i+1)+' as-animate-in" style="animation-delay:'+(i*0.1)+'s">' +
       '<span class="as-rank-badge '+medals[i]+'">#'+(i+1)+'</span>' +
       (cr.avatar && !cr.avatar.includes('ui-avatars.com')
-        ? '<img src="'+cr.avatar+'" alt="'+cr.name+'" class="as-avatar" style="object-fit:cover">'
+        ? '<img src="'+cr.avatar+'" alt="'+cr.name+'" class="as-avatar" loading="lazy" style="object-fit:cover">'
         : '<div class="as-avatar '+gradClass(i)+'">'+cr.name.charAt(0)+'</div>') +
       '<div class="as-creator-name">'+cr.name+'</div>' +
       '<div class="as-creator-subs">'+fmtK(cr.followers)+' subscribers</div>' +
       '<div class="as-creator-type">'+cr.type+'</div>' +
       '<div class="as-creator-country">'+c.flag+' '+c.name+'</div>' +
+      (cr.score ? '<div class="as-afro-score" title="AfroScore: weighted ranking across followers, views, growth, consistency, engagement &amp; multi-platform presence"><span class="as-score-num">'+cr.score+'</span><span class="as-score-label">AfroScore</span><span class="as-tier as-tier-'+cr.tier+'">'+cr.tier+'</span></div>' : '') +
       '<div class="as-creator-stats">' +
         '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtK(cr.followers)+'</span><span class="as-creator-stat-label">Subs</span></div>' +
         '<div class="as-creator-stat"><span class="as-creator-stat-val">'+fmtUSD(cr.gifts)+'</span><span class="as-creator-stat-label">Gifts</span></div>' +
@@ -550,16 +639,16 @@ function renderRankTable(creators){
     var p = PLATFORMS[cr.platform] || PLATFORMS.yt;
     var slug = cr.slug || cr.name.toLowerCase().replace(/\s+/g,'-');
     var avatarHtml = cr.avatar && !cr.avatar.includes('ui-avatars.com')
-      ? '<img src="'+cr.avatar+'" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0">'
+      ? '<img src="'+cr.avatar+'" alt="" loading="lazy" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0">'
       : '<div class="as-avatar as-avatar-sm '+gradClass(i)+'" style="width:32px;height:32px;min-width:32px;font-size:.75rem;line-height:32px;text-align:center">'+cr.name.charAt(0)+'</div>';
-    return '<tr onclick="window.location.href=\'creator.html?id='+slug+'\'" style="cursor:pointer">' +
+    return '<tr tabindex="0" role="link" aria-label="View '+cr.name+' profile" onclick="window.location.href=\'creator.html?id='+slug+'\'" onkeydown="if(event.key===\'Enter\')window.location.href=\'creator.html?id='+slug+'\'" style="cursor:pointer">' +
       '<td class="as-rank-num">'+rank+'</td>' +
       '<td><div style="display:inline-flex;align-items:center;gap:10px">'+avatarHtml+'<span class="as-table-user-name">'+cr.name+'</span></div></td>' +
       '<td>'+c.flag+' '+c.name+'</td>' +
       '<td><div style="display:flex;gap:4px;flex-wrap:wrap">'+platformBadges(cr)+'</div></td>' +
       '<td style="font-size:.75rem;color:#64748b">'+cr.type+'</td>' +
+      '<td><span class="as-score-badge" title="AfroScore">'+(cr.score||'\u2014')+'</span>'+(cr.tier?' <span class="as-tier as-tier-'+cr.tier+'" style="font-size:.6rem">'+cr.tier+'</span>':'')+'</td>' +
       '<td class="as-subs-cell">'+fmtK(cr.followers)+'</td>' +
-      '<td>'+fmtUSD(cr.gifts)+'</td>' +
       '<td>'+fmtK(cr.views)+'</td>' +
       '<td>'+fmtUSD(cr.nw)+'</td>' +
     '</tr>';
@@ -645,8 +734,9 @@ function renderCalendar(){
 function renderFeatures(){
   var el = document.getElementById('featureCards');
   el.innerHTML = FEATURES.map(function(f,i){
+    var color = FEATURE_COLORS[i] || '#007AFF';
     return '<div class="as-feature-card as-animate-in" style="animation-delay:'+(i*0.08)+'s">' +
-      '<div class="as-feature-icon">'+f.icon+'</div>' +
+      '<div class="as-feature-icon" style="background:'+f.bg+';color:'+color+'" aria-hidden="true">'+(FEATURE_SVGS[f.icon]||'')+'</div>' +
       '<div class="as-feature-title">'+f.title+'</div>' +
       '<div class="as-feature-desc">'+f.desc+'</div>' +
     '</div>';
@@ -657,8 +747,8 @@ function renderFAQ(){
   var el = document.getElementById('faqList');
   el.innerHTML = FAQS.map(function(f){
     return '<div class="as-faq-item">' +
-      '<div class="as-faq-q" onclick="toggleFaq(this)">'+f.q+'</div>' +
-      '<div class="as-faq-a">'+f.a+'</div>' +
+      '<button type="button" class="as-faq-q" onclick="toggleFaq(this)" aria-expanded="false">'+f.q+'</button>' +
+      '<div class="as-faq-a" role="region">'+f.a+'</div>' +
     '</div>';
   }).join('');
 }
@@ -673,18 +763,22 @@ var activeCountry = 'All';
 function renderFilters(){
   var times = ['All','This Week','This Month','All Time'];
   document.getElementById('timeFilter').innerHTML = times.map(function(t){
-    return '<span class="as-chip'+(activeTime===t?' active':'')+'" data-filter="time" data-val="'+t+'">'+t+'</span>';
+    var isActive = activeTime===t;
+    return '<button type="button" class="as-chip'+(isActive?' active':'')+'" data-filter="time" data-val="'+t+'" role="radio" aria-checked="'+(isActive?'true':'false')+'">'+t+'</button>';
   }).join('');
 
   var cats = ['All'].concat(CATEGORIES);
   document.getElementById('catFilter').innerHTML = cats.map(function(c,i){
     var icon = i>0 ? CAT_ICONS[i-1]+' ' : '';
-    return '<span class="as-chip'+(activeCat===c?' active':'')+'" data-filter="cat" data-val="'+c+'">'+icon+c+'</span>';
+    var isActive = activeCat===c;
+    return '<button type="button" class="as-chip'+(isActive?' active':'')+'" data-filter="cat" data-val="'+c+'" role="radio" aria-checked="'+(isActive?'true':'false')+'">'+icon+c+'</button>';
   }).join('');
 
-  var html = '<span class="as-chip'+(activeCountry==='All'?' active':'')+'" data-filter="country" data-val="All">All Countries</span>';
+  var isAllCountry = activeCountry==='All';
+  var html = '<button type="button" class="as-chip'+(isAllCountry?' active':'')+'" data-filter="country" data-val="All" role="radio" aria-checked="'+(isAllCountry?'true':'false')+'">All Countries</button>';
   COUNTRIES.forEach(function(c){
-    html += '<span class="as-chip'+(activeCountry===c.name?' active':'')+'" data-filter="country" data-val="'+c.name+'">'+c.flag+' '+c.name+'</span>';
+    var isActive = activeCountry===c.name;
+    html += '<button type="button" class="as-chip'+(isActive?' active':'')+'" data-filter="country" data-val="'+c.name+'" role="radio" aria-checked="'+(isActive?'true':'false')+'">'+c.flag+' '+c.name+'</button>';
   });
   document.getElementById('countryFilter').innerHTML = html;
 
@@ -742,7 +836,9 @@ document.getElementById('asSearch').addEventListener('input', function(){
 /* ---------- FAQ TOGGLE ---------- */
 
 function toggleFaq(el){
-  el.parentElement.classList.toggle('open');
+  var item = el.parentElement;
+  var isOpen = item.classList.toggle('open');
+  el.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 }
 
 
@@ -780,13 +876,21 @@ document.querySelectorAll('.as-subnav-links a, .as-hero-ctas a').forEach(functio
 (function(){
   var headers = document.querySelectorAll('.as-rank-table th');
   var sortCol = -1, sortAsc = false;
-  var colKeys = [null,null,null,null,null,'followers','gifts','views','nw'];
+  var colKeys = [null,null,null,null,null,'score','followers','views','nw'];
 
   headers.forEach(function(th, idx){
     if(!colKeys[idx]) return;
+    th.style.cursor = 'pointer';
+    th.setAttribute('aria-sort', 'none');
     th.addEventListener('click', function(){
       var key = colKeys[idx];
       if(sortCol===idx){ sortAsc=!sortAsc; } else { sortCol=idx; sortAsc=false; }
+      // Update visual indicators
+      headers.forEach(function(h){ h.classList.remove('sorted'); h.setAttribute('aria-sort','none'); var arr=h.querySelector('.sort-arrow'); if(arr) arr.innerHTML='&#9660;'; });
+      this.classList.add('sorted');
+      this.setAttribute('aria-sort', sortAsc ? 'ascending' : 'descending');
+      var arrow = this.querySelector('.sort-arrow');
+      if(arrow) arrow.innerHTML = sortAsc ? '&#9650;' : '&#9660;';
       var sorted = CREATORS.slice().sort(function(a,b){
         return sortAsc ? a[key]-b[key] : b[key]-a[key];
       });
