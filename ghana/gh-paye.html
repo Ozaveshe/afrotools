@@ -76,7 +76,7 @@
 <meta http-equiv="last-modified" content="2026-03-26">
   <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3" defer></script>
-<script src="/assets/js/lib/save-state.js?v=6cb0bca2" defer></script>
+<script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
 <script>window.PAYE_SAVE_SLUG='gh-paye';</script>
 <script src="/assets/js/lib/paye-save.js?v=6523237c" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/ghana/gh-paye" />
@@ -186,9 +186,9 @@
             <label>Personal Reliefs (GRA-registered)</label>
             <div class="toggles">
               <label class="tog"><input type="checkbox" id="togMarriage" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Marriage Relief</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
-              <label class="tog"><input type="checkbox" id="togChild1" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">1 Child</div><span class="tog-rate">GHS 600/yr</span></div></label>
-              <label class="tog"><input type="checkbox" id="togChild2" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">2 Children</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
-              <label class="tog"><input type="checkbox" id="togChild3" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">3 Children</div><span class="tog-rate">GHS 1,800/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild1" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">1 Child</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild2" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">2 Children</div><span class="tog-rate">GHS 2,400/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild3" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">3+ Children</div><span class="tog-rate">Capped at GHS 2,400/yr</span></div></label>
               <label class="tog"><input type="checkbox" id="togDisabled" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Disability Relief</div><span class="tog-rate">25% of income</span></div></label>
               <label class="tog"><input type="checkbox" id="togOldAge" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Old Age (60+)</div><span class="tog-rate">GHS 1,500/yr</span></div></label>
               <label class="tog"><input type="checkbox" id="togDependent" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Dependent Relative</div><span class="tog-rate">GHS 1,000/yr</span></div></label>
@@ -468,7 +468,7 @@
         </details>
         <details class="ng-faq-item">
           <summary>What personal reliefs can I claim?</summary>
-          <p>Marriage relief (GHS 1,200/yr), child relief (GHS 600 per child, up to 3 children), disability (25% of income), old age 60+ (GHS 1,500/yr), dependent relative (GHS 1,000/yr). All require GRA registration.</p>
+          <p>Marriage relief (GHS 1,200/yr), child relief (GHS 1,200 per child, capped at 2 children / GHS 2,400), disability (25% of income), old age 60+ (GHS 1,500/yr), dependent relative (GHS 1,000/yr). All require GRA registration.</p>
         </details>
       </div>
       <div class="ng-faq-col">
@@ -565,7 +565,7 @@
     const child1 = $('togChild1').checked;
     const child2 = $('togChild2').checked;
     const child3 = $('togChild3').checked;
-    const childRel = child3 ? 1800 : (child2 ? 1200 : (child1 ? 600 : 0));
+    const childRel = child3 ? 2400 : (child2 ? 2400 : (child1 ? 1200 : 0));
     const disabled = $('togDisabled').checked ? gross * 0.25 : 0;
     const oldAge = $('togOldAge').checked ? 1500 : 0;
     const dependent = $('togDependent').checked ? 1000 : 0;
@@ -985,6 +985,7 @@
   });
 
   // Expose for auto-email-gate.js interception
+  window.calculate = calculate;
   window.exportPdf = exportPdf;
 })();
 </script>

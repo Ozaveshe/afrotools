@@ -27,7 +27,7 @@
 <script src="/assets/js/components/tool-registry.min.js?v=b9986767" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
 <script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -1013,9 +1013,13 @@
   let headerPos = 'center';
   let footerPos = 'center';
 
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
   // File upload
   function handleFile(file) {
-    if (file && file.type === 'application/pdf') {
+    if (isPdfFile(file)) {
       currentFile = file;
       resultPdfBytes = null;
       resultCard.classList.remove('on');

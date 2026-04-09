@@ -41,7 +41,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools"},{"@type":"ListItem","position":3,"name":"Import Duty Calculator","item":"https://afrotools.com/tools/import-duty/"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is import duty calculated in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria NCS calculates duty on CIF value. Rates vary 5-50% by product. Additional levies: VAT 7.5%, CISS 1% on FOB, ETLS 0.5% on CIF. Surcharge 7% on duty for some items."}},{"@type":"Question","name":"What are Kenya import duty rates?","acceptedAnswer":{"@type":"Answer","text":"Kenya KRA applies EAC CET rates on CIF value. Additional: IDF 3.5% (Import Declaration Fee), RDL 2.5% (Railway Development Levy), VAT 16% on duty-inclusive value. Excise duty applies on select goods like vehicles."}},{"@type":"Question","name":"Which African country has the lowest import duties?","acceptedAnswer":{"@type":"Answer","text":"South Africa has 0% duty on electronics and machinery. Botswana and Namibia (SACU members) also have competitive rates. Total landed cost depends on VAT, levies, and exchange rates."}},{"@type":"Question","name":"What is the difference between FOB and CIF?","acceptedAnswer":{"@type":"Answer","text":"FOB (Free On Board) is the goods value at the port of origin. CIF (Cost, Insurance, Freight) includes goods value plus shipping and insurance. Import duties are calculated on CIF value, so shipping costs directly affect your total import cost."}},{"@type":"Question","name":"Does AfCFTA reduce import duties between African countries?","acceptedAnswer":{"@type":"Answer","text":"The African Continental Free Trade Area (AfCFTA) aims to eliminate tariffs on 90% of goods traded between member states. Implementation is phased and varies by country and product category. Check specific corridors for current AfCFTA preferences."}},{"@type":"Question","name":"How do I use an HS code?","acceptedAnswer":{"@type":"Answer","text":"HS codes are 6-10 digit numbers classifying products for customs. Example: 8517.12 = Smartphones. Include the full code on your commercial invoice and customs declaration. Use the HS Code Lookup tab to find codes by product name."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is import duty calculated in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria NCS calculates duty on CIF value. Rates vary 5-50% by product. Additional levies: VAT 7.5%, CISS 1% on FOB, ETLS 0.5% on CIF. Surcharge 7% on duty for some items."}},{"@type":"Question","name":"What are Kenya import duty rates?","acceptedAnswer":{"@type":"Answer","text":"Kenya KRA applies EAC CET rates on CIF value. Additional: IDF 3.5% (Import Declaration Fee), RDL 2.5% (Railway Development Levy), VAT 16% on duty-inclusive value. Excise duty applies on select goods like vehicles."}},{"@type":"Question","name":"Which African country has the lowest import duties?","acceptedAnswer":{"@type":"Answer","text":"South Africa has 0% duty on electronics and machinery. Botswana and Namibia (SACU members) also have competitive rates. Total landed cost depends on VAT, levies, and exchange rates."}},{"@type":"Question","name":"What is the difference between FOB and CIF?","acceptedAnswer":{"@type":"Answer","text":"FOB (Free On Board) is the goods value at the port of origin. CIF (Cost, Insurance, Freight) includes goods value plus shipping and insurance. Import duties are calculated on CIF value, so shipping costs directly affect your total import cost."}},{"@type":"Question","name":"Does AfCFTA reduce import duties between African countries?","acceptedAnswer":{"@type":"Answer","text":"The African Continental Free Trade Area (AfCFTA) aims to eliminate tariffs on 90% of goods traded between member states. Implementation is phased and varies by country and product category. Check specific corridors for current AfCFTA preferences."}},{"@type":"Question","name":"How do I use an HS code?","acceptedAnswer":{"@type":"Answer","text":"HS codes are 6-10 digit numbers classifying products for customs. Example: 8517.13 = Smartphones. Include the full code on your commercial invoice and customs declaration. Use the HS Code Lookup tab to find codes by product name."}}]}
 </script>
 
 <script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
@@ -51,6 +51,7 @@
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<script src="/assets/js/lib/import-duty-rules.js?v=20260406" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/import-duty/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/import-duty/" />
 <meta property="og:locale" content="en_US">
@@ -161,6 +162,24 @@
               </div>
               <select class="f-input" id="category">
                 <option value="">Select category...</option>
+                <optgroup label="Popular Goods">
+                  <option value="smartphone">Smartphone / iPhone</option>
+                  <option value="laptop">Laptop / Desktop</option>
+                  <option value="solar-panel">Solar Panel</option>
+                  <option value="generator">Generator</option>
+                  <option value="rice">Rice</option>
+                  <option value="cement">Cement</option>
+                  <option value="clothing-bale">Clothing Bale / Textiles</option>
+                  <option value="cosmetics-kit">Cosmetics / Beauty Products</option>
+                </optgroup>
+                <optgroup label="Vehicle Presets">
+                  <option value="used-sedan">Used Car - Sedan</option>
+                  <option value="new-sedan">New Car - Sedan</option>
+                  <option value="used-suv">Used Car - SUV</option>
+                  <option value="pickup">Pickup / Light Truck</option>
+                  <option value="motorcycle">Motorcycle</option>
+                </optgroup>
+                <optgroup label="Broad Categories">
                 <option value="Electronics">Electronics (HS 84-85)</option>
                 <option value="Clothing">Clothing &amp; Textiles (HS 61-62)</option>
                 <option value="Vehicles">Vehicles (HS 87)</option>
@@ -173,7 +192,9 @@
                 <option value="Furniture">Furniture (HS 94)</option>
                 <option value="Jewellery">Jewellery (HS 71)</option>
                 <option value="Books">Books (HS 49)</option>
+                </optgroup>
               </select>
+              <div id="productHint" style="margin-top:8px;font-size:0.78rem;color:#64748b;line-height:1.5;">Popular-product presets can prefill indicative FOB and shipping values for top import markets.</div>
             </div>
 
             <div class="field">
@@ -376,7 +397,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">How do I use an HS code?</div>
-        <p class="faq-a">HS codes (Harmonized System) are 6-10 digit numbers classifying products for customs. Example: 8517 = Telephone equipment, 8517.12 = Smartphones. Include the full code on your commercial invoice and customs declaration. Use our HS Code Lookup tab to search by product name.</p>
+        <p class="faq-a">HS codes (Harmonized System) are 6-10 digit numbers classifying products for customs. Example: 8517 = Telephone equipment, 8517.13 = Smartphones. Include the full code on your commercial invoice and customs declaration. Use our HS Code Lookup tab to search by product name.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">What is the difference between FOB and CIF?</div>
@@ -429,7 +450,7 @@ const COUNTRIES = {
       { name: 'ETLS (0.5% CIF)', amount: cif * 0.005 },
       { name: 'Surcharge (7% duty)', amount: duty * 0.07 },
     ],
-    vatBase: (cif, duty, levies) => cif + duty + levies,
+    vatBase: (cif, duty, levies) => (cif * 1.10) + duty + levies,
   },
   Kenya: {
     flag: '\uD83C\uDDF0\uD83C\uDDEA', currency: 'KES', symbol: 'KES', rate: 130,
@@ -454,14 +475,12 @@ const COUNTRIES = {
   },
   Ghana: {
     flag: '\uD83C\uDDEC\uD83C\uDDED', currency: 'GHS', symbol: 'GHS', rate: 16,
-    vat: 18.5, authority: 'GRA',
+    vat: 20, authority: 'GRA',
     duties: { Electronics:10, Clothing:20, Vehicles:30, Food:25, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:10, Jewellery:10, Books:5 },
-    levies: (cif, fob, duty) => [
-      { name: 'NHIL (2.5%)', amount: (cif + duty) * 0.025 },
-      { name: 'GETFund (1%)', amount: (cif + duty) * 0.01 },
+    levies: (cif) => [
       { name: 'ECOWAS Levy (0.5%)', amount: cif * 0.005 },
     ],
-    vatBase: (cif, duty) => cif + duty,
+    vatBase: (cif, duty, levies) => cif + duty + levies,
   },
   Tanzania: {
     flag: '\uD83C\uDDF9\uD83C\uDDFF', currency: 'TZS', symbol: 'TZS', rate: 2500,
@@ -547,7 +566,7 @@ const COUNTRIES = {
 
 // ── HS CODES DATABASE ────────────────────────────────────────────
 const HS_CODES = [
-  { product: 'Smartphone / iPhone', code: '8517.12.00', category: 'Electronics', duty: '0-20%' },
+  { product: 'Smartphone / iPhone', code: '8517.13.00', category: 'Electronics', duty: '0-20%' },
   { product: 'Laptop / Desktop', code: '8471.30.00', category: 'Electronics', duty: '0-20%' },
   { product: 'Television', code: '8528.72.00', category: 'Electronics', duty: '0-20%' },
   { product: 'Tablet / iPad', code: '8471.41.00', category: 'Electronics', duty: '0-20%' },
@@ -572,7 +591,7 @@ const HS_CODES = [
   { product: 'Ceramic Tiles', code: '6908.90.00', category: 'Building', duty: '5-20%' },
   { product: 'Glass Sheets', code: '7007.19.00', category: 'Building', duty: '5-15%' },
   { product: 'Generator', code: '8502.20.00', category: 'Machinery', duty: '5-15%' },
-  { product: 'Solar Panel', code: '8541.40.00', category: 'Machinery', duty: '0-10%' },
+  { product: 'Solar Panel', code: '8541.43.00', category: 'Machinery', duty: '0-10%' },
   { product: 'Inverter', code: '8504.40.00', category: 'Machinery', duty: '5-15%' },
   { product: 'Skincare Products', code: '3304.99.00', category: 'Cosmetics', duty: '15-25%' },
   { product: 'Hair Products', code: '3305.10.00', category: 'Cosmetics', duty: '15-25%' },
@@ -590,6 +609,11 @@ const HS_CODES = [
 function parseNum(v) { return parseFloat(String(v).replace(/[^0-9.-]/g, '')) || 0; }
 function fmtUSD(n) { return '$' + Math.round(n).toLocaleString(); }
 function fmtLocal(n, sym) { return sym + '\u00A0' + Math.round(n).toLocaleString(); }
+function getProfile(categoryKey) {
+  return window.AfroImportDutyRules && window.AfroImportDutyRules.getProfile
+    ? window.AfroImportDutyRules.getProfile(categoryKey)
+    : null;
+}
 
 // Input formatting
 function setupInput(el) {
@@ -604,8 +628,25 @@ setupInput(document.getElementById('shippingValue'));
 function scheduleCalc() { clearTimeout(debounceTimer); debounceTimer = setTimeout(calculateDuties, 300); }
 document.getElementById('destCountry').addEventListener('change', () => { scheduleCalc(); updateRateDisplay(); });
 document.getElementById('originCountry').addEventListener('change', scheduleCalc);
-document.getElementById('category').addEventListener('change', scheduleCalc);
+document.getElementById('category').addEventListener('change', () => { applyProfileSuggestion(); scheduleCalc(); });
 document.getElementById('quantity').addEventListener('input', scheduleCalc);
+
+function applyProfileSuggestion() {
+  const category = document.getElementById('category').value;
+  const profile = getProfile(category);
+  const hint = document.getElementById('productHint');
+  if (!profile) {
+    if (hint) hint.textContent = 'Broad category mode: useful for quick estimates, but product-specific presets are more precise for top countries.';
+    return;
+  }
+  const goodsEl = document.getElementById('goodsValue');
+  const shipEl = document.getElementById('shippingValue');
+  if (!parseNum(goodsEl.value) && profile.refFob) goodsEl.value = Math.round(profile.refFob).toLocaleString();
+  if (!parseNum(shipEl.value) && profile.refShipping) shipEl.value = Math.round(profile.refShipping).toLocaleString();
+  if (hint) {
+    hint.innerHTML = '<strong>' + profile.label + '</strong> · HS ' + profile.hsCode + ' · Typical duty range ' + profile.duty + '. Suggested FOB ' + fmtUSD(profile.refFob) + ' and shipping ' + fmtUSD(profile.refShipping) + ' are indicative only.';
+  }
+}
 
 // ── TABS ─────────────────────────────────────────────────────────
 function setTab(id, btn) {
@@ -620,6 +661,16 @@ function setTab(id, btn) {
 
 // ── COMPUTE LANDED COST ─────────────────────────────────────────
 function computeLandedCost(countryName, category, fob, shipping) {
+  if (window.AfroImportDutyRules && window.AfroImportDutyRules.compute) {
+    const granular = window.AfroImportDutyRules.compute(countryName, category, fob, shipping);
+    if (granular) {
+      const countryMeta = COUNTRIES[countryName];
+      return Object.assign({}, granular, {
+        flag: countryMeta ? countryMeta.flag : granular.flag,
+        authority: countryMeta ? countryMeta.authority : granular.authority
+      });
+    }
+  }
   const c = COUNTRIES[countryName];
   if (!c) return null;
   const cif = fob + shipping;
@@ -674,6 +725,7 @@ function calculateDuties() {
   html += '<div class="brk-row total"><span class="brk-lbl">Total in ' + R.currency + '</span><span class="brk-val grn">' + fmtLocal(R.totalLocal, R.symbol) + '</span></div>';
   if (qty > 1) html += '<div class="brk-row"><span class="brk-lbl">Per unit (' + qty + ' items)</span><span class="brk-val">' + fmtLocal(R.totalLocal / qty, R.symbol) + '</span></div>';
   html += '</div>';
+  if (R.sourceNote) html += '<div style="margin-top:14px;padding:10px 12px;border:1px solid #DBEAFE;background:#F8FBFF;border-radius:10px;font-size:0.8rem;line-height:1.55;color:#334155;"><strong>Enhanced rule:</strong> ' + R.sourceNote + '</div>';
 
   document.getElementById('resBody').innerHTML = html;
   document.getElementById('resultsCard').classList.add('on');
@@ -746,15 +798,17 @@ function buildCompare() {
 // ── HS CODE LOOKUP ──────────────────────────────────────────────
 function renderHS(filter) {
   const q = (filter || '').toLowerCase();
-  const filtered = q ? HS_CODES.filter(h => h.product.toLowerCase().includes(q) || h.code.includes(q) || h.category.toLowerCase().includes(q)) : HS_CODES;
+  const sourceCodes = window.AfroImportDutyRules && window.AfroImportDutyRules.hsCodes ? window.AfroImportDutyRules.hsCodes.concat(HS_CODES) : HS_CODES;
+  const filtered = q ? sourceCodes.filter(h => h.product.toLowerCase().includes(q) || h.code.includes(q) || (h.displayCategory || h.category).toLowerCase().includes(q)) : sourceCodes;
   document.getElementById('hsTableBody').innerHTML = filtered.map(h =>
-    '<tr onclick="selectHS(\'' + h.category + '\')"><td>' + h.product + '</td><td class="code">' + h.code + '</td><td>' + h.category + '</td><td>' + h.duty + '</td></tr>'
+    '<tr onclick="selectHS(\'' + h.category + '\')"><td>' + h.product + '</td><td class="code">' + h.code + '</td><td>' + (h.displayCategory || h.category) + '</td><td>' + h.duty + '</td></tr>'
   ).join('');
 }
 document.getElementById('hsSearch').addEventListener('input', e => renderHS(e.target.value));
 
 function selectHS(category) {
   document.getElementById('category').value = category;
+  applyProfileSuggestion();
   setTab('calc', document.querySelector('.duty-tab'));
   scheduleCalc();
 }
@@ -826,7 +880,8 @@ function updateRateDisplay() {
   const dest = document.getElementById('destCountry').value;
   const c = COUNTRIES[dest];
   if (!c) return;
-  document.getElementById('rateDisplay').innerHTML = '<strong>1 USD = ' + c.symbol + ' ' + c.rate + '</strong><br><small>Approximate rate for ' + c.currency + '. Actual customs rate may differ.</small>';
+  const premium = ['Nigeria', 'Ghana', 'Kenya', 'South Africa', 'Egypt', 'Morocco'].includes(dest);
+  document.getElementById('rateDisplay').innerHTML = '<strong>1 USD = ' + c.symbol + ' ' + c.rate + '</strong><br><small>Approximate rate for ' + c.currency + '. ' + (premium ? 'This market also has enhanced product presets for popular goods and vehicles.' : 'Actual customs rate may differ.') + '</small>';
 }
 
 // ── PDF EXPORT ──────────────────────────────────────────────────
@@ -887,6 +942,8 @@ function restoreFromURL() {
   if (s.c) document.getElementById('category').value = s.c;
   if (s.f) document.getElementById('goodsValue').value = parseInt(s.f).toLocaleString();
   if (s.s) document.getElementById('shippingValue').value = parseInt(s.s).toLocaleString();
+  applyProfileSuggestion();
+  updateRateDisplay();
   setTimeout(calculateDuties, 100);
 }
 
@@ -894,6 +951,8 @@ function restoreFromURL() {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('savedCount').textContent = getSaved().length;
   renderHS();
+  applyProfileSuggestion();
+  updateRateDisplay();
   setTimeout(restoreFromURL, 200);
 });
 </script>

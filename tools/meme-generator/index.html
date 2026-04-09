@@ -1,27 +1,48 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meme Generator — Create Custom Memes Online | AfroTools</title>
-<meta name="description" content="Free meme generator. Upload images and add custom text. Drag to position text, customize fonts and colors. Download as PNG instantly.">
-<link rel="canonical" href="https://afrotools.com/tools/meme-generator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meme Generator | AfroTools</title>
+<meta name="description" content="Create local-feeling memes with your own images, African caption packs, and simple starter scenes. Everything stays in your browser.">
+<meta name="keywords" content="meme generator, African meme captions, local meme maker, WhatsApp meme tool">
+<link rel="canonical" href="https://afrotools.com/tools/meme-generator/">
 <meta property="og:title" content="Meme Generator | AfroTools">
-<meta property="og:description" content="Create custom memes with text overlays. Fast and free.">
+<meta property="og:description" content="Build memes from your own photos or starter scenes with local caption packs.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/meme-generator/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
+<meta name="robots" content="index, follow">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Meme Generator | AfroTools">
-<meta name="twitter:description" content="Free meme generator tool with text overlays.">
-<meta name="robots" content="index, follow">
-<meta name="author" content="AfroTools">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<meta name="twitter:description" content="Build memes from your own photos or starter scenes with local caption packs.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Meme Generator",
+  "description": "Create local-feeling memes with your own images, African caption packs, and simple starter scenes.",
+  "url": "https://afrotools.com/tools/meme-generator/",
+  "inLanguage": "en",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
 <script src="/assets/js/components/tool-registry.min.js?v=b9986767" defer></script>
@@ -29,710 +50,774 @@
 <script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
 <style>
   :root {
-    --afro-blue: var(--color-primary);
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
+    --ink: #fffaf0;
+    --text: #f8fafc;
+    --muted: rgba(248,250,252,.78);
+    --paper: #fffdf8;
+    --paper-ink: #0f172a;
+    --line: #e7decf;
+    --brand: #ea580c;
+    --brand-strong: #c2410c;
+    --accent: #facc15;
   }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "DM Sans", system-ui, sans-serif;
+    color: var(--paper-ink);
+    background: linear-gradient(180deg, #120d0a 0%, #291a11 35%, #f5efe3 35%, #f5efe3 100%);
   }
-
-  .tool-hero::after {
-    content: '😂';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
+  .hero {
+    padding: 54px 24px 44px;
+    color: var(--text);
   }
-
-  .tool-hero-inner {
-    max-width: 1200px;
+  .hero-inner, .workspace, .related {
+    max-width: 1180px;
     margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
   }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, .85fr);
+    gap: 28px;
+    align-items: end;
+  }
+  .eyebrow {
+    margin-bottom: 14px;
+    font-size: .78rem;
+    letter-spacing: .08em;
     text-transform: uppercase;
-    margin-bottom: 14px;
+    color: rgba(248,250,252,.72);
   }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
+  .hero h1 {
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 4.4vw, 3.6rem);
+    line-height: .98;
+    letter-spacing: -.04em;
+    max-width: 740px;
   }
-
-  .breadcrumb span {
-    color: var(--afro-blue);
+  .hero p {
+    margin: 0;
+    max-width: 680px;
+    color: var(--muted);
+    line-height: 1.7;
   }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
+  .hero-notes {
+    display: grid;
+    gap: 10px;
+    justify-items: start;
   }
-
-  h1 em {
-    color: var(--afro-blue);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
+  .badge-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 6px;
+    gap: 10px;
   }
-
   .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(248,250,252,.12);
+    border: 1px solid rgba(248,250,252,.18);
+    font-size: .82rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    color: #fff;
   }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
+  .workspace {
+    padding: 0 24px 72px;
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, .72fr);
     gap: 22px;
     align-items: start;
   }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  .stack { display: grid; gap: 18px; }
+  .card, .side-card {
+    background: rgba(255,253,248,.95);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, .09);
   }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .field {
-    margin-bottom: 18px;
-  }
-
-  .field:last-child {
-    margin-bottom: 0;
-  }
-
-  .f-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
+  .card-head { padding: 22px 24px 0; }
+  .card-body, .side-card { padding: 22px 24px 24px; }
+  .card-title, .side-card h2 {
+    margin: 0;
     font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    letter-spacing: -.02em;
   }
-
-  .f-input:focus {
-    border-color: var(--afro-blue);
+  .card-sub, .side-card p {
+    margin: 6px 0 0;
+    color: #5b6473;
+    font-size: .9rem;
+    line-height: 1.65;
+  }
+  .tab-row, .scene-grid, .pack-grid, .action-row, .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .tab-btn, .scene-btn, .pack-btn {
+    appearance: none;
+    border: 1px solid #e7decf;
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .f-textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  .upload-area {
-    border: 2px dashed #BFDBFE;
-    border-radius: 8px;
-    padding: 30px 20px;
-    text-align: center;
+    color: #0f172a;
+    border-radius: 999px;
+    padding: 11px 15px;
     cursor: pointer;
-    transition: all 0.18s;
-    background: #EFF6FF;
-  }
-
-  .upload-area:hover {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.05);
-  }
-
-  .upload-area.active {
-    border-color: var(--afro-blue);
-    background: rgba(0, 113, 227, 0.08);
-  }
-
-  .upload-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-
-  .upload-text {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #244d2c;
-    margin-bottom: 4px;
-  }
-
-  .upload-hint {
-    font-size: 0.75rem;
-    color: #6B8CAE;
-  }
-
-  #imageInput {
-    display: none;
-  }
-
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-blue);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
+    font: inherit;
     font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'DM Sans', sans-serif;
   }
-
-  .calc-btn:hover {
-    background: #0059B3;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  .tab-btn.active, .scene-btn.active, .pack-btn.active {
+    border-color: rgba(234, 88, 12, .45);
+    background: #fff4ea;
+    color: #9a3412;
   }
-
-  .calc-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
+  .scene-grid, .pack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .preview-card {
-    background: #F5F9FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 10px;
-    padding: 20px;
+  .scene-btn, .pack-btn {
+    border-radius: 18px;
+    padding: 14px 16px;
+    text-align: left;
+  }
+  .scene-title, .pack-title {
+    display: block;
+    margin-bottom: 4px;
+    font-size: .92rem;
+    font-weight: 800;
+  }
+  .scene-copy, .pack-copy, .mini {
+    display: block;
+    font-size: .82rem;
+    line-height: 1.45;
+    color: #5b6473;
+  }
+  .upload-pane, .starter-pane { display: none; }
+  .pane-active { display: block; }
+  .drop-zone {
+    border: 1.5px dashed #d7c7ae;
+    border-radius: 22px;
+    padding: 30px 24px;
+    background: linear-gradient(180deg, #fffefa 0%, #f7f0e5 100%);
     text-align: center;
-    display: none;
+    cursor: pointer;
   }
-
-  .preview-card.on {
+  .drop-zone.active, .drop-zone:hover { border-color: var(--brand); }
+  #imageInput { display: none; }
+  .drop-icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .drop-title { font-size: 1rem; font-weight: 700; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .field { display: grid; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label {
+    font-size: .82rem;
+    font-weight: 700;
+    color: #334155;
+  }
+  .field textarea, .field select, .field input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1.5px solid #e7decf;
+    background: #fffdfa;
+    color: #0f172a;
+    font: inherit;
+  }
+  .field textarea {
+    min-height: 92px;
+    resize: vertical;
+  }
+  .field textarea:focus, .field select:focus, .field input:focus {
+    outline: none;
+    border-color: rgba(234, 88, 12, .45);
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, .1);
+    background: #fff;
+  }
+  input[type="range"] { accent-color: var(--brand); padding: 0; }
+  .range-wrap { display: grid; gap: 8px; }
+  .range-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #5b6473;
+    font-size: .8rem;
+  }
+  .canvas-wrap {
+    min-height: 320px;
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    background: #120d0a;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  #memeCanvas {
+    max-width: 100%;
+    height: auto;
     display: block;
   }
-
-  .meme-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 12px;
+  .placeholder {
+    max-width: 420px;
+    text-align: center;
+    padding: 28px;
+    color: rgba(248,250,252,.76);
+    line-height: 1.65;
   }
-
-  .meme-container canvas {
-    max-width: 100%;
-    border-radius: 8px;
-    border: 1px solid #DBEAFE;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 0 22px 22px;
-  }
-
-  .act-btn {
-    padding: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-family: 'DM Sans', sans-serif;
+  .btn {
+    appearance: none;
     border: none;
-  }
-
-  .act-download {
-    background: rgba(0, 113, 227, 0.1);
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    color: #1a5c3a;
-  }
-
-  .act-download:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
+    border-radius: 999px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font: inherit;
     font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
   }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
+  .btn-primary {
+    background: var(--brand);
+    color: #fff;
+    box-shadow: 0 12px 24px rgba(234, 88, 12, .22);
   }
-
-  .info-text li {
-    margin-bottom: 8px;
+  .btn-secondary {
+    background: #fff;
+    color: #0f172a;
+    border: 1px solid #e7decf;
   }
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
-
-    .action-row {
-      grid-template-columns: 1fr;
-    }
+  .status {
+    margin-top: 14px;
+    color: #5b6473;
+    font-size: .88rem;
+    line-height: 1.55;
+  }
+  .side-list {
+    margin: 14px 0 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 10px;
+    font-size: .88rem;
+    color: #334155;
+  }
+  .related { padding: 0 24px 40px; }
+  .related h2 { margin: 0 0 14px; font-size: 1.18rem; }
+  .chip-row a {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid #e7decf;
+    background: rgba(255,255,255,.92);
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: .9rem;
+  }
+  @media (max-width: 980px) {
+    .hero-inner, .workspace { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .scene-grid, .pack-grid, .form-grid { grid-template-columns: 1fr; }
   }
 </style>
-
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
-</script>
-<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/meme-generator/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/meme-generator/" />
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/meme-generator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/meme-generator/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-image.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Meme Generator",
-      "item": "https://afrotools.com/tools/meme-generator/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-09">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
-
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>Meme <em>Generator</em></h1>
-    <p class="hero-sub">Create custom memes with top and bottom text. Drag to reposition, customize fonts and colors. Download as PNG.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Fast</span>
-    </div>
-  </div>
-</div>
-
-<div class="tool-main">
-  <div class="tool-main-inner">
+<section class="hero">
+  <div class="hero-inner">
     <div>
-      <!-- Upload Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Upload Image</span>
-        </div>
-        <div class="card-body">
-          <div class="upload-area" id="uploadArea">
-            <div class="upload-icon">📤</div>
-            <div class="upload-text">Choose an image or drag it here</div>
-            <div class="upload-hint">PNG, JPG, WebP</div>
-            <input type="file" id="imageInput" accept="image/*">
-          </div>
-        </div>
-      </div>
-
-      <!-- Text Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Add Text</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Top Text</span>
-            </label>
-            <textarea class="f-input f-textarea" id="topText" placeholder="Enter top text..."></textarea>
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Bottom Text</span>
-            </label>
-            <textarea class="f-input f-textarea" id="bottomText" placeholder="Enter bottom text..."></textarea>
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Font Size (%)</span>
-            </label>
-            <input type="range" class="f-input" id="fontSize" min="5" max="30" value="12" style="padding: 6px 0;">
-          </div>
-
-          <button class="calc-btn" id="generateBtn" disabled>Generate Meme</button>
-        </div>
+      <div class="eyebrow">Image &amp; Design / Local Banter</div>
+      <h1>Build memes with your own screenshots, local caption packs, and starter scenes.</h1>
+      <p>This version is honest about what it is: an upload-first meme tool with African-flavoured caption starters and simple built-in scenes. It is useful today, and it leaves room for a deeper local graphics pack later.</p>
+    </div>
+    <div class="hero-notes">
+      <div class="badge-row">
+        <span class="badge">Upload-first</span>
+        <span class="badge">Starter scenes</span>
+        <span class="badge">No watermark</span>
       </div>
     </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Preview -->
-      <div class="card preview-card" id="previewCard">
-        <div class="card-head">
-          <span class="card-title">Meme</span>
-        </div>
-        <div class="card-body">
-          <div class="meme-container">
-            <canvas id="memeCanvas" style="max-width: 100%; border-radius: 8px; border: 1px solid #DBEAFE;"></canvas>
-          </div>
-        </div>
-        <div class="action-row">
-          <button class="act-btn act-download" id="downloadBtn">📥 Download PNG</button>
-        </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Meme Generator"
-    tool-slug="meme-generator">
-  </share-result-button>
-</div>
-      </div>
-
-      <!-- Info Card -->
-      <div class="info-card">
-        <div class="info-title">Meme Generator</div>
-        <div class="info-text">
-          Create memes with custom text overlays.
-          <ul style="margin-top:10px;">
-            <li>✓ Top/bottom text</li>
-            <li>✓ Adjustable size</li>
-            <li>✓ Impact font</li>
-            <li>✓ PNG download</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<afro-related-tools category="image-design" current="meme-generator"></afro-related-tools>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Meme Generator: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Meme Generator lets you create custom memes in seconds. Upload any image — a photo, screenshot, or reaction image — and add text overlays with full control over position, size, font, and colour. Drag the text to place it exactly where you want on the image, whether that is the classic top-and-bottom format or a more creative arrangement. Customise the text appearance with different fonts, bold styling, text colour, and outline colour to ensure readability against any background. The live preview shows your meme exactly as it will appear in the downloaded file. When you are happy with the result, download it as a high-quality PNG ready for sharing on WhatsApp, Twitter, Instagram, Facebook, or any social platform. This tool is perfect for social media managers, content creators, community admins, and anyone who loves sharing humorous or relatable visual content. Unlike other meme generators, there are no watermarks, no account required, and all processing happens in your browser so your images stay private. Create memes for any occasion — from workplace humour to trending topics.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I upload my own images?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. Upload any image from your device — photos, screenshots, downloaded images, or anything else. The tool supports JPG, PNG, and WebP formats.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I position the text anywhere on the image?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. Simply drag the text overlay to any position on the image. This gives you complete freedom beyond the traditional top-bottom meme layout, allowing creative text placements.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Does the tool add watermarks?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. Your meme is downloaded clean with no watermarks, logos, or branding from AfroTools. The downloaded image looks exactly like your preview.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What text customisation options are available?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can customise the font family, text size, text colour, outline colour, and bold styling. The outline ensures text remains readable regardless of the background image colours.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What format is the meme downloaded in?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Memes are downloaded as PNG files, which offer excellent quality and are compatible with all social media platforms including WhatsApp, Twitter, Instagram, and Facebook.</p>
-    </details>
   </div>
 </section>
-
-
-<section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
-<h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:14px">Related Image Tools</h2>
-<div style="display:flex;flex-wrap:wrap;gap:10px"><a href="/tools/image-filters/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Photo Filter & Editor</a><a href="/tools/social-card/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">Social Media Card</a><a href="/tools/thumbnail-maker/" style="padding:10px 16px;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#1e293b;text-decoration:none;transition:all .2s">YouTube Thumbnail Maker</a>
-<a href="/image-design/" style="padding:10px 16px;background:#f3f4f6;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.88rem;font-weight:600;color:#6b7280;text-decoration:none;transition:all .2s">View All Image Tools</a>
-</div>
-</div></section>
+<main class="workspace">
+  <section class="stack">
+    <article class="card">
+      <div class="card-head">
+        <h2 class="card-title">1. Choose your base image</h2>
+        <p class="card-sub">Upload a reaction photo or screenshot, or start from a simple local scene when you just need a fast placeholder.</p>
+      </div>
+      <div class="card-body">
+        <div class="tab-row">
+          <button class="tab-btn active" type="button" data-source="starter">Starter scenes</button>
+          <button class="tab-btn" type="button" data-source="upload">Upload your image</button>
+        </div>
+        <div class="starter-pane pane-active" id="starterPane" style="margin-top:16px">
+          <div class="scene-grid" id="sceneGrid"></div>
+        </div>
+        <div class="upload-pane" id="uploadPane" style="margin-top:16px">
+          <div class="drop-zone" id="uploadArea">
+            <div class="drop-icon">📤</div>
+            <div class="drop-title">Choose an image or drag it here</div>
+            <div class="mini">Best with reaction selfies, screenshots, group chat moments, or real photos.</div>
+            <input type="file" id="imageInput" accept="image/*">
+          </div>
+          <div class="mini" id="uploadMeta" style="margin-top:12px">No custom image selected yet.</div>
+        </div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head">
+        <h2 class="card-title">2. Pick a caption pack</h2>
+        <p class="card-sub">Use these as quick starts, then edit the text so it feels like your voice, your friend group, or your audience.</p>
+      </div>
+      <div class="card-body">
+        <div class="pack-grid" id="packGrid"></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head">
+        <h2 class="card-title">3. Edit the meme text and style</h2>
+        <p class="card-sub">Keep it short and readable. The classic style suits screenshots; the softer styles work better on the starter scenes.</p>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="field full">
+            <label for="topText">Top text</label>
+            <textarea id="topText"></textarea>
+          </div>
+          <div class="field full">
+            <label for="bottomText">Bottom text</label>
+            <textarea id="bottomText"></textarea>
+          </div>
+          <div class="field">
+            <label for="textStyle">Text style</label>
+            <select id="textStyle">
+              <option value="classic">Classic meme</option>
+              <option value="warm">Warm poster</option>
+              <option value="bold">Bold caption</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fontSize">Text size</label>
+            <div class="range-wrap">
+              <input id="fontSize" type="range" min="8" max="18" value="12">
+              <div class="range-meta"><span>Smaller</span><strong id="fontSizeValue">12%</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head">
+        <h2 class="card-title">4. Preview and download</h2>
+        <p class="card-sub">The preview updates live. Download a PNG when the text feels right.</p>
+      </div>
+      <div class="card-body">
+        <div class="canvas-wrap">
+          <canvas id="memeCanvas" width="1200" height="900"></canvas>
+        </div>
+        <div class="action-row" style="margin-top:18px">
+          <button class="btn btn-primary" id="downloadBtn" type="button">Download PNG</button>
+          <button class="btn btn-secondary" id="resetBtn" type="button">Reset Text</button>
+        </div>
+        <div class="status" id="statusText">Starter scenes are built in. For the strongest memes, use your own screenshots and reaction photos.</div>
+        <div class="result-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
+          <share-result-button tool-name="Meme Generator" tool-slug="meme-generator"></share-result-button>
+        </div>
+      </div>
+    </article>
+  </section>
+  <aside class="stack">
+    <article class="side-card">
+      <h2 id="guideTitle">NEPA mood</h2>
+      <p id="guideIntro">Starter scenes are simple AfroTools backdrops, not a full reaction-image library. They are here so you can move fast when you do not have a photo ready.</p>
+      <ul class="side-list" id="guideList"></ul>
+    </article>
+    <article class="side-card">
+      <h2>How to make it feel local</h2>
+      <p>The best results usually come from your own screenshots, your own facial reactions, and language your audience already uses. Keep captions short, rhythmical, and specific enough to feel like a shared joke.</p>
+      <ul class="side-list">
+        <li>Use the starter scenes when you need speed, not when you need a rich visual punchline.</li>
+        <li>Swap in your own images for family chat jokes, football banter, church humour, or campus memes.</li>
+        <li>Local slang works best when it is legible and not overloaded in both text boxes at once.</li>
+      </ul>
+    </article>
+  </aside>
+</main>
+<afro-related-tools category="image-design" current="meme-generator"></afro-related-tools>
+<section class="related">
+  <h2>Related image workflows</h2>
+  <div class="chip-row">
+    <a href="/tools/image-filters/">Image Filters</a>
+    <a href="/tools/social-card/">Social Card</a>
+    <a href="/tools/thumbnail-maker/">Thumbnail Maker</a>
+    <a href="/image-design/">View all image tools</a>
+  </div>
+</section>
 <afro-footer></afro-footer>
-
+<script src="/assets/js/components/related-tools.js?v=744f454f" defer></script>
 <script>
-  const uploadArea = document.getElementById('uploadArea');
-  const imageInput = document.getElementById('imageInput');
-  const topText = document.getElementById('topText');
-  const bottomText = document.getElementById('bottomText');
-  const fontSize = document.getElementById('fontSize');
-  const generateBtn = document.getElementById('generateBtn');
-  const previewCard = document.getElementById('previewCard');
-  const memeCanvas = document.getElementById('memeCanvas');
-  const downloadBtn = document.getElementById('downloadBtn');
+const STARTER_SCENES = {
+  nepa: {
+    label: 'NEPA mood',
+    copy: 'Power comes back and every charger appears at once.',
+    icon: '💡',
+    colors: ['#1f2937', '#0f172a'],
+    accent: '#facc15',
+    tips: ['Works well with classic celebration or relief jokes.', 'Good starter when the joke is about waiting, stress, or sudden hope.']
+  },
+  market: {
+    label: 'Market day',
+    copy: 'For bargaining jokes, last-price drama, and seller energy.',
+    icon: '🛒',
+    colors: ['#7c2d12', '#431407'],
+    accent: '#fb923c',
+    tips: ['Use short bargaining lines so the punchline lands quickly.', 'Great for reselling, food buying, and thrift banter.']
+  },
+  groupchat: {
+    label: 'Family group chat',
+    copy: 'For forwarded messages, good morning graphics, and admin pain.',
+    icon: '📱',
+    colors: ['#1d4ed8', '#172554'],
+    accent: '#93c5fd',
+    tips: ['Best when the joke sounds like something a real auntie or admin would say.', 'Pair with bold or classic text for readability.']
+  },
+  football: {
+    label: 'Weekend football',
+    copy: 'For early celebration, bad defending, and matchday overconfidence.',
+    icon: '⚽',
+    colors: ['#14532d', '#052e16'],
+    accent: '#86efac',
+    tips: ['Keep the text punchy so it reads like fan banter.', 'Works well with screenshots from live matches too.']
+  },
+  campus: {
+    label: 'Exam week',
+    copy: 'For school pressure, unread slides, and panic motivation.',
+    icon: '📚',
+    colors: ['#5b21b6', '#312e81'],
+    accent: '#c4b5fd',
+    tips: ['Use short study jokes and panic lines.', 'Great fallback when you do not have a real classroom photo.']
+  }
+};
 
-  let originalImage = null;
+const CAPTION_PACKS = {
+  nepa: {
+    label: 'Power returns',
+    copy: 'Relief, charger chaos, and instant happiness.',
+    top: 'WHEN LIGHT FINALLY COMES',
+    bottom: 'AND EVERYBODY STARTS CHARGING AT ONCE',
+    scene: 'nepa'
+  },
+  market: {
+    label: 'Last price',
+    copy: 'Bargaining energy and seller replies.',
+    top: 'YOU SAID LAST PRICE',
+    bottom: 'AUNTY SAID COME BACK',
+    scene: 'market'
+  },
+  groupchat: {
+    label: 'Morning forwards',
+    copy: 'Family group chat at sunrise.',
+    top: 'THE FAMILY GROUP CHAT AT 5AM',
+    bottom: 'GOOD MORNING WITH 19 FORWARDS',
+    scene: 'groupchat'
+  },
+  football: {
+    label: 'Too early to boast',
+    copy: 'Football banter for fans with no patience.',
+    top: 'YOUR TEAM SCORES FIRST',
+    bottom: 'YOU START TWEETING TOO EARLY',
+    scene: 'football'
+  },
+  campus: {
+    label: 'Past question shock',
+    copy: 'Exam-week panic in one frame.',
+    top: 'YOU OPENED THE PAST QUESTION',
+    bottom: 'AND NOTHING LOOKS FAMILIAR',
+    scene: 'campus'
+  },
+  hustle: {
+    label: 'Client payment',
+    copy: 'For freelancers, side hustles, and delayed transfers.',
+    top: 'CLIENT SAID PAYMENT IS COMING',
+    bottom: 'SINCE LAST WEEK',
+    scene: 'groupchat'
+  }
+};
 
-  // Upload area events
-  uploadArea.addEventListener('click', () => imageInput.click());
-  uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.classList.add('active');
-  });
-  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
-  uploadArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadArea.classList.remove('active');
-    if (e.dataTransfer.files.length) {
-      imageInput.files = e.dataTransfer.files;
-      handleImageUpload();
+const TEXT_STYLES = {
+  classic: { fill: '#ffffff', stroke: '#000000', family: 'Impact, Arial Black, sans-serif', outlineFactor: 0.11 },
+  warm: { fill: '#fff7d6', stroke: '#4a1d0f', family: 'DM Sans, sans-serif', outlineFactor: 0.08 },
+  bold: { fill: '#fde68a', stroke: '#172554', family: 'Arial Black, sans-serif', outlineFactor: 0.09 }
+};
+
+const elements = {
+  tabButtons: Array.from(document.querySelectorAll('.tab-btn')),
+  starterPane: document.getElementById('starterPane'),
+  uploadPane: document.getElementById('uploadPane'),
+  uploadArea: document.getElementById('uploadArea'),
+  imageInput: document.getElementById('imageInput'),
+  uploadMeta: document.getElementById('uploadMeta'),
+  sceneGrid: document.getElementById('sceneGrid'),
+  packGrid: document.getElementById('packGrid'),
+  topText: document.getElementById('topText'),
+  bottomText: document.getElementById('bottomText'),
+  textStyle: document.getElementById('textStyle'),
+  fontSize: document.getElementById('fontSize'),
+  fontSizeValue: document.getElementById('fontSizeValue'),
+  memeCanvas: document.getElementById('memeCanvas'),
+  downloadBtn: document.getElementById('downloadBtn'),
+  resetBtn: document.getElementById('resetBtn'),
+  statusText: document.getElementById('statusText'),
+  guideTitle: document.getElementById('guideTitle'),
+  guideIntro: document.getElementById('guideIntro'),
+  guideList: document.getElementById('guideList')
+};
+
+let sourceMode = 'starter';
+let activeScene = 'nepa';
+let activePack = 'nepa';
+let uploadedImage = null;
+let uploadedName = '';
+
+function wrapText(ctx, text, maxWidth) {
+  const words = String(text || '').trim().split(/\s+/).filter(Boolean);
+  const lines = [];
+  let current = '';
+  words.forEach((word) => {
+    const next = current ? `${current} ${word}` : word;
+    if (ctx.measureText(next).width <= maxWidth || !current) {
+      current = next;
+    } else {
+      lines.push(current);
+      current = word;
     }
   });
+  if (current) lines.push(current);
+  return lines;
+}
 
-  imageInput.addEventListener('change', handleImageUpload);
+function drawStarterScene(ctx, canvas, scene) {
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, scene.colors[0]);
+  gradient.addColorStop(1, scene.colors[1]);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  function handleImageUpload() {
-    const file = imageInput.files[0];
-    if (!file) return;
+  ctx.fillStyle = scene.accent;
+  ctx.globalAlpha = 0.14;
+  ctx.beginPath();
+  ctx.arc(canvas.width * 0.82, canvas.height * 0.22, canvas.width * 0.16, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(canvas.width * 0.2, canvas.height * 0.78, canvas.width * 0.12, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
 
-    const maxSize = 10 * 1024 * 1024; // 10MB
-    if (file.size > maxSize) {
-      alert('File is too large. Please upload an image under 10MB.');
-      return;
-    }
+  ctx.fillStyle = 'rgba(255,255,255,0.08)';
+  ctx.fillRect(canvas.width * 0.08, canvas.height * 0.18, canvas.width * 0.84, canvas.height * 0.56);
 
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file.');
-      return;
-    }
+  ctx.font = `${canvas.width * 0.12}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(scene.icon, canvas.width / 2, canvas.height / 2);
 
+  ctx.font = `700 ${canvas.width * 0.032}px DM Sans, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.82)';
+  ctx.fillText(scene.label.toUpperCase(), canvas.width / 2, canvas.height * 0.16);
+}
+
+function drawTextBlock(ctx, canvas, text, blockPosition) {
+  const style = TEXT_STYLES[elements.textStyle.value];
+  const size = Math.max(34, (canvas.height / 100) * Number(elements.fontSize.value));
+  const maxWidth = canvas.width * 0.82;
+  ctx.font = `900 ${size}px ${style.family}`;
+  ctx.textAlign = 'center';
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = Math.max(4, size * style.outlineFactor);
+  const lines = wrapText(ctx, text, maxWidth);
+  const lineHeight = size * 1.06;
+  let startY = blockPosition === 'top'
+    ? size * 0.7
+    : canvas.height - (size * 0.7) - (lineHeight * (lines.length - 1));
+  lines.forEach((line, index) => {
+    const y = startY + (index * lineHeight);
+    ctx.strokeStyle = style.stroke;
+    ctx.fillStyle = style.fill;
+    ctx.strokeText(line, canvas.width / 2, y);
+    ctx.fillText(line, canvas.width / 2, y);
+  });
+}
+
+function renderGuide() {
+  const scene = STARTER_SCENES[activeScene];
+  const pack = CAPTION_PACKS[activePack];
+  elements.guideTitle.textContent = scene.label;
+  elements.guideIntro.textContent = sourceMode === 'upload'
+    ? 'You are using your own image now, which is usually the strongest way to make the meme feel personal and locally specific.'
+    : 'Starter scenes are simple AfroTools backdrops, not a full reaction-image library. They are here so you can move fast when you do not have a photo ready.';
+  elements.guideList.innerHTML = [
+    `Current caption pack: ${pack.label}.`,
+    scene.tips[0],
+    scene.tips[1]
+  ].map((item) => `<li>${item}</li>`).join('');
+}
+
+function renderScenes() {
+  elements.sceneGrid.innerHTML = Object.entries(STARTER_SCENES).map(([key, scene]) => `
+    <button class="scene-btn ${key === activeScene ? 'active' : ''}" type="button" data-scene="${key}">
+      <span class="scene-title">${scene.label}</span>
+      <span class="scene-copy">${scene.copy}</span>
+    </button>
+  `).join('');
+}
+
+function renderPacks() {
+  elements.packGrid.innerHTML = Object.entries(CAPTION_PACKS).map(([key, pack]) => `
+    <button class="pack-btn ${key === activePack ? 'active' : ''}" type="button" data-pack="${key}">
+      <span class="pack-title">${pack.label}</span>
+      <span class="pack-copy">${pack.copy}</span>
+    </button>
+  `).join('');
+}
+
+function setSourceMode(mode) {
+  sourceMode = mode;
+  elements.tabButtons.forEach((button) => button.classList.toggle('active', button.dataset.source === mode));
+  elements.starterPane.classList.toggle('pane-active', mode === 'starter');
+  elements.uploadPane.classList.toggle('pane-active', mode === 'upload');
+  renderGuide();
+  renderMeme();
+}
+
+function applyPack(key, followScene) {
+  const pack = CAPTION_PACKS[key];
+  if (!pack) return;
+  activePack = key;
+  if (followScene && pack.scene) activeScene = pack.scene;
+  elements.topText.value = pack.top;
+  elements.bottomText.value = pack.bottom;
+  renderScenes();
+  renderPacks();
+  renderGuide();
+  renderMeme();
+}
+
+function drawBaseImage(ctx, canvas) {
+  if (sourceMode === 'upload' && uploadedImage) {
+    const scale = Math.min(canvas.width / uploadedImage.width, canvas.height / uploadedImage.height);
+    const width = uploadedImage.width * scale;
+    const height = uploadedImage.height * scale;
+    const x = (canvas.width - width) / 2;
+    const y = (canvas.height - height) / 2;
+    ctx.drawImage(uploadedImage, x, y, width, height);
+    return;
+  }
+  drawStarterScene(ctx, canvas, STARTER_SCENES[activeScene]);
+}
+
+function renderMeme() {
+  const canvas = elements.memeCanvas;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBaseImage(ctx, canvas);
+  if (elements.topText.value.trim()) drawTextBlock(ctx, canvas, elements.topText.value, 'top');
+  if (elements.bottomText.value.trim()) drawTextBlock(ctx, canvas, elements.bottomText.value, 'bottom');
+}
+
+function resetText() {
+  applyPack(activePack, false);
+}
+
+function readFileAsImage(file) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        originalImage = img;
-        generateBtn.disabled = false;
-      };
-      img.onerror = () => {
-        alert('Failed to load the image. The file may be corrupted.');
-      };
-      img.src = e.target.result;
+    reader.onload = (event) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = event.target.result;
     };
-    reader.onerror = () => {
-      alert('Failed to read the file. Please try again.');
-    };
+    reader.onerror = reject;
     reader.readAsDataURL(file);
+  });
+}
+
+function loadUploadedFile(file) {
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    elements.statusText.textContent = 'Please choose an image file.';
+    return;
   }
-
-  topText.addEventListener('input', () => {
-    if (originalImage) generateMeme();
+  readFileAsImage(file).then((image) => {
+    uploadedImage = image;
+    uploadedName = file.name.replace(/\.[^.]+$/, '');
+    elements.uploadMeta.textContent = `Using ${file.name}.`;
+    elements.statusText.textContent = 'Your custom image is loaded. Edit the text and download when ready.';
+    setSourceMode('upload');
+  }).catch(() => {
+    elements.statusText.textContent = 'That image could not be opened. Try a different file.';
   });
+}
 
-  bottomText.addEventListener('input', () => {
-    if (originalImage) generateMeme();
-  });
+function handleUpload() {
+  loadUploadedFile(elements.imageInput.files[0]);
+}
 
-  fontSize.addEventListener('input', () => {
-    if (originalImage) generateMeme();
-  });
+function downloadMeme() {
+  const base = sourceMode === 'upload' && uploadedName ? uploadedName : activeScene;
+  const suffix = activePack || 'meme';
+  const anchor = document.createElement('a');
+  anchor.href = elements.memeCanvas.toDataURL('image/png');
+  anchor.download = `${base}-${suffix}-meme.png`;
+  anchor.click();
+}
 
-  generateBtn.addEventListener('click', () => {
-    if (originalImage) {
-      generateMeme();
-      previewCard.classList.add('on');
-    }
-  });
+renderScenes();
+renderPacks();
+applyPack('nepa', true);
+elements.fontSizeValue.textContent = `${elements.fontSize.value}%`;
+renderGuide();
+renderMeme();
 
-  function generateMeme() {
-    const canvas = memeCanvas;
-    canvas.width = originalImage.width;
-    canvas.height = originalImage.height;
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx) {
-      alert('Canvas is not supported in your browser.');
-      return;
-    }
-
-    try {
-      // Draw image
-      ctx.drawImage(originalImage, 0, 0);
-
-      // Draw text
-      const size = (canvas.height / 100) * fontSize.value;
-      ctx.font = `bold ${size}px Impact, Arial Black, sans-serif`;
-      ctx.fillStyle = '#fff';
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = size / 8;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-
-      // Draw top text
-      if (topText.value) {
-        const words = topText.value.split(' ');
-        let y = size * 0.5;
-        words.forEach((word, i) => {
-          ctx.strokeText(word, canvas.width / 2, y);
-          ctx.fillText(word, canvas.width / 2, y);
-          y += size;
-        });
-      }
-
-      // Draw bottom text
-      ctx.textBaseline = 'bottom';
-      if (bottomText.value) {
-        const words = bottomText.value.split(' ');
-        let y = canvas.height - size * 0.5;
-        for (let i = words.length - 1; i >= 0; i--) {
-          ctx.strokeText(words[i], canvas.width / 2, y);
-          ctx.fillText(words[i], canvas.width / 2, y);
-          y -= size;
-        }
-      }
-    } catch (e) {
-      alert('Error generating meme. Please try a different image.');
-    }
-  }
-
-  downloadBtn.addEventListener('click', () => {
-    try {
-      memeCanvas.toBlob((blob) => {
-        if (!blob) {
-          alert('Failed to generate the download. Please try again.');
-          return;
-        }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'meme.png';
-        a.click();
-        URL.revokeObjectURL(url);
-      });
-    } catch (e) {
-      alert('Failed to download. Please try again.');
-    }
-  });
+elements.tabButtons.forEach((button) => {
+  button.addEventListener('click', () => setSourceMode(button.dataset.source));
+});
+elements.sceneGrid.addEventListener('click', (event) => {
+  const button = event.target.closest('.scene-btn');
+  if (!button) return;
+  activeScene = button.dataset.scene;
+  renderScenes();
+  renderGuide();
+  renderMeme();
+});
+elements.packGrid.addEventListener('click', (event) => {
+  const button = event.target.closest('.pack-btn');
+  if (!button) return;
+  applyPack(button.dataset.pack, true);
+});
+elements.uploadArea.addEventListener('click', () => elements.imageInput.click());
+elements.uploadArea.addEventListener('dragover', (event) => { event.preventDefault(); elements.uploadArea.classList.add('active'); });
+elements.uploadArea.addEventListener('dragleave', () => elements.uploadArea.classList.remove('active'));
+elements.uploadArea.addEventListener('drop', (event) => {
+  event.preventDefault();
+  elements.uploadArea.classList.remove('active');
+  if (event.dataTransfer.files.length) loadUploadedFile(event.dataTransfer.files[0]);
+});
+elements.imageInput.addEventListener('change', handleUpload);
+[elements.topText, elements.bottomText, elements.textStyle].forEach((input) => {
+  input.addEventListener('input', renderMeme);
+  input.addEventListener('change', renderMeme);
+});
+elements.fontSize.addEventListener('input', () => {
+  elements.fontSizeValue.textContent = `${elements.fontSize.value}%`;
+  renderMeme();
+});
+elements.downloadBtn.addEventListener('click', downloadMeme);
+elements.resetBtn.addEventListener('click', resetText);
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

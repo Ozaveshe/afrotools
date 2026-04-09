@@ -129,24 +129,25 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="interest">Interest</option>
 <option value="rent">Rent (Property)</option>
 <option value="royalties">Royalties</option>
-<option value="commission">Commission / Consultancy</option>
-<option value="professional">Professional Fees</option>
-<option value="construction">Construction / Building</option>
-<option value="contract">Contract / Supply</option>
-<option value="management">Management Fees</option>
-<option value="technical">Technical Fees</option>
-<option value="director">Directors' Fees</option>
+<option value="professional">Commission / Consultancy / Professional Fees</option>
+<option value="goods">Supply of Goods / Materials</option>
+<option value="tower">Co-location / Telecom Tower Services</option>
+<option value="services">Other Services</option>
+<option value="road-construction">Road / Bridge / Building / Power Plant Construction</option>
+<option value="construction">Other Construction Activities</option>
+<option value="brokerage">Brokerage Fees</option>
 </select></div>
 <div><label>Recipient Type</label>
 <select id="recipientType" onchange="updateRate()">
 <option value="company">Nigerian Company</option>
 <option value="individual">Nigerian Individual</option>
-<option value="non-resident">Non-Resident</option>
+<option value="non-resident-company">Non-Resident Company</option>
+<option value="non-resident-individual">Non-Resident Individual</option>
 </select></div>
 </div>
 <div class="row field">
 <div><label>Gross Payment Amount (&#8358;)</label><input type="number" id="amount" value="5000000" min="0" step="100000"></div>
-<div><label>WHT Rate (%)</label><input type="number" id="rate" value="10" min="0" max="100" step="0.5" readonly style="background:#e2e8f0;font-weight:700"></div>
+<div><label>WHT Rate (%)</label><input type="text" id="rate" value="10" readonly style="background:#e2e8f0;font-weight:700"></div>
 </div>
 <button class="btn btn-primary" onclick="calculate()">Calculate WHT</button>
 </div></div>
@@ -162,18 +163,18 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Nigeria WHT Rate Table</span></div>
 <div class="card-body">
 <table class="rate-table" id="rateTable">
-<tr><th>Payment Type</th><th>Company</th><th>Individual</th><th>Non-Resident</th></tr>
-<tr data-type="dividends"><td>Dividends</td><td>10%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="interest"><td>Interest</td><td>10%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="rent"><td>Rent</td><td>10%</td><td>10%</td><td>10%</td></tr>
-<tr data-type="royalties"><td>Royalties</td><td>10%</td><td>5%</td><td>10%</td></tr>
-<tr data-type="commission"><td>Commission</td><td>10%</td><td>5%</td><td>10%</td></tr>
-<tr data-type="professional"><td>Professional Fees</td><td>10%</td><td>5%</td><td>10%</td></tr>
-<tr data-type="construction"><td>Construction</td><td>5%</td><td>5%</td><td>10%</td></tr>
-<tr data-type="contract"><td>Contract/Supply</td><td>5%</td><td>5%</td><td>10%</td></tr>
-<tr data-type="management"><td>Management Fees</td><td>10%</td><td>5%</td><td>10%</td></tr>
-<tr data-type="technical"><td>Technical Fees</td><td>10%</td><td>5%</td><td>10%</td></tr>
-<tr data-type="director"><td>Directors' Fees</td><td>10%</td><td>10%</td><td>10%</td></tr>
+<tr><th>Payment Type</th><th>Resident Co.</th><th>Resident Ind.</th><th>NR Co.</th><th>NR Ind.</th></tr>
+<tr data-type="dividends"><td>Dividends</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr>
+<tr data-type="interest"><td>Interest</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr>
+<tr data-type="rent"><td>Rent / Hire / Lease</td><td>10%</td><td>10%</td><td>10%</td><td>10%</td></tr>
+<tr data-type="royalties"><td>Royalties</td><td>10%</td><td>5%</td><td>10%</td><td>5%</td></tr>
+<tr data-type="professional"><td>Commission / Consultancy / Professional Fees</td><td>5%</td><td>5%</td><td>10%</td><td>10%</td></tr>
+<tr data-type="goods"><td>Supply of Goods / Materials</td><td>2%</td><td>2%</td><td>—</td><td>—</td></tr>
+<tr data-type="tower"><td>Co-location / Tower Services</td><td>2%</td><td>2%</td><td>5%</td><td>5%</td></tr>
+<tr data-type="services"><td>Other Services</td><td>2%</td><td>2%</td><td>5%</td><td>5%</td></tr>
+<tr data-type="road-construction"><td>Road / Bridge / Building / Power Plant Construction</td><td>2%</td><td>2%</td><td>5%</td><td>5%</td></tr>
+<tr data-type="construction"><td>Other Construction Activities</td><td>5%</td><td>5%</td><td>10%</td><td>10%</td></tr>
+<tr data-type="brokerage"><td>Brokerage Fees</td><td>5%</td><td>5%</td><td>10%</td><td>10%</td></tr>
 </table>
 </div></div>
 </div>
@@ -194,7 +195,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <li>Issue credit notes to recipients</li>
 <li>Non-residents: WHT is often final tax</li>
 <li>DTA may reduce rates for non-residents</li>
-<li>Exemption for payments under &#8358;25,000</li>
+<li>2024 regulations add special exemptions and reduced low-margin rates</li>
 </ul>
 </div>
 </div>
@@ -203,7 +204,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="seo-section">
 <h2>Understanding Withholding Tax in Nigeria</h2>
 <p>Withholding Tax (WHT) in Nigeria is an advance payment of income tax that is deducted at source from payments made to individuals and companies. Governed by the Companies Income Tax Act (CITA), Personal Income Tax Act (PITA), and the WHT Regulations, it serves as a collection mechanism to ensure tax compliance and steady government revenue.</p>
-<p>WHT rates vary depending on the type of payment and whether the recipient is a company, individual, or non-resident. For companies, most payment types attract a 10% WHT rate, with construction and supply contracts at 5%. For individuals, rates range from 5% (professional fees, commissions, construction) to 10% (dividends, interest, rent, directors' fees). Non-residents generally face 10% WHT on all payment types, though Double Taxation Agreements may reduce this.</p>
+<p>WHT rates vary depending on the type of payment and whether the recipient is a resident company, resident individual, or non-resident. The 2024 Regulations also introduced lower rates for low-margin transactions such as supply of goods, general services, telecom tower services, and specific construction contracts.</p>
 <p>It's crucial to understand that WHT is not a final tax for Nigerian residents — it's a credit against the recipient's ultimate income tax liability. When filing annual tax returns, companies and individuals can offset WHT credits received during the year against their computed tax. If WHT exceeds the final tax, the excess is refundable (in theory, though FIRS refund processes can be slow in practice).</p>
 <p>For non-residents without a permanent establishment in Nigeria, WHT is typically the final tax on that income. This makes treaty planning important for foreign companies receiving payments from Nigeria — DTAs with countries like the UK, Netherlands, South Africa, and others may reduce WHT rates on dividends, interest, and royalties.</p>
 <p>The payer is legally responsible for deducting and remitting WHT to FIRS within 21 days of deduction. Failure to deduct or late remittance attracts penalties of 10% of the amount not deducted/remitted, plus interest at the Central Bank of Nigeria's lending rate. The payer must also issue a WHT credit note to the recipient as proof of deduction.</p>
@@ -213,7 +214,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <details class="faq-item"><summary>Who is responsible for deducting WHT?</summary><p>The payer (person or company making the payment) is legally responsible for deducting WHT and remitting it to FIRS. The payer must issue a credit note to the recipient and file WHT returns with FIRS.</p></details>
 <details class="faq-item"><summary>Can WHT be reduced under a DTA?</summary><p>Yes. If Nigeria has a Double Taxation Agreement with the non-resident's country, the WHT rate may be reduced. Common treaty rates are 7.5%-15% for dividends and interest. The non-resident must provide a tax residence certificate to claim the reduced rate.</p></details>
 <details class="faq-item"><summary>What is the deadline for remitting WHT to FIRS?</summary><p>WHT must be remitted to FIRS within 21 days of the date of deduction. Late remittance attracts a penalty of 10% of the amount not remitted plus interest at the CBN lending rate. The payer must also file monthly WHT returns alongside the remittance.</p></details>
-<details class="faq-item"><summary>Are there any payments exempt from WHT in Nigeria?</summary><p>Yes. Payments below &#8358;25,000 to individuals are exempt from WHT. Payments to government bodies and agencies are also exempt. Additionally, companies operating in free trade zones may be exempt from WHT on qualifying transactions under the NEPZA Act.</p></details>
+<details class="faq-item"><summary>Are there any payments exempt from WHT in Nigeria?</summary><p>Yes. The 2024 Regulations exempt several transactions, including qualifying imported goods with no Nigerian taxable presence, goods manufactured by the supplier, certain fuel products, insurance premiums, and some low-value small-company deduction scenarios. Check the specific exemption before relying on a nil deduction.</p></details>
 <details class="faq-item"><summary>How do I obtain a WHT credit note?</summary><p>The payer is legally required to issue a WHT credit note to the recipient at the time of deduction. This credit note serves as proof that tax was withheld and is needed when offsetting WHT against your annual tax liability during filing. If the payer fails to issue one, you can report this to FIRS.</p></details>
 <details class="faq-item"><summary>Does WHT apply to e-commerce and digital transactions?</summary><p>Yes. The Finance Act 2023 expanded WHT to cover digital economy transactions in Nigeria. Payments to non-resident digital service providers, including software licensing, streaming platforms, and online advertising, are subject to WHT. The rate is typically 10% for non-residents unless a DTA provides a lower rate.</p></details>
 </section>
@@ -228,24 +229,24 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <script>
 const RATES={
-  dividends:{company:10,individual:10,nonResident:10},
-  interest:{company:10,individual:10,nonResident:10},
-  rent:{company:10,individual:10,nonResident:10},
-  royalties:{company:10,individual:5,nonResident:10},
-  commission:{company:10,individual:5,nonResident:10},
-  professional:{company:10,individual:5,nonResident:10},
-  construction:{company:5,individual:5,nonResident:10},
-  contract:{company:5,individual:5,nonResident:10},
-  management:{company:10,individual:5,nonResident:10},
-  technical:{company:10,individual:5,nonResident:10},
-  director:{company:10,individual:10,nonResident:10}
+  dividends:{company:10,individual:10,'non-resident-company':10,'non-resident-individual':10},
+  interest:{company:10,individual:10,'non-resident-company':10,'non-resident-individual':10},
+  rent:{company:10,individual:10,'non-resident-company':10,'non-resident-individual':10},
+  royalties:{company:10,individual:5,'non-resident-company':10,'non-resident-individual':5},
+  professional:{company:5,individual:5,'non-resident-company':10,'non-resident-individual':10},
+  goods:{company:2,individual:2,'non-resident-company':null,'non-resident-individual':null},
+  tower:{company:2,individual:2,'non-resident-company':5,'non-resident-individual':5},
+  services:{company:2,individual:2,'non-resident-company':5,'non-resident-individual':5},
+  'road-construction':{company:2,individual:2,'non-resident-company':5,'non-resident-individual':5},
+  construction:{company:5,individual:5,'non-resident-company':10,'non-resident-individual':10},
+  brokerage:{company:5,individual:5,'non-resident-company':10,'non-resident-individual':10}
 };
 
 function updateRate(){
   const type=document.getElementById('paymentType').value;
   const recip=document.getElementById('recipientType').value;
-  const key=recip==='non-resident'?'nonResident':recip;
-  document.getElementById('rate').value=RATES[type][key];
+  const rate=RATES[type][recip];
+  document.getElementById('rate').value=rate==null?'N/A':rate;
   // Highlight table row
   document.querySelectorAll('.rate-table tr').forEach(r=>r.classList.remove('active'));
   const row=document.querySelector(`.rate-table tr[data-type="${type}"]`);
@@ -254,7 +255,17 @@ function updateRate(){
 
 function calculate(){
   const amount=+document.getElementById('amount').value;
-  const rate=(+document.getElementById('rate').value)/100;
+  const type=document.getElementById('paymentType').value;
+  const recip=document.getElementById('recipientType').value;
+  const selectedRate=RATES[type][recip];
+  if(selectedRate==null){
+    document.getElementById('resultGrid').innerHTML='';
+    document.getElementById('notes').innerHTML='<strong>Note:</strong> The 2024 Nigeria WHT Regulations do not give a standard deduction rate for this recipient/payment combination in this simplified tool. Review the transaction and any taxable-presence analysis before withholding.';
+    document.getElementById('resultCard').style.display='block';
+    document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  const rate=selectedRate/100;
   const wht=amount*rate;
   const net=amount-wht;
   const fmt=n=>'₦'+Math.round(n).toLocaleString('en');
@@ -266,7 +277,7 @@ function calculate(){
   html+=`<div class="result-box"><div class="num">${(rate*100).toFixed(0)}%</div><div class="lbl">WHT Rate</div></div>`;
 
   document.getElementById('resultGrid').innerHTML=html;
-  document.getElementById('notes').innerHTML=`<strong>Action:</strong> Deduct ${fmt(wht)} from the ${fmt(amount)} payment, remit to FIRS within 21 days, and issue a WHT credit note to the recipient.`;
+  document.getElementById('notes').innerHTML=`<strong>Action:</strong> Deduct ${fmt(wht)} from the ${fmt(amount)} payment, remit to FIRS by the 21st of the following month, and issue a WHT credit note to the recipient.`;
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }

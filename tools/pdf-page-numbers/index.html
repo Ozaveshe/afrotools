@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
@@ -43,7 +43,7 @@
   }
 
   .tool-hero::after {
-    content: '🔢';
+    content: '??';
     position: absolute;
     right: 5%;
     top: 50%;
@@ -417,7 +417,7 @@
           <div>
             <input type="file" id="pdfInput" accept=".pdf" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
             <label for="pdfInput" class="file-input-label">
-              📁 Click or drag & drop a PDF
+              ?? Click or drag & drop a PDF
             </label>
           </div>
         </div>
@@ -504,7 +504,7 @@
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
           <div class="action-row" id="actionRow" style="display:none;">
-            <button class="act-btn" id="downloadBtn">📥 Download</button>
+            <button class="act-btn" id="downloadBtn">?? Download</button>
           </div>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <share-result-button
@@ -519,10 +519,10 @@
         <div class="info-title">Features</div>
         <div class="info-text">
           <ul style="margin:0;padding-left:18px;">
-            <li>✓ Multiple formats</li>
-            <li>✓ 6 positions</li>
-            <li>✓ Custom margins</li>
-            <li>✓ Client-side only</li>
+            <li>? Multiple formats</li>
+            <li>? 6 positions</li>
+            <li>? Custom margins</li>
+            <li>? Client-side only</li>
           </ul>
         </div>
       </div>
@@ -537,7 +537,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">PDF Page Numbers: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools PDF Page Numbers tool adds professional page numbering to any PDF document. Upload your PDF and customise the numbering format, position, font size, and style. Choose from multiple numbering formats including standard numbers (1, 2, 3), Roman numerals (i, ii, iii), and custom prefixes like "Page 1 of 10." Position the page numbers at the top or bottom of each page, aligned to the left, centre, or right. Adjust the font size and starting number to match your document requirements — for example, start numbering from page 3 if your document has a cover page and table of contents. The tool processes each page of your PDF and overlays the page numbers without altering the original content, then produces a new PDF ready for download. This is essential for academic papers, legal documents, business reports, book manuscripts, and any multi-page document that needs organised pagination. All processing is client-side, so your documents remain private and never leave your browser. No software installation or account is needed.</p>
+    <p>The AfroTools PDF Page Numbers tool adds professional page numbering to any PDF document. Upload your PDF and customise the numbering format, position, font size, and style. Choose from multiple numbering formats including standard numbers (1, 2, 3), Roman numerals (i, ii, iii), and custom prefixes like "Page 1 of 10." Position the page numbers at the top or bottom of each page, aligned to the left, centre, or right. Adjust the font size and starting number to match your document requirements � for example, start numbering from page 3 if your document has a cover page and table of contents. The tool processes each page of your PDF and overlays the page numbers without altering the original content, then produces a new PDF ready for download. This is essential for academic papers, legal documents, business reports, book manuscripts, and any multi-page document that needs organised pagination. All processing is client-side, so your documents remain private and never leave your browser. No software installation or account is needed.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
@@ -568,7 +568,7 @@
 </section>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -611,8 +611,12 @@
     });
   });
 
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
   pdfInput.addEventListener('change', (e) => {
-    if (e.target.files[0]?.type === 'application/pdf') {
+    if (isPdfFile(e.target.files[0])) {
       currentFile = e.target.files[0];
       addBtn.disabled = false;
       resultCard.classList.remove('on');
@@ -632,7 +636,7 @@
     e.preventDefault();
     label.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (file?.type === 'application/pdf') {
+    if (isPdfFile(file)) {
       currentFile = file;
       addBtn.disabled = false;
       resultCard.classList.remove('on');
@@ -714,7 +718,7 @@
         // Vertical position
         y = position.startsWith('top') ? height - margin : margin;
 
-        // Horizontal position — manually center/right-align since pdf-lib has no align
+        // Horizontal position � manually center/right-align since pdf-lib has no align
         if (position.includes('center')) {
           x = (width - textWidth) / 2;
         } else if (position.includes('right')) {
@@ -734,10 +738,10 @@
       });
 
       resultPdf = await pdf.save();
-      resultText.textContent = '✓ Page numbers added!';
+      resultText.textContent = '? Page numbers added!';
       actionRow.style.display = 'grid';
     } catch (err) {
-      resultText.textContent = '✗ Error: ' + err.message;
+      resultText.textContent = '? Error: ' + err.message;
     }
     addBtn.disabled = false;
   });

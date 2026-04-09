@@ -1,1 +1,159 @@
-!function(e){"use strict";const t=[{limit:24e3,rate:.1},{limit:8333,rate:.25},{limit:467667,rate:.3},{limit:3e5,rate:.325},{limit:1/0,rate:.35}],a=["First KES 24,000","KES 24,001-32,333","KES 32,334-500,000","KES 500,001-800,000","Above KES 800,000"],n=9e3;function i(e){return.06*Math.min(e,n)+.06*Math.max(0,Math.min(e,108e3)-n)}function r(e,n={}){const r=e,o=!1!==n.nssf?i(r):0,l=!1!==n.shif&&r>0?Math.max(300,.0275*r):0,s=n.ahl?.015*r:0,m=n.voluntaryPension?Math.min(3e4,n.voluntaryPension):0,u=n.prmf?Math.min(15e3,n.prmf):0,f=n.disability?15e4:0,c=n.mortgageInterest?Math.min(3e4,n.mortgageInterest):0,h=Math.max(0,r-o-l-s-m-u-f-c),{tax:S,detail:E}=function(e){let n=Math.max(0,e),i=0,r=0;const o=[];for(let e=0;e<t.length;e++){const l=t[e],s=Math.min(n,l.limit===1/0?n:l.limit),m=s*l.rate;if(r+=m,o.push({label:a[e]||"",rate:100*l.rate,income:s,tax:m,cumulative:r}),i+=m,n-=s,n<=0)break}return{tax:i,detail:o}}(h),d=!1!==n.personalRelief?2400:0,A=n.insurancePremium?Math.min(5e3,.15*n.insurancePremium):0,p=c,x=Math.max(0,S-d-A),y=o+l+s+m+u+x,M=r-y,g=r>0?x/r*100:0,v=function(e){let a=e;for(const e of t){if(a<=e.limit||e.limit===1/0)return 100*e.rate;a-=e.limit}return 35}(h),N=i(r),b=.015*r;return{gross:r,nssf:o,shif:l,ahl:s,pension:m,prmf:u,disabilityExempt:f,taxable:h,grossTax:S,personalRelief:d,insRelief:A,mortRelief:p,paye:x,totalDeductions:y,net:M,netAnnual:12*M,effectiveRate:g,marginalRate:v,bandDetail:E,employerNSSF:N,employerAHL:b,totalEmployerCost:r+N+b}}const o={calculate:r,validate:function(e){return!e||isNaN(e)||e<=0?{valid:!1,error:"Please enter a valid salary amount"}:e>1e8?{valid:!1,error:"Amount exceeds maximum"}:{valid:!0,error:null}},reverseCalc:function(e,t={}){let a=e,n=3*e;for(let i=0;i<50;i++){const i=(a+n)/2,o=r(i,t);if(Math.abs(o.net-e)<1)return i;o.net<e?a=i:n=i}return(a+n)/2},calcNSSF:i,KES_BANDS:t,BAND_LABELS:a,NSSF_LEL:n,NSSF_UEL:108e3,PERSONAL_RELIEF:2400,country:"Kenya",currency:"KES",id:"ke-paye"};e.AfroTools=e.AfroTools||{},e.AfroTools.engines=e.AfroTools.engines||{},e.AfroTools.engines.kePAYE=o}(window);
+!function (window) {
+  "use strict";
+
+  var MONTHLY_BANDS = [
+    { width: 24000, rate: 0.10, label: "First KES 24,000" },
+    { width: 8333, rate: 0.25, label: "KES 24,001-32,333" },
+    { width: 467667, rate: 0.30, label: "KES 32,334-500,000" },
+    { width: 300000, rate: 0.325, label: "KES 500,001-800,000" },
+    { width: Infinity, rate: 0.35, label: "Above KES 800,000" }
+  ];
+
+  var PERSONAL_RELIEF = 2400;
+  var NSSF_LOWER_LIMIT = 9000;
+  var NSSF_UPPER_LIMIT = 108000;
+  var DISABILITY_EXEMPTION = 150000;
+  var MAX_VOLUNTARY_PENSION = 30000;
+  var MAX_PRMF = 15000;
+  var MAX_MORTGAGE_INTEREST = 30000;
+  var MAX_INSURANCE_RELIEF = 5000;
+
+  function calcNssf(gross) {
+    if (gross <= 0) return 0;
+    return 0.06 * Math.min(gross, NSSF_UPPER_LIMIT);
+  }
+
+  function calcProgressiveTax(taxable) {
+    var remaining = Math.max(0, taxable);
+    var totalTax = 0;
+    var detail = [];
+
+    for (var i = 0; i < MONTHLY_BANDS.length; i++) {
+      var band = MONTHLY_BANDS[i];
+      var income = Math.min(remaining, band.width === Infinity ? remaining : band.width);
+      var taxInBand = income * band.rate;
+
+      detail.push({
+        label: band.label,
+        rate: band.rate * 100,
+        income: income,
+        tax: taxInBand,
+        cumulative: totalTax + taxInBand
+      });
+
+      totalTax += taxInBand;
+      remaining -= income;
+
+      if (remaining <= 0) break;
+    }
+
+    return { tax: totalTax, detail: detail };
+  }
+
+  function getMarginalRate(taxable) {
+    var remaining = Math.max(0, taxable);
+
+    for (var i = 0; i < MONTHLY_BANDS.length; i++) {
+      var band = MONTHLY_BANDS[i];
+      var width = band.width === Infinity ? remaining : band.width;
+      if (remaining <= width) return band.rate * 100;
+      remaining -= width;
+    }
+
+    return 35;
+  }
+
+  function calculate(gross, options) {
+    options = options || {};
+
+    var nssf = options.nssf === false ? 0 : calcNssf(gross);
+    var shif = options.shif === false || gross <= 0 ? 0 : Math.max(300, gross * 0.0275);
+    var ahl = options.ahl ? gross * 0.015 : 0;
+    var pension = options.voluntaryPension ? Math.min(MAX_VOLUNTARY_PENSION, options.voluntaryPension) : 0;
+    var prmf = options.prmf ? Math.min(MAX_PRMF, options.prmf) : 0;
+    var disabilityExempt = options.disability ? DISABILITY_EXEMPTION : 0;
+    var mortRelief = options.mortgageInterest ? Math.min(MAX_MORTGAGE_INTEREST, options.mortgageInterest) : 0;
+    var taxable = Math.max(0, gross - nssf - shif - ahl - pension - prmf - disabilityExempt - mortRelief);
+    var taxResult = calcProgressiveTax(taxable);
+    var personalRelief = options.personalRelief === false ? 0 : PERSONAL_RELIEF;
+    var insRelief = options.insurancePremium ? Math.min(MAX_INSURANCE_RELIEF, options.insurancePremium * 0.15) : 0;
+    var paye = Math.max(0, taxResult.tax - personalRelief - insRelief);
+    var totalDeductions = nssf + shif + ahl + pension + prmf + paye;
+    var net = gross - totalDeductions;
+    var employerNssf = calcNssf(gross);
+    var employerAhl = gross * 0.015;
+
+    return {
+      gross: gross,
+      nssf: nssf,
+      shif: shif,
+      ahl: ahl,
+      pension: pension,
+      prmf: prmf,
+      disabilityExempt: disabilityExempt,
+      taxable: taxable,
+      grossTax: taxResult.tax,
+      personalRelief: personalRelief,
+      insRelief: insRelief,
+      mortRelief: mortRelief,
+      paye: paye,
+      totalDeductions: totalDeductions,
+      net: net,
+      netAnnual: net * 12,
+      effectiveRate: gross > 0 ? paye / gross * 100 : 0,
+      marginalRate: getMarginalRate(taxable),
+      bandDetail: taxResult.detail,
+      employerNSSF: employerNssf,
+      employerAHL: employerAhl,
+      totalEmployerCost: gross + employerNssf + employerAhl
+    };
+  }
+
+  var engine = {
+    calculate: calculate,
+    validate: function (gross) {
+      if (!gross || isNaN(gross) || gross <= 0) {
+        return { valid: false, error: "Please enter a valid salary amount" };
+      }
+
+      if (gross > 100000000) {
+        return { valid: false, error: "Amount exceeds maximum" };
+      }
+
+      return { valid: true, error: null };
+    },
+    reverseCalc: function (targetNet, options) {
+      var low = targetNet;
+      var high = targetNet * 3;
+
+      for (var i = 0; i < 50; i++) {
+        var guess = (low + high) / 2;
+        var result = calculate(guess, options);
+
+        if (Math.abs(result.net - targetNet) < 1) {
+          return guess;
+        }
+
+        if (result.net < targetNet) {
+          low = guess;
+        } else {
+          high = guess;
+        }
+      }
+
+      return (low + high) / 2;
+    },
+    calcNSSF: calcNssf,
+    KES_BANDS: MONTHLY_BANDS,
+    NSSF_LEL: NSSF_LOWER_LIMIT,
+    NSSF_UEL: NSSF_UPPER_LIMIT,
+    PERSONAL_RELIEF: PERSONAL_RELIEF,
+    country: "Kenya",
+    currency: "KES",
+    id: "ke-paye"
+  };
+
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.engines = window.AfroTools.engines || {};
+  window.AfroTools.engines.kePAYE = engine;
+}(window);

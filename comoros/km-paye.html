@@ -78,7 +78,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="km-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='km-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -88,7 +90,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/comoros/km-paye" />
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-km-paye.png">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 <style>
@@ -106,14 +108,14 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="https://afrotools.com">AfroTools</a> / <a href="https://afrotools.com/comoros">Comoros</a> / <span>PAYE Calculator</span></div>
     <h1>Comoros PAYE Calculator <em>2025/26</em></h1>
-    <p class="hero-sub">Calculate your monthly take-home pay using DGI progressive tax rates (0%–25%), CNPS contributions, and Comoros employment law. Accurate, free, instant. Generated for the Comorian employment market.</p>
+    <p class="hero-sub">Estimate your monthly take-home pay using DGI progressive tax rates (0%–25%), CNPS contributions, and standard Comoros payroll assumptions.</p>
     <div class="hero-badges">
       <div class="badge b-gold">DGI 0%–25%</div>
       <div class="badge b-green">CNPS 2.5% / 9.5%</div>
       <div class="badge b-blue">Annual Bands</div>
       <div class="badge b-grey">2025/26</div>
     </div>
-    <div class="hero-meta">Updated 10 March 2026 · Source: DGI (dgi.km), CNPS. Informational only.</div>
+    <div class="hero-meta">Updated 6 April 2026 · Source references: DGI (dgi.km), CNPS · Informational estimate.</div>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/comoros/km-vat" style="color:#007AFF;font-weight:600;">Comoros VAT Calculator</a></p>
   </div>
 </div>
@@ -676,23 +678,23 @@ function calcAnnualDGI(annualTaxableIncome) {
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.netAnnual,
+      tax: RESULT.annualDGI,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.netAnnual) + '/yr',
     subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Gross', value: fmt(RESULT.gross) + '/yr' },
+      { label: 'Tax', value: fmt(RESULT.annualDGI) + '/yr' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netAnnual); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -854,7 +856,7 @@ td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-
 .red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 </style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 </head><body>
 <div class="cover">

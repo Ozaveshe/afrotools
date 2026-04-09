@@ -19,10 +19,10 @@
 
 <!-- JSON-LD: WebApplication + FAQPage -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"AfroRates","description":"African central bank rate tracker covering policy rates, inflation, T-bills, and MPC calendars across 54 countries.","url":"https://afrotools.com/tools/afrorates/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"AfroRates","url":"https://afrotools.com/tools/afrorates/","description":"Track African central bank policy rates, inflation, treasury yields, and MPC calendars in one dashboard.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 
 <!-- Fonts -->
@@ -1277,7 +1277,7 @@ body {
        ──────────────────────────────────────────────────────────── -->
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>AfroRates is a comprehensive African currency exchange rate dashboard that tracks live rates for over 40 African currencies against major global currencies. Whether you are sending money home, trading forex, or running a business that deals with cross-border payments, AfroRates gives you real-time mid-market rates updated every five minutes. The dashboard features interactive charts, historical trends, and a built-in rate alert system so you never miss a favourable exchange window. Designed for diaspora professionals, importers, exporters, and anyone who needs accurate, up-to-date African forex data without the clutter of traditional financial terminals.</p>
+<p>AfroRates is AfroTools' African central bank rates dashboard. It tracks policy rates, inflation, real rates, treasury-bill yields, and MPC calendars across 54 countries, making it easier to compare monetary conditions across regions and currency blocs. Use it when you need a continent-wide snapshot of interest-rate conditions rather than a general FX converter.</p>
   </div>
 </section>
   <div class="section" id="faq-section">
@@ -2354,12 +2354,25 @@ body {
     // Update "Last updated" timestamp
     if (json.timestamp) {
       var d = new Date(json.timestamp);
-      document.getElementById('last-updated').textContent =
-        'Last updated: ' + d.toLocaleDateString('en-GB', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric'
-        });
+      var ageDays = Math.floor((Date.now() - d.getTime()) / 86400000);
+      var label = 'Last snapshot: ' + d.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+      if (ageDays > 14) {
+        label += ' · ' + ageDays + ' days old';
+      }
+      if (json._verification && json._verification.verified_count) {
+        label += ' · ' + json._verification.verified_count + ' official records verified';
+      }
+      if (json._verification && json._verification.manual_official_count) {
+        label += ' · ' + json._verification.manual_official_count + ' manual official override';
+        if (json._verification.manual_official_count > 1) {
+          label += 's';
+        }
+      }
+      document.getElementById('last-updated').textContent = label;
     }
 
     // Render all sections

@@ -339,7 +339,7 @@
 
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -390,16 +390,20 @@
   let dragSrcIdx      = null;
   let lastClickIdx    = null;
 
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
   /* ── Drag-drop upload ── */
   dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
   dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove('dragover'); });
   dropZone.addEventListener('drop', e => {
     e.preventDefault();
     dropZone.classList.remove('dragover');
-    const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
+    const files = Array.from(e.dataTransfer.files).filter(isPdfFile);
     if (files.length) loadFile(files[0]);
   });
-  fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); });
+  fileInput.addEventListener('change', () => { if (isPdfFile(fileInput.files[0])) loadFile(fileInput.files[0]); });
 
   /* ── Load PDF ── */
   async function loadFile(file) {

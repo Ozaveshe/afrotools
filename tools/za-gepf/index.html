@@ -438,7 +438,7 @@ details[open] .gepf-faq summary::after { content: '−'; }
             <div>
               <label class="gepf-label" for="g-gratuity">Gratuity Option</label>
               <select id="g-gratuity" class="gepf-select">
-                <option value="max">Maximum Gratuity (1/3 commuted)</option>
+                <option value="max">Standard GEPF Gratuity Estimate</option>
                 <option value="none">No Gratuity (Full Annuity)</option>
               </select>
             </div>
@@ -597,7 +597,7 @@ details[open] .gepf-faq summary::after { content: '−'; }
             </div>
             <div id="gepf-deduct-breakdown"></div>
             <div class="gepf-callout gepf-callout-info" style="margin-top:14px">
-              <strong>Note:</strong> PAYE is an estimate using 2025/26 SARS brackets with primary rebate only.
+              <strong>Note:</strong> PAYE is an estimate using SARS tax tables effective 1 March 2026 (2027 tax year), with primary rebate only.
               Actual tax may differ with medical credits, retirement deductions, and other allowances.
               GEMS contributions shown are approximate 2025 member rates.
             </div>
@@ -671,7 +671,7 @@ details[open] .gepf-faq summary::after { content: '−'; }
       </div>
 
       <div class="gepf-info-card">
-        <h4>Retirement Lump Sum Tax (2025)</h4>
+        <h4>Retirement Lump Sum Tax</h4>
         <ul>
           <li>First R550,000 — <strong>0%</strong></li>
           <li>R550,001 – R770,000 — <strong>18%</strong></li>
@@ -1069,5 +1069,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script>
+(function () {
+  "use strict";
+
+  function updateStaticCopy() {
+    var formula = document.querySelector('.gepf-formula');
+    if (formula) {
+      formula.innerHTML = 'Annual Annuity<br>= (Salary &times; Service Years &divide; 55) + R360<br><br>Monthly Pension<br>= Annual Annuity &divide; 12<br><br>Gratuity (lump sum)<br>= Salary &times; Service Years &times; 5.85%';
+    }
+
+    Array.from(document.querySelectorAll('p')).forEach(function (p) {
+      if (p.textContent.indexOf('Accrual factor is 1/55') !== -1) {
+        p.textContent = 'GEPF retirement benefits are typically expressed as a gratuity plus annuity, not a one-third commutation of a single pension figure.';
+      }
+      if (p.textContent.indexOf('Unlike private retirement funds, GEPF is a defined benefit scheme') !== -1) {
+        p.innerHTML = 'Unlike private retirement funds, GEPF is a <strong>defined benefit</strong> scheme: your retirement benefit is determined by a formula linked to pensionable salary and service, not by investment returns on an individual account. This means the government bears the investment risk, not you. Your benefit is guaranteed regardless of market conditions.';
+      }
+      if (p.textContent.indexOf('At retirement, members can commute') !== -1) {
+        p.textContent = 'At retirement, GEPF generally pays a gratuity plus a monthly annuity. A practical estimate uses a gratuity of 5.85% of final salary for each year of pensionable service and an annual annuity of salary × service ÷ 55 plus R360, subject to the fund rules and any early-retirement actuarial reduction. GEPF also grants annual pension increases, targeting CPI minus 0.5%.';
+      }
+    });
+
+    Array.from(document.querySelectorAll('details')).forEach(function (detail) {
+      var summary = detail.querySelector('summary');
+      if (summary && summary.textContent.indexOf('How is my GEPF monthly pension calculated?') !== -1) {
+        var body = detail.querySelector('p');
+        if (body) {
+          body.textContent = 'A practical estimate uses two parts: gratuity = annual pensionable salary × years of service × 5.85%, and annual annuity = annual pensionable salary × years of service ÷ 55 + R360. Example: R45,000/month salary gives annual salary of R540,000. At 25 years, estimated gratuity is about R789,750 and annual annuity is about R245,815, or roughly R20,485/month before tax.';
+        }
+      }
+    });
+  }
+
+  var originalCalculateAll = window.gepfCalculateAll;
+  window.gepfCalculateAll = function () {
+    originalCalculateAll();
+
+    var note = document.getElementById('gepf-pension-note');
+    var grid = document.getElementById('gepf-pension-grid');
+
+    if (note) {
+      note.innerHTML = '<strong>Note:</strong> This estimate uses the GEPF gratuity-plus-annuity approach on annual pensionable salary. Actual benefits depend on your specific conditions of service, fund rules, and GEPF actuarial calculations.';
+    }
+
+    if (grid) {
+      grid.innerHTML = grid.innerHTML
+        .replace('Monthly Pension (After Gratuity)', 'Estimated Monthly Annuity')
+        .replace('Gratuity (Tax-Advantaged Lump Sum)', 'Estimated Gratuity')
+        .replace('Full Pension Before Commutation', 'Estimated Annual Annuity');
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    updateStaticCopy();
+    if (typeof window.gepfCalculateAll === 'function') {
+      window.gepfCalculateAll();
+    }
+  });
+}());
+</script>
 </body>
 </html>

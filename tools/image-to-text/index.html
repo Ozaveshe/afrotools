@@ -231,6 +231,58 @@
     box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
   }
 
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .template-btn {
+    padding: 10px 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .template-btn:hover {
+    border-color: var(--afro-blue);
+  }
+
+  .template-btn.active {
+    border-color: var(--afro-blue);
+    background: var(--afro-blue);
+    color: #fff;
+  }
+
+  .context-note {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    color: #244d2c;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  .context-note strong {
+    color: #0d2813;
+  }
+
+  .file-meta {
+    margin-top: 12px;
+    font-size: 0.78rem;
+    color: #6B8CAE;
+    line-height: 1.6;
+  }
+
   .calc-btn {
     width: 100%;
     padding: 14px;
@@ -307,11 +359,13 @@
     max-height: 300px;
     overflow-y: auto;
     margin-bottom: 12px;
+    white-space: pre-wrap;
   }
 
   .action-row {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
 
   .act-btn {
@@ -425,7 +479,7 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Image to <em>Text</em></h1>
-    <p class="hero-sub">Extract text from images using OCR. Supports English, French, Arabic, and Swahili. Perfect for receipts, documents, signs.</p>
+    <p class="hero-sub">Extract text from receipts, school notices, screenshots, invoices, and multilingual documents using OCR in your browser.</p>
     <div class="hero-badges">
       <span class="badge b-green">No Upload</span>
       <span class="badge b-green">Client-side</span>
@@ -447,6 +501,7 @@
           <label for="imageInput" class="file-input-label">
             📸 Click or drag & drop an image
           </label>
+          <div class="file-meta" id="fileMeta">Best for receipts, school notices, invoices, screenshots, and multilingual admin documents.</div>
         </div>
       </div>
 
@@ -456,6 +511,12 @@
           <span class="card-title">Language</span>
         </div>
         <div class="card-body">
+          <div class="template-grid">
+            <button type="button" class="template-btn active" data-task="receipt">Receipt / Expense</button>
+            <button type="button" class="template-btn" data-task="school">School Notice</button>
+            <button type="button" class="template-btn" data-task="french">French Document</button>
+            <button type="button" class="template-btn" data-task="arabic">Arabic Sign</button>
+          </div>
           <div class="field">
             <label class="f-label-text">Select Language</label>
             <select class="f-input" id="languageSelect">
@@ -465,6 +526,7 @@
               <option value="swa">Swahili</option>
             </select>
           </div>
+          <div class="context-note" id="taskNote"><strong>Receipt / Expense:</strong> Use clear photos of supermarket receipts, fuel slips, POS printouts, and invoice screenshots for the cleanest extraction.</div>
 
           <button class="calc-btn" id="extractBtn" disabled>Extract Text</button>
           <div class="progress-section" id="progressSection" style="display:none;">
@@ -485,8 +547,16 @@
         </div>
         <div class="card-body">
           <div class="extracted-text" id="extractedText"></div>
+          <div class="template-grid" style="margin-bottom:12px;">
+            <button type="button" class="template-btn active" data-output="clean">Cleaned Text</button>
+            <button type="button" class="template-btn" data-output="raw">Original OCR</button>
+            <button type="button" class="template-btn" data-output="lines">Line List</button>
+            <button type="button" class="template-btn" data-output="amounts">Amounts Only</button>
+          </div>
+          <div class="context-note" id="outputNote"><strong>Cleaned Text:</strong> Removes messy spacing while keeping the content readable for notes, emails, and document drafting.</div>
           <div class="action-row">
-            <button class="act-btn" id="copyBtn">📋 Copy Text</button>
+            <button class="act-btn" id="copyBtn">📋 Copy Current</button>
+            <button class="act-btn" id="downloadTextBtn">📥 TXT</button>
           </div>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <share-result-button
@@ -501,10 +571,10 @@
         <div class="info-title">How It Works</div>
         <div class="info-text">
           <ul style="margin:0;padding-left:16px;">
-            <li>Upload any image</li>
-            <li>Select language</li>
+            <li>Upload receipts, notices, forms, or screenshots</li>
+            <li>Select the closest language</li>
             <li>Text extracted locally</li>
-            <li>Copy or edit</li>
+            <li>Switch between cleaned text, line list, or amounts-only view</li>
           </ul>
         </div>
       </div>
@@ -557,6 +627,8 @@
 <script>
   let currentImage = null;
   let extractedText = '';
+  let currentTask = 'receipt';
+  let displayMode = 'clean';
 
   const imageInput = document.getElementById('imageInput');
   const label = document.querySelector('.file-input-label');
@@ -565,9 +637,72 @@
   const resultCard = document.getElementById('resultCard');
   const extractedTextDiv = document.getElementById('extractedText');
   const copyBtn = document.getElementById('copyBtn');
+  const downloadTextBtn = document.getElementById('downloadTextBtn');
+  const outputButtons = document.querySelectorAll('[data-output]');
+  const outputNote = document.getElementById('outputNote');
   const progressSection = document.getElementById('progressSection');
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
+  const fileMeta = document.getElementById('fileMeta');
+  const taskButtons = document.querySelectorAll('[data-task]');
+  const taskNote = document.getElementById('taskNote');
+  const TASK_PRESETS = {
+    receipt: { language: 'eng', view: 'amounts', label: 'Receipt / Expense', note: 'Use clear photos of supermarket receipts, fuel slips, POS printouts, and invoice screenshots for the cleanest extraction.' },
+    school: { language: 'eng', view: 'lines', label: 'School Notice', note: 'Great for timetables, result notices, handouts, and campus announcements shared as screenshots.' },
+    french: { language: 'fra', view: 'clean', label: 'French Document', note: 'Best for francophone forms, public notices, and scanned paperwork from West and Central Africa.' },
+    arabic: { language: 'ara', view: 'raw', label: 'Arabic Sign', note: 'Use for Arabic signs, notices, shop boards, and printed forms with good contrast and straight framing.' }
+  };
+  const OUTPUT_MODES = {
+    clean: { label: 'Cleaned Text', note: 'Removes messy spacing while keeping the content readable for notes, emails, and document drafting.' },
+    raw: { label: 'Original OCR', note: 'Shows the OCR output exactly as detected, which is useful when you want the raw scan result.' },
+    lines: { label: 'Line List', note: 'Breaks the result into scan-friendly lines for school notices, handouts, and structured announcements.' },
+    amounts: { label: 'Amounts Only', note: 'Pulls out money figures and obvious numeric values from receipts, invoices, and expense screenshots.' }
+  };
+
+  function normalizeText(text) {
+    return String(text || '')
+      .replace(/\r/g, '')
+      .split('\n')
+      .map(line => line.replace(/[ \t]+/g, ' ').trim())
+      .filter(Boolean)
+      .join('\n');
+  }
+
+  function getAmountsOnly(text) {
+    const source = String(text || '');
+    if (!source.trim()) return '';
+    const matches = source.match(/\b(?:NGN|GHS|KES|UGX|TZS|RWF|ZAR|USD|EUR|KSh|USh|Shs|GBP)?\s?\d[\d,]*(?:\.\d{2})?\b/g) || [];
+    const cleaned = Array.from(new Set(matches.map(item => item.trim()).filter(Boolean)));
+    return cleaned.length ? cleaned.join('\n') : 'No clear monetary or numeric values found.';
+  }
+
+  function getDisplayedText() {
+    if (!extractedText || !String(extractedText).trim()) return '';
+    if (displayMode === 'raw') return String(extractedText).trim();
+    if (displayMode === 'lines') {
+      const lines = normalizeText(extractedText).split('\n').filter(Boolean);
+      return lines.map(line => '• ' + line).join('\n');
+    }
+    if (displayMode === 'amounts') return getAmountsOnly(extractedText);
+    return normalizeText(extractedText);
+  }
+
+  function setDisplayMode(mode) {
+    displayMode = OUTPUT_MODES[mode] ? mode : 'clean';
+    outputButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.output === displayMode));
+    outputNote.innerHTML = '<strong>' + OUTPUT_MODES[displayMode].label + ':</strong> ' + OUTPUT_MODES[displayMode].note;
+    extractedTextDiv.textContent = getDisplayedText();
+  }
+
+  function applyTaskPreset(key) {
+    const preset = TASK_PRESETS[key];
+    if (!preset) return;
+    currentTask = key;
+    languageSelect.value = preset.language;
+    taskButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.task === key));
+    taskNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
+    setDisplayMode(preset.view);
+  }
 
   imageInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
@@ -585,8 +720,10 @@
     }
 
     currentImage = file;
+    extractedText = '';
     extractBtn.disabled = false;
     resultCard.classList.remove('on');
+    fileMeta.textContent = 'Selected file: ' + file.name + ' • ' + (file.size / 1024).toFixed(1) + ' KB';
   });
 
   label.addEventListener('dragover', (e) => {
@@ -604,10 +741,20 @@
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
       currentImage = file;
+      extractedText = '';
       imageInput.files = e.dataTransfer.files;
       extractBtn.disabled = false;
       resultCard.classList.remove('on');
+      fileMeta.textContent = 'Selected file: ' + file.name + ' • ' + (file.size / 1024).toFixed(1) + ' KB';
     }
+  });
+
+  taskButtons.forEach(btn => {
+    btn.addEventListener('click', () => applyTaskPreset(btn.dataset.task));
+  });
+
+  outputButtons.forEach(btn => {
+    btn.addEventListener('click', () => setDisplayMode(btn.dataset.output));
   });
 
   extractBtn.addEventListener('click', async () => {
@@ -640,7 +787,7 @@
 
         setTimeout(() => {
           progressSection.style.display = 'none';
-          extractedTextDiv.textContent = extractedText;
+          setDisplayMode(displayMode);
           resultCard.classList.add('on');
           extractBtn.disabled = false;
         }, 500);
@@ -659,15 +806,29 @@
   });
 
   copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(extractedText).then(() => {
+    navigator.clipboard.writeText(getDisplayedText()).then(() => {
       copyBtn.textContent = '✓ Copied!';
       setTimeout(() => {
-        copyBtn.textContent = '📋 Copy Text';
+        copyBtn.textContent = '📋 Copy Current';
       }, 2000);
     }).catch(() => {
       alert('Failed to copy to clipboard. Please select and copy the text manually.');
     });
   });
+
+  downloadTextBtn.addEventListener('click', () => {
+    const text = getDisplayedText();
+    if (!text) return;
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = currentTask + '-' + displayMode + '-ocr.txt';
+    link.click();
+    URL.revokeObjectURL(url);
+  });
+
+  applyTaskPreset('receipt');
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

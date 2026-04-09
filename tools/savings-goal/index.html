@@ -775,8 +775,13 @@ function simulate(goal,current,monthlyDeposit,annualRate,annualInflation,increas
 }
 
 function solveForMonthly(goal,current,annualRate,annualInflation,months,increaseRate){
-  // Iterative solver
-  var low=0,high=goal*2,mid,sim;
+  // Iterative solver with adaptive upper bound for short or high-inflation timelines.
+  var low=0,high=Math.max(goal,1),mid,sim;
+  sim=simulate(goal,current,high,annualRate,annualInflation,increaseRate,months,'balance');
+  while(sim.balance<sim.adjustedGoal&&high<goal*1000){
+    high*=2;
+    sim=simulate(goal,current,high,annualRate,annualInflation,increaseRate,months,'balance');
+  }
   for(var i=0;i<50;i++){
     mid=(low+high)/2;
     sim=simulate(goal,current,mid,annualRate,annualInflation,increaseRate,months,'balance');

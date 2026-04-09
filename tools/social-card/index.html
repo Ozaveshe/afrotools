@@ -123,6 +123,52 @@
     border: 1px solid rgba(0, 113, 227, 0.38);
   }
 
+  .upgrade-note {
+    max-width: 1200px;
+    margin: 18px auto 0;
+    padding: 0 24px;
+  }
+
+  .upgrade-note-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 18px;
+    padding: 16px 18px;
+    border: 1px solid #DBEAFE;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #F5F9FF, #FFFFFF);
+  }
+
+  .upgrade-note-copy strong {
+    display: block;
+    color: #0f172a;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .upgrade-note-copy p {
+    margin: 0;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .upgrade-note-box a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: #0f172a;
+    color: #fff;
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
   .tool-main {
     padding: 28px 0 72px;
   }
@@ -432,6 +478,16 @@
   </div>
 </div>
 
+<div class="upgrade-note">
+  <div class="upgrade-note-box">
+    <div class="upgrade-note-copy">
+      <strong>Need a broader graphics workflow?</strong>
+      <p>Use this page for quick promo cards and announcements. For layered layouts, creator templates, and reusable campaign graphics, switch to CreatorCanvas.</p>
+    </div>
+    <a href="/tools/creator-canvas/">Open CreatorCanvas</a>
+  </div>
+</div>
+
 <div class="tool-main">
   <div class="tool-main-inner">
     <div>
@@ -446,6 +502,23 @@
             <button class="template-btn" data-template="linkedin">LinkedIn</button>
             <button class="template-btn" data-template="whatsapp">WhatsApp</button>
             <button class="template-btn" data-template="instagram">Instagram</button>
+          </div>
+          <p style="font-size:0.78rem;color:#64748b;line-height:1.6;">Start with the platform size, then load a local-use card for promos, launches, church programs, training cohorts, and market updates.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">African Starters</span>
+        </div>
+        <div class="card-body">
+          <div class="template-grid">
+            <button class="template-btn starter-btn active" data-preset="market-day">Market Day</button>
+            <button class="template-btn starter-btn" data-preset="church-program">Church Program</button>
+            <button class="template-btn starter-btn" data-preset="product-drop">Product Drop</button>
+            <button class="template-btn starter-btn" data-preset="creator-quote">Quote Card</button>
+            <button class="template-btn starter-btn" data-preset="bootcamp">Bootcamp</button>
+            <button class="template-btn starter-btn" data-preset="funding-update">Funding Update</button>
           </div>
         </div>
       </div>
@@ -469,8 +542,13 @@
           <div class="field">
             <label class="f-label-text">Background Color</label>
             <div class="color-row">
-              <input type="color" class="color-input" id="bgColor" value="var(--color-primary)">
+              <input type="color" class="color-input" id="bgColor" value="#007AFF">
             </div>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text">Brand / Footer</label>
+            <input type="text" class="f-input" id="brandLabel" placeholder="e.g. Built for East Africa founders" value="Built for African creators">
           </div>
 
           <button class="calc-btn" id="generateBtn">Generate Card</button>
@@ -487,8 +565,10 @@
         <div class="card-body">
           <div class="preview">
             <div class="card-preview" id="cardPreview" style="background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);width:100%;height:auto;min-height:200px;">
+              <div id="previewTag" style="display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.18);font-size:0.68rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;">Twitter/X</div>
               <h3 id="previewTitle">AfroTools</h3>
               <p id="previewMessage">Create amazing content</p>
+              <div id="previewBrand" style="margin-top:18px;font-size:0.72rem;font-weight:700;letter-spacing:0.04em;opacity:0.9;">Built for African creators</div>
             </div>
           </div>
           <div class="action-row">
@@ -576,11 +656,75 @@
   const cardTitle = document.getElementById('cardTitle');
   const cardMessage = document.getElementById('cardMessage');
   const bgColor = document.getElementById('bgColor');
+  const brandLabel = document.getElementById('brandLabel');
   const generateBtn = document.getElementById('generateBtn');
   const cardPreview = document.getElementById('cardPreview');
   const previewTitle = document.getElementById('previewTitle');
   const previewMessage = document.getElementById('previewMessage');
+  const previewTag = document.getElementById('previewTag');
+  const previewBrand = document.getElementById('previewBrand');
   const downloadBtn = document.getElementById('downloadBtn');
+  const starterButtons = document.querySelectorAll('.starter-btn');
+  const platformLabels = {
+    twitter: 'Twitter/X',
+    linkedin: 'LinkedIn',
+    whatsapp: 'WhatsApp',
+    instagram: 'Instagram'
+  };
+  const starterPresets = {
+    'market-day': {
+      template: 'whatsapp',
+      title: 'Saturday Market Day',
+      message: 'Fresh produce, fabric, and home goods. Share this card across WhatsApp groups before sunrise.',
+      color: '#15803D',
+      brand: 'For local traders and community sellers'
+    },
+    'church-program': {
+      template: 'instagram',
+      title: 'Revival Night',
+      message: 'Worship, prayer, and teaching this Friday at 6 PM. Save and share with your church network.',
+      color: '#4338CA',
+      brand: 'Built for church and fellowship teams'
+    },
+    'product-drop': {
+      template: 'instagram',
+      title: 'New Drop Live',
+      message: 'Announce a fresh collection, food menu, or beauty launch with a clean promo card.',
+      color: '#EA580C',
+      brand: 'Great for fashion, beauty, and product brands'
+    },
+    'creator-quote': {
+      template: 'twitter',
+      title: 'Creator Note',
+      message: 'Turn a clear insight, quote, or lesson into a branded card your audience can repost.',
+      color: '#0F766E',
+      brand: 'For creators, coaches, and storytellers'
+    },
+    'bootcamp': {
+      template: 'linkedin',
+      title: 'Cohort Applications Open',
+      message: 'Share programme dates, mentors, and key outcomes for your next training intake.',
+      color: '#0369A1',
+      brand: 'Perfect for academies and tech training'
+    },
+    'funding-update': {
+      template: 'linkedin',
+      title: 'Funding Update',
+      message: 'Highlight traction, expansion, or a big milestone with a card that reads professionally.',
+      color: '#7C3AED',
+      brand: 'Made for founders and startup teams'
+    }
+  };
+
+  function darken(hex, amount) {
+    var clean = (hex || '').replace('#', '');
+    if (clean.length !== 6) return '#003B8F';
+    var num = parseInt(clean, 16);
+    var r = Math.max(0, (num >> 16) - amount);
+    var g = Math.max(0, ((num >> 8) & 255) - amount);
+    var b = Math.max(0, (num & 255) - amount);
+    return '#' + [r, g, b].map(function(v) { return v.toString(16).padStart(2, '0'); }).join('');
+  }
 
   templateButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -594,11 +738,31 @@
   cardTitle.addEventListener('input', updatePreview);
   cardMessage.addEventListener('input', updatePreview);
   bgColor.addEventListener('change', updatePreview);
+  brandLabel.addEventListener('input', updatePreview);
+
+  starterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      starterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      var preset = starterPresets[btn.dataset.preset];
+      if (!preset) return;
+      currentTemplate = preset.template;
+      templateButtons.forEach(b => b.classList.toggle('active', b.dataset.template === currentTemplate));
+      cardTitle.value = preset.title;
+      cardMessage.value = preset.message;
+      bgColor.value = preset.color;
+      brandLabel.value = preset.brand;
+      updatePreview();
+    });
+  });
 
   function updatePreview() {
     previewTitle.textContent = cardTitle.value || 'Your Title';
     previewMessage.textContent = cardMessage.value || 'Your message';
-    cardPreview.style.background = bgColor.value;
+    previewTag.textContent = platformLabels[currentTemplate] || 'Social';
+    previewBrand.textContent = brandLabel.value || 'Built for African creators';
+    cardPreview.style.background = 'linear-gradient(135deg,' + bgColor.value + ',' + darken(bgColor.value, 72) + ')';
+    cardPreview.style.boxShadow = '0 14px 34px rgba(15, 23, 42, 0.18)';
   }
 
   generateBtn.addEventListener('click', updatePreview);
@@ -621,6 +785,8 @@
       alert('Failed to generate the card image. Please try again.');
     }
   });
+
+  updatePreview();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

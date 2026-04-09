@@ -27,7 +27,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Niger PAYE Calculator 2025/26","url":"https://afrotools.com/niger/ne-paye","description":"Calculate Niger take-home pay using 2025/26 DGI progressive PAYE rates and CNSS social security contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Niger PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Nine monthly bands under DGI: XOF 0–25,000 at 0%; 25,001–50,000 at 1%; 50,001–80,000 at 2%; 80,001–120,000 at 7.5%; 120,001–200,000 at 11%; 200,001–500,000 at 16%; 500,001–1,000,000 at 22%; 1,000,001–2,000,000 at 30%; above 2,000,000 at 35%. Annual tax-free threshold: XOF 300,000."}},{"@type":"Question","name":"What is CNSS in Niger?","acceptedAnswer":{"@type":"Answer","text":"CNSS (Caisse Nationale de Sécurité Sociale) is Niger's social security fund. The employee contribution rate is 5.25% of gross salary. CNSS is deductible from gross pay before calculating income tax (IRPP/PAYE)."}},{"@type":"Question","name":"How is Niger PAYE administered?","acceptedAnswer":{"@type":"Answer","text":"Niger's personal income tax (IRPP) is administered by DGI (Direction Générale des Impôts). Employers withhold tax monthly and remit to DGI. The currency is the West African CFA franc (XOF), shared among WAEMU member states and fixed to EUR at 655.957."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Niger PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Nine monthly bands under DGI: XOF 0–25,000 at 0%; 25,001–50,000 at 1%; 50,001–80,000 at 2%; 80,001–120,000 at 7.5%; 120,001–200,000 at 11%; 200,001–500,000 at 16%; 500,001–1,000,000 at 22%; 1,000,001–2,000,000 at 30%; above 2,000,000 at 35%. Annual tax-free threshold: XOF 300,000."}},{"@type":"Question","name":"What is CNSS in Niger?","acceptedAnswer":{"@type":"Answer","text":"CNSS (Caisse Nationale de Sécurité Sociale) is Niger's social security fund. The employee retirement contribution rate is 5.25% and the pension branch applies within the official annual ceiling of XOF 6,000,000. Employer social charges are higher than the employee rate because they also include family benefits, work-injury cover, and the ANPE contribution."}},{"@type":"Question","name":"How is Niger PAYE administered?","acceptedAnswer":{"@type":"Answer","text":"Niger's personal income tax (IRPP) is administered by DGI (Direction Générale des Impôts). Employers withhold tax monthly and remit to DGI. The currency is the West African CFA franc (XOF), shared among WAEMU member states and fixed to EUR at 655.957."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -77,7 +77,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="ne-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='ne-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -124,7 +126,7 @@
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
   <div class="amendment-bar-inner">
-    <p><strong>2025/26 Key Facts:</strong> IRPP bands — tax-free threshold <strong>XOF 25,000/month (XOF 300,000/year)</strong>. Top rate <strong>35% above XOF 2,000,000/month</strong>. CNSS employee contribution <strong>5.25%</strong>, deductible from taxable income. Nine progressive bands. Currency: West African CFA franc (XOF), fixed to EUR at 655.957.</p>
+<p><strong>2025/26 Key Facts:</strong> IRPP bands — tax-free threshold <strong>XOF 25,000/month (XOF 300,000/year)</strong>. Top rate <strong>35% above XOF 2,000,000/month</strong>. CNSS employee retirement contribution <strong>5.25%</strong> is deductible before IRPP and applies within the official <strong>XOF 6,000,000 annual ceiling</strong> (about XOF 500,000/month). Standard employer social charges total about <strong>16.9%</strong>. Currency: West African CFA franc (XOF), fixed to EUR at 655.957.</p>
   </div>
 </div>
 
@@ -141,12 +143,12 @@
         </div>
         <div class="card-body">
 
-          <!-- SECTOR SELECTOR -->
+          <!-- EMPLOYMENT SCHEME -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
+            <div class="f-label"><span class="f-label-text">Employment Scheme</span><span class="f-hint">CNSS base case or detached civil servant</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (CNSS)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (CNSS)</button>
+              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Salary Worker</button>
+              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Detached Civil Servant</button>
             </div>
           </div>
 
@@ -183,14 +185,14 @@
             <div class="toggles">
               <div class="tog on" data-tog="nssf" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label" id="nssfLabel">CNSS (5.25%)</div><div class="tog-rate">5.25% employee — tax-deductible</div></div>
+                <div><div class="tog-label" id="nssfLabel">CNSS (5.25%)</div><div class="tog-rate">5.25% employee retirement — capped at XOF 500,000 base</div></div>
               </div>
               <div class="tog" data-tog="secondary" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div><div class="tog-label">Secondary Employment</div><div class="tog-rate">Flat 30% no deductions</div></div>
               </div>
             </div>
-            <p class="f-note">CNSS employee contribution (5.25%) is fully deductible from taxable income before IRPP is calculated. Employer CNSS (15.4%) is an additional cost. No SDL or WCF in Niger.</p>
+            <p class="f-note" id="schemeNote">Salary-worker CNSS uses a 5.25% employee retirement deduction and standard employer social charges of about 16.9%, both within the official XOF 6,000,000 annual ceiling. Detached civil servants use a special employer-only 10.15% case in the CNSS employer guide. No SDL or WCF in Niger.</p>
           </div>
 
           <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
@@ -300,7 +302,7 @@
           <div class="band-row"><span class="band-range">XOF 500,001 – 1,000,000</span><span class="band-rate">22% on excess above 500,000</span></div>
           <div class="band-row"><span class="band-range">XOF 1,000,001 – 2,000,000</span><span class="band-rate">30% on excess above 1,000,000</span></div>
           <div class="band-row"><span class="band-range">Above XOF 2,000,000</span><span class="band-rate">35% on excess above 2,000,000</span></div>
-          <p class="band-note">Calculated monthly on taxable income (gross minus CNSS). Annual tax-free threshold: XOF 300,000. CNSS employee contribution (5.25%) deductible before IRPP calculation.</p>
+<p class="band-note">Calculated monthly on taxable income (gross minus deductible employee CNSS retirement contribution when applicable). Annual tax-free threshold: XOF 300,000. Niger CNSS retirement contributions are subject to an official annual ceiling of XOF 6,000,000.</p>
         </div>
       </div>
 
@@ -311,9 +313,9 @@
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">Employee CNSS</span><span class="band-rate">5.25% of gross salary</span></div>
-          <div class="band-row"><span class="band-range">Employer CNSS</span><span class="band-rate">15.4% of gross salary</span></div>
-          <p class="band-note">CNSS (Caisse Nationale de Sécurité Sociale) employee contribution (5.25%) is deductible from taxable income before IRPP is calculated. Administered by DGI Niger.</p>
+<div class="band-row"><span class="band-range">Employee CNSS retirement</span><span class="band-rate">5.25% up to XOF 500,000/month equivalent</span></div>
+<div class="band-row"><span class="band-range">Employer social charges</span><span class="band-rate">16.9% standard salary-worker case</span></div>
+<p class="band-note">CNSS (Caisse Nationale de Sécurité Sociale) employee retirement contribution is deductible from taxable income before IRPP. The CNSS employer guide also shows a detached-civil-servant case with employer-only 10.15% charges.</p>
         </div>
       </div>
 
@@ -431,13 +433,13 @@
     <div class="ng-guide-grid">
       <div class="ng-guide-col">
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Niger's personal income tax on employment (IRPP — Impôt sur le Revenu des Personnes Physiques) is administered by DGI (Direction Générale des Impôts). The system uses nine monthly progressive bands from 0% to 35%, making it one of the most graduated structures in WAEMU. Tax is calculated on taxable income after deducting the CNSS employee contribution (5.25%).</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Niger's personal income tax on employment (IRPP — Impôt sur le Revenu des Personnes Physiques) is administered by DGI (Direction Générale des Impôts). The system uses nine monthly progressive bands from 0% to 35%, making it one of the most graduated structures in WAEMU. Tax is calculated on taxable income after deducting the employee CNSS retirement contribution when the salary-worker CNSS case applies.</p>
         </div>
         <div class="ng-guide-card">
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Niger uses the West African CFA franc (XOF), shared with Mali, Senegal, Côte d'Ivoire, Burkina Faso, and other WAEMU members. XOF is fixed to the euro at 655.957. The tax-free threshold is XOF 25,000/month (XOF 300,000/year), relatively low but partly offset by the very low initial rates of 1% and 2% in the early bands.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">CNSS (Caisse Nationale de Sécurité Sociale) collects social security at 5.25% of gross salary from employees. This contribution is deductible from gross before IRPP calculation. Employer CNSS contributions are additional. Niger's nine-band structure differs from most WAEMU peers which typically use fewer, broader bands.</p>
+<p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">CNSS (Caisse Nationale de Sécurité Sociale) collects a 5.25% employee retirement contribution, deductible from gross before IRPP calculation, plus employer charges for pensions, family benefits, work-injury cover, and ANPE. The CNSS employer guide applies an official annual ceiling of XOF 6,000,000 to the contribution base. Niger's nine-band structure differs from most WAEMU peers which typically use fewer, broader bands.</p>
         </div>
         <div class="ng-guide-card">
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Unlike many anglophone African countries, Niger has no Skills Development Levy or Workers Compensation Fund equivalents — employer obligations are limited to CNSS. The top IRPP rate of 35% applies above XOF 2,000,000/month — significantly higher than most WAEMU peers' top thresholds. Employers must withhold IRPP monthly and remit to DGI by the 7th of the following month.</p>
@@ -464,7 +466,7 @@
       </div>
     </div>
     <div class="ng-guide-footer-note">
-      <p>CNSS employee: 5.25% of gross (deductible before IRPP). Currency: XOF (WAEMU CFA franc), fixed to EUR at 655.957.</p>
+<p>CNSS employee retirement: 5.25% within the official annual ceiling of XOF 6,000,000, deductible before IRPP. Currency: XOF (WAEMU CFA franc), fixed to EUR at 655.957.</p>
     </div>
   </div>
 </section>
@@ -488,7 +490,7 @@
         </details>
         <details class="ng-faq-item">
           <summary>Is CNSS contribution deductible from IRPP taxable income?</summary>
-          <p>Yes — the employee's CNSS contribution (5.25% of gross) is deductible from gross pay before calculating IRPP (Niger PAYE). This reduces taxable income and therefore your tax. CNSS is administered by the Caisse Nationale de Sécurité Sociale.</p>
+<p>Yes — the employee's CNSS retirement contribution (5.25%, within the official annual ceiling of XOF 6,000,000) is deductible from gross pay before calculating IRPP (Niger PAYE). This reduces taxable income and therefore your tax. CNSS is administered by the Caisse Nationale de Sécurité Sociale.</p>
         </details>
         <details class="ng-faq-item">
           <summary>What is IRPP in Niger?</summary>
@@ -540,7 +542,16 @@ function setSector(s, btn) {
   btn.classList.add('on');
   const nssfTog = document.querySelector('[data-tog="nssf"]');
   document.getElementById('nssfLabel').textContent = 'CNSS (5.25%)';
-  nssfTog.querySelector('.tog-rate').textContent = '5.25% employee — tax-deductible';
+  nssfTog.querySelector('.tog-rate').textContent = s === 'public'
+    ? '0% employee; 10.15% employer-only detached case'
+    : '5.25% employee retirement — capped at XOF 500,000 base';
+  const note = document.getElementById('schemeNote');
+  if (note) {
+    note.textContent = s === 'public'
+      ? 'Detached civil servants use the special employer-only 10.15% CNSS case in the CNSS employer guide. This page removes the employee CNSS deduction in that mode and keeps IRPP on gross salary.'
+      : 'Salary-worker CNSS uses a 5.25% employee retirement deduction and standard employer social charges of about 16.9%, both within the official XOF 6,000,000 annual ceiling. Detached civil servants use a special employer-only 10.15% case in the CNSS employer guide. No SDL or WCF in Niger.';
+  }
+  calculate();
 }
 
 // ── SLIDER ────────────────────────────────────────────────────
@@ -692,10 +703,12 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const hasNSSF     = isOn('nssf');
 
   // CNSS calculation
-  const socialRate     = hasNSSF ? 0.0525 : 0;
-  const empSocialRate  = 0.154;
-  const social         = gross * socialRate;
-  const empSocial      = gross * empSocialRate;
+  const monthlyCap     = 500000;
+  const socialBase     = hasNSSF ? Math.min(gross, monthlyCap) : 0;
+  const socialRate     = hasNSSF ? (SECTOR === 'public' ? 0 : 0.0525) : 0;
+  const empSocialRate  = SECTOR === 'public' ? 0.1015 : 0.169;
+  const social         = socialBase * socialRate;
+  const empSocial      = socialBase * empSocialRate;
 
   // PAYE
   let monthlyPAYE = 0;
@@ -725,7 +738,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const annual = v => v * 12;
 
   RESULT = {
-    gross, monthly: gross, social, socialRate, empSocial,
+    gross, monthly: gross, social, socialRate, socialBase, socialCap: monthlyCap, empSocial, empSocialRate,
     monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
     sdl, wcf, empSocial,
     totalEmployeeDeductions, netMonthly, effectiveRate,
@@ -742,7 +755,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   document.getElementById('hiddenGross').value = gross;
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + CNSS employer ${fmt(empSocial)}/mo (15.4%). No SDL or WCF in Niger.`;
+  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + employer social charges ${fmt(empSocial)}/mo (${pct(empSocialRate)} on capped XOF 500,000 base). No SDL or WCF in Niger.`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
@@ -751,23 +764,23 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.netMonthly,
+      tax: RESULT.monthlyPAYE,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
       { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -796,7 +809,7 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Deductions</div>
-      ${R.social > 0 ? row(`CNSS (${pct(R.socialRate)})`, fmt(social), 'c-red') : ''}
+      ${R.social > 0 ? row(`CNSS retirement (${pct(R.socialRate)}, capped at ${fmt(R.socialCap)})`, fmt(social), 'c-red') : ''}
       ${R.isSecondary
         ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">⚠ Secondary employment: flat 30% applied to full gross — no tax-free band, no CNSS deduction for IRPP purposes.</div>`
         : row(`Net taxable income${lbl}`, fmt(isAnnual ? R.annualGross - R.annualSocial : R.gross - R.social), 'c-mut')
@@ -876,7 +889,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Take-Home', 'PAYE', 'Emp CNSS', 'Empr Social'],
+        labels: ['Take-Home', 'PAYE', 'Employee CNSS', 'Employer Social'],
         datasets: [{ label:'XOF', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XOF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
@@ -960,7 +973,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
   <table>
     <tr><td>Monthly Gross Salary</td><td class="num">XOF ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS employee contribution (${pct(R.socialRate)})</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS employee retirement (${pct(R.socialRate)}, capped at XOF ${Math.round(R.socialCap).toLocaleString()} base)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     ${!R.isSecondary ? `<tr><td style="font-weight:600">Monthly Taxable Income</td><td class="num muted">XOF ${Math.round(R.gross - R.social).toLocaleString()}</td></tr>` : ''}
   </table>
 
@@ -983,14 +996,14 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
   <table>
     <tr><td>Employee gross salary</td><td class="num">XOF ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Employer CNSS (15.4%)</td><td class="num red">XOF ${Math.round(R.empSocial).toLocaleString()}</td></tr>
+    <tr><td>Employer social charges (${pct(R.empSocialRate)})</td><td class="num red">XOF ${Math.round(R.empSocial).toLocaleString()}</td></tr>
     <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
   <table>
     <tr><td style="width:30%"><span class="src">Code des Impôts</span>Niger IRPP</td><td style="color:#6b7280;font-size:8pt">Progressive IRPP on employment income. Nine monthly bands 0%–35%. CNSS contribution deductible from taxable income. Administered by DGI Niger.</td></tr>
-    <tr><td><span class="src">CNSS</span>Caisse Nationale de Sécurité Sociale</td><td style="color:#6b7280;font-size:8pt">Employee 5.25% of gross salary. Employer 15.4% of gross salary. No SDL or WCF in Niger.</td></tr>
+    <tr><td><span class="src">CNSS</span>Caisse Nationale de Sécurité Sociale</td><td style="color:#6b7280;font-size:8pt">Salary-worker case: employee retirement 5.25% plus employer social charges about 16.9%, within the official annual ceiling of XOF 6,000,000. Detached civil servants use a special employer-only 10.15% case.</td></tr>
   </table>
 </div>
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
@@ -1046,14 +1059,14 @@ async function getAI() {
 
   const prompt = `Niger IRPP analysis (2025/26, DGI):
 - Monthly gross: XOF ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Private (CNSS)' : 'Public (CNSS)'}
+- Scheme: ${R.sector === 'private' ? 'Salary worker CNSS case' : 'Detached civil servant case'}
 - CNSS employee (${pct(R.socialRate)}): XOF ${Math.round(R.social).toLocaleString()}/mo
 - Taxable income after CNSS: XOF ${Math.round(R.gross - R.social).toLocaleString()}/mo
 - Monthly IRPP: XOF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Monthly take-home: XOF ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - Secondary employment: ${R.isSecondary ? 'YES — flat 30% applied' : 'No'}
-- Employer CNSS (15.4%): XOF ${Math.round(R.empSocial).toLocaleString()}/mo
+- Employer social charges (${pct(R.empSocialRate)}): XOF ${Math.round(R.empSocial).toLocaleString()}/mo
 - Total employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
 
 Give: 1) Plain English summary of IRPP position 2) Two specific legal ways to reduce Niger tax liability (CNSS deductibility, approved pension deductions) 3) One DGI compliance point to know 4) One thing most Nigerien employees get wrong about CNSS or IRPP. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
@@ -1062,7 +1075,7 @@ Give: 1) Plain English summary of IRPP position 2) Two specific legal ways to re
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools AI Tax Advisor specialising in Niger IRPP — DGI progressive tax, CNSS, Code des Impôts Niger. Be concise, specific, practical. No markdown, no asterisks.',
+        system:'You are AfroTools AI Tax Advisor specialising in Niger IRPP — DGI progressive tax and CNSS payroll charges, including capped salary-worker contributions and the detached-civil-servant employer-only case. Be concise, specific, practical. No markdown, no asterisks.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -1099,7 +1112,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, Niger IRPP/DGI/CNSS. User: ${R.sector} sector, gross XOF ${Math.round(R.gross).toLocaleString()}/mo, take-home XOF ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        system:`AfroTools AI Tax Advisor, Niger IRPP/DGI/CNSS. User: ${R.sector === 'private' ? 'salary-worker CNSS case' : 'detached civil-servant case'}, gross XOF ${Math.round(R.gross).toLocaleString()}/mo, take-home XOF ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1115,7 +1128,10 @@ document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==
 
 // Net-to-Gross: register forward function
 window._grossToNet = function(g) {
-  var d=isOn('nssf')?g*0.0525:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);
+  if (isOn('secondary')) return g - (g * 0.30);
+  var d = 0;
+  if (isOn('nssf') && SECTOR !== 'public') d = Math.min(g, 500000) * 0.0525;
+  return g - (d + calcMonthlyPAYE(Math.max(0, g - d)).tax);
 };
 </script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=4701dd1d" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>

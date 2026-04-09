@@ -27,7 +27,7 @@
 <script src="/assets/js/components/tool-registry.min.js?v=b9986767" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
 <script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -342,6 +342,10 @@
   const flattenCheck = document.getElementById('flattenCheck');
   const statusMsg = document.getElementById('statusMsg');
 
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
   // ─── Upload handling ──────────────────────────────
   uploadZone.addEventListener('click', () => fileInput.click());
   uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
@@ -350,10 +354,10 @@
     e.preventDefault();
     uploadZone.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (file && file.type === 'application/pdf') handleFile(file);
+    if (isPdfFile(file)) handleFile(file);
   });
   fileInput.addEventListener('change', e => {
-    if (e.target.files[0]) handleFile(e.target.files[0]);
+    if (isPdfFile(e.target.files[0])) handleFile(e.target.files[0]);
   });
   loadNewBtn.addEventListener('click', () => {
     workspace.style.display = 'none';
@@ -368,6 +372,7 @@
   });
 
   async function handleFile(file) {
+    if (!isPdfFile(file)) return;
     try {
       const ab = await file.arrayBuffer();
       pdfBytes = new Uint8Array(ab);
@@ -460,30 +465,34 @@
 
     fields.forEach(field => {
       const name = field.getName();
-      const type = field.constructor.name;
-      const info = { name, type, field };
+      const info = { name, field };
 
-      if (type === 'PDFTextField') {
+      if (field instanceof PDFLib.PDFTextField) {
         textCount++;
+        info.type = 'PDFTextField';
         info.kind = 'text';
         try { info.currentValue = field.getText() || ''; } catch(e) { info.currentValue = ''; }
         try { info.isMultiline = field.isMultiline(); } catch(e) { info.isMultiline = false; }
-      } else if (type === 'PDFCheckBox') {
+      } else if (field instanceof PDFLib.PDFCheckBox) {
         checkCount++;
+        info.type = 'PDFCheckBox';
         info.kind = 'checkbox';
         try { info.currentValue = field.isChecked(); } catch(e) { info.currentValue = false; }
-      } else if (type === 'PDFDropdown') {
+      } else if (field instanceof PDFLib.PDFDropdown) {
         dropCount++;
+        info.type = 'PDFDropdown';
         info.kind = 'dropdown';
         try { info.options = field.getOptions(); } catch(e) { info.options = []; }
         try { info.currentValue = field.getSelected(); } catch(e) { info.currentValue = []; }
-      } else if (type === 'PDFRadioGroup') {
+      } else if (field instanceof PDFLib.PDFRadioGroup) {
         radioCount++;
+        info.type = 'PDFRadioGroup';
         info.kind = 'radio';
         try { info.options = field.getOptions(); } catch(e) { info.options = []; }
         try { info.currentValue = field.getSelected(); } catch(e) { info.currentValue = ''; }
-      } else if (type === 'PDFOptionList') {
+      } else if (field instanceof PDFLib.PDFOptionList) {
         dropCount++;
+        info.type = 'PDFOptionList';
         info.kind = 'dropdown';
         try { info.options = field.getOptions(); } catch(e) { info.options = []; }
         try { info.currentValue = field.getSelected(); } catch(e) { info.currentValue = []; }

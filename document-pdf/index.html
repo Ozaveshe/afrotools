@@ -172,6 +172,7 @@ function _initDocPdf(){
   var allTools=AFRO_TOOLS.filter(function(t){return t.category===key;});
   var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=allTools.filter(function(t){return t.status==='queued'||t.status==='planned'||t.status==='coming-soon';});
+  var fallbackOnlyIds={'html-to-pdf':true,'pdf-bates':true,'pdf-chat':true,'pdf-compare':true,'pdf-convert':true,'pdf-find-replace':true,'pdf-image-convert':true,'pdf-reorder':true,'pdf-repair':true,'pdf-to-audio':true,'pdf-translate':true,'pdf-workflow':true};
   var e;
   e=document.getElementById('s-total');if(e)e.textContent=allTools.length;
   e=document.getElementById('s-live');if(e)e.textContent=live.length;
@@ -184,6 +185,7 @@ function _initDocPdf(){
     var bg=DEFAULT_BG;
     var imgSrc='/assets/img/tools/'+t.id+'.webp';
     var imgFb='/assets/img/tools/'+t.id+'.svg';
+    var useImage=!fallbackOnlyIds[t.id];
     var badgeClass=t.status==='new'?'badge-new':(ok?'badge-live':'badge-soon');
     var badgeText=t.status==='new'?'New':(ok?'Live':'Coming Soon');
     var tag=ok?'a':'div';
@@ -191,7 +193,7 @@ function _initDocPdf(){
     return '<'+tag+href+' class="tc'+(ok?'':' coming')+'">'
       +'<div class="tc-thumb" style="background:'+bg+'">'
       +'<div class="tc-thumb-ph">'+t.icon+'</div>'
-      +'<img src="'+imgSrc+'" alt="'+t.name+'" loading="lazy" onerror="this.onerror=function(){this.style.display=\'none\'};this.src=\''+imgFb+'\';">'
+      +(useImage?'<img src="'+imgSrc+'" alt="'+t.name+'" loading="lazy" onerror="this.onerror=function(){this.style.display=\'none\'};this.src=\''+imgFb+'\';">':'')
       +'</div>'
       +'<div class="tc-body">'
       +'<div class="tc-row1"><span class="tc-flag">'+t.icon+'</span><span class="tc-badge '+badgeClass+'">'+badgeText+'</span></div>'

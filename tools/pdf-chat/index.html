@@ -962,7 +962,7 @@
 <afro-related-tools category="document-pdf" current="pdf-chat"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -1289,6 +1289,10 @@
         return;
       }
 
+      if (response.status === 404 || response.status >= 500) {
+        throw new Error('ai-service-unavailable');
+      }
+
       if (!response.ok) {
         throw new Error('Server error: ' + response.status);
       }
@@ -1306,7 +1310,11 @@
     } catch (err) {
       removeTypingIndicator();
       console.error('AI error:', err);
-      addErrorMessage('Something went wrong. Please try again.');
+      if (err && err.message === 'ai-service-unavailable') {
+        addErrorMessage('The AI service is unavailable right now. If you are testing locally, start the Netlify function environment; otherwise try again later.');
+      } else {
+        addErrorMessage('Something went wrong. Please try again.');
+      }
     } finally {
       isSending = false;
       updateSendBtn();

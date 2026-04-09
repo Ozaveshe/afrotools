@@ -108,6 +108,10 @@
       desc: 'GPA, WAEC, loans, fees', descFr: 'GPA, WAEC, prêts, frais scolaires', descSw: 'GPA, NECTA, mikopo, ada',
       href: '/education/', hrefSw: '/sw/zana-za-elimu/', color: '#EEF4FF', accent: '#3B82F6',
       tools: [
+        { label: 'AfroJAMB Hub — CBT + AI Tutor', href: '/jamb/', emoji: '🎯', badge: 'NEW' },
+        { label: 'JAMB CBT Mock Exam', href: '/jamb/cbt/', emoji: '⚡', badge: 'NEW' },
+        { label: 'JAMB AI Tutor', href: '/jamb/tutor/', emoji: '🤖', badge: 'NEW' },
+        { label: 'JAMB Past Questions Bank', href: '/jamb/past-questions/', emoji: '📚', badge: 'NEW' },
         { label: 'WAEC/NECO Grade Calculator', href: '/tools/waec-calculator/', emoji: '📋', badge: 'LIVE' },
         { label: 'JAMB Aggregate Calculator', href: '/tools/jamb-aggregate/', emoji: '🎓', badge: 'LIVE' },
         { label: 'GPA/CGPA Calculator', href: '/tools/gpa-calculator/', emoji: '🎓', badge: 'LIVE' },

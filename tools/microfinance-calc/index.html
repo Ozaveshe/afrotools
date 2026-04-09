@@ -319,6 +319,25 @@ h1 em{color:var(--afro-blue);font-style:normal}
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
 function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
 function fmtD(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function calcEffectiveAPR(disbursed,payment,periods,periodsPerYear,balloon){
+  if(disbursed<=0||payment<0||periods<=0)return 0;
+  balloon=balloon||0;
+  function npv(rate){
+    let pv=0;
+    for(let i=1;i<=periods;i++){
+      const cash=i===periods?payment+balloon:payment;
+      pv+=cash/Math.pow(1+rate,i);
+    }
+    return pv-disbursed;
+  }
+  let low=0,high=1;
+  while(npv(high)>0&&high<100){high*=2;}
+  for(let i=0;i<80;i++){
+    const mid=(low+high)/2;
+    if(npv(mid)>0)low=mid;else high=mid;
+  }
+  return (Math.pow(1+((low+high)/2),periodsPerYear)-1)*100;
+}
 
 function calculate(){
   const cur=document.getElementById('currency').value;
@@ -348,10 +367,7 @@ function calculate(){
   const flatTotalRepay=principal+flatInterestTotal;
   const flatPayment=flatTotalRepay/periods;
 
-  // Calculate effective APR for flat rate (approximate using IRR concept)
-  // Rule of thumb: effective APR ~ flat annual rate * 1.8 to 2.0
-  const flatAnnualRate=flatMonthlyRate*12*100;
-  const flatEffAPR=flatAnnualRate*1.85; // Approximate
+  const flatEffAPR=calcEffectiveAPR(disbursed,flatPayment,periods,periodsPerYear,0);
 
   // REDUCING BALANCE calculation
   let redMonthlyRate=rateType==='monthly'?rateInput/100:(rateInput/100/12);
@@ -366,14 +382,14 @@ function calculate(){
     redTotalRepay=redPayment*periods;
     redTotalInterest=redTotalRepay-principal;
   }
-  const redAnnualRate=rateType==='monthly'?rateInput*12:rateInput;
+  const redEffAPR=calcEffectiveAPR(disbursed,redPayment,periods,periodsPerYear,0);
 
   // Determine which method is being used based on rateType
   const isFlat=rateType==='monthly';
   const payment=isFlat?flatPayment:redPayment;
   const totalRepay=(isFlat?flatTotalRepay:redTotalRepay)+totalFees;
   const totalCost=(isFlat?flatInterestTotal:redTotalInterest)+totalFees;
-  const effectiveAPR=isFlat?flatEffAPR:redAnnualRate;
+  const effectiveAPR=isFlat?flatEffAPR:redEffAPR;
 
   // Display results
   const periodLabel=termUnit==='weeks'?'/wk':'/mo';
@@ -388,12 +404,12 @@ function calculate(){
   document.getElementById('cFlatPayment').textContent=fmt(Math.round(flatPayment),cur)+periodLabel;
   document.getElementById('cFlatTotal').textContent='Total: '+fmt(Math.round(flatTotalRepay+totalFees),cur);
   document.getElementById('cFlatInterest').textContent='Interest: '+fmt(Math.round(flatInterestTotal),cur);
-  document.getElementById('cFlatAPR').textContent='Effective APR: ~'+flatEffAPR.toFixed(0)+'%';
+  document.getElementById('cFlatAPR').textContent='Effective APR: '+flatEffAPR.toFixed(1)+'%';
 
   document.getElementById('cRedPayment').textContent=fmt(Math.round(redPayment),cur)+periodLabel;
   document.getElementById('cRedTotal').textContent='Total: '+fmt(Math.round(redTotalRepay+totalFees),cur);
   document.getElementById('cRedInterest').textContent='Interest: '+fmt(Math.round(redTotalInterest),cur);
-  document.getElementById('cRedAPR').textContent='Effective APR: '+redAnnualRate.toFixed(1)+'%';
+  document.getElementById('cRedAPR').textContent='Effective APR: '+redEffAPR.toFixed(1)+'%';
 
   // Savings from reducing balance
   const savings=flatTotalRepay-redTotalRepay;

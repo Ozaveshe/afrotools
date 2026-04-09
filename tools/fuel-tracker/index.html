@@ -16,10 +16,10 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"AfroFuel Tracker","description":"Pan-African petrol, diesel, and LPG price tracker with country comparisons, charts, and generator cost estimates.","url":"https://afrotools.com/tools/fuel-tracker/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"AfroFuel Tracker","url":"https://afrotools.com/tools/fuel-tracker/","description":"Compare petrol, diesel, and LPG price snapshots across African countries and estimate generator fuel costs.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -302,7 +302,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       </div>
       <div class="hero-stat">
         <div class="hero-stat-val" id="avg-price">$1.14</div>
-        <div class="hero-stat-label">Avg USD/Litre</div>
+        <div class="hero-stat-label" id="avg-price-label">Avg USD/Litre</div>
       </div>
     </div>
     <div class="last-updated" id="last-updated">Last updated: Loading...</div>
@@ -369,7 +369,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
           <th>Country</th>
           <th>Petrol (local)</th>
           <th>Diesel (local)</th>
-          <th>USD/Litre</th>
+          <th id="usd-price-header">USD/Litre</th>
           <th>Trend</th>
           <th style="width:90px">Regulated</th>
           <th style="width:80px">7d</th>
@@ -746,7 +746,12 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         diesel_local: +(bp.diesel * localMultiplier).toFixed(2),
         lpg_local: +(bp.lpg * localMultiplier).toFixed(2),
         change_pct: +change.toFixed(1),
-        history: generateHistory(bp.petrol, 12)
+        petrol_unit: 'liter',
+        diesel_unit: 'liter',
+        lpg_unit: 'kg',
+        history_petrol: generateHistory(bp.petrol, 12),
+        history_diesel: generateHistory(bp.diesel, 12),
+        history_lpg: generateHistory(bp.lpg, 12)
       };
     });
 
@@ -789,6 +794,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   let sortMode = 'price-asc';
   let chartInstance = null;
   let chartCountries = ['NG','ZA','KE','EG','GH'];
+  let forexRatesLoaded = false;
 
   const CHART_COLORS = AfroChartColors.doughnut;
   const CHART_DEFAULTS = ['NG','ZA','KE','EG','GH'];
@@ -807,12 +813,11 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   function normalizeApiData(data) {
     // Handle API format: countries as array with nested petrol.usd structure
     if (data && data.countries && !isValidFuelData(data)) {
-      var normalized = {updated: data.updated || new Date().toISOString(), countries: {}};
+      var normalized = {updated: data.updated || data.timestamp || new Date().toISOString(), countries: {}};
       var arr = Array.isArray(data.countries) ? data.countries : Object.values(data.countries);
       arr.forEach(function(c) {
         if (!c || !c.code) return;
         var code = c.code;
-        var localMult = getLocalMultiplier(code);
         normalized.countries[code] = {
           petrol_usd: c.petrol ? c.petrol.usd : 0,
           diesel_usd: c.diesel ? c.diesel.usd : 0,
@@ -821,12 +826,54 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
           diesel_local: c.diesel ? c.diesel.price : 0,
           lpg_local: c.lpg ? c.lpg.price : 0,
           change_pct: c.petrol ? (c.petrol.change_pct || 0) : 0,
-          history: generateHistory(c.petrol ? c.petrol.usd : 1, 12)
+          petrol_unit: c.petrol ? (c.petrol.unit || 'liter') : 'liter',
+          diesel_unit: c.diesel ? (c.diesel.unit || 'liter') : 'liter',
+          lpg_unit: c.lpg ? (c.lpg.unit || 'kg') : 'kg',
+          history_petrol: generateHistory(c.petrol ? c.petrol.usd : 1, 12),
+          history_diesel: generateHistory(c.diesel ? c.diesel.usd : 1, 12),
+          history_lpg: generateHistory(c.lpg ? c.lpg.usd : 1, 12)
         };
       });
       return normalized;
     }
     return data;
+  }
+
+  function getFuelUnitKey(fuel) {
+    return fuel === 'lpg' ? 'kg' : 'liter';
+  }
+
+  function getFuelUnitLabel(fuel) {
+    return fuel === 'lpg' ? 'kg' : 'litre';
+  }
+
+  function getFuelUnitShort(fuel) {
+    return fuel === 'lpg' ? 'kg' : 'L';
+  }
+
+  function getFuelHistory(data, fuel) {
+    if (!data) return [];
+    return data['history_' + fuel] || data.history || [];
+  }
+
+  function applyLiveForexRates(data) {
+    if (!data || !data.rates) return;
+    Object.keys(data.rates).forEach(function(code) {
+      FX_RATES[code] = data.rates[code];
+    });
+    forexRatesLoaded = true;
+  }
+
+  function fetchForexRates() {
+    fetch('/data/forex/latest.json', { cache: 'no-cache' })
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(applyLiveForexRates)
+      .catch(function(err) {
+        console.warn('AfroFuel: failed to refresh FX rates for generator conversions.', err);
+      });
   }
 
   const liveData = new AfroTools.LiveData('/.netlify/functions/api-fuel', {
@@ -851,6 +898,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     }
   });
   liveData.start();
+  fetchForexRates();
 
   // If no valid data within 2s, use fallback
   setTimeout(function() {
@@ -888,6 +936,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   /* ── Average Price ── */
   function updateAvgPrice() {
     var el = document.getElementById('avg-price');
+    var labelEl = document.getElementById('avg-price-label');
     var total = 0, count = 0;
     var countries = fuelData.countries || {};
     for (var code in countries) {
@@ -898,6 +947,9 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       }
     }
     el.textContent = count ? '$' + (total / count).toFixed(2) : '$--';
+    if (labelEl) {
+      labelEl.textContent = activeFuel === 'lpg' ? 'Avg USD/kg' : 'Avg USD/Litre';
+    }
   }
 
   /* ── Map ── */
@@ -905,14 +957,16 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     var mapEl = document.getElementById('afro-fuel-map');
     if (!mapEl || !mapEl.setData) return;
     var key = activeFuel + '_usd';
+    var unitShort = getFuelUnitShort(activeFuel);
     var items = [];
     var countries = fuelData.countries || {};
+    mapEl.setAttribute('data-unit', '$/' + unitShort);
     for (var code in countries) {
       if (COUNTRIES[code]) {
         items.push({
           code: code,
           value: countries[code][key] || 0,
-          label: COUNTRIES[code].name + ': $' + (countries[code][key] || 0).toFixed(2) + '/L'
+          label: COUNTRIES[code].name + ': $' + (countries[code][key] || 0).toFixed(2) + '/' + unitShort
         });
       }
     }
@@ -922,8 +976,12 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   /* ── Table ── */
   function renderTable() {
     var tbody = document.getElementById('price-table-body');
+    var usdHeader = document.getElementById('usd-price-header');
     var countries = fuelData.countries || {};
     var rows = [];
+    if (usdHeader) {
+      usdHeader.textContent = activeFuel === 'lpg' ? 'USD/kg' : 'USD/Litre';
+    }
 
     for (var code in COUNTRIES) {
       var c = COUNTRIES[code];
@@ -950,7 +1008,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         lpg_usd: d.lpg_usd,
         change: d.change_pct || 0,
         regulated: c.regulated,
-        history: d.history || []
+        history: getFuelHistory(d, activeFuel)
       });
     }
 
@@ -977,11 +1035,6 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       var trendSymbol = row.change > 0.5 ? '\u25B2' : row.change < -0.5 ? '\u25BC' : '\u2014';
       var regClass = row.regulated === 'yes' ? 'badge-yes' : row.regulated === 'partial' ? 'badge-partial' : 'badge-no';
       var regLabel = row.regulated === 'yes' ? 'Yes' : row.regulated === 'partial' ? 'Partial' : 'No';
-
-      var localPrice, localKey;
-      if (activeFuel === 'petrol') { localPrice = row.petrol_local; localKey = 'petrol_usd'; }
-      else if (activeFuel === 'diesel') { localPrice = row.diesel_local; localKey = 'diesel_usd'; }
-      else { localPrice = row.lpg_local; localKey = 'lpg_usd'; }
 
       html += '<tr>' +
         '<td>' + (i + 1) + '</td>' +
@@ -1026,7 +1079,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       var c = COUNTRIES[code];
       var d = (fuelData.countries || {})[code];
       if (!c || !d) return;
-      var history = d.history || [];
+      var history = getFuelHistory(d, activeFuel);
       datasets.push({
         label: c.flag + ' ' + c.name,
         data: history.length ? history : months.map(function(){return null;}),
@@ -1064,13 +1117,13 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
               padding:12,
               cornerRadius:10,
               callbacks:{
-                label: function(ctx) { return ctx.dataset.label + ': $' + (ctx.parsed.y || 0).toFixed(2) + '/L'; }
+                label: function(ctx) { return ctx.dataset.label + ': $' + (ctx.parsed.y || 0).toFixed(2) + '/' + getFuelUnitShort(activeFuel); }
               }
             }
           },
           scales: {
             y: {
-              title:{display:true,text:'USD / Litre',font:{family:'DM Sans',size:12,weight:'600'},color:'#9ca3af'},
+              title:{display:true,text:'USD / ' + getFuelUnitLabel(activeFuel),font:{family:'DM Sans',size:12,weight:'600'},color:'#9ca3af'},
               grid:{color:'rgba(0,0,0,0.05)'},
               ticks:{font:{family:'DM Sans',size:11},color:'#9ca3af',callback:function(v){return '$'+v.toFixed(2);}}
             },
@@ -1181,7 +1234,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       var key = calcFuel === 'diesel' ? 'diesel_local' : 'petrol_local';
       priceInput.value = d[key] || '';
       var c = COUNTRIES[code] || {};
-      document.getElementById('calc-price-label').textContent = 'Fuel price (' + c.symbol + ' per litre)';
+      document.getElementById('calc-price-label').textContent = 'Fuel price (' + c.symbol + ' per ' + getFuelUnitLabel(calcFuel) + ')';
     }
   }
 
@@ -1354,7 +1407,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     var expC = expensive ? COUNTRIES[expensive.code] : null;
 
     el.innerHTML =
-      card('&#9981;', '$' + avg.toFixed(2), 'Avg ' + activeFuel + ' price/L', count + ' countries tracked', 'insight-neutral') +
+      card('&#9981;', '$' + avg.toFixed(2), 'Avg ' + activeFuel + ' price/' + getFuelUnitShort(activeFuel), count + ' countries tracked', 'insight-neutral') +
       card(cheapC ? cheapC.flag : '&#127758;', '$' + (cheapest ? cheapest.price.toFixed(2) : '--'), 'Cheapest: ' + (cheapC ? cheapC.name : '--'), '', '') +
       card(expC ? expC.flag : '&#127758;', '$' + (expensive ? expensive.price.toFixed(2) : '--'), 'Most Expensive: ' + (expC ? expC.name : '--'), '', '') +
       card('&#128200;', (biggestUp ? biggestUp.change.toFixed(1) : '0') + '%', 'Biggest Price Rise', biggestUp && COUNTRIES[biggestUp.code] ? COUNTRIES[biggestUp.code].name : '', 'insight-up');

@@ -27,7 +27,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Cape Verde PAYE Calculator 2025/26","url":"https://afrotools.com/cape-verde/cv-paye","description":"Calculate Cape Verde take-home pay using 2025/26 DGCI rates and social security contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Cape Verde IUR tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Four annual bands: CVE 0–792,000 at 0% (exempt); CVE 792,001–1,584,000 at 16.5% on excess; CVE 1,584,001–2,772,000 at 23.1% on excess; above CVE 2,772,000 at 27.5% on excess. Monthly equivalent: exempt up to CVE 66,000. INPS (8.5% employee) is deductible before applying IUR rates."}},{"@type":"Question","name":"What is INPS in Cape Verde?","acceptedAnswer":{"@type":"Answer","text":"The INPS (Instituto Nacional de Previdência Social) is Cape Verde's mandatory social security fund. Employees contribute 8.5% of gross salary and employers contribute 16%. The employee contribution is deductible from taxable income before IUR is calculated."}},{"@type":"Question","name":"When must employers remit IUR to the DGCI in Cape Verde?","acceptedAnswer":{"@type":"Answer","text":"IUR (income tax) must be filed and paid to the DGCI (Direcção Geral das Contribuições e Impostos) by the 20th of the month following the payroll month. Late payments attract penalty interest. Employers must submit a monthly return even when no tax is due."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Cape Verde IUR tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Four annual bands: CVE 0–792,000 at 0% (exempt); CVE 792,001–1,584,000 at 16.5% on excess; CVE 1,584,001–2,772,000 at 23.1% on excess; above CVE 2,772,000 at 27.5% on excess. Monthly equivalent: exempt up to CVE 66,000. INPS is deductible before applying IUR rates."}},{"@type":"Question","name":"What is INPS in Cape Verde?","acceptedAnswer":{"@type":"Answer","text":"The INPS (Instituto Nacional de Previdência Social) is Cape Verde's mandatory social security fund. Standard employees contribute 8.5% and employers 16%. Domestic service uses 8% employee and 15% employer. The employee contribution is deductible from taxable income before IUR is calculated."}},{"@type":"Question","name":"When must employers remit IUR to the DGCI in Cape Verde?","acceptedAnswer":{"@type":"Answer","text":"IUR (income tax) must be filed and paid to the DGCI (Direcção Geral das Contribuições e Impostos) by the 20th of the month following the payroll month. Late payments attract penalty interest. Employers must submit a monthly return even when no tax is due."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -77,7 +77,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="cv-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='cv-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -141,12 +143,12 @@
         </div>
         <div class="card-body">
 
-          <!-- SECTOR SELECTOR -->
+          <!-- EMPLOYMENT REGIME -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
+            <div class="f-label"><span class="f-label-text">Employment Regime</span><span class="f-hint">Changes INPS rates</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (INPS)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public (INPS)</button>
+              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Standard Employee</button>
+              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Domestic Service</button>
             </div>
           </div>
 
@@ -190,7 +192,7 @@
                 <div><div class="tog-label">Secondary Employment</div><div class="tog-rate">Flat 30% no deductions</div></div>
               </div>
             </div>
-            <p class="f-note">INPS employee contribution (8.5%) is fully deductible from taxable income before PAYE is calculated. Employer INPS (16%) is an additional cost shown in employer chart. No INPS cap — applies to full gross salary.</p>
+            <p class="f-note" id="regimeNote">Standard employees contribute 8.5% to INPS and employers contribute 16%. Domestic service follows the official INPS domestic-service regime of 8% employee and 15% employer. No INPS cap — contributions apply to full gross salary.</p>
           </div>
 
           <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
@@ -530,7 +532,16 @@ function setSector(s, btn) {
   btn.classList.add('on');
   const nssfTog = document.querySelector('[data-tog="nssf"]');
   document.getElementById('nssfLabel').textContent = 'INPS';
-  nssfTog.querySelector('.tog-rate').textContent = '8.5% employee — tax-deductible';
+  nssfTog.querySelector('.tog-rate').textContent = s === 'public'
+    ? '8% employee (domestic service) — tax-deductible'
+    : '8.5% employee — tax-deductible';
+  const note = document.getElementById('regimeNote');
+  if (note) {
+    note.textContent = s === 'public'
+      ? 'Domestic service follows the official INPS domestic-service regime: 8% employee and 15% employer. This calculator keeps the same IUR bands but applies the domestic-service social-security rates.'
+      : 'Standard employees contribute 8.5% to INPS and employers contribute 16%. Domestic service follows the official INPS domestic-service regime of 8% employee and 15% employer. No INPS cap — contributions apply to full gross salary.';
+  }
+  calculate();
 }
 
 // ── SLIDER ────────────────────────────────────────────────────
@@ -637,8 +648,8 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const hasNSSF     = isOn('nssf');
 
   // INPS calculation (Cape Verde — 8.5% employee, 16% employer)
-  const socialRate     = hasNSSF ? 0.085 : 0;
-  const empSocialRate  = 0.16;
+  const socialRate     = hasNSSF ? (SECTOR === 'public' ? 0.08 : 0.085) : 0;
+  const empSocialRate  = SECTOR === 'public' ? 0.15 : 0.16;
   const social         = gross * socialRate;
   const empSocial      = gross * empSocialRate;
 
@@ -687,7 +698,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   document.getElementById('hiddenGross').value = gross;
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + INPS ${fmt(empSocial)}/mo (16% employer).`;
+  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + INPS ${fmt(empSocial)}/mo (${pct(empSocialRate)} employer).`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
@@ -696,23 +707,23 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.netMonthly,
+      tax: RESULT.monthlyPAYE,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
       { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -905,7 +916,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
   <table>
     <tr><td>Monthly Gross Salary</td><td class="num">CVE ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">INPS employee contribution (${pct(R.socialRate)}, no cap)</td><td class="num red">(CVE ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">INPS employee contribution (${pct(R.socialRate)}, ${R.sector === 'public' ? 'domestic service' : 'standard employee'})</td><td class="num red">(CVE ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     ${!R.isSecondary ? `<tr><td style="font-weight:600">Monthly Taxable Income</td><td class="num muted">CVE ${Math.round(R.gross - R.social).toLocaleString()}</td></tr>` : ''}
   </table>
 
@@ -928,14 +939,14 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
   <table>
     <tr><td>Employee gross salary</td><td class="num">CVE ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Employer INPS (16%)</td><td class="num red">CVE ${Math.round(R.empSocial).toLocaleString()}</td></tr>
+    <tr><td>Employer INPS (${pct(R.sector === 'public' ? 0.15 : 0.16)})</td><td class="num red">CVE ${Math.round(R.empSocial).toLocaleString()}</td></tr>
     <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">CVE ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
   <table>
     <tr><td style="width:30%"><span class="src">IUR Code</span>Income Tax (IUR)</td><td style="color:#6b7280;font-size:8pt">Progressive PAYE on employment income per DGCI Cape Verde. INPS employee contribution (8.5%) deductible from taxable income before IUR applied.</td></tr>
-    <tr><td><span class="src">Decree-Law 5/2004</span>INPS</td><td style="color:#6b7280;font-size:8pt">Total 24.5% of gross: 16% employer + 8.5% employee. No upper cap. Remitted separately to INPS institute.</td></tr>
+    <tr><td><span class="src">INPS</span>Social Security</td><td style="color:#6b7280;font-size:8pt">Standard employee regime: 16% employer + 8.5% employee. Domestic service regime: 15% employer + 8% employee. No upper cap. Remitted separately to INPS.</td></tr>
   </table>
 </div>
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
@@ -991,14 +1002,14 @@ async function getAI() {
 
   const prompt = `Cape Verde PAYE analysis (2025/26, DGCI):
 - Monthly gross: CVE ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Private (INPS)' : 'Public (INPS)'}
+- Regime: ${R.sector === 'public' ? 'Domestic service' : 'Standard employee'}
 - INPS employee (${pct(R.socialRate)}): CVE ${Math.round(R.social).toLocaleString()}/mo
 - Taxable income after INPS: CVE ${Math.round(R.gross - R.social).toLocaleString()}/mo
 - Monthly PAYE: CVE ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Monthly take-home: CVE ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
 - Secondary employment: ${R.isSecondary ? 'YES — flat 30% applied' : 'No'}
-- Employer INPS (16%): CVE ${Math.round(R.empSocial).toLocaleString()}/mo
+- Employer INPS (${pct(R.sector === 'public' ? 0.15 : 0.16)}): CVE ${Math.round(R.empSocial).toLocaleString()}/mo
 - Total employer cost: CVE ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
 
 Give: 1) Plain English summary of PAYE position 2) Two specific legal ways to reduce Cape Verde tax liability (INPS deductibility, approved deductions) 3) One DGCI compliance point to know 4) One thing most Cape Verdean employees get wrong about INPS. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
@@ -1007,7 +1018,7 @@ Give: 1) Plain English summary of PAYE position 2) Two specific legal ways to re
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools AI Tax Advisor specialising in Cape Verde PAYE — DGCI progressive IUR tax, INPS social security, Income Tax Code. Be concise, specific, practical. No markdown, no asterisks.',
+        system:'You are AfroTools AI Tax Advisor specialising in Cape Verde PAYE — DGCI progressive IUR tax and INPS social security, including domestic-service contributions. Be concise, specific, practical. No markdown, no asterisks.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -1044,7 +1055,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, Cape Verde. User: ${R.sector} sector, gross CVE ${Math.round(R.gross).toLocaleString()}/mo, take-home CVE ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        system:`AfroTools AI Tax Advisor, Cape Verde. User: ${R.sector === 'public' ? 'domestic-service regime' : 'standard employee regime'}, gross CVE ${Math.round(R.gross).toLocaleString()}/mo, take-home CVE ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1060,7 +1071,10 @@ document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==
 
 // Net-to-Gross: register forward function
 window._grossToNet = function(g) {
-  var d=isOn('nssf')?g*0.085:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);
+  if (isOn('secondary')) return g - (g * 0.30);
+  var rate = SECTOR === 'public' ? 0.08 : 0.085;
+  var d = isOn('nssf') ? g * rate : 0;
+  return g - (d + calcMonthlyPAYE(Math.max(0, g - d)).tax);
 };
 </script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=4701dd1d" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>

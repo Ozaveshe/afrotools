@@ -154,7 +154,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
-<script src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
+<script src="/assets/js/lib/save-state-classic.js?v=20260408a"></script>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-workspace/" />
@@ -266,7 +266,7 @@
 <!-- SEO Content Section -->
 <section style="max-width:860px;margin:48px auto;padding:0 24px;font-family:'DM Sans',system-ui,sans-serif;color:#374151;line-height:1.8">
   <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin-bottom:16px">Free Online PDF Workspace</h2>
-  <p>The AfroTools PDF Workspace is a complete suite of PDF tools that runs entirely in your browser. Merge multiple PDFs into one document, split large files into smaller ones, compress files to reduce size, add watermarks, insert page numbers, protect with passwords, sign documents, and convert between formats. No uploads to external servers, no file size limits, and no sign-up required.</p>
+<p>The AfroTools PDF Workspace is a complete suite of PDF tools that runs entirely in your browser. Merge multiple PDFs into one document, split large files into smaller ones, compress files to reduce size, add watermarks, insert page numbers, sign documents, and convert between formats. No uploads to external servers, no file size limits, and no sign-up required.</p>
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Available Tools</h3>
   <ul style="padding-left:20px;margin-bottom:16px">
@@ -275,7 +275,7 @@
     <li><strong>Compress PDF</strong> — Reduce PDF file size while maintaining quality, ideal for email attachments.</li>
     <li><strong>Add Watermark</strong> — Overlay text or image watermarks on every page of your document.</li>
     <li><strong>Page Numbers</strong> — Add page numbers in various positions and formats to any PDF.</li>
-    <li><strong>Password Protect</strong> — Encrypt your PDF with a password to restrict access.</li>
+<li><strong>Password Protect</strong> — Temporarily unavailable while the protection workflow is being rebuilt.</li>
     <li><strong>Sign PDF</strong> — Draw or type your signature and place it on any page of a document.</li>
   </ul>
 
@@ -301,7 +301,7 @@
 <afro-related-tools category="document-pdf" current="pdf-workspace"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=20260408a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -950,23 +950,18 @@ async function doCrop(){
 
 /* ── PROTECT / PASSWORD ───────────────────────────────────── */
 function openLock(){
-  $("mT").textContent="Protect PDF";$("mS").textContent="Add password protection before downloading";
+  $("mT").textContent="Protect PDF";$("mS").textContent="Password protection is temporarily unavailable in Workspace";
   $("mB").innerHTML='<div style="display:flex;flex-direction:column;gap:14px;">'+
-    '<div class="pn-field"><label>Password</label><input type="password" id="lockPwd" placeholder="Enter password" style="flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:inherit;font-size:14px;"></div>'+
-    '<p style="font-size:12px;color:#9ca3af;">Note: Protection uses PDF standard encryption. The password will be required to open the file.</p>'+
+    '<div style="padding:14px 16px;border:1px solid #fde68a;border-radius:12px;background:#fffbeb;color:#92400e;font-size:14px;line-height:1.6;">'+
+    'Password protection in PDF Workspace is temporarily unavailable while this workflow is being rebuilt. The previous version could download an unencrypted file, so it has been disabled until real protection is restored.'+
+    '</div>'+
     '</div>';
   var ft=$("mF");ft.innerHTML="";
-  var btn=document.createElement("button");btn.className="wb wb-p";btn.textContent="Protect & Download";btn.onclick=doLock;
-  var cancel=document.createElement("button");cancel.className="wb wb-s";cancel.textContent="Cancel";cancel.onclick=clM;
-  ft.appendChild(cancel);ft.appendChild(btn);opM();
+  var close=document.createElement("button");close.className="wb wb-s";close.textContent="Close";close.onclick=clM;
+  ft.appendChild(close);opM();
 }
 async function doLock(){
-  var pwd=$("lockPwd").value;if(!pwd){toast("Enter a password",1);return}
-  clM();showP("Protecting PDF...","");
-  try{
-    var doc=await buildPDF();var b=await doc.save();hideP();
-    dlB(fn.replace(".pdf","")+"_protected.pdf",new Uint8Array(b));toast("Downloaded! Note: For full password protection, use the dedicated PDF Password tool.");
-  }catch(e){hideP();toast("Error: "+e.message,1)}
+  clM();toast("Password protection is temporarily unavailable in Workspace.",1);
 }
 function dlB(n,b){var bl=new Blob([b],{type:"application/pdf"});var u=URL.createObjectURL(bl);var a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},5000);var vb=document.getElementById("tbVault");if(vb&&vb.setFile)vb.setFile(bl,n)}
 function opM(){$("mOv").classList.add("on")}

@@ -285,7 +285,7 @@
 </section>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=20260408a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -304,6 +304,9 @@ let splitPdfDoc = null;
 let splitCuts = {};
 let splitThumbnails = {};
 let mergeFiles = [];
+function isPdfFile(file) {
+  return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+}
 
 const mergeCard = document.getElementById('merge-card');
 const splitCard = document.getElementById('split-card');
@@ -337,7 +340,7 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
 
 // ── MERGE ──────────────────────────────────────────────
 mergeFileInput.addEventListener('change', (e) => {
-  const newFiles = Array.from(e.target.files).filter(f => f.type === 'application/pdf');
+  const newFiles = Array.from(e.target.files).filter(isPdfFile);
   const existing = new Set(mergeFiles.map(f => f.name + f.size));
   newFiles.forEach(f => { if (!existing.has(f.name + f.size)) mergeFiles.push(f); });
   e.target.value = '';
@@ -349,7 +352,7 @@ mergeLabel.addEventListener('dragover', (e) => { e.preventDefault(); mergeLabel.
 mergeLabel.addEventListener('dragleave', () => { mergeLabel.classList.remove('dragover'); });
 mergeLabel.addEventListener('drop', (e) => {
   e.preventDefault(); mergeLabel.classList.remove('dragover');
-  const dropped = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+  const dropped = Array.from(e.dataTransfer.files).filter(isPdfFile);
   const existing = new Set(mergeFiles.map(f => f.name + f.size));
   dropped.forEach(f => { if (!existing.has(f.name + f.size)) mergeFiles.push(f); });
   renderMergeFileList();
@@ -437,7 +440,7 @@ mergeBtn.addEventListener('click', async () => {
 
 // ── SPLIT ──────────────────────────────────────────────
 async function loadSplitFile(file) {
-  if (!file || file.type !== 'application/pdf') return;
+  if (!isPdfFile(file)) return;
   splitFile = file;
   splitCuts = {};
   splitThumbnails = {};

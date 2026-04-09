@@ -27,7 +27,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Mali PAYE Calculator 2025/26","url":"https://afrotools.com/mali/ml-paye","description":"Calculate Mali take-home pay using 2025/26 DGI ITS PAYE rates and INPS social security contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Mali PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Five monthly bands under DGI ITS: XOF 0–33,333 at 0%; XOF 33,334–66,666 at 5%; XOF 66,667–108,333 at 13%; XOF 108,334–175,000 at 25%; above XOF 175,000 at 36%. Annual tax-free threshold: XOF 400,000."}},{"@type":"Question","name":"What is INPS in Mali?","acceptedAnswer":{"@type":"Answer","text":"The Institut National de Prévoyance Sociale (INPS) is Mali's social security fund. The employee contribution is 3.6% of gross salary. INPS employee contribution is deductible from taxable income before ITS (PAYE) is calculated."}},{"@type":"Question","name":"How is Mali PAYE administered?","acceptedAnswer":{"@type":"Answer","text":"Mali PAYE (ITS — Impôt sur les Traitements et Salaires) is administered by DGI (Direction Générale des Impôts). Employers withhold tax monthly and remit to DGI by the 7th of the following month. The currency is the West African CFA franc (XOF), shared among WAEMU member states."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Mali PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Five monthly bands under DGI ITS: XOF 0–33,333 at 0%; XOF 33,334–66,666 at 5%; XOF 66,667–108,333 at 13%; XOF 108,334–175,000 at 25%; above XOF 175,000 at 36%. Annual tax-free threshold: XOF 400,000, and final ITS can be reduced by family-status and dependent-child relief."}},{"@type":"Question","name":"What is INPS in Mali?","acceptedAnswer":{"@type":"Answer","text":"The Institut National de Prévoyance Sociale (INPS) is Mali's social security fund. The employee contribution is 3.6% of gross salary. INPS employee contribution is deductible from taxable income before ITS (PAYE) is calculated."}},{"@type":"Question","name":"How is Mali PAYE administered?","acceptedAnswer":{"@type":"Answer","text":"Mali PAYE (ITS — Impôt sur les Traitements et Salaires) is administered by DGI (Direction Générale des Impôts). Employers withhold tax monthly and remit to DGI by the 7th of the following month. The currency is the West African CFA franc (XOF), shared among WAEMU member states."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -77,7 +77,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="ml-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='ml-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -124,7 +126,7 @@
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
   <div class="amendment-bar-inner">
-    <p><strong>2025/26 Key Facts:</strong> ITS bands — tax-free threshold <strong>XOF 33,333/month (XOF 400,000/year)</strong>. Top rate <strong>36% above XOF 175,000/month</strong>. INPS employee contribution <strong>3.6%</strong>, deductible from taxable income before ITS calculation. Currency: West African CFA franc (XOF), shared among WAEMU states and fixed to EUR at 655.957.</p>
+<p><strong>2025/26 Key Facts:</strong> ITS bands — tax-free threshold <strong>XOF 33,333/month (XOF 400,000/year)</strong>. Top rate <strong>36% above XOF 175,000/month</strong>. INPS employee contribution <strong>3.6%</strong>, deductible from taxable income before ITS calculation. Standard ITS relief also applies by family situation: <strong>0% single</strong>, <strong>10% married without children</strong>, plus <strong>2.5% per dependent child</strong> up to 10. Currency: West African CFA franc (XOF), shared among WAEMU states and fixed to EUR at 655.957.</p>
   </div>
 </div>
 
@@ -141,13 +143,22 @@
         </div>
         <div class="card-body">
 
-          <!-- SECTOR SELECTOR -->
+          <!-- FAMILY STATUS -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
+            <div class="f-label"><span class="f-label-text">Family Status</span><span class="f-hint">Used for standard ITS relief</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (INPS)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (INPS)</button>
+              <button class="sec-btn on" id="btnSingle" onclick="setFamilyStatus('single',this)">Single</button>
+              <button class="sec-btn" id="btnMarried" onclick="setFamilyStatus('married',this)">Married</button>
             </div>
+          </div>
+
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Dependent Children</span><span class="f-hint">Standard DGI family reduction</span></div>
+            <div class="f-wrap">
+              <span class="f-prefix">#</span>
+              <input type="number" class="f-input" id="dependentChildren" placeholder="0" min="0" max="10" step="1" value="0" oninput="calculate()">
+            </div>
+            <p class="f-note">This calculator applies the standard family relief published in Mali's tax code: 10% for married employees with no children, plus 2.5% per dependent child up to 10. Additional relief for a major invalid child is not included in this base estimate.</p>
           </div>
 
           <!-- SALARY SLIDER -->
@@ -430,7 +441,7 @@
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Mali's payroll income tax, known as ITS (Impôt sur les Traitements et Salaires), is administered by DGI (Direction Générale des Impôts). The system uses five monthly progressive bands ranging from 0% to 36%, calculated on taxable income after the INPS employee contribution (3.6%) is deducted. Employers withhold ITS each month and remit to DGI by the 7th of the following month.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Mali uses the West African CFA franc (XOF), shared with seven other WAEMU member states. XOF is fixed to the euro at 655.957 and backed by the French Treasury, providing exchange rate stability. Employees are entitled to a tax-free threshold of XOF 33,333 per month (XOF 400,000 per year). The top rate of 36% applies above XOF 175,000 per month — one of the higher top rates among WAEMU peers.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Mali uses the West African CFA franc (XOF), shared with seven other WAEMU member states. XOF is fixed to the euro at 655.957 and backed by the French Treasury, providing exchange rate stability. Employees are entitled to a tax-free threshold of XOF 33,333 per month (XOF 400,000 per year). The top rate of 36% applies above XOF 175,000 per month, and final ITS can be reduced using family-status relief published in the Code Général des Impôts.</p>
         </div>
         <div class="ng-guide-card">
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">INPS (Institut National de Prévoyance Sociale) collects social security contributions. The employee rate is 3.6% of gross salary. This contribution is fully deductible from gross pay before ITS is calculated, reducing the effective tax burden. Unlike some other African PAYE systems, Mali does not have SDL or WCF payroll levies — only INPS applies.</p>
@@ -476,7 +487,7 @@
       <div class="ng-faq-col">
         <details class="ng-faq-item" open>
           <summary>What are the Mali PAYE tax bands for 2025/26?</summary>
-          <p>Five monthly bands under DGI ITS: 0% on first XOF 33,333; 5% on XOF 33,334–66,666; 13% on XOF 66,667–108,333; 25% on XOF 108,334–175,000; 36% above XOF 175,000. Annual tax-free threshold: XOF 400,000. Bands applied against taxable income after INPS deduction.</p>
+          <p>Five monthly bands under DGI ITS: 0% on first XOF 33,333; 5% on XOF 33,334–66,666; 13% on XOF 66,667–108,333; 25% on XOF 108,334–175,000; 36% above XOF 175,000. Annual tax-free threshold: XOF 400,000. Bands are applied against taxable income after INPS deduction, then standard family relief can reduce the final ITS amount.</p>
         </details>
         <details class="ng-faq-item">
           <summary>Is INPS contribution deductible from ITS taxable income?</summary>
@@ -494,7 +505,7 @@
         </details>
         <details class="ng-faq-item">
           <summary>What is the top PAYE rate in Mali?</summary>
-          <p>Mali's top ITS rate is 36%, applying to monthly taxable income above XOF 175,000 (approximately XOF 2,100,000/year or about USD 3,500/year). This is one of the higher top rates in WAEMU. The effective rate is lower as only income above each threshold is taxed at that band's rate.</p>
+          <p>Mali's top ITS rate is 36%, applying to monthly taxable income above XOF 175,000 (approximately XOF 2,100,000/year or about USD 3,500/year). This is one of the higher top rates in WAEMU. The effective rate is lower because only income above each threshold is taxed at that band's rate, and standard family relief can reduce the final ITS due.</p>
         </details>
         <details class="ng-faq-item">
           <summary>When must employers remit PAYE to DGI Mali?</summary>
@@ -521,19 +532,31 @@ let PERIOD       = 'monthly';
 let CHART        = null;
 let CHART_TYPE   = 'donut';
 let CHAT_HISTORY = [];
-let SECTOR       = 'private'; // 'private' | 'public'
+let FAMILY_STATUS = 'single'; // 'single' | 'married'
 
 const fmt = n => 'XOF\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-GB');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
-// ── SECTOR SELECTOR ───────────────────────────────────────────
-function setSector(s, btn) {
-  SECTOR = s;
+// ── FAMILY STATUS ─────────────────────────────────────────────
+function setFamilyStatus(status, btn) {
+  FAMILY_STATUS = status;
   document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
-  const nssfTog = document.querySelector('[data-tog="nssf"]');
-  document.getElementById('nssfLabel').textContent = 'INPS (3.6%)';
-  nssfTog.querySelector('.tog-rate').textContent = '3.6% employee — tax-deductible';
+  calculate();
+}
+
+function getDependentChildren() {
+  const input = document.getElementById('dependentChildren');
+  const raw = parseInt(input?.value, 10);
+  const value = Math.min(Math.max(isNaN(raw) ? 0 : raw, 0), 10);
+  if (input && String(value) !== input.value) input.value = value;
+  return value;
+}
+
+function getFamilyReliefRate() {
+  const dependents = getDependentChildren();
+  const base = FAMILY_STATUS === 'married' ? 0.10 : 0;
+  return base + (dependents * 0.025);
 }
 
 // ── SLIDER ────────────────────────────────────────────────────
@@ -647,6 +670,8 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   const isSecondary = isOn('secondary');
   const hasNSSF     = isOn('nssf');
+  const dependentChildren = getDependentChildren();
+  const familyReliefRate = isSecondary ? 0 : getFamilyReliefRate();
 
   // INPS calculation
   const socialRate     = hasNSSF ? 0.036 : 0;
@@ -656,16 +681,21 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   // PAYE
   let monthlyPAYE = 0;
+  let baseMonthlyPAYE = 0;
+  let familyRelief = 0;
   let bandBreakdown = [];
 
   if (isSecondary) {
     // Secondary employment: flat 30%, no deductions
     monthlyPAYE = gross * 0.30;
+    baseMonthlyPAYE = monthlyPAYE;
     bandBreakdown = [{ rate: 0.30, income: gross, tax: monthlyPAYE, isFlat: true }];
   } else {
     const taxableIncome = Math.max(0, gross - social);
     const result = calcMonthlyPAYE(taxableIncome);
-    monthlyPAYE  = result.tax;
+    baseMonthlyPAYE = result.tax;
+    familyRelief = Math.min(baseMonthlyPAYE, baseMonthlyPAYE * familyReliefRate);
+    monthlyPAYE  = Math.max(0, baseMonthlyPAYE - familyRelief);
     bandBreakdown = result.bandBreakdown;
   }
 
@@ -683,7 +713,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   RESULT = {
     gross, monthly: gross, social, socialRate, empSocial,
-    monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
+    monthlyPAYE, baseMonthlyPAYE, familyRelief, familyReliefRate, dependentChildren, bandBreakdown, isSecondary, familyStatus: FAMILY_STATUS,
     sdl, wcf, empSocial,
     totalEmployeeDeductions, netMonthly, effectiveRate,
     annualGross: annual(gross), annualNet: annual(netMonthly),
@@ -708,38 +738,40 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.netMonthly,
+      tax: RESULT.monthlyPAYE,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
       { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
-  document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/mo · Take-home: ${fmt(netMonthly)}/mo · PAYE: ${fmt(monthlyPAYE)}/mo · Effective: ${pct(effectiveRate)}`;
+  const reliefText = familyRelief > 0 ? ` · Family relief: ${fmt(familyRelief)}/mo` : '';
+  document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/mo · Take-home: ${fmt(netMonthly)}/mo · PAYE: ${fmt(monthlyPAYE)}/mo${reliefText} · Effective: ${pct(effectiveRate)}`;
 }
 
 // ── RENDER ROWS ───────────────────────────────────────────────
 function renderRows(R, period) {
   const isAnnual = period === 'annual';
-  const d = isAnnual ? 1 : 1; // we always have monthly figures in RESULT
   const gross  = isAnnual ? R.annualGross   : R.gross;
   const social = isAnnual ? R.annualSocial  : R.social;
   const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
+  const payeBeforeRelief = isAnnual ? R.baseMonthlyPAYE * 12 : R.baseMonthlyPAYE;
+  const familyRelief = isAnnual ? R.familyRelief * 12 : R.familyRelief;
   const net    = isAnnual ? R.annualNet     : R.netMonthly;
   const totalDeductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDeductions;
   const lbl = isAnnual ? '/year' : '/month';
@@ -749,7 +781,7 @@ function renderRows(R, period) {
   return `
     <div class="res-section">
       <div class="res-section-title">Gross Income</div>
-      ${row(`Annual Gross Salary${lbl}`, fmt(gross))}
+      ${row(isAnnual ? 'Annual Gross Salary' : 'Monthly Gross Salary', fmt(gross))}
     </div>
     <div class="res-section">
       <div class="res-section-title">Deductions</div>
@@ -761,6 +793,8 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">ITS (DGI)</div>
+      ${!R.isSecondary && familyRelief > 0 ? row(`ITS before family relief${lbl}`, fmt(payeBeforeRelief), 'c-red') : ''}
+      ${!R.isSecondary && familyRelief > 0 ? row(`Family relief (${pct(R.familyReliefRate)})`, fmt(familyRelief), 'c-grn') : ''}
       ${row(`Income tax (ITS)${lbl}`, fmt(paye), 'c-red')}
     </div>
     <div class="res-section">
@@ -833,7 +867,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Take-Home', 'PAYE', 'Emp INPS', 'Empl Social'],
+        labels: ['Take-Home', 'PAYE', 'Employee INPS', 'Employer INPS'],
         datasets: [{ label:'XOF', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XOF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
@@ -925,12 +959,15 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <table>
     ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Secondary employment — flat 30% applied to gross XOF ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
     ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
+    ${!R.isSecondary && R.familyRelief > 0 ? `<tr><td>Family relief (${pct(R.familyReliefRate)})</td><td class="num green">(XOF ${Math.round(R.familyRelief).toLocaleString()})</td></tr>` : ''}
     <tr class="total"><td>Monthly PAYE</td><td class="num red">XOF ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 3 — Monthly Net Pay Summary</div>
   <table>
     ${R.social > 0 ? `<tr><td>INPS (employee, 3.6%)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    ${!R.isSecondary && R.familyRelief > 0 ? `<tr><td>ITS before family relief</td><td class="num red">(XOF ${Math.round(R.baseMonthlyPAYE).toLocaleString()})</td></tr>` : ''}
+    ${!R.isSecondary && R.familyRelief > 0 ? `<tr><td>Family relief (${pct(R.familyReliefRate)})</td><td class="num green">XOF ${Math.round(R.familyRelief).toLocaleString()}</td></tr>` : ''}
     <tr><td>PAYE income tax</td><td class="num red">(XOF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
     <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(XOF ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Monthly Take-Home Pay</td><td class="num green">XOF ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
@@ -946,7 +983,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
   <table>
-    <tr><td style="width:30%"><span class="src">Code des Impôts</span>Mali ITS</td><td style="color:#6b7280;font-size:8pt">Progressive ITS (Impôt sur les Traitements et Salaires) on employment income. Five monthly bands 0%–36%. Administered by DGI Mali.</td></tr>
+    <tr><td style="width:30%"><span class="src">Code des Impôts</span>Mali ITS</td><td style="color:#6b7280;font-size:8pt">Progressive ITS (Impôt sur les Traitements et Salaires) on employment income. Five monthly bands 0%–36%, with standard family reductions by marital status and dependent children.</td></tr>
     <tr><td><span class="src">INPS</span>Social Security</td><td style="color:#6b7280;font-size:8pt">INPS employee 3.6% of gross (deductible before ITS). Employer 12%. Administered by Institut National de Prévoyance Sociale (inps.ml).</td></tr>
   </table>
 </div>
@@ -1003,9 +1040,12 @@ async function getAI() {
 
   const prompt = `Mali ITS analysis (2025/26, DGI):
 - Monthly gross: XOF ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Private (INPS)' : 'Public (INPS)'}
+- Family status: ${R.familyStatus === 'married' ? 'Married' : 'Single'}
+- Dependent children: ${R.dependentChildren}
 - INPS employee (${pct(R.socialRate)}): XOF ${Math.round(R.social).toLocaleString()}/mo
 - Taxable income after INPS deduction: XOF ${Math.round(R.gross - R.social).toLocaleString()}/mo
+- ITS before family relief: XOF ${Math.round(R.baseMonthlyPAYE).toLocaleString()}
+- Family relief (${pct(R.familyReliefRate)}): XOF ${Math.round(R.familyRelief).toLocaleString()}
 - Monthly ITS (PAYE): XOF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Monthly take-home: XOF ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
@@ -1019,7 +1059,7 @@ Give: 1) Plain English summary of ITS position 2) Two specific legal ways to red
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools AI Tax Advisor specialising in Mali ITS — DGI progressive tax, INPS social security, Code des Impôts Mali. Be concise, specific, practical. No markdown, no asterisks.',
+        system:'You are AfroTools AI Tax Advisor specialising in Mali ITS — DGI progressive tax, standard family reductions, INPS social security, Code des Impôts Mali. Be concise, specific, practical. No markdown, no asterisks.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -1056,7 +1096,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, Mali. User: ${R.sector} sector, gross XOF ${Math.round(R.gross).toLocaleString()}/mo, take-home XOF ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        system:`AfroTools AI Tax Advisor, Mali. User: ${R.familyStatus} status, ${R.dependentChildren} dependent children, gross XOF ${Math.round(R.gross).toLocaleString()}/mo, take-home XOF ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1072,7 +1112,11 @@ document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==
 
 // Net-to-Gross: register forward function
 window._grossToNet = function(g) {
-  var d=isOn('nssf')?g*0.036:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);
+  if (isOn('secondary')) return g - (g * 0.30);
+  var d = isOn('nssf') ? g * 0.036 : 0;
+  var base = calcMonthlyPAYE(Math.max(0, g - d)).tax;
+  var relief = Math.min(base, base * getFamilyReliefRate());
+  return g - (d + Math.max(0, base - relief));
 };
 </script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=4701dd1d" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>

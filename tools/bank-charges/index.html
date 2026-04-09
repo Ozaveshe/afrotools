@@ -754,6 +754,12 @@ function onCountryChange() {
   // Show/hide mobile money filter
   var mmBtn = document.querySelector('[data-filter="mobile-money"]');
   if (mmBtn) mmBtn.style.display = hasMM ? '' : 'none';
+  if (!hasMM && currentFilter === 'mobile-money') {
+    currentFilter = 'all';
+    document.querySelectorAll('.bc-filter-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.filter === 'all');
+    });
+  }
   // Reset results
   document.querySelectorAll('.bc-results').forEach(function(el) { el.classList.remove('show'); });
   document.getElementById('savingsBanner').classList.remove('show');
@@ -775,16 +781,15 @@ function calculate() {
   var results = country.banks.map(function(bank) {
     var maintCost = bank.maint;
     var transferCost = bank.transfer * transfers;
-    var interbankCost = bank.interbankTransfer * interbank;
+    var chargeableInterbank = interbank;
+    if (bank.freeTxLimit) {
+      chargeableInterbank = Math.max(0, interbank - bank.freeTxLimit);
+    }
+    var interbankCost = bank.interbankTransfer * chargeableInterbank;
     var atmCost = bank.atm * atm;
     var smsCost = bank.sms * sms;
     var cardCost = bank.cardFee;
     var intlCost = bank.intlTx > 0 ? (bank.intlTx / 100) * avgAmount * intl : 0;
-
-    // Handle free transaction limits (e.g., Kuda)
-    if (bank.freeTxLimit && transfers <= bank.freeTxLimit) {
-      transferCost = 0;
-    }
 
     var total = maintCost + transferCost + interbankCost + atmCost + smsCost + cardCost + intlCost;
 

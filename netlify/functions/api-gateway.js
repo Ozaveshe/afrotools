@@ -2,6 +2,7 @@ import { getStore } from "@netlify/blobs";
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { getAllowedOrigin } = require('./utils/cors');
+const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -110,7 +111,14 @@ export default async function handler(event) {
   if (toolLower === 'tax' || toolLower === 'paye') {
     const engines = require('./_engines/index');
     const params = inputs || {};
-    const { country, grossAnnual, grossMonthly, netAnnual, netMonthly, ...options } = params;
+    const {
+      country,
+      grossAnnual,
+      grossMonthly,
+      netAnnual,
+      netMonthly,
+      ...rawOptions
+    } = params;
 
     if (!country) {
       return respond(400, {
@@ -128,11 +136,17 @@ export default async function handler(event) {
       });
     }
 
-    // If no salary inputs provided, return country info + options
-    const gross = grossAnnual || (grossMonthly ? grossMonthly * 12 : null);
-    const net = netAnnual || (netMonthly ? netMonthly * 12 : null);
+    let salaryInput;
+    try {
+      salaryInput = resolveAnnualSalaryInputs(params);
+    } catch (err) {
+      return respond(400, {
+        error: err.message,
+        code: err.message.includes('Provide exactly one') ? 'INVALID_SALARY_INPUT' : 'INVALID_INPUT'
+      });
+    }
 
-    if (!gross && !net) {
+    if (!salaryInput) {
       return respond(200, {
         status: 'success',
         country: engine.country,
@@ -141,15 +155,16 @@ export default async function handler(event) {
         regimes: engine.regimes,
         options: engine.getOptions(),
         lastUpdated: engine.lastUpdated,
-        hint: 'Provide grossAnnual, grossMonthly, netAnnual, or netMonthly in inputs to calculate.',
+        hint: 'Provide exactly one of grossAnnual, grossMonthly, netAnnual, or netMonthly in inputs to calculate.',
         _meta: makeMeta('tax', authInfo, startTime)
       });
     }
 
     try {
-      const result = gross
-        ? engine.calculate({ grossAnnual: gross, ...options })
-        : engine.reverseCalculate({ netAnnual: net, ...options });
+      const options = normalizeTaxOptions(country, rawOptions);
+      const result = salaryInput.mode === 'gross'
+        ? engine.calculate({ grossAnnual: salaryInput.annualAmount, ...options })
+        : engine.reverseCalculate({ netAnnual: salaryInput.annualAmount, ...options });
 
       return respond(200, {
         status: 'success',

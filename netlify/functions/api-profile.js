@@ -88,7 +88,12 @@ exports.handler = async function (event) {
       // Education fields
       'education_level', 'institution', 'gpa_value', 'gpa_scale',
       'target_study_level', 'target_countries', 'target_fields',
-      'ielts_overall', 'ielts_components', 'jamb_score', 'nationality'
+      'ielts_overall', 'ielts_components', 'jamb_score', 'nationality',
+      // AfroJAMB / Education Hub fields
+      'jamb_best_mock_score', 'jamb_predicted_score', 'jamb_practice_count',
+      'jamb_total_study_minutes', 'jamb_target_subjects', 'jamb_target_universities',
+      'jamb_target_courses', 'jamb_weak_topics', 'jamb_streak_days',
+      'jamb_score_source', 'graduation_date'
     ];
     const profileData = {};
     allowed.forEach(function (key) {

@@ -5,11 +5,11 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nigeria CIT Calculator | Company Income Tax | AfroTools</title>
-<meta name="description" content="Calculate Nigeria Company Income Tax (CIT). 2025 FIRS rates: 0% for small, 20% medium, 30% large companies. Includes tertiary education tax and minimum tax.">
+<meta name="description" content="Calculate Nigeria Company Income Tax (CIT). 2026 regime: 0% for qualifying small companies up to ₦100M turnover, 30% standard CIT, plus development levy for non-small companies.">
 <link rel="canonical" href="https://afrotools.com/tools/ng-cit/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Nigeria CIT Calculator | AfroTools">
-<meta property="og:description" content="Calculate Nigeria Company Income Tax with FIRS 2025 rates.">
+<meta property="og:description" content="Calculate Nigeria Company Income Tax with Nigeria's 2026 rates.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ng-cit/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,8 +113,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Nigeria CIT</span></div>
 <h1>Nigeria <em>Company Income Tax Calculator</em></h1>
-<p class="hero-sub">Calculate your company's tax liability under Nigeria's CIT Act. 2025 FIRS rates with small company exemption, medium company rate, tertiary education tax, and minimum tax.</p>
-<div class="hero-badges"><span class="badge b-em">FIRS 2025</span><span class="badge b-em">CIT + TET</span><span class="badge b-em">Minimum Tax</span></div>
+<p class="hero-sub">Calculate your company's tax liability under Nigeria's current regime. Qualifying small companies are exempt up to ₦100 million turnover, while larger companies pay 30% CIT plus development levy.</p>
+<div class="hero-badges"><span class="badge b-em">Nigeria 2026</span><span class="badge b-em">CIT</span><span class="badge b-em">Development Levy</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -219,31 +219,27 @@ function calculate() {
 
   let size;
   if (sizeSelect === 'auto') {
-    if (turnover <= 25000000) size = 'small';
-    else if (turnover <= 100000000) size = 'medium';
-    else size = 'large';
-  } else size = sizeSelect;
+    size = turnover <= 100000000 ? 'small' : 'large';
+  } else {
+    size = sizeSelect === 'medium' ? 'large' : sizeSelect;
+  }
 
   const taxableProfit = Math.max(0, profit - capAllow - dividends);
 
-  let citRate = 0;
-  if (size === 'small') citRate = 0;
-  else if (size === 'medium') citRate = 0.20;
-  else citRate = 0.30;
-
+  const citRate = size === 'small' ? 0 : 0.30;
   const cit = taxableProfit * citRate;
-  const tet = size === 'small' ? 0 : taxableProfit * 0.025;
-  const minTax = size === 'small' ? 0 : turnover * 0.005;
-  const actualCIT = Math.max(cit, minTax);
-  const isMinTax = minTax > cit && size !== 'small';
-  const totalTax = actualCIT + tet;
+  const developmentLevy = size === 'small' ? 0 : taxableProfit * 0.04;
+  const tet = 0;
+  const minTax = 0;
+  const isMinTax = false;
+  const totalTax = cit + developmentLevy;
   const effectiveRate = turnover > 0 ? (totalTax / turnover * 100) : 0;
   const fmt = n => '₦ ' + Math.round(n).toLocaleString('en');
 
   let html = '';
   html += `<div class="result-box highlight"><div class="num">${fmt(totalTax)}</div><div class="lbl">Total Tax Liability</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(actualCIT)}</div><div class="lbl">${isMinTax ? 'Minimum Tax (0.5%)' : 'CIT (' + (citRate*100) + '%)'}</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(tet)}</div><div class="lbl">TET (2.5%)</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(cit)}</div><div class="lbl">CIT (${(citRate*100).toFixed(0)}%)</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(developmentLevy)}</div><div class="lbl">Development Levy (4%)</div></div>`;
   html += `<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Effective Rate (on Turnover)</div></div>`;
   html += `<div class="result-box"><div class="num">${size.charAt(0).toUpperCase()+size.slice(1)}</div><div class="lbl">Company Classification</div></div>`;
   document.getElementById('resultGrid').innerHTML = html;

@@ -1,1 +1,89 @@
 !function(){"use strict";window.AfroTools=window.AfroTools||{};var e={NGN:"₦",KES:"KES ",ZAR:"R",GHS:"GHS ",EGP:"EGP ",TZS:"TZS ",UGX:"UGX ",RWF:"RWF ",XOF:"FCFA ",XAF:"FCFA ",MAD:"MAD ",TND:"TND ",AOA:"Kz ",ZMW:"ZMW ",ZWG:"ZWG ",MUR:"MUR ",BWP:"BWP ",NAD:"N$",MWK:"MWK ",MZN:"MZN ",MGA:"MGA ",LSL:"LSL ",SZL:"SZL ",GNF:"GNF ",SLE:"SLE ",LRD:"LRD ",GMD:"GMD ",CVE:"CVE ",MRU:"MRU ",DJF:"DJF ",KMF:"KMF ",SCR:"SCR ",SOS:"SOS ",SDG:"SDG ",SSP:"SSP ",LYD:"LYD ",DZD:"DZD ",ETB:"ETB ",BIF:"BIF ",ERN:"ERN ",CDF:"CDF ",STN:"STN "};function n(n,t){return null==n||isNaN(n)?"—":(e[t]||t+" ")+Number(n).toLocaleString("en",{minimumFractionDigits:0,maximumFractionDigits:2})}window.AfroTools.HREngine={getMinimumWage:function(t){if("undefined"==typeof MINIMUM_WAGES||!MINIMUM_WAGES[t])return null;var r=MINIMUM_WAGES[t],o=r.nationalMinimum||{};return{country:r.name,flag:r.flag,currency:r.currency,symbol:e[r.currency]||r.currency+" ",monthly:o.monthly,daily:o.daily,hourly:o.hourly,effectiveDate:o.effectiveDate,law:o.law,notes:o.notes||r.notes,sectorRates:r.sectorRates||null,previousRates:r.previousRates||null,livingWage:r.livingWage||null,noMinimumWage:!!r.noMinimumWage,compliance:r.compliance||null,fMonthly:o.monthly?n(o.monthly,r.currency):null,fDaily:o.daily?n(o.daily,r.currency):null,fHourly:o.hourly?n(o.hourly,r.currency):null}},calculateOvertime:function(t){if("undefined"==typeof OVERTIME_RULES||!OVERTIME_RULES[t.country])return null;var r=OVERTIME_RULES[t.country],o=r.standardHours.weekly||40,a=t.monthlySalary/(4.33*o),l=r.overtimeRate,u=1.5,i=t.dayType||"weekday";"weekday"===i?u=l.weekday||l.daytime||l.first8hrs||l.day||1.5:"weekend"===i||"restDay"===i?u=l.weekend||l.restDay||l.sunday||l.restDayDay||2:"publicHoliday"===i?u=l.publicHoliday||l.restDay||2:"night"===i&&(u=l.night||l.nighttime||l.nightWeekday||1.5);var y=a*u*t.overtimeHours,c=t.monthlySalary+y,m=c/(4.33*o+t.overtimeHours);return{country:r.name,currency:r.currency,symbol:e[r.currency]||r.currency+" ",standardHours:r.standardHours,hourlyRate:a,otMultiplier:u,overtimeHours:t.overtimeHours,overtimePay:y,totalPay:c,effectiveHourly:m,maxOvertime:r.maxOvertime||null,notes:r.notes||"",exemptions:r.exemptions||null,timeOff:r.timeOff||null,fHourlyRate:n(a,r.currency),fOvertimePay:n(y,r.currency),fTotalPay:n(c,r.currency),fEffectiveHourly:n(m,r.currency)}},getLeaveEntitlements:function(e){if("undefined"==typeof LEAVE_ENTITLEMENTS||!LEAVE_ENTITLEMENTS[e])return null;var n=LEAVE_ENTITLEMENTS[e],t=(n.annualLeave&&n.annualLeave.days||0)+(n.publicHolidays||0);return{country:n.name,flag:n.flag,currency:n.currency,annualLeave:n.annualLeave||{days:0},sickLeave:n.sickLeave||{days:null,notes:"Not specified"},maternityLeave:n.maternityLeave||{weeks:0},paternityLeave:n.paternityLeave||{days:0,notes:"Not specified"},publicHolidays:n.publicHolidays||0,compassionateLeave:n.compassionateLeave||null,familyResponsibility:n.familyResponsibility||null,totalDaysOff:t}},calculateSocialSecurity:function(t,r){if("undefined"==typeof SOCIAL_SECURITY||!SOCIAL_SECURITY[t])return null;for(var o=SOCIAL_SECURITY[t],a=0,l=0,u=[],i=0;i<o.schemes.length;i++){var y=o.schemes[i],c="number"==typeof y.employeeRate?y.employeeRate:0,m="number"==typeof y.employerRate?y.employerRate:0,s=r;y.cap&&y.cap.monthly&&r>y.cap.monthly&&(s=y.cap.monthly);var f=s*(c/100),S=s*(m/100);a+=f,l+=S,u.push({name:y.name,employeeRate:c,employerRate:m,employeeAmount:f,employerAmount:S,cap:y.cap||null,notes:y.notes||"",law:y.law||"",fEmployeeAmount:n(f,o.currency),fEmployerAmount:n(S,o.currency)})}return{country:o.name,flag:o.flag,currency:o.currency,symbol:e[o.currency]||o.currency+" ",monthlySalary:r,totalEmployee:a,totalEmployer:l,totalContribution:a+l,netAfterDeductions:r-a,totalCostToEmployer:r+l,breakdown:u,annualEmployee:12*a,annualEmployer:12*l,annualTotal:12*(a+l),fTotalEmployee:n(a,o.currency),fTotalEmployer:n(l,o.currency),fTotalContribution:n(a+l,o.currency),fNetAfterDeductions:n(r-a,o.currency),fTotalCostToEmployer:n(r+l,o.currency)}},projectPension:function(t){if("undefined"==typeof PENSION_SYSTEMS)return null;var r=PENSION_SYSTEMS[t.country]||{},o=t.currentAge||30,a=t.retirementAge||r.retirementAge||60,l=a-o;if(l<=0)return null;for(var u=t.currentSalary||0,i=(t.salaryGrowth||3)/100,y=(t.contributionRate||r.defaultContribution||10)/100,c=(t.growthRate||8)/100,m=t.currentBalance||0,s=[],f=0;f<l;f++){var S=12*u*y,E=m*c;m+=S+E,u*=1+i,s.push({year:o+f+1,balance:m,contribution:S,growth:E})}var p=.04*m/12,d=u,M=d>0?p/d*100:0,R=r.currency||"USD";return{country:r.name||t.country,flag:r.flag||"",currency:R,symbol:e[R]||R+" ",retirementAge:a,yearsToRetirement:l,finalBalance:m,monthlyPension:p,replacementRatio:M,finalSalary:d,totalContributed:s.reduce(function(e,n){return e+n.contribution},0),totalGrowth:s.reduce(function(e,n){return e+n.growth},0),yearlyProjection:s,pensionType:r.pensionType||"contributory",notes:r.notes||"",fFinalBalance:n(m,R),fMonthlyPension:n(p,R),fReplacementRatio:M.toFixed(1)+"%"}},formatCurrency:n,formatNumber:function(e){return null==e||isNaN(e)?"—":Number(e).toLocaleString("en",{minimumFractionDigits:0,maximumFractionDigits:2})},getAllCountryCodes:function(){return"undefined"==typeof MINIMUM_WAGES?[]:Object.keys(MINIMUM_WAGES).sort(function(e,n){return MINIMUM_WAGES[e].name.localeCompare(MINIMUM_WAGES[n].name)})},CURRENCY_SYMBOLS:e}}();
+;
+(function (window) {
+  "use strict";
+
+  var engine = window.AfroTools && window.AfroTools.HREngine;
+
+  if (!engine) {
+    return;
+  }
+
+  var originalOvertime = engine.calculateOvertime;
+  var formatCurrency = engine.formatCurrency;
+
+  engine.calculateOvertime = function (input) {
+    if (input && input.dayType === "holiday") {
+      input = Object.assign({}, input, { dayType: "publicHoliday" });
+    }
+
+    return originalOvertime.call(this, input);
+  };
+
+  engine.calculateSocialSecurity = function (countryCode, monthlySalary) {
+    if (typeof SOCIAL_SECURITY === "undefined" || !SOCIAL_SECURITY[countryCode]) {
+      return null;
+    }
+
+    var country = SOCIAL_SECURITY[countryCode];
+    var totalEmployee = 0;
+    var totalEmployer = 0;
+    var breakdown = [];
+    var i;
+
+    for (i = 0; i < (country.schemes || []).length; i += 1) {
+      var scheme = country.schemes[i];
+      var employeeRate = typeof scheme.employeeRate === "number" ? scheme.employeeRate : 0;
+      var employerRate = typeof scheme.employerRate === "number" ? scheme.employerRate : 0;
+      var base = monthlySalary;
+
+      if (scheme.cap && typeof scheme.cap === "object" && typeof scheme.cap.monthly === "number") {
+        base = Math.min(base, scheme.cap.monthly);
+        if (typeof scheme.cap.deductFromTierI === "number") {
+          base = Math.max(0, base - scheme.cap.deductFromTierI);
+        }
+      }
+
+      var employeeAmount = base * (employeeRate / 100);
+      var employerAmount = base * (employerRate / 100);
+
+      totalEmployee += employeeAmount;
+      totalEmployer += employerAmount;
+
+      breakdown.push({
+        name: scheme.name,
+        employeeRate: employeeRate,
+        employerRate: employerRate,
+        employeeAmount: employeeAmount,
+        employerAmount: employerAmount,
+        cap: scheme.cap || null,
+        notes: scheme.notes || "",
+        law: scheme.law || "",
+        fEmployeeAmount: formatCurrency(employeeAmount, country.currency),
+        fEmployerAmount: formatCurrency(employerAmount, country.currency)
+      });
+    }
+
+    return {
+      country: country.name,
+      flag: country.flag,
+      currency: country.currency,
+      symbol: engine.CURRENCY_SYMBOLS[country.currency] || (country.currency + " "),
+      monthlySalary: monthlySalary,
+      totalEmployee: totalEmployee,
+      totalEmployer: totalEmployer,
+      totalContribution: totalEmployee + totalEmployer,
+      netAfterDeductions: monthlySalary - totalEmployee,
+      totalCostToEmployer: monthlySalary + totalEmployer,
+      breakdown: breakdown,
+      annualEmployee: totalEmployee * 12,
+      annualEmployer: totalEmployer * 12,
+      annualTotal: (totalEmployee + totalEmployer) * 12,
+      fTotalEmployee: formatCurrency(totalEmployee, country.currency),
+      fTotalEmployer: formatCurrency(totalEmployer, country.currency),
+      fTotalContribution: formatCurrency(totalEmployee + totalEmployer, country.currency),
+      fNetAfterDeductions: formatCurrency(monthlySalary - totalEmployee, country.currency),
+      fTotalCostToEmployer: formatCurrency(monthlySalary + totalEmployer, country.currency)
+    };
+  };
+}(window));

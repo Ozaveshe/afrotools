@@ -53,19 +53,21 @@ class AfroRelatedTools extends HTMLElement {
   _render() {
     const tools = this._getTools();
     if (!tools.length) { this.shadowRoot.innerHTML=''; return; }
+    const fallbackOnlyIds = new Set(['html-to-pdf','pdf-bates','pdf-chat','pdf-compare','pdf-convert','pdf-find-replace','pdf-image-convert','pdf-reorder','pdf-repair','pdf-to-audio','pdf-translate','pdf-workflow']);
 
     const cards = tools.map(t => {
       const cs   = this._cat(t.category);
       const img  = `/assets/img/tools/${t.id}.webp`;
       const imgFallback = `/assets/img/tools/${t.id}.svg`;
+      const useImage = !fallbackOnlyIds.has(t.id);
       const desc = t.desc && t.desc.length > 50 ? t.desc.slice(0,48)+'…' : (t.desc||'');
       return `
         <a class="card" href="${t.href}" aria-label="${t.name}">
           <div class="card-visual" style="background:${cs.gradient}">
-            <img class="card-img" src="${img}" alt="${t.name} icon"
+            ${useImage ? `<img class="card-img" src="${img}" alt="${t.name} icon"
                  loading="lazy"
-                 onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.classList.add('card-img--icon');this.src='${imgFallback}'">
-            <div class="card-emoji" style="display:none" aria-hidden="true">${t.icon||'🔧'}</div>
+                 onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.classList.add('card-img--icon');this.src='${imgFallback}'">` : ''}
+            <div class="card-emoji" style="display:${useImage ? 'none' : 'flex'}" aria-hidden="true">${t.icon||'PDF'}</div>
           </div>
           <div class="card-body">
             <span class="pill" style="background:${cs.pill};color:${cs.pillTxt}">${cs.label}</span>

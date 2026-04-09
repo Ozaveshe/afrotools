@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB 48-Hour Cram Mode — Emergency Prep | AfroJAMB</title>
+<meta name="description" content="The last 48 hours before JAMB. Don't panic. Follow this hour-by-hour emergency cram plan: priority topics, quick mocks, AI explanations, sleep schedule. Free.">
+<link rel="canonical" href="https://afrotools.com/jamb/cram/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="JAMB 48-Hour Cram Mode — Emergency Prep">
+<meta property="og:description" content="Don't panic. Follow this hour-by-hour cram plan for the final 48 hours before JAMB.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-cram.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/jamb.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<!-- afro-edu-bridge -->
+<script src="/assets/js/afro-auth.js?v=6" defer></script>
+<script src="/assets/js/edu-profile-sync.js?v=01dfe789" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
+<script src="/assets/js/lib/cross-tool-nav.js?v=2" defer></script>
+<!-- /afro-edu-bridge --></head>
+<body class="jamb-page">
+<a href="#main" class="jb-skip">Skip to main content</a>
+
+
+<afro-navbar active="education"></afro-navbar>
+
+<div class="jb-wrap">
+  <nav class="jb-bc" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/education/">Education</a><span class="sep">/</span>
+    <a href="/jamb/">AfroJAMB</a><span class="sep">/</span>
+    <span class="cur">48-Hour Cram</span>
+  </nav>
+</div>
+
+<main id="main">
+<section class="jb-hero" style="padding:42px 0 50px;background:linear-gradient(135deg,#7f1d1d 0%,#0A1628 50%,#0063D1 100%);">
+  <div class="jb-wrap jb-hero-z">
+    <span class="jb-hero-tag" style="background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4);"><span class="pulse" style="background:#ef4444;"></span>Emergency Mode</span>
+    <h1 id="cram-headline">JAMB in <b id="cram-time">48 hrs</b>. Don't panic.</h1>
+    <p class="sub">This is a time-locked cram plan. No fluff, no syllabus deep-dives — just the highest-impact things you can do in the time you have left.</p>
+    <div id="cram-bigcountdown" style="display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;"></div>
+  </div>
+</section>
+
+<section class="jb-sec">
+  <div class="jb-wrap" style="max-width:780px;">
+
+    <!-- Status banner -->
+    <div id="status-banner" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;margin-bottom:18px;text-align:center;"></div>
+
+    <!-- Hour-by-hour blocks -->
+    <h2 style="font-size:1.2rem;font-weight:800;margin:24px 0 4px;color:#0f172a;">Your hour-by-hour plan</h2>
+    <p style="font-size:.82rem;color:#64748b;margin:0 0 18px;">Stop reading old notes. Do these in order. Each block is 30–60 minutes. Skip nothing.</p>
+
+    <div id="cram-blocks" style="display:flex;flex-direction:column;gap:12px;"></div>
+
+    <!-- Don't do these -->
+    <div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:14px;padding:24px;margin-top:24px;">
+      <h3 style="margin:0 0 10px;font-size:1rem;font-weight:800;color:#92400e;">⚠️ Don't do these in the last 48 hours</h3>
+      <ul style="margin:0;padding-left:20px;font-size:.86rem;line-height:1.7;color:#78350f;">
+        <li>Don't try to learn brand new topics — you don't have time to internalize</li>
+        <li>Don't take a 3-hour mock the night before — it'll burn you out</li>
+        <li>Don't compare scores with friends — it tanks confidence</li>
+        <li>Don't skip sleep — sleep > revision in the last 12 hours</li>
+        <li>Don't try new food or coffee on exam morning — energy crashes are real</li>
+      </ul>
+    </div>
+
+    <div class="jb-footer-cta">
+      <h3>Built for the panic.</h3>
+      <p>Found this useful? Share it with a classmate who's freaking out.</p>
+      <button id="share-btn" class="jb-btn jb-btn-primary">📤 Share with a friend</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<style>
+.cd-big {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  padding: 14px 22px;
+  text-align: center;
+}
+.cd-big .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.cd-big .l { font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-top: 6px; }
+
+.cram-block {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: start;
+  transition: all .15s;
+}
+.cram-block:hover { border-color: #4DA3FF; }
+.cram-block.done { background: #d1fae5; border-color: #10b981; opacity: .7; }
+.cram-block.done .cram-block-title { text-decoration: line-through; color: #065f46; }
+.cram-block.now { border-color: #f59e0b; background: #fffbeb; box-shadow: 0 4px 16px rgba(245,158,11,.15); }
+
+.cram-check {
+  width: 24px; height: 24px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: #fff;
+  font-size: .82rem;
+  margin-top: 2px;
+  padding: 0;
+  font-family: inherit;
+  color: #fff;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.cram-check:focus-visible {
+  outline: none;
+  border-color: #0063D1;
+  box-shadow: 0 0 0 3px rgba(0, 99, 209, 0.25);
+}
+.cram-block.done .cram-check { background: #22c55e; border-color: #22c55e; color: #fff; }
+.cram-block.now .cram-check { border-color: #f59e0b; }
+
+.cram-body { flex: 1; }
+.cram-time {
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #007AFF;
+  background: #E8F2FF;
+  padding: 3px 9px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.cram-block.now .cram-time { background: #f59e0b; color: #fff; }
+.cram-block-title { font-size: 1rem; font-weight: 800; color: #0f172a; line-height: 1.3; }
+.cram-block-desc { font-size: .82rem; color: #64748b; line-height: 1.55; margin-top: 6px; }
+.cram-block-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: #007AFF;
+  border: 1.5px solid #007AFF;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+.cram-block-link:hover { background: #007AFF; color: #fff; }
+</style>
+
+<script>
+// JAMB target: April 16, 2026 09:00 WAT
+var TARGET = new Date('2026-04-16T09:00:00+01:00').getTime();
+var STORAGE = "afrojamb-cram-progress";
+
+function loadProgress(){ try { return JSON.parse(localStorage.getItem(STORAGE) || "{}"); } catch(e) { return {}; } }
+function saveProgress(p){ try { localStorage.setItem(STORAGE, JSON.stringify(p)); } catch(e) {} }
+
+function tickCountdown() {
+  var diff = Math.max(0, TARGET - Date.now());
+  var h = Math.floor(diff / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+
+  // Big headline
+  var head = document.getElementById("cram-time");
+  if (h >= 24) head.textContent = Math.floor(h/24) + " days";
+  else if (h >= 1) head.textContent = h + " hrs";
+  else head.textContent = m + " min";
+
+  // Big countdown row
+  var box = document.getElementById("cram-bigcountdown");
+  var totalH = Math.floor(diff / 3600000);
+  box.innerHTML =
+    '<div class="cd-big"><div class="n">' + totalH + '</div><div class="l">Hours left</div></div>'
+    + '<div class="cd-big"><div class="n">' + m + '</div><div class="l">Minutes</div></div>'
+    + '<div class="cd-big"><div class="n">' + s + '</div><div class="l">Seconds</div></div>';
+
+  // Status banner
+  var banner = document.getElementById("status-banner");
+  if (diff <= 0) {
+    banner.innerHTML = '<div style="font-size:1.2rem;font-weight:800;color:#10b981;">🎓 JAMB has started. Good luck!</div><p style="font-size:.86rem;color:#64748b;margin-top:6px;">You\'ve got this. Trust your prep.</p>';
+  } else if (totalH > 48) {
+    banner.innerHTML = '<div style="font-size:1.05rem;font-weight:700;color:#0f172a;">' + Math.floor(totalH / 24) + ' days to go.</div><p style="font-size:.84rem;color:#64748b;margin-top:6px;">You have time for more than just cram. Try our <a href="/jamb/study-plan/" style="color:#007AFF;font-weight:700;">full study plan</a> instead — but bookmark this page for the final 48 hours.</p>';
+  } else if (totalH > 24) {
+    banner.innerHTML = '<div style="font-size:1.1rem;font-weight:800;color:#f59e0b;">🔥 You\'re in the 48-hour window. Lock in.</div><p style="font-size:.84rem;color:#64748b;margin-top:6px;">Follow the plan below in order. No improvising.</p>';
+  } else if (totalH > 12) {
+    banner.innerHTML = '<div style="font-size:1.1rem;font-weight:800;color:#ef4444;">⏰ Less than 24 hours. Skip to "Final Day" blocks below.</div>';
+  } else {
+    banner.innerHTML = '<div style="font-size:1.1rem;font-weight:800;color:#ef4444;">😤 Last 12 hours. SLEEP. Don\'t cram more.</div><p style="font-size:.84rem;color:#64748b;margin-top:6px;">Read our <a href="/jamb/exam-day-kit/" style="color:#007AFF;font-weight:700;">exam day kit</a> and go to bed early.</p>';
+  }
+}
+
+// Cram blocks — hour-by-hour (T-48 to T-0)
+var BLOCKS = [
+  // ---- TODAY (T-48 to T-24) ----
+  {phase: "Today (T-48 to T-24)", time: "Block 1 · 45 min", title: "Take a 30-min CBT mock right now",
+   desc: "Don't think. Open the CBT and take a 30-min Quick Mock across all 4 subjects. We need a baseline of where you are.",
+   link: {label: "Start Quick Mock →", href: "/jamb/cbt/?mode=quick"}},
+  {phase: "Today (T-48 to T-24)", time: "Block 2 · 30 min", title: "Review the wrong answers from Block 1",
+   desc: "Go to your results, click 'Wrong' filter, walk through every wrong answer. Tap 'Why is this the answer?' on the ones you don't understand. This is where you actually learn.",
+   link: null},
+  {phase: "Today (T-48 to T-24)", time: "Block 3 · 30 min", title: "Open Pattern Analyzer for your 4 subjects",
+   desc: "See which topics appear most. The 'Likely topics for JAMB 2026' card tells you exactly what to focus on. Note your top 3 weak topics from your wrong answers.",
+   link: {label: "Open Patterns →", href: "/jamb/patterns/"}},
+  {phase: "Today (T-48 to T-24)", time: "Block 4 · 60 min", title: "AI tutor: drill your top 3 weak topics",
+   desc: "Open the AI tutor. For each weak topic, ask: 'Quiz me on [topic] — give me 5 JAMB-style questions one at a time'. The tutor will quiz you and explain wrong answers in plain English.",
+   link: {label: "Open AI Tutor →", href: "/jamb/tutor/"}},
+  {phase: "Today (T-48 to T-24)", time: "Block 5 · 30 min", title: "Flashcards: power through 30 cards",
+   desc: "Pick the deck for your weakest subject. Power through 30 cards. Don't worry about retention — exposure is the goal.",
+   link: {label: "Open Flashcards →", href: "/jamb/flashcards/"}},
+  {phase: "Today (T-48 to T-24)", time: "Block 6 · 60 min", title: "Take a full 1-subject CBT",
+   desc: "Pick your strongest subject (for confidence) or your weakest (for stretch). Take a 40-min single-subject CBT. Review wrong answers right after.",
+   link: {label: "Single Subject CBT →", href: "/jamb/cbt/"}},
+  {phase: "Today (T-48 to T-24)", time: "Block 7 · 15 min", title: "Read the exam day survival kit",
+   desc: "Print out the checklist. Pack your bag tonight. Confirm your centre on the JAMB portal.",
+   link: {label: "Exam Day Kit →", href: "/jamb/exam-day-kit/"}},
+  {phase: "Today (T-48 to T-24)", time: "Sleep · 7+ hours", title: "Sleep at 10 PM. No exceptions.",
+   desc: "You cannot cram knowledge into a tired brain. Sleep beats one more revision session. Two alarms. Phone in another room.",
+   link: null},
+
+  // ---- TOMORROW (T-24 to T-12) ----
+  {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 8 · 30 min", title: "Wake up, eat, then 30-min Quick Mock again",
+   desc: "Same Quick Mock format as Block 1. Compare your aggregate score — are you up? You should be by 10–30 points.",
+   link: {label: "Start Quick Mock →", href: "/jamb/cbt/?mode=quick"}},
+  {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 9 · 30 min", title: "Review wrong answers + ask AI on the hard ones",
+   desc: "Same review loop. By now you should be seeing patterns in what trips you up.",
+   link: null},
+  {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 10 · 60 min", title: "Past questions: 1 hour focused on your weakest subject",
+   desc: "Go to past questions, filter to your weakest subject, do 20 questions in a row. Reveal answers as you go.",
+   link: {label: "Past Questions →", href: "/jamb/past-questions/"}},
+  {phase: "Tomorrow morning (T-24 to T-12)", time: "Block 11 · 30 min", title: "Cheat-sheet pass on math + science formulas",
+   desc: "Open the Math Formulas and Physics Constants flashcard decks. Don't review individual cards — flip through fast and let your eyes catalog them.",
+   link: {label: "Flashcards →", href: "/jamb/flashcards/"}},
+  {phase: "Tomorrow afternoon (T-12 to T-6)", time: "Block 12 · 30 min", title: "Final Quick Mock — measure progress",
+   desc: "One more 30-min Quick Mock. This is your last full mock before bed. Don't cram after this.",
+   link: {label: "Quick Mock →", href: "/jamb/cbt/?mode=quick"}},
+  {phase: "Tomorrow afternoon (T-12 to T-6)", time: "Block 13 · 15 min", title: "Pack your bag, print your slip, plan transport",
+   desc: "Use the checklist. Two copies of slip. Money for transport + reserve. Confirm centre directions.",
+   link: {label: "Exam Day Kit →", href: "/jamb/exam-day-kit/"}},
+
+  // ---- NIGHT BEFORE (T-12 to T-0) ----
+  {phase: "Night before (T-12 to T-0)", time: "7 PM · STOP studying", title: "Stop. Studying. Now.",
+   desc: "Your brain needs to consolidate. Cramming after 7 PM hurts more than helps. Eat normally — don't try anything new.",
+   link: null},
+  {phase: "Night before (T-12 to T-0)", time: "10 PM · Sleep", title: "Sleep at 10 PM sharp",
+   desc: "Set 2 alarms on different devices. Drink water. Lights out. You've prepared.",
+   link: null},
+  {phase: "Exam morning (T-3 to T-0)", time: "T-3hrs · Wake", title: "Wake up early. Eat protein.",
+   desc: "Eggs, bread, oats, banana. No oily food. Drink water but not too much. Use the bathroom.",
+   link: null},
+  {phase: "Exam morning (T-3 to T-0)", time: "T-90min · Leave", title: "Leave 90 minutes early",
+   desc: "Buffer for traffic. Better to wait at the centre than panic in transit.",
+   link: null},
+  {phase: "Exam morning (T-3 to T-0)", time: "At the centre", title: "Don't discuss the exam with other candidates",
+   desc: "Plug in headphones (no music — just to block out chatter). Sit. Breathe. Trust your prep.",
+   link: null},
+];
+
+function renderBlocks() {
+  var box = document.getElementById("cram-blocks");
+  box.innerHTML = "";
+  var progress = loadProgress();
+  var lastPhase = null;
+  BLOCKS.forEach(function(b, idx) {
+    if (b.phase !== lastPhase) {
+      var hd = document.createElement("h3");
+      hd.style.cssText = "font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#475569;margin:20px 0 8px;padding-bottom:8px;border-bottom:1px solid #e2e8f0;";
+      hd.textContent = b.phase;
+      box.appendChild(hd);
+      lastPhase = b.phase;
+    }
+    var done = !!progress[idx];
+    var blk = document.createElement("div");
+    blk.className = "cram-block" + (done ? " done" : "");
+    var btnId = "cram-check-" + idx;
+    var titleId = "cram-title-" + idx;
+    blk.innerHTML = '<button type="button" class="cram-check" id="' + btnId + '" role="checkbox" aria-checked="' + (done ? "true" : "false") + '" aria-labelledby="' + titleId + '">' + (done ? "✓" : "") + '</button>'
+      + '<div class="cram-body">'
+      + '<span class="cram-time">' + b.time + '</span>'
+      + '<div class="cram-block-title" id="' + titleId + '">' + b.title + '</div>'
+      + '<div class="cram-block-desc">' + b.desc + '</div>'
+      + (b.link ? '<a href="' + b.link.href + '" class="cram-block-link">' + b.link.label + '</a>' : '')
+      + '</div>';
+    blk.querySelector(".cram-check").addEventListener("click", function(){
+      progress[idx] = !progress[idx];
+      saveProgress(progress);
+      renderBlocks();
+    });
+    box.appendChild(blk);
+  });
+}
+
+document.getElementById("share-btn").addEventListener("click", function(){
+  var url = window.location.href;
+  var text = "If you're cramming for JAMB, this 48-hour plan is gold. Free, no signup. ";
+  if (navigator.share) {
+    navigator.share({title: "JAMB 48-Hour Cram", text: text, url: url}).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(text + url);
+    this.textContent = "✓ Link copied — share it!";
+  }
+});
+
+tickCountdown();
+setInterval(tickCountdown, 1000);
+renderBlocks();
+</script>
+
+</body>
+</html>

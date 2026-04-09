@@ -80,7 +80,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="so-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='so-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -90,7 +92,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/somalia/so-paye" />
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 <style>
@@ -108,13 +110,13 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="https://afrotools.com">AfroTools</a> / <a href="/somalia/">Somalia</a> / <span>PAYE Calculator</span></div>
     <h1>Somalia PAYE Calculator <em>2025/26</em></h1>
-    <p class="hero-sub">Calculate your monthly take-home pay using Somalia's flat 5% employment income tax. Simple calculation, no formal social security system. Accurate, free, instant.</p>
+    <p class="hero-sub">Estimate your monthly take-home pay using Somalia's flat 5% employment income tax. Simple calculation for standard cases, with no formal social security system modeled.</p>
     <div class="hero-badges">
       <div class="badge b-gold">Flat 5% Tax</div>
       <div class="badge b-blue">No Social Security</div>
       <div class="badge b-grey">MoF 2025/26</div>
     </div>
-    <div class="hero-meta">Updated 10 March 2026 · Informational only.</div>
+    <div class="hero-meta">Updated 6 April 2026 · Informational estimate.</div>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/somalia/so-vat" style="color:#007AFF;font-weight:600;">Somalia VAT Calculator</a></p>
   </div>
 </div>
@@ -466,30 +468,30 @@ updateSliderFill(document.getElementById('salarySlider'));
     return;
   }
   if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';setTimeout(()=>el.style.borderColor='',2000);return;}
-  const tax=gross*0.05;const net=gross-tax;RESULT={gross,monthly:gross,tax,net,annualGross:gross*12,annualNet:net*12,annualTax:tax*12,totalEmployerCost:gross};
+  const tax=gross*0.05;const net=gross-tax;const effectiveRate=gross>0?tax/gross:0;RESULT={gross,monthly:gross,tax,net,effectiveRate,annualGross:gross*12,annualNet:net*12,annualTax:tax*12,totalEmployerCost:gross};
   document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/mo · ${fmt(gross*12)}/yr`;document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');
   // Save/Share/Benchmark wiring
   var _saveBtn = document.querySelector('save-result-button');
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.net,
+      tax: RESULT.tax,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.net) + '/mo',
     subValues: [
       { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.tax) + '/mo' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }renderChart('donut');var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');var d=PERIOD==='monthly'?12:1;empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/d)+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>No formal employer contributions in Somalia; total cost equals gross salary.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.net); }renderChart('donut');var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');var d=PERIOD==='monthly'?12:1;empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/d)+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>No formal employer contributions in Somalia; total cost equals gross salary.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
   document.getElementById('aiBtn').disabled=false;
   document.getElementById('aiBtn').textContent='Get AI Tax Analysis';
 }
@@ -498,7 +500,7 @@ function renderRows(R,period){
   const isAnnual=period==='annual';const gross=isAnnual?R.annualGross:R.gross;const tax=isAnnual?R.annualTax:R.tax;const net=isAnnual?R.annualNet:R.net;const lbl=isAnnual?'/year':'/month';const row=(l,v,cls='')=>`<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;return `<div class="res-section"><div class="res-section-title">Gross Income</div>${row(`Salary${lbl}`,fmt(gross))}</div><div class="res-section"><div class="res-section-title">Tax</div>${row(`Employment tax (5%)${lbl}`,fmt(tax),'c-red')}</div><div class="res-section"><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;
 }
 
-function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?RESULT.netMonthly:(RESULT.annualNet||RESULT.netAnnual||RESULT.netMonthly*12);var gr=isM?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
+function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?RESULT.net:(RESULT.annualNet||RESULT.net*12);var gr=isM?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
 
 function setChart(type,btn){document.querySelectorAll('.chart-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderChart(type);}
 

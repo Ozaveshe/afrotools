@@ -399,14 +399,14 @@ const COUNTRIES = {
   },
   ZA:{sym:'R',hint:'In South African Rand (R)',agent:'Typical: 5–7.5% (incl. VAT)',
     calc:function(price,buyer,type,hasAgent,agentRate){
-      // Transfer duty (2024 SARS scales)
+      // Transfer duty (SARS 2026/27 scales)
       let td=0;
-      if(price<=1100000)td=0;
-      else if(price<=1512000)td=(price-1100000)*0.03;
-      else if(price<=2117000)td=12360+(price-1512000)*0.06;
-      else if(price<=2722000)td=48660+(price-2117000)*0.08;
-      else if(price<=12100000)td=97140+(price-2722000)*0.11;
-      else td=1128600+(price-12100000)*0.13;
+      if(price<=1210000)td=0;
+      else if(price<=1663800)td=(price-1210000)*0.03;
+      else if(price<=2329300)td=13614+(price-1663800)*0.06;
+      else if(price<=2994800)td=53544+(price-2329300)*0.08;
+      else if(price<=13310000)td=106784+(price-2994800)*0.11;
+      else td=1241456+(price-13310000)*0.13;
       // First time buyer: FLISP rebate consideration - still pay duty
       const legal=Math.max(price*0.012,8000)+3500; // conveyancer + disbursements
       const bondReg=price*0.01+5000; // bond registration attorney
@@ -414,7 +414,7 @@ const COUNTRIES = {
       const postals=2000; // posting, FICA etc
       const agent=hasAgent==='yes'?price*(agentRate/100)*1.15:0; // incl 15% VAT
       return [
-        {name:'Transfer Duty (SARS)',calc:'Progressive scale',amount:td,note:td===0?'R0 — property value below R1.1M threshold':''},
+        {name:'Transfer Duty (SARS)',calc:'Progressive scale',amount:td,note:td===0?'R0 — property value below R1.21M threshold':''},
         {name:'Conveyancing Attorney',calc:'~1.2% + disbursements',amount:legal},
         {name:'Bond Registration Attorney',calc:'~1% + fees',amount:bondReg},
         {name:'Deeds Office Fee',calc:'Fixed scale',amount:titleDeed},
@@ -561,7 +561,7 @@ function calculate(){
 
   // AI insight
   const largest=items.reduce((a,b)=>a.amount>b.amount?a:b);
-  document.getElementById('ai-text').textContent=`Your total transfer costs are ${fmt(totalCosts)} (${pct}% of purchase price). The largest cost is ${largest.name} at ${fmt(largest.amount)}. Budget for at least ${pct}% on top of your deposit when planning your finances. ${buyer==='first'&&country==='ZA'&&price<=1100000?'Great news: as a first-time buyer purchasing below R1.1M, you pay zero transfer duty!':''}`;
+  document.getElementById('ai-text').textContent=`Your total transfer costs are ${fmt(totalCosts)} (${pct}% of purchase price). The largest cost is ${largest.name} at ${fmt(largest.amount)}. Budget for at least ${pct}% on top of your deposit when planning your finances. ${buyer==='first'&&country==='ZA'&&price<=1210000?'Great news: as a first-time buyer purchasing below R1.21M, you pay zero transfer duty!':''}`;
   document.getElementById('ai-insight').style.display='block';
 
   document.getElementById('results-section').style.display='block';

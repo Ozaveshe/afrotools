@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passport Photo Generator — Passport Photo Sizes | AfroTools</title>
-<meta name="description" content="Free passport photo generator. 54 African countries + international sizes. Auto-crop to correct dimensions. White/blue backgrounds. Print layouts.">
+<title>Passport Photo Generator — Travel & ID Photo Sizes | AfroTools</title>
+<meta name="description" content="Free passport photo generator for popular African and international travel standards. Auto-crop, choose white or blue backgrounds, and export print-ready layouts.">
 <link rel="canonical" href="https://afrotools.com/tools/passport-photo/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Passport Photo Generator | AfroTools">
-<meta property="og:description" content="Create passport photos for African countries and international standards.">
+<meta property="og:description" content="Create passport photos for popular African countries and international travel standards.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/passport-photo/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Passport Photo Generator | AfroTools">
-<meta name="twitter:description" content="Create passport photos in all required sizes.">
+<meta name="twitter:description" content="Create passport photos in popular travel and ID sizes.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -210,6 +210,50 @@
     border-color: var(--afro-blue);
     background: #fff;
     box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .template-btn {
+    padding: 10px 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .template-btn:hover {
+    border-color: var(--afro-blue);
+  }
+
+  .template-btn.active {
+    border-color: var(--afro-blue);
+    background: var(--afro-blue);
+    color: #fff;
+  }
+
+  .context-note {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    color: #244d2c;
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  .context-note strong {
+    color: #0d2813;
   }
 
   .upload-area {
@@ -474,9 +518,9 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Passport <em>Photo</em></h1>
-    <p class="hero-sub">Generate passport photos for 54 African countries + international standards. Auto-crop, choose backgrounds, print layouts.</p>
+    <p class="hero-sub">Generate passport photos for popular African countries and international travel standards. Auto-crop, choose backgrounds, and export print-ready layouts.</p>
     <div class="hero-badges">
-      <span class="badge b-green">54 African Countries</span>
+      <span class="badge b-green">Travel & ID Sizes</span>
       <span class="badge b-green">Auto-crop</span>
       <span class="badge b-green">Print Ready</span>
     </div>
@@ -498,6 +542,22 @@
             <div class="upload-hint">PNG, JPG, WebP (Face photo)</div>
             <input type="file" id="imageInput" accept="image/*">
           </div>
+          <div class="context-note" style="margin-top:12px;"><strong>Need a cleaner background first?</strong> If your wall is busy or shadowy, use <a href="/tools/background-remover/" style="color:#0059B3;font-weight:700;text-decoration:none;">Background Remover</a> first, then come back here for sizing and print layout.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Quick Starts</span>
+        </div>
+        <div class="card-body">
+          <div class="template-grid">
+            <button type="button" class="template-btn active" data-preset="ng-travel">Nigeria Travel</button>
+            <button type="button" class="template-btn" data-preset="gh-embassy">Ghana Embassy</button>
+            <button type="button" class="template-btn" data-preset="ke-visa">Kenya Visa Pack</button>
+            <button type="button" class="template-btn" data-preset="uk-study">UK / Study Docs</button>
+          </div>
+          <div class="context-note" id="presetNote"><strong>Nigeria Travel:</strong> Sets a common 35x45mm travel workflow with white background and 4-up print layout for easy photo-shop printing.</div>
         </div>
       </div>
 
@@ -513,7 +573,7 @@
             </label>
             <select class="f-input" id="countrySelect">
               <option value="">Choose country...</option>
-              <optgroup label="African Countries">
+              <optgroup label="Popular African Countries">
                 <option value="ng" data-w="35" data-h="45">Nigeria (35x45mm)</option>
                 <option value="gh" data-w="40" data-h="50">Ghana (40x50mm)</option>
                 <option value="ke" data-w="45" data-h="35">Kenya (45x35mm)</option>
@@ -586,14 +646,26 @@
 
       <!-- Info Card -->
       <div class="info-card">
-        <div class="info-title">Passport Photo Sizes</div>
-        <div class="info-text">
-          Standardized sizes for passport applications across Africa and internationally.
+        <div class="info-title">Selected Spec</div>
+        <div class="info-text" id="countryGuide">
+          Pick a quick start or choose a country to see the recommended size, background, and print layout.
           <ul style="margin-top:10px;">
-            <li>✓ 54 African countries</li>
+            <li>✓ Popular African travel sizes</li>
             <li>✓ Auto-crop to size</li>
             <li>✓ Multiple backgrounds</li>
             <li>✓ Print layouts included</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Photo Checklist</div>
+        <div class="info-text" id="checklistGuide">
+          <ul style="margin:0;padding-left:16px;">
+            <li>Use a front-facing image with even lighting</li>
+            <li>Keep the face centered and clearly visible</li>
+            <li>Avoid filters, portrait blur, and heavy editing</li>
+            <li>Print a fresh copy before submission</li>
           </ul>
         </div>
       </div>
@@ -607,7 +679,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Passport Photo Generator: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Passport Photo Generator creates correctly sized passport and ID photos for over 54 African countries plus international destinations. Select your country and the tool automatically applies the correct photo dimensions, head size ratios, and background colour required by that country's immigration authority. Upload a clear headshot, and the tool crops and resizes your photo to meet the exact specifications — whether that is 35x45mm for a Nigerian passport, 2x2 inches for a US visa, or any other standard. Choose between white and blue backgrounds, both commonly accepted at embassies and consulates. The tool also generates print-ready layouts with multiple photos arranged on a single sheet, so you can print at home or at a local photo shop and cut to size. This saves you trips to expensive photo studios and gives you control over retakes until you get the perfect shot. All image processing happens in your browser, so your photos are never uploaded to a server. Ideal for travellers, visa applicants, students applying for international programmes, and anyone needing official ID photos.</p>
+    <p>The AfroTools Passport Photo Generator creates correctly sized passport and ID photos for popular African countries plus international destinations. Select a country and the tool applies the matching photo dimensions, then export a print-ready layout for local photo shops or home printing. Upload a clear headshot, and the tool crops and resizes your photo to meet common standards — whether that is 35x45mm for a Nigerian passport, 2x2 inches for a US visa, or other frequently used travel formats. Choose between white and blue backgrounds, both commonly accepted at embassies and consulates. The tool also generates print-ready layouts with multiple photos arranged on a single sheet, so you can print at home or at a local photo shop and cut to size. This saves you trips to expensive photo studios and gives you control over retakes until you get the perfect shot. All image processing happens in your browser, so your photos are never uploaded to a server. Ideal for travellers, visa applicants, students applying for international programmes, and anyone needing official ID photos.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
@@ -616,7 +688,7 @@
   <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How many countries are supported?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool supports passport photo sizes for over 54 African countries plus major international destinations. Each country's official photo dimensions and requirements are built into the tool.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool currently covers a set of popular African travel sizes plus major international destinations. We are expanding coverage over time, so always double-check the latest embassy requirement before submission.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Will the photo be accepted for visa applications?</summary>
@@ -656,9 +728,105 @@
   const previewCard = document.getElementById('previewCard');
   const previewCanvas = document.getElementById('previewCanvas');
   const downloadBtn = document.getElementById('downloadBtn');
+  const presetButtons = document.querySelectorAll('[data-preset]');
+  const presetNote = document.getElementById('presetNote');
+  const countryGuide = document.getElementById('countryGuide');
+  const checklistGuide = document.getElementById('checklistGuide');
 
   let originalImage = null;
   let selectedBg = 'white';
+  const COUNTRY_GUIDES = {
+    ng: '35x45mm is a common travel size for Nigeria. White background is safest, and 4-up prints work well at local photo studios.',
+    gh: 'Ghana often uses 40x50mm. Keep the face centered, use a plain background, and export a 4-up sheet for embassy packets.',
+    ke: 'Kenya commonly uses 45x35mm. Use a clear headshot, avoid shadows, and take a fresh print to visa or permit appointments.',
+    za: 'South Africa usually accepts 35x45mm passport photos. A bright, even background and neutral expression help avoid retakes.',
+    eg: 'Egypt often uses a taller 40x60mm format, so leave more headroom in your source image.',
+    tz: 'Tanzania travel photos are commonly printed at 35x45mm. Use white when unsure and keep shoulders fully visible.',
+    ug: 'Uganda travel and school uses often rely on 35x45mm prints with a clean white background.',
+    rw: 'Rwanda applications usually expect a neat 35x45mm headshot with even lighting and no strong shadows.',
+    et: 'Ethiopia travel documents commonly use 35x45mm. Start from a sharp portrait for better auto-crop results.',
+    sn: 'Senegal paperwork often works with 35x45mm travel photos. Use 4-up if you want easy printing at a local shop.',
+    'int-us': 'US visas and passports use 2x2 inch photos. Single layout helps when you want one larger master print first.',
+    'int-uk': 'UK travel documents use 35x45mm. White background and a centered face usually work best.',
+    'int-eu': 'EU document packets often use 40x50mm. Export a 4-up sheet if you need several copies quickly.'
+  };
+  const COUNTRY_CHECKLISTS = {
+    default: [
+      'Use a front-facing image with even lighting and no strong shadows',
+      'Keep the face centered with the full head clearly visible',
+      'Avoid filters, portrait blur, beauty edits, and heavy retouching',
+      'Print a fresh copy on good paper before submission'
+    ],
+    ng: [
+      'Use white background when unsure and avoid dark wall shadows',
+      'Keep your shoulders square and your head upright',
+      'Print a 4-up sheet for easy cutting at local photo shops',
+      'Carry a digital copy in case the portal asks for online upload too'
+    ],
+    gh: [
+      'Use a clean, bright background and a centered face',
+      'Keep jewelry and accessories minimal unless required for faith reasons',
+      'Bring multiple copies for embassy or school packets',
+      'Check the current embassy checklist before final submission'
+    ],
+    ke: [
+      'Start from a sharp portrait with good headroom',
+      'Avoid busy patterns behind the head and shoulders',
+      'Use 4-up prints if the application asks for several copies',
+      'Keep one extra print for permits or office follow-up'
+    ],
+    'int-us': [
+      'Use a square-style headshot with clear space around the head',
+      'Do not over-crop the forehead or chin',
+      'Single layout can help when you want one master print first',
+      'Always compare against the latest US travel guidance before upload'
+    ],
+    'int-uk': [
+      'Keep the face centered with both sides clearly visible',
+      'Use a plain light background and avoid harsh shadows',
+      'Print several copies if you are preparing a school or visa packet',
+      'Double-check the latest UK photo guidance before submission'
+    ]
+  };
+  const PRESETS = {
+    'ng-travel': { country: 'ng', bg: 'white', layout: '4up', label: 'Nigeria Travel', note: 'Sets a common 35x45mm travel workflow with white background and 4-up print layout for easy photo-shop printing.' },
+    'gh-embassy': { country: 'gh', bg: 'white', layout: '4up', label: 'Ghana Embassy', note: 'Useful for embassy packets, school applications, and official submissions that need several prints at once.' },
+    'ke-visa': { country: 'ke', bg: 'white', layout: '4up', label: 'Kenya Visa Pack', note: 'A practical preset for Kenyan visa and permit submissions where you want multiple copies ready to cut.' },
+    'uk-study': { country: 'int-uk', bg: 'white', layout: '4up', label: 'UK / Study Docs', note: 'Good starting point for UK travel, school applications, and international document packs.' }
+  };
+
+  function setBackgroundMode(nextBg) {
+    selectedBg = nextBg;
+    bgModeBtns.forEach(btn => btn.classList.toggle('on', btn.dataset.bg === nextBg));
+  }
+
+  function updateCountryGuide() {
+    if (!countrySelect.value) {
+      countryGuide.innerHTML = 'Pick a quick start or choose a country to see the recommended size, background, and print layout.<ul style="margin-top:10px;"><li>✓ Popular African travel sizes</li><li>✓ Auto-crop to size</li><li>✓ Multiple backgrounds</li><li>✓ Print layouts included</li></ul>';
+      checklistGuide.innerHTML = '<ul style="margin:0;padding-left:16px;">' + COUNTRY_CHECKLISTS.default.map(item => '<li>' + item + '</li>').join('') + '</ul>';
+      return;
+    }
+    const option = countrySelect.options[countrySelect.selectedIndex];
+    const size = option.dataset.w + 'x' + option.dataset.h + 'mm';
+    const layoutLabel = layoutSelect.options[layoutSelect.selectedIndex].text;
+    const bgLabel = selectedBg === 'white' ? 'White' : 'Blue';
+    const guide = COUNTRY_GUIDES[countrySelect.value] || 'Use a sharp, front-facing image with even lighting for the cleanest crop.';
+    countryGuide.innerHTML = '<strong>' + option.textContent + '</strong><br>' + guide + '<ul style="margin-top:10px;"><li>✓ Size: ' + size + '</li><li>✓ Background: ' + bgLabel + '</li><li>✓ Print layout: ' + layoutLabel + '</li><li>✓ Tip: export a fresh print after every retake</li></ul>';
+    const checklist = COUNTRY_CHECKLISTS[countrySelect.value] || COUNTRY_CHECKLISTS.default;
+    checklistGuide.innerHTML = '<ul style="margin:0;padding-left:16px;">' + checklist.map(item => '<li>' + item + '</li>').join('') + '</ul>';
+  }
+
+  function applyPreset(key) {
+    const preset = PRESETS[key];
+    if (!preset) return;
+    countrySelect.value = preset.country;
+    layoutSelect.value = preset.layout;
+    setBackgroundMode(preset.bg);
+    presetButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.preset === key));
+    presetNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
+    updateCountryGuide();
+    if (originalImage) generatePhoto();
+  }
 
   // Upload area events
   uploadArea.addEventListener('click', () => imageInput.click());
@@ -713,15 +881,25 @@
 
   bgModeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      bgModeBtns.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      selectedBg = btn.dataset.bg;
+      setBackgroundMode(btn.dataset.bg);
+      updateCountryGuide();
       if (originalImage) generatePhoto();
     });
   });
 
   countrySelect.addEventListener('change', () => {
+    presetButtons.forEach(btn => btn.classList.remove('active'));
+    updateCountryGuide();
     if (originalImage) generatePhoto();
+  });
+
+  layoutSelect.addEventListener('change', () => {
+    updateCountryGuide();
+    if (originalImage && countrySelect.value) generatePhoto();
+  });
+
+  presetButtons.forEach(btn => {
+    btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
   });
 
   generateBtn.addEventListener('click', () => {
@@ -804,6 +982,8 @@
       }
     };
   }
+
+  applyPreset('ng-travel');
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

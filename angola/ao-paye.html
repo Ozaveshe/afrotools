@@ -76,7 +76,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="ao-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='ao-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -86,7 +88,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/angola/ao-paye" />
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 <style>
@@ -107,14 +109,14 @@
       <a href="/">Home</a> / <a href="/angola/">🇦🇴 Angola</a> / <span>PAYE Calculator</span>
     </nav>
     <h1>Angola PAYE<br><em>Calculator 2026</em></h1>
-    <p class="hero-sub">AGT progressive tax (0%–25%), INSS social security (3% employee + 8% employer). Monthly computation per AGT bands.</p>
+    <p class="hero-sub">AGT progressive tax (0%–25%) with INSS social security (3% employee + 8% employer). Monthly estimate for standard payroll cases.</p>
     <div class="hero-badges">
       <span class="badge b-gold">✦ Includes AI Advisor</span>
-      <span class="badge b-red">AGT 2026 Verified</span>
+      <span class="badge b-red">AGT 2026 Page Model</span>
       <span class="badge b-red">INSS · 3% + 8%</span>
       <span class="badge b-grey">AOA · Angolan Kwanza</span>
     </div>
-    <p class="hero-meta">Last verified: 2026 · Source: AGT (agt.ao) · Labour Code (Código do Trabalho) · INSS Regulations</p>
+    <p class="hero-meta">Last reviewed: 6 April 2026 · Source references: AGT (agt.ao) · Labour Code (Código do Trabalho) · INSS regulations · Standard payroll estimate</p>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/angola/ao-vat" style="color:#007AFF;font-weight:600;">Angola VAT Calculator</a></p>
   </div>
 </section>
@@ -122,7 +124,7 @@
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
   <div class="amendment-bar-inner">
-    <p><strong>2026 Key Facts:</strong> PAYE bands (monthly): AOA 0–100,000 at 0%; 10% AOA 100,001–150,000; 15% AOA 150,001–200,000; 20% AOA 200,001–300,000; 21.5% AOA 300,001–500,000; 22.5% AOA 500,001–1,000,000; 23.5% AOA 1,000,001–1,500,000; 24.5% AOA 1,500,001–2,000,000; 25% above AOA 2,000,000. INSS total 11% (employee 3% + employer 8%). Employee INSS contribution is fully deductible from taxable income.</p>
+    <p><strong>Current page model:</strong> PAYE bands (monthly): AOA 0–100,000 at 0%; 10% AOA 100,001–150,000; 15% AOA 150,001–200,000; 20% AOA 200,001–300,000; 21.5% AOA 300,001–500,000; 22.5% AOA 500,001–1,000,000; 23.5% AOA 1,000,001–1,500,000; 24.5% AOA 1,500,001–2,000,000; 25% above AOA 2,000,000. INSS total 11% (employee 3% + employer 8%). Employee INSS contribution is fully deductible from taxable income.</p>
   </div>
 </div>
 
@@ -713,23 +715,23 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.netMonthly,
+      tax: RESULT.monthlyPAYE,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
       { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -892,7 +894,7 @@ td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-
 .red{color:#c0392b}.gold{color:#9a7a00}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 </style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 </head><body>
 <div class="cover">

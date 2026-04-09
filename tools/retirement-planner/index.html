@@ -925,14 +925,14 @@ function calcCoastFire(fireTarget, annualRealReturn, yearsUntil60) {
 }
 
 function calcBaristaFire(fireTarget, annualRealReturn, partTimeAnnualIncome, yearsToTraditional) {
-  // Amount needed so that part-time income + growth reaches FIRE by 60
-  // If you earn partTimeAnnualIncome each year for yearsToTraditional years
+  // Present value needed today so that growth plus future part-time income reaches the FIRE target by 60.
   let fvPartTime = 0;
   for (let y = 0; y < yearsToTraditional; y++) {
     fvPartTime = (fvPartTime + partTimeAnnualIncome) * (1 + annualRealReturn);
   }
-  const needed = fireTarget - fvPartTime;
-  return Math.max(0, needed);
+  const futureShortfall = Math.max(0, fireTarget - fvPartTime);
+  if (annualRealReturn <= 0) return futureShortfall;
+  return futureShortfall / Math.pow(1 + annualRealReturn, yearsToTraditional);
 }
 
 function buildProjection(monthlySavings, currentSavings, monthlyRealReturn, years, streamAdjFn) {

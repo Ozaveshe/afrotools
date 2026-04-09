@@ -1,1 +1,166 @@
-!function(e){"use strict";const t=[{limit:4e4,rate:0},{limit:15e3,rate:.1},{limit:15e3,rate:.15},{limit:13e4,rate:.2},{limit:2e5,rate:.225},{limit:8e5,rate:.25},{limit:1/0,rate:.275}],a=[{threshold:6e5,bandIdx:0,extraTax:0},{threshold:7e5,bandIdx:1,extraTax:1500},{threshold:8e5,bandIdx:2,extraTax:2250},{threshold:9e5,bandIdx:3,extraTax:26e3},{threshold:1e6,bandIdx:4,extraTax:45e3},{threshold:12e5,bandIdx:5,extraTax:2e5}],n=174e3;function r(e,r={}){const o=e,i=r.disabled?3e4:2e4,l=!1!==r.nosi?Math.min(o,n):0,s=.11*l,d=Math.max(0,o-i-s),x=function(e){let n=0,r=e;const o=[];for(const e of t){if(r<=0)break;const t=isFinite(e.limit)?Math.min(r,e.limit):r,a=t*e.rate;t>0&&o.push({rate:100*e.rate,income:t,tax:a}),n+=a,r-=t}let i=0;const l=[];for(const t of a)e>t.threshold&&(i=t.extraTax,l.push(t.bandIdx));return{standardTax:n,exclusionExtra:i,tax:n+i,breakdown:o,excludedBands:l}}(d),c=x.tax,u=.1875*l,f=s+c,h=o-f,m=o>0?c/o*100:0,E=function(e){let a=e;for(const e of t){if(a<=(isFinite(e.limit)?e.limit:a))return 100*e.rate;a-=e.limit}return 27.5}(d);return{gross:o,personalExemption:i,nosi:s,nosiBase:l,nati:d,standardTax:x.standardTax,exclusionExtra:x.exclusionExtra,excludedBands:x.excludedBands,tax:c,totalDeductions:f,netAnnual:h,netMonthly:h/12,effectiveRate:m,marginalRate:E,bandBreakdown:x.breakdown,employerNOSI:u,totalEmployerCost:o+u}}const o={calculate:r,validate:function(e){return!e||isNaN(e)||e<=0?{valid:!1,error:"Please enter a valid salary amount"}:{valid:!0,error:null}},reverseCalc:function(e,t={}){let a=e,n=3*e;for(let o=0;o<50;o++){const o=(a+n)/2,i=r(o,t);if(Math.abs(i.netAnnual-e)<1)return o;i.netAnnual<e?a=o:n=o}return(a+n)/2},ETA_BANDS:t,EXCLUSION_RULES:a,PERSONAL_EXEMPTION:2e4,DISABLED_PERSONAL_EXEMPTION:3e4,NOSI_RATE:.11,NOSI_ANNUAL_CAP:n,country:"Egypt",currency:"EGP",id:"eg-paye"};e.AfroTools=e.AfroTools||{},e.AfroTools.engines=e.AfroTools.engines||{},e.AfroTools.engines.egPAYE=o}(window);
+!function (window) {
+  "use strict";
+
+  var ETA_BANDS = [
+    { width: 40000, rate: 0.00 },
+    { width: 15000, rate: 0.10 },
+    { width: 15000, rate: 0.15 },
+    { width: 130000, rate: 0.20 },
+    { width: 200000, rate: 0.225 },
+    { width: 800000, rate: 0.25 },
+    { width: Infinity, rate: 0.275 }
+  ];
+
+  var EXCLUSION_RULES = [
+    { threshold: 600000, extraTax: 0, excludedBand: 0 },
+    { threshold: 700000, extraTax: 1500, excludedBand: 1 },
+    { threshold: 800000, extraTax: 2250, excludedBand: 2 },
+    { threshold: 900000, extraTax: 26000, excludedBand: 3 },
+    { threshold: 1000000, extraTax: 45000, excludedBand: 4 },
+    { threshold: 1200000, extraTax: 274750, excludedBand: 5 }
+  ];
+
+  var NOSI_CAP = 174000;
+  var NOSI_RATE = 0.11;
+  var EMPLOYER_NOSI_RATE = 0.1875;
+  var PERSONAL_EXEMPTION = 20000;
+  var DISABLED_PERSONAL_EXEMPTION = 30000;
+
+  function calcStandardTax(nati) {
+    var remaining = Math.max(0, nati);
+    var totalTax = 0;
+    var bandBreakdown = [];
+
+    for (var i = 0; i < ETA_BANDS.length; i++) {
+      var band = ETA_BANDS[i];
+      var income = Math.min(remaining, band.width === Infinity ? remaining : band.width);
+      var taxInBand = income * band.rate;
+
+      if (income > 0) {
+        bandBreakdown.push({
+          rate: band.rate * 100,
+          income: income,
+          tax: taxInBand
+        });
+      }
+
+      totalTax += taxInBand;
+      remaining -= income;
+
+      if (remaining <= 0) break;
+    }
+
+    return { totalTax: totalTax, bandBreakdown: bandBreakdown };
+  }
+
+  function calcExclusion(nati) {
+    var exclusionExtra = 0;
+    var excludedBands = [];
+
+    for (var i = 0; i < EXCLUSION_RULES.length; i++) {
+      var rule = EXCLUSION_RULES[i];
+      if (nati > rule.threshold) {
+        exclusionExtra = rule.extraTax;
+        excludedBands.push(rule.excludedBand);
+      }
+    }
+
+    return {
+      exclusionExtra: exclusionExtra,
+      excludedBands: excludedBands
+    };
+  }
+
+  function getMarginalRate(nati) {
+    var remaining = Math.max(0, nati);
+
+    for (var i = 0; i < ETA_BANDS.length; i++) {
+      var band = ETA_BANDS[i];
+      var width = band.width === Infinity ? remaining : band.width;
+      if (remaining <= width) return band.rate * 100;
+      remaining -= width;
+    }
+
+    return 27.5;
+  }
+
+  function calculate(grossAnnual, options) {
+    options = options || {};
+
+    var personalExemption = options.disabled ? DISABLED_PERSONAL_EXEMPTION : PERSONAL_EXEMPTION;
+    var nosiBase = options.nosi === false ? 0 : Math.min(grossAnnual, NOSI_CAP);
+    var nosi = nosiBase * NOSI_RATE;
+    var nati = Math.max(0, grossAnnual - personalExemption - nosi);
+    var standardTaxResult = calcStandardTax(nati);
+    var exclusion = calcExclusion(nati);
+    var tax = standardTaxResult.totalTax + exclusion.exclusionExtra;
+    var employerNOSI = nosiBase * EMPLOYER_NOSI_RATE;
+    var totalDeductions = nosi + tax;
+    var netAnnual = grossAnnual - totalDeductions;
+
+    return {
+      gross: grossAnnual,
+      personalExemption: personalExemption,
+      nosi: nosi,
+      nosiBase: nosiBase,
+      nati: nati,
+      standardTax: standardTaxResult.totalTax,
+      exclusionExtra: exclusion.exclusionExtra,
+      excludedBands: exclusion.excludedBands,
+      tax: tax,
+      totalDeductions: totalDeductions,
+      netAnnual: netAnnual,
+      netMonthly: netAnnual / 12,
+      effectiveRate: grossAnnual > 0 ? tax / grossAnnual * 100 : 0,
+      marginalRate: getMarginalRate(nati),
+      bandBreakdown: standardTaxResult.bandBreakdown,
+      employerNOSI: employerNOSI,
+      totalEmployerCost: grossAnnual + employerNOSI
+    };
+  }
+
+  var engine = {
+    calculate: calculate,
+    validate: function (grossAnnual) {
+      if (!grossAnnual || isNaN(grossAnnual) || grossAnnual <= 0) {
+        return { valid: false, error: "Please enter a valid salary amount" };
+      }
+
+      return { valid: true, error: null };
+    },
+    reverseCalc: function (targetNetAnnual, options) {
+      var low = targetNetAnnual;
+      var high = targetNetAnnual * 3;
+
+      for (var i = 0; i < 50; i++) {
+        var guess = (low + high) / 2;
+        var result = calculate(guess, options);
+
+        if (Math.abs(result.netAnnual - targetNetAnnual) < 1) {
+          return guess;
+        }
+
+        if (result.netAnnual < targetNetAnnual) {
+          low = guess;
+        } else {
+          high = guess;
+        }
+      }
+
+      return (low + high) / 2;
+    },
+    ETA_BANDS: ETA_BANDS,
+    EXCLUSION_RULES: EXCLUSION_RULES,
+    PERSONAL_EXEMPTION: PERSONAL_EXEMPTION,
+    DISABLED_PERSONAL_EXEMPTION: DISABLED_PERSONAL_EXEMPTION,
+    NOSI_RATE: NOSI_RATE,
+    NOSI_ANNUAL_CAP: NOSI_CAP,
+    country: "Egypt",
+    currency: "EGP",
+    id: "eg-paye"
+  };
+
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.engines = window.AfroTools.engines || {};
+  window.AfroTools.engines.egPAYE = engine;
+}(window);

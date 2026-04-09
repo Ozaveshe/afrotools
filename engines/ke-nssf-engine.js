@@ -1,1 +1,82 @@
-!function(t){"use strict";var e={LEL:7e3,UEL:36e3,RATE:.06,OLD_FLAT:200,SHIF_RATE:.0275,SHIF_MIN:300,AHL_RATE:.015,calculateNSSF:function(t,e){var l=0,o=0,a=0,n=0;if("new"===(e=e||"new")){var i=Math.min(t,this.UEL),r=Math.min(i,this.LEL),s=Math.max(0,i-this.LEL);l=r*this.RATE,o=s*this.RATE,a=r*this.RATE,n=s*this.RATE}else l=this.OLD_FLAT,a=this.OLD_FLAT;var c=l+o,u=a+n;return{empTier1:l,empTier2:o,erTier1:a,erTier2:n,totalEmployee:c,totalEmployer:u,totalMonthly:c+u,totalAnnual:12*(c+u)}},calculateSHIF:function(t){return Math.max(t*this.SHIF_RATE,this.SHIF_MIN)},calculateAHL:function(t){return t*this.AHL_RATE},getAllDeductions:function(t,e){var l=this.calculateNSSF(t,e),o=this.calculateSHIF(t),a=this.calculateAHL(t),n=l.totalEmployee+o+a,i=l.totalEmployer+o+a;return{nssf:l,employee:{nssf:l.totalEmployee,shif:o,ahl:a,total:n,pctOfGross:t>0?n/t*100:0},employer:{nssf:l.totalEmployer,shif:o,ahl:a,total:i,pctOfGross:t>0?i/t*100:0}}},compareActs:function(t){var e=this.calculateNSSF(t,"new"),l=this.calculateNSSF(t,"old"),o=e.totalEmployee-l.totalEmployee;return{oldActEmployee:l.totalEmployee,newActEmployee:e.totalEmployee,monthlyDifference:o,annualDifference:12*o,multiplier:l.totalEmployee>0?e.totalEmployee/l.totalEmployee:0}},projectRetirement:function(t,e,l){var o=l/12,a=12*e;return o>0&&a>0?t*((Math.pow(1+o,a)-1)/o):t*a}};"undefined"!=typeof module&&module.exports?module.exports=e:t.KE_NSSF=e}("undefined"!=typeof window?window:"undefined"!=typeof global?global:this);
+(function (root) {
+  "use strict";
+
+  var kePayroll = root.AfroTools && root.AfroTools.payroll && root.AfroTools.payroll.ke;
+
+  if (!kePayroll) {
+    return;
+  }
+
+  var engine = {
+    LEL: kePayroll.NSSF_LOWER_LIMIT,
+    UEL: kePayroll.NSSF_UPPER_LIMIT,
+    RATE: kePayroll.NSSF_RATE,
+    OLD_FLAT: kePayroll.LEGACY_NSSF_FLAT,
+    SHIF_RATE: kePayroll.SHIF_RATE,
+    SHIF_MIN: kePayroll.SHIF_MINIMUM,
+    AHL_RATE: kePayroll.AHL_RATE,
+
+    calculateNSSF: function (gross, regime) {
+      return kePayroll.calculateNssf(gross, regime || "new");
+    },
+
+    calculateSHIF: function (gross) {
+      return kePayroll.calculateShif(gross);
+    },
+
+    calculateAHL: function (gross) {
+      return kePayroll.calculateAhl(gross);
+    },
+
+    getAllDeductions: function (gross, regime) {
+      var burden = kePayroll.calculateStatutoryBurden(gross, regime || "new");
+
+      return {
+        nssf: burden.nssf,
+        employee: {
+          nssf: burden.employee.nssf,
+          shif: burden.employee.shif,
+          ahl: burden.employee.ahl,
+          total: burden.employee.total,
+          pctOfGross: burden.gross > 0 ? burden.employee.total / burden.gross * 100 : 0
+        },
+        employer: {
+          nssf: burden.employer.nssf,
+          shif: burden.employer.shif,
+          ahl: burden.employer.ahl,
+          total: burden.employer.total,
+          pctOfGross: burden.gross > 0 ? burden.employer.total / burden.gross * 100 : 0
+        }
+      };
+    },
+
+    compareActs: function (gross) {
+      var current = kePayroll.calculateNssf(gross, "new");
+      var legacy = kePayroll.calculateNssf(gross, "old");
+      var monthlyDifference = current.totalEmployee - legacy.totalEmployee;
+
+      return {
+        oldActEmployee: legacy.totalEmployee,
+        newActEmployee: current.totalEmployee,
+        monthlyDifference: monthlyDifference,
+        annualDifference: monthlyDifference * 12,
+        multiplier: legacy.totalEmployee > 0 ? current.totalEmployee / legacy.totalEmployee : 0
+      };
+    },
+
+    projectRetirement: function (monthlyContribution, years, annualReturnPercent) {
+      var monthlyRate = (annualReturnPercent || 0) / 12;
+      var months = 12 * years;
+
+      return monthlyRate > 0 && months > 0
+        ? monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
+        : monthlyContribution * months;
+    }
+  };
+
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = engine;
+  } else {
+    root.KE_NSSF = engine;
+  }
+}(typeof globalThis !== "undefined" ? globalThis : this));

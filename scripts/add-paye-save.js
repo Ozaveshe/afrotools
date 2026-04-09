@@ -29,7 +29,7 @@ files.forEach(({ file, slug }) => {
   }
 
   // Insert before </head>: save-state.js + config + paye-save.js
-  const inject = `<script src="/assets/js/lib/save-state.js"></script>\n<script>window.PAYE_SAVE_SLUG='${slug}';</script>\n<script src="/assets/js/lib/paye-save.js" defer></script>\n`;
+  const inject = `<script type="module" src="/assets/js/lib/save-state.js"></script>\n<script>window.PAYE_SAVE_SLUG='${slug}';</script>\n<script src="/assets/js/lib/paye-save.js" defer></script>\n`;
 
   c = c.replace('</head>', inject + '</head>');
 

@@ -264,7 +264,7 @@ function valuate(){
   const compScore=(users>10000?1.3:users>1000?1.0:0.7);
   const otherScore=1.0;
   const scorecardMultiplier=teamW*teamScore+prodW*prodScore+mktW*mktScore+compW*compScore+otherW*otherScore;
-  const scorecardVal=baseVal*scorecardMultiplier;
+  const scorecardVal=baseVal*scorecardMultiplier*countryAdj;
 
   // Method 3: Berkus (pre-revenue friendly)
   const maxPerFactor=500000;
@@ -273,7 +273,7 @@ function valuate(){
   const berkusMarket=(growth>10?maxPerFactor:growth>5?maxPerFactor*0.6:maxPerFactor*0.3);
   const berkusRelationships=(users>10000?maxPerFactor:users>1000?maxPerFactor*0.5:maxPerFactor*0.2);
   const berkusRevenue=revenue>0?Math.min(maxPerFactor,revenue*0.5):0;
-  const berkusVal=berkusTeam+berkusProd+berkusMarket+berkusRelationships+berkusRevenue;
+  const berkusVal=(berkusTeam+berkusProd+berkusMarket+berkusRelationships+berkusRevenue)*countryAdj;
 
   // Average
   const methods=[revMultMid,scorecardVal,berkusVal].filter(v=>v>0);
@@ -289,8 +289,8 @@ function valuate(){
 
   let mHtml='';
   mHtml+=`<div class="method-card"><h4>1. Revenue Multiple Method</h4><div class="val">${fmt(revMultMid)}</div><div class="desc">ARR (${fmt(revenue)}) x ${mult.mid}x (${sector}) x growth adj (${growthAdj.toFixed(1)}) x margin adj (${marginAdj.toFixed(1)}). Range: ${fmt(revMultLow)} — ${fmt(revMultHigh)}</div></div>`;
-  mHtml+=`<div class="method-card"><h4>2. Scorecard Method</h4><div class="val">${fmt(scorecardVal)}</div><div class="desc">Base ${stage} valuation (${fmt(baseVal)}) adjusted by team (${(teamScore*100).toFixed(0)}%), product (${(prodScore*100).toFixed(0)}%), market (${(mktScore*100).toFixed(0)}%), competition (${(compScore*100).toFixed(0)}%). Multiplier: ${scorecardMultiplier.toFixed(2)}x</div></div>`;
-  mHtml+=`<div class="method-card"><h4>3. Berkus Method</h4><div class="val">${fmt(berkusVal)}</div><div class="desc">Team: ${fmt(berkusTeam)} + Product: ${fmt(berkusProd)} + Market: ${fmt(berkusMarket)} + Relationships: ${fmt(berkusRelationships)} + Revenue: ${fmt(berkusRevenue)}</div></div>`;
+  mHtml+=`<div class="method-card"><h4>2. Scorecard Method</h4><div class="val">${fmt(scorecardVal)}</div><div class="desc">Base ${stage} valuation (${fmt(baseVal)}) adjusted by team (${(teamScore*100).toFixed(0)}%), product (${(prodScore*100).toFixed(0)}%), market (${(mktScore*100).toFixed(0)}%), competition (${(compScore*100).toFixed(0)}%), and country factor (${countryAdj.toFixed(2)}x). Multiplier: ${scorecardMultiplier.toFixed(2)}x</div></div>`;
+  mHtml+=`<div class="method-card"><h4>3. Berkus Method</h4><div class="val">${fmt(berkusVal)}</div><div class="desc">Team: ${fmt(berkusTeam)} + Product: ${fmt(berkusProd)} + Market: ${fmt(berkusMarket)} + Relationships: ${fmt(berkusRelationships)} + Revenue: ${fmt(berkusRevenue)}, then adjusted by country factor (${countryAdj.toFixed(2)}x)</div></div>`;
   document.getElementById('methodCards').innerHTML=mHtml;
 
   document.getElementById('resultCard').style.display='block';

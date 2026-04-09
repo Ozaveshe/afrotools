@@ -21,8 +21,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="preload" href="/assets/css/tokens.min.css?v=6977389f" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="/assets/css/global.min.css?v=1eef2cf2" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/blog/assets/css/blog.css?v=5826a4e5" as="style" onload="this.onload=null;this.rel='stylesheet'">
- <noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2"><link rel="stylesheet" href="/blog/assets/css/blog.css?v=5826a4e5"></noscript>
+<link rel="preload" href="/blog/assets/css/blog.css?v=5826a4e6" as="style" onload="this.onload=null;this.rel='stylesheet'">
+ <noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2"><link rel="stylesheet" href="/blog/assets/css/blog.css?v=5826a4e6"></noscript>
 <script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
 <script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
 <script type="application/ld+json">
@@ -60,6 +60,7 @@
 <meta property="article:modified_time" content="2026-03-28">
 </head>
 <body>
+<a class="skip-link" href="#blogMain">Skip to articles</a>
 <afro-navbar></afro-navbar>
 
 <!-- ── HERO ── -->
@@ -74,17 +75,50 @@
 
     <div class="blog-search" id="blogSearch">
       <input type="search" class="blog-search-input" id="searchInput" placeholder="Search articles... e.g. PAYE, mobile money, import duty" aria-label="Search blog articles" autocomplete="off">
-      <button class="blog-search-clear" id="searchClear" aria-label="Clear search" hidden>&times;</button>
+      <button class="blog-search-clear" id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
     </div>
 
     <div class="blog-filters" id="categoryFilters">
-      <button class="blog-filter-tab active" data-cat="all">All Articles <span class="tab-count" id="countAll"></span></button>
-      <button class="blog-filter-tab" data-cat="tax">Tax &amp; PAYE <span class="tab-count" id="countTax"></span></button>
-      <button class="blog-filter-tab" data-cat="currency">Currency &amp; Forex <span class="tab-count" id="countCurrency"></span></button>
-      <button class="blog-filter-tab" data-cat="business">Business &amp; Legal <span class="tab-count" id="countBusiness"></span></button>
-      <button class="blog-filter-tab" data-cat="tools">Tools &amp; Guides <span class="tab-count" id="countTools"></span></button>
-      <button class="blog-filter-tab" data-cat="data">Africa Data <span class="tab-count" id="countData"></span></button>
-      <button class="blog-filter-tab" data-cat="francais">&#127467;&#127479; Fran&ccedil;ais <span class="tab-count" id="countFrancais"></span></button>
+      <button class="blog-filter-tab active" type="button" data-cat="all">All Articles <span class="tab-count" id="countAll"></span></button>
+      <button class="blog-filter-tab" type="button" data-cat="tax">Tax &amp; PAYE <span class="tab-count" id="countTax"></span></button>
+      <button class="blog-filter-tab" type="button" data-cat="currency">Currency &amp; Forex <span class="tab-count" id="countCurrency"></span></button>
+      <button class="blog-filter-tab" type="button" data-cat="business">Business &amp; Legal <span class="tab-count" id="countBusiness"></span></button>
+      <button class="blog-filter-tab" type="button" data-cat="tools">Tools &amp; Guides <span class="tab-count" id="countTools"></span></button>
+      <button class="blog-filter-tab" type="button" data-cat="data">Africa Data <span class="tab-count" id="countData"></span></button>
+      <button class="blog-filter-tab" type="button" data-cat="francais">&#127467;&#127479; Fran&ccedil;ais <span class="tab-count" id="countFrancais"></span></button>
+    </div>
+
+    <div class="blog-hero-meta" aria-label="Blog highlights">
+      <div class="blog-stat">
+        <strong id="statArticles">0</strong>
+        <span>Guides, explainers, and comparisons ready to browse.</span>
+      </div>
+      <div class="blog-stat">
+        <strong>54</strong>
+        <span>African markets in scope across tax, trade, money, and work.</span>
+      </div>
+      <div class="blog-stat">
+        <strong>3</strong>
+        <span>High-intent tools linked directly from the blog hub.</span>
+      </div>
+    </div>
+
+    <div class="blog-utility-links" aria-label="Popular AfroTools calculators">
+      <a class="blog-utility-card" href="/nigeria/ng-salary-tax">
+        <span class="blog-utility-kicker">Calculator</span>
+        <strong>Nigeria PAYE</strong>
+        <span>Estimate take-home pay, reliefs, pension, and deductions in minutes.</span>
+      </a>
+      <a class="blog-utility-card" href="/tools/currency-converter/">
+        <span class="blog-utility-kicker">Converter</span>
+        <strong>Currency Converter</strong>
+        <span>Check live FX across major African currencies without leaving the site.</span>
+      </a>
+      <a class="blog-utility-card" href="/tools/import-duty/">
+        <span class="blog-utility-kicker">Cost Tool</span>
+        <strong>Import Duty</strong>
+        <span>Model customs duty, VAT, and landed cost before you place an order.</span>
+      </a>
     </div>
   </div>
 </section>
@@ -141,7 +175,11 @@
 </section>
 
 <!-- ── ARTICLE GRID ── -->
-<main class="blog-section">
+<main class="blog-section" id="blogMain">
+  <div class="blog-results-bar">
+    <p class="blog-results-summary" id="blogResultsSummary" aria-live="polite">Loading articles...</p>
+    <button class="blog-reset" id="blogReset" type="button" hidden>Reset filters</button>
+  </div>
   <div class="blog-grid" id="blogGrid">
 
     <!-- ===== NEW ARTICLES (Apr 2026) ===== -->
@@ -2554,9 +2592,9 @@
   </div>
 
   <nav class="blog-pagination" id="blogPagination" aria-label="Blog pagination">
-    <button class="page-btn page-prev" id="pagePrev" aria-label="Previous page">&lsaquo; Prev</button>
+    <button class="page-btn page-prev" id="pagePrev" type="button" aria-label="Previous page">&lsaquo; Prev</button>
     <div class="page-numbers" id="pageNumbers"></div>
-    <button class="page-btn page-next" id="pageNext" aria-label="Next page">Next &rsaquo;</button>
+    <button class="page-btn page-next" id="pageNext" type="button" aria-label="Next page">Next &rsaquo;</button>
   </nav>
 </main>
 
@@ -2565,10 +2603,13 @@
   <div class="blog-newsletter-inner">
     <h2>Stay ahead with <em>African finance insights</em></h2>
     <p>Get our best guides on tax, currency, and business delivered to your inbox. No spam, unsubscribe anytime.</p>
-    <form class="blog-newsletter-form" action="https://formspree.io/f/placeholder" method="POST" onsubmit="return false;">
-      <input type="email" name="email" placeholder="your@email.com" aria-label="Email address" required>
-      <button type="submit">Subscribe</button>
+    <form class="blog-newsletter-form" id="blogNewsletterForm" name="blog-newsletter" method="POST" data-netlify="true">
+      <input type="hidden" name="form-name" value="blog-newsletter">
+      <input type="hidden" name="source" value="blog-hub-newsletter">
+      <input type="email" id="blogNewsletterEmail" name="email" placeholder="your@email.com" aria-label="Email address" autocomplete="email" required>
+      <button type="submit" id="blogNewsletterButton">Subscribe</button>
     </form>
+    <p class="blog-newsletter-status" id="blogNewsletterStatus" aria-live="polite"></p>
     <p class="blog-newsletter-note">Join 12,000+ professionals across Africa</p>
   </div>
 </section>
@@ -2576,7 +2617,355 @@
 <afro-footer></afro-footer>
 
 <script>
+window.__blogHubUpgraded = true;
 (function() {
+  var CATEGORY_LABELS = {
+    all: 'All Articles',
+    tax: 'Tax & PAYE',
+    currency: 'Currency & Forex',
+    business: 'Business & Legal',
+    tools: 'Tools & Guides',
+    data: 'Africa Data',
+    francais: 'Français'
+  };
+  var PER_PAGE = 12;
+  var grid = document.getElementById('blogGrid');
+  if (!grid) return;
+
+  var allCards = Array.from(grid.querySelectorAll('.article-card'));
+  var pagination = document.getElementById('blogPagination');
+  var pageNumbers = document.getElementById('pageNumbers');
+  var prevBtn = document.getElementById('pagePrev');
+  var nextBtn = document.getElementById('pageNext');
+  var resultsSummary = document.getElementById('blogResultsSummary');
+  var resetBtn = document.getElementById('blogReset');
+  var statArticles = document.getElementById('statArticles');
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var filterTabs = Array.from(document.querySelectorAll('.blog-filter-tab'));
+  var newsletterForm = document.getElementById('blogNewsletterForm');
+  var newsletterInput = document.getElementById('blogNewsletterEmail');
+  var newsletterButton = document.getElementById('blogNewsletterButton');
+  var newsletterStatus = document.getElementById('blogNewsletterStatus');
+  var currentPage = 1;
+  var currentCat = 'all';
+  var searchQuery = '';
+  var noResults = null;
+
+  function normalizeQuery(value) {
+    return (value || '').trim().toLowerCase();
+  }
+
+  function queryWords() {
+    return searchQuery ? searchQuery.split(/\s+/).filter(Boolean) : [];
+  }
+
+  function getDeviceType() {
+    if (window.innerWidth < 768) return 'mobile';
+    if (window.innerWidth < 1024) return 'tablet';
+    return 'desktop';
+  }
+
+  function setActiveTab(cat) {
+    filterTabs.forEach(function(tab) {
+      tab.classList.toggle('active', tab.dataset.cat === cat);
+    });
+  }
+
+  function resetState() {
+    currentCat = 'all';
+    currentPage = 1;
+    searchQuery = '';
+    searchInput.value = '';
+    searchClear.hidden = true;
+    setActiveTab(currentCat);
+    render();
+  }
+
+  function setNewsletterStatus(message, tone) {
+    if (!newsletterStatus) return;
+    newsletterStatus.textContent = message || '';
+    newsletterStatus.className = 'blog-newsletter-status' + (tone ? ' is-' + tone : '');
+  }
+
+  allCards.forEach(function(card) {
+    var h3 = card.querySelector('h3');
+    var excerpt = card.querySelector('.article-card-excerpt');
+    var badge = card.querySelector('.category-badge');
+    var cat = card.dataset.cat || '';
+    card._searchText = ((h3 ? h3.textContent : '') + ' ' + (excerpt ? excerpt.textContent : '') + ' ' + (badge ? badge.textContent : '') + ' ' + cat).toLowerCase();
+  });
+
+  if (statArticles) statArticles.textContent = String(allCards.length);
+
+  (function initFromURL() {
+    var params = new URLSearchParams(window.location.search);
+    var cat = params.get('category');
+    var query = normalizeQuery(params.get('q'));
+    var page = parseInt(params.get('page'), 10);
+
+    if (cat && CATEGORY_LABELS[cat]) currentCat = cat;
+    if (query) {
+      searchQuery = query;
+      searchInput.value = query;
+      searchClear.hidden = false;
+    }
+    if (!isNaN(page) && page > 0) currentPage = page;
+    setActiveTab(currentCat);
+  })();
+
+  function updateURL() {
+    var url = new URL(window.location.href);
+    if (currentCat === 'all') url.searchParams.delete('category');
+    else url.searchParams.set('category', currentCat);
+
+    if (searchQuery) url.searchParams.set('q', searchQuery);
+    else url.searchParams.delete('q');
+
+    if (currentPage > 1) url.searchParams.set('page', String(currentPage));
+    else url.searchParams.delete('page');
+
+    history.replaceState(null, '', url.toString());
+  }
+
+  function updateCounts() {
+    var cats = { all: 0, tax: 0, currency: 0, business: 0, tools: 0, data: 0, francais: 0 };
+    var words = queryWords();
+    allCards.forEach(function(card) {
+      var matchesSearch = !words.length || words.every(function(word) { return card._searchText.indexOf(word) !== -1; });
+      if (!matchesSearch) return;
+      cats.all++;
+      if (cats[card.dataset.cat] !== undefined) cats[card.dataset.cat]++;
+    });
+    document.getElementById('countAll').textContent = cats.all;
+    document.getElementById('countTax').textContent = cats.tax;
+    document.getElementById('countCurrency').textContent = cats.currency;
+    document.getElementById('countBusiness').textContent = cats.business;
+    document.getElementById('countTools').textContent = cats.tools;
+    document.getElementById('countData').textContent = cats.data;
+    document.getElementById('countFrancais').textContent = cats.francais;
+  }
+
+  function getFiltered() {
+    var words = queryWords();
+    return allCards.filter(function(card) {
+      var catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
+      var searchMatch = !words.length || words.every(function(word) { return card._searchText.indexOf(word) !== -1; });
+      return catMatch && searchMatch;
+    });
+  }
+
+  function updateSummary(filtered, totalPages) {
+    if (!resultsSummary) return;
+    var summary = 'Showing ' + filtered.length + ' article' + (filtered.length === 1 ? '' : 's');
+    if (currentCat !== 'all') summary += ' in ' + CATEGORY_LABELS[currentCat];
+    if (searchQuery) summary += ' matching "' + searchQuery + '"';
+    if (totalPages > 1) summary += ' - page ' + currentPage + ' of ' + totalPages;
+    resultsSummary.textContent = summary;
+    if (resetBtn) resetBtn.hidden = currentCat === 'all' && !searchQuery && currentPage === 1;
+  }
+
+  function buildNoResults() {
+    noResults = document.createElement('div');
+    noResults.className = 'blog-no-results';
+
+    var title = document.createElement('strong');
+    title.textContent = 'No articles matched your filters.';
+
+    var body = document.createElement('p');
+    body.textContent = 'Try a broader keyword or reset back to all topics.';
+
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'blog-reset';
+    button.textContent = 'Show all articles';
+    button.addEventListener('click', resetState);
+
+    noResults.appendChild(title);
+    noResults.appendChild(body);
+    noResults.appendChild(button);
+    grid.appendChild(noResults);
+  }
+
+  function render() {
+    var filtered = getFiltered();
+    var total = Math.ceil(filtered.length / PER_PAGE);
+    if (currentPage > total) currentPage = total || 1;
+
+    allCards.forEach(function(card) {
+      card.style.display = 'none';
+      card.hidden = true;
+    });
+
+    var start = (currentPage - 1) * PER_PAGE;
+    filtered.slice(start, start + PER_PAGE).forEach(function(card) {
+      card.style.display = '';
+      card.hidden = false;
+    });
+
+    if (noResults) noResults.remove();
+    if (filtered.length === 0) buildNoResults();
+
+    pageNumbers.innerHTML = '';
+    for (var i = 1; i <= total; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'page-num' + (i === currentPage ? ' active' : '');
+      btn.textContent = i;
+      btn.dataset.page = i;
+      if (i === currentPage) btn.setAttribute('aria-current', 'page');
+      pageNumbers.appendChild(btn);
+    }
+
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= total;
+    pagination.style.display = total <= 1 ? 'none' : 'flex';
+    updateCounts();
+    updateSummary(filtered, total);
+    updateURL();
+  }
+
+  function scrollUp() {
+    var section = document.getElementById('blogMain');
+    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function submitNetlifySignup(email) {
+    var body = new URLSearchParams();
+    body.append('form-name', 'blog-newsletter');
+    body.append('email', email);
+    body.append('source', 'blog-hub-newsletter');
+    return fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString()
+    });
+  }
+
+  function captureLead(email) {
+    try {
+      if (window.AfroTools && typeof window.AfroTools.captureLeadEnriched === 'function') {
+        window.AfroTools.captureLeadEnriched({
+          email: email,
+          source: 'blog-hub-newsletter',
+          optInDigest: true
+        });
+        return Promise.resolve();
+      }
+    } catch (error) {}
+
+    var params = new URLSearchParams(window.location.search);
+    return fetch('/api/capture-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        source: 'blog-hub-newsletter',
+        optInDigest: true,
+        utmSource: params.get('utm_source') || null,
+        utmMedium: params.get('utm_medium') || null,
+        utmCampaign: params.get('utm_campaign') || null,
+        utmContent: params.get('utm_content') || null,
+        referrerUrl: document.referrer || null,
+        pageUrl: window.location.origin + window.location.pathname,
+        deviceType: getDeviceType()
+      })
+    }).catch(function() {});
+  }
+
+  var searchTimer;
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function() {
+      searchQuery = normalizeQuery(searchInput.value);
+      searchClear.hidden = !searchInput.value;
+      currentPage = 1;
+      render();
+    }, 200);
+  });
+
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    searchQuery = '';
+    searchClear.hidden = true;
+    currentPage = 1;
+    render();
+    searchInput.focus();
+  });
+
+  if (resetBtn) resetBtn.addEventListener('click', resetState);
+
+  pageNumbers.addEventListener('click', function(e) {
+    if (e.target.classList.contains('page-num')) {
+      currentPage = parseInt(e.target.dataset.page, 10);
+      render();
+      scrollUp();
+    }
+  });
+
+  prevBtn.addEventListener('click', function() {
+    currentPage--;
+    render();
+    scrollUp();
+  });
+
+  nextBtn.addEventListener('click', function() {
+    currentPage++;
+    render();
+    scrollUp();
+  });
+
+  filterTabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      currentCat = tab.dataset.cat;
+      currentPage = 1;
+      setActiveTab(currentCat);
+      render();
+      scrollUp();
+    });
+  });
+
+  if (newsletterForm && newsletterInput && newsletterButton) {
+    newsletterForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!newsletterInput.reportValidity()) return;
+
+      var email = newsletterInput.value.trim();
+      newsletterButton.disabled = true;
+      newsletterButton.textContent = 'Subscribing...';
+      setNewsletterStatus('', '');
+
+      Promise.allSettled([
+        submitNetlifySignup(email),
+        captureLead(email)
+      ]).then(function(results) {
+        var failed = results.every(function(result) { return result.status === 'rejected'; });
+        if (failed) throw new Error('newsletter failed');
+        newsletterForm.reset();
+        setNewsletterStatus("Thanks - you're on the list.", 'success');
+        newsletterButton.textContent = 'Subscribed';
+        if (typeof gtag === 'function') {
+          gtag('event', 'newsletter_signup', { source: 'blog-hub-newsletter' });
+        }
+      }).catch(function() {
+        setNewsletterStatus('Subscription failed. Please try again.', 'error');
+        newsletterButton.textContent = 'Subscribe';
+      }).finally(function() {
+        setTimeout(function() {
+          newsletterButton.disabled = false;
+          newsletterButton.textContent = 'Subscribe';
+        }, 1200);
+      });
+    });
+  }
+
+  render();
+})();
+</script>
+
+<script>
+(function() {
+  if (window.__blogHubUpgraded) return;
   var PER_PAGE = 12;
   var grid = document.getElementById('blogGrid');
   var allCards = Array.from(grid.querySelectorAll('.article-card'));

@@ -22,6 +22,13 @@ function calcBands(taxable, bands) {
   return { tax, bands: detail };
 }
 
+function normalizeRegime(regime) {
+  const normalized = String(regime || 'NTA_2026').trim().toLowerCase();
+  if (['nta', 'nta_2026', 'nta2026', 'new'].includes(normalized)) return 'NTA_2026';
+  if (['pita', 'pita_2025', 'pita2025', 'old'].includes(normalized)) return 'PITA_2025';
+  return 'NTA_2026';
+}
+
 module.exports = {
   country: 'NG',
   countryName: 'Nigeria',
@@ -42,10 +49,11 @@ module.exports = {
       lifeAssurance = 0
     } = params;
 
-    const bands = regime === 'NTA_2026' ? BANDS_NTA : BANDS_PITA;
+    const normalizedRegime = normalizeRegime(regime);
+    const bands = normalizedRegime === 'NTA_2026' ? BANDS_NTA : BANDS_PITA;
     let taxableIncome, cra = 0, rentRelief = 0;
 
-    if (regime === 'NTA_2026') {
+    if (normalizedRegime === 'NTA_2026') {
       // NTA 2026: CRA abolished. Pension on pensionable emoluments (Basic+Housing+Transport), not total gross
       const pensionBase = pensionableEmoluments || grossAnnual;
       const pensionAmt = inclPension ? pensionBase * 0.08 : 0;
@@ -67,7 +75,7 @@ module.exports = {
       const empNhf = grossAnnual * 0.025;
 
       return {
-        input: { country: 'NG', grossAnnual, regime },
+        input: { country: 'NG', grossAnnual, regime: normalizedRegime },
         deductions: {
           pension: Math.round(pensionAmt),
           nhf: Math.round(nhfAmt),
@@ -83,7 +91,7 @@ module.exports = {
           marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
         },
         employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension + empNhf), totalCostMonthly: Math.round((grossAnnual + empPension + empNhf) / 12) },
-        meta: { regime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
+        meta: { regime: normalizedRegime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
       };
     } else {
       // PITA 2025: CRA = higher of ₦200,000 or 1% of gross, PLUS 20% of gross
@@ -105,7 +113,7 @@ module.exports = {
       const empNhf = grossAnnual * 0.025;
 
       return {
-        input: { country: 'NG', grossAnnual, regime },
+        input: { country: 'NG', grossAnnual, regime: normalizedRegime },
         deductions: {
           pension: Math.round(pensionAmt),
           nhf: Math.round(nhfAmt),
@@ -121,7 +129,7 @@ module.exports = {
           marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
         },
         employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension + empNhf), totalCostMonthly: Math.round((grossAnnual + empPension + empNhf) / 12) },
-        meta: { regime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
+        meta: { regime: normalizedRegime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
       };
     }
   },

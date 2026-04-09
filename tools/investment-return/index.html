@@ -338,6 +338,33 @@
 
 var RESULT = null, CHART = null, CHART_TYPE = 'growth', CHAT_HISTORY = [];
 
+function solveAnnualizedReturn(cashflows) {
+  if (!cashflows || cashflows.length < 2) return null;
+  var low = -0.9999;
+  var high = 10;
+  var guess = 0;
+
+  function npv(rate) {
+    var total = 0;
+    for (var i = 0; i < cashflows.length; i++) {
+      total += cashflows[i] / Math.pow(1 + rate, i);
+    }
+    return total;
+  }
+
+  while (npv(high) > 0 && high < 100) high *= 2;
+
+  for (var i = 0; i < 120; i++) {
+    guess = (low + high) / 2;
+    var value = npv(guess);
+    if (Math.abs(value) < 1e-7) break;
+    if (value > 0) low = guess;
+    else high = guess;
+  }
+
+  return Math.pow(1 + guess, 12) - 1;
+}
+
 function setCurrency() {
   var sel = document.getElementById('currency');
   var sym = sel.value;
@@ -386,23 +413,31 @@ function calculate() {
   var balance = initial;
   var totalDeposits = initial;
   var yearData = [];
+  var monthlyRate = Math.pow(1 + periodicRate, compound / 12) - 1;
+  var monthlyCashflows = [-initial];
 
   for (var y = 1; y <= years; y++) {
     var yearInterest = 0;
     for (var p = 0; p < compound; p++) {
-      var contributions = monthly * monthsPerPeriod;
-      balance += contributions;
-      totalDeposits += contributions;
-      var interest = balance * periodicRate;
-      balance += interest;
-      yearInterest += interest;
+      var periodsThisStep = Math.round(monthsPerPeriod);
+      for (var m = 0; m < periodsThisStep; m++) {
+        balance += monthly;
+        totalDeposits += monthly;
+        monthlyCashflows.push(-monthly);
+        var interest = balance * monthlyRate;
+        balance += interest;
+        yearInterest += interest;
+      }
     }
     yearData.push({ year: y, deposits: totalDeposits, interest: yearInterest, balance: balance });
   }
 
+  monthlyCashflows.push(balance);
+
   var totalInterest = balance - totalDeposits;
   var roi = totalDeposits > 0 ? ((balance - totalDeposits) / totalDeposits * 100) : 0;
-  var cagr = initial > 0 ? (Math.pow(balance / initial, 1 / years) - 1) * 100 : 'N/A';
+  var annualizedReturn = solveAnnualizedReturn(monthlyCashflows);
+  var cagr = annualizedReturn !== null ? annualizedReturn * 100 : (initial > 0 ? (Math.pow(balance / initial, 1 / years) - 1) * 100 : 'N/A');
   var doubling = rate > 0 ? (72 / rate).toFixed(1) : '∞';
 
   // Inflation-adjusted

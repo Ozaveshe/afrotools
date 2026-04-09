@@ -290,6 +290,31 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 <script>
 let direction='buy';
+let liveForexRates = null;
+const FX_FALLBACK_RATES = {USD:1,EUR:0.92,GBP:0.79,JPY:149.5,CHF:0.88,CAD:1.36,AUD:1.53,NGN:1535.5,KES:129.45,ZAR:16.32,GHS:14.89,EGP:50.73};
+
+function fetchForexRates() {
+  return fetch('/data/forex/latest.json', { cache: 'no-cache' })
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      if (data && data.rates) {
+        liveForexRates = data.rates;
+      }
+    })
+    .catch(function(err) {
+      console.warn('Forex Profit: failed to load live FX rates, using fallback conversions.', err);
+    });
+}
+
+function getFxRate(code) {
+  if (code === 'USD') return 1;
+  if (liveForexRates && liveForexRates[code]) return liveForexRates[code];
+  return FX_FALLBACK_RATES[code] || null;
+}
+
 function setDir(d){
   direction=d;
   document.querySelectorAll('.dir-btn').forEach(b=>b.classList.remove('active'));
@@ -325,14 +350,10 @@ function calculate(){
   const pairParts=pair.value.split('/');
   const quoteCur=pairParts[1];
 
-  // Simple conversion rates for display (approximate)
-  const toUSD={USD:1,EUR:1.08,GBP:1.27,JPY:0.0067,CHF:1.12,CAD:0.74,AUD:0.66,NGN:0.00067,KES:0.0065,ZAR:0.055,GHS:0.063,EGP:0.021};
-  const profitUSD=profitQuote*(toUSD[quoteCur]||1);
-
-  // Convert to account currency
-  const usdToAcct=1/(toUSD[acctCur]||1);
-  const profitAcct=profitUSD*usdToAcct;
-  const pipValueAcct=pipValueQuote*(toUSD[quoteCur]||1)*usdToAcct;
+  const quoteRate = getFxRate(quoteCur);
+  const acctRate = getFxRate(acctCur);
+  const profitAcct = quoteRate && acctRate ? (profitQuote / quoteRate) * acctRate : profitQuote;
+  const pipValueAcct = quoteRate && acctRate ? (pipValueQuote / quoteRate) * acctRate : pipValueQuote;
 
   const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3',EUR:'\u20AC',JPY:'\u00A5',CHF:'CHF ',CAD:'C$',AUD:'A$'};
   const sym=symbols[acctCur]||'';
@@ -345,7 +366,7 @@ function calculate(){
   document.getElementById('rPipVal').textContent=sym+pipValueAcct.toFixed(2)+'/pip';
   document.getElementById('rPosSize').textContent=positionSize.toLocaleString('en')+' units';
 
-  const returnPct=entry>0?((priceDiff/entry)*100*(direction==='buy'?1:-1)):0;
+  const returnPct=entry>0?((priceDiff/entry)*100):0;
   document.getElementById('rReturn').textContent=(returnPct>=0?'+':'')+returnPct.toFixed(3)+'%';
 
   document.getElementById('results').style.display='block';
@@ -369,6 +390,8 @@ function calculate(){
     ]
   });
 }
+
+fetchForexRates();
 </script>
 
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

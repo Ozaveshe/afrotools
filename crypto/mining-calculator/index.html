@@ -347,9 +347,9 @@
       </div>
 
       <div class="form-group">
-        <label for="hashrate">Hashrate (TH/s)</label>
+        <label for="hashrate" id="hashrateLabel">Hashrate (TH/s)</label>
         <input type="number" id="hashrate" value="100" min="0" step="any">
-        <div class="hint">Typical ASIC: 100-140 TH/s (e.g., Antminer S19 XP)</div>
+        <div class="hint" id="hashrateHint">Typical ASIC: 100-140 TH/s (e.g., Antminer S19 XP)</div>
       </div>
 
       <div class="form-group">
@@ -432,9 +432,9 @@
 
   /* ── Mining constants ───────────────────────────── */
   var MINING_PARAMS = {
-    BTC: { difficulty: 80e12, blockReward: 3.125, algo: 'SHA-256', coinGeckoId: 'bitcoin' },
-    ETH: { difficulty: 1e16, blockReward: 0, algo: 'Ethash (PoS)', coinGeckoId: 'ethereum' },
-    LTC: { difficulty: 40e6, blockReward: 6.25, algo: 'Scrypt', coinGeckoId: 'litecoin' }
+    BTC: { difficulty: 80e12, blockReward: 3.125, algo: 'SHA-256', coinGeckoId: 'bitcoin', hashrateMultiplier: 1e12, unit: 'TH/s', defaultHashrate: 100, hint: 'Typical ASIC: 100-140 TH/s (e.g., Antminer S19 XP)' },
+    ETH: { difficulty: 1e16, blockReward: 0, algo: 'Ethash (PoS)', coinGeckoId: 'ethereum', hashrateMultiplier: 1e6, unit: 'MH/s', defaultHashrate: 500, hint: 'Legacy GPU rigs were commonly quoted in MH/s before Ethereum moved to PoS' },
+    LTC: { difficulty: 40e6, blockReward: 6.25, algo: 'Scrypt', coinGeckoId: 'litecoin', hashrateMultiplier: 1e9, unit: 'GH/s', defaultHashrate: 9.5, hint: 'Typical Litecoin ASIC: 9-10 GH/s (e.g., Antminer L7)' }
   };
 
   /* ── Currency map ───────────────────────────────── */
@@ -451,7 +451,9 @@
   /* ── DOM refs ───────────────────────────────────── */
   var $country = document.getElementById('countrySelect');
   var $coin = document.getElementById('coinSelect');
+  var $hashrateLabel = document.getElementById('hashrateLabel');
   var $hashrate = document.getElementById('hashrate');
+  var $hashrateHint = document.getElementById('hashrateHint');
   var $power = document.getElementById('power');
   var $customRate = document.getElementById('customRate');
   var $poolFee = document.getElementById('poolFee');
@@ -512,8 +514,17 @@
   });
 
   $coin.addEventListener('change', function () {
+    updateHashrateInputs();
     fetchLivePrice();
   });
+
+  function updateHashrateInputs() {
+    var params = MINING_PARAMS[$coin.value];
+    if (!params) return;
+    $hashrateLabel.textContent = 'Hashrate (' + params.unit + ')';
+    $hashrateHint.textContent = params.hint;
+    $hashrate.value = params.defaultHashrate;
+  }
 
   /* ── Fetch live price ───────────────────────────── */
   function fetchLivePrice() {
@@ -567,8 +578,8 @@
       if (elecRate === undefined) elecRate = rates.grid;
     }
 
-    // Daily BTC revenue = (hashrate_in_hashes / (difficulty * 2^32)) * block_reward * 86400
-    var hashrateHashes = hashrate * 1e12; // TH/s to H/s
+    // Daily revenue = (hashrate_in_hashes / (difficulty * 2^32)) * block_reward * 86400
+    var hashrateHashes = hashrate * params.hashrateMultiplier;
     var dailyCoinRevenue = (hashrateHashes / (params.difficulty * Math.pow(2, 32))) * params.blockReward * 86400;
 
     // Pool fee deduction
@@ -787,6 +798,7 @@
   /* ── Init ────────────────────────────────────────── */
   updatePowerSources();
   updateRateInfo();
+  updateHashrateInputs();
   fetchLivePrice();
 
 })();

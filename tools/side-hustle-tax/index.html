@@ -345,6 +345,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </select></div>
 <div id="salaryField"><label>Annual Salary (if employed)</label><input type="number" id="salary" value="3000000" min="0" step="100000"></div>
 </div>
+<div class="row field" id="rentField" style="display:none">
+<div><label>Annual Rent Paid (Nigeria only)</label><input type="number" id="rentPaid" value="0" min="0" step="50000"></div>
+<div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Used for Nigeria's optional 20% rent relief, capped at ₦500,000 under the current tax law.</div>
+</div>
 <button class="btn btn-primary" onclick="calculate()">Calculate Tax</button>
 </div></div>
 </div>
@@ -377,6 +381,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="row field">
 <div id="salaryField2"><label>Annual Salary (gross)</label><input type="number" id="salary2" value="3000000" min="0" step="100000" onchange="syncVal('salary',this.value)"></div>
 <div><label>Annual Side Hustle Revenue</label><input type="number" id="revenue2" value="2000000" min="0" step="100000" onchange="syncVal('revenue',this.value)"></div>
+</div>
+<div class="row field" id="rentField2" style="display:none">
+<div><label>Annual Rent Paid (Nigeria only)</label><input type="number" id="rentPaid2" value="0" min="0" step="50000" onchange="syncVal('rent',this.value)"></div>
+<div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Optional rent relief input for Nigeria.</div>
 </div>
 </div></div>
 
@@ -430,6 +438,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </select></div>
 <div id="salaryField3"><label>Annual Salary</label><input type="number" id="salary3" value="3000000" min="0" step="100000"></div>
 </div>
+<div class="row field" id="rentField3" style="display:none">
+<div><label>Annual Rent Paid (Nigeria only)</label><input type="number" id="rentPaid3" value="0" min="0" step="50000"></div>
+<div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Optional rent relief input for Nigeria.</div>
+</div>
 <div id="presetDeductions" style="margin-top:14px"></div>
 <button class="btn btn-primary" onclick="calculatePreset()" style="margin-top:14px">Calculate Tax</button>
 </div></div>
@@ -460,6 +472,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="no">Side Hustle Only</option>
 <option value="yes">Employed + Side Hustle</option>
 </select></div>
+</div>
+<div class="row field" id="rentField4" style="display:none">
+<div><label>Annual Rent Paid (Nigeria only)</label>
+<input type="number" id="compareRentPaid" value="0" min="0" step="50000"></div>
+<div style="display:flex;align-items:end;font-size:.74rem;color:#64748b;line-height:1.5">Optional rent relief input for Nigeria.</div>
 </div>
 <button class="btn btn-primary" onclick="calculateRegimes()">Compare Regimes</button>
 <div id="regimeResults"></div>
@@ -555,9 +572,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="seo-section">
 <h2>Understanding Side Hustle Taxes in Africa</h2>
 <p>The gig economy and side hustle culture is booming across Africa. From freelance developers in Lagos to Uber drivers in Nairobi, content creators in Johannesburg, and online sellers in Accra, millions of Africans earn supplementary income outside their primary employment. This income is taxable, and understanding your obligations helps you avoid penalties and maximize your take-home earnings.</p>
-<p>In Nigeria, side hustle income falls under personal income tax managed by FIRS and state tax authorities. Tax rates range from 7% to 24% depending on your total income bracket, with a Consolidated Relief Allowance of NGN 200,000 plus 1% of gross income. Businesses earning under NGN 25 million may qualify for presumptive tax.</p>
+<p>In Nigeria, side hustle income falls under personal income tax managed by FIRS and state tax authorities. Under the newer Nigeria Tax Act structure used in this calculator, the first NGN 800,000 is taxed at 0%, then progressive rates run from 15% to 25%. The old Consolidated Relief Allowance has been replaced here with the optional rent relief of 20% of annual rent paid, capped at NGN 500,000.</p>
 <p>Kenya uses a progressive tax system where all income is combined and taxed at rates from 10% to 35%. KRA requires anyone earning taxable income to file returns via iTax. Kenya also offers a turnover tax option at 3% of gross revenue for businesses earning under KES 25 million.</p>
-<p>South Africa taxes worldwide income through SARS. Freelance and side hustle income is added to employment income and taxed at marginal rates from 18% to 45%. The first R95,750 of taxable income is effectively tax-free. Provisional tax returns are required if side income exceeds R30,000 per year.</p>
+<p>South Africa taxes worldwide income through SARS. Freelance and side hustle income is added to employment income and taxed at marginal rates from 18% to 45%. The first R99,000 of taxable income is effectively tax-free for most individual taxpayers under the 2026/27 thresholds. Provisional tax returns are required if side income exceeds R30,000 per year.</p>
 <p>Ghana's GRA taxes all income sources on a graduated scale from 0% to 30%. The first GHS 4,824 is tax-free. Small businesses with turnover under GHS 200,000 may qualify for simplified presumptive tax.</p>
 <p>Egypt applies progressive rates from 0% to 27.5% with the first EGP 40,000 exempt. Tanzania, Uganda, Morocco, Rwanda, and Senegal each have their own progressive structures, and this calculator covers all ten countries with current rates and thresholds.</p>
 
@@ -587,8 +604,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 const TAX = {
   NG: {
     name:'Nigeria', currency:'NGN', symbol:'\u20a6', flag:'\ud83c\uddf3\ud83c\uddec',
-    brackets:[[300000,.07],[600000,.11],[1100000,.15],[1600000,.19],[3200000,.21],[Infinity,.24]],
-    relief:200000, cra:.01,
+    brackets:[[800000,0],[3000000,.15],[12000000,.18],[25000000,.21],[50000000,.23],[Infinity,.25]],
+    relief:0, rentReliefRate:.20, rentReliefCap:500000,
     filingDeadline:'March 31',
     taxAuthority:'FIRS / State IRS',
     thresholds:{presumptive:25000000,registration:300000},
@@ -608,7 +625,7 @@ const TAX = {
   ZA: {
     name:'South Africa', currency:'ZAR', symbol:'R', flag:'\ud83c\uddff\ud83c\udde6',
     brackets:[[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[Infinity,.45]],
-    rebate:17235, threshold:95750,
+    rebate:17820, threshold:99000,
     filingDeadline:'Nov 24 (non-provisional)',
     taxAuthority:'SARS eFiling',
     thresholds:{provisional:30000,turnover:1000000,turnoverTaxMax:1000000},
@@ -726,7 +743,7 @@ function syncJob(el) {
   toggleSalary();
 }
 function syncVal(field, val) {
-  const ids = {salary:['salary','salary2','salary3'],revenue:['revenue','revenue2','presetRevenue']};
+  const ids = {salary:['salary','salary2','salary3'],revenue:['revenue','revenue2','presetRevenue'],rent:['rentPaid','rentPaid2','rentPaid3']};
   (ids[field]||[]).forEach(id => {
     const e = document.getElementById(id);
     if (e) e.value = val;
@@ -741,8 +758,17 @@ function toggleSalary() {
 }
 
 function onCountryChange() {
+  toggleCountrySpecificFields();
   updateCountryInfo();
   updateRegimeInfo();
+}
+
+function toggleCountrySpecificFields() {
+  const showRent = getCountry() === 'NG';
+  ['rentField','rentField2','rentField3','rentField4'].forEach(id => {
+    const e = document.getElementById(id);
+    if (e) e.style.display = showRent ? '' : 'none';
+  });
 }
 
 /* ── Tab Switching ── */
@@ -767,16 +793,21 @@ function calcTax(brackets, taxable, country) {
   return tax;
 }
 
-function computeTax(countryCode, totalIncome, salary, hasJob) {
+function getNigeriaRentRelief(rentPaid) {
+  const t = TAX.NG;
+  return Math.min(t.rentReliefCap || 0, Math.max(0, rentPaid || 0) * (t.rentReliefRate || 0));
+}
+
+function computeTax(countryCode, totalIncome, salary, hasJob, rentPaid) {
   const t = TAX[countryCode];
   let taxOnTotal = 0, taxOnSalary = 0;
 
   if (countryCode === 'NG') {
-    const reliefTotal = 200000 + totalIncome * 0.01;
+    const reliefTotal = getNigeriaRentRelief(rentPaid);
     const taxableTotal = Math.max(0, totalIncome - reliefTotal);
     taxOnTotal = calcTax(t.brackets, taxableTotal, countryCode);
     if (hasJob) {
-      const reliefSalary = 200000 + salary * 0.01;
+      const reliefSalary = getNigeriaRentRelief(rentPaid);
       const taxableSalary = Math.max(0, salary - reliefSalary);
       taxOnSalary = calcTax(t.brackets, taxableSalary, countryCode);
     }
@@ -794,10 +825,10 @@ function computeTax(countryCode, totalIncome, salary, hasJob) {
   return { taxOnTotal, taxOnSalary, sideHustleTax: Math.max(0, taxOnTotal - taxOnSalary) };
 }
 
-function getMarginalRate(countryCode, income) {
+function getMarginalRate(countryCode, income, rentPaid) {
   const t = TAX[countryCode];
   let adjustedIncome = income;
-  if (countryCode === 'NG') adjustedIncome = Math.max(0, income - (200000 + income * 0.01));
+  if (countryCode === 'NG') adjustedIncome = Math.max(0, income - getNigeriaRentRelief(rentPaid));
   for (const [threshold, rate] of t.brackets) {
     if (adjustedIncome <= threshold) return rate;
   }
@@ -837,15 +868,16 @@ function calculate() {
   const expenses = +document.getElementById('expenses').value || 0;
   const hasJob = document.getElementById('hasJob').value === 'yes';
   const salary = hasJob ? (+document.getElementById('salary').value || 0) : 0;
+  const rentPaid = c === 'NG' ? (+document.getElementById('rentPaid').value || 0) : 0;
 
   const profit = Math.max(0, revenue - expenses);
   const totalIncome = salary + profit;
-  const result = computeTax(c, totalIncome, salary, hasJob);
+  const result = computeTax(c, totalIncome, salary, hasJob, rentPaid);
   const effectiveRate = profit > 0 ? (result.sideHustleTax / profit * 100) : 0;
-  const marginalRate = getMarginalRate(c, totalIncome);
+  const marginalRate = getMarginalRate(c, totalIncome, rentPaid);
   const takeHome = profit - result.sideHustleTax;
 
-  renderResults(c, t, revenue, expenses, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome);
+  renderResults(c, t, revenue, expenses, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome, rentPaid);
 }
 
 /* ── Detailed Calculate ── */
@@ -856,6 +888,7 @@ function calculateDetailed() {
   const revenue = +document.getElementById('revenue2').value || 0;
   const hasJob = document.getElementById('hasJob2').value === 'yes';
   const salary = hasJob ? (+document.getElementById('salary2').value || 0) : 0;
+  const rentPaid = c === 'NG' ? (+document.getElementById('rentPaid2').value || 0) : 0;
 
   // Sum checked deductions
   let totalDed = 0;
@@ -869,12 +902,12 @@ function calculateDetailed() {
 
   const profit = Math.max(0, revenue - totalDed);
   const totalIncome = salary + profit;
-  const result = computeTax(c, totalIncome, salary, hasJob);
+  const result = computeTax(c, totalIncome, salary, hasJob, rentPaid);
   const effectiveRate = profit > 0 ? (result.sideHustleTax / profit * 100) : 0;
-  const marginalRate = getMarginalRate(c, totalIncome);
+  const marginalRate = getMarginalRate(c, totalIncome, rentPaid);
   const takeHome = profit - result.sideHustleTax;
 
-  renderResults(c, t, revenue, totalDed, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome);
+  renderResults(c, t, revenue, totalDed, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome, rentPaid);
 }
 
 /* ── Preset Calculate ── */
@@ -885,6 +918,7 @@ function calculatePreset() {
   const revenue = +document.getElementById('presetRevenue').value || 0;
   const hasJob = document.getElementById('hasJob3').value === 'yes';
   const salary = hasJob ? (+document.getElementById('salary3').value || 0) : 0;
+  const rentPaid = c === 'NG' ? (+document.getElementById('rentPaid3').value || 0) : 0;
 
   let totalDed = 0;
   document.querySelectorAll('#presetDeductions .deduction-row').forEach(row => {
@@ -895,16 +929,16 @@ function calculatePreset() {
 
   const profit = Math.max(0, revenue - totalDed);
   const totalIncome = salary + profit;
-  const result = computeTax(c, totalIncome, salary, hasJob);
+  const result = computeTax(c, totalIncome, salary, hasJob, rentPaid);
   const effectiveRate = profit > 0 ? (result.sideHustleTax / profit * 100) : 0;
-  const marginalRate = getMarginalRate(c, totalIncome);
+  const marginalRate = getMarginalRate(c, totalIncome, rentPaid);
   const takeHome = profit - result.sideHustleTax;
 
-  renderResults(c, t, revenue, totalDed, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome);
+  renderResults(c, t, revenue, totalDed, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome, rentPaid);
 }
 
 /* ── Render Results ── */
-function renderResults(c, t, revenue, expenses, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome) {
+function renderResults(c, t, revenue, expenses, profit, salary, hasJob, totalIncome, result, effectiveRate, marginalRate, takeHome, rentPaid) {
   const sym = t.symbol;
 
   // Result grid
@@ -936,7 +970,7 @@ function renderResults(c, t, revenue, expenses, profit, salary, hasJob, totalInc
   document.getElementById('breakdownTable').innerHTML = tbl;
 
   // Bracket visualization
-  renderBracketViz(c, salary, totalIncome, hasJob);
+  renderBracketViz(c, salary, totalIncome, hasJob, rentPaid);
 
   // Quarterly schedule
   renderQuarterlySchedule(c, result.sideHustleTax);
@@ -954,7 +988,7 @@ function renderResults(c, t, revenue, expenses, profit, salary, hasJob, totalInc
 }
 
 /* ── Bracket Visualization ── */
-function renderBracketViz(c, salary, totalIncome, hasJob) {
+function renderBracketViz(c, salary, totalIncome, hasJob, rentPaid) {
   const t = TAX[c];
   const viz = document.getElementById('bracketViz');
   const bar = document.getElementById('bracketBar');
@@ -995,9 +1029,9 @@ function renderBracketViz(c, salary, totalIncome, hasJob) {
   legend.innerHTML = legendHTML;
 
   // Rate bars
-  const marginalOnSalary = hasJob ? getMarginalRate(c, salary) : 0;
-  const marginalOnCombined = getMarginalRate(c, totalIncome);
-  const effectiveOnCombined = totalIncome > 0 ? (computeTax(c, totalIncome, 0, false).taxOnTotal / totalIncome) : 0;
+  const marginalOnSalary = hasJob ? getMarginalRate(c, salary, rentPaid) : 0;
+  const marginalOnCombined = getMarginalRate(c, totalIncome, rentPaid);
+  const effectiveOnCombined = totalIncome > 0 ? (computeTax(c, totalIncome, 0, false, rentPaid).taxOnTotal / totalIncome) : 0;
 
   let ratesHTML = '';
   if (hasJob) {
@@ -1112,10 +1146,11 @@ function calculateRegimes() {
   const revenue = +document.getElementById('compareRevenue').value || 0;
   const expenses = +document.getElementById('compareExpenses').value || 0;
   const hasJob = document.getElementById('hasJob4').value === 'yes';
+  const rentPaid = c === 'NG' ? (+document.getElementById('compareRentPaid').value || 0) : 0;
   const profit = Math.max(0, revenue - expenses);
 
   // Income tax
-  const incResult = computeTax(c, profit, 0, false);
+  const incResult = computeTax(c, profit, 0, false, rentPaid);
   const incomeTax = incResult.sideHustleTax;
   const incomeRate = profit > 0 ? (incomeTax / profit * 100) : 0;
 
@@ -1188,7 +1223,7 @@ function updateCountryInfo() {
   if (t.relief) html += '<li><strong>Personal Relief:</strong> ' + t.symbol + ' ' + t.relief.toLocaleString('en') + '/yr</li>';
   if (t.rebate) html += '<li><strong>Primary Rebate:</strong> ' + t.symbol + ' ' + t.rebate.toLocaleString('en') + '</li>';
   if (t.threshold) html += '<li><strong>Tax-free Threshold:</strong> ' + t.symbol + ' ' + t.threshold.toLocaleString('en') + '</li>';
-  if (t.cra) html += '<li><strong>CRA:</strong> ' + t.symbol + '200,000 + 1% of gross</li>';
+  if (c === 'NG') html += '<li><strong>Nigeria Rent Relief:</strong> 20% of annual rent paid, capped at ' + fmt(t.rentReliefCap, t.symbol) + '</li>';
   if (t.turnover && t.turnover.available) html += '<li><strong>' + t.turnover.name + ':</strong> Available for revenue under ' + fmt(t.turnover.maxRevenue, t.symbol) + '</li>';
   html += '</ul>';
   infoCard.innerHTML = html;
@@ -1236,7 +1271,8 @@ function updateDeductionTotals() {
       total += amt;
       count++;
       // Estimate tax savings using marginal rate
-      const marginal = getMarginalRate(c, salary + Math.max(0, revenue - total));
+      const rentPaid = c === 'NG' ? (+document.getElementById('rentPaid2').value || 0) : 0;
+      const marginal = getMarginalRate(c, salary + Math.max(0, revenue - total), rentPaid);
       const saving = amt * marginal;
       saveEl.textContent = saving > 0 ? ('saves ' + fmt(saving)) : '--';
     } else if (saveEl) {
@@ -1250,8 +1286,9 @@ function updateDeductionTotals() {
   // Total tax savings estimate
   const profitWithDed = Math.max(0, revenue - total);
   const profitWithout = Math.max(0, revenue);
-  const taxWith = computeTax(c, salary + profitWithDed, salary, hasJob).sideHustleTax;
-  const taxWithout = computeTax(c, salary + profitWithout, salary, hasJob).sideHustleTax;
+  const rentPaid = c === 'NG' ? (+document.getElementById('rentPaid2').value || 0) : 0;
+  const taxWith = computeTax(c, salary + profitWithDed, salary, hasJob, rentPaid).sideHustleTax;
+  const taxWithout = computeTax(c, salary + profitWithout, salary, hasJob, rentPaid).sideHustleTax;
   const totalSavings = Math.max(0, taxWithout - taxWith);
   document.getElementById('totalTaxSavings').textContent = fmt(totalSavings);
 }
@@ -1299,6 +1336,7 @@ function selectPreset(id) {
 function init() {
   buildDeductionsList();
   buildPresetsGrid();
+  toggleCountrySpecificFields();
   updateCountryInfo();
   toggleSalary();
   selectPreset('freelancer');

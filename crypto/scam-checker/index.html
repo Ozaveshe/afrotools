@@ -18,10 +18,10 @@
 <meta name="robots" content="index, follow">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Crypto Scam Reporter and Checker","description":"Check wallet addresses and platforms against the AfroTools scam database and report crypto fraud targeting African users.","url":"https://afrotools.com/crypto/scam-checker/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Crypto Scam Reporter and Checker","url":"https://afrotools.com/crypto/scam-checker/","description":"Check wallet addresses and platforms against the AfroTools scam database and report crypto fraud targeting African users.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -830,6 +830,7 @@
 
         if (!data.reports || data.reports.length === 0) {
           resultEl.className = 'check-result safe';
+          resultEl.style.display = 'block';
           resultEl.innerHTML = '<h3>No reports found</h3><p>This address or platform has not been reported in our database (' + (data.found || 0) + ' matches). This does not guarantee it is safe &mdash; always do your own research.</p>';
           return;
         }
@@ -847,12 +848,14 @@
           html += '</div>';
         });
         resultEl.className = 'check-result danger';
+        resultEl.style.display = 'block';
         resultEl.innerHTML = html;
       })
       .catch(function() {
         btnCheck.disabled = false;
         btnCheck.textContent = 'Check';
         resultEl.className = 'check-result danger';
+        resultEl.style.display = 'block';
         resultEl.innerHTML = '<h3>Error</h3><p>Unable to search the database. Please try again.</p>';
       });
   });

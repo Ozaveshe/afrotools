@@ -764,7 +764,7 @@
 <afro-related-tools category="document-pdf" current="pdf-bates"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -842,9 +842,13 @@
   zeroPad.addEventListener('input', updatePreview);
   updatePreview();
 
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
   // File handling
   pdfInput.addEventListener('change', function(e) {
-    if (e.target.files[0]?.type === 'application/pdf') {
+    if (isPdfFile(e.target.files[0])) {
       currentFile = e.target.files[0];
       stampBtn.disabled = false;
       resultCard.classList.remove('on');
@@ -865,7 +869,7 @@
     e.preventDefault();
     dropLabel.classList.remove('dragover');
     var file = e.dataTransfer.files[0];
-    if (file?.type === 'application/pdf') {
+    if (isPdfFile(file)) {
       currentFile = file;
       stampBtn.disabled = false;
       resultCard.classList.remove('on');

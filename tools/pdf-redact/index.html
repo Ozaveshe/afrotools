@@ -73,7 +73,7 @@
 <script src="/assets/js/components/tool-registry.min.js?v=b9986767" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
 <script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
@@ -881,6 +881,10 @@ pdfFileInput.addEventListener('change', (e) => {
   if (file) loadFile(file);
 });
 
+function isPdfFile(file) {
+  return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+}
+
 // Drag & drop
 uploadZone.addEventListener('dragover', (e) => {
   e.preventDefault();
@@ -893,7 +897,7 @@ uploadZone.addEventListener('drop', (e) => {
   e.preventDefault();
   uploadZone.classList.remove('dragover');
   const file = e.dataTransfer.files[0];
-  if (file && file.type === 'application/pdf') loadFile(file);
+  if (isPdfFile(file)) loadFile(file);
 });
 
 clearFileBtn.addEventListener('click', () => {
@@ -901,6 +905,7 @@ clearFileBtn.addEventListener('click', () => {
 });
 
 async function loadFile(file) {
+  if (!isPdfFile(file)) return;
   try {
     pdfArrayBuffer = await file.arrayBuffer();
     pdfDoc = await pdfjsLib.getDocument({ data: pdfArrayBuffer.slice(0) }).promise;

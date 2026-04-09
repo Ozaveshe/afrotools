@@ -518,7 +518,7 @@
 <afro-related-tools category="document-pdf" current="pdf-editor"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -533,6 +533,7 @@
 
 /* ─── HELPERS ─── */
 var $=function(id){return document.getElementById(id)};
+function isPdfFile(file){return !!(file&&((file.type&&file.type==="application/pdf")||(/\.pdf$/i).test(file.name||"")))}
 function toast(msg,err){var t=$('toast');t.textContent=msg;t.className='toast'+(err?' err':'')+' on';clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},3500)}
 function showProc(t,s){$('pT').textContent=t||'Processing...';$('pS').textContent=s||'';$('pOv').classList.add('on')}
 function hideProc(){$('pOv').classList.remove('on')}
@@ -725,7 +726,7 @@ async function init(){
 
 /* ─── OPEN PDF ─── */
 async function openPDF(file){
-  if(!file||file.type!=='application/pdf'){toast('Please select a PDF file',true);return}
+  if(!isPdfFile(file)){toast('Please select a PDF file',true);return}
   showProc('Loading PDF...','Reading file');
   try{
     var ab=await file.arrayBuffer();
@@ -1747,7 +1748,7 @@ function setupWorkspaceDrop(){
     e.stopPropagation();
     var files=Array.from(e.dataTransfer.files);
     // Check if it's a PDF (replace current)
-    var pdf=files.find(function(f){return f.type==='application/pdf'});
+    var pdf=files.find(isPdfFile);
     if(pdf){
       if(operations.length>0){
         if(!confirm('Loading a new PDF will discard your current edits. Continue?'))return;

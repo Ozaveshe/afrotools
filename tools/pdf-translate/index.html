@@ -700,7 +700,7 @@
 <afro-related-tools category="document-pdf" current="pdf-translate"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -748,6 +748,10 @@
   const tabShowAll = $('tabShowAll');
 
   /* ── Helpers ── */
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
   function formatSize(bytes) {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
@@ -780,7 +784,7 @@
 
   /* ── File Upload ── */
   async function handleFile(file) {
-    if (!file || file.type !== 'application/pdf') {
+    if (!isPdfFile(file)) {
       showError('Please select a valid PDF file.');
       return;
     }
@@ -841,7 +845,7 @@
     e.preventDefault();
     e.stopPropagation();
     dropLabel.classList.remove('dragover');
-    var files = Array.from(e.dataTransfer.files).filter(function(f) { return f.type === 'application/pdf'; });
+    var files = Array.from(e.dataTransfer.files).filter(isPdfFile);
     if (files.length) handleFile(files[0]);
   });
 
@@ -886,6 +890,7 @@
     var translatedCount = 0;
     var skippedCount = 0;
     var errorPages = [];
+    var serviceUnavailable = false;
 
     for (var i = 0; i < totalPages; i++) {
       var pageText = textData[i].text;
@@ -925,6 +930,10 @@
           break;
         }
 
+        if (response.status === 404 || response.status >= 500) {
+          throw new Error('translation-service-unavailable');
+        }
+
         if (!response.ok) {
           throw new Error('API returned ' + response.status);
         }
@@ -937,6 +946,10 @@
         translatedPages.push(null);
         errorPages.push(i + 1);
         console.error('Translation error page ' + (i + 1) + ':', err);
+        if (err && err.message === 'translation-service-unavailable') {
+          serviceUnavailable = true;
+          break;
+        }
       }
     }
 
@@ -944,8 +957,12 @@
     progressLabel.textContent = 'Translation complete';
     progressDetail.textContent = translatedCount + ' pages translated' + (skippedCount ? ', ' + skippedCount + ' skipped' : '') + (errorPages.length ? ', ' + errorPages.length + ' failed' : '');
 
-    if (errorPages.length && !errorBanner.classList.contains('on')) {
-      showError('Some pages failed to translate (pages: ' + errorPages.join(', ') + '). The remaining pages were translated successfully.');
+    if (serviceUnavailable && !errorBanner.classList.contains('on')) {
+      showError('The translation service is unavailable right now. If you are testing locally, start the Netlify function environment; otherwise try again later.');
+    } else if (errorPages.length && translatedCount > 0 && !errorBanner.classList.contains('on')) {
+      showError('Some pages failed to translate (pages: ' + errorPages.join(', ') + '). The translated pages that completed are available below.');
+    } else if (errorPages.length && translatedCount === 0 && !errorBanner.classList.contains('on')) {
+      showError('Translation failed for all translatable pages (pages: ' + errorPages.join(', ') + ').');
     }
 
     isTranslating = false;

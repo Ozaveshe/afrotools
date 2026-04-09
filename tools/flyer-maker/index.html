@@ -43,6 +43,11 @@
 .tpl-card{border:2px solid #e2e8f0;border-radius:6px;padding:.4rem;text-align:center;cursor:pointer;font-size:.72rem;font-weight:600;transition:all .15s}
 .tpl-card:hover,.tpl-card.active{border-color:var(--sky);background:var(--sky-light)}
 .tpl-preview{height:60px;border-radius:3px;margin-bottom:.25rem}
+.upgrade-note{max-width:1100px;margin:1.25rem auto 0;padding:0 1.5rem}
+.upgrade-note-box{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff,#ffffff)}
+.upgrade-note-copy strong{display:block;color:#0c4a6e;font-size:.95rem;margin-bottom:.2rem}
+.upgrade-note-copy p{margin:0;color:#475569;font-size:.88rem}
+.upgrade-note-box a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 1rem;border-radius:999px;background:#0c4a6e;color:#fff;font-size:.86rem;font-weight:700;text-decoration:none}
 .seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -83,10 +88,20 @@
 <body>
 <afro-navbar></afro-navbar>
 <section class="hero"><h1>Flyer & Poster Maker</h1><p>Create professional event flyers and posters with customizable templates. Download as high-resolution PNG. Free, no signup.</p></section>
+<section class="upgrade-note">
+<div class="upgrade-note-box">
+<div class="upgrade-note-copy"><strong>Need a fuller graphics studio?</strong><p>Use this page for quick one-off flyers. For layered creator graphics, reusable templates, and broader campaign design, switch to CreatorCanvas.</p></div>
+<a href="/tools/creator-canvas/">Open CreatorCanvas</a>
+</div>
+</section>
 <div class="container">
 <div class="card">
 <h2>Choose a Template</h2>
 <div class="template-grid" id="templates"></div>
+</div>
+<div class="card">
+<h2>African Event Quick Starts</h2>
+<div class="template-grid" id="starterPresets"></div>
 </div>
 <div class="card">
 <div class="editor">
@@ -155,8 +170,16 @@ const TEMPLATES=[
 {name:'Campus',bg1:'#0c2340',bg2:'#1d4ed8',title:'#ffffff',accent:'#34d399'},
 {name:'Naija Green',bg1:'#064e3b',bg2:'#15803d',title:'#ffffff',accent:'#fbbf24'},
 ];
+const STARTER_PRESETS=[
+{name:'Church Vigil',template:'Church',title:'NIGHT OF WORSHIP',date:'Friday | 9PM TILL DAWN',venue:'City Chapel, Ibadan',details:'Prayer | Worship | Healing',contact:'WhatsApp: +234 801 234 5678',footer:'Free entry | Invite someone'},
+{name:'Campus Week',template:'Campus',title:'CAMPUS WEEK 2026',date:'Mon - Fri | 4PM Daily',venue:'Main Bowl, UNILAG',details:'Games | Music | Community | Awards',contact:'DM the student union for details',footer:'Powered by the campus team'},
+{name:'Wedding Invite',template:'Wedding',title:'WEDDING CELEBRATION',date:'Saturday | 11AM',venue:'Civic Centre, Accra',details:'Join us for the ceremony and reception',contact:'RSVP by WhatsApp',footer:'With love from both families'},
+{name:'Market Day Sale',template:'Naija Green',title:'MARKET DAY SALE',date:'This Saturday | 7AM',venue:'Open Market, Aba',details:'Fresh stock | New prices | Bulk deals',contact:'Call or WhatsApp to reserve',footer:'Early birds get the best picks'},
+{name:'Afrobeats Night',template:'Afro Gold',title:'AFROBEATS NIGHT',date:'Friday | 8PM',venue:'Rooftop Arena, Nairobi',details:'DJ sets | Live acts | Food | Cocktails',contact:'Tickets via WhatsApp and web',footer:'Dress code: vibrant'}
+];
 
 document.getElementById('templates').innerHTML=TEMPLATES.map((t,i)=>`<div class="tpl-card" onclick="applyTpl(${i})"><div class="tpl-preview" style="background:linear-gradient(135deg,${t.bg1},${t.bg2})"></div>${t.name}</div>`).join('');
+document.getElementById('starterPresets').innerHTML=STARTER_PRESETS.map((preset,i)=>`<div class="tpl-card" onclick="applyStarter(${i})">${preset.name}</div>`).join('');
 
 function applyTpl(i){
   const t=TEMPLATES[i];
@@ -175,6 +198,20 @@ function loadBg(f){
   const reader=new FileReader();
   reader.onload=e=>{const img=new Image();img.onload=()=>{bgImg=img;draw();};img.src=e.target.result;};
   reader.readAsDataURL(f);
+}
+
+function applyStarter(i){
+  const preset=STARTER_PRESETS[i];
+  if(!preset)return;
+  const tplIndex=TEMPLATES.findIndex(t=>t.name===preset.template);
+  if(tplIndex!==-1) applyTpl(tplIndex);
+  document.getElementById('title').value=preset.title;
+  document.getElementById('dateText').value=preset.date;
+  document.getElementById('venue').value=preset.venue;
+  document.getElementById('details').value=preset.details;
+  document.getElementById('contact').value=preset.contact;
+  document.getElementById('footer').value=preset.footer;
+  draw();
 }
 
 function draw(){
@@ -253,6 +290,7 @@ function download(){
   a.download='flyer.png';a.click();
 }
 
+applyStarter(0);
 draw();
 </script>
 

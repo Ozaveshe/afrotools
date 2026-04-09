@@ -1,1 +1,193 @@
-!function(t){"use strict";const e=[{limit:5880,rate:0},{limit:1320,rate:.05},{limit:1560,rate:.1},{limit:38e3,rate:.175},{limit:192e3,rate:.25},{limit:366240,rate:.3},{limit:1/0,rate:.35}],n=732e3,a=.165;function i(t){let n=t;for(const t of e){if(n<=(isFinite(t.limit)?t.limit:n))return 100*t.rate;n-=t.limit}return 35}function r(t,r={}){const o=t,l=r.basicSalary||o,s=Math.min(l,o),c=Math.min(s,n),m=!1!==r.ssnit?.055*c:0,u=s/12*a,f=r.tier3Amount||0,d=r.tier3?Math.min(f,u):0,A=r.marriage?1200:0,h=600*Math.min(r.children||0,3),T=r.disabled?.25*o:0,x=r.oldAge?1500:0,g=r.dependent?1e3:0,M=A+h+T+x+g,S=Math.max(0,o-m-d-M),{tax:b,breakdown:p}=function(t){let n=0,a=t;const i=[];for(const t of e){if(a<=0)break;const e=isFinite(t.limit)?Math.min(a,t.limit):a,r=e*t.rate;e>0&&i.push({rate:100*t.rate,income:e,amount:r}),n+=r,a-=e}return{tax:n,breakdown:i}}(S),y=.13*Math.min(s,n),E=m+d+b,R=o-E;return{gross:o,basic:s,ssnit:m,tier3:d,tier3Cap:u,marriage:A,childRel:h,disabled:T,oldAge:x,dependent:g,totalRelief:M,chargeableIncome:S,tax:b,bandBreakdown:p,totalDeductions:E,netAnnual:R,netMonthly:R/12,effectiveRate:o>0?b/o*100:0,marginalRate:i(S),employerSSNIT:y,totalEmployerCost:o+y}}const o={calculate:r,validate:function(t){return!t||isNaN(t)||t<=0?{valid:!1,error:"Please enter a valid salary amount"}:{valid:!0,error:null}},reverseCalc:function(t,e={}){let n=t,a=3*t;for(let i=0;i<50;i++){const i=(n+a)/2,o=r(i,e);if(Math.abs(o.netAnnual-t)<1)return i;o.netAnnual<t?n=i:a=i}return(n+a)/2},calcBonusTax:function(t,e=!0){const n=e?.05:.1;return{gross:t,tax:t*n,net:t*(1-n),rate:100*n}},optimizeTier3:function(t,e={}){const n=(e.basicSalary||t)*a,i=Math.max(100,Math.round(n/20));let o=0,l=0;const s=r(t,{...e,tier3:!1});for(let a=i;a<=n;a+=i){const n=r(t,{...e,tier3:!0,tier3Amount:a}),i=s.tax-n.tax;i>o&&(o=i,l=a)}return{optimalAmount:l,maxAmount:n,taxSaving:o,newTax:s.tax-o,baseTax:s.tax}},GH_BANDS:e,SSNIT_CAP:n,SSNIT_EMP_RATE:.055,SSNIT_EMPLOYER_RATE:.13,TIER3_CAP_RATE:a,country:"Ghana",currency:"GHS",id:"gh-paye"};t.AfroTools=t.AfroTools||{},t.AfroTools.engines=t.AfroTools.engines||{},t.AfroTools.engines.ghPAYE=o}(window);
+!function (window) {
+  "use strict";
+
+  var GH_BANDS = [
+    { width: 5880, rate: 0.00 },
+    { width: 1320, rate: 0.05 },
+    { width: 1560, rate: 0.10 },
+    { width: 38000, rate: 0.175 },
+    { width: 192000, rate: 0.25 },
+    { width: 366240, rate: 0.30 },
+    { width: Infinity, rate: 0.35 }
+  ];
+
+  var SSNIT_CAP = 61000;
+  var SSNIT_EMP_RATE = 0.055;
+  var SSNIT_EMPLOYER_RATE = 0.13;
+  var TIER3_CAP_RATE = 0.165;
+  var MARRIAGE_RELIEF = 1200;
+  var CHILD_RELIEF = 1200;
+  var MAX_CHILDREN = 2;
+  var OLD_AGE_RELIEF = 1500;
+  var DEPENDENT_RELIEF = 1000;
+
+  function calcTax(chargeableIncome) {
+    var remaining = Math.max(0, chargeableIncome);
+    var totalTax = 0;
+    var breakdown = [];
+
+    for (var i = 0; i < GH_BANDS.length; i++) {
+      var band = GH_BANDS[i];
+      var income = Math.min(remaining, band.width === Infinity ? remaining : band.width);
+      var amount = income * band.rate;
+
+      if (income > 0) {
+        breakdown.push({
+          rate: band.rate * 100,
+          income: income,
+          amount: amount
+        });
+      }
+
+      totalTax += amount;
+      remaining -= income;
+
+      if (remaining <= 0) break;
+    }
+
+    return { tax: totalTax, breakdown: breakdown };
+  }
+
+  function getMarginalRate(chargeableIncome) {
+    var remaining = Math.max(0, chargeableIncome);
+
+    for (var i = 0; i < GH_BANDS.length; i++) {
+      var band = GH_BANDS[i];
+      var width = band.width === Infinity ? remaining : band.width;
+      if (remaining <= width) return band.rate * 100;
+      remaining -= width;
+    }
+
+    return 35;
+  }
+
+  function calculate(grossAnnual, options) {
+    options = options || {};
+
+    var basicSalary = options.basicSalary || grossAnnual;
+    var pensionableBase = Math.min(basicSalary, grossAnnual);
+    var ssnitBase = Math.min(pensionableBase, SSNIT_CAP);
+    var ssnit = options.ssnit === false ? 0 : ssnitBase * SSNIT_EMP_RATE;
+    var tier3Cap = pensionableBase * TIER3_CAP_RATE;
+    var tier3 = options.tier3 ? Math.min(options.tier3Amount || 0, tier3Cap) : 0;
+    var marriage = options.marriage ? MARRIAGE_RELIEF : 0;
+    var childRel = CHILD_RELIEF * Math.min(options.children || 0, MAX_CHILDREN);
+    var disabled = options.disabled ? grossAnnual * 0.25 : 0;
+    var oldAge = options.oldAge ? OLD_AGE_RELIEF : 0;
+    var dependent = options.dependent ? DEPENDENT_RELIEF : 0;
+    var totalRelief = marriage + childRel + disabled + oldAge + dependent;
+    var chargeableIncome = Math.max(0, grossAnnual - ssnit - tier3 - totalRelief);
+    var taxResult = calcTax(chargeableIncome);
+    var employerSSNIT = ssnitBase * SSNIT_EMPLOYER_RATE;
+    var totalDeductions = ssnit + tier3 + taxResult.tax;
+    var netAnnual = grossAnnual - totalDeductions;
+
+    return {
+      gross: grossAnnual,
+      basic: pensionableBase,
+      ssnit: ssnit,
+      tier3: tier3,
+      tier3Cap: tier3Cap,
+      marriage: marriage,
+      childRel: childRel,
+      disabled: disabled,
+      oldAge: oldAge,
+      dependent: dependent,
+      totalRelief: totalRelief,
+      chargeableIncome: chargeableIncome,
+      tax: taxResult.tax,
+      bandBreakdown: taxResult.breakdown,
+      totalDeductions: totalDeductions,
+      netAnnual: netAnnual,
+      netMonthly: netAnnual / 12,
+      effectiveRate: grossAnnual > 0 ? taxResult.tax / grossAnnual * 100 : 0,
+      marginalRate: getMarginalRate(chargeableIncome),
+      employerSSNIT: employerSSNIT,
+      totalEmployerCost: grossAnnual + employerSSNIT
+    };
+  }
+
+  var engine = {
+    calculate: calculate,
+    validate: function (grossAnnual) {
+      if (!grossAnnual || isNaN(grossAnnual) || grossAnnual <= 0) {
+        return { valid: false, error: "Please enter a valid salary amount" };
+      }
+
+      return { valid: true, error: null };
+    },
+    reverseCalc: function (targetNetAnnual, options) {
+      var low = targetNetAnnual;
+      var high = targetNetAnnual * 3;
+
+      for (var i = 0; i < 50; i++) {
+        var guess = (low + high) / 2;
+        var result = calculate(guess, options);
+
+        if (Math.abs(result.netAnnual - targetNetAnnual) < 1) {
+          return guess;
+        }
+
+        if (result.netAnnual < targetNetAnnual) {
+          low = guess;
+        } else {
+          high = guess;
+        }
+      }
+
+      return (low + high) / 2;
+    },
+    calcBonusTax: function (bonusAmount, isResident) {
+      var rate = isResident ? 0.05 : 0.10;
+      return {
+        gross: bonusAmount,
+        tax: bonusAmount * rate,
+        net: bonusAmount * (1 - rate),
+        rate: rate * 100
+      };
+    },
+    optimizeTier3: function (grossAnnual, options) {
+      options = options || {};
+
+      var basicSalary = options.basicSalary || grossAnnual;
+      var maxAmount = basicSalary * TIER3_CAP_RATE;
+      var step = Math.max(100, Math.round(maxAmount / 20));
+      var baseResult = calculate(grossAnnual, Object.assign({}, options, { tier3: false }));
+      var optimalAmount = 0;
+      var bestSaving = 0;
+
+      for (var amount = step; amount <= maxAmount; amount += step) {
+        var withTier3 = calculate(grossAnnual, Object.assign({}, options, {
+          tier3: true,
+          tier3Amount: amount
+        }));
+        var saving = baseResult.tax - withTier3.tax;
+
+        if (saving > bestSaving) {
+          bestSaving = saving;
+          optimalAmount = amount;
+        }
+      }
+
+      return {
+        optimalAmount: optimalAmount,
+        maxAmount: maxAmount,
+        taxSaving: bestSaving,
+        newTax: baseResult.tax - bestSaving,
+        baseTax: baseResult.tax
+      };
+    },
+    GH_BANDS: GH_BANDS,
+    SSNIT_CAP: SSNIT_CAP,
+    SSNIT_EMP_RATE: SSNIT_EMP_RATE,
+    SSNIT_EMPLOYER_RATE: SSNIT_EMPLOYER_RATE,
+    TIER3_CAP_RATE: TIER3_CAP_RATE,
+    country: "Ghana",
+    currency: "GHS",
+    id: "gh-paye"
+  };
+
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.engines = window.AfroTools.engines || {};
+  window.AfroTools.engines.ghPAYE = engine;
+}(window);

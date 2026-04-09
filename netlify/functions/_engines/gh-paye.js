@@ -1,21 +1,67 @@
-// Ghana PAYE Engine — extracted from AfroTools payslip generator
+// Ghana PAYE Engine
 // Source: Ghana Revenue Authority (GRA)
+// Updated: Apr 2026
 
-// GRA monthly bands: 0% first 490 → 5% to 600 → 10% to 730 → 17.5% to 3,896.67 → 25% to 20K → 30% to 50K → 35% above
-const MONTHLY_BANDS = [[490,0],[110,0.05],[130,0.10],[3166.67,0.175],[16000,0.25],[30520,0.30],[Infinity,0.35]];
+const GH_BANDS = [
+  [5880, 0.00],
+  [1320, 0.05],
+  [1560, 0.10],
+  [38000, 0.175],
+  [192000, 0.25],
+  [366240, 0.30],
+  [Infinity, 0.35]
+];
 
-function calcBands(monthly, bands) {
-  let tax = 0, rem = monthly, detail = [], cumFrom = 0;
-  for (const [width, rate] of bands) {
-    const t = Math.min(rem, width);
-    const inBand = t * rate;
-    tax += inBand;
-    detail.push({ from: cumFrom, to: cumFrom + (width === Infinity ? rem : width), rate, taxInBand: Math.round(inBand * 100) / 100 });
-    cumFrom += width === Infinity ? rem : width;
-    rem -= t;
-    if (rem <= 0) break;
+const SSNIT_CAP = 61000;
+const SSNIT_EMPLOYEE_RATE = 0.055;
+const SSNIT_EMPLOYER_RATE = 0.13;
+const TIER3_CAP_RATE = 0.165;
+const MARRIAGE_RELIEF = 1200;
+const CHILD_RELIEF = 1200;
+const MAX_CHILDREN = 2;
+const OLD_AGE_RELIEF = 1500;
+const DEPENDENT_RELIEF = 1000;
+
+function calcBands(chargeableIncome) {
+  let tax = 0;
+  let remaining = Math.max(0, chargeableIncome);
+  let detail = [];
+  let bandStart = 0;
+
+  for (const [width, rate] of GH_BANDS) {
+    const bandIncome = Math.min(remaining, width === Infinity ? remaining : width);
+    const bandTax = bandIncome * rate;
+    const bandEnd = width === Infinity ? bandStart + bandIncome : bandStart + width;
+
+    if (bandIncome > 0) {
+      detail.push({
+        from: bandStart,
+        to: bandEnd,
+        rate,
+        taxInBand: Math.round(bandTax * 100) / 100
+      });
+    }
+
+    tax += bandTax;
+    remaining -= bandIncome;
+    bandStart = bandEnd;
+
+    if (remaining <= 0) break;
   }
+
   return { tax, bands: detail };
+}
+
+function getMarginalRate(chargeableIncome) {
+  let remaining = Math.max(0, chargeableIncome);
+
+  for (const [width, rate] of GH_BANDS) {
+    const bandWidth = width === Infinity ? remaining : width;
+    if (remaining <= bandWidth) return rate * 100;
+    remaining -= bandWidth;
+  }
+
+  return 35;
 }
 
 module.exports = {
@@ -23,59 +69,98 @@ module.exports = {
   countryName: 'Ghana',
   currency: 'GHS',
   regimes: ['STANDARD'],
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-04-06',
   source: 'Ghana Revenue Authority (GRA)',
 
   calculate(params) {
-    const { grossAnnual, ssnit: inclSsnit = true, tier2: inclTier2 = true } = params;
-    const monthly = grossAnnual / 12;
+    const {
+      grossAnnual,
+      basicSalary = grossAnnual,
+      ssnit: inclSsnit = true,
+      tier3 = false,
+      tier3Amount = 0,
+      marriage = false,
+      children = 0,
+      disabled = false,
+      oldAge = false,
+      dependent = false
+    } = params;
 
-    // SSNIT Tier 1: 5.5% employee
-    const ssnitAmt = inclSsnit ? monthly * 0.055 * 12 : 0;
-    // Tier 2: 5% employee
-    const tier2Amt = inclTier2 ? monthly * 0.05 * 12 : 0;
+    const pensionableBase = Math.min(basicSalary, grossAnnual);
+    const ssnitBase = Math.min(pensionableBase, SSNIT_CAP);
+    const ssnit = inclSsnit ? ssnitBase * SSNIT_EMPLOYEE_RATE : 0;
+    const maxTier3 = pensionableBase * TIER3_CAP_RATE;
+    const tier3Contribution = tier3 ? Math.min(tier3Amount, maxTier3) : 0;
 
-    const taxableMonthly = monthly - (inclSsnit ? monthly * 0.055 : 0) - (inclTier2 ? monthly * 0.05 : 0);
-    const { tax: monthlyTax, bands: bandDetail } = calcBands(taxableMonthly, MONTHLY_BANDS);
-    const annualTax = Math.round(monthlyTax * 12);
+    const marriageRelief = marriage ? MARRIAGE_RELIEF : 0;
+    const childRelief = CHILD_RELIEF * Math.min(children, MAX_CHILDREN);
+    const disabilityRelief = disabled ? grossAnnual * 0.25 : 0;
+    const oldAgeRelief = oldAge ? OLD_AGE_RELIEF : 0;
+    const dependentRelief = dependent ? DEPENDENT_RELIEF : 0;
+    const totalRelief = marriageRelief + childRelief + disabilityRelief + oldAgeRelief + dependentRelief;
 
-    const totalDeductions = ssnitAmt + tier2Amt + annualTax;
+    const chargeableIncome = Math.max(0, grossAnnual - ssnit - tier3Contribution - totalRelief);
+    const bandResult = calcBands(chargeableIncome);
+    const employerSsnit = inclSsnit ? ssnitBase * SSNIT_EMPLOYER_RATE : 0;
+    const totalDeductions = ssnit + tier3Contribution + bandResult.tax;
     const netAnnual = grossAnnual - totalDeductions;
-
-    const empSsnit = inclSsnit ? monthly * 0.13 * 12 : 0; // employer 13%
 
     return {
       input: { country: 'GH', grossAnnual, regime: 'STANDARD' },
-      deductions: { ssnit: Math.round(ssnitAmt), tier2: Math.round(tier2Amt), totalDeductions: Math.round(totalDeductions) },
-      tax: { taxableIncome: Math.round(taxableMonthly * 12), bands: bandDetail, grossTax: annualTax, reliefs: {}, netTax: annualTax },
-      result: {
-        netAnnual: Math.round(netAnnual),
-        netMonthly: Math.round(netAnnual / 12),
-        effectiveRate: (annualTax / grossAnnual * 100).toFixed(2) + '%',
-        marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
+      deductions: {
+        ssnit: Math.round(ssnit * 100) / 100,
+        tier3: Math.round(tier3Contribution * 100) / 100,
+        totalDeductions: Math.round(totalDeductions * 100) / 100
       },
-      employer: { ssnit: Math.round(empSsnit), totalCostAnnual: Math.round(grossAnnual + empSsnit), totalCostMonthly: Math.round((grossAnnual + empSsnit) / 12) },
+      tax: {
+        taxableIncome: Math.round(chargeableIncome * 100) / 100,
+        bands: bandResult.bands,
+        grossTax: Math.round(bandResult.tax * 100) / 100,
+        reliefs: {
+          marriage: marriageRelief,
+          childRelief: childRelief,
+          disability: disabilityRelief,
+          oldAge: oldAgeRelief,
+          dependent: dependentRelief
+        },
+        netTax: Math.round(bandResult.tax * 100) / 100
+      },
+      result: {
+        netAnnual: Math.round(netAnnual * 100) / 100,
+        netMonthly: Math.round((netAnnual / 12) * 100) / 100,
+        effectiveRate: (bandResult.tax / grossAnnual * 100).toFixed(2) + '%',
+        marginalRate: getMarginalRate(chargeableIncome) + '%'
+      },
+      employer: {
+        ssnit: Math.round(employerSsnit * 100) / 100,
+        totalCostAnnual: Math.round((grossAnnual + employerSsnit) * 100) / 100,
+        totalCostMonthly: Math.round(((grossAnnual + employerSsnit) / 12) * 100) / 100
+      },
       meta: { regime: 'STANDARD', currency: 'GHS', lastUpdated: this.lastUpdated, source: this.source }
     };
   },
 
   reverseCalculate(params) {
     const { netAnnual, ...opts } = params;
-    let lo = netAnnual, hi = netAnnual * 3;
+    let low = netAnnual;
+    let high = netAnnual * 3;
+
     for (let i = 0; i < 60; i++) {
-      const mid = (lo + hi) / 2;
-      const r = this.calculate({ grossAnnual: mid, ...opts });
-      if (Math.abs(r.result.netAnnual - netAnnual) < 1) return r;
-      if (r.result.netAnnual < netAnnual) lo = mid; else hi = mid;
+      const guess = (low + high) / 2;
+      const result = this.calculate({ grossAnnual: guess, ...opts });
+      if (Math.abs(result.result.netAnnual - netAnnual) < 1) return result;
+      if (result.result.netAnnual < netAnnual) low = guess;
+      else high = guess;
     }
-    return this.calculate({ grossAnnual: (lo + hi) / 2, ...opts });
+
+    return this.calculate({ grossAnnual: (low + high) / 2, ...opts });
   },
 
   getOptions() {
     return {
       deductions: [
-        { key: 'ssnit', label: 'SSNIT Tier 1 (5.5%)', default: true },
-        { key: 'tier2', label: 'Tier 2 (5%)', default: true }
+        { key: 'ssnit', label: 'SSNIT employee contribution (5.5% capped)', default: true },
+        { key: 'tier3', label: 'Tier III voluntary pension', default: false }
       ],
       regimes: [{ key: 'STANDARD', label: 'Standard PAYE', default: true }]
     };

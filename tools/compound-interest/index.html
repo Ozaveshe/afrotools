@@ -258,31 +258,21 @@ function calculate(){
 
   var rateDecimal=r/100;
 
-  // Build year-by-year table
+  // Build year-by-year table by simulating month-by-month so monthly contributions
+  // stay consistent regardless of whether the nominal rate compounds daily, monthly, or annually.
   var rows=[];
   var balance=P;
   var totalContributed=P;
+  var monthlyGrowthRate=Math.pow(1 + (rateDecimal / n), n / 12) - 1;
 
   for(var yr=1;yr<=t;yr++){
-    // Apply compounding n times per year, with monthly contributions added each period
-    var periodsPerYear=n;
-    var ratePerPeriod=rateDecimal/periodsPerYear;
-    var periodsTotal=periodsPerYear; // one year
-
-    // If there are monthly contributions, we need to handle PMT
-    // For simplicity: balance grows with compound formula + contributions treated monthly
-    var yearStart=balance;
-    // Compound the current balance
-    balance=balance*Math.pow(1+ratePerPeriod,periodsTotal);
-    // Add contributions: PMT is monthly, so 12 per year, each compounded for remaining months
-    var monthlyRate=rateDecimal/12;
-    var contribGrowth=pmt*12; // simple addition base
-    if(pmt>0 && monthlyRate>0){
-      // FV of monthly contributions for one year
-      contribGrowth=pmt*((Math.pow(1+monthlyRate,12)-1)/monthlyRate)*(1+monthlyRate);
+    for(var month=0;month<12;month++){
+      balance=balance*(1+monthlyGrowthRate);
+      if(pmt>0){
+        balance+=pmt;
+        totalContributed+=pmt;
+      }
     }
-    balance+=contribGrowth;
-    totalContributed+=pmt*12;
 
     var interest=balance-totalContributed;
     rows.push({year:yr,balance:balance,contributed:totalContributed,interest:interest});

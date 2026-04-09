@@ -676,6 +676,7 @@ function calculate() {
   const monthly = r === 0 ? P / n : P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
   const totalPaid = monthly * n;
   const totalInterest = totalPaid - P;
+  const totalPaidAllIn = totalPaid + (ins + svc) * n;
   const totalMonthly = monthly + ins + svc;
 
   // End date
@@ -695,7 +696,7 @@ function calculate() {
   }
   document.getElementById('rLoanAmt').textContent = fmt(P, c.currency);
   document.getElementById('rTotalInterest').textContent = fmt(totalInterest, c.currency);
-  document.getElementById('rTotalPaid').textContent = fmt(totalPaid, c.currency);
+  document.getElementById('rTotalPaid').textContent = fmt(totalPaidAllIn, c.currency);
   document.getElementById('rEndDate').textContent = endDate;
 
   // Breakdown bar
@@ -704,7 +705,7 @@ function calculate() {
   document.getElementById('bbPrincipal').style.width = principalPct + '%';
   document.getElementById('bbPrincipalPct').textContent = principalPct + '%';
   document.getElementById('bbInterestPct').textContent = interestPct + '%';
-  document.getElementById('rInterestPct').textContent = `Interest = ${interestPct}% of total cost`;
+  document.getElementById('rInterestPct').textContent = `Interest = ${interestPct}% of core loan repayments`;
 
   // Build yearly amortisation
   amortData = [];

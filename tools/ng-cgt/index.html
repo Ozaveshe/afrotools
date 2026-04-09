@@ -117,8 +117,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Nigeria CGT</span></div>
 <h1>Nigeria <em>Capital Gains Tax</em> Calculator</h1>
-<p class="hero-sub">Calculate your CGT liability on the disposal of assets in Nigeria. Covers property, shares, and other chargeable assets at the 10% flat rate with allowable deductions.</p>
-<div class="hero-badges"><span class="badge b-em">2025 CGTA Rates</span><span class="badge b-em">Nigeria</span><span class="badge b-em">Property &amp; Shares</span></div>
+<p class="hero-sub">Calculate your CGT liability on the disposal of assets in Nigeria. This calculator now distinguishes between individuals and companies and preserves the share-disposal threshold logic.</p>
+<div class="hero-badges"><span class="badge b-em">Nigeria 2026</span><span class="badge b-em">Property &amp; Shares</span><span class="badge b-em">Taxpayer Type</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -126,6 +126,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card">
 <div class="card-head"><span class="card-title">Asset Disposal Details</span></div>
 <div class="card-body">
+<div class="field"><label>Taxpayer Type</label>
+<select id="taxpayerType">
+<option value="individual">Individual</option>
+<option value="company">Company</option>
+</select></div>
 <div class="field"><label>Asset Type</label>
 <select id="assetType">
 <option value="property">Property / Land</option>
@@ -140,7 +145,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div><label>Improvement Costs (&#8358;)</label><input type="number" id="improvements" value="2000000" min="0" step="100000"></div>
 <div><label>Incidental Costs of Disposal (&#8358;)</label><input type="number" id="incidentalCosts" value="500000" min="0" step="50000"></div>
 </div>
-<div class="field"><label>Year of Acquisition</label><input type="number" id="yearAcquired" value="2018" min="1960" max="2025"></div>
+<div class="field"><label>Year of Acquisition</label><input type="number" id="yearAcquired" value="2018" min="1960" max="2026"></div>
 <button class="btn btn-primary" onclick="calculate()">Calculate CGT</button>
 </div></div>
 
@@ -209,6 +214,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <script>
 function calculate(){
+  const taxpayerType=document.getElementById('taxpayerType') ? document.getElementById('taxpayerType').value : 'individual';
   const salePrice=+document.getElementById('salePrice').value;
   const costPrice=+document.getElementById('costPrice').value;
   const improvements=+document.getElementById('improvements').value;
@@ -219,8 +225,7 @@ function calculate(){
   const allowableCost=costPrice+improvements+incidentalCosts;
   const gain=Math.max(0,salePrice-allowableCost);
 
-  // Check shares threshold
-  let cgtRate=0.10;
+  let cgtRate=taxpayerType==='company'?0.30:0.10;
   let sharesExempt=false;
   if(assetType==='shares'&&salePrice<100000000){
     sharesExempt=true;
@@ -229,7 +234,7 @@ function calculate(){
   const cgt=sharesExempt?0:gain*cgtRate;
   const netProceeds=salePrice-cgt;
   const effectiveRate=salePrice>0?((cgt/salePrice)*100):0;
-  const holdingYears=2025-yearAcquired;
+  const holdingYears=Math.max(0,new Date().getFullYear()-yearAcquired);
   const fmt=n=>'₦'+Math.round(n).toLocaleString('en');
 
   let html='';
@@ -238,6 +243,7 @@ function calculate(){
   html+=`<div class="result-box"><div class="num">${fmt(allowableCost)}</div><div class="lbl">Total Allowable Cost</div></div>`;
   html+=`<div class="result-box"><div class="num">${fmt(netProceeds)}</div><div class="lbl">Net Proceeds After CGT</div></div>`;
   html+=`<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Effective Tax Rate</div></div>`;
+  html+=`<div class="result-box"><div class="num">${(cgtRate*100).toFixed(0)}%</div><div class="lbl">Applied Tax Rate</div></div>`;
   html+=`<div class="result-box"><div class="num">${holdingYears} yrs</div><div class="lbl">Holding Period</div></div>`;
 
   document.getElementById('resultGrid').innerHTML=html;
@@ -245,7 +251,7 @@ function calculate(){
   let notes='';
   if(sharesExempt) notes='<strong>Note:</strong> Share disposals with total consideration under ₦100M in a 12-month period are exempt from CGT (Finance Act 2021).';
   else if(gain<=0) notes='<strong>Note:</strong> No gain on this disposal — no CGT is payable. However, capital losses cannot be offset against other income in Nigeria.';
-  else notes=`<strong>Note:</strong> CGT of ${fmt(cgt)} is due within 30 days of disposal. File with FIRS using Form CGT-1.`;
+  else notes=`<strong>Note:</strong> ${taxpayerType==='company'?'Company':'Individual'} tax on this disposal is ${fmt(cgt)} under the current AfroTools 2026 logic. File with FIRS using Form CGT-1 and confirm the final filing treatment for your fact pattern.`;
   document.getElementById('notes').innerHTML=notes;
 
   document.getElementById('resultCard').style.display='block';

@@ -253,6 +253,67 @@
     color: #fff;
   }
 
+  .starter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .starter-btn {
+    padding: 10px 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .starter-btn:hover {
+    border-color: var(--afro-blue);
+  }
+
+  .starter-btn.active {
+    border-color: var(--afro-blue);
+    background: var(--afro-blue);
+    color: #fff;
+  }
+
+  .starter-note {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #F5F9FF;
+    border: 1px solid #dbeafe;
+    color: #244d2c;
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  .starter-note strong {
+    color: #0d2813;
+  }
+
+  .guide-list {
+    margin: 10px 0 0;
+    padding-left: 16px;
+  }
+
+  .guide-foot {
+    margin-top: 12px;
+    font-size: 0.74rem;
+    color: #6B8CAE;
+    line-height: 1.6;
+  }
+
+  .guide-foot strong {
+    color: #244d2c;
+  }
+
   .color-row {
     display: flex;
     align-items: center;
@@ -503,7 +564,7 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>QR Code <em>Generator</em></h1>
-    <p class="hero-sub">Create professional QR codes from text, URLs, WiFi, or vCards. Customize colors and download as PNG or SVG.</p>
+    <p class="hero-sub">Create QR codes for WhatsApp orders, WiFi signs, menus, payment links, and business contacts. Customize colors and download as PNG or SVG.</p>
     <div class="hero-badges">
       <span class="badge b-green">No AI</span>
       <span class="badge b-green">Client-side</span>
@@ -527,6 +588,13 @@
             <button class="mode-btn" data-mode="wifi" role="button">WiFi</button>
             <button class="mode-btn" data-mode="vcard" role="button">vCard</button>
           </div>
+          <div class="starter-grid">
+            <button class="starter-btn active" type="button" data-starter="whatsapp">WhatsApp Order Link</button>
+            <button class="starter-btn" type="button" data-starter="wifi">Cafe / Church WiFi</button>
+            <button class="starter-btn" type="button" data-starter="menu">Menu or Price List</button>
+            <button class="starter-btn" type="button" data-starter="contact">Business Contact Card</button>
+          </div>
+          <div class="starter-note" id="starterNote"><strong>Tip:</strong> Use QR codes here for storefront posters, event flyers, menus, WiFi signs, and WhatsApp-first business flows.</div>
         </div>
       </div>
 
@@ -657,6 +725,20 @@
 
       <!-- Info Card -->
       <div class="info-card">
+        <div class="info-title">Starter Guide</div>
+        <div class="info-text">
+          <strong id="guideTitle">WhatsApp Order Link</strong>
+          <p id="guideIntro" style="margin-top:8px;">Use this for market stalls, food menus, service businesses, and storefront posters that convert directly in WhatsApp.</p>
+          <ul class="guide-list" id="guideChecklist">
+            <li>Add clear text like "Scan to order on WhatsApp"</li>
+            <li>Print dark code on a light background for easy scanning</li>
+            <li>Use PNG for quick posts and SVG for larger print jobs</li>
+          </ul>
+          <div class="guide-foot"><strong>Suggested filename:</strong> <span id="guideFilename">whatsapp-order-qr</span></div>
+        </div>
+      </div>
+
+      <div class="info-card">
         <div class="info-title">About QR Codes</div>
         <div class="info-text">
           <strong>QR codes</strong> store data in a 2D barcode readable by smartphones and cameras.
@@ -750,22 +832,148 @@
   const vcardModeDiv = document.getElementById('vcard-mode');
   const generateBtn = document.getElementById('generateBtn');
   const previewCard = document.getElementById('previewCard');
+  const starterButtons = document.querySelectorAll('[data-starter]');
+  const starterNote = document.getElementById('starterNote');
+  const guideTitle = document.getElementById('guideTitle');
+  const guideIntro = document.getElementById('guideIntro');
+  const guideChecklist = document.getElementById('guideChecklist');
+  const guideFilename = document.getElementById('guideFilename');
 
   const darkColorInput = document.getElementById('darkColor');
   const lightColorInput = document.getElementById('lightColor');
   const darkColorHex = document.getElementById('darkColorHex');
   const lightColorHex = document.getElementById('lightColorHex');
+  let currentStarter = 'whatsapp';
+  const STARTERS = {
+    whatsapp: {
+      mode: 'url',
+      label: 'WhatsApp Order Link',
+      note: 'Perfect for flyers, food menus, market stalls, and service businesses that close sales in WhatsApp.',
+      intro: 'Use this for market stalls, food menus, service businesses, and storefront posters that convert directly in WhatsApp.',
+      checklist: [
+        'Add clear text like "Scan to order on WhatsApp"',
+        'Print dark code on a light background for easy scanning',
+        'Use PNG for quick posts and SVG for larger print jobs'
+      ],
+      filename: 'whatsapp-order-qr',
+      apply: () => {
+        document.getElementById('urlInput').value = 'https://wa.me/2348012345678?text=Hello%20I%20want%20to%20order';
+        darkColorInput.value = '#128C7E';
+        lightColorInput.value = '#FFFFFF';
+      }
+    },
+    wifi: {
+      mode: 'wifi',
+      label: 'Cafe / Church WiFi',
+      note: 'Useful for cafes, salons, co-working spaces, church halls, and training rooms that want one easy scan.',
+      intro: 'Useful for cafes, salons, church halls, event centers, and classrooms that want guests online quickly.',
+      checklist: [
+        'Place it near the entrance, front desk, or reception area',
+        'Keep the password readable in case a scan fails',
+        'Use laminated prints for spaces with heavy foot traffic'
+      ],
+      filename: 'guest-wifi-qr',
+      apply: () => {
+        document.getElementById('wifiSSID').value = 'AfroTools Guest';
+        document.getElementById('wifiPassword').value = 'guest1234';
+        document.getElementById('wifiSecurity').value = 'WPA';
+        darkColorInput.value = '#0F172A';
+        lightColorInput.value = '#FFFFFF';
+      }
+    },
+    menu: {
+      mode: 'url',
+      label: 'Menu or Price List',
+      note: 'Best for restaurant menus, service lists, payment pages, link-in-bio pages, and digital catalogs.',
+      intro: 'Great for restaurants, salon service lists, beauty menus, and quick digital catalogs shared from a single page.',
+      checklist: [
+        'Link to a mobile-friendly page, not a desktop-only PDF',
+        'Add a short CTA like "Scan to see today\'s prices"',
+        'Use SVG when you need to print on boards or counter signs'
+      ],
+      filename: 'menu-price-list-qr',
+      apply: () => {
+        document.getElementById('urlInput').value = 'https://afrotools.com/menu';
+        darkColorInput.value = '#C2410C';
+        lightColorInput.value = '#FFF7ED';
+      }
+    },
+    contact: {
+      mode: 'vcard',
+      label: 'Business Contact Card',
+      note: 'Great for tailors, consultants, realtors, mechanics, and anyone sharing a quick save-to-phone contact card.',
+      intro: 'Perfect for service providers who want customers to save a number immediately after scanning a poster, card, or receipt.',
+      checklist: [
+        'Include your real phone number and business name',
+        'Place it on business cards, invoices, and event banners',
+        'Use a light background so older phone cameras can scan easily'
+      ],
+      filename: 'business-contact-qr',
+      apply: () => {
+        document.getElementById('vcardName').value = 'Amina Bello';
+        document.getElementById('vcardPhone').value = '+2348012345678';
+        document.getElementById('vcardEmail').value = 'hello@example.com';
+        document.getElementById('vcardOrg').value = 'AfroTools Studio';
+        darkColorInput.value = '#0F766E';
+        lightColorInput.value = '#FFFFFF';
+      }
+    }
+  };
+  const MODE_GUIDES = {
+    text: {
+      title: 'Plain Text QR',
+      intro: 'Use this for short notes, codes, booth info, or simple messages that people can read after scanning.',
+      checklist: ['Keep the message short', 'Avoid long paragraphs', 'Test scan before printing'],
+      filename: 'text-qr'
+    },
+    url: {
+      title: 'URL QR',
+      intro: 'Best for landing pages, order links, registration forms, menus, and payment instructions hosted online.',
+      checklist: ['Use a short mobile-friendly link', 'Make the destination page lightweight', 'Add a visible call-to-action next to the code'],
+      filename: 'link-qr'
+    },
+    wifi: {
+      title: 'WiFi QR',
+      intro: 'Best for guest internet access in shops, events, classrooms, churches, and co-working spaces.',
+      checklist: ['Keep the SSID accurate', 'Confirm the password works', 'Print where guests naturally stop'],
+      filename: 'wifi-qr'
+    },
+    vcard: {
+      title: 'Contact Card QR',
+      intro: 'Best for instantly saving a contact from posters, receipts, pop-up banners, and business cards.',
+      checklist: ['Use the correct phone number', 'Add business name', 'Keep the card updated when numbers change'],
+      filename: 'contact-qr'
+    }
+  };
+
+  function syncColorLabels() {
+    darkColorHex.textContent = darkColorInput.value.toUpperCase();
+    lightColorHex.textContent = lightColorInput.value.toUpperCase();
+  }
+
+  function renderGuide(config) {
+    guideTitle.textContent = config.title || config.label;
+    guideIntro.textContent = config.intro || config.note;
+    guideChecklist.innerHTML = (config.checklist || []).map(item => '<li>' + item + '</li>').join('');
+    guideFilename.textContent = config.filename || 'qrcode';
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    modeButtons.forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
+    textModeDiv.style.display = currentMode === 'text' ? 'block' : 'none';
+    urlModeDiv.style.display = currentMode === 'url' ? 'block' : 'none';
+    wifiModeDiv.style.display = currentMode === 'wifi' ? 'block' : 'none';
+    vcardModeDiv.style.display = currentMode === 'vcard' ? 'block' : 'none';
+  }
 
   modeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      currentMode = btn.dataset.mode;
-      modeButtons.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-
-      textModeDiv.style.display = currentMode === 'text' ? 'block' : 'none';
-      urlModeDiv.style.display = currentMode === 'url' ? 'block' : 'none';
-      wifiModeDiv.style.display = currentMode === 'wifi' ? 'block' : 'none';
-      vcardModeDiv.style.display = currentMode === 'vcard' ? 'block' : 'none';
+      setMode(btn.dataset.mode);
+      currentStarter = null;
+      starterButtons.forEach(starterBtn => starterBtn.classList.remove('active'));
+      starterNote.innerHTML = '<strong>' + (MODE_GUIDES[btn.dataset.mode].title || 'Tip') + ':</strong> ' + MODE_GUIDES[btn.dataset.mode].intro;
+      renderGuide(MODE_GUIDES[btn.dataset.mode]);
     });
   });
 
@@ -775,6 +983,20 @@
 
   lightColorInput.addEventListener('change', (e) => {
     lightColorHex.textContent = e.target.value.toUpperCase();
+  });
+
+  starterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const starter = STARTERS[btn.dataset.starter];
+      if (!starter) return;
+      currentStarter = btn.dataset.starter;
+      setMode(starter.mode);
+      starterButtons.forEach(starterBtn => starterBtn.classList.toggle('active', starterBtn === btn));
+      starter.apply();
+      starterNote.innerHTML = '<strong>' + starter.label + ':</strong> ' + starter.note;
+      renderGuide(starter);
+      syncColorLabels();
+    });
   });
 
   function escapeVCard(str) {
@@ -845,7 +1067,8 @@
     if (canvas) {
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
-      link.download = 'qrcode.png';
+      const baseName = currentStarter && STARTERS[currentStarter] ? STARTERS[currentStarter].filename : MODE_GUIDES[currentMode].filename;
+      link.download = baseName + '.png';
       link.click();
     }
   });
@@ -856,10 +1079,14 @@
       const svgData = new XMLSerializer().serializeToString(svg);
       const link = document.createElement('a');
       link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
-      link.download = 'qrcode.svg';
+      const baseName = currentStarter && STARTERS[currentStarter] ? STARTERS[currentStarter].filename : MODE_GUIDES[currentMode].filename;
+      link.download = baseName + '.svg';
       link.click();
     }
   });
+
+  syncColorLabels();
+  renderGuide(STARTERS.whatsapp);
 </script>
 <script src="/assets/js/components/tool-registry.js?v=0ab85031" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>

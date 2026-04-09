@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator Dashboard | Streamer University Africa</title>
+<meta name="description" content="Your personal creator dashboard. Track your stage, bottleneck, readiness score, and module progress — all in one place.">
+<link rel="canonical" href="https://afrotools.com/tools/afrostream/university/creator-dashboard/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Creator Dashboard | Streamer University Africa">
+<meta property="og:description" content="Track your creator stage, bottleneck, readiness score, and module progress in one place.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/afrostream/university/creator-dashboard/">
+<meta property="og:image" content="https://afrotools.com/assets/images/og/afrostream.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Syne:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
+<link rel="stylesheet" href="../university.css">
+<script src="/assets/js/components/navbar.js?v=79e40887" defer></script>
+<script src="/assets/js/components/footer.js?v=2df4a28a" defer></script>
+</head>
+<body class="su-page">
+<a href="#main-content" class="su-skip-link">Skip to main content</a>
+<afro-navbar></afro-navbar>
+
+<nav class="su-subnav" aria-label="AfroStream navigation">
+  <div class="su-subnav-inner">
+    <a href="/tools/afrostream/" class="su-subnav-logo">&#9655; AfroStream</a>
+    <div class="su-subnav-links">
+      <a href="/tools/afrostream/">Live Now</a>
+      <a href="/tools/afrostream/rankings.html">Rankings</a>
+      <a href="/tools/afrostream/news.html">News</a>
+      <a href="/tools/afrostream/calendar.html">Calendar</a>
+      <a href="/tools/afrostream/university/" class="active">University</a>
+      <a href="/tools/afrostream/submit.html">Submit</a>
+    </div>
+  </div>
+</nav>
+
+<section class="su-lesson-hero">
+  <div class="su-lesson-hero-inner">
+    <div class="su-lesson-badge">Streamer University &bull; Phase 3 &bull; Your Dashboard</div>
+    <h1>Creator <span>Dashboard</span></h1>
+    <p class="su-lesson-hero-desc">Your stage, bottleneck, score, and module progress — all in one place. Complete the assessments to unlock your personalized view.</p>
+  </div>
+</section>
+
+<main id="main-content" style="background:#F8FAFD; min-height:60vh; padding:48px 0;">
+  <div class="su-dash-wrap">
+
+    <!-- Stats overview -->
+    <div class="su-dash-overview" id="statsRow"></div>
+
+    <!-- Main grid -->
+    <div class="su-dash-grid">
+
+      <!-- Module progress -->
+      <div class="su-dash-panel">
+        <div class="su-dash-panel-title">Module progress</div>
+        <ul class="su-mod-list" id="modList"></ul>
+        <div class="su-progress-bar-wrap" style="margin-top:16px">
+          <div class="su-progress-bar-fill" id="modProgressFill" style="width:0%"></div>
+        </div>
+        <div class="su-progress-label" id="modProgressLabel"></div>
+      </div>
+
+      <!-- Recommended next actions -->
+      <div class="su-dash-panel">
+        <div class="su-dash-panel-title">Recommended next steps</div>
+        <div class="su-dash-recs" id="recList"></div>
+      </div>
+
+    </div>
+
+    <!-- Quick tools -->
+    <div class="su-dash-panel" style="margin-bottom:24px">
+      <div class="su-dash-panel-title">Quick tool access</div>
+      <div class="su-dash-tools">
+        <a href="/tools/creator-titles/"    class="su-dash-tool-btn">TitleSmith</a>
+        <a href="/tools/creator-hooks/"     class="su-dash-tool-btn">HookFactory</a>
+        <a href="/tools/creator-thumb/"     class="su-dash-tool-btn">ThumbnailForge</a>
+        <a href="/tools/creator-calendar/"  class="su-dash-tool-btn">CreatorCalendar</a>
+        <a href="/tools/creator-kit/"       class="su-dash-tool-btn">CreatorKit</a>
+        <a href="/tools/influencer-rate/"   class="su-dash-tool-btn">Rate Card</a>
+        <a href="/tools/creator-pricing/"   class="su-dash-tool-btn">CreatorPricing</a>
+        <a href="/tools/creator-repurpose/" class="su-dash-tool-btn">Repurpose</a>
+        <a href="/tools/creator-captions/"  class="su-dash-tool-btn">CaptionCraft</a>
+        <a href="/tools/creator-analytics/" class="su-dash-tool-btn">CreatorAnalytics</a>
+        <a href="/tools/creator-brand/"     class="su-dash-tool-btn">CreatorBrand</a>
+        <a href="/tools/creator-bios/"      class="su-dash-tool-btn">BioForge</a>
+      </div>
+    </div>
+
+    <!-- Diagnostics CTA (shown when any assessment is missing) -->
+    <div class="su-dash-panel" id="diagnosticsCta" style="display:none;background:linear-gradient(135deg,#0A1628,#001233);border:none">
+      <div class="su-dash-panel-title" style="color:#fff">Complete your assessment set</div>
+      <p style="font-size:.88rem;color:rgba(255,255,255,.7);margin-bottom:18px;line-height:1.6">Run all three assessments to unlock your full personalized dashboard. Takes about 5 minutes total.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px" id="missingCtaLinks"></div>
+    </div>
+
+    <!-- Reset -->
+    <div style="text-align:right;margin-top:8px">
+      <button onclick="resetDashboard()" style="background:none;border:none;font-size:.8rem;color:#94a3b8;cursor:pointer;text-decoration:underline">Clear all saved data</button>
+    </div>
+
+  </div>
+</main>
+
+<div class="su-bottom-cta">
+  <div class="su-bottom-cta-inner">
+    <h2>Keep building.<br>Come back weekly.</h2>
+    <p>Use this dashboard as your weekly check-in. Complete modules, retake assessments as you grow, and watch your score climb.</p>
+    <div class="su-bottom-cta-actions">
+      <a href="../" class="su-btn-primary">Browse all modules</a>
+      <a href="/tools/afrostream/submit.html" class="su-btn-secondary">Submit your AfroStream profile</a>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+var MODULES = [
+  { id: 'mod01', label: 'Module 01 — How to Start Streaming in Africa',    href: '../start-here/' },
+  { id: 'mod02', label: 'Module 02 — Best Platforms for African Creators',  href: '../platforms/' },
+  { id: 'mod03', label: 'Module 03 — Low-Budget Streaming Setup',           href: '../setup/' },
+  { id: 'mod04', label: 'Module 04 — How African Creators Make Money',      href: '../monetization/' },
+  { id: 'mod05', label: 'Module 05 — How to Price Brand Deals',             href: '../brand-deals/' },
+  { id: 'mod06', label: 'Module 06 — The African Creator Survival Guide',   href: '../africa-survival-guide/' },
+  { id: 'mod07', label: 'Module 07 — How to Repurpose Every Stream',        href: '../repurposing/' },
+  { id: 'mod08', label: 'Module 08 — Build a Creator Media Kit',            href: '../media-kit/' },
+  { id: 'mod09', label: 'Module 09 — The Mobile Creator Workflow',          href: '../mobile-workflow/' }
+];
+
+var STAGE_RECS = {
+  explorer:             [{ icon: '&#128161;', name: 'Start with Module 01', desc: 'Define your lane and build your first 30-day plan.', href: '../start-here/' }, { icon: '&#127902;', name: 'Choose your platform', desc: 'Pick the right platform before building on the wrong one.', href: '../platforms/' }],
+  starter:              [{ icon: '&#128197;', name: 'Build a content calendar', desc: 'Lock in your posting schedule before anything else.', href: '/tools/creator-calendar/' }, { icon: '&#9851;', name: 'Start repurposing', desc: 'Turn one post into many — without extra work.', href: '../repurposing/' }],
+  consistent:           [{ icon: '&#128247;', name: 'Upgrade your packaging', desc: 'Better titles and thumbnails unlock the next growth stage.', href: '/tools/creator-titles/' }, { icon: '&#9851;', name: 'Build a repurposing engine', desc: 'Scale your output without scaling your effort.', href: '../repurposing/' }],
+  'early-monetizer':    [{ icon: '&#128216;', name: 'Build your media kit', desc: 'You are ready for brand deals. Get your kit in order.', href: '../media-kit/' }, { icon: '&#128180;', name: 'Set your rates', desc: 'Know what to charge before a brand asks.', href: '/tools/influencer-rate/' }],
+  'commercially-ready': [{ icon: '&#129309;', name: 'Price your brand deals', desc: 'Close deals that reflect your actual value.', href: '../brand-deals/' }, { icon: '&#128202;', name: 'Track your performance', desc: 'Know your numbers before you pitch.', href: '/tools/creator-analytics/' }],
+  'growth-system-builder': [{ icon: '&#9881;', name: 'Systematize your workflow', desc: 'Document your system so it runs without you.', href: '../mobile-workflow/' }, { icon: '&#9851;', name: 'Scale your repurposing', desc: 'Build the content engine that multiplies your work.', href: '../repurposing/' }]
+};
+
+var BOTTLENECK_RECS = {
+  clarity:     [{ icon: '&#127919;', name: 'Define your niche', desc: 'Write your creator one-liner and commit to one angle.', href: '../start-here/' }],
+  consistency: [{ icon: '&#128197;', name: 'Lock in a schedule', desc: 'Block your posting days and batch-create ahead.', href: '/tools/creator-calendar/' }],
+  packaging:   [{ icon: '&#127775;', name: 'Improve your titles', desc: 'Rewrite your last 5 titles with outcome-driven formats.', href: '/tools/creator-titles/' }],
+  repurposing: [{ icon: '&#9851;', name: 'Build a repurposing system', desc: 'Turn every post into 5 more — Module 07 shows you how.', href: '../repurposing/' }],
+  discovery:   [{ icon: '&#128269;', name: 'Fix your distribution', desc: 'Cross-post to one more platform and improve your hooks.', href: '../platforms/' }],
+  monetization:[{ icon: '&#128176;', name: 'Set up one income stream', desc: 'Affiliate links or a tip page — set it up this week.', href: '../monetization/' }],
+  business:    [{ icon: '&#128216;', name: 'Build your media kit', desc: 'Three hours with CreatorKit gets your kit ready to send.', href: '../media-kit/' }],
+  mobile:      [{ icon: '&#128247;', name: 'Mobile workflow guide', desc: 'Create everything offline and upload only on wifi.', href: '../mobile-workflow/' }],
+  systems:     [{ icon: '&#9881;', name: 'Build your creator system', desc: 'Map your process and build a template for every format.', href: '../start-here/' }]
+};
+
+/* Sanitise any string before inserting into innerHTML */
+function esc(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+function load() {
+  var stage    = null, bottleneck = null, score = null, progress = {};
+  try { stage      = JSON.parse(localStorage.getItem('su_stage')); }      catch(e) {}
+  try { bottleneck = JSON.parse(localStorage.getItem('su_bottleneck')); }  catch(e) {}
+  try { score      = JSON.parse(localStorage.getItem('su_score')); }       catch(e) {}
+  try { progress   = JSON.parse(localStorage.getItem('su_progress')) || {}; } catch(e) {}
+  /* Validate shapes — discard if tampered */
+  if (stage && (typeof stage.name !== 'string' || typeof stage.id !== 'string')) stage = null;
+  if (bottleneck && typeof bottleneck.label !== 'string') bottleneck = null;
+  if (score && (typeof score.total !== 'number' || score.total < 0 || score.total > 70)) score = null;
+
+  renderStats(stage, bottleneck, score);
+  renderModules(progress);
+  renderRecs(stage, bottleneck);
+  renderDiagnosticsCta(stage, bottleneck, score);
+}
+
+function renderStats(stage, bottleneck, score) {
+  var el = document.getElementById('statsRow');
+
+  var stageHtml = stage
+    ? '<div class="su-dash-stat-val">' + esc(stage.name) + '</div><a href="../stage-finder/" class="su-dash-stat-link">Retake &rarr;</a>'
+    : '<div class="su-dash-stat-val" style="color:#94a3b8">Not assessed</div><a href="../stage-finder/" class="su-dash-stat-link">Take Stage Finder &rarr;</a>';
+
+  var bnHtml = bottleneck
+    ? '<div class="su-dash-stat-val">' + esc(bottleneck.label) + '</div><a href="../bottleneck/" class="su-dash-stat-link">Retake &rarr;</a>'
+    : '<div class="su-dash-stat-val" style="color:#94a3b8">Not diagnosed</div><a href="../bottleneck/" class="su-dash-stat-link">Take Diagnostic &rarr;</a>';
+
+  var scoreTotal = score ? parseInt(score.total, 10) : null;
+  var scoreHtml = (score && !isNaN(scoreTotal))
+    ? '<div class="su-dash-stat-val">' + scoreTotal + ' / 70</div><a href="../readiness-score/" class="su-dash-stat-link">Retake &rarr;</a>'
+    : '<div class="su-dash-stat-val" style="color:#94a3b8">Not scored</div><a href="../readiness-score/" class="su-dash-stat-link">Get your score &rarr;</a>';
+
+  el.innerHTML =
+    '<div class="su-dash-stat"><div class="su-dash-stat-lbl">Creator stage</div>' + stageHtml + '</div>' +
+    '<div class="su-dash-stat"><div class="su-dash-stat-lbl">Main bottleneck</div>' + bnHtml + '</div>' +
+    '<div class="su-dash-stat"><div class="su-dash-stat-lbl">Readiness score</div>' + scoreHtml + '</div>' +
+    '<div class="su-dash-stat"><div class="su-dash-stat-lbl">Modules complete</div><div class="su-dash-stat-val" id="modCountStat">Loading...</div></div>';
+}
+
+function renderModules(progress) {
+  var el = document.getElementById('modList');
+  el.innerHTML = '';
+  var done = 0;
+  MODULES.forEach(function(m) {
+    var checked = !!progress[m.id];
+    if (checked) done++;
+    var li = document.createElement('li');
+    li.className = 'su-mod-item' + (checked ? ' done' : '');
+    li.innerHTML = '<input type="checkbox" id="' + m.id + '"' + (checked ? ' checked' : '') + '><label for="' + m.id + '"><a href="' + m.href + '" style="color:inherit;text-decoration:none">' + m.label + '</a></label>';
+    li.querySelector('input').addEventListener('change', function(e) {
+      progress[m.id] = e.target.checked;
+      li.classList.toggle('done', e.target.checked);
+      saveProgress(progress);
+    });
+    el.appendChild(li);
+  });
+  var pct = Math.round((done / MODULES.length) * 100);
+  document.getElementById('modProgressFill').style.width = pct + '%';
+  document.getElementById('modProgressLabel').textContent = done + ' of ' + MODULES.length + ' modules completed (' + pct + '%)';
+  var countEl = document.getElementById('modCountStat');
+  if (countEl) countEl.textContent = done + ' / ' + MODULES.length;
+}
+
+function saveProgress(progress) {
+  try { localStorage.setItem('su_progress', JSON.stringify(progress)); } catch(e) {}
+  var done = Object.values(progress).filter(Boolean).length;
+  var pct = Math.round((done / MODULES.length) * 100);
+  document.getElementById('modProgressFill').style.width = pct + '%';
+  document.getElementById('modProgressLabel').textContent = done + ' of ' + MODULES.length + ' modules completed (' + pct + '%)';
+  var countEl = document.getElementById('modCountStat');
+  if (countEl) countEl.textContent = done + ' / ' + MODULES.length;
+}
+
+function renderRecs(stage, bottleneck) {
+  var recs = [];
+  if (stage && STAGE_RECS[stage.id]) {
+    recs = recs.concat(STAGE_RECS[stage.id]);
+  }
+  if (bottleneck && BOTTLENECK_RECS[bottleneck.id]) {
+    recs = recs.concat(BOTTLENECK_RECS[bottleneck.id]);
+  }
+  if (!recs.length) {
+    recs = [
+      { icon: '&#127919;', name: 'Find your creator stage', desc: 'Start with the Stage Finder to get personalised recommendations.', href: '../stage-finder/' },
+      { icon: '&#128269;', name: 'Diagnose your bottleneck', desc: 'Find the one thing holding your growth back.', href: '../bottleneck/' },
+      { icon: '&#128101;', name: 'Read Module 01', desc: 'The foundation every creator needs — lanes, platforms, 30-day plan.', href: '../start-here/' }
+    ];
+  }
+  var el = document.getElementById('recList');
+  el.innerHTML = '';
+  var frag = document.createDocumentFragment();
+  recs.slice(0, 4).forEach(function(r) {
+    var a = document.createElement('a');
+    a.href = r.href;
+    a.className = 'su-dash-rec';
+    var iconSpan = document.createElement('span');
+    iconSpan.className = 'su-dash-rec-icon';
+    iconSpan.innerHTML = r.icon; /* icon is from hardcoded data, safe */
+    var textDiv = document.createElement('div');
+    var nameDiv = document.createElement('div');
+    nameDiv.className = 'su-dash-rec-name';
+    nameDiv.textContent = r.name;
+    var descDiv = document.createElement('div');
+    descDiv.className = 'su-dash-rec-desc';
+    descDiv.textContent = r.desc;
+    textDiv.appendChild(nameDiv);
+    textDiv.appendChild(descDiv);
+    a.appendChild(iconSpan);
+    a.appendChild(textDiv);
+    frag.appendChild(a);
+  });
+  el.appendChild(frag);
+}
+
+function renderDiagnosticsCta(stage, bottleneck, score) {
+  var missing = [];
+  if (!stage)      missing.push({ label: 'Stage Finder',      href: '../stage-finder/',    note: '6 questions' });
+  if (!bottleneck) missing.push({ label: 'Bottleneck Diagnostic', href: '../bottleneck/', note: '5 questions' });
+  if (!score)      missing.push({ label: 'Readiness Score',   href: '../readiness-score/', note: '7 questions' });
+
+  if (!missing.length) return;
+  var ctaEl = document.getElementById('diagnosticsCta');
+  ctaEl.style.display = '';
+  var linksEl = document.getElementById('missingCtaLinks');
+  linksEl.innerHTML = '';
+  missing.forEach(function(m) {
+    linksEl.innerHTML += '<a href="' + m.href + '" style="display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#fff;text-decoration:none;font-size:.85rem;font-weight:600">' + m.label + ' <span style="font-size:.75rem;color:rgba(255,255,255,.55)">(' + m.note + ')</span></a>';
+  });
+}
+
+function resetDashboard() {
+  if (!confirm('Clear all saved assessment results and module progress?')) return;
+  try {
+    localStorage.removeItem('su_stage');
+    localStorage.removeItem('su_bottleneck');
+    localStorage.removeItem('su_score');
+    localStorage.removeItem('su_progress');
+    localStorage.removeItem('su_plan');
+  } catch(e) {}
+  load();
+}
+
+document.addEventListener('DOMContentLoaded', load);
+</script>
+</body>
+</html>

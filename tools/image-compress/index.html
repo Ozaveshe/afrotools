@@ -63,6 +63,12 @@
   .f-label-text { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #0d2813; }
   .f-input { width: 100%; padding: 11px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 1rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
   .f-input:focus { border-color: var(--afro-blue); background: #fff; box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1); }
+  .template-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .template-btn { padding: 10px 12px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.72rem; font-weight: 700; color: #244d2c; font-family: 'DM Sans', sans-serif; }
+  .template-btn:hover { border-color: var(--afro-blue); }
+  .template-btn.active { border-color: var(--afro-blue); background: var(--afro-blue); color: #fff; }
+  .context-note { padding: 12px 14px; border-radius: 8px; background: #F5F9FF; border: 1px solid #dbeafe; color: #244d2c; font-size: 0.78rem; line-height: 1.6; }
+  .context-note strong { color: #0d2813; }
   .slider-wrap { margin-bottom: 18px; }
   .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .slider-label { font-size: 0.75rem; font-weight: 700; color: #0d2813; }
@@ -185,7 +191,7 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
     <h1>Image <em>Compressor</em></h1>
-    <p class="hero-sub">Reduce image file size without losing quality. Drag and drop, adjust compression, download instantly.</p>
+    <p class="hero-sub">Reduce image file size for WhatsApp, job portals, storefront listings, and lightweight websites without leaving your browser.</p>
     <div class="hero-badges">
       <span class="badge b-green">No AI</span>
       <span class="badge b-green">Client-side</span>
@@ -206,6 +212,19 @@
             <div class="drop-hint">JPG, PNG, WebP • Max 50MB</div>
           </div>
           <input type="file" id="fileInput" accept="image/*">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Quick Targets</span></div>
+        <div class="card-body">
+          <div class="template-grid">
+            <button class="template-btn active" type="button" data-preset="whatsapp">WhatsApp Share</button>
+            <button class="template-btn" type="button" data-preset="portal">Visa / Job Portal</button>
+            <button class="template-btn" type="button" data-preset="marketplace">Marketplace Listing</button>
+            <button class="template-btn" type="button" data-preset="website">Fast Website</button>
+          </div>
+          <div class="context-note" id="presetNote"><strong>WhatsApp Share:</strong> Keeps images light for statuses, chats, and community updates on limited data.</div>
         </div>
       </div>
 
@@ -266,7 +285,7 @@
         <div class="info-text">
           <strong>Quality levels:</strong>
           <ul style="margin-top:10px;"><li><strong>90-100%:</strong> High quality, larger file</li><li><strong>70-85%:</strong> Good balance</li><li><strong>50-70%:</strong> Smaller files, some quality loss</li></ul>
-          <p style="margin-top:10px;"><strong>WebP format</strong> provides 25-35% better compression than JPEG.</p>
+          <p style="margin-top:10px;"><strong>WebP format</strong> provides 25-35% better compression than JPEG. Use the quick targets above when you are optimizing for WhatsApp, embassy portals, or low-data web pages.</p>
         </div>
       </div>
     </div>
@@ -349,7 +368,16 @@
   const qualityValue = document.getElementById('qualityValue');
   const compressBtn = document.getElementById('compressBtn');
   const downloadBtn = document.getElementById('downloadBtn');
+  const formatSelect = document.getElementById('formatSelect');
+  const presetButtons = document.querySelectorAll('[data-preset]');
+  const presetNote = document.getElementById('presetNote');
   let originalFile = null, compressedBlob = null, originalFileName = '';
+  const PRESETS = {
+    whatsapp: { quality: 72, format: 'jpeg', label: 'WhatsApp Share', note: 'Keeps images light for statuses, chats, and community updates on limited data.' },
+    portal: { quality: 78, format: 'jpeg', label: 'Visa / Job Portal', note: 'A safe middle ground for embassy forms, CV uploads, school portals, and application websites.' },
+    marketplace: { quality: 84, format: 'jpeg', label: 'Marketplace Listing', note: 'Preserves product clarity for shops, listings, menus, and seller catalogs while trimming file size.' },
+    website: { quality: 68, format: 'webp', label: 'Fast Website', note: 'Best for lighter landing pages, blog posts, and low-bandwidth site performance.' }
+  };
 
   dropZone.addEventListener('click', () => fileInput.click());
   dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
@@ -369,10 +397,26 @@
 
   qualitySlider.addEventListener('input', e => qualityValue.textContent = e.target.value);
 
+  function applyPreset(key) {
+    const preset = PRESETS[key];
+    if (!preset) return;
+    qualitySlider.value = preset.quality;
+    qualityValue.textContent = preset.quality;
+    formatSelect.value = preset.format;
+    presetNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
+    presetButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.preset === key));
+  }
+
+  presetButtons.forEach(btn => {
+    btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
+  });
+
+  applyPreset('whatsapp');
+
   compressBtn.addEventListener('click', () => {
     if (!originalFile) return;
     const quality = parseInt(qualitySlider.value) / 100;
-    const format = document.getElementById('formatSelect').value;
+    const format = formatSelect.value;
     const img = new Image();
     img.onload = () => {
       try {
@@ -407,7 +451,7 @@
 
   downloadBtn.addEventListener('click', () => {
     if (compressedBlob) {
-      const format = document.getElementById('formatSelect').value;
+      const format = formatSelect.value;
       const link = document.createElement('a');
       link.href = URL.createObjectURL(compressedBlob);
       link.download = `${originalFileName}-compressed.${format}`;

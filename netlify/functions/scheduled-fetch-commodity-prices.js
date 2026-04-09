@@ -49,54 +49,58 @@ var COMMODITY_MAP = {
  * https://www.worldbank.org/en/research/commodity-markets
  */
 async function fetchFromWorldBank() {
-  // The WB Commodity API endpoint gives latest month's prices
-  var url = 'https://api.worldbank.org/v2/country/WLD/indicator/';
-
-  // Alternative: use the direct commodity prices endpoint
-  var cmUrl = 'https://datacatalogapi.worldbank.org/dexapps/fao/commodityprices';
-
-  // Use the simpler GEM Commodities API
-  // This returns recent commodity prices in JSON
-  var apiUrl = 'https://api.worldbank.org/v2/sources/47/country/WLD/series/' +
-    Object.values(COMMODITY_MAP).map(function(c) { return c.wb; }).join(';') +
-    '/time/last?format=json&per_page=500';
-
-  var res = await fetchWithRetry(apiUrl, {
-    headers: { 'Accept': 'application/json' },
-  });
-
-  var json = await res.json();
-
-  // Parse the World Bank response format
+  // World Bank Commodity Prices — monthly Pink Sheet data
+  // Use the simple indicator API for individual commodities
   var commodities = [];
-  var entries = (json.source && json.source[0] && json.source[0].data) || json[1] || [];
 
-  var priceMap = {};
-  for (var i = 0; i < entries.length; i++) {
-    var entry = entries[i];
-    var seriesCode = entry.series || (entry.indicator && entry.indicator.id);
-    var value = parseFloat(entry.value);
-    if (seriesCode && !isNaN(value)) {
-      priceMap[seriesCode] = value;
-    }
-  }
+  // Fetch key indicators individually (more reliable than batch)
+  var indicators = [
+    { wb: 'CRUDE_BRENT', indicator: 'EP.CPI.BREN', id: 'crude_oil' },
+    { wb: 'GOLD', indicator: 'EP.CPI.GOLD', id: 'gold' },
+  ];
 
-  // Map back to our commodity IDs
-  Object.keys(COMMODITY_MAP).forEach(function(id) {
-    var def = COMMODITY_MAP[id];
-    var price = priceMap[def.wb];
-    if (price) {
+  // Alternative: use the World Bank Commodity Markets page data
+  // This CSV endpoint is more reliable than the JSON API
+  var csvUrl = 'https://thedocs.worldbank.org/en/doc/5d903e848db1d1b83e0ec8f744e55570-0350012021/related/CMO-Historical-Data-Monthly.csv';
+
+  try {
+    var res = await fetchWithRetry(csvUrl, { retries: 2 });
+    var csvText = await res.text();
+
+    // Parse last row of CSV for most recent month's prices
+    var lines = csvText.trim().split('\n');
+    if (lines.length < 3) throw new Error('CSV too short');
+
+    var headers = lines[0].split(',').map(function(h) { return h.trim().replace(/"/g, ''); });
+    var lastRow = lines[lines.length - 1].split(',').map(function(v) { return v.trim().replace(/"/g, ''); });
+
+    // Map CSV columns to our commodity IDs
+    var csvMap = {
+      'CRUDE_BRENT': 'crude_oil', 'NGAS_US': 'natural_gas', 'GOLD': 'gold',
+      'PLATINUM': 'platinum', 'COPPER': 'copper', 'IRON_ORE': 'iron_ore',
+      'COCOA': 'cocoa', 'COFFEE_ARABIC': 'coffee_arabica', 'COFFEE_ROBUS': 'coffee_robusta',
+      'TEA_MOMBASA': 'tea_mombasa', 'COTTON_A_INDX': 'cotton', 'SUGAR_WLD': 'sugar',
+      'WHEAT_US_HRW': 'wheat', 'MAIZE': 'maize', 'RICE_05': 'rice',
+      'PALM_OIL': 'palm_oil', 'RUBBER1_MYSG': 'rubber', 'DAP': 'phosphate',
+      'UREA_EE_BULK': 'urea',
+    };
+
+    headers.forEach(function(header, idx) {
+      var id = csvMap[header];
+      if (!id || !COMMODITY_MAP[id]) return;
+      var value = parseFloat(lastRow[idx]);
+      if (isNaN(value) || value <= 0) return;
+
+      var def = COMMODITY_MAP[id];
       commodities.push({
-        id: id,
-        name: def.name,
-        price: price,
-        unit: def.unit,
-        currency: 'USD',
-        category: def.category,
-        source: 'worldbank',
+        id: id, name: def.name, price: value,
+        unit: def.unit, currency: 'USD', category: def.category,
+        source: 'worldbank-cmo',
       });
-    }
-  });
+    });
+  } catch (e) {
+    console.log('[commodity] WB CSV failed: ' + e.message);
+  }
 
   if (commodities.length < 5) {
     throw new Error('World Bank returned only ' + commodities.length + ' commodities');

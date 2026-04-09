@@ -7,6 +7,7 @@
 const engines = require('./_engines/index');
 const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
+const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -154,7 +155,14 @@ exports.handler = async (event) => {
       return respond(400, { error: 'Invalid JSON body', code: 'INVALID_JSON' });
     }
 
-    const { country, grossAnnual, grossMonthly, netAnnual, netMonthly, ...options } = body;
+    const {
+      country,
+      grossAnnual,
+      grossMonthly,
+      netAnnual,
+      netMonthly,
+      ...rawOptions
+    } = body;
 
     if (!country) {
       return respond(400, {
@@ -172,22 +180,20 @@ exports.handler = async (event) => {
       });
     }
 
-    // Resolve annual salary from whichever field was provided
-    const gross = grossAnnual || (grossMonthly ? grossMonthly * 12 : null);
-    const net = netAnnual || (netMonthly ? netMonthly * 12 : null);
-
-    if (!gross && !net) {
-      return respond(400, {
-        error: 'Provide grossAnnual, grossMonthly, netAnnual, or netMonthly',
-        code: 'MISSING_REQUIRED_FIELD'
-      });
-    }
-
     try {
+      const salaryInput = resolveAnnualSalaryInputs(body);
+      if (!salaryInput) {
+        return respond(400, {
+          error: 'Provide exactly one of grossAnnual, grossMonthly, netAnnual, or netMonthly',
+          code: 'MISSING_REQUIRED_FIELD'
+        });
+      }
+
+      const options = normalizeTaxOptions(country, rawOptions);
       const startTime = Date.now();
-      const result = gross
-        ? engine.calculate({ grossAnnual: gross, ...options })
-        : engine.reverseCalculate({ netAnnual: net, ...options });
+      const result = salaryInput.mode === 'gross'
+        ? engine.calculate({ grossAnnual: salaryInput.annualAmount, ...options })
+        : engine.reverseCalculate({ netAnnual: salaryInput.annualAmount, ...options });
 
       return respond(200, {
         status: 'success',
@@ -202,7 +208,10 @@ exports.handler = async (event) => {
         }
       });
     } catch (err) {
-      return respond(400, { error: err.message, code: 'ENGINE_ERROR' });
+      const code = err.message && err.message.includes('Provide exactly one')
+        ? 'INVALID_SALARY_INPUT'
+        : 'ENGINE_ERROR';
+      return respond(400, { error: err.message, code });
     }
   }
 

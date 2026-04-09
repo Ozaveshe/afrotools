@@ -20,6 +20,7 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/afro-auth.js?v=6" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=01dfe789" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
 <script src="/engines/scholarship-matcher.js?v=7370f3a4" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/education-hub/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/education-hub/" />
@@ -86,15 +87,22 @@
       <span class="val empty" id="valJAMB">Not set</span>
     </div>
   </a>
-  <a class="eh-step" href="/tools/ielts-calculator/" id="stepIELTS">
+  <a class="eh-step" href="/jamb/cbt/" id="stepJambPractice">
     <span class="num">3</span>
+    <div>
+      <span class="label">JAMB Practice</span>
+      <span class="val empty" id="valJambPractice">0 mocks</span>
+    </div>
+  </a>
+  <a class="eh-step" href="/tools/ielts-calculator/" id="stepIELTS">
+    <span class="num">4</span>
     <div>
       <span class="label">IELTS / TOEFL</span>
       <span class="val empty" id="valIELTS">Not set</span>
     </div>
   </a>
   <a class="eh-step active" href="/tools/scholarship-finder/" id="stepScholar">
-    <span class="num">4</span>
+    <span class="num">5</span>
     <div>
       <span class="label">Find Scholarships</span>
       <span class="val empty" id="valScholar">Browse all</span>
@@ -284,15 +292,78 @@
 var profile = null;
 
 function init() {
-  setTimeout(loadProfile, 500);
+  // Update the mock-count step and activity feed immediately (no network needed).
+  // These are safe to run before profile loads because they don't touch the
+  // JAMB Aggregate slot which loadProfile owns.
+  loadJambPracticeStep();
   loadActivityFeed();
   loadFlashcardStreak();
+  // loadProfile() runs async — when it resolves, it calls loadJambMockFallback()
+  // itself so the precedence "real JAMB score > mock score" is enforced.
+  setTimeout(loadProfile, 500);
+}
+
+/**
+ * Populate the JAMB Practice step (step #3 in the progress tracker).
+ * Safe to run before profile loads — only touches its own DOM nodes.
+ */
+function loadJambPracticeStep() {
+  if (typeof AfroEdu === 'undefined') return;
+  try {
+    var s = AfroEdu.summary();
+    var el = document.getElementById('valJambPractice');
+    var step = document.getElementById('stepJambPractice');
+    if (!el || !step) return;
+    if (s.mockCount > 0) {
+      var label = s.mockCount + ' mock' + (s.mockCount === 1 ? '' : 's');
+      if (s.bestMockAggregate) label += ' · best ' + s.bestMockAggregate;
+      // Use markStep() so it gets the 'done' (green) treatment, matching
+      // the pattern used by loadProfile() for GPA/JAMB/IELTS. Reserved
+      // class 'active' belongs to the current page step (stepScholar).
+      markStep('stepJambPractice', 'valJambPractice', label);
+    } else {
+      el.textContent = 'Start CBT mock';
+    }
+  } catch (e) { /* ignore */ }
+}
+
+/**
+ * Called by loadProfile AFTER `profile` is set (or known to be null).
+ * If there is no real Post-UTME score, fall back to showing the best mock
+ * aggregate with a "MOCK" tag in the JAMB Aggregate display.
+ */
+function loadJambMockFallback() {
+  if (typeof AfroEdu === 'undefined') return;
+  try {
+    var s = AfroEdu.summary();
+    var jambEl = document.getElementById('dispJAMB');
+    if (!jambEl) return;
+    // Only write fallback if:
+    //   - user has NO profile (anonymous or not loaded)
+    //   - OR profile exists but has no real jamb_score yet
+    // AND there's a non-zero best mock
+    var hasRealScore = profile && profile.jamb_score;
+    if (hasRealScore) return;
+    if (!s.bestMockAggregate) return;
+    // Use textContent for the number and a separate span for the MOCK tag
+    // to avoid innerHTML concatenation with dynamic data.
+    jambEl.textContent = '';
+    jambEl.appendChild(document.createTextNode(String(s.bestMockAggregate)));
+    var tag = document.createElement('span');
+    tag.style.cssText = 'font-size:.58rem;font-weight:700;color:#94a3b8;margin-left:6px;';
+    tag.textContent = 'MOCK';
+    jambEl.appendChild(tag);
+    jambEl.classList.remove('empty');
+    markStep('stepJAMB', 'valJAMB', s.bestMockAggregate + ' (mock)');
+  } catch (e) { /* ignore */ }
 }
 
 function loadProfile() {
   if (typeof EduProfileSync === 'undefined' || typeof EduProfileSync.getProfile !== 'function') {
     document.getElementById('profileLoggedOut').style.display = '';
     document.getElementById('profileLoggedIn').style.display = 'none';
+    // Anonymous fallback: still show the mock score in the JAMB Aggregate slot
+    loadJambMockFallback();
     return;
   }
 
@@ -300,6 +371,8 @@ function loadProfile() {
     if (!p) {
       document.getElementById('profileLoggedOut').style.display = '';
       document.getElementById('profileLoggedIn').style.display = 'none';
+      // Logged-out fallback: use local mock aggregate as the JAMB display
+      loadJambMockFallback();
       return;
     }
 
@@ -325,6 +398,9 @@ function loadProfile() {
       jambEl.textContent = p.jamb_score;
       jambEl.classList.remove('empty');
       markStep('stepJAMB', 'valJAMB', String(p.jamb_score));
+    } else {
+      // Profile is loaded but no real JAMB score yet — fall back to mock
+      loadJambMockFallback();
     }
 
     // Tags — use textContent to prevent XSS
@@ -403,14 +479,32 @@ function saveProfileEdits() {
 function loadActivityFeed() {
   try {
     var history = JSON.parse(localStorage.getItem('afro_tool_history') || '[]');
-    var eduTools = { 'gpa-calculator': 'Calculated GPA', 'ielts-calculator': 'Calculated IELTS score', 'jamb-aggregate': 'Calculated JAMB aggregate', 'scholarship-finder': 'Browsed scholarships', 'flashcard-maker': 'Studied flashcards', 'study-planner': 'Generated study plan' };
-    var eduHistory = history.filter(function (h) { return eduTools[h.tool]; }).slice(0, 5);
+    var eduTools = {
+      'gpa-calculator': 'Calculated GPA',
+      'ielts-calculator': 'Calculated IELTS score',
+      'jamb-aggregate': 'Saved JAMB aggregate score',
+      'scholarship-finder': 'Browsed scholarships',
+      'flashcard-maker': 'Studied flashcards',
+      'study-planner': 'Generated study plan',
+      // AfroJAMB tools (written by afro-edu-bridge.js)
+      'jamb-cbt': 'Took JAMB CBT mock',
+      'jamb-score-predictor': 'Ran JAMB score predictor',
+      'jamb-tutor': 'Asked JAMB AI tutor',
+      'jamb-flashcards': 'Reviewed JAMB flashcards',
+      'jamb-cram': 'Worked the JAMB cram plan',
+      'jamb-past-questions': 'Browsed JAMB past questions',
+      'jamb-study-plan': 'Generated JAMB study plan'
+    };
+    var eduHistory = history.filter(function (h) { return eduTools[h.tool]; }).slice(0, 8);
     if (!eduHistory.length) return;
     var feedEl = document.getElementById('activityFeed');
     var html = '';
     eduHistory.forEach(function (h) {
       var ago = timeAgo(new Date(h.timestamp || h.date));
-      html += '<div class="eh-activity-item"><span class="eh-activity-text">' + escapeHtml(eduTools[h.tool]) + '</span><span class="eh-activity-time">' + ago + '</span></div>';
+      // If the activity has a detail field (from the bridge), show it as a subtitle
+      var label = escapeHtml(h.label || eduTools[h.tool]);
+      var detail = h.detail ? '<div style="font-size:.68rem;color:#94a3b8;margin-top:2px;">' + escapeHtml(h.detail) + '</div>' : '';
+      html += '<div class="eh-activity-item"><span class="eh-activity-text">' + label + detail + '</span><span class="eh-activity-time">' + ago + '</span></div>';
     });
     feedEl.innerHTML = html;
   } catch (e) { /* silent */ }
@@ -418,10 +512,22 @@ function loadActivityFeed() {
 
 function loadFlashcardStreak() {
   try {
+    // Legacy flashcard-maker streak key
     var streak = JSON.parse(localStorage.getItem('fc_streak') || '{}');
-    if (streak.count && streak.count > 0) {
+    var count = streak.count || 0;
+
+    // Fall back to AfroJAMB flashcards streak if legacy key is empty.
+    // The bridge mirrors to fc_streak but this is a safety net.
+    if (!count) {
+      try {
+        var afroStats = JSON.parse(localStorage.getItem('afrojamb-flash-stats') || '{}');
+        if (afroStats.streak) count = afroStats.streak;
+      } catch (e) { /* ignore */ }
+    }
+
+    if (count > 0) {
       document.getElementById('flashcardStreak').style.display = '';
-      document.getElementById('streakCount').textContent = streak.count;
+      document.getElementById('streakCount').textContent = count;
     }
   } catch (e) { /* silent */ }
 }

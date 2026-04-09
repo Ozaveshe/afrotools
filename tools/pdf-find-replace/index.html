@@ -1023,6 +1023,10 @@
     statusMsg.className = 'status-msg ' + type;
   }
 
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
   function hideStatus() {
     statusMsg.className = 'status-msg';
   }
@@ -1051,14 +1055,15 @@
     e.preventDefault();
     uploadZone.classList.remove('dragover');
     var file = e.dataTransfer.files[0];
-    if (file && file.type === 'application/pdf') handleFile(file);
+    if (isPdfFile(file)) handleFile(file);
   });
 
   fileInput.addEventListener('change', function() {
-    if (fileInput.files[0]) handleFile(fileInput.files[0]);
+    if (isPdfFile(fileInput.files[0])) handleFile(fileInput.files[0]);
   });
 
   async function handleFile(file) {
+    if (!isPdfFile(file)) return;
     hideStatus();
     state.file = file;
     state.replaced = false;
@@ -1483,7 +1488,7 @@
 
 })();
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/related-tools.js?v=fa787d8a" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>

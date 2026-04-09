@@ -43,6 +43,11 @@
 .template-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}
 .tpl-btn{padding:.3rem .6rem;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.75rem;font-weight:600;cursor:pointer;background:#fff;color:#64748b;transition:all .15s}
 .tpl-btn:hover,.tpl-btn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
+.upgrade-note{max-width:1100px;margin:1.25rem auto 0;padding:0 1.5rem}
+.upgrade-note-box{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff,#ffffff)}
+.upgrade-note-copy strong{display:block;color:#0c4a6e;font-size:.95rem;margin-bottom:.2rem}
+.upgrade-note-copy p{margin:0;color:#475569;font-size:.88rem}
+.upgrade-note-box a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 1rem;border-radius:999px;background:#0c4a6e;color:#fff;font-size:.86rem;font-weight:700;text-decoration:none}
 .seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -83,10 +88,20 @@
 <body>
 <afro-navbar></afro-navbar>
 <section class="hero"><h1>YouTube Thumbnail Maker</h1><p>Create eye-catching 1280x720 thumbnails with text overlays, gradients, and custom backgrounds. Free, no signup needed.</p></section>
+<section class="upgrade-note">
+<div class="upgrade-note-box">
+<div class="upgrade-note-copy"><strong>Need a creator-grade thumbnail workflow?</strong><p>Use this page for fast one-off thumbnails. For multi-platform templates, save-and-resume, and deeper Afrocentric layouts, switch to ThumbnailForge.</p></div>
+<a href="/tools/creator-thumb/">Open ThumbnailForge</a>
+</div>
+</section>
 <div class="container">
 <div class="card">
 <h2>Templates</h2>
 <div class="template-row" id="templates"></div>
+</div>
+<div class="card">
+<h2>African Creator Quick Starts</h2>
+<div class="template-row" id="contentPresets"></div>
 </div>
 <div class="card">
 <div class="editor">
@@ -157,8 +172,17 @@ const TEMPLATES=[
 {name:'Ubuntu Red',bg1:'#1c0a00',bg2:'#e11d48',text:'#ffffff',sub:'#fde68a',overlay:'dark'},
 {name:'Sahara',bg1:'#451a03',bg2:'#f59e0b',text:'#fef3c7',sub:'#e2e8f0',overlay:'none'},
 ];
+const CONTENT_PRESETS=[
+{name:'Afrobeats Drop',title:'NEW AFROBEATS\nTHIS WEEK',subtitle:'Top songs and reactions',channel:'@AfroSoundDaily',template:'Lagos Night'},
+{name:'JAMB Prep',title:'JAMB 2026\nLAST-MINUTE TIPS',subtitle:'Score higher with this guide',channel:'@StudyNaija',template:'Ubuntu Red'},
+{name:'Football Recap',title:'SUPER EAGLES\nMATCH RECAP',subtitle:'Big moments and talking points',channel:'@PitchPulseAfrica',template:'Kente'},
+{name:'Market Vlog',title:'INSIDE LAGOS\nMARKET DAY',subtitle:'Prices, bargains, and fresh finds',channel:'@StreetFinds',template:'Savanna'},
+{name:'Nollywood Review',title:'NOLLYWOOD\nMOVIE REVIEW',subtitle:'Worth the hype?',channel:'@CinemaNaija',template:'Afro Gold'},
+{name:'Food Creator',title:'BEST JOLLOF\nRECIPE HACKS',subtitle:'Make it smoky and rich',channel:'@KitchenWithAda',template:'Ankara'}
+];
 
 document.getElementById('templates').innerHTML=TEMPLATES.map((t,i)=>`<button class="tpl-btn" onclick="applyTemplate(${i})">${t.name}</button>`).join('');
+document.getElementById('contentPresets').innerHTML=CONTENT_PRESETS.map((preset,i)=>`<button class="tpl-btn" onclick="applyContentPreset(${i})">${preset.name}</button>`).join('');
 
 function applyTemplate(i){
   const t=TEMPLATES[i];
@@ -180,6 +204,17 @@ function loadBg(f){
     img.src=e.target.result;
   };
   reader.readAsDataURL(f);
+}
+
+function applyContentPreset(i){
+  const preset=CONTENT_PRESETS[i];
+  if(!preset)return;
+  document.getElementById('mainText').value=preset.title;
+  document.getElementById('subText').value=preset.subtitle;
+  document.getElementById('channelName').value=preset.channel;
+  const tplIndex=TEMPLATES.findIndex(t=>t.name===preset.template);
+  if(tplIndex!==-1) applyTemplate(tplIndex);
+  draw();
 }
 
 function draw(){
@@ -275,7 +310,7 @@ function resetCanvas(){
   applyTemplate(0);
 }
 
-applyTemplate(0);draw();
+applyContentPreset(0);draw();
 </script>
 
 <script>

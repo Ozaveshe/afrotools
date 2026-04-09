@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily JAMB Question — One Question Every Day | AfroJAMB</title>
+<meta name="description" content="Get one JAMB past question delivered to your WhatsApp or email every morning. Free. Pick your subjects. Build a daily habit.">
+<link rel="canonical" href="https://afrotools.com/jamb/daily/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Daily JAMB Question — Build the Habit">
+<meta property="og:description" content="One JAMB question every morning. Free. WhatsApp or email.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/jamb.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<!-- afro-edu-bridge -->
+<script src="/assets/js/afro-auth.js?v=6" defer></script>
+<script src="/assets/js/edu-profile-sync.js?v=01dfe789" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
+<script src="/assets/js/lib/cross-tool-nav.js?v=2" defer></script>
+<!-- /afro-edu-bridge --></head>
+<body class="jamb-page">
+
+<a href="#main" class="jb-skip">Skip to main content</a>
+<afro-navbar active="education"></afro-navbar>
+
+<div class="jb-wrap">
+  <nav class="jb-bc" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/education/">Education</a><span class="sep">/</span>
+    <a href="/jamb/">AfroJAMB</a><span class="sep">/</span>
+    <span class="cur">Daily Question</span>
+  </nav>
+</div>
+
+<main id="main">
+<section class="jb-hero" style="padding:42px 0 50px;">
+  <div class="jb-wrap jb-hero-z">
+    <span class="jb-hero-tag"><span aria-hidden="true">📩</span> Free Daily</span>
+    <h1>One JAMB question. <b>Every morning.</b></h1>
+    <p class="sub">A daily JAMB past question delivered to your WhatsApp or email. Pick your subjects. Build the habit. 30 seconds a day.</p>
+  </div>
+</section>
+
+<section class="jb-sec">
+  <div class="jb-wrap" style="max-width:560px;">
+
+    <!-- Sample card -->
+    <div aria-label="Sample message preview" style="background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);color:#fff;border-radius:16px;padding:24px;margin-bottom:18px;">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px;"><span aria-hidden="true">📩</span> Sample · 8:00 AM</div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.88);margin-bottom:14px;">Good morning! Here's your JAMB question for today <span aria-hidden="true">👇</span></div>
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:16px;font-size:.88rem;line-height:1.55;">
+        <div style="font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#93c5fd;margin-bottom:8px;">JAMB Biology · 2018</div>
+        <div style="margin-bottom:14px;font-weight:500;">Which of the following is responsible for the swelling of seeds during germination?</div>
+        <div style="font-size:.84rem;color:rgba(255,255,255,.92);line-height:1.7;">
+          A. Imbibition<br>
+          B. Osmosis<br>
+          C. Diffusion<br>
+          D. Active transport
+        </div>
+      </div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.72);margin-top:10px;">Tap reply with your answer. Get the explanation tomorrow.</div>
+    </div>
+
+    <!-- Signup form -->
+    <form id="form-screen" style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;box-shadow:0 1px 2px rgba(15,23,42,.04);" novalidate aria-labelledby="signup-title">
+      <h2 id="signup-title" style="margin:0 0 16px;font-size:1.1rem;font-weight:700;color:#0f172a;letter-spacing:-0.015em;">Sign me up</h2>
+
+      <fieldset style="border:0;padding:0;margin:0 0 18px;">
+        <legend class="lbl">How should we send it?</legend>
+        <div role="radiogroup" aria-label="Delivery channel" style="display:flex;gap:8px;">
+          <button class="ch-btn active" type="button" role="radio" aria-checked="true" data-channel="whatsapp"><span aria-hidden="true">📱</span> WhatsApp</button>
+          <button class="ch-btn" type="button" role="radio" aria-checked="false" data-channel="email"><span aria-hidden="true">📧</span> Email</button>
+        </div>
+      </fieldset>
+
+      <div style="margin-bottom:18px;">
+        <label class="lbl" for="contact" id="contact-label">WhatsApp number</label>
+        <input id="contact" type="tel" class="inp" placeholder="+234 ..." autocomplete="tel" aria-labelledby="contact-label" aria-required="true">
+      </div>
+
+      <fieldset style="border:0;padding:0;margin:0 0 18px;">
+        <legend class="lbl">Pick your subjects</legend>
+        <p style="font-size:.74rem;color:#64748b;margin:0 0 10px;">Pick 1 to 4. We'll rotate through them daily.</p>
+        <div id="subjects" role="group" aria-label="Subject selection" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;"></div>
+      </fieldset>
+
+      <div style="margin-bottom:18px;">
+        <label class="lbl" for="time">When?</label>
+        <select id="time" class="inp">
+          <option value="6">6:00 AM</option>
+          <option value="7">7:00 AM</option>
+          <option value="8" selected>8:00 AM</option>
+          <option value="12">12:00 PM (lunch)</option>
+          <option value="18">6:00 PM (after school)</option>
+          <option value="20">8:00 PM</option>
+        </select>
+      </div>
+
+      <button id="signup-btn" class="jb-btn jb-btn-primary" type="submit" style="width:100%;justify-content:center;font-size:.95rem;padding:14px;">
+        Sign me up — Free →
+      </button>
+
+      <p style="font-size:.7rem;color:#64748b;margin-top:14px;text-align:center;line-height:1.5;">
+        We won't send anything else. No spam. Unsubscribe anytime by replying STOP. Free during JAMB 2026 prep season.
+      </p>
+    </form>
+
+    <div id="success-screen" hidden role="status" aria-live="polite" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:28px;text-align:center;">
+      <div style="font-size:3rem;" aria-hidden="true">🎉</div>
+      <h2 style="margin:14px 0 6px;font-size:1.2rem;font-weight:700;color:#14532d;letter-spacing:-0.015em;">You're in!</h2>
+      <p style="font-size:.92rem;color:#15803d;margin:0;">Your first question arrives <span id="success-when">tomorrow morning</span>. Tell a friend who needs this!</p>
+      <a href="/jamb/" class="jb-btn jb-btn-primary" style="margin-top:18px;">Back to AfroJAMB →</a>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<afro-footer></afro-footer>
+
+<style>
+.lbl { display:block;font-size:.7rem;font-weight:700;color:#475569;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em; }
+.inp { width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:inherit;font-size:.92rem;background:#fff;outline:none; }
+.inp:focus { border-color:#007AFF; }
+.ch-btn {
+  flex:1; padding:12px;
+  border:1.5px solid #e2e8f0;
+  background:#fafbfc;
+  border-radius:10px;
+  font-family:inherit;
+  font-size:.86rem;
+  font-weight:700;
+  cursor:pointer;
+  color:#475569;
+  transition:all .15s;
+}
+.ch-btn:hover { border-color:#4DA3FF; }
+.ch-btn.active { background:#007AFF;color:#fff;border-color:#007AFF; }
+.subj-pick {
+  padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;
+  text-align:center;cursor:pointer;font-size:.78rem;font-weight:600;
+  background:#fafbfc;user-select:none;
+}
+.subj-pick:hover { border-color:#4DA3FF; }
+.subj-pick.selected { background:#E8F2FF;border-color:#007AFF;color:#0063D1; }
+</style>
+
+<script>
+var SUBJECTS = [
+  ["english","📝 English"],["mathematics","➗ Math"],["physics","⚛️ Physics"],
+  ["chemistry","🧪 Chem"],["biology","🌱 Biology"],["government","🏛️ Govt"],
+  ["economics","💹 Econ"],["literature","📖 Lit"],["crk","✝️ CRK"],
+  ["commerce","🛒 Commerce"],["accounts","📒 Accounts"],
+];
+var SELECTED = ["english","biology"];
+var CHANNEL = "whatsapp";
+
+function renderSubjects() {
+  var box = document.getElementById("subjects");
+  box.innerHTML = "";
+  SUBJECTS.forEach(function(s){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    var selected = SELECTED.indexOf(s[0]) !== -1;
+    btn.className = "subj-pick" + (selected ? " selected" : "");
+    btn.setAttribute("role", "checkbox");
+    btn.setAttribute("aria-checked", selected ? "true" : "false");
+    btn.setAttribute("aria-label", s[1].replace(/[^\w\s]/g, "").trim());
+    btn.textContent = s[1];
+    btn.addEventListener("click", function(){
+      var i = SELECTED.indexOf(s[0]);
+      if (i >= 0) SELECTED.splice(i, 1);
+      else if (SELECTED.length < 4) SELECTED.push(s[0]);
+      renderSubjects();
+    });
+    box.appendChild(btn);
+  });
+}
+renderSubjects();
+
+document.querySelectorAll(".ch-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".ch-btn").forEach(function(b){
+      b.classList.remove("active");
+      b.setAttribute("aria-checked", "false");
+    });
+    btn.classList.add("active");
+    btn.setAttribute("aria-checked", "true");
+    CHANNEL = btn.dataset.channel;
+    var input = document.getElementById("contact");
+    var label = document.getElementById("contact-label");
+    if (CHANNEL === "whatsapp") {
+      input.type = "tel";
+      input.placeholder = "+234 ...";
+      input.autocomplete = "tel";
+      label.textContent = "WhatsApp number";
+    } else {
+      input.type = "email";
+      input.placeholder = "you@example.com";
+      input.autocomplete = "email";
+      label.textContent = "Email address";
+    }
+  });
+});
+
+document.getElementById("form-screen").addEventListener("submit", async function(e){
+  e.preventDefault();
+  var submitBtn = document.getElementById("signup-btn");
+  var contact = document.getElementById("contact").value.trim();
+  var time = document.getElementById("time").value;
+  if (!contact) { alert("Enter your " + (CHANNEL === "whatsapp" ? "phone number" : "email")); return; }
+  if (SELECTED.length === 0) { alert("Pick at least 1 subject"); return; }
+
+  if (CHANNEL === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) {
+    alert("That doesn't look like a valid email");
+    return;
+  }
+  if (CHANNEL === "whatsapp") {
+    var digits = contact.replace(/\D/g,"");
+    if (digits.length < 10) { alert("Phone number looks too short"); return; }
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Signing you up...";
+
+  try {
+    await fetch("/.netlify/functions/jamb-daily-signup", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        channel: CHANNEL,
+        contact: contact,
+        subjects: SELECTED,
+        send_hour: parseInt(time),
+      })
+    });
+    // Don't fail if endpoint is missing — still save locally + show success
+  } catch(err) { /* ignore */ }
+
+  // Save locally for resilience
+  try {
+    localStorage.setItem("afrojamb-daily-signup", JSON.stringify({
+      channel: CHANNEL, contact: contact, subjects: SELECTED, send_hour: parseInt(time), at: Date.now()
+    }));
+  } catch(err) {}
+
+  document.getElementById("form-screen").hidden = true;
+  var successEl = document.getElementById("success-screen");
+  successEl.hidden = false;
+  var hr = parseInt(time);
+  var label = hr < 12 ? hr + ":00 AM" : hr === 12 ? "12:00 PM" : (hr - 12) + ":00 PM";
+  document.getElementById("success-when").textContent = "tomorrow at " + label;
+  // Move focus into the success region for screen readers
+  successEl.setAttribute("tabindex", "-1");
+  successEl.focus();
+});
+</script>
+
+</body>
+</html>

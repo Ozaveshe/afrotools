@@ -214,6 +214,51 @@
     box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
   }
 
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .template-btn {
+    padding: 10px 12px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .template-btn:hover {
+    border-color: var(--afro-blue);
+  }
+
+  .template-btn.active {
+    border-color: var(--afro-blue);
+    background: var(--afro-blue);
+    color: #fff;
+  }
+
+  .context-note {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    color: #244d2c;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .context-note strong {
+    color: #0d2813;
+  }
+
   .upload-area {
     border: 2px dashed #BFDBFE;
     border-radius: 8px;
@@ -453,7 +498,7 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Background <em>Remover</em></h1>
-    <p class="hero-sub">Remove backgrounds from images instantly. Powered by AI, no server uploads. Download as PNG with transparent background.</p>
+    <p class="hero-sub">Remove backgrounds from people and clear subject photos instantly. Powered by AI, no server uploads, and ready for transparent or solid-color exports.</p>
     <div class="hero-badges">
       <span class="badge b-green">AI-Powered</span>
       <span class="badge b-green">Client-side</span>
@@ -487,6 +532,19 @@
         </div>
         <div class="card-body">
           <p style="font-size: 0.85rem; color: #244d2c; margin-bottom: 12px;">The model will be downloaded on first use (35MB). Processing happens on your device.</p>
+          <div class="template-grid">
+            <button class="template-btn active" type="button" data-usecase="passport">Passport Headshot</button>
+            <button class="template-btn" type="button" data-usecase="profile">Profile Photo</button>
+            <button class="template-btn" type="button" data-usecase="marketplace">Marketplace Item</button>
+            <button class="template-btn" type="button" data-usecase="sticker">Sticker Cutout</button>
+          </div>
+          <div class="context-note" id="useCaseNote"><strong>Passport Headshot:</strong> Best when you want a clean cutout that you can place on white or blue before moving into passport-photo.</div>
+          <div class="template-grid">
+            <button class="template-btn active" type="button" data-output-bg="transparent">Transparent</button>
+            <button class="template-btn" type="button" data-output-bg="white">White</button>
+            <button class="template-btn" type="button" data-output-bg="blue">Blue</button>
+            <button class="template-btn" type="button" data-output-bg="charcoal">Charcoal</button>
+          </div>
           <button class="calc-btn" id="removeBtn" disabled>Remove Background</button>
           <div class="progress-bar" id="progressBar">
             <div class="progress-fill" id="progressFill"></div>
@@ -517,12 +575,12 @@
       <div class="info-card">
         <div class="info-title">How It Works</div>
         <div class="info-text">
-          Uses TensorFlow.js to detect and remove backgrounds with pixel-level accuracy.
+          Uses TensorFlow.js to detect people and clear foreground subjects directly in your browser.
           <ul style="margin-top:10px;">
             <li>✓ AI-powered detection</li>
             <li>✓ No server uploads</li>
             <li>✓ Privacy protected</li>
-            <li>✓ Download as PNG</li>
+            <li>✓ Transparent or solid-color export</li>
           </ul>
         </div>
       </div>
@@ -536,7 +594,7 @@
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
   <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Background Remover: How It Works</h2>
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Background Remover lets you remove image backgrounds instantly, right in your browser. Powered by TensorFlow and the BodyPix machine-learning model, this tool detects the subject in your photo and strips away the background with a single click. Upload any JPG or PNG image, and the AI automatically segments the foreground from the background, producing a clean transparent PNG you can download immediately. Because all processing happens client-side, your images never leave your device — there are no server uploads, no waiting in queues, and no privacy concerns. This makes it ideal for product photography, profile pictures, social media graphics, and marketing materials. Whether you need a transparent logo overlay, a headshot for your LinkedIn profile, or a product image for your online store, the Background Remover handles it in seconds. The tool works on any modern browser and is completely free to use with no watermarks or file size limits on the output.</p>
+    <p>The AfroTools Background Remover lets you remove image backgrounds instantly, right in your browser. Powered by TensorFlow and the BodyPix machine-learning model, this tool works best on people, profile photos, and clear foreground subjects where the person or item stands out from the background. Upload any JPG or PNG image, and the AI segments the foreground from the background, producing a clean transparent PNG or a solid-color export you can download immediately. Because all processing happens client-side, your images never leave your device — there are no server uploads, no waiting in queues, and no privacy concerns. This makes it especially useful for passport-prep workflows, profile pictures, creator assets, storefront images with clean contrast, and quick sticker cutouts. The tool works on any modern browser and is completely free to use with no watermarks on the output.</p>
   </div>
   <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
 
@@ -557,7 +615,7 @@
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How accurate is the AI background detection?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool uses Google's BodyPix model which works best with photos of people. For product photos and objects, results are generally good but may require images with clear contrast between the subject and background.</p>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The tool uses Google's BodyPix model which works best with photos of people. For product photos and objects, results can still work when there is strong contrast between the subject and background, but people and headshots remain the safest use case.</p>
     </details>
     <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
       <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is there a file size limit?</summary>
@@ -585,9 +643,54 @@
   const progressBar = document.getElementById('progressBar');
   const progressFill = document.getElementById('progressFill');
   const statusText = document.getElementById('statusText');
+  const useCaseButtons = document.querySelectorAll('[data-usecase]');
+  const outputBgButtons = document.querySelectorAll('[data-output-bg]');
+  const useCaseNote = document.getElementById('useCaseNote');
 
   let net = null;
   let originalImage = null;
+  let processedCanvas = null;
+  let selectedOutputBg = 'transparent';
+  const USE_CASES = {
+    passport: { outputBg: 'white', label: 'Passport Headshot', note: 'Best when you want a clean cutout that you can place on white or blue before moving into passport-photo.' },
+    profile: { outputBg: 'charcoal', label: 'Profile Photo', note: 'Good for LinkedIn, team pages, speaker bios, and professional profile graphics with a clean dark base.' },
+    marketplace: { outputBg: 'transparent', label: 'Marketplace Item', note: 'Keep a transparent export for product listings, catalogs, social promos, and storefront graphics.' },
+    sticker: { outputBg: 'transparent', label: 'Sticker Cutout', note: 'Transparent export works best for sticker-style creator assets and overlay graphics for social posts.' }
+  };
+
+  function renderOutput() {
+    if (!processedCanvas) return;
+    const canvas = outputCanvas;
+    canvas.width = processedCanvas.width;
+    canvas.height = processedCanvas.height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (selectedOutputBg !== 'transparent') {
+      const colors = {
+        white: '#FFFFFF',
+        blue: '#0A66CC',
+        charcoal: '#0F172A'
+      };
+      ctx.fillStyle = colors[selectedOutputBg] || '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(processedCanvas, 0, 0);
+  }
+
+  function setOutputBg(nextBg) {
+    selectedOutputBg = nextBg;
+    outputBgButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.outputBg === nextBg));
+    renderOutput();
+  }
+
+  function applyUseCase(key) {
+    const preset = USE_CASES[key];
+    if (!preset) return;
+    useCaseButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.usecase === key));
+    useCaseNote.innerHTML = '<strong>' + preset.label + ':</strong> ' + preset.note;
+    setOutputBg(preset.outputBg);
+  }
 
   // Load BodyPix model
   async function loadModel() {
@@ -626,6 +729,14 @@
   });
 
   imageInput.addEventListener('change', handleImageUpload);
+
+  useCaseButtons.forEach(btn => {
+    btn.addEventListener('click', () => applyUseCase(btn.dataset.usecase));
+  });
+
+  outputBgButtons.forEach(btn => {
+    btn.addEventListener('click', () => setOutputBg(btn.dataset.outputBg));
+  });
 
   function handleImageUpload() {
     const file = imageInput.files[0];
@@ -678,7 +789,7 @@
       });
 
       // Create output canvas with transparency
-      const canvas = outputCanvas;
+      const canvas = document.createElement('canvas');
       canvas.width = originalImage.width;
       canvas.height = originalImage.height;
       const ctx = canvas.getContext('2d');
@@ -701,6 +812,8 @@
       }
 
       ctx.putImageData(imageData, 0, 0);
+      processedCanvas = canvas;
+      renderOutput();
 
       progressFill.style.width = '100%';
       statusText.textContent = 'Done!';
@@ -714,7 +827,7 @@
       // Set download handler
       downloadBtn.onclick = () => {
         try {
-          canvas.toBlob((blob) => {
+          outputCanvas.toBlob((blob) => {
             if (!blob) {
               alert('Failed to generate the download. Please try again.');
               return;
@@ -736,6 +849,8 @@
       progressBar.classList.remove('active');
     }
   });
+
+  applyUseCase('passport');
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

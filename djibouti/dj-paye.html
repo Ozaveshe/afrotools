@@ -81,7 +81,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="dj-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='dj-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -91,7 +93,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/djibouti/dj-paye" />
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-dj-paye.png">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 <style>
@@ -109,14 +111,14 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="https://afrotools.com">AfroTools</a> / <a href="/djibouti/">Djibouti</a> / <span>PAYE Calculator</span></div>
     <h1>Djibouti PAYE Calculator <em>2025/26</em></h1>
-    <p class="hero-sub">Calculate your monthly take-home pay using Djibouti IRPP progressive tax rates (0%–30%), social security contributions, and Djibouti employment law. Accurate, free, instant.</p>
+    <p class="hero-sub">Estimate your monthly take-home pay using Djibouti IRPP progressive tax rates (0%–30%), social security contributions, and standard payroll assumptions.</p>
     <div class="hero-badges">
       <div class="badge b-gold">IRPP 0%–30%</div>
       <div class="badge b-blue">Social Security 4% / 15.7%</div>
       <div class="badge b-red">Monthly Bands</div>
       <div class="badge b-grey">2025/26</div>
     </div>
-    <div class="hero-meta">Updated 10 March 2026 · Informational only.</div>
+    <div class="hero-meta">Updated 6 April 2026 · Informational estimate.</div>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/djibouti/dj-vat" style="color:#007AFF;font-weight:600;">Djibouti VAT Calculator</a></p>
   </div>
 </div>
@@ -541,23 +543,23 @@ function calcMonthlyIRPP(monthlyTaxable){
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
-      effectiveRate: RESULT.effectiveRate
+      netPay: RESULT.net,
+      tax: RESULT.irpp,
+      effectiveRate: RESULT.effRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.net) + '/mo',
     subValues: [
       { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+      { label: 'Tax', value: fmt(RESULT.irpp) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.net); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
   document.getElementById('aiBtn').disabled=false;
@@ -576,7 +578,7 @@ function renderRows(R,period){
   return `<div class="res-section"><div class="res-section-title">Gross</div>${row(`Salary${lbl}`,fmt(gross))}</div><div class="res-section"><div class="res-section-title">Deductions</div>${R.social>0?row(`Social (${pct(R.socialRate)})`,fmt(social),'c-red'):''}${row(`Taxable${lbl}`,fmt(isAnnual?R.annualGross-R.annualSocial:R.gross-R.social),'c-mut')}</div><div class="res-section"><div class="res-section-title">IRPP</div>${row(`Tax${lbl}`,fmt(tax),'c-red')}</div><div class="res-section">${row('Total Deductions',fmt(social+tax),'c-red')}<div class="res-row total"><span class="res-row-lbl">Take-Home</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;
 }
 
-function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?RESULT.netMonthly:(RESULT.annualNet||RESULT.netAnnual||RESULT.netMonthly*12);var gr=isM?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
+function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?RESULT.net:(RESULT.annualNet||RESULT.net*12);var gr=isM?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
 function toggleBands(header){const body=header.nextElementSibling;const arr=header.querySelector('.tog-arrow');body.classList.toggle('open');arr.classList.toggle('open');}
 function setChart(type,btn){CHART_TYPE=type;document.querySelectorAll('.chart-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderChart(type);}
 

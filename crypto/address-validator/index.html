@@ -18,10 +18,10 @@
 <meta name="robots" content="index, follow">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Crypto Wallet Address Validator","description":"Paste any crypto wallet address to verify its format, auto-detect the network, and check against the AfroTools scam database.","url":"https://afrotools.com/crypto/address-validator/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Crypto Wallet Address Validator","url":"https://afrotools.com/crypto/address-validator/","description":"Paste any crypto wallet address to verify its format, auto-detect the network, and check against the AfroTools scam database.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -654,8 +654,8 @@
     var addrType = getAddressType(network, address);
 
     // Show loading while checking scam DB
-    $resultPanel.style.display = '';
-    $resultPanel.innerHTML = '<div style="text-align:center;padding:32px;color:var(--color-text-muted);">Checking scam database...</div>';
+    $resultPanel.style.display = 'block';
+    $resultCard.innerHTML = '<div style="text-align:center;padding:32px;color:var(--color-text-muted);">Checking scam database...</div>';
 
     checkScam(address).then(function(scamEntry) {
       renderResult(address, network, net, addrType, scamEntry);
@@ -667,7 +667,7 @@
 
   /* ── Render valid result ───────────────────────── */
   function renderResult(address, network, net, addrType, scamEntry) {
-    $resultPanel.style.display = '';
+    $resultPanel.style.display = 'block';
     var html = '';
 
     // Header
@@ -729,7 +729,7 @@
 
   /* ── Render invalid result ─────────────────────── */
   function renderInvalid(address) {
-    $resultPanel.style.display = '';
+    $resultPanel.style.display = 'block';
     var html = '';
 
     html += '<div class="status-banner invalid">';

@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB CBT Mock Exam — AfroJAMB</title>
+<meta name="description" content="Take a free, full JAMB CBT mock exam. 4 subjects, 180 questions, 2 hours. Pixel-perfect simulation of the real JAMB CBT interface. No sign-up needed.">
+<link rel="canonical" href="https://afrotools.com/jamb/cbt/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="JAMB CBT Mock Exam — AfroJAMB">
+<meta property="og:description" content="Practice JAMB like the real thing. Free CBT simulator with 16,000+ past questions.">
+<meta property="og:url" content="https://afrotools.com/jamb/cbt/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-cbt.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/jamb.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/engines/jamb-cbt-engine.js" defer></script>
+<!-- afro-edu-bridge -->
+<script src="/assets/js/afro-auth.js?v=6" defer></script>
+<script src="/assets/js/edu-profile-sync.js?v=01dfe789" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
+<script src="/assets/js/lib/cross-tool-nav.js?v=2" defer></script>
+<!-- /afro-edu-bridge --></head>
+<body class="jamb-page">
+
+<!-- ===== Pre-test setup screen ===== -->
+<div id="setup-screen">
+  <a href="#setup-main" class="jb-skip">Skip to main content</a>
+  <afro-navbar active="education"></afro-navbar>
+  <div class="jb-wrap">
+    <nav class="jb-bc" aria-label="Breadcrumb">
+      <a href="/">Home</a><span class="sep">/</span>
+      <a href="/education/">Education</a><span class="sep">/</span>
+      <a href="/jamb/">AfroJAMB</a><span class="sep">/</span>
+      <span class="cur">CBT Mock Exam</span>
+    </nav>
+  </div>
+
+  <main id="setup-main">
+  <section class="jb-hero" style="padding:48px 0 56px;">
+    <div class="jb-wrap jb-hero-z">
+      <span class="jb-hero-tag"><span class="pulse" aria-hidden="true"></span>Free Mock Exam</span>
+      <h1>Set Up Your <b>JAMB CBT Mock</b></h1>
+      <p class="sub">Choose your subjects. We'll build a real exam-like session with past questions, a working timer, and an interface that mirrors the actual JAMB CBT.</p>
+    </div>
+  </section>
+
+  <section class="jb-sec">
+    <div class="jb-wrap" style="max-width:760px;">
+
+      <fieldset style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;margin-bottom:18px;box-shadow:0 1px 2px rgba(15,23,42,.04);">
+        <legend style="font-size:1rem;font-weight:700;color:#0f172a;padding:0 6px;">1. Test Mode</legend>
+        <p style="font-size:.84rem;color:#475569;margin:4px 0 16px;">Pick how long you have right now.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+          <label class="mode-card" data-mode="quick">
+            <input type="radio" name="mode" value="quick" class="jb-sr-only">
+            <div class="mc-emoji" aria-hidden="true">⚡</div>
+            <div class="mc-name">Quick Mock</div>
+            <div class="mc-meta">10 Qs × 4 subjects · 30 min</div>
+          </label>
+          <label class="mode-card selected" data-mode="full">
+            <input type="radio" name="mode" value="full" checked class="jb-sr-only">
+            <div class="mc-emoji" aria-hidden="true">🎯</div>
+            <div class="mc-name">Full Mock</div>
+            <div class="mc-meta">40 Qs × 4 subjects · 2 hrs</div>
+          </label>
+          <label class="mode-card" data-mode="subject">
+            <input type="radio" name="mode" value="subject" class="jb-sr-only">
+            <div class="mc-emoji" aria-hidden="true">📚</div>
+            <div class="mc-name">Single Subject</div>
+            <div class="mc-meta">40 Qs · 40 min</div>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px;margin-bottom:18px;box-shadow:0 1px 2px rgba(15,23,42,.04);">
+        <legend style="font-size:1rem;font-weight:700;color:#0f172a;padding:0 6px;">2. Subjects</legend>
+        <p style="font-size:.84rem;color:#475569;margin:4px 0 16px;">Use of English is compulsory. Pick 3 more (or 1 if Single Subject mode).</p>
+
+        <div id="subject-picker" role="group" aria-label="Choose JAMB subjects" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;">
+          <!-- Populated by JS -->
+        </div>
+      </fieldset>
+
+      <div id="setup-warning" hidden style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:14px;padding:16px 18px;margin-bottom:14px;font-size:.8rem;line-height:1.55;color:#9a3412;"></div>
+
+      <div id="resume-card" hidden style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:14px;padding:18px 20px;margin-bottom:14px;">
+        <div style="font-size:.84rem;font-weight:800;color:#0f172a;margin-bottom:4px;">Resume your saved mock</div>
+        <div id="resume-meta" style="font-size:.78rem;color:#475569;margin-bottom:12px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button id="resume-btn" class="jb-btn jb-btn-primary" type="button">Resume saved mock</button>
+          <button id="discard-resume-btn" class="jb-btn jb-btn-ghost" type="button" style="background:#fff;color:#475569;border:1.5px solid #cbd5e1;">Start fresh instead</button>
+        </div>
+      </div>
+
+      <button id="start-btn" class="jb-btn jb-btn-primary" type="button" style="width:100%;justify-content:center;font-size:1rem;padding:16px;">
+        Start CBT Mock →
+      </button>
+
+      <p style="text-align:center;font-size:.74rem;color:#64748b;margin-top:14px;">
+        Your progress is saved automatically on this device.
+      </p>
+    </div>
+  </section>
+  </main>
+
+  <afro-footer></afro-footer>
+</div>
+
+<!-- ===== Active CBT shell ===== -->
+<div id="cbt-shell" class="cbt-shell" hidden>
+
+  <header class="cbt-header" role="banner">
+    <div class="cbt-brand" aria-label="AfroJAMB CBT">Afro<b>JAMB</b> CBT</div>
+    <div class="cbt-timer" id="cbt-timer" role="timer" aria-live="off" aria-atomic="true" aria-label="Time remaining">--:--:--</div>
+    <!-- Separate polite live region for milestone announcements -->
+    <span id="cbt-sr-timer" class="jb-sr-only" aria-live="polite" aria-atomic="true"></span>
+    <button id="cbt-submit-top" class="cbt-submit" type="button" style="padding:10px 20px;border:none;border-radius:100px;font-weight:600;font-size:.82rem;background:#fff;color:#0f172a;cursor:pointer;">Submit test</button>
+  </header>
+
+  <nav class="cbt-subjects" id="cbt-subjects-bar" aria-label="Subjects"></nav>
+
+  <main class="cbt-body" id="cbt-main">
+    <section id="cbt-question-panel" role="tabpanel" aria-live="polite" aria-atomic="false">
+      <div class="cbt-question-card">
+        <div class="cbt-q-meta">
+          <span class="cbt-q-num" id="cbt-q-num">Q1</span>
+          <span id="cbt-q-info">— · — / —</span>
+        </div>
+        <h2 class="cbt-q-text" id="cbt-q-text">Loading…</h2>
+        <div class="cbt-options" id="cbt-options"></div>
+        <div class="cbt-actions">
+          <button class="cbt-prev" id="cbt-prev" type="button" aria-label="Previous question">← Previous</button>
+          <button class="cbt-mark" id="cbt-mark" type="button" aria-pressed="false">Mark for review</button>
+          <button class="cbt-next" id="cbt-next" type="button" aria-label="Next question">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="cbt-nav" aria-label="Question navigator">
+      <h3 id="cbt-nav-heading">Question Navigator</h3>
+      <div class="cbt-nav-grid" id="cbt-nav-grid" role="group" aria-labelledby="cbt-nav-heading"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:.7rem;color:#475569;">
+        <span aria-hidden="true"><span style="display:inline-block;width:10px;height:10px;background:#E8F2FF;border-radius:2px;border:1px solid #4DA3FF;"></span> answered</span>
+        <span aria-hidden="true"><span style="display:inline-block;width:10px;height:10px;background:#fef3c7;border-radius:2px;border:1px solid #92400e;"></span> marked</span>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- ===== Results screen ===== -->
+<div id="results-screen" hidden>
+  <afro-navbar active="education"></afro-navbar>
+  <div class="jb-wrap">
+    <nav class="jb-bc">
+      <a href="/">Home</a><span class="sep">/</span>
+      <a href="/jamb/">AfroJAMB</a><span class="sep">/</span>
+      <a href="/jamb/cbt/">CBT</a><span class="sep">/</span>
+      <span class="cur">Results</span>
+    </nav>
+  </div>
+
+  <section class="jb-hero" style="padding:40px 0 48px;">
+    <div class="jb-wrap jb-hero-z">
+      <span class="jb-hero-tag">✓ Mock Complete</span>
+      <h1>Your <b>JAMB Score</b></h1>
+      <p class="sub">Aggregate (out of 400) and per-subject breakdown. The real exam will feel familiar after this.</p>
+    </div>
+  </section>
+
+  <section class="jb-sec">
+    <div class="jb-wrap" style="max-width:780px;">
+      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:6px;">Aggregate Score</div>
+        <div id="result-aggregate" style="font-size:4rem;font-weight:800;color:#007AFF;line-height:1;letter-spacing:-.02em;">—</div>
+        <div style="font-size:.86rem;color:#64748b;margin-top:8px;">out of 400 · <span id="result-pct">—</span>% correct</div>
+      </div>
+
+      <div id="result-subjects" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;"></div>
+
+      <!-- Review controls -->
+      <div id="review-controls" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;margin-bottom:18px;">
+        <h3 style="margin:0 0 6px;font-size:1rem;font-weight:800;color:#0f172a;">Review your answers</h3>
+        <p style="font-size:.78rem;color:#64748b;margin:0 0 14px;">Walk through every wrong answer with the explanation. This is where you actually learn.</p>
+        <div id="review-filters" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+          <button class="rev-filter active" data-filter="wrong">❌ Wrong (<span id="rf-wrong">0</span>)</button>
+          <button class="rev-filter" data-filter="skipped">⊘ Skipped (<span id="rf-skip">0</span>)</button>
+          <button class="rev-filter" data-filter="correct">✓ Correct (<span id="rf-right">0</span>)</button>
+          <button class="rev-filter" data-filter="all">All (<span id="rf-all">0</span>)</button>
+        </div>
+        <div id="review-list" style="display:flex;flex-direction:column;gap:14px;"></div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="/jamb/cbt/" class="jb-btn jb-btn-primary" style="flex:1;justify-content:center;">Try Another Mock</a>
+        <a href="/jamb/tutor/" class="jb-btn jb-btn-ghost" style="flex:1;justify-content:center;background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;">Open AI Tutor</a>
+      </div>
+    </div>
+  </section>
+
+  <afro-footer></afro-footer>
+</div>
+
+<style>
+.mode-card {
+  display:block;
+  padding:16px;
+  border:2px solid #e2e8f0;
+  border-radius:12px;
+  cursor:pointer;
+  text-align:center;
+  transition:all .15s;
+  background:#fafbfc;
+}
+.mode-card:hover { border-color:#4DA3FF; }
+.mode-card.selected { border-color:#007AFF; background:#E8F2FF; }
+.mc-emoji { font-size:1.6rem; }
+.mc-name { font-weight:800; font-size:.9rem; margin-top:6px; color:#0f172a; }
+.mc-meta { font-size:.7rem; color:#64748b; margin-top:4px; }
+
+.subj-pick {
+  display:flex; align-items:center; gap:8px;
+  padding:10px 14px;
+  border:1.5px solid #e2e8f0;
+  border-radius:10px;
+  cursor:pointer;
+  background:#fafbfc;
+  transition:all .15s;
+  font-size:.82rem;
+  font-weight:600;
+  user-select:none;
+}
+.subj-pick:hover { border-color:#4DA3FF; }
+.subj-pick.selected { background:#E8F2FF; border-color:#007AFF; color:#0063D1; }
+.subj-pick.locked { background:#f1f5f9; color:#94a3b8; cursor:not-allowed; }
+.subj-pick .check {
+  width:16px; height:16px; border-radius:4px;
+  border:1.5px solid #cbd5e1;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.7rem; color:#fff;
+  flex-shrink:0;
+}
+.subj-pick.selected .check { background:#007AFF; border-color:#007AFF; }
+.subj-pick .subj-copy {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  text-align:left;
+}
+.subj-pick .subj-name { line-height:1.2; }
+.subj-pick .subj-stat {
+  font-size:.66rem;
+  font-weight:700;
+  color:#64748b;
+}
+.subj-pick.selected .subj-stat { color:#0063D1; }
+.subj-pick.locked .subj-stat { color:#94a3b8; }
+
+/* ===== Review screen ===== */
+.rev-filter {
+  padding: 8px 14px;
+  font-size: .78rem;
+  font-weight: 700;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 100px;
+  background: #fafbfc;
+  cursor: pointer;
+  font-family: inherit;
+  color: #475569;
+  transition: all .15s;
+}
+.rev-filter:hover { border-color: #4DA3FF; }
+.rev-filter.active { background: #007AFF; color: #fff; border-color: #007AFF; }
+
+.rev-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+/* Status is communicated via the pill in .rev-meta + tinted option boxes,
+   not via colored left borders (which looked AI-generated). */
+
+.rev-meta {
+  display: flex;
+  gap: 6px;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.rev-meta .pill {
+  padding: 4px 10px;
+  background: #f1f5f9;
+  border-radius: 100px;
+  color: #475569;
+}
+.rev-meta .pill.subj { background: #eff6ff; color: #1d4ed8; }
+.rev-meta .pill.wrong { background: #fef2f2; color: #b91c1c; }
+.rev-meta .pill.correct { background: #f0fdf4; color: #15803d; }
+.rev-meta .pill.skipped { background: #fffbeb; color: #b45309; }
+.rev-meta .pill.ungraded { background: #f8fafc; color: #64748b; }
+
+.rev-q {
+  font-size: .95rem;
+  line-height: 1.6;
+  color: #0f172a;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.rev-opts { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+.rev-opt {
+  display: flex;
+  gap: 12px;
+  padding: 11px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: .85rem;
+  line-height: 1.45;
+  color: #334155;
+  align-items: flex-start;
+}
+.rev-opt.your-pick { border-color: #94a3b8; background: #f1f5f9; }
+.rev-opt.correct { border-color: #86efac; background: #f0fdf4; color: #14532d; }
+.rev-opt.your-pick.correct { border-color: #22c55e; background: #dcfce7; }
+.rev-opt.your-pick.wrong { border-color: #fca5a5; background: #fef2f2; color: #991b1b; }
+.rev-opt-letter {
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 20px;
+  color: inherit;
+  opacity: .7;
+}
+.rev-opt-tag {
+  margin-left: auto;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.rev-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.rev-actions button {
+  padding: 9px 16px;
+  font-size: .78rem;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #475569;
+  transition: all .15s ease;
+}
+.rev-actions button:hover { border-color: #cbd5e1; background: #f8fafc; color: #0f172a; }
+.rev-actions button.primary {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+.rev-actions button.primary:hover {
+  background: #1e293b;
+  border-color: #1e293b;
+  color: #fff;
+}
+.rev-explain {
+  margin-top: 14px;
+  padding: 16px 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: .88rem;
+  line-height: 1.65;
+  color: #1e293b;
+  white-space: pre-wrap;
+  position: relative;
+}
+.rev-explain::before {
+  content: "AI tutor";
+  display: block;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+</style>
+
+<script>
+// =====================================================================
+// SETUP SCREEN LOGIC
+// =====================================================================
+var POOL = null;
+var POOL_STATS = null;
+var RESUME_SNAPSHOT = null;
+var CBT_EVENTS_BOUND = false;
+var SELECTED_MODE = "full";
+var SELECTED_SUBJECTS = ["english","mathematics","physics","biology"];
+
+var SUBJ_META = {
+  english: {emoji:"📝", label:"Use of English"},
+  mathematics: {emoji:"➗", label:"Mathematics"},
+  physics: {emoji:"⚛️", label:"Physics"},
+  chemistry: {emoji:"🧪", label:"Chemistry"},
+  biology: {emoji:"🌱", label:"Biology"},
+  government: {emoji:"🏛️", label:"Government"},
+  economics: {emoji:"💹", label:"Economics"},
+  literature: {emoji:"📖", label:"Literature"},
+  crk: {emoji:"✝️", label:"CRK"},
+  commerce: {emoji:"🛒", label:"Commerce"},
+  accounts: {emoji:"📒", label:"Accounts"},
+};
+
+function questionsPerSubjectForMode() {
+  return SELECTED_MODE === "quick" ? 10 : 40;
+}
+
+function getAnsweredCount(subject) {
+  return POOL_STATS && POOL_STATS[subject] ? (POOL_STATS[subject].answered || 0) : 0;
+}
+
+function getCoverageSummary() {
+  var qPerSubject = questionsPerSubjectForMode();
+  var total = SELECTED_SUBJECTS.length * qPerSubject;
+  var gradable = SELECTED_SUBJECTS.reduce(function (sum, subject) {
+    return sum + Math.min(getAnsweredCount(subject), qPerSubject);
+  }, 0);
+  return {
+    total: total,
+    gradable: gradable,
+    qPerSubject: qPerSubject,
+  };
+}
+
+function syncModeCards() {
+  document.querySelectorAll(".mode-card").forEach(function (card) {
+    card.classList.toggle("selected", card.dataset.mode === SELECTED_MODE);
+  });
+}
+
+function updateSetupState() {
+  var startBtn = document.getElementById("start-btn");
+  var warning = document.getElementById("setup-warning");
+  if (!startBtn || !warning) return;
+
+  if (!POOL_STATS || !SELECTED_SUBJECTS.length) {
+    warning.hidden = true;
+    startBtn.textContent = "Start CBT Mock →";
+    return;
+  }
+
+  var coverage = getCoverageSummary();
+  if (coverage.total > 0 && coverage.gradable === coverage.total) {
+    warning.hidden = true;
+    startBtn.textContent = "Start CBT Mock →";
+    return;
+  }
+
+  warning.hidden = false;
+  if (coverage.gradable === 0) {
+    warning.textContent = "This subject selection has no confirmed answer keys yet. You can still practise the CBT interface, but this run will be practice-only and will not produce a reliable score.";
+    startBtn.textContent = "Start Practice Session →";
+    return;
+  }
+
+  warning.textContent = "Only " + coverage.gradable + " of " + coverage.total + " selected questions currently have confirmed answer keys. AfroJAMB will still let you practise the full paper, but your score will be calculated only from the graded questions.";
+  startBtn.textContent = "Start Partly Graded Mock →";
+}
+
+// Mode picker
+document.querySelectorAll(".mode-card").forEach(function(card){
+  card.addEventListener("click", function(){
+    SELECTED_MODE = card.dataset.mode;
+    if (SELECTED_MODE === "subject" && SELECTED_SUBJECTS.length > 1) {
+      SELECTED_SUBJECTS = [SELECTED_SUBJECTS[0]];
+    }
+    syncModeCards();
+    renderSubjectPicker();
+  });
+});
+
+function renderSubjectPicker() {
+  var picker = document.getElementById("subject-picker");
+  picker.innerHTML = "";
+  Object.keys(SUBJ_META).forEach(function(key){
+    var meta = SUBJ_META[key];
+    var answered = getAnsweredCount(key);
+    var coverageText = POOL_STATS
+      ? (answered > 0 ? answered + " graded questions" : "practice only for now")
+      : "checking coverage";
+    var btn = document.createElement("button");
+    btn.type = "button";
+    var isSelected = SELECTED_SUBJECTS.indexOf(key) !== -1;
+    var isEnglish = key === "english";
+    var isLocked = isEnglish && SELECTED_MODE !== "subject";
+    btn.className = "subj-pick" + (isSelected ? " selected" : "") + (isLocked ? " locked" : "");
+    // Proper semantics — checkbox-ish toggle (or radio in single-subject mode)
+    btn.setAttribute("role", SELECTED_MODE === "subject" ? "radio" : "checkbox");
+    btn.setAttribute("aria-checked", isSelected ? "true" : "false");
+    if (isLocked) btn.setAttribute("aria-disabled", "true");
+    btn.setAttribute("aria-label", meta.label + (isEnglish ? " (compulsory)" : ""));
+    btn.innerHTML = '<span class="check" aria-hidden="true">' + (isSelected ? "✓" : "") + '</span>' +
+                    '<span><span aria-hidden="true">' + meta.emoji + '</span> ' + meta.label + '</span>';
+    var labelBox = btn.querySelector("span:last-child");
+    if (labelBox) {
+      labelBox.className = "subj-copy";
+      labelBox.innerHTML = '<span class="subj-name">' + labelBox.innerHTML + '</span><span class="subj-stat">' + coverageText + '</span>';
+    }
+    btn.addEventListener("click", function(e){
+      if (isLocked) return;
+      if (SELECTED_MODE === "subject") {
+        SELECTED_SUBJECTS = [key];
+      } else {
+        var idx = SELECTED_SUBJECTS.indexOf(key);
+        if (idx >= 0) SELECTED_SUBJECTS.splice(idx, 1);
+        else if (SELECTED_SUBJECTS.length < 4) SELECTED_SUBJECTS.push(key);
+      }
+      renderSubjectPicker();
+    });
+    picker.appendChild(btn);
+  });
+  updateSetupState();
+}
+renderSubjectPicker();
+
+// Auto-load pool from URL params (e.g. ?mode=quick from hero CTA)
+(function(){
+  var p = new URLSearchParams(location.search);
+  if (p.get("mode") === "quick") {
+    SELECTED_MODE = "quick";
+    syncModeCards();
+  }
+})();
+
+async function loadPoolStats() {
+  try {
+    var res = await fetch("/data/jamb/pools/index.json");
+    var data = await res.json();
+    POOL_STATS = (data && data.stats && data.stats.by_subject) || null;
+  } catch (e) {
+    POOL_STATS = null;
+  }
+  renderSubjectPicker();
+}
+
+async function ensurePoolLoaded() {
+  if (POOL) return POOL;
+  var res = await fetch("/data/jamb/pools/practice-pool.json");
+  var data = await res.json();
+  POOL = data.questions || [];
+  return POOL;
+}
+
+function mapModeForSnapshot(mode) {
+  return mode === "quick" || mode === "subject" ? mode : "full";
+}
+
+function maybeShowResume() {
+  if (!(window.AfroJAMB && AfroJAMB.CBT && typeof AfroJAMB.CBT.tryRestore === "function")) {
+    setTimeout(maybeShowResume, 200);
+    return;
+  }
+  var snapshot = AfroJAMB.CBT.tryRestore();
+  if (!snapshot || !Array.isArray(snapshot.questionIds) || !snapshot.questionIds.length) return;
+
+  var remainingSeconds = Math.max(0, Math.floor(((snapshot.durationMs || 0) - (Date.now() - (snapshot.startedAt || 0))) / 1000));
+  if (!remainingSeconds) {
+    AfroJAMB.CBT.clearSession();
+    return;
+  }
+
+  RESUME_SNAPSHOT = snapshot;
+  var labels = (snapshot.subjects || []).map(function (subject) {
+    return SUBJ_META[subject] ? SUBJ_META[subject].label : subject;
+  });
+  document.getElementById("resume-meta").textContent =
+    labels.join(", ") + " • " + Math.ceil(remainingSeconds / 60) + " min left";
+  document.getElementById("resume-card").hidden = false;
+}
+
+async function buildAiHeaders() {
+  var headers = {"Content-Type":"application/json"};
+  try {
+    if (window.AfroAuth && typeof AfroAuth.isLoggedIn === "function" && AfroAuth.isLoggedIn()) {
+      var token = null;
+      if (typeof AfroAuth.getSessionTokenAsync === "function") token = await AfroAuth.getSessionTokenAsync();
+      else if (typeof AfroAuth.getSessionToken === "function") token = AfroAuth.getSessionToken();
+      if (token) headers.Authorization = "Bearer " + token;
+    }
+  } catch (e) {}
+  return headers;
+}
+
+document.getElementById("resume-btn").addEventListener("click", async function () {
+  if (!RESUME_SNAPSHOT) return;
+  this.disabled = true;
+  try {
+    SELECTED_MODE = mapModeForSnapshot(RESUME_SNAPSHOT.mode);
+    if (Array.isArray(RESUME_SNAPSHOT.subjects) && RESUME_SNAPSHOT.subjects.length) {
+      SELECTED_SUBJECTS = RESUME_SNAPSHOT.subjects.slice();
+    }
+    syncModeCards();
+    renderSubjectPicker();
+    await ensurePoolLoaded();
+    startCBT(RESUME_SNAPSHOT);
+  } catch (e) {
+    alert("Could not resume this saved mock. Start a fresh one instead.");
+    this.disabled = false;
+    setTimeout(updateSetupState, 0);
+  }
+});
+
+document.getElementById("discard-resume-btn").addEventListener("click", function () {
+  RESUME_SNAPSHOT = null;
+  if (window.AfroJAMB && AfroJAMB.CBT && typeof AfroJAMB.CBT.clearSession === "function") {
+    AfroJAMB.CBT.clearSession();
+  }
+  document.getElementById("resume-card").hidden = true;
+});
+
+document.getElementById("start-btn").addEventListener("click", async function(){
+  if (SELECTED_SUBJECTS.length === 0) {
+    alert("Pick at least 1 subject");
+    return;
+  }
+  this.disabled = true;
+  this.textContent = "Loading questions...";
+  try {
+    await ensurePoolLoaded();
+    startCBT();
+  } catch(e) {
+    alert("Failed to load questions. Please try again.");
+    this.disabled = false;
+    this.textContent = "Start CBT Mock →";
+  }
+});
+
+window.addEventListener("load", function () {
+  loadPoolStats();
+  maybeShowResume();
+});
+
+// =====================================================================
+// CBT SESSION
+// =====================================================================
+function startCBT(resumeSnapshot) {
+  document.getElementById("setup-screen").hidden = true;
+  document.getElementById("cbt-shell").hidden = false;
+
+  var cfg = {
+    pool: POOL,
+    subjects: SELECTED_SUBJECTS,
+    mode: SELECTED_MODE === "quick" ? "quick" : (SELECTED_MODE === "subject" ? "subject" : "full"),
+    questionsPerSubject: SELECTED_MODE === "quick" ? 10 : 40,
+    durationMinutes: SELECTED_MODE === "quick" ? 30 : (SELECTED_MODE === "subject" ? 40 : 120),
+    onTick: renderTimer,
+    onTimeout: function(){ submitTest(true); },
+  };
+
+  try {
+    if (resumeSnapshot && typeof AfroJAMB.CBT.restore === "function") {
+      AfroJAMB.CBT.restore(cfg, resumeSnapshot);
+    } else {
+      AfroJAMB.CBT.init(cfg);
+    }
+  } catch(e) {
+    alert("Could not start: " + e.message);
+    return;
+  }
+
+  lastMilestoneSpoken = null;
+  renderTimer(AfroJAMB.CBT.timeRemainingSeconds());
+  renderSubjectsBar();
+  renderQuestion();
+  renderNavGrid();
+
+  if (!CBT_EVENTS_BOUND) {
+    document.getElementById("cbt-prev").addEventListener("click", function(){ AfroJAMB.CBT.prev(); renderQuestion(); renderNavGrid(); renderSubjectsBar(); });
+    document.getElementById("cbt-next").addEventListener("click", function(){ AfroJAMB.CBT.next(); renderQuestion(); renderNavGrid(); renderSubjectsBar(); });
+    document.getElementById("cbt-mark").addEventListener("click", function(){ AfroJAMB.CBT.markForReview(); renderQuestion(); renderNavGrid(); });
+    document.getElementById("cbt-submit-top").addEventListener("click", function(){
+      if (confirm("Submit your test now? You won't be able to change your answers after this.")) {
+        submitTest(false);
+      }
+    });
+    CBT_EVENTS_BOUND = true;
+  }
+}
+
+// Milestones at which we announce the remaining time via aria-live.
+var TIMER_MILESTONES = [30 * 60, 15 * 60, 10 * 60, 5 * 60, 2 * 60, 60, 30, 10, 0];
+var lastMilestoneSpoken = null;
+
+function renderTimer(secs) {
+  var h = Math.floor(secs / 3600);
+  var m = Math.floor((secs % 3600) / 60);
+  var s = secs % 60;
+  var el = document.getElementById("cbt-timer");
+  el.textContent = String(h).padStart(2,"0") + ":" + String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+  if (secs < 300) el.classList.add("urgent");
+
+  // Screen reader announcements — only at milestones to avoid chatter
+  var milestone = TIMER_MILESTONES.find(function(ms){ return secs <= ms && ms !== lastMilestoneSpoken; });
+  if (milestone !== undefined && milestone !== lastMilestoneSpoken) {
+    lastMilestoneSpoken = milestone;
+    var sr = document.getElementById("cbt-sr-timer");
+    if (sr) {
+      if (milestone === 0) sr.textContent = "Time is up.";
+      else if (milestone < 60) sr.textContent = milestone + " seconds remaining.";
+      else if (milestone === 60) sr.textContent = "One minute remaining.";
+      else sr.textContent = (milestone / 60) + " minutes remaining.";
+    }
+  }
+}
+
+function renderSubjectsBar() {
+  var state = AfroJAMB.CBT.getState();
+  var bar = document.getElementById("cbt-subjects-bar");
+  bar.innerHTML = "";
+  bar.setAttribute("role", "tablist");
+  bar.setAttribute("aria-label", "Subjects");
+  state.subjects.forEach(function(s){
+    var meta = SUBJ_META[s] || {emoji:"📚", label:s};
+    var isActive = s === state.currentSubject;
+    var btn = document.createElement("button");
+    btn.className = "cbt-subj" + (isActive ? " active" : "");
+    btn.type = "button";
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    btn.setAttribute("aria-controls", "cbt-question-panel");
+    btn.tabIndex = isActive ? 0 : -1;
+    // Use span with aria-hidden for the emoji so screen readers don't verbalize it
+    btn.innerHTML = '<span aria-hidden="true">' + meta.emoji + '</span> ' + meta.label;
+    btn.addEventListener("click", function(){
+      AfroJAMB.CBT.switchSubject(s);
+      renderQuestion();
+      renderNavGrid();
+      renderSubjectsBar();
+    });
+    bar.appendChild(btn);
+  });
+}
+
+function renderQuestion() {
+  var data = AfroJAMB.CBT.getCurrentQuestion();
+  if (!data) return;
+  var q = data.question;
+  var subjLbl = (SUBJ_META[data.currentSubject] && SUBJ_META[data.currentSubject].label) || data.currentSubject;
+  document.getElementById("cbt-q-num").textContent = "Q" + data.indexInSubject;
+  document.getElementById("cbt-q-info").textContent = subjLbl + " · " + data.indexInSubject + " / " + data.subjectTotal;
+  document.getElementById("cbt-q-text").textContent = q.question;
+
+  var optsBox = document.getElementById("cbt-options");
+  optsBox.innerHTML = "";
+  // Proper radiogroup semantics
+  optsBox.setAttribute("role", "radiogroup");
+  optsBox.setAttribute("aria-label", "Answer options for question " + data.indexInSubject);
+
+  var letters = ["A","B","C","D","E"].filter(function(l){ return q.options[l]; });
+  letters.forEach(function(letter, i){
+    var isSelected = data.selectedAnswer === letter;
+    var div = document.createElement("div");
+    div.className = "cbt-opt" + (isSelected ? " selected" : "");
+    div.setAttribute("role", "radio");
+    div.setAttribute("aria-checked", isSelected ? "true" : "false");
+    // Keyboard: selected item is in tab order, others -1 (roving tabindex)
+    var anyChecked = letters.some(function(l){ return data.selectedAnswer === l; });
+    div.tabIndex = (anyChecked ? isSelected : i === 0) ? 0 : -1;
+    div.innerHTML = '<div class="cbt-opt-label" aria-hidden="true">' + letter + '</div>' +
+                    '<div class="cbt-opt-text">' + escapeHtmlCbt(q.options[letter]) + '</div>';
+    // Announce letter prefix for screen readers via aria-label
+    div.setAttribute("aria-label", "Option " + letter + ": " + q.options[letter]);
+
+    div.addEventListener("click", function(){
+      AfroJAMB.CBT.selectAnswer(letter);
+      renderQuestion();
+      renderNavGrid();
+    });
+    // Keyboard support — Space/Enter to select, Arrow keys to navigate
+    div.addEventListener("keydown", function(e){
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        AfroJAMB.CBT.selectAnswer(letter);
+        renderQuestion();
+        renderNavGrid();
+      } else if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+        e.preventDefault();
+        var nextL = letters[(i + 1) % letters.length];
+        AfroJAMB.CBT.selectAnswer(nextL);
+        renderQuestion();
+        renderNavGrid();
+        var nextEl = document.querySelector('.cbt-opt[aria-checked="true"]');
+        if (nextEl) nextEl.focus();
+      } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        var prevL = letters[(i - 1 + letters.length) % letters.length];
+        AfroJAMB.CBT.selectAnswer(prevL);
+        renderQuestion();
+        renderNavGrid();
+        var prevEl = document.querySelector('.cbt-opt[aria-checked="true"]');
+        if (prevEl) prevEl.focus();
+      }
+    });
+    optsBox.appendChild(div);
+  });
+
+  document.getElementById("cbt-mark").textContent = data.isMarked ? "Unmark" : "Mark for review";
+  document.getElementById("cbt-mark").setAttribute("aria-pressed", data.isMarked ? "true" : "false");
+}
+
+function escapeHtmlCbt(s) {
+  return String(s).replace(/[&<>"']/g, function(c){
+    return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[c];
+  });
+}
+
+function renderNavGrid() {
+  var grid = AfroJAMB.CBT.getCurrentSubjectGrid();
+  var wrap = document.getElementById("cbt-nav-grid");
+  wrap.innerHTML = "";
+  grid.forEach(function(c, i){
+    var cell = document.createElement("button");
+    cell.type = "button";
+    cell.className = "cbt-nav-cell"
+      + (c.answered ? " answered" : "")
+      + (c.marked ? " marked" : "")
+      + (c.current ? " current" : "");
+    cell.textContent = i + 1;
+    // ARIA: describe the status for screen readers
+    var status = [];
+    if (c.answered) status.push("answered");
+    if (c.marked) status.push("marked for review");
+    if (c.current) status.push("current question");
+    var label = "Question " + (i + 1) + (status.length ? ", " + status.join(", ") : ", not answered");
+    cell.setAttribute("aria-label", label);
+    if (c.current) cell.setAttribute("aria-current", "step");
+    cell.addEventListener("click", function(){
+      AfroJAMB.CBT.goto(c.index);
+      renderQuestion();
+      renderNavGrid();
+    });
+    wrap.appendChild(cell);
+  });
+}
+
+function submitTest(timedOut) {
+  var score = AfroJAMB.CBT.submit();
+  document.getElementById("cbt-shell").hidden = true;
+  document.getElementById("results-screen").hidden = false;
+  if (score.outOf === 0) {
+    document.getElementById("result-aggregate").textContent = "Practice";
+    document.getElementById("result-pct").textContent = "0";
+  } else {
+    document.getElementById("result-aggregate").textContent = score.aggregate;
+    document.getElementById("result-pct").textContent = score.pctCorrect;
+  }
+
+  // Show ungraded notice if any
+  if (score.ungraded > 0) {
+    var noticeEl = document.createElement("div");
+    noticeEl.style.cssText = "background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:.78rem;color:#92400e;";
+    noticeEl.textContent = score.ungraded + " of " + (score.outOf + score.ungraded) + " questions had no answer key in our database yet — they were excluded from scoring. Aggregate is calculated on " + score.outOf + " graded questions across " + score.gradedSubjects.length + " subjects.";
+    if (score.outOf === 0) {
+      noticeEl.textContent = "This session ran in practice-only mode because none of the selected questions had confirmed answer keys yet. Your answers are still available below for review.";
+    }
+    var existing = document.querySelector("#results-screen .ungraded-notice");
+    if (existing) existing.remove();
+    noticeEl.classList.add("ungraded-notice");
+    document.getElementById("result-subjects").parentNode.insertBefore(noticeEl, document.getElementById("result-subjects"));
+  }
+
+  var subjBox = document.getElementById("result-subjects");
+  subjBox.innerHTML = "";
+  Object.keys(score.subjectScores).forEach(function(s){
+    var meta = SUBJ_META[s] || {emoji:"📚", label:s};
+    var graded = score.subjectGraded[s] || 0;
+    var total = score.subjectTotal[s] || 0;
+    var card = document.createElement("div");
+    card.style.cssText = "background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:18px;text-align:center;";
+    if (graded === 0) {
+      card.innerHTML = '<div style="font-size:1.4rem;">' + meta.emoji + '</div>' +
+        '<div style="font-size:1rem;font-weight:800;color:#94a3b8;margin-top:4px;">Ungraded</div>' +
+        '<div style="font-size:.7rem;color:#64748b;margin-top:4px;font-weight:600;">' + meta.label + '</div>' +
+        '<div style="font-size:.62rem;color:#94a3b8;margin-top:2px;">' + total + ' Qs · no answer key yet</div>';
+    } else {
+      card.innerHTML = '<div style="font-size:1.4rem;">' + meta.emoji + '</div>' +
+        '<div style="font-size:1.6rem;font-weight:800;color:#007AFF;margin-top:4px;">' + score.subjectScores[s] + '<span style="font-size:.8rem;color:#94a3b8;">/100</span></div>' +
+        '<div style="font-size:.7rem;color:#64748b;margin-top:4px;font-weight:600;">' + meta.label + '</div>' +
+        '<div style="font-size:.62rem;color:#94a3b8;margin-top:2px;">' + score.subjectCorrect[s] + ' / ' + graded + ' correct</div>';
+    }
+    subjBox.appendChild(card);
+  });
+
+  // ===== Review screen =====
+  REVIEW_ITEMS = score.reviewItems || [];
+  CURRENT_FILTER = "wrong";
+
+  // Persist last attempt to history (localStorage) BEFORE telling AfroEdu,
+  // because the bridge derives bestMockAggregate from afrojamb-history.
+  try {
+    var hist = JSON.parse(localStorage.getItem("afrojamb-history") || "[]");
+    hist.unshift({
+      ts: Date.now(),
+      mode: SELECTED_MODE,
+      subjects: SELECTED_SUBJECTS,
+      aggregate: score.aggregate,
+      pctCorrect: score.pctCorrect,
+      ungraded: score.ungraded,
+      outOf: score.outOf,
+      subjectScores: score.subjectScores,
+      durationSeconds: score.durationSeconds,
+    });
+    localStorage.setItem("afrojamb-history", JSON.stringify(hist.slice(0, 30)));
+  } catch (e) { /* ignore */ }
+
+  // Cross-tool mirror: push this mock into the unified profile + activity feed.
+  // Anonymous users get localStorage-only; logged-in users get a profile sync.
+  if (window.AfroEdu && typeof AfroEdu.recordMock === "function") {
+    try {
+      AfroEdu.recordMock({
+        aggregate: score.aggregate,
+        subjectScores: score.subjectScores,
+        mode: SELECTED_MODE,
+        subjects: SELECTED_SUBJECTS,
+        durationSeconds: score.durationSeconds,
+        ungraded: score.ungraded,
+        outOf: score.outOf,
+        pctCorrect: score.pctCorrect,
+      });
+    } catch (e) { /* don't block results rendering */ }
+  }
+
+  // Filter counts
+  document.getElementById("rf-wrong").textContent = score.reviewItems.filter(function(r){return r.wrong;}).length;
+  document.getElementById("rf-skip").textContent = score.reviewItems.filter(function(r){return r.skipped;}).length;
+  document.getElementById("rf-right").textContent = score.reviewItems.filter(function(r){return r.correct;}).length;
+  document.getElementById("rf-all").textContent = score.reviewItems.length;
+  renderReviewList();
+
+  document.querySelectorAll(".rev-filter").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".rev-filter").forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      CURRENT_FILTER = btn.dataset.filter;
+      renderReviewList();
+    });
+  });
+}
+
+var REVIEW_ITEMS = [];
+var CURRENT_FILTER = "wrong";
+
+function renderReviewList() {
+  var box = document.getElementById("review-list");
+  box.innerHTML = "";
+  var items = REVIEW_ITEMS.filter(function(r){
+    if (CURRENT_FILTER === "wrong") return r.wrong;
+    if (CURRENT_FILTER === "skipped") return r.skipped;
+    if (CURRENT_FILTER === "correct") return r.correct;
+    return true;
+  });
+  if (items.length === 0) {
+    box.innerHTML = '<div style="text-align:center;padding:24px;color:#64748b;font-size:.86rem;">No questions in this filter. 🎉</div>';
+    return;
+  }
+  items.forEach(function(r){ box.appendChild(renderReviewCard(r)); });
+}
+
+function renderReviewCard(r) {
+  var card = document.createElement("div");
+  var status = r.wrong ? "wrong" : (r.correct ? "correct" : (r.skipped ? "skipped" : "ungraded"));
+  card.className = "rev-card " + status;
+
+  var subjLabel = (SUBJ_META[r.subject] && SUBJ_META[r.subject].label) || r.subject;
+  var statusPill = r.wrong ? '<span class="pill wrong">❌ Wrong</span>'
+    : r.correct ? '<span class="pill correct">✓ Correct</span>'
+    : r.skipped ? '<span class="pill skipped">⊘ Skipped</span>'
+    : '<span class="pill ungraded">— Ungraded</span>';
+
+  var meta = '<div class="rev-meta"><span class="pill subj">' + subjLabel + '</span>'
+    + (r.year ? '<span class="pill">JAMB ' + r.year + '</span>' : '')
+    + '<span class="pill">Q' + (r.index + 1) + '</span>'
+    + statusPill + '</div>';
+
+  var optsHtml = '';
+  ["A","B","C","D","E"].forEach(function(letter){
+    if (!r.options[letter]) return;
+    var classes = ["rev-opt"];
+    var tag = "";
+    if (letter === r.correctAnswer) {
+      classes.push("correct");
+      tag = '<span class="rev-opt-tag" style="color:#065f46;">Correct</span>';
+    }
+    if (letter === r.pickedAnswer) {
+      classes.push("your-pick");
+      if (letter === r.correctAnswer) {
+        tag = '<span class="rev-opt-tag" style="color:#065f46;">Your answer · Correct</span>';
+      } else {
+        tag = '<span class="rev-opt-tag" style="color:#991b1b;">Your answer</span>';
+        classes.push("wrong");
+      }
+    }
+    optsHtml += '<div class="' + classes.join(" ") + '">'
+      + '<div class="rev-opt-letter">' + letter + '</div>'
+      + '<div>' + escapeHtml(r.options[letter]) + '</div>'
+      + tag + '</div>';
+  });
+
+  var actionsHtml = '<div class="rev-actions">'
+    + (r.graded ? '<button class="explain-btn primary">🤖 Why is this the answer?</button>' : '<button class="explain-btn primary">🤖 Explain this question</button>')
+    + '</div>';
+
+  card.innerHTML = meta
+    + '<div class="rev-q">' + escapeHtml(r.question) + '</div>'
+    + '<div class="rev-opts">' + optsHtml + '</div>'
+    + actionsHtml;
+
+  card.querySelector(".explain-btn").addEventListener("click", async function(){
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = "Asking AI…";
+    try {
+      var prompt = "Explain this JAMB " + r.subject + " question step by step. "
+        + (r.pickedAnswer ? "I picked option " + r.pickedAnswer + ". " : "I skipped this. ")
+        + (r.correctAnswer ? "The correct answer is " + r.correctAnswer + ". " : "")
+        + "Why is the correct answer right? "
+        + "Question: " + r.question + "\nOptions:\n"
+        + Object.entries(r.options).map(function(p){return p[0]+". "+p[1];}).join("\n");
+      var res = await fetch("/.netlify/functions/ai-advisor", {
+        method: "POST",
+        headers: await buildAiHeaders(),
+        body: JSON.stringify({tool: "jamb-tutor-" + r.subject, message: prompt})
+      });
+      var data = await res.json();
+      var reply = data.reply || data.message || data.response || "Could not generate explanation.";
+      var box = document.createElement("div");
+      box.className = "rev-explain";
+      box.textContent = reply;
+      card.appendChild(box);
+      btn.textContent = "✓ Explained";
+    } catch(e) {
+      btn.textContent = "Try again";
+      btn.disabled = false;
+    }
+  });
+
+  return card;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c){
+    return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[c];
+  });
+}
+</script>
+
+</body>
+</html>

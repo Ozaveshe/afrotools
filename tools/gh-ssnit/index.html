@@ -1101,5 +1101,79 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script>
+(function () {
+  "use strict";
+
+  function updateCopy() {
+    Array.from(document.querySelectorAll('li')).forEach(function (item) {
+      if (item.textContent.indexOf('NHIA (health)') !== -1) {
+        item.remove();
+      }
+    });
+
+    Array.from(document.querySelectorAll('p')).forEach(function (p) {
+      if (p.textContent.indexOf('Total mandatory:') !== -1) {
+        p.innerHTML = 'Total mandatory: <strong>18.5%</strong> of capped basic salary (5.5% employee + 13% employer). NHIA is carved out of the 13.5% first-tier remittance, not added on top.';
+      }
+      if (p.textContent.indexOf('Under the current structure, employers contribute a total of 15.5%') !== -1) {
+        p.textContent = 'Under the current structure, employees contribute 5.5% of basic salary and employers contribute 13%. The first-tier remittance totals 13.5% (5.5% employee + 8% employer), from which SSNIT allocates 2.5% to NHIA internally. Employers also remit 5% of capped basic salary to a private NPRA-licensed trustee for Tier 2 occupational benefits. Total mandatory contributions are therefore 18.5%, with the employer bearing 13% in total.';
+      }
+    });
+  }
+
+  var originalCalcS1 = window.calcS1;
+  window.calcS1 = function () {
+    originalCalcS1();
+    var table = document.getElementById('s1BreakdownTable');
+    var body = document.getElementById('s1ResultBody');
+
+    if (table) {
+      table.innerHTML = table.innerHTML
+        .replace('Tier 1 (SSNIT)', 'Tier 1 (SSNIT First Tier)')
+        .replace(/<tr><td>NHIA \(Health\)<\/td><td>[^]*?<\/tr>/, '');
+    }
+
+    if (body && !document.getElementById('s1NhiaNote')) {
+      var note = document.createElement('div');
+      note.id = 's1NhiaNote';
+      note.className = 'ssnit-alert ssnit-alert-blue';
+      note.style.marginTop = '12px';
+      note.innerHTML = '<strong>NHIA note:</strong> The 2.5% NHIA amount is carved out of the first-tier remittance administered by SSNIT. It is not an extra employer cost on top of the statutory 13% employer contribution.';
+      body.appendChild(note);
+    }
+  };
+
+  window.calcS5 = function () {
+    var salary = +document.getElementById('s5Salary').value;
+    var years = +document.getElementById('s5Years').value;
+    clearErr('s5Err');
+    if (salary <= 0 || years <= 0) return showErr('s5Err', 'Enter valid salary and years.');
+
+    var monthlyTier2 = Math.min(salary, (window.SSNITEngine && window.SSNITEngine.MAX_INSURABLE_EARNINGS) || 69000) * E.RATES.tier2;
+    var best = E.TIER2_FUNDS[0];
+    var worst = E.TIER2_FUNDS[E.TIER2_FUNDS.length - 1];
+    var impactBestVsWorst = E.tier2FundImpact(monthlyTier2, years, best.avg3yr, worst.avg3yr);
+    var impactPerOnePercent = E.tier2FundImpact(monthlyTier2, years, best.avg3yr, best.avg3yr - 1);
+
+    var html = '<div class="ssnit-result-grid">';
+    html += '<div class="ssnit-result-box hi"><div class="num">' + fmt(impactBestVsWorst.diff) + '</div><div class="lbl">Best vs Worst Fund Difference (' + years + ' yrs)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactBestVsWorst.fvHigh) + '</div><div class="lbl">At Best Fund (' + best.avg3yr + '% avg)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactBestVsWorst.fvLow) + '</div><div class="lbl">At Worst Fund (' + worst.avg3yr + '% avg)</div></div>';
+    html += '<div class="ssnit-result-box"><div class="num">' + fmt(impactPerOnePercent.diff) + '</div><div class="lbl">1% Return Difference Over ' + years + ' Years</div></div>';
+    html += '</div>';
+    html += '<div class="ssnit-alert ssnit-alert-amber" style="margin-top:12px">Your monthly Tier 2 contribution: <strong>' + fmt(monthlyTier2) + '</strong> (5% of capped basic salary, employer-funded). The difference between the best and worst fund manager compounds to <strong>' + fmt(impactBestVsWorst.diff) + '</strong> over ' + years + ' years. Ask your HR department which trustee manages your Tier 2 fund.</div>';
+    document.getElementById('s5ResultBody').innerHTML = html;
+    document.getElementById('s5ResultBody').classList.remove('ssnit-hidden');
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    updateCopy();
+    if (typeof window.calcS1 === 'function') {
+      window.calcS1();
+    }
+  });
+}());
+</script>
 </body>
 </html>

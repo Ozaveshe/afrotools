@@ -255,14 +255,20 @@ function calculate(){
     notes='<strong>Exempt:</strong> Inter-company dividends between SA companies are exempt from dividends tax (Section 64F).';
   }
 
-  // Treaty rates for non-residents or foreign
-  if(!exempt&&(recipientType==='non-resident'||divType==='foreign')){
+  // Treaty rates apply to South African dividends paid to non-residents.
+  if(!exempt&&recipientType==='non-resident'&&divType==='local'){
     rate=(+document.getElementById('treatyRate').value)/100;
+  }
+
+  if(divType==='foreign'){
+    exempt=true;
+    notes="<strong>Note:</strong> Foreign dividends are generally not subject to South Africa's local dividends tax withholding. They are usually dealt with under income-tax rules with possible foreign-tax credits, so this tool does not estimate that liability.";
   }
 
   // REIT distributions taxed as income, not dividends tax
   if(divType==='reit'){
-    notes='<strong>Note:</strong> REIT/property fund distributions are generally taxed as income at your marginal rate, not at the 20% dividends tax rate. This calculator shows the withholding amount for illustration.';
+    exempt=true;
+    notes='<strong>Note:</strong> REIT/property fund distributions are generally taxed as income at your marginal rate, not under the normal 20% dividends tax withholding regime. This tool does not estimate that income-tax liability.';
   }
 
   const taxPerPayment=exempt?0:grossDiv*rate;

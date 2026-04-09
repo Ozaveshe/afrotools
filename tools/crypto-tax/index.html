@@ -207,7 +207,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <p>Cryptocurrency taxation in Africa is evolving rapidly. As digital asset adoption grows across the continent — Nigeria, Kenya, and South Africa are consistently among the top crypto adoption countries globally — tax authorities are increasingly clarifying their positions on how crypto should be taxed. Understanding your obligations is essential to avoid penalties.</p>
 <p>In Nigeria, the Nigeria Tax Act 2025 (effective January 2026) taxes crypto gains as "chargeable gains" at rates up to 25%, with a tax-free threshold of &#x20A6;800,000. All crypto users must link exchange accounts to their TIN and NIN. VASPs face 30% corporate tax and non-compliance penalties up to &#x20A6;10M.</p>
 <p>South Africa's SARS is the most explicit in Africa about crypto taxation. Crypto is treated as a financial asset, not currency. Profits from crypto trading are subject to capital gains tax (CGT) — with an annual exclusion of R40,000. Only 40% of gains are included in taxable income for individuals (effective max rate ~18%). If you're a frequent trader, SARS may classify your activity as trading income (100% taxable at marginal rates, up to 45%).</p>
-<p>Kenya introduced a 3% Digital Asset Tax (DAT) on the value of digital asset transfers in 2023, making it one of the first African countries with crypto-specific tax legislation. This is payable by exchanges and platforms, though the obligation ultimately falls on the taxpayer. Ghana's GRA has not issued specific crypto guidelines but treats crypto profits as income subject to regular tax rates.</p>
+<p>Kenya introduced a 3% Digital Asset Tax (DAT) on the value of digital asset transfers in 2023, but the Finance Act, 2025 repealed that provision from 1 July 2025. Kenya's broader crypto tax treatment is still developing, so this tool now uses a gain-based estimate rather than the old transfer-value tax. Ghana's GRA has not issued specific crypto guidelines but treats crypto profits as income subject to regular tax rules.</p>
 
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>Do I need to pay tax on crypto in Nigeria?</summary><p>Yes. FIRS considers crypto gains as taxable income. If you sell Bitcoin for Naira at a profit, that profit is subject to personal income tax. Keep records of all your purchases (cost basis), sales, and the dates of transactions. The lack of specific crypto legislation doesn't mean it's tax-free — general income tax rules apply.</p></details>
@@ -233,11 +233,10 @@ const TAX_INFO = {
   },
   KE: {
     name: 'Kenya', symbol: 'KES', currency: 'KES',
-    cgtRate: 0.15, // 15% CGT (increased 2023)
-    digitalAssetTax: 0.03, // 3% DAT
+    cgtRate: 0.15, // gain-based estimate after DAT repeal
     marginalRates: { low: 0.10, mid: 0.25, high: 0.35 },
     exclusion: 0,
-    info: '<p><strong>Kenya:</strong> 3% Digital Asset Tax (DAT) on transfer value since Sep 2023. CGT rate is 15% on net gains. KRA monitors transactions through exchange reporting.</p><p style="margin-top:6px"><strong>Filing:</strong> Via iTax (KRA PIN required).</p>'
+    info: '<p><strong>Kenya:</strong> The 3% Digital Asset Tax in the Income Tax Act was repealed by the Finance Act, 2025 from 1 July 2025. This tool now uses a simplified gain-based estimate instead of taxing the full transfer value.</p><p style="margin-top:6px"><strong>Filing:</strong> Check the latest KRA guidance in iTax because crypto treatment remains an evolving area.</p>'
   },
   ZA: {
     name: 'South Africa', symbol: 'R', currency: 'ZAR',
@@ -311,11 +310,8 @@ function calculate() {
     method = `CGT: ${(t.inclusionRate*100)}% inclusion x ${(marginalRate*100)}% marginal rate`;
     effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
   } else if (c === 'KE') {
-    // DAT (3% on transfer value) or CGT (15% on gain) — whichever applies
-    const dat = salePrice * t.digitalAssetTax;
-    const cgt = gain * t.cgtRate;
-    tax = Math.max(dat, cgt); // Conservative: use higher
-    method = dat > cgt ? `Digital Asset Tax: 3% of sale value` : `CGT: ${(t.cgtRate*100)}% of net gain`;
+    tax = gain * t.cgtRate;
+    method = `Post-DAT repeal estimate: ${(t.cgtRate*100)}% of net gain`;
     effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
   } else if (c === 'UG') {
     // Uganda: 10% on transfer value (not gain)
@@ -361,7 +357,7 @@ function calculate() {
 
   const tips = {
     NG: 'Keep records of all purchases and sales. FIRS is increasing digital asset monitoring. Consider using a crypto tax tracking tool.',
-    KE: 'The 3% DAT is withheld by licensed exchanges. If using P2P or foreign exchanges, you must self-report to KRA.',
+    KE: 'Kenya repealed the 3% Digital Asset Tax from 1 July 2025. Use this as a simplified gain-based estimate and verify the latest KRA guidance before filing.',
     ZA: 'Use the R40,000 annual exclusion wisely. Hold assets for longer periods when possible. SARS has data-sharing agreements with major exchanges.',
     GH: 'While enforcement is limited, GRA is building capacity. File voluntarily to avoid future penalties. Keep all transaction records.',
     UG: 'Uganda\'s 10% DAT applies to the transfer value, not just gains — making it expensive even for small profits. Use licensed URA-compliant exchanges where possible.',

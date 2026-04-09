@@ -478,12 +478,12 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 
 <script>
 var COUNTRIES = {
-  NG:{sym:'\u20A6',mortRate:22,downPct:10,savingsRate:17,hint:'Nigeria avg commercial rate ~22%. NHF rate: 6% (contributors only).',dpHint:'NHF: 10% min. Commercial banks: 20-30%.',savingsHint:'Nigeria fixed deposit ~17-20%/year'},
-  KE:{sym:'KSh',mortRate:13,downPct:20,savingsRate:12,hint:'Kenya avg mortgage rate ~13%.',dpHint:'Kenya banks typically require 20-30%.',savingsHint:'Kenya MMF/fixed deposit ~12%/year'},
-  ZA:{sym:'R',mortRate:11.75,downPct:10,savingsRate:9,hint:'SA prime + 1% avg ~11.75%.',dpHint:'SA: 10% typical. 0% deposit possible for first-time buyers with good credit.',savingsHint:'SA fixed deposit / money market ~9%'},
-  GH:{sym:'GH\u20B5',mortRate:28,downPct:20,savingsRate:25,hint:'Ghana avg mortgage rate ~28%.',dpHint:'Ghana banks require 20-30%.',savingsHint:'Ghana fixed deposit ~25%/year'},
-  TZ:{sym:'TSh',mortRate:17,downPct:20,savingsRate:14,hint:'Tanzania avg mortgage rate ~17%.',dpHint:'Tanzania banks typically require 20-30%.',savingsHint:'Tanzania fixed deposit ~14%/year'},
-  EG:{sym:'E\u00A3',mortRate:20,downPct:20,savingsRate:18,hint:'Egypt avg mortgage rate ~20%.',dpHint:'Egypt social housing: 20%. Commercial: 25-30%.',savingsHint:'Egypt fixed deposit ~18%/year'}
+  NG:{sym:'\u20A6',mortRate:22,downPct:10,savingsRate:17,transferPct:10,hint:'Nigeria avg commercial rate ~22%. NHF rate: 6% (contributors only).',dpHint:'NHF: 10% min. Commercial banks: 20-30%.',savingsHint:'Nigeria fixed deposit ~17-20%/year'},
+  KE:{sym:'KSh',mortRate:13,downPct:20,savingsRate:12,transferPct:8,hint:'Kenya avg mortgage rate ~13%.',dpHint:'Kenya banks typically require 20-30%.',savingsHint:'Kenya MMF/fixed deposit ~12%/year'},
+  ZA:{sym:'R',mortRate:11.75,downPct:10,savingsRate:9,transferPct:6,hint:'SA prime + 1% avg ~11.75%.',dpHint:'SA: 10% typical. 0% deposit possible for first-time buyers with good credit.',savingsHint:'SA fixed deposit / money market ~9%'},
+  GH:{sym:'GH\u20B5',mortRate:28,downPct:20,savingsRate:25,transferPct:4,hint:'Ghana avg mortgage rate ~28%.',dpHint:'Ghana banks require 20-30%.',savingsHint:'Ghana fixed deposit ~25%/year'},
+  TZ:{sym:'TSh',mortRate:17,downPct:20,savingsRate:14,transferPct:7,hint:'Tanzania avg mortgage rate ~17%.',dpHint:'Tanzania banks typically require 20-30%.',savingsHint:'Tanzania fixed deposit ~14%/year'},
+  EG:{sym:'E\u00A3',mortRate:20,downPct:20,savingsRate:18,transferPct:5,hint:'Egypt avg mortgage rate ~20%.',dpHint:'Egypt social housing: 20%. Commercial: 25-30%.',savingsHint:'Egypt fixed deposit ~18%/year'}
 };
 
 var SCHEMES = {
@@ -497,7 +497,7 @@ var SCHEMES = {
   ],
   ZA:[
     {name:'FLISP \u2014 Finance Linked Individual Subsidy',desc:'Government subsidy for first-time buyers earning R3,501-R22,000/month. Subsidy ranges from R27,960 to R121,626. You must have an approved home loan to qualify.',tag:'Subsidy up to R121,626'},
-    {name:'Zero Transfer Duty',desc:'First-time buyers purchasing homes below R1,100,000 pay zero SARS transfer duty. This saves up to R12,360.',tag:'R0 transfer duty below R1.1M'}
+    {name:'Zero Transfer Duty',desc:'First-time buyers purchasing homes below R1,210,000 pay zero SARS transfer duty. This saves upfront cash on lower-priced homes.',tag:'R0 transfer duty below R1.21M'}
   ],
   GH:[
     {name:'SSNIT Housing Loan Collateral',desc:'SSNIT members can use their pension contributions as collateral for home loans at participating banks. Reduces or eliminates the need for a cash deposit.',tag:'For SSNIT members'},
@@ -557,7 +557,7 @@ function calculate(){
   if(!homePrice||!monthlySavings){alert('Please enter home price and monthly savings amount.');return;}
 
   var downPayment=homePrice*downPct;
-  var transferCosts=homePrice*0.08;
+  var transferCosts=homePrice*((C.transferPct||8)/100);
   var totalNeeded=downPayment+transferCosts;
   var loanAmount=homePrice-downPayment;
   var monthlyMortgage=calcMonthlyPayment(loanAmount,mortRate,loanTerm);

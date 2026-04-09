@@ -424,11 +424,12 @@
         </div>
         <div class="card-body">
           <div class="template-grid">
-            <button class="template-btn active" data-template="achievement">Achievement</button>
-            <button class="template-btn" data-template="completion">Completion</button>
-            <button class="template-btn" data-template="appreciation">Appreciation</button>
-            <button class="template-btn" data-template="academic">Academic</button>
+            <button class="template-btn active" data-template="school-award">School Award</button>
+            <button class="template-btn" data-template="bootcamp">Bootcamp</button>
+            <button class="template-btn" data-template="church-service">Church Service</button>
+            <button class="template-btn" data-template="community">Community</button>
           </div>
+          <p style="font-size:0.78rem;color:#64748b;line-height:1.6;">Use the starter templates for schools, churches, community organisations, and training cohorts instead of starting from a blank certificate every time.</p>
         </div>
       </div>
 
@@ -440,12 +441,12 @@
         <div class="card-body">
           <div class="field">
             <label class="f-label-text">Recipient Name</label>
-            <input type="text" class="f-input" id="recipientName" placeholder="e.g., John Doe" value="John Doe">
+            <input type="text" class="f-input" id="recipientName" placeholder="e.g., Amina Bello" value="Amina Bello">
           </div>
 
           <div class="field">
             <label class="f-label-text">Course/Event</label>
-            <input type="text" class="f-input" id="courseName" placeholder="e.g., Web Development" value="Web Development">
+            <input type="text" class="f-input" id="courseName" placeholder="e.g., Digital Skills Cohort" value="Digital Skills Cohort">
           </div>
 
           <div class="field">
@@ -471,11 +472,12 @@
         </div>
         <div class="card-body">
           <div class="preview">
-            <div class="preview-title">Certificate of Achievement</div>
-            <div class="preview-text" style="margin-top:20px;font-style:italic;">This is to certify that</div>
+            <div class="preview-title" id="previewTitle">Certificate of Achievement</div>
+            <div class="preview-text" id="previewIntro" style="margin-top:20px;font-style:italic;">This is to certify that</div>
             <div class="preview-text" style="font-size:1.1rem;font-weight:700;"><span id="previewName">John Doe</span></div>
-            <div class="preview-text">has successfully completed</div>
+            <div class="preview-text" id="previewAction">has successfully completed</div>
             <div class="preview-text" style="font-weight:700;"><span id="previewCourse">Web Development</span></div>
+            <div class="preview-text" id="previewOrg" style="margin-top:18px;font-size:0.84rem;opacity:0.82;">Issued by AfroTools Academy</div>
           </div>
           <div class="action-row">
             <button class="act-btn" id="downloadPngBtn">📥 PNG</button>
@@ -557,29 +559,80 @@
   const certDate = document.getElementById('certDate');
   const organization = document.getElementById('organization');
   const generateBtn = document.getElementById('generateBtn');
+  const previewTitle = document.getElementById('previewTitle');
+  const previewIntro = document.getElementById('previewIntro');
   const previewName = document.getElementById('previewName');
+  const previewAction = document.getElementById('previewAction');
   const previewCourse = document.getElementById('previewCourse');
+  const previewOrg = document.getElementById('previewOrg');
   const downloadPngBtn = document.getElementById('downloadPngBtn');
   const downloadPdfBtn = document.getElementById('downloadPdfBtn');
   const templateButtons = document.querySelectorAll('.template-btn');
+  const templateConfigs = {
+    'school-award': {
+      title: 'Certificate of Excellence',
+      intro: 'This award is proudly presented to',
+      action: 'for outstanding performance in',
+      course: 'Senior Secondary Achievement Awards',
+      organization: 'Community Secondary School'
+    },
+    bootcamp: {
+      title: 'Certificate of Completion',
+      intro: 'This is to certify that',
+      action: 'has successfully completed',
+      course: 'Digital Skills Cohort',
+      organization: 'AfroTools Academy'
+    },
+    'church-service': {
+      title: 'Certificate of Service',
+      intro: 'This certificate recognises',
+      action: 'for faithful service in',
+      course: 'Youth Leadership and Ministry Training',
+      organization: 'Grace Revival Centre'
+    },
+    community: {
+      title: 'Certificate of Appreciation',
+      intro: 'We honour and appreciate',
+      action: 'for contributions to',
+      course: 'Community Development Initiative',
+      organization: 'Neighbourhood Impact Network'
+    }
+  };
 
   // Set today's date
   certDate.valueAsDate = new Date();
 
-  recipientName.addEventListener('input', () => {
+  function updatePreview() {
     previewName.textContent = recipientName.value || 'Name';
-  });
-
-  courseName.addEventListener('input', () => {
     previewCourse.textContent = courseName.value || 'Course';
-  });
+    previewOrg.textContent = 'Issued by ' + (organization.value || 'Your organisation');
+  }
 
   templateButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       templateButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      const config = templateConfigs[btn.dataset.template];
+      if (!config) return;
+      previewTitle.textContent = config.title;
+      previewIntro.textContent = config.intro;
+      previewAction.textContent = config.action;
+      if (!courseName.value || courseName.value === 'Digital Skills Cohort' || courseName.value === 'Web Development') {
+        courseName.value = config.course;
+      }
+      if (!organization.value || organization.value === 'AfroTools Academy') {
+        organization.value = config.organization;
+      }
+      updatePreview();
     });
   });
+
+  recipientName.addEventListener('input', updatePreview);
+  courseName.addEventListener('input', updatePreview);
+  organization.addEventListener('input', updatePreview);
+  generateBtn.addEventListener('click', updatePreview);
+
+  updatePreview();
 
   downloadPngBtn.addEventListener('click', async () => {
     try {

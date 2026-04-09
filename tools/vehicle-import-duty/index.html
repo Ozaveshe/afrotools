@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
 <script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
 <script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
+<script src="/assets/js/lib/import-duty-rules.js?v=20260406" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -272,6 +273,71 @@ var DUTY_DATA = {
   }
 };
 
+var SHARED_VEHICLE_COUNTRY_MAP = {
+  nigeria: 'Nigeria',
+  kenya: 'Kenya',
+  southafrica: 'South Africa',
+  ghana: 'Ghana',
+  ethiopia: 'Ethiopia',
+  tanzania: 'Tanzania',
+  uganda: 'Uganda',
+  rwanda: 'Rwanda',
+  zambia: 'Zambia',
+  egypt: 'Egypt'
+};
+
+var SHARED_VEHICLE_TYPE_MAP = {
+  sedan: 'used-sedan',
+  suv: 'used-suv',
+  truck: 'pickup',
+  bus: 'pickup',
+  motorcycle: 'motorcycle',
+  electric: 'new-sedan'
+};
+
+function buildSharedVehicleResult(countryKey, type, cif, age) {
+  if (!window.AfroImportDutyRules || !window.AfroImportDutyRules.compute) return null;
+  var countryName = SHARED_VEHICLE_COUNTRY_MAP[countryKey];
+  var categoryKey = SHARED_VEHICLE_TYPE_MAP[type];
+  if (!countryName || !categoryKey) return null;
+
+  var base = window.AfroImportDutyRules.compute(countryName, categoryKey, cif, 0);
+  if (!base) return null;
+
+  var ageFactor = 1;
+  if (age >= 8) ageFactor = 0.92;
+  else if (age >= 5) ageFactor = 0.96;
+  else if (age >= 3) ageFactor = 0.98;
+  if (type === 'electric') ageFactor = 1;
+
+  var multiplier = ageFactor;
+  var adjustedLevyItems = base.levyItems.map(function(item) {
+    return {
+      name: item.name,
+      amount: item.amount * multiplier
+    };
+  });
+  var adjustedDuty = base.duty * multiplier;
+  var totalLevies = adjustedLevyItems.reduce(function(sum, item) { return sum + item.amount; }, 0);
+  var adjustedVat = base.vat * multiplier;
+  var totalDuty = adjustedDuty + totalLevies + adjustedVat;
+
+  return {
+    currency: base.symbol,
+    fxRate: base.rate,
+    totalDuty: totalDuty,
+    totalLanded: cif + totalDuty,
+    effectiveRate: cif > 0 ? (totalDuty / cif) : 0,
+    levyItems: adjustedLevyItems,
+    duty: adjustedDuty,
+    dutyRate: base.dutyRate,
+    vat: adjustedVat,
+    vatRate: base.vatRate,
+    sourceNote: base.sourceNote || '',
+    ageAdjusted: ageFactor !== 1
+  };
+}
+
 function calcImportDuty() {
   var country = document.getElementById('dutyCountry').value;
   var type = document.getElementById('dutyVehicleType').value;
@@ -282,11 +348,47 @@ function calcImportDuty() {
   if (cif === 0) { alert('Please enter the CIF value of the vehicle.'); return; }
 
   var data = DUTY_DATA[country];
+  var sharedResult = buildSharedVehicleResult(country, type, cif, age);
   var isElectric = (type === 'electric');
   var rates = isElectric ? data.electric : data;
 
   var components = [];
   var totalDuty = 0;
+
+  if (sharedResult) {
+    components.push(['Import / Customs Duty', (sharedResult.dutyRate * 100).toFixed(0) + '%', sharedResult.duty]);
+    sharedResult.levyItems.forEach(function(item) {
+      components.push([item.name, '', item.amount]);
+    });
+    components.push(['VAT', (sharedResult.vatRate).toFixed(1).replace('.0', '') + '%', sharedResult.vat]);
+
+    totalDuty = sharedResult.totalDuty;
+
+    var tbodyShared = document.getElementById('dutyBreakdown');
+    tbodyShared.innerHTML = components.map(function(c){
+      return '<tr><td>' + c[0] + '</td><td class="rate">' + c[1] + '</td><td>$' + c[2].toFixed(0) + '</td></tr>';
+    }).join('') + '<tr class="total"><td>Total Duty &amp; Taxes</td><td></td><td>$' + totalDuty.toFixed(0) + '</td></tr>';
+
+    document.getElementById('dutyTotal').textContent = '$' + totalDuty.toFixed(0);
+    document.getElementById('dutyLanded').textContent = 'Total Landed Cost: $' + sharedResult.totalLanded.toFixed(0) + ' (' + (sharedResult.effectiveRate * 100).toFixed(0) + '% of CIF value)';
+
+    var sharedWarn = '';
+    if (data.ageLimit && age >= data.ageLimit) {
+      sharedWarn = '<div class="warning-box">&#x26a0;&#xfe0f; <strong>Age Limit Warning:</strong> ' + country.charAt(0).toUpperCase()+country.slice(1) + ' restricts imports of vehicles over ' + data.ageLimit + ' years old. This vehicle may be denied entry. Please verify with customs authorities.</div>';
+    } else if (data.warning) {
+      sharedWarn = '<div class="warning-box">&#x26a0;&#xfe0f; ' + data.warning + '</div>';
+    }
+    document.getElementById('dutyWarning').innerHTML = sharedWarn;
+
+    var info = data.notes + ' Using AfroTools shared vehicle customs rules for this market.';
+    if (sharedResult.ageAdjusted) info += ' A small age-adjustment factor was applied for older used vehicles.';
+    if (sharedResult.sourceNote) info += ' ' + sharedResult.sourceNote;
+    info += ' Rates are indicative — always confirm with a licensed customs agent before importing.';
+    document.getElementById('dutyInfo').textContent = info;
+
+    document.getElementById('dutyResults').classList.add('on');
+    return;
+  }
 
   // Import duty
   if (rates.duty > 0) {
@@ -382,6 +484,156 @@ function calcImportDuty() {
 
   document.getElementById('dutyResults').classList.add('on');
 }
+</script>
+<script>
+function buildLegacyVehicleResultUnified(data, type, cif) {
+  var rates = type === 'electric' ? data.electric : data;
+  var components = [];
+  var runningTotal = 0;
+
+  function addComponent(label, rate, amount) {
+    components.push([label, rate, amount]);
+    runningTotal += amount;
+  }
+
+  if (rates.duty > 0) addComponent('Import / Customs Duty', (rates.duty * 100).toFixed(0) + '%', cif * rates.duty);
+  if (rates.levy > 0) addComponent('Import Levy', (rates.levy * 100).toFixed(0) + '%', cif * rates.levy);
+  if (rates.ecowas > 0) addComponent('ECOWAS Levy', (rates.ecowas * 100).toFixed(0) + '%', cif * rates.ecowas);
+  if (rates.idf > 0) addComponent('Import Declaration Fee', (rates.idf * 100).toFixed(1).replace('.0', '') + '%', cif * rates.idf);
+  if (rates.excise > 0) addComponent('Excise Duty', (rates.excise * 100).toFixed(0) + '%', cif * rates.excise);
+  if (rates.rdl > 0) addComponent('Railway Dev. Levy', (rates.rdl * 100).toFixed(1).replace('.0', '') + '%', cif * rates.rdl);
+  if (rates.withholding > 0) addComponent('Withholding Tax', (rates.withholding * 100).toFixed(0) + '%', cif * rates.withholding);
+  if (rates.carbon > 0 && type !== 'electric') addComponent('Carbon Tax', (rates.carbon * 100).toFixed(0) + '%', cif * rates.carbon);
+  if (rates.nhil > 0) addComponent('NHIL', (rates.nhil * 100).toFixed(1).replace('.0', '') + '%', cif * rates.nhil);
+  if (rates.getfund > 0) addComponent('GETFund Levy', (rates.getfund * 100).toFixed(1).replace('.0', '') + '%', cif * rates.getfund);
+
+  if (rates.vat > 0) {
+    var vatBase = cif + runningTotal;
+    addComponent('VAT (on CIF + Duty)', (rates.vat * 100).toFixed(0) + '%', vatBase * rates.vat);
+  }
+
+  var agentFees = cif * 0.03;
+  addComponent('Clearing Agent &amp; Handling (est.)', '~3%', agentFees);
+
+  return {
+    totalDuty: runningTotal,
+    totalLanded: cif + runningTotal,
+    effectiveRate: cif > 0 ? runningTotal / cif : 0,
+    components: components,
+    sourceNote: 'Using AfroTools normalized fallback vehicle rules for this market.',
+    ageAdjusted: false
+  };
+}
+
+function buildSharedVehicleResultUnified(countryKey, type, cif, age) {
+  if (!window.AfroImportDutyRules || !window.AfroImportDutyRules.compute) return null;
+  var countryName = SHARED_VEHICLE_COUNTRY_MAP[countryKey];
+  var categoryKey = SHARED_VEHICLE_TYPE_MAP[type];
+  if (!countryName || !categoryKey) return null;
+
+  var base = window.AfroImportDutyRules.compute(countryName, categoryKey, cif, 0);
+  if (!base) return null;
+
+  var ageFactor = 1;
+  if (type !== 'electric') {
+    if (age >= 8) ageFactor = 0.92;
+    else if (age >= 5) ageFactor = 0.96;
+    else if (age >= 3) ageFactor = 0.98;
+  }
+
+  var adjustedLevyItems = base.levyItems.map(function (item) {
+    return { name: item.name, amount: item.amount * ageFactor };
+  });
+  var adjustedDuty = base.duty * ageFactor;
+  var adjustedVat = base.vat * ageFactor;
+  var totalLevies = adjustedLevyItems.reduce(function (sum, item) { return sum + item.amount; }, 0);
+  var totalDuty = adjustedDuty + totalLevies + adjustedVat;
+
+  return {
+    totalDuty: totalDuty,
+    totalLanded: cif + totalDuty,
+    effectiveRate: cif > 0 ? totalDuty / cif : 0,
+    components: [
+      ['Import / Customs Duty', (base.dutyRate * 100).toFixed(0) + '%', adjustedDuty]
+    ].concat(adjustedLevyItems.map(function (item) {
+      return [item.name, '', item.amount];
+    })).concat([
+      ['VAT', String(base.vatRate).replace('.0', '') + '%', adjustedVat]
+    ]),
+    sourceNote: 'Using AfroTools shared vehicle customs rules for this market.' + (base.sourceNote ? ' ' + base.sourceNote : ''),
+    ageAdjusted: ageFactor !== 1
+  };
+}
+
+function renderVehicleResultUnified(result, country, data, age) {
+  document.getElementById('dutyBreakdown').innerHTML = result.components.map(function (c) {
+    return '<tr><td>' + c[0] + '</td><td class="rate">' + c[1] + '</td><td>$' + c[2].toFixed(0) + '</td></tr>';
+  }).join('') + '<tr class="total"><td>Total Duty &amp; Taxes</td><td></td><td>$' + result.totalDuty.toFixed(0) + '</td></tr>';
+
+  document.getElementById('dutyTotal').textContent = '$' + result.totalDuty.toFixed(0);
+  document.getElementById('dutyLanded').textContent = 'Total Landed Cost: $' + result.totalLanded.toFixed(0) + ' (' + (result.effectiveRate * 100).toFixed(0) + '% of CIF value)';
+
+  var warn = '';
+  if (data.ageLimit && age >= data.ageLimit) {
+    warn = '<div class="warning-box">&#x26a0;&#xfe0f; <strong>Age Limit Warning:</strong> ' + country.charAt(0).toUpperCase() + country.slice(1) + ' restricts imports of vehicles over ' + data.ageLimit + ' years old. This vehicle may be denied entry. Please verify with customs authorities.</div>';
+  } else if (data.warning) {
+    warn = '<div class="warning-box">&#x26a0;&#xfe0f; ' + data.warning + '</div>';
+  }
+  document.getElementById('dutyWarning').innerHTML = warn;
+
+  var info = data.notes + ' ' + result.sourceNote;
+  if (result.ageAdjusted) info += ' A small age-adjustment factor was applied for older used vehicles.';
+  info += ' Rates are indicative — always confirm with a licensed customs agent before importing.';
+  document.getElementById('dutyInfo').textContent = info;
+  document.getElementById('dutyResults').classList.add('on');
+}
+
+calcImportDuty = function () {
+  var country = document.getElementById('dutyCountry').value;
+  var type = document.getElementById('dutyVehicleType').value;
+  var cif = parseFloat(document.getElementById('dutyCIF').value) || 0;
+  var age = parseInt(document.getElementById('dutyAge').value) || 0;
+  if (cif === 0) { alert('Please enter the CIF value of the vehicle.'); return; }
+
+  var data = DUTY_DATA[country];
+  if (country === 'nigeria') {
+    data.rate = 1600;
+    data.currency = 'NGN';
+    if (data.electric) data.electric.vat = 0.075;
+    data.vat = 0.075;
+  }
+  if (country === 'kenya') {
+    data.rate = 130;
+    data.currency = 'KES';
+    data.vat = 0.16;
+    data.idf = 0.035;
+    if (data.electric) {
+      data.electric.vat = 0.16;
+      data.electric.idf = 0.035;
+    }
+  }
+  if (country === 'southafrica') {
+    data.vat = 0.15;
+  }
+  if (country === 'ghana') {
+    data.rate = 16;
+    data.currency = 'GHS';
+    data.vat = 0.20;
+    delete data.nhil;
+    delete data.getfund;
+    if (data.electric) {
+      data.electric.vat = 0.20;
+      delete data.electric.nhil;
+      delete data.electric.getfund;
+    }
+  }
+  if (country === 'egypt') {
+    data.rate = 30;
+  }
+
+  var result = buildSharedVehicleResultUnified(country, type, cif, age) || buildLegacyVehicleResultUnified(data, type, cif);
+  renderVehicleResultUnified(result, country, data, age);
+};
 </script>
 </body>
 </html>

@@ -77,7 +77,9 @@
   @media(max-width:900px){.tool-info-card{order:1}}
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
+<meta name="tool-id" content="td-paye">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
+<script>window.PAYE_SAVE_SLUG='td-paye';</script>
 
   <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
@@ -87,7 +89,7 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/chad/td-paye" />
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-td-paye.png">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 <style>
@@ -108,14 +110,14 @@
       <a href="/">Home</a> / <a href="/chad/">🇹🇩 Chad</a> / <span>PAYE Calculator</span>
     </nav>
     <h1>Chad PAYE<br><em>Calculator 2025/26</em></h1>
-    <p class="hero-sub">Progressive income tax via DGI (Direction Générale des Impôts), CNPS social security (3.5% employee, 16.5% employer). Annual/monthly calculations per local bands.</p>
+    <p class="hero-sub">Progressive income tax via DGI (Direction Générale des Impôts), with CNPS social security (3.5% employee, 16.5% employer). Annual and monthly estimates for standard payroll cases.</p>
     <div class="hero-badges">
       <span class="badge b-gold">✦ Includes AI Advisor</span>
-      <span class="badge b-green">DGI (Direction Générale des Impôts) 2025/26 Verified</span>
+      <span class="badge b-green">DGI 2025/26 Page Model</span>
       <span class="badge b-blue">CNPS · Income Tax</span>
       <span class="badge b-grey">XAF · Chad</span>
     </div>
-    <p class="hero-meta">Last verified: July 2025 · Source: DGI Chad · Code Général des Impôts · Loi de Finances 2024/25</p>
+    <p class="hero-meta">Last reviewed: 6 April 2026 · Source references: DGI Chad · Code Général des Impôts · Loi de Finances 2024/25 · Standard payroll estimate</p>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/chad/td-vat" style="color:#007AFF;font-weight:600;">Chad VAT Calculator</a></p>
   </div>
 </section>
@@ -123,7 +125,7 @@
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
   <div class="amendment-bar-inner">
-    <p><strong>2025 Key Facts: Progressive IRPP 0%–40% on annual income bands. CNPS: employee 3.5%, employer 16.5%. Annual cycle: January–December.</strong></p>
+    <p><strong>Current page model:</strong> Progressive IRPP 0%–40% on annual income bands. CNPS: employee 3.5%, employer 16.5%. Annual cycle: January–December.</p>
   </div>
 </div>
 
@@ -717,23 +719,23 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.netMonthly,
+      tax: RESULT.monthlyPAYE,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
     headline: 'My Take-Home Pay',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
       { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -900,7 +902,7 @@ td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-
 .red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-06">
 </style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=bea33fe0">
 </head><body>
 <div class="cover">

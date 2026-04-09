@@ -483,8 +483,13 @@ function calculate(){
 
   if(!buyPrice){alert('Please enter a purchase price.');return;}
 
-  const totalCashIn=(downPayment||buyPrice)+buyCosts;
   const loanAmount=buyPrice-downPayment;
+  const totalCashIn=(loanAmount>0?downPayment:buyPrice)+buyCosts;
+
+  if(totalCashIn<=0){
+    alert('Enter at least a down payment or buying costs so the ROI can be measured against cash invested.');
+    return;
+  }
 
   // Calculate exit value
   const exitGross=buyPrice*Math.pow(1+appreciation,holdYears);
@@ -538,7 +543,7 @@ function calculate(){
   const totalROI=(totalProfit/totalCashIn)*100;
 
   // Annualised ROI (simplified CAGR on total return)
-  const annualisedROI=(Math.pow(1+totalROI/100,1/holdYears)-1)*100;
+  const annualisedROI=totalProfit<=-totalCashIn ? -100 : (Math.pow(1+totalROI/100,1/holdYears)-1)*100;
 
   // Display
   const positive=totalProfit>=0;
