@@ -1,0 +1,93 @@
+{
+  "countryCode": "UG",
+  "countryName": "Uganda",
+  "slug": "uganda",
+  "flagLabel": "UG",
+  "currency": "UGX",
+  "effectiveFrom": "2024-01-01",
+  "effectiveTo": null,
+  "status": "valuation-pack-estimate",
+  "confidence": "estimate",
+  "valuationMethod": "URA valuation-guide friendly workflow with seed valuation tables and manual override; no runtime scraping.",
+  "ageRules": {
+    "basis": "manufactureYear",
+    "maxYears": null,
+    "message": "This pack warns on older vehicles and expects admins to import the current URA valuation guide for precise official values."
+  },
+  "steeringRules": {
+    "required": "right",
+    "message": "Uganda drives on the left; right-hand-drive vehicles are the normal fit for the local market."
+  },
+  "inspectionRules": {
+    "required": true,
+    "label": "URA / standards checks",
+    "message": "Actual URA assessment can use official valuation-guide data rather than invoice price alone."
+  },
+  "customsBasisRules": {
+    "basis": "customsValue",
+    "insuranceRate": 0.012,
+    "freightFallbackUsd": 1300,
+    "valuationPackRequired": true
+  },
+  "ports": [
+    { "code": "KEMBA-UG", "label": "Via Mombasa to Kampala", "city": "Kampala", "terminalHandlingUsd": 180, "shippingLineChargesUsd": 150, "freeStorageDays": 4, "dailyStorageUsd": 20, "dailyDemurrageUsd": 45 },
+    { "code": "TZDAR-UG", "label": "Via Dar es Salaam to Kampala", "city": "Kampala", "terminalHandlingUsd": 170, "shippingLineChargesUsd": 145, "freeStorageDays": 4, "dailyStorageUsd": 20, "dailyDemurrageUsd": 42 }
+  ],
+  "cities": [
+    { "id": "kampala", "label": "Kampala", "inlandUsd": 420 },
+    { "id": "mbarara", "label": "Mbarara", "inlandUsd": 560 },
+    { "id": "gulu", "label": "Gulu", "inlandUsd": 610 },
+    { "id": "jinja", "label": "Jinja", "inlandUsd": 470 }
+  ],
+  "practicalCostPresets": {
+    "terminalHandlingUsd": 180,
+    "shippingLineChargesUsd": 150,
+    "inspectionUsd": 120,
+    "clearingAgentUsd": 330,
+    "diyClearingUsd": 160,
+    "registrationUsd": 230,
+    "tradePlateUsd": 60,
+    "bufferRate": 0.06
+  },
+  "taxComponents": [
+    { "id": "ug-import-duty", "label": "Import duty", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.25, "displayOrder": 10, "official": true, "group": "officialTaxes" },
+    { "id": "ug-environmental-levy", "label": "Environmental levy estimate", "type": "age-based", "base": "customsValue", "displayOrder": 20, "official": true, "group": "officialTaxes", "tiers": [
+      { "minAge": 8, "maxAge": 9, "rate": 0.15, "label": "8-9 years" },
+      { "minAge": 10, "rate": 0.35, "label": "10+ years" }
+    ] },
+    { "id": "ug-vat", "label": "VAT", "type": "percentage", "base": "customsValuePlusPriorOfficialTaxes", "rateOrFormula": 0.18, "displayOrder": 30, "official": true, "group": "officialTaxes" },
+    { "id": "ug-wht", "label": "Withholding tax estimate", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.06, "displayOrder": 40, "official": true, "group": "officialFees" },
+    { "id": "ug-infrastructure-levy", "label": "Infrastructure levy estimate", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.015, "displayOrder": 50, "official": true, "group": "officialFees" }
+  ],
+  "registrationComponents": [
+    { "id": "ug-registration-plates", "label": "Registration and number plate estimate", "type": "fixed", "amountUsd": 230, "displayOrder": 10, "official": false, "group": "registration" }
+  ],
+  "optionalComponents": [
+    { "id": "ug-valuation-gap", "label": "Valuation-guide adjustment buffer", "type": "percentage", "base": "customsValue", "rateOrFormula": 0.05, "official": false }
+  ],
+  "documents": [
+    "Commercial invoice",
+    "Bill of lading",
+    "Export certificate / logbook",
+    "URA TIN",
+    "Insurance certificate",
+    "Valuation-guide match where available",
+    "Registration application documents"
+  ],
+  "sourceNotes": [
+    { "name": "URA motor vehicle import tax calculator", "url": "https://ura.go.ug/en/tax-calculators/compute-motor-vehicle-import-tax/", "lastVerified": "2026-04-10", "confidence": "official", "note": "Used for calculator architecture reference; this product avoids runtime scraping." },
+    { "name": "URA Motor Vehicle Valuation Guide Jan 2024", "url": "https://ura.go.ug/en/download/motor-vehicle-valuation-guide-jan-2024/", "lastVerified": "2026-04-10", "confidence": "official", "note": "Seed/update path expects valuation tables from official guide exports." }
+  ],
+  "disclaimers": [
+    "If the precise URA valuation is unavailable, the result is labelled as an estimate based on the current valuation pack.",
+    "Admins should upload updated URA valuation tables rather than relying on real-time government-site scraping."
+  ],
+  "faqs": [
+    { "question": "Can Uganda estimate without a customs value?", "answer": "Yes. Use make, model, and year. The calculator tries the valuation seed pack and labels the result clearly when a precise official URA value is unavailable." },
+    { "question": "How do admins update Uganda values?", "answer": "Upload JSON or CSV valuation rows in the internal maintenance screen, preview the calculation, then publish the updated pack through the configured data workflow." }
+  ],
+  "copy": {
+    "intro": "Estimate a Uganda vehicle import using URA-style valuation data, exchange-rate-aware taxes, clearing costs, inland transport to Kampala or regional cities, and registration.",
+    "hiddenCosts": "The biggest misses are valuation-guide differences, inland movement from Mombasa or Dar, environmental levy on older vehicles, storage, and FX timing."
+  }
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-chat-bundle="/assets/js/components/chat-panel.min.js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>African Car Landed Cost Calculator | Nigeria, Kenya, Ghana, Uganda, Zambia, Tanzania | AfroTools</title>
+  <meta name="description" content="Estimate the real landed and on-road cost to import a car into Nigeria, Kenya, Ghana, Uganda, Zambia, or Tanzania, including customs, port, clearing, registration, FX, scenarios, and documents.">
+  <link rel="canonical" href="https://afrotools.com/tools/car-import-cost/">
+  <meta name="robots" content="index, follow">
+  <meta name="tool-id" content="car-import-cost">
+  <meta property="og:title" content="African Car Landed Cost Calculator | AfroTools">
+  <meta property="og:description" content="Calculate customs taxes, practical port costs, inland delivery, registration, delay risk, financing, and source-market comparisons for six African car import markets.">
+  <meta property="og:url" content="https://afrotools.com/tools/car-import-cost/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <link rel="stylesheet" href="/assets/css/car-import-cost.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "African Car Landed Cost Calculator",
+    "url": "https://afrotools.com/tools/car-import-cost/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "description": "Estimate real car import landed cost and on-road cost across Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "publisher": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Transport", "item": "https://afrotools.com/transport/" },
+      { "@type": "ListItem", "position": 3, "name": "African Car Landed Cost Calculator", "item": "https://afrotools.com/tools/car-import-cost/" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What does landed cost include?", "acceptedAnswer": { "@type": "Answer", "text": "The estimate includes vehicle base price, freight, marine insurance, customs value basis, official taxes, official fees, practical port and clearing costs, inland delivery, registration, scenarios, FX sensitivity, and finance estimates." } },
+      { "@type": "Question", "name": "Is this an official customs assessment?", "acceptedAnswer": { "@type": "Answer", "text": "No. It is a planning estimate built from source-dated rule packs. Final customs value, port charges, clearing agent costs, exchange rates, and registration charges can differ." } },
+      { "@type": "Question", "name": "Which countries are supported?", "acceptedAnswer": { "@type": "Answer", "text": "Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania are supported at launch with country-specific rule packs and compliance warnings." } }
+    ]
+  }
+  </script>
+</head>
+<body class="car-import-page" data-default-country="NG">
+  <afro-navbar theme="dark" active="transport"></afro-navbar>
+
+  <header class="car-import-hero">
+    <div class="car-import-shell">
+      <nav class="car-import-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">AfroTools</a><span>&rsaquo;</span><a href="/transport/">Transport</a><span>&rsaquo;</span><span>Car Import Cost</span>
+      </nav>
+      <div class="car-import-hero-grid">
+        <div>
+          <span class="car-import-kicker">True landed cost engine</span>
+          <h1>African Car Landed Cost Calculator</h1>
+          <p>Work out what a car really costs after source price, freight, insurance, official customs charges, clearing, port costs, inland delivery, registration, delay risk, financing, and resale margin.</p>
+        </div>
+        <aside class="car-import-hero-meta" aria-label="Launch markets">
+          <strong>Launch markets</strong>
+          <span>Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania</span>
+          <span>Source markets: Japan, UAE, UK, South Africa, and local dealer.</span>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main class="car-import-shell">
+    <div id="carImportApp"></div>
+
+    <div class="car-import-content-grid">
+      <section class="car-import-section">
+        <h2>How it works</h2>
+        <p>The calculator normalizes your vehicle details, determines the customs value basis, checks age and steering rules, applies the active country rule pack, adds practical clearing and port costs, then produces best, normal, and painful-case scenarios.</p>
+        <ul>
+          <li>Use purchase price, FOB, CIF, or make/model/year mode.</li>
+          <li>Compare Japan, UAE, UK, South Africa, and local dealer scenarios.</li>
+          <li>Save locally, save to account when signed in, export CSV/PDF, print, or share a URL.</li>
+        </ul>
+      </section>
+      <section class="car-import-section">
+        <h2>Current rules summary</h2>
+        <p id="carImportCountryIntro">Pick a country to see its active rule-pack summary.</p>
+        <p id="carImportHiddenCosts"></p>
+      </section>
+      <section class="car-import-section">
+        <h2>Source verification</h2>
+        <p>Rule packs are seed data, not runtime scrapers. Admins can update them through the maintenance screen when an official rule, valuation table, or port preset changes.</p>
+        <ul id="carImportSourceBlock"></ul>
+      </section>
+      <section class="car-import-section">
+        <h2>Related tools</h2>
+        <ul>
+          <li><a href="/tools/import-duty/">Import Duty Calculator</a></li>
+          <li><a href="/tools/vehicle-import-duty/">Vehicle Import Duty Calculator</a></li>
+          <li><a href="/tools/currency-converter/">African Currency Converter</a></li>
+          <li><a href="/tools/delivery-cost/">Delivery Cost Estimator</a></li>
+          <li><a href="/tools/car-insurance/">Car Insurance Tools</a></li>
+          <li><a href="/tools/car-loan/">Car Loan Calculator</a></li>
+        </ul>
+        <p><a data-partner-zone="clearing-agent" href="/contact/">Partner clearing, shipping, insurance, finance, and dealer quote zones are ready to connect.</a></p>
+      </section>
+    </div>
+  </main>
+
+  <afro-footer></afro-footer>
+  <script src="/assets/js/components/navbar.min.js" defer></script>
+  <script src="/assets/js/components/footer.min.js" defer></script>
+  <script src="/assets/js/lib/analytics.js" defer></script>
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/lib/export-tools.js" defer></script>
+  <script src="/assets/js/lib/share-state.js" defer></script>
+  <script src="/assets/js/lib/car-import-cost-engine.js" defer></script>
+  <script src="/assets/js/car-import-cost.js" defer></script>
+</body>
+</html>

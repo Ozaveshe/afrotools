@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Car Price Intelligence Admin | AfroTools</title>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <style>
+    body{font-family:Inter,system-ui,sans-serif;background:#f6f8fb;color:#142238;margin:0}
+    .wrap{max-width:1120px;margin:0 auto;padding:28px 18px}.panel{background:#fff;border:1px solid #dbe3ef;border-radius:8px;padding:18px;margin:14px 0;box-shadow:0 6px 18px rgba(15,32,52,.06)}
+    h1{font-size:1.6rem;margin:12px 0 8px}h2{font-size:1.05rem;margin:0 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border-bottom:1px solid #e6edf6;padding:9px;text-align:left;vertical-align:top}th{font-size:.76rem;text-transform:uppercase;color:#5c6f89;letter-spacing:.06em}
+    textarea,input,select{width:100%;border:1px solid #cfd9e8;border-radius:8px;padding:10px;font:inherit}textarea{min-height:230px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.84rem}
+    button,.button{display:inline-block;border:1px solid #1b6fb7;border-radius:8px;background:#1b6fb7;color:#fff;font-weight:800;padding:9px 12px;text-decoration:none;cursor:pointer}.secondary{background:#fff;color:#1b527f}.note{color:#62738d;line-height:1.6}.warn{color:#8a4f00}.pass{color:#136c42}
+    label{display:grid;gap:6px;margin:9px 0}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a href="/admin/dashboard.html" class="button secondary">Back to admin</a>
+    <h1>Car Price Intelligence Admin</h1>
+    <p class="note">Upload or preview source-market prices, local-market prices, valuation packs, shipping presets, practical costs, registration costs, confidence labels, effective dates, and stale thresholds. This screen stores a browser preview override; production publish should update the repo data pack or Supabase tables.</p>
+
+    <section class="panel">
+      <h2>Dataset health</h2>
+      <table><thead><tr><th>Dataset</th><th>Records</th><th>Freshness</th><th>Confidence</th></tr></thead><tbody id="healthRows"></tbody></table>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>Edit price pack JSON</h2>
+        <label>Dataset <select id="datasetSelect"><option value="sourceMarketPrices">Source market prices</option><option value="localMarketPrices">Local market prices</option><option value="vehicles">Vehicle variants</option><option value="ports">Ports</option><option value="destinationCities">Destination cities</option></select></label>
+        <label>Stale threshold days <input id="staleDays" type="number" min="1" value="120"></label>
+        <textarea id="packJson" spellcheck="false"></textarea>
+        <button id="validateBtn">Validate</button>
+        <button id="saveOverrideBtn" class="secondary">Save preview override</button>
+        <button id="exportBtn" class="secondary">Export pack JSON</button>
+        <div id="validationOut" class="note"></div>
+      </div>
+      <div class="panel">
+        <h2>Preview a page/result</h2>
+        <label>Country <select id="previewCountry"></select></label>
+        <label>Make <input id="previewMake" value="Toyota"></label>
+        <label>Model <input id="previewModel" value="Axio"></label>
+        <label>Year <input id="previewYear" value="2018" type="number"></label>
+        <label>Source market <select id="previewSource"><option value="japan">Japan</option><option value="uae">UAE</option><option value="uk">UK</option><option value="south-africa">South Africa</option></select></label>
+        <button id="previewBtn">Preview recommendation</button>
+        <pre id="previewOut" class="note"></pre>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>CSV import/update path</h2>
+      <p class="note">Upload CSV exported from a spreadsheet. Columns should match the selected dataset, for example: source_market, make, model, year, min_price, median_price, max_price, currency, collected_at, confidence, source_type.</p>
+      <input type="file" id="csvFile" accept=".csv,text/csv">
+      <textarea id="csvOut" spellcheck="false"></textarea>
+    </section>
+  </main>
+
+  <script src="/assets/js/lib/car-import-cost-engine.js"></script>
+  <script src="/assets/js/lib/car-price-intelligence.js"></script>
+  <script>
+  (function(){
+    var adminKey=sessionStorage.getItem("admin_key")||prompt("Enter admin password:");
+    if(!adminKey){document.body.innerHTML='<div style="text-align:center;padding:80px 24px;font-family:Inter,sans-serif;"><h1>Access denied</h1><p>Admin password required.</p><a href="/">Back to AfroTools</a></div>';return;}
+    sessionStorage.setItem("admin_key",adminKey);
+    var data, importData, Engine=window.AfroCarImportCost, Price=window.AfroCarPriceIntelligence;
+    function $(id){return document.getElementById(id)}
+    function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+    function loadJson(url){return fetch(url,{cache:"no-cache"}).then(function(r){if(!r.ok)throw new Error(url);return r.json()})}
+    function load(){
+      return Promise.all([loadJson("/data/cars/price-intelligence.json"),loadImportData()]).then(function(items){data=items[0];importData=items[1];render()})
+    }
+    function loadImportData(){
+      return loadJson("/data/trade/car-import-cost-core.json").then(function(core){return Promise.all(Object.keys(core.countryPackFiles).map(function(code){return loadJson(core.countryPackFiles[code])})).then(function(packs){return Engine.mergeData(core,packs,{NGN:1535.5,KES:129.45,GHS:14.89,UGX:3720,ZMW:27.5,TZS:2650})})})
+    }
+    function render(){
+      $("staleDays").value=data.staleAfterDays||120; fillCountries(); showDataset(); renderHealth();
+    }
+    function fillCountries(){
+      $("previewCountry").innerHTML=Object.keys(data.countries).map(function(code){var c=data.countries[code];return '<option value="'+code+'">'+code+' - '+esc(c.name)+'</option>'}).join('');
+    }
+    function renderHealth(){
+      var rows=[
+        ["vehicles",data.vehicles.length,"seed pack",confidenceSummary(data.vehicles)],
+        ["sourceMarketPrices",data.sourceMarketPrices.length,"explicit + modelled fallback",confidenceSummary(data.sourceMarketPrices)],
+        ["localMarketPrices",data.localMarketPrices.length,"explicit + profile fallback",confidenceSummary(data.localMarketPrices)],
+        ["ports",data.ports.length,"static presets","medium"],
+        ["destinationCities",data.destinationCities.length,"static presets","medium"]
+      ];
+      $("healthRows").innerHTML=rows.map(function(r){return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td>"+r[3]+"</td></tr>"}).join("");
+    }
+    function confidenceSummary(items){var labels={};(items||[]).forEach(function(item){labels[item.confidence||"unset"]=(labels[item.confidence||"unset"]||0)+1});return Object.keys(labels).map(function(k){return k+":"+labels[k]}).join(", ")}
+    function showDataset(){var key=$("datasetSelect").value;$("packJson").value=JSON.stringify(data[key]||[],null,2)}
+    function validate(){
+      try{
+        var parsed=JSON.parse($("packJson").value), key=$("datasetSelect").value;
+        if(!Array.isArray(parsed))throw new Error("Dataset must be a JSON array");
+        if(key.indexOf("Prices")>-1)parsed.forEach(function(row,i){["make","model","year","confidence"].forEach(function(k){if(row[k]==null)throw new Error("Row "+i+" missing "+k)})});
+        $("validationOut").innerHTML='<span class="pass">Valid '+esc(key)+' dataset with '+parsed.length+' rows.</span>';return parsed;
+      }catch(e){$("validationOut").innerHTML='<span class="warn">'+esc(e.message)+'</span>';return null}
+    }
+    function saveOverride(){
+      var parsed=validate(); if(!parsed)return;
+      var key=$("datasetSelect").value; data[key]=parsed; data.staleAfterDays=Number($("staleDays").value)||120;
+      localStorage.setItem("carPriceIntelligenceOverride",JSON.stringify(data));
+      renderHealth(); $("validationOut").innerHTML+='<br><span class="pass">Saved browser preview override. Refresh /cars to test.</span>';
+    }
+    function preview(){
+      var ctx=Price.buildVehicleContext(data,importData,{countryCode:$("previewCountry").value,make:$("previewMake").value,model:$("previewModel").value,year:$("previewYear").value,sourceMarket:$("previewSource").value});
+      $("previewOut").textContent=ctx?JSON.stringify({vehicle:ctx.vehicle.id,country:ctx.country.code,sourcePrice:ctx.sourcePrice,landed:{best:ctx.landed.best,normal:ctx.landed.normal,painful:ctx.landed.painful},localPrice:ctx.localPrice,recommendation:ctx.recommendation,warnings:ctx.landed.warnings},null,2):"No matching vehicle";
+    }
+    function exportPack(){var parsed=validate();if(!parsed)return;var blob=new Blob([JSON.stringify(parsed,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=$("datasetSelect").value+".json";a.click();URL.revokeObjectURL(a.href)}
+    function parseCsv(text){var lines=text.trim().split(/\r?\n/),headers=lines.shift().split(",").map(function(h){return h.trim()});return lines.map(function(line){var cols=line.split(","),row={};headers.forEach(function(h,i){row[h]=cols[i]});return row})}
+    $("datasetSelect").addEventListener("change",showDataset);$("validateBtn").addEventListener("click",validate);$("saveOverrideBtn").addEventListener("click",saveOverride);$("previewBtn").addEventListener("click",preview);$("exportBtn").addEventListener("click",exportPack);
+    $("csvFile").addEventListener("change",function(){var f=this.files[0];if(!f)return;f.text().then(function(text){$("csvOut").value=JSON.stringify(parseCsv(text),null,2)})});
+    load().catch(function(e){$("validationOut").textContent="Could not load data: "+e.message});
+  })();
+  </script>
+</body>
+</html>

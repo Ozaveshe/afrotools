@@ -1,6 +1,6 @@
 // /assets/js/components/tool-registry.js
 // ═══════════════════════════════════════════════════════════
-// AFROTOOLS — Single source of truth for all tools (1,266)
+// AFROTOOLS — Single source of truth for all tools (2,550 EN tool instances)
 // Add a tool here ONCE → it appears on every relevant page
 // Supports `lang` field: 'en' (default), 'fr' for French, 'sw' for Swahili
 // ═══════════════════════════════════════════════════════════
@@ -84,7 +84,7 @@ var AFRO_TOOLS = [
   // ═══════════════════════════════════════════════════════════
   //  PHASE 1 — VAT Calculators: All 54 Countries
   // ═══════════════════════════════════════════════════════════
-  { id: 'vat-calc-pan-african', name: 'VAT Calculator (Pan-African)', icon: '💱', desc: 'All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.', href: '/tools/vat-calculator/vat-calc', category: 'ecommerce', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 15000, estRevenue: 200, priority: 92 },
+  { id: 'vat-calc-pan-african', name: 'VAT Calculator (Pan-African)', icon: '💱', desc: 'All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.', href: '/tools/vat-calculator/', category: 'ecommerce', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 15000, estRevenue: 200, priority: 92 },
   { id: 'ng-vat', name: 'Nigeria VAT Calculator', icon: '🇳🇬', desc: 'NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.', href: '/nigeria/ng-vat', category: 'ecommerce', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['NG'], revenue: 'Freemium', estTraffic: 5000, estRevenue: 100, priority: 88 },
   { id: 'ke-vat', name: 'Kenya VAT Calculator', icon: '🇰🇪', desc: 'KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.', href: '/kenya/ke-vat', category: 'ecommerce', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['KE'], revenue: 'Freemium', estTraffic: 4000, estRevenue: 80, priority: 86 },
   { id: 'gh-vat', name: 'Ghana VAT Calculator', icon: '🇬🇭', desc: 'GRA VAT 15% + 2.5% NHIL + 1% GetFund. Standard + flat rate scheme.', href: '/ghana/gh-vat', category: 'ecommerce', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['GH'], revenue: 'Freemium', estTraffic: 3500, estRevenue: 70, priority: 84 },
@@ -1305,6 +1305,8 @@ var AFRO_TOOLS = [
   //  TRANSPORT & LOGISTICS — 9 tools
   // ═══════════════════════════════════════════════════════════
   { id: 'vehicle-import-duty', name: 'Vehicle Import Duty Calculator', icon: '🚗', desc: 'Calculate vehicle import duty, VAT, and levies for 16 African countries. CIF value, age depreciation, engine size.', href: '/tools/vehicle-import-duty/', category: 'transport', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Ads', estTraffic: 10000, estRevenue: 160, priority: 89 },
+  { id: 'car-import-cost', name: 'African Car Landed Cost Calculator', icon: 'CAR', desc: 'Estimate true car import landed and on-road cost across Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania. Customs, port costs, registration, FX sensitivity, and source-market comparison.', href: '/tools/car-import-cost/', category: 'transport', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['NG','KE','GH','UG','ZM','TZ'], revenue: 'Leads', estTraffic: 18000, estRevenue: 320, priority: 96 },
+  { id: 'car-price-intelligence', name: 'African Car Price Directory', icon: 'CAR', desc: 'Search popular imported cars with source-market price ranges, landed-cost ranges, local asking ranges, and import-vs-local recommendations for Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania.', href: '/cars/', category: 'transport', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['NG','KE','GH','UG','ZM','TZ'], revenue: 'Leads', estTraffic: 24000, estRevenue: 420, priority: 97 },
   { id: 'ride-fare', name: 'Ride-Hailing Fare Estimator', icon: '🛺', desc: 'Estimate Uber, Bolt, InDrive, Little fares across 20 African cities. Compare ride types, surge pricing awareness.', href: '/tools/ride-fare/', category: 'transport', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Ads', estTraffic: 12000, estRevenue: 170, priority: 90 },
   { id: 'boda-income', name: 'Boda-Boda/Okada Income Calc', icon: '🏍️', desc: 'Calculate daily/monthly income for motorcycle taxi riders in East and West Africa. Fuel, maintenance, net earnings.', href: '/tools/boda-income/', category: 'transport', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['KE', 'UG', 'TZ', 'NG', 'GH'], revenue: 'Ads', estTraffic: 8000, estRevenue: 120, priority: 85 },
   { id: 'matatu-fare', name: 'Matatu/Danfo Route Fare Calc', icon: '🚌', desc: 'Calculate public transport fares for matatu (Kenya), danfo (Nigeria), trotro (Ghana) routes by distance and zone.', href: '/tools/matatu-fare/', category: 'transport', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['KE', 'NG', 'GH'], revenue: 'Ads', estTraffic: 9000, estRevenue: 130, priority: 86 },
@@ -1590,6 +1592,75 @@ var AFRO_TOOLS = [
 
 ];
 
+// Country-specific pages count as distinct tools. The hub/index page counts too.
+// Example: /nigeria/ng-paye and /ghana/gh-paye are separate tools; likewise a
+// hub with 54 country pages is 55 tool instances.
+var AFRO_COUNTRY_TOOL_COUNTS = {
+  'generator-fuel-african': 16,
+  'crop-yield-estimator': 55,
+  'fertilizer-calculator': 55,
+  'irrigation-calculator': 55,
+  'farm-profit-calculator': 55,
+  'seed-rate-calculator': 55,
+  'poultry-roi-calculator': 16,
+  'harvest-date-estimator': 55,
+  'fish-farming-roi': 16,
+  'greenhouse-cost-estimator': 16,
+  'cassava-processing-calculator': 16,
+  'vaccination-schedule': 55,
+  'livestock-feed-calculator': 16,
+  'tenancy-agreement': 55,
+  'employment-contract': 55,
+  'export-docs': 55,
+  'crop-insurance': 16,
+  'farm-payroll-calculator': 55,
+  'input-prices': 16,
+  'farm-loans-hub': 16,
+  'visa-checker': 55,
+  'car-insurance': 55,
+  'health-insurance-compare': 16,
+  'life-insurance-calc': 16,
+  'funeral-insurance': 16,
+  'motor-third-party': 55,
+  'business-insurance': 16,
+  'workers-comp': 55,
+  'health-contribution': 55,
+  'electricity-tariff': 55,
+  'solar-roi': 55,
+  'prepaid-meter': 55,
+  'solar-vs-generator': 16,
+  'electricity-bill-verify': 16,
+  'water-bill': 16,
+  'gas-lpg-cost': 16,
+  'paygo-solar': 16,
+  'outage-cost': 16,
+  'generator-fuel': 16,
+  'air-quality': 2,
+  'carbon-credit': 2,
+  'flood-risk': 2,
+  'work-permit-cost': 55,
+  'contractor-vs-employee': 55,
+  'domestic-worker': 16,
+  'employee-cost': 55,
+  'gratuity-calculator': 55,
+  'maternity-leave': 55,
+  'retrenchment-calculator': 55,
+  'crop-insurance-calc': 16,
+  'microinsurance': 16,
+  'business-license': 17,
+  'tin-guide': 55,
+  'freelancer-rate': 16
+};
+
+for (var _toolCountId in AFRO_COUNTRY_TOOL_COUNTS) {
+  for (var _toolCountIndex = 0; _toolCountIndex < AFRO_TOOLS.length; _toolCountIndex++) {
+    if (AFRO_TOOLS[_toolCountIndex].id === _toolCountId) {
+      AFRO_TOOLS[_toolCountIndex].toolCount = AFRO_COUNTRY_TOOL_COUNTS[_toolCountId];
+      break;
+    }
+  }
+}
+
 // ═══════════════════════════════════════════════════════════
 // CATEGORY DEFINITIONS
 // ═══════════════════════════════════════════════════════════
@@ -1702,7 +1773,7 @@ function renderToolGrid(containerId, countryCode, opts) {
 // STATS HELPER — useful for dashboard/admin pages
 // ═══════════════════════════════════════════════════════════
 function getRegistryStats() {
-  var stats = { total: AFRO_TOOLS.length, live: 0, queued: 0, planned: 0, byPhase: {}, byCategory: {}, byLang: {}, estMonthlyRevenue: 0 };
+  var stats = { total: AFRO_TOOLS.length, toolInstances: getTotalToolCount(), live: 0, queued: 0, planned: 0, byPhase: {}, byCategory: {}, byLang: {}, estMonthlyRevenue: 0 };
   AFRO_TOOLS.forEach(function(t) {
     if (t.status === 'live' || t.status === 'new') stats.live++;
     else if (t.status === 'queued') stats.queued++;
@@ -1731,10 +1802,9 @@ if (typeof document !== 'undefined' && !document.getElementById('afro-tool-style
 //   onRegistryReady(function(tools) { /* render tools */ });
 // ═══════════════════════════════════════════════════════════
 // getTotalToolCount()
-// Returns the TRUE number of tools, accounting for hub entries
-// whose country sub-tools are not individually registered.
-// Entries with `toolCount` represent N tools (hub + countries).
-// Entries without `toolCount` count as 1.
+// Returns the TRUE number of tools, accounting for country-specific families.
+// Unique hrefs count once. Entries with `toolCount` only add variants that are
+// not already represented as explicit child URLs in the registry.
 // ═══════════════════════════════════════════════════════════
 function getTotalToolCount(filterFn) {
   var tools = AFRO_TOOLS.filter(function(t) {
@@ -1742,10 +1812,39 @@ function getTotalToolCount(filterFn) {
     var langOk = !t.lang || t.lang === 'en';
     return langOk && (typeof filterFn === 'function' ? filterFn(t) : true);
   });
-  var total = 0;
+  var seenByHref = {};
+  var hrefKeys = [];
+  var weightedFamilies = {};
+  var normalizeHref = function(href, fallback) {
+    return (href || fallback || '').replace(/\/index\.html$/, '').replace(/\/$/, '').toLowerCase();
+  };
+
   for (var i = 0; i < tools.length; i++) {
-    total += tools[i].toolCount || 1;
+    var hrefKey = normalizeHref(tools[i].href, tools[i].id);
+    if (!seenByHref[hrefKey]) {
+      seenByHref[hrefKey] = true;
+      hrefKeys.push(hrefKey);
+    }
+
+    var count = tools[i].toolCount || 1;
+    if (count > 1 && (!weightedFamilies[hrefKey] || count > weightedFamilies[hrefKey])) {
+      weightedFamilies[hrefKey] = count;
+    }
   }
+
+  var total = hrefKeys.length;
+  for (var familyHref in weightedFamilies) {
+    if (!Object.prototype.hasOwnProperty.call(weightedFamilies, familyHref)) continue;
+    var explicitFamilyUrls = 0;
+    for (var j = 0; j < hrefKeys.length; j++) {
+      if (hrefKeys[j] === familyHref || hrefKeys[j].indexOf(familyHref + '/') === 0) {
+        explicitFamilyUrls++;
+      }
+    }
+    var hiddenVariants = weightedFamilies[familyHref] - explicitFamilyUrls;
+    if (hiddenVariants > 0) total += hiddenVariants;
+  }
+
   return total;
 }
 

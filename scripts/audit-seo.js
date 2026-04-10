@@ -19,13 +19,51 @@ function findHtmlFiles(dir, depth) {
   return files;
 }
 
+function normalizePathname(value) {
+  if (!value) return null;
+  var stripped = value.replace(/\/index\.html$/i, '/').replace(/\/$/, '');
+  return stripped || '/';
+}
+
+function fileToPathname(filePath) {
+  var rel = filePath.replace(root + path.sep, '').split(path.sep).join('/');
+  if (rel === 'index.html') return '/';
+  if (rel.endsWith('/index.html')) return '/' + rel.slice(0, -'/index.html'.length) + '/';
+  return '/' + rel.replace(/\.html$/i, '');
+}
+
+function getCanonicalPath(html) {
+  var canonicalMatch = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i);
+  if (!canonicalMatch) return null;
+
+  try {
+    return normalizePathname(new URL(canonicalMatch[1]).pathname);
+  } catch(e) {
+    return normalizePathname(canonicalMatch[1]);
+  }
+}
+
+function isRedirectLike(html, filePath) {
+  var canonicalPath = getCanonicalPath(html);
+  var currentPath = normalizePathname(fileToPathname(filePath));
+  return (
+    /<meta[^>]+http-equiv=["']refresh["']/i.test(html) ||
+    /window\.location\.(replace|href)|location\.replace\(/i.test(html) ||
+    Boolean(canonicalPath && canonicalPath !== currentPath)
+  );
+}
+
 var files = findHtmlFiles(root, 0);
-var noCanonical = [], noDesc = [], shortDesc = [], noOgImage = [], longTitle = [], shortTitle = [];
+var noCanonical = [], noDesc = [], shortDesc = [], noOgImage = [], longTitle = [], shortTitle = [], skippedRedirects = [];
 
 files.forEach(function(f) {
   var html = fs.readFileSync(f, 'utf8');
   var rel = f.replace(root + path.sep, '').split(path.sep).join('/');
   if (!html.includes('og:title')) return; // skip non-real pages
+  if (isRedirectLike(html, f)) {
+    skippedRedirects.push(rel);
+    return;
+  }
   if (!html.includes('rel="canonical"')) noCanonical.push(rel);
   if (!html.includes('<meta name="description"')) noDesc.push(rel);
   if (!html.includes('og:image')) noOgImage.push(rel);
@@ -55,3 +93,6 @@ longTitle.slice(0, 15).forEach(function(r) { console.log('  ' + r); });
 
 console.log('\nShort title <20 chars (' + shortTitle.length + '):');
 shortTitle.forEach(function(r) { console.log('  ' + r); });
+
+console.log('\nSkipped redirect/canonical alias pages (' + skippedRedirects.length + '):');
+skippedRedirects.slice(0, 10).forEach(function(r) { console.log('  ' + r); });

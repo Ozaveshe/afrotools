@@ -13,13 +13,14 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
+const EXTRA_SITEMAPS = ['sitemap-cars.xml', 'jamb/sitemap.xml'];
 
 // Directories to exclude entirely (non-content)
 const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
   '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
   'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
-  'afrotools-sentinel', 'prompts', 'docs'
+  'afrotools-sentinel', 'prompts', 'docs', 'cars', 'jamb'
 ]);
 
 // Files to exclude
@@ -68,6 +69,52 @@ function fileToUrl(filePath) {
   return `${BASE_URL}/${rel}`;
 }
 
+function formatDate(date) {
+  return new Date(date).toISOString().slice(0, 10);
+}
+
+function normalizePathForCompare(value) {
+  if (!value) return '/';
+  const stripped = value.replace(BASE_URL, '').replace(/\/$/, '');
+  return stripped || '/';
+}
+
+function inspectHtmlFile(filePath) {
+  const html = fs.readFileSync(filePath, 'utf8');
+  let url = fileToUrl(filePath);
+  const currentPath = normalizePathForCompare(new URL(url).pathname);
+  const canonicalMatch = html.match(/<link rel="canonical" href="([^"]+)"/i);
+  let canonicalPath = null;
+  let canonicalUrl = null;
+
+  if (canonicalMatch) {
+    try {
+      canonicalUrl = new URL(canonicalMatch[1], BASE_URL);
+      canonicalPath = normalizePathForCompare(canonicalUrl.pathname);
+    } catch {
+      canonicalPath = normalizePathForCompare(canonicalMatch[1]);
+    }
+  }
+
+  const redirectLike =
+    /<meta[^>]+http-equiv=["']refresh["']/i.test(html) ||
+    /window\.location\.(replace|href)|location\.replace\(/i.test(html);
+
+  const extensionlessCanonicalMatch =
+    currentPath.endsWith('.html') &&
+    canonicalPath === currentPath.replace(/\.html$/i, '');
+  const canonicalMismatch = canonicalPath && canonicalPath !== currentPath && !extensionlessCanonicalMatch;
+  if (extensionlessCanonicalMatch && canonicalUrl && canonicalUrl.origin === BASE_URL) {
+    url = canonicalUrl.href;
+  }
+
+  return {
+    url,
+    lastmod: formatDate(fs.statSync(filePath).mtime),
+    exclude: redirectLike || canonicalMismatch,
+  };
+}
+
 /**
  * Determine which sub-sitemap a URL belongs to
  */
@@ -106,9 +153,9 @@ function categorize(relPath) {
 /**
  * Generate XML for a single sitemap
  */
-function generateSitemap(urls) {
-  const entries = urls.map(url =>
-    `  <url>\n    <loc>${url}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </url>`
+function generateSitemap(entriesByUrl) {
+  const entries = entriesByUrl.map(entry =>
+    `  <url>\n    <loc>${entry.url}</loc>\n    <lastmod>${entry.lastmod}</lastmod>\n  </url>`
   ).join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -123,7 +170,7 @@ ${entries}
  */
 function generateSitemapIndex(sitemapFiles) {
   const entries = sitemapFiles.map(file =>
-    `  <sitemap>\n    <loc>${BASE_URL}/${file}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </sitemap>`
+    `  <sitemap>\n    <loc>${BASE_URL}/${file.file}</loc>\n    <lastmod>${file.lastmod}</lastmod>\n  </sitemap>`
   ).join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -157,12 +204,26 @@ const groups = {
 for (const filePath of filtered) {
   const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
   const cat = categorize(rel);
-  groups[cat].push(fileToUrl(filePath));
+  const page = inspectHtmlFile(filePath);
+  if (page.exclude) continue;
+  groups[cat].push(page);
 }
 
-// Sort URLs within each group
+function dedupeEntries(entries) {
+  const byUrl = new Map();
+  for (const entry of entries) {
+    const existing = byUrl.get(entry.url);
+    if (!existing || entry.lastmod > existing.lastmod) {
+      byUrl.set(entry.url, entry);
+    }
+  }
+  return [...byUrl.values()];
+}
+
+// Deduplicate and sort URLs within each group
 for (const cat of Object.keys(groups)) {
-  groups[cat].sort();
+  groups[cat] = dedupeEntries(groups[cat]);
+  groups[cat].sort((a, b) => a.url.localeCompare(b.url));
 }
 
 // Write sub-sitemaps
@@ -187,7 +248,8 @@ for (const [cat, fileName] of Object.entries(categoryToFile)) {
   const outPath = path.join(ROOT, fileName);
   fs.writeFileSync(outPath, xml, 'utf8');
 
-  sitemapFileNames.push(fileName);
+  const lastmod = urls.reduce((latest, entry) => entry.lastmod > latest ? entry.lastmod : latest, urls[0].lastmod);
+  sitemapFileNames.push({ file: fileName, lastmod });
   totalUrls += urls.length;
   console.log(`  ${fileName}: ${urls.length} URLs`);
 }
@@ -196,28 +258,32 @@ for (const [cat, fileName] of Object.entries(categoryToFile)) {
 // Match EN pages to their FR/SW equivalents by path pattern
 const enUrls = [...groups.agriculture, ...groups.countries, ...groups.tools,
                 ...groups.blog, ...groups.misc];
-const frUrlSet = new Set(groups.fr.map(u => {
-  try { return new URL(u).pathname; } catch { return u; }
+const frUrlMap = new Map(groups.fr.map(entry => {
+  try { return [new URL(entry.url).pathname, entry.lastmod]; } catch { return [entry.url, entry.lastmod]; }
 }));
-const swUrlSet = new Set(groups.sw.map(u => {
-  try { return new URL(u).pathname; } catch { return u; }
+const swUrlMap = new Map(groups.sw.map(entry => {
+  try { return [new URL(entry.url).pathname, entry.lastmod]; } catch { return [entry.url, entry.lastmod]; }
 }));
 
 const i18nEntries = [];
 for (const enUrl of enUrls) {
   let enPath;
-  try { enPath = new URL(enUrl).pathname; } catch { enPath = enUrl; }
+  try { enPath = new URL(enUrl.url).pathname; } catch { enPath = enUrl.url; }
 
   const frPath = '/fr' + enPath;
   const swPath = '/sw' + enPath;
-  const hasFr = frUrlSet.has(frPath);
-  const hasSw = swUrlSet.has(swPath);
+  const hasFr = frUrlMap.has(frPath);
+  const hasSw = swUrlMap.has(swPath);
 
   if (hasFr || hasSw) {
     const langs = { en: enPath };
     if (hasFr) langs.fr = frPath;
     if (hasSw) langs.sw = swPath;
-    i18nEntries.push(langs);
+    const lastmod = [enUrl.lastmod, frUrlMap.get(frPath), swUrlMap.get(swPath)]
+      .filter(Boolean)
+      .sort()
+      .slice(-1)[0] || TODAY;
+    i18nEntries.push({ langs, lastmod });
   }
 }
 
@@ -226,11 +292,12 @@ if (i18nEntries.length > 0) {
   i18nXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
   i18nXml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 
-  for (const langs of i18nEntries) {
+  for (const entry of i18nEntries) {
+    const langs = entry.langs;
     for (const [lang, urlPath] of Object.entries(langs)) {
       i18nXml += '  <url>\n';
       i18nXml += `    <loc>${BASE_URL}${urlPath}</loc>\n`;
-      i18nXml += `    <lastmod>${TODAY}</lastmod>\n`;
+      i18nXml += `    <lastmod>${entry.lastmod}</lastmod>\n`;
       for (const [hl, hp] of Object.entries(langs)) {
         i18nXml += `    <xhtml:link rel="alternate" hreflang="${hl}" href="${BASE_URL}${hp}" />\n`;
       }
@@ -241,9 +308,20 @@ if (i18nEntries.length > 0) {
   i18nXml += '</urlset>\n';
 
   fs.writeFileSync(path.join(ROOT, 'sitemap-i18n.xml'), i18nXml, 'utf8');
-  sitemapFileNames.push('sitemap-i18n.xml');
+  const i18nLastmod = i18nEntries.reduce((latest, entry) => entry.lastmod > latest ? entry.lastmod : latest, i18nEntries[0].lastmod);
+  sitemapFileNames.push({ file: 'sitemap-i18n.xml', lastmod: i18nLastmod });
   const i18nCount = (i18nXml.match(/<url>/g) || []).length;
   console.log(`  sitemap-i18n.xml: ${i18nCount} hreflang entries (${i18nEntries.length} page pairs)`);
+}
+
+for (const extraFile of EXTRA_SITEMAPS) {
+  const fullPath = path.join(ROOT, extraFile);
+  if (!fs.existsSync(fullPath)) continue;
+
+  sitemapFileNames.push({
+    file: extraFile.replace(/\\/g, '/'),
+    lastmod: formatDate(fs.statSync(fullPath).mtime),
+  });
 }
 
 // Write sitemap index
