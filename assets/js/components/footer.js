@@ -102,23 +102,19 @@
        Accent: Apple Blue #007AFF via --color-primary.
     ───────────────────────────────────────────── */
     footer {
-      background:
-        radial-gradient(circle at top left, rgba(59,138,229,0.12), transparent 34%),
-        linear-gradient(180deg, #0f172a 0%, #111827 100%);
-      border-top: 1px solid rgba(255,255,255,0.08);
+      background: #111827;
+      border-top: 2px solid #1f2937;
       color: #d1d5db;
     }
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px 28px; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
 
     /* ─────────────────────────────────────────────
        TOP — logo + newsletter
     ───────────────────────────────────────────── */
     .top {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 56px; padding: 40px 32px 36px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(8,15,30,0.42);
-      border-radius: 28px;
+      gap: 56px; padding: 56px 0 48px;
+      border-bottom: 1px solid #1f2937;
       align-items: start;
     }
 
@@ -189,11 +185,8 @@
     ───────────────────────────────────────────── */
     .links {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 32px; padding: 32px;
-      margin-top: 18px;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 24px;
-      background: rgba(255,255,255,0.02);
+      gap: 32px; padding: 44px 0;
+      border-bottom: 1px solid #1f2937;
     }
     .col-title {
       font-size: 0.6rem; font-weight: 700;
@@ -214,21 +207,16 @@
     ───────────────────────────────────────────── */
     .stats {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 14px; padding: 18px 0 0;
+      gap: 16px; padding: 32px 0;
+      border-bottom: 1px solid #1f2937;
       text-align: center;
-    }
-    .stat-card {
-      padding: 22px 18px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));
     }
     .stat-n {
       font-size: 1.8rem; font-weight: 800;
       color: var(--color-primary); line-height: 1;
       letter-spacing: -0.02em;
     }
-    .stat-card:last-child .stat-n { color: #f9fafb; }
+    .stats > div:last-child .stat-n { color: #f9fafb; }
     .stat-l {
       font-size: 0.72rem; font-weight: 500;
       color: #8B95A3; margin-top: 5px;
@@ -240,7 +228,7 @@
     .bottom {
       display: flex; align-items: center;
       justify-content: space-between;
-      padding: 24px 0 0; flex-wrap: wrap; gap: 12px;
+      padding: 20px 0; flex-wrap: wrap; gap: 12px;
     }
     .copy {
       font-size: 0.75rem; font-weight: 500;
@@ -257,7 +245,7 @@
     /* Disclaimer — readable, not invisible */
     .disc {
       width: 100%; padding-top: 14px;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid #1f2937;
       font-size: 0.7rem; font-weight: 400;
       color: #8B95A3; line-height: 1.7;
     }
@@ -282,14 +270,12 @@
     }
 
     @media (max-width: 900px) {
-      .top   { grid-template-columns: 1fr; gap: 36px; }
+      .top   { grid-template-columns: 1fr; gap: 36px; padding: 40px 0 36px; }
       .links { grid-template-columns: 1fr 1fr; }
       .stats { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 560px) {
       .wrap  { padding: 0 20px; }
-      .top   { padding: 28px 20px; }
-      .links { padding: 24px 20px; }
       .links { grid-template-columns: 1fr 1fr; gap: 24px; }
       .nl-form { flex-direction: column; }
       .bottom { flex-direction: column; align-items: flex-start; }
@@ -422,10 +408,10 @@
             </div>
 
             <div class="stats">
-              <div class="stat-card"><div class="stat-n">${stats.countries}</div><div class="stat-l">${this._l(L.stats.countries)}</div></div>
-              <div class="stat-card"><div class="stat-n">${stats.categories}</div><div class="stat-l">${this._l(L.stats.categories)}</div></div>
-              <div class="stat-card"><div class="stat-n">${stats.payeCountries}</div><div class="stat-l">${this._l(L.stats.paye)}</div></div>
-              <div class="stat-card"><div class="stat-n">Free</div><div class="stat-l">${this._l(L.stats.free)}</div></div>
+              <div><div class="stat-n">${stats.countries}</div><div class="stat-l">${this._l(L.stats.countries)}</div></div>
+              <div><div class="stat-n">${stats.categories}</div><div class="stat-l">${this._l(L.stats.categories)}</div></div>
+              <div><div class="stat-n">${stats.payeCountries}</div><div class="stat-l">${this._l(L.stats.paye)}</div></div>
+              <div><div class="stat-n">Free</div><div class="stat-l">${this._l(L.stats.free)}</div></div>
             </div>
 
             <div class="bottom">
