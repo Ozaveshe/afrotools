@@ -4,24 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Car Price Intelligence Admin | AfroTools</title>
-  <link rel="stylesheet" href="/assets/css/tokens.min.css">
-  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <title>Car Backend Admin | AfroTools</title>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <style>
     body{font-family:Inter,system-ui,sans-serif;background:#f6f8fb;color:#142238;margin:0}
-    .wrap{max-width:1120px;margin:0 auto;padding:28px 18px}.panel{background:#fff;border:1px solid #dbe3ef;border-radius:8px;padding:18px;margin:14px 0;box-shadow:0 6px 18px rgba(15,32,52,.06)}
-    h1{font-size:1.6rem;margin:12px 0 8px}h2{font-size:1.05rem;margin:0 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border-bottom:1px solid #e6edf6;padding:9px;text-align:left;vertical-align:top}th{font-size:.76rem;text-transform:uppercase;color:#5c6f89;letter-spacing:.06em}
-    textarea,input,select{width:100%;border:1px solid #cfd9e8;border-radius:8px;padding:10px;font:inherit}textarea{min-height:230px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.84rem}
-    button,.button{display:inline-block;border:1px solid #1b6fb7;border-radius:8px;background:#1b6fb7;color:#fff;font-weight:800;padding:9px 12px;text-decoration:none;cursor:pointer}.secondary{background:#fff;color:#1b527f}.note{color:#62738d;line-height:1.6}.warn{color:#8a4f00}.pass{color:#136c42}
-    label{display:grid;gap:6px;margin:9px 0}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+    .wrap{max-width:1200px;margin:0 auto;padding:28px 18px}
+    .topbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .panel{background:#fff;border:1px solid #dbe3ef;border-radius:8px;padding:18px;margin:14px 0;box-shadow:0 6px 18px rgba(15,32,52,.06)}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+    .triple{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    h1{font-size:1.7rem;margin:12px 0 8px}h2{font-size:1.05rem;margin:0 0 12px}.note{color:#62738d;line-height:1.6}.warn{color:#8a4f00}.pass{color:#136c42}
+    textarea,input,select{width:100%;border:1px solid #cfd9e8;border-radius:8px;padding:10px;font:inherit}
+    textarea{min-height:220px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.84rem}
+    button,.button{display:inline-block;border:1px solid #1b6fb7;border-radius:8px;background:#1b6fb7;color:#fff;font-weight:800;padding:9px 12px;text-decoration:none;cursor:pointer}
+    .secondary{background:#fff;color:#1b527f}.tertiary{background:#eef4fb;color:#244360;border-color:#c8d8e8}
+    label{display:grid;gap:6px;margin:9px 0}table{width:100%;border-collapse:collapse;font-size:.9rem}
+    th,td{border-bottom:1px solid #e6edf6;padding:9px;text-align:left;vertical-align:top}th{font-size:.76rem;text-transform:uppercase;color:#5c6f89;letter-spacing:.06em}
+    .catalog{max-height:420px;overflow:auto}.mini{font-size:.78rem;color:#62738d}.actions{display:flex;flex-wrap:wrap;gap:8px}
+    .pill{display:inline-flex;align-items:center;min-height:28px;padding:4px 8px;border:1px solid #dbe3ef;border-radius:8px;background:#f5f8fc;font-size:.75rem;font-weight:800;text-transform:uppercase}
+    .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.preview{white-space:pre-wrap;max-height:460px;overflow:auto;background:#f7f9fc;border:1px solid #dbe3ef;border-radius:8px;padding:12px}
+    @media(max-width:980px){.grid,.triple,.cards{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <main class="wrap">
-    <a href="/admin/dashboard.html" class="button secondary">Back to admin</a>
-    <h1>Car Price Intelligence Admin</h1>
-    <p class="note">Upload or preview source-market prices, local-market prices, valuation packs, shipping presets, practical costs, registration costs, confidence labels, effective dates, and stale thresholds. This screen stores a browser preview override; production publish should update the repo data pack or Supabase tables.</p>
+    <div class="topbar">
+      <a href="/afrotools-mission-control.html" class="button secondary">Back to Mission Control</a>
+      <a href="/admin/car-import-cost-rules.html" class="button secondary">Car rule packs</a>
+      <button id="exportFullPackBtn" class="button tertiary" type="button">Export full car pack</button>
+    </div>
+    <h1>Car Backend Admin</h1>
+    <p class="note">This is the operational backend for the car product: vehicle catalog, source/local price intelligence, media library, country financing offers, and import-risk plus liquidity scoring config. Changes save as a browser preview override here first, then you can export the pack for repo or DB publish.</p>
 
     <section class="panel">
       <h2>Dataset health</h2>
@@ -30,14 +44,10 @@
 
     <section class="grid">
       <div class="panel">
-        <h2>Edit price pack JSON</h2>
-        <label>Dataset <select id="datasetSelect"><option value="sourceMarketPrices">Source market prices</option><option value="localMarketPrices">Local market prices</option><option value="vehicles">Vehicle variants</option><option value="ports">Ports</option><option value="destinationCities">Destination cities</option></select></label>
-        <label>Stale threshold days <input id="staleDays" type="number" min="1" value="120"></label>
-        <textarea id="packJson" spellcheck="false"></textarea>
-        <button id="validateBtn">Validate</button>
-        <button id="saveOverrideBtn" class="secondary">Save preview override</button>
-        <button id="exportBtn" class="secondary">Export pack JSON</button>
-        <div id="validationOut" class="note"></div>
+        <h2>Vehicle catalog</h2>
+        <label>Search vehicles <input id="catalogSearch" placeholder="Toyota Axio, CR-V, G-Wagon"></label>
+        <div class="catalog"><table><thead><tr><th>Vehicle</th><th>Body</th><th>Sources</th><th>Price band</th><th>Media</th></tr></thead><tbody id="catalogRows"></tbody></table></div>
+        <p class="mini">Use the dataset editor or upload flow below to add cars in bulk. The catalog table here is mainly for listing, spot checks, and previews.</p>
       </div>
       <div class="panel">
         <h2>Preview a page/result</h2>
@@ -46,77 +56,245 @@
         <label>Model <input id="previewModel" value="Axio"></label>
         <label>Year <input id="previewYear" value="2018" type="number"></label>
         <label>Source market <select id="previewSource"><option value="japan">Japan</option><option value="uae">UAE</option><option value="uk">UK</option><option value="south-africa">South Africa</option></select></label>
-        <button id="previewBtn">Preview recommendation</button>
-        <pre id="previewOut" class="note"></pre>
+        <div class="actions"><button id="previewBtn" type="button">Preview recommendation</button><button id="openPageBtn" type="button" class="secondary">Open car page</button></div>
+        <pre id="previewOut" class="preview"></pre>
       </div>
     </section>
 
-    <section class="panel">
-      <h2>CSV import/update path</h2>
-      <p class="note">Upload CSV exported from a spreadsheet. Columns should match the selected dataset, for example: source_market, make, model, year, min_price, median_price, max_price, currency, collected_at, confidence, source_type.</p>
-      <input type="file" id="csvFile" accept=".csv,text/csv">
-      <textarea id="csvOut" spellcheck="false"></textarea>
+    <section class="grid">
+      <div class="panel">
+        <h2>Dataset editor</h2>
+        <label>Dataset
+          <select id="datasetSelect">
+            <option value="vehicles">Vehicle variants</option>
+            <option value="sourceMarketPrices">Source market prices</option>
+            <option value="localMarketPrices">Local market prices</option>
+            <option value="mediaLibrary.assets">Media assets</option>
+            <option value="mediaLibrary.bindings">Media bindings</option>
+            <option value="countryFinancingOffers">Country financing offers</option>
+            <option value="scoringModels">Scoring models</option>
+            <option value="ports">Ports</option>
+            <option value="destinationCities">Destination cities</option>
+          </select>
+        </label>
+        <label>Stale threshold days <input id="staleDays" type="number" min="1" value="120"></label>
+        <textarea id="packJson" spellcheck="false"></textarea>
+        <div class="actions">
+          <button id="validateBtn" type="button">Validate</button>
+          <button id="saveOverrideBtn" type="button" class="secondary">Save preview override</button>
+          <button id="exportDatasetBtn" type="button" class="secondary">Export current dataset</button>
+        </div>
+        <div id="validationOut" class="note"></div>
+      </div>
+      <div class="panel">
+        <h2>Import / upload path</h2>
+        <p class="note">CSV import/update path still works here, but JSON is recommended for vehicles, media, financing offers, and nested scoring config.</p>
+        <input type="file" id="importFile" accept=".json,.csv,text/csv,application/json">
+        <textarea id="importOut" spellcheck="false"></textarea>
+        <div class="actions">
+          <button id="useImportBtn" type="button" class="secondary">Use imported dataset</button>
+          <button id="clearImportBtn" type="button" class="tertiary">Clear import buffer</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="triple">
+      <div class="panel">
+        <h2>Quick add media</h2>
+        <label>Vehicle ID <input id="mediaVehicleId" value="toyota-axio-2018"></label>
+        <label>Country <select id="mediaCountry"></select></label>
+        <label>Body type <input id="mediaBodyType" placeholder="sedan"></label>
+        <label>Image URL <input id="mediaUrl" placeholder="/assets/img/tools/car-loan.webp"></label>
+        <label>Or upload image file <input id="mediaFile" type="file" accept="image/*"></label>
+        <label>Alt text <input id="mediaAlt" placeholder="Toyota Axio placeholder image"></label>
+        <label>Caption <input id="mediaCaption" placeholder="Replace with licensed model-specific upload when available."></label>
+        <div class="actions"><button id="addMediaBtn" type="button">Append media asset</button></div>
+      </div>
+      <div class="panel">
+        <h2>Quick add financing offer</h2>
+        <label>Country <select id="offerCountry"></select></label>
+        <label>Provider <input id="offerProvider" value="Country auto-finance partner"></label>
+        <label>Offer label <input id="offerLabel" value="Imported used-car finance"></label>
+        <label>APR (decimal) <input id="offerApr" type="number" step="0.01" value="0.24"></label>
+        <label>Down payment (decimal) <input id="offerDown" type="number" step="0.01" value="0.30"></label>
+        <label>Tenures (comma separated) <input id="offerTenures" value="12,24,36"></label>
+        <label>Max vehicle age years <input id="offerMaxAge" type="number" value="9"></label>
+        <label>Max amount USD <input id="offerMaxAmount" type="number" value="35000"></label>
+        <div class="actions"><button id="addOfferBtn" type="button">Append financing offer</button></div>
+      </div>
+      <div class="panel">
+        <h2>Operational notes</h2>
+        <div class="cards">
+          <div><span class="pill">Media</span><p class="mini">Store metadata and preview uploads here first. For production, point `imageUrl` to the approved storage path or checked-in asset.</p></div>
+          <div><span class="pill">Financing</span><p class="mini">Keep offers country-specific. These are partner estimates unless a verified lender feed is wired.</p></div>
+          <div><span class="pill">Risk</span><p class="mini">Risk and liquidity are runtime scores driven by `scoringModels`, freshness, confidence, and landed-cost sensitivity.</p></div>
+          <div><span class="pill">Publish</span><p class="mini">Export the full pack after review, then update the repo data file or database publish job.</p></div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <script src="/assets/js/lib/car-import-cost-engine.js"></script>
-  <script src="/assets/js/lib/car-price-intelligence.js"></script>
+  <script src="/assets/js/lib/car-import-cost-engine.js?v=872c323d"></script>
+  <script src="/assets/js/lib/car-price-intelligence.js?v=f59312a1"></script>
   <script>
   (function(){
-    var adminKey=sessionStorage.getItem("admin_key")||prompt("Enter admin password:");
-    if(!adminKey){document.body.innerHTML='<div style="text-align:center;padding:80px 24px;font-family:Inter,sans-serif;"><h1>Access denied</h1><p>Admin password required.</p><a href="/">Back to AfroTools</a></div>';return;}
-    sessionStorage.setItem("admin_key",adminKey);
-    var data, importData, Engine=window.AfroCarImportCost, Price=window.AfroCarPriceIntelligence;
-    function $(id){return document.getElementById(id)}
-    function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-    function loadJson(url){return fetch(url,{cache:"no-cache"}).then(function(r){if(!r.ok)throw new Error(url);return r.json()})}
-    function load(){
-      return Promise.all([loadJson("/data/cars/price-intelligence.json"),loadImportData()]).then(function(items){data=items[0];importData=items[1];render()})
+    var adminKey = sessionStorage.getItem("admin_key") || prompt("Enter admin password:");
+    if (!adminKey) {
+      document.body.innerHTML = '<div style="text-align:center;padding:80px 24px;font-family:Inter,sans-serif;"><h1>Access denied</h1><p>Admin password required.</p><a href="/">Back to AfroTools</a></div>';
+      return;
     }
+    sessionStorage.setItem("admin_key", adminKey);
+
+    var data, importData, Engine = window.AfroCarImportCost, Price = window.AfroCarPriceIntelligence, importedBuffer = null;
+    function $(id){ return document.getElementById(id); }
+    function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+    function loadJson(url){ return fetch(url, { cache:"no-cache" }).then(function(r){ if(!r.ok) throw new Error(url); return r.json(); }); }
+    function getPath(obj, path){ return String(path).split(".").reduce(function(acc, key){ return acc && acc[key]; }, obj); }
+    function setPath(obj, path, value){ var keys = String(path).split("."), ref = obj; keys.forEach(function(key, index){ if(index === keys.length - 1) ref[key] = value; else ref = ref[key] = ref[key] || {}; }); }
     function loadImportData(){
-      return loadJson("/data/trade/car-import-cost-core.json").then(function(core){return Promise.all(Object.keys(core.countryPackFiles).map(function(code){return loadJson(core.countryPackFiles[code])})).then(function(packs){return Engine.mergeData(core,packs,{NGN:1535.5,KES:129.45,GHS:14.89,UGX:3720,ZMW:27.5,TZS:2650})})})
+      return loadJson("/data/trade/car-import-cost-core.json").then(function(core){
+        return Promise.all(Object.keys(core.countryPackFiles).map(function(code){ return loadJson(core.countryPackFiles[code]); })).then(function(packs){
+          return Engine.mergeData(core, packs, { NGN:1535.5, KES:129.45, GHS:14.89, UGX:3720, ZMW:27.5, TZS:2650 });
+        });
+      });
     }
-    function render(){
-      $("staleDays").value=data.staleAfterDays||120; fillCountries(); showDataset(); renderHealth();
+    function saveLocal(){ localStorage.setItem("carPriceIntelligenceOverride", JSON.stringify(data)); }
+    function healthRows(){
+      return [
+        ["vehicles", data.vehicles.length, "seed pack", confidenceSummary(data.vehicles)],
+        ["sourceMarketPrices", data.sourceMarketPrices.length, "explicit + fallback", confidenceSummary(data.sourceMarketPrices)],
+        ["localMarketPrices", data.localMarketPrices.length, "explicit + fallback", confidenceSummary(data.localMarketPrices)],
+        ["mediaLibrary.assets", (data.mediaLibrary && data.mediaLibrary.assets || []).length, "media library", confidenceSummary(data.mediaLibrary && data.mediaLibrary.assets)],
+        ["countryFinancingOffers", Object.keys(data.countryFinancingOffers || {}).reduce(function(sum, code){ return sum + (data.countryFinancingOffers[code] || []).length; }, 0), "country-specific", "partner-estimate"],
+        ["scoringModels", Object.keys(data.scoringModels || {}).length, "runtime config", "data-driven"]
+      ];
+    }
+    function confidenceSummary(items){
+      var labels = {};
+      (items || []).forEach(function(item){ labels[item.confidence || "unset"] = (labels[item.confidence || "unset"] || 0) + 1; });
+      return Object.keys(labels).map(function(k){ return k + ":" + labels[k]; }).join(", ") || "n/a";
     }
     function fillCountries(){
-      $("previewCountry").innerHTML=Object.keys(data.countries).map(function(code){var c=data.countries[code];return '<option value="'+code+'">'+code+' - '+esc(c.name)+'</option>'}).join('');
+      var html = Object.keys(data.countries).map(function(code){ var c = data.countries[code]; return '<option value="' + code + '">' + code + ' - ' + esc(c.name) + '</option>'; }).join("");
+      $("previewCountry").innerHTML = html; $("mediaCountry").innerHTML = '<option value="">Any</option>' + html; $("offerCountry").innerHTML = html;
     }
-    function renderHealth(){
-      var rows=[
-        ["vehicles",data.vehicles.length,"seed pack",confidenceSummary(data.vehicles)],
-        ["sourceMarketPrices",data.sourceMarketPrices.length,"explicit + modelled fallback",confidenceSummary(data.sourceMarketPrices)],
-        ["localMarketPrices",data.localMarketPrices.length,"explicit + profile fallback",confidenceSummary(data.localMarketPrices)],
-        ["ports",data.ports.length,"static presets","medium"],
-        ["destinationCities",data.destinationCities.length,"static presets","medium"]
-      ];
-      $("healthRows").innerHTML=rows.map(function(r){return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td>"+r[3]+"</td></tr>"}).join("");
+    function renderHealth(){ $("healthRows").innerHTML = healthRows().map(function(r){ return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td><td>" + r[3] + "</td></tr>"; }).join(""); }
+    function renderCatalog(){
+      var q = ($("catalogSearch").value || "").toLowerCase().trim();
+      var bindings = (data.mediaLibrary && data.mediaLibrary.bindings) || [];
+      var rows = data.vehicles.filter(function(item){ return !q || (item.make + " " + item.model + " " + item.year).toLowerCase().indexOf(q) > -1; }).slice(0, 120);
+      $("catalogRows").innerHTML = rows.map(function(item){
+        var mediaCount = bindings.filter(function(binding){ return binding.vehicleId === item.id; }).length;
+        return "<tr><td><strong>" + esc(item.make + " " + item.model + " " + item.year) + "</strong><div class=\"mini\">" + esc(item.id) + "</div></td><td>" + esc(item.body) + "</td><td>" + esc((item.sources || []).join(", ")) + "</td><td>" + esc(String(item.price[0])) + " - " + esc(String(item.price[2])) + "</td><td>" + mediaCount + "</td></tr>";
+      }).join("");
     }
-    function confidenceSummary(items){var labels={};(items||[]).forEach(function(item){labels[item.confidence||"unset"]=(labels[item.confidence||"unset"]||0)+1});return Object.keys(labels).map(function(k){return k+":"+labels[k]}).join(", ")}
-    function showDataset(){var key=$("datasetSelect").value;$("packJson").value=JSON.stringify(data[key]||[],null,2)}
+    function showDataset(){ $("packJson").value = JSON.stringify(getPath(data, $("datasetSelect").value) || [], null, 2); }
     function validate(){
-      try{
-        var parsed=JSON.parse($("packJson").value), key=$("datasetSelect").value;
-        if(!Array.isArray(parsed))throw new Error("Dataset must be a JSON array");
-        if(key.indexOf("Prices")>-1)parsed.forEach(function(row,i){["make","model","year","confidence"].forEach(function(k){if(row[k]==null)throw new Error("Row "+i+" missing "+k)})});
-        $("validationOut").innerHTML='<span class="pass">Valid '+esc(key)+' dataset with '+parsed.length+' rows.</span>';return parsed;
-      }catch(e){$("validationOut").innerHTML='<span class="warn">'+esc(e.message)+'</span>';return null}
+      try {
+        var parsed = JSON.parse($("packJson").value), key = $("datasetSelect").value;
+        if (key.indexOf("Prices") > -1 || key === "vehicles" || key.indexOf("mediaLibrary.") === 0) { if (!Array.isArray(parsed)) throw new Error("Dataset must be a JSON array"); }
+        $("validationOut").innerHTML = '<span class="pass">Valid ' + esc(key) + ' dataset.</span>';
+        return parsed;
+      } catch (error) {
+        $("validationOut").innerHTML = '<span class="warn">' + esc(error.message) + '</span>';
+        return null;
+      }
     }
     function saveOverride(){
-      var parsed=validate(); if(!parsed)return;
-      var key=$("datasetSelect").value; data[key]=parsed; data.staleAfterDays=Number($("staleDays").value)||120;
-      localStorage.setItem("carPriceIntelligenceOverride",JSON.stringify(data));
-      renderHealth(); $("validationOut").innerHTML+='<br><span class="pass">Saved browser preview override. Refresh /cars to test.</span>';
+      var parsed = validate(); if (parsed == null) return;
+      setPath(data, $("datasetSelect").value, parsed);
+      data.staleAfterDays = Number($("staleDays").value) || 120;
+      saveLocal(); renderHealth(); renderCatalog();
+      $("validationOut").innerHTML += '<br><span class="pass">Saved browser preview override. Refresh /cars to verify.</span>';
+    }
+    function exportDataset(){
+      var parsed = validate(); if (parsed == null) return;
+      downloadJson(parsed, $("datasetSelect").value.replace(/\./g, "-") + ".json");
+    }
+    function exportFullPack(){ downloadJson(data, "car-price-intelligence-full-pack.json"); }
+    function downloadJson(payload, filename){
+      var blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" }), a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href);
     }
     function preview(){
-      var ctx=Price.buildVehicleContext(data,importData,{countryCode:$("previewCountry").value,make:$("previewMake").value,model:$("previewModel").value,year:$("previewYear").value,sourceMarket:$("previewSource").value});
-      $("previewOut").textContent=ctx?JSON.stringify({vehicle:ctx.vehicle.id,country:ctx.country.code,sourcePrice:ctx.sourcePrice,landed:{best:ctx.landed.best,normal:ctx.landed.normal,painful:ctx.landed.painful},localPrice:ctx.localPrice,recommendation:ctx.recommendation,warnings:ctx.landed.warnings},null,2):"No matching vehicle";
+      var ctx = Price.buildVehicleContext(data, importData, { countryCode:$("previewCountry").value, make:$("previewMake").value, model:$("previewModel").value, year:$("previewYear").value, sourceMarket:$("previewSource").value });
+      $("previewOut").textContent = ctx ? JSON.stringify({ vehicle:ctx.vehicle.id, sourcePrice:ctx.sourcePrice, landed:{ best:ctx.landed.best, normal:ctx.landed.normal, painful:ctx.landed.painful }, localPrice:ctx.localPrice, recommendation:ctx.recommendation, media:ctx.media, bestFinance:ctx.financing.bestOffer, importRisk:ctx.importRisk, liquidity:ctx.liquidity }, null, 2) : "No matching vehicle";
     }
-    function exportPack(){var parsed=validate();if(!parsed)return;var blob=new Blob([JSON.stringify(parsed,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=$("datasetSelect").value+".json";a.click();URL.revokeObjectURL(a.href)}
-    function parseCsv(text){var lines=text.trim().split(/\r?\n/),headers=lines.shift().split(",").map(function(h){return h.trim()});return lines.map(function(line){var cols=line.split(","),row={};headers.forEach(function(h,i){row[h]=cols[i]});return row})}
-    $("datasetSelect").addEventListener("change",showDataset);$("validateBtn").addEventListener("click",validate);$("saveOverrideBtn").addEventListener("click",saveOverride);$("previewBtn").addEventListener("click",preview);$("exportBtn").addEventListener("click",exportPack);
-    $("csvFile").addEventListener("change",function(){var f=this.files[0];if(!f)return;f.text().then(function(text){$("csvOut").value=JSON.stringify(parseCsv(text),null,2)})});
-    load().catch(function(e){$("validationOut").textContent="Could not load data: "+e.message});
+    function openPage(){
+      var country = Price.getCountry(data, $("previewCountry").value), make = Price.slug($("previewMake").value), model = Price.slug($("previewModel").value), year = $("previewYear").value;
+      window.open("/cars/" + country.slug + "/" + make + "/" + model + "/" + year + "/", "_blank");
+    }
+    function parseCsv(text){
+      var lines = text.trim().split(/\r?\n/), headers = lines.shift().split(",").map(function(h){ return h.trim(); });
+      return lines.map(function(line){ var cols = line.split(","), row = {}; headers.forEach(function(h, i){ row[h] = cols[i]; }); return row; });
+    }
+    function addMediaAsset(){
+      var finish = function(imageUrl){
+        var assetId = "media-" + Date.now();
+        data.mediaLibrary = data.mediaLibrary || { assets:[], bindings:[] };
+        data.mediaLibrary.assets.push({ id:assetId, imageUrl:imageUrl, thumbUrl:imageUrl, alt:$("mediaAlt").value || "Car media upload", caption:$("mediaCaption").value || "", mediaType:"hero", sourceType:"admin-upload", confidence:"medium", collectedAt:new Date().toISOString().slice(0,10), status:"approved" });
+        data.mediaLibrary.bindings.push({ assetId:assetId, vehicleId:$("mediaVehicleId").value || "", countryCode:$("mediaCountry").value || "", bodyType:$("mediaBodyType").value || "", displayOrder:1, isPrimary:true, status:"approved" });
+        saveLocal(); renderHealth(); renderCatalog(); if ($("datasetSelect").value.indexOf("mediaLibrary.") === 0) showDataset();
+        $("validationOut").innerHTML = '<span class="pass">Media asset appended to preview override.</span>';
+      };
+      var file = $("mediaFile").files[0];
+      if (file) { var reader = new FileReader(); reader.onload = function(){ finish(reader.result); }; reader.readAsDataURL(file); }
+      else if ($("mediaUrl").value.trim()) finish($("mediaUrl").value.trim());
+    }
+    function addOffer(){
+      var code = $("offerCountry").value; if (!code) return;
+      data.countryFinancingOffers = data.countryFinancingOffers || {};
+      data.countryFinancingOffers[code] = data.countryFinancingOffers[code] || [];
+      data.countryFinancingOffers[code].push({
+        id: code.toLowerCase() + "-offer-" + Date.now(),
+        provider: $("offerProvider").value || "Country auto-finance partner",
+        label: $("offerLabel").value || "Imported used-car finance",
+        offerType: "partner-estimate",
+        aprPct: Number($("offerApr").value) || 0.24,
+        aprMaxPct: (Number($("offerApr").value) || 0.24) + 0.05,
+        minDownPaymentPct: Number($("offerDown").value) || 0.3,
+        defaultDownPaymentPct: Number($("offerDown").value) || 0.3,
+        tenuresMonths: ($("offerTenures").value || "12,24,36").split(",").map(function(v){ return Number(v.trim()) || 0; }).filter(Boolean),
+        defaultTenureMonths: (($("offerTenures").value || "12,24,36").split(",").map(function(v){ return Number(v.trim()) || 0; }).filter(Boolean)[1]) || 24,
+        maxVehicleAgeYears: Number($("offerMaxAge").value) || 9,
+        maxAmountUsd: Number($("offerMaxAmount").value) || 35000,
+        confidence: "medium",
+        sourceType: "partner-estimate",
+        effectiveFrom: new Date().toISOString().slice(0,10),
+        notes: "Preview offer added from Mission Control."
+      });
+      saveLocal(); renderHealth(); if ($("datasetSelect").value === "countryFinancingOffers") showDataset();
+      $("validationOut").innerHTML = '<span class="pass">Financing offer appended to preview override.</span>';
+    }
+    function bind(){
+      $("catalogSearch").addEventListener("input", renderCatalog);
+      $("datasetSelect").addEventListener("change", showDataset);
+      $("validateBtn").addEventListener("click", validate);
+      $("saveOverrideBtn").addEventListener("click", saveOverride);
+      $("exportDatasetBtn").addEventListener("click", exportDataset);
+      $("exportFullPackBtn").addEventListener("click", exportFullPack);
+      $("previewBtn").addEventListener("click", preview);
+      $("openPageBtn").addEventListener("click", openPage);
+      $("addMediaBtn").addEventListener("click", addMediaAsset);
+      $("addOfferBtn").addEventListener("click", addOffer);
+      $("clearImportBtn").addEventListener("click", function(){ importedBuffer = null; $("importOut").value = ""; });
+      $("useImportBtn").addEventListener("click", function(){ if (importedBuffer != null) { $("packJson").value = JSON.stringify(importedBuffer, null, 2); $("validationOut").textContent = "Imported dataset copied into editor."; } });
+      $("importFile").addEventListener("change", function(){
+        var file = this.files[0]; if (!file) return;
+        file.text().then(function(text){
+          importedBuffer = /\.json$/i.test(file.name) ? JSON.parse(text) : parseCsv(text);
+          $("importOut").value = JSON.stringify(importedBuffer, null, 2);
+        });
+      });
+    }
+    Promise.all([loadJson("/data/cars/price-intelligence.json"), loadImportData()]).then(function(items){
+      data = items[0]; importData = items[1];
+      try { var override = JSON.parse(localStorage.getItem("carPriceIntelligenceOverride") || "null"); if (override && override.schemaVersion) data = override; } catch (e) {}
+      $("staleDays").value = data.staleAfterDays || 120;
+      fillCountries(); renderHealth(); renderCatalog(); showDataset(); bind();
+    }).catch(function(error){
+      $("validationOut").textContent = "Could not load data: " + error.message;
+    });
   })();
   </script>
 </body>

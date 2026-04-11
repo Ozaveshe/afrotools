@@ -52,6 +52,11 @@ for (const [label, input, expectedStatus] of cases) {
   assert.ok(ctx.sourceComparison.length >= 2, `${label}: source comparison`);
   assert.strictEqual(ctx.aiContext.tool, "car-price-intelligence", `${label}: AI tool`);
   assert.ok(ctx.aiContext.landedCost.normal > 0, `${label}: AI landed payload`);
+  assert.ok(ctx.media && ctx.media.hero && ctx.media.hero.imageUrl, `${label}: media resolved`);
+  assert.ok(ctx.importRisk && ctx.importRisk.score > 0 && ctx.importRisk.score <= 100, `${label}: import risk score`);
+  assert.ok(ctx.liquidity && ctx.liquidity.score > 0 && ctx.liquidity.score <= 100, `${label}: liquidity score`);
+  assert.ok(ctx.financing && Array.isArray(ctx.financing.offers) && ctx.financing.offers.length >= 1, `${label}: financing offers`);
+  assert.ok(ctx.aiContext.importRisk && ctx.aiContext.liquidity, `${label}: AI scores included`);
 }
 
 const stale = Price.isStale("2025-01-01", data.generatedAt, data.staleAfterDays);
@@ -62,5 +67,11 @@ assert.ok(filtered.every((vehicle) => vehicle.makeSlug === "toyota" && vehicle.b
 
 const localFallback = Price.getLocalPrice(data, Price.findVehicle(data, { make: "kia", model: "sportage", year: 2017 }), "zambia");
 assert.strictEqual(localFallback.sourceType, "modelled-market-sample", "fallback local sample labelled");
+
+const media = Price.resolveMedia(data, Price.findVehicle(data, { make: "toyota", model: "axio", year: 2018 }), "kenya", "japan");
+assert.ok(media.hero && media.hero.imageUrl, "media fallback returns a hero asset");
+
+const finance = Price.buildFinancingOffers(data, Price.buildVehicleContext(data, importData, { country: "kenya", make: "toyota", model: "axio", year: 2018 }));
+assert.ok(finance.bestOffer, "best financing offer returned");
 
 console.log("car-price-intelligence.test.js passed");

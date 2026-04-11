@@ -125,6 +125,24 @@ async function saveAlerts(alerts) {
   if (!alerts.length || !SUPABASE_KEY) return;
 
   try {
+    var rows = alerts.map(function(alert) {
+      var countryLabel = alert.country_name || alert.country_code || 'Regional';
+      var title = countryLabel + ' ' + alert.metric + ' change';
+      var description = alert.metric + ' changed ' + alert.change_pct + '% (' + alert.old_value + ' -> ' + alert.new_value + ')';
+      if (alert.direction === 'up') description += ' Increase detected';
+      if (alert.direction === 'down') description += ' Decrease detected';
+
+      return {
+        country_codes: [alert.country_code || 'ALL'],
+        title: title,
+        description: description,
+        severity: alert.severity || 'medium',
+        effective_date: (alert.detected_at || new Date().toISOString()).slice(0, 10),
+        expires_at: null,
+        active: true,
+      };
+    });
+
     var res = await fetch(SUPABASE_URL + '/rest/v1/alerts', {
       method: 'POST',
       headers: {
@@ -133,7 +151,7 @@ async function saveAlerts(alerts) {
         'Authorization': 'Bearer ' + SUPABASE_KEY,
         'Prefer': 'return=minimal',
       },
-      body: JSON.stringify(alerts),
+      body: JSON.stringify(rows),
     });
 
     if (!res.ok) {

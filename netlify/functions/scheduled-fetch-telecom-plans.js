@@ -57,6 +57,27 @@ var COUNTRY_PROVIDERS = {
   SC: { name: 'Seychelles', currency: 'SCR', region: 'east', providers: ['Cable & Wireless', 'Airtel'] },
 };
 
+var COUNTRY_NAME_ALIASES = {
+  "cote d'ivoire": 'CI',
+  'ivory coast': 'CI',
+  'congo': 'CG',
+  'congo democratic republic of': 'CD',
+  'congo (democratic republic of)': 'CD',
+  'dr congo': 'CD',
+  'eswatini': 'SZ',
+  'swaziland': 'SZ',
+};
+
+function normalizeCountryName(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
 /**
  * Source 1: Cable.co.uk mobile data pricing (published research)
  * They publish annual cost-of-1GB reports with African data
@@ -82,7 +103,10 @@ async function fetchFromCableCo() {
   // Map country names to our codes
   var nameToCode = {};
   Object.keys(COUNTRY_PROVIDERS).forEach(function(code) {
-    nameToCode[COUNTRY_PROVIDERS[code].name.toLowerCase()] = code;
+    nameToCode[normalizeCountryName(COUNTRY_PROVIDERS[code].name)] = code;
+  });
+  Object.keys(COUNTRY_NAME_ALIASES).forEach(function(alias) {
+    nameToCode[normalizeCountryName(alias)] = COUNTRY_NAME_ALIASES[alias];
   });
 
   var now = new Date().toISOString().slice(0, 10);
@@ -96,14 +120,14 @@ async function fetchFromCableCo() {
       cells.push(cellMatch[1].replace(/<[^>]*>/g, '').trim());
     }
 
-    if (cells.length >= 4) {
-      var countryName = cells[0].toLowerCase().trim();
+    if (cells.length >= 3) {
+      var countryName = normalizeCountryName(cells[1] || cells[0]);
       var code = nameToCode[countryName];
-      if (!code) continue;
+      if (!code || !COUNTRY_PROVIDERS[code]) continue;
 
-      var avgPrice = parseFloat((cells[1] || '').replace(/[^0-9.]/g, '')) || null;
-      var cheapestPrice = parseFloat((cells[2] || '').replace(/[^0-9.]/g, '')) || null;
-      var plans = parseInt(cells[3]) || null;
+      var avgPrice = parseFloat((cells[cells.length - 1] || '').replace(/[^0-9.]/g, '')) || null;
+      var cheapestPrice = avgPrice;
+      var plans = cells.length >= 4 ? (parseInt(cells[3], 10) || null) : null;
 
       if (avgPrice) {
         var config = COUNTRY_PROVIDERS[code];

@@ -11,8 +11,7 @@
  * Writes to Netlify Blobs 'live-data' → key 'shipping-rates-latest'.
  */
 
-const { runScraper } = require('./_shared/scraper-base');
-const { getData } = require('./_shared/data-store');
+const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
 
 // Key African ports and trade routes
 var PORTS = {

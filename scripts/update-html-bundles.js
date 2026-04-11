@@ -19,6 +19,9 @@ if (!fs.existsSync(MANIFEST_PATH)) {
 }
 
 const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+const LEGACY_REGISTRY_PATH = '/assets/js/tool-registry.js';
+const REGISTRY_PATH = '/assets/js/components/tool-registry.js';
+const MINIFIED_REGISTRY_PATH = '/assets/js/components/tool-registry.min.js';
 
 // Build lookup: relative path → bundle name
 const fileToBundleMap = {};
@@ -53,6 +56,10 @@ let scriptCount = 0;
 for (const htmlPath of htmlFiles) {
   let html = fs.readFileSync(htmlPath, 'utf8');
   const original = html;
+
+  // Keep the registry on the lighter minified build across pages.
+  html = html.replaceAll(LEGACY_REGISTRY_PATH, MINIFIED_REGISTRY_PATH);
+  html = html.replaceAll(REGISTRY_PATH, MINIFIED_REGISTRY_PATH);
 
   // Track which bundles we've already injected for this file
   const injectedBundles = new Set();

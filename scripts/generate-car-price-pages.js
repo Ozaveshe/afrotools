@@ -130,17 +130,17 @@ function writeSitemap() {
 
 writePage("cars", {
   title: "African Car Price Directory | Import vs Local Landed Cost | AfroTools",
-  description: "Search popular imported cars in Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania with source price, landed-cost, and local asking-price ranges."
+  description: "Search popular imported cars in Nigeria, Kenya, Ghana, Uganda, Zambia, and Tanzania with source price, landed-cost, local asking-price, financing, and risk layers."
 });
 writePage("cars/compare", {
   title: "Compare Car Source Markets | Japan, UAE, UK, South Africa | AfroTools",
-  description: "Compare source-market price, shipping assumptions, landed cost, and local dealer ranges for African car imports."
+  description: "Compare source-market price, shipping assumptions, landed cost, local dealer ranges, financing outlook, and risk layers for African car imports."
 });
 
 Object.values(data.countries).forEach((country) => {
   writePage(`cars/${country.slug}`, {
     title: `${country.name} Car Import Price Directory | AfroTools`,
-    description: `Search car landed-cost and local asking-price ranges for ${country.name}, including source-market comparisons and import-vs-local recommendations.`,
+    description: `Search car landed-cost and local asking-price ranges for ${country.name}, including source-market comparisons, financing outlook, and import-vs-local recommendations.`,
     country: country.name
   });
 
@@ -151,7 +151,7 @@ Object.values(data.countries).forEach((country) => {
   makes.forEach((makeName, makeSlug) => {
     writePage(`cars/${country.slug}/${makeSlug}`, {
       title: `${makeName} Landed Car Prices in ${country.name} | AfroTools`,
-      description: `Browse ${makeName} model and year estimates in ${country.name}: source price range, landed-cost range, local asking range, and import-vs-local recommendation.`,
+      description: `Browse ${makeName} model and year estimates in ${country.name}: source price range, landed-cost range, local asking range, financing outlook, and import-vs-local recommendation.`,
       country: country.name,
       make: makeName
     });
@@ -165,7 +165,7 @@ Object.values(data.countries).forEach((country) => {
   models.forEach((vehicle, key) => {
     writePage(`cars/${country.slug}/${key}`, {
       title: `${vehicle.make} ${vehicle.model} Landed Prices in ${country.name} | AfroTools`,
-      description: `Compare ${vehicle.make} ${vehicle.model} year variants in ${country.name} with source-market price, landed-cost, and local asking ranges.`,
+      description: `Compare ${vehicle.make} ${vehicle.model} year variants in ${country.name} with source-market price, landed-cost, local asking, financing, and risk ranges.`,
       country: country.name,
       make: vehicle.make
     });
@@ -174,13 +174,13 @@ Object.values(data.countries).forEach((country) => {
   data.vehicles.forEach((vehicle) => {
     writePage(`cars/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`, {
       title: `${vehicle.year} ${vehicle.make} ${vehicle.model} Price in ${country.name} | Import vs Local | AfroTools`,
-      description: `Estimate ${vehicle.year} ${vehicle.make} ${vehicle.model} source price, landed cost, local asking range, compliance risk, and import-vs-local recommendation for ${country.name}.`,
+      description: `Estimate ${vehicle.year} ${vehicle.make} ${vehicle.model} source price, landed cost, local asking range, financing outlook, compliance risk, liquidity, and import-vs-local recommendation for ${country.name}.`,
       country: country.name,
       make: vehicle.make
     });
     writePage(`cars/import-vs-local/${country.slug}/${vehicle.makeSlug}/${vehicle.modelSlug}/${vehicle.year}`, {
       title: `${vehicle.year} ${vehicle.make} ${vehicle.model}: Import vs Local in ${country.name} | AfroTools`,
-      description: `Compare importing a ${vehicle.year} ${vehicle.make} ${vehicle.model} versus buying locally in ${country.name}, with source-market and landed-cost layers.`,
+      description: `Compare importing a ${vehicle.year} ${vehicle.make} ${vehicle.model} versus buying locally in ${country.name}, with source-market, landed-cost, financing, and risk layers.`,
       country: country.name,
       make: vehicle.make
     });

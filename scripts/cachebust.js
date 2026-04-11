@@ -17,6 +17,27 @@ const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlif
 
 // Cache file hashes so we don't re-read the same file
 const hashCache = new Map();
+const WRITE_RETRY_CODES = new Set(['EPERM', 'EBUSY', 'UNKNOWN']);
+
+function writeFileWithRetry(filePath, content, attempts = 3) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      fs.writeFileSync(filePath, content, 'utf8');
+      return;
+    } catch (error) {
+      lastError = error;
+      if (!WRITE_RETRY_CODES.has(error.code) || attempt === attempts) {
+        throw error;
+      }
+
+      const delayMs = attempt * 150;
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delayMs);
+    }
+  }
+
+  throw lastError;
+}
 
 function getFileHash(filePath) {
   if (hashCache.has(filePath)) return hashCache.get(filePath);
@@ -55,6 +76,8 @@ function resolveAssetPath(htmlPath, ref) {
 const CSS_RE = /(<link\b[^>]*\bhref=["'])([^"']+\.css)(["'][^>]*>)/g;
 // Match JS script tags: <script ... src="...js" ...>
 const JS_RE = /(<script\b[^>]*\bsrc=["'])([^"']+\.js)(["'][^>]*>)/g;
+// Match inline string literals pointing to local CSS/JS assets inside HTML scripts
+const INLINE_ASSET_RE = /(["'])((?:\/|\.\.?\/)[^"'?\s]+\.(?:css|js))(?:\?v=[a-f0-9]{8})?\1/g;
 
 function bustReferences(html, htmlPath) {
   let changed = false;
@@ -80,6 +103,21 @@ function bustReferences(html, htmlPath) {
 
   html = html.replace(CSS_RE, replacer);
   html = html.replace(JS_RE, replacer);
+  html = html.replace(INLINE_ASSET_RE, function(match, quote, ref) {
+    if (ref.startsWith('//') || ref.startsWith('http://') || ref.startsWith('https://')) {
+      return match;
+    }
+    if (/\/bundles\/\w+\.[a-f0-9]+\.min\.js/.test(ref)) {
+      return match;
+    }
+    const cleanRef = ref.split('?')[0];
+    const assetPath = resolveAssetPath(htmlPath, cleanRef);
+    const hash = getFileHash(assetPath);
+    if (!hash) return match;
+
+    changed = true;
+    return `${quote}${cleanRef}?v=${hash}${quote}`;
+  });
 
   return { html, changed };
 }
@@ -99,7 +137,7 @@ for (const htmlPath of htmlFiles) {
     const newRefs = (html.match(/\?v=[a-f0-9]{8}/g) || []).length;
     refCount += newRefs;
 
-    fs.writeFileSync(htmlPath, html, 'utf8');
+    writeFileWithRetry(htmlPath, html);
     updatedCount++;
   }
 }

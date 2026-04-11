@@ -32,10 +32,21 @@
   - recommendation status and explanation
   - source-market comparison
   - structured AI context
+- Added Phase 3-ready backend layers inside the same engine context:
+  - media resolution with vehicle/country/body-type fallback
+  - country-specific financing offers and derived monthly payment estimates
+  - import-risk scoring
+  - liquidity scoring
 - Added top-level `/cars` information architecture with country, make, model, year, compare, and import-vs-local pages.
 - Added source/local price freshness and confidence labels.
 - Added local watchlist persistence and calculator deep links.
-- Added admin preview/update path for source prices, local prices, vehicles, ports, and destination cities.
+- Expanded the admin preview/update path into a car backend console for:
+  - vehicle catalog listing
+  - source and local prices
+  - media library assets and bindings
+  - country financing offers
+  - scoring-model config
+  - page/result preview
 
 ## New infrastructure added
 
@@ -44,8 +55,9 @@
 - `assets/js/cars-directory.js`: shared route-aware UI for all car directory pages.
 - `assets/css/cars-directory.css`: page styling.
 - `scripts/generate-car-price-pages.js`: static route generator.
-- `admin/car-price-intelligence.html`: admin maintenance screen.
+- `admin/car-price-intelligence.html`: consolidated car backend admin.
 - `supabase/migrations/017-car-price-intelligence.sql`: additive normalized schema for countries, ports, cities, vehicles, valuation packs, source/local prices, shipping, registration, practical costs, saved quotes, and watchlists.
+- `supabase/migrations/018-car-media-financing-and-scoring.sql`: additive schema for car media assets, media bindings, financing offers, and scoring models.
 
 ## Data assumptions and verification
 
@@ -57,7 +69,11 @@
 ## Manual verification still needed
 
 - Replace seed source/local price ranges with verified admin price-pack imports.
+- Replace placeholder media bindings with licensed model-specific images or storage-backed uploads.
+- Verify country financing offers against active lenders or partner terms before enabling outbound referral flows.
+- Review the import-risk and liquidity scoring weights with real market outcomes after the first batch of saved quotes.
 - Apply and review `017-car-price-intelligence.sql` in the intended Supabase data project.
+- Apply and review `018-car-media-financing-and-scoring.sql` in the intended Supabase data project.
 - Refresh generated pages after any major seed dataset update with `node scripts/generate-car-price-pages.js`.
 - Run the normal minify/build pipeline to refresh any minified registries and cache-busted asset references.
 - Validate official rule packs and valuation schedules against each country source before using the app for paid partner flows.

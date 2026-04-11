@@ -161,11 +161,16 @@
   function renderVehicleCard(vehicle, code) {
     var ctx = vehicle._context || Price.buildVehicleContext(state.priceData, state.importData, { countryCode: code, vehicle: vehicle });
     var href = "/cars/" + countrySlug(code) + "/" + vehicle.makeSlug + "/" + vehicle.modelSlug + "/" + vehicle.year + "/";
+    var image = ctx.media && ctx.media.hero ? ctx.media.hero : { imageUrl: "/assets/img/tools/car-loan.webp", alt: "Car placeholder" };
+    var finance = ctx.financing && ctx.financing.bestOffer;
     return "<article class=\"cars-card\">" +
+      "<div class=\"cars-card-media\"><img class=\"cars-card-image\" src=\"" + esc(image.imageUrl) + "\" alt=\"" + esc(image.alt || (vehicle.make + " " + vehicle.model)) + "\"></div>" +
       "<div class=\"cars-card-top\"><span class=\"cars-badge " + esc(ctx.eligibilityStatus) + "\">" + esc(ctx.eligibilityStatus) + "</span><span class=\"cars-badge confidence\">" + esc(ctx.landed.confidence) + " confidence</span></div>" +
       "<h3><a href=\"" + href + "\">" + esc(vehicle.make + " " + vehicle.model + " " + vehicle.year) + "</a></h3>" +
       "<p>" + esc(vehicle.body + " - " + vehicle.trim + " - " + vehicle.fuel.join(", ")) + "</p>" +
       "<dl class=\"cars-price-mini\"><div><dt>Source</dt><dd>" + money(ctx.sourcePrice.median) + "</dd></div><div><dt>Landed</dt><dd>" + money(ctx.landed.normal) + "</dd></div><div><dt>Local</dt><dd>" + money(ctx.localPrice.median) + "</dd></div></dl>" +
+      "<div class=\"cars-card-metrics\"><span>Risk <strong>" + esc(ctx.importRisk.label) + " " + esc(String(ctx.importRisk.score)) + "</strong></span><span>Liquidity <strong>" + esc(ctx.liquidity.label) + " " + esc(String(ctx.liquidity.score)) + "</strong></span></div>" +
+      (finance ? "<div class=\"cars-card-finance\">From " + money(finance.monthlyPaymentLocal, finance.localCurrency) + " / month</div>" : "") +
       "<strong class=\"cars-reco " + esc(ctx.recommendation.status) + "\">" + esc(ctx.recommendation.label) + "</strong>" +
       "<div class=\"cars-card-actions\"><a href=\"" + href + "\">Open page</a><a href=\"" + ctx.calculatorUrl + "\" data-prefill-link>Run calculator</a></div>" +
     "</article>";
@@ -183,7 +188,7 @@
     app.innerHTML =
       "<section class=\"cars-detail\" id=\"carsReport\">" +
         "<nav class=\"cars-breadcrumb\" aria-label=\"Breadcrumb\"><a href=\"/\">AfroTools</a><span>&rsaquo;</span><a href=\"/cars/\">Cars</a><span>&rsaquo;</span><a href=\"/cars/" + c.slug + "/\">" + esc(c.name) + "</a><span>&rsaquo;</span><span>" + esc(v.make + " " + v.model + " " + v.year) + "</span></nav>" +
-        renderSnapshot(ctx) + renderThreeLayers(ctx) + renderRecommendation(ctx) + renderTabs(ctx) + renderCalculatorCta(ctx) + renderAiBlock() + renderRelatedVehicles(ctx) + renderSourceBlock(c.code) + renderFaqAndRelated() +
+        renderSnapshot(ctx) + renderThreeLayers(ctx) + renderRecommendation(ctx) + renderFinanceAndScores(ctx) + renderTabs(ctx) + renderCalculatorCta(ctx) + renderAiBlock() + renderRelatedVehicles(ctx) + renderSourceBlock(c.code) + renderFaqAndRelated() +
       "</section>";
     bindDetail(ctx);
     track(route.type === "import-vs-local" ? "car_import_vs_local_view" : "car_detail_view", { country: c.code, make: v.makeSlug, model: v.modelSlug, year: v.year, recommendation: ctx.recommendation.status });
@@ -192,7 +197,8 @@
 
   function renderSnapshot(ctx) {
     var v = ctx.vehicle;
-    return "<header class=\"cars-snapshot\"><div><span class=\"cars-kicker\">Landed car price snapshot</span><h1>" + esc(v.year + " " + v.make + " " + v.model) + " in " + esc(ctx.country.name) + "</h1><p>" + esc(v.trim + " - " + v.body + " - " + v.fuel.join(" / ") + " - " + v.mileage) + "</p></div><aside><img class=\"cars-hero-image\" src=\"/assets/img/tools/car-loan.webp\" alt=\"Car on a road\"><span class=\"cars-badge " + esc(ctx.eligibilityStatus) + "\">" + esc(ctx.eligibilityStatus) + "</span><span class=\"cars-badge confidence\">" + esc(ctx.landed.confidence) + " confidence</span><span class=\"cars-badge\">" + esc(ctx.freshness.source) + "</span><span class=\"cars-badge\">Official rules loaded</span><span class=\"cars-badge\">Estimated price pack</span></aside></header>";
+    var hero = ctx.media && ctx.media.hero ? ctx.media.hero : { imageUrl: "/assets/img/tools/car-loan.webp", alt: "Car placeholder", caption: "" };
+    return "<header class=\"cars-snapshot\"><div><span class=\"cars-kicker\">Landed car price snapshot</span><h1>" + esc(v.year + " " + v.make + " " + v.model) + " in " + esc(ctx.country.name) + "</h1><p>" + esc(v.trim + " - " + v.body + " - " + v.fuel.join(" / ") + " - " + v.mileage) + "</p><div class=\"cars-gallery-strip\">" + (ctx.media.gallery || []).map(function (item) { return "<img src=\"" + esc(item.thumbUrl || item.imageUrl) + "\" alt=\"" + esc(item.alt || v.make + " " + v.model) + "\">"; }).join("") + "</div></div><aside><img class=\"cars-hero-image\" src=\"" + esc(hero.imageUrl) + "\" alt=\"" + esc(hero.alt || (v.make + " " + v.model)) + "\"><span class=\"cars-badge " + esc(ctx.eligibilityStatus) + "\">" + esc(ctx.eligibilityStatus) + "</span><span class=\"cars-badge confidence\">" + esc(ctx.landed.confidence) + " confidence</span><span class=\"cars-badge\">" + esc(ctx.freshness.source) + "</span><span class=\"cars-badge\">Media " + esc(ctx.media.sourceType || "seed") + "</span><span class=\"cars-badge\">Official rules loaded</span><span class=\"cars-badge\">Estimated price pack</span><small class=\"cars-media-caption\">" + esc(hero.caption || "") + "</small></aside></header>";
   }
 
   function renderThreeLayers(ctx) {
@@ -212,18 +218,30 @@
     return "<section class=\"cars-recommendation " + esc(r.status) + "\"><div><span>Recommendation</span><h2>" + esc(r.label) + "</h2><p>" + esc(r.explanation) + "</p></div><div class=\"cars-buffer\"><strong>Buffer guide</strong><span>Keep 8-18% above the normal case when FX, storage, or valuation uncertainty is high.</span></div></section>";
   }
 
+  function renderFinanceAndScores(ctx) {
+    var best = ctx.financing && ctx.financing.bestOffer;
+    return "<section class=\"cars-score-grid\">" +
+      "<article class=\"cars-score-card\"><span>Import-risk score</span><strong>" + esc(String(ctx.importRisk.score)) + "</strong><em>" + esc(ctx.importRisk.label) + "</em><p>" + esc(ctx.importRisk.summary) + "</p><ul class=\"cars-score-list\">" + ctx.importRisk.reasons.map(function (reason) { return "<li>" + esc(reason.detail) + "</li>"; }).join("") + "</ul></article>" +
+      "<article class=\"cars-score-card\"><span>Liquidity score</span><strong>" + esc(String(ctx.liquidity.score)) + "</strong><em>" + esc(ctx.liquidity.label) + "</em><p>" + esc(ctx.liquidity.summary) + "</p><ul class=\"cars-score-list\">" + ctx.liquidity.reasons.map(function (reason) { return "<li>" + esc(reason.detail) + "</li>"; }).join("") + "</ul></article>" +
+      "<article class=\"cars-score-card cars-finance-card\"><span>Financing outlook</span>" + (best ? "<strong>" + money(best.monthlyPaymentLocal, best.localCurrency) + "</strong><em>" + esc(best.provider) + "</em><p>" + esc(best.label) + ". Down payment from " + money(best.downPaymentLocal, best.localCurrency) + " and " + best.tenureMonths + "-month tenor at about " + best.aprPct + "% APR.</p><a class=\"cars-button secondary\" href=\"" + esc(best.ctaUrl) + "\">" + esc(best.ctaLabel || "Check finance fit") + "</a>" : "<strong>No seeded offer</strong><p>Add a country financing pack in Mission Control to show monthly offers here.</p>") + "</article>" +
+    "</section>";
+  }
+
   function renderTabs(ctx) {
     var result = ctx.landed.normalResult;
+    var labels = ["Summary", "Official Charges", "Practical Costs", "Registration", "Financing", "Risk", "Compare", "FAQ"];
     return "<section class=\"cars-panel cars-tabs\"><div class=\"cars-tab-list\" role=\"tablist\">" +
-      ["Summary", "Official Charges", "Practical Costs", "Registration", "Compare", "FAQ"].map(function (label, index) {
+      labels.map(function (label, index) {
         return "<button type=\"button\" class=\"cars-tab" + (index === 0 ? " active" : "") + "\" data-cars-tab=\"" + index + "\">" + label + "</button>";
       }).join("") + "</div>" +
       tabPanel(0, true, renderCostSummary(result, ctx)) +
       tabPanel(1, false, itemList(result.breakdowns.officialTaxes.concat(result.breakdowns.officialFees))) +
       tabPanel(2, false, itemList(result.breakdowns.practicalCosts.concat(result.breakdowns.inlandDelivery))) +
       tabPanel(3, false, itemList(result.breakdowns.registration)) +
-      tabPanel(4, false, renderSourceComparison(ctx)) +
-      tabPanel(5, false, renderFaqs()) +
+      tabPanel(4, false, renderFinancingTab(ctx)) +
+      tabPanel(5, false, renderRiskTab(ctx)) +
+      tabPanel(6, false, renderSourceComparison(ctx)) +
+      tabPanel(7, false, renderFaqs()) +
     "</section>";
   }
   function tabPanel(index, active, html) { return "<div class=\"cars-tab-panel" + (active ? " active" : "") + "\" data-cars-panel=\"" + index + "\">" + html + "</div>"; }
@@ -260,6 +278,15 @@
     return "<div class=\"cars-compare-grid\">" + ctx.sourceComparison.map(function (item) {
       return "<article><span>" + esc(item.label) + "</span><strong>" + money(item.landed.normal) + "</strong><small>" + esc(item.transitDays) + " transit days - " + esc(item.confidence) + " confidence</small><p>Source " + money(item.price.median) + " | Best " + money(item.landed.best) + " | Painful " + money(item.landed.painful) + "</p></article>";
     }).join("") + "</div>";
+  }
+  function renderFinancingTab(ctx) {
+    if (!ctx.financing || !ctx.financing.offers.length) return "<p>No seeded financing offers for this country yet. Add them in Mission Control and refresh the price pack override.</p>";
+    return "<div class=\"cars-finance-list\">" + ctx.financing.offers.map(function (offer) {
+      return "<article><span>" + esc(offer.provider) + "</span><strong>" + money(offer.monthlyPaymentLocal, offer.localCurrency) + " / month</strong><small>" + esc(offer.tenureMonths) + " months - about " + esc(String(offer.aprPct)) + "% APR - " + esc(offer.confidence) + " confidence</small><p>Down payment " + money(offer.downPaymentLocal, offer.localCurrency) + " | Processing fee " + money(offer.processingFeeLocal, offer.localCurrency) + "</p>" + (offer.eligible ? "<a href=\"" + esc(offer.ctaUrl) + "\" class=\"cars-button secondary\">" + esc(offer.ctaLabel || "Check finance fit") + "</a>" : "<p class=\"cars-safe-note\">" + esc(offer.reasons.join(" ")) + "</p>") + "</article>";
+    }).join("") + "</div>";
+  }
+  function renderRiskTab(ctx) {
+    return "<div class=\"cars-risk-grid\"><article class=\"cars-score-card\"><span>Import-risk score</span><strong>" + esc(String(ctx.importRisk.score)) + "</strong><em>" + esc(ctx.importRisk.label) + " - " + esc(ctx.importRisk.confidence) + " confidence</em><p>" + esc(ctx.importRisk.summary) + "</p><ul class=\"cars-score-list\">" + ctx.importRisk.reasons.map(function (reason) { return "<li>" + esc(reason.detail) + "</li>"; }).join("") + "</ul></article><article class=\"cars-score-card\"><span>Liquidity score</span><strong>" + esc(String(ctx.liquidity.score)) + "</strong><em>" + esc(ctx.liquidity.label) + " - " + esc(ctx.liquidity.confidence) + " confidence</em><p>" + esc(ctx.liquidity.summary) + "</p><ul class=\"cars-score-list\">" + ctx.liquidity.reasons.map(function (reason) { return "<li>" + esc(reason.detail) + "</li>"; }).join("") + "</ul></article></div>";
   }
   function renderCalculatorCta(ctx) {
     return "<section class=\"cars-cta-bar\"><div><h2>Run the full landed-cost calculator</h2><p>Use this car page as a starting point, then edit exact trim, first-registration month, customs value, storage, and agent costs.</p></div><div class=\"cars-actions\"><a class=\"cars-button\" href=\"" + ctx.calculatorUrl + "\" id=\"carsRunCalculator\">Run full calculator</a><a class=\"cars-button secondary\" href=\"/cars/import-vs-local/" + ctx.country.slug + "/" + ctx.vehicle.makeSlug + "/" + ctx.vehicle.modelSlug + "/" + ctx.vehicle.year + "/\">Import vs local</a><button class=\"cars-button secondary\" type=\"button\" id=\"carsSharePage\">Share page</button><button class=\"cars-button tertiary\" type=\"button\" id=\"carsSaveWatchlist\">Save watchlist</button><button class=\"cars-button tertiary\" type=\"button\" id=\"carsExportCsv\">Export CSV</button><button class=\"cars-button tertiary\" type=\"button\" id=\"carsExportPdf\">Export PDF</button><save-result-button id=\"carsCloudSave\" tool-slug=\"car-price-intelligence\" tool-name=\"Car Price Intelligence\"></save-result-button></div></section>";
@@ -372,7 +399,20 @@
     track("car_watchlist_save", { country: ctx.country.code, vehicle: ctx.vehicle.id });
   }
   function exportCsv(ctx) {
-    var rows = [{ vehicle: ctx.vehicle.year + " " + ctx.vehicle.make + " " + ctx.vehicle.model, country: ctx.country.name, source_market: sourceLabel(ctx.sourceMarket), source_median_usd: ctx.sourcePrice.median, landed_normal_usd: ctx.landed.normal, local_median_usd: ctx.localPrice.median, recommendation: ctx.recommendation.label, confidence: ctx.landed.confidence }];
+    var rows = [{
+      vehicle: ctx.vehicle.year + " " + ctx.vehicle.make + " " + ctx.vehicle.model,
+      country: ctx.country.name,
+      source_market: sourceLabel(ctx.sourceMarket),
+      source_median_usd: ctx.sourcePrice.median,
+      landed_normal_usd: ctx.landed.normal,
+      local_median_usd: ctx.localPrice.median,
+      recommendation: ctx.recommendation.label,
+      confidence: ctx.landed.confidence,
+      import_risk_score: ctx.importRisk.score,
+      liquidity_score: ctx.liquidity.score,
+      finance_monthly_local: ctx.financing.bestOffer ? ctx.financing.bestOffer.monthlyPaymentLocal : "",
+      finance_currency: ctx.financing.bestOffer ? ctx.financing.bestOffer.localCurrency : ""
+    }];
     track("car_export_csv", { country: ctx.country.code, vehicle: ctx.vehicle.id });
     if (window.AfroExport && window.AfroExport.csv) window.AfroExport.csv(rows, "afrotools-car-price-report.csv");
   }

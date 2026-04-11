@@ -86,115 +86,129 @@ function extractPrice(text) {
   return match ? parseFloat(match[1]) : null;
 }
 
+function stripHtml(html) {
+  return String(html || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&amp;/gi, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseCountryFuelTable(html, currency) {
+  var anchoredHtml = String(html || '');
+  var headingIndex = anchoredHtml.search(/<h1[^>]*>/i);
+  if (headingIndex >= 0) anchoredHtml = anchoredHtml.slice(headingIndex);
+
+  var tableMatch = anchoredHtml.match(/<table[^>]*>[\s\S]*?<\/table>/i);
+  if (!tableMatch) return null;
+
+  var rows = tableMatch[0].match(/<tr[^>]*>[\s\S]*?<\/tr>/gi) || [];
+  var values = {};
+
+  rows.forEach(function(row) {
+    var cells = row.match(/<(?:th|td)[^>]*>[\s\S]*?<\/(?:th|td)>/gi) || [];
+    if (cells.length < 2) return;
+    var label = stripHtml(cells[0]).replace(/^\W+/, '').toUpperCase();
+    var literValue = extractPrice(stripHtml(cells[1]));
+    if (!label || literValue === null) return;
+    values[label] = literValue;
+  });
+
+  var local = values[String(currency || '').toUpperCase()] || null;
+  var usd = values.USD || null;
+
+  if (local === null && usd === null) return null;
+
+  return { local: local, usd: usd };
+}
+
+async function fetchCountryFuelPrice(country, fuelType) {
+  var url = 'https://www.globalpetrolprices.com/' + country.slug + '/' + fuelType + '_prices/';
+  var res = await fetchWithRetry(url, {
+    headers: {
+      'User-Agent': 'AfroTools/1.0 (https://afrotools.com; data aggregation)',
+      'Accept': 'text/html',
+    },
+  });
+  var html = await res.text();
+  var parsed = parseCountryFuelTable(html, country.currency);
+  if (!parsed) {
+    throw new Error('Could not parse ' + fuelType + ' price for ' + country.code);
+  }
+  return parsed;
+}
+
+async function mapWithConcurrency(items, concurrency, iteratee) {
+  var results = new Array(items.length);
+  var index = 0;
+
+  async function worker() {
+    while (index < items.length) {
+      var currentIndex = index++;
+      results[currentIndex] = await iteratee(items[currentIndex], currentIndex);
+    }
+  }
+
+  var workers = [];
+  var count = Math.min(concurrency, items.length);
+  for (var i = 0; i < count; i++) workers.push(worker());
+  await Promise.all(workers);
+  return results;
+}
+
 /**
  * Source 1: GlobalPetrolPrices.com — Africa overview page
  * Fetches the overview page which lists all countries' petrol+diesel in USD/liter
  */
 async function fetchFromGlobalPetrolPrices() {
-  // GPP has an Africa-specific gasoline page
-  var gasolineUrl = 'https://www.globalpetrolprices.com/gasoline_prices/Africa/';
-  var dieselUrl = 'https://www.globalpetrolprices.com/diesel_prices/Africa/';
-
-  var [gasolineRes, dieselRes] = await Promise.all([
-    fetchWithRetry(gasolineUrl, {
-      headers: {
-        'User-Agent': 'AfroTools/1.0 (https://afrotools.com; data aggregation)',
-        'Accept': 'text/html',
-      },
-    }),
-    fetchWithRetry(dieselUrl, {
-      headers: {
-        'User-Agent': 'AfroTools/1.0 (https://afrotools.com; data aggregation)',
-        'Accept': 'text/html',
-      },
-    }),
-  ]);
-
-  var gasolineHtml = await gasolineRes.text();
-  var dieselHtml = await dieselRes.text();
-
-  // Parse table rows — GPP uses simple HTML tables
-  // Each row: country name | local price | USD price
-  var gasolinePrices = parseGPPTable(gasolineHtml);
-  var dieselPrices = parseGPPTable(dieselHtml);
-
-  if (Object.keys(gasolinePrices).length < 10) {
-    throw new Error('GPP gasoline: only ' + Object.keys(gasolinePrices).length + ' countries parsed');
-  }
-
-  // Merge into our country structure
   var now = new Date().toISOString().slice(0, 10);
-  var countries = [];
+  var countries = (await mapWithConcurrency(COUNTRIES, 6, async function(c) {
+    try {
+      var fuelResults = await Promise.all([
+        fetchCountryFuelPrice(c, 'gasoline').catch(function() { return null; }),
+        fetchCountryFuelPrice(c, 'diesel').catch(function() { return null; }),
+      ]);
 
-  for (var i = 0; i < COUNTRIES.length; i++) {
-    var c = COUNTRIES[i];
-    var gasoline = gasolinePrices[c.slug] || gasolinePrices[c.name] || null;
-    var diesel = dieselPrices[c.slug] || dieselPrices[c.name] || null;
+      var gasoline = fuelResults[0];
+      var diesel = fuelResults[1];
+      if (!gasoline && !diesel) return null;
 
-    if (!gasoline && !diesel) continue;
+      return {
+        code: c.code,
+        name: c.name,
+        currency: c.currency,
+        region: c.region,
+        petrol: gasoline ? {
+          price: gasoline.local || gasoline.usd,
+          unit: 'liter',
+          usd: gasoline.usd,
+          change: 'unknown',
+          change_pct: 0,
+        } : null,
+        diesel: diesel ? {
+          price: diesel.local || diesel.usd,
+          unit: 'liter',
+          usd: diesel.usd,
+          change: 'unknown',
+          change_pct: 0,
+        } : null,
+        lpg: null,
+        regulated: null,
+        last_updated: now,
+        source: 'globalpetrolprices',
+      };
+    } catch (err) {
+      return null;
+    }
+  })).filter(Boolean);
 
-    countries.push({
-      code: c.code,
-      name: c.name,
-      currency: c.currency,
-      region: c.region,
-      petrol: gasoline ? {
-        price: gasoline.local || gasoline.usd,
-        unit: 'liter',
-        usd: gasoline.usd,
-        change: 'unknown',
-        change_pct: 0,
-      } : null,
-      diesel: diesel ? {
-        price: diesel.local || diesel.usd,
-        unit: 'liter',
-        usd: diesel.usd,
-        change: 'unknown',
-        change_pct: 0,
-      } : null,
-      lpg: null,
-      regulated: null,
-      last_updated: now,
-      source: 'globalpetrolprices',
-    });
+  if (countries.length < 20) {
+    throw new Error('GPP detail pages: only ' + countries.length + ' countries parsed');
   }
 
   return countries;
-}
-
-/**
- * Parse a GlobalPetrolPrices table HTML into { countryName: { usd, local } }
- */
-function parseGPPTable(html) {
-  var prices = {};
-
-  // GPP tables have rows like: <tr><td><a>Country</a></td><td>local_price</td><td>usd_price</td></tr>
-  // Use regex to extract — these are simple server-rendered tables
-  var rowPattern = /<tr[^>]*>[\s\S]*?<\/tr>/gi;
-  var rows = html.match(rowPattern) || [];
-
-  for (var i = 0; i < rows.length; i++) {
-    var row = rows[i];
-    // Extract cells
-    var cellPattern = /<td[^>]*>([\s\S]*?)<\/td>/gi;
-    var cells = [];
-    var cellMatch;
-    while ((cellMatch = cellPattern.exec(row)) !== null) {
-      cells.push(cellMatch[1].replace(/<[^>]*>/g, '').trim());
-    }
-
-    if (cells.length >= 3) {
-      var countryName = cells[0].trim();
-      var localPrice = extractPrice(cells[1]);
-      var usdPrice = extractPrice(cells[2]);
-
-      if (countryName && usdPrice !== null) {
-        prices[countryName] = { local: localPrice, usd: usdPrice };
-      }
-    }
-  }
-
-  return prices;
 }
 
 /**

@@ -37,11 +37,27 @@ class AfroRelatedTools extends HTMLElement {
   _getTools() {
     const cat     = this.getAttribute('category') || '';
     const current = this.getAttribute('current')  || '';
-    const all     = (typeof AFRO_TOOLS !== 'undefined') ? AFRO_TOOLS : [];
     const pageLang = document.documentElement.lang || 'en';
-    const live    = all.filter(t => t.status === 'live' && t.id !== current && (t.lang || 'en') === pageLang);
-    const same    = live.filter(t => t.category === cat).sort((a,b)=>(b.priority||0)-(a.priority||0));
-    const others  = live.filter(t => t.category !== cat).sort((a,b)=>(b.estTraffic||0)-(a.estTraffic||0));
+    const relatedData = (typeof AFRO_RELATED_TOOLS !== 'undefined') ? AFRO_RELATED_TOOLS : null;
+
+    if (relatedData && !Array.isArray(relatedData) && relatedData.buckets && relatedData.fallback) {
+      const bucketKey = `${pageLang}::${cat}`;
+      const same = (relatedData.buckets[bucketKey] || []).filter(t => t.id !== current);
+      const fallback = (relatedData.fallback[pageLang] || []).filter(t => t.id !== current);
+      let res = same.slice(0, 6);
+      if (res.length < 4) {
+        const ids = new Set(res.map(t => t.id));
+        res = res.concat(fallback.filter(t => !ids.has(t.id)).slice(0, 4 - res.length));
+      }
+      return res.slice(0, 6);
+    }
+
+    const all = Array.isArray(relatedData)
+      ? relatedData
+      : ((typeof AFRO_TOOLS !== 'undefined') ? AFRO_TOOLS : []);
+    const live = all.filter(t => t.status === 'live' && t.id !== current && (t.lang || 'en') === pageLang);
+    const same = live.filter(t => t.category === cat).sort((a,b)=>(b.priority||0)-(a.priority||0));
+    const others = live.filter(t => t.category !== cat).sort((a,b)=>(b.estTraffic||0)-(a.estTraffic||0));
     let res = same.slice(0,6);
     if (res.length < 4) {
       const ids = new Set(res.map(t=>t.id));

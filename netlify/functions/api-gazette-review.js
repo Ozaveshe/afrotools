@@ -73,6 +73,21 @@ exports.handler = async function(event) {
       return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Missing id or action' }) };
     }
 
+    var gazetteLookup = await fetch(
+      SUPABASE_URL + '/rest/v1/gazette_changes?id=eq.' + body.id + '&select=id,country_code,change_type',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
+    var gazetteRows = gazetteLookup.ok ? await gazetteLookup.json() : [];
+    if (!gazetteRows.length) {
+      return { statusCode: 404, headers: CORS, body: JSON.stringify({ error: 'Gazette change not found' }) };
+    }
+
+    var gazetteChange = gazetteRows[0];
+    var reviewFilter = SUPABASE_URL + '/rest/v1/review_queue?category=eq.gazette' +
+      '&country_code=eq.' + encodeURIComponent(gazetteChange.country_code) +
+      '&metric=eq.' + encodeURIComponent(gazetteChange.change_type) +
+      '&reason=eq.gazette_detected&status=eq.pending';
+
     var now = new Date().toISOString();
 
     if (body.action === 'approve') {
@@ -92,7 +107,7 @@ exports.handler = async function(event) {
       });
 
       // Update review queue
-      await fetch(SUPABASE_URL + '/rest/v1/review_queue?notes=cs.gazette&metric=eq.' + encodeURIComponent(body.change_type || '') + '&status=eq.pending', {
+      await fetch(reviewFilter, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +127,7 @@ exports.handler = async function(event) {
         headers: CORS,
         body: JSON.stringify({
           ok: true,
-          message: 'Change verified. Update the PAYE data file for ' + (body.country_code || 'affected country') + ', then mark applied_to_tools=true.',
+          message: 'Change verified. Update the PAYE data file for ' + (gazetteChange.country_code || 'affected country') + ', then mark applied_to_tools=true.',
         }),
       };
 
@@ -128,6 +143,21 @@ exports.handler = async function(event) {
           verified: false,
           verified_at: now,
           applied_to_tools: true, // No action needed
+        }),
+      });
+
+      await fetch(reviewFilter, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+        },
+        body: JSON.stringify({
+          status: 'rejected',
+          reviewed_by: 'admin',
+          reviewed_at: now,
+          notes: (body.notes || '') + ' [gazette change dismissed]',
         }),
       });
 

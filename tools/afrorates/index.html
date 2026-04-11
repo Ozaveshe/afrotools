@@ -35,17 +35,14 @@
 
 <!-- Shared CSS -->
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
-
-<!-- Chart.js CDN -->
-<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
 
 <!-- AfroTools shared JS -->
-<script src="/assets/js/components/tool-registry.min.js?v=b9986767" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=b6845e1b" defer></script>
 <script src="/assets/js/lib/live-data.js?v=bd400bd7"></script>
-<script src="/assets/js/components/navbar.min.js?v=fa984253" defer></script>
-<script src="/assets/js/components/footer.min.js?v=0f040e13" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=fa787d8a" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b30f88c7" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
 <script src="/assets/js/components/africa-map.js?v=abeb0a4d" defer></script>
 <script src="/assets/js/components/api-cta.js?v=d43d224a" defer></script>
 
@@ -67,10 +64,13 @@
 
 body {
   font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
-  background: #F8FAFD;
+  background:
+    radial-gradient(circle at top right, rgba(0,122,255,.08), transparent 28%),
+    linear-gradient(180deg, #fbfdff 0%, #f4f7fb 100%);
   color: #1d1d1f;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 /* ── Hero ───────────────────────────────────────────────────── */
@@ -246,29 +246,31 @@ body {
 
 /* ── Page Container ─────────────────────────────────────────── */
 .page-wrap {
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 40px 24px 80px;
+  padding: 28px 24px 64px;
 }
 
 /* ── Summary Stat Cards ─────────────────────────────────────── */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 48px;
+  gap: 14px;
+  margin-bottom: 24px;
 }
 
 .stat-card {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 18px;
   border: 1px solid #e5e7eb;
-  padding: 20px 22px;
-  transition: box-shadow .2s;
+  padding: 18px 18px;
+  transition: box-shadow .2s, transform .2s;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
 }
 
 .stat-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  box-shadow: 0 22px 40px rgba(10,22,40,.08);
+  transform: translateY(-1px);
 }
 
 .stat-label {
@@ -300,50 +302,177 @@ body {
   color: #6b7280;
 }
 
+.utility-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.84);
+  border: 1px solid rgba(229,231,235,.95);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  backdrop-filter: blur(12px);
+}
+
+.utility-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.jump-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: #fff;
+  color: #334155;
+  font-size: .76rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all .2s ease;
+}
+
+.jump-link:hover {
+  border-color: #007AFF;
+  color: #007AFF;
+  transform: translateY(-1px);
+}
+
+.utility-note {
+  font-size: .78rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.highlight-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 18px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.highlight-card.is-positive {
+  border-color: rgba(22,163,74,.22);
+}
+
+.highlight-card.is-negative {
+  border-color: rgba(220,38,38,.18);
+}
+
+.highlight-kicker {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.highlight-value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: #0A1628;
+}
+
+.highlight-name {
+  font-size: .94rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.highlight-meta {
+  font-size: .78rem;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.highlight-chip {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #0b63d1;
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
 /* ── Section Headers ────────────────────────────────────────── */
 .section {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
+  scroll-margin-top: 96px;
 }
 
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 14px;
   flex-wrap: wrap;
 }
 
 .section-title {
   font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 1.6rem;
+  font-size: clamp(1.45rem, 2vw, 1.8rem);
   font-weight: 400;
   color: #0A1628;
   line-height: 1.2;
 }
 
 .section-sub {
-  font-size: .85rem;
+  font-size: .82rem;
   color: #6b7280;
   margin-top: 4px;
+  max-width: 760px;
 }
 
 .last-updated {
   font-size: .72rem;
-  color: #9ca3af;
-  font-weight: 500;
-  background: #f3f4f6;
-  padding: 4px 10px;
-  border-radius: 6px;
+  color: #64748b;
+  font-weight: 600;
+  background: rgba(255,255,255,.8);
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
 }
 
 /* ── Rate Table Controls ────────────────────────────────────── */
 .table-controls {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) minmax(0, 2fr) auto auto;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 14px;
+  background: rgba(255,255,255,.86);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+  backdrop-filter: blur(12px);
 }
 
 .search-box {
@@ -373,6 +502,7 @@ body {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .filter-btn {
@@ -401,9 +531,9 @@ body {
 }
 
 .sort-select {
-  height: 36px;
+  height: 40px;
   border: 1.5px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 0 32px 0 12px;
   font-size: .78rem;
   font-weight: 600;
@@ -415,12 +545,52 @@ body {
   font-family: inherit;
 }
 
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+  justify-self: end;
+}
+
+.toolbar-btn {
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid #dbe3ee;
+  border-radius: 12px;
+  background: #fff;
+  color: #0A1628;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease, background .2s ease;
+  font-family: inherit;
+}
+
+.toolbar-btn:hover {
+  transform: translateY(-1px);
+  border-color: #007AFF;
+  color: #007AFF;
+  box-shadow: 0 10px 24px rgba(0,122,255,.12);
+}
+
+.toolbar-btn.primary {
+  background: #0A1628;
+  border-color: #0A1628;
+  color: #fff;
+}
+
+.toolbar-btn.primary:hover {
+  border-color: #007AFF;
+  background: #007AFF;
+  color: #fff;
+}
+
 /* ── Rate Table ─────────────────────────────────────────────── */
 .rate-table-wrap {
-  background: #fff;
-  border-radius: 16px;
+  background: rgba(255,255,255,.92);
+  border-radius: 20px;
   border: 1px solid #e5e7eb;
-  overflow: hidden;
+  overflow: auto;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
 }
 
 .rate-table {
@@ -441,7 +611,7 @@ body {
   color: #6b7280;
   text-transform: uppercase;
   letter-spacing: .06em;
-  padding: 12px 16px;
+  padding: 13px 12px;
   text-align: left;
   border-bottom: 2px solid #e5e7eb;
   cursor: pointer;
@@ -469,8 +639,8 @@ body {
 }
 
 .rate-table td {
-  padding: 10px 16px;
-  font-size: .84rem;
+  padding: 12px 12px;
+  font-size: .81rem;
   color: #374151;
   border-bottom: 1px solid #f3f4f6;
   vertical-align: middle;
@@ -487,7 +657,8 @@ body {
 .country-cell {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
   white-space: nowrap;
 }
 
@@ -495,9 +666,27 @@ body {
   font-size: 1.1rem;
 }
 
+.country-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #0b63d1;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
 .country-name {
   font-weight: 600;
   color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rate-val {
@@ -541,7 +730,7 @@ body {
 }
 
 .table-footer {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: .72rem;
   color: #9ca3af;
 }
@@ -549,10 +738,16 @@ body {
 /* ── Inflation Heatmap ──────────────────────────────────────── */
 .map-container {
   background: #fff;
-  border-radius: 16px;
+  border-radius: 20px;
   border: 1px solid #e5e7eb;
-  padding: 24px;
-  min-height: 400px;
+  padding: 18px;
+  min-height: 0;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+#inflation-map {
+  display: block;
+  min-height: 330px;
 }
 
 .map-legend {
@@ -590,18 +785,19 @@ body {
 /* ── Chart Cards ────────────────────────────────────────────── */
 .chart-card {
   background: #fff;
-  border-radius: 16px;
+  border-radius: 20px;
   border: 1px solid #e5e7eb;
   overflow: hidden;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
 }
 
 .chart-header {
-  padding: 20px 24px 16px;
+  padding: 18px 20px 14px;
   border-bottom: 1px solid #f3f4f6;
 }
 
 .chart-body {
-  padding: 20px 24px 24px;
+  padding: 14px 20px 20px;
 }
 
 .chart-controls {
@@ -639,33 +835,168 @@ body {
   border-color: #007AFF;
 }
 
+.country-chip:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
 .country-chip .remove {
   margin-left: 2px;
   font-size: .9rem;
   line-height: 1;
 }
 
-.chart-canvas-wrap {
-  position: relative;
-  height: 350px;
-  margin-top: 8px;
+.comparison-limit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: #f8fbff;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.comparison-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.comparison-overview {
+  display: grid;
+  gap: 12px;
+}
+
+.comparison-overview-card {
+  background: linear-gradient(180deg, #f9fbff 0%, #ffffff 100%);
+  border: 1px solid #e5edf8;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+.comparison-overview-kicker {
+  font-size: .68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.comparison-overview-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: #0A1628;
+}
+
+.comparison-overview-meta {
+  margin-top: 6px;
+  font-size: .78rem;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.comparison-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.comparison-item {
+  background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(248,250,253,.98) 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.comparison-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.comparison-country {
+  font-size: .92rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.comparison-bank {
+  margin-top: 4px;
+  font-size: .76rem;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.comparison-rate {
+  font-size: 1rem;
+  font-weight: 800;
+  white-space: nowrap;
+  color: #0A1628;
+}
+
+.comparison-track {
+  height: 10px;
+  margin: 12px 0 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #e8eef8;
+}
+
+.comparison-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.comparison-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.comparison-metric {
+  font-size: .75rem;
+  color: #64748b;
+}
+
+.comparison-metric strong {
+  color: #0f172a;
+  margin-right: 4px;
+}
+
+.comparison-empty {
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fbff;
+  color: #64748b;
+  font-size: .82rem;
+  line-height: 1.6;
 }
 
 /* ── MPC Calendar ───────────────────────────────────────────── */
 .mpc-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
 }
 
 .mpc-card {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 18px;
   border: 1px solid #e5e7eb;
-  padding: 20px;
+  padding: 16px;
   display: flex;
-  gap: 16px;
+  gap: 12px;
   transition: box-shadow .2s, transform .15s;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
 }
 
 .mpc-card:hover {
@@ -771,24 +1102,122 @@ body {
 }
 
 /* ── Real Rate Chart ────────────────────────────────────────── */
-.real-rate-chart-wrap {
-  position: relative;
-  min-height: 800px;
+.realrate-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.realrate-panel {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  padding: 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.realrate-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.realrate-panel-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0A1628;
+}
+
+.realrate-panel-sub {
+  font-size: .78rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.realrate-list {
+  display: grid;
+  gap: 10px;
+}
+
+.realrate-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding-top: 10px;
+  border-top: 1px solid #eef2f7;
+}
+
+.realrate-item:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.realrate-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.realrate-country {
+  font-size: .9rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.realrate-meta {
+  font-size: .76rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.realrate-score {
+  font-size: .96rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.realrate-score.pos {
+  color: #16a34a;
+}
+
+.realrate-score.neg {
+  color: #dc2626;
+}
+
+.realrate-footnote {
+  margin-top: 12px;
+  font-size: .76rem;
+  color: #64748b;
+  line-height: 1.6;
 }
 
 /* ── Yields Section ─────────────────────────────────────────── */
 .yields-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
 }
 
 .yield-card {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 18px;
   border: 1px solid #e5e7eb;
   overflow: hidden;
   transition: box-shadow .2s, transform .15s;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
 }
 
 .yield-card:hover {
@@ -798,7 +1227,7 @@ body {
 
 .yield-card-header {
   background: linear-gradient(135deg, #0d1f3c 0%, #1a3a6b 100%);
-  padding: 16px 20px;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -815,7 +1244,7 @@ body {
 }
 
 .yield-card-body {
-  padding: 16px 20px;
+  padding: 14px 18px;
 }
 
 .yield-row {
@@ -845,20 +1274,130 @@ body {
   color: #d1d5db;
 }
 
+.about-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.94) 0%, rgba(248,250,253,.96) 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.about-kicker {
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #0b63d1;
+  margin-bottom: 8px;
+}
+
+.about-card p {
+  font-size: .92rem;
+  line-height: 1.8;
+  color: #475569;
+}
+
+.partner-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
+}
+
+.partner-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.3fr) minmax(240px, .9fr);
+  align-items: stretch;
+}
+
+.partner-primary {
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(248,250,253,.94) 0%, #ffffff 100%);
+  border-right: 1px solid #eef2f7;
+}
+
+.partner-primary wise-cta {
+  display: block;
+  width: 100%;
+}
+
+.partner-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  background: linear-gradient(135deg, rgba(250,252,255,.96) 0%, rgba(242,247,255,.86) 100%);
+}
+
+.partner-kicker {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #0b63d1;
+}
+
+.partner-aside h3 {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.35;
+}
+
+.partner-aside p {
+  font-size: .84rem;
+  line-height: 1.7;
+  color: #64748b;
+}
+
+.partner-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.partner-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ee;
+  background: rgba(255,255,255,.82);
+  color: #334155;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.faq-shell {
+  max-width: 900px;
+}
+
 /* ── FAQ ────────────────────────────────────────────────────── */
 .faq-list {
-  max-width: 820px;
+  max-width: none;
+  background: rgba(255,255,255,.84);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 0 18px;
+  box-shadow: 0 18px 40px rgba(10,22,40,.04);
 }
 
 .faq-item {
   border-bottom: 1px solid #e5e7eb;
 }
 
+.faq-item:last-child {
+  border-bottom: none;
+}
+
 .faq-q {
   width: 100%;
   background: none;
   border: none;
-  padding: 18px 0;
+  padding: 16px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -908,16 +1447,45 @@ body {
   .stats-row {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .highlights-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .table-controls {
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 1fr);
+  }
+
+  .toolbar-actions {
+    justify-self: start;
+  }
+
+  .realrate-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
   .table-controls {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: stretch;
   }
 
   .search-box {
     min-width: 100%;
+  }
+
+  .toolbar-actions {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .toolbar-btn {
+    flex: 1 1 0;
   }
 
   .rate-table-wrap {
@@ -937,14 +1505,6 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 
-  .chart-canvas-wrap {
-    height: 280px;
-  }
-
-  .real-rate-chart-wrap {
-    min-height: 600px;
-  }
-
   .section-header {
     flex-direction: column;
     align-items: flex-start;
@@ -955,8 +1515,26 @@ body {
     gap: 10px;
   }
 
+  .utility-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .highlights-grid {
+    grid-template-columns: 1fr;
+  }
+
   .stat-value {
     font-size: 1.35rem;
+  }
+
+  .partner-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-primary {
+    border-right: none;
+    border-bottom: 1px solid #eef2f7;
   }
 }
 
@@ -974,6 +1552,10 @@ body {
     font-size: .72rem;
   }
 
+  .faq-list {
+    padding: 0 14px;
+  }
+
   .stats-row {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
@@ -986,9 +1568,12 @@ body {
   .stat-value {
     font-size: 1.2rem;
   }
+
+  .comparison-metrics {
+    gap: 8px 10px;
+  }
 }
 </style>
-<script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -1051,7 +1636,7 @@ body {
     </nav>
     <div class="hero-eyebrow">🏦 Central Bank Rates</div>
     <h1>AfroRates — African Central Bank <em>Rate Tracker</em></h1>
-    <p class="hero-sub">Policy rates, inflation, and yields for 54 countries.</p>
+    <p class="hero-sub">Track policy rates, inflation, real yields, and upcoming MPC meetings across all 54 African markets.</p>
   </div>
 </section>
 
@@ -1101,11 +1686,51 @@ body {
   <!-- ────────────────────────────────────────────────────────────
        POLICY RATE TABLE — All 54 countries, sortable & filterable
        ──────────────────────────────────────────────────────────── -->
+  <div class="utility-bar">
+    <div class="utility-links">
+      <a class="jump-link" href="#rate-table-section">Rates</a>
+      <a class="jump-link" href="#inflation-map-section">Heatmap</a>
+      <a class="jump-link" href="#comparison-section">Compare</a>
+      <a class="jump-link" href="#mpc-section">MPC</a>
+      <a class="jump-link" href="#realrate-section">Real Rates</a>
+      <a class="jump-link" href="#yields-section">Yields</a>
+      <a class="jump-link" href="#faq-section">FAQ</a>
+    </div>
+    <div class="utility-note">Jump to any section quickly, then export the filtered table when you need a working snapshot.</div>
+  </div>
+
+  <div class="highlights-grid" id="highlights-grid">
+    <article class="highlight-card">
+      <div class="highlight-kicker">Highest Policy Rate</div>
+      <div class="highlight-value">--</div>
+      <div class="highlight-name">Loading...</div>
+      <div class="highlight-meta">Scanning the latest country data.</div>
+    </article>
+    <article class="highlight-card">
+      <div class="highlight-kicker">Best Real Rate</div>
+      <div class="highlight-value">--</div>
+      <div class="highlight-name">Loading...</div>
+      <div class="highlight-meta">Scanning the latest country data.</div>
+    </article>
+    <article class="highlight-card">
+      <div class="highlight-kicker">Lowest Inflation</div>
+      <div class="highlight-value">--</div>
+      <div class="highlight-name">Loading...</div>
+      <div class="highlight-meta">Scanning the latest country data.</div>
+    </article>
+    <article class="highlight-card">
+      <div class="highlight-kicker">Next MPC Meeting</div>
+      <div class="highlight-value">--</div>
+      <div class="highlight-name">Loading...</div>
+      <div class="highlight-meta">Scanning the latest country data.</div>
+    </article>
+  </div>
+
   <div class="section" id="rate-table-section">
     <div class="section-header">
       <div>
         <h2 class="section-title">Policy Rate Dashboard</h2>
-        <p class="section-sub">All 54 African countries — sortable and filterable</p>
+        <p class="section-sub">All 54 African countries — searchable, sortable, and exportable.</p>
       </div>
       <div class="last-updated" id="last-updated">Loading...</div>
     </div>
@@ -1136,6 +1761,10 @@ body {
         <option value="realrate-desc">Real Rate: High to Low</option>
         <option value="realrate-asc">Real Rate: Low to High</option>
       </select>
+      <div class="toolbar-actions">
+        <button class="toolbar-btn" id="reset-filters" type="button">Reset</button>
+        <button class="toolbar-btn primary" id="export-csv" type="button">Export CSV</button>
+      </div>
     </div>
 
     <div class="rate-table-wrap">
@@ -1196,15 +1825,25 @@ body {
   <div class="section" id="comparison-section">
     <div class="chart-card">
       <div class="chart-header">
-        <h2 class="section-title">Rate Comparison</h2>
-        <p class="section-sub">Select up to 5 countries to compare policy rates side by side</p>
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Rate Comparison</h2>
+            <p class="section-sub">Select up to 5 countries and compare policy rate, inflation, real rate, and next MPC date side by side.</p>
+          </div>
+          <div class="comparison-limit" id="comparison-limit">0 / 5 selected</div>
+        </div>
         <div class="chart-controls" id="comparison-chips">
           <!-- Populated by JavaScript -->
         </div>
       </div>
       <div class="chart-body">
-        <div class="chart-canvas-wrap">
-          <canvas id="comparison-chart" aria-label="Policy rate comparison bar chart"></canvas>
+        <div class="comparison-layout">
+          <div class="comparison-overview" id="comparison-overview">
+            <!-- Populated by JavaScript -->
+          </div>
+          <div class="comparison-bars" id="comparison-bars">
+            <!-- Populated by JavaScript -->
+          </div>
         </div>
       </div>
     </div>
@@ -1231,17 +1870,16 @@ body {
        REAL INTEREST RATE RANKING — Horizontal bar chart (Chart.js)
        ──────────────────────────────────────────────────────────── -->
   <div class="section" id="realrate-section">
-    <div class="chart-card">
-      <div class="chart-header">
-        <h2 class="section-title">Real Interest Rate Ranking</h2>
-        <p class="section-sub">Policy rate minus headline inflation — green bars are positive (real yield), red bars are negative (real loss)</p>
-      </div>
-      <div class="chart-body">
-        <div class="real-rate-chart-wrap">
-          <canvas id="realrate-chart" aria-label="Real interest rate horizontal bar chart"></canvas>
-        </div>
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Real Rate Leaders &amp; Laggards</h2>
+        <p class="section-sub">The strongest saver-friendly markets and the deepest inflation drag, using policy rate minus headline inflation.</p>
       </div>
     </div>
+    <div class="realrate-grid" id="realrate-grid">
+      <!-- Populated by JavaScript -->
+    </div>
+    <p class="realrate-footnote">Use the main dashboard above and sort by Real Rate when you want the full 54-country ranking.</p>
   </div>
 
 
@@ -1277,23 +1915,48 @@ body {
   <!-- ────────────────────────────────────────────────────────────
        FAQ — 8 questions about African monetary policy (SEO)
        ──────────────────────────────────────────────────────────── -->
-<section style="max-width:900px;margin:32px auto;padding:0 20px;">
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-<p>AfroRates is AfroTools' African central bank rates dashboard. It tracks policy rates, inflation, real rates, treasury-bill yields, and MPC calendars across 54 countries, making it easier to compare monetary conditions across regions and currency blocs. Use it when you need a continent-wide snapshot of interest-rate conditions rather than a general FX converter.</p>
+  <div class="section" id="about-section">
+    <div class="about-card">
+      <div class="about-kicker">About AfroRates</div>
+      <p>AfroRates is AfroTools' African central bank rates dashboard. It tracks policy rates, inflation, real rates, treasury-bill yields, and MPC calendars across 54 countries, making it easier to compare monetary conditions across regions and currency blocs. Use it when you need a continent-wide snapshot of interest-rate conditions rather than a general FX converter.</p>
+    </div>
   </div>
-</section>
-  <div class="section" id="faq-section">
+
+  <div class="section" id="partner-section">
     <div class="section-header">
       <div>
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <p class="section-sub">Understanding African monetary policy and interest rates</p>
+        <h2 class="section-title">Cross-Border Transfer Partner</h2>
+        <p class="section-sub">Useful if you want to act on rate differences, send money, or compare transfer rails across African corridors.</p>
       </div>
     </div>
+    <div class="partner-card">
+      <div class="partner-layout">
+        <div class="partner-primary">
+          <wise-cta context="general"></wise-cta>
+        </div>
+        <div class="partner-aside">
+          <div class="partner-kicker">Why it sits here</div>
+          <h3>From macro signal to actual money movement</h3>
+          <p>AfroRates helps you read policy conditions across Africa. This partner block is the practical next step when you actually need to send funds, compare corridors, or move treasury cash across borders.</p>
+          <div class="partner-pills">
+            <span class="partner-pill">Mid-market pricing</span>
+            <span class="partner-pill">170+ countries</span>
+            <span class="partner-pill">Business payouts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-  <wise-cta context="general"></wise-cta>
-</div>
-    <div class="faq-list" id="faq-list">
+  <div class="section faq-section" id="faq-section">
+    <div class="faq-shell">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-sub">Understanding African monetary policy, real rates, and how to read the dashboard.</p>
+        </div>
+      </div>
+      <div class="faq-list" id="faq-list">
 
       <!-- FAQ 1 -->
       <div class="faq-item">
@@ -1508,6 +2171,7 @@ body {
 
     </div>
   </div>
+</div>
 
 </div><!-- end .page-wrap -->
 
@@ -1595,7 +2259,6 @@ body {
   var currentSearch = '';
   var currentSort = 'country-asc';
   var comparisonChart = null;
-  var realRateChart = null;
   var selectedComparison = ['NG', 'KE', 'ZA', 'GH', 'EG'];
 
 
@@ -1675,6 +2338,21 @@ body {
     return sorted[mid];
   }
 
+  function formatShortDate(dateValue) {
+    if (!dateValue) return 'No date';
+    var d = new Date(dateValue);
+    return d.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short'
+    });
+  }
+
+  function directionLabel(dir) {
+    if (dir === 'hawk') return 'Hawkish';
+    if (dir === 'dove') return 'Dovish';
+    return 'On hold';
+  }
+
 
   /* ════════════════════════════════════════════════════════════════
      SUMMARY STATS
@@ -1719,6 +2397,89 @@ body {
     document.getElementById('stat-hawks').innerHTML =
       hawkCount + ' <span class="stat-unit">of ' + data.length + '</span>';
     document.getElementById('stat-mpc-count').textContent = mpcCount;
+  }
+
+  function renderHighlights(data) {
+    var rateLeaders = data
+      .filter(function (c) { return c.policy_rate !== null && c.policy_rate !== undefined; })
+      .sort(function (a, b) { return b.policy_rate - a.policy_rate; });
+
+    var inflationLeaders = data
+      .filter(function (c) { return c.inflation && c.inflation.headline !== null && c.inflation.headline !== undefined; })
+      .sort(function (a, b) { return a.inflation.headline - b.inflation.headline; });
+
+    var realLeaders = data
+      .filter(function (c) { return realRateNum(c) !== null; })
+      .map(function (c) {
+        return {
+          country: c,
+          realRate: realRateNum(c)
+        };
+      })
+      .sort(function (a, b) { return b.realRate - a.realRate; });
+
+    var upcomingMeetings = data
+      .filter(function (c) {
+        return c.next_mpc && new Date(c.next_mpc) >= new Date();
+      })
+      .sort(function (a, b) { return new Date(a.next_mpc) - new Date(b.next_mpc); });
+
+    var highestRate = rateLeaders[0];
+    var lowestInflation = inflationLeaders[0];
+    var strongestReal = realLeaders[0];
+    var nextMeeting = upcomingMeetings[0];
+
+    var cards = [];
+
+    if (highestRate) {
+      cards.push(
+        '<article class="highlight-card">' +
+          '<div class="highlight-kicker">Highest Policy Rate</div>' +
+          '<div class="highlight-value">' + highestRate.policy_rate.toFixed(2) + '%</div>' +
+          '<div class="highlight-name">' + (FLAGS[highestRate.code] || '') + ' ' + highestRate.name + '</div>' +
+          '<div class="highlight-meta"><span class="highlight-chip">' + directionLabel(getDirection(highestRate)) + '</span> ' + highestRate.central_bank + '</div>' +
+        '</article>'
+      );
+    }
+
+    if (strongestReal) {
+      cards.push(
+        '<article class="highlight-card is-positive">' +
+          '<div class="highlight-kicker">Best Real Rate</div>' +
+          '<div class="highlight-value">+' + strongestReal.realRate.toFixed(2) + '%</div>' +
+          '<div class="highlight-name">' + (FLAGS[strongestReal.country.code] || '') + ' ' + strongestReal.country.name + '</div>' +
+          '<div class="highlight-meta">Policy ' + strongestReal.country.policy_rate.toFixed(2) + '% vs inflation ' + strongestReal.country.inflation.headline.toFixed(2) + '%</div>' +
+        '</article>'
+      );
+    }
+
+    if (lowestInflation) {
+      cards.push(
+        '<article class="highlight-card">' +
+          '<div class="highlight-kicker">Lowest Inflation</div>' +
+          '<div class="highlight-value">' + lowestInflation.inflation.headline.toFixed(2) + '%</div>' +
+          '<div class="highlight-name">' + (FLAGS[lowestInflation.code] || '') + ' ' + lowestInflation.name + '</div>' +
+          '<div class="highlight-meta">' + lowestInflation.central_bank + ' · Inflation release ' + (lowestInflation.inflation.date || 'latest') + '</div>' +
+        '</article>'
+      );
+    }
+
+    if (nextMeeting) {
+      var nextRate = nextMeeting.policy_rate !== null && nextMeeting.policy_rate !== undefined
+        ? nextMeeting.policy_rate.toFixed(2) + '%'
+        : 'N/A';
+
+      cards.push(
+        '<article class="highlight-card">' +
+          '<div class="highlight-kicker">Next MPC Meeting</div>' +
+          '<div class="highlight-value">' + formatShortDate(nextMeeting.next_mpc) + '</div>' +
+          '<div class="highlight-name">' + (FLAGS[nextMeeting.code] || '') + ' ' + nextMeeting.name + '</div>' +
+          '<div class="highlight-meta">' + nextMeeting.central_bank + ' · Current policy rate ' + nextRate + '</div>' +
+        '</article>'
+      );
+    }
+
+    document.getElementById('highlights-grid').innerHTML = cards.join('');
   }
 
 
@@ -1857,6 +2618,7 @@ body {
           '<td>' +
             '<div class="country-cell">' +
               '<span class="country-flag">' + (FLAGS[c.code] || '') + '</span>' +
+              '<span class="country-code">' + c.code + '</span>' +
               '<span class="country-name">' + c.name + '</span>' +
             '</div>' +
           '</td>' +
@@ -1872,6 +2634,75 @@ body {
     tbody.innerHTML = rows.join('');
     document.getElementById('table-count').textContent =
       'Showing ' + list.length + ' of ' + allCountries.length + ' countries';
+  }
+
+  function resetFilters() {
+    currentRegion = 'all';
+    currentSearch = '';
+    currentSort = 'country-asc';
+
+    document.getElementById('table-search').value = '';
+    document.getElementById('sort-select').value = currentSort;
+
+    document.querySelectorAll('.filter-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-region') === 'all');
+    });
+
+    document.querySelectorAll('.rate-table th').forEach(function (h) {
+      h.classList.remove('sorted');
+    });
+
+    renderTable();
+  }
+
+  function exportFilteredCSV() {
+    var rows = getFiltered();
+    var headers = [
+      'Code',
+      'Country',
+      'Central Bank',
+      'Policy Rate',
+      'Inflation',
+      'Real Rate',
+      'Direction',
+      'Region',
+      'Next MPC'
+    ];
+
+    function escapeCSV(value) {
+      if (value === null || value === undefined) return '';
+      var text = String(value);
+      if (/[",\n]/.test(text)) {
+        return '"' + text.replace(/"/g, '""') + '"';
+      }
+      return text;
+    }
+
+    var csvRows = [headers.join(',')];
+
+    rows.forEach(function (c) {
+      csvRows.push([
+        c.code,
+        c.name,
+        c.central_bank,
+        c.policy_rate !== null && c.policy_rate !== undefined ? c.policy_rate.toFixed(2) : '',
+        c.inflation && c.inflation.headline !== null && c.inflation.headline !== undefined ? c.inflation.headline.toFixed(2) : '',
+        realRateNum(c) !== null ? realRateNum(c).toFixed(2) : '',
+        directionLabel(getDirection(c)),
+        c.region || '',
+        c.next_mpc || ''
+      ].map(escapeCSV).join(','));
+    });
+
+    var blob = new Blob([csvRows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'afrorates-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
 
@@ -1900,6 +2731,9 @@ body {
     currentSort = e.target.value;
     renderTable();
   });
+
+  document.getElementById('reset-filters').addEventListener('click', resetFilters);
+  document.getElementById('export-csv').addEventListener('click', exportFilteredCSV);
 
   /* ── Sortable Column Headers ── */
   document.querySelectorAll('.rate-table th[data-sort]').forEach(function (th) {
@@ -1980,6 +2814,7 @@ body {
   function buildComparisonChips() {
     var wrap = document.getElementById('comparison-chips');
     var html = [];
+    var atLimit = selectedComparison.length >= 5;
 
     allCountries.forEach(function (c) {
       // Skip countries without a policy rate
@@ -1988,6 +2823,7 @@ body {
       var isActive = selectedComparison.indexOf(c.code) !== -1;
       html.push(
         '<button class="country-chip' + (isActive ? ' active' : '') + '" ' +
+          (!isActive && atLimit ? 'disabled ' : '') +
           'data-code="' + c.code + '">' +
           (FLAGS[c.code] || '') + ' ' + c.name +
           (isActive ? ' <span class="remove">&times;</span>' : '') +
@@ -2021,81 +2857,83 @@ body {
    * Render (or re-render) the comparison bar chart.
    */
   function renderComparisonChart() {
-    if (typeof Chart === 'undefined') return;
-    var ctx = document.getElementById('comparison-chart');
-
-    // Destroy previous chart instance if it exists
     if (comparisonChart) {
       comparisonChart.destroy();
       comparisonChart = null;
     }
+    var comparisonOverview = document.getElementById('comparison-overview');
+    var comparisonBars = document.getElementById('comparison-bars');
+    var comparisonLimit = document.getElementById('comparison-limit');
+    var selectedData = selectedComparison
+      .map(function (code) {
+        return allCountries.find(function (country) { return country.code === code; });
+      })
+      .filter(Boolean);
 
-    // Build labels and data arrays from selected countries
-    var labels = [];
-    var values = [];
-    var bgColors = [];
-    var borderClrs = [];
+    comparisonLimit.textContent = selectedData.length + ' / 5 selected' + (selectedData.length >= 5 ? ' · remove one to add another' : '');
 
-    selectedComparison.forEach(function (code, i) {
-      var c = allCountries.find(function (d) { return d.code === code; });
-      if (!c) return;
-      labels.push((FLAGS[code] || '') + ' ' + c.name);
-      values.push(c.policy_rate || 0);
-      bgColors.push(CHART_COLORS[i % CHART_COLORS.length] + 'CC');
-      borderClrs.push(CHART_COLORS[i % CHART_COLORS.length]);
-    });
+    if (selectedData.length === 0) {
+      comparisonOverview.innerHTML = '<div class="comparison-empty">Choose at least one market above to start comparing policy rate conditions.</div>';
+      comparisonBars.innerHTML = '';
+      return;
+    }
 
-    comparisonChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Policy Rate (%)',
-          data: values,
-          backgroundColor: bgColors,
-          borderColor: borderClrs,
-          borderWidth: 2,
-          borderRadius: 6,
-          barPercentage: 0.6
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: AfroChartColors.tooltipBg,
-            titleFont: { family: 'DM Sans', weight: '600' },
-            bodyFont: { family: 'DM Sans' },
-            cornerRadius: 8,
-            padding: 10,
-            callbacks: {
-              label: function (ctx) {
-                return 'Policy Rate: ' + ctx.parsed.y.toFixed(2) + '%';
-              }
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function (v) { return v + '%'; },
-              font: { family: 'DM Sans', size: 11 }
-            },
-            grid: { color: 'rgba(0,0,0,0.05)' }
-          },
-          x: {
-            ticks: {
-              font: { family: 'DM Sans', size: 11 },
-              maxRotation: 0
-            },
-            grid: { display: false }
-          }
-        }
-      }
-    });
+    var sorted = selectedData.slice().sort(function (a, b) { return (b.policy_rate || 0) - (a.policy_rate || 0); });
+    var maxRate = sorted[0] && sorted[0].policy_rate ? sorted[0].policy_rate : 1;
+    var highest = sorted[0];
+    var lowest = sorted[sorted.length - 1];
+    var avgRate = sorted.reduce(function (sum, country) { return sum + (country.policy_rate || 0); }, 0) / sorted.length;
+    var avgReal = sorted.reduce(function (sum, country) { return sum + (realRateNum(country) || 0); }, 0) / sorted.length;
+    var spread = (highest.policy_rate || 0) - (lowest.policy_rate || 0);
+
+    comparisonOverview.innerHTML = [
+      '<article class="comparison-overview-card">' +
+        '<div class="comparison-overview-kicker">Active Set</div>' +
+        '<div class="comparison-overview-value">' + sorted.length + ' markets</div>' +
+        '<div class="comparison-overview-meta">Average policy rate <strong>' + avgRate.toFixed(2) + '%</strong><br>Average real rate <strong>' + (avgReal >= 0 ? '+' : '') + avgReal.toFixed(2) + '%</strong></div>' +
+      '</article>',
+      '<article class="comparison-overview-card">' +
+        '<div class="comparison-overview-kicker">Highest Selected Rate</div>' +
+        '<div class="comparison-overview-value">' + (highest.policy_rate || 0).toFixed(2) + '%</div>' +
+        '<div class="comparison-overview-meta">' + (FLAGS[highest.code] || '') + ' ' + highest.name + '<br>' + highest.central_bank + '</div>' +
+      '</article>',
+      '<article class="comparison-overview-card">' +
+        '<div class="comparison-overview-kicker">Rate Spread</div>' +
+        '<div class="comparison-overview-value">' + spread.toFixed(2) + '%</div>' +
+        '<div class="comparison-overview-meta">' + highest.name + ' versus ' + lowest.name + ' across the current comparison basket.</div>' +
+      '</article>'
+    ].join('');
+
+    comparisonBars.innerHTML = sorted.map(function (country, index) {
+      var rate = country.policy_rate || 0;
+      var real = realRateNum(country);
+      var inflationValue = country.inflation && country.inflation.headline !== null && country.inflation.headline !== undefined
+        ? country.inflation.headline.toFixed(2) + '%'
+        : 'N/A';
+      var nextMeeting = country.next_mpc ? formatShortDate(country.next_mpc) : 'Not listed';
+      var width = Math.max((rate / maxRate) * 100, 10);
+      var fillColor = CHART_COLORS[index % CHART_COLORS.length];
+
+      return (
+        '<article class="comparison-item">' +
+          '<div class="comparison-top">' +
+            '<div>' +
+              '<div class="comparison-country">' + (FLAGS[country.code] || '') + ' ' + country.name + '</div>' +
+              '<div class="comparison-bank">' + country.central_bank + ' · ' + directionLabel(getDirection(country)) + '</div>' +
+            '</div>' +
+            '<div class="comparison-rate">' + rate.toFixed(2) + '%</div>' +
+          '</div>' +
+          '<div class="comparison-track">' +
+            '<div class="comparison-fill" style="width:' + width + '%;background:linear-gradient(90deg,' + fillColor + ' 0%,' + fillColor + 'CC 100%);"></div>' +
+          '</div>' +
+          '<div class="comparison-metrics">' +
+            '<span class="comparison-metric"><strong>Inflation</strong>' + inflationValue + '</span>' +
+            '<span class="comparison-metric"><strong>Real Rate</strong>' + (real !== null ? (real >= 0 ? '+' : '') + real.toFixed(2) + '%' : 'N/A') + '</span>' +
+            '<span class="comparison-metric"><strong>Next MPC</strong>' + nextMeeting + '</span>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join('');
   }
 
 
@@ -2181,98 +3019,68 @@ body {
      Sorted from most positive to most negative.
      ════════════════════════════════════════════════════════════════ */
   function renderRealRateChart(data) {
-    if (typeof Chart === 'undefined') return;
-    var ctx = document.getElementById('realrate-chart');
+    var ranked = data
+      .filter(function (c) { return realRateNum(c) !== null; })
+      .map(function (c) {
+        return {
+          code: c.code,
+          name: c.name,
+          central_bank: c.central_bank,
+          policy_rate: c.policy_rate,
+          inflation: c.inflation ? c.inflation.headline : null,
+          realRate: realRateNum(c)
+        };
+      })
+      .sort(function (a, b) { return b.realRate - a.realRate; });
 
-    // Destroy previous chart instance
-    if (realRateChart) {
-      realRateChart.destroy();
-      realRateChart = null;
+    ranked.forEach(function (entry, index) {
+      entry.rank = index + 1;
+    });
+
+    var leaders = ranked.slice(0, 8);
+    var laggards = ranked.slice(-8).sort(function (a, b) { return a.realRate - b.realRate; });
+
+    function buildPanel(title, subtitle, entries, isPositive) {
+      var items = entries.map(function (entry) {
+        var sign = entry.realRate >= 0 ? '+' : '';
+        return (
+          '<div class="realrate-item">' +
+            '<div class="realrate-rank">#' + entry.rank + '</div>' +
+            '<div>' +
+              '<div class="realrate-country">' + (FLAGS[entry.code] || '') + ' ' + entry.name + '</div>' +
+              '<div class="realrate-meta">' + entry.central_bank + ' · Policy ' + entry.policy_rate.toFixed(2) + '% · Inflation ' + entry.inflation.toFixed(2) + '%</div>' +
+            '</div>' +
+            '<div class="realrate-score ' + (isPositive ? 'pos' : 'neg') + '">' + sign + entry.realRate.toFixed(2) + '%</div>' +
+          '</div>'
+        );
+      }).join('');
+
+      return (
+        '<div class="realrate-panel">' +
+          '<div class="realrate-panel-header">' +
+            '<div>' +
+              '<div class="realrate-panel-title">' + title + '</div>' +
+              '<div class="realrate-panel-sub">' + subtitle + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="realrate-list">' + items + '</div>' +
+        '</div>'
+      );
     }
 
-    // Build array of countries with computed real rates
-    var withRate = [];
-    data.forEach(function (c) {
-      if (c.policy_rate === null || c.policy_rate === undefined) return;
-      var headline = c.inflation ? c.inflation.headline || 0 : 0;
-      withRate.push({
-        name: (FLAGS[c.code] || '') + ' ' + c.name,
-        realRate: c.policy_rate - headline
-      });
-    });
-
-    // Sort: most positive first, most negative last
-    withRate.sort(function (a, b) { return b.realRate - a.realRate; });
-
-    var labels = withRate.map(function (c) { return c.name; });
-    var values = withRate.map(function (c) { return c.realRate; });
-
-    // Color: green for positive, red for negative
-    var bgColors = values.map(function (v) {
-      return v >= 0 ? 'rgba(22, 163, 74, 0.75)' : 'rgba(220, 38, 38, 0.75)';
-    });
-    var borderColors = values.map(function (v) {
-      return v >= 0 ? '#16a34a' : '#dc2626';
-    });
-
-    // Dynamically set chart height based on number of bars
-    var barHeight = 24;
-    var chartHeight = Math.max(400, withRate.length * barHeight + 80);
-    ctx.parentElement.style.minHeight = chartHeight + 'px';
-
-    realRateChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Real Interest Rate (%)',
-          data: values,
-          backgroundColor: bgColors,
-          borderColor: borderColors,
-          borderWidth: 1,
-          borderRadius: 3,
-          barPercentage: 0.7
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: AfroChartColors.tooltipBg,
-            titleFont: { family: 'DM Sans', weight: '600' },
-            bodyFont: { family: 'DM Sans' },
-            cornerRadius: 8,
-            padding: 10,
-            callbacks: {
-              label: function (ctx) {
-                var val = ctx.parsed.x;
-                var sign = val >= 0 ? '+' : '';
-                return 'Real Rate: ' + sign + val.toFixed(2) + '%';
-              }
-            }
-          }
-        },
-        scales: {
-          x: {
-            ticks: {
-              callback: function (v) { return (v >= 0 ? '+' : '') + v + '%'; },
-              font: { family: 'DM Sans', size: 10 }
-            },
-            grid: { color: 'rgba(0,0,0,0.05)' }
-          },
-          y: {
-            ticks: {
-              font: { family: 'DM Sans', size: 10 },
-              autoSkip: false
-            },
-            grid: { display: false }
-          }
-        }
-      }
-    });
+    document.getElementById('realrate-grid').innerHTML =
+      buildPanel(
+        'Top Positive Real Rates',
+        'Markets where policy rates are still running ahead of headline inflation.',
+        leaders,
+        true
+      ) +
+      buildPanel(
+        'Deepest Negative Real Rates',
+        'Markets where inflation is still outpacing the benchmark policy rate.',
+        laggards,
+        false
+      );
   }
 
 
@@ -2379,6 +3187,7 @@ body {
 
     // Render all sections
     renderStats(data);
+    renderHighlights(data);
     buildTicker(data);
     renderTable();
     populateMap(data);

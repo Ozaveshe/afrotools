@@ -184,9 +184,37 @@ async function scanForChanges() {
         }
       });
 
-      // Store for next comparison
+      changes = changes.filter(function(change) {
+        return change.source_name !== 'World Bank';
+      });
+
+      // Store latest year + value so we compare like-for-like on the next scan
       var newMap = {};
-      wbJson[1].forEach(function(e) { if (e.value && e.country) newMap[e.country.id] = e.value; });
+      wbJson[1].forEach(function(e) {
+        if (e.value == null || !e.country || !TAX_AUTHORITIES[e.country.id]) return;
+        var current = newMap[e.country.id];
+        if (!current || String(e.date) > String(current.year)) {
+          newMap[e.country.id] = {
+            country_name: e.country.value,
+            year: String(e.date),
+            value: e.value,
+          };
+        }
+      });
+      Object.keys(newMap).forEach(function(countryCode) {
+        var latest = newMap[countryCode];
+        var prevEntry = prevMap[countryCode];
+        var prevValue = typeof prevEntry === 'number'
+          ? prevEntry
+          : (prevEntry && typeof prevEntry.value === 'number' ? prevEntry.value : null);
+        var prevYear = prevEntry && prevEntry.year ? String(prevEntry.year) : null;
+        if (prevValue !== null && prevYear !== latest.year && Math.abs(latest.value - prevValue) > 2) {
+          console.log(
+            '[gazette] World Bank macro context for ' + countryCode + ': tax revenue/GDP ' +
+            prevValue.toFixed(1) + '% -> ' + latest.value.toFixed(1) + '% (' + latest.year + '), not creating PAYE alert'
+          );
+        }
+      });
       await setData('gazette-last-wb-tax', { data: newMap, checked_at: new Date().toISOString() });
     }
   } catch (e) {
@@ -304,7 +332,7 @@ async function saveChanges(changes) {
           subject: 'GAZETTE ALERT: ' + highConf.length + ' regulatory change(s) detected',
           text: 'AfroTools Government Gazette Scanner\n' +
             new Date().toISOString() + '\n\n' +
-            'The following regulatory changes were detected that may affect PAYE calculators:\n\n' +
+            'The following regulatory changes were detected and need review:\n\n' +
             body + '\n\n' +
             'ACTION REQUIRED: Review and update affected tool data.\n' +
             'Review queue: https://afrotools.com/admin/review',

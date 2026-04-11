@@ -83,6 +83,7 @@ async function fetchSalaryData() {
     var currencyMap = { NG: 'NGN', KE: 'KES', ZA: 'ZAR', GH: 'GHS', EG: 'EGP', ET: 'ETB', TZ: 'TZS', RW: 'RWF', CI: 'XOF', MA: 'MAD', UG: 'UGX', SN: 'XOF', CM: 'XAF' };
     var currency = currencyMap[code] || 'USD';
     var fxRate = rates[currency] || 1;
+    var hasCommunityData = false;
 
     var sectors = SECTORS.map(function(sector) {
       var median = refSalaries[sector] || null;
@@ -93,7 +94,10 @@ async function fetchSalaryData() {
       });
       if (communityMatch.length > 0) {
         var avg = communityMatch.reduce(function(sum, s) { return sum + (s.monthly_gross_usd || 0); }, 0) / communityMatch.length;
-        if (avg > 0) median = Math.round(avg);
+        if (avg > 0) {
+          median = Math.round(avg);
+          hasCommunityData = true;
+        }
       }
 
       return {
@@ -113,7 +117,7 @@ async function fetchSalaryData() {
       currency: currency,
       sectors: sectors,
       last_updated: now,
-      source: communityMatch && communityMatch.length > 0 ? 'community-enriched' : 'reference-with-forex',
+      source: hasCommunityData ? 'community-enriched' : 'reference-with-forex',
     };
   });
 

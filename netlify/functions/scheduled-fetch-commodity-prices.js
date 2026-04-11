@@ -18,6 +18,7 @@
  */
 
 const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const { getData } = require('./_shared/data-store');
 
 // Commodity IDs we track — mapped to World Bank indicator codes
 var COMMODITY_MAP = {
@@ -41,6 +42,29 @@ var COMMODITY_MAP = {
   tobacco:         { wb: 'TOBACCO_US',  name: 'Tobacco (US import)', unit: 'mt', category: 'agriculture' },
   phosphate:       { wb: 'DAP',         name: 'DAP Fertilizer', unit: 'mt', category: 'chemicals' },
   urea:            { wb: 'UREA_EE_BULK', name: 'Urea', unit: 'mt', category: 'chemicals' },
+};
+
+var REFERENCE_COMMODITIES = {
+  crude_oil: 84,
+  natural_gas: 2.4,
+  gold: 2350,
+  platinum: 980,
+  copper: 8900,
+  iron_ore: 106,
+  cocoa: 8.5,
+  coffee_arabica: 5.5,
+  coffee_robusta: 4.2,
+  tea_mombasa: 2.6,
+  cotton: 1.9,
+  sugar: 0.52,
+  wheat: 265,
+  maize: 220,
+  rice: 430,
+  palm_oil: 910,
+  rubber: 1.7,
+  tobacco: 4800,
+  phosphate: 575,
+  urea: 340,
 };
 
 /**
@@ -174,6 +198,30 @@ async function fetchFromOpenAPIs() {
   return commodities;
 }
 
+async function fetchReferenceFallback() {
+  var previous = await getData('commodity-prices-latest');
+  if (previous && Array.isArray(previous.commodities) && previous.commodities.length > 0) {
+    return previous.commodities.map(function(commodity) {
+      return Object.assign({}, commodity, { source: 'previous-snapshot' });
+    });
+  }
+
+  return Object.keys(COMMODITY_MAP).map(function(id) {
+    var def = COMMODITY_MAP[id];
+    return {
+      id: id,
+      name: def.name,
+      price: REFERENCE_COMMODITIES[id] || null,
+      unit: def.unit,
+      currency: 'USD',
+      category: def.category,
+      source: 'reference-fallback',
+    };
+  }).filter(function(commodity) {
+    return typeof commodity.price === 'number' && commodity.price > 0;
+  });
+}
+
 /**
  * Transform raw commodity array into blob-ready format
  */
@@ -233,6 +281,7 @@ exports.handler = async function(event) {
     sources: [
       { name: 'WorldBank', fn: fetchFromWorldBank },
       { name: 'OpenAPIs', fn: fetchFromOpenAPIs },
+      { name: 'ReferenceFallback', fn: fetchReferenceFallback },
     ],
     transform: transformCommodityData,
     validate: validateCommodityPrices,

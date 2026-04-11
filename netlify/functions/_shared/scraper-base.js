@@ -283,8 +283,13 @@ async function runScraper(config) {
   var recordCount = 0;
   if (Array.isArray(newData.countries)) recordCount = newData.countries.length;
   else if (Array.isArray(newData.commodities)) recordCount = newData.commodities.length;
+  else if (Array.isArray(newData.coins)) recordCount = newData.coins.length;
+  else if (Array.isArray(newData.indices)) recordCount = newData.indices.length;
+  else if (Array.isArray(newData.routes)) recordCount = newData.routes.length;
+  else if (Array.isArray(newData.ports)) recordCount = newData.ports.length;
   else if (newData.rates) recordCount = Object.keys(newData.rates).length;
   else if (Array.isArray(newData.providers)) recordCount = newData.providers.length;
+  else if (typeof newData.record_count === 'number') recordCount = newData.record_count;
 
   var written = await setData(blobKey, newData);
 
