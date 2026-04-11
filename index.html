@@ -188,7 +188,7 @@
   <div class="hero-stats">
     <div class="hero-stats-inner">
       <div class="hero-stat rv"><div class="hero-stat-num c1" id="hp-stat-tools">2,550+</div><div class="hero-stat-lbl">Tools</div></div>
-      <div class="hero-stat rv d1"><div class="hero-stat-num c2">32</div><div class="hero-stat-lbl">Categories</div></div>
+      <div class="hero-stat rv d1"><div class="hero-stat-num c2" id="hp-stat-categories">31</div><div class="hero-stat-lbl">Categories</div></div>
       <div class="hero-stat rv d2"><div class="hero-stat-num c3">54</div><div class="hero-stat-lbl">Countries</div></div>
       <div class="hero-stat rv d3"><div class="hero-stat-num c4">AI</div><div class="hero-stat-lbl">Powered</div></div>
     </div>
@@ -419,16 +419,34 @@
   }
 
   window.syncHomepageToolCounts = syncHomepageToolCounts;
+  window.getLivePayeCountryCount = function() {
+    if (typeof AFRO_TOOLS === 'undefined') return 54;
+    var seen = {};
+    AFRO_TOOLS.forEach(function(t) {
+      var countries = Array.isArray(t.countries) ? t.countries : [];
+      var isLive = t.status === 'live' || t.status === 'new';
+      var isCountrySpecific = countries.length === 1 && countries[0] !== 'ALL';
+      var text = ((t.name || '') + ' ' + (t.href || '')).toLowerCase();
+      var looksLikePaye = text.indexOf('paye') !== -1 || text.indexOf('salary-tax') !== -1 || text.indexOf('income tax') !== -1;
+      if (isLive && isCountrySpecific && looksLikePaye) {
+        seen[countries[0]] = true;
+      }
+    });
+    var total = Object.keys(seen).length;
+    return total || 54;
+  };
   window.refreshHomepageRegistryStats = function() {
     if (typeof AFRO_TOOLS === 'undefined' || typeof AFRO_CATEGORIES === 'undefined') return;
     var total = typeof getTotalToolCount === 'function' ? getTotalToolCount() : AFRO_TOOLS.length;
     var live = AFRO_TOOLS.filter(function(t){ return t.status === 'live' || t.status === 'new'; }).length;
     var cats = Object.keys(AFRO_CATEGORIES).length;
-    var liveF = AFRO_TOOLS.filter(function(t){
-      return (t.status === 'live' || t.status === 'new') && t.category === 'financial' && t.countries[0] !== 'ALL';
-    }).length;
+    var liveF = window.getLivePayeCountryCount();
 
     syncHomepageToolCounts(total);
+    var el = document.getElementById('hp-stat-categories');
+    if (el) el.textContent = cats;
+    el = document.getElementById('cats-all-label');
+    if (el) el.textContent = 'All ' + cats + ' Categories';
     window._afroStats = { total: total, live: live, cats: cats, liveF: liveF };
   };
 })();
@@ -897,7 +915,7 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-  12 TOOL CATEGORIES
+  TOOL CATEGORIES
 ═══════════════════════════════════════════════════════════ -->
 <section class="sec sec--white" id="categories" aria-label="All tool categories">
   <div class="wrap">
@@ -953,7 +971,7 @@
   </a>
   <a href="/all-tools/" class="cat-card rv d3" style="border-color:#007AFF;background:#eff6ff">
     <div class="cat-icon-wrap" style="background:#dbeafe"><img src="/assets/img/categories/all-categories.png" alt="All Categories" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">All 32 Categories</div>
+    <div class="cat-name" id="cats-all-label">All 31 Categories</div>
     <div class="cat-desc">Finance, Health, Transport, Education, Energy, Legal, Climate, Diaspora &amp; more.</div>
     <div class="cat-count" style="color:#0063d1">Browse <span id="cats-browse-count">2,550+</span> tools &rarr;</div>
   </a>
@@ -1447,11 +1465,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── TWEMOJI: parse flags so they render on Windows ──
   // Scoped strictly to tool/category card containers only
+  function flagToSvg(flag) {
+    return Array.from(flag).map(function(ch) {
+      return ch.codePointAt(0).toString(16);
+    }).join('-');
+  }
+
+  function hydrateFlagTargets() {
+    var flagPattern = /(?:\uD83C[\uDDE6-\uDDFF]){2}/g;
+    document.querySelectorAll('.pill, .fb-flag').forEach(function(el) {
+      if (el.querySelector('img.emoji')) return;
+      var original = el.innerHTML;
+      var next = original.replace(flagPattern, function(flag) {
+        return '<img class="emoji" draggable="false" alt="' + flag + '" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/' + flagToSvg(flag) + '.svg">';
+      });
+      if (next !== original) el.innerHTML = next;
+    });
+  }
+
   function parseTwemoji() {
-    if (typeof twemoji === 'undefined') return;
-    var opts = { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' };
-    var targets = document.querySelectorAll('.tool-card, .category-card, .emoji-icon, .pill, .fb-flags, .showcase-tab-icon, .marquee-track, .cat-icon-wrap, .disc-badge, .ad-pills, .mk-field, .mk-creator-grid, .mk-recipe, .mk-recipe-list, .mk-fx-flag, .trusted-badge, .my-tool-icon, .fb-visual');
-    targets.forEach(function(el) { twemoji.parse(el, opts); });
+    if (typeof twemoji !== 'undefined') {
+      var opts = { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' };
+      var targets = document.querySelectorAll('.tool-card, .category-card, .emoji-icon, .pill, .fb-flags, .showcase-tab-icon, .marquee-track, .cat-icon-wrap, .disc-badge, .ad-pills, .mk-field, .mk-creator-grid, .mk-recipe, .mk-recipe-list, .mk-fx-flag, .trusted-badge, .my-tool-icon, .fb-visual');
+      targets.forEach(function(el) { twemoji.parse(el, opts); });
+    }
+    hydrateFlagTargets();
   }
   parseTwemoji();
   // Also run on window.load — deferred scripts (twemoji) are guaranteed ready by then
@@ -1469,11 +1507,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── DYNAMIC STAT UPDATES for categories heading ──
   (function(){
-    if (typeof AFRO_TOOLS === 'undefined') return;
-    // cats-tool-count now shows "English, French & Swahili" — don't override with number
     var ph = document.getElementById('paye-heading');
-    var liveF = AFRO_TOOLS.filter(function(t){return (t.status==='live'||t.status==='new') && t.category==='financial';}).length;
-    if (ph && liveF > 0) ph.textContent = 'PAYE Calculators — ' + liveF + ' Tools Live';
+    var liveF = typeof window.getLivePayeCountryCount === 'function' ? window.getLivePayeCountryCount() : 54;
+    if (ph && liveF > 0) ph.textContent = 'PAYE Calculators — ' + liveF + ' Countr' + (liveF === 1 ? 'y' : 'ies');
   })();
 
   // Newsletter
@@ -1708,9 +1744,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var total = s.total || (typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length);
     var live  = s.live  || AFRO_TOOLS.filter(function(t){ return t.status==='live'||t.status==='new'; }).length;
     var cats  = s.cats  || Object.keys(AFRO_CATEGORIES).length;
-    var liveF = s.liveF || AFRO_TOOLS.filter(function(t){
-      return (t.status==='live'||t.status==='new') && t.category==='financial' && t.countries[0]!=='ALL';
-    }).length;
+    var liveF = s.liveF || (typeof window.getLivePayeCountryCount === 'function' ? window.getLivePayeCountryCount() : 54);
 
     // Re-apply hero stats (in case sync script missed anything)
     if (typeof window.syncHomepageToolCounts === 'function') {
@@ -1718,7 +1752,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     var el;
     el = document.getElementById('stat-live');       if (el) el.textContent = live;
-    // stat-categories now shows language count — don't override
+    el = document.getElementById('hp-stat-categories'); if (el) el.textContent = cats;
+    el = document.getElementById('cats-all-label'); if (el) el.textContent = 'All ' + cats + ' Categories';
     // hero-h1 kept as static HTML — "The tools Africa actually needs."
 
     // PAYE section heading (rendered lower in page, safe to update now)

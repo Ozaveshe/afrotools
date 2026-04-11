@@ -36,9 +36,9 @@
                   yo: 'Àwọn iṣẹ́ kan ní àwọn ọ̀nà ìsopọ̀ afilieti sí àwọn alábàáṣiṣẹ́pọ̀ tí a gbẹ́kẹ̀lé. AfroTools lè ní èrè láì ní idiyele àfikún fún ọ.',
                   ha: "Wasu kayan aiki na ƙunsar hanyoyin haɗin gwiwa na abokan tarayya masu aminci. AfroTools na iya samun kuɗin abokin tarayya ba tare da ƙarin kuɗi a gare ku ba." },
     stats:      { countries: { en: 'African countries', fr: 'Pays africains', sw: 'Nchi za Afrika', yo: 'Orílẹ̀-èdè Áfíríkà', ha: 'Ƙasashen Afirka' },
-                  categories: { en: 'Tool categories', fr: 'Catégories', sw: 'Kategoria', yo: 'Ẹ̀ka', ha: 'Rukunoni' },
-                  paye:       { en: 'PAYE calculators', fr: 'Calculateurs PAYE', sw: 'Vikokotoo vya PAYE', yo: 'Àṣeàṣe PAYE', ha: "Na'urorin PAYE" },
-                  free:       { en: 'Always, forever', fr: 'Toujours gratuit', sw: 'Bure milele', yo: 'Ọ̀fẹ́ títí', ha: 'Kyauta har abada' } },
+                   categories: { en: 'Tool categories', fr: 'Catégories', sw: 'Kategoria', yo: 'Ẹ̀ka', ha: 'Rukunoni' },
+                   paye:       { en: 'PAYE countries live', fr: 'Pays PAYE en ligne', sw: 'Nchi za PAYE mubashara', yo: 'Àwọn orílẹ̀-èdè PAYE tó wà', ha: 'Kasashen PAYE masu aiki' },
+                   free:       { en: 'Always, forever', fr: 'Toujours gratuit', sw: 'Bure milele', yo: 'Ọ̀fẹ́ títí', ha: 'Kyauta har abada' } },
     privacy:    { en: 'Privacy', fr: 'Confidentialité', sw: 'Faragha', yo: 'Aṣírí', ha: 'Sirri' },
     terms:      { en: 'Terms', fr: 'Conditions', sw: 'Masharti', yo: 'Òfin', ha: 'Sharuɗɗa' },
     builtWith:  { en: 'Built with ♥ for Africa', fr: 'Fait avec ♥ pour l\'Afrique', sw: 'Imejengwa kwa ♥ kwa Afrika', yo: 'A kọ́ pẹ̀lú ♥ fún Áfíríkà', ha: 'An gina da ♥ don Afirka' },
@@ -54,12 +54,12 @@
       { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'Àṣeàṣe VAT',       ha: "Na'urar VAT",    href: '/tools/vat-calculator/' },
     ],
     countries: [
-      { en: '🇳🇬 Nigeria',      href: '/nigeria/' },
-      { en: '🇰🇪 Kenya',        href: '/kenya/' },
-      { en: '🇬🇭 Ghana',        href: '/ghana/' },
-      { en: '🇿🇦 South Africa', href: '/south-africa/' },
-      { en: '🇪🇬 Egypt',        href: '/egypt/' },
-      { en: '🇹🇿 Tanzania',     href: '/tanzania/' },
+      { en: 'Nigeria',      href: '/nigeria/' },
+      { en: 'Kenya',        href: '/kenya/' },
+      { en: 'Ghana',        href: '/ghana/' },
+      { en: 'South Africa', href: '/south-africa/' },
+      { en: 'Egypt',        href: '/egypt/' },
+      { en: 'Tanzania',     href: '/tanzania/' },
     ],
     company: [
       { en: 'About',       fr: 'À propos',        sw: 'Kuhusu',        yo: 'Nípa Wa',          ha: 'Game da Mu',    href: '/about/' },
@@ -102,19 +102,23 @@
        Accent: Apple Blue #007AFF via --color-primary.
     ───────────────────────────────────────────── */
     footer {
-      background: #111827;
-      border-top: 2px solid #1f2937;
+      background:
+        radial-gradient(circle at top left, rgba(59,138,229,0.12), transparent 34%),
+        linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      border-top: 1px solid rgba(255,255,255,0.08);
       color: #d1d5db;
     }
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px 28px; }
 
     /* ─────────────────────────────────────────────
        TOP — logo + newsletter
     ───────────────────────────────────────────── */
     .top {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 56px; padding: 56px 0 48px;
-      border-bottom: 1px solid #1f2937;
+      gap: 56px; padding: 40px 32px 36px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(8,15,30,0.42);
+      border-radius: 28px;
       align-items: start;
     }
 
@@ -185,8 +189,11 @@
     ───────────────────────────────────────────── */
     .links {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 32px; padding: 44px 0;
-      border-bottom: 1px solid #1f2937;
+      gap: 32px; padding: 32px;
+      margin-top: 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.02);
     }
     .col-title {
       font-size: 0.6rem; font-weight: 700;
@@ -207,15 +214,21 @@
     ───────────────────────────────────────────── */
     .stats {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 16px; padding: 32px 0;
-      border-bottom: 1px solid #1f2937;
+      gap: 14px; padding: 18px 0 0;
       text-align: center;
+    }
+    .stat-card {
+      padding: 22px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));
     }
     .stat-n {
       font-size: 1.8rem; font-weight: 800;
       color: var(--color-primary); line-height: 1;
       letter-spacing: -0.02em;
     }
+    .stat-card:last-child .stat-n { color: #f9fafb; }
     .stat-l {
       font-size: 0.72rem; font-weight: 500;
       color: #8B95A3; margin-top: 5px;
@@ -227,7 +240,7 @@
     .bottom {
       display: flex; align-items: center;
       justify-content: space-between;
-      padding: 20px 0; flex-wrap: wrap; gap: 12px;
+      padding: 24px 0 0; flex-wrap: wrap; gap: 12px;
     }
     .copy {
       font-size: 0.75rem; font-weight: 500;
@@ -244,7 +257,7 @@
     /* Disclaimer — readable, not invisible */
     .disc {
       width: 100%; padding-top: 14px;
-      border-top: 1px solid #1f2937;
+      border-top: 1px solid rgba(255,255,255,0.08);
       font-size: 0.7rem; font-weight: 400;
       color: #8B95A3; line-height: 1.7;
     }
@@ -269,12 +282,14 @@
     }
 
     @media (max-width: 900px) {
-      .top   { grid-template-columns: 1fr; gap: 36px; padding: 40px 0 36px; }
+      .top   { grid-template-columns: 1fr; gap: 36px; }
       .links { grid-template-columns: 1fr 1fr; }
       .stats { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 560px) {
       .wrap  { padding: 0 20px; }
+      .top   { padding: 28px 20px; }
+      .links { padding: 24px 20px; }
       .links { grid-template-columns: 1fr 1fr; gap: 24px; }
       .nl-form { flex-direction: column; }
       .bottom { flex-direction: column; align-items: flex-start; }
@@ -299,6 +314,9 @@
       document.addEventListener('afrotools:langchange', e => {
         this._lang = e.detail.lang; this._render(); this._bind();
       });
+      document.addEventListener('afrotools:registry-ready', () => {
+        this._render(); this._bind();
+      });
     }
 
     _l(obj) { return obj[this._lang] || obj.en; }
@@ -315,6 +333,40 @@
       return '/' + this._lang + href;
     }
 
+    _getRegistryStats() {
+      var categories = 31;
+      var payeCountries = 54;
+      var tools = Array.isArray(window.AFRO_TOOLS) ? window.AFRO_TOOLS : [];
+      var registryCategories = window.AFRO_CATEGORIES && typeof window.AFRO_CATEGORIES === 'object'
+        ? window.AFRO_CATEGORIES
+        : null;
+
+      if (registryCategories) {
+        categories = Object.keys(registryCategories).length || categories;
+      }
+
+      if (tools.length) {
+        var payeSet = new Set();
+        tools.forEach(function(tool) {
+          var countries = Array.isArray(tool.countries) ? tool.countries : [];
+          var text = ((tool.name || '') + ' ' + (tool.href || '')).toLowerCase();
+          var isLive = tool.status === 'live' || tool.status === 'new';
+          var isCountrySpecific = countries.length === 1 && countries[0] !== 'ALL';
+          var looksLikePaye = text.indexOf('paye') !== -1 || text.indexOf('salary-tax') !== -1 || text.indexOf('income tax') !== -1;
+          if (isLive && isCountrySpecific && looksLikePaye) {
+            payeSet.add(countries[0]);
+          }
+        });
+        if (payeSet.size) payeCountries = payeSet.size;
+      }
+
+      return {
+        countries: 54,
+        categories: categories,
+        payeCountries: payeCountries,
+      };
+    }
+
     _render() {
       const nlEyebrow = this._l(L.nlEyebrow);
       const nlTitle   = this._l(L.nlTitle);
@@ -324,6 +376,7 @@
       const tagline   = this._l(L.tagline);
       const disc      = this._l(L.disc);
       const affDisc   = this._l(L.affDisc);
+      const stats     = this._getRegistryStats();
 
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>
@@ -369,10 +422,10 @@
             </div>
 
             <div class="stats">
-              <div><div class="stat-n">54</div><div class="stat-l">${this._l(L.stats.countries)}</div></div>
-              <div><div class="stat-n">12</div><div class="stat-l">${this._l(L.stats.categories)}</div></div>
-              <div><div class="stat-n">8</div><div class="stat-l">${this._l(L.stats.paye)}</div></div>
-              <div><div class="stat-n">Free</div><div class="stat-l">${this._l(L.stats.free)}</div></div>
+              <div class="stat-card"><div class="stat-n">${stats.countries}</div><div class="stat-l">${this._l(L.stats.countries)}</div></div>
+              <div class="stat-card"><div class="stat-n">${stats.categories}</div><div class="stat-l">${this._l(L.stats.categories)}</div></div>
+              <div class="stat-card"><div class="stat-n">${stats.payeCountries}</div><div class="stat-l">${this._l(L.stats.paye)}</div></div>
+              <div class="stat-card"><div class="stat-n">Free</div><div class="stat-l">${this._l(L.stats.free)}</div></div>
             </div>
 
             <div class="bottom">

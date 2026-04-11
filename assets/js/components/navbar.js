@@ -852,7 +852,7 @@
     .mega-footer-lnk:hover { text-decoration: underline; }
 
     /* RIGHT */
-    .right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-left: auto; }
+    .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
     .pill-54 { font-size: 0.66rem; font-weight: 600; color: #6b7280; padding: 4px 10px; border-radius: 20px; border: 1px solid #e5e7eb; background: #f9fafb; white-space: nowrap; }
 
     .btn-login {
@@ -863,6 +863,22 @@
       transition: all 0.13s; cursor: pointer;
     }
     .btn-login:hover { border-color: #0062CC; color: #0062CC; }
+
+    .btn-pro {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 56px; padding: 7px 14px; border-radius: 980px;
+      border: 1.5px solid rgba(245,166,35,0.28);
+      background: linear-gradient(180deg, rgba(255,243,205,0.78), rgba(255,249,235,0.96));
+      color: #9a5b00; text-decoration: none; white-space: nowrap;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.01em;
+      transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
+      box-shadow: 0 1px 8px rgba(245,166,35,0.12);
+    }
+    .btn-pro:hover {
+      border-color: rgba(245,166,35,0.52);
+      box-shadow: 0 4px 16px rgba(245,166,35,0.18);
+      transform: translateY(-1px);
+    }
 
     .cta {
       display: inline-flex; align-items: center; gap: 5px;
@@ -968,9 +984,10 @@
       .cta { display: none; }
       .lang-btn-label { display: none; }
       .lang-btn { padding: 5px 7px; font-size: 0.9rem; }
+      .btn-pro { min-width: 0; padding: 7px 12px; }
     }
     @media (max-width: 940px) {
-      .nav-links, .pill-54, .cta { display: none; }
+      .nav-links, .pill-54, .cta, .btn-pro { display: none; }
       .lang-switch { display: none; }
       .btn-login { border: none; padding: 4px 8px; max-width: none; overflow: hidden; font-size: 0.75rem; }
       .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; font-size: 0 !important; }
@@ -1371,11 +1388,11 @@
               <li><a href="/african/" class="lnk">${T.african}</a></li>
               <li><a href="${isSw ? '/sw/zana-za-elimu/' : '/education/'}" class="lnk">${T.education}</a></li>
               <li><a href="/insurance/" class="lnk">${T.insurance}</a></li>
-              <li><a href="/pro/" class="lnk" style="color:#F5A623;font-weight:700">Pro</a></li>
             </ul>
 
             <div class="right">
               ${this._langSwitcherHTML()}
+              <a href="/pro/" class="btn-pro">Pro</a>
               <a href="/dashboard/" class="btn-login">${T.signIn}</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
