@@ -6,6 +6,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { minify } = require('terser');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -47,6 +48,15 @@ function minifyCSS(src) {
     .trim();
 }
 
+function isValidJavaScript(code, filename) {
+  try {
+    new vm.Script(code, { filename });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function run() {
   let jsTotal = { before: 0, after: 0, count: 0 };
   let cssTotal = { before: 0, after: 0, count: 0 };
@@ -82,10 +92,17 @@ async function run() {
         },
       });
 
-      fs.writeFileSync(minPath, result.code, 'utf8');
-      const minSize = Buffer.byteLength(result.code);
+      let finalCode = result.code || code;
+      let fallbackLabel = '';
+      if (!isValidJavaScript(finalCode, minRel)) {
+        finalCode = code;
+        fallbackLabel = ' (fallback: invalid minified output)';
+      }
+
+      fs.writeFileSync(minPath, finalCode, 'utf8');
+      const minSize = Buffer.byteLength(finalCode);
       const pct = ((1 - minSize / srcSize) * 100).toFixed(1);
-      console.log(`  JS    ${srcRel}: ${fmtKB(srcSize)} -> ${fmtKB(minSize)} (${pct}% smaller)`);
+      console.log(`  JS    ${srcRel}: ${fmtKB(srcSize)} -> ${fmtKB(minSize)} (${pct}% smaller)${fallbackLabel}`);
       jsTotal.before += srcSize;
       jsTotal.after += minSize;
       jsTotal.count++;
