@@ -11,7 +11,7 @@
 <meta property="og:description" content="Practice JAMB like the real thing. Free CBT simulator with 16,000+ past questions.">
 <meta property="og:url" content="https://afrotools.com/jamb/cbt/">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-cbt.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-cbt.webp">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,9 +29,34 @@
 <script src="/assets/js/edu-profile-sync.js?v=33a3d495" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
 <script src="/assets/js/lib/cross-tool-nav.js?v=2" defer></script>
-<!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og/afrojamb-cbt.png">
+<!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og/afrojamb-cbt.webp">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1443999710469672');
+fbq('track', 'PageView');
+</script>
+<script>
+if (typeof window.fbq === "function") {
+  window.fbq("track", "ViewContent", {
+    content_name: "AfroJAMB CBT Mock",
+    content_category: "jamb_cbt"
+  });
+}
+</script>
+<!-- End Meta Pixel Code -->
 </head>
 <body class="jamb-page">
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
+/></noscript>
 
 <!-- ===== Pre-test setup screen ===== -->
 <div id="setup-screen">
@@ -104,6 +129,18 @@
         </div>
       </div>
 
+      <div class="cbt-shortcuts-panel" style="margin-bottom:16px;">
+        <div class="cbt-shortcuts-title">Official JAMB eight-key shortcuts</div>
+        <div class="cbt-shortcuts-copy">Practise the real exam-day keys before you start so the interface feels familiar under pressure.</div>
+        <div class="cbt-shortcut-list">
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">A-D</span>Select answer</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">P</span>Previous question</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">N</span>Next question</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">R</span>Reverse answer / return</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">S</span>Submit / confirm</span>
+        </div>
+      </div>
+
       <button id="start-btn" class="jb-btn jb-btn-primary" type="button" style="width:100%;justify-content:center;font-size:1rem;padding:16px;">
         Start CBT Mock →
       </button>
@@ -155,8 +192,32 @@
         <span aria-hidden="true"><span style="display:inline-block;width:10px;height:10px;background:#E8F2FF;border-radius:2px;border:1px solid #4DA3FF;"></span> answered</span>
         <span aria-hidden="true"><span style="display:inline-block;width:10px;height:10px;background:#fef3c7;border-radius:2px;border:1px solid #92400e;"></span> marked</span>
       </div>
+      <div class="cbt-shortcuts-panel" style="margin-top:16px;">
+        <div class="cbt-shortcuts-title">Official shortcut guide</div>
+        <div class="cbt-shortcuts-copy">Use the same JAMB-style keys while this mock is open.</div>
+        <div class="cbt-shortcut-list">
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">A-D</span>Answer</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">P</span>Back</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">N</span>Next</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">R</span>Reverse / return</span>
+          <span class="cbt-shortcut-chip"><span class="cbt-shortcut-key">S</span>Submit / confirm</span>
+        </div>
+      </div>
     </aside>
   </main>
+
+  <div id="cbt-submit-dialog" class="cbt-dialog" hidden aria-hidden="true">
+    <div class="cbt-dialog-backdrop" data-close-submit="true"></div>
+    <div class="cbt-dialog-card" role="dialog" aria-modal="true" aria-labelledby="cbt-submit-title" tabindex="-1">
+      <div style="font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:10px;">Submit mock</div>
+      <h3 id="cbt-submit-title" style="margin:0 0 8px;font-size:1.2rem;font-weight:800;color:#0f172a;letter-spacing:-.02em;">Submit your test now?</h3>
+      <p style="margin:0 0 18px;font-size:.88rem;line-height:1.6;color:#475569;">You will not be able to change your answers after this. Press <strong>S</strong> to submit or confirm, and <strong>R</strong> to return to the test.</p>
+      <div class="cbt-dialog-actions">
+        <button id="cancel-submit-btn" class="cbt-dialog-btn cbt-dialog-btn-secondary" type="button" data-close-submit="true">Return to test (R)</button>
+        <button id="confirm-submit-btn" class="cbt-dialog-btn cbt-dialog-btn-primary" type="button">Yes, submit (S)</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== Results screen ===== -->
@@ -267,6 +328,110 @@
 }
 .subj-pick.selected .subj-stat { color:#0063D1; }
 .subj-pick.locked .subj-stat { color:#94a3b8; }
+
+.cbt-shortcuts-panel {
+  background:#f8fbff;
+  border:1.5px solid #bfdbfe;
+  border-radius:14px;
+  padding:18px 20px;
+}
+.cbt-shortcuts-title {
+  font-size:.84rem;
+  font-weight:800;
+  color:#0f172a;
+  margin-bottom:6px;
+}
+.cbt-shortcuts-copy {
+  font-size:.76rem;
+  line-height:1.55;
+  color:#475569;
+}
+.cbt-shortcut-list {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.cbt-shortcut-chip {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  background:#fff;
+  border:1px solid #dbeafe;
+  border-radius:999px;
+  font-size:.74rem;
+  font-weight:700;
+  color:#334155;
+}
+.cbt-shortcut-key {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:34px;
+  padding:5px 8px;
+  border-radius:8px;
+  background:#0f172a;
+  color:#fff;
+  font-family:"JetBrains Mono", monospace;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+.cbt-dialog {
+  position:fixed;
+  inset:0;
+  z-index:60;
+}
+.cbt-dialog[hidden] { display:none !important; }
+.cbt-dialog-backdrop {
+  position:absolute;
+  inset:0;
+  background:rgba(15,23,42,.58);
+  backdrop-filter:blur(2px);
+}
+.cbt-dialog-card {
+  position:relative;
+  width:min(92vw, 430px);
+  margin:12vh auto 0;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:20px;
+  padding:24px;
+  box-shadow:0 28px 64px rgba(15,23,42,.24);
+}
+.cbt-dialog-card:focus { outline:none; }
+.cbt-dialog-actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.cbt-dialog-btn {
+  flex:1;
+  min-width:160px;
+  border-radius:999px;
+  padding:12px 18px;
+  border:1.5px solid #cbd5e1;
+  background:#fff;
+  color:#475569;
+  font:inherit;
+  font-size:.82rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.cbt-dialog-btn-primary {
+  background:#007AFF;
+  border-color:#007AFF;
+  color:#fff;
+}
+.cbt-dialog-btn-secondary:hover {
+  border-color:#94a3b8;
+  color:#0f172a;
+}
+.cbt-dialog-btn-primary:hover {
+  background:#0063D1;
+  border-color:#0063D1;
+}
 
 /* ===== Review screen ===== */
 .rev-filter {
@@ -419,6 +584,7 @@ var RESUME_SNAPSHOT = null;
 var CBT_EVENTS_BOUND = false;
 var SELECTED_MODE = "full";
 var SELECTED_SUBJECTS = ["english","mathematics","physics","biology"];
+var VISUAL_DEPENDENT_RE = /use the diagram|use the figure|diagram below|diagram above|figure above|graph above|illustration above|circuit above|bar chart above|pie chart above|histogram above/i;
 
 var SUBJ_META = {
   english: {emoji:"📝", label:"Use of English"},
@@ -453,6 +619,11 @@ function getCoverageSummary() {
     gradable: gradable,
     qPerSubject: qPerSubject,
   };
+}
+
+function isLaunchSafeQuestion(q) {
+  var text = ((q && q.question) || "") + " " + Object.values((q && q.options) || {}).join(" ");
+  return !!q && !q.has_diagram && !VISUAL_DEPENDENT_RE.test(text);
 }
 
 function syncModeCards() {
@@ -570,7 +741,7 @@ async function ensurePoolLoaded() {
   if (POOL) return POOL;
   var res = await fetch("/data/jamb/pools/practice-pool.json");
   var data = await res.json();
-  POOL = data.questions || [];
+  POOL = (data.questions || []).filter(isLaunchSafeQuestion);
   return POOL;
 }
 
@@ -685,6 +856,15 @@ function startCBT(resumeSnapshot) {
       AfroJAMB.CBT.restore(cfg, resumeSnapshot);
     } else {
       AfroJAMB.CBT.init(cfg);
+      if (typeof window.fbq === "function") {
+        window.fbq("trackCustom", "StartMock", {
+          content_name: "AfroJAMB CBT Mock",
+          mode: cfg.mode,
+          subjects: cfg.subjects.join(","),
+          questions_per_subject: cfg.questionsPerSubject,
+          duration_minutes: cfg.durationMinutes
+        });
+      }
     }
   } catch(e) {
     alert("Could not start: " + e.message);
@@ -692,21 +872,142 @@ function startCBT(resumeSnapshot) {
   }
 
   lastMilestoneSpoken = null;
+  closeSubmitDialog(false);
   renderTimer(AfroJAMB.CBT.timeRemainingSeconds());
   renderSubjectsBar();
   renderQuestion();
   renderNavGrid();
 
   if (!CBT_EVENTS_BOUND) {
-    document.getElementById("cbt-prev").addEventListener("click", function(){ AfroJAMB.CBT.prev(); renderQuestion(); renderNavGrid(); renderSubjectsBar(); });
-    document.getElementById("cbt-next").addEventListener("click", function(){ AfroJAMB.CBT.next(); renderQuestion(); renderNavGrid(); renderSubjectsBar(); });
-    document.getElementById("cbt-mark").addEventListener("click", function(){ AfroJAMB.CBT.markForReview(); renderQuestion(); renderNavGrid(); });
-    document.getElementById("cbt-submit-top").addEventListener("click", function(){
-      if (confirm("Submit your test now? You won't be able to change your answers after this.")) {
-        submitTest(false);
-      }
+    document.getElementById("cbt-prev").addEventListener("click", prevQuestion);
+    document.getElementById("cbt-next").addEventListener("click", nextQuestion);
+    document.getElementById("cbt-mark").addEventListener("click", toggleMarkQuestion);
+    document.getElementById("cbt-submit-top").addEventListener("click", openSubmitDialog);
+    document.getElementById("confirm-submit-btn").addEventListener("click", confirmSubmitDialog);
+    document.querySelectorAll("[data-close-submit]").forEach(function(el){
+      el.addEventListener("click", function(){ closeSubmitDialog(true); });
     });
+    document.addEventListener("keydown", handleOfficialShortcut);
     CBT_EVENTS_BOUND = true;
+  }
+}
+
+function prevQuestion() {
+  AfroJAMB.CBT.prev();
+  renderQuestion();
+  renderNavGrid();
+  renderSubjectsBar();
+}
+
+function nextQuestion() {
+  AfroJAMB.CBT.next();
+  renderQuestion();
+  renderNavGrid();
+  renderSubjectsBar();
+}
+
+function toggleMarkQuestion() {
+  AfroJAMB.CBT.markForReview();
+  renderQuestion();
+  renderNavGrid();
+}
+
+function isSubmitDialogOpen() {
+  var dialog = document.getElementById("cbt-submit-dialog");
+  return !!dialog && !dialog.hidden;
+}
+
+function openSubmitDialog() {
+  if (!document.getElementById("cbt-shell") || document.getElementById("cbt-shell").hidden) return;
+  var dialog = document.getElementById("cbt-submit-dialog");
+  if (!dialog || !dialog.hidden) return;
+  dialog.hidden = false;
+  dialog.setAttribute("aria-hidden", "false");
+  var card = dialog.querySelector(".cbt-dialog-card");
+  if (card) card.focus();
+}
+
+function closeSubmitDialog(restoreFocus) {
+  var dialog = document.getElementById("cbt-submit-dialog");
+  if (!dialog || dialog.hidden) return;
+  dialog.hidden = true;
+  dialog.setAttribute("aria-hidden", "true");
+  if (restoreFocus !== false) {
+    var topBtn = document.getElementById("cbt-submit-top");
+    if (topBtn) topBtn.focus();
+  }
+}
+
+function confirmSubmitDialog() {
+  closeSubmitDialog(false);
+  submitTest(false);
+}
+
+function reverseCurrentAnswer() {
+  var data = AfroJAMB.CBT.getCurrentQuestion();
+  if (!data || !data.selectedAnswer) return false;
+  AfroJAMB.CBT.selectAnswer(null);
+  renderQuestion();
+  renderNavGrid();
+  return true;
+}
+
+function selectAnswerByShortcut(letter) {
+  var data = AfroJAMB.CBT.getCurrentQuestion();
+  if (!data || !data.question || !data.question.options || !data.question.options[letter]) return false;
+  AfroJAMB.CBT.selectAnswer(letter);
+  renderQuestion();
+  renderNavGrid();
+  return true;
+}
+
+function handleOfficialShortcut(e) {
+  var shell = document.getElementById("cbt-shell");
+  if (!shell || shell.hidden) return;
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+
+  var key = (e.key || "").toUpperCase();
+  if (isSubmitDialogOpen()) {
+    if (key === "S" || key === "Y" || e.key === "Enter") {
+      e.preventDefault();
+      confirmSubmitDialog();
+    } else if (key === "R" || e.key === "Escape") {
+      e.preventDefault();
+      closeSubmitDialog(true);
+    }
+    return;
+  }
+
+  if (["A","B","C","D","E"].indexOf(key) !== -1) {
+    if (selectAnswerByShortcut(key)) e.preventDefault();
+    return;
+  }
+  if (key === "P" || e.key === "ArrowLeft") {
+    e.preventDefault();
+    prevQuestion();
+    return;
+  }
+  if (key === "R") {
+    e.preventDefault();
+    reverseCurrentAnswer();
+    return;
+  }
+  if (key === "N" || e.key === "ArrowRight") {
+    e.preventDefault();
+    nextQuestion();
+    return;
+  }
+  if (key === "S") {
+    e.preventDefault();
+    openSubmitDialog();
+    return;
+  }
+  if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+    var panel = document.getElementById("cbt-question-panel");
+    if (panel) {
+      e.preventDefault();
+      panel.scrollBy({ top: e.key === "ArrowUp" ? -96 : 96, behavior: "smooth" });
+    }
   }
 }
 
@@ -806,22 +1107,6 @@ function renderQuestion() {
         AfroJAMB.CBT.selectAnswer(letter);
         renderQuestion();
         renderNavGrid();
-      } else if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-        e.preventDefault();
-        var nextL = letters[(i + 1) % letters.length];
-        AfroJAMB.CBT.selectAnswer(nextL);
-        renderQuestion();
-        renderNavGrid();
-        var nextEl = document.querySelector('.cbt-opt[aria-checked="true"]');
-        if (nextEl) nextEl.focus();
-      } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-        e.preventDefault();
-        var prevL = letters[(i - 1 + letters.length) % letters.length];
-        AfroJAMB.CBT.selectAnswer(prevL);
-        renderQuestion();
-        renderNavGrid();
-        var prevEl = document.querySelector('.cbt-opt[aria-checked="true"]');
-        if (prevEl) prevEl.focus();
       }
     });
     optsBox.appendChild(div);
@@ -867,6 +1152,7 @@ function renderNavGrid() {
 }
 
 function submitTest(timedOut) {
+  closeSubmitDialog(false);
   var score = AfroJAMB.CBT.submit();
   document.getElementById("cbt-shell").hidden = true;
   document.getElementById("results-screen").hidden = false;

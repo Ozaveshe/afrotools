@@ -33,7 +33,8 @@ AfroStream is a discovery hub for African live streamers at `afrotools.com/tools
 | RSS Feed | `/tools/afrostream/feed.xml` |
 
 ## API Sync
-- **Automatic**: Runs every 6 hours via Netlify Scheduled Function (`afrostream-sync.js`)
+- **Automatic**: Full sync runs every 2 hours via Netlify Scheduled Function (`afrostream-sync.js`)
+- **Live checks**: `afrostream-livecheck.js` runs every 30 minutes to refresh Twitch, Kick, and YouTube live status
 - **Manual**: Admin Panel > Sync tab > "Sync Now" button
 - **Direct API**: `POST /api/afrostream/sync` with `Authorization: Bearer {ADMIN_SECRET}`
 - Syncs: Twitch follower counts + live status, Kick follower counts + live status, YouTube subscriber counts + live status

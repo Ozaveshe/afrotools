@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="JAMB Past Questions Bank — 16,000+ Free Questions">
 <meta property="og:description" content="The biggest free JAMB past questions library on the African web. 11 subjects, 1978-2020, AI explanations included.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-hub.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
@@ -26,9 +26,34 @@
 <script src="/assets/js/edu-profile-sync.js?v=33a3d495" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
 <script src="/assets/js/lib/cross-tool-nav.js?v=2" defer></script>
-<!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og/afrojamb-hub.webp">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1443999710469672');
+fbq('track', 'PageView');
+</script>
+<script>
+if (typeof window.fbq === "function") {
+  window.fbq("track", "ViewContent", {
+    content_name: "AfroJAMB Past Questions",
+    content_category: "jamb_past_questions"
+  });
+}
+</script>
+<!-- End Meta Pixel Code -->
 </head>
 <body class="jamb-page">
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
+/></noscript>
 <a href="#main" class="jb-skip">Skip to main content</a>
 
 
@@ -170,6 +195,7 @@ var ALL_QUESTIONS = []; // current loaded subject pool
 var FILTERED = [];
 var PAGE_SIZE = 20;
 var SHOWN = 0;
+var VISUAL_DEPENDENT_RE = /use the diagram|use the figure|diagram below|diagram above|figure above|graph above|illustration above|circuit above|bar chart above|pie chart above|histogram above/i;
 
 function populateSubjectFilter(){
   var sel = document.getElementById("f-subject");
@@ -195,7 +221,7 @@ async function loadSubject(subject) {
   var url = subject ? "/data/jamb/pools/" + subject + ".json" : "/data/jamb/pools/practice-pool.json";
   var res = await fetch(url);
   var data = await res.json();
-  return data.questions || [];
+  return (data.questions || []).filter(isLaunchSafeQuestion);
 }
 
 async function loadAllSubjectsFull() {
@@ -255,6 +281,11 @@ async function refresh() {
   SHOWN = 0;
   document.getElementById("q-list").innerHTML = "";
   showMore();
+}
+
+function isLaunchSafeQuestion(q) {
+  var text = ((q && q.question) || "") + " " + Object.values((q && q.options) || {}).join(" ");
+  return !!q && !q.has_diagram && !VISUAL_DEPENDENT_RE.test(text);
 }
 
 function showMore() {

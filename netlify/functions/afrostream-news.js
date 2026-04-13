@@ -18,9 +18,9 @@ exports.handler = async function(event) {
   var parts = ['is_published=eq.true', 'order=published_at.desc'];
 
   if (qs.slug) {
-    parts.push('slug=eq.' + qs.slug);
+    parts.push('slug=eq.' + encodeURIComponent(qs.slug));
   } else {
-    if (qs.category) parts.push('category=eq.' + qs.category);
+    if (qs.category) parts.push('category=eq.' + encodeURIComponent(qs.category));
     if (qs.featured === 'true') parts.push('featured=eq.true');
     var limit = Math.min(parseInt(qs.limit) || 50, 100);
     parts.push('limit=' + limit);

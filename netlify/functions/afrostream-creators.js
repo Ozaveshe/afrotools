@@ -17,17 +17,19 @@ exports.handler = async function(event) {
   var qs = event.queryStringParameters || {};
   var parts = ['is_published=eq.true'];
 
-  if (qs.country) parts.push('country=eq.' + qs.country);
-  if (qs.category) parts.push('categories=cs.{' + qs.category + '}');
+  if (qs.country) parts.push('country=eq.' + encodeURIComponent(qs.country));
+  if (qs.category) parts.push('categories=cs.{' + encodeURIComponent(qs.category) + '}');
   if (qs.platform) {
     var col = qs.platform.toLowerCase() + '_url';
     parts.push(col + '=not.is.null');
     parts.push(col + '=neq.');
   }
 
-  var sort = 'subscribers.desc';
+  var sort = 'afro_score.desc.nullslast,subscribers.desc';
+  if (qs.sort === 'subscribers') sort = 'subscribers.desc';
+  if (qs.sort === 'afro_score' || qs.sort === 'score') sort = 'afro_score.desc.nullslast,subscribers.desc';
   if (qs.sort === 'gift_revenue') sort = 'gift_revenue.desc';
-  if (qs.sort === 'growth_rate') sort = 'growth_rate.desc';
+  if (qs.sort === 'growth_rate' || qs.sort === 'growth_pct') sort = 'growth_pct.desc.nullslast,growth_rate.desc.nullslast';
   if (qs.sort === 'name') sort = 'name.asc';
   if (qs.sort === 'newest') sort = 'created_at.desc';
   parts.push('order=' + sort);

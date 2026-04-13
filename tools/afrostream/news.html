@@ -626,7 +626,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
   async function fetchNews() {
     try {
-      var res = await fetch('/api/admin/afrostream/public/news');
+      var res = await fetch('/api/afrostream/news?limit=50');
       var json = await res.json();
       if (json.success && json.data && json.data.length) {
         return json.data.map(function(row) {
@@ -654,15 +654,15 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   /* -- FETCH CREATORS FOR SIDEBAR ------------------------------- */
   async function fetchCreators() {
     try {
-      var res = await fetch('/api/admin/afrostream/public/creators');
+      var res = await fetch('/api/afrostream/creators?sort=afro_score&limit=5');
       var json = await res.json();
       if (json.success && json.data && json.data.length) {
-        return json.data.slice(0, 5).map(function(c) {
+        return json.data.map(function(c) {
           return {
             name: c.name || c.channel_name || '',
             country: c.country_code || c.country || '',
-            score: c.subscribers ? formatSubs(c.subscribers) : (c.score || ''),
-            avatar: c.avatar_url || c.image_url || ''
+            score: c.afro_score ? ('AfroScore ' + c.afro_score) : (c.subscribers ? formatSubs(c.subscribers) : (c.score || '')),
+            avatar: c.avatar || c.avatar_url || c.image_url || ''
           };
         });
       }
@@ -727,7 +727,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   }
 
   function navigateToArticle(slug) {
-    window.location.href = 'news.html?article=' + encodeURIComponent(slug);
+    window.location.href = '/tools/afrostream/news/' + encodeURIComponent(slug);
   }
 
   /* -- HERO RENDER ---------------------------------------------- */
@@ -933,7 +933,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         '</div></div>';
     }
 
-    var shareUrl = window.location.origin + '/tools/afrostream/news.html?article=' + encodeURIComponent(article.slug);
+    var shareUrl = window.location.origin + '/tools/afrostream/news/' + encodeURIComponent(article.slug);
     var shareText = encodeURIComponent(article.headline + ' - AfroStream');
 
     var html = '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +

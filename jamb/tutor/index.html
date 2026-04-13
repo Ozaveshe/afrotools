@@ -10,7 +10,7 @@
 <meta property="og:title" content="AI JAMB Tutor — Free Step-by-Step Help">
 <meta property="og:description" content="Ask any JAMB question. Get instant explanations from a tutor trained on the syllabus. Free, no sign-up.">
 <meta property="og:url" content="https://afrotools.com/jamb/tutor/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-tutor.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/og/afrojamb-tutor.webp">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
@@ -25,9 +25,34 @@
 <script src="/assets/js/edu-profile-sync.js?v=33a3d495" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
 <script src="/assets/js/lib/cross-tool-nav.js?v=2" defer></script>
-<!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og/afrojamb-tutor.png">
+<!-- /afro-edu-bridge --><meta name="twitter:image" content="https://afrotools.com/assets/img/og/afrojamb-tutor.webp">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1443999710469672');
+fbq('track', 'PageView');
+</script>
+<script>
+if (typeof window.fbq === "function") {
+  window.fbq("track", "ViewContent", {
+    content_name: "AfroJAMB AI Tutor",
+    content_category: "jamb_tutor"
+  });
+}
+</script>
+<!-- End Meta Pixel Code -->
 </head>
 <body class="jamb-page">
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
+/></noscript>
 <a href="#main" class="jb-skip">Skip to main content</a>
 
 
@@ -195,6 +220,7 @@ var QUICK_PROMPTS = {
 var currentSubject = "mathematics";
 var conversationHistory = [];
 var sending = false;
+var hasTrackedTutorContact = false;
 
 function renderSubjects() {
   var box = document.getElementById("subj-picker");
@@ -256,6 +282,15 @@ async function sendMessage() {
   var text = input.value.trim();
   if (!text) return;
 
+  if (!hasTrackedTutorContact && typeof window.fbq === "function") {
+    window.fbq("track", "Contact", {
+      content_name: "AfroJAMB AI Tutor",
+      content_category: "jamb_tutor",
+      subject: currentSubject
+    });
+    hasTrackedTutorContact = true;
+  }
+
   sending = true;
   input.value = "";
   appendMessage("user", text);
@@ -307,6 +342,12 @@ renderQuickPrompts();
   }
   if (p.get("q")) {
     document.getElementById("msg-input").value = p.get("q");
+  }
+  if (typeof window.fbq === "function") {
+    window.fbq("trackCustom", "TutorOpened", {
+      content_name: "AfroJAMB AI Tutor",
+      subject: currentSubject
+    });
   }
 })();
 </script>

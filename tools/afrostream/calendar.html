@@ -27,8 +27,8 @@
 <script src="/assets/js/components/footer.js?v=bd815d9c" defer></script>
 
 <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 
 <style>
 img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!important;vertical-align:-.1em!important;display:inline!important}
@@ -887,7 +887,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
   async function fetchStreams() {
     try {
-      var res = await fetch('/api/admin/afrostream/public/streams');
+      var res = await fetch('/api/afrostream/streams?live=false&limit=100');
       var json = await res.json();
       if (json.success && json.data && json.data.length) {
         return json.data.filter(function(s) { return s.is_published !== false; }).map(mapApiStream);
@@ -914,6 +914,13 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         });
       });
     } catch(e) {}
+    STREAMS = STREAMS.filter(function(s) {
+      return s && s.time instanceof Date && !isNaN(s.time.getTime()) && s.creator;
+    }).sort(function(a, b) {
+      return a.time - b.time;
+    });
+    pruneSavedReminders();
+    scheduleSavedReminders();
     render();
   }
 
@@ -933,6 +940,57 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   function monthName(mo, yr) { return new Date(yr, mo, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }); }
   function formatDuration(mins) { return mins >= 60 ? Math.floor(mins/60) + 'h' + (mins%60 ? ' ' + mins%60 + 'm' : '') : mins + 'm'; }
   function esc(s) { var el = document.createElement('span'); el.textContent = s; return el.innerHTML; }
+  function getSavedReminders() {
+    try {
+      var saved = JSON.parse(localStorage.getItem('as_reminders') || '[]');
+      return Array.isArray(saved) ? saved.map(String) : [];
+    } catch(e) {
+      return [];
+    }
+  }
+  function saveReminders(reminders) {
+    localStorage.setItem('as_reminders', JSON.stringify(reminders));
+  }
+  function isReminderSet(id) {
+    return getSavedReminders().indexOf(String(id)) !== -1;
+  }
+  function pruneSavedReminders() {
+    var validIds = {};
+    STREAMS.forEach(function(s) {
+      if (s && s.id != null && s.time instanceof Date && !isNaN(s.time.getTime()) && s.time.getTime() > Date.now()) {
+        validIds[String(s.id)] = true;
+      }
+    });
+    saveReminders(getSavedReminders().filter(function(id) { return !!validIds[id]; }));
+  }
+  function syncReminderButtons(scope) {
+    var root = scope || document;
+    root.querySelectorAll('.as-cal-stream-remind[data-sid]').forEach(function(btn) {
+      var isSet = isReminderSet(btn.dataset.sid);
+      btn.classList.toggle('set', isSet);
+      btn.textContent = isSet ? 'Reminder set' : 'Remind';
+    });
+  }
+  function scheduleReminder(stream) {
+    if (!stream || !(stream.time instanceof Date) || isNaN(stream.time.getTime())) return;
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    var notifyAt = stream.time.getTime() - 15 * 60 * 1000;
+    var delay = notifyAt - Date.now();
+    if (delay <= 0 || delay >= 7 * 24 * 60 * 60 * 1000) return;
+    window.setTimeout(function() {
+      new Notification('AfroStream Reminder', {
+        body: stream.creator + ' goes live in 15 minutes' + (stream.title ? ': ' + stream.title : '!'),
+        icon: '/assets/img/logo-mark.svg'
+      });
+    }, delay);
+  }
+  function scheduleSavedReminders() {
+    var reminderMap = {};
+    getSavedReminders().forEach(function(id) { reminderMap[id] = true; });
+    STREAMS.forEach(function(stream) {
+      if (reminderMap[String(stream.id)]) scheduleReminder(stream);
+    });
+  }
 
   function filtered() {
     return STREAMS.filter(function(s) {
@@ -952,7 +1010,9 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   function streamCardHTML(s) {
     var p = PLAT[s.platform] || PLAT.youtube;
     var fl = FLAG[s.country] || '';
-    return '<div class="as-cal-stream" data-id="' + s.id + '">' +
+    var reminderClass = isReminderSet(s.id) ? ' set' : '';
+    var reminderLabel = isReminderSet(s.id) ? 'Reminder set' : 'Remind';
+    return '<div class="as-cal-stream" data-id="' + s.id + '" data-stream-date="' + s.time.toISOString() + '" data-stream-title="' + esc(s.title) + '" data-stream-creator="' + esc(s.creator) + '">' +
       '<div class="as-cal-stream-time">' + formatTime(s.time) + '</div>' +
       '<div class="as-cal-stream-plat" style="background:' + p.color + '"></div>' +
       '<div class="as-cal-stream-body">' +
@@ -968,7 +1028,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       '</div>' +
       '<span class="as-cal-stream-duration">' + formatDuration(s.duration) + '</span>' +
       '<div class="as-cal-stream-actions">' +
-        '<button class="as-cal-stream-remind" data-sid="' + s.id + '">Remind</button>' +
+        '<button class="as-cal-stream-remind' + reminderClass + '" data-sid="' + s.id + '">' + reminderLabel + '</button>' +
         '<a href="' + esc(s.url) + '" class="as-cal-stream-watch" target="_blank" rel="noopener">Watch</a>' +
       '</div>' +
     '</div>';
@@ -1106,6 +1166,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     if (currentView === 'month') container.innerHTML = renderMonth();
     else if (currentView === 'week') container.innerHTML = renderWeek();
     else container.innerHTML = renderList();
+    syncReminderButtons(container);
   }
 
   /* ── DAY PANEL ──────────────────────────────────────── */
@@ -1118,6 +1179,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       body.innerHTML = '<div class="as-cal-empty-state"><span>&#128564;</span>No streams scheduled for this day.</div>';
     } else {
       body.innerHTML = streams.map(streamCardHTML).join('');
+      syncReminderButtons(body);
     }
     document.getElementById('asDayPanel').classList.add('open');
     document.getElementById('asPanelOverlay').classList.add('open');
@@ -1181,35 +1243,23 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     var btn = e.target.closest('.as-cal-stream-remind');
     if (!btn || btn.classList.contains('set')) return;
 
-    /* Store reminder in localStorage */
     var sid = btn.dataset.sid || '';
-    var reminders = JSON.parse(localStorage.getItem('as_reminders') || '[]');
+    var reminders = getSavedReminders();
     if (reminders.indexOf(sid) === -1) reminders.push(sid);
-    localStorage.setItem('as_reminders', JSON.stringify(reminders));
+    saveReminders(reminders);
 
-    btn.textContent = 'Reminder set!';
     btn.classList.add('set');
+    btn.textContent = 'Reminder set';
 
-    /* Request notification permission */
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission();
+    var stream = STREAMS.find(function(item) { return String(item.id) === sid; });
+    if (stream && 'Notification' in window && Notification.permission === 'default') {
+      Promise.resolve(Notification.requestPermission()).then(function(permission) {
+        if (permission === 'granted') scheduleReminder(stream);
+      });
+    } else if (stream) {
+      scheduleReminder(stream);
     }
-
-    /* Find stream date from the card and schedule notification */
-    var card = btn.closest('.as-cal-stream-card, .as-cal-stream-item, [data-stream-date]');
-    if (card && card.dataset.streamDate && 'Notification' in window && Notification.permission === 'granted') {
-      var streamTime = new Date(card.dataset.streamDate).getTime();
-      var notifyAt = streamTime - 15 * 60 * 1000; /* 15 min before */
-      var delay = notifyAt - Date.now();
-      if (delay > 0 && delay < 7 * 24 * 60 * 60 * 1000) { /* within 7 days */
-        setTimeout(function() {
-          new Notification('AfroStream Reminder', {
-            body: 'A stream you follow starts in 15 minutes!',
-            icon: '/assets/img/logo-mark.svg'
-          });
-        }, delay);
-      }
-    }
+    syncReminderButtons(document);
   });
 
   /* ── SCROLL REVEAL ──────────────────────────────────── */

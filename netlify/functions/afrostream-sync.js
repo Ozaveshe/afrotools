@@ -102,6 +102,49 @@ function extractKickSlug(url) {
   return match ? match[1] : null;
 }
 
+function normalizeThumbnailUrl(value) {
+  if (!value) return '';
+
+  if (Array.isArray(value)) {
+    for (var ai = 0; ai < value.length; ai++) {
+      var arrUrl = normalizeThumbnailUrl(value[ai]);
+      if (arrUrl) return arrUrl;
+    }
+    return '';
+  }
+
+  if (typeof value === 'object') {
+    var keys = ['url', 'src', 'secure_url', 'thumbnail_url', 'thumbnailUrl', 'image', 'thumbnail', 'poster', 'original', 'large', 'medium', 'small', 'sm'];
+    for (var ki = 0; ki < keys.length; ki++) {
+      var next = normalizeThumbnailUrl(value[keys[ki]]);
+      if (next) return next;
+    }
+    return '';
+  }
+
+  var str = String(value).trim();
+  if (!str || str === 'null' || str === 'undefined' || str === '[object Object]') return '';
+
+  if ((str.charAt(0) === '{' || str.charAt(0) === '[') && str.indexOf('http') !== 0) {
+    try {
+      return normalizeThumbnailUrl(JSON.parse(str));
+    } catch (e) {
+      // fall through to string cleanup
+    }
+  }
+
+  str = str
+    .replace(/\\u0026/g, '&')
+    .replace(/\\\//g, '/')
+    .replace(/&amp;/g, '&')
+    .replace(/^\/\//, 'https://')
+    .replace(/^http:\/\//i, 'https://')
+    .replace(/\{width\}/g, '440')
+    .replace(/\{height\}/g, '248');
+
+  return /^https?:\/\//i.test(str) ? str : '';
+}
+
 // ── Kick API ─────────────────────────────────────────────────────
 
 async function getKickToken() {
@@ -157,8 +200,6 @@ async function syncKick() {
   }
 
   // 3. For each Kick creator, fetch channel data
-  // Set all Kick streams to not live first
-  await sb('PATCH', 'as_streams?platform=eq.Kick&is_live=eq.true', { is_live: false });
 
   for (var i = 0; i < creators.length; i++) {
     var creator = creators[i];
@@ -185,7 +226,7 @@ async function syncKick() {
       }
 
       // Update avatar if available and no existing avatar
-      var kickAvatar = channelData.profile_image || channelData.profile_pic || channelData.avatar;
+      var kickAvatar = normalizeThumbnailUrl(channelData.profile_image || channelData.profile_pic || channelData.avatar);
       if (kickAvatar && (!creator.avatar || creator.avatar.includes('ui-avatars.com'))) {
         updates.avatar = kickAvatar;
       }
@@ -197,6 +238,7 @@ async function syncKick() {
       var isLive = channelData.is_live || (channelData.livestream && channelData.livestream.is_live);
       if (isLive) {
         var streamTitle = (channelData.livestream && channelData.livestream.session_title) || channelData.stream_title || 'Live on Kick';
+        var kickThumb = normalizeThumbnailUrl((channelData.livestream && channelData.livestream.thumbnail) || channelData.banner_image);
         var streamData = {
           creator_name: creator.name,
           title: streamTitle,
@@ -208,6 +250,7 @@ async function syncKick() {
           is_live: true,
           is_published: true
         };
+        if (kickThumb) streamData.thumbnail = kickThumb;
 
         var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(creator.name) + '&platform=eq.Kick&limit=1&order=stream_date.desc');
         if (Array.isArray(existing) && existing.length > 0) {
@@ -216,6 +259,10 @@ async function syncKick() {
           await sb('POST', 'as_streams', streamData);
         }
         results.live_count++;
+      } else {
+        await sb('PATCH', 'as_streams?platform=eq.Kick&is_live=eq.true&creator_name=eq.' + encodeURIComponent(creator.name), {
+          is_live: false
+        });
       }
     } catch (e) {
       results.errors.push('Kick sync failed for ' + creator.name + ': ' + e.message);
@@ -496,6 +543,7 @@ async function syncTwitch() {
 
     if (!liveCreator) continue;
 
+    var twitchThumb = normalizeThumbnailUrl(liveStream.thumbnail_url);
     var streamData = {
       creator_name: liveCreator.name,
       title: liveStream.title || 'Live on Twitch',
@@ -507,6 +555,7 @@ async function syncTwitch() {
       is_live: true,
       is_published: true
     };
+    if (twitchThumb) streamData.thumbnail = twitchThumb;
 
     try {
       // Check if a live stream record already exists for this creator

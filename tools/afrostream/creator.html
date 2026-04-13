@@ -322,17 +322,18 @@ function normalizeCreator(d) {
     countryName: countryName,
     category:  category,
     platforms: platforms,
-    followers: d.followers || d.subscribers || 0,
+    followers: d.followers || d.total_followers || d.subscribers || 0,
     gifts:     d.gifts || d.gift_revenue || 0,
     peak:      d.peak || d.total_views || d.peak_viewers || 0,
-    growth:    d.growth || d.growth_rate || 0,
+    growth:    d.growth || d.growth_pct || d.growth_rate || 0,
     avgDuration: d.avgDuration || d.avg_duration || 0,
     frequency: d.frequency || d.stream_frequency || 0,
     bio:       d.bio || '',
     netWorth:  d.netWorth || d.net_worth || null,
     streamingSince: d.streaming_since || d.streamingSince || null,
     isPublished: d.is_published != null ? d.is_published : true,
-    score:     d.score || 0,
+    score:     d.score || d.afro_score || 0,
+    tier:      d.tier || d.afro_tier || '',
     rank:      d.rank || 0,
     _raw:      d
   };
@@ -353,10 +354,18 @@ async function fetchCreator(idOrSlug) {
   } catch(e) {}
 
   try {
-    /* Fallback: slug-based endpoint */
-    var res2 = await fetch('/api/admin/afrostream/public/creators/' + encodeURIComponent(idOrSlug));
+    /* Fallback: search within the public creator list */
+    var res2 = await fetch('/api/afrostream/creators?limit=100');
     var json2 = await res2.json();
-    if (json2.success && json2.data) return normalizeCreator(json2.data);
+    if (json2.success && json2.data && json2.data.length) {
+      var match = json2.data.find(function(row) {
+        var rowSlug = row.slug || '';
+        return String(row.id) === String(idOrSlug) ||
+          rowSlug === idOrSlug ||
+          String(row.name || '').toLowerCase() === String(idOrSlug).toLowerCase();
+      });
+      if (match) return normalizeCreator(match);
+    }
   } catch(e2) {}
 
   /* Fallback to demo */
@@ -377,16 +386,51 @@ async function fetchAllCreators() {
 }
 
 /* Compute scores and ranks for a creator list */
+function logScore(value, max) {
+  if (!value || value <= 0 || !max || max <= 1) return 0;
+  return Math.min(100, Math.round(Math.log10(value) / Math.log10(max) * 100));
+}
+
+function getTier(score) {
+  if (score >= 80) return 'legend';
+  if (score >= 60) return 'elite';
+  if (score >= 40) return 'established';
+  if (score >= 20) return 'trending';
+  return 'rising';
+}
+
+function consistencyScore(frequency) {
+  var freq = String(frequency || '').toLowerCase();
+  if (!freq) return 0;
+  if (freq.indexOf('daily') !== -1) return 100;
+  if (freq.indexOf('weekly') !== -1 && freq.indexOf('x') === -1) return 40;
+  var match = freq.match(/(\d+)\s*x\s*\/?\s*week/);
+  if (match) return Math.min(100, parseInt(match[1], 10) * 20);
+  return 30;
+}
+
+function computeFallbackAfroScore(c) {
+  var followerScore = logScore(c.followers, 200000000);
+  var viewScore = logScore(c.peak, 10000000000);
+  var growthScore = Math.max(0, Math.min(100, Number(c.growth || 0) * 5));
+  var engagementScore = logScore(c.followers > 0 ? c.peak / c.followers : 0, 100);
+  var multiPlatformScore = Math.min(100, Math.round(((c.platforms || []).length || 1) / 4 * 100));
+  return Math.max(0, Math.min(100, Math.round(
+    followerScore * 0.25 +
+    viewScore * 0.20 +
+    growthScore * 0.20 +
+    consistencyScore(c.frequency) * 0.15 +
+    engagementScore * 0.10 +
+    multiPlatformScore * 0.10
+  )));
+}
+
 function computeRanks(list) {
   list.forEach(function(c){
     if (!c.score) {
-      c.score = Math.round(
-        (c.followers / 50000) * 10 +
-        (c.gifts / 1000) * 5 +
-        (c.peak / 10000) * 8 +
-        c.growth * 2
-      );
+      c.score = computeFallbackAfroScore(c);
     }
+    if (!c.tier) c.tier = getTier(c.score);
   });
   list.sort(function(a,b){ return b.score - a.score; });
   list.forEach(function(c,i){ c.rank = i + 1; });
@@ -541,16 +585,13 @@ function generateNews(c) {
   if (ranked) {
     creator.rank = ranked.rank;
     creator.score = ranked.score;
+    creator.tier = ranked.tier || creator.tier;
   } else {
     /* Creator not in list — compute standalone */
     if (!creator.score) {
-      creator.score = Math.round(
-        (creator.followers / 50000) * 10 +
-        (creator.gifts / 1000) * 5 +
-        (creator.peak / 10000) * 8 +
-        creator.growth * 2
-      );
+      creator.score = computeFallbackAfroScore(creator);
     }
+    if (!creator.tier) creator.tier = getTier(creator.score);
     if (!creator.rank) creator.rank = CREATORS.length + 1;
   }
 
@@ -564,6 +605,9 @@ function generateNews(c) {
   var upcoming = generateUpcoming(creator);
   var gifters = generateGifters(creator);
   var news = generateNews(creator);
+  var creatorKey = creator.slug || creator.id;
+  var creatorPath = '/tools/afrostream/creator.html?id=' + encodeURIComponent(creatorKey);
+  var creatorUrl = window.location.origin + creatorPath;
 
   /* ===== RENDER PROFILE HERO ===== */
   (function renderHero() {
@@ -647,6 +691,14 @@ function generateNews(c) {
     if (ogDesc) ogDesc.setAttribute('content', metaDesc);
     var ogImg = document.querySelector('meta[property="og:image"]');
     if (ogImg) ogImg.setAttribute('content', 'https://afrotools.com/api/afrostream/og?name=' + encodeURIComponent(creator.name) + '&subs=' + fmtNum(creator.followers) + '&country=' + encodeURIComponent(creator.countryName) + '&category=' + encodeURIComponent(creator.category));
+    var canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', creatorUrl);
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', creatorUrl);
+
+    if (window.location.search !== '?id=' + encodeURIComponent(creatorKey)) {
+      window.history.replaceState({}, '', creatorPath);
+    }
 
     /* Person + ProfilePage JSON-LD */
     var jsonLd = {
@@ -658,7 +710,7 @@ function generateNews(c) {
         'description': creator.bio,
         'nationality': { '@type': 'Country', 'name': creator.countryName },
         'knowsAbout': creator.category,
-        'url': 'https://afrotools.com/tools/afrostream/creator.html?id=' + (creator.slug || creator.id),
+        'url': creatorUrl,
         'interactionStatistic': {
           '@type': 'InteractionCounter',
           'interactionType': 'https://schema.org/FollowAction',
@@ -956,6 +1008,7 @@ function generateNews(c) {
   })();
 
   /* Expose creator for action functions */
+  creator.url = creatorUrl;
   window._asCreator = creator;
 })();
 
@@ -980,7 +1033,7 @@ function toggleFollow() {
 
 function shareProfile() {
   var creator = window._asCreator;
-  var url = window.location.href;
+  var url = (creator && creator.url) || window.location.href;
   if (navigator.share) {
     navigator.share({title: (creator ? creator.name : 'Creator') + ' on AfroStream', url: url});
   } else if (navigator.clipboard) {

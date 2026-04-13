@@ -27,7 +27,7 @@ exports.handler = async function(event) {
 
   try {
     // Fetch creator
-    var creators = await sb('as_creators?slug=eq.' + slug + '&is_published=eq.true');
+    var creators = await sb('as_creators?slug=eq.' + encodeURIComponent(slug) + '&is_published=eq.true');
     if (!creators || !creators.length) {
       return { statusCode: 404, headers: h, body: JSON.stringify({ error: 'Creator not found' }) };
     }
@@ -36,7 +36,7 @@ exports.handler = async function(event) {
     // Fetch related data in parallel
     var [streams, similar] = await Promise.all([
       sb('as_streams?creator_name=eq.' + encodeURIComponent(creator.name) + '&is_published=eq.true&order=stream_date.desc&limit=10'),
-      sb('as_creators?country=eq.' + encodeURIComponent(creator.country) + '&slug=neq.' + slug + '&is_published=eq.true&order=subscribers.desc&limit=5')
+      sb('as_creators?country=eq.' + encodeURIComponent(creator.country) + '&slug=neq.' + encodeURIComponent(slug) + '&is_published=eq.true&order=subscribers.desc&limit=5')
     ]);
 
     return {

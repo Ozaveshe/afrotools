@@ -28,8 +28,8 @@ exports.handler = async function(event) {
     parts.push('order=stream_date.desc');
   }
 
-  if (qs.platform) parts.push('platform=eq.' + qs.platform);
-  if (qs.country) parts.push('country=eq.' + qs.country);
+  if (qs.platform) parts.push('platform=eq.' + encodeURIComponent(qs.platform));
+  if (qs.country) parts.push('country=eq.' + encodeURIComponent(qs.country));
 
   var limit = Math.min(parseInt(qs.limit) || 50, 100);
   parts.push('limit=' + limit);

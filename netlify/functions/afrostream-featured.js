@@ -15,7 +15,7 @@ exports.handler = async function(event) {
   if (event.httpMethod !== 'GET') return { statusCode: 405, headers: h, body: '{"error":"Method not allowed"}' };
 
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/as_featured?select=*,as_creators(*)&is_active=eq.true&order=created_at.desc', {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/as_featured?select=*,as_creators(*)&is_active=eq.true&order=sort_order.asc.nullslast,created_at.desc', {
       headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
     });
     var data = await res.json();

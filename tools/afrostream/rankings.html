@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
 <title>Top African Streamers Rankings 2026 — Twitch, Kick, YouTube | AfroStream</title>
-<meta name="description" content="Ranked list of Africa's biggest streamers by followers across Twitch and Kick. Filter by country, platform, category. Updated every 6 hours via live API data.">
+<meta name="description" content="Ranked list of Africa's biggest creators using AfroScore, our cross-platform ranking model across YouTube, Twitch, Kick, TikTok, Instagram, and more. Filter by country, platform, and category.">
 <link rel="canonical" href="https://afrotools.com/tools/afrostream/rankings.html">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Top African Streamers Rankings 2026 | AfroStream">
@@ -364,6 +364,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       <h1 class="as-rankings-title">&#127942; Streamers Rank</h1>
       <p class="as-rankings-subtitle">The most-watched, most-gifted, fastest-growing African streamers across all platforms.</p>
       <p class="as-rankings-updated" id="lastUpdated"></p>
+      <p class="as-rankings-updated" style="max-width:720px;margin:8px auto 0">AfroScore blends cross-platform followers (25%), views (20%), week-over-week growth (20%), streaming consistency (15%), engagement ratio (10%), and multi-platform presence (10%).</p>
     </div>
   </section>
 
@@ -540,7 +541,7 @@ function mapApiCreator(r) {
   var slug = r.slug || n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   /* avatar — use avatar_url or initials */
-  var avatarUrl = r.avatar_url || '';
+  var avatarUrl = r.avatar || r.avatar_url || '';
   var initials = n.replace(/[a-z\s]/g, '').slice(0, 2) || n.slice(0, 2).toUpperCase();
 
   /* categories — Supabase returns comma-separated like "Gaming,Tech" */
@@ -549,11 +550,13 @@ function mapApiCreator(r) {
 
   /* numeric fields — Supabase may store as text with $ prefix */
   function pNum(v) { if (typeof v === 'number') return v; if (!v) return 0; return parseInt(String(v).replace(/[^0-9.-]/g, ''), 10) || 0; }
-  var followers = pNum(r.subscribers);
+  var followers = pNum(r.total_followers || r.subscribers);
   var gifts = pNum(r.gift_revenue);
-  var peak = pNum(r.total_views);
+  var peak = pNum(r.total_views || r.yt_views || r.peak_viewers);
   var networth = pNum(r.net_worth);
-  var growth = parseFloat(r.growth_rate) || 0;
+  var growth = parseFloat(r.growth_pct || r.growth_rate) || 0;
+  var score = pNum(r.afro_score || r.score);
+  var tier = (r.afro_tier || '').toLowerCase().trim() || (score ? getTier(score) : '');
 
   return {
     id: r.id || slug,
@@ -572,6 +575,8 @@ function mapApiCreator(r) {
     peak: peak,
     networth: networth,
     growth: growth,
+    score: score,
+    tier: tier,
     frequency: r.frequency || 0,
     bio: r.bio || ''
   };
@@ -580,7 +585,7 @@ function mapApiCreator(r) {
 /* ===== FETCH REAL DATA WITH DEMO FALLBACK ===== */
 async function fetchCreators() {
   try {
-    var res = await fetch('/api/admin/afrostream/public/creators');
+    var res = await fetch('/api/afrostream/creators?sort=afro_score&limit=100');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var json = await res.json();
     if (json.success && json.data && json.data.length) {
@@ -593,18 +598,53 @@ async function fetchCreators() {
 /* ===== INIT ===== */
 var CREATORS = [];
 
+function logScore(value, max) {
+  if (!value || value <= 0 || !max || max <= 1) return 0;
+  return Math.min(100, Math.round(Math.log10(value) / Math.log10(max) * 100));
+}
+
+function getTier(score) {
+  if (score >= 80) return 'legend';
+  if (score >= 60) return 'elite';
+  if (score >= 40) return 'established';
+  if (score >= 20) return 'trending';
+  return 'rising';
+}
+
+function consistencyScore(frequency) {
+  var freq = String(frequency || '').toLowerCase();
+  if (!freq) return 0;
+  if (freq.indexOf('daily') !== -1) return 100;
+  if (freq.indexOf('weekly') !== -1 && freq.indexOf('x') === -1) return 40;
+  var match = freq.match(/(\d+)\s*x\s*\/?\s*week/);
+  if (match) return Math.min(100, parseInt(match[1], 10) * 20);
+  return 30;
+}
+
+function computeFallbackAfroScore(c) {
+  var followerScore = logScore(c.followers, 200000000);
+  var viewScore = logScore(c.peak, 10000000000);
+  var growthScore = Math.max(0, Math.min(100, c.growth * 5));
+  var engagementScore = logScore(c.followers > 0 ? c.peak / c.followers : 0, 100);
+  var multiPlatformScore = Math.min(100, Math.round(((c.platforms || []).length || 1) / 4 * 100));
+  var fallback = Math.round(
+    followerScore * 0.25 +
+    viewScore * 0.20 +
+    growthScore * 0.20 +
+    consistencyScore(c.frequency) * 0.15 +
+    engagementScore * 0.10 +
+    multiPlatformScore * 0.10
+  );
+  return Math.max(0, Math.min(100, fallback));
+}
+
 (async function initCreators() {
   CREATORS = await fetchCreators();
 
-  /* Compute score */
+  /* Use stored AfroScore when present; only estimate if sync data is missing */
   CREATORS.forEach(function(c) {
-    c.score = Math.round(
-      (c.followers / 50000) * 10 +
-      (c.gifts / 1000) * 5 +
-      (c.peak / 10000) * 8 +
-      (c.networth / 10000) * 3 +
-      c.growth * 2
-    );
+    if (!c.score) c.score = computeFallbackAfroScore(c);
+    if (!c.tier) c.tier = getTier(c.score);
   });
   CREATORS.sort(function(a, b) { return b.score - a.score; });
   CREATORS.forEach(function(c, i) { c.rank = i + 1; });

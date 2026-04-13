@@ -52,6 +52,124 @@ function extractYoutubeChannelId(url) {
   return null;
 }
 
+function decodeYouTubeHtml(value) {
+  if (!value) return '';
+  return String(value)
+    .replace(/\\u0026/g, '&')
+    .replace(/\\\//g, '/')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"');
+}
+
+function normalizeThumbnailUrl(value) {
+  if (!value) return '';
+
+  if (Array.isArray(value)) {
+    for (var ai = 0; ai < value.length; ai++) {
+      var arrUrl = normalizeThumbnailUrl(value[ai]);
+      if (arrUrl) return arrUrl;
+    }
+    return '';
+  }
+
+  if (typeof value === 'object') {
+    var keys = ['url', 'src', 'secure_url', 'thumbnail_url', 'thumbnailUrl', 'image', 'thumbnail', 'poster', 'original', 'large', 'medium', 'small', 'sm'];
+    for (var ki = 0; ki < keys.length; ki++) {
+      var next = normalizeThumbnailUrl(value[keys[ki]]);
+      if (next) return next;
+    }
+    return '';
+  }
+
+  var str = String(value).trim();
+  if (!str || str === 'null' || str === 'undefined' || str === '[object Object]') return '';
+
+  if ((str.charAt(0) === '{' || str.charAt(0) === '[') && str.indexOf('http') !== 0) {
+    try {
+      return normalizeThumbnailUrl(JSON.parse(str));
+    } catch (e) {
+      // fall through to string cleanup
+    }
+  }
+
+  str = decodeYouTubeHtml(str)
+    .replace(/^\/\//, 'https://')
+    .replace(/^http:\/\//i, 'https://')
+    .replace(/\{width\}/g, '440')
+    .replace(/\{height\}/g, '248');
+
+  return /^https?:\/\//i.test(str) ? str : '';
+}
+
+function buildYouTubeLiveUrl(parsed) {
+  if (!parsed) return null;
+  if (parsed.type === 'id') return 'https://www.youtube.com/channel/' + parsed.value + '/live';
+  if (parsed.type === 'handle') return 'https://www.youtube.com/@' + parsed.value + '/live';
+  return null;
+}
+
+async function probeYouTubeLivePage(creator) {
+  var parsed = extractYoutubeChannelId(creator.youtube_url);
+  if (!parsed) return null;
+
+  var liveUrl = buildYouTubeLiveUrl(parsed);
+  if (!liveUrl) return null;
+
+  var res = await fetch(liveUrl, {
+    headers: {
+      'Accept': 'text/html',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+    }
+  });
+  if (!res.ok) return null;
+
+  var html = await res.text();
+  var finalUrl = res.url || liveUrl;
+  var liveHints =
+    /"isLiveNow":true/.test(html) ||
+    /"isLive":true/.test(html) ||
+    /"isLiveContent":true/.test(html) ||
+    /"iconType":"LIVE"/.test(html);
+
+  var videoId = null;
+  var urlMatch = finalUrl.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+  if (urlMatch) videoId = urlMatch[1];
+  if (!videoId) {
+    var canonicalMatch = html.match(/"canonicalBaseUrl":"\\\/watch\\\?v=([A-Za-z0-9_-]{11})/);
+    if (canonicalMatch) videoId = canonicalMatch[1];
+  }
+  if (!videoId) {
+    var ogUrlMatch = html.match(/<meta property="og:url" content="https:\/\/www\.youtube\.com\/watch\?v=([A-Za-z0-9_-]{11})"/i);
+    if (ogUrlMatch) videoId = ogUrlMatch[1];
+  }
+
+  if (!liveHints) {
+    return { checked: true, is_live: false };
+  }
+
+  var title = '';
+  var titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/i);
+  if (titleMatch) title = decodeYouTubeHtml(titleMatch[1]);
+  if (!title) {
+    var headTitleMatch = html.match(/<title>([^<]+)<\/title>/i);
+    if (headTitleMatch) title = decodeYouTubeHtml(headTitleMatch[1].replace(/\s*-\s*YouTube\s*$/i, '').trim());
+  }
+
+  var thumbnail = '';
+  var thumbMatch = html.match(/<meta property="og:image" content="([^"]+)"/i);
+  if (thumbMatch) thumbnail = normalizeThumbnailUrl(thumbMatch[1]);
+  if (!thumbnail && videoId) thumbnail = normalizeThumbnailUrl('https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg');
+
+  return {
+    checked: true,
+    is_live: true,
+    video_id: videoId,
+    title: title || 'Live on YouTube',
+    thumbnail: thumbnail
+  };
+}
+
 // ── Auth helpers ──────────────────────────────────────────────────
 async function getTwitchToken() {
   var res = await fetch('https://id.twitch.tv/oauth2/token', {
@@ -98,11 +216,27 @@ async function getKickToken() {
 // ── Upsert stream helper ─────────────────────────────────────────
 async function upsertStream(creatorName, streamData) {
   var existing = await sb('GET', 'as_streams?creator_name=eq.' + encodeURIComponent(creatorName) + '&platform=eq.' + streamData.platform + '&limit=1&order=stream_date.desc');
+  var normalizedThumb = normalizeThumbnailUrl(streamData.thumbnail);
+  if (normalizedThumb) {
+    streamData.thumbnail = normalizedThumb;
+  } else {
+    delete streamData.thumbnail;
+  }
   if (Array.isArray(existing) && existing.length > 0) {
+    if (!streamData.thumbnail) {
+      var existingThumb = normalizeThumbnailUrl(existing[0].thumbnail);
+      if (existingThumb) streamData.thumbnail = existingThumb;
+    }
     await sb('PATCH', 'as_streams?id=eq.' + existing[0].id, streamData);
   } else {
     await sb('POST', 'as_streams', streamData);
   }
+}
+
+async function clearCreatorLiveStream(platform, creatorName) {
+  await sb('PATCH', 'as_streams?platform=eq.' + platform + '&is_live=eq.true&creator_name=eq.' + encodeURIComponent(creatorName), {
+    is_live: false
+  });
 }
 
 // ── Twitch live check ─────────────────────────────────────────────
@@ -155,7 +289,7 @@ async function checkTwitch(allCreators) {
           var creator = usernameMap[stream.user_login.toLowerCase()];
           if (!creator) continue;
 
-          var thumb = stream.thumbnail_url ? stream.thumbnail_url.replace('{width}', '440').replace('{height}', '248') : null;
+          var thumb = normalizeThumbnailUrl(stream.thumbnail_url);
           await upsertStream(creator.name, {
             creator_name: creator.name,
             title: stream.title || 'Live on Twitch',
@@ -303,9 +437,6 @@ async function checkKick(allCreators) {
     try { token = await getKickToken(); } catch(e) { /* use unofficial API */ }
   }
 
-  // Clear all Kick live streams first
-  await sb('PATCH', 'as_streams?platform=eq.Kick&is_live=eq.true', { is_live: false });
-
   for (var i = 0; i < creators.length; i++) {
     var creator = creators[i];
     var slug = extractKickSlug(creator.kick_url);
@@ -320,7 +451,7 @@ async function checkKick(allCreators) {
         var title = (ch.livestream && (ch.livestream.session_title || ch.livestream.slug)) || 'Live on Kick';
         var viewers = (ch.livestream && ch.livestream.viewer_count) || ch.viewer_count || 0;
         var category = (ch.livestream && ch.livestream.categories && ch.livestream.categories[0] && ch.livestream.categories[0].name) || '';
-        var kickThumb = (ch.livestream && ch.livestream.thumbnail && (ch.livestream.thumbnail.url || ch.livestream.thumbnail)) || ch.banner_image || null;
+        var kickThumb = normalizeThumbnailUrl((ch.livestream && ch.livestream.thumbnail) || ch.banner_image);
 
         await upsertStream(creator.name, {
           creator_name: creator.name,
@@ -336,6 +467,8 @@ async function checkKick(allCreators) {
           is_published: true
         });
         results.live++;
+      } else {
+        await clearCreatorLiveStream('Kick', creator.name);
       }
     } catch (e) {
       results.errors.push('Kick/' + slug + ': ' + e.message);
@@ -446,34 +579,16 @@ async function checkYouTubeRSS(creators) {
 
 async function checkYouTube(allCreators) {
   var results = { live: 0, errors: [], phase1: 0, phase2: 0 };
-
-  if (!YOUTUBE_API_KEY) {
-    results.errors.push('YouTube API key not configured');
-    return results;
-  }
-
-  // ── QUOTA TIME GATE ────────────────────────────────────────────
-  // Only run YouTube checks every 2 hours to stay within 10K units/day.
-  var thirtyMinSlot = Math.floor(Date.now() / 1800000);
-  if (thirtyMinSlot % 4 !== 0) {
-    results.skipped = true;
-    results.reason = 'YouTube gated to every 2h (quota preservation)';
-    return results;
-  }
-
   var creators = allCreators.filter(function(c) { return c.youtube_url; });
   if (!creators.length) return results;
 
-  // ── PHASE 1: RSS pre-filter (FREE, all creators) ──────────────
   var rssResult = await checkYouTubeRSS(creators);
   results.phase1 = rssResult.checked;
   var candidates = rssResult.candidates;
 
-  // Also include a small rotating batch of unchecked creators to catch missed ones
   var MAX_EXTRA = 6;
   var batchOffset = Math.floor(Date.now() / 7200000) % Math.ceil(creators.length / MAX_EXTRA);
   var extraBatch = creators.slice(batchOffset * MAX_EXTRA, (batchOffset + 1) * MAX_EXTRA);
-  // Add extras that aren't already candidates
   var candidateNames = {};
   candidates.forEach(function(c) { candidateNames[c.creator.name] = true; });
   extraBatch.forEach(function(c) {
@@ -485,30 +600,11 @@ async function checkYouTube(allCreators) {
 
   results.candidates = candidates.length;
   results.totalCreators = creators.length;
-
   if (!candidates.length) return results;
 
-  // ── QUOTA PROBE ───────────────────────────────────────────────
-  var quotaOk = true;
-  try {
-    var probeRes = await fetch('https://www.googleapis.com/youtube/v3/i18nRegions?part=snippet&key=' + YOUTUBE_API_KEY);
-    if (!probeRes.ok) {
-      var probeData = await probeRes.json();
-      var reason = probeData.error && probeData.error.errors && probeData.error.errors[0] && probeData.error.errors[0].reason;
-      if (reason === 'quotaExceeded' || reason === 'dailyLimitExceeded' || probeRes.status === 429) {
-        results.errors.push('YouTube quota exceeded — preserving existing live data');
-        results.quotaExceeded = true;
-        quotaOk = false;
-      }
-    }
-  } catch(e) { /* probe failed, assume ok */ }
-
-  if (!quotaOk) return results;
-
-  // ── PHASE 2: API check only for candidates (PAID, targeted) ───
-  // Clear only these candidates' live status
-  for (var bn = 0; bn < candidates.length; bn++) {
-    await sb('PATCH', 'as_streams?platform=eq.YouTube&is_live=eq.true&creator_name=eq.' + encodeURIComponent(candidates[bn].creator.name), { is_live: false });
+  var canFetchViewers = !!YOUTUBE_API_KEY;
+  if (!YOUTUBE_API_KEY) {
+    results.errors.push('YouTube API key not configured; checking live status without viewer counts');
   }
 
   for (var bi = 0; bi < candidates.length; bi++) {
@@ -516,29 +612,17 @@ async function checkYouTube(allCreators) {
     results.phase2++;
 
     try {
-      var channelId = await resolveYTChannelId(creator);
-      if (!channelId) continue;
+      var liveProbe = await probeYouTubeLivePage(creator);
+      if (!liveProbe) continue;
 
-      // Search for live streams on this channel (100 units each)
-      var liveRes = await fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' + channelId + '&type=video&eventType=live&maxResults=1&key=' + YOUTUBE_API_KEY);
-      if (!liveRes.ok) {
-        var liveErr = await liveRes.json();
-        var liveReason = liveErr.error && liveErr.error.errors && liveErr.error.errors[0] && liveErr.error.errors[0].reason;
-        if (liveReason === 'quotaExceeded' || liveReason === 'dailyLimitExceeded') {
-          results.errors.push('YouTube quota exceeded mid-run, stopping');
-          results.quotaExceeded = true;
-          break;
-        }
+      if (!liveProbe.is_live) {
+        await clearCreatorLiveStream('YouTube', creator.name);
         continue;
       }
 
-      var liveData = await liveRes.json();
-      if (liveData.items && liveData.items.length > 0) {
-        var liveItem = liveData.items[0];
-        var videoId = liveItem.id.videoId;
-
-        // Fetch viewer count (1 unit)
-        var viewers = 0;
+      var videoId = liveProbe.video_id;
+      var viewers = 0;
+      if (canFetchViewers && videoId) {
         try {
           var vidRes = await fetch('https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=' + videoId + '&key=' + YOUTUBE_API_KEY);
           if (vidRes.ok) {
@@ -546,25 +630,32 @@ async function checkYouTube(allCreators) {
             if (vidData.items && vidData.items[0] && vidData.items[0].liveStreamingDetails) {
               viewers = parseInt(vidData.items[0].liveStreamingDetails.concurrentViewers, 10) || 0;
             }
+          } else {
+            var vidErr = await vidRes.json().catch(function() { return null; });
+            var vidReason = vidErr && vidErr.error && vidErr.error.errors && vidErr.error.errors[0] && vidErr.error.errors[0].reason;
+            if (vidReason === 'quotaExceeded' || vidReason === 'dailyLimitExceeded' || vidRes.status === 429) {
+              canFetchViewers = false;
+              results.quotaExceeded = true;
+              results.errors.push('YouTube quota exceeded while fetching viewer counts; continuing without viewers');
+            }
           }
         } catch (e) { /* non-critical */ }
-
-        var ytThumb = (liveItem.snippet.thumbnails && (liveItem.snippet.thumbnails.high || liveItem.snippet.thumbnails.medium || liveItem.snippet.thumbnails.default || {}).url) || ('https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg');
-        await upsertStream(creator.name, {
-          creator_name: creator.name,
-          title: liveItem.snippet.title || 'Live on YouTube',
-          platform: 'YouTube',
-          category: '',
-          country: creator.country || '',
-          stream_date: new Date().toISOString(),
-          url: 'https://youtube.com/watch?v=' + videoId,
-          thumbnail: ytThumb,
-          viewer_count: viewers,
-          is_live: true,
-          is_published: true
-        });
-        results.live++;
       }
+
+      await upsertStream(creator.name, {
+        creator_name: creator.name,
+        title: liveProbe.title || 'Live on YouTube',
+        platform: 'YouTube',
+        category: '',
+        country: creator.country || '',
+        stream_date: new Date().toISOString(),
+        url: videoId ? 'https://youtube.com/watch?v=' + videoId : (buildYouTubeLiveUrl(extractYoutubeChannelId(creator.youtube_url)) || creator.youtube_url),
+        thumbnail: normalizeThumbnailUrl(liveProbe.thumbnail || (videoId ? 'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg' : '')),
+        viewer_count: viewers,
+        is_live: true,
+        is_published: true
+      });
+      results.live++;
     } catch (e) {
       results.errors.push('YT/' + creator.name + ': ' + e.message);
     }

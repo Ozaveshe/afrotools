@@ -26,7 +26,9 @@ exports.handler = async function(event) {
     var items = '';
     (articles || []).forEach(function(a) {
       var pubDate = new Date(a.published_at).toUTCString();
-      var link = 'https://afrotools.com/tools/afrostream/news.html#' + (a.slug || '');
+      var link = a.slug
+        ? 'https://afrotools.com/tools/afrostream/news/' + encodeURIComponent(a.slug)
+        : 'https://afrotools.com/tools/afrostream/news.html';
       items += '    <item>\n' +
         '      <title>' + escapeXml(a.title) + '</title>\n' +
         '      <link>' + link + '</link>\n' +

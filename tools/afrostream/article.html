@@ -11,6 +11,7 @@
 <meta property="og:description" content="African creator and streaming news.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="article">
+<meta property="og:url" content="https://afrotools.com/tools/afrostream/article.html">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index, follow">
@@ -106,26 +107,20 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
   var article = null;
 
-  // Try admin public slug endpoint first (same function that powers working news list)
   try {
-    var r1 = await fetch('/api/admin/afrostream/public/news/' + encodeURIComponent(slug));
+    var r1 = await fetch('/api/afrostream/news?slug=' + encodeURIComponent(slug));
     var j1 = await r1.json();
     if (j1.success && j1.data) article = j1.data;
   } catch(e) {}
-
-  // Fallback: dedicated news function
-  if (!article) {
-    try {
-      var r2 = await fetch('/api/afrostream/news?slug=' + encodeURIComponent(slug));
-      var j2 = await r2.json();
-      if (j2.success && j2.data) article = j2.data;
-    } catch(e) {}
-  }
 
   if (!article) {
     main.innerHTML = '<div class="as-article-404"><h1>Article Not Found</h1><p>We couldn\'t find that article.</p><a href="news.html" class="as-share-btn">&larr; Back to News</a></div>';
     return;
   }
+
+  var articleSlug = article.slug || slug;
+  var articlePath = '/tools/afrostream/news/' + encodeURIComponent(articleSlug);
+  var articleUrl = window.location.origin + articlePath;
 
   /* Update meta */
   document.title = article.title + ' — AfroStream | AfroTools';
@@ -135,6 +130,14 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   if (ogTitle) ogTitle.setAttribute('content', article.title);
   var ogDesc = document.querySelector('meta[property="og:description"]');
   if (ogDesc) ogDesc.setAttribute('content', article.excerpt || '');
+  var canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute('href', articleUrl);
+  var ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.setAttribute('content', articleUrl);
+
+  if (window.location.pathname !== articlePath) {
+    window.history.replaceState({}, '', articlePath);
+  }
 
   /* JSON-LD */
   var ld = document.createElement('script');
@@ -148,7 +151,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     'dateModified': article.created_at,
     'author': { '@type': 'Organization', 'name': 'AfroStream', 'url': 'https://afrotools.com/tools/afrostream/' },
     'publisher': { '@type': 'Organization', 'name': 'AfroTools', 'url': 'https://afrotools.com' },
-    'mainEntityOfPage': window.location.href
+    'mainEntityOfPage': articleUrl
   });
   document.head.appendChild(ld);
 
@@ -177,7 +180,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     ? '<img class="as-article-img" src="' + article.image_url + '" alt="' + article.title.replace(/"/g,'') + '">'
     : '';
 
-  var shareURL = encodeURIComponent(window.location.href);
+  var shareURL = encodeURIComponent(articleUrl);
   var shareTitle = encodeURIComponent(article.title);
 
   var html = '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +
@@ -192,7 +195,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     '<div class="as-article-share">' +
       '<a href="https://twitter.com/intent/tweet?text=' + shareTitle + '&url=' + shareURL + '" target="_blank" rel="noopener" class="as-share-btn">Share on X</a>' +
       '<a href="https://wa.me/?text=' + shareTitle + '%20' + shareURL + '" target="_blank" rel="noopener" class="as-share-btn">WhatsApp</a>' +
-      '<button class="as-share-btn" onclick="navigator.clipboard.writeText(window.location.href);this.textContent=\'Copied!\'">Copy Link</button>' +
+      '<button class="as-share-btn" onclick="navigator.clipboard.writeText(\'' + articleUrl.replace(/'/g, "\\'") + '\');this.textContent=\'Copied!\'">Copy Link</button>' +
     '</div>' +
     '<div class="as-article-related" id="relatedArticles"></div>';
 
@@ -208,7 +211,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         var rhtml = '<h2>Related Articles</h2><div class="as-related-articles">';
         related.forEach(function(r) {
           var d = new Date(r.published_at).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
-          rhtml += '<a href="article.html?slug=' + r.slug + '" class="as-related-card">' +
+          rhtml += '<a href="/tools/afrostream/news/' + encodeURIComponent(r.slug) + '" class="as-related-card">' +
             '<div class="as-related-card-cat">' + (r.category || 'News') + '</div>' +
             '<div class="as-related-card-title">' + r.title + '</div>' +
             '<div class="as-related-card-date">' + d + '</div>' +
