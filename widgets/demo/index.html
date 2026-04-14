@@ -6,9 +6,9 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Embed Africa's Best Tools On Your Website | AfroTools</title>
-<meta name="description" content="200+ embeddable calculators and tools for your website. PAYE, VAT, crypto, health, developer tools. One line of code. Free forever.">
+<meta name="description" content="Free embeddable widgets for African payroll, VAT, finance, health, education, and developer workflows. Copy the code and go live in minutes.">
 <meta property="og:title" content="AfroTools Embeddable Widgets — Free Tools for Your Website">
-<meta property="og:description" content="200+ embeddable calculators. One script tag. Automatic backlink. Free forever.">
+<meta property="og:description" content="Free embeddable widgets for payroll, VAT, finance, health, education, and developer workflows. One script tag, iframe fallback, built-in updates.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,7 +23,7 @@
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <script src="/widgets/embed.js?v=cdf08f77" defer></script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"AfroTools Embeddable Widgets","url":"https://afrotools.com/widgets/demo/","description":"200+ free embeddable calculators and tools for any website","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"AfroTools Embeddable Widgets","url":"https://afrotools.com/widgets/demo/","description":"Free embeddable widgets for payroll, VAT, finance, health, education, and developer workflows","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <style>
   :root{--bg:#ffffff;--surface:#ffffff;--card:#ffffff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--accent:#007AFF;--accent-hover:#0063D1;--font-serif:'Instrument Serif',Georgia,serif;--font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
@@ -76,9 +76,10 @@
   .modal-close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:4px 8px}
   .modal-close:hover{color:var(--text)}
   .modal h3{font-size:18px;margin-bottom:16px}
-  .code-block{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;font-family:'SFMono-Regular',Consolas,monospace;font-size:12px;color:var(--accent);overflow-x:auto;margin:12px 0;position:relative;white-space:pre-wrap;word-break:break-all}
-  .code-copy{position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted)}
-  .code-copy:hover{color:var(--text)}
+  .code-block{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;font-family:'SFMono-Regular',Consolas,monospace;font-size:12px;color:var(--text);overflow-x:auto;margin:12px 0;position:relative;white-space:pre-wrap;word-break:break-all}
+  .code-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+  .mini-copy{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all .15s}
+  .mini-copy:hover{border-color:var(--accent);color:var(--accent)}
   .widget-preview-frame{border:1px solid var(--border);border-radius:12px;margin:16px 0;min-height:300px;overflow:hidden;background:#fff}
 
   /* How It Works */
@@ -108,7 +109,10 @@
   .customizer-controls{display:flex;flex-direction:column;gap:14px}
   .customizer-label{font-size:13px;font-weight:600;margin-bottom:4px}
   .customizer-input{padding:8px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:14px}
-  .customizer-preview{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:20px;min-height:300px;display:flex;align-items:center;justify-content:center}
+  .customizer-preview{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:20px;min-height:300px;overflow:auto}
+  .customizer-note{font-size:12px;color:var(--muted);line-height:1.6}
+  .modal-link-row{margin-top:12px}
+  .modal-link{font-size:13px;font-weight:600}
 
   /* CTA */
   .cta-section{text-align:center;padding:60px 20px;background:linear-gradient(135deg,rgba(0,122,255,.06),transparent)}
@@ -138,7 +142,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AfroTools Embeddable Widgets — Free Tools for Your Website">
-<meta name="twitter:description" content="200+ embeddable calculators. One script tag. Automatic backlink. Free forever.">
+<meta name="twitter:description" content="Free embeddable widgets for payroll, VAT, finance, health, education, and developer workflows. One script tag, iframe fallback, built-in updates.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 </head>
@@ -150,12 +154,12 @@
 <section class="hero">
   <div class="hero-badge">Embeddable Widgets</div>
   <h1>Embed Africa's Best Tools<br>On Your Website — <em>Free</em></h1>
-  <p>200+ embeddable calculators and tools. One line of code. Automatic backlink. Works on any platform.</p>
+  <p><span id="hero-widget-count">128</span> embeddable widgets for payroll, VAT, finance, health, education, and developer workflows. One script tag. Built-in updates. Works on any platform.</p>
   <div class="stats-bar">
-    <div class="stat"><div class="stat-num" id="total-widgets">200+</div><div class="stat-label">Widgets</div></div>
-    <div class="stat"><div class="stat-num">14</div><div class="stat-label">Categories</div></div>
-    <div class="stat"><div class="stat-num">54</div><div class="stat-label">Countries</div></div>
-    <div class="stat"><div class="stat-num">&lt;8KB</div><div class="stat-label">Loader Size</div></div>
+    <div class="stat"><div class="stat-num" id="total-widgets">128</div><div class="stat-label">Widgets</div></div>
+    <div class="stat"><div class="stat-num" id="total-categories">12</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num" id="total-countries">54</div><div class="stat-label">Countries</div></div>
+    <div class="stat"><div class="stat-num">~9KB</div><div class="stat-label">Loader Size</div></div>
   </div>
 </section>
 
@@ -168,12 +172,12 @@
     <div class="step">
       <div class="step-num">1</div>
       <h4>Choose a Widget</h4>
-      <p>Browse 200+ widgets below. PAYE calculators, VAT tools, crypto converters, health calculators, and more.</p>
+      <p>Browse <span id="gallery-widget-count">128</span> widgets below. PAYE calculators, VAT tools, crypto converters, health calculators, and more.</p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <h4>Copy the Code</h4>
-      <p>Click "Copy Embed Code" — paste the two lines into your HTML. That's it.</p>
+      <p>Click "Copy Script" for the fastest install, or open "Preview &amp; Code" if you need the iframe version.</p>
     </div>
     <div class="step">
       <div class="step-num">3</div>
@@ -186,11 +190,11 @@
 <!-- WIDGET GALLERY -->
 <section class="section" id="gallery">
   <h2 class="section-title">Widget Gallery</h2>
-  <p class="section-desc">Click any widget to preview it and get the embed code.</p>
+  <p class="section-desc">Search by use case, preview a widget live, and copy the embed code that fits your stack.</p>
 
   <div class="search-bar">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="text" id="widget-search" placeholder="Search 200+ widgets... e.g. PAYE, VAT, BMI, JSON, mortgage">
+    <input type="text" id="widget-search" placeholder="Search widgets... e.g. PAYE, VAT, BMI, JSON, mortgage">
   </div>
   <div class="search-count" id="search-count"></div>
 
@@ -216,7 +220,7 @@
 <!-- CUSTOMIZER -->
 <section class="section">
   <h2 class="section-title">Customize Your Widget</h2>
-  <p class="section-desc">Every widget supports theme, width, and accent color customization.</p>
+  <p class="section-desc">Every widget supports theme, width, and accent color customization, with a live preview that updates automatically.</p>
   <div class="customizer">
     <div class="customizer-controls">
       <div>
@@ -245,13 +249,15 @@
         <input class="customizer-input" id="cust-accent" type="color" value="#007AFF" style="width:100%;height:40px;padding:4px">
       </div>
       <div>
-        <div class="customizer-label">Generated Code</div>
-        <div class="code-block" id="cust-code" style="position:relative"></div>
+        <div class="code-toolbar">
+          <div class="customizer-label">Generated Code</div>
+          <button class="mini-copy" type="button" data-copy-target="cust-code" data-copy-surface="customizer" data-embed-type="script" data-default-label="Copy Code">Copy Code</button>
+        </div>
+        <div class="code-block" id="cust-code"></div>
+        <div class="customizer-note">Free widgets include a small Powered by AfroTools footer so the widget stays updated and attributed.</div>
       </div>
     </div>
-    <div class="customizer-preview" id="cust-preview">
-      <div style="color:var(--muted);font-size:13px;text-align:center">Select a widget and click "Update Preview" to see it live</div>
-    </div>
+    <div class="customizer-preview" id="cust-preview"></div>
   </div>
 </section>
 
@@ -309,11 +315,11 @@
   <div class="faq-list">
     <div class="faq-item">
       <div class="faq-q">Is it free? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Yes, completely free. No sign-up, no API key, no usage limits. Free forever.</div>
+      <div class="faq-a">Yes, the widget library is free to use. No sign-up, no API key, and no usage caps for the public widgets. Free widgets include a small Powered by AfroTools footer.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Will it slow my website? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">No. The loader is under 8KB and loads asynchronously. Widgets are lazy-loaded via IntersectionObserver — they only load when visible. Zero render-blocking.</div>
+      <div class="faq-a">No. The loader is about 9KB, loads asynchronously, and lazy-loads widgets with IntersectionObserver so they only initialize when visible. Zero render-blocking.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Can I customize the colors? <span class="faq-arrow">▼</span></div>
@@ -329,7 +335,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">What about the "Powered by AfroTools" link? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">It's a small footer link on each widget. It helps us keep the service free and provides SEO value. The link is a standard dofollow link to the corresponding tool on AfroTools.com.</div>
+      <div class="faq-a">Free widgets include a small footer link on each widget. It helps us keep the library free, and it gives publishers a transparent source link back to the full tool on AfroTools.com.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Do the calculators produce accurate results? <span class="faq-arrow">▼</span></div>
@@ -341,8 +347,8 @@
 
 <!-- CTA -->
 <section class="cta-section">
-  <h2>Need a Custom Widget?</h2>
-  <p>We can build bespoke embeddable tools for your business.</p>
+  <h2>Need a Custom or White-Label Widget?</h2>
+  <p>We can build bespoke embeddable tools for your business, newsroom, HR portal, or internal platform.</p>
   <a href="mailto:hello@afrotools.com" class="btn-cta">Contact Us →</a>
 </section>
 
@@ -354,9 +360,16 @@
     <button class="modal-close" id="modal-close">&times;</button>
     <h3 id="modal-title">Widget Preview</h3>
     <div class="widget-preview-frame" id="modal-preview"></div>
-    <h4 style="font-size:14px;margin-top:16px">Script Embed Code</h4>
+    <p class="modal-link-row"><a class="modal-link" id="modal-tool-link" href="/" target="_blank" rel="noopener">Open the full tool on AfroTools</a></p>
+    <div class="code-toolbar">
+      <h4 style="font-size:14px;margin:0">Script Embed Code</h4>
+      <button class="mini-copy" type="button" data-copy-target="modal-script-code" data-copy-surface="modal" data-embed-type="script" data-default-label="Copy Script">Copy Script</button>
+    </div>
     <div class="code-block" id="modal-script-code"></div>
-    <h4 style="font-size:14px;margin-top:12px">iFrame Embed Code</h4>
+    <div class="code-toolbar">
+      <h4 style="font-size:14px;margin:0">iFrame Embed Code</h4>
+      <button class="mini-copy" type="button" data-copy-target="modal-iframe-code" data-copy-surface="modal" data-embed-type="iframe" data-default-label="Copy iFrame">Copy iFrame</button>
+    </div>
     <div class="code-block" id="modal-iframe-code"></div>
   </div>
 </div>
@@ -511,22 +524,120 @@
     {id:'shipping-calc',name:'Shipping Calculator',cat:'ecommerce',icon:'🚚',desc:'Shipping cost estimation by carrier',link:'/tools/shipping-calc/'},
   ];
 
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
+  function trackWidgetEvent(name, payload) {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', name, Object.assign({ widget_surface: 'widgets-demo' }, payload || {}));
+    }
+  }
+
+  function buildScriptCode(wid, options) {
+    options = options || {};
+    var code = '<div data-afrotools="' + wid + '"';
+    if (options.theme && options.theme !== 'light') code += '\n  data-afrotools-theme="' + options.theme + '"';
+    if (options.width) code += '\n  data-afrotools-width="' + options.width + '"';
+    if (options.accent && options.accent.toUpperCase() !== '#007AFF') code += '\n  data-afrotools-accent="' + options.accent + '"';
+    code += '></div>\n<script src="https://afrotools.com/widgets/embed.js" async><\/script>';
+    return code;
+  }
+
+  function buildIframeCode(widget) {
+    return '<iframe\n  src="https://afrotools.com/widgets/iframe/' + widget.cat + '-' + widget.id + '.html"\n  width="100%" height="500" frameborder="0"\n  style="border-radius:12px;max-width:480px;"\n  title="' + widget.name + ' - AfroTools"\n  loading="lazy">\n</iframe>';
+  }
+
+  function copyText(text, button, successLabel) {
+    if (!text) return;
+    var originalLabel = button ? (button.getAttribute('data-default-label') || button.textContent) : '';
+
+    function showSuccess() {
+      if (!button) return;
+      button.textContent = successLabel || 'Copied!';
+      setTimeout(function() {
+        button.textContent = originalLabel;
+      }, 1600);
+    }
+
+    function fallbackCopy() {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showSuccess();
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showSuccess).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  }
+
+  function renderWidgetPreview(container, wid, options) {
+    if (!container) return;
+    container.innerHTML = '';
+
+    var shell = document.createElement('div');
+    shell.style.display = 'flex';
+    shell.style.justifyContent = 'center';
+
+    var widgetDiv = document.createElement('div');
+    widgetDiv.setAttribute('data-afrotools', wid);
+    if (options && options.theme && options.theme !== 'light') widgetDiv.setAttribute('data-afrotools-theme', options.theme);
+    if (options && options.width) widgetDiv.setAttribute('data-afrotools-width', options.width);
+    if (options && options.accent && options.accent.toUpperCase() !== '#007AFF') widgetDiv.setAttribute('data-afrotools-accent', options.accent);
+
+    shell.appendChild(widgetDiv);
+    container.appendChild(shell);
+
+    if (window.AfroWidgets && window.AfroWidgets.init) {
+      window.AfroWidgets.init();
+    }
+  }
+
+  var widgetCount = WIDGETS.length;
+  var categoryCount = Object.keys(WIDGETS.reduce(function(acc, widget) {
+    acc[widget.cat] = true;
+    return acc;
+  }, {})).length;
+  var countryCount = WIDGETS.filter(function(widget) {
+    return /-paye$/.test(widget.id);
+  }).length;
+
+  setText('total-widgets', widgetCount);
+  setText('hero-widget-count', widgetCount);
+  setText('gallery-widget-count', widgetCount);
+  setText('total-categories', categoryCount);
+  setText('total-countries', countryCount);
+
   // Render widget cards
   var grid = document.getElementById('widget-grid');
   var activeCat = 'all';
   var searchQuery = '';
   var searchInput = document.getElementById('widget-search');
   var searchCount = document.getElementById('search-count');
+  if (searchInput) {
+    searchInput.placeholder = 'Search ' + widgetCount + ' widgets... e.g. PAYE, VAT, BMI, JSON, mortgage';
+  }
 
   function renderGrid() {
     var filtered = WIDGETS;
 
-    // Apply category filter
     if (activeCat !== 'all') {
       filtered = filtered.filter(function(w) { return w.cat === activeCat; });
     }
 
-    // Apply search filter
     if (searchQuery) {
       var q = searchQuery.toLowerCase();
       filtered = filtered.filter(function(w) {
@@ -542,18 +653,17 @@
         '<div class="widget-card-name"><span>' + w.icon + '</span> ' + w.name + '</div>' +
         '<div class="widget-card-desc">' + w.desc + '</div>' +
         '<div class="widget-card-actions">' +
-          '<button class="btn-copy" data-copy="' + w.id + '">Copy Embed</button>' +
-          '<button class="btn-preview" data-preview="' + w.id + '">Preview</button>' +
+          '<button class="btn-copy" data-copy="' + w.id + '" data-default-label="Copy Script">Copy Script</button>' +
+          '<button class="btn-preview" data-preview="' + w.id + '">Preview &amp; Code</button>' +
         '</div></div>';
     }).join('');
 
-    document.getElementById('total-widgets').textContent = WIDGETS.length + '+';
-
-    // Show result count when searching
     if (searchQuery) {
       searchCount.textContent = filtered.length + ' widget' + (filtered.length !== 1 ? 's' : '') + ' found';
+    } else if (activeCat !== 'all') {
+      searchCount.textContent = 'Showing ' + filtered.length + ' ' + activeCat.replace('-', ' ') + ' widget' + (filtered.length !== 1 ? 's' : '');
     } else {
-      searchCount.textContent = '';
+      searchCount.textContent = 'Showing ' + widgetCount + ' widgets';
     }
   }
 
@@ -577,16 +687,12 @@
     renderGrid();
   });
 
-  // Copy embed code
   grid.addEventListener('click', function(e) {
     var copyBtn = e.target.closest('.btn-copy');
     if (copyBtn) {
       var wid = copyBtn.dataset.copy;
-      var code = '<div data-afrotools="' + wid + '"></div>\n<script src="https://afrotools.com/widgets/embed.js" async><\/script>';
-      navigator.clipboard.writeText(code).then(function() {
-        copyBtn.textContent = 'Copied!';
-        setTimeout(function() { copyBtn.textContent = 'Copy Embed'; }, 2000);
-      });
+      copyText(buildScriptCode(wid), copyBtn, 'Copied!');
+      trackWidgetEvent('widget_copy_code', { widget_id: wid, embed_type: 'script', source: 'grid' });
       return;
     }
 
@@ -598,38 +704,53 @@
 
   // Modal
   var modal = document.getElementById('modal-overlay');
+  var modalToolLink = document.getElementById('modal-tool-link');
+  var modalScriptCopy = document.querySelector('[data-copy-target="modal-script-code"]');
+  var modalIframeCopy = document.querySelector('[data-copy-target="modal-iframe-code"]');
+  var customizerCopy = document.querySelector('[data-copy-target="cust-code"]');
   document.getElementById('modal-close').onclick = function() { modal.classList.remove('show'); };
   modal.onclick = function(e) { if (e.target === modal) modal.classList.remove('show'); };
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') modal.classList.remove('show');
+  });
 
   function showModal(wid) {
     var w = WIDGETS.find(function(x) { return x.id === wid; });
     if (!w) return;
     document.getElementById('modal-title').textContent = w.icon + ' ' + w.name;
 
-    var scriptCode = '&lt;div data-afrotools="' + wid + '"&gt;&lt;/div&gt;\n&lt;script src="https://afrotools.com/widgets/embed.js" async&gt;&lt;/script&gt;';
-    document.getElementById('modal-script-code').innerHTML = scriptCode;
+    document.getElementById('modal-script-code').textContent = buildScriptCode(wid);
+    document.getElementById('modal-iframe-code').textContent = buildIframeCode(w);
+    modalToolLink.href = w.link;
+    modalToolLink.textContent = 'Open the full ' + w.name + ' tool on AfroTools';
+    modalScriptCopy.dataset.widgetId = wid;
+    modalIframeCopy.dataset.widgetId = wid;
 
-    var cat = w.cat;
-    var iframeCode = '&lt;iframe\n  src="https://afrotools.com/widgets/iframe/' + cat + '-' + wid + '.html"\n  width="100%" height="500" frameborder="0"\n  style="border-radius:12px;max-width:480px;"\n  title="' + w.name + ' — AfroTools"\n  loading="lazy"&gt;\n&lt;/iframe&gt;';
-    document.getElementById('modal-iframe-code').innerHTML = iframeCode;
-
-    // Show modal first so the widget div is visible for IntersectionObserver
     var preview = document.getElementById('modal-preview');
     preview.innerHTML = '';
     modal.classList.add('show');
 
-    // Inject widget div and trigger embed.js to initialize it
     setTimeout(function() {
-      var widgetDiv = document.createElement('div');
-      widgetDiv.setAttribute('data-afrotools', wid);
-      preview.appendChild(widgetDiv);
-
-      // Directly init the widget (bypasses IntersectionObserver)
-      if (window.AfroWidgets && window.AfroWidgets.init) {
-        window.AfroWidgets.init();
-      }
+      renderWidgetPreview(preview, wid);
     }, 100);
+
+    trackWidgetEvent('widget_preview_open', { widget_id: wid });
   }
+
+  document.addEventListener('click', function(e) {
+    var copyControl = e.target.closest('[data-copy-target]');
+    if (!copyControl) return;
+
+    var target = document.getElementById(copyControl.getAttribute('data-copy-target'));
+    if (!target) return;
+
+    copyText(target.textContent, copyControl, 'Copied!');
+    trackWidgetEvent('widget_copy_code', {
+      widget_id: copyControl.dataset.widgetId || document.getElementById('cust-widget').value,
+      embed_type: copyControl.dataset.embedType || 'script',
+      source: copyControl.dataset.copySurface || 'inline'
+    });
+  });
 
   // FAQ toggles
   document.querySelectorAll('.faq-q').forEach(function(q) {
@@ -645,13 +766,18 @@
     var width = document.getElementById('cust-width').value;
     var accent = document.getElementById('cust-accent').value;
 
-    var code = '<div data-afrotools="' + wid + '"';
-    if (theme !== 'light') code += '\n     data-afrotools-theme="' + theme + '"';
-    if (width !== '480') code += '\n     data-afrotools-width="' + width + '"';
-    if (accent !== '#007AFF') code += '\n     data-afrotools-accent="' + accent + '"';
-    code += '></div>\n<script src="https://afrotools.com/widgets/embed.js" async><\/script>';
+    document.getElementById('cust-code').textContent = buildScriptCode(wid, {
+      theme: theme,
+      width: width,
+      accent: accent
+    });
+    customizerCopy.dataset.widgetId = wid;
 
-    document.getElementById('cust-code').textContent = code;
+    renderWidgetPreview(document.getElementById('cust-preview'), wid, {
+      theme: theme,
+      width: width,
+      accent: accent
+    });
   }
 
   ['cust-widget','cust-theme','cust-width','cust-accent'].forEach(function(id) {

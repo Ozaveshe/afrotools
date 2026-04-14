@@ -640,6 +640,9 @@
   var STORAGE_KEY = 'bioforge_history';
   var FAVS_KEY = 'bioforge_favorites';
   var STATS_KEY = 'bioforge_stats';
+  var GUEST_TODAY_KEY = 'bioforge_guest_today';
+  var GUEST_TODAY_DATE_KEY = 'bioforge_guest_today_date';
+  var GUEST_DAILY_LIMIT = 5;
   var currentBios = null;
   var abSetA = null;
   var abSetB = null;
@@ -711,12 +714,6 @@
   }
 
   function checkAuth() {
-    var token = getToken();
-    if (!token) {
-      document.getElementById('bfAuthGate').style.display = '';
-      document.getElementById('bfDashboard').style.display = 'none';
-      return false;
-    }
     document.getElementById('bfAuthGate').style.display = 'none';
     document.getElementById('bfDashboard').style.display = '';
 
@@ -726,6 +723,11 @@
       var initials = name.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().slice(0, 2);
       document.getElementById('bfUserAvatar').textContent = initials;
       document.getElementById('bfUserName').textContent = name;
+      document.getElementById('bfSignOut').style.display = '';
+    } else {
+      document.getElementById('bfUserAvatar').textContent = 'G';
+      document.getElementById('bfUserName').textContent = 'Guest mode';
+      document.getElementById('bfSignOut').style.display = 'none';
     }
     return true;
   }
@@ -733,7 +735,7 @@
   // Sign out
   document.getElementById('bfSignOut').addEventListener('click', function() {
     localStorage.removeItem(AUTH_KEY);
-    window.location.href = '/auth/login.html?redirect=/tools/creator-bios/app.html';
+    window.location.reload();
   });
 
   // ── TOAST ──
@@ -754,6 +756,25 @@
     document.getElementById('bfStatGen').textContent = s.generated;
     document.getElementById('bfStatSaved').textContent = s.saved;
     document.getElementById('bfStatComplete').style.display = currentBios && currentBios.bios && currentBios.bios.length >= 7 ? '' : 'none';
+  }
+
+  function getGuestDailyCount() {
+    var today = new Date().toISOString().split('T')[0];
+    var stored = localStorage.getItem(GUEST_TODAY_DATE_KEY);
+    if (stored !== today) {
+      localStorage.setItem(GUEST_TODAY_DATE_KEY, today);
+      localStorage.setItem(GUEST_TODAY_KEY, '0');
+      return 0;
+    }
+    return parseInt(localStorage.getItem(GUEST_TODAY_KEY) || '0', 10);
+  }
+
+  function incrementGuestDailyCount() {
+    var today = new Date().toISOString().split('T')[0];
+    localStorage.setItem(GUEST_TODAY_DATE_KEY, today);
+    var next = getGuestDailyCount() + 1;
+    localStorage.setItem(GUEST_TODAY_KEY, String(next));
+    return next;
   }
 
   // ── TABS ──
@@ -843,11 +864,17 @@
   }
 
   function generateBios(who, what, ctx, singlePlatform, onDone) {
+    var isGuest = !getToken();
+    var resultsArea = document.getElementById('bfResults');
+    if (isGuest && getGuestDailyCount() >= GUEST_DAILY_LIMIT) {
+      resultsArea.innerHTML = '<div class="bf-bio-card" style="padding:20px;"><div style="color:#ef4444; font-size:14px;">Guest mode limit reached for today. Try again tomorrow or sign in when account sync is available.</div></div>';
+      toast('Guest mode daily limit reached');
+      return;
+    }
+
     var btn = document.getElementById('bfGenerate');
     btn.classList.add('loading'); btn.disabled = true;
     startLoadingVerbs();
-
-    var resultsArea = document.getElementById('bfResults');
 
     if (!singlePlatform) {
       var shimmerHtml = '';
@@ -914,9 +941,12 @@
       stats.generated += (currentBios.bios ? currentBios.bios.length : 0);
       saveStats(stats);
       updateStatsUI();
+      if (isGuest) incrementGuestDailyCount();
 
       if (res.data.remaining !== undefined) {
         toast(res.data.remaining + ' generations remaining today');
+      } else if (isGuest) {
+        toast(Math.max(0, GUEST_DAILY_LIMIT - getGuestDailyCount()) + ' guest generations remaining today');
       }
 
       if (onDone) onDone(currentBios);

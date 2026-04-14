@@ -102,17 +102,13 @@ exports.handler = async (event) => {
 
   try {
     var user = await getUser(event);
-    if (!user) {
-      return { statusCode: 401, headers, body: JSON.stringify({ error: 'Authentication required. Sign in to generate captions.' }) };
-    }
-
     var path = event.path.replace('/.netlify/functions/creator-captions', '').replace(/^\//, '');
     var body = JSON.parse(event.body || '{}');
 
     // -- GENERATE --
     if (path === 'generate' || path === '') {
-      var rateCheck = await checkRateLimit(user.id);
-      if (!rateCheck.allowed) {
+      var rateCheck = user ? await checkRateLimit(user.id) : { allowed: true, remaining: null };
+      if (user && !rateCheck.allowed) {
         return {
           statusCode: 429, headers,
           body: JSON.stringify({ error: 'Daily limit reached (' + rateCheck.limit + ' generations). Resets at midnight.', remaining: 0 })
@@ -148,21 +144,22 @@ exports.handler = async (event) => {
       var outputText = aiData.content[0].text;
 
       // Save (fire and forget)
-      saveGeneration(user.id, body.brief || prompt.substring(0, 200), body.platform || 'instagram', body.tone || 'casual', outputText).catch(function() {});
+      if (user) {
+        saveGeneration(user.id, body.brief || prompt.substring(0, 200), body.platform || 'instagram', body.tone || 'casual', outputText).catch(function() {});
+      }
 
-      return {
-        statusCode: 200, headers,
-        body: JSON.stringify({
-          output: outputText,
-          remaining: rateCheck.remaining - 1
-        })
-      };
+      var responseBody = { output: outputText };
+      if (user && rateCheck.remaining !== null && rateCheck.remaining !== undefined) {
+        responseBody.remaining = rateCheck.remaining - 1;
+      }
+
+      return { statusCode: 200, headers, body: JSON.stringify(responseBody) };
     }
 
     // -- REWRITE --
     if (path === 'rewrite') {
-      var rateCheck2 = await checkRateLimit(user.id);
-      if (!rateCheck2.allowed) {
+      var rateCheck2 = user ? await checkRateLimit(user.id) : { allowed: true, remaining: null };
+      if (user && !rateCheck2.allowed) {
         return {
           statusCode: 429, headers,
           body: JSON.stringify({ error: 'Daily limit reached. Resets at midnight.', remaining: 0 })
@@ -200,12 +197,16 @@ exports.handler = async (event) => {
       var aiData2 = await aiRes2.json();
       var outputText2 = aiData2.content[0].text;
 
-      saveGeneration(user.id, 'Rewrite: ' + existingCaption.substring(0, 150), rewritePlatform, 'rewrite', outputText2).catch(function() {});
+      if (user) {
+        saveGeneration(user.id, 'Rewrite: ' + existingCaption.substring(0, 150), rewritePlatform, 'rewrite', outputText2).catch(function() {});
+      }
 
-      return {
-        statusCode: 200, headers,
-        body: JSON.stringify({ output: outputText2, remaining: rateCheck2.remaining - 1 })
-      };
+      var rewriteResponse = { output: outputText2 };
+      if (user && rateCheck2.remaining !== null && rateCheck2.remaining !== undefined) {
+        rewriteResponse.remaining = rateCheck2.remaining - 1;
+      }
+
+      return { statusCode: 200, headers, body: JSON.stringify(rewriteResponse) };
     }
 
     return { statusCode: 404, headers, body: JSON.stringify({ error: 'Not found' }) };

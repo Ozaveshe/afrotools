@@ -91,16 +91,12 @@ exports.handler = async (event) => {
 
   try {
     var user = await getUser(event);
-    if (!user) {
-      return { statusCode: 401, headers, body: JSON.stringify({ error: 'Authentication required. Please sign in to generate bios.' }) };
-    }
-
     var path = event.path.replace('/.netlify/functions/creator-bios', '').replace(/^\//, '');
     var body = JSON.parse(event.body || '{}');
 
     if (path === 'generate' || path === '') {
-      var rateCheck = await checkRateLimit(user.id);
-      if (!rateCheck.allowed) {
+      var rateCheck = user ? await checkRateLimit(user.id) : { allowed: true, remaining: null };
+      if (user && !rateCheck.allowed) {
         return {
           statusCode: 429, headers,
           body: JSON.stringify({ error: 'Daily limit reached (' + rateCheck.limit + ' generations). Resets at midnight.', remaining: 0 })
@@ -138,17 +134,16 @@ exports.handler = async (event) => {
       var outputText = aiData.content[0].text;
 
       // Save to DB (fire and forget)
-      if (!body.singlePlatform) {
+      if (!body.singlePlatform && user) {
         saveGeneration(user.id, body.who || '', body.what || '', body.tone || 'professional', outputText).catch(function() {});
       }
 
-      return {
-        statusCode: 200, headers,
-        body: JSON.stringify({
-          output: outputText,
-          remaining: rateCheck.remaining - 1
-        })
-      };
+      var responseBody = { output: outputText };
+      if (user && rateCheck.remaining !== null && rateCheck.remaining !== undefined) {
+        responseBody.remaining = rateCheck.remaining - 1;
+      }
+
+      return { statusCode: 200, headers, body: JSON.stringify(responseBody) };
     }
 
     return { statusCode: 404, headers, body: JSON.stringify({ error: 'Not found' }) };

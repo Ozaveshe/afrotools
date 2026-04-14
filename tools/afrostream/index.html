@@ -39,7 +39,7 @@
 <!-- Components -->
 <script src="/assets/js/components/navbar.js?v=5a869583" defer></script>
 <script src="/assets/js/components/footer.js?v=bd815d9c" defer></script>
-<script src="/engines/afrostream-engine.js?v=ebfb240e" defer></script>
+<script src="/engines/afrostream-engine.js?v=4b7b2101" defer></script>
 
 <!-- JSON-LD -->
 <script type="application/ld+json">
@@ -568,6 +568,23 @@ function escapeAttr(value){
   return escapeHtml(value);
 }
 
+function extractYouTubeVideoId(value){
+  if(!value) return '';
+  var str = String(value).trim();
+  if(!str) return '';
+  if(/^[A-Za-z0-9_-]{11}$/.test(str)) return str;
+  var patterns = [
+    /[?&]v=([A-Za-z0-9_-]{11})/i,
+    /youtu\.be\/([A-Za-z0-9_-]{11})/i,
+    /youtube\.com\/(?:live|shorts|embed)\/([A-Za-z0-9_-]{11})/i
+  ];
+  for(var i=0;i<patterns.length;i++){
+    var match = str.match(patterns[i]);
+    if(match) return match[1];
+  }
+  return '';
+}
+
 function normalizeThumbnailUrl(value){
   if(!value) return '';
   if(Array.isArray(value)){
@@ -598,7 +615,49 @@ function normalizeThumbnailUrl(value){
     .replace(/^http:\/\//i,'https://')
     .replace(/\{width\}/g,'440')
     .replace(/\{height\}/g,'248');
+  var youtubeId = extractYouTubeVideoId(str);
+  if(youtubeId) return 'https://img.youtube.com/vi/' + youtubeId + '/hqdefault.jpg';
   return /^https?:\/\//i.test(str) ? str : '';
+}
+
+function resolveLiveThumbnail(stream){
+  if(!stream) return '';
+  var direct = [
+    stream.thumbnail,
+    stream.thumbnail_url,
+    stream.thumbnailUrl,
+    stream.image,
+    stream.poster,
+    stream.cover,
+    stream.avatar
+  ];
+  for(var i=0;i<direct.length;i++){
+    var next = normalizeThumbnailUrl(direct[i]);
+    if(next) return next;
+  }
+  if(stream._raw){
+    var raw = stream._raw;
+    var rawValues = [
+      raw.thumbnail,
+      raw.thumbnail_url,
+      raw.thumbnailUrl,
+      raw.image,
+      raw.image_url,
+      raw.imageUrl,
+      raw.poster,
+      raw.cover,
+      raw.avatar,
+      raw.avatar_url,
+      raw.profile_image,
+      raw.banner_image,
+      raw.url
+    ];
+    for(var j=0;j<rawValues.length;j++){
+      var rawNext = normalizeThumbnailUrl(rawValues[j]);
+      if(rawNext) return rawNext;
+    }
+  }
+  return normalizeThumbnailUrl(stream.url);
 }
 
 
@@ -633,7 +692,7 @@ function renderLive(streams){
     var c = COUNTRIES[s.country] || COUNTRY_FALLBACK;
     var href = s.url || '#';
     var target = s.url ? ' target="_blank" rel="noopener"' : '';
-    var thumbUrl = normalizeThumbnailUrl(s.thumbnail) || normalizeThumbnailUrl(s.avatar);
+    var thumbUrl = resolveLiveThumbnail(s);
     var hasThumb = !!thumbUrl;
     var thumbCls = 'as-live-thumb' + (hasThumb ? '' : ' '+gradClass(i));
     var initial = escapeHtml((s.name || '?').charAt(0).toUpperCase());

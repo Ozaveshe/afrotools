@@ -68,6 +68,14 @@
   /* Preview */
   .admin-preview { margin-top: 20px; padding: 20px; background: #F5F9FF; border: 1px solid #E8F0FE; border-radius: 10px; }
   .admin-preview h3 { font-size: .85rem; font-weight: 600; margin-bottom: 10px; color: #6B7F99; }
+  .stream-thumb-preview { display: none; margin-top: 6px; padding: 14px; border-radius: 12px; border: 1px dashed #D7E3F4; background: #F8FBFF; }
+  .stream-thumb-preview img { display: block; width: 100%; max-width: 240px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; background: #E8F0FE; }
+  .stream-thumb-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stream-thumb-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; font-size: .7rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; background: #DCEBFF; color: #0063CC; }
+  .stream-thumb-hint { font-size: .76rem; color: #6B7F99; margin-top: 10px; line-height: 1.5; word-break: break-word; }
+  .stream-thumb-preview.is-warning { display: block; border-color: #FDBA74; background: #FFF7ED; }
+  .stream-thumb-preview.is-warning .stream-thumb-chip { background: #FED7AA; color: #9A3412; }
+  .stream-thumb-preview.is-warning .stream-thumb-hint { color: #9A3412; margin-top: 0; }
   /* Settings grid */
   .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
   /* Toggle */
@@ -269,6 +277,7 @@
           <input type="url" name="thumbnail" class="input" placeholder="https://...">
         </div>
       </div>
+      <div id="streamThumbnailPreview" class="stream-thumb-preview" aria-live="polite"></div>
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">Add Stream</button>
       </div>
@@ -678,6 +687,129 @@
     setTimeout(function() { el.remove(); }, 3000);
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function escapeAttr(value) {
+    return escapeHtml(value);
+  }
+
+  function decodeHtmlBits(value) {
+    return String(value == null ? '' : value)
+      .replace(/\\u0026/g, '&')
+      .replace(/\\\//g, '/')
+      .replace(/&amp;/g, '&')
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"');
+  }
+
+  function extractYouTubeVideoId(value) {
+    if (!value) return '';
+    var str = decodeHtmlBits(value).trim();
+    if (!str) return '';
+    if (/^[A-Za-z0-9_-]{11}$/.test(str)) return str;
+    var patterns = [
+      /[?&]v=([A-Za-z0-9_-]{11})/i,
+      /youtu\.be\/([A-Za-z0-9_-]{11})/i,
+      /youtube\.com\/(?:live|shorts|embed)\/([A-Za-z0-9_-]{11})/i
+    ];
+    for (var i = 0; i < patterns.length; i++) {
+      var match = str.match(patterns[i]);
+      if (match) return match[1];
+    }
+    return '';
+  }
+
+  function normalizeThumbnailInput(value) {
+    if (!value) return '';
+
+    if (Array.isArray(value)) {
+      for (var ai = 0; ai < value.length; ai++) {
+        var arrUrl = normalizeThumbnailInput(value[ai]);
+        if (arrUrl) return arrUrl;
+      }
+      return '';
+    }
+
+    if (typeof value === 'object') {
+      var keys = ['url', 'src', 'secure_url', 'thumbnail_url', 'thumbnailUrl', 'image', 'thumbnail', 'poster', 'original', 'large', 'medium', 'small', 'sm'];
+      for (var ki = 0; ki < keys.length; ki++) {
+        var next = normalizeThumbnailInput(value[keys[ki]]);
+        if (next) return next;
+      }
+      return '';
+    }
+
+    var str = String(value).trim();
+    if (!str || str === 'null' || str === 'undefined' || str === '[object Object]') return '';
+
+    if ((str.charAt(0) === '{' || str.charAt(0) === '[') && str.indexOf('http') !== 0) {
+      try {
+        return normalizeThumbnailInput(JSON.parse(str));
+      } catch (e) {}
+    }
+
+    str = decodeHtmlBits(str)
+      .replace(/^\/\//, 'https://')
+      .replace(/^http:\/\//i, 'https://')
+      .replace(/\{width\}/g, '440')
+      .replace(/\{height\}/g, '248');
+
+    var youtubeId = extractYouTubeVideoId(str);
+    if (youtubeId) return 'https://img.youtube.com/vi/' + youtubeId + '/hqdefault.jpg';
+
+    return /^https?:\/\//i.test(str) ? str : '';
+  }
+
+  function resolveStreamThumbnailInput(thumbnailValue, streamUrl) {
+    return normalizeThumbnailInput(thumbnailValue) || normalizeThumbnailInput(streamUrl);
+  }
+
+  function renderStreamThumbnailPreview() {
+    var form = document.getElementById('streamForm');
+    var preview = document.getElementById('streamThumbnailPreview');
+    if (!form || !preview) return;
+
+    var rawThumb = form.querySelector('[name="thumbnail"]').value;
+    var streamUrl = form.querySelector('[name="url"]').value;
+    var resolved = resolveStreamThumbnailInput(rawThumb, streamUrl);
+    var sourceLabel = rawThumb ? 'Thumbnail field' : 'Derived from stream URL';
+
+    if (!resolved && !rawThumb && !streamUrl) {
+      preview.style.display = 'none';
+      preview.className = 'stream-thumb-preview';
+      preview.innerHTML = '';
+      return;
+    }
+
+    if (!resolved) {
+      preview.style.display = 'block';
+      preview.className = 'stream-thumb-preview is-warning';
+      preview.innerHTML =
+        '<div class="stream-thumb-meta">' +
+          '<span class="stream-thumb-chip">Needs image</span>' +
+        '</div>' +
+        '<div class="stream-thumb-hint">Paste a direct image URL, or use a YouTube watch, live, share, or short link and AfroStream will derive the thumbnail automatically.</div>';
+      return;
+    }
+
+    preview.style.display = 'block';
+    preview.className = 'stream-thumb-preview';
+    preview.innerHTML =
+      '<div class="stream-thumb-meta">' +
+        '<span class="stream-thumb-chip">' + escapeHtml(sourceLabel) + '</span>' +
+      '</div>' +
+      '<img src="' + escapeAttr(resolved) + '" alt="Resolved stream thumbnail preview" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+      '<div style="display:none;align-items:center;justify-content:center;max-width:240px;aspect-ratio:16 / 9;border-radius:10px;background:#E2E8F0;color:#475569;font-size:.78rem;font-weight:600">Preview unavailable</div>' +
+      '<div class="stream-thumb-hint">' + escapeHtml(resolved) + '</div>';
+  }
+
   /* ── SYNC: Load from Supabase, cache to localStorage ── */
   async function syncFromSupabase() {
     try {
@@ -934,11 +1066,22 @@
   /* ═══════════════════════════════════════════════════════
      STREAM MANAGEMENT
      ═══════════════════════════════════════════════════════ */
-  document.getElementById('streamForm').addEventListener('submit', async function(e) {
+  var streamForm = document.getElementById('streamForm');
+  var streamThumbInput = streamForm.querySelector('[name="thumbnail"]');
+  var streamUrlInput = streamForm.querySelector('[name="url"]');
+
+  [streamThumbInput, streamUrlInput].forEach(function(input) {
+    input.addEventListener('input', renderStreamThumbnailPreview);
+    input.addEventListener('change', renderStreamThumbnailPreview);
+  });
+  renderStreamThumbnailPreview();
+
+  streamForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     var fd = new FormData(this);
     var btn = this.querySelector('[type="submit"]');
     btn.disabled = true; btn.textContent = 'Adding...';
+    var resolvedThumbnail = resolveStreamThumbnailInput(fd.get('thumbnail'), fd.get('url'));
 
     var stream = {
       creator_name: fd.get('creator'),
@@ -948,9 +1091,9 @@
       country: fd.get('country'),
       stream_date: new Date(fd.get('datetime')).toISOString(),
       url: fd.get('url'),
-      thumbnail: fd.get('thumbnail'),
       is_live: false
     };
+    if (resolvedThumbnail) stream.thumbnail = resolvedThumbnail;
 
     try {
       var created = await api('POST', 'streams', stream);
@@ -965,6 +1108,7 @@
       toast('Saved locally (Supabase offline)', true);
     }
     this.reset();
+    renderStreamThumbnailPreview();
     btn.disabled = false; btn.textContent = 'Add Stream';
     renderStreamList();
     updateStats();
@@ -988,12 +1132,26 @@
       var isLive = s.is_live || s.live;
       var liveCls = isLive ? ' as-live-indicator' : '';
       var name = s.creator_name || s.creator;
+      var thumbUrl = resolveStreamThumbnailInput(
+        s.thumbnail || s.thumbnail_url || s.thumbnailUrl || s.image || s.poster,
+        s.url
+      );
+      var initial = escapeHtml((name || '?').charAt(0).toUpperCase());
+      var thumbMarkup = thumbUrl
+        ? '<div style="width:72px;min-width:72px;aspect-ratio:16 / 9;border-radius:10px;overflow:hidden;background:#E8F0FE;box-shadow:0 2px 8px rgba(15,23,42,.08)">' +
+            '<img src="' + escapeAttr(thumbUrl) + '" alt="' + escapeAttr((name || 'Creator') + ' thumbnail') + '" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover" onerror="this.parentNode.innerHTML=\'' + initial + '\';this.parentNode.style.display=\'grid\';this.parentNode.style.placeItems=\'center\';this.parentNode.style.fontWeight=\'800\';this.parentNode.style.color=\'#0f172a\';this.parentNode.style.background=\'linear-gradient(135deg,#dbeafe,#bfdbfe)\'">' +
+          '</div>'
+        : '<div style="width:72px;min-width:72px;aspect-ratio:16 / 9;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#dbeafe,#bfdbfe)">' + initial + '</div>';
       return '<div class="as-admin-list-item' + liveCls + '">' +
-        '<div class="as-admin-list-info">' +
+        '<div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1">' +
+          thumbMarkup +
+          '<div class="as-admin-list-info">' +
           '<span class="as-platform-badge" style="background:' + (PLAT_COLORS[s.platform] || '#007AFF') + ';font-size:11px;padding:2px 8px;border-radius:20px;color:#fff;margin-right:8px">' + (PLAT_LABELS[s.platform] || s.platform) + '</span>' +
           '<strong>' + name + '</strong> — ' + s.title +
           '<span class="muted" style="margin-left:8px">' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) + '</span>' +
           (isLive ? ' <span style="color:#22C55E;font-weight:700;margin-left:8px">LIVE</span>' : '') +
+          (thumbUrl ? '<div class="muted" style="margin:6px 0 0;font-size:.74rem">Thumbnail ready</div>' : '<div class="muted" style="margin:6px 0 0;font-size:.74rem;color:#b45309">No thumbnail resolved yet</div>') +
+        '</div>' +
         '</div>' +
         '<div class="as-admin-list-actions">' +
           '<button class="as-btn as-btn-outline as-btn-xs" onclick="window._asToggleLive(' + s.id + ')">' + (isLive ? 'End Live' : 'Go Live') + '</button>' +

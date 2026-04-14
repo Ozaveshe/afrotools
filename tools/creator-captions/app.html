@@ -431,6 +431,9 @@
   var FAV_KEY = 'ccr-favorites';
   var TODAY_KEY = 'ccr-today-count';
   var TODAY_DATE_KEY = 'ccr-today-date';
+  var GUEST_GEN_KEY = 'ccr-guest-generations';
+  var GUEST_GEN_DATE_KEY = 'ccr-guest-generations-date';
+  var GUEST_DAILY_LIMIT = 10;
 
   // ===== AUTH =====
   var currentUser = null;
@@ -471,12 +474,13 @@
   }
 
   function initAuth() {
+    document.getElementById('authGate').style.display = 'none';
+    document.getElementById('appTopbar').style.display = '';
+    document.getElementById('statsBar').style.display = '';
+    document.getElementById('appMain').style.display = '';
+
     if (isSignedIn()) {
       currentUser = getUserInfo();
-      document.getElementById('authGate').style.display = 'none';
-      document.getElementById('appTopbar').style.display = '';
-      document.getElementById('statsBar').style.display = '';
-      document.getElementById('appMain').style.display = '';
 
       // Populate user info
       var email = currentUser ? (currentUser.email || '') : '';
@@ -490,16 +494,21 @@
         avatarEl.textContent = initials;
       }
       document.getElementById('userEmail').textContent = email;
-
+    } else {
+      currentUser = null;
+      document.getElementById('userAvatar').textContent = 'G';
+      document.getElementById('userEmail').textContent = 'Guest mode';
+      document.getElementById('signOutBtn').style.display = 'none';
       updateStats();
       renderHistory();
       renderFavorites();
-    } else {
-      document.getElementById('authGate').style.display = '';
-      document.getElementById('appTopbar').style.display = 'none';
-      document.getElementById('statsBar').style.display = 'none';
-      document.getElementById('appMain').style.display = 'none';
+      return;
     }
+
+    document.getElementById('signOutBtn').style.display = '';
+    updateStats();
+    renderHistory();
+    renderFavorites();
   }
 
   // Sign out
@@ -884,6 +893,10 @@
   document.getElementById('generateBtn').onclick = function() {
     var topic = document.getElementById('topicInput').value.trim();
     if (!topic) { toast('Describe your post first'); return; }
+    if (!isSignedIn() && getGuestGenerationCount() >= GUEST_DAILY_LIMIT) {
+      showError('writeOutput', 'Guest mode limit reached for today. Try again tomorrow or sign in when account sync is available.');
+      return;
+    }
 
     var platform = getActivePill('platformPills');
     var tone = getActivePill('tonePills');
@@ -919,7 +932,8 @@
 
       if (!res.ok) {
         if (res.data && (res.data.error || '').indexOf('401') >= 0) {
-          showError('writeOutput', 'Session expired. Please sign in again.');
+          localStorage.removeItem(AUTH_KEY);
+          showError('writeOutput', 'Session expired. Refresh the page to continue in guest mode.');
           return;
         }
         showError('writeOutput', res.data.error || 'Generation failed. Please try again.');
@@ -929,14 +943,17 @@
       var parsed = E.parseOutput(res.data.output);
       var captions = renderCaptions(parsed, platform, 'writeOutput');
 
-      if (res.data.remaining !== undefined) {
-        toast(res.data.remaining + ' generations remaining today');
-      }
-
       // Save
       saveToHistory(platform, topic, tone, captions);
       incrementTodayCount(captions.length);
+      if (!isSignedIn()) incrementGuestGenerationCount();
       updateStats();
+
+      if (res.data.remaining !== undefined) {
+        toast(res.data.remaining + ' generations remaining today');
+      } else if (!isSignedIn()) {
+        toast(Math.max(0, GUEST_DAILY_LIMIT - getGuestGenerationCount()) + ' guest generations remaining today');
+      }
     })
     .catch(function(err) {
       btn.classList.remove('loading');
@@ -950,6 +967,10 @@
   document.getElementById('rewriteBtn').onclick = function() {
     var caption = document.getElementById('rewriteInput').value.trim();
     if (!caption) { toast('Paste a caption to rewrite'); return; }
+    if (!isSignedIn() && getGuestGenerationCount() >= GUEST_DAILY_LIMIT) {
+      showError('rewriteOutput', 'Guest mode limit reached for today. Try again tomorrow or sign in when account sync is available.');
+      return;
+    }
 
     var platform = getActivePill('rewritePlatformPills');
 
@@ -976,9 +997,12 @@
 
       var parsed = E.parseOutput(res.data.output);
       renderCaptions(parsed, platform, 'rewriteOutput');
+      if (!isSignedIn()) incrementGuestGenerationCount();
 
       if (res.data.remaining !== undefined) {
         toast(res.data.remaining + ' generations remaining today');
+      } else if (!isSignedIn()) {
+        toast(Math.max(0, GUEST_DAILY_LIMIT - getGuestGenerationCount()) + ' guest generations remaining today');
       }
     })
     .catch(function() {
@@ -1223,6 +1247,25 @@
     localStorage.setItem(TODAY_DATE_KEY, today);
     var current = parseInt(localStorage.getItem(TODAY_KEY) || '0');
     localStorage.setItem(TODAY_KEY, String(current + (n || 0)));
+  }
+
+  function getGuestGenerationCount() {
+    var today = new Date().toISOString().slice(0, 10);
+    var stored = localStorage.getItem(GUEST_GEN_DATE_KEY);
+    if (stored !== today) {
+      localStorage.setItem(GUEST_GEN_DATE_KEY, today);
+      localStorage.setItem(GUEST_GEN_KEY, '0');
+      return 0;
+    }
+    return parseInt(localStorage.getItem(GUEST_GEN_KEY) || '0', 10);
+  }
+
+  function incrementGuestGenerationCount() {
+    var today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem(GUEST_GEN_DATE_KEY, today);
+    var next = getGuestGenerationCount() + 1;
+    localStorage.setItem(GUEST_GEN_KEY, String(next));
+    return next;
   }
 
   function updateStats() {
