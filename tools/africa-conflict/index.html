@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
@@ -17,114 +17,212 @@
 <meta property="og:url" content="https://afrotools.com/tools/africa-conflict/">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="style.css?v=4260f20e">
-<!-- Leaflet.js -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css?v=20260414a">
+<link rel="stylesheet" href="dashboard.css?v=20260414a">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script src="/assets/js/supabase-auth.js" defer></script>
 <script src="/engines/africa-conflict-engine.js?v=9f32d23d" defer></script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<meta property="article:modified_time" content="2026-04-14">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<main class="acd-page">
+<main class="acd-page acd-page-dashboard">
 
-  <!-- Hero -->
-  <div class="acd-hero">
-    <div class="acd-hero-inner">
-      <div>
-        <div class="acd-hero-title">
+  <section class="acd-hero acd-hero-dashboard">
+    <div class="acd-hero-inner acd-hero-shell">
+      <div class="acd-hero-copy">
+        <div class="acd-hero-kicker">
           <span class="acd-live-dot"></span>
-          <h1>⚔️ AfroConflict</h1>
+          Live Intelligence Layer
         </div>
-        <p class="acd-hero-desc">Africa Conflict Intelligence Dashboard — live tracking of armed conflicts, displacement, and conflict economy actors</p>
-        <p class="acd-hero-meta" id="acd-last-updated">Updating data...</p>
+        <div class="acd-hero-heading-wrap">
+          <h1>AfroConflict</h1>
+          <p class="acd-hero-desc">A faster, clearer operating surface for monitoring armed conflict across Africa, following spillover risk, and moving from headline to dossier without leaving the page.</p>
+        </div>
+        <div class="acd-hero-statline" id="acd-hero-statline">Loading conflict intelligence...</div>
       </div>
-      <nav class="acd-hero-nav">
-        <a href="/tools/africa-conflict/" class="active">Dashboard</a>
-        <a href="/tools/africa-conflict/map.html">Map</a>
-        <a href="/tools/africa-conflict/conflicts.html">All Conflicts</a>
-        <a href="/tools/africa-conflict/economy.html">Economy</a>
-        <a href="/tools/africa-conflict/displacement.html">Displacement</a>
-        <a href="/tools/africa-conflict/actors.html">Actors</a>
-        <a href="/tools/africa-conflict/forecasts.html">Forecasts</a>
-        <a href="/tools/africa-conflict/methodology.html">Methodology</a>
-      </nav>
+
+      <aside class="acd-briefing-card" id="acd-briefing-card" aria-live="polite">
+        <div class="acd-loading">Building live briefing...</div>
+      </aside>
     </div>
-  </div>
 
-  <!-- KPI Row -->
-  <div class="acd-kpi-row" id="acd-kpi-row">
-    <!-- JS populated -->
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
-  </div>
+    <div class="acd-command-bar" aria-label="Dashboard controls">
+      <label class="acd-control acd-control-search">
+        <span class="acd-control-label">Search</span>
+        <input id="acd-search" type="search" placeholder="Search conflict, country, or region">
+      </label>
 
-  <!-- Map + Top Conflicts -->
-  <div class="acd-main-split">
+      <label class="acd-control">
+        <span class="acd-control-label">Region</span>
+        <select id="acd-region-filter">
+          <option value="all">All regions</option>
+        </select>
+      </label>
 
-    <!-- Map -->
+      <div class="acd-control acd-control-risk">
+        <span class="acd-control-label">Risk</span>
+        <div class="acd-risk-pills" id="acd-risk-pills">
+          <button class="acd-filter-chip is-active" data-risk="all" type="button">All</button>
+          <button class="acd-filter-chip" data-risk="critical" type="button">Critical</button>
+          <button class="acd-filter-chip" data-risk="high" type="button">High</button>
+          <button class="acd-filter-chip" data-risk="medium" type="button">Medium</button>
+          <button class="acd-filter-chip" data-risk="low" type="button">Low</button>
+        </div>
+      </div>
+
+      <button class="acd-toggle-chip is-active" id="acd-african-toggle" type="button" aria-pressed="true">African conflicts only</button>
+      <button class="acd-btn acd-btn-outline" id="acd-reset-filters" type="button">Reset</button>
+    </div>
+
+    <div class="acd-active-filters" id="acd-active-filters" aria-live="polite"></div>
+
+    <nav class="acd-hero-nav" aria-label="Africa conflict sections">
+      <a href="/tools/africa-conflict/" class="active">Dashboard</a>
+      <a href="/tools/africa-conflict/map.html">Map</a>
+      <a href="/tools/africa-conflict/conflicts.html">All Conflicts</a>
+      <a href="/tools/africa-conflict/economy.html">Economy</a>
+      <a href="/tools/africa-conflict/displacement.html">Displacement</a>
+      <a href="/tools/africa-conflict/actors.html">Actors</a>
+      <a href="/tools/africa-conflict/forecasts.html">Forecasts</a>
+      <a href="/tools/africa-conflict/methodology.html">Methodology</a>
+    </nav>
+  </section>
+
+  <section class="acd-kpi-band">
+    <div class="acd-kpi-row" id="acd-kpi-row">
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+      <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+    </div>
+  </section>
+
+  <section class="acd-dashboard-grid">
     <div class="acd-map-container">
       <div class="acd-map-header">
-        <h2>🗺️ Conflict Map</h2>
-        <div class="acd-map-toggles">
-          <button class="acd-map-toggle active" data-layer="all">All</button>
-          <button class="acd-map-toggle" data-layer="density">Density</button>
-          <button class="acd-map-toggle" data-layer="displacement">Displacement</button>
-          <button class="acd-map-toggle" data-layer="spillover">Spillover</button>
+        <div>
+          <h2>Conflict map</h2>
+          <p class="acd-map-status" id="acd-map-status">Preparing map layers...</p>
+        </div>
+        <div class="acd-map-toggles" aria-label="Map layer toggles">
+          <button class="acd-map-toggle active" data-layer="all" type="button">All</button>
+          <button class="acd-map-toggle" data-layer="density" type="button">Density</button>
+          <button class="acd-map-toggle" data-layer="displacement" type="button">Displacement</button>
+          <button class="acd-map-toggle" data-layer="spillover" type="button">Spillover</button>
         </div>
       </div>
       <div id="acd-map"></div>
-      <div class="acd-map-legend">
-        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#dc2626"></div>Critical</div>
-        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ea580c"></div>High</div>
-        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ca8a04"></div>Medium</div>
-        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#65a30d"></div>Low</div>
-        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#6b7280"></div>Frozen/Other</div>
-        <span class="acd-source-tag">ACLED/Manual</span>
+      <div class="acd-map-footer">
+        <div class="acd-map-legend">
+          <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#dc2626"></div>Critical</div>
+          <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ea580c"></div>High</div>
+          <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ca8a04"></div>Medium</div>
+          <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#65a30d"></div>Low</div>
+          <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#6b7280"></div>Other</div>
+        </div>
+        <span class="acd-source-tag" id="acd-map-footnote">Marker size reflects estimated fatalities</span>
       </div>
     </div>
 
-    <!-- Top Conflicts -->
-    <div class="acd-top-conflicts">
-      <div class="acd-top-header">
-        <h2>🔴 Top Conflicts</h2>
-        <a href="/tools/africa-conflict/conflicts.html">View All →</a>
+    <div class="acd-side-stack">
+      <section class="acd-focus-card" id="acd-focus-card" aria-live="polite">
+        <div class="acd-loading">Loading spotlight conflict...</div>
+      </section>
+
+      <section class="acd-top-conflicts acd-watchlist">
+        <div class="acd-top-header">
+          <div>
+            <h2>Priority watchlist</h2>
+            <p class="acd-watchlist-copy">Click a conflict or map marker to pin it as the live briefing.</p>
+          </div>
+          <span class="acd-watchlist-count" id="acd-watchlist-count">Loading...</span>
+        </div>
+        <div id="acd-top-list">
+          <div class="acd-loading">Loading conflicts...</div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="acd-lower-grid">
+    <section class="acd-events-panel">
+      <div class="acd-events-header">
+        <div>
+          <h2>Recent events</h2>
+          <p class="acd-events-copy" id="acd-events-meta">Filtering recent event feed...</p>
+        </div>
+        <span class="acd-source-tag">ACLED / Manual</span>
       </div>
-      <div id="acd-top-list">
-        <div class="acd-loading">Loading conflicts...</div>
+
+      <div class="acd-event-controls">
+        <label class="acd-control">
+          <span class="acd-control-label">Scope</span>
+          <select id="acd-event-scope">
+            <option value="all">All current events</option>
+            <option value="selected">Selected conflict only</option>
+          </select>
+        </label>
+
+        <label class="acd-control">
+          <span class="acd-control-label">Type</span>
+          <select id="acd-event-type">
+            <option value="">All event types</option>
+            <option value="battle">Battle</option>
+            <option value="airstrike">Airstrike</option>
+            <option value="violence_against_civilians">Violence vs civilians</option>
+            <option value="explosion_remote">Explosion / remote</option>
+            <option value="ceasefire_violation">Ceasefire violation</option>
+            <option value="strategic_development">Strategic development</option>
+            <option value="agreement">Agreement</option>
+            <option value="protest">Protest</option>
+            <option value="riot">Riot</option>
+          </select>
+        </label>
+
+        <button class="acd-toggle-chip" id="acd-fatal-toggle" type="button" aria-pressed="false">Fatalities only</button>
       </div>
-    </div>
 
-  </div><!-- /.acd-main-split -->
+      <div class="acd-events-list" id="acd-events-feed">
+        <div class="acd-loading">Loading events...</div>
+      </div>
+    </section>
 
-  <!-- Recent Events Feed -->
-  <div class="acd-events-section">
-    <div class="acd-events-header">
-      <h2>📡 Recent Events</h2>
-      <span class="acd-source-tag">ACLED / Manual · Auto-refreshes every 5 min</span>
-    </div>
-    <div class="acd-events-scroll" id="acd-events-feed">
-      <div class="acd-loading">Loading events...</div>
-    </div>
-  </div>
+    <aside class="acd-signal-panel">
+      <div class="acd-section-header">
+        <div>
+          <h2>Signal board</h2>
+          <p class="acd-section-sub">Regional pressure, risk mix, and structural drivers across the current filter.</p>
+        </div>
+      </div>
 
+      <div class="acd-signal-summary" id="acd-signal-summary">
+        <div class="acd-loading">Calculating signal mix...</div>
+      </div>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
+      <div class="acd-chart-box acd-signal-box">
+        <h3>Risk mix</h3>
+        <div id="acd-risk-mix"></div>
+      </div>
+
+      <div class="acd-chart-box acd-signal-box">
+        <h3>Regional pressure</h3>
+        <div id="acd-region-pressure"></div>
+      </div>
+    </aside>
+  </section>
+
 </main>
 
 <!-- seo-internal-links -->
@@ -137,161 +235,7 @@
 
 <script src="/assets/js/components/navbar.js?v=5a869583" defer></script>
 <script src="/assets/js/components/footer.js?v=bd815d9c" defer></script>
-<script>
-(function () {
-  'use strict';
-
-  var map = null;
-  var allConflicts = [];
-
-  function q(sel) { return document.querySelector(sel); }
-
-  // Build KPI cards
-  function renderKPIs(stats) {
-    var kpiRow = q('#acd-kpi-row');
-    if (!kpiRow) return;
-    var kpis = [
-      { icon: '⚔️', label: 'Active Conflicts', val: stats.active_conflicts, sub: 'ACLED/Manual', color: '#dc2626' },
-      { icon: '🏕️', label: 'Total Displaced', val: AfroConflict.formatNumber(stats.total_displaced), sub: 'UNHCR', color: '#ea580c' },
-      { icon: '☠️', label: 'Est. Fatalities', val: AfroConflict.formatRange(stats.fatalities_min, stats.fatalities_max), sub: 'UCDP/ACLED', color: '#dc2626' },
-      { icon: '💸', label: 'Military Spend/yr', val: AfroConflict.formatCurrency(stats.military_spend_usd_m), sub: 'SIPRI/Manual', color: '#d97706' },
-      { icon: '📉', label: 'Est. Economic Loss', val: 'USD ' + stats.economic_loss_max_usd_b + 'B+', sub: 'WB/Manual', color: '#ca8a04' },
-      { icon: '🚨', label: 'Critical Risk', val: stats.critical_risk_count, sub: 'AfroConflict', color: '#dc2626' },
-      { icon: '🌍', label: 'Spillover Threats', val: stats.spillover_threat_countries + ' countries', sub: 'AfroConflict', color: '#ea580c' },
-      { icon: '📈', label: 'New Escalations (30d)', val: stats.new_escalations_30d, sub: 'ACLED', color: '#8b5cf6' }
-    ];
-
-    kpiRow.innerHTML = kpis.map(function (k) {
-      return '<div class="acd-kpi-card" style="border-top-color:' + k.color + '">' +
-        '<div class="acd-kpi-icon">' + k.icon + '</div>' +
-        '<div class="acd-kpi-value">' + k.val + '</div>' +
-        '<div class="acd-kpi-label">' + k.label + '</div>' +
-        '<div class="acd-kpi-sub">' + k.sub + '</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  // Top conflicts sidebar
-  function renderTopConflicts(conflicts) {
-    var el = q('#acd-top-list');
-    if (!el) return;
-    var top = conflicts
-      .filter(function(c) { return c.is_african; })
-      .sort(function(a,b) {
-        var riskOrder = { critical:0, high:1, medium:2, low:3, minimal:4 };
-        var ra = riskOrder[a.escalation_risk] !== undefined ? riskOrder[a.escalation_risk] : 5;
-        var rb = riskOrder[b.escalation_risk] !== undefined ? riskOrder[b.escalation_risk] : 5;
-        if (ra !== rb) return ra - rb;
-        return (b.fatalities_max||0) - (a.fatalities_max||0);
-      })
-      .slice(0, 8);
-
-    el.innerHTML = top.map(function (c) {
-      var color = AfroConflict.CONFIG.riskColors[c.escalation_risk] || '#6b7280';
-      return '<a href="/tools/africa-conflict/detail.html?id=' + c.slug + '" class="acd-conflict-row">' +
-        '<div class="acd-row-risk-dot" style="background:' + color + '"></div>' +
-        '<div class="acd-row-body">' +
-          '<div class="acd-row-name">' + AfroConflict.flagEmoji(c.primary_country) + ' ' + (c.short_name || c.name) + '</div>' +
-          '<div class="acd-row-sub">' + AfroConflict.statusBadge(c.status) + '</div>' +
-        '</div>' +
-        '<div class="acd-row-stats">' +
-          '<div>☠️ ' + AfroConflict.formatRange(c.fatalities_min, c.fatalities_max) + '</div>' +
-          '<div>🏕️ ' + AfroConflict.formatNumber((c.idps_count||0)+(c.refugees_count||0)) + '</div>' +
-        '</div>' +
-      '</a>';
-    }).join('');
-  }
-
-  // Events feed
-  function renderEvents(events) {
-    var el = q('#acd-events-feed');
-    if (!el || !events.length) {
-      if (el) el.innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">📡</div><div class="acd-empty-title">No recent events data</div></div>';
-      return;
-    }
-
-    el.innerHTML = events.slice(0, 20).map(function (e) {
-      var icon = AfroConflict.CONFIG.eventTypeIcons[e.event_type] || '📋';
-      var conflict = e.ac_conflicts || {};
-      return '<div class="acd-event-chip">' +
-        '<div class="acd-event-chip-top">' +
-          '<span>' + icon + '</span>' +
-          '<span class="acd-event-chip-date">' + AfroConflict.formatDate(e.event_date) + '</span>' +
-        '</div>' +
-        '<div class="acd-event-chip-loc">' + (e.location || 'Unknown location') + '</div>' +
-        '<div class="acd-event-chip-conflict">' + (conflict.short_name || conflict.name || '—') + '</div>' +
-        (e.fatalities > 0 ? '<div class="acd-event-chip-fat">☠️ ' + e.fatalities + ' fatalities</div>' : '') +
-      '</div>';
-    }).join('');
-  }
-
-  // Init map
-  function initMap(conflicts) {
-    if (typeof L === 'undefined' || map) return;
-    map = AfroConflict.renderMap('acd-map', conflicts.filter(function(c) { return c.is_african; }));
-
-    // Layer toggle buttons
-    document.querySelectorAll('.acd-map-toggle').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        document.querySelectorAll('.acd-map-toggle').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        // Future: switch layers based on data-layer attribute
-      });
-    });
-  }
-
-  // Use the /api/* redirected paths
-  async function loadAll() {
-    try {
-      var [statsRes, conflictsRes, eventsRes] = await Promise.all([
-        fetch('/api/stats'),
-        fetch('/api/conflicts'),
-        fetch('/api/events/recent')
-      ]);
-
-      if (statsRes.ok) {
-        var s = await statsRes.json();
-        renderKPIs(s.data || {});
-        q('#acd-last-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString();
-      }
-
-      if (conflictsRes.ok) {
-        var c = await conflictsRes.json();
-        allConflicts = c.data || [];
-        renderTopConflicts(allConflicts);
-        if (typeof L !== 'undefined') initMap(allConflicts);
-      }
-
-      if (eventsRes.ok) {
-        var e = await eventsRes.json();
-        renderEvents(e.data || []);
-      }
-    } catch (err) {
-      console.error('[AfroConflict]', err);
-    }
-  }
-
-  // Wait for Leaflet then load data
-  document.addEventListener('DOMContentLoaded', function () {
-    AfroConflict.init();
-    loadAll();
-
-    // Auto-refresh every 5 minutes when tab is visible
-    setInterval(function () {
-      if (!document.hidden) loadAll();
-    }, 300000);
-
-    // Init map when Leaflet is ready (it's deferred)
-    var leafletCheck = setInterval(function () {
-      if (typeof L !== 'undefined' && allConflicts.length && !map) {
-        initMap(allConflicts);
-        clearInterval(leafletCheck);
-      }
-    }, 200);
-  });
-
-})();
-</script>
+<script src="dashboard.js?v=20260414a" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

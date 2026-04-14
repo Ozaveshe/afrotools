@@ -1,5 +1,17 @@
+#cad-app.workspace-shell-ready {
+  --workspace-tabbar-row: 32px;
+  --workspace-ribbon-row: auto;
+  --workspace-status-row: 24px;
+  --workspace-command-row: 28px;
+  grid-template-rows: var(--workspace-tabbar-row) var(--workspace-ribbon-row) 1fr var(--workspace-status-row) var(--workspace-command-row);
+}
+
 #cad-app.workspace-shell-ready #main-area {
   grid-template-columns: var(--workspace-sidebar-size, 296px) 20px minmax(0, 1fr) auto;
+}
+
+#cad-app.workspace-shell-ready.tabbar-collapsed {
+  --workspace-tabbar-row: 0;
 }
 
 #cad-app.workspace-shell-ready.sidebar-collapsed {
@@ -11,7 +23,19 @@
 }
 
 #cad-app.workspace-shell-ready.command-collapsed {
-  grid-template-rows: 32px auto 1fr 24px 0;
+  --workspace-command-row: 0;
+}
+
+#cad-app.workspace-shell-ready.status-collapsed {
+  --workspace-status-row: 0;
+}
+
+#tab-bar.workspace-hidden {
+  min-height: 0;
+  height: 0;
+  padding: 0;
+  border-bottom: none;
+  overflow: hidden;
 }
 
 #cad-app.workspace-shell-ready.command-collapsed #command-area {
@@ -21,8 +45,69 @@
   border-top: none;
 }
 
+#cad-app.workspace-shell-ready.status-collapsed #status-bar {
+  min-height: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  border-top: none;
+}
+
 #ribbon.workspace-hidden {
   display: none;
+}
+
+#cad-app.workspace-shell-ready.rulers-hidden #main-area {
+  grid-template-columns: var(--workspace-sidebar-size, 296px) minmax(0, 1fr) auto;
+  grid-template-rows: 1fr;
+}
+
+#cad-app.workspace-shell-ready.rulers-hidden #ruler-corner,
+#cad-app.workspace-shell-ready.rulers-hidden #ruler-h,
+#cad-app.workspace-shell-ready.rulers-hidden #ruler-v {
+  display: none;
+}
+
+#cad-app.workspace-shell-ready.rulers-hidden #canvas-wrap {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#cad-app.workspace-shell-ready.rulers-hidden #properties-panel {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+#cad-app.workspace-shell-ready.minimap-hidden #minimap {
+  display: none;
+}
+
+#cad-app.workspace-shell-ready.zoomhud-hidden #zoom-controls {
+  display: none;
+}
+
+#workspace-topbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.workspace-topbar-toggle {
+  min-width: 58px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 141, 185, 0.16);
+  background: rgba(10, 16, 28, 0.8);
+  color: rgba(224, 233, 249, 0.72);
+  font-family: var(--cad-font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
 #cad-app.workspace-shell-ready #main-area,
@@ -120,6 +205,8 @@
 
 .workspace-rail-btn:hover,
 .workspace-rail-btn:focus-visible,
+.workspace-topbar-toggle:hover,
+.workspace-topbar-toggle:focus-visible,
 .workspace-launcher:hover,
 .workspace-launcher:focus-visible,
 .workspace-status-chip:hover,
@@ -138,6 +225,7 @@
 }
 
 .workspace-rail-btn.is-active,
+.workspace-topbar-toggle.is-on,
 .workspace-tool-btn.is-active,
 .workspace-status-chip.is-on,
 .workspace-dock-pill.is-on {
@@ -236,6 +324,40 @@
 
 .workspace-launcher { justify-content: space-between; padding: 12px 14px; }
 
+.workspace-mode-strip {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(7, 12, 24, 0.78) 0%, rgba(8, 20, 38, 0.7) 100%);
+  border: 1px solid rgba(120, 141, 185, 0.14);
+}
+
+.workspace-mode-strip__eyebrow {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(125, 211, 252, 0.72);
+}
+
+.workspace-mode-strip__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.workspace-mode-strip__row strong {
+  font-size: 12px;
+  color: #f8fbff;
+}
+
+#workspace-mode-footprint {
+  font-size: 10px;
+  color: rgba(224, 233, 249, 0.68);
+}
+
 .workspace-launcher__label,
 .workspace-tool-btn__meta,
 .workspace-action-btn__meta,
@@ -310,6 +432,13 @@
   border-radius: 18px;
   background: rgba(10, 16, 28, 0.76);
   overflow: hidden;
+  border: 1px solid rgba(120, 141, 185, 0.12);
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.workspace-section[open] {
+  border-color: rgba(96, 165, 250, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .workspace-section summary {
@@ -320,9 +449,16 @@
   gap: 12px;
   padding: 12px 14px;
   cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
 }
 
 .workspace-section summary::-webkit-details-marker { display: none; }
+
+.workspace-section summary:hover,
+.workspace-section summary:focus-visible {
+  background: rgba(18, 29, 47, 0.5);
+  outline: none;
+}
 
 .workspace-section__chevron {
   width: 26px;
@@ -343,6 +479,18 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  animation: workspace-section-reveal 140ms ease;
+}
+
+@keyframes workspace-section-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .workspace-note {

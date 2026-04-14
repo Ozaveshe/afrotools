@@ -59,6 +59,10 @@ function normalizeScope(fileState) {
   return `${fileFormat}:${fileName}`;
 }
 
+function slugifySection(value) {
+  return String(value || "section").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
 export class WorkspaceShell {
   constructor(app) {
     this.app = app;
@@ -97,7 +101,16 @@ export class WorkspaceShell {
     const appEl = document.getElementById("cad-app");
     const mainArea = document.getElementById("main-area");
     const canvasWrap = document.getElementById("canvas-wrap");
+    const tabBar = document.getElementById("tab-bar");
     appEl.classList.add("workspace-shell-ready");
+    if (tabBar && !document.getElementById("workspace-topbar-controls")) {
+      document.getElementById("tab-new")?.insertAdjacentHTML("beforebegin", `
+        <div id="workspace-topbar-controls">
+          <button class="workspace-topbar-toggle" data-toggle="tabbarCollapsed" id="workspace-top-tabs" title="Toggle tab bar">Tabs</button>
+          <button class="workspace-topbar-toggle" data-toggle="ribbonCollapsed" id="workspace-top-ribbon" title="Toggle ribbon">Ribbon</button>
+        </div>
+      `);
+    }
     if (!document.getElementById("workspace-sidebar")) {
       mainArea.insertAdjacentHTML("afterbegin", `
         <aside id="workspace-sidebar">
@@ -114,6 +127,13 @@ export class WorkspaceShell {
               <span class="workspace-sidebar__eyebrow">AfroDraft Essentials</span>
               <h2 class="workspace-sidebar__title">2D drafting without the noise</h2>
               <p class="workspace-sidebar__subtitle">Native AfroDraft projects, DXF exchange, and a DWG bridge that stays honest about what is connected.</p>
+              <div class="workspace-mode-strip">
+                <span class="workspace-mode-strip__eyebrow">Active workspace</span>
+                <div class="workspace-mode-strip__row">
+                  <strong id="workspace-mode-name">Draft</strong>
+                  <span id="workspace-mode-footprint">Full editor</span>
+                </div>
+              </div>
               <div class="workspace-file-strip">
                 <div class="workspace-file-strip__meta">
                   <span class="workspace-file-strip__eyebrow">Current file</span>
@@ -169,6 +189,33 @@ export class WorkspaceShell {
               </div>
             </section>
             <section class="workspace-section" open>
+              <summary><span class="workspace-section__title">Workspaces</span><span class="workspace-section__chevron">v</span></summary>
+              <div class="workspace-section__body workspace-tool-grid">
+                <button class="workspace-tool-btn" data-action="workspace-draft"><span class="workspace-tool-btn__icon">Dr</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Draft</span><span class="workspace-tool-btn__shortcut">Full editor</span></span></button>
+                <button class="workspace-tool-btn" data-action="workspace-review"><span class="workspace-tool-btn__icon">Rv</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Review</span><span class="workspace-tool-btn__shortcut">Less chrome</span></span></button>
+                <button class="workspace-tool-btn" data-action="workspace-plot"><span class="workspace-tool-btn__icon">Pl</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Plot</span><span class="workspace-tool-btn__shortcut">Sheet setup</span></span></button>
+                <button class="workspace-tool-btn" data-action="workspace-canvas"><span class="workspace-tool-btn__icon">Mx</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Canvas Max</span><span class="workspace-tool-btn__shortcut">Largest work area</span></span></button>
+              </div>
+            </section>
+            <section class="workspace-section" open>
+              <summary><span class="workspace-section__title">Canvas</span><span class="workspace-section__chevron">v</span></summary>
+              <div class="workspace-section__body workspace-tool-grid">
+                <button class="workspace-tool-btn" data-action="rulers"><span class="workspace-tool-btn__icon">Ru</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Rulers</span><span class="workspace-tool-btn__shortcut">Top and left</span></span></button>
+                <button class="workspace-tool-btn" data-action="minimap"><span class="workspace-tool-btn__icon">Mm</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Minimap</span><span class="workspace-tool-btn__shortcut">View navigator</span></span></button>
+                <button class="workspace-tool-btn" data-action="zoom-hud"><span class="workspace-tool-btn__icon">Zh</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Zoom HUD</span><span class="workspace-tool-btn__shortcut">Corner controls</span></span></button>
+                <button class="workspace-tool-btn" data-action="status-bar"><span class="workspace-tool-btn__icon">Sb</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Status Bar</span><span class="workspace-tool-btn__shortcut">Bottom toggles</span></span></button>
+              </div>
+            </section>
+            <section class="workspace-section" open>
+              <summary><span class="workspace-section__title">Power Tools</span><span class="workspace-section__chevron">v</span></summary>
+              <div class="workspace-section__body workspace-tool-grid">
+                <button class="workspace-tool-btn" data-action="quick-select"><span class="workspace-tool-btn__icon">Qs</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Quick Select</span><span class="workspace-tool-btn__shortcut">Filter objects</span></span></button>
+                <button class="workspace-tool-btn" data-action="find-text"><span class="workspace-tool-btn__icon">Ft</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Find Text</span><span class="workspace-tool-btn__shortcut">Search notes</span></span></button>
+                <button class="workspace-tool-btn" data-action="audit-drawing"><span class="workspace-tool-btn__icon">Au</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Audit</span><span class="workspace-tool-btn__shortcut">Check drawing</span></span></button>
+                <button class="workspace-tool-btn" data-action="command-history"><span class="workspace-tool-btn__icon">Ch</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">History</span><span class="workspace-tool-btn__shortcut">Command log</span></span></button>
+              </div>
+            </section>
+            <section class="workspace-section" open>
               <summary><span class="workspace-section__title">Selection</span><span class="workspace-section__chevron">v</span></summary>
               <div class="workspace-section__body workspace-tool-grid">
                 <button class="workspace-tool-btn" data-action="zoom-selection"><span class="workspace-tool-btn__icon">Zs</span><span class="workspace-tool-btn__meta"><span class="workspace-tool-btn__name">Zoom Selected</span><span class="workspace-tool-btn__shortcut">Frame selection</span></span></button>
@@ -204,9 +251,11 @@ export class WorkspaceShell {
         </aside>
       `);
     }
+    this._upgradeWorkspaceSections();
     if (!document.getElementById("workspace-dock-controls")) {
       canvasWrap.insertAdjacentHTML("beforeend", `
         <div id="workspace-dock-controls">
+          <button class="workspace-dock-pill" data-toggle="tabbarCollapsed" id="workspace-dock-tabs">Tabs</button>
           <button class="workspace-dock-pill" data-toggle="sidebarCollapsed" id="workspace-dock-tools">Tools</button>
           <button class="workspace-dock-pill" data-toggle="ribbonCollapsed" id="workspace-dock-ribbon">Ribbon</button>
           <button class="workspace-dock-pill" data-toggle="inspectorCollapsed" id="workspace-dock-inspector">Inspector</button>
@@ -268,6 +317,7 @@ export class WorkspaceShell {
   }
 
   _bindEvents() {
+    document.getElementById("tab-bar")?.addEventListener("click", (event) => this._handleUiClick(event));
     document.getElementById("workspace-sidebar")?.addEventListener("click", (event) => this._handleUiClick(event));
     document.getElementById("workspace-dock-controls")?.addEventListener("click", (event) => this._handleUiClick(event));
     document.getElementById("properties-panel")?.addEventListener("click", (event) => this._handleUiClick(event));
@@ -282,6 +332,34 @@ export class WorkspaceShell {
     this.engine.on("drawing-cleared", () => { this._refreshBlockPanel(); this._refreshViewsPanel(); this._syncSummary(); });
     this.engine.on("block-defined", () => this._refreshBlockPanel());
     this.engine.on("blocks-purged", () => this._refreshBlockPanel());
+  }
+
+  _upgradeWorkspaceSections() {
+    const panel = document.querySelector("#workspace-sidebar .workspace-sidebar__panel");
+    if (!panel) return;
+    Array.from(panel.children)
+      .filter((child) => child.matches?.("section.workspace-section"))
+      .forEach((section, index) => {
+        const title = section.querySelector(".workspace-section__title")?.textContent?.trim() || `section-${index + 1}`;
+        const key = slugifySection(title);
+        const details = document.createElement("details");
+        details.className = section.className;
+        details.dataset.section = key;
+        const saved = this.state.sectionState?.[key];
+        const shouldOpen = saved === undefined ? section.hasAttribute("open") : !!saved;
+        if (shouldOpen) details.open = true;
+        details.innerHTML = section.innerHTML;
+        section.replaceWith(details);
+      });
+    panel.querySelectorAll("details.workspace-section").forEach((details) => {
+      if (details.dataset.enhanced === "true") return;
+      details.dataset.enhanced = "true";
+      details.addEventListener("toggle", () => {
+        this.state.sectionState ||= {};
+        this.state.sectionState[details.dataset.section] = details.open;
+        this._saveState();
+      });
+    });
   }
 
   _bindDragAndDrop() {
@@ -359,6 +437,18 @@ export class WorkspaceShell {
     if (action === "tracking") return void this._toggleTracking();
     if (action === "axes") return void this._toggleAxes();
     if (action === "measure") return void this._toggleMeasure();
+    if (action === "workspace-draft") return void this._applyWorkspacePreset("draft");
+    if (action === "workspace-review") return void this._applyWorkspacePreset("review");
+    if (action === "workspace-plot") return void this._applyWorkspacePreset("plot");
+    if (action === "workspace-canvas") return void this._applyWorkspacePreset("canvas");
+    if (action === "rulers") return void this._toggleLayoutFlag("rulersHidden");
+    if (action === "minimap") return void this._toggleLayoutFlag("minimapHidden");
+    if (action === "zoom-hud") return void this._toggleLayoutFlag("zoomHudHidden");
+    if (action === "status-bar") return void this._toggleLayoutFlag("statusCollapsed");
+    if (action === "quick-select") return void (this.app._showQuickSelectDialog?.() || this._click("v7-qselect"));
+    if (action === "find-text") return void (this.app._findReplaceText?.() || this._click("v7-findreplace"));
+    if (action === "audit-drawing") return void (this.app._auditDrawing?.() || this._click("v7-audit"));
+    if (action === "command-history") return void (this.app._showCommandHistory?.() || this._click("v7-cmdhist"));
     if (action === "units") return void this.app._showUnitsDialog?.();
     if (action === "limits") return void this.app._showLimitsDialog?.();
     if (action === "drawing-stats") return void this.app._showDrawingStats?.();
@@ -416,14 +506,60 @@ export class WorkspaceShell {
 
   _applyLayout() {
     const appEl = document.getElementById("cad-app");
+    const tabBar = document.getElementById("tab-bar");
     const ribbon = document.getElementById("ribbon");
     const panel = document.getElementById("properties-panel");
+    const tabbarHidden = this.state.tabbarCollapsed || this.state.focusMode;
+    const ribbonHidden = this.state.ribbonCollapsed || this.state.focusMode;
+    const rulersHidden = this.state.rulersHidden || this.state.focusMode;
+    const minimapHidden = this.state.minimapHidden || this.state.focusMode;
+    const zoomHudHidden = this.state.zoomHudHidden || this.state.focusMode;
+    const statusHidden = this.state.statusCollapsed || this.state.focusMode;
     appEl?.classList.toggle("sidebar-collapsed", this.state.sidebarCollapsed || this.state.focusMode);
+    appEl?.classList.toggle("tabbar-collapsed", !!tabbarHidden);
     appEl?.classList.toggle("command-collapsed", this.state.commandCollapsed || this.state.focusMode);
+    appEl?.classList.toggle("status-collapsed", !!statusHidden);
     appEl?.classList.toggle("focus-mode", !!this.state.focusMode);
-    ribbon?.classList.toggle("workspace-hidden", this.state.ribbonCollapsed || this.state.focusMode);
+    appEl?.classList.toggle("rulers-hidden", !!rulersHidden);
+    appEl?.classList.toggle("minimap-hidden", !!minimapHidden);
+    appEl?.classList.toggle("zoomhud-hidden", !!zoomHudHidden);
+    tabBar?.classList.toggle("workspace-hidden", !!tabbarHidden);
+    ribbon?.classList.toggle("workspace-hidden", !!ribbonHidden);
     panel?.classList.toggle("collapsed", this.state.inspectorCollapsed || this.state.focusMode);
-    [["workspace-dock-tools", !(this.state.sidebarCollapsed || this.state.focusMode)], ["workspace-dock-ribbon", !(this.state.ribbonCollapsed || this.state.focusMode)], ["workspace-dock-inspector", !(this.state.inspectorCollapsed || this.state.focusMode)], ["workspace-dock-command", !(this.state.commandCollapsed || this.state.focusMode)], ["workspace-dock-focus", !!this.state.focusMode]].forEach(([id, on]) => document.getElementById(id)?.classList.toggle("is-on", on));
+    [["workspace-top-tabs", !tabbarHidden], ["workspace-top-ribbon", !ribbonHidden], ["workspace-dock-tabs", !tabbarHidden], ["workspace-dock-tools", !(this.state.sidebarCollapsed || this.state.focusMode)], ["workspace-dock-ribbon", !ribbonHidden], ["workspace-dock-inspector", !(this.state.inspectorCollapsed || this.state.focusMode)], ["workspace-dock-command", !(this.state.commandCollapsed || this.state.focusMode)], ["workspace-dock-focus", !!this.state.focusMode]].forEach(([id, on]) => document.getElementById(id)?.classList.toggle("is-on", on));
+    this._syncWorkspaceControls();
+  }
+
+  _syncWorkspaceControls() {
+    const profile = this._getWorkspaceProfile();
+    const labels = {
+      draft: ["Draft", "Full editor"],
+      review: ["Review", "Less chrome"],
+      plot: ["Plot", "Sheet setup"],
+      canvas: ["Canvas Max", "Largest work area"],
+    };
+    const [modeName, modeFootprint] = labels[profile] || labels.draft;
+    document.getElementById("workspace-mode-name")?.replaceChildren(document.createTextNode(modeName));
+    document.getElementById("workspace-mode-footprint")?.replaceChildren(document.createTextNode(modeFootprint));
+    [["workspace-draft", "draft"], ["workspace-review", "review"], ["workspace-plot", "plot"], ["workspace-canvas", "canvas"]].forEach(([action, key]) => {
+      document.querySelectorAll(`[data-action="${action}"]`).forEach((button) => button.classList.toggle("is-active", profile === key));
+    });
+    [["rulers", !(this.state.rulersHidden || this.state.focusMode)], ["minimap", !(this.state.minimapHidden || this.state.focusMode)], ["zoom-hud", !(this.state.zoomHudHidden || this.state.focusMode)], ["status-bar", !(this.state.statusCollapsed || this.state.focusMode)]].forEach(([action, on]) => {
+      document.querySelectorAll(`[data-action="${action}"]`).forEach((button) => button.classList.toggle("is-active", !!on));
+    });
+  }
+
+  _getWorkspaceProfile() {
+    if (this.state.focusMode || (this.state.tabbarCollapsed && this.state.ribbonCollapsed && this.state.sidebarCollapsed && this.state.inspectorCollapsed && this.state.commandCollapsed && this.state.statusCollapsed)) {
+      return "canvas";
+    }
+    if (this.state.rulersHidden && this.state.minimapHidden && this.state.zoomHudHidden && this.state.ribbonCollapsed && this.state.commandCollapsed) {
+      return "plot";
+    }
+    if (this.state.ribbonCollapsed && this.state.sidebarCollapsed && this.state.commandCollapsed) {
+      return "review";
+    }
+    return "draft";
   }
 
   _syncSummary() {
@@ -671,6 +807,74 @@ export class WorkspaceShell {
     this._toast(`Zoomed to ${layerName}`, "success");
   }
 
+  _applyWorkspacePreset(name) {
+    const presets = {
+      draft: {
+        focusMode: false,
+        tabbarCollapsed: false,
+        ribbonCollapsed: false,
+        sidebarCollapsed: false,
+        inspectorCollapsed: false,
+        commandCollapsed: false,
+        rulersHidden: false,
+        minimapHidden: false,
+        zoomHudHidden: false,
+        statusCollapsed: false,
+      },
+      review: {
+        focusMode: false,
+        tabbarCollapsed: false,
+        ribbonCollapsed: true,
+        sidebarCollapsed: true,
+        inspectorCollapsed: false,
+        commandCollapsed: true,
+        rulersHidden: false,
+        minimapHidden: true,
+        zoomHudHidden: false,
+        statusCollapsed: false,
+      },
+      plot: {
+        focusMode: false,
+        tabbarCollapsed: false,
+        ribbonCollapsed: true,
+        sidebarCollapsed: false,
+        inspectorCollapsed: false,
+        commandCollapsed: true,
+        rulersHidden: true,
+        minimapHidden: true,
+        zoomHudHidden: true,
+        statusCollapsed: false,
+      },
+      canvas: {
+        focusMode: true,
+        tabbarCollapsed: true,
+        ribbonCollapsed: true,
+        sidebarCollapsed: true,
+        inspectorCollapsed: true,
+        commandCollapsed: true,
+        rulersHidden: true,
+        minimapHidden: true,
+        zoomHudHidden: true,
+        statusCollapsed: true,
+      },
+    };
+    const preset = presets[name];
+    if (!preset) return;
+    Object.assign(this.state, preset);
+    this._applyLayout();
+    this._saveState();
+    this._toast(`${name === "canvas" ? "Canvas Max" : name[0].toUpperCase() + name.slice(1)} workspace ready`, "success");
+  }
+
+  _toggleLayoutFlag(key) {
+    this.state[key] = !this.state[key];
+    if (key === "rulersHidden" && !this.state[key]) {
+      this.app.renderer.dirty = true;
+    }
+    this._applyLayout();
+    this._saveState();
+  }
+
   _freezeOtherLayers() {
     const current = this.engine.currentLayer || this.app.layerManager?.currentLayer || "Layer 0";
     const names = this._getLayerNames();
@@ -872,9 +1076,9 @@ export class WorkspaceShell {
 
   _loadState() {
     try {
-      return { sidebarCollapsed: false, ribbonCollapsed: false, inspectorCollapsed: false, commandCollapsed: false, focusMode: false, inspectorTab: "props", ribbonMode: "quick", ...(JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}) };
+      return { tabbarCollapsed: false, sidebarCollapsed: false, ribbonCollapsed: false, inspectorCollapsed: false, commandCollapsed: false, focusMode: false, rulersHidden: false, minimapHidden: false, zoomHudHidden: false, statusCollapsed: false, sectionState: {}, inspectorTab: "props", ribbonMode: "quick", ...(JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}) };
     } catch {
-      return { sidebarCollapsed: false, ribbonCollapsed: false, inspectorCollapsed: false, commandCollapsed: false, focusMode: false, inspectorTab: "props", ribbonMode: "quick" };
+      return { tabbarCollapsed: false, sidebarCollapsed: false, ribbonCollapsed: false, inspectorCollapsed: false, commandCollapsed: false, focusMode: false, rulersHidden: false, minimapHidden: false, zoomHudHidden: false, statusCollapsed: false, sectionState: {}, inspectorTab: "props", ribbonMode: "quick" };
     }
   }
 
