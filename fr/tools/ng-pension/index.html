@@ -1,49 +1,476 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js">
 <head>
 <meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur pension Nigeria | AfroTools</title>
-<meta name="description" content="Estimez vos cotisations au système de retraite contributif (CPS) du Nigeria. Calculez les parts employé et employeur selon la Pension Reform Act.">
+<title>Calculateur de pension Nigeria (CPS) | AfroTools</title>
+<meta name="description" content="Calculez la pension au Nigeria, comparez les PFA, simulez les cotisations salariées et patronales, testez l'AVC et suivez les écarts de versement dans une interface française premium.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/ng-pension/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ng-pension/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ng-pension/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ng-pension/">
-<meta property="og:title" content="Calculateur pension Nigeria | AfroTools">
-<meta property="og:description" content="Calculez vos cotisations retraite au Nigeria selon la Pension Reform Act.">
+<meta property="og:title" content="Calculateur de pension Nigeria (CPS) | AfroTools">
+<meta property="og:description" content="Calculez la pension au Nigeria, comparez les PFA et explorez les scénarios CPS, AVC, micro-pension et retraite en français.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://afrotools.com/fr/tools/ng-pension/">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur de pension Nigeria (CPS) | AfroTools">
+<meta name="twitter:description" content="Pension Nigeria en français: CPS, PFA, AVC, micro-pension, retraite et contrôle des écarts de versement.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<meta name="content-language" content="fr">
+<meta property="article:modified_time" content="2026-04-15">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<style>
+:root{
+  --fr-ink:#0f172a;
+  --fr-muted:#475569;
+  --fr-line:#dbe4f0;
+  --fr-bg:#f7fafc;
+  --fr-surface:#ffffff;
+  --fr-soft:#eff6ff;
+  --fr-brand:#0f6fd6;
+  --fr-brand-dark:#0f172a;
+  --fr-brand-green:#15803d;
+}
+body{background:linear-gradient(180deg,#f8fbff 0%,#ffffff 28%,#f8fafc 100%);color:var(--fr-ink)}
+.fr-shell{max-width:1180px;margin:0 auto;padding:0 1.25rem}
+.fr-hero{position:relative;overflow:hidden;background:radial-gradient(circle at top right,rgba(255,255,255,.12),transparent 32%),linear-gradient(135deg,#0b1320 0%,#0f172a 46%,#0f6fd6 100%);color:#fff;padding:3.4rem 0 2.4rem}
+.fr-hero::before,.fr-hero::after{content:"";position:absolute;border-radius:999px;pointer-events:none;opacity:.16}
+.fr-hero::before{width:18rem;height:18rem;background:radial-gradient(circle,#7dd3fc 0%,rgba(125,211,252,0) 70%);right:-4rem;top:-6rem}
+.fr-hero::after{width:14rem;height:14rem;background:radial-gradient(circle,#38bdf8 0%,rgba(56,189,248,0) 70%);left:-5rem;bottom:-7rem}
+.fr-crumbs{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1rem}
+.fr-crumbs a{color:rgba(255,255,255,.82);text-decoration:none}
+.fr-crumbs span{color:rgba(255,255,255,.55)}
+.fr-hero-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,.85fr);gap:1.5rem;align-items:end}
+.fr-hero h1{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;font-size:clamp(2.05rem,4.8vw,3.6rem);line-height:1.02;letter-spacing:-.04em;margin:0 0 .9rem}
+.fr-hero h1 em{font-style:normal;color:#8fd3ff}
+.fr-hero p{max-width:42rem;font-size:1.03rem;line-height:1.75;color:rgba(255,255,255,.86);margin:0}
+.fr-chip-row{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.25rem}
+.fr-chip{display:inline-flex;align-items:center;padding:.5rem .82rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);font-size:.84rem;font-weight:700;color:#fff}
+.fr-hero-panel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:1.25rem;padding:1.1rem 1.15rem;backdrop-filter:blur(12px);box-shadow:0 18px 40px rgba(15,23,42,.18)}
+.fr-hero-panel strong{display:block;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.55rem}
+.fr-hero-panel p{margin:0;font-size:.96rem;line-height:1.7;color:rgba(255,255,255,.9)}
+.fr-grid{max-width:1180px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+.fr-grid-main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,.95fr);gap:1rem;align-items:start}
+.fr-card{background:var(--fr-surface);border:1px solid rgba(148,163,184,.22);border-radius:1.1rem;box-shadow:0 8px 28px rgba(15,23,42,.04)}
+.fr-card + .fr-card{margin-top:1rem}
+.fr-card-pad{padding:1.1rem 1.15rem}
+.fr-title{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;color:var(--fr-ink);letter-spacing:-.02em;font-size:1.35rem;margin:0 0 .65rem}
+.fr-copy{color:var(--fr-muted);line-height:1.8;font-size:.98rem}
+.fr-chip-grid{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
+.fr-chip-link{display:inline-flex;align-items:center;padding:.58rem .84rem;border-radius:999px;border:1px solid #dbeafe;background:#eff6ff;color:#1d4ed8;font-weight:700;text-decoration:none;font-size:.86rem}
+.fr-bullet-list{display:grid;gap:.7rem;margin-top:.9rem}
+.fr-bullet{padding:0.85rem 0.95rem;border:1px solid var(--fr-line);border-radius:1rem;background:linear-gradient(180deg,#fff 0%,#fbfdff 100%)}
+.fr-bullet strong{display:block;margin-bottom:.25rem}
+.fr-tool-frame{background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);overflow:hidden}
+.fr-frame-shell{border-top:1px solid var(--fr-line);background:#ffffff}
+.fr-frame-status{padding:1rem 1.15rem;background:#f8fbff;border-bottom:1px solid var(--fr-line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.fr-frame-status strong{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
+.fr-frame-status span{font-size:.9rem;color:var(--fr-muted)}
+.fr-frame{width:100%;min-height:2300px;border:none;display:block;background:#fff}
+.fr-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+.fr-stat{padding:1rem;border:1px solid var(--fr-line);border-radius:1rem;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%)}
+.fr-stat strong{display:block;font-size:.98rem;margin-bottom:.25rem}
+.fr-stat span{color:var(--fr-muted);font-size:.9rem;line-height:1.65}
+.fr-faq details{border:1px solid rgba(148,163,184,.2);border-radius:.95rem;background:#fff;margin-bottom:.8rem;overflow:hidden;box-shadow:0 6px 24px rgba(15,23,42,.03)}
+.fr-faq summary{list-style:none;cursor:pointer;padding:1rem 1.1rem;font-weight:700;color:var(--fr-ink);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.fr-faq summary::-webkit-details-marker{display:none}
+.fr-faq .answer{padding:0 1.1rem 1rem;color:var(--fr-muted);line-height:1.75}
+.fr-related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem}
+.fr-related a{display:flex;flex-direction:column;gap:.25rem;padding:1rem;border:1px solid var(--fr-line);border-radius:1rem;text-decoration:none;color:var(--fr-ink);background:linear-gradient(180deg,#fff 0%,#fbfdff 100%)}
+.fr-related a strong{font-size:.98rem}
+.fr-related a span{color:var(--fr-muted);font-size:.88rem;line-height:1.5}
+.fr-side{position:sticky;top:16px}
+.fr-side .fr-card + .fr-card{margin-top:1rem}
+@media (max-width: 1024px){
+  .fr-hero-grid,.fr-grid-main,.fr-related,.fr-stat-grid{grid-template-columns:1fr}
+  .fr-side{position:static}
+}
+@media (max-width: 760px){
+  .fr-hero{padding:3rem 0 2rem}
+  .fr-grid{padding:1.1rem 1rem 2.4rem}
+  .fr-card,.fr-hero-panel{border-radius:1rem}
+  .fr-frame{min-height:2050px}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Calculateur de pension Nigeria (CPS)",
+  "description":"Calculez la pension au Nigeria, comparez les PFA, explorez les AVC et suivez les écarts de versement dans une interface française premium.",
+  "url":"https://afrotools.com/fr/tools/ng-pension/",
+  "inLanguage":"fr",
+  "applicationCategory":"FinanceApplication",
+  "operatingSystem":"Web",
+  "browserRequirements":"Requires JavaScript",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebPage",
+  "name":"Calculateur de pension Nigeria (CPS)",
+  "description":"Page française premium pour la pension nigériane, les PFA, l'AVC, la micro-pension et la comparaison CPS vs gratuity.",
+  "url":"https://afrotools.com/fr/tools/ng-pension/",
+  "inLanguage":"fr",
+  "isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/tools/"},
+    {"@type":"ListItem","position":3,"name":"Calculateur de pension Nigeria","item":"https://afrotools.com/fr/tools/ng-pension/"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Que couvre cette page ?","acceptedAnswer":{"@type":"Answer","text":"Elle couvre la pension nigériane, les cotisations CPS, la comparaison des PFA, l'AVC, la micro-pension, le capital décès et la vérification des écarts de versement."}},
+    {"@type":"Question","name":"Puis-je comparer la pension avec mon salaire net ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Le lien avec le hub salaire/impôts permet de croiser pension, salaire net et retenues sociales pour avoir une vue complète."}},
+    {"@type":"Question","name":"La version française modifie-t-elle la logique du calcul ?","acceptedAnswer":{"@type":"Answer","text":"Non. La logique source reste celle de la page anglaise; seule la présentation visible, le SEO et les libellés sont localisés en français."}},
+    {"@type":"Question","name":"Que faire si mon RSA affiche un écart ?","acceptedAnswer":{"@type":"Answer","text":"Comparez le crédit attendu avec le versement reçu, vérifiez le portail PFA puis demandez une confirmation de remittance à l'employeur si nécessaire."}}
+  ]
+}
+</script>
 </head>
 <body>
-<afro-navbar></afro-navbar>
-<main>
-<section class="hero-section" style="padding:3rem 1rem;text-align:center">
-<h1>Calculateur pension Nigeria</h1>
-<p>Calculez vos cotisations retraite au Nigeria selon la Pension Reform Act.</p>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+<section class="fr-hero">
+  <div class="fr-shell fr-hero-grid">
+    <div>
+      <nav class="fr-crumbs" aria-label="Fil d'Ariane">
+        <a href="/fr/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><a href="/fr/tools/calculateur-paye/">Salaire et impôts</a><span>/</span><span>Pension Nigeria</span>
+      </nav>
+      <h1>Calculateur de <em>pension Nigeria</em> en français</h1>
+      <p>Une page premium pour suivre votre CPS, comparer les PFA, simuler l'AVC et relier votre retraite au salaire net. Le moteur source reste fidèle à l'outil anglais, tandis que l'expérience visible est entièrement francisée.</p>
+      <div class="fr-chip-row">
+        <span class="fr-chip">CPS, PFA, RSA</span>
+        <span class="fr-chip">AVC et micro-pension</span>
+        <span class="fr-chip">Écarts de versement</span>
+        <span class="fr-chip">SEO francophone</span>
+      </div>
+    </div>
+    <aside class="fr-hero-panel">
+      <strong>Lecture rapide</strong>
+      <p>Cette page vous aide à voir la cotisation, le rendement des fonds, le capital retraite projeté et les points de contrôle quand la remittance employeur semble en retard.</p>
+    </aside>
+  </div>
 </section>
-<section style="max-width:1100px;margin:0 auto;padding:1rem">
-<iframe src="/tools/ng-pension/" style="width:100%;min-height:700px;border:none;border-radius:12px" loading="lazy" title="Calculateur pension Nigeria"></iframe>
-</section>
-<section style="max-width:800px;margin:2rem auto;padding:0 1rem">
-<p>Le calculateur de pension Nigeria estime vos cotisations au système de retraite contributif (CPS). Calculez les parts employé et employeur selon la Pension Reform Act.</p>
-<p>Le système de pension contributif nigérian est obligatoire pour les entreprises de 3 employés ou plus. Cet outil calcule les cotisations mensuelles et projette votre épargne retraite selon votre profil salarial.</p>
-</section>
-<section style="max-width:800px;margin:2rem auto;padding:0 1rem">
-<h2>Questions fréquentes</h2>
-<details><summary>Quels sont les taux de cotisation ?</summary><p>L'employé cotise au minimum 8% et l'employeur 10% du salaire brut, soit un total minimum de 18% versé au compte RSA du salarié.</p></details>
-<details><summary>Qu'est-ce qu'un RSA ?</summary><p>Le Retirement Savings Account (RSA) est votre compte individuel de retraite géré par un PFA (Pension Fund Administrator) de votre choix.</p></details>
-<details><summary>Peut-on retirer avant la retraite ?</summary><p>Un retrait partiel de 25% est possible après 4 mois de chômage. Le solde reste bloqué jusqu'à l'âge de 50 ans ou la retraite.</p></details>
-</section>
+
+<main class="fr-grid">
+  <div class="fr-grid-main">
+    <section class="fr-card fr-tool-frame">
+      <div class="fr-card-pad">
+        <h2 class="fr-title">Moteur de pension localisé</h2>
+        <p class="fr-copy">Le calculateur ci-dessous charge la source nigériane et applique une couche de localisation DOM pour réduire les fuites d'anglais dans les onglets, tableaux, alertes IA, boutons de partage et messages dynamiques.</p>
+      </div>
+      <div class="fr-frame-status">
+        <strong>Calculateur source</strong>
+        <span id="frameStatus">Chargement du moteur de pension en français...</span>
+      </div>
+      <iframe id="pensionFrame" class="fr-frame" src="/tools/ng-pension/" title="Calculateur de pension Nigeria" loading="lazy"></iframe>
+    </section>
+
+    <aside class="fr-side">
+      <section class="fr-card">
+        <div class="fr-card-pad">
+          <h2 class="fr-title">Ce que couvre l'outil</h2>
+          <div class="fr-bullet-list">
+            <div class="fr-bullet"><strong>Contrôle des cotisations</strong><span>Vérifiez les contributions salarié et employeur, ainsi que les écarts de versement.</span></div>
+            <div class="fr-bullet"><strong>Comparaison des PFA</strong><span>Mesurez la performance des fonds sur 1, 3 et 5 ans avant de décider d'un transfert.</span></div>
+            <div class="fr-bullet"><strong>Retraite et AVC</strong><span>Simulez un AVC, une rente, un capital forfaitaire et un départ anticipé.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fr-card" style="margin-top:1rem">
+        <div class="fr-card-pad">
+          <h2 class="fr-title">Salaire et impôts</h2>
+          <div class="fr-stat-grid">
+            <div class="fr-stat"><strong>Hub PAYE</strong><span>Comparez la pension avec le salaire net sur tout le continent africain.</span></div>
+            <div class="fr-stat"><strong>Nigeria salaire</strong><span>Rejoignez la page salaire/impôts du Nigeria pour croiser retenues et net à percevoir.</span></div>
+          </div>
+          <div class="fr-chip-grid" style="margin-top:1rem">
+            <a class="fr-chip-link" href="/fr/tools/calculateur-paye/">Hub calculateur PAYE</a>
+            <a class="fr-chip-link" href="/fr/nigeria/ng-salary-tax/">Nigeria salaire net</a>
+            <a class="fr-chip-link" href="/fr/tools/ng-nhf/">NHF Nigeria</a>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="fr-card" style="margin-top:1rem">
+    <div class="fr-card-pad">
+      <h2 class="fr-title">Pourquoi cette version française compte</h2>
+      <div class="fr-stat-grid">
+        <div class="fr-stat"><strong>Lecture native</strong><span>Le visiteur voit un parcours en français, pas un simple écran anglais recouvert.</span></div>
+        <div class="fr-stat"><strong>Maillage fort</strong><span>La page renvoie vers les outils salaire/impôts pour renforcer le silo financier.</span></div>
+        <div class="fr-stat"><strong>Sorties dynamiques</strong><span>Les libellés runtime, les alertes et les messages IA sont retranscrits après rendu.</span></div>
+        <div class="fr-stat"><strong>SEO local</strong><span>Canonical, hreflang, schéma, breadcrumbs et texte éditorial sont pensés pour le français.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fr-card fr-faq" style="margin-top:1rem">
+    <div class="fr-card-pad">
+      <h2 class="fr-title">Questions fréquentes</h2>
+      <details>
+        <summary>Cette page modifie-t-elle la logique du calculateur ? <span>+</span></summary>
+        <div class="answer">Non. Le moteur reste la source anglaise, mais la couche française traduit les sorties visibles et les repères éditoriaux.</div>
+      </details>
+      <details>
+        <summary>Puis-je comparer mon pensionnement avec mon salaire net ? <span>+</span></summary>
+        <div class="answer">Oui. Le hub salaire/impôts permet de croiser la pension, le revenu net et les autres retenues dans un même parcours.</div>
+      </details>
+      <details>
+        <summary>Que faire si mon RSA affiche un écart ? <span>+</span></summary>
+        <div class="answer">Vérifiez le montant attendu, comparez-le au crédit reçu dans le portail PFA puis demandez une remittance confirmation à l'employeur si nécessaire.</div>
+      </details>
+      <details>
+        <summary>À quoi servent l'AVC et la micro-pension ? <span>+</span></summary>
+        <div class="answer">L'AVC augmente le capital retraite avec un avantage fiscal potentiel, tandis que la micro-pension aide les travailleurs informels à construire une épargne longue.</div>
+      </details>
+    </div>
+  </section>
+
+  <section class="fr-card" style="margin-top:1rem">
+    <div class="fr-card-pad">
+      <h2 class="fr-title">Outils liés</h2>
+      <div class="fr-related">
+        <a href="/fr/tools/calculateur-paye/"><strong>Hub calculateur PAYE</strong><span>Point d'entrée pour les salaires nets et les retenues sociales par pays.</span></a>
+        <a href="/fr/nigeria/ng-salary-tax/"><strong>Salaire net Nigeria</strong><span>Reliez pension, PAYE, NHF et net à percevoir sur une seule page.</span></a>
+        <a href="/fr/tools/ng-retenue-source/"><strong>Retenue à la source Nigeria</strong><span>Complément utile pour les salaires, les revenus passifs et la fiscalité locale.</span></a>
+      </div>
+    </div>
+  </section>
 </main>
+
 <afro-footer></afro-footer>
+<script>
+(function() {
+  var iframe = document.getElementById('pensionFrame');
+  var status = document.getElementById('frameStatus');
+  if (!iframe) return;
+
+  var SOURCE_URL = '/tools/ng-pension/';
+  var TIMEOUT_MS = 15000;
+  var timer = setTimeout(function() {
+    if (status) status.textContent = 'Chargement plus lent que prévu...';
+  }, 6000);
+  var failTimer = setTimeout(function() {
+    if (status) status.textContent = 'Le moteur prend du temps à répondre.';
+  }, TIMEOUT_MS);
+
+  var PAIRS = [
+    ['Nigeria Pension Calculator (CPS)', 'Calculateur de pension Nigeria (CPS)'],
+    ['Nigeria Pension Calculator', 'Calculateur de pension Nigeria'],
+    ['Calculate CPS contributions, compare PFA performance, optimise AVCs, explore micro-pension, and plan your retirement', 'Calculez les cotisations CPS, comparez la performance des PFA, simulez les AVC, explorez la micro-pension et planifiez votre retraite'],
+    ['PFA Performance', 'Performance des PFA'],
+    ['AVC Optimiser', 'Optimisation des AVC'],
+    ['Micro-Pension', 'Micro-pension'],
+    ['Retirement Planning', 'Planification retraite'],
+    ['Gratuity vs CPS', 'Indemnité de fin de service vs CPS'],
+    ['Death Benefit', 'Capital décès'],
+    ['Contribution Check', 'Vérification des cotisations'],
+    ['Compare PFA performance', 'Comparer la performance des PFA'],
+    ['Best 5-year return', 'Meilleur rendement sur 5 ans'],
+    ['Median (all licensed PFAs)', 'Médiane (toutes les PFA agréées)'],
+    ['Your current PFA', 'Votre PFA actuelle'],
+    ['No transfer needed', 'Aucun transfert nécessaire'],
+    ['Projected Balance After', 'Capital projeté après'],
+    ['Accessible Anytime (40%)', 'Accessible à tout moment (40 %)'],
+    ['Locked Until Retirement (60%)', 'Bloqué jusqu’à la retraite (60 %)'],
+    ['Total Contributed', 'Total cotisé'],
+    ['Earlier retirement possible', 'Départ anticipé possible'],
+    ['Monthly AVC', 'AVC mensuel'],
+    ['Monthly PAYE saving', 'Économie PAYE mensuelle'],
+    ['Your actual net cost', 'Votre coût net réel'],
+    ['Additional RSA at retirement', 'Capital RSA supplémentaire à la retraite'],
+    ['Gross ROI on net AVC cost', 'ROI brut sur le coût net des AVC'],
+    ['Break-Even Age', 'Âge d’équilibre'],
+    ['Years After Retirement to Break Even', 'Années après la retraite pour équilibrer'],
+    ['Total Wealth at Age', 'Patrimoine total à l’âge'],
+    ['Option A', 'Option A'],
+    ['Option B', 'Option B'],
+    ['Option A covers your expenses', 'L’option A couvre vos dépenses'],
+    ['Option B covers your expenses', 'L’option B couvre vos dépenses'],
+    ['Gratuity Payout', 'Indemnité de fin de service'],
+    ['CPS Accumulated Fund', 'Capital accumulé CPS'],
+    ['CPS Wins by', 'Le CPS l’emporte de'],
+    ['Gratuity Wins by', 'L’indemnité l’emporte de'],
+    ['RSA Balance to Next of Kin', 'Solde RSA pour les ayants droit'],
+    ['Group Life Insurance (3× Annual Basic)', 'Assurance groupe décès (3× salaire annuel de base)'],
+    ['Pensionable Emoluments', 'Éléments de rémunération pensionnables'],
+    ['Your Expected Contribution', 'Votre cotisation attendue'],
+    ['Employer\'s Expected Contribution', 'Cotisation attendue de l’employeur'],
+    ['Total Expected Monthly RSA Credit', 'Crédit mensuel RSA attendu'],
+    ['Total Expected Annual RSA Credit', 'Crédit annuel RSA attendu'],
+    ['Expected Monthly RSA Credit', 'Crédit RSA mensuel attendu'],
+    ['If Your RSA Shows a Shortfall', 'Si votre RSA affiche un écart'],
+    ['Watch for These Red Flags', 'Surveillez ces signaux d’alerte'],
+    ['Monthly contribution', 'Cotisation mensuelle'],
+    ['Monthly gross salary', 'Salaire brut mensuel'],
+    ['Annual gross salary', 'Salaire brut annuel'],
+    ['Employee', 'Salarié'],
+    ['Employer', 'Employeur'],
+    ['employee', 'salarié'],
+    ['employer', 'employeur'],
+    ['contribution', 'cotisation'],
+    ['contributions', 'cotisations'],
+    ['shortfall', 'écart'],
+    ['retire', 'retraite'],
+    ['lump sum', 'capital forfaitaire'],
+    ['annuity', 'rente viagère'],
+    ['performance', 'performance'],
+    ['compare', 'compare'],
+    ['micro', 'micro'],
+    ['rsa', 'RSA'],
+    ['PFA', 'PFA'],
+    ['Loading...', 'Chargement...'],
+    ['Calculate', 'Calculer'],
+    ['Recalculate', 'Recalculer'],
+    ['Reset', 'Réinitialiser'],
+    ['Download PDF', 'Télécharger le PDF'],
+    ['Copy Link', 'Copier le lien'],
+    ['Share', 'Partager'],
+    ['Link copied to clipboard', 'Lien copié dans le presse-papiers'],
+    ['Link copied!', 'Lien copié !'],
+    ['WhatsApp', 'WhatsApp'],
+    ['AI Advisor', 'Conseiller IA'],
+    ['Ask me anything about this tool — I can help explain results, suggest strategies, and answer questions.', 'Posez-moi n’importe quelle question sur cet outil : je peux expliquer les résultats, proposer des stratégies et répondre à vos questions.'],
+    ['Thinking...', 'Réflexion...'],
+    ['Thinking…', 'Réflexion…'],
+    ['Source data: PenCom', 'Source : PenCom'],
+    ['No data found', 'Aucune donnée trouvée'],
+    ['Search by PFA', 'Rechercher une PFA'],
+    ['Select a PFA', 'Choisissez une PFA'],
+    ['Current contribution', 'Cotisation actuelle'],
+    ['Current PFA', 'PFA actuelle'],
+    ['Best-performing PFA', 'PFA la plus performante'],
+    ['The best-performing PFA', 'La PFA la plus performante']
+  ];
+
+  PAIRS.sort(function(a, b) { return b[0].length - a[0].length; });
+
+  function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function translateText(input) {
+    var out = String(input || '');
+    for (var i = 0; i < PAIRS.length; i++) {
+      var pair = PAIRS[i];
+      out = out.replace(new RegExp(escapeRegExp(pair[0]), 'g'), pair[1]);
+    }
+    return out;
+  }
+
+  function translateTree(root) {
+    if (!root) return;
+    var ownerDoc = root.ownerDocument || document;
+    var walker = ownerDoc.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      if (!node.parentElement) return;
+      var tag = node.parentElement.tagName;
+      if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'TEXTAREA') return;
+      var next = translateText(node.nodeValue);
+      if (next !== node.nodeValue) node.nodeValue = next;
+    });
+
+    Array.prototype.forEach.call(root.querySelectorAll('[title],[placeholder],[aria-label],[aria-description],[alt]'), function(el) {
+      ['title', 'placeholder', 'aria-label', 'aria-description', 'alt'].forEach(function(attr) {
+        if (!el.hasAttribute(attr)) return;
+        var current = el.getAttribute(attr);
+        var next = translateText(current);
+        if (next !== current) el.setAttribute(attr, next);
+      });
+    });
+
+    Array.prototype.forEach.call(root.querySelectorAll('a[href="/tools/paye-calculator/"]'), function(el) {
+      el.setAttribute('href', '/fr/tools/calculateur-paye/');
+    });
+    Array.prototype.forEach.call(root.querySelectorAll('a[href="/tools/ng-salary-tax/"]'), function(el) {
+      el.setAttribute('href', '/fr/nigeria/ng-salary-tax/');
+    });
+    Array.prototype.forEach.call(root.querySelectorAll('a[href="/tools/ng-pension/"]'), function(el) {
+      el.setAttribute('href', '/fr/tools/ng-pension/');
+    });
+  }
+
+  function localizeFrame() {
+    var doc;
+    try {
+      doc = iframe.contentDocument || iframe.contentWindow.document;
+    } catch (err) {
+      status.textContent = 'Le moteur de pension est inaccessible depuis cette page.';
+      return;
+    }
+    if (!doc) return;
+
+    if (timer) clearTimeout(timer);
+    if (failTimer) clearTimeout(failTimer);
+    if (status) status.textContent = 'Moteur chargé et localisé en français.';
+
+    doc.documentElement.setAttribute('lang', 'fr');
+    if (doc.title) doc.title = translateText(doc.title);
+
+    var metaSelectors = [
+      'meta[name="description"]',
+      'meta[property="og:title"]',
+      'meta[property="og:description"]',
+      'meta[name="twitter:title"]',
+      'meta[name="twitter:description"]'
+    ];
+    metaSelectors.forEach(function(selector) {
+      var node = doc.querySelector(selector);
+      if (!node) return;
+      var content = node.getAttribute('content');
+      if (content) node.setAttribute('content', translateText(content));
+    });
+
+    translateTree(doc.body || doc.documentElement);
+
+    var observer = new MutationObserver(function(records) {
+      records.forEach(function(record) {
+        Array.prototype.forEach.call(record.addedNodes || [], function(node) {
+          if (node.nodeType === 1 || node.nodeType === 3) translateTree(node.parentNode || node);
+        });
+      });
+    });
+    observer.observe(doc.body || doc.documentElement, { childList: true, subtree: true, characterData: true });
+  }
+
+  iframe.addEventListener('load', localizeFrame);
+})();
+</script>
 </body>
 </html>

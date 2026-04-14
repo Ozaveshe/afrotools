@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur hypothécaire Afrique | AfroTools</title>
-<meta name="description" content="Calculez vos remboursements hypothécaires pour le Nigeria (NHF 6%), le Kenya, l'Afrique du Sud, le Ghana et 14 pays africains. Mensualités, coût total, tableau d'amortissement.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<title>Calculateur de prêt hypothécaire en Afrique | AfroTools</title>
+<meta name="description" content="Calculez vos mensualités hypothécaires, le coût total et l’échéancier complet pour le Nigeria, le Kenya, l’Afrique du Sud, le Ghana et d’autres marchés africains.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-hypothecaire/">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Calculateur hypothécaire Afrique | AfroTools">
-<meta property="og:description" content="Calculez vos mensualités hypothécaires pour le Nigeria, le Kenya, l'Afrique du Sud. Tableau d'amortissement inclus.">
+<meta property="og:title" content="Calculateur de prêt hypothécaire en Afrique | AfroTools">
+<meta property="og:description" content="Estimez vos mensualités, vos intérêts totaux et votre tableau d’amortissement pour les principaux marchés immobiliers africains.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-hypothecaire/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -18,70 +18,447 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur hypothécaire Afrique | AfroTools">
-<meta name="twitter:description" content="Calculez vos mensualités hypothécaires pour 14 pays africains.">
+<meta name="twitter:title" content="Calculateur de prêt hypothécaire en Afrique | AfroTools">
+<meta name="twitter:description" content="Calculez vos mensualités et votre échéancier hypothécaire pour les principaux marchés africains.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mortgage-calculator/" />
-<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-hypothecaire/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mortgage-calculator/" />
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mortgage-calculator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-hypothecaire/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mortgage-calculator/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
 <script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--line:#dbe4f0;--soft:#f8fbff;--brand:#0f6fd6}
+body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,#fff 46%,#f7fafc 100%);color:var(--ink);-webkit-font-smoothing:antialiased}
+.fr-mort-hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(145deg,#0b1320 0%,#111f38 50%,#0f6fd6 100%)}
+.fr-mort-hero::before,.fr-mort-hero::after{content:"";position:absolute;border-radius:999px;pointer-events:none;opacity:.16}
+.fr-mort-hero::before{width:22rem;height:22rem;background:radial-gradient(circle,#7dd3fc 0%,rgba(125,211,252,0) 70%);right:-6rem;top:-7rem}
+.fr-mort-hero::after{width:18rem;height:18rem;background:radial-gradient(circle,#38bdf8 0%,rgba(56,189,248,0) 70%);left:-4rem;bottom:-8rem}
+.fr-mort-hero-inner{max-width:1180px;margin:0 auto;padding:3.75rem 1.5rem 2.5rem;position:relative;z-index:1}
+.fr-mort-breadcrumb{display:flex;flex-wrap:wrap;gap:.45rem;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:1rem}
+.fr-mort-breadcrumb a{color:rgba(255,255,255,.78);text-decoration:none}
+.fr-mort-breadcrumb span{color:rgba(255,255,255,.55)}
+.fr-mort-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.95fr);gap:1.5rem;align-items:end}
+.fr-mort-copy h1{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;font-size:clamp(2.1rem,5vw,3.75rem);line-height:1.02;letter-spacing:-.04em;margin:0 0 .85rem}
+.fr-mort-copy h1 em{font-style:normal;color:#7dd3fc}
+.fr-mort-copy p{max-width:42rem;font-size:1.04rem;line-height:1.75;color:rgba(255,255,255,.86);margin:0 0 1rem}
+.fr-mort-badges{display:flex;flex-wrap:wrap;gap:.55rem}
+.fr-mort-badge{display:inline-flex;align-items:center;padding:.45rem .78rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);font-size:.8rem;font-weight:700;color:#fff}
+.fr-mort-panel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:1.25rem;padding:1.1rem 1.15rem;backdrop-filter:blur(12px);box-shadow:0 18px 40px rgba(15,23,42,.18)}
+.fr-mort-panel strong{display:block;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.55rem}
+.fr-mort-panel p{margin:0;font-size:.95rem;line-height:1.7;color:rgba(255,255,255,.9)}
+.fr-mort-shell{max-width:1180px;margin:-1rem auto 0;padding:0 1.5rem 3rem}
+.fr-mort-shell-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(270px,.95fr);gap:1rem;align-items:start}
+.fr-mort-card,.fr-mort-side,.fr-mort-seo,.fr-mort-faq,.fr-mort-links,.fr-mort-note{background:#fff;border:1px solid rgba(148,163,184,.22);border-radius:1.1rem;box-shadow:0 8px 28px rgba(15,23,42,.04)}
+.fr-mort-card{padding:1.15rem 1.2rem}
+.fr-mort-side{padding:1.1rem 1.15rem;position:sticky;top:16px}
+.fr-mort-side h2,.fr-mort-seo h2,.fr-mort-faq h2,.fr-mort-links h2,.fr-mort-card h2{font-family:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;color:var(--ink);letter-spacing:-.02em;font-size:1.35rem;margin:0 0 .75rem}
+.fr-mort-card p,.fr-mort-seo p,.fr-mort-links p,.fr-mort-faq p,.fr-mort-note p{color:#475569;line-height:1.8;font-size:.97rem}
+.fr-mort-chip-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.fr-mort-chip{display:inline-flex;align-items:center;padding:.55rem .82rem;border-radius:999px;border:1px solid #dbeafe;background:#eff6ff;color:#1d4ed8;font-weight:700;text-decoration:none;font-size:.86rem}
+.fr-mort-list{display:grid;gap:.7rem}
+.fr-mort-list a{color:#2563eb;text-decoration:none;font-weight:700}
+.fr-mort-faq details{border:1px solid rgba(148,163,184,.2);border-radius:.95rem;background:#fff;margin-bottom:.8rem;overflow:hidden;box-shadow:0 6px 24px rgba(15,23,42,.03)}
+.fr-mort-faq summary{cursor:pointer;list-style:none;padding:1rem 1rem 1rem 1.1rem;font-weight:800;color:#0f172a;display:flex;justify-content:space-between;gap:.75rem;align-items:center}
+.fr-mort-faq summary::-webkit-details-marker{display:none}
+.fr-mort-faq summary span{color:#0f6fd6}
+.fr-mort-faq details p{padding:0 1.1rem 1rem;margin:0}
+#tool-mount{min-height:620px}
+.fr-mort-loading,.fr-mort-fallback{display:grid;place-items:center;min-height:320px}
+.fr-mort-loading-card,.fr-mort-fallback-card{max-width:620px;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);border:1px solid #dbeafe;border-radius:22px;padding:26px;text-align:center;box-shadow:0 12px 34px rgba(15,23,42,.08)}
+.fr-mort-loading-card h3,.fr-mort-fallback-card h3{margin:0 0 10px;font-size:1.15rem;color:#0f172a}
+.fr-mort-loading-card p,.fr-mort-fallback-card p{margin:0;color:#475569;line-height:1.7}
+.fr-mort-loading-card a,.fr-mort-fallback-card a{color:#2563eb;text-decoration:none;font-weight:700}
+@media (max-width: 1024px){.fr-mort-shell-grid{grid-template-columns:1fr}.fr-mort-side{position:static}}
+@media (max-width: 760px){.fr-mort-hero-inner{padding:34px 16px 28px}.fr-mort-shell{padding:0 1rem 2.5rem}.fr-mort-card,.fr-mort-side{border-radius:20px}.fr-mort-grid{grid-template-columns:1fr}.fr-mort-shell-grid{grid-template-columns:1fr}}
+</style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur hypothécaire Afrique","description":"Calculez vos remboursements hypothécaires pour 14 pays africains. Mensualités, coût total, tableau d'amortissement.","url":"https://afrotools.com/fr/tools/calculateur-hypothecaire/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de prêt hypothécaire en Afrique","description":"Calculez vos mensualités hypothécaires, le coût total et le tableau d’amortissement pour les principaux marchés africains.","url":"https://afrotools.com/fr/tools/calculateur-hypothecaire/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Calculateur hypothécaire","item":"https://afrotools.com/fr/tools/calculateur-hypothecaire/"}]}
+{"@context":"https://schema.org","@type":"WebPage","name":"Calculateur de prêt hypothécaire en Afrique","url":"https://afrotools.com/fr/tools/calculateur-hypothecaire/","description":"Wrapper français premium pour calculer des mensualités, intérêts et échéanciers hypothécaires sur plusieurs marchés africains.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/fr/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Immobilier","item":"https://afrotools.com/fr/mortgage-property/"},{"@type":"ListItem","position":3,"name":"Calculateur hypothécaire","item":"https://afrotools.com/fr/tools/calculateur-hypothecaire/"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Comment fonctionne un prêt hypothécaire en Afrique ?","acceptedAnswer":{"@type":"Answer","text":"Les prêts hypothécaires en Afrique fonctionnent de manière similaire aux prêts classiques : vous empruntez un montant pour acheter un bien immobilier et le remboursez sur une période de 10 à 25 ans avec des intérêts. Les taux varient selon le pays, de 6% (NHF au Nigeria) à plus de 20%."}},
-{"@type":"Question","name":"Quel est le taux hypothécaire moyen en Afrique du Sud ?","acceptedAnswer":{"@type":"Answer","text":"Le taux préférentiel en Afrique du Sud est d'environ 10,25%. Les banques ajoutent ou soustraient un écart selon votre profil de crédit, ce qui donne des taux effectifs entre 9% et 13%."}},
-{"@type":"Question","name":"Peut-on obtenir un prêt immobilier au Nigeria ?","acceptedAnswer":{"@type":"Answer","text":"Oui, via le National Housing Fund (NHF) à 6% d'intérêt, ou via les banques commerciales à des taux plus élevés (18-25%). Le NHF est l'option la plus avantageuse pour les employés cotisants."}},
-{"@type":"Question","name":"Quelle durée choisir pour son prêt hypothécaire ?","acceptedAnswer":{"@type":"Answer","text":"Une durée plus longue réduit les mensualités mais augmente le coût total des intérêts. En Afrique, les durées courantes sont de 10 à 20 ans. Utilisez notre calculateur pour comparer différentes durées."}}
+{"@type":"Question","name":"Comment fonctionne un prêt hypothécaire en Afrique ?","acceptedAnswer":{"@type":"Answer","text":"Vous empruntez un montant pour acheter un bien immobilier, puis vous le remboursez sur plusieurs années avec intérêts. Les taux varient fortement selon le pays, la banque et le profil de risque."}},
+{"@type":"Question","name":"Quel pays africain propose les taux les plus bas ?","acceptedAnswer":{"@type":"Answer","text":"Le Nigeria peut offrir des taux subventionnés via le NHF à 6 %, tandis que l’Afrique du Sud tourne souvent autour du taux préférentiel et que d’autres marchés affichent des taux plus élevés."}},
+{"@type":"Question","name":"Quelle durée choisir pour un prêt hypothécaire ?","acceptedAnswer":{"@type":"Answer","text":"Une durée plus longue réduit la mensualité mais augmente le coût total des intérêts. Comparez plusieurs scénarios pour trouver un équilibre entre flux de trésorerie et coût global."}},
+{"@type":"Question","name":"Quels frais faut-il prévoir en plus de l’hypothèque ?","acceptedAnswer":{"@type":"Answer","text":"Prévoyez aussi les frais juridiques, les droits d’enregistrement, les frais de dossier, l’assurance habitation et, selon le pays, les taxes de mutation ou frais d’évaluation."}}
 ]}
 </script>
-<style>:root { --color-brand: var(--color-primary); }</style>
+<meta property="article:modified_time" content="2026-04-15">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
-<section style="background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center">
-<nav class="crumb" style="font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:1rem"><a href="/" style="color:rgba(255,255,255,.55);text-decoration:none">AfroTools</a><span style="margin:0 .4rem">/</span><a href="/finance/" style="color:rgba(255,255,255,.55);text-decoration:none">Finance</a><span style="margin:0 .4rem">/</span>Calculateur hypothécaire</nav>
-<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem;font-family:'Instrument Serif','DM Sans',serif;color:#fff">Calculateur <em style="color:var(--color-primary);font-style:normal">hypothécaire</em></h1>
-<p style="font-size:1.05rem;opacity:.85;max-width:620px;margin:0 auto;color:rgba(255,255,255,.8)">Calculez vos mensualités, le coût total et le tableau d'amortissement pour 14 pays africains.</p>
+
+<div id="mort-saved-section" style="display:none;max-width:1180px;margin:0 auto;padding:18px 1.5rem 0">
+  <div style="background:#fff;border:1px solid rgba(148,163,184,.22);border-radius:16px;padding:18px 20px;box-shadow:0 8px 24px rgba(15,23,42,.04)">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+      <h3 style="font-size:.95rem;font-weight:800;color:#0f172a;margin:0;font-family:'Bricolage Grotesque','DM Sans',system-ui,sans-serif">Vos scénarios enregistrés</h3>
+    </div>
+    <div id="mort-saved-grid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+  </div>
+</div>
+
+<section class="fr-mort-hero">
+  <div class="fr-mort-hero-inner">
+    <nav class="fr-mort-breadcrumb">
+      <a href="/">Accueil</a><span>›</span>
+      <a href="/fr/mortgage-property/">Immobilier</a><span>›</span>
+      <span>Calculateur hypothécaire</span>
+    </nav>
+    <div class="fr-mort-grid">
+      <div class="fr-mort-copy">
+        <div class="fr-mort-badge">Immobilier</div>
+        <h1>Calculateur de prêt <em>hypothécaire</em> africain</h1>
+        <p>Estimez vos mensualités, vos intérêts totaux et votre échéancier complet avec les taux réels du Nigeria, du Kenya, de l’Afrique du Sud, du Ghana et d’autres marchés africains.</p>
+        <div class="fr-mort-badges">
+          <span class="fr-mort-badge">Nigeria NHF 6 %</span>
+          <span class="fr-mort-badge">Afrique du Sud 10,25 %</span>
+          <span class="fr-mort-badge">Kenya ~13 %</span>
+          <span class="fr-mort-badge">Ghana ~28 %</span>
+          <span class="fr-mort-badge">14 pays</span>
+          <span class="fr-mort-badge">Tableau d’amortissement</span>
+        </div>
+      </div>
+      <aside class="fr-mort-panel">
+        <strong>Pourquoi cette version</strong>
+        <p>Une page française pensée pour le SEO immobilier, avec un shell natif, des liens internes utiles et une traduction sûre de l’interface dynamique du calculateur source.</p>
+      </aside>
+    </div>
+  </div>
 </section>
 
-<div id="tool-mount" style="min-height:400px"></div>
+<div class="fr-mort-shell">
+  <div id="tool-mount" class="fr-mort-card">
+    <div class="fr-mort-loading">
+      <div class="fr-mort-loading-card">
+        <h3>Chargement du calculateur…</h3>
+        <p>Nous préparons la version française de l’outil. Si le chargement prend trop de temps, <a href="/tools/mortgage-calculator/">ouvrez la version anglaise</a>.</p>
+      </div>
+    </div>
+  </div>
 
-<section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
-<h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Comprendre les prêts hypothécaires en Afrique</h2>
-<p style="color:#475569;margin-bottom:1rem">Le marché hypothécaire africain se développe rapidement, mais les taux d'intérêt restent élevés par rapport aux marchés occidentaux. Au Nigeria, le National Housing Fund offre des taux préférentiels de 6%, tandis que les banques commerciales prêtent entre 18% et 25%. En Afrique du Sud, le taux préférentiel d'environ 10,25% sert de référence.</p>
-<p style="color:#475569;margin-bottom:1rem">Notre calculateur prend en compte les spécificités de chaque marché africain : taux de base, durées disponibles et devises locales. Entrez le montant du prêt, le taux d'intérêt et la durée pour obtenir vos mensualités estimées et un tableau d'amortissement complet.</p>
-<p style="color:#475569;margin-bottom:1rem">Comparez différents scénarios pour trouver la combinaison optimale entre mensualités abordables et coût total minimal. N'oubliez pas d'inclure l'assurance habitation et les frais de dossier dans votre budget global.</p>
-</section>
+  <div class="fr-mort-shell-grid" style="margin-top:1rem">
+    <section class="fr-mort-seo fr-mort-card">
+      <h2>Un outil utile pour acheter au bon rythme</h2>
+      <p>Ce calculateur vous aide à comparer plusieurs durées, à mesurer l’impact d’un apport plus élevé et à anticiper le coût total du crédit. C’est particulièrement utile sur les marchés où les taux évoluent rapidement et où les frais annexes pèsent lourd dans le budget global.</p>
+      <p>Utilisez-le pour tester différents scénarios avant de parler à une banque, à un courtier ou à un promoteur. Vous pouvez ainsi choisir une mensualité réaliste sans perdre de vue le coût total sur toute la durée du prêt.</p>
+      <div class="fr-mort-chip-grid">
+        <a class="fr-mort-chip" href="/fr/tools/frais-transfert-propriete/">Frais de transfert de propriété</a>
+        <a class="fr-mort-chip" href="/fr/tools/evaluation-immobiliere/">Évaluation immobilière</a>
+        <a class="fr-mort-chip" href="/fr/tools/verification-locataire/">Vérification de locataire</a>
+        <a class="fr-mort-chip" href="/fr/tools/immobilier-diaspora/">Immobilier diaspora</a>
+        <a class="fr-mort-chip" href="/fr/tools/plus-value-immobiliere/">Plus-value immobilière</a>
+        <a class="fr-mort-chip" href="/fr/tools/comparateur-prets/">Comparateur de prêts</a>
+      </div>
+    </section>
 
-<section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
-<h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Questions fréquemment posées</h2>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Comment fonctionne un prêt hypothécaire en Afrique ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Vous empruntez un montant pour acheter un bien et le remboursez sur 10 à 25 ans. Les taux varient de 6% (NHF Nigeria) à plus de 20% selon le pays et le programme.</p></details>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Quel est le taux hypothécaire en Afrique du Sud ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Le taux préférentiel est d'environ 10,25%. Les taux effectifs varient de 9% à 13% selon votre profil de crédit.</p></details>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Peut-on obtenir un prêt immobilier au Nigeria ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Oui, via le NHF à 6% ou les banques commerciales à 18-25%. Le NHF est l'option la plus avantageuse pour les cotisants.</p></details>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Quelle durée choisir pour son prêt ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Une durée plus longue réduit les mensualités mais augmente le coût total. Les durées courantes en Afrique sont de 10 à 20 ans.</p></details>
-</section>
+    <aside class="fr-mort-side">
+      <h2>Marchés couverts</h2>
+      <div class="fr-mort-list">
+        <p>Le calculateur couvre plusieurs marchés africains majeurs, avec des taux et des durées représentatifs des offres bancaires et des programmes subventionnés.</p>
+        <a href="/fr/tools/verification-titre-foncier/">Vérifier le titre foncier</a>
+        <a href="/fr/tools/frais-gestion-immobiliere/">Frais de gestion immobilière</a>
+        <a href="/fr/tools/caution-locative/">Caution locative</a>
+      </div>
+    </aside>
+  </div>
 
-<afro-related-tools></afro-related-tools>
+  <section class="fr-mort-faq fr-mort-card" style="margin-top:1rem">
+    <h2>Questions fréquentes</h2>
+    <details>
+      <summary>Ce calculateur remplace-t-il l’offre d’une banque ? <span>+</span></summary>
+      <p>Non. Il sert à simuler des mensualités et à comparer des scénarios. L’offre finale dépendra de votre dossier, des frais applicables et des conditions exactes de l’établissement prêteur.</p>
+    </details>
+    <details>
+      <summary>Pourquoi comparer plusieurs durées ? <span>+</span></summary>
+      <p>Parce que la durée influence directement la mensualité et le coût total des intérêts. Une durée plus courte coûte moins cher au final, mais demande un effort mensuel plus important.</p>
+    </details>
+    <details>
+      <summary>Quels coûts dois-je ajouter au budget ? <span>+</span></summary>
+      <p>Ajoutez les frais juridiques, les droits de mutation, les frais d’évaluation, l’assurance et les frais de dossier. Sur certains marchés, ces coûts peuvent changer de façon significative le budget final.</p>
+    </details>
+    <details>
+      <summary>Le calculateur prend-il en charge l’amortissement complet ? <span>+</span></summary>
+      <p>Oui. L’outil affiche aussi un tableau d’amortissement pour vous aider à voir comment le capital et les intérêts évoluent au fil du temps.</p>
+    </details>
+  </section>
+  <section class="fr-mort-note fr-mort-card" style="margin-top:1rem">
+    <p>Astuce SEO: cette page française s’aligne sur la verticale immobilier avec un vocabulaire natif, des liens internes contextuels et un schéma clair pour aider la découverte organique sur les requêtes liées au prêt hypothécaire.</p>
+  </section>
+</div>
+
+<afro-related-tools category="mortgage-property" current="calculateur-hypothecaire"></afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+
 <script>
-(function(){var m=document.getElementById('tool-mount');fetch('/tools/mortgage-calculator/').then(r=>r.text()).then(h=>{var d=document.createElement('div');d.innerHTML=h;var s=d.querySelectorAll('style');s.forEach(function(el){document.head.appendChild(el.cloneNode(true))});var hero=d.querySelector('.tool-hero');var main=d.querySelector('.tool-main');if(main){m.innerHTML=main.outerHTML}else{var b=d.querySelector('.mortgage-wrap, .card, main, [class*=tool]');if(b)m.innerHTML=b.outerHTML}var scripts=d.querySelectorAll('script:not([src])');scripts.forEach(function(sc){if(sc.textContent.indexOf('gtag')>-1||sc.textContent.indexOf('schema.org')>-1)return;var ns=document.createElement('script');ns.textContent=sc.textContent;document.body.appendChild(ns)})}).catch(function(){m.innerHTML='<p style="text-align:center;padding:2rem;color:#64748b">Chargement de l\'outil... <a href="/tools/mortgage-calculator/">Ouvrir en anglais</a></p>'})})();
+(function(){
+  const SOURCE_URL = '/tools/mortgage-calculator/';
+  const mount = document.getElementById('tool-mount');
+  const loadedScripts = new Set(
+    Array.from(document.querySelectorAll('script[src]'))
+      .map(script => script.getAttribute('src'))
+      .filter(Boolean)
+  );
+  const textMap = [
+    ['Home','Accueil'],
+    ['Mortgage & Property','Immobilier'],
+    ['Mortgage Calculator','Calculateur hypothécaire'],
+    ['Select Your Country','Choisissez votre pays'],
+    ['Loan Type','Type de prêt'],
+    ['Property Value','Valeur du bien'],
+    ['Down Payment / Deposit','Apport / dépôt'],
+    ['Loan Amount','Montant emprunté'],
+    ['Interest Rate','Taux d’intérêt'],
+    ['Term','Durée'],
+    ['Years','Ans'],
+    ['Calculate Mortgage →','Calculer l’hypothèque →'],
+    ['Monthly Repayment','Mensualité'],
+    ['Principal + Interest','Capital + intérêts'],
+    ['Total Interest','Intérêts totaux'],
+    ['Total Cost','Coût total'],
+    ['Principal','Capital'],
+    ['Interest','Intérêts'],
+    ['View Full Amortisation Schedule ▾','Voir le tableau d’amortissement complet ▾'],
+    ['Hide Amortisation Schedule ▴','Masquer le tableau d’amortissement ▴'],
+    ['Year','Année'],
+    ['Monthly Payment','Mensualité'],
+    ['Principal Repaid','Capital remboursé'],
+    ['Interest Paid','Intérêts payés'],
+    ['Remaining Balance','Capital restant dû'],
+    ['AI Mortgage Calculator Advisor','Assistant hypothécaire IA'],
+    ['Powered by Claude','Propulsé par Claude'],
+    ['Ask me anything about this tool — I can help explain results, suggest strategies, and answer questions.','Posez-moi vos questions sur cet outil. Je peux expliquer les résultats, proposer des stratégies et répondre à vos questions.'],
+    ['Ask a question...','Posez une question...'],
+    ['Analysing your mortgage…','Analyse de votre prêt hypothécaire…'],
+    ['Thinking…','Réflexion en cours…'],
+    ['Your Saved Scenarios','Vos scénarios enregistrés'],
+    ['Sorry, the AI advisor is temporarily unavailable.','Désolé, l’assistant IA est temporairement indisponible.'],
+    ['Ouvrir en anglais','Ouvrir la version anglaise']
+  ];
+  const attrMap = {
+    placeholder: [['Ask a question...','Posez une question...']],
+    title: [['Mortgage Calculator','Calculateur hypothécaire']]
+  };
+  const countryMap = new Map([
+    ['Nigeria','Nigeria'],
+    ['Kenya','Kenya'],
+    ['South Africa','Afrique du Sud'],
+    ['Ghana','Ghana'],
+    ['Tanzania','Tanzanie'],
+    ['Uganda','Ouganda'],
+    ['Egypt','Égypte'],
+    ['Morocco','Maroc'],
+    ['Ethiopia','Éthiopie'],
+    ["Côte d'Ivoire","Côte d'Ivoire"],
+    ['Botswana','Botswana'],
+    ['Rwanda','Rwanda'],
+    ['Zambia','Zambie'],
+    ['Senegal','Sénégal']
+  ]);
+  const loanTypeMap = [
+    ['NHF Loan','Prêt NHF'],
+    ['Commercial Bank','Banque commerciale'],
+    ['Housing Finance','Financement immobilier'],
+    ['Standard (Prime)','Standard (taux préférentiel)'],
+    ['FLISP Assisted','Aide FLISP'],
+    ['Social Housing','Logement social'],
+    ['VEFA (Off-plan)','VEFA (sur plan)'],
+    ['CBE / DBE','CBE / DBE'],
+    ['BHCi Mortgage','Hypothèque BHCi'],
+    ['BBS / Stanbic','BBS / Stanbic'],
+    ['BRD Housing','Logement BRD'],
+    ['Natsave / Zanaco','Natsave / Zanaco'],
+    ['THB Mortgage','Hypothèque THB'],
+    ['GHL/Fidelity','GHL/Fidelity']
+  ];
+  const rateHintMap = [
+    ['Gov. subsidised','Subventionné par l’État'],
+    ['Fixed/Variable','Fixe/variable'],
+    ['Variable','Variable'],
+    ['Subsidy applies','Subvention applicable'],
+    ['First-time buyers','Premiers acheteurs'],
+    ['First-time home buyer subsidy','Subvention pour primo-accédants'],
+    ['Commercial Bank','Banque commerciale'],
+    ['Prime rate (2026)','Taux préférentiel (2026)'],
+    ['Up to 20 yrs','Jusqu’à 20 ans'],
+    ['Housing bank','Banque du logement'],
+    ['BCEAO zone','Zone BCEAO'],
+    ['State banks','Banques d’État'],
+    ['Dev. bank','Banque de développement']
+  ];
+
+  function translateText(text) {
+    let out = text;
+    textMap.forEach(([from, to]) => { out = out.split(from).join(to); });
+    rateHintMap.forEach(([from, to]) => { out = out.split(from).join(to); });
+    out = out.replace(/Principal Repaid/g, 'Capital remboursé');
+    out = out.replace(/Interest Paid/g, 'Intérêts payés');
+    out = out.replace(/Remaining Balance/g, 'Capital restant dû');
+    out = out.replace(/Mortgage/g, 'hypothécaire');
+    out = out.replace(/Amortisation/g, 'amortissement');
+    out = out.replace(/Amortization/g, 'amortissement');
+    out = out.replace(/Thinking\.\.\./g, 'Réflexion en cours…');
+    out = out.replace(/Analysing your mortgage…/g, 'Analyse de votre prêt hypothécaire…');
+    return out;
+  }
+
+  function translateNode(node) {
+    if (!node || node.nodeType !== Node.ELEMENT_NODE) return;
+    if (node.matches('script, style, noscript, template')) return;
+    if (node.dataset && node.dataset.frLocalized === '1') return;
+
+    if (node.matches('.ctab')) {
+      const raw = node.textContent.trim().replace(/\s+/g, ' ');
+      for (const [from, to] of countryMap.entries()) {
+        if (raw.includes(from)) {
+          node.childNodes.forEach(child => {
+            if (child.nodeType === Node.TEXT_NODE) child.textContent = child.textContent.replace(from, to);
+          });
+        }
+      }
+    }
+
+    if (node.matches('.lt-name,.lt-rate,.result-label,.result-sub,.rstat-label,.amort-toggle,.ai-title,.ai-by,.ai-status,.ai-thinking,.faq-q,.faq-a,.info-card h3,.info-card p,.hero-sub,.breadcrumb a,.breadcrumb span,[placeholder]')) {
+      node.textContent = translateText(node.textContent);
+    }
+
+    if (node.matches('[placeholder]')) {
+      const ph = node.getAttribute('placeholder');
+      if (ph) node.setAttribute('placeholder', translateText(ph));
+    }
+
+    if (node.matches('[title]')) {
+      const title = node.getAttribute('title');
+      if (title) node.setAttribute('title', translateText(title));
+    }
+
+    node.childNodes.forEach(child => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        child.textContent = translateText(child.textContent);
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        translateNode(child);
+      }
+    });
+  }
+
+  function localizeMount(root) {
+    if (!root) return;
+    translateNode(root);
+    root.querySelectorAll('.ctab').forEach(btn => {
+      btn.textContent = translateText(btn.textContent);
+    });
+    root.querySelectorAll('.lt-name,.lt-rate,.result-label,.result-sub,.rstat-label,.amort-toggle,.ai-title,.ai-by,.ai-status,.ai-thinking,.faq-q,.faq-a').forEach(el => {
+      el.textContent = translateText(el.textContent);
+    });
+    root.querySelectorAll('[placeholder]').forEach(el => {
+      el.setAttribute('placeholder', translateText(el.getAttribute('placeholder') || ''));
+    });
+    root.querySelectorAll('[title]').forEach(el => {
+      el.setAttribute('title', translateText(el.getAttribute('title') || ''));
+    });
+    const savedTitle = document.querySelector('#mort-saved-section h3');
+    if (savedTitle) savedTitle.textContent = 'Vos scénarios enregistrés';
+  }
+
+  function patchAiAdvisor() {
+    const api = window.AfroTools && window.AfroTools.ai;
+    if (!api || api.__frMortgageWrapped || typeof api.ask !== 'function') return;
+    const originalAsk = api.ask.bind(api);
+    api.ask = function(prompt, systemPrompt) {
+      const frSystemPrompt = 'Tu es un conseiller en financement immobilier africain. Réponds en français, de façon concise, pratique et orientée action. Si une précision manque, signale-la clairement.';
+      return originalAsk(prompt, frSystemPrompt || systemPrompt);
+    };
+    api.__frMortgageWrapped = true;
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      if (!src || loadedScripts.has(src)) return resolve();
+      loadedScripts.add(src);
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.onload = () => resolve();
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  }
+
+  function loadInlineScripts(doc) {
+    const scripts = Array.from(doc.querySelectorAll('script:not([src])'));
+    scripts.forEach(sc => {
+      if (/gtag|schema\.org/.test(sc.textContent)) return;
+      const ns = document.createElement('script');
+      ns.textContent = sc.textContent;
+      document.body.appendChild(ns);
+    });
+  }
+
+  async function init() {
+    try {
+      const response = await fetch(SOURCE_URL);
+      const html = await response.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      doc.querySelectorAll('style').forEach(style => {
+        document.head.appendChild(style.cloneNode(true));
+      });
+
+      const mountSource = doc.querySelector('.tool-wrap') || doc.querySelector('main') || doc.body;
+      mount.innerHTML = mountSource ? mountSource.outerHTML : '<div class="fr-mort-fallback"><div class="fr-mort-fallback-card"><h3>Chargement impossible</h3><p><a href="/tools/mortgage-calculator/">Ouvrir la version anglaise</a></p></div></div>';
+
+      const externalScripts = Array.from(doc.querySelectorAll('script[src]'))
+        .map(script => script.getAttribute('src'))
+        .filter(src => src && !/googletagmanager/.test(src));
+
+      for (const src of externalScripts) {
+        await loadScript(src);
+      }
+
+      loadInlineScripts(doc);
+      localizeMount(mount);
+      patchAiAdvisor();
+
+      const observer = new MutationObserver(() => {
+        localizeMount(mount);
+        patchAiAdvisor();
+      });
+      observer.observe(mount, { subtree: true, childList: true, characterData: true });
+
+      window.addEventListener('load', () => {
+        localizeMount(mount);
+        patchAiAdvisor();
+      }, { once: true });
+    } catch (error) {
+      mount.innerHTML = '<div class="fr-mort-fallback"><div class="fr-mort-fallback-card"><h3>Chargement impossible</h3><p>La version française du calculateur n’a pas pu se charger. <a href="/tools/mortgage-calculator/">Ouvrir la version anglaise</a>.</p></div></div>';
+    }
+  }
+
+  init();
+})();
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-D859CGF391');
+</script>
 </body>
 </html>

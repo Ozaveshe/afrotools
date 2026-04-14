@@ -12,7 +12,9 @@
 <meta property="og:description" content="PAYE Burundi pr?cis : IPR OBR 0 %?30 %, pension INSS 4 % plafonn?e, branche pension patronale et risque professionnel inclus.">
 <meta property="og:type"        content="website">
 <meta property="og:url" content="https://afrotools.com/fr/burundi/bi-paye/">
-<meta property="og:image"       content="https://afrotools.com/og-image?title=Burundi%20PAYE%20Calculator%202025%2F26%20%7C%20AfroTools&country=BI&sub=Calculateur%20fiscal%20gratuit%20%E2%80%94%20Afrique%20francophone&lang=fr">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name"   content="AfroTools">
 <meta name="twitter:card"       content="summary_large_image">
@@ -86,7 +88,7 @@
 <meta name="content-language" content="fr">
 <script src="/assets/js/i18n-detect.js?v=40bd62b3" defer></script>
 <meta property="og:locale:alternate" content="en_US">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-bi-paye.png">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-04-14">
 </head>
 <body class="tool-page">
@@ -114,7 +116,7 @@
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
     <p><strong>Donn�es cl�s 2025/26 :</strong> l'IPR applique un seuil d'exon�ration de <strong>BIF 150 000/mois</strong>, puis <strong>20 %</strong> de BIF 150 001 � 300 000 et <strong>30 %</strong> au-del�. La pension INSS salariale est de <strong>4 %</strong>, plafonn�e � <strong>BIF 18 000/mois</strong> sur l'assiette standard de BIF 450 000. Le co�t employeur inclut aussi la branche pension � 6 % et la branche risque professionnel � 3 %.</p>
-    <p><strong>Donn�es cl�s 2025/26:</strong> Tranches IPR inchang�es � seuil d'exon�ration <strong>BIF 150 000/mois (BIF 1 800 000/an)</strong>. Taux marginal <strong>35% au-del� de BIF 500 000/mois</strong>. INSS salari� 4% (d�ductible), patronal 6%. Emploi secondaire impos� � <strong>30%</strong> forfaitaire. Pas de SDL ni de WCF au Burundi.</p>
+
   </div>
 </div>
 
@@ -126,24 +128,24 @@
     <div>
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Enter Your Details</span>
-          <span class="card-sub">Burundin Shilling � BIF</span>
+          <span class="card-title">Saisissez vos informations</span>
+          <span class="card-sub">Franc burundais ? BIF</span>
         </div>
         <div class="card-body">
 
           <!-- SECTOR SELECTOR -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
+            <div class="f-label"><span class="f-label-text">Secteur</span><span class="f-hint">Détermine la caisse sociale</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (INSS)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (INSS)</button>
+              <button class="sec-btn on" id="btnPrivate" onclick="setSecteur('private',this)">Salarié standard</button>
+              <button class="sec-btn" id="btnPublic" onclick="setSecteur('public',this)">Secteur public (INSS)</button>
             </div>
           </div>
 
           <!-- SALARY SLIDER -->
           <div class="slider-wrap">
             <div class="slider-row">
-              <span class="slider-label">R?mun?ration brute mensuelle</span>
+              <span class="slider-label">Rémunération brute mensuelle</span>
               <span class="slider-val" id="sliderVal">BIF 1,500,000</span>
             </div>
             <input type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
@@ -152,7 +154,7 @@
 
           <!-- INPUT -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any d�ductions</span></div>
+            <div class="f-label"><span class="f-label-text">Ou saisissez le montant mensuel exact</span><span class="f-hint">Avant toute d?duction</span></div>
             <div class="f-wrap">
               <span class="f-prefix">BIF</span>
               <input type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
@@ -170,7 +172,7 @@
 
           <!-- CONTRIBUTION TOGGLES -->
           <div class="field">
-            <div class="f-label"><span class="f-label-text">Active D�ductions</span><span class="f-hint">Activer ou d?sactiver</span></div>
+            <div class="f-label"><span class="f-label-text">D?ductions actives</span><span class="f-hint">Activer ou d?sactiver</span></div>
             <div class="toggles">
               <div class="tog on" data-tog="nssf" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -178,13 +180,13 @@
               </div>
               <div class="tog" data-tog="secondary" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label">Emploi secondaire</div><div class="tog-rate">Flat 30% no d�ductions</div></div>
+                <div><div class="tog-label">Emploi secondaire</div><div class="tog-rate">Taux forfaitaire 30 % sans d?duction</div></div>
               </div>
             </div>
             <p class="f-note">La cotisation INSS salariale (4%) est d�ductible du revenu imposable avant le calcul de l'IPR. L'INSS patronal (6%) est un co�t suppl�mentaire. Pas de SDL ni de WCF au Burundi.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net ?</button>
+          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
         </div>
       </div>
 
@@ -194,7 +196,7 @@
           <div class="res-hero-label">Salaire net mensuel</div>
           <div class="res-hero-amount" id="resAmount">BIF 0</div>
           <div class="res-hero-period">Apr�s IPR, INSS &amp; toutes d�ductions</div>
-          <div class="res-hero-gross" id="resGross"></div>
+          <div class="res-hero-gross" id="resBrut"></div>
         </div>
         <div class="res-body">
           <div class="period-row">
@@ -205,7 +207,7 @@
           <div class="rate-bar-wrap">
             <div class="rate-bar-hdr">
               <span class="rate-bar-lbl">Taux effectif d'imposition</span>
-              <span class="rate-bar-pct" id="effRateDisplay">0%</span>
+              <span class="rate-bar-pct" id="effTauxDisplay">0%</span>
             </div>
             <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
           </div>
@@ -214,9 +216,9 @@
 
         <div class="chart-section">
           <div class="chart-tabs">
-            <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
-            <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
-            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
+            <button class="chart-tab on" onclick="setChart('donut',this)">Répartition</button>
+            <button class="chart-tab" onclick="setChart('bar',this)">Tranches fiscales</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Coût employeur</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
@@ -226,13 +228,13 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             T�l�charger PDF
           </button>
-          <button class="act-btn act-share" id="tzShareBtn" onclick="shareResult()">
+          <button class="act-btn act-share" id="tzPartagerBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Partager le r?sultat
+            Partager le résultat
           </button>
         </div>
 
-          <!-- Save & Share -->
+          <!-- Save & Partager -->
           <div class="save-share-row">
             <save-result-button
               tool-slug="bi-paye"
@@ -258,7 +260,7 @@
         <div class="ai-head">
           <div class="ai-dot"></div>
           <span class="ai-head-title">Conseiller fiscal IA</span>
-          <span class="ai-head-by">Powered by Claude</span>
+          <span class="ai-head-by">Propulsé par Claude</span>
         </div>
         <div class="ai-body">
           <p class="ai-status" id="aiStatus">Calculez votre salaire d'abord � j'analyserai votre situation IPR OBR, expliquerai la d�ductibilit� INSS et vous donnerai des conseils d'optimisation fiscale pour le Burundi.</p>
@@ -276,18 +278,17 @@
               </div>
       </div>
 
-<!-- OBR IPR TAX BANDS -->
+      <!-- OBR IPR TAX BANDS -->
       <div class="card bands-card">
         <div class="card-head" onclick="toggleBands(this)">
           <span class="card-title">OBR IPR 2025/26 Tranches mensuelles</span>
           <span class="tog-arrow">?</span>
         </div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">BIF 0 � 150 000</span><span class="band-zero">0% � exon�r�</span></div>
-          <div class="band-row"><span class="band-range">Au-del� de BIF 300 000</span><span class="band-rate">30 % sur l'exc�dent au-del� de 300 000</span></div>
-          <p class="band-note">Calcul� mensuellement sur le revenu imposable apr�s pension INSS salariale plafonn�e. Emploi secondaire : forfait de 30 % sur le revenu imposable de l'emploi.</p>
-          <div class="band-row"><span class="band-range">Au-del� de BIF 500 000</span><span class="band-rate">35% sur l'exc�dent au-del� de 500k</span></div>
-          <p class="band-note">Calcul� mensuellement sur le revenu imposable (brut moins INSS 4%). Seuil d'exon�ration annuel: BIF 1 800 000. Emploi secondaire: 30% forfaitaire sur le brut, sans d�ductions.</p>
+          <div class="band-row"><span class="band-range">BIF 0 ? 150 000</span><span class="band-zero">0 % ? exon?r?</span></div>
+          <div class="band-row"><span class="band-range">BIF 150 001 ? 300 000</span><span class="band-rate">20 % sur l'exc?dent au-del? de 150 000</span></div>
+          <div class="band-row"><span class="band-range">Au-del? de BIF 300 000</span><span class="band-rate">30 % sur l'exc?dent au-del? de 300 000</span></div>
+          <p class="band-note">Calcul? mensuellement sur le revenu imposable apr?s pension INSS salariale d?ductible. L'emploi secondaire est soumis ? un pr?l?vement forfaitaire de 30 % selon la loi fiscale burundaise.</p>
         </div>
       </div>
 
@@ -299,7 +300,7 @@
         </div>
         <div class="bands-body">
           <div class="band-row"><span class="band-range">INSS salari�</span><span class="band-rate">4% du salaire brut</span></div>
-          <div class="band-row"><span class="band-range">INSS patronal</span><span class="band-rate">6% du salaire brut</span></div>
+          <div class="band-row"><span class="band-range">INSS patronal</span><span class="band-rate">6 % du salaire brut</span></div>
           <p class="band-note">La cotisation INSS salariale (4%) est d�ductible du revenu imposable avant le calcul de l'IPR. L'INSS patronal (6%) est un co�t suppl�mentaire. Pas de SDL ni de WCF au Burundi.</p>
         </div>
       </div>
@@ -313,25 +314,25 @@
           <img src="/assets/img/tools/bi-vat.webp" alt="Calculateur PAYE Burundi" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Calculateur PAYE Burundi</div>
-            <div class="tool-info-cat">Tax &amp; Finance</div>
+            <div class="tool-info-cat">Fiscalité &amp; finance</div>
           </div>
         </div>
         <div class="tool-info-body">
           <div class="tool-info-stats">
-            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculs</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Note</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Gratuit</div><div class="tool-stat-lbl">à vie</div></div>
           </div>
           <div class="tool-info-features">
-            <span class="tool-feat">Net Pay Calc</span>
-            <span class="tool-feat">Tax Bands</span>
-            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">Salaire net</span>
+            <span class="tool-feat">Tranches fiscales</span>
+            <span class="tool-feat">Export PDF</span>
             <span class="tool-feat">Conseiller IA</span>
             <span class="tool-feat">D�ductions</span>
           </div>
         </div>
         <div class="tool-info-footer">
-          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <span class="tool-info-updated">Mis à jour : mars 2026</span>
           <div class="tool-info-actions">
             <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/tools/calculateur-paye/">Tous les pays</a>
@@ -346,8 +347,8 @@
 <!-- FAQ -->
 <section class="faq-sec">
   <div class="faq-inner">
-    <span class="eyebrow">Burundi Tax FAQ</span>
-    <h2 class="sec-title">Common PAYE Questions</h2>
+    <span class="eyebrow">FAQ fiscale Burundi</span>
+    <h2 class="sec-title">Questions fréquentes sur la paie</h2>
     <div class="faq-grid">
       <div class="faq-item">
         <div class="faq-q">Quelles sont les tranches IPR au Burundi pour 2025/26?</div>
@@ -359,7 +360,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">Qu'est-ce que l'IPR au Burundi?</div>
-        <p class="faq-a">L'IPR (Imp�t sur les Revenus) est l'imp�t progressif sur les revenus d'emploi au Burundi, similaire au PAYE. Il est administr� par l'OBR (Office Burundais des Recettes). Les quatre tranches mensuelles progressives vont de 0% � 35%. Le Burundi n'a pas de SDL ni de WCF � le syst�me de paie est simplifi�.</p>
+        <p class="faq-a">L'IPR (Imp?t sur les Revenus) est l'imp?t progressif sur les revenus d'emploi au Burundi, similaire au PAYE. Il est administr? par l'OBR (Office Burundais des Recettes). Les trois tranches mensuelles progressives vont de 0 % ? 30 % pour l'employeur principal. Le Burundi n'a pas de SDL ni de WCF, donc le syst?me de paie est simplifi?.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">Comment est impos� l'emploi secondaire au Burundi?</div>
@@ -367,11 +368,11 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">Quelle est la devise du Burundi?</div>
-        <p class="faq-a">Le Burundi utilise le franc burundais (BIF). L'exercice fiscal suit l'ann�e civile. Le seuil d'exon�ration mensuel est de BIF 150 000 (BIF 1 800 000 par an). Le taux marginal de 35% s'applique au-del� de BIF 500 000 par mois.</p>
+    <p style="color:#374151;line-height:1.7;margin-bottom:1.5rem">Le Burundi utilise le franc burundais (BIF). L'exercice fiscal suit l'ann?e civile. Le seuil d'exon?ration mensuel est de BIF 150 000 (BIF 1 800 000 par an). Le taux marginal de 30 % s'applique au-del? de BIF 300 000 par mois pour l'employeur principal. Les employeurs doivent remettre l'IPR ? l'OBR avant le 15 du mois suivant le mois de paie.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">Quand les employeurs doivent-ils remettre l'IPR � l'OBR?</div>
-        <p class="faq-a">L'IPR doit �tre d�clar� et vers� � l'OBR avant le 7 du mois suivant le mois de paie. Les cotisations INSS sont remises s�par�ment. Le retard entra�ne des p�nalit�s au titre du Code G�n�ral des Imp�ts. Les employeurs doivent d�poser une d�claration mensuelle m�me pour les mois sans imp�t.</p>
+        <p class="faq-a">L'IPR (Imp?t sur les Revenus) est l'imp?t progressif sur les revenus d'emploi au Burundi, similaire au PAYE. Il est administr? par l'OBR (Office Burundais des Recettes). Les trois tranches mensuelles progressives vont de 0 % ? 30 % pour l'employeur principal. Le Burundi n'a pas de SDL ni de WCF, donc le syst?me de paie est simplifi?.</p>
       </div>
     </div>
   </div>
@@ -381,8 +382,8 @@
 <div class="modal-bg" id="pdfModal">
   <div class="modal">
     <div id="modalForm">
-      <h3>?? Download Your PAYE Summary</h3>
-      <p>Enter your email to get a detailed PDF � we'll notify you when Burundi tax rates change.</p>
+      <h3>?? Télécharger votre synthèse de salaire net</h3>
+      <p>Saisissez votre e-mail pour recevoir un PDF d?taill?. Nous vous avertirons si les taux burundais changent.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
       <p style="display:none"><input name="bot-field"></p>
@@ -391,19 +392,19 @@
         <input type="hidden" name="tool"         value="paye">
         <input type="hidden" name="tool_id"      value="bi-paye">
         <input type="hidden" name="currency"     value="BIF">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
-        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Get My PDF ?</button>
+        <input type="hidden" name="gross_salary" id="hiddenBrut" value="">
+        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (facultatif)" autocomplete="name">
+        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
+        <button class="modal-submit" type="submit">Recevoir le PDF →</button>
       </form>
-      <button class="modal-cancel" onclick="closePdfModal()">No thanks</button>
+      <button class="modal-cancel" onclick="closePdfModal()">Non merci</button>
     </div>
     <div class="modal-success" id="modalSuccess">
       <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">?</button>
       <div class="big-check">?</div>
-      <h4>PDF opening now</h4>
-      <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
-      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done ?</button>
+      <h4>Le PDF s'ouvre maintenant</h4>
+      <p>Cliquez sur <strong>Enregistrer en PDF</strong> dans la bo?te de dialogue d'impression.</p>
+      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Terminé →</button>
     </div>
   </div>
 </div>
@@ -411,9 +412,9 @@
 <section style="padding:48px 16px;background:#f8fafd">
   <div style="max-width:800px;margin:0 auto">
     <h2 style="font-size:1.45rem;font-weight:700;color:#0f172a;margin-bottom:1rem">L'IPR au Burundi: Comment fonctionne l'imp�t sur les revenus</h2>
-    <p style="color:#374151;line-height:1.7;margin-bottom:1rem">L'<strong>Imp�t sur les Revenus (IPR)</strong> est l'imp�t progressif sur les revenus d'emploi au Burundi, administr� par l'<strong>Office Burundais des Recettes (OBR)</strong>. Il est calcul� sur le revenu mensuel imposable � soit le salaire brut diminu� de la cotisation INSS salariale d�ductible (4%). L'IPR comporte quatre tranches mensuelles progressives de 0% � 35%. Les employeurs retiennent l'IPR chaque mois et le versent � l'OBR.</p>
+    <p style="color:#374151;line-height:1.7;margin-bottom:1rem">L'<strong>Imp?t sur les Revenus (IPR)</strong> est l'imp?t progressif sur les revenus d'emploi au Burundi, administr? par l'<strong>Office Burundais des Recettes (OBR)</strong>. Il est calcul? sur le revenu mensuel imposable, soit le salaire brut diminu? de la cotisation INSS salariale d?ductible (4 %). L'IPR comporte trois tranches mensuelles progressives de 0 % ? 30 % pour l'employeur principal, tandis que l'emploi secondaire est soumis ? un taux forfaitaire de 30 %. Les employeurs retiennent l'IPR chaque mois et le versent ? l'OBR.</p>
     <p style="color:#374151;line-height:1.7;margin-bottom:1rem">La s�curit� sociale est g�r�e par l'<strong>INSS (Institut National de S�curit� Sociale)</strong>. La cotisation salariale est de <strong>4%</strong> du salaire brut, d�ductible du revenu imposable avant le calcul de l'IPR. La cotisation patronale est de <strong>6%</strong>. Il n'existe pas de SDL ni de WCF au Burundi � le syst�me de paie est simplifi� compar� � d'autres pays africains.</p>
-    <p style="color:#374151;line-height:1.7;margin-bottom:1.5rem">Le Burundi utilise le franc burundais (BIF). L'exercice fiscal suit l'ann�e civile. Le seuil d'exon�ration mensuel est de BIF 150 000 (BIF 1 800 000 par an). Le taux marginal de 35% s'applique au-del� de BIF 500 000 par mois. Les employeurs doivent remettre l'IPR � l'OBR avant le 15 du mois suivant le mois de paie.</p>
+    <p style="color:#374151;line-height:1.7;margin-bottom:1.5rem">Le Burundi utilise le franc burundais (BIF). L'exercice fiscal suit l'ann?e civile. Le seuil d'exon?ration mensuel est de BIF 150 000 (BIF 1 800 000 par an). Le taux marginal de 30 % s'applique au-del? de BIF 300 000 par mois pour l'employeur principal. Les employeurs doivent remettre l'IPR ? l'OBR avant le 15 du mois suivant le mois de paie.</p>
     <div style="overflow-x:auto">
       <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
         <thead><tr style="background:#0A1628;color:#fff"><th style="padding:10px 12px;text-align:left">Revenu imposable mensuel (BIF)</th><th style="padding:10px 12px;text-align:right">Taux</th></tr></thead>
@@ -429,21 +430,21 @@
 </section>
 <section class="more-tools-sec">
   <div class="more-tools-inner">
-    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <h2 class="more-tools-title">Autres outils fiscaux africains</h2>
     <div class="more-tools-grid">
-      <a href="/fr/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
-      <a href="/fr/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
-      <a href="/fr/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
-      <a href="/fr/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
-      <a href="/fr/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
+      <a href="/fr/nigeria/ng-salary-tax" class="more-tool-link">Nigeria calculateur salaire net</a>
+      <a href="/fr/kenya/ke-paye" class="more-tool-link">Kenya calculateur salaire net</a>
+      <a href="/fr/ghana/gh-paye" class="more-tool-link">Ghana calculateur salaire net</a>
+      <a href="/fr/south-africa/za-paye" class="more-tool-link">Afrique du Sud calculateur salaire net</a>
+      <a href="/fr/egypt/eg-paye" class="more-tool-link">Égypte calculateur salaire net</a>
       <a href="/fr/tools/calculateur-tva/" class="more-tool-link">Calculateur TVA panafricain</a>
-      <a href="/fr/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
+      <a href="/fr/tools/currency-converter/" class="more-tool-link">Convertisseur de devises africaines</a>
     </div>
   </div>
 </section>
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">Related African Tax Tools</h2>
+  <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">Outils fiscaux africains associés</h2>
   <div style="display:flex;flex-wrap:wrap;gap:10px;">
     <a href="/fr/burundi/bi-vat" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Calculateur TVA Burundi</a>
     <a href="/fr/rwanda/rw-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Rwanda PAYE</a>
@@ -457,7 +458,7 @@
 <script>
 // ------------------------------------------------------------------
 //  BURUNDI IPR CALCULATOR 2025/26
-//  OBR Progressive Monthly Tax � INSS 4% (employee) / 6% (employer)
+//  OBR Progressive Monthly Impôt � INSS 4% (employee) / 6% (employer)
 //  Source: Code G�n�ral des Imp�ts 2025 � OBR (obr.gov.bi)
 //          INSS (Institut National de S�curit� Sociale)
 // ------------------------------------------------------------------
@@ -473,13 +474,13 @@ const fmt = n => 'BIF\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-GB');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // -- SECTOR SELECTOR -------------------------------------------
-function setSector(s, btn) {
+function setSecteur(s, btn) {
   SECTOR = s;
   document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   const nssfTog = document.querySelector('[data-tog="nssf"]');
   document.getElementById('nssfLabel').textContent = 'INSS Pension (4%)';
-  nssfTog.querySelector('.tog-rate').textContent = 'Employee pension deduction, capped at BIF 18,000';
+  nssfTog.querySelector('.tog-rate').textContent = 'Cotisation salariale de pension, plafonnée à BIF 18 000';
 }
 
 // -- SLIDER ----------------------------------------------------
@@ -520,26 +521,26 @@ function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.cla
 //  30%   above     BIF 300,000
 // --------------------------------------------------------------
 
-function calcMonthlyPAYE(monthlyTaxableIncome) {
-  const income = Math.max(0, monthlyTaxableIncome);
-  const bandBreakdown = [];
+function calcMonthlyPAYE(monthlyImpôtableIncome) {
+  const income = Math.max(0, monthlyImpôtableIncome);
+  const bandRépartition = [];
 
   if (income <= 150000) {
-    bandBreakdown.push({ rate: 0, income, tax: 0 });
-    return { tax: 0, bandBreakdown };
+    bandRépartition.push({ rate: 0, income, tax: 0 });
+    return { tax: 0, bandRépartition };
   }
 
   let tax = 0;
 
   // Band 1: 0% on first 150,000
-  bandBreakdown.push({ rate: 0, income: 150000, tax: 0 });
+  bandRépartition.push({ rate: 0, income: 150000, tax: 0 });
 
   // Band 2: 20% on 150,001�300,000
   if (income > 150000) {
     const chunk = Math.min(income - 150000, 150000);
     const t = chunk * 0.20;
     tax += t;
-    bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });
+    bandRépartition.push({ rate: 0.20, income: chunk, tax: t });
   }
 
   // Band 3: 30% above 300,000
@@ -547,10 +548,10 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
     const chunk = income - 300000;
     const t = chunk * 0.30;
     tax += t;
-    bandBreakdown.push({ rate: 0.30, income: chunk, tax: t });
+    bandRépartition.push({ rate: 0.30, income: chunk, tax: t });
   }
 
-  return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
+  return { tax, bandRépartition: bandRépartition.filter(b => b.income > 0) };
 }
 
 // -- MAIN CALCULATE --------------------------------------------
@@ -579,28 +580,28 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const riskBase    = Math.min(gross, 80000);
 
   // INSS calculation
-  const socialRate       = hasNSSF ? 0.04 : 0;
-  const employerPenRate  = 0.06;
-  const employerRiskRate = 0.03;
-  const social           = pensionBase * socialRate;
-  const employerPension  = pensionBase * employerPenRate;
-  const employerRisk     = riskBase * employerRiskRate;
+  const socialTaux       = hasNSSF ? 0.04 : 0;
+  const employerPenTaux  = 0.06;
+  const employerRiskTaux = 0.03;
+  const social           = pensionBase * socialTaux;
+  const employerPension  = pensionBase * employerPenTaux;
+  const employerRisk     = riskBase * employerRiskTaux;
   const empSocial        = employerPension + employerRisk;
 
   // PAYE
   let monthlyPAYE = 0;
-  let bandBreakdown = [];
+  let bandRépartition = [];
 
   const taxableIncome = Math.max(0, gross - social);
 
   if (isSecondary) {
     // Secondary employment: flat 30% on taxable employment income
     monthlyPAYE = taxableIncome * 0.30;
-    bandBreakdown = [{ rate: 0.30, income: taxableIncome, tax: monthlyPAYE, isFlat: true }];
+    bandRépartition = [{ rate: 0.30, income: taxableIncome, tax: monthlyPAYE, isFlat: true }];
   } else {
     const result = calcMonthlyPAYE(taxableIncome);
     monthlyPAYE  = result.tax;
-    bandBreakdown = result.bandBreakdown;
+    bandRépartition = result.bandRépartition;
   }
 
   // Employer levies
@@ -608,55 +609,55 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const wcf = 0; // No WCF in Burundi
 
   // Net pay
-  const totalEmployeeDeductions = social + monthlyPAYE;
-  const netMonthly = gross - totalEmployeeDeductions;
-  const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
+  const totalEmployeeDéductions = social + monthlyPAYE;
+  const netMonthly = gross - totalEmployeeDéductions;
+  const effectiveTaux = gross > 0 ? monthlyPAYE / gross : 0;
 
   // Annual figures
   const annual = v => v * 12;
 
   RESULT = {
-    gross, monthly: gross, social, socialRate, empSocial,
+    gross, monthly: gross, social, socialTaux, empSocial,
     pensionBase, riskBase, taxableIncome, employerPension, employerRisk,
-    monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
+    monthlyPAYE, bandRépartition, isSecondary, sector: SECTOR,
     sdl, wcf, empSocial,
-    totalEmployeeDeductions, netMonthly, effectiveRate,
-    annualGross: annual(gross), annualNet: annual(netMonthly),
-    annualTax: annual(monthlyPAYE), annualSocial: annual(social),
-    annualTaxableIncome: annual(taxableIncome),
+    totalEmployeeDéductions, netMonthly, effectiveTaux,
+    annualBrut: annual(gross), annualNet: annual(netMonthly),
+    annualImpôt: annual(monthlyPAYE), annualSocial: annual(social),
+    annualImpôtableIncome: annual(taxableIncome),
     totalEmployerCostMonthly: gross + empSocial,
   };
 
   document.getElementById('resAmount').textContent      = fmt(netMonthly);
-  document.getElementById('resGross').textContent       = `Brut : ${fmt(gross)}/mois ? ${fmt(annual(gross))}/an`;
+  document.getElementById('resBrut').textContent       = `Brut : ${fmt(gross)}/mois ? ${fmt(annual(gross))}/an`;
   document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
-  document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
-  setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
+  document.getElementById('effTauxDisplay').textContent = pct(effectiveTaux);
+  setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveTaux * 200, 100) + '%'; }, 80);
+  document.getElementById('hiddenBrut').value = gross;
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + employer pension ${fmt(employerPension)}/mo (6% on BIF 450,000) + professional risk ${fmt(employerRisk)}/mo (3% on BIF 80,000).`;
+  strip.innerHTML = `<strong>Total Coût employeur: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Brut + pension patronale ${fmt(employerPension)}/mo (6% sur BIF 450,000) + risque professionnel ${fmt(employerRisk)}/mo (3% sur BIF 80,000).`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
-  // Save/Share/Benchmark wiring
+  // Save/Partager/Benchmark wiring
   var _saveBtn = document.querySelector('save-result-button');
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
       netPay: RESULT.netMonthly,
       tax: RESULT.monthlyPAYE,
-      effectiveRate: RESULT.effectiveRate
+      effectiveTaux: RESULT.effectiveTaux
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Take-Home Pay',
+    headline: 'Mon salaire net',
     mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
-      { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' },
-      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+      { label: 'Brut', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Impôt', value: fmt(RESULT.monthlyPAYE) + '/mo' },
+      { label: 'Taux effectif', value: pct(RESULT.effectiveTaux) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
@@ -665,19 +666,19 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = "Obtenir l'analyse fiscale IA ->";
-  document.getElementById('aiStatus').textContent = `Brut : ${fmt(gross)}/mois ? Net : ${fmt(netMonthly)}/mois ? IPR : ${fmt(monthlyPAYE)}/mois ? Taux effectif : ${pct(effectiveRate)}`;
+  document.getElementById('aiBtn').textContent = "Obtenir l'analyse fiscale IA ?";
+  document.getElementById('aiStatus').textContent = `Brut : ${fmt(gross)}/mois ? Net : ${fmt(netMonthly)}/mois ? IPR : ${fmt(monthlyPAYE)}/mois ? Taux effectif : ${pct(effectiveTaux)}`;
 }
 
 // -- RENDER ROWS -----------------------------------------------
 function renderRows(R, period) {
   const isAnnual = period === 'annual';
   const d = isAnnual ? 1 : 1; // we always have monthly figures in RESULT
-  const gross  = isAnnual ? R.annualGross   : R.gross;
+  const gross  = isAnnual ? R.annualBrut   : R.gross;
   const social = isAnnual ? R.annualSocial  : R.social;
-  const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
+  const paye   = isAnnual ? R.annualImpôt     : R.monthlyPAYE;
   const net    = isAnnual ? R.annualNet     : R.netMonthly;
-  const totalDeductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDeductions;
+  const totalDéductions = isAnnual ? R.annualImpôt + R.annualSocial : R.totalEmployeeDéductions;
   const lbl = isAnnual ? '/an' : '/mois';
 
   const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
@@ -688,11 +689,11 @@ function renderRows(R, period) {
       ${row(`Salaire brut${lbl}`, fmt(gross))}
     </div>
     <div class="res-section">
-      <div class="res-section-title">Deductions</div>
-      ${R.social > 0 ? row(`INSS (${pct(R.socialRate)})`, fmt(social), 'c-red') : ''}
+      <div class="res-section-title">Déductions</div>
+      ${R.social > 0 ? row(`INSS (${pct(R.socialTaux)})`, fmt(social), 'c-red') : ''}
       ${R.isSecondary
-        ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">? Secondary employment: flat 30% applied to taxable employment income after any active INSS pension deduction in this simplified model.</div>`
-        : row(`Revenu imposable${lbl}`, fmt(isAnnual ? R.annualTaxableIncome : R.taxableIncome), 'c-mut')
+        ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">? Emploi secondaire : taux fixe de 30 % appliqué au revenu imposable après la pension INSS active, dans ce modèle simplifié.</div>`
+        : row(`Revenu imposable${lbl}`, fmt(isAnnual ? R.annualImpôtableIncome : R.taxableIncome), 'c-mut')
       }
     </div>
     <div class="res-section">
@@ -700,8 +701,8 @@ function renderRows(R, period) {
       ${row(`Income tax (IPR)${lbl}`, fmt(paye), 'c-red')}
     </div>
     <div class="res-section">
-      ${row('Total des d?ductions', fmt(totalDeductions), 'c-red')}
-      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
+      ${row('Total des d?ductions', fmt(totalDéductions), 'c-red')}
+      <div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
     </div>`;
 }
 
@@ -714,9 +715,9 @@ function setPeriod(period, btn) {
     // Update hero
     var isMonthly = period === 'monthly';
     var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
-    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
+    var gr = isMonthly ? RESULT.gross : (RESULT.annualBrut || RESULT.gross * 12);
     document.getElementById('resAmount').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
+    document.getElementById('resBrut').textContent = isMonthly
       ? 'Brut : ' + fmt(gr) + '/mois'
       : 'Brut : ' + fmt(gr) + '/an';
     document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
@@ -749,19 +750,19 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Take-Home', 'IPR Tax', 'INSS'],
+        labels: ['Net', 'IPR', 'INSS'],
         datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.social], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
     });
   } else if (type === 'bar') {
-    const bands = R.bandBreakdown.filter(b => b.tax > 0);
+    const bands = R.bandRépartition.filter(b => b.tax > 0);
     if (!bands.length) return;
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
         labels: bands.map(b => b.isFlat ? '30% flat' : (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (BIF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Impôt (BIF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'BIF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
@@ -769,7 +770,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Take-Home', 'IPR', 'Employer Social'],
+        labels: ['Net', 'IPR', 'Employeur'],
         datasets: [{ label:'BIF', data:[R.netMonthly, R.monthlyPAYE, R.empSocial], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'BIF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
@@ -800,8 +801,8 @@ function generatePdf() {
   const dateStr= new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
   const refNo  = 'AFT-BI-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
-  const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? 'Flat 30% (secondary employment)' : 'Rate ' + (b.rate*100) + '% on BIF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(BIF ${Math.round(b.tax).toLocaleString()})</td></tr>`
+  const bandRows = R.bandRépartition.filter(b => b.tax > 0).map(b =>
+    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? 'Taux fixe 30 % (emploi secondaire)' : 'Taux ' + (b.rate*100) + '% sur BIF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(BIF ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
@@ -832,58 +833,58 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
-    <div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Plateforme tout-en-un d'AfroTools</div></div>
+    <div><div class="ref-label">Référence</div><div class="ref-val">${refNo}</div></div>
   </div>
-  <div class="doc-title">Burundi IPR<br><span>Summary 2025/26</span></div>
-  <div class="doc-meta">Generated ${dateStr} � afrotools.com/burundi/bi-paye</div>
+  <div class="doc-title">Burundi IPR<br><span>R?sum? 2025/26</span></div>
+  <div class="doc-meta">G?n?r? ${dateStr} � afrotools.com/burundi/bi-paye</div>
   <div class="badge">OBR 2025/26</div>
 </div>
 <div class="body">
   <div class="sh">
-    <div class="shi"><div class="sh-lbl">Monthly Take-Home</div><div class="sh-val gold">BIF ${Math.round(R.netMonthly).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">Salaire net mensuel</div><div class="sh-val gold">BIF ${Math.round(R.netMonthly).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly Gross</div><div class="sh-val">BIF ${Math.round(R.gross).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">Salaire brut mensuel</div><div class="sh-val">BIF ${Math.round(R.gross).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly PAYE</div><div class="sh-val red">BIF ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">IPR mensuel</div><div class="sh-val red">BIF ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
+    <div class="shi"><div class="sh-lbl">Taux effectif</div><div class="sh-val red">${pct(R.effectiveTaux)}</div></div>
   </div>
 
-  <div class="sec-head">Section 1 � Monthly Income &amp; Deductions</div>
+  <div class="sec-head">Section 1 ? Revenu mensuel & d?ductions</div>
   <table>
-    <tr><td>Monthly Gross Salary</td><td class="num">BIF ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">INSS employee contribution (${pct(R.socialRate)}, deductible)</td><td class="num red">(BIF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
-    <tr><td style="font-weight:600">Monthly Taxable Income</td><td class="num muted">BIF ${Math.round(R.taxableIncome).toLocaleString()}</td></tr>
+    <tr><td>Salaire brut mensuel</td><td class="num">BIF ${Math.round(R.gross).toLocaleString()}</td></tr>
+    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Cotisation salariale INSS (${pct(R.socialTaux)}, d?ductible)</td><td class="num red">(BIF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    <tr><td style="font-weight:600">Revenu imposable mensuel</td><td class="num muted">BIF ${Math.round(R.taxableIncome).toLocaleString()}</td></tr>
   </table>
 
-  <div class="sec-head">Section 2 � IPR Computation (OBR 2025/26)</div>
+    <div class="sec-head">Section 2 ? Calcul de l'IPR (OBR 2025/26)</div>
   <table>
-    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">? Secondary employment � flat 30% applied to taxable income of BIF ${Math.round(R.taxableIncome).toLocaleString()}</td></tr>` : ''}
-    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band � no PAYE due</td></tr>'}
-    <tr class="total"><td>Monthly PAYE</td><td class="num red">BIF ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
+    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">? Emploi secondaire ? taux forfaitaire de 30 % appliqu? au revenu imposable de BIF ${Math.round(R.taxableIncome).toLocaleString()}</td></tr>` : ''}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Revenu dans la tranche 0 % ? aucun PAYE d?</td></tr>'}
+    <tr class="total"><td>IPR mensuel</td><td class="num red">BIF ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 
-  <div class="sec-head">Section 3 � Monthly Net Pay Summary</div>
+  <div class="sec-head">Section 3 ? Synth?se du salaire net mensuel</div>
   <table>
     ${R.social > 0 ? `<tr><td>INSS (employee)</td><td class="num red">(BIF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
-    <tr><td>IPR income tax</td><td class="num red">(BIF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(BIF ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr><td>Imp?t sur les revenus (IPR)</td><td class="num red">(BIF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total Monthly Déductions</td><td class="num red">(BIF ${Math.round(R.totalEmployeeDéductions).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire net mensuel</td><td class="num green">BIF ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Salaire net annuel</td><td class="num green">BIF ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>
 
-  <div class="sec-head">Section 4 � Employer Cost (Monthly)</div>
+  <div class="sec-head">Section 4 � Coût employeur (Monthly)</div>
   <table>
-    <tr><td>Employee gross salary</td><td class="num">BIF ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Branche pension patronale (6% on BIF ${Math.round(R.pensionBase).toLocaleString()})</td><td class="num red">BIF ${Math.round(R.employerPension).toLocaleString()}</td></tr>
-    <tr><td>Branche risque professionnel (3% on BIF ${Math.round(R.riskBase).toLocaleString()})</td><td class="num red">BIF ${Math.round(R.employerRisk).toLocaleString()}</td></tr>
+    <tr><td>Salaire brut du salarié</td><td class="num">BIF ${Math.round(R.gross).toLocaleString()}</td></tr>
+    <tr><td>Branche pension patronale (6% sur BIF ${Math.round(R.pensionBase).toLocaleString()})</td><td class="num red">BIF ${Math.round(R.employerPension).toLocaleString()}</td></tr>
+    <tr><td>Branche risque professionnel (3% sur BIF ${Math.round(R.riskBase).toLocaleString()})</td><td class="num red">BIF ${Math.round(R.employerRisk).toLocaleString()}</td></tr>
     <tr class="total"><td style="font-weight:800">Co?t employeur total mensuel</td><td class="num red">BIF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 5 � Legal Basis &amp; Sources</div>
   <table>
-    <tr><td style="width:30%"><span class="src">OBR</span>OBR IPR workshop note 2025</td><td style="color:#6b7280;font-size:8pt">Monthly employment income is taxed at 0% up to BIF 150,000, 20% on the next BIF 150,000, and 30% above BIF 300,000. Non-principal employment is withheld at 30%.</td></tr>
+    <tr><td style="width:30%"><span class="src">OBR</span>Note d'atelier OBR IPR 2025</td><td style="color:#6b7280;font-size:8pt">Le revenu mensuel d'emploi est impos? ? 0 % jusqu'? BIF 150 000, ? 20 % sur les BIF 150 001 ? 300 000, et ? 30 % au-del? de BIF 300 000. L'emploi non principal est pr?lev? ? 30 %.</td></tr>
     <tr><td><span class="src">INSS</span>Calcul des cotisations</td><td style="color:#6b7280;font-size:8pt">Pension branch base is capped at BIF 450,000/month with a 4% employee and 6% employer split. Employer professional-risk branch is 3% on a separate BIF 80,000 monthly ceiling.</td></tr>
     <tr><td><span class="src">Scope</span>Calculator scope</td><td style="color:#6b7280;font-size:8pt">This page estimates a standard cash-remuneration case. Housing, transport, MFP, and reimbursements are not separately modelled.</td></tr>
   </table>
@@ -891,8 +892,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div>
-      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#2563EB">TOOLS</b>.COM � Africa's Financial Calculator Platform</div>
-      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with OBR (obr.gov.bi) or a qualified Burundian tax advisor.</div>
+      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#2563EB">TOOLS</b>.COM � Plateforme de calcul financier Afrique</div>
+      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">? titre informatif uniquement. Ne constitue pas un conseil fiscal professionnel. V?rifiez aupr?s de l'OBR (obr.gov.bi) ou d'un conseiller fiscal burundais qualifi?.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
       <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
@@ -917,14 +918,14 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 // -- SHARE -----------------------------------------------------
 function shareResult() {
   if (!RESULT) return;
-  const text = `My Burundi PAYE breakdown: Gross BIF ${Math.round(RESULT.gross).toLocaleString()}/mo ? Take-home BIF ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/burundi/bi-paye`;
+  const text = `Résumé PAYE Burundi : Brut BIF ${Math.round(RESULT.gross).toLocaleString()}/mo ? Net BIF ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveTaux)} effective rate). Calculé sur afrotools.com/fr/burundi/bi-paye`;
   if (navigator.share) {
     navigator.share({title:'Mon PAYE Burundi',text,url:'https://afrotools.com/fr/burundi/bi-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
-    const btn = document.getElementById('tzShareBtn');
-    btn.textContent = '? Copied!';
-    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Partager le r?sultat`,2500);
+    const btn = document.getElementById('tzPartagerBtn');
+    btn.textContent = '✓ Copié !';
+    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Partager le résultat`,2500);
   }
 }
 
@@ -935,29 +936,29 @@ async function getAI() {
   const btn = document.getElementById('aiBtn');
   const respEl = document.getElementById('aiResp');
 
-  btn.disabled = true; btn.textContent = 'Analysing�';
+  btn.disabled = true; btn.textContent = 'Analyse en cours?';
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
   const prompt = `Analyse IPR Burundi (2025/26, OBR) :
 - Salaire brut mensuel : BIF ${Math.round(R.gross).toLocaleString()}
-- INSS salariale (${pct(R.socialRate)}): BIF ${Math.round(R.social).toLocaleString()}/mo
+- INSS salariale (${pct(R.socialTaux)}): BIF ${Math.round(R.social).toLocaleString()}/mo
 - Revenu imposable apr?s INSS : BIF ${Math.round(R.taxableIncome).toLocaleString()}/mo
 - IPR mensuel : BIF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Salaire net mensuel : BIF ${Math.round(R.netMonthly).toLocaleString()}
-- Taux effectif : ${pct(R.effectiveRate)}
-- Emploi secondaire : ${R.isSecondary ? 'YES � flat 30% on taxable employment income' : 'No'}
+- Taux effectif : ${pct(R.effectiveTaux)}
+- Revenu imposable apr?s INSS : BIF ${Math.round(R.taxableIncome).toLocaleString()}/mo
 - Branche pension patronale (6 % sur BIF ${Math.round(R.pensionBase).toLocaleString()}) : BIF ${Math.round(R.employerPension).toLocaleString()}/mo
 - Risque professionnel patronal (3 % sur BIF ${Math.round(R.riskBase).toLocaleString()}) : BIF ${Math.round(R.employerRisk).toLocaleString()}/mo
 - Co?t employeur total : BIF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
-
-Give: 1) Plain English summary of IPR position 2) Two specific legal ways to reduce Burundi tax liability within this simplified model 3) One OBR compliance point to know 4) One thing employees get wrong about INSS ceilings. Mention that housing, transport and MFP are not separately modelled here. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
+- Emploi secondaire : ${R.isSecondary ? `OUI ? taux forfaitaire de 30 % sur le revenu imposable d'emploi` : 'Non'}
+Répondez en français. Donnez : 1) un résumé clair de la situation IPR 2) deux moyens légaux de réduire la charge fiscale au Burundi 3) un point de conformité OBR à connaître 4) une erreur courante concernant les plafonds INSS. Mentionnez que le logement, le transport et le MFP ne sont pas modélisés séparément ici. Maximum 200 mots. Pas de markdown, pas d'astérisques, pas de puces.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools AI Tax Advisor specialising in Burundi IPR � OBR progressive tax, INSS 4%, Code G�n�ral des Imp�ts 2025. Be concise, specific, practical. No markdown, no asterisks.',
+        system:'You are AfroTools AI Impôt Advisor specialising in Burundi IPR � OBR progressive tax, INSS 4%, Code G�n�ral des Imp�ts 2025. Be concise, specific, practical. No markdown, no asterisks.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -971,10 +972,10 @@ Give: 1) Plain English summary of IPR position 2) Two specific legal ways to red
       else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
     };
     type();
-    btn.textContent = 'Ask a follow-up below ?';
+    btn.textContent = 'Posez une question ci-dessous ↓';
   } catch(err) {
-    respEl.className='ai-response';respEl.textContent='AI analysis temporarily unavailable.';
-    btn.disabled=false;btn.textContent='Try Again';
+    respEl.className='ai-response';respEl.textContent='Analyse IA temporairement indisponible.';
+    btn.disabled=false;btn.textContent='Réessayer';
   }
 }
 
@@ -994,21 +995,21 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, Burundi. User: ${R.sector} sector, gross BIF ${Math.round(R.gross).toLocaleString()}/mo, take-home BIF ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        system:`Conseiller fiscal IA AfroTools, Burundi. Utilisateur : secteur ${R.sector}, brut BIF ${Math.round(R.gross).toLocaleString()}/mois, net BIF ${Math.round(R.netMonthly).toLocaleString()}/mois, taux effectif ${pct(R.effectiveTaux)}. Réponse concise. Pas de markdown.`,
         messages:CHAT_HISTORY
       })
     });
     const data = await res.json();
-    const text = data.text || 'Impossible de r?pondre.';
+    const text = data.text || 'Impossible de répondre.';
     aiEl.textContent = text;
     CHAT_HISTORY.push({role:'assistant',content:text});
     msgs.scrollTop = msgs.scrollHeight;
-  } catch { aiEl.textContent='Erreur r?seau. Veuillez r?essayer.'; }
+  } catch { aiEl.textContent='Erreur réseau. Veuillez réessayer.'; }
 }
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 
-// Net-to-Gross: register forward function
+// Net-to-Brut: register forward function
 window._grossToNet = function(g) {
   var d=isOn('nssf')?Math.min(g,450000)*0.04:0;
   return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);

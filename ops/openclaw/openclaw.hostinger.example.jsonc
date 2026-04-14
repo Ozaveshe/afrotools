@@ -1,0 +1,72 @@
+{
+  // Save as ~/.openclaw/openclaw.json on your Hostinger VPS.
+  // Adjust paths to match where you clone AfroTools on the server.
+
+  env: {
+    shellEnv: {
+      enabled: true,
+      timeoutMs: 15000,
+    },
+  },
+
+  identity: {
+    name: "AfroTools Operator",
+    theme: "careful coding assistant for a static-first African tools platform",
+    emoji: "AT",
+  },
+
+  gateway: {
+    mode: "local",
+    port: 18789,
+    // Use "lan" for Docker/Traefik on Hostinger.
+    // Change to "loopback" for the systemd + SSH tunnel path.
+    bind: "lan",
+    auth: {
+      mode: "token",
+      token: "${OPENCLAW_GATEWAY_TOKEN}",
+      allowTailscale: true,
+      rateLimit: {
+        maxAttempts: 10,
+        windowMs: 60000,
+        lockoutMs: 300000,
+        exemptLoopback: true,
+      },
+    },
+    controlUi: {
+      enabled: true,
+      basePath: "/openclaw",
+      // If you use a fixed HTTPS origin later, add it here:
+      // allowedOrigins: ["https://openclaw-xxxx.srv123456.hstgr.cloud"],
+    },
+    tools: {
+      deny: ["browser"],
+      allow: ["gateway"],
+    },
+  },
+
+  tools: {
+    profile: "coding",
+    deny: ["browser"],
+  },
+
+  agents: {
+    defaults: {
+      workspace: "/opt/afrotools",
+      repoRoot: "/opt/afrotools",
+      userTimezone: "Africa/Lagos",
+      timeFormat: "24",
+      model: {
+        primary: "openai-codex/gpt-5.4",
+      },
+      models: {
+        "openai-codex/gpt-5.4": {
+          alias: "codex",
+          params: {
+            transport: "auto",
+          },
+        },
+      },
+      systemPromptOverride: "Read AGENTS.md first. AfroTools is static-first and script-heavy. Prefer source files over generated outputs and prefer existing scripts over manual batch edits. Treat assets/js/components/tool-registry.js, _redirects, _headers, sitemap files, translated outputs, and minified bundles as high risk. For HTML or content changes run npm test. For registry or navigation changes run npm run check-links and npm run audit. For SEO changes run npm run seo:report. For i18n changes run npm run build:i18n:validate and npm run validate:hreflang. If a task needs live schema inspection, SQL execution, logs, auth, storage, or generated types, use the configured Supabase MCP server first.",
+    },
+  },
+}

@@ -2,10 +2,31 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.join(__dirname, "..");
-const blueprintsPath = path.join(root, "data/cars/catalog-candidate-blueprints.json");
 const masterCatalogPath = path.join(root, "data/cars/master-vehicle-catalog.csv");
-const outputCatalogPath = path.join(root, "data/cars/catalog-expansion-wave-1.csv");
-const outputImageManifestPath = path.join(root, "data/cars/image-upload-manifest-wave-1.csv");
+
+function parseArgs(argv) {
+  const options = {};
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    if (!token.startsWith("--")) continue;
+    const key = token.slice(2);
+    const value = argv[index + 1];
+    if (!value || value.startsWith("--")) {
+      options[key] = true;
+      continue;
+    }
+    options[key] = value;
+    index += 1;
+  }
+
+  return options;
+}
+
+const args = parseArgs(process.argv.slice(2));
+const blueprintsPath = path.resolve(root, args.blueprints || "data/cars/catalog-candidate-blueprints.json");
+const outputCatalogPath = path.resolve(root, args["output-catalog"] || "data/cars/catalog-expansion-wave-1.csv");
+const outputImageManifestPath = path.resolve(root, args["output-manifest"] || "data/cars/image-upload-manifest-wave-1.csv");
 
 function parseCsv(text) {
   const rows = [];

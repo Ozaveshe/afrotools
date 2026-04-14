@@ -1,55 +1,498 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="fr">
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur d’impôt crypto | AfroTools</title>
-<meta name="description" content="Calculez vos obligations fiscales sur les gains en cryptomonnaies selon la législation de votre pays africain. Notre outil simplifie la déclaration de vos plus-values sur les actifs numériques.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="view-transition" content="same-origin">
+<title>Calculateur d'impôt crypto en Afrique | AfroTools</title>
+<meta name="description" content="Calculez l'impôt sur vos gains crypto en Afrique avec une estimation pays par pays pour le Nigeria, le Kenya, l'Afrique du Sud, le Ghana, l'Ouganda et le Rwanda.">
 <link rel="canonical" href="https://afrotools.com/fr/tools/impot-crypto/">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/crypto-tax/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/impot-crypto/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/crypto-tax/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/crypto-tax/">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Calculateur d’impôt crypto | AfroTools">
-<meta property="og:description" content="Calculez vos obligations fiscales sur les gains en cryptomonnaies selon la législation de votre pays africain. Notre outil simplifie la déclaration de vos plus-values sur les actifs numériques.">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Calculateur d'impôt crypto en Afrique | AfroTools">
+<meta property="og:description" content="Estimez l'impôt sur vos plus-values crypto selon les règles fiscales de plusieurs pays africains.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/impot-crypto/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://afrotools.com/fr/tools/impot-crypto/">
-<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur d'impôt crypto en Afrique | AfroTools">
+<meta name="twitter:description" content="Estimez l'impôt sur vos plus-values crypto selon les règles fiscales africaines.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="theme-color" content="#0f172a">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <style>
-.tool-hero{text-align:center;padding:3rem 1rem 2rem;background:var(--bg)}
-.tool-hero h1{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--text);margin:0 0 .5rem}
-.tool-hero p{color:var(--text-muted);max-width:600px;margin:0 auto}
-.tool-iframe-wrap{max-width:1000px;margin:0 auto;padding:0 1rem 2rem}
-.tool-iframe-wrap iframe{width:100%;height:700px;border:1px solid var(--border);border-radius:12px}
-.seo-section{max-width:760px;margin:0 auto;padding:2rem 1rem}
-.seo-section h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.seo-section p{line-height:1.7;color:var(--text-muted);margin:0 0 1rem}
-.faq{max-width:760px;margin:0 auto;padding:0 1rem 3rem}
-.faq h2{font-family:'Instrument Serif',serif;font-size:1.5rem;margin:0 0 1rem;color:var(--text)}
-.faq details{border:1px solid var(--border);border-radius:8px;margin:0 0 .5rem;padding:.75rem 1rem}
-.faq summary{cursor:pointer;font-weight:600;color:var(--text)}
-.faq details p{margin:.5rem 0 0;color:var(--text-muted);line-height:1.6}
+:root{--ink:#0f172a;--muted:#475569;--line:#dbe4ee;--soft:#f8fafc;--accent:#b45309;--accent-2:#f59e0b;--accent-3:#fef3c7;--shadow:0 18px 50px rgba(15,23,42,.08)}
+body{background:linear-gradient(180deg,#fff7ed 0%,#ffffff 15%,#f8fafc 100%)}
+.hero{position:relative;overflow:hidden;padding:48px 0 28px;background:linear-gradient(135deg,#7c2d12 0%,#b45309 45%,#f59e0b 100%);color:#fff}
+.hero::before{content:"";position:absolute;inset:-80px -120px auto auto;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.12);filter:blur(6px)}
+.hero::after{content:"";position:absolute;inset:auto auto -100px -120px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.1);filter:blur(8px)}
+.hero-inner,.shell,.content,.seo,.faq,.related{max-width:1180px;margin:0 auto;padding:0 24px}
+.breadcrumbs{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.72);margin-bottom:14px}
+.breadcrumbs a{color:rgba(255,255,255,.72);text-decoration:none}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:24px;align-items:end}
+.hero h1{margin:0 0 12px;font-family:'Instrument Serif',serif;font-size:clamp(2rem,4vw,3.3rem);line-height:1.02;letter-spacing:-.03em}
+.hero p{margin:0;max-width:60ch;font-size:1rem;line-height:1.7;color:rgba(255,255,255,.88)}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.badge{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-size:.76rem;font-weight:700;letter-spacing:.02em}
+.hero-card{background:rgba(255,255,255,.12);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.hero-card h2{margin:0 0 10px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.hero-card p{font-size:.92rem;color:rgba(255,255,255,.9)}
+.hero-card ul{margin:12px 0 0;padding-left:18px;color:rgba(255,255,255,.88);line-height:1.6}
+.main{padding:28px 0 24px}
+.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(290px,.65fr);gap:22px;align-items:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.panel-head{padding:16px 20px;border-bottom:1px solid #edf2f7;background:linear-gradient(180deg,#fff,#fbfdff)}
+.panel-head h2,.panel-head h3{margin:0;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.panel-body{padding:20px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+label{font-size:.76rem;font-weight:700;color:#475569;letter-spacing:.02em}
+input,select{width:100%;padding:12px 14px;border:1.5px solid #cbd5e1;border-radius:12px;background:#fff;font:inherit;color:var(--ink);box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent-2);box-shadow:0 0 0 4px rgba(245,158,11,.14)}
+.full{grid-column:1/-1}
+.cta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.btn{appearance:none;border:0;border-radius:14px;padding:13px 18px;font-weight:800;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#92400e,#f59e0b);color:#fff;box-shadow:0 12px 24px rgba(180,83,9,.24)}
+.btn-primary:hover{filter:saturate(1.05) brightness(1.02)}
+.helper{font-size:.82rem;color:var(--muted);line-height:1.6}
+.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.result-box{background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid var(--line);border-radius:16px;padding:14px 14px 13px;min-height:96px}
+.result-box.highlight{grid-column:1/-1;background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fde68a}
+.num{font-size:1.35rem;font-weight:900;color:var(--accent)}
+.num.big{font-size:2rem}
+.lbl{margin-top:6px;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#64748b}
+.breakdown{margin-top:16px;border-top:1px solid #edf2f7;padding-top:14px}
+.breakdown-row{display:flex;justify-content:space-between;gap:18px;padding:9px 0;border-bottom:1px dashed #e2e8f0;font-size:.92rem;line-height:1.5}
+.breakdown-row.total{border-bottom:0;border-top:2px solid #cbd5e1;margin-top:4px;padding-top:12px;font-weight:800}
+.breakdown-row .item{color:#334155}
+.breakdown-row .cost{font-weight:800;color:var(--ink);text-align:right}
+.tip{margin-top:16px;padding:14px 15px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;line-height:1.65}
+.country-copy{font-size:.92rem;line-height:1.7;color:var(--muted)}
+.stack{display:grid;gap:14px}
+.info-list{margin:0;padding-left:18px;color:#92400e;line-height:1.65}
+.info-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:16px}
+.info-card h3{margin:0 0 8px;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:#9a3412}
+.info-card p{margin:0;color:#9a3412;line-height:1.65}
+.seo,.faq,.related{padding-top:16px;padding-bottom:10px}
+.section-title{margin:0 0 12px;font-family:'Instrument Serif',serif;font-size:1.55rem;color:var(--ink)}
+.section-text{margin:0 0 14px;max-width:80ch;color:var(--muted);line-height:1.8}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 10px;box-shadow:0 6px 16px rgba(15,23,42,.04)}
+.faq summary{cursor:pointer;font-weight:800;color:var(--ink)}
+.faq p{margin:10px 0 0;color:var(--muted);line-height:1.7}
+.related-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.related-card{display:block;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 15px;box-shadow:0 6px 16px rgba(15,23,42,.04);transition:transform .18s ease,border-color .18s ease}
+.related-card:hover{transform:translateY(-2px);border-color:#f59e0b}
+.related-card strong{display:block;color:var(--ink);margin-bottom:4px}
+.related-card span{display:block;color:var(--muted);font-size:.88rem;line-height:1.5}
+@media (max-width: 980px){
+  .hero-grid,.layout,.related-grid{grid-template-columns:1fr}
+}
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebApplication",
+      "name":"Calculateur d'impôt crypto en Afrique",
+      "url":"https://afrotools.com/fr/tools/impot-crypto/",
+      "applicationCategory":"FinanceApplication",
+      "operatingSystem":"Web",
+      "description":"Estimation de l'impôt crypto pays par pays pour plusieurs marchés africains."
+    },
+    {
+      "@type":"BreadcrumbList",
+      "itemListElement":[
+        {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+        {"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/all-tools/"},
+        {"@type":"ListItem","position":3,"name":"Impôt crypto","item":"https://afrotools.com/fr/tools/impot-crypto/"}
+      ]
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {
+          "@type":"Question",
+          "name":"Comment est calculé l'impôt crypto ?",
+          "acceptedAnswer":{"@type":"Answer","text":"L'outil estime la taxe selon le pays choisi, la nature de la transaction, la base de coût, les frais et la tranche de revenu annuelle quand elle s'applique."}
+        },
+        {
+          "@type":"Question",
+          "name":"Quels pays sont couverts ?",
+          "acceptedAnswer":{"@type":"Answer","text":"Le Nigeria, le Kenya, l'Afrique du Sud, le Ghana, l'Ouganda et le Rwanda sont couverts dans ce calculateur."}
+        },
+        {
+          "@type":"Question",
+          "name":"Dois-je déclarer mes gains crypto ?",
+          "acceptedAnswer":{"@type":"Answer","text":"Dans la plupart des cas, oui. La fiscalité dépend de la nature de l'opération et du pays. Ce calculateur fournit une estimation et non un avis fiscal."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+<meta property="article:modified_time" content="2026-04-15">
 </head>
 <body>
 <afro-navbar></afro-navbar>
 <main>
-<section class="tool-hero"><h1>Calculateur d’impôt crypto</h1><p>Calculez vos obligations fiscales sur les gains en cryptomonnaies selon la législation de votre pays africain. Notre outil simplifie la déclaration de vos plus-values sur les actifs numériques.</p></section>
-<div class="tool-iframe-wrap"><iframe src="/tools/crypto-tax/" title="Calculateur d’impôt crypto" loading="lazy"></iframe></div>
-<section class="seo-section"><h2>À propos</h2><p>Calculez vos obligations fiscales sur les gains en cryptomonnaies selon la législation de votre pays africain. Notre outil simplifie la déclaration de vos plus-values sur les actifs numériques.</p><p>Les réglementations sur les cryptomonnaies varient considérablement d’un pays africain à l’autre. Cet outil vous aide à comprendre vos obligations fiscales et à estimer les impôts dus sur vos transactions crypto.</p></section>
-<section class="faq"><h2>Questions fréquentes</h2>
-<details><summary>Comment est calculé l’impôt sur les cryptos ?</summary><p>L’outil applique les taux d’imposition en vigueur dans votre pays sur vos plus-values réalisées lors de la vente ou l’échange de cryptomonnaies.</p></details>
-<details><summary>Quels pays sont couverts ?</summary><p>Nigeria, Afrique du Sud, Kenya, Ghana et d’autres pays africains ayant une législation sur les actifs numériques.</p></details>
-<details><summary>Dois-je déclarer mes gains crypto ?</summary><p>Dans la plupart des pays africains, les gains en cryptomonnaies sont imposables. Consultez un fiscaliste pour votre situation spécifique.</p></details>
-</section>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="breadcrumbs"><a href="/fr/">Accueil</a> / <a href="/fr/all-tools/">Outils</a> / <span>Impôt crypto</span></div>
+      <div class="hero-grid">
+        <div>
+          <h1>Calculateur d'impôt crypto en Afrique</h1>
+          <p>Estimez l'impôt sur les gains crypto selon le pays, le type d'opération et votre tranche de revenu. La logique fiscale reprend le moteur anglais, mais l'expérience est entièrement localisée en français.</p>
+          <div class="hero-badges">
+            <span class="badge">Nigeria</span>
+            <span class="badge">Kenya</span>
+            <span class="badge">Afrique du Sud</span>
+            <span class="badge">Ghana</span>
+            <span class="badge">Ouganda</span>
+            <span class="badge">Rwanda</span>
+          </div>
+        </div>
+        <aside class="hero-card">
+          <h2>Ce que vous obtenez</h2>
+          <p>Un calcul rapide, des règles par pays et une lecture claire de la taxe estimée, du gain net et du rendement effectif.</p>
+          <ul>
+            <li>Base de coût, frais et prix de cession</li>
+            <li>Cas de perte et méthode fiscale</li>
+            <li>Alertes pays et repères de déclaration</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="main">
+    <div class="content layout">
+      <div class="panel">
+        <div class="panel-head"><h2>Votre transaction crypto</h2></div>
+        <div class="panel-body">
+          <div class="grid">
+            <div class="field">
+              <label for="country">Pays</label>
+              <select id="country" onchange="updateInfo()">
+                <option value="NG">Nigeria</option>
+                <option value="KE">Kenya</option>
+                <option value="ZA">Afrique du Sud</option>
+                <option value="GH">Ghana</option>
+                <option value="UG">Ouganda</option>
+                <option value="RW">Rwanda</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="txType">Type d'opération</label>
+              <select id="txType">
+                <option value="sell">Vente de crypto contre monnaie fiduciaire</option>
+                <option value="swap">Échange crypto contre crypto</option>
+                <option value="spend">Dépense de crypto pour acheter un bien ou un service</option>
+                <option value="mining">Revenus de minage ou de staking</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="costBasis">Prix d'achat / base de coût</label>
+              <input type="number" id="costBasis" value="500000" min="0" step="10000">
+            </div>
+            <div class="field">
+              <label for="salePrice">Prix de cession / de vente</label>
+              <input type="number" id="salePrice" value="1500000" min="0" step="10000">
+            </div>
+            <div class="field">
+              <label for="fees">Frais de transaction / gas</label>
+              <input type="number" id="fees" value="5000" min="0" step="1000">
+            </div>
+            <div class="field">
+              <label for="holdingPeriod">Durée de détention</label>
+              <select id="holdingPeriod">
+                <option value="short">Moins de 12 mois</option>
+                <option value="long">12 mois ou plus</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="incomeBracket">Tranche de revenu annuelle</label>
+              <select id="incomeBracket">
+                <option value="low">Faible (sous la médiane)</option>
+                <option value="mid">Moyenne</option>
+                <option value="high">Élevée (tranche supérieure)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="annualGains">Gains crypto annuels totaux</label>
+              <input type="number" id="annualGains" value="0" min="0" step="100000" placeholder="Autres gains crypto cette année">
+            </div>
+            <div class="full cta-row">
+              <button class="btn btn-primary" onclick="calculate()">Calculer l'impôt</button>
+              <div class="helper">Les montants sont estimatifs. Vérifiez toujours la règle locale avant de déclarer.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="panel" id="resultCard" style="display:none">
+          <div class="panel-head"><h2>Estimation fiscale</h2></div>
+          <div class="panel-body">
+            <div class="result-grid" id="resultGrid"></div>
+            <div class="breakdown" id="breakdown"></div>
+            <div class="tip" id="tipBox"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Statut fiscal du pays</h3></div>
+          <div class="panel-body country-copy" id="countryInfo"></div>
+        </div>
+
+        <div class="info-card">
+          <h3>Opérations imposables</h3>
+          <ul class="info-list">
+            <li>Vendre de la crypto contre de la monnaie fiduciaire</li>
+            <li>Échanger une crypto contre une autre</li>
+            <li>Payer des biens ou services avec de la crypto</li>
+            <li>Recevoir des revenus de minage ou de staking</li>
+            <li>Recevoir un airdrop ou un hard fork imposable</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <h3>Non imposable dans la plupart des cas</h3>
+          <ul class="info-list">
+            <li>Acheter de la crypto avec de la monnaie fiduciaire</li>
+            <li>Transférer entre vos propres portefeuilles</li>
+            <li>Conserver la crypto sans vendre</li>
+            <li>Faire un don à une association reconnue</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seo">
+    <h2 class="section-title">Comprendre l'impôt crypto en Afrique</h2>
+    <p class="section-text">La fiscalité des actifs numériques varie fortement d'un pays à l'autre. Le Nigeria applique une logique de gains imposables avec un seuil d'exonération, l'Afrique du Sud utilise le régime CGT avec un taux d'inclusion, le Kenya a abandonné son ancienne taxe de transfert au profit d'une estimation plus proche du gain net, tandis que l'Ouganda taxe la valeur de transfert elle-même. Ce calculateur vous aide à comparer rapidement ces approches.</p>
+    <p class="section-text">Le but de cette page est de vous donner une estimation claire, en français, pour préparer un dossier plus propre avant la déclaration. Pour des cas complexes comme le mining professionnel, les échanges fréquents ou les portefeuilles multi-pays, il faut toujours une vérification locale avant soumission.</p>
+  </section>
+
+  <section class="faq">
+    <h2 class="section-title">Questions fréquentes</h2>
+    <details>
+      <summary>Comment l'impôt sur les cryptos est-il calculé ?</summary>
+      <p>L'outil prend le pays, la nature de la transaction, la base de coût, les frais, les gains annuels et la tranche de revenu pour produire une estimation cohérente avec le moteur source.</p>
+    </details>
+    <details>
+      <summary>Quels pays sont couverts ?</summary>
+      <p>Le calculateur couvre le Nigeria, le Kenya, l'Afrique du Sud, le Ghana, l'Ouganda et le Rwanda.</p>
+    </details>
+    <details>
+      <summary>Dois-je déclarer mes gains crypto ?</summary>
+      <p>Dans la plupart des cas, oui. Les règles diffèrent selon le pays et le type de transaction. Ce calculateur n'est pas un avis fiscal, mais une aide à la préparation.</p>
+    </details>
+    <details>
+      <summary>Que se passe-t-il si ma transaction est en perte ?</summary>
+      <p>La page affiche une perte en capital et rappelle que certaines juridictions permettent de reporter la perte sur des gains futurs.</p>
+    </details>
+  </section>
+
+  <section class="related">
+    <h2 class="section-title">Outils liés</h2>
+    <div class="related-grid">
+      <a class="related-card" href="/fr/tools/ng-plus-value/">
+        <strong>Plus-value Nigeria</strong>
+        <span>Un calculateur dédié aux plus-values nigérianes, utile pour comparer les règles CGT.</span>
+      </a>
+      <a class="related-card" href="/fr/tools/ke-plus-value/">
+        <strong>Plus-value Kenya</strong>
+        <span>Une autre approche pays par pays pour comparer les scénarios fiscaux kényans.</span>
+      </a>
+      <a class="related-card" href="/fr/tools/za-plus-value/">
+        <strong>Plus-value Afrique du Sud</strong>
+        <span>Le régime CGT sud-africain avec taux d'inclusion et seuil d'exclusion.</span>
+      </a>
+      <a class="related-card" href="/fr/tools/plus-value-immobiliere/">
+        <strong>Plus-value immobilière</strong>
+        <span>Le parallèle utile si vous comparez crypto et plus-values d'actifs réels.</span>
+      </a>
+    </div>
+  </section>
 </main>
 <afro-footer></afro-footer>
+
+<script>
+const TAX_INFO = {
+  NG: {
+    name: 'Nigeria',
+    symbol: '₦',
+    currency: 'NGN',
+    cgtRate: 0.25,
+    marginalRates: { low: 0.07, mid: 0.15, high: 0.25 },
+    exclusion: 800000,
+    info: '<p><strong>Nigeria :</strong> le Nigeria Tax Act 2025 taxe les gains crypto comme des gains imposables jusqu’à 25%. Les premiers ₦800 000 sont exonérés. Les utilisateurs doivent relier leurs comptes d’échange au TIN et au NIN.</p><p style="margin-top:6px"><strong>Dépôt :</strong> déclaration annuelle via la FIRS.</p>',
+    tip: 'Conservez toutes les preuves d’achat et de vente. La FIRS renforce le suivi des actifs numériques.'
+  },
+  KE: {
+    name: 'Kenya',
+    symbol: 'KES',
+    currency: 'KES',
+    cgtRate: 0.15,
+    marginalRates: { low: 0.10, mid: 0.25, high: 0.35 },
+    exclusion: 0,
+    info: '<p><strong>Kenya :</strong> la taxe de 3% sur les actifs numériques a été supprimée à partir du 1er juillet 2025. Le calculateur utilise ici une estimation fondée sur le gain net plutôt que sur la valeur brute du transfert.</p><p style="margin-top:6px"><strong>Dépôt :</strong> vérifiez les dernières consignes KRA dans iTax.</p>',
+    tip: 'Utilisez cette estimation comme base de travail et confirmez la position KRA avant dépôt.'
+  },
+  ZA: {
+    name: 'Afrique du Sud',
+    symbol: 'R',
+    currency: 'ZAR',
+    cgtRate: 0.18,
+    inclusionRate: 0.40,
+    exclusion: 40000,
+    marginalRates: { low: 0.18, mid: 0.31, high: 0.45 },
+    info: '<p><strong>Afrique du Sud :</strong> la crypto est traitée comme un actif financier par SARS. Le régime CGT applique un taux d’inclusion de 40% et un taux marginal selon votre tranche. L’exclusion annuelle est de R40 000.</p><p style="margin-top:6px"><strong>Dépôt :</strong> via SARS eFiling.</p>',
+    tip: 'L’exclusion annuelle de R40 000 est importante. Les traders fréquents peuvent être requalifiés en revenu ordinaire.'
+  },
+  GH: {
+    name: 'Ghana',
+    symbol: 'GH₵',
+    currency: 'GHS',
+    cgtRate: 0.15,
+    marginalRates: { low: 0.05, mid: 0.175, high: 0.30 },
+    exclusion: 0,
+    info: '<p><strong>Ghana :</strong> il n’existe pas encore de règles crypto spécifiques. La GRA applique les règles générales de gains en capital et d’impôt sur le revenu.</p><p style="margin-top:6px"><strong>Dépôt :</strong> via la déclaration annuelle GRA.</p>',
+    tip: 'Gardez un registre complet de vos transactions, même si l’application pratique reste encore limitée.'
+  },
+  UG: {
+    name: 'Ouganda',
+    symbol: 'USh',
+    currency: 'UGX',
+    cgtRate: 0.10,
+    digitalAssetTax: 0.10,
+    marginalRates: { low: 0.10, mid: 0.20, high: 0.30 },
+    exclusion: 0,
+    info: '<p><strong>Ouganda :</strong> la Finance Act 2023 introduit une taxe de 10% sur la valeur de transfert des actifs numériques, et non seulement sur le gain. L’URA est l’administration fiscale compétente.</p><p style="margin-top:6px"><strong>Dépôt :</strong> via le portail e-Tax de l’URA.</p>',
+    tip: 'Cette taxe s’applique à la valeur de cession, ce qui peut la rendre coûteuse même sur de petits profits.'
+  },
+  RW: {
+    name: 'Rwanda',
+    symbol: 'RF',
+    currency: 'RWF',
+    cgtRate: 0.15,
+    marginalRates: { low: 0.10, mid: 0.20, high: 0.30 },
+    exclusion: 0,
+    info: '<p><strong>Rwanda :</strong> la RRA applique le régime standard de gains en capital sur les profits crypto. Le cadre fintech évolue rapidement et aucune loi crypto spécifique n’est encore en place.</p><p style="margin-top:6px"><strong>Dépôt :</strong> via M-Declaration de la RRA.</p>',
+    tip: 'Conservez des journaux de transactions complets pour faciliter la déclaration.'
+  }
+};
+
+function money(n, symbol) {
+  return `${symbol} ${Math.round(Math.abs(n)).toLocaleString('fr-FR')}`;
+}
+
+function updateInfo() {
+  const c = document.getElementById('country').value;
+  document.getElementById('countryInfo').innerHTML = TAX_INFO[c].info;
+}
+
+function calculate() {
+  const c = document.getElementById('country').value;
+  const t = TAX_INFO[c];
+  const costBasis = +document.getElementById('costBasis').value || 0;
+  const salePrice = +document.getElementById('salePrice').value || 0;
+  const fees = +document.getElementById('fees').value || 0;
+  const txType = document.getElementById('txType').value;
+  const bracket = document.getElementById('incomeBracket').value;
+  const otherGains = +document.getElementById('annualGains').value || 0;
+  const gain = salePrice - costBasis - fees;
+  const totalGains = gain + otherGains;
+
+  if (gain <= 0) {
+    document.getElementById('resultGrid').innerHTML = `
+      <div class="result-box highlight">
+        <div class="num big" style="color:#166534">Perte en capital : ${money(gain, t.symbol)}</div>
+        <div class="lbl">Aucun impôt n'est dû sur une perte</div>
+      </div>`;
+    document.getElementById('breakdown').innerHTML = '';
+    document.getElementById('tipBox').innerHTML = `<strong>À noter :</strong> les pertes en capital peuvent parfois être reportées sur les gains futurs. Conservez toutes vos preuves.`;
+    document.getElementById('resultCard').style.display = 'block';
+    document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+
+  const fmtRate = rate => `${(rate * 100).toFixed(1)}%`;
+  const effective = v => gain > 0 ? (v / gain) * 100 : 0;
+  let tax = 0;
+  let method = '';
+  let effectiveRate = 0;
+
+  if (c === 'ZA') {
+    const taxableGain = Math.max(0, totalGains - t.exclusion);
+    const includedGain = taxableGain * t.inclusionRate;
+    const marginalRate = t.marginalRates[bracket];
+    tax = includedGain * marginalRate;
+    if (totalGains > 0) tax = tax * (gain / totalGains);
+    method = `CGT : taux d'inclusion de ${fmtRate(t.inclusionRate)} x taux marginal de ${fmtRate(marginalRate)}`;
+    effectiveRate = effective(tax);
+  } else if (c === 'KE') {
+    tax = gain * t.cgtRate;
+    method = `Estimation post-suppression DAT : ${fmtRate(t.cgtRate)} du gain net`;
+    effectiveRate = effective(tax);
+  } else if (c === 'UG') {
+    tax = salePrice * t.digitalAssetTax;
+    method = 'Taxe sur les actifs numériques : 10% de la valeur de cession';
+    effectiveRate = effective(tax);
+  } else {
+    const taxableGainAfterExemption = Math.max(0, totalGains - (t.exclusion || 0));
+    const proportionalTaxable = totalGains > 0 ? taxableGainAfterExemption * (gain / totalGains) : 0;
+    const cgtTax = proportionalTaxable * t.cgtRate;
+    const incomeTax = proportionalTaxable * t.marginalRates[bracket];
+    if (txType === 'mining') {
+      tax = gain * t.marginalRates[bracket];
+      method = `Impôt sur le revenu : ${fmtRate(t.marginalRates[bracket])} (le minage est traité comme un revenu)`;
+    } else {
+      tax = Math.max(cgtTax, incomeTax);
+      method = cgtTax > incomeTax ? `CGT : jusqu'à ${fmtRate(t.cgtRate)}` : `Impôt sur le revenu : ${fmtRate(t.marginalRates[bracket])}`;
+      if (t.exclusion > 0) method += ` (après exonération de ${money(t.exclusion, t.symbol)})`;
+    }
+    effectiveRate = effective(tax);
+  }
+
+  const resultHtml = [
+    `<div class="result-box highlight"><div class="num big">${money(tax, t.symbol)}</div><div class="lbl">Impôt estimé</div></div>`,
+    `<div class="result-box"><div class="num">${money(gain, t.symbol)}</div><div class="lbl">Gain en capital</div></div>`,
+    `<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Taux effectif</div></div>`,
+    `<div class="result-box"><div class="num">${money(gain - tax, t.symbol)}</div><div class="lbl">Profit après impôt</div></div>`,
+    `<div class="result-box"><div class="num" style="font-size:1.05rem;line-height:1.35">${method}</div><div class="lbl">Méthode fiscale</div></div>`
+  ].join('');
+
+  let breakdown = '';
+  breakdown += `<div class="breakdown-row"><span class="item">Prix de cession</span><span class="cost">${money(salePrice, t.symbol)}</span></div>`;
+  breakdown += `<div class="breakdown-row"><span class="item">Moins : base de coût / prix d'achat</span><span class="cost">- ${money(costBasis, t.symbol)}</span></div>`;
+  breakdown += `<div class="breakdown-row"><span class="item">Moins : frais de transaction</span><span class="cost">- ${money(fees, t.symbol)}</span></div>`;
+  breakdown += `<div class="breakdown-row"><span class="item"><strong>Gain net en capital</strong></span><span class="cost"><strong>${money(gain, t.symbol)}</strong></span></div>`;
+  if (c === 'ZA') {
+    breakdown += `<div class="breakdown-row"><span class="item">Moins : exonération annuelle</span><span class="cost">- ${money(t.exclusion, t.symbol)}</span></div>`;
+    breakdown += `<div class="breakdown-row"><span class="item">Gain inclus (${fmtRate(t.inclusionRate)})</span><span class="cost">${money(Math.max(0, totalGains - t.exclusion) * t.inclusionRate, t.symbol)}</span></div>`;
+  }
+  breakdown += `<div class="breakdown-row total"><span class="item">Impôt à payer</span><span class="cost">${money(tax, t.symbol)}</span></div>`;
+
+  document.getElementById('resultGrid').innerHTML = resultHtml;
+  document.getElementById('breakdown').innerHTML = breakdown;
+  document.getElementById('tipBox').innerHTML = `<strong>Conseil fiscal :</strong> ${t.tip}`;
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+updateInfo();
+</script>
 </body>
 </html>

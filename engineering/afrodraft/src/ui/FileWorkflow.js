@@ -9,17 +9,23 @@ const DEFAULT_STATE = {
   dirty: false,
 };
 
+const RECENT_FILES_STORAGE_KEY = "afrodraft.recent-files";
+const RECENT_FILES_LIMIT = 12;
+
 export class FileWorkflow {
   constructor(app, options = {}) {
     this.app = app;
     this.engine = app.engine;
     this.fileHandle = null;
     this.state = { ...DEFAULT_STATE };
+    this.engine._currentFilename = this.state.fileName;
     this.toast = options.onToast || (() => {});
     this.onStateChange = options.onStateChange || (() => {});
     this.onNeedDwgImportHelp = options.onNeedDwgImportHelp || (() => {});
     this.onNeedDwgSaveHelp = options.onNeedDwgSaveHelp || (() => {});
     this._boundKeydown = null;
+    this._sessionStartedAt = Date.now();
+    this._lastRecoveryInfo = null;
     this._emitState();
   }
 
@@ -50,7 +56,49 @@ export class FileWorkflow {
   }
 
   getState() {
-    return { ...this.state, dirty: !!this.engine.modified };
+    return {
+      ...this.state,
+      dirty: !!this.engine.modified,
+      hasHandle: !!this.fileHandle,
+      canSave: this._canOverwriteCurrentFile(),
+      canSaveAs: true,
+      sessionStartedAt: this._sessionStartedAt,
+      sessionAgeMs: Date.now() - this._sessionStartedAt,
+      recentFiles: this.getRecentFiles(),
+      recovery: this.getRecoveryInfo(),
+    };
+  }
+
+  getRecentFiles() {
+    return this._readRecentFiles();
+  }
+
+  getRecoveryInfo() {
+    return this._lastRecoveryInfo ? { ...this._lastRecoveryInfo } : null;
+  }
+
+  async saveAutosaveNow() {
+    await DrawingFile.autosave(this.engine);
+    this._lastRecoveryInfo = await this.checkRecovery();
+    this._emitState();
+    return this._lastRecoveryInfo;
+  }
+
+  async clearAutosave() {
+    await DrawingFile.clearAutosave();
+    this._lastRecoveryInfo = { exists: false };
+    this._emitState();
+    return true;
+  }
+
+  async openRecentFile(entryOrIndex) {
+    const recents = this.getRecentFiles();
+    const entry = typeof entryOrIndex === "number" ? recents[entryOrIndex] : entryOrIndex;
+    if (!entry) return false;
+    const fileName = entry.fileName || entry.name;
+    if (!fileName) return false;
+    this.toast(`Locate ${fileName} in the picker to reopen it from disk.`, "info");
+    return this.openDrawing();
   }
 
   async openDrawing(options = {}) {
@@ -80,12 +128,28 @@ export class FileWorkflow {
         sourceKind: "project",
       });
       this._finalizeLoad();
+      this._rememberRecentFile({
+        fileName: this.state.fileName,
+        fileFormat: "adraft",
+        sourceKind: "project",
+        lastAction: "open",
+        hasHandle: !!handle,
+        handleName: handle?.name || null,
+      });
       this.toast(`Opened ${name}`, "success");
       return;
     }
     if (ext === ".dxf") {
       const text = await file.text();
       await this._loadDxfText(text, name, handle, "dxf");
+      this._rememberRecentFile({
+        fileName: this.state.fileName,
+        fileFormat: "dxf",
+        sourceKind: "dxf",
+        lastAction: "open",
+        hasHandle: !!handle,
+        handleName: handle?.name || null,
+      });
       this.toast(`Imported ${name}`, "success");
       return;
     }
@@ -104,6 +168,70 @@ export class FileWorkflow {
       return this.saveAsDwg();
     }
     return this.saveAsProject(false);
+  }
+
+  createNewProject(options = {}) {
+    if (this.engine.modified && options.force !== true && options.confirmDiscard !== false) {
+      const label = this.state.fileName || DEFAULT_STATE.fileName;
+      const confirmed = typeof window === "undefined" || typeof window.confirm !== "function"
+        ? true
+        : window.confirm(`Start a new project and discard unsaved changes in ${label}?`);
+      if (!confirmed) return false;
+    }
+
+    const nextName = this._withExt(options.fileName || DEFAULT_STATE.fileName, ".adraft");
+    this.engine.clear();
+    if (options.units) {
+      this.engine.units = options.units;
+    }
+    this._setState({
+      fileHandle: null,
+      fileName: nextName,
+      fileFormat: "adraft",
+      sourceKind: "new",
+    });
+    this._finalizeLoad();
+    this._rememberRecentFile({
+      fileName: nextName,
+      fileFormat: "adraft",
+      sourceKind: "new",
+      lastAction: "new",
+      hasHandle: false,
+    });
+    this.toast(`Started ${nextName}`, "success");
+    return true;
+  }
+
+  async checkRecovery() {
+    this._lastRecoveryInfo = await DrawingFile.checkRecovery();
+    this._emitState();
+    return this._lastRecoveryInfo;
+  }
+
+  async recoverAutosave() {
+    const recovery = await this.checkRecovery();
+    if (!recovery?.exists) return false;
+    const restored = await DrawingFile.recoverAutosave(this.engine);
+    if (!restored) return false;
+    this._setState({
+      fileHandle: null,
+      fileName: recovery.filename || this.engine._currentFilename || DEFAULT_STATE.fileName,
+      fileFormat: "adraft",
+      sourceKind: "project",
+    });
+    this._finalizeLoad();
+    this._lastRecoveryInfo = recovery;
+    this._rememberRecentFile({
+      fileName: this.state.fileName,
+      fileFormat: "adraft",
+      sourceKind: "project",
+      lastAction: "recover",
+      lastSavedAt: recovery.timestamp || Date.now(),
+      hasHandle: false,
+      handleName: null,
+    });
+    this.toast(`Recovered ${this.state.fileName}`, "success");
+    return true;
   }
 
   async saveAsProject(forceSaveAs = false) {
@@ -134,6 +262,15 @@ export class FileWorkflow {
       sourceKind: "project",
     });
     this.engine.markSaved();
+    this._rememberRecentFile({
+      fileName: this.state.fileName,
+      fileFormat: "adraft",
+      sourceKind: "project",
+      lastAction: "save",
+      lastSavedAt: Date.now(),
+      hasHandle: !!handle,
+      handleName: handle?.name || null,
+    });
     this.toast(`Saved ${this.state.fileName}`, "success");
     return true;
   }
@@ -166,6 +303,15 @@ export class FileWorkflow {
       sourceKind: "dxf",
     });
     this.engine.markSaved();
+    this._rememberRecentFile({
+      fileName: this.state.fileName,
+      fileFormat: "dxf",
+      sourceKind: "dxf",
+      lastAction: "save",
+      lastSavedAt: Date.now(),
+      hasHandle: !!handle,
+      handleName: handle?.name || null,
+    });
     this.toast(`Saved ${this.state.fileName}`, "success");
     return true;
   }
@@ -193,6 +339,15 @@ export class FileWorkflow {
     if (result?.saved) {
       this._setState({ fileFormat: "dwg", sourceKind: "dwg", fileName: result.fileName || this._withExt(this.state.fileName, ".dwg") });
       this.engine.markSaved();
+    this._rememberRecentFile({
+      fileName: this.state.fileName,
+      fileFormat: "dwg",
+      sourceKind: "dwg",
+      lastAction: "save",
+      lastSavedAt: Date.now(),
+      hasHandle: false,
+      handleName: null,
+    });
       this.toast(`Saved ${this.state.fileName}`, "success");
       return true;
     }
@@ -203,6 +358,15 @@ export class FileWorkflow {
       this._downloadBlob(fileName, blob);
       this._setState({ fileFormat: "dwg", sourceKind: "dwg", fileName });
       this.engine.markSaved();
+      this._rememberRecentFile({
+        fileName,
+        fileFormat: "dwg",
+        sourceKind: "dwg",
+        lastAction: "save",
+        lastSavedAt: Date.now(),
+        hasHandle: false,
+        handleName: null,
+      });
       this.toast(`Saved ${fileName}`, "success");
       return true;
     }
@@ -242,11 +406,27 @@ export class FileWorkflow {
 
     if (typeof result === "string") {
       await this._loadDxfText(result, file.name, handle, "dwg");
+      this._rememberRecentFile({
+        fileName: this.state.fileName,
+        fileFormat: "dwg",
+        sourceKind: "dwg",
+        lastAction: "open",
+        hasHandle: !!handle,
+        handleName: handle?.name || null,
+      });
       this.toast(`Opened ${file.name}`, "success");
       return;
     }
     if (result?.dxfText) {
       await this._loadDxfText(result.dxfText, file.name, handle, "dwg");
+      this._rememberRecentFile({
+        fileName: this.state.fileName,
+        fileFormat: "dwg",
+        sourceKind: "dwg",
+        lastAction: "open",
+        hasHandle: !!handle,
+        handleName: handle?.name || null,
+      });
       this.toast(`Opened ${file.name}`, "success");
       return;
     }
@@ -254,6 +434,14 @@ export class FileWorkflow {
       DrawingFile.deserialize(result.projectJson, this.engine);
       this._setState({ fileHandle: handle, fileName: file.name, fileFormat: "dwg", sourceKind: "dwg" });
       this._finalizeLoad();
+      this._rememberRecentFile({
+        fileName: this.state.fileName,
+        fileFormat: "dwg",
+        sourceKind: "dwg",
+        lastAction: "open",
+        hasHandle: !!handle,
+        handleName: handle?.name || null,
+      });
       this.toast(`Opened ${file.name}`, "success");
       return;
     }
@@ -275,7 +463,96 @@ export class FileWorkflow {
 
   _setState(patch) {
     this.state = { ...this.state, ...patch, dirty: !!this.engine.modified };
+    this.engine._currentFilename = this.state.fileName;
     this._emitState();
+  }
+
+  _canOverwriteCurrentFile() {
+    return this.state.fileFormat === "adraft"
+      ? !!this.fileHandle || !this._supportsSavePicker()
+      : true;
+  }
+
+  _rememberRecentFile(details = {}) {
+    const entry = this._normalizeRecentFile({
+      fileName: details.fileName || this.state.fileName,
+      fileFormat: details.fileFormat || this.state.fileFormat,
+      sourceKind: details.sourceKind || this.state.sourceKind,
+      lastAction: details.lastAction || "open",
+      lastOpenedAt: Date.now(),
+      lastSavedAt: details.lastSavedAt || null,
+      hasHandle: !!details.hasHandle,
+    });
+    if (!entry) return null;
+
+    const files = this._readRecentFiles();
+    const key = this._recentFileKey(entry);
+    const next = files.filter((item) => this._recentFileKey(item) !== key);
+    next.unshift(entry);
+    this._writeRecentFiles(next.slice(0, RECENT_FILES_LIMIT));
+    this._emitState();
+    return entry;
+  }
+
+  _normalizeRecentFile(entry) {
+    const fileName = String(entry?.fileName || "").trim() || DEFAULT_STATE.fileName;
+    const fileFormat = this._normalizeFormat(entry?.fileFormat || this._ext(fileName) || "adraft");
+    const sourceKind = entry?.sourceKind || this._sourceKindFromFormat(fileFormat);
+    const lastOpenedAt = Number(entry?.lastOpenedAt || Date.now());
+    const lastSavedAt = entry?.lastSavedAt ? Number(entry.lastSavedAt) : null;
+    return {
+      fileName,
+      fileFormat,
+      sourceKind,
+      lastAction: entry?.lastAction || "open",
+      lastOpenedAt,
+      lastSavedAt,
+      hasHandle: !!entry?.hasHandle,
+      handleName: entry?.handleName ? String(entry.handleName) : null,
+    };
+  }
+
+  _recentFileKey(entry) {
+    return `${this._normalizeFormat(entry?.fileFormat || "")}:${String(entry?.sourceKind || "")}:${String(entry?.fileName || "").toLowerCase()}`;
+  }
+
+  _normalizeFormat(format) {
+    const clean = String(format || "").toLowerCase().replace(/^\./, "");
+    if (clean === "json") return "adraft";
+    if (clean === "acad") return "dwg";
+    if (clean === "dwg" || clean === "dxf" || clean === "adraft") return clean;
+    return "adraft";
+  }
+
+  _sourceKindFromFormat(format) {
+    if (format === "dxf") return "dxf";
+    if (format === "dwg") return "dwg";
+    if (format === "adraft") return "project";
+    return "new";
+  }
+
+  _readRecentFiles() {
+    try {
+      const raw = window.localStorage?.getItem(RECENT_FILES_STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed
+        .map((entry) => this._normalizeRecentFile(entry))
+        .filter(Boolean)
+        .sort((a, b) => (b.lastOpenedAt || 0) - (a.lastOpenedAt || 0))
+        .slice(0, RECENT_FILES_LIMIT);
+    } catch {
+      return [];
+    }
+  }
+
+  _writeRecentFiles(entries) {
+    try {
+      window.localStorage?.setItem(RECENT_FILES_STORAGE_KEY, JSON.stringify(entries));
+    } catch {
+      // Ignore storage quota or privacy restrictions.
+    }
   }
 
   _emitState() {

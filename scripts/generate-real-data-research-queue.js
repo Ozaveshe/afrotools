@@ -2,9 +2,32 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.join(__dirname, "..");
-const wavePath = path.join(root, "data/cars/catalog-expansion-wave-1.csv");
-const verifiedPath = path.join(root, "data/cars/verified-real-data-batch-1.json");
-const outputPath = path.join(root, "data/cars/real-data-research-queue.csv");
+
+function parseArgs(argv) {
+  const options = {};
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    if (!token.startsWith("--")) continue;
+    const key = token.slice(2);
+    const value = argv[index + 1];
+    if (!value || value.startsWith("--")) {
+      options[key] = true;
+      continue;
+    }
+    options[key] = value;
+    index += 1;
+  }
+
+  return options;
+}
+
+const args = parseArgs(process.argv.slice(2));
+const wavePath = path.resolve(root, args.wave || "data/cars/catalog-expansion-wave-1.csv");
+const verifiedPath = path.resolve(root, args.verified || "data/cars/verified-real-data-batch-1.json");
+const outputPath = path.resolve(root, args.output || "data/cars/real-data-research-queue.csv");
+const queueLimit = Number(args.limit || 100);
+const waveOnly = Boolean(args["wave-only"]);
 
 function parseCsv(text) {
   const rows = [];
@@ -89,6 +112,60 @@ function createCandidateFromEvidence(entry) {
   };
 }
 
+function createCandidateFromWaveRow(row) {
+  return {
+    vehicle_id: row.vehicle_id,
+    make: row.make,
+    model: row.model,
+    year: row.year,
+    body_type: row.body_type,
+    candidate_priority: row.candidate_priority
+  };
+}
+
+function getEvidenceSets(entry) {
+  if (Array.isArray(entry.marketEvidence) && entry.marketEvidence.length) {
+    return entry.marketEvidence
+      .filter((item) => item && item.countryCode && item.sourceMarket && item.localMarketSample && item.sourceMarketSample)
+      .map((item) => ({
+        countryCode: item.countryCode,
+        sourceMarket: item.sourceMarket,
+        localMarketSample: item.localMarketSample,
+        sourceMarketSample: item.sourceMarketSample
+      }));
+  }
+
+  if (entry.countryCode && entry.sourceMarket && entry.localMarketSample && entry.sourceMarketSample) {
+    return [
+      {
+        countryCode: entry.countryCode,
+        sourceMarket: entry.sourceMarket,
+        localMarketSample: entry.localMarketSample,
+        sourceMarketSample: entry.sourceMarketSample
+      }
+    ];
+  }
+
+  return [];
+}
+
+function getPrimaryEvidence(entry) {
+  const evidenceSets = getEvidenceSets(entry);
+  if (!evidenceSets.length) return null;
+  const index = Number.isInteger(entry.primaryEvidenceIndex) ? entry.primaryEvidenceIndex : 0;
+  return evidenceSets[index] || evidenceSets[0];
+}
+
+function summarizeDistinct(values) {
+  return Array.from(
+    new Set(
+      values
+        .map((value) => String(value || "").trim())
+        .filter(Boolean)
+    )
+  ).join("|");
+}
+
 function median(values) {
   if (!values.length) return "";
   const sorted = values.slice().sort((left, right) => left - right);
@@ -109,21 +186,20 @@ function main() {
   const verified = JSON.parse(fs.readFileSync(verifiedPath, "utf8"));
   const verifiedMap = new Map(verified.entries.map((entry) => [entry.vehicleId, entry]));
   const waveCandidates = readWaveCandidates();
-  const highPriorityWaveCandidates = waveCandidates
-    .filter((row) => row.candidate_priority === "high")
-    .map((row) => ({
-      vehicle_id: row.vehicle_id,
-      make: row.make,
-      model: row.model,
-      year: row.year,
-      body_type: row.body_type,
-      candidate_priority: row.candidate_priority
-    }));
-  const candidateIds = new Set(highPriorityWaveCandidates.map((row) => row.vehicle_id));
-  const verifiedOnlyCandidates = verified.entries
-    .filter((entry) => !candidateIds.has(entry.vehicleId))
-    .map(createCandidateFromEvidence);
-  const candidates = [...verifiedOnlyCandidates, ...highPriorityWaveCandidates]
+  const verifiedWaveCandidates = waveCandidates
+    .filter((row) => verifiedMap.has(row.vehicle_id))
+    .map(createCandidateFromWaveRow);
+  const pendingHighPriorityWaveCandidates = waveCandidates
+    .filter((row) => row.candidate_priority === "high" && !verifiedMap.has(row.vehicle_id))
+    .map(createCandidateFromWaveRow);
+  const candidateIds = new Set([
+    ...verifiedWaveCandidates.map((row) => row.vehicle_id),
+    ...pendingHighPriorityWaveCandidates.map((row) => row.vehicle_id)
+  ]);
+  const verifiedOnlyCandidates = waveOnly
+    ? []
+    : verified.entries.filter((entry) => !candidateIds.has(entry.vehicleId)).map(createCandidateFromEvidence);
+  const candidates = [...verifiedOnlyCandidates, ...verifiedWaveCandidates, ...pendingHighPriorityWaveCandidates]
     .sort((left, right) => {
       const leftVerified = verifiedMap.has(left.vehicle_id) ? 0 : 1;
       const rightVerified = verifiedMap.has(right.vehicle_id) ? 0 : 1;
@@ -132,7 +208,7 @@ function main() {
       if (left.model !== right.model) return left.model.localeCompare(right.model);
       return Number(left.year) - Number(right.year);
     })
-    .slice(0, 100);
+    .slice(0, queueLimit);
 
   const header = [
     "vehicle_id",
@@ -156,13 +232,18 @@ function main() {
     "source_listing_urls",
     "image_license_status",
     "promotion_ready",
-    "promotion_blockers"
+    "promotion_blockers",
+    "available_country_codes",
+    "available_source_markets",
+    "evidence_pair_count"
   ];
 
   const rows = candidates.map((candidate) => {
     const evidence = verifiedMap.get(candidate.vehicle_id);
-    const localValues = evidence ? evidence.localMarketSample.observedPrices : [];
-    const sourceValues = evidence ? evidence.sourceMarketSample.observedPrices : [];
+    const evidenceSets = evidence ? getEvidenceSets(evidence) : [];
+    const primaryEvidence = evidence ? getPrimaryEvidence(evidence) : null;
+    const localValues = primaryEvidence ? primaryEvidence.localMarketSample.observedPrices : [];
+    const sourceValues = primaryEvidence ? primaryEvidence.sourceMarketSample.observedPrices : [];
     return [
       candidate.vehicle_id,
       candidate.make,
@@ -170,28 +251,31 @@ function main() {
       candidate.year,
       candidate.body_type,
       candidate.candidate_priority,
-      evidence ? evidence.countryCode : "",
-      evidence ? evidence.sourceMarket : "",
+      primaryEvidence ? primaryEvidence.countryCode : "",
+      primaryEvidence ? primaryEvidence.sourceMarket : "",
       evidence ? "verified-source-backed" : "research-pending",
       formatObservation(localValues),
-      evidence ? evidence.localMarketSample.currency : "",
+      primaryEvidence ? primaryEvidence.localMarketSample.currency : "",
       median(localValues),
-      evidence ? evidence.localMarketSample.sampleCount : "",
-      evidence ? formatUrls(evidence.localMarketSample.urls) : "",
+      primaryEvidence ? primaryEvidence.localMarketSample.sampleCount : "",
+      primaryEvidence ? formatUrls(primaryEvidence.localMarketSample.urls) : "",
       formatObservation(sourceValues),
-      evidence ? evidence.sourceMarketSample.currency : "",
+      primaryEvidence ? primaryEvidence.sourceMarketSample.currency : "",
       median(sourceValues),
-      evidence ? evidence.sourceMarketSample.sampleCount : "",
-      evidence ? formatUrls(evidence.sourceMarketSample.urls) : "",
+      primaryEvidence ? primaryEvidence.sourceMarketSample.sampleCount : "",
+      primaryEvidence ? formatUrls(primaryEvidence.sourceMarketSample.urls) : "",
       evidence ? evidence.imageLicenseStatus : "pending",
       evidence ? String(Boolean(evidence.promotionReady)) : "false",
-      evidence ? evidence.promotionBlockers.join(" | ") : "Needs verified source-market listing, local-market listing, and licensed image before promotion."
+      evidence ? evidence.promotionBlockers.join(" | ") : "Needs verified source-market listing, local-market listing, and licensed image before promotion.",
+      evidence ? summarizeDistinct(evidenceSets.map((item) => item.countryCode)) : "",
+      evidence ? summarizeDistinct(evidenceSets.map((item) => item.sourceMarket)) : "",
+      evidence ? evidenceSets.length : ""
     ];
   });
 
   fs.writeFileSync(outputPath, `${stringifyCsv([header, ...rows])}\n`, "utf8");
   const verifiedCount = rows.filter((row) => row[8] === "verified-source-backed").length;
-  console.log(`Updated data/cars/real-data-research-queue.csv with ${rows.length} rows (${verifiedCount} verified so far).`);
+  console.log(`Updated ${path.relative(root, outputPath)} with ${rows.length} rows (${verifiedCount} verified so far).`);
 }
 
 main();

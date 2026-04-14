@@ -96,7 +96,39 @@ e=document.getElementById('s-live');if(e)e.textContent=live.length;
 e=document.getElementById('s-pipe');if(e)e.textContent=pipe.length;
 var container=document.getElementById('tool-grid');if(!container)return;
 var BG='linear-gradient(145deg,#0c1929 0%,#1a2744 60%,#1e3a5f 100%)';
-function card(t,ok){var bc=t.status==='new'?'badge-new':(ok?'badge-live':'badge-soon');var bt=t.status==='new'?'Nouveau':(ok?'Actif':'Bientot');var tag=ok?'a':'div';var href=ok?' href="'+t.href+'"':'';return '<'+tag+href+' class="tc'+(ok?'':' coming')+'"><div class="tc-thumb" style="background:'+BG+'"><div class="tc-thumb-ph">'+t.icon+'</div><img src="/assets/img/tools/'+t.id+'.webp" alt="'+t.name+'" loading="lazy" onerror="this.onerror=function(){this.style.display=\'none\'};this.src=\'/assets/img/tools/'+t.id+'.svg\';"></div><div class="tc-body"><div class="tc-row1"><span class="tc-flag">'+t.icon+'</span><span class="tc-badge '+bc+'">'+bt+'</span></div><div class="tc-name">'+t.name+'</div><div class="tc-desc">'+t.desc+'</div><div class="tc-foot"><span class="tc-tags">OUTIL</span><span class="tc-cta">Ouvrir &rarr;</span></div></div></'+tag+'>';}
+var FR_HREFS={
+'/tools/paye-calculator/':'/fr/tools/calculateur-paye/',
+'/tools/vat-calculator/':'/fr/tools/calculateur-tva/',
+'/tools/salary-compare/':'/fr/tools/comparateur-salaires/',
+'/tools/side-hustle-tax/':'/fr/tools/impot-activite-secondaire/',
+'/tools/crypto-tax/':'/fr/tools/impot-crypto/',
+'/tools/za-dividend-tax/':'/fr/tools/za-impot-dividendes/',
+'/tools/ng-cit/':'/fr/tools/ng-impot-societes/',
+'/tools/ng-pension/':'/fr/tools/ng-pension/',
+'/tools/ke-nssf/':'/fr/tools/ke-nssf/',
+'/tools/ng-nhf/':'/fr/tools/ng-nhf/',
+'/tools/gh-wht/':'/fr/tools/gh-wht/',
+'/tools/ke-wht/':'/fr/tools/ke-wht/',
+'/tools/ng-wht/':'/fr/tools/ng-wht/',
+'/tools/ecowas-levy/':'/fr/tools/ecowas-levy/',
+'/tools/inheritance-tax/':'/fr/tools/inheritance-tax/',
+'/tools/national-pension/':'/fr/tools/national-pension/',
+'/tools/salary-negotiation/':'/fr/tools/negociation-salaire/',
+'/tools/teacher-salary/':'/fr/tools/salaire-enseignant/',
+'/tools/boda-income/':'/fr/tools/revenu-boda/',
+'/tools/okada-income/':'/fr/tools/revenu-okada/',
+'/tools/pension-projection/':'/fr/tools/projection-pension/',
+'/tools/pension-proj/':'/fr/tools/projection-pension/',
+'/tools/property-tax/':'/fr/tools/taxe-fonciere/',
+'/tools/property-cgt/':'/fr/tools/plus-value-immobiliere/',
+'/tools/ng-cgt/':'/fr/tools/ng-plus-value/',
+'/tools/ke-cgt/':'/fr/tools/ke-plus-value/',
+'/tools/ke-stamp-duty/':'/fr/tools/ke-droits-timbre/',
+'/tools/za-cgt/':'/fr/tools/za-plus-value/',
+'/tools/stamp-duty/':'/fr/tools/droits-enregistrement/'
+};
+function frHref(t){return FR_HREFS[t.href]||t.href;}
+function card(t,ok){var bc=t.status==='new'?'badge-new':(ok?'badge-live':'badge-soon');var bt=t.status==='new'?'Nouveau':(ok?'Actif':'Bientot');var tag=ok?'a':'div';var href=ok?' href="'+frHref(t)+'"':'';return '<'+tag+href+' class="tc'+(ok?'':' coming')+'"><div class="tc-thumb" style="background:'+BG+'"><div class="tc-thumb-ph">'+t.icon+'</div><img src="/assets/img/tools/'+t.id+'.webp" alt="'+t.name+'" loading="lazy" onerror="this.onerror=function(){this.style.display=\'none\'};this.src=\'/assets/img/tools/'+t.id+'.svg\';"></div><div class="tc-body"><div class="tc-row1"><span class="tc-flag">'+t.icon+'</span><span class="tc-badge '+bc+'">'+bt+'</span></div><div class="tc-name">'+t.name+'</div><div class="tc-desc">'+t.desc+'</div><div class="tc-foot"><span class="tc-tags">OUTIL</span><span class="tc-cta">Ouvrir &rarr;</span></div></div></'+tag+'>';}
 var PS=35,cP=1,cL=live,cPi=pipe,cQ='';
 function render(fl,fp,q,pg){pg=pg||1;cL=fl;cPi=fp;cQ=q;cP=pg;var html='';var label=document.getElementById('search-label');var all=[];fl.forEach(function(t){all.push({t:t,ok:true});});fp.forEach(function(t){all.push({t:t,ok:false});});var tot=all.length;var tp=Math.ceil(tot/PS);if(pg>tp)pg=tp||1;if(q){label.style.display='block';label.textContent=tot+' resultat'+(tot!==1?'s':'')+' pour "'+q+'"';}else{label.style.display='none';}var si=q?0:(pg-1)*PS;var ei=q?tot:Math.min(pg*PS,tot);var pi=all.slice(si,ei);var pl=pi.filter(function(i){return i.ok;});var pp=pi.filter(function(i){return !i.ok;});if(pl.length){html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> Disponibles <span style="font-size:13px;font-weight:500;color:#6b7280">('+fl.length+' total)</span></h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';pl.forEach(function(i){html+=card(i.t,true);});html+='</div>';}if(pp.length){html+='<h2 style="font-size:18px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> Bientot <span style="font-size:13px;font-weight:500;color:#6b7280">('+fp.length+' total)</span></h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';pp.forEach(function(i){html+=card(i.t,false);});html+='</div>';}if(!pl.length&&!pp.length){html='<div class="no-results">Aucun outil trouve pour <strong>"'+q+'"</strong>.</div>';}if(!q&&tp>1){html+='<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:32px;padding:16px 0">';html+='<button onclick="goPage('+(pg-1)+')" style="padding:8px 16px;border:1.5px solid '+(pg>1?'var(--color-primary)':'#e5e7eb')+';border-radius:8px;background:'+(pg>1?'#fff':'#f9fafb')+';color:'+(pg>1?'var(--color-primary)':'#d1d5db')+';font-weight:700;font-size:.82rem;cursor:'+(pg>1?'pointer':'default')+';font-family:DM Sans,sans-serif"'+(pg<=1?' disabled':'')+'>&#8592; Precedent</button>';for(var p=1;p<=tp;p++){html+='<button onclick="goPage('+p+')" style="width:36px;height:36px;border:1.5px solid '+(p===pg?'var(--color-primary)':'#e5e7eb')+';border-radius:8px;background:'+(p===pg?'var(--color-primary)':'#fff')+';color:'+(p===pg?'#fff':'#374151')+';font-weight:700;font-size:.82rem;cursor:pointer;font-family:DM Sans,sans-serif">'+p+'</button>';}html+='<button onclick="goPage('+(pg+1)+')" style="padding:8px 16px;border:1.5px solid '+(pg<tp?'var(--color-primary)':'#e5e7eb')+';border-radius:8px;background:'+(pg<tp?'#fff':'#f9fafb')+';color:'+(pg<tp?'var(--color-primary)':'#d1d5db')+';font-weight:700;font-size:.82rem;cursor:'+(pg<tp?'pointer':'default')+';font-family:DM Sans,sans-serif"'+(pg>=tp?' disabled':'')+'>Suivant &#8594;</button>';html+='</div>';html+='<div style="text-align:center;font-size:.75rem;color:#9ca3af;margin-top:4px">'+(si+1)+'–'+ei+' sur '+tot+' outils</div>';}container.innerHTML=html;}
 window.goPage=function(p){var tot=cL.length+cPi.length;var tp=Math.ceil(tot/PS);if(p<1||p>tp)return;render(cL,cPi,cQ,p);document.getElementById('tool-grid').scrollIntoView({behavior:'smooth',block:'start'});};

@@ -46,9 +46,14 @@
     eventScope: 'all',
     fatalOnly: false
   };
+  var apiOrigin = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') ? 'https://afrotools.com' : '';
 
   function q(sel) { return document.querySelector(sel); }
   function qa(sel) { return document.querySelectorAll(sel); }
+
+  function apiUrl(path) {
+    return apiOrigin + path;
+  }
 
   function escapeHtml(value) {
     return String(value == null ? '' : value)
@@ -178,7 +183,7 @@
     ];
 
     kpiRow.innerHTML = kpis.map(function (item) {
-      return '<article class="acd-kpi-card" style="border-top-color:' + item.color + '">' +
+      return '<article class="acd-kpi-card" data-color="' + escapeHtml(item.color) + '">' +
         '<div class="acd-kpi-icon">' + item.icon + '</div>' +
         '<div class="acd-kpi-value">' + escapeHtml(item.val) + '</div>' +
         '<div class="acd-kpi-label">' + escapeHtml(item.label) + '</div>' +
@@ -280,6 +285,37 @@
     el.textContent = message;
   }
 
+  function renderHeroSignals() {
+    var el = q('#acd-hero-chips');
+    if (!el) return;
+
+    if (!filteredConflicts.length) {
+      el.innerHTML = '';
+      return;
+    }
+
+    var hottest = filteredConflicts[0];
+    var mostDisplaced = filteredConflicts.slice().sort(function (a, b) {
+      return totalDisplaced(b) - totalDisplaced(a);
+    })[0];
+    var spilloverHot = filteredConflicts.filter(hasSpillover).length;
+    var eventStatus = recentEvents.length ? recentEvents.length + ' recent records' : 'Awaiting sync';
+
+    el.innerHTML = [
+      heroChip('Priority', getConflictLabel(hottest)),
+      heroChip('Most displaced', AfroConflict.flagEmoji(mostDisplaced.primary_country) + ' ' + AfroConflict.formatNumber(totalDisplaced(mostDisplaced))),
+      heroChip('Spillover active', spilloverHot + ' theatres'),
+      heroChip('Event feed', eventStatus)
+    ].join('');
+  }
+
+  function heroChip(label, value) {
+    return '<div class="acd-hero-chip">' +
+      '<span class="acd-hero-chip-label">' + escapeHtml(label) + '</span>' +
+      '<strong>' + escapeHtml(value) + '</strong>' +
+    '</div>';
+  }
+
   function renderActiveFilters() {
     var container = q('#acd-active-filters');
     if (!container) return;
@@ -316,7 +352,7 @@
       return;
     }
 
-    var summary = truncate(getConflictSummary(conflict), 290);
+    var summary = truncate(getConflictSummary(conflict), 210);
     var spilloverCount = (conflict.spillover_countries || []).length;
 
     el.innerHTML = '<div class="acd-briefing-overline">Live briefing</div>' +
@@ -546,15 +582,19 @@
   function renderEvents(spotlight) {
     var el = q('#acd-events-feed');
     var meta = q('#acd-events-meta');
+    var panel = q('.acd-events-panel');
     if (!el || !meta) return;
 
     var filtered = getFilteredEvents(spotlight);
 
     if (!recentEvents.length) {
+      if (panel) panel.classList.add('is-empty');
       meta.textContent = 'Recent event data is still populating.';
       el.innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">📡</div><div class="acd-empty-title">No recent event stream is available yet.</div></div>';
       return;
     }
+
+    if (panel) panel.classList.remove('is-empty');
 
     meta.textContent = filtered.length + ' events shown' + (filters.eventScope === 'selected' && spotlight ? ' for ' + getConflictLabel(spotlight) : '') + '.';
 
@@ -714,6 +754,7 @@
     var spotlight = ensureSpotlight();
 
     renderHeroSummary(spotlight);
+    renderHeroSignals();
     renderActiveFilters();
     renderBriefingCard(spotlight);
     renderFocusCard(spotlight);
@@ -726,6 +767,8 @@
   function setSpotlight(slug, panMap) {
     spotlightSlug = slug || '';
     var spotlight = ensureSpotlight();
+    renderHeroSummary(spotlight);
+    renderHeroSignals();
     renderBriefingCard(spotlight);
     renderFocusCard(spotlight);
     renderWatchlist(filteredConflicts, spotlight);
@@ -832,10 +875,15 @@
   async function loadAll() {
     try {
       var responses = await Promise.all([
-        fetch('/api/stats'),
-        fetch('/api/conflicts'),
-        fetch('/api/events/recent')
+        fetch(apiUrl('/api/stats')),
+        fetch(apiUrl('/api/conflicts')),
+        fetch(apiUrl('/api/events/recent'))
       ]);
+
+      allConflicts = [];
+      recentEvents = [];
+      buildConflictLookup(allConflicts);
+      populateRegionFilter(allConflicts);
 
       if (responses[1].ok) {
         var conflictsJson = await responses[1].json();
@@ -865,13 +913,26 @@
       filteredConflicts = [];
       recentEvents = [];
       spotlightSlug = '';
+      buildConflictLookup(allConflicts);
+      populateRegionFilter(allConflicts);
       renderKPIs(computeFallbackStats(allConflicts));
       renderHeroSummary(null);
+      renderHeroSignals();
       renderActiveFilters();
       q('#acd-briefing-card').innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">⚠️</div><div class="acd-empty-title">We could not load the live dashboard feed.</div></div>';
       q('#acd-focus-card').innerHTML = '<div class="acd-empty"><div class="acd-empty-title">Please refresh to retry.</div></div>';
       q('#acd-top-list').innerHTML = '<div class="acd-empty"><div class="acd-empty-title">Conflict watchlist unavailable.</div></div>';
       q('#acd-events-feed').innerHTML = '<div class="acd-empty"><div class="acd-empty-title">Event feed unavailable.</div></div>';
+      renderBriefingCard(null);
+      renderFocusCard(null);
+      renderWatchlist([], null);
+      renderSignalBoard([]);
+      renderEvents(null);
+      renderMap([]);
+      q('#acd-hero-statline').textContent = 'Live dashboard feed unavailable. Refresh to retry.';
+      q('#acd-active-filters').innerHTML = '<span class="acd-filter-hint">Live dashboard feed unavailable.</span>';
+      q('#acd-watchlist-count').textContent = 'Unavailable';
+      q('#acd-events-meta').textContent = 'Event feed unavailable.';
       q('#acd-map-status').textContent = 'Live feed unavailable.';
     }
   }
