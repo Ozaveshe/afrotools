@@ -9,6 +9,8 @@
  *   node scripts/build-i18n.js --all            # Build all languages
  *   node scripts/build-i18n.js --lang fr         # Build specific language
  *   node scripts/build-i18n.js --page ghana/gh-paye  # Build specific page in all languages
+ *   node scripts/build-i18n.js --lang fr --page benin/bj-paye --overwrite-existing
+ *                                            # Rebuild an existing translated output from source
  *   node scripts/build-i18n.js --dry-run         # Report missing translations
  *   node scripts/build-i18n.js --validate        # Validate JSON files for missing keys
  *
@@ -53,6 +55,7 @@ const flags = {
   page: null,
   dryRun: args.includes('--dry-run'),
   validate: args.includes('--validate'),
+  overwriteExisting: args.includes('--overwrite-existing'),
 };
 
 const langIdx = args.indexOf('--lang');
@@ -544,6 +547,98 @@ function generateHreflangTags(pagePath, activeLangs) {
 
 const missingKeys = new Map(); // lang -> Set of missing keys
 
+function applyExactPairs(input, pairs) {
+  let output = input;
+  for (const [from, to] of pairs) {
+    if (!output.includes(from)) continue;
+    output = output.split(from).join(to);
+  }
+  return output;
+}
+
+function applyFrenchPayeFallbacks(input) {
+  let output = input;
+
+  output = output
+    .replace(/<title>([^<]+?)\s+Calculateur PAYE([^<]*)<\/title>/i, '<title>Calculateur PAYE $1$2</title>')
+    .replace(/<meta\s+property="og:title"\s+content="([^"]+?)\s+PAYE Calculator([^"]*)"/i, '<meta property="og:title" content="Calculateur PAYE $1$2"')
+    .replace(/<meta\s+name="twitter:title"\s+content="([^"]+?)\s+PAYE Calculator([^"]*)"/i, '<meta name="twitter:title" content="Calculateur PAYE $1$2"')
+    .replace(/<h1>([^<]+?)\s+Calculateur PAYE\s*(<em>[\s\S]*?<\/em>)<\/h1>/i, '<h1>Calculateur PAYE $1 $2</h1>')
+    .replace(/<h1>([^<]+?)\s+Calculateur PAYE<\/h1>/i, '<h1>Calculateur PAYE $1</h1>')
+    .replace(/tool-name="([^"]+?)\s+PAYE Calculator"/g, 'tool-name="Calculateur PAYE $1"')
+    .replace(/"name":"([^"]+?)\s+PAYE Calculator([^"]*)"/g, '"name":"Calculateur PAYE $1$2"')
+    .replace(/>([^<]+?)\s+Calculateur PAYE</g, '>Calculateur PAYE $1<')
+    .replace(/>([^<]+?)\s+Calculateur TVA</g, '>Calculateur TVA $1<')
+    .replace(/alt="([^"]+?)\s+PAYE Calculator"/g, 'alt="Calculateur PAYE $1"')
+    .replace(/alt="([^"]+?)\s+VAT Calculator"/g, 'alt="Calculateur TVA $1"')
+    .replace(/<h2 class="ng-guide-title">How\s+([^<]+?)\s+PAYE Tax Is Calculated([^<]*)<\/h2>/i, '<h2 class="ng-guide-title">Comment le PAYE de $1 est calcule$2</h2>');
+
+  const pairs = [
+    ['Calculate your monthly take-home pay using', 'Calculez votre salaire net mensuel avec'],
+    ['Calculate your take-home pay in', 'Calculez votre salaire net en'],
+    ['Calculate your take-home pay using', 'Calculez votre salaire net avec'],
+    ['Accurate, free, instant.', 'Precis, gratuit et instantane.'],
+    ['Updated ', 'Mis a jour '],
+    ['Updated:', 'Mis a jour :'],
+    ['Informational only.', 'A titre informatif uniquement.'],
+    ['Salary Input', 'Saisie du salaire'],
+    ['Annual or monthly gross', 'Brut annuel ou mensuel'],
+    ['Enter your annual gross salary. Monthly equivalent shown in slider.', "Saisissez votre salaire brut annuel. L'equivalent mensuel apparait sur le curseur."],
+    ['Adjust with slider', 'Ajuster avec le curseur'],
+    ['all employees', 'tous les salaries'],
+    ['employee — tax-deductible', 'salarie — deductible fiscalement'],
+    ['After DGI tax, CNPS &amp; all deductions', 'Apres impot DGI, CNPS et retenues'],
+    ['After all deductions &amp; tax', 'Apres deductions et impot'],
+    ['Monthly Equivalent', 'Equivalent mensuel'],
+    ['Annual Bands', 'Tranches annuelles'],
+    ['Free PDF Export', 'Export PDF gratuit'],
+    ['Share Result', 'Partager le resultat'],
+    ['Ask a follow-up…', 'Posez une question de suivi...'],
+    ['Ask a follow-up...', 'Posez une question de suivi...'],
+    ['Ask a follow-up below ↓', 'Posez une question ci-dessous ↓'],
+    ['Your name (optional)', 'Votre nom (facultatif)'],
+    ['Your email address', 'Votre adresse e-mail'],
+    ['Annual Take-Home Pay', 'Salaire net annuel'],
+    ['Monthly Take-Home Pay', 'Salaire net mensuel'],
+    ['Annual Take-Home', 'Net annuel'],
+    ['Annual Gross', 'Brut annuel'],
+    ['Gross: ', 'Brut : '],
+    ['Take-home: ', 'Net : '],
+    ['Effective: ', 'Taux effectif : '],
+    ['Total Employer Cost:', 'Cout total employeur :'],
+    ['My Take-Home Pay', 'Mon salaire net'],
+    ['Your Salary', 'Votre salaire'],
+    ['Calculate First →', "Calculez d'abord →"],
+    ['Enter your salary above and calculate to get a personalized tax analysis.', "Saisissez votre salaire ci-dessus puis lancez le calcul pour obtenir une analyse fiscale personnalisee."],
+    ['Employment Status', "Statut d'emploi"],
+    ['Progressive tax', 'Impot progressif'],
+    ['Non-Resident', 'Non-resident'],
+    ['Flat 30%', 'Taux fixe 30%'],
+    ['Deductions & Levies', 'Retenues et prelevements'],
+    ['Not deductible from tax', "Non deductible de l'impot"],
+    ['Official annual bands', 'Tranches annuelles officielles'],
+    ['Monthly Salary', 'Salaire mensuel'],
+    ['Or enter directly', 'Ou saisissez directement'],
+    ['Monthly salary', 'Salaire mensuel'],
+    ['What are the ', 'Quelles sont les '],
+    ['What is the total ', 'Quel est le total de '],
+    ['What is the salary in the calculator equivalent to in monthly terms?', "A quoi correspond le salaire du calculateur en equivalent mensuel ?"],
+    ['What is ', "Qu'est-ce que "],
+    ['When are ', 'Quand les '],
+    ['taxes calculated and paid?', 'impots sont-ils calcules et payes ?'],
+    ['Annual gross salary', 'Salaire brut annuel'],
+    ['Monthly gross salary', 'Salaire brut mensuel'],
+    ['Gross Income', 'Revenu brut'],
+    ['Take-Home Pay', 'Salaire net'],
+    ['Tax Bands', 'Tranches fiscales'],
+    ['Income Tax', 'Impot sur le revenu'],
+    ['Share', 'Partager'],
+  ];
+
+  output = applyExactPairs(output, pairs);
+  return output;
+}
+
 function processHTML(html, lang, pagePath) {
   let processed = html;
   const pageTranslations = loadPageTranslations(pagePath, lang);
@@ -916,6 +1011,11 @@ function processHTML(html, lang, pagePath) {
     }).join('');
   }
 
+  const cleanPagePath = pagePath.replace(/^\//, '').replace(/\/$/, '');
+  if (lang === 'fr' && /(?:^|\/)[^/]*(?:-paye|salary-tax)$/i.test(cleanPagePath)) {
+    processed = applyFrenchPayeFallbacks(processed);
+  }
+
   // 11. Update internal navigation links to include language prefix
   // Only rewrite links that are absolute paths starting with / and pointing to known pages
   // Skip asset links, API links, and external links
@@ -1014,8 +1114,12 @@ function build() {
     for (const pagePath of pagesToProcess) {
       const clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
 
-      // Only build pages that have a page-specific translation file
-      if (!translatedPages[lang].has(clean)) {
+      const hasPageTranslation = translatedPages[lang].has(clean);
+      const allowExplicitSourceRebuild = Boolean(flags.overwriteExisting && flags.page);
+
+      // By default, only build pages that have a page-specific translation file.
+      // For targeted repair work, allow a single explicit page rebuild from source.
+      if (!hasPageTranslation && !allowExplicitSourceRebuild) {
         totalSkipped++;
         continue;
       }
@@ -1029,11 +1133,15 @@ function build() {
       try {
         const outputPath = buildOutputPath(pagePath, lang);
 
-        // NEVER overwrite existing hand-crafted French files.
+        // NEVER overwrite existing translated files unless explicitly asked.
         // A file is "existing" if it's on disk but NOT generated by us
         // (i.e., the page path is NOT in our translatedPages set for this lang).
         // If we have a translation for it, we're the ones who created it — safe to overwrite.
-        if (fs.existsSync(outputPath) && !translatedPages[lang].has(clean)) {
+        if (
+          fs.existsSync(outputPath) &&
+          !translatedPages[lang].has(clean) &&
+          !flags.overwriteExisting
+        ) {
           totalSkipped++;
           continue;
         }
@@ -1282,6 +1390,8 @@ Usage:
   node scripts/build-i18n.js --all              Build all languages
   node scripts/build-i18n.js --lang fr           Build specific language
   node scripts/build-i18n.js --page ghana/gh-paye  Build specific page in all langs
+  node scripts/build-i18n.js --lang fr --page benin/bj-paye --overwrite-existing
+                                                Rebuild an existing translated output from source
   node scripts/build-i18n.js --dry-run           Report missing translations
   node scripts/build-i18n.js --validate          Validate JSON key parity
   `);

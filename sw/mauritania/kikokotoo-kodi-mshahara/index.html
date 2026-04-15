@@ -15,15 +15,15 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:locale" content="sw_TZ">
+<meta property="og:locale" content="sw_MR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@afrotoolsHQ">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <meta name="tool-id" content="mr-paye-sw">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/mauritania/mr-paye">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/mauritania/mr-paye/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/mauritania/kikokotoo-kodi-mshahara/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/mauritania/mr-paye">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/mauritania/mr-paye/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Mauritania","item":"https://afrotools.com/sw/mauritania/"},{"@type":"ListItem","position":4,"name":"Kikokotoo cha Kodi ya Mshahara","item":"https://afrotools.com/sw/mauritania/kikokotoo-kodi-mshahara/"}]}
 </script>
@@ -138,8 +138,8 @@
       <div class="calc-body">
         <div class="results-grid">
           <div class="result-item"><div class="result-label">Mshahara Ghafi</div><div class="result-value" id="r-gross">MRU 0</div></div>
-          <div class="result-item"><div class="result-label">CNSS (1%)</div><div class="result-value deduct-val" id="r-cnss">− MRU 0</div></div>
-          <div class="result-item"><div class="result-label">Kodi ya ITS PAYE</div><div class="result-value deduct-val" id="r-tax">− MRU 0</div></div>
+          <div class="result-item"><div class="result-label">CNSS (1%)</div><div class="result-value deduct-val" id="r-cnss">- MRU 0</div></div>
+          <div class="result-item"><div class="result-label">Kodi ya ITS PAYE</div><div class="result-value deduct-val" id="r-tax">- MRU 0</div></div>
           <div class="result-item highlight"><div class="result-label">Mshahara Halisi</div><div class="result-value grn" id="r-net">MRU 0</div></div>
           <div class="result-item"><div class="result-label">Kiwango Halisi cha Kodi</div><div class="result-value" id="r-eff">0.0%</div></div>
           <div class="result-item"><div class="result-label">Gharama ya Mwajiri (CNSS 15%)</div><div class="result-value" id="r-emp">MRU 0</div></div>
@@ -202,12 +202,12 @@
       <p>Mfanyakazi mwenye mshahara wa MRU 30,000 kwa mwezi:</p>
       <ol>
         <li>CNSS (1% × 30,000): MRU 300</li>
-        <li>Mapato yanayolipishwa kodi: MRU 30,000 − 300 = MRU 29,700</li>
+        <li>Mapato yanayolipishwa kodi: MRU 30,000 - 300 = MRU 29,700</li>
         <li>0% hadi 6,000: MRU 0</li>
         <li>15% kwa 6,001–21,000 (= MRU 15,000): MRU 2,250</li>
         <li>25% kwa 21,001–29,700 (= MRU 8,700): MRU 2,175</li>
         <li>Jumla ya ITS kwa mwezi: MRU 4,425</li>
-        <li>Mshahara halisi: MRU 30,000 − 300 − 4,425 = <strong>MRU 25,275</strong></li>
+        <li>Mshahara halisi: MRU 30,000 - 300 - 4,425 = <strong>MRU 25,275</strong></li>
       </ol>
 
       <h3>Uchumi wa Mauritania na Mshahara wa Wastani</h3>
@@ -261,7 +261,7 @@
           <li><a href="/sw/senegal/kikokotoo-kodi-mshahara/">🇸🇳 Kodi ya Senegal</a></li>
           <li><a href="/sw/mali/kikokotoo-kodi-mshahara/">🇲🇱 Kodi ya Mali</a></li>
           <li><a href="/sw/cape-verde/kikokotoo-kodi-mshahara/">🇨🇻 Kodi ya Cabo Verde</a></li>
-          <li><a href="/mauritania/mr-paye">🇲🇷 Mauritania PAYE (Kiingereza)</a></li>
+          <li><a href="/mauritania/mr-paye/">🇲🇷 Mauritania PAYE (Kiingereza)</a></li>
         </ul>
       </div>
     </div>
@@ -314,14 +314,14 @@ function calculate(){
   var empCost=gross*(1+EMP_CNSS);
   document.getElementById('resultsSubtitle').textContent='Mshahara ghafi: '+fmt(gross)+'/mwezi';
   document.getElementById('r-gross').textContent=fmt(gross);
-  document.getElementById('r-cnss').textContent='− '+fmt(cnss);
-  document.getElementById('r-tax').textContent='− '+fmt(monthlyTax);
+  document.getElementById('r-cnss').textContent='- '+fmt(cnss);
+  document.getElementById('r-tax').textContent='- '+fmt(monthlyTax);
   document.getElementById('r-net').textContent=fmt(Math.max(0,net));
   document.getElementById('r-eff').textContent=effRate.toFixed(1)+'%';
   document.getElementById('r-emp').textContent=fmt(empCost);
   updateChart(Math.max(0,net),cnss,monthlyTax);
 }
-function toggleBands(el){var card=el.closest('.sidebar-card');card.classList.toggle('collapsed');el.querySelector('.toggle-icon').textContent=card.classList.contains('collapsed')?'►':'▼';}
+function toggleBands(el){var card=el.closest('.sidebar-card');card.classList.toggle('collapsed');el.querySelector('.toggle-icon').textContent=card.classList.contains('collapsed')?'▶':'▼';}
 function updateChart(net,ss,tax){
   var ctx=document.getElementById('payChart').getContext('2d');
   if(myChart){myChart.destroy();}

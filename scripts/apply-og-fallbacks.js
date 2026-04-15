@@ -315,6 +315,37 @@ function syncStructuredDataImage(html, imageUrl) {
   );
 }
 
+function normalizeToolImagePath(value) {
+  if (!value) return null;
+  return String(value).startsWith(SITE_ORIGIN) ? String(value).slice(SITE_ORIGIN.length) : String(value);
+}
+
+function syncVisibleToolImage(html, relativePath) {
+  const pattern = /<img\b(?=[^>]*\bclass=["'][^"']*tool-info-img[^"']*["'])(?=[^>]*\bsrc=["'][^"']*\/assets\/img\/tools\/[^"']+["'])[^>]*>/i;
+  const match = html.match(pattern);
+
+  if (!match) {
+    return { html, changed: false };
+  }
+
+  const tag = match[0];
+  const srcMatch = tag.match(/\bsrc=["']([^"']+)["']/i);
+
+  if (!srcMatch) {
+    return { html, changed: false };
+  }
+
+  if (normalizeToolImagePath(srcMatch[1]) === relativePath) {
+    return { html, changed: false };
+  }
+
+  const nextTag = tag.replace(/\bsrc=["'][^"']+["']/i, 'src="' + escapeHtmlAttribute(relativePath) + '"');
+  return {
+    html: html.replace(tag, nextTag),
+    changed: nextTag !== tag,
+  };
+}
+
 function applyFallbacks(html, filePath) {
   if (!html.includes("</head>")) return { html, changed: false, usedToolImage: false };
   if (!/<meta\s+(property|name)=["']og:title["']/i.test(html)) return { html, changed: false, usedToolImage: false };
@@ -354,6 +385,12 @@ function applyFallbacks(html, filePath) {
     const syncedStructuredData = syncStructuredDataImage(next, targetImage);
     if (syncedStructuredData !== next) {
       next = syncedStructuredData;
+      changed = true;
+    }
+
+    const visibleImageSync = syncVisibleToolImage(next, preferredToolImage.relativePath);
+    if (visibleImageSync.changed) {
+      next = visibleImageSync.html;
       changed = true;
     }
   } else {

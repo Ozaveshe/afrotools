@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:locale" content="sw_TZ">
+<meta property="og:locale" content="sw_SL">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@afrotoolsHQ">
 <meta name="twitter:title" content="Kikokotoo cha Kodi ya Mshahara Sierra Leone — NRA 2026">
@@ -25,9 +25,9 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <meta name="tool-id" content="sl-paye-sw">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/sierra-leone/sl-paye">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/sierra-leone/sl-paye/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/sierra-leone/kikokotoo-kodi-mshahara/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sierra-leone/sl-paye">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sierra-leone/sl-paye/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Sierra Leone","item":"https://afrotools.com/sw/sierra-leone/"},{"@type":"ListItem","position":4,"name":"Kikokotoo cha Kodi ya Mshahara","item":"https://afrotools.com/sw/sierra-leone/kikokotoo-kodi-mshahara/"}]}
 </script>
@@ -165,11 +165,11 @@
           </div>
           <div class="result-item">
             <div class="result-label">NASSIT (5%)</div>
-            <div class="result-value deduct-val" id="r-nassit">− SLE 0</div>
+            <div class="result-value deduct-val" id="r-nassit">- SLE 0</div>
           </div>
           <div class="result-item">
             <div class="result-label">Kodi ya NRA PAYE</div>
-            <div class="result-value deduct-val" id="r-tax">− SLE 0</div>
+            <div class="result-value deduct-val" id="r-tax">- SLE 0</div>
           </div>
           <div class="result-item highlight">
             <div class="result-label">Mshahara Halisi</div>
@@ -251,7 +251,7 @@
         <li>Jumla ya PAYE ya kila mwaka: SLE 150,000</li>
         <li>PAYE ya kila mwezi: SLE 12,500</li>
         <li>NASSIT (5% × 125,000): SLE 6,250</li>
-        <li>Mshahara halisi: SLE 125,000 − 12,500 − 6,250 = <strong>SLE 106,250</strong></li>
+        <li>Mshahara halisi: SLE 125,000 - 12,500 - 6,250 = <strong>SLE 106,250</strong></li>
       </ol>
       <p>Kiwango halisi cha kodi (effective rate) ni 10% ya mshahara ghafi, ambayo inaonyesha mfumo wa kodi wenye usawa nchini Sierra Leone.</p>
 
@@ -323,7 +323,7 @@
           <li><a href="/sw/liberia/kikokotoo-kodi-mshahara/">🇱🇷 Kodi ya Liberia (LRA)</a></li>
           <li><a href="/sw/gambia/kikokotoo-kodi-mshahara/">🇬🇲 Kodi ya Gambia (GRA)</a></li>
           <li><a href="/sw/guinea/kikokotoo-kodi-mshahara/">🇬🇳 Kodi ya Guinea (DNI)</a></li>
-          <li><a href="/sierra-leone/sl-paye">🇸🇱 Sierra Leone PAYE (Kiingereza)</a></li>
+          <li><a href="/sierra-leone/sl-paye/">🇸🇱 Sierra Leone PAYE (Kiingereza)</a></li>
         </ul>
       </div>
     </div>
@@ -412,7 +412,7 @@ function calculate(){
   var gross = state.period==='annual' ? state.gross/12 : state.gross;
   var annualGross = gross*12;
   var nassit = state.togs.nassit ? gross*NASSIT_RATE : 0;
-  // NRA is applied on full annual gross (NASSIT not deductible)
+  // NRA is applied on full ghafi ya mwaka (NASSIT not deductible)
   var annualTax = calcNRA(annualGross);
   var monthlyTax = annualTax/12;
   var net = gross - nassit - monthlyTax;
@@ -420,8 +420,8 @@ function calculate(){
   var empCost = gross*(1+EMP_NASSIT);
   document.getElementById('resultsSubtitle').textContent = 'Mshahara ghafi: '+fmt(gross)+'/mwezi';
   document.getElementById('r-gross').textContent = fmt(gross);
-  document.getElementById('r-nassit').textContent = '− '+fmt(nassit);
-  document.getElementById('r-tax').textContent = '− '+fmt(monthlyTax);
+  document.getElementById('r-nassit').textContent = '- '+fmt(nassit);
+  document.getElementById('r-tax').textContent = '- '+fmt(monthlyTax);
   document.getElementById('r-net').textContent = fmt(Math.max(0,net));
   document.getElementById('r-eff').textContent = effRate.toFixed(1)+'%';
   document.getElementById('r-emp').textContent = fmt(empCost);
@@ -430,7 +430,7 @@ function calculate(){
 function toggleBands(el){
   var card=el.closest('.sidebar-card');
   card.classList.toggle('collapsed');
-  el.querySelector('.toggle-icon').textContent=card.classList.contains('collapsed')?'►':'▼';
+  el.querySelector('.toggle-icon').textContent=card.classList.contains('collapsed')?'▶':'▼';
 }
 function updateChart(net,nassit,tax){
   var ctx=document.getElementById('payChart').getContext('2d');

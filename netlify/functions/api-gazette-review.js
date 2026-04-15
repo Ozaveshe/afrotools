@@ -12,10 +12,23 @@
 
 const { getAllowedOrigin } = require('./utils/cors');
 
-var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
                    process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
                    process.env.SUPABASE_SERVICE_KEY;
+
+function getHeader(event, headerName) {
+  var headers = event.headers || {};
+  var expected = headerName.toLowerCase();
+
+  for (var key in headers) {
+    if (Object.prototype.hasOwnProperty.call(headers, key) && key.toLowerCase() === expected) {
+      return headers[key];
+    }
+  }
+
+  return '';
+}
 
 exports.handler = async function(event) {
   var CORS = {
@@ -27,7 +40,7 @@ exports.handler = async function(event) {
 
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
 
-  var adminKey = event.headers['x-admin-key'];
+  var adminKey = getHeader(event, 'x-admin-key');
   if (!adminKey || adminKey !== (process.env.ADMIN_KEY || process.env.ADMIN_SECRET)) {
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Unauthorized' }) };
   }

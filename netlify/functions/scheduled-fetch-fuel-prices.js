@@ -124,6 +124,55 @@ function parseCountryFuelTable(html, currency) {
   return { local: local, usd: usd };
 }
 
+function parseObservedDate(html) {
+  var headingMatch = String(html || '').match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  if (!headingMatch) return null;
+
+  var headingText = stripHtml(headingMatch[1]);
+  var dateMatch = headingText.match(/(\d{2})-([A-Za-z]{3})-(\d{4})/);
+  if (!dateMatch) return null;
+
+  var monthMap = {
+    Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06',
+    Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12',
+  };
+  var month = monthMap[dateMatch[2]];
+  if (!month) return null;
+
+  return dateMatch[3] + '-' + month + '-' + dateMatch[1];
+}
+
+function isOlderThan(candidateDate, baselineDate) {
+  if (!candidateDate || !baselineDate) return false;
+  return candidateDate < baselineDate;
+}
+
+function getLatestDate(dates) {
+  return dates.filter(Boolean).sort().slice(-1)[0] || null;
+}
+
+function buildFuelValue(scrapedFuel, existingFuel, existingUpdatedAt) {
+  if (!scrapedFuel) {
+    return { fuel: existingFuel || null, observedAt: null, reusedExisting: !!existingFuel };
+  }
+
+  if (isOlderThan(scrapedFuel.observed_at, existingUpdatedAt)) {
+    return { fuel: existingFuel || null, observedAt: existingUpdatedAt || null, reusedExisting: !!existingFuel };
+  }
+
+  return {
+    fuel: {
+      price: scrapedFuel.local || scrapedFuel.usd,
+      unit: 'liter',
+      usd: scrapedFuel.usd,
+      change: 'unknown',
+      change_pct: 0,
+    },
+    observedAt: scrapedFuel.observed_at || null,
+    reusedExisting: false,
+  };
+}
+
 async function fetchCountryFuelPrice(country, fuelType) {
   var url = 'https://www.globalpetrolprices.com/' + country.slug + '/' + fuelType + '_prices/';
   var res = await fetchWithRetry(url, {
@@ -137,6 +186,7 @@ async function fetchCountryFuelPrice(country, fuelType) {
   if (!parsed) {
     throw new Error('Could not parse ' + fuelType + ' price for ' + country.code);
   }
+  parsed.observed_at = parseObservedDate(html);
   return parsed;
 }
 
@@ -163,7 +213,15 @@ async function mapWithConcurrency(items, concurrency, iteratee) {
  * Fetches the overview page which lists all countries' petrol+diesel in USD/liter
  */
 async function fetchFromGlobalPetrolPrices() {
-  var now = new Date().toISOString().slice(0, 10);
+  var previousData = await getData('fuel-latest');
+  var previousMap = {};
+
+  if (previousData && Array.isArray(previousData.countries)) {
+    previousData.countries.forEach(function(country) {
+      previousMap[country.code] = country;
+    });
+  }
+
   var countries = (await mapWithConcurrency(COUNTRIES, 6, async function(c) {
     try {
       var fuelResults = await Promise.all([
@@ -173,30 +231,27 @@ async function fetchFromGlobalPetrolPrices() {
 
       var gasoline = fuelResults[0];
       var diesel = fuelResults[1];
-      if (!gasoline && !diesel) return null;
+      var existing = previousMap[c.code] || null;
+      if (!gasoline && !diesel) return existing || null;
+
+      var petrolResult = buildFuelValue(gasoline, existing && existing.petrol, existing && existing.last_updated);
+      var dieselResult = buildFuelValue(diesel, existing && existing.diesel, existing && existing.last_updated);
+      var lastUpdated = getLatestDate([
+        petrolResult.observedAt,
+        dieselResult.observedAt,
+        existing && existing.last_updated,
+      ]) || new Date().toISOString().slice(0, 10);
 
       return {
         code: c.code,
         name: c.name,
         currency: c.currency,
         region: c.region,
-        petrol: gasoline ? {
-          price: gasoline.local || gasoline.usd,
-          unit: 'liter',
-          usd: gasoline.usd,
-          change: 'unknown',
-          change_pct: 0,
-        } : null,
-        diesel: diesel ? {
-          price: diesel.local || diesel.usd,
-          unit: 'liter',
-          usd: diesel.usd,
-          change: 'unknown',
-          change_pct: 0,
-        } : null,
-        lpg: null,
-        regulated: null,
-        last_updated: now,
+        petrol: petrolResult.fuel,
+        diesel: dieselResult.fuel,
+        lpg: existing && existing.lpg ? existing.lpg : null,
+        regulated: existing && typeof existing.regulated === 'boolean' ? existing.regulated : null,
+        last_updated: lastUpdated,
         source: 'globalpetrolprices',
       };
     } catch (err) {

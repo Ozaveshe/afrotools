@@ -15,13 +15,13 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:locale" content="sw_TZ">
+<meta property="og:locale" content="sw_SD">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@afrotoolsHQ">
 <meta name="robots" content="index, follow">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/sudan/sd-paye">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/sudan/sd-paye/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/sudan/kikokotoo-kodi-mshahara/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sudan/sd-paye">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/sudan/sd-paye/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Sudani","item":"https://afrotools.com/sw/sudan/"},{"@type":"ListItem","position":4,"name":"Kikokotoo cha Kodi ya Mshahara","item":"https://afrotools.com/sw/sudan/kikokotoo-kodi-mshahara/"}]}
 </script>
@@ -106,10 +106,10 @@
         </div>
         <div class="card-body">
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(5000,this)">SDG 5k/mo</button>
-            <button class="preset-btn" onclick="setPreset(10000,this)">SDG 10k/mo</button>
-            <button class="preset-btn" onclick="setPreset(20000,this)">SDG 20k/mo</button>
-            <button class="preset-btn" onclick="setPreset(50000,this)">SDG 50k/mo</button>
+            <button class="preset-btn" onclick="setPreset(5000,this)">SDG 5k/mwezi</button>
+            <button class="preset-btn" onclick="setPreset(10000,this)">SDG 10k/mwezi</button>
+            <button class="preset-btn" onclick="setPreset(20000,this)">SDG 20k/mwezi</button>
+            <button class="preset-btn" onclick="setPreset(50000,this)">SDG 50k/mwezi</button>
           </div>
           <div class="slider-wrap">
             <div class="slider-row">
@@ -378,7 +378,7 @@ function renderResults() {
   document.getElementById('employerStrip').innerHTML = '<div class="employer-strip-head">Gharama za Mwajiri</div>' + row('Mshahara Ghafi', fmt(r.gross * d)) + row('NASSCO ya Mwajiri (17%)', fmt(r.employerNASSCO * d)) + '<div class="res-row total"><span class="res-row-lbl">Gharama Jumla</span><span class="res-row-val grn">' + fmt(empTotal * d) + '</span></div>';
   document.getElementById('resultsCard').classList.add('on');
   document.getElementById('aiBtn').disabled = false; document.getElementById('aiBtn').textContent = 'Changanua \u2192';
-  document.getElementById('aiStatus').textContent = 'Ghafi: ' + fmt(r.gross) + '/mo \u00B7 Halisi: ' + fmt(r.net) + '/mo';
+  document.getElementById('aiStatus').textContent = 'Ghafi: ' + fmt(r.gross) + '/mwezi \u00B7 Halisi: ' + fmt(r.net) + '/mwezi';
 }
 
 function setPeriod(p, btn) { PERIOD = p; document.querySelectorAll('.per-btn').forEach(function(b) { b.classList.remove('on'); }); btn.classList.add('on'); if (RESULT) renderResults(); }
@@ -404,7 +404,7 @@ function getAI() {
   if (!RESULT) return;
   var btn = document.getElementById('aiBtn'); btn.disabled = true; btn.textContent = 'Inachanganua\u2026';
   var r = RESULT;
-  fetch('/netlify/functions/ai-advisor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool: 'paye', country: 'Sudan', prompt: 'Mfanyakazi Sudani: ghafi SDG ' + Math.round(r.gross) + '/mo, NASSCO SDG ' + Math.round(r.nassco) + ', kodi SDG ' + Math.round(r.tax) + ', halisi SDG ' + Math.round(r.net) + '. Toa uchambuzi wa Kiswahili.' }) })
+  fetch('/netlify/functions/ai-advisor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool: 'paye', country: 'Sudan', prompt: 'Mfanyakazi Sudani: ghafi SDG ' + Math.round(r.gross) + '/mwezi, NASSCO SDG ' + Math.round(r.nassco) + ', kodi SDG ' + Math.round(r.tax) + ', halisi SDG ' + Math.round(r.net) + '. Toa uchambuzi wa Kiswahili.' }) })
     .then(function(res) { return res.json(); })
     .then(function(data) { document.getElementById('aiResp').textContent = data.response || 'Hitilafu ilitokea.'; document.getElementById('aiChat').style.display = 'block'; btn.disabled = false; btn.textContent = 'Uliza swali lingine \u2192'; })
     .catch(function() { btn.disabled = false; btn.textContent = 'Jaribu tena \u2192'; });

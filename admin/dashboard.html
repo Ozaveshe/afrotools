@@ -374,6 +374,78 @@
     line-height: 1.65;
   }
 
+  .admin-health-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .admin-health-panel-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 16px;
+  }
+
+  .admin-health-panel {
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+    border-radius: var(--radius-xl);
+  }
+
+  .admin-mini {
+    padding: 6px 10px;
+    background: rgba(var(--color-primary-rgb), 0.08);
+    color: var(--color-primary);
+  }
+
+  .health-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .health-live {
+    background: rgba(22, 101, 52, 0.12);
+    color: #166534;
+  }
+
+  .health-ok {
+    background: rgba(3, 105, 161, 0.12);
+    color: #0369a1;
+  }
+
+  .health-stale,
+  .health-degraded {
+    background: rgba(154, 103, 0, 0.12);
+    color: #9a6700;
+  }
+
+  .health-offline,
+  .health-critical {
+    background: rgba(180, 35, 24, 0.12);
+    color: #b42318;
+  }
+
+  .backend-note-list {
+    margin: 14px 0 0;
+    padding-left: 18px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .backend-note-list li + li {
+    margin-top: 8px;
+  }
+
   .pass { color: #166534; }
   .warn { color: #9a6700; }
   .fail { color: #b42318; }
@@ -421,6 +493,11 @@
     .admin-stats {
       grid-template-columns: repeat(2, 1fr);
     }
+
+    .admin-health-grid,
+    .admin-health-panel-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   @media (max-width: 720px) {
@@ -429,7 +506,9 @@
     }
 
     .admin-stats,
-    .link-grid {
+    .link-grid,
+    .admin-health-grid,
+    .admin-health-panel-grid {
       grid-template-columns: 1fr;
     }
 
@@ -502,6 +581,39 @@
     <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-value" id="s-cats">—</div></div>
     <div class="stat-card"><div class="stat-label">Est. monthly revenue</div><div class="stat-value" id="s-rev">—</div></div>
   </div>
+
+  <section class="admin-section">
+    <div class="admin-section-head">
+      <div>
+        <h2>Backend Health</h2>
+        <p class="admin-section-copy">Live backend telemetry pulled from freshness, scraper health, and alert endpoints so the admin surface stays current without leaving the dashboard.</p>
+      </div>
+      <button class="audit-btn" type="button" onclick="loadBackendHealth()">Refresh Health</button>
+    </div>
+    <div class="admin-health-grid" id="backend-cards">
+      <div class="stat-card"><div class="stat-label">Backend</div><div class="stat-value">--</div></div>
+      <div class="stat-card"><div class="stat-label">Fresh Sources</div><div class="stat-value">--</div></div>
+      <div class="stat-card"><div class="stat-label">Healthy Scrapers</div><div class="stat-value">--</div></div>
+      <div class="stat-card"><div class="stat-label">Active Alerts</div><div class="stat-value">--</div></div>
+    </div>
+    <div class="admin-health-panel-grid">
+      <div class="admin-health-panel">
+        <div class="admin-link-markers"><span class="admin-mini">Freshness</span></div>
+        <table>
+          <thead><tr><th>Category</th><th>Status</th><th>Age</th></tr></thead>
+          <tbody id="freshness-table">
+            <tr><td colspan="3">Loading live backend freshness...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="admin-health-panel">
+        <div class="admin-link-markers"><span class="admin-mini">Warnings</span></div>
+        <ul class="backend-note-list" id="backend-notes">
+          <li>Loading backend checks...</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
   <section class="admin-section">
     <div class="admin-section-head">
@@ -583,16 +695,188 @@
 
 <script>
 var adminKey = sessionStorage.getItem('admin_key');
+var dashboardEnabled = !!adminKey;
 if (!adminKey) {
   adminKey = prompt('Enter admin password:');
   if (adminKey) sessionStorage.setItem('admin_key', adminKey);
+  dashboardEnabled = !!adminKey;
 }
-if (!adminKey) {
+if (!dashboardEnabled) {
   document.body.innerHTML = '<div class="auth-state"><div class="auth-card"><div class="admin-mark" style="margin:0 auto;">AT</div><h1>Access Denied</h1><p>Admin password required to open the operations dashboard.</p><a class="admin-linkline" href="/">Back to AfroTools</a></div></div>';
 }
 
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+    return ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[ch];
+  });
+}
+
+async function fetchJson(url, opts) {
+  var res = await fetch(url, opts || {});
+  var text = await res.text();
+  var data = {};
+  try { data = text ? JSON.parse(text) : {}; } catch (err) { data = { error: text || 'Invalid response' }; }
+  if (!res.ok) {
+    throw new Error(data.error || ('Request failed with status ' + res.status));
+  }
+  return data;
+}
+
+function formatAgeMinutes(minutes) {
+  if (minutes == null || !isFinite(minutes) || minutes < 0) return '--';
+  if (minutes < 60) return minutes + 'm';
+  if (minutes < 1440) return Math.round(minutes / 60) + 'h';
+  return Math.round(minutes / 1440) + 'd';
+}
+
+function getHealthTone(status) {
+  var normalized = String(status || 'offline').toLowerCase();
+  if (normalized === 'healthy' || normalized === 'live' || normalized === 'active') return 'health-live';
+  if (normalized === 'ok') return 'health-ok';
+  if (normalized === 'stale' || normalized === 'degraded' || normalized === 'expired') return 'health-stale';
+  return 'health-offline';
+}
+
+function renderBackendCards(freshness, scraperHealth, alertsData, errors) {
+  var freshnessEntries = freshness && freshness.categories ? Object.values(freshness.categories) : [];
+  var healthyFreshness = freshnessEntries.filter(function(entry) {
+    return entry.status === 'live' || entry.status === 'ok';
+  }).length;
+  var summary = alertsData && alertsData.summary ? alertsData.summary : {};
+  var cardsEl = document.getElementById('backend-cards');
+  var cards = [
+    {
+      label: 'Backend',
+      value: freshness ? String(freshness.overall_health || 'unknown').toUpperCase() : 'OFF',
+      meta: errors.length === 0 ? 'All live checks responded' : errors.length + ' endpoint issue(s)',
+      tone: freshness ? getHealthTone(freshness.overall_health) : 'health-offline'
+    },
+    {
+      label: 'Fresh Sources',
+      value: freshnessEntries.length ? healthyFreshness + '/' + freshnessEntries.length : '--',
+      meta: freshnessEntries.length ? 'Live or ok categories' : 'Freshness API unavailable',
+      tone: freshnessEntries.length && healthyFreshness === freshnessEntries.length ? 'health-live' : 'health-stale'
+    },
+    {
+      label: 'Healthy Scrapers',
+      value: scraperHealth ? (scraperHealth.healthy_count + '/' + scraperHealth.total_count) : '--',
+      meta: scraperHealth ? ('Overall ' + (scraperHealth.overall_health || 'unknown')) : 'Scraper health unavailable',
+      tone: scraperHealth ? getHealthTone(scraperHealth.overall_health) : 'health-offline'
+    },
+    {
+      label: 'Active Alerts',
+      value: summary.active != null ? String(summary.active) : '--',
+      meta: (summary.expired || summary.inactive) ? ((summary.expired || 0) + ' expired, ' + (summary.inactive || 0) + ' inactive') : 'No stale admin alerts',
+      tone: (summary.expired || summary.inactive) ? 'health-stale' : 'health-live'
+    }
+  ];
+
+  if (!cardsEl) return;
+  cardsEl.innerHTML = cards.map(function(card) {
+    return '<div class="stat-card">' +
+      '<div class="stat-label">' + escapeHtml(card.label) + '</div>' +
+      '<div class="stat-value">' + escapeHtml(card.value) + '</div>' +
+      '<div class="health-badge ' + card.tone + '" style="margin-top:10px;">' + escapeHtml(card.meta) + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderFreshnessTable(freshness) {
+  var tbody = document.getElementById('freshness-table');
+  if (!tbody) return;
+  if (!freshness || !freshness.categories) {
+    tbody.innerHTML = '<tr><td colspan="3">Freshness data unavailable.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = Object.entries(freshness.categories).sort(function(a, b) {
+    return a[0].localeCompare(b[0]);
+  }).map(function(entry) {
+    var category = entry[0];
+    var data = entry[1] || {};
+    return '<tr>' +
+      '<td>' + escapeHtml(category) + '</td>' +
+      '<td><span class="health-badge ' + getHealthTone(data.status) + '">' + escapeHtml(String(data.status || 'offline').toUpperCase()) + '</span></td>' +
+      '<td>' + escapeHtml(formatAgeMinutes(data.age_minutes)) + '</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function renderBackendNotes(freshness, scraperHealth, alertsData, errors) {
+  var notes = [];
+  var notesEl = document.getElementById('backend-notes');
+  var summary = alertsData && alertsData.summary ? alertsData.summary : {};
+  if (!notesEl) return;
+
+  if (freshness && freshness.categories) {
+    Object.entries(freshness.categories).filter(function(entry) {
+      var status = entry[1] && entry[1].status;
+      return status === 'stale' || status === 'offline';
+    }).slice(0, 4).forEach(function(entry) {
+      notes.push(entry[0] + ' is ' + entry[1].status + ' (' + formatAgeMinutes(entry[1].age_minutes) + ' old).');
+    });
+  }
+
+  if (scraperHealth && Array.isArray(scraperHealth.scrapers)) {
+    scraperHealth.scrapers.filter(function(scraper) {
+      return !scraper.is_healthy;
+    }).slice(0, 3).forEach(function(scraper) {
+      notes.push((scraper.scraper_id || scraper.name || 'Unknown scraper') + ' reported unhealthy status.');
+    });
+  }
+
+  if ((summary.expired || 0) > 0) {
+    notes.push(summary.expired + ' alert(s) are expired and still visible in admin history.');
+  }
+  if ((summary.inactive || 0) > 0) {
+    notes.push(summary.inactive + ' alert(s) are inactive and still part of the admin review trail.');
+  }
+
+  errors.forEach(function(errorMessage) {
+    notes.push(errorMessage);
+  });
+
+  if (notes.length === 0) {
+    notes.push('No active backend warnings from the connected APIs.');
+  }
+
+  notesEl.innerHTML = notes.map(function(note) {
+    return '<li>' + escapeHtml(note) + '</li>';
+  }).join('');
+}
+
+async function loadBackendHealth() {
+  if (!dashboardEnabled) return;
+
+  var headers = adminKey ? { 'x-admin-key': adminKey } : {};
+  var results = await Promise.allSettled([
+    fetchJson('/api/data-freshness'),
+    fetchJson('/api/scraper-health', { headers: headers }),
+    fetchJson('/api/alerts?view=admin', { headers: headers })
+  ]);
+
+  var freshness = results[0].status === 'fulfilled' ? results[0].value : null;
+  var scraperHealth = results[1].status === 'fulfilled' ? results[1].value : null;
+  var alertsData = results[2].status === 'fulfilled' ? results[2].value : null;
+  var errors = [];
+
+  if (results[0].status === 'rejected') errors.push('Freshness API: ' + results[0].reason.message);
+  if (results[1].status === 'rejected') errors.push('Scraper health API: ' + results[1].reason.message);
+  if (results[2].status === 'rejected') errors.push('Alerts API: ' + results[2].reason.message);
+
+  renderBackendCards(freshness, scraperHealth, alertsData, errors);
+  renderFreshnessTable(freshness);
+  renderBackendNotes(freshness, scraperHealth, alertsData, errors);
+}
+
 function _initDashboard() {
-  if (typeof AFRO_TOOLS === 'undefined') return;
+  if (!dashboardEnabled || typeof AFRO_TOOLS === 'undefined') return;
   var stats = getRegistryStats();
 
   document.getElementById('s-total').textContent = stats.total;
@@ -637,7 +921,9 @@ if (typeof onRegistryReady === 'function') {
 }
 
 function runAudit() {
+  if (!dashboardEnabled) return;
   var results = document.getElementById('audit-results');
+  if (!results) return;
   var lines = [];
 
   if (typeof AFRO_TOOLS === 'undefined') {
@@ -681,6 +967,10 @@ function runAudit() {
   lines.push('Audit complete at ' + new Date().toLocaleString());
 
   results.innerHTML = lines.join('\n');
+}
+
+if (dashboardEnabled) {
+  loadBackendHealth();
 }
 </script>
 </body>

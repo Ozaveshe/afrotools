@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zana Zote za Fedha za Afrika — Kiswahili | AfroTools</title>
+<title>Zana Zote za Fedha za Afrika â€” Kiswahili | AfroTools</title>
 <meta name="description" content="Vikokotoo 2,550+ bure: kodi ya mshahara, VAT, sarafu, ankara, uhamishaji wa pesa na zaidi. Iliyoundwa kwa muktadha wa Afrika. Bure milele.">
 <link rel="canonical" href="https://afrotools.com/sw/zana-zote/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Zana Zote za Fedha — AfroTools Kiswahili">
+<meta property="og:title" content="Zana Zote za Fedha â€” AfroTools Kiswahili">
 <meta property="og:description" content="Vikokotoo 2,550+ bure kwa nchi zote 54 za Afrika. Kodi, sarafu, ankara, na zaidi.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
@@ -120,14 +120,14 @@
         <div class="tc-desc">Kodi ya mshahara kwa nchi zote 54 za Afrika. Vipimo halisi vya TRA, KRA, URA na zaidi.</div>
         <div class="tc-cta">Tumia sasa &rarr;</div>
       </a>
-      <a href="/tools/vat-calculator/" class="tool-card">
+      <a href="/sw/zana/kikokotoo-vat/" class="tool-card">
         <div class="tc-icon">&#129534;</div>
         <span class="badge-live">Inapatikana</span>
         <div class="tc-name">Kikokotoo cha VAT</div>
         <div class="tc-desc">Kokotoa VAT ya biashara yako kwa haraka. Inasaidia kiwango cha VAT cha nchi yoyote ya Afrika.</div>
         <div class="tc-cta">Tumia sasa &rarr;</div>
       </a>
-      <a href="/tools/currency-converter/" class="tool-card">
+      <a href="/sw/zana/kibadilishaji-sarafu/" class="tool-card">
         <div class="tc-icon">&#128177;</div>
         <span class="badge-live">Inapatikana</span>
         <div class="tc-name">Kibadilishaji cha Sarafu</div>
@@ -316,6 +316,43 @@
       return tool.lang === 'sw' || (tool.href || '').indexOf('/sw/') === 0;
     }
 
+    function localizeTool(tool) {
+      var overrides = {
+        'minimum-wage': {
+          name: 'Kikokotoo cha Kima cha Chini cha Mshahara',
+          desc: 'Angalia kima cha chini cha mshahara kwa nchi zote 54 za Afrika, sekta maalumu na mabadiliko ya kihistoria.',
+          href: '/sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/',
+          lang: 'sw'
+        },
+        'overtime-calc': {
+          name: 'Kikokotoo cha Muda wa Ziada',
+          desc: 'Kokotoa malipo ya muda wa ziada kwa viwango rasmi vya sheria za kazi vya nchi yako.',
+          href: '/sw/zana/kikokotoo-muda-wa-ziada/',
+          lang: 'sw'
+        },
+        'salary-compare': {
+          name: 'Kilinganisha Mishahara Afrika',
+          desc: 'Linganisha mishahara, fidia ya jumla na tofauti za soko kwa kazi mbalimbali barani Afrika.',
+          href: '/sw/zana/kilinganisha-mishahara/',
+          lang: 'sw'
+        },
+        'retirement-planner': {
+          name: 'Mpango wa Kustaafu Mapema Afrika',
+          desc: 'Panga uhuru wa kifedha na kustaafu mapema kwa sarafu, mfumuko wa bei na akiba ya nchi yako.',
+          href: '/sw/zana/mpango-wa-kustaafu-mapema/',
+          lang: 'sw'
+        },
+        'ng-nhf': {
+          name: 'Kikokotoo cha Mfuko wa Nyumba Afrika',
+          desc: 'Linganisha NHF, AHL, FLISP na mifuko mingine ya nyumba ya Afrika kwa michango, ustahiki na malipo.',
+          href: '/sw/zana/kikokotoo-mfuko-wa-nyumba/',
+          lang: 'sw'
+        }
+      };
+
+      return overrides[tool.id] ? Object.assign({}, tool, overrides[tool.id]) : tool;
+    }
+
     function score(tool, tokens) {
       var name = (tool.name || '').toLowerCase();
       var blob = [
@@ -344,6 +381,7 @@
     var tokens = tokenize(query);
     var results = window.AFRO_TOOLS
       .map(function(tool) {
+        tool = localizeTool(tool);
         return { tool: tool, score: score(tool, tokens) };
       })
       .filter(function(entry) {
@@ -379,7 +417,7 @@
       var isLive = tool.status === 'live' || tool.status === 'new';
       return (
         '<a href="' + escapeHtml(tool.href || '#') + '" class="tool-card">' +
-          '<div class="tc-icon">' + escapeHtml(tool.icon || '🔧') + '</div>' +
+          '<div class="tc-icon">' + escapeHtml(tool.icon || 'ðŸ”§') + '</div>' +
           '<span class="' + (isLive ? 'badge-live' : 'badge-soon') + '">' + (isLive ? 'Inapatikana' : 'Inakuja') + '</span>' +
           '<div class="tc-name">' + escapeHtml(tool.name || '') + '</div>' +
           '<div class="tc-desc">' + escapeHtml(tool.desc || '') + '</div>' +

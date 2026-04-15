@@ -115,8 +115,9 @@
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
   <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/namibia/na-paye" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/namibia/na-paye" />
+<link rel="alternate" hreflang="en" href="https://afrotools.com/namibia/na-paye/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/namibia/kikokotoo-kodi-mshahara/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/namibia/na-paye/" />
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/na-paye.webp">
 <meta property="article:modified_time" content="2026-03-28">
@@ -177,7 +178,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/na-vat.webp" alt="Namibia PAYE Calculator" class="tool-info-img" loading="lazy">
+          <img src="/assets/img/tools/na-paye.webp" alt="Namibia PAYE Calculator" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Namibia PAYE Calculator</div>
             <div class="tool-info-cat">Tax &amp; Finance</div>
@@ -406,7 +407,7 @@ const ssc=calcAnnualSSC(gross);const sscAnnual=ssc.employee;const taxableIncome=
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.monthlyNet); }renderChart(CHART_TYPE);var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/(PERIOD==='monthly'?12:1))+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>Gross + employer SSC (0.9% of monthly wages, capped at N$99/mo) '+fmt(RESULT.employerSSC/(PERIOD==='monthly'?12:1))+'/'+(PERIOD==='monthly'?'mo':'yr')+'.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis →';document.getElementById('aiStatus').textContent=`Gross: ${fmt(gross)}/year | Take-home: ${fmt(netAnnual)}/year | PAYE: ${fmt(annualPAYE)}/year | Effective: ${pct(effectiveRate)}`;}
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.monthlyNet); }renderChart(CHART_TYPE);var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/(PERIOD==='monthly'?12:1))+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>Gross + employer SSC (0.9% of monthly wages, capped at N$99/mo) '+fmt(RESULT.employerSSC/(PERIOD==='monthly'?12:1))+'/'+(PERIOD==='monthly'?'mo':'yr')+'.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis â†’';document.getElementById('aiStatus').textContent=`Gross: ${fmt(gross)}/year | Take-home: ${fmt(netAnnual)}/year | PAYE: ${fmt(annualPAYE)}/year | Effective: ${pct(effectiveRate)}`;}
 function renderRows(R,period){const isMonthly=period==='monthly';const gross=isMonthly?R.monthlyGross:R.annual;const ssc=isMonthly?R.monthlySSC:R.sscAnnual;const paye=isMonthly?R.monthlyTax:R.annualPAYE;const net=isMonthly?R.monthlyNet:R.netAnnual;const taxable=isMonthly?R.monthlyTaxableIncome:R.taxableIncome;const lbl=isMonthly?'/month':'/year';const row=(l,v,cls='')=>`<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;return`<div class="res-section"><div class="res-section-title">Gross Income</div>${row(`Gross Salary${lbl}`,fmt(gross))}</div><div class="res-section"><div class="res-section-title">Deductions</div>${row('SSC (0.9%, capped at N$99/mo)',fmt(ssc),'c-red')}${row(`Taxable income${lbl}`,fmt(taxable),'c-mut')}</div><div class="res-section"><div class="res-section-title">PAYE (NamRA)</div>${row(`Income tax (PAYE)${lbl}`,fmt(paye),'c-red')}</div><div class="res-section">${row('Total Deductions',fmt(isMonthly?R.monthlySSC+R.monthlyTax:R.sscAnnual+R.annualPAYE),'c-red')}<div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;}
 function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?(RESULT.monthlyNet||RESULT.netAnnual/12):RESULT.netAnnual;var gr=isM?(RESULT.monthlyGross||RESULT.gross/12):RESULT.gross;document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
 function toggleBands(header){const body=header.nextElementSibling;const arr=header.querySelector('.tog-arrow');body.classList.toggle('open');arr.classList.toggle('open');}

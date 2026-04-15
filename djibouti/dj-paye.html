@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
@@ -123,8 +123,9 @@
   <script src="/assets/js/components/save-result-button.js?v=af739551" defer></script>
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
   <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/djibouti/dj-paye" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/djibouti/dj-paye" />
+<link rel="alternate" hreflang="en" href="https://afrotools.com/djibouti/dj-paye/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/djibouti/kikokotoo-kodi-mshahara/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/djibouti/dj-paye/" />
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/dj-paye.webp">
 <meta property="article:modified_time" content="2026-04-06">
@@ -294,7 +295,7 @@
 
       <div class="tool-info-card">
         <div class="tool-info-header">
-          <img src="/assets/img/tools/dj-vat.webp" alt="Djibouti PAYE Calculator" class="tool-info-img" loading="lazy">
+          <img src="/assets/img/tools/dj-paye.webp" alt="Djibouti PAYE Calculator" class="tool-info-img" loading="lazy">
           <div class="tool-info-meta">
             <div class="tool-info-name">Djibouti PAYE Calculator</div>
             <div class="tool-info-cat">Tax &amp; Finance</div>
@@ -543,34 +544,34 @@ function calcMonthlyIRPP(monthlyTaxable){
     return;
   }
   if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';setTimeout(()=>el.style.borderColor='',2000);return;}
-  
+
   const hasSocial=isOn('social');
   const socialRate=hasSocial?0.04:0;
   const social=gross*socialRate;
   const empSocial=gross*0.157;
-  
+
   const taxable=Math.max(0,gross-social);
   const result=calcMonthlyIRPP(taxable);
   const irpp=result.tax;
   const bands=result.bands;
-  
+
   const totalDed=social+irpp;
   const net=gross-totalDed;
   const effRate=gross>0?irpp/gross:0;
-  
+
   RESULT={gross,monthly:gross,social,socialRate,empSocial,irpp,bands,totalDed,net,effRate,annualGross:gross*12,annualNet:net*12,annualTax:irpp*12,annualSocial:social*12,totalEmployerCost:gross+empSocial};
-  
+
   document.getElementById('resAmount').textContent=fmt(net);
   document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/mo · ${fmt(gross*12)}/yr`;
   document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);
   document.getElementById('effRateDisplay').textContent=pct(effRate);
   setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(effRate*200,100)+'%'},80);
   document.getElementById('hiddenGross').value=gross;
-  
+
   const strip=document.getElementById('employerStrip');
   strip.innerHTML=`<strong>Employer Cost: ${fmt(RESULT.totalEmployerCost)}/mo</strong><br>Gross + social ${fmt(empSocial)}/mo (15.7%).`;
   strip.classList.add('on');
-  
+
   document.getElementById('resultsCard').classList.add('on');
   // Save/Share/Benchmark wiring
   var _saveBtn = document.querySelector('save-result-button');

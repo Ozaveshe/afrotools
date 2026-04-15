@@ -18,8 +18,10 @@
     "cars:catalog:refresh": "npm run cars:catalog:validate && npm run cars:catalog:manifest && npm run cars:catalog:sync",
     "cars:candidates:build": "node scripts/generate-car-catalog-candidates.js",
     "cars:candidates:build:wave2": "node scripts/generate-car-catalog-candidates.js --blueprints data/cars/catalog-candidate-blueprints-wave-2-ev-luxury.json --output-catalog data/cars/catalog-expansion-wave-2-ev-luxury.csv --output-manifest data/cars/image-upload-manifest-wave-2-ev-luxury.csv",
+    "cars:candidates:build:wave3": "node scripts/generate-car-catalog-candidates.js --blueprints data/cars/catalog-candidate-blueprints-wave-3-premium-ev.json --output-catalog data/cars/catalog-expansion-wave-3-premium-ev.csv --output-manifest data/cars/image-upload-manifest-wave-3-premium-ev.csv",
     "cars:research:queue": "node scripts/generate-real-data-research-queue.js",
     "cars:research:queue:wave2": "node scripts/generate-real-data-research-queue.js --wave data/cars/catalog-expansion-wave-2-ev-luxury.csv --output data/cars/real-data-research-queue-wave-2-ev-luxury.csv --wave-only",
+    "cars:research:queue:wave3": "node scripts/generate-real-data-research-queue.js --wave data/cars/catalog-expansion-wave-3-premium-ev.csv --output data/cars/real-data-research-queue-wave-3-premium-ev.csv --wave-only",
     "bundle": "node scripts/bundle.js && node scripts/update-html-bundles.js",
     "build": "node scripts/minify.js && node scripts/bundle.js && node scripts/update-html-bundles.js && node scripts/build-related-tools-data.js && node scripts/prune-unused-registry.js && node scripts/build-seo-system.js && node scripts/apply-og-fallbacks.js && node scripts/cachebust.js && node scripts/inject-internal-links.js && node scripts/generate-sitemaps.js && node scripts/stamp-sw.js",
     "test:car-import-cost": "node tests/car-import-cost-rule-packs.test.js && node tests/car-import-cost-engine.test.js && node tests/car-import-cost-routes.test.js",
@@ -36,7 +38,9 @@
     "seo:og": "node scripts/apply-og-fallbacks.js",
     "seo:links": "node scripts/fix-seo-alias-links.js",
     "seo:dry": "node scripts/seo-daily-fix.js --dry-run",
-    "seo:report": "node scripts/seo-daily-fix.js --report"
+    "seo:report": "node scripts/seo-daily-fix.js --report",
+    "inventory:site": "node scripts/build-site-inventory.js",
+    "agriculture:taxonomy": "node scripts/agriculture-taxonomy-report.js"
   },
   "repository": {
     "type": "git",

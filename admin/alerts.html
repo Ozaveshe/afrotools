@@ -44,10 +44,28 @@
   .sev-high { color: #dc2626; font-weight: 700; }
   .sev-medium { color: #d97706; font-weight: 700; }
   .sev-low { color: #059669; font-weight: 700; }
+  .status-pill {
+    display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px;
+    font-size: .72rem; font-weight: 700; letter-spacing: .02em;
+  }
+  .status-active { background: #ECFDF3; color: #027A48; }
+  .status-expired { background: #FFF7ED; color: #C2410C; }
+  .status-inactive { background: #F3F4F6; color: #4B5563; }
   .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.success { background: #059669; }
   .toast.error { background: #dc2626; }
+  .auth-state {
+    min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    background: linear-gradient(180deg, #F5F9FF, #EEF4FB);
+  }
+  .auth-card {
+    max-width: 420px; width: 100%; padding: 28px; background: rgba(255,255,255,0.9);
+    border: 1px solid #E8F0FE; border-radius: 18px; box-shadow: 0 18px 60px rgba(15, 23, 42, 0.08);
+    text-align: center;
+  }
+  .auth-card h1 { margin: 14px 0 8px; font-size: 1.8rem; }
+  .auth-card p { color: #6B7F99; margin-bottom: 18px; }
   @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/admin/alerts" />
@@ -118,10 +136,10 @@
     <h2>Existing Alerts</h2>
     <table>
       <thead>
-        <tr><th>Countries</th><th>Title</th><th>Severity</th><th>Date</th><th>Expires</th><th>Actions</th></tr>
+        <tr><th>Status</th><th>Countries</th><th>Title</th><th>Severity</th><th>Date</th><th>Expires</th><th>Actions</th></tr>
       </thead>
       <tbody id="alertsTable">
-        <tr><td colspan="6" style="text-align:center;color:#94a3b8;">Loading...</td></tr>
+        <tr><td colspan="7" style="text-align:center;color:#94a3b8;">Loading...</td></tr>
       </tbody>
     </table>
   </div>
@@ -131,17 +149,72 @@
 
 <script>
 var adminKey = sessionStorage.getItem('admin_key');
+var alertsEnabled = !!adminKey;
 if (!adminKey) {
   adminKey = prompt('Enter admin password:');
   if (adminKey) sessionStorage.setItem('admin_key', adminKey);
+  alertsEnabled = !!adminKey;
+}
+
+if (!alertsEnabled) {
+  document.body.innerHTML = '<div class="auth-state"><div class="auth-card"><h1>Access Denied</h1><p>Admin password required to manage alerts.</p><a class="back-link" href="/">Back to AfroTools</a></div></div>';
 }
 
 function showToast(msg, type) {
   var t = document.getElementById('toast');
+  if (!t) return;
   t.textContent = msg;
   t.className = 'toast ' + (type || 'success');
   t.classList.add('show');
   setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+function todayInputValue() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+    return ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[ch];
+  });
+}
+
+function getAlertStatusMeta(alert) {
+  var today = todayInputValue();
+  if (!alert || alert.active === false) {
+    return { label: 'Inactive', className: 'status-inactive' };
+  }
+  if (alert.expires_at && alert.expires_at < today) {
+    return { label: 'Expired', className: 'status-expired' };
+  }
+  return { label: 'Active', className: 'status-active' };
+}
+
+function renderStats(summary) {
+  var stats = summary || {};
+  document.getElementById('alertStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + (stats.total || 0) + '</div><div class="stat-label">Total Alerts</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + (stats.active || 0) + '</div><div class="stat-label">Active</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + (stats.expired || 0) + '</div><div class="stat-label">Expired</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + (stats.inactive || 0) + '</div><div class="stat-label">Inactive</div></div>';
+}
+
+function resetForm() {
+  document.getElementById('editId').value = '';
+  document.getElementById('formTitle').textContent = 'Create New Alert';
+  document.getElementById('saveAlertBtn').textContent = 'Create Alert';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  document.getElementById('alertTitle').value = '';
+  document.getElementById('alertDesc').value = '';
+  document.getElementById('alertCountries').value = 'ALL';
+  document.getElementById('alertDate').value = todayInputValue();
+  document.getElementById('alertExpiry').value = '';
 }
 
 async function apiFetch(method, params, body) {
@@ -149,39 +222,49 @@ async function apiFetch(method, params, body) {
   var opts = { method: method, headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey } };
   if (body) opts.body = JSON.stringify(body);
   var res = await fetch(url, opts);
-  return res.json();
+  var text = await res.text();
+  var data = {};
+  try { data = text ? JSON.parse(text) : {}; } catch (err) { data = { error: text || 'Invalid server response' }; }
+  if (!res.ok) {
+    throw new Error(data.error || ('Request failed with status ' + res.status));
+  }
+  return data;
 }
 
 async function loadAlerts() {
-  var data = await apiFetch('GET', '');
-  var alerts = data.alerts || [];
-  var active = alerts.filter(function(a) { return a.active; });
-  var expired = alerts.filter(function(a) { return a.expires_at && new Date(a.expires_at) < new Date(); });
-
-  document.getElementById('alertStats').innerHTML =
-    '<div class="stat-card"><div class="stat-value">' + alerts.length + '</div><div class="stat-label">Total Alerts</div></div>' +
-    '<div class="stat-card"><div class="stat-value">' + active.length + '</div><div class="stat-label">Active</div></div>' +
-    '<div class="stat-card"><div class="stat-value">' + expired.length + '</div><div class="stat-label">Expiring</div></div>';
-
   var tbody = document.getElementById('alertsTable');
-  if (alerts.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;">No alerts yet. Create one above.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = alerts.map(function(a) {
-    var sevClass = a.severity === 'high' ? 'sev-high' : a.severity === 'medium' ? 'sev-medium' : 'sev-low';
-    return '<tr>' +
-      '<td>' + (a.country_codes || []).join(', ') + '</td>' +
-      '<td><strong>' + a.title + '</strong><br><span style="font-size:.72rem;color:#6B7F99;">' + (a.description || '').substring(0, 80) + '</span></td>' +
-      '<td class="' + sevClass + '">' + a.severity.toUpperCase() + '</td>' +
-      '<td>' + (a.effective_date || '-') + '</td>' +
-      '<td>' + (a.expires_at || 'Never') + '</td>' +
-      '<td><button class="btn btn-sm btn-primary" onclick="editAlert(\'' + a.id + '\')">Edit</button> ' +
-      '<button class="btn btn-sm btn-danger" onclick="deleteAlert(\'' + a.id + '\')">Delete</button></td>' +
-    '</tr>';
-  }).join('');
+  try {
+    var data = await apiFetch('GET', 'view=admin');
+    var alerts = data.alerts || [];
+    renderStats(data.summary || {});
 
-  window._alertsCache = alerts;
+    if (alerts.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;">No alerts yet. Create one above.</td></tr>';
+      window._alertsCache = [];
+      return;
+    }
+
+    tbody.innerHTML = alerts.map(function(a) {
+      var sevClass = a.severity === 'high' ? 'sev-high' : a.severity === 'medium' ? 'sev-medium' : 'sev-low';
+      var status = getAlertStatusMeta(a);
+      return '<tr>' +
+        '<td><span class="status-pill ' + status.className + '">' + status.label + '</span></td>' +
+        '<td>' + escapeHtml((a.country_codes || ['ALL']).join(', ')) + '</td>' +
+        '<td><strong>' + escapeHtml(a.title) + '</strong><br><span style="font-size:.72rem;color:#6B7F99;">' + escapeHtml((a.description || '').substring(0, 96)) + '</span></td>' +
+        '<td class="' + sevClass + '">' + escapeHtml(String(a.severity || '').toUpperCase()) + '</td>' +
+        '<td>' + escapeHtml(a.effective_date || '-') + '</td>' +
+        '<td>' + escapeHtml(a.expires_at || 'Never') + '</td>' +
+        '<td><button class="btn btn-sm btn-primary" onclick="editAlert(\'' + escapeHtml(a.id) + '\')">Edit</button> ' +
+        '<button class="btn btn-sm btn-danger" onclick="deleteAlert(\'' + escapeHtml(a.id) + '\')">Delete</button></td>' +
+      '</tr>';
+    }).join('');
+
+    window._alertsCache = alerts;
+  } catch (err) {
+    renderStats();
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#dc2626;">' + escapeHtml(err.message || 'Unable to load alerts') + '</td></tr>';
+    showToast(err.message || 'Unable to load alerts', 'error');
+  }
 }
 
 async function saveAlert() {
@@ -203,21 +286,20 @@ async function saveAlert() {
     return;
   }
 
-  if (editId) {
-    await apiFetch('PUT', 'id=' + editId, body);
-    showToast('Alert updated');
-    cancelEdit();
-  } else {
-    await apiFetch('POST', '', body);
-    showToast('Alert created');
+  try {
+    if (editId) {
+      await apiFetch('PUT', 'id=' + encodeURIComponent(editId), body);
+      showToast('Alert updated');
+    } else {
+      await apiFetch('POST', '', body);
+      showToast('Alert created');
+    }
+  } catch (err) {
+    showToast(err.message || 'Unable to save alert', 'error');
+    return;
   }
 
-  // Reset form
-  document.getElementById('alertTitle').value = '';
-  document.getElementById('alertDesc').value = '';
-  document.getElementById('alertCountries').value = 'ALL';
-  document.getElementById('alertDate').value = '';
-  document.getElementById('alertExpiry').value = '';
+  resetForm();
   loadAlerts();
 }
 
@@ -238,27 +320,24 @@ function editAlert(id) {
 }
 
 function cancelEdit() {
-  document.getElementById('editId').value = '';
-  document.getElementById('formTitle').textContent = 'Create New Alert';
-  document.getElementById('saveAlertBtn').textContent = 'Create Alert';
-  document.getElementById('cancelEditBtn').style.display = 'none';
-  document.getElementById('alertTitle').value = '';
-  document.getElementById('alertDesc').value = '';
-  document.getElementById('alertCountries').value = 'ALL';
-  document.getElementById('alertDate').value = '';
-  document.getElementById('alertExpiry').value = '';
+  resetForm();
 }
 
 async function deleteAlert(id) {
   if (!confirm('Deactivate this alert?')) return;
-  await apiFetch('DELETE', 'id=' + id);
-  showToast('Alert deactivated');
-  loadAlerts();
+  try {
+    await apiFetch('DELETE', 'id=' + encodeURIComponent(id));
+    showToast('Alert deactivated');
+    loadAlerts();
+  } catch (err) {
+    showToast(err.message || 'Unable to deactivate alert', 'error');
+  }
 }
 
-// Set default date to today
-document.getElementById('alertDate').value = new Date().toISOString().split('T')[0];
-loadAlerts();
+if (alertsEnabled) {
+  resetForm();
+  loadAlerts();
+}
 </script>
 </body>
 </html>

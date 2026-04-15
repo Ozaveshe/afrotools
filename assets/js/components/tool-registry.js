@@ -280,8 +280,11 @@ var AFRO_TOOLS = [
   { id: 'crypto-cgt', name: 'Crypto Tax Calculator', icon: '₿', desc: 'CGT on crypto for NG, KE, ZA, GH. NTA 2026 digital asset rules.', href: '/tools/crypto-tax/', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['NG', 'KE', 'ZA', 'GH'], revenue: 'Premium PDF', estTraffic: 8000, estRevenue: 400, priority: 86 },
 
   // ═══════════════════════════════════════════════════════════
-  //  PHASE 2 — Health & Agriculture
+  //  PHASE 2 — Health flagship routes
   // ═══════════════════════════════════════════════════════════
+  // These /health/ routes are flagship surfaces inside the Health registry.
+  // Older /tools/ variants still exist as separate registry entries and are
+  // handled explicitly by the shared Health taxonomy layer.
   { id: 'bmi-calculator', name: 'BMI Calculator for Africans', icon: '⚕️', desc: 'BMI with African body composition research. Metric & imperial, waist-to-height ratio, ethnicity-adjusted context.', href: '/health/bmi-calculator/', category: 'health', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Ad-supported', estTraffic: 8000, estRevenue: 100, priority: 80 },
   { id: 'due-date', name: 'Pregnancy Due Date Calculator', icon: '👶', desc: 'Due date, weekly milestones, and hospital delivery cost estimates for Nigeria, Kenya, South Africa, Ghana.', href: '/health/pregnancy-due-date/', category: 'health', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Ad-supported', estTraffic: 6000, estRevenue: 80, priority: 78 },
   { id: 'calorie-counter', name: 'Calorie Counter (African Foods)', icon: '🍲', desc: '200+ African foods with verified nutritional data. Build meals, track daily calories and macros with local dishes.', href: '/health/calorie-counter/', category: 'health', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 8000, estRevenue: 150, priority: 82 },
@@ -934,7 +937,10 @@ var AFRO_TOOLS = [
   { id: 'crypto-quiz',      name: 'Crypto Knowledge Quiz',         icon: '🧠', desc: '3 difficulty levels, Africa-specific questions. Test your crypto knowledge, share your score.', href: '/crypto/quiz/',            category: 'financial', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Free', estTraffic: 8000, estRevenue: 50, priority: 80 },
 
   // ═══════════════════════════════════════════════════════════
-  //  FRANCOPHONE AFRICA — French PAYE Calculators (14 countries)
+  //  FRANCOPHONE AFRICA — Canonical French salary-net calculator rows
+  //  Keep the `*-paye-fr` ids as the single source of truth for
+  //  `/fr/.../calculateur-salaire-net` pages. Do not add parallel
+  //  `*-salaire` aliases for the same URLs.
   // ═══════════════════════════════════════════════════════════
   { id: 'ci-paye-fr', name: 'Calculateur Salaire Net — Côte d\'Ivoire', icon: '🇨🇮', desc: 'Barème IRPP, cotisations CNPS, contribution nationale. Calcul complet en français.', href: '/fr/cote-divoire/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['CI'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 2000, priority: 78 },
   { id: 'sn-paye-fr', name: 'Calculateur Salaire Net — Sénégal', icon: '🇸🇳', desc: 'IRPP barème progressif, cotisations IPRES et CSS. Calcul complet en français.', href: '/fr/senegal/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['SN'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 1800, priority: 75 },
@@ -1333,26 +1339,6 @@ var AFRO_TOOLS = [
   { id: 'scholarship-check', name: 'Scholarship Eligibility Checker', icon: '🏆', desc: 'Check eligibility for African scholarships and fellowships. Mastercard, MTN, Commonwealth, Chevening, DAAD — 50+ scholarships.', href: '/tools/scholarship-check/', category: 'education', tier: 'T2', status: 'new', phase: 'NEW', countries: ['ALL'], revenue: 'Ads', estTraffic: 12000, estRevenue: 170, priority: 87, isNew: true },
   { id: 'student-budget', name: 'Student Budget Planner', icon: '💸', desc: 'Plan your student budget for African universities. Tuition, rent, food, transport — monthly budget with savings tips.', href: '/tools/student-budget/', category: 'education', tier: 'T2', status: 'new', phase: 'NEW', countries: ['ALL'], revenue: 'Ads', estTraffic: 9000, estRevenue: 130, priority: 84, isNew: true },
   { id: 'coding-bootcamp', name: 'Coding Bootcamp Comparator', icon: '💻', desc: 'Compare coding bootcamps and tech training programs in Africa. Cost, duration, job placement rates, stack focus.', href: '/tools/coding-bootcamp/', category: 'education', tier: 'T2', status: 'new', phase: 'NEW', countries: ['ALL'], revenue: 'Ads', estTraffic: 7000, estRevenue: 110, priority: 81, isNew: true },
-
-  // ═══════════════════════════════════════════════════════════
-  //  FRANCOPHONE — 14 salary calculators
-  // ═══════════════════════════════════════════════════════════
-  { id: 'ci-salaire', name: "Côte d'Ivoire — Calculateur Salaire Net", icon: '🇨🇮', desc: "Calculez votre salaire net en Côte d'Ivoire. IS progressif 0–35%, CN 1,5%, CNPS 6,3%. Barème DGI 2026.", href: '/fr/cote-divoire/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CI'], revenue: 'Premium PDF', estTraffic: 5000, estRevenue: 90, priority: 82, lang: 'fr' },
-  { id: 'sn-salaire', name: 'Sénégal — Calculateur Salaire Net', icon: '🇸🇳', desc: 'Calculez votre salaire net au Sénégal. IRPP progressif 0–40%, IPRES 5,6%, CSS 5,6%. Barème DGID 2026.', href: '/fr/senegal/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['SN'], revenue: 'Premium PDF', estTraffic: 5000, estRevenue: 90, priority: 82, lang: 'fr' },
-  { id: 'cm-salaire', name: 'Cameroun — Calculateur Salaire Net', icon: '🇨🇲', desc: 'Calculez votre salaire net au Cameroun. IRPP 10–35% + CAC 10%, CNPS 4,2%. Barème DGI 2026.', href: '/fr/cameroun/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CM'], revenue: 'Premium PDF', estTraffic: 5000, estRevenue: 90, priority: 82, lang: 'fr' },
-  { id: 'cd-salaire', name: 'RD Congo — Calculateur Salaire Net', icon: '🇨🇩', desc: 'Calculez votre salaire net en RDC. IPR progressif 3–40%, CNSS 5%. Barème DGI 2026.', href: '/fr/rdc/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CD'], revenue: 'Premium PDF', estTraffic: 4000, estRevenue: 80, priority: 80, lang: 'fr' },
-  { id: 'ma-salaire', name: 'Maroc — Calculateur Salaire Net', icon: '🇲🇦', desc: 'Calculez votre salaire net au Maroc. IR progressif 0–38%, CNSS 4,48%, AMO 2,26%. Barème DGI 2026.', href: '/fr/maroc/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['MA'], revenue: 'Premium PDF', estTraffic: 6000, estRevenue: 100, priority: 84, lang: 'fr' },
-  { id: 'dz-salaire', name: 'Algérie — Calculateur Salaire Net', icon: '🇩🇿', desc: 'Calculez votre salaire net en Algérie. IRG progressif 0–35%, CNAS 9%. Barème DGI 2026.', href: '/fr/algerie/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['DZ'], revenue: 'Premium PDF', estTraffic: 5000, estRevenue: 90, priority: 82, lang: 'fr' },
-  { id: 'tn-salaire', name: 'Tunisie — Calculateur Salaire Net', icon: '🇹🇳', desc: 'Calculez votre salaire net en Tunisie. IRPP progressif 0–35%, CNSS 9,18%. Barème DGI 2026.', href: '/fr/tunisie/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['TN'], revenue: 'Premium PDF', estTraffic: 5000, estRevenue: 90, priority: 82, lang: 'fr' },
-  { id: 'ml-salaire', name: 'Mali — Calculateur Salaire Net', icon: '🇲🇱', desc: 'Calculez votre salaire net au Mali. ITS progressif 0–40%, INPS 3,6%. Barème DGI 2026.', href: '/fr/mali/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ML'], revenue: 'Premium PDF', estTraffic: 3000, estRevenue: 60, priority: 76, lang: 'fr' },
-  { id: 'bf-salaire', name: 'Burkina Faso — Calculateur Salaire Net', icon: '🇧🇫', desc: 'Calculez votre salaire net au Burkina Faso. IUTS progressif 0–27,5%, CNSS 5,5%. Barème DGI 2026.', href: '/fr/burkina-faso/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['BF'], revenue: 'Premium PDF', estTraffic: 3000, estRevenue: 60, priority: 75, lang: 'fr' },
-  { id: 'ne-salaire', name: 'Niger — Calculateur Salaire Net', icon: '🇳🇪', desc: 'Calculez votre salaire net au Niger. IUTS progressif 0–35%, CNSS 4,17%. Barème DGI 2026.', href: '/fr/niger/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['NE'], revenue: 'Premium PDF', estTraffic: 2500, estRevenue: 50, priority: 73, lang: 'fr' },
-  { id: 'gn-salaire', name: 'Guinée — Calculateur Salaire Net', icon: '🇬🇳', desc: 'Calculez votre salaire net en Guinée. ITS progressif 0–35%, CNSS 5%. Barème DNI 2026.', href: '/fr/guinee/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['GN'], revenue: 'Premium PDF', estTraffic: 2500, estRevenue: 50, priority: 73, lang: 'fr' },
-  { id: 'cg-salaire', name: 'Congo — Calculateur Salaire Net', icon: '🇨🇬', desc: 'Calculez votre salaire net au Congo (Brazzaville). IRPP progressif 1–45%, CNSS 4%. Barème DGI 2026.', href: '/fr/congo/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CG'], revenue: 'Premium PDF', estTraffic: 2500, estRevenue: 50, priority: 73, lang: 'fr' },
-  { id: 'ga-salaire', name: 'Gabon — Calculateur Salaire Net', icon: '🇬🇦', desc: 'Calculez votre salaire net au Gabon. IRPP progressif 0–35%, CNSS 2,5%, CNAMGS 2%. Barème DGI 2026.', href: '/fr/gabon/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['GA'], revenue: 'Premium PDF', estTraffic: 2500, estRevenue: 50, priority: 73, lang: 'fr' },
-  { id: 'tg-salaire', name: 'Togo — Calculateur Salaire Net', icon: '🇹🇬', desc: 'Calculez votre salaire net au Togo. IRPP progressif 0–35%, CNSS 4%. Barème OTR 2026.', href: '/fr/togo/calculateur-salaire-net', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['TG'], revenue: 'Premium PDF', estTraffic: 2500, estRevenue: 50, priority: 73, lang: 'fr' },
-
-
   // ═══════════════════════════════════════════════════════════
   //  BATCH ADD — 194 missing tools (auto-generated 2026-04-02)
   // ═══════════════════════════════════════════════════════════
@@ -1673,7 +1659,7 @@ var AFRO_CATEGORIES = {
   'image-design':      { name: 'Image & Design',          icon: '🖼️', color: '#ec4899', bg: '#fdf2f8', href: '/image-design/',         desc: 'Compress, resize, convert. QR generator. Passport photos. African templates.' },
   'developer':         { name: 'Developer Tools',         icon: '⌨️', color: '#8b5cf6', bg: '#ede9fe', href: '/developer-tools/',      desc: 'Color picker, JSON/CSV converter, hash generator, Base64, regex tester, JWT decoder.' },
   'education':         { name: 'Education',               icon: '🎓', color: '#f59e0b', bg: '#fef3c7', href: '/education/',            desc: 'GPA/CGPA (WAEC, KCSE, Matric), student loans, university fees. African curricula.' },
-  'health':            { name: 'Health & Wellness',       icon: '🏥', color: '#dc2626', bg: '#fef2f2', href: '/health/',               desc: 'Genotype checker, drug prices, childbirth costs, meal plans, child growth — 27 tools, always free.' },
+  'health':            { name: 'Health & Wellness',       icon: '🏥', color: '#dc2626', bg: '#fef2f2', href: '/health/',               desc: '40 registry-backed health tools across vitals, lab interpretation, nutrition, family health, costs, and clinical utilities.' },
   'government':        { name: 'Government & Civic',      icon: '🏛️', color: '#1d4ed8', bg: '#eff6ff', href: '/government/',           desc: 'Passports, voter registration, national ID, pensions, land registry fees — 20 tools for 54 African countries.' },
   'small-business':    { name: 'Small Business & SME',    icon: '🏪', color: '#ea580c', bg: '#fff7ed', href: '/small-business/',        desc: 'POS agents, mini-importation, market stalls, startup runway, burn rate, marketplace fees — 45 tools.' },
   'ecommerce':         { name: 'VAT & Business Tax',      icon: '🧾', color: '#ea580c', bg: '#fff7ed', href: '/vat-business-tax/',     desc: 'VAT calculators for all 54 countries. Nigeria 7.5%, Kenya 16%, SA 15%, Egypt 14%.' },
@@ -1716,6 +1702,32 @@ function getToolsFor(countryCode, filter) {
   });
 }
 
+function getToolGridLabels(locale) {
+  var normalized = String(locale || 'en').toLowerCase();
+  if (normalized.indexOf('sw') === 0) {
+    return {
+      available: 'Inapatikana Sasa',
+      coming: 'Inakuja Hivi Karibuni',
+      live: 'Hai',
+      fresh: 'Mpya'
+    };
+  }
+  if (normalized.indexOf('fr') === 0) {
+    return {
+      available: 'Disponibles',
+      coming: 'Bient&ocirc;t Disponibles',
+      live: 'En ligne',
+      fresh: 'Nouveau'
+    };
+  }
+  return {
+    available: 'Available Now',
+    coming: 'Coming Soon',
+    live: 'Live',
+    fresh: 'New'
+  };
+}
+
 function renderToolGrid(containerId, countryCode, opts) {
   opts = opts || {};
   var showComing = opts.showComing !== false;
@@ -1725,6 +1737,7 @@ function renderToolGrid(containerId, countryCode, opts) {
   var container = document.getElementById(containerId);
   if (!container) return;
 
+  var labels = getToolGridLabels(opts.locale || document.documentElement.lang || 'en');
   var liveTools = getToolsFor(countryCode, 'live');
   var newTools  = getToolsFor(countryCode, 'new');
   var queuedTools = getToolsFor(countryCode, 'queued');
@@ -1735,13 +1748,13 @@ function renderToolGrid(containerId, countryCode, opts) {
 
   if (allLive.length) {
     html += '<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:\'DM Sans\',sans-serif">'
-          + '<span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> Available Now</h2>';
+          + '<span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> ' + labels.available + '</h2>';
     html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
     allLive.forEach(function(t) {
       var cat = AFRO_CATEGORIES[t.category] || { color: '#888', bg: '#f0f0f0' };
       var badge = t.status === 'new'
-        ? '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">✨ New</span>'
-        : '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#EEF4FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;font-weight:700;color:var(--color-primary);text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:var(--color-primary);border-radius:50%;animation:pulse 2s infinite"></span>Live</span>';
+        ? '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">' + labels.fresh + '</span>'
+        : '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#EEF4FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;font-weight:700;color:var(--color-primary);text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:var(--color-primary);border-radius:50%;animation:pulse 2s infinite"></span>' + labels.live + '</span>';
       html += '<a href="'+t.href+'" style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;text-decoration:none;color:inherit;transition:.25s;display:block;position:relative;overflow:hidden;padding:24px 22px">'
             + badge
             + '<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+cat.bg+'">'+t.icon+'</div>'
@@ -1755,12 +1768,12 @@ function renderToolGrid(containerId, countryCode, opts) {
   if (showComing && comingTools.length) {
     var shown = comingTools.slice(0, maxComing);
     html += '<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:\'DM Sans\',sans-serif">'
-          + '<span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> Coming Soon</h2>';
+          + '<span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> ' + labels.coming + '</h2>';
     html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
     shown.forEach(function(t) {
       var cat = AFRO_CATEGORIES[t.category] || { color: '#888', bg: '#f0f0f0' };
       html += '<div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;position:relative;opacity:.6;overflow:hidden;padding:24px 22px">'
-            + '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase">Coming Soon</span>'
+            + '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase">' + labels.coming + '</span>'
             + '<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+cat.bg+'">'+t.icon+'</div>'
             + '<h3 style="font-size:16px;font-weight:700;margin-bottom:6px;color:#374151;font-family:\'DM Sans\',sans-serif">'+t.name+'</h3>'
             + '<p style="font-size:14px;color:#6b7280;line-height:1.6">'+t.desc+'</p>'

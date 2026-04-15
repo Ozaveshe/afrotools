@@ -37,10 +37,24 @@
 - Start with existing scripts in `scripts/seo-*.js`, `scripts/build-seo-system.js`, `scripts/apply-og-fallbacks.js`, and `scripts/inject-internal-links.js`
 - Avoid hand-editing sitemap files
 
+### Blog or creator news publishing
+
+- Use `afrotools-content-publishing`
+- Read `docs/CONTENT-PUBLISHING-WORKFLOW.md`
+- Treat `/blog/` as static repo-backed content
+- Treat AfroStream news as a live Supabase-backed publishing surface
+- Use the configured `supabase` MCP server first for AfroStream news publishing or inspection
+- Run the narrowest validation for the surface you touched
+
 ### Translation or hreflang issue
 
 - Use the i18n rule
+- For French-market rollout or French SEO batching, use `afrotools-french-localization-coordinator` and read `docs/FRENCH-LOCALIZATION-STRATEGY.md`
+- For Swahili-market rollout or Swahili SEO batching, use `afrotools-swahili-localization-coordinator` and read `docs/SWAHILI-LOCALIZATION-STRATEGY.md`
 - Treat translated outputs as generated unless the task is explicitly a manual patch
+- Treat Swahili as a selectively generated or hand-authored surface; do not assume `lang/sw.json` alone is enough for high-value page quality
+- If a stale translated page is only a wrapper or thin output, use `node scripts/build-i18n.js --lang fr --page <source-page> --overwrite-existing` to rebuild that specific page from the English source before hand-patching
+- After rebuilding a French PAYE page from English source, run `node scripts/polish-fr-paye-batch.js` for the visible and runtime French copy layer, then `node scripts/polish-fr-paye-seo.js` to inject the French SEO/schema bundle on the currently targeted pages
 - Run `npm run build:i18n:validate` and `npm run validate:hreflang`
 
 ### Release or regression review

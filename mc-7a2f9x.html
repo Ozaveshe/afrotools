@@ -287,19 +287,20 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 
   <!-- â”€â”€ NAV RAIL â”€â”€ -->
   <nav class="rail">
-    <button class="rail-btn on" onclick="showPage('dashboard')" title="Dashboard">ðŸ </button>
-    <button class="rail-btn" onclick="showPage('checklist')" title="Morning Checklist">â˜‘ï¸</button>
-    <button class="rail-btn" onclick="showPage('pipelines')" title="Data Pipelines">ðŸ”„</button>
+    <button class="rail-btn on" data-page="dashboard" onclick="showPage('dashboard', this)" title="Dashboard">ðŸ </button>
+    <button class="rail-btn" data-page="checklist" onclick="showPage('checklist', this)" title="Morning Checklist">â˜‘ï¸</button>
+    <button class="rail-btn" data-page="pipelines" onclick="showPage('pipelines', this)" title="Data Pipelines">ðŸ”„</button>
     <div class="rail-sep"></div>
-    <button class="rail-btn" onclick="showPage('registry')" title="Tool Registry">ðŸ“¦</button>
-    <button class="rail-btn" onclick="showPage('seo')" title="SEO & Sitemaps">ðŸ”</button>
-    <button class="rail-btn" onclick="showPage('i18n')" title="Languages">ðŸŒ</button>
-    <button class="rail-btn" onclick="showPage('livedata')" title="Live Data Management">ðŸ—„ï¸</button>
+    <button class="rail-btn" data-page="registry" onclick="showPage('registry', this)" title="Tool Registry">ðŸ“¦</button>
+    <button class="rail-btn" data-page="inventory" onclick="showPage('inventory', this)" title="Site Inventory">ðŸ§¾</button>
+    <button class="rail-btn" data-page="seo" onclick="showPage('seo', this)" title="SEO & Sitemaps">ðŸ”</button>
+    <button class="rail-btn" data-page="i18n" onclick="showPage('i18n', this)" title="Languages">ðŸŒ</button>
+    <button class="rail-btn" data-page="livedata" onclick="showPage('livedata', this)" title="Live Data Management">ðŸ—„ï¸</button>
     <div class="rail-sep"></div>
-    <button class="rail-btn" onclick="showPage('allpages')" title="All Pages Review">ðŸ“‹</button>
-    <button class="rail-btn" onclick="showPage('dailyreview')" title="Daily Review (200/day)">ðŸ”€</button>
+    <button class="rail-btn" data-page="allpages" onclick="showPage('allpages', this)" title="All Pages Review">ðŸ“‹</button>
+    <button class="rail-btn" data-page="dailyreview" onclick="showPage('dailyreview', this)" title="Daily Review (200/day)">ðŸ”€</button>
     <div class="rail-bottom">
-      <button class="rail-btn" onclick="showPage('scripts')" title="Scripts & Commands">âš¡</button>
+      <button class="rail-btn" data-page="scripts" onclick="showPage('scripts', this)" title="Scripts & Commands">âš¡</button>
       <a class="rail-btn" href="/" title="Back to Site" style="text-decoration:none;color:inherit">â†—</a>
     </div>
   </nav>
@@ -371,7 +372,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
               <div class="check-box" onclick="toggleCheck(this)">âœ“</div>
               <div class="check-body">
                 <div class="check-title">Review 200 pages (Daily Review)</div>
-                <span class="check-cmd" onclick="document.querySelectorAll('.rail-btn')[9].click()">Open Daily Review â†’</span>
+                <span class="check-cmd" onclick="showPage('dailyreview')">Open Daily Review â†’</span>
                 <div class="check-freq">Daily â€” review 200 random pages, add comments, track progress</div>
               </div>
             </div>
@@ -399,7 +400,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
       <div class="panel" style="margin-bottom:16px">
         <div class="panel-hdr">
           <div class="panel-title"><span class="icon">ðŸ—„ï¸</span> Live Data Management</div>
-          <div class="panel-badge"><a href="#" onclick="event.preventDefault();document.querySelectorAll('.rail-btn')[6].click()" style="color:var(--brand);font-size:10px;text-decoration:none">View all â†’</a></div>
+          <div class="panel-badge"><a href="#" onclick="event.preventDefault();showPage('livedata')" style="color:var(--brand);font-size:10px;text-decoration:none">View all â†’</a></div>
         </div>
         <div class="panel-body">
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="dash-livedata"></div>
@@ -560,6 +561,74 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             <thead><tr><th style="width:30px">#</th><th>Tool</th><th>Category</th><th>Lang</th><th>Tier</th><th>Countries</th><th>URL</th></tr></thead>
             <tbody id="reg-tbody"></tbody>
           </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         PAGE: SITE INVENTORY
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <div class="page" id="page-inventory">
+      <div class="page-hdr">
+        <div>
+          <div class="page-title">ðŸ§¾ Site Inventory</div>
+          <div class="page-sub" id="inv-subtitle">Loading storekeeper snapshot...</div>
+        </div>
+      </div>
+
+      <div class="rv-export-bar">
+        <a class="rv-export-btn" href="/admin/data/site-inventory.json" target="_blank" rel="noopener">Open JSON</a>
+        <a class="rv-export-btn" href="/admin/data/tool-registry-export.csv" target="_blank" rel="noopener">Registry CSV</a>
+        <a class="rv-export-btn" href="/admin/data/category-inventory.csv" target="_blank" rel="noopener">Category CSV</a>
+        <a class="rv-export-btn" href="/admin/data/subcategory-inventory.csv" target="_blank" rel="noopener">Subcategory CSV</a>
+        <a class="rv-export-btn" href="/admin/data/site-pages-export.csv" target="_blank" rel="noopener">Pages CSV</a>
+        <button class="rv-export-btn" onclick="buildInventoryPage(true)">Refresh View</button>
+      </div>
+
+      <div class="stats" id="inv-stats"></div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">ðŸ“’</span> Ledger Definitions</div>
+          </div>
+          <div class="panel-body" id="inv-ledger"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">ðŸ§±</span> Page Ledger</div>
+          </div>
+          <div class="panel-body scroll-panel" id="inv-page-ledger"></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">ðŸŒ</span> Language Coverage</div>
+          </div>
+          <div class="panel-body" id="inv-language-ledger"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">âœ…</span> Inventory Health</div>
+          </div>
+          <div class="panel-body" id="inv-health-ledger"></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">ðŸ“Š</span> Category Ledger</div>
+          </div>
+          <div class="panel-body scroll-panel" id="inv-category-ledger"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">ðŸ—‚ï¸</span> Top Folders</div>
+          </div>
+          <div class="panel-body scroll-panel" id="inv-folder-ledger"></div>
         </div>
       </div>
     </div>
@@ -829,6 +898,97 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 var TOOLS = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS : [];
+var inventorySnapshot = null;
+
+function fmtNum(value){
+  return Number(value || 0).toLocaleString('en-US');
+}
+
+function mcSetStatCard(valueId, subId, value, subText){
+  var valueEl = document.getElementById(valueId);
+  var subEl = document.getElementById(subId);
+  if(valueEl) valueEl.textContent = value;
+  if(subEl) subEl.textContent = subText;
+}
+
+function mcFetchJson(url, options){
+  return fetch(url, options || {}).then(function(res){
+    return res.text().then(function(text){
+      var data = {};
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch(e) {
+        data = { error: text || 'Invalid response' };
+      }
+      if(!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+      return data;
+    });
+  });
+}
+
+function loadOpsSignals(){
+  var adminKey = sessionStorage.getItem('admin_key') || '';
+  var adminHeaders = adminKey ? { 'x-admin-key': adminKey } : {};
+
+  Promise.allSettled([
+    mcFetchJson('/api/data-freshness'),
+    mcFetchJson('/api/scraper-health', { headers: adminHeaders }),
+    mcFetchJson('/api/alerts?view=admin', { headers: adminHeaders }),
+    mcFetchJson('/api/gazette-review', { headers: adminHeaders })
+  ]).then(function(results){
+    var freshness = results[0].status === 'fulfilled' ? results[0].value : null;
+    var scraperHealth = results[1].status === 'fulfilled' ? results[1].value : null;
+    var alertsData = results[2].status === 'fulfilled' ? results[2].value : null;
+    var reviewData = results[3].status === 'fulfilled' ? results[3].value : null;
+
+    if(freshness && freshness.categories){
+      var freshnessEntries = Object.keys(freshness.categories).map(function(key){ return freshness.categories[key] || {}; });
+      var freshCount = freshnessEntries.filter(function(entry){
+        return entry.status === 'live' || entry.status === 'ok';
+      }).length;
+      var scraperSummary = scraperHealth
+        ? 'Scrapers ' + fmtNum(scraperHealth.healthy_count) + '/' + fmtNum(scraperHealth.total_count)
+        : 'Scraper API unavailable';
+
+      mcSetStatCard(
+        'backend-health-value',
+        'backend-health-sub',
+        String((freshness.overall_health || 'offline')).toUpperCase(),
+        freshCount + '/' + freshnessEntries.length + ' source groups fresh · ' + scraperSummary
+      );
+    } else {
+      mcSetStatCard('backend-health-value', 'backend-health-sub', 'OFFLINE', 'Freshness API unavailable');
+    }
+
+    if(alertsData && alertsData.summary){
+      var alertSummary = alertsData.summary;
+      mcSetStatCard(
+        'alerts-live-value',
+        'alerts-live-sub',
+        fmtNum(alertSummary.active),
+        fmtNum(alertSummary.expired || 0) + ' expired · ' + fmtNum(alertSummary.inactive || 0) + ' inactive'
+      );
+    } else {
+      mcSetStatCard('alerts-live-value', 'alerts-live-sub', '--', 'Alerts API unavailable');
+    }
+
+    if(reviewData){
+      var totalQueue = Number(reviewData.gazette_count || 0) + Number(reviewData.review_count || 0);
+      mcSetStatCard(
+        'review-queue-value',
+        'review-queue-sub',
+        fmtNum(totalQueue),
+        fmtNum(reviewData.gazette_count || 0) + ' gazette · ' + fmtNum(reviewData.review_count || 0) + ' review items'
+      );
+    } else {
+      mcSetStatCard('review-queue-value', 'review-queue-sub', '--', 'Review API unavailable');
+    }
+  }).catch(function(){
+    mcSetStatCard('backend-health-value', 'backend-health-sub', 'ERROR', 'Backend monitoring failed to load');
+    mcSetStatCard('alerts-live-value', 'alerts-live-sub', '--', 'Alerts API unavailable');
+    mcSetStatCard('review-queue-value', 'review-queue-sub', '--', 'Review API unavailable');
+  });
+}
 
 // â”€â”€ Clock â”€â”€
 setInterval(function(){
@@ -849,11 +1009,12 @@ setInterval(function(){
 })();
 
 // â”€â”€ Navigation â”€â”€
-function showPage(id){
+function showPage(id, sourceEl){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.rail-btn').forEach(function(b){b.classList.remove('on')});
-  event.currentTarget.classList.add('on');
+  var activeBtn = sourceEl || document.querySelector('.rail-btn[data-page="'+id+'"]');
+  if(activeBtn) activeBtn.classList.add('on');
   document.querySelector('.main').scrollTop = 0;
 }
 
@@ -901,6 +1062,13 @@ function buildDashStats(){
   var byLang = {en:0,fr:0,sw:0};
   var byCat = {};
   var live = 0;
+  var totalInstances = typeof getTotalToolCount === 'function' ? getTotalToolCount() : total;
+  var liveInstances = typeof getTotalToolCount === 'function'
+    ? getTotalToolCount(function(t){ return t.status==='live'||t.status==='new'; })
+    : live;
+  var publicPages = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES.length : 0;
+  var frPages = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES.filter(function(p){ return p.indexOf('/fr/') === 0; }).length : 0;
+  var swPages = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES.filter(function(p){ return p.indexOf('/sw/') === 0; }).length : 0;
 
   TOOLS.forEach(function(t){
     var l = t.lang || 'en';
@@ -911,12 +1079,15 @@ function buildDashStats(){
 
   var el = document.getElementById('dash-stats');
   el.innerHTML = [
-    '<div class="stat-card c-blue"><div class="sc-label">Total Tools</div><div class="sc-value" style="color:var(--brand)">'+total+'</div><div class="sc-sub">'+live+' live</div><div class="sc-breakdown"><span class="sc-en">EN '+byLang.en+'</span><span class="sc-fr">FR '+byLang.fr+'</span><span class="sc-sw">SW '+byLang.sw+'</span></div></div>',
-    '<div class="stat-card c-green"><div class="sc-label">Categories</div><div class="sc-value" style="color:var(--green)">'+Object.keys(byCat).length+'</div><div class="sc-sub">'+Object.keys(byCat).sort(function(a,b){return byCat[b]-byCat[a]}).slice(0,3).map(function(c){return c+': '+byCat[c]}).join(', ')+'</div></div>',
-    '<div class="stat-card c-purple"><div class="sc-label">Languages</div><div class="sc-value" style="color:var(--purple)">3</div><div class="sc-sub">English Â· French Â· Swahili</div></div>',
-    '<div class="stat-card c-amber"><div class="sc-label">Countries</div><div class="sc-value" style="color:var(--amber)">54</div><div class="sc-sub">All African nations covered</div></div>',
-    '<div class="stat-card c-blue"><div class="sc-label">Sitemaps</div><div class="sc-value" style="color:var(--blue)">3</div><div class="sc-sub">sitemap.xml Â· i18n Â· sw</div></div>',
-    '<div class="stat-card c-red" id="dash-review-stat" style="cursor:pointer" onclick="document.querySelectorAll(\'.rail-btn\')[8].click()"><div class="sc-label">Page Review</div><div class="sc-value" style="color:var(--red)" id="rv-stat-value">â€”</div><div class="sc-sub" id="rv-stat-sub">Loading...</div></div>',
+    '<div class="stat-card c-blue"><div class="sc-label">Registry Entries</div><div class="sc-value" style="color:var(--brand)">'+fmtNum(total)+'</div><div class="sc-sub">'+fmtNum(live)+' live/new entries</div><div class="sc-breakdown"><span class="sc-en">EN '+fmtNum(byLang.en)+'</span><span class="sc-fr">FR '+fmtNum(byLang.fr)+'</span><span class="sc-sw">SW '+fmtNum(byLang.sw)+'</span></div></div>',
+    '<div class="stat-card c-green"><div class="sc-label">EN Tool Instances</div><div class="sc-value" style="color:var(--green)">'+fmtNum(totalInstances)+'</div><div class="sc-sub">'+fmtNum(liveInstances)+' live/new after family expansion</div></div>',
+    '<div class="stat-card c-purple"><div class="sc-label">Public Pages</div><div class="sc-value" style="color:var(--purple)">'+fmtNum(publicPages)+'</div><div class="sc-sub">FR '+fmtNum(frPages)+' Â· SW '+fmtNum(swPages)+'</div></div>',
+    '<div class="stat-card c-amber"><div class="sc-label">Categories</div><div class="sc-value" style="color:var(--amber)">'+Object.keys(byCat).length+'</div><div class="sc-sub">'+Object.keys(byCat).sort(function(a,b){return byCat[b]-byCat[a]}).slice(0,3).map(function(c){return c+': '+byCat[c]}).join(', ')+'</div></div>',
+    '<div class="stat-card c-blue"><div class="sc-label">Languages</div><div class="sc-value" style="color:var(--blue)">3</div><div class="sc-sub">English Â· French Â· Swahili</div></div>',
+    '<div class="stat-card c-red" id="dash-review-stat" style="cursor:pointer" onclick="showPage(\'allpages\')"><div class="sc-label">Page Review</div><div class="sc-value" style="color:var(--red)" id="rv-stat-value">â€”</div><div class="sc-sub" id="rv-stat-sub">Loading...</div></div>',
+    '<div class="stat-card c-green" style="cursor:pointer" onclick="showPage(\'livedata\')"><div class="sc-label">Backend Health</div><div class="sc-value" style="color:var(--green)" id="backend-health-value">â€”</div><div class="sc-sub" id="backend-health-sub">Loading backend checks...</div></div>',
+    '<div class="stat-card c-amber" style="cursor:pointer" onclick="window.open(\'/admin/alerts.html\', \'_blank\')"><div class="sc-label">Active Alerts</div><div class="sc-value" style="color:var(--amber)" id="alerts-live-value">â€”</div><div class="sc-sub" id="alerts-live-sub">Loading alert summary...</div></div>',
+    '<div class="stat-card c-blue" style="cursor:pointer" onclick="window.open(\'/admin/review.html\', \'_blank\')"><div class="sc-label">Review Queue</div><div class="sc-value" style="color:var(--blue)" id="review-queue-value">â€”</div><div class="sc-sub" id="review-queue-sub">Loading review queue...</div></div>',
   ].join('');
 
   // Review stats
@@ -938,8 +1109,8 @@ function buildDashStats(){
   // Greeting sub â€” include review progress
   var reviewedCount = 0;
   try { reviewedCount = Object.keys(JSON.parse(localStorage.getItem(RV_COMMENTS_KEY)) || {}).length; } catch(e){}
-  var pagesTotal = typeof ALL_PAGES !== 'undefined' ? ALL_PAGES.length : '?';
-  document.getElementById('greeting-sub').textContent = total + ' tools Â· ' + live + ' live Â· ' + pagesTotal + ' pages Â· ' + reviewedCount + ' reviewed';
+  var pagesLabel = typeof ALL_PAGES !== 'undefined' ? fmtNum(ALL_PAGES.length) : 'â€”';
+  document.getElementById('greeting-sub').textContent = fmtNum(total) + ' registry entries Â· ' + fmtNum(totalInstances) + ' EN tool instances Â· ' + pagesLabel + ' public pages Â· ' + fmtNum(reviewedCount) + ' reviewed';
 
   // Language coverage bars
   var langEl = document.getElementById('lang-coverage');
@@ -966,12 +1137,15 @@ function buildDashStats(){
       {icon:'âš™ï¸',name:'Car Rules',href:'/admin/car-import-cost-rules.html'},
       {icon:'ðŸ’¸',name:'Remittance',href:'/admin/remittance.html'},
       {icon:'ðŸš¨',name:'Alerts',href:'/admin/alerts.html'},
+      {icon:'RQ',name:'Review Queue',href:'/admin/review.html'},
       {icon:'ðŸ“º',name:'AfroStream',href:'/tools/afrostream/admin.html'},
       {icon:'âš”ï¸',name:'Conflict',href:'/admin/conflict.html'},
     ].map(function(d){
       return '<a class="qa-btn" href="'+d.href+'" target="_blank" style="text-decoration:none"><span class="qa-icon">'+d.icon+'</span><div>'+d.name+'</div></a>';
     }).join('');
   }
+
+  loadOpsSignals();
 
   // Category breakdown
   var catEl = document.getElementById('cat-breakdown');
@@ -1175,6 +1349,148 @@ function renderRegistry(){
 }
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+//  SITE INVENTORY
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+function renderInventoryError(err){
+  var message = err && err.message ? err.message : 'Inventory snapshot unavailable';
+  document.getElementById('inv-subtitle').textContent = 'Unable to load site-inventory.json';
+  document.getElementById('inv-stats').innerHTML = '<div class="stat-card c-red"><div class="sc-label">Inventory Error</div><div class="sc-value" style="color:var(--red);font-size:18px">Missing Snapshot</div><div class="sc-sub">'+message+'</div></div>';
+  ['inv-ledger','inv-page-ledger','inv-language-ledger','inv-health-ledger','inv-category-ledger','inv-folder-ledger'].forEach(function(id){
+    var node = document.getElementById(id);
+    if(node){
+      node.innerHTML = '<div class="empty-state"><div class="icon">âš ï¸</div><div class="title">Run <span style="font-family:var(--mono);color:var(--brand)">npm run inventory:site</span></div><div style="font-size:11px;color:var(--text3);margin-top:6px">The inventory page reads the generated snapshot and CSV exports.</div></div>';
+    }
+  });
+}
+
+function renderInventorySnapshot(snapshot){
+  var summary = snapshot.summary || {};
+  var registry = snapshot.registry || {};
+  var pages = snapshot.pages || {};
+  var defs = snapshot.definitions || {};
+  var taxonomy = snapshot.taxonomy || {};
+
+  document.getElementById('inv-subtitle').textContent = 'Snapshot generated ' + (snapshot.generatedAtDisplay || snapshot.generatedAt || 'recently') + ' from registry + filesystem scan';
+
+  document.getElementById('inv-stats').innerHTML = [
+    '<div class="stat-card c-blue"><div class="sc-label">Registry Entries</div><div class="sc-value" style="color:var(--brand)">'+fmtNum(summary.registryEntries)+'</div><div class="sc-sub">'+fmtNum(summary.registryLiveEntries)+' live/new Â· '+fmtNum(summary.registryQueuedEntries)+' queued</div></div>',
+    '<div class="stat-card c-green"><div class="sc-label">EN Tool Instances</div><div class="sc-value" style="color:var(--green)">'+fmtNum(summary.englishToolInstances)+'</div><div class="sc-sub">'+fmtNum(summary.englishUniqueToolUrls)+' unique URLs Â· '+fmtNum(summary.englishLiveToolInstances)+' live/new</div></div>',
+    '<div class="stat-card c-purple"><div class="sc-label">Total HTML Pages</div><div class="sc-value" style="color:var(--purple)">'+fmtNum(summary.totalHtmlPages)+'</div><div class="sc-sub">'+fmtNum(summary.publicHtmlPages)+' public Â· '+fmtNum(summary.internalHtmlPages)+' internal</div></div>',
+    '<div class="stat-card c-amber"><div class="sc-label">Language Pages</div><div class="sc-value" style="color:var(--amber)">'+fmtNum(summary.languageHtmlPages)+'</div><div class="sc-sub">FR '+fmtNum(summary.frenchHtmlPages)+' Â· SW '+fmtNum(summary.swahiliHtmlPages)+'</div></div>',
+    '<div class="stat-card c-blue"><div class="sc-label">Other Public Pages</div><div class="sc-value" style="color:var(--blue)">'+fmtNum(summary.otherPublicPages)+'</div><div class="sc-sub">This is the closest bucket to "just pages"</div></div>',
+    '<div class="stat-card c-red"><div class="sc-label">Categories</div><div class="sc-value" style="color:var(--red)">'+fmtNum(summary.categories)+'</div><div class="sc-sub">'+fmtNum(summary.categoryLandingPagesPresent)+' landing pages on disk</div></div>',
+  ].join('');
+
+  document.getElementById('inv-ledger').innerHTML = [
+    {title:'Registry entry',desc:defs.registryEntry},
+    {title:'EN tool instance',desc:defs.englishToolInstance},
+    defs.subcategoryHub ? {title:'Subcategory hub',desc:defs.subcategoryHub} : null,
+    defs.categoryLeafTool ? {title:'Category leaf tool',desc:defs.categoryLeafTool} : null,
+    {title:'HTML page',desc:defs.htmlPage},
+    {title:'Other public pages',desc:defs.otherPublicPages},
+  ].filter(Boolean).map(function(item){
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:12px;font-weight:700;color:var(--text)">'+item.title+'</div><div style="font-size:11px;color:var(--text3);margin-top:4px;line-height:1.6">'+item.desc+'</div></div>';
+  }).join('');
+
+  document.getElementById('inv-page-ledger').innerHTML = [
+    {label:'Tool base pages',count:summary.toolBasePages,info:'Main /tools/<slug>/ pages'},
+    {label:'Tool variant pages',count:summary.toolVariantPages,info:'Country or nested tool routes under /tools/'},
+    {label:'Tool app pages',count:summary.toolAppPages,info:'Dedicated app.html tool surfaces'},
+    {label:'Country hubs',count:summary.countryHubPages,info:'Country landing pages at /<country>/'},
+    {label:'Country tool pages',count:summary.countryToolPages,info:'Country tax/tool routes outside /tools/'},
+    {label:'Widget pages',count:summary.widgetHtmlPages,info:'Standalone widget and iframe surfaces'},
+    {label:'Other public pages',count:summary.otherPublicPages,info:'The general content/system bucket'},
+    {label:'Internal pages',count:summary.internalHtmlPages,info:'Admin, dashboard, and mission-control routes'},
+  ].map(function(item){
+    return '<div class="pipe-row"><div class="pipe-status ps-ok"></div><div class="pipe-name">'+item.label+'<div style="font-size:9px;color:var(--text4)">'+item.info+'</div></div><div class="pipe-info" style="font-weight:700">'+fmtNum(item.count)+'</div></div>';
+  }).join('');
+
+  document.getElementById('inv-language-ledger').innerHTML = [
+    {label:'English registry entries',count:(registry.byLang||{}).en||0,color:'var(--brand)',pct:100},
+    {label:'French registry entries',count:(registry.byLang||{}).fr||0,color:'#7c3aed',pct:summary.englishRegistryEntries ? Math.round(((registry.byLang||{}).fr||0)/summary.englishRegistryEntries*100) : 0},
+    {label:'Swahili registry entries',count:(registry.byLang||{}).sw||0,color:'var(--green)',pct:summary.englishRegistryEntries ? Math.round(((registry.byLang||{}).sw||0)/summary.englishRegistryEntries*100) : 0},
+    {label:'French HTML pages',count:summary.frenchHtmlPages,color:'#7c3aed',pct:summary.publicHtmlPages ? Math.round(summary.frenchHtmlPages/summary.publicHtmlPages*100) : 0},
+    {label:'Swahili HTML pages',count:summary.swahiliHtmlPages,color:'var(--green)',pct:summary.publicHtmlPages ? Math.round(summary.swahiliHtmlPages/summary.publicHtmlPages*100) : 0},
+  ].map(function(item){
+    return '<div class="cov-row"><div class="cov-label" style="width:136px;font-size:11px">'+item.label+'</div><div class="cov-bar-wrap"><div class="cov-bar" style="width:'+Math.max(item.pct,1)+'%;background:'+item.color+'"></div></div><div class="cov-num">'+fmtNum(item.count)+'</div></div>';
+  }).join('');
+
+  document.getElementById('inv-health-ledger').innerHTML = [
+    {label:'Live/new entries with pages',count:summary.liveNewRegistryEntriesWithPages,info:summary.liveNewRegistryEntriesMissingPages === 0 ? 'No live/new registry rows are missing pages' : fmtNum(summary.liveNewRegistryEntriesMissingPages)+' missing'},
+    {label:'Live/new tool apps',count:summary.liveNewToolApps,info:fmtNum(summary.totalAppHtmlFiles)+' total app.html files on disk'},
+    {label:'Category landing pages',count:summary.categoryLandingPagesPresent,info:fmtNum(summary.categories)+' / '+fmtNum(summary.categories)+' category hubs exist'},
+    {label:'Explicit subcategory hubs',count:summary.explicitSubcategoryHubs || 0,info:(summary.categoriesWithExplicitSubcategories || 0)+' categories currently have machine-readable subcategory shelves'},
+    {label:'Public HTML pages',count:summary.publicHtmlPages,info:'French + Swahili pages are counted separately in the language bucket'},
+  ].map(function(item){
+    return '<div class="pipe-row"><div class="pipe-status ps-ok"></div><div class="pipe-name">'+item.label+'<div style="font-size:9px;color:var(--text4)">'+item.info+'</div></div><div class="pipe-info" style="font-weight:700">'+fmtNum(item.count)+'</div></div>';
+  }).join('');
+
+  var categoryInventoryRows = (taxonomy.categoryRows && taxonomy.categoryRows.length) ? taxonomy.categoryRows : (registry.categoryRows || []);
+  document.getElementById('inv-category-ledger').innerHTML = categoryInventoryRows.map(function(row){
+    if(row.countingMode){
+      var detailLine = row.countingMode === 'explicit-hubs+direct'
+        ? fmtNum(row.explicitHubCount)+' hubs · '+fmtNum(row.explicitHubLiveTools)+' hub tools · '+fmtNum(row.directLiveTools)+' direct'
+        : 'Flat category · '+fmtNum(row.liveLeafTools)+' live leaf tools';
+      var previewLine = row.subcategoryPreview && row.subcategoryPreview.length
+        ? '<div style="font-size:10px;color:var(--text3);margin-top:6px;line-height:1.6">Subcategories: '+row.subcategoryPreview.join(' · ')+(row.subcategoryOverflow ? ' · +'+fmtNum(row.subcategoryOverflow)+' more' : '')+'</div>'
+        : '';
+
+      return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">'
+        + '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">'
+        + '<div><div style="font-size:12px;font-weight:700;color:var(--text)">'+row.name+'</div><div style="font-size:10px;color:var(--brand);font-family:var(--mono)">'+row.href+'</div></div>'
+        + '<div style="text-align:right"><div style="font-size:12px;font-weight:700">'+fmtNum(row.liveLeafTools)+' live tools</div><div style="font-size:10px;color:var(--text3)">'+fmtNum(row.englishInstances)+' EN instances</div></div>'
+        + '</div>'
+        + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">'
+        + '<span class="sc-en" style="font-size:10px;padding:2px 6px;border-radius:4px">EN '+fmtNum(row.liveEnglishTools)+'</span>'
+        + (row.liveFrenchTools ? '<span class="sc-fr" style="font-size:10px;padding:2px 6px;border-radius:4px">FR '+fmtNum(row.liveFrenchTools)+'</span>' : '')
+        + (row.liveSwahiliTools ? '<span class="sc-sw" style="font-size:10px;padding:2px 6px;border-radius:4px">SW '+fmtNum(row.liveSwahiliTools)+'</span>' : '')
+        + '<span class="rv-status '+(row.landingPageExists ? 'rv-done' : 'rv-pending')+'">'+(row.landingPageExists ? 'Landing page live' : 'Missing landing page')+'</span>'
+        + '</div>'
+        + '<div style="font-size:10px;color:var(--text3);margin-top:6px;line-height:1.6">'+detailLine+'</div>'
+        + previewLine
+        + '</div>';
+    }
+
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">'
+      + '<div><div style="font-size:12px;font-weight:700;color:var(--text)">'+row.name+'</div><div style="font-size:10px;color:var(--brand);font-family:var(--mono)">'+row.href+'</div></div>'
+      + '<div style="text-align:right"><div style="font-size:12px;font-weight:700">'+fmtNum(row.totalEntries)+' entries</div><div style="font-size:10px;color:var(--text3)">'+fmtNum(row.englishInstances)+' EN instances</div></div>'
+      + '</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">'
+      + '<span class="sc-en" style="font-size:10px;padding:2px 6px;border-radius:4px">EN '+fmtNum(row.englishEntries)+'</span>'
+      + (row.frenchEntries ? '<span class="sc-fr" style="font-size:10px;padding:2px 6px;border-radius:4px">FR '+fmtNum(row.frenchEntries)+'</span>' : '')
+      + (row.swahiliEntries ? '<span class="sc-sw" style="font-size:10px;padding:2px 6px;border-radius:4px">SW '+fmtNum(row.swahiliEntries)+'</span>' : '')
+      + '<span class="rv-status '+(row.landingPageExists ? 'rv-done' : 'rv-pending')+'">'+(row.landingPageExists ? 'Landing page live' : 'Missing landing page')+'</span>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('inv-folder-ledger').innerHTML = (pages.topLevelRows || []).slice(0, 24).map(function(row){
+    return '<div class="pipe-row"><div class="pipe-status ps-ok"></div><div class="pipe-name" style="font-family:var(--mono)">'+row.segment+'</div><div class="pipe-info" style="font-weight:700">'+fmtNum(row.count)+'</div></div>';
+  }).join('');
+}
+
+function buildInventoryPage(forceRefresh){
+  document.getElementById('inv-subtitle').textContent = 'Loading storekeeper snapshot...';
+  if(!forceRefresh && inventorySnapshot){
+    renderInventorySnapshot(inventorySnapshot);
+    return;
+  }
+
+  var url = '/admin/data/site-inventory.json' + (forceRefresh ? ('?v=' + Date.now()) : '');
+  fetch(url, { cache: 'no-store' })
+    .then(function(res){
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(snapshot){
+      inventorySnapshot = snapshot;
+      renderInventorySnapshot(snapshot);
+    })
+    .catch(renderInventoryError);
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  SEO PAGE
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function buildSEOPage(){
@@ -1248,7 +1564,7 @@ function buildPipelinesPage(){
 
   var apis = [
     'api-forex','api-fuel','api-rates','api-fx-rates','api-tax','api-vat','api-tax-rates',
-    'api-salary-benchmarks','api-profile','api-keys','api-alerts','api-history','api-favorites',
+    'api-salary-benchmarks','api-profile','api-keys','api-alerts','api-data-freshness','api-scraper-health','api-gazette-review','api-history','api-favorites',
     'api-scholarships','api-countries','ai-advisor','ai-business-plan','translate',
     'crypto-prices','crypto-portfolio','crypto-p2p','crypto-scam',
     'afrokitchen-recipes','afrokitchen-costs','afroprices-search','afroprices-submit',
@@ -1457,6 +1773,7 @@ function buildLiveDataPage(){
     {name:'Car Rule Packs',icon:'âš™ï¸',href:'/admin/car-import-cost-rules.html',desc:'6 countries, rule packs, valuation uploads',freq:'As needed'},
     {name:'Remittance',icon:'ðŸ’¸',href:'/admin/remittance.html',desc:'9 providers Ã— corridors',freq:'Monthly'},
     {name:'Alerts',icon:'ðŸš¨',href:'/admin/alerts.html',desc:'Tax & regulatory changes',freq:'As needed'},
+    {name:'Review Queue',icon:'RQ',href:'/admin/review.html',desc:'Approve or reject gazette-backed changes',freq:'Daily'},
     {name:'AfroStream',icon:'ðŸ“º',href:'/tools/afrostream/admin.html',desc:'Creators, streams, news, featured',freq:'Weekly'},
     {name:'Conflict Monitor',icon:'âš”ï¸',href:'/admin/conflict.html',desc:'Africa conflict events admin',freq:'As needed'},
   ];
@@ -1608,15 +1925,19 @@ function buildLiveDataPage(){
       {key:'RESEND_API_KEY',svc:'Resend',req:'Required for emails'},
     ]},
     {cat:'Supabase',items:[
+      {key:'SUPABASE_DATA_URL',svc:'Data instance override',req:'Preferred by newer admin functions'},
       {key:'SUPABASE_URL',svc:'Data instance',req:'Has fallback hardcoded'},
       {key:'SUPABASE_ANON_KEY',svc:'Public anon key',req:'Has fallback hardcoded'},
-      {key:'SUPABASE_SERVICE_KEY',svc:'Service role (write)',req:'Required for admin ops'},
+      {key:'SUPABASE_SERVICE_ROLE_KEY',svc:'Primary service role',req:'Preferred for admin writes'},
+      {key:'SUPABASE_DATA_SERVICE_ROLE_KEY',svc:'Data service role',req:'Fallback for data admin ops'},
+      {key:'SUPABASE_SERVICE_KEY',svc:'Legacy service role (write)',req:'Backward compatibility fallback'},
       {key:'SUPABASE_AUTH_URL',svc:'Auth instance',req:'Has fallback hardcoded'},
       {key:'SUPABASE_AUTH_SERVICE_KEY',svc:'Auth service role',req:'Falls back to SERVICE_KEY'},
     ]},
     {cat:'Auth & Config',items:[
       {key:'AUTH_SECRET',svc:'JWT validation',req:'Rate limit bypass'},
-      {key:'ADMIN_SECRET',svc:'Admin endpoints',req:'Admin auth'},
+      {key:'ADMIN_KEY',svc:'Admin endpoints',req:'Preferred; falls back to ADMIN_SECRET'},
+      {key:'ADMIN_SECRET',svc:'Admin endpoints',req:'Legacy admin auth fallback'},
       {key:'EMAIL_FROM',svc:'Resend sender',req:'Default: hello@afrotools.com'},
       {key:'URL',svc:'Site URL',req:'Default: https://afrotools.org'},
     ]},
@@ -1980,6 +2301,7 @@ function drMarkReviewed(idx){
 function initAll(){
   buildDashStats();
   buildRegistry();
+  buildInventoryPage();
   buildSEOPage();
   buildI18nPage();
   buildPipelinesPage();

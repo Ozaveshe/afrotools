@@ -15,14 +15,14 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:locale" content="sw_TZ">
+<meta property="og:locale" content="sw_LY">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@afrotoolsHQ">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/libya/ly-paye">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/libya/ly-paye/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/libya/kikokotoo-kodi-mshahara/">
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/libya/ly-paye">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/libya/ly-paye/">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Libya","item":"https://afrotools.com/sw/libya/"},{"@type":"ListItem","position":4,"name":"Kikokotoo cha Kodi ya Mshahara","item":"https://afrotools.com/sw/libya/kikokotoo-kodi-mshahara/"}]}
 </script>
@@ -110,10 +110,10 @@
         </div>
         <div class="card-body">
           <div class="presets">
-            <button class="preset-btn" onclick="setPreset(500,this)">LYD 500/mo</button>
-            <button class="preset-btn" onclick="setPreset(1000,this)">LYD 1,000/mo</button>
-            <button class="preset-btn" onclick="setPreset(2000,this)">LYD 2,000/mo</button>
-            <button class="preset-btn" onclick="setPreset(5000,this)">LYD 5,000/mo</button>
+            <button class="preset-btn" onclick="setPreset(500,this)">LYD 500/mwezi</button>
+            <button class="preset-btn" onclick="setPreset(1000,this)">LYD 1,000/mwezi</button>
+            <button class="preset-btn" onclick="setPreset(2000,this)">LYD 2,000/mwezi</button>
+            <button class="preset-btn" onclick="setPreset(5000,this)">LYD 5,000/mwezi</button>
           </div>
           <div class="slider-wrap">
             <div class="slider-row">
@@ -420,7 +420,7 @@ function renderResults() {
   document.getElementById('resultsCard').classList.add('on');
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Changanua Nafasi Yangu ya Kodi \u2192';
-  document.getElementById('aiStatus').textContent = 'Ghafi: ' + fmt(r.gross) + '/mo \u00B7 Halisi: ' + fmt(r.net) + '/mo';
+  document.getElementById('aiStatus').textContent = 'Ghafi: ' + fmt(r.gross) + '/mwezi \u00B7 Halisi: ' + fmt(r.net) + '/mwezi';
 }
 
 function setChart(type, btn) {
@@ -449,7 +449,7 @@ function getAI() {
   if (!RESULT) return;
   var btn = document.getElementById('aiBtn'); btn.disabled = true; btn.textContent = 'Inachanganua\u2026';
   var r = RESULT;
-  fetch('/netlify/functions/ai-advisor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool: 'paye', country: 'Libya', prompt: 'Mfanyakazi Libya: ghafi LYD ' + r.gross.toFixed(2) + '/mo, NSSF LYD ' + r.nssf.toFixed(2) + ', kodi LYD ' + r.tax.toFixed(2) + ', halisi LYD ' + r.net.toFixed(2) + '. Toa uchambuzi wa Kiswahili.' }) })
+  fetch('/netlify/functions/ai-advisor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool: 'paye', country: 'Libya', prompt: 'Mfanyakazi Libya: ghafi LYD ' + r.gross.toFixed(2) + '/mwezi, NSSF LYD ' + r.nssf.toFixed(2) + ', kodi LYD ' + r.tax.toFixed(2) + ', halisi LYD ' + r.net.toFixed(2) + '. Toa uchambuzi wa Kiswahili.' }) })
     .then(function(res) { return res.json(); })
     .then(function(data) { document.getElementById('aiResp').textContent = data.response || 'Hitilafu ilitokea.'; document.getElementById('aiChat').style.display = 'block'; btn.disabled = false; btn.textContent = 'Uliza swali lingine \u2192'; })
     .catch(function() { btn.disabled = false; btn.textContent = 'Jaribu tena \u2192'; });

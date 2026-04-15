@@ -24,6 +24,49 @@ const AFRICAN_CURRENCIES = [
 const GLOBAL_CURRENCIES = ['EUR', 'GBP', 'CNY', 'AED', 'INR', 'CAD', 'AUD', 'JPY'];
 
 const ALL_CURRENCIES = [...AFRICAN_CURRENCIES, ...GLOBAL_CURRENCIES];
+const MIN_SOURCE_COVERAGE = 40;
+const SOURCE_DISAGREEMENT_THRESHOLD = 0.2;
+const UNVERIFIED_JUMP_THRESHOLD = 0.5;
+
+function countTrackedRates(rates) {
+  return ALL_CURRENCIES.filter(code => rates && rates[code] !== undefined).length;
+}
+
+function normalizeTimestamp(value) {
+  if (!value) return null;
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+function stabilizeRates(fetchedRates, existingRates, comparisonRates) {
+  const safeRates = { ...fetchedRates };
+  const warnings = [];
+
+  for (const code of Object.keys(fetchedRates || {})) {
+    const nextRate = fetchedRates[code];
+    const existingRate = existingRates && existingRates[code];
+    const comparisonRate = comparisonRates && comparisonRates[code];
+
+    if (typeof comparisonRate === 'number' && comparisonRate > 0 && typeof nextRate === 'number' && nextRate > 0) {
+      const disagreement = Math.abs(nextRate - comparisonRate) / Math.max(nextRate, comparisonRate);
+      if (disagreement > SOURCE_DISAGREEMENT_THRESHOLD && typeof existingRate === 'number' && existingRate > 0) {
+        safeRates[code] = existingRate;
+        warnings.push(code + ': source disagreement (' + nextRate + ' vs ' + comparisonRate + '), kept existing ' + existingRate);
+        continue;
+      }
+    }
+
+    if ((comparisonRate === undefined || comparisonRate === null) && typeof existingRate === 'number' && existingRate > 0 && typeof nextRate === 'number' && nextRate > 0) {
+      const jump = Math.abs(nextRate - existingRate) / existingRate;
+      if (jump > UNVERIFIED_JUMP_THRESHOLD) {
+        safeRates[code] = existingRate;
+        warnings.push(code + ': unverified jump (' + existingRate + ' -> ' + nextRate + '), kept existing rate');
+      }
+    }
+  }
+
+  return { rates: safeRates, warnings };
+}
 
 /**
  * Source 1: ExchangeRate-API (free tier)
@@ -47,7 +90,12 @@ async function fetchFromExchangeRateAPI() {
     }
   }
 
-  return { rates, source: 'exchangerate-api' };
+  return {
+    rates,
+    source: 'exchangerate-api',
+    last_updated: normalizeTimestamp(json.time_last_update_utc),
+    next_update: normalizeTimestamp(json.time_next_update_utc),
+  };
 }
 
 /**
@@ -66,7 +114,12 @@ async function fetchFromFrankfurter() {
     }
   }
 
-  return { rates, source: 'frankfurter' };
+  return {
+    rates,
+    source: 'frankfurter',
+    last_updated: json.date ? json.date + 'T00:00:00.000Z' : null,
+    next_update: null,
+  };
 }
 
 /**
@@ -88,7 +141,12 @@ async function fetchFromFawazAhmed() {
     }
   }
 
-  return { rates, source: 'fawazahmed' };
+  return {
+    rates,
+    source: 'fawazahmed',
+    last_updated: json.date ? json.date + 'T00:00:00.000Z' : null,
+    next_update: null,
+  };
 }
 
 /**
@@ -105,19 +163,24 @@ exports.handler = async function (event) {
 
   let fetchedRates = null;
   let usedSource = null;
+  let sourceLastUpdated = null;
+  let sourceNextUpdate = null;
 
   for (const source of sources) {
     try {
       console.log(`[forex-fetch] Trying source: ${source.name}`);
       const result = await source.fn();
+      const coverage = countTrackedRates(result.rates);
 
-      if (Object.keys(result.rates).length >= 5) {
+      if (coverage >= MIN_SOURCE_COVERAGE) {
         fetchedRates = result.rates;
         usedSource = result.source;
-        console.log(`[forex-fetch] Success from ${source.name} — ${Object.keys(result.rates).length} currencies`);
+        sourceLastUpdated = result.last_updated || null;
+        sourceNextUpdate = result.next_update || null;
+        console.log(`[forex-fetch] Success from ${source.name} - ${coverage} tracked currencies`);
         break;
       } else {
-        console.log(`[forex-fetch] ${source.name} returned too few currencies (${Object.keys(result.rates).length}), trying next...`);
+        console.log(`[forex-fetch] ${source.name} returned too few tracked currencies (${coverage}), trying next...`);
       }
     } catch (err) {
       console.error(`[forex-fetch] ${source.name} failed: ${err.message}`);
@@ -137,11 +200,30 @@ exports.handler = async function (event) {
 
   // Merge with existing data (preserve currencies not in new fetch)
   const existing = await getData('forex-latest');
-  const mergedRates = existing && existing.rates ? { ...existing.rates, ...fetchedRates } : fetchedRates;
+  let comparisonRates = null;
+  if (usedSource !== 'fawazahmed') {
+    try {
+      const comparison = await fetchFromFawazAhmed();
+      comparisonRates = comparison.rates;
+    } catch (err) {
+      console.warn('[forex-fetch] Fawaz comparison fetch failed: ' + err.message);
+    }
+  }
+
+  const stabilized = stabilizeRates(
+    fetchedRates,
+    existing && existing.rates ? existing.rates : null,
+    comparisonRates
+  );
+  if (stabilized.warnings.length > 0) {
+    console.warn('[forex-fetch] Stabilized rates: ' + stabilized.warnings.join('; '));
+  }
+
+  const mergedRates = existing && existing.rates ? { ...existing.rates, ...stabilized.rates } : stabilized.rates;
 
   // Build the data object
-  const now = new Date().toISOString();
-  const nextUpdate = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+  const now = sourceLastUpdated || new Date().toISOString();
+  const nextUpdate = sourceNextUpdate || new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
   const data = {
     timestamp: now,

@@ -56,6 +56,12 @@ if (typeof onRegistryReady === 'function') { onRegistryReady(_initXxHub); }
 else { document.addEventListener('DOMContentLoaded', function() { ... }); }
 ```
 
+For the Swahili salary-and-PAYE country hub family, regenerate the shared template batch with:
+```bash
+node scripts/build-sw-country-hubs.js
+```
+Use that script as the source of truth before hand-editing individual `/sw/{country}/index.html` files.
+
 ---
 
 ## Step 3: Create the PAYE Calculator Page
