@@ -640,7 +640,6 @@
   'use strict';
 
   var API = '/api/admin/afrostream';
-  var ADMIN_PASS = 'Moly7174';
   var MC_TOKEN = localStorage.getItem('afrostream_admin_token') || sessionStorage.getItem('admin_key');
   var TOKEN = MC_TOKEN || ''; // set on login via sessionStorage or Mission Control
   var LS_KEY = {
@@ -665,6 +664,23 @@
   function lsSave(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
   function lsVal(key) { return localStorage.getItem(key) || ''; }
   function lsSaveVal(key, v) { localStorage.setItem(key, v); }
+
+  async function validateAdminToken(token) {
+    if (!token) return false;
+    try {
+      var res = await fetch('/api/admin-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': token
+        },
+        body: JSON.stringify({ source: 'afrostream-admin' })
+      });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
 
   /* ── API HELPERS ───────────────────────────────────── */
   async function api(method, path, body) {
@@ -845,20 +861,19 @@
   var panel = document.getElementById('adminPanel');
   var gateErr = document.getElementById('gateError');
 
-  function checkAuth() {
+  async function checkAuth() {
     var saved = lsVal(LS_KEY.token) || MC_TOKEN;
-    // Clear stale tokens that don't match current ADMIN_PASS
-    if (saved && saved !== ADMIN_PASS) {
-      localStorage.removeItem(LS_KEY.token);
-      localStorage.removeItem(LS_KEY.auth);
-      saved = MC_TOKEN; // try MC token as fallback
-    }
-    if (saved && saved === ADMIN_PASS) {
+    if (saved && await validateAdminToken(saved)) {
       TOKEN = saved;
       gate.style.display = 'none';
       panel.style.display = '';
       initAdmin();
+      return;
     }
+    localStorage.removeItem(LS_KEY.token);
+    localStorage.removeItem(LS_KEY.auth);
+    gate.style.display = '';
+    panel.style.display = 'none';
   }
 
   document.getElementById('gateSubmit').addEventListener('click', tryLogin);
@@ -866,16 +881,18 @@
     if (e.key === 'Enter') tryLogin();
   });
 
-  function tryLogin() {
+  async function tryLogin() {
     var pw = document.getElementById('gatePassword').value;
-    if (pw === ADMIN_PASS) {
-      TOKEN = pw; // password IS the token for local gate; real auth is ADMIN_SECRET in Netlify env
+    if (await validateAdminToken(pw)) {
+      TOKEN = pw;
       lsSaveVal(LS_KEY.token, pw);
       lsSaveVal(LS_KEY.auth, 'true');
       gate.style.display = 'none';
       panel.style.display = '';
+      gateErr.style.display = 'none';
       initAdmin();
     } else {
+      TOKEN = '';
       gateErr.style.display = '';
     }
   }

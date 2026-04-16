@@ -12,10 +12,7 @@
 
 const { getAllowedOrigin } = require('./utils/cors');
 
-var SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
-                   process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
-                   process.env.SUPABASE_SERVICE_KEY;
+var DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 
 function getHeader(event, headerName) {
   var headers = event.headers || {};
@@ -41,24 +38,37 @@ exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
 
   var adminKey = getHeader(event, 'x-admin-key');
-  if (!adminKey || adminKey !== (process.env.ADMIN_KEY || process.env.ADMIN_SECRET)) {
+  var adminSecret = cleanEnvValue(process.env.ADMIN_KEY || process.env.ADMIN_SECRET);
+  if (!adminKey || adminKey !== adminSecret) {
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
+  var SUPABASE_URL = getSupabaseUrl();
+  var SUPABASE_KEY = cleanEnvValue(
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SERVICE_KEY
+  );
   if (!SUPABASE_KEY) {
     return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Service key not configured' }) };
   }
 
   // GET: List pending gazette changes + review queue items
   if (event.httpMethod === 'GET') {
-    var [gazetteRes, reviewRes] = await Promise.all([
-      fetch(SUPABASE_URL + '/rest/v1/gazette_changes?applied_to_tools=eq.false&order=detected_at.desc&limit=50', {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
-      }),
-      fetch(SUPABASE_URL + '/rest/v1/review_queue?status=eq.pending&order=created_at.desc&limit=50', {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
-      }),
-    ]);
+    var gazetteRes;
+    var reviewRes;
+    try {
+      [gazetteRes, reviewRes] = await Promise.all([
+        fetch(SUPABASE_URL + '/rest/v1/gazette_changes?applied_to_tools=eq.false&order=detected_at.desc&limit=50', {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        }),
+        fetch(SUPABASE_URL + '/rest/v1/review_queue?status=eq.pending&order=created_at.desc&limit=50', {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        }),
+      ]);
+    } catch (err) {
+      return { statusCode: 503, headers: CORS, body: JSON.stringify({ error: 'Review queue unavailable', detail: err.message }) };
+    }
 
     var gazette = gazetteRes.ok ? await gazetteRes.json() : [];
     var review = reviewRes.ok ? await reviewRes.json() : [];
@@ -182,3 +192,19 @@ exports.handler = async function(event) {
 
   return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method not allowed' }) };
 };
+
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
+function getSupabaseUrl() {
+  var candidate = cleanEnvValue(
+    process.env.SUPABASE_AUTH_URL ||
+    process.env.SUPABASE_DATA_URL ||
+    process.env.SUPABASE_URL
+  );
+
+  return /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(candidate)
+    ? candidate
+    : DEFAULT_SUPABASE_URL;
+}

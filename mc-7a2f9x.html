@@ -255,7 +255,7 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 @media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
 </style>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-16">
 </head>
 <body>
 
@@ -265,8 +265,8 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
     <div class="auth-logo">Afro<em>Tools</em></div>
     <div class="auth-sub">Mission Control Â· Restricted Access</div>
     <input type="password" id="auth-input" placeholder="Enter access key" autocomplete="off" autofocus>
-    <button class="auth-btn" onclick="authenticate()">Unlock</button>
-    <div class="auth-hint">ðŸ”’ This console is not publicly accessible</div>
+    <button class="auth-btn" id="auth-btn" onclick="authenticate()">Unlock</button>
+    <div class="auth-hint" id="auth-hint">ðŸ”’ This console validates against the live admin backend</div>
   </div>
 </div>
 
@@ -386,12 +386,12 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
             <div class="panel-badge" id="pipe-badge">Checking...</div>
           </div>
           <div class="panel-body" id="pipe-status-body">
-            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Forex Rates</div><div class="pipe-info">Every 15 min</div></div>
-            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Fuel Prices</div><div class="pipe-info">Every 6 hrs</div></div>
-            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Central Bank Rates</div><div class="pipe-info">Every 12 hrs</div></div>
-            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">FX Snapshots (Supabase)</div><div class="pipe-info">Daily 6 AM UTC</div></div>
-            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Scholarship Verifier</div><div class="pipe-info">Daily 4 AM UTC</div></div>
-            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Monthly Digest Emails</div><div class="pipe-info">1st of month 8 AM</div></div>
+            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Forex feed</div><div class="pipe-info">Waiting for live freshness check</div></div>
+            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Fuel feed</div><div class="pipe-info">Waiting for live freshness check</div></div>
+            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Central bank feed</div><div class="pipe-info">Waiting for live freshness check</div></div>
+            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Endpoint audit</div><div class="pipe-info">Waiting for API sweep</div></div>
+            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Scraper fleet</div><div class="pipe-info">Waiting for admin health</div></div>
+            <div class="pipe-row"><div class="pipe-status ps-unknown"></div><div class="pipe-name">Review queue</div><div class="pipe-info">Waiting for admin queue summary</div></div>
           </div>
         </div>
       </div>
@@ -466,6 +466,60 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
         <div class="panel">
           <div class="panel-hdr"><div class="panel-title"><span class="icon">ðŸ¥</span> Health Checks</div></div>
           <div class="panel-body" id="dash-health"></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:16px">
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">âš¡</span> Backend Telemetry</div>
+            <div class="panel-badge"><a href="#" onclick="event.preventDefault();refreshAdminStatus()" style="color:var(--brand);font-size:10px;text-decoration:none">Refresh live â†’</a></div>
+          </div>
+          <div class="panel-body">
+            <div class="stats" id="mc-backend-cards" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px">
+              <div class="stat-card c-blue"><div class="sc-label">Backend</div><div class="sc-value" style="color:var(--brand)">--</div><div class="sc-sub">Waiting for admin status</div></div>
+              <div class="stat-card c-green"><div class="sc-label">Fresh Sources</div><div class="sc-value" style="color:var(--green)">--</div><div class="sc-sub">Waiting for admin status</div></div>
+              <div class="stat-card c-amber"><div class="sc-label">Healthy Scrapers</div><div class="sc-value" style="color:var(--amber)">--</div><div class="sc-sub">Waiting for admin status</div></div>
+              <div class="stat-card c-red"><div class="sc-label">Alerts / Queue</div><div class="sc-value" style="color:var(--red)">--</div><div class="sc-sub">Waiting for admin status</div></div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:8px">Freshness</div>
+                <table class="reg-table">
+                  <thead><tr><th>Category</th><th>Status</th><th>Age</th></tr></thead>
+                  <tbody id="mc-freshness-table">
+                    <tr><td colspan="3" style="font-size:11px;color:var(--text3)">Waiting for admin status...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:8px">Warnings</div>
+                <div class="panel" style="background:var(--card2);border-color:var(--border);box-shadow:none;padding:12px">
+                  <ul id="mc-backend-warnings" style="margin:0;padding-left:18px;font-size:11px;line-height:1.7;color:var(--text3)">
+                    <li>Waiting for admin status...</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title"><span class="icon">ðŸ“¡</span> API Audit & Registry Check</div>
+            <div class="panel-badge"><a href="#" onclick="event.preventDefault();runAudit()" style="color:var(--brand);font-size:10px;text-decoration:none">Run audit â†’</a></div>
+          </div>
+          <div class="panel-body">
+            <div style="font-size:10px;color:var(--text4);margin-bottom:10px">Live API checks are grouped as working, protected, degraded, or broken. Registry audit stays browser-side and checks the loaded tool registry for obvious gaps.</div>
+            <table class="reg-table">
+              <thead><tr><th>Endpoint</th><th>Status</th><th>Latency</th></tr></thead>
+              <tbody id="mc-api-audit">
+                <tr><td colspan="3" style="font-size:11px;color:var(--text3)">Waiting for admin status...</td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin:14px 0 8px">Registry quick audit</div>
+            <div id="mc-audit-results" style="font-size:11px;line-height:1.7;color:var(--text3)">Run the registry audit to surface duplicates, missing hrefs, empty descriptions, and country coverage gaps.</div>
+          </div>
         </div>
       </div>
 
@@ -899,9 +953,30 @@ body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
 
 var TOOLS = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS : [];
 var inventorySnapshot = null;
+var MC_ADMIN_STATUS = null;
+var MC_STATUS_LOADING = false;
 
 function fmtNum(value){
   return Number(value || 0).toLocaleString('en-US');
+}
+
+function escapeHtml(value){
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+    return ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    })[ch];
+  });
+}
+
+function formatAgeMinutes(minutes){
+  if(minutes == null || !isFinite(minutes) || minutes < 0) return '--';
+  if(minutes < 60) return minutes + 'm';
+  if(minutes < 1440) return Math.round(minutes / 60) + 'h';
+  return Math.round(minutes / 1440) + 'd';
 }
 
 function mcSetStatCard(valueId, subId, value, subText){
@@ -926,68 +1001,207 @@ function mcFetchJson(url, options){
   });
 }
 
-function loadOpsSignals(){
+function mcToneSpec(status){
+  var normalized = String(status || 'unknown').toLowerCase();
+  if(normalized === 'working' || normalized === 'healthy' || normalized === 'live' || normalized === 'ok' || normalized === 'protected'){
+    return { dot:'ps-ok', color:'var(--green)', bg:'var(--green-l)' };
+  }
+  if(normalized === 'degraded' || normalized === 'stale'){
+    return { dot:'ps-stale', color:'var(--amber)', bg:'var(--amber-l)' };
+  }
+  if(normalized === 'broken' || normalized === 'critical' || normalized === 'offline' || normalized === 'error'){
+    return { dot:'ps-error', color:'var(--red)', bg:'var(--red-l)' };
+  }
+  return { dot:'ps-unknown', color:'var(--text3)', bg:'var(--card2)' };
+}
+
+function mcBadgeHtml(text, status){
+  var tone = mcToneSpec(status);
+  return '<span style="display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:'+tone.bg+';color:'+tone.color+'">'+escapeHtml(text)+'</span>';
+}
+
+function mcFindEndpointCheck(id){
+  if(!MC_ADMIN_STATUS || !Array.isArray(MC_ADMIN_STATUS.endpoint_checks)) return null;
+  return MC_ADMIN_STATUS.endpoint_checks.find(function(check){ return check.id === id; }) || null;
+}
+
+function renderBackendTelemetry(report){
+  var cardsEl = document.getElementById('mc-backend-cards');
+  var freshnessTable = document.getElementById('mc-freshness-table');
+  var warningsEl = document.getElementById('mc-backend-warnings');
+  if(!cardsEl || !freshnessTable || !warningsEl) return;
+
+  if(!report || !report.summary){
+    cardsEl.innerHTML = '<div class="stat-card c-red"><div class="sc-label">Backend</div><div class="sc-value" style="color:var(--red)">OFF</div><div class="sc-sub">Admin status unavailable</div></div>';
+    freshnessTable.innerHTML = '<tr><td colspan="3" style="font-size:11px;color:var(--text3)">Admin status unavailable.</td></tr>';
+    warningsEl.innerHTML = '<li>Mission Control could not load the protected admin status report.</li>';
+    return;
+  }
+
+  var summary = report.summary;
+  var fresh = summary.freshness || {};
+  var scrapers = summary.scrapers || {};
+  var alerts = summary.alerts || {};
+  var review = summary.review || {};
+
+  cardsEl.innerHTML = [
+    '<div class="stat-card c-blue"><div class="sc-label">Backend</div><div class="sc-value" style="color:var(--brand)">'+escapeHtml(String(summary.overall_health || 'unknown').toUpperCase())+'</div><div class="sc-sub">'+fmtNum((summary.endpoints && summary.endpoints.working) || 0)+' working endpoint checks</div></div>',
+    '<div class="stat-card c-green"><div class="sc-label">Fresh Sources</div><div class="sc-value" style="color:var(--green)">'+fmtNum(fresh.healthy_count || 0)+'/'+fmtNum(fresh.total_count || 0)+'</div><div class="sc-sub">'+fmtNum((fresh.stale_categories || []).length)+' stale · '+fmtNum((fresh.offline_categories || []).length)+' offline</div></div>',
+    '<div class="stat-card c-amber"><div class="sc-label">Healthy Scrapers</div><div class="sc-value" style="color:var(--amber)">'+fmtNum(scrapers.healthy_count || 0)+'/'+fmtNum(scrapers.total_count || 0)+'</div><div class="sc-sub">'+fmtNum((scrapers.unhealthy_scrapers || []).length)+' unhealthy</div></div>',
+    '<div class="stat-card c-red"><div class="sc-label">Alerts / Queue</div><div class="sc-value" style="color:var(--red)">'+fmtNum(alerts.active || 0)+' / '+fmtNum(review.total_queue || 0)+'</div><div class="sc-sub">'+fmtNum(alerts.expired || 0)+' expired alerts · '+fmtNum(review.gazette_count || 0)+' gazette</div></div>'
+  ].join('');
+
+  var freshnessRows = [];
+  var categories = report.freshness && report.freshness.categories ? report.freshness.categories : {};
+  Object.keys(categories).sort().forEach(function(category){
+    var item = categories[category] || {};
+    freshnessRows.push(
+      '<tr><td>'+escapeHtml(category)+'</td><td>'+mcBadgeHtml(String(item.status || 'unknown'), item.status)+'</td><td>'+escapeHtml(formatAgeMinutes(item.age_minutes))+'</td></tr>'
+    );
+  });
+  freshnessTable.innerHTML = freshnessRows.length ? freshnessRows.join('') : '<tr><td colspan="3" style="font-size:11px;color:var(--text3)">No freshness categories returned.</td></tr>';
+
+  var warnings = Array.isArray(report.warnings) ? report.warnings.slice(0, 8) : [];
+  warningsEl.innerHTML = warnings.length
+    ? warnings.map(function(item){ return '<li>'+escapeHtml(item)+'</li>'; }).join('')
+    : '<li>No active backend warnings from the monitored admin feeds.</li>';
+}
+
+function renderEndpointAudit(report){
+  var auditEl = document.getElementById('mc-api-audit');
+  var healthEl = document.getElementById('dash-health');
+  if(!auditEl || !healthEl) return;
+
+  if(!report || !Array.isArray(report.endpoint_checks)){
+    auditEl.innerHTML = '<tr><td colspan="3" style="font-size:11px;color:var(--text3)">Endpoint audit unavailable.</td></tr>';
+    healthEl.innerHTML = '<div style="font-size:11px;color:var(--red)">Endpoint audit unavailable.</div>';
+    return;
+  }
+
+  var rows = report.endpoint_checks.slice().sort(function(a,b){
+    var rank = { broken:0, degraded:1, protected:2, working:3 };
+    return (rank[a.classification] || 9) - (rank[b.classification] || 9);
+  });
+
+  auditEl.innerHTML = rows.map(function(row){
+    return '<tr><td><div style="font-weight:700;font-size:11px">'+escapeHtml(row.name)+'</div><div style="font-size:10px;color:var(--text4);font-family:var(--mono)">'+escapeHtml(row.path)+'</div></td><td>'+mcBadgeHtml(row.classification, row.classification)+'</td><td style="font-family:var(--mono);font-size:11px">'+escapeHtml((row.latency_ms || 0)+'ms')+'</td></tr>';
+  }).join('');
+
+  var summary = report.summary && report.summary.endpoints ? report.summary.endpoints : { working:0, protected:0, degraded:0, broken:0 };
+  var topNotes = rows.filter(function(row){ return row.classification === 'broken' || row.classification === 'degraded'; }).slice(0, 4);
+  healthEl.innerHTML = [
+    '<div style="font-size:10px;color:var(--text4);margin-bottom:8px">Protected admin report of monitored routes</div>',
+    '<div class="pipe-row"><div class="pipe-status ps-ok" style="width:8px;height:8px"></div><div class="pipe-name" style="font-size:11px">Working</div><div class="pipe-info" style="font-size:11px">'+fmtNum(summary.working)+'</div></div>',
+    '<div class="pipe-row"><div class="pipe-status ps-ok" style="width:8px;height:8px"></div><div class="pipe-name" style="font-size:11px">Protected</div><div class="pipe-info" style="font-size:11px">'+fmtNum(summary.protected)+'</div></div>',
+    '<div class="pipe-row"><div class="pipe-status ps-stale" style="width:8px;height:8px"></div><div class="pipe-name" style="font-size:11px">Degraded</div><div class="pipe-info" style="font-size:11px">'+fmtNum(summary.degraded)+'</div></div>',
+    '<div class="pipe-row"><div class="pipe-status ps-error" style="width:8px;height:8px"></div><div class="pipe-name" style="font-size:11px">Broken</div><div class="pipe-info" style="font-size:11px">'+fmtNum(summary.broken)+'</div></div>',
+    topNotes.length ? '<div style="font-size:10px;color:var(--text4);margin:10px 0 6px">Needs attention</div>' : '',
+    topNotes.map(function(row){
+      return '<div class="pipe-row"><div class="pipe-status '+mcToneSpec(row.classification).dot+'" style="width:8px;height:8px"></div><div class="pipe-name" style="font-size:11px">'+escapeHtml(row.name)+'</div><div class="pipe-info" style="font-size:10px">'+escapeHtml(row.note || row.classification)+'</div></div>';
+    }).join('')
+  ].join('');
+}
+
+function applyPipelineRow(row, status, info){
+  if(!row) return;
+  var dot = row.querySelector('.pipe-status');
+  var meta = row.querySelector('.pipe-info');
+  var tone = mcToneSpec(status);
+  if(dot) dot.className = 'pipe-status ' + tone.dot;
+  if(meta) meta.textContent = info;
+}
+
+function renderPipelineStatus(report){
+  var badge = document.getElementById('pipe-badge');
+  var rows = document.querySelectorAll('#pipe-status-body .pipe-row');
+  if(!badge || !rows.length) return;
+
+  if(!report || !report.summary){
+    badge.textContent = 'Offline';
+    rows.forEach(function(row){ applyPipelineRow(row, 'offline', 'Admin status unavailable'); });
+    return;
+  }
+
+  var freshness = report.freshness && report.freshness.categories ? report.freshness.categories : {};
+  var endpoints = report.summary.endpoints || {};
+  var scrapers = report.summary.scrapers || {};
+  var review = report.summary.review || {};
+  badge.textContent = String(report.summary.overall_health || 'unknown').toUpperCase();
+
+  applyPipelineRow(rows[0], freshness.forex && freshness.forex.status, 'Age ' + formatAgeMinutes(freshness.forex && freshness.forex.age_minutes));
+  applyPipelineRow(rows[1], freshness.fuel && freshness.fuel.status, 'Age ' + formatAgeMinutes(freshness.fuel && freshness.fuel.age_minutes));
+  applyPipelineRow(rows[2], freshness.rates && freshness.rates.status, 'Age ' + formatAgeMinutes(freshness.rates && freshness.rates.age_minutes));
+  applyPipelineRow(rows[3], endpoints.broken > 0 ? 'broken' : (endpoints.degraded > 0 ? 'degraded' : 'working'), fmtNum(endpoints.working || 0)+' working · '+fmtNum(endpoints.broken || 0)+' broken');
+  applyPipelineRow(rows[4], scrapers.overall_health, fmtNum(scrapers.healthy_count || 0)+'/'+fmtNum(scrapers.total_count || 0)+' healthy');
+  applyPipelineRow(rows[5], review.total_queue > 0 ? 'degraded' : 'working', fmtNum(review.total_queue || 0)+' queued review items');
+}
+
+function loadOpsSignals(force){
+  if(MC_STATUS_LOADING && !force) return Promise.resolve(MC_ADMIN_STATUS);
+
   var adminKey = sessionStorage.getItem('admin_key') || '';
-  var adminHeaders = adminKey ? { 'x-admin-key': adminKey } : {};
+  if(!adminKey){
+    renderBackendTelemetry(null);
+    renderEndpointAudit(null);
+    renderPipelineStatus(null);
+    mcSetStatCard('backend-health-value', 'backend-health-sub', 'LOCKED', 'Admin key missing from session');
+    mcSetStatCard('alerts-live-value', 'alerts-live-sub', '--', 'Admin key missing from session');
+    mcSetStatCard('review-queue-value', 'review-queue-sub', '--', 'Admin key missing from session');
+    return Promise.resolve(null);
+  }
 
-  Promise.allSettled([
-    mcFetchJson('/api/data-freshness'),
-    mcFetchJson('/api/scraper-health', { headers: adminHeaders }),
-    mcFetchJson('/api/alerts?view=admin', { headers: adminHeaders }),
-    mcFetchJson('/api/gazette-review', { headers: adminHeaders })
-  ]).then(function(results){
-    var freshness = results[0].status === 'fulfilled' ? results[0].value : null;
-    var scraperHealth = results[1].status === 'fulfilled' ? results[1].value : null;
-    var alertsData = results[2].status === 'fulfilled' ? results[2].value : null;
-    var reviewData = results[3].status === 'fulfilled' ? results[3].value : null;
+  MC_STATUS_LOADING = true;
+  return mcFetchJson('/api/admin-status', {
+    headers: { 'x-admin-key': adminKey }
+  }).then(function(report){
+    MC_ADMIN_STATUS = report;
+    var summary = report.summary || {};
+    var fresh = summary.freshness || {};
+    var scrapers = summary.scrapers || {};
+    var alerts = summary.alerts || {};
+    var review = summary.review || {};
 
-    if(freshness && freshness.categories){
-      var freshnessEntries = Object.keys(freshness.categories).map(function(key){ return freshness.categories[key] || {}; });
-      var freshCount = freshnessEntries.filter(function(entry){
-        return entry.status === 'live' || entry.status === 'ok';
-      }).length;
-      var scraperSummary = scraperHealth
-        ? 'Scrapers ' + fmtNum(scraperHealth.healthy_count) + '/' + fmtNum(scraperHealth.total_count)
-        : 'Scraper API unavailable';
+    mcSetStatCard(
+      'backend-health-value',
+      'backend-health-sub',
+      String((summary.overall_health || 'offline')).toUpperCase(),
+      fmtNum(fresh.healthy_count || 0) + '/' + fmtNum(fresh.total_count || 0) + ' source groups fresh · ' + fmtNum(scrapers.healthy_count || 0) + '/' + fmtNum(scrapers.total_count || 0) + ' scrapers healthy'
+    );
+    mcSetStatCard(
+      'alerts-live-value',
+      'alerts-live-sub',
+      fmtNum(alerts.active || 0),
+      fmtNum(alerts.expired || 0) + ' expired · ' + fmtNum(alerts.inactive || 0) + ' inactive'
+    );
+    mcSetStatCard(
+      'review-queue-value',
+      'review-queue-sub',
+      fmtNum(review.total_queue || 0),
+      fmtNum(review.gazette_count || 0) + ' gazette · ' + fmtNum(review.review_count || 0) + ' review items'
+    );
 
-      mcSetStatCard(
-        'backend-health-value',
-        'backend-health-sub',
-        String((freshness.overall_health || 'offline')).toUpperCase(),
-        freshCount + '/' + freshnessEntries.length + ' source groups fresh · ' + scraperSummary
-      );
-    } else {
-      mcSetStatCard('backend-health-value', 'backend-health-sub', 'OFFLINE', 'Freshness API unavailable');
-    }
-
-    if(alertsData && alertsData.summary){
-      var alertSummary = alertsData.summary;
-      mcSetStatCard(
-        'alerts-live-value',
-        'alerts-live-sub',
-        fmtNum(alertSummary.active),
-        fmtNum(alertSummary.expired || 0) + ' expired · ' + fmtNum(alertSummary.inactive || 0) + ' inactive'
-      );
-    } else {
-      mcSetStatCard('alerts-live-value', 'alerts-live-sub', '--', 'Alerts API unavailable');
-    }
-
-    if(reviewData){
-      var totalQueue = Number(reviewData.gazette_count || 0) + Number(reviewData.review_count || 0);
-      mcSetStatCard(
-        'review-queue-value',
-        'review-queue-sub',
-        fmtNum(totalQueue),
-        fmtNum(reviewData.gazette_count || 0) + ' gazette · ' + fmtNum(reviewData.review_count || 0) + ' review items'
-      );
-    } else {
-      mcSetStatCard('review-queue-value', 'review-queue-sub', '--', 'Review API unavailable');
-    }
-  }).catch(function(){
-    mcSetStatCard('backend-health-value', 'backend-health-sub', 'ERROR', 'Backend monitoring failed to load');
+    renderBackendTelemetry(report);
+    renderEndpointAudit(report);
+    renderPipelineStatus(report);
+    if(typeof buildPipelinesPage === 'function') buildPipelinesPage();
+    return report;
+  }).catch(function(err){
+    MC_ADMIN_STATUS = null;
+    renderBackendTelemetry(null);
+    renderEndpointAudit(null);
+    renderPipelineStatus(null);
+    if(typeof buildPipelinesPage === 'function') buildPipelinesPage();
+    mcSetStatCard('backend-health-value', 'backend-health-sub', 'ERROR', err.message || 'Backend monitoring failed to load');
     mcSetStatCard('alerts-live-value', 'alerts-live-sub', '--', 'Alerts API unavailable');
     mcSetStatCard('review-queue-value', 'review-queue-sub', '--', 'Review API unavailable');
+    return null;
+  }).finally(function(){
+    MC_STATUS_LOADING = false;
   });
+}
+
+function refreshAdminStatus(){
+  return loadOpsSignals(true);
 }
 
 // â”€â”€ Clock â”€â”€
@@ -1297,6 +1511,56 @@ function buildDashStats(){
   }
 }
 
+function runAudit(){
+  var results = document.getElementById('mc-audit-results');
+  if(!results) return;
+
+  if(typeof AFRO_TOOLS === 'undefined' || !AFRO_TOOLS.length){
+    results.innerHTML = '<div style="color:var(--red)">âœ— AFRO_TOOLS registry is not loaded.</div>';
+    return;
+  }
+
+  var ids = {};
+  var dupes = [];
+  var missingHref = [];
+  var missingDesc = [];
+  var missingCategory = [];
+  var countryCoverage = new Set();
+
+  AFRO_TOOLS.forEach(function(tool){
+    if(ids[tool.id]) dupes.push(tool.id);
+    ids[tool.id] = true;
+    if(!tool.href) missingHref.push(tool.id);
+    if(!tool.description || !String(tool.description).trim()) missingDesc.push(tool.id);
+    if(!tool.category || !String(tool.category).trim()) missingCategory.push(tool.id);
+    (tool.countries || []).forEach(function(code){
+      if(code && code !== 'ALL') countryCoverage.add(code);
+    });
+  });
+
+  var lines = [];
+  if(dupes.length){
+    lines.push('<div style="color:var(--red)">âœ— Duplicate IDs: '+escapeHtml(dupes.slice(0,8).join(', '))+(dupes.length > 8 ? ' +' + fmtNum(dupes.length - 8) + ' more' : '')+'</div>');
+  }
+  if(missingHref.length){
+    lines.push('<div style="color:var(--red)">âœ— Missing href on '+fmtNum(missingHref.length)+' registry entries.</div>');
+  }
+  if(missingDesc.length){
+    lines.push('<div style="color:var(--amber)">âš  Missing description on '+fmtNum(missingDesc.length)+' registry entries.</div>');
+  }
+  if(missingCategory.length){
+    lines.push('<div style="color:var(--red)">âœ— Missing category on '+fmtNum(missingCategory.length)+' registry entries.</div>');
+  }
+
+  lines.push('<div style="color:var(--text2)">Coverage: '+fmtNum(countryCoverage.size)+' countries referenced across '+fmtNum(AFRO_TOOLS.length)+' registry entries.</div>');
+
+  if(!dupes.length && !missingHref.length && !missingDesc.length && !missingCategory.length){
+    lines.unshift('<div style="color:var(--green)">âœ“ Registry basics look clean in the loaded dataset.</div>');
+  }
+
+  results.innerHTML = lines.join('');
+}
+
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  REGISTRY TABLE
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -1562,17 +1826,20 @@ function buildPipelinesPage(){
     return '<div class="pipe-row"><div class="pipe-status ps-ok"></div><div class="pipe-name">'+s.name+'<div style="font-size:9px;color:var(--text4);font-family:var(--mono)">'+s.url+'</div></div><div class="pipe-info" style="font-size:9px">'+s.tables+'</div></div>';
   }).join('');
 
-  var apis = [
-    'api-forex','api-fuel','api-rates','api-fx-rates','api-tax','api-vat','api-tax-rates',
-    'api-salary-benchmarks','api-profile','api-keys','api-alerts','api-data-freshness','api-scraper-health','api-gazette-review','api-history','api-favorites',
-    'api-scholarships','api-countries','ai-advisor','ai-business-plan','translate',
-    'crypto-prices','crypto-portfolio','crypto-p2p','crypto-scam',
-    'afrokitchen-recipes','afrokitchen-costs','afroprices-search','afroprices-submit',
-    'capture-lead','capture-search','paystack-webhook','create-checkout',
-  ];
-  document.getElementById('api-count').textContent = apis.length + ' functions';
-  document.getElementById('api-endpoints').innerHTML = apis.map(function(a){
-    return '<div class="pipe-row"><div class="pipe-status ps-ok" style="width:8px;height:8px"></div><div class="pipe-name" style="font-size:11px;font-family:var(--mono)">'+a+'</div></div>';
+  var monitoredApis = MC_ADMIN_STATUS && Array.isArray(MC_ADMIN_STATUS.endpoint_checks)
+    ? MC_ADMIN_STATUS.endpoint_checks
+    : [
+        { name:'Forex latest', path:'/api/forex?base=USD', classification:'unknown', note:'Waiting for live admin audit' },
+        { name:'Fuel NG', path:'/api/fuel?country=NG', classification:'unknown', note:'Waiting for live admin audit' },
+        { name:'Rates NG', path:'/api/rates?country=NG', classification:'unknown', note:'Waiting for live admin audit' },
+        { name:'Data freshness', path:'/api/data-freshness', classification:'unknown', note:'Waiting for live admin audit' },
+        { name:'Alerts admin', path:'/api/alerts?view=admin', classification:'unknown', note:'Waiting for live admin audit' },
+        { name:'Scraper health', path:'/api/scraper-health', classification:'unknown', note:'Waiting for live admin audit' }
+      ];
+  document.getElementById('api-count').textContent = monitoredApis.length + ' monitored endpoints';
+  document.getElementById('api-endpoints').innerHTML = monitoredApis.map(function(api){
+    var tone = mcToneSpec(api.classification || 'unknown');
+    return '<div class="pipe-row"><div class="pipe-status '+tone.dot+'" style="width:8px;height:8px"></div><div class="pipe-name" style="font-size:11px">'+escapeHtml(api.name || api.id || 'endpoint')+'<div style="font-size:9px;color:var(--text4);font-family:var(--mono)">'+escapeHtml(api.path || '')+'</div></div><div class="pipe-info" style="font-size:10px">'+escapeHtml(api.note || ((api.latency_ms || 0) + 'ms'))+'</div></div>';
   }).join('');
 }
 
@@ -1669,56 +1936,76 @@ function buildChecklistPage(){
 //  DATA PIPELINE STATUS CHECK
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function checkPipelines(){
+  if(MC_ADMIN_STATUS){
+    renderPipelineStatus(MC_ADMIN_STATUS);
+    return;
+  }
   var badge = document.getElementById('pipe-badge');
-  badge.textContent = 'Checking...';
-
-  var pipes = document.querySelectorAll('#pipe-status-body .pipe-status');
-  // Check forex API
-  fetch('/api/forex').then(function(r){return r.json()}).then(function(d){
-    if(d&&d.rates) pipes[0].className='pipe-status ps-ok';
-    else pipes[0].className='pipe-status ps-stale';
-  }).catch(function(){pipes[0].className='pipe-status ps-error'});
-
-  // Check fuel API
-  fetch('/api/fuel').then(function(r){return r.json()}).then(function(d){
-    if(d&&(d.prices||d.data)) pipes[1].className='pipe-status ps-ok';
-    else pipes[1].className='pipe-status ps-stale';
-  }).catch(function(){pipes[1].className='pipe-status ps-error'});
-
-  // Check rates API
-  fetch('/api/rates').then(function(r){return r.json()}).then(function(d){
-    if(d) pipes[2].className='pipe-status ps-ok';
-    else pipes[2].className='pipe-status ps-stale';
-  }).catch(function(){pipes[2].className='pipe-status ps-error'});
-
-  // Others are cron-based, mark as OK for now
-  setTimeout(function(){
-    [3,4,5].forEach(function(i){if(pipes[i])pipes[i].className='pipe-status ps-ok'});
-    badge.textContent = 'Checked';
-  },500);
+  if(badge) badge.textContent = 'Loading...';
 }
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  AUTH GATE
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 var MC_KEY = 'mc_auth_token';
-var MC_VALID_HASH = '7a2f9x2026'; // simple key â€” change this to your chosen passphrase
+var MC_ADMIN_STORAGE_KEY = 'admin_key';
 
-function authenticate(){
+function setAuthHint(text, status){
+  var hint = document.getElementById('auth-hint');
+  if(!hint) return;
+  hint.textContent = text;
+  hint.style.color = mcToneSpec(status).color;
+}
+
+function clearMissionControlSession(){
+  sessionStorage.removeItem(MC_KEY);
+  sessionStorage.removeItem(MC_ADMIN_STORAGE_KEY);
+}
+
+async function authenticate(){
   var input = document.getElementById('auth-input');
+  var button = document.getElementById('auth-btn');
   var val = input.value.trim();
-  if(val === MC_VALID_HASH || sessionStorage.getItem(MC_KEY) === 'granted'){
-    sessionStorage.setItem(MC_KEY, 'granted');
-    // Set admin_key so /admin/ sub-pages don't re-prompt
-    sessionStorage.setItem('admin_key', 'Moly7174');
-    // Set AfroStream token so its admin page doesn't re-prompt
-    localStorage.setItem('afrostream_admin_token', 'Moly7174');
-    unlockDashboard();
-  } else {
+  if(!val){
     input.classList.add('error');
+    setAuthHint('Enter the live admin key to unlock Mission Control.', 'stale');
+    setTimeout(function(){input.classList.remove('error')},400);
+    input.focus();
+    return;
+  }
+
+  input.disabled = true;
+  if(button) button.disabled = true;
+  if(button) button.textContent = 'Validating...';
+  setAuthHint('Checking the key against /api/admin-session...', 'working');
+
+  try {
+    await mcFetchJson('/api/admin-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': val
+      },
+      body: JSON.stringify({ source: 'mission-control' })
+    });
+
+    sessionStorage.setItem(MC_KEY, 'granted');
+    sessionStorage.setItem(MC_ADMIN_STORAGE_KEY, val);
+    // Keep AfroStream aligned with the same validated admin key.
+    localStorage.setItem('afrostream_admin_token', val);
+    setAuthHint('Admin session verified. Loading live telemetry...', 'working');
+    unlockDashboard();
+  } catch (err) {
+    clearMissionControlSession();
+    input.classList.add('error');
+    setAuthHint('Invalid admin key. Mission Control stays locked until the backend accepts it.', 'broken');
     setTimeout(function(){input.classList.remove('error')},400);
     input.value = '';
     input.focus();
+  } finally {
+    input.disabled = false;
+    if(button) button.disabled = false;
+    if(button) button.textContent = 'Unlock';
   }
 }
 document.getElementById('auth-input').addEventListener('keydown',function(e){if(e.key==='Enter')authenticate()});
@@ -1730,13 +2017,26 @@ function unlockDashboard(){
   initAll();
 }
 
-// Check if already authed
-if(sessionStorage.getItem(MC_KEY)==='granted'){
-  unlockDashboard();
-} else {
-  // Hide everything behind gate
-  document.querySelector('.layout').style.display='none';
+function restoreMissionControlSession(){
+  var storedKey = sessionStorage.getItem(MC_ADMIN_STORAGE_KEY) || '';
+  if(sessionStorage.getItem(MC_KEY) !== 'granted' || !storedKey){
+    document.querySelector('.layout').style.display='none';
+    return;
+  }
+
+  setAuthHint('Restoring admin session from this browser tab...', 'working');
+  mcFetchJson('/api/admin-session', {
+    headers: { 'x-admin-key': storedKey }
+  }).then(function(){
+    unlockDashboard();
+  }).catch(function(){
+    clearMissionControlSession();
+    document.querySelector('.layout').style.display='none';
+    setAuthHint('Stored admin session expired or no longer matches the backend.', 'stale');
+  });
 }
+
+restoreMissionControlSession();
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  PLATFORM INFRASTRUCTURE PAGE (Comprehensive)

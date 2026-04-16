@@ -10,7 +10,7 @@
 
 const { getAllowedOrigin } = require('./utils/cors');
 
-var SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
+var DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 
 function getHeader(event, headerName) {
   var headers = event.headers || {};
@@ -40,11 +40,16 @@ exports.handler = async function(event) {
 
   // Admin-only endpoint
   var adminKey = getHeader(event, 'x-admin-key');
-  if (!adminKey || adminKey !== (process.env.ADMIN_KEY || process.env.ADMIN_SECRET)) {
+  var adminSecret = cleanEnvValue(process.env.ADMIN_KEY || process.env.ADMIN_SECRET);
+  if (!adminKey || adminKey !== adminSecret) {
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
-  var serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
+  var serviceKey = cleanEnvValue(
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SERVICE_KEY
+  );
   if (!serviceKey) {
     return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Service key not configured' }) };
   }
@@ -52,7 +57,7 @@ exports.handler = async function(event) {
   var params = event.queryStringParameters || {};
 
   // Query the scraper_health view
-  var url = SUPABASE_URL + '/rest/v1/scraper_health?select=*';
+  var url = getSupabaseUrl() + '/rest/v1/scraper_health?select=*';
   if (params.id) {
     url += '&scraper_id=eq.' + encodeURIComponent(params.id);
   }
@@ -94,3 +99,19 @@ exports.handler = async function(event) {
     return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: err.message }) };
   }
 };
+
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
+function getSupabaseUrl() {
+  var candidate = cleanEnvValue(
+    process.env.SUPABASE_AUTH_URL ||
+    process.env.SUPABASE_DATA_URL ||
+    process.env.SUPABASE_URL
+  );
+
+  return /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(candidate)
+    ? candidate
+    : DEFAULT_SUPABASE_URL;
+}

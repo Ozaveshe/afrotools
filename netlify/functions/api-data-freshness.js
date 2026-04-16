@@ -25,7 +25,8 @@ const { getAllowedOrigin } = require('./utils/cors');
 
 // Freshness thresholds per category (in minutes)
 var THRESHOLDS = {
-  forex:       { live: 30, ok: 120, stale: 1440 },
+  // ExchangeRate-API publishes daily source files, so a same-day read is still live.
+  forex:       { live: 1440, ok: 2880, stale: 10080 },
   fuel:        { live: 720, ok: 4320, stale: 10080 },
   commodities: { live: 1440, ok: 4320, stale: 10080 },
   electricity: { live: 1440, ok: 10080, stale: 43200 },

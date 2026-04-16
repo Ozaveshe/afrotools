@@ -8,9 +8,9 @@
  * DELETE /api/alerts?id=UUID    — deactivate alert (admin only)
  */
 
-const SUPABASE_DATA_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const { getAllowedOrigin } = require('./utils/cors');
 const SEVERITY_LEVELS = ['low', 'medium', 'high'];
+const DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -39,13 +39,33 @@ function getHeader(event, headerName) {
 }
 
 function getServiceKey() {
-  return process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
+  return cleanEnvValue(
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SERVICE_KEY
+  );
+}
+
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
+function getSupabaseUrl() {
+  const candidate = cleanEnvValue(
+    process.env.SUPABASE_AUTH_URL ||
+    process.env.SUPABASE_DATA_URL ||
+    process.env.SUPABASE_URL
+  );
+
+  return /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(candidate)
+    ? candidate
+    : DEFAULT_SUPABASE_URL;
 }
 
 function isAdmin(event) {
   const key = getHeader(event, 'x-admin-key');
-  const secret = process.env.ADMIN_SECRET || process.env.ADMIN_KEY;
-  return secret && key === secret;
+  const secret = cleanEnvValue(process.env.ADMIN_SECRET || process.env.ADMIN_KEY);
+  return !!secret && key === secret;
 }
 
 function normalizeCountryCodes(countryCodes) {
@@ -151,9 +171,10 @@ function buildSummary(alerts) {
 }
 
 async function supaFetch(path, options = {}) {
+  const baseUrl = getSupabaseUrl();
   const key = getServiceKey();
   if (!key) throw new Error('Missing service key');
-  const res = await fetch(`${SUPABASE_DATA_URL}/rest/v1/${path}`, {
+  const res = await fetch(`${baseUrl}/rest/v1/${path}`, {
     ...options,
     headers: {
       apikey: key,
@@ -197,7 +218,12 @@ exports.handler = async function (event) {
       query += `&or=(expires_at.is.null,expires_at.gte.${today})`;
     }
 
-    const result = await supaFetch(query);
+    let result;
+    try {
+      result = await supaFetch(query);
+    } catch (err) {
+      return jsonResponse(503, { error: 'Alerts unavailable', detail: err.message });
+    }
     if (result.status >= 400) {
       return jsonResponse(503, { error: 'Alerts unavailable' });
     }
@@ -224,13 +250,18 @@ exports.handler = async function (event) {
       return jsonResponse(400, { error: 'Invalid alert payload', fields: errors });
     }
 
-    const result = await supaFetch('alerts', {
-      method: 'POST',
-      body: JSON.stringify({
-        ...payload,
-        active: true,
-      }),
-    });
+    let result;
+    try {
+      result = await supaFetch('alerts', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...payload,
+          active: true,
+        }),
+      });
+    } catch (err) {
+      return jsonResponse(503, { error: 'Alert create failed', detail: err.message });
+    }
     return jsonResponse(result.status < 300 ? 201 : result.status, result.data);
   }
 
@@ -247,20 +278,30 @@ exports.handler = async function (event) {
       return jsonResponse(400, { error: 'No fields provided for update' });
     }
     payload.updated_at = new Date().toISOString();
-    const result = await supaFetch(`alerts?id=eq.${params.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(payload),
-    });
+    let result;
+    try {
+      result = await supaFetch(`alerts?id=eq.${params.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      return jsonResponse(503, { error: 'Alert update failed', detail: err.message });
+    }
     return jsonResponse(result.status < 300 ? 200 : result.status, result.data);
   }
 
   // --- DELETE: soft-delete ---
   if (event.httpMethod === 'DELETE') {
     if (!params.id) return jsonResponse(400, { error: 'Missing ?id= parameter' });
-    const result = await supaFetch(`alerts?id=eq.${params.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ active: false, updated_at: new Date().toISOString() }),
-    });
+    let result;
+    try {
+      result = await supaFetch(`alerts?id=eq.${params.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ active: false, updated_at: new Date().toISOString() }),
+      });
+    } catch (err) {
+      return jsonResponse(503, { error: 'Alert delete failed', detail: err.message });
+    }
     return jsonResponse(result.status < 300 ? 200 : result.status, { ok: true });
   }
 
