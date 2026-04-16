@@ -27,3 +27,9 @@ That file is the source of truth for:
 - `AfroJAMB` and `AfroStudy` are ecosystem product surfaces and are not part of the registry tool count.
 
 When updating counts or section labels, do not hardcode numbers into the page first. Update the shared mapping and let the education pages read from it.
+
+## Canonical Tool Rule
+
+- One user job should map to one primary education tool in the taxonomy.
+- If an older or alternate URL still matters for SEO continuity, keep it as an alias or redirect instead of a second registry-backed tool.
+- Current example: `/tools/ke-helb/` is the canonical Kenya HELB surface, while `/tools/helb-repayment/` should behave only as an alias route into that canonical page.

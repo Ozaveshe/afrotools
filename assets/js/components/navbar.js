@@ -121,7 +121,7 @@
         { label: 'Teacher Salary Scale Lookup', href: '/tools/teacher-salary/', emoji: '👨‍🏫', badge: 'NEW' },
         { label: 'Student Loan Repayment Calc', href: '/tools/student-loan-repay/', emoji: '💰', badge: 'NEW' },
         { label: 'NYSC Allowance Calculator', href: '/tools/nysc-allowance/', emoji: '🇳🇬', badge: 'NEW' },
-        { label: 'HELB Repayment Calculator', href: '/tools/helb-repayment/', emoji: '🇰🇪', badge: 'NEW' },
+        { label: 'Kenya HELB Calculator', href: '/tools/ke-helb/', emoji: '🇰🇪', badge: 'NEW' },
         { label: 'KCSE Grade Calculator', href: '/tools/kcse-calculator/', emoji: '🇰🇪', badge: 'NEW' },
         { label: 'Ghana NSS Allowance', href: '/tools/national-service-gh/', emoji: '🇬🇭', badge: 'NEW' },
         { label: 'University Admission Points', href: '/tools/university-admission/', emoji: '🎓', badge: 'NEW' },
@@ -747,17 +747,23 @@
       position: sticky;
       top: 0;
       z-index: 500;
+      --nav-shell-height: 60px;
+      --nav-inline-pad: 20px;
+      --nav-safe-top: env(safe-area-inset-top, 0px);
+      --nav-safe-right: env(safe-area-inset-right, 0px);
+      --nav-safe-bottom: env(safe-area-inset-bottom, 0px);
+      --nav-safe-left: env(safe-area-inset-left, 0px);
     }
 
     nav {
       position: relative;
-      height: 60px;
+      height: var(--nav-shell-height);
       background: rgba(248, 250, 253, 0.98);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
       display: flex; align-items: center;
-      padding: 0 20px;
+      padding: 0 max(var(--nav-inline-pad), var(--nav-safe-right)) 0 max(var(--nav-inline-pad), var(--nav-safe-left));
       transition: box-shadow 0.2s;
     }
     nav.scrolled { box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 24px rgba(0,0,0,0.04); }
@@ -798,7 +804,7 @@
     /* MEGA MENU */
     .mega {
       position: fixed;
-      top: 60px; left: 0; right: 0;
+      top: var(--nav-shell-height); left: 0; right: 0;
       background: rgba(255,255,255,0.97);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
       backdrop-filter: saturate(180%) blur(20px);
@@ -856,11 +862,13 @@
     .pill-54 { font-size: 0.66rem; font-weight: 600; color: #6b7280; padding: 4px 10px; border-radius: 20px; border: 1px solid #e5e7eb; background: #f9fafb; white-space: nowrap; }
 
     .btn-login {
+      display: inline-flex; align-items: center; justify-content: center;
       font-size: 0.79rem; font-weight: 600; color: #374151;
       padding: 7px 14px; border-radius: 980px;
       border: 1.5px solid rgba(0,0,0,0.12); background: rgba(0,0,0,0.03);
       text-decoration: none; white-space: nowrap;
       transition: all 0.13s; cursor: pointer;
+      min-height: 40px;
     }
     .btn-login:hover { border-color: #0062CC; color: #0062CC; }
 
@@ -873,6 +881,7 @@
       font-size: 0.78rem; font-weight: 800; letter-spacing: 0.01em;
       transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
       box-shadow: 0 1px 8px rgba(245,166,35,0.12);
+      min-height: 40px;
     }
     .btn-pro:hover {
       border-color: rgba(245,166,35,0.52);
@@ -888,6 +897,7 @@
       border: none; cursor: pointer; white-space: nowrap;
       transition: background 0.13s, transform 0.1s;
       box-shadow: 0 1px 4px rgba(0,122,255,0.28);
+      min-height: 40px;
     }
     .cta:hover  { background: #005BBF; transform: translateY(-1px); }
     .cta:active { transform: translateY(0); }
@@ -901,6 +911,7 @@
       border: 1.5px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02);
       cursor: pointer; white-space: nowrap; transition: all 0.13s;
       font-family: 'DM Sans', system-ui, sans-serif;
+      min-height: 40px;
     }
     .lang-btn-label { transition: width 0.15s, opacity 0.15s; }
     .lang-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
@@ -934,12 +945,17 @@
     /* MOBILE DRAWER */
     .mob {
       display: none; position: fixed;
-      top: 60px; left: 0; right: 0; bottom: 0;
+      top: var(--nav-shell-height); left: 0; right: 0; bottom: 0;
       background: #fff; z-index: 498;
       overflow-y: auto; flex-direction: column;
       opacity: 0; pointer-events: none;
       transition: opacity 0.2s;
-      padding-bottom: env(safe-area-inset-bottom, 48px);
+      min-height: calc(100dvh - var(--nav-shell-height));
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding-right: var(--nav-safe-right);
+      padding-bottom: calc(20px + var(--nav-safe-bottom));
+      padding-left: var(--nav-safe-left);
     }
     .mob.open { opacity: 1; pointer-events: all; }
 
@@ -966,6 +982,7 @@
       padding: 20px; border-top: 1px solid #f3f4f6; margin-top: 8px;
       display: flex; flex-direction: column; gap: 10px;
     }
+    .mob-footer a { min-height: 48px; }
     .mob-cta {
       display: flex; align-items: center; justify-content: center;
       padding: 15px; border-radius: 980px; font-size: 0.95rem; font-weight: 700;
@@ -994,12 +1011,19 @@
       .btn-login span:first-child { margin-right: 0 !important; }
       .burger { display: flex; }
       .mob    { display: flex; }
-      nav     { padding: 0 16px; max-width: 100vw !important; overflow-x: hidden !important; }
+      nav     {
+        padding-left: max(16px, var(--nav-safe-left));
+        padding-right: max(16px, var(--nav-safe-right));
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+      }
     }
     @media (max-width: 480px) {
+      :host {
+        --nav-shell-height: 56px;
+        --nav-inline-pad: 16px;
+      }
       .logo-tag { display: none; }
-      nav { height: 56px; }
-      .mob { top: 56px; }
     }
 
     /* SEARCH BUTTON */
@@ -1152,12 +1176,13 @@
       border-radius: 10px; border: 1.5px solid #e5e7eb;
       background: #f9fafb;
       transition: border-color 0.13s;
+      min-height: 52px;
     }
     .mob-search-bar:focus-within { border-color: #0062CC; background: #fff; }
     .mob-search-bar svg { width: 16px; height: 16px; color: #9ca3af; flex-shrink: 0; }
     .mob-search-input {
       flex: 1; border: none; outline: none;
-      font-size: 0.9rem; font-weight: 500; color: #111827;
+      font-size: 16px; font-weight: 500; color: #111827;
       font-family: 'DM Sans', system-ui, sans-serif;
       background: transparent;
     }
@@ -1167,9 +1192,10 @@
     }
     .mob-search-results .search-result {
       padding: 12px 12px;
+      min-height: 56px;
     }
     .mob-search-results .search-result-icon {
-      width: 36px; height: 36px;
+      width: 40px; height: 40px;
     }
     .mob-search-empty {
       padding: 20px 16px; text-align: center;
@@ -1198,6 +1224,8 @@
       this.attachShadow({ mode: 'open' });
       this._menuOpen = false;
       this._megaOpen = false;
+      this._lockedScrollY = 0;
+      this._bodyLocked = false;
     }
 
     connectedCallback() {
@@ -1210,6 +1238,10 @@
         document.head.appendChild(link);
       }
       this._render(); this._bind();
+    }
+
+    disconnectedCallback() {
+      if (this._bodyLocked) this._unlockBodyScroll();
     }
     get active() { return this.getAttribute('active') || ''; }
 
@@ -1451,6 +1483,27 @@
 
       const openMega  = () => { this._megaOpen = true;  allBtn.classList.add('open'); mega.classList.add('open'); allBtn.setAttribute('aria-expanded','true'); };
       const closeMega = () => { this._megaOpen = false; allBtn.classList.remove('open'); mega.classList.remove('open'); allBtn.setAttribute('aria-expanded','false'); };
+      const resetMobileSearch = () => {
+        const mobSearchInput = sr.querySelector('.mob-search-input');
+        const mobSearchResults = sr.querySelector('#mobSearchResults');
+        const mobCategoriesWrap = sr.querySelector('#mobCategoriesWrap');
+        if (mobSearchInput) mobSearchInput.value = '';
+        if (mobSearchResults) mobSearchResults.innerHTML = '';
+        if (mobCategoriesWrap) mobCategoriesWrap.style.display = '';
+      };
+      const setMenuOpen = (isOpen) => {
+        this._menuOpen = isOpen;
+        burger?.classList.toggle('open', this._menuOpen);
+        mob?.classList.toggle('open', this._menuOpen);
+        burger?.setAttribute('aria-expanded', String(this._menuOpen));
+        if (this._menuOpen) {
+          closeMega();
+          this._lockBodyScroll();
+          return;
+        }
+        this._unlockBodyScroll();
+        resetMobileSearch();
+      };
 
       // Click toggle
       allBtn?.addEventListener('click', e => { e.stopPropagation(); this._megaOpen ? closeMega() : openMega(); });
@@ -1481,24 +1534,20 @@
 
       // Escape
       document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { closeMega(); langDrop?.classList.remove('open'); if (this._menuOpen) burger?.click(); }
+        if (e.key === 'Escape') {
+          closeMega();
+          langDrop?.classList.remove('open');
+          if (this._menuOpen) setMenuOpen(false);
+        }
       });
 
       // Mobile hamburger
       burger?.addEventListener('click', () => {
-        this._menuOpen = !this._menuOpen;
-        burger.classList.toggle('open', this._menuOpen);
-        mob.classList.toggle('open', this._menuOpen);
-        burger.setAttribute('aria-expanded', String(this._menuOpen));
-        document.body.style.overflow = this._menuOpen ? 'hidden' : '';
-        if (this._menuOpen) closeMega();
+        setMenuOpen(!this._menuOpen);
       });
 
       mob?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-        this._menuOpen = false;
-        burger?.classList.remove('open');
-        mob.classList.remove('open');
-        document.body.style.overflow = '';
+        setMenuOpen(false);
       }));
 
       // ── ACTIVE PAGE INDICATOR ──
@@ -1713,15 +1762,6 @@
       });
 
       // Clear mobile search when closing drawer
-      const origBurgerClick = () => {
-        if (!this._menuOpen && mobSearchInput) {
-          mobSearchInput.value = '';
-          mobSearchResults.innerHTML = '';
-          if (mobCategoriesWrap) mobCategoriesWrap.style.display = '';
-        }
-      };
-      burger?.addEventListener('click', origBurgerClick);
-
       // ── AUTH STATE: update Sign-in button when user logs in/out ──
       const loginBtn = sr.querySelector('.btn-login');
       const mobLoginBtn = sr.querySelector('.mob-login');
@@ -1805,6 +1845,30 @@
 
       // Listen for auth state changes
       window.addEventListener('afro-auth-change', updateAuthUI);
+    }
+
+    _lockBodyScroll() {
+      if (this._bodyLocked) return;
+      this._lockedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.position = 'fixed';
+      document.body.style.top = '-' + this._lockedScrollY + 'px';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      this._bodyLocked = true;
+    }
+
+    _unlockBodyScroll() {
+      if (!this._bodyLocked) return;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      window.scrollTo(0, this._lockedScrollY || 0);
+      this._bodyLocked = false;
     }
   }
 

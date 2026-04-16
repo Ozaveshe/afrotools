@@ -19,11 +19,12 @@
 <meta name="twitter:description" content="165+ authentic African recipes with step-by-step timers, serving adjustment, ingredient costs, and AI cooking advisor.">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="style.css?v=124095ea">
+<link rel="stylesheet" href="style.css?v=20260416a">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -105,24 +106,33 @@
 
   <!-- HERO -->
   <section class="ak-hero">
-    <div class="ak-hero-inner">
+    <div class="ak-hero-inner ak-hero-home">
       <div class="ak-hero-text">
         <nav class="ak-breadcrumb" aria-label="breadcrumb">
           <a href="/">AfroTools</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>AfroKitchen</span>
         </nav>
-        <div style="display:flex;gap:6px;margin-bottom:14px">
+        <div class="ak-hero-intro">
+        <div class="ak-hero-badges">
           <span class="ak-badge ak-badge-live">LIVE</span>
           <span class="ak-badge ak-badge-ai">AI POWERED</span>
-          <span class="ak-badge ak-badge-live">54 COUNTRIES</span>
+          <span class="ak-badge ak-badge-warm">54 COUNTRIES</span>
         </div>
         <div class="ak-eyebrow">AFRICAN CUISINE</div>
         <h1>Recipes from Every African Country</h1>
-        <p class="ak-hero-sub">165+ authentic dishes from all 54 countries. Step-by-step cooking timers, serving size scaling, ingredient costs in your currency, and an AI cooking advisor.</p>
+        <p class="ak-hero-sub">AfroKitchen is a warm editorial kitchen atlas for African food. Browse signature dishes, scale ingredients, estimate local costs, and get practical cooking help without losing the story behind the plate.</p>
         <div class="ak-hero-stats">
           <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent" id="recipe-count">165+</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Countries</div><div class="ak-stat-val">54</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Regions</div><div class="ak-stat-val">5</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Price</div><div class="ak-stat-val accent">Free</div></div>
+        </div>
+        <div class="ak-hero-actions">
+          <a href="#recipes-grid" class="ak-btn ak-btn-primary">Start browsing</a>
+          <a href="submit.html" class="ak-btn ak-btn-secondary">Share a family recipe</a>
+        </div>
+        <div class="ak-hero-anchors">
+          <a href="#country-grid" class="ak-support-link">Browse all countries</a>
+          <a href="#collections-grid" class="ak-support-link">Jump to curated collections</a>
         </div>
 
         <!-- Search -->
@@ -132,16 +142,31 @@
         </div>
 
         <!-- Filters -->
-        <div class="ak-filters">
-          <select class="ak-filter-select" id="filter-country" aria-label="Filter by country"><option value="">All Countries</option></select>
-          <select class="ak-filter-select" id="filter-category" aria-label="Filter by category"><option value="">All Categories</option></select>
-          <select class="ak-filter-select" id="filter-diet" aria-label="Filter by diet"><option value="">Any Diet</option></select>
-          <select class="ak-filter-select" id="filter-difficulty" aria-label="Filter by difficulty"><option value="">Any Difficulty</option></select>
+        <div class="ak-filter-deck">
+          <p class="ak-filter-note">Filter the archive by country, dish type, diet, or difficulty and the recipe board updates instantly.</p>
+          <div class="ak-filters">
+            <select class="ak-filter-select" id="filter-country" aria-label="Filter by country"><option value="">All Countries</option></select>
+            <select class="ak-filter-select" id="filter-category" aria-label="Filter by category"><option value="">All Categories</option></select>
+            <select class="ak-filter-select" id="filter-diet" aria-label="Filter by diet"><option value="">Any Diet</option></select>
+            <select class="ak-filter-select" id="filter-difficulty" aria-label="Filter by difficulty"><option value="">Any Difficulty</option></select>
+          </div>
+        </div>
         </div>
       </div>
 
-      <!-- Featured recipe -->
-      <div class="ak-hero-preview" id="featured-recipe"></div>
+      <div class="ak-hero-aside">
+        <div class="ak-hero-preview" id="featured-recipe"></div>
+        <div class="ak-hero-support">
+          <div class="ak-support-card">
+            <div class="ak-support-label">Why it feels useful</div>
+            <p class="ak-support-copy">The homepage now leads with one strong recipe moment, quick routing into countries and collections, and a tighter search deck instead of competing blocks.</p>
+          </div>
+          <div class="ak-support-card">
+            <div class="ak-support-label">What you can do</div>
+            <p class="ak-support-copy">Find a dish for tonight, compare regional cuisines, and submit the recipe your family always gets asked about.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -159,7 +184,7 @@
       </div>
       <div class="ak-grid" id="recipes-grid"></div>
       <div class="ak-empty" id="recipes-empty" style="display:none">
-        <div class="ak-empty-icon">&#x1F373;</div>
+        <div class="ak-empty-mark">AK</div>
         <h3>No recipes found</h3>
         <p>Try adjusting your filters or search term</p>
       </div>
@@ -200,9 +225,6 @@
     </div>
   </section>
 
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
   <!-- FAQ -->
   <section class="ak-section">
     <div class="ak-container">
@@ -210,49 +232,54 @@
         <div class="ak-section-eyebrow">FAQ</div>
         <h2 class="ak-section-title">Frequently Asked Questions</h2>
       </div>
-      <div style="max-width:800px">
-        <details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden" open>
-          <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">How many African recipes does AfroKitchen have?<span style="font-size:.8rem;color:#64748b">↓</span></summary>
-          <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">AfroKitchen currently has over 165 authentic recipes from all 54 African countries, spanning West African, East African, North African, Southern African, and Central African cuisines.</div>
+      <div class="ak-faq">
+        <details class="ak-faq-item" open>
+          <summary>How many African recipes does AfroKitchen have?</summary>
+          <div class="ak-faq-answer">AfroKitchen currently has over 165 authentic recipes from all 54 African countries, spanning West African, East African, North African, Southern African, and Central African cuisines.</div>
         </details>
-        <details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
-          <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Can I adjust serving sizes?<span style="font-size:.8rem;color:#64748b">↓</span></summary>
-          <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Yes. Every recipe supports dynamic serving size adjustment. Change the number of servings and all ingredient quantities update automatically.</div>
+        <details class="ak-faq-item">
+          <summary>Can I adjust serving sizes?</summary>
+          <div class="ak-faq-answer">Yes. Every recipe supports dynamic serving size adjustment. Change the number of servings and all ingredient quantities update automatically.</div>
         </details>
-        <details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
-          <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Does AfroKitchen show ingredient costs?<span style="font-size:.8rem;color:#64748b">↓</span></summary>
-          <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Yes. Ingredient costs are shown in local African currencies including NGN, KES, GHS, and ZAR, so you can estimate how much a dish will cost to make.</div>
+        <details class="ak-faq-item">
+          <summary>Does AfroKitchen show ingredient costs?</summary>
+          <div class="ak-faq-answer">Yes. Ingredient costs are shown in local African currencies including NGN, KES, GHS, and ZAR, so you can estimate how much a dish will cost to make.</div>
         </details>
-        <details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
-          <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Is AfroKitchen free to use?<span style="font-size:.8rem;color:#64748b">↓</span></summary>
-          <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Completely free. Browse recipes, use cooking timers, adjust servings, and get AI cooking advice — all at no cost.</div>
+        <details class="ak-faq-item">
+          <summary>Is AfroKitchen free to use?</summary>
+          <div class="ak-faq-answer">Completely free. Browse recipes, use cooking timers, adjust servings, and get AI cooking advice at no cost.</div>
         </details>
-        <details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
-          <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Can I submit my own recipe?<span style="font-size:.8rem;color:#64748b">↓</span></summary>
-          <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Yes! Click the 'Submit a Recipe' button to share your family's traditional dish with the AfroKitchen community.</div>
+        <details class="ak-faq-item">
+          <summary>Can I submit my own recipe?</summary>
+          <div class="ak-faq-answer">Yes. Use the submit page to share your family's dish with the AfroKitchen community.</div>
         </details>
       </div>
     </div>
   </section>
 
   <!-- AI Advisor -->
-  <section style="max-width:800px;margin:0 auto;padding:32px 24px">
-  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px">
-      <h3 style="font-size:15px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;margin:0">🤖 AfroKitchen Advisor <span style="padding:3px 9px;background:#EFF6FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;color:var(--color-primary);font-weight:700">AI</span></h3>
-      <span style="font-size:11px;color:#9ca3af">Powered by Claude</span>
+  <section class="ak-section">
+  <div class="ak-container ak-narrow">
+  <div class="ak-advisor">
+    <div class="ak-advisor-head">
+      <div class="ak-advisor-title-group">
+        <div class="ak-advisor-kicker">Kitchen guidance</div>
+        <h3>AfroKitchen Advisor</h3>
+        <div class="ak-advisor-meta">Ask about substitutions, scaling, pairings, and technique. Up to three exchanges per session.</div>
+      </div>
+      <span class="ak-advisor-badge">Powered by Claude</span>
     </div>
-    <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.5">Ask any question about African cooking, ingredients, and recipes. Max 3 exchanges per session.</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
-      <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">Substitute ingredients for this recipe</div>
-      <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">Scale this recipe for 20 people</div>
-      <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">Suggest side dishes for jollof rice</div>
+    <div class="ak-advisor-suggestions">
+      <button type="button" class="ak-advisor-suggestion" onclick="askAI(this.textContent)">Substitute ingredients for this recipe</button>
+      <button type="button" class="ak-advisor-suggestion" onclick="askAI(this.textContent)">Scale this recipe for 20 people</button>
+      <button type="button" class="ak-advisor-suggestion" onclick="askAI(this.textContent)">Suggest side dishes for jollof rice</button>
     </div>
-    <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
-    <div style="display:flex;gap:8px">
-      <input type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
-      <button id="aiBtn" onclick="askAI()" style="padding:10px 20px;background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
+    <div id="aiChat" class="ak-advisor-messages"></div>
+    <div class="ak-advisor-input-wrap">
+      <input type="text" class="ak-advisor-input" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()">
+      <button id="aiBtn" class="ak-advisor-send" onclick="askAI()">Ask</button>
     </div>
+  </div>
   </div>
   </section>
 
@@ -324,20 +351,31 @@
     var card = document.createElement('a');
     card.className = 'ak-recipe-card';
     card.href = 'recipe.html?slug=' + r.slug;
-    var catEmojis = { main:'🍚', soup_stew:'🍲', rice:'🍛', snack:'🍢', dessert:'🍮', drink:'🥤', breakfast:'🍳', side:'🥗', street_food:'🍖', starter:'🥘' };
+    var categoryLabels = {
+      main: 'Main dish',
+      soup_stew: 'Soup or stew',
+      rice: 'Rice dish',
+      snack: 'Snack',
+      dessert: 'Dessert',
+      drink: 'Drink',
+      breakfast: 'Breakfast',
+      side: 'Side',
+      street_food: 'Street food',
+      starter: 'Starter'
+    };
     var thumbHtml = r.image_url
       ? '<div class="ak-recipe-card-thumb"><img class="ak-recipe-card-img" src="' + r.image_url + '" alt="' + (r.image_alt || r.name) + '" loading="lazy" onerror="this.parentElement.className+=\' ak-img-fallback\';this.style.display=\'none\'"></div>'
-      : '<div class="ak-recipe-card-thumb ak-img-fallback"><span class="ak-card-emoji">' + (catEmojis[r.category] || '🍽️') + '</span></div>';
+      : '<div class="ak-recipe-card-thumb ak-img-fallback"><div class="ak-card-fallback"><div class="ak-card-fallback-label">' + (categoryLabels[r.category] || 'AfroKitchen') + '</div><p class="ak-card-fallback-title">' + r.name + '</p></div></div>';
     card.innerHTML = thumbHtml +
       '<div class="ak-recipe-card-body">' +
         '<div class="ak-recipe-card-flag">' + (country.flag || '') + ' ' + r.country_name + '</div>' +
-        '<div class="ak-recipe-card-title">' + r.name + '</div>' +
-        '<div class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + (r.description && r.description.length > 100 ? '...' : '') + '</div>' +
+        '<h3 class="ak-recipe-card-title">' + r.name + '</h3>' +
+        '<p class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + (r.description && r.description.length > 100 ? '...' : '') + '</p>' +
         '<div class="ak-recipe-card-meta">' +
-          '<span>&#x23F1; ' + totalMin + ' min</span>' +
-          '<span>&#x1F37D; ' + r.default_servings + ' servings</span>' +
-          '<span>' + (r.difficulty || 'medium') + '</span>' +
-          (r.calories ? '<span>' + r.calories + ' cal</span>' : '') +
+          '<span><small>Time</small><strong>' + totalMin + ' min</strong></span>' +
+          '<span><small>Serves</small><strong>' + r.default_servings + '</strong></span>' +
+          '<span><small>Level</small><strong>' + (r.difficulty || 'medium') + '</strong></span>' +
+          (r.calories ? '<span><small>Energy</small><strong>' + r.calories + ' cal</strong></span>' : '') +
         '</div>' +
       '</div>';
     return card;
@@ -362,7 +400,7 @@
     recipes.forEach(function (r) {
       grid.appendChild(renderRecipeCard(r));
     });
-    document.getElementById('recipe-count').textContent = recipes.length + '+';
+    document.getElementById('recipe-count').textContent = String(recipes.length);
   }
 
   // ── Featured recipe ──
@@ -374,17 +412,14 @@
     var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
     var featImgHtml = r.image_url
       ? '<img class="ak-featured-img" src="' + r.image_url + '" alt="' + r.name + '" onerror="this.style.display=\'none\'">'
-      : '<div class="ak-featured-img" style="background:linear-gradient(135deg,#1A1008,#2A1A0A 60%,rgba(212,101,46,.3) 100%)"></div>';
+      : '<div class="ak-featured-fallback"><div class="ak-featured-kicker">Featured recipe</div><div class="ak-card-fallback-title">' + r.name + '</div></div>';
     document.getElementById('featured-recipe').innerHTML =
       '<a class="ak-featured-card" href="recipe.html?slug=' + r.slug + '">' +
         featImgHtml +
         '<div class="ak-featured-overlay">' +
+          '<div class="ak-featured-label">Featured recipe</div>' +
           '<h3>' + r.name + '</h3>' +
-          '<div class="ak-featured-meta">' +
-            '<span>' + (country.flag || '') + ' ' + r.country_name + '</span>' +
-            '<span>&#x23F1; ' + totalMin + ' min</span>' +
-            '<span>Serves ' + r.default_servings + '</span>' +
-          '</div>' +
+          '<p class="ak-featured-meta"><strong>' + (country.flag || '') + ' ' + r.country_name + '</strong> · ' + totalMin + ' min · Serves ' + r.default_servings + '</p>' +
         '</div>' +
       '</a>';
   }
@@ -450,8 +485,9 @@ async function askAI(preset){
   document.getElementById('aiBtn').disabled=true;
   document.getElementById('aiQ').value='';
   var chat=document.getElementById('aiChat');
-  var uMsg=document.createElement('div');uMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%;background:#EFF6FF;color:#111;border:1px solid rgba(0,122,255,.12);align-self:flex-end;font-weight:500';uMsg.textContent=q;chat.appendChild(uMsg);
-  var typing=document.createElement('div');typing.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;color:#9ca3af;font-style:italic;background:#f9fafb;border:1px solid #f3f4f6;align-self:flex-start';typing.textContent='Thinking…';chat.appendChild(typing);chat.scrollTop=9999;
+  var uMsg=document.createElement('div');
+  uMsg.className='ak-advisor-msg user';uMsg.style.cssText='';uMsg.textContent=q;chat.appendChild(uMsg);
+  var typing=document.createElement('div');typing.className='ak-advisor-msg ai is-thinking';typing.textContent='Thinking...';chat.appendChild(typing);chat.scrollTop=9999;
   var msgs=chatHistory.concat([{role:'user',content:q}]);
   try{
     var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'afrokitchen',system:'',messages:msgs,maxTokens:500})});
@@ -461,11 +497,11 @@ async function askAI(preset){
     var reply=data.reply||data.content||'Sorry, something went wrong.';
     chatHistory.push({role:'user',content:q});chatHistory.push({role:'assistant',content:reply});
     aiExchanges++;
-    var bMsg=document.createElement('div');bMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%;background:#f9fafb;color:#374151;border:1px solid #f3f4f6;align-self:flex-start;white-space:pre-wrap';bMsg.textContent=reply;chat.appendChild(bMsg);
+    var bMsg=document.createElement('div');bMsg.className='ak-advisor-msg ai';bMsg.style.whiteSpace='pre-wrap';bMsg.textContent=reply;chat.appendChild(bMsg);
     if(aiExchanges>=3){document.getElementById('aiQ').placeholder='Session limit reached (3/3)';document.getElementById('aiQ').disabled=true;document.getElementById('aiBtn').disabled=true;}
   }catch(e){
     typing.remove();
-    var eMsg=document.createElement('div');eMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;background:#fef3cd;color:#92400e;border:1px solid #fde68a;align-self:flex-start';eMsg.textContent='AI advisor is currently unavailable. Please try again later.';chat.appendChild(eMsg);
+    var eMsg=document.createElement('div');eMsg.className='ak-advisor-msg ai';eMsg.textContent='AI advisor is currently unavailable. Please try again later.';chat.appendChild(eMsg);
   }
   aiLoading=false;if(aiExchanges<3)document.getElementById('aiBtn').disabled=false;chat.scrollTop=9999;
 }

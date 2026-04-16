@@ -473,17 +473,17 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   flex-wrap: wrap;
   align-items: center;
 }
-.rev-meta .pill {
+.rev-meta .meta-chip {
   padding: 4px 10px;
   background: #f1f5f9;
   border-radius: 100px;
   color: #475569;
 }
-.rev-meta .pill.subj { background: #eff6ff; color: #1d4ed8; }
-.rev-meta .pill.wrong { background: #fef2f2; color: #b91c1c; }
-.rev-meta .pill.correct { background: #f0fdf4; color: #15803d; }
-.rev-meta .pill.skipped { background: #fffbeb; color: #b45309; }
-.rev-meta .pill.ungraded { background: #f8fafc; color: #64748b; }
+.rev-meta .meta-chip.subj { background: #eff6ff; color: #1d4ed8; }
+.rev-meta .meta-chip.wrong { background: #fef2f2; color: #b91c1c; }
+.rev-meta .meta-chip.correct { background: #f0fdf4; color: #15803d; }
+.rev-meta .meta-chip.skipped { background: #fffbeb; color: #b45309; }
+.rev-meta .meta-chip.ungraded { background: #f8fafc; color: #64748b; }
 
 .rev-q {
   font-size: .95rem;
@@ -573,6 +573,26 @@ src="https://www.facebook.com/tr?id=1443999710469672&ev=PageView&noscript=1"
   text-transform: uppercase;
   color: #64748b;
   margin-bottom: 8px;
+}
+@media (max-width: 820px) {
+  #cbt-submit-top {
+    min-height: 44px;
+    padding: 12px 18px !important;
+    font-size: 1rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cbt-dialog-btn,
+  .rev-filter,
+  .rev-actions button {
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>
 
@@ -1283,15 +1303,15 @@ function renderReviewCard(r) {
   card.className = "rev-card " + status;
 
   var subjLabel = (SUBJ_META[r.subject] && SUBJ_META[r.subject].label) || r.subject;
-  var statusPill = r.wrong ? '<span class="pill wrong">❌ Wrong</span>'
-    : r.correct ? '<span class="pill correct">✓ Correct</span>'
-    : r.skipped ? '<span class="pill skipped">⊘ Skipped</span>'
-    : '<span class="pill ungraded">— Ungraded</span>';
+      var statusPill = r.wrong ? '<span class="meta-chip wrong">❌ Wrong</span>'
+        : r.correct ? '<span class="meta-chip correct">✓ Correct</span>'
+        : r.skipped ? '<span class="meta-chip skipped">⊘ Skipped</span>'
+        : '<span class="meta-chip ungraded">— Ungraded</span>';
 
-  var meta = '<div class="rev-meta"><span class="pill subj">' + subjLabel + '</span>'
-    + (r.year ? '<span class="pill">JAMB ' + r.year + '</span>' : '')
-    + '<span class="pill">Q' + (r.index + 1) + '</span>'
-    + statusPill + '</div>';
+      var meta = '<div class="rev-meta"><span class="meta-chip subj">' + subjLabel + '</span>'
+        + (r.year ? '<span class="meta-chip">JAMB ' + r.year + '</span>' : '')
+        + '<span class="meta-chip">Q' + (r.index + 1) + '</span>'
+        + statusPill + '</div>';
 
   var optsHtml = '';
   ["A","B","C","D","E"].forEach(function(letter){

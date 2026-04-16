@@ -63,8 +63,7 @@
         'boarding-school',
         'edu-savings',
         'student-loan-repay',
-        'ke-helb',
-        'helb-repayment'
+        'ke-helb'
       ],
       featuredIds: [
         'school-fees',
@@ -72,7 +71,7 @@
         'boarding-school',
         'edu-savings',
         'student-loan-repay',
-        'helb-repayment'
+        'ke-helb'
       ]
     },
     {
@@ -219,11 +218,10 @@
       key: 'loans',
       title: 'Student Loans & Repayment',
       eyebrow: 'Student Finance',
-      description: 'Track student-loan repayment paths, HELB tools, and supporting budget planning.',
+      description: 'Track student-loan repayment paths, the canonical Kenya HELB calculator, and supporting budget planning.',
       toolIds: [
         'student-loan-repay',
         'ke-helb',
-        'helb-repayment',
         'student-budget',
         'edu-savings'
       ],

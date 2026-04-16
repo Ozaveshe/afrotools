@@ -40,6 +40,10 @@ Do not treat AfroStream news like the static blog.
 If the task is a normal blog article, edit repo files.
 If the task is a creator news item, use the live content path first.
 
+Quality beats cadence.
+
+If a post cannot be made fresh, well-sourced, and substantial, skip it and report the blocker instead of shipping thin filler.
+
 ## Main Blog Workflow
 
 Use this for finance, tax, business, tool, and country guides that should live under `/blog/`.
@@ -69,6 +73,11 @@ Use this for finance, tax, business, tool, and country guides that should live u
 - Prefer practical and current topics over generic thought pieces.
 - For time-sensitive rules, rates, deadlines, or legal guidance, verify against official sources before writing.
 - Use concrete dates inside the article when "current" matters.
+- Default to substantial long-form coverage for competitive evergreen topics. A normal target is 1,800 to 2,800 words when the topic supports it.
+- Do not pad for length. Add depth through real sections, source-backed detail, tables, FAQs, comparisons, and tool-linked next steps.
+- No em dashes in titles, headings, body copy, meta descriptions, or CTA text.
+- No invented user stories, fictional mini-case-studies, fake scenarios, or made-up examples.
+- If an example is needed, use a formula walkthrough based on real published thresholds or an official worked example from a cited source.
 - Avoid thin content. Match the depth of neighboring high-quality blog posts.
 - Link back to relevant tools, country pages, or other blog guides.
 
@@ -129,6 +138,9 @@ Recommended fields:
 - Focus on African creators, platforms, business moves, rankings, audience growth, or monetization.
 - Keep stories tighter than the main blog.
 - Use specific names, dates, platforms, and countries.
+- No em dashes anywhere in publishable copy.
+- No invented milestones, fake creator stories, synthetic drama, or placeholder events.
+- If a story cannot be tied to a real verified source, do not publish it.
 - Avoid unverified gossip. If a claim is not verified, do not present it as fact.
 - Favor clean, skimmable structure over long-form essay writing.
 
@@ -173,6 +185,7 @@ A safe operating pattern is two batches per day:
 Pause and call it out when:
 
 - a "current" topic cannot be verified
+- the source set is too weak to support a substantial article
 - a live publish path is blocked by missing auth
 - the new post would obviously duplicate an existing slug or keyword target
 - the change needs both repo edits and live database publishing but only one side is available

@@ -8,9 +8,12 @@
 <meta name="description" content="Explore authentic recipes from African cuisine. Step-by-step cooking instructions with timers and AI advisor.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="style.css?v=124095ea">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="style.css?v=20260416a">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/country" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/country" />
 <meta property="og:locale" content="en_US">
@@ -22,33 +25,56 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="canonical" href="https://afrotools.com/tools/afrokitchen/">
+<meta name="robots" content="noindex, follow">
 </head>
 <body>
 <afro-navbar></afro-navbar>
 <div class="ak-page">
-  <section class="ak-hero" style="padding-bottom:40px">
-    <div class="ak-hero-inner" style="grid-template-columns:1fr">
-      <div class="ak-hero-text" style="max-width:700px">
+  <section class="ak-hero">
+    <div class="ak-hero-inner ak-hero-single">
+      <div class="ak-hero-text">
         <nav class="ak-breadcrumb" aria-label="breadcrumb">
           <a href="/">AfroTools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><span id="breadcrumb-country">Country</span>
         </nav>
+        <div class="ak-hero-badges">
+          <span class="ak-badge ak-badge-live">Country cuisine</span>
+          <span class="ak-badge ak-badge-ai">AfroKitchen</span>
+        </div>
         <div class="ak-eyebrow" id="country-region"></div>
         <h1 id="country-title"></h1>
         <p class="ak-hero-sub" id="country-desc"></p>
+      </div>
+      <div class="ak-hero-facts">
+        <div class="ak-fact-card">
+          <div class="ak-fact-card-label">Recipes from this country</div>
+          <span class="ak-fact-card-value" id="country-count">--</span>
+          <p class="ak-fact-card-copy">A single-country surface that now feels like a destination page, not a leftover filter.</p>
+        </div>
+        <div class="ak-fact-card">
+          <div class="ak-fact-card-label">Kitchen context</div>
+          <p class="ak-fact-card-copy" id="country-currency-copy">Regional staples, difficulty filters, and faster routing into the strongest dishes.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="ak-section">
     <div class="ak-container">
+      <div class="ak-section-head rv">
+        <div class="ak-section-eyebrow">Country board</div>
+        <h2 class="ak-section-title">Explore the dishes</h2>
+        <p class="ak-section-sub">Filter the country archive to find easier weeknight dishes or deeper weekend cooking projects.</p>
+      </div>
       <div class="ak-filters ak-filters-light">
+        <div class="ak-filter-note">Refine this country view by course type or cooking difficulty.</div>
         <select class="ak-filter-select" id="filter-category" aria-label="Filter by category"><option value="">All Categories</option></select>
         <select class="ak-filter-select" id="filter-difficulty" aria-label="Filter by difficulty"><option value="">Any Difficulty</option></select>
       </div>
       <div class="ak-loading" id="recipes-loading"><div class="ak-spinner"></div><div>Loading recipes...</div></div>
       <div class="ak-grid" id="recipes-grid"></div>
       <div class="ak-empty" id="recipes-empty" style="display:none">
-        <div class="ak-empty-icon">&#x1F373;</div>
+        <div class="ak-empty-mark">AK</div>
         <h3>No recipes yet for this country</h3>
         <p>Know a recipe from here? <a href="submit.html">Submit it!</a></p>
       </div>
@@ -78,6 +104,18 @@
   var params = new URLSearchParams(window.location.search);
   var code = params.get('country') || params.get('code');
   var country = code ? AK.COUNTRIES[code] : null;
+  var categoryLabels = {
+    main: 'Main dish',
+    soup_stew: 'Soup or stew',
+    rice: 'Rice dish',
+    snack: 'Snack',
+    dessert: 'Dessert',
+    drink: 'Drink',
+    breakfast: 'Breakfast',
+    side: 'Side',
+    street_food: 'Street food',
+    starter: 'Starter'
+  };
 
   if (!country) {
     document.getElementById('country-title').textContent = 'Country Not Found';
@@ -91,6 +129,7 @@
   document.getElementById('country-region').textContent = country.region;
   document.getElementById('country-title').textContent = country.flag + ' ' + country.name + ' Cuisine';
   document.getElementById('country-desc').textContent = 'Authentic recipes from ' + country.name + '. Step-by-step cooking instructions with timers and ingredient costs in ' + country.currency.code + '.';
+  document.getElementById('country-currency-copy').textContent = 'Most ingredient cost previews are shown in ' + country.currency.code + ', with filters tuned for quicker browsing.';
 
   // Populate filters
   var catSelect = document.getElementById('filter-category');
@@ -111,19 +150,24 @@
     var recipes = await AK.fetchRecipes(filters);
     loading.style.display = 'none';
     if (!recipes || !recipes.length) { empty.style.display = ''; return; }
+    document.getElementById('country-count').textContent = String(recipes.length);
 
     recipes.forEach(function (r) {
       var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
       var card = document.createElement('a');
       card.className = 'ak-recipe-card';
       card.href = 'recipe.html?slug=' + r.slug;
+      var thumbHtml = r.image_url
+        ? '<div class="ak-recipe-card-thumb"><img class="ak-recipe-card-img" src="' + r.image_url + '" alt="' + r.name + '" loading="lazy"></div>'
+        : '<div class="ak-recipe-card-thumb ak-img-fallback"><div class="ak-card-fallback"><div class="ak-card-fallback-label">' + (categoryLabels[r.category] || 'AfroKitchen') + '</div><p class="ak-card-fallback-title">' + r.name + '</p></div></div>';
       card.innerHTML =
-        '<img class="ak-recipe-card-img" src="' + (r.image_url || '/assets/img/og-default.png') + '" alt="' + r.name + '" loading="lazy">' +
+        thumbHtml +
         '<div class="ak-recipe-card-body">' +
-          '<div class="ak-recipe-card-title">' + r.name + '</div>' +
-          '<div class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + '</div>' +
+          '<div class="ak-recipe-card-flag">' + country.flag + ' ' + country.name + '</div>' +
+          '<h3 class="ak-recipe-card-title">' + r.name + '</h3>' +
+          '<p class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + '</p>' +
           '<div class="ak-recipe-card-meta">' +
-            '<span>&#x23F1; ' + totalMin + ' min</span><span>' + (r.difficulty || 'medium') + '</span>' +
+            '<span><small>Time</small><strong>' + totalMin + ' min</strong></span><span><small>Level</small><strong>' + (r.difficulty || 'medium') + '</strong></span>' +
           '</div>' +
         '</div>';
       grid.appendChild(card);
@@ -133,6 +177,21 @@
   catSelect.addEventListener('change', load);
   diffSelect.addEventListener('change', load);
   load();
+
+  var revealEls = document.querySelectorAll('.rv');
+  if (revealEls.length && 'IntersectionObserver' in window) {
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { revealObs.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
 })();
 </script>
 </body>

@@ -17,12 +17,12 @@
 <meta property="og:url" content="https://afrotools.com/tools/africa-conflict/">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
 <link rel="stylesheet" href="/tools/africa-conflict/style.css?v=20260414a">
-<link rel="stylesheet" href="/tools/africa-conflict/dashboard.css?v=20260415a">
+<link rel="stylesheet" href="/tools/africa-conflict/dashboard.css?v=20260416a">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script src="/assets/js/supabase-auth.js" defer></script>
@@ -44,9 +44,28 @@
         </div>
         <div class="acd-hero-heading-wrap">
           <h1>AfroConflict</h1>
-          <p class="acd-hero-desc">A faster, clearer operating surface for monitoring armed conflict across Africa, following spillover risk, and moving from headline to dossier without leaving the page.</p>
+          <p class="acd-hero-desc">An operational dashboard for tracking armed conflict across Africa, pressure on civilians, and spillover risk with a cleaner jump from regional scan to conflict dossier.</p>
         </div>
         <div class="acd-hero-statline" id="acd-hero-statline">Loading conflict intelligence...</div>
+        <div class="acd-hero-protocol" aria-label="Dashboard operating model">
+          <div class="acd-hero-protocol-item">
+            <span class="acd-protocol-label">Coverage</span>
+            <strong>Conflict theatres, spillover exposure, displacement, and actor networks.</strong>
+          </div>
+          <div class="acd-hero-protocol-item">
+            <span class="acd-protocol-label">Inputs</span>
+            <strong>ACLED, UNHCR, World Bank, analyst notes, and manual verification layers.</strong>
+          </div>
+          <div class="acd-hero-protocol-item">
+            <span class="acd-protocol-label">Workflow</span>
+            <strong>Scan the map, pin the watchlist, then open a dossier only when you need depth.</strong>
+          </div>
+        </div>
+        <div class="acd-hero-actions">
+          <a class="acd-btn acd-btn-primary" href="#acd-map-section">Open live map</a>
+          <a class="acd-btn acd-btn-outline" href="#acd-watchlist-section">Review watchlist</a>
+          <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology.html">Read methodology</a>
+        </div>
         <div class="acd-hero-chips" id="acd-hero-chips"></div>
       </div>
 
@@ -55,33 +74,43 @@
       </aside>
     </div>
 
-    <div class="acd-command-bar" aria-label="Dashboard controls">
-      <label class="acd-control acd-control-search">
-        <span class="acd-control-label">Search</span>
-        <input id="acd-search" type="search" placeholder="Search conflict, country, or region">
-      </label>
-
-      <label class="acd-control">
-        <span class="acd-control-label">Region</span>
-        <select id="acd-region-filter">
-          <option value="all">All regions</option>
-        </select>
-      </label>
-
-      <div class="acd-control acd-control-risk">
-        <span class="acd-control-label">Risk</span>
-        <div class="acd-risk-pills" id="acd-risk-pills">
-          <button class="acd-filter-chip is-active" data-risk="all" type="button">All</button>
-          <button class="acd-filter-chip" data-risk="critical" type="button">Critical</button>
-          <button class="acd-filter-chip" data-risk="high" type="button">High</button>
-          <button class="acd-filter-chip" data-risk="medium" type="button">Medium</button>
-          <button class="acd-filter-chip" data-risk="low" type="button">Low</button>
+    <section class="acd-command-shell" aria-labelledby="acd-command-title">
+      <div class="acd-command-shell-head">
+        <div>
+          <p class="acd-section-kicker">Filter theatre</p>
+          <h2 id="acd-command-title">Trim the signal without losing the regional picture.</h2>
         </div>
+        <p class="acd-command-copy">Search by country or conflict, isolate urgency, or widen the aperture to include global pressure on Africa.</p>
       </div>
 
-      <button class="acd-toggle-chip is-active" id="acd-african-toggle" type="button" aria-pressed="true">African conflicts only</button>
-      <button class="acd-btn acd-btn-outline" id="acd-reset-filters" type="button">Reset</button>
-    </div>
+      <div class="acd-command-bar" aria-label="Dashboard controls">
+        <label class="acd-control acd-control-search">
+          <span class="acd-control-label">Search</span>
+          <input id="acd-search" type="search" placeholder="Search conflict, country, or region">
+        </label>
+
+        <label class="acd-control">
+          <span class="acd-control-label">Region</span>
+          <select id="acd-region-filter">
+            <option value="all">All regions</option>
+          </select>
+        </label>
+
+        <div class="acd-control acd-control-risk">
+          <span class="acd-control-label">Risk</span>
+          <div class="acd-risk-pills" id="acd-risk-pills">
+            <button class="acd-filter-chip is-active" data-risk="all" type="button">All</button>
+            <button class="acd-filter-chip" data-risk="critical" type="button">Critical</button>
+            <button class="acd-filter-chip" data-risk="high" type="button">High</button>
+            <button class="acd-filter-chip" data-risk="medium" type="button">Medium</button>
+            <button class="acd-filter-chip" data-risk="low" type="button">Low</button>
+          </div>
+        </div>
+
+        <button class="acd-toggle-chip is-active" id="acd-african-toggle" type="button" aria-pressed="true">African conflicts only</button>
+        <button class="acd-btn acd-btn-outline" id="acd-reset-filters" type="button">Reset</button>
+      </div>
+    </section>
 
     <div class="acd-active-filters" id="acd-active-filters" aria-live="polite"></div>
 
@@ -98,6 +127,13 @@
   </section>
 
   <section class="acd-kpi-band">
+    <div class="acd-section-intro">
+      <div>
+        <p class="acd-section-kicker">Operational snapshot</p>
+        <h2>What changed across the theatre</h2>
+      </div>
+      <p>Fast-read totals for scope, displacement, fatalities, military spend, spillover, and recent escalation pressure.</p>
+    </div>
     <div class="acd-kpi-row" id="acd-kpi-row">
       <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
       <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
@@ -111,7 +147,7 @@
   </section>
 
   <section class="acd-dashboard-grid">
-    <div class="acd-map-container">
+    <div class="acd-map-container" id="acd-map-section">
       <div class="acd-map-header">
         <div>
           <h2>Conflict map</h2>
@@ -142,7 +178,7 @@
         <div class="acd-loading">Loading spotlight conflict...</div>
       </section>
 
-      <section class="acd-top-conflicts acd-watchlist">
+      <section class="acd-top-conflicts acd-watchlist" id="acd-watchlist-section">
         <div class="acd-top-header">
           <div>
             <h2>Priority watchlist</h2>
@@ -158,7 +194,7 @@
   </section>
 
   <section class="acd-lower-grid">
-    <section class="acd-events-panel">
+    <section class="acd-events-panel" id="acd-events-section">
       <div class="acd-events-header">
         <div>
           <h2>Recent events</h2>
@@ -236,7 +272,7 @@
 
 <script src="/assets/js/components/navbar.js?v=5a869583" defer></script>
 <script src="/assets/js/components/footer.js?v=bd815d9c" defer></script>
-<script src="/tools/africa-conflict/dashboard.js?v=20260415a" defer></script>
+<script src="/tools/africa-conflict/dashboard.js?v=20260416a" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

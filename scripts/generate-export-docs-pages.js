@@ -181,7 +181,7 @@ function pageHtml(c) {
 '\n' +
 '/* Form */\n' +
 '.ed-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }\n' +
-'@media (max-width: 600px) { .ed-form-grid { grid-template-columns: 1fr; } }\n' +
+'@media (max-width: 820px) { .ed-form-grid { grid-template-columns: 1fr; } }\n' +
 '.ed-field { display: flex; flex-direction: column; gap: 0.3rem; }\n' +
 '.ed-label { font-size: 0.82rem; font-weight: 600; color: var(--ed-muted); text-transform: uppercase; letter-spacing: 0.04em; }\n' +
 '.ed-select { font-family: inherit; font-size: 0.95rem; padding: 0.65rem 0.85rem; border: 1.5px solid #E5E7EB; border-radius: 10px; background: #fff; color: var(--ed-text); outline: none; transition: border-color 0.2s; width: 100%; }\n' +

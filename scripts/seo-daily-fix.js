@@ -14,7 +14,7 @@
  * Usage:
  *   node scripts/seo-daily-fix.js
  *   node scripts/seo-daily-fix.js --dry-run   (preview only, no writes)
- *   node scripts/seo-daily-fix.js --report    (print report, exit non-zero if issues)
+ *   node scripts/seo-daily-fix.js --report    (print report only, exit non-zero if issues)
  */
 
 'use strict';
@@ -25,9 +25,10 @@ const path = require('path');
 const ROOT    = path.resolve(__dirname, '..');
 const DRY_RUN = process.argv.includes('--dry-run');
 const REPORT  = process.argv.includes('--report');
+const FIX_MODE = !DRY_RUN && !REPORT;
 const TODAY   = new Date().toISOString().slice(0, 10);
 
-const SKIP_DIRS = new Set(['node_modules', '.git', 'assets', 'scripts', '.netlify', 'lang']);
+const SKIP_DIRS = new Set(['node_modules', '.git', 'assets', 'scripts', '.netlify', 'lang', 'supabase']);
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -43,7 +44,34 @@ function walk(dir, cb) {
 }
 
 function readFile(fp)          { return fs.readFileSync(fp, 'utf8'); }
-function writeFile(fp, data)   { if (!DRY_RUN) fs.writeFileSync(fp, data, 'utf8'); }
+function writeFile(fp, data)   { if (FIX_MODE) fs.writeFileSync(fp, data, 'utf8'); }
+
+function hasCanonical(content) {
+  return /<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["'][^"']+["'])[^>]*>/i.test(content);
+}
+
+function hasTitle(content) {
+  return /<title\b[^>]*>[\s\S]*?<\/title>/i.test(content);
+}
+
+function hasDescription(content) {
+  return /<meta\b(?=[^>]*\bname=["']description["'])(?=[^>]*\bcontent=["'][^"']*["'])[^>]*>/i.test(content);
+}
+
+function hasNoindex(content) {
+  const robotsMatch =
+    content.match(/<meta\b(?=[^>]*\bname=["']robots["'])[^>]*\bcontent=["']([^"']+)["'][^>]*>/i) ||
+    content.match(/<meta\b(?=[^>]*\bcontent=["']([^"']+)["'])[^>]*\bname=["']robots["'][^>]*>/i);
+
+  return Boolean(robotsMatch && /\bnoindex\b/i.test(robotsMatch[1]));
+}
+
+function isRedirectLike(content) {
+  return (
+    /<meta[^>]+http-equiv=["']refresh["']/i.test(content) ||
+    /window\.location\.(replace|href)|location\.replace\(/i.test(content)
+  );
+}
 
 // ─── Step 1: Build map of .html-backed URLs (no trailing slash) ───────────
 
@@ -136,10 +164,7 @@ const issues = {
   missingDescription:  [],
   hreflangViolations:  [],   // any remaining after fix
 };
-
-const CANON_RE   = /<link rel="canonical" href="([^"]+)"/;
-const TITLE_RE   = /<title>/;
-const DESC_RE    = /name="description"/;
+let metadataSkippedNoindex = 0;
 
 walk(ROOT, (fp, fname) => {
   if (!fname.endsWith('.html')) return;
@@ -148,10 +173,15 @@ walk(ROOT, (fp, fname) => {
 
   // Skip utility pages
   if (/index_old|style-guide|logo-system|mission-control/.test(rel)) return;
+  if (isRedirectLike(content)) return;
+  if (hasNoindex(content)) {
+    metadataSkippedNoindex++;
+    return;
+  }
 
-  if (!CANON_RE.test(content))  issues.missingCanonical.push(rel);
-  if (!TITLE_RE.test(content))  issues.missingTitle.push(rel);
-  if (!DESC_RE.test(content))   issues.missingDescription.push(rel);
+  if (!hasCanonical(content))   issues.missingCanonical.push(rel);
+  if (!hasTitle(content))       issues.missingTitle.push(rel);
+  if (!hasDescription(content)) issues.missingDescription.push(rel);
 
   // Re-check for any remaining hreflang violations
   let m;
@@ -194,7 +224,7 @@ const BOLD   = '\x1b[1m';
 console.log(`\n${BOLD}AfroTools SEO Daily Fix — ${TODAY}${RESET}\n`);
 console.log(`${DRY_RUN ? '[DRY RUN] ' : ''}Mode: ${REPORT ? 'report' : 'fix'}\n`);
 
-console.log(`${BOLD}── Auto-fixes applied ──────────────────────────────────${RESET}`);
+console.log(`${BOLD}${FIX_MODE ? '── Auto-fixes applied' : '── Auto-fixes available'} ──────────────────────────────────${RESET}`);
 console.log(`  Hreflang files fixed:      ${hreflangFilesFixed}`);
 console.log(`  Hreflang attrs fixed:      ${hreflangAttrsFixed}`);
 console.log(`  Sitemap <loc> fixed:       ${sitemapLocsFixed}`);
@@ -219,11 +249,13 @@ printList('Missing <title> tags',      issues.missingTitle);
 printList('Missing meta descriptions', issues.missingDescription);
 printList('Remaining hreflang violations', issues.hreflangViolations);
 printList('/fr/ homepage broken links (no static file — verify _redirects)', frBroken);
+console.log(`  ${GREEN}Noindex pages skipped from metadata report: ${metadataSkippedNoindex}${RESET}`);
 
 // Summary
 const totalIssues =
   issues.missingCanonical.length +
   issues.missingTitle.length +
+  issues.missingDescription.length +
   issues.hreflangViolations.length +
   frBroken.length;
 
@@ -235,7 +267,11 @@ const anythingFixed =
 console.log(`\n${BOLD}── Summary ─────────────────────────────────────────────${RESET}`);
 
 if (anythingFixed) {
-  console.log(`  ${GREEN}✓ Auto-fixes committed. Netlify will redeploy.${RESET}`);
+  if (FIX_MODE) {
+    console.log(`  ${GREEN}✓ Auto-fixes committed. Netlify will redeploy.${RESET}`);
+  } else {
+    console.log(`  ${YELLOW}⚠ Auto-fixes available. Run npm run seo to apply them.${RESET}`);
+  }
 } else {
   console.log(`  ${GREEN}✓ No auto-fixes needed — site is clean.${RESET}`);
 }

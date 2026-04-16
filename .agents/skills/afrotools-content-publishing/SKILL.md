@@ -18,6 +18,9 @@ Use this skill when the task is to write or publish content for AfroTools.
 - Use the configured `supabase` MCP server first for live AfroStream news work.
 - Prefer repo edits for static blog posts and live publishing for AfroStream news.
 - For time-sensitive claims, verify before writing.
+- Make main blog pieces substantial by default when the topic is competitive and evergreen.
+- No em dashes in publishable copy.
+- No invented scenarios, fake examples, or filler added just to hit cadence.
 - Avoid duplicate slugs and obvious keyword cannibalization.
 
 ## Workflow

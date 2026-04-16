@@ -73,6 +73,22 @@ function formatDate(date) {
   return new Date(date).toISOString().slice(0, 10);
 }
 
+function extractCanonicalHref(html) {
+  const match =
+    html.match(/<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["']([^"']+)["'])[^>]*>/i) ||
+    html.match(/<link\b(?=[^>]*\bhref=["']([^"']+)["'])(?=[^>]*\brel=["']canonical["'])[^>]*>/i);
+
+  return match ? match[1] : null;
+}
+
+function hasNoindex(html) {
+  const robotsMatch =
+    html.match(/<meta\b(?=[^>]*\bname=["']robots["'])[^>]*\bcontent=["']([^"']+)["'][^>]*>/i) ||
+    html.match(/<meta\b(?=[^>]*\bcontent=["']([^"']+)["'])[^>]*\bname=["']robots["'][^>]*>/i);
+
+  return Boolean(robotsMatch && /\bnoindex\b/i.test(robotsMatch[1]));
+}
+
 function normalizePathForCompare(value) {
   if (!value) return '/';
   const stripped = value.replace(BASE_URL, '').replace(/\/$/, '');
@@ -83,22 +99,23 @@ function inspectHtmlFile(filePath) {
   const html = fs.readFileSync(filePath, 'utf8');
   let url = fileToUrl(filePath);
   const currentPath = normalizePathForCompare(new URL(url).pathname);
-  const canonicalMatch = html.match(/<link rel="canonical" href="([^"]+)"/i);
+  const canonicalHref = extractCanonicalHref(html);
   let canonicalPath = null;
   let canonicalUrl = null;
 
-  if (canonicalMatch) {
+  if (canonicalHref) {
     try {
-      canonicalUrl = new URL(canonicalMatch[1], BASE_URL);
+      canonicalUrl = new URL(canonicalHref, BASE_URL);
       canonicalPath = normalizePathForCompare(canonicalUrl.pathname);
     } catch {
-      canonicalPath = normalizePathForCompare(canonicalMatch[1]);
+      canonicalPath = normalizePathForCompare(canonicalHref);
     }
   }
 
   const redirectLike =
     /<meta[^>]+http-equiv=["']refresh["']/i.test(html) ||
     /window\.location\.(replace|href)|location\.replace\(/i.test(html);
+  const noindex = hasNoindex(html);
 
   const extensionlessCanonicalMatch =
     currentPath.endsWith('.html') &&
@@ -111,7 +128,7 @@ function inspectHtmlFile(filePath) {
   return {
     url,
     lastmod: formatDate(fs.statSync(filePath).mtime),
-    exclude: redirectLike || canonicalMismatch,
+    exclude: redirectLike || canonicalMismatch || noindex,
   };
 }
 

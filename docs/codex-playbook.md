@@ -35,6 +35,9 @@
 
 - Use `afrotools-seo-ops`
 - Start with existing scripts in `scripts/seo-*.js`, `scripts/build-seo-system.js`, `scripts/apply-og-fallbacks.js`, and `scripts/inject-internal-links.js`
+- Treat `widgets/iframe/` as embed utility surfaces: keep them `noindex, follow` and canonicalize them to the full tool route with `npm run seo:widgets`
+- Treat thin tool workspace/query/detail subviews under `tools/` as utility surfaces: run `node scripts/fix-thin-tool-pages-seo.js` to set `noindex, follow` and canonicalize them back to `/tools/<tool>/`
+- Keep `noindex` utility pages out of sitemap generation so auth, offline, app workspaces, and other thin utility routes do not leak into search-facing indexes
 - Avoid hand-editing sitemap files
 
 ### Blog or creator news publishing

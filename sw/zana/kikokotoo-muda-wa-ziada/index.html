@@ -281,7 +281,7 @@
         <tbody>
           <tr><td>&#x1F1F3;&#x1F1EC; Nigeria</td><td>40</td><td>173.3</td><td>1.5&times;</td><td>2.0&times;</td></tr>
           <tr><td>&#x1F1F0;&#x1F1EA; Kenya</td><td>52</td><td>225.3</td><td>1.5&times;</td><td>2.0&times;</td></tr>
-          <tr><td>&#x1F1FF;&#x1F1E6; South Africa</td><td>45</td><td>195.0</td><td>1.5&times;</td><td>2.0&times;</td></tr>
+          <tr><td>&#x1F1FF;&#x1F1E6; Afrika Kusini</td><td>45</td><td>195.0</td><td>1.5&times;</td><td>2.0&times;</td></tr>
           <tr><td>&#x1F1EC;&#x1F1ED; Ghana</td><td>40</td><td>173.3</td><td>1.5&times;</td><td>2.5&times;</td></tr>
           <tr><td>&#x1F1EA;&#x1F1EC; Egypt</td><td>48</td><td>208.0</td><td>1.35&times;</td><td>1.7&times;</td></tr>
           <tr><td>&#x1F1F9;&#x1F1FF; Tanzania</td><td>45</td><td>195.0</td><td>1.5&times;</td><td>2.0&times;</td></tr>
@@ -332,6 +332,7 @@
 
 <script src="/data/hr/overtime-rules.js?v=54countries"></script>
 <script src="/engines/hr-engine.js?v=9bfe19a1"></script>
+<script src="/assets/js/hr-engine-sw-overlay.js?v=20260416"></script>
 <script>
 var countrySelect = document.getElementById('country');
 var SW_COUNTRY_NAMES = {
@@ -390,12 +391,48 @@ var SW_COUNTRY_NAMES = {
   "ZM": "Zambia",
   "ZW": "Zimbabwe"
 };
+var hrSwOverlay = window.AfroTools && window.AfroTools.HRSwOverlay ? window.AfroTools.HRSwOverlay : null;
 var currencyPrefix = document.getElementById('currency-prefix');
 var resultsEl = document.getElementById('results');
 var payType = 'pay'; /* 'pay' or 'toil' */
 var lastResult = null;
 var lastRule = null;
 var lastInputs = null;
+
+function getLocalizedRule(code) {
+  if (hrSwOverlay && typeof hrSwOverlay.getRule === 'function') {
+    return hrSwOverlay.getRule(code);
+  }
+  return (typeof OVERTIME_RULES !== 'undefined') ? OVERTIME_RULES[code] : null;
+}
+
+function getLocalizedObservation(code) {
+  if (hrSwOverlay && typeof hrSwOverlay.getObservation === 'function') {
+    return hrSwOverlay.getObservation(code);
+  }
+  if (typeof OT_OBSERVATIONS !== 'undefined' && OT_OBSERVATIONS[code]) {
+    return OT_OBSERVATIONS[code];
+  }
+  return 'Chagua nchi uone muhtasari wa sheria za kazi, saa za kawaida na viwango vya muda wa ziada.';
+}
+
+function getLocalizedLawText(code) {
+  if (hrSwOverlay && typeof hrSwOverlay.getLawLabel === 'function') {
+    return hrSwOverlay.getLawLabel(code);
+  }
+  var rule = getLocalizedRule(code);
+  if (rule && rule.standardHours && rule.standardHours.law) {
+    return 'Sheria: ' + rule.standardHours.law;
+  }
+  return 'Msingi wa kisheria: rejea ya moja kwa moja haijatajwa kwenye seti hii ya data.';
+}
+
+function getLegalFallback(code) {
+  if (hrSwOverlay && typeof hrSwOverlay.getLegalFallback === 'function') {
+    return hrSwOverlay.getLegalFallback(code);
+  }
+  return 'Maelezo ya ziada ya nchi hii hayajatajwa wazi kwenye seti hii ya data.';
+}
 
 /* ── Populate country dropdown ── */
 (function init() {
@@ -417,15 +454,11 @@ var lastInputs = null;
 function onCountryChange() {
   if (typeof OVERTIME_RULES === 'undefined') return;
   var code = countrySelect.value;
-  var rule = OVERTIME_RULES[code];
+  var rule = getLocalizedRule(code);
   if (!rule) return;
   currencyPrefix.textContent = rule.symbol || rule.currency;
   var obsEl = document.getElementById('ai-obs');
-  if (typeof OT_OBSERVATIONS !== 'undefined' && OT_OBSERVATIONS[code]) {
-    obsEl.innerHTML = OT_OBSERVATIONS[code];
-  } else {
-    obsEl.textContent = 'Chagua nchi uone muhtasari wa sheria za kazi, saa za kawaida na viwango vya muda wa ziada.';
-  }
+  obsEl.innerHTML = getLocalizedObservation(code);
 }
 
 function setPayType(type) {
@@ -469,7 +502,7 @@ function calculate() {
 
     if (!result || result.error) { alert(result ? result.error : 'Hesabu imeshindikana.'); return; }
 
-    var rule = OVERTIME_RULES[country];
+    var rule = getLocalizedRule(country);
     lastResult = result;
     lastRule = rule;
     lastInputs = { country: country, monthlySalary: monthlySalary, overtimeHours: overtimeHours, dayType: dayType };
@@ -478,6 +511,7 @@ function calculate() {
 }
 
 function renderResults(result, rule, inputs) {
+  rule = getLocalizedRule(inputs.country) || rule;
   var cur = rule.symbol || rule.currency;
   var dayLabels = { weekday: 'Siku ya kazi', weekend: 'Wikendi', holiday: 'Sikukuu ya umma', night: 'Zamu ya usiku' };
   var dayLabel = dayLabels[inputs.dayType] || inputs.dayType;
@@ -501,13 +535,15 @@ function renderResults(result, rule, inputs) {
   if (maxOT && maxOT.weekly) { var li = document.createElement('li'); li.textContent = 'Kiwango cha juu cha OT: ' + maxOT.weekly + ' saa kwa wiki'; legalList.appendChild(li); }
   if (maxOT && maxOT.daily) { var li2 = document.createElement('li'); li2.textContent = 'Kiwango cha juu cha OT: ' + maxOT.daily + ' saa kwa siku'; legalList.appendChild(li2); }
   if (maxOT && maxOT.monthly) { var li3 = document.createElement('li'); li3.textContent = 'Kiwango cha juu cha OT: ' + maxOT.monthly + ' saa kwa mwezi'; legalList.appendChild(li3); }
+  if (maxOT && maxOT.notes) { var li3b = document.createElement('li'); li3b.textContent = maxOT.notes; legalList.appendChild(li3b); }
   if (rule.nightWork && rule.nightWork.definition) { var li4 = document.createElement('li'); li4.textContent = 'Zamu ya usiku: ' + rule.nightWork.definition; legalList.appendChild(li4); }
   if (result.exemptions && result.exemptions.length) { var li5 = document.createElement('li'); li5.textContent = 'Misamaha: ' + result.exemptions.join('; '); legalList.appendChild(li5); }
   if (result.timeOff) { var li6 = document.createElement('li'); li6.textContent = result.timeOff; legalList.appendChild(li6); }
   if (rule.notes) { var li7 = document.createElement('li'); li7.textContent = rule.notes; legalList.appendChild(li7); }
-  var lawText = (rule.standardHours && rule.standardHours.law) ? 'Sheria: ' + rule.standardHours.law : '';
+  if (!legalList.children.length) { var li8 = document.createElement('li'); li8.textContent = getLegalFallback(inputs.country); legalList.appendChild(li8); }
+  var lawText = getLocalizedLawText(inputs.country);
   lawRef.textContent = lawText;
-  legalEl.style.display = legalList.children.length ? '' : 'none';
+  legalEl.style.display = '';
 
   /* TOIL block */
   var toilBlock = document.getElementById('toil-block');
@@ -524,8 +560,8 @@ function renderResults(result, rule, inputs) {
     document.getElementById('toil-days').textContent = fmt(toilDays, 1) + ' siku';
     document.getElementById('toil-daily-rate').textContent = cur + ' ' + fmt(dailyRate) + ' / siku';
     document.getElementById('toil-verdict').textContent = cashIsBetter
-      ? 'Cash is worth ' + pct + '% more than TOIL at your daily rate. Negotiate cash if possible.'
-      : 'TOIL equivalent value (' + cur + ' ' + fmt(toilCashEquiv) + ') is similar to cash. TOIL is a fair deal.';
+      ? 'Malipo ya fedha yana thamani ya takribani ' + pct + '% zaidi kuliko TOIL kwa kiwango chako cha siku. Ukiweza, jadili ulipwe fedha.'
+      : 'Thamani ya TOIL (' + cur + ' ' + fmt(toilCashEquiv) + ') iko karibu na malipo ya fedha. TOIL ni makubaliano yanayokubalika.';
     toilBlock.style.display = '';
   } else {
     toilBlock.style.display = 'none';
@@ -539,7 +575,7 @@ function renderResults(result, rule, inputs) {
   waBtn.style.display = '';
 
   /* Dispute letter */
-  var lawRef2 = (rule.standardHours && rule.standardHours.law) ? rule.standardHours.law : '[Sheria ya Kazi]';
+  var lawRef2 = (rule.standardHours && rule.standardHours.law) ? rule.standardHours.law : 'mwongozo wa kazi wa nchi husika';
   var letter = 'Tarehe: ' + new Date().toLocaleDateString('sw-TZ') + '\n\nKwa: [Jina la Mwajiri / Meneja wa Rasilimali Watu]\n[Jina la Kampuni]\n[Anwani ya Kampuni]\n\nKutoka: [Jina Lako Kamili]\n[Cheo Chako]\n[Nambari ya Mfanyakazi]\n\nSomo: Madai ya kutolipwa muda wa ziada\n\nNdugu [Jina la Meneja],\n\nNaandika kuomba rasmi malipo ya muda wa ziada ninayodaiwa kwa kazi niliyofanya katika mwezi wa ' + month + '.\n\nKama ilivyoandikwa, nilifanya saa ' + inputs.overtimeHours + ' za muda wa ziada katika kipindi hiki (' + dayLabel.toLowerCase() + '). Chini ya ' + lawRef2 + ', muda wa ziada hulipwa kwa kiwango cha ' + result.otMultiplier + 'x cha kiwango cha kawaida kwa saa.\n\nHesabu:\n  Mshahara wa mwezi: ' + cur + fmt(inputs.monthlySalary, 0) + '\n  Kiwango cha kawaida kwa saa: ' + cur + fmt(result.hourlyRate) + '\n  Kizidishi cha OT: ' + result.otMultiplier + 'x\n  Saa za OT: ' + inputs.overtimeHours + '\n  Kiasi ninachodai: ' + cur + fmt(result.overtimePay) + '\n\nNaomba kiasi hiki kijumuishwe kwenye malipo yangu yajayo au kilipwe ndani ya siku [14] tangu tarehe ya barua hii.\n\nIwapo suala hili halitatatuliwa, nitawasilisha malalamiko rasmi kwa [Wizara ya Kazi / mamlaka husika].\n\nWako kwa uaminifu,\n[Sahihi Yako]\n[Jina Lako Kamili]\n[Tarehe]';
   document.getElementById('dispute-letter').textContent = letter;
   document.getElementById('dispute-section').style.display = '';
@@ -551,7 +587,7 @@ function renderResults(result, rule, inputs) {
   resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function copyLetter() {
+function copyLetterOriginal() {
   var text = document.getElementById('dispute-letter').textContent;
   var btn = document.querySelector('.ot-dispute-copy');
   navigator.clipboard.writeText(text).then(function() {
@@ -579,6 +615,34 @@ function copyLetter() {
     }, 2000);
   });
 }
+
+copyLetter = function() {
+  var text = document.getElementById('dispute-letter').textContent;
+  var btn = document.querySelector('.ot-dispute-copy');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '\u2713 Imenakiliwa!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = '\uD83D\uDCCB Nakili barua';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '\u2713 Imenakiliwa!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = '\uD83D\uDCCB Nakili barua';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+};
 </script>
 </body>
 </html>
