@@ -42,7 +42,10 @@ exports.handler = async function(event) {
   }
 
   // Parse route from path (needed for auth scope check)
-  var path = event.path.replace(/^\/\.netlify\/functions\/api-v1\/?/, '').replace(/^api\/v1\/?/, '');
+  var path = String(event.path || '')
+    .replace(/^\/\.netlify\/functions\/api-v1\/?/, '')
+    .replace(/^\/?api\/v1\/?/, '')
+    .replace(/^\/+/, '');
   var params = event.queryStringParameters || {};
 
   // Auth — uses api-auth module with Supabase key validation + tier enforcement
