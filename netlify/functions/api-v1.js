@@ -114,21 +114,25 @@ async function handleForex(params, CORS) {
   if (!data) return jsonResp(503, { error: 'Forex data unavailable' }, CORS);
 
   var result = { timestamp: data.timestamp, base: data.base || 'USD' };
+  var defaultBase = String(data.base || 'USD').toUpperCase();
 
   if (params.base && params.target) {
-    var baseRate = data.rates[params.base.toUpperCase()];
-    var targetRate = data.rates[params.target.toUpperCase()];
+    var baseCode = params.base.toUpperCase();
+    var targetCode = params.target.toUpperCase();
+    var baseRate = baseCode === defaultBase ? 1 : data.rates[baseCode];
+    var targetRate = targetCode === defaultBase ? 1 : data.rates[targetCode];
     if (!baseRate || !targetRate) return jsonResp(404, { error: 'Currency not found' }, CORS);
-    result.pair = params.base.toUpperCase() + '/' + params.target.toUpperCase();
+    result.pair = baseCode + '/' + targetCode;
     result.rate = Math.round((targetRate / baseRate) * 1000000) / 1000000;
   } else if (params.base) {
     var base = params.base.toUpperCase();
-    var baseR = data.rates[base];
+    var baseR = base === defaultBase ? 1 : data.rates[base];
     if (!baseR) return jsonResp(404, { error: 'Currency not found: ' + base }, CORS);
     var rates = {};
     Object.keys(data.rates).forEach(function(code) {
       rates[code] = Math.round((data.rates[code] / baseR) * 1000000) / 1000000;
     });
+    if (base === defaultBase) rates[defaultBase] = 1;
     result.rates = rates;
   } else {
     result.rates = data.rates;
