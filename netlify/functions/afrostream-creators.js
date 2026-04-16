@@ -9,10 +9,17 @@ function cors(event) {
   return { 'Access-Control-Allow-Origin': ok ? o : 'https://afrotools.com', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET, OPTIONS', 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300', 'Vary': 'Origin' };
 }
 
+function readJson(res) {
+  return res.text().then(function(text) {
+    return text ? JSON.parse(text) : null;
+  });
+}
+
 exports.handler = async function(event) {
   var h = cors(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: h, body: '' };
   if (event.httpMethod !== 'GET') return { statusCode: 405, headers: h, body: '{"error":"Method not allowed"}' };
+  if (!SUPABASE_KEY) return { statusCode: 500, headers: h, body: '{"error":"SUPABASE service key not configured"}' };
 
   var qs = event.queryStringParameters || {};
   var parts = ['is_published=eq.true'];
@@ -34,16 +41,25 @@ exports.handler = async function(event) {
   if (qs.sort === 'newest') sort = 'created_at.desc';
   parts.push('order=' + sort);
 
-  var limit = Math.min(parseInt(qs.limit) || 50, 100);
+  var limit = Math.min(parseInt(qs.limit, 10) || 50, 100);
   parts.push('limit=' + limit);
-  if (qs.offset) parts.push('offset=' + (parseInt(qs.offset) || 0));
+  if (qs.offset) parts.push('offset=' + (parseInt(qs.offset, 10) || 0));
 
   try {
     var res = await fetch(SUPABASE_URL + '/rest/v1/as_creators?' + parts.join('&'), {
       headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
     });
-    var data = await res.json();
-    return { statusCode: 200, headers: h, body: JSON.stringify({ success: true, data: data, count: data.length }) };
+    var data = await readJson(res);
+    if (!res.ok) {
+      return {
+        statusCode: res.status >= 500 ? 502 : res.status,
+        headers: h,
+        body: JSON.stringify({ error: 'Supabase request failed', detail: data && data.message ? data.message : 'Unexpected upstream error' })
+      };
+    }
+
+    var rows = Array.isArray(data) ? data : [];
+    return { statusCode: 200, headers: h, body: JSON.stringify({ success: true, data: rows, count: rows.length }) };
   } catch (e) {
     return { statusCode: 500, headers: h, body: JSON.stringify({ error: e.message }) };
   }
