@@ -9,6 +9,12 @@ function cors(event) {
   return { 'Access-Control-Allow-Origin': ok ? o : 'https://afrotools.com', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET, OPTIONS', 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300', 'Vary': 'Origin' };
 }
 
+function cacheControl(qs) {
+  // Slug lookups are used as article permalinks and should reflect fresh publish state.
+  if (qs.slug) return 'no-store';
+  return 'public, max-age=300';
+}
+
 function readJson(res) {
   return res.text().then(function(text) {
     return text ? JSON.parse(text) : null;
@@ -22,6 +28,7 @@ exports.handler = async function(event) {
   if (!SUPABASE_KEY) return { statusCode: 500, headers: h, body: '{"error":"SUPABASE service key not configured"}' };
 
   var qs = event.queryStringParameters || {};
+  h['Cache-Control'] = cacheControl(qs);
   var parts = ['is_published=eq.true', 'order=published_at.desc'];
 
   if (qs.slug) {
