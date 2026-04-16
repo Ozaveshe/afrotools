@@ -83,10 +83,11 @@ async function fetchFromExchangeRateAPI() {
   const json = await res.json();
   if (json.result === 'error') throw new Error(`ExchangeRate-API: ${json['error-type']}`);
 
+  const rawRates = json.rates || json.conversion_rates || {};
   const rates = {};
   for (const code of ALL_CURRENCIES) {
-    if (json.rates && json.rates[code] !== undefined) {
-      rates[code] = json.rates[code];
+    if (rawRates[code] !== undefined) {
+      rates[code] = rawRates[code];
     }
   }
 
