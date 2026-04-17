@@ -814,7 +814,7 @@
       "name": "Is my content stored or saved?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Your content is auto-saved to your browser's localStorage, so it persists between sessions on the same device. Nothing is sent to any server. You can clear the saved content at any time by clearing your text."
+        "text": "Your content is auto-saved locally in your browser. If you sign in, the current draft also syncs to your AfroTools account so you can continue on another device. You can clear the saved content at any time."
       }
     },
     {
@@ -880,7 +880,7 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Markdown <em>Editor</em></h1>
-    <p class="hero-sub">Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save with localStorage.</p>
+    <p class="hero-sub">Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.</p>
     <div class="hero-badges">
       <span class="badge b-green">Live Preview</span>
       <span class="badge b-green">GFM Support</span>
@@ -1039,7 +1039,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Your content is auto-saved to your browser's localStorage, so it persists between sessions on the same device. Nothing is sent to any server. You can clear the saved content at any time by clearing your text.
+        Your content is auto-saved locally in your browser. If you sign in, the current draft also syncs to your AfroTools account so you can continue on another device. You can clear the saved content at any time.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1394,10 +1394,23 @@
   editor.addEventListener('input', updatePreview);
 
   /* ── Init ───────────────────────────────────────────────────────── */
+  window.AfroMarkdownEditor = {
+    getContent: function() {
+      return editor.value;
+    },
+    setContent: function(value) {
+      editor.value = value || '';
+    },
+    updatePreview: updatePreview,
+    showToast: showToast
+  };
+
   loadFromLocalStorage();
   updatePreview();
 })();
 </script>
+<script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
+<script src="/tools/markdown-editor/js/markdown-workspace-sync.js?v=20260417a" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
 </body>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lease Risk Check Nigeria | AfroTools</title>
+<meta name="description" content="Nigeria-first lease scam and listing risk checker powered by contributor reports, red flags, and AfroPoints review workflows.">
+<link rel="canonical" href="https://afrotools.com/tools/lease-risk-check/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Lease Risk Check</span></div>
+    <div class="md-eyebrow">Nigeria First</div>
+    <h1>Lease Risk Check</h1>
+    <p>Score suspicious rental listings with Nigeria-first scam signals, contributor proof, and a manual reviewer gate before any report becomes public.</p>
+    <div class="md-chip-row"><span class="md-chip">Upfront fee traps</span><span class="md-chip">Missing title docs</span><span class="md-chip">Duplicate listing checks</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Published Lease Risk Reports</div><div class="md-panel-subtitle">Recent verified public reports from the review queue.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Abuja"></div>
+          <div class="md-field"><label for="mdMinRisk">Minimum Risk Score</label><input id="mdMinRisk" class="md-input" data-md-filter="min_risk_score" placeholder="e.g. 60"></div>
+          <div class="md-field"><label for="mdRefresh">Refresh</label><button id="mdRefresh" class="md-btn md-btn-secondary">Reload</button></div>
+        </div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading lease risk reports...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Report a Risky Listing</div><div class="md-panel-subtitle">This feed is Nigeria-first, but the schema is reusable for other markets.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Port Harcourt"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="NGN"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I reviewed the listing myself</option><option value="merchant_quote">Agent or landlord communication</option><option value="community_check">Community warning</option><option value="official_notice">Formal listing or notice</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Listing, screenshot, or drive link"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Risk Report</button></div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Use this with</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Combine this with the existing tenant screening checklist for full rental diligence.</li>
+          <li>Use proof links and a reasoned risk score so reviewers can publish faster.</li>
+          <li>Flag duplicate photos, fake urgency, and document refusal in the scam signals field.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/lease-risk',
+  responseKey: 'reports',
+  subtype: 'lease_risk_report',
+  vertical: 'rent_intelligence',
+  reportButtonLabel: 'Submit Risk Report',
+  transformPayload: function (payload) {
+    if (payload.scam_signals && typeof payload.scam_signals === 'string') {
+      payload.scam_signals = payload.scam_signals.split(',').map(function (item) { return item.trim(); }).filter(Boolean);
+    }
+    return payload;
+  },
+  renderSummary: function (rows) {
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Published risk reports</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return row.risk_score >= 60; }).length + '</div><div class="md-stat-label">High-risk records</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">NG</div><div class="md-stat-label">First launch market</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.property_type || 'Listing') + ' - Risk ' + helpers.escapeHtml(row.risk_score || 0) + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.city || '') + ' | ' + (row.landlord_name || 'Unknown owner')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">Rent ' + helpers.escapeHtml(row.asking_rent || '') + ' ' + helpers.escapeHtml(row.currency_code || '') + '</span><span class="md-pill">' + helpers.escapeHtml((row.scam_signals || []).length) + ' scam signals</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

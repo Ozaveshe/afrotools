@@ -322,16 +322,22 @@
   .landing-hero { padding: 48px 16px 40px; }
   .landing-faq-grid { grid-template-columns: 1fr; }
   .features-grid, .steps-grid,
-  .landing-features-grid, .landing-steps-grid { grid-template-columns: 1fr 1fr; }
+  .landing-features-grid, .landing-steps-grid { grid-template-columns: 1fr; }
+  .faq-item summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    font-size: 1rem;
+  }
 }
 /* Tablet — 2-col grids, stacked hero CTAs */
 @media (max-width: 600px) {
-  .features-grid, .landing-features-grid { grid-template-columns: 1fr 1fr; }
-  .steps-grid, .landing-steps-grid { grid-template-columns: 1fr 1fr; }
   .audience-grid { grid-template-columns: 1fr; }
   .landing-ctas { flex-direction: column; }
   .landing-cta-primary, .landing-cta-secondary { width: 100%; justify-content: center; }
-  .saved-grid { grid-template-columns: 1fr 1fr; }
+  .saved-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .features-grid, .steps-grid,
@@ -420,8 +426,6 @@
   display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
   padding: 20px;
 }
-@media (max-width: 600px) { .tl-form-grid { grid-template-columns: 1fr; } }
-
 /* Content inside card without .tl-card-body */
 .tl-card > .tl-field,
 .tl-card > .tl-section-title,
@@ -545,7 +549,16 @@
 .tl-card table tr:hover td { background: #f8fafc; }
 
 /* Responsive */
-@media (max-width: 800px) {
+@media (max-width: 768px) {
+  .tl-form-grid { grid-template-columns: 1fr; }
+  .tl-field select,
+  .tl-field input,
+  .ot-input-wrap input {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+@media (max-width: 960px) {
   .tl-body { grid-template-columns: 1fr; }
   .tl-sidebar { position: static; }
 }

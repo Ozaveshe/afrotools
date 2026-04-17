@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Route Fares | AfroTools</title>
+<meta name="description" content="Track bus, minibus, ride-hail, and motorbike fares by route and city, then contribute live transport observations through AfroPoints.">
+<link rel="canonical" href="https://afrotools.com/tools/route-fares/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Route Fares</span></div>
+    <div class="md-eyebrow">Fuel and Transport</div>
+    <h1>Route Fares</h1>
+    <p>See what commuters are actually paying by route, operator, and mode, then add your own verified fare report to the network.</p>
+    <div class="md-chip-row"><span class="md-chip">Danfo and BRT</span><span class="md-chip">Matatu and boda</span><span class="md-chip">Ride-hail and bus</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified Route Feed</div><div class="md-panel-subtitle">Recent public route-fare submissions.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Nairobi"></div>
+          <div class="md-field"><label for="mdRouteFrom">Route From</label><input id="mdRouteFrom" class="md-input" data-md-filter="route_from" placeholder="Origin"></div>
+          <div class="md-field"><label for="mdRouteTo">Route To</label><input id="mdRouteTo" class="md-input" data-md-filter="route_to" placeholder="Destination"></div>
+        </div>
+        <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading route fares...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Fare</div><div class="md-panel-subtitle">New routes and large fare jumps automatically enter review.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Accra"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="KES"></div>
+        <div class="md-form-field"><label for="mdReportProvider">Operator</label><input id="mdReportProvider" class="md-input" placeholder="Optional"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I rode this route</option><option value="receipt">Ticket or receipt</option><option value="merchant_quote">Operator quote</option><option value="community_check">Community check</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Fare</button></div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Buyer outputs</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Transport operators can benchmark route inflation by corridor.</li>
+          <li>Media teams can publish city-by-city commuter cost trackers.</li>
+          <li>Lenders and employers can use commuting trends in affordability studies.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/transport-fares',
+  responseKey: 'fares',
+  subtype: 'transport_fare',
+  vertical: 'fuel_transport',
+  reportButtonLabel: 'Submit Fare',
+  renderSummary: function (rows) {
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Verified fares</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return row.transport_mode; }).length + '</div><div class="md-stat-label">Tagged transport modes</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">Routes</div><div class="md-stat-label">New corridors auto-review</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.route_name || ((row.route_from || '') + ' - ' + (row.route_to || ''))) + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.transport_mode || 'Transport') + ' | ' + (row.provider_name || 'Local operator')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.fare_amount || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.city || '') + '</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

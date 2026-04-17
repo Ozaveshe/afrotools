@@ -9,11 +9,11 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="style.css?v=20260416a">
+<link rel="stylesheet" href="style.css?v=20260416c">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/country" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/country" />
 <meta property="og:locale" content="en_US">
@@ -98,9 +98,29 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="image-pipeline.js?v=20260416a"></script>
+<script src="static-routes.js?v=20260416a"></script>
 <script>
 (function () {
   var AK = AfroKitchenEngine;
+  var AKImages = window.AfroKitchenImages;
+  var AKRoutes = window.AfroKitchenStaticRoutes || {
+    recipe: function (slug) {
+      return '/tools/afrokitchen/recipes/' + encodeURIComponent(slug) + '/';
+    }
+  };
+  function syncPreferredUrlMetadata(url) {
+    if (!url) return;
+    var canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = url;
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', url);
+  }
   var params = new URLSearchParams(window.location.search);
   var code = params.get('country') || params.get('code');
   var country = code ? AK.COUNTRIES[code] : null;
@@ -125,6 +145,9 @@
   }
 
   document.title = country.name + ' Cuisine \u2014 AfroKitchen | AfroTools';
+  if (typeof AKRoutes.country === 'function') {
+    syncPreferredUrlMetadata(window.location.origin + AKRoutes.country(code));
+  }
   document.getElementById('breadcrumb-country').textContent = country.name;
   document.getElementById('country-region').textContent = country.region;
   document.getElementById('country-title').textContent = country.flag + ' ' + country.name + ' Cuisine';
@@ -156,10 +179,12 @@
       var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
       var card = document.createElement('a');
       card.className = 'ak-recipe-card';
-      card.href = 'recipe.html?slug=' + r.slug;
-      var thumbHtml = r.image_url
-        ? '<div class="ak-recipe-card-thumb"><img class="ak-recipe-card-img" src="' + r.image_url + '" alt="' + r.name + '" loading="lazy"></div>'
-        : '<div class="ak-recipe-card-thumb ak-img-fallback"><div class="ak-card-fallback"><div class="ak-card-fallback-label">' + (categoryLabels[r.category] || 'AfroKitchen') + '</div><p class="ak-card-fallback-title">' + r.name + '</p></div></div>';
+      card.href = AKRoutes.recipe(r.slug);
+      var thumbHtml = AKImages.createCardSlotMarkup(r, {
+        label: categoryLabels[r.category] || 'AfroKitchen',
+        title: r.name,
+        alt: r.image_alt || r.name
+      });
       card.innerHTML =
         thumbHtml +
         '<div class="ak-recipe-card-body">' +
@@ -170,6 +195,7 @@
             '<span><small>Time</small><strong>' + totalMin + ' min</strong></span><span><small>Level</small><strong>' + (r.difficulty || 'medium') + '</strong></span>' +
           '</div>' +
         '</div>';
+      AKImages.hydrate(card);
       grid.appendChild(card);
     });
   }

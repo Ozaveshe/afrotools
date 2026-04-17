@@ -13,11 +13,11 @@
 <meta property="og:image:height" content="630">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="style.css?v=20260416a">
+<link rel="stylesheet" href="style.css?v=20260416c">
 <script type="application/ld+json" id="recipe-schema"></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/recipe" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/recipe" />
@@ -53,6 +53,7 @@
           <a href="/">AfroTools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><span id="hero-breadcrumb">Recipe</span>
         </nav>
         <h1 id="hero-title"></h1>
+        <div class="ak-hero-local-name" id="hero-local-name" style="display:none"></div>
         <p id="hero-desc" class="ak-hero-description"></p>
         <div class="ak-recipe-meta-row" id="hero-meta"></div>
         <div id="recipe-hero-credit" class="ak-hero-photo-credit" style="display:none"></div>
@@ -65,8 +66,22 @@
         <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.print()">Print recipe</button>
         <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.share()">Share recipe</button>
         <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.copyLink()">Copy link</button>
+        <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.copyShoppingList()">Copy shopping list</button>
+        <button class="ak-btn ak-btn-sm ak-btn-outline" onclick="AKPage.shareIngredients()">Share ingredients</button>
         <button class="ak-btn ak-btn-sm ak-btn-primary" onclick="AKPage.startCookingMode()">Start cooking mode</button>
       </div>
+      <div class="ak-utility-feedback" id="utility-feedback" aria-live="polite"></div>
+
+      <section class="ak-trust-band">
+        <div class="ak-trust-band-head">
+          <div>
+            <div class="ak-section-kicker">Trust & context</div>
+            <h2 class="ak-section-title">Why this recipe feels grounded</h2>
+          </div>
+          <p class="ak-community-copy" id="trust-copy">Recipes cook better when the practical details and the cultural context live together.</p>
+        </div>
+        <div class="ak-trust-grid" id="trust-grid"></div>
+      </section>
 
       <!-- SERVING ADJUSTER -->
       <div class="ak-servings">
@@ -134,18 +149,58 @@
         </div>
       </section>
 
-      <!-- REVIEWS -->
-      <section class="ak-tight-section">
-        <h2 class="ak-section-title">Ratings & Reviews</h2>
-        <div class="ak-reviews-summary" id="reviews-summary"></div>
-        <div id="reviews-list"></div>
-        <div class="ak-review-form" id="review-form">
-          <h3 class="ak-panel-title">Leave a Review</h3>
-          <div class="ak-review-stars" id="review-stars"></div>
-          <textarea class="ak-review-textarea" id="review-comment" placeholder="What did you think? Any modifications you made?"></textarea>
-          <div class="ak-review-form-row">
-            <input class="ak-form-input" id="review-name" placeholder="Your name (optional)">
-            <button class="ak-btn ak-btn-sm ak-btn-primary" onclick="AKPage.submitReview()">Submit</button>
+      <!-- COMMUNITY -->
+      <section class="ak-tight-section ak-community-section" id="community-section">
+        <div class="ak-community-head">
+          <div>
+            <div class="ak-section-kicker">Community kitchen</div>
+            <h2 class="ak-section-title">Cooked by real people, not just published once</h2>
+          </div>
+          <p class="ak-community-copy">The strongest recipe experiences combine trust, utility, and visible community. Rate the dish, note what you changed, or upload a photo of the version you actually cooked.</p>
+        </div>
+        <div class="ak-community-stats" id="community-stats"></div>
+        <div class="ak-cooksnap-grid" id="cooksnap-grid"></div>
+        <div class="ak-cooksnap-empty" id="cooksnap-empty" style="display:none">
+          <strong>No cook photos yet.</strong>
+          <p>Be the first person to show how this dish turns out in a real kitchen.</p>
+        </div>
+
+        <div class="ak-reviews-shell">
+          <div class="ak-reviews-topline">
+            <h3 class="ak-panel-title">Ratings & Reviews</h3>
+            <div class="ak-reviews-summary" id="reviews-summary"></div>
+          </div>
+          <div id="reviews-list"></div>
+        </div>
+
+        <div class="ak-community-forms">
+          <div class="ak-community-card ak-review-form" id="review-form">
+            <h3 class="ak-panel-title">Rate the recipe</h3>
+            <p class="ak-form-helper">Tell the next cook how it turned out and what you changed.</p>
+            <div class="ak-review-stars" id="review-stars"></div>
+            <textarea class="ak-review-textarea" id="review-comment" placeholder="How did it taste? What should the next person know?"></textarea>
+            <input class="ak-form-input" id="review-modifications" placeholder="What did you change? e.g. used smoked paprika, reduced chili">
+            <div class="ak-review-form-row">
+              <input class="ak-form-input" id="review-name" placeholder="Your name">
+              <select class="ak-form-select" id="review-country"></select>
+              <button class="ak-btn ak-btn-sm ak-btn-primary" id="review-submit-btn" onclick="AKPage.submitReview()">Submit review</button>
+            </div>
+            <div class="ak-form-feedback" id="review-feedback" aria-live="polite"></div>
+          </div>
+
+          <div class="ak-community-card ak-cooksnap-form" id="cooksnap-form">
+            <h3 class="ak-panel-title">Share your cook</h3>
+            <p class="ak-form-helper">Upload the plated version you made. We compress it before upload so it stays fast.</p>
+            <textarea class="ak-review-textarea" id="cook-note" placeholder="Caption your cook. What worked well, what did you pair it with, or what would you do next time?"></textarea>
+            <input class="ak-file-input" type="file" accept="image/*" id="cook-photo">
+            <div class="ak-file-hint">Best results: a bright, natural photo of the finished dish.</div>
+            <div class="ak-cooksnap-preview" id="cook-photo-preview" style="display:none"></div>
+            <div class="ak-review-form-row">
+              <input class="ak-form-input" id="cook-name" placeholder="Your name">
+              <select class="ak-form-select" id="cook-country"></select>
+              <button class="ak-btn ak-btn-sm ak-btn-primary" id="cook-submit-btn" onclick="AKPage.submitCooksnap()">Share my cook</button>
+            </div>
+            <div class="ak-form-feedback" id="cook-feedback" aria-live="polite"></div>
           </div>
         </div>
       </section>
@@ -187,603 +242,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afrokitchen-engine.js?v=2"></script>
-<script>
-var AKPage = (function () {
-  'use strict';
-  var AK = AfroKitchenEngine;
-  var recipe = null;
-  var servings = 6;
-  var cookingStep = 0;
-  var reviewRating = 0;
-  var advisorMessages = [];
-  var timerIds = {};
-  var categoryLabels = {
-    main: 'Main dish',
-    soup_stew: 'Soup or stew',
-    rice: 'Rice dish',
-    snack: 'Snack',
-    dessert: 'Dessert',
-    drink: 'Drink',
-    breakfast: 'Breakfast',
-    side: 'Side',
-    street_food: 'Street food',
-    starter: 'Starter'
-  };
-
-  // ── Init ──
-  async function init() {
-    var params = new URLSearchParams(window.location.search);
-    var slug = params.get('slug') || params.get('id');
-    if (!slug) { show404(); return; }
-
-    recipe = await AK.fetchRecipeBySlug(slug);
-    // Retry once after a short delay if first attempt fails (handles slow Supabase init)
-    if (!recipe) {
-      await new Promise(function (res) { setTimeout(res, 1200); });
-      recipe = await AK.fetchRecipeBySlug(slug);
-    }
-    // Final fallback: server-side fetch via Netlify function
-    if (!recipe) {
-      try {
-        var res = await fetch('/.netlify/functions/afrokitchen-recipes?action=get&slug=' + encodeURIComponent(slug));
-        if (res.ok) {
-          var data = await res.json();
-          if (data && data.id) recipe = data;
-        }
-      } catch (e) {}
-    }
-    if (!recipe) { show404(); return; }
-
-    servings = recipe.default_servings;
-
-    // Update page title and meta
-    document.title = recipe.name + ' — AfroKitchen | AfroTools';
-    var metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.content = recipe.description;
-
-    var schema = AK.getStructuredData(recipe, servings);
-    document.getElementById('recipe-schema').textContent = JSON.stringify(schema);
-
-    renderHero();
-    renderIngredients();
-    renderSteps();
-    renderStory();
-    renderNutrition();
-    renderReviews();
-    renderAdvisorSuggestions();
-    renderReviewStars();
-    loadRelated();
-
-    // Populate cost country dropdown
-    var costCountry = document.getElementById('cost-country');
-    var codes = Object.keys(AK.COUNTRIES).sort(function (a, b) { return AK.COUNTRIES[a].name.localeCompare(AK.COUNTRIES[b].name); });
-    codes.forEach(function (c) {
-      var opt = document.createElement('option');
-      opt.value = c;
-      opt.textContent = AK.COUNTRIES[c].flag + ' ' + AK.COUNTRIES[c].name;
-      if (c === recipe.country_code) opt.selected = true;
-      costCountry.appendChild(opt);
-    });
-
-    document.getElementById('recipe-loading').style.display = 'none';
-    document.getElementById('recipe-content').style.display = '';
-
-    // Advisor enter key
-    document.getElementById('advisor-input').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') askAdvisor();
-    });
-  }
-
-  function show404() {
-    document.getElementById('recipe-loading').style.display = 'none';
-    document.getElementById('recipe-404').style.display = '';
-  }
-
-  // ── Hero ──
-  function renderHero() {
-    var hero = document.getElementById('recipe-hero');
-    if (recipe.image_url) {
-      hero.style.backgroundImage = 'url(' + recipe.image_url + ')';
-    } else {
-      hero.style.background = '#1A1008';
-    }
-    document.getElementById('hero-breadcrumb').textContent = recipe.name;
-    document.getElementById('hero-title').textContent = recipe.name;
-    document.getElementById('hero-desc').textContent = recipe.description;
-    var country = AK.COUNTRIES[recipe.country_code] || {};
-    var totalMin = recipe.prep_time_minutes + recipe.cook_time_minutes;
-    var ratingSummary = recipe.avg_rating ? buildRatingStars(recipe.avg_rating) + ' (' + recipe.review_count + ')' : 'No ratings yet';
-    document.getElementById('hero-meta').innerHTML =
-      '<span><small>Country</small><strong>' + (country.flag || '') + ' ' + recipe.country_name + '</strong></span>' +
-      '<span><small>Time</small><strong>' + totalMin + ' min</strong></span>' +
-      '<span><small>Serves</small><strong>' + recipe.default_servings + '</strong></span>' +
-      '<span><small>Level</small><strong>' + recipe.difficulty + '</strong></span>' +
-      '<span><small>Rating</small><strong>' + ratingSummary + '</strong></span>';
-  }
-
-  // ── Ingredients ──
-  function renderIngredients() {
-    var ingredients = AK.scaleIngredients(recipe.ingredients || [], recipe.default_servings, servings);
-    var list = document.getElementById('ingredients-list');
-    list.innerHTML = '';
-    document.getElementById('servings-val').textContent = servings;
-
-    var currentGroup = '';
-    ingredients.forEach(function (ing, i) {
-      if (ing.group_name && ing.group_name !== currentGroup) {
-        currentGroup = ing.group_name;
-        var groupEl = document.createElement('div');
-        groupEl.className = 'ak-ing-group';
-        groupEl.textContent = currentGroup;
-        list.appendChild(groupEl);
-      }
-      var item = document.createElement('label');
-      item.className = 'ak-ing-item';
-      item.innerHTML =
-        '<input type="checkbox" class="ak-ing-check">' +
-        '<span class="ak-ing-text">' +
-          '<span class="ak-ing-amount">' + AK.formatAmount(ing.scaled_amount) + ' ' + ing.unit + '</span> ' +
-          ing.name +
-          (ing.prep_note ? ', <em>' + ing.prep_note + '</em>' : '') +
-          (ing.is_optional ? ' <span class="ak-ing-optional">(optional)</span>' : '') +
-          (ing.substitution ? ' <span class="ak-ing-optional">[Sub: ' + ing.substitution + ']</span>' : '') +
-        '</span>';
-      list.appendChild(item);
-    });
-  }
-
-  // ── Steps ──
-  function renderSteps() {
-    var list = document.getElementById('steps-list');
-    list.innerHTML = '';
-    var steps = recipe.steps || [];
-    steps.forEach(function (step, i) {
-      var div = document.createElement('div');
-      div.className = 'ak-step';
-      div.id = 'step-' + step.step_number;
-      var html =
-        '<div class="ak-step-header">' +
-          '<div class="ak-step-num">' + step.step_number + '</div>' +
-          '<div class="ak-step-title">' + step.title + '</div>' +
-        '</div>' +
-        '<div class="ak-step-text">' + step.instruction + '</div>';
-
-      if (step.tip) {
-        html += '<div class="ak-step-tip">' + step.tip + '</div>';
-      }
-
-      if (step.timer_seconds) {
-        var timerId = 'timer_step_' + step.step_number;
-        html += '<div class="ak-timer" id="timer-wrap-' + step.step_number + '">' +
-          '<span class="ak-timer-label">' + (step.timer_label || 'Timer') + '</span>' +
-          '<span class="ak-timer-display" id="timer-display-' + step.step_number + '">' + AK.formatTime(step.timer_seconds) + '</span>' +
-          '<div class="ak-timer-bar"><div class="ak-timer-bar-fill" id="timer-bar-' + step.step_number + '" style="width:100%"></div></div>' +
-          '<button class="ak-timer-btn" id="timer-start-' + step.step_number + '" onclick="AKPage.toggleTimer(' + step.step_number + ',' + step.timer_seconds + ')">Start</button>' +
-          '<button class="ak-timer-btn" onclick="AKPage.resetTimerStep(' + step.step_number + ',' + step.timer_seconds + ')">Reset</button>' +
-        '</div>';
-      }
-
-      div.innerHTML = html;
-      list.appendChild(div);
-    });
-  }
-
-  // ── Timers ──
-  function toggleTimer(stepNum, totalSeconds) {
-    var key = 'step_' + stepNum;
-    if (timerIds[key]) {
-      var t = AK.getTimer(timerIds[key]);
-      if (t && t.running) {
-        AK.pauseTimer(timerIds[key]);
-        document.getElementById('timer-start-' + stepNum).textContent = 'Resume';
-        return;
-      } else if (t && t.remaining > 0) {
-        AK.startTimer(timerIds[key]);
-        document.getElementById('timer-start-' + stepNum).textContent = 'Pause';
-        return;
-      }
-    }
-    // Create new timer
-    timerIds[key] = AK.createTimer(totalSeconds, 'Step ' + stepNum,
-      function (t) {
-        document.getElementById('timer-display-' + stepNum).textContent = AK.formatTime(t.remaining);
-        var pct = (t.remaining / t.totalSeconds) * 100;
-        document.getElementById('timer-bar-' + stepNum).style.width = pct + '%';
-      },
-      function () {
-        document.getElementById('timer-start-' + stepNum).textContent = 'Done!';
-        document.getElementById('timer-display-' + stepNum).textContent = '00:00';
-      }
-    );
-    AK.startTimer(timerIds[key]);
-    document.getElementById('timer-start-' + stepNum).textContent = 'Pause';
-  }
-
-  function resetTimerStep(stepNum, totalSeconds) {
-    var key = 'step_' + stepNum;
-    if (timerIds[key]) AK.resetTimer(timerIds[key]);
-    document.getElementById('timer-display-' + stepNum).textContent = AK.formatTime(totalSeconds);
-    document.getElementById('timer-bar-' + stepNum).style.width = '100%';
-    document.getElementById('timer-start-' + stepNum).textContent = 'Start';
-  }
-
-  // ── Servings ──
-  function adjustServings(delta) {
-    var newVal = servings + delta;
-    if (newVal < 1 || newVal > 50) return;
-    servings = newVal;
-    renderIngredients();
-    renderNutrition();
-    updateCost();
-  }
-
-  // ── Cost ──
-  async function updateCost() {
-    var country = document.getElementById('cost-country').value;
-    if (!country || !recipe.id) return;
-    var prices = await AK.fetchIngredientPrices(recipe.id, country);
-    if (!prices || !prices.length) {
-      document.getElementById('cost-panel').style.display = 'none';
-      return;
-    }
-    var cost = AK.calculateRecipeCost(recipe.ingredients, recipe.default_servings, servings, prices, country);
-    document.getElementById('cost-total').textContent = cost.symbol + cost.totalCost.toLocaleString();
-    document.getElementById('cost-per').textContent = cost.symbol + cost.costPerServing.toLocaleString() + ' per serving (' + servings + ' servings)';
-    document.getElementById('cost-note').textContent = cost.note;
-    document.getElementById('cost-panel').style.display = '';
-  }
-
-  // ── Story ──
-  function renderStory() {
-    if (recipe.story) {
-      document.getElementById('story-section').style.display = '';
-      document.getElementById('story-text').innerHTML = '<p>' + recipe.story.replace(/\n\n/g, '</p><p>') + '</p>';
-    }
-    if (recipe.best_served_with) {
-      var el = document.getElementById('served-with');
-      el.style.display = '';
-      el.innerHTML = '<strong>Best served with:</strong> ' + recipe.best_served_with;
-    }
-    if (recipe.regional_variations) {
-      var el2 = document.getElementById('variations');
-      el2.style.display = '';
-      el2.innerHTML = '<strong>Regional variations:</strong> ' + recipe.regional_variations;
-    }
-  }
-
-  // ── Nutrition ──
-  function renderNutrition() {
-    if (!recipe.calories) return;
-    document.getElementById('nutrition-section').style.display = '';
-    var grid = document.getElementById('nutrition-grid');
-    var items = [
-      { label: 'Calories', val: recipe.calories, unit: '' },
-      { label: 'Protein', val: recipe.protein_g, unit: 'g' },
-      { label: 'Carbs', val: recipe.carbs_g, unit: 'g' },
-      { label: 'Fat', val: recipe.fat_g, unit: 'g' },
-      { label: 'Fiber', val: recipe.fiber_g, unit: 'g' }
-    ];
-    grid.innerHTML = items.map(function (it) {
-      return '<div class="ak-nutrition-item">' +
-        '<div class="ak-nutrition-val">' + (it.val || 0) + it.unit + '</div>' +
-        '<div class="ak-nutrition-label">' + it.label + '</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  // ── Reviews ──
-  function renderReviews() {
-    var reviews = recipe.reviews || [];
-    var summary = document.getElementById('reviews-summary');
-    if (recipe.avg_rating) {
-      var stars = buildRatingStars(recipe.avg_rating);
-      summary.innerHTML = '<div class="ak-star-rating">' + stars + '</div>' +
-        '<span><strong>' + recipe.avg_rating + '</strong></span>' +
-        '<span class="ak-section-annotation">(' + recipe.review_count + ' ratings)</span>';
-    } else {
-      summary.innerHTML = '<span class="ak-section-annotation">No reviews yet. Be the first.</span>';
-    }
-
-    var list = document.getElementById('reviews-list');
-    list.innerHTML = '';
-    reviews.slice(0, 10).forEach(function (r) {
-      var card = document.createElement('div');
-      card.className = 'ak-review-card';
-      var stars = buildRatingStars(r.rating);
-      card.innerHTML =
-        '<div class="ak-review-header">' +
-          '<span class="ak-review-author">' + (r.author_name || 'Anonymous') + ' ' + stars + '</span>' +
-          '<span class="ak-review-date">' + new Date(r.created_at).toLocaleDateString() + '</span>' +
-        '</div>' +
-        (r.comment ? '<div class="ak-review-text">' + r.comment + '</div>' : '') +
-        (r.modifications ? '<div class="ak-review-modifications">Modifications: ' + r.modifications + '</div>' : '');
-      list.appendChild(card);
-    });
-  }
-
-  function renderReviewStars() {
-    var container = document.getElementById('review-stars');
-    for (var i = 1; i <= 5; i++) {
-      (function (rating) {
-        var btn = document.createElement('button');
-        btn.innerHTML = '&#9734;';
-        btn.onclick = function () {
-          reviewRating = rating;
-          var btns = container.querySelectorAll('button');
-          btns.forEach(function (b, idx) {
-            b.classList.toggle('active', idx < rating);
-            b.innerHTML = idx < rating ? '&#9733;' : '&#9734;';
-          });
-        };
-        container.appendChild(btn);
-      })(i);
-    }
-  }
-
-  async function submitReview() {
-    if (!reviewRating) { alert('Please select a star rating'); return; }
-    var comment = document.getElementById('review-comment').value.trim();
-    var name = document.getElementById('review-name').value.trim();
-    var res = await AK.submitReview(recipe.id, reviewRating, comment, name);
-    if (res.success) {
-      alert('Thank you for your review!');
-      document.getElementById('review-comment').value = '';
-      document.getElementById('review-name').value = '';
-      reviewRating = 0;
-      var btns = document.getElementById('review-stars').querySelectorAll('button');
-      btns.forEach(function (b) { b.classList.remove('active'); b.innerHTML = '&#9734;'; });
-    } else {
-      alert('Error submitting review: ' + (res.error || 'Unknown'));
-    }
-  }
-
-  // ── AI Advisor ──
-  function renderAdvisorSuggestions() {
-    var suggestions = [
-      'What can I substitute for ' + ((recipe.ingredients || [])[3] || {}).name + '?',
-      'Make this less spicy',
-      'How do I cook this for 20 people?',
-      'What drink pairs with this?',
-      'Can I make this ahead of time?'
-    ];
-    var container = document.getElementById('advisor-suggestions');
-    suggestions.forEach(function (s) {
-      var btn = document.createElement('button');
-      btn.className = 'ak-advisor-suggestion';
-      btn.textContent = s;
-      btn.onclick = function () {
-        document.getElementById('advisor-input').value = s;
-        askAdvisor();
-      };
-      container.appendChild(btn);
-    });
-  }
-
-  async function askAdvisor() {
-    var input = document.getElementById('advisor-input');
-    var question = input.value.trim();
-    if (!question) return;
-    input.value = '';
-
-    advisorMessages.push({ role: 'user', content: question });
-    renderAdvisorMessages();
-
-    try {
-      var res = await fetch('/.netlify/functions/ai-advisor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tool: 'afrokitchen',
-          message: question,
-          messages: advisorMessages,
-          context: JSON.stringify({
-            recipe_name: recipe.name,
-            country: recipe.country_name,
-            servings: servings,
-            ingredients: (recipe.ingredients || []).map(function (i) { return i.name; }),
-            difficulty: recipe.difficulty
-          })
-        })
-      });
-      var data = await res.json();
-      var reply = data.reply || data.text || 'Sorry, I could not generate a response.';
-      advisorMessages.push({ role: 'assistant', content: reply });
-    } catch (e) {
-      advisorMessages.push({ role: 'assistant', content: 'Unable to reach the AI advisor. Please try again.' });
-    }
-    renderAdvisorMessages();
-  }
-
-  function renderAdvisorMessages() {
-    var container = document.getElementById('advisor-messages');
-    container.innerHTML = '';
-    advisorMessages.forEach(function (msg) {
-      var div = document.createElement('div');
-      div.className = 'ak-advisor-msg ' + (msg.role === 'user' ? 'user' : 'ai');
-      div.textContent = msg.content;
-      container.appendChild(div);
-    });
-    container.scrollTop = container.scrollHeight;
-  }
-
-  // ── Related Recipes ──
-  function buildRatingStars(rating) {
-    var stars = '';
-    for (var i = 1; i <= 5; i++) stars += i <= Math.round(rating) ? '&#9733;' : '&#9734;';
-    return stars;
-  }
-
-  function buildThumbMarkup(r) {
-    return r.image_url
-      ? '<div class="ak-recipe-card-thumb"><img class="ak-recipe-card-img" src="' + r.image_url + '" alt="' + r.name + '" loading="lazy"></div>'
-      : '<div class="ak-recipe-card-thumb ak-img-fallback"><div class="ak-card-fallback"><div class="ak-card-fallback-label">' + (categoryLabels[r.category] || 'AfroKitchen') + '</div><p class="ak-card-fallback-title">' + r.name + '</p></div></div>';
-  }
-
-  async function loadRelated() {
-    var recipes = await AK.fetchRecipes({ country: recipe.country_code, limit: 4 });
-    var grid = document.getElementById('related-grid');
-    (recipes || []).filter(function (r) { return r.slug !== recipe.slug; }).slice(0, 3).forEach(function (r) {
-      var card = document.createElement('a');
-      card.className = 'ak-recipe-card';
-      card.href = 'recipe.html?slug=' + r.slug;
-      var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
-      card.innerHTML =
-        buildThumbMarkup(r) +
-        '<div class="ak-recipe-card-body">' +
-          '<div class="ak-recipe-card-flag">' + recipe.country_name + '</div>' +
-          '<h3 class="ak-recipe-card-title">' + r.name + '</h3>' +
-          '<div class="ak-recipe-card-meta"><span><small>Time</small><strong>' + totalMin + ' min</strong></span></div>' +
-        '</div>';
-      grid.appendChild(card);
-    });
-  }
-
-  // ── Cooking Mode ──
-  function startCookingMode() {
-    cookingStep = 0;
-    document.getElementById('cooking-recipe-name').textContent = recipe.name;
-    document.getElementById('cooking-mode').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    renderCookingStep();
-  }
-
-  function exitCookingMode() {
-    document.getElementById('cooking-mode').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  function renderCookingStep() {
-    var steps = recipe.steps || [];
-    if (cookingStep < 0) cookingStep = 0;
-    if (cookingStep >= steps.length) cookingStep = steps.length - 1;
-    var step = steps[cookingStep];
-    var body = document.getElementById('cooking-body');
-    var html =
-      '<div class="ak-cooking-step-num">Step ' + step.step_number + ' of ' + steps.length + '</div>' +
-      '<div class="ak-cooking-title">' + step.title + '</div>' +
-      '<div class="ak-cooking-instruction">' + step.instruction + '</div>';
-
-    if (step.timer_seconds) {
-      html += '<div class="ak-timer" style="margin-bottom:20px">' +
-        '<span class="ak-timer-label">' + (step.timer_label || 'Timer') + '</span>' +
-        '<span class="ak-timer-display" id="cooking-timer-display">' + AK.formatTime(step.timer_seconds) + '</span>' +
-        '<div class="ak-timer-bar"><div class="ak-timer-bar-fill" id="cooking-timer-bar" style="width:100%"></div></div>' +
-        '<button class="ak-timer-btn" id="cooking-timer-btn" onclick="AKPage.toggleCookingTimer(' + step.step_number + ',' + step.timer_seconds + ')">Start</button>' +
-        '<button class="ak-timer-btn" onclick="AKPage.resetCookingTimer(' + step.timer_seconds + ')">Reset</button>' +
-      '</div>';
-    }
-
-    if (step.tip) {
-      html += '<div class="ak-cooking-tip">' + step.tip + '</div>';
-    }
-
-    body.innerHTML = html;
-  }
-
-  function cookingNext() {
-    cookingStep++;
-    if (cookingStep >= (recipe.steps || []).length) { exitCookingMode(); return; }
-    renderCookingStep();
-  }
-  function cookingPrev() {
-    cookingStep--;
-    renderCookingStep();
-  }
-
-  var cookingTimerId = null;
-  function toggleCookingTimer(stepNum, totalSeconds) {
-    if (cookingTimerId) {
-      var t = AK.getTimer(cookingTimerId);
-      if (t && t.running) {
-        AK.pauseTimer(cookingTimerId);
-        document.getElementById('cooking-timer-btn').textContent = 'Resume';
-        return;
-      } else if (t && t.remaining > 0) {
-        AK.startTimer(cookingTimerId);
-        document.getElementById('cooking-timer-btn').textContent = 'Pause';
-        return;
-      }
-    }
-    cookingTimerId = AK.createTimer(totalSeconds, 'Cooking',
-      function (t) {
-        var disp = document.getElementById('cooking-timer-display');
-        var bar = document.getElementById('cooking-timer-bar');
-        if (disp) disp.textContent = AK.formatTime(t.remaining);
-        if (bar) bar.style.width = ((t.remaining / t.totalSeconds) * 100) + '%';
-      },
-      function () {
-        var btn = document.getElementById('cooking-timer-btn');
-        if (btn) btn.textContent = 'Done!';
-      }
-    );
-    AK.startTimer(cookingTimerId);
-    document.getElementById('cooking-timer-btn').textContent = 'Pause';
-  }
-
-  function resetCookingTimer(totalSeconds) {
-    if (cookingTimerId) AK.resetTimer(cookingTimerId);
-    var disp = document.getElementById('cooking-timer-display');
-    var bar = document.getElementById('cooking-timer-bar');
-    var btn = document.getElementById('cooking-timer-btn');
-    if (disp) disp.textContent = AK.formatTime(totalSeconds);
-    if (bar) bar.style.width = '100%';
-    if (btn) btn.textContent = 'Start';
-  }
-
-  // ── Share / Print ──
-  function shareRecipe() { if (recipe) AK.shareRecipe(recipe); }
-  function copyLink() {
-    if (recipe) {
-      AK.copyRecipeLink(recipe);
-      alert('Link copied!');
-    }
-  }
-  function printRecipe() { if (recipe) AK.printRecipe(recipe, servings); }
-
-  // ── Keyboard navigation for cooking mode ──
-  document.addEventListener('keydown', function (e) {
-    if (!document.getElementById('cooking-mode').classList.contains('active')) return;
-    if (e.key === 'ArrowRight' || e.key === ' ') cookingNext();
-    if (e.key === 'ArrowLeft') cookingPrev();
-    if (e.key === 'Escape') exitCookingMode();
-  });
-
-  // ── Touch swipe for cooking mode ──
-  var touchStartX = 0, touchStartY = 0;
-  document.getElementById('cooking-mode').addEventListener('touchstart', function (e) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-  document.getElementById('cooking-mode').addEventListener('touchend', function (e) {
-    var diffX = e.changedTouches[0].clientX - touchStartX;
-    var diffY = e.changedTouches[0].clientY - touchStartY;
-    // Only treat as horizontal swipe if X movement dominates Y (not a scroll)
-    if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
-      if (diffX < 0) cookingNext();
-      else cookingPrev();
-    }
-  }, { passive: true });
-
-  init();
-
-  return {
-    adjustServings: adjustServings,
-    toggleTimer: toggleTimer,
-    resetTimerStep: resetTimerStep,
-    startCookingMode: startCookingMode,
-    exitCookingMode: exitCookingMode,
-    cookingNext: cookingNext,
-    cookingPrev: cookingPrev,
-    toggleCookingTimer: toggleCookingTimer,
-    resetCookingTimer: resetCookingTimer,
-    askAdvisor: askAdvisor,
-    submitReview: submitReview,
-    share: shareRecipe,
-    copyLink: copyLink,
-    print: printRecipe,
-    updateCost: updateCost
-  };
-})();
-</script>
+<script src="image-pipeline.js?v=20260416a"></script>
+<script src="static-routes.js?v=20260416a"></script>
+<script src="recipe-page.js?v=20260416c"></script>
 </body>
 </html>

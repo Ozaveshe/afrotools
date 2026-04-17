@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salary Intelligence | AfroTools</title>
+<meta name="description" content="Track salary bands by role, city, industry, and experience, blending verified crowd submissions with benchmark tables for African markets.">
+<link rel="canonical" href="https://afrotools.com/tools/salary-intelligence/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Salary Intelligence</span></div>
+    <div class="md-eyebrow">Salary Intelligence</div>
+    <h1>Salary Intelligence</h1>
+    <p>Compare raw verified salary reports with benchmark medians by country, role, and experience, then add your own compensation data to strengthen the market signal.</p>
+    <div class="md-chip-row"><span class="md-chip">Role-level pay</span><span class="md-chip">City and experience filters</span><span class="md-chip">Benchmark + raw feed</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified Salary Reports</div><div class="md-panel-subtitle">Benchmarks and crowd reports live in one feed.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Johannesburg"></div>
+          <div class="md-field"><label for="mdRoleCategory">Role Category</label><input id="mdRoleCategory" class="md-input" data-md-filter="role_category" placeholder="e.g. Engineering"></div>
+          <div class="md-field"><label for="mdExperienceLevel">Experience</label><input id="mdExperienceLevel" class="md-input" data-md-filter="experience_level" placeholder="e.g. Mid"></div>
+        </div>
+        <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading salary intelligence...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Salary Report</div><div class="md-panel-subtitle">Proof-backed compensation data is more valuable and earns trust faster.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Nairobi"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="KES"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">My own compensation</option><option value="receipt">Payslip or offer letter</option><option value="merchant_quote">Recruiter or employer quote</option><option value="community_check">Trusted community check</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional redacted proof"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Salary</button></div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Best buyers</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Recruiters and employers can benchmark offer ranges by city and role.</li>
+          <li>Media can publish salary heatmaps by profession and experience.</li>
+          <li>Workers can compare gross and net expectations before accepting an offer.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/salary-intelligence',
+  responseKey: 'reports',
+  subtype: 'salary_report',
+  vertical: 'salary_intelligence',
+  reportButtonLabel: 'Submit Salary',
+  renderSummary: function (rows, data) {
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Verified crowd reports</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + (data.benchmarks || []).length + '</div><div class="md-stat-label">Benchmark rows</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">Pay</div><div class="md-stat-label">Gross and net capture supported</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.role_title || 'Role') + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.city || '') + ' | ' + (row.industry || 'Industry') + ' | ' + (row.experience_level || 'Experience')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.monthly_gross || '') + ' gross</span><span class="md-pill">' + helpers.escapeHtml(row.monthly_net || 'n/a') + ' net</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

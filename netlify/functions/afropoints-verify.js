@@ -1,177 +1,291 @@
-// netlify/functions/afropoints-verify.js
-// Consensus verification — confirms contributions when enough independent reports agree
+const { getAllowedOrigin } = require('./utils/cors');
+const {
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  SUBTYPE_CONFIGS,
+  getConfirmationBonus,
+  getMetricKey,
+  getNumericValue,
+  publishToDomain,
+  sbRequest
+} = require('./_shared/market-data');
 
-const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
-
-function cors(event) {
-  const origin = event.headers?.origin || '';
-  const ok = origin === 'https://afrotools.com' || origin === 'https://www.afrotools.com' || origin.endsWith('.netlify.app') || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
-  return { 'Access-Control-Allow-Origin': ok ? origin : 'https://afrotools.com', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Content-Type': 'application/json', 'Vary': 'Origin' };
+function corsHeaders(event) {
+  return {
+    'Access-Control-Allow-Origin': getAllowedOrigin(event),
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json',
+    'Vary': 'Origin'
+  };
 }
 
-function reply(s, b, h) { return { statusCode: s, headers: h, body: JSON.stringify(b) }; }
-
-// Category consensus rules
-const RULES = {
-  product_price:  { min: 2, days: 7,  pct: 0.20 },
-  forex_rate:     { min: 3, days: 1,  pct: 0.05 },
-  fuel_price:     { min: 2, days: 7,  pct: 0.20 },
-  rent:           { min: 3, days: 30, pct: 0.30 },
-  transport:      { min: 3, days: 14, pct: 0.20 },
-  salary:         { min: 5, days: 90, pct: 0 },
-  business_cost:  { min: 3, days: 30, pct: 0.30 },
-  meal_price:     { min: 2, days: 14, pct: 0.20 },
-  fintech_fee:    { min: 3, days: 30, pct: 0.20 },
-  education_cost: { min: 3, days: 90, pct: 0.30 }
-};
-
-const BONUS = { product_price: 3, forex_rate: 5, fuel_price: 3, rent: 5, transport: 3, salary: 0, business_cost: 5, meal_price: 3, fintech_fee: 5, education_cost: 3 };
-
-async function sbFetch(path, opts) {
-  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
-    ...opts,
-    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', ...(opts?.headers || {}) }
-  });
-  const text = await res.text();
-  try { return JSON.parse(text); } catch { return text; }
+function reply(statusCode, body, headers) {
+  return { statusCode, headers, body: JSON.stringify(body) };
 }
 
-function getNumericValue(payload, category) {
-  switch (category) {
-    case 'product_price': case 'meal_price': return payload.price;
-    case 'forex_rate': return payload.buy_rate;
-    case 'fuel_price': return payload.price_per_unit;
-    case 'rent': return payload.rent_amount;
-    case 'transport': return payload.fare;
-    case 'salary': return payload.monthly_gross;
-    case 'business_cost': return payload.monthly_amount;
-    case 'fintech_fee': return payload.fee_amount;
-    case 'education_cost': return payload.amount;
-    default: return null;
+function calculateRank(totalEarned, trustScore) {
+  if (totalEarned >= 10000 && trustScore >= 90) return 'legend';
+  if (totalEarned >= 2000 && trustScore >= 85) return 'expert';
+  if (totalEarned >= 500 && trustScore >= 70) return 'trusted';
+  if (totalEarned >= 100) return 'contributor';
+  return 'newcomer';
+}
+
+function toSubmission(contribution) {
+  return {
+    subtype: contribution.subtype || contribution.data_category,
+    vertical: contribution.vertical,
+    country_code: contribution.country_code,
+    city: contribution.city,
+    neighborhood: contribution.neighborhood,
+    observed_at: contribution.observed_at || contribution.submitted_at,
+    source_type: contribution.source_type,
+    proof_url: contribution.proof_url,
+    photo_url: contribution.photo_url,
+    currency_code: contribution.currency_code,
+    unit: contribution.unit,
+    quantity: contribution.quantity,
+    provider_name: contribution.provider_name,
+    merchant_name: contribution.merchant_name,
+    route_name: contribution.route_name,
+    business_context: contribution.business_context,
+    payload: contribution.payload || {}
+  };
+}
+
+function median(values) {
+  if (!values.length) return null;
+  const sorted = values.slice().sort(function (left, right) { return left - right; });
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+}
+
+async function fetchProfile(userId) {
+  const rows = await sbRequest('GET', 'points_profiles?user_id=eq.' + userId);
+  return Array.isArray(rows) && rows[0]
+    ? rows[0]
+    : {
+        user_id: userId,
+        total_earned: 0,
+        total_spent: 0,
+        current_balance: 0,
+        contributions_count: 0,
+        confirmations_count: 0,
+        trust_score: 50,
+        current_streak: 0,
+        longest_streak: 0,
+        rank: 'newcomer',
+        badges: []
+      };
+}
+
+async function saveProfile(profile) {
+  const payload = {
+    total_earned: profile.total_earned || 0,
+    total_spent: profile.total_spent || 0,
+    current_balance: profile.current_balance || 0,
+    contributions_count: profile.contributions_count || 0,
+    confirmations_count: profile.confirmations_count || 0,
+    trust_score: profile.trust_score || 0,
+    current_streak: profile.current_streak || 0,
+    longest_streak: profile.longest_streak || 0,
+    rank: profile.rank || 'newcomer',
+    badges: profile.badges || [],
+    primary_country: profile.primary_country || null,
+    primary_city: profile.primary_city || null,
+    contributor_persona: profile.contributor_persona || null,
+    regular_countries: profile.regular_countries || [],
+    regular_cities: profile.regular_cities || [],
+    regular_neighborhoods: profile.regular_neighborhoods || [],
+    regular_routes: profile.regular_routes || [],
+    coverage_categories: profile.coverage_categories || [],
+    submission_frequency: profile.submission_frequency || null,
+    payout_preference: profile.payout_preference || null,
+    proof_comfort: profile.proof_comfort || null,
+    onboarding_completed_at: profile.onboarding_completed_at || null,
+    last_submission_at: profile.last_submission_at || null,
+    updated_at: new Date().toISOString()
+  };
+
+  const existing = await sbRequest('GET', 'points_profiles?user_id=eq.' + profile.user_id);
+  if (Array.isArray(existing) && existing[0]) {
+    await sbRequest('PATCH', 'points_profiles?user_id=eq.' + profile.user_id, payload, {
+      Prefer: 'return=minimal'
+    });
+    return;
   }
+
+  await sbRequest('POST', 'points_profiles', {
+    user_id: profile.user_id,
+    created_at: new Date().toISOString(),
+    ...payload
+  }, {
+    Prefer: 'return=minimal'
+  });
 }
 
-function median(arr) {
-  const sorted = arr.slice().sort(function (a, b) { return a - b; });
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+async function insertConfidenceRecord(contribution, score, corroborationCount) {
+  const submission = toSubmission(contribution);
+  const sourceName = contribution.provider_name || contribution.merchant_name || contribution.city;
+  const numericValue = getNumericValue(submission);
+  if (numericValue === null || numericValue === undefined) return;
+
+  await sbRequest('POST', 'data_confidence', {
+    category: submission.vertical || submission.subtype,
+    country_code: submission.country_code,
+    metric: getMetricKey(submission),
+    value: numericValue,
+    confidence: Math.max(0.01, Math.min(1, score / 100)),
+    source_type: submission.source_type || 'crowd',
+    source_name: sourceName,
+    verified_by_count: corroborationCount,
+    flagged: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }, {
+    Prefer: 'return=minimal'
+  });
+}
+
+async function rewardConfirmedContribution(contribution, corroborationCount, score) {
+  const subtype = contribution.subtype || contribution.data_category;
+  const bonus = getConfirmationBonus(subtype);
+  const confirmedAt = new Date().toISOString();
+
+  await sbRequest('PATCH', 'contributions?id=eq.' + contribution.id, {
+    status: 'confirmed',
+    confidence_score: score,
+    confirmed_by_count: corroborationCount,
+    bonus_awarded: bonus > 0,
+    confirmed_at: confirmedAt
+  }, {
+    Prefer: 'return=minimal'
+  });
+
+  if (bonus > 0) {
+    await sbRequest('POST', 'points_ledger', {
+      user_id: contribution.user_id,
+      amount: bonus,
+      reason: 'confirmation_bonus',
+      contribution_id: contribution.id,
+      description: 'Consensus confirmed: ' + subtype.replace(/_/g, ' ')
+    }, { Prefer: 'return=minimal' });
+  }
+
+  const profile = await fetchProfile(contribution.user_id);
+  profile.total_earned = Number(profile.total_earned || 0) + bonus;
+  profile.current_balance = Number(profile.current_balance || 0) + bonus;
+  profile.confirmations_count = Number(profile.confirmations_count || 0) + 1;
+  profile.trust_score = Math.min(100, Number(profile.trust_score || 50) + 1);
+  profile.rank = calculateRank(Number(profile.total_earned || 0), Number(profile.trust_score || 0));
+  await saveProfile(profile);
+
+  await insertConfidenceRecord(contribution, score, corroborationCount);
+  await publishToDomain(toSubmission(contribution), contribution, 'verified');
+}
+
+async function penalizeFlaggedContribution(contribution) {
+  await sbRequest('PATCH', 'contributions?id=eq.' + contribution.id, {
+    status: 'flagged',
+    review_required: true,
+    review_reason: 'consensus_outlier'
+  }, {
+    Prefer: 'return=minimal'
+  });
+
+  const profile = await fetchProfile(contribution.user_id);
+  profile.trust_score = Math.max(0, Number(profile.trust_score || 50) - 5);
+  profile.rank = calculateRank(Number(profile.total_earned || 0), Number(profile.trust_score || 0));
+  await saveProfile(profile);
+}
+
+function buildGroupKey(contribution) {
+  return [
+    contribution.country_code,
+    String(contribution.city || '').toLowerCase(),
+    getMetricKey(toSubmission(contribution))
+  ].join('|');
 }
 
 exports.handler = async function (event) {
-  const headers = cors(event);
+  const headers = corsHeaders(event);
+
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
   if (event.httpMethod !== 'POST') return reply(405, { error: 'Method not allowed' }, headers);
   if (!SUPABASE_KEY) return reply(500, { error: 'Server not configured' }, headers);
 
   try {
-    let confirmed = 0, flagged = 0;
+    let confirmed = 0;
+    let flagged = 0;
 
-    for (const category of Object.keys(RULES)) {
-      const rule = RULES[category];
-      const cutoff = new Date(Date.now() - rule.days * 86400000).toISOString();
-
-      // Get pending contributions grouped by city
-      const pending = await sbFetch(
-        'contributions?status=eq.pending&data_category=eq.' + category + '&submitted_at=gte.' + cutoff + '&order=country_code,city&select=*'
+    for (const subtype of Object.keys(SUBTYPE_CONFIGS)) {
+      const config = SUBTYPE_CONFIGS[subtype];
+      const cutoff = new Date(Date.now() - config.windowDays * 86400000).toISOString();
+      const pending = await sbRequest(
+        'GET',
+        'contributions?status=eq.pending&data_category=eq.' + encodeURIComponent(subtype) + '&submitted_at=gte.' + cutoff + '&order=country_code,city&select=*'
       );
+
       if (!Array.isArray(pending) || pending.length === 0) continue;
 
-      // Group by country+city
       const groups = {};
-      for (const c of pending) {
-        const key = c.country_code + '|' + c.city.toLowerCase();
+      pending.forEach(function (entry) {
+        const key = buildGroupKey(entry);
         if (!groups[key]) groups[key] = [];
-        groups[key].push(c);
-      }
+        groups[key].push(entry);
+      });
 
       for (const key of Object.keys(groups)) {
-        const group = groups[key];
-        // Deduplicate by user_id (one per user)
-        const byUser = {};
-        for (const c of group) { if (!byUser[c.user_id]) byUser[c.user_id] = c; }
-        const unique = Object.values(byUser);
-
-        if (unique.length < rule.min) continue;
-
-        // Extract numeric values
-        const values = unique.map(function (c) { return getNumericValue(c.payload, category); }).filter(function (v) { return v != null && v > 0; });
-        if (values.length < rule.min) continue;
-
-        const med = median(values);
-        if (med === 0) continue;
-
-        // Salary category: just confirm by count, no threshold check
-        if (rule.pct === 0) {
-          for (const c of unique) {
-            await sbFetch('contributions?id=eq.' + c.id, {
-              method: 'PATCH',
-              headers: { Prefer: 'return=minimal' },
-              body: JSON.stringify({ status: 'confirmed', confidence_score: 80, confirmed_by_count: unique.length, confirmed_at: new Date().toISOString() })
-            });
-            confirmed++;
-          }
-          continue;
-        }
-
-        // Check consensus
-        const withinThreshold = unique.filter(function (c) {
-          var v = getNumericValue(c.payload, category);
-          return v && Math.abs(v - med) / med <= rule.pct;
+        const uniqueByUser = {};
+        const unique = groups[key].filter(function (entry) {
+          if (uniqueByUser[entry.user_id]) return false;
+          uniqueByUser[entry.user_id] = true;
+          return true;
         });
 
-        if (withinThreshold.length >= rule.min) {
-          const score = Math.min(100, Math.round((withinThreshold.length / unique.length) * 100));
+        if (unique.length < config.consensusMin) continue;
 
-          for (const c of withinThreshold) {
-            await sbFetch('contributions?id=eq.' + c.id, {
-              method: 'PATCH',
-              headers: { Prefer: 'return=minimal' },
-              body: JSON.stringify({ status: 'confirmed', confidence_score: score, confirmed_by_count: withinThreshold.length, bonus_awarded: true, confirmed_at: new Date().toISOString() })
-            });
+        const values = unique
+          .map(function (entry) { return getNumericValue(toSubmission(entry)); })
+          .filter(function (value) { return value !== null && value > 0; });
 
-            // Award confirmation bonus
-            const bonus = BONUS[category] || 3;
-            if (bonus > 0) {
-              await sbFetch('points_ledger', {
-                method: 'POST',
-                body: JSON.stringify({ user_id: c.user_id, amount: bonus, reason: 'confirmation_bonus', contribution_id: c.id, description: 'Consensus confirmed: ' + category.replace(/_/g, ' ') })
-              });
+        if (values.length < config.consensusMin) continue;
 
-              // Update profile balance
-              await sbFetch('points_profiles?user_id=eq.' + c.user_id, {
-                method: 'PATCH',
-                headers: { Prefer: 'return=minimal' },
-                body: JSON.stringify({
-                  total_earned: undefined, // Would need RPC for atomic increment
-                  confirmations_count: undefined,
-                  updated_at: new Date().toISOString()
-                })
-              });
-            }
-            confirmed++;
-          }
+        const med = median(values);
+        if (!med) continue;
 
-          // Flag outliers
-          const outliers = unique.filter(function (c) {
-            var v = getNumericValue(c.payload, category);
-            return v && Math.abs(v - med) / med > 0.5;
-          });
-          for (const c of outliers) {
-            await sbFetch('contributions?id=eq.' + c.id, {
-              method: 'PATCH',
-              headers: { Prefer: 'return=minimal' },
-              body: JSON.stringify({ status: 'flagged' })
-            });
-            flagged++;
-          }
+        const withinThreshold = unique.filter(function (entry) {
+          const value = getNumericValue(toSubmission(entry));
+          if (!value) return false;
+          if (config.thresholdPct === 0) return true;
+          return Math.abs(value - med) / med <= config.thresholdPct;
+        });
+
+        if (withinThreshold.length < config.consensusMin) continue;
+
+        const score = Math.min(100, Math.round((withinThreshold.length / unique.length) * 100));
+
+        for (const entry of withinThreshold) {
+          await rewardConfirmedContribution(entry, withinThreshold.length, score);
+          confirmed += 1;
+        }
+
+        const outliers = unique.filter(function (entry) {
+          const value = getNumericValue(toSubmission(entry));
+          return value && Math.abs(value - med) / med > 0.5;
+        });
+
+        for (const entry of outliers) {
+          await penalizeFlaggedContribution(entry);
+          flagged += 1;
         }
       }
     }
 
-    return reply(200, { success: true, confirmed: confirmed, flagged: flagged }, headers);
-  } catch (err) {
-    console.error('AfroPoints verify error:', err);
+    return reply(200, { success: true, confirmed, flagged }, headers);
+  } catch (error) {
+    console.error('AfroPoints verify error:', error);
     return reply(500, { error: 'Internal server error' }, headers);
   }
 };

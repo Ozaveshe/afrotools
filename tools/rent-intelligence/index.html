@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rent Intelligence | AfroTools</title>
+<meta name="description" content="Track rent asks, lease terms, deposits, and vacancy signals by city and neighborhood, then contribute verified rent data through AfroPoints.">
+<link rel="canonical" href="https://afrotools.com/tools/rent-intelligence/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Rent Intelligence</span></div>
+    <div class="md-eyebrow">Rent Intelligence</div>
+    <h1>Rent Intelligence</h1>
+    <p>Monitor live rent asks, deposits, lease terms, and vacancy patterns by city and neighborhood, with manual review on every publishable listing.</p>
+    <div class="md-chip-row"><span class="md-chip">Neighborhood rent asks</span><span class="md-chip">Deposit tracking</span><span class="md-chip">Manual review protected</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified Rent Listings</div><div class="md-panel-subtitle">Only approved records appear in this feed.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Lagos"></div>
+          <div class="md-field"><label for="mdPropertyType">Property Type</label><input id="mdPropertyType" class="md-input" data-md-filter="property_type" placeholder="e.g. Apartment"></div>
+          <div class="md-field"><label for="mdBedrooms">Bedrooms</label><input id="mdBedrooms" class="md-input" data-md-filter="bedrooms" placeholder="e.g. 2"></div>
+        </div>
+        <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading rent intelligence...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Rent Ask</div><div class="md-panel-subtitle">Rent submissions always enter review before publication.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Nairobi"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="e.g. Westlands"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="KES"></div>
+        <div class="md-form-field"><label for="mdReportMerchant">Agent or Listing Source</label><input id="mdReportMerchant" class="md-input" placeholder="Optional"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I checked the listing myself</option><option value="merchant_quote">Agent or landlord quote</option><option value="official_notice">Formal listing or ad</option><option value="community_check">Community confirmation</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Listing URL or image"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Rent Data</button></div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Commercial uses</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Developers can benchmark asking rent and deposit pressure by neighborhood.</li>
+          <li>Recruiters can package rent trends with salary bands for relocation research.</li>
+          <li>Media can publish city-by-city affordability trackers grounded in fresh local data.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/rent-intelligence',
+  responseKey: 'listings',
+  subtype: 'rent_listing',
+  vertical: 'rent_intelligence',
+  reportButtonLabel: 'Submit Rent Data',
+  renderSummary: function (rows) {
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Verified rent records</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return row.deposit_amount; }).length + '</div><div class="md-stat-label">With deposit data</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">Review</div><div class="md-stat-label">All public listings are manually checked</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml((row.property_type || 'Property') + ' - ' + (row.city || '')) + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.neighborhood || 'Citywide') + ' | Lease ' + (row.lease_term_months || '?') + ' month(s)') + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.monthly_rent || '') + ' ' + helpers.escapeHtml(row.currency_code || '') + '</span><span class="md-pill">Deposit ' + helpers.escapeHtml(row.deposit_amount || 'n/a') + '</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

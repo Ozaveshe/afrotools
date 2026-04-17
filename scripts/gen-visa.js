@@ -63,8 +63,9 @@ for(const cc of ccKeys){
 <script type="application/ld+json">${schema2}<\/script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
-<script src="/assets/js/components/navbar.min.js?v=fa984253" defer><\/script><script src="/assets/js/components/footer.min.js?v=0f040e13" defer><\/script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/multi-country.css?v=1">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer><\/script><script src="/assets/js/components/footer.min.js?v=f68d6568" defer><\/script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
 .visa-hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#1d4ed8 100%);color:#fff;padding:3rem 1.5rem 2.5rem}
@@ -73,7 +74,7 @@ for(const cc of ccKeys){
 .visa-hero h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;margin-bottom:.5rem}
 .visa-hero p{font-size:1rem;opacity:.9;max-width:650px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin:1.5rem 0 0}
-@media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.stats{grid-template-columns:1fr}}
 .stat{text-align:center;padding:.75rem;border-radius:10px;background:rgba(255,255,255,.1)}
 .stat .val{font-size:1.5rem;font-weight:800}.stat .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;opacity:.8}
 .stat.free .val{color:#4ade80}.stat.voa .val{color:#60a5fa}.stat.evisa .val{color:#fbbf24}.stat.req .val{color:#f87171}
@@ -87,8 +88,10 @@ for(const cc of ccKeys){
 .seo h2{font-size:1.3rem;font-weight:800;color:#1e3a5f;margin-bottom:1rem}
 .seo p{color:#475569;margin-bottom:1rem;font-size:.95rem}
 </style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <afro-navbar theme="dark" active="government"></afro-navbar>
 <section class="visa-hero"><div class="container">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>\u203A</span> <a href="/government/">Government & Civic</a> <span>\u203A</span> <a href="/tools/visa-checker/">Visa Checker</a> <span>\u203A</span> ${c.name}</nav>
@@ -102,7 +105,7 @@ for(const cc of ccKeys){
 </div>
 </div></section>
 
-<div class="main">
+<div class="main" id="main-content" role="main">
 <div class="card"><h2>\u{1F50D} Check Your Nationality</h2>
 <label for="originSelect" style="font-size:.85rem;font-weight:600;color:#475569;display:block;margin-bottom:.4rem">I am a citizen of...</label>
 <select id="originSelect" class="sel">${opts}</select>

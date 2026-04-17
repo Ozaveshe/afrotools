@@ -62,7 +62,7 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this invoice generator free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes, AfroTools Invoice Generator is completely free. Create unlimited invoices, save templates, manage clients, and download real PDFs at no cost."}},{"@type":"Question","name":"Which African currencies are supported?","acceptedAnswer":{"@type":"Answer","text":"We support all major African currencies including NGN (Nigeria), KES (Kenya), GHS (Ghana), ZAR (South Africa), and 15+ more African and international currencies."}},{"@type":"Question","name":"How do I calculate VAT on invoices?","acceptedAnswer":{"@type":"Answer","text":"The invoice generator automatically calculates VAT based on your selected currency/country. Rates are preset (Nigeria 7.5%, Kenya 16%, Ghana 15%, etc.) but you can customize the rate."}},{"@type":"Question","name":"Can I save client details for future invoices?","acceptedAnswer":{"@type":"Answer","text":"Yes! The client database feature saves your clients locally in your browser. Click 'Save Client' to store details, then select any saved client to auto-fill their information on new invoices."}},{"@type":"Question","name":"How do I download my invoice as PDF?","acceptedAnswer":{"@type":"Answer","text":"Click 'Download PDF' to generate a professional PDF using our built-in PDF engine. The PDF includes your logo, all line items, totals, and notes — ready to send to your client."}},{"@type":"Question","name":"Is my invoice data saved online?","acceptedAnswer":{"@type":"Answer","text":"No, all invoice data is stored locally in your browser using localStorage. We never send your financial data to any server. For backup, download PDFs or use the share link feature."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this invoice generator free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes, AfroTools Invoice Generator is completely free. Create unlimited invoices, save templates, manage clients, and download real PDFs at no cost."}},{"@type":"Question","name":"Which African currencies are supported?","acceptedAnswer":{"@type":"Answer","text":"We support all major African currencies including NGN (Nigeria), KES (Kenya), GHS (Ghana), ZAR (South Africa), and 15+ more African and international currencies."}},{"@type":"Question","name":"How do I calculate VAT on invoices?","acceptedAnswer":{"@type":"Answer","text":"The invoice generator automatically calculates VAT based on your selected currency/country. Rates are preset (Nigeria 7.5%, Kenya 16%, Ghana 15%, etc.) but you can customize the rate."}},{"@type":"Question","name":"Can I save client details for future invoices?","acceptedAnswer":{"@type":"Answer","text":"Yes! The client database feature saves your clients locally in your browser. Click 'Save Client' to store details, then select any saved client to auto-fill their information on new invoices."}},{"@type":"Question","name":"How do I download my invoice as PDF?","acceptedAnswer":{"@type":"Answer","text":"Click 'Download PDF' to generate a professional PDF using our built-in PDF engine. The PDF includes your logo, all line items, totals, and notes — ready to send to your client."}},{"@type":"Question","name":"Is my invoice data saved online?","acceptedAnswer":{"@type":"Answer","text":"If you stay signed out, your invoice data stays in your browser. If you sign in, the active invoice draft syncs to your AfroTools account so you can continue on another device. Client lists and saved templates still stay local for now."}}]}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,6 +71,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/invoice-generator.css?v=65d71b73">
 <script src="/assets/js/lib/save-state-classic.js?v=20260408a"></script>
+<script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
 
 <style>
 :root { --color-brand: var(--color-primary); }
@@ -526,7 +527,7 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">Is my data saved online?</div>
-      <div class="faq-a">No. All data stays in your browser (localStorage). We never transmit your financial data. For backup, download PDFs or use the share link.</div>
+      <div class="faq-a">If you stay signed out, your invoice data stays in your browser. If you sign in, the active invoice draft syncs to your AfroTools account so you can continue on another device. Client lists and saved templates still stay local for now.</div>
     </div>
   </div>
 </div>
@@ -1271,11 +1272,20 @@ function init() {
   updatePreview();
 }
 
+window.AfroInvoiceState = {
+  gatherState: gatherState,
+  restoreState: restoreState,
+  updatePreview: updatePreview,
+  toast: toast,
+  nextInvoiceNumber: nextInvoiceNumber
+};
+
 init();
 
 })();
 </script>
 <script src="/assets/js/lib/auto-email-gate.js?v=97c0a5e8" defer></script>
+<script src="/tools/invoice-generator/js/invoice-workspace-sync.js?v=20260417a" defer></script>
 <script>
 // Invoice Generator — saved invoices
 (function(){

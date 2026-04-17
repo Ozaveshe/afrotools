@@ -1,362 +1,176 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School Fees Comparator | AfroTools</title>
-<meta name="description" content="Compare school fees, extras, and term costs across schools with side-by-side totals.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Fees Comparator App | AfroTools</title>
+<meta name="description" content="Compare verified school-fee records by city, level, and school type, then push the annual cost into Student Budget for monthly survival planning.">
+<link rel="canonical" href="https://afrotools.com/tools/school-fees/app.html">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
-<script src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
 <style>
-:root{--color-primary:#007AFF;--blue-light:#EFF6FF}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b}
-.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 20px;display:flex;align-items:center;height:52px;gap:12px}
-.topbar-back{font-size:12px;color:#6b7280;text-decoration:none;font-weight:600}
-.topbar-brand{font-size:14px;font-weight:800;color:#111;text-decoration:none}
-.topbar-title{flex:1;font-size:12px;color:#6b7280;font-weight:600}
-.btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s}
-.btn-p{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff}.btn-p:hover{background:#0059B3}
-.btn-g{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}.btn-g:hover{background:#e5e7eb}
-.main{max-width:1000px;margin:0 auto;padding:24px 20px}
-
-/* Filters */
-.filters{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:end}
-.filter{display:flex;flex-direction:column;gap:4px;min-width:140px}
-.filter label{font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em}
-.filter select,.filter input{padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:12px;font-family:inherit;color:#1e293b;outline:none}
-.filter select:focus,.filter input:focus{border-color:var(--color-primary)}
-
-/* School cards */
-.school-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px}
-.school-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:18px;transition:border-color .15s,box-shadow .15s}
-.school-card:hover{border-color:var(--color-primary);box-shadow:0 4px 12px rgba(0,122,255,.08)}
-.school-card.selected{border-color:var(--color-primary);background:var(--blue-light)}
-.sc-name{font-size:.88rem;font-weight:800;color:#111;margin-bottom:2px}
-.sc-location{font-size:.72rem;color:#6b7280;margin-bottom:8px}
-.sc-type{display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:4px;margin-bottom:8px}
-.sc-type.primary{background:#DCFCE7;color:#166534}.sc-type.secondary{background:#DBEAFE;color:#1E40AF}
-.sc-type.international{background:#FEF3C7;color:#92400E}.sc-type.university{background:#F3E8FF;color:#6B21A8}
-.sc-fee{font-size:1rem;font-weight:900;color:var(--color-primary);margin-bottom:4px}
-.sc-breakdown{font-size:.68rem;color:#9ca3af;line-height:1.4}
-.sc-actions{display:flex;gap:6px;margin-top:10px}
-.sc-btn{padding:6px 12px;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid #e5e7eb;background:#fff;color:#374151;cursor:pointer;transition:.15s}
-.sc-btn:hover{background:#f3f4f6}.sc-btn.compare{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border-color:var(--color-primary)}
-
-/* Compare table */
-.compare-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;margin-bottom:20px;display:none}
-.compare-section.on{display:block}
-.compare-table{width:100%;border-collapse:collapse;font-size:12px}
-.compare-table th{text-align:left;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;padding:8px;border-bottom:1px solid #e5e7eb}
-.compare-table td{padding:8px;border-bottom:1px solid #f1f5f9}
-.compare-table .total-row{font-weight:800;border-top:2px solid #111}
-
-/* Report form */
-.report-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;margin-top:20px}
-.report-section h3{font-size:.9rem;font-weight:800;color:#111;margin-bottom:12px}
-.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.report-grid .field{display:flex;flex-direction:column;gap:4px}
-.report-grid label{font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase}
-.report-grid input,.report-grid select,.report-grid textarea{padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:12px;font-family:inherit;outline:none}
-
-.empty-state{text-align:center;padding:60px 20px;color:#9ca3af}
-.empty-state h3{font-size:1rem;font-weight:800;color:#374151;margin-bottom:8px}
-
-@media(max-width:640px){.filters{flex-direction:column}.school-grid{grid-template-columns:1fr}.report-grid{grid-template-columns:1fr}}
+  .md-note-strip{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:14px 16px;border-radius:16px;background:#eff6ff;border:1px solid #bfdbfe;margin-bottom:16px}
+  .md-note-strip strong{display:block;color:var(--md-ink);font-size:.86rem}
+  .md-note-strip p{margin:4px 0 0;color:var(--md-muted);font-size:.8rem;line-height:1.6}
+  .md-note-strip a{white-space:nowrap;font-size:.78rem;font-weight:700;color:var(--md-primary)}
+  .md-card-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .md-card-link{display:inline-flex;align-items:center;justify-content:center;padding:9px 12px;border-radius:999px;background:#eff6ff;color:var(--md-primary);font-size:.75rem;font-weight:800}
+  .md-card-link.secondary{background:#fff;border:1px solid #dbe5f1;color:var(--md-ink)}
+  .md-card-note{margin-top:10px;font-size:.78rem;color:var(--md-muted);line-height:1.6}
 </style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/school-fees/app" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/school-fees/app" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="School Fees Comparator | AfroTools">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="canonical" href="https://afrotools.com/tools/school-fees/">
-<meta name="robots" content="noindex, follow">
 </head>
 <body>
-
-<div class="topbar">
-  <a href="index.html" class="topbar-back">&larr; Back</a>
-  <span class="topbar-brand">School Fees Comparator</span>
-  <span class="topbar-title"></span>
-  <button class="btn btn-g" onclick="saveShortlist()">Save Shortlist</button>
-  <button class="btn btn-p" onclick="exportPDF()">Download PDF</button>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/education/">Education</a><span>/</span><span>School Fees</span></div>
+    <div class="md-eyebrow">Education Costs</div>
+    <h1>School Fees Comparator</h1>
+    <p>Use the live school-fees app to compare annual tuition and extras across cities, then push the numbers into Student Budget when you want to know if the month is still survivable.</p>
+    <div class="md-chip-row"><span class="md-chip">Primary to university</span><span class="md-chip">Budget handoff</span><span class="md-chip">Proof-backed when possible</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified School Fee Records</div><div class="md-panel-subtitle">Filter by country, city, level, or institution type, then move the annual cost into a monthly budget test.</div></div>
+      <div class="md-panel-body">
+        <div class="md-note-strip">
+          <div>
+            <strong>Compare annual fees, then test the month</strong>
+            <p>Each school card now routes into Student Budget with a monthly fee reserve so you can see whether fees or living costs are the real pressure point.</p>
+          </div>
+          <a href="/tools/student-budget/">Open Student Budget</a>
+        </div>
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Lagos"></div>
+          <div class="md-field"><label for="mdLevel">Level</label><input id="mdLevel" class="md-input" data-md-filter="education_level" placeholder="e.g. Secondary"></div>
+          <div class="md-field"><label for="mdType">Type</label><input id="mdType" class="md-input" data-md-filter="institution_type" placeholder="e.g. Private"></div>
+        </div>
+        <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading school fees...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Next Step</div><div class="md-panel-subtitle">Use School Fees as the annual-cost input, not the end of the decision.</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Open Student Budget when you want to turn annual fees into a monthly survival test.</li>
+          <li>Open Education Hub when you want the wider finance and study journey in one cockpit.</li>
+          <li>Submit a correction when a fee record is stale, incomplete, or missing extras.</li>
+        </ul>
+        <div class="md-actions" style="margin-top:14px;">
+          <a class="md-btn md-btn-secondary" href="/tools/student-budget/">Student Budget</a>
+          <a class="md-btn md-btn-secondary" href="/tools/education-hub/">Education Hub</a>
+        </div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Report A School Fee</div><div class="md-panel-subtitle">Use annual tuition and extras when you know them.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Nairobi"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="KES"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I paid or confirmed this myself</option><option value="receipt">Receipt or fee schedule</option><option value="official_notice">Official school notice</option><option value="community_check">Parent or student confirmation</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional public or redacted proof"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit School Fee</button></div>
+      </div>
+    </div>
+  </aside>
 </div>
-
-<div class="main">
-
-  <!-- Filters -->
-  <div class="filters">
-    <div class="filter"><label>Country</label>
-      <select id="filterCountry" onchange="applyFilters()">
-        <option value="">All Countries</option>
-        <option value="nigeria">Nigeria</option>
-        <option value="kenya">Kenya</option>
-        <option value="south-africa">South Africa</option>
-        <option value="ghana">Ghana</option>
-        <option value="egypt">Egypt</option>
-      </select>
-    </div>
-    <div class="filter"><label>City</label>
-      <select id="filterCity" onchange="applyFilters()">
-        <option value="">All Cities</option>
-      </select>
-    </div>
-    <div class="filter"><label>Level</label>
-      <select id="filterLevel" onchange="applyFilters()">
-        <option value="">All Levels</option>
-        <option value="primary">Primary</option>
-        <option value="secondary">Secondary</option>
-        <option value="international">International</option>
-        <option value="university">University</option>
-      </select>
-    </div>
-    <div class="filter"><label>Max Annual Fee</label>
-      <input type="number" id="filterBudget" placeholder="e.g., 5000000" oninput="applyFilters()">
-    </div>
-    <button class="btn btn-g" onclick="clearFilters()" style="align-self:end;">Clear</button>
-  </div>
-
-  <!-- School Listings -->
-  <div class="school-grid" id="schoolGrid"></div>
-
-  <!-- Compare Section -->
-  <div class="compare-section" id="compareSection">
-    <h3 style="font-size:.9rem;font-weight:800;color:#111;margin-bottom:14px;">Side-by-Side Comparison</h3>
-    <table class="compare-table" id="compareTable"></table>
-  </div>
-
-  <!-- Report a Fee -->
-  <div class="report-section">
-    <h3>Report a School Fee</h3>
-    <p style="font-size:.78rem;color:#6b7280;margin-bottom:14px;">Help the community! Report school fees you've paid. After verification, the data will appear in the comparator.</p>
-    <div class="report-grid">
-      <div class="field"><label>School Name</label><input type="text" id="reportSchool"></div>
-      <div class="field"><label>City</label><input type="text" id="reportCity"></div>
-      <div class="field"><label>Country</label><select id="reportCountry"><option>Nigeria</option><option>Kenya</option><option>South Africa</option><option>Ghana</option><option>Egypt</option><option>Other</option></select></div>
-      <div class="field"><label>Level</label><select id="reportLevel"><option>Primary</option><option>Secondary</option><option>International</option><option>University</option></select></div>
-      <div class="field"><label>Annual Tuition</label><input type="number" id="reportTuition" placeholder="Amount"></div>
-      <div class="field"><label>Currency</label><select id="reportCurrency"><option>NGN</option><option>KES</option><option>ZAR</option><option>GHS</option><option>EGP</option></select></div>
-      <div class="field" style="grid-column:1/-1"><label>Additional Notes</label><textarea id="reportNotes" rows="2" placeholder="Books, uniform, transport costs, etc."></textarea></div>
-    </div>
-    <button class="btn btn-p" style="margin-top:12px;" onclick="submitReport()">Submit Fee Report</button>
-  </div>
-
-</div>
-
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
 <script>
-// Sample school data (in production, this would come from a database/API)
-var SCHOOLS = [
-  {id:'ng-chrisland',name:'Chrisland School',city:'Lagos',country:'nigeria',level:'primary',curriculum:'Nigerian',tuition:2400000,books:150000,uniform:120000,transport:300000,meals:180000,currency:'NGN'},
-  {id:'ng-greensprings',name:'Greensprings School',city:'Lagos',country:'nigeria',level:'secondary',curriculum:'British/Nigerian',tuition:3200000,books:200000,uniform:150000,transport:350000,meals:200000,currency:'NGN'},
-  {id:'ng-ais',name:'American International School',city:'Lagos',country:'nigeria',level:'international',curriculum:'American',tuition:8500000,books:350000,uniform:200000,transport:500000,meals:400000,currency:'NGN'},
-  {id:'ng-unilag',name:'University of Lagos',city:'Lagos',country:'nigeria',level:'university',curriculum:'Nigerian',tuition:250000,books:80000,uniform:0,transport:120000,meals:200000,currency:'NGN'},
-  {id:'ng-hillcrest',name:'Hillcrest School',city:'Abuja',country:'nigeria',level:'primary',curriculum:'Nigerian',tuition:1800000,books:120000,uniform:100000,transport:250000,meals:150000,currency:'NGN'},
-  {id:'ng-covenant',name:'Covenant University',city:'Ota',country:'nigeria',level:'university',curriculum:'Nigerian',tuition:1200000,books:100000,uniform:80000,transport:0,meals:350000,currency:'NGN'},
-  {id:'ke-braeburn',name:'Braeburn School',city:'Nairobi',country:'kenya',level:'international',curriculum:'British',tuition:850000,books:40000,uniform:25000,transport:60000,meals:45000,currency:'KES'},
-  {id:'ke-brookhouse',name:'Brookhouse School',city:'Nairobi',country:'kenya',level:'secondary',curriculum:'British',tuition:1200000,books:50000,uniform:30000,transport:80000,meals:60000,currency:'KES'},
-  {id:'ke-uon',name:'University of Nairobi',city:'Nairobi',country:'kenya',level:'university',curriculum:'Kenyan',tuition:150000,books:30000,uniform:0,transport:40000,meals:80000,currency:'KES'},
-  {id:'za-crawford',name:'Crawford College',city:'Johannesburg',country:'south-africa',level:'secondary',curriculum:'IEB',tuition:120000,books:8000,uniform:5000,transport:15000,meals:12000,currency:'ZAR'},
-  {id:'za-michaelhouse',name:'Michaelhouse',city:'KwaZulu-Natal',country:'south-africa',level:'secondary',curriculum:'IEB',tuition:280000,books:12000,uniform:8000,transport:0,meals:45000,currency:'ZAR'},
-  {id:'za-uct',name:'University of Cape Town',city:'Cape Town',country:'south-africa',level:'university',curriculum:'SA',tuition:65000,books:10000,uniform:0,transport:8000,meals:20000,currency:'ZAR'},
-  {id:'gh-lincoln',name:'Lincoln Community School',city:'Accra',country:'ghana',level:'international',curriculum:'American',tuition:85000,books:5000,uniform:2000,transport:8000,meals:6000,currency:'GHS'},
-  {id:'gh-achimota',name:'Achimota School',city:'Accra',country:'ghana',level:'secondary',curriculum:'Ghanaian',tuition:3500,books:500,uniform:400,transport:1200,meals:2000,currency:'GHS'}
-];
-
-var CURR_SYMBOLS = {NGN:'\u20A6',KES:'KSh',ZAR:'R',GHS:'GH\u20B5',EGP:'E\u00A3',USD:'$'};
-var selected = [];
-var ss = new SaveState('school-fees');
-
-function fmt(n,curr) {
-  var sym = CURR_SYMBOLS[curr]||'';
-  return sym + n.toLocaleString();
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+function matchBudgetCityKey(value) {
+  var key = String(value || '').toLowerCase().trim();
+  var aliases = {
+    lagos: 'lagos',
+    abuja: 'abuja',
+    ibadan: 'ibadan',
+    'ile ife': 'ibadan',
+    ife: 'ibadan',
+    nairobi: 'nairobi',
+    mombasa: 'mombasa',
+    accra: 'accra',
+    kumasi: 'kumasi',
+    'cape town': 'capetown',
+    johannesburg: 'johannesburg',
+    'addis ababa': 'addis',
+    kampala: 'kampala',
+    'dar es salaam': 'dar',
+    kigali: 'kigali'
+  };
+  return aliases[key] || aliases[key.replace(/[^a-z0-9]+/g, ' ').trim()] || '';
 }
 
-function totalCost(s) {
-  return (s.tuition||0)+(s.books||0)+(s.uniform||0)+(s.transport||0)+(s.meals||0);
+function buildStudentBudgetHref(row, annualFee) {
+  var params = new URLSearchParams();
+  params.set('school', row.institution_name || 'School');
+  params.set('annualFee', annualFee || 0);
+  if (row.currency_code) params.set('currency', row.currency_code);
+  if (row.city) params.set('city', row.city);
+  var cityKey = matchBudgetCityKey(row.city);
+  if (cityKey) params.set('cityKey', cityKey);
+  return '/tools/student-budget/?' + params.toString();
 }
 
-function applyFilters() {
-  var country = document.getElementById('filterCountry').value;
-  var city = document.getElementById('filterCity').value;
-  var level = document.getElementById('filterLevel').value;
-  var budget = parseFloat(document.getElementById('filterBudget').value) || Infinity;
-
-  // Update city dropdown
-  var cities = {};
-  SCHOOLS.forEach(function(s){
-    if(!country || s.country===country) cities[s.city]=1;
-  });
-  var citySelect = document.getElementById('filterCity');
-  var currentCity = citySelect.value;
-  citySelect.innerHTML = '<option value="">All Cities</option>' + Object.keys(cities).sort().map(function(c){return '<option'+(c===currentCity?' selected':'')+'>'+c+'</option>';}).join('');
-
-  var filtered = SCHOOLS.filter(function(s){
-    if(country && s.country!==country) return false;
-    if(city && s.city!==city) return false;
-    if(level && s.level!==level) return false;
-    if(totalCost(s) > budget) return false;
-    return true;
-  });
-
-  renderSchools(filtered);
+function sourceLabel(value) {
+  var map = {
+    self_observed: 'Self observed',
+    receipt: 'Receipt / schedule',
+    official_notice: 'Official notice',
+    community_check: 'Community check'
+  };
+  return map[value] || 'Contributor data';
 }
 
-function renderSchools(schools) {
-  var grid = document.getElementById('schoolGrid');
-  if (!schools.length) {
-    grid.innerHTML = '<div class="empty-state"><h3>No schools match your filters</h3><p>Try broadening your search or report a school fee below.</p></div>';
-    return;
+function formatObserved(value) {
+  if (!value) return '';
+  var date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+window.MarketDataApp.mount({
+  endpoint: '/api/school-fees',
+  responseKey: 'fees',
+  subtype: 'school_fee',
+  vertical: 'school_fees',
+  reportButtonLabel: 'Submit School Fee',
+  renderSummary: function (rows) {
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Verified fee records</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return row.education_level === 'University'; }).length + '</div><div class="md-stat-label">University rows</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return !!row.proof_url; }).length + '</div><div class="md-stat-label">Proof-backed rows</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    var extras = Number(row.extras_total || 0);
+    var tuition = Number(row.annual_tuition || 0);
+    var total = tuition + extras;
+    var observed = formatObserved(row.observed_at);
+    var budgetHref = buildStudentBudgetHref(row, total);
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.institution_name || 'Institution') + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.city || '') + ' | ' + (row.education_level || 'Level') + ' | ' + (row.institution_type || 'Type')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(total || 0) + ' total</span><span class="md-pill">Extras ' + helpers.escapeHtml(extras || 0) + '</span><span class="md-pill">' + helpers.escapeHtml(sourceLabel(row.source_type)) + '</span>' + (row.proof_url ? '<span class="md-pill">Proof linked</span>' : '') + (observed ? '<span class="md-pill">Observed ' + helpers.escapeHtml(observed) + '</span>' : '') + '</div>' +
+      '<div class="md-card-note">Use this annual total as a monthly reserve in Student Budget to see whether fees or living costs are the real issue.</div>' +
+      '<div class="md-card-actions"><a class="md-card-link" href="' + helpers.escapeHtml(budgetHref) + '">Plan this school in Student Budget</a><a class="md-card-link secondary" href="/tools/education-hub/">Open Education Hub</a></div></article>';
   }
-
-  grid.innerHTML = schools.map(function(s){
-    var total = totalCost(s);
-    var isSelected = selected.indexOf(s.id) >= 0;
-    return '<div class="school-card'+(isSelected?' selected':'')+'" id="card-'+s.id+'">'+
-      '<div class="sc-type '+s.level+'">'+s.level+'</div>'+
-      '<div class="sc-name">'+esc(s.name)+'</div>'+
-      '<div class="sc-location">'+esc(s.city)+', '+esc(s.country.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();}))+'</div>'+
-      '<div class="sc-fee">'+fmt(total,s.currency)+'/yr</div>'+
-      '<div class="sc-breakdown">Tuition: '+fmt(s.tuition,s.currency)+
-      (s.books?' | Books: '+fmt(s.books,s.currency):'')+
-      (s.transport?' | Transport: '+fmt(s.transport,s.currency):'')+'</div>'+
-      '<div class="sc-actions">'+
-      '<button class="sc-btn compare" onclick="toggleCompare(\''+s.id+'\')">'+
-      (isSelected?'Remove':'+ Compare')+'</button>'+
-      '</div></div>';
-  }).join('');
-}
-
-function toggleCompare(id) {
-  var idx = selected.indexOf(id);
-  if (idx >= 0) {
-    selected.splice(idx, 1);
-  } else {
-    if (selected.length >= 4) { alert('You can compare up to 4 schools.'); return; }
-    selected.push(id);
-  }
-  applyFilters();
-  renderCompare();
-}
-
-function renderCompare() {
-  var section = document.getElementById('compareSection');
-  if (selected.length < 2) { section.classList.remove('on'); return; }
-  section.classList.add('on');
-
-  var schools = selected.map(function(id){return SCHOOLS.find(function(s){return s.id===id;});}).filter(Boolean);
-  var table = document.getElementById('compareTable');
-  var rows = [
-    {label:'School',fn:function(s){return '<strong>'+esc(s.name)+'</strong><br><span style="font-size:.68rem;color:#6b7280">'+esc(s.city)+'</span>';}},
-    {label:'Level',fn:function(s){return s.level;}},
-    {label:'Tuition',fn:function(s){return fmt(s.tuition,s.currency);}},
-    {label:'Books',fn:function(s){return fmt(s.books||0,s.currency);}},
-    {label:'Uniform',fn:function(s){return fmt(s.uniform||0,s.currency);}},
-    {label:'Transport',fn:function(s){return fmt(s.transport||0,s.currency);}},
-    {label:'Meals',fn:function(s){return fmt(s.meals||0,s.currency);}},
-    {label:'Total Annual',fn:function(s){return '<strong style="color:var(--color-primary)">'+fmt(totalCost(s),s.currency)+'</strong>';}}
-  ];
-
-  var html = '<thead><tr><th></th>';
-  schools.forEach(function(){html += '<th></th>';});
-  html += '</tr></thead><tbody>';
-
-  rows.forEach(function(r,i){
-    html += '<tr'+(i===rows.length-1?' class="total-row"':'')+'><td style="font-weight:700;color:#64748b;font-size:11px;text-transform:uppercase">'+r.label+'</td>';
-    schools.forEach(function(s){html += '<td>'+r.fn(s)+'</td>';});
-    html += '</tr>';
-  });
-  html += '</tbody>';
-  table.innerHTML = html;
-}
-
-function clearFilters() {
-  document.getElementById('filterCountry').value='';
-  document.getElementById('filterCity').innerHTML='<option value="">All Cities</option>';
-  document.getElementById('filterLevel').value='';
-  document.getElementById('filterBudget').value='';
-  applyFilters();
-}
-
-function saveShortlist() {
-  if (!selected.length) { alert('Select at least one school to compare.'); return; }
-  var name = prompt('Name this shortlist (e.g., "Lagos Primary Options"):');
-  if (!name) return;
-  var schools = selected.map(function(id){return SCHOOLS.find(function(s){return s.id===id;});}).filter(Boolean);
-  ss.save({title:name,data:{selected:selected,schoolNames:schools.map(function(s){return s.name;}).join(', ')}});
-  alert('Shortlist saved!');
-}
-
-function exportPDF() {
-  if (!selected.length) { alert('Select at least 2 schools to compare.'); return; }
-  if (window.afroEmailGate && !window.afroEmailGate.check()) return;
-  var w = window.open('','_blank');
-  var schools = selected.map(function(id){return SCHOOLS.find(function(s){return s.id===id;});}).filter(Boolean);
-<meta property="article:modified_time" content="2026-03-28">
-  var html = '<html><head><title>School Fee Comparison</title><style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;font-size:12px;color:#333}h1{font-size:18px;margin-bottom:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:11px}th{background:#f0f0f0}.total{font-weight:700;border-top:2px solid #333}@media print{body{margin:20px}}</style></head><body>';
-  html += '<h1>School Fee Comparison</h1><p style="color:#666;margin-bottom:16px;">Generated by AfroTools — '+new Date().toLocaleDateString()+'</p>';
-  html += '<table><thead><tr><th>Cost Item</th>';
-  schools.forEach(function(s){html += '<th>'+esc(s.name)+'<br><span style="font-weight:400;color:#666">'+esc(s.city)+'</span></th>';});
-  html += '</tr></thead><tbody>';
-  ['Tuition','Books','Uniform','Transport','Meals'].forEach(function(label){
-    var key = label.toLowerCase();
-    html += '<tr><td>'+label+'</td>';
-    schools.forEach(function(s){html += '<td>'+fmt(s[key]||0,s.currency)+'</td>';});
-    html += '</tr>';
-  });
-  html += '<tr class="total"><td>Total Annual</td>';
-  schools.forEach(function(s){html += '<td>'+fmt(totalCost(s),s.currency)+'</td>';});
-  html += '</tr></tbody></table></body></html>';
-  w.document.write(html); w.document.close();
-  setTimeout(function(){w.print();},500);
-}
-
-function submitReport() {
-  var school = document.getElementById('reportSchool').value;
-  var city = document.getElementById('reportCity').value;
-  if (!school || !city) { alert('Please enter school name and city.'); return; }
-  // In production this would POST to an API. For now, save locally.
-  var reports = JSON.parse(localStorage.getItem('afrotools-fee-reports')||'[]');
-  reports.push({
-    school:school, city:city,
-    country:document.getElementById('reportCountry').value,
-    level:document.getElementById('reportLevel').value,
-    tuition:document.getElementById('reportTuition').value,
-    currency:document.getElementById('reportCurrency').value,
-    notes:document.getElementById('reportNotes').value,
-    date:new Date().toISOString()
-  });
-  localStorage.setItem('afrotools-fee-reports',JSON.stringify(reports));
-  alert('Thank you! Your fee report has been submitted for review.');
-  document.getElementById('reportSchool').value='';
-  document.getElementById('reportCity').value='';
-  document.getElementById('reportTuition').value='';
-  document.getElementById('reportNotes').value='';
-}
-
-// Load from URL param
-(function(){
-  var params = new URLSearchParams(window.location.search);
-  var id = params.get('id');
-  if (id) {
-    var item = ss.load(id);
-    if (item && item.data && item.data.selected) {
-      selected = item.data.selected;
-    }
-  }
-  applyFilters();
-})();
-
-function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+});
 </script>
-<script src="/assets/js/lib/auto-email-gate.js?v=97c0a5e8" defer></script>
 </body>
 </html>

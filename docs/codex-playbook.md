@@ -38,6 +38,8 @@
 - Treat `widgets/iframe/` as embed utility surfaces: keep them `noindex, follow` and canonicalize them to the full tool route with `npm run seo:widgets`
 - Treat thin tool workspace/query/detail subviews under `tools/` as utility surfaces: run `node scripts/fix-thin-tool-pages-seo.js` to set `noindex, follow` and canonicalize them back to `/tools/<tool>/`
 - Keep `noindex` utility pages out of sitemap generation so auth, offline, app workspaces, and other thin utility routes do not leak into search-facing indexes
+- For AfroKitchen static-route work, use the manifest-driven flow in order: `node scripts/export-afrokitchen-seo-manifest.js`, `node scripts/generate-afrokitchen-static-pages.js`, `node scripts/generate-sitemaps.js`, `npm run seo`, then `npm run seo:report`
+- Treat `npm run seo` as the sitemap normalization pass after regeneration: it now normalizes generated sitemap files against each page's preferred canonical URL rather than relying on hand-edited XML cleanup
 - Avoid hand-editing sitemap files
 
 ### Blog or creator news publishing
@@ -60,6 +62,29 @@
 - After rebuilding a French PAYE page from English source, run `node scripts/polish-fr-paye-batch.js` for the visible and runtime French copy layer, then `node scripts/polish-fr-paye-seo.js` to inject the French SEO/schema bundle on the currently targeted pages
 - Run `npm run build:i18n:validate` and `npm run validate:hreflang`
 
+### Swahili country-hub salary pass checklist
+
+- Classify each target hub before editing:
+  - strong salary-entry hub
+  - lighter bridge hub
+- Keep the hub order stable:
+  - salary-first hero
+  - local summary blocks already on the page
+  - existing local tax tables
+  - divider
+  - `Mishahara Kwanza` or `Njia ya Mishahara`
+  - `Zana za Mishahara na Ajira`
+- Use local Sw PAYE as the first featured card only if the route is live and strong enough to feature
+- If local salary depth is thin, bridge back to `sw/mshahara-na-kodi/` and `sw/tools/` instead of pretending the hub is deeper than it is
+- If the paired English hub is in scope, add reciprocal `hreflang="sw"` there only for that paired page
+- For real hub batches, run:
+  - `npm run check-links`
+  - `npm run audit`
+  - `npm run build:i18n:validate`
+  - `npm run validate:hreflang`
+  - `npm run seo:report`
+- In the summary, separate baseline repo debt from net-new issues on the touched hubs
+
 ### Release or regression review
 
 - Use `afrotools-release-qa`
@@ -69,6 +94,19 @@
 
 - Use `afrotools-supabase-ops`
 - Use the configured `supabase` MCP server first for live schema, SQL, logs, auth, storage, or types
+
+## Automation Operating Model
+
+- Keep the active production automation set focused on the highest-value AfroTools loops:
+  - `AM Content Batch`
+  - `PM Content Batch`
+  - `SEO Guardrail Sweep`
+  - `Live Data Freshness Watch`
+  - `Release Safety Sweep`
+- Prefer `worktree` execution for recurring repo jobs so runs stay isolated from the main checkout.
+- For content-batch automations on Windows, keep the Supabase MCP config in global Codex config so clean worktrees can see it.
+- If a fallback secret appears missing during a Windows worktree run, check the Windows user environment store before concluding the live publish path is blocked.
+- If you change Supabase MCP URL query parameters such as `read_only=true`, restart Codex before expecting the current session's MCP tools to use the new mode.
 
 ## Decision Rules
 

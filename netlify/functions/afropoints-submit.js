@@ -1,44 +1,130 @@
-// netlify/functions/afropoints-submit.js
-// Handle data submissions — validate, store, award points, check badges
+const { getAllowedOrigin } = require('./utils/cors');
+const {
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  cleanText,
+  sbRequest,
+  normalizeSubmission,
+  getSubmissionPoints,
+  getRecentBaseline,
+  calculateConfidence,
+  getReviewReason,
+  buildContributionRecord,
+  buildDomainRecord,
+  getMetricKey,
+  getNumericValue
+} = require('./_shared/market-data');
 
-const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const BADGE_DEFS = {
+  first_blood: { name: 'First Blood', bonus: 10 },
+  streak_7: { name: 'Week Warrior', bonus: 0 },
+  streak_30: { name: 'Monthly Machine', bonus: 0 }
+};
 
-function cors(event) {
-  const origin = event.headers?.origin || '';
-  const ok = origin === 'https://afrotools.com' || origin === 'https://www.afrotools.com' || origin.endsWith('.netlify.app') || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
-  return { 'Access-Control-Allow-Origin': ok ? origin : 'https://afrotools.com', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Content-Type': 'application/json', 'Vary': 'Origin' };
+function corsHeaders(event) {
+  return {
+    'Access-Control-Allow-Origin': getAllowedOrigin(event),
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json',
+    'Vary': 'Origin'
+  };
 }
 
-function reply(status, body, headers) { return { statusCode: status, headers: headers, body: JSON.stringify(body) }; }
-
-async function sbQuery(method, path, body, token) {
-  const opts = { method, headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + (token || SUPABASE_KEY), 'Content-Type': 'application/json', Prefer: method === 'POST' ? 'return=representation' : undefined } };
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, opts);
-  const text = await res.text();
-  try { return JSON.parse(text); } catch { return text; }
+function reply(statusCode, body, headers) {
+  return { statusCode, headers, body: JSON.stringify(body) };
 }
 
-// Points per category
-const POINTS = { product_price: 5, forex_rate: 8, fuel_price: 5, rent: 10, transport: 5, salary: 15, business_cost: 10, meal_price: 5, fintech_fee: 8, education_cost: 8 };
-const VALID_CATEGORIES = Object.keys(POINTS);
+function mergeUnique(existing, nextValue) {
+  const values = Array.isArray(existing) ? existing.slice() : [];
+  if (!nextValue) return values;
+  if (!values.includes(nextValue)) values.push(nextValue);
+  return values;
+}
 
-// Validate JWT and extract user_id
+function mergeUniqueMany(existing, valuesToAdd) {
+  let values = Array.isArray(existing) ? existing.slice() : [];
+  (valuesToAdd || []).forEach(function (value) {
+    values = mergeUnique(values, value);
+  });
+  return values;
+}
+
+function mergeBadges(existing, badgeIds) {
+  return mergeUniqueMany(existing, badgeIds);
+}
+
+function calculateRank(totalEarned, trustScore) {
+  if (totalEarned >= 10000 && trustScore >= 90) return 'legend';
+  if (totalEarned >= 2000 && trustScore >= 85) return 'expert';
+  if (totalEarned >= 500 && trustScore >= 70) return 'trusted';
+  if (totalEarned >= 100) return 'contributor';
+  return 'newcomer';
+}
+
 async function getUser(event) {
-  const auth = event.headers?.authorization || '';
+  const auth = event.headers?.authorization || event.headers?.Authorization || '';
   if (!auth.startsWith('Bearer ')) return null;
+
   const token = auth.slice(7);
   try {
-    const res = await fetch(SUPABASE_URL + '/auth/v1/user', { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + token } });
-    if (!res.ok) return null;
-    const user = await res.json();
-    return { id: user.id, token: token };
-  } catch { return null; }
+    const response = await fetch(SUPABASE_URL + '/auth/v1/user', {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: 'Bearer ' + token
+      }
+    });
+    if (!response.ok) return null;
+    const user = await response.json();
+    return { id: user.id, token };
+  } catch {
+    return null;
+  }
+}
+
+async function fetchProfile(userId) {
+  const rows = await sbRequest('GET', 'points_profiles?user_id=eq.' + userId);
+  return Array.isArray(rows) && rows[0] ? rows[0] : null;
+}
+
+async function addLedgerEntry(entry) {
+  return sbRequest('POST', 'points_ledger', entry, { Prefer: 'return=minimal' });
+}
+
+async function ensureDailyCapacity(userId, subtype) {
+  const today = new Date().toISOString().slice(0, 10);
+  const path = [
+    'contributions?select=id',
+    'user_id=eq.' + userId,
+    'data_category=eq.' + encodeURIComponent(subtype),
+    'submitted_at=gte.' + today + 'T00:00:00Z'
+  ].join('&');
+  const rows = await sbRequest('GET', path);
+  return !Array.isArray(rows) || rows.length < 20;
+}
+
+async function queueReview(submission, baseline, contributionId, reason) {
+  const changePct = baseline.changePct === null || baseline.changePct === undefined ? null : Number(baseline.changePct.toFixed(2));
+  return sbRequest('POST', 'review_queue', {
+    category: submission.subtype,
+    country_code: submission.country_code,
+    metric: getMetricKey(submission),
+    scraped_value: getNumericValue(submission),
+    previous_value: baseline.baselineValue,
+    change_pct: changePct,
+    reason,
+    status: 'pending',
+    notes: 'AfroPoints contribution ' + contributionId + ' requires manual review'
+  }, { Prefer: 'return=minimal' });
+}
+
+function getProofBonus(submission) {
+  return submission.proof_url || submission.photo_url ? 2 : 0;
 }
 
 exports.handler = async function (event) {
-  const headers = cors(event);
+  const headers = corsHeaders(event);
+
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
   if (event.httpMethod !== 'POST') return reply(405, { error: 'Method not allowed' }, headers);
   if (!SUPABASE_KEY) return reply(500, { error: 'Server not configured' }, headers);
@@ -47,165 +133,184 @@ exports.handler = async function (event) {
   if (!user) return reply(401, { error: 'Authentication required' }, headers);
 
   let body;
-  try { body = JSON.parse(event.body); } catch { return reply(400, { error: 'Invalid JSON' }, headers); }
+  try {
+    body = JSON.parse(event.body || '{}');
+  } catch {
+    return reply(400, { error: 'Invalid JSON' }, headers);
+  }
 
-  const { category, country_code, city, currency_code, payload, photo_url } = body;
-
-  // Validate required fields
-  if (!category || !VALID_CATEGORIES.includes(category)) return reply(400, { error: 'Invalid category' }, headers);
-  if (!country_code || country_code.length !== 2) return reply(400, { error: 'Invalid country_code' }, headers);
-  if (!city || city.trim().length < 2) return reply(400, { error: 'City is required' }, headers);
-  if (!currency_code || currency_code.length !== 3) return reply(400, { error: 'Invalid currency_code' }, headers);
-  if (!payload || typeof payload !== 'object') return reply(400, { error: 'Payload is required' }, headers);
+  const normalized = normalizeSubmission(body);
+  if (normalized.error) return reply(400, { error: normalized.error }, headers);
 
   try {
-    // Rate limiting: max 20/day per category
-    const today = new Date().toISOString().slice(0, 10);
-    const countRes = await fetch(
-      SUPABASE_URL + '/rest/v1/contributions?select=id&user_id=eq.' + user.id + '&data_category=eq.' + category + '&submitted_at=gte.' + today + 'T00:00:00Z',
-      { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } }
-    );
-    const countData = await countRes.json();
-    if (Array.isArray(countData) && countData.length >= 20) {
+    const submission = normalized.submission;
+    const hasCapacity = await ensureDailyCapacity(user.id, submission.subtype);
+    if (!hasCapacity) {
       return reply(429, { error: 'Daily limit reached for this category (20/day)' }, headers);
     }
 
-    // Insert contribution
-    const contribution = {
-      user_id: user.id,
-      data_category: category,
-      country_code: country_code.toUpperCase(),
-      city: city.trim(),
-      currency_code: currency_code.toUpperCase(),
-      payload: payload,
-      photo_url: photo_url || null,
-      status: 'pending',
-      points_awarded: POINTS[category] || 5
-    };
+    const existingProfile = await fetchProfile(user.id);
+    const baseline = await getRecentBaseline(submission, 40);
+    const reviewReason = getReviewReason(submission, baseline);
+    const confidenceScore = calculateConfidence(submission, existingProfile, baseline);
 
-    const inserted = await sbQuery('POST', 'contributions', contribution, SUPABASE_KEY);
-    if (!inserted || !Array.isArray(inserted) || !inserted[0]) {
+    const contributionRecord = buildContributionRecord(user.id, submission, confidenceScore, reviewReason);
+    const inserted = await sbRequest('POST', 'contributions', contributionRecord, {
+      Prefer: 'return=representation'
+    });
+
+    if (!Array.isArray(inserted) || !inserted[0]) {
       return reply(500, { error: 'Failed to save contribution' }, headers);
     }
-    const contrib = inserted[0];
 
-    // Award points
-    const pointsAmount = POINTS[category] || 5;
-    const photoBonus = photo_url ? 2 : 0;
-    const totalPoints = pointsAmount + photoBonus;
+    const savedContribution = inserted[0];
+    const domainRecord = buildDomainRecord(submission, user.id, savedContribution.id, confidenceScore, reviewReason);
 
-    await sbQuery('POST', 'points_ledger', {
-      user_id: user.id,
-      amount: totalPoints,
-      reason: 'submission',
-      contribution_id: contrib.id,
-      description: category.replace(/_/g, ' ') + ' in ' + city + ', ' + country_code.toUpperCase()
-    }, SUPABASE_KEY);
-
-    // Upsert points_profile
-    const profileRes = await fetch(
-      SUPABASE_URL + '/rest/v1/points_profiles?user_id=eq.' + user.id,
-      { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } }
-    );
-    const profiles = await profileRes.json();
-
-    if (Array.isArray(profiles) && profiles.length > 0) {
-      const p = profiles[0];
-      const newEarned = (p.total_earned || 0) + totalPoints;
-      const newBalance = (p.current_balance || 0) + totalPoints;
-      const newCount = (p.contributions_count || 0) + 1;
-
-      // Streak logic
-      const lastSub = p.last_submission_at ? new Date(p.last_submission_at) : null;
-      const now = new Date();
-      let streak = p.current_streak || 0;
-      if (lastSub) {
-        const diffH = (now - lastSub) / 3600000;
-        if (diffH > 24 && diffH <= 48) streak += 1;
-        else if (diffH > 48) streak = 1;
-      } else { streak = 1; }
-      const longestStreak = Math.max(p.longest_streak || 0, streak);
-
-      // Rank
-      const trust = p.trust_score || 50;
-      let rank = 'newcomer';
-      if (newEarned >= 10000 && trust >= 90) rank = 'legend';
-      else if (newEarned >= 2000 && trust >= 85) rank = 'expert';
-      else if (newEarned >= 500 && trust >= 70) rank = 'trusted';
-      else if (newEarned >= 100) rank = 'contributor';
-
-      // Streak bonus
-      let streakBonus = 0;
-      if (streak >= 30 && p.current_streak < 30) streakBonus = 100;
-      else if (streak >= 7 && p.current_streak < 7) streakBonus = 20;
-      else if (streak >= 3 && p.current_streak < 3) streakBonus = 5;
-
-      if (streakBonus > 0) {
-        await sbQuery('POST', 'points_ledger', {
-          user_id: user.id, amount: streakBonus, reason: 'streak_bonus',
-          description: streak + '-day streak bonus'
-        }, SUPABASE_KEY);
+    if (domainRecord) {
+      const table = require('./_shared/market-data').getSubtypeConfig(submission.subtype)?.table;
+      if (table) {
+        await sbRequest('POST', table, domainRecord, { Prefer: 'return=minimal' });
       }
-
-      await fetch(
-        SUPABASE_URL + '/rest/v1/points_profiles?user_id=eq.' + user.id,
-        {
-          method: 'PATCH',
-          headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
-          body: JSON.stringify({
-            total_earned: newEarned + streakBonus,
-            current_balance: newBalance + streakBonus,
-            contributions_count: newCount,
-            current_streak: streak,
-            longest_streak: longestStreak,
-            rank: rank,
-            primary_country: country_code.toUpperCase(),
-            primary_city: city.trim(),
-            last_submission_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
-        }
-      );
-
-      return reply(200, {
-        success: true,
-        contribution_id: contrib.id,
-        points_awarded: totalPoints,
-        streak_bonus: streakBonus,
-        new_balance: newBalance + streakBonus,
-        rank: rank,
-        streak: streak
-      }, headers);
-
-    } else {
-      // First-time profile creation
-      await sbQuery('POST', 'points_profiles', {
-        user_id: user.id,
-        total_earned: totalPoints,
-        current_balance: totalPoints,
-        contributions_count: 1,
-        current_streak: 1,
-        longest_streak: 1,
-        rank: 'newcomer',
-        primary_country: country_code.toUpperCase(),
-        primary_city: city.trim(),
-        last_submission_at: new Date().toISOString()
-      }, SUPABASE_KEY);
-
-      return reply(200, {
-        success: true,
-        contribution_id: contrib.id,
-        points_awarded: totalPoints,
-        streak_bonus: 0,
-        new_balance: totalPoints,
-        rank: 'newcomer',
-        streak: 1,
-        badges_earned: [{ id: 'first_blood', name: 'First Blood', emoji: '🎯', bonus: 10 }]
-      }, headers);
     }
 
-  } catch (err) {
-    console.error('AfroPoints submit error:', err);
+    if (reviewReason) {
+      await queueReview(submission, baseline, savedContribution.id, reviewReason);
+    }
+
+    const submissionPoints = getSubmissionPoints(submission.subtype);
+    const proofBonus = getProofBonus(submission);
+    const submissionTotal = submissionPoints + proofBonus;
+
+    await addLedgerEntry({
+      user_id: user.id,
+      amount: submissionTotal,
+      reason: 'submission',
+      contribution_id: savedContribution.id,
+      description: submission.subtype.replace(/_/g, ' ') + ' in ' + submission.city + ', ' + submission.country_code
+    });
+
+    const previousEarned = existingProfile ? Number(existingProfile.total_earned || 0) : 0;
+    const previousBalance = existingProfile ? Number(existingProfile.current_balance || 0) : 0;
+    const previousCount = existingProfile ? Number(existingProfile.contributions_count || 0) : 0;
+    const previousStreak = existingProfile ? Number(existingProfile.current_streak || 0) : 0;
+    const trustScore = Number(existingProfile?.trust_score || 50);
+    const previousBadges = Array.isArray(existingProfile?.badges) ? existingProfile.badges : [];
+
+    const nextCount = previousCount + 1;
+
+    let nextStreak = previousStreak;
+    if (existingProfile?.last_submission_at) {
+      const hoursSinceLastSubmission = (Date.now() - new Date(existingProfile.last_submission_at).getTime()) / 3600000;
+      if (hoursSinceLastSubmission > 24 && hoursSinceLastSubmission <= 48) nextStreak += 1;
+      else if (hoursSinceLastSubmission > 48) nextStreak = 1;
+    } else {
+      nextStreak = 1;
+    }
+
+    const longestStreak = Math.max(Number(existingProfile?.longest_streak || 0), nextStreak);
+    let streakBonus = 0;
+    if (nextStreak >= 30 && previousStreak < 30) streakBonus = 100;
+    else if (nextStreak >= 7 && previousStreak < 7) streakBonus = 20;
+    else if (nextStreak >= 3 && previousStreak < 3) streakBonus = 5;
+
+    if (streakBonus > 0) {
+      await addLedgerEntry({
+        user_id: user.id,
+        amount: streakBonus,
+        reason: 'streak_bonus',
+        description: nextStreak + '-day streak bonus'
+      });
+    }
+
+    const badgeAwards = [];
+    let badgeBonus = 0;
+
+    if (nextCount === 1 && !previousBadges.includes('first_blood')) {
+      badgeAwards.push({ id: 'first_blood', name: BADGE_DEFS.first_blood.name });
+      badgeBonus += BADGE_DEFS.first_blood.bonus;
+    }
+    if (nextStreak >= 7 && previousStreak < 7 && !previousBadges.includes('streak_7')) {
+      badgeAwards.push({ id: 'streak_7', name: BADGE_DEFS.streak_7.name });
+    }
+    if (nextStreak >= 30 && previousStreak < 30 && !previousBadges.includes('streak_30')) {
+      badgeAwards.push({ id: 'streak_30', name: BADGE_DEFS.streak_30.name });
+    }
+
+    if (badgeBonus > 0) {
+      await addLedgerEntry({
+        user_id: user.id,
+        amount: badgeBonus,
+        reason: 'badge_bonus',
+        contribution_id: savedContribution.id,
+        description: 'Badge unlocked: ' + badgeAwards.map(function (badge) { return badge.name; }).join(', ')
+      });
+    }
+
+    const finalEarned = previousEarned + submissionTotal + streakBonus + badgeBonus;
+    const finalBalance = previousBalance + submissionTotal + streakBonus + badgeBonus;
+    const nextBadges = mergeBadges(previousBadges, badgeAwards.map(function (badge) { return badge.id; }));
+    const nextRank = calculateRank(finalEarned, trustScore);
+
+    const profilePayload = {
+      user_id: user.id,
+      total_earned: finalEarned,
+      current_balance: finalBalance,
+      contributions_count: nextCount,
+      current_streak: nextStreak,
+      longest_streak: longestStreak,
+      rank: nextRank,
+      badges: nextBadges,
+      primary_country: submission.country_code,
+      primary_city: submission.city,
+      coverage_categories: mergeUnique(Array.isArray(existingProfile?.coverage_categories) ? existingProfile.coverage_categories : [], submission.subtype),
+      regular_countries: mergeUnique(Array.isArray(existingProfile?.regular_countries) ? existingProfile.regular_countries : [], submission.country_code),
+      regular_cities: mergeUnique(Array.isArray(existingProfile?.regular_cities) ? existingProfile.regular_cities : [], submission.city),
+      regular_neighborhoods: mergeUnique(Array.isArray(existingProfile?.regular_neighborhoods) ? existingProfile.regular_neighborhoods : [], submission.neighborhood),
+      regular_routes: mergeUnique(Array.isArray(existingProfile?.regular_routes) ? existingProfile.regular_routes : [], submission.route_name),
+      payout_preference: cleanText(existingProfile?.payout_preference),
+      contributor_persona: cleanText(existingProfile?.contributor_persona),
+      submission_frequency: cleanText(existingProfile?.submission_frequency),
+      proof_comfort: cleanText(existingProfile?.proof_comfort),
+      last_submission_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    if (existingProfile) {
+      await sbRequest('PATCH', 'points_profiles?user_id=eq.' + user.id, profilePayload, {
+        Prefer: 'return=representation'
+      });
+    } else {
+      await sbRequest('POST', 'points_profiles', {
+        ...profilePayload,
+        total_spent: 0,
+        confirmations_count: 0,
+        trust_score: trustScore,
+        created_at: new Date().toISOString()
+      }, {
+        Prefer: 'return=minimal'
+      });
+    }
+
+    return reply(200, {
+      success: true,
+      contribution_id: savedContribution.id,
+      subtype: submission.subtype,
+      vertical: submission.vertical,
+      points_awarded: submissionTotal,
+      streak_bonus: streakBonus,
+      badge_bonus: badgeBonus,
+      badges_earned: badgeAwards,
+      new_balance: finalBalance,
+      rank: nextRank,
+      streak: nextStreak,
+      confidence_score: confidenceScore,
+      review_required: Boolean(reviewReason),
+      review_reason: reviewReason,
+      baseline_value: baseline.baselineValue,
+      change_pct: baseline.changePct
+    }, headers);
+  } catch (error) {
+    console.error('AfroPoints submit error:', error);
     return reply(500, { error: 'Internal server error' }, headers);
   }
 };

@@ -2,76 +2,57 @@
 <html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>African University Rankings — Compare 100+ Universities</title>
-<meta name="description" content="Compare African universities by ranking, tuition fees, student population, and research output. Filter by country, programme, and budget to find your ideal university.">
-<meta name="keywords" content="African university rankings, best universities Africa, university comparison, Nigerian universities, Kenyan universities, South African universities, university fees">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>African University Shortlist Builder | AfroTools</title>
+<meta name="description" content="Filter leading African universities, build a personal shortlist, compare fit tradeoffs, and route naturally into scholarships, degree checks, affordability planning, and Education Hub.">
+<meta name="keywords" content="African university shortlist, African university rankings, compare African universities, university shortlist builder, university fit checker Africa">
 <link rel="canonical" href="https://afrotools.com/tools/university-ranking/">
-<meta property="og:title" content="African University Rankings — Compare 100+ Universities">
-<meta property="og:description" content="Compare African universities by ranking, cost, and programmes. Filter by country, field of study, and budget.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African University Shortlist Builder | AfroTools">
+<meta property="og:description" content="Turn African university rankings into a real shortlist with fit heuristics, compare tradeoffs, scholarship signals, and Education Hub handoff.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/university-ranking.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/university-ranking/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/tools/university-ranking/university-ranking.css?v=20260417a">
 <script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
-<style>
-:root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
-.hero{background:linear-gradient(135deg,#3b0764 0%,#6d28d9 50%,#8b5cf6 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
-.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
-.container{max-width:1100px;margin:0 auto;padding:1.5rem}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
-.filters{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1.5rem;align-items:end}
-.filter-group{display:flex;flex-direction:column;gap:.3rem}
-.filter-group label{font-weight:600;font-size:.8rem;color:#475569}
-.filter-group select,.filter-group input{padding:.45rem .65rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit}
-.filter-group select:focus,.filter-group input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
-.search-input{min-width:200px;padding:.45rem .65rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit}
-.search-input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
-.count-badge{background:var(--purple-light);color:var(--purple);padding:.3rem .7rem;border-radius:12px;font-size:.8rem;font-weight:600}
-.uni-table{width:100%;border-collapse:collapse;font-size:.85rem}
-.uni-table th{background:var(--purple-light);color:#3b0764;padding:.65rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid #c4b5fd;cursor:pointer;white-space:nowrap;user-select:none}
-.uni-table th:hover{background:#ede9fe}
-.uni-table th .sort-arrow{font-size:.7rem;margin-left:.25rem;color:#a78bfa}
-.uni-table td{padding:.55rem .75rem;border-bottom:1px solid #f1f5f9}
-.uni-table tr:hover td{background:#faf5ff}
-.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-weight:700;font-size:.8rem}
-.rank-1{background:#fef3c7;color:#92400e}
-.rank-2{background:#f1f5f9;color:#475569}
-.rank-3{background:#fff7ed;color:#9a3412}
-.rank-other{background:#f8fafc;color:#64748b}
-.country-flag{font-size:1.1rem;margin-right:.25rem}
-.type-badge{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.72rem;font-weight:600}
-.type-public{background:#f0fdf4;color:#16a34a}
-.type-private{background:#eff6ff;color:#2563eb}
-.strength-tags{display:flex;flex-wrap:wrap;gap:.25rem}
-.strength-tag{padding:.1rem .4rem;background:#f5f3ff;color:#6d28d9;border-radius:3px;font-size:.7rem;font-weight:500}
-.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.seo-section h2{font-size:1.4rem;font-weight:800;color:#3b0764;margin-bottom:1rem}
-.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
-.seo-section p{color:#475569;margin-bottom:1rem}
-.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.faq h2{font-size:1.4rem;font-weight:800;color:#3b0764;margin-bottom:1rem}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
-.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
-.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
-.faq details[open] summary::after{content:'-'}
-.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
-@media(max-width:768px){.uni-table{font-size:.78rem}.uni-table th,.uni-table td{padding:.4rem .5rem}}
-</style>
+<script src="/assets/js/edu-profile-sync.js?v=33a3d495" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
+<script src="/tools/university-ranking/university-ranking.js?v=20260417a" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/university-ranking/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/university-ranking/" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="African University Rankings — Compare 100+ Universities">
-<meta name="twitter:description" content="Compare African universities by ranking, cost, and programmes. Filter by country, field of study, and budget.">
+<meta name="twitter:title" content="African University Shortlist Builder | AfroTools">
+<meta name="twitter:description" content="Build a real African university shortlist with fit framing, compare tradeoffs, and connected handoffs into scholarships, degree checks, affordability, and Education Hub.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/university-ranking.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African University Shortlist Builder",
+  "description": "An AfroTools university-shortlisting tool for comparing African universities by fit, affordability, scholarship signals, and shortlist tradeoffs.",
+  "url": "https://afrotools.com/tools/university-ranking/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  }
+}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -92,72 +73,213 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "African University Rankings",
+      "name": "African University Shortlist Builder",
       "item": "https://afrotools.com/tools/university-ranking/"
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<meta property="article:modified_time" content="2026-04-17">
 </head>
-<body>
+<body class="ur-body">
 <afro-navbar></afro-navbar>
-<section class="hero">
-<div style="max-width:1100px;margin:0 auto;padding:0 1.5rem"><nav class="breadcrumb" style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:rgba(255,255,255,.3);text-decoration:none">Home</a> / <a href="/education/" style="color:rgba(255,255,255,.3);text-decoration:none">Education</a> / <span style="color:rgba(255,255,255,.7)">University Rankings</span></nav></div>
-<h1>African University Rankings</h1>
-<p>Compare 100+ universities across Africa by ranking, tuition fees, research output, and programme strengths. Find the right university for you.</p>
-</section>
-<div class="container">
-<div class="card">
-<div class="filters">
-<div class="filter-group"><label>Search</label><input type="text" class="search-input" id="searchInput" placeholder="Search university..." oninput="filterAndRender()"></div>
-<div class="filter-group"><label>Country</label><select id="countryFilter" onchange="filterAndRender()"><option value="">All Countries</option></select></div>
-<div class="filter-group"><label>Type</label><select id="typeFilter" onchange="filterAndRender()"><option value="">All</option><option value="Public">Public</option><option value="Private">Private</option></select></div>
-<div class="filter-group"><label>Strength</label><select id="strengthFilter" onchange="filterAndRender()"><option value="">All Fields</option><option value="Engineering">Engineering</option><option value="Medicine">Medicine</option><option value="Business">Business</option><option value="Law">Law</option><option value="Science">Science</option><option value="Technology">Technology</option><option value="Agriculture">Agriculture</option><option value="Arts">Arts</option></select></div>
-<div class="filter-group"><label>Annual Fees (USD)</label><select id="budgetFilter" onchange="filterAndRender()"><option value="">Any Budget</option><option value="500">Under $500/yr</option><option value="2000">$500 – $2,000/yr</option><option value="5000">$2,000 – $5,000/yr</option><option value="99999">$5,000+/yr</option></select></div>
-<div class="filter-group"><label>Scholarships</label><select id="scholarshipFilter" onchange="filterAndRender()"><option value="">All</option><option value="yes">Has Scholarships</option></select></div>
-<span class="count-badge" id="countBadge">0 universities</span>
-</div>
-<div style="overflow-x:auto">
-<table class="uni-table" id="uniTable">
-<thead><tr>
-<th onclick="sortBy('rank')">Rank <span class="sort-arrow">v</span></th>
-<th onclick="sortBy('name')">University</th>
-<th onclick="sortBy('country')">Country</th>
-<th onclick="sortBy('type')">Type</th>
-<th onclick="sortBy('fees')">Fees/yr (USD) <span class="sort-arrow">v</span></th>
-<th onclick="sortBy('students')">Students</th>
-<th>Scholarship</th>
-<th>Strengths</th>
-</tr></thead>
-<tbody id="uniBody"></tbody>
-</table>
-</div>
-</div>
-</div>
-<section class="seo-section">
-<h2>African University Rankings and Comparison Tool</h2>
-<p>Choosing the right university is one of the most important decisions an African student will make. With over 2,000 universities across the continent, the options can be overwhelming. This ranking tool helps you compare top African universities based on objective criteria including global ranking position, student population, founding year, and programme strengths.</p>
-<h3>Rankings Methodology</h3>
-<p>Our rankings are based on a composite of international ranking systems including Times Higher Education, QS World University Rankings, and the Academic Ranking of World Universities (Shanghai Ranking). African-specific factors like regional research impact, graduate employability within Africa, and programme availability are also considered. Rankings should be one factor in your decision — not the only one.</p>
-<h3>Beyond Rankings: What Matters</h3>
-<p>While rankings provide a useful benchmark, the best university for you depends on your specific needs. Consider the availability of your desired programme, tuition affordability, location and living costs, campus facilities, industry connections, and alumni network strength. A lower-ranked university with an excellent programme in your field may be better than a higher-ranked one without it.</p>
-<h3>Public vs Private Universities</h3>
-<p>African students have both public and private university options. Public universities generally offer lower tuition but may have larger class sizes and longer programme durations. Private universities often provide more modern facilities and faster completion but at higher cost. Both paths can lead to excellent outcomes depending on your circumstances and career goals.</p>
-</section>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-<section class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>How often are rankings updated?</summary><p>Rankings are updated annually based on the latest available data from international ranking bodies. Our database reflects 2025/2026 ranking positions. Note that rankings can fluctuate year to year, so consider the overall trend rather than a single year's position.</p></details>
-<details><summary>Why isn't my university listed?</summary><p>This tool focuses on universities that appear in international ranking systems. Many excellent African universities, particularly newer private institutions, may not yet be ranked internationally. Not being listed doesn't reflect the quality of education — it often reflects the university's research output volume or age.</p></details>
-<details><summary>Can I compare tuition fees?</summary><p>Tuition fees vary enormously between public and private universities and between programmes. We include approximate fee ranges where available. For exact current fees, always check directly with the university's admissions office.</p></details>
-<details><summary>Which African country has the best universities?</summary><p>South Africa, Egypt, and Nigeria have the most internationally ranked universities. However, universities in Kenya, Ghana, Morocco, and Tanzania also feature prominently. The "best" university depends on your specific field of study and career goals.</p></details>
-<details><summary>What scholarships are available for African students?</summary><p>Many universities in the database offer institutional scholarships for high-achieving students. Beyond university scholarships, major external opportunities include: the Mastercard Foundation Scholars Program (partnered with 18 African universities), the African Development Bank's Japan Fund Scholarship, the MasterCard Scholars Program, DAAD scholarships for study in Germany, and the Chevening Scholarship for study in the UK. Use the "Has Scholarships" filter to see which universities in our list have scholarship programmes.</p></details>
-<details><summary>How do QS and Times Higher Education rankings work for African universities?</summary><p>QS World University Rankings score universities on academic reputation (40%), employer reputation (10%), faculty-to-student ratio (20%), citations per faculty (20%), international faculty and students (10%). Times Higher Education uses teaching, research, citations, international outlook, and industry income. African universities often score lower on citation metrics because research publications may be in local journals not tracked internationally — not because the research quality is poor. This is a known bias in global ranking systems.</p></details>
-</section>
+<header class="ur-hero">
+  <div class="ur-shell">
+    <nav class="ur-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>University Shortlist Builder</span></nav>
+    <div class="ur-kicker">Shortlist-first university decisions</div>
+    <div class="ur-hero-grid">
+      <div class="ur-hero-copy">
+        <h1>Build an African university shortlist you can actually compare.</h1>
+        <p>This page still keeps the ranking table and filters power users need, but it now works like a decision product: fit framing, saved-school compare, scholarship signals, and clear next steps into the rest of the AfroTools education system.</p>
+        <div class="ur-hero-actions">
+          <a class="is-primary" href="#workspace">Start shortlisting</a>
+          <a class="is-secondary" href="/tools/education-hub/">Open Education Hub</a>
+          <a class="is-secondary" href="/tools/scholarship-finder/">Check funding fit</a>
+        </div>
+      </div>
+      <aside class="ur-hero-panel">
+        <div class="ur-panel-label">Decision snapshot</div>
+        <h2>Your ranking table is now a shortlist workspace</h2>
+        <p>Fit scores are heuristic, not admission odds. They help you see which schools are cheaper, stronger, more scholarship-friendly, or better aligned with your saved destinations and fields.</p>
+        <div class="ur-stat-grid">
+          <div class="ur-stat-card">
+            <strong id="heroUniversityCount">0</strong>
+            <span>Universities in this dataset</span>
+          </div>
+          <div class="ur-stat-card">
+            <strong id="heroShortlistCount">0</strong>
+            <span>Saved shortlist schools</span>
+          </div>
+          <div class="ur-stat-card">
+            <strong id="heroDestinationCount">0</strong>
+            <span>Saved destination signals</span>
+          </div>
+          <div class="ur-stat-card">
+            <strong id="heroFocusCount">0</strong>
+            <span>Saved field signals</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<main class="ur-main">
+  <div class="ur-shell">
+    <section class="ur-context-grid">
+      <article class="ur-card ur-profile-card">
+        <div class="ur-section-label">Profile-aware fit</div>
+        <h2>Use your cockpit signals to judge schools faster</h2>
+        <p class="ur-profile-lead" id="profileSummary">Load target countries and fields from Education Hub to make this shortlist more personal.</p>
+        <div class="ur-signal-list" id="profileSignals"></div>
+        <div class="ur-profile-actions">
+          <a class="is-primary" href="/tools/education-hub/">Update Education Hub profile</a>
+          <a href="/tools/degree-checker/">Check degree route</a>
+          <a href="/tools/study-abroad-cost/">Compare destination costs</a>
+        </div>
+      </article>
+      <div class="ur-highlight-grid" id="decisionHighlights"></div>
+    </section>
+
+    <section class="ur-workspace" id="workspace">
+      <section class="ur-workspace-main">
+        <div class="ur-workspace-head">
+          <div class="ur-section-label">Rankings workspace</div>
+          <h2>Filter the table, then turn your best options into a shortlist</h2>
+          <p>Keep the table power you already had, but use the save buttons to move from browsing into decision-making. Shortlist mode narrows the table to the schools you actually care about.</p>
+        </div>
+
+        <div class="ur-toolbar">
+          <div class="ur-field wide">
+            <label for="searchInput">Search</label>
+            <input id="searchInput" type="text" placeholder="Search university, country, or field">
+          </div>
+          <div class="ur-field">
+            <label for="countryFilter">Country</label>
+            <select id="countryFilter"><option value="">All countries</option></select>
+          </div>
+          <div class="ur-field">
+            <label for="typeFilter">Type</label>
+            <select id="typeFilter">
+              <option value="">All types</option>
+              <option value="Public">Public</option>
+              <option value="Private">Private</option>
+            </select>
+          </div>
+          <div class="ur-field">
+            <label for="strengthFilter">Strength</label>
+            <select id="strengthFilter">
+              <option value="">All strengths</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Medicine">Medicine</option>
+              <option value="Business">Business</option>
+              <option value="Law">Law</option>
+              <option value="Science">Science</option>
+              <option value="Technology">Technology</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Arts">Arts</option>
+              <option value="Education">Education</option>
+            </select>
+          </div>
+          <div class="ur-field">
+            <label for="budgetFilter">Annual fees</label>
+            <select id="budgetFilter">
+              <option value="">Any fee range</option>
+              <option value="500">Under $500/yr</option>
+              <option value="2000">$500-$2,000/yr</option>
+              <option value="5000">$2,000-$5,000/yr</option>
+              <option value="99999">$5,000+/yr</option>
+            </select>
+          </div>
+          <div class="ur-field">
+            <label for="scholarshipFilter">Scholarships</label>
+            <select id="scholarshipFilter">
+              <option value="">All schools</option>
+              <option value="yes">Scholarship flag only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ur-toolbar-meta">
+          <p class="ur-heuristic-note">Heuristic fit is based on affordability posture, saved fields, saved destinations, scholarship flags, and relative ranking strength. It is a planning aid, not an admission probability model.</p>
+          <div class="ur-toolbar-actions">
+            <button class="ur-pill-button" id="shortlistToggle" type="button">Shortlist mode</button>
+            <button class="ur-clear-button" id="clearFiltersBtn" type="button">Clear filters</button>
+            <span class="ur-count-badge" id="countBadge">0 schools in view</span>
+          </div>
+        </div>
+
+        <div class="ur-table-wrap">
+          <table class="ur-table" id="uniTable">
+            <thead>
+              <tr>
+                <th><button class="ur-sort-button" data-sort="rank" type="button">Rank</button></th>
+                <th><button class="ur-sort-button" data-sort="name" type="button">University</button></th>
+                <th><button class="ur-sort-button" data-sort="country" type="button">Country</button></th>
+                <th><button class="ur-sort-button" data-sort="fees" type="button">Fees</button></th>
+                <th><button class="ur-sort-button" data-sort="students" type="button">Students</button></th>
+                <th>Scholarships</th>
+                <th><button class="ur-sort-button" data-sort="fitScore" type="button">Fit</button></th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="uniBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="ur-shortlist-rail">
+        <div class="ur-rail-head">
+          <div class="ur-section-label">My shortlist</div>
+          <h2>Compare the schools you already saved</h2>
+          <p id="shortlistIntro">Save 3 to 5 schools and this rail will start surfacing the tradeoffs that matter.</p>
+        </div>
+        <div class="ur-rail-metrics" id="shortlistMetrics"></div>
+        <p class="ur-compare-note" id="shortlistNote">Saved schools are where the page becomes a decision product, not just a directory.</p>
+        <div class="ur-shortlist-grid" id="shortlistGrid"></div>
+      </aside>
+    </section>
+
+    <section class="ur-next-section">
+      <div class="ur-section-head">
+        <div class="ur-section-label">Continue the route</div>
+        <h2>Move the shortlist into the rest of the education system</h2>
+        <p>Once you have real schools in view, the next job is usually affordability, funding, degree readiness, or saving the plan into the cockpit.</p>
+      </div>
+      <div class="ur-next-grid" id="nextRouteGrid"></div>
+    </section>
+
+    <section class="ur-seo">
+      <div class="ur-section-label">How to use it well</div>
+      <h2>Rankings matter less when you cannot act on them</h2>
+      <p>This page is strongest when you use it to narrow decisions, not admire a table. Start with country, field, or fee pressure. Then save the schools that still look viable. Once a few schools are on your shortlist, compare the tradeoffs: which one is cheapest, which one looks strongest for research, and which one keeps scholarship options open.</p>
+      <p>That is why the shortlist rail matters. It turns the directory into a planning surface and makes the saved-school flow useful inside Education Hub, Scholarship Finder, Degree Checker, and the wider study-abroad stack.</p>
+    </section>
+
+    <section class="ur-faq">
+      <div class="ur-section-label">FAQ</div>
+      <h2>Frequently asked questions</h2>
+      <details>
+        <summary>Is the fit score an admission probability?</summary>
+        <p>No. The score is a heuristic planning signal. It reflects affordability, destination alignment, programme overlap, scholarship flags, and ranking strength. It does not know programme-level cut-offs, department capacity, or official admissions criteria.</p>
+      </details>
+      <details>
+        <summary>What makes a saved school more useful now?</summary>
+        <p>Saved schools now feed a compare rail instead of just changing a button label. AfroTools can show which saved school is cheapest, which one anchors research strength, which ones keep scholarship options open, and which schools align with your saved destinations or study focus.</p>
+      </details>
+      <details>
+        <summary>Should I save schools before I know my full budget?</summary>
+        <p>Yes. Save the schools that still feel viable, then use the shortlist rail and Study Abroad Cost to pressure-test the wider plan. A shortlist is more useful when it is imperfect but real than when it never gets built.</p>
+      </details>
+      <details>
+        <summary>How does this connect to Education Hub?</summary>
+        <p>Every saved school becomes a student object in Education Hub. That means you can see universities beside scholarship shortlists, destinations, cost signals, deadlines, and next-best actions instead of losing your research in one standalone tool.</p>
+      </details>
+    </section>
+  </div>
+</main>
+
 <afro-related-tools category="education" current="university-ranking"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -165,8 +287,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;c
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script>
-var UNIVERSITIES=[
+<script>var UNIVERSITIES=[
 {rank:1,name:'University of Cape Town',country:'South Africa',flag:'🇿🇦',type:'Public',students:29000,founded:1829,fees:3000,feesLabel:'~USD 2,500–4,000',scholarship:true,strengths:['Medicine','Law','Science','Engineering','Business']},
 {rank:2,name:'University of the Witwatersrand',country:'South Africa',flag:'🇿🇦',type:'Public',students:38000,founded:1896,fees:2800,feesLabel:'~USD 2,500–4,100',scholarship:true,strengths:['Engineering','Medicine','Science','Law','Business']},
 {rank:3,name:'Stellenbosch University',country:'South Africa',flag:'🇿🇦',type:'Public',students:32000,founded:1866,fees:3200,feesLabel:'~USD 2,700–4,700',scholarship:true,strengths:['Agriculture','Engineering','Science','Business']},
@@ -217,82 +338,7 @@ var UNIVERSITIES=[
 {rank:48,name:'University of Energy & Natural Resources',country:'Ghana',flag:'🇬🇭',type:'Public',students:8000,founded:2012,fees:280,feesLabel:'~USD 210–490',scholarship:false,strengths:['Engineering','Science','Agriculture']},
 {rank:49,name:'Lagos Business School (Pan-Atlantic)',country:'Nigeria',flag:'🇳🇬',type:'Private',students:1500,founded:1991,fees:4000,feesLabel:'~USD 3,000–8,000 (MBA)',scholarship:true,strengths:['Business']},
 {rank:50,name:'African Leadership University',country:'Rwanda',flag:'🇷🇼',type:'Private',students:3000,founded:2015,fees:5000,feesLabel:'~USD 4,000–7,000',scholarship:true,strengths:['Business','Technology','Arts']}
-];
-
-var sortField='rank';
-var sortAsc=true;
-
-function filterAndRender(){
-  var search=document.getElementById('searchInput').value.toLowerCase();
-  var country=document.getElementById('countryFilter').value;
-  var type=document.getElementById('typeFilter').value;
-  var strength=document.getElementById('strengthFilter').value;
-  var budget=document.getElementById('budgetFilter').value;
-  var scholFilter=document.getElementById('scholarshipFilter').value;
-
-  var filtered=UNIVERSITIES.filter(function(u){
-    if(search&&u.name.toLowerCase().indexOf(search)===-1&&u.country.toLowerCase().indexOf(search)===-1) return false;
-    if(country&&u.country!==country) return false;
-    if(type&&u.type!==type) return false;
-    if(strength&&u.strengths.indexOf(strength)===-1) return false;
-    if(scholFilter==='yes'&&!u.scholarship) return false;
-    if(budget){
-      var b=parseInt(budget);
-      if(b===500&&u.fees>=500) return false;
-      if(b===2000&&(u.fees<500||u.fees>=2000)) return false;
-      if(b===5000&&(u.fees<2000||u.fees>=5000)) return false;
-      if(b===99999&&u.fees<5000) return false;
-    }
-    return true;
-  });
-
-  filtered.sort(function(a,b){
-    var va=a[sortField],vb=b[sortField];
-    if(typeof va==='string') va=va.toLowerCase();
-    if(typeof vb==='string') vb=vb.toLowerCase();
-    if(va<vb) return sortAsc?-1:1;
-    if(va>vb) return sortAsc?1:-1;
-    return 0;
-  });
-
-  document.getElementById('countBadge').textContent=filtered.length+' universit'+(filtered.length===1?'y':'ies');
-
-  var rows='';
-  filtered.forEach(function(u){
-    var rc=u.rank<=3?'rank-'+u.rank:'rank-other';
-    var scholBadge=u.scholarship?'<span style="color:#16a34a;font-weight:700" title="Scholarships available">&#10003; Yes</span>':'<span style="color:#94a3b8">&ndash;</span>';
-    var tags='';
-    u.strengths.forEach(function(s){tags+='<span class="strength-tag">'+s+'</span>';});
-    rows+='<tr>'+
-      '<td><span class="rank-badge '+rc+'">'+u.rank+'</span></td>'+
-      '<td style="font-weight:600">'+u.name+'</td>'+
-      '<td><span class="country-flag">'+u.flag+'</span>'+u.country+'</td>'+
-      '<td><span class="type-badge type-'+u.type.toLowerCase()+'">'+u.type+'</span></td>'+
-      '<td style="font-size:.8rem;color:#475569">'+(u.feesLabel||'&ndash;')+'</td>'+
-      '<td>'+u.students.toLocaleString()+'</td>'+
-      '<td style="text-align:center">'+scholBadge+'</td>'+
-      '<td><div class="strength-tags">'+tags+'</div></td>'+
-      '</tr>';
-  });
-  document.getElementById('uniBody').innerHTML=rows;
-}
-
-function sortBy(field){
-  if(sortField===field) sortAsc=!sortAsc;
-  else{sortField=field;sortAsc=true;}
-  filterAndRender();
-}
-
-// Populate country filter
-var countrySet={};
-UNIVERSITIES.forEach(function(u){countrySet[u.country]=true;});
-var countries=Object.keys(countrySet).sort();
-var countryOpts='<option value="">All Countries</option>';
-countries.forEach(function(c){countryOpts+='<option>'+c+'</option>';});
-document.getElementById('countryFilter').innerHTML=countryOpts;
-
-filterAndRender();
-</script>
+];</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

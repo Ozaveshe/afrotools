@@ -1,1 +1,169 @@
-var EduProfileSync=function(){"use strict";var e=["education_level","institution","gpa_value","gpa_scale","target_study_level","target_countries","target_fields","ielts_overall","ielts_components","jamb_score","nationality","jamb_best_mock_score","jamb_predicted_score","jamb_practice_count","jamb_total_study_minutes","jamb_target_subjects","jamb_target_universities","jamb_target_courses","jamb_weak_topics","jamb_streak_days","jamb_score_source","graduation_date"],t=null,n=null;return{update:function(o){if(o&&"object"==typeof o){var i={},r=!1;e.forEach(function(e){void 0!==o[e]&&null!==o[e]&&""!==o[e]&&(i[e]=o[e],r=!0)}),r&&(t=Object.assign(t||{},i),clearTimeout(n),n=setTimeout(function(){!function(){if(t){var e,n=t;if(t=null,window.AfroAuth&&"function"==typeof AfroAuth.isLoggedIn&&AfroAuth.isLoggedIn()){if("function"==typeof AfroAuth.getSessionTokenAsync)e=AfroAuth.getSessionTokenAsync();else{if("function"!=typeof AfroAuth.getSessionToken)return;e=Promise.resolve(AfroAuth.getSessionToken())}e.then(function(e){e&&fetch("/api/profile",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+e},body:JSON.stringify(n)}).then(function(){console.log("[edu-sync] Profile updated:",Object.keys(n).join(", "))}).catch(function(){})}).catch(function(){})}}}()},1e3))}},getProfile:function(){if(!window.AfroAuth||"function"!=typeof AfroAuth.isLoggedIn||!AfroAuth.isLoggedIn())return Promise.resolve(null);var e;if("function"==typeof AfroAuth.getSessionTokenAsync)e=AfroAuth.getSessionTokenAsync();else{if("function"!=typeof AfroAuth.getSessionToken)return Promise.resolve(null);e=Promise.resolve(AfroAuth.getSessionToken())}return e.then(function(e){return e?fetch("/api/profile",{headers:{Authorization:"Bearer "+e}}).then(function(e){return e.json()}).then(function(e){return e.profile||null}):null}).catch(function(){return null})}}}();
+var EduProfileSync = (function () {
+  'use strict';
+
+  var PROFILE_FIELDS = [
+    'education_level',
+    'institution',
+    'gpa_value',
+    'gpa_scale',
+    'target_study_level',
+    'target_countries',
+    'target_fields',
+    'ielts_overall',
+    'ielts_components',
+    'jamb_score',
+    'nationality',
+    'jamb_best_mock_score',
+    'jamb_predicted_score',
+    'jamb_practice_count',
+    'jamb_total_study_minutes',
+    'jamb_target_subjects',
+    'jamb_target_universities',
+    'jamb_target_courses',
+    'jamb_weak_topics',
+    'jamb_streak_days',
+    'jamb_score_source',
+    'graduation_date'
+  ];
+
+  var LOCAL_CACHE_KEY = 'afroedu-profile-cache';
+  var pendingPayload = null;
+  var flushTimer = null;
+
+  function safeRead(key, fallback) {
+    try {
+      var raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function safeWrite(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      /* ignore localStorage failures */
+    }
+  }
+
+  function sanitizePayload(input) {
+    if (!input || typeof input !== 'object') return null;
+
+    var payload = {};
+    var hasFields = false;
+
+    PROFILE_FIELDS.forEach(function (field) {
+      if (input[field] !== undefined && input[field] !== null && input[field] !== '') {
+        payload[field] = input[field];
+        hasFields = true;
+      }
+    });
+
+    return hasFields ? payload : null;
+  }
+
+  function mergeIntoCache(payload) {
+    if (!payload) return null;
+
+    var cached = safeRead(LOCAL_CACHE_KEY, {}) || {};
+    var next = Object.assign({}, cached, payload, {
+      local_updated_at: Date.now()
+    });
+
+    safeWrite(LOCAL_CACHE_KEY, next);
+    return next;
+  }
+
+  function getTokenPromise() {
+    if (!window.AfroAuth || typeof AfroAuth.isLoggedIn !== 'function' || !AfroAuth.isLoggedIn()) {
+      return Promise.resolve(null);
+    }
+
+    if (typeof AfroAuth.getSessionTokenAsync === 'function') {
+      return AfroAuth.getSessionTokenAsync().catch(function () { return null; });
+    }
+
+    if (typeof AfroAuth.getSessionToken === 'function') {
+      try {
+        return Promise.resolve(AfroAuth.getSessionToken());
+      } catch (error) {
+        return Promise.resolve(null);
+      }
+    }
+
+    return Promise.resolve(null);
+  }
+
+  function flushRemote() {
+    if (!pendingPayload) return;
+
+    var payload = pendingPayload;
+    pendingPayload = null;
+
+    getTokenPromise().then(function (token) {
+      if (!token) return;
+
+      fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(payload)
+      }).then(function () {
+        console.log('[edu-sync] Profile updated:', Object.keys(payload).join(', '));
+      }).catch(function () {
+        /* silent failure keeps local cache intact */
+      });
+    }).catch(function () {
+      /* silent */
+    });
+  }
+
+  function queueRemoteSync(payload) {
+    if (!payload) return;
+
+    pendingPayload = Object.assign({}, pendingPayload || {}, payload);
+    clearTimeout(flushTimer);
+    flushTimer = setTimeout(flushRemote, 1000);
+  }
+
+  function update(input) {
+    var payload = sanitizePayload(input);
+    if (!payload) return;
+
+    mergeIntoCache(payload);
+    queueRemoteSync(payload);
+  }
+
+  function getCachedProfile() {
+    return safeRead(LOCAL_CACHE_KEY, null);
+  }
+
+  function getProfile() {
+    return getTokenPromise().then(function (token) {
+      if (!token) return null;
+
+      return fetch('/api/profile', {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        var profile = data && data.profile ? data.profile : null;
+        if (profile) mergeIntoCache(profile);
+        return profile;
+      }).catch(function () {
+        return null;
+      });
+    });
+  }
+
+  return {
+    update: update,
+    getProfile: getProfile,
+    getCachedProfile: getCachedProfile
+  };
+})();

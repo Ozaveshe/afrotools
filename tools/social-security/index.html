@@ -256,6 +256,7 @@
     }
   </style>
   <meta property="article:modified_time" content="2026-03-29">
+  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-michango-ya-hifadhi-ya-jamii/">
   <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/social-security/">
   <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/social-security/">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
@@ -609,7 +610,7 @@
 var CURRENCY_MAP = {
   NG:'NGN', KE:'KES', ZA:'ZAR', GH:'GHS', EG:'EGP', TZ:'TZS', UG:'UGX',
   RW:'RWF', CI:'XOF', SN:'XOF', CM:'XAF', MA:'MAD', TN:'TND', ZM:'ZMW',
-  BW:'BWP', MU:'MUR', NA:'NAD', DZ:'DZD', ET:'ETB', AO:'AOA', ZW:'ZWL',
+  BW:'BWP', MU:'MUR', NA:'NAD', DZ:'DZD', ET:'ETB', AO:'AOA', ZW:'ZWG',
   MW:'MWK', MZ:'MZN', MG:'MGA', CD:'CDF', GA:'XAF', BJ:'XOF', BF:'XOF',
   ML:'XOF', NE:'XOF', TG:'XOF', GN:'GNF', LY:'LYD', SD:'SDG'
 };
@@ -617,7 +618,7 @@ var SYMBOL_MAP = {
   NGN:'\u20A6', KES:'KES', ZAR:'R', GHS:'GH\u20B5', EGP:'E\u00A3', TZS:'TZS',
   UGX:'UGX', RWF:'RWF', XOF:'CFA', XAF:'FCFA', MAD:'MAD', TND:'TND',
   ZMW:'ZMW', BWP:'BWP', MUR:'MUR', NAD:'N$', DZD:'DA', ETB:'ETB',
-  AOA:'Kz', ZWL:'ZWL', MWK:'MK', MZN:'MT', MGA:'Ar', CDF:'CDF',
+  AOA:'Kz', ZWG:'ZWG', MWK:'MK', MZN:'MT', MGA:'Ar', CDF:'CDF',
   GNF:'GNF', LYD:'LYD', SDG:'SDG'
 };
 
@@ -678,7 +679,7 @@ function onCountryChange() {
   var cc = document.getElementById('country').value;
   if (!cc) return;
   clearFieldError('err-country');
-  var cur = getCurrency(cc);
+  var cur = (result && result.symbol) || getCurrency(cc);
   document.getElementById('currency-prefix').textContent = cur;
   document.getElementById('results').style.display = 'none';
   document.getElementById('roi-card').style.display = 'none';
@@ -802,10 +803,12 @@ function calculate() {
     nameSpan.className = 'ss-scheme-name';
     nameSpan.textContent = s.name || 'Scheme';
     tdName.appendChild(nameSpan);
-    if (s.note) {
+    var noteText = s.notes || s.note || '';
+    var lawText = s.law || '';
+    if (noteText || lawText) {
       var noteSpan = document.createElement('span');
       noteSpan.className = 'ss-scheme-note';
-      noteSpan.textContent = s.note;
+      noteSpan.textContent = noteText && lawText ? noteText + ' — ' + lawText : (noteText || lawText);
       tdName.appendChild(noteSpan);
     }
     tr.appendChild(tdName);
@@ -836,10 +839,13 @@ function calculate() {
 
     /* Cap column */
     var tdCap = document.createElement('td');
-    if (s.cap) {
+    var capValue = null;
+    if (typeof s.cap === 'number') capValue = s.cap;
+    else if (s.cap && typeof s.cap.monthly === 'number') capValue = s.cap.monthly;
+    if (capValue !== null) {
       var capBadge = document.createElement('span');
       capBadge.className = 'ss-cap-badge';
-      capBadge.textContent = 'Cap: ' + cur + ' ' + formatNumber(s.cap);
+      capBadge.textContent = 'Cap: ' + cur + ' ' + formatNumber(capValue);
       tdCap.appendChild(capBadge);
     } else {
       var noCap = document.createElement('span');
@@ -1267,8 +1273,10 @@ function fallbackCalculate(cc, monthlySalary) {
     var base = monthlySalary;
 
     /* Apply cap if present */
-    if (scheme.cap && base > scheme.cap) {
+    if (scheme.cap && typeof scheme.cap === 'number' && base > scheme.cap) {
       base = scheme.cap;
+    } else if (scheme.cap && typeof scheme.cap.monthly === 'number' && base > scheme.cap.monthly) {
+      base = scheme.cap.monthly;
     }
 
     var empAmt = base * ((scheme.employeeRate || 0) / 100);
@@ -1284,7 +1292,9 @@ function fallbackCalculate(cc, monthlySalary) {
       employeeAmount: empAmt,
       employerAmount: erAmt,
       cap: scheme.cap || null,
-      note: scheme.note || ''
+      notes: scheme.notes || scheme.note || '',
+      note: scheme.notes || scheme.note || '',
+      law: scheme.law || ''
     });
   }
 

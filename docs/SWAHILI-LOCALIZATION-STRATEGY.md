@@ -260,6 +260,189 @@ To avoid agent stalls and half-finished Swahili waves, keep batches narrow.
 - mixing salary, agriculture, AI tools, and blog work in one pass
 - adding registry, hreflang, UI rewrite, and tool-copy rewrites for dozens of pages at once
 
+## Swahili Country-Hub Salary Rollout Pattern
+
+Use this pattern before adding more `/sw/<country>/index.html` salary discovery work. The goal is to stop reinventing the same hub pass every batch.
+
+### Pattern types
+
+There are two valid country-hub rollout modes.
+
+#### 1. Strong salary-entry hub
+
+Use strong treatment when the country is a real salary-intent entry market and at least one of the following is true:
+
+- a live Swahili local PAYE route already exists and is good enough to feature first
+- the market is a regional anchor with high salary/payroll search value
+- there are already localized Sw salary tools that make the country page feel like a real salary hub, not just a bridge
+- the country helps a comparison cluster that users actually browse across
+
+Canonical examples:
+
+- `sw/kenya/index.html`
+- `sw/tanzania/index.html`
+- `sw/nigeria/index.html`
+- `sw/south-africa/index.html`
+- `sw/morocco/index.html`
+- `sw/ethiopia/index.html`
+- `sw/zambia/index.html`
+
+#### 2. Lighter bridge hub
+
+Use bridge treatment when the country needs salary/pay orientation, but the surrounding localized salary depth is still thin.
+
+Use bridge treatment when:
+
+- the local Sw PAYE page exists, but adjacent localized salary depth is limited
+- the best user experience is still to route people into `sw/mshahara-na-kodi/index.html` and `sw/tools/index.html`
+- the market matters, but it is not yet ready to act like a full salary-entry hub
+
+Canonical examples:
+
+- `sw/mozambique/index.html`
+- `sw/malawi/index.html`
+
+### Standard section order
+
+For a Sw salary-first country hub, keep the section order stable unless the page has a structural reason not to.
+
+1. Hero with salary-first support copy
+2. Local tax or payroll summary cards already native to the country page
+3. Any existing local tax, PAYE, VAT, or social-security tables already on the page
+4. Divider
+5. `Mishahara Kwanza` section for strong hubs, or `Njia ya Mishahara` for lighter bridge hubs
+6. Existing tools section relabeled to `Zana za Mishahara na Ajira`
+7. Back-links to Sw entry points, paired English page, and optional nearby comparison markets
+
+Do not move the whole page into a new template just to follow this order. Fit the pattern into the current shell.
+
+### Hero and support-copy rules
+
+The hero should stop sounding like a generic finance directory and start sounding like a salary-entry surface.
+
+Rules:
+
+- keep the country name and core tax identity in the title
+- make the support copy salary-first, not broad-finance-first
+- lead with the local salary problem the user is trying to solve:
+  - PAYE
+  - social-security deductions
+  - overtime
+  - leave
+  - salary comparison
+  - retirement or housing-fund planning
+- keep acronyms users actually search, such as `PAYE`, `VAT`, `NSSF`, `UIF`, `CNSS`, `SSNIT`, `NAPSA`, `USD/US$`
+- use the outline CTA as the bridge back to `sw/mshahara-na-kodi/` when the page is in the salary rollout lane
+
+### `Mishahara Kwanza` section rules
+
+This section is the repeatable discovery block for Sw salary hubs.
+
+For strong salary-entry hubs:
+
+- use the label `Mishahara Kwanza`
+- include `4` featured cards when space allows
+- local Sw PAYE should be the first card if it is live and user-ready
+- end with a bridge sentence linking to `sw/mshahara-na-kodi/index.html`
+- where helpful, link to nearby comparison markets such as Kenya, Tanzania, Uganda, Ghana, Nigeria, or South Africa
+
+For lighter bridge hubs:
+
+- use `Njia ya Mishahara` if the page is more of a bridge than a full salary hub
+- include `3` cards in most cases
+- local Sw PAYE still goes first if it exists and is good enough
+- the second and third cards should usually be:
+  - `sw/mshahara-na-kodi/index.html`
+  - `sw/tools/index.html`
+- use one adjacent localized salary tool only if it adds real value without making the hub feel falsely deep
+
+### Link priority inside the salary cluster
+
+When choosing which localized Sw salary/pay tools to feature first, use this priority order unless the market has a strong country-specific reason to vary it:
+
+1. local Sw PAYE route
+2. `sw/zana/kikokotoo-michango-ya-hifadhi-ya-jamii/index.html`
+3. `sw/zana/kikokotoo-kima-cha-chini-cha-mshahara/index.html`
+4. `sw/zana/kikokotoo-muda-wa-ziada/index.html`
+5. `sw/zana/kikokotoo-likizo/index.html`
+6. `sw/zana/kilinganisha-mishahara/index.html`
+7. `sw/zana/mpango-wa-kustaafu-mapema/index.html`
+8. `sw/zana/kikokotoo-mfuko-wa-nyumba/index.html`
+
+Use the earliest tools in the list that are already localized and actually useful for that market.
+
+### When to feature local PAYE vs broader salary-cluster links
+
+Feature local PAYE first when:
+
+- the Sw route is live
+- the page is not just an English fallback wrapper
+- the route is already used as a real local calculator entry point
+
+Do not make local PAYE the lead card when:
+
+- the Sw route is weak, stale, or still mostly a fallback shell
+- the country page would over-promise salary depth that does not yet exist
+
+In those cases:
+
+- point the outline CTA to `sw/mshahara-na-kodi/index.html`
+- make the discovery section bridge into the broader salary cluster
+- keep `sw/tools/index.html` as the secondary discovery target
+
+### Reciprocal hreflang rule for paired English hubs
+
+If a Sw country hub is touched as part of a salary-first hub rollout and the paired English hub is in scope, add or verify:
+
+- `hreflang="sw"` on the paired English hub
+- existing `hreflang="en"` and `x-default` stay intact unless clearly wrong
+
+Do not broaden that into a repo-wide hreflang cleanup during the same batch.
+
+### Validation checklist for country-hub salary passes
+
+For a real country-hub salary surfacing batch, run:
+
+- `npm run check-links`
+- `npm run audit`
+- `npm run build:i18n:validate`
+- `npm run validate:hreflang`
+- `npm run seo:report`
+
+When summarizing results, separate:
+
+- baseline repo debt
+- net-new issues caused by the batch
+
+Use this rule:
+
+- if the touched Sw hubs and paired English hubs do not appear directly in the failure output, treat the remaining failures as baseline debt
+- if the only remaining nearby warnings are older one-way references from untouched French pages into the paired English hubs, treat those as baseline debt
+- only call an issue net-new if the touched pages themselves appear in the failing output after the batch
+
+### Recommended execution clusters for remaining Sw country hubs
+
+After the current Kenya/Tanzania/Uganda/Rwanda/Burundi, Nigeria/South Africa/Ghana/Egypt, and Morocco/Ethiopia/Zambia/Mozambique/Malawi passes, use this rollout order next:
+
+1. Southern follow-on cluster:
+   - Botswana
+   - Namibia
+   - Lesotho
+2. Francophone and Central salary-discovery cluster:
+   - Cameroon
+   - Cote d'Ivoire
+   - Senegal
+3. North Africa follow-on cleanup:
+   - Libya
+   - Tunisia
+   - Algeria only if the salary-entry case is clear
+
+Why this order:
+
+- the southern cluster extends the Zambia, Malawi, Mozambique, and South Africa salary graph cleanly
+- the Francophone and Central cluster is valuable, but should ride on a more mature Sw salary-hub process
+- the North Africa follow-on batch should happen after the current Morocco pattern is proven stable in multiple adjacent markets
+
 ## Swahili SEO Playbook
 
 ### 1. Build clusters, not isolated pages

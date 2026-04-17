@@ -175,6 +175,15 @@ if (typeof onRegistryReady === 'function') {
 3. **Page JS** listens for event or checks `onRegistryReady()` → renders tool cards, stats
 4. **Web components** (`<afro-navbar>`, `<afro-country-tools>`) read from `AFRO_TOOLS` in their `connectedCallback()`, re-render on registry-ready if needed
 
+## Dashboard And Saved State
+
+- User profile data is stored in Supabase `profiles` and fetched through `/api/profile`, with a direct Supabase browser fallback.
+- Favorited tools are stored in Supabase `favorites` and surfaced through `/api/favorites`.
+- Cross-device drafts and saved workspace items are stored in Supabase `workspace_items` and surfaced through `/api/workspace`.
+- For signed-in users, `localStorage` should only act as a cache mirror for favorites and draft workspace data, not the source of truth.
+- Dashboard workspace panels should prefer synced account data such as `favorites`, `calculation_history`, and `workspace_items` before falling back to device-only drafts.
+- Tool pages that still autosave locally should mirror the latest signed-in state into `localStorage` for offline continuity, but should push canonical updates through `/api/workspace`.
+
 ## Deployment
 
 ```

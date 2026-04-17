@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wholesale Retail Spread | AfroTools</title>
+<meta name="description" content="Track wholesale-to-retail spreads for fast-moving goods by city and market, then submit verified spread reports through AfroPoints.">
+<link rel="canonical" href="https://afrotools.com/tools/wholesale-retail-spread/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Wholesale Retail Spread</span></div>
+    <div class="md-eyebrow">Wholesale and Retail</div>
+    <h1>Wholesale Retail Spread</h1>
+    <p>Measure product spreads between wholesale and retail markets by city, then submit the real margins you see for FMCG and household goods.</p>
+    <div class="md-chip-row"><span class="md-chip">FMCG focus</span><span class="md-chip">Wholesale versus retail</span><span class="md-chip">Market-by-market intelligence</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified Spread Feed</div><div class="md-panel-subtitle">Use this to compare margin pressure across cities and markets.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Lagos"></div>
+          <div class="md-field"><label for="mdMarketName">Market Name</label><input id="mdMarketName" class="md-input" data-md-filter="market_name" placeholder="e.g. Balogun"></div>
+          <div class="md-field"><label for="mdProductName">Product</label><input id="mdProductName" class="md-input" data-md-filter="product_name" placeholder="e.g. Cooking oil"></div>
+        </div>
+        <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading verified spread data...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Spread</div><div class="md-panel-subtitle">Capture both wholesale and retail prices to make the margin useful.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Accra"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="GHS"></div>
+        <div class="md-form-field"><label for="mdReportMerchant">Market Name</label><input id="mdReportMerchant" class="md-input" placeholder="Optional"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I checked both prices myself</option><option value="receipt">Wholesale or retail receipt</option><option value="merchant_quote">Trader quote</option><option value="community_check">Community check</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Spread</button></div>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/wholesale-retail-spreads',
+  responseKey: 'spreads',
+  subtype: 'wholesale_retail_spread',
+  vertical: 'wholesale_retail',
+  reportButtonLabel: 'Submit Spread',
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.product_name || 'Product') + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.market_name || 'Market') + ' | ' + (row.city || '')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">Wholesale ' + helpers.escapeHtml(row.wholesale_price || '') + '</span><span class="md-pill">Retail ' + helpers.escapeHtml(row.retail_price || '') + '</span><span class="md-pill">Spread ' + helpers.escapeHtml(row.spread_pct || '') + '%</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

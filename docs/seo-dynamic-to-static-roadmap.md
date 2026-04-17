@@ -15,6 +15,11 @@ The goal is not a broad refactor. The goal is to turn the highest-value dynamic 
 
 - `tools/afrokitchen/index.html` is already a public, indexable landing page.
 - `tools/afrokitchen/recipe.html`, `collection.html`, and `country.html` are utility/query templates that currently read `?slug=` or `?country=` and are correctly `noindex, follow`.
+- The static SEO generator now uses a repo-side manifest export at `tools/afrokitchen/seo-manifest.json`.
+- The current implementation path is:
+  - `scripts/export-afrokitchen-seo-manifest.js`
+  - `scripts/generate-afrokitchen-static-pages.js`
+  - generated route helper `tools/afrokitchen/static-routes.js`
 - The runtime data layer lives in `engines/afrokitchen-engine.js`.
 - Live recipe data comes from:
   - `netlify/functions/afrokitchen-recipes.js`

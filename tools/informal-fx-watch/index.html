@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informal FX Watch | AfroTools</title>
+<meta name="description" content="Track street, BDC, and P2P informal FX spreads across African markets, then submit verified corridor rates through AfroPoints.">
+<link rel="canonical" href="https://afrotools.com/tools/informal-fx-watch/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Informal FX Watch</span></div>
+    <div class="md-eyebrow">FX and Remittance</div>
+    <h1>Informal FX Watch</h1>
+    <p>Monitor verified street, BDC, and P2P rates across the Big 4 markets, then report the live quote you actually see on the ground.</p>
+    <div class="md-chip-row">
+      <span class="md-chip">Nigeria</span>
+      <span class="md-chip">Kenya</span>
+      <span class="md-chip">South Africa</span>
+      <span class="md-chip">Ghana</span>
+    </div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head">
+        <div class="md-panel-title">Live FX Feed</div>
+        <div class="md-panel-subtitle">Verified P2P and contributor-confirmed FX spreads.</div>
+      </div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Lagos"></div>
+          <div class="md-field"><label for="mdAsset">Asset</label><input id="mdAsset" class="md-input" data-md-filter="asset" placeholder="USD, BTC, USDT"></div>
+          <div class="md-field"><label for="mdFiat">Fiat</label><input id="mdFiat" class="md-input" data-md-filter="fiat" placeholder="NGN, KES, ZAR"></div>
+        </div>
+        <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading live data...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head">
+        <div class="md-panel-title">Submit an FX Rate</div>
+        <div class="md-panel-subtitle">AfroPoints rewards contributors who submit proof-backed FX observations.</div>
+      </div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Lagos"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="NGN"></div>
+        <div class="md-form-field"><label for="mdReportProvider">Dealer or Platform</label><input id="mdReportProvider" class="md-input" placeholder="e.g. BDC, Binance P2P"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I saw this myself</option><option value="merchant_quote">Dealer or provider quote</option><option value="official_notice">Public rate notice</option><option value="community_check">Community check</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional photo or public quote link"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit FX Rate</button></div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Why this data matters</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Fintechs can price corridor spreads against what people actually get on the street.</li>
+          <li>Media and analysts can benchmark black-market versus P2P movement by city.</li>
+          <li>Contributors earn more when they attach proof and precise location details.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/fx-spreads',
+  responseKey: 'rates',
+  subtype: 'informal_fx_rate',
+  vertical: 'fx_remittance',
+  reportButtonLabel: 'Submit FX Rate',
+  renderSummary: function (rows) {
+    var assets = {};
+    rows.forEach(function (row) { assets[row.asset || 'USD'] = true; });
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Active quotes</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + Object.keys(assets).length + '</div><div class="md-stat-label">Assets covered</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">P2P</div><div class="md-stat-label">Live contributor + platform mix</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml((row.platform || 'Market') + ' - ' + (row.asset || 'USD') + '/' + (row.fiat || 'LOCAL')) + '</h3>' +
+      '<p>Buy: ' + helpers.escapeHtml(row.buy_price) + ' | Sell: ' + helpers.escapeHtml(row.sell_price) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml((row.countries || []).join(', ') || 'Pan-Africa') + '</span><span class="md-pill">Trust ' + helpers.escapeHtml(row.trust_score || 0) + '</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

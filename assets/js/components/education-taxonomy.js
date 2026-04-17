@@ -34,29 +34,29 @@
       key: 'exam-prep-admissions',
       title: 'Exam Prep & Admissions',
       icon: '🎓',
-      description: 'Score calculators, admissions checkers, and exam-readiness tools for African grading systems.',
+      description: 'Admissions routing, country-native score calculators, and exam-readiness tools for African grading systems.',
       toolIds: [
+        'university-admission',
         'waec-calculator',
         'jamb-aggregate',
         'kcse-calculator',
         'matric-points',
-        'gpa-calculator',
-        'university-admission'
+        'gpa-calculator'
       ],
       featuredIds: [
+        'university-admission',
         'waec-calculator',
         'jamb-aggregate',
         'kcse-calculator',
         'matric-points',
-        'gpa-calculator',
-        'university-admission'
+        'gpa-calculator'
       ]
     },
     {
       key: 'student-finance',
       title: 'Student Finance',
       icon: '💰',
-      description: 'Fees, budgeting, savings, and loan repayment tools for students and families.',
+      description: 'School-fee comparison, monthly survival planning, savings, and loan repayment tools for students and families.',
       toolIds: [
         'school-fees',
         'student-budget',
@@ -72,16 +72,23 @@
         'edu-savings',
         'student-loan-repay',
         'ke-helb'
-      ]
+      ],
+      toolOverrides: {
+        'school-fees': {
+          desc: 'The canonical education cost explorer for comparing annual tuition and extras before you commit to a school path.'
+        },
+        'student-budget': {
+          desc: 'The monthly survival planner for testing whether housing, living costs, fees, or support gaps are breaking the month.'
+        }
+      }
     },
     {
       key: 'scholarships-study-abroad',
       title: 'Scholarships & Study Abroad',
       icon: '🌍',
-      description: 'Scholarship discovery, study-abroad planning, credential checks, and destination research.',
+      description: 'One flagship scholarship flow, a destination affordability engine, IELTS pathway planning, a degree-readiness bridge, and university shortlist building.',
       toolIds: [
         'scholarship-finder',
-        'scholarship-check',
         'degree-checker',
         'study-abroad-cost',
         'university-ranking',
@@ -89,12 +96,22 @@
       ],
       featuredIds: [
         'scholarship-finder',
-        'scholarship-check',
         'study-abroad-cost',
         'degree-checker',
         'university-ranking',
         'ielts-calculator'
-      ]
+      ],
+      toolOverrides: {
+        'degree-checker': {
+          desc: 'Turn African degree equivalency into destination-readiness guidance for study, work, migration, and the next tool to use.'
+        },
+        'study-abroad-cost': {
+          desc: 'Compare UK, Canada, Australia, USA, and Germany across tuition, living costs, visa fees, insurance, and scholarship scenarios.'
+        },
+        'university-ranking': {
+          desc: 'Build a school shortlist with fit heuristics, compare tradeoffs, and save universities back into the student cockpit.'
+        }
+      }
     },
     {
       key: 'academic-tools',
@@ -171,7 +188,7 @@
       registryId: 'education-hub',
       title: 'Education Hub',
       href: '/tools/education-hub/',
-      summary: 'Personalized education journey layer for academic profile, scholarships, and saved progress.',
+      summary: 'Central student cockpit for profile, scholarships, universities, destinations, cost signals, and next-step orchestration.',
       productType: 'Registry-backed platform',
       accent: 'Registry + product'
     },
@@ -200,7 +217,7 @@
       key: 'fees',
       title: 'Education Fees & Cost Planning',
       eyebrow: 'Student Finance',
-      description: 'Plan tuition, boarding, monthly budgets, and education savings from one focused hub.',
+      description: 'Start with School Fees Comparator for annual tuition context, then use Student Budget Planner for the monthly survival plan.',
       toolIds: [
         'school-fees',
         'student-budget',
@@ -208,6 +225,14 @@
         'edu-savings',
         'student-loan-repay'
       ],
+      toolOverrides: {
+        'school-fees': {
+          desc: 'Compare annual tuition and extras first, then move the chosen school into monthly planning.'
+        },
+        'student-budget': {
+          desc: 'Turn city costs, housing modes, and fee reserves into a practical monthly survival verdict.'
+        }
+      },
       relatedLinks: [
         { label: 'Education hub', href: '/education/' },
         { label: 'Student loans', href: '/education/loans/' },
@@ -218,13 +243,18 @@
       key: 'loans',
       title: 'Student Loans & Repayment',
       eyebrow: 'Student Finance',
-      description: 'Track student-loan repayment paths, the canonical Kenya HELB calculator, and supporting budget planning.',
+      description: 'Track student-loan repayment paths, the canonical Kenya HELB calculator, and the monthly budget pressure that creates financing gaps.',
       toolIds: [
         'student-loan-repay',
         'ke-helb',
         'student-budget',
         'edu-savings'
       ],
+      toolOverrides: {
+        'student-budget': {
+          desc: 'Use the monthly survival planner when you need to prove whether the gap is really a loan problem or a cost-structure problem.'
+        }
+      },
       relatedLinks: [
         { label: 'Education hub', href: '/education/' },
         { label: 'Fees & cost planning', href: '/education/fees/' },
@@ -235,14 +265,25 @@
       key: 'scholarships',
       title: 'Scholarships & Funding Opportunities',
       eyebrow: 'Scholarships & Study Abroad',
-      description: 'Find scholarships, check eligibility, and prepare your profile for study funding routes.',
+      description: 'Use one flagship scholarship flow, then connect it to affordability scenarios, IELTS readiness, degree-readiness checks, and destination research.',
       toolIds: [
         'scholarship-finder',
-        'scholarship-check',
         'degree-checker',
+        'study-abroad-cost',
         'university-ranking',
         'ielts-calculator'
       ],
+      toolOverrides: {
+        'degree-checker': {
+          desc: 'Check whether your qualification still looks viable for the destination before you over-invest in scholarship or admissions planning.'
+        },
+        'study-abroad-cost': {
+          desc: 'Compare destination affordability and scholarship-offset scenarios before you decide which route is realistic.'
+        },
+        'university-ranking': {
+          desc: 'Turn school research into a shortlist with compare notes, scholarship-friendly routes, and saved universities.'
+        }
+      },
       relatedLinks: [
         { label: 'Education hub', href: '/education/' },
         { label: 'Study abroad', href: '/education/study-abroad/' },
@@ -253,15 +294,25 @@
       key: 'study-abroad',
       title: 'Study Abroad Planning Tools',
       eyebrow: 'Scholarships & Study Abroad',
-      description: 'Estimate destination costs, check degree fit, and connect scholarships with travel-study planning.',
+      description: 'Compare destinations side by side, pressure-test affordability, plan IELTS targets, bridge degree equivalency into readiness, and connect scholarships with university shortlist building.',
       toolIds: [
         'study-abroad-cost',
         'degree-checker',
         'scholarship-finder',
-        'scholarship-check',
         'university-ranking',
         'ielts-calculator'
       ],
+      toolOverrides: {
+        'degree-checker': {
+          desc: 'The degree-readiness bridge for study abroad: see comparability, credential-assessment need, and the next tool to use.'
+        },
+        'study-abroad-cost': {
+          desc: 'The affordability engine for study abroad: compare tuition, living, visa, insurance, and scholarship scenarios across destinations.'
+        },
+        'university-ranking': {
+          desc: 'The university shortlist builder for comparing school tradeoffs before you apply.'
+        }
+      },
       relatedLinks: [
         { label: 'Education hub', href: '/education/' },
         { label: 'Scholarships', href: '/education/scholarships/' },
@@ -273,8 +324,13 @@
   function resolveBuckets() {
     var registryMap = buildRegistryMap();
     return BUCKETS.map(function (bucket) {
-      var allTools = resolveTools(bucket.toolIds, registryMap);
-      var featuredTools = resolveTools(bucket.featuredIds, registryMap);
+      var overrides = bucket.toolOverrides || {};
+      var allTools = resolveTools(bucket.toolIds, registryMap).map(function (tool) {
+        return overrides[tool.id] ? Object.assign({}, tool, overrides[tool.id]) : tool;
+      });
+      var featuredTools = resolveTools(bucket.featuredIds, registryMap).map(function (tool) {
+        return overrides[tool.id] ? Object.assign({}, tool, overrides[tool.id]) : tool;
+      });
       return {
         key: bucket.key,
         title: bucket.title,
@@ -310,13 +366,16 @@
     var config = SUBHUBS[key];
     if (!config) return null;
     var registryMap = buildRegistryMap();
+    var overrides = config.toolOverrides || {};
     return {
       key: config.key,
       title: config.title,
       eyebrow: config.eyebrow,
       description: config.description,
       relatedLinks: cloneList(config.relatedLinks),
-      tools: resolveTools(config.toolIds, registryMap)
+      tools: resolveTools(config.toolIds, registryMap).map(function (tool) {
+        return overrides[tool.id] ? Object.assign({}, tool, overrides[tool.id]) : tool;
+      })
     };
   }
 

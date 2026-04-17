@@ -27,11 +27,23 @@
   <div class="ap-hero-inner">
     <nav class="ap-breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="./">AfroPoints</a> <span>/</span> <span>Contribute</span></nav>
     <h1>Submit Data &amp; Earn Points</h1>
-    <p class="ap-hero-sub">Choose a category, fill in the details from your city, and earn points instantly.</p>
+    <p class="ap-hero-sub">Choose a category, add what you observed, and increase data quality with proof, timestamps, and precise location details.</p>
   </div>
 </section>
 
 <div class="ap-main" style="max-width:800px;">
+  <div class="ap-card ap-card--highlight" style="margin-bottom:20px;">
+    <div class="ap-card-header">Before You Submit</div>
+    <div class="ap-card-body">
+      <p style="font-size:0.84rem; color:var(--color-text-muted); line-height:1.65; margin:0 0 14px;">Use the contributor playbook to save your coverage, check what good submissions look like, and share AfroPoints with another local reporter.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <a class="ap-cta ap-cta--sm ap-cta--ghost" href="contributor-playbook.html">Set up coverage</a>
+        <a class="ap-cta ap-cta--sm ap-cta--ghost" href="good-submission-examples.html">See examples</a>
+        <a class="ap-cta ap-cta--sm ap-cta--ghost" href="privacy-safety.html">Privacy guide</a>
+        <a class="ap-cta ap-cta--sm" href="https://wa.me/?text=Report%20African%20market%20data%20and%20earn%20cash%20with%20AfroPoints:%20https%3A%2F%2Fafrotools.com%2Ftools%2Fafropoints%2Fcontributor-playbook.html">Share on WhatsApp</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Step indicator -->
   <div class="ap-steps" id="steps">
@@ -80,6 +92,33 @@
           <label class="ap-label" for="apNeighborhood">Neighborhood (optional)</label>
           <input class="ap-input" id="apNeighborhood" type="text" placeholder="e.g. Ikeja, Westlands">
         </div>
+        <div class="ap-form-grid">
+          <div class="ap-field">
+            <label class="ap-label" for="apObservedAt">Observed At (optional)</label>
+            <input class="ap-input" id="apObservedAt" type="datetime-local">
+          </div>
+          <div class="ap-field">
+            <label class="ap-label" for="apSourceType">Source Type</label>
+            <select class="ap-select" id="apSourceType">
+              <option value="self_observed">I saw this myself</option>
+              <option value="receipt">Receipt or invoice</option>
+              <option value="merchant_quote">Merchant or provider quote</option>
+              <option value="official_notice">Official published rate/notice</option>
+              <option value="community_check">Community confirmation</option>
+            </select>
+          </div>
+        </div>
+        <div class="ap-field">
+          <label class="ap-label" for="apProofUrl">Proof URL (optional)</label>
+          <input class="ap-input" id="apProofUrl" type="url" placeholder="Receipt, storefront sign, public rate page, or photo link">
+          <div style="font-size:0.72rem; color:var(--color-text-muted); margin-top:4px;">Proof links unlock a +2 point quality bonus and make the data more useful for market reports and advertiser packages.</div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:10px;">
+          <button type="button" class="ap-cta ap-cta--ghost ap-cta--sm" onclick="captureLocation()">Use My Location</button>
+          <span id="geoStatus" style="font-size:0.75rem; color:var(--color-text-muted);">Optional GPS pin helps cluster pricing by neighborhood and route.</span>
+        </div>
+        <input id="apLatitude" type="hidden">
+        <input id="apLongitude" type="hidden">
       </div>
       <div style="display:flex; gap:10px; margin-top:18px;">
         <button class="ap-cta ap-cta--ghost ap-cta--sm" onclick="goStep(2)">&#8592; Back</button>
@@ -132,6 +171,33 @@
 <script>
 var selectedCategory = null;
 var currentStep = 1;
+var CATEGORY_ALIASES = {
+  product_prices: 'staple_price',
+  product_price: 'staple_price',
+  food_prices: 'staple_price',
+  staple_prices: 'staple_price',
+  forex_rates: 'informal_fx_rate',
+  forex_rate: 'informal_fx_rate',
+  fuel_prices: 'fuel_price',
+  rent_housing: 'rent_listing',
+  rent: 'rent_listing',
+  transport_fares: 'transport_fare',
+  transport: 'transport_fare',
+  salaries: 'salary_report',
+  salary: 'salary_report',
+  business_costs: 'backup_power_cost',
+  business_cost: 'backup_power_cost',
+  fintech_fees: 'fintech_fee',
+  education_costs: 'school_fee',
+  education_cost: 'school_fee',
+  remittance_quotes: 'remittance_quote',
+  remittance_quote: 'remittance_quote',
+  lease_risk_check: 'lease_risk_report',
+  clinic_costs: 'clinic_cost',
+  clinic_cost: 'clinic_cost',
+  pharmacy_prices: 'pharmacy_price',
+  wholesale_retail: 'wholesale_retail_spread'
+};
 
 (function () {
   'use strict';
@@ -149,6 +215,8 @@ var currentStep = 1;
     opt.textContent = AP.COUNTRIES[c];
     countrySelect.appendChild(opt);
   });
+  var now = new Date();
+  $('apObservedAt').value = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
   // Default to user's country if available
   if (window.AfroAuth && AfroAuth.onReady) {
     AfroAuth.onReady(function () {
@@ -169,7 +237,26 @@ var currentStep = 1;
     card.onclick = function () { selectCategory(cat.id); };
     grid.appendChild(card);
   });
+
+  var presetCategory = normalizeCategoryFromUrl();
+  if (presetCategory && AP.getCategoryById(presetCategory)) {
+    selectCategory(presetCategory);
+  }
 })();
+
+function normalizeCategoryFromUrl() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var raw = params.get('cat');
+    if (!raw) return null;
+    if (window.AfroPointsEngine && typeof window.AfroPointsEngine.normalizeCategoryId === 'function') {
+      return window.AfroPointsEngine.normalizeCategoryId(raw) || CATEGORY_ALIASES[raw] || raw;
+    }
+    return CATEGORY_ALIASES[raw] || raw;
+  } catch (err) {
+    return null;
+  }
+}
 
 function selectCategory(catId) {
   var AP = window.AfroPointsEngine;
@@ -211,6 +298,14 @@ function selectCategory(catId) {
 }
 
 function goStep(n) {
+  if (n > currentStep) {
+    if (currentStep === 1 && !selectedCategory) {
+      showToast('Choose a data category first', 'error');
+      return;
+    }
+    if (currentStep === 2 && !validateDynamicFields()) return;
+    if (currentStep === 3 && !validateLocationFields()) return;
+  }
   currentStep = n;
   for (var i = 1; i <= 4; i++) {
     var el = document.getElementById('step' + i);
@@ -234,11 +329,22 @@ function buildReview() {
   var fields = AP.getFieldsForCategory(selectedCategory);
   var country = document.getElementById('apCountry').value;
   var city = document.getElementById('apCity').value;
+  var neighborhood = document.getElementById('apNeighborhood').value;
+  var observedAt = document.getElementById('apObservedAt').value;
+  var sourceType = document.getElementById('apSourceType').value;
+  var proofUrl = document.getElementById('apProofUrl').value;
+  var latitude = document.getElementById('apLatitude').value;
+  var longitude = document.getElementById('apLongitude').value;
 
   var html = '<div style="display:grid; grid-template-columns:140px 1fr; gap:6px 12px;">';
   html += '<span style="color:var(--color-text-muted);font-weight:600;">Category</span><span>' + (cat ? cat.emoji + ' ' + cat.label : selectedCategory) + '</span>';
   html += '<span style="color:var(--color-text-muted);font-weight:600;">Country</span><span>' + AP.getCountryName(country) + '</span>';
   html += '<span style="color:var(--color-text-muted);font-weight:600;">City</span><span>' + city + '</span>';
+  if (neighborhood) html += '<span style="color:var(--color-text-muted);font-weight:600;">Neighborhood</span><span>' + neighborhood + '</span>';
+  if (observedAt) html += '<span style="color:var(--color-text-muted);font-weight:600;">Observed</span><span>' + new Date(observedAt).toLocaleString() + '</span>';
+  if (sourceType) html += '<span style="color:var(--color-text-muted);font-weight:600;">Source</span><span>' + sourceType.replace(/_/g, ' ') + '</span>';
+  if (proofUrl) html += '<span style="color:var(--color-text-muted);font-weight:600;">Proof</span><span>' + proofUrl + '</span>';
+  if (latitude && longitude) html += '<span style="color:var(--color-text-muted);font-weight:600;">GPS Pin</span><span>' + latitude + ', ' + longitude + '</span>';
 
   fields.forEach(function (f) {
     var el = document.getElementById('f_' + f.key);
@@ -249,7 +355,7 @@ function buildReview() {
   html += '</div>';
 
   document.getElementById('reviewSummary').innerHTML = html;
-  document.getElementById('reviewPts').textContent = '+' + AP.getSubmissionPoints(selectedCategory) + ' points';
+  document.getElementById('reviewPts').textContent = '+' + getEstimatedPoints() + ' points';
 }
 
 function getPayload() {
@@ -264,7 +370,78 @@ function getPayload() {
       if (val !== '' && val !== null) payload[f.key] = val;
     }
   });
+  var observedAt = document.getElementById('apObservedAt').value;
+  var sourceType = document.getElementById('apSourceType').value;
+  if (observedAt) payload.observed_at = observedAt;
+  if (sourceType) payload.source_type = sourceType;
   return payload;
+}
+
+function getEstimatedPoints() {
+  var AP = window.AfroPointsEngine;
+  var total = AP.getSubmissionPoints(selectedCategory);
+  if (document.getElementById('apProofUrl').value.trim()) total += 2;
+  return total;
+}
+
+function validateDynamicFields() {
+  var AP = window.AfroPointsEngine;
+  var fields = AP.getFieldsForCategory(selectedCategory);
+  for (var i = 0; i < fields.length; i++) {
+    var field = fields[i];
+    var el = document.getElementById('f_' + field.key);
+    if (!el) continue;
+    if (field.required && !el.value) {
+      showToast(field.label + ' is required', 'error');
+      el.focus();
+      return false;
+    }
+  }
+  return true;
+}
+
+function validateLocationFields() {
+  var country = document.getElementById('apCountry').value;
+  var city = document.getElementById('apCity').value.trim();
+  var proofUrl = document.getElementById('apProofUrl').value.trim();
+
+  if (!country || !city) {
+    showToast('Country and city are required', 'error');
+    return false;
+  }
+
+  if (proofUrl) {
+    try {
+      new URL(proofUrl);
+    } catch (err) {
+      showToast('Proof URL must be a valid link', 'error');
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function captureLocation() {
+  if (!navigator.geolocation) {
+    showToast('Geolocation is not available in this browser', 'error');
+    return;
+  }
+
+  var status = document.getElementById('geoStatus');
+  status.textContent = 'Getting your location...';
+
+  navigator.geolocation.getCurrentPosition(function (position) {
+    document.getElementById('apLatitude').value = position.coords.latitude.toFixed(6);
+    document.getElementById('apLongitude').value = position.coords.longitude.toFixed(6);
+    status.textContent = 'GPS pin saved for this submission.';
+  }, function () {
+    status.textContent = 'We could not access your location. You can still submit without it.';
+  }, {
+    enableHighAccuracy: true,
+    timeout: 12000,
+    maximumAge: 300000
+  });
 }
 
 function showToast(msg, type) {
@@ -288,9 +465,11 @@ async function submitData() {
   var country = document.getElementById('apCountry').value;
   var city = document.getElementById('apCity').value.trim();
   var neighborhood = document.getElementById('apNeighborhood').value.trim();
+  var proofUrl = document.getElementById('apProofUrl').value.trim();
+  var latitude = document.getElementById('apLatitude').value;
+  var longitude = document.getElementById('apLongitude').value;
 
-  if (!country || !city) {
-    showToast('Country and city are required', 'error');
+  if (!validateDynamicFields() || !validateLocationFields()) {
     btn.disabled = false;
     btn.textContent = 'Submit & Earn Points';
     return;
@@ -303,7 +482,11 @@ async function submitData() {
       city: city,
       neighborhood: neighborhood || undefined,
       currency_code: AP.getCurrency(country),
-      payload: getPayload()
+      payload: getPayload(),
+      proof_url: proofUrl || undefined,
+      photo_url: proofUrl || undefined,
+      latitude: latitude || undefined,
+      longitude: longitude || undefined
     });
 
     if (result.error) {
@@ -315,9 +498,14 @@ async function submitData() {
 
     // Show success
     var total = (result.points_awarded || 0) + (result.streak_bonus || 0);
+    if (result.badge_bonus) total += result.badge_bonus;
     document.getElementById('successPts').textContent = '+' + total + ' pts';
     var desc = 'Data submitted! ';
+    if (proofUrl) desc += 'Proof bonus included. ';
     if (result.streak_bonus) desc += 'Streak bonus: +' + result.streak_bonus + ' pts. ';
+    if (result.badges_earned && result.badges_earned.length) {
+      desc += 'Unlocked ' + result.badges_earned.map(function (badge) { return badge.name; }).join(', ') + '. ';
+    }
     desc += 'New balance: ' + AP.formatPoints(result.new_balance || 0) + ' pts.';
     document.getElementById('successDesc').textContent = desc;
     document.getElementById('successOverlay').classList.add('show');
@@ -334,6 +522,13 @@ function resetForm() {
   document.getElementById('successOverlay').classList.remove('show');
   selectedCategory = null;
   document.querySelectorAll('.ap-cat-card').forEach(function (c) { c.classList.remove('active'); });
+  document.getElementById('apNeighborhood').value = '';
+  document.getElementById('apObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  document.getElementById('apSourceType').value = 'self_observed';
+  document.getElementById('apProofUrl').value = '';
+  document.getElementById('apLatitude').value = '';
+  document.getElementById('apLongitude').value = '';
+  document.getElementById('geoStatus').textContent = 'Optional GPS pin helps cluster pricing by neighborhood and route.';
   goStep(1);
 }
 </script>

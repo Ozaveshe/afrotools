@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staple Basket | AfroTools</title>
+<meta name="description" content="Track staple basket prices by neighborhood and market, then contribute verified consumer prices through AfroPoints.">
+<link rel="canonical" href="https://afrotools.com/tools/staple-basket/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Staple Basket</span></div>
+    <div class="md-eyebrow">Staple Prices</div>
+    <h1>Staple Basket</h1>
+    <p>Build neighborhood-level basket intelligence from verified rice, flour, oil, beans, and household essentials submitted by contributors on the ground.</p>
+    <div class="md-chip-row"><span class="md-chip">Neighborhood pricing</span><span class="md-chip">Market versus store</span><span class="md-chip">Buyer-ready benchmark feed</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Staple Basket Feed</div><div class="md-panel-subtitle">Recent community prices and basket snapshots.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Kumasi"></div>
+          <div class="md-field"><label for="mdRefreshHint">Basket View</label><input id="mdRefreshHint" class="md-input" value="Recent verified prices" disabled></div>
+          <div class="md-field"><label for="mdRefresh">Refresh</label><button id="mdRefresh" class="md-btn md-btn-secondary">Reload</button></div>
+        </div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading staple basket data...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Staple Price</div><div class="md-panel-subtitle">Price data gets stronger with item, market, and proof detail.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Lagos"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="e.g. Yaba"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="NGN"></div>
+        <div class="md-form-field"><label for="mdReportMerchant">Market or Store</label><input id="mdReportMerchant" class="md-input" placeholder="e.g. Mile 12 Market"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I bought or checked it myself</option><option value="receipt">Receipt or invoice</option><option value="merchant_quote">Merchant quote</option><option value="community_check">Community check</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Price</button></div>
+      </div>
+    </div>
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">What buyers get</div></div>
+      <div class="md-panel-body">
+        <ul class="md-list">
+          <li>Retailers can benchmark neighborhood inflation against competitor markets.</li>
+          <li>Reporters can build weekly staple basket trackers per city.</li>
+          <li>Brands can see wholesale and retail spread opportunities across markets.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/staple-baskets',
+  responseKey: 'recent_prices',
+  subtype: 'staple_price',
+  vertical: 'staple_basket',
+  reportButtonLabel: 'Submit Price',
+  renderSummary: function (rows, data) {
+    return '<div class="md-stat"><div class="md-stat-value">' + (data.snapshots || []).length + '</div><div class="md-stat-label">Basket snapshots</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Recent verified prices</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + (data.templates || []).length + '</div><div class="md-stat-label">Basket templates</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.product_name || 'Staple item') + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.market_name || 'Local market') + ' - ' + (row.city || '')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.price || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.country_code || '') + '</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

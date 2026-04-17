@@ -125,7 +125,7 @@
         { label: 'KCSE Grade Calculator', href: '/tools/kcse-calculator/', emoji: '🇰🇪', badge: 'NEW' },
         { label: 'Ghana NSS Allowance', href: '/tools/national-service-gh/', emoji: '🇬🇭', badge: 'NEW' },
         { label: 'University Admission Points', href: '/tools/university-admission/', emoji: '🎓', badge: 'NEW' },
-        { label: 'Scholarship Eligibility Checker', href: '/tools/scholarship-check/', emoji: '🏆', badge: 'NEW' },
+        { label: 'Scholarship Finder', href: '/tools/scholarship-finder/', emoji: '🏆', badge: 'LIVE' },
         { label: 'Student Budget Planner', href: '/tools/student-budget/', emoji: '💸', badge: 'NEW' },
         { label: 'Coding Bootcamp Comparator', href: '/tools/coding-bootcamp/', emoji: '💻', badge: 'NEW' },
         { label: 'Exam Countdown Timer', href: '/tools/exam-countdown/', emoji: '⏳', badge: 'LIVE' },

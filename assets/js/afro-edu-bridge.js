@@ -1,1 +1,434 @@
-!function(e){"use strict";var t="afrojamb-history",r="fc_streak",a="afro_tool_history",o="afroedu-jamb-source",c="afroedu-predicted",n="afroedu-profile-cache",u={"post-utme":3,"cbt-mock":2,predictor:1};function s(e,t){try{var r=localStorage.getItem(e);return r?JSON.parse(r):t}catch(e){return t}}function i(e,t){try{localStorage.setItem(e,JSON.stringify(t))}catch(e){}}function d(e){e&&Object.keys(e).length&&"undefined"!=typeof EduProfileSync&&"function"==typeof EduProfileSync.update&&EduProfileSync.update(e)}function l(e){var t=s(a,[]);t.unshift(Object.assign({timestamp:Date.now()},e)),t.length>100&&(t.length=100),i(a,t)}function b(){try{return localStorage.getItem(o)||null}catch(e){return null}}function g(e){try{localStorage.setItem(o,e)}catch(e){}}function m(e){var t=b();return!t||(u[e]||0)>=(u[t]||0)}function f(){var e=s(t,[]);return e.length?e.reduce(function(e,t){return Math.max(e,t.aggregate||0)},0):0}function j(){return(s(t,[])||[]).length}function _(){return Math.round((s(t,[])||[]).reduce(function(e,t){return e+(t.durationSeconds||0)},0)/60)}function y(){return j()>0||!!s(c,null)}function k(){y()&&document&&document.body&&document.body.setAttribute("data-active-jamb","true")}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",k):k(),e.AfroEdu={recordMock:function(e){if(e){var t=e.aggregate||0,r=f(),a={jamb_practice_count:j(),jamb_total_study_minutes:_()};e.subjects&&e.subjects.length&&(a.jamb_target_subjects=e.subjects),t>0&&m("cbt-mock")&&t>=((s(n,{})||{}).jamb_score||0)&&(a.jamb_score=r,a.jamb_best_mock_score=r,g("cbt-mock"));var o,c,u=s(n,{});Object.assign(u,a),i(n,u),d(a),"quick"===e.mode?(o="Quick Mock",c="quick mock"):"subject"===e.mode?(o="Single Subject",c="single-subject mock"):(o="Full Mock",c="full mock");var b=t+"/400 · "+o;e.ungraded&&(b+=" · "+e.ungraded+" ungraded"),l({tool:"jamb-cbt",label:"Took JAMB "+c,detail:b,score:t})}},recordPredicted:function(e){if(e){i(c,{aggregate:e.aggregate,subjectScores:e.subjectScores,subjects:e.subjects,ts:Date.now()});var t={jamb_predicted_score:e.aggregate};m("predictor")&&(t.jamb_score=e.aggregate,g("predictor")),e.subjects&&(t.jamb_target_subjects=e.subjects);var r=s(n,{});Object.assign(r,t),i(n,r),d(t),l({tool:"jamb-score-predictor",label:"Ran JAMB score predictor",detail:"Projected "+e.aggregate+"/400",score:e.aggregate})}},recordRealJambScore:function(e){if(e){g("post-utme");var t={jamb_score:e},r=s(n,{});r.jamb_score=e,i(n,r),d(t),l({tool:"jamb-aggregate",label:"Saved JAMB aggregate score",detail:e+" (Post-UTME)",score:e})}},recordActivity:function(e,t,r){var a={tool:e,label:t};r&&"object"==typeof r&&Object.assign(a,r),l(a)},mirrorStreak:function(e){if(!(null==e||isNaN(e)||e<0)){var t=Math.floor(e);try{var a=s(r,{})||{};a.count=t,a.best=Math.max(a.best||0,t),a.updated_at=Date.now(),i(r,a)}catch(e){}d({jamb_streak_days:t});var o=s(n,{});o.jamb_streak_days=t,i(n,o)}},prefillFromProfile:function(e){var t=s(n,{}),r={jamb_score:Math.max(t.jamb_score||0,f()),jamb_best_mock_score:f(),jamb_practice_count:j(),jamb_total_study_minutes:_()},a=Object.assign({},r,t);if("undefined"!=typeof EduProfileSync&&"function"==typeof EduProfileSync.getProfile)try{var o=EduProfileSync.getProfile();if(o&&"function"==typeof o.then)return void o.then(function(t){t&&(a=Object.assign({},a,t)),a.jamb_best_mock_score=Math.max(a.jamb_best_mock_score||0,f()),e&&e(a)}).catch(function(){e&&e(a)})}catch(e){}e&&e(a)},bestMockAggregate:f,hasJambHistory:y,summary:function(){var e,r=s(n,{}),a=(e=s(t,[])).length?e[0]:null;return{hasHistory:y(),bestMockAggregate:f(),mockCount:j(),totalMinutes:_(),lastMockAt:a?a.ts:null,lastMockAggregate:a?a.aggregate:null,lastMockSubjects:a?a.subjects:null,jambScore:r.jamb_score||f()||null,jambScoreSource:b(),jambPredictedScore:r.jamb_predicted_score||null,streakDays:r.jamb_streak_days||0}},_safeRead:s,_safeWrite:i,_getCurrentScoreSource:b}}("undefined"!=typeof window?window:globalThis);
+(function (root) {
+  'use strict';
+
+  var JAMB_HISTORY_KEY = 'afrojamb-history';
+  var FLASHCARD_STREAK_KEY = 'fc_streak';
+  var ACTIVITY_KEY = 'afro_tool_history';
+  var SCORE_SOURCE_KEY = 'afroedu-jamb-source';
+  var PREDICTED_KEY = 'afroedu-predicted';
+  var PROFILE_CACHE_KEY = 'afroedu-profile-cache';
+  var COCKPIT_KEY = 'afroedu-cockpit-state';
+
+  var SOURCE_PRIORITY = {
+    'post-utme': 3,
+    'cbt-mock': 2,
+    predictor: 1
+  };
+
+  function safeRead(key, fallback) {
+    try {
+      var raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function safeWrite(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      /* ignore localStorage failures */
+    }
+  }
+
+  function pushProfileUpdate(payload) {
+    if (!payload || !Object.keys(payload).length) return;
+    if (typeof EduProfileSync !== 'undefined' && typeof EduProfileSync.update === 'function') {
+      EduProfileSync.update(payload);
+    }
+  }
+
+  function recordActivity(tool, label, meta) {
+    var history = safeRead(ACTIVITY_KEY, []);
+    var entry = Object.assign({
+      tool: tool,
+      label: label,
+      timestamp: Date.now()
+    }, meta || {});
+
+    history.unshift(entry);
+    if (history.length > 100) history.length = 100;
+    safeWrite(ACTIVITY_KEY, history);
+  }
+
+  function getCurrentScoreSource() {
+    try {
+      return localStorage.getItem(SCORE_SOURCE_KEY) || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function setCurrentScoreSource(source) {
+    try {
+      localStorage.setItem(SCORE_SOURCE_KEY, source);
+    } catch (error) {
+      /* ignore */
+    }
+  }
+
+  function canPromoteSource(candidate) {
+    var current = getCurrentScoreSource();
+    return !current || (SOURCE_PRIORITY[candidate] || 0) >= (SOURCE_PRIORITY[current] || 0);
+  }
+
+  function getBestMockAggregate() {
+    var history = safeRead(JAMB_HISTORY_KEY, []);
+    if (!history.length) return 0;
+
+    return history.reduce(function (best, item) {
+      return Math.max(best, item.aggregate || 0);
+    }, 0);
+  }
+
+  function getMockCount() {
+    return (safeRead(JAMB_HISTORY_KEY, []) || []).length;
+  }
+
+  function getTotalStudyMinutes() {
+    return Math.round((safeRead(JAMB_HISTORY_KEY, []) || []).reduce(function (minutes, item) {
+      return minutes + (item.durationSeconds || 0);
+    }, 0) / 60);
+  }
+
+  function hasJambHistory() {
+    return getMockCount() > 0 || !!safeRead(PREDICTED_KEY, null);
+  }
+
+  function markJambState() {
+    if (!document || !document.body) return;
+    if (hasJambHistory()) document.body.setAttribute('data-active-jamb', 'true');
+  }
+
+  function ensureCockpitState(raw) {
+    var state = raw && typeof raw === 'object' ? raw : {};
+    return {
+      universities: Array.isArray(state.universities) ? state.universities : [],
+      destinations: Array.isArray(state.destinations) ? state.destinations : [],
+      deadlines: Array.isArray(state.deadlines) ? state.deadlines : [],
+      budgetSignals: Array.isArray(state.budgetSignals) ? state.budgetSignals : []
+    };
+  }
+
+  function getCockpitState() {
+    return ensureCockpitState(safeRead(COCKPIT_KEY, null));
+  }
+
+  function saveCockpitState(state) {
+    safeWrite(COCKPIT_KEY, ensureCockpitState(state));
+  }
+
+  function slugify(value, fallback) {
+    var base = String(value || fallback || 'item')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return base || fallback || 'item';
+  }
+
+  function upsertCockpitItem(collection, item, builder) {
+    if (!item || !collection) return null;
+
+    var state = getCockpitState();
+    var list = state[collection] || [];
+    var built = builder(item);
+    if (!built || !built.id) return null;
+
+    var index = list.findIndex(function (entry) {
+      return entry.id === built.id;
+    });
+
+    if (index >= 0) {
+      list[index] = Object.assign({}, list[index], built, { updatedAt: Date.now() });
+    } else {
+      list.unshift(Object.assign({ savedAt: Date.now(), updatedAt: Date.now() }, built));
+    }
+
+    if (list.length > 12) list.length = 12;
+    state[collection] = list;
+    saveCockpitState(state);
+    return built;
+  }
+
+  function removeCockpitItem(collection, id) {
+    if (!collection || !id) return;
+    var state = getCockpitState();
+    state[collection] = (state[collection] || []).filter(function (entry) {
+      return entry.id !== id;
+    });
+    saveCockpitState(state);
+  }
+
+  function buildUniversity(item) {
+    return {
+      id: item.id || slugify((item.name || '') + '-' + (item.country || ''), 'university'),
+      name: item.name || 'Saved university',
+      country: item.country || '',
+      rank: item.rank || null,
+      fees: item.fees || null,
+      feesLabel: item.feesLabel || '',
+      type: item.type || '',
+      students: item.students || null,
+      scholarship: item.scholarship === true,
+      strengths: Array.isArray(item.strengths) ? item.strengths.slice(0, 5) : [],
+      fitLabel: item.fitLabel || '',
+      fitScore: item.fitScore || null,
+      fitReasons: Array.isArray(item.fitReasons) ? item.fitReasons.slice(0, 3) : [],
+      tradeoffs: Array.isArray(item.tradeoffs) ? item.tradeoffs.slice(0, 2) : [],
+      href: item.href || '/tools/university-ranking/',
+      note: item.note || '',
+      source: item.source || 'education-hub'
+    };
+  }
+
+  function buildDestination(item) {
+    return {
+      id: item.id || slugify(item.name || item.destination || 'destination', 'destination'),
+      name: item.name || item.destination || 'Saved destination',
+      reason: item.reason || '',
+      source: item.source || 'education-hub',
+      studyLevel: item.studyLevel || '',
+      field: item.field || '',
+      href: item.href || '/tools/study-abroad-cost/'
+    };
+  }
+
+  function buildBudgetSignal(item) {
+    var destinationId = slugify(item.destination || item.name || 'budget-signal', 'budget-signal');
+    var levelId = slugify(item.level || 'level', 'level');
+    return {
+      id: item.id || destinationId + '-' + levelId,
+      destination: item.destination || 'Destination',
+      level: item.level || '',
+      field: item.field || '',
+      years: item.years || null,
+      annualTotal: item.annualTotal || null,
+      totalCost: item.totalCost || null,
+      firstYearTotal: item.firstYearTotal || null,
+      upfrontCost: item.upfrontCost || null,
+      scholarshipOffset: item.scholarshipOffset || null,
+      scholarshipMode: item.scholarshipMode || '',
+      comparisonLabel: item.comparisonLabel || '',
+      currency: item.currency || '',
+      href: item.href || '/tools/study-abroad-cost/',
+      note: item.note || '',
+      source: item.source || 'study-abroad-cost'
+    };
+  }
+
+  function buildDeadline(item) {
+    return {
+      id: item.id || slugify((item.title || '') + '-' + (item.date || ''), 'deadline'),
+      title: item.title || 'Deadline',
+      date: item.date || '',
+      route: item.route || '',
+      href: item.href || '',
+      note: item.note || '',
+      source: item.source || 'education-hub'
+    };
+  }
+
+  function recordMock(result) {
+    if (!result) return;
+
+    var aggregate = result.aggregate || 0;
+    var bestMock = getBestMockAggregate();
+    var payload = {
+      jamb_practice_count: getMockCount(),
+      jamb_total_study_minutes: getTotalStudyMinutes()
+    };
+
+    if (result.subjects && result.subjects.length) {
+      payload.jamb_target_subjects = result.subjects;
+    }
+
+    if (aggregate > 0 && canPromoteSource('cbt-mock') && aggregate >= ((safeRead(PROFILE_CACHE_KEY, {}) || {}).jamb_score || 0)) {
+      payload.jamb_score = bestMock;
+      payload.jamb_best_mock_score = bestMock;
+      setCurrentScoreSource('cbt-mock');
+    }
+
+    var profile = safeRead(PROFILE_CACHE_KEY, {});
+    Object.assign(profile, payload);
+    safeWrite(PROFILE_CACHE_KEY, profile);
+    pushProfileUpdate(payload);
+
+    var modeLabel = 'Full Mock';
+    var modeKey = 'full mock';
+    if (result.mode === 'quick') {
+      modeLabel = 'Quick Mock';
+      modeKey = 'quick mock';
+    } else if (result.mode === 'subject') {
+      modeLabel = 'Single Subject';
+      modeKey = 'single-subject mock';
+    }
+
+    var detail = aggregate + '/400 · ' + modeLabel;
+    if (result.ungraded) detail += ' · ' + result.ungraded + ' ungraded';
+
+    recordActivity('jamb-cbt', 'Took JAMB ' + modeKey, {
+      detail: detail,
+      score: aggregate
+    });
+  }
+
+  function recordPredicted(result) {
+    if (!result) return;
+
+    safeWrite(PREDICTED_KEY, {
+      aggregate: result.aggregate,
+      subjectScores: result.subjectScores,
+      subjects: result.subjects,
+      ts: Date.now()
+    });
+
+    var payload = { jamb_predicted_score: result.aggregate };
+    if (canPromoteSource('predictor')) {
+      payload.jamb_score = result.aggregate;
+      setCurrentScoreSource('predictor');
+    }
+    if (result.subjects) payload.jamb_target_subjects = result.subjects;
+
+    var profile = safeRead(PROFILE_CACHE_KEY, {});
+    Object.assign(profile, payload);
+    safeWrite(PROFILE_CACHE_KEY, profile);
+    pushProfileUpdate(payload);
+
+    recordActivity('jamb-score-predictor', 'Ran JAMB score predictor', {
+      detail: 'Projected ' + result.aggregate + '/400',
+      score: result.aggregate
+    });
+  }
+
+  function recordRealJambScore(score) {
+    if (!score) return;
+
+    setCurrentScoreSource('post-utme');
+    var payload = { jamb_score: score };
+    var profile = safeRead(PROFILE_CACHE_KEY, {});
+    profile.jamb_score = score;
+    safeWrite(PROFILE_CACHE_KEY, profile);
+    pushProfileUpdate(payload);
+
+    recordActivity('jamb-aggregate', 'Saved JAMB aggregate score', {
+      detail: score + ' (Post-UTME)',
+      score: score
+    });
+  }
+
+  function mirrorStreak(value) {
+    if (value === null || value === undefined || isNaN(value) || value < 0) return;
+
+    var streak = Math.floor(value);
+    var stats = safeRead(FLASHCARD_STREAK_KEY, {}) || {};
+    stats.count = streak;
+    stats.best = Math.max(stats.best || 0, streak);
+    stats.updated_at = Date.now();
+    safeWrite(FLASHCARD_STREAK_KEY, stats);
+
+    pushProfileUpdate({ jamb_streak_days: streak });
+
+    var profile = safeRead(PROFILE_CACHE_KEY, {});
+    profile.jamb_streak_days = streak;
+    safeWrite(PROFILE_CACHE_KEY, profile);
+  }
+
+  function prefillFromProfile(callback) {
+    var cache = safeRead(PROFILE_CACHE_KEY, {});
+    var summary = {
+      jamb_score: Math.max(cache.jamb_score || 0, getBestMockAggregate()),
+      jamb_best_mock_score: getBestMockAggregate(),
+      jamb_practice_count: getMockCount(),
+      jamb_total_study_minutes: getTotalStudyMinutes()
+    };
+
+    var merged = Object.assign({}, summary, cache);
+    if (typeof EduProfileSync !== 'undefined' && typeof EduProfileSync.getProfile === 'function') {
+      try {
+        var request = EduProfileSync.getProfile();
+        if (request && typeof request.then === 'function') {
+          request.then(function (profile) {
+            if (profile) merged = Object.assign({}, merged, profile);
+            merged.jamb_best_mock_score = Math.max(merged.jamb_best_mock_score || 0, getBestMockAggregate());
+            if (callback) callback(merged);
+          }).catch(function () {
+            if (callback) callback(merged);
+          });
+          return;
+        }
+      } catch (error) {
+        /* fall through to callback */
+      }
+    }
+
+    if (callback) callback(merged);
+  }
+
+  function summary() {
+    var history = safeRead(JAMB_HISTORY_KEY, []);
+    var latest = history.length ? history[0] : null;
+    var profile = safeRead(PROFILE_CACHE_KEY, {});
+
+    return {
+      hasHistory: hasJambHistory(),
+      bestMockAggregate: getBestMockAggregate(),
+      mockCount: getMockCount(),
+      totalMinutes: getTotalStudyMinutes(),
+      lastMockAt: latest ? latest.ts : null,
+      lastMockAggregate: latest ? latest.aggregate : null,
+      lastMockSubjects: latest ? latest.subjects : null,
+      jambScore: profile.jamb_score || getBestMockAggregate() || null,
+      jambScoreSource: getCurrentScoreSource(),
+      jambPredictedScore: profile.jamb_predicted_score || null,
+      streakDays: profile.jamb_streak_days || 0
+    };
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', markJambState);
+  } else {
+    markJambState();
+  }
+
+  root.AfroEdu = {
+    recordMock: recordMock,
+    recordPredicted: recordPredicted,
+    recordRealJambScore: recordRealJambScore,
+    recordActivity: recordActivity,
+    mirrorStreak: mirrorStreak,
+    prefillFromProfile: prefillFromProfile,
+    bestMockAggregate: getBestMockAggregate,
+    hasJambHistory: hasJambHistory,
+    summary: summary,
+    getCockpitState: getCockpitState,
+    saveCockpitState: saveCockpitState,
+    saveUniversity: function (item) {
+      return upsertCockpitItem('universities', item, buildUniversity);
+    },
+    removeUniversity: function (id) {
+      removeCockpitItem('universities', id);
+    },
+    saveDestination: function (item) {
+      return upsertCockpitItem('destinations', item, buildDestination);
+    },
+    removeDestination: function (id) {
+      removeCockpitItem('destinations', id);
+    },
+    saveBudgetSignal: function (item) {
+      return upsertCockpitItem('budgetSignals', item, buildBudgetSignal);
+    },
+    removeBudgetSignal: function (id) {
+      removeCockpitItem('budgetSignals', id);
+    },
+    saveDeadline: function (item) {
+      return upsertCockpitItem('deadlines', item, buildDeadline);
+    },
+    removeDeadline: function (id) {
+      removeCockpitItem('deadlines', id);
+    },
+    _safeRead: safeRead,
+    _safeWrite: safeWrite,
+    _getCurrentScoreSource: getCurrentScoreSource
+  };
+})('undefined' !== typeof window ? window : globalThis);

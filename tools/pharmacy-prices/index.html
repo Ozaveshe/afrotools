@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacy Prices | AfroTools</title>
+<meta name="description" content="Track verified pharmacy prices for common medicines across African cities and contribute your own observed retail prices through AfroPoints.">
+<link rel="canonical" href="https://afrotools.com/tools/pharmacy-prices/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Pharmacy Prices</span></div>
+    <div class="md-eyebrow">Health Costs</div>
+    <h1>Pharmacy Prices</h1>
+    <p>Track verified medicine prices by city, dosage, and pack size, then contribute price checks from pharmacies and health centres you trust.</p>
+    <div class="md-chip-row"><span class="md-chip">Medicine and dosage</span><span class="md-chip">Brand or generic</span><span class="md-chip">Retail observations</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified Pharmacy Feed</div><div class="md-panel-subtitle">Useful for patients, media, NGOs, and pharmacy ops teams.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Nairobi"></div>
+          <div class="md-field"><label for="mdMedicine">Medicine</label><input id="mdMedicine" class="md-input" data-md-filter="medicine_name" placeholder="e.g. Paracetamol"></div>
+          <div class="md-field"><label for="mdRefresh">Refresh</label><button id="mdRefresh" class="md-btn md-btn-secondary">Reload</button></div>
+        </div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading pharmacy prices...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Report A Pharmacy Price</div><div class="md-panel-subtitle">Generic and brand prices are both useful.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Kumasi"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="GHS"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I checked this price myself</option><option value="receipt">Receipt or package proof</option><option value="merchant_quote">Pharmacy quote</option><option value="community_check">Community confirmation</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional public or redacted proof"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Pharmacy Price</button></div>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/pharmacy-prices',
+  responseKey: 'reports',
+  subtype: 'pharmacy_price',
+  vertical: 'health_costs',
+  reportButtonLabel: 'Submit Pharmacy Price',
+  renderSummary: function (rows) {
+    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Verified pharmacy records</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return row.brand_name; }).length + '</div><div class="md-stat-label">Named brands</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">City</div><div class="md-stat-label">Neighborhood checks matter for health pricing</div></div>';
+  },
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.medicine_name || 'Medicine') + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.city || '') + ' | ' + (row.pharmacy_name || 'Pharmacy') + ' | ' + (row.dosage || 'Dosage n/a')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.price_amount || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.pack_size || 'Pack size n/a') + '</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>

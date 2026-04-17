@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Scholarship Finder | AfroTools</title>
-<meta name="description" content="Find scholarships for African students — undergraduate, postgraduate, and PhD. Filter by country, field of study, level, and funding type. 120+ scholarships with match scoring.">
+<title>African Scholarship Finder & Eligibility Check | AfroTools</title>
+<meta name="description" content="Run a quick scholarship eligibility check or explore 120+ scholarships with profile-aware match scoring, fit explanations, and shortlist tools for African students.">
 <link rel="canonical" href="https://afrotools.com/tools/scholarship-finder/">
+<meta name="tool-id" content="scholarship-finder">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="African Scholarship Finder | AfroTools"><meta property="og:description" content="Find scholarships for African students. 120+ opportunities with personalized match scores.">
+<meta property="og:title" content="African Scholarship Finder & Eligibility Check | AfroTools"><meta property="og:description" content="Start with a quick scholarship check, then refine your profile for deeper match scoring, fit explanations, and shortlist actions.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/scholarship-finder/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
@@ -62,6 +63,16 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .match-possible{background:#fef9c3;color:#a16207}.match-unlikely{background:#fee2e2;color:#dc2626}
 .match-details{font-size:.68rem;color:#64748b;margin-top:6px;line-height:1.5}
 .match-details .met{color:#16a34a}.match-details .unmet{color:#dc2626}
+.entry-card{margin-bottom:18px}
+.entry-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:16px}
+.entry-panel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px}
+.entry-panel h2{font-size:1rem;font-weight:800;color:var(--afro-dark);margin:0 0 8px}
+.entry-panel p{font-size:.8rem;color:#475569;line-height:1.65;margin:0}
+.entry-list{margin:12px 0 0;padding-left:18px;color:#475569;font-size:.78rem;line-height:1.7}
+.entry-list li+li{margin-top:6px}
+.quick-check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.quick-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.entry-mode-note{font-size:.74rem;color:#64748b;line-height:1.6;margin-top:12px}
 /* Quick profile card */
 .profile-card{margin-bottom:18px}
 .profile-card .card-body{padding:18px 22px}
@@ -71,6 +82,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .profile-status{font-size:.72rem;color:#16a34a;font-weight:600}
 .profile-cta{font-size:.76rem;color:var(--accent);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
 .profile-cta:hover{text-decoration:underline}
+.results-summary{margin:18px 0}
+.summary-text{font-size:.78rem;color:#475569;line-height:1.6}
+.summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+.summary-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px}
+.summary-item strong{display:block;font-size:1.2rem;font-weight:800;color:#0f172a}
+.summary-item span{display:block;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-top:6px}
+.summary-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.shortlist-note{font-size:.72rem;color:#16a34a;font-weight:700;margin-left:auto}
+.fit-explainer{margin-top:10px;font-size:.72rem;color:#475569;line-height:1.6}
+.fit-explainer strong{color:#0f172a}
+.fit-line{display:block;margin-top:4px}
+.fit-line.good{color:#15803d}
+.fit-line.warn{color:#a16207}
+.fit-line.miss{color:#dc2626}
+.card-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.action-link{text-decoration:none;justify-content:center}
+.shortlist-btn.is-saved{background:#dcfce7;border-color:#16a34a;color:#166534}
 /* Loading skeleton */
 .skeleton{animation:pulse 1.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
@@ -84,8 +112,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .workflow-cta h3{font-size:.88rem;font-weight:700;color:#002D6B;margin:0}
 .workflow-cta p{font-size:.76rem;color:#0063D1;margin:4px 0 0;line-height:1.5}
 .workflow-cta .links{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
-@media(max-width:768px){.filter-row{grid-template-columns:1fr 1fr}.scholarship-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr 1fr}.workflow-cta{flex-direction:column;align-items:flex-start}.workflow-cta .links{margin-left:0}}
-@media(max-width:480px){.filter-row{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.entry-grid{grid-template-columns:1fr}.quick-check-grid{grid-template-columns:1fr}.filter-row{grid-template-columns:1fr 1fr}.summary-grid{grid-template-columns:1fr 1fr}.scholarship-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr 1fr}.workflow-cta{flex-direction:column;align-items:flex-start}.workflow-cta .links{margin-left:0}}
+@media(max-width:480px){.filter-row{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}.summary-grid{grid-template-columns:1fr}}
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-auth.js?v=6" defer></script>
 <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
@@ -98,8 +126,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="African Scholarship Finder | AfroTools">
-<meta name="twitter:description" content="Find scholarships for African students. 120+ opportunities with personalized match scores.">
+<meta name="twitter:title" content="African Scholarship Finder & Eligibility Check | AfroTools">
+<meta name="twitter:description" content="Quick scholarship check plus 120+ scholarships with profile-aware match scoring, fit explanations, and shortlist tools.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp">
 <script type="application/ld+json">
 {
@@ -127,7 +155,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-16">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 </head>
@@ -136,20 +164,98 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Scholarship Finder</span></div>
 <h1>African <em>Scholarship</em> Finder</h1>
-<p class="hero-sub">Discover 120+ scholarships for African students with personalized match scoring based on your GPA, IELTS, and study goals.</p>
-<div class="hero-badges"><span class="badge b-em" id="totalBadge">120+ Scholarships</span><span class="badge b-em">Match Scoring</span><span class="badge b-em">All Levels</span><span class="badge b-em">Global Destinations</span></div>
+<p class="hero-sub">Start with a quick eligibility check, then refine your GPA, IELTS, field, level, and destination to see profile-aware scholarship matches for African students.</p>
+<div class="hero-badges"><span class="badge b-em" id="totalBadge">120+ Scholarships</span><span class="badge b-em">Quick Check</span><span class="badge b-em">Fit Explanations</span><span class="badge b-em">Shortlists</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
 
+<div class="card entry-card">
+<div class="card-head">
+  <span class="card-title">One Scholarship Product, Two Ways To Start</span>
+  <span class="stat" id="entryModePill">Start here</span>
+</div>
+<div class="card-body">
+  <div class="entry-grid">
+    <div class="entry-panel">
+      <h2>Quick Eligibility Check</h2>
+      <p>Answer four practical questions and get a fast first-pass view of strong, medium, and weaker-fit scholarships without leaving the main Scholarship Finder.</p>
+      <div class="quick-check-grid">
+        <div class="field"><label>Current Grade Band</label>
+          <select id="quickBand">
+            <option value="">Select grade band</option>
+            <option value="elite">First Class / 75%+ / 4.5-5.0 GPA</option>
+            <option value="strong">Upper Second / 65-74% / 3.5-4.4 GPA</option>
+            <option value="developing">Lower Second / 55-64% / 2.5-3.4 GPA</option>
+            <option value="emerging">Below 55% / below 2.5 GPA</option>
+          </select>
+        </div>
+        <div class="field"><label>Target Level</label>
+          <select id="quickLevel">
+            <option value="">Any level</option>
+            <option value="undergrad">Undergraduate</option>
+            <option value="masters">Master's</option>
+            <option value="phd">PhD / Doctoral</option>
+            <option value="postdoc">Postdoctoral</option>
+          </select>
+        </div>
+        <div class="field"><label>Field</label>
+          <select id="quickField">
+            <option value="">Any field</option>
+            <option value="stem">STEM / Engineering</option>
+            <option value="business">Business / Economics</option>
+            <option value="health">Health / Medicine</option>
+            <option value="law">Law / Governance</option>
+            <option value="arts">Arts / Humanities</option>
+            <option value="agric">Agriculture / Environment</option>
+          </select>
+        </div>
+        <div class="field"><label>Destination</label>
+          <select id="quickDest">
+            <option value="">Any destination</option>
+            <option value="uk">United Kingdom</option>
+            <option value="us">United States</option>
+            <option value="eu">Europe</option>
+            <option value="canada">Canada</option>
+            <option value="australia">Australia</option>
+            <option value="africa">Within Africa</option>
+            <option value="global">Global / Multiple</option>
+          </select>
+        </div>
+      </div>
+      <div class="quick-actions">
+        <button class="btn btn-primary btn-sm" onclick="runQuickCheck()">Run Quick Check</button>
+        <button class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Use Full Match Explorer</button>
+      </div>
+      <div class="entry-mode-note" id="quickStatus">Fast mode writes into the same Scholarship Finder profile, so you can keep refining instead of starting over.</div>
+    </div>
+    <div class="entry-panel">
+      <h2>Full Match Explorer</h2>
+      <p>Use your GPA, IELTS, field, study level, and destination to unlock profile-aware scoring, clearer fit explanations, and stronger next-step actions.</p>
+      <ul class="entry-list">
+        <li>See why a scholarship is a strong, good, possible, or weak fit.</li>
+        <li>Save scholarships into a shortlist you can revisit on this device.</li>
+        <li>Pair funding routes with the schools you save in University Rankings.</li>
+        <li>Open official details, then continue building your profile in Education Hub.</li>
+      </ul>
+      <div class="quick-actions">
+        <button class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Build Full Profile</button>
+        <a href="/tools/education-hub/" class="btn btn-outline btn-sm action-link">Open Education Hub</a>
+        <a href="/tools/university-ranking/" class="btn btn-outline btn-sm action-link">University Shortlist</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- Quick Profile Card -->
 <div class="card profile-card" id="profileCard">
 <div class="card-head">
-  <span class="card-title">Your Academic Profile</span>
+  <span class="card-title">Full Match Explorer</span>
   <span class="profile-status" id="profileStatus"></span>
 </div>
 <div class="card-body">
-  <p style="font-size:.78rem;color:#64748b;margin-bottom:12px" id="profileDesc">Enter your details to see personalized scholarship match scores.</p>
+  <p style="font-size:.78rem;color:#64748b;margin-bottom:12px" id="profileDesc">Use the full explorer when you want deeper scholarship scoring, stronger fit explanations, and a more useful shortlist.</p>
   <div class="profile-grid">
     <div class="field"><label>GPA / Score</label><input type="number" id="profileGPA" step="0.01" min="0" max="100" placeholder="e.g. 3.50"></div>
     <div class="field"><label>GPA Scale</label>
@@ -260,6 +366,28 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   </select>
 </div>
 
+<div class="card results-summary" id="resultsSummary">
+<div class="card-head">
+  <span class="card-title">Scholarship Flow Summary</span>
+  <span class="stat" id="summaryMode">Start here</span>
+</div>
+<div class="card-body">
+  <p class="summary-text" id="summaryText">Start with a quick scholarship check or build your full profile to see stronger fit explanations and save scholarships into a shortlist.</p>
+  <div class="summary-grid">
+    <div class="summary-item"><strong id="summaryStrong">0</strong><span>Strong</span></div>
+    <div class="summary-item"><strong id="summaryGood">0</strong><span>Good</span></div>
+    <div class="summary-item"><strong id="summaryPossible">0</strong><span>Possible</span></div>
+    <div class="summary-item"><strong id="summaryShortlist">0</strong><span>Shortlist</span></div>
+  </div>
+  <div class="summary-actions">
+    <button class="btn btn-primary btn-sm" onclick="jumpToFullProfile()">Continue Building Profile</button>
+    <button class="btn btn-outline btn-sm" id="shortlistToggle" onclick="toggleShortlistView()">View Shortlist</button>
+    <a href="/tools/education-hub/" class="btn btn-outline btn-sm action-link">Back to Education Hub</a>
+    <span class="shortlist-note" id="shortlistNote">No saved scholarships yet</span>
+  </div>
+</div>
+</div>
+
 <div class="scholarship-grid" id="scholarshipGrid">
   <!-- Loading skeletons -->
   <div class="skel-card skeleton"></div>
@@ -273,14 +401,15 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <!-- Workflow CTA -->
 <div class="workflow-cta" id="workflowCta">
   <div>
-    <h3>Complete Your Education Journey</h3>
-    <p>Use our education tools to build your profile and get better scholarship matches.</p>
+    <h3>Keep Your Scholarship Flow Moving</h3>
+    <p>Use Education Hub to save your academic profile, then come back here for quick checks, deeper fit scoring, and shortlist updates.</p>
   </div>
   <div class="links">
-    <a href="/tools/gpa-calculator/" class="btn btn-primary btn-sm">Calculate GPA</a>
+    <a href="/tools/education-hub/" class="btn btn-primary btn-sm">Open Education Hub</a>
+    <a href="/tools/gpa-calculator/" class="btn btn-outline btn-sm">Calculate GPA</a>
     <a href="/tools/ielts-calculator/" class="btn btn-outline btn-sm">IELTS Score</a>
+    <a href="/tools/study-abroad-cost/" class="btn btn-outline btn-sm">Compare costs</a>
     <a href="/tools/jamb-aggregate/" class="btn btn-outline btn-sm">JAMB Aggregate</a>
-    <a href="/tools/education-hub/" class="btn btn-outline btn-sm">Education Hub</a>
   </div>
 </div>
 
@@ -289,14 +418,14 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="seo-section">
 <h2>Scholarships for African Students</h2>
 <p>Thousands of scholarships are available specifically for African students, covering everything from undergraduate studies to postdoctoral research. These range from fully-funded government programmes (Chevening, Fulbright, DAAD) to university-specific awards and private foundation grants. With rising tuition costs globally and limited funding for higher education within Africa, scholarships represent a critical pathway for talented African students to access world-class education.</p>
-<p>Fully-funded scholarships — which typically cover tuition, living expenses, flights, and health insurance — are the most sought-after. Top programmes include the Chevening Scholarship (UK, ~1,500 awards/year globally), Mastercard Foundation Scholars Program (covering study at leading universities worldwide), Rhodes Scholarship (Oxford), Gates Cambridge, and DAAD (Germany). Many of these specifically target or have dedicated streams for African applicants, recognizing the importance of developing African talent.</p>
+<p>Fully-funded scholarships â€” which typically cover tuition, living expenses, flights, and health insurance â€” are the most sought-after. Top programmes include the Chevening Scholarship (UK, ~1,500 awards/year globally), Mastercard Foundation Scholars Program (covering study at leading universities worldwide), Rhodes Scholarship (Oxford), Gates Cambridge, and DAAD (Germany). Many of these specifically target or have dedicated streams for African applicants, recognizing the importance of developing African talent.</p>
 <p>Within Africa, the African Union's Mwalimu Nyerere Scholarship provides funding for postgraduate study at African institutions, while the African Development Bank and various national programmes (PTDF Nigeria, Jubilee Scholarship Ghana, CDF Kenya) offer funding for both domestic and international study. University-specific scholarships at institutions like University of Cape Town, Wits, Makerere, and the University of Ghana also provide significant funding for African students.</p>
-<p>Success in scholarship applications requires preparation, authentic storytelling, and strategic timing. Start early — most major scholarships have deadlines 9-12 months before the start date. Focus on demonstrating leadership, community impact, and a clear plan for how you'll use your education to contribute to Africa's development. Get strong recommendation letters, write compelling personal statements, and apply to multiple scholarships to increase your chances.</p>
+<p>Success in scholarship applications requires preparation, authentic storytelling, and strategic timing. Start early â€” most major scholarships have deadlines 9-12 months before the start date. Focus on demonstrating leadership, community impact, and a clear plan for how you'll use your education to contribute to Africa's development. Get strong recommendation letters, write compelling personal statements, and apply to multiple scholarships to increase your chances.</p>
 
 <h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>What is the easiest fully-funded scholarship to get?</summary><p>No scholarship is "easy," but some have higher acceptance rates: DAAD (Germany) accepts ~25% of applicants, compared to Chevening (~3%) and Rhodes (~1%). Country-specific scholarships (Hungarian Government, Turkish Government, Chinese Government scholarships) tend to have higher acceptance rates and less competition. Focus on fit rather than prestige — apply where your profile matches the scholarship's values.</p></details>
+<details class="faq-item"><summary>What is the easiest fully-funded scholarship to get?</summary><p>No scholarship is "easy," but some have higher acceptance rates: DAAD (Germany) accepts ~25% of applicants, compared to Chevening (~3%) and Rhodes (~1%). Country-specific scholarships (Hungarian Government, Turkish Government, Chinese Government scholarships) tend to have higher acceptance rates and less competition. Focus on fit rather than prestige â€” apply where your profile matches the scholarship's values.</p></details>
 <details class="faq-item"><summary>Can I apply for multiple scholarships?</summary><p>Yes! In fact, you should. Apply to 5-10 scholarships that match your profile. However, be aware that some scholarships (like Chevening) require you to declare if you hold other awards. You generally cannot accept two fully-funded scholarships simultaneously, so choose the best offer if you receive multiple awards.</p></details>
-<details class="faq-item"><summary>How does the match score work?</summary><p>Our match scoring compares your academic profile (GPA, IELTS score, target field, destination, and study level) against each scholarship's requirements. It weights GPA (40%), IELTS (25%), field match (15%), destination (10%), and level (10%). A "Strong Match" means you meet or exceed most requirements. Even an "Unlikely" match doesn't mean you can't apply — many scholarships consider factors beyond grades.</p></details>
+<details class="faq-item"><summary>How does the match score work?</summary><p>Our match scoring compares your academic profile (GPA, IELTS score, target field, destination, and study level) against each scholarship's requirements. It weights GPA (40%), IELTS (25%), field match (15%), destination (10%), and level (10%). A "Strong Match" means you meet or exceed most requirements. Even an "Unlikely" match doesn't mean you can't apply â€” many scholarships consider factors beyond grades.</p></details>
 </section>
 
 
@@ -315,14 +444,17 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   var matchResults = [];
   var studentProfile = null;
   var isLoading = true;
-
-  // ── IELTS to TOEFL conversion helper ──
+  var entryMode = 'start';
+  var shortlistOnly = false;
+  var SHORTLIST_KEY = 'afro-scholarship-shortlist';
+  var shortlist = loadShortlist();
+  var GPA_BANDS = {
+    elite: { value: 3.8, scale: '4.0' },
+    strong: { value: 3.4, scale: '4.0' },
+    developing: { value: 2.8, scale: '4.0' },
+    emerging: { value: 2.3, scale: '4.0' }
+  };
   var IELTS_TOEFL_MAP = { 9: '118-120', 8.5: '115-117', 8: '110-114', 7.5: '102-109', 7: '94-101', 6.5: '79-93', 6: '60-78', 5.5: '46-59', 5: '35-45' };
-  function ieltsToToefl(ielts) {
-    return IELTS_TOEFL_MAP[ielts] || 'N/A';
-  }
-
-  // ── Fallback data (top 30 for offline) ──
   var FALLBACK = [
     {name:'Chevening Scholarship',provider:'UK Government (FCDO)',levels:['masters'],destinations:['uk'],fields:['any'],funding:'full',description:'Fully funded Master\'s in the UK. Covers tuition, living, flights, visa. Must have 2+ years work experience.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.5,deadline_text:'Nov (annual)',info_url:'https://www.chevening.org'},
     {name:'Rhodes Scholarship',provider:'Rhodes Trust',levels:['masters','phd'],destinations:['uk'],fields:['any'],funding:'full',description:'Study at University of Oxford. Fully funded. Africa has dedicated slots.',min_gpa_4:3.7,min_gpa_5:4.5,min_ielts:7.0,deadline_text:'Jul-Oct',info_url:'https://www.rhodeshouse.ox.ac.uk'},
@@ -333,10 +465,360 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     {name:'Mastercard Foundation Scholars',provider:'Mastercard Foundation',levels:['undergrad','masters'],destinations:['global'],fields:['any'],funding:'full',description:'Study at partner universities worldwide. For economically disadvantaged Africans.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.0,deadline_text:'Varies',info_url:'https://mastercardfdn.org/all/scholars'},
     {name:'Commonwealth Scholarship',provider:'Commonwealth Secretariat',levels:['masters','phd'],destinations:['uk'],fields:['any'],funding:'full',description:'For Commonwealth African countries. Master\'s or PhD at UK universities.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.5,deadline_text:'Dec',info_url:'https://cscuk.fcdo.gov.uk'},
     {name:'Turkish Government Scholarship',provider:'Republic of Turkey',levels:['undergrad','masters','phd'],destinations:['eu'],fields:['any'],funding:'full',description:'Study in Turkey. High acceptance rate. Covers everything.',min_gpa_4:2.5,min_gpa_5:3.0,min_ielts:null,deadline_text:'Jan-Feb',info_url:'https://turkiyeburslari.gov.tr'},
-    {name:'Hungarian Government Scholarship',provider:'Tempus Public Foundation',levels:['undergrad','masters','phd'],destinations:['eu'],fields:['any'],funding:'full',description:'Study in Hungary. Stipendium Hungaricum.',min_gpa_4:2.5,min_gpa_5:3.0,min_ielts:5.5,deadline_text:'Jan',info_url:'https://stipendiumhungaricum.hu'},
+    {name:'Hungarian Government Scholarship',provider:'Tempus Public Foundation',levels:['undergrad','masters','phd'],destinations:['eu'],fields:['any'],funding:'full',description:'Study in Hungary. Stipendium Hungaricum.',min_gpa_4:2.5,min_gpa_5:3.0,min_ielts:5.5,deadline_text:'Jan',info_url:'https://stipendiumhungaricum.hu'}
   ];
 
-  // ── Load scholarships from API ──
+  function getEl(id) {
+    return document.getElementById(id);
+  }
+
+  function ieltsToToefl(ielts) {
+    return IELTS_TOEFL_MAP[ielts] || 'N/A';
+  }
+
+  function hasProfileData(profile) {
+    return !!(profile && (profile.gpa_value || profile.ielts_overall || profile.target_study_level || (profile.target_fields && profile.target_fields.length) || (profile.target_countries && profile.target_countries.length)));
+  }
+
+  function loadShortlist() {
+    try {
+      var raw = localStorage.getItem(SHORTLIST_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (err) {
+      return [];
+    }
+  }
+
+  function saveShortlist() {
+    try {
+      localStorage.setItem(SHORTLIST_KEY, JSON.stringify(shortlist));
+    } catch (err) {}
+  }
+
+  function getScholarshipKey(scholarship) {
+    return String(scholarship.application_url || scholarship.info_url || scholarship.name || '').trim().toLowerCase();
+  }
+
+  function isShortlisted(scholarship) {
+    return shortlist.indexOf(getScholarshipKey(scholarship)) !== -1;
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatScholarshipCount(count) {
+    return count >= 120 ? '120+ Scholarships' : count + ' Scholarships';
+  }
+
+  function listAsPhrase(items) {
+    if (!items.length) return '';
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return items[0] + ' and ' + items[1];
+    return items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1];
+  }
+
+  function aspectLabel(key) {
+    if (key === 'gpa') return 'GPA';
+    if (key === 'ielts') return 'IELTS';
+    if (key === 'field') return 'field';
+    if (key === 'destination') return 'destination';
+    if (key === 'level') return 'study level';
+    return key;
+  }
+
+  function describeUnmet(key, detail) {
+    if (!detail) return aspectLabel(key);
+    if (key === 'gpa' && detail.required) return 'GPA below ' + detail.required + '/4.0';
+    if (key === 'ielts' && detail.required) return 'IELTS below ' + detail.required;
+    if (key === 'field') return 'field mismatch';
+    if (key === 'destination') return 'different destination';
+    if (key === 'level') return 'different study level';
+    return aspectLabel(key);
+  }
+
+  function buildFitExplanation(match) {
+    if (!match) {
+      return '<div class="fit-explainer"><strong>Preview mode:</strong> Run a quick scholarship check or load your full profile to see why this scholarship fits.</div>';
+    }
+
+    var aligned = match.met.map(aspectLabel).filter(Boolean);
+    var blockers = match.unmet.map(function (key) {
+      return describeUnmet(key, match.details ? match.details[key] : null);
+    }).filter(Boolean);
+    var missing = Object.keys(match.details || {}).filter(function (key) {
+      return match.details[key] && match.details[key].missing;
+    }).map(aspectLabel).filter(Boolean);
+    var summary = 'Strong fit based on the profile data you entered.';
+
+    if (match.category === 'Good Match') {
+      summary = 'Good fit, with a few watchouts to tighten before you apply.';
+    } else if (match.category === 'Possible') {
+      summary = 'Possible fit, but you should improve or clarify a few points first.';
+    } else if (match.category === 'Unlikely') {
+      summary = 'This looks like a stretch unless your profile changes or the scholarship is flexible on requirements.';
+    }
+
+    var lines = ['<strong>Why this fit score:</strong> ' + escapeHtml(summary)];
+    if (aligned.length) {
+      lines.push('<span class="fit-line good"><strong>Aligned:</strong> ' + escapeHtml(listAsPhrase(aligned)) + '</span>');
+    }
+    if (blockers.length) {
+      lines.push('<span class="fit-line miss"><strong>Watchouts:</strong> ' + escapeHtml(listAsPhrase(blockers)) + '</span>');
+    }
+    if (missing.length) {
+      lines.push('<span class="fit-line warn"><strong>Add next:</strong> ' + escapeHtml(listAsPhrase(missing)) + '</span>');
+    }
+
+    return '<div class="fit-explainer">' + lines.join('') + '</div>';
+  }
+
+  function recordScholarshipActivity(label, detail) {
+    if (typeof AfroEdu !== 'undefined' && typeof AfroEdu.recordActivity === 'function') {
+      AfroEdu.recordActivity('scholarship-finder', label, { detail: detail });
+    }
+  }
+
+  function setEntryMode(mode, message) {
+    entryMode = mode || 'start';
+    var label = 'Start here';
+
+    if (entryMode === 'quick') label = 'Quick check active';
+    if (entryMode === 'full') label = 'Full explorer';
+
+    getEl('entryModePill').textContent = label;
+    if (message) getEl('quickStatus').textContent = message;
+  }
+
+  function syncFinderFilters(profile) {
+    if (!profile) return;
+    if (profile.target_study_level) getEl('level').value = profile.target_study_level;
+    if (profile.target_fields && profile.target_fields[0]) getEl('field').value = profile.target_fields[0];
+    if (profile.target_countries && profile.target_countries[0]) getEl('destination').value = profile.target_countries[0];
+  }
+
+  function guessBandFromProfile(profile) {
+    if (!profile || !profile.gpa_value) return '';
+    var normalized = null;
+
+    if (typeof ScholarshipMatcher !== 'undefined' && typeof ScholarshipMatcher.normalizeGPA === 'function' && profile.gpa_scale) {
+      normalized = ScholarshipMatcher.normalizeGPA(profile.gpa_value, profile.gpa_scale);
+    } else {
+      normalized = parseFloat(profile.gpa_value);
+    }
+
+    if (!normalized || isNaN(normalized)) return '';
+    if (normalized >= 3.7) return 'elite';
+    if (normalized >= 3.3) return 'strong';
+    if (normalized >= 2.7) return 'developing';
+    return 'emerging';
+  }
+
+  function populateQuickForm(profile) {
+    if (!profile) return;
+    var band = guessBandFromProfile(profile);
+    if (band) getEl('quickBand').value = band;
+    if (profile.target_study_level) getEl('quickLevel').value = profile.target_study_level;
+    if (profile.target_fields && profile.target_fields[0]) getEl('quickField').value = profile.target_fields[0];
+    if (profile.target_countries && profile.target_countries[0]) getEl('quickDest').value = profile.target_countries[0];
+  }
+
+  function populateProfileForm(profile) {
+    if (profile.gpa_value) getEl('profileGPA').value = profile.gpa_value;
+    if (profile.gpa_scale) getEl('profileScale').value = profile.gpa_scale;
+    if (profile.ielts_overall) getEl('profileIELTS').value = profile.ielts_overall;
+    if (profile.target_study_level) getEl('profileLevel').value = profile.target_study_level;
+    if (profile.target_fields && profile.target_fields[0]) getEl('profileField').value = profile.target_fields[0];
+    if (profile.target_countries && profile.target_countries[0]) getEl('profileDest').value = profile.target_countries[0];
+    populateQuickForm(profile);
+  }
+
+  function buildStudentProfileFromForm() {
+    var gpa = parseFloat(getEl('profileGPA').value);
+    var ielts = parseFloat(getEl('profileIELTS').value);
+    var field = getEl('profileField').value;
+    var destination = getEl('profileDest').value;
+
+    return {
+      gpa_value: isNaN(gpa) ? null : gpa,
+      gpa_scale: getEl('profileScale').value || null,
+      ielts_overall: isNaN(ielts) ? null : ielts,
+      target_study_level: getEl('profileLevel').value || null,
+      target_fields: field ? [field] : [],
+      target_countries: destination ? [destination] : []
+    };
+  }
+
+  function persistStudentProfile() {
+    if (!studentProfile) return;
+
+    if (typeof ScholarshipMatcher !== 'undefined') {
+      ScholarshipMatcher.saveQuickProfile(studentProfile);
+    }
+
+    if (typeof EduProfileSync !== 'undefined') {
+      var syncData = {};
+      if (studentProfile.gpa_value) syncData.gpa_value = studentProfile.gpa_value;
+      if (studentProfile.gpa_scale) syncData.gpa_scale = studentProfile.gpa_scale;
+      if (studentProfile.ielts_overall) syncData.ielts_overall = studentProfile.ielts_overall;
+      if (studentProfile.target_study_level) syncData.target_study_level = studentProfile.target_study_level;
+      if (studentProfile.target_fields.length) syncData.target_fields = studentProfile.target_fields;
+      if (studentProfile.target_countries.length) syncData.target_countries = studentProfile.target_countries;
+      EduProfileSync.update(syncData);
+    }
+  }
+
+  function showProfileHints(profile) {
+    if (!profile || !profile.gpa_value) getEl('gpaLink').style.display = 'inline-flex';
+    if (!profile || !profile.ielts_overall) getEl('ieltsLink').style.display = 'inline-flex';
+  }
+
+  function scrollToResults() {
+    var target = getEl('resultsSummary') || getEl('scholarshipGrid');
+    if (target && typeof target.scrollIntoView === 'function') {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function runMatcher() {
+    if (!hasProfileData(studentProfile) || typeof ScholarshipMatcher === 'undefined') {
+      matchResults = [];
+      return;
+    }
+    matchResults = ScholarshipMatcher.match(allScholarships, studentProfile);
+  }
+
+  function updateSummary(results) {
+    var strong = 0;
+    var good = 0;
+    var possible = 0;
+
+    results.forEach(function (scholarship) {
+      if (!scholarship._match) return;
+      if (scholarship._match.category === 'Strong Match') strong++;
+      else if (scholarship._match.category === 'Good Match') good++;
+      else if (scholarship._match.category === 'Possible') possible++;
+    });
+
+    getEl('summaryStrong').textContent = strong;
+    getEl('summaryGood').textContent = good;
+    getEl('summaryPossible').textContent = possible;
+    getEl('summaryShortlist').textContent = shortlist.length;
+    getEl('summaryMode').textContent = shortlistOnly ? 'Shortlist view' : (entryMode === 'quick' ? 'Quick check' : entryMode === 'full' ? 'Full explorer' : 'Start here');
+
+    var summaryText = 'Start with a quick scholarship check or build your full profile to see stronger fit explanations and save scholarships into a shortlist.';
+    if (shortlistOnly) {
+      summaryText = shortlist.length
+        ? 'Review your saved scholarships here. Turn shortlist view off to return to the full finder.'
+        : 'You have not saved any scholarships yet. Use the shortlist button on any scholarship card to keep it here.';
+    } else if (matchResults.length && entryMode === 'quick') {
+      summaryText = 'Quick check is active. Move into the full explorer to add IELTS or refine your destination before you apply.';
+    } else if (matchResults.length && entryMode === 'full') {
+      summaryText = 'Your full profile is shaping the list below. Save high-fit scholarships and open the official details for the ones you want to pursue.';
+    }
+
+    getEl('summaryText').textContent = summaryText;
+    getEl('shortlistToggle').textContent = shortlistOnly ? 'Show all matches' : 'View shortlist';
+    getEl('shortlistNote').textContent = shortlist.length ? shortlist.length + ' saved scholarship' + (shortlist.length === 1 ? '' : 's') : 'No saved scholarships yet';
+  }
+
+  function findScholarshipByKey(key) {
+    for (var i = 0; i < allScholarships.length; i++) {
+      if (getScholarshipKey(allScholarships[i]) === key) return allScholarships[i];
+    }
+    return null;
+  }
+
+  function renderGrid(results) {
+    var grid = getEl('scholarshipGrid');
+    if (!results.length) {
+      var emptyMessage = shortlistOnly
+        ? (shortlist.length ? 'No shortlisted scholarships match your current filters. Try clearing a filter or switch back to all matches.' : 'You have not saved any scholarships yet. Use the shortlist button on a scholarship card to keep it here.')
+        : 'No scholarships match your filters. Try broadening your search.';
+      grid.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:40px;font-size:.88rem;grid-column:1/-1">' + escapeHtml(emptyMessage) + '</p>';
+      return;
+    }
+
+    var html = '';
+    var DEST_LABELS = {uk:'UK',us:'USA',eu:'Europe',africa:'Africa',canada:'Canada',australia:'Australia',global:'Global'};
+    var LEVEL_SHORT = {undergrad:'UG',masters:'MSc',phd:'PhD',postdoc:'PostDoc'};
+
+    results.forEach(function (scholarship) {
+      var fundClass = scholarship.funding === 'full' ? 'full' : 'partial';
+      var fundLabel = scholarship.funding === 'full' ? 'FULLY FUNDED' : 'PARTIAL';
+      var levels = (scholarship.levels || []).map(function (level) { return LEVEL_SHORT[level] || level; }).join(', ');
+      var destinations = (scholarship.destinations || []).map(function (destination) { return DEST_LABELS[destination] || destination; }).join(', ');
+      var url = scholarship.application_url || scholarship.info_url || '#';
+      var key = getScholarshipKey(scholarship);
+      var encodedKey = encodeURIComponent(key);
+      var saved = isShortlisted(scholarship);
+      var matchBadge = '';
+
+      if (scholarship._match && scholarship._match.percent !== undefined) {
+        matchBadge = '<div class="match-badge ' + scholarship._match.categoryClass + '">' + escapeHtml(scholarship._match.category) + ' &middot; ' + scholarship._match.percent + '%</div>';
+      }
+
+      html += '<div class="sch-card">' +
+        '<span class="funding-badge ' + fundClass + '">' + fundLabel + '</span>' +
+        matchBadge +
+        '<h3>' + escapeHtml(scholarship.name || '') + '</h3>' +
+        '<div class="provider">' + escapeHtml(scholarship.provider || '') + '</div>' +
+        '<div class="details">' + escapeHtml(scholarship.description || '') + '</div>' +
+        (scholarship.min_ielts || scholarship.min_gpa_4 ? '<div class="sch-reqs">' +
+          (scholarship.min_gpa_4 ? 'GPA: <span>' + escapeHtml(scholarship.min_gpa_4) + '/4.0</span>' + (scholarship.min_gpa_5 ? ' (' + escapeHtml(scholarship.min_gpa_5) + '/5.0)' : '') + ' &nbsp; ' : '') +
+          (scholarship.min_ielts ? 'IELTS: <span>' + escapeHtml(scholarship.min_ielts) + '+</span> (TOEFL: ' + escapeHtml(ieltsToToefl(scholarship.min_ielts)) + ')' : '') +
+        '</div>' : '') +
+        '<div class="tags">' +
+          '<span class="tag">' + escapeHtml(levels || 'All levels') + '</span>' +
+          '<span class="tag">' + escapeHtml(destinations || 'Global') + '</span>' +
+          (scholarship.fields || []).filter(function (field) { return field !== 'any'; }).map(function (field) {
+            return '<span class="tag">' + escapeHtml(field) + '</span>';
+          }).join('') +
+        '</div>' +
+        (scholarship.deadline_text ? '<div class="deadline">Deadline: ' + escapeHtml(scholarship.deadline_text) + '</div>' : '') +
+        buildFitExplanation(scholarship._match) +
+        '<div class="card-actions">' +
+          '<button class="btn btn-outline btn-sm shortlist-btn' + (saved ? ' is-saved' : '') + '" onclick="toggleShortlist(\'' + encodedKey + '\')">' + (saved ? 'Saved to Shortlist' : 'Save to Shortlist') + '</button>' +
+          '<a class="btn btn-primary btn-sm action-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">Open Details</a>' +
+          '<button class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Continue Profile</button>' +
+        '</div>' +
+      '</div>';
+    });
+
+    grid.innerHTML = html;
+  }
+
+  function applyProfileState(mode, message, scrollResults) {
+    studentProfile = buildStudentProfileFromForm();
+
+    if (!hasProfileData(studentProfile)) {
+      getEl('profileStatus').textContent = '';
+      getEl('profileDesc').textContent = 'Use the full explorer when you want deeper scholarship scoring, stronger fit explanations, and a more useful shortlist.';
+      setEntryMode('start', 'Add at least one detail to run a scholarship check.');
+      matchResults = [];
+      applyFilters();
+      return;
+    }
+
+    persistStudentProfile();
+    syncFinderFilters(studentProfile);
+    setEntryMode(mode, message);
+    getEl('profileStatus').textContent = mode === 'quick' ? 'Quick check ready' : 'Profile applied';
+    getEl('profileDesc').textContent = mode === 'quick'
+      ? 'Quick check loaded. Add IELTS or refine your destination here for sharper match explanations.'
+      : 'Full profile applied. Keep refining your GPA, IELTS, field, level, and destination for better scholarship fit explanations.';
+
+    runMatcher();
+    applyFilters();
+    recordScholarshipActivity(mode === 'quick' ? 'Ran quick scholarship check' : 'Updated scholarship profile', 'Scholarship Finder profile refreshed');
+    if (scrollResults) scrollToResults();
+  }
+
   function loadScholarships() {
     fetch('/api/scholarships')
       .then(function (res) { return res.json(); })
@@ -347,31 +829,35 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           allScholarships = FALLBACK;
         }
         isLoading = false;
-        document.getElementById('totalBadge').textContent = allScholarships.length + '+ Scholarships';
+        getEl('totalBadge').textContent = formatScholarshipCount(allScholarships.length);
         tryLoadProfile();
         applyFilters();
       })
       .catch(function () {
         allScholarships = FALLBACK;
         isLoading = false;
+        getEl('totalBadge').textContent = formatScholarshipCount(allScholarships.length);
+        tryLoadProfile();
         applyFilters();
       });
   }
 
-  // ── Load student profile if logged in ──
   function tryLoadProfile() {
-    // First check sessionStorage quick profile
     if (typeof ScholarshipMatcher !== 'undefined') {
       var quick = ScholarshipMatcher.getQuickProfile();
-      if (quick) {
+      if (quick && hasProfileData(quick)) {
         populateProfileForm(quick);
         studentProfile = quick;
+        syncFinderFilters(quick);
+        setEntryMode('quick', 'Previous scholarship check restored. Add IELTS or refine destination for sharper fit explanations.');
+        getEl('profileDesc').textContent = 'Quick check restored. Add IELTS or refine your destination here for sharper match explanations.';
+        getEl('profileStatus').textContent = 'Profile restored';
         runMatcher();
+        applyFilters();
         return;
       }
     }
 
-    // Then try logged-in profile
     if (typeof EduProfileSync !== 'undefined' && typeof EduProfileSync.getProfile === 'function') {
       EduProfileSync.getProfile().then(function (profile) {
         if (!profile) return;
@@ -383,13 +869,15 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           target_countries: profile.target_countries || [],
           target_fields: profile.target_fields || []
         };
-        // Only use if has some data
-        if (eduProfile.gpa_value || eduProfile.ielts_overall || eduProfile.target_study_level) {
+        if (hasProfileData(eduProfile)) {
           populateProfileForm(eduProfile);
           studentProfile = eduProfile;
-          document.getElementById('profileDesc').textContent = 'Loaded from your account. Adjust if needed.';
-          document.getElementById('profileStatus').textContent = 'Profile loaded';
+          syncFinderFilters(eduProfile);
+          setEntryMode('full', 'Education Hub profile loaded. Adjust it here if you want a tighter scholarship shortlist.');
+          getEl('profileDesc').textContent = 'Loaded from your account. Adjust it here if you want a tighter scholarship shortlist.';
+          getEl('profileStatus').textContent = 'Profile loaded';
           runMatcher();
+          applyFilters();
         } else {
           showProfileHints(profile);
         }
@@ -397,218 +885,140 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     }
   }
 
-  function populateProfileForm(p) {
-    if (p.gpa_value) document.getElementById('profileGPA').value = p.gpa_value;
-    if (p.gpa_scale) document.getElementById('profileScale').value = p.gpa_scale;
-    if (p.ielts_overall) document.getElementById('profileIELTS').value = p.ielts_overall;
-    if (p.target_study_level) document.getElementById('profileLevel').value = p.target_study_level;
-    if (p.target_fields && p.target_fields[0]) document.getElementById('profileField').value = p.target_fields[0];
-    if (p.target_countries && p.target_countries[0]) document.getElementById('profileDest').value = p.target_countries[0];
-  }
-
-  function showProfileHints(profile) {
-    if (!profile || !profile.gpa_value) {
-      document.getElementById('gpaLink').style.display = 'inline-flex';
-    }
-    if (!profile || !profile.ielts_overall) {
-      document.getElementById('ieltsLink').style.display = 'inline-flex';
-    }
-  }
-
-  // ── Apply Profile ──
-  window.applyProfile = function () {
-    var gpa = parseFloat(document.getElementById('profileGPA').value);
-    var scale = document.getElementById('profileScale').value;
-    var ielts = parseFloat(document.getElementById('profileIELTS').value);
-    var level = document.getElementById('profileLevel').value;
-    var field = document.getElementById('profileField').value;
-    var dest = document.getElementById('profileDest').value;
-
-    studentProfile = {
-      gpa_value: isNaN(gpa) ? null : gpa,
-      gpa_scale: scale || null,
-      ielts_overall: isNaN(ielts) ? null : ielts,
-      target_study_level: level || null,
-      target_fields: field ? [field] : [],
-      target_countries: dest ? [dest] : []
-    };
-
-    // Save to sessionStorage
-    if (typeof ScholarshipMatcher !== 'undefined') {
-      ScholarshipMatcher.saveQuickProfile(studentProfile);
-    }
-
-    // Also sync to profile if logged in
-    if (typeof EduProfileSync !== 'undefined') {
-      var syncData = {};
-      if (studentProfile.gpa_value) syncData.gpa_value = studentProfile.gpa_value;
-      if (studentProfile.gpa_scale) syncData.gpa_scale = studentProfile.gpa_scale;
-      if (studentProfile.ielts_overall) syncData.ielts_overall = studentProfile.ielts_overall;
-      if (studentProfile.target_study_level) syncData.target_study_level = studentProfile.target_study_level;
-      if (studentProfile.target_fields.length) syncData.target_fields = studentProfile.target_fields;
-      if (studentProfile.target_countries.length) syncData.target_countries = studentProfile.target_countries;
-      EduProfileSync.update(syncData);
-    }
-
-    document.getElementById('profileStatus').textContent = 'Profile applied';
-    runMatcher();
-    applyFilters();
+  window.applyProfile = function (options) {
+    options = options || {};
+    applyProfileState(options.mode || 'full', options.message || 'Use the full explorer to sharpen your shortlist before you apply.', !!options.scrollResults);
   };
 
   window.clearProfile = function () {
     studentProfile = null;
     matchResults = [];
-    document.getElementById('profileGPA').value = '';
-    document.getElementById('profileScale').value = '';
-    document.getElementById('profileIELTS').value = '';
-    document.getElementById('profileLevel').value = '';
-    document.getElementById('profileField').value = '';
-    document.getElementById('profileDest').value = '';
-    document.getElementById('profileStatus').textContent = '';
+    shortlistOnly = false;
+    getEl('profileGPA').value = '';
+    getEl('profileScale').value = '';
+    getEl('profileIELTS').value = '';
+    getEl('profileLevel').value = '';
+    getEl('profileField').value = '';
+    getEl('profileDest').value = '';
+    getEl('quickBand').value = '';
+    getEl('quickLevel').value = '';
+    getEl('quickField').value = '';
+    getEl('quickDest').value = '';
+    getEl('level').value = 'all';
+    getEl('destination').value = 'all';
+    getEl('field').value = 'all';
+    getEl('profileStatus').textContent = '';
+    getEl('profileDesc').textContent = 'Use the full explorer when you want deeper scholarship scoring, stronger fit explanations, and a more useful shortlist.';
     if (typeof ScholarshipMatcher !== 'undefined') {
       ScholarshipMatcher.clearQuickProfile();
     }
+    setEntryMode('start', 'Fast mode writes into the same Scholarship Finder profile, so you can keep refining instead of starting over.');
     applyFilters();
   };
 
-  // ── Run matcher ──
-  function runMatcher() {
-    if (!studentProfile || typeof ScholarshipMatcher === 'undefined') {
-      matchResults = [];
+  window.jumpToFullProfile = function () {
+    setEntryMode('full', 'Use the full explorer to add IELTS, refine destination, and improve your shortlist.');
+    var card = getEl('profileCard');
+    if (card && typeof card.scrollIntoView === 'function') {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  window.runQuickCheck = function () {
+    var band = getEl('quickBand').value;
+    var level = getEl('quickLevel').value;
+    var field = getEl('quickField').value;
+    var destination = getEl('quickDest').value;
+
+    if (!band && !level && !field && !destination) {
+      setEntryMode('start', 'Pick at least one quick-check input before running the scholarship finder.');
       return;
     }
-    matchResults = ScholarshipMatcher.match(allScholarships, studentProfile);
-  }
 
-  // ── Filter & Render ──
+    if (band && GPA_BANDS[band]) {
+      getEl('profileGPA').value = GPA_BANDS[band].value;
+      getEl('profileScale').value = GPA_BANDS[band].scale;
+    } else {
+      getEl('profileGPA').value = '';
+      getEl('profileScale').value = '';
+    }
+
+    getEl('profileLevel').value = level || '';
+    getEl('profileField').value = field || '';
+    getEl('profileDest').value = destination || '';
+
+    applyProfileState('quick', 'Quick check active. Add IELTS or refine destination in the full explorer for sharper scholarship fit explanations.', true);
+  };
+
+  window.toggleShortlistView = function () {
+    shortlistOnly = !shortlistOnly;
+    applyFilters();
+  };
+
+  window.toggleShortlist = function (encodedKey) {
+    var key = decodeURIComponent(encodedKey || '');
+    if (!key) return;
+
+    var index = shortlist.indexOf(key);
+    if (index === -1) {
+      shortlist.unshift(key);
+      recordScholarshipActivity('Saved scholarship shortlist', (findScholarshipByKey(key) || {}).name || 'Saved scholarship');
+    } else {
+      shortlist.splice(index, 1);
+      recordScholarshipActivity('Removed scholarship shortlist', (findScholarshipByKey(key) || {}).name || 'Removed scholarship');
+    }
+
+    saveShortlist();
+    applyFilters();
+  };
+
   window.applyFilters = function () {
     if (isLoading) return;
 
-    var level = document.getElementById('level').value;
-    var dest = document.getElementById('destination').value;
-    var field = document.getElementById('field').value;
-    var funding = document.getElementById('funding').value;
-    var search = document.getElementById('search').value.toLowerCase();
-    var sortBy = document.getElementById('sortBy').value;
+    var level = getEl('level').value;
+    var dest = getEl('destination').value;
+    var field = getEl('field').value;
+    var funding = getEl('funding').value;
+    var search = getEl('search').value.toLowerCase();
+    var sortBy = getEl('sortBy').value;
+    var source = matchResults.length > 0
+      ? matchResults.map(function (result) { return Object.assign({}, result.scholarship, { _match: result }); })
+      : allScholarships.map(function (scholarship) { return Object.assign({}, scholarship, { _match: null }); });
 
-    // Get the right data source
-    var source;
-    if (matchResults.length > 0) {
-      source = matchResults.map(function (r) {
-        return Object.assign({}, r.scholarship, { _match: r });
-      });
-    } else {
-      source = allScholarships.map(function (s) {
-        return Object.assign({}, s, { _match: null });
-      });
-    }
-
-    // Apply filters
-    var results = source.filter(function (s) {
-      if (level !== 'all' && s.levels && s.levels.indexOf(level) === -1) return false;
-      if (dest !== 'all' && s.destinations && s.destinations.indexOf(dest) === -1) return false;
-      if (field !== 'all' && s.fields && s.fields.indexOf(field) === -1 && s.fields.indexOf('any') === -1) return false;
-      if (funding !== 'all' && s.funding !== funding) return false;
-      if (search && (s.name || '').toLowerCase().indexOf(search) === -1 &&
-        (s.provider || '').toLowerCase().indexOf(search) === -1 &&
-        (s.description || '').toLowerCase().indexOf(search) === -1) return false;
+    var results = source.filter(function (scholarship) {
+      if (level !== 'all' && scholarship.levels && scholarship.levels.indexOf(level) === -1) return false;
+      if (dest !== 'all' && scholarship.destinations && scholarship.destinations.indexOf(dest) === -1 && scholarship.destinations.indexOf('global') === -1) return false;
+      if (field !== 'all' && scholarship.fields && scholarship.fields.indexOf(field) === -1 && scholarship.fields.indexOf('any') === -1) return false;
+      if (funding !== 'all' && scholarship.funding !== funding) return false;
+      if (search && (scholarship.name || '').toLowerCase().indexOf(search) === -1 && (scholarship.provider || '').toLowerCase().indexOf(search) === -1 && (scholarship.description || '').toLowerCase().indexOf(search) === -1) return false;
+      if (shortlistOnly && !isShortlisted(scholarship)) return false;
       return true;
     });
 
-    // Sort
     if (sortBy === 'match' && matchResults.length > 0) {
       results.sort(function (a, b) {
-        var sa = a._match ? a._match.score : 0;
-        var sb = b._match ? b._match.score : 0;
-        return sb - sa;
+        var scoreA = a._match ? a._match.score : 0;
+        var scoreB = b._match ? b._match.score : 0;
+        return scoreB - scoreA;
       });
     } else if (sortBy === 'name') {
       results.sort(function (a, b) { return (a.name || '').localeCompare(b.name || ''); });
     } else if (sortBy === 'deadline') {
       var now = new Date().getMonth() + 1;
       results.sort(function (a, b) {
-        var da = a.deadline_month || 13;
-        var db = b.deadline_month || 13;
-        // Sort by months until deadline
-        var diffA = da >= now ? da - now : da + 12 - now;
-        var diffB = db >= now ? db - now : db + 12 - now;
+        var deadlineA = a.deadline_month || 13;
+        var deadlineB = b.deadline_month || 13;
+        var diffA = deadlineA >= now ? deadlineA - now : deadlineA + 12 - now;
+        var diffB = deadlineB >= now ? deadlineB - now : deadlineB + 12 - now;
         return diffA - diffB;
       });
     }
 
-    document.getElementById('countBadge').textContent = results.length + ' scholarships found';
+    getEl('countBadge').textContent = results.length + (shortlistOnly ? ' shortlisted scholarships' : ' scholarships found');
     renderGrid(results);
+    updateSummary(results);
   };
 
-  function renderGrid(results) {
-    var grid = document.getElementById('scholarshipGrid');
-    if (!results.length) {
-      grid.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:40px;font-size:.88rem;grid-column:1/-1">No scholarships match your filters. Try broadening your search.</p>';
-      return;
-    }
-
-    var html = '';
-    var DEST_LABELS = {uk:'UK',us:'USA',eu:'Europe',africa:'Africa',canada:'Canada',australia:'Australia',global:'Global'};
-    var LEVEL_SHORT = {undergrad:'UG',masters:'MSc',phd:'PhD',postdoc:'PostDoc'};
-
-    results.forEach(function (s) {
-      var fundClass = s.funding === 'full' ? 'full' : 'partial';
-      var fundLabel = s.funding === 'full' ? 'FULLY FUNDED' : 'PARTIAL';
-      var levels = (s.levels || []).map(function (l) { return LEVEL_SHORT[l] || l; }).join(', ');
-      var destLabels = (s.destinations || []).map(function (d) { return DEST_LABELS[d] || d; }).join(', ');
-      var url = s.application_url || s.info_url || '#';
-
-      // Match badge
-      var matchHtml = '';
-      if (s._match && s._match.percent !== undefined) {
-        var m = s._match;
-        matchHtml = '<div class="match-badge ' + m.categoryClass + '">' + m.category + ' &middot; ' + m.percent + '%</div>';
-
-        // Show unmet requirements
-        if (m.unmet.length > 0) {
-          matchHtml += '<div class="match-details">';
-          m.unmet.forEach(function (key) {
-            var d = m.details[key];
-            if (key === 'gpa' && d.required && d.yours) {
-              matchHtml += '<span class="unmet">GPA: yours ' + d.yours + ' / need ' + d.required + '</span> ';
-            } else if (key === 'ielts' && d.required && d.yours) {
-              matchHtml += '<span class="unmet">IELTS: yours ' + d.yours + ' / need ' + d.required + '</span> ';
-            } else if (key === 'field') {
-              matchHtml += '<span class="unmet">Field mismatch</span> ';
-            } else if (key === 'destination') {
-              matchHtml += '<span class="unmet">Different destination</span> ';
-            } else if (key === 'level') {
-              matchHtml += '<span class="unmet">Level mismatch</span> ';
-            }
-          });
-          matchHtml += '</div>';
-        }
-      }
-
-      html += '<div class="sch-card">' +
-        '<span class="funding-badge ' + fundClass + '">' + fundLabel + '</span>' +
-        matchHtml +
-        '<h3>' + (s.name || '') + '</h3>' +
-        '<div class="provider">' + (s.provider || '') + '</div>' +
-        '<div class="details">' + (s.description || '') + '</div>' +
-        (s.min_ielts || s.min_gpa_4 ? '<div class="sch-reqs">' +
-          (s.min_gpa_4 ? 'GPA: <span>' + s.min_gpa_4 + '/4.0</span>' + (s.min_gpa_5 ? ' (' + s.min_gpa_5 + '/5.0)' : '') + ' &nbsp; ' : '') +
-          (s.min_ielts ? 'IELTS: <span>' + s.min_ielts + '+</span> (TOEFL: ' + ieltsToToefl(s.min_ielts) + ')' : '') +
-        '</div>' : '') +
-        '<div class="tags">' +
-          '<span class="tag">' + levels + '</span>' +
-          '<span class="tag">' + destLabels + '</span>' +
-          (s.fields || []).filter(function (f) { return f !== 'any'; }).map(function (f) { return '<span class="tag">' + f + '</span>'; }).join('') +
-        '</div>' +
-        (s.deadline_text ? '<div class="deadline">Deadline: ' + s.deadline_text + '</div>' : '') +
-        '<a class="sch-link" href="' + url + '" target="_blank" rel="noopener">Visit Official Website &rarr;</a>' +
-      '</div>';
-    });
-
-    grid.innerHTML = html;
-  }
-
-  // ── Init ──
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadScholarships);
   } else {

@@ -53,8 +53,9 @@ for(const cc in C){
 <script type="application/ld+json">${schema2}<\/script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=1eef2cf2">
-<script src="/assets/js/components/navbar.min.js?v=fa984253" defer><\/script><script src="/assets/js/components/footer.min.js?v=0f040e13" defer><\/script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/multi-country.css?v=1">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer><\/script><script src="/assets/js/components/footer.min.js?v=f68d6568" defer><\/script>
 <style>
 :root{--blue:#1d4ed8;--blue-light:#eff6ff;--blue-dark:#1e40af}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -67,7 +68,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f8fafc;color:#1e293b
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
 .card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#1e3a5f}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.form-grid{grid-template-columns:1fr}.agreement-preview .signatures{grid-template-columns:1fr;gap:1.25rem}}
 .form-group{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.25rem}
 .form-group label{font-weight:600;font-size:.85rem;color:#475569}
 .form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
@@ -95,15 +96,17 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f8fafc;color:#1e293b
 .seo-section p{color:#475569;margin-bottom:1rem;font-size:.95rem}
 @media print{.hero,.card,.actions,.seo-section,afro-navbar,afro-footer,.info-cards{display:none!important}.agreement-preview{border:none;padding:1cm;font-size:12pt}}
 </style>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <afro-navbar theme="dark" active="legal"></afro-navbar>
 <section class="hero">
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>\u203A</span> <a href="/legal/">Legal & Compliance</a> <span>\u203A</span> <a href="/tools/employment-contract/">Employment Contract Builder</a> <span>\u203A</span> ${c.name}</nav>
 <h1>${c.flag} ${c.name} Employment Contract Builder</h1>
 <p>Generate employment contracts compliant with ${e.labourLaw.split(';')[0].trim()}. Pre-configured with ${c.name} labour law requirements.</p>
 </section>
-<div class="container">
+<div class="container" id="main-content" role="main">
 <div class="info-cards">
 <div class="info-card"><div class="val">${mwText}</div><div class="lbl">Minimum Wage</div></div>
 <div class="info-card"><div class="val">${e.workingHours} hrs/week</div><div class="lbl">Working Hours</div></div>

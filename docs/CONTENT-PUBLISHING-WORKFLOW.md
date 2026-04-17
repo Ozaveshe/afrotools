@@ -98,6 +98,12 @@ Preferred order:
 2. If MCP is unavailable, use the AfroStream admin/API path only when the required credentials are available.
 3. If neither live path is available, prepare publish-ready payloads and stop before pretending the item is live.
 
+### Automation note for Windows worktrees
+
+- Worktree automations should rely on the global Codex Supabase config, not an untracked repo-local `.codex/config.toml`.
+- On Windows, a required fallback secret can exist in the user environment store even when it is missing from the current process environment.
+- Before treating `ADMIN_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`, or `SUPABASE_DATA_SERVICE_ROLE_KEY` as missing during an automation run, check the Windows user environment store as well.
+
 ### Repo files that explain the system
 
 - `tools/afrostream/news.html`

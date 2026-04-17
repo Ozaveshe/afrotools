@@ -27,6 +27,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const REPORT  = process.argv.includes('--report');
 const FIX_MODE = !DRY_RUN && !REPORT;
 const TODAY   = new Date().toISOString().slice(0, 10);
+const SITE_ORIGIN = 'https://afrotools.com';
 
 const SKIP_DIRS = new Set(['node_modules', '.git', 'assets', 'scripts', '.netlify', 'lang', 'supabase']);
 
@@ -48,6 +49,14 @@ function writeFile(fp, data)   { if (FIX_MODE) fs.writeFileSync(fp, data, 'utf8'
 
 function hasCanonical(content) {
   return /<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["'][^"']+["'])[^>]*>/i.test(content);
+}
+
+function extractCanonicalHref(content) {
+  const match =
+    content.match(/<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["']([^"']+)["'])[^>]*>/i) ||
+    content.match(/<link\b(?=[^>]*\bhref=["']([^"']+)["'])(?=[^>]*\brel=["']canonical["'])[^>]*>/i);
+
+  return match ? match[1] : '';
 }
 
 function hasTitle(content) {
@@ -73,14 +82,62 @@ function isRedirectLike(content) {
   );
 }
 
+function trimTrailingSlash(pathname) {
+  if (!pathname || pathname === '/') return '/';
+  return pathname.replace(/\/+$/, '') || '/';
+}
+
+function normalizeSiteUrl(url) {
+  try {
+    const parsed = new URL(url, SITE_ORIGIN);
+    if (parsed.origin !== SITE_ORIGIN) return '';
+    return `${parsed.origin}${trimTrailingSlash(parsed.pathname)}`;
+  } catch {
+    return '';
+  }
+}
+
+function defaultPageUrl(filePath) {
+  const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
+
+  if (rel === 'index.html') return `${SITE_ORIGIN}/`;
+  if (rel.endsWith('/index.html')) {
+    return `${SITE_ORIGIN}/${rel.replace(/index\.html$/i, '')}`;
+  }
+
+  return `${SITE_ORIGIN}/${rel.slice(0, -5)}`;
+}
+
+function resolvePreferredPageUrl(filePath, content) {
+  const canonicalHref = extractCanonicalHref(content);
+
+  if (canonicalHref) {
+    try {
+      const canonical = new URL(canonicalHref, SITE_ORIGIN);
+      if (canonical.origin === SITE_ORIGIN) {
+        return `${canonical.origin}${canonical.pathname}`;
+      }
+    } catch {
+      // Fall back to the file-derived URL below.
+    }
+  }
+
+  return defaultPageUrl(filePath);
+}
+
 // ─── Step 1: Build map of .html-backed URLs (no trailing slash) ───────────
 
-const htmlUrls = new Set();   // 'https://afrotools.com/algeria/dz-paye'
+const preferredPageUrls = new Map();
 
 walk(ROOT, (fp, fname) => {
-  if (!fname.endsWith('.html') || fname === 'index.html') return;
-  const rel = path.relative(ROOT, fp).replace(/\\/g, '/');
-  htmlUrls.add('https://afrotools.com/' + rel.slice(0, -5));  // strip .html
+  if (!fname.endsWith('.html')) return;
+
+  const content = readFile(fp);
+  if (isRedirectLike(content)) return;
+
+  const preferredUrl = resolvePreferredPageUrl(fp, content);
+  const lookupKey = normalizeSiteUrl(preferredUrl);
+  if (lookupKey) preferredPageUrls.set(lookupKey, preferredUrl);
 });
 
 // ─── Step 2: Fix hreflang trailing slashes ────────────────────────────────
@@ -88,8 +145,7 @@ walk(ROOT, (fp, fname) => {
 let hreflangFilesFixed = 0;
 let hreflangAttrsFixed = 0;
 
-// Regex matches any hreflang href ending with /
-const HREFLANG_RE = /hreflang="[^"]+" href="(https:\/\/afrotools\.com\/[^"]+\/)"/g;
+const HREFLANG_RE = /hreflang="[^"]+" href="(https:\/\/afrotools\.com\/[^"]+)"/g;
 
 walk(ROOT, (fp, fname) => {
   if (!fname.endsWith('.html')) return;
@@ -99,11 +155,11 @@ walk(ROOT, (fp, fname) => {
 
   let changed = false;
   const fixed = original.replace(HREFLANG_RE, (match, url) => {
-    const bare = url.slice(0, -1);  // strip trailing slash
-    if (htmlUrls.has(bare)) {
+    const preferredUrl = preferredPageUrls.get(normalizeSiteUrl(url));
+    if (preferredUrl && preferredUrl !== url) {
       changed = true;
       hreflangAttrsFixed++;
-      return match.replace(`"${url}"`, `"${bare}"`);
+      return match.replace(`"${url}"`, `"${preferredUrl}"`);
     }
     return match;
   });
@@ -120,7 +176,14 @@ walk(ROOT, (fp, fname) => {
 let sitemapLocsFixed    = 0;
 let sitemapLastmodFixed = 0;
 
-const SITEMAP_FILES = ['sitemap.xml', 'sitemap-i18n.xml'];
+const SITEMAP_FILES = fs
+  .readdirSync(ROOT)
+  .filter((name) => /^sitemap.*\.xml$/i.test(name))
+  .sort();
+
+if (fs.existsSync(path.join(ROOT, 'jamb', 'sitemap.xml'))) {
+  SITEMAP_FILES.push('jamb/sitemap.xml');
+}
 
 for (const smName of SITEMAP_FILES) {
   const smPath = path.join(ROOT, smName);
@@ -129,11 +192,12 @@ for (const smName of SITEMAP_FILES) {
   const original = readFile(smPath);
   let content    = original;
 
-  // Fix <loc> trailing slashes pointing to .html pages
+  // Normalize <loc> values to the page's preferred canonical URL.
   content = content.replace(/<loc>(https:\/\/afrotools\.com\/[^<]+)<\/loc>/g, (match, url) => {
-    if (url.endsWith('/') && htmlUrls.has(url.slice(0, -1))) {
+    const preferredUrl = preferredPageUrls.get(normalizeSiteUrl(url));
+    if (preferredUrl && preferredUrl !== url) {
       sitemapLocsFixed++;
-      return `<loc>${url.slice(0, -1)}</loc>`;
+      return `<loc>${preferredUrl}</loc>`;
     }
     return match;
   });
@@ -185,10 +249,10 @@ walk(ROOT, (fp, fname) => {
 
   // Re-check for any remaining hreflang violations
   let m;
-  const re = /hreflang="[^"]+" href="(https:\/\/afrotools\.com\/[^"]+\/)"/g;
+  const re = /hreflang="[^"]+" href="(https:\/\/afrotools\.com\/[^"]+)"/g;
   while ((m = re.exec(content)) !== null) {
-    const bare = m[1].slice(0, -1);
-    if (htmlUrls.has(bare)) {
+    const preferredUrl = preferredPageUrls.get(normalizeSiteUrl(m[1]));
+    if (preferredUrl && preferredUrl !== m[1]) {
       issues.hreflangViolations.push({ file: rel, url: m[1] });
     }
   }

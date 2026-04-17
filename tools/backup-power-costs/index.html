@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backup Power Costs | AfroTools</title>
+<meta name="description" content="Track generator fuel, LPG, inverter battery, and solar backup costs across African cities, then contribute verified local power backup data through AfroPoints.">
+<link rel="canonical" href="https://afrotools.com/tools/backup-power-costs/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/market-data.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="md-hero">
+  <div class="md-hero-inner">
+    <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Backup Power Costs</span></div>
+    <div class="md-eyebrow">Backup Power</div>
+    <h1>Backup Power Costs</h1>
+    <p>See what homes and businesses are paying for generator fuel, LPG refills, inverter batteries, and solar backups, then add your own verified cost data.</p>
+    <div class="md-chip-row"><span class="md-chip">Generator fuel</span><span class="md-chip">LPG and inverters</span><span class="md-chip">Solar setup tracking</span></div>
+  </div>
+</section>
+<div class="md-shell">
+  <div class="md-main">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Verified Backup Power Feed</div><div class="md-panel-subtitle">Fresh cost reports across cities and energy types.</div></div>
+      <div class="md-panel-body">
+        <div class="md-toolbar">
+          <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
+          <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Ibadan"></div>
+          <div class="md-field"><label for="mdEnergyType">Energy Type</label><input id="mdEnergyType" class="md-input" data-md-filter="energy_type" placeholder="e.g. Generator Fuel"></div>
+          <div class="md-field"><label for="mdRefresh">Refresh</label><button id="mdRefresh" class="md-btn md-btn-secondary">Reload</button></div>
+        </div>
+        <div class="md-summary" id="mdSummary"></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading backup power costs...</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="md-side">
+    <div class="md-panel">
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Backup Power Cost</div><div class="md-panel-subtitle">Use this for diesel, petrol, LPG, inverter, or solar data.</div></div>
+      <div class="md-panel-body">
+        <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
+        <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Lagos"></div>
+        <div class="md-form-field"><label for="mdReportNeighborhood">Neighborhood</label><input id="mdReportNeighborhood" class="md-input" placeholder="Optional"></div>
+        <div class="md-form-field"><label for="mdReportCurrency">Currency</label><input id="mdReportCurrency" class="md-input" value="NGN"></div>
+        <div class="md-form-field"><label for="mdReportProvider">Provider or Seller</label><input id="mdReportProvider" class="md-input" placeholder="Optional"></div>
+        <div id="mdReportFields"></div>
+        <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
+        <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I paid or checked this myself</option><option value="receipt">Receipt or invoice</option><option value="merchant_quote">Seller quote</option><option value="community_check">Community check</option></select></div>
+        <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional"></div>
+        <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Cost</button></div>
+      </div>
+    </div>
+  </aside>
+</div>
+<div class="md-toast" id="mdToast"></div>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
+<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/market-data-app.js"></script>
+<script>
+document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+window.MarketDataApp.mount({
+  endpoint: '/api/backup-power-costs',
+  responseKey: 'costs',
+  subtype: 'backup_power_cost',
+  vertical: 'backup_power',
+  reportButtonLabel: 'Submit Cost',
+  renderCard: function (row, helpers) {
+    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.energy_type || 'Power cost') + '</h3>' +
+      '<p>' + helpers.escapeHtml((row.product_name || 'Backup product') + ' | ' + (row.city || '')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.cost_amount || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.unit || 'unit') + '</span></div></article>';
+  }
+});
+</script>
+</body>
+</html>
