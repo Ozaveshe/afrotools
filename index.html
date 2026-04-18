@@ -150,7 +150,7 @@
     </div>
     <div class="hero-quicklinks rv d1" aria-label="Popular tools">
       <span class="hero-quicklinks-label">Start with</span>
-      <a class="hero-quicklink" href="/nigeria/ng-paye/">Nigeria PAYE</a>
+      <a class="hero-quicklink" href="/nigeria/ng-salary-tax/">Nigeria PAYE</a>
       <a class="hero-quicklink" href="/ghana/gh-paye/">Ghana PAYE</a>
       <a class="hero-quicklink" href="/tools/pdf-workspace/">PDF Workspace</a>
       <a class="hero-quicklink" href="/tools/vat-calculator/">VAT Calculator</a>
@@ -161,7 +161,7 @@
     <div class="hero-float-cards">
       <div class="hero-float-card hero-float-card--a">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        <div><div>NGN/USD Live</div><div class="hero-float-sub">1 USD = 1,612 NGN</div></div>
+        <div><div>NGN/USD Live</div><div class="hero-float-sub" id="hero-fx-ngn">1 USD = -- NGN</div></div>
       </div>
       <div class="hero-float-card hero-float-card--b">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -331,10 +331,10 @@
           <div class="showcase-mockup">
             <div class="mockup-bar"><span class="mkdot r"></span><span class="mkdot y"></span><span class="mkdot g"></span><span class="mockup-title-txt">LIVE FX RATES</span></div>
             <div class="mockup-body">
-              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F3;&#x1F1EC;</span><div class="mk-fx-body"><div class="mk-fx-code">NGN</div><div class="mk-fx-name">Nigerian Naira</div></div><span class="mk-fx-rate">1 USD = 1,612</span></div>
-              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F0;&#x1F1EA;</span><div class="mk-fx-body"><div class="mk-fx-code">KES</div><div class="mk-fx-name">Kenyan Shilling</div></div><span class="mk-fx-rate">1 USD = 129.4</span></div>
-              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1EC;&#x1F1ED;</span><div class="mk-fx-body"><div class="mk-fx-code">GHS</div><div class="mk-fx-name">Ghana Cedi</div></div><span class="mk-fx-rate">1 USD = 15.3</span></div>
-              <div class="mk-fx-swap">Updated 2 mins ago &middot; <a href="/tools/currency-converter/" style="color:#007AFF">All rates &rarr;</a></div>
+              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F3;&#x1F1EC;</span><div class="mk-fx-body"><div class="mk-fx-code">NGN</div><div class="mk-fx-name">Nigerian Naira</div></div><span class="mk-fx-rate" id="mk-fx-ngn">1 USD = --</span></div>
+              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F0;&#x1F1EA;</span><div class="mk-fx-body"><div class="mk-fx-code">KES</div><div class="mk-fx-name">Kenyan Shilling</div></div><span class="mk-fx-rate" id="mk-fx-kes">1 USD = --</span></div>
+              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1EC;&#x1F1ED;</span><div class="mk-fx-body"><div class="mk-fx-code">GHS</div><div class="mk-fx-name">Ghana Cedi</div></div><span class="mk-fx-rate" id="mk-fx-ghs">1 USD = --</span></div>
+              <div class="mk-fx-swap" id="mk-fx-updated">Loading live rates &middot; <a href="/tools/currency-converter/" style="color:#007AFF">All rates &rarr;</a></div>
             </div>
           </div>
         </div>
@@ -1525,14 +1525,68 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ── LOAD LIVE DATA PREVIEWS FOR HOMEPAGE CARDS ──
-  fetch('/data/forex/latest.json').then(function(r){return r.json()}).then(function(d){
+  function formatHomepageRate(code, value) {
+    if (typeof value !== 'number' || !isFinite(value)) return '--';
+    if (code === 'NGN') return Math.round(value).toLocaleString();
+    if (value >= 100) return value.toLocaleString(undefined, { maximumFractionDigits: 1 });
+    return value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+  }
+
+  function formatHomepageUpdate(timestamp) {
+    var parsed = Date.parse(timestamp || '');
+    if (!isFinite(parsed)) return 'Updated live';
+
+    var diffMinutes = Math.max(0, Math.round((Date.now() - parsed) / 60000));
+    if (diffMinutes < 60) return 'Updated ' + Math.max(1, diffMinutes) + ' min ago';
+
+    var diffHours = Math.round(diffMinutes / 60);
+    if (diffHours < 24) return 'Updated ' + diffHours + 'h ago';
+
+    var diffDays = Math.round(diffHours / 24);
+    return 'Updated ' + diffDays + 'd ago';
+  }
+
+  function applyHomepageFxPreview(data) {
+    if (!data || !data.rates) return;
+
+    var ngn = formatHomepageRate('NGN', data.rates.NGN);
+    var kes = formatHomepageRate('KES', data.rates.KES);
+    var ghs = formatHomepageRate('GHS', data.rates.GHS);
+    var updateLabel = formatHomepageUpdate(data.timestamp);
+
     var fx = document.getElementById('fx-preview');
-    if(fx && d.rates){
-      var ngn = Math.round(d.rates.NGN).toLocaleString();
-      var kes = Math.round(d.rates.KES);
+    if (fx) {
       fx.innerHTML = '<span>USD/NGN <strong style="color:#0062CC">' + ngn + '</strong></span><span>USD/KES <strong style="color:#0062CC">KSh' + kes + '</strong></span>';
     }
-  }).catch(function(){});
+
+    var heroNgn = document.getElementById('hero-fx-ngn');
+    if (heroNgn) heroNgn.textContent = '1 USD = ' + ngn + ' NGN';
+
+    var mockupNgn = document.getElementById('mk-fx-ngn');
+    if (mockupNgn) mockupNgn.textContent = '1 USD = ' + ngn;
+
+    var mockupKes = document.getElementById('mk-fx-kes');
+    if (mockupKes) mockupKes.textContent = '1 USD = ' + kes;
+
+    var mockupGhs = document.getElementById('mk-fx-ghs');
+    if (mockupGhs) mockupGhs.textContent = '1 USD = ' + ghs;
+
+    var mockupUpdated = document.getElementById('mk-fx-updated');
+    if (mockupUpdated) {
+      mockupUpdated.innerHTML = updateLabel + ' &middot; <a href="/tools/currency-converter/" style="color:#007AFF">All rates &rarr;</a>';
+    }
+  }
+
+  fetch('/api/forex?base=USD').then(function(r){
+    if (!r.ok) throw new Error('live forex unavailable');
+    return r.json();
+  }).then(function(d){
+    applyHomepageFxPreview(d);
+  }).catch(function(){
+    fetch('/data/forex/latest.json').then(function(r){ return r.json(); }).then(function(d){
+      applyHomepageFxPreview(d);
+    }).catch(function(){});
+  });
 
   // ── HERO SEARCH WITH LIVE DROPDOWN ──
   (function() {
