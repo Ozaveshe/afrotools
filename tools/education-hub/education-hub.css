@@ -284,6 +284,10 @@
   margin-top: 18px;
 }
 
+.hub-current-plan {
+  margin-top: 18px;
+}
+
 .hub-layout-top {
   grid-template-columns: 1.18fr 0.82fr;
 }
@@ -523,8 +527,14 @@
 .hub-object-list,
 .hub-budget-list,
 .hub-route-list,
-.hub-activity-list {
+  .hub-activity-list {
   display: grid;
+  gap: 12px;
+}
+
+.hub-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -615,6 +625,30 @@
 .hub-mini-grid {
   display: grid;
   gap: 12px;
+}
+
+.hub-source-banner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-radius: 18px;
+  background: #f8fbff;
+  border: 1px solid var(--hub-border);
+}
+
+.hub-source-banner p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--hub-muted);
+}
+
+.hub-source-banner.is-degraded {
+  background: #fff8e8;
+  border-color: #f1d18a;
 }
 
 .hub-mini-card,
@@ -742,6 +776,50 @@
   color: var(--hub-ink);
 }
 
+.hub-plan-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid var(--hub-border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, #f9fbff 100%);
+  text-decoration: none;
+  color: var(--hub-ink);
+}
+
+.hub-plan-top,
+.hub-plan-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.hub-plan-card strong {
+  display: block;
+  font-size: 0.96rem;
+  line-height: 1.2;
+}
+
+.hub-plan-card p,
+.hub-plan-card span,
+.hub-plan-card small {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--hub-muted);
+}
+
+.hub-plan-meta {
+  display: grid;
+  gap: 6px;
+}
+
+.hub-plan-actions span {
+  max-width: 70%;
+}
+
 .hub-route-step {
   grid-template-columns: auto 1fr;
   align-items: flex-start;
@@ -810,6 +888,7 @@
   .hub-grid-three,
   .hub-grid-two,
   .hub-profile-stats,
+  .hub-plan-grid,
   .hub-readiness-grid,
   .hub-surface-grid {
     grid-template-columns: 1fr;
@@ -840,6 +919,7 @@
   .hub-stat-grid,
   .hub-metric-row,
   .hub-budget-grid,
+  .hub-plan-grid,
   .hub-surface-grid {
     grid-template-columns: 1fr;
   }

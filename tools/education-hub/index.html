@@ -19,7 +19,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="education-hub.css?v=20260417a">
+<link rel="stylesheet" href="education-hub.css?v=20260418a">
 <script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
@@ -27,10 +27,11 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
 <script src="/assets/js/afro-auth.js?v=6" defer></script>
-<script src="/assets/js/edu-profile-sync.js?v=33a3d495" defer></script>
-<script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
-<script src="/engines/scholarship-matcher.js?v=7370f3a4" defer></script>
-<script src="education-hub.js?v=20260417c" defer></script>
+<script src="/assets/js/edu-profile-sync.js?v=20260418a" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=20260418a" defer></script>
+<script src="/assets/js/education-scholarship-feed.js?v=20260418a" defer></script>
+<script src="/engines/scholarship-matcher.js?v=20260418a" defer></script>
+<script src="education-hub.js?v=20260418a" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/education-hub/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/education-hub/">
 <meta property="og:locale" content="en_US">
@@ -244,6 +245,22 @@
       </div>
     </section>
 
+    <section class="hub-current-plan">
+      <article class="hub-card hub-plan-panel">
+        <div class="hub-card-head">
+          <div>
+            <span class="hub-card-label">Current Plan</span>
+            <h2>See which parts of the route are active, thin, or blocked</h2>
+          </div>
+          <span class="hub-badge hub-badge-soft" id="currentPlanStatus">Starting up</span>
+        </div>
+        <div class="hub-card-body">
+          <p class="hub-section-note" id="currentPlanSummary">The cockpit is strongest when destination, funding, test, and shortlist signals move together.</p>
+          <div class="hub-plan-grid" id="currentPlanList"></div>
+        </div>
+      </article>
+    </section>
+
     <section class="hub-grid-three">
       <article class="hub-card">
         <div class="hub-card-head">
@@ -258,6 +275,10 @@
             <div><strong id="scholarshipPrimaryCount">0</strong><span>good matches</span></div>
             <div><strong id="scholarshipShortlistCount">0</strong><span>shortlisted</span></div>
             <div><strong id="scholarshipMatchesCount">0</strong><span>total evaluated</span></div>
+          </div>
+          <div class="hub-source-banner" id="scholarshipSourceBanner">
+            <span class="hub-fit hub-fit-ok" id="scholarshipSourceBadge">Checking feed</span>
+            <p id="scholarshipSourceText">Checking scholarship source status.</p>
           </div>
           <p class="hub-section-note" id="scholarshipSummaryText">The hub will surface stronger scholarship signals as your profile improves.</p>
           <div class="hub-mini-grid" id="scholarshipList"></div>

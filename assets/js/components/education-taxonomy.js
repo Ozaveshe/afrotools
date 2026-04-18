@@ -188,7 +188,7 @@
       registryId: 'education-hub',
       title: 'Education Hub',
       href: '/tools/education-hub/',
-      summary: 'Central student cockpit for profile, scholarships, universities, destinations, cost signals, and next-step orchestration.',
+      summary: 'Operating-layer student cockpit for profile, scholarships, universities, destinations, cost signals, and next-step orchestration.',
       productType: 'Registry-backed platform',
       accent: 'Registry + product'
     },

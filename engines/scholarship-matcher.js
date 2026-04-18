@@ -36,6 +36,15 @@ var ScholarshipMatcher = (function () {
     }
   }
 
+  function dispatchQuickProfileEvent(profile) {
+    if (typeof window === 'undefined' || typeof window.dispatchEvent !== 'function' || typeof window.CustomEvent !== 'function') return;
+    window.dispatchEvent(new CustomEvent('afroedu:quick-profile-updated', {
+      detail: {
+        profile: profile || null
+      }
+    }));
+  }
+
   function normalizeGPA(value, scale) {
     if (!value || !scale) return null;
     var normalizer = GPA_NORMALIZERS[scale];
@@ -244,6 +253,7 @@ var ScholarshipMatcher = (function () {
     if (typeof localStorage !== 'undefined') {
       safeWrite(localStorage, QUICK_PROFILE_KEY, profile);
     }
+    dispatchQuickProfileEvent(profile);
   }
 
   function clearQuickProfile() {
@@ -253,6 +263,7 @@ var ScholarshipMatcher = (function () {
     try {
       if (typeof localStorage !== 'undefined') localStorage.removeItem(QUICK_PROFILE_KEY);
     } catch (error) {}
+    dispatchQuickProfileEvent(null);
   }
 
   return {

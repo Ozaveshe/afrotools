@@ -826,8 +826,8 @@ function renderResults() {
   // Show results
   document.getElementById('resultsCard').classList.add('on');
   document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = 'Analyse My Kenya Tax Position â†’';
-  document.getElementById('aiStatus').textContent = `Gross: ${fmt(r.gross)}/mo Â· Take-home: ${fmt(r.net)}/mo Â· Rate: ${pct(r.effectiveRate)}`;
+  document.getElementById('aiBtn').textContent = 'Analyse My Kenya Tax Position \u2192';
+  document.getElementById('aiStatus').textContent = `Gross: ${fmt(r.gross)}/mo \u00B7 Take-home: ${fmt(r.net)}/mo \u00B7 Rate: ${pct(r.effectiveRate)}`;
 }
 
 function setPeriod(p, btn) {
@@ -955,7 +955,7 @@ function getShareState() {
 }
 function shareCalc() {
   if (!RESULT) return;
-  AfroTools.shareState.share({ title: 'My Kenya Tax Breakdown', text: `Gross ${fmt(RESULT.gross)}/mo â†’ Take-home ${fmt(RESULT.net)}/mo (${pct(RESULT.effectiveRate)} rate)`, state: getShareState(), toolId: 'ke-paye' });
+  AfroTools.shareState.share({ title: 'My Kenya Tax Breakdown', text: `Gross ${fmt(RESULT.gross)}/mo \u2192 Take-home ${fmt(RESULT.net)}/mo (${pct(RESULT.effectiveRate)} rate)`, state: getShareState(), toolId: 'ke-paye' });
 }
 function whatsappShare() {
   if (!RESULT) return;

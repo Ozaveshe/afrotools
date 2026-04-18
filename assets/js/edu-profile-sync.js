@@ -27,6 +27,7 @@ var EduProfileSync = (function () {
   ];
 
   var LOCAL_CACHE_KEY = 'afroedu-profile-cache';
+  var PROFILE_EVENT = 'afroedu:profile-updated';
   var pendingPayload = null;
   var flushTimer = null;
 
@@ -47,6 +48,17 @@ var EduProfileSync = (function () {
     }
   }
 
+  function dispatchProfileEvent(profile, payload, reason) {
+    if (typeof window === 'undefined' || typeof window.dispatchEvent !== 'function' || typeof window.CustomEvent !== 'function') return;
+    window.dispatchEvent(new CustomEvent(PROFILE_EVENT, {
+      detail: {
+        profile: profile || null,
+        payload: payload || null,
+        reason: reason || 'local'
+      }
+    }));
+  }
+
   function sanitizePayload(input) {
     if (!input || typeof input !== 'object') return null;
 
@@ -63,7 +75,7 @@ var EduProfileSync = (function () {
     return hasFields ? payload : null;
   }
 
-  function mergeIntoCache(payload) {
+  function mergeIntoCache(payload, reason) {
     if (!payload) return null;
 
     var cached = safeRead(LOCAL_CACHE_KEY, {}) || {};
@@ -72,6 +84,7 @@ var EduProfileSync = (function () {
     });
 
     safeWrite(LOCAL_CACHE_KEY, next);
+    dispatchProfileEvent(next, payload, reason);
     return next;
   }
 
@@ -133,7 +146,7 @@ var EduProfileSync = (function () {
     var payload = sanitizePayload(input);
     if (!payload) return;
 
-    mergeIntoCache(payload);
+    mergeIntoCache(payload, 'local');
     queueRemoteSync(payload);
   }
 
@@ -153,7 +166,7 @@ var EduProfileSync = (function () {
         return response.json();
       }).then(function (data) {
         var profile = data && data.profile ? data.profile : null;
-        if (profile) mergeIntoCache(profile);
+        if (profile) mergeIntoCache(profile, 'remote');
         return profile;
       }).catch(function () {
         return null;

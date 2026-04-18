@@ -8,6 +8,8 @@
   var PREDICTED_KEY = 'afroedu-predicted';
   var PROFILE_CACHE_KEY = 'afroedu-profile-cache';
   var COCKPIT_KEY = 'afroedu-cockpit-state';
+  var COCKPIT_EVENT = 'afroedu:cockpit-updated';
+  var ACTIVITY_EVENT = 'afroedu:activity-updated';
 
   var SOURCE_PRIORITY = {
     'post-utme': 3,
@@ -32,6 +34,11 @@
     }
   }
 
+  function dispatchEvent(name, detail) {
+    if (!root || typeof root.dispatchEvent !== 'function' || typeof root.CustomEvent !== 'function') return;
+    root.dispatchEvent(new CustomEvent(name, { detail: detail || {} }));
+  }
+
   function pushProfileUpdate(payload) {
     if (!payload || !Object.keys(payload).length) return;
     if (typeof EduProfileSync !== 'undefined' && typeof EduProfileSync.update === 'function') {
@@ -50,6 +57,7 @@
     history.unshift(entry);
     if (history.length > 100) history.length = 100;
     safeWrite(ACTIVITY_KEY, history);
+    dispatchEvent(ACTIVITY_EVENT, { entry: entry });
   }
 
   function getCurrentScoreSource() {
@@ -116,7 +124,9 @@
   }
 
   function saveCockpitState(state) {
-    safeWrite(COCKPIT_KEY, ensureCockpitState(state));
+    var nextState = ensureCockpitState(state);
+    safeWrite(COCKPIT_KEY, nextState);
+    dispatchEvent(COCKPIT_EVENT, { state: nextState });
   }
 
   function slugify(value, fallback) {

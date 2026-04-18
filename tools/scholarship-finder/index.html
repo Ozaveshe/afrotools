@@ -90,6 +90,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .summary-item span{display:block;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-top:6px}
 .summary-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
 .shortlist-note{font-size:.72rem;color:#16a34a;font-weight:700;margin-left:auto}
+.feed-note{margin-top:8px;font-size:.72rem;line-height:1.6;color:#64748b}
+.feed-note.warn{color:#a16207}
 .fit-explainer{margin-top:10px;font-size:.72rem;color:#475569;line-height:1.6}
 .fit-explainer strong{color:#0f172a}
 .fit-line{display:block;margin-top:4px}
@@ -117,9 +119,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-auth.js?v=6" defer></script>
 <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
-<script src="/assets/js/edu-profile-sync.js?v=33a3d495" defer></script>
-<script src="/assets/js/afro-edu-bridge.js?v=1" defer></script>
-<script src="/engines/scholarship-matcher.js?v=7370f3a4" defer></script>
+<script src="/assets/js/edu-profile-sync.js?v=20260418a" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=20260418a" defer></script>
+<script src="/assets/js/education-scholarship-feed.js?v=20260418a" defer></script>
+<script src="/engines/scholarship-matcher.js?v=20260418a" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scholarship-finder/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scholarship-finder/" />
 <meta property="og:locale" content="en_US">
@@ -373,6 +376,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 <div class="card-body">
   <p class="summary-text" id="summaryText">Start with a quick scholarship check or build your full profile to see stronger fit explanations and save scholarships into a shortlist.</p>
+  <p class="feed-note" id="feedStatus">Checking scholarship source status.</p>
   <div class="summary-grid">
     <div class="summary-item"><strong id="summaryStrong">0</strong><span>Strong</span></div>
     <div class="summary-item"><strong id="summaryGood">0</strong><span>Good</span></div>
@@ -448,6 +452,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   var shortlistOnly = false;
   var SHORTLIST_KEY = 'afro-scholarship-shortlist';
   var shortlist = loadShortlist();
+  var scholarshipFeedMeta = {
+    label: 'Checking feed',
+    message: 'Checking scholarship source status.',
+    isDegraded: false
+  };
   var GPA_BANDS = {
     elite: { value: 3.8, scale: '4.0' },
     strong: { value: 3.4, scale: '4.0' },
@@ -514,6 +523,15 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
   function formatScholarshipCount(count) {
     return count >= 120 ? '120+ Scholarships' : count + ' Scholarships';
+  }
+
+  function updateFeedStatus() {
+    var note = getEl('feedStatus');
+    if (!note) return;
+    note.textContent = scholarshipFeedMeta && scholarshipFeedMeta.message
+      ? scholarshipFeedMeta.message
+      : 'Checking scholarship source status.';
+    note.className = 'feed-note' + (scholarshipFeedMeta && scholarshipFeedMeta.isDegraded ? ' warn' : '');
   }
 
   function listAsPhrase(items) {
@@ -722,9 +740,14 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       summaryText = 'Your full profile is shaping the list below. Save high-fit scholarships and open the official details for the ones you want to pursue.';
     }
 
+    if (scholarshipFeedMeta && scholarshipFeedMeta.isDegraded) {
+      summaryText = scholarshipFeedMeta.message + ' ' + summaryText;
+    }
+
     getEl('summaryText').textContent = summaryText;
     getEl('shortlistToggle').textContent = shortlistOnly ? 'Show all matches' : 'View shortlist';
     getEl('shortlistNote').textContent = shortlist.length ? shortlist.length + ' saved scholarship' + (shortlist.length === 1 ? '' : 's') : 'No saved scholarships yet';
+    updateFeedStatus();
   }
 
   function findScholarshipByKey(key) {
@@ -820,26 +843,42 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   }
 
   function loadScholarships() {
-    fetch('/api/scholarships')
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (data.scholarships && data.scholarships.length > 0) {
-          allScholarships = data.scholarships;
-        } else {
-          allScholarships = FALLBACK;
-        }
-        isLoading = false;
-        getEl('totalBadge').textContent = formatScholarshipCount(allScholarships.length);
-        tryLoadProfile();
-        applyFilters();
-      })
-      .catch(function () {
-        allScholarships = FALLBACK;
-        isLoading = false;
-        getEl('totalBadge').textContent = formatScholarshipCount(allScholarships.length);
-        tryLoadProfile();
-        applyFilters();
-      });
+    var loader = window.AfroScholarshipFeed && typeof window.AfroScholarshipFeed.load === 'function'
+      ? window.AfroScholarshipFeed.load()
+      : fetch('/api/scholarships')
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          return {
+            scholarships: data && data.scholarships && data.scholarships.length ? data.scholarships : FALLBACK,
+            meta: {
+              label: data && data.scholarships && data.scholarships.length ? 'Live feed' : 'Curated fallback',
+              message: data && data.scholarships && data.scholarships.length
+                ? 'Live scholarship feed loaded.'
+                : 'Live scholarship feed returned no active rows, so the finder is using a curated fallback list.',
+              isDegraded: !(data && data.scholarships && data.scholarships.length)
+            }
+          };
+        })
+        .catch(function () {
+          return {
+            scholarships: FALLBACK,
+            meta: {
+              label: 'Curated fallback',
+              message: 'Live scholarship feed is unavailable. Showing a narrower curated backup dataset instead.',
+              isDegraded: true
+            }
+          };
+        });
+
+    loader.then(function (result) {
+      allScholarships = result && result.scholarships && result.scholarships.length ? result.scholarships : FALLBACK;
+      scholarshipFeedMeta = result && result.meta ? result.meta : scholarshipFeedMeta;
+      isLoading = false;
+      getEl('totalBadge').textContent = formatScholarshipCount(allScholarships.length);
+      updateFeedStatus();
+      tryLoadProfile();
+      applyFilters();
+    });
   }
 
   function tryLoadProfile() {

@@ -3,15 +3,11 @@
 
   var SHORTLIST_KEY = 'afro-scholarship-shortlist';
   var IELTS_STATE_KEY = 'afro-ielts-pathway-state';
-
-  var fallbackScholarships = [
-    { name: 'Chevening Scholarship', provider: 'UK Government', destinations: ['uk'], levels: ['masters'], fields: ['any'], funding: 'full', min_gpa_4: 3.0, min_ielts: 6.5, deadline_text: 'Nov', info_url: 'https://www.chevening.org' },
-    { name: 'DAAD Scholarship', provider: 'German Academic Exchange Service', destinations: ['eu'], levels: ['masters', 'phd'], fields: ['any'], funding: 'full', min_gpa_4: 3.0, min_ielts: 6.0, deadline_text: 'Oct-Nov', info_url: 'https://www.daad.de' },
-    { name: 'Mastercard Foundation Scholars', provider: 'Mastercard Foundation', destinations: ['global'], levels: ['undergrad', 'masters'], fields: ['any'], funding: 'full', min_gpa_4: 3.0, min_ielts: 6.0, deadline_text: 'Varies', info_url: 'https://mastercardfdn.org/all/scholars/' },
-    { name: 'Fulbright Foreign Student Program', provider: 'US Department of State', destinations: ['us'], levels: ['masters', 'phd'], fields: ['any'], funding: 'full', min_gpa_4: 3.0, min_ielts: 6.5, deadline_text: 'Feb-Oct', info_url: 'https://foreign.fulbrightonline.org/' },
-    { name: 'Commonwealth Scholarship', provider: 'Commonwealth Secretariat', destinations: ['uk'], levels: ['masters', 'phd'], fields: ['any'], funding: 'full', min_gpa_4: 3.0, min_ielts: 6.5, deadline_text: 'Dec', info_url: 'https://cscuk.fcdo.gov.uk/' },
-    { name: 'Australia Awards Africa', provider: 'Australian Government', destinations: ['australia'], levels: ['masters'], fields: ['any'], funding: 'full', min_gpa_4: 3.0, min_ielts: 6.5, deadline_text: 'Apr-May', info_url: 'https://www.dfat.gov.au/' }
-  ];
+  var PROFILE_CACHE_KEY = 'afroedu-profile-cache';
+  var QUICK_PROFILE_KEY = 'afro-quick-edu-profile';
+  var COCKPIT_KEY = 'afroedu-cockpit-state';
+  var ACTIVITY_KEY = 'afro_tool_history';
+  var SCHOLARSHIP_CACHE_KEY = 'afroedu-scholarship-feed-cache-v1';
 
   var destinationOptions = [
     'United Kingdom',
@@ -36,22 +32,62 @@
   };
 
   var cockpit = {
-    profile: {},
     remoteProfile: null,
     cachedProfile: null,
     quickProfile: null,
-    state: { universities: [], destinations: [], deadlines: [], budgetSignals: [] },
+    profile: {},
+    state: emptyCockpitState(),
     scholarships: [],
+    scholarshipSource: buildDefaultScholarshipSource(),
     matches: [],
     shortlistKeys: [],
     shortlistItems: [],
     activity: [],
-    jamb: null,
+    jamb: {},
     ieltsState: null
   };
+  var lastRemoteProfileRefreshAt = 0;
+
+  function emptyCockpitState() {
+    return {
+      universities: [],
+      destinations: [],
+      deadlines: [],
+      budgetSignals: []
+    };
+  }
+
+  function buildDefaultScholarshipSource() {
+    return {
+      mode: 'fallback',
+      label: 'Checking feed',
+      message: 'Checking scholarship source status.',
+      tone: 'ok',
+      count: 0,
+      cachedAt: null,
+      updatedLabel: '',
+      isDegraded: false,
+      error: ''
+    };
+  }
 
   function getEl(id) {
     return document.getElementById(id);
+  }
+
+  function setText(id, value) {
+    var el = getEl(id);
+    if (el) el.textContent = value;
+  }
+
+  function setHtml(id, value) {
+    var el = getEl(id);
+    if (el) el.innerHTML = value;
+  }
+
+  function setWidth(id, value) {
+    var el = getEl(id);
+    if (el) el.style.width = value;
   }
 
   function notify(message, type) {
@@ -76,12 +112,13 @@
     return div.innerHTML;
   }
 
-  function uniqueStrings(list) {
-    return (list || []).reduce(function (acc, item) {
-      if (!item) return acc;
-      var value = String(item).trim();
-      if (!value) return acc;
-      if (acc.indexOf(value) === -1) acc.push(value);
+  function uniqueStrings(values) {
+    return (values || []).reduce(function (acc, value) {
+      var next = String(value || '').trim();
+      if (!next) return acc;
+      if (!acc.some(function (existing) { return existing.toLowerCase() === next.toLowerCase(); })) {
+        acc.push(next);
+      }
       return acc;
     }, []);
   }
@@ -91,7 +128,9 @@
       .replace(/[-_]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
-      .replace(/\b\w/g, function (match) { return match.toUpperCase(); });
+      .replace(/\b\w/g, function (match) {
+        return match.toUpperCase();
+      });
   }
 
   function slugify(value) {
@@ -106,78 +145,137 @@
       secondary: 'Secondary',
       undergraduate: 'Undergraduate',
       undergrad: 'Undergraduate',
+      bachelors: 'Undergraduate',
       postgraduate: 'Postgraduate',
-      masters: 'Masterâ€™s',
+      masters: "Master's",
       phd: 'PhD',
-      postdoc: 'Postdoc'
+      postdoc: 'Postdoc',
+      'monthly-budget': 'Monthly Budget'
     };
     return map[level] || titleCase(level);
   }
 
   function formatRelative(dateValue) {
     if (!dateValue) return 'No date set';
-    var now = new Date();
+
     var date = new Date(dateValue);
     if (isNaN(date.getTime())) return 'Invalid date';
 
-    var diff = Math.ceil((date.getTime() - now.getTime()) / 86400000);
+    var diff = Math.ceil((date.getTime() - Date.now()) / 86400000);
     if (diff < 0) return Math.abs(diff) + ' day' + (Math.abs(diff) === 1 ? '' : 's') + ' overdue';
     if (diff === 0) return 'Due today';
     if (diff === 1) return 'Due tomorrow';
     return diff + ' days left';
   }
 
+  function formatTimeAgo(timestamp) {
+    var date = new Date(timestamp);
+    if (isNaN(date.getTime())) return 'Recently';
+
+    var diffDays = Math.floor((Date.now() - date.getTime()) / 86400000);
+    if (diffDays <= 0) return 'Today';
+    if (diffDays === 1) return '1 day ago';
+    if (diffDays < 30) return diffDays + ' days ago';
+
+    var diffMonths = Math.floor(diffDays / 30);
+    if (diffMonths <= 1) return '1 month ago';
+    return diffMonths + ' months ago';
+  }
+
   function formatMoney(value, currency) {
-    if (value === null || value === undefined || value === '') return 'â€”';
+    if (value === null || value === undefined || value === '') return '-';
+
     var number = Number(value);
-    if (isNaN(number)) return 'â€”';
+    if (isNaN(number)) return '-';
     return (currency || '') + number.toLocaleString();
   }
 
-  function buildScholarshipKey(scholarship) {
-    return String(scholarship.application_url || scholarship.info_url || scholarship.name || '').trim().toLowerCase();
+  function getDaysUntil(dateValue) {
+    if (!dateValue) return null;
+
+    var date = new Date(dateValue);
+    if (isNaN(date.getTime())) return null;
+    return Math.ceil((date.getTime() - Date.now()) / 86400000);
   }
 
-  function getScholarshipShortlistKeys() {
-    return safeRead(SHORTLIST_KEY, [], localStorage) || [];
+  function buildScholarshipKey(scholarship) {
+    return String(scholarship && (scholarship.application_url || scholarship.info_url || scholarship.name) || '')
+      .trim()
+      .toLowerCase();
+  }
+
+  function readCachedProfile() {
+    if (window.EduProfileSync && typeof window.EduProfileSync.getCachedProfile === 'function') {
+      return window.EduProfileSync.getCachedProfile();
+    }
+    return safeRead(PROFILE_CACHE_KEY, null, localStorage);
+  }
+
+  function readQuickProfile() {
+    if (window.ScholarshipMatcher && typeof window.ScholarshipMatcher.getQuickProfile === 'function') {
+      return window.ScholarshipMatcher.getQuickProfile();
+    }
+    return safeRead(QUICK_PROFILE_KEY, null, localStorage);
+  }
+
+  function readCockpitState() {
+    if (window.AfroEdu && typeof window.AfroEdu.getCockpitState === 'function') {
+      return window.AfroEdu.getCockpitState() || emptyCockpitState();
+    }
+    return safeRead(COCKPIT_KEY, emptyCockpitState(), localStorage) || emptyCockpitState();
+  }
+
+  function readJambSummary() {
+    if (window.AfroEdu && typeof window.AfroEdu.summary === 'function') {
+      return window.AfroEdu.summary() || {};
+    }
+    return {};
   }
 
   function readIeltsState() {
     return safeRead(IELTS_STATE_KEY, null, localStorage);
   }
 
+  function getScholarshipShortlistKeys() {
+    return safeRead(SHORTLIST_KEY, [], localStorage) || [];
+  }
+
   function mapProfileWithFallbacks(remote, cached, quick) {
-      var merged = Object.assign({}, cached || {}, quick || {}, remote || {});
-      merged.target_countries = uniqueStrings([]
-        .concat((remote && remote.target_countries) || [])
-        .concat((cached && cached.target_countries) || [])
-        .concat((quick && quick.target_countries) || []));
-      merged.target_fields = uniqueStrings([]
-        .concat((remote && remote.target_fields) || [])
-        .concat((cached && cached.target_fields) || [])
-        .concat((quick && quick.target_fields) || []));
-      return merged;
-    }
+    var merged = Object.assign({}, cached || {}, quick || {}, remote || {});
+
+    merged.target_countries = uniqueStrings([]
+      .concat((remote && remote.target_countries) || [])
+      .concat((cached && cached.target_countries) || [])
+      .concat((quick && quick.target_countries) || []));
+
+    merged.target_fields = uniqueStrings([]
+      .concat((remote && remote.target_fields) || [])
+      .concat((cached && cached.target_fields) || [])
+      .concat((quick && quick.target_fields) || []));
+
+    return merged;
+  }
 
   function mergeSignalsIntoProfile(profile) {
     var merged = Object.assign({}, profile || {});
-    var ieltsState = cockpit.ieltsState;
-    var latestBudget = cockpit.state.budgetSignals && cockpit.state.budgetSignals.length ? cockpit.state.budgetSignals[0] : null;
+    var ieltsState = cockpit.ieltsState || {};
+    var budgetSignals = cockpit.state.budgetSignals || [];
+    var latestBudget = budgetSignals.length ? budgetSignals.slice().sort(sortByRecency)[0] : null;
     var savedDestinations = cockpit.state.destinations || [];
 
-    if (!merged.ielts_overall && ieltsState && ieltsState.lastOverall) {
+    if (!merged.ielts_overall && ieltsState.lastOverall) {
       merged.ielts_overall = parseFloat(ieltsState.lastOverall);
     }
 
-    if (!merged.target_study_level && latestBudget && latestBudget.level) {
+    if (!merged.target_study_level && latestBudget && latestBudget.level && latestBudget.level !== 'monthly-budget') {
       merged.target_study_level = latestBudget.level;
     }
 
-    if ((!merged.target_countries || !merged.target_countries.length) && ieltsState && ieltsState.targetDestination) {
+    if ((!merged.target_countries || !merged.target_countries.length) && ieltsState.targetDestination) {
       merged.target_countries = [titleCase(ieltsState.targetDestination)];
     }
 
-    if (latestBudget && latestBudget.destination) {
+    if (latestBudget && latestBudget.destination && latestBudget.level !== 'monthly-budget') {
       merged.target_countries = uniqueStrings((merged.target_countries || []).concat([latestBudget.destination]));
     }
 
@@ -191,69 +289,96 @@
   }
 
   function normalizeScholarshipDestination(country) {
-      var key = String(country || '')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
+    var key = slugify(country);
+    var aliases = {
+      uk: 'uk',
+      'united-kingdom': 'uk',
+      britain: 'uk',
+      england: 'uk',
+      scotland: 'uk',
+      wales: 'uk',
+      'great-britain': 'uk',
+      us: 'us',
+      usa: 'us',
+      'united-states': 'us',
+      america: 'us',
+      eu: 'eu',
+      europe: 'eu',
+      germany: 'eu',
+      france: 'eu',
+      ireland: 'eu',
+      netherlands: 'eu',
+      belgium: 'eu',
+      sweden: 'eu',
+      finland: 'eu',
+      norway: 'eu',
+      denmark: 'eu',
+      spain: 'eu',
+      italy: 'eu',
+      austria: 'eu',
+      canada: 'canada',
+      australia: 'australia',
+      africa: 'africa',
+      global: 'global'
+    };
+    return aliases[key] || key;
+  }
 
-      var aliases = {
-        uk: 'uk',
-        'united-kingdom': 'uk',
-        britain: 'uk',
-        england: 'uk',
-        scotland: 'uk',
-        wales: 'uk',
-        'great-britain': 'uk',
-        us: 'us',
-        usa: 'us',
-        'united-states': 'us',
-        america: 'us',
-        eu: 'eu',
-        europe: 'eu',
-        germany: 'eu',
-        france: 'eu',
-        ireland: 'eu',
-        netherlands: 'eu',
-        belgium: 'eu',
-        sweden: 'eu',
-        finland: 'eu',
-        norway: 'eu',
-        denmark: 'eu',
-        spain: 'eu',
-        italy: 'eu',
-        austria: 'eu',
-        canada: 'canada',
-        australia: 'australia'
-      };
+  function buildMatcherProfile(profile) {
+    return {
+      gpa_value: profile.gpa_value || null,
+      gpa_scale: profile.gpa_scale || null,
+      ielts_overall: profile.ielts_overall || null,
+      target_study_level: profile.target_study_level || null,
+      target_fields: uniqueStrings(profile.target_fields || []),
+      target_countries: uniqueStrings(profile.target_countries || []).reduce(function (acc, country) {
+        var normalized = normalizeScholarshipDestination(country);
+        if (normalized && acc.indexOf(normalized) === -1) acc.push(normalized);
+        return acc;
+      }, [])
+    };
+  }
 
-      return aliases[key] || key;
-    }
+  function computeScholarshipMatches(profile, scholarships) {
+    if (!window.ScholarshipMatcher || typeof window.ScholarshipMatcher.match !== 'function') return [];
+    if (!scholarships.length) return [];
 
-    function buildMatcherProfile(profile) {
-      return {
-        gpa_value: profile.gpa_value || null,
-        gpa_scale: profile.gpa_scale || null,
-        ielts_overall: profile.ielts_overall || null,
-        target_study_level: profile.target_study_level || null,
-        target_fields: uniqueStrings(profile.target_fields || []),
-        target_countries: uniqueStrings(profile.target_countries || []).reduce(function (acc, country) {
-          var normalized = normalizeScholarshipDestination(country);
-          if (normalized && acc.indexOf(normalized) === -1) {
-            acc.push(normalized);
-          }
-          return acc;
-        }, [])
-      };
-    }
+    var rawMatches = window.ScholarshipMatcher.match(scholarships, buildMatcherProfile(profile)) || [];
+    return rawMatches.map(function (match) {
+      var category = match.category || 'Possible';
+      var categoryClass = match.categoryClass;
+      if (!categoryClass && typeof window.ScholarshipMatcher.categoryClass === 'function') {
+        categoryClass = window.ScholarshipMatcher.categoryClass(category);
+      }
+      return Object.assign({}, match, {
+        category: category,
+        categoryClass: categoryClass || 'match-possible'
+      });
+    }).sort(function (left, right) {
+      return (right.percent || 0) - (left.percent || 0);
+    });
+  }
+
+  function resolveScholarshipShortlist(allScholarships, shortlistKeys) {
+    if (!shortlistKeys.length) return [];
+
+    var lookup = {};
+    allScholarships.forEach(function (scholarship) {
+      lookup[buildScholarshipKey(scholarship)] = scholarship;
+    });
+
+    return shortlistKeys.map(function (key) {
+      return lookup[key];
+    }).filter(Boolean);
+  }
 
   function extractActivity() {
-    var history = safeRead('afro_tool_history', [], localStorage) || [];
     var labels = {
       'gpa-calculator': 'Updated GPA profile',
       'ielts-calculator': 'Updated IELTS pathway',
       'degree-checker': 'Checked degree readiness',
       'scholarship-finder': 'Worked scholarship flow',
-      'study-abroad-cost': 'Updated cost plan',
+      'study-abroad-cost': 'Updated affordability route',
       'student-budget': 'Updated monthly survival plan',
       'university-ranking': 'Updated university shortlist',
       'education-hub': 'Updated cockpit',
@@ -262,7 +387,7 @@
       'jamb-aggregate': 'Saved JAMB aggregate score'
     };
 
-    return history.filter(function (item) {
+    return (safeRead(ACTIVITY_KEY, [], localStorage) || []).filter(function (item) {
       return labels[item.tool];
     }).slice(0, 8).map(function (item) {
       return {
@@ -285,15 +410,11 @@
       'target_fields'
     ];
 
-    var filled = 0;
-    fields.forEach(function (field) {
+    var filled = fields.reduce(function (count, field) {
       var value = profile[field];
-      if (Array.isArray(value)) {
-        if (value.length) filled += 1;
-      } else if (value !== undefined && value !== null && value !== '') {
-        filled += 1;
-      }
-    });
+      if (Array.isArray(value)) return count + (value.length ? 1 : 0);
+      return count + ((value !== undefined && value !== null && value !== '') ? 1 : 0);
+    }, 0);
 
     return {
       filled: filled,
@@ -316,15 +437,25 @@
     });
   }
 
+  function sortByRecency(left, right) {
+    return Number(right.updatedAt || right.savedAt || 0) - Number(left.updatedAt || left.savedAt || 0);
+  }
+
   function buildChecklist(profile, signals) {
-    var shortlistCount = signals.shortlistItems.length;
-    var destinationsCount = signals.destinations.length;
-    var universitiesCount = signals.universities.length;
-    var budgetCount = signals.budgetSignals.length;
-    var deadlineCount = signals.deadlines.length;
-    var wantsStudyAbroad = destinationsCount > 0 || (profile.target_countries && profile.target_countries.length > 0);
+    var wantsStudyAbroad = signals.destinations.length > 0 || (profile.target_countries && profile.target_countries.length > 0);
     var hasScholarMatches = signals.goodMatches > 0;
     var hasDegreeReadiness = hasDegreeReadinessSignal(signals);
+    var scholarshipHint = 'Run Scholarship Finder after profile setup.';
+
+    if (signals.shortlistItems.length) {
+      scholarshipHint = signals.shortlistItems.length + ' saved scholarship' + (signals.shortlistItems.length === 1 ? '' : 's');
+    } else if (hasScholarMatches) {
+      scholarshipHint = signals.goodMatches + ' good matches available right now.';
+    }
+
+    if (signals.scholarshipSource.isDegraded) {
+      scholarshipHint += ' Feed status: ' + signals.scholarshipSource.label.toLowerCase() + '.';
+    }
 
     return [
       {
@@ -358,36 +489,36 @@
       {
         key: 'scholarships',
         title: 'Build your scholarship shortlist',
-        complete: shortlistCount > 0,
-        hint: shortlistCount > 0 ? shortlistCount + ' saved scholarship' + (shortlistCount === 1 ? '' : 's') : (hasScholarMatches ? signals.goodMatches + ' good matches available right now.' : 'Run Scholarship Finder after profile setup.'),
+        complete: signals.shortlistItems.length > 0,
+        hint: scholarshipHint,
         href: '/tools/scholarship-finder/'
       },
       {
         key: 'universities',
         title: 'Save universities or schools',
-        complete: universitiesCount >= 3,
-        hint: universitiesCount ? universitiesCount + ' saved so far.' : 'Use University Rankings to build the shortlist or quick-add your own school.',
+        complete: signals.universities.length >= 3,
+        hint: signals.universities.length ? signals.universities.length + ' saved so far.' : 'Use University Rankings to build the shortlist or quick-add your own school.',
         href: '/tools/university-ranking/'
       },
       {
         key: 'destinations',
         title: 'Set destinations',
-        complete: destinationsCount > 0,
-        hint: destinationsCount ? destinationsCount + ' destination' + (destinationsCount === 1 ? '' : 's') + ' on file.' : 'Add destinations you are seriously considering.',
+        complete: signals.destinations.length > 0,
+        hint: signals.destinations.length ? signals.destinations.length + ' destination' + (signals.destinations.length === 1 ? '' : 's') + ' on file.' : 'Add destinations you are seriously considering.',
         href: '/tools/study-abroad-cost/'
       },
       {
         key: 'budget',
         title: 'Estimate a real cost signal',
-        complete: budgetCount > 0,
-        hint: budgetCount ? 'Recent cost plan saved to the cockpit.' : 'Study Abroad Cost can save a live affordability signal here.',
+        complete: signals.budgetSignals.length > 0,
+        hint: signals.budgetSignals.length ? 'Recent cost plan saved to the cockpit.' : 'Study Abroad Cost can save a live affordability signal here.',
         href: '/tools/study-abroad-cost/'
       },
       {
         key: 'deadlines',
         title: 'Track a deadline',
-        complete: deadlineCount > 0,
-        hint: deadlineCount ? deadlineCount + ' upcoming date' + (deadlineCount === 1 ? '' : 's') + ' tracked.' : 'Add the next application or test milestone.',
+        complete: signals.deadlines.length > 0,
+        hint: signals.deadlines.length ? signals.deadlines.length + ' upcoming date' + (signals.deadlines.length === 1 ? '' : 's') + ' tracked.' : 'Add the next application or test milestone.',
         href: '#deadline-form'
       }
     ];
@@ -395,485 +526,7 @@
 
   function buildNextActions(profile, signals) {
     var actions = [];
-    var topMatch = signals.matches && signals.matches.length ? signals.matches[0] : null;
-
-    if (signals.completion.percent < 50) {
-      actions.push({
-        title: 'Complete the core profile first',
-        copy: 'Your cockpit is still missing the basics that make recommendations sharper: level, field, destination, and institution.',
-        href: '#profile-editor',
-        cta: 'Update profile'
-      });
-    }
-
-    if (!profile.gpa_value) {
-      actions.push({
-        title: 'Set your GPA',
-        copy: 'GPA is still missing, which weakens scholarship, study-abroad, and university-fit guidance across the hub.',
-        href: '/tools/gpa-calculator/',
-        cta: 'Open GPA calculator'
-      });
-    }
-
-    if ((profile.target_countries || []).length && !profile.ielts_overall) {
-      actions.push({
-        title: 'Add your IELTS pathway target',
-        copy: 'You already have destination intent, but the hub cannot judge your English readiness yet.',
-        href: '/tools/ielts-calculator/',
-        cta: 'Plan IELTS'
-      });
-    }
-
-    if (signals.goodMatches > 0 && signals.shortlistItems.length === 0) {
-      actions.push({
-        title: 'Turn matches into a shortlist',
-        copy: 'You have ' + signals.goodMatches + ' stronger scholarship matches available. Save the best ones so the cockpit can track them.',
-        href: '/tools/scholarship-finder/',
-        cta: 'Review scholarship matches'
-      });
-    }
-
-    if (signals.universities.length === 0) {
-      actions.push({
-        title: 'Save your first universities',
-        copy: 'A real application plan usually starts with 3-5 schools. Build the shortlist in University Rankings, then keep the saved schools here.',
-        href: '/tools/university-ranking/',
-        cta: 'Build shortlist'
-      });
-    }
-
-    if (signals.destinations.length > 0 && signals.budgetSignals.length === 0) {
-      actions.push({
-        title: 'Translate destinations into real costs',
-        copy: 'You have destination intent on file, but no affordability signal yet. Run one cost scenario so the hub can compare paths.',
-        href: '/tools/study-abroad-cost/',
-        cta: 'Estimate study abroad cost'
-      });
-    }
-
-    if (signals.deadlines.length === 0) {
-      actions.push({
-        title: 'Track the next deadline',
-        copy: 'The cockpit gets more valuable when a real application, test, or scholarship date is attached to the plan.',
-        href: '#deadline-form',
-        cta: 'Add deadline'
-      });
-    }
-
-    if (!actions.length && topMatch) {
-      actions.push({
-        title: 'Push from planning into applications',
-        copy: 'Your profile is in good shape. Keep refining your shortlist and validate deadlines, costs, and entry requirements for your strongest routes.',
-        href: '/tools/scholarship-finder/',
-        cta: 'Open scholarship workflow'
-      });
-    }
-
-    return actions.slice(0, 4);
-  }
-
-  function resolveScholarshipShortlist(allScholarships, shortlistKeys) {
-    if (!shortlistKeys.length) return [];
-    var lookup = {};
-    allScholarships.forEach(function (scholarship) {
-      lookup[buildScholarshipKey(scholarship)] = scholarship;
-    });
-
-    return shortlistKeys.map(function (key) {
-      return lookup[key];
-    }).filter(Boolean);
-  }
-
-  function loadScholarships() {
-    return fetch('/api/scholarships').then(function (response) {
-      if (!response.ok) throw new Error('scholarship feed unavailable');
-      return response.json();
-    }).then(function (data) {
-      if (data && data.scholarships && data.scholarships.length) return data.scholarships;
-      throw new Error('empty scholarship feed');
-    }).catch(function () {
-      return fallbackScholarships.slice();
-    });
-  }
-
-  function renderHero(signals) {
-    getEl('heroCompletion').textContent = signals.completion.percent + '%';
-    getEl('heroMatches').textContent = String(signals.goodMatches);
-    getEl('heroSchools').textContent = String(signals.universities.length);
-    getEl('heroDeadlines').textContent = String(signals.deadlines.length);
-
-    var primaryAction = signals.nextActions[0];
-    if (primaryAction) {
-      getEl('nextActionTitle').textContent = primaryAction.title;
-      getEl('nextActionCopy').textContent = primaryAction.copy;
-      getEl('nextActionPrimary').textContent = primaryAction.cta;
-      getEl('nextActionPrimary').setAttribute('href', primaryAction.href);
-    }
-
-    getEl('heroModeBadge').textContent = signals.profileMode;
-  }
-
-  function renderProfile(profile, signals) {
-    getEl('profileModeBadge').textContent = signals.profileMode;
-    getEl('profileCompletionValue').textContent = signals.completion.percent + '%';
-    getEl('profileCompletionFill').style.width = signals.completion.percent + '%';
-    getEl('profileStatusCopy').textContent = signals.profileStatusCopy;
-    getEl('profileGpaValue').textContent = profile.gpa_value ? Number(profile.gpa_value).toFixed(2) + (profile.gpa_scale ? ' / ' + profile.gpa_scale : '') : 'Set GPA';
-    getEl('profileIeltsValue').textContent = profile.ielts_overall ? Number(profile.ielts_overall).toFixed(1) : 'Add IELTS';
-    getEl('profileJambValue').textContent = signals.jambDisplay;
-    getEl('profileDestinationValue').textContent = signals.destinations.length ? signals.destinations.map(function (destination) { return destination.name; }).slice(0, 2).join(', ') : 'Set destinations';
-
-    var tags = [];
-    if (profile.education_level) tags.push({ label: formatStudyLevel(profile.education_level), tone: 'blue' });
-    if (profile.target_study_level) tags.push({ label: formatStudyLevel(profile.target_study_level), tone: 'gold' });
-    if (profile.institution) tags.push({ label: profile.institution, tone: 'slate' });
-    if (profile.target_fields && profile.target_fields.length) {
-      profile.target_fields.slice(0, 3).forEach(function (field) {
-        tags.push({ label: titleCase(field), tone: 'green' });
-      });
-    }
-
-    getEl('profileHighlights').innerHTML = tags.length ? tags.map(function (tag) {
-      return '<span class="hub-pill hub-pill-' + tag.tone + '">' + escapeHtml(tag.label) + '</span>';
-    }).join('') : '<span class="hub-empty-inline">No profile tags yet. Start with level, field, or destination.</span>';
-
-    getEl('syncHint').innerHTML = signals.remoteProfile
-      ? 'Account sync is active. This cockpit can travel with your login.'
-      : 'Working in local cockpit mode on this device. <a href="#" data-action="open-auth">Sign in</a> to sync across devices.';
-
-    getEl('edLevel').value = profile.education_level || '';
-    getEl('edInstitution').value = profile.institution || '';
-    getEl('edGradDate').value = profile.graduation_date || '';
-    getEl('edCountries').value = uniqueStrings(profile.target_countries || []).join(', ');
-    getEl('edFields').value = uniqueStrings(profile.target_fields || []).join(', ');
-    getEl('edStudyLevel').value = profile.target_study_level || '';
-  }
-
-  function renderChecklist(signals) {
-    var completed = signals.checklist.filter(function (item) { return item.complete; }).length;
-    getEl('checklistCount').textContent = completed + '/' + signals.checklist.length;
-    getEl('checklistProgressFill').style.width = Math.round((completed / signals.checklist.length) * 100) + '%';
-
-    getEl('checklistList').innerHTML = signals.checklist.map(function (item) {
-      return '<a class="hub-check-item' + (item.complete ? ' is-complete' : '') + '" href="' + escapeHtml(item.href) + '">' +
-        '<span class="hub-check-mark">' + (item.complete ? '&#10003;' : '&#10132;') + '</span>' +
-        '<span class="hub-check-copy"><strong>' + escapeHtml(item.title) + '</strong><span>' + escapeHtml(item.hint) + '</span></span>' +
-      '</a>';
-    }).join('');
-  }
-
-  function renderScholarships(signals) {
-    getEl('scholarshipPrimaryCount').textContent = String(signals.goodMatches);
-    getEl('scholarshipShortlistCount').textContent = String(signals.shortlistItems.length);
-    getEl('scholarshipMatchesCount').textContent = String(signals.matches.length);
-
-    var sourceList = signals.shortlistItems.length ? signals.shortlistItems : signals.matches.slice(0, 4).map(function (match) {
-      return match.scholarship;
-    });
-
-    getEl('scholarshipSummaryText').textContent = signals.shortlistItems.length
-      ? 'You already saved scholarships into a shortlist. Use this card to keep the best ones visible while the hub pushes the next action.'
-      : (signals.goodMatches
-        ? 'You already have stronger scholarship matches. The next move is to review fit and save the best routes into your shortlist.'
-        : 'The hub will show stronger scholarship signals after your GPA, destination, and IELTS profile are clearer.');
-
-    getEl('scholarshipList').innerHTML = sourceList.length ? sourceList.map(function (scholarship) {
-      var match = signals.matches.find(function (result) {
-        return buildScholarshipKey(result.scholarship) === buildScholarshipKey(scholarship);
-      });
-      var fit = match ? match.category : (signals.shortlistItems.length ? 'Saved shortlist' : 'Needs fuller profile');
-      var fitClass = match ? match.categoryClass : 'match-possible';
-      return '<article class="hub-mini-card">' +
-        '<div class="hub-mini-top"><span class="hub-fit ' + fitClass + '">' + escapeHtml(fit) + '</span><span class="hub-mini-meta">' + escapeHtml((scholarship.funding || '').toUpperCase() || 'FUNDING') + '</span></div>' +
-        '<h4>' + escapeHtml(scholarship.name) + '</h4>' +
-        '<p>' + escapeHtml(scholarship.provider || 'Scholarship provider') + '</p>' +
-        '<div class="hub-mini-links"><a href="/tools/scholarship-finder/">Open workflow</a>' +
-        (scholarship.info_url ? '<a href="' + escapeHtml(scholarship.info_url) + '" target="_blank" rel="noopener">Official details</a>' : '') +
-        '</div>' +
-      '</article>';
-    }).join('') : '<div class="hub-empty-block">No saved scholarships yet. Run Scholarship Finder, save the strongest routes, and they will appear here.</div>';
-  }
-
-  function renderUniversities(signals) {
-    getEl('universityList').innerHTML = signals.universities.length ? signals.universities.map(function (university) {
-      var meta = [];
-      if (university.fitLabel) meta.push(university.fitLabel);
-      if (university.country) meta.push(university.country);
-      if (university.rank) meta.push('Rank ' + university.rank);
-      if (university.feesLabel) meta.push(university.feesLabel);
-      if (university.note) meta.push(university.note);
-      return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(university.name) + '</h4><p>' + escapeHtml(meta.join(' Â· ') || 'Saved university') + '</p></div>' +
-        '<div class="hub-object-actions">' +
-          '<a href="' + escapeHtml(university.href || '/tools/university-ranking/') + '">Open</a>' +
-          '<button type="button" data-action="remove-university" data-id="' + escapeHtml(university.id) + '">Remove</button>' +
-        '</div>' +
-      '</article>';
-    }).join('') : '<div class="hub-empty-block">No universities saved yet. Save them from the University Shortlist Builder or add one manually below.</div>';
-  }
-
-  function renderDestinations(signals) {
-    getEl('destinationList').innerHTML = signals.destinations.length ? signals.destinations.map(function (destination) {
-      var detail = [];
-      if (destination.reason) detail.push(destination.reason);
-      if (destination.studyLevel) detail.push(formatStudyLevel(destination.studyLevel));
-      return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(destination.name) + '</h4><p>' + escapeHtml(detail.join(' Â· ') || 'Saved destination') + '</p></div>' +
-        '<div class="hub-object-actions">' +
-          '<a href="' + escapeHtml(destination.href || '/tools/study-abroad-cost/') + '">Open route</a>' +
-          '<button type="button" data-action="remove-destination" data-id="' + escapeHtml(destination.id) + '">Remove</button>' +
-        '</div>' +
-      '</article>';
-    }).join('') : '<div class="hub-empty-block">No destinations saved yet. Add them here or let the cost calculator push them back into the cockpit.</div>';
-  }
-
-  function renderBudgetSignals(signals) {
-    getEl('budgetSignalList').innerHTML = signals.budgetSignals.length ? signals.budgetSignals.map(function (signal) {
-      return '<article class="hub-budget-card">' +
-        '<div class="hub-budget-top"><strong>' + escapeHtml(signal.destination) + '</strong><span>' + escapeHtml(formatStudyLevel(signal.level || '')) + '</span></div>' +
-        '<div class="hub-budget-grid">' +
-          '<div><label>Annual</label><strong>' + escapeHtml(formatMoney(signal.annualTotal, signal.currency)) + '</strong></div>' +
-          '<div><label>Total</label><strong>' + escapeHtml(formatMoney(signal.totalCost, signal.currency)) + '</strong></div>' +
-        '</div>' +
-        '<p>' + escapeHtml((signal.field ? titleCase(signal.field) + ' Â· ' : '') + (signal.years ? signal.years + ' year plan' : 'Saved cost signal')) + '</p>' +
-        '<div class="hub-object-actions"><a href="' + escapeHtml(signal.href || '/tools/study-abroad-cost/') + '">Review plan</a>' +
-        '<button type="button" data-action="remove-budget" data-id="' + escapeHtml(signal.id) + '">Remove</button></div>' +
-      '</article>';
-    }).join('') : '<div class="hub-empty-block">No cost signals yet. Run Student Budget Planner or Study Abroad Cost and the most recent estimate will land here.</div>';
-  }
-
-  function renderTimeline(signals) {
-    getEl('deadlineList').innerHTML = signals.deadlines.length ? signals.deadlines.map(function (deadline) {
-      return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(deadline.title) + '</h4><p>' + escapeHtml(formatRelative(deadline.date) + (deadline.route ? ' Â· ' + deadline.route : '')) + '</p></div>' +
-        '<div class="hub-object-actions">' +
-          (deadline.href ? '<a href="' + escapeHtml(deadline.href) + '">Open</a>' : '<span class="hub-inline-muted">' + escapeHtml(deadline.date) + '</span>') +
-          '<button type="button" data-action="remove-deadline" data-id="' + escapeHtml(deadline.id) + '">Remove</button>' +
-        '</div>' +
-      '</article>';
-    }).join('') : '<div class="hub-empty-block">No deadlines tracked yet. Add the next application, exam, or scholarship date so the cockpit can keep the plan grounded.</div>';
-  }
-
-  function renderNextActions(signals) {
-    var actions = signals.nextActions.slice(1);
-    getEl('nextActionList').innerHTML = actions.length ? actions.map(function (action) {
-      return '<a class="hub-action-item" href="' + escapeHtml(action.href) + '">' +
-        '<strong>' + escapeHtml(action.title) + '</strong>' +
-        '<span>' + escapeHtml(action.copy) + '</span>' +
-      '</a>';
-    }).join('') : '<div class="hub-empty-inline">No secondary actions right now. Stay on top of deadlines and refine your shortlists.</div>';
-  }
-
-  function renderReadiness(signals) {
-    var cards = [
-      {
-        title: 'GPA',
-        status: cockpit.profile.gpa_value ? 'On file' : 'Missing',
-        detail: cockpit.profile.gpa_value ? Number(cockpit.profile.gpa_value).toFixed(2) + (cockpit.profile.gpa_scale ? ' / ' + cockpit.profile.gpa_scale : '') : 'Use GPA Calculator',
-        href: '/tools/gpa-calculator/',
-        tone: cockpit.profile.gpa_value ? 'good' : 'warn'
-      },
-      {
-        title: 'IELTS',
-        status: cockpit.profile.ielts_overall ? 'Planned' : 'Not set',
-        detail: cockpit.profile.ielts_overall ? 'Overall ' + Number(cockpit.profile.ielts_overall).toFixed(1) : 'Set destination and benchmark',
-        href: '/tools/ielts-calculator/',
-        tone: cockpit.profile.ielts_overall ? 'good' : 'warn'
-      },
-      {
-        title: 'JAMB / Exams',
-        status: signals.jambStatus,
-        detail: signals.jambDetail,
-        href: signals.jambHref,
-        tone: signals.jambTone
-      }
-    ];
-
-    getEl('readinessList').innerHTML = cards.map(function (card) {
-      return '<a class="hub-readiness-card" href="' + escapeHtml(card.href) + '">' +
-        '<span class="hub-fit hub-fit-' + escapeHtml(card.tone) + '">' + escapeHtml(card.status) + '</span>' +
-        '<strong>' + escapeHtml(card.title) + '</strong>' +
-        '<p>' + escapeHtml(card.detail) + '</p>' +
-      '</a>';
-    }).join('');
-  }
-
-  function renderStudyRoute(signals) {
-    var degreeReady = hasDegreeReadinessSignal(signals);
-    var route = [
-      { label: 'IELTS Pathway', href: '/tools/ielts-calculator/', complete: !!cockpit.profile.ielts_overall, detail: cockpit.profile.ielts_overall ? 'Score synced into cockpit' : 'Needed for many international routes' },
-      { label: 'Degree Check', href: '/tools/degree-checker/', complete: degreeReady, detail: degreeReady ? 'Destination-readiness route saved' : 'Validate qualification fit before you commit' },
-      { label: 'University Shortlist', href: '/tools/university-ranking/', complete: signals.universities.length > 0, detail: signals.universities.length ? signals.universities.length + ' school' + (signals.universities.length === 1 ? '' : 's') + ' saved' : 'Save schools into cockpit' },
-      { label: 'Cost Signal', href: '/tools/study-abroad-cost/', complete: signals.budgetSignals.length > 0, detail: signals.budgetSignals.length ? 'Recent affordability plan saved' : 'Estimate total cost by destination' },
-      { label: 'Scholarship Flow', href: '/tools/scholarship-finder/', complete: signals.shortlistItems.length > 0, detail: signals.shortlistItems.length ? 'Shortlist active' : 'Turn matches into saved funding routes' }
-    ];
-
-    getEl('studyRouteList').innerHTML = route.map(function (step) {
-      return '<a class="hub-route-step' + (step.complete ? ' is-complete' : '') + '" href="' + escapeHtml(step.href) + '">' +
-        '<span class="hub-route-mark">' + (step.complete ? '&#10003;' : '&#8226;') + '</span>' +
-        '<span><strong>' + escapeHtml(step.label) + '</strong><small>' + escapeHtml(step.detail) + '</small></span>' +
-      '</a>';
-    }).join('');
-  }
-
-  function renderActivity(signals) {
-    getEl('activityFeed').innerHTML = signals.activity.length ? signals.activity.map(function (item) {
-      return '<div class="hub-activity-item">' +
-        '<span><strong>' + escapeHtml(item.label) + '</strong>' + (item.detail ? '<small>' + escapeHtml(item.detail) + '</small>' : '') + '</span>' +
-        '<time>' + escapeHtml(formatRelative(item.timestamp)) + '</time>' +
-      '</div>';
-    }).join('') : '<div class="hub-empty-block">No recent education activity yet. As you use GPA, degree checks, IELTS, scholarships, or cost tools, the cockpit timeline will update here.</div>';
-  }
-
-  function buildSignals() {
-    var profile = cockpit.profile;
-    var completion = computeCompletion(profile);
-    var universities = (cockpit.state.universities || []).slice().sort(function (left, right) {
-      return (right.savedAt || 0) - (left.savedAt || 0);
-    });
-    var destinations = uniqueStrings((profile.target_countries || []).concat((cockpit.state.destinations || []).map(function (item) {
-      return item.name;
-    }))).map(function (name) {
-      var existing = (cockpit.state.destinations || []).find(function (destination) {
-        return destination.name === name;
-      });
-      return existing || { id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), name: name, href: '/tools/study-abroad-cost/' };
-    });
-    var budgetSignals = (cockpit.state.budgetSignals || []).slice().sort(function (left, right) {
-      return (right.savedAt || 0) - (left.savedAt || 0);
-    });
-    var deadlines = (cockpit.state.deadlines || []).slice().sort(function (left, right) {
-      return new Date(left.date || '2099-12-31') - new Date(right.date || '2099-12-31');
-    });
-    var matches = cockpit.matches || [];
-    var shortlistItems = cockpit.shortlistItems || [];
-    var goodMatches = matches.filter(function (match) { return match.percent >= 60; }).length;
-    var profileMode = cockpit.remoteProfile ? 'Account cockpit' : (completion.percent > 0 ? 'Local cockpit' : 'Start cockpit');
-    var profileStatusCopy = cockpit.remoteProfile
-      ? 'Your account-backed profile is shaping the cockpit across scholarships, tests, and destinations.'
-      : (completion.percent > 0
-        ? 'You already have local signals on this device. Keep building and sign in later if you want sync.'
-        : 'Start with the profile and the hub will turn your tools into one connected journey.');
-    var jamb = cockpit.jamb || {};
-    var jambDisplay = jamb.jambScore ? String(jamb.jambScore) : (jamb.bestMockAggregate ? jamb.bestMockAggregate + ' mock' : 'Set route');
-    var jambStatus = jamb.jambScore ? 'Tracked' : (jamb.mockCount ? 'In progress' : 'Not started');
-    var jambDetail = jamb.jambScore ? 'Aggregate score on file' : (jamb.mockCount ? jamb.mockCount + ' mock' + (jamb.mockCount === 1 ? '' : 's') + ' recorded' : 'Route into AfroJAMB or University Admission');
-    var jambTone = jamb.jambScore ? 'good' : (jamb.mockCount ? 'ok' : 'warn');
-    var jambHref = jamb.mockCount ? '/jamb/' : '/tools/university-admission/';
-
-    var signals = {
-      completion: completion,
-      universities: universities,
-      destinations: destinations,
-      budgetSignals: budgetSignals,
-      deadlines: deadlines,
-      matches: matches,
-      shortlistItems: shortlistItems,
-      goodMatches: goodMatches,
-      activity: cockpit.activity || [],
-      profileMode: profileMode,
-      profileStatusCopy: profileStatusCopy,
-      remoteProfile: cockpit.remoteProfile,
-      jambDisplay: jambDisplay,
-      jambStatus: jambStatus,
-      jambDetail: jambDetail,
-      jambTone: jambTone,
-      jambHref: jambHref
-    };
-
-    signals.checklist = buildChecklist(profile, signals);
-    signals.nextActions = buildNextActions(profile, signals);
-    return signals;
-  }
-
-  function rerender() {
-    var signals = buildSignals();
-    renderHero(signals);
-    renderProfile(cockpit.profile, signals);
-    renderChecklist(signals);
-    renderScholarships(signals);
-    renderUniversities(signals);
-    renderDestinations(signals);
-    renderBudgetSignals(signals);
-    renderTimeline(signals);
-    renderNextActions(signals);
-    renderReadiness(signals);
-    renderStudyRoute(signals);
-    renderActivity(signals);
-  }
-
-  function formatStudyLevel(level) {
-    var map = {
-      secondary: 'Secondary',
-      undergraduate: 'Undergraduate',
-      undergrad: 'Undergraduate',
-      bachelors: 'Undergraduate',
-      postgraduate: 'Postgraduate',
-      masters: "Master's",
-      phd: 'PhD',
-      postdoc: 'Postdoc'
-    };
-    return map[level] || titleCase(level);
-  }
-
-  function getDaysUntil(dateValue) {
-    if (!dateValue) return null;
-    var now = new Date();
-    var date = new Date(dateValue);
-    if (isNaN(date.getTime())) return null;
-    return Math.ceil((date.getTime() - now.getTime()) / 86400000);
-  }
-
-  function formatTimeAgo(timestamp) {
-    var date = new Date(timestamp);
-    if (isNaN(date.getTime())) return 'Recently';
-    var diffMs = Date.now() - date.getTime();
-    var diffDays = Math.floor(diffMs / 86400000);
-    if (diffDays <= 0) return 'Today';
-    if (diffDays === 1) return '1 day ago';
-    if (diffDays < 30) return diffDays + ' days ago';
-    var diffMonths = Math.floor(diffDays / 30);
-    if (diffMonths <= 1) return '1 month ago';
-    return diffMonths + ' months ago';
-  }
-
-  function notify(message, type) {
-    if (window.AfroToast && typeof window.AfroToast.show === 'function') {
-      window.AfroToast.show(message, type || 'success');
-    }
-  }
-
-  function slugify(value) {
-    return String(value || '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
-
-  function renderHero(signals) {
-    var primaryAction = signals.nextActions[0];
-
-    getEl('heroCompletion').textContent = signals.completion.percent + '%';
-    getEl('heroMatches').textContent = String(signals.goodMatches);
-    getEl('heroSchools').textContent = String(signals.universities.length);
-    getEl('heroDeadlines').textContent = String(signals.deadlines.length);
-    getEl('heroModeBadge').textContent = signals.profileMode;
-
-    if (getEl('heroStatusCopy')) {
-      getEl('heroStatusCopy').textContent = signals.profileStatusCopy;
-    }
-
-    if (primaryAction) {
-      getEl('nextActionTitle').textContent = primaryAction.title;
-      getEl('nextActionCopy').textContent = primaryAction.copy;
-      getEl('nextActionPrimary').textContent = primaryAction.cta;
-      getEl('nextActionPrimary').setAttribute('href', primaryAction.href);
-    }
-  }
-
-  function buildNextActions(profile, signals) {
-    var actions = [];
-    var topMatch = signals.matches && signals.matches.length ? signals.matches[0] : null;
+    var topMatch = signals.matches.length ? signals.matches[0] : null;
     var nextDeadline = signals.deadlines.length ? signals.deadlines[0] : null;
     var daysUntilNextDeadline = nextDeadline ? getDaysUntil(nextDeadline.date) : null;
     var hasDegreeReadiness = hasDegreeReadinessSignal(signals);
@@ -881,9 +534,18 @@
     if (daysUntilNextDeadline !== null && daysUntilNextDeadline <= 21) {
       actions.push({
         title: nextDeadline.title + ' is coming up',
-        copy: 'You have ' + formatRelative(nextDeadline.date).toLowerCase() + '. Use the cockpit to keep the plan moving before the deadline slips.',
+        copy: 'You have ' + formatRelative(nextDeadline.date).toLowerCase() + '. Keep the route moving before the date slips.',
         href: nextDeadline.href || '#deadline-form',
         cta: 'Review deadline'
+      });
+    }
+
+    if (signals.scholarshipSource.isDegraded) {
+      actions.push({
+        title: 'Scholarship signals are running in backup mode',
+        copy: signals.scholarshipSource.message,
+        href: '/tools/scholarship-finder/',
+        cta: 'Review scholarship flow'
       });
     }
 
@@ -935,7 +597,7 @@
     if (signals.universities.length === 0) {
       actions.push({
         title: 'Save your first universities',
-        copy: 'A real application plan usually starts with 3-5 schools. Build the shortlist in University Rankings, then keep the saved schools here.',
+        copy: 'A real application plan usually starts with 3 to 5 schools. Build the shortlist in University Rankings, then keep the saved schools here.',
         href: '/tools/university-ranking/',
         cta: 'Build shortlist'
       });
@@ -962,7 +624,7 @@
     if (!actions.length && topMatch) {
       actions.push({
         title: 'Push from planning into applications',
-        copy: 'Your profile is in good shape. Keep refining your shortlist and validate deadlines, costs, and entry requirements for your strongest routes.',
+        copy: 'Your profile is in good shape. Keep refining shortlists and validating deadlines, costs, and entry requirements for the strongest routes.',
         href: '/tools/scholarship-finder/',
         cta: 'Open scholarship workflow'
       });
@@ -971,7 +633,7 @@
     if (!actions.length) {
       actions.push({
         title: 'Keep the cockpit current',
-        copy: 'You have a solid setup. Refresh scores, budgets, and deadlines as your plan changes.',
+        copy: 'You have a solid setup. Refresh scores, destinations, budgets, and deadlines as the plan changes.',
         href: '#profile-editor',
         cta: 'Review cockpit'
       });
@@ -980,102 +642,663 @@
     return actions.slice(0, 4);
   }
 
-  function renderActivity(signals) {
-    getEl('activityFeed').innerHTML = signals.activity.length ? signals.activity.map(function (item) {
-      return '<div class="hub-activity-item">' +
-        '<span><strong>' + escapeHtml(item.label) + '</strong>' + (item.detail ? '<small>' + escapeHtml(item.detail) + '</small>' : '') + '</span>' +
-        '<time>' + escapeHtml(formatTimeAgo(item.timestamp)) + '</time>' +
-      '</div>';
-    }).join('') : '<div class="hub-empty-block">No recent education activity yet. As you use GPA, degree checks, IELTS, scholarships, or cost tools, the cockpit timeline will update here.</div>';
+  function buildCurrentPlan(signals) {
+    var profile = cockpit.profile;
+    var degreeReady = hasDegreeReadinessSignal(signals);
+    var destinationNames = signals.destinations.map(function (destination) {
+      return destination.name;
+    });
+    var topBudget = signals.budgetSignals.length ? signals.budgetSignals[0] : null;
+    var upcomingDeadline = signals.deadlines.length ? signals.deadlines[0] : null;
+    var testsReady = [profile.gpa_value, profile.ielts_overall, signals.jambStatus === 'Tracked' || signals.jambStatus === 'In progress'].filter(Boolean).length;
+
+    return [
+      {
+        key: 'destination',
+        title: 'Destination path',
+        status: destinationNames.length ? (topBudget ? 'Active' : 'Needs cost check') : 'Not shaped',
+        tone: destinationNames.length ? (topBudget ? 'good' : 'warn') : 'warn',
+        detail: destinationNames.length ? destinationNames.slice(0, 2).join(', ') : 'No saved destination path yet.',
+        meta: topBudget
+          ? 'Latest affordability signal: ' + topBudget.destination + ' ' + formatStudyLevel(topBudget.level || '')
+          : 'Use Study Abroad Cost to turn destination intent into a real route.',
+        href: '/tools/study-abroad-cost/',
+        cta: topBudget ? 'Review route' : 'Set destinations'
+      },
+      {
+        key: 'funding',
+        title: 'Funding path',
+        status: signals.shortlistItems.length ? 'Shortlist active' : (signals.goodMatches ? 'Matches ready' : (signals.scholarshipSource.isDegraded ? 'Backup mode' : 'Needs profile')),
+        tone: signals.shortlistItems.length ? 'good' : (signals.goodMatches ? 'ok' : 'warn'),
+        detail: signals.shortlistItems.length
+          ? signals.shortlistItems.length + ' saved scholarship' + (signals.shortlistItems.length === 1 ? '' : 's')
+          : (signals.goodMatches ? signals.goodMatches + ' good matches waiting' : 'No strong funding route locked yet.'),
+        meta: signals.scholarshipSource.isDegraded
+          ? signals.scholarshipSource.message
+          : 'Source: ' + signals.scholarshipSource.label + '.',
+        href: '/tools/scholarship-finder/',
+        cta: signals.shortlistItems.length ? 'Open shortlist' : 'Review scholarships'
+      },
+      {
+        key: 'tests',
+        title: 'Test readiness path',
+        status: testsReady >= 3 && degreeReady ? 'Ready to route' : (testsReady > 0 ? 'In progress' : 'Needs setup'),
+        tone: testsReady >= 3 && degreeReady ? 'good' : (testsReady > 0 ? 'ok' : 'warn'),
+        detail: profile.ielts_overall
+          ? 'IELTS ' + Number(profile.ielts_overall).toFixed(1) + ' on file'
+          : 'IELTS target not locked yet.',
+        meta: degreeReady
+          ? 'Degree readiness signal is already in the cockpit.'
+          : 'Pair GPA, IELTS, and degree readiness before pushing harder on applications.',
+        href: '/tools/ielts-calculator/',
+        cta: testsReady >= 3 && degreeReady ? 'Review tests' : 'Strengthen readiness'
+      },
+      {
+        key: 'shortlist',
+        title: 'Shortlist health',
+        status: signals.universities.length >= 3 && signals.deadlines.length ? 'Operational' : (signals.universities.length ? 'Building' : 'Thin'),
+        tone: signals.universities.length >= 3 && signals.deadlines.length ? 'good' : (signals.universities.length ? 'ok' : 'warn'),
+        detail: signals.universities.length
+          ? signals.universities.length + ' saved school' + (signals.universities.length === 1 ? '' : 's')
+          : 'No universities saved yet.',
+        meta: upcomingDeadline
+          ? 'Next date: ' + upcomingDeadline.title + ' (' + formatRelative(upcomingDeadline.date) + ')'
+          : 'Add a real deadline so the shortlist stays anchored to action.',
+        href: '/tools/university-ranking/',
+        cta: signals.universities.length ? 'Refine shortlist' : 'Build shortlist'
+      }
+    ];
   }
 
-  function formatMoney(value, currency) {
-    if (value === null || value === undefined || value === '') return '-';
-    var number = Number(value);
-    if (isNaN(number)) return '-';
-    return (currency || '') + number.toLocaleString();
+  function buildSignals() {
+    var profile = cockpit.profile;
+    var completion = computeCompletion(profile);
+    var universities = (cockpit.state.universities || []).slice().sort(sortByRecency);
+    var destinations = uniqueStrings((profile.target_countries || []).concat((cockpit.state.destinations || []).map(function (item) {
+      return item.name;
+    }))).map(function (name) {
+      var existing = (cockpit.state.destinations || []).find(function (destination) {
+        return destination.name && destination.name.toLowerCase() === name.toLowerCase();
+      });
+      return existing || {
+        id: slugify(name),
+        name: name,
+        href: '/tools/study-abroad-cost/'
+      };
+    });
+    var budgetSignals = (cockpit.state.budgetSignals || []).slice().sort(sortByRecency);
+    var deadlines = (cockpit.state.deadlines || []).slice().sort(function (left, right) {
+      return new Date(left.date || '2099-12-31') - new Date(right.date || '2099-12-31');
+    });
+    var matches = cockpit.matches || [];
+    var shortlistItems = cockpit.shortlistItems || [];
+    var goodMatches = matches.filter(function (match) {
+      return Number(match.percent || 0) >= 60;
+    }).length;
+    var remoteProfile = cockpit.remoteProfile;
+    var profileMode = remoteProfile ? 'Account cockpit' : (completion.percent > 0 ? 'Local cockpit' : 'Start cockpit');
+    var profileStatusCopy = remoteProfile
+      ? 'Your account-backed profile is shaping the cockpit across scholarships, tests, and destinations.'
+      : (completion.percent > 0
+        ? 'You already have local signals on this device. Keep building and sign in later if you want sync.'
+        : 'Start with the profile and the hub will turn your tools into one connected journey.');
+    var jamb = cockpit.jamb || {};
+    var jambDisplay = jamb.jambScore ? String(jamb.jambScore) : (jamb.bestMockAggregate ? jamb.bestMockAggregate + ' mock' : 'Set route');
+    var jambStatus = jamb.jambScore ? 'Tracked' : (jamb.mockCount ? 'In progress' : 'Not started');
+    var jambDetail = jamb.jambScore ? 'Aggregate score on file' : (jamb.mockCount ? jamb.mockCount + ' mock' + (jamb.mockCount === 1 ? '' : 's') + ' recorded' : 'Route into AfroJAMB or University Admission');
+    var jambTone = jamb.jambScore ? 'good' : (jamb.mockCount ? 'ok' : 'warn');
+    var jambHref = (jamb.jambScore || jamb.mockCount) ? '/jamb/' : '/tools/university-admission/';
+    var signals = {
+      completion: completion,
+      universities: universities,
+      destinations: destinations,
+      budgetSignals: budgetSignals,
+      deadlines: deadlines,
+      matches: matches,
+      shortlistItems: shortlistItems,
+      goodMatches: goodMatches,
+      activity: cockpit.activity || [],
+      profileMode: profileMode,
+      profileStatusCopy: profileStatusCopy,
+      remoteProfile: remoteProfile,
+      scholarshipSource: cockpit.scholarshipSource || buildDefaultScholarshipSource(),
+      jambDisplay: jambDisplay,
+      jambStatus: jambStatus,
+      jambDetail: jambDetail,
+      jambTone: jambTone,
+      jambHref: jambHref
+    };
+
+    signals.checklist = buildChecklist(profile, signals);
+    signals.nextActions = buildNextActions(profile, signals);
+    signals.currentPlan = buildCurrentPlan(signals);
+    return signals;
+  }
+
+  function renderCollection(id, items, emptyHtml, renderer) {
+    setHtml(id, items.length ? items.map(renderer).join('') : emptyHtml);
+  }
+
+  function renderHero(signals) {
+    var primaryAction = signals.nextActions[0];
+
+    setText('heroCompletion', signals.completion.percent + '%');
+    setText('heroMatches', String(signals.goodMatches));
+    setText('heroSchools', String(signals.universities.length));
+    setText('heroDeadlines', String(signals.deadlines.length));
+    setText('heroModeBadge', signals.profileMode);
+    setText('heroStatusCopy', signals.profileStatusCopy);
+
+    if (primaryAction) {
+      setText('nextActionTitle', primaryAction.title);
+      setText('nextActionCopy', primaryAction.copy);
+      setText('nextActionPrimary', primaryAction.cta);
+      getEl('nextActionPrimary').setAttribute('href', primaryAction.href);
+    }
+  }
+
+  function renderProfile(signals) {
+    var profile = cockpit.profile;
+    var destinationPreview = signals.destinations.length
+      ? signals.destinations.map(function (destination) { return destination.name; }).slice(0, 2).join(', ')
+      : 'Set destinations';
+    var tags = [];
+
+    setText('profileModeBadge', signals.profileMode);
+    setText('profileCompletionValue', signals.completion.percent + '%');
+    setWidth('profileCompletionFill', signals.completion.percent + '%');
+    setText('profileStatusCopy', signals.profileStatusCopy);
+    setText('profileGpaValue', profile.gpa_value ? Number(profile.gpa_value).toFixed(2) + (profile.gpa_scale ? ' / ' + profile.gpa_scale : '') : 'Set GPA');
+    setText('profileIeltsValue', profile.ielts_overall ? Number(profile.ielts_overall).toFixed(1) : 'Add IELTS');
+    setText('profileJambValue', signals.jambDisplay);
+    setText('profileDestinationValue', destinationPreview);
+
+    if (profile.education_level) tags.push({ label: formatStudyLevel(profile.education_level), tone: 'blue' });
+    if (profile.target_study_level) tags.push({ label: formatStudyLevel(profile.target_study_level), tone: 'gold' });
+    if (profile.institution) tags.push({ label: profile.institution, tone: 'slate' });
+    if (profile.target_fields && profile.target_fields.length) {
+      profile.target_fields.slice(0, 3).forEach(function (field) {
+        tags.push({ label: titleCase(field), tone: 'green' });
+      });
+    }
+
+    setHtml('profileHighlights', tags.length
+      ? tags.map(function (tag) {
+        return '<span class="hub-pill hub-pill-' + tag.tone + '">' + escapeHtml(tag.label) + '</span>';
+      }).join('')
+      : '<span class="hub-empty-inline">No profile tags yet. Start with level, field, or destination.</span>');
+
+    setHtml('syncHint', signals.remoteProfile
+      ? 'Account sync is active. This cockpit can travel with your login.'
+      : 'Working in local cockpit mode on this device. <a href="#" data-action="open-auth">Sign in</a> to sync across devices.');
+
+    getEl('edLevel').value = profile.education_level || '';
+    getEl('edInstitution').value = profile.institution || '';
+    getEl('edGradDate').value = profile.graduation_date || '';
+    getEl('edCountries').value = uniqueStrings(profile.target_countries || []).join(', ');
+    getEl('edFields').value = uniqueStrings(profile.target_fields || []).join(', ');
+    getEl('edStudyLevel').value = profile.target_study_level || '';
+  }
+
+  function renderChecklist(signals) {
+    var completed = signals.checklist.filter(function (item) { return item.complete; }).length;
+    var percent = Math.round((completed / signals.checklist.length) * 100);
+
+    setText('checklistCount', completed + '/' + signals.checklist.length);
+    setWidth('checklistProgressFill', percent + '%');
+    renderCollection('checklistList', signals.checklist, '', function (item) {
+      return '<a class="hub-check-item' + (item.complete ? ' is-complete' : '') + '" href="' + escapeHtml(item.href) + '">' +
+        '<span class="hub-check-mark">' + (item.complete ? '&#10003;' : '&#10132;') + '</span>' +
+        '<span class="hub-check-copy"><strong>' + escapeHtml(item.title) + '</strong><span>' + escapeHtml(item.hint) + '</span></span>' +
+      '</a>';
+    });
+  }
+
+  function renderCurrentPlan(signals) {
+    var strongCount = signals.currentPlan.filter(function (card) { return card.tone === 'good'; }).length;
+    var activeStatus = strongCount >= 3 ? 'In motion' : (strongCount >= 1 ? 'Building route' : 'Needs setup');
+
+    setText('currentPlanStatus', activeStatus);
+    setText('currentPlanSummary', strongCount >= 3
+      ? 'The main route layers are moving together. Keep deadlines and evidence current.'
+      : 'The cockpit is tracking the real route. Fill the thin areas so destination, funding, tests, and shortlist health stay connected.');
+
+    renderCollection('currentPlanList', signals.currentPlan, '', function (card) {
+      return '<a class="hub-plan-card" href="' + escapeHtml(card.href) + '">' +
+        '<div class="hub-plan-top"><strong>' + escapeHtml(card.title) + '</strong><span class="hub-fit hub-fit-' + escapeHtml(card.tone) + '">' + escapeHtml(card.status) + '</span></div>' +
+        '<div class="hub-plan-meta"><p>' + escapeHtml(card.detail) + '</p><small>' + escapeHtml(card.meta) + '</small></div>' +
+        '<div class="hub-plan-actions"><span>' + escapeHtml(card.cta) + '</span><span class="hub-inline-link">Open</span></div>' +
+      '</a>';
+    });
+  }
+
+  function renderScholarshipSource(signals) {
+    var badge = getEl('scholarshipSourceBadge');
+    var banner = getEl('scholarshipSourceBanner');
+
+    if (badge) {
+      badge.className = 'hub-fit hub-fit-' + (signals.scholarshipSource.tone || 'ok');
+      badge.textContent = signals.scholarshipSource.label;
+    }
+
+    if (banner) {
+      banner.classList.toggle('is-degraded', !!signals.scholarshipSource.isDegraded);
+    }
+
+    setText('scholarshipSourceText', signals.scholarshipSource.message);
+  }
+
+  function renderScholarships(signals) {
+    var sourceList = signals.shortlistItems.length
+      ? signals.shortlistItems
+      : signals.matches.slice(0, 4).map(function (match) {
+        return match.scholarship;
+      });
+    var summaryText = 'The hub will show stronger scholarship signals after your GPA, destination, and IELTS profile are clearer.';
+
+    if (signals.shortlistItems.length) {
+      summaryText = 'Your shortlist is active. Keep the strongest funding routes visible here while the cockpit drives the next action.';
+    } else if (signals.goodMatches) {
+      summaryText = 'You already have stronger scholarship matches. The next move is to review fit and save the best routes into your shortlist.';
+    }
+
+    if (signals.scholarshipSource.isDegraded) {
+      summaryText = signals.scholarshipSource.message + ' ' + summaryText;
+    }
+
+    setText('scholarshipPrimaryCount', String(signals.goodMatches));
+    setText('scholarshipShortlistCount', String(signals.shortlistItems.length));
+    setText('scholarshipMatchesCount', String(signals.matches.length));
+    setText('scholarshipSummaryText', summaryText);
+    renderScholarshipSource(signals);
+
+    renderCollection('scholarshipList', sourceList, '<div class="hub-empty-block">No saved scholarships yet. Run Scholarship Finder, save the strongest routes, and they will appear here.</div>', function (scholarship) {
+      var match = signals.matches.find(function (result) {
+        return buildScholarshipKey(result.scholarship) === buildScholarshipKey(scholarship);
+      });
+      var fit = match ? match.category : (signals.shortlistItems.length ? 'Saved shortlist' : 'Needs fuller profile');
+      var fitClass = match ? match.categoryClass : 'match-possible';
+      return '<article class="hub-mini-card">' +
+        '<div class="hub-mini-top"><span class="hub-fit ' + escapeHtml(fitClass) + '">' + escapeHtml(fit) + '</span><span class="hub-mini-meta">' + escapeHtml((scholarship.funding || '').toUpperCase() || 'FUNDING') + '</span></div>' +
+        '<h4>' + escapeHtml(scholarship.name) + '</h4>' +
+        '<p>' + escapeHtml(scholarship.provider || 'Scholarship provider') + '</p>' +
+        '<div class="hub-mini-links"><a href="/tools/scholarship-finder/">Open workflow</a>' +
+        (scholarship.info_url ? '<a href="' + escapeHtml(scholarship.info_url) + '" target="_blank" rel="noopener">Official details</a>' : '') +
+        '</div>' +
+      '</article>';
+    });
   }
 
   function renderUniversities(signals) {
-    getEl('universityList').innerHTML = signals.universities.length ? signals.universities.map(function (university) {
+    renderCollection('universityList', signals.universities, '<div class="hub-empty-block">No universities saved yet. Save them from the University Shortlist Builder or add one manually below.</div>', function (university) {
       var meta = [];
       if (university.fitLabel) meta.push(university.fitLabel);
       if (university.country) meta.push(university.country);
       if (university.rank) meta.push('Rank ' + university.rank);
       if (university.feesLabel) meta.push(university.feesLabel);
       if (university.note) meta.push(university.note);
+
       return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(university.name) + '</h4><p>' + escapeHtml(meta.join(' - ') || 'Saved university') + '</p></div>' +
+        '<div class="hub-object-copy"><h4>' + escapeHtml(university.name) + '</h4><p>' + escapeHtml(meta.join(' · ') || 'Saved university') + '</p></div>' +
         '<div class="hub-object-actions">' +
           '<a href="' + escapeHtml(university.href || '/tools/university-ranking/') + '">Open</a>' +
           '<button type="button" data-action="remove-university" data-id="' + escapeHtml(university.id) + '">Remove</button>' +
         '</div>' +
       '</article>';
-    }).join('') : '<div class="hub-empty-block">No universities saved yet. Save them from the University Shortlist Builder or add one manually below.</div>';
+    });
   }
 
   function renderDestinations(signals) {
-    getEl('destinationList').innerHTML = signals.destinations.length ? signals.destinations.map(function (destination) {
+    renderCollection('destinationList', signals.destinations, '<div class="hub-empty-block">No destinations saved yet. Add them here or let the affordability engine push them back into the cockpit.</div>', function (destination) {
       var detail = [];
       if (destination.reason) detail.push(destination.reason);
       if (destination.studyLevel) detail.push(formatStudyLevel(destination.studyLevel));
+      if (destination.field) detail.push(titleCase(destination.field));
+
       return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(destination.name) + '</h4><p>' + escapeHtml(detail.join(' - ') || 'Saved destination') + '</p></div>' +
+        '<div class="hub-object-copy"><h4>' + escapeHtml(destination.name) + '</h4><p>' + escapeHtml(detail.join(' · ') || 'Saved destination') + '</p></div>' +
         '<div class="hub-object-actions">' +
           '<a href="' + escapeHtml(destination.href || '/tools/study-abroad-cost/') + '">Open route</a>' +
           '<button type="button" data-action="remove-destination" data-id="' + escapeHtml(destination.id) + '">Remove</button>' +
         '</div>' +
       '</article>';
-    }).join('') : '<div class="hub-empty-block">No destinations saved yet. Add them here or let the cost calculator push them back into the cockpit.</div>';
+    });
   }
 
   function renderBudgetSignals(signals) {
-    getEl('budgetSignalList').innerHTML = signals.budgetSignals.length ? signals.budgetSignals.map(function (signal) {
+    renderCollection('budgetSignalList', signals.budgetSignals, '<div class="hub-empty-block">No cost signals yet. Run Student Budget Planner or Study Abroad Cost and the most recent estimate will land here.</div>', function (signal) {
+      var summary = [];
+      if (signal.field) summary.push(titleCase(signal.field));
+      if (signal.years && signal.level !== 'monthly-budget') summary.push(signal.years + ' year plan');
+      if (signal.note) summary.push(signal.note);
+
       return '<article class="hub-budget-card">' +
         '<div class="hub-budget-top"><strong>' + escapeHtml(signal.destination) + '</strong><span>' + escapeHtml(formatStudyLevel(signal.level || '')) + '</span></div>' +
         '<div class="hub-budget-grid">' +
           '<div><label>Annual</label><strong>' + escapeHtml(formatMoney(signal.annualTotal, signal.currency)) + '</strong></div>' +
           '<div><label>Total</label><strong>' + escapeHtml(formatMoney(signal.totalCost, signal.currency)) + '</strong></div>' +
         '</div>' +
-        '<p>' + escapeHtml((signal.field ? titleCase(signal.field) + ' - ' : '') + (signal.years ? signal.years + ' year plan' : 'Saved cost signal')) + '</p>' +
+        '<p>' + escapeHtml(summary.join(' · ') || 'Saved cost signal') + '</p>' +
         '<div class="hub-object-actions"><a href="' + escapeHtml(signal.href || '/tools/study-abroad-cost/') + '">Review plan</a>' +
         '<button type="button" data-action="remove-budget" data-id="' + escapeHtml(signal.id) + '">Remove</button></div>' +
       '</article>';
-    }).join('') : '<div class="hub-empty-block">No cost signals yet. Run Student Budget Planner or Study Abroad Cost and the most recent estimate will land here.</div>';
+    });
   }
 
   function renderTimeline(signals) {
-    getEl('deadlineList').innerHTML = signals.deadlines.length ? signals.deadlines.map(function (deadline) {
+    renderCollection('deadlineList', signals.deadlines, '<div class="hub-empty-block">No deadlines tracked yet. Add the next application, exam, or scholarship date so the cockpit can keep the plan grounded.</div>', function (deadline) {
       return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(deadline.title) + '</h4><p>' + escapeHtml(formatRelative(deadline.date) + (deadline.route ? ' - ' + deadline.route : '')) + '</p></div>' +
+        '<div class="hub-object-copy"><h4>' + escapeHtml(deadline.title) + '</h4><p>' + escapeHtml(formatRelative(deadline.date) + (deadline.route ? ' · ' + deadline.route : '')) + '</p></div>' +
         '<div class="hub-object-actions">' +
           (deadline.href ? '<a href="' + escapeHtml(deadline.href) + '">Open</a>' : '<span class="hub-inline-muted">' + escapeHtml(deadline.date || '') + '</span>') +
           '<button type="button" data-action="remove-deadline" data-id="' + escapeHtml(deadline.id) + '">Remove</button>' +
         '</div>' +
       '</article>';
-    }).join('') : '<div class="hub-empty-block">No deadlines tracked yet. Add the next application, exam, or scholarship date so the cockpit can keep the plan grounded.</div>';
+    });
+  }
+
+  function renderNextActions(signals) {
+    var secondaryActions = signals.nextActions.slice(1);
+    renderCollection('nextActionList', secondaryActions, '<div class="hub-empty-inline">No secondary actions right now. Stay on top of deadlines and refine your shortlists.</div>', function (action) {
+      return '<a class="hub-action-item" href="' + escapeHtml(action.href) + '">' +
+        '<strong>' + escapeHtml(action.title) + '</strong>' +
+        '<span>' + escapeHtml(action.copy) + '</span>' +
+      '</a>';
+    });
+  }
+
+  function renderReadiness(signals) {
+    var degreeReady = hasDegreeReadinessSignal(signals);
+    var readinessCards = [
+      {
+        title: 'GPA',
+        status: cockpit.profile.gpa_value ? 'On file' : 'Missing',
+        detail: cockpit.profile.gpa_value
+          ? Number(cockpit.profile.gpa_value).toFixed(2) + (cockpit.profile.gpa_scale ? ' / ' + cockpit.profile.gpa_scale : '')
+          : 'Use GPA Calculator to push your current standing into the cockpit.',
+        href: '/tools/gpa-calculator/',
+        tone: cockpit.profile.gpa_value ? 'good' : 'warn'
+      },
+      {
+        title: 'IELTS',
+        status: cockpit.profile.ielts_overall ? 'Tracked' : 'Not set',
+        detail: cockpit.profile.ielts_overall
+          ? 'Overall ' + Number(cockpit.profile.ielts_overall).toFixed(1) + ' synced into the cockpit.'
+          : 'Set a destination benchmark in IELTS Calculator before application pressure builds.',
+        href: '/tools/ielts-calculator/',
+        tone: cockpit.profile.ielts_overall ? 'good' : 'warn'
+      },
+      {
+        title: 'Degree fit',
+        status: degreeReady ? 'Checked' : 'Open loop',
+        detail: degreeReady
+          ? 'A qualification-readiness signal is already on file.'
+          : 'Use Degree Checker if you still need destination-fit validation.',
+        href: '/tools/degree-checker/',
+        tone: degreeReady ? 'ok' : 'warn'
+      },
+      {
+        title: 'JAMB / local exams',
+        status: signals.jambStatus,
+        detail: signals.jambDetail,
+        href: signals.jambHref,
+        tone: signals.jambTone
+      }
+    ];
+
+    renderCollection('readinessList', readinessCards, '', function (card) {
+      return '<a class="hub-readiness-card" href="' + escapeHtml(card.href) + '">' +
+        '<span class="hub-fit hub-fit-' + escapeHtml(card.tone) + '">' + escapeHtml(card.status) + '</span>' +
+        '<strong>' + escapeHtml(card.title) + '</strong>' +
+        '<p>' + escapeHtml(card.detail) + '</p>' +
+      '</a>';
+    });
+  }
+
+  function renderStudyRoute(signals) {
+    var degreeReady = hasDegreeReadinessSignal(signals);
+    var route = [
+      {
+        label: 'Profile and GPA',
+        href: '#profile-editor',
+        complete: signals.completion.percent >= 50 && !!cockpit.profile.gpa_value,
+        detail: signals.completion.percent >= 50 && cockpit.profile.gpa_value
+          ? 'Core profile is in place and GPA is synced.'
+          : 'Start by locking profile basics and academic standing.'
+      },
+      {
+        label: 'IELTS pathway',
+        href: '/tools/ielts-calculator/',
+        complete: !!cockpit.profile.ielts_overall,
+        detail: cockpit.profile.ielts_overall
+          ? 'IELTS route synced into the cockpit.'
+          : 'Needed for many international routes and scholarship checks.'
+      },
+      {
+        label: 'Degree readiness',
+        href: '/tools/degree-checker/',
+        complete: degreeReady,
+        detail: degreeReady
+          ? 'Qualification-fit signal already saved.'
+          : 'Validate qualification fit before pushing harder on destination choices.'
+      },
+      {
+        label: 'Destination and cost route',
+        href: '/tools/study-abroad-cost/',
+        complete: signals.destinations.length > 0 && signals.budgetSignals.length > 0,
+        detail: signals.destinations.length > 0 && signals.budgetSignals.length > 0
+          ? 'Destination intent and affordability signals are both active.'
+          : (signals.destinations.length
+            ? 'You have destination intent, but cost signals are still thin.'
+            : 'Save destinations, then translate them into affordability scenarios.')
+      },
+      {
+        label: 'Funding and shortlist',
+        href: '/tools/scholarship-finder/',
+        complete: signals.shortlistItems.length > 0,
+        detail: signals.shortlistItems.length > 0
+          ? 'Scholarship shortlist is active in the cockpit.'
+          : (signals.goodMatches
+            ? signals.goodMatches + ' stronger scholarship matches are ready to shortlist.'
+            : 'Use Scholarship Finder to turn profile signals into live funding options.')
+      },
+      {
+        label: 'Schools and deadlines',
+        href: '/tools/university-ranking/',
+        complete: signals.universities.length > 0 && signals.deadlines.length > 0,
+        detail: signals.universities.length > 0 && signals.deadlines.length > 0
+          ? 'Shortlist and timeline are both anchored to real next steps.'
+          : (signals.universities.length
+            ? 'Add at least one real deadline so the shortlist becomes operational.'
+            : 'Save schools before the route becomes too abstract.')
+      }
+    ];
+
+    renderCollection('studyRouteList', route, '', function (step) {
+      return '<a class="hub-route-step' + (step.complete ? ' is-complete' : '') + '" href="' + escapeHtml(step.href) + '">' +
+        '<span class="hub-route-mark">' + (step.complete ? '&#10003;' : '&#8226;') + '</span>' +
+        '<span><strong>' + escapeHtml(step.label) + '</strong><small>' + escapeHtml(step.detail) + '</small></span>' +
+      '</a>';
+    });
+  }
+
+  function renderActivity(signals) {
+    renderCollection('activityFeed', signals.activity, '<div class="hub-empty-block">No recent education activity yet. As you use GPA, degree checks, IELTS, scholarships, or cost tools, the cockpit timeline will update here.</div>', function (item) {
+      return '<div class="hub-activity-item">' +
+        '<span><strong>' + escapeHtml(item.label) + '</strong>' + (item.detail ? '<small>' + escapeHtml(item.detail) + '</small>' : '') + '</span>' +
+        '<time>' + escapeHtml(formatTimeAgo(item.timestamp)) + '</time>' +
+      '</div>';
+    });
+  }
+
+  function renderDashboard(signals) {
+    renderHero(signals);
+    renderProfile(signals);
+    renderChecklist(signals);
+    renderCurrentPlan(signals);
+    renderScholarships(signals);
+    renderUniversities(signals);
+    renderDestinations(signals);
+    renderBudgetSignals(signals);
+    renderTimeline(signals);
+    renderNextActions(signals);
+    renderReadiness(signals);
+    renderStudyRoute(signals);
+    renderActivity(signals);
+  }
+
+  function syncLocalSources() {
+    cockpit.cachedProfile = readCachedProfile();
+    cockpit.quickProfile = readQuickProfile();
+    cockpit.state = readCockpitState();
+    cockpit.ieltsState = readIeltsState();
+    cockpit.jamb = readJambSummary();
+    cockpit.shortlistKeys = getScholarshipShortlistKeys();
+    cockpit.activity = extractActivity();
+    cockpit.profile = mergeSignalsIntoProfile(mapProfileWithFallbacks(
+      cockpit.remoteProfile,
+      cockpit.cachedProfile,
+      cockpit.quickProfile
+    ));
+    cockpit.shortlistItems = resolveScholarshipShortlist(cockpit.scholarships, cockpit.shortlistKeys);
+    cockpit.matches = computeScholarshipMatches(cockpit.profile, cockpit.scholarships);
+  }
+
+  function applySignalsAndRender() {
+    syncLocalSources();
+    var signals = buildSignals();
+    renderDashboard(signals);
+    return signals;
+  }
+
+  function collectProfileSources(fetchRemote) {
+    var shouldFetchRemote = fetchRemote !== false && window.EduProfileSync && typeof window.EduProfileSync.getProfile === 'function';
+    var remotePromise = shouldFetchRemote
+      ? window.EduProfileSync.getProfile().catch(function () { return null; })
+      : Promise.resolve(cockpit.remoteProfile);
+
+    return remotePromise.then(function (remoteProfile) {
+      cockpit.remoteProfile = remoteProfile || null;
+      cockpit.cachedProfile = readCachedProfile();
+      cockpit.quickProfile = readQuickProfile();
+      return {
+        remoteProfile: cockpit.remoteProfile,
+        cachedProfile: cockpit.cachedProfile,
+        quickProfile: cockpit.quickProfile
+      };
+    });
+  }
+
+  function loadScholarshipFeed() {
+    if (window.AfroScholarshipFeed && typeof window.AfroScholarshipFeed.load === 'function') {
+      return window.AfroScholarshipFeed.load().then(function (result) {
+        return {
+          scholarships: result && Array.isArray(result.scholarships) ? result.scholarships : [],
+          meta: result && result.meta ? result.meta : buildDefaultScholarshipSource()
+        };
+      });
+    }
+
+    var cached = safeRead(SCHOLARSHIP_CACHE_KEY, null, localStorage);
+    if (cached && Array.isArray(cached.scholarships) && cached.scholarships.length) {
+      return Promise.resolve({
+        scholarships: cached.scholarships,
+        meta: {
+          mode: 'cache',
+          label: 'Cached feed',
+          message: 'Live scholarship feed helper is unavailable. Showing the last cached scholarship dataset on this device.',
+          tone: 'warn',
+          count: cached.scholarships.length,
+          cachedAt: cached.savedAt || null,
+          updatedLabel: cached.savedAt ? new Date(cached.savedAt).toLocaleDateString() : '',
+          isDegraded: true,
+          error: 'scholarship feed helper missing'
+        }
+      });
+    }
+
+    return Promise.resolve({
+      scholarships: [],
+      meta: {
+        mode: 'fallback',
+        label: 'Feed unavailable',
+        message: 'Scholarship feed is unavailable right now, so match counts may be incomplete until the feed is restored.',
+        tone: 'warn',
+        count: 0,
+        cachedAt: null,
+        updatedLabel: '',
+        isDegraded: true,
+        error: 'scholarship feed helper missing'
+      }
+    });
+  }
+
+  function refreshScholarships() {
+    return loadScholarshipFeed().then(function (result) {
+      cockpit.scholarships = result.scholarships || [];
+      cockpit.scholarshipSource = result.meta || buildDefaultScholarshipSource();
+      applySignalsAndRender();
+      return result;
+    });
+  }
+
+  function refreshRemoteProfile() {
+    return collectProfileSources(true).then(function () {
+      lastRemoteProfileRefreshAt = Date.now();
+      applySignalsAndRender();
+      return cockpit.profile;
+    });
+  }
+
+  function updateProfile(payload) {
+    var cleaned = {};
+    Object.keys(payload || {}).forEach(function (key) {
+      if (payload[key] !== undefined) cleaned[key] = payload[key];
+    });
+
+    if (!Object.keys(cleaned).length) return cockpit.profile;
+
+    if (window.EduProfileSync && typeof window.EduProfileSync.update === 'function') {
+      window.EduProfileSync.update(cleaned);
+    } else {
+      try {
+        var cached = safeRead(PROFILE_CACHE_KEY, {}, localStorage) || {};
+        localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(Object.assign({}, cached, cleaned, {
+          local_updated_at: Date.now()
+        })));
+      } catch (error) {
+        /* ignore local cache write failures */
+      }
+    }
+
+    cockpit.cachedProfile = Object.assign({}, cockpit.cachedProfile || {}, cleaned);
+    cockpit.profile = mergeSignalsIntoProfile(mapProfileWithFallbacks(
+      cockpit.remoteProfile,
+      cockpit.cachedProfile,
+      cockpit.quickProfile
+    ));
+    return cockpit.profile;
+  }
+
+  function recordActivity(label, detail) {
+    if (window.AfroEdu && typeof window.AfroEdu.recordActivity === 'function') {
+      window.AfroEdu.recordActivity('education-hub', label, detail ? { detail: detail } : {});
+    }
   }
 
   function saveProfileEdits() {
-    var data = {
+    updateProfile({
       education_level: getEl('edLevel').value || undefined,
       institution: getEl('edInstitution').value.trim() || undefined,
       graduation_date: getEl('edGradDate').value || undefined,
       target_countries: uniqueStrings((getEl('edCountries').value || '').split(',')),
       target_fields: uniqueStrings((getEl('edFields').value || '').split(',')),
       target_study_level: getEl('edStudyLevel').value || undefined
-    };
+    });
 
-    if (window.EduProfileSync && typeof window.EduProfileSync.update === 'function') {
-      window.EduProfileSync.update(data);
-    }
-
-    cockpit.profile = mergeSignalsIntoProfile(Object.assign({}, cockpit.profile, data));
-    if (window.AfroEdu && typeof window.AfroEdu.recordActivity === 'function') {
-      window.AfroEdu.recordActivity('education-hub', 'Updated cockpit profile', 'Profile fields refreshed');
-    }
+    recordActivity('Updated cockpit profile', 'Profile fields refreshed');
     notify('Education Hub profile updated', 'success');
-    rerender();
+    applySignalsAndRender();
   }
 
   function addManualUniversity() {
@@ -1090,51 +1313,36 @@
 
     if (window.AfroEdu && typeof window.AfroEdu.saveUniversity === 'function') {
       window.AfroEdu.saveUniversity({
-        id: slugify(name),
+        id: slugify(name + '-' + country),
         name: name,
         country: country,
         feesLabel: note,
         href: '/tools/university-ranking/',
+        source: 'education-hub',
         savedAt: Date.now()
       });
-      window.AfroEdu.recordActivity('education-hub', 'Saved university', name);
     }
 
-    if (window.AfroEdu && typeof window.AfroEdu.getCockpitState === 'function') {
-      cockpit.state = window.AfroEdu.getCockpitState();
+    if (country) {
+      updateProfile({
+        target_countries: uniqueStrings((cockpit.profile.target_countries || []).concat([country]))
+      });
     }
 
+    recordActivity('Saved university', name);
     getEl('manualUniversityName').value = '';
     getEl('manualUniversityCountry').value = '';
     getEl('manualUniversityNote').value = '';
     notify('University saved to the cockpit', 'success');
-    rerender();
+    applySignalsAndRender();
   }
 
   function routeToHref(routeKey) {
-    var map = {
-      scholarship: '/tools/scholarship-finder/',
-      ielts: '/tools/ielts-calculator/',
-      budget: '/tools/study-abroad-cost/',
-      university: '/tools/university-ranking/',
-      admission: '/tools/university-admission/',
-      jamb: '/jamb/',
-      afrostudy: '/education/afrostudy/'
-    };
-    return map[routeKey] || '#deadline-form';
+    return routeOptions[routeKey] ? routeOptions[routeKey].href : '#deadline-form';
   }
 
   function routeToLabel(routeKey) {
-    var map = {
-      scholarship: 'Scholarship route',
-      ielts: 'IELTS plan',
-      budget: 'Budget plan',
-      university: 'University shortlist',
-      admission: 'Admissions pathway',
-      jamb: 'AfroJAMB',
-      afrostudy: 'AfroStudy'
-    };
-    return map[routeKey] || '';
+    return routeOptions[routeKey] ? routeOptions[routeKey].label : '';
   }
 
   function addManualDestination() {
@@ -1157,35 +1365,24 @@
         reason: reason,
         studyLevel: studyLevel,
         href: '/tools/study-abroad-cost/',
+        source: 'education-hub',
         savedAt: Date.now()
       });
-      window.AfroEdu.recordActivity('education-hub', 'Saved destination', name);
     }
 
     mergedCountries = uniqueStrings((cockpit.profile.target_countries || []).concat([name]));
-
-    if (window.EduProfileSync && typeof window.EduProfileSync.update === 'function') {
-      window.EduProfileSync.update({
-        target_countries: mergedCountries,
-        target_study_level: studyLevel || cockpit.profile.target_study_level || undefined
-      });
-    }
-
-    cockpit.profile = mergeSignalsIntoProfile(Object.assign({}, cockpit.profile, {
+    updateProfile({
       target_countries: mergedCountries,
-      target_study_level: studyLevel || cockpit.profile.target_study_level
-    }));
+      target_study_level: studyLevel || cockpit.profile.target_study_level || undefined
+    });
 
-    if (window.AfroEdu && typeof window.AfroEdu.getCockpitState === 'function') {
-      cockpit.state = window.AfroEdu.getCockpitState();
-    }
-
+    recordActivity('Saved destination', name);
     getEl('destinationSelect').value = '';
     getEl('destinationCustom').value = '';
     getEl('destinationReason').value = '';
     getEl('destinationLevel').value = '';
     notify('Destination saved to the cockpit', 'success');
-    rerender();
+    applySignalsAndRender();
   }
 
   function addDeadline() {
@@ -1205,147 +1402,166 @@
         date: date,
         route: routeToLabel(routeKey),
         href: routeToHref(routeKey),
+        source: 'education-hub',
         savedAt: Date.now()
       });
-      window.AfroEdu.recordActivity('education-hub', 'Tracked deadline', title);
     }
 
-    if (window.AfroEdu && typeof window.AfroEdu.getCockpitState === 'function') {
-      cockpit.state = window.AfroEdu.getCockpitState();
-    }
-
+    recordActivity('Tracked deadline', title);
     getEl('deadlineTitle').value = '';
     getEl('deadlineDate').value = '';
     getEl('deadlineRoute').value = 'scholarship';
     notify('Deadline saved to the cockpit', 'success');
-    rerender();
+    applySignalsAndRender();
+  }
+
+  function removeDestinationAndProfile(id) {
+    var destination = (cockpit.state.destinations || []).find(function (item) {
+      return item && item.id === id;
+    });
+    var nextCountries;
+
+    if (window.AfroEdu && typeof window.AfroEdu.removeDestination === 'function') {
+      window.AfroEdu.removeDestination(id);
+    }
+
+    nextCountries = uniqueStrings((cockpit.profile.target_countries || []).filter(function (country) {
+      return !destination || String(country || '').toLowerCase() !== String(destination.name || '').toLowerCase();
+    }));
+
+    updateProfile({
+      target_countries: nextCountries
+    });
+
+    recordActivity('Removed destination', destination ? destination.name : 'Destination route removed');
+  }
+
+  function handleAction(event) {
+    var trigger = event.target.closest('[data-action]');
+    var action;
+    var id;
+    var entry;
+
+    if (!trigger) return;
+
+    action = trigger.getAttribute('data-action');
+    id = trigger.getAttribute('data-id');
+
+    if (action === 'open-auth') {
+      event.preventDefault();
+      if (window.AfroAuthModal && typeof window.AfroAuthModal.open === 'function') {
+        window.AfroAuthModal.open();
+      }
+      return;
+    }
+
+    if (!id) return;
+
+    if (action === 'remove-university' && window.AfroEdu && typeof window.AfroEdu.removeUniversity === 'function') {
+      entry = (cockpit.state.universities || []).find(function (item) { return item && item.id === id; });
+      window.AfroEdu.removeUniversity(id);
+      recordActivity('Removed university', entry ? entry.name : 'University removed');
+    } else if (action === 'remove-destination') {
+      removeDestinationAndProfile(id);
+    } else if (action === 'remove-budget' && window.AfroEdu && typeof window.AfroEdu.removeBudgetSignal === 'function') {
+      entry = (cockpit.state.budgetSignals || []).find(function (item) { return item && item.id === id; });
+      window.AfroEdu.removeBudgetSignal(id);
+      recordActivity('Removed budget signal', entry ? entry.destination : 'Budget signal removed');
+    } else if (action === 'remove-deadline' && window.AfroEdu && typeof window.AfroEdu.removeDeadline === 'function') {
+      entry = (cockpit.state.deadlines || []).find(function (item) { return item && item.id === id; });
+      window.AfroEdu.removeDeadline(id);
+      recordActivity('Removed deadline', entry ? entry.title : 'Deadline removed');
+    } else {
+      return;
+    }
+
+    applySignalsAndRender();
   }
 
   function bindEvents() {
-    document.addEventListener('click', function (event) {
-      var action = event.target.getAttribute('data-action');
-      var id = event.target.getAttribute('data-id');
-
-      if (action === 'open-auth') {
-        event.preventDefault();
-        if (window.AfroAuthModal && typeof window.AfroAuthModal.open === 'function') {
-          window.AfroAuthModal.open();
-        }
-        return;
-      }
-
-      if (!action || !id || !window.AfroEdu) return;
-
-      if (action === 'remove-university' && typeof window.AfroEdu.removeUniversity === 'function') {
-        window.AfroEdu.removeUniversity(id);
-      }
-      if (action === 'remove-destination' && typeof window.AfroEdu.removeDestination === 'function') {
-        window.AfroEdu.removeDestination(id);
-      }
-      if (action === 'remove-budget' && typeof window.AfroEdu.removeBudgetSignal === 'function') {
-        window.AfroEdu.removeBudgetSignal(id);
-      }
-      if (action === 'remove-deadline' && typeof window.AfroEdu.removeDeadline === 'function') {
-        window.AfroEdu.removeDeadline(id);
-      }
-
-      if (typeof window.AfroEdu.getCockpitState === 'function') {
-        cockpit.state = window.AfroEdu.getCockpitState();
-      }
-      rerender();
-    });
-
+    document.addEventListener('click', handleAction);
     getEl('saveProfileBtn').addEventListener('click', saveProfileEdits);
     getEl('saveUniversityBtn').addEventListener('click', addManualUniversity);
     getEl('saveDestinationBtn').addEventListener('click', addManualDestination);
     getEl('saveDeadlineBtn').addEventListener('click', addDeadline);
+
+    window.addEventListener('afroedu:profile-updated', function () {
+      applySignalsAndRender();
+    });
+    window.addEventListener('afroedu:quick-profile-updated', function () {
+      applySignalsAndRender();
+    });
+    window.addEventListener('afroedu:cockpit-updated', function () {
+      applySignalsAndRender();
+    });
+    window.addEventListener('afroedu:activity-updated', function () {
+      applySignalsAndRender();
+    });
+    window.addEventListener('afroedu:scholarship-feed-updated', function (event) {
+      if (event && event.detail) {
+        cockpit.scholarshipSource = Object.assign(buildDefaultScholarshipSource(), event.detail);
+      }
+      applySignalsAndRender();
+    });
+    window.addEventListener('storage', function (event) {
+      if (!event.key || [PROFILE_CACHE_KEY, QUICK_PROFILE_KEY, COCKPIT_KEY, ACTIVITY_KEY, SHORTLIST_KEY, SCHOLARSHIP_CACHE_KEY, IELTS_STATE_KEY].indexOf(event.key) !== -1) {
+        applySignalsAndRender();
+      }
+    });
+    window.addEventListener('focus', function () {
+      if (Date.now() - lastRemoteProfileRefreshAt > 60000) {
+        refreshRemoteProfile();
+        return;
+      }
+      applySignalsAndRender();
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') {
+        if (Date.now() - lastRemoteProfileRefreshAt > 60000) {
+          refreshRemoteProfile();
+          return;
+        }
+        applySignalsAndRender();
+      }
+    });
   }
 
   function applyDestinationOptions() {
-    getEl('destinationSelect').innerHTML = '<option value="">Choose saved destination</option>' + destinationOptions.map(function (name) {
+    setHtml('destinationSelect', '<option value="">Choose saved destination</option>' + destinationOptions.map(function (name) {
       return '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>';
-    }).join('');
-  }
-
-  function collectRemoteAndLocalProfile() {
-    var remotePromise = window.EduProfileSync && typeof window.EduProfileSync.getProfile === 'function'
-      ? window.EduProfileSync.getProfile().catch(function () { return null; })
-      : Promise.resolve(null);
-    var cachedProfile = window.EduProfileSync && typeof window.EduProfileSync.getCachedProfile === 'function'
-      ? window.EduProfileSync.getCachedProfile()
-      : null;
-    var quickProfile = window.ScholarshipMatcher && typeof window.ScholarshipMatcher.getQuickProfile === 'function'
-      ? window.ScholarshipMatcher.getQuickProfile()
-      : null;
-
-    return remotePromise.then(function (remoteProfile) {
-      return {
-        remoteProfile: remoteProfile,
-        cachedProfile: cachedProfile,
-        quickProfile: quickProfile
-      };
-    });
+    }).join(''));
   }
 
   function init() {
     applyDestinationOptions();
     bindEvents();
 
-    collectRemoteAndLocalProfile().then(function (profileState) {
-      var matcherProfile;
-      var rawMatches = [];
-
-      cockpit.remoteProfile = profileState.remoteProfile;
-      cockpit.cachedProfile = profileState.cachedProfile;
-      cockpit.quickProfile = profileState.quickProfile;
-      cockpit.state = window.AfroEdu && typeof window.AfroEdu.getCockpitState === 'function'
-        ? window.AfroEdu.getCockpitState()
-        : cockpit.state;
-      cockpit.ieltsState = readIeltsState();
-      cockpit.jamb = window.AfroEdu && typeof window.AfroEdu.summary === 'function'
-        ? window.AfroEdu.summary()
-        : {};
-      cockpit.profile = mergeSignalsIntoProfile(mapProfileWithFallbacks(
-        profileState.remoteProfile,
-        profileState.cachedProfile,
-        profileState.quickProfile
-      ));
-      cockpit.shortlistKeys = getScholarshipShortlistKeys();
-      cockpit.activity = extractActivity();
-
-      return loadScholarships().then(function (scholarships) {
-        cockpit.scholarships = scholarships;
-        cockpit.shortlistItems = resolveScholarshipShortlist(scholarships, cockpit.shortlistKeys);
-
-        if (window.ScholarshipMatcher && typeof window.ScholarshipMatcher.match === 'function') {
-          matcherProfile = buildMatcherProfile(cockpit.profile);
-          rawMatches = window.ScholarshipMatcher.match(scholarships, matcherProfile) || [];
-        }
-
-        cockpit.matches = rawMatches.map(function (match) {
-          return Object.assign({}, match, {
-            category: match.category || (window.ScholarshipMatcher && typeof window.ScholarshipMatcher.categorize === 'function'
-              ? window.ScholarshipMatcher.categorize(match.percent)
-              : 'Possible fit'),
-            categoryClass: match.categoryClass || (window.ScholarshipMatcher && typeof window.ScholarshipMatcher.categoryClass === 'function'
-              ? window.ScholarshipMatcher.categoryClass(match.percent)
-              : 'match-possible')
-          });
-        }).sort(function (left, right) {
-          return (right.percent || 0) - (left.percent || 0);
-        });
-
-        rerender();
-      });
+    collectProfileSources(true).then(function () {
+      lastRemoteProfileRefreshAt = Date.now();
+      return refreshScholarships();
+    }).then(function () {
+      applySignalsAndRender();
     }).catch(function () {
-      cockpit.profile = {};
-      cockpit.scholarships = fallbackScholarships.slice();
-      cockpit.shortlistItems = [];
-      cockpit.matches = [];
-      cockpit.activity = extractActivity();
-      rerender();
+      cockpit.remoteProfile = null;
+      cockpit.scholarships = [];
+      cockpit.scholarshipSource = {
+        mode: 'fallback',
+        label: 'Feed unavailable',
+        message: 'Scholarship signals are temporarily unavailable. The rest of your cockpit still works normally.',
+        tone: 'warn',
+        count: 0,
+        cachedAt: null,
+        updatedLabel: '',
+        isDegraded: true,
+        error: 'hub init failed'
+      };
+      applySignalsAndRender();
     });
   }
 
-  document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 }());

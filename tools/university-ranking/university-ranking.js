@@ -652,6 +652,7 @@
 
   function saveUniversity(university) {
     if (!university || !window.AfroEdu || typeof window.AfroEdu.saveUniversity !== 'function') return;
+    var profile = getProfileState();
 
     (getCockpitState().universities || []).forEach(function (entry) {
       if (entry && entry.name === university.name && entry.id !== university.id && typeof window.AfroEdu.removeUniversity === 'function') {
@@ -678,6 +679,12 @@
       tradeoffs: university.fit.tradeoffs,
       note: university.fit.reasons[0] || 'Shortlist compare candidate'
     });
+
+    if (window.EduProfileSync && typeof window.EduProfileSync.update === 'function' && university.country) {
+      window.EduProfileSync.update({
+        target_countries: uniqueStrings(splitList(profile.target_countries).concat([university.country]))
+      });
+    }
 
     if (typeof window.AfroEdu.recordActivity === 'function') {
       window.AfroEdu.recordActivity('university-ranking', 'Updated university shortlist', {
