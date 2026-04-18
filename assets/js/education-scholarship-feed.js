@@ -1,4 +1,11 @@
-(function (root) {
+(function (globalRoot, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory(null);
+    return;
+  }
+
+  globalRoot.AfroScholarshipFeed = factory(globalRoot);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
   'use strict';
 
   var CACHE_KEY = 'afroedu-scholarship-feed-cache-v1';
@@ -186,13 +193,17 @@
   function buildMeta(mode, scholarships, options) {
     var settings = options || {};
     var cachedAt = settings.cachedAt || null;
-    var tone = mode === 'live' ? 'good' : 'warn';
+    var stale = !!settings.stale;
+    var isDegraded = mode === 'fallback' || stale;
+    var tone = isDegraded ? 'warn' : 'good';
     var label = 'Live feed';
     var message = 'Live scholarship feed loaded.';
 
     if (mode === 'cache') {
       label = 'Cached feed';
-      message = 'Live scholarship feed is unavailable. Showing the last successful sync' + (cachedAt ? ' from ' + formatTimestamp(cachedAt) : '') + '.';
+      message = stale
+        ? 'Live scholarship feed is unavailable. Showing the last successful sync' + (cachedAt ? ' from ' + formatTimestamp(cachedAt) : '') + '.'
+        : 'Showing the latest cached scholarship snapshot' + (cachedAt ? ' from ' + formatTimestamp(cachedAt) : '') + '.';
     } else if (mode === 'fallback') {
       label = 'Curated fallback';
       message = 'Live scholarship feed is unavailable. Showing a narrower curated backup dataset instead.';
@@ -206,17 +217,10 @@
       count: scholarships.length,
       cachedAt: cachedAt,
       updatedLabel: cachedAt ? formatTimestamp(cachedAt) : '',
-      isDegraded: mode !== 'live',
+      isDegraded: isDegraded,
+      stale: stale,
       error: settings.error ? String(settings.error) : ''
     };
-  }
-
-  function normalizeLivePayload(data) {
-    if (!data || !Array.isArray(data.scholarships) || !data.scholarships.length) {
-      throw new Error('empty scholarship feed');
-    }
-
-    return cloneScholarships(data.scholarships);
   }
 
   function readCachedFeed() {
@@ -230,11 +234,46 @@
     };
   }
 
-  function cacheLiveFeed(scholarships) {
+  function cacheLiveFeed(scholarships, savedAt) {
     safeWrite(CACHE_KEY, {
-      savedAt: Date.now(),
+      savedAt: savedAt || Date.now(),
       scholarships: cloneScholarships(scholarships)
     });
+  }
+
+  function normalizeMode(data) {
+    var mode = data && typeof data.mode === 'string' ? String(data.mode).toLowerCase() : '';
+    if (mode === 'fallback') return 'fallback';
+    if (mode === 'cache' || mode === 'cached') return 'cache';
+    if (data && data.stale) return 'cache';
+    return 'live';
+  }
+
+  function resolveServerFeed(data) {
+    var mode = normalizeMode(data);
+    var scholarships = Array.isArray(data && data.scholarships)
+      ? cloneScholarships(data.scholarships)
+      : [];
+    var cachedAt = data && (data.cachedAt || data.timestamp || data.updatedAt || data.fetchedAt || data.syncedAt) || null;
+
+    if (mode === 'fallback' && !scholarships.length) {
+      scholarships = cloneScholarships(FALLBACK_SCHOLARSHIPS);
+    }
+
+    if (!scholarships.length) {
+      throw new Error('empty scholarship feed');
+    }
+
+    return {
+      scholarships: scholarships,
+      meta: buildMeta(mode, scholarships, {
+        cachedAt: cachedAt,
+        stale: !!(data && data.stale),
+        error: data && data.error ? data.error : ''
+      }),
+      shouldCache: mode !== 'fallback',
+      cacheTimestamp: cachedAt || Date.now()
+    };
   }
 
   function resolveDegradedFeed(error) {
@@ -272,24 +311,19 @@
       }
       return response.json();
     }).then(function (data) {
-      var scholarships = normalizeLivePayload(data);
-      cacheLiveFeed(scholarships);
+      var resolved = resolveServerFeed(data);
+      if (resolved.shouldCache) {
+        cacheLiveFeed(resolved.scholarships, resolved.cacheTimestamp);
+      }
+      dispatchFeedEvent(resolved.meta);
 
-      var meta = buildMeta('live', scholarships, {
-        cachedAt: Date.now()
-      });
-      dispatchFeedEvent(meta);
-
-      return {
-        scholarships: scholarships,
-        meta: meta
-      };
+      return { scholarships: resolved.scholarships, meta: resolved.meta };
     }).catch(function (error) {
       return resolveDegradedFeed(error && error.message ? error.message : error);
     });
   }
 
-  root.AfroScholarshipFeed = {
+  return {
     CACHE_KEY: CACHE_KEY,
     load: load,
     getFallbackScholarships: function () {
@@ -297,4 +331,4 @@
     },
     getCachedFeed: readCachedFeed
   };
-})(window);
+});

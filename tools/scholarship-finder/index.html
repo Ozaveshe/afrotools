@@ -121,7 +121,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=20260418a" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=20260418a" defer></script>
-<script src="/assets/js/education-scholarship-feed.js?v=20260418a" defer></script>
+<script src="/assets/js/education-scholarship-feed.js?v=20260418b" defer></script>
 <script src="/engines/scholarship-matcher.js?v=20260418a" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scholarship-finder/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scholarship-finder/" />
@@ -848,14 +848,37 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       : fetch('/api/scholarships')
         .then(function (res) { return res.json(); })
         .then(function (data) {
+          var hasScholarships = data && data.scholarships && data.scholarships.length;
+          var mode = data && data.mode === 'fallback'
+            ? 'fallback'
+            : (data && (data.mode === 'cache' || data.mode === 'cached' || data.stale) ? 'cache' : 'live');
+          var label = 'Live feed';
+          var message = 'Live scholarship feed loaded.';
+          var isDegraded = false;
+
+          if (!hasScholarships) {
+            mode = 'fallback';
+          }
+
+          if (mode === 'cache') {
+            label = 'Cached feed';
+            message = data && data.stale
+              ? 'Live scholarship feed is unavailable. Showing the last successful sync instead.'
+              : 'Showing the latest cached scholarship snapshot.';
+            isDegraded = !!(data && data.stale);
+          } else if (mode === 'fallback') {
+            label = 'Curated fallback';
+            message = 'Live scholarship feed is unavailable. Showing a narrower curated backup dataset instead.';
+            isDegraded = true;
+          }
+
           return {
-            scholarships: data && data.scholarships && data.scholarships.length ? data.scholarships : FALLBACK,
+            scholarships: hasScholarships ? data.scholarships : FALLBACK,
             meta: {
-              label: data && data.scholarships && data.scholarships.length ? 'Live feed' : 'Curated fallback',
-              message: data && data.scholarships && data.scholarships.length
-                ? 'Live scholarship feed loaded.'
-                : 'Live scholarship feed returned no active rows, so the finder is using a curated fallback list.',
-              isDegraded: !(data && data.scholarships && data.scholarships.length)
+              mode: mode,
+              label: label,
+              message: message,
+              isDegraded: isDegraded
             }
           };
         })

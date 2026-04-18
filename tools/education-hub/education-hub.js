@@ -133,6 +133,13 @@
       });
   }
 
+  function truncateText(value, maxLength) {
+    var text = String(value || '').trim();
+
+    if (!text || !maxLength || text.length <= maxLength) return text;
+    return text.slice(0, Math.max(0, maxLength - 3)).trim() + '...';
+  }
+
   function slugify(value) {
     return String(value || '')
       .toLowerCase()
@@ -781,6 +788,35 @@
 
   function renderHero(signals) {
     var primaryAction = signals.nextActions[0];
+    var sourceTone = signals.scholarshipSource.isDegraded ? 'warn' : (signals.scholarshipSource.tone || 'ok');
+    var destinationFocus = signals.destinations.length
+      ? signals.destinations.map(function (destination) { return destination.name; }).slice(0, 2).join(' + ')
+      : 'Set destinations';
+    var fundingFocus = signals.shortlistItems.length
+      ? signals.shortlistItems.length + ' saved scholarship' + (signals.shortlistItems.length === 1 ? '' : 's')
+      : (signals.goodMatches
+        ? signals.goodMatches + ' good match' + (signals.goodMatches === 1 ? '' : 'es') + ' waiting'
+        : (signals.scholarshipSource.isDegraded ? 'Backup feed active' : 'Build your shortlist'));
+    var upcomingDeadline = signals.deadlines.length ? signals.deadlines[0] : null;
+    var routeStrength = signals.currentPlan.filter(function (card) {
+      return card.tone === 'good';
+    }).length;
+    var routeSupport = signals.currentPlan.filter(function (card) {
+      return card.tone === 'ok';
+    }).length;
+    var operatingMode = signals.remoteProfile
+      ? 'Account-linked cockpit'
+      : (signals.completion.percent > 0 ? 'Local cockpit active' : 'Cockpit starting');
+    var momentumValue = routeStrength >= 3
+      ? 'Operational'
+      : (routeStrength + routeSupport >= 2 ? 'Building momentum' : 'Starting up');
+    var momentumDetail = routeStrength >= 3
+      ? 'Destination, funding, tests, and shortlist signals are moving together.'
+      : (routeStrength + routeSupport >= 2
+        ? 'The route is forming. Keep feeding the cockpit with clearer deadlines and stronger evidence.'
+        : 'Add profile, destinations, or shortlists so the cockpit can drive a real plan.');
+    var feedBadge = getEl('heroFeedBadge');
+    var nextActionPrimary = getEl('nextActionPrimary');
 
     setText('heroCompletion', signals.completion.percent + '%');
     setText('heroMatches', String(signals.goodMatches));
@@ -788,12 +824,27 @@
     setText('heroDeadlines', String(signals.deadlines.length));
     setText('heroModeBadge', signals.profileMode);
     setText('heroStatusCopy', signals.profileStatusCopy);
+    setText('heroOperatingMode', operatingMode);
+    setText('heroDestinationFocus', destinationFocus);
+    setText('heroFundingFocus', fundingFocus);
+    setText('heroTimelineFocus', upcomingDeadline
+      ? truncateText(upcomingDeadline.title, 28) + ' - ' + formatRelative(upcomingDeadline.date)
+      : 'Track the first deadline');
+    setText('heroScholarshipMode', signals.scholarshipSource.label);
+    setText('heroScholarshipModeDetail', signals.scholarshipSource.message);
+    setText('heroMomentumValue', momentumValue);
+    setText('heroMomentumDetail', momentumDetail);
+
+    if (feedBadge) {
+      feedBadge.textContent = signals.scholarshipSource.label;
+      feedBadge.className = 'hub-hero-statuschip hub-hero-statuschip-' + (sourceTone === 'good' ? 'ok' : sourceTone);
+    }
 
     if (primaryAction) {
       setText('nextActionTitle', primaryAction.title);
       setText('nextActionCopy', primaryAction.copy);
       setText('nextActionPrimary', primaryAction.cta);
-      getEl('nextActionPrimary').setAttribute('href', primaryAction.href);
+      if (nextActionPrimary) nextActionPrimary.setAttribute('href', primaryAction.href);
     }
   }
 

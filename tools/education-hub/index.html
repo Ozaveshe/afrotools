@@ -15,11 +15,12 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/education-hub/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="education-hub.css?v=20260418a">
+<link rel="stylesheet" href="education-hub.css?v=20260418b">
 <script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
@@ -29,9 +30,9 @@
 <script src="/assets/js/afro-auth.js?v=6" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=20260418a" defer></script>
 <script src="/assets/js/afro-edu-bridge.js?v=20260418a" defer></script>
-<script src="/assets/js/education-scholarship-feed.js?v=20260418a" defer></script>
+<script src="/assets/js/education-scholarship-feed.js?v=20260418b" defer></script>
 <script src="/engines/scholarship-matcher.js?v=20260418a" defer></script>
-<script src="education-hub.js?v=20260418a" defer></script>
+<script src="education-hub.js?v=20260418b" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/education-hub/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/education-hub/">
 <meta property="og:locale" content="en_US">
@@ -109,16 +110,39 @@
 <header class="hub-hero">
   <div class="hub-wrap hub-hero-grid">
     <div class="hub-hero-copy">
-      <div class="hub-eyebrow">Education Hub</div>
+      <div class="hub-hero-topline">
+        <div class="hub-eyebrow">Education Hub</div>
+        <div class="hub-hero-statusbar">
+          <span class="hub-hero-statuschip" id="heroOperatingMode">Cockpit starting</span>
+          <span class="hub-hero-statuschip hub-hero-statuschip-muted" id="heroFeedBadge">Checking scholarship source</span>
+        </div>
+      </div>
       <h1>The central <span>student cockpit</span> for AfroTools.</h1>
       <p>Track where you are, see what matters next, and orchestrate scholarships, tests, universities, destinations, and affordability planning from one connected workspace.</p>
       <div class="hub-hero-pills">
-        <span>My Profile</span>
-        <span>My Checklist</span>
-        <span>My Scholarships</span>
-        <span>My Universities</span>
-        <span>My Destinations</span>
-        <span>My Budget Signals</span>
+        <a href="#profile-editor">My Profile</a>
+        <a href="#checklistList">My Checklist</a>
+        <a href="#scholarshipList">My Scholarships</a>
+        <a href="#universityList">My Universities</a>
+        <a href="#destinationList">My Destinations</a>
+        <a href="#budgetSignalList">My Budget Signals</a>
+      </div>
+      <div class="hub-hero-rail">
+        <article class="hub-hero-rail-card">
+          <span>Destination route</span>
+          <strong id="heroDestinationFocus">Set destinations</strong>
+          <p>Lock in countries and affordability routes so the cockpit can prioritise the right moves.</p>
+        </article>
+        <article class="hub-hero-rail-card">
+          <span>Funding route</span>
+          <strong id="heroFundingFocus">Build your shortlist</strong>
+          <p>Scholarship Finder turns your profile into shortlist-ready funding routes for the cockpit.</p>
+        </article>
+        <article class="hub-hero-rail-card">
+          <span>Timeline pressure</span>
+          <strong id="heroTimelineFocus">Track the first deadline</strong>
+          <p>Deadlines make the plan operational by telling the cockpit what matters first.</p>
+        </article>
       </div>
     </div>
     <div class="hub-next-card">
@@ -130,6 +154,18 @@
       <p id="nextActionCopy">Your cockpit turns into a real planning surface once your education level, destinations, and study goals are clear.</p>
       <a class="hub-primary-link" id="nextActionPrimary" href="#profile-editor">Update profile</a>
       <p class="hub-next-foot" id="heroStatusCopy">Start with the profile and the hub will turn your tools into one connected journey.</p>
+      <div class="hub-next-signal-grid">
+        <article class="hub-next-signal-card">
+          <span>Scholarship source</span>
+          <strong id="heroScholarshipMode">Checking feed</strong>
+          <small id="heroScholarshipModeDetail">Feed status and trust level will appear here.</small>
+        </article>
+        <article class="hub-next-signal-card">
+          <span>Route momentum</span>
+          <strong id="heroMomentumValue">Starting up</strong>
+          <small id="heroMomentumDetail">Profile, destination, funding, and deadlines will roll into one operating view.</small>
+        </article>
+      </div>
       <div class="hub-stat-grid">
         <div class="hub-stat-box">
           <strong id="heroCompletion">0%</strong>

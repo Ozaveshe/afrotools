@@ -10,6 +10,7 @@
  */
 
 const { getData, setData } = require('./_shared/data-store');
+const ScholarshipFeed = require('../../assets/js/education-scholarship-feed.js');
 
 const SUPABASE_DATA_URL = process.env.SUPABASE_DATA_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
 const SUPABASE_DATA_ANON = process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY;
@@ -28,6 +29,44 @@ const CORS_HEADERS = {
 
 function jsonResponse(statusCode, body) {
   return { statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) };
+}
+
+function getCachedScholarships(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (payload && Array.isArray(payload.data)) return payload.data;
+  return null;
+}
+
+function getCachedTimestamp(payload) {
+  return payload && (payload.timestamp || payload.cachedAt || payload.updatedAt || payload.updated_at) || null;
+}
+
+function buildPayload(scholarships, params, options) {
+  var filtered = filterScholarships(scholarships || [], params);
+  var offset = parseInt(params.offset, 10) || 0;
+  var limit = parseInt(params.limit, 10) || 0;
+  var total = filtered.length;
+
+  if (offset > 0) filtered = filtered.slice(offset);
+  if (limit > 0) filtered = filtered.slice(0, limit);
+
+  return {
+    scholarships: filtered,
+    total: total,
+    count: filtered.length,
+    mode: options && options.mode ? options.mode : 'live',
+    cached: !!(options && options.mode === 'cache'),
+    stale: !!(options && options.stale),
+    cachedAt: options && options.cachedAt ? options.cachedAt : null,
+    error: options && options.error ? String(options.error) : ''
+  };
+}
+
+function getFallbackScholarships() {
+  if (ScholarshipFeed && typeof ScholarshipFeed.getFallbackScholarships === 'function') {
+    return ScholarshipFeed.getFallbackScholarships();
+  }
+  return [];
 }
 
 async function fetchFromSupabase() {
@@ -97,11 +136,17 @@ exports.handler = async function (event) {
     // Try cache first
     var cached = await getData(CACHE_KEY);
     var scholarships = null;
+    var mode = 'live';
+    var cachedAt = null;
 
-    if (cached && cached.data && cached.timestamp) {
-      var age = Date.now() - new Date(cached.timestamp).getTime();
+    var cachedScholarships = getCachedScholarships(cached);
+    cachedAt = getCachedTimestamp(cached);
+
+    if (cachedScholarships && cachedAt) {
+      var age = Date.now() - new Date(cachedAt).getTime();
       if (age < CACHE_TTL_MS) {
-        scholarships = cached.data;
+        scholarships = cachedScholarships;
+        mode = 'cache';
         console.log('[scholarships-api] Cache hit, ' + scholarships.length + ' scholarships');
       }
     }
@@ -110,36 +155,21 @@ exports.handler = async function (event) {
     if (!scholarships) {
       console.log('[scholarships-api] Cache miss, fetching from Supabase...');
       scholarships = await fetchFromSupabase();
+      mode = 'live';
+      cachedAt = new Date().toISOString();
       // Update cache
       await setData(CACHE_KEY, {
         data: scholarships,
-        timestamp: new Date().toISOString(),
+        timestamp: cachedAt,
         count: scholarships.length,
       });
       console.log('[scholarships-api] Cached ' + scholarships.length + ' scholarships');
     }
 
-    // Apply filters
-    var filtered = filterScholarships(scholarships, params);
-
-    // Pagination
-    var offset = parseInt(params.offset) || 0;
-    var limit = parseInt(params.limit) || 0;
-    var total = filtered.length;
-
-    if (offset > 0) {
-      filtered = filtered.slice(offset);
-    }
-    if (limit > 0) {
-      filtered = filtered.slice(0, limit);
-    }
-
-    return jsonResponse(200, {
-      scholarships: filtered,
-      total: total,
-      count: filtered.length,
-      cached: !!cached,
-    });
+    return jsonResponse(200, buildPayload(scholarships, params, {
+      mode: mode,
+      cachedAt: cachedAt
+    }));
 
   } catch (err) {
     console.error('[scholarships-api] Error:', err.message);
@@ -147,18 +177,25 @@ exports.handler = async function (event) {
     // Last resort: try cache even if stale
     try {
       var stale = await getData(CACHE_KEY);
-      if (stale && stale.data) {
-        var filtered2 = filterScholarships(stale.data, params);
-        return jsonResponse(200, {
-          scholarships: filtered2,
-          total: filtered2.length,
-          count: filtered2.length,
-          cached: true,
+      var staleScholarships = getCachedScholarships(stale);
+      if (staleScholarships && staleScholarships.length) {
+        return jsonResponse(200, buildPayload(staleScholarships, params, {
+          mode: 'cache',
           stale: true,
-        });
+          cachedAt: getCachedTimestamp(stale),
+          error: err.message
+        }));
       }
     } catch (e) { /* ignore */ }
 
-    return jsonResponse(500, { error: 'Failed to fetch scholarships' });
+    var fallbackScholarships = getFallbackScholarships();
+    if (fallbackScholarships.length) {
+      return jsonResponse(200, buildPayload(fallbackScholarships, params, {
+        mode: 'fallback',
+        error: err.message
+      }));
+    }
+
+    return jsonResponse(500, { error: 'Failed to fetch scholarships', mode: 'fallback' });
   }
 };
