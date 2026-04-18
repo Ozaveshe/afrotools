@@ -35,7 +35,37 @@
   }
 
   function isLoggedIn() {
-    return !!(window.AfroAuth && typeof window.AfroAuth.isLoggedIn === 'function' && window.AfroAuth.isLoggedIn());
+    if (!window.AfroAuth) {
+      return false;
+    }
+
+    try {
+      if (typeof window.AfroAuth.isLoggedIn === 'function' && window.AfroAuth.isLoggedIn()) {
+        return true;
+      }
+    } catch (error) {
+      console.warn('[SavedTools] isLoggedIn check failed:', error);
+    }
+
+    try {
+      if (typeof window.AfroAuth.getUser === 'function') {
+        var user = window.AfroAuth.getUser();
+        if (user && user.id) return true;
+      }
+    } catch (error) {
+      console.warn('[SavedTools] getUser fallback failed:', error);
+    }
+
+    try {
+      if (typeof window.AfroAuth.getCachedProfile === 'function') {
+        var cachedProfile = window.AfroAuth.getCachedProfile();
+        if (cachedProfile && cachedProfile.id) return true;
+      }
+    } catch (error) {
+      console.warn('[SavedTools] getCachedProfile fallback failed:', error);
+    }
+
+    return false;
   }
 
   async function getSessionToken() {

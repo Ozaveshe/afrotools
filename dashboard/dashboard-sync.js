@@ -3,6 +3,7 @@
 
   var WORKSPACE_TIMEOUT_MS = 9000;
   var WORKSPACE_ITEM_TYPES = [
+    'saved-calculation',
     'cv-draft',
     'cv',
     'floor-plan-draft',
@@ -150,6 +151,110 @@
     }
 
     return { label: 'Saved result', value: 'Open to view details' };
+  }
+
+  function summarizeSavedCalculationEntry(item) {
+    var payload = item && item.payload ? item.payload : {};
+    var snapshot = payload && payload.snapshot ? payload.snapshot : {};
+    var regime = snapshot.regime === 'nta' ? 'NTA 2026' : 'PITA 2025';
+
+    if (typeof snapshot.netMonthly === 'number' && Number.isFinite(snapshot.netMonthly)) {
+      return regime + ' | ' + formatWorkspaceCurrency(snapshot.netMonthly, item.meta && item.meta.currency ? item.meta.currency : 'NGN') + '/mo';
+    }
+
+    if (typeof item.summary === 'string' && item.summary.trim()) {
+      return item.summary.trim();
+    }
+
+    if (typeof payload.summary === 'string' && payload.summary.trim()) {
+      return payload.summary.trim();
+    }
+
+    return 'Saved scenario';
+  }
+
+  function readLocalSavedCalculationItems() {
+    var rawItems = [];
+
+    try {
+      rawItems = JSON.parse(localStorage.getItem('afrotools-saved-ng-salary-tax') || '[]');
+    } catch (error) {
+      rawItems = [];
+    }
+
+    if (!Array.isArray(rawItems)) return [];
+
+    return rawItems.map(function (item) {
+      if (!item || !item.id) return null;
+
+      var payload = item.data || {};
+      var summary = summarizeSavedCalculationEntry({
+        payload: payload,
+        summary: payload && payload.summary ? payload.summary : ''
+      });
+
+      return {
+        id: 'local-' + item.id,
+        item_type: 'saved-calculation',
+        item_key: item.id,
+        tool_slug: 'ng-paye',
+        title: item.title || 'Saved calculation',
+        summary: summary,
+        href: '/nigeria/ng-salary-tax/?saved_calc=' + encodeURIComponent(item.id),
+        payload: payload,
+        meta: {
+          local_only: true,
+          currency: 'NGN'
+        },
+        created_at: item.createdAt ? new Date(item.createdAt).toISOString() : new Date().toISOString(),
+        updated_at: item.updatedAt ? new Date(item.updatedAt).toISOString() : new Date().toISOString(),
+        local_only: true
+      };
+    }).filter(Boolean);
+  }
+
+  function getSavedCalculationItems(workspaceItems) {
+    var merged = Object.create(null);
+
+    (workspaceItems || []).forEach(function (item) {
+      if (!item || item.item_type !== 'saved-calculation' || !item.item_key) return;
+      merged[item.item_key] = item;
+    });
+
+    readLocalSavedCalculationItems().forEach(function (item) {
+      var existing = merged[item.item_key];
+      if (!existing) {
+        merged[item.item_key] = item;
+        return;
+      }
+
+      var existingTime = window.AfroWorkspace.getTimestamp(existing.updated_at || existing.created_at);
+      var localTime = window.AfroWorkspace.getTimestamp(item.updated_at || item.created_at);
+
+      if (localTime > existingTime) {
+        merged[item.item_key] = Object.assign({}, item, { local_only: false });
+      }
+    });
+
+    return sortByUpdatedDesc(Object.keys(merged).map(function (itemKey) {
+      return merged[itemKey];
+    }));
+  }
+
+  function removeLocalSavedCalculationItem(itemKey) {
+    var current = [];
+
+    try {
+      current = JSON.parse(localStorage.getItem('afrotools-saved-ng-salary-tax') || '[]');
+    } catch (error) {
+      current = [];
+    }
+
+    if (!Array.isArray(current)) return;
+
+    localStorage.setItem('afrotools-saved-ng-salary-tax', JSON.stringify(current.filter(function (item) {
+      return item && item.id !== itemKey;
+    })));
   }
 
   function getActiveWorkspaceTab() {
@@ -349,6 +454,7 @@
 
     return {
       items: items,
+      savedCalculations: getSavedCalculationItems(items),
       cvs: Array.isArray(cvs) ? cvs : [],
       plans: Array.isArray(plans) ? plans : [],
       hasDocs: hasDocs
@@ -393,20 +499,65 @@
     }).join('');
   }
 
-  function renderWorkspaceHistory(container, historyItems) {
+  function renderWorkspaceHistory(container, historyItems, savedCalculationItems) {
     var items = Array.isArray(historyItems) ? historyItems : [];
-    var intro = '<div style="margin-bottom:14px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:14px 16px;color:#475569;font-size:0.82rem;line-height:1.5;">Recent calculations are loaded from your signed-in AfroTools account, so they are available on every device.</div>';
+    var savedItems = Array.isArray(savedCalculationItems) ? savedCalculationItems : [];
+    var intro = '<div style="margin-bottom:14px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:14px 16px;color:#475569;font-size:0.82rem;line-height:1.5;">Saved scenarios stay in your dashboard, while recent calculator activity helps you quickly jump back into the tools you used.</div>';
 
-    if (items.length === 0) {
+    if (items.length === 0 && savedItems.length === 0) {
       container.innerHTML = intro +
         '<div style="padding:20px;text-align:center;color:#64748B;font-size:0.85rem;background:#F8FAFC;border-radius:12px;border:1.5px dashed #CBD5E1;">' +
-        '<p style="margin-bottom:8px;font-weight:600;color:#1E293B;">No synced calculations yet</p>' +
-        '<span style="font-size:.78rem;">Run a calculator while signed in and your recent results will appear here automatically.</span>' +
+        '<p style="margin-bottom:8px;font-weight:600;color:#1E293B;">No saved calculations yet</p>' +
+        '<span style="font-size:.78rem;">Run a calculator, save a named scenario, and your dashboard will start filling in automatically.</span>' +
         '</div>';
       return;
     }
 
-    container.innerHTML = intro + '<div class="cv-card-grid">' + items.map(function (item) {
+    var savedSection = '';
+    if (savedItems.length) {
+      savedSection =
+        '<div style="margin-bottom:16px;">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">' +
+            '<div>' +
+              '<div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#94A3B8;font-weight:800;">Saved Scenarios</div>' +
+              '<div style="font-size:.82rem;color:#64748B;">Named calculation snapshots from Nigeria PAYE and future synced calculators.</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cv-card-grid">' + savedItems.map(function (item) {
+            var summary = summarizeSavedCalculationEntry(item);
+            var badge = item.local_only
+              ? '<span style="display:inline-flex;align-items:center;justify-content:center;padding:0 10px;height:24px;border-radius:999px;background:#F1F5F9;color:#475569;font-size:.66rem;font-weight:800;">This device</span>'
+              : '<span style="display:inline-flex;align-items:center;justify-content:center;padding:0 10px;height:24px;border-radius:999px;background:#DBEAFE;color:#1D4ED8;font-size:.66rem;font-weight:800;">Dashboard</span>';
+
+            return '<div class="cv-card">' +
+              '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">' +
+                '<div>' +
+                  '<div class="cv-card-name">' + escapeHtml(item.title || 'Saved calculation') + '</div>' +
+                  '<div class="cv-card-meta">' + escapeHtml(formatRelativeTime(item.updated_at || item.created_at)) + '</div>' +
+                '</div>' +
+                badge +
+              '</div>' +
+              '<div style="margin-top:10px;font-size:.82rem;color:#475569;line-height:1.55;">' + escapeHtml(summary) + '</div>' +
+              '<div class="cv-card-actions">' +
+                '<a class="cv-card-edit" href="' + (item.href || '/nigeria/ng-salary-tax/') + '">Open scenario</a>' +
+                '<button type="button" class="cv-card-dup" style="border:none;background:#FEE2E2;color:#B91C1C;cursor:pointer;" onclick="removeSavedCalculationFromWorkspace(\'' + item.item_key + '\',' + (item.local_only ? 'true' : 'false') + ')">Delete</button>' +
+              '</div>' +
+            '</div>';
+          }).join('') + '</div>' +
+        '</div>';
+    }
+
+    var historySection = '';
+    if (items.length) {
+      historySection =
+        '<div>' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">' +
+            '<div>' +
+              '<div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#94A3B8;font-weight:800;">Recent Activity</div>' +
+              '<div style="font-size:.82rem;color:#64748B;">Synced history from calculators you ran while signed in.</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="cv-card-grid">' + items.map(function (item) {
       var toolId = item.tool_slug || '';
       var registryTool = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS.find(function (tool) { return tool.id === toolId; }) : null;
       var summary = summarizeHistoryEntry(item);
@@ -430,7 +581,11 @@
           '<a class="cv-card-dup" href="' + href + '">Recalculate</a>' +
         '</div>' +
       '</div>';
-    }).join('') + '</div>';
+          }).join('') + '</div>' +
+        '</div>';
+    }
+
+    container.innerHTML = intro + savedSection + historySection;
   }
 
   window.removeFavoriteFromWorkspace = async function (toolId) {
@@ -465,12 +620,45 @@
     renderWorkspaceFavoriteGrid(container, items);
   };
 
-  window.loadSyncedCalculationHistory = async function (historyItems) {
+  window.loadSyncedCalculationHistory = async function (historyItems, savedCalculationItems) {
     var container = document.getElementById('workspaceHistoryContainer');
     if (!container) return;
 
     container.innerHTML = '<div style="color:#94A3B8;font-size:.82rem;padding:12px 0;">Loading your synced calculations...</div>';
-    renderWorkspaceHistory(container, Array.isArray(historyItems) ? historyItems : await getHistoryItems(12));
+    var savedItems = Array.isArray(savedCalculationItems) ? savedCalculationItems : getSavedCalculationItems(await fetchWorkspaceItems());
+    renderWorkspaceHistory(
+      container,
+      Array.isArray(historyItems) ? historyItems : await getHistoryItems(12),
+      savedItems
+    );
+  };
+
+  window.removeSavedCalculationFromWorkspace = async function (itemKey, localOnly) {
+    if (!itemKey) return;
+
+    try {
+      removeLocalSavedCalculationItem(itemKey);
+
+      if (!localOnly && window.AfroWorkspace && window.AfroWorkspace.isSignedIn()) {
+        await window.AfroWorkspace.remove({
+          itemType: 'saved-calculation',
+          itemKey: itemKey
+        });
+      }
+
+      if (typeof renderMyWorkspace === 'function') {
+        renderMyWorkspace({ activeTab: 'ws-history' });
+      }
+
+      if (typeof showToast === 'function') {
+        showToast('Saved calculation removed');
+      }
+    } catch (error) {
+      console.warn('[DashboardSync] Failed to remove saved calculation:', error);
+      if (typeof showToast === 'function') {
+        showToast('Could not remove this saved calculation', 'error');
+      }
+    }
   };
 
   window.renderMyWorkspace = async function (options) {
@@ -549,7 +737,7 @@
     if (document.getElementById('ws-history')) {
       var historyPanel = document.getElementById('ws-history');
       historyPanel.id = 'workspaceHistoryContainer';
-      await window.loadSyncedCalculationHistory(historyItems);
+      await window.loadSyncedCalculationHistory(historyItems, workspaceState.savedCalculations);
       historyPanel.id = 'ws-history';
     }
 
@@ -737,6 +925,7 @@
     window.addEventListener('storage', function (event) {
       var watchedKeys = {
         afro_favs_v2: true,
+        'afrotools-saved-ng-salary-tax': true,
         afro_cv_list: true,
         afro_fp_list: true,
         afro_invoice_draft: true,
