@@ -52,6 +52,95 @@ var TAX_AUTHORITIES = {
   MW: { name: 'Malawi', authority: 'MRA', keywords: ['PAYE', 'income tax', 'minimum wage'], currency: 'MWK' },
 };
 
+var COUNTRY_ALIASES = {
+  NG: ['nigeria', 'nigerian', 'firs', 'lagos', 'abuja'],
+  KE: ['kenya', 'kenyan', 'kra', 'nairobi'],
+  ZA: ['south africa', 'south african', 'sars', 'johannesburg', 'cape town', 'pretoria'],
+  GH: ['ghana', 'ghanaian', 'gra', 'accra'],
+  EG: ['egypt', 'egyptian', 'eta', 'cairo'],
+  TZ: ['tanzania', 'tanzanian', 'tra', 'dar es salaam'],
+  UG: ['uganda', 'ugandan', 'ura', 'kampala'],
+  RW: ['rwanda', 'rwandan', 'rra', 'kigali', 'rssb'],
+  ET: ['ethiopia', 'ethiopian', 'erca', 'addis ababa'],
+  CI: ["cote d'ivoire", 'cote divoire', 'ivory coast', 'ivoirian', 'dgi', 'abidjan', 'smig'],
+  SN: ['senegal', 'senegalese', 'dgid', 'dakar', 'smig'],
+  CM: ['cameroon', 'cameroonian', 'dgi', 'yaounde', 'douala', 'smig'],
+  MA: ['morocco', 'moroccan', 'dgi', 'rabat', 'casablanca', 'smig'],
+  TN: ['tunisia', 'tunisian', 'dgi', 'tunis', 'smig'],
+  ZM: ['zambia', 'zambian', 'zra', 'lusaka', 'napsa'],
+  ZW: ['zimbabwe', 'zimbabwean', 'zimra', 'harare', 'nssa'],
+  BW: ['botswana', 'batswana', 'burs', 'gaborone'],
+  NA: ['namibia', 'namibian', 'namra', 'windhoek'],
+  MU: ['mauritius', 'mauritian', 'mra', 'port louis'],
+  MW: ['malawi', 'malawian', 'mra', 'lilongwe', 'blantyre'],
+};
+
+var REGULATORY_SIGNAL_PATTERNS = [
+  /\bgazette\b/i,
+  /\bapproved\b/i,
+  /\bapproval\b/i,
+  /\bannounced\b/i,
+  /\beffective\b/i,
+  /\bcomes? into force\b/i,
+  /\bin effect\b/i,
+  /\bdecree\b/i,
+  /\border\b/i,
+  /\bregulation\b/i,
+  /\bamend(?:ed|ment)?\b/i,
+  /\brevised\b/i,
+  /\braised\b/i,
+  /\bincreased\b/i,
+  /\bcut\b/i,
+  /\bslash(?:ed)?\b/i,
+  /\bsigned\b/i,
+  /\bpassed\b/i,
+  /\bbudget\b/i,
+  /\bfinance bill\b/i,
+  /\bfinance act\b/i,
+  /\bnew rate\b/i,
+  /\bnew rates\b/i,
+];
+
+var NON_ACTIONABLE_SIGNAL_PATTERNS = [
+  /\bplan(?:s|ned)?\b/i,
+  /\bdemand(?:s|ed)?\b/i,
+  /\bprotest(?:s|ed)?\b/i,
+  /\bcall(?:s|ed)? for\b/i,
+  /\burge(?:s|d)?\b/i,
+  /\badvocat(?:e|es|ed)\b/i,
+  /\blacking\b/i,
+  /\branks? lowest\b/i,
+  /\bopinion\b/i,
+  /\banalysis\b/i,
+];
+
+function containsAny(text, patternsOrTerms) {
+  for (var i = 0; i < patternsOrTerms.length; i++) {
+    var item = patternsOrTerms[i];
+    if (item instanceof RegExp) {
+      if (item.test(text)) return true;
+      continue;
+    }
+    if (text.indexOf(String(item).toLowerCase()) !== -1) return true;
+  }
+  return false;
+}
+
+function isArticleRelevant(article, code, config) {
+  var title = ((article && article.title) || '').toLowerCase();
+  var desc = ((article && article.description) || '').toLowerCase();
+  var combined = (title + ' ' + desc).trim();
+  if (!combined) return false;
+
+  var aliases = COUNTRY_ALIASES[code] || [config.name.toLowerCase(), config.authority.toLowerCase()];
+  var hasCountrySignal = containsAny(combined, aliases);
+  var hasKeywordSignal = containsAny(combined, config.keywords.map(function(keyword) { return keyword.toLowerCase(); }));
+  var hasRegulatorySignal = containsAny(combined, REGULATORY_SIGNAL_PATTERNS);
+  var isClearlyNonActionable = containsAny(combined, NON_ACTIONABLE_SIGNAL_PATTERNS);
+
+  return hasCountrySignal && hasKeywordSignal && hasRegulatorySignal && !isClearlyNonActionable;
+}
+
 /**
  * Scan news sources for regulatory change signals.
  * Uses a search approach to detect recent announcements.
@@ -86,6 +175,10 @@ async function scanForChanges() {
             var title = (article.title || '').toLowerCase();
             var desc = (article.description || '').toLowerCase();
             var combined = title + ' ' + desc;
+
+            if (!isArticleRelevant(article, code, config)) {
+              return;
+            }
 
             // Detect specific change types
             var changeType = detectChangeType(combined, config.keywords);

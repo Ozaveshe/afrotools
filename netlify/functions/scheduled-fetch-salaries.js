@@ -1,29 +1,75 @@
 /**
- * AfroTools — Scheduled Salary Benchmark Fetcher
+ * AfroTools - Scheduled Salary Benchmark Fetcher
  * Runs weekly (Friday 3am) via Netlify Scheduled Functions.
  *
  * Sources:
- *  1. Existing Supabase salary_benchmarks table (community data)
- *  2. ILO STAT API (wage indicators by country)
- *  3. Reference data with forex refresh
+ *  1. Live salary benchmark rows from Supabase when available
+ *  2. Reference salary baselines with current forex conversion
  *
- * Output: { timestamp, countries: [{ code, name, sectors: [{ sector, median_usd, p25_usd, p75_usd }] }] }
- * Writes to Netlify Blobs 'live-data' → key 'salary-benchmarks-latest'.
+ * Output:
+ *   {
+ *     timestamp,
+ *     countries: [{ code, name, sectors: [{ sector, median_usd, p25_usd, p75_usd }] }]
+ *   }
+ *
+ * Writes to live_data_store key: salary-benchmarks-latest
  */
 
-const { runScraper, fetchWithRetry } = require('./_shared/scraper-base');
+const { runScraper } = require('./_shared/scraper-base');
 const { getData } = require('./_shared/data-store');
 
-var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
-var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
-                   process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
-                   process.env.SUPABASE_SERVICE_KEY;
+const SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY;
 
-// Sectors tracked
-var SECTORS = ['technology', 'finance', 'healthcare', 'education', 'oil_gas', 'agriculture', 'retail', 'manufacturing', 'government', 'ngo'];
+const SECTORS = [
+  'technology',
+  'finance',
+  'healthcare',
+  'education',
+  'oil_gas',
+  'agriculture',
+  'retail',
+  'manufacturing',
+  'government',
+  'ngo',
+];
 
-// Reference median salaries (USD/month gross) per country per sector
-var REFERENCE_SALARIES = {
+const COUNTRY_NAMES = {
+  NG: 'Nigeria',
+  KE: 'Kenya',
+  ZA: 'South Africa',
+  GH: 'Ghana',
+  EG: 'Egypt',
+  ET: 'Ethiopia',
+  TZ: 'Tanzania',
+  RW: 'Rwanda',
+  CI: "Cote d'Ivoire",
+  MA: 'Morocco',
+  UG: 'Uganda',
+  SN: 'Senegal',
+  CM: 'Cameroon',
+};
+
+const COUNTRY_CURRENCIES = {
+  NG: 'NGN',
+  KE: 'KES',
+  ZA: 'ZAR',
+  GH: 'GHS',
+  EG: 'EGP',
+  ET: 'ETB',
+  TZ: 'TZS',
+  RW: 'RWF',
+  CI: 'XOF',
+  MA: 'MAD',
+  UG: 'UGX',
+  SN: 'XOF',
+  CM: 'XAF',
+};
+
+const REFERENCE_SALARIES = {
   NG: { technology: 800, finance: 700, healthcare: 500, education: 300, oil_gas: 1500, agriculture: 150, retail: 200, manufacturing: 350, government: 400, ngo: 500 },
   KE: { technology: 1200, finance: 1000, healthcare: 700, education: 500, oil_gas: 1800, agriculture: 200, retail: 300, manufacturing: 500, government: 600, ngo: 700 },
   ZA: { technology: 2500, finance: 2200, healthcare: 1500, education: 1200, oil_gas: 3000, agriculture: 400, retail: 600, manufacturing: 900, government: 1500, ngo: 1200 },
@@ -39,106 +85,148 @@ var REFERENCE_SALARIES = {
   CM: { technology: 500, finance: 400, healthcare: 280, education: 200, oil_gas: 850, agriculture: 80, retail: 120, manufacturing: 200, government: 250, ngo: 300 },
 };
 
-/**
- * Source 1: Supabase salary_benchmarks + ILO + reference data
- */
-async function fetchSalaryData() {
-  var forexData = await getData('forex-latest');
-  var rates = (forexData && forexData.rates) || {};
-  var now = new Date().toISOString().slice(0, 10);
-
-  // Fetch from Supabase salary_benchmarks table if available
-  var supabaseData = [];
-  if (SUPABASE_KEY) {
-    try {
-      var res = await fetch(SUPABASE_URL + '/rest/v1/salary_benchmarks?select=*', {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
-      });
-      if (res.ok) supabaseData = await res.json();
-    } catch (e) {
-      console.log('[salaries] Supabase fetch failed: ' + e.message);
-    }
+function normalizeCommunityBenchmarks(rows) {
+  if (!Array.isArray(rows)) {
+    return [];
   }
 
-  // Try ILO STAT API for wage data
-  var iloWages = {};
+  return rows.filter(function(row) {
+    return (
+      row &&
+      typeof row === 'object' &&
+      typeof row.country_code === 'string' &&
+      typeof row.role_category === 'string'
+    );
+  });
+}
+
+async function fetchCommunityBenchmarks() {
+  if (!SUPABASE_KEY) {
+    return [];
+  }
+
   try {
-    var iloUrl = 'https://www.ilo.org/ilostat/api/v1/data/EAR_4MTH_SEX_ECO_CUR_NB?format=json&limit=500';
-    var iloRes = await fetchWithRetry(iloUrl, { headers: { 'Accept': 'application/json' } });
-    var iloJson = await iloRes.json();
-    if (iloJson && iloJson.data) {
-      iloJson.data.forEach(function(d) {
-        if (d.ref_area && d.obs_value) {
-          iloWages[d.ref_area] = d.obs_value;
-        }
-      });
+    const response = await fetch(SUPABASE_URL + '/rest/v1/salary_benchmarks?select=*', {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: 'Bearer ' + SUPABASE_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('HTTP ' + response.status);
     }
-  } catch (e) {
-    console.log('[salaries] ILO API failed: ' + e.message);
+
+    return normalizeCommunityBenchmarks(await response.json());
+  } catch (error) {
+    console.log('[salaries] Community benchmark fetch failed: ' + error.message);
+    return [];
+  }
+}
+
+function summarizeCommunitySector(rows) {
+  const values = rows
+    .map(function(row) {
+      return parseFloat(row.median_gross);
+    })
+    .filter(function(value) {
+      return Number.isFinite(value) && value > 0;
+    });
+
+  if (values.length === 0) {
+    return null;
   }
 
-  // Build country data from multiple sources
-  var countries = Object.keys(REFERENCE_SALARIES).map(function(code) {
-    var refSalaries = REFERENCE_SALARIES[code];
-    var currencyMap = { NG: 'NGN', KE: 'KES', ZA: 'ZAR', GH: 'GHS', EG: 'EGP', ET: 'ETB', TZ: 'TZS', RW: 'RWF', CI: 'XOF', MA: 'MAD', UG: 'UGX', SN: 'XOF', CM: 'XAF' };
-    var currency = currencyMap[code] || 'USD';
-    var fxRate = rates[currency] || 1;
-    var hasCommunityData = false;
+  const total = values.reduce(function(sum, value) {
+    return sum + value;
+  }, 0);
 
-    var sectors = SECTORS.map(function(sector) {
-      var median = refSalaries[sector] || null;
+  return {
+    medianUsd: Math.round(total / values.length),
+    sampleSize: rows.reduce(function(sum, row) {
+      return sum + Math.max(0, parseInt(row.sample_size, 10) || 0);
+    }, 0),
+  };
+}
 
-      // Enrich with Supabase community data if available
-      var communityMatch = supabaseData.filter(function(s) {
-        return s.country_code === code && s.sector === sector;
+async function buildSalaryDataset(options) {
+  const opts = options || {};
+  const forexData = await getData('forex-latest');
+  const rates =
+    forexData && forexData.rates && typeof forexData.rates === 'object'
+      ? forexData.rates
+      : {};
+  const communityData = Array.isArray(opts.communityData) ? opts.communityData : [];
+  const now = new Date().toISOString().slice(0, 10);
+
+  return Object.keys(REFERENCE_SALARIES).map(function(code) {
+    const currency = COUNTRY_CURRENCIES[code] || 'USD';
+    const fxRate =
+      typeof rates[currency] === 'number' && rates[currency] > 0 ? rates[currency] : 1;
+    let countryHasCommunityData = false;
+
+    const sectors = SECTORS.map(function(sector) {
+      let medianUsd = REFERENCE_SALARIES[code][sector] || null;
+      let sampleSize = 0;
+
+      const matches = communityData.filter(function(row) {
+        return row.country_code === code && row.role_category === sector;
       });
-      if (communityMatch.length > 0) {
-        var avg = communityMatch.reduce(function(sum, s) { return sum + (s.monthly_gross_usd || 0); }, 0) / communityMatch.length;
-        if (avg > 0) {
-          median = Math.round(avg);
-          hasCommunityData = true;
-        }
+
+      const summary = summarizeCommunitySector(matches);
+      if (summary && summary.medianUsd > 0) {
+        medianUsd = summary.medianUsd;
+        sampleSize = summary.sampleSize;
+        countryHasCommunityData = true;
       }
 
       return {
         sector: sector,
-        median_usd: median,
-        median_local: median ? Math.round(median * fxRate) : null,
-        p25_usd: median ? Math.round(median * 0.65) : null,
-        p75_usd: median ? Math.round(median * 1.45) : null,
-        sample_size: communityMatch.length,
+        median_usd: medianUsd,
+        median_local: medianUsd ? Math.round(medianUsd * fxRate) : null,
+        p25_usd: medianUsd ? Math.round(medianUsd * 0.65) : null,
+        p75_usd: medianUsd ? Math.round(medianUsd * 1.45) : null,
+        sample_size: sampleSize,
         currency: currency,
       };
     });
 
     return {
       code: code,
-      name: { NG: 'Nigeria', KE: 'Kenya', ZA: 'South Africa', GH: 'Ghana', EG: 'Egypt', ET: 'Ethiopia', TZ: 'Tanzania', RW: 'Rwanda', CI: "Côte d'Ivoire", MA: 'Morocco', UG: 'Uganda', SN: 'Senegal', CM: 'Cameroon' }[code] || code,
+      name: COUNTRY_NAMES[code] || code,
       currency: currency,
       sectors: sectors,
       last_updated: now,
-      source: hasCommunityData ? 'community-enriched' : 'reference-with-forex',
+      source: countryHasCommunityData ? 'community-enriched' : 'reference-with-forex',
     };
   });
+}
 
-  return countries;
+async function fetchSalaryData() {
+  const communityData = await fetchCommunityBenchmarks();
+  return buildSalaryDataset({ communityData: communityData });
+}
+
+async function fetchReferenceSalaryData() {
+  return buildSalaryDataset({ communityData: [] });
 }
 
 function transformSalaryData(countries) {
   return {
     timestamp: new Date().toISOString(),
     countries: countries,
-    record_count: countries.length,
+    record_count: Array.isArray(countries) ? countries.length : 0,
   };
 }
 
-exports.handler = async function(event) {
+exports.handler = async function() {
   return runScraper({
     id: 'salary-benchmarks',
     blobKey: 'salary-benchmarks-latest',
     metaKey: 'salaries',
     sources: [
-      { name: 'MultiSource', fn: fetchSalaryData },
+      { name: 'CommunityReference', fn: fetchSalaryData },
+      { name: 'ReferenceFallback', fn: fetchReferenceSalaryData },
     ],
     transform: transformSalaryData,
     validateOpts: { maxChangeRatio: 3.0 },

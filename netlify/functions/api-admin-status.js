@@ -235,7 +235,9 @@ exports.handler = async function(event) {
       name: 'API gateway',
       path: '/api/v1',
       area: 'dev-api',
-      isValid: function(data) { return !!(data && (data.status === 'operational' || data.api)); },
+      isValid: function(data) {
+        return !!(data && data.name === 'AfroData API' && data.version === 'v1' && Array.isArray(data.endpoints));
+      },
     },
     {
       id: 'countries-auth',
