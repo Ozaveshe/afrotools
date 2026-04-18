@@ -20,7 +20,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="education-hub.css?v=20260418b">
+<link rel="stylesheet" href="education-hub.css?v=20260418c">
 <script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
@@ -32,7 +32,7 @@
 <script src="/assets/js/afro-edu-bridge.js?v=20260418a" defer></script>
 <script src="/assets/js/education-scholarship-feed.js?v=20260418b" defer></script>
 <script src="/engines/scholarship-matcher.js?v=20260418a" defer></script>
-<script src="education-hub.js?v=20260418b" defer></script>
+<script src="education-hub.js?v=20260418c" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/education-hub/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/education-hub/">
 <meta property="og:locale" content="en_US">
@@ -216,39 +216,77 @@
           </div>
           <div class="hub-pill-row" id="profileHighlights"></div>
           <p class="hub-sync-note" id="syncHint">Working in local cockpit mode on this device.</p>
-          <div class="hub-form-grid">
-            <label>Education level
-              <select id="edLevel">
-                <option value="">Select level</option>
-                <option value="secondary">Secondary</option>
-                <option value="undergraduate">Undergraduate</option>
-                <option value="postgraduate">Postgraduate</option>
-                <option value="phd">PhD</option>
-              </select>
-            </label>
-            <label>Institution
-              <input id="edInstitution" placeholder="e.g. University of Lagos" type="text">
-            </label>
-            <label>Graduation date
-              <input id="edGradDate" type="month">
-            </label>
-            <label>Target study level
-              <select id="edStudyLevel">
-                <option value="">Choose pathway</option>
-                <option value="undergrad">Undergraduate</option>
-                <option value="masters">Master's</option>
-                <option value="phd">PhD</option>
-                <option value="postdoc">Postdoctoral</option>
-              </select>
-            </label>
-            <label>Target countries
-              <input id="edCountries" placeholder="Canada, United Kingdom, Germany" type="text">
-            </label>
-            <label>Target fields
-              <input id="edFields" placeholder="Engineering, Business, Public health" type="text">
-            </label>
+          <div class="hub-form-section">
+            <div class="hub-form-section-head">
+              <span class="hub-form-section-label">About you</span>
+              <small>Basics the hub needs to recommend the right next step.</small>
+            </div>
+            <div class="hub-form-grid">
+              <label>Education level
+                <select id="edLevel">
+                  <option value="">Select level</option>
+                  <option value="secondary">Secondary</option>
+                  <option value="undergraduate">Undergraduate</option>
+                  <option value="postgraduate">Postgraduate</option>
+                  <option value="phd">PhD</option>
+                </select>
+              </label>
+              <label>Institution
+                <input id="edInstitution" placeholder="e.g. University of Lagos" type="text">
+              </label>
+              <label>Graduation date
+                <input id="edGradDate" type="month">
+              </label>
+              <label>Target study level
+                <select id="edStudyLevel">
+                  <option value="">Choose pathway</option>
+                  <option value="undergrad">Undergraduate</option>
+                  <option value="masters">Master's</option>
+                  <option value="phd">PhD</option>
+                  <option value="postdoc">Postdoctoral</option>
+                </select>
+              </label>
+            </div>
           </div>
-          <button class="hub-btn hub-btn-primary" id="saveProfileBtn" type="button">Save profile into cockpit</button>
+
+          <div class="hub-form-section">
+            <div class="hub-form-section-head">
+              <span class="hub-form-section-label">Scores &amp; tests</span>
+              <small>Used to match scholarships and judge study-abroad readiness.</small>
+            </div>
+            <div class="hub-form-grid hub-form-grid-3">
+              <label>GPA
+                <input id="edGpaValue" inputmode="decimal" placeholder="e.g. 3.6" step="0.01" min="0" type="number">
+              </label>
+              <label>GPA scale
+                <select id="edGpaScale">
+                  <option value="">Choose scale</option>
+                  <option value="4.0">4.0</option>
+                  <option value="5.0">5.0 (Nigeria)</option>
+                  <option value="7.0">7.0</option>
+                  <option value="10.0">10.0</option>
+                  <option value="100">Percentage / 100</option>
+                </select>
+              </label>
+              <label>IELTS overall
+                <input id="edIeltsOverall" inputmode="decimal" placeholder="e.g. 7.0" step="0.5" min="0" max="9" type="number">
+              </label>
+              <label>JAMB score
+                <input id="edJambScore" inputmode="numeric" placeholder="e.g. 268" step="1" min="0" max="400" type="number">
+              </label>
+              <label>Target countries
+                <input id="edCountries" placeholder="Canada, United Kingdom, Germany" type="text">
+              </label>
+              <label>Target fields
+                <input id="edFields" placeholder="Engineering, Business, Public health" type="text">
+              </label>
+            </div>
+          </div>
+
+          <div class="hub-save-row">
+            <button class="hub-btn hub-btn-primary" id="saveProfileBtn" type="button">Save my profile</button>
+            <span class="hub-save-hint" id="profileSaveHint">Your profile flows into scholarships, IELTS, cost, and ranking tools.</span>
+          </div>
         </div>
       </article>
 

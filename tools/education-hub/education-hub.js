@@ -889,6 +889,36 @@
     getEl('edCountries').value = uniqueStrings(profile.target_countries || []).join(', ');
     getEl('edFields').value = uniqueStrings(profile.target_fields || []).join(', ');
     getEl('edStudyLevel').value = profile.target_study_level || '';
+
+    var gpaInput = getEl('edGpaValue');
+    if (gpaInput) gpaInput.value = profile.gpa_value ? Number(profile.gpa_value).toString() : '';
+
+    var gpaScaleInput = getEl('edGpaScale');
+    if (gpaScaleInput) {
+      var scaleNum = profile.gpa_scale ? Number(profile.gpa_scale) : 0;
+      var scaleStr = '';
+      if (scaleNum === 4) scaleStr = '4.0';
+      else if (scaleNum === 5) scaleStr = '5.0';
+      else if (scaleNum === 7) scaleStr = '7.0';
+      else if (scaleNum === 10) scaleStr = '10.0';
+      else if (scaleNum === 100) scaleStr = '100';
+      gpaScaleInput.value = scaleStr;
+    }
+
+    var ieltsInput = getEl('edIeltsOverall');
+    if (ieltsInput) ieltsInput.value = profile.ielts_overall ? Number(profile.ielts_overall).toString() : '';
+
+    var jambInput = getEl('edJambScore');
+    if (jambInput) jambInput.value = profile.jamb_score ? Number(profile.jamb_score).toString() : '';
+
+    var saveHint = getEl('profileSaveHint');
+    if (saveHint) {
+      saveHint.textContent = signals.completion.percent >= 100
+        ? 'Profile 100% complete — scholarship matching is sharpest.'
+        : (signals.completion.percent >= 60
+          ? (8 - signals.completion.filled) + ' field' + ((8 - signals.completion.filled) === 1 ? '' : 's') + ' left to reach a full profile.'
+          : 'Add a few more fields so scholarships, IELTS, and cost tools can personalise for you.');
+    }
   }
 
   function renderChecklist(signals) {
@@ -1338,17 +1368,30 @@
   }
 
   function saveProfileEdits() {
+    var gpaValueRaw = getEl('edGpaValue') ? getEl('edGpaValue').value : '';
+    var gpaScaleRaw = getEl('edGpaScale') ? getEl('edGpaScale').value : '';
+    var ieltsRaw = getEl('edIeltsOverall') ? getEl('edIeltsOverall').value : '';
+    var jambRaw = getEl('edJambScore') ? getEl('edJambScore').value : '';
+    var gpaValue = gpaValueRaw !== '' && !isNaN(parseFloat(gpaValueRaw)) ? parseFloat(gpaValueRaw) : undefined;
+    var gpaScale = gpaScaleRaw !== '' && !isNaN(parseFloat(gpaScaleRaw)) ? parseFloat(gpaScaleRaw) : undefined;
+    var ieltsOverall = ieltsRaw !== '' && !isNaN(parseFloat(ieltsRaw)) ? parseFloat(ieltsRaw) : undefined;
+    var jambScore = jambRaw !== '' && !isNaN(parseInt(jambRaw, 10)) ? parseInt(jambRaw, 10) : undefined;
+
     updateProfile({
       education_level: getEl('edLevel').value || undefined,
       institution: getEl('edInstitution').value.trim() || undefined,
       graduation_date: getEl('edGradDate').value || undefined,
       target_countries: uniqueStrings((getEl('edCountries').value || '').split(',')),
       target_fields: uniqueStrings((getEl('edFields').value || '').split(',')),
-      target_study_level: getEl('edStudyLevel').value || undefined
+      target_study_level: getEl('edStudyLevel').value || undefined,
+      gpa_value: gpaValue,
+      gpa_scale: gpaScale,
+      ielts_overall: ieltsOverall,
+      jamb_score: jambScore
     });
 
-    recordActivity('Updated cockpit profile', 'Profile fields refreshed');
-    notify('Education Hub profile updated', 'success');
+    recordActivity('Updated profile', 'Profile fields refreshed');
+    notify('Profile saved', 'success');
     applySignalsAndRender();
   }
 
