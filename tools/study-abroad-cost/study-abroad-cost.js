@@ -4,6 +4,7 @@
   var STORAGE_KEY = 'afro-study-abroad-scenarios-v2';
   var MAX_COMPARE = 3;
   var MAX_HISTORY = 6;
+  var DEFAULT_SAVE_FEEDBACK = 'Nothing saved yet.';
 
   var FIELD_LABELS = {
     engineering: 'Engineering / STEM',
@@ -336,11 +337,29 @@
     field: 'engineering',
     years: 1,
     scholarshipMode: 'none',
-    lastResults: []
+    lastResults: [],
+    lastDecision: null,
+    profile: null,
+    cockpit: null,
+    context: null,
+    hasUserInput: false,
+    contextAutoApplied: false,
+    contextSignature: '',
+    saveFeedbackMessage: DEFAULT_SAVE_FEEDBACK,
+    hasSavedCurrentComparison: false
   };
 
   function getEl(id) {
     return doc ? doc.getElementById(id) : null;
+  }
+
+  function setSaveFeedback(message, isSaved) {
+    var feedback = getEl('saveFeedback');
+    state.saveFeedbackMessage = message || DEFAULT_SAVE_FEEDBACK;
+    state.hasSavedCurrentComparison = !!isSaved;
+    if (feedback) {
+      feedback.textContent = state.saveFeedbackMessage;
+    }
   }
 
   function safeStorage(action, key, value) {
@@ -419,6 +438,120 @@
     return level;
   }
 
+  function normalizeCountryKey(value) {
+    var key = String(value || '').toLowerCase().replace(/[^a-z]+/g, '');
+    var aliases = {
+      uk: 'uk',
+      unitedkingdom: 'uk',
+      britain: 'uk',
+      greatbritain: 'uk',
+      england: 'uk',
+      canada: 'canada',
+      australia: 'australia',
+      usa: 'usa',
+      us: 'usa',
+      unitedstates: 'usa',
+      unitedstatesofamerica: 'usa',
+      germany: 'germany',
+      deutschland: 'germany'
+    };
+    return aliases[key] || '';
+  }
+
+  function uniqueStrings(values) {
+    return (values || []).reduce(function (acc, value) {
+      var normalized = String(value || '').trim();
+      if (!normalized) return acc;
+      if (!acc.some(function (item) { return item.toLowerCase() === normalized.toLowerCase(); })) {
+        acc.push(normalized);
+      }
+      return acc;
+    }, []);
+  }
+
+  function mapProfileLevel(value) {
+    var key = String(value || '').toLowerCase().trim();
+    if (!key) return '';
+    if (key === 'undergrad' || key === 'undergraduate' || key === 'bachelor' || key === 'bachelors') return 'bachelors';
+    if (key === 'masters' || key === 'master' || key === 'postgrad' || key === 'postgraduate') return 'masters';
+    if (key === 'phd' || key === 'doctorate' || key === 'doctoral') return 'phd';
+    return '';
+  }
+
+  function mapProfileField(value) {
+    var source = Array.isArray(value) ? value.join(' ') : String(value || '');
+    var key = source.toLowerCase();
+    if (!key) return '';
+    if (/(engineer|stem|computer|ict|tech|science|data)/.test(key)) return 'engineering';
+    if (/(business|management|finance|account|commerce|mba|economics)/.test(key)) return 'business';
+    if (/(health|medicine|medical|nursing|pharmacy|public health)/.test(key)) return 'health';
+    if (/(law|policy|legal|governance)/.test(key)) return 'law';
+    if (/(social|humanit|education|arts|history|language|media|communication|politic|sociology)/.test(key)) return 'social';
+    return '';
+  }
+
+  function getPressureScore(result) {
+    return Math.max(result.effectiveCostIndex, result.effectiveUpfrontIndex);
+  }
+
+  function bandRank(key) {
+    if (key === 'affordable') return 0;
+    if (key === 'stretch') return 1;
+    return 2;
+  }
+
+  function getAffordabilityBand(result) {
+    var pressure = getPressureScore(result);
+
+    if (pressure <= 2.4) {
+      return {
+        key: 'affordable',
+        label: 'Affordable',
+        compact: 'Affordable',
+        tone: 'good',
+        note: 'Works in this reference model without heroic funding assumptions.'
+      };
+    }
+
+    if (pressure <= 3.8) {
+      return {
+        key: 'stretch',
+        label: 'Stretch',
+        compact: 'Stretch',
+        tone: 'ok',
+        note: 'Possible, but only if you manage the route carefully or improve the funding mix.'
+      };
+    }
+
+    return {
+      key: 'high-risk',
+      label: 'High-risk / expensive',
+      compact: 'High-risk',
+      tone: 'risk',
+      note: 'This route stays funding-sensitive in the current model and should not be treated as easy.'
+    };
+  }
+
+  function getUpfrontBand(result) {
+    var score = result.effectiveUpfrontIndex;
+    if (score <= 2.4) {
+      return {
+        key: 'light',
+        label: 'Low upfront burden'
+      };
+    }
+    if (score <= 3.8) {
+      return {
+        key: 'moderate',
+        label: 'Moderate upfront burden'
+      };
+    }
+    return {
+      key: 'heavy',
+      label: 'Heavy upfront burden'
+    };
+  }
+
   function getHistory() {
     return parseJson(safeStorage('get', STORAGE_KEY), []);
   }
@@ -445,14 +578,221 @@
 
   function loadScenarioIntoState(item) {
     if (!item) return;
-    state.selectedDestinations = (item.destinations || []).slice(0, MAX_COMPARE);
+    state.selectedDestinations = (item.destinationKeys || item.destinations || []).slice(0, MAX_COMPARE);
     state.level = item.level || 'masters';
     state.field = item.field || 'engineering';
     state.years = clamp(parseInt(item.years, 10) || 1, 1, 6);
     state.scholarshipMode = item.scholarshipMode || 'none';
+    state.hasUserInput = true;
     syncInputsFromState();
     renderDestinationCards();
     runComparison();
+  }
+
+  function getCockpitSnapshot() {
+    if (root.AfroEdu && typeof root.AfroEdu.getCockpitState === 'function') {
+      try {
+        return root.AfroEdu.getCockpitState() || {
+          universities: [],
+          destinations: [],
+          deadlines: [],
+          budgetSignals: []
+        };
+      } catch (error) {
+        return {
+          universities: [],
+          destinations: [],
+          deadlines: [],
+          budgetSignals: []
+        };
+      }
+    }
+
+    return {
+      universities: [],
+      destinations: [],
+      deadlines: [],
+      budgetSignals: []
+    };
+  }
+
+  function getCachedProfileSnapshot() {
+    if (root.EduProfileSync && typeof root.EduProfileSync.getCachedProfile === 'function') {
+      try {
+        return root.EduProfileSync.getCachedProfile() || {};
+      } catch (error) {
+        return {};
+      }
+    }
+    return {};
+  }
+
+  function getLatestBudgetSignal(cockpit) {
+    return ((cockpit && cockpit.budgetSignals) || []).slice().sort(function (left, right) {
+      return (right.updatedAt || right.savedAt || 0) - (left.updatedAt || left.savedAt || 0);
+    })[0] || null;
+  }
+
+  function buildContextSignature(context) {
+    if (!context) return '';
+    return [
+      (context.destinationKeys || []).join(','),
+      context.level || '',
+      context.field || '',
+      context.years || '',
+      context.ielts || '',
+      context.savedUniversities || 0
+    ].join('|');
+  }
+
+  function buildConnectedContext(profile, cockpit) {
+    var latestBudget = getLatestBudgetSignal(cockpit);
+    var countryNames = uniqueStrings((profile.target_countries || [])
+      .concat(((cockpit.destinations || []).map(function (item) { return item.name; })))
+      .concat(latestBudget && latestBudget.destination ? [latestBudget.destination] : []));
+    var destinationKeys = countryNames.map(normalizeCountryKey).filter(Boolean).slice(0, MAX_COMPARE);
+    var level = mapProfileLevel(profile.target_study_level) || mapProfileLevel(latestBudget && latestBudget.level);
+    var field = mapProfileField(profile.target_fields || profile.target_field) || mapProfileField(latestBudget && latestBudget.field);
+    var years = clamp(parseInt((latestBudget && latestBudget.years) || state.years, 10) || 1, 1, 6);
+    var ielts = profile.ielts_overall ? Number(profile.ielts_overall) : null;
+    var gpa = profile.gpa_value || null;
+
+    return {
+      destinationKeys: destinationKeys,
+      countryNames: countryNames,
+      level: level,
+      field: field,
+      years: years,
+      ielts: ielts,
+      gpa: gpa,
+      savedUniversities: ((cockpit && cockpit.universities) || []).length,
+      savedDestinations: ((cockpit && cockpit.destinations) || []).length,
+      savedBudgetSignals: ((cockpit && cockpit.budgetSignals) || []).length,
+      hasSuggestedScenario: destinationKeys.length > 0 || !!level || !!field
+    };
+  }
+
+  function renderRouteContext() {
+    var node = getEl('routeContext');
+    var context = state.context;
+    var chips = [];
+    var title = 'Use this tool standalone, or pull in your cockpit context.';
+    var copy = 'Education Hub, IELTS, and saved shortlist signals can prefill this page without auto-saving any new affordability plan until you choose to.';
+
+    if (!node) return;
+
+    if (context) {
+      if (context.level) chips.push(levelLabel(context.level));
+      if (context.field) chips.push(fieldLabel(context.field));
+      if (context.countryNames && context.countryNames.length) chips = chips.concat(context.countryNames.slice(0, 3));
+      if (context.ielts) chips.push('IELTS ' + Number(context.ielts).toFixed(1));
+      if (context.gpa) chips.push('GPA ' + context.gpa);
+      if (context.savedUniversities) chips.push(context.savedUniversities + ' saved ' + (context.savedUniversities === 1 ? 'university' : 'universities'));
+
+      if (context.hasSuggestedScenario) {
+        title = state.contextAutoApplied
+          ? 'The comparison is already using your Education Hub context.'
+          : 'A saved education route is ready to seed this comparison.';
+        copy = state.contextAutoApplied
+          ? 'This page pulled in the strongest connected route signals it found. You can still adjust everything manually before saving anything back to the cockpit.'
+          : 'Use your saved level, field, destinations, and test signals to start from a real student route instead of a blank calculator.';
+      } else if (context.savedBudgetSignals || context.savedDestinations) {
+        title = 'Connected signals found, but the route still needs shaping.';
+        copy = 'You already have some saved education state. Add clearer destination intent or a target field in Education Hub if you want this page to prefill more aggressively.';
+      }
+    }
+
+    node.innerHTML = '' +
+      '<article class="sa-context-card">' +
+        '<div>' +
+          '<span class="sa-kicker">Connected route context</span>' +
+          '<h3>' + escapeHtml(title) + '</h3>' +
+          '<p>' + escapeHtml(copy) + '</p>' +
+          '<div class="sa-context-chips">' +
+            (chips.length
+              ? chips.map(function (chip) {
+                return '<span class="sa-context-chip">' + escapeHtml(chip) + '</span>';
+              }).join('')
+              : '<span class="sa-context-chip">No saved destination path yet</span>') +
+          '</div>' +
+        '</div>' +
+        '<div class="sa-context-actions">' +
+          (context && context.hasSuggestedScenario
+            ? '<button class="sa-button secondary" type="button" data-action="apply-context">Use cockpit context</button>'
+            : '') +
+          '<a class="sa-link-button secondary" href="/tools/education-hub/">Open Education Hub</a>' +
+        '</div>' +
+      '</article>';
+  }
+
+  function applyConnectedContext(context, options) {
+    var signature;
+    var shouldRun;
+
+    if (!context || !context.hasSuggestedScenario) return false;
+
+    signature = buildContextSignature(context);
+    if (!options || !options.force) {
+      if (state.hasUserInput) return false;
+      if (state.contextAutoApplied && state.contextSignature === signature) return false;
+    }
+
+    if (context.destinationKeys.length) state.selectedDestinations = context.destinationKeys.slice(0, MAX_COMPARE);
+    if (context.level) state.level = context.level;
+    if (context.field) state.field = context.field;
+    if (context.years) state.years = clamp(parseInt(context.years, 10) || state.years, 1, 6);
+
+    state.contextAutoApplied = true;
+    state.contextSignature = signature;
+    syncInputsFromState();
+    renderDestinationCards();
+    renderRouteContext();
+
+    shouldRun = !options || options.runComparison !== false;
+    if (shouldRun && state.selectedDestinations.length) {
+      runComparison();
+    }
+    return true;
+  }
+
+  function syncConnectedContext(options) {
+    state.profile = getCachedProfileSnapshot();
+    state.cockpit = getCockpitSnapshot();
+    state.context = buildConnectedContext(state.profile, state.cockpit);
+    renderRouteContext();
+
+    if (options && options.autoApply) {
+      applyConnectedContext(state.context, {
+        force: false,
+        runComparison: true
+      });
+    }
+
+    if (root.EduProfileSync && typeof root.EduProfileSync.getProfile === 'function') {
+      try {
+        var request = root.EduProfileSync.getProfile();
+        if (request && typeof request.then === 'function') {
+          request.then(function (profile) {
+            state.profile = Object.assign({}, state.profile || {}, profile || {});
+            state.cockpit = getCockpitSnapshot();
+            state.context = buildConnectedContext(state.profile, state.cockpit);
+            renderRouteContext();
+            if (options && options.autoApply) {
+              applyConnectedContext(state.context, {
+                force: false,
+                runComparison: true
+              });
+            } else if (state.lastResults.length) {
+              renderResults(state.lastResults);
+            }
+          }).catch(function () {
+            /* ignore async profile failures here */
+          });
+        }
+      } catch (error) {
+        /* ignore */
+      }
+    }
   }
 
   function computeUkHealthcare(years) {
@@ -584,55 +924,209 @@
     };
   }
 
+  function sortResultsByDecision(left, right) {
+    return bandRank(left.affordabilityBand.key) - bandRank(right.affordabilityBand.key) ||
+      getPressureScore(left) - getPressureScore(right) ||
+      left.effectiveCostIndex - right.effectiveCostIndex ||
+      left.effectiveUpfrontIndex - right.effectiveUpfrontIndex;
+  }
+
+  function buildScenarioVariants(destinationKey, payload) {
+    return ['none', 'partial', 'full'].map(function (modeKey) {
+      var variant = computeScenario(destinationKey, Object.assign({}, payload, {
+        scholarshipMode: modeKey
+      }));
+      return {
+        mode: modeKey,
+        label: SCHOLARSHIP_MODES[modeKey].label,
+        result: variant,
+        band: getAffordabilityBand(variant)
+      };
+    });
+  }
+
+  function buildScenarioGuidance(variants) {
+    var none = variants.find(function (item) { return item.mode === 'none'; }) || variants[0];
+    var partial = variants.find(function (item) { return item.mode === 'partial'; }) || none;
+    var full = variants.find(function (item) { return item.mode === 'full'; }) || partial;
+    var best = variants.slice().sort(function (left, right) {
+      return bandRank(left.band.key) - bandRank(right.band.key) ||
+        getPressureScore(left.result) - getPressureScore(right.result);
+    })[0];
+    var partialImprovement = bandRank(none.band.key) - bandRank(partial.band.key);
+    var fullImprovement = bandRank(none.band.key) - bandRank(full.band.key);
+    var unlock = partialImprovement > 0 ? partial : (fullImprovement > 0 ? full : null);
+    var message = 'Funding changes the totals, but living and upfront pressure still matter.';
+
+    if (none.band.key === 'affordable') {
+      message = 'Already workable without relying on scholarship support in this reference model.';
+    } else if (unlock && unlock.mode === 'partial') {
+      message = 'Becomes more viable if you land a partial tuition award, so scholarship search is worth the effort.';
+    } else if (unlock && unlock.mode === 'full' && best.band.key !== 'high-risk') {
+      message = 'Needs a strong tuition award to become realistically workable, even before living support enters the picture.';
+    } else if (best.band.key === 'high-risk') {
+      message = 'Even strong tuition support does not remove the living and upfront pressure here.';
+    }
+
+    return {
+      none: none,
+      partial: partial,
+      full: full,
+      best: best,
+      unlock: unlock,
+      improvement: Math.max(partialImprovement, fullImprovement, 0),
+      message: message
+    };
+  }
+
+  function enrichResults(results, payload) {
+    return results.map(function (result) {
+      var variants = buildScenarioVariants(result.key, payload);
+      return Object.assign({}, result, {
+        affordabilityBand: getAffordabilityBand(result),
+        upfrontBand: getUpfrontBand(result),
+        scenarioView: buildScenarioGuidance(variants),
+        scenarioVariants: variants,
+        addedYearCost: result.annualRecurringAfterOffset
+      });
+    });
+  }
+
+  function buildPrimaryAction(results, decision) {
+    var profile = state.profile || {};
+    var cockpit = state.cockpit || {};
+    var bestRoute = decision.bestRoute;
+    var hasIelts = !!profile.ielts_overall;
+    var savedUniversities = ((cockpit.universities || []).length > 0);
+
+    if (!bestRoute) {
+      return {
+        key: 'education-hub',
+        title: 'Shape the route in Education Hub',
+        copy: 'Save a clearer profile first so this comparison can become more personal on the next pass.',
+        href: '/tools/education-hub/',
+        cta: 'Open Education Hub'
+      };
+    }
+
+    if (bestRoute.affordabilityBand.key === 'high-risk' || (decision.scholarshipUnlock && decision.scholarshipUnlock.improvement > 0)) {
+      return {
+        key: 'scholarship',
+        title: 'Review scholarship leverage next',
+        copy: decision.scholarshipUnlock && decision.scholarshipUnlock.improvement > 0
+          ? decision.scholarshipUnlock.name + ' only improves materially if funding support lands.'
+          : 'The current route is still funding-sensitive, so Scholarship Finder is the next high-value move.',
+        href: '/tools/scholarship-finder/',
+        cta: 'Review scholarships'
+      };
+    }
+
+    if ((bestRoute.key === 'uk' || bestRoute.key === 'canada' || bestRoute.key === 'australia' || bestRoute.key === 'usa') && !hasIelts) {
+      return {
+        key: 'ielts',
+        title: 'Check IELTS readiness next',
+        copy: bestRoute.name + ' can stay affordable on paper and still fail later if the English-score route is weak.',
+        href: '/tools/ielts-calculator/',
+        cta: 'Check IELTS path'
+      };
+    }
+
+    if (!savedUniversities) {
+      return {
+        key: 'university',
+        title: 'Shortlist universities while the route is still realistic',
+        copy: 'The next gain is to protect the affordability edge by saving schools that still fit the route you prefer.',
+        href: '/tools/university-ranking/',
+        cta: 'Shortlist universities'
+      };
+    }
+
+    return {
+      key: 'degree',
+      title: 'Validate degree fit before you commit harder',
+      copy: 'Cost clarity helps, but Degree Checker is the gate that stops you funding a route your qualification still struggles to enter.',
+      href: '/tools/degree-checker/',
+      cta: 'Review degree fit'
+    };
+  }
+
+  function buildDecisionModel(results) {
+    var sorted = results.slice().sort(sortResultsByDecision);
+    var bestRoute = sorted[0] || null;
+    var lowestUpfront = results.slice().sort(function (left, right) {
+      return left.effectiveUpfrontIndex - right.effectiveUpfrontIndex;
+    })[0] || null;
+    var biggestCaution = results.slice().sort(function (left, right) {
+      return bandRank(right.affordabilityBand.key) - bandRank(left.affordabilityBand.key) ||
+        getPressureScore(right) - getPressureScore(left);
+    })[0] || null;
+    var scholarshipUnlock = results.slice().sort(function (left, right) {
+      return (right.scenarioView.improvement || 0) - (left.scenarioView.improvement || 0) ||
+        bandRank(left.scenarioView.best.band.key) - bandRank(right.scenarioView.best.band.key);
+    })[0] || null;
+    var nextAction = buildPrimaryAction(results, {
+      bestRoute: bestRoute,
+      scholarshipUnlock: scholarshipUnlock
+    });
+
+    return {
+      bestRoute: bestRoute,
+      lowestUpfront: lowestUpfront,
+      biggestCaution: biggestCaution,
+      scholarshipUnlock: scholarshipUnlock && scholarshipUnlock.scenarioView.improvement > 0 ? scholarshipUnlock : null,
+      nextAction: nextAction
+    };
+  }
+
   function computeHighlights(results) {
+    var decision;
     if (!results.length) return [];
 
-    var mostAffordable = results.slice().sort(function (a, b) {
-      return a.effectiveCostIndex - b.effectiveCostIndex;
-    })[0];
-
-    var lowestUpfront = results.slice().sort(function (a, b) {
-      return a.effectiveUpfrontIndex - b.effectiveUpfrontIndex;
-    })[0];
-
-    var bestScholarship = results.slice().sort(function (a, b) {
-      return b.offsetShare - a.offsetShare;
-    })[0];
-
-    var highestUpside = results.slice().sort(function (a, b) {
-      return b.salaryUpsideIndex - a.salaryUpsideIndex;
-    })[0];
+    decision = buildDecisionModel(results);
 
     return [
       {
-        label: 'Most affordable',
-        winner: mostAffordable.name,
-        note: 'Uses the AfroTools reference affordability model so local-currency totals can still be compared sensibly.'
+        label: 'Best affordability route',
+        winner: decision.bestRoute.name,
+        note: decision.bestRoute.affordabilityBand.compact + ' in the current scenario because cost pressure and upfront burden both stay relatively contained.',
+        band: decision.bestRoute.affordabilityBand
       },
       {
-        label: 'Lowest upfront cash burden',
-        winner: lowestUpfront.name,
-        note: 'Looks at official proof-of-funds rules where they exist, plus visa and setup pressure.'
+        label: 'Lowest upfront burden',
+        winner: decision.lowestUpfront.name,
+        note: decision.lowestUpfront.upfrontBand.label + ' when proof-of-funds, visa charges, and arrival setup are kept in view.',
+        band: decision.lowestUpfront.affordabilityBand
       },
+      decision.scholarshipUnlock
+        ? {
+          label: 'Scholarship unlock',
+          winner: decision.scholarshipUnlock.name,
+          note: 'Moves from ' + decision.scholarshipUnlock.scenarioView.none.band.compact + ' to ' + decision.scholarshipUnlock.scenarioView.unlock.band.compact + ' if ' + decision.scholarshipUnlock.scenarioView.unlock.label.toLowerCase() + ' lands.',
+          band: decision.scholarshipUnlock.scenarioView.unlock.band
+        }
+        : {
+          label: 'Funding reality',
+          winner: decision.bestRoute.name,
+          note: 'No route materially unlocks on partial support alone in this comparison, so cheaper paths still matter.',
+          band: decision.bestRoute.affordabilityBand
+        },
       {
-        label: 'Best scholarship leverage',
-        winner: bestScholarship.name,
-        note: Math.round(bestScholarship.offsetShare * 100) + '% of the reference programme cost shifts in the selected scholarship mode.'
-      },
-      {
-        label: 'Highest salary upside',
-        winner: highestUpside.name,
-        note: 'Directional market-upside signal only. This is not a guaranteed earnings forecast.'
+        label: 'Biggest caution',
+        winner: decision.biggestCaution.name,
+        note: decision.biggestCaution.affordabilityBand.compact + ' because the route still combines high overall cost pressure with a tougher upfront hurdle.',
+        band: decision.biggestCaution.affordabilityBand
       }
     ];
   }
 
-  function buildSummary(results, payload) {
+  function buildSummary(results, payload, decision) {
+    if (!decision || !decision.bestRoute) return '';
+
     if (results.length === 1) {
-      return results[0].name + ' is modeled here as a ' + levelLabel(payload.level) + ' ' + fieldLabel(payload.field) + ' route lasting ' + payload.years + ' year' + (payload.years === 1 ? '' : 's') + '. Use the detailed cost layers below to decide whether the route is affordable now, or only with scholarship support.';
+      return decision.bestRoute.name + ' reads here as a ' + decision.bestRoute.affordabilityBand.compact + ' ' + levelLabel(payload.level) + ' ' + fieldLabel(payload.field) + ' route over ' + payload.years + ' year' + (payload.years === 1 ? '' : 's') + '. Use the scenario ladder below to judge whether it is workable now, or only after funding improves.';
     }
 
-    return 'This comparison keeps ' + results.length + ' destinations in the same decision frame for a ' + levelLabel(payload.level) + ' ' + fieldLabel(payload.field) + ' route over ' + payload.years + ' year' + (payload.years === 1 ? '' : 's') + '. The highlight chips use an AfroTools reference model, while the cards keep each destination in its local currency.';
+    return decision.bestRoute.name + ' currently looks like the cleanest route to investigate, ' + decision.lowestUpfront.name + ' carries the lightest upfront burden, and ' + decision.biggestCaution.name + ' is the most funding-sensitive path in this ' + levelLabel(payload.level) + ' ' + fieldLabel(payload.field) + ' comparison over ' + payload.years + ' year' + (payload.years === 1 ? '' : 's') + '.';
   }
 
   function syncInputsFromState() {
@@ -701,6 +1195,37 @@
     renderDestinationCards();
   }
 
+  function renderDecisionBrief(decision) {
+    var node = getEl('decisionBrief');
+    var bestRoute = decision ? decision.bestRoute : null;
+    var nextAction = decision ? decision.nextAction : null;
+
+    if (!node) return;
+
+    if (!bestRoute || !nextAction) {
+      node.innerHTML = '';
+      return;
+    }
+
+    node.innerHTML = '' +
+      '<article class="sa-brief-card">' +
+        '<div class="sa-brief-head">' +
+          '<div>' +
+            '<span class="sa-kicker">Best route to investigate next</span>' +
+            '<h3>' + escapeHtml(bestRoute.name) + '</h3>' +
+          '</div>' +
+          '<span class="sa-band is-' + escapeHtml(bestRoute.affordabilityBand.tone) + '">' + escapeHtml(bestRoute.affordabilityBand.compact) + '</span>' +
+        '</div>' +
+        '<p>' + escapeHtml(bestRoute.scenarioView.message) + '</p>' +
+        '<div class="sa-brief-gridline">' +
+          '<div class="sa-brief-stat"><label>Affordability</label><strong>' + escapeHtml(bestRoute.affordabilityBand.label) + '</strong><span>' + escapeHtml(bestRoute.affordabilityBand.note) + '</span></div>' +
+          '<div class="sa-brief-stat"><label>Upfront burden</label><strong>' + escapeHtml(bestRoute.upfrontBand.label) + '</strong><span>' + escapeHtml(bestRoute.upfrontSignal.note) + '</span></div>' +
+          '<div class="sa-brief-stat"><label>Programme length</label><strong>' + escapeHtml(bestRoute.years + ' year' + (bestRoute.years === 1 ? '' : 's')) + '</strong><span>Each extra year adds about ' + escapeHtml(formatMoney(bestRoute.addedYearCost, bestRoute.symbol)) + ' in this scenario.</span></div>' +
+          '<div class="sa-brief-stat"><label>Recommended next move</label><strong>' + escapeHtml(nextAction.title) + '</strong><span>' + escapeHtml(nextAction.copy) + '</span></div>' +
+        '</div>' +
+      '</article>';
+  }
+
   function buildDecisionCards(highlights) {
     var node = getEl('decisionHighlights');
     if (!node) return;
@@ -711,6 +1236,7 @@
           '<span class="sa-kicker">' + escapeHtml(item.label) + '</span>' +
           '<strong>' + escapeHtml(item.winner) + '</strong>' +
           '<p>' + escapeHtml(item.note) + '</p>' +
+          (item.band ? '<span class="sa-band is-' + escapeHtml(item.band.tone) + '">' + escapeHtml(item.band.compact) + '</span>' : '') +
         '</article>';
     }).join('');
   }
@@ -741,6 +1267,9 @@
       results.map(function (result) { return '<th>' + escapeHtml(result.name) + '</th>'; }).join('') +
       '</tr></thead>' +
       '<tbody>' +
+        row('Affordability posture', 'AfroTools decision band using overall route pressure and upfront burden together.', function (result) {
+          return '<strong>' + escapeHtml(result.affordabilityBand.label) + '</strong><small>' + escapeHtml(result.affordabilityBand.note) + '</small>';
+        }) +
         row('Tuition per year', 'Reference tuition midpoint for the selected level and field.', function (result) {
           return '<strong>' + formatMoney(result.tuitionPerYear, result.symbol) + '</strong><small>Range: ' + formatRange(result.tuitionRange[0], result.tuitionRange[1], result.symbol) + '</small>';
         }) +
@@ -762,6 +1291,9 @@
         }) +
         row('Full-program estimate', 'The main affordability number for the whole route.', function (result) {
           return '<strong>' + formatMoney(result.programAfterOffset, result.symbol) + '</strong><small>Before scholarship: ' + formatMoney(result.programBase, result.symbol) + '</small>';
+        }) +
+        row('Extra year if the programme runs longer', 'Useful when you are comparing one-year and multi-year routes.', function (result) {
+          return '<strong>' + formatMoney(result.addedYearCost, result.symbol) + '</strong><small>Approximate extra recurring cost for each additional year in the selected scholarship mode.</small>';
         }) +
         row('Scholarship effect', 'Only applies the selected scholarship mode to tuition, not living.', function (result) {
           return '<strong>- ' + formatMoney(result.scholarshipOffset, result.symbol) + '</strong><small>' + escapeHtml(result.scholarshipModeNote) + '</small>';
@@ -799,16 +1331,24 @@
           value: formatMoney(result.governmentFees + result.setupCost, result.symbol)
         }
       ];
+      var activeVariant = result.scenarioVariants.find(function (variant) {
+        return variant.mode === state.scholarshipMode;
+      }) || result.scenarioVariants[0];
 
       return '' +
         '<article class="sa-result-card">' +
           '<div class="sa-result-head">' +
             '<div>' +
               '<span class="sa-kicker">' + escapeHtml(levelLabel(result.level)) + ' affordability route</span>' +
-              '<h3>' + escapeHtml(result.name) + '</h3>' +
+              '<div class="sa-result-head-main">' +
+                '<h3>' + escapeHtml(result.name) + '</h3>' +
+                '<div class="sa-result-chips">' +
+                  '<span class="sa-band is-' + escapeHtml(result.affordabilityBand.tone) + '">' + escapeHtml(result.affordabilityBand.compact) + '</span>' +
+                  '<span class="sa-result-chip">' + escapeHtml(result.destination.currencyLabel) + '</span>' +
+                '</div>' +
+              '</div>' +
               '<p>' + escapeHtml(result.destination.pathwayNote) + '</p>' +
             '</div>' +
-            '<span class="sa-result-chip">' + escapeHtml(result.destination.currencyLabel) + '</span>' +
           '</div>' +
           '<div class="sa-result-grid">' +
             '<div class="sa-stat"><label>First year</label><strong>' + formatMoney(result.firstYearAfterOffset, result.symbol) + '</strong></div>' +
@@ -816,12 +1356,25 @@
             '<div class="sa-stat"><label>Tuition offset</label><strong>- ' + formatMoney(result.scholarshipOffset, result.symbol) + '</strong></div>' +
             '<div class="sa-stat"><label>Upfront signal</label><strong>' + (result.upfrontSignal.type === 'range' ? formatRange(result.upfrontSignal.min, result.upfrontSignal.max, result.symbol) : formatMoney(result.upfrontSignal.value, result.symbol)) + '</strong></div>' +
           '</div>' +
+          '<div class="sa-scenario-box">' +
+            '<div class="sa-scenario-head"><strong>What changes if funding improves?</strong><span>Current mode: ' + escapeHtml(activeVariant.label) + '</span></div>' +
+            '<div class="sa-scenario-grid">' +
+              result.scenarioVariants.map(function (variant) {
+                return '<div class="sa-scenario-card">' +
+                  '<label>' + escapeHtml(variant.label) + '</label>' +
+                  '<strong>' + escapeHtml(formatMoney(variant.result.programAfterOffset, variant.result.symbol)) + '</strong>' +
+                  '<span>' + escapeHtml(variant.band.note) + '</span>' +
+                  '<span class="sa-band is-' + escapeHtml(variant.band.tone) + '">' + escapeHtml(variant.band.compact) + '</span>' +
+                '</div>';
+              }).join('') +
+            '</div>' +
+          '</div>' +
           '<ul class="sa-layer-list">' +
             layers.map(function (layer) {
               return '<li class="sa-layer-item"><div><strong>' + escapeHtml(layer.label) + '</strong><span>' + escapeHtml(layer.note) + '</span></div><b>' + escapeHtml(layer.value) + '</b></li>';
             }).join('') +
           '</ul>' +
-          '<p class="sa-card-note">' + escapeHtml(result.destination.setupNote) + '</p>' +
+          '<p class="sa-card-note">' + escapeHtml(result.scenarioView.message + ' Each extra year adds about ' + formatMoney(result.addedYearCost, result.symbol) + ' in this model. ' + result.destination.setupNote) + '</p>' +
           '<div class="sa-card-links">' +
             result.destination.scholarshipExamples.map(function (item) { return '<span>' + escapeHtml(item) + '</span>'; }).join('') +
           '</div>' +
@@ -829,8 +1382,9 @@
     }).join('');
   }
 
-  function renderNextSteps(results) {
+  function renderNextSteps(results, decision) {
     var node = getEl('nextSteps');
+    var primary = decision ? decision.nextAction : null;
     if (!node) return;
 
     var destinations = results.map(function (result) {
@@ -848,14 +1402,16 @@
       {
         kicker: 'Scholarship leverage',
         title: 'Offset the expensive route before you rule it out',
-        copy: 'Scholarship Finder is the next move when the numbers only work with support. Keep the affordability gap and shortlist logic in one connected workflow.',
+        copy: decision && decision.scholarshipUnlock
+          ? decision.scholarshipUnlock.name + ' only becomes more viable if funding support lands, so Scholarship Finder is a natural next move.'
+          : 'Scholarship Finder is the next move when the numbers only work with support. Keep the affordability gap and shortlist logic in one connected workflow.',
         href: '/tools/scholarship-finder/',
         cta: 'Open Scholarship Finder'
       },
       {
         kicker: 'University shortlist',
         title: 'Keep cost next to school choice',
-        copy: 'Use University Rankings to save schools, then compare them against the affordability signals you just created instead of separating school fit from budget reality.',
+        copy: 'Use University Rankings to save schools that preserve the route you just pressure-tested instead of separating school fit from budget reality.',
         href: '/tools/university-ranking/',
         cta: 'Shortlist universities'
       },
@@ -868,10 +1424,24 @@
       }
     ];
 
+    if (primary) {
+      cards = cards.map(function (card) {
+        return Object.assign({}, card, {
+          recommended: card.href === primary.href,
+          copy: card.href === primary.href ? primary.copy : card.copy
+        });
+      }).sort(function (left, right) {
+        return (right.recommended ? 1 : 0) - (left.recommended ? 1 : 0);
+      });
+    }
+
     node.innerHTML = cards.map(function (card) {
       return '' +
-        '<article class="sa-next-card">' +
-          '<span class="sa-kicker">' + escapeHtml(card.kicker) + '</span>' +
+        '<article class="sa-next-card' + (card.recommended ? ' is-recommended' : '') + '">' +
+          '<div class="sa-next-top">' +
+            '<span class="sa-kicker">' + escapeHtml(card.kicker) + '</span>' +
+            (card.recommended ? '<span class="sa-recommended-badge">Recommended now</span>' : '') +
+          '</div>' +
           '<h3>' + escapeHtml(card.title) + '</h3>' +
           '<p>' + escapeHtml(card.copy) + '</p>' +
           '<div class="sa-action-row"><a class="sa-link-button secondary" href="' + escapeHtml(card.href) + '">' + escapeHtml(card.cta) + '</a></div>' +
@@ -964,43 +1534,49 @@
   function renderResults(results) {
     var panel = getEl('resultsPanel');
     var summary = getEl('decisionSummary');
-    var feedback = getEl('saveFeedback');
 
+    state.lastDecision = buildDecisionModel(results);
     if (panel) panel.hidden = false;
-    if (summary) summary.textContent = buildSummary(results, state);
-    if (feedback) feedback.textContent = 'Nothing saved yet.';
+    if (summary) summary.textContent = buildSummary(results, state, state.lastDecision);
+    setSaveFeedback(
+      state.hasSavedCurrentComparison ? state.saveFeedbackMessage : DEFAULT_SAVE_FEEDBACK,
+      state.hasSavedCurrentComparison
+    );
 
+    renderDecisionBrief(state.lastDecision);
     buildDecisionCards(computeHighlights(results));
     renderMatrix(results);
     renderResultCards(results);
-    renderNextSteps(results);
+    renderNextSteps(results, state.lastDecision);
     renderAssumptions(results);
   }
 
   function runComparison() {
     readStateFromInputs();
+    setSaveFeedback(DEFAULT_SAVE_FEEDBACK, false);
 
     if (!state.selectedDestinations.length) {
       state.selectedDestinations = ['uk'];
       renderDestinationCards();
     }
 
-    state.lastResults = state.selectedDestinations.map(function (key) {
+    state.lastResults = enrichResults(state.selectedDestinations.map(function (key) {
       return computeScenario(key, state);
-    });
+    }), state);
 
     renderResults(state.lastResults);
     persistScenario(state.lastResults);
   }
 
   function saveToEducationHub() {
-    var feedback = getEl('saveFeedback');
+    var bestRoute;
     if (!state.lastResults.length) {
-      if (feedback) feedback.textContent = 'Run a comparison first so there is something real to save.';
+      setSaveFeedback('Run a comparison first so there is something real to save.', false);
       return;
     }
 
     var countryNames = state.lastResults.map(function (result) { return result.name; });
+    bestRoute = state.lastDecision && state.lastDecision.bestRoute ? state.lastDecision.bestRoute : state.lastResults[0];
 
     if (root.EduProfileSync && typeof root.EduProfileSync.update === 'function') {
       root.EduProfileSync.update({
@@ -1016,7 +1592,7 @@
           root.AfroEdu.saveDestination({
             id: result.key,
             name: result.name,
-            reason: 'Affordability comparison saved',
+            reason: result.affordabilityBand.compact + ' route saved from destination decision engine',
             studyLevel: profileLevelKey(state.level),
             field: state.field,
             href: '/tools/study-abroad-cost/'
@@ -1036,8 +1612,11 @@
             upfrontCost: result.upfrontSignal.type === 'range' ? result.upfrontSignal.max : result.upfrontSignal.value,
             scholarshipOffset: result.scholarshipOffset,
             scholarshipMode: state.scholarshipMode,
-            comparisonLabel: 'Affordability engine',
-            note: 'Saved from study-abroad cost comparison',
+            comparisonLabel: 'Destination decision engine',
+            affordabilityBand: result.affordabilityBand.label,
+            upfrontBand: result.upfrontBand.label,
+            routeRecommendation: result.scenarioView.message,
+            note: SCHOLARSHIP_MODES[state.scholarshipMode].label + ' | ' + levelLabel(state.level) + ' ' + fieldLabel(state.field),
             currency: result.symbol,
             href: '/tools/study-abroad-cost/'
           });
@@ -1046,14 +1625,12 @@
 
       if (typeof root.AfroEdu.recordActivity === 'function') {
         root.AfroEdu.recordActivity('study-abroad-cost', 'Saved affordability comparison', {
-          detail: countryNames.join(' vs ') + ' | ' + levelLabel(state.level) + ' | ' + fieldLabel(state.field)
+          detail: countryNames.join(' vs ') + ' | Best route: ' + bestRoute.name + ' (' + bestRoute.affordabilityBand.compact + ')'
         });
       }
     }
 
-    if (feedback) {
-      feedback.textContent = 'Saved to Education Hub on this device. Your cockpit can now reuse destinations and affordability signals.';
-    }
+    setSaveFeedback('Saved to Education Hub on this device. Your cockpit can now reuse destinations and affordability signals.', true);
   }
 
   function resetScenario() {
@@ -1063,11 +1640,19 @@
     state.years = 1;
     state.scholarshipMode = 'none';
     state.lastResults = [];
+    state.lastDecision = null;
+    state.hasUserInput = false;
+    state.contextAutoApplied = false;
+    state.contextSignature = '';
+    setSaveFeedback(DEFAULT_SAVE_FEEDBACK, false);
 
     syncInputsFromState();
     renderDestinationCards();
     renderAssumptions([]);
     renderHistory();
+    syncConnectedContext({
+      autoApply: false
+    });
 
     var panel = getEl('resultsPanel');
     var summary = getEl('decisionSummary');
@@ -1081,11 +1666,22 @@
     doc.addEventListener('click', function (event) {
       var destinationTarget = event.target.closest ? event.target.closest('[data-destination]') : null;
       var historyTarget = event.target.closest ? event.target.closest('[data-load-scenario]') : null;
+      var actionTarget = event.target.closest ? event.target.closest('[data-action]') : null;
       var destinationKey = destinationTarget ? destinationTarget.getAttribute('data-destination') : event.target.getAttribute('data-destination');
       var historyKey = historyTarget ? historyTarget.getAttribute('data-load-scenario') : event.target.getAttribute('data-load-scenario');
+      var action = actionTarget ? actionTarget.getAttribute('data-action') : event.target.getAttribute('data-action');
 
       if (destinationKey) {
+        state.hasUserInput = true;
         toggleDestination(destinationKey);
+        return;
+      }
+
+      if (action === 'apply-context') {
+        applyConnectedContext(state.context, {
+          force: true,
+          runComparison: true
+        });
         return;
       }
 
@@ -1094,6 +1690,7 @@
           return entry.key === historyKey;
         });
         if (item) {
+          state.hasUserInput = true;
           state.selectedDestinations = (item.destinationKeys || []).slice(0, MAX_COMPARE);
           state.level = item.level;
           state.field = item.field;
@@ -1106,9 +1703,26 @@
       }
     });
 
+    doc.addEventListener('change', function (event) {
+      if (event.target && (event.target.id === 'studyLevel' || event.target.id === 'studyField' || event.target.id === 'studyYears' || event.target.id === 'scholarshipMode')) {
+        state.hasUserInput = true;
+      }
+    });
+
     getEl('runComparisonBtn').addEventListener('click', runComparison);
     getEl('resetScenarioBtn').addEventListener('click', resetScenario);
     getEl('saveHubBtn').addEventListener('click', saveToEducationHub);
+
+    root.addEventListener('afroedu:profile-updated', function () {
+      syncConnectedContext({
+        autoApply: false
+      });
+    });
+    root.addEventListener('afroedu:cockpit-updated', function () {
+      syncConnectedContext({
+        autoApply: false
+      });
+    });
   }
 
   function init() {
@@ -1119,6 +1733,9 @@
     renderAssumptions([]);
     renderHistory();
     bindEvents();
+    syncConnectedContext({
+      autoApply: true
+    });
   }
 
   root.AfroStudyAbroadModel = {

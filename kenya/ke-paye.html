@@ -138,7 +138,8 @@
   @media(max-width:768px){.tool-info-stats{grid-template-columns:1fr}}
 </style>
   <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
-<script>window.PAYE_SAVE_SLUG='ke-paye';</script>
+  <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=20260419a">
+<script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/kenya/ke-paye/" />
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/kenya/ke-paye" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/kenya/kikokotoo-kodi-mshahara/" />
@@ -375,6 +376,21 @@
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               Copy Link
             </button>
+          </div>
+          <div class="calc-save-shell" id="calcSaveShell">
+            <div class="calc-save-head">
+              <div>
+                <h3>Save this scenario</h3>
+                <p>Name your result, keep it on this device, and sync it into your dashboard when you are signed in.</p>
+              </div>
+              <a href="/dashboard/#myWorkspace">Open dashboard</a>
+            </div>
+            <div class="calc-save-form">
+              <input class="calc-save-input" id="calcSaveName" type="text" maxlength="120" placeholder="Example: Nairobi offer or April payroll">
+              <button class="calc-save-button" id="calcSaveBtn" type="button" disabled>Run a Calculation First</button>
+            </div>
+            <div class="calc-save-status" id="calcSaveStatus" data-tone="muted"></div>
+            <div class="calc-save-grid" id="calcSavedList"></div>
           </div>
         </div>
 
@@ -1041,87 +1057,184 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+<script>
+window.PAYE_CALC_SYNC_CONFIG = {
+  storageSlug: 'ke-paye',
+  toolSlug: 'ke-paye',
+  toolName: 'Kenya PAYE Calculator',
+  toolHref: '/kenya/ke-paye/',
+  currency: 'KES',
+  countryCode: 'KE',
+  locale: 'en-KE'
+};
+
+window.PAYE_TOOL_SAVE_META = {
+  toolId: 'ke-paye',
+  defaultTitle: 'Save this calculator',
+  defaultDesc: 'Bookmark Kenya PAYE to your personal dashboard for quick access anytime.'
+};
+
+window.PAYE_CALC_SYNC_ADAPTER = (function () {
+  function formatInput(value) {
+    return Math.round(Number(value) || 0).toLocaleString('en-KE');
+  }
+
+  function parseMoney(value) {
+    return parseFloat(String(value || '').replace(/[^0-9.-]/g, '')) || 0;
+  }
+
+  function readToggle(toggleName) {
+    var toggle = document.querySelector('[data-tog="' + toggleName + '"]');
+    return !!(toggle && toggle.classList.contains('on'));
+  }
+
+  function setToggle(toggleName, enabled) {
+    var toggle = document.querySelector('[data-tog="' + toggleName + '"]');
+    if (!toggle) return;
+    toggle.classList.toggle('on', !!enabled);
+    toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+  }
+
+  function setFieldState(fieldId, enabled) {
+    var field = document.getElementById(fieldId);
+    if (field) field.classList.toggle('on', !!enabled);
+  }
+
+  function setMoneyValue(fieldId, value) {
+    var input = document.getElementById(fieldId);
+    if (!input) return;
+    input.value = value ? formatInput(value) : '';
+  }
+
+  function setPeriodValue(period) {
+    var buttons = document.querySelectorAll('.per-btn');
+    if (typeof window.setPeriod === 'function' && buttons.length >= 2) {
+      window.setPeriod(period === 'annual' ? 'annual' : 'monthly', period === 'annual' ? buttons[1] : buttons[0]);
+    }
+  }
+
+  return {
+    hasResult: function () {
+      return !!window.RESULT;
+    },
+    buildPayload: function () {
+      if (!window.RESULT) return null;
+
+      var grossMonthly = Number(window.RESULT.gross) || 0;
+      var taxMonthly = Number(window.RESULT.paye) || 0;
+      var netMonthly = Number(window.RESULT.net) || 0;
+      var taxableMonthly = Number(window.RESULT.taxable) || 0;
+
+      return {
+        version: 2,
+        toolSlug: 'ke-paye',
+        toolName: 'Kenya PAYE Calculator',
+        countryCode: 'KE',
+        currency: 'KES',
+        inputs: {
+          salaryValue: parseMoney(document.getElementById('salaryInput').value),
+          salaryPeriod: 'monthly',
+          period: window.PERIOD || 'monthly',
+          toggles: {
+            nssf: readToggle('nssf'),
+            shif: readToggle('shif'),
+            ahl: readToggle('ahl'),
+            disability: readToggle('disability'),
+            personalrelief: readToggle('personalrelief'),
+            insurance: readToggle('insurance'),
+            pension: readToggle('pension'),
+            mortgage: readToggle('mortgage'),
+            prmf: readToggle('prmf')
+          },
+          insurancePremium: parseMoney(document.getElementById('insurancePremium').value),
+          pensionContrib: parseMoney(document.getElementById('pensionContrib').value),
+          mortgageInterest: parseMoney(document.getElementById('mortgageInterest').value),
+          prmfContrib: parseMoney(document.getElementById('prmfContrib').value)
+        },
+        snapshot: {
+          gross: grossMonthly * 12,
+          grossAnnual: grossMonthly * 12,
+          grossMonthly: grossMonthly,
+          tax: taxMonthly * 12,
+          taxAnnual: taxMonthly * 12,
+          taxMonthly: taxMonthly,
+          netAnnual: netMonthly * 12,
+          netMonthly: netMonthly,
+          effectiveRate: Number(window.RESULT.effectiveRate) || 0,
+          marginalRate: Number(window.RESULT.marginalRate) || 0,
+          taxable: taxableMonthly * 12,
+          taxableAnnual: taxableMonthly * 12,
+          taxableMonthly: taxableMonthly
+        }
+      };
+    },
+    restorePayload: function (payload, title) {
+      if (!payload || payload.version !== 2 || !payload.inputs) return false;
+
+      var inputs = payload.inputs;
+      var grossMonthly = Number(inputs.salaryValue || 0);
+      var slider = document.getElementById('salarySlider');
+
+      document.getElementById('salaryInput').value = formatInput(grossMonthly);
+      if (slider) {
+        var min = parseInt(slider.min, 10) || 0;
+        var max = parseInt(slider.max, 10) || grossMonthly;
+        slider.value = Math.min(Math.max(grossMonthly, min), max);
+      }
+      document.getElementById('sliderVal').textContent = new Intl.NumberFormat('en-KE', {
+        style: 'currency',
+        currency: 'KES',
+        maximumFractionDigits: 0
+      }).format(grossMonthly);
+
+      if (typeof window.updateSliderFill === 'function' && slider) {
+        window.updateSliderFill(slider);
+      }
+
+      var toggles = inputs.toggles || {};
+      setToggle('nssf', !!toggles.nssf);
+      setToggle('shif', !!toggles.shif);
+      setToggle('ahl', !!toggles.ahl);
+      setToggle('disability', !!toggles.disability);
+      setToggle('personalrelief', !!toggles.personalrelief);
+      setToggle('insurance', !!toggles.insurance);
+      setToggle('pension', !!toggles.pension);
+      setToggle('mortgage', !!toggles.mortgage);
+      setToggle('prmf', !!toggles.prmf);
+
+      setFieldState('insuranceField', !!toggles.insurance);
+      setFieldState('pensionField', !!toggles.pension);
+      setFieldState('mortgageField', !!toggles.mortgage);
+      setFieldState('prmfField', !!toggles.prmf);
+
+      setMoneyValue('insurancePremium', inputs.insurancePremium);
+      setMoneyValue('pensionContrib', inputs.pensionContrib);
+      setMoneyValue('mortgageInterest', inputs.mortgageInterest);
+      setMoneyValue('prmfContrib', inputs.prmfContrib);
+
+      if (typeof window.calculate === 'function') {
+        window.calculate();
+      }
+
+      setPeriodValue(inputs.period);
+
+      if (document.getElementById('calcSaveName')) {
+        document.getElementById('calcSaveName').value = title || '';
+      }
+
+      return true;
+    }
+  };
+})();
+</script>
+<script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
+<script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
+<script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
+<script src="/assets/js/lib/paye-calculation-sync.js?v=20260419b" defer></script>
+<script src="/assets/js/lib/paye-tool-save-cta.js?v=20260419a" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js?v=97c0a5e8" defer></script>
 
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<script>
-(function(){
-  var KEY='afro_favs_v2',TOOL_ID='ke-paye',LIMIT=10;
-  function isLoggedIn(){return typeof AfroAuth!=='undefined'&&AfroAuth.isLoggedIn();}
-  function isPro(){return typeof AfroAuth!=='undefined'&&AfroAuth.isPro();}
-  function getFavs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[];}}
-  function isSaved(){return getFavs().indexOf(TOOL_ID)>-1;}
-
-  window.toggleSaveTool=function(){
-    if(!isLoggedIn()){
-      if(typeof AfroAuth!=='undefined'&&AfroAuth.openModal){
-        AfroAuth.openModal('login',function(){updateSaveUI();});
-      }else{window.location.href='/dashboard/';}
-      return;
-    }
-    var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
-    if(idx>-1){favs.splice(idx,1);}else{
-      if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Free accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
-        return;
-      }
-      favs.push(TOOL_ID);
-    }
-    localStorage.setItem(KEY,JSON.stringify(favs));
-    updateSaveUI();
-  };
-
-  function showSaveToast(msg){
-    var t=document.createElement('div');
-    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 24px;border-radius:10px;font-size:.85rem;font-family:DM Sans,sans-serif;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:400px;text-align:center';
-    t.textContent=msg;document.body.appendChild(t);
-    setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},4000);
-  }
-
-  function updateSaveUI(){
-    var loggedIn=isLoggedIn(),saved=loggedIn&&isSaved();
-    var svgSaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-    var svgUnsaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-
-    // Inline save button
-    var btn=document.getElementById('inlineSaveBtn');
-    if(btn){
-      if(!loggedIn){btn.innerHTML=svgUnsaved+' Sign in to Save';btn.classList.remove('saved');}
-      else if(saved){btn.innerHTML=svgSaved+' Saved';btn.classList.add('saved');}
-      else{btn.innerHTML=svgUnsaved+' Save to My Tools';btn.classList.remove('saved');}
-    }
-
-    // Sidebar save button
-    var sb=document.getElementById('sidebarSaveBtn');
-    if(sb){
-      var lbl=document.getElementById('sidebarSaveLabel');
-      if(!loggedIn){
-        if(lbl)lbl.textContent='Sign in to Save';
-        sb.classList.remove('saved');
-      }else if(saved){
-        if(lbl)lbl.textContent='Saved';
-        sb.classList.add('saved');
-      }else{
-        if(lbl)lbl.textContent='Save to My Tools';
-        sb.classList.remove('saved');
-      }
-    }
-
-    // Save CTA banner text
-    var title=document.querySelector('.ng-save-title');
-    var desc=document.querySelector('.ng-save-desc');
-    if(!loggedIn){
-      if(title)title.textContent='Sign in to save this calculator';
-      if(desc)desc.textContent='Create a free account to bookmark tools, track calculations, and access your dashboard.';
-    }
-  }
-  window.updateSaveUI=updateSaveUI;
-
-  // Run on load + auth changes
-  document.addEventListener('DOMContentLoaded',updateSaveUI);
-  window.addEventListener('afro-auth-change',updateSaveUI);
-})();
-</script>
 </body>
 </html>

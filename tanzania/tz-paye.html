@@ -66,9 +66,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="/assets/css/calculator.min.css?v=90ad3e19">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+  <link rel="stylesheet" href="/assets/css/calculator.min.css?v=90ad3e19">
+  <link rel="stylesheet" href="/assets/css/paye-calculation-sync.css?v=20260419a">
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
 <script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
@@ -116,7 +117,8 @@
 <meta name="tool-id" content="tz-paye">
   <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
 <script src="/assets/js/lib/chart-config.js?v=a32f19d3"></script>
-<script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=9a49500a" defer></script><script>window.PAYE_SAVE_SLUG='tz-paye';</script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js?v=9a49500a" defer></script>
+<script type="module" src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tanzania/tz-paye/" />
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/tanzania/kikokotoo-kodi-mshahara/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tanzania/tz-paye/" />
@@ -277,6 +279,21 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share Result
           </button>
+        </div>
+        <div class="calc-save-shell" id="calcSaveShell">
+          <div class="calc-save-head">
+            <div>
+              <h3>Save this scenario</h3>
+              <p>Name your result, keep it on this device, and sync it into your dashboard when you are signed in.</p>
+            </div>
+            <a href="/dashboard/#myWorkspace">Open dashboard</a>
+          </div>
+          <div class="calc-save-form">
+            <input class="calc-save-input" id="calcSaveName" type="text" maxlength="120" placeholder="Example: Dar payroll or secondary job check">
+            <button class="calc-save-button" id="calcSaveBtn" type="button" disabled>Run a Calculation First</button>
+          </div>
+          <div class="calc-save-status" id="calcSaveStatus" data-tone="muted"></div>
+          <div class="calc-save-grid" id="calcSavedList"></div>
         </div>
       </div>
     </div>
@@ -1112,86 +1129,127 @@ window._grossToNet = function(g) {
   return g - (social + calcMonthlyPAYE(taxable).tax);
 };
 </script>
-<script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
-
-<script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script>
-(function(){
-  var KEY='afro_favs_v2',TOOL_ID='tz-paye',LIMIT=10;
-  function isLoggedIn(){return typeof AfroAuth!=='undefined'&&AfroAuth.isLoggedIn();}
-  function isPro(){return typeof AfroAuth!=='undefined'&&AfroAuth.isPro();}
-  function getFavs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[];}}
-  function isSaved(){return getFavs().indexOf(TOOL_ID)>-1;}
+window.PAYE_CALC_SYNC_CONFIG = {
+  storageSlug: 'tz-paye',
+  toolSlug: 'tz-paye',
+  toolName: 'Tanzania PAYE Calculator',
+  toolHref: '/tanzania/tz-paye/',
+  currency: 'TZS',
+  countryCode: 'TZ',
+  locale: 'en-TZ'
+};
 
-  window.toggleSaveTool=function(){
-    if(!isLoggedIn()){
-      if(typeof AfroAuth!=='undefined'&&AfroAuth.openModal){
-        AfroAuth.openModal('login',function(){updateSaveUI();});
-      }else{window.location.href='/dashboard/';}
-      return;
+window.PAYE_TOOL_SAVE_META = {
+  toolId: 'tz-paye',
+  defaultTitle: 'Save this calculator',
+  defaultDesc: 'Bookmark Tanzania PAYE to your personal dashboard for quick access anytime.'
+};
+
+window.PAYE_CALC_SYNC_ADAPTER = (function () {
+  function setToggleState(toggleName, enabled) {
+    var toggle = document.querySelector('[data-tog="' + toggleName + '"]');
+    if (!toggle) return;
+    toggle.classList.toggle('on', !!enabled);
+    toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+  }
+
+  function setSectorValue(sector) {
+    var nextSector = sector === 'public' ? 'public' : 'private';
+    var button = nextSector === 'public' ? document.getElementById('btnPublic') : document.getElementById('btnPrivate');
+    if (button && typeof setSector === 'function') {
+      setSector(nextSector, button);
     }
-    var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
-    if(idx>-1){favs.splice(idx,1);}else{
-      if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Free accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
-        return;
+  }
+
+  return {
+    hasResult: function () {
+      return !!window.RESULT;
+    },
+    buildPayload: function () {
+      if (!window.RESULT) return null;
+
+      return {
+        version: 2,
+        toolSlug: 'tz-paye',
+        toolName: 'Tanzania PAYE Calculator',
+        countryCode: 'TZ',
+        currency: 'TZS',
+        inputs: {
+          salaryValue: parseFloat(document.getElementById('grossSalary').value) || 0,
+          salaryPeriod: 'monthly',
+          period: window.PERIOD || 'monthly',
+          sector: window.SECTOR || 'private',
+          toggles: {
+            nssf: isOn('nssf'),
+            secondary: isOn('secondary')
+          }
+        },
+        snapshot: {
+          gross: Number(window.RESULT.annualGross) || 0,
+          grossAnnual: Number(window.RESULT.annualGross) || 0,
+          grossMonthly: Number(window.RESULT.gross) || 0,
+          tax: Number(window.RESULT.annualTax) || 0,
+          taxAnnual: Number(window.RESULT.annualTax) || 0,
+          taxMonthly: Number(window.RESULT.monthlyPAYE) || 0,
+          netAnnual: Number(window.RESULT.annualNet) || 0,
+          netMonthly: Number(window.RESULT.netMonthly) || 0,
+          effectiveRate: (Number(window.RESULT.effectiveRate) || 0) * 100,
+          taxableAnnual: (Number(window.RESULT.annualGross) || 0) - (Number(window.RESULT.annualSocial) || 0),
+          taxableMonthly: (Number(window.RESULT.gross) || 0) - (Number(window.RESULT.social) || 0),
+          socialAnnual: Number(window.RESULT.annualSocial) || 0,
+          socialMonthly: Number(window.RESULT.social) || 0,
+          employerCostAnnual: (Number(window.RESULT.totalEmployerCostMonthly) || 0) * 12,
+          employerCostMonthly: Number(window.RESULT.totalEmployerCostMonthly) || 0,
+          sdlAnnual: (Number(window.RESULT.sdl) || 0) * 12,
+          sdlMonthly: Number(window.RESULT.sdl) || 0,
+          wcfAnnual: (Number(window.RESULT.wcf) || 0) * 12,
+          wcfMonthly: Number(window.RESULT.wcf) || 0
+        }
+      };
+    },
+    restorePayload: function (payload, title) {
+      if (!payload || payload.version !== 2 || !payload.inputs) return false;
+
+      var inputs = payload.inputs || {};
+      var toggles = inputs.toggles || {};
+      var salaryValue = Number(inputs.salaryValue || 0);
+      var slider = document.getElementById('salarySlider');
+      var salaryInput = document.getElementById('grossSalary');
+
+      setSectorValue(inputs.sector);
+      salaryInput.value = salaryValue || '';
+      if (slider && salaryValue) {
+        slider.value = Math.min(Math.max(salaryValue, parseInt(slider.min, 10) || salaryValue), parseInt(slider.max, 10) || salaryValue);
+        document.getElementById('sliderVal').textContent = fmt(salaryValue);
+        updateSliderFill(slider);
       }
-      favs.push(TOOL_ID);
+
+      setToggleState('nssf', toggles.nssf !== false);
+      setToggleState('secondary', !!toggles.secondary);
+
+      if (typeof calculate === 'function') calculate();
+
+      var periodButtons = document.querySelectorAll('.per-btn');
+      if (typeof setPeriod === 'function' && periodButtons.length >= 2) {
+        setPeriod(inputs.period === 'annual' ? 'annual' : 'monthly', inputs.period === 'annual' ? periodButtons[1] : periodButtons[0]);
+      }
+
+      if (document.getElementById('calcSaveName')) {
+        document.getElementById('calcSaveName').value = title || '';
+      }
+      return true;
     }
-    localStorage.setItem(KEY,JSON.stringify(favs));
-    updateSaveUI();
   };
-
-  function showSaveToast(msg){
-    var t=document.createElement('div');
-    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 24px;border-radius:10px;font-size:.85rem;font-family:DM Sans,sans-serif;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:400px;text-align:center';
-    t.textContent=msg;document.body.appendChild(t);
-    setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},4000);
-  }
-
-  function updateSaveUI(){
-    var loggedIn=isLoggedIn(),saved=loggedIn&&isSaved();
-    var svgSaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-    var svgUnsaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-
-    // Inline save button
-    var btn=document.getElementById('inlineSaveBtn');
-    if(btn){
-      if(!loggedIn){btn.innerHTML=svgUnsaved+' Sign in to Save';btn.classList.remove('saved');}
-      else if(saved){btn.innerHTML=svgSaved+' Saved';btn.classList.add('saved');}
-      else{btn.innerHTML=svgUnsaved+' Save to My Tools';btn.classList.remove('saved');}
-    }
-
-    // Sidebar save button
-    var sb=document.getElementById('sidebarSaveBtn');
-    if(sb){
-      var lbl=document.getElementById('sidebarSaveLabel');
-      if(!loggedIn){
-        if(lbl)lbl.textContent='Sign in to Save';
-        sb.classList.remove('saved');
-      }else if(saved){
-        if(lbl)lbl.textContent='Saved';
-        sb.classList.add('saved');
-      }else{
-        if(lbl)lbl.textContent='Save to My Tools';
-        sb.classList.remove('saved');
-      }
-    }
-
-    // Save CTA banner text
-    var title=document.querySelector('.ng-save-title');
-    var desc=document.querySelector('.ng-save-desc');
-    if(!loggedIn){
-      if(title)title.textContent='Sign in to save this calculator';
-      if(desc)desc.textContent='Create a free account to bookmark tools, track calculations, and access your dashboard.';
-    }
-  }
-  window.updateSaveUI=updateSaveUI;
-
-  // Run on load + auth changes
-  document.addEventListener('DOMContentLoaded',updateSaveUI);
-  window.addEventListener('afro-auth-change',updateSaveUI);
 })();
 </script>
+<script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
+<script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
+<script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
+<script src="/assets/js/lib/paye-calculation-sync.js?v=20260419b" defer></script>
+<script src="/assets/js/lib/paye-tool-save-cta.js?v=20260419a" defer></script>
+
+<script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 </body>
 </html>

@@ -68,6 +68,8 @@ Use that script as the source of truth before hand-editing individual `/sw/{coun
 
 File: `/{country-slug}/xx-paye.html`
 
+Before cloning an existing PAYE page, read [PAYE-STANDARD.md](./PAYE-STANDARD.md). Nigeria PAYE is the current reference implementation for synced scenarios, recent activity, and dashboard integration.
+
 Include:
 - Salary input (with `AfroTools.ux.formatOnBlur()`)
 - Toggle switches for deductions (pension, social security, etc.)
@@ -76,6 +78,12 @@ Include:
 - AI advisor panel (for Tier 1 tools)
 - PDF download button
 - FAQ section with `<afro-faq>`
+- Standard save layer:
+  - `Save to My Tools` via shared favorites logic
+  - named scenario saves using `SaveState`
+  - signed-in history via `AfroHistory`
+  - signed-in dashboard sync via `workspace_items` item type `saved-calculation`
+  - deep-link restore using `?saved_calc=<item_key>`
 
 ---
 

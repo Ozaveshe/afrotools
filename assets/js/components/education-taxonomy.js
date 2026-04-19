@@ -75,7 +75,7 @@
       ],
       toolOverrides: {
         'school-fees': {
-          desc: 'The canonical education cost explorer for comparing annual tuition and extras before you commit to a school path.'
+          desc: 'The finance-side comparison anchor for checking whether a shortlist still looks safer, stretch, or high pressure before monthly planning.'
         },
         'student-budget': {
           desc: 'The monthly survival planner for testing whether housing, living costs, fees, or support gaps are breaking the month.'
@@ -86,7 +86,7 @@
       key: 'scholarships-study-abroad',
       title: 'Scholarships & Study Abroad',
       icon: '🌍',
-      description: 'One flagship scholarship flow, a destination affordability engine, IELTS pathway planning, a degree-readiness bridge, and university shortlist building.',
+      description: 'One flagship scholarship flow, a destination decision engine, IELTS pathway planning, a degree-readiness bridge, and university shortlist building.',
       toolIds: [
         'scholarship-finder',
         'degree-checker',
@@ -106,10 +106,10 @@
           desc: 'Turn African degree equivalency into destination-readiness guidance for study, work, migration, and the next tool to use.'
         },
         'study-abroad-cost': {
-          desc: 'Compare UK, Canada, Australia, USA, and Germany across tuition, living costs, visa fees, insurance, and scholarship scenarios.'
+          desc: 'Compare destinations across tuition, living, visa, relocation, and scholarship scenarios so affordability turns into a real next-step decision.'
         },
         'university-ranking': {
-          desc: 'Build a school shortlist with fit heuristics, compare tradeoffs, and save universities back into the student cockpit.'
+          desc: 'Build a route-aware school shortlist that respects destination intent, affordability pressure, readiness, scholarships, and cockpit context.'
         }
       }
     },
@@ -217,7 +217,7 @@
       key: 'fees',
       title: 'Education Fees & Cost Planning',
       eyebrow: 'Student Finance',
-      description: 'Start with School Fees Comparator for annual tuition context, then use Student Budget Planner for the monthly survival plan.',
+      description: 'Start with School Fees Comparator as the finance-side comparison anchor, then use Student Budget Planner to test whether a confirmed or estimated route survives month to month.',
       toolIds: [
         'school-fees',
         'student-budget',
@@ -227,10 +227,10 @@
       ],
       toolOverrides: {
         'school-fees': {
-          desc: 'Compare annual tuition and extras first, then move the chosen school into monthly planning.'
+          desc: 'Compare annual fees with shortlist and affordability context first, then move the right school into monthly planning.'
         },
         'student-budget': {
-          desc: 'Turn city costs, housing modes, and fee reserves into a practical monthly survival verdict.'
+          desc: 'Turn city costs, housing modes, and fee confidence into the monthly survival verdict that confirms or rejects the finance route.'
         }
       },
       relatedLinks: [
@@ -243,7 +243,7 @@
       key: 'loans',
       title: 'Student Loans & Repayment',
       eyebrow: 'Student Finance',
-      description: 'Track student-loan repayment paths, the canonical Kenya HELB calculator, and the monthly budget pressure that creates financing gaps.',
+      description: 'Track student-loan repayment paths, the canonical Kenya HELB calculator, and the monthly survival gaps that create financing pressure.',
       toolIds: [
         'student-loan-repay',
         'ke-helb',
@@ -252,7 +252,7 @@
       ],
       toolOverrides: {
         'student-budget': {
-          desc: 'Use the monthly survival planner when you need to prove whether the gap is really a loan problem or a cost-structure problem.'
+          desc: 'Use the monthly survival planner when you need to prove whether the gap coming out of the finance lane is really a loan problem or a cost-structure problem.'
         }
       },
       relatedLinks: [
@@ -278,10 +278,10 @@
           desc: 'Check whether your qualification still looks viable for the destination before you over-invest in scholarship or admissions planning.'
         },
         'study-abroad-cost': {
-          desc: 'Compare destination affordability and scholarship-offset scenarios before you decide which route is realistic.'
+          desc: 'Use the destination decision engine to compare affordability, upfront burden, and scholarship scenarios before you decide which route is realistic.'
         },
         'university-ranking': {
-          desc: 'Turn school research into a shortlist with compare notes, scholarship-friendly routes, and saved universities.'
+          desc: 'Turn school research into a route-aware shortlist with cost pressure, qualification cues, scholarship leverage, and saved cockpit context.'
         }
       },
       relatedLinks: [
@@ -294,7 +294,7 @@
       key: 'study-abroad',
       title: 'Study Abroad Planning Tools',
       eyebrow: 'Scholarships & Study Abroad',
-      description: 'Compare destinations side by side, pressure-test affordability, plan IELTS targets, bridge degree equivalency into readiness, and connect scholarships with university shortlist building.',
+      description: 'Compare destinations side by side, pressure-test affordability, plan IELTS targets, bridge degree equivalency into readiness, and route naturally into scholarships and university shortlist building.',
       toolIds: [
         'study-abroad-cost',
         'degree-checker',
@@ -307,10 +307,10 @@
           desc: 'The degree-readiness bridge for study abroad: see comparability, credential-assessment need, and the next tool to use.'
         },
         'study-abroad-cost': {
-          desc: 'The affordability engine for study abroad: compare tuition, living, visa, insurance, and scholarship scenarios across destinations.'
+          desc: 'The destination decision engine for study abroad: compare tuition, living, relocation, upfront burden, and scholarship scenarios across destinations.'
         },
         'university-ranking': {
-          desc: 'The university shortlist builder for comparing school tradeoffs before you apply.'
+          desc: 'The route-aware university shortlist builder for comparing realistic school tradeoffs before you apply.'
         }
       },
       relatedLinks: [

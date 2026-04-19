@@ -312,6 +312,55 @@ a {
   gap: 16px;
 }
 
+.dc-context-grid,
+.dc-context-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dc-context-grid {
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.dc-context-side {
+  flex: 1 1 260px;
+  display: grid;
+  gap: 14px;
+  align-content: space-between;
+}
+
+.dc-context-facts {
+  flex: 1.4 1 420px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.dc-context-fact {
+  border-radius: 18px;
+  border: 1px solid rgba(22, 49, 61, 0.1);
+  background: linear-gradient(180deg, #ffffff 0%, #fbf8f1 100%);
+  padding: 14px;
+}
+
+.dc-context-fact label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6a7e85;
+}
+
+.dc-context-fact strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--dc-ink);
+}
+
 .dc-field-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -611,6 +660,10 @@ a {
   .dc-trust-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .dc-context-facts {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 760px) {
@@ -631,7 +684,8 @@ a {
   .dc-detail-grid,
   .dc-how-grid,
   .dc-trust-grid,
-  .dc-meta-grid {
+  .dc-meta-grid,
+  .dc-context-facts {
     grid-template-columns: 1fr;
   }
 
@@ -640,7 +694,8 @@ a {
   }
 
   .dc-state-actions,
-  .dc-strip-links {
+  .dc-strip-links,
+  .dc-context-actions {
     flex-direction: column;
     align-items: stretch;
   }

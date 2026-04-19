@@ -72,6 +72,15 @@
   var recentToolUses = [];
   var savedCalculationItems = [];
   var forexData = null;
+  var SAVED_CALCULATIONS_EVENT = 'afro-saved-calculations-change';
+  var LOCAL_SAVED_CALC_KEY_PREFIX = 'afrotools-saved-';
+  var LEGACY_LOCAL_CALC_KEYS = {
+    'afrotools-saved-ng-salary-tax': {
+      toolSlug: 'ng-paye',
+      href: '/nigeria/ng-salary-tax/',
+      currency: 'NGN'
+    }
+  };
 
   function withTimeout(promise, timeoutMs) {
     return Promise.race([
@@ -132,7 +141,65 @@
 
   function formatPercent(value) {
     if (value === null || value === undefined || value === '') return '--';
-    return Number(value).toFixed(1) + '%';
+    var numeric = normalizeRateValue(value);
+    if (numeric === null) return '--';
+    return numeric.toFixed(1) + '%';
+  }
+
+  function normalizeRateValue(value) {
+    var numeric = Number(value);
+    if (!Number.isFinite(numeric)) return null;
+    if (numeric > 0 && numeric <= 1) return numeric * 100;
+    return numeric;
+  }
+
+  function summarizeSavedCalculationPayload(payload, currency, fallbackSummary) {
+    if (typeof fallbackSummary === 'string' && fallbackSummary.trim()) {
+      return fallbackSummary.trim();
+    }
+
+    var data = payload && typeof payload === 'object' ? payload : {};
+    if (typeof data.summary === 'string' && data.summary.trim()) {
+      return data.summary.trim();
+    }
+
+    if (data.fields && data.fields.summary) {
+      return String(data.fields.summary);
+    }
+
+    var snapshot = data && data.snapshot ? data.snapshot : {};
+    var parts = [];
+
+    if (snapshot.regime === 'nta') {
+      parts.push('NTA 2026');
+    } else if (snapshot.regime === 'pita') {
+      parts.push('PITA 2025');
+    }
+
+    if (typeof snapshot.netMonthly === 'number' && Number.isFinite(snapshot.netMonthly)) {
+      parts.push('Take-home ' + formatCurrency(snapshot.netMonthly, currency) + '/mo');
+    } else if (typeof snapshot.netAnnual === 'number' && Number.isFinite(snapshot.netAnnual)) {
+      parts.push('Net ' + formatCurrency(snapshot.netAnnual, currency) + '/yr');
+    } else if (typeof snapshot.tax === 'number' && Number.isFinite(snapshot.tax)) {
+      parts.push('Tax ' + formatCurrency(snapshot.tax, currency));
+    }
+
+    var rate = normalizeRateValue(snapshot.effectiveRate);
+    if (rate !== null) {
+      parts.push('Rate ' + rate.toFixed(1) + '%');
+    }
+
+    return parts.length ? parts.join(' | ') : 'Saved calculation';
+  }
+
+  function firstFiniteNumber() {
+    for (var index = 0; index < arguments.length; index += 1) {
+      var value = arguments[index];
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        return value;
+      }
+    }
+    return null;
   }
 
   function getCountryCode() {
@@ -271,31 +338,62 @@
     };
   }
 
-  function readLocalSavedCalculations() {
-    var rawItems = [];
+  function buildLocalSavedCalculationItem(storageKey, item) {
+    if (!item || !item.id) return null;
 
-    try {
-      rawItems = JSON.parse(localStorage.getItem('afrotools-saved-ng-salary-tax') || '[]');
-    } catch (error) {
-      rawItems = [];
+    var payload = item.data || {};
+    var legacyConfig = LEGACY_LOCAL_CALC_KEYS[storageKey] || null;
+    var hasStructuredPayload = payload && payload.version === 2 && payload.toolSlug && payload.snapshot;
+    if (!hasStructuredPayload && !legacyConfig) return null;
+
+    var toolSlug = payload.toolSlug || (legacyConfig ? legacyConfig.toolSlug : '');
+    if (!toolSlug) return null;
+
+    var toolMeta = getToolMeta(toolSlug, payload.toolName || 'Saved calculation');
+    var currency = payload.currency || (legacyConfig ? legacyConfig.currency : getCountryCurrency());
+    var summary = summarizeSavedCalculationPayload(payload, currency, item.data && item.data.summary ? item.data.summary : '');
+
+    return {
+      item_key: item.id,
+      tool_slug: toolSlug,
+      title: item.title || payload.toolName || toolMeta.name || 'Saved calculation',
+      summary: summary,
+      payload: payload,
+      updated_at: item.updatedAt ? new Date(item.updatedAt).toISOString() : new Date().toISOString(),
+      created_at: item.createdAt ? new Date(item.createdAt).toISOString() : new Date().toISOString(),
+      href: ((legacyConfig && legacyConfig.href) || toolMeta.href) + '?saved_calc=' + encodeURIComponent(item.id),
+      local_only: true,
+      meta: {
+        currency: currency
+      }
+    };
+  }
+
+  function readLocalSavedCalculations() {
+    var items = [];
+
+    for (var index = 0; index < localStorage.length; index += 1) {
+      var storageKey = localStorage.key(index);
+      if (!storageKey || storageKey.indexOf(LOCAL_SAVED_CALC_KEY_PREFIX) !== 0) continue;
+
+      var rawItems = [];
+      try {
+        rawItems = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      } catch (error) {
+        rawItems = [];
+      }
+
+      if (!Array.isArray(rawItems)) continue;
+
+      rawItems.forEach(function (item) {
+        var normalized = buildLocalSavedCalculationItem(storageKey, item);
+        if (normalized) {
+          items.push(normalized);
+        }
+      });
     }
 
-    if (!Array.isArray(rawItems)) return [];
-
-    return rawItems.map(function (item) {
-      return {
-        item_key: item.id,
-        title: item.title || 'Saved calculation',
-        summary: item.data && item.data.summary ? item.data.summary : '',
-        payload: item.data || {},
-        updated_at: item.updatedAt ? new Date(item.updatedAt).toISOString() : new Date().toISOString(),
-        created_at: item.createdAt ? new Date(item.createdAt).toISOString() : new Date().toISOString(),
-        href: '/nigeria/ng-salary-tax/?saved_calc=' + encodeURIComponent(item.id),
-        local_only: true
-      };
-    }).filter(function (item) {
-      return item.item_key;
-    });
+    return items;
   }
 
   function mergeSavedCalculationItems(remoteItems) {
@@ -322,18 +420,26 @@
 
   function summarizeHistoryItem(item) {
     var outputs = item && item.outputs ? item.outputs : {};
-    var numericValue = outputs.net_monthly || outputs.netMonthly || outputs.net_pay || outputs.takeHome || outputs.total || outputs.result || null;
+    var numericValue = firstFiniteNumber(
+      outputs.net_monthly,
+      outputs.netMonthly,
+      outputs.net_pay,
+      outputs.takeHome,
+      outputs.total,
+      outputs.result
+    );
 
     if (typeof numericValue === 'number' && Number.isFinite(numericValue)) {
       return formatCurrency(numericValue, item.currency || getCountryCurrency());
     }
 
-    if (typeof outputs.effective_rate === 'number' && Number.isFinite(outputs.effective_rate)) {
-      return Number(outputs.effective_rate).toFixed(1) + '%';
+    var rate = normalizeRateValue(outputs.effective_rate);
+    if (rate === null) {
+      rate = normalizeRateValue(outputs.effectiveRate);
     }
 
-    if (typeof outputs.effectiveRate === 'number' && Number.isFinite(outputs.effectiveRate)) {
-      return Number(outputs.effectiveRate).toFixed(1) + '%';
+    if (rate !== null) {
+      return rate.toFixed(1) + '%';
     }
 
     return 'Open tool';
@@ -350,25 +456,36 @@
         updatedAt: historyItem.created_at,
         currency: historyItem.currency || getCountryCurrency(),
         snapshot: {
-          netMonthly: historyItem.outputs.net_monthly || historyItem.outputs.netMonthly || historyItem.outputs.net_pay || historyItem.outputs.takeHome || null,
-          effectiveRate: historyItem.outputs.effective_rate || historyItem.outputs.effectiveRate || historyItem.outputs.tax_rate || null
+          netMonthly: firstFiniteNumber(
+            historyItem.outputs.net_monthly,
+            historyItem.outputs.netMonthly,
+            historyItem.outputs.net_pay,
+            historyItem.outputs.takeHome
+          ),
+          effectiveRate: normalizeRateValue(firstFiniteNumber(
+            historyItem.outputs.effective_rate,
+            historyItem.outputs.effectiveRate,
+            historyItem.outputs.tax_rate
+          ))
         }
       };
     }
 
     var savedItem = savedCalculationItems.find(function (item) {
       var payload = item && item.payload ? item.payload : {};
-      return payload.snapshot && typeof payload.snapshot.netMonthly === 'number';
+      var toolSlug = (item && item.tool_slug) || payload.toolSlug || '';
+      var isPayeTool = toolSlug.indexOf('paye') !== -1 || toolSlug.indexOf('salary-tax') !== -1;
+      return isPayeTool && payload.snapshot && typeof payload.snapshot.netMonthly === 'number';
     });
 
     if (savedItem && savedItem.payload && savedItem.payload.snapshot) {
       return {
         source: 'saved',
         updatedAt: savedItem.updated_at || savedItem.created_at,
-        currency: 'NGN',
+        currency: (savedItem.meta && savedItem.meta.currency) || savedItem.payload.currency || getCountryCurrency(),
         snapshot: {
           netMonthly: savedItem.payload.snapshot.netMonthly,
-          effectiveRate: savedItem.payload.snapshot.effectiveRate
+          effectiveRate: normalizeRateValue(savedItem.payload.snapshot.effectiveRate)
         }
       };
     }
@@ -1006,7 +1123,10 @@
   }
 
   async function refreshSavedCalculations() {
-    if (window.AfroWorkspace && typeof window.AfroWorkspace.list === 'function' && window.AfroWorkspace.isSignedIn()) {
+    var hasWorkspaceApi = window.AfroWorkspace && typeof window.AfroWorkspace.list === 'function';
+    var workspaceReady = hasWorkspaceApi && typeof window.AfroWorkspace.isSignedIn === 'function' && window.AfroWorkspace.isSignedIn();
+
+    if (hasWorkspaceApi && (workspaceReady || currentUser)) {
       try {
         var remoteItems = await withTimeout(window.AfroWorkspace.list({
           itemType: 'saved-calculation',
@@ -1090,11 +1210,16 @@
     });
 
     window.addEventListener('storage', function (event) {
-      if (event.key === 'afrotools-saved-ng-salary-tax' || (event.key && event.key.indexOf('afro_recent_v2') === 0)) {
+      var isSavedCalculationKey = event.key && event.key.indexOf('afrotools-saved-') === 0;
+      var isRecentActivityKey = event.key && event.key.indexOf('afro_recent_v2') === 0;
+
+      if (isSavedCalculationKey || isRecentActivityKey) {
         refreshAndRenderDashboard();
       }
     });
 
+    window.addEventListener(SAVED_CALCULATIONS_EVENT, refreshAndRenderDashboard);
+    window.addEventListener('afro-history-change', refreshAndRenderDashboard);
     window.addEventListener('focus', refreshAndRenderDashboard);
     window.addEventListener('afro-auth-change', refreshAndRenderDashboard);
   }

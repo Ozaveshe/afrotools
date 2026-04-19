@@ -162,6 +162,22 @@
     return map[level] || titleCase(level);
   }
 
+  function formatBudgetSource(source) {
+    var map = {
+      'school-fees': 'School Fees comparison',
+      'student-budget': 'Student Budget plan',
+      'study-abroad-cost': 'Study Abroad Cost route'
+    };
+    return map[source] || '';
+  }
+
+  function getBudgetActionLabel(signal) {
+    if (!signal || !signal.source) return 'Review plan';
+    if (signal.source === 'school-fees') return 'Review fees';
+    if (signal.source === 'student-budget') return 'Review budget';
+    return 'Review plan';
+  }
+
   function formatRelative(dateValue) {
     if (!dateValue) return 'No date set';
 
@@ -387,6 +403,7 @@
       'scholarship-finder': 'Worked scholarship flow',
       'study-abroad-cost': 'Updated affordability route',
       'student-budget': 'Updated monthly survival plan',
+      'school-fees': 'Updated fee comparison',
       'university-ranking': 'Updated university shortlist',
       'education-hub': 'Updated cockpit',
       'jamb-cbt': 'Took JAMB CBT mock',
@@ -442,6 +459,14 @@
     return (signals.activity || []).some(function (item) {
       return item && item.label && /degree/i.test(item.label);
     });
+  }
+
+  function getLatestDegreeReadinessSignal(signals) {
+    return (signals.destinations || []).filter(function (destination) {
+      var href = destination && destination.href ? destination.href : '';
+      var reason = destination && destination.reason ? destination.reason : '';
+      return href.indexOf('/tools/degree-checker/') !== -1 || /degree/i.test(reason);
+    }).slice().sort(sortByRecency)[0] || null;
   }
 
   function sortByRecency(left, right) {
@@ -518,7 +543,7 @@
         key: 'budget',
         title: 'Estimate a real cost signal',
         complete: signals.budgetSignals.length > 0,
-        hint: signals.budgetSignals.length ? 'Recent cost plan saved to the cockpit.' : 'Study Abroad Cost can save a live affordability signal here.',
+        hint: signals.budgetSignals.length ? 'Recent cost plan saved to the cockpit.' : 'School Fees, Student Budget, or Study Abroad Cost can save a live cost signal here.',
         href: '/tools/study-abroad-cost/'
       },
       {
@@ -652,22 +677,61 @@
   function buildCurrentPlan(signals) {
     var profile = cockpit.profile;
     var degreeReady = hasDegreeReadinessSignal(signals);
+    var degreeRoute = getLatestDegreeReadinessSignal(signals);
     var destinationNames = signals.destinations.map(function (destination) {
       return destination.name;
     });
     var topBudget = signals.budgetSignals.length ? signals.budgetSignals[0] : null;
+    var budgetBand = topBudget && topBudget.affordabilityBand ? topBudget.affordabilityBand : '';
+    var budgetViability = topBudget && topBudget.viabilityLabel ? topBudget.viabilityLabel : '';
+    var budgetSignalMeta = topBudget
+      ? truncateText(uniqueStrings([
+        topBudget.planningMode,
+        topBudget.feeConfidence,
+        topBudget.feeLaneSummary,
+        topBudget.pressureTitle,
+        topBudget.shortlistContext,
+        topBudget.countryMixSummary,
+        topBudget.routeSummary
+      ]).join(' | '), 120)
+      : '';
     var upcomingDeadline = signals.deadlines.length ? signals.deadlines[0] : null;
+    var topUniversity = signals.universities.length ? signals.universities[0] : null;
+    var shortlistMeta = topUniversity
+      ? uniqueStrings([
+        topUniversity.routeDestination,
+        topUniversity.routeAffordability,
+        topUniversity.readinessState,
+        topUniversity.assessmentNeed,
+        topUniversity.field ? titleCase(topUniversity.field) : '',
+        topUniversity.studyLevel ? formatStudyLevel(topUniversity.studyLevel) : ''
+      ]).slice(0, 3)
+      : [];
     var testsReady = [profile.gpa_value, profile.ielts_overall, signals.jambStatus === 'Tracked' || signals.jambStatus === 'In progress'].filter(Boolean).length;
 
     return [
       {
         key: 'destination',
         title: 'Destination path',
-        status: destinationNames.length ? (topBudget ? 'Active' : 'Needs cost check') : 'Not shaped',
-        tone: destinationNames.length ? (topBudget ? 'good' : 'warn') : 'warn',
+        status: destinationNames.length
+          ? (topBudget
+            ? ((topBudget.source === 'student-budget' && budgetViability)
+              ? budgetViability
+              : (/high-risk/i.test(budgetBand) ? 'Funding-sensitive' : (/stretch/i.test(budgetBand) ? 'Stretch route' : 'Active')))
+            : 'Needs cost check')
+          : 'Not shaped',
+        tone: destinationNames.length
+          ? (topBudget
+            ? ((topBudget.source === 'student-budget' && budgetViability)
+              ? ((/unsustainable|unstable/i.test(budgetViability) ? 'warn' : (/tight/i.test(budgetViability) ? 'ok' : 'good')))
+              : (/high-risk/i.test(budgetBand) ? 'warn' : (/stretch/i.test(budgetBand) ? 'ok' : 'good')))
+            : 'warn')
+          : 'warn',
         detail: destinationNames.length ? destinationNames.slice(0, 2).join(', ') : 'No saved destination path yet.',
         meta: topBudget
-          ? 'Latest affordability signal: ' + topBudget.destination + ' ' + formatStudyLevel(topBudget.level || '')
+          ? ((topBudget.source === 'student-budget' && budgetSignalMeta)
+            ? 'Latest monthly route: ' + budgetSignalMeta
+            : 'Latest affordability signal: ' + topBudget.destination + ' ' + formatStudyLevel(topBudget.level || '') + (budgetBand ? ' | ' + budgetBand : ''))
           : 'Use Study Abroad Cost to turn destination intent into a real route.',
         href: '/tools/study-abroad-cost/',
         cta: topBudget ? 'Review route' : 'Set destinations'
@@ -695,7 +759,9 @@
           ? 'IELTS ' + Number(profile.ielts_overall).toFixed(1) + ' on file'
           : 'IELTS target not locked yet.',
         meta: degreeReady
-          ? 'Degree readiness signal is already in the cockpit.'
+          ? ((degreeRoute && degreeRoute.readinessState)
+            ? 'Degree route on file: ' + degreeRoute.readinessState + (degreeRoute.assessmentNeed ? ' | ' + degreeRoute.assessmentNeed : '')
+            : 'Degree readiness signal is already in the cockpit.')
           : 'Pair GPA, IELTS, and degree readiness before pushing harder on applications.',
         href: '/tools/ielts-calculator/',
         cta: testsReady >= 3 && degreeReady ? 'Review tests' : 'Strengthen readiness'
@@ -706,11 +772,20 @@
         status: signals.universities.length >= 3 && signals.deadlines.length ? 'Operational' : (signals.universities.length ? 'Building' : 'Thin'),
         tone: signals.universities.length >= 3 && signals.deadlines.length ? 'good' : (signals.universities.length ? 'ok' : 'warn'),
         detail: signals.universities.length
-          ? signals.universities.length + ' saved school' + (signals.universities.length === 1 ? '' : 's')
+          ? signals.universities.length + ' saved school' + (signals.universities.length === 1 ? '' : 's') + (topUniversity ? ' | Lead: ' + topUniversity.name : '')
           : 'No universities saved yet.',
-        meta: upcomingDeadline
-          ? 'Next date: ' + upcomingDeadline.title + ' (' + formatRelative(upcomingDeadline.date) + ')'
-          : 'Add a real deadline so the shortlist stays anchored to action.',
+        meta: topUniversity
+          ? truncateText(
+            topUniversity.routeSummary ||
+            shortlistMeta.join(' | ') ||
+            (upcomingDeadline
+              ? 'Next date: ' + upcomingDeadline.title + ' (' + formatRelative(upcomingDeadline.date) + ')'
+              : 'Add a real deadline so the shortlist stays anchored to action.'),
+            120
+          )
+          : (upcomingDeadline
+            ? 'Next date: ' + upcomingDeadline.title + ' (' + formatRelative(upcomingDeadline.date) + ')'
+            : 'Add a real deadline so the shortlist stays anchored to action.'),
         href: '/tools/university-ranking/',
         cta: signals.universities.length ? 'Refine shortlist' : 'Build shortlist'
       }
@@ -1014,13 +1089,21 @@
     renderCollection('universityList', signals.universities, '<div class="hub-empty-block">No universities saved yet. Save them from the University Shortlist Builder or add one manually below.</div>', function (university) {
       var meta = [];
       if (university.fitLabel) meta.push(university.fitLabel);
+      if (university.routeDestination) meta.push('Route: ' + university.routeDestination);
       if (university.country) meta.push(university.country);
       if (university.rank) meta.push('Rank ' + university.rank);
       if (university.feesLabel) meta.push(university.feesLabel);
-      if (university.note) meta.push(university.note);
+      if (university.routeAffordability) meta.push(university.routeAffordability);
+      if (university.readinessState) meta.push(university.readinessState);
+      if (university.assessmentNeed) meta.push(university.assessmentNeed);
+      if (Array.isArray(university.shortlistSignals) && university.shortlistSignals.length) {
+        meta.push(university.shortlistSignals.slice(0, 2).join(' | '));
+      }
+      if (university.routeSummary) meta.push(truncateText(university.routeSummary, 110));
+      if (university.note && university.note !== university.routeSummary) meta.push(university.note);
 
       return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(university.name) + '</h4><p>' + escapeHtml(meta.join(' · ') || 'Saved university') + '</p></div>' +
+        '<div class="hub-object-copy"><h4>' + escapeHtml(university.name) + '</h4><p>' + escapeHtml(meta.join(' | ') || 'Saved university') + '</p></div>' +
         '<div class="hub-object-actions">' +
           '<a href="' + escapeHtml(university.href || '/tools/university-ranking/') + '">Open</a>' +
           '<button type="button" data-action="remove-university" data-id="' + escapeHtml(university.id) + '">Remove</button>' +
@@ -1033,11 +1116,14 @@
     renderCollection('destinationList', signals.destinations, '<div class="hub-empty-block">No destinations saved yet. Add them here or let the affordability engine push them back into the cockpit.</div>', function (destination) {
       var detail = [];
       if (destination.reason) detail.push(destination.reason);
+      if (destination.readinessState) detail.push(destination.readinessState);
+      if (destination.assessmentNeed) detail.push(destination.assessmentNeed);
       if (destination.studyLevel) detail.push(formatStudyLevel(destination.studyLevel));
       if (destination.field) detail.push(titleCase(destination.field));
+      if (destination.nextTool) detail.push('Next: ' + destination.nextTool);
 
       return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(destination.name) + '</h4><p>' + escapeHtml(detail.join(' · ') || 'Saved destination') + '</p></div>' +
+        '<div class="hub-object-copy"><h4>' + escapeHtml(destination.name) + '</h4><p>' + escapeHtml(detail.join(' | ') || 'Saved destination') + '</p></div>' +
         '<div class="hub-object-actions">' +
           '<a href="' + escapeHtml(destination.href || '/tools/study-abroad-cost/') + '">Open route</a>' +
           '<button type="button" data-action="remove-destination" data-id="' + escapeHtml(destination.id) + '">Remove</button>' +
@@ -1047,20 +1133,43 @@
   }
 
   function renderBudgetSignals(signals) {
-    renderCollection('budgetSignalList', signals.budgetSignals, '<div class="hub-empty-block">No cost signals yet. Run Student Budget Planner or Study Abroad Cost and the most recent estimate will land here.</div>', function (signal) {
+    renderCollection('budgetSignalList', signals.budgetSignals, '<div class="hub-empty-block">No cost signals yet. Run School Fees, Student Budget Planner, or Study Abroad Cost and the most recent estimate will land here.</div>', function (signal) {
       var summary = [];
+      var statusLabel = formatStudyLevel(signal.level || '');
+      var sourceLabel = formatBudgetSource(signal.source);
+      var reviewLabel = getBudgetActionLabel(signal);
+      if (signal.viabilityLabel) summary.push(signal.viabilityLabel);
+      if (signal.comparisonLabel) summary.push(signal.comparisonLabel);
+      if (sourceLabel) summary.push(sourceLabel);
+      if (signal.planningMode) summary.push(signal.planningMode);
+      if (signal.feeConfidence) summary.push(signal.feeConfidence);
       if (signal.field) summary.push(titleCase(signal.field));
       if (signal.years && signal.level !== 'monthly-budget') summary.push(signal.years + ' year plan');
+      if (signal.affordabilityBand) summary.push(signal.affordabilityBand);
+      if (signal.upfrontBand) summary.push(signal.upfrontBand);
+      if (signal.feeLaneSummary) summary.push(signal.feeLaneSummary);
+      if (signal.routeRecommendation) summary.push(signal.routeRecommendation);
+      if (signal.pressureTitle) summary.push(signal.pressureTitle);
+      if (signal.shortlistContext) summary.push(signal.shortlistContext);
+      if (signal.countryMixSummary) summary.push(signal.countryMixSummary);
+      if (signal.monthlyBalance !== undefined && signal.monthlyBalance !== null) summary.push('Monthly balance ' + formatMoney(signal.monthlyBalance, signal.currency));
+      if (signal.coverageRatio) summary.push('Coverage ' + Math.round(Number(signal.coverageRatio) * 100) + '%');
+      if (signal.routeSummary) summary.push(truncateText(signal.routeSummary, 110));
       if (signal.note) summary.push(signal.note);
+      if (signal.level === 'monthly-budget' && signal.viabilityLabel) {
+        statusLabel = signal.viabilityLabel + (signal.feeConfidence ? ' | ' + signal.feeConfidence : '');
+      } else if (signal.affordabilityBand) {
+        statusLabel += statusLabel ? ' | ' + signal.affordabilityBand : signal.affordabilityBand;
+      }
 
       return '<article class="hub-budget-card">' +
-        '<div class="hub-budget-top"><strong>' + escapeHtml(signal.destination) + '</strong><span>' + escapeHtml(formatStudyLevel(signal.level || '')) + '</span></div>' +
+        '<div class="hub-budget-top"><strong>' + escapeHtml(signal.destination) + '</strong><span>' + escapeHtml(statusLabel) + '</span></div>' +
         '<div class="hub-budget-grid">' +
           '<div><label>Annual</label><strong>' + escapeHtml(formatMoney(signal.annualTotal, signal.currency)) + '</strong></div>' +
           '<div><label>Total</label><strong>' + escapeHtml(formatMoney(signal.totalCost, signal.currency)) + '</strong></div>' +
         '</div>' +
-        '<p>' + escapeHtml(summary.join(' · ') || 'Saved cost signal') + '</p>' +
-        '<div class="hub-object-actions"><a href="' + escapeHtml(signal.href || '/tools/study-abroad-cost/') + '">Review plan</a>' +
+        '<p>' + escapeHtml(truncateText(summary.join(' | ') || 'Saved cost signal', 170)) + '</p>' +
+        '<div class="hub-object-actions"><a href="' + escapeHtml(signal.href || '/tools/study-abroad-cost/') + '">' + escapeHtml(reviewLabel) + '</a>' +
         '<button type="button" data-action="remove-budget" data-id="' + escapeHtml(signal.id) + '">Remove</button></div>' +
       '</article>';
     });
@@ -1069,7 +1178,7 @@
   function renderTimeline(signals) {
     renderCollection('deadlineList', signals.deadlines, '<div class="hub-empty-block">No deadlines tracked yet. Add the next application, exam, or scholarship date so the cockpit can keep the plan grounded.</div>', function (deadline) {
       return '<article class="hub-object-card">' +
-        '<div class="hub-object-copy"><h4>' + escapeHtml(deadline.title) + '</h4><p>' + escapeHtml(formatRelative(deadline.date) + (deadline.route ? ' · ' + deadline.route : '')) + '</p></div>' +
+        '<div class="hub-object-copy"><h4>' + escapeHtml(deadline.title) + '</h4><p>' + escapeHtml(formatRelative(deadline.date) + (deadline.route ? ' | ' + deadline.route : '')) + '</p></div>' +
         '<div class="hub-object-actions">' +
           (deadline.href ? '<a href="' + escapeHtml(deadline.href) + '">Open</a>' : '<span class="hub-inline-muted">' + escapeHtml(deadline.date || '') + '</span>') +
           '<button type="button" data-action="remove-deadline" data-id="' + escapeHtml(deadline.id) + '">Remove</button>' +
@@ -1090,6 +1199,7 @@
 
   function renderReadiness(signals) {
     var degreeReady = hasDegreeReadinessSignal(signals);
+    var degreeRoute = getLatestDegreeReadinessSignal(signals);
     var readinessCards = [
       {
         title: 'GPA',
@@ -1111,9 +1221,11 @@
       },
       {
         title: 'Degree fit',
-        status: degreeReady ? 'Checked' : 'Open loop',
+        status: degreeReady ? (degreeRoute && degreeRoute.readinessState ? degreeRoute.readinessState : 'Checked') : 'Open loop',
         detail: degreeReady
-          ? 'A qualification-readiness signal is already on file.'
+          ? ((degreeRoute && degreeRoute.assessmentNeed)
+            ? 'Latest route: ' + (degreeRoute.name || 'Saved destination') + ' | ' + degreeRoute.assessmentNeed
+            : 'A qualification-readiness signal is already on file.')
           : 'Use Degree Checker if you still need destination-fit validation.',
         href: '/tools/degree-checker/',
         tone: degreeReady ? 'ok' : 'warn'
@@ -1138,6 +1250,8 @@
 
   function renderStudyRoute(signals) {
     var degreeReady = hasDegreeReadinessSignal(signals);
+    var topBudget = signals.budgetSignals.length ? signals.budgetSignals[0] : null;
+    var budgetSourceLabel = formatBudgetSource(topBudget && topBudget.source);
     var route = [
       {
         label: 'Profile and GPA',
@@ -1168,7 +1282,9 @@
         href: '/tools/study-abroad-cost/',
         complete: signals.destinations.length > 0 && signals.budgetSignals.length > 0,
         detail: signals.destinations.length > 0 && signals.budgetSignals.length > 0
-          ? 'Destination intent and affordability signals are both active.'
+          ? ((budgetSourceLabel || topBudget && topBudget.comparisonLabel)
+            ? ((topBudget && topBudget.comparisonLabel) || budgetSourceLabel) + ' is now feeding the cockpit.'
+            : 'Destination intent and affordability signals are both active.')
           : (signals.destinations.length
             ? 'You have destination intent, but cost signals are still thin.'
             : 'Save destinations, then translate them into affordability scenarios.')

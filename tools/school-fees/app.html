@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>School Fees Comparator App | AfroTools</title>
-<meta name="description" content="Compare verified school-fee records by city, level, and school type, then push the annual cost into Student Budget for monthly survival planning.">
+<meta name="description" content="Compare verified school-fee records with shortlist and route context from the cockpit, then pressure-test the strongest or safest options in Student Budget.">
 <link rel="canonical" href="https://afrotools.com/tools/school-fees/app.html">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
 <link rel="stylesheet" href="/assets/css/market-data.css">
+<link rel="stylesheet" href="/tools/school-fees/school-fees-app.css?v=20260419a">
 <style>
   .md-note-strip{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:14px 16px;border-radius:16px;background:#eff6ff;border:1px solid #bfdbfe;margin-bottom:16px}
   .md-note-strip strong{display:block;color:var(--md-ink);font-size:.86rem}
@@ -18,7 +19,6 @@
   .md-card-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
   .md-card-link{display:inline-flex;align-items:center;justify-content:center;padding:9px 12px;border-radius:999px;background:#eff6ff;color:var(--md-primary);font-size:.75rem;font-weight:800}
   .md-card-link.secondary{background:#fff;border:1px solid #dbe5f1;color:var(--md-ink)}
-  .md-card-note{margin-top:10px;font-size:.78rem;color:var(--md-muted);line-height:1.6}
 </style>
 </head>
 <body>
@@ -28,22 +28,25 @@
     <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/education/">Education</a><span>/</span><span>School Fees</span></div>
     <div class="md-eyebrow">Education Costs</div>
     <h1>School Fees Comparator</h1>
-    <p>Use the live school-fees app to compare annual tuition and extras across cities, then push the numbers into Student Budget when you want to know if the month is still survivable.</p>
-    <div class="md-chip-row"><span class="md-chip">Primary to university</span><span class="md-chip">Budget handoff</span><span class="md-chip">Proof-backed when possible</span></div>
+    <p>Use the live school-fees app as the finance-side comparison anchor for your education route. If your shortlist, affordability posture, or study level already exist in the cockpit, this page starts warmer instead of from zero.</p>
+    <div class="md-chip-row"><span class="md-chip">Route-aware compare</span><span class="md-chip">Shortlist-fed when possible</span><span class="md-chip">Budget handoff</span><span class="md-chip">Proof-backed when possible</span></div>
   </div>
 </section>
 <div class="md-shell">
   <div class="md-main">
     <div class="md-panel">
-      <div class="md-panel-head"><div class="md-panel-title">Verified School Fee Records</div><div class="md-panel-subtitle">Filter by country, city, level, or institution type, then move the annual cost into a monthly budget test.</div></div>
+      <div class="md-panel-head"><div class="md-panel-title">Verified School Fee Records</div><div class="md-panel-subtitle">Compare the live fee feed, overlay saved shortlist context where it exists, then decide whether the route is safer, stretch, or high pressure.</div></div>
       <div class="md-panel-body">
         <div class="md-note-strip">
           <div>
-            <strong>Compare annual fees, then test the month</strong>
-            <p>Each school card now routes into Student Budget with a monthly fee reserve so you can see whether fees or living costs are the real pressure point.</p>
+            <strong>Compare annual fees with the route already in mind</strong>
+            <p>Live fee rows stay the trust layer. Saved shortlist fee bands and route posture simply make the comparison more decision-ready, not more precise than the data supports.</p>
           </div>
           <a href="/tools/student-budget/">Open Student Budget</a>
         </div>
+        <div class="sf-route-banner" id="sfRouteBanner"></div>
+        <div class="sf-filter-actions" id="sfFilterActions"></div>
+        <div class="sf-shortlist-panel" id="sfShortlistPanel"></div>
         <div class="md-toolbar">
           <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
           <div class="md-field"><label for="mdCity">City</label><input id="mdCity" class="md-input" data-md-filter="city" placeholder="e.g. Lagos"></div>
@@ -58,17 +61,10 @@
   </div>
   <aside class="md-side">
     <div class="md-panel">
-      <div class="md-panel-head"><div class="md-panel-title">Next Step</div><div class="md-panel-subtitle">Use School Fees as the annual-cost input, not the end of the decision.</div></div>
+      <div class="md-panel-head"><div class="md-panel-title">Next Step</div><div class="md-panel-subtitle">Use School Fees as the finance comparison anchor, not the end of the route.</div></div>
       <div class="md-panel-body">
-        <ul class="md-list">
-          <li>Open Student Budget when you want to turn annual fees into a monthly survival test.</li>
-          <li>Open Education Hub when you want the wider finance and study journey in one cockpit.</li>
-          <li>Submit a correction when a fee record is stale, incomplete, or missing extras.</li>
-        </ul>
-        <div class="md-actions" style="margin-top:14px;">
-          <a class="md-btn md-btn-secondary" href="/tools/student-budget/">Student Budget</a>
-          <a class="md-btn md-btn-secondary" href="/tools/education-hub/">Education Hub</a>
-        </div>
+        <div class="sf-side-routes" id="sfNextSteps"></div>
+        <p class="sf-coverage-note" id="sfCoverageNote"></p>
       </div>
     </div>
     <div class="md-panel">
@@ -94,83 +90,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afropoints-engine.js?v=2"></script>
+<script src="/assets/js/afro-edu-bridge.js?v=20260419f"></script>
 <script src="/assets/js/market-data-app.js"></script>
-<script>
-document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-function matchBudgetCityKey(value) {
-  var key = String(value || '').toLowerCase().trim();
-  var aliases = {
-    lagos: 'lagos',
-    abuja: 'abuja',
-    ibadan: 'ibadan',
-    'ile ife': 'ibadan',
-    ife: 'ibadan',
-    nairobi: 'nairobi',
-    mombasa: 'mombasa',
-    accra: 'accra',
-    kumasi: 'kumasi',
-    'cape town': 'capetown',
-    johannesburg: 'johannesburg',
-    'addis ababa': 'addis',
-    kampala: 'kampala',
-    'dar es salaam': 'dar',
-    kigali: 'kigali'
-  };
-  return aliases[key] || aliases[key.replace(/[^a-z0-9]+/g, ' ').trim()] || '';
-}
-
-function buildStudentBudgetHref(row, annualFee) {
-  var params = new URLSearchParams();
-  params.set('school', row.institution_name || 'School');
-  params.set('annualFee', annualFee || 0);
-  if (row.currency_code) params.set('currency', row.currency_code);
-  if (row.city) params.set('city', row.city);
-  var cityKey = matchBudgetCityKey(row.city);
-  if (cityKey) params.set('cityKey', cityKey);
-  return '/tools/student-budget/?' + params.toString();
-}
-
-function sourceLabel(value) {
-  var map = {
-    self_observed: 'Self observed',
-    receipt: 'Receipt / schedule',
-    official_notice: 'Official notice',
-    community_check: 'Community check'
-  };
-  return map[value] || 'Contributor data';
-}
-
-function formatObserved(value) {
-  if (!value) return '';
-  var date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '';
-  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-window.MarketDataApp.mount({
-  endpoint: '/api/school-fees',
-  responseKey: 'fees',
-  subtype: 'school_fee',
-  vertical: 'school_fees',
-  reportButtonLabel: 'Submit School Fee',
-  renderSummary: function (rows) {
-    return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Verified fee records</div></div>' +
-      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return row.education_level === 'University'; }).length + '</div><div class="md-stat-label">University rows</div></div>' +
-      '<div class="md-stat"><div class="md-stat-value">' + rows.filter(function (row) { return !!row.proof_url; }).length + '</div><div class="md-stat-label">Proof-backed rows</div></div>';
-  },
-  renderCard: function (row, helpers) {
-    var extras = Number(row.extras_total || 0);
-    var tuition = Number(row.annual_tuition || 0);
-    var total = tuition + extras;
-    var observed = formatObserved(row.observed_at);
-    var budgetHref = buildStudentBudgetHref(row, total);
-    return '<article class="md-card"><h3>' + helpers.escapeHtml(row.institution_name || 'Institution') + '</h3>' +
-      '<p>' + helpers.escapeHtml((row.city || '') + ' | ' + (row.education_level || 'Level') + ' | ' + (row.institution_type || 'Type')) + '</p>' +
-      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(total || 0) + ' total</span><span class="md-pill">Extras ' + helpers.escapeHtml(extras || 0) + '</span><span class="md-pill">' + helpers.escapeHtml(sourceLabel(row.source_type)) + '</span>' + (row.proof_url ? '<span class="md-pill">Proof linked</span>' : '') + (observed ? '<span class="md-pill">Observed ' + helpers.escapeHtml(observed) + '</span>' : '') + '</div>' +
-      '<div class="md-card-note">Use this annual total as a monthly reserve in Student Budget to see whether fees or living costs are the real issue.</div>' +
-      '<div class="md-card-actions"><a class="md-card-link" href="' + helpers.escapeHtml(budgetHref) + '">Plan this school in Student Budget</a><a class="md-card-link secondary" href="/tools/education-hub/">Open Education Hub</a></div></article>';
-  }
-});
-</script>
+<script src="/tools/school-fees/school-fees-app.js?v=20260419b"></script>
 </body>
 </html>

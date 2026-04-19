@@ -45,10 +45,10 @@
   };
 
   var STATE_META = {
-    broad: { label: 'Broadly recognized', tone: 'good', lead: 'Your qualification level is commonly comparable for this destination.', short: 'Broad fit' },
-    evaluation: { label: 'Likely recognized with credential evaluation', tone: 'evaluation', lead: 'The route often works, but formal review is part of the real process.', short: 'Needs evaluation' },
-    partial: { label: 'Partial / needs review', tone: 'partial', lead: 'Some pathways stay open, but bridging, top-up study, or case-by-case review is common.', short: 'Partial fit' },
-    unclear: { label: 'Pathway unclear', tone: 'unclear', lead: 'Do not treat this as confirmed recognition without a destination-specific review.', short: 'Unclear fit' }
+    broad: { label: 'Broadly aligned', tone: 'good', lead: 'The qualification level compares strongly enough to treat the destination as a real route, not just a loose possibility.', short: 'Aligned' },
+    evaluation: { label: 'Likely requires credential review', tone: 'evaluation', lead: 'The route can work, but credential evaluation or institution-led review should be treated as part of the normal path.', short: 'Review likely' },
+    partial: { label: 'Pathway possible but conditions matter', tone: 'partial', lead: 'The route is still possible, but bridge-entry, flexible admissions, or stronger supporting evidence are more likely to matter.', short: 'Conditional' },
+    unclear: { label: 'Uncertain / needs formal assessment', tone: 'unclear', lead: 'Treat this as exploratory until an official evaluator, university, employer, or regulator confirms the route.', short: 'Uncertain' }
   };
 
   var DESTINATIONS = {
@@ -210,7 +210,12 @@
     SADC: ['ZA', 'ZW', 'ZM']
   };
 
-  var appState = { lastResult: null };
+  var appState = {
+    lastResult: null,
+    context: null,
+    contextApplied: false,
+    contextSignature: ''
+  };
   var elements = {};
 
   function getEl(id) {
@@ -227,26 +232,440 @@
   }
 
   function uniqueStrings(list) {
-    return (list || []).filter(function (value, index, array) {
-      return value && array.indexOf(value) === index;
-    });
+    return (list || []).reduce(function (acc, value) {
+      var text = String(value || '').trim();
+      if (!text) return acc;
+      if (!acc.some(function (item) { return item.toLowerCase() === text.toLowerCase(); })) {
+        acc.push(text);
+      }
+      return acc;
+    }, []);
   }
 
   function slugify(value) {
     return String(value || 'route').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'route';
   }
 
+  function titleCase(value) {
+    return String(value || '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/\b\w/g, function (match) {
+        return match.toUpperCase();
+      });
+  }
+
+  function normalizeCountryKey(value) {
+    return String(value || '').toLowerCase().replace(/[^a-z]+/g, '');
+  }
+
+  function resolveDestinationCode(value) {
+    var key = normalizeCountryKey(value);
+    var aliases = {
+      uk: 'UK',
+      unitedkingdom: 'UK',
+      britain: 'UK',
+      greatbritain: 'UK',
+      england: 'UK',
+      scotland: 'UK',
+      wales: 'UK',
+      usa: 'USA',
+      us: 'USA',
+      unitedstates: 'USA',
+      unitedstatesofamerica: 'USA',
+      america: 'USA',
+      canada: 'CA',
+      australia: 'AU',
+      germany: 'DE',
+      deutschland: 'DE',
+      netherlands: 'NL',
+      holland: 'NL',
+      dutch: 'NL',
+      uae: 'AE',
+      emirates: 'AE',
+      unitedarabemirates: 'AE'
+    };
+
+    return aliases[key] || '';
+  }
+
+  function mapProfileDegreeLevel(value) {
+    var key = String(value || '').toLowerCase().trim();
+    if (!key) return '';
+    if (key === 'bachelor' || key === 'bachelors' || key === 'undergraduate' || key === 'undergrad') return 'bachelor';
+    if (key === 'master' || key === 'masters' || key === 'postgraduate' || key === 'postgrad') return 'master';
+    if (key === 'phd' || key === 'doctorate' || key === 'doctoral') return 'phd';
+    if (key === 'hnd' || key === 'higher diploma' || key === 'higher national diploma') return 'hnd';
+    if (key === 'pgd' || key === 'postgraduate diploma') return 'pgd';
+    return '';
+  }
+
   function isHigherDegree(level) {
     return level === 'master' || level === 'phd';
   }
 
-  function buildResultSummary(selection, equivalency, destination, statusMeta) {
+  function getRecentTimestamp(item) {
+    return Number((item && (item.updatedAt || item.savedAt || item.timestamp)) || 0);
+  }
+
+  function sortByRecency(left, right) {
+    return getRecentTimestamp(right) - getRecentTimestamp(left);
+  }
+
+  function getLatestItem(list) {
+    var items = Array.isArray(list) ? list.slice().sort(sortByRecency) : [];
+    return items.length ? items[0] : null;
+  }
+
+  function readCachedProfileSnapshot() {
+    if (window.EduProfileSync && typeof window.EduProfileSync.getCachedProfile === 'function') {
+      try {
+        return window.EduProfileSync.getCachedProfile() || {};
+      } catch (error) {
+        return {};
+      }
+    }
+    return {};
+  }
+
+  function getCockpitSnapshot() {
+    if (window.AfroEdu && typeof window.AfroEdu.getCockpitState === 'function') {
+      try {
+        return window.AfroEdu.getCockpitState() || {};
+      } catch (error) {
+        return {};
+      }
+    }
+    return {};
+  }
+
+  function buildConnectedContext(profile, cockpit) {
+    var savedDestinations = Array.isArray(cockpit.destinations) ? cockpit.destinations.slice().sort(sortByRecency) : [];
+    var budgetSignals = Array.isArray(cockpit.budgetSignals) ? cockpit.budgetSignals.slice().sort(sortByRecency) : [];
+    var latestBudget = getLatestItem(budgetSignals);
+    var latestDegreeRoute = getLatestItem(savedDestinations.filter(function (destination) {
+      var href = destination && destination.href ? destination.href : '';
+      var reason = destination && destination.reason ? destination.reason : '';
+      return href.indexOf('/tools/degree-checker/') !== -1 || /degree/i.test(reason);
+    }));
+    var targetCountries = uniqueStrings((profile.target_countries || []).concat(savedDestinations.map(function (destination) {
+      return destination.name;
+    })));
+    var preferredDestinationName = latestBudget && latestBudget.destination
+      ? latestBudget.destination
+      : (latestDegreeRoute && latestDegreeRoute.name
+        ? latestDegreeRoute.name
+        : (targetCountries[0] || ''));
+    var preferredDestinationCode = resolveDestinationCode(preferredDestinationName);
+    var degreeLevelSuggestion = mapProfileDegreeLevel(profile.education_level || '');
+    var fieldSuggestion = uniqueStrings(profile.target_fields || [])[0] || '';
+    var preferredPathway = latestBudget
+      ? 'study'
+      : ((latestDegreeRoute && latestDegreeRoute.pathwayGoal) || (preferredDestinationCode ? 'study' : ''));
+    var matchingBudget = latestBudget && preferredDestinationCode && resolveDestinationCode(latestBudget.destination) === preferredDestinationCode
+      ? latestBudget
+      : null;
+    var facts = [];
+    var title = 'General mode until you set a destination route';
+    var copy = 'Degree Checker still works without saved context, but it becomes more specific once Study Abroad Cost or Education Hub already knows your destination path.';
+    var hint = 'Set destination intent first if you want this page to respond more like a route bridge than a general explainer.';
+
+    if (preferredDestinationCode) {
+      title = 'Connected route context found for ' + DESTINATIONS[preferredDestinationCode].name;
+      copy = matchingBudget
+        ? 'Degree Checker can now interpret your qualification against the saved affordability route instead of treating the destination as generic.'
+        : 'You already have destination intent, but affordability or funding context for this destination is still thin.';
+      hint = matchingBudget
+        ? 'Apply the saved route to the form, confirm your qualification details, and run the readiness check.'
+        : 'Apply the saved destination to the form, then decide whether affordability, IELTS, or a credential review is the next gate.';
+    }
+
+    facts.push({
+      label: 'Destination route',
+      value: preferredDestinationCode ? DESTINATIONS[preferredDestinationCode].name : 'Not locked'
+    });
+    facts.push({
+      label: 'Affordability',
+      value: matchingBudget && matchingBudget.affordabilityBand ? matchingBudget.affordabilityBand : 'No saved cost signal'
+    });
+    facts.push({
+      label: 'Qualification on file',
+      value: degreeLevelSuggestion ? DEGREE_LEVELS[degreeLevelSuggestion].label : 'Not pulled from profile'
+    });
+    facts.push({
+      label: 'IELTS signal',
+      value: profile.ielts_overall ? Number(profile.ielts_overall).toFixed(1) + ' overall' : 'Still open'
+    });
+
+    return {
+      profile: profile || {},
+      cockpit: cockpit || {},
+      latestBudget: latestBudget,
+      matchingBudget: matchingBudget,
+      preferredDestinationCode: preferredDestinationCode,
+      preferredPathway: preferredPathway,
+      degreeLevelSuggestion: degreeLevelSuggestion,
+      fieldSuggestion: fieldSuggestion,
+      hasSuggestedFormContext: !!(preferredDestinationCode || degreeLevelSuggestion || preferredPathway),
+      facts: facts,
+      title: title,
+      copy: copy,
+      hint: hint
+    };
+  }
+
+  function buildContextSignature(context) {
+    return [
+      context.preferredDestinationCode || '',
+      context.preferredPathway || '',
+      context.degreeLevelSuggestion || '',
+      context.fieldSuggestion || '',
+      context.latestBudget ? context.latestBudget.id || context.latestBudget.destination || '' : ''
+    ].join('|');
+  }
+
+  function renderContextPanel() {
+    var context = appState.context;
+
+    if (!context) return;
+
+    if (elements.routeContextTitle) elements.routeContextTitle.textContent = context.title;
+    if (elements.routeContextCopy) elements.routeContextCopy.textContent = context.copy;
+    if (elements.routeContextHint) elements.routeContextHint.textContent = context.hint;
+    if (elements.routeContextFacts) {
+      elements.routeContextFacts.innerHTML = context.facts.map(function (fact) {
+        return '<div class="dc-context-fact"><label>' + escapeHtml(fact.label) + '</label><strong>' + escapeHtml(fact.value) + '</strong></div>';
+      }).join('');
+    }
+    if (elements.applyRouteContextBtn) {
+      elements.applyRouteContextBtn.hidden = !context.hasSuggestedFormContext;
+      elements.applyRouteContextBtn.disabled = !context.hasSuggestedFormContext;
+      elements.applyRouteContextBtn.textContent = context.preferredDestinationCode ? 'Use saved route in form' : 'Use saved context';
+    }
+  }
+
+  function applyConnectedContext(options) {
+    var context = appState.context;
+    var changed = false;
+
+    if (!context) return false;
+
+    if (context.preferredDestinationCode && elements.targetCountry.value !== context.preferredDestinationCode) {
+      elements.targetCountry.value = context.preferredDestinationCode;
+      changed = true;
+    }
+
+    if (context.degreeLevelSuggestion && elements.degreeLevel.value !== context.degreeLevelSuggestion) {
+      elements.degreeLevel.value = context.degreeLevelSuggestion;
+      changed = true;
+    }
+
+    if (context.preferredPathway && elements.pathwayGoal.value !== context.preferredPathway) {
+      elements.pathwayGoal.value = context.preferredPathway;
+      changed = true;
+    }
+
+    if (changed) {
+      context.hint = 'Saved route context is now sitting in the form. Adjust anything that is too generic, then run the check.';
+    } else if (options && options.force) {
+      context.hint = 'This form already matches the saved route context. You can run the check now or tweak the route manually.';
+    }
+
+    renderContextPanel();
+    return changed;
+  }
+
+  function syncConnectedContext(options) {
+    var context = buildConnectedContext(readCachedProfileSnapshot(), getCockpitSnapshot());
+    var signature = buildContextSignature(context);
+
+    appState.context = context;
+
+    if (options && options.autoApply && signature !== appState.contextSignature) {
+      applyConnectedContext({ force: false });
+    }
+
+    appState.contextSignature = signature;
+    renderContextPanel();
+
+    if (window.EduProfileSync && typeof window.EduProfileSync.getProfile === 'function') {
+      try {
+        var request = window.EduProfileSync.getProfile();
+        if (request && typeof request.then === 'function') {
+          request.then(function (profile) {
+            appState.context = buildConnectedContext(Object.assign({}, readCachedProfileSnapshot(), profile || {}), getCockpitSnapshot());
+            renderContextPanel();
+          }).catch(function () {});
+        }
+      } catch (error) {
+        return;
+      }
+    }
+  }
+
+  function getBudgetBandKey(context, targetCountry) {
+    var budget = context && context.latestBudget;
+    if (!budget || !budget.destination || !targetCountry) return '';
+    if (resolveDestinationCode(budget.destination) !== targetCountry) return '';
+    if (/high-risk/i.test(budget.affordabilityBand || '')) return 'high-risk';
+    if (/stretch/i.test(budget.affordabilityBand || '')) return 'stretch';
+    if (/affordable/i.test(budget.affordabilityBand || '')) return 'affordable';
+    return '';
+  }
+
+  function buildRouteReadiness(selection, equivalency, destination, context) {
+    var budgetBand = getBudgetBandKey(context, selection.targetCountry);
+    var key = equivalency.status;
+    var notes = [];
+    var hasLanguageSignal = !!(context && context.profile && context.profile.ielts_overall);
+
+    if (key !== 'unclear' && key !== 'partial') {
+      if (selection.routeContext === 'regulated' && key === 'broad') {
+        key = 'evaluation';
+      } else if (budgetBand === 'high-risk' && key === 'broad') {
+        key = 'partial';
+      } else if (budgetBand === 'stretch' && key === 'broad') {
+        key = 'evaluation';
+      }
+    }
+
+    if (context && context.matchingBudget && context.matchingBudget.affordabilityBand) {
+      notes.push(destination.name + ' already has a saved affordability route: ' + context.matchingBudget.affordabilityBand + '.');
+    } else if (selection.pathwayGoal === 'study') {
+      notes.push('Affordability is still an open part of the route for ' + destination.name + '.');
+    }
+
+    if (selection.routeContext === 'regulated') {
+      notes.push('You selected a regulated-profession route, so destination-specific licensing or board review matters more than a general degree comparison.');
+    }
+
+    if (selection.degreeLevel === 'hnd' || selection.degreeLevel === 'pgd') {
+      notes.push('Bridge-entry, top-up study, or flexible institution targeting is more realistic than assuming a clean one-to-one degree replacement.');
+    }
+
+    if (selection.pathwayGoal === 'study') {
+      notes.push(hasLanguageSignal
+        ? 'An IELTS signal is already on file, so the next decision can move beyond language basics.'
+        : 'Language proof is still a separate gate, even if the qualification level looks workable.');
+    }
+
+    return {
+      key: key,
+      label: STATE_META[key].label,
+      tone: STATE_META[key].tone,
+      short: STATE_META[key].short,
+      lead: STATE_META[key].lead,
+      notes: uniqueStrings(notes).slice(0, 4)
+    };
+  }
+
+  function buildResultSummary(selection, equivalency, destination, routeReadiness, context) {
     var degree = DEGREE_LEVELS[selection.degreeLevel];
     var grade = CLASSIFICATIONS[selection.classification];
     var source = SOURCE_COUNTRIES[selection.sourceCountry];
-    var context = selection.routeContext === 'regulated' ? ' in a regulated-profession context' : '';
+    var parts = [
+      'Assuming a recognized ' + source.name + ' institution and complete documents, your ' + degree.label.toLowerCase() + ' with ' + grade.label.toLowerCase() + ' looks ' + routeReadiness.label.toLowerCase() + ' for ' + destination.name + ' in this ' + PATHWAYS[selection.pathwayGoal] + ' route.'
+    ];
 
-    return 'Assuming a recognized ' + source.name + ' institution and complete documents, your ' + degree.label.toLowerCase() + ' with ' + grade.label.toLowerCase() + ' is currently best treated as ' + statusMeta.label.toLowerCase() + ' for ' + destination.name + context + '. The comparison level is ' + equivalency.equiv.toLowerCase() + ', but the destination route owner still makes the final call.';
+    parts.push('The qualification currently maps closest to ' + equivalency.equiv.toLowerCase() + ', but the destination route owner still makes the final call.');
+
+    if (context && context.matchingBudget && context.matchingBudget.affordabilityBand) {
+      parts.push('Your saved affordability route for this destination currently reads as ' + context.matchingBudget.affordabilityBand.toLowerCase() + '.');
+    } else if (selection.pathwayGoal === 'study') {
+      parts.push('Cost pressure for this destination is still not locked in the cockpit yet.');
+    }
+
+    if (selection.pathwayGoal === 'study') {
+      parts.push(context && context.profile && context.profile.ielts_overall
+        ? 'IELTS ' + Number(context.profile.ielts_overall).toFixed(1) + ' is already on file.'
+        : 'Language proof is still an open gate.');
+    }
+
+    return parts.join(' ');
+  }
+
+  function buildRouteSnapshot(selection, destination, routeReadiness, context) {
+    var budget = context && context.matchingBudget ? context.matchingBudget : null;
+    var fieldLabel = context && context.fieldSuggestion ? titleCase(context.fieldSuggestion) : 'Field not locked';
+
+    return {
+      title: budget ? 'Current route context for ' + destination.name : 'Route context is still thin for ' + destination.name,
+      body: budget
+        ? 'This destination already has a saved affordability route in the cockpit, so this result can behave like a real route check rather than a generic equivalency explainer.'
+        : 'The qualification result is useful already, but the route still needs clearer destination or affordability signals if you want the lane to feel fully connected.',
+      facts: [
+        {
+          label: 'Destination',
+          value: destination.name + (context && context.preferredDestinationCode === selection.targetCountry ? ' (saved route)' : '')
+        },
+        {
+          label: 'Affordability',
+          value: budget && budget.affordabilityBand ? budget.affordabilityBand : 'No saved cost route'
+        },
+        {
+          label: 'Field',
+          value: fieldLabel
+        },
+        {
+          label: 'Best current posture',
+          value: routeReadiness.label
+        }
+      ]
+    };
+  }
+
+  function buildDecisionAction(selection, destination, routeReadiness, context) {
+    var budgetKey = getBudgetBandKey(context, selection.targetCountry);
+    var hasIelts = !!(context && context.profile && context.profile.ielts_overall);
+
+    if (selection.pathwayGoal === 'study' && !budgetKey) {
+      return {
+        key: 'cost',
+        title: 'Pressure-test affordability next',
+        copy: 'Qualification fit is only one layer. Open Study Abroad Cost so ' + destination.name + ' becomes a real affordability route with tuition, living, visa, and setup pressure in view.',
+        href: '/tools/study-abroad-cost/',
+        cta: 'Open Study Abroad Cost'
+      };
+    }
+
+    if (selection.pathwayGoal === 'study' && !hasIelts) {
+      return {
+        key: 'ielts',
+        title: 'Lock the language-proof gate',
+        copy: 'The destination route is clearer now, but language proof is still open. Use IELTS Calculator to turn this into a more realistic application plan.',
+        href: '/tools/ielts-calculator/',
+        cta: 'Open IELTS Calculator'
+      };
+    }
+
+    if (routeReadiness.key === 'partial' || routeReadiness.key === 'unclear') {
+      return {
+        key: 'ranking',
+        title: 'Target flexible-entry universities',
+        copy: 'Because the route is conditional, the next smart move is institution targeting. Use University Ranking to look for more flexible schools, top-up options, or realistic shortlist fits.',
+        href: '/tools/university-ranking/',
+        cta: 'Open University Ranking'
+      };
+    }
+
+    if (budgetKey === 'high-risk' || budgetKey === 'stretch') {
+      return {
+        key: 'scholarship',
+        title: 'Look for funding leverage',
+        copy: 'The qualification route may work, but the destination is still funding-sensitive. Review scholarships before you treat the route as comfortably viable.',
+        href: '/tools/scholarship-finder/',
+        cta: 'Open Scholarship Finder'
+      };
+    }
+
+    return {
+      key: 'ranking',
+      title: 'Push into shortlist building',
+      copy: 'The route looks usable enough to move into institution choice. Open University Ranking to turn this readiness result into actual schools and deadlines.',
+      href: '/tools/university-ranking/',
+      cta: 'Open University Ranking'
+    };
   }
 
   function getStudyReadiness(selection, equivalency, destination) {
@@ -350,7 +769,7 @@
     };
   }
 
-  function getAdditionalRequirements(selection, destination, status) {
+  function getAdditionalRequirements(selection, destination, status, context) {
     var list = [
       destination.languageSummary,
       'Official transcripts, degree certificate, and direct institutional verification are still central for serious applications.',
@@ -375,6 +794,10 @@
 
     if (status === 'partial' || status === 'unclear') {
       list.push('Treat the route as conditional until a real destination owner confirms the exact recognition path.');
+    }
+
+    if (context && context.matchingBudget && context.matchingBudget.affordabilityBand) {
+      list.push('Saved affordability signal for this destination: ' + context.matchingBudget.affordabilityBand + '.');
     }
 
     return uniqueStrings(list);
@@ -417,22 +840,49 @@
     return 'Country name alone never guarantees recognition. The strongest practical signal is still a recognized home institution plus complete, directly verifiable documents.';
   }
 
-  function buildToolCards(selection, status) {
-    var primaryId = 'ielts';
-    if (selection.pathwayGoal === 'study' && (status === 'partial' || status === 'unclear')) primaryId = 'ranking';
-    if (selection.pathwayGoal !== 'study' && (status === 'partial' || status === 'unclear')) primaryId = 'hub';
+  function buildToolCards(selection, routeReadiness, context, decisionAction) {
+    var budgetKey = getBudgetBandKey(context, selection.targetCountry);
+    var hasIelts = !!(context && context.profile && context.profile.ielts_overall);
 
     return [
-      { id: 'ielts', title: 'IELTS Calculator', href: '/tools/ielts-calculator/', copy: 'Check the English-proof side of the route so degree comparability is not the only signal in your plan.' },
-      { id: 'cost', title: 'Study Abroad Cost', href: '/tools/study-abroad-cost/', copy: 'Pressure-test whether the destination still works after tuition, living costs, visa fees, and scholarship scenarios.' },
-      { id: 'ranking', title: 'University Ranking', href: '/tools/university-ranking/', copy: 'Shortlist institutions and routes that look realistic for your qualification level, flexibility, and destination.' },
-      { id: 'scholarship', title: 'Scholarship Finder', href: '/tools/scholarship-finder/', copy: 'Use your destination plan to check whether funding can actually make the route viable.' },
+      {
+        id: 'cost',
+        title: 'Study Abroad Cost',
+        href: '/tools/study-abroad-cost/',
+        copy: budgetKey
+          ? 'Your cockpit already has a ' + ((context && context.matchingBudget && context.matchingBudget.affordabilityBand) || 'saved') + ' route for this destination. Re-open it if this degree result changes which destination feels realistic.'
+          : 'Translate qualification fit into a real destination decision with tuition, living, visa, relocation, and scholarship scenarios.'
+      },
+      {
+        id: 'ielts',
+        title: 'IELTS Calculator',
+        href: '/tools/ielts-calculator/',
+        copy: hasIelts
+          ? 'IELTS ' + Number(context.profile.ielts_overall).toFixed(1) + ' is already on file. Use it to check whether your destination readiness still lines up with language requirements.'
+          : 'Degree comparability does not clear the language gate. Use IELTS Calculator to decide whether language proof could still block the route.'
+      },
+      {
+        id: 'ranking',
+        title: 'University Ranking',
+        href: '/tools/university-ranking/',
+        copy: routeReadiness.key === 'partial' || routeReadiness.key === 'unclear'
+          ? 'Because this route is more conditional, shortlist institutions with flexible entry, top-up, bridge, or case-by-case admissions behavior.'
+          : 'Shortlist institutions that match the destination, qualification level, and route pressure you just confirmed here.'
+      },
+      {
+        id: 'scholarship',
+        title: 'Scholarship Finder',
+        href: '/tools/scholarship-finder/',
+        copy: budgetKey === 'high-risk' || budgetKey === 'stretch'
+          ? 'Funding may be what changes this route from fragile to workable. Review scholarships with the destination and study level already in mind.'
+          : 'Check whether funding can strengthen this destination choice before you commit further time to applications.'
+      },
       { id: 'hub', title: 'Education Hub', href: '/tools/education-hub/', copy: 'Save the route, keep your destination stack connected, and return later when you have IELTS, budget, or shortlist updates.' }
     ].map(function (tool) {
-      var tag = tool.id === primaryId ? 'Recommended first move' : 'Next tool';
-      if (tool.id === 'ranking' && tool.id === primaryId) tag = 'Recommended for flexible entry';
-      if (tool.id === 'hub' && tool.id === primaryId) tag = 'Recommended fallback route';
-      return Object.assign({}, tool, { primary: tool.id === primaryId, tag: tag });
+      return Object.assign({}, tool, {
+        primary: tool.id === decisionAction.key,
+        tag: tool.id === decisionAction.key ? 'Best next move' : 'Route follow-up'
+      });
     });
   }
 
@@ -440,6 +890,9 @@
     var equivalency = EQUIVALENCIES[selection.degreeLevel][selection.targetCountry];
     var destination = DESTINATIONS[selection.targetCountry];
     var statusMeta = STATE_META[equivalency.status];
+    var context = appState.context || buildConnectedContext({}, {});
+    var routeReadiness = buildRouteReadiness(selection, equivalency, destination, context);
+    var decisionAction = buildDecisionAction(selection, destination, routeReadiness, context);
 
     return {
       selection: selection,
@@ -447,14 +900,18 @@
       destination: destination,
       gradeEquivalent: (GRADE_EQUIV[selection.classification] || {})[selection.targetCountry] || 'Evaluator-specific',
       statusMeta: statusMeta,
+      routeReadiness: routeReadiness,
+      routeSnapshot: buildRouteSnapshot(selection, destination, routeReadiness, context),
       studyReadiness: getStudyReadiness(selection, equivalency, destination),
       workReadiness: getWorkMigrationReadiness(selection, equivalency),
-      assessment: getAssessmentNeed(selection, destination, equivalency.status),
-      requirements: getAdditionalRequirements(selection, destination, equivalency.status),
+      assessment: getAssessmentNeed(selection, destination, routeReadiness.key),
+      requirements: getAdditionalRequirements(selection, destination, routeReadiness.key, context),
       checklist: getDocumentChecklist(selection),
-      tools: buildToolCards(selection, equivalency.status),
-      summary: buildResultSummary(selection, equivalency, destination, statusMeta),
-      regionalNote: getRegionalNote(selection.sourceCountry)
+      tools: buildToolCards(selection, routeReadiness, context, decisionAction),
+      decisionAction: decisionAction,
+      summary: buildResultSummary(selection, equivalency, destination, routeReadiness, context),
+      regionalNote: getRegionalNote(selection.sourceCountry),
+      context: context
     };
   }
 
@@ -481,6 +938,12 @@
     }).join('');
   }
 
+  function renderRouteFacts(facts) {
+    return (facts || []).map(function (fact) {
+      return '<div class="dc-context-fact"><label>' + escapeHtml(fact.label) + '</label><strong>' + escapeHtml(fact.value) + '</strong></div>';
+    }).join('');
+  }
+
   function renderResult(result) {
     var selection = result.selection;
     var source = SOURCE_COUNTRIES[selection.sourceCountry];
@@ -490,48 +953,56 @@
     elements.resultsMount.innerHTML =
       '<div class="dc-overview-grid">' +
         '<article class="dc-state-card">' +
-          '<span class="dc-state-badge ' + escapeHtml(result.statusMeta.tone) + '">' + escapeHtml(result.statusMeta.label) + '</span>' +
+          '<span class="dc-state-badge ' + escapeHtml(result.routeReadiness.tone) + '">' + escapeHtml(result.routeReadiness.label) + '</span>' +
           '<h3 class="dc-result-title">' + escapeHtml(result.destination.name) + ' readiness for your ' + escapeHtml(PATHWAYS[selection.pathwayGoal]) + '</h3>' +
           '<p class="dc-summary">' + escapeHtml(result.summary) + '</p>' +
           '<div class="dc-meta-grid">' +
-            '<div class="dc-meta-item"><label>Your route</label><strong>' + escapeHtml(level.label) + '</strong></div>' +
+            '<div class="dc-meta-item"><label>Your qualification</label><strong>' + escapeHtml(level.label) + '</strong></div>' +
             '<div class="dc-meta-item"><label>Comparable level</label><strong>' + escapeHtml(result.equivalency.equiv) + '</strong></div>' +
+            '<div class="dc-meta-item"><label>Qualification mapping</label><strong>' + escapeHtml(result.statusMeta.label) + '</strong></div>' +
             '<div class="dc-meta-item"><label>Grade read-across</label><strong>' + escapeHtml(result.gradeEquivalent) + '</strong></div>' +
             '<div class="dc-meta-item"><label>Framework note</label><strong>' + escapeHtml(result.equivalency.framework) + '</strong></div>' +
           '</div>' +
           '<div class="dc-state-actions">' +
             '<button class="dc-button" id="saveRouteBtn" type="button">Save this route to Education Hub</button>' +
-            '<span class="dc-save-feedback" id="saveFeedback">Save the route if you want the cockpit to remember this destination.</span>' +
+            '<span class="dc-save-feedback" id="saveFeedback">Save the route if you want the cockpit to remember this readiness signal.</span>' +
           '</div>' +
         '</article>' +
         '<article class="dc-card">' +
-          '<div class="dc-card-top"><div><div class="dc-card-kicker">Recognition view</div><h3>What the result actually means</h3></div><span class="dc-card-status">' + escapeHtml(result.statusMeta.short) + '</span></div>' +
-          '<p>' + escapeHtml(result.statusMeta.lead) + '</p>' +
-          '<p>' + escapeHtml(result.equivalency.note) + '</p>' +
+          '<div class="dc-card-top"><div><div class="dc-card-kicker">Connected route snapshot</div><h3>' + escapeHtml(result.routeSnapshot.title) + '</h3></div><span class="dc-card-status">' + escapeHtml(result.routeReadiness.short) + '</span></div>' +
+          '<p>' + escapeHtml(result.routeSnapshot.body) + '</p>' +
+          '<div class="dc-context-facts">' + renderRouteFacts(result.routeSnapshot.facts) + '</div>' +
           '<ul class="dc-bullet-list">' +
-            '<li>Source-country regulator signal: ' + escapeHtml(source.regulator) + '</li>' +
-            '<li>Grade context: ' + escapeHtml(classification.label) + '</li>' +
-            '<li>Route context: ' + escapeHtml(CONTEXTS[selection.routeContext]) + '</li>' +
-            '<li>Final authority: destination institution, employer, regulator, immigration owner, or formal evaluator</li>' +
+            renderBullets(result.routeReadiness.notes) +
           '</ul>' +
         '</article>' +
       '</div>' +
       '<div class="dc-readiness-grid">' +
+        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Qualification mapping</div><h3>' + escapeHtml(result.statusMeta.label) + '</h3></div></div><p>' + escapeHtml(result.statusMeta.lead) + '</p><p>' + escapeHtml(result.equivalency.note) + '</p></article>' +
         '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Study readiness</div><h3>' + escapeHtml(result.studyReadiness.status) + '</h3></div></div><p>' + escapeHtml(result.studyReadiness.body) + '</p></article>' +
         '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Work / migration readiness</div><h3>' + escapeHtml(result.workReadiness.status) + '</h3></div></div><p>' + escapeHtml(result.workReadiness.body) + '</p></article>' +
-        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Credential assessment</div><h3>' + escapeHtml(result.assessment.label) + '</h3></div></div><p>' + escapeHtml(result.assessment.body) + '</p></article>' +
-        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Language proof</div><h3>Still a separate gate</h3></div></div><p>' + escapeHtml(result.destination.languageSummary) + '</p></article>' +
+        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Credential review</div><h3>' + escapeHtml(result.assessment.label) + '</h3></div></div><p>' + escapeHtml(result.assessment.body) + '</p></article>' +
       '</div>' +
       '<div class="dc-detail-grid">' +
         '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Official route owner</div><h3>' + escapeHtml(result.destination.name) + ' guidance</h3></div></div><p>Use these official sources to validate the live route before you treat this planning view as final.</p><ul class="dc-link-list">' + renderLinks(result.destination.officialLinks) + '</ul></article>' +
-        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Likely additional requirements</div><h3>What usually comes next</h3></div></div><ul class="dc-bullet-list">' + renderBullets(result.requirements) + '</ul></article>' +
+        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">What conditions matter next</div><h3>Language, documents, and route pressure</h3></div></div><ul class="dc-bullet-list">' + renderBullets(result.requirements) + '</ul></article>' +
+        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Best next tool</div><h3>' + escapeHtml(result.decisionAction.title) + '</h3></div></div><p>' + escapeHtml(result.decisionAction.copy) + '</p><div class="dc-tool-links"><a class="dc-tool-link primary" href="' + escapeHtml(result.decisionAction.href) + '">' + escapeHtml(result.decisionAction.cta) + '</a></div></article>' +
+      '</div>' +
+      '<div class="dc-detail-grid">' +
         '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Document checklist</div><h3>Prepare the evidence now</h3></div></div><ul class="dc-bullet-list">' + renderBullets(result.checklist) + '</ul></article>' +
+        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Route context</div><h3>' + escapeHtml(CONTEXTS[selection.routeContext]) + '</h3></div></div><ul class="dc-bullet-list">' +
+          '<li>Source-country regulator signal: ' + escapeHtml(source.regulator) + '</li>' +
+          '<li>Grade context: ' + escapeHtml(classification.label) + '</li>' +
+          '<li>Framework note: ' + escapeHtml(result.equivalency.framework) + '</li>' +
+          '<li>Final authority: destination institution, employer, regulator, immigration owner, or formal evaluator</li>' +
+        '</ul></article>' +
+        '<article class="dc-card"><div class="dc-card-top"><div><div class="dc-card-kicker">Trust boundary</div><h3>Indicative, not authoritative</h3></div></div><p>This result is a planning bridge. It helps you decide whether the route looks broadly aligned, conditional, or uncertain, but it does not replace an official credential evaluation, admissions decision, or licensing outcome.</p></article>' +
       '</div>' +
       '<div class="dc-region-note">' + escapeHtml(result.regionalNote) + '</div>' +
       '<div class="dc-next-grid">' + renderToolCards(result.tools) + '</div>';
 
     elements.resultPanel.hidden = false;
-    elements.resultLead.textContent = 'Indicative outcome for ' + result.destination.name + '. Use this to plan the next gate, not to replace an official evaluation.';
+    elements.resultLead.textContent = 'Indicative outcome for ' + result.destination.name + '. Use this to choose the next gate responsibly, not to replace an official evaluation.';
     elements.resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -547,9 +1018,11 @@
   }
 
   function getMergedCountries(destinationName) {
-    var cached = window.EduProfileSync && typeof window.EduProfileSync.getCachedProfile === 'function'
-      ? window.EduProfileSync.getCachedProfile()
-      : null;
+    var cached = appState.context && appState.context.profile
+      ? appState.context.profile
+      : (window.EduProfileSync && typeof window.EduProfileSync.getCachedProfile === 'function'
+        ? window.EduProfileSync.getCachedProfile()
+        : null);
     return uniqueStrings(((cached && cached.target_countries) || []).concat([destinationName]));
   }
 
@@ -564,9 +1037,17 @@
         window.AfroEdu.saveDestination({
           id: slugify(result.destination.name + '-' + result.selection.pathwayGoal + '-' + result.selection.degreeLevel),
           name: result.destination.name,
-          reason: result.statusMeta.label + ' - ' + PATHWAYS[result.selection.pathwayGoal],
+          reason: 'Degree route: ' + result.routeReadiness.label,
           source: 'degree-checker',
-          href: '/tools/degree-checker/'
+          studyLevel: result.context && result.context.latestBudget && result.context.latestBudget.level ? result.context.latestBudget.level : '',
+          field: result.context && result.context.fieldSuggestion ? result.context.fieldSuggestion : '',
+          href: '/tools/degree-checker/',
+          readinessState: result.routeReadiness.label,
+          qualificationState: result.statusMeta.label,
+          assessmentNeed: result.assessment.label,
+          nextTool: result.decisionAction.title,
+          pathwayGoal: result.selection.pathwayGoal,
+          routeSummary: result.summary
         });
       }
 
@@ -579,12 +1060,13 @@
 
       if (window.AfroEdu && typeof window.AfroEdu.recordActivity === 'function') {
         window.AfroEdu.recordActivity('degree-checker', 'Saved degree readiness route', {
-          detail: result.destination.name + ' - ' + result.statusMeta.label
+          detail: result.destination.name + ' | ' + result.routeReadiness.label + ' | Next: ' + result.decisionAction.title
         });
       }
 
-      feedback.textContent = 'Saved to Education Hub. Your cockpit can now treat ' + result.destination.name + ' as a live destination route.';
+      feedback.textContent = 'Saved to Education Hub. The cockpit can now treat ' + result.destination.name + ' as a live degree-readiness route.';
       feedback.className = 'dc-save-feedback success';
+      syncConnectedContext({ autoApply: false });
     } catch (error) {
       feedback.textContent = 'Could not save this route just now. You can still use the result locally.';
       feedback.className = 'dc-save-feedback error';
@@ -599,7 +1081,7 @@
 
     if (window.AfroEdu && typeof window.AfroEdu.recordActivity === 'function') {
       window.AfroEdu.recordActivity('degree-checker', 'Checked degree readiness', {
-        detail: result.destination.name + ' - ' + result.statusMeta.label
+        detail: result.destination.name + ' | ' + result.routeReadiness.label
       });
     }
 
@@ -608,10 +1090,25 @@
 
   function bindEvents() {
     elements.form.addEventListener('submit', onSubmit);
+
+    if (elements.applyRouteContextBtn) {
+      elements.applyRouteContextBtn.addEventListener('click', function () {
+        applyConnectedContext({ force: true });
+      });
+    }
+
     document.addEventListener('click', function (event) {
       if (event.target && event.target.id === 'saveRouteBtn') {
         saveRoute();
       }
+    });
+
+    window.addEventListener('afroedu:profile-updated', function () {
+      syncConnectedContext({ autoApply: false });
+    });
+
+    window.addEventListener('afroedu:cockpit-updated', function () {
+      syncConnectedContext({ autoApply: false });
     });
   }
 
@@ -626,9 +1123,15 @@
       routeContext: getEl('routeContext'),
       resultPanel: getEl('resultPanel'),
       resultLead: getEl('resultLead'),
-      resultsMount: getEl('resultsMount')
+      resultsMount: getEl('resultsMount'),
+      routeContextTitle: getEl('routeContextTitle'),
+      routeContextCopy: getEl('routeContextCopy'),
+      routeContextHint: getEl('routeContextHint'),
+      routeContextFacts: getEl('routeContextFacts'),
+      applyRouteContextBtn: getEl('applyRouteContextBtn')
     };
     bindEvents();
+    syncConnectedContext({ autoApply: true });
   }
 
   document.addEventListener('DOMContentLoaded', init);

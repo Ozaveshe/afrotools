@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const {
+  ROOT,
   TOOL_DIR,
   RECIPES_DIR,
   COUNTRIES_DIR,
@@ -221,13 +222,92 @@ function renderRecipeCollectionSummaryCard(recipe) {
           </div>`;
 }
 
+function toAbsoluteSchemaUrl(value) {
+  const input = String(value || "").trim();
+  if (!input) return "";
+  if (/^https?:\/\//i.test(input)) return input;
+  if (input.startsWith("//")) return `https:${input}`;
+  if (input.startsWith("/")) return `${SITE_ORIGIN}${input}`;
+  return `${SITE_ORIGIN}/${input.replace(/^\/+/, "")}`;
+}
+
+function buildRecipeKeywords(recipe) {
+  const values = [
+    ...(Array.isArray(recipe.tags) ? recipe.tags : []),
+    ...(Array.isArray(recipe.diet_tags) ? recipe.diet_tags : []),
+    recipe.occasion,
+    recipe.name_local
+  ];
+  const keywords = Array.from(
+    new Set(
+      values
+        .map((value) => String(value || "").trim())
+        .filter(Boolean)
+        .filter((value) => value.toLowerCase() !== String(recipe.name || "").trim().toLowerCase())
+    )
+  );
+
+  return keywords.length ? keywords.join(", ") : "";
+}
+
+function canUseSchemaImage(value) {
+  const absoluteUrl = toAbsoluteSchemaUrl(value);
+  if (!absoluteUrl || absoluteUrl === TOOL_OG_IMAGE) return false;
+
+  if (absoluteUrl.startsWith(`${SITE_ORIGIN}/`)) {
+    try {
+      const pathname = new URL(absoluteUrl).pathname.replace(/^\/+/, "");
+      return fs.existsSync(path.join(ROOT, pathname));
+    } catch (error) {
+      return false;
+    }
+  }
+
+  return /^https?:\/\//i.test(absoluteUrl);
+}
+
+function buildRecipeInstructionSchemas(recipe, pageUrl, socialImage) {
+  const fallbackImage = canUseSchemaImage(socialImage)
+    ? toAbsoluteSchemaUrl(socialImage)
+    : "";
+
+  return (recipe.steps || []).map((step) => {
+    const stepSchema = {
+      "@type": "HowToStep",
+      name: step.title,
+      text: step.instruction,
+      url: `${pageUrl}#step-${step.step_number}`
+    };
+    const stepImage = canUseSchemaImage(step.image_url)
+      ? toAbsoluteSchemaUrl(step.image_url)
+      : fallbackImage;
+
+    if (stepImage) {
+      stepSchema.image = stepImage;
+    }
+
+    return stepSchema;
+  });
+}
+
 function buildRecipeSchemas(recipe, engine, socialImage) {
   const pageUrl = recipe.route_url;
   const recipeSchema = JSON.parse(
     JSON.stringify(engine.getStructuredData(recipe, recipe.default_servings || 1))
   );
-  recipeSchema.image = socialImage || TOOL_OG_IMAGE;
+  const normalizedSocialImage = toAbsoluteSchemaUrl(socialImage || TOOL_OG_IMAGE) || TOOL_OG_IMAGE;
+  const keywords = buildRecipeKeywords(recipe);
+
+  recipeSchema.image = normalizedSocialImage;
   recipeSchema.url = pageUrl;
+  recipeSchema.recipeInstructions = buildRecipeInstructionSchemas(
+    recipe,
+    pageUrl,
+    normalizedSocialImage
+  );
+  if (keywords) {
+    recipeSchema.keywords = keywords;
+  }
   recipeSchema.mainEntityOfPage = {
     "@type": "WebPage",
     "@id": pageUrl

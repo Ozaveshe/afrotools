@@ -146,8 +146,10 @@ function classifyPage(relPath) {
   const fileName = parts[parts.length - 1];
   const isWidget = relPath.startsWith('widgets/iframe/');
   const isTool = relPath.startsWith('tools/');
+  const isEmailTemplate = relPath.startsWith('supabase/email-templates/');
   const isInternal = INTERNAL_PAGES.has(relPath) || relPath.startsWith('admin/');
-  const isAppLike = isTool && parts.length > 2 && fileName !== 'index.html';
+  const isOfflineFallback = /(^|\/)offline\.html$/i.test(relPath);
+  const isAppLike = (isTool && parts.length > 2 && fileName !== 'index.html') || /(^|\/)app\.html$/i.test(relPath);
   const language = parts[0] === 'fr' ? 'fr' : parts[0] === 'sw' ? 'sw' : 'en';
   const route = toRoute(relPath);
   const family = getFamily(relPath, { isWidget, isAppLike });
@@ -161,10 +163,12 @@ function classifyPage(relPath) {
     isWidget,
     isInternal,
     isAppLike,
+    isEmailTemplate,
+    isOfflineFallback,
     family,
     familyLabel: humanizeFamily(family),
-    expectsSharedNavbar: !isWidget && !isAppLike,
-    expectsSharedFoundationCss: !isWidget,
+    expectsSharedNavbar: !isWidget && !isAppLike && !isEmailTemplate && !isOfflineFallback,
+    expectsSharedFoundationCss: !isWidget && !isAppLike && !isEmailTemplate,
   };
 }
 
@@ -223,6 +227,7 @@ function toRoute(relPath) {
 
 function analyzePage(page) {
   const html = readText(page.absPath);
+  const isRedirectStub = detectRedirectStub(html);
   const title = getTitle(html);
   const linkedAssets = extractLinkedAssets(html, page.absPath);
   const inlineStyleEntries = extractInlineStyles(html, page.relPath);
@@ -249,8 +254,8 @@ function analyzePage(page) {
   const issues = [];
 
   addIssueIfNeeded(issues, detectMissingViewport(page, html));
-  addIssueIfNeeded(issues, detectFoundationCssIssue(page, usesSharedFoundationCss));
-  addIssueIfNeeded(issues, detectSharedNavbarIssue(page, usesSharedNavbar));
+  addIssueIfNeeded(issues, detectFoundationCssIssue(page, usesSharedFoundationCss, isRedirectStub));
+  addIssueIfNeeded(issues, detectSharedNavbarIssue(page, usesSharedNavbar, isRedirectStub));
   addIssueIfNeeded(issues, detectSub16Controls(page, relevantCssRules));
   addIssueIfNeeded(issues, detectTapTargets(page, relevantCssRules));
   addIssueIfNeeded(issues, detectLateMulticolumn(page, relevantCssRules));
@@ -286,6 +291,13 @@ function readText(absPath) {
 function getTitle(html) {
   const match = html.match(/<title>([\s\S]*?)<\/title>/i);
   return match ? decodeHtml(match[1].trim()) : '';
+}
+
+function detectRedirectStub(html) {
+  return /<meta\b[^>]*http-equiv=["']refresh["']/i.test(html)
+    || /window\.location(?:\.replace|\.href)\s*\(/i.test(html)
+    || /window\.location\s*=\s*["']/i.test(html)
+    || /redirecting to/i.test(html);
 }
 
 function extractLinkedAssets(html, pageAbsPath) {
@@ -489,16 +501,16 @@ function detectMissingViewport(page, html) {
   });
 }
 
-function detectFoundationCssIssue(page, usesSharedFoundationCss) {
-  if (!page.expectsSharedFoundationCss || usesSharedFoundationCss) return null;
+function detectFoundationCssIssue(page, usesSharedFoundationCss, isRedirectStub) {
+  if (!page.expectsSharedFoundationCss || usesSharedFoundationCss || isRedirectStub) return null;
   return makeIssue(page, 'missing_shared_foundation_css', {
     evidence: [{ source: page.relPath, detail: 'Page does not link the shared CSS foundation or an equivalent bundled foundation.' }],
     fixCandidates: ['assets/css/design-system.css adoption', page.family],
   });
 }
 
-function detectSharedNavbarIssue(page, usesSharedNavbar) {
-  if (!page.expectsSharedNavbar || usesSharedNavbar) return null;
+function detectSharedNavbarIssue(page, usesSharedNavbar, isRedirectStub) {
+  if (!page.expectsSharedNavbar || usesSharedNavbar || isRedirectStub) return null;
   return makeIssue(page, 'missing_shared_navbar', {
     evidence: [{ source: page.relPath, detail: 'Full page does not use <afro-navbar> or the shared navbar component script.' }],
     fixCandidates: ['assets/js/components/navbar.js adoption', page.family],
@@ -823,7 +835,6 @@ function splitTopLevel(text, delimiter) {
 
 function findCollapseBreakpoint(rules, sourceRule) {
   const matchingRules = rules.filter((candidate) => {
-    if (candidate.sourcePath !== sourceRule.sourcePath) return false;
     if (!candidate.tokens.length || !sourceRule.tokens.length) return candidate.selectorsLower === sourceRule.selectorsLower;
     return candidate.tokens.some((token) => sourceRule.tokens.includes(token));
   });
@@ -837,9 +848,9 @@ function findCollapseBreakpoint(rules, sourceRule) {
 }
 
 function isSingleColumnRule(rule) {
-  const columns = (rule.declarations['grid-template-columns'] || '').toLowerCase();
-  const flexDirection = (rule.declarations['flex-direction'] || '').toLowerCase();
-  const display = (rule.declarations.display || '').toLowerCase();
+  const columns = (rule.declarations['grid-template-columns'] || '').toLowerCase().replace(/\s*!important\b/g, '').trim();
+  const flexDirection = (rule.declarations['flex-direction'] || '').toLowerCase().replace(/\s*!important\b/g, '').trim();
+  const display = (rule.declarations.display || '').toLowerCase().replace(/\s*!important\b/g, '').trim();
   if (columns) return columns === '1fr' || /^repeat\(\s*1\b/i.test(columns) || /^minmax\(/i.test(columns);
   if (flexDirection === 'column') return true;
   if (display === 'block') return true;

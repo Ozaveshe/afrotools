@@ -1,19 +1,26 @@
 (function (window, document) {
   'use strict';
 
-  var STORAGE_SLUG = 'ng-salary-tax';
+  var CONFIG = window.PAYE_CALC_SYNC_CONFIG || {};
+  var STORAGE_SLUG = CONFIG.storageSlug || 'ng-salary-tax';
   var STORAGE_KEY = 'afrotools-saved-' + STORAGE_SLUG;
-  var TOOL_SLUG = 'ng-paye';
-  var TOOL_NAME = 'Nigeria PAYE Calculator';
-  var TOOL_HREF = '/nigeria/ng-salary-tax/';
-  var WORKSPACE_ITEM_TYPE = 'saved-calculation';
-  var CURRENCY = 'NGN';
-  var COUNTRY_CODE = 'NG';
+  var TOOL_SLUG = CONFIG.toolSlug || 'ng-paye';
+  var TOOL_NAME = CONFIG.toolName || 'Nigeria PAYE Calculator';
+  var TOOL_HREF = CONFIG.toolHref || '/nigeria/ng-salary-tax/';
+  var WORKSPACE_ITEM_TYPE = CONFIG.workspaceItemType || 'saved-calculation';
+  var CURRENCY = CONFIG.currency || 'NGN';
+  var COUNTRY_CODE = CONFIG.countryCode || 'NG';
+  var LOCALE = CONFIG.locale || 'en-US';
+  var SAVED_CALCULATIONS_EVENT = 'afro-saved-calculations-change';
 
   var saveStateInstance = null;
   var remoteItemsById = Object.create(null);
   var lastHistoryFingerprint = '';
   var lastHistorySavedAt = 0;
+  var syncLifecyclePromise = null;
+  var lifecycleRefreshTimer = null;
+  var pendingRestoreId = '';
+  var pendingHistoryPayload = null;
 
   function escapeHtml(value) {
     var node = document.createElement('div');
@@ -30,6 +37,119 @@
     if (typeof value === 'number' && Number.isFinite(value)) return value;
     var parsed = new Date(value).getTime();
     return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function getAdapter() {
+    return window.PAYE_CALC_SYNC_ADAPTER || {};
+  }
+
+  function normalizeRateValue(value) {
+    var numeric = Number(value);
+    if (!Number.isFinite(numeric)) return null;
+    if (numeric > 0 && numeric <= 1) {
+      return numeric * 100;
+    }
+    return numeric;
+  }
+
+  function normalizeSnapshot(snapshot) {
+    if (!snapshot || typeof snapshot !== 'object') return null;
+
+    var normalized = Object.assign({}, snapshot);
+    var effectiveRate = normalizeRateValue(normalized.effectiveRate);
+    var marginalRate = normalizeRateValue(normalized.marginalRate);
+
+    if (effectiveRate !== null) {
+      normalized.effectiveRate = effectiveRate;
+    }
+
+    if (marginalRate !== null) {
+      normalized.marginalRate = marginalRate;
+    }
+
+    if (normalized.grossAnnual === undefined || normalized.grossAnnual === null) {
+      if (typeof normalized.gross === 'number' && Number.isFinite(normalized.gross)) {
+        normalized.grossAnnual = normalized.gross;
+      } else if (typeof normalized.grossMonthly === 'number' && Number.isFinite(normalized.grossMonthly)) {
+        normalized.grossAnnual = normalized.grossMonthly * 12;
+      }
+    }
+
+    if (normalized.gross === undefined || normalized.gross === null) {
+      if (typeof normalized.grossAnnual === 'number' && Number.isFinite(normalized.grossAnnual)) {
+        normalized.gross = normalized.grossAnnual;
+      }
+    }
+
+    if (normalized.grossMonthly === undefined || normalized.grossMonthly === null) {
+      if (typeof normalized.grossAnnual === 'number' && Number.isFinite(normalized.grossAnnual)) {
+        normalized.grossMonthly = normalized.grossAnnual / 12;
+      }
+    }
+
+    if (normalized.netAnnual === undefined || normalized.netAnnual === null) {
+      if (typeof normalized.netMonthly === 'number' && Number.isFinite(normalized.netMonthly)) {
+        normalized.netAnnual = normalized.netMonthly * 12;
+      }
+    }
+
+    if (normalized.netMonthly === undefined || normalized.netMonthly === null) {
+      if (typeof normalized.netAnnual === 'number' && Number.isFinite(normalized.netAnnual)) {
+        normalized.netMonthly = normalized.netAnnual / 12;
+      }
+    }
+
+    if (normalized.taxAnnual === undefined || normalized.taxAnnual === null) {
+      if (typeof normalized.tax === 'number' && Number.isFinite(normalized.tax)) {
+        normalized.taxAnnual = normalized.tax;
+      } else if (typeof normalized.taxMonthly === 'number' && Number.isFinite(normalized.taxMonthly)) {
+        normalized.taxAnnual = normalized.taxMonthly * 12;
+      }
+    }
+
+    if (normalized.tax === undefined || normalized.tax === null) {
+      if (typeof normalized.taxAnnual === 'number' && Number.isFinite(normalized.taxAnnual)) {
+        normalized.tax = normalized.taxAnnual;
+      }
+    }
+
+    if (normalized.taxMonthly === undefined || normalized.taxMonthly === null) {
+      if (typeof normalized.taxAnnual === 'number' && Number.isFinite(normalized.taxAnnual)) {
+        normalized.taxMonthly = normalized.taxAnnual / 12;
+      }
+    }
+
+    return normalized;
+  }
+
+  function normalizePayload(payload) {
+    if (!payload || typeof payload !== 'object') return null;
+
+    var normalized = Object.assign({}, payload);
+    normalized.version = normalized.version || 2;
+    normalized.toolSlug = normalized.toolSlug || TOOL_SLUG;
+    normalized.toolName = normalized.toolName || TOOL_NAME;
+    normalized.countryCode = normalized.countryCode || COUNTRY_CODE;
+    normalized.currency = normalized.currency || CURRENCY;
+
+    if (normalized.snapshot) {
+      normalized.snapshot = normalizeSnapshot(normalized.snapshot);
+    }
+
+    return normalized;
+  }
+
+  function hasCalculationResult() {
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.hasResult === 'function') {
+      try {
+        return !!adapter.hasResult();
+      } catch (error) {
+        console.warn('[PayeCalculationSync] hasResult adapter failed:', error);
+      }
+    }
+
+    return !!window.RESULT;
   }
 
   function formatRelativeTime(value) {
@@ -55,19 +175,21 @@
     if (value === null || value === undefined || value === '') return '--';
 
     try {
-      return new Intl.NumberFormat('en-NG', {
+      return new Intl.NumberFormat(LOCALE, {
         style: 'currency',
         currency: CURRENCY,
         maximumFractionDigits: 0
       }).format(Number(value) || 0);
     } catch (error) {
-      return '\u20A6' + Math.round(Number(value) || 0).toLocaleString('en-NG');
+      return (CURRENCY || 'USD') + ' ' + Math.round(Number(value) || 0).toLocaleString(LOCALE);
     }
   }
 
   function formatPercent(value) {
     if (value === null || value === undefined || value === '') return '--';
-    return Number(value).toFixed(1) + '%';
+    var numeric = normalizeRateValue(value);
+    if (numeric === null) return '--';
+    return numeric.toFixed(1) + '%';
   }
 
   function getSaveState() {
@@ -81,17 +203,86 @@
   }
 
   function isSignedIn() {
-    return !!(window.AfroAuth && typeof window.AfroAuth.isLoggedIn === 'function' && window.AfroAuth.isLoggedIn());
-  }
+    if (window.AfroAuth) {
+      try {
+        if (typeof window.AfroAuth.isLoggedIn === 'function' && window.AfroAuth.isLoggedIn()) {
+          return true;
+        }
+      } catch (error) {
+        console.warn('[PayeCalculationSync] isLoggedIn check failed:', error);
+      }
 
-  function isWorkspaceReady() {
+      try {
+        if (typeof window.AfroAuth.getUser === 'function') {
+          var user = window.AfroAuth.getUser();
+          if (user && user.id) return true;
+        }
+      } catch (error) {
+        console.warn('[PayeCalculationSync] getUser fallback failed:', error);
+      }
+
+      try {
+        if (typeof window.AfroAuth.getCachedProfile === 'function') {
+          var cachedProfile = window.AfroAuth.getCachedProfile();
+          if (cachedProfile && cachedProfile.id) return true;
+        }
+      } catch (error) {
+        console.warn('[PayeCalculationSync] getCachedProfile fallback failed:', error);
+      }
+    }
+
     return !!(window.AfroWorkspace && typeof window.AfroWorkspace.isSignedIn === 'function' && window.AfroWorkspace.isSignedIn());
   }
 
+  function canUseWorkspace() {
+    return !!(
+      window.AfroWorkspace &&
+      typeof window.AfroWorkspace.list === 'function' &&
+      typeof window.AfroWorkspace.upsert === 'function' &&
+      typeof window.AfroWorkspace.remove === 'function'
+    );
+  }
+
+  function whenAuthReady(callback) {
+    if (!window.AfroAuth || typeof window.AfroAuth.onReady !== 'function') {
+      return false;
+    }
+
+    window.AfroAuth.onReady(function () {
+      callback();
+    });
+
+    return true;
+  }
+
+  function dispatchSavedCalculationsChange(action, itemId) {
+    try {
+      window.dispatchEvent(new CustomEvent(SAVED_CALCULATIONS_EVENT, {
+        detail: {
+          action: action || 'refresh',
+          toolSlug: TOOL_SLUG,
+          itemId: itemId || '',
+          count: getMergedSavedItems().length
+        }
+      }));
+    } catch (error) {
+      // Ignore custom event failures.
+    }
+  }
+
   function getResultSnapshot() {
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.getResultSnapshot === 'function') {
+      try {
+        return normalizeSnapshot(adapter.getResultSnapshot());
+      } catch (error) {
+        console.warn('[PayeCalculationSync] getResultSnapshot adapter failed:', error);
+      }
+    }
+
     if (!window.RESULT) return null;
 
-    return {
+    return normalizeSnapshot({
       gross: window.RESULT.gross || 0,
       tax: window.RESULT.tax || 0,
       netAnnual: window.RESULT.netAnnual || 0,
@@ -110,7 +301,7 @@
       regime: window.RESULT.regime || window.REGIME || 'pita',
       isExempt: !!window.RESULT.isExempt,
       minTaxApplied: !!window.RESULT.minTaxApplied
-    };
+    });
   }
 
   function isToggleOn(toggleName) {
@@ -119,6 +310,15 @@
   }
 
   function getCurrentInputs() {
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.getCurrentInputs === 'function') {
+      try {
+        return adapter.getCurrentInputs();
+      } catch (error) {
+        console.warn('[PayeCalculationSync] getCurrentInputs adapter failed:', error);
+      }
+    }
+
     var rawSalary = parseNumber(document.getElementById('grossSalary').value);
 
     return {
@@ -145,7 +345,16 @@
   }
 
   function buildCurrentPayload() {
-    return {
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.buildPayload === 'function') {
+      try {
+        return normalizePayload(adapter.buildPayload());
+      } catch (error) {
+        console.warn('[PayeCalculationSync] buildPayload adapter failed:', error);
+      }
+    }
+
+    return normalizePayload({
       version: 2,
       toolSlug: TOOL_SLUG,
       toolName: TOOL_NAME,
@@ -153,31 +362,92 @@
       currency: CURRENCY,
       inputs: getCurrentInputs(),
       snapshot: getResultSnapshot()
-    };
+    });
   }
 
   function getDefaultTitle(payload) {
-    var snapshot = payload && payload.snapshot ? payload.snapshot : null;
-    var inputs = payload && payload.inputs ? payload.inputs : {};
-    var regime = inputs.regime === 'nta' ? 'NTA 2026' : 'PITA 2025';
-
-    if (!snapshot) {
-      return regime + ' Scenario';
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.getDefaultTitle === 'function') {
+      try {
+        var adapterTitle = adapter.getDefaultTitle(payload);
+        if (adapterTitle) return String(adapterTitle);
+      } catch (error) {
+        console.warn('[PayeCalculationSync] getDefaultTitle adapter failed:', error);
+      }
     }
 
-    return regime + ' - ' + formatCurrency(snapshot.netMonthly) + '/mo';
+    var normalized = normalizePayload(payload) || {};
+    var snapshot = normalized.snapshot || null;
+
+    if (!snapshot) {
+      return TOOL_NAME + ' scenario';
+    }
+
+    var prefix = snapshot.regime === 'nta'
+      ? 'NTA 2026'
+      : snapshot.regime === 'pita'
+        ? 'PITA 2025'
+        : 'Take-home';
+
+    if (typeof snapshot.netMonthly === 'number' && Number.isFinite(snapshot.netMonthly)) {
+      return prefix + ' - ' + formatCurrency(snapshot.netMonthly) + '/mo';
+    }
+
+    if (typeof snapshot.netAnnual === 'number' && Number.isFinite(snapshot.netAnnual)) {
+      return prefix + ' - ' + formatCurrency(snapshot.netAnnual) + '/yr';
+    }
+
+    return TOOL_NAME + ' scenario';
   }
 
   function getPayloadSummary(payload) {
-    if (!payload || typeof payload !== 'object') return 'Saved calculation';
-
-    if (payload.version === 2 && payload.snapshot) {
-      var regime = payload.snapshot.regime === 'nta' ? 'NTA 2026' : 'PITA 2025';
-      return regime + ' | ' + formatCurrency(payload.snapshot.netMonthly) + '/mo | Tax ' + formatPercent(payload.snapshot.effectiveRate);
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.getPayloadSummary === 'function') {
+      try {
+        var adapterSummary = adapter.getPayloadSummary(payload);
+        if (adapterSummary) return String(adapterSummary);
+      } catch (error) {
+        console.warn('[PayeCalculationSync] getPayloadSummary adapter failed:', error);
+      }
     }
 
-    if (payload.summary) return String(payload.summary);
-    if (payload.fields && payload.fields.summary) return String(payload.fields.summary);
+    if (!payload || typeof payload !== 'object') return 'Saved calculation';
+
+    if (typeof payload.summary === 'string' && payload.summary.trim()) {
+      return payload.summary.trim();
+    }
+
+    if (payload.fields && payload.fields.summary) {
+      return String(payload.fields.summary);
+    }
+
+    var normalized = normalizePayload(payload);
+    if (normalized && normalized.snapshot) {
+      var snapshot = normalized.snapshot;
+      var pieces = [];
+
+      if (snapshot.regime === 'nta') {
+        pieces.push('NTA 2026');
+      } else if (snapshot.regime === 'pita') {
+        pieces.push('PITA 2025');
+      }
+
+      if (typeof snapshot.netMonthly === 'number' && Number.isFinite(snapshot.netMonthly)) {
+        pieces.push('Take-home ' + formatCurrency(snapshot.netMonthly) + '/mo');
+      } else if (typeof snapshot.netAnnual === 'number' && Number.isFinite(snapshot.netAnnual)) {
+        pieces.push('Net ' + formatCurrency(snapshot.netAnnual) + '/yr');
+      } else if (typeof snapshot.tax === 'number' && Number.isFinite(snapshot.tax)) {
+        pieces.push('Tax ' + formatCurrency(snapshot.tax));
+      }
+
+      if (snapshot.effectiveRate !== undefined && snapshot.effectiveRate !== null) {
+        pieces.push('Rate ' + formatPercent(snapshot.effectiveRate));
+      }
+
+      if (pieces.length) {
+        return pieces.join(' | ');
+      }
+    }
 
     return 'Saved calculation';
   }
@@ -194,7 +464,7 @@
       };
     }
 
-    return payload;
+    return payload.version === 2 ? normalizePayload(payload) : payload;
   }
 
   function normalizeLocalItem(item) {
@@ -268,8 +538,8 @@
     var button = document.getElementById('calcSaveBtn');
     if (!button) return;
 
-    button.disabled = !window.RESULT;
-    button.textContent = window.RESULT ? 'Save to Dashboard' : 'Run a Calculation First';
+    button.disabled = !hasCalculationResult();
+    button.textContent = hasCalculationResult() ? 'Save to Dashboard' : 'Run a Calculation First';
   }
 
   function renderSavedCalculations() {
@@ -418,6 +688,21 @@
     return true;
   }
 
+  function restorePayloadWithAdapter(payload, title) {
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.restorePayload === 'function') {
+      try {
+        return adapter.restorePayload(payload, title) === true;
+      } catch (error) {
+        console.warn('[PayeCalculationSync] restorePayload adapter failed:', error);
+      }
+    }
+
+    return payload && payload.version === 2
+      ? restoreModernPayload(payload, title)
+      : restoreLegacyPayload(payload, title);
+  }
+
   function restoreLegacyPayload(payload, title) {
     var legacy = payload && payload.fields ? payload.fields : payload;
     if (!legacy || typeof legacy !== 'object') return false;
@@ -460,38 +745,158 @@
     return saveState ? saveState.load(itemId) : null;
   }
 
-  function restoreSavedCalculation(itemId) {
+  function restoreSavedCalculation(itemId, options) {
+    var settings = options || {};
     var localItem = loadLocalItem(itemId);
     var restored = false;
 
     if (localItem) {
       var payload = normalizeForWorkspace(localItem);
-      restored = payload.version === 2
-        ? restoreModernPayload(payload, localItem.title)
-        : restoreLegacyPayload(payload, localItem.title);
+      restored = restorePayloadWithAdapter(payload, localItem.title);
     } else if (remoteItemsById[itemId]) {
       var remoteItem = remoteItemsById[itemId];
-      restored = remoteItem.payload && remoteItem.payload.version === 2
-        ? restoreModernPayload(remoteItem.payload, remoteItem.title)
-        : restoreLegacyPayload(remoteItem.payload || {}, remoteItem.title);
+      restored = restorePayloadWithAdapter(remoteItem.payload || {}, remoteItem.title);
     }
 
     if (!restored) {
-      setStatus('That saved scenario could not be restored on this device.', 'warning');
-      return;
+      if (settings.deferIfMissing) {
+        pendingRestoreId = itemId;
+        return false;
+      }
+
+      if (!settings.suppressMissingWarning) {
+        setStatus('That saved scenario could not be restored on this device.', 'warning');
+      }
+      return false;
     }
 
-    setStatus('Loaded saved scenario.', 'info');
+    pendingRestoreId = '';
 
-    var resultsCard = document.getElementById('resultsCard');
-    if (resultsCard) {
-      resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!settings.suppressSuccessStatus) {
+      setStatus('Loaded saved scenario.', 'info');
+    }
+
+    if (!settings.suppressScroll) {
+      var resultsCard = document.getElementById('resultsCard');
+      if (resultsCard) {
+        resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    return true;
+  }
+
+  function tryRestorePendingSavedCalculation() {
+    if (!pendingRestoreId) return false;
+
+    var restored = restoreSavedCalculation(pendingRestoreId, {
+      suppressMissingWarning: !isSignedIn()
+    });
+
+    if (!restored && !isSignedIn()) {
+      setStatus('Sign in to reopen this saved scenario on this device.', 'info');
+    }
+
+    return restored;
+  }
+
+  function scheduleSavedCalculationRefresh(reason, delayMs) {
+    if (lifecycleRefreshTimer) {
+      clearTimeout(lifecycleRefreshTimer);
+    }
+
+    lifecycleRefreshTimer = window.setTimeout(function () {
+      refreshSavedCalculationLifecycle(reason);
+    }, typeof delayMs === 'number' ? delayMs : 120);
+  }
+
+  function attachLifecycleListeners() {
+    window.__payeSavedCalculationLifecycleAttached = window.__payeSavedCalculationLifecycleAttached || {};
+    if (window.__payeSavedCalculationLifecycleAttached[STORAGE_KEY]) return;
+    window.__payeSavedCalculationLifecycleAttached[STORAGE_KEY] = true;
+
+    window.addEventListener('afro-auth-change', function () {
+      scheduleSavedCalculationRefresh('auth-change', 150);
+    });
+
+    window.addEventListener('afro-workspace-change', function (event) {
+      var detail = event && event.detail ? event.detail : {};
+      if (!detail.itemType || detail.itemType === WORKSPACE_ITEM_TYPE) {
+        scheduleSavedCalculationRefresh('workspace-change', 120);
+      }
+    });
+
+    window.addEventListener('storage', function (event) {
+      if (event.key === STORAGE_KEY) {
+        scheduleSavedCalculationRefresh('storage', 0);
+      }
+    });
+
+    window.addEventListener('focus', function () {
+      scheduleSavedCalculationRefresh('focus', 0);
+    });
+
+    if (!whenAuthReady(function () {
+      scheduleSavedCalculationRefresh('auth-ready', 0);
+    })) {
+      setTimeout(function () {
+        scheduleSavedCalculationRefresh('auth-delay-400', 0);
+      }, 400);
+      setTimeout(function () {
+        scheduleSavedCalculationRefresh('auth-delay-1200', 0);
+      }, 1200);
+    }
+  }
+
+  async function refreshSavedCalculationLifecycle(reason) {
+    if (syncLifecyclePromise) {
+      return syncLifecyclePromise;
+    }
+
+    syncLifecyclePromise = (async function () {
+      var remoteItems = await refreshRemoteSavedItems();
+      mergeRemoteItemsIntoLocal(remoteItems);
+      await syncAllLocalItemsToWorkspace();
+      await refreshRemoteSavedItems();
+      await retryPendingHistorySync();
+      renderSavedCalculations();
+      tryRestorePendingSavedCalculation();
+      dispatchSavedCalculationsChange(reason || 'refresh');
+    })();
+
+    try {
+      return await syncLifecyclePromise;
+    } finally {
+      syncLifecyclePromise = null;
     }
   }
 
   function buildWorkspaceRecord(item) {
     var payload = normalizeForWorkspace(item);
     var summary = getPayloadSummary(payload);
+    var snapshot = payload && payload.snapshot ? normalizeSnapshot(payload.snapshot) : null;
+    var baseMeta = {
+      country: COUNTRY_CODE,
+      currency: CURRENCY,
+      summary: summary,
+      netMonthly: snapshot && typeof snapshot.netMonthly === 'number' ? snapshot.netMonthly : null,
+      effectiveRate: snapshot && snapshot.effectiveRate !== undefined && snapshot.effectiveRate !== null
+        ? normalizeRateValue(snapshot.effectiveRate)
+        : null
+    };
+
+    if (snapshot && snapshot.regime) {
+      baseMeta.regime = snapshot.regime;
+    }
+
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.buildWorkspaceMeta === 'function') {
+      try {
+        baseMeta = Object.assign(baseMeta, adapter.buildWorkspaceMeta(payload, summary, baseMeta) || {});
+      } catch (error) {
+        console.warn('[PayeCalculationSync] buildWorkspaceMeta adapter failed:', error);
+      }
+    }
 
     return {
       itemType: WORKSPACE_ITEM_TYPE,
@@ -501,21 +906,14 @@
       summary: summary,
       href: TOOL_HREF + '?saved_calc=' + encodeURIComponent(item.id),
       payload: payload,
-      meta: {
-        country: COUNTRY_CODE,
-        currency: CURRENCY,
-        summary: summary,
-        netMonthly: payload.snapshot ? payload.snapshot.netMonthly || 0 : null,
-        effectiveRate: payload.snapshot ? payload.snapshot.effectiveRate || 0 : null,
-        regime: payload.snapshot ? payload.snapshot.regime || 'pita' : (payload.inputs ? payload.inputs.regime || 'pita' : 'pita')
-      }
+      meta: baseMeta
     };
   }
 
   async function refreshRemoteSavedItems() {
     remoteItemsById = Object.create(null);
 
-    if (!isWorkspaceReady()) return [];
+    if (!canUseWorkspace()) return [];
 
     try {
       var items = await window.AfroWorkspace.list({
@@ -562,7 +960,7 @@
   }
 
   async function syncLocalItemToWorkspace(item) {
-    if (!isWorkspaceReady()) return false;
+    if (!canUseWorkspace()) return false;
 
     try {
       var saved = await window.AfroWorkspace.upsert(buildWorkspaceRecord(item));
@@ -578,7 +976,7 @@
 
   async function syncAllLocalItemsToWorkspace() {
     var saveState = getSaveState();
-    if (!saveState || !isWorkspaceReady()) return;
+    if (!saveState || !canUseWorkspace()) return;
 
     var items = saveState.getAll();
 
@@ -597,7 +995,7 @@
   }
 
   async function saveCurrentCalculation() {
-    if (!window.RESULT) {
+    if (!hasCalculationResult()) {
       setStatus('Run a calculation before saving it.', 'warning');
       return;
     }
@@ -609,6 +1007,11 @@
     }
 
     var payload = buildCurrentPayload();
+    if (!payload || !payload.snapshot) {
+      setStatus('We could not read this calculation state yet. Please run it again.', 'warning');
+      return;
+    }
+
     var titleInput = document.getElementById('calcSaveName');
     var title = titleInput && titleInput.value.trim()
       ? titleInput.value.trim()
@@ -632,9 +1035,12 @@
       setStatus('Saved to your dashboard and this device.', 'success');
     } else if (isSignedIn()) {
       setStatus('Saved on this device. We could not sync it just now.', 'warning');
+      scheduleSavedCalculationRefresh('save-retry', 800);
     } else {
       setStatus('Saved on this device. Sign in to sync it to your dashboard.', 'info');
     }
+
+    dispatchSavedCalculationsChange('save', savedItem.id);
   }
 
   async function removeSavedCalculation(itemId) {
@@ -647,65 +1053,119 @@
       saveState.delete(itemId);
     }
 
-    if (remoteItemsById[itemId] && isWorkspaceReady()) {
+    var remoteDeleteFailed = false;
+
+    if (remoteItemsById[itemId] && canUseWorkspace()) {
       try {
         await window.AfroWorkspace.remove({
           itemType: WORKSPACE_ITEM_TYPE,
           itemKey: itemId
         });
       } catch (error) {
+        remoteDeleteFailed = true;
         console.warn('[PayeCalculationSync] Workspace delete failed:', error.message || error);
       }
+    }
+
+    if (remoteDeleteFailed) {
+      renderSavedCalculations();
+      setStatus('Removed on this device. We could not delete the dashboard copy just now.', 'warning');
+      scheduleSavedCalculationRefresh('delete-retry', 800);
+      dispatchSavedCalculationsChange('delete-pending', itemId);
+      return;
     }
 
     delete remoteItemsById[itemId];
     renderSavedCalculations();
     setStatus('Saved calculation deleted.', 'info');
+    dispatchSavedCalculationsChange('delete', itemId);
   }
 
-  function buildHistoryFingerprint(inputs, snapshot) {
+  function buildHistoryFingerprint(payload) {
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.buildHistoryFingerprint === 'function') {
+      try {
+        var adapterFingerprint = adapter.buildHistoryFingerprint(payload);
+        if (adapterFingerprint) return String(adapterFingerprint);
+      } catch (error) {
+        console.warn('[PayeCalculationSync] buildHistoryFingerprint adapter failed:', error);
+      }
+    }
+
+    var normalized = normalizePayload(payload) || {};
+    var inputs = normalized.inputs || {};
+    var snapshot = normalized.snapshot || {};
+
     return JSON.stringify({
-      salaryValue: inputs.salaryValue,
-      salaryPeriod: inputs.salaryPeriod,
-      calcMode: inputs.calcMode,
-      regime: inputs.regime,
-      toggles: inputs.toggles,
-      nhisRate: inputs.nhisRate,
-      lifeAmt: inputs.lifeAmt,
-      homeloanAmt: inputs.homeloanAmt,
-      pensionableAmt: inputs.pensionableAmt,
-      annualRent: inputs.annualRent,
-      gross: snapshot.gross,
-      tax: snapshot.tax,
-      netMonthly: snapshot.netMonthly
+      inputs: inputs,
+      snapshot: {
+        grossAnnual: snapshot.grossAnnual || snapshot.gross || null,
+        netAnnual: snapshot.netAnnual || null,
+        netMonthly: snapshot.netMonthly || null,
+        taxAnnual: snapshot.taxAnnual || snapshot.tax || null,
+        effectiveRate: snapshot.effectiveRate || null,
+        regime: snapshot.regime || null
+      }
     });
   }
 
   async function syncRecentHistory(payload) {
     if (!isSignedIn() || !window.AfroHistory || typeof window.AfroHistory.save !== 'function') return;
 
-    var fingerprint = buildHistoryFingerprint(payload.inputs, payload.snapshot);
+    var normalizedPayload = normalizePayload(payload);
+    if (!normalizedPayload || !normalizedPayload.snapshot) return;
+
+    var fingerprint = buildHistoryFingerprint(normalizedPayload);
     var now = Date.now();
 
     if (fingerprint === lastHistoryFingerprint && now - lastHistorySavedAt < 30000) {
       return;
     }
 
-    lastHistoryFingerprint = fingerprint;
-    lastHistorySavedAt = now;
-
     try {
-      await window.AfroHistory.save({
+      var adapter = getAdapter();
+      var historyOutputs = normalizedPayload.snapshot;
+
+      if (adapter && typeof adapter.getHistoryOutputs === 'function') {
+        try {
+          historyOutputs = adapter.getHistoryOutputs(normalizedPayload) || normalizedPayload.snapshot;
+        } catch (error) {
+          console.warn('[PayeCalculationSync] getHistoryOutputs adapter failed:', error);
+        }
+      }
+
+      if (historyOutputs && typeof historyOutputs === 'object') {
+        historyOutputs = normalizeSnapshot(historyOutputs) || historyOutputs;
+      }
+
+      var result = await window.AfroHistory.save({
         toolSlug: TOOL_SLUG,
         toolName: TOOL_NAME,
         countryCode: COUNTRY_CODE,
         currency: CURRENCY,
-        inputs: payload.inputs,
-        outputs: payload.snapshot
+        inputs: normalizedPayload.inputs,
+        outputs: historyOutputs
       });
+
+      if (result && result.saved) {
+        lastHistoryFingerprint = fingerprint;
+        lastHistorySavedAt = now;
+        pendingHistoryPayload = null;
+        return;
+      }
+
+      if (isSignedIn()) {
+        pendingHistoryPayload = payload;
+      }
     } catch (error) {
+      pendingHistoryPayload = payload;
       console.warn('[PayeCalculationSync] History save failed:', error.message || error);
     }
+  }
+
+  async function retryPendingHistorySync() {
+    if (!pendingHistoryPayload || !isSignedIn()) return;
+    await syncRecentHistory(pendingHistoryPayload);
   }
 
   function saveDeviceHistory(payload) {
@@ -715,31 +1175,50 @@
       window.AfroData.logToolUse(TOOL_SLUG, TOOL_NAME);
     }
 
-    if (typeof window.AfroData.save === 'function' && payload.snapshot) {
+    var adapter = getAdapter();
+    if (adapter && typeof adapter.saveDeviceHistory === 'function') {
+      try {
+        adapter.saveDeviceHistory(payload, window.AfroData);
+        return;
+      } catch (error) {
+        console.warn('[PayeCalculationSync] saveDeviceHistory adapter failed:', error);
+      }
+    }
+
+    var normalized = normalizePayload(payload);
+    var snapshot = normalized && normalized.snapshot ? normalized.snapshot : null;
+
+    if (typeof window.AfroData.save === 'function' && snapshot) {
       window.AfroData.save(STORAGE_SLUG, {
-        gross: payload.snapshot.gross,
-        grossAnnual: payload.snapshot.gross,
-        netAnnual: payload.snapshot.netAnnual,
-        netMonthly: payload.snapshot.netMonthly,
-        tax: payload.snapshot.tax,
-        effectiveRate: payload.snapshot.effectiveRate,
-        regime: payload.snapshot.regime
+        gross: snapshot.grossAnnual || snapshot.gross || null,
+        grossAnnual: snapshot.grossAnnual || snapshot.gross || null,
+        grossMonthly: snapshot.grossMonthly || null,
+        netAnnual: snapshot.netAnnual || null,
+        netMonthly: snapshot.netMonthly || null,
+        tax: snapshot.taxAnnual || snapshot.tax || null,
+        taxAnnual: snapshot.taxAnnual || snapshot.tax || null,
+        taxMonthly: snapshot.taxMonthly || null,
+        effectiveRate: snapshot.effectiveRate,
+        regime: snapshot.regime || null,
+        summary: getPayloadSummary(normalized)
       });
     }
   }
 
   async function handleCalculationComplete() {
-    if (!window.RESULT) return;
+    if (!hasCalculationResult()) return;
 
     updateSaveButtonState();
 
     var payload = buildCurrentPayload();
+    if (!payload || !payload.snapshot) return;
     saveDeviceHistory(payload);
     await syncRecentHistory(payload);
   }
 
   function attachCalculationHook() {
-    if (window._ngPayeCalculationHookAttached || typeof window.calculate !== 'function') return;
+    window.__payeCalculationHookAttached = window.__payeCalculationHookAttached || {};
+    if (window.__payeCalculationHookAttached[STORAGE_KEY] || typeof window.calculate !== 'function') return;
 
     var originalCalculate = window.calculate;
     window.calculate = function () {
@@ -748,7 +1227,7 @@
       return result;
     };
 
-    window._ngPayeCalculationHookAttached = true;
+    window.__payeCalculationHookAttached[STORAGE_KEY] = true;
   }
 
   function bindUi() {
@@ -778,22 +1257,19 @@
     var savedId = params.get('saved_calc');
     if (!savedId) return;
 
-    restoreSavedCalculation(savedId);
+    pendingRestoreId = savedId;
+    tryRestorePendingSavedCalculation();
   }
 
   async function initializeSavedCalculations() {
     attachCalculationHook();
     bindUi();
+    attachLifecycleListeners();
     updateSaveButtonState();
     setStatus('Name a scenario to reuse it later and see it in your dashboard.', 'muted');
-
-    var remoteItems = await refreshRemoteSavedItems();
-    mergeRemoteItemsIntoLocal(remoteItems);
-    await syncAllLocalItemsToWorkspace();
-    await refreshRemoteSavedItems();
-
     renderSavedCalculations();
     await restoreFromQueryParam();
+    await refreshSavedCalculationLifecycle('init');
   }
 
   if (document.readyState === 'loading') {

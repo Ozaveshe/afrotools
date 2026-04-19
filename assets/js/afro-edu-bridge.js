@@ -186,6 +186,17 @@
       fitScore: item.fitScore || null,
       fitReasons: Array.isArray(item.fitReasons) ? item.fitReasons.slice(0, 3) : [],
       tradeoffs: Array.isArray(item.tradeoffs) ? item.tradeoffs.slice(0, 2) : [],
+      routeDestination: item.routeDestination || '',
+      routeAffordability: item.routeAffordability || '',
+      routeUpfront: item.routeUpfront || '',
+      readinessState: item.readinessState || '',
+      assessmentNeed: item.assessmentNeed || '',
+      ieltsState: item.ieltsState || '',
+      studyLevel: item.studyLevel || '',
+      field: item.field || '',
+      shortlistSignals: Array.isArray(item.shortlistSignals) ? item.shortlistSignals.slice(0, 4) : [],
+      nextTool: item.nextTool || '',
+      routeSummary: item.routeSummary || '',
       href: item.href || '/tools/university-ranking/',
       note: item.note || '',
       source: item.source || 'education-hub'
@@ -200,7 +211,13 @@
       source: item.source || 'education-hub',
       studyLevel: item.studyLevel || '',
       field: item.field || '',
-      href: item.href || '/tools/study-abroad-cost/'
+      href: item.href || '/tools/study-abroad-cost/',
+      readinessState: item.readinessState || '',
+      qualificationState: item.qualificationState || '',
+      assessmentNeed: item.assessmentNeed || '',
+      nextTool: item.nextTool || '',
+      pathwayGoal: item.pathwayGoal || '',
+      routeSummary: item.routeSummary || ''
     };
   }
 
@@ -220,6 +237,28 @@
       scholarshipOffset: item.scholarshipOffset || null,
       scholarshipMode: item.scholarshipMode || '',
       comparisonLabel: item.comparisonLabel || '',
+      affordabilityBand: item.affordabilityBand || '',
+      upfrontBand: item.upfrontBand || '',
+      routeRecommendation: item.routeRecommendation || '',
+      routeSummary: item.routeSummary || '',
+      routeDestination: item.routeDestination || '',
+      routeUpfront: item.routeUpfront || '',
+      studyLevel: item.studyLevel || '',
+      schoolName: item.schoolName || '',
+      planningMode: item.planningMode || '',
+      feeConfidence: item.feeConfidence || '',
+      feeConfidenceDetail: item.feeConfidenceDetail || '',
+      feeSourceLabel: item.feeSourceLabel || '',
+      feeLane: item.feeLane || '',
+      feeLaneSummary: item.feeLaneSummary || '',
+      viabilityLabel: item.viabilityLabel || '',
+      pressureKey: item.pressureKey || '',
+      pressureTitle: item.pressureTitle || '',
+      pressureSummary: item.pressureSummary || '',
+      shortlistContext: item.shortlistContext || '',
+      countryMixSummary: item.countryMixSummary || '',
+      monthlyBalance: item.monthlyBalance || null,
+      coverageRatio: item.coverageRatio || null,
       currency: item.currency || '',
       href: item.href || '/tools/study-abroad-cost/',
       note: item.note || '',
@@ -274,8 +313,8 @@
       modeKey = 'single-subject mock';
     }
 
-    var detail = aggregate + '/400 · ' + modeLabel;
-    if (result.ungraded) detail += ' · ' + result.ungraded + ' ungraded';
+    var detail = aggregate + '/400 | ' + modeLabel;
+    if (result.ungraded) detail += ' | ' + result.ungraded + ' ungraded';
 
     recordActivity('jamb-cbt', 'Took JAMB ' + modeKey, {
       detail: detail,

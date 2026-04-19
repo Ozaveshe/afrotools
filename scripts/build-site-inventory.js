@@ -294,14 +294,82 @@ function routeToDir(route) {
   return path.join(ROOT, normalizedRoute);
 }
 
-function loadHubConfig(filePath) {
+function filePathToRoute(filePath) {
+  const relativePath = `/${path.relative(ROOT, filePath).replace(/\\/g, '/')}`;
+  return canonicalRoute(relativePath);
+}
+
+function routeToFilePath(route) {
+  let routeValue = String(route || '').trim();
+  if (!routeValue) return null;
+
+  if (/^https?:\/\//i.test(routeValue)) {
+    try {
+      const url = new URL(routeValue);
+      const hostname = String(url.hostname || '').toLowerCase();
+      if (hostname !== 'afrotools.com' && hostname !== 'www.afrotools.com') return null;
+      routeValue = url.pathname || '/';
+    } catch (error) {
+      return null;
+    }
+  }
+
+  routeValue = routeValue.split('#')[0].split('?')[0];
+  if (!routeValue.startsWith('/')) return null;
+
+  const normalizedRoute = routeValue.replace(/\/$/, '');
+  const tries = [
+    path.join(ROOT, routeValue.replace(/^\/+/, ''), 'index.html'),
+    path.join(ROOT, `${normalizedRoute.replace(/^\/+/, '')}.html`),
+  ];
+
+  return tries.find((targetPath) => fs.existsSync(targetPath)) || null;
+}
+
+function extractRedirectRoute(source) {
+  const patterns = [
+    /window\.location\.replace\(\s*['"]([^'"]+)['"]\s*\)/i,
+    /location\.replace\(\s*['"]([^'"]+)['"]\s*\)/i,
+    /window\.location\s*=\s*['"]([^'"]+)['"]/i,
+    /<meta[^>]+http-equiv=["']refresh["'][^>]+content=["'][^"']*url=([^"'>]+)["']/i,
+  ];
+
+  for (const pattern of patterns) {
+    const match = source.match(pattern);
+    if (match && match[1]) {
+      return String(match[1]).trim();
+    }
+  }
+
+  return null;
+}
+
+function loadHubConfig(filePath, seenPaths) {
+  const visited = seenPaths || new Set();
+  if (visited.has(filePath)) return null;
+  visited.add(filePath);
+
   const source = fs.readFileSync(filePath, 'utf8');
   const match = source.match(/window\.HUB_CONFIG\s*=\s*(\{[\s\S]*?\})\s*;/);
-  if (!match) return null;
+  if (!match) {
+    const redirectRoute = extractRedirectRoute(source);
+    const redirectFile = routeToFilePath(redirectRoute);
+    return redirectFile ? loadHubConfig(redirectFile, visited) : null;
+  }
 
   try {
-    return vm.runInNewContext(`(${match[1]})`);
+    const config = vm.runInNewContext(`(${match[1]})`);
+    if (config && typeof config === 'object') {
+      config._sourceFile = filePath;
+      config._sourceRoute = filePathToRoute(filePath);
+    }
+    return config;
   } catch (error) {
+    const redirectRoute = extractRedirectRoute(source);
+    const redirectFile = routeToFilePath(redirectRoute);
+    if (redirectFile) {
+      return loadHubConfig(redirectFile, visited);
+    }
     return { error: error.message };
   }
 }
@@ -344,7 +412,8 @@ function buildTaxonomy(tools, categories, categoryInventoryRows) {
             slug: entry.name,
             hubId: hubConfig.id || entry.name,
             label: hubConfig.label || entry.name,
-            href: `${categoryRoute}${entry.name}/`,
+            sourceHref: `${categoryRoute}${entry.name}/`,
+            href: hubConfig._sourceRoute || `${categoryRoute}${entry.name}/`,
             toolIds,
             liveToolIds: liveHubTools.map((tool) => tool.id),
             toolCount: toolIds.length,
@@ -620,6 +689,7 @@ function buildInventory() {
     category_name: row.categoryName,
     subcategory_slug: row.slug,
     subcategory_name: row.label,
+    source_href: row.sourceHref || row.href,
     href: row.href,
     tool_count: row.toolCount,
     live_tools: row.liveTools,
