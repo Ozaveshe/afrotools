@@ -1,17 +1,6 @@
 #!/usr/bin/env node
 /**
  * validate-hreflang.js — Validates hreflang implementation across all HTML pages.
- *
- * Checks:
- *  1. Self-reference exists
- *  2. Bidirectional completeness
- *  3. Absolute URLs only
- *  4. Correct language codes (en, fr, sw, yo, ha, x-default)
- *  5. x-default present on every page with hreflang
- *  6. Referenced URLs correspond to actual files
- *  7. Canonical consistency (points to self, not another lang)
- *  8. No duplicate hreflang entries
- *  9. <html lang=""> matches the page's own hreflang declaration
  */
 
 const fs = require('fs');
@@ -20,14 +9,10 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const VALID_LANGS = new Set(['en', 'fr', 'sw', 'yo', 'ha', 'x-default']);
-
-// Directories to skip
 const SKIP_DIRS = new Set([
   'node_modules', '.git', '.claude', 'assets', 'scripts',
   'lang', 'data', 'supabase', 'netlify', '.netlify', 'docs'
 ]);
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
 
 function walkHtml(dir) {
   const results = [];
@@ -42,27 +27,48 @@ function walkHtml(dir) {
   return results;
 }
 
-function filePathToUrl(filePath) {
-  let rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
-  // index.html → directory URL
-  if (rel.endsWith('/index.html')) {
-    rel = rel.slice(0, -'index.html'.length);
-  } else if (rel === 'index.html') {
-    rel = '';
-  } else if (rel.endsWith('.html')) {
-    // Netlify pretty URLs: foo/bar.html → /foo/bar/
-    rel = rel.slice(0, -'.html'.length) + '/';
+function filePathToUrls(filePath) {
+  const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
+  const urls = new Set();
+
+  if (rel === 'index.html') {
+    urls.add(`${BASE_URL}/`);
+    return urls;
   }
-  return BASE_URL + '/' + rel;
+
+  if (rel.endsWith('/index.html')) {
+    urls.add(`${BASE_URL}/${rel.slice(0, -'index.html'.length)}`);
+    return urls;
+  }
+
+  if (rel.endsWith('.html')) {
+    const raw = `${BASE_URL}/${rel}`;
+    urls.add(raw);
+    const prettyTarget = path.join(ROOT, rel.slice(0, -'.html'.length), 'index.html');
+    if (!fs.existsSync(prettyTarget)) {
+      const pretty = `${BASE_URL}/${rel.slice(0, -'.html'.length)}/`;
+      urls.add(pretty);
+    }
+    return urls;
+  }
+
+  urls.add(`${BASE_URL}/${rel}`);
+  return urls;
 }
 
 function normalizeUrl(url) {
-  // Normalize to always have trailing slash for comparison
-  return url.endsWith('/') ? url : url + '/';
-}
-
-function urlExists(url, allUrls) {
-  return allUrls.has(normalizeUrl(url));
+  try {
+    const parsed = new URL(url, BASE_URL);
+    parsed.hash = '';
+    parsed.search = '';
+    let normalized = `${parsed.origin}${parsed.pathname}`;
+    if (!normalized.endsWith('/') && !normalized.endsWith('.html')) {
+      normalized += '/';
+    }
+    return normalized;
+  } catch {
+    return url.endsWith('/') || url.endsWith('.html') ? url : `${url}/`;
+  }
 }
 
 function extractHreflangTags(html) {
@@ -74,7 +80,7 @@ function extractHreflangTags(html) {
     const hreflangMatch = tag.match(/hreflang=["']([^"']+)["']/i);
     const hrefMatch = tag.match(/href=["']([^"']+)["']/i);
     if (hreflangMatch && hrefMatch) {
-      tags.push({ lang: hreflangMatch[1], href: hrefMatch[1] });
+      tags.push({ lang: hreflangMatch[1].toLowerCase(), href: hrefMatch[1] });
     }
   }
   return tags;
@@ -87,19 +93,21 @@ function extractCanonical(html) {
 
 function extractHtmlLang(html) {
   const match = html.match(/<html[^>]*\slang=["']([^"']+)["']/i);
-  return match ? match[1] : null;
+  return match ? match[1].toLowerCase() : null;
 }
 
-function inferPageLang(filePath) {
+function inferPageLang(filePath, htmlLang, hreflangs) {
+  if (htmlLang && VALID_LANGS.has(htmlLang) && htmlLang !== 'x-default') return htmlLang;
+
   const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
   if (rel.startsWith('fr/')) return 'fr';
   if (rel.startsWith('sw/')) return 'sw';
   if (rel.startsWith('yo/')) return 'yo';
   if (rel.startsWith('ha/')) return 'ha';
-  return 'en';
-}
 
-// ── Main ─────────────────────────────────────────────────────────────────────
+  const selfLike = hreflangs.find((h) => h.lang !== 'x-default');
+  return selfLike ? selfLike.lang : 'en';
+}
 
 function main() {
   const errors = [];
@@ -109,87 +117,102 @@ function main() {
   let totalPairs = 0;
 
   const allFiles = walkHtml(ROOT);
-  // Build set of all page URLs for existence checking
   const allUrls = new Set();
-  for (const f of allFiles) {
-    const url = filePathToUrl(f);
-    allUrls.add(normalizeUrl(url));
+  for (const filePath of allFiles) {
+    for (const url of filePathToUrls(filePath)) {
+      allUrls.add(normalizeUrl(url));
+    }
   }
 
-  // Parse all pages — key by normalized URL
-  const pageData = new Map(); // normalizedUrl -> { hreflangs, canonical, htmlLang, filePath, url }
+  const pageData = new Map();
   for (const filePath of allFiles) {
-    const html = fs.readFileSync(filePath, 'utf-8');
-    const url = filePathToUrl(filePath);
+    const html = fs.readFileSync(filePath, 'utf8');
+    const urls = Array.from(filePathToUrls(filePath));
+    const primaryUrl = urls[0];
     const hreflangs = extractHreflangTags(html);
     const canonical = extractCanonical(html);
     const htmlLang = extractHtmlLang(html);
-    pageData.set(normalizeUrl(url), { hreflangs, canonical, htmlLang, filePath, url });
+    const expectedLang = inferPageLang(filePath, htmlLang, hreflangs);
+
+    for (const url of urls) {
+      pageData.set(normalizeUrl(url), {
+        hreflangs,
+        canonical,
+        htmlLang,
+        expectedLang,
+        filePath,
+        url: primaryUrl
+      });
+    }
     pagesChecked++;
   }
 
-  // Run checks on each page with hreflang
-  for (const [normalizedKey, data] of pageData) {
-    const { hreflangs, canonical, htmlLang, filePath, url } = data;
-    if (hreflangs.length === 0) continue;
+  const seenFiles = new Set();
+
+  for (const filePath of allFiles) {
+    const html = fs.readFileSync(filePath, 'utf8');
+    const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
+    if (seenFiles.has(rel)) continue;
+    seenFiles.add(rel);
+
+    const hreflangs = extractHreflangTags(html);
+    if (!hreflangs.length) continue;
+
+    const canonical = extractCanonical(html);
+    const htmlLang = extractHtmlLang(html);
+    const selfUrls = Array.from(filePathToUrls(filePath)).map(normalizeUrl);
+    const expectedLang = inferPageLang(filePath, htmlLang, hreflangs);
+
     pagesWithHreflang++;
     totalPairs += hreflangs.length;
 
-    const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
-    const expectedLang = inferPageLang(filePath);
-
-    // 1. Self-reference exists
-    const selfRef = hreflangs.find(h =>
-      h.lang === expectedLang && normalizeUrl(h.href) === normalizedKey
-    );
+    const selfRef = hreflangs.find((h) => h.lang === expectedLang && selfUrls.includes(normalizeUrl(h.href)));
     if (!selfRef) {
       errors.push(`${rel} — missing self-reference (expected hreflang="${expectedLang}" pointing to self)`);
     }
 
-    // 3. Absolute URLs only
     for (const h of hreflangs) {
-      if (!h.href.startsWith('https://afrotools.com')) {
+      if (!/^https:\/\//i.test(h.href)) {
         errors.push(`${rel} — hreflang="${h.lang}" has non-absolute URL: ${h.href}`);
+        continue;
       }
-    }
-
-    // 4. Correct language codes
-    for (const h of hreflangs) {
+      if (!h.href.startsWith(BASE_URL)) {
+        errors.push(`${rel} — hreflang="${h.lang}" points to wrong domain: ${h.href}`);
+      }
       if (!VALID_LANGS.has(h.lang)) {
         errors.push(`${rel} — invalid hreflang code "${h.lang}" (allowed: en, fr, sw, yo, ha, x-default)`);
       }
     }
 
-    // 5. x-default present
-    const hasXDefault = hreflangs.some(h => h.lang === 'x-default');
-    if (!hasXDefault) {
+    if (!hreflangs.some((h) => h.lang === 'x-default')) {
       errors.push(`${rel} — missing x-default hreflang`);
     }
 
-    // 6. Referenced URLs exist as files
     for (const h of hreflangs) {
-      if (h.lang === 'x-default') continue; // x-default checked via its target
-      if (!urlExists(h.href, allUrls)) {
+      if (h.lang === 'x-default') continue;
+      if (!allUrls.has(normalizeUrl(h.href))) {
         errors.push(`${rel} — hreflang="${h.lang}" references ${h.href} but that file doesn't exist`);
       }
     }
 
-    // 7. Canonical consistency
     if (canonical) {
-      if (normalizeUrl(canonical) !== normalizedKey) {
-        // Could be intentional for non-trailing-slash pages, only flag cross-language
-        const canonicalLang = canonical.includes('/fr/') ? 'fr'
-          : canonical.includes('/sw/') ? 'sw'
-          : canonical.includes('/yo/') ? 'yo'
-          : canonical.includes('/ha/') ? 'ha'
-          : 'en';
+      const canonicalNorm = normalizeUrl(canonical);
+      const canonicalIsSelf = selfUrls.includes(canonicalNorm);
+      if (!canonical.startsWith(BASE_URL)) {
+        errors.push(`${rel} — canonical points to wrong domain: ${canonical}`);
+      } else if (!canonicalIsSelf) {
+        const canonicalLang =
+          canonical.includes('/fr/') ? 'fr' :
+          canonical.includes('/sw/') ? 'sw' :
+          canonical.includes('/yo/') ? 'yo' :
+          canonical.includes('/ha/') ? 'ha' :
+          expectedLang;
         if (canonicalLang !== expectedLang) {
           errors.push(`${rel} — canonical points to ${canonical} (different language version, should point to self)`);
         }
       }
     }
 
-    // 8. No duplicate hreflang entries
     const langCounts = {};
     for (const h of hreflangs) {
       langCounts[h.lang] = (langCounts[h.lang] || 0) + 1;
@@ -200,27 +223,29 @@ function main() {
       }
     }
 
-    // 9. lang attribute matches
     if (htmlLang && htmlLang !== expectedLang) {
       errors.push(`${rel} — <html lang="${htmlLang}"> doesn't match expected language "${expectedLang}"`);
     }
   }
 
-  // 2. Bidirectional completeness (cross-page check)
-  for (const [normalizedKey, data] of pageData) {
-    const { hreflangs, filePath } = data;
-    if (hreflangs.length === 0) continue;
+  for (const filePath of allFiles) {
+    const html = fs.readFileSync(filePath, 'utf8');
+    const hreflangs = extractHreflangTags(html);
+    if (!hreflangs.length) continue;
+
     const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
+    const htmlLang = extractHtmlLang(html);
+    const expectedLang = inferPageLang(filePath, htmlLang, hreflangs);
+    const sourceUrls = Array.from(filePathToUrls(filePath)).map(normalizeUrl);
+    const sourceKey = sourceUrls[0];
 
     for (const h of hreflangs) {
       if (h.lang === 'x-default') continue;
       const targetData = pageData.get(normalizeUrl(h.href));
-      if (!targetData) continue; // Already caught by check 6
+      if (!targetData) continue;
 
-      // Target page should reference back to this page
-      const sourceExpectedLang = inferPageLang(filePath);
-      const backRef = targetData.hreflangs.find(th =>
-        th.lang === sourceExpectedLang && normalizeUrl(th.href) === normalizedKey
+      const backRef = targetData.hreflangs.find((th) =>
+        th.lang === expectedLang && sourceUrls.includes(normalizeUrl(th.href))
       );
       if (!backRef) {
         const targetRel = path.relative(ROOT, targetData.filePath).replace(/\\/g, '/');
@@ -229,8 +254,6 @@ function main() {
     }
   }
 
-  // ── Output ──────────────────────────────────────────────────────────────────
-
   console.log('\n🔍 Hreflang Validation Report');
   console.log('═'.repeat(60));
   console.log(`📄 ${pagesChecked} pages scanned`);
@@ -238,28 +261,21 @@ function main() {
   console.log(`🔗 ${totalPairs} hreflang pairs found`);
   console.log('');
 
-  if (errors.length === 0 && warnings.length === 0) {
+  if (!errors.length && !warnings.length) {
     console.log('✅ All checks passed!');
-    console.log(`✅ ${pagesWithHreflang} pages checked`);
-    console.log(`✅ ${totalPairs} hreflang pairs validated`);
-    console.log('✅ 0 errors');
   } else {
-    if (errors.length > 0) {
+    if (errors.length) {
       console.log(`❌ ${errors.length} error(s):`);
-      for (const e of errors) {
-        console.log(`   ❌ ${e}`);
-      }
+      for (const error of errors) console.log(`   ❌ ${error}`);
     }
-    if (warnings.length > 0) {
+    if (warnings.length) {
       console.log(`\n⚠️  ${warnings.length} warning(s):`);
-      for (const w of warnings) {
-        console.log(`   ⚠️  ${w}`);
-      }
+      for (const warning of warnings) console.log(`   ⚠️  ${warning}`);
     }
   }
 
   console.log('');
-  process.exit(errors.length > 0 ? 1 : 0);
+  process.exit(errors.length ? 1 : 0);
 }
 
 main();
