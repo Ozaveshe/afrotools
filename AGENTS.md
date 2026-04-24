@@ -32,10 +32,12 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
+- `npm run seo:widgets` - normalize widget iframe SEO utility routes
 - `npm run build:i18n -- --all` - regenerate translations
 - `npm run build:i18n:validate` - validate i18n output
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
+- `node scripts/mobile-audit.js` - build the repo-wide mobile risk audit report
 
 ## Edit Strategy
 
@@ -77,6 +79,18 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
+- Treat `widgets/iframe/` pages as utility shells and use `npm run seo:widgets` to keep them `noindex, follow` with canonical targets on the full tool routes.
+
+### Content publishing
+
+- Read `docs/CONTENT-PUBLISHING-WORKFLOW.md` before changing blog or AfroStream editorial surfaces.
+- Treat `/blog/` as static repo-backed content.
+- Treat AfroStream news as a live Supabase-backed publishing surface and use the configured `supabase` MCP server first for publishing or inspection.
+
+### Mobile audit work
+
+- Use `node scripts/mobile-audit.js` to generate `reports/mobile-audit.json` and `reports/mobile-audit.md` before broad mobile cleanup passes.
+- Treat the mobile audit as a static heuristic guide for prioritization, then manually spot-check the highest-risk clusters.
 
 ### i18n work
 
@@ -87,6 +101,11 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use the configured `supabase` MCP server first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
 - Keep repo edits and live project actions conceptually separate in your notes and summaries.
+
+### Admin and ops work
+
+- Treat `mc-7a2f9x.html` as the single Mission Control admin cockpit.
+- Treat `admin/dashboard.html` as a redirect shell, not a second dashboard to maintain.
 
 ## Preferred Validation
 
