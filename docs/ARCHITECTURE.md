@@ -2,7 +2,7 @@
 
 ## System Overview
 
-AfroTools is a plain HTML/CSS/JS web application with no build tools, no frameworks, and no bundler. It deploys automatically to Netlify from the GitHub `main` branch.
+AfroTools is a static-first HTML/CSS/JS web application with a generated build layer. Source pages live in the repo root, shared scripts generate bundles and SEO artifacts, and Netlify publishes the clean `dist/` artifact instead of the repo root.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

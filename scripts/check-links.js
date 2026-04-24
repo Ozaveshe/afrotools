@@ -8,7 +8,74 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const IGNORE = ['.claude', 'node_modules', 'afrotools-deploy', '.git'];
+const IGNORE = ['.claude', 'node_modules', 'afrotools-deploy', '.git', 'dist'];
+
+function escapeRegex(value) {
+  return value.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+}
+
+function normalizeRoute(value) {
+  if (!value) return '/';
+  const clean = value.split(/[?#]/)[0];
+  if (clean === '/') return clean;
+  return clean.replace(/\/$/, '');
+}
+
+function compileRedirectPattern(pattern) {
+  const normalized = normalizeRoute(pattern);
+  const body = escapeRegex(normalized)
+    .replace(/\*/g, '.*')
+    .replace(/:([A-Za-z][A-Za-z0-9_]*)/g, '[^/]+');
+  return new RegExp(`^${body}/?$`);
+}
+
+function addRedirectRule(rules, from, status) {
+  if (!from || !from.startsWith('/')) return;
+  const code = Number.parseInt(status, 10);
+  if (code === 404 || code === 410) return;
+  rules.push({ from, re: compileRedirectPattern(from) });
+}
+
+function loadRedirectRules() {
+  const rules = [];
+  const redirectsPath = path.join(ROOT, '_redirects');
+  if (fs.existsSync(redirectsPath)) {
+    const lines = fs.readFileSync(redirectsPath, 'utf8').split(/\r?\n/);
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line || line.startsWith('#')) continue;
+      const [from, , status] = line.split(/\s+/);
+      addRedirectRule(rules, from, status);
+    }
+  }
+
+  const netlifyPath = path.join(ROOT, 'netlify.toml');
+  if (fs.existsSync(netlifyPath)) {
+    const lines = fs.readFileSync(netlifyPath, 'utf8').split(/\r?\n/);
+    let current = null;
+    const flush = () => {
+      if (current) addRedirectRule(rules, current.from, current.status);
+      current = null;
+    };
+
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (line === '[[redirects]]') {
+        flush();
+        current = {};
+        continue;
+      }
+      if (!current) continue;
+      const fromMatch = line.match(/^from\s*=\s*"([^"]+)"/);
+      if (fromMatch) current.from = fromMatch[1];
+      const statusMatch = line.match(/^status\s*=\s*(\d+)/);
+      if (statusMatch) current.status = statusMatch[1];
+    }
+    flush();
+  }
+
+  return rules;
+}
 
 function findHTMLFiles(dir) {
   const results = [];
@@ -38,10 +105,9 @@ function extractLinks(html) {
   return links;
 }
 
-function resolveLink(href) {
-  let target = href;
+function resolveLink(href, redirectRules) {
+  let target = normalizeRoute(href);
   if (!target.startsWith('/')) return null; // skip relative for now
-  target = target.replace(/\/$/, '');
 
   // Try: exact file, /index.html, .html
   const tries = [
@@ -53,12 +119,15 @@ function resolveLink(href) {
   for (const t of tries) {
     if (fs.existsSync(t)) return true;
   }
+  if (redirectRules.some((rule) => rule.re.test(target))) return true;
   return false;
 }
 
 // Run
 const files = findHTMLFiles(ROOT);
-console.log(`Scanning ${files.length} HTML files...\n`);
+const redirectRules = loadRedirectRules();
+console.log(`Scanning ${files.length} HTML files...`);
+console.log(`Loaded ${redirectRules.length} redirect rules.\n`);
 
 let brokenCount = 0;
 const brokenMap = {};
@@ -70,7 +139,7 @@ for (const file of files) {
 
   for (const href of links) {
     if (!href.startsWith('/')) continue; // skip relative
-    const exists = resolveLink(href);
+    const exists = resolveLink(href, redirectRules);
     if (!exists) {
       if (!brokenMap[href]) brokenMap[href] = [];
       brokenMap[href].push(rel);

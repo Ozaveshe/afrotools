@@ -1,8 +1,8 @@
 [build]
-  publish = "."
+  publish = "dist"
   functions = "netlify/functions"
   edge_functions = "netlify/edge-functions"
-  command = "npm run build && node scripts/indexnow.js --git || true"
+  command = "npm run build:deploy && (node scripts/indexnow.js --git || true)"
 
 [[edge_functions]]
   function = "og-image"
@@ -20,20 +20,20 @@
 # Deploy previews: every PR gets a unique preview URL
 
 [context.deploy-preview]
-  command = "echo 'Deploy preview build'"
+  command = "npm run build:deploy"
 
 [context.deploy-preview.environment]
   CONTEXT = "deploy-preview"
 
 [context.branch-deploy]
-  command = "echo 'Branch deploy build'"
+  command = "npm run build:deploy"
 
 [context.branch-deploy.environment]
   CONTEXT = "branch-deploy"
 
 # Staging branch gets same build as production
 [context.staging]
-  command = "node scripts/indexnow.js --git || true"
+  command = "npm run build:deploy"
 
 [context.staging.environment]
   CONTEXT = "staging"
@@ -60,6 +60,9 @@
 
 [functions."scheduled-verify-scholarships"]
   schedule = "0 4 * * *"
+
+[functions."scheduled-send-scholarship-reminders"]
+  schedule = "0 * * * *"
 
 [functions."afrostream-sync"]
   schedule = "0 */2 * * *"
@@ -110,6 +113,106 @@
   schedule = "0 * * * *"
 
 # --- Live Monitoring API Redirects ---
+
+# --- Static Source Denylist ---
+# Defense in depth: the deploy artifact excludes these paths, and these forced
+# 404s protect any accidental root-publish or stale deploy configuration.
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/AGENTS.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/*.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/supabase/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/prompts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/reports/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.codex/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.agents/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.github/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.claude/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.env*"
+  to = "/404.html"
+  status = 404
+  force = true
 
 [[redirects]]
   from = "/api/forex"
@@ -217,11 +320,38 @@
   to = "/.netlify/functions/api-alerts"
   status = 200
 
+# Country-specific climate pages are generated incrementally. Keep planned
+# country cards from landing on 404s until their per-country calculators exist.
+[[redirects]]
+  from = "/tools/air-quality/:country/"
+  to = "/tools/air-quality/"
+  status = 302
+
+[[redirects]]
+  from = "/tools/carbon-credit/:country/"
+  to = "/tools/carbon-credit/"
+  status = 302
+
+[[redirects]]
+  from = "/tools/flood-risk/:country/"
+  to = "/tools/flood-risk/"
+  status = 302
+
 # --- Scholarships API ---
 
 [[redirects]]
   from = "/api/scholarships"
   to = "/.netlify/functions/api-scholarships"
+  status = 200
+
+[[redirects]]
+  from = "/api/scholarship-saves"
+  to = "/.netlify/functions/api-scholarship-saves"
+  status = 200
+
+[[redirects]]
+  from = "/api/scholarship-reminders"
+  to = "/.netlify/functions/api-scholarship-reminders"
   status = 200
 
 # --- Calculation History API ---

@@ -73,6 +73,48 @@
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
+## Internal/source paths denied by redirects. These headers are defense in depth
+## for accidental root-publish or stale deploy configuration.
+/package.json
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/package-lock.json
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/AGENTS.md
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/*.md
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/netlify/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/supabase/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/scripts/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/tests/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/docs/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
+/prompts/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, noarchive
+
 ## ── Netlify functions — no cache ──
 /.netlify/functions/*
   Cache-Control: no-store, no-cache, must-revalidate

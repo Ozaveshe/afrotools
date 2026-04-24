@@ -3,9 +3,18 @@
 // Lightweight endpoint to capture search queries for product intelligence.
 // Fire-and-forget from client via navigator.sendBeacon().
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const { getAllowedOrigin } = require('./utils/cors');
+
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
+const SUPABASE_URL = cleanEnvValue(process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL) || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_SERVICE_KEY = cleanEnvValue(
+  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY
+);
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -58,7 +67,7 @@ exports.handler = async (event) => {
       if (record[key] != null) clean[key] = record[key];
     }
 
-    if (!SUPABASE_KEY) {
+    if (!SUPABASE_SERVICE_KEY) {
       console.warn('No SUPABASE_KEY — skipping search capture');
       return { statusCode: 200, headers: CORS_HEADERS, body: '' };
     }
@@ -67,8 +76,8 @@ exports.handler = async (event) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(clean)

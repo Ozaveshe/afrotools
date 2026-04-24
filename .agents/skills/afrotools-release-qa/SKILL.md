@@ -28,3 +28,6 @@ Use this skill to avoid over-testing the wrong things and under-testing the risk
 - `npm run validate:hreflang`
 - `npm run cars:catalog:refresh`
 - `npm run build`
+- `npm run build:deploy`
+- `npm run audit:dist`
+- `npm run security:scan`
