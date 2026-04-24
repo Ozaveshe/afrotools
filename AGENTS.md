@@ -32,10 +32,16 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
+- `npm run seo:og` - apply OG fallback pass
+- `npm run seo:links` - repair SEO alias links
+- `npm run seo:widgets` - normalize widget iframe SEO behavior
 - `npm run build:i18n -- --all` - regenerate translations
+- `npm run build:i18n:dry-run` - preview i18n output changes without writing files
 - `npm run build:i18n:validate` - validate i18n output
+- `npm run build:i18n:full` - rebuild i18n output and validate hreflang
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
+- `npm run inventory:site` - rebuild the site inventory report
 
 ## Edit Strategy
 
@@ -78,6 +84,12 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - Do not manually edit sitemap files as a first choice.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
 
+### Content publishing
+
+- Read `docs/CONTENT-PUBLISHING-WORKFLOW.md` when working on `/blog/` or AfroStream news surfaces.
+- Treat `/blog/` as static repo-backed content.
+- Treat AfroStream news as a live Supabase-backed surface and use the configured `supabase` MCP server first for inspection or publishing.
+
 ### i18n work
 
 - Treat translated pages as build outputs unless the task is a targeted manual fix.
@@ -90,7 +102,8 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 ## Preferred Validation
 
-- HTML or content changes: `npm test`
+- HTML or page-only content changes: `npm run check-links`
+- Broader content changes that also affect shared discovery or hubs: `npm test`
 - Registry or navigation changes: `npm run check-links` and `npm run audit`
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
