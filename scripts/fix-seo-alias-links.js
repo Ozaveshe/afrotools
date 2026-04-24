@@ -22,6 +22,7 @@ const ALIASES = {
   "/tools/paye-calculator/": "/salary-tax/",
   "/tools/salary-tax/": "/salary-tax/",
   "/tools/salary-calculator/": "/salary-tax/",
+  "/tools/vat-calculator/vat-calc": "/tools/vat-calculator/",
   "/categories/financial/": "/salary-tax/",
   "/fr/tools/paye-calculator/": "/fr/tools/calculateur-paye/",
   "/fr/tools/vat-calculator/": "/fr/tools/calculateur-tva/",

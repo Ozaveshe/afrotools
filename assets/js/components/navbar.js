@@ -213,7 +213,7 @@
       desc: 'VAT, margins, break-even', descFr: 'TVA, marges, seuil de rentabilité', descSw: 'VAT, faida, hatua ya usawa',
       href: '/vat-business-tax/', hrefFr: '/fr/', hrefSw: '/sw/vat-na-kodi/', color: '#fff7ed', accent: '#f59e0b',
       tools: [
-        { label: 'Pan-African VAT Calculator', href: '/tools/vat-calculator/vat-calc', emoji: '💱', badge: 'LIVE' },
+        { label: 'Pan-African VAT Calculator', href: '/tools/vat-calculator/', emoji: '💱', badge: 'LIVE' },
         { label: 'Nigeria VAT (7.5%)', href: '/nigeria/ng-vat', emoji: '🇳🇬', badge: 'LIVE' },
         { label: 'South Africa VAT (15%)', href: '/south-africa/za-vat', emoji: '🇿🇦', badge: 'LIVE' },
         { label: 'Kenya VAT (16%)', href: '/kenya/ke-vat', emoji: '🇰🇪', badge: 'LIVE' },
