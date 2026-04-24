@@ -14,6 +14,7 @@ var TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 var KICK_CLIENT_ID = process.env.KICK_CLIENT_ID;
 var KICK_CLIENT_SECRET = process.env.KICK_CLIENT_SECRET;
 var YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+var LIVE_WINDOW_HOURS = 24;
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -54,6 +55,13 @@ async function sb(method, path, body, upsert) {
   var res = await fetch(SUPABASE_URL + '/rest/v1/' + path, opts);
   var text = await res.text();
   try { return JSON.parse(text); } catch (e) { return text; }
+}
+
+async function clearStaleLiveStreams() {
+  var cutoff = new Date(Date.now() - LIVE_WINDOW_HOURS * 60 * 60 * 1000).toISOString();
+  await sb('PATCH', 'as_streams?is_live=eq.true&stream_date=lt.' + cutoff, {
+    is_live: false
+  });
 }
 
 // ── Twitch API ───────────────────────────────────────────────────
@@ -760,6 +768,7 @@ exports.handler = async function(event) {
     }
     if (YOUTUBE_API_KEY) {
       youtubeResults = await syncYouTube();
+      await clearStaleLiveStreams();
     }
 
     // ── Compute scores + snapshots after all syncs ──

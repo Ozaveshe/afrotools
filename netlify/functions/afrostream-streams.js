@@ -2,6 +2,7 @@
 // Public API: GET /api/afrostream/streams?live=&platform=&limit=
 var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
+var LIVE_WINDOW_HOURS = 24;
 
 function cors(event) {
   var o = event.headers?.origin || '';
@@ -26,6 +27,7 @@ exports.handler = async function(event) {
 
   if (qs.live === 'true') {
     parts.push('is_live=eq.true');
+    parts.push('stream_date=gte.' + new Date(Date.now() - LIVE_WINDOW_HOURS * 60 * 60 * 1000).toISOString());
     parts.push('order=stream_date.desc');
   } else if (qs.live === 'false') {
     parts.push('is_live=eq.false');

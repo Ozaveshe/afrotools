@@ -10,6 +10,7 @@ var TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 var KICK_CLIENT_ID = process.env.KICK_CLIENT_ID;
 var KICK_CLIENT_SECRET = process.env.KICK_CLIENT_SECRET;
 var YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+var LIVE_WINDOW_HOURS = 24;
 
 // ── Supabase helper ───────────────────────────────────────────────
 async function sb(method, path, body) {
@@ -235,6 +236,13 @@ async function upsertStream(creatorName, streamData) {
 
 async function clearCreatorLiveStream(platform, creatorName) {
   await sb('PATCH', 'as_streams?platform=eq.' + platform + '&is_live=eq.true&creator_name=eq.' + encodeURIComponent(creatorName), {
+    is_live: false
+  });
+}
+
+async function clearStaleLiveStreams() {
+  var cutoff = new Date(Date.now() - LIVE_WINDOW_HOURS * 60 * 60 * 1000).toISOString();
+  await sb('PATCH', 'as_streams?is_live=eq.true&stream_date=lt.' + cutoff, {
     is_live: false
   });
 }
@@ -676,6 +684,8 @@ exports.handler = async function(event) {
       summary.duration_ms = Date.now() - start;
       return { statusCode: 200, body: JSON.stringify({ success: true, message: 'No creators found', data: summary }) };
     }
+
+    await clearStaleLiveStreams();
 
     // Run all platform checks in parallel
     var results = await Promise.allSettled([
