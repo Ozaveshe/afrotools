@@ -5,7 +5,8 @@
  * index.html files that generate links via JavaScript only.
  *
  * This ensures Google can discover sub-pages from raw HTML without
- * needing to execute JavaScript.
+ * needing to execute JavaScript, while still pointing crawlers at the
+ * preferred canonical route instead of the raw .html file path.
  *
  * Targets:
  *   1. Agriculture tool index pages → country sub-pages
@@ -19,7 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
+const { ROOT, preferredRouteForFile } = require('./lib/canonical-aliases');
 
 // Country slug → readable name
 const COUNTRY_NAMES = {
@@ -123,8 +124,9 @@ function processAgriculture() {
     const links = countryFiles.map(f => {
       const slug = f.replace('.html', '');
       const name = COUNTRY_NAMES[slug] || slugToName(slug);
+      const filePath = path.join(toolDir, f);
       return {
-        href: `/agriculture/${tool.name}/${f}`,
+        href: preferredRouteForFile(filePath),
         text: `${toolName} in ${name}`
       };
     });
@@ -156,8 +158,9 @@ function processCountryHubs() {
     const countryName = COUNTRY_NAMES[dir] || slugToName(dir);
     const links = subPages.map(f => {
       const name = slugToName(f);
+      const filePath = path.join(fullDir, f);
       return {
-        href: `/${dir}/${f}`,
+        href: preferredRouteForFile(filePath),
         text: `${countryName} ${name} Calculator`
       };
     });
@@ -185,6 +188,7 @@ function processToolSubPages() {
     // Find country-named .html files
     const subFiles = fs.readdirSync(toolDir)
       .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.includes('_template'))
+      .filter(f => !(tool.name === 'africa-conflict' && f === 'detail.html'))
       .sort();
 
     if (subFiles.length < 2) continue;
@@ -199,8 +203,9 @@ function processToolSubPages() {
 
     // Add non-country sub-pages first (e.g. actors.html, conflicts.html)
     for (const f of otherFiles) {
+      const filePath = path.join(toolDir, f);
       links.push({
-        href: `/tools/${tool.name}/${f}`,
+        href: preferredRouteForFile(filePath),
         text: `${toolName} \u2014 ${slugToName(f)}`
       });
     }
@@ -209,8 +214,9 @@ function processToolSubPages() {
     for (const f of countryFiles) {
       const slug = f.replace('.html', '');
       const name = COUNTRY_NAMES[slug] || slugToName(slug);
+      const filePath = path.join(toolDir, f);
       links.push({
-        href: `/tools/${tool.name}/${f}`,
+        href: preferredRouteForFile(filePath),
         text: `${toolName} \u2014 ${name}`
       });
     }
@@ -249,8 +255,9 @@ function processFrench() {
     const countryName = COUNTRY_NAMES[dir] || slugToName(dir);
     const links = subPages.map(f => {
       const name = slugToName(f);
+      const filePath = path.join(fullDir, f);
       return {
-        href: `/fr/${dir}/${f}`,
+        href: preferredRouteForFile(filePath),
         text: `${countryName} ${name}`
       };
     });
@@ -280,8 +287,9 @@ function processFrench() {
       const links = countryFiles.map(f => {
         const slug = f.replace('.html', '');
         const name = COUNTRY_NAMES[slug] || slugToName(slug);
+        const filePath = path.join(toolDir, f);
         return {
-          href: `/fr/agriculture/${tool.name}/${f}`,
+          href: preferredRouteForFile(filePath),
           text: `${toolName} \u2014 ${name}`
         };
       });
@@ -314,16 +322,18 @@ function processFrench() {
 
       const links = [];
       for (const f of otherFiles) {
+        const filePath = path.join(toolDir, f);
         links.push({
-          href: `/fr/tools/${tool.name}/${f}`,
+          href: preferredRouteForFile(filePath),
           text: `${toolName} \u2014 ${slugToName(f)}`
         });
       }
       for (const f of countryFiles) {
         const slug = f.replace('.html', '');
         const name = COUNTRY_NAMES[slug] || slugToName(slug);
+        const filePath = path.join(toolDir, f);
         links.push({
-          href: `/fr/tools/${tool.name}/${f}`,
+          href: preferredRouteForFile(filePath),
           text: `${toolName} \u2014 ${name}`
         });
       }

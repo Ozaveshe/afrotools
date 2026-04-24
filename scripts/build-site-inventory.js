@@ -138,6 +138,9 @@ function canonicalRoute(fileRoute) {
   if (fileRoute.endsWith('/index.html')) {
     return fileRoute.slice(0, -11) + '/';
   }
+  if (fileRoute.endsWith('.html')) {
+    return fileRoute.slice(0, -5);
+  }
   return fileRoute;
 }
 

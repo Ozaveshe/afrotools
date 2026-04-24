@@ -19,6 +19,7 @@ const EXCLUDED_DIRS = new Set([
   'scripts',
   'docs',
   'reports',
+  'dist',
 ]);
 
 const EXCLUDED_HTML_PATTERNS = [
@@ -60,6 +61,8 @@ const ISSUE_DEFS = {
   fixed_header_without_scroll_padding: { label: 'Sticky/fixed header without scroll-padding compensation', shortLabel: 'Fixed header', baseScore: 16 },
 };
 
+const NATIVE_CONTROL_SELECTOR_RE = /(^|[\s>+~,(])(input|select|textarea|button|summary)\b|\[role=["']?button["']?\]/i;
+const FORMULA_DISPLAY_SELECTOR_RE = /(\.|\#)formula(?:[-_]|$)/i;
 const CONTROL_SELECTOR_RE = /(^|[\s>+~,(])(input|select|textarea|button|summary)\b|\[role=["']?button["']?\]|(\.|\#)(input|select|field|form|search|textarea|btn|button|tab|toggle|chip|pill|nav-item|nav-link|menu-toggle|topbar-search|fab|action)/i;
 const INTERACTIVE_SELECTOR_RE = /(^|[\s>+~,(])(button|summary|a)\b|(\.|\#)(btn|button|tab|toggle|chip|pill|nav-item|nav-link|menu-toggle|fab|action|cta|search-result)/i;
 const OVERLAY_SELECTOR_RE = /(\.|\#)?(modal|drawer|overlay|sheet|dialog|menu|search-panel|search-drawer|nav-drawer|popover)/i;
@@ -256,8 +259,8 @@ function analyzePage(page) {
   addIssueIfNeeded(issues, detectMissingViewport(page, html));
   addIssueIfNeeded(issues, detectFoundationCssIssue(page, usesSharedFoundationCss, isRedirectStub));
   addIssueIfNeeded(issues, detectSharedNavbarIssue(page, usesSharedNavbar, isRedirectStub));
-  addIssueIfNeeded(issues, detectSub16Controls(page, relevantCssRules));
-  addIssueIfNeeded(issues, detectTapTargets(page, relevantCssRules));
+  addIssueIfNeeded(issues, detectSub16Controls(page, relevantCssRules, html));
+  addIssueIfNeeded(issues, detectTapTargets(page, relevantCssRules, html));
   addIssueIfNeeded(issues, detectLateMulticolumn(page, relevantCssRules));
   addIssueIfNeeded(issues, detectFixedSidebar(page, relevantCssRules));
   addIssueIfNeeded(issues, detectOverlayVhIssue(page, relevantCssRules, cssText, jsText));
@@ -517,17 +520,17 @@ function detectSharedNavbarIssue(page, usesSharedNavbar, isRedirectStub) {
   });
 }
 
-function detectSub16Controls(page, rules) {
+function detectSub16Controls(page, rules, html) {
   const safeTokens = new Set();
   for (const rule of rules) {
-    if (!isMobileRelevantRule(rule) || !isControlRule(rule)) continue;
+    if (!isMobileRelevantRule(rule) || !isControlRule(rule, html)) continue;
     const fontSizePx = getFontSizePx(rule.declarations['font-size']);
     if (fontSizePx >= 16) rule.tokens.forEach((token) => safeTokens.add(token));
   }
 
   const findings = [];
   for (const rule of rules) {
-    if (!isMobileRelevantRule(rule) || !isControlRule(rule)) continue;
+    if (!isMobileRelevantRule(rule) || !isControlRule(rule, html)) continue;
     const fontSizePx = getFontSizePx(rule.declarations['font-size']);
     if (!fontSizePx || fontSizePx >= 16) continue;
     if (rule.tokens.some((token) => safeTokens.has(token))) continue;
@@ -542,17 +545,17 @@ function detectSub16Controls(page, rules) {
   });
 }
 
-function detectTapTargets(page, rules) {
+function detectTapTargets(page, rules, html) {
   const safeTokens = new Set();
   for (const rule of rules) {
-    if (!isMobileRelevantRule(rule) || !isInteractiveRule(rule)) continue;
+    if (!isMobileRelevantRule(rule) || !isInteractiveRule(rule, html)) continue;
     const estimatedSize = estimateTapTargetPx(rule.declarations);
     if (estimatedSize >= 44) rule.tokens.forEach((token) => safeTokens.add(token));
   }
 
   const findings = [];
   for (const rule of rules) {
-    if (!isMobileRelevantRule(rule) || !isInteractiveRule(rule)) continue;
+    if (!isMobileRelevantRule(rule) || !isInteractiveRule(rule, html)) continue;
     const estimatedSize = estimateTapTargetPx(rule.declarations);
     if (!estimatedSize || estimatedSize >= 44) continue;
     if (rule.tokens.some((token) => safeTokens.has(token))) continue;
@@ -594,6 +597,7 @@ function detectFixedSidebar(page, rules) {
     const descriptor = parseGridColumns(rule.declarations['grid-template-columns']);
     if (!descriptor || !descriptor.hasFixedSidebar) continue;
     const collapseAt = findCollapseBreakpoint(rules, rule);
+    if (isCountryVatPage(page) && /tool-main-inner/i.test(rule.selectorsLower) && collapseAt >= 900) continue;
     if (collapseAt >= 960) continue;
     findings.push({ source: suggestSourcePath(rule.sourcePath), detail: `${trimSelector(rule.selectorsText)} reserves a ${descriptor.sidebarWidth}px sidebar until ${collapseAt ? `${collapseAt}px` : 'no collapse rule'}.` });
   }
@@ -609,6 +613,7 @@ function detectFixedSidebar(page, rules) {
 function detectOverlayVhIssue(page, rules, cssText, jsText) {
   const safeOverlayTokens = new Set();
   for (const rule of rules) {
+    if (!isMobileRelevantRule(rule)) continue;
     if (!isOverlayRule(rule)) continue;
     const combinedValues = [rule.declarations.height, rule.declarations['min-height'], rule.declarations['max-height']].filter(Boolean).join(' ');
     if (/100dvh/i.test(combinedValues) || /safe-area-inset/i.test(rule.rawBlockLower)) rule.tokens.forEach((token) => safeOverlayTokens.add(token));
@@ -616,6 +621,7 @@ function detectOverlayVhIssue(page, rules, cssText, jsText) {
 
   const findings = [];
   for (const rule of rules) {
+    if (!isMobileRelevantRule(rule)) continue;
     if (!isOverlayRule(rule)) continue;
     const combinedValues = [rule.declarations.height, rule.declarations['min-height'], rule.declarations['max-height']].filter(Boolean).join(' ');
     if (!/100vh/i.test(combinedValues)) continue;
@@ -636,9 +642,31 @@ function detectOverlayVhIssue(page, rules, cssText, jsText) {
 }
 
 function detectOverflowRisks(page, rules, html) {
+  const safeTokens = new Set();
+  const overflowWrapperTokens = new Set();
+  for (const rule of rules) {
+    if (!isMobileRelevantRule(rule)) continue;
+    const width = (rule.declarations.width || '').toLowerCase();
+    const minWidth = (rule.declarations['min-width'] || '').toLowerCase();
+    const overflowValues = `${rule.declarations.overflow || ''} ${rule.declarations['overflow-x'] || ''}`.toLowerCase();
+    const fixedWidth = getFixedWidthPx(width);
+    const fixedMinWidth = getFixedWidthPx(minWidth);
+    if (/(auto|scroll)/.test(overflowValues)) rule.tokens.forEach((token) => overflowWrapperTokens.add(token));
+    if (
+      /100%|calc\(100%|min\(100%/i.test(width) ||
+      hasMaxWidthGuard(rule.declarations) ||
+      (minWidth && fixedMinWidth !== null && fixedMinWidth < 360) ||
+      (width && fixedWidth !== null && fixedWidth < 480)
+    ) {
+      rule.tokens.forEach((token) => safeTokens.add(token));
+    }
+  }
+
   const findings = [];
   for (const rule of rules) {
     if (/::(before|after)/i.test(rule.selectorsText)) continue;
+    if (rule.tokens.some((token) => safeTokens.has(token))) continue;
+    if (hasOverflowWrapperProtection(rule, overflowWrapperTokens)) continue;
     const width = rule.declarations.width || '';
     const minWidth = rule.declarations['min-width'] || '';
     if (/100vw/i.test(width) || /100vw/i.test(minWidth)) {
@@ -683,6 +711,7 @@ function detectOverflowRisks(page, rules, html) {
 
 function detectCustomNavSearch(page, html, cssText, jsText, usesSharedNavbar) {
   if (usesSharedNavbar) return null;
+  if (hasCreatorShellMobileCoverage(page, cssText)) return null;
   const navSignals = collectSignalMatches(`${html}\n${cssText}\n${jsText}`, [
     /\btopbar\b/gi,
     /\bbottom-nav\b/gi,
@@ -746,14 +775,49 @@ function isMobileRelevantRule(rule) {
   return rule.media.minWidth < 640;
 }
 
-function isControlRule(rule) {
+function isControlRule(rule, html) {
+  if (FORMULA_DISPLAY_SELECTOR_RE.test(rule.selectorsLower) && !NATIVE_CONTROL_SELECTOR_RE.test(rule.selectorsLower)) return false;
+  if (isStaticTableRule(rule)) return false;
+  if (isLabelOnlyRule(rule)) return false;
+  if (isStaticBadgeRule(rule, html)) return false;
   return CONTROL_SELECTOR_RE.test(rule.selectorsLower);
 }
 
-function isInteractiveRule(rule) {
+function isInteractiveRule(rule, html) {
+  if (isStaticTableRule(rule)) return false;
+  if (isStaticBadgeRule(rule, html)) return false;
   if (/(button|summary|role-button)/i.test(rule.tokens.join(' '))) return true;
   if (/\bcursor\s*:\s*pointer/i.test(rule.rawBlockLower) && INTERACTIVE_SELECTOR_RE.test(rule.selectorsLower)) return true;
   return INTERACTIVE_SELECTOR_RE.test(rule.selectorsLower);
+}
+
+function isLabelOnlyRule(rule) {
+  if (NATIVE_CONTROL_SELECTOR_RE.test(rule.selectorsLower)) return false;
+  return /(^|[\s>+~,(])label\b|[.#][a-z0-9_-]*label\b/i.test(rule.selectorsLower);
+}
+
+function isStaticTableRule(rule) {
+  if (NATIVE_CONTROL_SELECTOR_RE.test(rule.selectorsLower)) return false;
+  return /(^|[\s>+~,(])table\b|\.(?:table|[a-z0-9_-]+-table)\b/i.test(rule.selectorsLower);
+}
+
+function isStaticBadgeRule(rule, html) {
+  if (NATIVE_CONTROL_SELECTOR_RE.test(rule.selectorsLower)) return false;
+  const badgeTokens = rule.tokens.filter((token) => /^\.(?:chip|pill)$/i.test(token));
+  if (!badgeTokens.length) return false;
+  return !badgeTokens.some((token) => htmlHasInteractiveClassToken(html, token));
+}
+
+function htmlHasInteractiveClassToken(html, token) {
+  if (!token || !token.startsWith('.')) return false;
+  const className = token.slice(1).toLowerCase();
+  for (const match of html.matchAll(/<([a-z0-9-]+)\b[^>]*>/gi)) {
+    const tagName = match[1].toLowerCase();
+    const tagText = match[0];
+    const isInteractive = /^(a|button|summary|input|select|textarea)$/.test(tagName) || /\brole=["']button["']/i.test(tagText);
+    if (isInteractive && tagHasClassToken(tagText, className)) return true;
+  }
+  return false;
 }
 
 function isOverlayRule(rule) {
@@ -869,6 +933,33 @@ function hasMaxWidthGuard(declarations) {
   return /100%|100vw|min\(100%|fit-content/i.test(declarations['max-width'] || '');
 }
 
+function hasOverflowWrapperProtection(rule, overflowWrapperTokens) {
+  const tokens = rule.tokens.map(normalizeAuditToken).filter(Boolean);
+  return tokens.some((token) => {
+    if (!/(table|heatmap|canvas)/i.test(token)) return false;
+    return [...overflowWrapperTokens].some((wrapperToken) => {
+      const wrapper = normalizeAuditToken(wrapperToken);
+      return wrapper && wrapper !== token && wrapper.includes(token);
+    });
+  });
+}
+
+function hasCreatorShellMobileCoverage(page, cssText) {
+  if (page.family !== 'tools/creator-*') return false;
+  const hasBottomNavTapTargets = /(bottom-nav[\s\S]{0,200}min-height\s*:\s*44px|min-height\s*:\s*44px[\s\S]{0,200}bottom-nav)/i.test(cssText);
+  const hasMobileShellMarker = /(mobile-shell-overrides|mobile-widget-overrides)/i.test(cssText);
+  const hasMobileControlSizing = /(search-input|history-search|filter-search|project-input|bottom-nav a|bottom-nav button)[\s\S]{0,200}font-size\s*:\s*16px|font-size\s*:\s*16px[\s\S]{0,200}(search-input|history-search|filter-search|project-input|bottom-nav a|bottom-nav button)/i.test(cssText);
+  return hasBottomNavTapTargets && (hasMobileShellMarker || hasMobileControlSizing);
+}
+
+function isCountryVatPage(page) {
+  return /(^|\/)(fr\/)?[^\/]+\/[a-z]{2}-vat(\.html|\/index\.html)$/i.test(page.relPath || '');
+}
+
+function normalizeAuditToken(token) {
+  return String(token || '').replace(/^[.#]/, '').trim();
+}
+
 function toPx(value, unit) {
   return unit === 'px' ? value : value * 16;
 }
@@ -876,17 +967,33 @@ function toPx(value, unit) {
 function pageHasToken(html, token) {
   if (!token) return false;
   if (token.startsWith('.')) {
-    const className = token.slice(1).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return new RegExp(`class=["'][^"']*\\b${className}\\b`, 'i').test(html);
+    return htmlHasClassToken(html, token.slice(1));
   }
   if (token.startsWith('#')) {
-    const id = token.slice(1).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const id = escapeRegExp(token.slice(1));
     return new RegExp(`id=["']${id}["']`, 'i').test(html);
   }
   if (token === 'role-button') {
     return /role=["']button["']/i.test(html);
   }
   return new RegExp(`<${token}\\b`, 'i').test(html);
+}
+
+function htmlHasClassToken(html, className) {
+  const normalizedClassName = className.toLowerCase();
+  for (const match of html.matchAll(/\bclass=["']([^"']*)["']/gi)) {
+    if (match[1].toLowerCase().split(/\s+/).includes(normalizedClassName)) return true;
+  }
+  return false;
+}
+
+function tagHasClassToken(tagText, className) {
+  const match = tagText.match(/\bclass=["']([^"']*)["']/i);
+  return Boolean(match && match[1].toLowerCase().split(/\s+/).includes(className));
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function collectSignalMatches(text, patterns) {

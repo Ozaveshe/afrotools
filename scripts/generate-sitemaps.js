@@ -10,6 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const { fileToPublicRoute } = require('./lib/canonical-aliases');
+
 const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -19,7 +21,7 @@ const EXTRA_SITEMAPS = ['sitemap-cars.xml', 'jamb/sitemap.xml'];
 const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
   '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
-  'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
+  'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
   'afrotools-sentinel', 'prompts', 'docs', 'cars', 'jamb'
 ]);
 
@@ -55,22 +57,18 @@ function findHtmlFiles(dir, files = []) {
  * Convert file path to URL
  */
 function fileToUrl(filePath) {
-  let rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
-
-  // index.html -> directory URL
-  if (rel.endsWith('/index.html')) {
-    rel = rel.replace(/index\.html$/, '');
-  } else if (rel === 'index.html') {
-    rel = '';
-  }
-  // Other .html files keep extension but add trailing context
-  // e.g. nigeria/ng-paye.html -> /nigeria/ng-paye.html
-
-  return `${BASE_URL}/${rel}`;
+  return `${BASE_URL}${fileToPublicRoute(filePath)}`;
 }
 
 function formatDate(date) {
   return new Date(date).toISOString().slice(0, 10);
+}
+
+function normalizeSitemapLastmod(date) {
+  const formatted = formatDate(date);
+  const ageMs = Date.now() - new Date(formatted).getTime();
+  const ageDays = ageMs / 86400000;
+  return ageDays > 7 ? TODAY : formatted;
 }
 
 function extractCanonicalHref(html) {
@@ -97,37 +95,37 @@ function normalizePathForCompare(value) {
 
 function inspectHtmlFile(filePath) {
   const html = fs.readFileSync(filePath, 'utf8');
-  let url = fileToUrl(filePath);
+  const url = fileToUrl(filePath);
   const currentPath = normalizePathForCompare(new URL(url).pathname);
   const canonicalHref = extractCanonicalHref(html);
   let canonicalPath = null;
-  let canonicalUrl = null;
 
   if (canonicalHref) {
     try {
-      canonicalUrl = new URL(canonicalHref, BASE_URL);
-      canonicalPath = normalizePathForCompare(canonicalUrl.pathname);
+      const canonicalUrl = new URL(canonicalHref, BASE_URL);
+      if (canonicalUrl.origin === BASE_URL) {
+        canonicalPath = normalizePathForCompare(canonicalUrl.pathname);
+      }
     } catch {
       canonicalPath = normalizePathForCompare(canonicalHref);
     }
   }
 
+  const headEnd = html.search(/<\/head>/i);
+  const snippet = headEnd === -1 ? html.slice(0, 2500) : html.slice(0, headEnd + 7);
   const redirectLike =
     /<meta[^>]+http-equiv=["']refresh["']/i.test(html) ||
-    /window\.location\.(replace|href)|location\.replace\(/i.test(html);
+    /window\.location\.replace\(\s*['"][^'"]+['"]\s*\)/i.test(snippet) ||
+    /location\.replace\(\s*['"][^'"]+['"]\s*\)/i.test(snippet) ||
+    /window\.location(?:\.href)?\s*=\s*['"][^'"]+['"]/i.test(snippet) ||
+    /location\.href\s*=\s*['"][^'"]+['"]/i.test(snippet);
   const noindex = hasNoindex(html);
-
-  const extensionlessCanonicalMatch =
-    currentPath.endsWith('.html') &&
-    canonicalPath === currentPath.replace(/\.html$/i, '');
-  const canonicalMismatch = canonicalPath && canonicalPath !== currentPath && !extensionlessCanonicalMatch;
-  if (extensionlessCanonicalMatch && canonicalUrl && canonicalUrl.origin === BASE_URL) {
-    url = canonicalUrl.href;
-  }
+  const canonicalMismatch = canonicalPath && canonicalPath !== currentPath;
 
   return {
     url,
-    lastmod: formatDate(fs.statSync(filePath).mtime),
+    normalizedKey: currentPath,
+    lastmod: normalizeSitemapLastmod(fs.statSync(filePath).mtime),
     exclude: redirectLike || canonicalMismatch || noindex,
   };
 }
@@ -229,9 +227,20 @@ for (const filePath of filtered) {
 function dedupeEntries(entries) {
   const byUrl = new Map();
   for (const entry of entries) {
-    const existing = byUrl.get(entry.url);
-    if (!existing || entry.lastmod > existing.lastmod) {
-      byUrl.set(entry.url, entry);
+    const key = entry.normalizedKey || entry.url;
+    const existing = byUrl.get(key);
+
+    if (!existing) {
+      byUrl.set(key, entry);
+      continue;
+    }
+
+    const preferCurrent =
+      (existing.url.endsWith('/') && !entry.url.endsWith('/')) ||
+      (existing.url.endsWith('/') === entry.url.endsWith('/') && entry.lastmod > existing.lastmod);
+
+    if (preferCurrent) {
+      byUrl.set(key, entry);
     }
   }
   return [...byUrl.values()];
@@ -337,7 +346,7 @@ for (const extraFile of EXTRA_SITEMAPS) {
 
   sitemapFileNames.push({
     file: extraFile.replace(/\\/g, '/'),
-    lastmod: formatDate(fs.statSync(fullPath).mtime),
+    lastmod: normalizeSitemapLastmod(fs.statSync(fullPath).mtime),
   });
 }
 

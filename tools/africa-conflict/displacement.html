@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Displacement Tracker — AfroConflict | AfroTools</title>
 <meta name="description" content="Track conflict-driven displacement across Africa — IDPs, refugees, asylum seekers, and returnees. Data from UNHCR and IDMC.">
-<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/displacement/">
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/displacement">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Displacement Tracker - AfroConflict | AfroTools">
 <meta property="og:description" content="Track conflict-driven displacement across Africa - IDPs, refugees, asylum seekers, and returnees. Data from UNHCR and IDMC.">
@@ -12,7 +12,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/displacement/">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/displacement">
 <meta property="og:site_name" content="AfroTools">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
@@ -23,10 +23,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=4260f20e">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" defer></script>
 <script src="/engines/africa-conflict-engine.js?v=9f32d23d" defer></script>
+<script src="/tools/africa-conflict/static-routes.js?v=20260424a" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
@@ -41,8 +42,8 @@
       </div>
       <nav class="acd-hero-nav">
         <a href="/tools/africa-conflict/">Dashboard</a>
-        <a href="/tools/africa-conflict/displacement.html" class="active">Displacement</a>
-        <a href="/tools/africa-conflict/methodology.html">Methodology</a>
+        <a href="/tools/africa-conflict/displacement/" class="active">Displacement</a>
+        <a href="/tools/africa-conflict/methodology/">Methodology</a>
       </nav>
     </div>
   </div>
@@ -75,10 +76,17 @@
   </div>
 </main>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=5a869583" defer></script>
-<script src="/assets/js/components/footer.js?v=bd815d9c" defer></script>
+<script src="/assets/js/components/navbar.js?v=ad90a313" defer></script>
+<script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
 <script>
 (function(){
+  function conflictUrl(slug) {
+    if (window.AfroConflictStaticRoutes && typeof window.AfroConflictStaticRoutes.conflict === 'function') {
+      return window.AfroConflictStaticRoutes.conflict(slug);
+    }
+    return '/tools/africa-conflict/detail.html?id=' + encodeURIComponent(slug || '');
+  }
+
   async function load() {
     var res = await fetch('/api/conflicts');
     var json = await res.json();
@@ -118,7 +126,7 @@
       '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem"><thead><tr style="border-bottom:2px solid var(--acd-border)"><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Conflict</th><th style="padding:8px;text-align:right;color:var(--acd-text-dim)">IDPs</th><th style="padding:8px;text-align:right;color:var(--acd-text-dim)">Refugees</th><th style="padding:8px;text-align:right;color:var(--acd-text-dim)">Total</th><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Source</th></tr></thead><tbody>' +
       sorted.map(function(c){
         var total = (c.idps_count||0)+(c.refugees_count||0);
-        return '<tr style="border-bottom:1px solid var(--acd-border)"><td style="padding:8px">'+AfroConflict.flagEmoji(c.primary_country)+' <a href="/tools/africa-conflict/detail.html?id='+c.slug+'" style="color:var(--acd-accent)">'+(c.short_name||c.name)+'</a></td><td style="padding:8px;text-align:right">'+AfroConflict.formatNumber(c.idps_count)+'</td><td style="padding:8px;text-align:right">'+AfroConflict.formatNumber(c.refugees_count)+'</td><td style="padding:8px;text-align:right;font-weight:700">'+AfroConflict.formatNumber(total)+'</td><td style="padding:8px;font-size:.72rem;color:var(--acd-text-dim)">'+(c.displacement_source||'—')+'</td></tr>';
+        return '<tr style="border-bottom:1px solid var(--acd-border)"><td style="padding:8px">'+AfroConflict.flagEmoji(c.primary_country)+' <a href="'+conflictUrl(c.slug)+'" style="color:var(--acd-accent)">'+(c.short_name||c.name)+'</a></td><td style="padding:8px;text-align:right">'+AfroConflict.formatNumber(c.idps_count)+'</td><td style="padding:8px;text-align:right">'+AfroConflict.formatNumber(c.refugees_count)+'</td><td style="padding:8px;text-align:right;font-weight:700">'+AfroConflict.formatNumber(total)+'</td><td style="padding:8px;font-size:.72rem;color:var(--acd-text-dim)">'+(c.displacement_source||'—')+'</td></tr>';
       }).join('') + '</tbody></table></div>';
   }
   document.addEventListener('DOMContentLoaded', function(){ AfroConflict.init(); load(); });

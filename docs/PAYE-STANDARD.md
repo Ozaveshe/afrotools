@@ -141,6 +141,17 @@ The page must retry sync after:
 
 This avoids the failure mode where the navbar knows the user is signed in but the calculator still behaves like a guest.
 
+Shared browser sync clients must also support both auth paths:
+
+- bearer-token auth when `AfroAuth` has a live session token
+- secure cookie auth when the browser has an `afro_session` or `afro_refresh` session but no fresh local bearer token yet
+
+For `/api/favorites`, `/api/history`, and `/api/workspace`:
+
+- send requests with `credentials: 'same-origin'`
+- include `Authorization: Bearer ...` only when a token is actually available
+- accept server-side cookie-session refresh so dashboard sync does not fail just because local token hydration lags behind navbar auth state
+
 ## Dashboard Contract
 
 The dashboard should treat PAYE pages as first-class data sources.

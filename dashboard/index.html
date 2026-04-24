@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="manifest" href="/manifest.json">
@@ -12,12 +12,12 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, and financial insights across Africa.">
+    <meta name="description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, workspace items, and AfroPoints contribution status across Africa.">
     <title>My Dashboard | AfroTools</title>
-    <link rel="stylesheet" href="/assets/css/design-system.css?v=34e1b1e7">
+    <link rel="stylesheet" href="/assets/css/design-system.css?v=8c8b64ec">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-    <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-    <link rel="stylesheet" href="/assets/css/dashboard.css?v=4a1ba096">
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+    <link rel="stylesheet" href="/assets/css/dashboard.css?v=844a7bfe">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Instrument+Serif:ital@0;1&display=swap">
@@ -582,6 +582,188 @@
             gap: 6px;
         }
 
+        /* Dashboard action center */
+        .dashboard-action-center {
+            background: var(--dash-bg-card, #fff);
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: var(--dash-radius, 16px);
+            padding: 24px;
+            margin-bottom: 28px;
+            box-shadow: var(--dash-shadow-sm);
+            animation: dashFadeUp 400ms ease-out both;
+            animation-delay: 120ms;
+        }
+        .dash-action-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 16px;
+        }
+        .dash-action-kicker {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--dash-accent, #007AFF);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .dash-action-title {
+            margin: 0;
+            color: var(--dash-text-primary, #0A1628);
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+        .dash-action-copy {
+            margin: 6px 0 0;
+            color: var(--dash-text-secondary, #5B6B82);
+            font-size: 0.88rem;
+            line-height: 1.5;
+            max-width: 720px;
+        }
+        .dash-action-refresh {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 38px;
+            padding: 9px 14px;
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: var(--dash-radius-sm, 10px);
+            background: var(--dash-bg-subtle, #F4F7FB);
+            color: var(--dash-text-secondary, #5B6B82);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--dash-transition, 220ms ease);
+            white-space: nowrap;
+        }
+        .dash-action-refresh:hover {
+            border-color: var(--dash-accent, #007AFF);
+            color: var(--dash-accent, #007AFF);
+            background: var(--dash-bg-card, #fff);
+        }
+        .dash-action-refresh:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+        .dash-action-refresh svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+        .dash-action-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .dash-status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 30px;
+            padding: 6px 10px;
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: 999px;
+            background: var(--dash-bg-subtle, #F4F7FB);
+            color: var(--dash-text-secondary, #5B6B82);
+            font-size: 0.76rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .dash-status-chip::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dash-text-muted, #8E9BB3);
+        }
+        .dash-status-chip.good::before { background: #059669; }
+        .dash-status-chip.warn::before { background: #F59E0B; }
+        .dash-status-chip.info::before { background: var(--dash-accent, #007AFF); }
+        .dash-action-list {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .dash-action-item {
+            min-width: 0;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 17px;
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: var(--dash-radius-sm, 10px);
+            background: linear-gradient(180deg, var(--dash-bg-card, #fff), var(--dash-bg-subtle, #F4F7FB));
+            transition: border-color var(--dash-transition, 220ms ease), box-shadow var(--dash-transition, 220ms ease), transform var(--dash-transition, 220ms ease);
+        }
+        .dash-action-item:hover {
+            border-color: color-mix(in srgb, var(--dash-accent) 28%, var(--dash-border));
+            box-shadow: var(--dash-shadow-md);
+            transform: translateY(-1px);
+        }
+        .dash-action-item.primary {
+            border-color: color-mix(in srgb, var(--dash-accent) 28%, var(--dash-border));
+            background: linear-gradient(180deg, #F8FBFF, #EFF6FF);
+        }
+        .dash-action-tag {
+            color: var(--dash-text-muted, #8E9BB3);
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .dash-action-label {
+            margin-top: 5px;
+            color: var(--dash-text-primary, #0A1628);
+            font-size: 0.95rem;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+        .dash-action-detail {
+            margin-top: 6px;
+            color: var(--dash-text-secondary, #5B6B82);
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+        .dash-action-cta {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 8px 12px;
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: var(--dash-radius-xs, 8px);
+            background: var(--dash-bg-card, #fff);
+            color: var(--dash-accent, #007AFF);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--dash-transition, 220ms ease);
+        }
+        .dash-action-cta:hover {
+            border-color: var(--dash-accent, #007AFF);
+            background: var(--dash-accent, #007AFF);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1100px) {
+            .dash-action-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         /* ── 2-Column Dashboard Grid ── */
         .dash-main-grid {
             display: grid;
@@ -829,6 +1011,222 @@
         .tool-icon { font-size: 1.8rem; margin-bottom: 8px; }
         .quick-access-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; color: var(--dash-text-primary, #0A1628); }
         .quick-access-date { font-size: 0.72rem; color: var(--dash-text-muted, #8E9BB3); }
+
+        /* AfroPoints account lane */
+        .afropoints-lane {
+            background: var(--dash-bg-card, #fff);
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: var(--dash-radius-sm, 10px);
+            box-shadow: var(--dash-shadow-sm);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .afropoints-lane-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--dash-border, #E8EDF5);
+            background: linear-gradient(135deg, rgba(0,122,255,.06), rgba(245,158,11,.06));
+        }
+        .afropoints-lane-kicker {
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--dash-accent, #007AFF);
+            margin-bottom: 4px;
+        }
+        .afropoints-lane-title {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: var(--dash-text-primary, #0A1628);
+            line-height: 1.25;
+            margin: 0;
+        }
+        .afropoints-lane-copy {
+            font-size: .84rem;
+            color: var(--dash-text-secondary, #5B6B82);
+            margin-top: 4px;
+            max-width: 680px;
+            line-height: 1.55;
+        }
+        .afropoints-lane-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+        .afropoints-action,
+        .afropoints-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 34px;
+            border-radius: 999px;
+            font-size: .76rem;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .afropoints-action {
+            padding: 8px 13px;
+            background: var(--dash-accent, #007AFF);
+            color: #fff;
+        }
+        .afropoints-action.secondary {
+            color: var(--dash-accent, #007AFF);
+            background: #fff;
+            border: 1px solid rgba(0,122,255,.18);
+        }
+        .afropoints-lane-body {
+            padding: 18px 22px 22px;
+        }
+        .afropoints-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .afropoints-metric {
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: var(--dash-radius-sm, 10px);
+            padding: 13px 14px;
+            background: #fff;
+            min-height: 94px;
+        }
+        .afropoints-metric-label {
+            font-size: .66rem;
+            font-weight: 800;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--dash-text-muted, #8E9BB3);
+            margin-bottom: 6px;
+        }
+        .afropoints-metric-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--dash-text-primary, #0A1628);
+            line-height: 1.15;
+        }
+        .afropoints-metric-note {
+            margin-top: 5px;
+            color: var(--dash-text-secondary, #5B6B82);
+            font-size: .74rem;
+            line-height: 1.45;
+        }
+        .afropoints-progress {
+            height: 8px;
+            background: #E8EDF5;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .afropoints-progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--dash-accent, #007AFF), #F59E0B);
+            border-radius: inherit;
+        }
+        .afropoints-workflow {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 14px;
+        }
+        .afropoints-panel {
+            border: 1px solid var(--dash-border, #E8EDF5);
+            border-radius: var(--dash-radius-sm, 10px);
+            background: var(--dash-bg-subtle, #F4F7FB);
+            padding: 15px;
+        }
+        .afropoints-panel-title {
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--dash-text-muted, #8E9BB3);
+            margin-bottom: 10px;
+        }
+        .afropoints-next-title {
+            font-size: .98rem;
+            font-weight: 800;
+            color: var(--dash-text-primary, #0A1628);
+            line-height: 1.3;
+        }
+        .afropoints-next-meta {
+            margin-top: 4px;
+            color: var(--dash-text-secondary, #5B6B82);
+            font-size: .82rem;
+            line-height: 1.55;
+        }
+        .afropoints-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .afropoints-chip {
+            padding: 6px 10px;
+            background: #fff;
+            color: var(--dash-text-secondary, #5B6B82);
+            border: 1px solid var(--dash-border, #E8EDF5);
+        }
+        .afropoints-chip.warn {
+            background: rgba(245,158,11,.1);
+            color: #92400e;
+            border-color: rgba(245,158,11,.22);
+        }
+        .afropoints-chip.good {
+            background: rgba(34,197,94,.1);
+            color: #166534;
+            border-color: rgba(34,197,94,.22);
+        }
+        .afropoints-chip.info {
+            background: rgba(0,122,255,.08);
+            color: var(--dash-accent, #007AFF);
+            border-color: rgba(0,122,255,.18);
+        }
+        .afropoints-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .afropoints-activity-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(226,232,240,.82);
+            font-size: .82rem;
+            color: var(--dash-text-secondary, #5B6B82);
+        }
+        .afropoints-activity-row:last-child { border-bottom: none; }
+        .afropoints-activity-main { min-width: 0; }
+        .afropoints-activity-name {
+            display: block;
+            font-weight: 800;
+            color: var(--dash-text-primary, #0A1628);
+            line-height: 1.35;
+        }
+        .afropoints-activity-meta {
+            display: block;
+            font-size: .74rem;
+            color: var(--dash-text-muted, #8E9BB3);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .afropoints-state {
+            padding: 22px;
+            text-align: center;
+            color: var(--dash-text-secondary, #5B6B82);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
 
         /* Saved Calculations */
         .saved-items {
@@ -1114,6 +1512,18 @@
             .qc-grid {
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             }
+            .dash-action-head {
+                flex-direction: column;
+            }
+            .dash-action-refresh {
+                width: 100%;
+            }
+            .dash-action-list {
+                grid-template-columns: 1fr;
+            }
+            .dash-action-item {
+                min-height: 0;
+            }
             .rec-grid {
                 grid-template-columns: 1fr;
             }
@@ -1130,6 +1540,17 @@
             }
             .quick-access-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            .afropoints-lane-head,
+            .afropoints-workflow {
+                display: block;
+            }
+            .afropoints-lane-actions {
+                justify-content: flex-start;
+                margin-top: 14px;
+            }
+            .afropoints-metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
@@ -1413,6 +1834,31 @@
             .nudge-card { background: linear-gradient(135deg, #0F1D2E 0%, #0D1F17 100%); border-color: #1E3A5F; }
             .nudge-title { color: #E2E8F0; }
             .nudge-desc { color: #94A3B8; }
+            .dashboard-action-center { background: #131D2E; border-color: #1E2D40; }
+            .dash-action-title { color: #E2E8F0; }
+            .dash-action-copy,
+            .dash-action-detail { color: #94A3B8; }
+            .dash-action-refresh,
+            .dash-status-chip,
+            .dash-action-cta {
+                background: #0F1D2E;
+                border-color: #1E2D40;
+                color: #94A3B8;
+            }
+            .dash-action-refresh:hover,
+            .dash-action-cta:hover {
+                border-color: #4DA3FF;
+                background: #4DA3FF;
+                color: #0A1628;
+            }
+            .dash-action-item,
+            .dash-action-item.primary {
+                background: linear-gradient(180deg, #131D2E, #0F1D2E);
+                border-color: #1E2D40;
+            }
+            .dash-action-item:hover { border-color: #4DA3FF; }
+            .dash-action-label { color: #E2E8F0; }
+            .dash-action-tag { color: #64748B; }
             .snapshot-card { background: #131D2E; border-color: #1E2D40; }
             .snapshot-card:hover { border-color: #4DA3FF; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
             .snapshot-card-label { color: #64748B; }
@@ -1438,7 +1884,7 @@
         @media print {
             nav, footer, .mobile-nav, .btn, .fab, [data-no-print],
             .btn-edit-profile, .btn-logout, .profile-editor, .nudge-card,
-            .pro-upsell, .toast-container, .breadcrumb { display: none !important; }
+            .dashboard-action-center, .pro-upsell, .toast-container, .breadcrumb { display: none !important; }
             body { background: white; color: black; font-size: 12pt; }
             .card, .profile-header, .stat-card, .qc-card, .saved-item,
             .market-card, .whatsnew-card, .snapshot-card, .snapshot-item {
@@ -1454,16 +1900,17 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My Dashboard | AfroTools">
-<meta name="twitter:description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, and financial insights across Africa.">
+<meta name="twitter:description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, workspace items, and AfroPoints contribution status across Africa.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 
 
 <meta property="og:title" content="My Dashboard | AfroTools">
-<meta property="og:description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, and financial insights across Africa.">
+<meta property="og:description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, workspace items, and AfroPoints contribution status across Africa.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="article:modified_time" content="2026-03-28">
+<meta property="og:url" content="https://afrotools.com/dashboard/">
 </head>
 <body>
     <afro-navbar></afro-navbar>
@@ -1482,7 +1929,7 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--dash-accent,#007AFF)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
             <h1 style="font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;color:var(--dash-text-primary,#0A1628);letter-spacing:-.02em;">Sign in to your dashboard</h1>
-            <p style="color:var(--dash-text-secondary,#5B6B82);margin-bottom:2rem;font-size:0.92rem;line-height:1.5;">Access your saved calculations, favorite tools, and personalized recommendations.</p>
+            <p style="color:var(--dash-text-secondary,#5B6B82);margin-bottom:2rem;font-size:0.92rem;line-height:1.5;">Access your saved calculations, favorite tools, workspace items, and AfroPoints contribution status from one account dashboard.</p>
             <button onclick="AfroAuth.openModal()" style="max-width:300px;margin:0 auto;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:var(--dash-accent,#007AFF);color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(0,122,255,.2);transition:all 220ms ease;">
                 Sign in to get started
             </button>
@@ -1695,6 +2142,23 @@
             <!-- Profile Nudge -->
             <div id="profileNudge" style="display:none;"></div>
 
+            <!-- Dashboard Action Center -->
+            <section class="dashboard-action-center" id="dashboardActionCenter" aria-labelledby="dashboardActionTitle">
+                <div class="dash-action-head">
+                    <div>
+                        <span class="dash-action-kicker">Dashboard updates</span>
+                        <h2 class="dash-action-title" id="dashboardActionTitle">Start from here</h2>
+                        <p class="dash-action-copy" id="dashboardActionCopy">Checking your profile, saved work, and account sync.</p>
+                    </div>
+                    <button class="dash-action-refresh" type="button" onclick="refreshDashboardView()" aria-label="Refresh dashboard data">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4"/><path d="M6 22v-4h4"/></svg>
+                        <span>Refresh</span>
+                    </button>
+                </div>
+                <div class="dash-action-meta" id="dashboardActionMeta" aria-live="polite"></div>
+                <div class="dash-action-list" id="dashboardActionList"></div>
+            </section>
+
             <!-- ═══════ MY NUMBERS COMMAND CENTER ═══════ -->
             <div class="mn-header" id="mnHeader" style="display:none;"></div>
 
@@ -1703,6 +2167,15 @@
               <h2 class="section-title" style="margin-bottom:0;">Your Numbers</h2>
             </div>
             <div class="mn-summary-scroll" id="mnSummaryCards"></div>
+
+            <!-- AfroPoints account lane -->
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">AfroPoints</h2>
+              <a href="/tools/afropoints/" class="section-link">Open contributor cockpit &#8594;</a>
+            </div>
+            <section class="afropoints-lane" id="dashboardAfroPointsLane" aria-live="polite">
+              <div class="afropoints-state">Loading your contribution status...</div>
+            </section>
 
             <!-- Main 2-Column Grid: Activity + Sidebar -->
             <div class="dash-main-grid">
@@ -1804,17 +2277,19 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
-    <script src="/assets/js/components/tool-registry.min.js?v=8e392061" defer></script>
+    <script src="/assets/js/components/tool-registry.min.js?v=26372685" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js?v=0580d293"></script>
-    <script src="/assets/js/afro-history.js?v=a5b9c3e9"></script>
-    <script src="/assets/js/lib/saved-tools.js?v=45f6c572" defer></script>
+    <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
+    <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
     <script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
     <script src="/assets/js/tax-calendar.js?v=be0e44a9"></script>
     <script src="/assets/js/dashboard.js?v=c9eef2d3"></script>
-    <script src="/dashboard/dashboard-app.js?v=abe707f6"></script>
-    <script src="/assets/js/components/navbar.min.js?v=cd2d4746"></script>
-    <script src="/assets/js/components/footer.min.js?v=f68d6568"></script>
+    <script src="/engines/afropoints-engine.js?v=2"></script>
+    <script src="/dashboard/dashboard-app.js?v=05100b7e"></script>
+    <script src="/dashboard/afropoints-lane.js?v=20260424"></script>
+    <script src="/assets/js/components/navbar.min.js?v=ce75def6"></script>
+    <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
     <script>
         let currentUser = null;
@@ -1823,6 +2298,7 @@
         let selectedInterests = [];
         let editorOpen = false;
         let dashboardCache = { forex: null, fuel: null, rates: null };
+        let dashboardWorkspaceState = { status: 'idle', count: null, items: [], loadedAt: null };
 
         const COUNTRY_CURRENCY_MAP = {
             'NG':'NGN','KE':'KES','ZA':'ZAR','GH':'GHS','EG':'EGP','TZ':'TZS','UG':'UGX','RW':'RWF',
@@ -2291,6 +2767,7 @@
                     loadCountrySnapshot();
                     renderQuickCalculate();
                 }
+                renderActionCenter();
             } else {
                 showToast(result.error || 'Failed to save profile', 'error');
             }
@@ -2430,6 +2907,9 @@
             if (window.DashboardApp) {
                 try { DashboardApp.init(); } catch(e) { console.warn('DashboardApp:', e); }
             }
+            if (window.DashboardAfroPointsLane) {
+                try { DashboardAfroPointsLane.refresh(); } catch(e) { console.warn('DashboardAfroPointsLane:', e); }
+            }
             loadDashboardData();
             if (window.AfroDashboard) {
                 try {
@@ -2456,6 +2936,7 @@
                     loadCountrySnapshot();
                     renderQuickCalculate();
                     renderWhatsNew();
+                    renderActionCenter();
                 }
             } catch(e) {}
 
@@ -2473,9 +2954,11 @@
                 loadCountrySnapshot();
                 renderQuickCalculate();
                 renderWhatsNew();
+                renderActionCenter();
             } else if (!extendedProfile || Object.keys(extendedProfile).length === 0) {
                 // No data anywhere — show empty completeness
                 updateCompletenessRing(calculateCompleteness(currentUser, {}));
+                renderActionCenter();
             }
         }
 
@@ -2504,6 +2987,15 @@
             }
             window.addEventListener('afro-auth-change', handleAuthChange);
             document.addEventListener('afro-auth-change', handleAuthChange);
+            window.addEventListener('afro-favorites-change', function() {
+                renderMyWorkspace();
+                updateQuickStats();
+                renderActionCenter();
+            });
+            window.addEventListener('afro-workspace-change', function() {
+                refreshWorkspaceSummary(true);
+                renderMyWorkspace();
+            });
         }
 
         async function handleLogout() {
@@ -2528,6 +3020,8 @@
             loadSavedCalculations();
             updateQuickStats();
             renderWhatsNew();
+            renderActionCenter();
+            refreshWorkspaceSummary();
             toggleSectionVisibility();
         }
 
@@ -2625,6 +3119,409 @@
                 dashboardCache.fuel = results[1];
                 dashboardCache.rates = results[2];
             } catch(e) { console.warn('[Dashboard] data fetch error:', e); }
+        }
+
+        function dashReadText(key) {
+            try { return localStorage.getItem(key) || ''; } catch(e) { return ''; }
+        }
+
+        function dashReadJson(key, fallback) {
+            try {
+                var raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : fallback;
+            } catch(e) {
+                return fallback;
+            }
+        }
+
+        function dashEscapeHtml(value) {
+            return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+            });
+        }
+
+        function dashSafeHref(href) {
+            var text = String(href || '').trim();
+            if (!text) return '/tools/';
+            if (text.charAt(0) === '/' || text.charAt(0) === '#') return text.replace(/"/g, '%22');
+            return '/tools/';
+        }
+
+        function dashPlural(count, singular, plural) {
+            return count + ' ' + (count === 1 ? singular : (plural || singular + 's'));
+        }
+
+        function dashTimeAgo(value) {
+            var ts = new Date(value).getTime();
+            if (!Number.isFinite(ts)) return 'Recently';
+            var diff = Date.now() - ts;
+            if (diff < 3600000) return 'Today';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+            var days = Math.floor(diff / 86400000);
+            if (days < 30) return days + 'd ago';
+            return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function getDashboardWorkspaceCounts() {
+            var favorites = dashReadJson('afro_favs_v2', []);
+            if (!Array.isArray(favorites)) favorites = [];
+
+            var cvs = dashReadJson('afro_cv_list', []);
+            if (!Array.isArray(cvs)) cvs = [];
+
+            var plans = dashReadJson('afro_fp_list', []);
+            if (!Array.isArray(plans)) plans = [];
+
+            var docs = 0;
+            ['afro_invoice_draft', 'afro_cv_data', 'cv_builder_data', 'afro_paye_saved', 'afro_markdown_draft', 'markdown_content'].forEach(function(key) {
+                if (dashReadText(key)) docs += 1;
+            });
+
+            var savedCalcs = 0;
+            try {
+                if (typeof AfroData !== 'undefined' && AfroData.getAllSaved) {
+                    var allSaved = AfroData.getAllSaved() || {};
+                    Object.keys(allSaved).forEach(function(id) {
+                        savedCalcs += (allSaved[id] && allSaved[id].count) ? allSaved[id].count : 1;
+                    });
+                }
+            } catch(e) {}
+
+            var localTotal = favorites.length + cvs.length + plans.length + docs + savedCalcs;
+            var cloudTotal = typeof dashboardWorkspaceState.count === 'number' ? dashboardWorkspaceState.count : null;
+            return {
+                favorites: favorites.length,
+                cvs: cvs.length,
+                plans: plans.length,
+                docs: docs,
+                savedCalcs: savedCalcs,
+                localTotal: localTotal,
+                cloudTotal: cloudTotal,
+                total: cloudTotal === null ? localTotal : Math.max(localTotal, cloudTotal)
+            };
+        }
+
+        function getDashboardSyncMeta(counts) {
+            if (!currentUser) {
+                return {
+                    label: 'Device-only workspace',
+                    tone: 'warn',
+                    copy: 'Your saved work is visible on this browser. Sign in to sync it across devices.'
+                };
+            }
+            if (dashboardWorkspaceState.status === 'synced') {
+                return {
+                    label: 'Cloud workspace ready',
+                    tone: 'good',
+                    copy: 'Your profile, saved tools, and workspace are connected to this account.'
+                };
+            }
+            if (dashboardWorkspaceState.status === 'loading') {
+                return {
+                    label: 'Checking cloud sync',
+                    tone: 'info',
+                    copy: 'Your local dashboard is ready while account workspace sync is being checked.'
+                };
+            }
+            if (dashboardWorkspaceState.status === 'error') {
+                return {
+                    label: 'Cloud sync needs refresh',
+                    tone: 'warn',
+                    copy: 'Your local dashboard is available, but the cloud workspace could not be confirmed for this session.'
+                };
+            }
+            if (counts.localTotal > 0) {
+                return {
+                    label: 'Local workspace active',
+                    tone: 'info',
+                    copy: 'Your saved work is loaded locally. Use refresh to check for newer account data.'
+                };
+            }
+            return {
+                label: 'Account loaded',
+                tone: 'info',
+                copy: 'Your dashboard is ready. Start a tool or save a result to build your workspace.'
+            };
+        }
+
+        function getDashboardRecentTool() {
+            try {
+                if (typeof AfroData === 'undefined' || !AfroData.getRecentTools) return null;
+                var recent = AfroData.getRecentTools()[0];
+                if (!recent || !recent.toolId) return null;
+                var regTool = (typeof AFRO_TOOLS !== 'undefined') ? AFRO_TOOLS.find(function(t) { return t.id === recent.toolId; }) : null;
+                var meta = toolMetadata[recent.toolId] || {};
+                return {
+                    id: recent.toolId,
+                    name: (regTool && regTool.name) || meta.name || recent.toolId.replace(/-/g, ' '),
+                    href: (regTool && regTool.href) || ('/tools/' + encodeURIComponent(recent.toolId) + '/'),
+                    time: dashTimeAgo(recent.date)
+                };
+            } catch(e) {
+                return null;
+            }
+        }
+
+        function getDashboardRecommendedTool(excludeIds) {
+            if (typeof AFRO_TOOLS === 'undefined') return null;
+            var exclude = excludeIds || [];
+            var interests = (extendedProfile && extendedProfile.interests) || selectedInterests || [];
+            var loc = resolveCountry();
+            var interestCategories = {};
+            interests.forEach(function(intId) {
+                var opt = INTEREST_OPTIONS.find(function(o) { return o.id === intId; });
+                if (opt) opt.categories.forEach(function(cat) { interestCategories[cat] = true; });
+            });
+
+            var scored = AFRO_TOOLS.filter(function(t) {
+                return (t.status === 'live' || t.status === 'new') && exclude.indexOf(t.id) === -1;
+            }).map(function(t) {
+                var score = (t.priority || 0) / 10;
+                var countries = t.countries || [];
+                if (interestCategories[t.category]) score += 10;
+                if (loc.code && (countries.indexOf('ALL') !== -1 || countries.indexOf(loc.code) !== -1)) score += 5;
+                if (t.status === 'new') score += 2;
+                return { tool: t, score: score };
+            }).sort(function(a, b) { return b.score - a.score; });
+
+            return scored.length ? scored[0].tool : null;
+        }
+
+        function getDashboardPrimaryTool() {
+            if (typeof AFRO_TOOLS !== 'undefined') {
+                var loc = resolveCountry();
+                if (loc.code) {
+                    var countryPaye = AFRO_TOOLS.find(function(t) {
+                        var countries = t.countries || [];
+                        return (t.status === 'live' || t.status === 'new') &&
+                            t.category === 'financial' &&
+                            countries.indexOf(loc.code) !== -1 &&
+                            (t.id.indexOf('paye') !== -1 || t.id.indexOf('salary-tax') !== -1);
+                    });
+                    if (countryPaye) return countryPaye;
+                }
+            }
+            return { id: 'salary-tax', name: 'Salary Tax Calculator', href: '/salary-tax/', desc: 'Run your first tax scenario.' };
+        }
+
+        function buildDashboardActions(pct, counts) {
+            var actions = [];
+            var seen = {};
+            function add(action) {
+                var key = action.key || action.href || action.label;
+                if (!key || seen[key]) return;
+                seen[key] = true;
+                actions.push(action);
+            }
+
+            if (pct < 80) {
+                var missing = [];
+                var p = extendedProfile || {};
+                var loc = resolveCountry();
+                var interests = p.interests || [];
+                if (!loc.code) missing.push('country');
+                if (interests.length < 3) missing.push('interests');
+                if (!p.job_title) missing.push('job title');
+                if (!p.industry) missing.push('industry');
+                add({
+                    key: 'profile',
+                    tag: 'Profile',
+                    label: pct < 20 ? 'Set up your dashboard' : 'Complete your profile',
+                    detail: missing.length ? 'Add ' + missing.slice(0, 3).join(', ') + ' so recommendations and market data match you.' : 'A few more profile details will improve recommendations.',
+                    cta: 'Edit profile',
+                    action: 'profile',
+                    tone: 'primary'
+                });
+            }
+
+            var recent = getDashboardRecentTool();
+            if (recent) {
+                add({
+                    key: 'recent-' + recent.id,
+                    tag: 'Continue',
+                    label: recent.name,
+                    detail: 'Last opened ' + recent.time + '. Pick up from your recent workflow.',
+                    cta: 'Open tool',
+                    href: recent.href
+                });
+            }
+
+            if (counts.total > 0) {
+                add({
+                    key: 'workspace',
+                    tag: 'Workspace',
+                    label: dashPlural(counts.total, 'saved item'),
+                    detail: 'Review saved tools, documents, CVs, floor plans, and calculator scenarios.',
+                    cta: 'Open workspace',
+                    href: '#myWorkspace'
+                });
+            } else {
+                var primary = getDashboardPrimaryTool();
+                add({
+                    key: primary.id || primary.href || 'first-tool',
+                    tag: 'First action',
+                    label: primary.name,
+                    detail: primary.desc || 'Run a calculation and save the result to start your workspace.',
+                    cta: 'Start',
+                    href: primary.href
+                });
+            }
+
+            var excluded = actions.map(function(action) { return action.key && action.key.replace('recent-', ''); });
+            var recommended = getDashboardRecommendedTool(excluded);
+            if (recommended) {
+                add({
+                    key: recommended.id,
+                    tag: recommended.status === 'new' ? 'New for you' : 'Recommended',
+                    label: recommended.name,
+                    detail: recommended.desc || 'A useful next tool based on your country and interests.',
+                    cta: 'Try it',
+                    href: recommended.href
+                });
+            }
+
+            if (actions.length < 4 && currentUser && currentUser.tier !== 'pro') {
+                add({
+                    key: 'pro',
+                    tag: 'Plan',
+                    label: 'Unlock Pro workflows',
+                    detail: 'Use exports, deeper history, and advisor features when your workflow gets heavier.',
+                    cta: 'View Pro',
+                    href: '/pro/'
+                });
+            }
+
+            if (actions.length < 4) {
+                add({
+                    key: 'tools',
+                    tag: 'Explore',
+                    label: 'Browse all tools',
+                    detail: 'Find calculators, document tools, education workflows, and country utilities.',
+                    cta: 'Open tools',
+                    href: '/tools/'
+                });
+            }
+
+            return actions.slice(0, 4);
+        }
+
+        function renderDashboardAction(action) {
+            var toneClass = action.tone === 'primary' ? ' primary' : '';
+            var cta = action.action === 'profile'
+                ? '<button type="button" class="dash-action-cta" onclick="openProfileEditor()">' + dashEscapeHtml(action.cta) + '</button>'
+                : '<a class="dash-action-cta" href="' + dashSafeHref(action.href) + '">' + dashEscapeHtml(action.cta) + '</a>';
+
+            return '<article class="dash-action-item' + toneClass + '">' +
+                '<div>' +
+                    '<div class="dash-action-tag">' + dashEscapeHtml(action.tag) + '</div>' +
+                    '<div class="dash-action-label">' + dashEscapeHtml(action.label) + '</div>' +
+                    '<div class="dash-action-detail">' + dashEscapeHtml(action.detail) + '</div>' +
+                '</div>' +
+                cta +
+            '</article>';
+        }
+
+        function renderActionCenter() {
+            var section = document.getElementById('dashboardActionCenter');
+            var metaEl = document.getElementById('dashboardActionMeta');
+            var listEl = document.getElementById('dashboardActionList');
+            var copyEl = document.getElementById('dashboardActionCopy');
+            if (!section || !metaEl || !listEl) return;
+
+            var pct = calculateCompleteness(currentUser || {}, extendedProfile || {});
+            var loc = resolveCountry();
+            var counts = getDashboardWorkspaceCounts();
+            var sync = getDashboardSyncMeta(counts);
+            var marketLabel = loc.code ? 'Market: ' + (loc.name || loc.code) : 'Market not set';
+
+            if (copyEl) copyEl.textContent = sync.copy;
+
+            metaEl.innerHTML = [
+                { label: marketLabel, tone: loc.code ? 'good' : 'warn' },
+                { label: 'Profile ' + pct + '%', tone: pct >= 80 ? 'good' : 'warn' },
+                { label: dashPlural(counts.total, 'workspace item'), tone: counts.total > 0 ? 'good' : 'info' },
+                { label: sync.label, tone: sync.tone }
+            ].map(function(item) {
+                return '<span class="dash-status-chip ' + item.tone + '">' + dashEscapeHtml(item.label) + '</span>';
+            }).join('');
+
+            listEl.innerHTML = buildDashboardActions(pct, counts).map(renderDashboardAction).join('');
+        }
+
+        async function refreshWorkspaceSummary(force) {
+            if (!currentUser) {
+                dashboardWorkspaceState = { status: 'local', count: null, items: [], loadedAt: Date.now() };
+                renderActionCenter();
+                return;
+            }
+
+            if (!window.AfroWorkspace || !AfroWorkspace.list || !AfroWorkspace.isSignedIn || !AfroWorkspace.isSignedIn()) {
+                dashboardWorkspaceState.status = 'local';
+                dashboardWorkspaceState.count = null;
+                renderActionCenter();
+                if (!dashboardWorkspaceState.waitedForWorkspace) {
+                    dashboardWorkspaceState.waitedForWorkspace = true;
+                    setTimeout(function() { refreshWorkspaceSummary(true); }, 700);
+                }
+                return;
+            }
+
+            if (dashboardWorkspaceState.status === 'loading' && !force) return;
+            if (!force && dashboardWorkspaceState.loadedAt && Date.now() - dashboardWorkspaceState.loadedAt < 45000) {
+                renderActionCenter();
+                return;
+            }
+
+            dashboardWorkspaceState.status = 'loading';
+            renderActionCenter();
+            try {
+                var items = await AfroWorkspace.list({ limit: 40, withPayload: false });
+                dashboardWorkspaceState = {
+                    status: 'synced',
+                    count: Array.isArray(items) ? items.length : 0,
+                    items: Array.isArray(items) ? items : [],
+                    loadedAt: Date.now()
+                };
+            } catch(e) {
+                console.warn('[Dashboard] workspace sync check failed:', e.message || e);
+                dashboardWorkspaceState.status = 'error';
+                dashboardWorkspaceState.loadedAt = Date.now();
+            }
+            renderActionCenter();
+        }
+
+        async function refreshDashboardView() {
+            var btn = document.querySelector('.dash-action-refresh');
+            if (btn) btn.disabled = true;
+            try {
+                await fetchDashboardData();
+                await refreshWorkspaceSummary(true);
+                loadProfileDisplay();
+                renderProfileNudge(calculateCompleteness(currentUser, extendedProfile));
+                loadCountrySnapshot();
+                renderQuickCalculate();
+                renderMyWorkspace();
+                loadQuickAccess();
+                loadSavedCalculations();
+                updateQuickStats();
+                renderWhatsNew();
+                renderSmartRecommendations();
+                renderActionCenter();
+                toggleSectionVisibility();
+                if (window.DashboardApp) {
+                    try { DashboardApp.init(); } catch(e) { console.warn('DashboardApp refresh:', e); }
+                }
+                if (window.AfroDashboard) {
+                    try { AfroDashboard.initDashboard(); } catch(e2) { console.warn('Dashboard widgets refresh:', e2); }
+                }
+                showToast('Dashboard refreshed', 'info');
+            } catch(e3) {
+                console.warn('[Dashboard] refresh failed:', e3);
+                renderActionCenter();
+                showToast('Dashboard refreshed with local data only', 'info');
+            } finally {
+                if (btn) btn.disabled = false;
+            }
         }
 
         function getSmartGreeting() {
@@ -3199,6 +4096,7 @@
                 AfroData.clearTool(toolId);
                 loadSavedCalculations();
                 updateQuickStats();
+                renderActionCenter();
             }
         }
 
@@ -3258,6 +4156,7 @@
                 cvs.unshift(newCV);
                 localStorage.setItem('afro_cv_list', JSON.stringify(cvs));
                 loadMyCVs();
+                renderActionCenter();
             } catch(e) {}
         }
 
@@ -3268,6 +4167,7 @@
                 cvs = cvs.filter(function(c) { return c.id !== id; });
                 localStorage.setItem('afro_cv_list', JSON.stringify(cvs));
                 loadMyCVs();
+                renderActionCenter();
             } catch(e) {}
         }
 
@@ -3324,6 +4224,7 @@
                     localStorage.setItem('afro_fp_' + np.id, JSON.stringify(data));
                 }
                 loadMyFloorPlans();
+                renderActionCenter();
             } catch(e) {}
         }
         function deleteDashboardFP(id) {
@@ -3334,6 +4235,7 @@
                 localStorage.setItem('afro_fp_list', JSON.stringify(plans));
                 localStorage.removeItem('afro_fp_' + id);
                 loadMyFloorPlans();
+                renderActionCenter();
             } catch(e) {}
         }
 

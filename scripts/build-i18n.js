@@ -21,6 +21,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const { fileToPublicRoute } = require('./lib/canonical-aliases');
+
 // ── CONFIG ──────────────────────────────────────────────────────────
 
 const ROOT = path.join(__dirname, '..');
@@ -473,17 +475,21 @@ function getFrenchUrl(pagePath) {
 // ── BUILD URL FOR LANGUAGE ──────────────────────────────────────────
 
 function buildLangUrl(pagePath, lang) {
+  const targetFile =
+    lang === DEFAULT_LANG ? resolveSourceFile(pagePath) : buildOutputPath(pagePath, lang);
+
+  if (targetFile) {
+    return `${SITE_URL}${fileToPublicRoute(targetFile)}`;
+  }
+
   let clean = pagePath.replace(/^\//, '').replace(/\/$/, '');
-  // Treat index.html as root
   if (clean === 'index.html') clean = '';
 
   if (lang === DEFAULT_LANG) {
-    if (clean === '') return `${SITE_URL}/`;
-    return `${SITE_URL}/${clean}/`;
+    return clean === '' ? `${SITE_URL}/` : `${SITE_URL}/${clean}`;
   }
 
-  if (clean === '') return `${SITE_URL}/${lang}/`;
-  return `${SITE_URL}/${lang}/${clean}/`;
+  return clean === '' ? `${SITE_URL}/${lang}/` : `${SITE_URL}/${lang}/${clean}`;
 }
 
 // ── BUILD OUTPUT PATH ───────────────────────────────────────────────

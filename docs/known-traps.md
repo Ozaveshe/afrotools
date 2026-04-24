@@ -15,6 +15,8 @@
 
 - The product is static-first, but the repo is not edit-only. Several scripts mutate outputs during build and maintenance.
 - "No framework" does not mean "no generated layer."
+- Do not publish the repo root. Netlify must publish the clean `dist/` artifact so source files, prompts, migrations, functions, tests, and agent configuration cannot become static assets.
+- Public Supabase anon keys may appear in browser code; service-role keys must never appear outside Netlify/Supabase secret stores.
 
 ## Mission Control Split
 
@@ -30,3 +32,4 @@
 
 - Use the configured `supabase` MCP server first for live operations.
 - Keep live data actions separate from repo edits in notes and summaries.
+- New Supabase-backed features need both a replayable repo migration and a live-project check against Supabase advisors.

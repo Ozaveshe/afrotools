@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -79,8 +79,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
 <meta name="twitter:title" content="Business Plan Builder | AfroTools">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="canonical" href="https://afrotools.com/tools/business-plan/">
+<link rel="canonical" href="https://afrotools.com/tools/business-plan/app">
 <meta name="robots" content="noindex, follow">
+<meta property="og:url" content="https://afrotools.com/tools/business-plan/app">
 </head>
 <body>
 
@@ -410,6 +411,111 @@ function doExportBusinessPlan() {
     alert('Your business plan has been downloaded. Open it in a browser and use Print > Save as PDF.');
   }
   setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
+}
+
+function loadJsPdf() {
+  if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
+  return new Promise(function(resolve, reject) {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+    script.onload = resolve;
+    script.onerror = function() { reject(new Error('Could not load the PDF export library.')); };
+    document.head.appendChild(script);
+  });
+}
+
+function addPlanText(doc, text, x, y, maxWidth, lineHeight, bottom) {
+  var lines = doc.splitTextToSize(String(text || ''), maxWidth);
+  lines.forEach(function(line) {
+    if (y > bottom) {
+      doc.addPage();
+      y = 22;
+    }
+    doc.text(line, x, y);
+    y += lineHeight;
+  });
+  return y;
+}
+
+// Override the print-fallback exporter with a direct .pdf download.
+async function doExportBusinessPlan() {
+  try {
+    await loadJsPdf();
+    var planName = DATA.legalName || DATA.businessName || 'Business Plan';
+    var doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    var pageWidth = doc.internal.pageSize.getWidth();
+    var pageHeight = doc.internal.pageSize.getHeight();
+    var margin = 18;
+    var y = 22;
+
+    doc.setProperties({
+      title: planName,
+      subject: 'Business plan generated with AfroTools',
+      author: planName,
+      creator: 'AfroTools Business Plan Builder'
+    });
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    y = addPlanText(doc, planName, margin, y, pageWidth - margin * 2, 8, pageHeight - 18) + 4;
+
+    SECTIONS.forEach(function(sec) {
+      if (y > pageHeight - 36) {
+        doc.addPage();
+        y = 22;
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(0, 98, 204);
+      y = addPlanText(doc, sec.name, margin, y, pageWidth - margin * 2, 7, pageHeight - 18) + 1;
+      doc.setTextColor(0);
+      doc.setFont('times', 'normal');
+      doc.setFontSize(10.5);
+
+      if (sec.fields === 'FINANCIAL_TABLE') {
+        ['revenue', 'cogs', 'grossProfit', 'opex', 'marketing_cost', 'salaries', 'netProfit'].forEach(function(r) {
+          var label = r.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+          var vals = [];
+          for (var year = 1; year <= 3; year++) {
+            var value = DATA['fin_' + r + '_y' + year] || '';
+            if (r === 'grossProfit' || r === 'netProfit') {
+              var rev = parseFloat(DATA['fin_revenue_y' + year]) || 0;
+              var cogs = parseFloat(DATA['fin_cogs_y' + year]) || 0;
+              var opex = parseFloat(DATA['fin_opex_y' + year]) || 0;
+              var mkt = parseFloat(DATA['fin_marketing_cost_y' + year]) || 0;
+              var sal = parseFloat(DATA['fin_salaries_y' + year]) || 0;
+              value = r === 'grossProfit' ? rev - cogs : rev - cogs - opex - mkt - sal;
+            }
+            vals.push(value === '' ? '-' : Number(value).toLocaleString());
+          }
+          y = addPlanText(doc, label + ': Y1 ' + vals[0] + ' | Y2 ' + vals[1] + ' | Y3 ' + vals[2], margin, y, pageWidth - margin * 2, 5.5, pageHeight - 18);
+        });
+        y += 3;
+      } else {
+        sec.fields.forEach(function(f) {
+          if (!DATA[f.id]) return;
+          doc.setFont('helvetica', 'bold');
+          y = addPlanText(doc, f.label + ':', margin, y, pageWidth - margin * 2, 5.5, pageHeight - 18);
+          doc.setFont('times', 'normal');
+          y = addPlanText(doc, DATA[f.id], margin, y, pageWidth - margin * 2, 5.5, pageHeight - 18) + 2;
+        });
+      }
+    });
+
+    for (var p = 1; p <= doc.getNumberOfPages(); p++) {
+      doc.setPage(p);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(140);
+      doc.text('Generated with AfroTools.com', pageWidth / 2, pageHeight - 8, { align: 'center' });
+      doc.text(String(p), pageWidth - margin, pageHeight - 8, { align: 'right' });
+      doc.setTextColor(0);
+    }
+
+    doc.save((planName.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_') || 'Business_Plan') + '.pdf');
+  } catch (err) {
+    console.error('PDF export error:', err);
+    alert('PDF export failed. Please check your connection and try again.');
+  }
 }
 
 function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}

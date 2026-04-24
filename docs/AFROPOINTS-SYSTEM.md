@@ -4,7 +4,7 @@
 
 AfroPoints is a hybrid static-plus-serverless product:
 
-- Static marketing and workflow pages live in `tools/afropoints/`
+- Static contributor cockpit, workflow, payout, leaderboard, guide, and buyer pages live in `tools/afropoints/`
 - Client runtime lives in `engines/afropoints-engine.js`
 - Server state lives in Netlify functions:
   - `netlify/functions/afropoints-submit.js`
@@ -86,3 +86,16 @@ As of the latest live Supabase inspection:
 - `contributions`, `points_profiles`, `points_ledger`, `cashout_requests`, and `leaderboard_cache` are empty
 
 That means the product foundation exists, but growth loops and monetization still depend on getting real contribution volume.
+
+## Account Product Standard
+
+AfroPoints should behave as an account lane, not as a disconnected marketing microsite.
+
+- The AfroPoints homepage is the contributor cockpit: signed-out users see accepted data types, review expectations, payout thresholds, and first contribution paths; signed-in users see points, review status, profile readiness, trust score, cashout progress, recent submissions, and next action.
+- `/dashboard/` surfaces AfroPoints beside saved tools, calculation history, and workspace items. Dashboard modules should fetch account-backed profile, ledger, contribution, and cashout data first, using localStorage only as an offline/cache mirror.
+- AfroPoints pages share the same account navigation: Cockpit, Submit data, Cashout, Leaderboard, Review rules, Data buyers, and Account.
+- Contribution category labels and routes must come from `AfroPointsEngine.CATEGORIES` so the UI stays aligned with the server taxonomy.
+- Cashout copy must stay precise: 2,000 points minimum for mobile money, bank transfer, and reviewed crypto payout requests; 500-point blocks for AfroTools Pro credit; fiat and crypto payouts are pending review until approved.
+- Leaderboard and buyer-facing copy must avoid implying live liquidity or proven payout volume unless live data verifies it.
+
+When adding a new AfroPoints page, include `tools/afropoints/account-system.css`, use the shared account navigation, and route account actions back to the contributor cockpit, submit flow, cashout flow, verification guide, or main `/dashboard/` instead of creating a separate dashboard surface.

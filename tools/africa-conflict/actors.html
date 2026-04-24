@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Actor Networks — AfroConflict | AfroTools</title>
 <meta name="description" content="Conflict actors network across Africa — state militaries, rebel groups, foreign backers, arms suppliers, and sanctioned entities.">
-<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/actors/">
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/actors">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Actor Networks - AfroConflict | AfroTools">
 <meta property="og:description" content="Conflict actors network across Africa - state militaries, rebel groups, foreign backers, arms suppliers, and sanctioned entities.">
@@ -12,7 +12,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/actors/">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/actors">
 <meta property="og:site_name" content="AfroTools">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
@@ -23,9 +23,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=4260f20e">
 <script src="/engines/africa-conflict-engine.js?v=9f32d23d" defer></script>
+<script src="/tools/africa-conflict/static-routes.js?v=20260424a" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
@@ -40,8 +41,8 @@
       </div>
       <nav class="acd-hero-nav">
         <a href="/tools/africa-conflict/">Dashboard</a>
-        <a href="/tools/africa-conflict/conflicts.html">All Conflicts</a>
-        <a href="/tools/africa-conflict/actors.html" class="active">Actors</a>
+        <a href="/tools/africa-conflict/conflicts/">All Conflicts</a>
+        <a href="/tools/africa-conflict/actors/" class="active">Actors</a>
       </nav>
     </div>
   </div>
@@ -81,10 +82,17 @@
   </div>
 </main>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=5a869583" defer></script>
-<script src="/assets/js/components/footer.js?v=bd815d9c" defer></script>
+<script src="/assets/js/components/navbar.js?v=ad90a313" defer></script>
+<script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
 <script>
 (function(){
+  function conflictUrl(slug) {
+    if (window.AfroConflictStaticRoutes && typeof window.AfroConflictStaticRoutes.conflict === 'function') {
+      return window.AfroConflictStaticRoutes.conflict(slug);
+    }
+    return '/tools/africa-conflict/detail.html?id=' + encodeURIComponent(slug || '');
+  }
+
   var allConflicts = [];
 
   async function load() {
@@ -111,7 +119,7 @@
     fsEl.innerHTML = fsEntries.length ?
       '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.82rem"><thead><tr style="border-bottom:2px solid var(--acd-border)"><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Country</th><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Conflicts Involved In</th></tr></thead><tbody>' +
       fsEntries.map(function(e){
-        return '<tr style="border-bottom:1px solid var(--acd-border)"><td style="padding:8px">'+AfroConflict.flagEmoji(e[0])+' '+e[0]+'</td><td style="padding:8px">'+e[1].map(function(c){ return '<a href="/tools/africa-conflict/detail.html?id='+c.slug+'" style="color:var(--acd-accent)">'+(c.short_name||c.name)+'</a>'; }).join(', ')+'</td></tr>';
+        return '<tr style="border-bottom:1px solid var(--acd-border)"><td style="padding:8px">'+AfroConflict.flagEmoji(e[0])+' '+e[0]+'</td><td style="padding:8px">'+e[1].map(function(c){ return '<a href="'+conflictUrl(c.slug)+'" style="color:var(--acd-accent)">'+(c.short_name||c.name)+'</a>'; }).join(', ')+'</td></tr>';
       }).join('') + '</tbody></table></div>' :
       '<div class="acd-empty"><div class="acd-empty-title">Foreign state involvement data will populate from conflict actor records</div></div>';
 
@@ -121,7 +129,7 @@
       '<div class="acd-disclaimer-box" style="margin-top:0">Economy actor data is stored per-conflict. View conflict detail pages to see specific conflict economy actors. Use the admin panel to add actors per conflict. This global view will aggregate them as data is entered.</div>' +
       '<div class="acd-actors-grid">' +
       allConflicts.filter(function(c){ return c.is_african; }).map(function(c){
-        return '<a href="/tools/africa-conflict/detail.html?id='+c.slug+'#tab-economy-actors" style="text-decoration:none"><div class="acd-actor-card">' +
+        return '<a href="'+conflictUrl(c.slug)+'" style="text-decoration:none"><div class="acd-actor-card">' +
           AfroConflict.flagEmoji(c.primary_country)+' <span style="font-weight:700">'+(c.short_name||c.name)+'</span>' +
           '<div style="font-size:.72rem;color:var(--acd-text-muted);margin-top:4px">'+AfroConflict.statusBadge(c.status)+'</div>' +
           (c.resource_links&&c.resource_links.length ? '<div class="acd-resource-tags" style="margin-top:6px">'+c.resource_links.slice(0,3).map(function(r){ return '<span class="acd-resource-tag">'+AfroConflict.resourceIcon(r)+' '+r.replace(/_/g,' ')+'</span>'; }).join('')+'</div>' : '') +

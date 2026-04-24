@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cash Out — AfroPoints | AfroTools</title>
-<meta name="description" content="Redeem your AfroPoints for real cash via mobile money, bank transfer, or convert to AfroTools Pro credit.">
-<link rel="canonical" href="https://afrotools.com/tools/afropoints/cashout.html">
+<meta name="description" content="Check AfroPoints cashout readiness, minimum thresholds, supported payout rails, and pending review status.">
+<link rel="canonical" href="https://afrotools.com/tools/afropoints/cashout">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Cash Out AfroPoints">
-<meta property="og:description" content="Redeem points for real cash via mobile money or bank transfer.">
+<meta property="og:description" content="Check cashout readiness, payout rails, and review status for AfroPoints.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=8d93e37c">
+<link rel="stylesheet" href="account-system.css?v=20260424">
+<meta property="og:url" content="https://afrotools.com/tools/afropoints/cashout">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -25,12 +30,35 @@
 <section class="ap-hero" style="padding-bottom:24px;">
   <div class="ap-hero-inner">
     <nav class="ap-breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="./">AfroPoints</a> <span>/</span> <span>Cash Out</span></nav>
-    <h1>💸 Cash Out Your Points</h1>
-    <p class="ap-hero-sub">Redeem your earned points for mobile money, bank transfer, stablecoin or crypto payout, or instant AfroTools Pro credit.</p>
+    <h1>Cashout Readiness</h1>
+    <p class="ap-hero-sub">See whether your reviewed AfroPoints balance meets the minimum threshold, which payout rails are available, and what still needs approval.</p>
   </div>
 </section>
 
+<nav class="ap-system-nav" aria-label="AfroPoints account navigation">
+  <div class="ap-system-nav-inner">
+    <a class="ap-system-link" href="./">Cockpit</a>
+    <a class="ap-system-link" href="contribute.html">Submit data</a>
+    <a class="ap-system-link is-active" href="cashout.html">Cashout</a>
+    <a class="ap-system-link" href="leaderboard.html">Leaderboard</a>
+    <a class="ap-system-link" href="verification.html">Review rules</a>
+    <a class="ap-system-link" href="data-buyers.html">Data buyers</a>
+    <a class="ap-system-link" href="/dashboard/">Account</a>
+  </div>
+</nav>
+
 <div class="ap-main" style="max-width:700px;">
+
+  <div class="ap-card ap-card--highlight" id="cashoutReadinessCard" style="margin-bottom:20px;">
+    <div class="ap-card-header">Availability State</div>
+    <div class="ap-card-body" id="cashoutReadiness">
+      <div class="ap-inline-note">Cash payouts are request-based. Mobile money, bank transfer, and crypto requests need at least 2,000 points and remain pending until reviewed. AfroTools Pro credit can be redeemed in 500-point blocks.</div>
+      <div class="ap-method-state"><div><strong>Mobile money</strong><span>M-Pesa, MTN MoMo, Airtel Money, OPay and similar rails where supported.</span></div><span class="ap-status-chip warn">Reviewed</span></div>
+      <div class="ap-method-state"><div><strong>Bank transfer</strong><span>Requires complete bank and account-holder details.</span></div><span class="ap-status-chip warn">Reviewed</span></div>
+      <div class="ap-method-state"><div><strong>Crypto wallet</strong><span>Supported assets are USDT, USDC, BTC, and ETH. No automatic on-chain payout in v1.</span></div><span class="ap-status-chip warn">Reviewed</span></div>
+      <div class="ap-method-state"><div><strong>AfroTools Pro credit</strong><span>500 points per month of Pro credit.</span></div><span class="ap-status-chip good">Immediate</span></div>
+    </div>
+  </div>
 
   <!-- Balance card -->
   <div class="ap-card" style="margin-bottom:20px;">
@@ -110,8 +138,8 @@
 
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
-<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afropoints-engine.js?v=1"></script>
@@ -128,6 +156,10 @@ function showToast(msg, type) {
 }
 
 function selectMethod(el) {
+  if (!window.AfroAuth || !AfroAuth.isLoggedIn()) {
+    showToast('Please sign in to request a cashout', 'error');
+    return;
+  }
   document.querySelectorAll('.ap-cashout-option').forEach(function (o) { o.classList.remove('selected'); });
   el.classList.add('selected');
   selectedMethod = el.getAttribute('data-method');
@@ -253,10 +285,19 @@ async function confirmCashout() {
 
 function loadData() {
   var AP = window.AfroPointsEngine;
-  if (!window.AfroAuth || !AfroAuth.isLoggedIn()) return;
+  if (!window.AfroAuth || !AfroAuth.isLoggedIn()) {
+    if (!document.getElementById('cashoutAuthState')) {
+      $('cashoutReadiness').insertAdjacentHTML('afterbegin',
+        '<div id="cashoutAuthState" class="ap-inline-note" style="border-color:rgba(245,158,11,.24);background:rgba(245,158,11,.08);color:#92400e;">Sign in to see your exact balance, pending review state, and payout history. Cashout requests cannot be created from a signed-out session.</div>'
+      );
+    }
+    return;
+  }
 
   AP.getProfile().then(function (p) {
     if (!p || p.error) return;
+    var authState = document.getElementById('cashoutAuthState');
+    if (authState) authState.remove();
     userBalance = p.current_balance || 0;
     $('balanceDisplay').textContent = AP.formatPoints(userBalance);
     $('cashEquiv').textContent = (userBalance / 100).toFixed(2);

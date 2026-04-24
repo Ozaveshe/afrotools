@@ -47,6 +47,12 @@ When updating counts or section labels, do not hardcode numbers into the page fi
   - save a reusable object through `AfroEdu` if the signal is shortlist/timeline/cost oriented
   - record a lightweight activity entry so Education Hub can show it in the cockpit timeline
 
+## Account Sync Rule
+
+- Education pages that call `EduCloudSync` must load `assets/js/afro-auth.js` before `assets/js/edu-cloud-sync.js`.
+- `EduCloudSync` listens for `afro-auth-change` and runs an account merge on auth readiness, so signed-in users should not be left in a local-only state after logging in or refreshing.
+- If an education tool only updates profile fields, load `EduProfileSync`; if it saves durable GPA, flashcard, or study-plan objects, load both auth and `EduCloudSync`.
+
 ## Canonical Tool Rule
 
 - One user job should map to one primary education tool in the taxonomy.

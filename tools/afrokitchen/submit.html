@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -9,23 +9,29 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<link rel="stylesheet" href="style.css?v=20260416c">
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/submit/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/submit/" />
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<link rel="stylesheet" href="style.css?v=20260424a">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/submit" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/submit" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
-<link rel="canonical" href="https://afrotools.com/tools/afrokitchen/submit/">
+<link rel="canonical" href="https://afrotools.com/tools/afrokitchen/submit">
+<meta property="og:title" content="Submit a Recipe — AfroKitchen | AfroTools">
+<meta property="og:description" content="Share your family's recipe with AfroKitchen and help preserve Africa's food heritage with clear ingredients, steps, and cultural context.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Submit a Recipe — AfroKitchen | AfroTools">
-<meta name="twitter:description" content="Share your family">
+<meta name="twitter:description" content="Share your family's recipe with AfroKitchen and help preserve Africa's food heritage.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<meta property="og:url" content="https://afrotools.com/tools/afrokitchen/submit">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -64,24 +70,24 @@
       <div class="ak-form-panel">
       <form id="submit-form" onsubmit="return handleSubmit(event)">
         <div class="ak-form-group">
-          <label class="ak-form-label">Recipe Name *</label>
+          <label class="ak-form-label" for="f-name">Recipe Name *</label>
           <input class="ak-form-input" id="f-name" required placeholder="e.g., Grandma's Egusi Soup">
         </div>
 
         <div class="ak-form-group">
-          <label class="ak-form-label">Country of Origin *</label>
+          <label class="ak-form-label" for="f-country">Country of Origin *</label>
           <select class="ak-form-select" id="f-country" required>
             <option value="">Select a country</option>
           </select>
         </div>
 
         <div class="ak-form-group">
-          <label class="ak-form-label">Short Description</label>
+          <label class="ak-form-label" for="f-desc">Short Description</label>
           <input class="ak-form-input" id="f-desc" placeholder="One-line description of the dish">
         </div>
 
         <div class="ak-form-group">
-          <label class="ak-form-label">Ingredients *</label>
+          <label class="ak-form-label" for="f-ingredients">Ingredients *</label>
           <textarea class="ak-form-textarea" id="f-ingredients" required placeholder="List each ingredient on a new line, e.g.:
 3 cups rice
 6 fresh tomatoes
@@ -92,7 +98,7 @@
         </div>
 
         <div class="ak-form-group">
-          <label class="ak-form-label">Cooking Steps *</label>
+          <label class="ak-form-label" for="f-steps">Cooking Steps *</label>
           <textarea class="ak-form-textarea" id="f-steps" required placeholder="Describe each step clearly, e.g.:
 Step 1: Blend the tomatoes, peppers, and onions until smooth.
 Step 2: Heat oil in a large pot and fry the sliced onions.
@@ -102,17 +108,17 @@ Step 3: Add the tomato paste and fry for 3 minutes.
         </div>
 
         <div class="ak-form-group">
-          <label class="ak-form-label">Story / Cultural Context</label>
+          <label class="ak-form-label" for="f-story">Story / Cultural Context</label>
           <textarea class="ak-form-textarea" id="f-story" placeholder="Tell us about this dish. Where does it come from? When is it traditionally served? What makes it special to your family?"></textarea>
         </div>
 
         <div class="ak-name-email-grid">
           <div class="ak-form-group">
-            <label class="ak-form-label">Your Name</label>
+            <label class="ak-form-label" for="f-author">Your Name</label>
             <input class="ak-form-input" id="f-author" placeholder="Optional">
           </div>
           <div class="ak-form-group">
-            <label class="ak-form-label">Email</label>
+            <label class="ak-form-label" for="f-email">Email</label>
             <input class="ak-form-input" type="email" id="f-email" placeholder="Optional (for follow-up)">
           </div>
         </div>
@@ -146,8 +152,8 @@ Step 3: Add the tomato paste and fry for 3 minutes.
 </div>
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
-<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afrokitchen-engine.js?v=2"></script>

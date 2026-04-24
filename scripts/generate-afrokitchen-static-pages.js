@@ -27,6 +27,7 @@ const {
 } = require("./lib/afrokitchen-static");
 
 const LANDING_PATH = path.join(TOOL_DIR, "index.html");
+const AK_FONT_HREF = "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;700&display=swap";
 const LEGACY_RECIPE_ALIASES = [
   {
     legacySlug: "nigerian-jollof-rice",
@@ -182,6 +183,7 @@ function resolveRecipeHref(recipe) {
 }
 
 function renderRelatedHtml(recipe, relatedRecipes) {
+  const hasFallbackRecipes = relatedRecipes.some((entry) => !entry.generated_in_wave);
   const cards = relatedRecipes
     .map((entry) => {
       const modeLabel = entry.generated_in_wave ? "Static route" : "Interactive fallback";
@@ -198,7 +200,7 @@ function renderRelatedHtml(recipe, relatedRecipes) {
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
       <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">Clean recipe routes are preferred whenever this wave has generated them. Remaining dishes still resolve through the interactive fallback until the next static expansion.</p>
+      <p class="ak-section-sub">${hasFallbackRecipes ? "Clean recipe routes are preferred whenever this wave has generated them. Remaining dishes still resolve through the interactive fallback until the next static expansion." : "Every related dish below links through a clean static recipe route from the verified AfroKitchen inventory."}</p>
     </div>
     <div class="ak-static-related-grid">${cards}</div>
     <div class="ak-hero-actions ak-static-related-actions">
@@ -408,11 +410,11 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
   <meta name="twitter:image" content="${escapeHtml(media.socialImage || TOOL_OG_IMAGE)}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="preload" as="style" href="${AK_FONT_HREF}" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="${AK_FONT_HREF}"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-  <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260416a">
+  <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
   <style>
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
@@ -477,7 +479,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
         </div>
         <div class="ak-hero-actions">
           <a href="${recipe.country_route_path}" class="ak-btn ak-btn-secondary">Explore ${escapeHtml(recipe.country_name)} recipes</a>
-          <a href="${recipe.fallback_url}" class="ak-btn ak-btn-primary">Open interactive cooking mode</a>
+          ${recipe.primary_collection_route_path ? `<a href="${recipe.primary_collection_route_path}" class="ak-btn ak-btn-primary">Open ${escapeHtml(recipe.primary_collection_name)}</a>` : `<a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary">Browse AfroKitchen</a>`}
         </div>
       </div>
       <aside class="ak-static-hero-card">
@@ -489,7 +491,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
           <div><span>Best occasion</span><strong>${escapeHtml(recipe.occasion || "Any time you want to cook deeper into the AfroKitchen archive.")}</strong></div>
           <div><span>Country hub</span><strong><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)} cuisine hub</a></strong></div>
           ${recipe.primary_collection_slug ? `<div><span>Collection route</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
-          <div><span>Interactive fallback</span><strong><a href="${recipe.fallback_url}">${escapeHtml(recipe.fallback_path)}</a></strong></div>
+          <div><span>Canonical route</span><strong><a href="${recipe.route_path}">${escapeHtml(recipe.route_path)}</a></strong></div>
         </div>
         <div class="ak-static-credit">${media.credit ? `Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.` : "Static SEO content ships even when recipe imagery falls back to the shared AfroKitchen visual set."}</div>
       </aside>
@@ -513,7 +515,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
-            <p>${escapeHtml(recipe.best_served_with || "Use the interactive recipe fallback or country hub to explore pairings.")}</p>
+            <p>${escapeHtml(recipe.best_served_with || "Use the country hub to explore pairings and nearby dishes.")}</p>
           </div>
           ${renderRecipeCollectionSummaryCard(recipe)}
         </div>
@@ -546,7 +548,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
           </div>
           <div class="ak-steps">${renderedSteps}</div>
           <div class="ak-static-helper-note">
-            <p>${escapeHtml(recipe.regional_variations || "Regional variations and live helpers still layer on top through AfroKitchen’s interactive surfaces. This static page is the crawlable starting point, while the fallback template handles extra kitchen tools when needed.")}</p>
+            <p>${escapeHtml(recipe.regional_variations || "Regional variations and live helpers layer onto this clean static recipe route without changing the canonical URL.")}</p>
           </div>
         </section>
       </div>
@@ -725,12 +727,13 @@ function renderCountryRecipeCards(country) {
 function renderNeighborCountryLinks(country, manifest) {
   const neighbors = pickNeighborCountries(country, manifest);
   if (!neighbors.length) return "";
+  const hasFallbackRecipes = country.recipes.some((recipe) => !recipe.generated_in_wave);
 
   return `<section class="ak-section ak-static-related">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep browsing</div>
       <h2 class="ak-section-title">More ${escapeHtml(country.region)} country hubs</h2>
-      <p class="ak-section-sub">Country hubs are fully static in this wave, even when some recipe detail pages still resolve through the interactive fallback.</p>
+      <p class="ak-section-sub">${hasFallbackRecipes ? "Country hubs are fully static in this wave, even when some recipe detail pages still resolve through the interactive fallback." : "Country hubs are fully static and now cross-link to clean verified recipe routes."}</p>
     </div>
     <div class="ak-hero-route-grid">
       ${neighbors
@@ -805,9 +808,16 @@ function buildCountryPageHtml(country, manifest) {
   const { collectionPageSchema, itemListSchema, breadcrumbSchema } = buildCountrySchemas(country);
   const title = `${country.country_name} Recipes & Traditional Dishes | AfroKitchen`;
   const description = excerpt(country.description, 158);
-  const generatedRecipeLead = country.generated_recipe_count
-    ? `${country.generated_recipe_count} clean recipe routes ship in this wave`
-    : "This hub is already static, but its recipe detail links still point to the interactive fallback until a later recipe wave ships.";
+  const generatedRecipeLead =
+    country.generated_recipe_count === country.total_recipes
+      ? `All ${country.total_recipes} verified recipes use clean static routes`
+      : country.generated_recipe_count
+        ? `${country.generated_recipe_count} of ${country.total_recipes} verified recipes use clean static routes`
+        : "This hub is already static, but its recipe detail links still point to the interactive fallback until a later recipe wave ships.";
+  const recipeListCopy =
+    country.generated_recipe_count === country.total_recipes
+      ? "Every card below links to a clean static recipe URL from the verified live AfroKitchen inventory."
+      : "The cards below use clean static recipe URLs when this production wave has generated them. Remaining dishes still link through the interactive fallback so the hub reflects the full verified inventory from the live AfroKitchen dataset.";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -831,11 +841,11 @@ function buildCountryPageHtml(country, manifest) {
   <meta name="twitter:image" content="${TOOL_OG_IMAGE}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="preload" as="style" href="${AK_FONT_HREF}" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="${AK_FONT_HREF}"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-  <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260416a">
+  <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
   <style>
     .ak-country-static-page .ak-country-hub-shell,
     .ak-country-static-page .ak-country-hub-card,
@@ -879,14 +889,14 @@ function buildCountryPageHtml(country, manifest) {
         </div>
         <div class="ak-hero-actions">
           <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
-          <a href="${country.fallback_path}" class="ak-btn ak-btn-outline">Open interactive country mode</a>
+          <a href="/tools/afrokitchen/#collections-grid" class="ak-btn ak-btn-outline">Browse collections</a>
         </div>
       </div>
       <div class="ak-hero-facts">
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">Why this hub matters</div>
           <span class="ak-fact-card-value">${escapeHtml(String(country.total_recipes))}</span>
-          <p class="ak-fact-card-copy">The country hub is static even when recipe detail coverage is still rolling out in waves.</p>
+          <p class="ak-fact-card-copy">The country hub is static and points verified dishes at their canonical recipe routes.</p>
         </div>
         <div class="ak-fact-card">
           <div class="ak-fact-card-label">Current route coverage</div>
@@ -901,7 +911,7 @@ function buildCountryPageHtml(country, manifest) {
       <div class="ak-country-hub-shell rv visible">
         <div class="ak-section-kicker">Country archive</div>
         <h2 class="ak-section-title">Every verified ${escapeHtml(country.country_name)} recipe in one crawlable hub</h2>
-        <p class="ak-section-sub">The cards below use clean static recipe URLs when this production wave has generated them. Remaining dishes still link through the interactive fallback so the hub reflects the full verified inventory from the live AfroKitchen dataset.</p>
+        <p class="ak-section-sub">${escapeHtml(recipeListCopy)}</p>
         <div class="ak-country-hub-grid">
           ${renderCountryRecipeCards(country)}
         </div>
@@ -928,9 +938,16 @@ function buildCollectionPageHtml(collection) {
     buildCollectionSchemas(collection);
   const title = `${collection.name} Recipes Collection | AfroKitchen`;
   const description = excerpt(collection.description, 158);
-  const generatedRecipeLead = collection.generated_recipe_count
-    ? `${collection.generated_recipe_count} clean recipe routes already sit inside this collection`
-    : "This collection route is static, but its recipe detail links still point to the interactive fallback until a later recipe wave ships.";
+  const generatedRecipeLead =
+    collection.generated_recipe_count === collection.total_recipes
+      ? `All ${collection.total_recipes} recipes in this collection use clean static routes`
+      : collection.generated_recipe_count
+        ? `${collection.generated_recipe_count} of ${collection.total_recipes} recipes in this collection use clean static routes`
+        : "This collection route is static, but its recipe detail links still point to the interactive fallback until a later recipe wave ships.";
+  const recipeListCopy =
+    collection.generated_recipe_count === collection.total_recipes
+      ? "This page ships the collection intro and recipe list directly in HTML, with every member linked through its clean static recipe URL."
+      : "This page ships the collection intro and recipe list directly in HTML, with clean recipe URLs preferred wherever the current static wave has generated them.";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -954,11 +971,11 @@ function buildCollectionPageHtml(collection) {
   <meta name="twitter:image" content="${TOOL_OG_IMAGE}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="preload" as="style" href="${AK_FONT_HREF}" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="${AK_FONT_HREF}"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-  <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260416a">
+  <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
   <style>
     .ak-collection-static-page .ak-country-hub-shell,
     .ak-collection-static-page .ak-country-hub-card,
@@ -1002,7 +1019,7 @@ function buildCollectionPageHtml(collection) {
         </div>
         <div class="ak-hero-actions">
           <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
-          <a href="${collection.fallback_path}" class="ak-btn ak-btn-outline">Open interactive collection mode</a>
+          <a href="/tools/afrokitchen/#country-grid" class="ak-btn ak-btn-outline">Browse country hubs</a>
         </div>
       </div>
       <div class="ak-hero-facts">
@@ -1024,7 +1041,7 @@ function buildCollectionPageHtml(collection) {
       <div class="ak-country-hub-shell rv visible">
         <div class="ak-section-kicker">Collection archive</div>
         <h2 class="ak-section-title">Contained recipe routes for ${escapeHtml(collection.name)}</h2>
-        <p class="ak-section-sub">This page ships the collection intro and recipe list directly in HTML, with clean recipe URLs preferred wherever the current static wave has generated them.</p>
+        <p class="ak-section-sub">${escapeHtml(recipeListCopy)}</p>
         <div class="ak-country-hub-grid">
           ${renderCollectionRecipeCards(collection)}
         </div>

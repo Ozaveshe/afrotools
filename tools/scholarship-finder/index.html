@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -13,9 +13,9 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/scholarship-finder.webp"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/scholarship-finder/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
-<script src="/assets/js/components/related-tools-data.min.js?v=1892f791" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script><script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/related-tools-data.min.js?v=17f7d623" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <style>
@@ -118,10 +118,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 @media(max-width:480px){.filter-row{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}.summary-grid{grid-template-columns:1fr}}
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-auth.js?v=6" defer></script>
-<script src="/assets/js/afro-history.js?v=a5b9c3e9" defer></script>
+<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/edu-profile-sync.js?v=20260418a" defer></script>
-<script src="/assets/js/afro-edu-bridge.js?v=20260419b" defer></script>
-<script src="/assets/js/education-scholarship-feed.js?v=20260418b" defer></script>
+<script src="/assets/js/afro-edu-bridge.js?v=20260424a" defer></script>
+<script src="/assets/js/education-scholarship-feed.js?v=20260420a" defer></script>
 <script src="/engines/scholarship-matcher.js?v=20260418a" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scholarship-finder/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scholarship-finder/" />
@@ -452,6 +452,18 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   var shortlistOnly = false;
   var SHORTLIST_KEY = 'afro-scholarship-shortlist';
   var shortlist = loadShortlist();
+  var savedScholarships = [];
+  var savedScholarshipMap = {};
+  var savedScholarshipState = {
+    mode: 'local',
+    isSignedIn: false,
+    syncLabel: 'Local shortlist',
+    count: shortlist.length,
+    reminderEnabledCount: 0,
+    nextDeadline: null,
+    isDegraded: false,
+    error: ''
+  };
   var scholarshipFeedMeta = {
     label: 'Checking feed',
     message: 'Checking scholarship source status.',
@@ -481,6 +493,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     return document.getElementById(id);
   }
 
+  function notify(message, type) {
+    if (window.AfroToast && typeof window.AfroToast.show === 'function') {
+      window.AfroToast.show(message, type || 'success');
+    }
+  }
+
   function ieltsToToefl(ielts) {
     return IELTS_TOEFL_MAP[ielts] || 'N/A';
   }
@@ -489,16 +507,32 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     return !!(profile && (profile.gpa_value || profile.ielts_overall || profile.target_study_level || (profile.target_fields && profile.target_fields.length) || (profile.target_countries && profile.target_countries.length)));
   }
 
+  function uniqueKeys(values) {
+    var seen = {};
+    return (values || []).reduce(function (acc, value) {
+      var key = String(value || '').trim().toLowerCase();
+      if (!key || seen[key]) return acc;
+      seen[key] = true;
+      acc.push(key);
+      return acc;
+    }, []);
+  }
+
   function loadShortlist() {
+    if (window.AfroScholarshipFeed && typeof window.AfroScholarshipFeed.getLocalShortlistKeys === 'function') {
+      return window.AfroScholarshipFeed.getLocalShortlistKeys();
+    }
+
     try {
       var raw = localStorage.getItem(SHORTLIST_KEY);
-      return raw ? JSON.parse(raw) : [];
+      return raw ? uniqueKeys(JSON.parse(raw)) : [];
     } catch (err) {
       return [];
     }
   }
 
   function saveShortlist() {
+    shortlist = uniqueKeys(shortlist);
     try {
       localStorage.setItem(SHORTLIST_KEY, JSON.stringify(shortlist));
     } catch (err) {}
@@ -509,7 +543,114 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   }
 
   function isShortlisted(scholarship) {
-    return shortlist.indexOf(getScholarshipKey(scholarship)) !== -1;
+    var key = getScholarshipKey(scholarship);
+    return shortlist.indexOf(key) !== -1 || !!savedScholarshipMap[key];
+  }
+
+  function buildSavedScholarshipMap(items) {
+    return (items || []).reduce(function (acc, item) {
+      var key = getScholarshipKey(item);
+      if (key) acc[key] = item;
+      return acc;
+    }, {});
+  }
+
+  function getSavedScholarshipRecord(target) {
+    var key = typeof target === 'string' ? target : getScholarshipKey(target);
+    return key ? (savedScholarshipMap[key] || null) : null;
+  }
+
+  function deriveNextSavedDeadline(items) {
+    return (items || []).filter(function (item) {
+      return item && item.deadline_date && new Date(item.deadline_date).getTime() >= Date.now();
+    }).sort(function (left, right) {
+      return new Date(left.deadline_date).getTime() - new Date(right.deadline_date).getTime();
+    })[0] || null;
+  }
+
+  function syncSavedScholarships(payload) {
+    var data = payload || {};
+    var localKeys = Array.isArray(data.localKeys) && data.localKeys.length ? data.localKeys : loadShortlist();
+
+    savedScholarships = Array.isArray(data.items) ? data.items.slice() : [];
+    savedScholarshipMap = buildSavedScholarshipMap(savedScholarships);
+    shortlist = uniqueKeys(savedScholarships.map(getScholarshipKey).concat(localKeys));
+    saveShortlist();
+
+    savedScholarshipState = {
+      mode: data.mode || (data.isSignedIn ? 'account' : 'local'),
+      isSignedIn: !!data.isSignedIn,
+      syncLabel: data.syncLabel || (data.isSignedIn ? 'Account saves' : 'Local shortlist'),
+      count: data.count !== undefined && data.count !== null ? Number(data.count) : shortlist.length,
+      reminderEnabledCount: data.reminderEnabledCount !== undefined && data.reminderEnabledCount !== null ? Number(data.reminderEnabledCount) : 0,
+      nextDeadline: data.nextDeadline || deriveNextSavedDeadline(savedScholarships),
+      isDegraded: !!data.isDegraded,
+      error: data.error ? String(data.error) : ''
+    };
+
+    if (isNaN(savedScholarshipState.count)) {
+      savedScholarshipState.count = shortlist.length;
+    }
+
+    return savedScholarshipState;
+  }
+
+  function loadSavedScholarships() {
+    if (window.AfroScholarshipFeed && typeof window.AfroScholarshipFeed.loadSaved === 'function') {
+      return window.AfroScholarshipFeed.loadSaved({
+        scholarships: allScholarships
+      }).then(function (payload) {
+        syncSavedScholarships(payload);
+        return payload;
+      }).catch(function () {
+        var localPayload = {
+          items: [],
+          count: shortlist.length,
+          localKeys: shortlist.slice(),
+          isSignedIn: false,
+          mode: 'local',
+          syncLabel: 'Local shortlist',
+          reminderEnabledCount: 0,
+          nextDeadline: null,
+          isDegraded: false,
+          error: ''
+        };
+        syncSavedScholarships(localPayload);
+        return localPayload;
+      });
+    }
+
+    var payload = {
+      items: [],
+      count: shortlist.length,
+      localKeys: shortlist.slice(),
+      isSignedIn: false,
+      mode: 'local',
+      syncLabel: 'Local shortlist',
+      reminderEnabledCount: 0,
+      nextDeadline: null,
+      isDegraded: false,
+      error: ''
+    };
+    syncSavedScholarships(payload);
+    return Promise.resolve(payload);
+  }
+
+  function openAuthIfAvailable() {
+    if (window.AfroAuthModal && typeof window.AfroAuthModal.open === 'function') {
+      window.AfroAuthModal.open();
+      return;
+    }
+    notify('Sign in to sync scholarship saves and deadline reminders.', 'info');
+  }
+
+  function formatReminderOffsets(offsets) {
+    return (offsets || []).map(function (offset) {
+      var days = Number(offset);
+      if (days === 0) return 'same day';
+      if (days === 1) return '1 day';
+      return days + ' days';
+    }).join(', ');
   }
 
   function escapeHtml(value) {
@@ -529,7 +670,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     var note = getEl('feedStatus');
     if (!note) return;
     note.textContent = scholarshipFeedMeta && scholarshipFeedMeta.message
-      ? scholarshipFeedMeta.message
+      ? ((scholarshipFeedMeta.label ? scholarshipFeedMeta.label + ': ' : '') + scholarshipFeedMeta.message)
       : 'Checking scholarship source status.';
     note.className = 'feed-note' + (scholarshipFeedMeta && scholarshipFeedMeta.isDegraded ? ' warn' : '');
   }
@@ -715,6 +856,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     var strong = 0;
     var good = 0;
     var possible = 0;
+    var savedCount = savedScholarshipState.count || shortlist.length;
+    var nextDeadline = savedScholarshipState.nextDeadline;
 
     results.forEach(function (scholarship) {
       if (!scholarship._match) return;
@@ -726,12 +869,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     getEl('summaryStrong').textContent = strong;
     getEl('summaryGood').textContent = good;
     getEl('summaryPossible').textContent = possible;
-    getEl('summaryShortlist').textContent = shortlist.length;
+    getEl('summaryShortlist').textContent = savedCount;
     getEl('summaryMode').textContent = shortlistOnly ? 'Shortlist view' : (entryMode === 'quick' ? 'Quick check' : entryMode === 'full' ? 'Full explorer' : 'Start here');
 
     var summaryText = 'Start with a quick scholarship check or build your full profile to see stronger fit explanations and save scholarships into a shortlist.';
     if (shortlistOnly) {
-      summaryText = shortlist.length
+      summaryText = savedCount
         ? 'Review your saved scholarships here. Turn shortlist view off to return to the full finder.'
         : 'You have not saved any scholarships yet. Use the shortlist button on any scholarship card to keep it here.';
     } else if (matchResults.length && entryMode === 'quick') {
@@ -740,13 +883,27 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       summaryText = 'Your full profile is shaping the list below. Save high-fit scholarships and open the official details for the ones you want to pursue.';
     }
 
+    if (savedCount && nextDeadline && nextDeadline.deadline_date) {
+      summaryText += ' Next saved deadline: ' + nextDeadline.name + ' on ' + nextDeadline.deadline_date + '.';
+    }
+
     if (scholarshipFeedMeta && scholarshipFeedMeta.isDegraded) {
       summaryText = scholarshipFeedMeta.message + ' ' + summaryText;
     }
 
     getEl('summaryText').textContent = summaryText;
     getEl('shortlistToggle').textContent = shortlistOnly ? 'Show all matches' : 'View shortlist';
-    getEl('shortlistNote').textContent = shortlist.length ? shortlist.length + ' saved scholarship' + (shortlist.length === 1 ? '' : 's') : 'No saved scholarships yet';
+    if (savedScholarshipState.isSignedIn) {
+      getEl('shortlistNote').textContent = savedCount
+        ? savedCount + ' synced save' + (savedCount === 1 ? '' : 's') + (savedScholarshipState.reminderEnabledCount ? ' | ' + savedScholarshipState.reminderEnabledCount + ' reminder' + (savedScholarshipState.reminderEnabledCount === 1 ? '' : 's') + ' on' : '')
+        : (shortlist.length
+          ? 'Signed in, but these shortlist items are still local to this device until you save them into your account.'
+          : 'Signed in. Save scholarships to sync them into your education cockpit.');
+    } else {
+      getEl('shortlistNote').textContent = savedCount
+        ? savedCount + ' saved on this device'
+        : 'Guest mode: shortlist stays on this device until you sign in.';
+    }
     updateFeedStatus();
   }
 
@@ -754,7 +911,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     for (var i = 0; i < allScholarships.length; i++) {
       if (getScholarshipKey(allScholarships[i]) === key) return allScholarships[i];
     }
-    return null;
+    return savedScholarshipMap[key] || null;
   }
 
   function renderGrid(results) {
@@ -779,11 +936,28 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       var url = scholarship.application_url || scholarship.info_url || '#';
       var key = getScholarshipKey(scholarship);
       var encodedKey = encodeURIComponent(key);
-      var saved = isShortlisted(scholarship);
+      var savedRecord = getSavedScholarshipRecord(scholarship);
+      var saved = !!savedRecord || isShortlisted(scholarship);
+      var reminder = savedRecord && savedRecord.reminder ? savedRecord.reminder : null;
+      var reminderSummary = '';
+      var reminderAction = '';
+      var saveLabel = saved
+        ? (savedScholarshipState.isSignedIn && savedRecord ? 'Saved to Plan' : 'Saved Locally')
+        : (savedScholarshipState.isSignedIn ? 'Save to Plan' : 'Save to Shortlist');
       var matchBadge = '';
 
       if (scholarship._match && scholarship._match.percent !== undefined) {
         matchBadge = '<div class="match-badge ' + scholarship._match.categoryClass + '">' + escapeHtml(scholarship._match.category) + ' &middot; ' + scholarship._match.percent + '%</div>';
+      }
+
+      if (savedRecord && scholarship.deadline_date) {
+        if (reminder && reminder.enabled) {
+          reminderSummary = '<div class="match-details"><span class="met">Reminder active:</span> ' + escapeHtml(formatReminderOffsets(reminder.offsets || [])) + '</div>';
+          reminderAction = '<button class="btn btn-outline btn-sm" onclick="toggleScholarshipReminder(\'' + encodedKey + '\')">Reminder on</button>';
+        } else if (savedScholarshipState.isSignedIn) {
+          reminderSummary = '<div class="match-details"><span class="unmet">Reminder off:</span> Turn deadline alerts on if you want email prompts.</div>';
+          reminderAction = '<button class="btn btn-outline btn-sm" onclick="toggleScholarshipReminder(\'' + encodedKey + '\')">Reminder off</button>';
+        }
       }
 
       html += '<div class="sch-card">' +
@@ -804,10 +978,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
           }).join('') +
         '</div>' +
         (scholarship.deadline_text ? '<div class="deadline">Deadline: ' + escapeHtml(scholarship.deadline_text) + '</div>' : '') +
+        reminderSummary +
         buildFitExplanation(scholarship._match) +
         '<div class="card-actions">' +
-          '<button class="btn btn-outline btn-sm shortlist-btn' + (saved ? ' is-saved' : '') + '" onclick="toggleShortlist(\'' + encodedKey + '\')">' + (saved ? 'Saved to Shortlist' : 'Save to Shortlist') + '</button>' +
+          '<button class="btn btn-outline btn-sm shortlist-btn' + (saved ? ' is-saved' : '') + '" onclick="toggleShortlist(\'' + encodedKey + '\')">' + saveLabel + '</button>' +
           '<a class="btn btn-primary btn-sm action-link" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">Open Details</a>' +
+          reminderAction +
           '<button class="btn btn-outline btn-sm" onclick="jumpToFullProfile()">Continue Profile</button>' +
         '</div>' +
       '</div>';
@@ -899,8 +1075,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       isLoading = false;
       getEl('totalBadge').textContent = formatScholarshipCount(allScholarships.length);
       updateFeedStatus();
-      tryLoadProfile();
-      applyFilters();
+      loadSavedScholarships().finally(function () {
+        tryLoadProfile();
+        applyFilters();
+      });
     });
   }
 
@@ -1019,19 +1197,106 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
   window.toggleShortlist = function (encodedKey) {
     var key = decodeURIComponent(encodedKey || '');
+    var scholarship = findScholarshipByKey(key);
+    var saved = scholarship ? isShortlisted(scholarship) : shortlist.indexOf(key) !== -1;
     if (!key) return;
+
+    if (window.AfroScholarshipFeed) {
+      var action = saved && typeof window.AfroScholarshipFeed.unsaveScholarship === 'function'
+        ? window.AfroScholarshipFeed.unsaveScholarship({
+          scholarship: scholarship,
+          scholarships: allScholarships
+        })
+        : (typeof window.AfroScholarshipFeed.saveScholarship === 'function'
+          ? window.AfroScholarshipFeed.saveScholarship({
+            scholarship: scholarship,
+            scholarships: allScholarships
+          })
+          : null);
+
+      if (action && typeof action.then === 'function') {
+        action.then(function (payload) {
+          syncSavedScholarships(payload);
+          if (saved) {
+            recordScholarshipActivity('Removed scholarship shortlist', (scholarship || {}).name || 'Removed scholarship');
+            notify(payload && payload.mode === 'account' ? 'Scholarship removed from your saved plan.' : 'Scholarship removed from this device shortlist.', 'success');
+          } else {
+            recordScholarshipActivity('Saved scholarship shortlist', (scholarship || {}).name || 'Saved scholarship');
+            notify(payload && payload.mode === 'account' ? 'Scholarship saved to your education plan.' : 'Scholarship saved on this device. Sign in to sync reminders.', 'success');
+          }
+          applyFilters();
+        }).catch(function (error) {
+          notify(error && error.message ? error.message : 'Unable to update scholarship save right now.', 'error');
+        });
+        return;
+      }
+    }
 
     var index = shortlist.indexOf(key);
     if (index === -1) {
       shortlist.unshift(key);
-      recordScholarshipActivity('Saved scholarship shortlist', (findScholarshipByKey(key) || {}).name || 'Saved scholarship');
+      recordScholarshipActivity('Saved scholarship shortlist', (scholarship || {}).name || 'Saved scholarship');
     } else {
       shortlist.splice(index, 1);
-      recordScholarshipActivity('Removed scholarship shortlist', (findScholarshipByKey(key) || {}).name || 'Removed scholarship');
+      recordScholarshipActivity('Removed scholarship shortlist', (scholarship || {}).name || 'Removed scholarship');
     }
 
     saveShortlist();
+    syncSavedScholarships({
+      items: savedScholarships,
+      count: shortlist.length,
+      localKeys: shortlist.slice(),
+      isSignedIn: savedScholarshipState.isSignedIn,
+      mode: savedScholarshipState.isSignedIn ? 'local-fallback' : 'local',
+      syncLabel: savedScholarshipState.isSignedIn ? 'Local fallback shortlist' : 'Local shortlist',
+      reminderEnabledCount: savedScholarshipState.reminderEnabledCount,
+      nextDeadline: savedScholarshipState.nextDeadline,
+      isDegraded: savedScholarshipState.isDegraded,
+      error: savedScholarshipState.error
+    });
     applyFilters();
+  };
+
+  window.toggleScholarshipReminder = function (encodedKey) {
+    var key = decodeURIComponent(encodedKey || '');
+    var savedRecord = getSavedScholarshipRecord(key);
+    var reminderEnabled = savedRecord && savedRecord.reminder ? !!savedRecord.reminder.enabled : false;
+
+    if (!savedRecord) {
+      notify('Save the scholarship first so AfroTools can attach a reminder route to it.', 'warning');
+      return;
+    }
+
+    if (!savedScholarshipState.isSignedIn) {
+      openAuthIfAvailable();
+      return;
+    }
+
+    if (!savedRecord.deadline_date) {
+      notify('This scholarship does not have a reliable dated deadline yet, so reminder scheduling stays off for now.', 'info');
+      return;
+    }
+
+    if (!window.AfroScholarshipFeed || typeof window.AfroScholarshipFeed.updateReminder !== 'function') {
+      notify('Reminder controls are unavailable right now.', 'warning');
+      return;
+    }
+
+    window.AfroScholarshipFeed.updateReminder({
+      scholarshipId: savedRecord.scholarshipId || savedRecord.id,
+      scholarship: savedRecord,
+      enabled: !reminderEnabled,
+      offsets: savedRecord.reminder && savedRecord.reminder.offsets && savedRecord.reminder.offsets.length
+        ? savedRecord.reminder.offsets
+        : (window.AfroScholarshipFeed.DEFAULT_REMINDER_OFFSETS || [30, 14, 7, 1, 0])
+    }).then(function (payload) {
+      syncSavedScholarships(payload);
+      recordScholarshipActivity(!reminderEnabled ? 'Enabled scholarship reminder' : 'Disabled scholarship reminder', savedRecord.name || 'Saved scholarship');
+      notify(!reminderEnabled ? 'Deadline reminder enabled for this scholarship.' : 'Deadline reminder disabled for this scholarship.', 'success');
+      applyFilters();
+    }).catch(function (error) {
+      notify(error && error.message ? error.message : 'Unable to update scholarship reminder right now.', 'error');
+    });
   };
 
   window.applyFilters = function () {
@@ -1046,6 +1311,18 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     var source = matchResults.length > 0
       ? matchResults.map(function (result) { return Object.assign({}, result.scholarship, { _match: result }); })
       : allScholarships.map(function (scholarship) { return Object.assign({}, scholarship, { _match: null }); });
+    var sourceLookup = {};
+
+    source.forEach(function (item) {
+      sourceLookup[getScholarshipKey(item)] = true;
+    });
+
+    savedScholarships.forEach(function (item) {
+      var itemKey = getScholarshipKey(item);
+      if (!itemKey || sourceLookup[itemKey]) return;
+      sourceLookup[itemKey] = true;
+      source.push(Object.assign({}, item, { _match: null }));
+    });
 
     var results = source.filter(function (scholarship) {
       if (level !== 'all' && scholarship.levels && scholarship.levels.indexOf(level) === -1) return false;
@@ -1080,6 +1357,17 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
     renderGrid(results);
     updateSummary(results);
   };
+
+  window.addEventListener('afroedu:scholarship-saves-updated', function (event) {
+    syncSavedScholarships(event && event.detail ? event.detail : {});
+    if (!isLoading) applyFilters();
+  });
+
+  window.addEventListener('afro-auth-change', function () {
+    loadSavedScholarships().then(function () {
+      if (!isLoading) applyFilters();
+    });
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadScholarships);

@@ -10,7 +10,7 @@ Use `node scripts/mobile-audit.js` to build a repo-wide mobile risk audit withou
 ## Scope
 
 - Scans public HTML pages and their linked local CSS and JS.
-- Excludes hidden/system folders, `node_modules`, `tests`, `docs`, `scripts`, `reports`, and generated body partials such as `lang/pages/**/fr.body.html`.
+- Excludes hidden/system folders, generated deploy artifacts such as `dist`, `node_modules`, `tests`, `docs`, `scripts`, `reports`, and generated body partials such as `lang/pages/**/fr.body.html`.
 - Treats widget iframes and app-like tool subviews differently from full pages so missing shared navbar usage is not over-reported on intentional utility shells.
 
 ## Current Heuristics

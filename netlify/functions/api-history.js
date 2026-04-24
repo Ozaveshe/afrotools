@@ -10,11 +10,9 @@
  */
 
 const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
-if (!SUPABASE_ANON_KEY) console.warn('[api-history] Missing SUPABASE_ANON_KEY_AUTH env var');
-
 const FREE_LIMIT = 5;
 const { getAllowedOrigin } = require('./utils/cors');
+const { getUserFromEvent } = require('./_shared/browser-session-auth');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -23,19 +21,19 @@ const CORS_HEADERS = {
   'Content-Type': 'application/json',
 };
 
-function jsonResponse(statusCode, body) {
-  return { statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) };
-}
+function jsonResponse(statusCode, body, responseMeta) {
+  const meta = responseMeta || {};
+  const response = {
+    statusCode,
+    headers: Object.assign({}, CORS_HEADERS, meta.headers || {}),
+    body: JSON.stringify(body),
+  };
 
-async function getUserFromToken(authHeader) {
-  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
-  const token = authHeader.replace('Bearer ', '');
-  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) return null;
-  const user = await res.json();
-  return user && user.id ? user : null;
+  if (meta.multiValueHeaders && Object.keys(meta.multiValueHeaders).length) {
+    response.multiValueHeaders = meta.multiValueHeaders;
+  }
+
+  return response;
 }
 
 exports.handler = async function (event) {
@@ -44,11 +42,13 @@ exports.handler = async function (event) {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
 
-  const user = await getUserFromToken(event.headers['authorization'] || event.headers['Authorization']);
-  if (!user) return jsonResponse(401, { error: 'Unauthorized' });
+  const authResult = await getUserFromEvent(event);
+  const user = authResult && authResult.user ? authResult.user : null;
+  const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
+  if (!user) return jsonResponse(401, { error: 'Unauthorized' }, sessionResponse);
 
   const serviceKey = process.env.SUPABASE_AUTH_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY;
-  if (!serviceKey) return jsonResponse(500, { error: 'Server config error' });
+  if (!serviceKey) return jsonResponse(500, { error: 'Server config error' }, sessionResponse);
 
   const headers = {
     apikey: serviceKey,
@@ -67,23 +67,23 @@ exports.handler = async function (event) {
     }
     const res = await fetch(url, { headers });
     const data = await res.json();
-    return jsonResponse(200, { data: Array.isArray(data) ? data : [] });
+    return jsonResponse(200, { data: Array.isArray(data) ? data : [] }, sessionResponse);
   }
 
   // DELETE: remove a calculation
   if (event.httpMethod === 'DELETE') {
-    if (!params.id) return jsonResponse(400, { error: 'Missing id parameter' });
+    if (!params.id) return jsonResponse(400, { error: 'Missing id parameter' }, sessionResponse);
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/calculation_history?id=eq.${params.id}&user_id=eq.${user.id}`,
       { method: 'DELETE', headers }
     );
-    return jsonResponse(res.ok ? 200 : 400, { deleted: res.ok });
+    return jsonResponse(res.ok ? 200 : 400, { deleted: res.ok }, sessionResponse);
   }
 
   // POST: save a calculation
   if (event.httpMethod === 'POST') {
     let body;
-    try { body = JSON.parse(event.body); } catch { return jsonResponse(400, { error: 'Invalid JSON' }); }
+    try { body = JSON.parse(event.body); } catch { return jsonResponse(400, { error: 'Invalid JSON' }, sessionResponse); }
 
     // Check free tier limit (count this month's saves)
     const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
@@ -103,7 +103,7 @@ exports.handler = async function (event) {
     const isPro = Array.isArray(profileData) && profileData[0] && profileData[0].tier === 'pro';
 
     if (!isPro && count >= FREE_LIMIT) {
-      return jsonResponse(200, { saved: false, reason: 'limit_reached', limit: FREE_LIMIT });
+      return jsonResponse(200, { saved: false, reason: 'limit_reached', limit: FREE_LIMIT }, sessionResponse);
     }
 
     // Sanitize input
@@ -125,12 +125,12 @@ exports.handler = async function (event) {
 
     if (res.ok) {
       const inserted = await res.json();
-      return jsonResponse(200, { saved: true, id: inserted[0] ? inserted[0].id : null });
+      return jsonResponse(200, { saved: true, id: inserted[0] ? inserted[0].id : null }, sessionResponse);
     }
 
     const errText = await res.text();
-    return jsonResponse(200, { saved: false, reason: 'db_error', error: errText });
+    return jsonResponse(200, { saved: false, reason: 'db_error', error: errText }, sessionResponse);
   }
 
-  return jsonResponse(405, { error: 'Method not allowed' });
+  return jsonResponse(405, { error: 'Method not allowed' }, sessionResponse);
 };

@@ -675,6 +675,27 @@ Return:
 Do not edit files in this step unless asked.
 ```
 
+## Business and Compliance Pattern
+
+For Swahili business/compliance expansion, treat VAT, invoices, TIN, business registration, break-even, and profit margin as one practical path instead of isolated translated tools.
+
+- Start with task intent: price with VAT, issue an invoice, confirm TIN, register the business, then test break-even and margin.
+- Keep official acronyms when they help search or filing clarity, but explain them naturally on first mention.
+- Use repo source data and existing calculator behavior; do not add legal or tax rules that are not present in the source.
+- Link business pages back to salary/PAYE when payroll, employer tax, or staff costs become relevant.
+- Prefer hand-authored Swahili product pages and persistent hub links over registry-dependent discovery for priority compliance paths.
+
+### All-Country TIN Coverage
+
+When Swahili TIN coverage is expanded to all African countries, keep it as a compliance discovery surface rather than a generic legal directory.
+
+- Use `data/legal/tin-guide-data.js` as the source of truth for country facts.
+- Keep country pages hand-authored in Swahili, but do not invent requirements beyond the source data.
+- Group the TIN hub by region so users can scan all 54 countries quickly.
+- Link TIN pages to VAT, invoice, business registration, and salary/PAYE where those workflows naturally meet.
+- Add reciprocal Swahili hreflang only on the paired English TIN pages in the batch.
+
+
 ## Recommended Execution Order
 
 ### Phase 0: Stabilize

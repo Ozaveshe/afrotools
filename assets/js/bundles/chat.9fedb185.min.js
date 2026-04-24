@@ -64,6 +64,8 @@
       this._loading      = false;
       this._initialized  = false;
       this._lastErrorMsg = null;
+      this._totalTokens  = { input: 0, output: 0 };
+      this._turns        = 0;
     }
 
     static get observedAttributes() { return ['context', 'tool', 'greeting']; }
@@ -481,6 +483,47 @@
             border-top: 1px solid var(--ac-border);
           }
 
+          /* ── Typewriter cursor ── */
+          @keyframes ac-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+          .msg-ai .tw-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--ac-primary);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: ac-blink .6s steps(1) infinite;
+          }
+
+          /* ── Token usage footer ── */
+          .chat-usage {
+            display: none;
+            font-size: 0.62rem;
+            color: var(--ac-text-muted);
+            padding: 4px 16px;
+            text-align: right;
+            opacity: .6;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+          }
+          .chat-card.expanded .chat-usage { display: block; }
+
+          /* ── Compact button ── */
+          .chat-compact {
+            display: none;
+            font-size: 0.66rem;
+            font-weight: 600;
+            color: var(--ac-primary);
+            background: none;
+            border: 1px dashed var(--ac-border);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            align-self: center;
+            transition: background .13s;
+          }
+          .chat-compact:hover { background: rgba(0,98,204,.06); }
+          .chat-compact.visible { display: inline-flex; }
+
           /* ── Rate limit CTA (inline) ── */
           .rate-limit-inline {
             font-size: 0.76rem;
@@ -523,6 +566,8 @@
               <span class="char-count" id="charcount">0 / 1000</span>
             </div>
           </div>
+
+          <div class="chat-usage" id="usage"></div>
 
           <div class="chat-disclaimer">
             AI responses may contain errors. Verify important information.
@@ -675,9 +720,11 @@
       this._showLoading();
 
       try {
-        const lastMsg = this._messages[this._messages.length - 1].content;
-        const history = this._messages.slice(0, -1);
-        let reply;
+        // Compact history if it's getting long (keep last 6 messages)
+        const messagesToSend = this._getCompactedHistory();
+        const lastMsg = messagesToSend[messagesToSend.length - 1].content;
+        const history = messagesToSend.slice(0, -1);
+        let reply, usage;
         if (typeof window.AfroTools !== 'undefined' && window.AfroTools.ai && typeof window.AfroTools.ai.ask === 'function') {
           reply = await window.AfroTools.ai.ask(lastMsg, '', history, { tool: this.tool, context: this.context });
         } else {
@@ -689,10 +736,14 @@
           if (!res.ok) throw new Error(`Request failed (${res.status})`);
           const data = await res.json();
           reply = data.reply || data.text || '';
+          usage = data.usage || null;
         }
         this._hideLoading();
-        this._addMessage('assistant', reply);
+        // Typewriter effect for assistant messages
+        await this._typewriterMessage(reply);
         this._messages.push({ role: 'assistant', content: reply });
+        this._turns++;
+        this._updateUsage(usage);
         this._persistHistory();
       } catch (err) {
         this._hideLoading();
@@ -704,6 +755,92 @@
 
       this._loading = false;
       send.disabled = false;
+    }
+
+    /* ══════════════════════════════════════════════════
+       TYPEWRITER — word-by-word rendering with cursor
+    ══════════════════════════════════════════════════ */
+    async _typewriterMessage(text) {
+      const c = this.shadowRoot.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = 'msg msg-ai';
+      c.appendChild(div);
+
+      const words = text.split(/(\s+)/); // keep whitespace tokens
+      const cursor = document.createElement('span');
+      cursor.className = 'tw-cursor';
+      div.appendChild(cursor);
+
+      let accumulated = '';
+      for (let i = 0; i < words.length; i++) {
+        accumulated += words[i];
+        // Re-render parsed markdown every few words for performance
+        if (i % 4 === 3 || i === words.length - 1) {
+          div.innerHTML = parseMd(accumulated);
+          div.appendChild(cursor);
+          c.scrollTop = c.scrollHeight;
+        }
+        // 8ms per word-token for typewriter feel
+        if (i < words.length - 1) {
+          await new Promise(r => setTimeout(r, 8));
+        }
+      }
+
+      // Remove cursor, add final parsed content + copy button
+      div.innerHTML = parseMd(text);
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'msg-copy';
+      copyBtn.innerHTML = COPY_SVG;
+      copyBtn.setAttribute('aria-label', 'Copy message');
+      copyBtn.dataset.text = text;
+      div.appendChild(copyBtn);
+      c.scrollTop = c.scrollHeight;
+    }
+
+    /* ══════════════════════════════════════════════════
+       TOKEN USAGE TRACKING
+    ══════════════════════════════════════════════════ */
+    _updateUsage(usage) {
+      if (usage) {
+        this._totalTokens.input += usage.input_tokens || 0;
+        this._totalTokens.output += usage.output_tokens || 0;
+      }
+      const el = this.shadowRoot.getElementById('usage');
+      if (!el) return;
+      const total = this._totalTokens.input + this._totalTokens.output;
+      if (total > 0) {
+        // Haiku pricing: ~$0.25/MTok input, ~$1.25/MTok output
+        const cost = (this._totalTokens.input * 0.25 + this._totalTokens.output * 1.25) / 1000000;
+        el.textContent = this._turns + ' turn' + (this._turns !== 1 ? 's' : '') +
+          ' \u00B7 ~' + total.toLocaleString() + ' tokens' +
+          (cost >= 0.001 ? ' \u00B7 ~$' + cost.toFixed(4) : '');
+      } else {
+        el.textContent = this._turns + ' turn' + (this._turns !== 1 ? 's' : '');
+      }
+    }
+
+    /* ══════════════════════════════════════════════════
+       HISTORY COMPACTION — keep last 6 messages, summarize rest
+    ══════════════════════════════════════════════════ */
+    _getCompactedHistory() {
+      if (this._messages.length <= 8) return this._messages;
+
+      // Keep last 6 messages, summarize older ones
+      const older = this._messages.slice(0, -6);
+      const recent = this._messages.slice(-6);
+
+      // Build a brief summary of older messages
+      const summary = older.map(m =>
+        (m.role === 'user' ? 'User: ' : 'AI: ') +
+        m.content.substring(0, 120) + (m.content.length > 120 ? '...' : '')
+      ).join(' | ');
+
+      // Ensure alternating roles: summary as user, then a placeholder assistant reply
+      return [
+        { role: 'user', content: '[Previous conversation summary: ' + summary + ']' },
+        { role: 'assistant', content: 'Understood. I have context from our earlier conversation. How can I help?' },
+        ...recent
+      ];
     }
 
     /* ══════════════════════════════════════════════════
@@ -720,8 +857,8 @@
       div.className = 'msg ' + cls;
 
       if (type === 'assistant') {
+        // Non-typewriter fallback (history restore)
         div.innerHTML = parseMd(text);
-        // Copy button
         const copyBtn = document.createElement('button');
         copyBtn.className = 'msg-copy';
         copyBtn.innerHTML = COPY_SVG;

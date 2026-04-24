@@ -22,6 +22,11 @@
 const fs   = require('fs');
 const path = require('path');
 
+const {
+  fileToPublicRoute,
+  fileToSourceHtmlRoute,
+} = require('./lib/canonical-aliases');
+
 const ROOT    = path.resolve(__dirname, '..');
 const DRY_RUN = process.argv.includes('--dry-run');
 const REPORT  = process.argv.includes('--report');
@@ -29,7 +34,7 @@ const FIX_MODE = !DRY_RUN && !REPORT;
 const TODAY   = new Date().toISOString().slice(0, 10);
 const SITE_ORIGIN = 'https://afrotools.com';
 
-const SKIP_DIRS = new Set(['node_modules', '.git', 'assets', 'scripts', '.netlify', 'lang', 'supabase']);
+const SKIP_DIRS = new Set(['node_modules', '.git', 'assets', 'scripts', '.netlify', 'dist', 'lang', 'supabase']);
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -76,9 +81,15 @@ function hasNoindex(content) {
 }
 
 function isRedirectLike(content) {
+  const headEnd = content.search(/<\/head>/i);
+  const snippet = headEnd === -1 ? content.slice(0, 2500) : content.slice(0, headEnd + 7);
+
   return (
     /<meta[^>]+http-equiv=["']refresh["']/i.test(content) ||
-    /window\.location\.(replace|href)|location\.replace\(/i.test(content)
+    /window\.location\.replace\(\s*['"][^'"]+['"]\s*\)/i.test(snippet) ||
+    /location\.replace\(\s*['"][^'"]+['"]\s*\)/i.test(snippet) ||
+    /window\.location(?:\.href)?\s*=\s*['"][^'"]+['"]/i.test(snippet) ||
+    /location\.href\s*=\s*['"][^'"]+['"]/i.test(snippet)
   );
 }
 
@@ -98,31 +109,84 @@ function normalizeSiteUrl(url) {
 }
 
 function defaultPageUrl(filePath) {
-  const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
-
-  if (rel === 'index.html') return `${SITE_ORIGIN}/`;
-  if (rel.endsWith('/index.html')) {
-    return `${SITE_ORIGIN}/${rel.replace(/index\.html$/i, '')}`;
-  }
-
-  return `${SITE_ORIGIN}/${rel.slice(0, -5)}`;
+  return `${SITE_ORIGIN}${fileToPublicRoute(filePath)}`;
 }
 
 function resolvePreferredPageUrl(filePath, content) {
-  const canonicalHref = extractCanonicalHref(content);
+  return defaultPageUrl(filePath);
+}
 
-  if (canonicalHref) {
-    try {
-      const canonical = new URL(canonicalHref, SITE_ORIGIN);
-      if (canonical.origin === SITE_ORIGIN) {
-        return `${canonical.origin}${canonical.pathname}`;
-      }
-    } catch {
-      // Fall back to the file-derived URL below.
-    }
+function upsertCanonical(content, url) {
+  const line = `<link rel="canonical" href="${url}">`;
+  const pattern =
+    /<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["'][^"']+["'])[^>]*>/i;
+
+  if (pattern.test(content)) {
+    return content.replace(pattern, line);
   }
 
-  return defaultPageUrl(filePath);
+  return content.replace(/<\/head>/i, `${line}\n</head>`);
+}
+
+function upsertOgUrl(content, url) {
+  const line = `<meta property="og:url" content="${url}">`;
+  const pattern =
+    /<meta\b(?=[^>]*\bproperty=["']og:url["'])(?=[^>]*\bcontent=["'][^"']*["'])[^>]*>/i;
+
+  if (pattern.test(content)) {
+    return content.replace(pattern, line);
+  }
+
+  return content.replace(/<\/head>/i, `${line}\n</head>`);
+}
+
+function normalizeKnownSiteUrl(url) {
+  const preferred = preferredPageUrls.get(normalizeSiteUrl(url));
+  return preferred || url;
+}
+
+function normalizeJsonLdValue(value) {
+  if (Array.isArray(value)) {
+    return value.map(normalizeJsonLdValue);
+  }
+
+  if (!value || typeof value !== 'object') {
+    return typeof value === 'string' ? normalizeKnownSiteUrl(value) : value;
+  }
+
+  for (const key of Object.keys(value)) {
+    value[key] = normalizeJsonLdValue(value[key]);
+  }
+
+  return value;
+}
+
+function normalizeJsonLdUrls(content) {
+  let blocksFixed = 0;
+
+  const next = content.replace(
+    /<script\b([^>]*type=["']application\/ld\+json["'][^>]*)>([\s\S]*?)<\/script>/gi,
+    (match, attrs, jsonText) => {
+      const trimmed = jsonText.trim();
+      if (!trimmed) return match;
+
+      try {
+        const parsed = JSON.parse(trimmed);
+        const before = JSON.stringify(parsed);
+        const normalized = normalizeJsonLdValue(parsed);
+        const after = JSON.stringify(normalized);
+
+        if (before === after) return match;
+
+        blocksFixed += 1;
+        return `<script${attrs}>${after}</script>`;
+      } catch {
+        return match;
+      }
+    }
+  );
+
+  return { content: next, blocksFixed };
 }
 
 // ─── Step 1: Build map of .html-backed URLs (no trailing slash) ───────────
@@ -136,11 +200,71 @@ walk(ROOT, (fp, fname) => {
   if (isRedirectLike(content)) return;
 
   const preferredUrl = resolvePreferredPageUrl(fp, content);
-  const lookupKey = normalizeSiteUrl(preferredUrl);
-  if (lookupKey) preferredPageUrls.set(lookupKey, preferredUrl);
+  const lookupKeys = [normalizeSiteUrl(preferredUrl)];
+  const sourceHtmlRoute = fileToSourceHtmlRoute(fp);
+
+  if (sourceHtmlRoute) {
+    lookupKeys.push(normalizeSiteUrl(`${SITE_ORIGIN}${sourceHtmlRoute}`));
+  }
+
+  for (const lookupKey of lookupKeys) {
+    if (lookupKey) preferredPageUrls.set(lookupKey, preferredUrl);
+  }
 });
 
 // ─── Step 2: Fix hreflang trailing slashes ────────────────────────────────
+
+let canonicalFilesFixed = 0;
+let canonicalAttrsFixed = 0;
+let ogUrlFilesFixed     = 0;
+let ogUrlAttrsFixed     = 0;
+let jsonLdFilesFixed    = 0;
+let jsonLdBlocksFixed   = 0;
+
+walk(ROOT, (fp, fname) => {
+  if (!fname.endsWith('.html')) return;
+
+  const rel = path.relative(ROOT, fp).replace(/\\/g, '/');
+  if (/^(404\.html|style-guide\.html|logo-system\.html|afrotools-mission-control\.html|mc-7a2f9x\.html)$/i.test(rel)) {
+    return;
+  }
+
+  const original = readFile(fp);
+  if (isRedirectLike(original)) return;
+  if (hasNoindex(original)) return;
+
+  const preferredUrl = defaultPageUrl(fp);
+  const currentCanonical = extractCanonicalHref(original);
+  let next = upsertCanonical(original, preferredUrl);
+  if (currentCanonical !== preferredUrl) {
+    canonicalAttrsFixed++;
+  }
+
+  const ogUrlMatch =
+    original.match(/<meta\b(?=[^>]*\bproperty=["']og:url["'])(?=[^>]*\bcontent=["']([^"']*)["'])[^>]*>/i) ||
+    original.match(/<meta\b(?=[^>]*\bcontent=["']([^"']*)["'])(?=[^>]*\bproperty=["']og:url["'])[^>]*>/i);
+  const currentOgUrl = ogUrlMatch ? ogUrlMatch[1] : '';
+  next = upsertOgUrl(next, preferredUrl);
+  if (currentOgUrl !== preferredUrl) {
+    ogUrlAttrsFixed++;
+  }
+
+  const normalizedJsonLd = normalizeJsonLdUrls(next);
+  next = normalizedJsonLd.content;
+  if (normalizedJsonLd.blocksFixed > 0) {
+    jsonLdFilesFixed++;
+    jsonLdBlocksFixed += normalizedJsonLd.blocksFixed;
+  }
+
+  if (next !== original) {
+    writeFile(fp, next);
+    if (currentCanonical !== preferredUrl) canonicalFilesFixed++;
+    if (currentOgUrl !== preferredUrl) ogUrlFilesFixed++;
+    if (DRY_RUN) console.log(`  [dry] seo self-url fix: ${rel}`);
+  }
+});
+
+// â”€â”€â”€ Step 3: Fix hreflang trailing slashes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 let hreflangFilesFixed = 0;
 let hreflangAttrsFixed = 0;
@@ -174,6 +298,7 @@ walk(ROOT, (fp, fname) => {
 // ─── Step 3: Fix sitemap trailing slashes + update lastmod ────────────────
 
 let sitemapLocsFixed    = 0;
+let sitemapHrefFixed    = 0;
 let sitemapLastmodFixed = 0;
 
 const SITEMAP_FILES = fs
@@ -198,6 +323,15 @@ for (const smName of SITEMAP_FILES) {
     if (preferredUrl && preferredUrl !== url) {
       sitemapLocsFixed++;
       return `<loc>${preferredUrl}</loc>`;
+    }
+    return match;
+  });
+
+  content = content.replace(/href="(https:\/\/afrotools\.com\/[^"]+)"/g, (match, url) => {
+    const preferredUrl = preferredPageUrls.get(normalizeSiteUrl(url));
+    if (preferredUrl && preferredUrl !== url) {
+      sitemapHrefFixed++;
+      return `href="${preferredUrl}"`;
     }
     return match;
   });
@@ -289,9 +423,16 @@ console.log(`\n${BOLD}AfroTools SEO Daily Fix — ${TODAY}${RESET}\n`);
 console.log(`${DRY_RUN ? '[DRY RUN] ' : ''}Mode: ${REPORT ? 'report' : 'fix'}\n`);
 
 console.log(`${BOLD}${FIX_MODE ? '── Auto-fixes applied' : '── Auto-fixes available'} ──────────────────────────────────${RESET}`);
+console.log(`  Canonical files fixed:     ${canonicalFilesFixed}`);
+console.log(`  Canonical attrs fixed:     ${canonicalAttrsFixed}`);
+console.log(`  og:url files fixed:        ${ogUrlFilesFixed}`);
+console.log(`  og:url attrs fixed:        ${ogUrlAttrsFixed}`);
+console.log(`  JSON-LD files fixed:       ${jsonLdFilesFixed}`);
+console.log(`  JSON-LD blocks fixed:      ${jsonLdBlocksFixed}`);
 console.log(`  Hreflang files fixed:      ${hreflangFilesFixed}`);
 console.log(`  Hreflang attrs fixed:      ${hreflangAttrsFixed}`);
 console.log(`  Sitemap <loc> fixed:       ${sitemapLocsFixed}`);
+console.log(`  Sitemap hreflang fixed:    ${sitemapHrefFixed}`);
 console.log(`  Sitemap <lastmod> updated: ${sitemapLastmodFixed}`);
 
 console.log(`\n${BOLD}── Remaining issues (manual review) ────────────────────${RESET}`);
@@ -324,8 +465,12 @@ const totalIssues =
   frBroken.length;
 
 const anythingFixed =
+  canonicalFilesFixed > 0 ||
+  ogUrlFilesFixed > 0 ||
+  jsonLdFilesFixed > 0 ||
   hreflangFilesFixed > 0 ||
   sitemapLocsFixed > 0 ||
+  sitemapHrefFixed > 0 ||
   sitemapLastmodFixed > 0;
 
 console.log(`\n${BOLD}── Summary ─────────────────────────────────────────────${RESET}`);

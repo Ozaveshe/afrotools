@@ -2442,199 +2442,199 @@
         "id": "ma-paye-fr",
         "name": "Calculateur Salaire Net — Maroc",
         "icon": "🇲🇦",
-        "desc": "IR barème progressif, CNSS, AMO, frais professio...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/maroc/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 83,
-        "estTraffic": 3000
+        "estTraffic": 0
       },
       {
         "id": "dz-paye-fr",
         "name": "Calculateur Salaire Net — Algérie",
         "icon": "🇩🇿",
-        "desc": "IRG tranches progressives, CNAS 9%, frais profes...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/algerie/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 80,
-        "estTraffic": 2500
+        "estTraffic": 0
       },
       {
         "id": "cd-paye-fr",
         "name": "Calculateur Salaire Net — RDC",
         "icon": "🇨🇩",
-        "desc": "IPR progressif, cotisations INSS. 105M d'habitan...",
-        "href": "/fr/rdc/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/dr-congo/cd-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 79,
-        "estTraffic": 2500
+        "estTraffic": 0
       },
       {
         "id": "ci-paye-fr",
         "name": "Calculateur Salaire Net — Côte d'Ivoire",
         "icon": "🇨🇮",
-        "desc": "Barème IRPP, cotisations CNPS, contribution nati...",
-        "href": "/fr/cote-divoire/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/cote-divoire/ci-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 78,
-        "estTraffic": 2000
+        "estTraffic": 0
       },
       {
         "id": "tn-paye-fr",
         "name": "Calculateur Salaire Net — Tunisie",
         "icon": "🇹🇳",
-        "desc": "IRPP tranches progressives, CNSS 9,18%. En franç...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/tunisie/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 77,
-        "estTraffic": 2000
+        "estTraffic": 0
       },
       {
         "id": "cm-paye-fr",
         "name": "Calculateur Salaire Net — Cameroun",
         "icon": "🇨🇲",
-        "desc": "IRPP progressif, CNPS, centimes additionnels com...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/cameroun/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 76,
-        "estTraffic": 1500
-      },
-      {
-        "id": "convertisseur-devises-fr",
-        "name": "Convertisseur de Devises Africaines",
-        "icon": "💱",
-        "desc": "Taux de change en temps réel pour toutes les dev...",
-        "href": "/fr/tools/convertisseur-devises",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 75,
-        "estTraffic": 2500
+        "estTraffic": 0
       },
       {
         "id": "sn-paye-fr",
         "name": "Calculateur Salaire Net — Sénégal",
         "icon": "🇸🇳",
-        "desc": "IRPP barème progressif, cotisations IPRES et CSS...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/senegal/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 75,
-        "estTraffic": 1800
+        "estTraffic": 0
       },
       {
-        "id": "transfert-argent-fr",
-        "name": "Comparateur Transfert d'Argent",
-        "icon": "💸",
-        "desc": "Comparez Wise, Remitly, Western Union, LemFi pou...",
-        "href": "/fr/tools/transfert-argent",
+        "id": "convertisseur-devises-fr",
+        "name": "Convertisseur de devises africaines",
+        "icon": "💱",
+        "desc": "Convertisseur de devises déjà publié en français.",
+        "href": "/fr/tools/convertisseur-devises",
         "category": "financial",
         "lang": "fr",
-        "priority": 73,
-        "estTraffic": 2200
-      },
-      {
-        "id": "calculateur-tva-fr",
-        "name": "Calculateur TVA Panafricain",
-        "icon": "🧾",
-        "desc": "TVA pour 54 pays africains. Mode montant unique,...",
-        "href": "/fr/tools/calculateur-tva",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 2000
-      },
-      {
-        "id": "frais-mobile-money-fr",
-        "name": "Comparateur Frais Mobile Money",
-        "icon": "📱",
-        "desc": "Comparez M-Pesa, MTN MoMo, Airtel Money, Wave, O...",
-        "href": "/fr/tools/frais-mobile-money",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 71,
-        "estTraffic": 1800
-      },
-      {
-        "id": "generateur-factures-fr",
-        "name": "Générateur de Factures Africain",
-        "icon": "📄",
-        "desc": "Créez des factures professionnelles pour les mar...",
-        "href": "/fr/tools/generateur-factures",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 70,
-        "estTraffic": 1500
-      },
-      {
-        "id": "droits-douane-fr",
-        "name": "Calculateur Droits de Douane",
-        "icon": "🚢",
-        "desc": "Droits d'importation pour l'Afrique. CEDEAO, COM...",
-        "href": "/fr/tools/droits-douane",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 68,
-        "estTraffic": 1200
-      },
-      {
-        "id": "sn-vs-ci-fr",
-        "name": "Sénégal vs Côte d'Ivoire — Comparaison Impôts 2026",
-        "icon": "🇸🇳",
-        "desc": "IRPP, CNPS/IPRES, TVA, retenues à la source. Don...",
-        "href": "/fr/comparer/senegal-vs-cote-divoire-impots",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 65,
-        "estTraffic": 800
-      },
-      {
-        "id": "ga-paye-fr",
-        "name": "Calculateur Salaire Net — Gabon",
-        "icon": "🇬🇦",
-        "desc": "IRPP progressif, CNSS. En français.",
-        "href": "/fr/gabon/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 63,
-        "estTraffic": 700
-      },
-      {
-        "id": "cg-paye-fr",
-        "name": "Calculateur Salaire Net — Congo",
-        "icon": "🇨🇬",
-        "desc": "IRPP, CNSS. En français.",
-        "href": "/fr/congo/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 62,
-        "estTraffic": 600
+        "priority": 75,
+        "estTraffic": 0
       },
       {
         "id": "ma-tva-fr",
         "name": "Calculateur TVA — Maroc",
         "icon": "🇲🇦",
-        "desc": "TVA 20% — Montant HT/TTC. En français.",
+        "desc": "Route française canonique pour la TVA marocaine ...",
         "href": "/fr/maroc/calculateur-tva",
         "category": "financial",
         "lang": "fr",
-        "priority": 62,
+        "priority": 74,
         "estTraffic": 0
       },
       {
-        "id": "bf-paye-fr",
-        "name": "Calculateur Salaire Net — Burkina Faso",
-        "icon": "🇧🇫",
-        "desc": "IUTS progressif, CNSS. En français.",
-        "href": "/fr/burkina-faso/calculateur-salaire-net",
+        "id": "dz-tva-fr",
+        "name": "Calculateur TVA — Algérie",
+        "icon": "🇩🇿",
+        "desc": "Route française canonique pour la TVA algérienne...",
+        "href": "/fr/algerie/calculateur-tva",
         "category": "financial",
         "lang": "fr",
-        "priority": 60,
-        "estTraffic": 800
+        "priority": 72,
+        "estTraffic": 0
+      },
+      {
+        "id": "calculateur-tva-fr",
+        "name": "Calculateur TVA panafricain",
+        "icon": "🧾",
+        "desc": "Calcul HT/TTC et comparaison TVA déjà publiés en...",
+        "href": "/fr/tools/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 72,
+        "estTraffic": 0
+      },
+      {
+        "id": "cm-tva-fr",
+        "name": "Calculateur TVA — Cameroun",
+        "icon": "🇨🇲",
+        "desc": "Route française canonique pour la TVA camerounai...",
+        "href": "/fr/cameroun/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 70,
+        "estTraffic": 0
+      },
+      {
+        "id": "tn-tva-fr",
+        "name": "Calculateur TVA — Tunisie",
+        "icon": "🇹🇳",
+        "desc": "Route française canonique pour la TVA tunisienne...",
+        "href": "/fr/tunisie/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 69,
+        "estTraffic": 0
+      },
+      {
+        "id": "droits-douane-fr",
+        "name": "Calculateur droits de douane",
+        "icon": "🚢",
+        "desc": "Droits d'importation et coûts douaniers déjà pub...",
+        "href": "/fr/tools/droits-douane",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 68,
+        "estTraffic": 0
+      },
+      {
+        "id": "sn-tva-fr",
+        "name": "Calculateur TVA — Sénégal",
+        "icon": "🇸🇳",
+        "desc": "Route française canonique pour la TVA sénégalais...",
+        "href": "/fr/senegal/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 68,
+        "estTraffic": 0
+      },
+      {
+        "id": "sn-vs-ci-fr",
+        "name": "Sénégal vs Côte d'Ivoire — Comparaison impôts 2026",
+        "icon": "🇸🇳",
+        "desc": "Contenu support fiscal déjà publié en français p...",
+        "href": "/fr/comparer/senegal-vs-cote-divoire-impots",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 65,
+        "estTraffic": 0
+      },
+      {
+        "id": "ga-paye-fr",
+        "name": "Calculateur Salaire Net — Gabon",
+        "icon": "🇬🇦",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/gabon/ga-paye",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 63,
+        "estTraffic": 0
+      },
+      {
+        "id": "comparateur-salaires-fr",
+        "name": "Comparateur de salaires",
+        "icon": "📊",
+        "desc": "Comparaison salariale déjà disponible en français.",
+        "href": "/fr/tools/comparateur-salaires",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 63,
+        "estTraffic": 0
       }
     ],
     "fr::document-pdf": [
@@ -2647,7 +2647,7 @@
         "category": "document-pdf",
         "lang": "fr",
         "priority": 69,
-        "estTraffic": 1500
+        "estTraffic": 0
       }
     ],
     "sw::financial": [
@@ -2716,52 +2716,6 @@
         "lang": "sw",
         "priority": 62,
         "estTraffic": 500
-      }
-    ],
-    "fr::ecommerce": [
-      {
-        "id": "bi-tva-fr",
-        "name": "Calculateur TVA — Burundi",
-        "icon": "🇧🇮",
-        "desc": "TVA 18%. Exportations détaxées. Exonéré : médica...",
-        "href": "/fr/burundi/bi-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 50,
-        "estTraffic": 400
-      },
-      {
-        "id": "cv-tva-fr",
-        "name": "Calculateur TVA — Cap-Vert",
-        "icon": "🇨🇻",
-        "desc": "TVA 15%, taux réduit 6%. Exportations détaxées. ...",
-        "href": "/fr/cape-verde/cv-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 48,
-        "estTraffic": 350
-      },
-      {
-        "id": "cf-tva-fr",
-        "name": "Calculateur TVA — Centrafrique",
-        "icon": "🇨🇫",
-        "desc": "TVA 19%. Exportations détaxées. Exonéré : alimen...",
-        "href": "/fr/car/cf-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 45,
-        "estTraffic": 300
-      },
-      {
-        "id": "gq-tva-fr",
-        "name": "Calculateur TVA — Guinée Équatoriale",
-        "icon": "🇬🇶",
-        "desc": "TVA 15%. Exportations détaxées. Exonéré : alimen...",
-        "href": "/fr/eq-guinea/gq-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 42,
-        "estTraffic": 200
       }
     ],
     "en::trade": [
@@ -5064,133 +5018,144 @@
         "id": "ma-paye-fr",
         "name": "Calculateur Salaire Net — Maroc",
         "icon": "🇲🇦",
-        "desc": "IR barème progressif, CNSS, AMO, frais professio...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/maroc/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 83,
-        "estTraffic": 3000
+        "estTraffic": 0
       },
       {
         "id": "dz-paye-fr",
         "name": "Calculateur Salaire Net — Algérie",
         "icon": "🇩🇿",
-        "desc": "IRG tranches progressives, CNAS 9%, frais profes...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/algerie/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 80,
-        "estTraffic": 2500
+        "estTraffic": 0
       },
       {
         "id": "cd-paye-fr",
         "name": "Calculateur Salaire Net — RDC",
         "icon": "🇨🇩",
-        "desc": "IPR progressif, cotisations INSS. 105M d'habitan...",
-        "href": "/fr/rdc/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/dr-congo/cd-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 79,
-        "estTraffic": 2500
-      },
-      {
-        "id": "convertisseur-devises-fr",
-        "name": "Convertisseur de Devises Africaines",
-        "icon": "💱",
-        "desc": "Taux de change en temps réel pour toutes les dev...",
-        "href": "/fr/tools/convertisseur-devises",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 75,
-        "estTraffic": 2500
-      },
-      {
-        "id": "transfert-argent-fr",
-        "name": "Comparateur Transfert d'Argent",
-        "icon": "💸",
-        "desc": "Comparez Wise, Remitly, Western Union, LemFi pou...",
-        "href": "/fr/tools/transfert-argent",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 73,
-        "estTraffic": 2200
+        "estTraffic": 0
       },
       {
         "id": "ci-paye-fr",
         "name": "Calculateur Salaire Net — Côte d'Ivoire",
         "icon": "🇨🇮",
-        "desc": "Barème IRPP, cotisations CNPS, contribution nati...",
-        "href": "/fr/cote-divoire/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/cote-divoire/ci-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 78,
-        "estTraffic": 2000
+        "estTraffic": 0
       },
       {
         "id": "tn-paye-fr",
         "name": "Calculateur Salaire Net — Tunisie",
         "icon": "🇹🇳",
-        "desc": "IRPP tranches progressives, CNSS 9,18%. En franç...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/tunisie/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 77,
-        "estTraffic": 2000
-      },
-      {
-        "id": "calculateur-tva-fr",
-        "name": "Calculateur TVA Panafricain",
-        "icon": "🧾",
-        "desc": "TVA pour 54 pays africains. Mode montant unique,...",
-        "href": "/fr/tools/calculateur-tva",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 72,
-        "estTraffic": 2000
-      },
-      {
-        "id": "sn-paye-fr",
-        "name": "Calculateur Salaire Net — Sénégal",
-        "icon": "🇸🇳",
-        "desc": "IRPP barème progressif, cotisations IPRES et CSS...",
-        "href": "/fr/senegal/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 75,
-        "estTraffic": 1800
-      },
-      {
-        "id": "frais-mobile-money-fr",
-        "name": "Comparateur Frais Mobile Money",
-        "icon": "📱",
-        "desc": "Comparez M-Pesa, MTN MoMo, Airtel Money, Wave, O...",
-        "href": "/fr/tools/frais-mobile-money",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 71,
-        "estTraffic": 1800
+        "estTraffic": 0
       },
       {
         "id": "cm-paye-fr",
         "name": "Calculateur Salaire Net — Cameroun",
         "icon": "🇨🇲",
-        "desc": "IRPP progressif, CNPS, centimes additionnels com...",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/cameroun/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 76,
-        "estTraffic": 1500
+        "estTraffic": 0
       },
       {
-        "id": "generateur-factures-fr",
-        "name": "Générateur de Factures Africain",
-        "icon": "📄",
-        "desc": "Créez des factures professionnelles pour les mar...",
-        "href": "/fr/tools/generateur-factures",
+        "id": "sn-paye-fr",
+        "name": "Calculateur Salaire Net — Sénégal",
+        "icon": "🇸🇳",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
+        "href": "/fr/senegal/calculateur-salaire-net",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 75,
+        "estTraffic": 0
+      },
+      {
+        "id": "convertisseur-devises-fr",
+        "name": "Convertisseur de devises africaines",
+        "icon": "💱",
+        "desc": "Convertisseur de devises déjà publié en français.",
+        "href": "/fr/tools/convertisseur-devises",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 75,
+        "estTraffic": 0
+      },
+      {
+        "id": "ma-tva-fr",
+        "name": "Calculateur TVA — Maroc",
+        "icon": "🇲🇦",
+        "desc": "Route française canonique pour la TVA marocaine ...",
+        "href": "/fr/maroc/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 74,
+        "estTraffic": 0
+      },
+      {
+        "id": "dz-tva-fr",
+        "name": "Calculateur TVA — Algérie",
+        "icon": "🇩🇿",
+        "desc": "Route française canonique pour la TVA algérienne...",
+        "href": "/fr/algerie/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 72,
+        "estTraffic": 0
+      },
+      {
+        "id": "calculateur-tva-fr",
+        "name": "Calculateur TVA panafricain",
+        "icon": "🧾",
+        "desc": "Calcul HT/TTC et comparaison TVA déjà publiés en...",
+        "href": "/fr/tools/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 72,
+        "estTraffic": 0
+      },
+      {
+        "id": "cm-tva-fr",
+        "name": "Calculateur TVA — Cameroun",
+        "icon": "🇨🇲",
+        "desc": "Route française canonique pour la TVA camerounai...",
+        "href": "/fr/cameroun/calculateur-tva",
         "category": "financial",
         "lang": "fr",
         "priority": 70,
-        "estTraffic": 1500
+        "estTraffic": 0
+      },
+      {
+        "id": "tn-tva-fr",
+        "name": "Calculateur TVA — Tunisie",
+        "icon": "🇹🇳",
+        "desc": "Route française canonique pour la TVA tunisienne...",
+        "href": "/fr/tunisie/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 69,
+        "estTraffic": 0
       },
       {
         "id": "generateur-cv-fr",
@@ -5201,260 +5166,249 @@
         "category": "document-pdf",
         "lang": "fr",
         "priority": 69,
-        "estTraffic": 1500
+        "estTraffic": 0
       },
       {
         "id": "droits-douane-fr",
-        "name": "Calculateur Droits de Douane",
+        "name": "Calculateur droits de douane",
         "icon": "🚢",
-        "desc": "Droits d'importation pour l'Afrique. CEDEAO, COM...",
+        "desc": "Droits d'importation et coûts douaniers déjà pub...",
         "href": "/fr/tools/droits-douane",
         "category": "financial",
         "lang": "fr",
         "priority": 68,
-        "estTraffic": 1200
+        "estTraffic": 0
+      },
+      {
+        "id": "sn-tva-fr",
+        "name": "Calculateur TVA — Sénégal",
+        "icon": "🇸🇳",
+        "desc": "Route française canonique pour la TVA sénégalais...",
+        "href": "/fr/senegal/calculateur-tva",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 68,
+        "estTraffic": 0
       },
       {
         "id": "sn-vs-ci-fr",
-        "name": "Sénégal vs Côte d'Ivoire — Comparaison Impôts 2026",
+        "name": "Sénégal vs Côte d'Ivoire — Comparaison impôts 2026",
         "icon": "🇸🇳",
-        "desc": "IRPP, CNPS/IPRES, TVA, retenues à la source. Don...",
+        "desc": "Contenu support fiscal déjà publié en français p...",
         "href": "/fr/comparer/senegal-vs-cote-divoire-impots",
         "category": "financial",
         "lang": "fr",
         "priority": 65,
-        "estTraffic": 800
-      },
-      {
-        "id": "bf-paye-fr",
-        "name": "Calculateur Salaire Net — Burkina Faso",
-        "icon": "🇧🇫",
-        "desc": "IUTS progressif, CNSS. En français.",
-        "href": "/fr/burkina-faso/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 60,
-        "estTraffic": 800
-      },
-      {
-        "id": "mg-paye-fr",
-        "name": "Calculateur Salaire Net — Madagascar",
-        "icon": "🇲🇬",
-        "desc": "IRPP progressif, CNaPS 1%, OSIE santé. Calcul co...",
-        "href": "/fr/madagascar/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 60,
-        "estTraffic": 800
-      },
-      {
-        "id": "ml-paye-fr",
-        "name": "Calculateur Salaire Net — Mali",
-        "icon": "🇲🇱",
-        "desc": "ITS progressif, cotisations INPS. En français.",
-        "href": "/fr/mali/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 60,
-        "estTraffic": 800
+        "estTraffic": 0
       },
       {
         "id": "ga-paye-fr",
         "name": "Calculateur Salaire Net — Gabon",
         "icon": "🇬🇦",
-        "desc": "IRPP progressif, CNSS. En français.",
-        "href": "/fr/gabon/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/gabon/ga-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 63,
-        "estTraffic": 700
+        "estTraffic": 0
+      },
+      {
+        "id": "comparateur-salaires-fr",
+        "name": "Comparateur de salaires",
+        "icon": "📊",
+        "desc": "Comparaison salariale déjà disponible en français.",
+        "href": "/fr/tools/comparateur-salaires",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 63,
+        "estTraffic": 0
       },
       {
         "id": "cg-paye-fr",
         "name": "Calculateur Salaire Net — Congo",
         "icon": "🇨🇬",
-        "desc": "IRPP, CNSS. En français.",
-        "href": "/fr/congo/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/congo/cg-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 62,
-        "estTraffic": 600
+        "estTraffic": 0
+      },
+      {
+        "id": "calculateur-conges-fr",
+        "name": "Calculateur de congés",
+        "icon": "🗓️",
+        "desc": "Calcul des congés et droits déjà disponible en f...",
+        "href": "/fr/tools/calculateur-conges",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 60,
+        "estTraffic": 0
+      },
+      {
+        "id": "mg-paye-fr",
+        "name": "Calculateur Salaire Net — Madagascar",
+        "icon": "🇲🇬",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
+        "href": "/fr/madagascar/calculateur-salaire-net",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 60,
+        "estTraffic": 0
+      },
+      {
+        "id": "ci-tva-fr",
+        "name": "Calculateur TVA — Côte d'Ivoire",
+        "icon": "🇨🇮",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/cote-divoire/ci-vat",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 60,
+        "estTraffic": 0
+      },
+      {
+        "id": "cd-tva-fr",
+        "name": "Calculateur TVA — RDC",
+        "icon": "🇨🇩",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/dr-congo/cd-vat",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 60,
+        "estTraffic": 0
+      },
+      {
+        "id": "calculateur-hypothecaire-fr",
+        "name": "Calculateur hypothécaire",
+        "icon": "🏠",
+        "desc": "Calculateur hypothécaire déjà disponible en fran...",
+        "href": "/fr/tools/calculateur-hypothecaire",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 58,
+        "estTraffic": 0
       },
       {
         "id": "bj-paye-fr",
         "name": "Calculateur Salaire Net — Bénin",
         "icon": "🇧🇯",
-        "desc": "IRPP progressif, CNSS 3,6%. En français.",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/benin/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 58,
-        "estTraffic": 600
+        "estTraffic": 0
       },
       {
         "id": "gn-paye-fr",
         "name": "Calculateur Salaire Net — Guinée",
         "icon": "🇬🇳",
-        "desc": "Impôt sur le revenu, CNSS. En français.",
-        "href": "/fr/guinee/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/guinea/gn-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 58,
-        "estTraffic": 500
+        "estTraffic": 0
       },
       {
-        "id": "tg-paye-fr",
-        "name": "Calculateur Salaire Net — Togo",
-        "icon": "🇹🇬",
-        "desc": "IRPP, CNSS. En français.",
-        "href": "/fr/togo/calculateur-salaire-net",
+        "id": "salaire-minimum-fr",
+        "name": "Salaire minimum",
+        "icon": "⚖️",
+        "desc": "Repères de salaire minimum déjà publiés en franç...",
+        "href": "/fr/tools/salaire-minimum",
         "category": "financial",
         "lang": "fr",
         "priority": 58,
-        "estTraffic": 500
+        "estTraffic": 0
       },
       {
         "id": "ne-paye-fr",
         "name": "Calculateur Salaire Net — Niger",
         "icon": "🇳🇪",
-        "desc": "IUTS, CNSS. En français.",
-        "href": "/fr/niger/calculateur-salaire-net",
+        "desc": "Page française en ligne sur la route historique ...",
+        "href": "/fr/niger/ne-paye",
         "category": "financial",
         "lang": "fr",
         "priority": 57,
-        "estTraffic": 500
+        "estTraffic": 0
       },
       {
         "id": "td-paye-fr",
         "name": "Calculateur Salaire Net — Tchad",
         "icon": "🇹🇩",
-        "desc": "IRPP progressif, CNPS 3,5%. En français.",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/tchad/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 57,
-        "estTraffic": 500
+        "estTraffic": 0
+      },
+      {
+        "id": "comparateur-prets-fr",
+        "name": "Comparateur de prêts",
+        "icon": "🏦",
+        "desc": "Comparaison de prêts déjà disponible en français.",
+        "href": "/fr/tools/comparateur-prets",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 57,
+        "estTraffic": 0
+      },
+      {
+        "id": "frais-bancaires-fr",
+        "name": "Frais bancaires",
+        "icon": "🏦",
+        "desc": "Comparateur de frais bancaires déjà publié en fr...",
+        "href": "/fr/tools/frais-bancaires",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 57,
+        "estTraffic": 0
+      },
+      {
+        "id": "profit-forex-fr",
+        "name": "Calculateur profit Forex",
+        "icon": "📈",
+        "desc": "Calculateur de profit Forex déjà publié en franç...",
+        "href": "/fr/tools/profit-forex",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 56,
+        "estTraffic": 0
+      },
+      {
+        "id": "eligibilite-pret-immobilier-fr",
+        "name": "Éligibilité prêt immobilier",
+        "icon": "✅",
+        "desc": "Vérification d'éligibilité prêt immobilier déjà ...",
+        "href": "/fr/tools/eligibilite-pret-immobilier",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 56,
+        "estTraffic": 0
+      },
+      {
+        "id": "ng-impot-societes-fr",
+        "name": "Impôt sociétés — Nigeria",
+        "icon": "🏢",
+        "desc": "Impôt sur les sociétés nigérian déjà disponible ...",
+        "href": "/fr/tools/ng-impot-societes",
+        "category": "financial",
+        "lang": "fr",
+        "priority": 56,
+        "estTraffic": 0
       },
       {
         "id": "bi-paye-fr",
         "name": "Calculateur Salaire Net — Burundi",
         "icon": "🇧🇮",
-        "desc": "IPR progressif, INSS 4%. En français.",
+        "desc": "Route normalisée calculateur-salaire-net déjà en...",
         "href": "/fr/burundi/calculateur-salaire-net",
         "category": "financial",
         "lang": "fr",
         "priority": 55,
-        "estTraffic": 400
-      },
-      {
-        "id": "mr-paye-fr",
-        "name": "Calculateur Salaire Net — Mauritanie",
-        "icon": "🇲🇷",
-        "desc": "ITS progressif, CNSS 1%. En français.",
-        "href": "/fr/mauritanie/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 55,
-        "estTraffic": 400
-      },
-      {
-        "id": "cv-paye-fr",
-        "name": "Calculateur Salaire Net — Cap-Vert",
-        "icon": "🇨🇻",
-        "desc": "DGCI IRPS progressif, INPS 8,5% salarié + 16% em...",
-        "href": "/fr/cape-verde/cv-paye",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 52,
-        "estTraffic": 400
-      },
-      {
-        "id": "gq-paye-fr",
-        "name": "Calculateur Salaire Net — Guinée Équatoriale",
-        "icon": "🇬🇶",
-        "desc": "IRPF progressif 0%–35%, sécurité sociale 4,5% sa...",
-        "href": "/fr/eq-guinea/gq-paye",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 50,
-        "estTraffic": 400
-      },
-      {
-        "id": "bi-tva-fr",
-        "name": "Calculateur TVA — Burundi",
-        "icon": "🇧🇮",
-        "desc": "TVA 18%. Exportations détaxées. Exonéré : médica...",
-        "href": "/fr/burundi/bi-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 50,
-        "estTraffic": 400
-      },
-      {
-        "id": "cv-tva-fr",
-        "name": "Calculateur TVA — Cap-Vert",
-        "icon": "🇨🇻",
-        "desc": "TVA 15%, taux réduit 6%. Exportations détaxées. ...",
-        "href": "/fr/cape-verde/cv-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 48,
-        "estTraffic": 350
-      },
-      {
-        "id": "cf-paye-fr",
-        "name": "Calculateur Salaire Net — Centrafrique",
-        "icon": "🇨🇫",
-        "desc": "IRPP progressif, CNPS 3%. En français.",
-        "href": "/fr/centrafrique/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 52,
-        "estTraffic": 300
-      },
-      {
-        "id": "km-paye-fr",
-        "name": "Calculateur Salaire Net — Comores",
-        "icon": "🇰🇲",
-        "desc": "IRPP progressif, CNSS 2%. En français.",
-        "href": "/fr/comores/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 52,
-        "estTraffic": 300
-      },
-      {
-        "id": "dj-paye-fr",
-        "name": "Calculateur Salaire Net — Djibouti",
-        "icon": "🇩🇯",
-        "desc": "IRPP progressif, CNSS 4%. En français.",
-        "href": "/fr/djibouti/calculateur-salaire-net",
-        "category": "financial",
-        "lang": "fr",
-        "priority": 52,
-        "estTraffic": 300
-      },
-      {
-        "id": "cf-tva-fr",
-        "name": "Calculateur TVA — Centrafrique",
-        "icon": "🇨🇫",
-        "desc": "TVA 19%. Exportations détaxées. Exonéré : alimen...",
-        "href": "/fr/car/cf-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 45,
-        "estTraffic": 300
-      },
-      {
-        "id": "gq-tva-fr",
-        "name": "Calculateur TVA — Guinée Équatoriale",
-        "icon": "🇬🇶",
-        "desc": "TVA 15%. Exportations détaxées. Exonéré : alimen...",
-        "href": "/fr/eq-guinea/gq-vat",
-        "category": "ecommerce",
-        "lang": "fr",
-        "priority": 42,
-        "estTraffic": 200
+        "estTraffic": 0
       }
     ],
     "sw": [

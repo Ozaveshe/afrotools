@@ -30,7 +30,12 @@ The goal is not a broad refactor. The goal is to turn the highest-value dynamic 
 ### Africa Conflict
 
 - `tools/africa-conflict/index.html` plus `conflicts.html`, `actors.html`, `displacement.html`, `economy.html`, `forecasts.html`, `map.html`, and `methodology.html` are already stable public pages.
-- `tools/africa-conflict/detail.html` is still a thin query/detail template driven by `?id=`.
+- `tools/africa-conflict/detail.html` is a thin `noindex, follow` query/detail fallback driven by `?id=`.
+- Static conflict dossiers are generated from the live Supabase manifest at `tools/africa-conflict/seo-manifest.json`.
+- The current implementation path is:
+  - `scripts/export-africa-conflict-seo-manifest.js`
+  - `scripts/generate-africa-conflict-static-pages.js`
+  - generated route helper `tools/africa-conflict/static-routes.js`
 - The runtime data layer lives in `engines/africa-conflict-engine.js`.
 - Public conflict data comes from:
   - `netlify/functions/conflict-data.js`
@@ -392,12 +397,18 @@ Data and sync sources:
 New implementation scripts recommended:
 
 - `scripts/generate-africa-conflict-static-pages.js`
-- optional: `scripts/export-africa-conflict-seo-manifest.js`
+- `scripts/export-africa-conflict-seo-manifest.js`
+- shared helpers in `scripts/lib/africa-conflict-static.js`
+- generated manifest and route helper:
+  - `tools/africa-conflict/seo-manifest.json`
+  - `tools/africa-conflict/static-routes.js`
 
 Recommended implementation behavior:
 
 - Build dossier pages from a normalized manifest of published conflicts.
+- Generate `/tools/africa-conflict/conflicts/index.html` plus one directory route per static-eligible conflict slug.
 - Regenerate after the sync pipeline updates conflict data.
+- Keep `tools/africa-conflict/detail.html` `noindex, follow` for unknown or excluded conflicts, with runtime canonicals pointing at clean static routes where one exists.
 - Keep live charts and recent-event modules hydrated client-side.
 
 ### Shared SEO and build layer

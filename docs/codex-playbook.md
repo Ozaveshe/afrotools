@@ -35,11 +35,17 @@
 
 - Use `afrotools-seo-ops`
 - Start with existing scripts in `scripts/seo-*.js`, `scripts/build-seo-system.js`, `scripts/apply-og-fallbacks.js`, and `scripts/inject-internal-links.js`
+- If Search Console starts surfacing `.html` alternates, run `node scripts/fix-canonical-alias-links.js` to collapse internal hrefs onto each page's preferred route and `node scripts/update-html-canonical-redirects.js` to regenerate the 301 block for safe `.html` aliases
+- Treat the file shape as the route source of truth: `foo/index.html` serves `/foo/`, while `foo.html` serves `/foo` with no trailing slash. Keep canonicals, hreflang, JSON-LD, sitemap entries, and injected internal links aligned to that served route rather than to a stale in-page canonical.
 - Treat `widgets/iframe/` as embed utility surfaces: keep them `noindex, follow` and canonicalize them to the full tool route with `npm run seo:widgets`
 - Treat thin tool workspace/query/detail subviews under `tools/` as utility surfaces: run `node scripts/fix-thin-tool-pages-seo.js` to set `noindex, follow` and canonicalize them back to `/tools/<tool>/`
+- Keep `npm run seo` from self-canonicalizing `noindex` utility pages; those pages should keep the parent canonical assigned by the thin-page fixer.
 - Keep `noindex` utility pages out of sitemap generation so auth, offline, app workspaces, and other thin utility routes do not leak into search-facing indexes
 - For AfroKitchen static-route work, use the manifest-driven flow in order: `node scripts/export-afrokitchen-seo-manifest.js`, `node scripts/generate-afrokitchen-static-pages.js`, `node scripts/generate-sitemaps.js`, `npm run seo`, then `npm run seo:report`
+- For Africa Conflict static-dossier work, use the live Supabase-backed manifest flow in order: `node scripts/export-africa-conflict-seo-manifest.js`, `node scripts/generate-africa-conflict-static-pages.js`, `node scripts/generate-sitemaps.js`, `npm run seo`, then `npm run seo:report`
 - Treat `npm run seo` as the sitemap normalization pass after regeneration: it now normalizes generated sitemap files against each page's preferred canonical URL rather than relying on hand-edited XML cleanup
+- Keep `scripts/generate-sitemaps.js` and `scripts/seo-daily-fix.js` aligned on stale `<lastmod>` handling so a fresh sitemap generation does not leave predictable report-only sitemap fixes.
+- Keep generated deploy output such as `dist/` out of source SEO scans; regenerate it from source rather than letting sitemap or alias scripts discover `/dist/...` URLs.
 - Avoid hand-editing sitemap files
 
 ### Blog or creator news publishing
@@ -94,6 +100,16 @@
 
 - Use `afrotools-supabase-ops`
 - Use the configured `supabase` MCP server first for live schema, SQL, logs, auth, storage, or types
+
+### Scholarship platform task
+
+- Read `docs/SCHOLARSHIP-PIPELINE.md`
+- Keep scholarship source freshness, save state, and reminder logic aligned across:
+  - `assets/js/education-scholarship-feed.js`
+  - `tools/scholarship-finder/`
+  - `tools/education-hub/`
+  - `netlify/functions/_shared/scholarship-platform.js`
+- Keep live project actions and repo edits separate in notes and summaries
 
 ## Automation Operating Model
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,16 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=4260f20e">
 <!-- ECharts for charts -->
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" defer></script>
 <script src="/engines/africa-conflict-engine.js?v=9f32d23d" defer></script>
+<script src="/tools/africa-conflict/static-routes.js?v=20260424a" defer></script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/">
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/detail">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/detail">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -36,7 +38,7 @@
       </div>
       <nav class="acd-hero-nav">
         <a href="/tools/africa-conflict/">← Dashboard</a>
-        <a href="/tools/africa-conflict/conflicts.html">All Conflicts</a>
+        <a href="/tools/africa-conflict/conflicts/">All Conflicts</a>
       </nav>
     </div>
   </div>
@@ -171,8 +173,8 @@
 </main>
 
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=5a869583" defer></script>
-<script src="/assets/js/components/footer.js?v=bd815d9c" defer></script>
+<script src="/assets/js/components/navbar.js?v=ad90a313" defer></script>
+<script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
 <script>
 (function () {
   'use strict';
@@ -184,6 +186,15 @@
   var evtData = [];
 
   function q(sel) { return document.querySelector(sel); }
+
+  function syncPreferredUrlMetadata(url) {
+    if (!url) return;
+    var absoluteUrl = url.charAt(0) === '/' ? 'https://afrotools.com' + url : url;
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    if (canonical) canonical.setAttribute('href', absoluteUrl);
+    if (ogUrl) ogUrl.setAttribute('content', absoluteUrl);
+  }
 
   if (!slug) {
     document.querySelector('.acd-page').innerHTML = '<div class="acd-empty" style="padding:80px"><div class="acd-empty-icon">❓</div><div class="acd-empty-title">No conflict specified. <a href="conflicts.html" style="color:var(--acd-accent)">Browse all conflicts →</a></div></div>';
@@ -490,6 +501,10 @@
       if (!conflict) {
         document.querySelector('.acd-page').innerHTML = '<div class="acd-empty" style="padding:80px"><div class="acd-empty-icon">❌</div><div class="acd-empty-title">Conflict not found. <a href="conflicts.html" style="color:var(--acd-accent)">Browse all conflicts →</a></div></div>';
         return;
+      }
+
+      if (window.AfroConflictStaticRoutes && window.AfroConflictStaticRoutes.hasConflict(slug)) {
+        syncPreferredUrlMetadata(window.AfroConflictStaticRoutes.conflict(slug));
       }
 
       // Update page title/meta

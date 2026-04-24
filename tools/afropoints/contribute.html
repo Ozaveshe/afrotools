@@ -1,24 +1,29 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contribute Data — AfroPoints | AfroTools</title>
 <meta name="description" content="Submit real-world African data — prices, rates, salaries, costs — and earn points. Takes under 30 seconds. Cash out via mobile money.">
-<link rel="canonical" href="https://afrotools.com/tools/afropoints/contribute.html">
+<link rel="canonical" href="https://afrotools.com/tools/afropoints/contribute">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Contribute Data — AfroPoints | AfroTools">
 <meta property="og:description" content="Submit African market data and earn points redeemable for cash.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=8d93e37c">
+<link rel="stylesheet" href="account-system.css?v=20260424">
+<meta property="og:url" content="https://afrotools.com/tools/afropoints/contribute">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -26,16 +31,34 @@
 <section class="ap-hero" style="padding-bottom:24px;">
   <div class="ap-hero-inner">
     <nav class="ap-breadcrumb"><a href="/">AfroTools</a> <span>/</span> <a href="./">AfroPoints</a> <span>/</span> <span>Contribute</span></nav>
-    <h1>Submit Data &amp; Earn Points</h1>
-    <p class="ap-hero-sub">Choose a category, add what you observed, and increase data quality with proof, timestamps, and precise location details.</p>
+    <div class="ap-hero-eyebrow">Submission Intake</div>
+    <h1>Submit Data For Review</h1>
+    <p class="ap-hero-sub">Choose an engine-approved category, add what you observed, and include enough proof, timing, and location detail for review.</p>
   </div>
 </section>
 
+<nav class="ap-system-nav" aria-label="AfroPoints account navigation">
+  <div class="ap-system-nav-inner">
+    <a class="ap-system-link" href="./">Cockpit</a>
+    <a class="ap-system-link is-active" href="contribute.html">Submit data</a>
+    <a class="ap-system-link" href="cashout.html">Cashout</a>
+    <a class="ap-system-link" href="leaderboard.html">Leaderboard</a>
+    <a class="ap-system-link" href="verification.html">Review rules</a>
+    <a class="ap-system-link" href="data-buyers.html">Data buyers</a>
+    <a class="ap-system-link" href="/dashboard/">Account</a>
+  </div>
+</nav>
+
 <div class="ap-main" style="max-width:800px;">
   <div class="ap-card ap-card--highlight" style="margin-bottom:20px;">
-    <div class="ap-card-header">Before You Submit</div>
+    <div class="ap-card-header">Submission Readiness</div>
     <div class="ap-card-body">
-      <p style="font-size:0.84rem; color:var(--color-text-muted); line-height:1.65; margin:0 0 14px;">Use the contributor playbook to save your coverage, check what good submissions look like, and share AfroPoints with another local reporter.</p>
+      <p style="font-size:0.84rem; color:var(--color-text-muted); line-height:1.65; margin:0 0 14px;">Points can be credited when a submission is accepted, but buyer-facing publication still depends on confidence scoring, corroboration, or manual review.</p>
+      <div class="ap-chip-row" style="margin:0 0 14px;">
+        <span class="ap-status-chip info">14 engine categories</span>
+        <span class="ap-status-chip warn">Review may be required</span>
+        <span class="ap-status-chip good">Proof improves trust</span>
+      </div>
       <div style="display:flex; flex-wrap:wrap; gap:10px;">
         <a class="ap-cta ap-cta--sm ap-cta--ghost" href="contributor-playbook.html">Set up coverage</a>
         <a class="ap-cta ap-cta--sm ap-cta--ghost" href="good-submission-examples.html">See examples</a>
@@ -133,8 +156,8 @@
     <div class="ap-card-body">
       <div id="reviewSummary" style="font-size:0.85rem; line-height:1.8; margin-bottom:18px;"></div>
       <div style="display:flex; align-items:center; gap:10px; padding:12px 16px; background:rgba(245,158,11,0.08); border-radius:10px; margin-bottom:18px;">
-        <span style="font-size:1.2rem;">🎯</span>
-        <span style="font-size:0.85rem; font-weight:600;">You'll earn <strong id="reviewPts" style="color:#F59E0B;">0</strong> points for this submission</span>
+        <span class="ap-status-chip warn">Estimated award</span>
+        <span style="font-size:0.85rem; font-weight:600;">This submission can earn <strong id="reviewPts" style="color:#F59E0B;">0</strong>. Publication waits for verification where required.</span>
       </div>
       <div style="display:flex; gap:10px;">
         <button class="ap-cta ap-cta--ghost ap-cta--sm" onclick="goStep(3)">&#8592; Back</button>
@@ -148,12 +171,12 @@
 <div class="ap-success-overlay" id="successOverlay">
   <div class="ap-success-box">
     <div class="ap-success-emoji">🎉</div>
-    <div class="ap-success-title">Points Earned!</div>
+    <div class="ap-success-title">Submission Received</div>
     <div class="ap-success-pts" id="successPts">+5</div>
     <div class="ap-success-desc" id="successDesc">Your data has been submitted and is awaiting verification.</div>
     <div style="display:flex; gap:10px; justify-content:center;">
       <button class="ap-cta ap-cta--sm" onclick="resetForm()">Submit Another</button>
-      <a href="./" class="ap-cta ap-cta--ghost ap-cta--sm">Dashboard</a>
+      <a href="./" class="ap-cta ap-cta--ghost ap-cta--sm">Cockpit</a>
     </div>
   </div>
 </div>
@@ -163,8 +186,8 @@
 
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
-<script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afropoints-engine.js?v=1"></script>

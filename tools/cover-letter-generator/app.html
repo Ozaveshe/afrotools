@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.aa4062f1.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.9fedb185.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -83,8 +83,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <meta name="twitter:description" content="Generate professional cover letters for African job markets. Free AI-powered tool tailored for Nigeria, Kenya, Ghana, South Africa.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="canonical" href="https://afrotools.com/tools/cover-letter-generator/">
+<link rel="canonical" href="https://afrotools.com/tools/cover-letter-generator/app">
 <meta name="robots" content="noindex, follow">
+<meta property="og:url" content="https://afrotools.com/tools/cover-letter-generator/app">
 </head>
 <body>
 <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">Cover Letter Generator — African Job Markets</h1>
@@ -352,6 +353,78 @@ body{font-family:Georgia,'Times New Roman',serif;color:#333;padding:60px 64px;li
     alert('Your cover letter has been downloaded. Open it in a browser and use Print > Save as PDF.');
   }
   setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+
+function loadJsPdf() {
+  if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
+  return new Promise(function(resolve, reject) {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+    script.onload = resolve;
+    script.onerror = function() { reject(new Error('Could not load the PDF export library.')); };
+    document.head.appendChild(script);
+  });
+}
+
+function addPdfText(doc, text, x, y, maxWidth, lineHeight, bottom) {
+  var lines = doc.splitTextToSize(String(text || ''), maxWidth);
+  lines.forEach(function(line) {
+    if (y > bottom) {
+      doc.addPage();
+      y = 24;
+    }
+    doc.text(line, x, y);
+    y += lineHeight;
+  });
+  return y;
+}
+
+// Override the print-fallback exporter with a direct .pdf download.
+async function exportPDF() {
+  try {
+    await loadJsPdf();
+    var preview = document.getElementById('preview');
+    var name = getVal('fullName') || 'Cover Letter';
+    var doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    var pageWidth = doc.internal.pageSize.getWidth();
+    var pageHeight = doc.internal.pageSize.getHeight();
+    var margin = 22;
+    var y = 24;
+
+    doc.setProperties({
+      title: 'Cover Letter - ' + name,
+      subject: 'Cover letter generated with AfroTools',
+      author: name,
+      creator: 'AfroTools Cover Letter Generator'
+    });
+    doc.setFont('times', 'normal');
+    doc.setFontSize(11);
+
+    var blocks = (preview.innerText || '').split(/\n{2,}/).map(function(block) {
+      return block.trim();
+    }).filter(Boolean);
+
+    blocks.forEach(function(block, index) {
+      var compact = block.replace(/\n/g, ' ');
+      doc.setFont('times', index === 0 ? 'bold' : 'normal');
+      y = addPdfText(doc, compact, margin, y, pageWidth - margin * 2, 6.2, pageHeight - 24);
+      y += 4;
+    });
+
+    for (var p = 1; p <= doc.getNumberOfPages(); p++) {
+      doc.setPage(p);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(140);
+      doc.text('Generated with AfroTools.com', pageWidth / 2, pageHeight - 10, { align: 'center' });
+      doc.setTextColor(0);
+    }
+
+    doc.save(name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_') + '_Cover_Letter.pdf');
+  } catch (err) {
+    console.error('PDF export error:', err);
+    alert('PDF export failed. Please check your connection and try again.');
+  }
 }
 
 loadFromUrl();
