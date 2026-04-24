@@ -32,10 +32,17 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
+- `npm run seo:og` - apply OG fallback metadata
+- `npm run seo:links` - repair SEO alias and internal-link issues
+- `npm run seo:widgets` - normalize widget iframe SEO metadata
 - `npm run build:i18n -- --all` - regenerate translations
+- `npm run build:i18n:dry-run` - preview i18n changes without writing output
 - `npm run build:i18n:validate` - validate i18n output
+- `npm run build:i18n:full` - rebuild i18n output and validate hreflang
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
+- `npm run inventory:site` - rebuild the site inventory snapshot
+- `npm run agriculture:taxonomy` - regenerate the agriculture taxonomy report
 
 ## Edit Strategy
 
@@ -76,7 +83,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
-- If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
+- If canonical, OG, internal linking, alias, or widget iframe behavior changes, run the relevant SEO scripts such as `npm run seo:og`, `npm run seo:links`, or `npm run seo:widgets` and record the workflow in docs if it is new.
 
 ### i18n work
 
@@ -95,6 +102,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
 - Car data changes: `npm run cars:catalog:refresh`
+- Inventory or taxonomy changes: rerun the matching generator command and inspect the resulting report or snapshot
 - Netlify/server code changes: targeted `node -c` or direct function smoke checks when available
 
 ## Deliverables
