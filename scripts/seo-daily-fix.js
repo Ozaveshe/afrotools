@@ -29,7 +29,25 @@ const FIX_MODE = !DRY_RUN && !REPORT;
 const TODAY   = new Date().toISOString().slice(0, 10);
 const SITE_ORIGIN = 'https://afrotools.com';
 
-const SKIP_DIRS = new Set(['node_modules', '.git', 'assets', 'scripts', '.netlify', 'lang', 'supabase']);
+const SKIP_DIRS = new Set([
+  'node_modules',
+  '.git',
+  '.agents',
+  '.claude',
+  '.codex',
+  '.github',
+  '.netlify',
+  'assets',
+  'dist',
+  'docs',
+  'lang',
+  'netlify',
+  'output',
+  'reports',
+  'scripts',
+  'supabase',
+  'test-results',
+]);
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 

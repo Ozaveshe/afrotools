@@ -23,8 +23,9 @@ const VALID_LANGS = new Set(['en', 'fr', 'sw', 'yo', 'ha', 'x-default']);
 
 // Directories to skip
 const SKIP_DIRS = new Set([
-  'node_modules', '.git', '.claude', 'assets', 'scripts',
-  'lang', 'data', 'supabase', 'netlify', '.netlify', 'docs'
+  'node_modules', '.git', '.claude', '.codex', '.agents', 'assets', 'scripts',
+  'lang', 'data', 'supabase', 'netlify', '.netlify', 'docs', 'dist',
+  'reports', 'output', 'test-results'
 ]);
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -58,7 +59,8 @@ function filePathToUrl(filePath) {
 
 function normalizeUrl(url) {
   // Normalize to always have trailing slash for comparison
-  return url.endsWith('/') ? url : url + '/';
+  const normalized = url.endsWith('/') ? url : url + '/';
+  return normalized.replace(/\/index\/$/, '/');
 }
 
 function urlExists(url, allUrls) {
@@ -90,13 +92,19 @@ function extractHtmlLang(html) {
   return match ? match[1] : null;
 }
 
-function inferPageLang(filePath) {
+function inferPageLang(filePath, htmlLang) {
   const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
   if (rel.startsWith('fr/')) return 'fr';
   if (rel.startsWith('sw/')) return 'sw';
   if (rel.startsWith('yo/')) return 'yo';
   if (rel.startsWith('ha/')) return 'ha';
+  if (htmlLang && VALID_LANGS.has(htmlLang) && htmlLang !== 'x-default') return htmlLang;
   return 'en';
+}
+
+function hasNoindex(html) {
+  const match = html.match(/<meta\s[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i);
+  return Boolean(match && /(^|,|\s)noindex($|,|\s)/i.test(match[1]));
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
@@ -120,6 +128,7 @@ function main() {
   const pageData = new Map(); // normalizedUrl -> { hreflangs, canonical, htmlLang, filePath, url }
   for (const filePath of allFiles) {
     const html = fs.readFileSync(filePath, 'utf-8');
+    if (hasNoindex(html)) continue;
     const url = filePathToUrl(filePath);
     const hreflangs = extractHreflangTags(html);
     const canonical = extractCanonical(html);
@@ -136,7 +145,7 @@ function main() {
     totalPairs += hreflangs.length;
 
     const rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
-    const expectedLang = inferPageLang(filePath);
+    const expectedLang = inferPageLang(filePath, htmlLang);
 
     // 1. Self-reference exists
     const selfRef = hreflangs.find(h =>
@@ -218,7 +227,7 @@ function main() {
       if (!targetData) continue; // Already caught by check 6
 
       // Target page should reference back to this page
-      const sourceExpectedLang = inferPageLang(filePath);
+      const sourceExpectedLang = inferPageLang(filePath, data.htmlLang);
       const backRef = targetData.hreflangs.find(th =>
         th.lang === sourceExpectedLang && normalizeUrl(th.href) === normalizedKey
       );

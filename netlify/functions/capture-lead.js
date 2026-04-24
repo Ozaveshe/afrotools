@@ -3,9 +3,18 @@
 // Accepts both legacy format (email+source) and enriched format with attribution data.
 // Stores email leads in Supabase with full segmentation + attribution columns.
 
-const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_DATA_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const { getAllowedOrigin } = require('./utils/cors');
+
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
+const SUPABASE_DATA_URL = cleanEnvValue(process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL) || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_SERVICE_KEY = cleanEnvValue(
+  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY
+);
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -75,7 +84,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Invalid email' }) };
     }
 
-    if (!SUPABASE_DATA_KEY) {
+    if (!SUPABASE_DATA_SERVICE_KEY) {
       console.warn('No SUPABASE_SERVICE_KEY — skipping lead storage');
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, stored: false }) };
     }
@@ -123,8 +132,8 @@ exports.handler = async (event) => {
     const res = await fetch(`${SUPABASE_DATA_URL}/rest/v1/email_leads`, {
       method: 'POST',
       headers: {
-        'apikey': SUPABASE_DATA_KEY,
-        'Authorization': `Bearer ${SUPABASE_DATA_KEY}`,
+        'apikey': SUPABASE_DATA_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_DATA_SERVICE_KEY}`,
         'Content-Type': 'application/json',
         'Prefer': 'resolution=merge-duplicates'
       },

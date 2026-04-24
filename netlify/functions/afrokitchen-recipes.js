@@ -4,8 +4,18 @@
 
 // AfroKitchen uses the Auth/Kitchen Supabase instance (zpclagtgczsygrgztlts),
 // NOT the generic SUPABASE_URL env var which points to the Data instance (jbmhfpkzbgyeodsqhprx)
-const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
+const SUPABASE_URL = cleanEnvValue(process.env.SUPABASE_AUTH_URL) || 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_KEY = cleanEnvValue(
+  process.env.SUPABASE_AUTH_SERVICE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY ||
+  process.env.SUPABASE_ANON_KEY_AUTH ||
+  process.env.SUPABASE_ANON_KEY
+);
 
 function getCorsHeaders(event) {
   const origin = event.headers?.origin || '';
