@@ -85,6 +85,88 @@ const REFERENCE_SALARIES = {
   CM: { technology: 500, finance: 400, healthcare: 280, education: 200, oil_gas: 850, agriculture: 80, retail: 120, manufacturing: 200, government: 250, ngo: 300 },
 };
 
+function getRowSector(row) {
+  if (!row || typeof row !== 'object') {
+    return '';
+  }
+
+  if (typeof row.role_category === 'string' && row.role_category) {
+    return row.role_category;
+  }
+
+  if (typeof row.sector === 'string' && row.sector) {
+    return row.sector;
+  }
+
+  return '';
+}
+
+function getRowSampleSize(row) {
+  return Math.max(0, parseInt(row && row.sample_size, 10) || 0);
+}
+
+function parsePositiveNumber(value) {
+  const number = parseFloat(value);
+  return Number.isFinite(number) && number > 0 ? number : null;
+}
+
+function getUsdRate(rates, currency) {
+  if (!currency || currency === 'USD') {
+    return 1;
+  }
+
+  const rate = rates && rates[currency];
+  return typeof rate === 'number' && rate > 0 ? rate : null;
+}
+
+function getRowMedianUsd(row, rates, fallbackCurrency) {
+  const explicitUsd =
+    parsePositiveNumber(row && row.monthly_gross_usd) ||
+    parsePositiveNumber(row && row.median_gross_usd) ||
+    parsePositiveNumber(row && row.median_usd);
+
+  if (explicitUsd) {
+    return explicitUsd;
+  }
+
+  const localGross =
+    parsePositiveNumber(row && row.median_gross) ||
+    parsePositiveNumber(row && row.monthly_gross) ||
+    parsePositiveNumber(row && row.monthly_gross_local);
+  const currency = String((row && row.currency) || fallbackCurrency || 'USD').toUpperCase();
+  const usdRate = getUsdRate(rates, currency);
+
+  if (!localGross || !usdRate) {
+    return null;
+  }
+
+  return localGross / usdRate;
+}
+
+function getRowMedianLocal(row, rates, fallbackCurrency) {
+  const localGross =
+    parsePositiveNumber(row && row.median_gross) ||
+    parsePositiveNumber(row && row.monthly_gross) ||
+    parsePositiveNumber(row && row.monthly_gross_local);
+
+  if (localGross) {
+    return localGross;
+  }
+
+  const explicitUsd =
+    parsePositiveNumber(row && row.monthly_gross_usd) ||
+    parsePositiveNumber(row && row.median_gross_usd) ||
+    parsePositiveNumber(row && row.median_usd);
+  const currency = String((row && row.currency) || fallbackCurrency || 'USD').toUpperCase();
+  const usdRate = getUsdRate(rates, currency);
+
+  if (!explicitUsd || !usdRate) {
+    return null;
+  }
+
+  return explicitUsd * usdRate;
+}
+
 function normalizeCommunityBenchmarks(rows) {
   if (!Array.isArray(rows)) {
     return [];
@@ -95,7 +177,8 @@ function normalizeCommunityBenchmarks(rows) {
       row &&
       typeof row === 'object' &&
       typeof row.country_code === 'string' &&
-      typeof row.role_category === 'string'
+      !!getRowSector(row) &&
+      (!row.period || row.period === 'monthly')
     );
   });
 }
@@ -124,27 +207,38 @@ async function fetchCommunityBenchmarks() {
   }
 }
 
-function summarizeCommunitySector(rows) {
-  const values = rows
+function summarizeCommunitySector(rows, rates, fallbackCurrency) {
+  const usdValues = rows
     .map(function(row) {
-      return parseFloat(row.median_gross);
+      return getRowMedianUsd(row, rates, fallbackCurrency);
+    })
+    .filter(function(value) {
+      return Number.isFinite(value) && value > 0;
+    });
+  const localValues = rows
+    .map(function(row) {
+      return getRowMedianLocal(row, rates, fallbackCurrency);
     })
     .filter(function(value) {
       return Number.isFinite(value) && value > 0;
     });
 
-  if (values.length === 0) {
+  if (usdValues.length === 0) {
     return null;
   }
 
-  const total = values.reduce(function(sum, value) {
+  const usdTotal = usdValues.reduce(function(sum, value) {
+    return sum + value;
+  }, 0);
+  const localTotal = localValues.reduce(function(sum, value) {
     return sum + value;
   }, 0);
 
   return {
-    medianUsd: Math.round(total / values.length),
+    medianUsd: Math.round(usdTotal / usdValues.length),
+    medianLocal: localValues.length ? Math.round(localTotal / localValues.length) : null,
     sampleSize: rows.reduce(function(sum, row) {
-      return sum + Math.max(0, parseInt(row.sample_size, 10) || 0);
+      return sum + getRowSampleSize(row);
     }, 0),
   };
 }
@@ -167,15 +261,17 @@ async function buildSalaryDataset(options) {
 
     const sectors = SECTORS.map(function(sector) {
       let medianUsd = REFERENCE_SALARIES[code][sector] || null;
+      let medianLocal = medianUsd ? Math.round(medianUsd * fxRate) : null;
       let sampleSize = 0;
 
       const matches = communityData.filter(function(row) {
-        return row.country_code === code && row.role_category === sector;
+        return row.country_code === code && getRowSector(row) === sector;
       });
 
-      const summary = summarizeCommunitySector(matches);
+      const summary = summarizeCommunitySector(matches, rates, currency);
       if (summary && summary.medianUsd > 0) {
         medianUsd = summary.medianUsd;
+        medianLocal = summary.medianLocal || (medianUsd ? Math.round(medianUsd * fxRate) : null);
         sampleSize = summary.sampleSize;
         countryHasCommunityData = true;
       }
@@ -183,7 +279,7 @@ async function buildSalaryDataset(options) {
       return {
         sector: sector,
         median_usd: medianUsd,
-        median_local: medianUsd ? Math.round(medianUsd * fxRate) : null,
+        median_local: medianLocal,
         p25_usd: medianUsd ? Math.round(medianUsd * 0.65) : null,
         p75_usd: medianUsd ? Math.round(medianUsd * 1.45) : null,
         sample_size: sampleSize,
