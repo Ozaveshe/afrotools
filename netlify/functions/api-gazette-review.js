@@ -72,6 +72,15 @@ exports.handler = async function(event) {
 
     var gazette = gazetteRes.ok ? await gazetteRes.json() : [];
     var review = reviewRes.ok ? await reviewRes.json() : [];
+    var pendingPairs = {};
+    (Array.isArray(review) ? review : []).forEach(function(item) {
+      if (item && item.category === 'gazette' && item.status === 'pending') {
+        pendingPairs[(item.country_code || '') + '::' + (item.metric || '')] = true;
+      }
+    });
+    gazette = (Array.isArray(gazette) ? gazette : []).filter(function(change) {
+      return !!pendingPairs[(change.country_code || '') + '::' + (change.change_type || '')];
+    });
 
     return {
       statusCode: 200,
@@ -165,7 +174,7 @@ exports.handler = async function(event) {
         body: JSON.stringify({
           verified: false,
           verified_at: now,
-          applied_to_tools: true, // No action needed
+          applied_to_tools: false, // Rejected changes were not applied
         }),
       });
 

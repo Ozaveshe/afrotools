@@ -4,7 +4,7 @@
 // Updates as_creators and as_streams in Supabase
 //
 // Trigger: POST /api/afrostream/sync (manual, requires ADMIN_SECRET)
-// Schedule: Can be configured as Netlify Scheduled Function (every 6 hours)
+// Schedule: Netlify Scheduled Function (currently every 2 hours in netlify.toml)
 
 var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
@@ -53,7 +53,17 @@ async function sb(method, path, body, upsert) {
   if (body) opts.body = JSON.stringify(body);
   var res = await fetch(SUPABASE_URL + '/rest/v1/' + path, opts);
   var text = await res.text();
-  try { return JSON.parse(text); } catch (e) { return text; }
+  var data;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch (e) {
+    data = text;
+  }
+  if (!res.ok) {
+    var detail = data && typeof data === 'object' ? (data.message || data.error || JSON.stringify(data)) : (data || res.statusText);
+    throw new Error('Supabase ' + method + ' ' + path + ' failed: ' + detail);
+  }
+  return data;
 }
 
 // ── Twitch API ───────────────────────────────────────────────────
@@ -753,13 +763,25 @@ exports.handler = async function(event) {
     var youtubeResults = { creators_synced: 0, live_count: 0, errors: ['YouTube API key not configured'] };
 
     if (TWITCH_CLIENT_ID && TWITCH_CLIENT_SECRET) {
-      twitchResults = await syncTwitch();
+      try {
+        twitchResults = await syncTwitch();
+      } catch (e) {
+        twitchResults = { creators_synced: 0, live_count: 0, errors: [e.message] };
+      }
     }
     if (KICK_CLIENT_ID && KICK_CLIENT_SECRET) {
-      kickResults = await syncKick();
+      try {
+        kickResults = await syncKick();
+      } catch (e) {
+        kickResults = { creators_synced: 0, live_count: 0, errors: [e.message] };
+      }
     }
     if (YOUTUBE_API_KEY) {
-      youtubeResults = await syncYouTube();
+      try {
+        youtubeResults = await syncYouTube();
+      } catch (e) {
+        youtubeResults = { creators_synced: 0, live_count: 0, errors: [e.message] };
+      }
     }
 
     // ── Compute scores + snapshots after all syncs ──
