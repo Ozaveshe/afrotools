@@ -32,6 +32,9 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
+- `npm run seo:og` - apply OG fallback metadata
+- `npm run seo:links` - repair SEO alias links
+- `npm run seo:widgets` - normalize widget iframe SEO metadata
 - `npm run build:i18n -- --all` - regenerate translations
 - `npm run build:i18n:validate` - validate i18n output
 - `npm run validate:hreflang` - hreflang validation
@@ -76,12 +79,27 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
+- Treat `widgets/iframe/` and thin tool subviews under `tools/` as utility surfaces; keep them `noindex, follow` and canonicalized back to the main tool route.
+- For AfroKitchen static-route SEO work, use the manifest-driven flow: export manifest, generate static pages, regenerate sitemaps, run `npm run seo`, then `npm run seo:report`.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
+
+### Blog and publishing work
+
+- Read `docs/CONTENT-PUBLISHING-WORKFLOW.md`.
+- Treat `/blog/` as static repo-backed content.
+- Treat AfroStream news as a live Supabase-backed publishing surface and use the configured `supabase` MCP server first for publishing or inspection.
 
 ### i18n work
 
 - Treat translated pages as build outputs unless the task is a targeted manual fix.
+- If a stale French page is only a wrapper or thin output, rebuild the specific page from the English source with `node scripts/build-i18n.js --lang fr --page <source-page> --overwrite-existing` before hand-patching.
+- After rebuilding a French PAYE page, run `node scripts/polish-fr-paye-batch.js` and `node scripts/polish-fr-paye-seo.js` for the copy and SEO layers on the targeted pages.
 - Validate hreflang after non-trivial translation changes.
+
+### Release and regression review
+
+- Read `docs/release-checklist.md`.
+- Choose validation based on the files touched instead of always running the full repo suite.
 
 ### Supabase work
 
