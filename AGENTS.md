@@ -26,15 +26,23 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 ## Core Commands
 
 - `npm run build` - full site rebuild and post-processing
+- `npm run bundle` - rebuild JS bundles and update HTML bundle references
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
 - `npm run seo` - SEO daily fix pass
+- `npm run seo:dry` - preview SEO daily fixes without writing changes
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
+- `npm run seo:og` - apply OG fallback updates only
+- `npm run seo:links` - repair SEO alias and internal link issues
 - `npm run build:i18n -- --all` - regenerate translations
+- `npm run build:i18n:dry-run` - preview translation rebuild impact without writing files
 - `npm run build:i18n:validate` - validate i18n output
+- `npm run build:i18n:full` - rebuild translations and validate hreflang in one pass
 - `npm run validate:hreflang` - hreflang validation
+- `npm run cars:catalog:validate` - validate car catalog inputs and data quality
+- `npm run cars:catalog:summary` - inspect car catalog coverage before editing
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
 
 ## Edit Strategy
@@ -76,12 +84,19 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
+- Prefer the narrow SEO command that matches the change before running the full daily pass.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
 
 ### i18n work
 
 - Treat translated pages as build outputs unless the task is a targeted manual fix.
+- Use `npm run build:i18n:dry-run` first when checking translation blast radius or validating a suspected fix.
 - Validate hreflang after non-trivial translation changes.
+
+### Cars data work
+
+- Use the catalog subcommands for diagnosis before a full refresh when possible.
+- Run `npm run cars:catalog:validate` before `npm run cars:catalog:refresh` if you only need to confirm source data integrity.
 
 ### Supabase work
 
@@ -92,9 +107,9 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - HTML or content changes: `npm test`
 - Registry or navigation changes: `npm run check-links` and `npm run audit`
-- SEO changes: `npm run seo:report` or the narrower script that matches the change
-- i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
-- Car data changes: `npm run cars:catalog:refresh`
+- SEO changes: `npm run seo:report`, `npm run seo:dry`, or the narrower script that matches the change
+- i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`; use `npm run build:i18n:full` when you need both rebuild and validation
+- Car data changes: `npm run cars:catalog:validate` for source checks, `npm run cars:catalog:refresh` for full rebuilds
 - Netlify/server code changes: targeted `node -c` or direct function smoke checks when available
 
 ## Deliverables
