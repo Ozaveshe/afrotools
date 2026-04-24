@@ -2,7 +2,7 @@
 
 ## System Overview
 
-AfroTools is a plain HTML/CSS/JS web application with no build tools, no frameworks, and no bundler. It deploys automatically to Netlify from the GitHub `main` branch.
+AfroTools is a static-first HTML/CSS/JS web application with a generated build layer. Source pages live in the repo root, shared scripts generate bundles and SEO artifacts, and Netlify publishes the clean `dist/` artifact instead of the repo root.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -188,7 +188,7 @@ if (typeof onRegistryReady === 'function') {
 ## Deployment
 
 ```
-Local edit → git add → git commit → git push → Netlify auto-deploy (< 60s)
+Local edit -> git add -> git commit -> git push -> Netlify runs `npm run build:deploy` -> publishes `dist/`
 ```
 
-Netlify builds are instant (no build step). The `_redirects` file handles URL routing.
+The build mutates generated assets, then `scripts/build-dist.js` copies only public static output into `dist/`. Netlify functions are deployed from `netlify/functions` and are not copied into the static publish directory.
