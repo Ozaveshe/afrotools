@@ -29,11 +29,14 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
+- `npm run inventory:site` - regenerate the site inventory snapshot and CSV exports for internal dashboards
+- `npm run agriculture:taxonomy` - report Agriculture category bucket coverage and assignment gaps
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
 - `npm run build:i18n -- --all` - regenerate translations
 - `npm run build:i18n:validate` - validate i18n output
+- `npm run build:i18n:full` - rebuild translations and run hreflang validation
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
 
@@ -64,7 +67,14 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - If adding or changing a tool, review `docs/ADDING-A-TOOL.md`.
 - If adding or changing a country surface, review `docs/ADDING-A-COUNTRY.md`.
+- For the Swahili salary-and-PAYE country hub family, use `node scripts/build-sw-country-hubs.js` as the source of truth before hand-editing `/sw/{country}/index.html`.
 - If registry entries change, validate links and audit tool metadata.
+
+### Content publishing
+
+- Read `docs/CONTENT-PUBLISHING-WORKFLOW.md` before editing editorial surfaces.
+- Treat `/blog/` as static repo-backed content.
+- Treat AfroStream news as a live Supabase-backed publishing surface and use the configured `supabase` MCP server first for live inspection or publishing.
 
 ### Design and UI work
 
@@ -81,7 +91,14 @@ Do not hand-edit generated files unless the source is missing or the task explic
 ### i18n work
 
 - Treat translated pages as build outputs unless the task is a targeted manual fix.
+- For French-market rollout or SEO batching, read `docs/FRENCH-LOCALIZATION-STRATEGY.md`.
+- For Swahili-market rollout or SEO batching, read `docs/SWAHILI-LOCALIZATION-STRATEGY.md`.
 - Validate hreflang after non-trivial translation changes.
+
+### Inventory and taxonomy work
+
+- Use `npm run inventory:site` to refresh the site inventory snapshot consumed by internal dashboards after large registry or page-count changes.
+- Use `assets/js/components/category-taxonomy.js` and `npm run agriculture:taxonomy` when Agriculture bucket counts or assignments need validation.
 
 ### Supabase work
 
