@@ -32,10 +32,15 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
+- `npm run seo:og` - apply OG fallback metadata
+- `npm run seo:links` - repair SEO alias and internal link issues
+- `npm run seo:widgets` - canonicalize widget iframe utility pages
 - `npm run build:i18n -- --all` - regenerate translations
 - `npm run build:i18n:validate` - validate i18n output
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
+- `npm run inventory:site` - rebuild the internal site inventory snapshot
+- `npm run agriculture:taxonomy` - report Agriculture taxonomy coverage
 
 ## Edit Strategy
 
@@ -76,7 +81,13 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
+- Treat `widgets/iframe/` routes as utility surfaces and use `npm run seo:widgets` to keep them canonicalized to the full tool route.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
+
+### Inventory and taxonomy work
+
+- If internal dashboard counts or registry/page inventory numbers look stale after large page or registry changes, run `npm run inventory:site`.
+- If working on Agriculture bucket coverage or category taxonomy mapping, use `npm run agriculture:taxonomy` before changing taxonomy logic by hand.
 
 ### i18n work
 
@@ -92,7 +103,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - HTML or content changes: `npm test`
 - Registry or navigation changes: `npm run check-links` and `npm run audit`
-- SEO changes: `npm run seo:report` or the narrower script that matches the change
+- SEO changes: `npm run seo:report` or the narrower script that matches the change such as `npm run seo:og`, `npm run seo:links`, or `npm run seo:widgets`
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
 - Car data changes: `npm run cars:catalog:refresh`
 - Netlify/server code changes: targeted `node -c` or direct function smoke checks when available
