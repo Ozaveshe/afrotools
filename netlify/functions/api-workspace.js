@@ -7,17 +7,14 @@
  * DELETE /api/workspace?id=<uuid>
  * DELETE /api/workspace?item_type=cv&item_key=abc
  *
- * Auth is verified with the user's Supabase access token.
+ * Auth is verified with the user's Supabase access token or secure session cookie.
  * Data is written with the service role key so browser fallback paths can stay simple.
  */
 
-const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
 const { getAllowedOrigin } = require('./utils/cors');
+const { getUserFromEvent } = require('./_shared/browser-session-auth');
 
-if (!SUPABASE_ANON_KEY) {
-  console.warn('[api-workspace] Missing SUPABASE_ANON_KEY_AUTH env var');
-}
+const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -27,12 +24,19 @@ const CORS_HEADERS = {
   Vary: 'Origin',
 };
 
-function jsonResponse(statusCode, body) {
-  return {
+function jsonResponse(statusCode, body, responseMeta) {
+  var meta = responseMeta || {};
+  var response = {
     statusCode: statusCode,
-    headers: CORS_HEADERS,
+    headers: Object.assign({}, CORS_HEADERS, meta.headers || {}),
     body: JSON.stringify(body),
   };
+
+  if (meta.multiValueHeaders && Object.keys(meta.multiValueHeaders).length) {
+    response.multiValueHeaders = meta.multiValueHeaders;
+  }
+
+  return response;
 }
 
 function sanitizeText(value, maxLength) {
@@ -71,23 +75,6 @@ function payloadSizeBytes(payload, meta) {
   }
 }
 
-async function getUserFromToken(authHeader) {
-  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
-
-  var token = authHeader.replace('Bearer ', '');
-  var response = await fetch(SUPABASE_AUTH_URL + '/auth/v1/user', {
-    headers: {
-      apikey: SUPABASE_ANON_KEY,
-      Authorization: 'Bearer ' + token,
-    },
-  });
-
-  if (!response.ok) return null;
-
-  var user = await response.json();
-  return user && user.id ? user : null;
-}
-
 exports.handler = async function (event) {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
 
@@ -95,14 +82,17 @@ exports.handler = async function (event) {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
 
-  var user = await getUserFromToken(event.headers.authorization || event.headers.Authorization);
+  var authResult = await getUserFromEvent(event);
+  var user = authResult && authResult.user ? authResult.user : null;
+  var sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
+
   if (!user) {
-    return jsonResponse(401, { error: 'Unauthorized' });
+    return jsonResponse(401, { error: 'Unauthorized' }, sessionResponse);
   }
 
   var serviceKey = process.env.SUPABASE_AUTH_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY;
   if (!serviceKey) {
-    return jsonResponse(500, { error: 'Server config error' });
+    return jsonResponse(500, { error: 'Server config error' }, sessionResponse);
   }
 
   var restHeaders = {
@@ -158,10 +148,10 @@ exports.handler = async function (event) {
     }
 
     if (!getResponse.ok) {
-      return jsonResponse(getResponse.status, { error: 'Workspace fetch failed', detail: getText });
+      return jsonResponse(getResponse.status, { error: 'Workspace fetch failed', detail: getText }, sessionResponse);
     }
 
-    return jsonResponse(200, { data: Array.isArray(getData) ? getData : [] });
+    return jsonResponse(200, { data: Array.isArray(getData) ? getData : [] }, sessionResponse);
   }
 
   if (event.httpMethod === 'POST') {
@@ -169,7 +159,7 @@ exports.handler = async function (event) {
     try {
       body = JSON.parse(event.body || '{}');
     } catch (error) {
-      return jsonResponse(400, { error: 'Invalid JSON' });
+      return jsonResponse(400, { error: 'Invalid JSON' }, sessionResponse);
     }
 
     var bodyItemType = sanitizeText(body.item_type, 64);
@@ -182,11 +172,11 @@ exports.handler = async function (event) {
     var meta = normalizeJson(body.meta, {});
 
     if (!bodyItemType || !bodyItemKey) {
-      return jsonResponse(400, { error: 'Missing item_type or item_key' });
+      return jsonResponse(400, { error: 'Missing item_type or item_key' }, sessionResponse);
     }
 
     if (payloadSizeBytes(payload, meta) > 750000) {
-      return jsonResponse(400, { error: 'Workspace item is too large' });
+      return jsonResponse(400, { error: 'Workspace item is too large' }, sessionResponse);
     }
 
     var row = {
@@ -223,13 +213,13 @@ exports.handler = async function (event) {
     }
 
     if (!postResponse.ok) {
-      return jsonResponse(postResponse.status, { error: 'Workspace save failed', detail: postText });
+      return jsonResponse(postResponse.status, { error: 'Workspace save failed', detail: postText }, sessionResponse);
     }
 
     return jsonResponse(200, {
       ok: true,
       item: Array.isArray(postData) ? (postData[0] || null) : postData,
-    });
+    }, sessionResponse);
   }
 
   if (event.httpMethod === 'DELETE') {
@@ -238,7 +228,7 @@ exports.handler = async function (event) {
     var deleteKey = sanitizeText(params.item_key, 120);
 
     if (!deleteId && (!deleteType || !deleteKey)) {
-      return jsonResponse(400, { error: 'Missing id or item_type/item_key' });
+      return jsonResponse(400, { error: 'Missing id or item_type/item_key' }, sessionResponse);
     }
 
     var deleteUrl = SUPABASE_AUTH_URL + '/rest/v1/workspace_items?user_id=eq.' + user.id;
@@ -267,14 +257,14 @@ exports.handler = async function (event) {
     }
 
     if (!deleteResponse.ok) {
-      return jsonResponse(deleteResponse.status, { error: 'Workspace delete failed', detail: deleteText });
+      return jsonResponse(deleteResponse.status, { error: 'Workspace delete failed', detail: deleteText }, sessionResponse);
     }
 
     return jsonResponse(200, {
       deleted: true,
       item: Array.isArray(deleteData) ? (deleteData[0] || null) : deleteData,
-    });
+    }, sessionResponse);
   }
 
-  return jsonResponse(405, { error: 'Method not allowed' });
+  return jsonResponse(405, { error: 'Method not allowed' }, sessionResponse);
 };

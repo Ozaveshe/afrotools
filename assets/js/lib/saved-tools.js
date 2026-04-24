@@ -119,16 +119,19 @@
 
   async function requestFavorites(path, options) {
     var token = await getSessionToken();
-    if (!token) return null;
+    if (!token && !isLoggedIn()) return null;
 
     var requestOptions = options || {};
     requestOptions.headers = Object.assign(
       {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
       },
       requestOptions.headers || {}
     );
+    if (token) {
+      requestOptions.headers.Authorization = 'Bearer ' + token;
+    }
+    requestOptions.credentials = requestOptions.credentials || 'same-origin';
 
     try {
       var response = await Promise.race([

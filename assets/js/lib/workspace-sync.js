@@ -60,7 +60,17 @@
 
   function getCachedUser() {
     if (window.AfroAuth && typeof window.AfroAuth.getUser === 'function') {
-      return window.AfroAuth.getUser();
+      var authUser = window.AfroAuth.getUser();
+      if (authUser && authUser.id) return authUser;
+    }
+
+    if (window.AfroAuth && typeof window.AfroAuth.getCachedProfile === 'function') {
+      try {
+        var cachedProfile = window.AfroAuth.getCachedProfile();
+        if (cachedProfile && cachedProfile.id) return cachedProfile;
+      } catch (error) {
+        console.warn('[WorkspaceSync] getCachedProfile lookup failed:', error.message || error);
+      }
     }
 
     var user = readJson(AUTH_STORAGE_KEY, null);
@@ -114,7 +124,7 @@
 
   function isSignedIn() {
     var user = getCachedUser();
-    return !!(user && user.id && getSessionTokenSync());
+    return !!(user && user.id);
   }
 
   function buildQuery(query) {
@@ -142,16 +152,21 @@
     var requestOptions = options || {};
     var token = await getSessionTokenAsync();
 
-    if (!token) {
+    if (!token && !isSignedIn()) {
       throw new Error('Not signed in');
+    }
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers.Authorization = 'Bearer ' + token;
     }
 
     var response = await fetch(API_PATH + buildQuery(requestOptions.query), {
       method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
+      credentials: 'same-origin',
+      headers: headers,
       body: requestOptions.body ? JSON.stringify(requestOptions.body) : undefined,
     });
 
