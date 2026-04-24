@@ -33,6 +33,10 @@ const EXPLICIT_THIN_PAGES = new Set([
   "tools/afrokitchen/recipe.html",
   "tools/afrokitchen/collection.html",
   "tools/afrokitchen/country.html",
+  "fr/tools/afrokitchen/recipe.html",
+  "fr/tools/afrokitchen/collection.html",
+  "fr/tools/afrokitchen/country.html",
+  "fr/tools/afrokitchen/submit.html",
   "tools/africa-conflict/detail.html",
 ]);
 
@@ -60,18 +64,27 @@ function isTargetFile(filePath) {
   if (EXPLICIT_THIN_PAGES.has(rel)) return true;
 
   const parts = rel.split("/");
-  if (parts.length !== 3 || parts[0] !== "tools") return false;
+  const isRootToolPage = parts.length === 3 && parts[0] === "tools";
+  const isLocalizedToolPage = parts.length === 4 && parts[1] === "tools";
 
-  return THIN_TOOL_FILE_NAMES.has(parts[2]);
+  if (!isRootToolPage && !isLocalizedToolPage) return false;
+
+  return THIN_TOOL_FILE_NAMES.has(parts[parts.length - 1]);
 }
 
 function parentToolCanonical(filePath) {
   const rel = normalizeRel(filePath);
   const parts = rel.split("/");
 
-  if (parts.length < 3 || parts[0] !== "tools") return null;
+  if (parts.length >= 3 && parts[0] === "tools") {
+    return `${SITE_ORIGIN}/tools/${parts[1]}/`;
+  }
 
-  return `${SITE_ORIGIN}/tools/${parts[1]}/`;
+  if (parts.length >= 4 && parts[1] === "tools") {
+    return `${SITE_ORIGIN}/${parts[0]}/tools/${parts[2]}/`;
+  }
+
+  return null;
 }
 
 function insertBeforeHeadEnd(html, lines) {
