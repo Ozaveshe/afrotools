@@ -16,6 +16,7 @@ const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const TODAY = new Date().toISOString().slice(0, 10);
 const EXTRA_SITEMAPS = ['sitemap-cars.xml', 'jamb/sitemap.xml'];
+const REFRESH_LASTMOD = process.env.AFROTOOLS_REFRESH_SITEMAP_LASTMOD === '1';
 
 // Directories to exclude entirely (non-content)
 const EXCLUDE_DIRS = new Set([
@@ -35,6 +36,45 @@ const EXCLUDE_PATTERNS = [
   /index_old\.html$/i,
   /^404\.html$/i,
 ];
+
+function readXmlLastmods(filePath, blockTag) {
+  if (!fs.existsSync(filePath)) return new Map();
+
+  const content = fs.readFileSync(filePath, 'utf8');
+  const pattern = new RegExp(
+    `<${blockTag}>[\\s\\S]*?<loc>([^<]+)<\\/loc>[\\s\\S]*?<lastmod>(\\d{4}-\\d{2}-\\d{2})<\\/lastmod>[\\s\\S]*?<\\/${blockTag}>`,
+    'g'
+  );
+  const entries = new Map();
+  let match;
+
+  while ((match = pattern.exec(content)) !== null) {
+    entries.set(match[1], match[2]);
+  }
+
+  return entries;
+}
+
+function readExistingUrlLastmods() {
+  const entries = new Map();
+  for (const name of fs.readdirSync(ROOT)) {
+    if (!/^sitemap.*\.xml$/i.test(name) || name === 'sitemap-index.xml') continue;
+
+    for (const [loc, lastmod] of readXmlLastmods(path.join(ROOT, name), 'url')) {
+      entries.set(loc, lastmod);
+    }
+  }
+
+  const jambSitemap = path.join(ROOT, 'jamb', 'sitemap.xml');
+  for (const [loc, lastmod] of readXmlLastmods(jambSitemap, 'url')) {
+    entries.set(loc, lastmod);
+  }
+
+  return entries;
+}
+
+const EXISTING_URL_LASTMODS = readExistingUrlLastmods();
+const EXISTING_INDEX_LASTMODS = readXmlLastmods(path.join(ROOT, 'sitemap-index.xml'), 'sitemap');
 
 /**
  * Recursively find all .html files
@@ -69,6 +109,14 @@ function normalizeSitemapLastmod(date) {
   const ageMs = Date.now() - new Date(formatted).getTime();
   const ageDays = ageMs / 86400000;
   return ageDays > 7 ? TODAY : formatted;
+}
+
+function stableSitemapLastmod(loc, fallbackDate) {
+  if (!REFRESH_LASTMOD && EXISTING_URL_LASTMODS.has(loc)) {
+    return EXISTING_URL_LASTMODS.get(loc);
+  }
+
+  return normalizeSitemapLastmod(fallbackDate);
 }
 
 function extractCanonicalHref(html) {
@@ -125,7 +173,7 @@ function inspectHtmlFile(filePath) {
   return {
     url,
     normalizedKey: currentPath,
-    lastmod: normalizeSitemapLastmod(fs.statSync(filePath).mtime),
+    lastmod: stableSitemapLastmod(url, fs.statSync(filePath).mtime),
     exclude: redirectLike || canonicalMismatch || noindex,
   };
 }
@@ -344,9 +392,13 @@ for (const extraFile of EXTRA_SITEMAPS) {
   const fullPath = path.join(ROOT, extraFile);
   if (!fs.existsSync(fullPath)) continue;
 
+  const file = extraFile.replace(/\\/g, '/');
+  const loc = `${BASE_URL}/${file}`;
   sitemapFileNames.push({
-    file: extraFile.replace(/\\/g, '/'),
-    lastmod: normalizeSitemapLastmod(fs.statSync(fullPath).mtime),
+    file,
+    lastmod: !REFRESH_LASTMOD && EXISTING_INDEX_LASTMODS.has(loc)
+      ? EXISTING_INDEX_LASTMODS.get(loc)
+      : normalizeSitemapLastmod(fs.statSync(fullPath).mtime),
   });
 }
 

@@ -3,6 +3,7 @@
 ## Generated Files
 
 - Do not treat `sitemap*.xml` as hand-authored.
+- `scripts/generate-sitemaps.js` preserves existing sitemap `<lastmod>` values by default so CI checkout mtimes do not create generated-output drift. Set `AFROTOOLS_REFRESH_SITEMAP_LASTMOD=1` only when intentionally restamping sitemap dates.
 - Do not patch minified bundles first if the source file exists.
 - Treat many translated pages as outputs of the i18n flow, not canonical sources.
 
