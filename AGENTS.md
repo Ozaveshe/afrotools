@@ -19,16 +19,18 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - Most pages are plain HTML with shared JS and CSS.
 - Many outputs are generated or post-processed by scripts in `scripts/`.
 - `assets/js/components/tool-registry.js` is the routing and discovery backbone for tools.
-- Netlify serves the site and functions.
+- Netlify serves the site and functions from the built `dist/` artifact, not the repo root.
 - `afrotools-mission-control.html` is the Codex cockpit.
 - `mc-7a2f9x.html` is the legacy ops dashboard.
 
 ## Core Commands
 
 - `npm run build` - full site rebuild and post-processing
+- `npm run build:deploy` - full build plus deploy-artifact assembly in `dist/`
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
+- `npm run audit:dist` - verify the deploy artifact only contains publishable files
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
@@ -49,8 +51,10 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `assets/js/components/tool-registry.js`
 - `_redirects`
 - `_headers`
+- `netlify.toml`
 - `netlify/functions/`
 - `scripts/build-*.js`
+- `scripts/audit-dist.js`
 - `scripts/generate-*.js`
 - `sitemap*.xml`
 - `assets/js/bundles/`
@@ -76,6 +80,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
+- Keep source SEO scans pointed at source files, not generated `dist/` output.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
 
 ### i18n work
@@ -88,6 +93,12 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - Use the configured `supabase` MCP server first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
 - Keep repo edits and live project actions conceptually separate in your notes and summaries.
 
+### Blog and scholarship publishing
+
+- Treat `/blog/` as static repo-backed content and follow `docs/CONTENT-PUBLISHING-WORKFLOW.md`.
+- Treat scholarship platform data as an auth-side Supabase surface plus repo fallback, and follow `docs/SCHOLARSHIP-PIPELINE.md`.
+- Use the configured `supabase` MCP server first for live scholarship schema or data checks.
+
 ## Preferred Validation
 
 - HTML or content changes: `npm test`
@@ -95,6 +106,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
 - Car data changes: `npm run cars:catalog:refresh`
+- Deploy artifact or publish-safety changes: `npm run build:deploy` and `npm run audit:dist`
 - Netlify/server code changes: targeted `node -c` or direct function smoke checks when available
 
 ## Deliverables
