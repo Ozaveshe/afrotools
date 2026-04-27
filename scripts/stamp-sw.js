@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Stamps service-worker.js with a new CACHE_VERSION based on current timestamp.
+ * Stamps service-worker.js with a CACHE_VERSION based on tracked asset content.
  * Also injects bundle paths from manifest.json into the PRECACHE list.
  * This forces browsers to purge the old cache on next visit.
  *
@@ -14,7 +14,7 @@ const crypto = require('crypto');
 const SW_PATH = path.join(__dirname, '..', 'service-worker.js');
 const MANIFEST_PATH = path.join(__dirname, '..', 'assets', 'js', 'bundles', 'manifest.json');
 
-// Build a short hash from timestamp + key file contents
+// Build a short hash from key file contents so CI builds are deterministic.
 const keyFiles = [
   'assets/css/tokens.min.css',
   'assets/css/design-system.min.css',
@@ -24,7 +24,6 @@ const keyFiles = [
 ].map(f => path.join(__dirname, '..', f));
 
 const hash = crypto.createHash('md5');
-hash.update(Date.now().toString());
 for (const f of keyFiles) {
   if (fs.existsSync(f)) {
     hash.update(fs.readFileSync(f));
@@ -41,16 +40,12 @@ const version = hash.digest('hex').slice(0, 8);
 let sw = fs.readFileSync(SW_PATH, 'utf8');
 
 // 1. Stamp CACHE_VERSION
-const stamped = sw.replace(
-  /const CACHE_VERSION = '[^']+'/,
-  `const CACHE_VERSION = '${version}'`
-);
-
-if (stamped === sw) {
+const cacheVersionPattern = /const\s+CACHE_VERSION\s*=\s*['"][^'"]+['"]/;
+if (!cacheVersionPattern.test(sw)) {
   console.log('  WARN  CACHE_VERSION pattern not found in service-worker.js');
   process.exit(1);
 }
-sw = stamped;
+sw = sw.replace(cacheVersionPattern, `const CACHE_VERSION = '${version}'`);
 
 // 2. Inject bundle paths into PRECACHE list (if manifest exists)
 if (fs.existsSync(MANIFEST_PATH)) {

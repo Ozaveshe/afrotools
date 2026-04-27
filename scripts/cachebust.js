@@ -13,7 +13,21 @@ const path = require('path');
 const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
-const SKIP_DIRS = new Set(['node_modules', '.git', '.claude', 'scripts', 'netlify']);
+const SKIP_DIRS = new Set([
+  'node_modules',
+  '.git',
+  '.claude',
+  '.codex',
+  '.netlify',
+  '.playwright',
+  'artifacts',
+  'dist',
+  'netlify',
+  'output',
+  'reports',
+  'scripts',
+  'test-results',
+]);
 
 // Cache file hashes so we don't re-read the same file
 const hashCache = new Map();
