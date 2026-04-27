@@ -3147,6 +3147,14 @@
             return '/tools/';
         }
 
+        function dashEscapeJsString(value) {
+            return String(value == null ? '' : value)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/</g, '\\x3c')
+                .replace(/>/g, '\\x3e');
+        }
+
         function dashPlural(count, singular, plural) {
             return count + ' ' + (count === 1 ? singular : (plural || singular + 's'));
         }
@@ -3947,7 +3955,8 @@
                 var meta = toolMetadata[tool.toolId] || { name: tool.name || tool.toolId, icon: '\uD83D\uDD27' };
                 var daysAgo = Math.floor((Date.now() - new Date(tool.date)) / 86400000);
                 var timeStr = daysAgo === 0 ? 'Today' : daysAgo + ' days ago';
-                return '<a href="/tools/' + tool.toolId + '/" class="quick-access-card"><div class="tool-icon">' + meta.icon + '</div><div class="quick-access-name">' + meta.name + '</div><div class="quick-access-date">' + timeStr + '</div></a>';
+                var href = dashSafeHref('/tools/' + String(tool.toolId || '').replace(/[^a-z0-9-]/gi, '') + '/');
+                return '<a href="' + dashEscapeHtml(href) + '" class="quick-access-card"><div class="tool-icon">' + dashEscapeHtml(meta.icon || '\uD83D\uDD27') + '</div><div class="quick-access-name">' + dashEscapeHtml(meta.name || tool.toolId || 'Tool') + '</div><div class="quick-access-date">' + dashEscapeHtml(timeStr) + '</div></a>';
             }).join('');
         }
 
@@ -3963,7 +3972,8 @@
                 var meta = toolMetadata[toolId] || { name: toolId, icon: '\uD83D\uDD27' };
                 var formatted = new Date(data.latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 var displayValue = data.count + ' saved item' + (data.count !== 1 ? 's' : '');
-                return '<div class="saved-item"><div class="saved-content"><h3>' + meta.name + '</h3><div class="saved-value">' + displayValue + '</div><div class="saved-meta">Last used: ' + formatted + '</div></div><div class="saved-actions"><a href="/tools/' + toolId + '/" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">View</a><button class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;" onclick="clearSaved(\'' + toolId + '\')">Clear</button></div></div>';
+                var href = dashSafeHref('/tools/' + String(toolId || '').replace(/[^a-z0-9-]/gi, '') + '/');
+                return '<div class="saved-item"><div class="saved-content"><h3>' + dashEscapeHtml(meta.name || toolId || 'Tool') + '</h3><div class="saved-value">' + dashEscapeHtml(displayValue) + '</div><div class="saved-meta">Last used: ' + dashEscapeHtml(formatted) + '</div></div><div class="saved-actions"><a href="' + dashEscapeHtml(href) + '" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">View</a><button class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;" onclick="clearSaved(\'' + dashEscapeJsString(toolId) + '\')">Clear</button></div></div>';
             }).join('');
         }
 
@@ -3979,12 +3989,11 @@
                 container.innerHTML = favorites.map(function(toolId) {
                     var regTool = registry.find(function(t) { return t.id === toolId; });
                     var meta = toolMetadata[toolId] || (regTool ? { name: regTool.name, icon: regTool.icon || '\uD83D\uDD27' } : { name: toolId.replace(/-/g,' '), icon: '\uD83D\uDD27' });
-                    var href = regTool ? regTool.href : '/tools/' + toolId + '/';
-                    var imgSrc = '/assets/img/tools/' + toolId + '.webp';
-                    var imgFb = '/assets/img/tools/' + toolId + '.svg';
-                    return '<a href="' + href + '" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 12px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .18s;" onmouseover="this.style.borderColor=\'#007AFF\';this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 20px rgba(0,122,255,.10)\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
-                        '<div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;"><img src="' + imgSrc + '" alt="' + (meta.name || 'Tool') + '" width="36" height="36" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" onerror="this.onerror=function(){this.outerHTML=\'' + meta.icon + '\'};this.src=\'' + imgFb + '\'"></div>' +
-                        '<div style="font-size:.78rem;font-weight:700;color:#111827;line-height:1.3;">' + meta.name + '</div>' +
+                    var slug = String(toolId || '').replace(/[^a-z0-9-]/gi, '');
+                    var href = regTool ? regTool.href : (slug ? '/tools/' + slug + '/' : '/tools/');
+                    return '<a href="' + dashEscapeHtml(dashSafeHref(href)) + '" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 12px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .18s;" onmouseover="this.style.borderColor=\'#007AFF\';this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 20px rgba(0,122,255,.10)\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
+                        '<div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;">' + dashEscapeHtml(meta.icon || '\uD83D\uDD27') + '</div>' +
+                        '<div style="font-size:.78rem;font-weight:700;color:#111827;line-height:1.3;">' + dashEscapeHtml(meta.name || 'Tool') + '</div>' +
                     '</a>';
                 }).join('');
             }
@@ -4047,14 +4056,14 @@
 
             container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">' +
                 docs.map(function(doc) {
-                    return '<a href="' + doc.href + '" style="background:' + doc.color + ';border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 18px 16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:all .18s;" onmouseover="this.style.borderColor=\'#007AFF\';this.style.boxShadow=\'0 4px 16px rgba(0,122,255,.08)\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.boxShadow=\'none\'">' +
+                    return '<a href="' + dashEscapeHtml(dashSafeHref(doc.href)) + '" style="background:' + dashEscapeHtml(doc.color) + ';border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 18px 16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:all .18s;" onmouseover="this.style.borderColor=\'#007AFF\';this.style.boxShadow=\'0 4px 16px rgba(0,122,255,.08)\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.boxShadow=\'none\'">' +
                         '<div style="display:flex;align-items:center;justify-content:space-between;">' +
-                            '<span style="font-size:1.6rem;">' + doc.icon + '</span>' +
-                            '<span style="font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#007AFF;background:rgba(0,122,255,.08);padding:3px 8px;border-radius:100px;">' + doc.type + '</span>' +
+                            '<span style="font-size:1.6rem;">' + dashEscapeHtml(doc.icon) + '</span>' +
+                            '<span style="font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#007AFF;background:rgba(0,122,255,.08);padding:3px 8px;border-radius:100px;">' + dashEscapeHtml(doc.type) + '</span>' +
                         '</div>' +
-                        '<div style="font-size:.9rem;font-weight:700;color:#111827;line-height:1.3;">' + doc.name + '</div>' +
-                        '<div style="font-size:.75rem;color:#6B7280;line-height:1.5;">' + doc.detail + '</div>' +
-                        '<div style="font-size:.68rem;color:#9CA3AF;margin-top:2px;">Saved: ' + doc.saved + ' \u00B7 Click to continue \u2192</div>' +
+                        '<div style="font-size:.9rem;font-weight:700;color:#111827;line-height:1.3;">' + dashEscapeHtml(doc.name) + '</div>' +
+                        '<div style="font-size:.75rem;color:#6B7280;line-height:1.5;">' + dashEscapeHtml(doc.detail) + '</div>' +
+                        '<div style="font-size:.68rem;color:#9CA3AF;margin-top:2px;">Saved: ' + dashEscapeHtml(doc.saved) + ' \u00B7 Click to continue \u2192</div>' +
                     '</a>';
                 }).join('') + '</div>';
         }
@@ -4127,17 +4136,20 @@
             }
 
             container.innerHTML = '<div class="cv-card-grid">' + cvs.map(function(cv) {
+                var id = String(cv.id || '').slice(0, 120);
                 var name = cv.title || 'Untitled CV';
                 var person = (((cv.data && cv.data.fn) || '') + ' ' + ((cv.data && cv.data.ln) || '')).trim() || 'No name';
                 var tmpl = cv.template || 'slate';
                 var time = timeAgo(cv.updatedAt || cv.createdAt || Date.now());
+                var href = dashSafeHref('/tools/cv-builder/?cv=' + encodeURIComponent(id));
+                var jsId = dashEscapeJsString(id);
                 return '<div class="cv-card">' +
-                    '<div class="cv-card-name">' + name + '</div>' +
-                    '<div class="cv-card-meta">' + person + ' &middot; ' + tmpl + ' &middot; ' + time + '</div>' +
+                    '<div class="cv-card-name">' + dashEscapeHtml(name) + '</div>' +
+                    '<div class="cv-card-meta">' + dashEscapeHtml(person) + ' &middot; ' + dashEscapeHtml(tmpl) + ' &middot; ' + dashEscapeHtml(time) + '</div>' +
                     '<div class="cv-card-actions">' +
-                        '<a class="cv-card-edit" href="/tools/cv-builder/?cv=' + cv.id + '">Edit</a>' +
-                        '<button class="cv-card-dup" onclick="duplicateDashboardCV(\'' + cv.id + '\')">Duplicate</button>' +
-                        '<button class="cv-card-del" onclick="deleteDashboardCV(\'' + cv.id + '\')">Delete</button>' +
+                        '<a class="cv-card-edit" href="' + dashEscapeHtml(href) + '">Edit</a>' +
+                        '<button class="cv-card-dup" onclick="duplicateDashboardCV(\'' + jsId + '\')">Duplicate</button>' +
+                        '<button class="cv-card-del" onclick="deleteDashboardCV(\'' + jsId + '\')">Delete</button>' +
                     '</div>' +
                 '</div>';
             }).join('') + '</div>';
@@ -4193,14 +4205,19 @@
                 return new Date(ts).toLocaleDateString('en-GB', {day:'numeric', month:'short'});
             }
             container.innerHTML = '<div class="cv-card-grid">' + plans.map(function(p) {
+                var id = String(p.id || '').slice(0, 120);
                 var time = timeAgo(p.updatedAt || Date.now());
+                var area = Number(p.area);
+                var areaText = Number.isFinite(area) ? area.toFixed(1) + ' m\u00B2' : '-';
+                var href = dashSafeHref('/engineering/floor-planner/?project=' + encodeURIComponent(id));
+                var jsId = dashEscapeJsString(id);
                 return '<div class="cv-card">' +
-                    '<div class="cv-card-name">' + (p.name || 'Untitled Plan') + '</div>' +
-                    '<div class="cv-card-meta">' + (p.rooms || 0) + ' rooms &middot; ' + (p.area ? p.area.toFixed(1) + ' m\u00B2' : '—') + ' &middot; ' + time + '</div>' +
+                    '<div class="cv-card-name">' + dashEscapeHtml(p.name || 'Untitled Plan') + '</div>' +
+                    '<div class="cv-card-meta">' + dashEscapeHtml(p.rooms || 0) + ' rooms &middot; ' + dashEscapeHtml(areaText) + ' &middot; ' + dashEscapeHtml(time) + '</div>' +
                     '<div class="cv-card-actions">' +
-                        '<a class="cv-card-edit" href="/engineering/floor-planner/?project=' + p.id + '">Edit</a>' +
-                        '<button class="cv-card-dup" onclick="duplicateDashboardFP(\'' + p.id + '\')">Duplicate</button>' +
-                        '<button class="cv-card-del" onclick="deleteDashboardFP(\'' + p.id + '\')">Delete</button>' +
+                        '<a class="cv-card-edit" href="' + dashEscapeHtml(href) + '">Edit</a>' +
+                        '<button class="cv-card-dup" onclick="duplicateDashboardFP(\'' + jsId + '\')">Duplicate</button>' +
+                        '<button class="cv-card-del" onclick="deleteDashboardFP(\'' + jsId + '\')">Delete</button>' +
                     '</div>' +
                 '</div>';
             }).join('') + '</div>';

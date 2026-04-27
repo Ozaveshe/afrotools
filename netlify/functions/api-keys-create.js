@@ -7,6 +7,11 @@
 var { getStore } = require('@netlify/blobs');
 var { randomBytes } = require('crypto');
 var { getAllowedOrigin } = require('./utils/cors');
+var { checkRateLimit } = require('./_shared/rate-limit');
+
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
 
 var CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -19,10 +24,24 @@ function json(status, body) {
   return { statusCode: status, headers: CORS, body: JSON.stringify(body) };
 }
 
+function clientIp(event) {
+  var headers = event.headers || {};
+  return String(
+    headers['x-nf-client-connection-ip'] ||
+    headers['client-ip'] ||
+    headers['x-forwarded-for'] ||
+    ''
+  ).split(',')[0].trim() || 'unknown';
+}
+
 exports.handler = async function(event) {
   CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
+
+  if (!checkRateLimit('api-keys-create:' + clientIp(event), 12)) {
+    return json(429, { error: 'Too many API key requests. Please try again later.' });
+  }
 
   var body;
   try { body = JSON.parse(event.body); } catch(e) { return json(400, { error: 'Invalid JSON' }); }
@@ -72,22 +91,27 @@ exports.handler = async function(event) {
 
   // Also track in email_leads if the capture-lead function exists
   try {
-    var SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-    var SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+    var SUPABASE_URL = cleanEnvValue(process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL) || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+    var SUPABASE_KEY = cleanEnvValue(
+      process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.SUPABASE_SERVICE_KEY
+    );
     if (SUPABASE_KEY) {
-      await fetch(SUPABASE_URL + '/rest/v1/email_leads', {
+      await fetch(SUPABASE_URL + '/rest/v1/email_leads?on_conflict=email', {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_KEY,
           'Authorization': 'Bearer ' + SUPABASE_KEY,
           'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
+          'Prefer': 'return=minimal,resolution=merge-duplicates'
         },
         body: JSON.stringify({
           email: email,
           source: 'api_key_signup',
           tool_slug: 'api',
-          metadata: { name: keyData.name, useCase: keyData.useCase, apiKey: apiKey.slice(0, 18) + '...' }
+          opt_in_digest: true,
+          name: keyData.name
         })
       });
     }

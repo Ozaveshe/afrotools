@@ -399,7 +399,7 @@
         <div class="code-panel active" id="panel-curl"><pre><span class="fn">curl</span> <span class="kw">-X</span> POST https://afrotools.com/api/v1/calculate \
   <span class="kw">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="kw">-H</span> <span class="str">"x-api-key: YOUR_API_KEY"</span> \
-  <span class="kw">-d</span> <span class="str">'{"tool":"ng-paye","inputs":{"grossAnnual":5000000,"pension":true}}'</span></pre></div>
+  <span class="kw">-d</span> <span class="str">'{"tool":"tax","inputs":{"country":"NG","grossAnnual":5000000,"pension":true}}'</span></pre></div>
         <div class="code-panel" id="panel-javascript"><pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://afrotools.com/api/v1/calculate'</span>, {
   <span class="fn">method</span>: <span class="str">'POST'</span>,
   <span class="fn">headers</span>: {
@@ -407,19 +407,19 @@
     <span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span>
   },
   <span class="fn">body</span>: JSON.<span class="fn">stringify</span>({
-    <span class="fn">tool</span>: <span class="str">'ng-paye'</span>,
-    <span class="fn">inputs</span>: { <span class="fn">grossAnnual</span>: <span class="num">5000000</span>, <span class="fn">pension</span>: <span class="num">true</span> }
+    <span class="fn">tool</span>: <span class="str">'tax'</span>,
+    <span class="fn">inputs</span>: { <span class="fn">country</span>: <span class="str">'NG'</span>, <span class="fn">grossAnnual</span>: <span class="num">5000000</span>, <span class="fn">pension</span>: <span class="num">true</span> }
   })
 });
 <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
-console.<span class="fn">log</span>(data.result);</pre></div>
+console.<span class="fn">log</span>(data);</pre></div>
         <div class="code-panel" id="panel-python"><pre><span class="kw">import</span> requests
 
 resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotools.com/api/v1/calculate'</span>,
     <span class="fn">headers</span>={<span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span>},
-    <span class="fn">json</span>={<span class="str">'tool'</span>: <span class="str">'ng-paye'</span>, <span class="str">'inputs'</span>: {<span class="str">'grossAnnual'</span>: <span class="num">5000000</span>, <span class="str">'pension'</span>: <span class="num">True</span>}}
+    <span class="fn">json</span>={<span class="str">'tool'</span>: <span class="str">'tax'</span>, <span class="str">'inputs'</span>: {<span class="str">'country'</span>: <span class="str">'NG'</span>, <span class="str">'grossAnnual'</span>: <span class="num">5000000</span>, <span class="str">'pension'</span>: <span class="num">True</span>}}
 )
-<span class="fn">print</span>(resp.<span class="fn">json</span>()[<span class="str">'result'</span>])</pre></div>
+<span class="fn">print</span>(resp.<span class="fn">json</span>())</pre></div>
       </div>
     </div>
   </div>
@@ -480,22 +480,21 @@ resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotool
       </div>
       <h4>Request Body</h4>
       <pre>{
-  "tool": "ng-paye",
+  "tool": "tax",
   "inputs": {
+    "country": "NG",
     "grossAnnual": 5000000,
     "pension": true
   }
 }</pre>
       <h4>Response</h4>
       <pre>{
-  "result": {
-    "tax": 374550,
-    "netAnnual": 4225450,
-    "effectiveRate": "7.49%"
-  },
-  "meta": {
-    "tool": "ng-paye",
-    "version": "0.1.0-beta",
+  "status": "success",
+  "country": "NG",
+  "currency": "NGN",
+  "_meta": {
+    "tool": "tax",
+    "version": "1.0",
     "timestamp": "2026-03-13T12:00:00.000Z",
     "usage": {
       "current": 42,

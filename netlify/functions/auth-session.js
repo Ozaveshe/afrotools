@@ -38,7 +38,7 @@ function setCookie(name, value, maxAge) {
   parts.push('SameSite=Lax');
   parts.push('Path=/');
   if (IS_PROD) parts.push('Domain=.afrotools.com');
-  if (maxAge) parts.push('Max-Age=' + maxAge);
+  if (maxAge !== undefined && maxAge !== null) parts.push('Max-Age=' + maxAge);
   return parts.join('; ');
 }
 
@@ -58,10 +58,32 @@ function parseCookies(cookieHeader) {
   return cookies;
 }
 
-function jsonResponse(statusCode, body, extraHeaders) {
+function jsonResponse(statusCode, body, extraHeaders, multiValueHeaders) {
   var headers = Object.assign({}, extraHeaders || {});
   headers['Content-Type'] = 'application/json';
-  return { statusCode: statusCode, headers: headers, body: JSON.stringify(body) };
+  var response = { statusCode: statusCode, headers: headers, body: JSON.stringify(body) };
+  if (multiValueHeaders && Object.keys(multiValueHeaders).length) {
+    response.multiValueHeaders = multiValueHeaders;
+  }
+  return response;
+}
+
+function sessionCookieHeaders(session) {
+  return {
+    'Set-Cookie': [
+      setCookie('afro_session', session.access_token, session.expires_in || 3600),
+      setCookie('afro_refresh', session.refresh_token, 30 * 24 * 3600),
+    ],
+  };
+}
+
+function clearCookieHeaders() {
+  return {
+    'Set-Cookie': [
+      clearCookie('afro_session'),
+      clearCookie('afro_refresh'),
+    ],
+  };
 }
 
 function buildUser(supaUser) {
@@ -98,13 +120,20 @@ exports.handler = async function (event) {
     return corsResponse(event);
   }
 
-  if (!SUPABASE_ANON_KEY) {
-    return jsonResponse(500, { error: 'Server config error: missing auth key' }, cors);
-  }
-
   var pathParts = (event.path || '').split('/').filter(Boolean);
   var action = pathParts[pathParts.length - 1]; // login, signup, logout, session, refresh
-  var cookies = parseCookies(event.headers.cookie || event.headers.Cookie || '');
+  var requestHeaders = event.headers || {};
+  var cookies = parseCookies(requestHeaders.cookie || requestHeaders.Cookie || '');
+
+  if (!SUPABASE_ANON_KEY) {
+    if (action === 'logout') {
+      return jsonResponse(200, { ok: true }, Object.assign({}, cors), clearCookieHeaders());
+    }
+    if (action === 'session' && event.httpMethod === 'GET' && !cookies.afro_session && !cookies.afro_refresh) {
+      return jsonResponse(200, { user: null, authenticated: false }, cors);
+    }
+    return jsonResponse(500, { error: 'Server config error: missing auth key' }, cors);
+  }
 
   // ── LOGIN ──
   if (action === 'login' && event.httpMethod === 'POST') {
@@ -130,11 +159,7 @@ exports.handler = async function (event) {
     var user = buildUser(session.user);
 
     var respHeaders = Object.assign({}, cors);
-    respHeaders['Set-Cookie'] = setCookie('afro_session', session.access_token, session.expires_in || 3600);
-    // Multi-value headers for Netlify
-    respHeaders['set-cookie'] = setCookie('afro_refresh', session.refresh_token, 30 * 24 * 3600);
-
-    return jsonResponse(200, { ok: true, user: user }, respHeaders);
+    return jsonResponse(200, { ok: true, user: user }, respHeaders, sessionCookieHeaders(session));
   }
 
   // ── SIGNUP ──
@@ -170,9 +195,7 @@ exports.handler = async function (event) {
 
     if (session.access_token) {
       var respHeaders = Object.assign({}, cors);
-      respHeaders['Set-Cookie'] = setCookie('afro_session', session.access_token, session.expires_in || 3600);
-      respHeaders['set-cookie'] = setCookie('afro_refresh', session.refresh_token, 30 * 24 * 3600);
-      return jsonResponse(200, { ok: true, user: user }, respHeaders);
+      return jsonResponse(200, { ok: true, user: user }, respHeaders, sessionCookieHeaders(session));
     }
 
     // If email confirmation required, user is returned but no session
@@ -191,10 +214,7 @@ exports.handler = async function (event) {
     }
 
     var respHeaders = Object.assign({}, cors);
-    respHeaders['Set-Cookie'] = clearCookie('afro_session');
-    respHeaders['set-cookie'] = clearCookie('afro_refresh');
-
-    return jsonResponse(200, { ok: true }, respHeaders);
+    return jsonResponse(200, { ok: true }, respHeaders, clearCookieHeaders());
   }
 
   // ── SESSION (get current user) ──
@@ -223,17 +243,13 @@ exports.handler = async function (event) {
       if (refreshResult.status === 200 && refreshResult.data.access_token) {
         var newSession = refreshResult.data;
         var respHeaders = Object.assign({}, cors);
-        respHeaders['Set-Cookie'] = setCookie('afro_session', newSession.access_token, newSession.expires_in || 3600);
-        respHeaders['set-cookie'] = setCookie('afro_refresh', newSession.refresh_token, 30 * 24 * 3600);
-        return jsonResponse(200, { user: buildUser(newSession.user), authenticated: true, refreshed: true }, respHeaders);
+        return jsonResponse(200, { user: buildUser(newSession.user), authenticated: true, refreshed: true }, respHeaders, sessionCookieHeaders(newSession));
       }
     }
 
     // Both tokens invalid — clear cookies
     var clearHeaders = Object.assign({}, cors);
-    clearHeaders['Set-Cookie'] = clearCookie('afro_session');
-    clearHeaders['set-cookie'] = clearCookie('afro_refresh');
-    return jsonResponse(200, { user: null, authenticated: false }, clearHeaders);
+    return jsonResponse(200, { user: null, authenticated: false }, clearHeaders, clearCookieHeaders());
   }
 
   // ── REFRESH ──
@@ -251,15 +267,11 @@ exports.handler = async function (event) {
     if (result.status === 200 && result.data.access_token) {
       var session = result.data;
       var respHeaders = Object.assign({}, cors);
-      respHeaders['Set-Cookie'] = setCookie('afro_session', session.access_token, session.expires_in || 3600);
-      respHeaders['set-cookie'] = setCookie('afro_refresh', session.refresh_token, 30 * 24 * 3600);
-      return jsonResponse(200, { ok: true, user: buildUser(session.user) }, respHeaders);
+      return jsonResponse(200, { ok: true, user: buildUser(session.user) }, respHeaders, sessionCookieHeaders(session));
     }
 
     var clearHeaders = Object.assign({}, cors);
-    clearHeaders['Set-Cookie'] = clearCookie('afro_session');
-    clearHeaders['set-cookie'] = clearCookie('afro_refresh');
-    return jsonResponse(401, { error: 'Refresh failed' }, clearHeaders);
+    return jsonResponse(401, { error: 'Refresh failed' }, clearHeaders, clearCookieHeaders());
   }
 
   return jsonResponse(404, { error: 'Unknown auth endpoint: ' + action }, cors);

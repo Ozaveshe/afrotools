@@ -727,6 +727,25 @@ For the second Swahili fintech layer, extend `/sw/fintech/` beyond money movemen
 - Rotating-savings pages should respect local names and user intent. Do not flatten Chama, Ajo, Esusu, Stokvel, Tontine, and Susu into one generic term when the local term helps trust and search.
 - Use paired English tool pages for formulas, inputs, scripts, provider assumptions, and disclaimer posture. Do not invent rates, provider rules, or legal requirements.
 
+
+### Property, Housing, and Land Pattern
+
+Use `/sw/nyumba-na-ardhi/` as the durable Swahili hub for property planning. Group pages in this order: buying and mortgage, renting and tenancy, land title and registry, taxes and transfer costs, investment and diaspora, construction and permits, then cross-links to insurance, fintech loans, salary/PAYE, VAT, and business compliance.
+
+Retain search-useful terms only where they help users match market language: mortgage, ROI, CGT, diaspora, off-plan, title deed, conveyancing, service charge, short-let, and Airbnb. Explain each term in Swahili context on first use instead of leaving it as an unexplained English label.
+
+Never overclaim property prices, legal title safety, valuation accuracy, tax treatment, building approval, tenancy enforceability, or lending approval. Property pages should remain estimate and planning tools that point users toward official registries, qualified lawyers, valuers, banks, surveyors, quantity surveyors, and local authorities.
+
+### Insurance and Protection Pattern
+
+For Swahili insurance expansion, treat household protection, health cover, vehicle insurance, business risk, farm risk, travel risk, and employer compensation as one practical risk-planning surface under `/sw/bima/`.
+
+- Recommended `/sw/bima/` order: bima ya kaya na familia, bima ya afya na michango ya afya, bima ya gari na safari, bima ya biashara na dhima, bima ya kilimo na mazao, then fidia na ulinzi wa wafanyakazi.
+- Retain search-useful terms when they match real market usage: `NHIF`, `SHIF`, `NHIS`, `HMO`, `medical aid`, `WIBA`, `COIDA`, `third-party`, `comprehensive`, `public liability`, and `professional indemnity`.
+- Explain retained terms in Kiswahili on first use instead of leaving them as unexplained English labels.
+- Use paired English insurance pages as the source of country coverage, scripts, assumptions, formulas, and disclaimer posture. Do not invent premiums, provider rules, legal requirements, country coverage, or live quote accuracy.
+- If the English page covers 15 countries, the Swahili page must say 15. If it covers 54 countries, the Swahili page can say 54. Engine-backed single-page calculators should not claim country-level pages that were not created.
+
 ## Recommended Execution Order
 
 ### Phase 0: Stabilize

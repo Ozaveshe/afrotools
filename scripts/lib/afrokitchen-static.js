@@ -347,7 +347,7 @@ function buildCountryDescription(country) {
   const fallbackNames = humanList(country.recipes.map((recipe) => recipe.name), 3);
   const recipeLead = highlighted || fallbackNames;
   return excerpt(
-    `Discover ${country.total_recipes} verified ${country.country_name} recipes on AfroKitchen, including ${recipeLead}. Browse traditional dishes, regional context, and the wider African food archive from one country hub.`,
+    `Discover ${country.total_recipes} ${country.country_name} recipes on AfroKitchen, including ${recipeLead}. Browse traditional dishes, regional context, and the wider African food atlas from one country hub.`,
     158
   );
 }
@@ -366,7 +366,7 @@ function buildCollectionDescription(collection) {
   );
 
   return excerpt(
-    `Explore ${collection.name} on AfroKitchen with ${collection.total_recipes} verified recipes from ${collection.country_count} African countries, including ${highlightedRecipes || fallbackRecipes}. Follow dishes from ${highlightedCountries || "across the continent"} through one crawlable collection route.`,
+    `Explore ${collection.name} on AfroKitchen with ${collection.total_recipes} recipes from ${collection.country_count} African countries, including ${highlightedRecipes || fallbackRecipes}. Follow dishes from ${highlightedCountries || "across the continent"} in one focused collection.`,
     158
   );
 }

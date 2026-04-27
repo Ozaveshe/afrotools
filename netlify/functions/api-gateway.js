@@ -1,6 +1,4 @@
-import { getStore } from "@netlify/blobs";
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
 const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
 
@@ -32,7 +30,7 @@ function makeMeta(tool, auth, startTime) {
   };
 }
 
-export default async function handler(event) {
+exports.handler = async function (event) {
   CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
 
@@ -272,4 +270,4 @@ export default async function handler(event) {
     })),
     hint: 'Use one of the available tools listed above.'
   });
-}
+};

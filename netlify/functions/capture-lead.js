@@ -4,6 +4,7 @@
 // Stores email leads in Supabase with full segmentation + attribution columns.
 
 const { getAllowedOrigin } = require('./utils/cors');
+const { checkRateLimit } = require('./_shared/rate-limit');
 
 function cleanEnvValue(value) {
   return String(value || '').trim().replace(/^['"]|['"]$/g, '');
@@ -66,6 +67,16 @@ function cleanNumeric(val) {
   return isFinite(n) && n >= 0 ? n : null;
 }
 
+function clientIp(event) {
+  const headers = event.headers || {};
+  return String(
+    headers['x-nf-client-connection-ip'] ||
+    headers['client-ip'] ||
+    headers['x-forwarded-for'] ||
+    ''
+  ).split(',')[0].trim() || 'unknown';
+}
+
 exports.handler = async (event) => {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
@@ -82,6 +93,10 @@ exports.handler = async (event) => {
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Invalid email' }) };
+    }
+
+    if (!checkRateLimit('capture-lead:' + clientIp(event), 60)) {
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, stored: false, rateLimited: true }) };
     }
 
     if (!SUPABASE_DATA_SERVICE_KEY) {
@@ -129,13 +144,13 @@ exports.handler = async (event) => {
     }
 
     // Upsert into email_leads — on conflict update enriched fields
-    const res = await fetch(`${SUPABASE_DATA_URL}/rest/v1/email_leads`, {
+    const res = await fetch(`${SUPABASE_DATA_URL}/rest/v1/email_leads?on_conflict=email`, {
       method: 'POST',
       headers: {
         'apikey': SUPABASE_DATA_SERVICE_KEY,
         'Authorization': `Bearer ${SUPABASE_DATA_SERVICE_KEY}`,
         'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates'
+        'Prefer': 'return=minimal,resolution=merge-duplicates'
       },
       body: JSON.stringify(cleanRecord)
     });

@@ -32,37 +32,37 @@ const LEGACY_RECIPE_ALIASES = [
   {
     legacySlug: "nigerian-jollof-rice",
     targetRecipeSlug: "jollof-rice-ng",
-    reason: "Legacy seed route preserved while AfroKitchen canonical routes switch to the verified Supabase slug."
+    reason: "This older link now opens the richer Nigerian Jollof Rice recipe."
   },
   {
     legacySlug: "ethiopian-doro-wat",
     targetRecipeSlug: "doro-wat",
-    reason: "Legacy seed route preserved while AfroKitchen canonical routes switch to the verified Supabase slug."
+    reason: "This older link now opens the richer Doro Wat recipe."
   },
   {
     legacySlug: "egyptian-koshari",
     targetRecipeSlug: "koshari-eg",
-    reason: "Legacy seed route preserved while AfroKitchen canonical routes switch to the verified Supabase slug."
+    reason: "This older link now opens the richer Koshari recipe."
   },
   {
     legacySlug: "moroccan-chicken-tagine",
     targetRecipeSlug: "chicken-tagine-preserved-lemons-ma",
-    reason: "Legacy seed route preserved while AfroKitchen canonical routes switch to the verified Supabase slug."
+    reason: "This older link now opens the richer Moroccan chicken tagine recipe."
   },
   {
     legacySlug: "ugali-sukuma-wiki",
     targetRecipeSlug: "ugali-na-sukuma-wiki",
-    reason: "Legacy seed route preserved while AfroKitchen canonical routes switch to the verified Supabase slug."
+    reason: "This older link now opens the richer Ugali na Sukuma Wiki recipe."
   },
   {
     legacySlug: "ghanaian-waakye",
     targetCountryCode: "GH",
-    reason: "Legacy seed route preserved as a noindex compatibility alias because the current verified Supabase inventory does not include a Waakye record yet."
+    reason: "This older Waakye link now sends you to the Ghana cuisine hub while the dedicated recipe is being prepared."
   },
   {
     legacySlug: "dovi",
     targetRecipeSlug: "dovi-zw",
-    reason: "Duplicate Zimbabwe Dovi route retired in favor of the richer verified dovi-zw recipe record."
+    reason: "This older Dovi link now opens the richer Zimbabwe Dovi recipe."
   }
 ];
 
@@ -191,12 +191,11 @@ function resolveRecipeHref(recipe) {
 }
 
 function renderRelatedHtml(recipe, relatedRecipes) {
-  const hasFallbackRecipes = relatedRecipes.some((entry) => !entry.generated_in_wave);
   const cards = relatedRecipes
     .map((entry) => {
-      const modeLabel = entry.generated_in_wave ? "Static route" : "Interactive fallback";
+      const modeLabel = `${entry.country_name} | ${categoryLabel(entry)}`;
       return `<a class="ak-support-card ak-static-related-card" href="${resolveRecipeHref(entry)}">
-        <div class="ak-support-label">${escapeHtml(entry.country_name)} | ${modeLabel}</div>
+        <div class="ak-support-label">${escapeHtml(modeLabel)}</div>
         <h3>${escapeHtml(entry.name)}</h3>
         <p>${escapeHtml(excerpt(entry.description, 130))}</p>
         <div class="ak-static-card-meta">${escapeHtml(String(entry.total_time_minutes || 0))} min | ${escapeHtml(categoryLabel(entry))}</div>
@@ -208,7 +207,7 @@ function renderRelatedHtml(recipe, relatedRecipes) {
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep exploring</div>
       <h2 class="ak-section-title">More AfroKitchen dishes from the same food atlas</h2>
-      <p class="ak-section-sub">${hasFallbackRecipes ? "Clean recipe routes are preferred whenever this wave has generated them. Remaining dishes still resolve through the interactive fallback until the next static expansion." : "Every related dish below links through a clean static recipe route from the verified AfroKitchen inventory."}</p>
+      <p class="ak-section-sub">Try another dish from the same country, region, or cooking mood.</p>
     </div>
     <div class="ak-static-related-grid">${cards}</div>
     <div class="ak-hero-actions ak-static-related-actions">
@@ -223,11 +222,11 @@ function renderRecipeCollectionSummaryCard(recipe) {
 
   const collectionCopy =
     recipe.collection_count > 1
-      ? `${recipe.name} belongs to ${recipe.collection_count} AfroKitchen collections. ${recipe.primary_collection_name} is the strongest cluster route to start from.`
-      : `${recipe.primary_collection_name} is the main AfroKitchen collection route tied to this dish right now.`;
+      ? `${recipe.name} appears in ${recipe.collection_count} AfroKitchen collections. Start with ${recipe.primary_collection_name} if you want more dishes in the same mood.`
+      : `${recipe.primary_collection_name} is the easiest collection to explore after this dish.`;
 
   return `<div class="ak-static-summary-card">
-            <strong>Follow the collection route</strong>
+            <strong>Follow the collection</strong>
             <p>${escapeHtml(collectionCopy)} <a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></p>
           </div>`;
 }
@@ -374,6 +373,9 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
   const renderedSteps = renderStepsHtml(recipe);
   const relatedSection = renderRelatedHtml(recipe, relatedRecipes);
   const storyLead = recipe.story ? excerpt(recipe.story, 420) : description;
+  const heroStyle = media.pageImage
+    ? ` style="background-image:linear-gradient(140deg,rgba(36,18,8,.9),rgba(123,31,12,.72) 46%,rgba(199,62,29,.58)),url('${escapeHtml(media.pageImage)}')"`
+    : "";
 
   const recipeData = {
     slug: recipe.slug,
@@ -485,7 +487,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
 <body>
 <afro-navbar></afro-navbar>
 <div class="ak-page ak-static-page">
-  <section class="ak-hero">
+  <section class="ak-hero"${heroStyle}>
     <div class="ak-hero-inner ak-hero-single">
       <div class="ak-hero-text">
         <nav class="ak-breadcrumb" aria-label="breadcrumb">
@@ -514,7 +516,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
           <div><span>Best served with</span><strong>${escapeHtml(recipe.best_served_with || "Browse the country hub for pairing ideas and nearby dishes.")}</strong></div>
           <div><span>Best occasion</span><strong>${escapeHtml(recipe.occasion || "Any time you want to cook deeper into the AfroKitchen archive.")}</strong></div>
           <div><span>Country hub</span><strong><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)} cuisine hub</a></strong></div>
-          ${recipe.primary_collection_slug ? `<div><span>Collection route</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
+          ${recipe.primary_collection_slug ? `<div><span>Collection</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
         </div>
         ${media.credit ? `<div class="ak-static-credit">Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.</div>` : ""}
       </aside>
@@ -551,7 +553,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
           <span class="ak-servings-val" id="ak-static-servings">${escapeHtml(String(recipe.default_servings || 1))}</span>
           <button class="ak-servings-btn" type="button" onclick="AKStaticRecipePage.adjustServings(1)">+</button>
         </div>
-        <p class="ak-static-serving-note">The core SEO content is fully visible in HTML. The controls above only recalculate ingredients and nutrition client-side for convenience.</p>
+        <p class="ak-static-serving-note">Adjust the servings before you shop so the ingredient amounts match your table.</p>
       </div>
 
       <div class="ak-recipe-layout">
@@ -571,7 +573,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
           </div>
           <div class="ak-steps">${renderedSteps}</div>
           <div class="ak-static-helper-note">
-            <p>${escapeHtml(recipe.regional_variations || "Regional variations and live helpers layer onto this clean static recipe route without changing the canonical URL.")}</p>
+            <p>${escapeHtml(recipe.regional_variations || "Every household has small variations. Start here, then adjust seasoning, heat, and serving sides to your kitchen.")}</p>
           </div>
         </section>
       </div>
@@ -735,10 +737,10 @@ function pickNeighborCountries(country, manifest) {
 function renderCountryRecipeCards(country) {
   return country.recipes
     .map((recipe) => {
-      const modeLabel = recipe.generated_in_wave ? "Static recipe route" : "Interactive fallback";
+      const modeLabel = `${categoryLabel(recipe)} | ${recipe.difficulty || "medium"}`;
       const href = recipe.generated_in_wave ? recipe.route_path : recipe.fallback_path;
       return `<a class="ak-country-hub-card" href="${href}">
-        <div class="ak-support-label">${modeLabel}</div>
+        <div class="ak-support-label">${escapeHtml(modeLabel)}</div>
         <h3>${escapeHtml(recipe.name)}</h3>
         <p>${escapeHtml(excerpt(recipe.description, 128))}</p>
         <div class="ak-static-card-meta">${escapeHtml(String(recipe.total_time_minutes || 0))} min | ${escapeHtml(categoryLabel(recipe))}</div>
@@ -756,7 +758,7 @@ function renderNeighborCountryLinks(country, manifest) {
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Keep browsing</div>
       <h2 class="ak-section-title">More ${escapeHtml(country.region)} country hubs</h2>
-      <p class="ak-section-sub">${hasFallbackRecipes ? "Country hubs are fully static in this wave, even when some recipe detail pages still resolve through the interactive fallback." : "Country hubs are fully static and now cross-link to clean verified recipe routes."}</p>
+      <p class="ak-section-sub">${hasFallbackRecipes ? "Explore nearby cuisines while this country surface keeps every verified dish easy to reach." : "Explore nearby cuisines and keep building a meal from the same region."}</p>
     </div>
     <div class="ak-hero-route-grid">
       ${neighbors
@@ -774,9 +776,9 @@ function renderCountryCollectionLinks(country) {
 
   return `<section class="ak-section ak-static-related">
     <div class="ak-section-head rv visible">
-      <div class="ak-section-eyebrow">Collection routes</div>
+      <div class="ak-section-eyebrow">Collections</div>
       <h2 class="ak-section-title">Collections that include ${escapeHtml(country.country_name)}</h2>
-      <p class="ak-section-sub">These collection hubs are pulled from live AfroKitchen membership data, so the strongest cross-links stay tied to real recipe coverage instead of guessed tags.</p>
+      <p class="ak-section-sub">Use these collections when you want a faster path into party dishes, one-pot meals, street food, or vegetable-forward cooking.</p>
     </div>
     <div class="ak-hero-route-grid">
       ${country.related_collections
@@ -792,10 +794,10 @@ function renderCountryCollectionLinks(country) {
 function renderCollectionRecipeCards(collection) {
   return collection.recipes
     .map((recipe) => {
-      const modeLabel = recipe.generated_in_wave ? "Static recipe route" : "Interactive fallback";
+      const modeLabel = `${recipe.country_name} | ${categoryLabel(recipe)}`;
       const href = recipe.generated_in_wave ? recipe.route_path : recipe.fallback_path;
       return `<a class="ak-country-hub-card" href="${href}">
-        <div class="ak-support-label">${escapeHtml(recipe.country_name)} | ${modeLabel}</div>
+        <div class="ak-support-label">${escapeHtml(modeLabel)}</div>
         <h3>${escapeHtml(recipe.name)}</h3>
         <p>${escapeHtml(excerpt(recipe.description, 128))}</p>
         <div class="ak-static-card-meta">${escapeHtml(String(recipe.total_time_minutes || 0))} min | ${escapeHtml(categoryLabel(recipe))}</div>
@@ -812,8 +814,8 @@ function renderCollectionCountryLinks(collection) {
   return `<section class="ak-section ak-static-related">
     <div class="ak-section-head rv visible">
       <div class="ak-section-eyebrow">Country hubs</div>
-      <h2 class="ak-section-title">Country routes connected to ${escapeHtml(collection.name)}</h2>
-      <p class="ak-section-sub">Collections work best when they also feed country discovery, so these hub links stay visible in HTML alongside the recipe grid.</p>
+      <h2 class="ak-section-title">Countries behind ${escapeHtml(collection.name)}</h2>
+      <p class="ak-section-sub">Jump from the collection back into the countries behind the dishes.</p>
     </div>
     <div class="ak-hero-route-grid">
       ${visibleCountries
@@ -823,7 +825,7 @@ function renderCollectionCountryLinks(collection) {
         )
         .join("\n")}
     </div>
-    ${additionalCountries > 0 ? `<p class="ak-section-sub">This collection also touches ${escapeHtml(String(additionalCountries))} more country hubs through the wider verified inventory.</p>` : ""}
+    ${additionalCountries > 0 ? `<p class="ak-section-sub">This collection also touches ${escapeHtml(String(additionalCountries))} more country hubs across AfroKitchen.</p>` : ""}
   </section>`;
 }
 
@@ -833,14 +835,14 @@ function buildCountryPageHtml(country, manifest) {
   const description = excerpt(country.description, 158);
   const generatedRecipeLead =
     country.generated_recipe_count === country.total_recipes
-      ? `All ${country.total_recipes} verified recipes use clean static routes`
+      ? `${country.total_recipes} dishes are ready to open and cook`
       : country.generated_recipe_count
-        ? `${country.generated_recipe_count} of ${country.total_recipes} verified recipes use clean static routes`
-        : "This hub is already static, but its recipe detail links still point to the interactive fallback until a later recipe wave ships.";
+        ? `${country.generated_recipe_count} of ${country.total_recipes} dishes are ready to open and cook`
+        : "This hub is ready for browsing, with more detail pages coming into the full cooking experience.";
   const recipeListCopy =
     country.generated_recipe_count === country.total_recipes
-      ? "Every card below links to a clean static recipe URL from the verified live AfroKitchen inventory."
-      : "The cards below use clean static recipe URLs when this production wave has generated them. Remaining dishes still link through the interactive fallback so the hub reflects the full verified inventory from the live AfroKitchen dataset.";
+      ? "Open any dish below for ingredients, story, timing, serving notes, and pairings."
+      : "Open any dish below to start cooking, then keep exploring the rest of this country hub.";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -907,9 +909,9 @@ function buildCountryPageHtml(country, manifest) {
         <h1>${escapeHtml(country.country_name)} Recipes & Traditional Dishes</h1>
         <p class="ak-hero-sub">${escapeHtml(country.description)}</p>
         <div class="ak-hero-stats">
-          <div class="ak-stat"><div class="ak-stat-lbl">Verified recipes</div><div class="ak-stat-val accent">${escapeHtml(String(country.total_recipes))}</div></div>
+          <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent">${escapeHtml(String(country.total_recipes))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Featured dishes</div><div class="ak-stat-val">${escapeHtml(String(country.featured_recipes))}</div></div>
-          <div class="ak-stat"><div class="ak-stat-lbl">Static recipe routes</div><div class="ak-stat-val">${escapeHtml(String(country.generated_recipe_count))}</div></div>
+          <div class="ak-stat"><div class="ak-stat-lbl">Ready to cook</div><div class="ak-stat-val">${escapeHtml(String(country.generated_recipe_count))}</div></div>
         </div>
         <div class="ak-hero-actions">
           <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
@@ -918,12 +920,12 @@ function buildCountryPageHtml(country, manifest) {
       </div>
       <div class="ak-hero-facts">
         <div class="ak-fact-card">
-          <div class="ak-fact-card-label">Why this hub matters</div>
+          <div class="ak-fact-card-label">Country table</div>
           <span class="ak-fact-card-value">${escapeHtml(String(country.total_recipes))}</span>
-          <p class="ak-fact-card-copy">The country hub is static and points verified dishes at their canonical recipe routes.</p>
+          <p class="ak-fact-card-copy">A small set of dishes to start cooking from ${escapeHtml(country.country_name)}.</p>
         </div>
         <div class="ak-fact-card">
-          <div class="ak-fact-card-label">Current route coverage</div>
+          <div class="ak-fact-card-label">What to expect</div>
           <p class="ak-fact-card-copy">${escapeHtml(generatedRecipeLead)}</p>
         </div>
       </div>
@@ -934,13 +936,13 @@ function buildCountryPageHtml(country, manifest) {
     <div class="ak-container">
       <div class="ak-country-hub-shell rv visible">
         <div class="ak-section-kicker">Country archive</div>
-        <h2 class="ak-section-title">Every verified ${escapeHtml(country.country_name)} recipe in one crawlable hub</h2>
+        <h2 class="ak-section-title">Every ${escapeHtml(country.country_name)} dish in one place</h2>
         <p class="ak-section-sub">${escapeHtml(recipeListCopy)}</p>
         <div class="ak-country-hub-grid">
           ${renderCountryRecipeCards(country)}
         </div>
         <div class="ak-country-archive-note">
-          <p>${country.generated_recipe_count < country.total_recipes ? `${escapeHtml(country.country_name)} currently has ${escapeHtml(String(country.total_recipes - country.generated_recipe_count))} verified dishes that still resolve through the noindex query template while the static recipe rollout expands beyond this first production wave.` : `Every verified ${escapeHtml(country.country_name)} recipe in the current inventory already has a clean static route in this wave.`}</p>
+          <p>${country.generated_recipe_count < country.total_recipes ? `${escapeHtml(country.country_name)} has ${escapeHtml(String(country.total_recipes - country.generated_recipe_count))} more dishes queued for deeper cooking pages.` : `Every ${escapeHtml(country.country_name)} recipe in this country hub is ready to open from the card above.`}</p>
         </div>
       </div>
 
@@ -964,14 +966,14 @@ function buildCollectionPageHtml(collection) {
   const description = excerpt(collection.description, 158);
   const generatedRecipeLead =
     collection.generated_recipe_count === collection.total_recipes
-      ? `All ${collection.total_recipes} recipes in this collection use clean static routes`
+      ? `${collection.total_recipes} dishes are ready to open from this collection`
       : collection.generated_recipe_count
-        ? `${collection.generated_recipe_count} of ${collection.total_recipes} recipes in this collection use clean static routes`
-        : "This collection route is static, but its recipe detail links still point to the interactive fallback until a later recipe wave ships.";
+        ? `${collection.generated_recipe_count} of ${collection.total_recipes} dishes are ready to open from this collection`
+        : "This collection is ready for browsing, with more detail pages coming into the full cooking experience.";
   const recipeListCopy =
     collection.generated_recipe_count === collection.total_recipes
-      ? "This page ships the collection intro and recipe list directly in HTML, with every member linked through its clean static recipe URL."
-      : "This page ships the collection intro and recipe list directly in HTML, with clean recipe URLs preferred wherever the current static wave has generated them.";
+      ? "Open any dish below for ingredients, story, timing, serving notes, and pairings."
+      : "Open any dish below to start cooking, then keep exploring the rest of this collection.";
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -1034,13 +1036,13 @@ function buildCollectionPageHtml(collection) {
           <span class="ak-badge ak-badge-live">Collection hub</span>
           <span class="ak-badge ak-badge-ai">${collection.is_featured ? "Featured" : "Curated"}</span>
         </div>
-        <div class="ak-eyebrow">Curated route</div>
+        <div class="ak-eyebrow">Curated collection</div>
         <h1>${escapeHtml(collection.name)}</h1>
         <p class="ak-hero-sub">${escapeHtml(collection.description)}</p>
         <div class="ak-hero-stats">
-          <div class="ak-stat"><div class="ak-stat-lbl">Verified recipes</div><div class="ak-stat-val accent">${escapeHtml(String(collection.total_recipes))}</div></div>
+          <div class="ak-stat"><div class="ak-stat-lbl">Recipes</div><div class="ak-stat-val accent">${escapeHtml(String(collection.total_recipes))}</div></div>
           <div class="ak-stat"><div class="ak-stat-lbl">Country hubs</div><div class="ak-stat-val">${escapeHtml(String(collection.country_count))}</div></div>
-          <div class="ak-stat"><div class="ak-stat-lbl">Static recipe routes</div><div class="ak-stat-val">${escapeHtml(String(collection.generated_recipe_count))}</div></div>
+          <div class="ak-stat"><div class="ak-stat-lbl">Ready to cook</div><div class="ak-stat-val">${escapeHtml(String(collection.generated_recipe_count))}</div></div>
         </div>
         <div class="ak-hero-actions">
           <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
@@ -1049,12 +1051,12 @@ function buildCollectionPageHtml(collection) {
       </div>
       <div class="ak-hero-facts">
         <div class="ak-fact-card">
-          <div class="ak-fact-card-label">Why this cluster matters</div>
+          <div class="ak-fact-card-label">Collection table</div>
           <span class="ak-fact-card-value">${escapeHtml(String(collection.total_recipes))}</span>
-          <p class="ak-fact-card-copy">Collections are the editorial layer of AfroKitchen, turning scattered recipe inventory into a crawlable route with a clear theme.</p>
+          <p class="ak-fact-card-copy">A focused set of dishes for this craving, occasion, or cooking style.</p>
         </div>
         <div class="ak-fact-card">
-          <div class="ak-fact-card-label">Current route coverage</div>
+          <div class="ak-fact-card-label">What to expect</div>
           <p class="ak-fact-card-copy">${escapeHtml(generatedRecipeLead)}</p>
         </div>
       </div>
@@ -1065,13 +1067,13 @@ function buildCollectionPageHtml(collection) {
     <div class="ak-container">
       <div class="ak-country-hub-shell rv visible">
         <div class="ak-section-kicker">Collection archive</div>
-        <h2 class="ak-section-title">Contained recipe routes for ${escapeHtml(collection.name)}</h2>
+        <h2 class="ak-section-title">Dishes inside ${escapeHtml(collection.name)}</h2>
         <p class="ak-section-sub">${escapeHtml(recipeListCopy)}</p>
         <div class="ak-country-hub-grid">
           ${renderCollectionRecipeCards(collection)}
         </div>
         <div class="ak-country-archive-note">
-          <p>${collection.generated_recipe_count < collection.total_recipes ? `${escapeHtml(collection.name)} currently includes ${escapeHtml(String(collection.total_recipes - collection.generated_recipe_count))} verified dishes that still resolve through the noindex query template while the static recipe rollout continues.` : `Every recipe linked from ${escapeHtml(collection.name)} already has a clean static route in the current AfroKitchen wave.`}</p>
+          <p>${collection.generated_recipe_count < collection.total_recipes ? `${escapeHtml(collection.name)} has ${escapeHtml(String(collection.total_recipes - collection.generated_recipe_count))} more dishes queued for deeper cooking pages.` : `Every recipe linked from ${escapeHtml(collection.name)} is ready to open from the card above.`}</p>
         </div>
       </div>
 
@@ -1112,15 +1114,15 @@ function buildLegacyAliasPage(alias, manifest) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AfroKitchen route moved</title>
-  <meta name="description" content="This AfroKitchen route has moved to a newer static path sourced from the verified recipe inventory.">
+  <title>AfroKitchen page moved</title>
+  <meta name="description" content="This AfroKitchen page now lives at a newer recipe or country link.">
   <link rel="canonical" href="${targetUrl}">
   <meta name="robots" content="noindex, follow">
   <meta http-equiv="refresh" content="0;url=${targetPath}">
 </head>
 <body>
   <main style="font-family:system-ui, sans-serif; max-width: 760px; margin: 48px auto; padding: 0 20px; line-height: 1.6;">
-    <h1>AfroKitchen route updated</h1>
+    <h1>AfroKitchen page updated</h1>
     <p>${escapeHtml(alias.reason)}</p>
     <p><a href="${targetPath}">Continue to the current AfroKitchen page.</a></p>
   </main>
@@ -1174,9 +1176,9 @@ function buildLandingWaveMarkup(manifest) {
   return `<section class="ak-section ak-section-soft">
     <div class="ak-container">
       <div class="ak-support-card rv visible">
-        <div class="ak-section-kicker">Static route wave</div>
-        <h2 class="ak-section-title">Manifest-driven AfroKitchen routes now front the archive</h2>
-        <p class="ak-section-sub">This production wave ships ${manifest.wave.recipe_count} clean recipe routes and ${manifest.wave.country_hub_count} country hubs from the verified AfroKitchen inventory. Country hubs map the full archive, and clean recipe routes are preferred wherever this wave has generated them.</p>
+        <div class="ak-section-kicker">First bites</div>
+        <h2 class="ak-section-title">Popular dishes to open first</h2>
+        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. Open one now, or keep browsing by country, collection, ingredient, or difficulty.</p>
         <div class="ak-hero-route-grid">
           ${featuredLinks}
         </div>

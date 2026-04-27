@@ -1363,6 +1363,24 @@
       return '<div class="mob-lang-section"><div class="mob-section-label">' + langLabel + '</div><div class="mob-lang-row">' + opts + '</div></div>';
     }
 
+    _escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    _cleanDisplayName(value, fallback) {
+      const cleaned = String(value || '')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/[<>]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return cleaned || fallback || 'Dashboard';
+    }
+
     _render() {
       var lang = this._getLang();
       var isFr = lang === 'fr';
@@ -1789,12 +1807,14 @@
           return;
         }
         const user = AfroAuth.getUser();
-        const name = (user && user.name) ? user.name.split(' ')[0] : 'Dashboard';
-        const initial = name[0].toUpperCase();
+        const displayName = this._cleanDisplayName(user && user.name, 'Dashboard');
+        const name = displayName.split(' ')[0] || 'Dashboard';
+        const safeName = this._escapeHtml(name);
+        const initial = this._escapeHtml((name[0] || 'D').toUpperCase());
         // Desktop: show avatar initial + first name
         if (loginBtn) {
           loginBtn.href = '/dashboard/';
-          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0062CC;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + name + '</span>';
+          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0062CC;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + safeName + '</span>';
         }
         // AfroPoints badge — show points balance next to avatar (once only)
         if (!_apBadgeLoaded) {

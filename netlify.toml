@@ -70,6 +70,9 @@
 [functions."afrostream-livecheck"]
   schedule = "*/30 * * * *"
 
+[functions."conflict-sync"]
+  schedule = "0 3 * * *"
+
 [functions."scheduled-fetch-commodity-prices"]
   schedule = "0 2 * * *"
 
@@ -266,6 +269,16 @@
 
 # Public AfroData API v1
 [[redirects]]
+  from = "/api/v1/calculate"
+  to = "/.netlify/functions/api-gateway"
+  status = 200
+
+[[redirects]]
+  from = "/api/v1/calculate/"
+  to = "/.netlify/functions/api-gateway"
+  status = 200
+
+[[redirects]]
   from = "/api/v1/*"
   to = "/.netlify/functions/api-v1"
   status = 200
@@ -295,6 +308,26 @@
   status = 200
 
 # --- API Keys Redirects ---
+
+[[redirects]]
+  from = "/api/get-key"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/get-key/"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/keys/create"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
+
+[[redirects]]
+  from = "/api/keys/create/"
+  to = "/.netlify/functions/api-keys-create"
+  status = 200
 
 [[redirects]]
   from = "/api/keys"

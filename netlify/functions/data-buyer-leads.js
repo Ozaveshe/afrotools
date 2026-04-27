@@ -1,5 +1,6 @@
 const { getAllowedOrigin } = require('./utils/cors');
 const { SUPABASE_URL, SUPABASE_KEY, sbRequest, cleanText } = require('./_shared/market-data');
+const { checkRateLimit } = require('./_shared/rate-limit');
 
 function headers(event) {
   return {
@@ -18,9 +19,34 @@ function reply(statusCode, body, responseHeaders) {
 function normalizeStringArray(value) {
   if (!Array.isArray(value)) return [];
   return value
-    .map(function (item) { return typeof item === 'string' ? item.trim() : ''; })
+    .map(function (item) { return typeof item === 'string' ? item.trim().slice(0, 80) : ''; })
     .filter(Boolean)
-    .filter(function (item, index, items) { return items.indexOf(item) === index; });
+    .filter(function (item, index, items) { return items.indexOf(item) === index; })
+    .slice(0, 20);
+}
+
+function cleanField(value, maxLength) {
+  if (typeof value !== 'string') return null;
+  var text = value.trim();
+  if (!text) return null;
+  return text.slice(0, maxLength || 255);
+}
+
+function cleanEmail(value) {
+  var email = cleanField(value, 254);
+  if (!email) return null;
+  email = email.toLowerCase();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? email : null;
+}
+
+function clientIp(event) {
+  var headers = event.headers || {};
+  return String(
+    headers['x-nf-client-connection-ip'] ||
+    headers['client-ip'] ||
+    headers['x-forwarded-for'] ||
+    ''
+  ).split(',')[0].trim() || 'unknown';
 }
 
 async function getUser(event) {
@@ -53,6 +79,10 @@ exports.handler = async function (event) {
     const user = await getUser(event);
 
     if (event.httpMethod === 'POST') {
+      if (!checkRateLimit('data-buyer-leads:' + clientIp(event), 12)) {
+        return reply(429, { error: 'Too many buyer requests. Please try again later.' }, responseHeaders);
+      }
+
       let body;
       try {
         body = JSON.parse(event.body || '{}');
@@ -60,24 +90,28 @@ exports.handler = async function (event) {
         return reply(400, { error: 'Invalid JSON' }, responseHeaders);
       }
 
+      const company = cleanField(body.company, 160);
+      const contactEmail = cleanEmail(body.contact_email);
+      const useCase = cleanField(body.use_case, 2000);
+
       if (!body.consent) return reply(400, { error: 'Consent is required' }, responseHeaders);
-      if (!cleanText(body.company)) return reply(400, { error: 'Company is required' }, responseHeaders);
-      if (!cleanText(body.contact_email)) return reply(400, { error: 'Contact email is required' }, responseHeaders);
-      if (!cleanText(body.use_case)) return reply(400, { error: 'Use case is required' }, responseHeaders);
+      if (!company) return reply(400, { error: 'Company is required' }, responseHeaders);
+      if (!contactEmail) return reply(400, { error: 'Valid contact email is required' }, responseHeaders);
+      if (!useCase) return reply(400, { error: 'Use case is required' }, responseHeaders);
 
       const payload = {
         submitted_by: user ? user.id : null,
-        company: cleanText(body.company),
-        contact_name: cleanText(body.contact_name),
-        contact_email: cleanText(body.contact_email),
-        contact_phone: cleanText(body.contact_phone),
-        use_case: cleanText(body.use_case),
+        company: company,
+        contact_name: cleanField(body.contact_name, 150),
+        contact_email: contactEmail,
+        contact_phone: cleanField(body.contact_phone, 80),
+        use_case: useCase,
         verticals: normalizeStringArray(body.verticals),
         countries: normalizeStringArray(body.countries),
         cities: normalizeStringArray(body.cities),
-        cadence: cleanText(body.cadence),
-        delivery_format: cleanText(body.delivery_format),
-        budget_band: cleanText(body.budget_band),
+        cadence: cleanField(body.cadence, 40),
+        delivery_format: cleanField(body.delivery_format, 40),
+        budget_band: cleanField(body.budget_band, 40),
         consent: true,
         review_status: 'new',
         created_at: new Date().toISOString(),

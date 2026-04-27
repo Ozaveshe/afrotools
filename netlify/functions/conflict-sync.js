@@ -3,7 +3,7 @@
 // Runs daily at 03:00 UTC
 // DO NOT overwrite manually_overridden=true fields
 
-export const config = { schedule: '0 3 * * *' };
+exports.config = { schedule: '0 3 * * *' };
 
 const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_DATA_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -51,7 +51,7 @@ async function sbPatch(path, body, key) {
   });
 }
 
-export const handler = async function (event) {
+exports.handler = async function (event) {
   var headers = { 'Content-Type': 'application/json' };
   var params = event.queryStringParameters || {};
   var source = params.source || 'all';

@@ -1,8 +1,6 @@
-import { getStore } from "@netlify/blobs";
-import { createHmac, randomBytes } from "crypto";
-import { createRequire } from 'module';
-const _require = createRequire(import.meta.url);
-const { getAllowedOrigin } = _require('./utils/cors');
+const { getStore } = require('@netlify/blobs');
+const { createHmac, randomBytes } = require('crypto');
+const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -120,7 +118,7 @@ async function findKeyByPrefix(store, userId, keyPrefix) {
   return null;
 }
 
-export default async function handler(event) {
+exports.handler = async function (event) {
   CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
@@ -300,4 +298,4 @@ export default async function handler(event) {
   }
 
   return json(400, { error: 'Unknown action. Supported: create, list, revoke, rename, usage.' });
-}
+};
