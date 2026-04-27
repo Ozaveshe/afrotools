@@ -156,7 +156,17 @@ function normalizeKnownSiteUrl(url) {
   }
 
   const preferred = preferredPageUrls.get(normalizeSiteUrl(url));
-  return preferred || url;
+  if (!preferred) return url;
+
+  try {
+    const original = new URL(url, SITE_ORIGIN);
+    const preferredParsed = new URL(preferred);
+    preferredParsed.search = original.search;
+    preferredParsed.hash = original.hash;
+    return preferredParsed.toString();
+  } catch {
+    return preferred;
+  }
 }
 
 function normalizeJsonLdValue(value) {

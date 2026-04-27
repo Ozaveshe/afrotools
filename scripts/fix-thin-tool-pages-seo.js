@@ -33,6 +33,7 @@ const EXPLICIT_THIN_PAGES = new Set([
   "tools/afrokitchen/recipe.html",
   "tools/afrokitchen/collection.html",
   "tools/afrokitchen/country.html",
+  "tools/afrokitchen/submit.html",
   "fr/tools/afrokitchen/recipe.html",
   "fr/tools/afrokitchen/collection.html",
   "fr/tools/afrokitchen/country.html",
