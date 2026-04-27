@@ -24,15 +24,20 @@ const keyFiles = [
 ].map(f => path.join(__dirname, '..', f));
 
 const hash = crypto.createHash('md5');
+
+function readNormalizedText(filePath) {
+  return fs.readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+}
+
 for (const f of keyFiles) {
   if (fs.existsSync(f)) {
-    hash.update(fs.readFileSync(f));
+    hash.update(readNormalizedText(f));
   }
 }
 
 // Also hash bundle manifest if it exists
 if (fs.existsSync(MANIFEST_PATH)) {
-  hash.update(fs.readFileSync(MANIFEST_PATH));
+  hash.update(readNormalizedText(MANIFEST_PATH));
 }
 
 const version = hash.digest('hex').slice(0, 8);

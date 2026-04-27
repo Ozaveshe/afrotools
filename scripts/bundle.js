@@ -61,6 +61,10 @@ const manifest = {};
 let totalIn = 0;
 let totalOut = 0;
 
+function normalizeText(content) {
+  return content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+}
+
 for (const [name, files] of Object.entries(BUNDLE_DEFS)) {
   const parts = [];
   let inputSize = 0;
@@ -72,7 +76,7 @@ for (const [name, files] of Object.entries(BUNDLE_DEFS)) {
       missing.push(relPath);
       continue;
     }
-    let content = fs.readFileSync(absPath, 'utf8');
+    let content = normalizeText(fs.readFileSync(absPath, 'utf8'));
     // Strip ES module export statements — bundles load as regular scripts, not modules
     content = content.replace(/;\s*export\s*\{[^}]*\}\s*;?/g, ';');
     content = content.replace(/export\s*\{[^}]*\}\s*;?/g, '');
