@@ -16,6 +16,10 @@ function normalizeLf(text) {
   return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 }
 
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function parseExistingSources(text) {
   const existing = new Set();
 
@@ -57,7 +61,8 @@ const { block, count } = buildBlock(eol, aliases, existingSources);
 
 let next;
 if (stripGenerated.includes(INSERT_BEFORE)) {
-  next = stripGenerated.replace(INSERT_BEFORE, `${block}${eol}${eol}${INSERT_BEFORE}`);
+  const insertBeforeRegex = new RegExp(`${eol}*${escapeRegExp(INSERT_BEFORE)}`);
+  next = stripGenerated.replace(insertBeforeRegex, `${eol}${eol}${block}${eol}${eol}${INSERT_BEFORE}`);
 } else {
   next = `${stripGenerated.trimEnd()}${eol}${eol}${block}${eol}`;
 }

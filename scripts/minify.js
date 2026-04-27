@@ -160,6 +160,7 @@ async function run() {
     '.git',
     'scripts',
     'netlify',
+    'vendor',
     '.claude',
     '.codex',
     '.jamb',

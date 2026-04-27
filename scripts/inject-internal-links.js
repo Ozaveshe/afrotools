@@ -68,7 +68,7 @@ function injectLinks(indexPath, links, sectionTitle) {
   // Remove existing injected block (idempotent)
   const markerStart = html.indexOf(SEO_NAV_MARKER);
   if (markerStart !== -1) {
-    const markerEnd = html.indexOf(SEO_NAV_MARKER, markerStart + SEO_NAV_MARKER.length);
+    const markerEnd = html.lastIndexOf(SEO_NAV_MARKER);
     if (markerEnd !== -1) {
       html = html.slice(0, markerStart) + html.slice(markerEnd + SEO_NAV_MARKER.length);
     }
@@ -86,14 +86,20 @@ function injectLinks(indexPath, links, sectionTitle) {
 </nav>
 ${SEO_NAV_MARKER}`;
 
+  function insertGeneratedBlock(source, index, block) {
+    const before = source.slice(0, index).replace(/\s*$/, '\n\n');
+    const after = source.slice(index).replace(/^\s*/, '');
+    return `${before}${block}\n${after}`;
+  }
+
   // Inject before <afro-footer> or before </body>
   const footerIdx = html.indexOf('<afro-footer');
   if (footerIdx !== -1) {
-    html = html.slice(0, footerIdx) + navBlock + '\n' + html.slice(footerIdx);
+    html = insertGeneratedBlock(html, footerIdx, navBlock);
   } else {
     const bodyIdx = html.lastIndexOf('</body>');
     if (bodyIdx !== -1) {
-      html = html.slice(0, bodyIdx) + navBlock + '\n' + html.slice(bodyIdx);
+      html = insertGeneratedBlock(html, bodyIdx, navBlock);
     }
   }
 

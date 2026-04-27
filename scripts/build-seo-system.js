@@ -46,6 +46,21 @@ function escapeHtml(value) {
 }
 
 function ensureHeadTag(html, tag) {
+  if (tag === STYLE_TAG) {
+    const seoStylePattern = /<link\b[^>]*href=["']\/assets\/css\/seo-clusters\.css(?:\?v=[a-f0-9]{8})?["'][^>]*>\s*/gi;
+    let seen = false;
+    html = html.replace(seoStylePattern, function (match) {
+      if (seen) {
+        return "";
+      }
+      seen = true;
+      return match.endsWith("\n") ? match : match + "\n";
+    });
+    if (seen) {
+      return html;
+    }
+  }
+
   if (html.includes(tag)) {
     return html;
   }
