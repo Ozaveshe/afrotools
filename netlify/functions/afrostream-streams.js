@@ -15,6 +15,10 @@ function readJson(res) {
   });
 }
 
+function isoHoursAgo(hours) {
+  return new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+}
+
 exports.handler = async function(event) {
   var h = cors(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: h, body: '' };
@@ -26,6 +30,7 @@ exports.handler = async function(event) {
 
   if (qs.live === 'true') {
     parts.push('is_live=eq.true');
+    parts.push('stream_date=gte.' + isoHoursAgo(24));
     parts.push('order=stream_date.desc');
   } else if (qs.live === 'false') {
     parts.push('is_live=eq.false');

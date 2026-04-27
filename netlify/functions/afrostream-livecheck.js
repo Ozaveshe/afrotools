@@ -239,6 +239,13 @@ async function clearCreatorLiveStream(platform, creatorName) {
   });
 }
 
+async function clearStaleLiveStreams() {
+  var cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  await sb('PATCH', 'as_streams?is_live=eq.true&stream_date=lt.' + encodeURIComponent(cutoff), {
+    is_live: false
+  });
+}
+
 // ── Twitch live check ─────────────────────────────────────────────
 async function checkTwitch(allCreators) {
   var results = { live: 0, errors: [] };
@@ -265,6 +272,8 @@ async function checkTwitch(allCreators) {
 
   try {
     var token = await getTwitchToken();
+
+    await clearStaleLiveStreams();
 
     // Clear all Twitch live streams first
     await sb('PATCH', 'as_streams?platform=eq.Twitch&is_live=eq.true', { is_live: false });
@@ -676,6 +685,8 @@ exports.handler = async function(event) {
       summary.duration_ms = Date.now() - start;
       return { statusCode: 200, body: JSON.stringify({ success: true, message: 'No creators found', data: summary }) };
     }
+
+    await clearStaleLiveStreams();
 
     // Run all platform checks in parallel
     var results = await Promise.allSettled([

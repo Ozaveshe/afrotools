@@ -56,6 +56,13 @@ async function sb(method, path, body, upsert) {
   try { return JSON.parse(text); } catch (e) { return text; }
 }
 
+async function clearStaleLiveStreams() {
+  var cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  return sb('PATCH', 'as_streams?is_live=eq.true&stream_date=lt.' + encodeURIComponent(cutoff), {
+    is_live: false
+  });
+}
+
 // ── Twitch API ───────────────────────────────────────────────────
 
 async function getTwitchToken() {
@@ -763,6 +770,7 @@ exports.handler = async function(event) {
     }
 
     // ── Compute scores + snapshots after all syncs ──
+    await clearStaleLiveStreams();
     var scoreResults = await computeScores();
 
     return {
