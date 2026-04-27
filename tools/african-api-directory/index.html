@@ -3,191 +3,388 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African API Directory — Fintech, Gov, Telecom APIs | AfroTools</title>
-<meta name="description" content="Searchable directory of African APIs: Paystack, Flutterwave, M-Pesa, Africa's Talking, NIMC, MTN MoMo and 40+ more. Filter by category, country, pricing.">
+<title>African API Directory with Docs and Sandbox Notes | AfroTools</title>
+<meta name="description" content="Curated African API directory for payments, mobile money, SMS, USSD, KYC, open banking and maps. Filter by country, auth model, sandbox support and docs check date.">
 <link rel="canonical" href="https://afrotools.com/tools/african-api-directory/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="African API Directory | AfroTools">
-<meta property="og:description" content="Browse 40+ African fintech, telecom, identity and government APIs with pricing, uptime and documentation links.">
+<meta property="og:description" content="Find African payment, telecom, identity, open banking and map APIs with docs links, auth notes, sandbox status and API Tester handoff.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/african-api-directory/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African API Directory | AfroTools">
+<meta name="twitter:description" content="Curated African APIs with docs links, auth notes, sandbox status and API Tester handoff.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/energy.css?v=ca21dbe3">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/african-api-directory/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/african-api-directory/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "African API Directory",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/african-api-directory/",
+  "description": "Curated African API directory with documentation links, auth notes, sandbox support, verification dates and API Tester handoff.",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://afrotools.com/developer-tools/"},
+    {"@type": "ListItem", "position": 3, "name": "African API Directory", "item": "https://afrotools.com/tools/african-api-directory/"}
+  ]
+}
+</script>
 <style>
-:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
-.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
-.filter-bar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;align-items:center}
-.filter-bar select,.filter-bar input{padding:9px 14px;border:1.5px solid var(--en-border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--en-text);background:#fff;outline:none;transition:border-color .15s}
-.filter-bar select:focus,.filter-bar input:focus{border-color:var(--en-accent)}
-.filter-bar input{flex:1;min-width:200px}
-.api-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.api-card{background:#fff;border:1.5px solid var(--en-border);border-radius:14px;padding:20px;box-shadow:var(--en-shadow);transition:box-shadow .18s,border-color .18s,transform .18s;position:relative}
-.api-card:hover{box-shadow:var(--en-shadow-hover);border-color:rgba(139,92,246,.4);transform:translateY(-2px)}
-.api-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
-.api-icon{width:42px;height:42px;border-radius:10px;background:var(--en-accent-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.api-name{font-size:1rem;font-weight:700;color:var(--en-text);margin:0 0 3px}
-.api-org{font-size:.78rem;color:var(--en-muted)}
-.api-badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
-.api-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.72rem;font-weight:600;letter-spacing:.03em}
-.badge-cat{background:var(--en-accent-pale);color:var(--en-accent-dark)}
-.badge-free{background:#d1fae5;color:#065f46}
-.badge-freemium{background:#fef3c7;color:#92400e}
-.badge-paid{background:#fee2e2;color:#991b1b}
-.badge-country{background:#e0f2fe;color:#075985}
-.api-desc{font-size:.84rem;color:var(--en-muted);line-height:1.5;margin-bottom:12px}
-.api-meta{display:flex;align-items:center;gap:12px;font-size:.78rem;color:var(--en-muted)}
-.api-uptime{display:flex;align-items:center;gap:4px}
-.uptime-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.uptime-dot.high{background:#22c55e}
-.uptime-dot.medium{background:#f59e0b}
-.api-doc-link{margin-left:auto;color:var(--en-accent);font-weight:600;font-size:.82rem;text-decoration:none}
-.api-doc-link:hover{text-decoration:underline}
-.api-stars{color:#f59e0b;font-size:.82rem}
-.no-results{text-align:center;padding:48px 20px;color:var(--en-muted)}
-.results-count{font-size:.82rem;color:var(--en-muted);margin-bottom:16px}
+:root{
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#dbe4ee;
+  --soft:#f8fafc;
+  --panel:#fff;
+  --green:#047857;
+  --blue:#2563eb;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;color:var(--ink)}
+.hero{background:linear-gradient(135deg,#08111f 0%,#15314a 52%,#047857 100%);color:#fff}
+.hero-inner{max-width:1280px;margin:0 auto;padding:42px 22px 34px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.62);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:800;letter-spacing:0;max-width:940px}
+.hero-copy{font-size:1.02rem;line-height:1.72;max-width:820px;color:rgba(255,255,255,.82);margin:0}
+.hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.hero-stat{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:8px;padding:14px}
+.hero-stat strong{display:block;font-size:1.45rem;color:#fff}
+.hero-stat span{font-size:.78rem;color:rgba(255,255,255,.68)}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 22px 70px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+.left,.right{display:grid;gap:16px}
+.right{position:sticky;top:78px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfdff}
+.card-title{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#334155}
+.card-body{padding:16px}
+.filters{display:grid;grid-template-columns:2fr repeat(4,minmax(130px,1fr));gap:10px}
+label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
+select,input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(4,120,87,.13)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:8px 11px;font:800 .76rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.btn:hover{border-color:#94a3b8;background:#f8fafc}
+.btn.primary{background:#047857;border-color:#047857;color:#fff}
+.btn.primary:hover{background:#065f46}
+.btn.small{font-size:.72rem;padding:7px 9px}
+.directory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.api-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:15px;display:grid;gap:12px}
+.api-card:hover{border-color:#9bd5c0;box-shadow:0 8px 22px rgba(15,23,42,.07)}
+.api-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.api-name{font-size:1rem;font-weight:800;color:#111827}
+.api-org{font-size:.78rem;color:var(--muted);margin-top:2px}
+.api-score{font-size:.74rem;font-weight:800;border-radius:999px;padding:5px 8px;background:#ecfdf5;color:#065f46;white-space:nowrap}
+.desc{font-size:.84rem;line-height:1.55;color:#475569}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:.7rem;font-weight:800;background:#f1f5f9;color:#334155}
+.badge.green{background:#ecfdf5;color:#065f46}
+.badge.blue{background:#eff6ff;color:#1d4ed8}
+.badge.amber{background:#fffbeb;color:#92400e}
+.badge.red{background:#fef2f2;color:#991b1b}
+.meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.meta{border:1px solid #edf2f7;background:#f8fafc;border-radius:7px;padding:8px}
+.meta span{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:800}
+.meta strong{display:block;font-size:.78rem;color:#1e293b;margin-top:2px}
+.code{font:500 .74rem var(--mono);background:#0b1220;color:#dbeafe;border-radius:7px;padding:9px;overflow:auto;white-space:nowrap}
+.hint{font-size:.78rem;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.notice{border-left:4px solid var(--amber);background:#fffbeb;color:#78350f;border-radius:7px;padding:10px 11px;font-size:.82rem;line-height:1.45}
+.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
+.compare-list{display:grid;gap:8px}
+.compare-item{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px}
+.compare-item strong{display:block;font-size:.84rem}
+.compare-item span{display:block;font-size:.74rem;color:#64748b;margin-top:3px;line-height:1.4}
+.source-list{display:grid;gap:8px}
+.source-list a{font-size:.84rem;color:#047857;text-decoration:none;font-weight:800}
+.source-list a:hover{text-decoration:underline}
+.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:40}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1080px){
+  .layout{grid-template-columns:1fr}
+  .right{position:static}
+  .filters{grid-template-columns:1fr 1fr}
+  .hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .hero-inner,.wrap{padding-left:16px;padding-right:16px}
+  .filters,.hero-grid,.meta-grid{grid-template-columns:1fr}
+}
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:url" content="https://afrotools.com/tools/african-api-directory/">
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<div class="en-tool-hero">
-  <div class="en-tool-hero-inner">
-    <nav class="en-breadcrumb">
-      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
-      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
-      <span class="en-breadcrumb-current">African API Directory</span>
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Developer Tools</a><span>/</span>
+      <span>African API Directory</span>
     </nav>
-    <h1>African <em>API Directory</em></h1>
-    <p>Browse 40+ African fintech, telecom, identity and government APIs. Filter by category, country and pricing model to find the right API for your project.</p>
-    <div class="en-tool-hero-meta">
-      <span class="en-tool-hero-pill">🌍 40+ APIs</span>
-      <span class="en-tool-hero-pill">🆓 Free to browse</span>
-      <span class="en-tool-hero-pill">⚡ Always updated</span>
+    <h1>Find African APIs with enough context to actually start building.</h1>
+    <p class="hero-copy">A curated developer directory for payments, mobile money, USSD, SMS, identity, open banking and maps. Each entry shows official docs, auth model, sandbox notes, last docs check and a starter request you can hand off to API Tester.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong id="stat-apis">0</strong><span>curated APIs</span></div>
+      <div class="hero-stat"><strong id="stat-countries">0</strong><span>markets covered</span></div>
+      <div class="hero-stat"><strong>2026-04-27</strong><span>latest docs check in this pass</span></div>
+      <div class="hero-stat"><strong>No uptime claims</strong><span>docs-first trust model</span></div>
     </div>
   </div>
-</div>
+</header>
 
-<div class="en-tool-layout-wide">
-  <div class="en-card">
-    <div class="filter-bar">
-      <input type="text" id="api-search" placeholder="Search APIs — e.g. Paystack, identity, SMS…">
-      <select id="filter-cat">
-        <option value="">All Categories</option>
-        <option value="payments">Payments</option>
-        <option value="identity">Identity / KYC</option>
-        <option value="telecom">Telecom / SMS</option>
-        <option value="logistics">Logistics</option>
-        <option value="agriculture">Agriculture</option>
-        <option value="health">Health</option>
-        <option value="government">Government</option>
-        <option value="data">Data / Analytics</option>
-      </select>
-      <select id="filter-country">
-        <option value="">All Countries</option>
-        <option value="nigeria">Nigeria</option>
-        <option value="kenya">Kenya</option>
-        <option value="south-africa">South Africa</option>
-        <option value="ghana">Ghana</option>
-        <option value="pan-africa">Pan-Africa</option>
-      </select>
-      <select id="filter-pricing">
-        <option value="">All Pricing</option>
-        <option value="free">Free</option>
-        <option value="freemium">Freemium</option>
-        <option value="paid">Paid</option>
-      </select>
+<main class="wrap">
+  <section class="layout">
+    <div class="left">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Filter APIs</span><button class="btn small" id="reset-filters" type="button">Reset</button></div>
+        <div class="card-body">
+          <div class="filters">
+            <div><label for="search">Search</label><input id="search" placeholder="Paystack, KYC, USSD, mobile money"></div>
+            <div><label for="category">Category</label><select id="category"></select></div>
+            <div><label for="country">Country</label><select id="country"></select></div>
+            <div><label for="auth">Auth</label><select id="auth"></select></div>
+            <div><label for="sandbox">Sandbox</label><select id="sandbox"></select></div>
+          </div>
+          <p class="hint">Scores are editorial fit scores, not uptime measurements. Verify pricing, certification and compliance directly with each provider before production.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Directory</span><span id="result-count" class="badge green">0 shown</span></div>
+        <div class="card-body"><div class="directory-grid" id="api-grid"></div></div>
+      </section>
     </div>
-    <div class="results-count" id="results-count"></div>
-    <div class="api-grid" id="api-grid"></div>
-  </div>
-</div>
 
+    <aside class="right">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Compare Shortlist</span><button class="btn small" id="clear-compare" type="button">Clear</button></div>
+        <div class="card-body">
+          <div class="compare-list" id="compare-list"></div>
+          <p class="hint">Use this to shortlist APIs before you open docs or save starter calls into API Tester.</p>
+        </div>
+      </section>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Trust Rules</span></div>
+        <div class="card-body">
+          <div class="notice ok">This page now avoids vague "always updated" and uptime claims. Each API shows a docs check date and a verification state.</div>
+          <p class="hint">Production readiness still depends on merchant onboarding, compliance approval, sandbox access, country availability and provider-side rate limits.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Primary Sources</span></div>
+        <div class="card-body source-list">
+          <a href="https://paystack.com/docs" target="_blank" rel="noopener">Paystack docs</a>
+          <a href="https://developer.flutterwave.com" target="_blank" rel="noopener">Flutterwave developer docs</a>
+          <a href="https://developer.safaricom.co.ke" target="_blank" rel="noopener">Safaricom Daraja portal</a>
+          <a href="https://momodeveloper.mtn.com" target="_blank" rel="noopener">MTN MoMo developer portal</a>
+          <a href="https://developers.africastalking.com" target="_blank" rel="noopener">Africa's Talking docs</a>
+        </div>
+      </section>
+    </aside>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
 <afro-footer></afro-footer>
 
 <script>
-var APIS=[
-  {name:"Paystack",org:"Paystack (Stripe)",cat:"payments",countries:["nigeria","ghana","south-africa","kenya"],pricing:"freemium",desc:"Accept payments via card, bank transfer, USSD and mobile money. Nigeria's most popular payment gateway with 99.9% uptime.",doc:"https://paystack.com/docs",uptime:"high",stars:5,icon:"💳"},
-  {name:"Flutterwave",org:"Flutterwave",cat:"payments",countries:["pan-africa"],pricing:"freemium",desc:"Pan-African payment infrastructure. Supports 20+ African currencies, card, bank, mobile money, USSD across 34 African countries.",doc:"https://developer.flutterwave.com",uptime:"high",stars:5,icon:"💳"},
-  {name:"M-Pesa API (Daraja)",org:"Safaricom",cat:"payments",countries:["kenya"],pricing:"freemium",desc:"Kenya's dominant mobile money API. STK Push, C2B, B2C, account balance queries. Handles 60%+ of Kenya's digital payments.",doc:"https://developer.safaricom.co.ke",uptime:"high",stars:5,icon:"📱"},
-  {name:"MTN MoMo API",org:"MTN Group",cat:"payments",countries:["pan-africa"],pricing:"freemium",desc:"MTN Mobile Money API covering 20+ African markets. Collection, disbursement, remittance and subscription APIs available.",doc:"https://momodeveloper.mtn.com",uptime:"high",stars:4,icon:"📱"},
-  {name:"Africa's Talking",org:"Africa's Talking",cat:"telecom",countries:["pan-africa"],pricing:"freemium",desc:"SMS, USSD, voice, airtime and payments APIs for 18+ African countries. Popular for USSD applications and bulk SMS.",doc:"https://africastalking.com/docs",uptime:"high",stars:5,icon:"📨"},
-  {name:"Termii",org:"Termii",cat:"telecom",countries:["pan-africa"],pricing:"freemium",desc:"Nigeria-founded messaging API: SMS, voice, email, WhatsApp. Used by 200+ businesses across Africa for OTP and notifications.",doc:"https://developers.termii.com",uptime:"high",stars:4,icon:"💬"},
-  {name:"Interswitch API",org:"Interswitch",cat:"payments",countries:["nigeria"],pricing:"paid",desc:"Nigeria's largest payment infrastructure. QuickTeller API, Webpay, Passport identity verification. Powers ATM switching.",doc:"https://developer.interswitchgroup.com",uptime:"high",stars:4,icon:"🏦"},
-  {name:"VerifyMe Nigeria",org:"VerifyMe",cat:"identity",countries:["nigeria"],pricing:"freemium",desc:"BVN, NIN, driver's license, CAC, TIN verification APIs for Nigeria. Used for KYC compliance across fintech and banking.",doc:"https://verifyme.ng/docs",uptime:"high",stars:4,icon:"🪪"},
-  {name:"NIMC API",org:"NIMC (Nigeria)",cat:"government",countries:["nigeria"],pricing:"paid",desc:"Nigeria Identity Management Commission API for NIN verification. Sandbox available. Required for regulated financial services.",doc:"https://developers.nimc.gov.ng",uptime:"medium",stars:3,icon:"🏛️"},
-  {name:"GhIPSS API",org:"GhIPSS",cat:"payments",countries:["ghana"],pricing:"paid",desc:"Ghana Interbank Payment and Settlement Systems. GhQR, instant pay, GHIPSS wallet APIs for Ghanaian market.",doc:"https://ghipss.net/developers",uptime:"high",stars:3,icon:"🏦"},
-  {name:"NIBSS API",org:"NIBSS",cat:"payments",countries:["nigeria"],pricing:"paid",desc:"Nigeria Inter-Bank Settlement System. NIP instant payments, NIBSS Instant Payment (NIP) API for bank-to-bank transfers.",doc:"https://nibss-plc.com.ng/developers",uptime:"high",stars:4,icon:"🏦"},
-  {name:"Smile Identity",org:"Smile Identity",cat:"identity",countries:["pan-africa"],pricing:"freemium",desc:"AI-powered identity verification for Africa. ID document + selfie matching for KYC across Ghana, Nigeria, Kenya, SA, Uganda.",doc:"https://docs.usesmileid.com",uptime:"high",stars:5,icon:"😊"},
-  {name:"Youverify",org:"Youverify",cat:"identity",countries:["nigeria","ghana","kenya"],pricing:"freemium",desc:"Digital identity verification, AML screening, KYB/KYC compliance. Supports BVN, NIN, RC number, CAC verification.",doc:"https://docs.youverify.co",uptime:"high",stars:4,icon:"✅"},
-  {name:"Mono",org:"Mono",cat:"data",countries:["nigeria","ghana","kenya","south-africa"],pricing:"freemium",desc:"Open banking infrastructure. Connect to 30+ African banks, access account data, income verification, direct debit.",doc:"https://docs.mono.co",uptime:"high",stars:5,icon:"🔗"},
-  {name:"Okra",org:"Okra",cat:"data",countries:["nigeria"],pricing:"freemium",desc:"Financial data API for Nigeria. Account info, transactions, income, balance, identity data from 20+ Nigerian banks.",doc:"https://docs.okra.ng",uptime:"high",stars:4,icon:"📊"},
-  {name:"Sendbox",org:"Sendbox",cat:"logistics",countries:["nigeria"],pricing:"freemium",desc:"Logistics and shipping API for Nigeria. Rate quotes, shipment booking, tracking, COD for local e-commerce businesses.",doc:"https://developers.sendbox.co",uptime:"medium",stars:3,icon:"📦"},
-  {name:"Kobo360 API",org:"Kobo360",cat:"logistics",countries:["pan-africa"],pricing:"paid",desc:"Trucking and freight API for Sub-Saharan Africa. Load matching, GPS tracking, driver management for logistics companies.",doc:"https://kobo360.com/api",uptime:"medium",stars:3,icon:"🚛"},
-  {name:"Apollo Agriculture API",org:"Apollo Agriculture",cat:"agriculture",countries:["kenya"],pricing:"paid",desc:"Smallholder farmer scoring and loan API for Kenya. Uses satellite, soil data and repayment history for credit decisions.",doc:"https://apolloagriculture.com",uptime:"medium",stars:3,icon:"🌾"},
-  {name:"Watu Credit API",org:"Watu Credit",cat:"payments",countries:["kenya","uganda"],pricing:"paid",desc:"Asset financing API for motorcycles and smartphones in East Africa. BNPL scoring for underserved borrowers.",doc:"https://watu.africa",uptime:"medium",stars:3,icon:"🏍️"},
-  {name:"Pesapal API",org:"Pesapal",cat:"payments",countries:["kenya","uganda","tanzania","zambia"],pricing:"freemium",desc:"East African payment gateway. M-Pesa, Airtel Money, card payments across Kenya, Uganda, Tanzania, Zambia.",doc:"https://developer.pesapal.com",uptime:"high",stars:4,icon:"💳"},
-  {name:"Hubtel API",org:"Hubtel",cat:"payments",countries:["ghana"],pricing:"freemium",desc:"Ghana's leading payment API. Mobile money (MTN, Vodafone, AirtelTigo), card, WhatsApp commerce integration.",doc:"https://developers.hubtel.com",uptime:"high",stars:4,icon:"💳"},
-  {name:"SnapScan API",org:"SnapScan (Standard Bank)",cat:"payments",countries:["south-africa"],pricing:"freemium",desc:"QR code payments for South Africa. Popular with small merchants. Integrates with Standard Bank merchant accounts.",doc:"https://developer.snapscan.io",uptime:"high",stars:3,icon:"📷"},
-  {name:"Peach Payments API",org:"Peach Payments",cat:"payments",countries:["south-africa","kenya","mauritius"],pricing:"freemium",desc:"PCI-DSS compliant payment gateway for Southern and East Africa. Cards, EFT, Apple Pay, PayPal, instant EFT.",doc:"https://developer.peachpayments.com",uptime:"high",stars:4,icon:"🍑"},
-  {name:"Dojah",org:"Dojah",cat:"identity",countries:["nigeria","ghana","kenya"],pricing:"freemium",desc:"No-code KYC and fraud prevention APIs. BVN, NIN, Ghana Card, phone/email verification, PEP/AML screening.",doc:"https://docs.dojah.io",uptime:"high",stars:4,icon:"🔍"},
-  {name:"Prembly (IdentityPass)",org:"Prembly",cat:"identity",countries:["pan-africa"],pricing:"freemium",desc:"Identity verification APIs across Africa. 15+ African countries, 50+ ID types. Business and individual KYC.",doc:"https://docs.prembly.com",uptime:"high",stars:4,icon:"🪪"},
-  {name:"mHealth Nigeria API",org:"Ministry of Health",cat:"health",countries:["nigeria"],pricing:"free",desc:"Nigeria's national health facility registry API. 40,000+ health facilities with location, services and ownership data.",doc:"https://hmisng.gov.ng",uptime:"medium",stars:2,icon:"🏥"},
-  {name:"Open Street Map Africa",org:"OpenStreetMap",cat:"data",countries:["pan-africa"],pricing:"free",desc:"Free map data API for Africa. Nominatim geocoding, routing, tiles. Best coverage for major African cities.",doc:"https://wiki.openstreetmap.org/wiki/API",uptime:"high",stars:4,icon:"🗺️"},
-  {name:"iHub Nairobi API Registry",org:"iHub",cat:"data",countries:["kenya"],pricing:"free",desc:"Aggregator of Kenyan open government datasets. Population census, economic indicators, health statistics.",doc:"https://ihub.co.ke",uptime:"medium",stars:2,icon:"📈"},
-];
+(function(){
+  'use strict';
 
-function renderAPIs(list){
-  var g=document.getElementById('api-grid');
-  var c=document.getElementById('results-count');
-  c.textContent=list.length+' API'+(list.length!==1?'s':'')+' found';
-  if(!list.length){g.innerHTML='<div class="no-results">No APIs found for your filters.<br>Try adjusting your search or filters.</div>';return;}
-  g.innerHTML=list.map(function(a){
-    var priceBadge=a.pricing==='free'?'<span class="api-badge badge-free">Free</span>':a.pricing==='freemium'?'<span class="api-badge badge-freemium">Freemium</span>':'<span class="api-badge badge-paid">Paid</span>';
-    var countries=a.countries.map(function(c){return '<span class="api-badge badge-country">'+c.replace('-',' ')+'</span>';}).join('');
-    var stars='★'.repeat(a.stars)+'☆'.repeat(5-a.stars);
-    return '<div class="api-card">'+
-      '<div class="api-card-top"><div class="api-icon">'+a.icon+'</div><div><div class="api-name">'+a.name+'</div><div class="api-org">'+a.org+'</div></div></div>'+
-      '<div class="api-badges"><span class="api-badge badge-cat">'+a.cat+'</span>'+priceBadge+countries+'</div>'+
-      '<div class="api-desc">'+a.desc+'</div>'+
-      '<div class="api-meta"><span class="api-uptime"><span class="uptime-dot '+(a.uptime==='high'?'high':'medium')+'"></span>'+(a.uptime==='high'?'High uptime':'Medium uptime')+'</span><span class="api-stars">'+stars+'</span><a class="api-doc-link" href="'+a.doc+'" target="_blank" rel="noopener">Docs →</a></div>'+
-    '</div>';
-  }).join('');
-}
+  var SAVED_KEY = 'afrotools.apiTester.saved.v1';
+  var compare = [];
 
-renderAPIs(APIS);
+  var APIS = [
+    {id:'paystack', name:'Paystack', org:'Paystack', category:'Payments', countries:['Nigeria','Ghana','South Africa','Kenya'], auth:'Bearer secret key', sandbox:'Yes', pricing:'Freemium', checked:'2026-04-27', verification:'Official docs checked', score:95, docs:'https://paystack.com/docs', base:'https://api.paystack.co', use:'Card, bank transfer, USSD and mobile money acceptance for West African merchants.', risk:'Merchant onboarding and compliance review required before live payments.', request:{method:'GET', url:'https://api.paystack.co/bank', headers:[{key:'Authorization', value:'Bearer {{paystackSecret}}'}], tests:{status:'200', contains:'data', time:'3000', jsonpath:'$.data'}}},
+    {id:'flutterwave', name:'Flutterwave', org:'Flutterwave', category:'Payments', countries:['Pan-Africa'], auth:'Bearer secret key', sandbox:'Yes', pricing:'Freemium', checked:'2026-04-27', verification:'Official docs checked', score:93, docs:'https://developer.flutterwave.com', base:'https://api.flutterwave.com/v3', use:'Pan-African card, bank, mobile money and payout workflows.', risk:'Country capability differs by payment method and merchant profile.', request:{method:'GET', url:'https://api.flutterwave.com/v3/banks/NG', headers:[{key:'Authorization', value:'Bearer {{flutterwaveSecret}}'}], tests:{status:'200', contains:'data', time:'3000', jsonpath:'$.data'}}},
+    {id:'safaricom-daraja', name:'M-Pesa Daraja', org:'Safaricom', category:'Mobile Money', countries:['Kenya'], auth:'OAuth basic token', sandbox:'Yes', pricing:'Partner terms', checked:'2026-04-27', verification:'Official docs checked', score:94, docs:'https://developer.safaricom.co.ke', base:'https://sandbox.safaricom.co.ke', use:'STK Push, C2B, B2C, account balance and transaction status for Kenyan M-Pesa apps.', risk:'Requires app credentials, shortcode setup and production approval.', request:{method:'GET', url:'https://sandbox.safaricom.co.ke/oauth/v1/generate', params:[{key:'grant_type', value:'client_credentials'}], headers:[{key:'Authorization', value:'Basic {{mpesaBasic}}'}], tests:{status:'200', contains:'access_token', time:'3000', jsonpath:'$.access_token'}}},
+    {id:'mtn-momo', name:'MTN MoMo', org:'MTN Group', category:'Mobile Money', countries:['Pan-Africa','Ghana','Uganda','Cameroon','Rwanda'], auth:'Subscription key plus token', sandbox:'Yes', pricing:'Partner terms', checked:'2026-04-27', verification:'Official docs checked', score:88, docs:'https://momodeveloper.mtn.com', base:'https://sandbox.momodeveloper.mtn.com', use:'Collections, disbursements and remittance flows in MTN mobile money markets.', risk:'Products and country availability vary by market.', request:{method:'POST', url:'https://sandbox.momodeveloper.mtn.com/collection/token/', headers:[{key:'Ocp-Apim-Subscription-Key', value:'{{mtnSubscriptionKey}}'},{key:'Authorization', value:'Basic {{token}}'}], tests:{status:'200', contains:'access_token', time:'3000', jsonpath:'$.access_token'}}},
+    {id:'africastalking', name:"Africa's Talking", org:"Africa's Talking", category:'Telecom', countries:['Pan-Africa','Kenya','Nigeria','Uganda','Tanzania'], auth:'API key', sandbox:'Yes', pricing:'Freemium', checked:'2026-04-27', verification:'Official docs checked', score:92, docs:'https://developers.africastalking.com', base:'https://api.africastalking.com', use:'SMS, USSD, airtime, voice and payments for African communication workflows.', risk:'USSD and sender IDs require country-specific setup.', request:{method:'POST', url:'https://api.sandbox.africastalking.com/version1/messaging', headers:[{key:'apiKey', value:'{{africasTalkingApiKey}}'},{key:'Accept', value:'application/json'}], body:'username={{africasTalkingUsername}}&to=%2B254700000000&message=Hello%20from%20AfroTools', tests:{status:'201', contains:'SMSMessageData', time:'3000'}}},
+    {id:'termii', name:'Termii', org:'Termii', category:'Telecom', countries:['Nigeria','Pan-Africa'], auth:'API key', sandbox:'Limited', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:80, docs:'https://developers.termii.com', base:'https://api.ng.termii.com/api', use:'SMS, WhatsApp, voice OTP and notification messaging.', risk:'Sender setup and routing differ by country and channel.', request:{method:'GET', url:'https://api.ng.termii.com/api/sms/inbox', params:[{key:'api_key', value:'{{token}}'}], headers:[], tests:{status:'200', time:'3000'}}},
+    {id:'interswitch', name:'Interswitch', org:'Interswitch Group', category:'Payments', countries:['Nigeria'], auth:'Client credentials', sandbox:'Yes', pricing:'Enterprise', checked:'2026-04-27', verification:'Docs link checked', score:78, docs:'https://developer.interswitchgroup.com', base:'https://qa.interswitchng.com', use:'Enterprise payment, card and switching infrastructure.', risk:'Enterprise onboarding and certification are typically required.', request:{method:'GET', url:'https://qa.interswitchng.com/api/v1/quickteller/categorys', headers:[{key:'Authorization', value:'Bearer {{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'nibss', name:'NIBSS', org:'Nigeria Inter-Bank Settlement System', category:'Banking', countries:['Nigeria'], auth:'Institution credentials', sandbox:'Restricted', pricing:'Enterprise', checked:'2026-04-27', verification:'Provider site checked', score:72, docs:'https://nibss-plc.com.ng', base:'See provider docs', use:'Instant payments, bank verification and interbank infrastructure in Nigeria.', risk:'Access usually requires regulated institution or partner status.', request:{method:'GET', url:'https://nibss-plc.com.ng', headers:[], tests:{status:'200', time:'3000'}}},
+    {id:'hubtel', name:'Hubtel', org:'Hubtel', category:'Payments', countries:['Ghana'], auth:'Basic or API credentials', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:82, docs:'https://developers.hubtel.com', base:'https://api-txnstatus.hubtel.com', use:'Ghana mobile money, card, commerce and transaction status workflows.', risk:'Merchant account and service setup required.', request:{method:'GET', url:'https://api-txnstatus.hubtel.com/transactions/{{clientReference}}/status', headers:[{key:'Authorization', value:'Basic {{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'pesapal', name:'Pesapal', org:'Pesapal', category:'Payments', countries:['Kenya','Uganda','Tanzania','Rwanda','Zambia'], auth:'Bearer token', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:80, docs:'https://developer.pesapal.com', base:'https://cybqa.pesapal.com/pesapalv3', use:'East African card, mobile money and merchant payment flows.', risk:'Production credentials and IPN setup required.', request:{method:'GET', url:'https://cybqa.pesapal.com/pesapalv3/api/Auth/RequestToken', headers:[{key:'Authorization', value:'Bearer {{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'peach', name:'Peach Payments', org:'Peach Payments', category:'Payments', countries:['South Africa','Kenya','Mauritius'], auth:'Bearer token', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:79, docs:'https://developer.peachpayments.com', base:'https://test.oppwa.com', use:'Card, EFT and checkout payments for Southern and East African merchants.', risk:'Payment method availability depends on market and merchant approval.', request:{method:'GET', url:'https://test.oppwa.com/v1/checkouts/{{checkoutId}}/payment', headers:[{key:'Authorization', value:'Bearer {{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'smile', name:'Smile ID', org:'Smile ID', category:'Identity', countries:['Pan-Africa','Nigeria','Kenya','Ghana','South Africa'], auth:'Partner ID plus API key', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:90, docs:'https://docs.usesmileid.com', base:'https://api.usesmileid.com', use:'Document verification, selfie checks, biometric KYC and AML workflows.', risk:'Identity coverage and data rules vary by country.', request:{method:'GET', url:'https://api.usesmileid.com/v1/services', headers:[{key:'Authorization', value:'Bearer {{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'youverify', name:'Youverify', org:'Youverify', category:'Identity', countries:['Nigeria','Ghana','Kenya'], auth:'Bearer token', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:83, docs:'https://docs.youverify.co', base:'https://api.youverify.co', use:'KYC, KYB, AML screening and government ID verification.', risk:'Regulated data access may require business approval.', request:{method:'GET', url:'https://api.youverify.co/v2/api/identity/ng/bvn/{{bvn}}', headers:[{key:'Authorization', value:'Bearer {{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'dojah', name:'Dojah', org:'Dojah', category:'Identity', countries:['Nigeria','Ghana','Kenya'], auth:'App ID plus secret key', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:82, docs:'https://docs.dojah.io', base:'https://api.dojah.io', use:'Identity, AML, fraud prevention and verification widgets.', risk:'Government data checks require compliant use cases.', request:{method:'GET', url:'https://api.dojah.io/api/v1/kyc/bvn/full', params:[{key:'bvn', value:'{{bvn}}'}], headers:[{key:'AppId', value:'{{token}}'},{key:'Authorization', value:'{{secretKey}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'prembly', name:'Prembly IdentityPass', org:'Prembly', category:'Identity', countries:['Pan-Africa'], auth:'API key', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:80, docs:'https://docs.prembly.com', base:'https://api.prembly.com', use:'Business and individual verification across African ID types.', risk:'Country coverage and product names change often, verify in dashboard.', request:{method:'GET', url:'https://api.prembly.com/identitypass/verification/status', headers:[{key:'x-api-key', value:'{{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'mono', name:'Mono', org:'Mono', category:'Open Banking', countries:['Nigeria','Ghana','Kenya','South Africa'], auth:'Secret key', sandbox:'Yes', pricing:'Freemium', checked:'2026-04-27', verification:'Docs link checked', score:86, docs:'https://docs.mono.co', base:'https://api.withmono.com', use:'Account data, transactions, income verification and direct debit workflows.', risk:'Bank coverage and consent flows differ by country.', request:{method:'GET', url:'https://api.withmono.com/v2/accounts/{{accountId}}', headers:[{key:'mono-sec-key', value:'{{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'okra', name:'Okra', org:'Okra', category:'Open Banking', countries:['Nigeria'], auth:'Bearer token', sandbox:'Yes', pricing:'Paid usage', checked:'2026-04-27', verification:'Docs link checked', score:78, docs:'https://docs.okra.ng', base:'https://api.okra.ng', use:'Nigerian bank account, balance, transaction and identity data.', risk:'Coverage and endpoint availability depend on product access.', request:{method:'GET', url:'https://api.okra.ng/v2/products/balance/getById', headers:[{key:'Authorization', value:'Bearer {{token}}'}], tests:{status:'200', time:'3000'}}},
+    {id:'osm', name:'OpenStreetMap APIs', org:'OpenStreetMap', category:'Maps', countries:['Pan-Africa'], auth:'No key for public APIs', sandbox:'Public', pricing:'Free with usage policy', checked:'2026-04-27', verification:'Official wiki checked', score:76, docs:'https://wiki.openstreetmap.org/wiki/API', base:'https://nominatim.openstreetmap.org', use:'Geocoding, map data and routing foundations for African city and logistics tools.', risk:'Respect usage policies. Heavy production use needs your own tile or geocoding infrastructure.', request:{method:'GET', url:'https://nominatim.openstreetmap.org/search', params:[{key:'q', value:'Lagos Nigeria'},{key:'format', value:'json'}], headers:[{key:'Accept', value:'application/json'}], tests:{status:'200', contains:'Lagos', time:'3000'}}}
+  ];
 
-function filter(){
-  var q=(document.getElementById('api-search').value||'').toLowerCase();
-  var cat=document.getElementById('filter-cat').value;
-  var country=document.getElementById('filter-country').value;
-  var pricing=document.getElementById('filter-pricing').value;
-  var list=APIS.filter(function(a){
-    if(q&&!(a.name+' '+a.desc+' '+a.org+' '+a.cat).toLowerCase().includes(q))return false;
-    if(cat&&a.cat!==cat)return false;
-    if(country&&!a.countries.includes(country))return false;
-    if(pricing&&a.pricing!==pricing)return false;
-    return true;
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function slug(value){ return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
+  }
+  function uniq(items){ return Array.from(new Set(items)).sort(); }
+  function reqFor(api){
+    var r = api.request || {};
+    return {
+      name: api.name + ' starter request',
+      method: r.method || 'GET',
+      url: r.url || api.base,
+      params: r.params || [],
+      headers: r.headers || [],
+      bodyMode: r.body ? 'form' : 'json',
+      body: r.body || '',
+      auth: {type:'none', token:'', user:'', prefix:'Bearer'},
+      tests: r.tests || {status:'200', time:'3000'}
+    };
+  }
+  function toCurl(api){
+    var req = reqFor(api);
+    var url = req.url;
+    if (req.params.length) {
+      url += (url.indexOf('?') === -1 ? '?' : '&') + req.params.map(function(p){ return encodeURIComponent(p.key) + '=' + encodeURIComponent(p.value); }).join('&');
+    }
+    var parts = ['curl -X ' + req.method + ' "' + url + '"'];
+    req.headers.forEach(function(h){ parts.push('  -H "' + h.key + ': ' + h.value + '"'); });
+    if (req.body) parts.push("  --data '" + req.body.replace(/'/g,"'\\''") + "'");
+    return parts.join(' \\\n');
+  }
+  function saveToApiTester(api){
+    var req = reqFor(api);
+    try {
+      var saved = JSON.parse(localStorage.getItem(SAVED_KEY) || '[]').filter(function(item){ return item.name !== req.name; });
+      saved.unshift(req);
+      localStorage.setItem(SAVED_KEY, JSON.stringify(saved.slice(0, 20)));
+      toast('Saved to API Tester');
+    } catch(e) {
+      toast('Browser storage unavailable');
+    }
+  }
+  function copyCurl(api){
+    navigator.clipboard.writeText(toCurl(api)).then(function(){ toast('cURL copied'); });
+  }
+  function addCompare(api){
+    if (!compare.some(function(item){ return item.id === api.id; })) compare.push(api);
+    if (compare.length > 4) compare.shift();
+    renderCompare();
+  }
+  function renderCompare(){
+    $('compare-list').innerHTML = compare.map(function(api){
+      return '<div class="compare-item"><strong>'+esc(api.name)+'</strong><span>'+esc(api.category)+' - '+esc(api.auth)+' - Sandbox: '+esc(api.sandbox)+'</span></div>';
+    }).join('') || '<div class="notice">No APIs shortlisted yet.</div>';
+  }
+  function renderOptions(){
+    var categories = uniq(APIS.map(function(api){ return api.category; }));
+    var countries = uniq([].concat.apply([], APIS.map(function(api){ return api.countries; })));
+    var auths = uniq(APIS.map(function(api){ return api.auth; }));
+    $('category').innerHTML = '<option value="">All categories</option>' + categories.map(function(v){ return '<option>'+esc(v)+'</option>'; }).join('');
+    $('country').innerHTML = '<option value="">All countries</option>' + countries.map(function(v){ return '<option>'+esc(v)+'</option>'; }).join('');
+    $('auth').innerHTML = '<option value="">All auth models</option>' + auths.map(function(v){ return '<option>'+esc(v)+'</option>'; }).join('');
+    $('sandbox').innerHTML = '<option value="">Any sandbox</option><option>Yes</option><option>Limited</option><option>Restricted</option><option>Public</option>';
+  }
+  function render(list){
+    $('result-count').textContent = list.length + ' shown';
+    $('api-grid').innerHTML = list.map(function(api){
+      var sandboxClass = api.sandbox === 'Yes' || api.sandbox === 'Public' ? 'green' : api.sandbox === 'Limited' ? 'amber' : 'red';
+      return '<article class="api-card">'+
+        '<div class="api-top"><div><div class="api-name">'+esc(api.name)+'</div><div class="api-org">'+esc(api.org)+'</div></div><div class="api-score">'+api.score+'/100</div></div>'+
+        '<div class="badges"><span class="badge blue">'+esc(api.category)+'</span><span class="badge '+sandboxClass+'">Sandbox: '+esc(api.sandbox)+'</span><span class="badge">'+esc(api.pricing)+'</span></div>'+
+        '<p class="desc">'+esc(api.use)+'</p>'+
+        '<div class="meta-grid">'+
+          '<div class="meta"><span>Markets</span><strong>'+esc(api.countries.join(', '))+'</strong></div>'+
+          '<div class="meta"><span>Auth</span><strong>'+esc(api.auth)+'</strong></div>'+
+          '<div class="meta"><span>Docs checked</span><strong>'+esc(api.checked)+'</strong></div>'+
+          '<div class="meta"><span>Verification</span><strong>'+esc(api.verification)+'</strong></div>'+
+        '</div>'+
+        '<div class="notice">'+esc(api.risk)+'</div>'+
+        '<div class="code">'+esc(api.base)+'</div>'+
+        '<div class="toolbar">'+
+          '<a class="btn primary" href="'+esc(api.docs)+'" target="_blank" rel="noopener">Open docs</a>'+
+          '<button class="btn" data-action="curl" data-id="'+esc(api.id)+'" type="button">Copy cURL</button>'+
+          '<button class="btn" data-action="tester" data-id="'+esc(api.id)+'" type="button">Save to API Tester</button>'+
+          '<button class="btn" data-action="compare" data-id="'+esc(api.id)+'" type="button">Compare</button>'+
+        '</div>'+
+      '</article>';
+    }).join('') || '<div class="notice">No APIs match these filters.</div>';
+  }
+  function applyFilters(){
+    var q = $('search').value.toLowerCase();
+    var cat = $('category').value;
+    var country = $('country').value;
+    var auth = $('auth').value;
+    var sandbox = $('sandbox').value;
+    var list = APIS.filter(function(api){
+      var hay = [api.name, api.org, api.category, api.use, api.risk, api.countries.join(' ')].join(' ').toLowerCase();
+      if (q && hay.indexOf(q) === -1) return false;
+      if (cat && api.category !== cat) return false;
+      if (country && api.countries.indexOf(country) === -1) return false;
+      if (auth && api.auth !== auth) return false;
+      if (sandbox && api.sandbox !== sandbox) return false;
+      return true;
+    });
+    render(list);
+  }
+
+  document.addEventListener('click', function(event){
+    var action = event.target.getAttribute('data-action');
+    if (!action) return;
+    var api = APIS.find(function(item){ return item.id === event.target.getAttribute('data-id'); });
+    if (!api) return;
+    if (action === 'curl') copyCurl(api);
+    if (action === 'tester') saveToApiTester(api);
+    if (action === 'compare') addCompare(api);
   });
-  renderAPIs(list);
-}
+  ['search','category','country','auth','sandbox'].forEach(function(id){
+    $(id).addEventListener('input', applyFilters);
+    $(id).addEventListener('change', applyFilters);
+  });
+  $('reset-filters').addEventListener('click', function(){
+    ['search','category','country','auth','sandbox'].forEach(function(id){ $(id).value = ''; });
+    applyFilters();
+  });
+  $('clear-compare').addEventListener('click', function(){ compare = []; renderCompare(); });
 
-['api-search','filter-cat','filter-country','filter-pricing'].forEach(function(id){
-  document.getElementById(id).addEventListener('input',filter);
-  document.getElementById(id).addEventListener('change',filter);
-});
+  $('stat-apis').textContent = APIS.length;
+  $('stat-countries').textContent = uniq([].concat.apply([], APIS.map(function(api){ return api.countries; }))).length;
+  renderOptions();
+  render(APIS);
+  renderCompare();
+})();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

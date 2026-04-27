@@ -237,6 +237,7 @@ ${tool.resultsHTML}
 <afro-footer></afro-footer>
 <script src="/data/energy/country-energy-index.js"></script>
 <script src="/engines/${tool.engineFile}.js"></script>
+<script src="/assets/js/energy-tool-assistant.js"></script>
 <script>
 !function(){
 "use strict";
@@ -252,8 +253,9 @@ if(r.error){alert(r.error);return;}
 ${tool.bindJS}
 var obs=document.getElementById("rObs");
 if(r.observations&&r.observations.length){
-  obs.innerHTML="<h3>AI Observations</h3><ul>"+r.observations.map(function(o){return"<li>"+o+"</li>";}).join("")+"</ul>";
-  obs.style.display="block";
+  if(window.AfroEnergyTools&&window.AfroEnergyTools.renderObservations){
+    window.AfroEnergyTools.renderObservations(obs,r.observations,"Calculation Notes");
+  }
 }
 document.getElementById("results").classList.add("on");
 document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
@@ -314,6 +316,7 @@ ${countryCards}
 </section>
 </main>
 <afro-footer></afro-footer>
+<script src="/assets/js/energy-tool-assistant.js"></script>
 </body>
 </html>`;
 }

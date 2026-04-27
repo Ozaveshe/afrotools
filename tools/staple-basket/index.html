@@ -11,6 +11,26 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
 <meta property="og:url" content="https://afrotools.com/tools/staple-basket/">
+<style>
+.basket-planner{margin-top:1rem;border:1px solid rgba(15,23,42,.12);border-radius:8px;background:#fff;padding:1rem}
+.basket-planner-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:.8rem}
+.basket-planner-title{font-weight:800;color:#0f172a}
+.basket-planner-note{color:#64748b;font-size:.92rem;margin-top:.2rem}
+.basket-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin-bottom:.9rem}
+.basket-plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}
+.basket-plan-card{border:1px solid rgba(15,23,42,.1);border-radius:8px;background:#f8fafc;padding:.85rem}
+.basket-plan-value{font-size:1.15rem;font-weight:800;color:#0f172a}
+.basket-plan-label{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-top:.15rem}
+.basket-advice{margin-top:.85rem;padding:.85rem;border-radius:8px;background:#ecfdf5;color:#14532d}
+.basket-empty{margin-top:.85rem;padding:.85rem;border-radius:8px;background:#fffbeb;color:#78350f}
+.basket-quality{margin-top:.85rem;border:1px solid rgba(15,23,42,.1);border-radius:8px;background:#f8fafc;padding:.85rem}
+.basket-quality strong{display:block;color:#0f172a;margin-bottom:.35rem}
+.basket-quality ul{margin:.35rem 0 0;padding-left:1.1rem;color:#475569}
+@media (max-width:860px){.basket-controls,.basket-plan{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.basket-controls,.basket-plan{grid-template-columns:1fr}.basket-planner-head{display:block}}
+</style>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -36,6 +56,22 @@
         </div>
         <div class="md-summary" id="mdSummary"></div>
         <div class="md-grid" id="mdList"><div class="md-empty">Loading staple basket data...</div></div>
+        <div class="basket-planner" id="basketPlanner">
+          <div class="basket-planner-head">
+            <div>
+              <div class="basket-planner-title">Household Basket Planner</div>
+              <div class="basket-planner-note">Turn local market reports into a shopping-cycle estimate for your household.</div>
+            </div>
+            <button class="md-btn md-btn-secondary" id="basketCopy" type="button">Copy Basket Plan</button>
+          </div>
+          <div class="basket-controls">
+            <div class="md-field"><label for="basketHousehold">Household Size</label><input id="basketHousehold" class="md-input" type="number" min="1" value="4"></div>
+            <div class="md-field"><label for="basketDays">Shopping Cycle</label><input id="basketDays" class="md-input" type="number" min="1" value="7"></div>
+            <div class="md-field"><label for="basketBudget">Max Budget</label><input id="basketBudget" class="md-input" type="number" min="0" placeholder="Optional"></div>
+            <div class="md-field"><label for="basketFocus">Basket Focus</label><select id="basketFocus" class="md-select"><option value="balanced">Balanced staples</option><option value="calories">Cheapest calories</option><option value="protein">Protein support</option><option value="school">School-week essentials</option></select></div>
+          </div>
+          <div id="basketPlanOutput" class="basket-empty">Loading recent staple prices before building a plan.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -52,6 +88,7 @@
         <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
         <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I bought or checked it myself</option><option value="receipt">Receipt or invoice</option><option value="merchant_quote">Merchant quote</option><option value="community_check">Community check</option></select></div>
         <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional"></div>
+        <div class="basket-quality" id="basketQuality"><strong>Submission quality</strong><span>Add the item, unit, price, market, and proof so the basket estimate can be trusted.</span></div>
         <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Price</button></div>
       </div>
     </div>
@@ -77,21 +114,156 @@
 <script src="/assets/js/market-data-app.js?v=9eeda2f8"></script>
 <script>
 document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+var latestStapleRows = [];
+var latestBasketBrief = '';
+function basketNumber(id, fallback) {
+  var el = document.getElementById(id);
+  var value = Number(el && el.value);
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+}
+function basketMoney(value, currency) {
+  var amount = Number(value || 0);
+  return (currency || '') + ' ' + amount.toLocaleString(undefined, { maximumFractionDigits: 0 });
+}
+function staplePrice(row) {
+  var price = Number(row.price || row.price_amount || row.observed_price || 0);
+  return Number.isFinite(price) ? price : 0;
+}
+function stapleCategory(row) {
+  return String(row.product_category || row.category || '').toLowerCase();
+}
+function stapleName(row) {
+  return String(row.product_name || row.item_name || '').toLowerCase();
+}
+function pickStaple(rows, matcher) {
+  var matches = rows.filter(function (row) { return staplePrice(row) > 0 && matcher(row); }).sort(function (a, b) { return staplePrice(a) - staplePrice(b); });
+  return matches[0] || null;
+}
+function buildBasketRows(rows, focus) {
+  var picks = [];
+  var add = function (label, matcher, multiplier) {
+    var row = pickStaple(rows, matcher);
+    if (row) picks.push({ label: label, row: row, multiplier: multiplier || 1 });
+  };
+  add('Main carbohydrate', function (row) { return /rice|maize|garri|flour|yam|cassava|bread|cereal/.test(stapleName(row)) || /staple/.test(stapleCategory(row)); }, focus === 'calories' ? 1.4 : 1);
+  add('Cooking oil or fat', function (row) { return /oil|butter|margarine/.test(stapleName(row)); }, .35);
+  add('Beans, eggs, fish, or meat', function (row) { return /beans|egg|fish|meat|chicken|protein/.test(stapleName(row)) || /protein/.test(stapleCategory(row)); }, focus === 'protein' ? 1.2 : .7);
+  add('Vegetable or produce', function (row) { return /tomato|onion|pepper|vegetable|plantain|produce/.test(stapleName(row)) || /produce/.test(stapleCategory(row)); }, focus === 'school' ? .8 : .6);
+  add('Household essential', function (row) { return /soap|detergent|toilet|salt|sugar|milk|household/.test(stapleName(row)) || /household/.test(stapleCategory(row)); }, focus === 'school' ? 1 : .5);
+  return picks;
+}
+function renderStapleBasketPlanner(rows) {
+  latestStapleRows = rows || latestStapleRows || [];
+  var output = document.getElementById('basketPlanOutput');
+  if (!output) return;
+  var priced = latestStapleRows.filter(function (row) { return staplePrice(row) > 0; });
+  if (!priced.length) {
+    latestBasketBrief = 'Staple Basket plan: no verified staple prices are loaded for this filter yet.';
+    output.className = 'basket-empty';
+    output.textContent = 'No verified prices are loaded for this country/city yet. Submit a few core items first: rice or maize, oil, beans or eggs, vegetables, and one household essential.';
+    return;
+  }
+  var household = basketNumber('basketHousehold', 4);
+  var days = basketNumber('basketDays', 7);
+  var budget = basketNumber('basketBudget', 0);
+  var focusEl = document.getElementById('basketFocus');
+  var focus = focusEl ? focusEl.value : 'balanced';
+  var basket = buildBasketRows(priced, focus);
+  var currency = (basket[0] && (basket[0].row.currency_code || basket[0].row.currency)) || (priced[0].currency_code || priced[0].currency || '');
+  var scale = Math.max(.5, household / 4) * Math.max(.35, days / 7);
+  var estimated = basket.reduce(function (sum, item) { return sum + (staplePrice(item.row) * item.multiplier * scale); }, 0);
+  var buffer = estimated * .12;
+  var total = estimated + buffer;
+  var status = budget > 0 ? (total <= budget ? 'Within budget' : 'Budget gap: ' + basketMoney(total - budget, currency)) : 'Add a budget to see the gap';
+  var items = basket.map(function (item) { return item.label + ': ' + (item.row.product_name || 'item') + ' at ' + basketMoney(staplePrice(item.row), currency); });
+  latestBasketBrief = 'Staple Basket plan for ' + household + ' people / ' + days + ' days. Estimate: ' + basketMoney(total, currency) + '. ' + status + '. Items: ' + items.join('; ');
+  if (!basket.length) {
+    output.className = 'basket-empty';
+    output.textContent = 'Prices are loaded, but they do not yet cover enough common basket items. Add product names and units like rice 1kg, cooking oil 1L, beans 1kg, tomatoes basket, or soap pack.';
+    return;
+  }
+  output.className = '';
+  output.innerHTML = '<div class="basket-plan">' +
+    '<div class="basket-plan-card"><div class="basket-plan-value">' + basketMoney(total, currency) + '</div><div class="basket-plan-label">Estimated Basket</div></div>' +
+    '<div class="basket-plan-card"><div class="basket-plan-value">' + basketMoney(buffer, currency) + '</div><div class="basket-plan-label">12% Market Buffer</div></div>' +
+    '<div class="basket-plan-card"><div class="basket-plan-value">' + status + '</div><div class="basket-plan-label">Budget Check</div></div>' +
+    '</div><div class="basket-advice"><strong>Recommended shopping order:</strong> ' + items.join(' | ') + '</div>';
+}
+function copyBasketPlan() {
+  if (!latestBasketBrief) renderStapleBasketPlanner(latestStapleRows);
+  navigator.clipboard.writeText(latestBasketBrief).then(function () {
+    window.MarketDataApp && window.MarketDataApp.showToast('Basket plan copied.', 'success');
+  }).catch(function () {
+    window.prompt('Copy basket plan', latestBasketBrief);
+  });
+}
+function renderBasketQuality() {
+  var box = document.getElementById('basketQuality');
+  if (!box) return;
+  var checks = [
+    { id: 'report_product_name', label: 'item name' },
+    { id: 'report_product_category', label: 'category' },
+    { id: 'report_price', label: 'price' },
+    { id: 'report_unit', label: 'unit' },
+    { id: 'mdReportMerchant', label: 'market or store' },
+    { id: 'mdProofUrl', label: 'proof URL or receipt note' }
+  ];
+  var missing = checks.filter(function (check) {
+    var el = document.getElementById(check.id);
+    return !el || !String(el.value || '').trim();
+  }).map(function (check) { return check.label; });
+  var score = checks.length - missing.length;
+  box.innerHTML = '<strong>Submission quality: ' + score + '/' + checks.length + '</strong>' +
+    (missing.length ? '<span>Add: ' + missing.join(', ') + '.</span>' : '<span>Strong report. This can support basket comparisons.</span>') +
+    '<ul><li>Use a clear unit such as per kg, 1L bottle, crate, pack, or basket.</li><li>Fresh reports with proof help separate real market movement from rumor.</li></ul>';
+}
+document.addEventListener('input', function (event) {
+  if (event.target && /^(basket|report_|mdReportMerchant|mdProofUrl)/.test(event.target.id || '')) {
+    renderStapleBasketPlanner(latestStapleRows);
+    renderBasketQuality();
+  }
+});
+document.addEventListener('change', function (event) {
+  if (event.target && /^(basket|report_|mdReportMerchant|mdProofUrl)/.test(event.target.id || '')) {
+    renderStapleBasketPlanner(latestStapleRows);
+    renderBasketQuality();
+  }
+});
+var basketCopyButton = document.getElementById('basketCopy');
+if (basketCopyButton) basketCopyButton.addEventListener('click', copyBasketPlan);
 window.MarketDataApp.mount({
   endpoint: '/api/staple-baskets',
   responseKey: 'recent_prices',
   subtype: 'staple_price',
   vertical: 'staple_basket',
+  limit: 36,
   reportButtonLabel: 'Submit Price',
+  reportFields: [
+    { key: 'product_name', label: 'Item Name', type: 'text', required: true, placeholder: 'e.g. Rice 1kg' },
+    { key: 'product_category', label: 'Category', type: 'select', required: true, options: ['Food Staples', 'Produce', 'Protein', 'Household', 'Other'] },
+    { key: 'price', label: 'Observed Price', type: 'number', required: true, min: 0 },
+    { key: 'unit', label: 'Unit', type: 'text', required: true, placeholder: 'e.g. per kg, 1L bottle, basket' },
+    { key: 'brand_name', label: 'Brand or Variety', type: 'text', required: false, placeholder: 'Optional' },
+    { key: 'notes', label: 'Price Context', type: 'textarea', required: false, placeholder: 'Cash price, bulk discount, scarcity, quality grade, or promo note' }
+  ],
   renderSummary: function (rows, data) {
+    setTimeout(function () {
+      renderStapleBasketPlanner(rows);
+      renderBasketQuality();
+    }, 0);
+    var uniqueItems = {};
+    rows.forEach(function (row) { if (row.product_name) uniqueItems[String(row.product_name).toLowerCase()] = true; });
     return '<div class="md-stat"><div class="md-stat-value">' + (data.snapshots || []).length + '</div><div class="md-stat-label">Basket snapshots</div></div>' +
       '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Recent verified prices</div></div>' +
-      '<div class="md-stat"><div class="md-stat-value">' + (data.templates || []).length + '</div><div class="md-stat-label">Basket templates</div></div>';
+      '<div class="md-stat"><div class="md-stat-value">' + Object.keys(uniqueItems).length + '</div><div class="md-stat-label">Distinct items</div></div>';
   },
   renderCard: function (row, helpers) {
+    var unit = row.unit ? ' / ' + row.unit : '';
+    var observed = row.observed_at ? new Date(row.observed_at).toLocaleDateString() : 'Recent';
     return '<article class="md-card"><h3>' + helpers.escapeHtml(row.product_name || 'Staple item') + '</h3>' +
-      '<p>' + helpers.escapeHtml((row.market_name || 'Local market') + ' - ' + (row.city || '')) + '</p>' +
-      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.price || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.country_code || '') + '</span></div></article>';
+      '<p>' + helpers.escapeHtml((row.market_name || row.merchant_name || 'Local market') + ' - ' + (row.city || '')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.price || '') + helpers.escapeHtml(unit) + '</span><span class="md-pill">' + helpers.escapeHtml(row.product_category || 'Staple') + '</span></div>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.country_code || '') + '</span><span class="md-pill">' + helpers.escapeHtml(observed) + '</span><span class="md-pill">' + (row.proof_url ? 'Proof linked' : 'Proof pending') + '</span></div></article>';
   }
 });
 </script>

@@ -10,7 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
-<script src="/assets/js/lib/save-state.js?v=6cb0bca2"></script>
 <style>
 :root{--color-primary:#007AFF;--color-primary-dark:#0059B3;--blue-light:#EFF6FF;--green:#008751;--bg:#f1f5f9;--card:#fff;--border:#e5e7eb;--text:#1e293b;--text-muted:#6b7280;--text-light:#94a3b8;--radius:14px;--radius-sm:8px}
 @media(prefers-color-scheme:dark){:root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#e2e8f0;--text-muted:#94a3b8;--text-light:#64748b}}
@@ -42,6 +41,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .tpl-name{font-weight:800;font-size:.9rem;margin-bottom:2px}
 .tpl-desc{font-size:.75rem;color:var(--text-muted)}
 .modal-close{margin-top:14px;padding:10px 20px;border-radius:980px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit;width:100%}
+.qa-modal{max-width:820px}
+.qa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.qa-metric{padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg)}
+.qa-metric span{display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px}
+.qa-metric strong{font-size:18px;color:var(--text)}
+.qa-list{display:grid;gap:8px;margin-top:10px}
+.qa-item{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg)}
+.qa-dot{width:9px;height:9px;border-radius:50%;margin-top:5px;background:#94a3b8}
+.qa-dot.ok{background:#16a34a}.qa-dot.warn{background:#f59e0b}.qa-dot.risk{background:#dc2626}
+.qa-item strong{display:block;font-size:13px;margin-bottom:2px}.qa-item p{font-size:12px;line-height:1.5;color:var(--text-muted);margin:0}
+.qa-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.qa-actions .topbar-btn{color:var(--text)}
+.qa-source{font-size:12px;line-height:1.5;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;margin-top:14px}
+.qa-source a{color:var(--color-primary);font-weight:800;text-decoration:none}
 
 /* Project header */
 .proj-header{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
@@ -124,6 +136,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <link rel="canonical" href="https://afrotools.com/tools/boq-builder/app">
 <meta name="robots" content="noindex, follow">
 <meta property="og:url" content="https://afrotools.com/tools/boq-builder/app">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=20260427">
 </head>
 <body>
 
@@ -133,11 +146,22 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <span class="topbar-title" id="projTitle">Untitled BOQ</span>
   <button class="topbar-btn topbar-btn-ghost" onclick="showTemplates()">Templates</button>
   <button class="topbar-btn topbar-btn-ghost" onclick="resetBOQ()">Reset</button>
+  <button class="topbar-btn topbar-btn-ghost" onclick="showTenderQA()">Tender QA</button>
   <button class="topbar-btn topbar-btn-ghost" onclick="exportCSV()">CSV</button>
   <button class="topbar-btn topbar-btn-ghost" onclick="importCSV()">Import</button>
   <button class="topbar-btn topbar-btn-ghost" onclick="shareBOQ()">Share</button>
   <button class="topbar-btn topbar-btn-primary" onclick="exportPDF()">PDF</button>
   <button class="topbar-btn topbar-btn-green" onclick="saveBOQ()">Save</button>
+</div>
+
+<!-- Tender QA modal -->
+<div class="modal-overlay" id="qaModal">
+  <div class="modal qa-modal">
+    <h2>Tender Readiness QA</h2>
+    <p>Checks the current BOQ for pricing completeness, measurement clarity, project metadata and tender handoff risks.</p>
+    <div id="qaContent"></div>
+    <button class="modal-close" onclick="closeTenderQA()">Close</button>
+  </div>
 </div>
 
 <!-- Template picker -->
@@ -181,7 +205,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
       <div class="proj-field"><label for="projQS">QS / Estimator</label><input type="text" id="projQS" placeholder="Quantity Surveyor name"></div>
       <div class="proj-field"><label for="projCountry">Country (VAT auto-set)</label>
         <select id="projCountry" onchange="setCountryVAT()">
-          <option value="">— Select —</option>
+          <option value=""> -  Select  - </option>
           <option value="NG">Nigeria (7.5%)</option>
           <option value="KE">Kenya (16%)</option>
           <option value="ZA">South Africa (15%)</option>
@@ -232,7 +256,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="handleCSVImport(event)">
 
 <script>
-/* ── Data ── */
+/* -- Data -- */
 var CATEGORIES = [
   {id:'preliminaries', name:'Preliminaries & General'},
   {id:'substructure', name:'Substructure'},
@@ -254,20 +278,58 @@ var UNITS = ['m\u00B2','m\u00B3','lin.m','nr','kg','tonne','item','sum','lot','s
 var CURR_SYMBOLS = {NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',TZS:'TSh ',EGP:'E\u00A3',USD:'$',GBP:'\u00A3',EUR:'\u20AC'};
 var COUNTRY_VAT = {NG:7.5,KE:16,ZA:15,GH:15,TZ:18,EG:14,UG:18,RW:18,ET:15};
 
+if(typeof SaveState==='undefined'){
+  function SaveState(slug,opts){
+    opts=opts||{};
+    this.slug=slug;
+    this.key='afrotools-saved-'+slug;
+    this.maxFree=opts.maxFree||20;
+  }
+  SaveState.prototype._read=function(){
+    try{return JSON.parse(localStorage.getItem(this.key))||[];}catch(e){return[];}
+  };
+  SaveState.prototype._write=function(items){
+    try{localStorage.setItem(this.key,JSON.stringify(items));}catch(e){items.pop();try{localStorage.setItem(this.key,JSON.stringify(items));}catch(err){}}
+  };
+  SaveState.prototype.save=function(entry){
+    var items=this._read();
+    var now=Date.now();
+    var id=entry.id||('boq_'+now.toString(36)+'_'+Math.random().toString(36).slice(2,8));
+    var idx=items.findIndex(function(item){return item.id===id;});
+    var saved={id:id,title:entry.title||'Untitled',data:entry.data,thumbnail:entry.thumbnail||null,createdAt:idx>=0?items[idx].createdAt:now,updatedAt:now};
+    if(idx>=0)items[idx]=saved;else items.unshift(saved);
+    if(items.length>this.maxFree)items.length=this.maxFree;
+    this._write(items);
+    return saved;
+  };
+  SaveState.prototype.load=function(id){
+    return this._read().find(function(item){return item.id===id;})||null;
+  };
+  SaveState.prototype.getAll=function(){
+    return this._read().sort(function(a,b){return b.updatedAt-a.updatedAt;});
+  };
+  SaveState.prototype.delete=function(id){
+    var items=this._read();
+    var next=items.filter(function(item){return item.id!==id;});
+    if(next.length!==items.length){this._write(next);return true;}
+    return false;
+  };
+}
+
 var ss = new SaveState('boq-builder');
 var _currentId = null;
 
-/* ── Templates ── */
+/* -- Templates -- */
 var TEMPLATES = [
   {
     name: '3-Bedroom Bungalow',
-    desc: 'Standard residential bungalow — Nigeria/Kenya spec. ~120m\u00B2 floor area.',
+    desc: 'Standard residential bungalow - Nigeria/Kenya spec. ~120m\u00B2 floor area.',
     data: {
       preliminaries:[{desc:'Site clearance & preparation',unit:'sum',qty:1,rate:''},{desc:'Setting out',unit:'sum',qty:1,rate:''},{desc:'Temporary facilities (site office, store)',unit:'sum',qty:1,rate:''},{desc:'Water for construction',unit:'sum',qty:1,rate:''}],
       substructure:[{desc:'Excavation to reduced level',unit:'m\u00B3',qty:85,rate:''},{desc:'Excavation of trenches for foundation',unit:'m\u00B3',qty:42,rate:''},{desc:'Concrete in foundation (1:3:6)',unit:'m\u00B3',qty:18,rate:''},{desc:'Concrete in ground beams (1:2:4)',unit:'m\u00B3',qty:12,rate:''},{desc:'Reinforcement in foundation (Y12, Y16)',unit:'kg',qty:1800,rate:''},{desc:'Hardcore filling & compaction',unit:'m\u00B3',qty:35,rate:''},{desc:'DPC (Damp Proof Course)',unit:'m\u00B2',qty:120,rate:''},{desc:'Oversite concrete (1:2:4) 150mm thick',unit:'m\u00B2',qty:120,rate:''}],
       concrete:[{desc:'Concrete in columns (1:1.5:3)',unit:'m\u00B3',qty:6,rate:''},{desc:'Concrete in beams (1:1.5:3)',unit:'m\u00B3',qty:8,rate:''},{desc:'Reinforcement in columns & beams',unit:'kg',qty:2400,rate:''}],
       masonry:[{desc:'225mm sandcrete blockwork to walls',unit:'m\u00B2',qty:280,rate:''},{desc:'150mm sandcrete blockwork (partitions)',unit:'m\u00B2',qty:65,rate:''}],
-      roofing:[{desc:'Roof trusses — hardwood timber',unit:'sum',qty:1,rate:''},{desc:'Long-span aluminium roofing sheets',unit:'m\u00B2',qty:160,rate:''},{desc:'Ridge capping',unit:'lin.m',qty:12,rate:''},{desc:'Fascia board (hardwood)',unit:'lin.m',qty:52,rate:''},{desc:'PVC rain gutters & downpipes',unit:'lin.m',qty:30,rate:''}],
+      roofing:[{desc:'Roof trusses - hardwood timber',unit:'sum',qty:1,rate:''},{desc:'Long-span aluminium roofing sheets',unit:'m\u00B2',qty:160,rate:''},{desc:'Ridge capping',unit:'lin.m',qty:12,rate:''},{desc:'Fascia board (hardwood)',unit:'lin.m',qty:52,rate:''},{desc:'PVC rain gutters & downpipes',unit:'lin.m',qty:30,rate:''}],
       carpentry:[{desc:'Flush doors (internal) 800x2100mm',unit:'nr',qty:8,rate:''},{desc:'Panel door (external) 900x2100mm',unit:'nr',qty:2,rate:''},{desc:'Aluminium sliding windows 1200x1200mm',unit:'nr',qty:8,rate:''},{desc:'Aluminium casement windows 600x600mm',unit:'nr',qty:4,rate:''}],
       finishes:[{desc:'Cement/sand rendering to walls (internal)',unit:'m\u00B2',qty:520,rate:''},{desc:'Cement/sand rendering to walls (external)',unit:'m\u00B2',qty:230,rate:''},{desc:'Floor screeding 50mm thick',unit:'m\u00B2',qty:120,rate:''},{desc:'Floor tiles (ceramic 400x400mm)',unit:'m\u00B2',qty:120,rate:''},{desc:'Wall tiles to kitchen & bathrooms',unit:'m\u00B2',qty:45,rate:''},{desc:'Emulsion paint to internal walls (2 coats)',unit:'m\u00B2',qty:520,rate:''},{desc:'Weather-coat paint to external walls',unit:'m\u00B2',qty:230,rate:''},{desc:'POP/skim coat ceiling',unit:'m\u00B2',qty:120,rate:''}],
       plumbing:[{desc:'WC suite complete',unit:'nr',qty:3,rate:''},{desc:'WHB (wash hand basin) complete',unit:'nr',qty:3,rate:''},{desc:'Kitchen sink (stainless steel)',unit:'nr',qty:1,rate:''},{desc:'Shower complete',unit:'nr',qty:2,rate:''},{desc:'PPR pipes & fittings (water supply)',unit:'sum',qty:1,rate:''},{desc:'PVC pipes & fittings (drainage)',unit:'sum',qty:1,rate:''},{desc:'Septic tank & soakaway',unit:'sum',qty:1,rate:''}],
@@ -278,15 +340,15 @@ var TEMPLATES = [
   },
   {
     name: '2-Storey Duplex',
-    desc: 'Typical duplex — 4 bedrooms upstairs, living areas downstairs. ~200m\u00B2.',
+    desc: 'Typical duplex - 4 bedrooms upstairs, living areas downstairs. ~200m\u00B2.',
     data: {
       preliminaries:[{desc:'Site clearance & hoarding',unit:'sum',qty:1,rate:''},{desc:'Setting out',unit:'sum',qty:1,rate:''},{desc:'Temporary facilities',unit:'sum',qty:1,rate:''},{desc:'Scaffolding (2 lifts)',unit:'m\u00B2',qty:320,rate:''}],
       substructure:[{desc:'Excavation to reduced level',unit:'m\u00B3',qty:100,rate:''},{desc:'Excavation of trenches',unit:'m\u00B3',qty:55,rate:''},{desc:'Concrete in pad foundations (1:3:6)',unit:'m\u00B3',qty:24,rate:''},{desc:'Concrete in ground beams (1:2:4)',unit:'m\u00B3',qty:16,rate:''},{desc:'Reinforcement in foundation',unit:'kg',qty:2800,rate:''},{desc:'Hardcore filling & compaction',unit:'m\u00B3',qty:45,rate:''},{desc:'DPC membrane',unit:'m\u00B2',qty:100,rate:''},{desc:'Oversite concrete 150mm',unit:'m\u00B2',qty:100,rate:''}],
       concrete:[{desc:'Concrete in columns (M20)',unit:'m\u00B3',qty:14,rate:''},{desc:'Concrete in beams (M20)',unit:'m\u00B3',qty:18,rate:''},{desc:'Concrete in suspended slab (M20) 150mm',unit:'m\u00B3',qty:15,rate:''},{desc:'Concrete in staircase',unit:'m\u00B3',qty:3,rate:''},{desc:'Reinforcement steel',unit:'kg',qty:5500,rate:''},{desc:'Formwork to soffit of slab',unit:'m\u00B2',qty:100,rate:''},{desc:'Formwork to beams',unit:'m\u00B2',qty:80,rate:''},{desc:'Formwork to columns',unit:'m\u00B2',qty:60,rate:''}],
       masonry:[{desc:'225mm sandcrete blockwork (ground floor)',unit:'m\u00B2',qty:220,rate:''},{desc:'225mm sandcrete blockwork (first floor)',unit:'m\u00B2',qty:200,rate:''},{desc:'150mm partition walls',unit:'m\u00B2',qty:80,rate:''}],
-      roofing:[{desc:'Roof trusses — treated hardwood',unit:'sum',qty:1,rate:''},{desc:'Long-span aluminium roofing sheets 0.55mm',unit:'m\u00B2',qty:180,rate:''},{desc:'Ridge capping',unit:'lin.m',qty:14,rate:''},{desc:'Fascia & barge boards',unit:'lin.m',qty:65,rate:''},{desc:'PVC gutters & downpipes',unit:'lin.m',qty:36,rate:''}],
+      roofing:[{desc:'Roof trusses - treated hardwood',unit:'sum',qty:1,rate:''},{desc:'Long-span aluminium roofing sheets 0.55mm',unit:'m\u00B2',qty:180,rate:''},{desc:'Ridge capping',unit:'lin.m',qty:14,rate:''},{desc:'Fascia & barge boards',unit:'lin.m',qty:65,rate:''},{desc:'PVC gutters & downpipes',unit:'lin.m',qty:36,rate:''}],
       carpentry:[{desc:'Flush doors (internal)',unit:'nr',qty:14,rate:''},{desc:'Panel door (entrance) solid',unit:'nr',qty:1,rate:''},{desc:'Security door (steel)',unit:'nr',qty:1,rate:''},{desc:'Aluminium sliding windows 1200x1200',unit:'nr',qty:12,rate:''},{desc:'Aluminium casement windows',unit:'nr',qty:6,rate:''},{desc:'Built-in wardrobes',unit:'nr',qty:4,rate:''},{desc:'Kitchen cabinets',unit:'sum',qty:1,rate:''}],
-      finishes:[{desc:'Internal rendering',unit:'m\u00B2',qty:800,rate:''},{desc:'External rendering',unit:'m\u00B2',qty:400,rate:''},{desc:'Floor screeding',unit:'m\u00B2',qty:200,rate:''},{desc:'Floor tiles — ground floor',unit:'m\u00B2',qty:100,rate:''},{desc:'Floor tiles — first floor',unit:'m\u00B2',qty:100,rate:''},{desc:'Wall tiles (kitchens & bathrooms)',unit:'m\u00B2',qty:75,rate:''},{desc:'Staircase tiles',unit:'m\u00B2',qty:12,rate:''},{desc:'Internal emulsion paint (2 coats)',unit:'m\u00B2',qty:800,rate:''},{desc:'External weathercoat paint',unit:'m\u00B2',qty:400,rate:''},{desc:'POP ceiling',unit:'m\u00B2',qty:200,rate:''}],
+      finishes:[{desc:'Internal rendering',unit:'m\u00B2',qty:800,rate:''},{desc:'External rendering',unit:'m\u00B2',qty:400,rate:''},{desc:'Floor screeding',unit:'m\u00B2',qty:200,rate:''},{desc:'Floor tiles - ground floor',unit:'m\u00B2',qty:100,rate:''},{desc:'Floor tiles - first floor',unit:'m\u00B2',qty:100,rate:''},{desc:'Wall tiles (kitchens & bathrooms)',unit:'m\u00B2',qty:75,rate:''},{desc:'Staircase tiles',unit:'m\u00B2',qty:12,rate:''},{desc:'Internal emulsion paint (2 coats)',unit:'m\u00B2',qty:800,rate:''},{desc:'External weathercoat paint',unit:'m\u00B2',qty:400,rate:''},{desc:'POP ceiling',unit:'m\u00B2',qty:200,rate:''}],
       plumbing:[{desc:'WC suite',unit:'nr',qty:5,rate:''},{desc:'WHB',unit:'nr',qty:5,rate:''},{desc:'Bathtub (master)',unit:'nr',qty:1,rate:''},{desc:'Shower cubicle',unit:'nr',qty:3,rate:''},{desc:'Kitchen sink (double bowl)',unit:'nr',qty:1,rate:''},{desc:'Water supply piping',unit:'sum',qty:1,rate:''},{desc:'Drainage piping',unit:'sum',qty:1,rate:''},{desc:'Septic tank & soakaway',unit:'sum',qty:1,rate:''},{desc:'Overhead water tank (2000L)',unit:'nr',qty:1,rate:''}],
       electrical:[{desc:'Electrical wiring complete',unit:'sum',qty:1,rate:''},{desc:'DB (ground floor)',unit:'nr',qty:1,rate:''},{desc:'DB (first floor)',unit:'nr',qty:1,rate:''},{desc:'Light points',unit:'nr',qty:32,rate:''},{desc:'Socket outlets (13A twin)',unit:'nr',qty:28,rate:''},{desc:'AC points',unit:'nr',qty:6,rate:''},{desc:'External security lights',unit:'nr',qty:6,rate:''},{desc:'TV/data points',unit:'nr',qty:8,rate:''}],
       mechanical:[{desc:'AC split unit installation conduit',unit:'nr',qty:6,rate:''}],
@@ -312,7 +374,7 @@ var TEMPLATES = [
   },
   {
     name: 'Perimeter Fence & Gate',
-    desc: 'Standard compound fence — blockwork with steel gate. 100m perimeter.',
+    desc: 'Standard compound fence - blockwork with steel gate. 100m perimeter.',
     data: {
       preliminaries:[{desc:'Site clearance along fence line',unit:'sum',qty:1,rate:''},{desc:'Setting out fence perimeter',unit:'sum',qty:1,rate:''}],
       substructure:[{desc:'Excavation for fence foundation',unit:'m\u00B3',qty:30,rate:''},{desc:'Concrete in fence strip foundation',unit:'m\u00B3',qty:10,rate:''},{desc:'Reinforcement (Y12 bars)',unit:'kg',qty:400,rate:''}],
@@ -328,7 +390,7 @@ var TEMPLATES = [
   },
   {
     name: 'Residential Renovation',
-    desc: 'Typical renovation — retiling, repainting, bathroom upgrade, minor structural work.',
+    desc: 'Typical renovation - retiling, repainting, bathroom upgrade, minor structural work.',
     data: {
       preliminaries:[{desc:'Protection of existing finishes',unit:'sum',qty:1,rate:''},{desc:'Demolition & removal of old finishes',unit:'sum',qty:1,rate:''},{desc:'Waste disposal',unit:'sum',qty:1,rate:''}],
       substructure:[],
@@ -345,7 +407,7 @@ var TEMPLATES = [
   }
 ];
 
-/* ── Init ── */
+/* -- Init -- */
 (function(){
   document.getElementById('projDate').value = new Date().toISOString().slice(0,10);
   renderAll();
@@ -354,10 +416,116 @@ var TEMPLATES = [
   if (id) loadBOQ(id);
 })();
 
-/* ── Helpers ── */
+/* -- Helpers -- */
 function getSymbol(){return CURR_SYMBOLS[document.getElementById('projCurrency').value]||'';}
 function fmt(n){return n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+
+function activeItems(){
+  var items=[];
+  CATEGORIES.forEach(function(cat){
+    cat.items.forEach(function(it){
+      if(it.desc||it.qty||it.rate)items.push({cat:cat,item:it});
+    });
+  });
+  return items;
+}
+
+function getFinancialTotals(){
+  var subtotal=0;
+  CATEGORIES.forEach(function(cat){subtotal+=(cat._total||0);});
+  var contPct=parseFloat(document.getElementById('contingencyPct').value)||0;
+  var vatPct=parseFloat(document.getElementById('vatPct').value)||0;
+  var markupPct=parseFloat(document.getElementById('markupPct').value)||0;
+  var contingency=subtotal*contPct/100;
+  var subtotalPlusCont=subtotal+contingency;
+  var vat=subtotalPlusCont*vatPct/100;
+  var beforeMarkup=subtotalPlusCont+vat;
+  var markup=beforeMarkup*markupPct/100;
+  var grand=beforeMarkup+markup;
+  return {subtotal:subtotal,contPct:contPct,vatPct:vatPct,markupPct:markupPct,contingency:contingency,vat:vat,markup:markup,grand:grand};
+}
+
+function qaCheck(type,title,body){return{type:type,title:title,body:body};}
+
+function buildTenderQA(){
+  var items=activeItems();
+  var priced=items.filter(function(row){return row.item.desc&&parseFloat(row.item.qty)>0&&parseFloat(row.item.rate)>0;});
+  var missingRates=items.filter(function(row){return row.item.desc&&!(parseFloat(row.item.rate)>0);});
+  var missingQty=items.filter(function(row){return row.item.desc&&!(parseFloat(row.item.qty)>0);});
+  var missingDesc=items.filter(function(row){return !row.item.desc&&(row.item.qty||row.item.rate);});
+  var usedCats=CATEGORIES.filter(function(cat){return cat.items.some(function(it){return it.desc||it.qty||it.rate;});});
+  var totals=getFinancialTotals();
+  var projectFields=[
+    ['Project Name','projName'],
+    ['Client','projClient'],
+    ['Location','projLocation'],
+    ['Reference','projRef'],
+    ['Prepared By','projPrepBy'],
+    ['QS / Estimator','projQS'],
+    ['Country','projCountry']
+  ];
+  var missingMeta=projectFields.filter(function(pair){return !document.getElementById(pair[1]).value;}).map(function(pair){return pair[0];});
+  var hasPrelim=getCat('preliminaries').items.some(function(it){return it.desc&&(parseFloat(it.qty)>0||parseFloat(it.rate)>0);});
+  var hasExternal=getCat('external').items.some(function(it){return it.desc&&(parseFloat(it.qty)>0||parseFloat(it.rate)>0);});
+  var hasMeasuredUnits=items.some(function(row){return /m|kg|nr|sum|lin\.m|tonne/i.test(row.item.unit||'');});
+  var checks=[];
+
+  checks.push(qaCheck(items.length?'ok':'risk','Line Items',items.length?items.length+' active line items, '+priced.length+' fully priced.':'No active BOQ line items yet.'));
+  checks.push(qaCheck(missingRates.length?'risk':'ok','Missing Rates',missingRates.length?missingRates.length+' described items have no rate.':'All described items have rates.'));
+  checks.push(qaCheck(missingQty.length?'risk':'ok','Missing Quantities',missingQty.length?missingQty.length+' described items have no quantity.':'All described items have quantities.'));
+  checks.push(qaCheck(missingDesc.length?'warn':'ok','Description Quality',missingDesc.length?missingDesc.length+' rows have quantities or rates but no description.':'All priced rows have descriptions.'));
+  checks.push(qaCheck(hasMeasuredUnits?'ok':'risk','Measurement Basis',hasMeasuredUnits?'Units are present. Check that each item follows its measurement basis before tender.':'No measurement units detected.'));
+  checks.push(qaCheck(hasPrelim?'ok':'warn','Preliminaries',hasPrelim?'Preliminaries are included.':'Add preliminaries for setup, supervision, temporary works and site services.'));
+  checks.push(qaCheck(hasExternal?'ok':'warn','External Works',hasExternal?'External works are included.':'Confirm whether external works are excluded or add gates, paving, drainage and landscaping.'));
+  checks.push(qaCheck(missingMeta.length?'warn':'ok','Project Metadata',missingMeta.length?'Missing: '+missingMeta.join(', ')+'.':'Project metadata is ready for export.'));
+  checks.push(qaCheck(document.getElementById('projCountry').value?'ok':'warn','VAT Basis',document.getElementById('projCountry').value?'Country is selected and VAT can be checked.':'Select country so VAT basis is explicit.'));
+  checks.push(qaCheck(totals.contPct>=10?'ok':'warn','Risk Allowance',totals.contPct>=10?'Contingency is '+totals.contPct+'%.':'Contingency is below 10%; check if this is a tender-stage BOQ or a risky early estimate.'));
+
+  var score=Math.round(checks.filter(function(c){return c.type==='ok';}).length/checks.length*100);
+  return {items:items,priced:priced,usedCats:usedCats,missingRates:missingRates,missingQty:missingQty,missingMeta:missingMeta,checks:checks,score:score,totals:totals};
+}
+
+function renderTenderQA(){
+  var q=buildTenderQA();
+  var sym=getSymbol();
+  var content=document.getElementById('qaContent');
+  content.innerHTML=
+    '<div class="qa-grid">'+
+    '<div class="qa-metric"><span>Readiness</span><strong>'+q.score+'%</strong></div>'+
+    '<div class="qa-metric"><span>Line Items</span><strong>'+q.items.length+'</strong></div>'+
+    '<div class="qa-metric"><span>Priced Items</span><strong>'+q.priced.length+'</strong></div>'+
+    '<div class="qa-metric"><span>Categories</span><strong>'+q.usedCats.length+'</strong></div>'+
+    '<div class="qa-metric"><span>Grand Total</span><strong>'+sym+fmt(q.totals.grand)+'</strong></div>'+
+    '</div>'+
+    '<div class="qa-list">'+q.checks.map(function(c){return '<div class="qa-item"><span class="qa-dot '+c.type+'"></span><div><strong>'+esc(c.title)+'</strong><p>'+esc(c.body)+'</p></div></div>';}).join('')+'</div>'+
+    '<div class="qa-actions"><button class="topbar-btn topbar-btn-primary" onclick="copyTenderQA()">Copy Handoff</button><button class="topbar-btn topbar-btn-ghost" onclick="renderTenderQA()">Refresh QA</button></div>'+
+    '<div class="qa-source">Method note: this QA follows the practical discipline in RICS NRM, especially clear measurement, item descriptions, preliminaries, tender use and pricing basis. Sources: <a href="https://www.rics.org/profession-standards/rics-standards-and-guidance/sector-standards/construction-standards/nrm" target="_blank" rel="noopener">RICS NRM</a> | <a href="https://www.rics.org/content/dam/ricsglobal/documents/standards/nrm_2_detailed_measurement_for_building_works_1st_edition_rics.pdf" target="_blank" rel="noopener">RICS NRM 2</a></div>';
+}
+
+function tenderQAText(){
+  var q=buildTenderQA();
+  var sym=getSymbol();
+  var lines=[
+    'BOQ Tender QA Handoff',
+    'Project: '+(document.getElementById('projName').value||'Untitled BOQ'),
+    'Readiness: '+q.score+'%',
+    'Line items: '+q.items.length+' active, '+q.priced.length+' fully priced',
+    'Grand total: '+sym+fmt(q.totals.grand),
+    '',
+    'Checks:'
+  ];
+  q.checks.forEach(function(c){lines.push('- '+c.title+': '+c.body);});
+  return lines.join('\n');
+}
+
+function showTenderQA(){renderTenderQA();document.getElementById('qaModal').classList.add('active');}
+function closeTenderQA(){document.getElementById('qaModal').classList.remove('active');}
+function copyTenderQA(){
+  var text=tenderQAText();
+  if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){alert('Tender QA handoff copied.');}).catch(function(){prompt('Copy tender QA handoff:',text);});}
+  else prompt('Copy tender QA handoff:',text);
+}
 
 function updateTitle(){
   var name=document.getElementById('projName').value||'Untitled BOQ';
@@ -372,7 +540,7 @@ function setCountryVAT(){
   }
 }
 
-/* ── Templates ── */
+/* -- Templates -- */
 function showTemplates(){
   var grid=document.getElementById('tplGrid');
   grid.innerHTML='';
@@ -394,7 +562,7 @@ function loadTemplate(idx){
   renderAll();
 }
 
-/* ── Render ── */
+/* -- Render -- */
 function renderAll(){
   var container=document.getElementById('categories');
   container.innerHTML='';
@@ -439,7 +607,7 @@ function itemRow(catId,idx,item){
     '</tr>';
 }
 
-/* ── CRUD ── */
+/* -- CRUD -- */
 function getCat(catId){return CATEGORIES.find(function(c){return c.id===catId;});}
 
 function addItem(catId){
@@ -478,7 +646,7 @@ function toggleCat(catId){
   body.classList.toggle('collapsed');
 }
 
-/* ── Calculations ── */
+/* -- Calculations -- */
 function recalcAll(){
   var totalItems=0;
   CATEGORIES.forEach(function(cat){
@@ -516,29 +684,22 @@ function recalcSummary(){
   });
   rows.innerHTML=html;
 
-  var contPct=parseFloat(document.getElementById('contingencyPct').value)||0;
-  var vatPct=parseFloat(document.getElementById('vatPct').value)||0;
-  var markupPct=parseFloat(document.getElementById('markupPct').value)||0;
-  var contingency=subtotal*contPct/100;
-  var subtotalPlusCont=subtotal+contingency;
-  var vat=subtotalPlusCont*vatPct/100;
-  var beforeMarkup=subtotalPlusCont+vat;
-  var markup=beforeMarkup*markupPct/100;
-  var grand=beforeMarkup+markup;
+  var totalsData=getFinancialTotals();
 
   totals.innerHTML=
     '<div class="sum-row"><span class="sum-label">Subtotal</span><span class="sum-value">'+sym+fmt(subtotal)+'</span></div>'+
-    (contPct?'<div class="sum-row"><span class="sum-label">Contingency ('+contPct+'%)</span><span class="sum-value">'+sym+fmt(contingency)+'</span></div>':'')+
-    (vatPct?'<div class="sum-row"><span class="sum-label">VAT ('+vatPct+'%)</span><span class="sum-value">'+sym+fmt(vat)+'</span></div>':'')+
-    (markupPct?'<div class="sum-row"><span class="sum-label">Contractor Markup ('+markupPct+'%)</span><span class="sum-value">'+sym+fmt(markup)+'</span></div>':'')+
-    '<div class="sum-row grand"><span class="sum-label">Grand Total</span><span class="sum-value">'+sym+fmt(grand)+'</span></div>';
+    (totalsData.contPct?'<div class="sum-row"><span class="sum-label">Contingency ('+totalsData.contPct+'%)</span><span class="sum-value">'+sym+fmt(totalsData.contingency)+'</span></div>':'')+
+    (totalsData.vatPct?'<div class="sum-row"><span class="sum-label">VAT ('+totalsData.vatPct+'%)</span><span class="sum-value">'+sym+fmt(totalsData.vat)+'</span></div>':'')+
+    (totalsData.markupPct?'<div class="sum-row"><span class="sum-label">Contractor Markup ('+totalsData.markupPct+'%)</span><span class="sum-value">'+sym+fmt(totalsData.markup)+'</span></div>':'')+
+    '<div class="sum-row grand"><span class="sum-label">Grand Total</span><span class="sum-value">'+sym+fmt(totalsData.grand)+'</span></div>';
 
   // Running total bar
   document.getElementById('rtSubtotal').textContent=sym+fmt(subtotal);
-  document.getElementById('rtGrand').textContent=sym+fmt(grand);
+  document.getElementById('rtGrand').textContent=sym+fmt(totalsData.grand);
+  if(document.getElementById('qaModal').classList.contains('active'))renderTenderQA();
 }
 
-/* ── Save / Load ── */
+/* -- Save / Load -- */
 function saveBOQ(){
   var name=document.getElementById('projName').value||'Untitled BOQ';
   var entry=ss.save({
@@ -582,7 +743,7 @@ function loadBOQ(id){
   document.getElementById('vatPct').value=d.vatPct||'7.5';
   document.getElementById('markupPct').value=d.markupPct||'0';
   if(d.categories){
-    // Map loaded categories by id — handle old 6-category format
+    // Map loaded categories by id - handle old 6-category format
     var loaded={};
     d.categories.forEach(function(c){loaded[c.id]=c;});
     CATEGORIES.forEach(function(cat){
@@ -634,13 +795,13 @@ function resetBOQ(){
   renderAll();
 }
 
-/* ── Share ── */
+/* -- Share -- */
 function shareBOQ(){
   var name=document.getElementById('projName').value||'BOQ';
   var sym=getSymbol();
-  var subtotal=0;
-  CATEGORIES.forEach(function(c){subtotal+=(c._total||0);});
-  var text=name+' \u2014 Grand Total: '+sym+fmt(subtotal)+'\nBuilt with AfroTools BOQ Builder\nhttps://afrotools.com/tools/boq-builder/';
+  var totals=getFinancialTotals();
+  var qa=buildTenderQA();
+  var text=name+' - Grand Total: '+sym+fmt(totals.grand)+'\nTender readiness: '+qa.score+'%\nBuilt with AfroTools BOQ Builder\nhttps://afrotools.com/tools/boq-builder/';
   if(navigator.share){
     navigator.share({title:name+' | AfroTools BOQ',text:text}).catch(function(){});
   }else{
@@ -648,7 +809,7 @@ function shareBOQ(){
   }
 }
 
-/* ── CSV Export ── */
+/* -- CSV Export -- */
 function exportCSV(){
   var rows=[['Category','Description','Unit','Quantity','Rate','Amount']];
   CATEGORIES.forEach(function(cat){
@@ -665,7 +826,7 @@ function exportCSV(){
   a.click();
 }
 
-/* ── CSV Import ── */
+/* -- CSV Import -- */
 function importCSV(){document.getElementById('csvFileInput').click();}
 
 function handleCSVImport(e){
@@ -689,7 +850,7 @@ function handleCSVImport(e){
   e.target.value='';
 }
 
-/* ── PDF Export ── */
+/* -- PDF Export -- */
 function exportPDF(){
   if(window.afroEmailGate&&!window.afroEmailGate.check())return;
 
@@ -723,11 +884,12 @@ function exportPDF(){
     '.total-row{font-weight:700;background:#f9f9f9}'+
     '.summary-table{margin-top:16px;width:50%;margin-left:auto}'+
     '.summary-table td{padding:6px 8px;font-size:10px}'+
+    '.qa-table{margin-top:16px;width:100%;border-collapse:collapse}'+
+    '.qa-table td{padding:5px 6px;border:1px solid #eee;font-size:9px}'+
     '.grand td{font-size:13px;font-weight:700;border-top:2px solid #333}'+
     '.footer{margin-top:40px;border-top:1px solid #ddd;padding-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:9px;color:#666}'+
     '.sig-line{border-top:1px solid #999;margin-top:40px;padding-top:4px}'+
     '.page-num{text-align:center;font-size:8px;color:#999;margin-top:20px}'+
-<meta property="article:modified_time" content="2026-03-28">
     '</style></head><body>'+
     '<div class="header"><div class="header-left"><div class="brand">AfroTools.com</div><h1>Bill of Quantities</h1></div>'+
     '<div class="header-right">'+esc(name)+'<br>'+(ref?'Ref: '+esc(ref)+'<br>':'')+(date?'Date: '+date:'')+'</div></div>'+
@@ -761,22 +923,21 @@ function exportPDF(){
   html+='</tbody></table>';
 
   // Summary table
-  var contPct=parseFloat(document.getElementById('contingencyPct').value)||0;
-  var vatPct=parseFloat(document.getElementById('vatPct').value)||0;
-  var markupPct=parseFloat(document.getElementById('markupPct').value)||0;
-  var cont=subtotal*contPct/100;
-  var vat2=(subtotal+cont)*vatPct/100;
-  var beforeMarkup=subtotal+cont+vat2;
-  var markup2=beforeMarkup*markupPct/100;
-  var grand=beforeMarkup+markup2;
+  var totalsData=getFinancialTotals();
+  var qa=buildTenderQA();
 
   html+='<table class="summary-table">';
   html+='<tr><td><strong>Subtotal</strong></td><td class="num"><strong>'+sym+fmt(subtotal)+'</strong></td></tr>';
-  if(contPct)html+='<tr><td>Contingency ('+contPct+'%)</td><td class="num">'+sym+fmt(cont)+'</td></tr>';
-  if(vatPct)html+='<tr><td>VAT ('+vatPct+'%)</td><td class="num">'+sym+fmt(vat2)+'</td></tr>';
-  if(markupPct)html+='<tr><td>Contractor Markup ('+markupPct+'%)</td><td class="num">'+sym+fmt(markup2)+'</td></tr>';
-  html+='<tr class="grand"><td>GRAND TOTAL</td><td class="num">'+sym+fmt(grand)+'</td></tr>';
+  if(totalsData.contPct)html+='<tr><td>Contingency ('+totalsData.contPct+'%)</td><td class="num">'+sym+fmt(totalsData.contingency)+'</td></tr>';
+  if(totalsData.vatPct)html+='<tr><td>VAT ('+totalsData.vatPct+'%)</td><td class="num">'+sym+fmt(totalsData.vat)+'</td></tr>';
+  if(totalsData.markupPct)html+='<tr><td>Contractor Markup ('+totalsData.markupPct+'%)</td><td class="num">'+sym+fmt(totalsData.markup)+'</td></tr>';
+  html+='<tr class="grand"><td>GRAND TOTAL</td><td class="num">'+sym+fmt(totalsData.grand)+'</td></tr>';
   html+='</table>';
+
+  html+='<table class="qa-table"><tr><td><strong>Tender Readiness</strong></td><td>'+qa.score+'%</td></tr>'+
+    '<tr><td><strong>Line Items</strong></td><td>'+qa.items.length+' active, '+qa.priced.length+' fully priced</td></tr>'+
+    '<tr><td><strong>Open Risks</strong></td><td>'+qa.checks.filter(function(c){return c.type!=='ok';}).map(function(c){return esc(c.title);}).join(', ')+'</td></tr>'+
+    '<tr><td><strong>Method Note</strong></td><td>Check descriptions, units, quantities, preliminaries, VAT basis and exclusions before tender issue.</td></tr></table>';
 
   // Footer with signature lines
   html+='<div class="footer"><div><strong>Prepared By:</strong><div class="sig-line">'+(prepBy?esc(prepBy):'')+'</div></div>'+
@@ -789,13 +950,14 @@ function exportPDF(){
   setTimeout(function(){w.print();},500);
 }
 
-/* ── Keyboard shortcuts ── */
+/* -- Keyboard shortcuts -- */
 document.addEventListener('keydown',function(e){
   if(e.ctrlKey&&e.key==='s'){e.preventDefault();saveBOQ();}
   if(e.ctrlKey&&e.key==='p'){e.preventDefault();exportPDF();}
-  if(e.key==='Escape'){closeTemplates();}
+  if(e.key==='Escape'){closeTemplates();closeTenderQA();}
 });
 </script>
 <script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
+  <script src="/assets/js/engineering-toolkit.js?v=20260427" defer></script>
 </body>
 </html>

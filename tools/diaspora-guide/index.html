@@ -23,7 +23,7 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
@@ -66,6 +66,21 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .guide-block li{padding:.5rem 0;border-bottom:1px solid #f1f5f9;font-size:.92rem;color:#475569}
 .guide-block li:last-child{border-bottom:none}
 .guide-block li strong{color:#1e293b}
+.tax-planner{background:#fff;border:1px solid #dbeafe;border-radius:10px;padding:1.25rem;margin-bottom:1.5rem}
+.tax-planner h2{font-size:1.05rem;margin-bottom:.35rem;color:#0A1628}
+.tax-planner p{font-size:.88rem;color:#64748b;margin-bottom:1rem}
+.tax-planner-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem}
+.tax-planner-output{border-top:1px solid #e2e8f0;margin-top:1rem;padding-top:1rem}
+.tax-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:.75rem}
+.tax-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.75rem}
+.tax-metric span{display:block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#64748b;margin-bottom:.2rem}
+.tax-metric strong{font-size:.92rem;color:#0A1628}
+.tax-action-list{padding-left:1.1rem;color:#475569;font-size:.9rem;line-height:1.7;margin:.6rem 0}
+.source-links{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+.source-links a{font-size:.78rem;font-weight:700;color:#0063D1;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:.4rem .65rem;text-decoration:none}
+.copy-tax-plan{padding:.55rem .9rem;border:1.5px solid rgba(0,122,255,.22);background:#fff;color:#0063D1;border-radius:7px;font-weight:800;font-family:inherit;cursor:pointer}
+@media(max-width:850px){.tax-planner-grid,.tax-metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.tax-planner-grid,.tax-metrics{grid-template-columns:1fr}}
 .tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.72rem;font-weight:700;text-transform:uppercase}
 .tag-yes{background:#DBEAFE;color:#0063D1}
 .tag-no{background:#fee2e2;color:#dc2626}
@@ -118,6 +133,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -136,6 +153,19 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group"><label>Home Country (Africa)</label><select id="homeCountry"><option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="GH">Ghana</option><option value="ZA">South Africa</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="SN">Senegal</option><option value="ET">Ethiopia</option></select></div>
 <div class="form-group"><label>Country of Residence</label><select id="resCountry"><option value="US">United States</option><option value="UK">United Kingdom</option><option value="CA">Canada</option><option value="AE">UAE</option><option value="DE">Germany</option></select></div>
 <div class="form-group"><label>&nbsp;</label><button class="btn" onclick="showGuide()">Get Guide</button></div>
+</div>
+</div>
+<div class="tax-planner">
+<h2>Cross-border compliance checklist</h2>
+<p>Use this before the guide: residency days, home-country income, foreign assets, and remittances can trigger different filing steps.</p>
+<div class="tax-planner-grid">
+<div class="form-group"><label>Days in home country</label><select id="daysHome"><option value="0">0-30 days</option><option value="90">31-182 days</option><option value="183">183+ days</option></select></div>
+<div class="form-group"><label>Income back home</label><select id="homeIncome"><option value="none">No income</option><option value="rent">Rental income</option><option value="business">Business income</option><option value="investment">Dividends or interest</option><option value="multiple">Multiple sources</option></select></div>
+<div class="form-group"><label>Foreign assets/accounts</label><select id="foreignAssets"><option value="none">No major foreign assets</option><option value="medium">Accounts/property to report</option><option value="large">Large foreign portfolio</option></select></div>
+<div class="form-group"><label>Family remittances</label><select id="remittanceLevel"><option value="normal">Routine support</option><option value="large">Large gifts/transfers</option><option value="property">Property or business funding</option></select></div>
+</div>
+<div class="tax-planner-output" id="taxPlanOutput">
+<p>Select your countries and profile, then the checklist will show practical next steps and official pages to verify.</p>
 </div>
 </div>
 <div id="results">
@@ -164,7 +194,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <h2>Frequently Asked Questions</h2>
 <details><summary>Do I need to pay tax in my African home country if I live abroad?</summary><p>It depends on your country. Nigeria generally only taxes non-residents on Nigerian-sourced income. South Africa taxes residents on worldwide income but offers a foreign employment income exemption (up to R1.25 million). Kenya taxes residents on global income. Check your specific country's rules above.</p></details>
 <details><summary>What is a Double Taxation Agreement?</summary><p>A DTA is a treaty between two countries that prevents the same income from being taxed twice. It typically allocates taxing rights and provides mechanisms like tax credits. For example, if you pay tax on rental income in Nigeria and have a DTA with your residence country, you can usually claim a credit for the Nigerian tax paid.</p></details>
-<details><summary>Are remittances to family taxable?</summary><p>In most African countries, money received as a gift or family support is not taxable for the recipient. However, large transfers may trigger bank reporting requirements or central bank monitoring. In the US, gifts above $17,000/year per recipient require a gift tax return filing by the sender.</p></details>
+<details><summary>Are remittances to family taxable?</summary><p>In most African countries, money received as a gift or family support is not taxable for the recipient. However, large transfers may trigger bank reporting requirements or central bank monitoring. In the US, large gifts can require an IRS gift tax return, and the annual exclusion changes by tax year, so verify the current IRS amount before sending major transfers.</p></details>
 <details><summary>Do I lose my tax residency when I move abroad?</summary><p>Not automatically. Each country has specific rules. South Africa requires formal "financial emigration" to change tax status. Nigeria considers you a non-resident if you're absent for more than 183 days. Kenya looks at your "permanent home" and days spent in-country. You may need to formally notify your home country's tax authority.</p></details>
 <details><summary>Do I need to file tax returns in both countries?</summary><p>Potentially yes. If you earn income in your African home country (e.g. rental income, dividends, business profits), you may need to file a return there. You will also likely need to file in your country of residence and declare worldwide income. A qualified cross-border tax advisor can help you comply with both obligations and claim available treaty relief.</p></details>
 </section>
@@ -315,12 +345,92 @@ ET:{
 };
 
 const RES_DATA={
-US:{name:'United States',system:'Citizenship-based (US citizens/green card holders taxed on worldwide income)',filing:'April 15 annually (automatic extension to June 15 for abroad filers)',threshold:'Filing required if income exceeds $13,850 (single, 2023). Foreign Earned Income Exclusion: up to $120,000.',foreign_credit:'Foreign Tax Credit (Form 1116) or Foreign Earned Income Exclusion (Form 2555)',reporting:'FBAR: report foreign accounts >$10,000 aggregate. FATCA Form 8938 for assets >$50,000 (>$200,000 abroad).'},
+US:{name:'United States',system:'Citizenship-based (US citizens/green card holders taxed on worldwide income)',filing:'April 15 annually (automatic extension to June 15 for abroad filers)',threshold:'Filing thresholds, gift exclusions, and the Foreign Earned Income Exclusion are adjusted annually. Verify the current IRS tax-year page before filing.',foreign_credit:'Foreign Tax Credit (Form 1116) or Foreign Earned Income Exclusion (Form 2555)',reporting:'FBAR: report foreign accounts over $10,000 aggregate. FATCA Form 8938 may apply at higher asset thresholds.'},
 UK:{name:'United Kingdom',system:'Residence-based. Statutory Residence Test (SRT) determines status.',filing:'January 31 following end of tax year (April 5). Self-assessment required.',threshold:'Personal allowance: GBP 12,570. Tax-free if below this.',foreign_credit:'Double Taxation Relief or unilateral credit relief. Remittance basis available for non-domiciled residents.',reporting:'No FBAR equivalent but worldwide income must be declared. Common Reporting Standard applies.'},
 CA:{name:'Canada',system:'Residence-based. "Significant residential ties" test.',filing:'April 30 annually. Self-employed: June 15.',threshold:'Basic personal amount: CAD 15,000. All worldwide income taxable for residents.',foreign_credit:'Foreign Tax Credit on federal and provincial returns. T1135 Foreign Income Verification for assets >CAD 100,000.',reporting:'T1135 for specified foreign property exceeding CAD 100,000. Penalties for non-filing.'},
 AE:{name:'United Arab Emirates',system:'No personal income tax (as of 2024). Corporate tax introduced at 9% for businesses.',filing:'No personal income tax filing required.',threshold:'N/A - no personal income tax.',foreign_credit:'N/A. However, UAE tax residency certificates available for DTA claims with home country.',reporting:'No personal reporting requirements. Corporate tax applies to businesses with income >AED 375,000.'},
 DE:{name:'Germany',system:'Residence-based. Taxed on worldwide income if resident (habitual abode or domicile in Germany).',filing:'July 31 of following year (February 28 if prepared by tax advisor).',threshold:'Basic allowance: EUR 10,908. Progressive rates 14-45%.',foreign_credit:'Foreign Tax Credit or exemption under DTAs. Progressionsvorbehalt may apply (exempt income affects tax rate).',reporting:'All worldwide income must be declared. No separate foreign asset reporting but bank accounts covered under CRS.'}
 };
+
+const OFFICIAL_SOURCES={
+US:[
+  {label:'IRS International taxpayers',url:'https://www.irs.gov/individuals/international-taxpayers'},
+  {label:'FinCEN FBAR',url:'https://www.fincen.gov/report-foreign-bank-and-financial-accounts'}
+],
+UK:[
+  {label:'HMRC Self Assessment',url:'https://www.gov.uk/self-assessment-tax-returns'},
+  {label:'UK Statutory Residence Test',url:'https://www.gov.uk/government/publications/rdr3-statutory-residence-test-srt'}
+],
+CA:[
+  {label:'CRA T1135',url:'https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t1135.html'},
+  {label:'CRA newcomers and emigrants',url:'https://www.canada.ca/en/revenue-agency/services/tax/international-non-residents.html'}
+],
+AE:[
+  {label:'UAE Federal Tax Authority',url:'https://tax.gov.ae/en/default.aspx'},
+  {label:'UAE tax residency certificate',url:'https://tax.gov.ae/en/services/issuance.of.tax.residency.certificate.aspx'}
+],
+DE:[
+  {label:'Germany Federal Tax Office',url:'https://www.bzst.de/EN/Home/home_node.html'},
+  {label:'German tax information',url:'https://www.make-it-in-germany.com/en/living-in-germany/money/taxes'}
+]
+};
+
+let lastTaxPlan='';
+
+function copyTaxPlan(){
+  if(!lastTaxPlan)return;
+  const btn=document.getElementById('copyTaxPlanBtn');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(lastTaxPlan).then(()=>{if(btn){btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy checklist',1400)}});
+  }else{
+    window.prompt('Copy checklist',lastTaxPlan);
+  }
+}
+
+function renderTaxPlan(){
+  const out=document.getElementById('taxPlanOutput');
+  if(!out)return;
+  const hc=document.getElementById('homeCountry').value;
+  const rc=document.getElementById('resCountry').value;
+  const home=DATA[hc],res=RES_DATA[rc];
+  const days=document.getElementById('daysHome').value;
+  const income=document.getElementById('homeIncome').value;
+  const assets=document.getElementById('foreignAssets').value;
+  const remit=document.getElementById('remittanceLevel').value;
+  const treaty=home.treaties[rc]||'Unknown';
+  const actions=[];
+  if(days==='183')actions.push('Check whether your home-country day count makes you tax resident or dual resident.');
+  else actions.push('Keep travel records and passport stamps to support non-resident or part-year status.');
+  if(income!=='none')actions.push('Confirm filing and withholding rules for '+income.replace('multiple','multiple home-country income sources')+' in '+home.name+'.');
+  else actions.push('Confirm whether a nil return, TIN update, or no filing is required in '+home.name+'.');
+  if(assets!=='none')actions.push('Review foreign account or asset reporting in '+res.name+' before the filing deadline.');
+  if(remit!=='normal')actions.push('Document the source and purpose of large transfers, especially if funding property or business activity.');
+  actions.push(treaty.includes('in force')?'Read the DTA article for your income type before claiming treaty relief.':'Check unilateral foreign tax credit relief because this corridor may not have a DTA.');
+  actions.push('Use official tax authority pages for current-year thresholds before relying on any static guide.');
+  lastTaxPlan=[
+    'Diaspora tax checklist',
+    'Home country: '+home.name,
+    'Residence country: '+res.name,
+    'Treaty status: '+treaty,
+    'Days in home country: '+document.getElementById('daysHome').selectedOptions[0].text,
+    'Home-country income: '+document.getElementById('homeIncome').selectedOptions[0].text,
+    'Foreign assets/accounts: '+document.getElementById('foreignAssets').selectedOptions[0].text,
+    'Remittances: '+document.getElementById('remittanceLevel').selectedOptions[0].text,
+    'Next actions: '+actions.join(' | ')
+  ].join('\n');
+  const risk=days==='183'||income!=='none'||assets!=='none'||remit!=='normal'?'Review needed':'Low complexity';
+  const links=(OFFICIAL_SOURCES[rc]||[]).map(s=>`<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`).join('');
+  out.innerHTML=`
+    <div class="tax-metrics">
+      <div class="tax-metric"><span>Corridor</span><strong>${home.name} -> ${res.name}</strong></div>
+      <div class="tax-metric"><span>DTA</span><strong>${treaty}</strong></div>
+      <div class="tax-metric"><span>Profile</span><strong>${risk}</strong></div>
+      <div class="tax-metric"><span>Deadline</span><strong>${res.filing.split('.')[0]}</strong></div>
+    </div>
+    <ul class="tax-action-list">${actions.map(a=>`<li>${a}</li>`).join('')}</ul>
+    <div class="source-links">${links}<button class="copy-tax-plan" id="copyTaxPlanBtn" type="button" onclick="copyTaxPlan()">Copy checklist</button></div>
+  `;
+}
 
 function showGuide(){
   const hc=document.getElementById('homeCountry').value;
@@ -379,7 +489,13 @@ function showGuide(){
   <div class="disclaimer">This guide provides general information only and does not constitute tax advice. Tax laws change frequently. Consult a qualified tax professional for advice specific to your situation.</div>`;
 
   document.getElementById('results').innerHTML=html;
+  renderTaxPlan();
 }
+['homeCountry','resCountry','daysHome','homeIncome','foreignAssets','remittanceLevel'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.addEventListener('change',renderTaxPlan);
+});
+renderTaxPlan();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

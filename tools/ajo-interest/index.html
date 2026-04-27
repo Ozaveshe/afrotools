@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--green:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);padding:44px 0 36px;overflow:hidden}
@@ -60,6 +60,17 @@ h1 em{color:#93c5fd;font-style:normal}
 .r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
 .r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
 .r-value.green{color:var(--green)}
+.risk-plan{margin-top:16px;background:#f8fafc;border:1px solid #dbeafe;border-radius:8px;padding:16px}
+.risk-plan h3{margin:0 0 10px;font-size:.92rem;color:var(--afro-dark)}
+.risk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.risk-metric{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px}
+.risk-metric span{display:block;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#64748b;margin-bottom:4px}
+.risk-metric strong{font-size:.9rem;color:var(--afro-dark)}
+.risk-plan p{font-size:.8rem;color:#475569;line-height:1.65;margin:8px 0 0}
+.risk-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.risk-copy{padding:9px 14px;border:1.5px solid rgba(0,122,255,.22);background:#fff;color:var(--green);border-radius:8px;font-weight:800;font-family:inherit;cursor:pointer}
+@media(max-width:650px){.risk-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:430px){.risk-grid{grid-template-columns:1fr}}
 .rotation-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:14px}
 .rotation-table th{background:#f1f5f9;padding:8px 10px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0}
 .rotation-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;font-weight:500}
@@ -134,6 +145,8 @@ h1 em{color:#93c5fd;font-style:normal}
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -183,6 +196,10 @@ h1 em{color:#93c5fd;font-style:normal}
 </div>
 <div class="field"><label class="f-label">Collector/Admin Fee (%)</label><input type="number" id="fee" class="f-input" value="0" min="0" max="20" step="0.5">
 <p style="font-size:.7rem;color:#94a3b8;margin-top:2px">Some Ajo collectors charge 1 contribution cycle or 2-5% fee</p></div>
+<div class="field-row">
+<div class="field"><label class="f-label">Expected Late/Missed Members</label><input type="number" id="lateMembers" class="f-input" value="0" min="0" max="100"></div>
+<div class="field"><label class="f-label">Emergency Reserve (% of Pool)</label><input type="number" id="reservePct" class="f-input" value="5" min="0" max="50" step="0.5"></div>
+</div>
 <div class="field"><label class="f-label">Start Date</label><input type="date" id="startDate" class="f-input"></div>
 <button class="calc-btn" onclick="calculate()">Calculate Rotation</button>
 </div></div>
@@ -199,6 +216,7 @@ h1 em{color:#93c5fd;font-style:normal}
 <div class="result-box"><div class="r-label">Full Rotation Duration</div><div class="r-value" id="rDuration">--</div></div>
 </div>
 <table class="rotation-table" id="rotationTable"></table>
+<div id="riskPlan"></div>
 <div id="funComparisons"></div>
 <div id="funDyk"></div>
 </div></div>
@@ -265,6 +283,17 @@ h1 em{color:#93c5fd;font-style:normal}
 <script>
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
 function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',XOF:'CFA ',USD:'$'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+let lastAjoRiskBrief='';
+
+function copyAjoRiskPlan(){
+  if(!lastAjoRiskBrief)return;
+  const btn=document.getElementById('riskCopyBtn');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(lastAjoRiskBrief).then(()=>{if(btn){btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy rule brief',1400)}});
+  }else{
+    window.prompt('Copy rule brief',lastAjoRiskBrief);
+  }
+}
 
 function calculate(){
   const type=document.getElementById('type').value;
@@ -274,6 +303,8 @@ function calculate(){
   const contribution=parseNum(document.getElementById('contribution').value);
   const frequency=document.getElementById('frequency').value;
   const fee=parseFloat(document.getElementById('fee').value)||0;
+  const lateMembers=Math.max(0,parseInt(document.getElementById('lateMembers').value)||0);
+  const reservePct=Math.max(0,parseFloat(document.getElementById('reservePct').value)||0);
   const startDateStr=document.getElementById('startDate').value;
 
   if(contribution<=0){alert('Please enter the contribution amount.');return}
@@ -283,6 +314,10 @@ function calculate(){
   const payout=pool-feeAmount;
   const totalContribution=contribution*members;
   const wait=position-1;
+  const reserveTarget=pool*(reservePct/100);
+  const missedExposure=lateMembers*contribution;
+  const coverageRatio=missedExposure>0?Math.min(100,(reserveTarget/missedExposure)*100):100;
+  const positionType=position<=Math.ceil(members/3)?'early payout':position>=Math.ceil(members*2/3)?'late payout':'middle payout';
 
   const freqLabels={daily:'day',weekly:'week',monthly:'month'};
   const freqDays={daily:1,weekly:7,monthly:30};
@@ -307,6 +342,36 @@ function calculate(){
   }
   html+='</tbody>';
   document.getElementById('rotationTable').innerHTML=html;
+
+  const riskStatus=lateMembers===0?'Low immediate default pressure':coverageRatio>=100?'Reserve covers expected late payments':'Reserve does not cover expected late payments';
+  const positionNote=positionType==='early payout'
+    ? 'You receive liquidity early, so the group should document your remaining contribution obligation clearly.'
+    : positionType==='late payout'
+      ? 'You carry group credit risk for longer. Ask for stronger records, receipts, and default rules.'
+      : 'Your position balances access and risk, but late payment rules should still be written down.';
+  lastAjoRiskBrief=[
+    type+' group rule brief',
+    'Members: '+members,
+    'Contribution: '+fmt(contribution,cur)+' '+frequency,
+    'Pool per cycle: '+fmt(pool,cur),
+    'Your position: '+position+' ('+positionType+')',
+    'Expected late/missed members: '+lateMembers,
+    'Reserve target: '+fmt(reserveTarget,cur)+' ('+reservePct+'% of pool)',
+    'Missed payment exposure: '+fmt(missedExposure,cur),
+    'Risk note: '+riskStatus,
+    'Rule proposal: Keep attendance, payment receipts, payout signatures, default penalties, and replacement-member rules in writing.'
+  ].join('\n');
+  document.getElementById('riskPlan').innerHTML=
+    '<div class="risk-plan"><h3>Group safety & position advisor</h3>'+
+    '<div class="risk-grid">'+
+    '<div class="risk-metric"><span>Position type</span><strong>'+positionType+'</strong></div>'+
+    '<div class="risk-metric"><span>Reserve target</span><strong>'+fmt(Math.round(reserveTarget),cur)+'</strong></div>'+
+    '<div class="risk-metric"><span>Missed exposure</span><strong>'+fmt(Math.round(missedExposure),cur)+'</strong></div>'+
+    '<div class="risk-metric"><span>Coverage</span><strong>'+Math.round(coverageRatio)+'%</strong></div>'+
+    '</div>'+
+    '<p><strong>'+riskStatus+'.</strong> '+positionNote+'</p>'+
+    '<p>Write down contribution dates, payout order, default penalties, guarantor rules, and how a member can exit. This protects friendships as much as money.</p>'+
+    '<div class="risk-actions"><button class="risk-copy" id="riskCopyBtn" type="button" onclick="copyAjoRiskPlan()">Copy rule brief</button></div></div>';
 
   // Fun comparisons based on payout amount
   var payoutNGN=payout;

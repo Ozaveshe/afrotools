@@ -56,7 +56,7 @@ function writeFileWithRetry(filePath, content, attempts = 3) {
 function getFileHash(filePath) {
   if (hashCache.has(filePath)) return hashCache.get(filePath);
   if (!fs.existsSync(filePath)) return null;
-  const content = fs.readFileSync(filePath);
+  const content = fs.readFileSync(filePath, 'utf8').replace(/\r\n?/g, '\n');
   const hash = crypto.createHash('md5').update(content).digest('hex').slice(0, 8);
   hashCache.set(filePath, hash);
   return hash;
@@ -142,7 +142,14 @@ let updatedCount = 0;
 let refCount = 0;
 
 for (const htmlPath of htmlFiles) {
-  const original = fs.readFileSync(htmlPath, 'utf8');
+  let original;
+  try {
+    original = fs.readFileSync(htmlPath, 'utf8');
+  } catch (error) {
+    if (error.code === 'ENOENT') continue;
+    throw error;
+  }
+
   const { html, changed } = bustReferences(original, htmlPath);
 
   if (changed) {

@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
@@ -165,7 +166,167 @@
   </div>
 
   <!-- SEO Content -->
-  <div class="leg-seo">
+  <!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"statutory-declaration","title":"Statutory Declaration","workflowTitle":"Administrative declaration checklist","coverage":"16 core markets","decision":"Whether the matter needs a statutory declaration, affidavit, police report, newspaper publication or court order","evidence":["Ask the receiving office for required wording before signing","Use precise facts, dates, document numbers and addresses","Bring original ID and attachments to the commissioner or notary"],"redFlags":["Using a statutory declaration for contested facts that need court evidence","Signing before filling all blanks","Declaring facts you cannot personally verify"],"related":[{"label":"Affidavit Generator","href":"/tools/affidavit-generator/"},{"label":"Power of Attorney","href":"/tools/power-of-attorney/"},{"label":"National ID Guide","href":"/tools/national-id-guide/"}],"competitor":{"group":"personal","label":"Legal-aid portals, Rocket Lawyer and LawDepot personal-law flows","patterns":["Personal-law tools work best when they gather facts, documents, urgency and eligibility before pointing people to a court, lawyer or aid office.","They provide a portable case note or printable pack because users often move between family, court, registry and advice channels.","They make escalation triggers prominent for contested facts, safety concerns, court deadlines or vulnerable parties."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Ask the receiving office for required wording before signing\".","Saved workflows can be resumed from the dashboard and handed off to Affidavit Generator when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the administrative declaration checklist result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/affidavit-generator/">Affidavit Generator</a><a href="/tools/power-of-attorney/">Power of Attorney</a><a href="/tools/national-id-guide/">National ID Guide</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Legal-aid portals, Rocket Lawyer and LawDepot personal-law flows. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Personal-law tools work best when they gather facts, documents, urgency and eligibility before pointing people to a court, lawyer or aid office.</li><li>They provide a portable case note or printable pack because users often move between family, court, registry and advice channels.</li><li>They make escalation triggers prominent for contested facts, safety concerns, court deadlines or vulnerable parties.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Ask the receiving office for required wording before signing&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Affidavit Generator when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether the matter needs a statutory declaration, affidavit, police report, newspaper publication or court order</li><li>Ask the receiving office for required wording before signing</li><li>Using a statutory declaration for contested facts that need court evidence</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · 16 core markets</div>
+  <h2 id="legal-upgrade-heading">Administrative declaration checklist</h2>
+  <p>A statutory declaration is for formal facts outside court: lost documents, name changes, address confirmation, age declarations and administrative corrections. The receiving office controls the format.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether the matter needs a statutory declaration, affidavit, police report, newspaper publication or court order</li><li>Who must witness, commission or notarise the declaration</li><li>Which supporting documents must be attached</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Ask the receiving office for required wording before signing</li><li>Use precise facts, dates, document numbers and addresses</li><li>Bring original ID and attachments to the commissioner or notary</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Using a statutory declaration for contested facts that need court evidence</li><li>Signing before filling all blanks</li><li>Declaring facts you cannot personally verify</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://brs.go.ke/companies-registry/" target="_blank" rel="noopener">Kenya Business Registration Service</a><a href="https://www.cac.gov.ng/business-names/" target="_blank" rel="noopener">Corporate Affairs Commission</a><a href="https://www.nlas.go.ke/faqs" target="_blank" rel="noopener">NLAS legal aid FAQs</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/affidavit-generator/">Affidavit Generator</a><a href="/tools/power-of-attorney/">Power of Attorney</a><a href="/tools/national-id-guide/">National ID Guide</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the administrative declaration checklist trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether the matter needs a statutory declaration, affidavit, police report, newspaper publication or court order.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Ask the receiving office for required wording before signing. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Using a statutory declaration for contested facts that need court evidence.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly>Administrative declaration checklist action pack
+Tool: statutory-declaration
+Coverage: 16 core markets
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether the matter needs a statutory declaration, affidavit, police report, newspaper publication or court order.
+
+Evidence to attach:
+- Ask the receiving office for required wording before signing
+- Use precise facts, dates, document numbers and addresses
+- Bring original ID and attachments to the commissioner or notary
+
+Escalate before filing or signing if:
+- Using a statutory declaration for contested facts that need court evidence
+- Signing before filling all blanks
+- Declaring facts you cannot personally verify
+
+Primary checks:
+- Kenya Business Registration Service: https://brs.go.ke/companies-registry/
+- Corporate Affairs Commission: https://www.cac.gov.ng/business-names/
+- NLAS legal aid FAQs: https://www.nlas.go.ke/faqs
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<div class="leg-seo">
     <h2>Statutory Declarations in Africa</h2>
     <p>A statutory declaration is a written statement of facts that a person declares to be true. Unlike an affidavit (which is sworn under oath), a statutory declaration is made under a specific statutory provision and may be a solemn declaration rather than an oath. In most African countries, statutory declarations are used for administrative purposes — name changes, lost documents, address confirmations, and similar matters.</p>
     <ul>
@@ -322,5 +483,21 @@ function copyDecl() {
   });
 }
 </script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js" defer></script>
 </body>
 </html>

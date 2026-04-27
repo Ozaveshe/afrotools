@@ -22,7 +22,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <meta name="tool-id" content="ajo-chama">
@@ -74,6 +74,13 @@
     .stat-card .label { font-size: .82rem; color: #666; margin-top: .15rem; }
     .penalty-section { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
     .penalty-section h3 { margin: 0 0 .75rem; font-size: 1rem; color: #92400e; }
+    .group-rule-plan { background: #f8fafc; border: 1px solid #dbe3ef; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
+    .group-rule-plan h3 { margin: 0 0 .75rem; font-size: 1rem; color: #0f172a; }
+    .rule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .75rem; margin-bottom: .75rem; }
+    .rule-box { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: .85rem; }
+    .rule-box span { display: block; font-size: .68rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+    .rule-box strong { display: block; margin-top: .2rem; color: #0f172a; font-size: .95rem; }
+    .rule-plan-text { font-size: .88rem; color: #475569; line-height: 1.7; margin: .5rem 0; }
     .faq { margin-top: 2rem; }
     .faq h2 { font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem; }
     .faq-item { border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: .75rem; overflow: hidden; }
@@ -149,6 +156,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -243,6 +252,34 @@
         </select>
       </div>
     </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="reserveRate">Group Reserve (% of pool per round)</label>
+        <input type="number" id="reserveRate" min="0" max="30" value="5" step="1">
+      </div>
+      <div class="form-group">
+        <label for="graceDays">Late Payment Grace Days</label>
+        <input type="number" id="graceDays" min="0" max="14" value="2" step="1">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="defaultRule">If a Member Defaults</label>
+        <select id="defaultRule">
+          <option value="reserve">Use reserve first, member repays with penalty</option>
+          <option value="pause">Pause payout until arrears clear</option>
+          <option value="guarantor">Guarantor covers the missed contribution</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="meetingMode">Meeting / Reminder Channel</label>
+        <select id="meetingMode">
+          <option value="whatsapp">WhatsApp group</option>
+          <option value="meeting">Physical meeting</option>
+          <option value="bank">Bank/co-op record</option>
+        </select>
+      </div>
+    </div>
 
     <h2 style="margin-top:1.5rem;">Member Names</h2>
     <div class="member-list" id="memberList"></div>
@@ -261,6 +298,7 @@
       <h3>Late Payment Penalties</h3>
       <p id="penaltyInfo"></p>
     </div>
+    <div class="group-rule-plan" id="constitutionPlan"></div>
   </div>
 
   <!-- Schedule Table -->
@@ -412,6 +450,10 @@ function generateSchedule() {
   var interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
   var numCycles = parseInt(document.getElementById('numCycles').value) || 1;
   var cycleSeparator = parseInt(document.getElementById('cycleSeparator').value) || 0;
+  var reserveRate = parseFloat(document.getElementById('reserveRate').value) || 0;
+  var graceDays = parseInt(document.getElementById('graceDays').value) || 0;
+  var defaultRule = document.getElementById('defaultRule').value;
+  var meetingMode = document.getElementById('meetingMode').value;
 
   if (!contribution || contribution <= 0) return alert('Enter a valid contribution amount.');
   if (members.length < 2) return alert('At least 2 members are needed.');
@@ -428,6 +470,8 @@ function generateSchedule() {
   var totalEachPays = contribution * totalRounds;
   var totalEachReceives = payoutPerRound * numCycles;
   var endDate = getNextDate(startDate, frequency, totalRounds - 1 + (numCycles - 1) * cycleSeparator);
+  var reservePerRound = poolPerRound * reserveRate / 100;
+  var reserveTotal = reservePerRound * totalRounds;
 
   // Build all-cycles member order
   var allOrdered = [];
@@ -445,6 +489,7 @@ function generateSchedule() {
     '<div class="stat-card"><div class="value">' + fmt(totalEachPays, currency) + '</div><div class="label">Each Member Pays (Total)</div></div>' +
     '<div class="stat-card"><div class="value">' + fmt(totalEachReceives, currency) + '</div><div class="label">Each Member Receives (Total)</div></div>' +
     '<div class="stat-card"><div class="value">' + totalRounds + '</div><div class="label">Total Rounds (' + numCycles + ' cycle' + (numCycles > 1 ? 's' : '') + ')</div></div>' +
+    (reserveRate > 0 ? '<div class="stat-card"><div class="value">' + fmt(reserveTotal, currency) + '</div><div class="label">Projected Reserve</div></div>' : '') +
     '<div class="stat-card"><div class="value">' + formatDate(endDate) + '</div><div class="label">Schedule Ends</div></div>' +
     (rotationMode === 'lottery' ? '<div class="stat-card" style="background:#fffbeb;border-color:#fde68a"><div class="value" style="font-size:.95rem;font-weight:700">Lottery</div><div class="label">Order Applied</div></div>' : '');
   document.getElementById('statGrid').innerHTML = statHTML;
@@ -452,6 +497,38 @@ function generateSchedule() {
   document.getElementById('penaltyInfo').textContent = penaltyRate > 0
     ? 'Late payment penalty: ' + penaltyRate + '% of contribution = ' + fmt(penaltyAmount, currency) + ' per late payment.'
     : 'No late payment penalty has been set for this group.';
+
+  var defaultText = {
+    reserve: 'If a member misses payment, the group reserve covers the payout first and the member repays the reserve plus penalty.',
+    pause: 'If a member misses payment, the group pauses the payout until arrears and penalties are cleared.',
+    guarantor: 'If a member misses payment, the named guarantor covers the missed contribution and recovers it privately.'
+  }[defaultRule];
+  var channelText = {
+    whatsapp: 'Send reminders in the WhatsApp group before the due date and post proof of payment after collection.',
+    meeting: 'Record attendance, payments, and disputes in the physical meeting minutes.',
+    bank: 'Use bank or cooperative records as the source of truth for contributions and payouts.'
+  }[meetingMode];
+  var riskLabel = reserveRate >= 5 && penaltyRate >= 3 && graceDays <= 3 ? 'Strong rules' : reserveRate > 0 || penaltyRate > 0 ? 'Usable but tighten rules' : 'High trust risk';
+  var constitutionText = [
+    'AJO / CHAMA GROUP RULES',
+    'Contribution: ' + fmt(contribution, currency) + ' per member per ' + frequency,
+    'Pool: ' + fmt(poolPerRound, currency) + ' per round',
+    'Reserve: ' + reserveRate + '% per round = ' + fmt(reservePerRound, currency),
+    'Late grace: ' + graceDays + ' day(s)',
+    'Penalty: ' + penaltyRate + '% = ' + fmt(penaltyAmount, currency),
+    'Default rule: ' + defaultText,
+    'Reminder channel: ' + channelText
+  ].join('\n');
+  document.getElementById('constitutionPlan').innerHTML =
+    '<h3>Group Constitution Starter</h3>' +
+    '<div class="rule-grid">' +
+    '<div class="rule-box"><span>Rule strength</span><strong>' + riskLabel + '</strong></div>' +
+    '<div class="rule-box"><span>Reserve / round</span><strong>' + fmt(reservePerRound, currency) + '</strong></div>' +
+    '<div class="rule-box"><span>Total reserve</span><strong>' + fmt(reserveTotal, currency) + '</strong></div>' +
+    '<div class="rule-box"><span>Grace period</span><strong>' + graceDays + ' day(s)</strong></div>' +
+    '</div>' +
+    '<p class="rule-plan-text">' + defaultText + ' ' + channelText + '</p>' +
+    '<button class="btn btn-secondary btn-sm" onclick="copyConstitutionPlan()">Copy group rules</button>';
 
   // Schedule Table
   document.getElementById('scheduleHead').innerHTML = '<th>Round</th><th>Cycle</th><th>Date</th><th>Recipient</th><th>Pool Amount</th><th>Each Pays</th>';
@@ -494,7 +571,12 @@ function generateSchedule() {
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth' });
 
   // Store for sharing/export
-  window._ajoData = { members: members, allOrdered: allOrdered, contribution: contribution, currency: currency, frequency: frequency, startDate: startDate, poolPerRound: payoutPerRound, scheduleData: scheduleData, penaltyRate: penaltyRate, penaltyAmount: penaltyAmount, interestRate: interestRate, numCycles: numCycles };
+  window._ajoData = { members: members, allOrdered: allOrdered, contribution: contribution, currency: currency, frequency: frequency, startDate: startDate, poolPerRound: payoutPerRound, scheduleData: scheduleData, penaltyRate: penaltyRate, penaltyAmount: penaltyAmount, interestRate: interestRate, numCycles: numCycles, constitutionText: constitutionText };
+}
+
+function copyConstitutionPlan() {
+  var d = window._ajoData;
+  if (d && d.constitutionText && navigator.clipboard) navigator.clipboard.writeText(d.constitutionText);
 }
 
 function printSchedule() { window.print(); }
@@ -539,6 +621,10 @@ function resetForm() {
   document.getElementById('currency').value = 'NGN';
   document.getElementById('numCycles').value = '1';
   document.getElementById('cycleSeparator').value = '0';
+  document.getElementById('reserveRate').value = 5;
+  document.getElementById('graceDays').value = 2;
+  document.getElementById('defaultRule').value = 'reserve';
+  document.getElementById('meetingMode').value = 'whatsapp';
   updateMemberList();
   ['resultsCard', 'scheduleCard', 'timelineCard'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
 }

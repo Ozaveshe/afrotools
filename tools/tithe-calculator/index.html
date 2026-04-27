@@ -57,6 +57,17 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .plan-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f1f5f9}
 .plan-row .label{font-size:.82rem;font-weight:600;color:var(--afro-dark)}
 .plan-row .amount{font-size:.88rem;font-weight:700;color:#7c3aed}
+.steward-card{margin-top:18px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px}
+.steward-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.steward-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#312e81}
+.steward-copy{border:1.5px solid #ddd6fe;background:#fff;color:#6d28d9;border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:800;cursor:pointer}
+.steward-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.steward-metric{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:11px;text-align:center}
+.steward-k{font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.steward-v{font-size:.94rem;font-weight:900;color:#7c3aed}
+.steward-list{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.steward-list li{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:9px;padding:9px 11px;font-size:.78rem;color:#4c1d95;line-height:1.55}
+@media(max-width:680px){.steward-grid{grid-template-columns:1fr}.steward-copy{width:100%}}
 .verse{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:10px;padding:18px;margin-top:18px;text-align:center;font-style:italic;color:#6d28d9;font-size:.85rem;line-height:1.7}
 .verse cite{display:block;font-style:normal;font-weight:700;margin-top:8px;font-size:.72rem;color:#7c3aed}
 .sidebar .info-card{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:16px;margin-top:14px}
@@ -127,6 +138,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -171,6 +184,19 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div><label>Additional Monthly Offering</label><input type="number" id="offering" value="0" min="0" step="1000"></div>
 <div><label>Other Income (side hustle, etc.)</label><input type="number" id="otherIncome" value="0" min="0" step="10000"></div>
 </div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Essential Monthly Expenses</label><input type="number" id="essentials" value="0" min="0" step="1000" placeholder="Rent, food, school, transport"></div>
+<div><label>Special Pledge Goal</label><input type="number" id="pledgeGoal" value="0" min="0" step="1000" placeholder="Optional building/project pledge"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Pledge Months</label><input type="number" id="pledgeMonths" value="6" min="1" max="60" step="1"></div>
+<div><label>Giving Rhythm</label>
+<select id="givingRhythm">
+<option value="weekly">Weekly envelope</option>
+<option value="monthly" selected>Monthly transfer</option>
+<option value="split">Split tithe and offering dates</option>
+</select></div>
+</div>
 <button class="btn btn-primary" onclick="calculate()">Calculate Giving</button>
 </div></div>
 
@@ -179,6 +205,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-body">
 <div class="result-grid" id="resultGrid"></div>
 <div class="giving-plan" id="givingPlan"></div>
+<div id="stewardshipPlan"></div>
 <div class="verse" id="verse"></div>
 </div></div>
 </div>
@@ -237,6 +264,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 <afro-related-tools category="african" current="tithe-calculator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="rs-upgrade-shell" data-rs-tool-id="tithe-calculator"></section>
+<script src="/assets/js/religious-cultural-apps.js" defer></script>
 <afro-footer></afro-footer>
 
 <script>
@@ -246,6 +276,7 @@ const VERSES = [
   { text: '"Honor the LORD with your wealth, with the firstfruits of all your crops; then your barns will be filled to overflowing."', ref: 'Proverbs 3:9-10 (NIV)' },
   { text: '"Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap."', ref: 'Luke 6:38 (NIV)' },
 ];
+let lastGivingPlanText = '';
 
 function calculate() {
   const income = +document.getElementById('income').value;
@@ -254,13 +285,21 @@ function calculate() {
   const basis = document.getElementById('basis').value;
   const tithePct = +document.getElementById('tithePct').value / 100;
   const offering = +document.getElementById('offering').value;
+  const essentials = +document.getElementById('essentials').value || 0;
+  const pledgeGoal = +document.getElementById('pledgeGoal').value || 0;
+  const pledgeMonths = Math.max(1, +document.getElementById('pledgeMonths').value || 1);
+  const givingRhythm = document.getElementById('givingRhythm').value;
 
   const totalIncome = income + otherIncome;
   const monthlyTithe = totalIncome * tithePct;
-  const monthlyTotal = monthlyTithe + offering;
+  const pledgeMonthly = pledgeGoal > 0 ? pledgeGoal / pledgeMonths : 0;
+  const monthlyTotal = monthlyTithe + offering + pledgeMonthly;
   const annualTithe = monthlyTithe * 12;
   const annualTotal = monthlyTotal * 12;
   const weeklyTithe = monthlyTithe / 4.33;
+  const remainingAfterEssentials = totalIncome - essentials;
+  const remainingAfterGiving = totalIncome - essentials - monthlyTotal;
+  const givingShare = totalIncome > 0 ? monthlyTotal / totalIncome * 100 : 0;
 
   const basisLabel = basis === 'gross' ? 'Gross Income (before tax)' : 'Net Income (after tax)';
   const fmt = n => currency + ' ' + Math.round(n).toLocaleString('en');
@@ -279,10 +318,17 @@ function calculate() {
   plan += `<div class="plan-row"><span class="label">Weekly tithe</span><span class="amount">${fmt(weeklyTithe)}</span></div>`;
   plan += `<div class="plan-row"><span class="label">Monthly tithe (${(tithePct * 100)}% of ${basisLabel.toLowerCase()}: ${fmt(totalIncome)})</span><span class="amount">${fmt(monthlyTithe)}</span></div>`;
   if (offering > 0) plan += `<div class="plan-row"><span class="label">Monthly offering</span><span class="amount">${fmt(offering)}</span></div>`;
+  if (pledgeGoal > 0) plan += `<div class="plan-row"><span class="label">Special pledge over ${pledgeMonths} months</span><span class="amount">${fmt(pledgeMonthly)} / month</span></div>`;
   plan += `<div class="plan-row"><span class="label">Quarterly giving</span><span class="amount">${fmt(monthlyTotal * 3)}</span></div>`;
   plan += `<div class="plan-row"><span class="label">Annual total</span><span class="amount" style="font-size:1rem">${fmt(annualTotal)}</span></div>`;
-  plan += `<div class="plan-row"><span class="label">Remaining monthly income</span><span class="amount" style="color:#059669">${fmt(totalIncome - monthlyTotal)}</span></div>`;
+  plan += `<div class="plan-row"><span class="label">Remaining after essentials and giving</span><span class="amount" style="color:${remainingAfterGiving < 0 ? '#dc2626' : '#059669'}">${fmt(remainingAfterGiving)}</span></div>`;
   document.getElementById('givingPlan').innerHTML = plan;
+
+  renderStewardshipPlan({
+    currency, fmt, totalIncome, monthlyTithe, offering, pledgeGoal, pledgeMonths,
+    pledgeMonthly, monthlyTotal, annualTotal, essentials, remainingAfterEssentials,
+    remainingAfterGiving, givingShare, givingRhythm, basisLabel
+  });
 
   const verse = VERSES[Math.floor(Math.random() * VERSES.length)];
   document.getElementById('verse').innerHTML = `${verse.text}<cite>${verse.ref}</cite>`;
@@ -290,8 +336,75 @@ function calculate() {
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
 }
+
+function renderStewardshipPlan(data) {
+  const rhythmLabels = {
+    weekly: 'Set aside weekly envelopes or mobile-money transfers.',
+    monthly: 'Schedule one monthly transfer after income lands.',
+    split: 'Split tithe and offering dates so pledge giving does not crowd rent, food, school, or transport.'
+  };
+  let status = 'Comfortable';
+  if (data.remainingAfterGiving < 0) status = 'Needs review';
+  else if (data.givingShare > 20 || data.remainingAfterGiving < data.totalIncome * 0.15) status = 'Tight';
+
+  const actions = [];
+  actions.push(rhythmLabels[data.givingRhythm] || rhythmLabels.monthly);
+  if (data.essentials > 0) actions.push('Essentials entered: ' + data.fmt(data.essentials) + '. Remaining after essentials before giving is ' + data.fmt(data.remainingAfterEssentials) + '.');
+  if (data.pledgeGoal > 0) actions.push('Pledge pace: ' + data.fmt(data.pledgeMonthly) + ' per month for ' + data.pledgeMonths + ' months.');
+  if (data.remainingAfterGiving < 0) actions.push('This plan is above the entered household margin. Consider reducing the pledge pace or extending the pledge months.');
+  else actions.push('After this giving plan, household margin is ' + data.fmt(data.remainingAfterGiving) + ' for the month.');
+  actions.push('Keep a receipt or note with date, church/project, amount, and purpose for family budgeting.');
+
+  lastGivingPlanText = [
+    'Giving plan',
+    'Income base: ' + data.fmt(data.totalIncome) + ' | Basis: ' + data.basisLabel,
+    'Monthly tithe: ' + data.fmt(data.monthlyTithe) + ' | Offering: ' + data.fmt(data.offering) + ' | Pledge: ' + data.fmt(data.pledgeMonthly),
+    'Total monthly giving: ' + data.fmt(data.monthlyTotal) + ' (' + data.givingShare.toFixed(1) + '% of income).',
+    actions.join(' ')
+  ].join('\n');
+
+  document.getElementById('stewardshipPlan').innerHTML = `
+    <div class="steward-card">
+      <div class="steward-head"><div class="steward-title">Stewardship guardrails</div><button type="button" class="steward-copy" onclick="copyGivingPlan(this)">Copy plan</button></div>
+      <div class="steward-grid">
+        <div class="steward-metric"><div class="steward-k">Affordability</div><div class="steward-v">${status}</div></div>
+        <div class="steward-metric"><div class="steward-k">Giving share</div><div class="steward-v">${data.givingShare.toFixed(1)}%</div></div>
+        <div class="steward-metric"><div class="steward-k">Monthly margin</div><div class="steward-v">${data.fmt(data.remainingAfterGiving)}</div></div>
+      </div>
+      <ul class="steward-list">${actions.map(item => `<li>${item}</li>`).join('')}</ul>
+    </div>
+  `;
+}
+
+function copyGivingPlan(btn) {
+  if (!lastGivingPlanText) return;
+  const done = () => {
+    if (btn) {
+      const old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = old; }, 1300);
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(lastGivingPlanText).then(done).catch(() => fallbackCopyGivingPlan(done));
+  } else {
+    fallbackCopyGivingPlan(done);
+  }
+}
+
+function fallbackCopyGivingPlan(done) {
+  const area = document.createElement('textarea');
+  area.value = lastGivingPlanText;
+  area.setAttribute('readonly','');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(area);
+}
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script>
 (function(){
   var target = document.getElementById('resultCard');

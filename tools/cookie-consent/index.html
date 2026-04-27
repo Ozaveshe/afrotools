@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
 .code-block{background:#0A1628;border-radius:12px;padding:1.25rem;font-family:'Courier New',Courier,monospace;font-size:.78rem;line-height:1.7;color:#e2e8f0;white-space:pre;overflow-x:auto;overflow-y:auto;max-height:350px;position:relative;margin-top:.75rem}
@@ -163,7 +164,167 @@
     </div>
   </div>
 
-  <div class="leg-seo">
+  <!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"cookie-consent","title":"Cookie Consent","workflowTitle":"Consent design and code check","coverage":"Banner generator","decision":"Which cookies are strictly necessary, analytics, advertising, preferences or security","evidence":["Audit actual cookies in the browser before publishing the banner","Block non-essential tags until the saved preference allows them","Keep a visible preference link in the footer or account area"],"redFlags":["A banner that says “accept” but loads tracking before any choice","No reject button where opt-in consent is required","Using dark patterns that make refusal harder than acceptance"],"related":[{"label":"Privacy Policy Generator","href":"/tools/privacy-policy-gen/"},{"label":"DPA Generator","href":"/tools/dpa-generator/"},{"label":"NDPA Checker","href":"/tools/ndpa-checker/"}],"competitor":{"group":"privacy","label":"Termly, OneTrust and enterprise consent platforms","patterns":["Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.","They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.","They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Audit actual cookies in the browser before publishing the banner\".","Saved workflows can be resumed from the dashboard and handed off to Privacy Policy Generator when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the consent design and code check result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/privacy-policy-gen/">Privacy Policy Generator</a><a href="/tools/dpa-generator/">DPA Generator</a><a href="/tools/ndpa-checker/">NDPA Checker</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Termly, OneTrust and enterprise consent platforms. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.</li><li>They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.</li><li>They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Audit actual cookies in the browser before publishing the banner&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Privacy Policy Generator when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Which cookies are strictly necessary, analytics, advertising, preferences or security</li><li>Audit actual cookies in the browser before publishing the banner</li><li>A banner that says “accept” but loads tracking before any choice</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Banner generator</div>
+  <h2 id="legal-upgrade-heading">Consent design and code check</h2>
+  <p>A banner is compliant only when the site behaviour matches the choice. Non-essential analytics, advertising and tracking cookies should wait for consent where consent is required.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Which cookies are strictly necessary, analytics, advertising, preferences or security</li><li>Whether opt-in, opt-out or notice-only is appropriate for the target jurisdictions</li><li>How users can withdraw or change consent later</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Audit actual cookies in the browser before publishing the banner</li><li>Block non-essential tags until the saved preference allows them</li><li>Keep a visible preference link in the footer or account area</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>A banner that says “accept” but loads tracking before any choice</li><li>No reject button where opt-in consent is required</li><li>Using dark patterns that make refusal harder than acceptance</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.ndpc.gov.ng/ndp-act-2023/" target="_blank" rel="noopener">Nigeria Data Protection Commission</a><a href="https://inforegulator.org.za/" target="_blank" rel="noopener">South Africa Information Regulator</a><a href="https://www.dataprotection.ie/en/dpc-guidance/guide-data-protection-impact-assessments" target="_blank" rel="noopener">DPIA guidance</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/privacy-policy-gen/">Privacy Policy Generator</a><a href="/tools/dpa-generator/">DPA Generator</a><a href="/tools/ndpa-checker/">NDPA Checker</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the consent design and code check trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Which cookies are strictly necessary, analytics, advertising, preferences or security.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Audit actual cookies in the browser before publishing the banner. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: A banner that says “accept” but loads tracking before any choice.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly>Consent design and code check action pack
+Tool: cookie-consent
+Coverage: Banner generator
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Which cookies are strictly necessary, analytics, advertising, preferences or security.
+
+Evidence to attach:
+- Audit actual cookies in the browser before publishing the banner
+- Block non-essential tags until the saved preference allows them
+- Keep a visible preference link in the footer or account area
+
+Escalate before filing or signing if:
+- A banner that says “accept” but loads tracking before any choice
+- No reject button where opt-in consent is required
+- Using dark patterns that make refusal harder than acceptance
+
+Primary checks:
+- Nigeria Data Protection Commission: https://www.ndpc.gov.ng/ndp-act-2023/
+- South Africa Information Regulator: https://inforegulator.org.za/
+- DPIA guidance: https://www.dataprotection.ie/en/dpc-guidance/guide-data-protection-impact-assessments
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<div class="leg-seo">
     <h2>Cookie Consent Requirements Under African and EU Law</h2>
     <p>Cookie consent banners are required by data protection laws that mandate user consent before setting non-essential cookies. The EU GDPR, Nigeria's NDPA 2023, South Africa's POPIA, and Kenya's DPA 2019 all require prior consent for analytics, marketing, and tracking cookies.</p>
     <p>A legally compliant cookie consent banner must: (1) appear before any non-essential cookies are set; (2) clearly explain what cookies are used; (3) offer a genuine option to decline; (4) not use dark patterns to manipulate consent; (5) record and store the user's consent choice.</p>
@@ -264,5 +425,21 @@ function toggleCard(h){var b=h.nextElementSibling;var e=h.getAttribute('aria-exp
 
 updatePreview();
 </script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js" defer></script>
 </body>
 </html>

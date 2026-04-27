@@ -26,6 +26,30 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=20260424a">
 <link rel="stylesheet" href="responsive-fixes.css?v=20260425a">
+<style>
+  .ak-planner-section{padding:0 20px 56px;background:#fff}
+  .ak-planner-card{max-width:1120px;margin:0 auto;border:1px solid rgba(124,58,35,0.14);border-radius:8px;background:linear-gradient(180deg,#fff 0%,#fff7ed 100%);padding:24px;box-shadow:0 14px 34px rgba(38,24,15,0.06)}
+  .ak-planner-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:18px}
+  .ak-planner-head .ak-section-title,.ak-planner-head .ak-section-sub{text-align:left;margin-left:0;margin-right:0}
+  .ak-planner-head .ak-section-sub{margin-bottom:0}
+  .ak-planner-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+  .ak-planner-field label{display:block;font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#9a6b49;margin-bottom:6px}
+  .ak-planner-field select,.ak-planner-field input{width:100%;min-height:44px;border:1px solid rgba(124,58,35,0.18);border-radius:8px;background:#fff;padding:10px 12px;font:inherit;color:#2b1d15}
+  .ak-planner-field select:focus,.ak-planner-field input:focus{outline:2px solid rgba(180,83,9,0.22);border-color:#b45309}
+  .ak-planner-result{border-top:1px solid rgba(124,58,35,0.12);padding-top:16px}
+  .ak-planner-pick{display:grid;grid-template-columns:1fr 1.2fr;gap:16px;align-items:stretch}
+  .ak-planner-image{min-height:210px;border-radius:8px;overflow:hidden;background:#f8eadf}
+  .ak-planner-image img{width:100%;height:100%;object-fit:cover;display:block}
+  .ak-planner-copy{background:#fff;border:1px solid rgba(124,58,35,0.12);border-radius:8px;padding:18px}
+  .ak-planner-copy h3{margin:0 0 8px;font-size:1.15rem;color:#26180f}
+  .ak-planner-copy p{margin:8px 0 0;color:#6b4b36;font-size:0.88rem;line-height:1.65}
+  .ak-planner-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+  .ak-planner-metrics span{display:block;border:1px solid rgba(124,58,35,0.12);border-radius:8px;padding:10px;background:#fff8f1;font-size:0.76rem;color:#6b4b36}
+  .ak-planner-metrics strong{display:block;color:#2b1d15;font-size:0.94rem;margin-top:2px}
+  .ak-planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  @media (max-width:960px){.ak-planner-grid{grid-template-columns:repeat(2,1fr)}.ak-planner-pick{grid-template-columns:1fr}.ak-planner-metrics{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.ak-planner-card{padding:18px}.ak-planner-head{flex-direction:column}.ak-planner-grid,.ak-planner-metrics{grid-template-columns:1fr}.ak-planner-actions .ak-btn{width:100%;justify-content:center}}
+</style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroKitchen — African Recipes","description":"A warm African recipe atlas with 160+ dishes from all 54 countries. Search by country, ingredient, occasion, difficulty, or collection.","url":"https://afrotools.com/tools/afrokitchen/","inLanguage":"en","applicationCategory":"FoodApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroKitchen — African Recipes","url":"https://afrotools.com/tools/afrokitchen/","description":"A warm African recipe atlas with 160+ dishes from all 54 countries. Search by country, ingredient, occasion, difficulty, or collection.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many African recipes does AfroKitchen have?","acceptedAnswer":{"@type":"Answer","text":"AfroKitchen has 160+ recipes from all 54 African countries, spanning West African, East African, North African, Southern African, and Central African cuisines."}},{"@type":"Question","name":"Can I adjust serving sizes?","acceptedAnswer":{"@type":"Answer","text":"Yes. Recipe pages support dynamic serving size adjustment so ingredient quantities update when you change the number of servings."}},{"@type":"Question","name":"Does AfroKitchen show ingredient costs?","acceptedAnswer":{"@type":"Answer","text":"Yes. Ingredient cost previews are available for supported local African currencies including NGN, KES, GHS, and ZAR."}},{"@type":"Question","name":"Is AfroKitchen free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. Browse recipes, use cooking timers, adjust servings, and get cooking advice at no cost."}},{"@type":"Question","name":"Can I submit my own recipe?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the recipe submission page to share a family dish with the AfroKitchen community."}}]}</script>
@@ -62,6 +86,8 @@
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -157,6 +183,55 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- TONIGHT PLANNER -->
+  <section class="ak-planner-section">
+    <div class="ak-planner-card rv">
+      <div class="ak-planner-head">
+        <div>
+          <div class="ak-section-kicker">Tonight planner</div>
+          <h2 class="ak-section-title">Let AfroKitchen Pick a Dish</h2>
+          <p class="ak-section-sub">Choose time, diet, country, and occasion. Get a recipe plus a simple prep note you can send to whoever is shopping.</p>
+        </div>
+        <a class="ak-btn ak-btn-secondary" href="#recipes-grid">Browse all</a>
+      </div>
+      <div class="ak-planner-grid">
+        <div class="ak-planner-field">
+          <label for="ak-plan-time">Max time</label>
+          <select id="ak-plan-time">
+            <option value="30">30 minutes</option>
+            <option value="45" selected>45 minutes</option>
+            <option value="75">75 minutes</option>
+            <option value="999">Any time</option>
+          </select>
+        </div>
+        <div class="ak-planner-field">
+          <label for="ak-plan-servings">Servings</label>
+          <input id="ak-plan-servings" type="number" min="1" max="30" step="1" value="4">
+        </div>
+        <div class="ak-planner-field">
+          <label for="ak-plan-diet">Diet</label>
+          <select id="ak-plan-diet"><option value="">Any diet</option></select>
+        </div>
+        <div class="ak-planner-field">
+          <label for="ak-plan-country">Country</label>
+          <select id="ak-plan-country"><option value="">Any country</option></select>
+        </div>
+        <div class="ak-planner-field">
+          <label for="ak-plan-occasion">Occasion</label>
+          <select id="ak-plan-occasion">
+            <option value="">Any occasion</option>
+            <option value="everyday">Everyday</option>
+            <option value="celebration">Celebration</option>
+            <option value="festive">Festive</option>
+            <option value="budget-friendly">Budget-friendly</option>
+            <option value="street-food">Street food</option>
+          </select>
+        </div>
+      </div>
+      <div class="ak-planner-result" id="ak-plan-result" aria-live="polite"></div>
     </div>
   </section>
 
@@ -320,7 +395,7 @@
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/ghana/">
         <span class="ak-country-chip-flag">GH</span>
         <span class="ak-country-chip-copy"><strong>Ghana</strong><small>West Africa</small></span>
-        <span class="ak-country-chip-count"><strong>3</strong><small>Dishes</small></span>
+        <span class="ak-country-chip-count"><strong>6</strong><small>Dishes</small></span>
       </a>
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/guinea/">
         <span class="ak-country-chip-flag">GN</span>
@@ -340,7 +415,7 @@
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/kenya/">
         <span class="ak-country-chip-flag">KE</span>
         <span class="ak-country-chip-copy"><strong>Kenya</strong><small>East Africa</small></span>
-        <span class="ak-country-chip-count"><strong>3</strong><small>Dishes</small></span>
+        <span class="ak-country-chip-count"><strong>5</strong><small>Dishes</small></span>
       </a>
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/lesotho/">
         <span class="ak-country-chip-flag">LS</span>
@@ -405,7 +480,7 @@
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/nigeria/">
         <span class="ak-country-chip-flag">NG</span>
         <span class="ak-country-chip-copy"><strong>Nigeria</strong><small>West Africa</small></span>
-        <span class="ak-country-chip-count"><strong>3</strong><small>Dishes</small></span>
+        <span class="ak-country-chip-count"><strong>7</strong><small>Dishes</small></span>
       </a>
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/republic-of-congo/">
         <span class="ak-country-chip-flag">CG</span>
@@ -445,7 +520,7 @@
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/south-africa/">
         <span class="ak-country-chip-flag">ZA</span>
         <span class="ak-country-chip-copy"><strong>South Africa</strong><small>Southern Africa</small></span>
-        <span class="ak-country-chip-count"><strong>3</strong><small>Dishes</small></span>
+        <span class="ak-country-chip-count"><strong>4</strong><small>Dishes</small></span>
       </a>
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/south-sudan/">
         <span class="ak-country-chip-flag">SS</span>
@@ -703,6 +778,25 @@
     diffSelect.appendChild(opt);
   });
 
+  var planCountry = document.getElementById('ak-plan-country');
+  var planDiet = document.getElementById('ak-plan-diet');
+  if (planCountry) {
+    codes.forEach(function (c) {
+      var opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = AK.COUNTRIES[c].flag + ' ' + AK.COUNTRIES[c].name;
+      planCountry.appendChild(opt);
+    });
+  }
+  if (planDiet) {
+    AK.DIETS.forEach(function (d) {
+      var opt = document.createElement('option');
+      opt.value = d;
+      opt.textContent = titleCase(d);
+      planDiet.appendChild(opt);
+    });
+  }
+
   // ── Load recipes ──
   var PAGE_SIZE = 12;
   var currentRecipes = [];
@@ -712,12 +806,22 @@
   var recipeTotal = document.getElementById('recipe-total');
   var recipesMoreWrap = document.getElementById('recipes-more-wrap');
   var recipesMoreBtn = document.getElementById('recipes-more');
+  var mealPlannerRecipes = [];
 
   function titleCase(value) {
     return String(value || '')
       .split('-')
       .map(function (part) { return part ? part.charAt(0).toUpperCase() + part.slice(1) : ''; })
       .join(' ');
+  }
+
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function getFilterLabels(filters) {
@@ -921,15 +1025,122 @@
 
   async function loadLandingMeta() {
     var allRecipes = await AK.fetchRecipes({});
+    mealPlannerRecipes = allRecipes || [];
     if (recipeTotal && allRecipes && allRecipes.length) {
       recipeTotal.textContent = String(allRecipes.length);
     }
     renderCountryGrid(allRecipes || []);
+    renderMealPlan();
+  }
+
+  function recipeTotalMinutes(recipe) {
+    return Number(recipe.prep_time_minutes || 0) + Number(recipe.cook_time_minutes || 0);
+  }
+
+  function getRecipeImage(recipe) {
+    if (!recipe) return '';
+    if (recipe.image_url) return recipe.image_url;
+    if (AKImages && typeof AKImages.getImageUrl === 'function') return AKImages.getImageUrl(recipe);
+    return '/assets/img/tools/afrokitchen.webp';
+  }
+
+  function ingredientList(recipe, servings) {
+    if (!recipe || !Array.isArray(recipe.ingredients) || !recipe.ingredients.length) return [];
+    var scaled = AK.scaleIngredients(recipe.ingredients, recipe.default_servings || 1, servings);
+    return scaled.slice(0, 10).map(function (item) {
+      var amount = Number(item.scaled_amount || 0) > 0 ? AK.formatAmount(item.scaled_amount) + ' ' : '';
+      var unit = item.unit ? item.unit + ' ' : '';
+      return amount + unit + item.name;
+    });
+  }
+
+  function renderMealPlan() {
+    var result = document.getElementById('ak-plan-result');
+    if (!result) return;
+    var maxTime = Number((document.getElementById('ak-plan-time') || {}).value || 45);
+    var servings = Math.max(1, Math.min(30, Number((document.getElementById('ak-plan-servings') || {}).value || 4)));
+    var diet = (document.getElementById('ak-plan-diet') || {}).value || '';
+    var country = (document.getElementById('ak-plan-country') || {}).value || '';
+    var occasion = (document.getElementById('ak-plan-occasion') || {}).value || '';
+    var pool = mealPlannerRecipes.slice();
+    if (!pool.length) {
+      result.innerHTML = '<p>Loading recipe ideas...</p>';
+      return;
+    }
+    pool = pool.filter(function (recipe) {
+      var ok = recipeTotalMinutes(recipe) <= maxTime;
+      if (country) ok = ok && recipe.country_code === country;
+      if (diet) ok = ok && Array.isArray(recipe.diet_tags) && recipe.diet_tags.indexOf(diet) !== -1;
+      if (occasion) {
+        var tags = recipe.tags || [];
+        ok = ok && (recipe.occasion === occasion || tags.indexOf(occasion) !== -1);
+      }
+      return ok;
+    });
+    if (!pool.length) {
+      result.innerHTML = '<p>No dish matches every planner choice. Try widening the time, country, or diet filters.</p>';
+      return;
+    }
+    pool.sort(function (a, b) {
+      return (Number(b.is_featured || 0) - Number(a.is_featured || 0)) || ((b.view_count || 0) - (a.view_count || 0));
+    });
+    var recipe = pool[0];
+    var total = recipeTotalMinutes(recipe);
+    var ingredients = ingredientList(recipe, servings);
+    var countryInfo = AK.COUNTRIES[recipe.country_code] || {};
+    var shoppingNote = ingredients.length ? ingredients.join(', ') : 'Open the recipe page for the full ingredient list.';
+    var planText = 'AfroKitchen meal plan\n' +
+      'Dish: ' + recipe.name + '\n' +
+      'Country: ' + recipe.country_name + '\n' +
+      'Servings: ' + servings + '\n' +
+      'Time: ' + total + ' minutes\n' +
+      'Shopping start: ' + shoppingNote + '\n' +
+      'Serve with: ' + (recipe.best_served_with || 'Follow the recipe notes.');
+    result.innerHTML =
+      '<div class="ak-planner-pick">' +
+        '<div class="ak-planner-image"><img src="' + esc(getRecipeImage(recipe)) + '" alt="' + esc(recipe.image_alt || recipe.name) + '" loading="lazy"></div>' +
+        '<div class="ak-planner-copy">' +
+          '<h3>' + esc(recipe.name) + '</h3>' +
+          '<p><strong>' + esc((countryInfo.flag || '') + ' ' + recipe.country_name) + '</strong> fits your planner because it can land within ' + total + ' minutes and scales cleanly to ' + servings + ' servings.</p>' +
+          '<div class="ak-planner-metrics">' +
+            '<span>Time<strong>' + total + ' min</strong></span>' +
+            '<span>Serves<strong>' + servings + '</strong></span>' +
+            '<span>Level<strong>' + esc(recipe.difficulty || 'medium') + '</strong></span>' +
+            '<span>Energy<strong>' + esc(recipe.calories ? recipe.calories + ' cal' : 'N/A') + '</strong></span>' +
+          '</div>' +
+          '<p><strong>Shopping start:</strong> ' + esc(shoppingNote) + '</p>' +
+          '<p><strong>Serve with:</strong> ' + esc(recipe.best_served_with || 'Check the recipe notes for sides and pairings.') + '</p>' +
+          '<div class="ak-planner-actions">' +
+            '<a class="ak-btn ak-btn-primary" href="' + esc(AKRoutes.recipe(recipe.slug)) + '">Open recipe</a>' +
+            '<button class="ak-btn ak-btn-secondary" type="button" id="ak-plan-copy">Copy prep note</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    var copyButton = document.getElementById('ak-plan-copy');
+    if (copyButton) {
+      copyButton.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(planText).then(function () {
+            copyButton.textContent = 'Copied';
+            setTimeout(function () { copyButton.textContent = 'Copy prep note'; }, 1400);
+          });
+        } else {
+          window.prompt('Copy prep note', planText);
+        }
+      });
+    }
   }
 
   // ── Event listeners ──
   [countrySelect, catSelect, dietSelect, diffSelect].forEach(function (el) {
     el.addEventListener('change', loadRecipes);
+  });
+  ['ak-plan-time', 'ak-plan-servings', 'ak-plan-diet', 'ak-plan-country', 'ak-plan-occasion'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('change', renderMealPlan);
+      el.addEventListener('input', renderMealPlan);
+    }
   });
   if (recipesMoreBtn) {
     recipesMoreBtn.addEventListener('click', function () {

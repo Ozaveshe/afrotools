@@ -2,381 +2,64 @@
 <html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AFCON Tournament Predictor — Africa Cup of Nations 2025 Bracket Simulator | AfroTools</title>
-<meta name="description" content="Simulate the Africa Cup of Nations tournament with ELO-style ratings. Predict group standings, knockout bracket, and tournament winner probability for all 24 teams.">
+<title>AFCON Tournament Predictor - 2025 Review and 2027 Planning | AfroTools</title>
+<meta name="description" content="Model AFCON title probability, compare contenders, and run 2025 review or 2027 planning assumptions with official CAF context.">
 <link rel="canonical" href="https://afrotools.com/tools/afcon-predictor/">
 <meta property="og:title" content="AFCON Tournament Predictor | AfroTools">
-<meta property="og:description" content="Simulate AFCON bracket using ELO ratings. Predict group standings, knockout rounds, and tournament winner.">
+<meta property="og:description" content="Model AFCON title probability, compare contenders, and run 2025 review or 2027 planning assumptions with official CAF context.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://afrotools.com/tools/afcon-predictor/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/tools/afcon-predictor/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AFCON Tournament Predictor","description":"Simulate Africa Cup of Nations tournament with ELO-style ratings. Predict group standings and winner.","url":"https://afrotools.com/tools/afcon-predictor/","applicationCategory":"SportsApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Sports & Entertainment","item":"https://afrotools.com/sports/"},{"@type":"ListItem","position":3,"name":"AFCON Predictor","item":"https://afrotools.com/tools/afcon-predictor/"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=ca21dbe3">
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
-:root{--en-accent:#DC2626;--en-accent-dark:#B91C1C;--en-accent-light:#FEE2E2;--en-accent-pale:#FEF2F2;--en-shadow-hover:0 4px 16px rgba(220,38,38,.18),0 1px 4px rgba(0,0,0,.08)}
-.en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a0a 50%,#450a0a 100%)!important}
-.container{max-width:1100px;margin:0 auto;padding:0 24px}
-.group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:24px}
-.group-card{background:#fff;border:1.5px solid var(--en-border,#e2e8f0);border-radius:12px;padding:16px}
-.group-card h3{font-size:.9rem;font-weight:700;color:var(--en-accent-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.group-table{width:100%;font-size:.82rem;border-collapse:collapse}
-.group-table th{padding:4px 8px;text-align:left;font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #e2e8f0}
-.group-table td{padding:6px 8px;border-bottom:1px solid #f1f5f9}
-.group-table tr:last-child td{border-bottom:none}
-.group-table .pos-1{background:#fef9c3}
-.group-table .pos-2{background:#f0fdf4}
-.bracket-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.bracket-match{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;font-size:.88rem}
-.bracket-match-label{font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
-.bracket-match-teams{display:flex;flex-direction:column;gap:6px}
-.bracket-team{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:6px;background:#f8fafd}
-.bracket-team.winner{background:#fef2f2;font-weight:700;color:#B91C1C}
-.win-prob{font-size:.76rem;color:#64748b;font-weight:600}
-.trophy-card{background:linear-gradient(135deg,#B91C1C,#7f1d1d);color:#fff;border-radius:14px;padding:28px;text-align:center;margin-bottom:24px}
-.trophy-card .trophy-icon{font-size:3rem;margin-bottom:10px}
-.trophy-card h3{font-family:'Instrument Serif',Georgia,serif;font-size:1.8rem;font-weight:400;margin-bottom:6px}
-.trophy-card p{font-size:.9rem;opacity:.8}
-</style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AFCON Tournament Predictor","description":"Model AFCON title probability, compare contenders, and run 2025 review or 2027 planning assumptions with official CAF context.","url":"https://afrotools.com/tools/afcon-predictor/","applicationCategory":"SportsApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Sports and Entertainment","item":"https://afrotools.com/sports/"},{"@type":"ListItem","position":3,"name":"AFCON Tournament Predictor","item":"https://afrotools.com/tools/afcon-predictor/"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5"><link rel="stylesheet" href="/assets/css/sports-tools.css">
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 </head>
-<body>
+<body data-sports-tool="afcon-predictor">
 <afro-navbar theme="dark" active="sports"></afro-navbar>
 
-<section class="en-tool-hero">
+<section class="en-tool-hero sports-hero">
 <div class="container">
 <nav class="en-breadcrumb" aria-label="Breadcrumb">
-<a href="/">Home</a><span class="en-breadcrumb-sep">›</span>
-<a href="/sports/">Sports &amp; Entertainment</a><span class="en-breadcrumb-sep">›</span>
-<span class="en-breadcrumb-current">AFCON Predictor</span>
+<a href="/">Home</a><span class="en-breadcrumb-sep">/</span>
+<a href="/sports/">Sports and Entertainment</a><span class="en-breadcrumb-sep">/</span>
+<span class="en-breadcrumb-current">AFCON Tournament Predictor</span>
 </nav>
-<h1>AFCON Tournament <em>Predictor</em></h1>
-<p>Simulate the Africa Cup of Nations bracket using ELO-style ratings. Predict group standings, knockout matches, and the most likely tournament winner.</p>
+<h1>AFCON Tournament Predictor</h1>
+<p>Stress-test African national teams with a transparent title model. Use it for 2025 review content, 2027 planning, fan analysis, and pre-tournament scenario writing.</p>
 <div class="en-tool-hero-meta">
-<span class="en-tool-hero-pill">🏆 24 Teams</span>
-<span class="en-tool-hero-pill">📊 ELO Simulation</span>
-<span class="en-tool-hero-pill">⚽ Full Bracket</span>
+<span class="en-tool-hero-pill">Tournament model</span>
+<span class="en-tool-hero-pill">Africa-first assumptions</span>
+<span class="en-tool-hero-pill">Free interactive calculator</span>
+<span class="en-tool-hero-pill">PDF-ready report</span>
 </div>
 </div>
 </section>
 
-<main>
-<div class="en-tool-layout-wide">
-
-<div class="en-card">
-<div class="en-card-title"><div class="en-card-title-icon">⚙️</div>Simulation Settings</div>
-<div class="en-form-grid">
-<div class="en-field">
-<label class="en-label" for="predMethod">Prediction Method</label>
-<select class="en-select" id="predMethod">
-<option value="elo">ELO Rating (recommended)</option>
-<option value="fifa">FIFA World Ranking</option>
-<option value="form">Recent Form (last 10 games)</option>
-</select>
+<main class="sports-page-main">
+<div class="sports-tool-layout">
+<section class="sports-tool-intro">
+<div class="sports-tool-brief">
+<h2>What this app does</h2>
+<p>Stress-test African national teams with a transparent title model. Use it for 2025 review content, 2027 planning, fan analysis, and pre-tournament scenario writing.</p>
 </div>
-<div class="en-field">
-<label class="en-label" for="simRuns">Simulation Runs</label>
-<select class="en-select" id="simRuns">
-<option value="1000">1,000 runs (fast)</option>
-<option value="5000" selected>5,000 runs (accurate)</option>
-<option value="10000">10,000 runs (most accurate)</option>
-</select>
+<div class="sports-tool-promise">
+<h2>Built for this use case</h2>
+<ul><li>Top contender ranking across a 24-team field.</li><li>Adjustable form, defensive, and host assumptions.</li><li>Official CAF source card for tournament and appeal context.</li><li>PDF-ready report unlock, lead capture, and dashboard save after the result.</li></ul>
 </div>
-</div>
-<div class="en-form-actions">
-<button class="en-btn" onclick="runSimulation()">Run AFCON Simulation 🏆</button>
-</div>
-</div>
-
-<div class="en-tip" style="display:block">
-<div class="en-tip-icon">💡</div>
-<div class="en-tip-body">
-<div class="en-tip-label">How it works</div>
-<div class="en-tip-text">The simulator uses ELO-style ratings based on FIFA rankings, AFCON history, and recent results. Each match is simulated using win probability calculated from the rating difference. Group stages run round-robin; knockouts use single-elimination. Run 5,000+ times for stable probability estimates.</div>
-</div>
-</div>
-
-<div class="en-results" id="predResults">
-
-<div class="trophy-card" id="rTrophyCard">
-<div class="trophy-icon">🏆</div>
-<h3 id="rWinner">—</h3>
-<p id="rWinnerProb">Most likely tournament winner</p>
-</div>
-
-<div class="en-card">
-<div class="en-card-title"><div class="en-card-title-icon">📊</div>Group Stage Standings (Predicted)</div>
-<p style="font-size:.85rem;color:#64748b;margin-bottom:16px">🟡 = Group winner | 🟢 = Runner-up (advance to round of 16)</p>
-<div class="group-grid" id="groupStandingsGrid"></div>
-</div>
-
-<div class="en-card">
-<div class="en-card-title"><div class="en-card-title-icon">⚔️</div>Predicted Knockout Bracket</div>
-<div class="en-notice" style="margin-bottom:16px"><strong>Round of 16</strong> — Group winners vs runners-up</div>
-<div class="bracket-grid" id="r16Grid"></div>
-<div class="en-notice" style="margin:16px 0"><strong>Quarter-Finals</strong></div>
-<div class="bracket-grid" id="qfGrid"></div>
-<div class="en-notice" style="margin:16px 0"><strong>Semi-Finals</strong></div>
-<div class="bracket-grid" id="sfGrid"></div>
-</div>
-
-<div class="en-card">
-<div class="en-card-title"><div class="en-card-title-icon">📈</div>Tournament Winner Probability</div>
-<div id="winProbGrid"></div>
-</div>
-
-</div>
-</div>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</section>
+<div id="sports-tool-root" class="sports-tool-root"></div>
 </div>
 </main>
 
 <afro-footer></afro-footer>
-<script>
-(function(){
-'use strict';
-
-// AFCON teams with ELO ratings (approximate, based on FIFA rankings 2024-2025)
-var TEAMS = [
-  {name:'Morocco',flag:'🇲🇦',elo:1850,group:'A'},
-  {name:'Egypt',flag:'🇪🇬',elo:1780,group:'A'},
-  {name:'Tanzania',flag:'🇹🇿',elo:1450,group:'A'},
-  {name:'DR Congo',flag:'🇨🇩',elo:1580,group:'A'},
-  {name:'Nigeria',flag:'🇳🇬',elo:1790,group:'B'},
-  {name:'South Africa',flag:'🇿🇦',elo:1680,group:'B'},
-  {name:'Namibia',flag:'🇳🇦',elo:1420,group:'B'},
-  {name:'Zimbabwe',flag:'🇿🇼',elo:1440,group:'B'},
-  {name:"Côte d'Ivoire",flag:'🇨🇮',elo:1820,group:'C'},
-  {name:'Guinea',flag:'🇬🇳',elo:1570,group:'C'},
-  {name:'Sierra Leone',flag:'🇸🇱',elo:1390,group:'C'},
-  {name:'Equatorial Guinea',flag:'🇬🇶',elo:1360,group:'C'},
-  {name:'Senegal',flag:'🇸🇳',elo:1870,group:'D'},
-  {name:'Cameroon',flag:'🇨🇲',elo:1710,group:'D'},
-  {name:'Guinea-Bissau',flag:'🇬🇼',elo:1400,group:'D'},
-  {name:'Gambia',flag:'🇬🇲',elo:1480,group:'D'},
-  {name:'Algeria',flag:'🇩🇿',elo:1760,group:'E'},
-  {name:'Burkina Faso',flag:'🇧🇫',elo:1600,group:'E'},
-  {name:'Mauritania',flag:'🇲🇷',elo:1430,group:'E'},
-  {name:'Angola',flag:'🇦🇴',elo:1500,group:'E'},
-  {name:'Mali',flag:'🇲🇱',elo:1640,group:'F'},
-  {name:'Tunisia',flag:'🇹🇳',elo:1700,group:'F'},
-  {name:'Ghana',flag:'🇬🇭',elo:1670,group:'F'},
-  {name:'Uganda',flag:'🇺🇬',elo:1490,group:'F'},
-];
-
-function winProb(eloA, eloB){
-  return 1/(1+Math.pow(10,(eloB-eloA)/400));
-}
-
-function simulateMatch(teamA, teamB){
-  var pA=winProb(teamA.elo, teamB.elo);
-  var r=Math.random();
-  // draw possible
-  var drawRange=0.22;
-  var pAAdj=pA*(1-drawRange);
-  var pBAdj=(1-pA)*(1-drawRange);
-  if(r<pAAdj) return {winner:teamA,loser:teamB,draw:false};
-  if(r<pAAdj+drawRange) return {winner:null,loser:null,draw:true,a:teamA,b:teamB};
-  return {winner:teamB,loser:teamA,draw:false};
-}
-
-function simulateGroup(teams){
-  var standings={};
-  teams.forEach(function(t){standings[t.name]={team:t,pts:0,gf:0,ga:0,w:0,d:0,l:0};});
-  for(var i=0;i<teams.length;i++){
-    for(var j=i+1;j<teams.length;j++){
-      var result=simulateMatch(teams[i],teams[j]);
-      var goalsA=Math.floor(Math.random()*4);
-      var goalsB=Math.floor(Math.random()*4);
-      if(result.draw){
-        var g=Math.floor(Math.random()*3);
-        standings[teams[i].name].pts+=1;standings[teams[i].name].d++;standings[teams[i].name].gf+=g;standings[teams[i].name].ga+=g;
-        standings[teams[j].name].pts+=1;standings[teams[j].name].d++;standings[teams[j].name].gf+=g;standings[teams[j].name].ga+=g;
-      } else {
-        var wn=result.winner.name,ln=result.loser.name;
-        var wg=Math.floor(Math.random()*3)+1,lg=Math.floor(Math.random()*2);
-        standings[wn].pts+=3;standings[wn].w++;standings[wn].gf+=wg;standings[wn].ga+=lg;
-        standings[ln].l++;standings[ln].gf+=lg;standings[ln].ga+=wg;
-      }
-    }
-  }
-  var arr=Object.values(standings);
-  arr.sort(function(a,b){
-    if(b.pts!==a.pts) return b.pts-a.pts;
-    return (b.gf-b.ga)-(a.gf-a.ga);
-  });
-  return arr;
-}
-
-function simulateKnockout(teamA,teamB){
-  var pA=winProb(teamA.elo,teamB.elo);
-  return Math.random()<pA?teamA:teamB;
-}
-
-function runSimulation(){
-  var runs=parseInt(document.getElementById('simRuns').value)||5000;
-  var winCounts={};
-  TEAMS.forEach(function(t){winCounts[t.name]=0;});
-
-  var groups={'A':[],'B':[],'C':[],'D':[],'E':[],'F':[]};
-  TEAMS.forEach(function(t){groups[t.group].push(t);});
-
-  var displayStandings={};
-  var r16Matches=[],qfMatches=[],sfMatches=[];
-
-  for(var sim=0;sim<runs;sim++){
-    var groupWinners=[],groupRunners=[];
-    Object.keys(groups).forEach(function(g){
-      var gs=simulateGroup(groups[g]);
-      groupWinners.push(gs[0].team);
-      groupRunners.push(gs[1].team);
-      if(sim===0){
-        displayStandings[g]=gs;
-      }
-    });
-
-    // Round of 16 (6 group winners + 2 best runners-up get byes in simplification)
-    var r16=[
-      simulateKnockout(groupWinners[0],groupRunners[1]),
-      simulateKnockout(groupWinners[1],groupRunners[0]),
-      simulateKnockout(groupWinners[2],groupRunners[3]),
-      simulateKnockout(groupWinners[3],groupRunners[2]),
-      simulateKnockout(groupWinners[4],groupRunners[5]),
-      simulateKnockout(groupWinners[5],groupRunners[4]),
-      simulateKnockout(groupWinners[0],groupRunners[2]),
-      simulateKnockout(groupWinners[3],groupRunners[5]),
-    ];
-
-    if(sim===0){
-      r16Matches=[
-        {a:groupWinners[0],b:groupRunners[1],w:r16[0]},
-        {a:groupWinners[1],b:groupRunners[0],w:r16[1]},
-        {a:groupWinners[2],b:groupRunners[3],w:r16[2]},
-        {a:groupWinners[3],b:groupRunners[2],w:r16[3]},
-        {a:groupWinners[4],b:groupRunners[5],w:r16[4]},
-        {a:groupWinners[5],b:groupRunners[4],w:r16[5]},
-        {a:groupWinners[0],b:groupRunners[2],w:r16[6]},
-        {a:groupWinners[3],b:groupRunners[5],w:r16[7]},
-      ];
-    }
-
-    var qf=[
-      simulateKnockout(r16[0],r16[1]),
-      simulateKnockout(r16[2],r16[3]),
-      simulateKnockout(r16[4],r16[5]),
-      simulateKnockout(r16[6],r16[7]),
-    ];
-    if(sim===0){
-      qfMatches=[
-        {a:r16[0],b:r16[1],w:qf[0]},
-        {a:r16[2],b:r16[3],w:qf[1]},
-        {a:r16[4],b:r16[5],w:qf[2]},
-        {a:r16[6],b:r16[7],w:qf[3]},
-      ];
-    }
-
-    var sf=[
-      simulateKnockout(qf[0],qf[1]),
-      simulateKnockout(qf[2],qf[3]),
-    ];
-    if(sim===0){
-      sfMatches=[
-        {a:qf[0],b:qf[1],w:sf[0]},
-        {a:qf[2],b:qf[3],w:sf[1]},
-      ];
-    }
-
-    var champion=simulateKnockout(sf[0],sf[1]);
-    winCounts[champion.name]=(winCounts[champion.name]||0)+1;
-  }
-
-  // Display results
-  document.getElementById('predResults').classList.add('on');
-
-  // Trophy
-  var sorted=Object.entries(winCounts).sort(function(a,b){return b[1]-a[1];});
-  var topTeam=TEAMS.find(function(t){return t.name===sorted[0][0];});
-  document.getElementById('rWinner').textContent=(topTeam?topTeam.flag+' ':'')+sorted[0][0];
-  document.getElementById('rWinnerProb').textContent='Win probability: '+(sorted[0][1]/runs*100).toFixed(1)+'% across '+runs.toLocaleString()+' simulations';
-
-  // Group standings
-  var gGrid=document.getElementById('groupStandingsGrid');
-  gGrid.innerHTML='';
-  Object.keys(displayStandings).forEach(function(g){
-    var gs=displayStandings[g];
-    var html='<div class="group-card"><h3>Group '+g+'</h3><table class="group-table"><thead><tr><th>#</th><th>Team</th><th>P</th><th>Pts</th></tr></thead><tbody>';
-    gs.forEach(function(s,i){
-      var cls=i===0?' class="pos-1"':i===1?' class="pos-2"':'';
-      html+='<tr'+cls+'><td>'+(i+1)+'</td><td>'+s.team.flag+' '+s.team.name+'</td><td>'+s.pts+'</td><td><strong>'+s.pts+'</strong></td></tr>';
-    });
-    html+='</tbody></table></div>';
-    gGrid.innerHTML+=html;
-  });
-
-  // R16
-  var r16Grid=document.getElementById('r16Grid');
-  r16Grid.innerHTML='';
-  r16Matches.forEach(function(m,i){
-    r16Grid.innerHTML+=matchCard('R16 Match '+(i+1),m.a,m.b,m.w);
-  });
-
-  // QF
-  var qfGrid=document.getElementById('qfGrid');
-  qfGrid.innerHTML='';
-  qfMatches.forEach(function(m,i){
-    qfGrid.innerHTML+=matchCard('Quarter-Final '+(i+1),m.a,m.b,m.w);
-  });
-
-  // SF
-  var sfGrid=document.getElementById('sfGrid');
-  sfGrid.innerHTML='';
-  sfMatches.forEach(function(m,i){
-    sfGrid.innerHTML+=matchCard('Semi-Final '+(i+1),m.a,m.b,m.w);
-  });
-
-  // Win probability bars
-  var topTeams=sorted.slice(0,8);
-  var html='';
-  topTeams.forEach(function(e){
-    var team=TEAMS.find(function(t){return t.name===e[0];});
-    var pct=(e[1]/runs*100).toFixed(1);
-    html+='<div class="en-progress-item"><div class="en-progress-label">'+(team?team.flag+' ':'')+e[0]+'</div>';
-    html+='<div class="en-progress-bar-wrap"><div class="en-progress-bar" style="width:'+pct+'%"></div></div>';
-    html+='<div class="en-progress-value">'+pct+'%</div></div>';
-  });
-  document.getElementById('winProbGrid').innerHTML='<div class="en-progress-row">'+html+'</div>';
-}
-
-function matchCard(label,teamA,teamB,winner){
-  var pA=(winProb(teamA.elo,teamB.elo)*100).toFixed(0);
-  var pB=(100-parseInt(pA));
-  return '<div class="bracket-match"><div class="bracket-match-label">'+label+'</div>'+
-    '<div class="bracket-match-teams">'+
-    '<div class="bracket-team'+(winner&&winner.name===teamA.name?' winner':'')+'">'+
-      '<span>'+teamA.flag+' '+teamA.name+'</span>'+
-      '<span class="win-prob">'+pA+'%</span>'+
-    '</div>'+
-    '<div style="text-align:center;font-size:.72rem;color:#94a3b8;padding:2px 0">vs</div>'+
-    '<div class="bracket-team'+(winner&&winner.name===teamB.name?' winner':'')+'">'+
-      '<span>'+teamB.flag+' '+teamB.name+'</span>'+
-      '<span class="win-prob">'+pB+'%</span>'+
-    '</div>'+
-    (winner?'<div style="font-size:.75rem;font-weight:700;color:#B91C1C;margin-top:8px;padding-top:8px;border-top:1px solid #fee2e2">→ Advances: '+winner.flag+' '+winner.name+'</div>':'')+
-    '</div></div>';
-}
-
-document.querySelectorAll('.en-faq-q').forEach(function(btn){
-  btn.addEventListener('click',function(){this.closest('.en-faq-item').classList.toggle('open');});
-});
-
-})();
-</script>
+<script src="/assets/js/sports-toolkit.js"></script>
+<script>window.AfroSports&&window.AfroSports.init&&window.AfroSports.init();</script>
 </body>
 </html>

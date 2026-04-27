@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UUID Generator — Generate UUID v4, v7, ULID, Nano ID Online</title>
-<meta name="description" content="Free UUID generator. Generate v1, v4, v7 UUIDs, ULIDs, and Nano IDs instantly. Bulk generate up to 100. UUID anatomy viewer, collision calculator, export to file.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UUID v7, v4, ULID and NanoID Generator | AfroTools</title>
+<meta name="description" content="Generate UUID v4, UUID v7, ULID and NanoID-style identifiers locally. Inspect anatomy, timestamp sorting, collision risk, database snippets and export bulk IDs.">
 <link rel="canonical" href="https://afrotools.com/tools/uuid-generator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="UUID Generator | AfroTools">
-<meta property="og:description" content="Generate UUID v1, v4, v7, ULID, Nano ID. Bulk generation, anatomy viewer, collision calculator.">
+<meta property="og:title" content="UUID v7, v4, ULID and NanoID Generator | AfroTools">
+<meta property="og:description" content="Generate sortable and random IDs with anatomy, collision math, database examples and bulk export.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/uuid-generator/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -17,1330 +17,636 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="UUID Generator | AfroTools">
-<meta name="twitter:description" content="Free UUID v4, v1, v7, ULID, Nano ID generator with bulk generation, anatomy viewer, and collision calculator.">
+<meta name="twitter:title" content="UUID v7 and v4 Generator | AfroTools">
+<meta name="twitter:description" content="Local ID workbench for UUIDs, ULIDs and NanoID-style IDs.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"UUID v7, v4, ULID and NanoID Generator","applicationCategory":"DeveloperApplication","operatingSystem":"Web","url":"https://afrotools.com/tools/uuid-generator/","description":"Generate UUID v4, UUID v7, ULID and NanoID-style identifiers locally. Inspect anatomy, timestamp sorting, collision risk, database snippets and export bulk IDs.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"UUID Generator","item":"https://afrotools.com/tools/uuid-generator/"}]}</script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
-  :root {
-    --afro-green: var(--color-primary);
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
+  :root{
+    --ink:#101828;
+    --muted:#5f6f86;
+    --line:#d8e2ee;
+    --soft:#f5f8fc;
+    --panel:#fff;
+    --blue:#0b66d8;
+    --green:#087443;
+    --amber:#a15c07;
+    --red:#b42318;
+    --purple:#6941c6;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
   }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
+  *{box-sizing:border-box}
+  body{margin:0;background:#edf3f8;color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+  .hero{background:#101828;color:#fff;padding:44px 0 38px}
+  .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
+  .crumb{font-size:13px;color:#c5d0df;margin-bottom:16px}
+  .crumb a{color:#dce6f3;text-decoration:none}
+  .hero h1{font-size:42px;line-height:1.08;margin:0 0 14px;font-weight:800;color:#fff;max-width:860px}
+  .lead{font-size:18px;line-height:1.55;color:#d5deea;max-width:850px;margin:0 0 22px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:800}
+  .main{padding:26px 0 64px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:16px;align-items:start}
+  .stack{display:grid;gap:16px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 12px 30px rgba(16,24,40,.07)}
+  .panel-head{padding:16px 18px;border-bottom:1px solid var(--line);background:#f9fbfd;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .panel-title{font-size:17px;font-weight:800;margin:0}
+  .panel-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .panel-body{padding:18px}
+  label{display:grid;gap:6px;font-size:13px;font-weight:800;color:#344054}
+  textarea,input,select{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
+  textarea:focus,input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,102,216,.13)}
+  textarea{min-height:120px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
+  .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
+  button:hover{border-color:var(--blue);color:var(--blue)}
+  .primary{background:var(--blue);border-color:var(--blue);color:#fff}
+  .primary:hover{background:#0755b7;color:#fff}
+  .danger{background:#fef3f2;border-color:#fecdca;color:#b42318}
+  .pill{display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);padding:6px 10px;font-size:12px;font-weight:800}
+  .good{background:#ecfdf3;color:#067647;border-color:#abefc6}
+  .warn{background:#fffaeb;color:#93370d;border-color:#fedf89}
+  .bad{background:#fef3f2;color:#b42318;border-color:#fecdca}
+  .id-list{display:grid;gap:8px;max-height:420px;overflow:auto}
+  .id-card{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid #e4eaf2;border-radius:8px;background:#fbfdff;padding:10px}
+  .id-card code{font-family:var(--mono);font-size:13px;word-break:break-all}
+  .id-card button{padding:7px 9px}
+  .output{font-family:var(--mono);font-size:13px;line-height:1.55;background:#101828;color:#eef4ff;border-radius:8px;padding:14px;overflow:auto;word-break:break-word}
+  .light-output{font-family:var(--mono);font-size:13px;line-height:1.55;background:#fbfdff;border:1px solid #e4eaf2;border-radius:8px;padding:12px;overflow:auto;word-break:break-word;min-height:48px}
+  .messages{display:grid;gap:8px}
+  .message{border-radius:8px;border:1px solid var(--line);padding:10px 12px;font-size:13px;line-height:1.45}
+  .diff{display:grid;gap:8px}
+  .diff-row{display:grid;grid-template-columns:130px 1fr;gap:10px;border:1px solid #e4eaf2;border-radius:8px;background:#fbfdff;padding:10px;font-size:13px}
+  .diff-row b{color:#344054}
+  .diff-row code{font-family:var(--mono);word-break:break-all}
+  .source-list{display:grid;gap:10px}
+  .source-row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid #e4eaf2;border-radius:8px;padding:11px;background:#fbfdff}
+  .source-row a{color:#0b66d8;font-weight:800}
+  .source-row span{font-size:12px;color:var(--muted)}
+  .source-row div span{display:block;margin-top:4px}
+  .source-row > span{white-space:nowrap}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tab{padding:8px 11px}
+  .tab.active{background:#eaf3ff;border-color:#a8cfff;color:#0b66d8}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+  .seg-time{color:#2563eb}.seg-ver{color:#ea580c}.seg-var{color:#7c3aed}.seg-rand{color:#059669}.seg-dash{color:#667085}
+  .big-id{font-family:var(--mono);font-size:16px;line-height:1.7;word-break:break-all}
+  .mini{font-size:12px;color:var(--muted);line-height:1.5}
+  .faq{width:min(900px,calc(100% - 32px));margin:18px auto 0;display:grid;gap:8px}
+  details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
+  summary{font-weight:800;cursor:pointer}
+  details p{color:var(--muted);line-height:1.6;margin:10px 0 0}
+  @media(max-width:960px){
+    .grid{grid-template-columns:1fr}
+    .field-grid{grid-template-columns:1fr 1fr}
   }
-
-  .tool-hero::after {
-    content: '\1F194';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
+  @media(max-width:560px){
+    .wrap{width:min(100% - 20px,1200px)}
+    .hero{padding:30px 0}
+    .hero h1{font-size:30px}
+    .lead{font-size:16px}
+    .field-grid,.diff-row,.id-card{grid-template-columns:1fr}
+    .panel-head{display:block}
   }
-
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
-
-  .breadcrumb span {
-    color: var(--afro-green);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  h1 em {
-    color: var(--afro-green);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 6px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .field {
-    margin-bottom: 18px;
-  }
-
-  .field:last-child {
-    margin-bottom: 0;
-  }
-
-  .f-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'Courier New', monospace;
-  }
-
-  .f-input:focus {
-    border-color: var(--afro-green);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-green);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .calc-btn:hover {
-    background: #0059B3;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
-  }
-
-  .uuid-list {
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 8px;
-    padding: 12px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.85rem;
-    color: #0d2813;
-    max-height: 300px;
-    overflow-y: auto;
-    line-height: 1.8;
-  }
-
-  .uuid-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px;
-    border-bottom: 1px solid #EFF6FF;
-  }
-
-  .uuid-item:last-child {
-    border-bottom: none;
-  }
-
-  .uuid-value {
-    flex: 1;
-    word-break: break-all;
-    margin-right: 8px;
-    cursor: pointer;
-  }
-
-  .uuid-value:hover {
-    color: var(--afro-green);
-  }
-
-  .uuid-copy-btn {
-    padding: 4px 8px;
-    background: rgba(0, 113, 227, 0.1);
-    border: 1px solid rgba(0, 113, 227, 0.35);
-    color: #1a5c3a;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.65rem;
-    font-weight: 700;
-    white-space: nowrap;
-    transition: all 0.15s;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .uuid-copy-btn:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .validation-result {
-    padding: 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  .validation-result.valid {
-    background: rgba(0, 113, 227, 0.1);
-    color: #1a5c3a;
-    border: 1px solid rgba(0, 113, 227, 0.3);
-  }
-
-  .validation-result.invalid {
-    background: rgba(220, 53, 69, 0.1);
-    color: #800000;
-    border: 1px solid rgba(220, 53, 69, 0.3);
-  }
-
-  .copy-all-btn, .download-btn {
-    padding: 8px;
-    background: rgba(0, 113, 227, 0.1);
-    border: 1px solid rgba(0, 113, 227, 0.35);
-    color: #1a5c3a;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.72rem;
-    font-weight: 700;
-    transition: all 0.15s;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .copy-all-btn {
-    width: 100%;
-    margin-top: 8px;
-  }
-
-  .copy-all-btn:hover, .download-btn:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .btn-row {
-    display: flex;
-    gap: 6px;
-    margin-top: 8px;
-  }
-
-  .btn-row .download-btn {
-    flex: 1;
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
-
-  .info-text li {
-    margin-bottom: 8px;
-  }
-
-  .fmt-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-  .fmt-toggle{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border:1.5px solid #BFDBFE;border-radius:6px;font-size:.7rem;font-weight:700;color:#0d2813;cursor:pointer;background:#EFF6FF;transition:all .15s;user-select:none;font-family:'Inter',sans-serif}
-  .fmt-toggle.active{background:rgba(0,113,227,.15);border-color:var(--afro-green);color:var(--afro-green)}
-  .nano-cfg{display:none;margin-top:10px;padding:12px;background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:7px}
-  .nano-cfg.show{display:block}
-  .nano-cfg label{font-size:.72rem;font-weight:700;color:#0d2813;display:block;margin-bottom:4px}
-  .nano-cfg input{width:100%;padding:8px 10px;background:#fff;border:1.5px solid #BFDBFE;border-radius:5px;font-size:.82rem;font-family:'Courier New',monospace;color:#0d2813;outline:none;margin-bottom:8px}
-  .nano-cfg input:focus{border-color:var(--afro-green)}
-
-  /* Anatomy modal */
-  .anatomy-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .anatomy-overlay.show {
-    display: flex;
-  }
-
-  .anatomy-box {
-    background: #fff;
-    border-radius: 14px;
-    max-width: 560px;
-    width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    overflow: hidden;
-    animation: anatomyIn 0.2s ease-out;
-  }
-
-  @keyframes anatomyIn {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-
-  .anatomy-header {
-    padding: 16px 22px;
-    background: #F5F9FF;
-    border-bottom: 1px solid #DBEAFE;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .anatomy-header h3 {
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #0a4018;
-    margin: 0;
-  }
-
-  .anatomy-close {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: #888;
-    padding: 4px;
-  }
-
-  .anatomy-body {
-    padding: 22px;
-  }
-
-  .anatomy-uuid-display {
-    font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    font-weight: 700;
-    padding: 14px;
-    background: #0f1419;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    text-align: center;
-    line-height: 1.6;
-    letter-spacing: 0.5px;
-    overflow-x: auto;
-  }
-
-  .seg-time{color:#60a5fa}.seg-ver{color:#f97316}.seg-var{color:#a78bfa}.seg-rand{color:#34d399}.seg-node{color:#fb7185}.seg-dash{color:#555}
-
-  .anatomy-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-  .anatomy-legend-item{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:#333}
-  .anatomy-legend-item .dot{width:10px;height:10px;border-radius:3px}
-  .anatomy-meta{font-size:.78rem;color:#444;line-height:1.8}
-  .anatomy-meta strong{color:#0d2813}
-
-  .collision-result{margin-top:12px;padding:14px;background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:8px;font-size:.82rem;color:#0d2813;line-height:1.7}
-  .collision-result .big-num{font-size:1.3rem;font-weight:800;color:var(--afro-green);display:block;margin:6px 0}
-  .toast-container{position:fixed;bottom:24px;right:24px;z-index:99999;display:flex;flex-direction:column;gap:8px}
-  .toast{background:#0f1419;color:#fff;padding:10px 18px;border-radius:8px;font-size:.78rem;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.25);animation:toastIn .25s ease-out,toastOut .25s ease-in 2.5s forwards;font-family:'Inter',sans-serif}
-  @keyframes toastIn{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
-  @keyframes toastOut{from{opacity:1}to{opacity:0}}
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
-
-    .uuid-item {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .uuid-value {
-      margin-right: 0;
-      margin-bottom: 6px;
-    }
-
-    .uuid-copy-btn {
-      width: 100%;
-    }
-
-    .anatomy-box {
-      max-width: 100%;
-    }
-
-    .anatomy-uuid-display {
-      font-size: 0.85rem;
-    }
-
-    .btn-row {
-      flex-direction: column;
-    }
-  }
-  details[open] summary svg{transform:rotate(180deg)}
-  details summary::-webkit-details-marker{display:none}
-  .faq-list details{border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff}
-  .faq-list summary{padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center}
-  .faq-list .faq-a{padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"UUID Generator","description":"Free UUID generator. Generate v1, v4, v7 UUIDs, ULIDs, and Nano IDs instantly. Bulk generate up to 100. UUID anatomy viewer, collision calculator, export to file.","url":"https://afrotools.com/tools/uuid-generator/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"UUID Generator","url":"https://afrotools.com/tools/uuid-generator/","description":"Free UUID generator. Generate v1, v4, v7 UUIDs, ULIDs, and Nano IDs instantly. Bulk generate up to 100. UUID anatomy viewer, collision calculator, export to file.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What UUID versions are supported?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "AfroTools UUID Generator supports UUID v1 (timestamp-based, using the current date/time and a random node ID), UUID v4 (randomly generated using cryptographic randomness), and UUID v7 (timestamp-ordered, RFC 9562). It also generates ULIDs and Nano IDs."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are the generated UUIDs truly random?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "UUID v4 and Nano ID values are generated using crypto.getRandomValues() in your browser, which provides cryptographically secure randomness. UUID v7 combines a millisecond timestamp with cryptographic random bits for sortable yet unique identifiers."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I generate UUIDs in bulk?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. You can generate up to 100 UUIDs at once by setting the count field. All generated IDs are displayed in a list with individual copy buttons, a Copy All button, and download options for .txt and .csv files."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is the UUID generator free to use?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, completely free with no limits, no sign-up, and no ads. You can generate as many UUIDs as you need. The tool also includes a UUID validator, anatomy viewer, and collision probability calculator."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the difference between UUID v4 and UUID v7?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "UUID v4 is fully random, while UUID v7 (RFC 9562) embeds a Unix millisecond timestamp in the first 48 bits, making it time-sortable. UUID v7 is ideal for database primary keys where insertion order matters, as it improves index locality."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is a ULID and how does it differ from a UUID?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A ULID (Universally Unique Lexicographically Sortable Identifier) is a 26-character string using Crockford Base32 encoding. It combines a 48-bit millisecond timestamp with 80 bits of randomness. Unlike UUIDs, ULIDs are naturally sortable by creation time and are more compact."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is a Nano ID?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Nano ID is a URL-friendly unique identifier that uses a customizable alphabet and length. The default is 21 characters using A-Za-z0-9_-, which provides roughly 126 bits of entropy. You can configure the alphabet and length for your specific use case."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How likely are UUID collisions?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For UUID v4 with 122 random bits, the probability of collision is astronomically low. Even generating 1 billion UUIDs per second for 100 years, the collision probability would be about 1 in 10^18. Use the collision calculator to see exact probabilities for your use case."
-      }
-    }
-  ]
-}
-</script>
-<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/uuid-generator/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/uuid-generator/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "UUID Generator",
-      "item": "https://afrotools.com/tools/uuid-generator/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
 </head>
 <body>
-<afro-navbar active="tools"></afro-navbar>
+<afro-navbar></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>UUID <em>Generator</em></h1>
-    <p class="hero-sub">Generate UUID v1, v4, v7, ULIDs, and Nano IDs instantly. Bulk generate up to 100 at once. Anatomy viewer, collision calculator, and export.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">v1, v4, v7</span>
-      <span class="badge b-green">ULID</span>
-      <span class="badge b-green">Nano ID</span>
-      <span class="badge b-green">Bulk (100)</span>
-      <span class="badge b-green">Export</span>
+<section class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Developer Tools</a> / UUID Generator</div>
+    <h1>Generate IDs with the tradeoffs visible.</h1>
+    <p class="lead">Create UUID v4, UUID v7, ULID and NanoID-style identifiers locally. Inspect timestamps, random bits, collision risk, sort behavior and database usage before choosing an ID format.</p>
+    <div class="chips" aria-label="Tool capabilities">
+      <span class="chip">UUID v7 sortable IDs</span>
+      <span class="chip">Local crypto randomness</span>
+      <span class="chip">Collision math</span>
+      <span class="chip">Database snippets</span>
     </div>
   </div>
-</div>
+</section>
 
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div>
-      <!-- Generator Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Generate IDs</span>
+<main class="main">
+  <div class="wrap grid">
+    <section class="stack" aria-label="ID generator">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Generate IDs</h2>
+            <div class="panel-sub">Everything runs in this browser using Web Crypto where randomness is needed.</div>
+          </div>
+          <div class="row" id="statusLine"></div>
         </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Type & Count</span>
-            </label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-              <select class="f-input" id="versionSelect" style="padding: 11px 13px;">
-                <option value="v4">UUID v4 (Random)</option>
-                <option value="v1">UUID v1 (Timestamp)</option>
-                <option value="v7">UUID v7 (Sortable)</option>
-                <option value="ulid">ULID</option>
-                <option value="nanoid">Nano ID</option>
+        <div class="panel-body stack">
+          <div class="field-grid">
+            <label for="idType">ID type
+              <select id="idType">
+                <option value="uuidv7">UUID v7, sortable</option>
+                <option value="uuidv4">UUID v4, random</option>
+                <option value="ulid">ULID, sortable text</option>
+                <option value="nanoid">NanoID-style</option>
               </select>
-              <input type="number" class="f-input" id="countInput" value="1" min="1" max="100">
-            </div>
-          </div>
-
-          <!-- Nano ID config -->
-          <div class="nano-cfg" id="nanoCfg">
-            <label>Length (1-256)</label>
-            <input type="number" id="nanoLength" value="21" min="1" max="256">
-            <label>Alphabet</label>
-            <input type="text" id="nanoAlphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-">
-          </div>
-
-          <!-- Format options -->
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Format Options</span>
             </label>
-            <div class="fmt-row">
-              <button class="fmt-toggle" id="fmtUpper" title="UPPERCASE">Aa UPPER</button>
-              <button class="fmt-toggle" id="fmtNoDash" title="Remove dashes">No Dashes</button>
-              <button class="fmt-toggle" id="fmtBraces" title="Wrap in braces">{Braces}</button>
-            </div>
-          </div>
-
-          <button class="calc-btn" id="generateBtn">Generate</button>
-
-          <div class="uuid-list" id="uuidList"></div>
-          <button class="copy-all-btn" id="copyAllBtn" style="display: none;">Copy All</button>
-          <div class="btn-row" id="downloadRow" style="display: none;">
-            <button class="download-btn" id="downloadTxt">Download .txt</button>
-            <button class="download-btn" id="downloadCsv">Download .csv</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Validator Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">UUID Validator</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">UUID to Validate</span>
+            <label for="countInput">Count
+              <input id="countInput" type="number" min="1" max="1000" value="25">
             </label>
-            <input type="text" class="f-input" id="validateInput" placeholder="Paste UUID to validate...">
-          </div>
-
-          <div id="validationResult"></div>
-        </div>
-      </div>
-
-      <!-- Collision Calculator Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Collision Probability Calculator</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">ID Type</span>
+            <label for="formatSelect">UUID format
+              <select id="formatSelect">
+                <option value="canonical">canonical lowercase</option>
+                <option value="uppercase">uppercase</option>
+                <option value="nohyphen">no hyphens</option>
+                <option value="braces">with braces</option>
+                <option value="urn">URN</option>
+              </select>
             </label>
-            <select class="f-input" id="collisionType" style="padding: 11px 13px;">
-              <option value="122">UUID v4 (122 random bits)</option>
-              <option value="62">UUID v7 (62 random bits)</option>
-              <option value="80">ULID (80 random bits)</option>
-              <option value="custom">Custom bit length</option>
-            </select>
-          </div>
-          <div class="field" id="customBitsField" style="display:none;">
-            <label class="f-label">
-              <span class="f-label-text">Random bits</span>
+            <label for="nanoLength">NanoID length
+              <input id="nanoLength" type="number" min="4" max="64" value="21">
             </label>
-            <input type="number" class="f-input" id="customBits" value="128" min="1" max="256">
-          </div>
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Number of IDs generated</span>
+            <label for="nanoAlphabet">NanoID alphabet
+              <input id="nanoAlphabet" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-">
             </label>
-            <input type="text" class="f-input" id="collisionCount" value="1000000" placeholder="e.g. 1000000" style="font-family: 'Inter', sans-serif;">
+            <label for="prefixInput">Optional prefix
+              <input id="prefixInput" placeholder="usr_">
+            </label>
           </div>
-          <button class="calc-btn" id="collisionBtn">Calculate Probability</button>
-          <div id="collisionResult"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Info Card -->
-      <div class="info-card">
-        <div class="info-title">ID Types</div>
-        <div class="info-text">
-          <div><strong>UUID v1:</strong> Timestamp-based</div>
-          <div style="margin-top: 4px; font-size: 0.73rem; color: #6B8CAE;">Date, time, and random node</div>
-          <div style="margin-top: 10px;"><strong>UUID v4:</strong> Random</div>
-          <div style="margin-top: 4px; font-size: 0.73rem; color: #6B8CAE;">122 bits of crypto randomness</div>
-          <div style="margin-top: 10px;"><strong>UUID v7:</strong> Time-sortable</div>
-          <div style="margin-top: 4px; font-size: 0.73rem; color: #6B8CAE;">48-bit ms timestamp + random (RFC 9562)</div>
-          <div style="margin-top: 10px;"><strong>ULID:</strong> Sortable, compact</div>
-          <div style="margin-top: 4px; font-size: 0.73rem; color: #6B8CAE;">26-char Crockford Base32</div>
-          <div style="margin-top: 10px;"><strong>Nano ID:</strong> URL-friendly</div>
-          <div style="margin-top: 4px; font-size: 0.73rem; color: #6B8CAE;">Configurable alphabet and length</div>
+          <div class="row">
+            <button class="primary" id="generateBtn" type="button">Generate</button>
+            <button id="copyAllBtn" type="button">Copy All</button>
+            <button id="downloadCsvBtn" type="button">Download CSV</button>
+            <button id="downloadJsonBtn" type="button">Download JSON</button>
+          </div>
         </div>
       </div>
 
-      <!-- Anatomy tip -->
-      <div class="info-card">
-        <div class="info-title">UUID Anatomy</div>
-        <div class="info-text" style="font-size: 0.75rem;">
-          Click any generated UUID to see its anatomy breakdown: version, variant, timestamp (for v1/v7), and a color-coded bit visualization.
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Generated IDs</h2>
+            <div class="panel-sub" id="generatedSub">Fresh IDs appear here.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="id-list" id="idList"></div>
         </div>
       </div>
 
-      <!-- Use Cases -->
-      <div class="info-card">
-        <div class="info-title">Use Cases</div>
-        <div class="info-text" style="font-size: 0.75rem;">
-          <div>Database primary keys (v7)</div>
-          <div style="margin-top: 6px;">API tokens &amp; session IDs (v4)</div>
-          <div style="margin-top: 6px;">Event ordering (ULID)</div>
-          <div style="margin-top: 6px;">Short URL keys (Nano ID)</div>
-          <div style="margin-top: 6px;">Device identifiers (v1)</div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Validate and Inspect</h2>
+            <div class="panel-sub">Paste any UUID, ULID or generated ID to inspect format and anatomy.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <label for="inspectInput">ID to inspect</label>
+          <input id="inspectInput" spellcheck="false">
+          <div class="light-output big-id" id="coloredId"></div>
+          <div class="diff" id="anatomyOutput"></div>
         </div>
       </div>
-    </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Collision Calculator</h2>
+            <div class="panel-sub">Birthday-bound estimate for random identifier spaces.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="field-grid">
+            <label for="collisionBits">Random bits
+              <select id="collisionBits">
+                <option value="122">UUID v4, 122 random bits</option>
+                <option value="74">UUID v7, about 74 random bits</option>
+                <option value="80">ULID, 80 random bits per millisecond</option>
+                <option value="126">NanoID 21 default alphabet, about 126 bits</option>
+                <option value="custom">Custom</option>
+              </select>
+            </label>
+            <label for="customBits">Custom bits
+              <input id="customBits" type="number" min="1" max="256" value="96">
+            </label>
+            <label for="collisionCount">IDs generated
+              <input id="collisionCount" value="1000000000">
+            </label>
+          </div>
+          <div class="row">
+            <button class="primary" id="collisionBtn" type="button">Calculate Risk</button>
+          </div>
+          <div class="messages" id="collisionOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Implementation Snippets</h2>
+            <div class="panel-sub">Practical storage patterns for generated IDs.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="tabs">
+            <button class="tab active" data-tab="postgres" type="button">Postgres</button>
+            <button class="tab" data-tab="mysql" type="button">MySQL</button>
+            <button class="tab" data-tab="prisma" type="button">Prisma</button>
+            <button class="tab" data-tab="javascript" type="button">JavaScript</button>
+          </div>
+          <div class="tab-panel active" id="tab-postgres"><pre class="output" id="postgresSnippet"></pre></div>
+          <div class="tab-panel" id="tab-mysql"><pre class="output" id="mysqlSnippet"></pre></div>
+          <div class="tab-panel" id="tab-prisma"><pre class="output" id="prismaSnippet"></pre></div>
+          <div class="tab-panel" id="tab-javascript"><pre class="output" id="jsSnippet"></pre></div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="stack" aria-label="ID guidance">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Recommendation</h2>
+            <div class="panel-sub">Which format fits the selected use case?</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="recommendationOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Format Facts</h2>
+            <div class="panel-sub">Bits, sorting and leakage tradeoffs.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="diff" id="factsOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Warnings</h2>
+            <div class="panel-sub">Things to check before production use.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="warningOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Reference Sources</h2>
+            <div class="panel-sub">Specs and docs behind this tool.</div>
+          </div>
+        </div>
+        <div class="panel-body source-list">
+          <div class="source-row"><div><a href="https://www.rfc-editor.org/rfc/rfc9562.html" target="_blank" rel="noopener">RFC 9562 UUIDs</a><span>Current UUID specification, including UUID v4, v7, variants and layouts.</span></div><span>IETF RFC</span></div>
+          <div class="source-row"><div><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank" rel="noopener">MDN crypto.randomUUID</a><span>Browser-native UUID v4 generation with cryptographically secure randomness.</span></div><span>MDN</span></div>
+          <div class="source-row"><div><a href="https://github.com/ulid/spec" target="_blank" rel="noopener">ULID specification</a><span>Crockford Base32, 48-bit timestamp, 80-bit randomness and lexical sortability.</span></div><span>Spec</span></div>
+          <div class="source-row"><div><a href="https://github.com/ai/nanoid" target="_blank" rel="noopener">Nano ID project</a><span>URL-friendly random IDs, custom alphabet and collision-size guidance.</span></div><span>Project docs</span></div>
+        </div>
+      </div>
+    </aside>
   </div>
-</div>
-
-<!-- Anatomy overlay -->
-<div class="anatomy-overlay" id="anatomyOverlay">
-  <div class="anatomy-box">
-    <div class="anatomy-header">
-      <h3>UUID Anatomy</h3>
-      <button class="anatomy-close" id="anatomyClose" aria-label="Close">&times;</button>
-    </div>
-    <div class="anatomy-body" id="anatomyBody"></div>
-  </div>
-</div>
-
-<!-- Toast container -->
-<div class="toast-container" id="toastContainer"></div>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px;">
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>This UUID generator creates universally unique identifiers in version 4 format using cryptographically secure random number generation. UUIDs are essential for database primary keys, API request tracking, session identifiers, and any system that needs guaranteed unique values without a central authority. Generate single or bulk UUIDs with one click and copy them instantly. The tool also validates existing UUIDs and displays their version information. Software developers, database administrators, and DevOps engineers who need reliable unique identifiers for distributed systems, microservices, and data pipelines will find this generator fast, simple, and always available.</p>
-  </div>
-</section>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-<section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
-  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'Inter',sans-serif">Frequently Asked Questions</h2>
-  <div class="faq-list">
-    <details><summary>What UUID versions are supported?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">AfroTools supports UUID v1 (timestamp-based), UUID v4 (random), and UUID v7 (time-sortable, RFC 9562). It also generates ULIDs (Crockford Base32, sortable) and Nano IDs (URL-friendly, configurable).</div></details>
-    <details><summary>Are the generated IDs truly random?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">UUID v4, v7, ULID, and Nano ID all use crypto.getRandomValues() for cryptographically secure randomness, suitable for production use.</div></details>
-    <details><summary>Can I generate IDs in bulk?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">Yes. Generate up to 100 IDs at once with individual copy buttons, Copy All, and download options for .txt and .csv.</div></details>
-    <details><summary>Is it free to use?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">Yes, completely free with no limits, no sign-up, and no ads. Includes a UUID validator, anatomy viewer, and collision probability calculator.</div></details>
-    <details><summary>What is the difference between UUID v4 and v7?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">UUID v4 is fully random (122 bits), while v7 (RFC 9562) embeds a millisecond timestamp in the first 48 bits for time-sortability. V7 is ideal for database primary keys.</div></details>
-    <details><summary>What is a ULID?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">A ULID is a 26-character Crockford Base32 identifier combining a 48-bit timestamp with 80 random bits. ULIDs are lexicographically sortable and more compact than UUIDs.</div></details>
-    <details><summary>What is a Nano ID?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">Nano ID is a URL-friendly unique ID with configurable alphabet and length. Default: 21 chars using A-Za-z0-9_- (~126 bits of entropy).</div></details>
-    <details><summary>How likely are UUID collisions?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-a">For UUID v4 with 122 random bits, collision probability is astronomically low. Even 1 billion UUIDs/second for 100 years yields ~1 in 10^18 chance. Use the collision calculator above for exact numbers.</div></details>
-  </div>
-</section>
-
+</main>
 
 <afro-related-tools category="developer" current="uuid-generator"></afro-related-tools>
+
+<section class="faq">
+  <details>
+    <summary>Should I use UUID v4 or UUID v7 for database primary keys?</summary>
+    <p>UUID v4 is excellent for opaque random IDs. UUID v7 includes a Unix-millisecond timestamp prefix, so new IDs sort roughly by creation time and are usually friendlier to database indexes.</p>
+  </details>
+  <details>
+    <summary>Does UUID v7 leak information?</summary>
+    <p>Yes, it leaks approximate creation time. That is usually fine for internal database keys, but may be undesirable for public identifiers where timing reveals business activity.</p>
+  </details>
+  <details>
+    <summary>Are NanoID-style IDs official UUIDs?</summary>
+    <p>No. NanoID-style IDs are compact random strings. They are useful for public slugs and short references, but they do not carry UUID version or variant structure.</p>
+  </details>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
-(function() {
-  'use strict';
-
-  // --- DOM refs ---
-  const countInput = document.getElementById('countInput');
-  const versionSelect = document.getElementById('versionSelect');
-  const generateBtn = document.getElementById('generateBtn');
-  const uuidList = document.getElementById('uuidList');
-  const validateInput = document.getElementById('validateInput');
-  const validationResult = document.getElementById('validationResult');
-  const copyAllBtn = document.getElementById('copyAllBtn');
-  const downloadRow = document.getElementById('downloadRow');
-  const downloadTxt = document.getElementById('downloadTxt');
-  const downloadCsv = document.getElementById('downloadCsv');
-  const nanoCfg = document.getElementById('nanoCfg');
-  const nanoLength = document.getElementById('nanoLength');
-  const nanoAlphabet = document.getElementById('nanoAlphabet');
-  const fmtUpper = document.getElementById('fmtUpper');
-  const fmtNoDash = document.getElementById('fmtNoDash');
-  const fmtBraces = document.getElementById('fmtBraces');
-  const anatomyOverlay = document.getElementById('anatomyOverlay');
-  const anatomyBody = document.getElementById('anatomyBody');
-  const anatomyClose = document.getElementById('anatomyClose');
-  const collisionType = document.getElementById('collisionType');
-  const collisionCount = document.getElementById('collisionCount');
-  const collisionBtn = document.getElementById('collisionBtn');
-  const collisionResult = document.getElementById('collisionResult');
-  const customBitsField = document.getElementById('customBitsField');
-  const customBits = document.getElementById('customBits');
-  const toastContainer = document.getElementById('toastContainer');
-
-  let lastGeneratedIDs = [];
-  let lastGeneratedType = 'v4';
-
-  // --- Toast ---
-  function showToast(msg) {
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.textContent = msg;
-    toastContainer.appendChild(t);
-    setTimeout(() => t.remove(), 3000);
+(function(){
+  var crockford = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  var lastIds = [];
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
   }
-
-  // --- Crypto random helpers ---
-  function cryptoRandBytes(n) {
-    const buf = new Uint8Array(n);
-    crypto.getRandomValues(buf);
-    return buf;
+  function randomBytes(length){
+    var bytes = new Uint8Array(length);
+    crypto.getRandomValues(bytes);
+    return bytes;
   }
-
-  function cryptoRandHex(n) {
-    return Array.from(cryptoRandBytes(n), b => b.toString(16).padStart(2, '0')).join('');
+  function hex(bytes){
+    return Array.from(bytes).map(function(byte){ return byte.toString(16).padStart(2, '0'); }).join('');
   }
-
-  // --- UUID v4 ---
-  function generateUUIDv4() {
-    const b = cryptoRandBytes(16);
-    b[6] = (b[6] & 0x0f) | 0x40; // version 4
-    b[8] = (b[8] & 0x3f) | 0x80; // variant 10
-    const h = Array.from(b, x => x.toString(16).padStart(2, '0')).join('');
-    return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);
+  function formatUuidFromBytes(bytes){
+    var h = hex(bytes);
+    return h.slice(0,8) + '-' + h.slice(8,12) + '-' + h.slice(12,16) + '-' + h.slice(16,20) + '-' + h.slice(20);
   }
-
-  // --- UUID v1 ---
-  function generateUUIDv1() {
-    const now = Date.now();
-    const uuidEpochOffset = 122192928000000000n;
-    const timestamp = BigInt(now) * 10000n + uuidEpochOffset;
-    const clockSeq = crypto.getRandomValues(new Uint16Array(1))[0] & 0x3FFF;
-    const node = cryptoRandHex(6);
-
-    const timeLow = (timestamp & 0xFFFFFFFFn).toString(16).padStart(8, '0');
-    const timeMid = ((timestamp >> 32n) & 0xFFFFn).toString(16).padStart(4, '0');
-    const timeHi = ((timestamp >> 48n) & 0x0FFFn).toString(16).padStart(3, '0');
-    const clockSeqHi = ((clockSeq >> 8) & 0x3F | 0x80).toString(16).padStart(2, '0');
-    const clockSeqLo = (clockSeq & 0xFF).toString(16).padStart(2, '0');
-
-    return `${timeLow}-${timeMid}-1${timeHi}-${clockSeqHi}${clockSeqLo}-${node}`;
+  function uuidv4(){
+    if (crypto.randomUUID) return crypto.randomUUID();
+    var bytes = randomBytes(16);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    return formatUuidFromBytes(bytes);
   }
-
-  // --- UUID v7 (RFC 9562) ---
-  function generateUUIDv7() {
-    const now = Date.now();
-    const b = cryptoRandBytes(16);
-
-    // First 48 bits: unix_ts_ms
-    const ms = BigInt(now);
-    b[0] = Number((ms >> 40n) & 0xFFn);
-    b[1] = Number((ms >> 32n) & 0xFFn);
-    b[2] = Number((ms >> 24n) & 0xFFn);
-    b[3] = Number((ms >> 16n) & 0xFFn);
-    b[4] = Number((ms >> 8n) & 0xFFn);
-    b[5] = Number(ms & 0xFFn);
-
-    // Version 7
-    b[6] = (b[6] & 0x0f) | 0x70;
-    // Variant 10
-    b[8] = (b[8] & 0x3f) | 0x80;
-
-    const h = Array.from(b, x => x.toString(16).padStart(2, '0')).join('');
-    return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);
-  }
-
-  // --- ULID ---
-  const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
-
-  function generateULID() {
-    const now = Date.now();
-    // 10-char timestamp (Crockford Base32)
-    let ts = '';
-    let t = now;
-    for (let i = 9; i >= 0; i--) {
-      ts = CROCKFORD[t % 32] + ts;
-      t = Math.floor(t / 32);
+  function uuidv7(){
+    var bytes = randomBytes(16);
+    var ms = BigInt(Date.now());
+    for (var i = 5; i >= 0; i--) {
+      bytes[i] = Number(ms & 0xffn);
+      ms >>= 8n;
     }
-    // 16-char random
-    const rb = cryptoRandBytes(10);
-    let rand = '';
-    // Encode 80 bits (10 bytes) as 16 base32 chars
-    // Process 5 bits at a time from the byte array
-    let bits = 0n;
-    for (let i = 0; i < 10; i++) bits = (bits << 8n) | BigInt(rb[i]);
-    for (let i = 15; i >= 0; i--) {
-      rand = CROCKFORD[Number(bits & 31n)] + rand;
-      bits >>= 5n;
-    }
-    return ts + rand;
+    bytes[6] = (bytes[6] & 0x0f) | 0x70;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    return formatUuidFromBytes(bytes);
   }
-
-  // --- Nano ID ---
-  function generateNanoID(len, alphabet) {
-    len = Math.max(1, Math.min(256, len || 21));
-    alphabet = alphabet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
-    if (alphabet.length === 0) alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
-    const mask = (1 << Math.ceil(Math.log2(alphabet.length))) - 1;
-    const step = Math.ceil(1.6 * mask * len / alphabet.length);
-    let id = '';
-    while (id.length < len) {
-      const bytes = cryptoRandBytes(step);
-      for (let i = 0; i < bytes.length && id.length < len; i++) {
-        const idx = bytes[i] & mask;
-        if (idx < alphabet.length) id += alphabet[idx];
+  function encodeBase32(value, length){
+    var out = '';
+    for (var i = 0; i < length; i++) {
+      out = crockford[Number(value & 31n)] + out;
+      value >>= 5n;
+    }
+    return out;
+  }
+  function ulid(){
+    var time = encodeBase32(BigInt(Date.now()), 10);
+    var bytes = randomBytes(10);
+    var rand = 0n;
+    bytes.forEach(function(byte){ rand = (rand << 8n) | BigInt(byte); });
+    return time + encodeBase32(rand, 16);
+  }
+  function nanoid(){
+    var alphabet = $('nanoAlphabet').value || '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-';
+    var size = Math.max(4, Math.min(64, Number($('nanoLength').value || 21)));
+    var mask = 1;
+    while (mask < alphabet.length - 1) mask = (mask << 1) | 1;
+    var id = '';
+    while (id.length < size) {
+      var bytes = randomBytes(Math.ceil(size * 1.6));
+      for (var i = 0; i < bytes.length && id.length < size; i++) {
+        var index = bytes[i] & mask;
+        if (index < alphabet.length) id += alphabet[index];
       }
     }
     return id;
   }
-
-  // --- Format ---
-  function applyFormat(id, type) {
-    let s = id;
-    const isUUID = (type === 'v1' || type === 'v4' || type === 'v7');
-    if (isUUID && fmtNoDash.classList.contains('active')) {
-      s = s.replace(/-/g, '');
-    }
-    if (fmtUpper.classList.contains('active')) {
-      s = s.toUpperCase();
-    }
-    if (fmtBraces.classList.contains('active')) {
-      s = '{' + s + '}';
-    }
-    return s;
+  function applyUuidFormat(id){
+    var format = $('formatSelect').value;
+    if (!/^([0-9a-f]{8}-){1}[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return id;
+    if (format === 'uppercase') return id.toUpperCase();
+    if (format === 'nohyphen') return id.replace(/-/g, '');
+    if (format === 'braces') return '{' + id + '}';
+    if (format === 'urn') return 'urn:uuid:' + id;
+    return id.toLowerCase();
   }
-
-  // --- Format toggle handlers ---
-  [fmtUpper, fmtNoDash, fmtBraces].forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.classList.toggle('active');
-      // Re-render if we have generated IDs
-      if (lastGeneratedIDs.length > 0) renderList();
+  function generateOne(){
+    var type = $('idType').value;
+    var id = type === 'uuidv4' ? uuidv4() : type === 'uuidv7' ? uuidv7() : type === 'ulid' ? ulid() : nanoid();
+    id = type.indexOf('uuid') === 0 ? applyUuidFormat(id) : id;
+    return ($('prefixInput').value || '') + id;
+  }
+  function copyText(text, button){
+    navigator.clipboard.writeText(text || '').then(function(){
+      if (!button) return;
+      var original = button.textContent;
+      button.textContent = 'Copied';
+      setTimeout(function(){ button.textContent = original; }, 1200);
     });
-  });
-
-  // --- Nano ID config visibility ---
-  versionSelect.addEventListener('change', () => {
-    nanoCfg.classList.toggle('show', versionSelect.value === 'nanoid');
-  });
-
-  // --- Collision type custom bits ---
-  collisionType.addEventListener('change', () => {
-    customBitsField.style.display = collisionType.value === 'custom' ? 'block' : 'none';
-  });
-
-  // --- Validation ---
-  function isValidUUID(uuid) {
-    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
   }
-
-  function getUUIDVersion(uuid) {
-    const parts = uuid.split('-');
-    if (parts.length !== 5) return null;
-    return parseInt(parts[2][0]);
+  function generate(){
+    var count = Math.max(1, Math.min(1000, Number($('countInput').value || 1)));
+    lastIds = [];
+    for (var i = 0; i < count; i++) lastIds.push(generateOne());
+    $('generatedSub').textContent = count + ' ' + labelFor($('idType').value) + ' generated locally.';
+    $('statusLine').innerHTML = '<span class="pill good">' + count + ' generated</span>';
+    renderIds();
+    $('inspectInput').value = lastIds[0] || '';
+    inspect();
+    renderGuidance();
+    renderSnippets();
   }
-
-  // --- Render list ---
-  function renderList() {
-    const formatted = lastGeneratedIDs.map(id => applyFormat(id, lastGeneratedType));
-    uuidList.innerHTML = formatted.map((id) => {
-      const escaped = id.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-      const isUUID = (lastGeneratedType === 'v1' || lastGeneratedType === 'v4' || lastGeneratedType === 'v7');
-      return `<div class="uuid-item"><span class="uuid-value${isUUID ? ' clickable-uuid' : ''}" data-raw="${id.replace(/[{}]/g,'')}" title="${isUUID ? 'Click to see anatomy' : ''}">${escaped}</span><button class="uuid-copy-btn" data-uuid="${escaped}" aria-label="Copy">Copy</button></div>`;
+  function labelFor(type){
+    return type === 'uuidv4' ? 'UUID v4' : type === 'uuidv7' ? 'UUID v7' : type === 'ulid' ? 'ULID' : 'NanoID-style';
+  }
+  function renderIds(){
+    $('idList').innerHTML = lastIds.map(function(id){
+      return '<div class="id-card"><code>' + esc(id) + '</code><button type="button" data-copy="' + esc(id) + '">Copy</button></div>';
     }).join('');
-
-    copyAllBtn.style.display = 'block';
-    downloadRow.style.display = formatted.length > 1 ? 'flex' : 'none';
-
-    // Copy buttons
-    document.querySelectorAll('.uuid-copy-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        navigator.clipboard.writeText(btn.dataset.uuid);
-        btn.textContent = '\u2713';
-        showToast('Copied to clipboard');
-        setTimeout(() => btn.textContent = 'Copy', 2000);
-      });
-    });
-
-    // Anatomy click
-    document.querySelectorAll('.clickable-uuid').forEach(el => {
-      el.addEventListener('click', () => showAnatomy(el.dataset.raw));
-    });
   }
-
-  // --- Generate ---
-  generateBtn.addEventListener('click', () => {
-    const count = parseInt(countInput.value);
-    const version = versionSelect.value;
-    if (count < 1 || count > 100 || isNaN(count)) {
-      showToast('Enter a number between 1 and 100');
-      return;
-    }
-
-    lastGeneratedType = version;
-    let generator;
-    switch (version) {
-      case 'v1': generator = generateUUIDv1; break;
-      case 'v7': generator = generateUUIDv7; break;
-      case 'ulid': generator = generateULID; break;
-      case 'nanoid': generator = () => generateNanoID(parseInt(nanoLength.value), nanoAlphabet.value); break;
-      default: generator = generateUUIDv4;
-    }
-
-    lastGeneratedIDs = Array.from({ length: count }, generator);
-    renderList();
-    showToast(`Generated ${count} ${version.toUpperCase()}${count > 1 ? 's' : ''}`);
-  });
-
-  // --- Copy all ---
-  copyAllBtn.addEventListener('click', () => {
-    const formatted = lastGeneratedIDs.map(id => applyFormat(id, lastGeneratedType));
-    navigator.clipboard.writeText(formatted.join('\n'));
-    copyAllBtn.textContent = '\u2713 Copied All!';
-    showToast('All IDs copied to clipboard');
-    setTimeout(() => copyAllBtn.textContent = 'Copy All', 2000);
-  });
-
-  // --- Download ---
-  function downloadFile(content, filename, mime) {
-    const blob = new Blob([content], { type: mime });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+  function download(content, filename, mime){
+    var blob = new Blob([content], { type:mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    a.remove();
     URL.revokeObjectURL(url);
-    showToast(`Downloaded ${filename}`);
   }
-
-  downloadTxt.addEventListener('click', () => {
-    const formatted = lastGeneratedIDs.map(id => applyFormat(id, lastGeneratedType));
-    downloadFile(formatted.join('\n'), 'ids.txt', 'text/plain');
-  });
-
-  downloadCsv.addEventListener('click', () => {
-    const formatted = lastGeneratedIDs.map(id => applyFormat(id, lastGeneratedType));
-    const csv = 'id\n' + formatted.map(id => `"${id}"`).join('\n');
-    downloadFile(csv, 'ids.csv', 'text/csv');
-  });
-
-  // --- Validator ---
-  validateInput.addEventListener('input', () => {
-    const uuid = validateInput.value.trim();
-    if (!uuid) {
-      validationResult.innerHTML = '';
-      return;
-    }
-
-    const isValid = isValidUUID(uuid);
-    const version = isValid ? getUUIDVersion(uuid) : null;
-    let versionText = version ? ` (v${version})` : '';
-
-    let extra = '';
-    if (isValid) {
-      extra = `<div style="margin-top:6px;font-size:0.7rem;color:#6B8CAE;cursor:pointer;text-decoration:underline" onclick="document.querySelector('.clickable-uuid') || void 0; document.getElementById('anatomyOverlay').style.display='flex';">View anatomy</div>`;
-    }
-
-    validationResult.innerHTML = `<div class="validation-result ${isValid ? 'valid' : 'invalid'}">${isValid ? '\u2713 Valid UUID' + versionText : '\u2717 Invalid UUID'}${isValid ? extra : ''}</div>`;
-
-    if (isValid) {
-      validationResult.querySelector('div[style]')?.addEventListener('click', () => showAnatomy(uuid));
-    }
-  });
-
-  // --- UUID Anatomy ---
-  function showAnatomy(raw) {
-    // Strip braces and normalize
-    let uuid = raw.replace(/[{}]/g, '');
-    // If no dashes, re-insert them
-    if (uuid.length === 32 && !uuid.includes('-')) {
-      uuid = uuid.slice(0,8)+'-'+uuid.slice(8,12)+'-'+uuid.slice(12,16)+'-'+uuid.slice(16,20)+'-'+uuid.slice(20);
-    }
-    const lc = uuid.toLowerCase();
-    const parts = lc.split('-');
-    if (parts.length !== 5) {
-      showToast('Cannot parse anatomy for this ID type');
-      return;
-    }
-
-    const ver = parseInt(parts[2][0]);
-    const variantBits = parseInt(parts[3][0], 16);
-    let variantName = 'Unknown';
-    if ((variantBits & 0x8) === 0) variantName = 'NCS (reserved)';
-    else if ((variantBits & 0xC) === 0x8) variantName = 'RFC 4122 / 9562';
-    else if ((variantBits & 0xE) === 0xC) variantName = 'Microsoft (reserved)';
-    else if ((variantBits & 0xF) === 0xE) variantName = 'Future (reserved)';
-
-    // Color-coded display
-    let colorHTML = '';
-    if (ver === 1) {
-      // v1: time_low - time_mid - 1time_hi - clk - node
-      colorHTML = `<span class="seg-time">${parts[0]}</span><span class="seg-dash">-</span><span class="seg-time">${parts[1]}</span><span class="seg-dash">-</span><span class="seg-ver">${parts[2][0]}</span><span class="seg-time">${parts[2].slice(1)}</span><span class="seg-dash">-</span><span class="seg-var">${parts[3][0]}</span><span class="seg-rand">${parts[3].slice(1)}</span><span class="seg-dash">-</span><span class="seg-node">${parts[4]}</span>`;
-    } else if (ver === 7) {
-      // v7: timestamp(48 bits = first 12 hex) - ver+rand - var+rand - rand
-      colorHTML = `<span class="seg-time">${parts[0]}</span><span class="seg-dash">-</span><span class="seg-time">${parts[1]}</span><span class="seg-dash">-</span><span class="seg-ver">${parts[2][0]}</span><span class="seg-rand">${parts[2].slice(1)}</span><span class="seg-dash">-</span><span class="seg-var">${parts[3][0]}</span><span class="seg-rand">${parts[3].slice(1)}</span><span class="seg-dash">-</span><span class="seg-rand">${parts[4]}</span>`;
-    } else {
-      // v4 and others: all random except version and variant
-      colorHTML = `<span class="seg-rand">${parts[0]}</span><span class="seg-dash">-</span><span class="seg-rand">${parts[1]}</span><span class="seg-dash">-</span><span class="seg-ver">${parts[2][0]}</span><span class="seg-rand">${parts[2].slice(1)}</span><span class="seg-dash">-</span><span class="seg-var">${parts[3][0]}</span><span class="seg-rand">${parts[3].slice(1)}</span><span class="seg-dash">-</span><span class="seg-rand">${parts[4]}</span>`;
-    }
-
-    // Timestamp extraction
-    let tsInfo = '';
-    if (ver === 1) {
-      try {
-        const timeHi = parts[2].slice(1);
-        const timeMid = parts[1];
-        const timeLow = parts[0];
-        const hex = timeHi + timeMid + timeLow;
-        const ticks = BigInt('0x' + hex);
-        const unixMs = Number((ticks - 122192928000000000n) / 10000n);
-        const dt = new Date(unixMs);
-        if (!isNaN(dt.getTime())) {
-          tsInfo = `<div><strong>Timestamp:</strong> ${dt.toISOString()}</div><div><strong>Unix ms:</strong> ${unixMs}</div>`;
-        }
-      } catch(e) {}
-    } else if (ver === 7) {
-      try {
-        const msHex = parts[0] + parts[1];
-        const unixMs = parseInt(msHex, 16);
-        const dt = new Date(unixMs);
-        if (!isNaN(dt.getTime())) {
-          tsInfo = `<div><strong>Timestamp:</strong> ${dt.toISOString()}</div><div><strong>Unix ms:</strong> ${unixMs}</div>`;
-        }
-      } catch(e) {}
-    }
-
-    // Legend items
-    let legendItems = '';
-    if (ver === 1) {
-      legendItems = `
-        <div class="anatomy-legend-item"><span class="dot" style="background:#60a5fa"></span>Timestamp</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#f97316"></span>Version</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#a78bfa"></span>Variant</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#34d399"></span>Clock seq</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#fb7185"></span>Node</div>
-      `;
-    } else if (ver === 7) {
-      legendItems = `
-        <div class="anatomy-legend-item"><span class="dot" style="background:#60a5fa"></span>Timestamp</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#f97316"></span>Version</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#a78bfa"></span>Variant</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#34d399"></span>Random</div>
-      `;
-    } else {
-      legendItems = `
-        <div class="anatomy-legend-item"><span class="dot" style="background:#f97316"></span>Version</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#a78bfa"></span>Variant</div>
-        <div class="anatomy-legend-item"><span class="dot" style="background:#34d399"></span>Random</div>
-      `;
-    }
-
-    // Bit counts
-    let bitInfo = '';
-    if (ver === 4) bitInfo = '<div><strong>Random bits:</strong> 122</div>';
-    else if (ver === 7) bitInfo = '<div><strong>Timestamp bits:</strong> 48 | <strong>Random bits:</strong> 62</div>';
-    else if (ver === 1) bitInfo = '<div><strong>Timestamp bits:</strong> 60 | <strong>Clock seq:</strong> 14 | <strong>Node:</strong> 48</div>';
-
-    anatomyBody.innerHTML = `
-      <div class="anatomy-uuid-display">${colorHTML}</div>
-      <div class="anatomy-legend">${legendItems}</div>
-      <div class="anatomy-meta">
-        <div><strong>Version:</strong> ${ver} (${ver === 1 ? 'Timestamp' : ver === 4 ? 'Random' : ver === 7 ? 'Time-sortable' : 'v' + ver})</div>
-        <div><strong>Variant:</strong> ${variantName}</div>
-        ${tsInfo}
-        ${bitInfo}
-        <div><strong>Total length:</strong> 128 bits (32 hex digits)</div>
-      </div>
-    `;
-
-    anatomyOverlay.classList.add('show');
+  function normalizeUuid(value){
+    var id = String(value || '').trim().replace(/^urn:uuid:/i, '').replace(/[{}-]/g, '').toLowerCase();
+    if (!/^[0-9a-f]{32}$/.test(id)) return null;
+    return id.slice(0,8) + '-' + id.slice(8,12) + '-' + id.slice(12,16) + '-' + id.slice(16,20) + '-' + id.slice(20);
   }
-
-  anatomyClose.addEventListener('click', () => anatomyOverlay.classList.remove('show'));
-  anatomyOverlay.addEventListener('click', (e) => {
-    if (e.target === anatomyOverlay) anatomyOverlay.classList.remove('show');
-  });
-
-  // --- Collision probability ---
-  collisionBtn.addEventListener('click', () => {
-    let bits;
-    if (collisionType.value === 'custom') {
-      bits = parseInt(customBits.value);
-      if (isNaN(bits) || bits < 1 || bits > 256) {
-        showToast('Enter bits between 1 and 256');
-        return;
+  function uuidVariant(firstHex){
+    var value = parseInt(firstHex, 16);
+    if ((value & 8) === 0) return 'NCS reserved';
+    if ((value & 12) === 8) return 'RFC 4122 / RFC 9562';
+    if ((value & 14) === 12) return 'Microsoft reserved';
+    return 'Future reserved';
+  }
+  function inspect(){
+    var raw = $('inspectInput').value.trim();
+    var withoutPrefix = raw.replace(/^[-_A-Za-z0-9]{1,20}_/, function(prefix){
+      return raw.slice(prefix.length);
+    });
+    var uuid = normalizeUuid(raw) || normalizeUuid(withoutPrefix);
+    var rows = [];
+    if (uuid) {
+      var parts = uuid.split('-');
+      var version = parts[2][0];
+      var variant = uuidVariant(parts[3][0]);
+      var color = '<span class="seg-time">' + esc(parts[0]) + '</span><span class="seg-dash">-</span><span class="seg-time">' + esc(parts[1]) + '</span><span class="seg-dash">-</span><span class="seg-ver">' + esc(parts[2][0]) + '</span><span class="seg-rand">' + esc(parts[2].slice(1)) + '</span><span class="seg-dash">-</span><span class="seg-var">' + esc(parts[3][0]) + '</span><span class="seg-rand">' + esc(parts[3].slice(1)) + '</span><span class="seg-dash">-</span><span class="seg-rand">' + esc(parts[4]) + '</span>';
+      $('coloredId').innerHTML = color;
+      rows.push(['Format', 'UUID']);
+      rows.push(['Version', version + (version === '7' ? ', Unix-time ordered' : version === '4' ? ', random' : '')]);
+      rows.push(['Variant', variant]);
+      rows.push(['Canonical', uuid]);
+      if (version === '7') {
+        var ms = parseInt(parts[0] + parts[1], 16);
+        rows.push(['Timestamp', new Date(ms).toISOString()]);
+        rows.push(['Random bits', 'About 74 bits after timestamp, version and variant fields']);
+      } else if (version === '4') {
+        rows.push(['Random bits', '122 bits']);
       }
+    } else if (/^[0-9A-HJKMNP-TV-Z]{26}$/.test(raw)) {
+      var timePart = raw.slice(0, 10);
+      var value = 0n;
+      for (var i = 0; i < timePart.length; i++) value = value * 32n + BigInt(crockford.indexOf(timePart[i]));
+      $('coloredId').innerHTML = '<span class="seg-time">' + esc(raw.slice(0, 10)) + '</span><span class="seg-rand">' + esc(raw.slice(10)) + '</span>';
+      rows.push(['Format', 'ULID']);
+      rows.push(['Timestamp', new Date(Number(value)).toISOString()]);
+      rows.push(['Random bits', '80 bits']);
+      rows.push(['Sort behavior', 'Lexicographic by timestamp prefix']);
+    } else if (raw) {
+      $('coloredId').textContent = raw;
+      rows.push(['Format', 'Custom or NanoID-style']);
+      rows.push(['Length', String(raw.length)]);
+      var configuredAlphabetSize = $('idType').value === 'nanoid' ? ($('nanoAlphabet').value || '').length : uniqueChars(raw);
+      rows.push(['Entropy estimate', entropyFor(raw.length, configuredAlphabetSize).toFixed(1) + ' bits based on ' + (configuredAlphabetSize === uniqueChars(raw) ? 'observed' : 'configured') + ' alphabet']);
+      rows.push(['Sort behavior', 'Random, not time-sortable']);
     } else {
-      bits = parseInt(collisionType.value);
+      $('coloredId').textContent = '';
+      rows.push(['Status', 'Generate or paste an ID to inspect it.']);
     }
-
-    const nStr = collisionCount.value.replace(/[,\s]/g, '');
-    const n = parseFloat(nStr);
-    if (isNaN(n) || n < 1) {
-      showToast('Enter a valid number of IDs');
+    $('anatomyOutput').innerHTML = rows.map(function(row){ return '<div class="diff-row"><b>' + esc(row[0]) + '</b><code>' + esc(row[1]) + '</code></div>'; }).join('');
+  }
+  function uniqueChars(value){
+    return new Set(String(value).split('')).size || 1;
+  }
+  function entropyFor(length, alphabetLength){
+    return length * Math.log2(Math.max(1, alphabetLength));
+  }
+  function renderGuidance(){
+    var type = $('idType').value;
+    var rec = [];
+    if (type === 'uuidv7') {
+      rec.push(['good','Good default for database primary keys when you want UUID compatibility plus creation-time ordering.']);
+      rec.push(['warn','Leaks approximate creation time. Avoid for public IDs if timing reveals sensitive activity.']);
+    } else if (type === 'uuidv4') {
+      rec.push(['good','Good for opaque public identifiers and correlation IDs where time ordering is not needed.']);
+      rec.push(['warn','Random insertion can fragment some B-tree indexes at high write volume.']);
+    } else if (type === 'ulid') {
+      rec.push(['good','Readable, URL-safe and lexicographically sortable. Useful for logs and client-facing references.']);
+      rec.push(['warn','Not a UUID. Store as text, and decide whether timestamp leakage is acceptable.']);
+    } else {
+      rec.push(['good','Compact and URL-friendly. Useful for public slugs, invites, short references and filenames.']);
+      rec.push(['warn','Collision risk depends on length and alphabet. Keep enough entropy for your volume.']);
+    }
+    $('recommendationOutput').innerHTML = rec.map(function(item){ return '<div class="message ' + item[0] + '">' + esc(item[1]) + '</div>'; }).join('');
+    var facts = factsFor(type);
+    $('factsOutput').innerHTML = facts.map(function(row){ return '<div class="diff-row"><b>' + esc(row[0]) + '</b><code>' + esc(row[1]) + '</code></div>'; }).join('');
+    var warnings = warningsFor(type);
+    $('warningOutput').innerHTML = warnings.map(function(item){ return '<div class="message ' + item[0] + '">' + esc(item[1]) + '</div>'; }).join('');
+  }
+  function factsFor(type){
+    if (type === 'uuidv7') return [['Length','36 chars canonical, 128 bits total'],['Randomness','About 74 random bits plus 48-bit Unix millisecond timestamp'],['Sort','Roughly chronological'],['Standard','RFC 9562']];
+    if (type === 'uuidv4') return [['Length','36 chars canonical, 128 bits total'],['Randomness','122 random bits'],['Sort','Random'],['Standard','RFC 9562 and browser crypto.randomUUID']];
+    if (type === 'ulid') return [['Length','26 chars'],['Randomness','80 random bits plus 48-bit millisecond timestamp'],['Sort','Lexicographic chronological'],['Alphabet','Crockford Base32']];
+    return [['Length',$('nanoLength').value + ' chars'],['Randomness','About ' + entropyFor(Number($('nanoLength').value || 21), ($('nanoAlphabet').value || '').length).toFixed(1) + ' bits'],['Sort','Random'],['Alphabet size',String(($('nanoAlphabet').value || '').length)]];
+  }
+  function warningsFor(type){
+    var list = [];
+    if (!window.crypto || !crypto.getRandomValues) list.push(['bad','Secure browser randomness is unavailable. Do not use generated IDs.']);
+    if (type === 'uuidv7' || type === 'ulid') list.push(['warn','Timestamp-sortable IDs expose approximate creation time.']);
+    if (type === 'nanoid') {
+      if (($('nanoAlphabet').value || '').length < 16) list.push(['bad','Alphabet is very small. Increase alphabet or length to avoid collisions.']);
+      if (Number($('nanoLength').value || 0) < 10) list.push(['warn','Short public IDs are easy to guess and collide at scale.']);
+    }
+    if (type === 'uuidv4') list.push(['warn','UUID v4 is not sequential. It is safe, but may be less index-friendly for very hot tables.']);
+    if (!list.length) list.push(['good','No obvious warnings for this selection.']);
+    return list;
+  }
+  function collision(){
+    var bits = $('collisionBits').value === 'custom' ? Number($('customBits').value || 1) : Number($('collisionBits').value);
+    var n = Number(String($('collisionCount').value || '').replace(/[,\s]/g, ''));
+    if (!Number.isFinite(bits) || bits < 1 || !Number.isFinite(n) || n < 1) {
+      $('collisionOutput').innerHTML = '<div class="message bad">Enter a valid bit count and generated ID count.</div>';
       return;
     }
-
-    // Birthday paradox: P ~ 1 - e^(-n^2 / (2 * 2^bits))
-    // Use log for large numbers: log(P) = -n^2 / (2 * 2^bits) * log(e)
-    // log10(1/P) = n^2 / (2 * 2^bits * ln(10))
-
-    const log2Space = bits; // 2^bits possible values
-    // log10(2^bits) = bits * log10(2)
-    const log10Space = bits * Math.log10(2);
-    // log10(n^2) = 2 * log10(n)
-    const log10N2 = 2 * Math.log10(n);
-    // log10(2) for the denominator 2
-    const log10_2 = Math.log10(2);
-    const log10_ln10 = Math.log10(Math.LN10);
-
-    // exponent = n^2 / (2 * 2^bits)
-    // log10(exponent) = log10(n^2) - log10(2) - log10(2^bits) = log10N2 - log10_2 - log10Space
-    const log10Exp = log10N2 - log10_2 - log10Space;
-
-    // P ~ exponent when exponent is very small (Taylor: 1 - e^(-x) ~ x)
-    // So log10(P) ~ log10Exp
-    // And 1/P ~ 10^(-log10Exp)
-
-    let resultHTML;
-    if (log10Exp > -1) {
-      // High probability - compute directly
-      const exponent = Math.pow(10, log10Exp);
-      const prob = 1 - Math.exp(-exponent);
-      if (prob >= 0.999) {
-        resultHTML = `<span class="big-num">Near certain collision</span>
-          <div>With ${n.toLocaleString()} IDs and ${bits} random bits, collision is virtually guaranteed.</div>`;
-      } else {
-        const oneIn = Math.round(1 / prob);
-        resultHTML = `<span class="big-num">1 in ${oneIn.toLocaleString()}</span>
-          <div>Probability: ${(prob * 100).toFixed(6)}%</div>
-          <div>With ${Number(n).toLocaleString()} IDs and ${bits} random bits.</div>`;
-      }
+    var log10Exp = 2 * Math.log10(n) - Math.log10(2) - bits * Math.log10(2);
+    var html;
+    if (log10Exp > -4) {
+      var x = Math.pow(10, log10Exp);
+      var p = 1 - Math.exp(-x);
+      html = '<div class="message ' + (p > 0.01 ? 'bad' : 'warn') + '">Approx collision probability: ' + (p * 100).toPrecision(4) + '%</div>';
     } else {
-      // Very small probability
-      const log10InvP = -log10Exp;
-      const expFloor = Math.floor(log10InvP);
-      const mantissa = Math.pow(10, log10InvP - expFloor);
-
-      if (expFloor > 6) {
-        resultHTML = `<span class="big-num">1 in ~${mantissa.toFixed(2)} &times; 10<sup>${expFloor}</sup></span>
-          <div>Collision is astronomically unlikely.</div>
-          <div>With ${Number(n).toLocaleString()} IDs and ${bits} random bits.</div>`;
-      } else {
-        const invP = Math.pow(10, log10InvP);
-        resultHTML = `<span class="big-num">1 in ${Math.round(invP).toLocaleString()}</span>
-          <div>With ${Number(n).toLocaleString()} IDs and ${bits} random bits.</div>`;
-      }
+      var invExp = Math.floor(-log10Exp);
+      var mantissa = Math.pow(10, -log10Exp - invExp);
+      html = '<div class="message good">Approx collision odds: 1 in ' + mantissa.toFixed(2) + 'e' + invExp + '</div>';
     }
-
-    collisionResult.innerHTML = `<div class="collision-result">${resultHTML}</div>`;
+    html += '<div class="message">This is the birthday-bound estimate for uniformly random IDs. Timestamped formats must also avoid generating too many IDs in the same millisecond with weak randomness.</div>';
+    $('collisionOutput').innerHTML = html;
+  }
+  function renderSnippets(){
+    var type = $('idType').value;
+    var uuidDefault = type === 'uuidv7' ? 'UUID v7 generated by your app or extension' : type === 'uuidv4' ? 'gen_random_uuid()' : 'text ID generated by application code';
+    $('postgresSnippet').textContent = type.indexOf('uuid') === 0
+      ? "create extension if not exists pgcrypto;\n\ncreate table orders (\n  id uuid primary key default gen_random_uuid(),\n  created_at timestamptz not null default now()\n);\n\n-- For UUID v7, generate in application code until your database/runtime exposes a vetted v7 function.\n-- Keep the column type as uuid."
+      : "create table public_links (\n  id text primary key,\n  created_at timestamptz not null default now()\n);\n\n-- Generate " + labelFor(type) + " in application code and store as text.";
+    $('mysqlSnippet').textContent = type.indexOf('uuid') === 0
+      ? "create table orders (\n  id char(36) primary key,\n  created_at timestamp default current_timestamp\n);\n\n-- MySQL UUID_TO_BIN(id, 1) is useful for time-ordered UUID layouts, but confirm behavior for UUID v7 in your version."
+      : "create table public_links (\n  id varchar(64) primary key,\n  created_at timestamp default current_timestamp\n);";
+    $('prismaSnippet').textContent = type === 'uuidv4'
+      ? "model Order {\n  id        String   @id @default(uuid()) @db.Uuid\n  createdAt DateTime @default(now())\n}"
+      : type === 'uuidv7'
+      ? "model Order {\n  id        String   @id @db.Uuid\n  createdAt DateTime @default(now())\n}\n\n// Generate UUID v7 in app code before create()."
+      : "model PublicLink {\n  id        String   @id @db.VarChar(64)\n  createdAt DateTime @default(now())\n}\n\n// Generate " + labelFor(type) + " in app code.";
+    $('jsSnippet').textContent = type === 'uuidv4'
+      ? "const id = crypto.randomUUID();\nconsole.log(id);"
+      : type === 'uuidv7'
+      ? "// Use a vetted UUID v7 library in production, or reuse this page's RFC 9562-style layout carefully.\nconst id = generateUuidV7();"
+      : type === 'ulid'
+      ? "// Use a vetted ULID package in production when monotonic same-millisecond ordering matters.\nconst id = generateUlid();"
+      : "import { customAlphabet } from 'nanoid';\n\nconst nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-', " + $('nanoLength').value + ");\nconst id = nanoid();";
+    void uuidDefault;
+  }
+  $('generateBtn').addEventListener('click', generate);
+  ['idType','formatSelect','nanoLength','nanoAlphabet','prefixInput'].forEach(function(id){ $(id).addEventListener('input', function(){ renderGuidance(); renderSnippets(); }); $(id).addEventListener('change', function(){ renderGuidance(); renderSnippets(); }); });
+  $('idList').addEventListener('click', function(event){
+    var button = event.target.closest('button[data-copy]');
+    if (!button) return;
+    copyText(button.getAttribute('data-copy'), button);
   });
-
-  // --- Init ---
-  generateBtn.click();
+  $('copyAllBtn').addEventListener('click', function(){ copyText(lastIds.join('\n'), this); });
+  $('downloadCsvBtn').addEventListener('click', function(){
+    download('id\n' + lastIds.map(function(id){ return '"' + String(id).replace(/"/g, '""') + '"'; }).join('\n'), 'afrotools-ids.csv', 'text/csv');
+  });
+  $('downloadJsonBtn').addEventListener('click', function(){
+    download(JSON.stringify({ type:$('idType').value, generatedAt:new Date().toISOString(), ids:lastIds }, null, 2), 'afrotools-ids.json', 'application/json');
+  });
+  $('inspectInput').addEventListener('input', inspect);
+  $('collisionBtn').addEventListener('click', collision);
+  ['collisionBits','customBits','collisionCount'].forEach(function(id){ $(id).addEventListener('input', collision); $(id).addEventListener('change', collision); });
+  document.querySelectorAll('.tab').forEach(function(button){
+    button.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === button); });
+      document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.toggle('active', panel.id === 'tab-' + button.dataset.tab); });
+    });
+  });
+  generate();
+  collision();
 })();
 </script>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Uuid Generator" tool-slug="uuid-generator"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

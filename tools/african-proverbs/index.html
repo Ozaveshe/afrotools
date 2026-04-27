@@ -14,7 +14,7 @@
 <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=ca21dbe3">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
@@ -38,8 +38,15 @@
 .mini-english{font-size:.82rem;color:#64748b;line-height:1.5;margin-bottom:8px}
 .mini-tags{display:flex;gap:6px;flex-wrap:wrap}
 .mini-tag{font-size:.7rem;font-weight:600;padding:2px 7px;border-radius:5px;background:#FFFBEB;color:#B45309}
+.proverb-use-card{background:#fff;border:1px solid #fde68a;border-radius:12px;padding:22px;margin:22px 0;box-shadow:0 10px 26px rgba(120,53,15,.08)}
+.proverb-use-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:16px 0}
+.proverb-use-output{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:16px;color:#78350f;line-height:1.6}
+.proverb-use-output h4{margin:0 0 8px;color:#92400e}
+.proverb-use-output p{margin:0 0 8px}
 </style>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar theme="dark" active="religious-cultural"></afro-navbar>
@@ -122,6 +129,40 @@
 </div>
 </div>
 
+<div class="proverb-use-card">
+<div class="en-card-title"><span class="en-card-title-icon">✍️</span>Proverb Use Studio</div>
+<p class="en-muted" style="margin:0 0 12px">Turn the selected proverb into a caption, toast, classroom note, speech line, or leadership message with context that protects the meaning.</p>
+<div class="proverb-use-grid">
+<div class="en-field">
+<label class="en-label">Use case</label>
+<select class="en-select" id="useCase">
+<option value="caption">Social caption</option>
+<option value="toast">Family toast</option>
+<option value="classroom">Classroom note</option>
+<option value="leadership">Leadership message</option>
+<option value="speech">Speech opener</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Tone</label>
+<select class="en-select" id="useTone">
+<option value="warm">Warm</option>
+<option value="formal">Formal</option>
+<option value="youthful">Youthful</option>
+<option value="reflective">Reflective</option>
+</select>
+</div>
+<div class="en-field">
+<label class="en-label">Audience</label>
+<input class="en-input" id="useAudience" value="family and friends">
+</div>
+</div>
+<div class="proverb-use-output" id="proverbUseOutput"></div>
+<div class="en-form-actions" style="margin-top:12px">
+<button class="en-btn en-btn-secondary" type="button" onclick="copyProverbUse()">Copy use note</button>
+</div>
+</div>
+
 <!-- ALL PROVERBS -->
 <div class="en-card">
 <div class="en-card-title"><span class="en-card-title-icon">📚</span>All Proverbs <span id="proverbCount" style="font-size:.8rem;font-weight:400;color:#64748b;margin-left:6px"></span></div>
@@ -133,6 +174,9 @@
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
+
+<section class="rs-upgrade-shell" data-rs-tool-id="african-proverbs"></section>
+<script src="/assets/js/religious-cultural-apps.js" defer></script>
 <afro-footer></afro-footer>
 <script>
 var PROVERBS=[
@@ -174,6 +218,9 @@ var PROVERBS=[
   {o:"Nkechi nke onwe ya bụ nke oma",e:"Every person's own share is the good share.",c:"Igbo",t:"success",ctx:"Contentment with one's own portion and individual path leads to peace. Envy of others' success brings no benefit."}
 ];
 
+var currentProverb=null;
+var lastProverbUse='';
+
 function generateRandom(){
   var filtered=getFiltered();
   if(filtered.length===0){alert('No proverbs found for that filter. Try a different combination.');return;}
@@ -190,14 +237,57 @@ function getFiltered(){
 }
 
 function showFeatured(p){
+  currentProverb=p;
   document.getElementById('fpOriginal').textContent=p.o;
   document.getElementById('fpTranslation').textContent='"'+p.e+'"';
   document.getElementById('fpCulture').textContent='🌍 '+p.c;
   document.getElementById('fpTopic').textContent='#'+p.t;
   document.getElementById('fpContext').textContent=p.ctx;
+  renderProverbUse();
   var el=document.getElementById('featuredProverb');
   el.style.display='block';
   el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderProverbUse(){
+  var p=currentProverb||PROVERBS[0];
+  if(!p){return;}
+  var useEl=document.getElementById('useCase');
+  var toneEl=document.getElementById('useTone');
+  var audienceEl=document.getElementById('useAudience');
+  var use=useEl?useEl.value:'caption';
+  var tone=toneEl?toneEl.value:'warm';
+  var audience=audienceEl&&audienceEl.value.trim()?audienceEl.value.trim():'family and friends';
+  var lead={
+    caption:'Use it as a short caption that makes people pause before the lesson.',
+    toast:'Use it as a respectful toast before a family decision, wedding speech, or community meal.',
+    classroom:'Use it to open a discussion about the value behind the proverb, not just the literal words.',
+    leadership:'Use it to frame a team decision, responsibility, patience, or shared effort.',
+    speech:'Use it as a speech opener, then connect the lesson to the room in plain language.'
+  }[use]||'Use it as a thoughtful note with cultural context.';
+  var toneLine={
+    warm:'Keep the delivery gentle, personal, and generous.',
+    formal:'Keep the delivery precise and dignified, with one short explanation.',
+    youthful:'Keep the delivery conversational without turning the proverb into a joke.',
+    reflective:'Let the proverb breathe, then ask what it teaches today.'
+  }[tone]||'Keep the delivery respectful.';
+  var meaning=String(p.e||'').replace(/^"|"$/g,'');
+  lastProverbUse=[
+    p.c+' proverb: '+p.o,
+    'Meaning: '+meaning,
+    'Best use: '+lead,
+    'Audience: '+audience,
+    'Tone: '+toneLine,
+    'Context note: '+p.ctx
+  ].join('\n');
+  var out=document.getElementById('proverbUseOutput');
+  if(out){
+    out.innerHTML='<h4>'+p.c+' usage note</h4><p><strong>Meaning:</strong> '+meaning+'</p><p>'+lead+'</p><p><strong>Tone guardrail:</strong> '+toneLine+'</p><p><strong>Audience:</strong> '+audience+'</p>';
+  }
+}
+
+function copyProverbUse(){
+  if(lastProverbUse&&navigator.clipboard){navigator.clipboard.writeText(lastProverbUse).then(function(){alert('Proverb use note copied.');});}
 }
 
 function filterProverbs(){
@@ -226,6 +316,10 @@ function shareProverb(){
 
 filterProverbs();
 generateRandom();
+['useCase','useTone','useAudience'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el){el.addEventListener(id==='useAudience'?'input':'change',renderProverbUse);}
+});
 </script>
 </body>
 </html>

@@ -14,7 +14,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, workspace items, and AfroPoints contribution status across Africa.">
     <title>My Dashboard | AfroTools</title>
-    <link rel="stylesheet" href="/assets/css/design-system.css?v=8c8b64ec">
+    <link rel="stylesheet" href="/assets/css/design-system.css?v=1dd8c6a1">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
     <link rel="stylesheet" href="/assets/css/dashboard.css?v=844a7bfe">
@@ -1828,6 +1828,155 @@
         }
         .ws-panel { display: none; margin-bottom: 24px; }
         .ws-panel.active { display: block; }
+        .energy-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+        }
+        .energy-plan-card {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .energy-plan-card h3 {
+            margin: 0;
+            font-size: .95rem;
+            font-weight: 800;
+            color: #111827;
+            line-height: 1.3;
+        }
+        .energy-plan-summary {
+            color: #64748b;
+            font-size: .78rem;
+            line-height: 1.5;
+        }
+        .energy-plan-meta {
+            color: #9CA3AF;
+            font-size: .7rem;
+            font-weight: 700;
+        }
+        .energy-plan-next {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .energy-plan-next a {
+            border: 1px solid #FDE68A;
+            background: #FFFBEB;
+            color: #92400E;
+            border-radius: 999px;
+            padding: 5px 8px;
+            text-decoration: none;
+            font-size: .68rem;
+            font-weight: 800;
+        }
+        .trade-pack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+        }
+        .trade-pack-card {
+            background: #FFFFFF;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            display: grid;
+            gap: 10px;
+        }
+        .trade-pack-card h3 {
+            margin: 0;
+            font-size: 0.96rem;
+            color: #111827;
+        }
+        .trade-pack-card p {
+            margin: 0;
+            color: #64748B;
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+        .trade-pack-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .trade-pack-meta span {
+            border: 1px solid #BFDBFE;
+            border-radius: 999px;
+            background: #EFF6FF;
+            color: #1D4ED8;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+        .trade-pack-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .trade-pack-actions a,
+        .trade-pack-actions button {
+            min-height: 32px;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: #0F172A;
+            padding: 6px 10px;
+            font: inherit;
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .trade-pack-actions a:hover,
+        .trade-pack-actions button:hover {
+            border-color: #007AFF;
+            color: #005BBD;
+        }
+        .auth-local-nudge {
+            max-width: 520px;
+            margin: 1.5rem auto 0;
+            padding: 14px 16px;
+            border: 1.5px solid #BFDBFE;
+            border-radius: 12px;
+            background: #EFF6FF;
+            color: #1E3A5F;
+            text-align: left;
+        }
+        .auth-local-nudge strong {
+            display: block;
+            color: #0F172A;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        .auth-local-nudge span {
+            display: block;
+            color: #475569;
+            font-size: 0.78rem;
+            line-height: 1.45;
+        }
+        .auth-local-nudge a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: #005BBD;
+            border: 1px solid #BFDBFE;
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .auth-local-nudge-block + .auth-local-nudge-block {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #BFDBFE;
+        }
 
         /* Dark mode additions */
         @media (prefers-color-scheme: dark) {
@@ -1855,6 +2004,47 @@
             .dash-action-item.primary {
                 background: linear-gradient(180deg, #131D2E, #0F1D2E);
                 border-color: #1E2D40;
+            }
+            .trade-pack-card {
+                background: #131D2E;
+                border-color: #1E2D40;
+            }
+            .trade-pack-card h3 {
+                color: #E2E8F0;
+            }
+            .trade-pack-card p {
+                color: #94A3B8;
+            }
+            .trade-pack-actions a,
+            .trade-pack-actions button {
+                background: #0F1D2E;
+                border-color: #1E2D40;
+                color: #CBD5E1;
+            }
+            .auth-local-nudge {
+                background: #0F1D2E;
+                border-color: #1E2D40;
+            }
+            .auth-local-nudge strong {
+                color: #E2E8F0;
+            }
+            .auth-local-nudge span {
+                color: #94A3B8;
+            }
+            .auth-local-nudge a {
+                background: #131D2E;
+                border-color: #1E2D40;
+                color: #93C5FD;
+            }
+            .energy-plan-card {
+                background: #131D2E;
+                border-color: #1E2D40;
+            }
+            .energy-plan-card h3 {
+                color: #E2E8F0;
+            }
+            .energy-plan-summary {
+                color: #94A3B8;
             }
             .dash-action-item:hover { border-color: #4DA3FF; }
             .dash-action-label { color: #E2E8F0; }
@@ -1909,7 +2099,7 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 <meta property="og:url" content="https://afrotools.com/dashboard/">
 </head>
 <body>
@@ -1934,6 +2124,7 @@
                 Sign in to get started
             </button>
             <p style="margin-top:1.5rem;font-size:0.82rem;color:var(--dash-text-muted,#8E9BB3);">Free forever. No credit card required.</p>
+            <div id="authTradePackNudge" class="auth-local-nudge" style="display:none;"></div>
         </div>
 
         <!-- Dashboard Section -->
@@ -2277,7 +2468,7 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
-    <script src="/assets/js/components/tool-registry.min.js?v=90733912" defer></script>
+    <script src="/assets/js/components/tool-registry.min.js?v=0de15c9b" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js?v=f9a5f563"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
@@ -2898,6 +3089,7 @@
         function showAuth() {
             document.getElementById('authSection').style.display = 'block';
             document.getElementById('dashboardSection').classList.remove('active');
+            renderAuthTradePackNudge();
         }
 
         function showDashboard() {
@@ -2919,6 +3111,39 @@
             }
             renderSmartRecommendations();
             loadExtendedProfile();
+        }
+
+        function renderAuthTradePackNudge() {
+            var nudge = document.getElementById('authTradePackNudge');
+            if (!nudge) return;
+            var tradePacks = dashReadJson('afrotools:trade-dashboard-items', []);
+            if (!Array.isArray(tradePacks)) tradePacks = [];
+            var legalWorkflows = dashGetLegalWorkflows();
+            var blocks = [];
+
+            if (legalWorkflows.length > 0) {
+                var latestLegal = legalWorkflows[0] || {};
+                var legalTitle = latestLegal.title || (latestLegal.payload && latestLegal.payload.config && (latestLegal.payload.config.workflowTitle || latestLegal.payload.config.title)) || 'your latest legal workflow';
+                blocks.push('<div class="auth-local-nudge-block"><strong>' + dashEscapeHtml(legalWorkflows.length + ' local legal workflow' + (legalWorkflows.length === 1 ? '' : 's') + ' waiting') + '</strong>' +
+                    '<span>' + dashEscapeHtml('Your legal case workspace is saved on this device. Sign in to sync it across devices, or continue from ' + legalTitle + '.') + '</span>' +
+                    '<a href="' + dashSafeHref(latestLegal.href || '/legal/') + '">Continue legal work</a></div>');
+            }
+
+            if (tradePacks.length > 0) {
+                var latest = tradePacks[0] || {};
+                var count = tradePacks.length;
+                blocks.push('<div class="auth-local-nudge-block"><strong>' + dashEscapeHtml(count + ' local trade pack' + (count === 1 ? '' : 's') + ' waiting') + '</strong>' +
+                    '<span>' + dashEscapeHtml('Your Trade Pack is saved on this device. Sign in to sync it across devices, or continue from ' + (latest.tool || latest.title || 'the Trade suite') + '.') + '</span>' +
+                    '<a href="' + dashSafeTradeHref(latest.sourceHref || latest.href || '/trade/') + '">Continue trade work</a></div>');
+            }
+
+            if (!blocks.length) {
+                nudge.style.display = 'none';
+                nudge.innerHTML = '';
+                return;
+            }
+            nudge.innerHTML = blocks.join('');
+            nudge.style.display = '';
         }
 
         async function loadExtendedProfile() {
@@ -2995,6 +3220,8 @@
             window.addEventListener('afro-workspace-change', function() {
                 refreshWorkspaceSummary(true);
                 renderMyWorkspace();
+                updateQuickStats();
+                setTimeout(renderLegalWorkflowDashboardBlock, 300);
             });
         }
 
@@ -3019,6 +3246,8 @@
             loadQuickAccess();
             loadSavedCalculations();
             updateQuickStats();
+            renderLegalWorkflowDashboardBlock();
+            setTimeout(renderLegalWorkflowDashboardBlock, 1000);
             renderWhatsNew();
             renderActionCenter();
             refreshWorkspaceSummary();
@@ -3147,6 +3376,14 @@
             return '/tools/';
         }
 
+        function dashSafeExternalHref(href) {
+            var text = String(href || '').trim();
+            if (!text) return '#';
+            if (text.charAt(0) === '/' || text.charAt(0) === '#') return text.replace(/"/g, '%22');
+            if (/^https?:\/\//i.test(text)) return text.replace(/"/g, '%22');
+            return '#';
+        }
+
         function dashEscapeJsString(value) {
             return String(value == null ? '' : value)
                 .replace(/\\/g, '\\\\')
@@ -3170,6 +3407,50 @@
             return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         }
 
+        function dashGetLegalWorkflows() {
+            var items = dashReadJson('afro_legal_workflows', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && item.itemType === 'legal-workflow';
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
+            });
+        }
+
+        function getSportsReportsLocal() {
+            var items = dashReadJson('afro_sports_reports_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'sports-report' || item.toolSlug);
+            }).sort(function(a, b) {
+                return new Date(b.savedAt || b.createdAt || 0).getTime() - new Date(a.savedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getSportsReportsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'sports-report' || item.itemType === 'sports-report');
+            });
+        }
+
+        function getReligiousCulturalPlansLocal() {
+            var items = dashReadJson('afro_religious_cultural_workspace', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'religious-cultural-plan' || item.toolSlug);
+            }).sort(function(a, b) {
+                return new Date(b.savedAt || b.createdAt || 0).getTime() - new Date(a.savedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getReligiousCulturalPlansCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'religious-cultural-plan' || item.itemType === 'religious-cultural-plan');
+            });
+        }
+
         function getDashboardWorkspaceCounts() {
             var favorites = dashReadJson('afro_favs_v2', []);
             if (!Array.isArray(favorites)) favorites = [];
@@ -3180,10 +3461,39 @@
             var plans = dashReadJson('afro_fp_list', []);
             if (!Array.isArray(plans)) plans = [];
 
+            var tradePacks = dashReadJson('afrotools:trade-dashboard-items', []);
+            if (!Array.isArray(tradePacks)) tradePacks = [];
+
+            var telecomItems = dashReadJson('afro_telecom_workspace', []);
+            if (!Array.isArray(telecomItems)) telecomItems = [];
+
+            var engineeringPacks = dashReadJson('afro_engineering_packs', []);
+            if (!Array.isArray(engineeringPacks)) engineeringPacks = [];
+
+            var engineeringWorkflows = dashReadJson('afro_engineering_workflows', []);
+            if (!Array.isArray(engineeringWorkflows)) engineeringWorkflows = [];
+
             var docs = 0;
             ['afro_invoice_draft', 'afro_cv_data', 'cv_builder_data', 'afro_paye_saved', 'afro_markdown_draft', 'markdown_content'].forEach(function(key) {
                 if (dashReadText(key)) docs += 1;
             });
+            docs += dashGetLegalWorkflows().length;
+
+            var africanWorkflows = dashReadJson('african_workflow_items', []);
+            if (!Array.isArray(africanWorkflows)) africanWorkflows = [];
+
+            var energyReports = dashReadJson('afro_energy_reports', []);
+            if (!Array.isArray(energyReports)) energyReports = [];
+
+            var climateReports = dashReadJson('afro_climate_workspace', []);
+            if (!Array.isArray(climateReports)) climateReports = [];
+
+            var sportsReports = getSportsReportsLocal();
+
+            var religiousCulturalPlans = getReligiousCulturalPlansLocal();
+
+            var healthPlans = dashReadJson('afro_health_plans', []);
+            if (!Array.isArray(healthPlans)) healthPlans = [];
 
             var savedCalcs = 0;
             try {
@@ -3195,14 +3505,25 @@
                 }
             } catch(e) {}
 
-            var localTotal = favorites.length + cvs.length + plans.length + docs + savedCalcs;
+            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + religiousCulturalPlans.length + healthPlans.length;
             var cloudTotal = typeof dashboardWorkspaceState.count === 'number' ? dashboardWorkspaceState.count : null;
             return {
                 favorites: favorites.length,
                 cvs: cvs.length,
                 plans: plans.length,
+                tradePacks: tradePacks.length,
+                telecom: telecomItems.length,
+                engineeringPacks: engineeringPacks.length,
+                engineeringWorkflows: engineeringWorkflows.length,
+                engineeringItems: engineeringPacks.length + engineeringWorkflows.length,
                 docs: docs,
                 savedCalcs: savedCalcs,
+                africanWorkflows: africanWorkflows.length,
+                energyReports: energyReports.length,
+                climateReports: climateReports.length,
+                sportsReports: sportsReports.length,
+                religiousCulturalPlans: religiousCulturalPlans.length,
+                healthPlans: healthPlans.length,
                 localTotal: localTotal,
                 cloudTotal: cloudTotal,
                 total: cloudTotal === null ? localTotal : Math.max(localTotal, cloudTotal)
@@ -3354,12 +3675,89 @@
                 });
             }
 
+            if (counts.tradePacks > 0) {
+                add({
+                    key: 'trade-packs',
+                    tag: 'Trade',
+                    label: dashPlural(counts.tradePacks, 'trade pack'),
+                    detail: 'Open saved broker, bank, customs or team handoffs from the trade suite.',
+                    cta: 'Open trade packs',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.engineeringItems > 0) {
+                add({
+                    key: 'engineering-packs',
+                    tag: 'Engineering',
+                    label: dashPlural(counts.engineeringItems, 'engineering item'),
+                    detail: 'Open saved Engineering project workflows, calculator packs, assumptions, and next-tool handoffs.',
+                    cta: 'Open engineering desk',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.energyReports > 0) {
+                add({
+                    key: 'energy-plans',
+                    tag: 'Energy',
+                    label: dashPlural(counts.energyReports, 'energy plan'),
+                    detail: 'Open saved solar, generator, battery, bill or mini-grid reports from the energy suite.',
+                    cta: 'Open energy plans',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.climateReports > 0) {
+                add({
+                    key: 'climate-reports',
+                    tag: 'Climate',
+                    label: dashPlural(counts.climateReports, 'climate report'),
+                    detail: 'Review saved climate scenarios, PDF-ready action packs, and next recommended apps.',
+                    cta: 'Open climate reports',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.sportsReports > 0) {
+                add({
+                    key: 'sports-reports',
+                    tag: 'Sports',
+                    label: dashPlural(counts.sportsReports, 'sports report'),
+                    detail: 'Open saved odds, royalties, events, athlete, ticket, gaming, and creative reports from the Sports suite.',
+                    cta: 'Open sports reports',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.religiousCulturalPlans > 0) {
+                add({
+                    key: 'religious-cultural-plans',
+                    tag: 'Faith & Culture',
+                    label: dashPlural(counts.religiousCulturalPlans, 'saved pack'),
+                    detail: 'Open saved zakat, prayer, ceremony, naming, proverb, calendar, attire, and festival packs from the Religious & Cultural suite.',
+                    cta: 'Open faith packs',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.healthPlans > 0) {
+                add({
+                    key: 'health-plans',
+                    tag: 'Health',
+                    label: dashPlural(counts.healthPlans, 'health plan'),
+                    detail: 'Review saved Health calculators, journey plans, and PDF-ready visit-prep notes.',
+                    cta: 'Open health plans',
+                    href: '#myWorkspace'
+                });
+            }
+
             if (counts.total > 0) {
                 add({
                     key: 'workspace',
                     tag: 'Workspace',
                     label: dashPlural(counts.total, 'saved item'),
-                    detail: 'Review saved tools, documents, CVs, floor plans, and calculator scenarios.',
+                    detail: 'Review saved tools, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, African workflows, trade packs, documents, CVs, floor plans, and calculator scenarios.',
                     cta: 'Open workspace',
                     href: '#myWorkspace'
                 });
@@ -3512,6 +3910,8 @@
                 loadQuickAccess();
                 loadSavedCalculations();
                 updateQuickStats();
+                renderLegalWorkflowDashboardBlock();
+                setTimeout(renderLegalWorkflowDashboardBlock, 1000);
                 renderWhatsNew();
                 renderSmartRecommendations();
                 renderActionCenter();
@@ -3825,6 +4225,499 @@
             }).join('') + '</div>';
         }
 
+        function renderAfricanWorkflowWorkspace(container, items) {
+            if (!container) return;
+            var list = Array.isArray(items) ? items.slice(0, 12) : [];
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No African workflow steps saved yet.</div>';
+                return;
+            }
+            container.innerHTML = list.map(function(item) {
+                var nextTools = Array.isArray(item.nextTools) ? item.nextTools.slice(0, 3) : [];
+                var next = nextTools.length || (Array.isArray(item.next) ? item.next.length : 0);
+                var source = item.sourceUrl
+                    ? '<a class="btn-small" href="' + dashSafeExternalHref(item.sourceUrl) + '" target="_blank" rel="noopener noreferrer">Source</a>'
+                    : '';
+                var nextHtml = nextTools.length
+                    ? '<div class="saved-meta">Next: ' + nextTools.map(function(nextItem) {
+                        return '<a href="' + dashSafeHref(nextItem.href || '/african/') + '">' + dashEscapeHtml(nextItem.name || 'Next tool') + '</a>';
+                    }).join(' · ') + '</div>'
+                    : '';
+                var checkCount = Array.isArray(item.checks) ? item.checks.length : 0;
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.name || 'African workflow step') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.group || 'African tools') + '</div>' +
+                        (item.upgrade ? '<div class="saved-meta">' + dashEscapeHtml(item.upgrade) + '</div>' : '') +
+                        '<div class="saved-meta">' + dashEscapeHtml(dashTimeAgo(item.savedAt)) + (next ? ' · ' + next + ' suggested next step' + (next === 1 ? '' : 's') : '') + (checkCount ? ' · ' + checkCount + ' checks' : '') + '</div>' +
+                        nextHtml +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashSafeHref(item.href || '/african/') + '">Open</a>' +
+                        source +
+                    '</div>' +
+                '</article>';
+            }).join('');
+        }
+
+        function renderHealthPlanWorkspace(container, items) {
+            if (!container) return;
+            var list = Array.isArray(items) ? items.slice(0, 12) : [];
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No Health plans saved yet. Open the Health hub, save a workflow, or unlock a PDF plan.</div>';
+                return;
+            }
+            container.innerHTML = list.map(function(item) {
+                var saved = item.savedAt || item.updatedAt || item.createdAt;
+                var related = Array.isArray(item.related) ? item.related.length : 0;
+                var sync = item.syncStatus === 'cloud' ? 'Account + device' : 'This device';
+                var href = item.href || (item.toolId ? '/tools/' + String(item.toolId).replace(/[^a-z0-9-]/gi, '') + '/' : '/health/');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || item.toolName || 'Health plan') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || item.bucket || 'Health workflow') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(dashTimeAgo(saved)) + ' | ' + dashEscapeHtml(sync) + (related ? ' | ' + related + ' related tool' + (related === 1 ? '' : 's') : '') + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashSafeHref(href) + '">Open</a>' +
+                        '<a class="btn-small" href="/health/">Health hub</a>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+        }
+
+        function renderInsuranceWorkspace(container, items) {
+            if (!container) return;
+            var list = Array.isArray(items) ? items.slice(0, 12) : [];
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No insurance buyer packs saved yet.</div>';
+                return;
+            }
+            container.innerHTML = list.map(function(item) {
+                var tools = Array.isArray(item.workflowTools) ? item.workflowTools.length : 0;
+                var href = item.href || (item.toolSlug ? '/tools/' + String(item.toolSlug).replace(/[^a-z0-9-]/gi, '') + '/' : '/insurance/');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Insurance buyer pack') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.country || item.workflowId || 'Insurance') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(dashTimeAgo(item.savedAt)) + (tools ? ' | ' + tools + ' workflow app' + (tools === 1 ? '' : 's') : '') + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashSafeHref(href) + '">Open</a>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+        }
+
+        function renderEngineeringWorkspace(container, packs, workflows) {
+            if (!container) return;
+            var packList = Array.isArray(packs) ? packs.slice() : [];
+            var workflowList = Array.isArray(workflows) ? workflows.slice() : [];
+            var items = workflowList.concat(packList).filter(function(item) { return item && (item.id || item.itemKey); }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            }).slice(0, 16);
+            if (!items.length) {
+                container.innerHTML = '<div class="ws-empty">No Engineering workflows or packs saved yet. Open the Engineering hub and choose Save workflow to dashboard.</div>';
+                return;
+            }
+            container.innerHTML = '<div class="trade-pack-grid">' + items.map(function(item) {
+                var isWorkflow = item.itemType === 'engineering-workflow' || Array.isArray(item.steps);
+                var steps = Array.isArray(item.steps) ? item.steps.length : 0;
+                var payloadSteps = item.payload && Array.isArray(item.payload.steps) ? item.payload.steps.length : 0;
+                var count = steps || payloadSteps || (item.payload && Array.isArray(item.payload.controls) ? item.payload.controls.length : 0);
+                var saved = item.updatedAt || item.createdAt;
+                var href = dashSafeHref(item.sourceHref || item.href || '/engineering/');
+                return '<article class="trade-pack-card">' +
+                    '<div>' +
+                        '<h3>' + dashEscapeHtml(item.title || (isWorkflow ? 'Engineering workflow' : 'Engineering pack')) + '</h3>' +
+                        '<p>' + dashEscapeHtml(item.summary || (isWorkflow ? 'Saved app sequence from the Engineering hub.' : 'Saved assumptions, checks, risks and next-tool handoff from an Engineering app.')) + '</p>' +
+                    '</div>' +
+                    '<div class="trade-pack-meta">' +
+                        '<span>' + dashEscapeHtml(isWorkflow ? 'Workflow' : 'Pack') + '</span>' +
+                        '<span>' + dashEscapeHtml(count ? count + (isWorkflow ? ' step' : ' capture') + (count === 1 ? '' : 's') : 'Saved item') + '</span>' +
+                        '<span>' + dashEscapeHtml(dashTimeAgo(saved)) + '</span>' +
+                        '<span>' + dashEscapeHtml(item.syncStatus === 'cloud' ? 'Account + device' : 'This device') + '</span>' +
+                    '</div>' +
+                    '<div class="trade-pack-actions">' +
+                        '<a href="' + href + '">Continue</a>' +
+                        '<a href="/engineering/#project-desk">Engineering hub</a>' +
+                        '<button type="button" data-engineering-remove="' + dashEscapeHtml(item.itemKey || item.id || '') + '" data-engineering-kind="' + (isWorkflow ? 'workflow' : 'pack') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('') + '</div>';
+            container.querySelectorAll('[data-engineering-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-engineering-remove');
+                    var kind = btn.getAttribute('data-engineering-kind');
+                    var key = kind === 'workflow' ? 'afro_engineering_workflows' : 'afro_engineering_packs';
+                    var current = dashReadJson(key, []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.itemKey !== id && item.id !== id; });
+                    try { localStorage.setItem(key, JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: kind === 'workflow' ? 'engineering-workflow' : 'engineering-pack', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] engineering workspace delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+        }
+
+        function dashSafeTradeHref(href) {
+            try {
+                var url = new URL(String(href || '/trade/'), window.location.origin);
+                if (url.origin === window.location.origin) {
+                    return dashSafeHref(url.pathname + url.search + url.hash);
+                }
+            } catch(e) {}
+            return '/trade/';
+        }
+
+        function renderTradePackWorkspace(container, items) {
+            if (!container) return;
+            var list = Array.isArray(items) ? items.slice(0, 12) : [];
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No trade packs saved yet. Use any Trade Action Desk and choose Save to dashboard.</div>';
+                return;
+            }
+            container.innerHTML = '<div class="trade-pack-grid">' + list.map(function(item) {
+                var count = Number(item.snapshotCount || (item.payload && item.payload.snapshots && item.payload.snapshots.length) || 0);
+                var saved = item.updatedAt || item.createdAt;
+                return '<article class="trade-pack-card">' +
+                    '<div>' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Trade pack') + '</h3>' +
+                        '<p>' + dashEscapeHtml(item.summary || 'Saved broker, customs, finance or team handoff from the trade suite.') + '</p>' +
+                    '</div>' +
+                    '<div class="trade-pack-meta">' +
+                        '<span>' + dashEscapeHtml(item.workflowLabel || 'Trade workflow') + '</span>' +
+                        '<span>' + dashEscapeHtml(count ? count + ' snapshot' + (count === 1 ? '' : 's') : 'Saved pack') + '</span>' +
+                        '<span>' + dashEscapeHtml(dashTimeAgo(saved)) + '</span>' +
+                    '</div>' +
+                    '<div class="trade-pack-actions">' +
+                        '<a href="' + dashSafeTradeHref(item.sourceHref || item.href || '/trade/') + '">Continue</a>' +
+                        '<a href="/trade/#myWorkspace">Open hub</a>' +
+                        '<button type="button" data-trade-pack-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('') + '</div>';
+            container.querySelectorAll('[data-trade-pack-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-trade-pack-remove');
+                    var current = dashReadJson('afrotools:trade-dashboard-items', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afrotools:trade-dashboard-items', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                });
+            });
+        }
+
+        function loadMyTelecomWorkspace() {
+            var container = document.getElementById('myTelecomWorkspaceContainer');
+            if (!container) return;
+            var items = dashReadJson('afro_telecom_workspace', []);
+            if (!Array.isArray(items)) items = [];
+            items = items.filter(function(item) { return item && item.id; }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            }).slice(0, 12);
+
+            if (!items.length) {
+                container.innerHTML = '<div class="ws-empty">No telecom plans saved yet.</div>';
+                return;
+            }
+
+            container.innerHTML = items.map(function(item) {
+                var steps = Array.isArray(item.steps) ? item.steps.length : 0;
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var detail = [item.countryName || item.country || 'Africa', item.workflowLabel || item.workflow || 'Telecom'].filter(Boolean).join(' | ');
+                var href = item.href || '/telecom/';
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Telecom plan') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(detail) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(saved) + (steps ? ' | ' + steps + ' workflow app' + (steps === 1 ? '' : 's') : '') + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashSafeHref(href) + '">Open</a>' +
+                        '<button class="btn-small" type="button" onclick="deleteTelecomWorkspace(\'' + dashEscapeJsString(item.id) + '\')">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+        }
+
+        function deleteTelecomWorkspace(id) {
+            if (!id || !confirm('Remove this telecom workspace item?')) return;
+            var items = dashReadJson('afro_telecom_workspace', []);
+            if (!Array.isArray(items)) items = [];
+            var removed = null;
+            items = items.filter(function(item) {
+                if (item && item.id === id) {
+                    removed = item;
+                    return false;
+                }
+                return true;
+            });
+            localStorage.setItem('afro_telecom_workspace', JSON.stringify(items));
+            loadMyTelecomWorkspace();
+            renderActionCenter();
+            if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn() && removed) {
+                AfroWorkspace.remove({ itemType: removed.itemType || 'telecom-brief', itemKey: id }).catch(function(e) {
+                    console.warn('[Dashboard] telecom workspace delete sync failed:', e.message || e);
+                });
+            }
+        }
+
+        function renderEnergyPlanWorkspace(container, items) {
+            if (!container) return;
+            var list = Array.isArray(items) ? items.filter(function(item) { return item && item.id; }).sort(function(a, b) {
+                return new Date(b.savedAt || b.createdAt || 0).getTime() - new Date(a.savedAt || a.createdAt || 0).getTime();
+            }).slice(0, 12) : [];
+
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No energy plans saved yet. Run any Energy calculator and choose Save to dashboard.</div>';
+                return;
+            }
+
+            container.innerHTML = '<div class="energy-plan-grid">' + list.map(function(item) {
+                var nextTools = Array.isArray(item.nextTools) ? item.nextTools.slice(0, 3) : [];
+                var saved = dashTimeAgo(item.savedAt || item.createdAt);
+                var href = dashSafeHref(item.href || (item.slug ? '/tools/' + String(item.slug).replace(/[^a-z0-9-]/gi, '') + '/' : '/energy/'));
+                return '<article class="energy-plan-card">' +
+                    '<div>' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Energy plan') + '</h3>' +
+                        '<div class="energy-plan-summary">' + dashEscapeHtml(item.summary || 'Saved energy report from AfroTools.') + '</div>' +
+                    '</div>' +
+                    '<div class="energy-plan-meta">' + dashEscapeHtml(saved) + (item.scenario ? ' | ' + dashEscapeHtml(item.scenario) : '') + '</div>' +
+                    (nextTools.length ? '<div class="energy-plan-next">' + nextTools.map(function(step) {
+                        return '<a href="' + dashEscapeHtml(dashSafeHref(step.href || '/energy/')) + '">' + dashEscapeHtml(step.label || 'Next step') + '</a>';
+                    }).join('') + '</div>' : '') +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open</a>' +
+                        '<a class="btn-small" href="/energy/">Energy hub</a>' +
+                        '<button class="btn-small" type="button" data-energy-report-remove="' + dashEscapeHtml(item.id) + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('') + '</div>';
+
+            container.querySelectorAll('[data-energy-report-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-energy-report-remove');
+                    if (!id || !confirm('Remove this energy plan?')) return;
+                    var current = dashReadJson('afro_energy_reports', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_energy_reports', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: 'energy_report', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] energy report delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+        }
+
+        function renderClimateReportWorkspace(container, items) {
+            if (!container) return;
+            var list = Array.isArray(items) ? items.filter(function(item) { return item && item.id; }).sort(function(a, b) {
+                return new Date(b.createdAt || b.savedAt || 0).getTime() - new Date(a.createdAt || a.savedAt || 0).getTime();
+            }).slice(0, 12) : [];
+
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No climate reports saved yet. Run any Climate app and choose Save to dashboard.</div>';
+                return;
+            }
+
+            container.innerHTML = list.map(function(item) {
+                var nextTools = Array.isArray(item.nextTools) ? item.nextTools.slice(0, 3) : [];
+                var saved = dashTimeAgo(item.createdAt || item.savedAt);
+                var href = dashSafeHref(item.href || (item.toolSlug ? '/tools/' + String(item.toolSlug).replace(/[^a-z0-9-]/gi, '') + '/' : '/climate/'));
+                var detail = [item.countryName || item.country || 'Africa', item.workflow || item.toolName || 'Climate'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Climate report') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml((item.resultLabel || 'Result') + ': ' + (item.resultValue || item.level || 'Saved scenario')) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail + ' | ' + saved) + '</div>' +
+                        (item.resultSub ? '<div class="saved-meta">' + dashEscapeHtml(item.resultSub) + '</div>' : '') +
+                        (nextTools.length ? '<div class="energy-plan-next">' + nextTools.map(function(step) {
+                            return '<a href="' + dashEscapeHtml(dashSafeHref(step.href || '/climate/')) + '">' + dashEscapeHtml(step.label || step.shortName || 'Next step') + '</a>';
+                        }).join('') + '</div>' : '') +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open</a>' +
+                        '<a class="btn-small" href="/climate/">Climate hub</a>' +
+                        '<button class="btn-small" type="button" data-climate-report-remove="' + dashEscapeHtml(item.id) + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            container.querySelectorAll('[data-climate-report-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-climate-report-remove');
+                    if (!id || !confirm('Remove this climate report?')) return;
+                    var current = dashReadJson('afro_climate_workspace', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_climate_workspace', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: 'climate-scenario', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] climate report delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+        }
+
+        function getSportsReportItems(localItems) {
+            var merged = {};
+            (Array.isArray(localItems) ? localItems : getSportsReportsLocal()).forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key || item.toolSlug || '';
+                if (!id) return;
+                merged[id] = item;
+            });
+            getSportsReportsCloud().forEach(function(item) {
+                if (!item) return;
+                var id = item.item_key || item.itemKey || item.id || '';
+                if (!id || merged[id]) return;
+                merged[id] = {
+                    id: id,
+                    itemType: 'sports-report',
+                    toolSlug: item.tool_slug || item.toolSlug || '',
+                    title: item.title || 'Sports report',
+                    summary: item.summary || 'Saved sports report from AfroTools.',
+                    href: item.href || (item.tool_slug ? '/tools/' + String(item.tool_slug).replace(/[^a-z0-9-]/gi, '') + '/' : '/sports/'),
+                    savedAt: item.updated_at || item.created_at || item.savedAt || item.createdAt,
+                    synced: true
+                };
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.savedAt || b.createdAt || 0).getTime() - new Date(a.savedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function renderSportsReportWorkspace(container, items) {
+            if (!container) return;
+            var list = getSportsReportItems(items).slice(0, 12);
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No sports reports saved yet. Run a Sports calculator, unlock the report, and save it to the dashboard.</div>';
+                return;
+            }
+            container.innerHTML = list.map(function(item) {
+                var saved = dashTimeAgo(item.savedAt || item.createdAt);
+                var href = dashSafeHref(item.href || (item.toolSlug ? '/tools/' + String(item.toolSlug).replace(/[^a-z0-9-]/gi, '') + '/' : '/sports/'));
+                var detail = [item.workflowLabel || 'Sports workflow', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || item.toolTitle || 'Sports report') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || ((item.resultLabel || 'Result') + ': ' + (item.resultValue || 'Saved scenario'))) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open</a>' +
+                        '<a class="btn-small" href="/sports/">Sports hub</a>' +
+                        '<button class="btn-small" type="button" data-sports-report-remove="' + dashEscapeHtml(item.id || item.itemKey || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            container.querySelectorAll('[data-sports-report-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-sports-report-remove');
+                    if (!id || !confirm('Remove this sports report?')) return;
+                    var current = dashReadJson('afro_sports_reports_v1', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_sports_reports_v1', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: 'sports-report', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] sports report delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+        }
+
+        function getReligiousCulturalPlanItems(localItems) {
+            var merged = {};
+            (Array.isArray(localItems) ? localItems : getReligiousCulturalPlansLocal()).forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key || item.toolSlug || '';
+                if (!id) return;
+                merged[id] = item;
+            });
+            getReligiousCulturalPlansCloud().forEach(function(item) {
+                if (!item) return;
+                var id = item.item_key || item.itemKey || item.id || '';
+                if (!id || merged[id]) return;
+                merged[id] = {
+                    id: id,
+                    itemType: 'religious-cultural-plan',
+                    toolSlug: item.tool_slug || item.toolSlug || '',
+                    title: item.title || 'Religious & Cultural pack',
+                    summary: item.summary || 'Saved faith, family, or heritage pack from AfroTools.',
+                    href: item.href || (item.tool_slug ? '/tools/' + String(item.tool_slug).replace(/[^a-z0-9-]/gi, '') + '/' : '/religious-cultural/'),
+                    savedAt: item.updated_at || item.created_at || item.savedAt || item.createdAt,
+                    synced: true
+                };
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.savedAt || b.createdAt || 0).getTime() - new Date(a.savedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function renderReligiousCulturalWorkspace(container, items) {
+            if (!container) return;
+            var list = getReligiousCulturalPlanItems(items).slice(0, 12);
+            if (!list.length) {
+                container.innerHTML = '<div class="ws-empty">No faith or culture packs saved yet. Open any Religious & Cultural app, update the plan, then save it to the dashboard.</div>';
+                return;
+            }
+            container.innerHTML = list.map(function(item) {
+                var saved = dashTimeAgo(item.savedAt || item.createdAt);
+                var href = dashSafeHref(item.href || (item.toolSlug ? '/tools/' + String(item.toolSlug).replace(/[^a-z0-9-]/gi, '') + '/' : '/religious-cultural/'));
+                var detail = [item.workflowLabel || 'Religious & Cultural workflow', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || item.toolTitle || 'Religious & Cultural pack') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || ((item.resultLabel || 'Result') + ': ' + (item.resultValue || 'Saved plan'))) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open</a>' +
+                        '<a class="btn-small" href="/religious-cultural/">Hub</a>' +
+                        '<button class="btn-small" type="button" data-religious-cultural-remove="' + dashEscapeHtml(item.id || item.itemKey || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            container.querySelectorAll('[data-religious-cultural-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-religious-cultural-remove');
+                    if (!id || !confirm('Remove this Religious & Cultural pack?')) return;
+                    var current = dashReadJson('afro_religious_cultural_workspace', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_religious_cultural_workspace', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: 'religious-cultural-plan', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] Religious & Cultural pack delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+        }
+
         function renderMyWorkspace() {
             var container = document.getElementById('myWorkspaceContent');
             if (!container) return;
@@ -3832,6 +4725,32 @@
             var tabs = [];
             var localFavs = JSON.parse(localStorage.getItem('afro_favs_v2') || '[]');
             if (localFavs.length > 0) tabs.push({ id: 'ws-favs', label: 'My Tools', icon: '\u2B50' });
+
+            var africanWorkflows = [];
+            try { africanWorkflows = JSON.parse(localStorage.getItem('african_workflow_items') || '[]'); } catch(e) {}
+            if (africanWorkflows.length > 0) tabs.push({ id: 'ws-african', label: 'African Workflows', icon: '\uD83C\uDF0D' });
+
+            var energyReports = [];
+            try { energyReports = JSON.parse(localStorage.getItem('afro_energy_reports') || '[]'); } catch(e) {}
+            if (energyReports.length > 0) tabs.push({ id: 'ws-energy', label: 'Energy Plans', icon: 'ENE' });
+
+            var climateReports = [];
+            try { climateReports = JSON.parse(localStorage.getItem('afro_climate_workspace') || '[]'); } catch(e) {}
+            if (climateReports.length > 0) tabs.push({ id: 'ws-climate', label: 'Climate Reports', icon: 'CLI' });
+
+            var sportsReports = getSportsReportsLocal();
+            if (sportsReports.length > 0 || getSportsReportsCloud().length > 0) tabs.push({ id: 'ws-sports', label: 'Sports Reports', icon: 'SPT' });
+
+            var religiousCulturalPlans = getReligiousCulturalPlansLocal();
+            if (religiousCulturalPlans.length > 0 || getReligiousCulturalPlansCloud().length > 0) tabs.push({ id: 'ws-religious-cultural', label: 'Faith & Culture', icon: 'CUL' });
+
+            var healthPlans = [];
+            try { healthPlans = JSON.parse(localStorage.getItem('afro_health_plans') || '[]'); } catch(e) {}
+            if (healthPlans.length > 0) tabs.push({ id: 'ws-health', label: 'Health Plans', icon: 'HLT' });
+
+            var insurancePlans = [];
+            try { insurancePlans = JSON.parse(localStorage.getItem('afro_insurance_workspace') || '[]'); } catch(e) {}
+            if (insurancePlans.length > 0) tabs.push({ id: 'ws-insurance', label: 'Insurance', icon: '\uD83D\uDEE1\uFE0F' });
 
             var cvs = [];
             try { cvs = JSON.parse(localStorage.getItem('afro_cv_list') || '[]'); } catch(e) {}
@@ -3841,11 +4760,30 @@
             try { plans = JSON.parse(localStorage.getItem('afro_fp_list') || '[]'); } catch(e) {}
             if (plans.length > 0) tabs.push({ id: 'ws-plans', label: 'Floor Plans', icon: '\uD83C\uDFE0' });
 
+            var tradePacks = [];
+            try { tradePacks = JSON.parse(localStorage.getItem('afrotools:trade-dashboard-items') || '[]'); } catch(e) {}
+            if (tradePacks.length > 0) tabs.push({ id: 'ws-trade', label: 'Trade Packs', icon: '\uD83D\uDEA2' });
+
+            var telecomItems = [];
+            try { telecomItems = JSON.parse(localStorage.getItem('afro_telecom_workspace') || '[]'); } catch(e) {}
+            if (telecomItems.length > 0) tabs.push({ id: 'ws-telecom', label: 'Telecom', icon: 'TEL' });
+
+            var engineeringPacks = [];
+            try { engineeringPacks = JSON.parse(localStorage.getItem('afro_engineering_packs') || '[]'); } catch(e) {}
+            if (!Array.isArray(engineeringPacks)) engineeringPacks = [];
+            var engineeringWorkflows = [];
+            try { engineeringWorkflows = JSON.parse(localStorage.getItem('afro_engineering_workflows') || '[]'); } catch(e) {}
+            if (!Array.isArray(engineeringWorkflows)) engineeringWorkflows = [];
+            if (engineeringPacks.length > 0 || engineeringWorkflows.length > 0) tabs.push({ id: 'ws-engineering', label: 'Engineering', icon: 'ENG' });
+
+            var legalWorkflows = dashGetLegalWorkflows();
+            if (legalWorkflows.length > 0) tabs.push({ id: 'ws-legal', label: 'Legal Workflows', icon: '\u2696\uFE0F' });
+
             var hasDocs = !!(localStorage.getItem('afro_invoice_draft') || localStorage.getItem('afro_cv_data') || localStorage.getItem('cv_builder_data') || localStorage.getItem('afro_paye_saved') || localStorage.getItem('afro_markdown_draft'));
             if (hasDocs) tabs.push({ id: 'ws-docs', label: 'Documents', icon: '\uD83D\uDCC1' });
 
             if (tabs.length === 0) {
-                container.innerHTML = '<div class="ws-empty"><div style="font-size:2rem;margin-bottom:8px;">\u2B50</div>Start using tools to build your workspace.<br><span style="font-size:.78rem;color:#9CA3AF;">Your saved tools, CVs, documents, and floor plans will appear here.</span></div>';
+                container.innerHTML = '<div class="ws-empty"><div style="font-size:2rem;margin-bottom:8px;">\u2B50</div>Start using tools to build your workspace.<br><span style="font-size:.78rem;color:#9CA3AF;">Your saved tools, engineering packs, health plans, faith and culture packs, sports reports, energy plans, climate reports, trade packs, insurance packs, telecom plans, legal workflows, African workflows, CVs, documents, and floor plans will appear here.</span></div>';
                 return;
             }
 
@@ -3880,6 +4818,27 @@
                 loadFavorites();
                 wsFavs.id = 'ws-favs';
             }
+            if (document.getElementById('ws-african')) {
+                renderAfricanWorkflowWorkspace(document.getElementById('ws-african'), africanWorkflows);
+            }
+            if (document.getElementById('ws-energy')) {
+                renderEnergyPlanWorkspace(document.getElementById('ws-energy'), energyReports);
+            }
+            if (document.getElementById('ws-climate')) {
+                renderClimateReportWorkspace(document.getElementById('ws-climate'), climateReports);
+            }
+            if (document.getElementById('ws-sports')) {
+                renderSportsReportWorkspace(document.getElementById('ws-sports'), sportsReports);
+            }
+            if (document.getElementById('ws-religious-cultural')) {
+                renderReligiousCulturalWorkspace(document.getElementById('ws-religious-cultural'), religiousCulturalPlans);
+            }
+            if (document.getElementById('ws-health')) {
+                renderHealthPlanWorkspace(document.getElementById('ws-health'), healthPlans);
+            }
+            if (document.getElementById('ws-insurance')) {
+                renderInsuranceWorkspace(document.getElementById('ws-insurance'), insurancePlans);
+            }
             if (document.getElementById('ws-cvs')) {
                 var wsCvs = document.getElementById('ws-cvs');
                 wsCvs.id = 'myCVsContainer';
@@ -3891,6 +4850,24 @@
                 wsPlans.id = 'myFloorPlansContainer';
                 loadMyFloorPlans();
                 wsPlans.id = 'ws-plans';
+            }
+            if (document.getElementById('ws-trade')) {
+                renderTradePackWorkspace(document.getElementById('ws-trade'), tradePacks);
+            }
+            if (document.getElementById('ws-telecom')) {
+                var wsTelecom = document.getElementById('ws-telecom');
+                wsTelecom.id = 'myTelecomWorkspaceContainer';
+                loadMyTelecomWorkspace();
+                wsTelecom.id = 'ws-telecom';
+            }
+            if (document.getElementById('ws-engineering')) {
+                renderEngineeringWorkspace(document.getElementById('ws-engineering'), engineeringPacks, engineeringWorkflows);
+            }
+            if (document.getElementById('ws-legal')) {
+                var wsLegal = document.getElementById('ws-legal');
+                wsLegal.id = 'myLegalWorkflowsContainer';
+                loadLegalWorkflows();
+                wsLegal.id = 'ws-legal';
             }
             if (document.getElementById('ws-docs')) {
                 var wsDocs = document.getElementById('ws-docs');
@@ -4010,6 +4987,84 @@
             }
         }
 
+        function loadLegalWorkflows() {
+            var container = document.getElementById('myLegalWorkflowsContainer');
+            if (!container) return;
+            var workflows = dashGetLegalWorkflows();
+
+            if (!workflows.length) {
+                container.innerHTML = '<div style="background:#fff;border:1.5px dashed #D1D5DB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">&#x2696;&#xFE0F;</div>No legal workflows saved yet.<br><span style="font-size:.78rem;">Open any legal app, fill the case workspace, then save it here.</span></div>';
+                return;
+            }
+
+            container.innerHTML = '<div class="saved-list">' + workflows.map(function(item) {
+                var payload = item.payload || {};
+                var state = payload.state || {};
+                var meta = item.meta || {};
+                var href = dashSafeHref(item.href || ('/tools/' + String(item.toolSlug || '').replace(/[^a-z0-9-]/gi, '') + '/'));
+                var title = item.title || (payload.config && (payload.config.workflowTitle || payload.config.title)) || 'Legal workflow';
+                var status = state.status || meta.status || 'Checking evidence';
+                var country = state.country || meta.country || 'Legal';
+                var riskCount = Number(meta.risks || (Array.isArray(state.risks) ? state.risks.length : 0)) || 0;
+                var evidenceCount = Number(meta.evidenceChecked || (Array.isArray(state.evidence) ? state.evidence.length : 0)) || 0;
+                var pdfText = meta.pdfUnlocked ? 'PDF unlocked' : 'PDF gate pending';
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(title) + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(country) + ' &middot; ' + dashEscapeHtml(status) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(dashTimeAgo(item.updatedAt)) + ' &middot; ' + evidenceCount + ' evidence item' + (evidenceCount === 1 ? '' : 's') + ' &middot; ' + riskCount + ' risk flag' + (riskCount === 1 ? '' : 's') + ' &middot; ' + dashEscapeHtml(pdfText) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;" href="' + dashEscapeHtml(href) + '">Resume</a>' +
+                    '</div>' +
+                '</article>';
+            }).join('') + '</div>';
+        }
+
+        function renderLegalWorkflowDashboardBlock() {
+            var container = document.getElementById('myWorkspaceContent');
+            if (!container) return;
+            var workflows = dashGetLegalWorkflows();
+            var existing = document.getElementById('legalWorkflowsDashboardBlock');
+            if (!workflows.length) {
+                if (existing) existing.remove();
+                return;
+            }
+            if (container.querySelector('#ws-legal') || container.querySelector('#myLegalWorkflowsContainer')) return;
+
+            var html = '<section id="legalWorkflowsDashboardBlock" class="saved-list" style="margin-top:14px;">' +
+                '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">' +
+                    '<div><h3 style="font-size:.95rem;font-weight:800;color:#111827;margin:0;">Legal Workflows</h3>' +
+                    '<p style="font-size:.78rem;color:#6B7280;margin:3px 0 0;">Case notes, evidence packs and PDF-gated legal checklists saved from legal apps.</p></div>' +
+                    '<a class="btn btn-secondary" style="font-size:.8rem;padding:6px 12px;" href="/legal/">Open legal hub</a>' +
+                '</div>' +
+                workflows.slice(0, 5).map(function(item) {
+                    var payload = item.payload || {};
+                    var state = payload.state || {};
+                    var meta = item.meta || {};
+                    var href = dashSafeHref(item.href || ('/tools/' + String(item.toolSlug || '').replace(/[^a-z0-9-]/gi, '') + '/'));
+                    var title = item.title || (payload.config && (payload.config.workflowTitle || payload.config.title)) || 'Legal workflow';
+                    var status = state.status || meta.status || 'Checking evidence';
+                    var country = state.country || meta.country || 'Legal';
+                    var riskCount = Number(meta.risks || (Array.isArray(state.risks) ? state.risks.length : 0)) || 0;
+                    var evidenceCount = Number(meta.evidenceChecked || (Array.isArray(state.evidence) ? state.evidence.length : 0)) || 0;
+                    return '<article class="saved-item">' +
+                        '<div class="saved-content">' +
+                            '<h3>' + dashEscapeHtml(title) + '</h3>' +
+                            '<div class="saved-value">' + dashEscapeHtml(country) + ' &middot; ' + dashEscapeHtml(status) + '</div>' +
+                            '<div class="saved-meta">' + dashEscapeHtml(dashTimeAgo(item.updatedAt)) + ' &middot; ' + evidenceCount + ' evidence item' + (evidenceCount === 1 ? '' : 's') + ' &middot; ' + riskCount + ' risk flag' + (riskCount === 1 ? '' : 's') + '</div>' +
+                        '</div>' +
+                        '<div class="saved-actions">' +
+                            '<a class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;" href="' + dashEscapeHtml(href) + '">Resume</a>' +
+                        '</div>' +
+                    '</article>';
+                }).join('') +
+            '</section>';
+
+            if (existing) existing.outerHTML = html;
+            else container.insertAdjacentHTML('beforeend', html);
+        }
+
         function loadMyDocuments() {
             var container = document.getElementById('myDocumentsContainer');
             if (!container) return;
@@ -4047,10 +5102,10 @@
             } catch(e) {}
 
             var statDocs = document.getElementById('stat-docs');
-            if (statDocs) statDocs.textContent = docs.length;
+            if (statDocs) statDocs.textContent = docs.length + dashGetLegalWorkflows().length;
 
             if (docs.length === 0) {
-                container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">&#x1F4C2;</div>PDFs and documents you generate will appear here.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, or PAYE Calculator to get started.</span></div>';
+                container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">&#x1F4C2;</div>PDFs and documents you generate will appear here.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, PAYE Calculator, or a Legal app PDF checklist to get started.</span></div>';
                 return;
             }
 
@@ -4082,6 +5137,15 @@
 
                 var statPlan = document.getElementById('stat-plan');
                 if (statPlan && currentUser) statPlan.textContent = currentUser.tier === 'pro' ? 'Pro' : 'Free';
+
+                var statDocs = document.getElementById('stat-docs');
+                if (statDocs) {
+                    var docsCount = dashGetLegalWorkflows().length;
+                    ['afro_invoice_draft', 'afro_cv_data', 'cv_builder_data', 'afro_paye_saved', 'afro_markdown_draft', 'markdown_content'].forEach(function(key) {
+                        if (dashReadText(key)) docsCount += 1;
+                    });
+                    statDocs.textContent = docsCount;
+                }
 
                 var statFavs = document.getElementById('stat-favs');
                 if (statFavs) {
@@ -4259,7 +5323,93 @@
         // Start
         waitForAuth();
     </script>
-    <script src="/dashboard/dashboard-sync.js?v=20260417b"></script>
+<script src="/dashboard/dashboard-sync.js?v=20260417b"></script>
+<script src="/dashboard/insurance-workspace.js"></script>
+<script src="/dashboard/telecom-workspace.js"></script>
+<script src="/dashboard/climate-workspace.js"></script>
+<script>
+!function() {
+    "use strict";
+    function readEnergyReports() {
+        try {
+            var items = JSON.parse(localStorage.getItem('afro_energy_reports') || '[]');
+            return Array.isArray(items) ? items : [];
+        } catch(e) {
+            return [];
+        }
+    }
+    function ensureEnergyTab() {
+        var container = document.getElementById('myWorkspaceContent');
+        if (!container) return;
+        var reports = readEnergyReports();
+        if (!reports.length) return;
+        var tabs = container.querySelector('.ws-tabs');
+        var panels = container.querySelector('.ws-panels');
+        if (!tabs || !panels) {
+            container.innerHTML = '<div class="ws-tabs"></div><div class="ws-panels"></div>';
+            tabs = container.querySelector('.ws-tabs');
+            panels = container.querySelector('.ws-panels');
+        }
+        var hasActive = !!tabs.querySelector('.ws-tab.active');
+        var button = tabs.querySelector('[data-ws="ws-energy"]');
+        if (!button) {
+            button = document.createElement('button');
+            button.className = 'ws-tab' + (hasActive ? '' : ' active');
+            button.type = 'button';
+            button.dataset.ws = 'ws-energy';
+            button.textContent = 'ENE Energy Plans';
+            tabs.appendChild(button);
+        }
+        var panel = panels.querySelector('[data-ws-panel="ws-energy"]');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.className = 'ws-panel' + (hasActive ? '' : ' active');
+            panel.dataset.wsPanel = 'ws-energy';
+            panel.id = 'ws-energy';
+            panels.appendChild(panel);
+        }
+        if (!button.dataset.energyBound) {
+            button.dataset.energyBound = 'true';
+            button.addEventListener('click', function() {
+                container.querySelectorAll('.ws-tab').forEach(function(tab) { tab.classList.remove('active'); });
+                container.querySelectorAll('.ws-panel').forEach(function(item) { item.classList.remove('active'); });
+                button.classList.add('active');
+                panel.classList.add('active');
+            });
+        }
+        if (typeof renderEnergyPlanWorkspace === 'function') {
+            renderEnergyPlanWorkspace(panel, reports);
+        }
+    }
+    function wrapWorkspaceRenderer() {
+        if (typeof window.renderMyWorkspace === 'function' && !window.renderMyWorkspace.__energyWorkspaceWrapped) {
+            var original = window.renderMyWorkspace;
+            window.renderMyWorkspace = function() {
+                var result = original.apply(this, arguments);
+                return Promise.resolve(result).then(function(value) {
+                    ensureEnergyTab();
+                    return value;
+                });
+            };
+            window.renderMyWorkspace.__energyWorkspaceWrapped = true;
+        }
+        setTimeout(ensureEnergyTab, 400);
+        setTimeout(ensureEnergyTab, 1600);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wrapWorkspaceRenderer);
+    } else {
+        wrapWorkspaceRenderer();
+    }
+    window.addEventListener('afro-workspace-change', function(evt) {
+        var detail = evt && evt.detail ? evt.detail : {};
+        if (!detail.itemType || detail.itemType === 'energy_report') setTimeout(ensureEnergyTab, 80);
+    });
+    window.addEventListener('storage', function(evt) {
+        if (evt.key === 'afro_energy_reports') ensureEnergyTab();
+    });
+}();
+</script>
 
 <!-- AI Chat Widget -->
 <style>

@@ -27,16 +27,16 @@
 
 <!-- Design System -->
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/design-system.css?v=8c8b64ec">
+<link rel="stylesheet" href="/assets/css/design-system.css?v=1dd8c6a1">
 
 <!-- Chart.js -->
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
-<!-- Web Components --><script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<!-- Web Components --><script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 
-<script src="/assets/js/components/navbar.js?v=bd86f22e" defer></script>
-<script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
-<script src="/assets/js/components/related-tools.js?v=7785bbdc" defer></script>
+<script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script>
+<script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
+<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
 
 <!-- Engine -->
 <script src="/engines/afroprices-engine.js?v=551e89b6"></script>
@@ -412,6 +412,94 @@
   cursor: pointer;
 }
 
+/* Buyer decision desk */
+.ap-decision-card {
+  background: #fff;
+  border: 1.5px solid rgba(0,122,255,.18);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 12px 30px rgba(15,23,42,.06);
+}
+.ap-decision-card h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  margin: 0 0 .5rem;
+}
+.ap-decision-card > p {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin: 0 0 1rem;
+}
+.ap-decision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(170px,1fr));
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+.ap-decision-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+.ap-decision-grid input,
+.ap-decision-grid select {
+  padding: .6rem .75rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  background: var(--color-bg-card);
+}
+.ap-decision-output {
+  background: rgba(0,122,255,.05);
+  border: 1px solid rgba(0,122,255,.14);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+.ap-decision-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(135px,1fr));
+  gap: .75rem;
+  margin-bottom: .85rem;
+}
+.ap-decision-metric {
+  background: #fff;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: .7rem .8rem;
+}
+.ap-decision-metric span {
+  display: block;
+  color: var(--color-text-subtle);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: .2rem;
+}
+.ap-decision-metric strong {
+  color: var(--color-text);
+}
+.ap-decision-actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-top: .85rem;
+}
+.ap-decision-actions button {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  color: var(--color-text);
+  font-weight: 700;
+  padding: .55rem .9rem;
+  cursor: pointer;
+}
+
 /* Community submit */
 .ap-submit-section {
   max-width: var(--max-width-content);
@@ -707,6 +795,8 @@
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 
@@ -763,6 +853,42 @@
 
   <!-- Product results -->
   <div id="apResultsList"></div>
+
+  <!-- Buyer Decision Desk -->
+  <div class="ap-decision-card" id="apDecisionCard" style="display:none;">
+    <h3>Buyer Decision Desk</h3>
+    <p>Turn search results into a buying plan with a budget ceiling, urgency, warranty preference, and channel risk check.</p>
+    <div class="ap-decision-grid">
+      <label>Budget ceiling
+        <input type="number" id="apBudgetCeiling" placeholder="Optional">
+      </label>
+      <label>Need by
+        <select id="apNeedBy">
+          <option value="today">Today</option>
+          <option value="week" selected>This week</option>
+          <option value="month">This month</option>
+          <option value="watch">Watch price</option>
+        </select>
+      </label>
+      <label>Warranty priority
+        <select id="apWarrantyPriority">
+          <option value="high" selected>High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </label>
+      <label>Preferred channel
+        <select id="apPreferredChannel">
+          <option value="any" selected>Any trusted source</option>
+          <option value="affiliate">Online / affiliate</option>
+          <option value="retail">Retail shop</option>
+          <option value="market">Physical market</option>
+          <option value="community">Community quote</option>
+        </select>
+      </label>
+    </div>
+    <div class="ap-decision-output" id="apDecisionOutput"></div>
+  </div>
 
   <!-- Price History -->
   <div class="ap-chart-section" id="apChartSection" style="display:none;">
@@ -893,6 +1019,12 @@
   var sortSelect = document.getElementById('apSortSelect');
   var insightCard = document.getElementById('apInsightCard');
   var insightBody = document.getElementById('apInsightBody');
+  var decisionCard = document.getElementById('apDecisionCard');
+  var decisionOutput = document.getElementById('apDecisionOutput');
+  var budgetCeiling = document.getElementById('apBudgetCeiling');
+  var needBy = document.getElementById('apNeedBy');
+  var warrantyPriority = document.getElementById('apWarrantyPriority');
+  var preferredChannel = document.getElementById('apPreferredChannel');
   var chartSection = document.getElementById('apChartSection');
   var alertCard = document.getElementById('apAlertCard');
   var alertBtn = document.getElementById('apAlertBtn');
@@ -908,6 +1040,7 @@
 
   var currentResults = null;
   var priceChart = null;
+  var lastBuyingBrief = '';
 
   // ── INIT ──────────────────────────────────────────────────────────
   function init() {
@@ -920,9 +1053,14 @@
     searchBtn.addEventListener('click', doSearch);
     searchInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
     countrySelect.addEventListener('change', updateForCountry);
-    sortSelect.addEventListener('change', function () { if (currentResults) renderResults(currentResults); });
+    sortSelect.addEventListener('change', function () { if (currentResults) { renderResults(currentResults); renderDealDecision(currentResults); } });
     alertBtn.addEventListener('click', handleSetAlert);
     submitForm.addEventListener('submit', handleSubmitPrice);
+    [budgetCeiling, needBy, warrantyPriority, preferredChannel].forEach(function (el) {
+      if (el) el.addEventListener(el === budgetCeiling ? 'input' : 'change', function () {
+        if (currentResults) renderDealDecision(currentResults);
+      });
+    });
 
     // Check URL params
     var params = new URLSearchParams(window.location.search);
@@ -1037,6 +1175,7 @@
     resultsTitle.textContent = 'Searching for "' + query + '"...';
     resultsList.innerHTML = '<div class="ap-loading"><div class="ap-spinner"></div>Searching platforms and markets...</div>';
     insightCard.style.display = 'none';
+    decisionCard.style.display = 'none';
     chartSection.style.display = 'none';
     alertCard.style.display = 'none';
     disclosure.style.display = 'none';
@@ -1054,12 +1193,14 @@
         '</div>';
 
         // Still show AI insight for "no results" advice
+        decisionCard.style.display = 'none';
         showAIInsight(query, code, []);
         return;
       }
 
       resultsTitle.textContent = data.results.length + ' result' + (data.results.length > 1 ? 's' : '') + ' for "' + query + '"';
       renderResults(data);
+      renderDealDecision(data);
       disclosure.style.display = 'block';
 
       // Show AI insight
@@ -1159,6 +1300,101 @@
   }
 
   // ── AI INSIGHT ────────────────────────────────────────────────────
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderDealDecision(data) {
+    if (!data || !data.results || !data.results.length) {
+      decisionCard.style.display = 'none';
+      return;
+    }
+    var country = data.country || AfroPricesEngine.getCountry(countrySelect.value);
+    var sym = country.currency.symbol;
+    var listings = [];
+    data.results.forEach(function (product) {
+      (product.listings || []).forEach(function (listing) {
+        var price = Number(listing.price || listing.priceMin || 0);
+        if (!price) return;
+        listings.push({
+          product: product.name,
+          source: listing.source || 'Unknown source',
+          type: listing.type || 'retail',
+          price: price,
+          inStock: listing.inStock,
+          delivery: listing.delivery || '',
+          rating: listing.rating || '',
+          city: listing.city || '',
+          hasUrl: !!listing.url
+        });
+      });
+    });
+    if (!listings.length) {
+      decisionCard.style.display = 'none';
+      return;
+    }
+
+    var channel = preferredChannel.value;
+    var available = listings.filter(function (item) { return item.inStock !== false; });
+    var channelMatches = channel === 'any' ? available : available.filter(function (item) { return item.type === channel; });
+    var candidates = channelMatches.length ? channelMatches : available.length ? available : listings;
+    candidates.sort(function (a, b) { return a.price - b.price; });
+    listings.sort(function (a, b) { return a.price - b.price; });
+    var best = candidates[0];
+    var cheapest = listings[0];
+    var prices = listings.map(function (item) { return item.price; }).sort(function (a, b) { return a - b; });
+    var median = prices[Math.floor(prices.length / 2)];
+    var spread = prices[prices.length - 1] - prices[0];
+    var budget = parseFloat(budgetCeiling.value || '0');
+    var urgency = needBy.value;
+    var warranty = warrantyPriority.value;
+    var underBudget = budget ? best.price <= budget : true;
+    var reliability = best.type === 'affiliate' || best.type === 'retail' ? 'higher paper trail' : best.type === 'market' ? 'inspect before payment' : 'verify seller and receipt';
+    var recommendation = underBudget ? 'Buy candidate is inside your stated ceiling.' : 'Hold or negotiate because the best candidate is above your ceiling.';
+    if (urgency === 'watch') recommendation = 'Set a price alert and wait unless stock is scarce.';
+    if (urgency === 'today' && best.inStock === false) recommendation = 'Avoid this source today because stock is not confirmed.';
+    if (warranty === 'high' && (best.type === 'market' || best.type === 'community')) recommendation += ' Because warranty matters, ask for a receipt, serial check, and return terms before paying.';
+    var priceText = AfroPricesEngine.formatPrice(best.price, sym);
+    var medianText = AfroPricesEngine.formatPrice(median, sym);
+    var spreadText = AfroPricesEngine.formatPrice(spread, sym);
+    var savingText = cheapest && best.price > cheapest.price ? 'You are paying ' + AfroPricesEngine.formatPrice(best.price - cheapest.price, sym) + ' above the cheapest listing to satisfy your channel preference.' : 'This is also the cheapest listing found.';
+
+    lastBuyingBrief = [
+      'AfroPrices buying brief',
+      'Search: ' + (searchInput.value || data.query || 'Selected category'),
+      'Country: ' + country.name,
+      'Recommended source: ' + best.source + ' for ' + best.product,
+      'Price: ' + priceText,
+      'Budget ceiling: ' + (budget ? AfroPricesEngine.formatPrice(budget, sym) : 'Not set'),
+      'Median observed price: ' + medianText,
+      'Observed spread: ' + spreadText,
+      'Decision: ' + recommendation,
+      'Risk check: ' + reliability + '. ' + savingText
+    ].join('\n');
+
+    decisionCard.style.display = 'block';
+    decisionOutput.innerHTML =
+      '<div class="ap-decision-metrics">' +
+        '<div class="ap-decision-metric"><span>Best candidate</span><strong>' + esc(priceText) + '</strong></div>' +
+        '<div class="ap-decision-metric"><span>Median price</span><strong>' + esc(medianText) + '</strong></div>' +
+        '<div class="ap-decision-metric"><span>Price spread</span><strong>' + esc(spreadText) + '</strong></div>' +
+        '<div class="ap-decision-metric"><span>Confidence</span><strong>' + (underBudget ? 'Actionable' : 'Negotiate') + '</strong></div>' +
+      '</div>' +
+      '<p><strong>' + esc(best.source) + '</strong> has the current decision candidate for <strong>' + esc(best.product) + '</strong> at <strong>' + esc(priceText) + '</strong>.</p>' +
+      '<p>' + esc(recommendation) + ' ' + esc(savingText) + '</p>' +
+      '<p><strong>Risk check:</strong> ' + esc(reliability) + (best.delivery ? '. Delivery: ' + esc(best.delivery) : '') + (best.city ? '. City: ' + esc(best.city) : '') + '</p>' +
+      '<div class="ap-decision-actions"><button type="button" onclick="window.copyAfroPricesBuyingBrief()">Copy buying brief</button></div>';
+  }
+
+  window.copyAfroPricesBuyingBrief = function () {
+    if (lastBuyingBrief && navigator.clipboard) navigator.clipboard.writeText(lastBuyingBrief);
+  };
+
   async function showAIInsight(query, countryCode, results) {
     insightCard.style.display = 'block';
     insightBody.innerHTML = '<div class="ap-insight-loading">Analysing prices <span class="dot-pulse"><span></span><span></span><span></span></span></div>';

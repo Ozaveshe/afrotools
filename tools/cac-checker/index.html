@@ -14,7 +14,7 @@
 <meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/cac-checker/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91"><script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -97,6 +97,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -214,6 +215,165 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="general"></wise-cta>
 </div>
+<!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"cac-checker","title":"CAC / Business Name Checker","workflowTitle":"Business-name availability workflow","coverage":"Nigeria","decision":"Whether the name is registrable as a business name, company name or trademark","evidence":["Prepare at least three name options before the CAC search","Check spelling, restricted words, existing company names and trademark conflicts","Move quickly from availability to reservation because name status can change"],"redFlags":["Using a name because the domain is free while CAC or trademark search fails","Restricted words such as bank, insurance, university or government without approval","Letting an agent reserve a name under an account you cannot access"],"related":[{"label":"CAC Registration Cost","href":"/tools/cac-cost/"},{"label":"Trademark Registration","href":"/tools/trademark-registration/"},{"label":"Business Registration","href":"/tools/business-registration/"}],"competitor":{"group":"company","label":"LegalZoom, Firstbase, Stripe Atlas and registry portals","patterns":["Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.","The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.","They make official portal verification visible so users can tell a government fee from an agent or bundled service fee."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Prepare at least three name options before the CAC search\".","Saved workflows can be resumed from the dashboard and handed off to CAC Registration Cost when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the business-name availability workflow result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/cac-cost/">CAC Registration Cost</a><a href="/tools/trademark-registration/">Trademark Registration</a><a href="/tools/business-registration/">Business Registration</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against LegalZoom, Firstbase, Stripe Atlas and registry portals. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Guided formation flows collect facts once, then reuse them for filings, annual reminders, tax setup and registered-agent style tasks.</li><li>The strongest products turn one filing into an operating calendar with renewal dates, evidence storage and next-step prompts.</li><li>They make official portal verification visible so users can tell a government fee from an agent or bundled service fee.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Prepare at least three name options before the CAC search&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to CAC Registration Cost when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether the name is registrable as a business name, company name or trademark</li><li>Prepare at least three name options before the CAC search</li><li>Using a name because the domain is free while CAC or trademark search fails</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Nigeria</div>
+  <h2 id="legal-upgrade-heading">Business-name availability workflow</h2>
+  <p>A business-name checker should do more than tell users to search. It should help them prepare alternatives, avoid prohibited words, and connect name availability to CAC filing and trademark risk.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether the name is registrable as a business name, company name or trademark</li><li>Whether regulated words need prior approval or sector evidence</li><li>Whether a similar domain, social handle or trademark creates brand conflict</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Prepare at least three name options before the CAC search</li><li>Check spelling, restricted words, existing company names and trademark conflicts</li><li>Move quickly from availability to reservation because name status can change</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Using a name because the domain is free while CAC or trademark search fails</li><li>Restricted words such as bank, insurance, university or government without approval</li><li>Letting an agent reserve a name under an account you cannot access</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.cac.gov.ng/business-names/" target="_blank" rel="noopener">Corporate Affairs Commission</a><a href="https://www.cac.gov.ng/wp-content/uploads/2020/12/CAMA-NOTE-BOOK-FULL-VERSION.pdf" target="_blank" rel="noopener">Companies and Allied Matters Act 2020</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/cac-cost/">CAC Registration Cost</a><a href="/tools/trademark-registration/">Trademark Registration</a><a href="/tools/business-registration/">Business Registration</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the business-name availability workflow trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether the name is registrable as a business name, company name or trademark.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Prepare at least three name options before the CAC search. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Using a name because the domain is free while CAC or trademark search fails.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly>Business-name availability workflow action pack
+Tool: cac-checker
+Coverage: Nigeria
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether the name is registrable as a business name, company name or trademark.
+
+Evidence to attach:
+- Prepare at least three name options before the CAC search
+- Check spelling, restricted words, existing company names and trademark conflicts
+- Move quickly from availability to reservation because name status can change
+
+Escalate before filing or signing if:
+- Using a name because the domain is free while CAC or trademark search fails
+- Restricted words such as bank, insurance, university or government without approval
+- Letting an agent reserve a name under an account you cannot access
+
+Primary checks:
+- Corporate Affairs Commission: https://www.cac.gov.ng/business-names/
+- Companies and Allied Matters Act 2020: https://www.cac.gov.ng/wp-content/uploads/2020/12/CAMA-NOTE-BOOK-FULL-VERSION.pdf
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
 <afro-related-tools category="legal" current="cac-checker"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
@@ -318,5 +478,21 @@ function checkName(){
 })();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js" defer></script>
 </body>
 </html>

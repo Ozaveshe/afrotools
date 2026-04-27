@@ -372,7 +372,7 @@
         "id": "pdf-watermark",
         "name": "PDF Watermark Tool",
         "icon": "💧",
-        "desc": "Add text or image watermarks to PDFs. Custom opa...",
+        "desc": "Add text or image watermarks to one PDF or batch...",
         "href": "/tools/pdf-watermark/",
         "category": "document-pdf",
         "lang": "en",

@@ -3,202 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Redaction Tool — Permanently Remove Sensitive Text</title>
-<meta name="description" content="Redact sensitive information from PDFs by drawing black boxes over text. Permanently removes content — 100% client-side, no uploads, free.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Redaction Tool | Search, Mark, and Securely Flatten | AfroTools</title>
+<meta name="description" content="Redact PDFs locally with manual boxes, search-based matches, labels, preview, page controls, and secure flattened export. Files stay in your browser.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-redact/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF Redaction Tool | AfroTools">
-<meta property="og:description" content="Draw redaction boxes on PDF pages to permanently remove sensitive text. Free, client-side, no uploads.">
+<meta property="og:description" content="Search, mark, preview, and securely flatten PDF redactions in your browser. No uploads.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-redact/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-redact.webp">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PDF Redaction Tool | AfroTools">
-<meta name="twitter:description" content="Permanently redact sensitive information from PDFs. Free and client-side.">
+<meta name="twitter:description" content="Redact PDFs locally with search matches, manual boxes, preview, and secure flattened export.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-redact.webp">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Redaction Tool","description":"Permanently redact sensitive information from PDF documents by drawing black boxes over text.","url":"https://afrotools.com/tools/pdf-redact/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-redact.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Redaction Tool","url":"https://afrotools.com/tools/pdf-redact/","description":"Permanently redact sensitive information from PDF documents by drawing black boxes over text.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-redact.webp"}</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Are the redactions truly permanent?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. This tool draws opaque black rectangles directly onto the PDF page using pdf-lib. The original text beneath is overwritten and cannot be recovered from the downloaded file."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my PDF uploaded to a server?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. All processing happens entirely in your browser using JavaScript. Your PDF never leaves your device."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I undo a redaction after downloading?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Once you apply redactions and download, the content under the black boxes is permanently removed. You can undo redactions before applying, but not after downloading the final PDF."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What file types are supported?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "This tool supports standard PDF files (.pdf). Password-protected PDFs are not currently supported."
-      }
-    }
-  ]
-}
-</script>
+<meta property="article:modified_time" content="2026-04-27">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-redact/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-redact/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Redaction Tool","description":"Browser-only PDF redaction with manual boxes, search-based matches, preview, and secure flattened export.","url":"https://afrotools.com/tools/pdf-redact/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-redact.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are the redactions permanent?","acceptedAnswer":{"@type":"Answer","text":"The secure export rebuilds the PDF as flattened page images with the redaction marks burned into the pages. That removes the generated PDF text layer, so redacted text is not selectable or extractable from the output."}},{"@type":"Question","name":"Is my PDF uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. Upload, preview, search, and export run inside your browser. Your file is not sent to AfroTools servers."}},{"@type":"Question","name":"Can I search for words to redact?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enter one or more terms, choose current page or all pages, then add reviewable redaction boxes for matching visible text runs before export."}},{"@type":"Question","name":"What should I keep after exporting?","acceptedAnswer":{"@type":"Answer","text":"Keep the original PDF separately if you need an editable source later. The redacted export is intentionally flattened for safety."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/assets/js/components/related-tools.js?v=7785bbdc" defer></script>
-<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
-<script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
-<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <style>
   :root {
-    --afro-green: var(--color-primary);
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
+    --rd-blue: var(--color-primary);
+    --rd-dark: #0f1419;
+    --rd-ink: #0f172a;
+    --rd-muted: #64748b;
+    --rd-soft: #eff6ff;
+    --rd-red: #b91c1c;
+    --rd-green: #047857;
   }
 
   .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    background: linear-gradient(135deg, var(--rd-dark) 0%, #1a1f2e 100%);
     padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
   }
 
-  .tool-hero::after {
-    content: '\2588';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-    color: #fff;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
+  .tool-hero-inner,
+  .tool-main-inner {
+    max-width: 1220px;
     margin: 0 auto;
     padding: 0 24px;
-    position: relative;
   }
 
   .breadcrumb {
+    color: rgba(255,255,255,0.34);
     font-size: 0.72rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
     letter-spacing: 0.08em;
-    text-transform: uppercase;
     margin-bottom: 14px;
+    text-transform: uppercase;
   }
 
   .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255,255,255,0.34);
     text-decoration: none;
   }
 
-  .breadcrumb span {
-    color: var(--afro-green);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
+  .breadcrumb span,
   h1 em {
-    color: var(--afro-green);
+    color: #60a5fa;
     font-style: normal;
   }
 
+  h1 {
+    color: #fff;
+    font-size: clamp(1.65rem, 4vw, 2.55rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.08;
+    margin: 0 0 10px;
+  }
+
   .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
+    color: rgba(255,255,255,0.56);
+    font-size: 0.9rem;
+    line-height: 1.62;
+    max-width: 760px;
+    margin: 0 0 14px;
   }
 
   .hero-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
-    margin-bottom: 6px;
   }
 
   .badge {
-    display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
+    background: rgba(37,99,235,0.18);
+    border: 1px solid rgba(96,165,250,0.42);
     border-radius: 4px;
+    color: #bfdbfe;
+    display: inline-flex;
     font-size: 0.68rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.05em;
+    min-height: 26px;
+    padding: 4px 11px;
+    text-transform: uppercase;
   }
 
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
+  .badge.red {
+    background: rgba(239,68,68,0.14);
+    border-color: rgba(252,165,165,0.42);
+    color: #fecaca;
   }
 
-  .b-red {
-    background: rgba(220, 38, 38, 0.15);
-    color: #ef4444;
-    border: 1px solid rgba(220, 38, 38, 0.35);
-  }
-
-  /* Main layout */
   .tool-main {
     padding: 28px 0 72px;
   }
 
   .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 22px;
     align-items: start;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: minmax(0, 1fr) 390px;
   }
 
   .card {
     background: #fff;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
+    box-shadow: 0 1px 8px rgba(15,23,42,0.05);
     overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
   }
 
   .card + .card {
@@ -206,1101 +149,788 @@
   }
 
   .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #e5e7eb;
-    background: #f9fafb;
-    display: flex;
     align-items: center;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    gap: 12px;
     justify-content: space-between;
+    padding: 15px 22px;
   }
 
   .card-title {
+    color: #374151;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #374151;
+  }
+
+  .card-kicker {
+    color: var(--rd-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
   }
 
   .card-body {
     padding: 22px;
   }
 
-  /* Upload zone */
-  .upload-zone {
-    border: 2px dashed #d1d5db;
+  .drop-zone {
+    background: var(--rd-soft);
+    border: 2px dashed #bfdbfe;
     border-radius: 8px;
-    padding: 40px 20px;
-    text-align: center;
     cursor: pointer;
-    transition: all 0.2s;
-    background: #fafbfc;
+    padding: 30px 18px;
+    text-align: center;
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
   }
 
-  .upload-zone:hover,
-  .upload-zone.dragover {
-    border-color: var(--afro-green);
-    background: rgba(0, 113, 227, 0.04);
+  .drop-zone:hover,
+  .drop-zone.dragover,
+  .drop-zone:focus-visible {
+    background: #fff;
+    border-color: var(--rd-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
   }
 
-  .upload-zone input[type="file"] {
-    display: none;
+  .drop-title {
+    color: #1e293b;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 4px;
   }
 
-  .upload-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    display: block;
+  .drop-hint {
+    color: #6b8cae;
+    font-size: 0.72rem;
+    font-weight: 700;
   }
 
-  .upload-text {
-    font-size: 0.88rem;
-    color: #6b7280;
-    margin-bottom: 6px;
+  .hidden-input {
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
   }
 
-  .upload-hint {
-    font-size: 0.75rem;
-    color: #9ca3af;
-  }
-
-  .file-loaded {
-    display: flex;
+  .file-summary {
     align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-radius: 8px;
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    display: none;
+    gap: 12px;
+    justify-content: space-between;
     margin-top: 12px;
+    padding: 11px 12px;
   }
 
-  .file-loaded-name {
+  .file-summary.on {
+    display: flex;
+  }
+
+  .file-name {
+    color: var(--rd-ink);
     font-size: 0.82rem;
-    font-weight: 600;
-    color: #1e40af;
-    flex: 1;
+    font-weight: 800;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .file-loaded-clear {
-    background: none;
-    border: none;
-    color: #dc2626;
-    cursor: pointer;
-    font-size: 0.78rem;
-    font-weight: 600;
-  }
-
-  /* Canvas area */
-  .canvas-wrapper {
-    position: relative;
-    background: #e5e7eb;
-    border-radius: 8px;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .canvas-wrapper.empty {
-    background: #f3f4f6;
-  }
-
-  .canvas-wrapper.empty::after {
-    content: 'Load a PDF to begin redacting';
-    color: #9ca3af;
-    font-size: 0.88rem;
-  }
-
-  .canvas-container {
-    position: relative;
-    display: inline-block;
-    line-height: 0;
-  }
-
-  #pdfCanvas {
-    display: block;
-    max-width: 100%;
-    height: auto;
-  }
-
-  .redaction-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    cursor: crosshair;
-  }
-
-  .watermark-label {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(220, 38, 38, 0.85);
-    color: #fff;
-    font-size: 0.65rem;
+  .file-meta {
+    color: var(--rd-muted);
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 3px 12px;
-    border-radius: 3px;
-    pointer-events: none;
-    z-index: 5;
+    margin-top: 2px;
   }
 
-  /* Toolbar */
-  .toolbar {
-    display: flex;
+  .mini-btn,
+  .icon-btn,
+  .primary-btn,
+  .secondary-btn {
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding: 12px 0;
-  }
-
-  .toolbar-group {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .toolbar-sep {
-    width: 1px;
-    height: 24px;
-    background: #d1d5db;
-    margin: 0 6px;
-  }
-
-  .tb-btn {
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
     display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 800;
+    justify-content: center;
+    min-height: 34px;
+    padding: 8px 12px;
+    transition: background 0.16s, border-color 0.16s, color 0.16s, opacity 0.16s;
+  }
+
+  .primary-btn {
+    background: var(--rd-blue);
+    color: #fff;
+    width: 100%;
+  }
+
+  .primary-btn:hover:not(:disabled) {
+    background: #005bbf;
+  }
+
+  .secondary-btn,
+  .mini-btn,
+  .icon-btn {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    color: #334155;
+  }
+
+  .secondary-btn:hover:not(:disabled),
+  .mini-btn:hover:not(:disabled),
+  .icon-btn:hover:not(:disabled) {
+    border-color: var(--rd-blue);
+    color: var(--rd-blue);
+  }
+
+  .danger-btn {
+    border-color: #fecaca;
+    color: var(--rd-red);
+  }
+
+  .primary-btn:disabled,
+  .secondary-btn:disabled,
+  .mini-btn:disabled,
+  .icon-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.52;
+  }
+
+  .control-group {
+    margin-bottom: 18px;
+  }
+
+  .control-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .label-row {
+    align-items: baseline;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 7px;
+  }
+
+  .label-row label {
+    color: #374151;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .field-hint {
+    color: #94a3b8;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    background: #fff;
     border: 1px solid #d1d5db;
     border-radius: 6px;
-    background: #fff;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #374151;
-    cursor: pointer;
-    transition: all 0.15s;
+    color: #0f172a;
     font-family: inherit;
+    font-size: 0.84rem;
+    min-height: 38px;
+    padding: 9px 10px;
+    width: 100%;
   }
 
-  .tb-btn:hover:not(:disabled) {
-    background: #f3f4f6;
-    border-color: #9ca3af;
+  textarea {
+    line-height: 1.4;
+    min-height: 86px;
+    resize: vertical;
   }
 
-  .tb-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+  input[type="color"] {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    height: 38px;
+    padding: 4px;
+    width: 54px;
   }
 
-  .tb-btn.danger {
-    color: #dc2626;
-    border-color: #fca5a5;
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--rd-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
   }
 
-  .tb-btn.danger:hover:not(:disabled) {
-    background: #fef2f2;
+  .two-col {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
   }
 
-  .page-indicator {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #374151;
-    min-width: 80px;
+  .toolbar {
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+    padding: 12px;
+  }
+
+  .toolbar-left,
+  .toolbar-right {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .page-input {
+    max-width: 76px;
     text-align: center;
   }
 
-  .redaction-count {
-    display: inline-flex;
+  .editor-shell {
+    background: #f3f4f6;
+    min-height: 620px;
+    overflow: auto;
+    padding: 24px;
+  }
+
+  .canvas-stage {
     align-items: center;
-    gap: 5px;
-    padding: 5px 12px;
-    background: #111827;
-    color: #f9fafb;
-    border-radius: 5px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin-left: auto;
-  }
-
-  .redaction-count .dot {
-    width: 8px;
-    height: 8px;
-    background: #ef4444;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  /* Apply button */
-  .apply-btn {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 8px;
-    background: #dc2626;
-    color: #fff;
-    font-size: 0.92rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-    margin-top: 12px;
-  }
-
-  .apply-btn:hover:not(:disabled) {
-    background: #b91c1c;
-  }
-
-  .apply-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  /* Warning */
-  .warning-box {
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 14px 16px;
-    background: #fffbeb;
-    border: 1px solid #fde68a;
+    justify-content: center;
+    min-height: 560px;
+  }
+
+  .canvas-empty {
+    align-items: center;
+    background: #fff;
+    border: 1px dashed #cbd5e1;
     border-radius: 8px;
-    margin-top: 14px;
+    color: #64748b;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.86rem;
+    font-weight: 700;
+    gap: 6px;
+    justify-content: center;
+    min-height: 360px;
+    padding: 30px;
+    text-align: center;
+    width: min(100%, 520px);
   }
 
-  .warning-icon {
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    line-height: 1;
+  .page-canvas-wrap {
+    background: #fff;
+    box-shadow: 0 18px 42px rgba(15,23,42,0.18);
+    display: none;
+    position: relative;
   }
 
-  .warning-text {
+  .page-canvas-wrap.on {
+    display: block;
+  }
+
+  #pdfCanvas,
+  #overlayCanvas {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+
+  #overlayCanvas {
+    cursor: crosshair;
+    left: 0;
+    position: absolute;
+    top: 0;
+    touch-action: none;
+  }
+
+  .security-note {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #475569;
     font-size: 0.78rem;
-    color: #92400e;
+    line-height: 1.55;
+    padding: 12px;
+  }
+
+  .security-note strong {
+    color: #0f172a;
+  }
+
+  .status-card {
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    display: none;
+    margin-top: 14px;
+    padding: 13px;
+  }
+
+  .status-card.on {
+    display: block;
+  }
+
+  .status-title {
+    color: var(--rd-ink);
+    font-size: 0.84rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+  }
+
+  .status-note {
+    color: #475569;
+    font-size: 0.76rem;
     line-height: 1.5;
   }
 
-  /* Progress */
   .progress-bar {
-    height: 4px;
     background: #e5e7eb;
-    border-radius: 4px;
+    border-radius: 999px;
+    display: none;
+    height: 8px;
+    margin-top: 12px;
     overflow: hidden;
-    margin-top: 14px;
+  }
+
+  .progress-bar.on {
+    display: block;
   }
 
   .progress-fill {
+    background: var(--rd-blue);
     height: 100%;
-    background: var(--afro-green);
-    border-radius: 4px;
-    transition: width 0.3s;
+    transition: width 0.18s;
     width: 0;
   }
 
-  /* Result */
-  .result-card {
+  .action-row {
     display: none;
+    gap: 10px;
+    margin-top: 12px;
   }
 
-  .result-card.on {
-    display: block;
+  .action-row.on {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
-  .result-msg {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #374151;
-    text-align: center;
-    padding: 10px 0;
+  .stats-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr 1fr;
   }
 
-  .result-msg.success {
-    color: #1e40af;
-  }
-
-  .result-msg.error {
-    color: #dc2626;
-  }
-
-  .download-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    border: none;
+  .stat {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    background: var(--afro-green);
-    color: #fff;
+    padding: 11px;
+  }
+
+  .stat-value {
+    color: var(--rd-ink);
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .stat-label {
+    color: var(--rd-muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .match-row {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+  }
+
+  .match-row .primary-btn {
+    min-width: 132px;
+    width: auto;
+  }
+
+  .pattern-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .help-list {
+    color: #475569;
+    display: grid;
+    font-size: 0.78rem;
+    gap: 8px;
+    line-height: 1.52;
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .help-list strong {
+    color: #0f172a;
+  }
+
+  .content-section {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 24px 72px;
+  }
+
+  .content-section h2 {
+    color: #0f172a;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    margin: 0 0 10px;
+  }
+
+  .content-section p {
+    color: #475569;
     font-size: 0.88rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.2s;
-    margin-top: 10px;
-    text-align: center;
+    line-height: 1.7;
+    margin: 0 0 14px;
+    max-width: 880px;
   }
 
-  .download-btn:hover {
-    filter: brightness(1.1);
-  }
-
-  /* Info card */
-  .info-card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  .feature-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
     margin-top: 18px;
   }
 
-  .info-title {
-    padding: 15px 22px;
-    border-bottom: 1px solid #e5e7eb;
-    background: #f9fafb;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #374151;
+  .feature {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
   }
 
-  .info-text {
-    padding: 18px 22px;
-    font-size: 0.82rem;
-    color: #4b5563;
-    line-height: 1.7;
+  .feature h3 {
+    color: #111827;
+    font-size: 0.9rem;
+    margin: 0 0 6px;
   }
 
-  .info-text ul {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0 0 0;
+  .feature p {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    margin: 0;
   }
 
-  .info-text li {
-    padding: 3px 0;
-    font-size: 0.8rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 860px) {
+  @media (max-width: 980px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
     }
+
+    .editor-shell {
+      min-height: 420px;
+      padding: 16px;
+    }
+
+    .canvas-stage {
+      min-height: 420px;
+    }
   }
 
-  @media (max-width: 600px) {
-    .toolbar {
-      gap: 6px;
+  @media (max-width: 640px) {
+    .tool-hero-inner,
+    .tool-main-inner,
+    .content-section {
+      padding-left: 16px;
+      padding-right: 16px;
     }
-    .tb-btn {
-      padding: 6px 10px;
-      font-size: 0.72rem;
+
+    .two-col,
+    .feature-grid,
+    .stats-grid,
+    .pattern-grid {
+      grid-template-columns: 1fr;
     }
-    .redaction-count {
-      margin-left: 0;
+
+    .toolbar,
+    .toolbar-left,
+    .toolbar-right {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .toolbar .mini-btn,
+    .toolbar .icon-btn,
+    .toolbar select,
+    .page-input {
       width: 100%;
-      justify-content: center;
+    }
+
+    .match-row {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .match-row .primary-btn {
+      width: 100%;
     }
   }
 </style>
-<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-redact/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-redact/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-redact.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "PDF Redaction Tool",
-      "item": "https://afrotools.com/tools/pdf-redact/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<!-- Hero -->
-<div class="tool-hero">
+<header class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>PDF Redact</span>
-    </div>
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/document-pdf/">Document PDF</a> / <span>PDF Redact</span></div>
     <h1>PDF <em>Redaction</em> Tool</h1>
-    <p class="hero-sub">Draw black boxes over sensitive text in your PDF. Redactions are burned in permanently — the original content is destroyed and cannot be recovered.</p>
+    <p class="hero-sub">Draw redaction boxes, find matching text, review every page, then export a flattened PDF that removes the generated file's text layer. Everything runs locally in your browser.</p>
     <div class="hero-badges">
-      <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-red">Permanent</span>
+      <span class="badge">Browser Only</span>
+      <span class="badge red">Secure Flattened Export</span>
+      <span class="badge">Search Redaction</span>
+      <span class="badge">Manual Review</span>
     </div>
   </div>
-</div>
+</header>
 
-<!-- Main -->
-<div class="tool-main">
+<main class="tool-main">
   <div class="tool-main-inner">
-    <div>
-      <!-- Upload Card -->
-      <div class="card" id="uploadCard">
+    <section class="card" aria-label="PDF redaction editor">
+      <div class="card-head">
+        <span class="card-title">Redaction Editor</span>
+        <span class="card-kicker" id="pageStatus">No PDF loaded</span>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button type="button" class="icon-btn" id="prevPageBtn" title="Previous page" disabled>Prev</button>
+          <input class="page-input" id="pageInput" type="number" min="1" value="1" aria-label="Page number" disabled>
+          <span class="card-kicker" id="pageTotal">of 0</span>
+          <button type="button" class="icon-btn" id="nextPageBtn" title="Next page" disabled>Next</button>
+          <select id="zoomSelect" aria-label="Preview zoom" disabled>
+            <option value="fit">Fit</option>
+            <option value="1">100%</option>
+            <option value="1.25">125%</option>
+            <option value="1.5">150%</option>
+          </select>
+        </div>
+        <div class="toolbar-right">
+          <button type="button" class="mini-btn" id="fullPageBtn" disabled>Full Page</button>
+          <button type="button" class="mini-btn" id="undoBtn" disabled>Undo</button>
+          <button type="button" class="mini-btn danger-btn" id="clearPageBtn" disabled>Clear Page</button>
+          <button type="button" class="mini-btn danger-btn" id="clearAllBtn" disabled>Clear All</button>
+        </div>
+      </div>
+      <div class="editor-shell" id="editorShell">
+        <div class="canvas-stage">
+          <div class="canvas-empty" id="emptyState">
+            <strong>Upload a PDF to start redacting.</strong>
+            <span>Drag on the page to mark sensitive areas. Use search to add boxes faster.</span>
+          </div>
+          <div class="page-canvas-wrap" id="canvasWrap">
+            <canvas id="pdfCanvas"></canvas>
+            <canvas id="overlayCanvas" aria-label="Redaction drawing canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <section class="card">
         <div class="card-head">
-          <span class="card-title">Upload PDF</span>
+          <span class="card-title">Upload</span>
+          <span class="card-kicker">One PDF</span>
         </div>
         <div class="card-body">
-          <label class="upload-zone" id="uploadZone">
-            <input type="file" id="pdfFileInput" accept=".pdf">
-            <span class="upload-icon">&#128196;</span>
-            <div class="upload-text">Click to select or drag &amp; drop a PDF</div>
-            <div class="upload-hint">PDF files only &bull; Max 100 MB</div>
-          </label>
-          <div class="file-loaded" id="fileLoaded" style="display:none;">
-            <span>&#9989;</span>
-            <span class="file-loaded-name" id="fileName"></span>
-            <button class="file-loaded-clear" id="clearFileBtn">Remove</button>
+          <div class="drop-zone" id="dropZone" role="button" tabindex="0">
+            <div class="drop-title">Drop a PDF here</div>
+            <div class="drop-hint">or click to choose a file</div>
+          </div>
+          <input class="hidden-input" id="fileInput" type="file" accept="application/pdf,.pdf">
+          <div class="file-summary" id="fileSummary">
+            <div style="min-width:0">
+              <div class="file-name" id="fileName">No file selected</div>
+              <div class="file-meta" id="fileMeta"></div>
+            </div>
+            <button type="button" class="mini-btn" id="removeFileBtn">Remove</button>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Canvas Card -->
-      <div class="card" id="canvasCard" style="margin-top:18px;">
+      <section class="card">
         <div class="card-head">
-          <span class="card-title">Redaction Editor</span>
-          <span class="card-title" id="pageDimLabel" style="color:#9ca3af;font-weight:500;font-size:0.68rem;"></span>
-        </div>
-        <div class="card-body" style="padding:14px;">
-          <div class="canvas-wrapper empty" id="canvasWrapper">
-            <div class="canvas-container" id="canvasContainer" style="display:none;">
-              <canvas id="pdfCanvas"></canvas>
-              <canvas class="redaction-overlay" id="redactionOverlay"></canvas>
-              <div class="watermark-label">REDACTION PREVIEW</div>
-            </div>
-          </div>
-
-          <!-- Toolbar -->
-          <div class="toolbar" id="toolbar" style="display:none;">
-            <div class="toolbar-group">
-              <button class="tb-btn" id="prevPageBtn" disabled title="Previous page">&#9664; Prev</button>
-              <span class="page-indicator" id="pageIndicator">1 / 1</span>
-              <button class="tb-btn" id="nextPageBtn" disabled title="Next page">Next &#9654;</button>
-            </div>
-            <div class="toolbar-sep"></div>
-            <div class="toolbar-group">
-              <button class="tb-btn" id="undoBtn" disabled title="Undo last redaction">&#8630; Undo</button>
-              <button class="tb-btn danger" id="clearAllBtn" disabled title="Clear all redactions on this page">Clear Page</button>
-            </div>
-            <span class="redaction-count" id="redactionCount" style="display:none;">
-              <span class="dot"></span>
-              <span id="countText">0 redactions</span>
-            </span>
-          </div>
-
-          <!-- Apply -->
-          <button class="apply-btn" id="applyBtn" disabled>Apply Redactions &amp; Download</button>
-
-          <div class="warning-box">
-            <span class="warning-icon">&#9888;&#65039;</span>
-            <span class="warning-text"><strong>Redactions are permanent.</strong> Once applied, the original text beneath the black boxes is destroyed and cannot be recovered. Always keep a backup of your original file.</span>
-          </div>
-
-          <!-- Progress -->
-          <div class="progress-bar" id="progressBar" style="display:none;">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Result -->
-      <div class="card result-card" id="resultCard">
-        <div class="card-head">
-          <span class="card-title">Result</span>
+          <span class="card-title">Redaction Style</span>
+          <span class="card-kicker" id="boxCount">0 boxes</span>
         </div>
         <div class="card-body">
-          <div class="result-msg" id="resultMsg"></div>
-          <button class="download-btn" id="downloadBtn" style="display:none;">&#128229; Download Redacted PDF</button>
+          <div class="control-group">
+            <div class="label-row">
+              <label for="redactionColor">Fill color</label>
+              <span class="field-hint">Opaque only</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <input id="redactionColor" type="color" value="#000000" aria-label="Redaction color">
+              <input id="colorHex" type="text" value="#000000" aria-label="Redaction color hex">
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="label-row">
+              <label for="redactionLabel">Label</label>
+              <span class="field-hint">Optional</span>
+            </div>
+            <input id="redactionLabel" type="text" maxlength="36" placeholder="REDACTED">
+          </div>
+          <div class="control-group">
+            <div class="label-row">
+              <label for="paddingInput">Search padding</label>
+              <span class="field-hint">Points</span>
+            </div>
+            <input id="paddingInput" type="number" min="0" max="18" value="3">
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="info-card">
-        <div class="info-title">How It Works</div>
-        <div class="info-text">
-          <strong>1. Upload</strong> your PDF file.<br><br>
-          <strong>2. Draw</strong> black boxes over any text you want to redact by clicking and dragging on the preview.<br><br>
-          <strong>3. Navigate</strong> pages with Prev/Next and add redactions to any page.<br><br>
-          <strong>4. Apply</strong> redactions to permanently burn black rectangles into the PDF and download.
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Find Text</span>
+          <span class="card-kicker">Review matches</span>
         </div>
-      </div>
+        <div class="card-body">
+          <div class="control-group">
+            <div class="label-row">
+              <label for="searchTerms">Terms</label>
+              <span class="field-hint">One per line or comma</span>
+            </div>
+            <textarea id="searchTerms" placeholder="passport number&#10;account ID"></textarea>
+          </div>
+          <div class="control-group two-col">
+            <div>
+              <div class="label-row"><label for="searchScope">Scope</label></div>
+              <select id="searchScope">
+                <option value="current">Current page</option>
+                <option value="all">All pages</option>
+              </select>
+            </div>
+            <div>
+              <div class="label-row"><label for="matchMode">Match</label></div>
+              <select id="matchMode">
+                <option value="contains">Contains</option>
+                <option value="exact">Exact run</option>
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="label-row">
+              <label>Quick patterns</label>
+              <span class="field-hint">Uses selected scope</span>
+            </div>
+            <div class="pattern-grid">
+              <button type="button" class="mini-btn" data-pattern="email" disabled>Emails</button>
+              <button type="button" class="mini-btn" data-pattern="phone" disabled>Phones</button>
+              <button type="button" class="mini-btn" data-pattern="card" disabled>Cards</button>
+            </div>
+          </div>
+          <div class="match-row">
+            <button type="button" class="primary-btn" id="findBtn" disabled>Add Matches</button>
+            <button type="button" class="secondary-btn" id="clearSearchBtn">Clear Terms</button>
+          </div>
+          <div class="status-card on" id="searchStatus">
+            <div class="status-title">Search boxes are reviewable</div>
+            <div class="status-note">PDF text can be split into runs, so a match may cover a phrase, word, or line segment. Review each page before exporting.</div>
+          </div>
+        </div>
+      </section>
 
-      <div class="info-card" style="margin-top:18px;">
-        <div class="info-title">Tips</div>
-        <div class="info-text">
-          <ul>
-            <li>&#10003; Click &amp; drag to draw redaction boxes</li>
-            <li>&#10003; Use Undo to remove the last box</li>
-            <li>&#10003; Clear Page removes all boxes on current page</li>
-            <li>&#10003; Redactions on all pages are applied at once</li>
-            <li>&#10003; 100% client-side — nothing uploaded</li>
-            <li>&#10003; Keep a backup of your original file</li>
-          </ul>
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Export</span>
+          <span class="card-kicker">Flattened PDF</span>
         </div>
-      </div>
-    </div>
+        <div class="card-body">
+          <div class="control-group">
+            <div class="label-row">
+              <label for="qualitySelect">Output quality</label>
+              <span class="field-hint">Flattened image pages</span>
+            </div>
+            <select id="qualitySelect">
+              <option value="balanced">Balanced, 144 DPI</option>
+              <option value="compact">Compact, 108 DPI</option>
+              <option value="high">High detail, 180 DPI</option>
+            </select>
+          </div>
+          <div class="security-note">
+            <strong>Secure export:</strong> the output is rebuilt as flattened pages with redactions burned in. This removes selectable text from the generated PDF and avoids unsafe overlay-only redaction.
+          </div>
+          <div class="status-card" id="resultCard">
+            <div class="status-title" id="resultTitle">Ready</div>
+            <div class="status-note" id="resultNote"></div>
+            <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="action-row" id="downloadRow">
+              <button type="button" class="primary-btn" id="downloadBtn">Download Redacted PDF</button>
+            </div>
+          </div>
+          <button type="button" class="primary-btn" id="exportBtn" disabled style="margin-top:12px">Export Redacted PDF</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Workflow</span>
+        </div>
+        <div class="card-body">
+          <ol class="help-list">
+            <li><strong>Upload</strong> the PDF you want to redact.</li>
+            <li><strong>Mark</strong> sensitive areas manually or add search matches.</li>
+            <li><strong>Review</strong> every page that has redaction boxes.</li>
+            <li><strong>Export</strong> a flattened copy and keep your original separately.</li>
+          </ol>
+        </div>
+      </section>
+    </aside>
   </div>
-</div>
+</main>
 
-<afro-related-tools category="document-pdf" current="pdf-redact"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">PDF Redaction Tool: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools PDF Redaction Tool lets you permanently remove sensitive information from PDF documents by drawing black boxes over text, numbers, or any content that needs to be hidden. Unlike simply highlighting text black in a word processor (which can be copied and pasted to reveal the hidden content), this tool flattens the redaction into the document so the original text is permanently destroyed. Upload your PDF, navigate to any page, and click and drag to draw redaction boxes over the areas you want to hide. Redact names, account numbers, addresses, signatures, confidential figures, or any other sensitive data. When you download the redacted PDF, the covered content is completely removed — not just visually hidden. This is critical for legal compliance, data protection, and sharing documents with third parties who should not see certain information. The entire process runs in your browser using client-side JavaScript, so your sensitive documents are never uploaded to any server. This tool is essential for lawyers, HR professionals, compliance officers, and anyone handling confidential documents that need selective disclosure.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is the redaction permanent?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. Once you download the redacted PDF, the underlying text beneath the black boxes is permanently removed. It cannot be recovered by copying, selecting, or using any PDF editing tool.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How do I redact content?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Upload your PDF, then click and drag on any page to draw a black box over the content you want to hide. You can add multiple redaction boxes on any page. Preview your redactions, then download the final document.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is this different from using a black highlighter in Word?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes, fundamentally. Black highlighting in Word only covers text visually — the text can still be selected and copied. This tool permanently removes the content underneath redaction boxes, making it truly secure.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is my document kept private during redaction?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Absolutely. All processing happens locally in your browser. Your PDF is never uploaded to any server, making it safe for legal documents, medical records, financial statements, and other highly sensitive files.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I undo a redaction after downloading?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. Once the redacted PDF is downloaded, the redactions are permanent and cannot be reversed. Always keep a copy of the original unredacted document if you may need the full content in the future.</p>
-    </details>
+<section class="content-section">
+  <h2>Private PDF redaction with real flattened output</h2>
+  <p>Many browser PDF editors only draw a black shape over text. That can leave the original text behind in the file. AfroTools takes the safer client-side approach for this tool: it previews the PDF, lets you place or search for redactions, then rebuilds the exported PDF as flattened page images with the marks burned into the pages.</p>
+  <p>Use it for invoices, contracts, IDs, statements, court bundles, procurement files, and internal documents where visible secrets must not remain extractable in the redacted copy.</p>
+  <div class="feature-grid">
+    <div class="feature">
+      <h3>Manual redaction</h3>
+      <p>Drag directly on the page preview, undo the last box, clear a page, or remove all boxes before exporting.</p>
+    </div>
+    <div class="feature">
+      <h3>Search redaction</h3>
+      <p>Find names, IDs, account numbers, or repeated phrases across the current page or the whole document.</p>
+    </div>
+    <div class="feature">
+      <h3>Secure flattening</h3>
+      <p>The generated PDF is intentionally image-based so redacted text is not present as selectable PDF text.</p>
+    </div>
   </div>
 </section>
 
+<afro-related-tools category="document-pdf" current="pdf-redact"></afro-related-tools>
 <afro-footer></afro-footer>
 
-<script type="module">
-// ============================================================
-// PDF Redaction Tool — AfroTools
-// Uses pdf.js (ESM) for rendering, pdf-lib (global) for modification
-// ============================================================
-
-// Import pdf.js as ESM
-import * as pdfjsLib from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs';
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
-
-function getPDFLib() {
-  if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
-  return window.PDFLib;
-}
-
-// === State ===
-let pdfDoc = null;           // pdf.js document
-let pdfArrayBuffer = null;   // raw bytes for pdf-lib
-let currentPage = 1;
-let totalPages = 0;
-let scale = 1;
-let redactions = {};         // { pageNum: [{ x, y, w, h }] } in PDF coordinates
-let isDrawing = false;
-let drawStart = null;
-let redactedPdfBytes = null;
-
-// === DOM ===
-const pdfFileInput = document.getElementById('pdfFileInput');
-const uploadZone = document.getElementById('uploadZone');
-const fileLoaded = document.getElementById('fileLoaded');
-const fileName = document.getElementById('fileName');
-const clearFileBtn = document.getElementById('clearFileBtn');
-const canvasWrapper = document.getElementById('canvasWrapper');
-const canvasContainer = document.getElementById('canvasContainer');
-const pdfCanvas = document.getElementById('pdfCanvas');
-const redactionOverlay = document.getElementById('redactionOverlay');
-const toolbar = document.getElementById('toolbar');
-const prevPageBtn = document.getElementById('prevPageBtn');
-const nextPageBtn = document.getElementById('nextPageBtn');
-const pageIndicator = document.getElementById('pageIndicator');
-const undoBtn = document.getElementById('undoBtn');
-const clearAllBtn = document.getElementById('clearAllBtn');
-const redactionCount = document.getElementById('redactionCount');
-const countText = document.getElementById('countText');
-const applyBtn = document.getElementById('applyBtn');
-const progressBar = document.getElementById('progressBar');
-const progressFill = document.getElementById('progressFill');
-const resultCard = document.getElementById('resultCard');
-const resultMsg = document.getElementById('resultMsg');
-const downloadBtn = document.getElementById('downloadBtn');
-const pageDimLabel = document.getElementById('pageDimLabel');
-
-// === File loading ===
-pdfFileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) loadFile(file);
-});
-
-function isPdfFile(file) {
-  return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
-}
-
-// Drag & drop
-uploadZone.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  uploadZone.classList.add('dragover');
-});
-uploadZone.addEventListener('dragleave', () => {
-  uploadZone.classList.remove('dragover');
-});
-uploadZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  uploadZone.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (isPdfFile(file)) loadFile(file);
-});
-
-clearFileBtn.addEventListener('click', () => {
-  resetAll();
-});
-
-async function loadFile(file) {
-  if (!isPdfFile(file)) return;
-  try {
-    pdfArrayBuffer = await file.arrayBuffer();
-    pdfDoc = await pdfjsLib.getDocument({ data: pdfArrayBuffer.slice(0) }).promise;
-    totalPages = pdfDoc.numPages;
-    currentPage = 1;
-    redactions = {};
-    redactedPdfBytes = null;
-
-    fileName.textContent = file.name + ' (' + totalPages + ' page' + (totalPages > 1 ? 's' : '') + ')';
-    fileLoaded.style.display = 'flex';
-    uploadZone.style.display = 'none';
-    canvasWrapper.classList.remove('empty');
-    canvasContainer.style.display = 'inline-block';
-    toolbar.style.display = 'flex';
-    resultCard.classList.remove('on');
-    downloadBtn.style.display = 'none';
-    progressBar.style.display = 'none';
-
-    await renderPage(currentPage);
-    updateUI();
-  } catch (err) {
-    alert('Failed to load PDF: ' + err.message);
-  }
-}
-
-function resetAll() {
-  pdfDoc = null;
-  pdfArrayBuffer = null;
-  totalPages = 0;
-  currentPage = 1;
-  redactions = {};
-  redactedPdfBytes = null;
-
-  pdfFileInput.value = '';
-  fileLoaded.style.display = 'none';
-  uploadZone.style.display = '';
-  canvasWrapper.classList.add('empty');
-  canvasContainer.style.display = 'none';
-  toolbar.style.display = 'none';
-  resultCard.classList.remove('on');
-  downloadBtn.style.display = 'none';
-  progressBar.style.display = 'none';
-  pageDimLabel.textContent = '';
-  updateUI();
-}
-
-// === Render ===
-async function renderPage(pageNum) {
-  const page = await pdfDoc.getPage(pageNum);
-  const viewport = page.getViewport({ scale: 1 });
-
-  // Determine scale to fit within container (max ~750px wide)
-  const maxW = Math.min(750, canvasWrapper.clientWidth - 28);
-  scale = maxW / viewport.width;
-  const scaledViewport = page.getViewport({ scale });
-
-  pdfCanvas.width = scaledViewport.width;
-  pdfCanvas.height = scaledViewport.height;
-  redactionOverlay.width = scaledViewport.width;
-  redactionOverlay.height = scaledViewport.height;
-
-  const ctx = pdfCanvas.getContext('2d');
-  await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
-
-  pageDimLabel.textContent = Math.round(viewport.width) + ' x ' + Math.round(viewport.height) + ' pt';
-
-  drawRedactionsOnOverlay();
-}
-
-// === Drawing redaction overlay ===
-function drawRedactionsOnOverlay() {
-  const ctx = redactionOverlay.getContext('2d');
-  ctx.clearRect(0, 0, redactionOverlay.width, redactionOverlay.height);
-
-  const boxes = redactions[currentPage] || [];
-  boxes.forEach((box) => {
-    // Convert PDF coords to canvas coords
-    const cx = box.x * scale;
-    const cy = box.y * scale;
-    const cw = box.w * scale;
-    const ch = box.h * scale;
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
-    ctx.fillRect(cx, cy, cw, ch);
-    // Border
-    ctx.strokeStyle = '#ef4444';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4, 3]);
-    ctx.strokeRect(cx, cy, cw, ch);
-    ctx.setLineDash([]);
-  });
-
-  // Draw in-progress box
-  if (isDrawing && drawStart) {
-    // We draw the temp box from mouse events, handled in mouse move
-  }
-}
-
-// === Mouse drawing on overlay ===
-let tempBox = null;
-
-redactionOverlay.addEventListener('mousedown', (e) => {
-  if (!pdfDoc) return;
-  const rect = redactionOverlay.getBoundingClientRect();
-  drawStart = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  isDrawing = true;
-  tempBox = null;
-});
-
-redactionOverlay.addEventListener('mousemove', (e) => {
-  if (!isDrawing || !drawStart) return;
-  const rect = redactionOverlay.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-
-  tempBox = {
-    x: Math.min(drawStart.x, mx),
-    y: Math.min(drawStart.y, my),
-    w: Math.abs(mx - drawStart.x),
-    h: Math.abs(my - drawStart.y),
-  };
-
-  drawRedactionsOnOverlay();
-  // Draw temp box
-  const ctx = redactionOverlay.getContext('2d');
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-  ctx.fillRect(tempBox.x, tempBox.y, tempBox.w, tempBox.h);
-  ctx.strokeStyle = '#fbbf24';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 3]);
-  ctx.strokeRect(tempBox.x, tempBox.y, tempBox.w, tempBox.h);
-  ctx.setLineDash([]);
-});
-
-redactionOverlay.addEventListener('mouseup', (e) => {
-  if (!isDrawing) return;
-  isDrawing = false;
-
-  if (tempBox && tempBox.w > 4 && tempBox.h > 4) {
-    // Convert canvas coords to PDF coords
-    const pdfBox = {
-      x: tempBox.x / scale,
-      y: tempBox.y / scale,
-      w: tempBox.w / scale,
-      h: tempBox.h / scale,
-    };
-    if (!redactions[currentPage]) redactions[currentPage] = [];
-    redactions[currentPage].push(pdfBox);
-  }
-
-  tempBox = null;
-  drawStart = null;
-  drawRedactionsOnOverlay();
-  updateUI();
-});
-
-redactionOverlay.addEventListener('mouseleave', () => {
-  if (isDrawing) {
-    // Finalize if we leave the canvas
-    if (tempBox && tempBox.w > 4 && tempBox.h > 4) {
-      const pdfBox = {
-        x: tempBox.x / scale,
-        y: tempBox.y / scale,
-        w: tempBox.w / scale,
-        h: tempBox.h / scale,
-      };
-      if (!redactions[currentPage]) redactions[currentPage] = [];
-      redactions[currentPage].push(pdfBox);
-    }
-    isDrawing = false;
-    tempBox = null;
-    drawStart = null;
-    drawRedactionsOnOverlay();
-    updateUI();
-  }
-});
-
-// === Touch support ===
-redactionOverlay.addEventListener('touchstart', (e) => {
-  if (!pdfDoc) return;
-  e.preventDefault();
-  const touch = e.touches[0];
-  const rect = redactionOverlay.getBoundingClientRect();
-  drawStart = { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
-  isDrawing = true;
-  tempBox = null;
-}, { passive: false });
-
-redactionOverlay.addEventListener('touchmove', (e) => {
-  if (!isDrawing || !drawStart) return;
-  e.preventDefault();
-  const touch = e.touches[0];
-  const rect = redactionOverlay.getBoundingClientRect();
-  const mx = touch.clientX - rect.left;
-  const my = touch.clientY - rect.top;
-
-  tempBox = {
-    x: Math.min(drawStart.x, mx),
-    y: Math.min(drawStart.y, my),
-    w: Math.abs(mx - drawStart.x),
-    h: Math.abs(my - drawStart.y),
-  };
-
-  drawRedactionsOnOverlay();
-  const ctx = redactionOverlay.getContext('2d');
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-  ctx.fillRect(tempBox.x, tempBox.y, tempBox.w, tempBox.h);
-  ctx.strokeStyle = '#fbbf24';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 3]);
-  ctx.strokeRect(tempBox.x, tempBox.y, tempBox.w, tempBox.h);
-  ctx.setLineDash([]);
-}, { passive: false });
-
-redactionOverlay.addEventListener('touchend', (e) => {
-  if (!isDrawing) return;
-  e.preventDefault();
-  isDrawing = false;
-
-  if (tempBox && tempBox.w > 4 && tempBox.h > 4) {
-    const pdfBox = {
-      x: tempBox.x / scale,
-      y: tempBox.y / scale,
-      w: tempBox.w / scale,
-      h: tempBox.h / scale,
-    };
-    if (!redactions[currentPage]) redactions[currentPage] = [];
-    redactions[currentPage].push(pdfBox);
-  }
-
-  tempBox = null;
-  drawStart = null;
-  drawRedactionsOnOverlay();
-  updateUI();
-}, { passive: false });
-
-// === Page navigation ===
-prevPageBtn.addEventListener('click', async () => {
-  if (currentPage > 1) {
-    currentPage--;
-    await renderPage(currentPage);
-    updateUI();
-  }
-});
-
-nextPageBtn.addEventListener('click', async () => {
-  if (currentPage < totalPages) {
-    currentPage++;
-    await renderPage(currentPage);
-    updateUI();
-  }
-});
-
-// === Undo / Clear ===
-undoBtn.addEventListener('click', () => {
-  if (redactions[currentPage] && redactions[currentPage].length > 0) {
-    redactions[currentPage].pop();
-    drawRedactionsOnOverlay();
-    updateUI();
-  }
-});
-
-clearAllBtn.addEventListener('click', () => {
-  if (redactions[currentPage]) {
-    redactions[currentPage] = [];
-    drawRedactionsOnOverlay();
-    updateUI();
-  }
-});
-
-// === Update UI state ===
-function updateUI() {
-  const totalRedactions = Object.values(redactions).reduce((sum, arr) => sum + arr.length, 0);
-  const pageRedactions = (redactions[currentPage] || []).length;
-
-  // Page nav
-  prevPageBtn.disabled = currentPage <= 1;
-  nextPageBtn.disabled = currentPage >= totalPages;
-  pageIndicator.textContent = currentPage + ' / ' + totalPages;
-
-  // Undo / clear
-  undoBtn.disabled = pageRedactions === 0;
-  clearAllBtn.disabled = pageRedactions === 0;
-
-  // Redaction count
-  if (totalRedactions > 0) {
-    redactionCount.style.display = 'inline-flex';
-    countText.textContent = totalRedactions + ' redaction' + (totalRedactions !== 1 ? 's' : '');
-  } else {
-    redactionCount.style.display = 'none';
-  }
-
-  // Apply button
-  applyBtn.disabled = totalRedactions === 0;
-}
-
-// === Apply Redactions ===
-applyBtn.addEventListener('click', async () => {
-  const totalRedactions = Object.values(redactions).reduce((sum, arr) => sum + arr.length, 0);
-  if (totalRedactions === 0) return;
-
-  applyBtn.disabled = true;
-  applyBtn.textContent = 'Applying...';
-  progressBar.style.display = 'block';
-  progressFill.style.width = '0%';
-  resultCard.classList.remove('on');
-  downloadBtn.style.display = 'none';
-
-  try {
-    const pdfLibDoc = await getPDFLib().PDFDocument.load(pdfArrayBuffer);
-    const pages = pdfLibDoc.getPages();
-
-    const pageNums = Object.keys(redactions).map(Number).filter(pn => redactions[pn].length > 0);
-    let processed = 0;
-
-    for (const pageNum of pageNums) {
-      const page = pages[pageNum - 1]; // 0-indexed
-      const { height } = page.getSize();
-      const boxes = redactions[pageNum];
-
-      for (const box of boxes) {
-        // pdf.js coordinate: (0,0) is top-left, y goes down
-        // pdf-lib coordinate: (0,0) is bottom-left, y goes up
-        // Convert: pdfLibY = pageHeight - (box.y + box.h)
-        const pdfLibY = height - (box.y + box.h);
-
-        page.drawRectangle({
-          x: box.x,
-          y: pdfLibY,
-          width: box.w,
-          height: box.h,
-          color: getPDFLib().rgb(0, 0, 0),
-          opacity: 1,
-          borderWidth: 0,
-        });
-      }
-
-      processed++;
-      progressFill.style.width = (processed / pageNums.length * 100) + '%';
-    }
-
-    redactedPdfBytes = await pdfLibDoc.save();
-    progressFill.style.width = '100%';
-
-    resultCard.classList.add('on');
-    resultMsg.className = 'result-msg success';
-    resultMsg.textContent = 'Redactions applied to ' + totalRedactions + ' area' + (totalRedactions !== 1 ? 's' : '') + ' across ' + pageNums.length + ' page' + (pageNums.length !== 1 ? 's' : '') + '.';
-    downloadBtn.style.display = 'block';
-
-  } catch (err) {
-    resultCard.classList.add('on');
-    resultMsg.className = 'result-msg error';
-    resultMsg.textContent = 'Error: ' + err.message;
-  }
-
-  applyBtn.textContent = 'Apply Redactions & Download';
-  applyBtn.disabled = false;
-});
-
-// === Download ===
-function doActualDownload() {
-  if (!redactedPdfBytes) return;
-  const blob = new Blob([redactedPdfBytes], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'redacted.pdf';
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
-}
-
-downloadBtn.addEventListener('click', () => {
-  const gate = document.querySelector('email-gate-modal');
-  if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
-});
-
-// === Window resize handler ===
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    if (pdfDoc) renderPage(currentPage);
-  }, 200);
-});
-
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Pdf Redact" tool-slug="pdf-redact"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<script src="/tools/pdf-redact/app.js?v=20260427"></script>
 </body>
 </html>

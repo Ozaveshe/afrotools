@@ -308,6 +308,20 @@
   color: #1e40af;
 }
 .rc-savings strong { font-weight: 700; }
+.rc-decision {
+  background: #f8fafc;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.rc-decision h3 { margin: 0 0 10px; font-size: 1rem; font-weight: 800; color: #111827; }
+.rc-decision-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+.rc-decision-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; }
+.rc-decision-card strong { display: block; color: var(--color-primary,#0071e3); font-size: 1rem; margin-bottom: 2px; }
+.rc-decision-card span { color: #6b7280; font-size: .76rem; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+.rc-decision-note { margin-top: 10px; color: #374151; font-size: .86rem; line-height: 1.55; }
+.rc-planner-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 8px; }
 
 /* Chart */
 .rc-chart-section {
@@ -406,6 +420,7 @@
   .rc-input-group { flex-direction: column; }
   .rc-input-group .rc-select { flex: auto; }
   .rc-provider-grid { grid-template-columns: repeat(2, 1fr); }
+  .rc-planner-row, .rc-decision-grid { grid-template-columns: 1fr; }
   .rc-bars { height: 160px; gap: 6px; }
   .rc-bar-val { font-size: 0.65rem; }
   .rc-bar-lbl { font-size: 0.6rem; }
@@ -443,6 +458,8 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/remittance-compare.webp">
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar active="african"></afro-navbar>
@@ -526,6 +543,30 @@
       </div>
     </div>
 
+    <div class="rc-planner-row">
+      <div class="rc-field">
+        <label for="rcRepeat">Transfers per Year</label>
+        <input type="number" class="rc-input" id="rcRepeat" value="12" min="1" max="365">
+      </div>
+      <div class="rc-field">
+        <label for="rcRecipientAccess">Recipient Access</label>
+        <select class="rc-select" id="rcRecipientAccess">
+          <option value="all">Any method</option>
+          <option value="mobile">Mobile money preferred</option>
+          <option value="bank">Bank account preferred</option>
+          <option value="cash">Cash pickup needed</option>
+        </select>
+      </div>
+      <div class="rc-field">
+        <label for="rcUrgency">Urgency</label>
+        <select class="rc-select" id="rcUrgency">
+          <option value="value">Best total value</option>
+          <option value="speed">Fastest possible</option>
+          <option value="balanced">Balanced value and speed</option>
+        </select>
+      </div>
+    </div>
+
     <button class="rc-calc-btn" id="rcCompareBtn">Compare Providers</button>
   </div>
 
@@ -558,6 +599,7 @@
       <span class="rc-results-count" id="rcCount"></span>
     </div>
 
+    <div class="rc-decision" id="rcDecision"></div>
     <div class="rc-provider-list" id="rcProviderList"></div>
 
     <!-- Savings callout -->
@@ -658,7 +700,7 @@
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script>
 (function() {
   'use strict';
@@ -930,6 +972,10 @@
     // Amount formatting
     $('rcAmount').addEventListener('focus', function() { this.value = this.value.replace(/,/g, ''); this.select(); });
     $('rcAmount').addEventListener('blur', function() { const v = parseAmt(this.value); if (v > 0) this.value = fmtNum(v, 2); });
+    ['rcRepeat','rcRecipientAccess','rcUrgency'].forEach(id => {
+      $(id).addEventListener('change', () => { if (lastResults.length) renderResults(); });
+      $(id).addEventListener('input', () => { if (lastResults.length) renderResults(); });
+    });
 
     // Sort buttons
     $('rcSortBtns').addEventListener('click', e => {
@@ -1083,12 +1129,14 @@
       $('rcProviderList').innerHTML = '<div style="text-align:center;padding:40px 20px;color:#6b7280;"><p style="font-size:1rem;margin-bottom:8px;">No providers found for this corridor and filter combination.</p><p style="font-size:0.85rem;">Try changing the delivery method filter or selecting a different corridor.</p></div>';
       $('rcBars').innerHTML = '';
       $('rcSavings').style.display = 'none';
+      $('rcDecision').innerHTML = '';
       $('rcCount').textContent = '';
       return;
     }
 
     const best = filtered.reduce((a, b) => a.recipientGets > b.recipientGets ? a : b);
     const worst = filtered.reduce((a, b) => a.recipientGets < b.recipientGets ? a : b);
+    renderDecisionPlan(filtered, best, worst);
 
     // Title
     const destName = DEST_NAMES[$('rcTo').value] || $('rcTo').value;
@@ -1184,6 +1232,31 @@
     // Show results
     $('rcResults').classList.add('active');
     setTimeout(() => $('rcResults').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+
+  function renderDecisionPlan(filtered, best, worst) {
+    const repeat = Math.max(1, parseInt($('rcRepeat').value, 10) || 1);
+    const access = $('rcRecipientAccess').value;
+    const urgency = $('rcUrgency').value;
+    const accessMatch = access === 'all' ? null : filtered.find(r => r.methods.includes(access));
+    const fastest = filtered.reduce((a, b) => a.speedHours < b.speedHours ? a : b);
+    const balanced = filtered.slice().sort((a, b) => {
+      const aScore = a.trueCostPct + Math.min(a.speedHours, 72) / 24;
+      const bScore = b.trueCostPct + Math.min(b.speedHours, 72) / 24;
+      return aScore - bScore;
+    })[0];
+    const pick = accessMatch || (urgency === 'speed' ? fastest : urgency === 'balanced' ? balanced : best);
+    const annualSaving = (best.recipientGets - worst.recipientGets) * repeat;
+    const accessText = accessMatch ? accessMatch.name + ' matches the recipient access preference.' : 'No special recipient access preference applied.';
+    $('rcDecision').innerHTML =
+      '<h3>Transfer Decision Plan</h3>' +
+      '<div class="rc-decision-grid">' +
+      '<div class="rc-decision-card"><strong>' + pick.name + '</strong><span>Recommended pick</span></div>' +
+      '<div class="rc-decision-card"><strong>' + fmtCur(best.recipientGets, best.destCur) + '</strong><span>Best recipient gets</span></div>' +
+      '<div class="rc-decision-card"><strong>' + fmtCur(annualSaving, best.destCur) + '</strong><span>Annual upside</span></div>' +
+      '<div class="rc-decision-card"><strong>' + fastest.name + '</strong><span>Fastest option</span></div>' +
+      '</div>' +
+      '<div class="rc-decision-note">' + accessText + ' For repeat transfers, compare total recipient amount, speed, and payout method before sending. Recheck the live quote inside the provider app before confirming.</div>';
   }
 
 })();

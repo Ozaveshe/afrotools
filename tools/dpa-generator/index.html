@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
 .check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.4rem;margin-top:.4rem}
@@ -163,7 +164,167 @@
     </div>
   </div>
 
-  <div class="leg-seo">
+  <!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"dpa-generator","title":"Dpa Generator","workflowTitle":"Controller-processor contract pack","coverage":"Template generator","decision":"Whether each party is controller, processor, joint controller, or independent controller","evidence":["Attach a processing schedule rather than hiding details in general wording","Match breach-notice timing to the strictest relevant jurisdiction","Require deletion or return of data when the service ends"],"redFlags":["Calling every vendor a processor when some decide purposes independently","No sub-processor approval or onward-transfer clause","No audit, security or deletion evidence requirement"],"related":[{"label":"Privacy Policy Generator","href":"/tools/privacy-policy-gen/"},{"label":"Breach Notification","href":"/tools/breach-notification/"},{"label":"Cross-Border Data","href":"/tools/cross-border-data/"}],"competitor":{"group":"privacy","label":"Termly, OneTrust and enterprise consent platforms","patterns":["Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.","They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.","They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Attach a processing schedule rather than hiding details in general wording\".","Saved workflows can be resumed from the dashboard and handed off to Privacy Policy Generator when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the controller-processor contract pack result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/privacy-policy-gen/">Privacy Policy Generator</a><a href="/tools/breach-notification/">Breach Notification</a><a href="/tools/cross-border-data/">Cross-Border Data</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Termly, OneTrust and enterprise consent platforms. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.</li><li>They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.</li><li>They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Attach a processing schedule rather than hiding details in general wording&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to Privacy Policy Generator when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether each party is controller, processor, joint controller, or independent controller</li><li>Attach a processing schedule rather than hiding details in general wording</li><li>Calling every vendor a processor when some decide purposes independently</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · Template generator</div>
+  <h2 id="legal-upgrade-heading">Controller-processor contract pack</h2>
+  <p>A data processing agreement should translate privacy law into operational duties: instructions, sub-processors, security, breach notice, audits, deletion, transfer controls and assistance with data-subject rights.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether each party is controller, processor, joint controller, or independent controller</li><li>Which processing instructions, data categories and retention periods belong in the schedule</li><li>Which sub-processor, cross-border and breach timelines are acceptable</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Attach a processing schedule rather than hiding details in general wording</li><li>Match breach-notice timing to the strictest relevant jurisdiction</li><li>Require deletion or return of data when the service ends</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Calling every vendor a processor when some decide purposes independently</li><li>No sub-processor approval or onward-transfer clause</li><li>No audit, security or deletion evidence requirement</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.ndpc.gov.ng/ndp-act-2023/" target="_blank" rel="noopener">Nigeria Data Protection Commission</a><a href="https://www.odpc.go.ke/faqs/" target="_blank" rel="noopener">Kenya ODPC FAQs</a><a href="https://www.justice.gov.za/legislation/acts/2013-004.pdf" target="_blank" rel="noopener">POPIA Act text</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/privacy-policy-gen/">Privacy Policy Generator</a><a href="/tools/breach-notification/">Breach Notification</a><a href="/tools/cross-border-data/">Cross-Border Data</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the controller-processor contract pack trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether each party is controller, processor, joint controller, or independent controller.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Attach a processing schedule rather than hiding details in general wording. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Calling every vendor a processor when some decide purposes independently.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly>Controller-processor contract pack action pack
+Tool: dpa-generator
+Coverage: Template generator
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether each party is controller, processor, joint controller, or independent controller.
+
+Evidence to attach:
+- Attach a processing schedule rather than hiding details in general wording
+- Match breach-notice timing to the strictest relevant jurisdiction
+- Require deletion or return of data when the service ends
+
+Escalate before filing or signing if:
+- Calling every vendor a processor when some decide purposes independently
+- No sub-processor approval or onward-transfer clause
+- No audit, security or deletion evidence requirement
+
+Primary checks:
+- Nigeria Data Protection Commission: https://www.ndpc.gov.ng/ndp-act-2023/
+- Kenya ODPC FAQs: https://www.odpc.go.ke/faqs/
+- POPIA Act text: https://www.justice.gov.za/legislation/acts/2013-004.pdf
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<div class="leg-seo">
     <h2>When Do You Need a Data Processing Agreement?</h2>
     <p>A Data Processing Agreement (DPA) — also called a Data Processing Addendum or Data Processing Contract — is legally required whenever a data controller engages a third-party vendor, supplier, or service provider to process personal data on its behalf. Common examples include cloud service providers, payroll processors, CRM platforms, email marketing tools, and analytics services.</p>
     <p>Under the Nigeria NDPA 2023, every data controller must have a written DPA in place with all data processors. Failure to maintain appropriate processor contracts can itself constitute a breach of the NDPA, resulting in fines of up to ₦10 million or 2% of annual turnover. The same requirement applies under POPIA (South Africa), Kenya DPA 2019, and the EU GDPR.</p>
@@ -260,5 +421,21 @@ function copyDPA(){
 
 function toggleCard(h){var b=h.nextElementSibling;var e=h.getAttribute('aria-expanded')==='true';h.setAttribute('aria-expanded',String(!e));b.classList.toggle('collapsed',e);}
 </script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js" defer></script>
 </body>
 </html>

@@ -67,7 +67,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/tool-registry.min.js?v=90733912" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=0de15c9b" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -97,11 +97,11 @@ a{text-decoration:none;color:inherit}
 
 /* GRID */
 .sec{padding:48px 0 64px}
-.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
 @media(max-width:720px){.cg{grid-template-columns:1fr}}
 
 /* CATEGORY CARD */
-.cc{padding:24px;background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;display:flex;flex-direction:column;gap:12px;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+.cc{padding:24px;background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;display:flex;flex-direction:column;gap:12px;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden;min-width:0}
 .cc:hover{border-color:var(--cc-accent,#0062CC);box-shadow:0 8px 28px rgba(0,0,0,.06);transform:translateY(-2px)}
 .cc-top{display:flex;align-items:center;gap:12px}
 .cc-i{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
@@ -109,9 +109,11 @@ a{text-decoration:none;color:inherit}
 .cc-n{font-size:1rem;font-weight:800;color:#111827;line-height:1.2}
 .cc-d{font-size:.82rem;color:#6b7280;line-height:1.6;flex:1}
 .cc-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px}
-.cc-tool{font-size:.7rem;font-weight:600;color:#374151;background:#f9fafb;border:1px solid #e5e7eb;padding:4px 10px;border-radius:100px;white-space:nowrap;transition:all .12s}
+.cc-tool{display:inline-flex;align-items:flex-start;gap:5px;max-width:100%;min-width:0;font-size:.7rem;font-weight:600;color:#374151;background:#f9fafb;border:1px solid #e5e7eb;padding:5px 10px;border-radius:100px;white-space:normal;line-height:1.25;overflow-wrap:anywhere;transition:all .12s}
+.cc-tool-emoji{flex:0 0 auto;line-height:1.25}
+.cc-tool-text{min-width:0;overflow-wrap:anywhere}
 .cc-tool:hover{background:#EEF4FF;border-color:#0062CC;color:#0062CC}
-.cc-more{font-size:.7rem;font-weight:700;color:var(--cc-accent,#0062CC);padding:4px 10px;border-radius:100px;white-space:nowrap}
+.cc-more{display:inline-flex;align-items:center;font-size:.7rem;font-weight:700;color:var(--cc-accent,#0062CC);padding:5px 10px;border-radius:100px;white-space:nowrap}
 .cc-count{font-size:.68rem;font-weight:600;color:#9ca3af;margin-top:4px}
 
 /* RESPONSIVE */
@@ -121,6 +123,9 @@ a{text-decoration:none;color:inherit}
   .hero-stats{gap:16px}
   .filter-inner{flex-direction:column;align-items:stretch}
   .cc{padding:18px}
+  .cc-top{align-items:flex-start}
+  .cc-tools{gap:7px}
+  .cc-tool{border-radius:12px}
 }
 </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/categories/" />
@@ -141,10 +146,10 @@ a{text-decoration:none;color:inherit}
 <section class="hero"><div class="wrap">
   <div class="hero-ey">Tool Directory</div>
   <h1>All <em>Categories</em></h1>
-  <p>Every tool on AfroTools, organised into 28 categories. Built for African regulations, currencies, and real-world needs across 54 countries.</p>
+  <p>Every tool on AfroTools, organised into 32 categories. Built for African regulations, currencies, and real-world needs across 54 countries.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="hero-stat-n" id="heroToolCount">2,550+</div><div class="hero-stat-l">Tools</div></div>
-    <div class="hero-stat"><div class="hero-stat-n">28</div><div class="hero-stat-l">Categories</div></div>
+    <div class="hero-stat"><div class="hero-stat-n" id="heroToolCount">2,560</div><div class="hero-stat-l">Live Tools</div></div>
+    <div class="hero-stat"><div class="hero-stat-n" id="heroCategoryCount">32</div><div class="hero-stat-l">Categories</div></div>
     <div class="hero-stat"><div class="hero-stat-n">54</div><div class="hero-stat-l">Countries</div></div>
   </div>
 </div></section>
@@ -153,7 +158,7 @@ a{text-decoration:none;color:inherit}
   <div class="filter-inner">
     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/></svg>
     <input class="filter-input" type="text" id="catFilter" placeholder="Filter categories..." autocomplete="off">
-    <span class="filter-count" id="catCount">28 categories</span>
+    <span class="filter-count" id="catCount">32 categories</span>
   </div>
 </div>
 
@@ -163,6 +168,7 @@ a{text-decoration:none;color:inherit}
 <script>
 var ALL_CATS = [
   { key:'financial', slug:'salary-tax', name:'Salary & Tax', icon:'\u{1F4B0}', bg:'#EFF6FF', accent:'#0062CC', desc:'PAYE income tax calculators for all 54 African countries. Gross-to-net salary, tax deductions, pension, employer costs \u2014 official 2026 brackets.' },
+  { key:'hr-payroll', slug:'hr-payroll', name:'HR & Payroll', icon:'\u{1F4BC}', bg:'#f0fdfa', accent:'#0d9488', desc:'Employee cost, contractor vs employee, maternity leave, gratuity, retrenchment, domestic worker pay, and payroll compliance.' },
   { key:'document-pdf', slug:'document-pdf', name:'Document & PDF', icon:'\u{1F4C4}', bg:'#eff6ff', accent:'#3b82f6', desc:'Merge, split, compress, and edit PDF files in-browser. Generate invoices, CVs, cover letters, and e-signatures \u2014 no uploads needed.' },
   { key:'image-design', slug:'image-design', name:'Image & Design', icon:'\u{1F5BC}\uFE0F', bg:'#fdf2f8', accent:'#ec4899', desc:'Compress, resize, convert images. Remove backgrounds, make QR codes, passport photos, flyers, logos, and memes.' },
   { key:'developer', slug:'developer-tools', name:'Developer Tools', icon:'\u2328\uFE0F', bg:'#ede9fe', accent:'#8b5cf6', desc:'JSON formatters, API testers, regex, Base64, JWT decoders, diff checkers, markdown editors, and USSD simulators.' },
@@ -176,16 +182,19 @@ var ALL_CATS = [
   { key:'data-productivity', slug:'data-productivity', name:'Business & ROI', icon:'\u{1F4CA}', bg:'#eef2ff', accent:'#6366f1', desc:'Budget planners, unit converters, public holiday calendars, working days calculators, time zones, age calculators, pomodoro timer.' },
   { key:'language', slug:'language', name:'Language & Translation', icon:'\u{1F5E3}\uFE0F', bg:'#faf5ff', accent:'#a855f7', desc:'Nigerian Pidgin, Swahili, Yoruba, Hausa, Amharic translators. African name meanings and Francophone Africa translator.' },
   { key:'african', slug:'african', name:'Uniquely African', icon:'\u{1F30D}', bg:'#fef2f2', accent:'#dc2626', desc:'AfroAtlas explorer, AfroKitchen recipes, AfroConflict tracker \u2014 tools you won\'t find anywhere else on the internet.' },
-  { key:'francophone', slug:'fr', name:'Outils en Fran\u00e7ais', icon:'\u{1F1EB}\u{1F1F7}', bg:'#eef6ff', accent:'#0055A4', desc:'Salary calculators in French for 14 Francophone African countries \u2014 C\u00f4te d\'Ivoire, S\u00e9n\u00e9gal, Cameroun, RDC, Maroc, and more.' },
   { key:'trade', slug:'trade', name:'Trade & Import', icon:'\u{1F6A2}', bg:'#E8F2FF', accent:'#007AFF', desc:'AfCFTA tariff tracker, landed cost calculator, shipping estimator, LC fees, export docs, incoterms, port demurrage, and trade finance.' },
   { key:'telecom', slug:'telecom', name:'Telecom & Mobile', icon:'\u{1F4F1}', bg:'#ECFEFF', accent:'#06B6D4', desc:'Data plan comparators, USSD code directory, roaming costs, mobile money fees, Starlink vs local ISP, DStv/GOtv comparator.' },
   { key:'energy', slug:'energy', name:'Energy & Utilities', icon:'\u26A1', bg:'#FFFBEB', accent:'#F59E0B', desc:'Electricity tariffs, solar ROI, prepaid meters, generator fuel costs, battery sizing, mini-grid feasibility, EV charging, biogas ROI.' },
   { key:'engineering', slug:'engineering', name:'Engineering', icon:'\u{1F527}', bg:'#f5f5f4', accent:'#78716c', desc:'BOQ builder, concrete mix calculator, electrical load analysis, and rebar calculator for African engineers and architects.' },
+  { key:'creative', slug:'creative', name:'Creative Economy', icon:'\u{1F3A8}', bg:'#fdf2f8', accent:'#ec4899', desc:'Creator analytics, AfroStream, film budgets, album budgets, music royalties, photography pricing, palettes, and social media tools.' },
+  { key:'security', slug:'security', name:'Security & Safety', icon:'\u{1F512}', bg:'#f9fafb', accent:'#374151', desc:'Cybersecurity risk, breach cost, CCTV, home security, fire safety, password strength, and phishing awareness tools.' },
   { key:'government', slug:'government', name:'Government & Civic', icon:'\u{1F3DB}\uFE0F', bg:'#eff6ff', accent:'#1d4ed8', desc:'Passport checklists, visa checker, national ID guide, voter registration, pension estimator, land registry fees, birth/death certificates.' },
   { key:'small-business', slug:'small-business', name:'Small Business', icon:'\u{1F3EA}', bg:'#fff7ed', accent:'#ea580c', desc:'Startup runway, TAM/SAM/SOM, unit economics, burn rate, cash flow forecast, POS agent calculator, mini-importation profit, market stall profit.' },
   { key:'transport', slug:'transport', name:'Transport & Logistics', icon:'\u{1F69B}', bg:'#fef3c7', accent:'#d97706', desc:'Fuel cost per trip, vehicle import duty, ride-hailing fares, boda-boda income, matatu/danfo fares, delivery costs, car loan vs cash.' },
+  { key:'travel-tourism', slug:'travel', name:'Travel & Tourism', icon:'\u2708\uFE0F', bg:'#e0f2fe', accent:'#0284c7', desc:'Safari costs, airport transfers, beach holidays, hotel guides, flight tracking, festival budgets, packing lists, and vaccination costs.' },
   { key:'personal-finance', slug:'personal-finance', name:'Personal Finance', icon:'\u{1F4BC}', bg:'#f0fdf4', accent:'#16a34a', desc:'50/30/20 budgets, zero-based budgets, baby cost estimator, wedding budget, funeral savings, WHT calculator, side hustle to full-time.' },
   { key:'diaspora', slug:'diaspora', name:'Diaspora', icon:'\u2708\uFE0F', bg:'#eff6ff', accent:'#2563eb', desc:'Japa calculator, visa tracker, immigration points, IELTS/TOEFL converter, embassy wait times, cost of living comparator, double taxation.' },
+  { key:'career', slug:'career', name:'Career & Development', icon:'\u{1F4C8}', bg:'#f5f3ff', accent:'#7c3aed', desc:'Career growth, career switch finance, salary negotiation, readiness scores, and practical career planning tools for African workers.' },
   { key:'religious-cultural', slug:'religious-cultural', name:'Religious & Cultural', icon:'\u{1F54C}', bg:'#fffbeb', accent:'#d97706', desc:'Zakat calculator, prayer times, Ramadan timetable, halal compliance, Hajj budget, tithe calculator, African proverbs, naming ceremony costs.' },
   { key:'climate', slug:'climate', name:'Climate & Environment', icon:'\u{1F33F}', bg:'#f0fdf4', accent:'#059669', desc:'Carbon credits, drought risk, flood risk, air quality, tree planting ROI, e-waste value, water scarcity, recycling revenue, sustainability scorecard.' },
   { key:'sports', slug:'sports', name:'Sports & Entertainment', icon:'\u26BD', bg:'#fdf4ff', accent:'#9333ea', desc:'Betting odds, AFCON predictor, fantasy football, streaming royalties, DJ booking rates, concert budgets, Nollywood box office.' },
@@ -547,63 +556,154 @@ function _renderCats() {
   var g = document.getElementById('cg');
   if (!g) return;
 
-  // Use registry if available, otherwise fallback to _NAV_TOOLS
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function normalizeHref(href) {
+    return String(href || '').replace(/\/index\.html$/, '').replace(/\/$/, '').toLowerCase();
+  }
+
+  function isPublicTool(t) {
+    return t && (t.status === 'live' || t.status === 'new');
+  }
+
+  function shortToolLabel(label) {
+    var text = String(label || '').replace(/\s+[\u2013\u2014]\s+.*$/, '');
+    text = text
+      .replace(/\s+Calculator for Africa$/i, ' Calculator')
+      .replace(/\s+Tool for Africa$/i, ' Tool')
+      .replace(/\s+Africa$/i, '')
+      .replace(/\s+All 54 African Countries$/i, '')
+      .trim();
+    if (text.length > 46) {
+      text = text.slice(0, 43).replace(/\s+\S*$/, '').trim() + '...';
+    }
+    return text || label || 'Tool';
+  }
+
+  function formatCount(value) {
+    return Number(value || 0).toLocaleString();
+  }
+
+  function countLabel(value) {
+    return formatCount(value) + ' tool' + (value === 1 ? '' : 's');
+  }
+
+  // Use registry if available, otherwise fallback to the static navigation sample.
   var hasRegistry = typeof AFRO_TOOLS !== 'undefined' && AFRO_TOOLS.length > 0;
 
-  // Get per-category tool counts and top tools from registry
+  // Get per-category live tool counts and top tools from the registry.
   var regCounts = {};
   var regTopTools = {};
   if (hasRegistry) {
-    AFRO_TOOLS.forEach(function(t){
-      var cat = t.category;
-      if (!regCounts[cat]) { regCounts[cat] = 0; regTopTools[cat] = []; }
-      regCounts[cat] += t.toolCount || 1;
-      if ((t.status === 'live' || t.status === 'new') && regTopTools[cat].length < 4) {
-        regTopTools[cat].push({ label: t.name, href: t.href, emoji: t.icon || '' });
+    ALL_CATS.forEach(function(cm){
+      if (typeof getTotalToolCount === 'function') {
+        regCounts[cm.key] = getTotalToolCount(function(t) {
+          return t.category === cm.key && isPublicTool(t);
+        });
+      } else {
+        regCounts[cm.key] = AFRO_TOOLS.filter(function(t){
+          return (!t.lang || t.lang === 'en') && t.category === cm.key && isPublicTool(t);
+        }).reduce(function(sum, t){ return sum + (Number(t.toolCount) || 1); }, 0);
       }
+
+      var seen = {};
+      regTopTools[cm.key] = AFRO_TOOLS
+        .filter(function(t){
+          return (!t.lang || t.lang === 'en') && t.category === cm.key && isPublicTool(t);
+        })
+        .sort(function(a, b){
+          return (b.priority || 0) - (a.priority || 0) || String(a.name || '').localeCompare(String(b.name || ''));
+        })
+        .filter(function(t){
+          var key = normalizeHref(t.href || t.id);
+          if (!key || seen[key]) return false;
+          seen[key] = true;
+          return true;
+        })
+        .slice(0, 4)
+        .map(function(t){
+          return {
+            label: t.name || 'Tool',
+            displayLabel: shortToolLabel(t.name || 'Tool'),
+            href: t.href || '#',
+            emoji: t.icon || ''
+          };
+        });
     });
   }
 
   // Calculate total tools
   var totalTools = 0;
   if (hasRegistry && typeof getTotalToolCount === 'function') {
-    totalTools = getTotalToolCount();
+    totalTools = getTotalToolCount(isPublicTool);
+  } else if (hasRegistry) {
+    totalTools = AFRO_TOOLS.filter(function(t){
+      return (!t.lang || t.lang === 'en') && isPublicTool(t);
+    }).length;
   }
-  // Add fallback counts for categories not in registry
-  ALL_CATS.forEach(function(cm){
-    if (!regCounts[cm.key] && _NAV_TOOLS[cm.key]) {
+  // Fallback only when the registry did not load. Avoid mixing brochure lists
+  // with registry-backed counts because that has historically inflated totals.
+  if (!hasRegistry) {
+    ALL_CATS.forEach(function(cm){
+      if (_NAV_TOOLS[cm.key]) {
+        regCounts[cm.key] = _NAV_TOOLS[cm.key].length;
+        regTopTools[cm.key] = _NAV_TOOLS[cm.key].slice(0, 4).map(function(t){
+          return {
+            label: t.label,
+            displayLabel: t.label,
+            href: t.href,
+            emoji: t.emoji || ''
+          };
+        });
       totalTools += _NAV_TOOLS[cm.key].length;
-    }
-  });
+      }
+    });
+  }
+
   var h = document.getElementById('heroToolCount');
-  if (h && totalTools > 0) h.textContent = totalTools.toLocaleString() + '+';
+  if (h && totalTools > 0) h.textContent = formatCount(totalTools);
+  var categoryHero = document.getElementById('heroCategoryCount');
+  if (categoryHero) categoryHero.textContent = formatCount(ALL_CATS.length);
+  var countEl = document.getElementById('catCount');
+  if (countEl) countEl.textContent = ALL_CATS.length + ' categories';
 
   var html = '';
   ALL_CATS.forEach(function(cm){
     // Prefer registry data, fallback to _NAV_TOOLS
-    var toolCount = regCounts[cm.key] || (_NAV_TOOLS[cm.key] ? _NAV_TOOLS[cm.key].length : 0);
+    var toolCount = Number(regCounts[cm.key]) || 0;
     var topTools = (regTopTools[cm.key] && regTopTools[cm.key].length > 0)
       ? regTopTools[cm.key]
-      : (_NAV_TOOLS[cm.key] ? _NAV_TOOLS[cm.key].slice(0, 4) : []);
+      : (!hasRegistry && _NAV_TOOLS[cm.key] ? _NAV_TOOLS[cm.key].slice(0, 4) : []);
 
     var toolPills = '';
     if (topTools.length > 0) {
       topTools.forEach(function(t){
-        toolPills += '<span class="cc-tool">' + t.emoji + ' ' + t.label + '</span>';
+        toolPills += '<span class="cc-tool" title="' + escapeHtml(t.label) + '">'
+          + (t.emoji ? '<span class="cc-tool-emoji">' + escapeHtml(t.emoji) + '</span>' : '')
+          + '<span class="cc-tool-text">' + escapeHtml(t.displayLabel || t.label) + '</span>'
+          + '</span>';
       });
       if (toolCount > 4) {
-        toolPills += '<span class="cc-more">+' + (toolCount - 4) + ' more</span>';
+        toolPills += '<span class="cc-more">+' + formatCount(toolCount - 4) + ' more</span>';
       }
     }
-    var countText = toolCount > 0 ? toolCount + ' tools' : '';
+    var countText = toolCount > 0 ? countLabel(toolCount) : 'Category hub';
+    var searchText = (cm.name + ' ' + cm.desc + ' ' + topTools.map(function(t){ return t.label; }).join(' ')).toLowerCase();
 
-    html += '<a href="/' + cm.slug + '/" class="cc" style="--cc-accent:' + cm.accent + '">'
+    html += '<a href="/' + escapeHtml(cm.slug) + '/" class="cc" data-search="' + escapeHtml(searchText) + '" style="--cc-accent:' + escapeHtml(cm.accent) + '">'
       + '<div class="cc-top">'
-      + '<div class="cc-i" style="background:' + cm.bg + '">' + cm.icon + '</div>'
-      + '<div class="cc-info"><div class="cc-n">' + cm.name + '</div>'
-      + (countText ? '<div class="cc-count">' + countText + '</div>' : '')
+      + '<div class="cc-i" style="background:' + escapeHtml(cm.bg) + '">' + escapeHtml(cm.icon) + '</div>'
+      + '<div class="cc-info"><div class="cc-n">' + escapeHtml(cm.name) + '</div>'
+      + '<div class="cc-count">' + escapeHtml(countText) + '</div>'
       + '</div></div>'
-      + '<div class="cc-d">' + cm.desc + '</div>'
+      + '<div class="cc-d">' + escapeHtml(cm.desc) + '</div>'
       + (toolPills ? '<div class="cc-tools">' + toolPills + '</div>' : '')
       + '</a>';
   });
@@ -617,9 +717,9 @@ function _renderCats() {
       var q = this.value.toLowerCase().trim();
       var cards = g.querySelectorAll('.cc');
       var vis = 0;
-      cards.forEach(function(card, i){
-        var cat = ALL_CATS[i];
-        var match = !q || cat.name.toLowerCase().indexOf(q) !== -1 || cat.desc.toLowerCase().indexOf(q) !== -1;
+      cards.forEach(function(card){
+        var haystack = card.getAttribute('data-search') || '';
+        var match = !q || haystack.indexOf(q) !== -1;
         card.style.display = match ? '' : 'none';
         if (match) vis++;
       });

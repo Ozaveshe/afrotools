@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <meta name="tool-id" content="brideprice-advisor">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
@@ -130,6 +130,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 
 /* Disclaimer */
 .bp-disclaimer{margin-top:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;font-size:.72rem;color:var(--muted);line-height:1.6}
+.bp-plan{border:1px solid rgba(212,168,67,.28);background:linear-gradient(180deg,#fff 0%,#fffaf0 100%);border-radius:8px;padding:18px;margin-top:16px}
+.bp-plan-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#92400e;margin-bottom:8px}
+.bp-plan-copy{font-size:.82rem;color:#4b5563;line-height:1.65;margin:0 0 14px}
+.bp-plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.bp-plan-field label{display:block;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#64748b;margin-bottom:5px}
+.bp-input{width:100%;padding:10px 12px;background:#fff;border:1.5px solid var(--border);border-radius:7px;font-size:.88rem;font-weight:600;color:var(--text);outline:none;font-family:inherit}
+.bp-input:focus{border-color:var(--bp);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
+.bp-plan-output{margin-top:14px;border-top:1px solid #f1e3bd;padding-top:14px}
+.bp-plan-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.bp-plan-metrics div{background:#fff;border:1px solid #f1e3bd;border-radius:8px;padding:10px}
+.bp-plan-metrics span{display:block;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#92400e;margin-bottom:4px}
+.bp-plan-metrics strong{font-size:.95rem;color:var(--text)}
+.bp-plan-output p{font-size:.82rem;line-height:1.65;color:#4b5563;margin:8px 0 0}
+.bp-plan-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.bp-plan-button{padding:10px 16px;border:1.5px solid rgba(0,122,255,.2);border-radius:8px;background:#fff;color:var(--bp);font-family:inherit;font-weight:800;cursor:pointer}
+.bp-plan-button.primary{background:var(--bp);color:#fff;border-color:var(--bp)}
+@media(max-width:900px){.bp-plan-grid,.bp-plan-metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.bp-plan-grid,.bp-plan-metrics{grid-template-columns:1fr}.bp-plan-actions .bp-plan-button{width:100%}}
 
 /* Sidebar */
 .bp-sidebar .bp-info{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
@@ -154,6 +172,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -199,6 +219,36 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
         </div>
       </div>
       <button class="bp-go-btn" onclick="showGuide()">💍 Show Me the Guide</button>
+    </div>
+  </div>
+
+  <div class="bp-plan" id="familyPlan">
+    <div class="bp-plan-title">Respectful family plan</div>
+    <p class="bp-plan-copy">Use the selected culture as a starting point, then plan a realistic, respectful conversation. The goal is family agreement and dignity, not pressure or display.</p>
+    <div class="bp-plan-grid">
+      <div class="bp-plan-field">
+        <label for="bpSaved">Already saved</label>
+        <input class="bp-input" id="bpSaved" type="number" min="0" step="1000" value="0">
+      </div>
+      <div class="bp-plan-field">
+        <label for="bpMonths">Target months</label>
+        <input class="bp-input" id="bpMonths" type="number" min="1" max="36" step="1" value="9">
+      </div>
+      <div class="bp-plan-field">
+        <label for="bpHouseholds">Contributing homes</label>
+        <input class="bp-input" id="bpHouseholds" type="number" min="1" max="20" step="1" value="2">
+      </div>
+      <div class="bp-plan-field">
+        <label for="bpTone">Family approach</label>
+        <select class="bp-input" id="bpTone">
+          <option value="balanced">Balanced request</option>
+          <option value="symbolic">Symbolic first</option>
+          <option value="full">Full ceremony</option>
+        </select>
+      </div>
+    </div>
+    <div class="bp-plan-output" id="bpPlanOutput">
+      <p>Select a culture, then this planner will estimate your savings gap, monthly target, and talking points.</p>
     </div>
   </div>
 
@@ -441,11 +491,72 @@ function updateCultures(){
   document.getElementById('culture').innerHTML=cultures.map(function(cu,i){return '<option value="'+i+'">'+cu.emoji+' '+cu.name+' — '+cu.localName+'</option>'}).join('');
 }
 
+function getCurrentCulture(){
+  var c=document.getElementById('country').value;
+  var idx=parseInt(document.getElementById('culture').value||'0',10);
+  return DATA[c]&&DATA[c][idx] ? DATA[c][idx] : null;
+}
+
+function formatPlanMoney(culture,value){
+  return (culture?culture.curr:'')+Math.round(Number(value||0)).toLocaleString();
+}
+
+function renderFamilyPlan(){
+  var out=document.getElementById('bpPlanOutput');
+  if(!out)return;
+  var cu=getCurrentCulture();
+  if(!cu){out.innerHTML='<p>Select a culture, then this planner will estimate your savings gap, monthly target, and talking points.</p>';return;}
+  var saved=Math.max(0,Number(document.getElementById('bpSaved').value||0));
+  var months=Math.max(1,Number(document.getElementById('bpMonths').value||1));
+  var homes=Math.max(1,Number(document.getElementById('bpHouseholds').value||1));
+  var tone=document.getElementById('bpTone').value||'balanced';
+  var factor=tone==='symbolic'?0.65:tone==='full'?1.2:1;
+  var target=Math.round(cu.totalAvg*factor);
+  var gap=Math.max(0,target-saved);
+  var monthly=Math.ceil(gap/months);
+  var perHome=Math.ceil(gap/homes);
+  var toneNote=tone==='symbolic'
+    ? 'Open with a symbolic, affordability-first proposal and ask elders which items matter most culturally.'
+    : tone==='full'
+      ? 'Plan for the fuller ceremony list, but still separate cultural essentials from display costs.'
+      : 'Use the midpoint as a respectful anchor, then invite both families to adjust around capacity.';
+  var brief=[
+    'Bride price family conversation plan',
+    'Culture: '+cu.name+' ('+cu.localName+')',
+    'Planning target: '+formatPlanMoney(cu,target),
+    'Saved already: '+formatPlanMoney(cu,saved),
+    'Gap: '+formatPlanMoney(cu,gap),
+    'Monthly saving target: '+formatPlanMoney(cu,monthly)+' for '+months+' month(s)',
+    'If shared by '+homes+' contributing home(s): '+formatPlanMoney(cu,perHome)+' each',
+    'Approach: '+toneNote,
+    'Reminder: bride price is a family respect practice, not a purchase. Confirm consent, expectations, and affordability before ceremony spending.'
+  ].join('\n');
+  out.innerHTML=
+    '<div class="bp-plan-metrics">'+
+      '<div><span>Planning target</span><strong>'+formatPlanMoney(cu,target)+'</strong></div>'+
+      '<div><span>Gap</span><strong>'+formatPlanMoney(cu,gap)+'</strong></div>'+
+      '<div><span>Monthly target</span><strong>'+formatPlanMoney(cu,monthly)+'</strong></div>'+
+      '<div><span>Per home</span><strong>'+formatPlanMoney(cu,perHome)+'</strong></div>'+
+    '</div>'+
+    '<p><strong>Conversation angle:</strong> '+toneNote+'</p>'+
+    '<p><strong>Respect guardrail:</strong> agree what is cultural, what is optional, and what the couple can realistically carry after the wedding.</p>'+
+    '<div class="bp-plan-actions"><button type="button" class="bp-plan-button primary" onclick="showGuide()">Open culture guide</button><button type="button" class="bp-plan-button" id="bpCopyPlan">Copy family plan</button></div>';
+  var copy=document.getElementById('bpCopyPlan');
+  if(copy){
+    copy.onclick=function(){
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(brief).then(function(){copy.textContent='Copied';setTimeout(function(){copy.textContent='Copy family plan';},1400);});
+      }else{window.prompt('Copy family plan',brief);}
+    };
+  }
+}
+
 function showGuide(){
   var c=document.getElementById('country').value;
   var idx=parseInt(document.getElementById('culture').value);
   var cu=DATA[c]&&DATA[c][idx];
   if(!cu)return;
+  renderFamilyPlan();
 
   // Culture hero
   document.getElementById('cultureHero').innerHTML=
@@ -517,6 +628,14 @@ function showGuide(){
 }
 
 updateCultures();
+['country','culture','bpSaved','bpMonths','bpHouseholds','bpTone'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el){
+    el.addEventListener('input',renderFamilyPlan);
+    el.addEventListener('change',renderFamilyPlan);
+  }
+});
+renderFamilyPlan();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>

@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/legal.css?v=af6e9e60">
+<link rel="stylesheet" href="/assets/css/legal-enhancements.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
 .check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.45rem;margin-top:.4rem}
@@ -166,7 +167,167 @@
     </div>
   </div>
 
-  <div class="leg-seo">
+  <!-- LEGAL-WORKFLOW-COPILOT:START -->
+<section class="leg-workflow-copilot" aria-labelledby="legal-workflow-heading">
+  <script type="application/json" class="leg-workflow-data">{"slug":"breach-notification","title":"Breach Notification","workflowTitle":"Incident notice readiness","coverage":"16 core privacy regimes","decision":"Whether the incident is a reportable personal data breach","evidence":["Record discovery time, containment time and decision time separately","Describe affected data categories and groups without speculation","Add immediate, medium-term and long-term remediation steps"],"redFlags":["Waiting for perfect forensic certainty before making a time-sensitive notification","Notifying customers before containment messaging is ready","Blaming a vendor without checking processor contract duties"],"related":[{"label":"DPIA Tool","href":"/tools/dpia-tool/"},{"label":"DPA Generator","href":"/tools/dpa-generator/"},{"label":"Cross-Border Data","href":"/tools/cross-border-data/"}],"competitor":{"group":"privacy","label":"Termly, OneTrust and enterprise consent platforms","patterns":["Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.","They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.","They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding."],"implemented":["This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.","The app-specific checklist is not generic: it starts with \"Record discovery time, containment time and decision time separately\".","Saved workflows can be resumed from the dashboard and handed off to DPIA Tool when the matter naturally continues.","The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report."]}}</script>
+  <div class="leg-workflow-head">
+    <span class="leg-action-kicker">Case workspace</span>
+    <h2 id="legal-workflow-heading">Build, save and export this legal workflow</h2>
+    <p>This workspace turns the incident notice readiness result into a reusable matter note, dashboard item and gated PDF checklist. Use the app first, then save the evidence trail.</p>
+  </div>
+  <div class="leg-workflow-grid">
+    <label class="leg-field"><span class="leg-f-label">Matter or project</span><input class="leg-f-input" data-workflow-field="matter" type="text" placeholder="e.g. Supplier DPA review"></label>
+    <label class="leg-field"><span class="leg-f-label">Country or regime</span><input class="leg-f-input" data-workflow-field="country" type="text" placeholder="e.g. Kenya, NDPA, Lagos"></label>
+    <label class="leg-field"><span class="leg-f-label">Target date</span><input class="leg-f-input" data-workflow-field="date" type="date"></label>
+    <label class="leg-field"><span class="leg-f-label">Status</span><select class="leg-f-select" data-workflow-field="status"><option>Checking evidence</option><option>Ready to verify</option><option>Waiting on official source</option><option>Escalate before action</option></select></label>
+  </div>
+  <div class="leg-workflow-columns">
+    <div>
+      <h3 class="leg-mini-heading">Evidence checked</h3>
+      <div class="leg-workflow-checklist" data-workflow-evidence-list></div>
+    </div>
+    <div>
+      <h3 class="leg-mini-heading">Risk flags</h3>
+      <div class="leg-workflow-checklist warning" data-workflow-risk-list></div>
+    </div>
+  </div>
+  <label class="leg-field full"><span class="leg-f-label">Private notes</span><textarea class="leg-f-textarea" data-workflow-field="note" placeholder="Add facts, missing documents, portal references, lawyer comments, or next actions."></textarea></label>
+  <div class="leg-workflow-summary" data-workflow-summary></div>
+  <div class="leg-workflow-actions">
+    <button type="button" class="leg-copy-btn" data-workflow-build>Build handoff note</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-save>Save to dashboard</button>
+    <button type="button" class="leg-secondary-btn" data-workflow-load>Load saved</button>
+    <a class="leg-secondary-btn" href="/dashboard/">Open dashboard</a>
+  </div>
+  <textarea class="leg-output leg-workflow-output" data-workflow-output readonly></textarea>
+  <form class="leg-pdf-gate" data-workflow-gate novalidate>
+    <div>
+      <span class="leg-action-kicker">PDF gate</span>
+      <h3>Email the checklist and unlock print/PDF</h3>
+      <p>The core tool stays free. The deeper PDF pack captures email only when the user wants a portable report, checklist and dashboard reminder.</p>
+    </div>
+    <label class="leg-field"><span class="leg-f-label">Email</span><input class="leg-f-input" data-workflow-field="email" data-workflow-email type="email" autocomplete="email" placeholder="you@example.com"></label>
+    <label class="leg-workflow-optin"><input type="checkbox" data-workflow-optin checked><span>Send me occasional AfroTools legal checklist updates.</span></label>
+    <div class="leg-workflow-actions compact">
+      <button type="submit" class="leg-copy-btn" data-workflow-pdf-gate>Email checklist + unlock PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-print>Print or save PDF</button>
+      <button type="button" class="leg-secondary-btn" data-workflow-copy>Copy handoff note</button>
+    </div>
+    <div class="leg-gate-status" data-workflow-gate-status></div>
+  </form>
+  <div class="leg-workflow-next">
+    <span>Continue workflow</span>
+    <div><a href="/tools/dpia-tool/">DPIA Tool</a><a href="/tools/dpa-generator/">DPA Generator</a><a href="/tools/cross-border-data/">Cross-Border Data</a></div>
+  </div>
+</section>
+<!-- LEGAL-WORKFLOW-COPILOT:END -->
+<!-- LEGAL-COMPETITOR-CHECK:START -->
+<section class="leg-competitor" aria-labelledby="legal-competitor-heading">
+  <div class="leg-action-kicker">Competitor check - 28 April 2026</div>
+  <div class="leg-competitor-head">
+    <h2 id="legal-competitor-heading">What stronger tools teach this app</h2>
+    <p>Benchmarked against Termly, OneTrust and enterprise consent platforms. The goal is not to copy them; it is to bring the useful workflow pattern into an Africa-first tool with official-source caution and local evidence capture.</p>
+  </div>
+  <div class="leg-competitor-grid">
+    <div>
+      <h3>Observed feature pattern</h3>
+      <ul><li>Mature privacy tools scan or map real processing activity, then connect policies, cookie choices, DSARs, consent logs and regulator evidence.</li><li>They preserve an audit trail instead of leaving users with a static policy that drifts away from the product.</li><li>They route high-risk processing into DPIA, breach and processor-contract workflows before launch or vendor onboarding.</li></ul>
+    </div>
+    <div>
+      <h3>Implemented on this app</h3>
+      <ul><li>This page now asks for matter, country or regime, date, status, evidence and risk flags before the user exports a note.</li><li>The app-specific checklist is not generic: it starts with &quot;Record discovery time, containment time and decision time separately&quot;.</li><li>Saved workflows can be resumed from the dashboard and handed off to DPIA Tool when the matter naturally continues.</li><li>The PDF/export moment is a value-after-result gate, so users can still use the tool first and only share email when saving the report.</li></ul>
+    </div>
+    <div>
+      <h3>Best next move</h3>
+      <ul><li>Whether the incident is a reportable personal data breach</li><li>Record discovery time, containment time and decision time separately</li><li>Waiting for perfect forensic certainty before making a time-sensitive notification</li></ul>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-COMPETITOR-CHECK:END -->
+<!-- LEGAL-DEEP-IMPROVEMENT:START -->
+<section class="leg-upgrade" aria-labelledby="legal-upgrade-heading">
+  <div class="leg-upgrade-kicker">Reviewed 28 April 2026 · 16 core privacy regimes</div>
+  <h2 id="legal-upgrade-heading">Incident notice readiness</h2>
+  <p>Breach notifications are judged by clarity and speed. The useful output is a regulator-ready account of what happened, whose data was affected, what risk exists, what you did, and what people should do now.</p>
+  <div class="leg-upgrade-grid">
+    <div class="leg-upgrade-block">
+      <h3>Decisions this clarifies</h3>
+      <ul><li>Whether the incident is a reportable personal data breach</li><li>Which regulator, data subjects, police, partner, or customer must be notified</li><li>Whether 72-hour reporting, confidentiality, attachments, or follow-up notices apply</li></ul>
+    </div>
+    <div class="leg-upgrade-block">
+      <h3>Before you rely on it</h3>
+      <ul><li>Record discovery time, containment time and decision time separately</li><li>Describe affected data categories and groups without speculation</li><li>Add immediate, medium-term and long-term remediation steps</li></ul>
+    </div>
+    <div class="leg-upgrade-block warning">
+      <h3>Red flags</h3>
+      <ul><li>Waiting for perfect forensic certainty before making a time-sensitive notification</li><li>Notifying customers before containment messaging is ready</li><li>Blaming a vendor without checking processor contract duties</li></ul>
+    </div>
+  </div>
+  <div class="leg-source-row">
+    <div>
+      <span>Primary checks</span>
+      <div class="leg-source-links"><a href="https://www.odpc.go.ke/report-a-data-breach/" target="_blank" rel="noopener">Kenya ODPC breach reporting</a><a href="https://www.ndpc.gov.ng/" target="_blank" rel="noopener">NDPC services</a><a href="https://inforegulator.org.za/" target="_blank" rel="noopener">South Africa Information Regulator</a></div>
+    </div>
+    <div>
+      <span>Next best tools</span>
+      <div class="leg-source-links internal"><a href="/tools/dpia-tool/">DPIA Tool</a><a href="/tools/dpa-generator/">DPA Generator</a><a href="/tools/cross-border-data/">Cross-Border Data</a></div>
+    </div>
+  </div>
+</section>
+<!-- LEGAL-DEEP-IMPROVEMENT:END -->
+<!-- LEGAL-ACTION-PACK:START -->
+<section class="leg-action-pack" aria-labelledby="legal-action-pack-heading">
+  <div class="leg-action-head">
+    <span class="leg-action-kicker">Review pack</span>
+    <h2 id="legal-action-pack-heading">Save the incident notice readiness trail</h2>
+    <p>Before filing, signing, publishing, or sending anything, keep a short record that links the app result to evidence and official-source checks.</p>
+  </div>
+  <div class="leg-action-grid">
+    <div>
+      <h3>Capture</h3>
+      <p>Save the country or regime, parties, dates, amounts, selected options, and final output. Add why this matters: Whether the incident is a reportable personal data breach.</p>
+    </div>
+    <div>
+      <h3>Attach</h3>
+      <p>Record discovery time, containment time and decision time separately. Also keep the strongest supporting document, receipt, portal reference, ID, contract, policy, or court file beside the generated result.</p>
+    </div>
+    <div>
+      <h3>Escalate</h3>
+      <p>If you see this risk, pause and get qualified help: Waiting for perfect forensic certainty before making a time-sensitive notification.</p>
+    </div>
+  </div>
+  <label class="leg-action-copy-label">Copyable review note</label>
+  <textarea class="leg-action-copy-text" readonly>Incident notice readiness action pack
+Tool: breach-notification
+Coverage: 16 core privacy regimes
+
+Result to save:
+- Country or regime selected, parties involved, dates, amounts, and the generated output from the app.
+- The reason this output was prepared: Whether the incident is a reportable personal data breach.
+
+Evidence to attach:
+- Record discovery time, containment time and decision time separately
+- Describe affected data categories and groups without speculation
+- Add immediate, medium-term and long-term remediation steps
+
+Escalate before filing or signing if:
+- Waiting for perfect forensic certainty before making a time-sensitive notification
+- Notifying customers before containment messaging is ready
+- Blaming a vendor without checking processor contract duties
+
+Primary checks:
+- Kenya ODPC breach reporting: https://www.odpc.go.ke/report-a-data-breach/
+- NDPC services: https://www.ndpc.gov.ng/
+- South Africa Information Regulator: https://inforegulator.org.za/
+
+Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal advice.</textarea>
+  <div class="leg-action-copy-row">
+    <button type="button" class="leg-action-copy-btn" data-legal-copy-action>Copy review pack</button>
+    <span>Paste this into your matter file, compliance folder, board pack, or lawyer handoff.</span>
+  </div>
+</section>
+<!-- LEGAL-ACTION-PACK:END -->
+<div class="leg-seo">
     <h2>Data Breach Notification Requirements in Africa</h2>
     <p>When a personal data breach occurs, most African data protection laws require organisations to notify the relevant regulatory authority within a specified timeframe. Nigeria's NDPA 2023 and Kenya's DPA 2019 both specify 72-hour notification timelines matching the EU GDPR. South Africa's POPIA requires notification "as soon as reasonably possible" without specifying a fixed number of hours.</p>
     <p>A regulatory notification must typically include: description of the breach, categories and approximate numbers of affected data subjects, categories of data affected, likely consequences, and measures taken to address the breach.</p>
@@ -276,5 +437,21 @@ function copyLetter(){
 
 function toggleCard(h){var b=h.nextElementSibling;var e=h.getAttribute('aria-expanded')==='true';h.setAttribute('aria-expanded',String(!e));b.classList.toggle('collapsed',e);}
 </script>
+<script id="legal-action-copy-script">
+(function(){
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-legal-copy-action]');
+    if (!button) return;
+    var section = button.closest('.leg-action-pack');
+    var area = section && section.querySelector('.leg-action-copy-text');
+    if (!area) return;
+    var original = button.textContent;
+    var done = function(){ button.textContent = "Copied"; setTimeout(function(){ button.textContent = original; }, 1800); };
+    var fallback = function(){ area.focus(); area.select(); try { document.execCommand("copy"); done(); } catch (err) { button.textContent = "Select text manually"; } };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(area.value).then(done).catch(fallback); } else { fallback(); }
+  });
+}());
+</script>
+<script src="/assets/js/legal-workflow-copilot.js" defer></script>
 </body>
 </html>

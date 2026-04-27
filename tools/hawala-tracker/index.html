@@ -18,7 +18,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 50%,#0063D1 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -45,6 +45,17 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .channel-card .total{margin-top:8px;padding-top:8px;border-top:2px solid #e2e8f0;display:flex;justify-content:space-between;font-size:.88rem;font-weight:800}
 .channel-card .total .val{color:#007AFF}
 .channel-card .speed{display:inline-block;margin-top:6px;padding:3px 8px;border-radius:4px;font-size:.66rem;font-weight:700;background:#e0f2fe;color:#0369a1}
+.decision-card{margin-top:16px;background:#fff;border:1.5px solid #dbeafe;border-radius:10px;overflow:hidden}
+.decision-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;background:#f8fbff;border-bottom:1px solid #dbeafe}
+.decision-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0A1628}
+.decision-copy{border:1.5px solid #bfdbfe;background:#fff;color:#007AFF;border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:800;cursor:pointer}
+.decision-body{padding:16px}
+.decision-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.decision-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:11px;text-align:center}
+.decision-k{font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.decision-v{font-size:.92rem;font-weight:900;color:#007AFF}
+.decision-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.decision-list li{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:9px 11px;font-size:.78rem;color:#1e3a8a;line-height:1.55}
 .sidebar .info-card{background:#E8F2FF;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0A1628;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#0A1628;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
@@ -68,7 +79,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .zfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
 .zfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
 @media(max-width:500px){.zfun{grid-template-columns:1fr}}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.compare-grid,.decision-grid{grid-template-columns:1fr}.decision-copy{width:100%}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Africa Remittance Cost Tracker","description":"Compare remittance costs to and within Africa across formal and informal channels including bank wire, mobile money, fintech, crypto, and hawala.","url":"https://afrotools.com/tools/hawala-tracker/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Africa Remittance Cost Tracker","url":"https://afrotools.com/tools/hawala-tracker/","description":"Compare remittance costs to and within Africa across formal and informal channels including bank wire, mobile money, fintech, crypto, and hawala.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -110,6 +121,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -151,6 +164,22 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </select></div>
 </div>
 <div class="field"><label>Amount to Send (in sending currency)</label><input type="number" id="amount" value="500" min="10" step="50"></div>
+<div class="row field">
+<div><label>Recipient Access</label>
+<select id="recipientAccess">
+<option value="bank">Bank account</option>
+<option value="mobile" selected>Mobile money wallet</option>
+<option value="cash">Cash pickup</option>
+<option value="agent">Trusted agent / informal access</option>
+</select></div>
+<div><label>Urgency</label>
+<select id="urgency">
+<option value="minutes">Minutes</option>
+<option value="today" selected>Today</option>
+<option value="standard">1-3 days is fine</option>
+</select></div>
+</div>
+<div class="field"><label>Repeat Transfers Per Year</label><input type="number" id="repeatTransfers" value="12" min="1" max="52" step="1"></div>
 <button class="btn btn-primary" onclick="compare()">Compare Channels</button>
 </div></div>
 
@@ -158,6 +187,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Cost Comparison</span></div>
 <div class="card-body">
 <div class="compare-grid" id="compareGrid"></div>
+<div id="remitDecision"></div>
 <p style="font-size:.72rem;color:#94a3b8;margin-top:14px">* Estimates based on typical 2026 rates. Actual costs vary by provider, amount, payment method, and exchange rate at time of transfer. FX margin = difference between mid-market rate and offered rate. Always check exact costs before sending.</p>
 <div id="funZone" style="display:none">
   <div class="zfun" id="funCards"></div>
@@ -248,11 +278,15 @@ const CORRIDOR_ADJ={
   'ae-ng':1.1,'ae-ke':1.05,'ng-ke':1.3,'ng-gh':1.25,'za-ng':1.2,'ke-ug':1.1,
   'ke-tz':1.15,'us-et':1.1,'us-sn':1.15,'eu-sn':0.95,'eu-ng':0.95,'ca-ng':1.0
 };
+let lastRemittanceBrief='';
 
 function compare(){
   const from=document.getElementById('from').value;
   const to=document.getElementById('to').value;
   const amount=+document.getElementById('amount').value;
+  const access=document.getElementById('recipientAccess').value;
+  const urgency=document.getElementById('urgency').value;
+  const repeats=Math.max(1,+document.getElementById('repeatTransfers').value||1);
   const corridor=from+'-'+to;
   const adj=CORRIDOR_ADJ[corridor]||1.0;
 
@@ -284,6 +318,7 @@ function compare(){
   });
 
   document.getElementById('compareGrid').innerHTML=html;
+  renderRemittanceDecision(results,{from,to,amount,cur,access,urgency,repeats});
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 
@@ -310,6 +345,67 @@ function compare(){
     funZone.style.display='none';
   }
 }
+
+function renderRemittanceDecision(results,ctx){
+  const target=document.getElementById('remitDecision');
+  if(!target||!results.length)return;
+  const cheapest=results[0];
+  const speedScore={ 'Minutes-1 day':2, 'Minutes (cash)':1, '10-30 min':1, 'Instant-1hr':1, 'Same day':2, '2-5 days':5 };
+  const fastest=results.slice().sort((a,b)=>(speedScore[a.speed]||4)-(speedScore[b.speed]||4))[0];
+  const accessLabels={bank:'bank account',mobile:'mobile money wallet',cash:'cash pickup',agent:'trusted agent or informal access'};
+  const urgencyLabels={minutes:'must arrive in minutes',today:'must arrive today',standard:'can arrive in 1-3 days'};
+  let fit=cheapest.name;
+  if(ctx.access==='mobile') fit='Mobile Money or fintech app';
+  if(ctx.access==='bank') fit='Fintech bank deposit';
+  if(ctx.access==='cash') fit='Cash pickup provider';
+  if(ctx.access==='agent') fit='Only use regulated or trusted channels where legal';
+  const annualSavings=(results[results.length-1].totalCost-cheapest.totalCost)*ctx.repeats;
+  let risk='Low';
+  if(ctx.access==='cash'||ctx.urgency==='minutes')risk='Medium';
+  if(ctx.access==='agent')risk='High documentation risk';
+  const actions=[
+    'Check both fee and FX margin on the final quote screen before sending.',
+    'Best estimated cost: '+cheapest.name+' at '+ctx.cur+cheapest.totalCost.toFixed(2)+' on this transfer.',
+    'Best access fit for '+accessLabels[ctx.access]+': '+fit+'.',
+    'Fastest estimated route: '+fastest.name+' ('+fastest.speed+').',
+    'If using any informal agent, confirm local legality, agent identity, settlement code, recipient name, and pickup time in writing.',
+    'At '+ctx.repeats+' transfers per year, choosing the cheapest selected option could save about '+ctx.cur+annualSavings.toFixed(2)+' versus the priciest option.'
+  ];
+  lastRemittanceBrief=[
+    'Remittance decision brief',
+    'Corridor: '+ctx.from.toUpperCase()+' to '+ctx.to.toUpperCase()+' | Amount: '+ctx.cur+ctx.amount+' | Urgency: '+urgencyLabels[ctx.urgency],
+    'Cheapest estimate: '+cheapest.name+' at '+ctx.cur+cheapest.totalCost.toFixed(2)+' ('+cheapest.totalPct.toFixed(1)+'%).',
+    'Risk note: '+risk+'.',
+    actions.join(' ')
+  ].join('\n');
+  target.innerHTML='<div class="decision-card"><div class="decision-head"><div class="decision-title">Transfer decision brief</div><button type="button" class="decision-copy" onclick="copyRemittanceBrief(this)">Copy brief</button></div><div class="decision-body"><div class="decision-grid">'+
+    '<div class="decision-metric"><div class="decision-k">Cheapest</div><div class="decision-v">'+escapeHtml(cheapest.name)+'</div></div>'+
+    '<div class="decision-metric"><div class="decision-k">Fastest</div><div class="decision-v">'+escapeHtml(fastest.name)+'</div></div>'+
+    '<div class="decision-metric"><div class="decision-k">Risk</div><div class="decision-v">'+escapeHtml(risk)+'</div></div>'+
+    '</div><ul class="decision-list">'+actions.slice(0,6).map(a=>'<li>'+escapeHtml(a)+'</li>').join('')+'</ul></div></div>';
+}
+
+function copyRemittanceBrief(btn){
+  if(!lastRemittanceBrief)return;
+  const done=()=>{if(btn){const old=btn.textContent;btn.textContent='Copied';setTimeout(()=>{btn.textContent=old;},1300);}};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(lastRemittanceBrief).then(done).catch(()=>fallbackCopyRemittanceBrief(done));
+  }else fallbackCopyRemittanceBrief(done);
+}
+
+function fallbackCopyRemittanceBrief(done){
+  const area=document.createElement('textarea');
+  area.value=lastRemittanceBrief;
+  area.setAttribute('readonly','');
+  area.style.position='fixed';
+  area.style.left='-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try{document.execCommand('copy');done();}catch(e){}
+  document.body.removeChild(area);
+}
+
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

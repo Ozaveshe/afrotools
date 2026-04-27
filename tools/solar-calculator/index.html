@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Solar Panel Calculator – AfroTools</title>
+<title>Solar Panel Calculator - AfroTools</title>
 <meta name="description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
@@ -12,7 +12,7 @@
 <link rel="icon" href="/assets/img/favicon.ico">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -115,6 +115,16 @@ select.field-input{cursor:pointer;}
 /* ── INFO BOX ── */
 .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;font-size:.8rem;color:#1e40af;line-height:1.6;margin-top:16px;}
 .info-box strong{font-weight:700;}
+.solar-source-card{background:#f8fafc;border:1px solid #dbe4f0;border-radius:8px;padding:16px;margin-top:20px;color:#334155;font-size:.86rem;line-height:1.6;}
+.solar-source-card strong{display:block;color:#0f172a;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+.solar-source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.solar-source-links a{border:1px solid #cbd5e1;border-radius:999px;color:#0f5cc0;font-size:.78rem;font-weight:800;padding:7px 10px;text-decoration:none;}
+.solar-source-links a:hover{background:#eef5ff;border-color:#9ec5ff;}
+.site-qa-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+@media(max-width:680px){.site-qa-grid{grid-template-columns:1fr;}}
+.site-qa-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:13px;}
+.site-qa-card strong{display:block;color:#0f172a;font-size:.82rem;margin-bottom:5px;}
+.site-qa-card span{color:#475569;font-size:.8rem;line-height:1.5;}
 
 /* AI Advisor sidebar */
 .ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
@@ -151,7 +161,7 @@ select.field-input{cursor:pointer;}
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Solar Panel Calculator – AfroTools">
+<meta name="twitter:title" content="Solar Panel Calculator - AfroTools">
 <meta name="twitter:description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 
@@ -163,6 +173,7 @@ select.field-input{cursor:pointer;}
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta property="og:url" content="https://afrotools.com/tools/solar-calculator/">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=20260427">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -172,7 +183,7 @@ select.field-input{cursor:pointer;}
   <div class="solar-hero">
     <div class="solar-hero-badge">☀️ Solar Calculator</div>
     <h1>Solar System Sizer<br>for Africa</h1>
-    <p>Country-specific irradiance data. Size your panels, batteries, inverter, and cable — and see your ROI vs running a generator.</p>
+    <p>Country-specific irradiance data. Size your panels, batteries, inverter, and cable - and see your ROI vs running a generator.</p>
     <div class="solar-hero-tags">
       <span>🌍 33 African Countries</span>
       <span>🔋 Battery Bank Sizing</span>
@@ -241,6 +252,42 @@ select.field-input{cursor:pointer;}
             <input type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
           </div>
         </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Panel Direction <span class="hint">roof layout</span></div>
+            <select class="field-input" id="orientationFactor">
+              <option value="1" selected>Best facing roof</option>
+              <option value="0.93">Flat roof or mixed tilt</option>
+              <option value="0.9">East-west split roof</option>
+              <option value="0.78">Poor direction</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Shade Loss <span class="hint">trees, walls, tanks</span></div>
+            <select class="field-input" id="shadeLoss">
+              <option value="0" selected>No shade</option>
+              <option value="5">Light shade, 5%</option>
+              <option value="10">Some shade, 10%</option>
+              <option value="20">Heavy shade, 20%</option>
+              <option value="35">Very heavy shade, 35%</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Dust / Soiling <span class="hint">monthly cleaning</span></div>
+            <select class="field-input" id="soilingLoss">
+              <option value="3">Clean coastal or rainy area, 3%</option>
+              <option value="7" selected>Typical city dust, 7%</option>
+              <option value="12">Dusty dry season, 12%</option>
+              <option value="18">Construction or Harmattan dust, 18%</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Usable Roof Area <span class="hint">optional m2</span></div>
+            <input type="number" class="field-input" id="roofArea" placeholder="e.g. 45" min="0" step="1">
+          </div>
+        </div>
         <div class="field-group">
           <div class="field-label">Generator (Comparison) <span class="hint">monthly fuel cost</span></div>
           <div style="display:flex;gap:10px;align-items:center;">
@@ -306,28 +353,36 @@ select.field-input{cursor:pointer;}
     <!-- Result Cards -->
     <div class="result-grid">
       <div class="result-card highlight">
-        <div class="val" id="rPanels">—</div>
+        <div class="val" id="rPanels">-</div>
         <div class="lbl">Solar Panels</div>
       </div>
       <div class="result-card highlight">
-        <div class="val" id="rBatteries">—</div>
+        <div class="val" id="rBatteries">-</div>
         <div class="lbl">Batteries</div>
       </div>
       <div class="result-card highlight">
-        <div class="val" id="rInverter">—</div>
+        <div class="val" id="rInverter">-</div>
         <div class="lbl">Inverter Size</div>
       </div>
       <div class="result-card blue">
-        <div class="val" id="rPanelKW">— <span>kWp</span></div>
+        <div class="val" id="rPanelKW">- <span>kWp</span></div>
         <div class="lbl">Panel Array</div>
       </div>
       <div class="result-card blue">
-        <div class="val" id="rBattKWh">— <span>kWh</span></div>
+        <div class="val" id="rBattKWh">- <span>kWh</span></div>
         <div class="lbl">Battery Bank</div>
       </div>
       <div class="result-card green" id="rSavingsCard">
-        <div class="val" id="rMonthlySave">—</div>
+        <div class="val" id="rMonthlySave">-</div>
         <div class="lbl">Monthly Savings vs Gen</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rEffSun">-- <span>h</span></div>
+        <div class="lbl">Effective Sun</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rRoofArea">-- <span>m2</span></div>
+        <div class="lbl">Roof Area Needed</div>
       </div>
     </div>
 
@@ -336,31 +391,31 @@ select.field-input{cursor:pointer;}
       <div class="sys-block">
         <div class="sys-icon">☀️</div>
         <div class="sys-label">Panels</div>
-        <div class="sys-spec" id="diagPanels">— × —W</div>
+        <div class="sys-spec" id="diagPanels">- × -W</div>
       </div>
       <div class="sys-arrow">→</div>
       <div class="sys-block">
         <div class="sys-icon">🔄</div>
         <div class="sys-label">Charge Controller</div>
-        <div class="sys-spec" id="diagMPPT">— MPPT</div>
+        <div class="sys-spec" id="diagMPPT">- MPPT</div>
       </div>
       <div class="sys-arrow">→</div>
       <div class="sys-block">
         <div class="sys-icon">🔋</div>
         <div class="sys-label">Battery Bank</div>
-        <div class="sys-spec" id="diagBatt">— kWh</div>
+        <div class="sys-spec" id="diagBatt">- kWh</div>
       </div>
       <div class="sys-arrow">→</div>
       <div class="sys-block">
         <div class="sys-icon">⚡</div>
         <div class="sys-label">Inverter</div>
-        <div class="sys-spec" id="diagInv">— kVA</div>
+        <div class="sys-spec" id="diagInv">- kVA</div>
       </div>
       <div class="sys-arrow">→</div>
       <div class="sys-block">
         <div class="sys-icon">🏠</div>
         <div class="sys-label">Loads</div>
-        <div class="sys-spec" id="diagLoad">— kWh/d</div>
+        <div class="sys-spec" id="diagLoad">- kWh/d</div>
       </div>
     </div>
 
@@ -370,6 +425,7 @@ select.field-input{cursor:pointer;}
         <button class="result-tab active" onclick="showTab('roi')">💰 ROI vs Generator</button>
         <button class="result-tab" onclick="showTab('specs')">🔧 Specifications</button>
         <button class="result-tab" onclick="showTab('tips')">💡 Tips</button>
+        <button class="result-tab" onclick="showTab('site')">Site QA</button>
       </div>
 
       <!-- ROI Tab -->
@@ -406,6 +462,21 @@ select.field-input{cursor:pointer;}
       <div class="tab-pane" id="tab-tips">
         <div id="tipsContent"></div>
       </div>
+
+      <!-- Site QA Tab -->
+      <div class="tab-pane" id="tab-site">
+        <div id="siteQaContent" class="site-qa-grid"></div>
+      </div>
+    </div>
+
+    <div class="solar-source-card">
+      <strong>Method notes</strong>
+      This planner now exposes PVWatts-style assumptions for losses, panel direction, dust and roof area. Use it for early sizing, then confirm roof shade, structure, wiring, protection and utility rules with a certified installer.
+      <div class="solar-source-links">
+        <a href="https://developer.nrel.gov/docs/solar/pvwatts/v8/" target="_blank" rel="noopener">PVWatts V8 inputs</a>
+        <a href="https://pvwatts.nrel.gov/" target="_blank" rel="noopener">PVWatts calculator</a>
+        <a href="https://www.energy.gov/energysaver/planning-home-solar-electric-system" target="_blank" rel="noopener">DOE solar planning</a>
+      </div>
     </div>
   </div>
 </div>
@@ -419,7 +490,7 @@ select.field-input{cursor:pointer;}
       <span class="ai-by">Powered by Claude</span>
     </div>
     <div class="ai-advisor-body">
-      <div class="ai-status" id="aiStatus">Ask me anything about this tool &mdash; I can help explain results, suggest strategies, and answer questions.</div>
+      <div class="ai-status" id="aiStatus">Ask me anything about this tool - I can help explain results, suggest strategies, and answer questions.</div>
       <div class="ai-chat" id="aiChat">
         <div class="ai-msgs" id="aiMsgs"></div>
         <div class="ai-input-row">
@@ -487,7 +558,56 @@ const BATT_DOD = {lead:0.5,gel:0.55,lifepo4:0.8};
 const BATT_EFF = {lead:0.85,gel:0.87,lifepo4:0.97};
 const BATT_CYCLES = {lead:500,gel:700,lifepo4:3500};
 // Typical 100Ah 12V battery
-const BATT_UNIT_WH = 1200; // 100Ah × 12V = 1200 Wh
+const BATT_UNIT_WH = 1200; // 100Ah x 12V = 1200 Wh
+const BASE_SYSTEM_FACTOR = 0.82; // wiring, inverter, controller and heat allowance
+
+function numVal(id, fallback){
+  const el = document.getElementById(id);
+  const val = el ? parseFloat(el.value) : NaN;
+  return Number.isFinite(val) ? val : fallback;
+}
+
+function textForSelect(id){
+  const el = document.getElementById(id);
+  return el && el.selectedOptions && el.selectedOptions[0] ? el.selectedOptions[0].textContent : '';
+}
+
+function panelAreaM2(panelW){
+  if(panelW >= 520) return 2.6;
+  if(panelW >= 430) return 2.25;
+  if(panelW >= 380) return 2.05;
+  if(panelW >= 300) return 1.75;
+  return 1.55;
+}
+
+function getSiteProfile(psh, panelW, panelCount){
+  const orientation = Math.max(0.5, numVal('orientationFactor', 1));
+  const shade = Math.min(0.6, Math.max(0, numVal('shadeLoss', 0) / 100));
+  const soiling = Math.min(0.4, Math.max(0, numVal('soilingLoss', 7) / 100));
+  const performanceFactor = Math.max(0.35, BASE_SYSTEM_FACTOR * orientation * (1 - shade) * (1 - soiling));
+  const roofNeeded = panelCount ? panelCount * panelAreaM2(panelW) * 1.15 : 0;
+  const roofAvailable = numVal('roofArea', 0);
+  return {
+    orientation,
+    orientationLabel: textForSelect('orientationFactor'),
+    shadePct: Math.round(shade * 100),
+    soilingPct: Math.round(soiling * 100),
+    totalLossPct: Math.round((1 - performanceFactor) * 100),
+    performanceFactor,
+    effectivePsh: psh * performanceFactor,
+    roofNeeded,
+    roofAvailable,
+    roofOk: !roofAvailable || roofAvailable >= roofNeeded
+  };
+}
+
+function setBatteryMode(){
+  const onGrid = document.getElementById('systemType') && document.getElementById('systemType').value === 'ongrid';
+  ['battType','backupDays'].forEach(function(id){
+    const el = document.getElementById(id);
+    if(el) el.disabled = onGrid;
+  });
+}
 
 // Default appliances
 const DEFAULT_APPLIANCES = [
@@ -561,6 +681,8 @@ let appliances = JSON.parse(JSON.stringify(DEFAULT_APPLIANCES));
   });
   // Currency sync
   document.getElementById('currency').value = selectedCountry.curr;
+  document.getElementById('systemType').addEventListener('change', setBatteryMode);
+  setBatteryMode();
   showIrradiance(selectedCountry);
   renderAppliances();
   updateTotals();
@@ -595,7 +717,7 @@ function showIrradiance(c){
   let quality = c.psh >= 6 ? '☀️☀️ Exceptional' : c.psh >= 5.5 ? '☀️ Very Good' : c.psh >= 5 ? '☀️ Good' : '⛅ Moderate';
   const tilt = Math.min(35, Math.abs(c.lat || 5) + 10);
   const facing = (c.lat || 0) < 0 ? 'north-facing' : 'south-facing';
-  val.textContent = `${c.name}: ${c.psh} PSH/day — ${quality} · Tilt panels ${tilt}° ${facing}`;
+  val.textContent = `${c.name}: ${c.psh} PSH/day - ${quality} · Tilt panels ${tilt}° ${facing}`;
   badge.style.display = 'inline-flex';
 }
 
@@ -658,22 +780,25 @@ function calculate(){
   const curr = document.getElementById('currency').value;
   const currSym = [...document.getElementById('currency').options].find(o=>o.value===curr)?.text.split(' ')[1] || '';
   const systemType = document.getElementById('systemType').value;
+  const needsBattery = systemType !== 'ongrid';
 
-  // Add 25% system loss factor (wiring, inverter, temp)
-  const adjustedWh = totalWh / 0.75;
+  // Build a PVWatts-style derating profile from site inputs.
+  const firstPassSite = getSiteProfile(psh, panelW, 0);
 
   // ── PANELS ──
-  // Panel kWp needed = Daily Wh needed / (PSH × (1 - system losses))
-  const panelKW = adjustedWh / (psh * 1000);
+  // Panel kWp needed = daily Wh needed / derated peak sun hours.
+  const panelKW = totalWh / (firstPassSite.effectivePsh * 1000);
   const numPanels = Math.ceil(panelKW * 1000 / panelW);
   const actualKWp = (numPanels * panelW) / 1000;
+  const siteProfile = getSiteProfile(psh, panelW, numPanels);
+  const adjustedWh = totalWh / siteProfile.performanceFactor;
 
   // ── BATTERIES ──
   const dod = BATT_DOD[battType];
   const eff = BATT_EFF[battType];
   // kWh needed in battery bank
-  const battKWhNeeded = (adjustedWh / 1000) * backupDays / (dod * eff);
-  const numBatteries = Math.ceil(battKWhNeeded * 1000 / BATT_UNIT_WH);
+  const battKWhNeeded = needsBattery ? (adjustedWh / 1000) * backupDays / (dod * eff) : 0;
+  const numBatteries = needsBattery ? Math.ceil(battKWhNeeded * 1000 / BATT_UNIT_WH) : 0;
   const actualBattKWh = (numBatteries * BATT_UNIT_WH) / 1000;
 
   // ── INVERTER ──
@@ -709,6 +834,8 @@ function calculate(){
   document.getElementById('rInverter').textContent = invKVA + ' kVA';
   document.getElementById('rPanelKW').innerHTML = actualKWp.toFixed(1) + ' <span>kWp</span>';
   document.getElementById('rBattKWh').innerHTML = actualBattKWh.toFixed(1) + ' <span>kWh</span>';
+  document.getElementById('rEffSun').innerHTML = siteProfile.effectivePsh.toFixed(1) + ' <span>h</span>';
+  document.getElementById('rRoofArea').innerHTML = Math.ceil(siteProfile.roofNeeded) + ' <span>m2</span>';
 
   // Savings
   if(monthlyGenCost > 0){
@@ -723,7 +850,7 @@ function calculate(){
   // Diagram
   document.getElementById('diagPanels').textContent = numPanels + ' × ' + panelW + 'W';
   document.getElementById('diagMPPT').textContent = mpptA + 'A MPPT';
-  document.getElementById('diagBatt').textContent = actualBattKWh.toFixed(1) + ' kWh';
+  document.getElementById('diagBatt').textContent = needsBattery ? actualBattKWh.toFixed(1) + ' kWh' : 'Grid-tie only';
   document.getElementById('diagInv').textContent = invKVA + ' kVA';
   document.getElementById('diagLoad').textContent = (totalWh/1000).toFixed(1) + ' kWh/d';
 
@@ -731,10 +858,11 @@ function calculate(){
   buildROITable(sysLocalCost, annualGenCost, curr, currSym, degradation, rate);
 
   // Specs
-  buildSpecs(numPanels, panelW, actualKWp, numBatteries, battType, actualBattKWh, invKVA, mpptA);
+  buildSpecs(numPanels, panelW, actualKWp, numBatteries, battType, actualBattKWh, invKVA, mpptA, siteProfile, systemType);
 
   // Tips
-  buildTips(selectedCountry, systemType, battType, numPanels, invKVA);
+  buildTips(selectedCountry, systemType, battType, numPanels, invKVA, siteProfile);
+  buildSiteQA(siteProfile, systemType, totalWh, peakW);
 
   document.getElementById('resultsSection').style.display = 'block';
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
@@ -790,13 +918,15 @@ function buildROITable(sysCost, annualGen, curr, sym, degradation, rate){
   }
 }
 
-function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA){
+function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA, site, sysType){
   const battNames = {lead:'Lead-Acid FLA (100Ah/12V)',gel:'Gel VRLA (100Ah/12V)',lifepo4:'LiFePO4 Lithium (100Ah/12V)'};
   const invRecs = invKVA <= 2 ? 'Victron Phoenix / Axpert 2kVA' : invKVA <= 5 ? 'Victron MultiPlus / Axpert 5kVA' : 'Victron Quattro / Deye 8kVA';
   const specs = [
     ['Solar Panels', `${nPanels} × ${pW}W = ${kWp.toFixed(1)} kWp`, pW>=400?'Mono PERC or Half-Cut preferred':'Mono PERC recommended'],
-    ['Battery Bank', `${nBatt} × ${battNames[bType]}`, bType==='lifepo4'?'Best ROI long-term (3,500+ cycles)':'Consider upgrading to LiFePO4'],
-    ['Battery Total', `${bKWh.toFixed(1)} kWh usable`, 'Wire batteries in series/parallel for 24V or 48V bank'],
+    ['Effective Sun', `${site.effectivePsh.toFixed(1)} peak sun hours after losses`, `${site.totalLossPct}% combined loss from wiring, heat, direction, shade and dust`],
+    ['Roof Area', `${Math.ceil(site.roofNeeded)} m2 recommended`, site.roofOk ? 'Entered roof area is enough or was left blank' : `Needs about ${Math.ceil(site.roofNeeded - site.roofAvailable)} m2 more usable roof`],
+    ['Battery Bank', sysType==='ongrid' ? 'No battery bank for grid-tied mode' : `${nBatt} × ${battNames[bType]}`, sysType==='ongrid' ? 'Add batteries only if backup is required' : (bType==='lifepo4'?'Best ROI long-term (3,500+ cycles)':'Consider upgrading to LiFePO4')],
+    ['Battery Total', `${bKWh.toFixed(1)} kWh usable`, sysType==='ongrid' ? 'Grid-tied systems rely on grid export or self-consumption' : 'Wire batteries in series/parallel for 24V or 48V bank'],
     ['Inverter/Charger', `${invKVA} kVA`, invRecs],
     ['MPPT Controller', `${mpptA}A`, 'Victron SmartSolar or EPever MPPT'],
     ['DC Cable (Panels→MPPT)', `Panels in series → MPPT input`, '6mm² or 10mm² DC solar cable (TÜV certified)'],
@@ -813,19 +943,21 @@ function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA){
   });
 }
 
-function buildTips(country, sysType, battType, nPanels, invKVA){
+function buildTips(country, sysType, battType, nPanels, invKVA, site){
   const tips = [
-    `<strong>☀️ ${country.name} Solar Tips:</strong> With ${country.psh} peak sun hours/day, ${country.name} has excellent solar potential. Dry season produces more energy — plan your battery bank for the rainy season.`,
-    `<strong>🔋 Battery Tip:</strong> ${battType==='lifepo4'?'LiFePO4 is the right choice — 3,500+ cycles means 10-year life with proper care. Charge to 90% daily max, not 100%.':'Consider upgrading to LiFePO4 lithium batteries when budget allows. They last 5–7× longer than lead-acid.'}`,
-    `<strong>⚡ Inverter Sizing:</strong> Your ${invKVA}kVA inverter handles normal loads. Avoid running high-surge devices (AC units, water pumps, welders) simultaneously. Motor loads have 3–6× surge current at startup.`,
-    `<strong>🌡️ Heat Management:</strong> Solar panels lose efficiency above 25°C. In tropical African climates, derate by 15–20%. Ensure 10–15cm air gap below panels for cooling.`,
+    `<strong>☀️ ${country.name} Solar Tips:</strong> With ${country.psh} peak sun hours/day, ${country.name} has excellent solar potential. Dry season produces more energy - plan your battery bank for the rainy season.`,
+    `<strong>Site Losses:</strong> This run uses ${site.totalLossPct}% combined loss and ${site.effectivePsh.toFixed(1)} effective sun hours/day. Reduce shade and dust before buying extra panels.`,
+    `<strong>Roof Check:</strong> Plan about ${Math.ceil(site.roofNeeded)} m2 of usable roof for ${nPanels} panels. ${site.roofOk ? 'Your roof area input does not show a space problem.' : 'Your entered roof area is too small for this array.'}`,
+    `<strong>🔋 Battery Tip:</strong> ${battType==='lifepo4'?'LiFePO4 is the right choice - 3,500+ cycles means 10-year life with proper care. Charge to 90% daily max, not 100%.':'Consider upgrading to LiFePO4 lithium batteries when budget allows. They last 5-7× longer than lead-acid.'}`,
+    `<strong>⚡ Inverter Sizing:</strong> Your ${invKVA}kVA inverter handles normal loads. Avoid running high-surge devices (AC units, water pumps, welders) simultaneously. Motor loads have 3-6× surge current at startup.`,
+    `<strong>🌡️ Heat Management:</strong> Solar panels lose efficiency above 25°C. In tropical African climates, derate by 15-20%. Ensure 10-15cm air gap below panels for cooling.`,
     `<strong>🔧 Maintenance Schedule:</strong> Clean panels monthly with a soft cloth and water. Check cable connections quarterly. Test battery voltage monthly. Professional inspection annually.`,
-    `<strong>📋 Installation Note:</strong> Use a certified solar installer — improper wiring is a fire risk. In Nigeria (NEMSA), Kenya (ERC), Ghana (ECG) — always get a certified system inspection.`,
+    `<strong>📋 Installation Note:</strong> Use a certified solar installer - improper wiring is a fire risk. In Nigeria (NEMSA), Kenya (ERC), Ghana (ECG) - always get a certified system inspection.`,
   ];
 
   const sysNotes = {
-    offgrid: `<strong>🏠 Off-Grid Mode:</strong> You are fully independent from the utility grid. Size your battery bank generously — ${Math.round(+document.getElementById('backupDays').value)} days of autonomy during cloudy periods.`,
-    hybrid: `<strong>🔌 Hybrid Mode:</strong> Your solar charges batteries first, uses grid as backup. This is ideal for most African cities — you get solar savings while maintaining grid reliability.`,
+    offgrid: `<strong>🏠 Off-Grid Mode:</strong> You are fully independent from the utility grid. Size your battery bank generously - ${Math.round(+document.getElementById('backupDays').value)} days of autonomy during cloudy periods.`,
+    hybrid: `<strong>🔌 Hybrid Mode:</strong> Your solar charges batteries first, uses grid as backup. This is ideal for most African cities - you get solar savings while maintaining grid reliability.`,
     ongrid: `<strong>🔄 On-Grid (Grid-Tied):</strong> No battery needed. Feed excess power back to the grid if your utility allows net metering. Check with your DISCO/utility about connection requirements.`,
   };
   tips.push(sysNotes[sysType]);
@@ -834,9 +966,24 @@ function buildTips(country, sysType, battType, nPanels, invKVA){
 }
 
 // ── TABS ──
+function buildSiteQA(site, sysType, totalWh, peakW){
+  const cards = [
+    ['PVWatts-style derate', `${site.totalLossPct}% total loss. Direction: ${site.orientationLabel || 'Best facing roof'}, shade: ${site.shadePct}%, dust: ${site.soilingPct}%.`],
+    ['Load discipline', `${(totalWh/1000).toFixed(1)} kWh/day and ${formatNum(peakW)} W peak. Move irons, kettles, welders and pumps to grid or generator unless the inverter is sized for surge.`],
+    ['Roof fit', site.roofAvailable ? `${Math.ceil(site.roofAvailable)} m2 entered, ${Math.ceil(site.roofNeeded)} m2 needed. ${site.roofOk ? 'Space looks workable.' : 'Reduce loads, use higher watt panels or split the array.'}` : `Enter usable roof area to catch space problems before quoting. Estimate now: ${Math.ceil(site.roofNeeded)} m2.`],
+    ['System mode', sysType === 'ongrid' ? 'Grid-tied mode skips batteries. Confirm net metering, anti-islanding protection and utility approval.' : 'Backup mode includes batteries. Confirm ventilation, cable protection, fuses and safe battery location.'],
+    ['Installer handoff', 'Ask for string layout, isolators, earthing, breaker schedule, battery datasheet, inverter surge rating and warranty terms.']
+  ];
+  const target = document.getElementById('siteQaContent');
+  if(!target) return;
+  target.innerHTML = cards.map(function(card){
+    return `<div class="site-qa-card"><strong>${card[0]}</strong><span>${card[1]}</span></div>`;
+  }).join('');
+}
+
 function showTab(id){
   document.querySelectorAll('.result-tab').forEach((t,i) => {
-    const panes = ['roi','specs','tips'];
+    const panes = ['roi','specs','tips','site'];
     t.classList.toggle('active', panes[i]===id);
   });
   document.querySelectorAll('.tab-pane').forEach(p => {
@@ -849,7 +996,7 @@ function formatNum(n){ return n.toLocaleString('en'); }
 </script>
 
 <script>
-// Save/Share buttons — manual placement needed
+// Save/Share buttons - manual placement needed
 (function(){
   var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
@@ -889,5 +1036,6 @@ async function sendAI(){
 }
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+  <script src="/assets/js/engineering-toolkit.js?v=20260427" defer></script>
 </body>
 </html>

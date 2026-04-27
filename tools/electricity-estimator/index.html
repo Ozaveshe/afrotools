@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <meta name="tool-id" content="electricity-estimator">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
@@ -112,6 +112,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
 .eb-calc-btn{width:100%;padding:14px;background:var(--eb-blue);color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:14px;transition:background .15s}
 .eb-calc-btn:hover{background:var(--eb-blue-dark)}
 
+/* Reliability planner */
+.eb-reliability{background:#f8fbff;border:1px solid var(--eb-border);border-radius:12px;padding:14px;margin-top:14px}
+.eb-reliability-title{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--eb-blue);margin-bottom:10px}
+.eb-reliability-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:680px){.eb-reliability-grid{grid-template-columns:1fr}}
+
 /* Results */
 .eb-result{display:none;margin-top:18px}
 .eb-result.show{display:block}
@@ -146,6 +152,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
 .eb-compare-card.gen .eb-compare-val{color:#dc2626}
 .eb-compare-desc{font-size:.72rem;color:#78716c;margin-top:4px;line-height:1.5}
 
+.eb-resilience{margin-top:14px;border:1.5px solid var(--eb-border);border-radius:12px;background:#fff;overflow:hidden}
+.eb-resilience-head{padding:14px 16px;background:#f5f9ff;border-bottom:1px solid var(--eb-border);display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.eb-resilience-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--eb-dark)}
+.eb-copy{border:1.5px solid var(--eb-border);background:#fff;color:var(--eb-blue);border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:800;cursor:pointer}
+.eb-resilience-body{padding:16px}
+.eb-resilience-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.eb-res-card{background:#f8fbff;border:1px solid #dbeafe;border-radius:10px;padding:11px}
+.eb-res-k{font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--eb-muted);margin-bottom:4px}
+.eb-res-v{font-size:.95rem;font-weight:900;color:var(--eb-dark)}
+.eb-res-note{font-size:.72rem;color:#475569;line-height:1.5;margin-top:4px}
+.eb-action-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.eb-action-list li{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:9px 11px;font-size:.78rem;color:#1e3a8a;line-height:1.5}
+@media(max-width:840px){.eb-resilience-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.eb-resilience-grid{grid-template-columns:1fr}.eb-copy{width:100%}}
+
 /* Solar Slider */
 .eb-solar-slider-wrap{margin-top:10px;padding:12px;background:#fffdf5;border:1px solid #fde68a;border-radius:8px}
 .eb-solar-range{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:#fde68a;outline:none;cursor:pointer}
@@ -177,6 +198,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -240,6 +263,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
       <!-- Added Appliances -->
       <div class="eb-app-list" id="appList" style="margin-top:12px"></div>
 
+      <div class="eb-reliability" aria-label="Outage and token planner">
+        <div class="eb-reliability-title">Outage and prepaid planner</div>
+        <div class="eb-reliability-grid">
+          <div class="eb-field" style="margin-bottom:0">
+            <label class="eb-label">Outage Hours / Day</label>
+            <input type="number" class="eb-input" id="outageHours" min="0" max="24" step="0.5" value="4">
+          </div>
+          <div class="eb-field" style="margin-bottom:0">
+            <label class="eb-label">Token / Bill Budget</label>
+            <input type="number" class="eb-input" id="tokenBudget" min="0" placeholder="Optional">
+          </div>
+          <div class="eb-field" style="margin-bottom:0">
+            <label class="eb-label">Backup Mode</label>
+            <select class="eb-select" id="backupMode">
+              <option value="essential">Lights, router, fan</option>
+              <option value="cold">Fridge and freezer safe</option>
+              <option value="work">Work from home</option>
+              <option value="whole">Whole listed load</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <button class="eb-calc-btn" onclick="calculate()">⚡ Calculate Bill</button>
 
       <!-- Results -->
@@ -280,6 +326,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--eb-bg);color:var(--eb-tex
             <div class="eb-compare-desc" id="genDesc"></div>
           </div>
         </div>
+        <div class="eb-resilience" id="resiliencePlan"></div>
       </div>
     </div>
   </div>
@@ -435,6 +482,7 @@ var selectedCountry = 'ng';
 var selectedCat = 'all';
 var userApps = [];
 var lastResult = null;
+var lastEnergyPlanText = '';
 
 /* ═══════ INIT ═══════ */
 function init() {
@@ -651,6 +699,7 @@ function calculate() {
 
   // Solar
   updateSolar();
+  renderResiliencePlan(monthlyKwh, dailyKwh, monthlyCost, genCost, genLitres, breakdown);
 
   document.getElementById('resultSection').classList.add('show');
   document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -670,6 +719,110 @@ function updateSolar() {
   var fmt = function(n) { return c.symbol + n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }); };
   document.getElementById('solarSave').textContent = fmt(savings) + '/mo';
   document.getElementById('solarDesc').textContent = systemKw.toFixed(1) + 'kW system. ~' + payback + ' year payback.';
+}
+
+function money(c, n, decimals) {
+  return c.symbol + Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: decimals || 0, maximumFractionDigits: decimals || 0 });
+}
+
+function numField(id, fallback) {
+  var el = document.getElementById(id);
+  var n = el ? Number(el.value) : NaN;
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function getCriticalLoad(mode) {
+  var watts = 0;
+  var names = [];
+  userApps.forEach(function(a) {
+    var name = String(a.name || '').toLowerCase();
+    var include = mode === 'whole';
+    if (mode === 'essential') include = /led|bulb|router|fan|phone|lamp/.test(name);
+    if (mode === 'cold') include = /fridge|refrigerator|freezer|led|bulb/.test(name);
+    if (mode === 'work') include = /laptop|desktop|router|fan|phone|led|bulb|printer/.test(name);
+    if (include) {
+      watts += Number(a.watts || 0) * Number(a.qty || 1);
+      names.push(a.name);
+    }
+  });
+  if (!watts && userApps.length) {
+    var fallback = userApps.slice().sort(function(a, b) { return (a.watts * a.qty) - (b.watts * b.qty); }).slice(0, 3);
+    fallback.forEach(function(a) {
+      watts += Number(a.watts || 0) * Number(a.qty || 1);
+      names.push(a.name);
+    });
+  }
+  return { watts: watts, names: names };
+}
+
+function renderResiliencePlan(monthlyKwh, dailyKwh, monthlyCost, genCost, genLitres, breakdown) {
+  var target = document.getElementById('resiliencePlan');
+  if (!target) return;
+  var c = COUNTRIES[selectedCountry];
+  var outageHours = Math.max(0, Math.min(24, numField('outageHours', 0)));
+  var tokenBudget = Math.max(0, numField('tokenBudget', 0));
+  var mode = document.getElementById('backupMode').value;
+  var critical = getCriticalLoad(mode);
+  var criticalKwh = critical.watts * outageHours / 1000;
+  var batteryKwh = criticalKwh > 0 ? criticalKwh / 0.85 : 0;
+  var outageFuel = criticalKwh * 30 / 3.5;
+  var dailyCost = monthlyCost / 30;
+  var budgetDays = tokenBudget && dailyCost ? Math.floor(tokenBudget / dailyCost) : 0;
+  var topLoad = breakdown.slice().sort(function(a, b) { return b.kwh - a.kwh; })[0];
+  var modeLabels = { essential:'essential lights/router/fan', cold:'cold-chain basics', work:'work-from-home basics', whole:'the whole listed load' };
+  var actions = [];
+
+  if (outageHours > 0) actions.push('Size backup around ' + Math.max(critical.watts, 0).toLocaleString() + 'W for ' + modeLabels[mode] + ', not around every appliance by default.');
+  if (batteryKwh > 0) actions.push('Target at least ' + batteryKwh.toFixed(1) + 'kWh usable battery capacity, then add inverter headroom above ' + Math.ceil(critical.watts * 1.25).toLocaleString() + 'W.');
+  if (outageFuel > 0) actions.push('If using a generator only during outages, budget about ' + outageFuel.toFixed(0) + 'L/month for the critical load.');
+  if (budgetDays) actions.push('Your entered token budget lasts about ' + budgetDays + ' days at this usage.');
+  if (topLoad) actions.push('Largest load: ' + topLoad.name + '. Reducing its hours gives the fastest bill drop.');
+  if (monthlyKwh > 300) actions.push('Usage is high for many urban African households. Audit AC, water heating, freezer, and pump run-time first.');
+  if (!actions.length) actions.push('Add outage hours or a token budget to turn this bill estimate into a practical operating plan.');
+
+  lastEnergyPlanText = [
+    c.name + ' electricity plan',
+    'Monthly estimate: ' + money(c, monthlyCost, 0) + ' for ' + monthlyKwh.toFixed(1) + ' kWh.',
+    'Backup mode: ' + modeLabels[mode] + ' | Outage hours/day: ' + outageHours,
+    'Critical load: ' + Math.max(critical.watts, 0).toLocaleString() + 'W | Battery target: ' + batteryKwh.toFixed(1) + 'kWh.',
+    actions.slice(0, 4).join(' ')
+  ].join('\n');
+
+  target.innerHTML = '<div class="eb-resilience-head"><div class="eb-resilience-title">Outage and token plan</div><button type="button" class="eb-copy" onclick="copyEnergyPlan(this)">Copy plan</button></div>' +
+    '<div class="eb-resilience-body"><div class="eb-resilience-grid">' +
+    '<div class="eb-res-card"><div class="eb-res-k">Critical load</div><div class="eb-res-v">' + Math.max(critical.watts, 0).toLocaleString() + 'W</div><div class="eb-res-note">' + esc(modeLabels[mode]) + '</div></div>' +
+    '<div class="eb-res-card"><div class="eb-res-k">Battery target</div><div class="eb-res-v">' + batteryKwh.toFixed(1) + 'kWh</div><div class="eb-res-note">Usable capacity for outages</div></div>' +
+    '<div class="eb-res-card"><div class="eb-res-k">Outage fuel</div><div class="eb-res-v">' + outageFuel.toFixed(0) + 'L/mo</div><div class="eb-res-note">Critical load only</div></div>' +
+    '<div class="eb-res-card"><div class="eb-res-k">Budget runway</div><div class="eb-res-v">' + (budgetDays ? budgetDays + ' days' : 'Add budget') + '</div><div class="eb-res-note">Based on daily bill estimate</div></div>' +
+    '</div><ul class="eb-action-list">' + actions.slice(0, 6).map(function(action) { return '<li>' + esc(action) + '</li>'; }).join('') + '</ul></div>';
+}
+
+function copyEnergyPlan(btn) {
+  if (!lastEnergyPlanText) return;
+  var done = function() {
+    if (btn) {
+      var old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function() { btn.textContent = old; }, 1300);
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(lastEnergyPlanText).then(done).catch(function() { fallbackCopyEnergyPlan(done); });
+  } else {
+    fallbackCopyEnergyPlan(done);
+  }
+}
+
+function fallbackCopyEnergyPlan(done) {
+  var area = document.createElement('textarea');
+  area.value = lastEnergyPlanText;
+  area.setAttribute('readonly','');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(area);
 }
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }

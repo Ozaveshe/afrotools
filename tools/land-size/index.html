@@ -89,6 +89,16 @@
   .canvas-label { font-size: 0.68rem; color: #6B8CAE; margin-top: 6px; }
   .price-section { margin-top: 18px; padding-top: 18px; border-top: 1px solid #EFF6FF; }
   .price-result { font-size: 1.5rem; font-weight: 800; color: var(--afro-green); margin-top: 8px; }
+  .land-plan { margin-top: 18px; padding-top: 18px; border-top: 1px solid #EFF6FF; }
+  .plan-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .plan-sub { font-size: .78rem; color: #64748b; line-height: 1.55; margin-top: 4px; }
+  .plan-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .plan-output { margin-top: 12px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .plan-card { border: 1px solid #DBEAFE; border-radius: 8px; background: #F8FAFF; padding: 12px; }
+  .plan-value { font-size: 1.05rem; font-weight: 800; color: #0f172a; }
+  .plan-label { font-size: .62rem; font-weight: 800; color: #6B8CAE; text-transform: uppercase; letter-spacing: .05em; margin-top: 3px; }
+  .plan-advice { margin-top: 12px; padding: 12px; border-radius: 8px; background: #ecfdf5; color: #14532d; font-size: .82rem; line-height: 1.6; }
+  .plan-empty { margin-top: 12px; padding: 12px; border-radius: 8px; background: #fffbeb; color: #78350f; font-size: .82rem; line-height: 1.6; }
   .sidebar .info-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
   .sidebar .info-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0A1628; margin-bottom: 10px; }
   .sidebar .info-text { font-size: 0.78rem; color: #4b5563; line-height: 1.7; }
@@ -116,6 +126,8 @@
     .tool-main-inner { grid-template-columns: 1fr; }
     .row-2 { grid-template-columns: 1fr; }
     .conversions-grid { grid-template-columns: 1fr; }
+    .plan-grid, .plan-output { grid-template-columns: 1fr; }
+    .plan-head { display: block; }
     .tool-hero { padding: 32px 0 28px; }
   }
 </style>
@@ -127,6 +139,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -191,6 +205,8 @@
                   <option value="acre">Acres</option>
                   <option value="plot">Nigerian Plot (648 sqm)</option>
                   <option value="halfplot">Half Plot (324 sqm)</option>
+                  <option value="gplot">Ghana Standard Plot (650 sqm)</option>
+                  <option value="keighth">Kenya 1/8 Acre (506 sqm)</option>
                   <option value="morgen">SA Morgen (8567 sqm)</option>
                   <option value="kacre">Kenyan Acre (4047 sqm)</option>
                 </select>
@@ -231,6 +247,46 @@
               </div>
             </div>
             <div class="price-result" id="priceResult" style="display:none"></div>
+          </div>
+
+          <div class="land-plan">
+            <div class="plan-head">
+              <div>
+                <div class="card-title">Subdivision Planner</div>
+                <div class="plan-sub">Estimate sellable area after access roads, compare it to local plot standards, and build a buyer due-diligence note.</div>
+              </div>
+              <button class="mode-tab" type="button" id="copyLandPlan" style="max-width:160px">Copy Brief</button>
+            </div>
+            <div class="plan-grid">
+              <div class="field">
+                <label class="f-label">Local Plot Standard</label>
+                <select class="f-select" id="planPlotUnit" onchange="updateLandPlan()">
+                  <option value="plot">Nigeria 60x120ft</option>
+                  <option value="gplot">Ghana 70x100ft</option>
+                  <option value="keighth">Kenya 1/8 acre</option>
+                  <option value="halfplot">Half plot</option>
+                  <option value="acre">Acre</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="f-label">Access/Setback Reserve %</label>
+                <input type="number" class="f-input" id="planReserve" value="15" min="0" max="70" step="1" oninput="updateLandPlan()">
+              </div>
+              <div class="field">
+                <label class="f-label">Closing/Survey Buffer %</label>
+                <input type="number" class="f-input" id="planClosing" value="8" min="0" max="50" step="1" oninput="updateLandPlan()">
+              </div>
+              <div class="field">
+                <label class="f-label">Intended Use</label>
+                <select class="f-select" id="planUse" onchange="updateLandPlan()">
+                  <option value="residential">Residential plots</option>
+                  <option value="mixed">Mixed-use shops and homes</option>
+                  <option value="farm">Farm or estate</option>
+                  <option value="hold">Land bank</option>
+                </select>
+              </div>
+            </div>
+            <div id="landPlanOutput" class="plan-empty">Enter land dimensions or area to see subdivision and due-diligence guidance.</div>
           </div>
         </div>
       </div>
@@ -346,6 +402,8 @@
     acre: 4046.86,
     plot: 648,
     halfplot: 324,
+    gplot: 650,
+    keighth: 505.86,
     morgen: 8567,
     kacre: 4047
   };
@@ -359,6 +417,8 @@
     { key: 'acre', label: 'Acres', fmt: 4 },
     { key: 'plot', label: 'Nigerian Plots', fmt: 3 },
     { key: 'halfplot', label: 'Half Plots', fmt: 3 },
+    { key: 'gplot', label: 'Ghana Plots', fmt: 3 },
+    { key: 'keighth', label: 'Kenya 1/8 Acres', fmt: 3 },
     { key: 'morgen', label: 'SA Morgen', fmt: 4 },
     { key: 'kacre', label: 'Kenyan Acres', fmt: 4 }
   ];
@@ -404,6 +464,7 @@
     if (currentSqm <= 0) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:16px;color:#9ca3af;font-size:0.8rem">Enter dimensions or area to see conversions.</div>';
       funZone.style.display = 'none';
+      updateLandPlan();
       return;
     }
     grid.innerHTML = convUnits.map(function(u) {
@@ -411,6 +472,7 @@
       return '<div class="conv-item"><div class="conv-label">' + u.label + '</div><div class="conv-value">' + formatNum(val, u.fmt) + '</div></div>';
     }).join('');
     updateFunCards();
+    updateLandPlan();
   }
 
   function updateFunCards() {
@@ -496,18 +558,73 @@
     var el = document.getElementById('priceResult');
     if (!price || price <= 0 || currentSqm <= 0) {
       el.style.display = 'none';
+      updateLandPlan();
       return;
     }
     var total = price * currentSqm;
     var symbols = { NGN: '\u20A6', KES: 'KES ', ZAR: 'R', GHS: 'GHS ', USD: '$' };
     el.textContent = 'Total: ' + (symbols[cur] || '') + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     el.style.display = 'block';
+    updateLandPlan();
+  }
+
+  function moneyLand(value) {
+    var cur = document.getElementById('priceCurrency').value;
+    var symbols = { NGN: '\u20A6', KES: 'KES ', ZAR: 'R', GHS: 'GHS ', USD: '$' };
+    return (symbols[cur] || '') + Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
+
+  var lastLandBrief = '';
+  function updateLandPlan() {
+    var output = document.getElementById('landPlanOutput');
+    if (!output) return;
+    if (currentSqm <= 0) {
+      output.className = 'plan-empty';
+      output.textContent = 'Enter land dimensions or area to see subdivision and due-diligence guidance.';
+      lastLandBrief = 'Land size brief: enter dimensions or area before planning subdivision.';
+      return;
+    }
+    var plotUnit = document.getElementById('planPlotUnit').value;
+    var reservePct = Math.max(0, parseFloat(document.getElementById('planReserve').value) || 0);
+    var closingPct = Math.max(0, parseFloat(document.getElementById('planClosing').value) || 0);
+    var use = document.getElementById('planUse').value;
+    var price = parseFloat(document.getElementById('pricePerUnit').value) || 0;
+    var sellable = currentSqm * Math.max(0, 1 - reservePct / 100);
+    var plotSize = unitToSqm[plotUnit] || 648;
+    var equivalentPlots = sellable / plotSize;
+    var totalValue = price ? currentSqm * price : 0;
+    var projectBuffer = totalValue * closingPct / 100;
+    var perPlotValue = price ? (plotSize * price) : 0;
+    var useAdvice = {
+      residential: 'Check survey beacon coordinates, road access, drainage, title history, and local planning approvals before paying a deposit.',
+      mixed: 'Confirm commercial zoning, frontage width, loading access, parking pressure, and service connections before carving plots.',
+      farm: 'Ask for soil and water access notes, right-of-way, community land claims, and whether the area is affected by seasonal flooding.',
+      hold: 'Document title chain, tax or ground rent obligations, access road status, and realistic resale comparables.'
+    }[use];
+    lastLandBrief = 'Land brief: gross area ' + formatNum(currentSqm, 2) + ' sqm; sellable after ' + reservePct + '% reserve is ' + formatNum(sellable, 2) + ' sqm; equivalent local plots ' + equivalentPlots.toFixed(2) + '; total value ' + (price ? moneyLand(totalValue) : 'not priced') + '; closing/survey buffer ' + (price ? moneyLand(projectBuffer) : closingPct + '% of purchase budget') + '. ' + useAdvice;
+    output.className = '';
+    output.innerHTML = '<div class="plan-output">' +
+      '<div class="plan-card"><div class="plan-value">' + formatNum(sellable, 2) + '</div><div class="plan-label">Sellable sqm</div></div>' +
+      '<div class="plan-card"><div class="plan-value">' + equivalentPlots.toFixed(2) + '</div><div class="plan-label">Equivalent plots</div></div>' +
+      '<div class="plan-card"><div class="plan-value">' + (price ? moneyLand(perPlotValue) : 'Add price') + '</div><div class="plan-label">Per plot value</div></div>' +
+      '<div class="plan-card"><div class="plan-value">' + (price ? moneyLand(projectBuffer) : closingPct + '%') + '</div><div class="plan-label">Buffer</div></div>' +
+      '</div><div class="plan-advice"><strong>Due diligence:</strong> ' + useAdvice + '</div>';
+  }
+
+  var copyLandPlanBtn = document.getElementById('copyLandPlan');
+  if (copyLandPlanBtn) {
+    copyLandPlanBtn.addEventListener('click', function () {
+      updateLandPlan();
+      navigator.clipboard.writeText(lastLandBrief).catch(function () {
+        window.prompt('Copy land brief', lastLandBrief);
+      });
+    });
   }
 
   // Init
   updateConversions();
 </script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>

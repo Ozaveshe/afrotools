@@ -25,6 +25,30 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=83c9b5fa">
+<style>
+  .aa-brief-section{background:#fff;padding-top:0}
+  .aa-brief-panel{border:1.5px solid var(--aa-border);border-radius:8px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);padding:24px;box-shadow:0 12px 30px rgba(15,23,42,0.05)}
+  .aa-brief-grid{display:grid;grid-template-columns:1.1fr 1fr 0.8fr auto;gap:12px;align-items:end;margin-bottom:16px}
+  .aa-brief-field label{display:block;font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--aa-text-subtle);margin-bottom:6px}
+  .aa-brief-input{width:100%;min-height:46px;padding:12px 14px;border:1.5px solid var(--aa-border);border-radius:8px;background:#fff;font-family:'DM Sans',system-ui,sans-serif;font-size:0.86rem;color:var(--aa-text);outline:none}
+  .aa-brief-input:focus{border-color:var(--aa-blue);box-shadow:0 0 0 3px rgba(0,122,255,0.1)}
+  .aa-brief-output{border-top:1px solid #e8eef7;padding-top:16px}
+  .aa-brief-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+  .aa-brief-title strong{font-size:1rem;color:var(--aa-text)}
+  .aa-brief-tag{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:var(--aa-blue-pale);color:var(--aa-blue);font-size:0.68rem;font-weight:800;letter-spacing:0.04em;text-transform:uppercase}
+  .aa-brief-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  .aa-brief-card{border:1px solid #e8eef7;border-radius:8px;background:#fff;padding:12px}
+  .aa-brief-card span{display:block;font-size:0.66rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--aa-text-subtle);margin-bottom:4px}
+  .aa-brief-card strong{display:block;font-size:0.95rem;color:var(--aa-text)}
+  .aa-brief-text{font-size:0.84rem;line-height:1.65;color:var(--aa-text-muted);margin:0}
+  .aa-brief-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .aa-btn--secondary{background:#fff;color:var(--aa-blue);border:1.5px solid rgba(0,122,255,0.2);box-shadow:none}
+  .aa-btn--secondary:hover{background:var(--aa-blue-pale);box-shadow:none}
+  .aa-compare-hint{display:none;margin:12px auto 0;max-width:580px;padding:10px 14px;border:1px solid rgba(77,163,255,0.3);border-radius:8px;background:rgba(77,163,255,0.08);color:rgba(255,255,255,0.78);font-size:0.8rem;line-height:1.5;position:relative;z-index:1}
+  .aa-compare-hint a{color:#fff;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+  @media (max-width:900px){.aa-brief-grid{grid-template-columns:1fr 1fr}.aa-brief-cards{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.aa-brief-panel{padding:18px}.aa-brief-grid,.aa-brief-cards{grid-template-columns:1fr}.aa-brief-actions .aa-btn{width:100%;justify-content:center}}
+</style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroAtlas — Africa's Resource Intelligence Explorer","description":"Interactive explorer of Africa's natural resources, GDP, trade data, and economic indicators for all 54 countries. Compare any African country with the world.","url":"https://afrotools.com/tools/afroatlas/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afroatlas.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroAtlas — Africa's Resource Intelligence Explorer","url":"https://afrotools.com/tools/afroatlas/","description":"Interactive explorer of Africa's natural resources, GDP, trade data, and economic indicators for all 54 countries. Compare any African country with the world.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afroatlas.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroAtlas","item":"https://afrotools.com/tools/afroatlas/"}]}</script>
@@ -34,6 +58,8 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afroatlas.webp">
 <meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -68,6 +94,7 @@
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
           <input type="search" id="aa-search" placeholder="Search countries, resources, or type 'Nigeria vs Kenya'..." autocomplete="off">
         </div>
+        <div class="aa-compare-hint" id="aa-compare-hint"></div>
       </div>
     </div>
   </section>
@@ -77,6 +104,41 @@
     <div class="aa-wrap">
       <div class="aa-region-tabs" id="aa-region-tabs"></div>
       <div class="aa-grid" id="aa-grid"></div>
+    </div>
+  </section>
+
+  <!-- ══ RESEARCH BRIEF ══ -->
+  <section class="aa-section aa-brief-section">
+    <div class="aa-wrap">
+      <div class="aa-brief-panel aa-rv">
+        <div class="aa-section-header">
+          <span class="aa-eyebrow">Brief Builder</span>
+          <h2 class="aa-section-title">Turn Atlas Data Into a Decision Note</h2>
+          <p class="aa-section-sub">Create a compact country brief for market research, diaspora planning, investment screening, or class notes.</p>
+        </div>
+        <div class="aa-brief-grid">
+          <div class="aa-brief-field">
+            <label for="aa-brief-country">Country</label>
+            <select id="aa-brief-country" class="aa-brief-input"></select>
+          </div>
+          <div class="aa-brief-field">
+            <label for="aa-brief-angle">Research angle</label>
+            <select id="aa-brief-angle" class="aa-brief-input">
+              <option value="investment">Investment screen</option>
+              <option value="resources">Resource map</option>
+              <option value="trade">Trade snapshot</option>
+              <option value="diaspora">Diaspora planning</option>
+              <option value="risk">Development risk</option>
+            </select>
+          </div>
+          <div class="aa-brief-field">
+            <label for="aa-brief-budget">Optional budget USD</label>
+            <input id="aa-brief-budget" class="aa-brief-input" type="number" min="0" step="100" placeholder="25000">
+          </div>
+          <button class="aa-btn aa-btn--primary" id="aa-brief-copy" type="button">Copy Brief</button>
+        </div>
+        <div class="aa-brief-output" id="aa-brief-output" aria-live="polite"></div>
+      </div>
     </div>
   </section>
 
@@ -195,6 +257,47 @@
       return '';
     }
 
+    function findCountryCodeByText(text) {
+      var q = String(text || '').toLowerCase().trim();
+      if (!q) return '';
+      for (var i = 0; i < allCountries.length; i++) {
+        var c = allCountries[i];
+        var code = _findCode(c);
+        if (code.toLowerCase() === q || c.slug.toLowerCase() === q || c.name.toLowerCase() === q) return code;
+      }
+      for (var j = 0; j < allCountries.length; j++) {
+        var c2 = allCountries[j];
+        if (c2.name.toLowerCase().indexOf(q) !== -1 || c2.slug.toLowerCase().indexOf(q) !== -1) return _findCode(c2);
+      }
+      return '';
+    }
+
+    function parseCompareQuery(text) {
+      var raw = String(text || '').trim();
+      if (!/\s+v(?:s|\.)?\s+/i.test(raw)) return null;
+      var parts = raw.split(/\s+v(?:s|\.)?\s+/i);
+      if (parts.length < 2) return null;
+      var a = findCountryCodeByText(parts[0]);
+      var b = findCountryCodeByText(parts.slice(1).join(' vs '));
+      if (!a || !b || a === b) return null;
+      return { a: a, b: b };
+    }
+
+    function countryByCode(code) {
+      return AfroAtlas.COUNTRIES[String(code || '').toUpperCase()] || null;
+    }
+
+    function resourceLabels(country) {
+      if (!country || !country.resources || !country.resources.length) return 'No major resource rows in this dataset';
+      var labels = [];
+      for (var i = 0; i < Math.min(3, country.resources.length); i++) {
+        var r = country.resources[i];
+        var info = resTypes[r.type];
+        labels.push((info ? info.label : r.type) + (r.prod ? ' (' + r.prod + ')' : ''));
+      }
+      return labels.join(', ');
+    }
+
     /* ── 1. Stats Row (live data) ── */
     var stats = AfroAtlas.getAggregateStats();
     var statsEl = $('aa-stats');
@@ -240,15 +343,19 @@
       if (!gridEl) return;
       var searchVal = ($('aa-search') || {}).value;
       var q = (searchVal || '').toLowerCase().trim();
+      var compareSearch = parseCompareQuery(searchVal);
+      var compareCodes = compareSearch ? [compareSearch.a, compareSearch.b] : null;
       var html = '';
       var count = 0;
 
       for (var ci = 0; ci < allCountries.length; ci++) {
         var c = allCountries[ci];
+        var ccode = _findCode(c);
 
         if (activeRegion !== 'all' && c.region !== activeRegion) continue;
+        if (compareCodes && compareCodes.indexOf(ccode) === -1) continue;
 
-        if (q) {
+        if (q && !compareSearch) {
           var match = false;
           if (c.name.toLowerCase().indexOf(q) !== -1) match = true;
           if (!match && c.capital && c.capital.toLowerCase().indexOf(q) !== -1) match = true;
@@ -282,7 +389,6 @@
           }
         }
 
-        var ccode = _findCode(c);
         var flagSrc = 'https://flagcdn.com/w80/' + ccode.toLowerCase() + '.png';
 
         html += '<a href="country/' + esc(c.slug) + '/" class="aa-card aa-rv">' +
@@ -310,11 +416,15 @@
 
     /* ── 4. Search ── */
     var searchInput = $('aa-search');
+    var compareHint = $('aa-compare-hint');
     var debounceTimer = null;
     if (searchInput) {
       searchInput.addEventListener('input', function() {
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(renderGrid, 120);
+        debounceTimer = setTimeout(function() {
+          renderGrid();
+          syncCompareFromSearch();
+        }, 120);
       });
     }
 
@@ -354,6 +464,22 @@
       }
     }
 
+    function syncCompareFromSearch() {
+      var parsed = parseCompareQuery(searchInput ? searchInput.value : '');
+      if (!compareHint) return;
+      if (!parsed) {
+        compareHint.style.display = 'none';
+        compareHint.innerHTML = '';
+        return;
+      }
+      if (selA) selA.value = parsed.a;
+      if (selB) selB.value = parsed.b;
+      var ca = countryByCode(parsed.a);
+      var cb = countryByCode(parsed.b);
+      compareHint.style.display = 'block';
+      compareHint.innerHTML = 'Ready to compare <strong>' + esc(ca ? ca.name : parsed.a) + '</strong> with <strong>' + esc(cb ? cb.name : parsed.b) + '</strong>. <a href="compare.html?a=' + encodeURIComponent(parsed.a) + '&b=' + encodeURIComponent(parsed.b) + '">Open comparison</a>';
+    }
+
     if (compareBtn) {
       compareBtn.addEventListener('click', function() {
         var a = selA ? selA.value : '';
@@ -363,6 +489,96 @@
         }
       });
     }
+
+    /* ── 5b. Research Brief Builder ── */
+    var briefCountry = $('aa-brief-country');
+    var briefAngle = $('aa-brief-angle');
+    var briefBudget = $('aa-brief-budget');
+    var briefOutput = $('aa-brief-output');
+    var briefCopy = $('aa-brief-copy');
+    var lastAtlasBrief = '';
+
+    if (briefCountry) {
+      var countryChoices = sorted || allCountries.slice().sort(function(a, b) {
+        return a.name.localeCompare(b.name);
+      });
+      var briefOptions = '';
+      for (var bci = 0; bci < countryChoices.length; bci++) {
+        var bcode = _findCode(countryChoices[bci]);
+        briefOptions += '<option value="' + esc(bcode) + '">' + countryChoices[bci].flag + ' ' + esc(countryChoices[bci].name) + '</option>';
+      }
+      briefCountry.innerHTML = briefOptions;
+      if (findCountryCodeByText('Nigeria')) briefCountry.value = findCountryCodeByText('Nigeria');
+    }
+
+    function getAngleNote(country, angle, budget) {
+      var imports = country.imports && country.imports.length ? country.imports.slice(0, 3).map(function(item) { return item.p; }).join(', ') : 'major import lines';
+      var exports = country.exports && country.exports.length ? country.exports.slice(0, 3).map(function(item) { return item.p; }).join(', ') : 'major export lines';
+      var res = resourceLabels(country);
+      if (angle === 'resources') return 'Map the resource story first: ' + res + '. Check whether the opportunity is extraction, local processing, logistics, or supplier services.';
+      if (angle === 'trade') return 'Trade lens: exports lean toward ' + exports + ', while imports include ' + imports + '. Look for import substitution, distribution, and processing gaps.';
+      if (angle === 'diaspora') return 'Diaspora lens: start with city choice, banking, mobile connectivity, property rules, and family support costs before committing capital.';
+      if (angle === 'risk') return 'Risk lens: pressure points to review include inflation, debt-to-GDP, electricity access, internet access, and currency convertibility.';
+      if (budget > 0) return 'Investment screen: treat $' + budget.toLocaleString() + ' as a discovery budget first. Validate licences, local partner quality, FX access, and market demand before scaling.';
+      return 'Investment screen: shortlist sectors where resources, imports, infrastructure, and consumer demand overlap. Validate with local prices before writing a business plan.';
+    }
+
+    function renderBrief() {
+      if (!briefOutput || !briefCountry) return;
+      var code = briefCountry.value || '';
+      var country = countryByCode(code);
+      if (!country) return;
+      var angle = briefAngle ? briefAngle.value : 'investment';
+      var budget = Math.max(0, Number(briefBudget && briefBudget.value ? briefBudget.value : 0));
+      var resourceText = resourceLabels(country);
+      var gdpPc = country.gdpPC ? '$' + country.gdpPC.toLocaleString() : 'N/A';
+      var electricity = typeof country.electricity === 'number' ? country.electricity + '%' : 'N/A';
+      var internet = typeof country.internet === 'number' ? country.internet + '%' : 'N/A';
+      var note = getAngleNote(country, angle, budget);
+      var nextStep = country.tools && country.tools.length ? country.tools[0].n : 'Open the country page for deeper context';
+
+      lastAtlasBrief = country.name + ' AfroAtlas brief\n' +
+        'GDP: ' + fmtGDP(country.gdp) + '\n' +
+        'Population: ' + fmtPop(country.population) + '\n' +
+        'GDP per capita: ' + gdpPc + '\n' +
+        'Top resources: ' + resourceText + '\n' +
+        'Electricity/internet: ' + electricity + ' / ' + internet + '\n' +
+        'Research angle: ' + note + '\n' +
+        'Next step: ' + nextStep;
+
+      briefOutput.innerHTML =
+        '<div class="aa-brief-title"><strong>' + esc(country.flag + ' ' + country.name) + '</strong><span class="aa-brief-tag">' + esc(angle.replace('-', ' ')) + '</span></div>' +
+        '<div class="aa-brief-cards">' +
+          '<div class="aa-brief-card"><span>GDP</span><strong>' + esc(fmtGDP(country.gdp)) + '</strong></div>' +
+          '<div class="aa-brief-card"><span>Population</span><strong>' + esc(fmtPop(country.population)) + '</strong></div>' +
+          '<div class="aa-brief-card"><span>GDP per capita</span><strong>' + esc(gdpPc) + '</strong></div>' +
+          '<div class="aa-brief-card"><span>Power / internet</span><strong>' + esc(electricity + ' / ' + internet) + '</strong></div>' +
+        '</div>' +
+        '<p class="aa-brief-text"><strong>Top resource signal:</strong> ' + esc(resourceText) + '</p>' +
+        '<p class="aa-brief-text">' + esc(note) + '</p>' +
+        '<div class="aa-brief-actions">' +
+          '<a class="aa-btn aa-btn--secondary" href="country/' + esc(country.slug) + '/">Open Country Page</a>' +
+          (country.tools && country.tools.length ? '<a class="aa-btn aa-btn--secondary" href="' + esc(country.tools[0].p) + '">' + esc(country.tools[0].n) + '</a>' : '') +
+        '</div>';
+    }
+
+    if (briefCountry) briefCountry.addEventListener('change', renderBrief);
+    if (briefAngle) briefAngle.addEventListener('change', renderBrief);
+    if (briefBudget) briefBudget.addEventListener('input', renderBrief);
+    if (briefCopy) {
+      briefCopy.addEventListener('click', function() {
+        if (!lastAtlasBrief) renderBrief();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(lastAtlasBrief).then(function() {
+            briefCopy.textContent = 'Copied';
+            setTimeout(function() { briefCopy.textContent = 'Copy Brief'; }, 1400);
+          });
+        } else {
+          window.prompt('Copy brief', lastAtlasBrief);
+        }
+      });
+    }
+    renderBrief();
 
     /* ── 6. Rankings Chart ── */
     var resTabsEl = $('aa-res-tabs');

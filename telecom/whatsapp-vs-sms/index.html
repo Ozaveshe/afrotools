@@ -201,10 +201,11 @@
     var waData = country.whatsappBusiness || {};
     var smsData = country.bulkSMS || {};
 
-    var waMktRate = waData.marketingRate || waData.rate || 0;
-    var waUtlRate = waData.utilityRate || (waMktRate * 0.6);
-    var waSvcRate = waData.serviceRate || 0;
-    var smsRate = smsData.costPerSMS || smsData.domesticRate || 0;
+    var waCard = waData.perMessage || waData.perConversation || {};
+    var waMktRate = waData.marketingRate || waData.rate || waCard.marketing || 0;
+    var waUtlRate = waData.utilityRate || waCard.utility || (waMktRate * 0.6);
+    var waSvcRate = waData.serviceRate || waCard.service || 0;
+    var smsRate = smsData.costPerSMS || smsData.domesticRate || smsData.avgCostPerSMS || 0;
 
     if (waMktRate === 0 && smsRate === 0) {
       resultsEl.innerHTML = '<p style="text-align:center;color:#94a3b8;margin:2rem 0;">No WhatsApp Business or SMS pricing data available for ' + country.name + ' yet.</p>';
@@ -347,5 +348,6 @@
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/telecom-toolkit.js" defer></script>
 </body>
 </html>

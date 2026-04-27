@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Format Converter &mdash; Word to PDF, Excel to | AfroTools</title>
-<meta name="description" content="Free PDF format converter. Convert Word (.docx) to PDF, Excel (.xlsx) to PDF, or extract text from PDFs. 100% client-side, no uploads, no sign-up.">
+<title>PDF Converter - Word, Excel, Text, Images | AfroTools</title>
+<meta name="description" content="Free private PDF converter for DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG. Runs in your browser with no uploads.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-convert/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Format Converter | AfroTools">
-<meta property="og:description" content="Convert Word to PDF, Excel to PDF, or extract text from PDFs. Free, fast, 100% private &mdash; files never leave your device.">
+<meta property="og:title" content="PDF Converter | AfroTools">
+<meta property="og:description" content="Convert Word and spreadsheets to PDF, extract PDF text, or export PDF pages as PNG or JPG. Private browser processing with no uploads.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-convert/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -17,8 +17,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Format Converter | AfroTools">
-<meta name="twitter:description" content="Convert Word to PDF, Excel to PDF, or extract text from PDFs. Client-side processing, no data leaves your device.">
+<meta name="twitter:title" content="PDF Converter | AfroTools">
+<meta name="twitter:description" content="Convert DOCX, spreadsheets, PDF text, and PDF pages to images in your browser. No uploads.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -51,7 +51,7 @@
   .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #374151; }
   .card-body { padding: 22px; }
 
-  .mode-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 0; }
+  .mode-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 0; }
   .mode-btn { padding: 14px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.82rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .mode-btn:hover { border-color: var(--afro-blue); }
   .mode-btn.on { border-color: var(--afro-blue); background: var(--color-primary); color: #fff; }
@@ -67,8 +67,10 @@
   .settings-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
   .field { margin-bottom: 0; }
   .f-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #1e293b; margin-bottom: 6px; display: block; }
-  .f-select { width: 100%; padding: 10px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; cursor: pointer; }
-  .f-select:focus { border-color: var(--afro-blue); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+  .f-select, .f-input { width: 100%; padding: 10px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #1e293b; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-select { cursor: pointer; }
+  .f-select:focus, .f-input:focus { border-color: var(--afro-blue); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+  .field-note { font-size: 0.7rem; color: #6B8CAE; line-height: 1.45; margin-top: 5px; }
 
   .toggle-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
   .toggle-label { font-size: 0.78rem; font-weight: 700; color: #1e293b; }
@@ -149,8 +151,8 @@
   }
 </style>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Converter","description":"Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG or JPG in your browser with no file uploads.","url":"https://afrotools.com/tools/pdf-convert/","inLanguage":"en","applicationCategory":"ProductivityApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a Word document to PDF?","acceptedAnswer":{"@type":"Answer","text":"Select Word to PDF, upload a DOCX file, choose page size and margins, then convert. The PDF is generated in your browser."}},{"@type":"Question","name":"Can I convert Excel files with multiple sheets?","acceptedAnswer":{"@type":"Answer","text":"Yes. XLSX, XLS, and CSV files are supported. Multi-sheet workbooks show sheet tabs so you can pick the sheet to export."}},{"@type":"Question","name":"Can I export PDF pages as images?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upload a PDF, choose PNG or JPG, set scale and page range, then download a ZIP with one image per selected page."}},{"@type":"Question","name":"Is my data safe?","acceptedAnswer":{"@type":"Answer","text":"All conversion work runs locally in your browser. Files are not uploaded to AfroTools servers."}}]}</script>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-convert/" />
@@ -184,20 +186,20 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>PDF Format Converter</span></div>
-    <h1>PDF Format <em>Converter</em></h1>
-    <p class="hero-sub">Convert Word documents to PDF, Excel spreadsheets to PDF, or extract text from PDF files. Fast, free, and 100% client-side &mdash; your files never leave your device.</p>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>PDF Converter</span></div>
+    <h1>PDF <em>Converter</em></h1>
+    <p class="hero-sub">Convert DOCX, XLSX, XLS, and CSV files to PDF, extract selectable PDF text, or export PDF pages as PNG or JPG. Everything runs locally in your browser.</p>
     <div class="hero-badges">
       <span class="badge b-green">Client-side</span>
       <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Word &amp; Excel</span>
+      <span class="badge b-green">Office, Text &amp; Images</span>
     </div>
   </div>
 </div>
@@ -211,6 +213,7 @@
         <button class="mode-btn on" id="modeWord" onclick="switchMode('word2pdf')">Word &rarr; PDF</button>
         <button class="mode-btn" id="modeExcel" onclick="switchMode('excel2pdf')">Excel &rarr; PDF</button>
         <button class="mode-btn" id="modePdfText" onclick="switchMode('pdf2text')">PDF &rarr; Text</button>
+        <button class="mode-btn" id="modePdfImages" onclick="switchMode('pdf2images')">PDF &rarr; Images</button>
       </div>
     </div>
   </div>
@@ -389,6 +392,71 @@
     </div>
   </div>
 
+  <!-- ============ PDF TO IMAGES ============ -->
+  <div id="pdf2images-panel" class="hidden">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Upload PDF</span></div>
+      <div class="card-body">
+        <div class="drop-zone" id="imageDropZone">
+          <div class="drop-icon">&#128444;</div>
+          <div class="drop-text">Drag &amp; drop your PDF here, or click to browse</div>
+          <div class="drop-hint">Export selected pages as PNG or JPG images</div>
+          <input type="file" id="imageFileInput" accept=".pdf,application/pdf" style="display:none">
+        </div>
+        <div class="file-info" id="imageFileInfo">
+          <div class="file-info-inner">
+            <div>
+              <span class="fname" id="imageFileName"></span>
+              <span class="fsize" id="imageFileSize"></span>
+              <span class="fextra" id="imagePageCount"></span>
+            </div>
+            <button class="file-remove" onclick="resetPdfImages()">Remove</button>
+          </div>
+        </div>
+        <div class="settings-row-3">
+          <div class="field">
+            <label class="f-label">Image Format</label>
+            <select class="f-select" id="imageFormat">
+              <option value="png">PNG (sharp text)</option>
+              <option value="jpeg">JPG (smaller files)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="f-label">Render Scale</label>
+            <select class="f-select" id="imageScale">
+              <option value="1">1x</option>
+              <option value="1.5" selected>1.5x</option>
+              <option value="2">2x</option>
+              <option value="3">3x</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="f-label">Page Range</label>
+            <input class="f-input" id="imagePageRange" type="text" placeholder="All, 1, 3-5">
+            <div class="field-note">Leave blank for all pages. Use commas and ranges.</div>
+          </div>
+        </div>
+        <button class="calc-btn" id="imageConvertBtn" disabled onclick="convertImages()">Export Images as ZIP</button>
+        <div class="progress-bar" id="imageProgress"><div class="progress-fill" id="imageProgressFill"></div></div>
+        <div class="progress-text" id="imageProgressText"></div>
+      </div>
+    </div>
+
+    <!-- Image Result -->
+    <div class="card hidden" id="imageResultCard">
+      <div class="card-head"><span class="card-title">Image ZIP Created</span></div>
+      <div class="card-body" style="text-align:center;">
+        <div style="font-size:3rem;margin-bottom:8px;">&#128444;</div>
+        <div style="font-size:1rem;font-weight:700;color:#1e293b;margin-bottom:4px;" id="imageResultName"></div>
+        <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="imageResultInfo"></div>
+        <div class="result-actions" style="justify-content:center;">
+          <button class="act-btn act-download" id="imageDownloadBtn">&#128229; Download ZIP</button>
+          <button class="act-btn act-reset" onclick="resetPdfImages()">&#8635; Export Another</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Tips -->
   <div class="tips-section">
     <div class="tips-title">Tips</div>
@@ -396,6 +464,7 @@
       <div class="tip-item">&#128274; Files never leave your device</div>
       <div class="tip-item">&#128196; Word conversion preserves basic formatting</div>
       <div class="tip-item">&#128202; Excel tables get styled headers &amp; alternating rows</div>
+      <div class="tip-item">&#128444; PDF pages can export as PNG/JPG ZIPs</div>
       <div class="tip-item">&#128221; PDF text extraction works on selectable text only</div>
     </div>
   </div>
@@ -403,23 +472,27 @@
 
 <!-- SEO Content -->
 <div class="seo-section">
-  <h2>Free PDF Format Converter</h2>
-  <p>The AfroTools PDF Format Converter is a free, browser-based tool that converts Word documents and Excel spreadsheets to PDF, and extracts text from PDF files. All processing happens locally in your browser &mdash; your files are never uploaded to any server.</p>
+  <h2>Free Private PDF Converter</h2>
+  <p>The AfroTools PDF Converter is a browser-based toolkit for everyday document conversion. Convert DOCX files to PDF, turn XLSX, XLS, and CSV sheets into PDF tables, extract selectable PDF text, or export PDF pages as PNG or JPG images. All processing happens locally in your browser, so your files are never uploaded to a server.</p>
 
   <h3>Word to PDF Conversion</h3>
-  <p>Upload any .docx file and convert it to a clean PDF document. The converter preserves headings, paragraphs, bold and italic text, lists, links, and tables from your Word document. Choose between A4 and Letter page sizes, and select normal, narrow, or wide margins to match your needs.</p>
+  <p>Upload a .docx file and convert it to a clean PDF document. The converter preserves common document structure such as headings, paragraphs, bold and italic text, lists, links, and tables. Choose between A4 and Letter page sizes, then set normal, narrow, or wide margins. Complex Word layouts, custom fonts, floating images, and exact print fidelity may vary because the conversion runs fully in the browser.</p>
 
   <h3>Excel to PDF Conversion</h3>
-  <p>Transform your spreadsheets into professional PDF tables. The tool supports .xlsx, .xls, and .csv files, and handles workbooks with multiple sheets. Tables are formatted with bold headers, alternating row colours, and proper borders. Choose landscape orientation for wide spreadsheets, and use the auto-fit option to ensure columns fit within the page.</p>
+  <p>Transform spreadsheets into professional PDF tables. The tool supports .xlsx, .xls, and .csv files, and handles workbooks with multiple sheets. Tables are formatted with bold headers, alternating row colours, and borders. Choose landscape orientation for wide spreadsheets, and use auto-fit to keep columns inside the page.</p>
 
   <h3>PDF Text Extraction</h3>
-  <p>Extract all selectable text from any PDF document. The extracted text is displayed page by page and can be copied to clipboard or downloaded as a plain text file. This feature works with any PDF that contains selectable text (not scanned images &mdash; for that, use our OCR tool).</p>
+  <p>Extract selectable text from PDF documents page by page. The extracted text can be copied to the clipboard or downloaded as a plain text file. This works with PDFs that contain real text. Scanned documents are images and need OCR before text can be extracted.</p>
+
+  <h3>PDF to Image Export</h3>
+  <p>Export all pages or a selected range of pages as PNG or JPG images. The converter renders pages in your browser, packages the output into a ZIP file, and keeps predictable filenames so the images are ready for sharing, archiving, or uploading into another workflow.</p>
 
   <h3>Why Use This Tool?</h3>
   <ul>
     <li><strong>100% Private:</strong> All processing happens in your browser. No files are uploaded anywhere.</li>
     <li><strong>No Software Needed:</strong> No need to install Microsoft Office, LibreOffice, or any desktop application.</li>
-    <li><strong>Multi-Format:</strong> Handle Word, Excel, and PDF files all in one tool.</li>
+    <li><strong>Multi-Format:</strong> Handle Word, Excel, CSV, PDF text, and PDF image exports in one tool.</li>
+    <li><strong>Page Range Control:</strong> Export every page or specific page ranges such as 1, 3-5, 8.</li>
     <li><strong>No Registration:</strong> No account needed. No limits. Open and use instantly.</li>
     <li><strong>Mobile Friendly:</strong> Works on phones, tablets, and desktops alike.</li>
   </ul>
@@ -440,6 +513,10 @@
     <div class="faq-a">Yes. When you upload a multi-sheet workbook, the tool shows tabs for each sheet. You can select which sheet to convert. Each sheet is rendered as a styled table in the PDF.</div>
   </div>
   <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I turn PDF pages into images? <span class="faq-arrow">&#9660;</span></div>
+    <div class="faq-a">Yes. Select "PDF to Images", upload your PDF, choose PNG or JPG, set the render scale, and optionally enter a page range such as 1, 3-5. The tool creates a ZIP file with one image per selected page.</div>
+  </div>
+  <div class="faq-item">
     <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data safe? <span class="faq-arrow">&#9660;</span></div>
     <div class="faq-a">Absolutely. All processing uses JavaScript libraries running entirely in your browser. Your files are never uploaded to any server. No data leaves your device at any point during conversion.</div>
   </div>
@@ -458,7 +535,7 @@
 <afro-footer></afro-footer>
 
 <!-- Core PDF utilities -->
-<script src="/assets/js/lib/pdf-utils.js?v=38dbd587"></script>
+<script src="/assets/js/lib/pdf-utils.js?v=20260428"></script>
 
 <script>
 // ============================================================
@@ -474,12 +551,17 @@ let excelPdfBlob = null;
 let textPdfDoc = null;
 let textPages = []; // [{page, text}]
 let textCurrentPage = -1; // -1 = all
+let imagePdfFile = null;
+let imagePdfDoc = null;
+let imageZipBlob = null;
+let imageOutputName = '';
 
 // Library loading state
 let mammothLoaded = false;
 let jspdfLoaded = false;
 let xlsxLoaded = false;
 let html2canvasLoaded = false;
+let jszipLoaded = false;
 
 // ============================================================
 // Utility
@@ -491,7 +573,7 @@ function formatSize(bytes) {
 }
 
 function showToast(msg, isError) {
-  if (window.PdfUtils) { PdfUtils.showToast(msg, isError); return; }
+  if (window.PdfUtils) { window.PdfUtils.showToast(msg, isError); return; }
   var t = document.createElement('div');
   t.textContent = msg;
   t.style.cssText = 'position:fixed;bottom:20px;right:20px;background:' + (isError ? '#dc2626' : '#111') + ';color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:9999;font-family:DM Sans,sans-serif;max-width:350px;';
@@ -513,13 +595,23 @@ function downloadBlob(blob, filename) {
 // ============================================================
 // Lazy library loading
 // ============================================================
-function loadScript(src) {
+function loadScript(src, readyCheck) {
   return new Promise(function(resolve, reject) {
+    if (readyCheck && readyCheck()) { resolve(); return; }
     var existing = document.querySelector('script[src="' + src + '"]');
-    if (existing) { resolve(); return; }
+    if (existing) {
+      if (!readyCheck || readyCheck() || existing.dataset.loaded === 'true') { resolve(); return; }
+      existing.addEventListener('load', function() { resolve(); }, { once: true });
+      existing.addEventListener('error', function() { reject(new Error('Failed to load: ' + src)); }, { once: true });
+      return;
+    }
     var s = document.createElement('script');
     s.src = src;
-    s.onload = resolve;
+    s.onload = function() {
+      s.dataset.loaded = 'true';
+      if (readyCheck && !readyCheck()) { reject(new Error('Library did not initialize: ' + src)); return; }
+      resolve();
+    };
     s.onerror = function() { reject(new Error('Failed to load: ' + src)); };
     document.head.appendChild(s);
   });
@@ -527,26 +619,40 @@ function loadScript(src) {
 
 async function ensureMammoth() {
   if (mammothLoaded && window.mammoth) return;
-  await loadScript('https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js');
+  await loadScript('/assets/vendor/mammoth/mammoth.browser.min.js?v=1.8.0', function() { return !!window.mammoth; });
   mammothLoaded = true;
 }
 
 async function ensureJsPdf() {
   if (jspdfLoaded && window.jspdf) return;
-  await loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
+  await loadScript('/assets/vendor/jspdf/jspdf.umd.min.js?v=2.5.1', function() { return !!window.jspdf; });
   jspdfLoaded = true;
 }
 
 async function ensureXlsx() {
   if (xlsxLoaded && window.XLSX) return;
-  await loadScript('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js');
+  await loadScript('/assets/vendor/xlsx/xlsx.full.min.js?v=0.20.1', function() { return !!window.XLSX; });
   xlsxLoaded = true;
 }
 
 async function ensureHtml2Canvas() {
   if (html2canvasLoaded && window.html2canvas) return;
-  await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+  await loadScript('/assets/vendor/html2canvas/html2canvas.min.js?v=1.4.1', function() { return !!window.html2canvas; });
   html2canvasLoaded = true;
+}
+
+async function ensureJsZip() {
+  if (jszipLoaded && window.JSZip) return;
+  await loadScript('/assets/vendor/jszip/jszip.min.js?v=3.10.1', function() { return !!window.JSZip; });
+  jszipLoaded = true;
+}
+
+async function ensurePdfJs() {
+  if (window.PdfUtils && window.PdfUtils.ensurePdfJs) return window.PdfUtils.ensurePdfJs();
+  await loadScript('/assets/vendor/pdfjs/pdf.min.js?v=96de3233', function() { return !!window.pdfjsLib; });
+  if (!window.pdfjsLib) throw new Error('PDF.js failed to load.');
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js';
+  return window.pdfjsLib;
 }
 
 // ============================================================
@@ -557,9 +663,11 @@ function switchMode(mode) {
   document.getElementById('modeWord').classList.toggle('on', mode === 'word2pdf');
   document.getElementById('modeExcel').classList.toggle('on', mode === 'excel2pdf');
   document.getElementById('modePdfText').classList.toggle('on', mode === 'pdf2text');
+  document.getElementById('modePdfImages').classList.toggle('on', mode === 'pdf2images');
   document.getElementById('word2pdf-panel').classList.toggle('hidden', mode !== 'word2pdf');
   document.getElementById('excel2pdf-panel').classList.toggle('hidden', mode !== 'excel2pdf');
   document.getElementById('pdf2text-panel').classList.toggle('hidden', mode !== 'pdf2text');
+  document.getElementById('pdf2images-panel').classList.toggle('hidden', mode !== 'pdf2images');
 }
 
 // ============================================================
@@ -969,14 +1077,44 @@ async function convertExcel() {
 // PDF TO TEXT
 // ============================================================
 async function ensurePdfJsForText() {
-  if (window.pdfjsLib) {
-    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-    return window.pdfjsLib;
-  }
-  await loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js');
-  if (!window.pdfjsLib) throw new Error('PDF.js failed to load.');
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-  return window.pdfjsLib;
+  return ensurePdfJs();
+}
+
+function textItemsToLines(items) {
+  if (!items || !items.length) return '';
+  var normalized = items
+    .filter(function(item) { return item && item.str && item.str.trim(); })
+    .map(function(item) {
+      return {
+        str: item.str,
+        x: item.transform ? item.transform[4] : 0,
+        y: item.transform ? item.transform[5] : 0,
+        height: item.height || 10
+      };
+    })
+    .sort(function(a, b) {
+      if (Math.abs(b.y - a.y) > 3) return b.y - a.y;
+      return a.x - b.x;
+    });
+
+  var lines = [];
+  normalized.forEach(function(item) {
+    var last = lines[lines.length - 1];
+    if (!last || Math.abs(last.y - item.y) > Math.max(3, item.height * 0.45)) {
+      lines.push({ y: item.y, items: [item] });
+      return;
+    }
+    last.items.push(item);
+  });
+
+  return lines.map(function(line) {
+    return line.items
+      .sort(function(a, b) { return a.x - b.x; })
+      .map(function(item) { return item.str; })
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }).filter(Boolean).join('\n');
 }
 
 async function extractTextPages(pdfDoc) {
@@ -986,7 +1124,7 @@ async function extractTextPages(pdfDoc) {
     var textContent = await page.getTextContent();
     pages.push({
       page: pageNum,
-      text: textContent.items.map(function(item) { return item.str; }).join(' ').trim()
+      text: textItemsToLines(textContent.items)
     });
   }
   return pages;
@@ -1072,7 +1210,7 @@ async function extractText() {
 
     var totalChars = textPages.reduce(function(a, p) { return a + p.text.length; }, 0);
     if (totalChars === 0) {
-      showToast('No selectable text found. This may be a scanned PDF \u2014 try the OCR tool.', true);
+      showToast('No selectable text found. This may be a scanned PDF; try the OCR tool.', true);
     } else {
       showToast('Text extracted from ' + textPages.length + ' page(s)!');
     }
@@ -1128,13 +1266,183 @@ function downloadText() {
 }
 
 // ============================================================
+// PDF TO IMAGES
+// ============================================================
+function safeBaseName(name) {
+  return (name || 'document')
+    .replace(/\.[^.]+$/i, '')
+    .replace(/[^a-z0-9_-]+/gi, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || 'document';
+}
+
+function padPageNumber(pageNum) {
+  return String(pageNum).padStart(3, '0');
+}
+
+function parsePageRange(input, total) {
+  var clean = (input || '').trim();
+  if (!clean || clean.toLowerCase() === 'all') {
+    return Array.from({ length: total }, function(_, i) { return i + 1; });
+  }
+
+  var pages = new Set();
+  clean.split(',').forEach(function(part) {
+    var value = part.trim();
+    if (!value) return;
+    var range = value.split('-').map(function(n) { return parseInt(n.trim(), 10); });
+    if (range.length === 1 && Number.isInteger(range[0])) {
+      if (range[0] >= 1 && range[0] <= total) pages.add(range[0]);
+      return;
+    }
+    if (range.length === 2 && Number.isInteger(range[0]) && Number.isInteger(range[1])) {
+      var start = Math.max(1, Math.min(range[0], range[1]));
+      var end = Math.min(total, Math.max(range[0], range[1]));
+      for (var page = start; page <= end; page++) pages.add(page);
+    }
+  });
+
+  var sorted = Array.from(pages).sort(function(a, b) { return a - b; });
+  if (!sorted.length) throw new Error('Enter a valid page range such as 1, 3-5.');
+  return sorted;
+}
+
+function canvasToBlob(canvas, mimeType, quality) {
+  return new Promise(function(resolve, reject) {
+    canvas.toBlob(function(blob) {
+      if (blob) { resolve(blob); return; }
+      reject(new Error('Could not render page image.'));
+    }, mimeType, quality);
+  });
+}
+
+async function handlePdfImageFile(file) {
+  if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+    showToast('Please select a PDF file.', true);
+    return;
+  }
+
+  imagePdfFile = file;
+  imagePdfDoc = null;
+  imageZipBlob = null;
+  imageOutputName = '';
+  document.getElementById('imageFileName').textContent = file.name;
+  document.getElementById('imageFileSize').textContent = formatSize(file.size);
+  document.getElementById('imageFileInfo').style.display = 'block';
+  document.getElementById('imageConvertBtn').disabled = true;
+  document.getElementById('imageResultCard').classList.add('hidden');
+
+  try {
+    var pdfjs = await ensurePdfJs();
+    var ab = await file.arrayBuffer();
+    imagePdfDoc = await pdfjs.getDocument({ data: ab.slice(0) }).promise;
+    document.getElementById('imagePageCount').textContent = imagePdfDoc.numPages + ' page' + (imagePdfDoc.numPages !== 1 ? 's' : '');
+    document.getElementById('imageConvertBtn').disabled = false;
+  } catch (err) {
+    showToast('Failed to read PDF: ' + err.message, true);
+    document.getElementById('imageConvertBtn').disabled = true;
+  }
+}
+
+function resetPdfImages() {
+  imagePdfFile = null;
+  imagePdfDoc = null;
+  imageZipBlob = null;
+  imageOutputName = '';
+  document.getElementById('imageFileInfo').style.display = 'none';
+  document.getElementById('imageFileInput').value = '';
+  document.getElementById('imagePageRange').value = '';
+  document.getElementById('imageConvertBtn').disabled = true;
+  document.getElementById('imageResultCard').classList.add('hidden');
+  document.getElementById('imageProgress').style.display = 'none';
+  document.getElementById('imageProgressText').style.display = 'none';
+}
+
+async function convertImages() {
+  if (!imagePdfDoc || !imagePdfFile) return;
+  var btn = document.getElementById('imageConvertBtn');
+  var bar = document.getElementById('imageProgress');
+  var fill = document.getElementById('imageProgressFill');
+  var ptext = document.getElementById('imageProgressText');
+  var format = document.getElementById('imageFormat').value;
+  var scale = parseFloat(document.getElementById('imageScale').value) || 1.5;
+  var mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
+  var ext = format === 'jpeg' ? 'jpg' : 'png';
+  var quality = format === 'jpeg' ? 0.88 : undefined;
+
+  btn.disabled = true;
+  bar.style.display = 'block';
+  ptext.style.display = 'block';
+  fill.style.width = '5%';
+  ptext.textContent = 'Preparing export...';
+
+  try {
+    await ensurePdfJs();
+    await ensureJsZip();
+    var pages = parsePageRange(document.getElementById('imagePageRange').value, imagePdfDoc.numPages);
+    var zip = new JSZip();
+    var baseName = safeBaseName(imagePdfFile.name);
+
+    for (var i = 0; i < pages.length; i++) {
+      var pageNum = pages[i];
+      var page = await imagePdfDoc.getPage(pageNum);
+      var viewport = page.getViewport({ scale: scale });
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d', { alpha: false });
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+      var blob = await canvasToBlob(canvas, mimeType, quality);
+      zip.file(baseName + '_page_' + padPageNumber(pageNum) + '.' + ext, blob);
+      canvas.width = 0;
+      canvas.height = 0;
+
+      var renderProgress = 10 + Math.round(((i + 1) / pages.length) * 70);
+      fill.style.width = renderProgress + '%';
+      ptext.textContent = 'Rendered page ' + pageNum + ' of ' + imagePdfDoc.numPages + '...';
+    }
+
+    ptext.textContent = 'Compressing ZIP...';
+    imageZipBlob = await zip.generateAsync({ type: 'blob' }, function(meta) {
+      fill.style.width = (82 + Math.round(meta.percent * 0.16)) + '%';
+    });
+    imageOutputName = baseName + '_images.zip';
+
+    document.getElementById('imageResultName').textContent = imageOutputName;
+    document.getElementById('imageResultInfo').textContent = formatSize(imageZipBlob.size) + ' \u00B7 ' + pages.length + ' image(s) \u00B7 ' + ext.toUpperCase() + ' @ ' + scale + 'x';
+    document.getElementById('imageResultCard').classList.remove('hidden');
+
+    var dlBtn = document.getElementById('imageDownloadBtn');
+    dlBtn.onclick = function() {
+      function doImageDl() { downloadBlob(imageZipBlob, imageOutputName); }
+      var gate = document.querySelector('email-gate-modal');
+      if (gate) { gate.show(doImageDl); } else { doImageDl(); }
+    };
+
+    fill.style.width = '100%';
+    ptext.textContent = 'Done!';
+    showToast('PDF pages exported as images successfully!');
+  } catch (err) {
+    console.error('PDF image export error:', err);
+    showToast('Image export failed: ' + err.message, true);
+    fill.style.width = '0%';
+    ptext.textContent = '';
+  }
+
+  btn.disabled = false;
+}
+
+// ============================================================
 // Initialize drop zones
 // ============================================================
 setupDropZone('wordDropZone', 'wordFileInput', handleWordFile);
 setupDropZone('excelDropZone', 'excelFileInput', handleExcelFile);
 setupDropZone('textDropZone', 'textFileInput', handlePdfTextFile);
+setupDropZone('imageDropZone', 'imageFileInput', handlePdfImageFile);
 </script>
-<script src="/assets/js/components/related-tools.js?v=7785bbdc" defer></script>
+<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>

@@ -188,16 +188,17 @@
   function buildISPCard(isp, sym) {
     var name = isp.name || 'Local ISP';
     var type = isp.type || 'Fiber';
-    var monthly = isp.monthly || 0;
+    var monthly = isp.monthly || (isp.prices && isp.prices[0]) || 0;
     var setup = isp.setup || 0;
-    var speed = isp.speed || 'Varies';
+    var speed = isp.speed || (isp.speeds && isp.speeds[0]) || 'Varies';
     var dataCap = isp.dataCap || 'Varies';
+    var speedLabel = /mbps/i.test(String(speed)) ? speed : speed + ' Mbps';
     return '<div class="isp-card">' +
       '<div class="card-label">' + type + '</div>' +
       '<h3>' + name + '</h3>' +
       '<div class="metric"><span class="metric-label">Monthly</span><span class="metric-value">' + fmt(monthly, sym) + '</span></div>' +
       '<div class="metric"><span class="metric-label">Setup/Install</span><span class="metric-value">' + fmt(setup, sym) + '</span></div>' +
-      '<div class="metric"><span class="metric-label">Speed</span><span class="metric-value">' + speed + ' Mbps</span></div>' +
+      '<div class="metric"><span class="metric-label">Speed</span><span class="metric-value">' + speedLabel + '</span></div>' +
       '<div class="metric"><span class="metric-label">Data Cap</span><span class="metric-value">' + dataCap + '</span></div>' +
       '</div>';
   }
@@ -219,7 +220,7 @@
 
     for (var i = 0; i < isps.length && i < 5; i++) {
       var isp = isps[i];
-      var ispMonthly = isp.monthly || 0;
+      var ispMonthly = isp.monthly || (isp.prices && isp.prices[0]) || 0;
       var capNum = parseInt(isp.dataCap) || 0;
       var costGB = capNum > 0 ? (ispMonthly / capNum) : (ispMonthly / 500);
       items.push({name: isp.name || 'ISP', cost: costGB, cls: 'blue'});
@@ -250,7 +251,7 @@
     for (var i = 0; i < isps.length && i < 5; i++) {
       var isp = isps[i];
       var setup = isp.setup || 0;
-      var monthly = isp.monthly || 0;
+      var monthly = isp.monthly || (isp.prices && isp.prices[0]) || 0;
       allRows.push({name: isp.name || 'ISP', y1: setup + (monthly * 12), y3: setup + (monthly * 36)});
     }
 
@@ -301,5 +302,6 @@
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/telecom-toolkit.js" defer></script>
 </body>
 </html>

@@ -11,6 +11,21 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
 <meta property="og:url" content="https://afrotools.com/tools/fintech-fee-watch/">
+<style>
+.ff-quality{border:1px solid #dbeafe;background:#f8fbff;border-radius:14px;padding:14px;margin:14px 0;}
+.ff-quality-title{font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#1d4ed8;margin-bottom:8px;}
+.ff-quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.ff-quality-pill{border:1px solid #bfdbfe;background:#fff;border-radius:10px;padding:9px;}
+.ff-quality-k{font-size:.62rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#64748b;margin-bottom:3px;}
+.ff-quality-v{font-size:.95rem;font-weight:900;color:#0f172a;}
+.ff-quality-list{margin:0;padding:0;list-style:none;display:grid;gap:7px;}
+.ff-quality-list li{font-size:.78rem;line-height:1.45;color:#334155;background:#fff;border:1px solid #e2e8f0;border-radius:9px;padding:8px 9px;}
+.ff-card-line{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;}
+.ff-source{font-size:.72rem;color:#475569;line-height:1.5;margin-top:10px;}
+@media(max-width:640px){.ff-quality-grid{grid-template-columns:1fr;}}
+</style>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -53,6 +68,7 @@
         <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
         <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I saw the fee myself</option><option value="receipt">Receipt or app screenshot</option><option value="official_notice">Official tariff or fee page</option><option value="community_check">Community check</option></select></div>
         <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional screenshot or tariff page"></div>
+        <div class="ff-quality" id="ffQuality" aria-live="polite"></div>
         <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Fee</button></div>
       </div>
     </div>
@@ -73,13 +89,97 @@ window.MarketDataApp.mount({
   responseKey: 'fees',
   subtype: 'fintech_fee',
   vertical: 'fintech_fees',
+  limit: 36,
   reportButtonLabel: 'Submit Fee',
+  reportFields: [
+    {key:'provider', label:'Provider', type:'text', required:true, placeholder:'e.g. M-Pesa, OPay, MTN MoMo'},
+    {key:'fee_type', label:'Fee Type', type:'select', required:true, options:['Transfer','Withdrawal','Deposit','ATM','POS','USSD','Bill Payment','Cash-out']},
+    {key:'amount_band', label:'Amount Band', type:'text', required:true, placeholder:'e.g. 1,001-5,000'},
+    {key:'fee_amount', label:'Fee Amount', type:'number', required:true, min:0},
+    {key:'transaction_channel', label:'Channel', type:'select', required:true, options:['App','USSD','Agent','ATM','POS','Branch','Official fee page']},
+    {key:'customer_segment', label:'Customer Segment', type:'select', required:false, options:['Personal wallet','Business wallet','Bank account','Agent account','Unknown']},
+    {key:'notes', label:'What did the screen or receipt say?', type:'textarea', required:false, placeholder:'Short note, including any tax, network, or interop warning shown to you'}
+  ],
+  transformPayload: function (payload) {
+    return {
+      provider: payload.provider,
+      fee_type: payload.fee_type,
+      amount_band: payload.amount_band,
+      fee_amount: payload.fee_amount,
+      transaction_channel: payload.transaction_channel,
+      customer_segment: payload.customer_segment || null,
+      notes: payload.notes || null
+    };
+  },
+  renderSummary: function (rows, response, helpers) {
+    var feeRows = rows.filter(function (row) { return Number.isFinite(Number(row.fee_amount)); });
+    var avg = feeRows.length ? feeRows.reduce(function (sum, row) { return sum + Number(row.fee_amount || 0); }, 0) / feeRows.length : 0;
+    var official = rows.filter(function (row) { return row.source_type === 'official_notice' || row.proof_url; }).length;
+    return '<div class="md-stat"><div class="md-stat-value">' + helpers.formatNumber(rows.length) + '</div><div class="md-stat-label">Verified records</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + helpers.formatNumber(Math.round(avg)) + '</div><div class="md-stat-label">Average listed fee</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + helpers.formatNumber(official) + '</div><div class="md-stat-label">With proof signal</div></div>';
+  },
   renderCard: function (row, helpers) {
+    var observed = row.observed_at ? new Date(row.observed_at) : null;
+    var observedText = observed && !isNaN(observed.getTime()) ? observed.toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : 'Date not listed';
+    var source = row.source_type ? row.source_type.replace(/_/g, ' ') : 'community report';
+    var proof = row.proof_url ? 'Proof linked' : 'No public proof link';
     return '<article class="md-card"><h3>' + helpers.escapeHtml((row.provider_name || 'Provider') + ' - ' + (row.fee_type || 'Fee')) + '</h3>' +
-      '<p>' + helpers.escapeHtml((row.city || '') + ' | ' + (row.amount_band || 'Amount band not set')) + '</p>' +
-      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.fee_amount || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.transaction_channel || 'Channel') + '</span></div></article>';
+      '<p>' + helpers.escapeHtml((row.city || '') + (row.neighborhood ? ' - ' + row.neighborhood : '') + ' | ' + (row.amount_band || 'Amount band not set')) + '</p>' +
+      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.fee_amount || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.transaction_channel || 'Channel') + '</span></div>' +
+      '<div class="ff-card-line"><span class="md-pill">' + helpers.escapeHtml(observedText) + '</span><span class="md-pill">' + helpers.escapeHtml(proof) + '</span></div>' +
+      '<div class="ff-source">Source: ' + helpers.escapeHtml(source) + '</div></article>';
   }
 });
+
+function fintechFieldValue(id){
+  var el = document.getElementById(id);
+  return el ? String(el.value || '').trim() : '';
+}
+
+function renderFintechQualityCoach(){
+  var target = document.getElementById('ffQuality');
+  if(!target) return;
+  var proof = fintechFieldValue('mdProofUrl');
+  var source = fintechFieldValue('mdSourceType');
+  var observed = fintechFieldValue('mdObservedAt');
+  var provider = fintechFieldValue('mdReportProvider') || fintechFieldValue('report_provider');
+  var feeType = fintechFieldValue('report_fee_type');
+  var amountBand = fintechFieldValue('report_amount_band');
+  var feeAmount = fintechFieldValue('report_fee_amount');
+  var channel = fintechFieldValue('report_transaction_channel');
+  var score = 35;
+  if(proof) score += 25;
+  if(source === 'official_notice' || source === 'receipt') score += 15;
+  if(provider && feeType && amountBand && feeAmount && channel) score += 20;
+  if(observed) score += 5;
+  score = Math.min(100, score);
+  var level = score >= 80 ? 'Strong evidence' : score >= 60 ? 'Usable report' : 'Needs detail';
+  var review = score >= 80 ? 'Fast review likely' : score >= 60 ? 'Normal review' : 'Reviewer may ask for proof';
+  var checks = [];
+  if(!provider) checks.push('Add the exact provider or bank name.');
+  if(!amountBand) checks.push('Add the amount band exactly as shown in the fee table.');
+  if(!feeAmount) checks.push('Add the fee amount, even if it is zero.');
+  if(!channel) checks.push('Select the channel: app, USSD, agent, ATM, POS, branch, or official page.');
+  if(!proof) checks.push('Add a screenshot, receipt, or official tariff link when you can.');
+  if(checks.length === 0) checks.push('This report has the details buyers need for city-level fee benchmarks.');
+  target.innerHTML = '<div class="ff-quality-title">Report quality coach</div>' +
+    '<div class="ff-quality-grid"><div class="ff-quality-pill"><div class="ff-quality-k">Evidence score</div><div class="ff-quality-v">' + score + '/100</div></div>' +
+    '<div class="ff-quality-pill"><div class="ff-quality-k">Review path</div><div class="ff-quality-v">' + review + '</div></div></div>' +
+    '<ul class="ff-quality-list"><li><strong>' + level + '.</strong> ' + checks[0] + '</li>' + checks.slice(1, 4).map(function (item) { return '<li>' + item + '</li>'; }).join('') + '</ul>';
+}
+
+function initFintechQualityCoach(){
+  renderFintechQualityCoach();
+  ['mdReportProvider','mdObservedAt','mdSourceType','mdProofUrl','report_provider','report_fee_type','report_amount_band','report_fee_amount','report_transaction_channel'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if(el){
+      el.addEventListener('input', renderFintechQualityCoach);
+      el.addEventListener('change', renderFintechQualityCoach);
+    }
+  });
+}
+setTimeout(initFintechQualityCoach, 0);
 </script>
 </body>
 </html>

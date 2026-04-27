@@ -105,6 +105,8 @@ exports.handler = async (event) => {
     }
 
     // Build enriched record — all new fields are optional and validated
+    const attribution = body.attribution && typeof body.attribution === 'object' ? body.attribution : {};
+    const device = body.device && typeof body.device === 'object' ? body.device : {};
     const record = {
       email: email.toLowerCase().trim(),
       source: cleanStr(body.source, 50) || 'pdf-gate',
@@ -116,15 +118,15 @@ exports.handler = async (event) => {
       currency: cleanStr(body.currency, 3),
 
       // Attribution
-      referrer_url: cleanUrl(body.referrerUrl),
-      utm_source: cleanStr(body.utmSource, 100),
-      utm_medium: cleanStr(body.utmMedium, 100),
-      utm_campaign: cleanStr(body.utmCampaign, 200),
-      utm_content: cleanStr(body.utmContent, 200),
-      page_url: cleanUrl(body.pageUrl),
+      referrer_url: cleanUrl(body.referrerUrl || body.referrer_url || attribution.referrerUrl),
+      utm_source: cleanStr(body.utmSource || body.utm_source, 100),
+      utm_medium: cleanStr(body.utmMedium || body.utm_medium, 100),
+      utm_campaign: cleanStr(body.utmCampaign || body.utm_campaign, 200),
+      utm_content: cleanStr(body.utmContent || body.utm_content, 200),
+      page_url: cleanUrl(body.pageUrl || body.page_url || attribution.pageUrl),
 
       // Device
-      device_type: cleanEnum(body.deviceType, VALID_DEVICE_TYPES),
+      device_type: cleanEnum(body.deviceType || body.device_type || device.type, VALID_DEVICE_TYPES),
 
       // User profile (optional)
       name: cleanStr(body.name, 150),

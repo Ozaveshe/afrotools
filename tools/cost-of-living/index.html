@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 50%,#007AFF 100%);padding:44px 0 36px}
@@ -44,9 +44,10 @@ h1 em{color:#4DA3FF;font-style:normal}
 .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
 .card-body{padding:22px}
 label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
 .sel-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.budget-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
 .compare-table{width:100%;border-collapse:collapse}
 .compare-table th,.compare-table td{padding:10px 14px;text-align:left;border-bottom:1px solid #f1f5f9;font-size:.82rem}
 .compare-table th{background:#f8fafc;font-weight:700;color:#64748b;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;position:sticky;top:0}
@@ -60,13 +61,19 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0
 .sum-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
 .sum-box .num{font-size:1.4rem;font-weight:800;color:#007AFF}
 .sum-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.budget-plan{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:0 0 18px}
+.budget-plan h3{font-size:1rem;font-weight:800;color:var(--afro-dark);margin:0 0 10px}
+.budget-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.budget-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px}
+.budget-card strong{display:block;color:#007AFF;font-size:1.05rem}.budget-card span{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:700}
+.budget-note{margin-top:10px;font-size:.86rem;color:#475569;line-height:1.6}
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
 .seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.sel-row{grid-template-columns:1fr}.summary{grid-template-columns:1fr}}
+@media(max-width:768px){.sel-row,.budget-row{grid-template-columns:1fr}.summary,.budget-grid{grid-template-columns:1fr}}
 .mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .mfun-card{padding:16px;border-radius:10px;text-align:center}
 .mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
@@ -125,6 +132,8 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -144,12 +153,19 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0
 <div><label>City 2</label><select id="city2" onchange="compare()"></select></div>
 <div><label>Display Currency</label><select id="curr" onchange="compare()"><option value="USD">USD ($)</option><option value="local">Local Currency</option></select></div>
 </div>
+<div class="budget-row">
+<div><label>Monthly Income (USD)</label><input id="incomeUsd" type="number" value="2000" min="0" oninput="compare()"></div>
+<div><label>Household Size</label><input id="householdSize" type="number" value="1" min="1" max="12" oninput="compare()"></div>
+<div><label>Housing</label><select id="housingType" onchange="compare()"><option value="rent1bed">1-bedroom</option><option value="rent3bed">3-bedroom family home</option></select></div>
+<div><label>Lifestyle</label><select id="lifestyle" onchange="compare()"><option value="local">Mostly local</option><option value="mixed" selected>Mixed local/expat</option><option value="expat">Expat-heavy</option></select></div>
+</div>
 </div></div>
 
 <div class="card" style="margin-top:18px">
 <div class="card-head"><span class="card-title">Comparison Results</span></div>
 <div class="card-body">
 <div class="summary" id="summary"></div>
+<div class="budget-plan" id="budgetPlan"></div>
 <div style="overflow-x:auto"><table class="compare-table" id="table"></table></div>
 </div></div>
 </div></section>
@@ -286,20 +302,61 @@ function fmtVal(v, city, useLocal) {
   if (useLocal) return city.currency + ' ' + Math.round(v * city.rate).toLocaleString('en');
   return '$' + v.toLocaleString('en', {minimumFractionDigits: v < 10 ? 1 : 0, maximumFractionDigits: v < 10 ? 1 : 0});
 }
+var lastCostBrief = '';
+function getProfile() {
+  return {
+    income: Number(document.getElementById('incomeUsd').value) || 0,
+    people: Math.max(1, Number(document.getElementById('householdSize').value) || 1),
+    housing: document.getElementById('housingType').value,
+    lifestyle: document.getElementById('lifestyle').value
+  };
+}
+function monthlyCost(city, profile) {
+  var lifestyleFactor = profile.lifestyle === 'expat' ? 1.35 : profile.lifestyle === 'local' ? 0.85 : 1;
+  var rent = city[profile.housing] || city.rent1bed;
+  var grocery = city.grocery * (1 + (profile.people - 1) * 0.7) * lifestyleFactor;
+  var transport = city.transport * Math.min(profile.people, 2) * lifestyleFactor;
+  var utilities = (city.internet + city.electricity + city.water + city.phone * profile.people) * lifestyleFactor;
+  var lifestyle = (city.gym + city.domestic + city.restaurant * 2 + city.cinema * 2) * lifestyleFactor;
+  return { total: rent + grocery + transport + utilities + lifestyle, rent: rent, grocery: grocery, transport: transport, utilities: utilities, lifestyle: lifestyle };
+}
+function renderBudgetPlan(c1, c2, m1, m2, profile, useLocal) {
+  var cheaper = m1.total <= m2.total ? c1 : c2;
+  var cheaperCost = Math.min(m1.total, m2.total);
+  var expensiveCost = Math.max(m1.total, m2.total);
+  var incomeGap = profile.income ? profile.income - cheaperCost : 0;
+  var rentShare = (cheaper === c1 ? m1.rent : m2.rent) / cheaperCost * 100;
+  var annualSavings = (expensiveCost - cheaperCost) * 12;
+  var status = !profile.income ? 'Add income to check runway' : incomeGap >= 0 ? 'Budget fits with $' + Math.round(incomeGap).toLocaleString('en') + ' monthly buffer' : 'Budget gap of $' + Math.abs(Math.round(incomeGap)).toLocaleString('en') + ' per month';
+  lastCostBrief = 'Cost of living plan: ' + cheaper.name + ' is cheaper for this profile at about $' + Math.round(cheaperCost).toLocaleString('en') + ' per month. Rent share is ' + rentShare.toFixed(0) + '%. Annual difference versus the other city is about $' + Math.round(annualSavings).toLocaleString('en') + '. ' + status + '.';
+  document.getElementById('budgetPlan').innerHTML =
+    '<h3>Personal Monthly Budget</h3><div class="budget-grid">' +
+    '<div class="budget-card"><strong>' + cheaper.name + '</strong><span>Cheaper city</span></div>' +
+    '<div class="budget-card"><strong>$' + Math.round(cheaperCost).toLocaleString('en') + '</strong><span>Profile monthly cost</span></div>' +
+    '<div class="budget-card"><strong>' + rentShare.toFixed(0) + '%</strong><span>Rent share</span></div>' +
+    '<div class="budget-card"><strong>$' + Math.round(annualSavings).toLocaleString('en') + '</strong><span>Annual difference</span></div>' +
+    '</div><div class="budget-note">' + status + '. Figures are directional. Price-check rent, school, healthcare, and commute patterns before relocating. <button class="btn" style="margin-left:8px;padding:6px 10px;font-size:.78rem" onclick="copyCostBrief()">Copy Brief</button></div>';
+}
+function copyCostBrief() {
+  navigator.clipboard.writeText(lastCostBrief).catch(function () { window.prompt('Copy cost brief', lastCostBrief); });
+}
 
 function compare() {
   var c1 = CITIES[document.getElementById('city1').value];
   var c2 = CITIES[document.getElementById('city2').value];
   var useLocal = document.getElementById('curr').value === 'local';
+  var profile = getProfile();
 
   // Summary
-  var monthly1 = 0, monthly2 = 0;
-  ITEMS.forEach(function(itm) { if (itm.monthly) { monthly1 += c1[itm.key]; monthly2 += c2[itm.key]; } });
+  var monthlyBreakdown1 = monthlyCost(c1, profile);
+  var monthlyBreakdown2 = monthlyCost(c2, profile);
+  var monthly1 = monthlyBreakdown1.total, monthly2 = monthlyBreakdown2.total;
   var diff = ((monthly2 - monthly1) / monthly1 * 100);
 
   var sumHtml = '<div class="sum-box"><div class="num">' + fmtVal(monthly1, c1, useLocal) + '/mo</div><div class="lbl">' + c1.name + ' Total Monthly</div></div>';
   sumHtml += '<div class="sum-box"><div class="num">' + fmtVal(monthly2, c2, useLocal) + '/mo</div><div class="lbl">' + c2.name + ' Total Monthly</div></div>';
   document.getElementById('summary').innerHTML = sumHtml;
+  renderBudgetPlan(c1, c2, monthlyBreakdown1, monthlyBreakdown2, profile, useLocal);
 
   // Table
   var html = '<thead><tr><th>Item</th><th>' + c1.name + '</th><th>' + c2.name + '</th><th>Difference</th></tr></thead><tbody>';

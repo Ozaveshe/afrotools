@@ -8,7 +8,7 @@
 <meta name="description" content="Compare trade finance options for African imports and exports. Letter of Credit, T/T, Cash Against Documents, Open Account — costs, risks, and when to use each.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/tool-landing.css?v=66f6f0c0">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <style>
 /* ── Tool Shell, Hero & Navigation ──────────────── */
 :root{--brand:#007AFF;--brand-d:#0063D1;--surface:#fff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b}
@@ -78,7 +78,10 @@
 .compare-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
 </style>
   <link rel="canonical" href="https://afrotools.com/tools/trade-finance-comparator/">
-  <meta property="og:type" content="website">
+
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/trade-finance-comparator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/trade-finance-comparator/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kilinganisha-fedha-za-biashara/"><meta property="og:type" content="website">
   <meta property="og:url" content="https://afrotools.com/tools/trade-finance-comparator/">
   <meta property="og:title" content="Trade Finance Comparator — LC vs T/T vs CAD for African Trade">
   <meta property="og:description" content="Compare trade finance options for African imports and exports. Letter of Credit, T/T, Cash Against Documents, Open Account — costs, risks, and when to use ">
@@ -95,6 +98,7 @@
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<link rel="stylesheet" href="/assets/css/trade-toolkit.css">
 </head>
 <body>
 <afro-navbar active="trade"></afro-navbar>
@@ -349,8 +353,11 @@ function buildGuide() {
   html += '<h3 style="font-weight:800;margin-bottom:12px">Decision Quick Reference</h3>';
   html += '<table class="compare-table"><thead><tr><th>Situation</th><th>Recommended Instrument</th></tr></thead><tbody>';
   TradeFinanceData.decisionFactors.forEach(function(f) {
-    var inst = TradeFinanceData.getById(f.recommendation);
-    html += '<tr><td>' + f.factor + '</td><td>' + inst.icon + ' ' + inst.abbreviation + '</td></tr>';
+    var inst = TradeFinanceData.getById(f.recommendation || f.yes);
+    var situation = f.factor || f.question || 'Decision factor';
+    var reason = f.reason || f.yesReason || '';
+    if (!inst) return;
+    html += '<tr><td>' + situation + (reason ? '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + reason + '</div>' : '') + '</td><td>' + inst.icon + ' ' + inst.abbreviation + '</td></tr>';
   });
   html += '</tbody></table></div>';
   document.getElementById('guideContent').innerHTML = html;
@@ -362,5 +369,6 @@ buildAdvisor();
 buildGuide();
 runCalc();
 </script>
+<script src="/assets/js/trade-toolkit.js" defer></script>
 </body>
 </html>

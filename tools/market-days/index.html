@@ -39,8 +39,19 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/assets/css/market-days.css?v=68ca843d">
+  <style>
+    .trip-planner-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end}
+    .trip-output{margin-top:16px;border-top:1px solid rgba(148,163,184,.2);padding-top:16px}
+    .trip-output-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+    .trip-output-box{border:1px solid rgba(148,163,184,.22);border-radius:16px;background:#fff;padding:12px}
+    .trip-output-box span{display:block;font-size:.66rem;font-weight:800;color:var(--color-text-subtle,#64748b);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+    .trip-output-box strong{display:block;font-size:.88rem;color:var(--color-text,#0f172a);line-height:1.35}
+    .trip-output p{font-size:.86rem;color:var(--color-text-muted,#475569);line-height:1.7;margin:8px 0}
+    .trip-copy{border:1px solid rgba(0,122,255,.35);background:#fff;color:var(--color-primary,#007aff);border-radius:999px;padding:10px 14px;font-size:.8rem;font-weight:800;font-family:inherit;cursor:pointer}
+    @media(max-width:820px){.trip-planner-grid,.trip-output-grid{grid-template-columns:1fr}}
+  </style>
 
-  <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+  <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
   <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
@@ -108,6 +119,8 @@
     ]
   }
   </script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body class="market-days-page">
   <afro-navbar></afro-navbar>
@@ -218,6 +231,38 @@
           <article class="surface upcoming-card">
             <div class="section-label">Next turns from the selected date</div>
             <div class="upcoming-grid" id="upcomingGrid"></div>
+          </article>
+
+          <article class="surface lookup-card">
+            <div class="section-label">Market trip planner</div>
+            <div class="trip-planner-grid">
+              <div>
+                <label class="field-label" for="tripMarket">Named market</label>
+                <select class="field-select" id="tripMarket"></select>
+              </div>
+              <div>
+                <label class="field-label" for="tripPurpose">Purpose</label>
+                <select class="field-select" id="tripPurpose">
+                  <option value="shopping">Shopping trip</option>
+                  <option value="vendor">Vendor restock</option>
+                  <option value="ceremony">Ceremony planning</option>
+                  <option value="research">Research / field visit</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="tripBuffer">Planning buffer</label>
+                <select class="field-select" id="tripBuffer">
+                  <option value="0">Any next matching day</option>
+                  <option value="2" selected>At least 2 days away</option>
+                  <option value="7">At least 1 week away</option>
+                  <option value="14">At least 2 weeks away</option>
+                </select>
+              </div>
+              <div>
+                <button class="solid-btn" id="buildTripPlan" type="button">Build trip brief</button>
+              </div>
+            </div>
+            <div class="trip-output" id="tripPlannerOutput"></div>
           </article>
         </div>
 
@@ -337,6 +382,69 @@
   </main>
 
   <afro-footer></afro-footer>
+  <script>
+    (function(){
+      var lastTripBrief = '';
+      function engine(){ return window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.igboMarketDays; }
+      function selectedDateKey(api){
+        var p = new URLSearchParams(window.location.search).get('date');
+        return api.isValidDateKey(p) ? p : api.getTodayDateKey(api.defaultTimeZone);
+      }
+      function initTripPlanner(){
+        var api = engine();
+        var marketSelect = document.getElementById('tripMarket');
+        if(!api || !marketSelect) return;
+        marketSelect.innerHTML = api.marketDirectory.map(function(m){
+          return '<option value="'+m.id+'">'+m.name+' - '+m.town+', '+m.state+'</option>';
+        }).join('');
+        var btn = document.getElementById('buildTripPlan');
+        if(btn) btn.addEventListener('click', renderTripPlan);
+        renderTripPlan();
+      }
+      function renderTripPlan(){
+        var api = engine();
+        var out = document.getElementById('tripPlannerOutput');
+        if(!api || !out) return;
+        var marketId = document.getElementById('tripMarket').value;
+        var market = api.marketDirectory.find(function(m){ return m.id === marketId; }) || api.marketDirectory[0];
+        var purpose = document.getElementById('tripPurpose').value;
+        var buffer = parseInt(document.getElementById('tripBuffer').value,10) || 0;
+        var base = api.addDays(api.parseDateKey(selectedDateKey(api)), buffer);
+        var dates = api.getUpcomingDates(base, market.dayIndex, 3);
+        var day = api.dayDetails[market.dayIndex];
+        var purposeNote = {
+          shopping: 'Go early, compare at least three stalls, and carry a written target list so the market-day crowd does not push you into impulse buying.',
+          vendor: 'Call your supplier a day before, confirm stock and transport, and keep cash/mobile money split so one payment channel failure does not stop the trip.',
+          ceremony: 'Use the first matching date for scouting and the second for confirmed purchases after family approval.',
+          research: 'Record date, market day, section, stall type, and quoted prices so the visit can become a clean field note.'
+        }[purpose];
+        lastTripBrief = [
+          'IGBO MARKET TRIP BRIEF',
+          'Market: '+market.name+' ('+market.town+', '+market.state+')',
+          'Traditional day: '+day.name,
+          'Next options: '+dates.map(function(d){ return api.formatDate(d,{weekday:'short',day:'numeric',month:'short',year:'numeric'}); }).join(' | '),
+          'Purpose: '+purpose,
+          'Note: '+purposeNote,
+          'Source: '+market.sourceUrl
+        ].join('\n');
+        out.innerHTML =
+          '<div class="trip-output-grid">'+
+          '<div class="trip-output-box"><span>Market day</span><strong>'+day.name+' / '+day.alias+'</strong></div>'+
+          '<div class="trip-output-box"><span>Best next date</span><strong>'+api.formatDate(dates[0],{weekday:'short',day:'numeric',month:'short',year:'numeric'})+'</strong></div>'+
+          '<div class="trip-output-box"><span>Source</span><strong>'+market.sourceLabel+'</strong></div>'+
+          '</div>'+
+          '<p><strong>'+market.name+':</strong> '+market.descriptor+' '+market.operatingPattern+'</p>'+
+          '<p>'+purposeNote+'</p>'+
+          '<button class="trip-copy" type="button" onclick="window.copyMarketTripBrief&&window.copyMarketTripBrief()">Copy trip brief</button>';
+        window.__marketTripBrief = lastTripBrief;
+      }
+      window.copyMarketTripBrief = function(){
+        if(window.__marketTripBrief && navigator.clipboard) navigator.clipboard.writeText(window.__marketTripBrief);
+      };
+      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initTripPlanner);
+      else initTripPlanner();
+    })();
+  </script>
   <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
   <script>
     window.dataLayer = window.dataLayer || [];

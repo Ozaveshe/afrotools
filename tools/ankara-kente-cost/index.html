@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/energy.css?v=ca21dbe3">
+<link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -20,9 +20,18 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 a{text-decoration:none;color:inherit}
 :root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
 .en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+.quote-builder{border:1px solid #fbcfe8;background:#fff7fb}
+.quote-output{background:#fff;border:1px solid #f9a8d4;border-radius:12px;padding:18px;line-height:1.65}
+.quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.quote-metric{background:#fdf2f8;border:1px solid #fbcfe8;border-radius:10px;padding:12px}
+.quote-metric span{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#9d174d;margin-bottom:4px}
+.quote-metric strong{font-size:1.1rem;color:#831843}
+.quote-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 </style>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta property="og:url" content="https://afrotools.com/tools/ankara-kente-cost/">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar theme="dark" active="creative"></afro-navbar>
@@ -98,6 +107,31 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
   </div>
+  <div class="en-card quote-builder">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f4cb;</div>Production Quote Builder</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Pieces / Units</label>
+        <input type="number" id="quoteUnits" class="en-input" value="3" min="1">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Labour per Piece</label>
+        <input type="number" id="labourPerPiece" class="en-input" value="12000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Packaging per Piece</label>
+        <input type="number" id="packagingPerPiece" class="en-input" value="1500" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Shipping / Errand Cost</label>
+        <input type="number" id="shippingOrder" class="en-input" value="5000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Target Margin %</label>
+        <input type="number" id="quoteMargin" class="en-input" value="35" min="0" max="300">
+      </div>
+    </div>
+  </div>
   <div class="en-form-actions">
     <button class="en-btn en-btn-full" onclick="calculate()">Calculate Fabric Cost</button>
   </div>
@@ -131,6 +165,10 @@ a{text-decoration:none;color:inherit}
       <div class="en-card-title"><div class="en-card-title-icon">&#x1f30d;</div>Export &amp; Import Notes</div>
       <div id="exportNotes"></div>
     </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4dd;</div>Production Quote</div>
+      <div class="quote-output" id="productionQuote"></div>
+    </div>
     <div class="en-tip">
       <div class="en-tip-icon">&#x1f9f5;</div>
       <div class="en-tip-body">
@@ -159,7 +197,8 @@ var PRICES={
   bogolan:{SN:{factory:2000,premium:6000,handcrafted:20000},CI:{factory:2000,premium:6000,handcrafted:20000}}
 };
 var EXPORT_MULT={factory:3,premium:5,handcrafted:8};
-function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+var lastProductionQuote='';
+function fmt(n,digits){digits=digits||0;return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:digits,maximumFractionDigits:digits});}
 function setDefaultPrice(){
   var type=document.getElementById('fabricType').value;
   var quality=document.getElementById('quality').value;
@@ -177,6 +216,11 @@ function calculate(){
   var pricePerYard=parseFloat(document.getElementById('pricePerYard').value)||0;
   var yards=parseFloat(document.getElementById('yards').value)||6;
   var purpose=document.getElementById('purpose').value;
+  var units=Math.max(1,parseInt(document.getElementById('quoteUnits').value,10)||1);
+  var labourPerPiece=parseFloat(document.getElementById('labourPerPiece').value)||0;
+  var packagingPerPiece=parseFloat(document.getElementById('packagingPerPiece').value)||0;
+  var shippingOrder=parseFloat(document.getElementById('shippingOrder').value)||0;
+  var marginPct=parseFloat(document.getElementById('quoteMargin').value)||0;
   var sym=SYM[country];var rate=FX[country];
   var totalLocal=pricePerYard*yards;
   var totalUSD=totalLocal/rate;
@@ -208,8 +252,44 @@ function calculate(){
     '<div class="en-notice"><strong>Export Value:</strong> This fabric would sell for approximately $'+fmt(exportUSD,0)+' in the US, UK, or diaspora markets ('+exportMult+'x local price). Popular on Etsy, Depop, and African diaspora fashion marketplaces.</div>'+
     (purpose==='export'?'<div class="en-notice en-notice-warning" style="margin-top:12px"><strong>Import Duty Estimate:</strong> Importing to US/UK — estimated customs duty ≈ $'+fmt(customsDuty,0)+' (12% of value). Always check the harmonized tariff code for textiles (HS code 5208–5212 for cotton fabrics) before shipping.</div>':'')+
     '<div style="margin-top:12px;font-size:.87rem;color:#475569"><strong>Best Markets for African Fabric Export:</strong><br>&#x2022; US Etsy — Ankara prints sell for $15–$40/yd<br>&#x2022; UK markets — Kente sells for £30–£100/yd<br>&#x2022; Canada — Growing African diaspora demand<br>&#x2022; Germany — Large West African community<br>&#x2022; Instagram / TikTok direct sales — lowest fees</div>';
+  renderProductionQuote({country:country,type:type,quality:quality,sym:sym,rate:rate,totalLocal:totalLocal,totalUSD:totalUSD,yards:yards,units:units,labourPerPiece:labourPerPiece,packagingPerPiece:packagingPerPiece,shippingOrder:shippingOrder,marginPct:marginPct});
   document.getElementById('results').classList.add('on');
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderProductionQuote(data){
+  var materialPerPiece=data.totalLocal/data.units;
+  var shippingPerPiece=data.shippingOrder/data.units;
+  var costPerPiece=materialPerPiece+data.labourPerPiece+data.packagingPerPiece+shippingPerPiece;
+  var quotePerPiece=costPerPiece*(1+(data.marginPct/100));
+  var orderTotal=quotePerPiece*data.units;
+  var profitPerPiece=quotePerPiece-costPerPiece;
+  var exportOrderUSD=orderTotal/data.rate;
+  var label=data.type+' '+data.quality+' order';
+  lastProductionQuote=[
+    'Ankara/Kente production quote',
+    'Order: '+data.units+' piece(s), '+data.yards+' yards total',
+    'Fabric: '+label,
+    'Material per piece: '+data.sym+fmt(materialPerPiece),
+    'Labour per piece: '+data.sym+fmt(data.labourPerPiece),
+    'Packaging per piece: '+data.sym+fmt(data.packagingPerPiece),
+    'Shipping per piece: '+data.sym+fmt(shippingPerPiece),
+    'Suggested quote per piece: '+data.sym+fmt(quotePerPiece),
+    'Order total: '+data.sym+fmt(orderTotal)+' (about $'+fmt(exportOrderUSD,2)+' USD)',
+    'Expected gross profit per piece: '+data.sym+fmt(profitPerPiece)
+  ].join('\n');
+  document.getElementById('productionQuote').innerHTML=
+    '<div class="quote-grid">'+
+      '<div class="quote-metric"><span>Quote per piece</span><strong>'+data.sym+fmt(quotePerPiece)+'</strong></div>'+
+      '<div class="quote-metric"><span>Order total</span><strong>'+data.sym+fmt(orderTotal)+'</strong></div>'+
+      '<div class="quote-metric"><span>Gross profit / piece</span><strong>'+data.sym+fmt(profitPerPiece)+'</strong></div>'+
+      '<div class="quote-metric"><span>USD order value</span><strong>$'+fmt(exportOrderUSD,2)+'</strong></div>'+
+    '</div>'+
+    '<p><strong>Quote logic:</strong> Material is split across '+data.units+' piece(s), then labour, packaging, shipping allocation, and '+fmt(data.marginPct)+'% margin are added.</p>'+
+    '<p><strong>Client note:</strong> confirm pattern direction, lining, measurements, delivery date, and whether unused fabric is returned before collecting deposit.</p>'+
+    '<div class="quote-actions"><button class="en-btn en-btn-secondary" type="button" onclick="copyProductionQuote()">Copy quote</button></div>';
+}
+function copyProductionQuote(){
+  if(lastProductionQuote&&navigator.clipboard){navigator.clipboard.writeText(lastProductionQuote).then(function(){alert('Production quote copied.');});}
 }
 setDefaultPrice();
 </script>

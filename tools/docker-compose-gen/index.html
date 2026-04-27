@@ -3,316 +3,726 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Docker Compose Generator — African Developer Tool | AfroTools</title>
-<meta name="description" content="Generate docker-compose.yml files with common service templates: Node.js, Python, PostgreSQL, MySQL, Redis, Nginx, React. Includes .env template and deploy notes.">
+<title>Docker Compose Generator with Healthchecks | AfroTools</title>
+<meta name="description" content="Generate Docker Compose stacks with healthchecks, depends_on conditions, profiles, secrets, .env examples, Nginx config and deployment commands for African developers shipping on VPS and cloud hosts.">
 <link rel="canonical" href="https://afrotools.com/tools/docker-compose-gen/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Docker Compose Generator | AfroTools">
-<meta property="og:description" content="Generate docker-compose.yml with common African dev stack templates. Node.js, Python, PostgreSQL, Redis, Nginx and more.">
+<meta property="og:description" content="Build compose.yaml with healthchecks, secrets, profiles, reverse proxy config and deploy notes.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/docker-compose-gen/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Docker Compose Generator | AfroTools">
+<meta name="twitter:description" content="Generate Compose stacks with healthchecks, profiles, secrets and deploy notes.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/energy.css?v=ca21dbe3">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/docker-compose-gen/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/docker-compose-gen/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Docker Compose Generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/docker-compose-gen/",
+  "description": "Generate Docker Compose stacks with healthchecks, depends_on conditions, profiles, secrets, environment examples and deployment commands.",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://afrotools.com/developer-tools/"},
+    {"@type": "ListItem", "position": 3, "name": "Docker Compose Generator", "item": "https://afrotools.com/tools/docker-compose-gen/"}
+  ]
+}
+</script>
 <style>
-:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
-.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
-.dc-layout{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
-@media(max-width:960px){.dc-layout{grid-template-columns:1fr}}
-.output-sticky{position:sticky;top:80px}
-.service-templates{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.svc-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:2px solid var(--en-border);border-radius:9px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;background:#fff;user-select:none}
-.svc-chip.added{border-color:var(--en-accent);background:var(--en-accent-pale);color:var(--en-accent-dark)}
-.svc-chip:hover:not(.added){border-color:var(--en-accent-light);background:var(--en-accent-pale)}
-.services-list{display:flex;flex-direction:column;gap:10px}
-.svc-item{background:#fff;border:1.5px solid var(--en-border);border-radius:12px;padding:14px;position:relative}
-.svc-item-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.svc-item-icon{width:32px;height:32px;border-radius:8px;background:var(--en-accent-light);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
-.svc-item-name{font-weight:700;color:var(--en-text);flex:1}
-.svc-item-del{border:none;background:none;color:#ef4444;cursor:pointer;font-size:1rem;padding:4px;border-radius:6px;transition:background .15s}
-.svc-item-del:hover{background:#fee2e2}
-.svc-config{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:600px){.svc-config{grid-template-columns:1fr}}
-.svc-config input,.svc-config select{width:100%;padding:7px 10px;border:1.5px solid var(--en-border);border-radius:8px;font-size:.82rem;font-family:'DM Sans',sans-serif;color:var(--en-text);background:#fff;box-sizing:border-box;transition:border-color .15s;outline:none}
-.svc-config input:focus,.svc-config select:focus{border-color:var(--en-accent)}
-.svc-label{font-size:.72rem;font-weight:600;color:var(--en-muted);margin-bottom:3px}
-.code-block{font-family:'JetBrains Mono',monospace;font-size:.76rem;background:#0f0f1a;color:#c9d1d9;padding:16px;border-radius:10px;overflow-x:auto;white-space:pre;line-height:1.7;max-height:480px;overflow-y:auto}
-.copy-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:var(--en-accent-light);color:var(--en-accent-dark);border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
-.copy-btn:hover{background:#ddd6fe}
-.copy-btn.copied{background:#d1fae5;color:#065f46}
-.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--en-border);margin-bottom:14px}
-.tab-btn{padding:9px 14px;font-size:.8rem;font-weight:600;color:var(--en-muted);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .15s}
-.tab-btn.active{color:var(--en-accent-dark);border-bottom-color:var(--en-accent)}
-.tab-pane{display:none}.tab-pane.active{display:block}
-.cmd-list{display:flex;flex-direction:column;gap:6px}
-.cmd-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--en-accent-pale);border-radius:8px;font-size:.82rem}
-.cmd-code{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--en-accent-dark);flex:1}
-.cmd-desc{font-size:.78rem;color:var(--en-muted)}
+:root{
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#dbe4ee;
+  --soft:#f8fafc;
+  --panel:#fff;
+  --blue:#2563eb;
+  --green:#047857;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;color:var(--ink)}
+.hero{background:linear-gradient(135deg,#08111f 0%,#17314b 52%,#2563eb 100%);color:#fff}
+.hero-inner{max-width:1280px;margin:0 auto;padding:42px 22px 34px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.62);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:800;letter-spacing:0;max-width:940px}
+.hero-copy{font-size:1.02rem;line-height:1.72;max-width:830px;color:rgba(255,255,255,.82);margin:0}
+.hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.hero-stat{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:8px;padding:14px}
+.hero-stat strong{display:block;font-size:1.45rem;color:#fff}
+.hero-stat span{font-size:.78rem;color:rgba(255,255,255,.68)}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 22px 70px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:18px;align-items:start}
+.left,.right{display:grid;gap:16px}
+.right{position:sticky;top:78px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfdff}
+.card-title{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#334155}
+.card-body{padding:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
+select,input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:8px 11px;font:800 .76rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{border-color:#94a3b8;background:#f8fafc}
+.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.btn.primary:hover{background:#1d4ed8}
+.btn.small{font-size:.72rem;padding:7px 9px}
+.service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.service{border:1px solid var(--line);background:#fff;border-radius:8px;padding:11px;cursor:pointer;display:grid;gap:5px}
+.service:hover{border-color:#93c5fd;background:#eff6ff}
+.service.active{border-color:#2563eb;background:#eff6ff}
+.service strong{font-size:.86rem}
+.service span{font-size:.74rem;color:#64748b;line-height:1.4}
+.switch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.switch{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+.switch input{width:auto;margin-top:3px}
+.switch strong{display:block;font-size:.82rem}
+.switch span{display:block;font-size:.74rem;color:#64748b;line-height:1.4;margin-top:2px}
+.notice{border-left:4px solid #94a3b8;background:#f8fafc;border-radius:7px;padding:10px 11px;font-size:.82rem;line-height:1.45}
+.notice.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
+.notice.warn{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
+.notice.error{border-left-color:var(--red);background:#fef2f2;color:#7f1d1d}
+.score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.score{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}
+.score strong{display:block;font-size:1.35rem}
+.score span{font-size:.72rem;color:#64748b;font-weight:800}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
+.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer}
+.tab.active{background:#fff;color:#2563eb}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:620px}
+.source-list{display:grid;gap:8px}
+.source-list a{font-size:.84rem;color:#2563eb;text-decoration:none;font-weight:800}
+.source-list a:hover{text-decoration:underline}
+.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:40}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1080px){
+  .layout{grid-template-columns:1fr}
+  .right{position:static}
+  .hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .hero-inner,.wrap{padding-left:16px;padding-right:16px}
+  .grid,.grid.two,.switch-grid,.score-grid,.hero-grid{grid-template-columns:1fr}
+}
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:url" content="https://afrotools.com/tools/docker-compose-gen/">
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<div class="en-tool-hero">
-  <div class="en-tool-hero-inner">
-    <nav class="en-breadcrumb">
-      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
-      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
-      <span class="en-breadcrumb-current">Docker Compose Generator</span>
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Developer Tools</a><span>/</span>
+      <span>Docker Compose Generator</span>
     </nav>
-    <h1>Docker Compose <em>Generator</em></h1>
-    <p>Pick your services, configure ports and environment variables, then download a production-ready docker-compose.yml with .env template.</p>
-    <div class="en-tool-hero-meta">
-      <span class="en-tool-hero-pill">🐳 docker-compose.yml</span>
-      <span class="en-tool-hero-pill">🔒 .env template</span>
-      <span class="en-tool-hero-pill">📋 Deploy commands</span>
+    <h1>Generate Compose stacks with the production footguns already called out.</h1>
+    <p class="hero-copy">Pick a stack profile, services and deploy target. Generate compose.yaml, .env.example, reverse proxy config, Dockerfile starter and commands with healthchecks, secrets, profiles and depends_on conditions.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong id="stat-services">0</strong><span>selected services</span></div>
+      <div class="hero-stat"><strong id="stat-health">0</strong><span>healthchecks</span></div>
+      <div class="hero-stat"><strong>Secrets</strong><span>file-based option</span></div>
+      <div class="hero-stat"><strong>Profiles</strong><span>debug and ops services</span></div>
     </div>
   </div>
-</div>
+</header>
 
-<div class="en-tool-layout-wide">
-  <div class="dc-layout">
-    <div>
-      <div class="en-card" style="margin-bottom:16px">
-        <div class="en-card-title"><span class="en-card-title-icon">🔧</span> Project Settings</div>
-        <div class="en-form-grid en-form-grid-2">
-          <div class="en-field">
-            <label class="en-label">Project Name</label>
-            <input class="en-input" id="project-name" value="my-african-app" oninput="generate()">
+<main class="wrap">
+  <section class="layout">
+    <div class="left">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Project Settings</span></div>
+        <div class="card-body">
+          <div class="grid">
+            <div><label for="project">Project name</label><input id="project" value="afro-app"></div>
+            <div><label for="domain">Domain</label><input id="domain" value="app.example.com"></div>
+            <div><label for="target">Deploy target</label><select id="target"><option value="dev">Local dev</option><option value="vps">Small VPS</option><option value="prod">Production starter</option></select></div>
           </div>
-          <div class="en-field">
-            <label class="en-label">Network Name</label>
-            <input class="en-input" id="network-name" value="app-network" oninput="generate()">
+          <div class="grid" style="margin-top:12px">
+            <div><label for="runtime">Primary runtime</label><select id="runtime"><option value="node">Node.js API</option><option value="python">Python FastAPI</option><option value="django">Django</option><option value="laravel">Laravel PHP</option></select></div>
+            <div><label for="db">Primary database</label><select id="db"><option value="postgres">Postgres</option><option value="mysql">MySQL</option><option value="none">No database</option></select></div>
+            <div><label for="proxy">Reverse proxy</label><select id="proxy"><option value="nginx">Nginx</option><option value="caddy">Caddy</option><option value="none">None</option></select></div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="en-card" style="margin-bottom:16px">
-        <div class="en-card-title"><span class="en-card-title-icon">➕</span> Add Services</div>
-        <div class="service-templates" id="service-templates"></div>
-      </div>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Stack Profile</span></div>
+        <div class="card-body">
+          <div class="service-grid" id="profiles"></div>
+        </div>
+      </section>
 
-      <div class="en-card" id="services-config-card" style="display:none">
-        <div class="en-card-title"><span class="en-card-title-icon">⚙️</span> Configure Services</div>
-        <div class="services-list" id="services-list"></div>
-      </div>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Services</span><button class="btn small" id="reset-services" type="button">Reset</button></div>
+        <div class="card-body">
+          <div class="service-grid" id="services"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Safety Options</span></div>
+        <div class="card-body">
+          <div class="switch-grid">
+            <label class="switch"><input id="healthchecks" type="checkbox" checked><span><strong>Healthchecks</strong><span>Add service healthchecks and depends_on conditions where Compose supports them.</span></span></label>
+            <label class="switch"><input id="secrets" type="checkbox" checked><span><strong>File secrets</strong><span>Use secrets files for database passwords instead of hardcoding passwords in compose.yaml.</span></span></label>
+            <label class="switch"><input id="profilesOpt" type="checkbox" checked><span><strong>Profiles</strong><span>Put Adminer, Mailhog and monitoring behind optional debug or ops profiles.</span></span></label>
+            <label class="switch"><input id="resourceLimits" type="checkbox"><span><strong>VPS limits</strong><span>Add conservative memory and CPU limits for small VPS deployments.</span></span></label>
+            <label class="switch"><input id="namedVolumes" type="checkbox" checked><span><strong>Named volumes</strong><span>Use named volumes for database, Redis and upload data.</span></span></label>
+            <label class="switch"><input id="privateNetwork" type="checkbox" checked><span><strong>Private app network</strong><span>Keep services on a dedicated network instead of relying on the default network.</span></span></label>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="output-sticky">
-      <div class="en-card">
-        <div class="en-card-title"><span class="en-card-title-icon">📄</span> Generated Files</div>
-        <div class="tab-bar">
-          <button class="tab-btn active" onclick="showTab('compose',this)">docker-compose.yml</button>
-          <button class="tab-btn" onclick="showTab('env',this)">.env</button>
-          <button class="tab-btn" onclick="showTab('cmds',this)">Commands</button>
+    <aside class="right">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Output</span><button class="btn small primary" id="copy-output" type="button">Copy active file</button></div>
+        <div class="tabs">
+          <button class="tab active" data-tab="compose" type="button">compose.yaml</button>
+          <button class="tab" data-tab="env" type="button">.env</button>
+          <button class="tab" data-tab="commands" type="button">commands</button>
+          <button class="tab" data-tab="proxyConf" type="button">proxy</button>
+          <button class="tab" data-tab="dockerfile" type="button">Dockerfile</button>
         </div>
-        <div class="tab-pane active" id="tab-compose">
-          <div class="copy-row">
-            <button class="copy-btn" onclick="copyCode('compose-code')">📋 Copy YAML</button>
-            <button class="copy-btn" onclick="downloadFile('docker-compose.yml','compose-code')" style="background:#dcfce7;color:#166534">⬇️ Download</button>
-          </div>
-          <div class="code-block" id="compose-code"><!-- Add services to generate --></div>
-        </div>
-        <div class="tab-pane" id="tab-env">
-          <div class="copy-row">
-            <button class="copy-btn" onclick="copyCode('env-code')">📋 Copy .env</button>
-            <button class="copy-btn" onclick="downloadFile('.env','env-code')" style="background:#dcfce7;color:#166534">⬇️ Download</button>
-          </div>
-          <div class="code-block" id="env-code"># Add services to generate .env</div>
-        </div>
-        <div class="tab-pane" id="tab-cmds">
-          <div class="cmd-list" id="cmds-list"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        <div class="tab-panel active" id="panel-compose"><pre class="codebox" id="compose-code"></pre></div>
+        <div class="tab-panel" id="panel-env"><pre class="codebox" id="env-code"></pre></div>
+        <div class="tab-panel" id="panel-commands"><pre class="codebox" id="commands-code"></pre></div>
+        <div class="tab-panel" id="panel-proxyConf"><pre class="codebox" id="proxy-code"></pre></div>
+        <div class="tab-panel" id="panel-dockerfile"><pre class="codebox" id="dockerfile-code"></pre></div>
+      </section>
 
+      <section class="card">
+        <div class="card-head"><span class="card-title">Stack Health</span></div>
+        <div class="card-body">
+          <div class="score-grid">
+            <div class="score"><strong id="score-warnings">0</strong><span>warnings</span></div>
+            <div class="score"><strong id="score-volumes">0</strong><span>volumes</span></div>
+            <div class="score"><strong id="score-profiles">0</strong><span>profiles</span></div>
+          </div>
+          <div id="warnings" style="display:grid;gap:8px;margin-top:12px"></div>
+        </div>
+      </section>
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Official References</span></div>
+        <div class="card-body source-list">
+          <a href="https://docs.docker.com/compose/compose-file/" target="_blank" rel="noopener">Docker Compose file reference</a>
+          <a href="https://docs.docker.com/compose/how-tos/startup-order/" target="_blank" rel="noopener">Startup order and depends_on</a>
+          <a href="https://docs.docker.com/compose/how-tos/profiles/" target="_blank" rel="noopener">Compose profiles</a>
+          <a href="https://docs.docker.com/compose/how-tos/use-secrets/" target="_blank" rel="noopener">Compose secrets</a>
+        </div>
+      </section>
+    </aside>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
 <afro-footer></afro-footer>
 
 <script>
-var SERVICE_TEMPLATES={
-  nodejs:{icon:'🟢',name:'Node.js',image:'node:20-alpine',port:'3000',env:{NODE_ENV:'production',PORT:'3000'},volumes:['./:/app','node_modules:/app/node_modules'],cmd:'node server.js',workdir:'/app'},
-  python:{icon:'🐍',name:'Python/Flask',image:'python:3.11-slim',port:'5000',env:{FLASK_ENV:'production',PORT:'5000'},volumes:['./:/app'],cmd:'python app.py',workdir:'/app'},
-  django:{icon:'🎸',name:'Django',image:'python:3.11-slim',port:'8000',env:{DJANGO_SETTINGS_MODULE:'myapp.settings.production',DEBUG:'0'},volumes:['./:/app'],cmd:'gunicorn myapp.wsgi:application --bind 0.0.0.0:8000',workdir:'/app'},
-  react:{icon:'⚛️',name:'React',image:'node:20-alpine',port:'3000',env:{NODE_ENV:'production'},volumes:['./:/app'],cmd:'npm start',workdir:'/app'},
-  nextjs:{icon:'▲',name:'Next.js',image:'node:20-alpine',port:'3000',env:{NODE_ENV:'production'},volumes:['./:/app'],cmd:'npm start',workdir:'/app'},
-  postgres:{icon:'🐘',name:'PostgreSQL',image:'postgres:15-alpine',port:'5432',env:{POSTGRES_DB:'appdb',POSTGRES_USER:'appuser',POSTGRES_PASSWORD:'CHANGE_ME'},volumes:['postgres_data:/var/lib/postgresql/data'],cmd:null,workdir:null},
-  mysql:{icon:'🐬',name:'MySQL',image:'mysql:8.0',port:'3306',env:{MYSQL_ROOT_PASSWORD:'CHANGE_ME',MYSQL_DATABASE:'appdb',MYSQL_USER:'appuser',MYSQL_PASSWORD:'CHANGE_ME'},volumes:['mysql_data:/var/lib/mysql'],cmd:null,workdir:null},
-  mongodb:{icon:'🍃',name:'MongoDB',image:'mongo:7',port:'27017',env:{MONGO_INITDB_ROOT_USERNAME:'admin',MONGO_INITDB_ROOT_PASSWORD:'CHANGE_ME',MONGO_INITDB_DATABASE:'appdb'},volumes:['mongo_data:/data/db'],cmd:null,workdir:null},
-  redis:{icon:'🔴',name:'Redis',image:'redis:7-alpine',port:'6379',env:{},volumes:['redis_data:/data'],cmd:'redis-server --appendonly yes',workdir:null},
-  nginx:{icon:'🟩',name:'Nginx',image:'nginx:alpine',port:'80',env:{},volumes:['./nginx.conf:/etc/nginx/nginx.conf:ro','./dist:/usr/share/nginx/html:ro'],cmd:null,workdir:null},
-};
+(function(){
+  'use strict';
 
-var addedServices=[];
+  var activeTab = 'compose';
+  var selected = new Set(['app','postgres','redis','nginx']);
 
-function renderTemplates(){
-  var el=document.getElementById('service-templates');
-  el.innerHTML=Object.keys(SERVICE_TEMPLATES).map(function(key){
-    var t=SERVICE_TEMPLATES[key];
-    var isAdded=addedServices.find(function(s){return s.type===key;});
-    return '<div class="svc-chip'+(isAdded?' added':'')+'" onclick="addService(\''+key+'\')" id="chip-'+key+'">'+t.icon+' '+t.name+(isAdded?' ✓':'')+'</div>';
-  }).join('');
-}
-
-function addService(type){
-  if(addedServices.find(function(s){return s.type===type;}))return;
-  var t=SERVICE_TEMPLATES[type];
-  addedServices.push({type:type,name:type,port:t.port,customPort:t.port,env:Object.assign({},t.env)});
-  renderTemplates();
-  renderServicesList();
-  generate();
-}
-
-function removeService(type){
-  addedServices=addedServices.filter(function(s){return s.type!==type;});
-  renderTemplates();
-  renderServicesList();
-  generate();
-}
-
-function renderServicesList(){
-  var card=document.getElementById('services-config-card');
-  var el=document.getElementById('services-list');
-  if(!addedServices.length){card.style.display='none';return;}
-  card.style.display='block';
-  el.innerHTML=addedServices.map(function(svc){
-    var t=SERVICE_TEMPLATES[svc.type];
-    var envRows=Object.keys(t.env).map(function(k){
-      return '<div><div class="svc-label">'+k+'</div><input value="'+t.env[k]+'" onchange="updateEnv(\''+svc.type+'\',\''+k+'\',this.value)"></div>';
-    }).join('');
-    return '<div class="svc-item">'+
-      '<div class="svc-item-header">'+
-        '<div class="svc-item-icon">'+t.icon+'</div>'+
-        '<div class="svc-item-name">'+t.name+'</div>'+
-        '<div><div class="svc-label">Port</div><input style="width:80px;padding:5px 8px;border:1.5px solid var(--en-border);border-radius:7px;font-size:.82rem;font-family:\'DM Sans\',sans-serif" value="'+svc.customPort+'" onchange="updatePort(\''+svc.type+'\',this.value)"></div>'+
-        '<button class="svc-item-del" onclick="removeService(\''+svc.type+'\')">✕</button>'+
-      '</div>'+
-      '<div class="svc-config">'+envRows+'</div>'+
-    '</div>';
-  }).join('');
-}
-
-function updatePort(type,val){var s=addedServices.find(function(x){return x.type===type;});if(s)s.customPort=val;generate();}
-function updateEnv(type,key,val){var s=addedServices.find(function(x){return x.type===type;});if(s)s.env[key]=val;generate();}
-
-function generate(){
-  if(!addedServices.length){
-    document.getElementById('compose-code').textContent='# Add services to generate docker-compose.yml';
-    document.getElementById('env-code').textContent='# Add services to generate .env';
-    renderCmds();return;
-  }
-  var proj=document.getElementById('project-name').value||'app';
-  var net=document.getElementById('network-name').value||'app-network';
-
-  var lines=['version: "3.9"','','services:'];
-  var volumes=new Set();
-  var envLines=['# .env file — generated by AfroTools','# IMPORTANT: Never commit this file to git!',''];
-
-  addedServices.forEach(function(svc){
-    var t=SERVICE_TEMPLATES[svc.type];
-    lines.push('  '+svc.type+':');
-    lines.push('    image: '+t.image);
-    if(svc.customPort){
-      lines.push('    ports:');
-      lines.push('      - "'+svc.customPort+':'+t.port+'"');
-    }
-    if(Object.keys(svc.env).length){
-      lines.push('    environment:');
-      Object.keys(svc.env).forEach(function(k){
-        var val=svc.env[k];
-        var isSecret=k.toLowerCase().includes('password')||k.toLowerCase().includes('secret')||k.toLowerCase().includes('key');
-        lines.push('      '+k+': '+(isSecret?'"${'+k+'}"':'"'+val+'"'));
-        if(isSecret){envLines.push(k+'='+val);}
-      });
-    }
-    if(t.volumes&&t.volumes.length){
-      lines.push('    volumes:');
-      t.volumes.forEach(function(v){
-        lines.push('      - '+v);
-        if(!v.startsWith('./'))volumes.add(v.split(':')[0]);
-      });
-    }
-    if(t.workdir){lines.push('    working_dir: '+t.workdir);}
-    if(t.cmd){lines.push('    command: '+t.cmd);}
-    lines.push('    networks:');
-    lines.push('      - '+net);
-    lines.push('    restart: unless-stopped');
-    lines.push('');
-  });
-
-  if(volumes.size){
-    lines.push('volumes:');
-    volumes.forEach(function(v){lines.push('  '+v+':');});
-    lines.push('');
-  }
-
-  lines.push('networks:');
-  lines.push('  '+net+':');
-  lines.push('    driver: bridge');
-
-  document.getElementById('compose-code').textContent=lines.join('\n');
-  document.getElementById('env-code').textContent=envLines.join('\n');
-  renderCmds();
-}
-
-function renderCmds(){
-  var proj=document.getElementById('project-name').value||'app';
-  var el=document.getElementById('cmds-list');
-  var cmds=[
-    {cmd:'docker compose up -d',desc:'Start all services in background'},
-    {cmd:'docker compose down',desc:'Stop and remove containers'},
-    {cmd:'docker compose logs -f',desc:'Tail logs from all services'},
-    {cmd:'docker compose ps',desc:'Show running service status'},
-    {cmd:'docker compose exec <service> sh',desc:'Open shell in service'},
-    {cmd:'docker compose pull',desc:'Pull latest images'},
-    {cmd:'docker compose restart <service>',desc:'Restart a specific service'},
-    {cmd:'docker compose build --no-cache',desc:'Rebuild without cache'},
+  var PROFILES = [
+    {id:'api', name:'API + Postgres', desc:'Backend API, Postgres, Redis and reverse proxy.', services:['app','postgres','redis','nginx']},
+    {id:'fintech', name:'Fintech Sandbox', desc:'API, Postgres, Redis, worker, Mailhog and Adminer.', services:['app','worker','postgres','redis','mailhog','adminer','nginx']},
+    {id:'content', name:'Content App', desc:'Web app, database, object uploads and proxy.', services:['app','postgres','uploads','nginx']},
+    {id:'ops', name:'Ops Observability', desc:'Add Prometheus and Grafana behind ops profile.', services:['app','postgres','redis','prometheus','grafana','nginx']}
   ];
-  el.innerHTML=cmds.map(function(c){
-    return '<div class="cmd-row">'+
-      '<span class="cmd-code">$ '+c.cmd+'</span>'+
-      '<span class="cmd-desc">'+c.desc+'</span>'+
-    '</div>';
-  }).join('');
-}
+  var SERVICES = [
+    {id:'app', name:'App runtime', desc:'Generated from selected runtime.'},
+    {id:'worker', name:'Background worker', desc:'Queue worker for jobs, webhooks and retries.'},
+    {id:'postgres', name:'Postgres', desc:'Default durable relational database.'},
+    {id:'mysql', name:'MySQL', desc:'Alternative relational database.'},
+    {id:'redis', name:'Redis', desc:'Cache, queues and rate limits.'},
+    {id:'nginx', name:'Nginx', desc:'Reverse proxy and static file front.'},
+    {id:'caddy', name:'Caddy', desc:'Reverse proxy with automatic TLS.'},
+    {id:'adminer', name:'Adminer', desc:'Debug database UI in profile.'},
+    {id:'mailhog', name:'Mailhog', desc:'Local email testing in profile.'},
+    {id:'prometheus', name:'Prometheus', desc:'Metrics store in ops profile.'},
+    {id:'grafana', name:'Grafana', desc:'Metrics dashboard in ops profile.'},
+    {id:'uploads', name:'Uploads volume', desc:'Persistent local file storage.'}
+  ];
 
-function copyCode(id){
-  var txt=document.getElementById(id).textContent;
-  navigator.clipboard.writeText(txt).then(function(){
-    var btn=event.target;btn.textContent='✅ Copied!';btn.classList.add('copied');
-    setTimeout(function(){btn.textContent='📋 Copy';btn.classList.remove('copied');},2000);
+  function $(id){ return document.getElementById(id); }
+  function checked(id){ return $(id).checked; }
+  function val(id){ return $(id).value.trim(); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function slug(value){ return String(value || 'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'app'; }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
+  }
+  function has(id){ return selected.has(id); }
+  function addLines(lines, text){ text.split('\n').forEach(function(line){ lines.push(line); }); }
+
+  function renderChoices(){
+    $('profiles').innerHTML = PROFILES.map(function(profile){
+      return '<button class="service" data-profile="'+profile.id+'" type="button"><strong>'+esc(profile.name)+'</strong><span>'+esc(profile.desc)+'</span></button>';
+    }).join('');
+    $('services').innerHTML = SERVICES.map(function(svc){
+      return '<button class="service '+(has(svc.id) ? 'active' : '')+'" data-service="'+svc.id+'" type="button"><strong>'+esc(svc.name)+'</strong><span>'+esc(svc.desc)+'</span></button>';
+    }).join('');
+  }
+
+  function runtimeService(){
+    var runtime = val('runtime');
+    if (runtime === 'python') return {
+      image:'build: .',
+      command:'uvicorn app.main:app --host 0.0.0.0 --port 8000',
+      port:'8000'
+    };
+    if (runtime === 'django') return {
+      image:'build: .',
+      command:'python manage.py runserver 0.0.0.0:8000',
+      port:'8000'
+    };
+    if (runtime === 'laravel') return {
+      image:'build: .',
+      command:'php artisan serve --host=0.0.0.0 --port=8000',
+      port:'8000'
+    };
+    return {
+      image:'build: .',
+      command:'npm run dev -- --host 0.0.0.0',
+      port:'3000'
+    };
+  }
+
+  function generateCompose(){
+    var project = slug(val('project'));
+    var app = runtimeService();
+    var lines = [];
+    var volumes = [];
+    var secrets = [];
+    var networks = checked('privateNetwork') ? ['  app_net:'] : [];
+    var healthCount = 0;
+    var profiles = new Set();
+
+    lines.push('name: ' + project);
+    lines.push('');
+    lines.push('services:');
+
+    if (has('app')) {
+      lines.push('  app:');
+      lines.push('    ' + app.image);
+      lines.push('    command: ' + app.command);
+      lines.push('    restart: unless-stopped');
+      lines.push('    env_file: .env');
+      lines.push('    ports:');
+      lines.push('      - "${APP_PORT:-' + app.port + '}:' + app.port + '"');
+      if (has('postgres') || has('mysql') || has('redis')) {
+        lines.push('    depends_on:');
+        if (checked('healthchecks')) {
+          if (has('postgres')) lines.push('      postgres:\n        condition: service_healthy');
+          if (has('mysql')) lines.push('      mysql:\n        condition: service_healthy');
+          if (has('redis')) lines.push('      redis:\n        condition: service_healthy');
+        } else {
+          if (has('postgres')) lines.push('      - postgres');
+          if (has('mysql')) lines.push('      - mysql');
+          if (has('redis')) lines.push('      - redis');
+        }
+      }
+      if (has('uploads')) {
+        lines.push('    volumes:');
+        lines.push('      - uploads_data:/app/uploads');
+        volumes.push('uploads_data');
+      }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD-SHELL", "wget -qO- http://localhost:' + app.port + '/health || exit 1"]\n      interval: 30s\n      timeout: 5s\n      retries: 5\n      start_period: 30s');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('worker')) {
+      lines.push('  worker:');
+      lines.push('    build: .');
+      lines.push('    command: npm run worker');
+      lines.push('    restart: unless-stopped');
+      lines.push('    env_file: .env');
+      lines.push('    depends_on:');
+      lines.push('      app:\n        condition: service_started');
+      if (has('redis') && checked('healthchecks')) lines.push('      redis:\n        condition: service_healthy');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["worker"]'); profiles.add('worker'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('postgres')) {
+      lines.push('  postgres:');
+      lines.push('    image: postgres:16-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    environment:');
+      lines.push('      POSTGRES_DB: ${POSTGRES_DB:-app}');
+      lines.push('      POSTGRES_USER: ${POSTGRES_USER:-app}');
+      if (checked('secrets')) {
+        lines.push('      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password');
+        lines.push('    secrets:\n      - postgres_password');
+        secrets.push('postgres_password');
+      } else {
+        lines.push('      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}');
+      }
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - postgres_data:/var/lib/postgresql/data'); volumes.push('postgres_data'); }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app} -d ${POSTGRES_DB:-app}"]\n      interval: 10s\n      timeout: 5s\n      retries: 5');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('mysql')) {
+      lines.push('  mysql:');
+      lines.push('    image: mysql:8.4');
+      lines.push('    restart: unless-stopped');
+      lines.push('    environment:');
+      lines.push('      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}');
+      lines.push('      MYSQL_USER: ${MYSQL_USER:-app}');
+      lines.push('      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change_me}');
+      lines.push('      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change_me_root}');
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - mysql_data:/var/lib/mysql'); volumes.push('mysql_data'); }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER:-app} -p${MYSQL_PASSWORD:-change_me}"]\n      interval: 10s\n      timeout: 5s\n      retries: 5');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('redis')) {
+      lines.push('  redis:');
+      lines.push('    image: redis:7-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    command: redis-server --appendonly yes');
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - redis_data:/data'); volumes.push('redis_data'); }
+      if (checked('healthchecks')) {
+        healthCount++;
+        addLines(lines, '    healthcheck:\n      test: ["CMD", "redis-cli", "ping"]\n      interval: 10s\n      timeout: 5s\n      retries: 5');
+      }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('nginx') && val('proxy') === 'nginx') {
+      lines.push('  nginx:');
+      lines.push('    image: nginx:1.27-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    ports:\n      - "80:80"');
+      lines.push('    volumes:\n      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro');
+      lines.push('    depends_on:\n      app:\n        condition: service_started');
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+      addResource(lines);
+    }
+
+    if (has('caddy') && val('proxy') === 'caddy') {
+      lines.push('  caddy:');
+      lines.push('    image: caddy:2-alpine');
+      lines.push('    restart: unless-stopped');
+      lines.push('    ports:\n      - "80:80"\n      - "443:443"');
+      lines.push('    volumes:\n      - ./Caddyfile:/etc/caddy/Caddyfile:ro\n      - caddy_data:/data');
+      volumes.push('caddy_data');
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('adminer')) {
+      lines.push('  adminer:');
+      lines.push('    image: adminer:4');
+      lines.push('    restart: unless-stopped');
+      lines.push('    ports:\n      - "8080:8080"');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["debug"]'); profiles.add('debug'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('mailhog')) {
+      lines.push('  mailhog:');
+      lines.push('    image: mailhog/mailhog:v1.0.1');
+      lines.push('    ports:\n      - "8025:8025"');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["debug"]'); profiles.add('debug'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('prometheus')) {
+      lines.push('  prometheus:');
+      lines.push('    image: prom/prometheus:v2.54.1');
+      lines.push('    ports:\n      - "9090:9090"');
+      if (checked('profilesOpt')) { lines.push('    profiles: ["ops"]'); profiles.add('ops'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    if (has('grafana')) {
+      lines.push('  grafana:');
+      lines.push('    image: grafana/grafana:11.2.0');
+      lines.push('    ports:\n      - "3001:3000"');
+      if (checked('namedVolumes')) { lines.push('    volumes:\n      - grafana_data:/var/lib/grafana'); volumes.push('grafana_data'); }
+      if (checked('profilesOpt')) { lines.push('    profiles: ["ops"]'); profiles.add('ops'); }
+      if (checked('privateNetwork')) lines.push('    networks:\n      - app_net');
+    }
+
+    volumes = Array.from(new Set(volumes));
+    secrets = Array.from(new Set(secrets));
+    if (volumes.length) {
+      lines.push('');
+      lines.push('volumes:');
+      volumes.forEach(function(v){ lines.push('  ' + v + ':'); });
+    }
+    if (secrets.length) {
+      lines.push('');
+      lines.push('secrets:');
+      secrets.forEach(function(s){ lines.push('  ' + s + ':\n    file: ./secrets/' + s + '.txt'); });
+    }
+    if (networks.length) {
+      lines.push('');
+      lines.push('networks:');
+      networks.forEach(function(n){ lines.push(n); });
+    }
+
+    return {text:lines.join('\n'), volumes:volumes.length, profiles:profiles.size, health:healthCount};
+  }
+
+  function addResource(lines){
+    if (!checked('resourceLimits')) return;
+    lines.push('    deploy:');
+    lines.push('      resources:');
+    lines.push('        limits:');
+    lines.push('          cpus: "0.75"');
+    lines.push('          memory: 512M');
+  }
+
+  function generateEnv(){
+    var runtime = runtimeService();
+    var lines = [
+      '# Generated by AfroTools Docker Compose Generator',
+      '# Copy to .env and replace every placeholder before production.',
+      '',
+      'APP_ENV=local',
+      'APP_PORT=' + runtime.port,
+      'APP_URL=https://' + (val('domain') || 'app.example.com'),
+      '',
+      'POSTGRES_DB=app',
+      'POSTGRES_USER=app',
+      'POSTGRES_PASSWORD=change_me',
+      '',
+      'MYSQL_DATABASE=app',
+      'MYSQL_USER=app',
+      'MYSQL_PASSWORD=change_me',
+      'MYSQL_ROOT_PASSWORD=change_me_root',
+      '',
+      'REDIS_URL=redis://redis:6379/0',
+      'SMTP_HOST=mailhog',
+      'SMTP_PORT=1025'
+    ];
+    if (checked('secrets')) {
+      lines.push('');
+      lines.push('# If file secrets are enabled, create: secrets/postgres_password.txt');
+    }
+    return lines.join('\n');
+  }
+
+  function generateCommands(){
+    var project = slug(val('project'));
+    var lines = [
+      '# ' + project + ' compose commands',
+      'mkdir -p secrets',
+      'printf "replace-with-a-long-random-password" > secrets/postgres_password.txt',
+      'cp .env.example .env',
+      'docker compose config',
+      'docker compose up -d --build',
+      'docker compose ps',
+      'docker compose logs -f app',
+      '',
+      '# Run optional profiles',
+      'docker compose --profile debug up -d',
+      'docker compose --profile ops up -d',
+      '',
+      '# Back up Postgres',
+      'docker compose exec postgres pg_dump -U ${POSTGRES_USER:-app} ${POSTGRES_DB:-app} > backup.sql',
+      '',
+      '# Update safely',
+      'docker compose pull',
+      'docker compose up -d --build',
+      'docker compose logs --tail=100 app'
+    ];
+    return lines.join('\n');
+  }
+
+  function generateProxy(){
+    var app = runtimeService();
+    var domain = val('domain') || 'app.example.com';
+    if (val('proxy') === 'caddy') {
+      return domain + ' {\n  reverse_proxy app:' + app.port + '\n  encode gzip zstd\n}';
+    }
+    if (val('proxy') === 'none') return '# No reverse proxy selected.';
+    return [
+      'server {',
+      '  listen 80;',
+      '  server_name ' + domain + ';',
+      '',
+      '  client_max_body_size 20m;',
+      '',
+      '  location / {',
+      '    proxy_pass http://app:' + app.port + ';',
+      '    proxy_set_header Host $host;',
+      '    proxy_set_header X-Real-IP $remote_addr;',
+      '    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;',
+      '    proxy_set_header X-Forwarded-Proto $scheme;',
+      '  }',
+      '}'
+    ].join('\n');
+  }
+
+  function generateDockerfile(){
+    var runtime = val('runtime');
+    if (runtime === 'python') {
+      return [
+        'FROM python:3.12-slim',
+        'WORKDIR /app',
+        'COPY requirements.txt .',
+        'RUN pip install --no-cache-dir -r requirements.txt',
+        'COPY . .',
+        'EXPOSE 8000',
+        'CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]'
+      ].join('\n');
+    }
+    if (runtime === 'django') {
+      return [
+        'FROM python:3.12-slim',
+        'WORKDIR /app',
+        'COPY requirements.txt .',
+        'RUN pip install --no-cache-dir -r requirements.txt',
+        'COPY . .',
+        'EXPOSE 8000',
+        'CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]'
+      ].join('\n');
+    }
+    if (runtime === 'laravel') {
+      return [
+        'FROM php:8.3-cli',
+        'WORKDIR /app',
+        'COPY --from=composer:2 /usr/bin/composer /usr/bin/composer',
+        'COPY . .',
+        'RUN composer install --no-dev --optimize-autoloader',
+        'EXPOSE 8000',
+        'CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]'
+      ].join('\n');
+    }
+    return [
+      'FROM node:22-alpine',
+      'WORKDIR /app',
+      'COPY package*.json ./',
+      'RUN npm ci',
+      'COPY . .',
+      'EXPOSE 3000',
+      'CMD ["npm", "run", "start"]'
+    ].join('\n');
+  }
+
+  function warnings(compose){
+    var notes = [];
+    if (has('app') && val('target') !== 'dev') notes.push({type:'warn', text:'The app service still exposes APP_PORT directly. Put it behind the proxy or firewall on production hosts.'});
+    if (!checked('secrets')) notes.push({type:'error', text:'File secrets are disabled. Avoid committing database passwords in compose.yaml or .env.'});
+    if (!checked('healthchecks')) notes.push({type:'warn', text:'Healthchecks are disabled, so depends_on cannot wait for database readiness.'});
+    if (has('adminer') && !checked('profilesOpt')) notes.push({type:'warn', text:'Adminer is not behind a profile. Do not expose it on public servers.'});
+    if (val('target') === 'vps' && !checked('resourceLimits')) notes.push({type:'warn', text:'Small VPS target selected without resource limits. Consider enabling VPS limits.'});
+    if (!notes.length) notes.push({type:'ok', text:'Stack includes the main safety options for this generator.'});
+    $('warnings').innerHTML = notes.map(function(note){ return '<div class="notice '+note.type+'">'+esc(note.text)+'</div>'; }).join('');
+    $('score-warnings').textContent = notes.filter(function(n){ return n.type !== 'ok'; }).length;
+    $('score-volumes').textContent = compose.volumes;
+    $('score-profiles').textContent = compose.profiles;
+  }
+
+  function render(){
+    if (val('db') === 'postgres') { selected.add('postgres'); selected.delete('mysql'); }
+    if (val('db') === 'mysql') { selected.add('mysql'); selected.delete('postgres'); }
+    if (val('db') === 'none') { selected.delete('mysql'); selected.delete('postgres'); }
+    if (val('proxy') === 'nginx') { selected.add('nginx'); selected.delete('caddy'); }
+    if (val('proxy') === 'caddy') { selected.add('caddy'); selected.delete('nginx'); }
+    if (val('proxy') === 'none') { selected.delete('nginx'); selected.delete('caddy'); }
+    renderChoices();
+    var compose = generateCompose();
+    $('compose-code').textContent = compose.text;
+    $('env-code').textContent = generateEnv();
+    $('commands-code').textContent = generateCommands();
+    $('proxy-code').textContent = generateProxy();
+    $('dockerfile-code').textContent = generateDockerfile();
+    $('stat-services').textContent = selected.size;
+    $('stat-health').textContent = compose.health;
+    warnings(compose);
+  }
+
+  document.addEventListener('click', function(event){
+    var svc = event.target.closest('[data-service]');
+    if (svc) {
+      var id = svc.getAttribute('data-service');
+      if (selected.has(id)) selected.delete(id); else selected.add(id);
+      render();
+    }
+    var profile = event.target.closest('[data-profile]');
+    if (profile) {
+      var p = PROFILES.find(function(item){ return item.id === profile.getAttribute('data-profile'); });
+      if (p) { selected = new Set(p.services); render(); }
+    }
+    if (event.target.classList.contains('tab')) {
+      activeTab = event.target.getAttribute('data-tab');
+      document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === event.target); });
+      document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.remove('active'); });
+      $('panel-' + activeTab).classList.add('active');
+    }
   });
-}
+  document.addEventListener('input', function(event){ if (event.target.closest('main')) render(); });
+  document.addEventListener('change', function(event){ if (event.target.closest('main')) render(); });
+  $('reset-services').addEventListener('click', function(){ selected = new Set(['app','postgres','redis','nginx']); render(); });
+  $('copy-output').addEventListener('click', function(){
+    var node = activeTab === 'compose' ? $('compose-code') : activeTab === 'env' ? $('env-code') : activeTab === 'commands' ? $('commands-code') : activeTab === 'proxyConf' ? $('proxy-code') : $('dockerfile-code');
+    navigator.clipboard.writeText(node.textContent).then(function(){ toast('Copied ' + activeTab); });
+  });
 
-function downloadFile(fname,codeId){
-  var content=document.getElementById(codeId).textContent;
-  var blob=new Blob([content],{type:'text/plain'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;a.click();
-}
-
-function showTab(id,btn){
-  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
-}
-
-renderTemplates();
-generate();
+  renderChoices();
+  render();
+})();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

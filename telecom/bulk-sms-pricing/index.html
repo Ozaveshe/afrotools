@@ -177,7 +177,7 @@
     var country = TELECOM_DATA.countries[code];
     var sym = country.symbol || '';
     var smsData = country.bulkSMS || {};
-    var baseCostPerSMS = smsData.costPerSMS || smsData.domesticRate || 0;
+    var baseCostPerSMS = smsData.costPerSMS || smsData.domesticRate || smsData.avgCostPerSMS || 0;
     var isIntl = smsType.value === 'international';
     if (isIntl) baseCostPerSMS = baseCostPerSMS * 1.5;
     var volume = parseInt(slider.value) || 10000;
@@ -230,7 +230,8 @@
     if (providers.length === 0) {
       var ops = country.operators || [];
       for (var k = 0; k < ops.length && k < 3; k++) {
-        providers.push({name: ops[k].name, rate: baseCost * (0.9 + Math.random() * 0.2), features: ['Local delivery', 'API access']});
+        var adjustment = k === 0 ? 0.96 : k === 1 ? 1.03 : 1.08;
+        providers.push({name: ops[k].name, rate: baseCost * adjustment, features: ['Local delivery', 'API access']});
       }
       if (providers.length === 0) return '';
     }
@@ -260,5 +261,6 @@
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/telecom-toolkit.js" defer></script>
 </body>
 </html>

@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/assets/css/japa-calculator.css?v=be3d44a4">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>:root { --color-brand: var(--color-primary); }
@@ -47,6 +47,30 @@
 .japa-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
 .japa-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
 @media(max-width:500px){.japa-fun{grid-template-columns:1fr}}
+.japa-ready{margin-top:16px;padding-top:16px;border-top:1px solid #f3f4f6}
+.japa-ready-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+.japa-ready-title{font-size:13px;font-weight:800;color:#111827;margin:0}
+.japa-ready-sub{font-size:12px;color:#6b7280;line-height:1.55;margin-top:4px}
+.japa-ready-score{min-width:92px;text-align:center;border:1.5px solid rgba(0,122,255,.16);background:#EFF6FF;border-radius:10px;padding:10px}
+.japa-ready-score strong{display:block;font-size:24px;line-height:1;font-weight:800;color:var(--color-brand)}
+.japa-ready-score span{display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#1e40af;margin-top:4px}
+.japa-ready-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.japa-ready-field label{font-size:10px;font-weight:800;color:#374151;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px}
+.japa-ready-field select{width:100%;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:#111827;background:#fff}
+.japa-ready-field select:focus{outline:none;border-color:var(--color-brand);box-shadow:0 0 0 3px rgba(0,122,255,.08)}
+.japa-ready-checks{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}
+.japa-ready-check{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fff;font-size:12px;font-weight:700;color:#374151;line-height:1.4;cursor:pointer}
+.japa-ready-check input{margin-top:2px;accent-color:var(--color-brand)}
+.japa-ready-output{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.japa-ready-card{border:1.5px solid #e5e7eb;background:#f9fafb;border-radius:10px;padding:12px}
+.japa-ready-card strong{display:block;font-size:11px;font-weight:800;color:#111827;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.japa-ready-card p{font-size:12px;color:#4b5563;line-height:1.55;margin:0}
+.japa-ready-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.japa-ready-actions button{padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:800;color:#374151;cursor:pointer}
+.japa-ready-actions button:hover{border-color:var(--color-brand);color:var(--color-brand);background:#EFF6FF}
+.japa-ready-actions .primary{background:var(--color-brand);border-color:var(--color-brand);color:#fff}
+.japa-ready-actions .primary:hover{filter:brightness(1.05);color:#fff}
+@media(max-width:680px){.japa-ready-head,.japa-ready-output{grid-template-columns:1fr;display:grid}.japa-ready-grid{grid-template-columns:1fr}.japa-ready-checks{grid-template-columns:1fr}.japa-ready-score{text-align:left}.japa-ready-field select,.japa-ready-check,.japa-ready-actions button{font-size:16px;min-height:44px}}
 </style>
 <meta name="tool-id" content="japa-calculator">
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
@@ -116,6 +140,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <link rel="stylesheet" href="/assets/css/seo-clusters.css?v=5a8b6c7a">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -287,6 +313,61 @@
     <div class="extra-grid">
       <div><span class="fi-label">Already saved (USD)</span><input class="fi-inp" type="number" id="alreadySaved" placeholder="0" min="0"></div>
       <div><span class="fi-label">Target departure month</span><input class="fi-inp" type="month" id="targetDate"></div>
+    </div>
+    <div class="japa-ready" id="japaReady">
+      <div class="japa-ready-head">
+        <div>
+          <h3 class="japa-ready-title">Departure Readiness Check</h3>
+          <p class="japa-ready-sub">A cost estimate only helps if the documents, proof of funds, test dates, and arrival plan are moving at the same pace as your target month.</p>
+        </div>
+        <div class="japa-ready-score" aria-live="polite"><strong id="jrScore">0%</strong><span id="jrLabel">Not started</span></div>
+      </div>
+      <div class="japa-ready-grid">
+        <div class="japa-ready-field">
+          <label for="jrDocs">Core documents</label>
+          <select id="jrDocs">
+            <option value="0">Not gathered</option>
+            <option value="1">Partly gathered</option>
+            <option value="2">Ready to submit</option>
+          </select>
+        </div>
+        <div class="japa-ready-field">
+          <label for="jrTests">Tests and credentials</label>
+          <select id="jrTests">
+            <option value="0">Not booked</option>
+            <option value="1">Booked or requested</option>
+            <option value="2">Scores or evaluation ready</option>
+          </select>
+        </div>
+        <div class="japa-ready-field">
+          <label for="jrFunds">Proof of funds</label>
+          <select id="jrFunds">
+            <option value="0">Below required level</option>
+            <option value="1">Close, still building</option>
+            <option value="2">Bank proof ready</option>
+          </select>
+        </div>
+      </div>
+      <div class="japa-ready-checks">
+        <label class="japa-ready-check"><input type="checkbox" data-japa-ready="appointment"> Embassy, VAC, or biometrics appointment route checked</label>
+        <label class="japa-ready-check"><input type="checkbox" data-japa-ready="housing"> First 30 nights of housing researched or reserved</label>
+        <label class="japa-ready-check"><input type="checkbox" data-japa-ready="buffer"> 15% FX and emergency buffer included</label>
+        <label class="japa-ready-check"><input type="checkbox" data-japa-ready="support"> Arrival support contact or community confirmed</label>
+      </div>
+      <div class="japa-ready-output">
+        <div class="japa-ready-card">
+          <strong>Next action</strong>
+          <p id="jrNext">Start by gathering passport, birth records, academic records, bank statements, and destination-specific visa documents.</p>
+        </div>
+        <div class="japa-ready-card">
+          <strong>Timing risk</strong>
+          <p id="jrRisk">Set a target departure month to see whether the plan is comfortably paced or compressed.</p>
+        </div>
+      </div>
+      <div class="japa-ready-actions">
+        <button type="button" class="primary" id="jrSave">Save readiness</button>
+        <button type="button" id="jrCopy">Copy action brief</button>
+      </div>
     </div>
     <button class="jgo" onclick="calculate()">✈️ Calculate My Total Japa Cost</button>
   </div>
@@ -1453,6 +1534,7 @@ function renderResults(){
   renderChart(items,tot);
   renderCompare(r,tot);
   renderTimeline(pw,items);
+  renderJapaReadiness();
   syncPlanInputs();
   document.getElementById('bkTotalLbl').textContent='$'+Math.round(tot).toLocaleString();
   document.getElementById('aiCtx').textContent='Ready: '+o.name+' → '+d.name+' · '+pw.name+' · $'+Math.round(tot).toLocaleString()+' total. Ask me anything.';
@@ -1990,6 +2072,141 @@ function downloadPDF(){
     toast('PDF downloaded!');
   } else { window.print(); }
 }
+
+// Departure readiness check
+function getJapaReadyState(){
+  var docs=Number((document.getElementById('jrDocs')||{}).value||0);
+  var tests=Number((document.getElementById('jrTests')||{}).value||0);
+  var funds=Number((document.getElementById('jrFunds')||{}).value||0);
+  var checks=Array.prototype.slice.call(document.querySelectorAll('[data-japa-ready]'));
+  var checked=checks.filter(function(c){return c.checked;}).length;
+  var coreScore=(docs+tests+funds)/6*60;
+  var checkScore=checks.length?checked/checks.length*40:0;
+  var score=Math.round(coreScore+checkScore);
+  return {docs:docs,tests:tests,funds:funds,checked:checked,totalChecks:checks.length,score:score};
+}
+function monthsUntilJapaTarget(){
+  var raw=(document.getElementById('targetDate')||{}).value;
+  if(!raw)return null;
+  var parts=raw.split('-');
+  if(parts.length<2)return null;
+  var now=new Date();
+  return (Number(parts[0])-now.getFullYear())*12+(Number(parts[1])-now.getMonth()-1);
+}
+function getJapaTotalEstimate(){
+  if(!lastResult||!lastResult.items)return null;
+  return lastResult.items.reduce(function(sum,item){return sum+item.usd;},0);
+}
+function renderJapaReadiness(){
+  var wrap=document.getElementById('japaReady');
+  if(!wrap)return;
+  var state=getJapaReadyState();
+  var scoreEl=document.getElementById('jrScore');
+  var labelEl=document.getElementById('jrLabel');
+  var nextEl=document.getElementById('jrNext');
+  var riskEl=document.getElementById('jrRisk');
+  if(scoreEl)scoreEl.textContent=state.score+'%';
+  var label='Not started';
+  if(state.score>=80)label='Strong';
+  else if(state.score>=55)label='Building';
+  else if(state.score>=25)label='Early';
+  if(labelEl)labelEl.textContent=label;
+
+  var next='Gather passport, birth records, academic records, bank statements, and destination-specific visa documents before spending on non-refundable bookings.';
+  if(state.docs<2)next='Make document readiness the first sprint: passport validity, transcripts, reference letters, police report path, medical exam rules, and bank letters.';
+  else if(state.tests<2)next='Book or finish language tests, credential evaluation, or professional licensing checks before you lock the departure month.';
+  else if(state.funds<2)next='Move proof of funds into a clean, traceable account and keep a separate FX buffer so exchange-rate movement does not break the plan.';
+  else if(state.checked<state.totalChecks)next='Close the practical gaps now: appointment route, first 30 nights, FX buffer, and arrival support contact.';
+  else next='You have the major readiness pillars covered. Recheck official fees and appointment dates before you pay or resign.';
+  if(nextEl)nextEl.textContent=next;
+
+  var months=monthsUntilJapaTarget();
+  var total=getJapaTotalEstimate();
+  var saved=Number((document.getElementById('alreadySaved')||{}).value||0);
+  var risk='Set a target departure month to see whether the plan is comfortably paced or compressed.';
+  if(months!==null){
+    if(months<0)risk='Your target month has passed. Update it before relying on the savings timeline.';
+    else if(months<=2)risk='Very compressed. Prioritize appointment availability, documents, and refundable bookings before paying large fees.';
+    else if(months<=5)risk='Tight but possible if documents and tests are already moving. Keep a 15% to 20% cash buffer.';
+    else risk='Comfortably paced. Use the extra time to reduce FX risk, verify official fees, and build arrival cash.';
+  }
+  if(total){
+    var buffer=Math.round(total*0.15);
+    var gap=Math.max(0,Math.round(total+buffer-saved));
+    risk+=' Based on the current estimate, a 15% shock buffer is about $'+buffer.toLocaleString()+'.';
+    if(saved>0)risk+=' Including that buffer, your remaining funding gap is about $'+gap.toLocaleString()+'.';
+  }
+  if(riskEl)riskEl.textContent=risk;
+}
+function buildJapaActionBrief(){
+  var state=getJapaReadyState();
+  var months=monthsUntilJapaTarget();
+  var total=getJapaTotalEstimate();
+  var origin=document.getElementById('oCtry')?document.getElementById('oCtry').value:'';
+  var dest=document.getElementById('dCtry')?document.getElementById('dCtry').value:'';
+  var lines=[
+    'Japa readiness brief',
+    'Origin: '+origin,
+    'Destination: '+dest,
+    'Readiness score: '+state.score+'%',
+    'Target month distance: '+(months===null?'not set':months+' month(s)'),
+    'Current estimate: '+(total?'$'+Math.round(total).toLocaleString():'calculate first'),
+    '',
+    'Next action:',
+    (document.getElementById('jrNext')||{}).textContent||'Gather documents and verify official fees.',
+    '',
+    'Timing risk:',
+    (document.getElementById('jrRisk')||{}).textContent||'Set a target month.'
+  ];
+  return lines.join('\n');
+}
+function initJapaReadiness(){
+  var wrap=document.getElementById('japaReady');
+  if(!wrap)return;
+  try{
+    var saved=JSON.parse(localStorage.getItem('afrotools:japa-readiness')||'{}');
+    ['jrDocs','jrTests','jrFunds'].forEach(function(id){if(saved[id]&&document.getElementById(id))document.getElementById(id).value=saved[id];});
+    Object.keys(saved.checks||{}).forEach(function(key){
+      var el=document.querySelector('[data-japa-ready="'+key+'"]');
+      if(el)el.checked=!!saved.checks[key];
+    });
+  }catch(e){}
+  var watchIds=['jrDocs','jrTests','jrFunds','targetDate','alreadySaved','monthlyIncome','savingsRate'];
+  watchIds.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.addEventListener('input',renderJapaReadiness);
+    if(el)el.addEventListener('change',renderJapaReadiness);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-japa-ready]'),function(el){
+    el.addEventListener('change',renderJapaReadiness);
+  });
+  var saveBtn=document.getElementById('jrSave');
+  if(saveBtn)saveBtn.addEventListener('click',function(){
+    var checks={};
+    Array.prototype.forEach.call(document.querySelectorAll('[data-japa-ready]'),function(el){checks[el.getAttribute('data-japa-ready')]=el.checked;});
+    localStorage.setItem('afrotools:japa-readiness',JSON.stringify({
+      jrDocs:(document.getElementById('jrDocs')||{}).value,
+      jrTests:(document.getElementById('jrTests')||{}).value,
+      jrFunds:(document.getElementById('jrFunds')||{}).value,
+      checks:checks,
+      updatedAt:new Date().toISOString()
+    }));
+    toast('Readiness saved on this device');
+  });
+  var copyBtn=document.getElementById('jrCopy');
+  if(copyBtn)copyBtn.addEventListener('click',function(){
+    var brief=buildJapaActionBrief();
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(brief).then(function(){toast('Action brief copied');},function(){toast('Could not copy brief');});
+    }else{
+      var ta=document.createElement('textarea');
+      ta.value=brief;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Action brief copied');
+    }
+  });
+  renderJapaReadiness();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initJapaReadiness);
+else initJapaReadiness();
 
 // GA4 on calculate
 var _origCalc=calculate;

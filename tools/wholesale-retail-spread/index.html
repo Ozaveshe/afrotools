@@ -11,6 +11,24 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
 <meta property="og:url" content="https://afrotools.com/tools/wholesale-retail-spread/">
+<style>
+.spread-desk{margin-top:1rem;border:1px solid rgba(15,23,42,.12);border-radius:8px;background:#fff;padding:1rem}
+.spread-desk-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:.85rem}
+.spread-title{font-weight:800;color:#0f172a}
+.spread-note{color:#64748b;font-size:.92rem;margin-top:.2rem}
+.spread-controls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.75rem}
+.spread-output{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin-top:.9rem}
+.spread-card{border:1px solid rgba(15,23,42,.1);border-radius:8px;background:#f8fafc;padding:.85rem}
+.spread-value{font-weight:800;color:#0f172a;font-size:1.1rem}
+.spread-label{color:#64748b;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
+.spread-advice{margin-top:.85rem;border-radius:8px;background:#eff6ff;color:#1e3a8a;padding:.85rem}
+.spread-quality{margin-top:.85rem;border:1px solid rgba(15,23,42,.1);border-radius:8px;background:#f8fafc;padding:.85rem}
+.spread-quality strong{display:block;color:#0f172a;margin-bottom:.3rem}
+@media (max-width:960px){.spread-controls{grid-template-columns:1fr 1fr}.spread-output{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.spread-controls,.spread-output{grid-template-columns:1fr}.spread-desk-head{display:block}}
+</style>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -37,6 +55,23 @@
         <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
         <div class="md-summary" id="mdSummary"></div>
         <div class="md-grid" id="mdList"><div class="md-empty">Loading verified spread data...</div></div>
+        <div class="spread-desk">
+          <div class="spread-desk-head">
+            <div>
+              <div class="spread-title">Trader Margin Desk</div>
+              <div class="spread-note">Model shelf price, shrinkage, and daily gross profit before buying stock.</div>
+            </div>
+            <button class="md-btn md-btn-secondary" id="spreadCopy" type="button">Copy Margin Brief</button>
+          </div>
+          <div class="spread-controls">
+            <div class="md-field"><label for="deskWholesale">Wholesale Cost</label><input id="deskWholesale" class="md-input" type="number" min="0" placeholder="e.g. 12000"></div>
+            <div class="md-field"><label for="deskRetail">Shelf Price</label><input id="deskRetail" class="md-input" type="number" min="0" placeholder="e.g. 15000"></div>
+            <div class="md-field"><label for="deskTargetMargin">Target Margin %</label><input id="deskTargetMargin" class="md-input" type="number" min="1" max="95" value="25"></div>
+            <div class="md-field"><label for="deskShrinkage">Spoilage/Shrinkage %</label><input id="deskShrinkage" class="md-input" type="number" min="0" max="80" value="3"></div>
+            <div class="md-field"><label for="deskUnits">Expected Units/Day</label><input id="deskUnits" class="md-input" type="number" min="0" value="20"></div>
+          </div>
+          <div id="spreadDeskOutput" class="spread-advice">Enter wholesale and retail prices to calculate markup, margin, shrinkage risk, and a target shelf price.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -53,6 +88,7 @@
         <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
         <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I checked both prices myself</option><option value="receipt">Wholesale or retail receipt</option><option value="merchant_quote">Trader quote</option><option value="community_check">Community check</option></select></div>
         <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional"></div>
+        <div class="spread-quality" id="spreadQuality"><strong>Spread quality</strong><span>Best reports include product size, wholesale price, retail price, and whether the quote is cash, credit, or bulk.</span></div>
         <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit Spread</button></div>
       </div>
     </div>
@@ -68,16 +104,133 @@
 <script src="/assets/js/market-data-app.js?v=9eeda2f8"></script>
 <script>
 document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+var lastSpreadBrief = '';
+function spreadNum(id) {
+  var el = document.getElementById(id);
+  var value = Number(el && el.value);
+  return Number.isFinite(value) ? value : 0;
+}
+function spreadMoney(value) {
+  var currency = (document.getElementById('mdReportCurrency') && document.getElementById('mdReportCurrency').value) || '';
+  return currency + ' ' + Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 0 });
+}
+function renderSpreadDesk() {
+  var output = document.getElementById('spreadDeskOutput');
+  if (!output) return;
+  var wholesale = spreadNum('deskWholesale');
+  var retail = spreadNum('deskRetail');
+  var targetMargin = Math.min(95, Math.max(1, spreadNum('deskTargetMargin') || 25));
+  var shrinkage = Math.max(0, spreadNum('deskShrinkage'));
+  var units = Math.max(0, spreadNum('deskUnits'));
+  if (!wholesale || !retail) {
+    output.className = 'spread-advice';
+    output.textContent = 'Enter wholesale and retail prices to calculate markup, margin, shrinkage risk, and a target shelf price.';
+    lastSpreadBrief = 'Wholesale Retail Spread: enter wholesale and retail prices to build a margin brief.';
+    return;
+  }
+  var adjustedCost = wholesale * (1 + shrinkage / 100);
+  var gross = retail - adjustedCost;
+  var markup = adjustedCost ? (gross / adjustedCost) * 100 : 0;
+  var margin = retail ? (gross / retail) * 100 : 0;
+  var targetShelf = adjustedCost / (1 - targetMargin / 100);
+  var dailyGross = gross * units;
+  var advice = margin < targetMargin ? 'Shelf price is below target margin after shrinkage. Raise price, buy cheaper, or reduce waste.' : 'Shelf price clears target margin after shrinkage.';
+  lastSpreadBrief = 'Margin brief: wholesale ' + spreadMoney(wholesale) + ', shelf ' + spreadMoney(retail) + ', adjusted cost ' + spreadMoney(adjustedCost) + ', margin ' + margin.toFixed(1) + '%, markup ' + markup.toFixed(1) + '%, target shelf ' + spreadMoney(targetShelf) + ', daily gross ' + spreadMoney(dailyGross) + '. ' + advice;
+  output.className = '';
+  output.innerHTML = '<div class="spread-output">' +
+    '<div class="spread-card"><div class="spread-value">' + margin.toFixed(1) + '%</div><div class="spread-label">Gross Margin</div></div>' +
+    '<div class="spread-card"><div class="spread-value">' + markup.toFixed(1) + '%</div><div class="spread-label">Markup</div></div>' +
+    '<div class="spread-card"><div class="spread-value">' + spreadMoney(targetShelf) + '</div><div class="spread-label">Target Shelf Price</div></div>' +
+    '<div class="spread-card"><div class="spread-value">' + spreadMoney(dailyGross) + '</div><div class="spread-label">Daily Gross</div></div>' +
+    '</div><div class="spread-advice"><strong>Decision:</strong> ' + advice + '</div>';
+}
+function renderSpreadQuality() {
+  var box = document.getElementById('spreadQuality');
+  if (!box) return;
+  var checks = [
+    ['report_product_name', 'product'],
+    ['report_wholesale_price', 'wholesale price'],
+    ['report_retail_price', 'retail price'],
+    ['report_pack_size', 'pack or unit size'],
+    ['mdReportMerchant', 'market'],
+    ['mdProofUrl', 'proof']
+  ];
+  var missing = checks.filter(function (check) {
+    var el = document.getElementById(check[0]);
+    return !el || !String(el.value || '').trim();
+  }).map(function (check) { return check[1]; });
+  box.innerHTML = '<strong>Spread quality: ' + (checks.length - missing.length) + '/' + checks.length + '</strong>' +
+    (missing.length ? '<span>Add: ' + missing.join(', ') + '.</span>' : '<span>Strong spread report. Buyers can compare this margin.</span>');
+}
+function copySpreadBrief() {
+  renderSpreadDesk();
+  navigator.clipboard.writeText(lastSpreadBrief).then(function () {
+    window.MarketDataApp && window.MarketDataApp.showToast('Margin brief copied.', 'success');
+  }).catch(function () {
+    window.prompt('Copy margin brief', lastSpreadBrief);
+  });
+}
+document.addEventListener('input', function (event) {
+  if (event.target && /^(desk|report_|mdReportMerchant|mdProofUrl)/.test(event.target.id || '')) {
+    renderSpreadDesk();
+    renderSpreadQuality();
+  }
+});
+document.addEventListener('change', function (event) {
+  if (event.target && /^(desk|report_|mdReportMerchant|mdProofUrl)/.test(event.target.id || '')) {
+    renderSpreadDesk();
+    renderSpreadQuality();
+  }
+});
+var spreadCopy = document.getElementById('spreadCopy');
+if (spreadCopy) spreadCopy.addEventListener('click', copySpreadBrief);
 window.MarketDataApp.mount({
   endpoint: '/api/wholesale-retail-spreads',
   responseKey: 'spreads',
   subtype: 'wholesale_retail_spread',
   vertical: 'wholesale_retail',
+  limit: 36,
   reportButtonLabel: 'Submit Spread',
+  reportFields: [
+    { key: 'product_name', label: 'Product Name', type: 'text', required: true, placeholder: 'e.g. Cooking oil' },
+    { key: 'pack_size', label: 'Pack or Unit Size', type: 'text', required: true, placeholder: 'e.g. 5L bottle, 50kg bag, carton of 24' },
+    { key: 'wholesale_price', label: 'Wholesale Price', type: 'number', required: true, min: 0 },
+    { key: 'retail_price', label: 'Retail Price', type: 'number', required: true, min: 0 },
+    { key: 'quote_type', label: 'Quote Type', type: 'select', required: false, options: ['Cash', 'Credit', 'Bulk only', 'Promo', 'Other'] },
+    { key: 'notes', label: 'Context Note', type: 'textarea', required: false, placeholder: 'Transport, scarcity, brand grade, minimum order, or seasonal note' }
+  ],
+  transformPayload: function (payload) {
+    var wholesale = Number(payload.wholesale_price || 0);
+    var retail = Number(payload.retail_price || 0);
+    if (wholesale > 0 && retail > 0) {
+      payload.spread_pct = ((retail - wholesale) / wholesale * 100).toFixed(2);
+      payload.margin_pct = ((retail - wholesale) / retail * 100).toFixed(2);
+      payload.gross_profit = (retail - wholesale).toFixed(2);
+    }
+    return payload;
+  },
+  renderSummary: function (rows, data, helpers) {
+    setTimeout(renderSpreadQuality, 0);
+    var spreads = rows.map(function (row) {
+      var spread = Number(row.spread_pct);
+      if (!Number.isFinite(spread) && Number(row.wholesale_price) > 0 && Number(row.retail_price) > 0) spread = ((Number(row.retail_price) - Number(row.wholesale_price)) / Number(row.wholesale_price)) * 100;
+      return spread;
+    }).filter(function (value) { return Number.isFinite(value); });
+    var avg = spreads.length ? spreads.reduce(function (sum, value) { return sum + value; }, 0) / spreads.length : 0;
+    return '<div class="md-stat"><div class="md-stat-value">' + helpers.formatNumber(rows.length) + '</div><div class="md-stat-label">Verified spreads</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + avg.toFixed(1) + '%</div><div class="md-stat-label">Average markup</div></div>' +
+      '<div class="md-stat"><div class="md-stat-value">' + helpers.escapeHtml((data.markets || []).length || 'Live') + '</div><div class="md-stat-label">Market coverage</div></div>';
+  },
   renderCard: function (row, helpers) {
+    var wholesale = Number(row.wholesale_price || 0);
+    var retail = Number(row.retail_price || 0);
+    var spread = Number(row.spread_pct);
+    if (!Number.isFinite(spread) && wholesale > 0 && retail > 0) spread = ((retail - wholesale) / wholesale) * 100;
+    var margin = retail > 0 ? ((retail - wholesale) / retail) * 100 : 0;
     return '<article class="md-card"><h3>' + helpers.escapeHtml(row.product_name || 'Product') + '</h3>' +
       '<p>' + helpers.escapeHtml((row.market_name || 'Market') + ' | ' + (row.city || '')) + '</p>' +
-      '<div class="md-meta"><span class="md-pill">Wholesale ' + helpers.escapeHtml(row.wholesale_price || '') + '</span><span class="md-pill">Retail ' + helpers.escapeHtml(row.retail_price || '') + '</span><span class="md-pill">Spread ' + helpers.escapeHtml(row.spread_pct || '') + '%</span></div></article>';
+      '<div class="md-meta"><span class="md-pill">Wholesale ' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.wholesale_price || '') + '</span><span class="md-pill">Retail ' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.retail_price || '') + '</span></div>' +
+      '<div class="md-meta"><span class="md-pill">Markup ' + (Number.isFinite(spread) ? spread.toFixed(1) : '0.0') + '%</span><span class="md-pill">Margin ' + margin.toFixed(1) + '%</span><span class="md-pill">' + helpers.escapeHtml(row.pack_size || row.unit || 'unit unknown') + '</span></div></article>';
   }
 });
 </script>

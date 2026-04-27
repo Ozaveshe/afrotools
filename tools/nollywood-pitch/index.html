@@ -63,6 +63,16 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .bar-track{flex:1;height:22px;background:#f1f5f9;border-radius:4px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:.5rem;font-size:.72rem;font-weight:600;color:#fff;min-width:30px;transition:width .3s}
 .actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap}
+.pitch-grid{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:1rem;margin-top:.75rem}
+.pitch-output{border-top:1px solid #e2e8f0;margin-top:1rem;padding-top:1rem}
+.pitch-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:.75rem}
+.pitch-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.75rem}
+.pitch-metric span{display:block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#64748b;margin-bottom:.2rem}
+.pitch-metric strong{font-size:.92rem;color:#0A1628}
+.pitch-output p{font-size:.88rem;color:#475569;line-height:1.65;margin:.45rem 0}
+.pitch-copy{padding:.55rem .9rem;border:1.5px solid rgba(0,122,255,.22);background:#fff;color:#0063D1;border-radius:7px;font-weight:800;font-family:inherit;cursor:pointer}
+@media(max-width:850px){.pitch-grid,.pitch-metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.pitch-grid,.pitch-metrics{grid-template-columns:1fr}}
 .seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
 .seo-section h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
 .seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
@@ -99,7 +109,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .zfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
 @media(max-width:500px){.zfun{grid-template-columns:1fr}}
 </style>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <meta name="tool-id" content="nollywood-pitch">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Film & TV Budget Estimator Africa","description":"Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.","url":"https://afrotools.com/tools/nollywood-pitch/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Film & TV Budget Estimator Africa","url":"https://afrotools.com/tools/nollywood-pitch/","description":"Estimate your African film or TV production budget with pre-loaded industry costs for Nollywood, Kenyan, Ghanaian, and South African markets.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -148,6 +158,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -190,6 +202,18 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
     <div class="zfun-dyk-text">Nollywood is the 2nd largest film industry by output &mdash; producing over 2,500 films per year! That's more than Hollywood. Only Bollywood makes more.</div>
   </div>
 </div>
+</div>
+
+<div class="card">
+<h2>Pitch & Finance Readiness</h2>
+<p style="font-size:.85rem;color:#64748b;margin-bottom:.5rem">Competitor film-budget templates usually stop at a topsheet. This turns your estimate into a producer-facing note with funding gap, cash pressure, and outlet-specific next actions.</p>
+<div class="pitch-grid">
+<div class="form-group"><label>Logline</label><input id="pitchLogline" placeholder="One sentence story hook"></div>
+<div class="form-group"><label>Shoot Days</label><input id="pitchDays" type="number" value="18" min="1"></div>
+<div class="form-group"><label>Funding Secured (%)</label><input id="pitchFunded" type="number" value="30" min="0" max="100"></div>
+<div class="form-group"><label>Target Outlet</label><select id="pitchOutlet"><option value="cinema">Cinema release</option><option value="streaming">Streaming pitch</option><option value="tv">TV / Africa Magic</option><option value="festival">Festival route</option><option value="brand">Brand funded</option></select></div>
+</div>
+<div class="pitch-output" id="pitchOutput"></div>
 </div>
 </div>
 
@@ -266,7 +290,7 @@ async function askAI(preset){
 </script>
 
 <afro-related-tools category="african" current="nollywood-pitch"></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js?v=bd86f22e" defer></script><script src="/assets/js/components/footer.js?v=b612b5b2" defer></script><script src="/assets/js/components/related-tools.js?v=7785bbdc" defer></script><script src="/assets/js/components/newsletter-cta.js?v=e6a5a0cd" defer></script>
+<script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script><script src="/assets/js/components/footer.js?v=42461b5b" defer></script><script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script><script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script>
 const CURRENCIES={NG:{sym:'\u20a6',name:'NGN'},KE:{sym:'KSh',name:'KES'},GH:{sym:'GH\u20b5',name:'GHS'},ZA:{sym:'R',name:'ZAR'}};
@@ -291,6 +315,9 @@ const PRESETS={
 };
 
 let allItems=[];
+let lastGrandTotal=0;
+let lastCatTotals={};
+let lastPitchBrief='';
 
 function loadPreset(){
   const c=document.getElementById('country').value;
@@ -332,6 +359,9 @@ function recalc(){
     grandTotal+=v;
   });
 
+  lastGrandTotal=grandTotal;
+  lastCatTotals=catTotals;
+
   const cats=Object.keys(catTotals);
   const aboveLine=catTotals['Pre-Production']||0;
   const belowLine=grandTotal-aboveLine-(catTotals['Contingency']||0);
@@ -351,6 +381,7 @@ function recalc(){
   });
   document.getElementById('barChart').innerHTML=barHtml;
   updateNollyFun(grandTotal, c);
+  renderPitchPlan();
 }
 
 function updateNollyFun(total, country){
@@ -375,6 +406,63 @@ function updateNollyFun(total, country){
     '<div class="zfun-card blue"><div class="zfun-emoji">&#127871;</div><div class="zfun-title">Cinema Tickets</div><div class="zfun-text">'+tickets.toLocaleString()+' tickets</div></div>'+
     '<div class="zfun-card gold"><div class="zfun-emoji">&#128241;</div><div class="zfun-title">In iPhones</div><div class="zfun-text">'+iphones+' iPhone 16 Pros</div></div>'+
     '<div class="zfun-card rose"><div class="zfun-emoji">&#127917;</div><div class="zfun-title">Hollywood Ratio</div><div class="zfun-text">'+hollyLabel+' of avg Hollywood film</div></div>';
+}
+
+function renderPitchPlan(){
+  var box=document.getElementById('pitchOutput');
+  if(!box)return;
+  var c=document.getElementById('country').value;
+  var sym=CURRENCIES[c].sym;
+  var countryLabel=document.getElementById('country').selectedOptions[0].text;
+  var projectLabel=document.getElementById('projectType').selectedOptions[0].text;
+  var tierLabel=document.getElementById('tier').selectedOptions[0].text;
+  var logline=(document.getElementById('pitchLogline').value||'Untitled project').trim();
+  var shootDays=Math.max(1,parseFloat(document.getElementById('pitchDays').value)||1);
+  var fundedPct=Math.min(100,Math.max(0,parseFloat(document.getElementById('pitchFunded').value)||0));
+  var outlet=document.getElementById('pitchOutlet').value;
+  var total=lastGrandTotal||0;
+  var secured=total*fundedPct/100;
+  var gap=Math.max(0,total-secured);
+  var perDay=total/shootDays;
+  var contingency=lastCatTotals['Contingency']||0;
+  var contingencyPct=total>0?contingency/total*100:0;
+  var largest=Object.keys(lastCatTotals).sort(function(a,b){return lastCatTotals[b]-lastCatTotals[a];})[0]||'Crew';
+  var outletNotes={
+    cinema:'Protect trailer, key art, classification, DCP, premiere and P&A spend before locking the budget.',
+    streaming:'Prioritize chain of title, music clearances, sound mix, subtitles, deliverables and a clean production bible.',
+    tv:'Translate the budget into per-episode cost, delivery dates, cast availability and broadcaster-friendly milestones.',
+    festival:'Reserve money for subtitling, festival fees, EPK, travel, stills, poster and rough-cut feedback.',
+    brand:'Define usage rights, approval rounds, product placement scope, brand safety and final deliverables in writing.'
+  };
+  var risk=contingencyPct<8?'Contingency looks thin':gap>total*0.6?'Funding gap is high':'Pitchable with clear assumptions';
+  lastPitchBrief=[
+    'NOLLYWOOD PITCH BRIEF',
+    'Project: '+logline,
+    'Market: '+countryLabel,
+    'Format: '+projectLabel+' / '+tierLabel,
+    'Budget: '+sym+Math.round(total).toLocaleString(),
+    'Secured: '+sym+Math.round(secured).toLocaleString()+' ('+fundedPct+'%)',
+    'Funding gap: '+sym+Math.round(gap).toLocaleString(),
+    'Shoot days: '+shootDays+' at about '+sym+Math.round(perDay).toLocaleString()+' per day',
+    'Largest cost bucket: '+largest,
+    'Finance note: '+risk,
+    'Outlet note: '+outletNotes[outlet]
+  ].join('\n');
+  box.innerHTML=
+    '<div class="pitch-metrics">'+
+    '<div class="pitch-metric"><span>Funding gap</span><strong>'+sym+Math.round(gap).toLocaleString()+'</strong></div>'+
+    '<div class="pitch-metric"><span>Cost / shoot day</span><strong>'+sym+Math.round(perDay).toLocaleString()+'</strong></div>'+
+    '<div class="pitch-metric"><span>Contingency</span><strong>'+contingencyPct.toFixed(1)+'%</strong></div>'+
+    '<div class="pitch-metric"><span>Largest bucket</span><strong>'+largest+'</strong></div>'+
+    '</div>'+
+    '<p><strong>Producer read:</strong> '+risk+'. Keep budget top sheet, detailed line items, cashflow timing and finance plan aligned before sharing with investors.</p>'+
+    '<p><strong>Outlet action:</strong> '+outletNotes[outlet]+'</p>'+
+    '<button class="pitch-copy" type="button" onclick="copyPitchBrief()">Copy pitch brief</button>';
+}
+
+function copyPitchBrief(){
+  if(!lastPitchBrief)return;
+  if(navigator.clipboard){navigator.clipboard.writeText(lastPitchBrief);}
 }
 
 function downloadBudget(){
@@ -415,6 +503,11 @@ function downloadBudget(){
 }
 
 loadPreset();
+['pitchLogline','pitchDays','pitchFunded','pitchOutlet'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el)el.addEventListener('input',renderPitchPlan);
+  if(el)el.addEventListener('change',renderPitchPlan);
+});
 </script>
 
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <meta name="tool-id" content="burial-cost">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
@@ -51,6 +51,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
 .fc-main{padding:28px 0 48px}
 .fc-grid{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
 @media(max-width:800px){.fc-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.fc-family-grid{grid-template-columns:1fr 1fr}.fc-copy{width:100%}}
+@media(max-width:500px){.fc-family-grid{grid-template-columns:1fr}}
 
 /* Cards */
 .fc-card{background:var(--fc-card);border:1px solid var(--fc-border);border-radius:12px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
@@ -138,6 +140,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
 .fc-ins-text{font-size:.78rem;color:#14532d;line-height:1.6}
 .fc-ins-val{font-size:1.3rem;font-weight:800;color:#15803d}
 
+/* Family funding plan */
+.fc-family-plan{margin-top:14px;background:#fff;border:1.5px solid var(--fc-border);border-radius:12px;overflow:hidden}
+.fc-family-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;background:#F5F9FF;border-bottom:1px solid var(--fc-border)}
+.fc-family-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fc-dark)}
+.fc-copy{border:1.5px solid var(--fc-border);background:#fff;color:var(--fc-blue);border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:800;cursor:pointer}
+.fc-family-body{padding:16px}
+.fc-family-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.fc-family-card{background:#f8fbff;border:1px solid var(--fc-border);border-radius:9px;padding:11px;text-align:center}
+.fc-family-k{font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fc-muted);margin-bottom:4px}
+.fc-family-v{font-size:.95rem;font-weight:900;color:var(--fc-blue)}
+.fc-brief-list{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.fc-brief-list li{background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:9px 11px;font-size:.78rem;color:#1e3a8a;line-height:1.55}
+@media(max-width:720px){.fc-family-grid{grid-template-columns:1fr 1fr}.fc-copy{width:100%}}
+@media(max-width:500px){.fc-family-grid{grid-template-columns:1fr}}
+
 /* Sidebar */
 .fc-sidebar .fc-info-card{background:#fff;border:1px solid var(--fc-border);border-radius:12px;padding:18px;margin-bottom:14px}
 .fc-info-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fc-dark);margin-bottom:10px}
@@ -161,6 +178,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -239,6 +258,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
         <input type="range" class="fc-slider" id="guestSlider" min="20" max="2000" step="10" value="200" oninput="document.getElementById('guestLabel').textContent=this.value">
         <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--fc-muted)"><span>20</span><span>500</span><span>1,000</span><span>2,000</span></div>
       </div>
+      <div class="fc-row">
+        <div class="fc-field">
+          <label class="fc-label">Available Family Fund</label>
+          <input type="number" class="fc-input" id="availableFund" min="0" value="0">
+        </div>
+        <div class="fc-field">
+          <label class="fc-label">Expected Insurance / Benefit</label>
+          <input type="number" class="fc-input" id="insurancePayout" min="0" value="0">
+        </div>
+      </div>
+      <div class="fc-row">
+        <div class="fc-field">
+          <label class="fc-label">Contributing Households</label>
+          <input type="number" class="fc-input" id="contributors" min="1" value="10">
+        </div>
+        <div class="fc-field">
+          <label class="fc-label">Days Until Funeral</label>
+          <input type="number" class="fc-input" id="deadlineDays" min="1" value="7">
+        </div>
+      </div>
     </div>
   </div>
 
@@ -275,6 +314,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
           <div class="fc-ins-title">💡 Burial Insurance Could Help</div>
           <div class="fc-ins-text" id="insuranceText"></div>
         </div>
+        <div class="fc-family-plan" id="familyFundingPlan"></div>
       </div>
     </div>
   </div>
@@ -389,6 +429,7 @@ var COSTS = {
 var selectedCountry = 'NG';
 var selectedBudget = 'standard';
 var selectedItems = {mortuary:true,casket:true,venue:true,catering:true,transport:true,cemetery:true,program:false,music:false,canopy:false,asoebi:false,video:false,obituary:false};
+var lastFuneralBrief = '';
 
 /* ═══ INIT ═══ */
 function init(){renderCountries();renderItems();updateSidebar();}
@@ -444,6 +485,10 @@ function calculate(){
   var guests=parseInt(document.getElementById('guestSlider').value);
   var location=document.getElementById('location').value;
   var ceremony=document.getElementById('ceremony').value;
+  var availableFund=parseFloat(document.getElementById('availableFund').value)||0;
+  var insurancePayout=parseFloat(document.getElementById('insurancePayout').value)||0;
+  var contributors=Math.max(1,parseInt(document.getElementById('contributors').value)||1);
+  var deadlineDays=Math.max(1,parseInt(document.getElementById('deadlineDays').value)||1);
   var data=COSTS[selectedCountry][selectedBudget];
   var c=COUNTRIES[selectedCountry];
   var locMult=location==='hometown'?0.7:1.0;
@@ -483,8 +528,61 @@ function calculate(){
     'A burial insurance policy covering <strong>'+c.insuranceRange+'</strong> costs around <strong>'+c.insurancePremium+'</strong>. '+
     'Starting now could fully cover this '+fmt(total)+' funeral in 12-24 months of saving.';
 
+  renderFamilyFundingPlan({total:total,items:items,fmt:fmt,country:c.name,guests:guests,availableFund:availableFund,insurancePayout:insurancePayout,contributors:contributors,deadlineDays:deadlineDays,ceremony:ceremony,location:location});
+
   document.getElementById('resultSection').classList.add('show');
   document.getElementById('resultSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderFamilyFundingPlan(data){
+  var target=document.getElementById('familyFundingPlan');
+  if(!target)return;
+  var covered=data.availableFund+data.insurancePayout;
+  var gap=Math.max(0,data.total-covered);
+  var perHousehold=gap/data.contributors;
+  var perDay=gap/data.deadlineDays;
+  var top=data.items[0]||{name:'Main cost',cost:0};
+  var locationLabel=data.location==='hometown'?'hometown or rural burial':'city or urban burial';
+  var actions=[
+    'Confirm the biggest line item first: '+top.name+' at '+data.fmt(top.cost)+'.',
+    'Family fund plus expected insurance covers '+data.fmt(covered)+' of the estimate.',
+    gap>0?'Remaining gap is '+data.fmt(gap)+', or '+data.fmt(perHousehold)+' per contributing household.':'Current fund and expected benefits cover the estimate.',
+    'Deadline target is '+data.fmt(perDay)+' per day across '+data.deadlineDays+' days.',
+    'For a '+locationLabel+', agree who owns catering count, transport, mortuary, and documentation before spending starts.',
+    'Keep receipts and one shared contribution ledger to reduce duplicate requests and family confusion.'
+  ];
+  lastFuneralBrief=[
+    'Funeral family funding brief',
+    data.country+' | '+data.guests+' guests | Estimate: '+data.fmt(data.total),
+    'Covered: '+data.fmt(covered)+' | Gap: '+data.fmt(gap)+' | Per household: '+data.fmt(perHousehold),
+    actions.join(' ')
+  ].join('\n');
+  target.innerHTML='<div class="fc-family-head"><div class="fc-family-title">Family funding plan</div><button type="button" class="fc-copy" onclick="copyFuneralBrief(this)">Copy brief</button></div><div class="fc-family-body"><div class="fc-family-grid">'+
+    '<div class="fc-family-card"><div class="fc-family-k">Funding gap</div><div class="fc-family-v">'+data.fmt(gap)+'</div></div>'+
+    '<div class="fc-family-card"><div class="fc-family-k">Per household</div><div class="fc-family-v">'+data.fmt(perHousehold)+'</div></div>'+
+    '<div class="fc-family-card"><div class="fc-family-k">Daily target</div><div class="fc-family-v">'+data.fmt(perDay)+'</div></div>'+
+    '<div class="fc-family-card"><div class="fc-family-k">Covered</div><div class="fc-family-v">'+data.fmt(covered)+'</div></div>'+
+    '</div><ul class="fc-brief-list">'+actions.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul></div>';
+}
+
+function copyFuneralBrief(btn){
+  if(!lastFuneralBrief)return;
+  var done=function(){if(btn){var old=btn.textContent;btn.textContent='Copied';setTimeout(function(){btn.textContent=old;},1300);}};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(lastFuneralBrief).then(done).catch(function(){fallbackCopyFuneralBrief(done);});
+  }else fallbackCopyFuneralBrief(done);
+}
+
+function fallbackCopyFuneralBrief(done){
+  var area=document.createElement('textarea');
+  area.value=lastFuneralBrief;
+  area.setAttribute('readonly','');
+  area.style.position='fixed';
+  area.style.left='-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try{document.execCommand('copy');done();}catch(e){}
+  document.body.removeChild(area);
 }
 
 init();

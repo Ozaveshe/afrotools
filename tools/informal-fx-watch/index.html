@@ -11,6 +11,22 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="/assets/css/market-data.css?v=82be8cb4">
 <meta property="og:url" content="https://afrotools.com/tools/informal-fx-watch/">
+<style>
+.fx-desk{margin-top:1rem;border:1px solid rgba(15,23,42,.12);border-radius:8px;background:#fff;padding:1rem}
+.fx-desk-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:.8rem}
+.fx-title{font-weight:800;color:#0f172a}.fx-note{color:#64748b;font-size:.9rem;margin-top:.2rem}
+.fx-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem}
+.fx-output{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin-top:.8rem}
+.fx-card{border:1px solid rgba(15,23,42,.1);border-radius:8px;background:#f8fafc;padding:.8rem}
+.fx-value{font-weight:800;color:#0f172a}.fx-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-top:.15rem}
+.fx-advice{margin-top:.8rem;border-radius:8px;background:#eff6ff;color:#1e3a8a;padding:.8rem;font-size:.88rem;line-height:1.55}
+.fx-quality{margin-top:.85rem;border:1px solid rgba(15,23,42,.1);border-radius:8px;background:#f8fafc;padding:.85rem}
+.fx-quality strong{display:block;color:#0f172a;margin-bottom:.3rem}
+@media(max-width:860px){.fx-grid,.fx-output{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.fx-grid,.fx-output{grid-template-columns:1fr}.fx-desk-head{display:block}}
+</style>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -45,6 +61,19 @@
         <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
         <div class="md-summary" id="mdSummary"></div>
         <div class="md-grid" id="mdList"><div class="md-empty">Loading live data...</div></div>
+        <div class="fx-desk">
+          <div class="fx-desk-head">
+            <div><div class="fx-title">Street Quote Checker</div><div class="fx-note">Test a buy/sell quote before accepting a dealer, BDC, or P2P rate.</div></div>
+            <button class="md-btn md-btn-secondary" type="button" id="copyFxBrief">Copy FX Brief</button>
+          </div>
+          <div class="fx-grid">
+            <div class="md-field"><label for="fxAmount">Amount</label><input id="fxAmount" class="md-input" type="number" value="1000" min="0"></div>
+            <div class="md-field"><label for="fxBuy">Buy Rate</label><input id="fxBuy" class="md-input" type="number" min="0" placeholder="e.g. 1450"></div>
+            <div class="md-field"><label for="fxSell">Sell Rate</label><input id="fxSell" class="md-input" type="number" min="0" placeholder="e.g. 1480"></div>
+            <div class="md-field"><label for="fxSide">I Need To</label><select id="fxSide" class="md-select"><option value="sell">Sell USD/asset</option><option value="buy">Buy USD/asset</option></select></div>
+          </div>
+          <div id="fxDeskOutput" class="fx-advice">Enter buy and sell rates to see spread, implied midpoint, and cost impact.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -64,6 +93,7 @@
         <div class="md-form-field"><label for="mdObservedAt">Observed At</label><input id="mdObservedAt" class="md-input" type="datetime-local"></div>
         <div class="md-form-field"><label for="mdSourceType">Source Type</label><select id="mdSourceType" class="md-select"><option value="self_observed">I saw this myself</option><option value="merchant_quote">Dealer or provider quote</option><option value="official_notice">Public rate notice</option><option value="community_check">Community check</option></select></div>
         <div class="md-form-field"><label for="mdProofUrl">Proof URL</label><input id="mdProofUrl" class="md-input" placeholder="Optional photo or public quote link"></div>
+        <div class="fx-quality" id="fxQuality"><strong>FX report quality</strong><span>Add base currency, target currency, buy rate, sell rate, market type, dealer/platform, and proof.</span></div>
         <div class="md-actions"><button class="md-btn md-btn-primary" id="mdSubmitReport">Submit FX Rate</button></div>
       </div>
     </div>
@@ -89,25 +119,119 @@
 <script src="/assets/js/market-data-app.js?v=9eeda2f8"></script>
 <script>
 document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+var lastFxBrief = '';
+function fxNum(id) {
+  var el = document.getElementById(id);
+  var value = Number(el && el.value);
+  return Number.isFinite(value) ? value : 0;
+}
+function renderFxDesk() {
+  var out = document.getElementById('fxDeskOutput');
+  if (!out) return;
+  var amount = fxNum('fxAmount');
+  var buy = fxNum('fxBuy');
+  var sell = fxNum('fxSell');
+  var side = document.getElementById('fxSide').value;
+  if (!buy || !sell || !amount) {
+    out.className = 'fx-advice';
+    out.textContent = 'Enter buy and sell rates to see spread, implied midpoint, and cost impact.';
+    lastFxBrief = 'Informal FX brief: add amount, buy rate, and sell rate before accepting a quote.';
+    return;
+  }
+  var mid = (buy + sell) / 2;
+  var spread = sell - buy;
+  var spreadPct = mid ? (spread / mid) * 100 : 0;
+  var received = side === 'sell' ? amount * buy : amount * sell;
+  var fairAtMid = amount * mid;
+  var costImpact = Math.abs(fairAtMid - received);
+  var advice = spreadPct > 3 ? 'Wide spread. Compare another dealer or platform before committing.' : spreadPct > 1.5 ? 'Moderate spread. Accept only if speed or cash access matters.' : 'Tight spread. The quote is relatively competitive for an informal market.';
+  lastFxBrief = 'FX quote brief: amount ' + amount.toLocaleString() + ', buy ' + buy + ', sell ' + sell + ', midpoint ' + mid.toFixed(2) + ', spread ' + spreadPct.toFixed(2) + '%, cost impact around ' + costImpact.toLocaleString(undefined,{maximumFractionDigits:0}) + '. ' + advice;
+  out.className = '';
+  out.innerHTML = '<div class="fx-output">' +
+    '<div class="fx-card"><div class="fx-value">' + mid.toFixed(2) + '</div><div class="fx-label">Implied midpoint</div></div>' +
+    '<div class="fx-card"><div class="fx-value">' + spreadPct.toFixed(2) + '%</div><div class="fx-label">Spread</div></div>' +
+    '<div class="fx-card"><div class="fx-value">' + received.toLocaleString(undefined,{maximumFractionDigits:0}) + '</div><div class="fx-label">Quote result</div></div>' +
+    '<div class="fx-card"><div class="fx-value">' + costImpact.toLocaleString(undefined,{maximumFractionDigits:0}) + '</div><div class="fx-label">Midpoint gap</div></div>' +
+    '</div><div class="fx-advice"><strong>Decision:</strong> ' + advice + '</div>';
+}
+function renderFxQuality() {
+  var box = document.getElementById('fxQuality');
+  if (!box) return;
+  var checks = [
+    ['report_base_currency','base currency'],
+    ['report_target_currency','target currency'],
+    ['report_buy_rate','buy rate'],
+    ['report_sell_rate','sell rate'],
+    ['report_market_type','market type'],
+    ['mdReportProvider','dealer or platform'],
+    ['mdProofUrl','proof']
+  ];
+  var missing = checks.filter(function (check) {
+    var el = document.getElementById(check[0]);
+    return !el || !String(el.value || '').trim();
+  }).map(function (check) { return check[1]; });
+  box.innerHTML = '<strong>FX report quality: ' + (checks.length - missing.length) + '/' + checks.length + '</strong>' +
+    (missing.length ? '<span>Add: ' + missing.join(', ') + '.</span>' : '<span>Strong quote report. It can support spread comparisons.</span>');
+}
+document.addEventListener('input', function (event) {
+  if (event.target && /^(fx|report_|mdReportProvider|mdProofUrl)/.test(event.target.id || '')) {
+    renderFxDesk();
+    renderFxQuality();
+  }
+});
+document.addEventListener('change', function (event) {
+  if (event.target && /^(fx|report_|mdReportProvider|mdProofUrl)/.test(event.target.id || '')) {
+    renderFxDesk();
+    renderFxQuality();
+  }
+});
+var copyFxBrief = document.getElementById('copyFxBrief');
+if (copyFxBrief) copyFxBrief.addEventListener('click', function () {
+  renderFxDesk();
+  navigator.clipboard.writeText(lastFxBrief).catch(function () { window.prompt('Copy FX brief', lastFxBrief); });
+});
 window.MarketDataApp.mount({
   endpoint: '/api/fx-spreads',
   responseKey: 'rates',
   subtype: 'informal_fx_rate',
   vertical: 'fx_remittance',
+  limit: 36,
   reportButtonLabel: 'Submit FX Rate',
+  reportFields: [
+    { key: 'base_currency', label: 'Base Currency', type: 'text', required: true, placeholder: 'e.g. USD, USDT, GBP' },
+    { key: 'target_currency', label: 'Target Currency', type: 'text', required: true, placeholder: 'e.g. NGN, KES, GHS' },
+    { key: 'buy_rate', label: 'Buy Rate', type: 'number', required: true, min: 0 },
+    { key: 'sell_rate', label: 'Sell Rate', type: 'number', required: true, min: 0 },
+    { key: 'market_type', label: 'Market Type', type: 'select', required: true, options: ['Street','BDC','P2P','Community Dealer','Agent'] },
+    { key: 'notes', label: 'Quote Context', type: 'textarea', required: false, placeholder: 'Cash only, transfer only, minimum amount, screenshot time, or location note' }
+  ],
   renderSummary: function (rows) {
+    setTimeout(renderFxQuality, 0);
     var assets = {};
-    rows.forEach(function (row) { assets[row.asset || 'USD'] = true; });
+    var spreads = [];
+    rows.forEach(function (row) {
+      assets[row.asset || row.base_currency || 'USD'] = true;
+      var buy = Number(row.buy_price || row.buy_rate || 0);
+      var sell = Number(row.sell_price || row.sell_rate || 0);
+      var mid = (buy + sell) / 2;
+      if (buy && sell && mid) spreads.push(((sell - buy) / mid) * 100);
+    });
+    var avgSpread = spreads.length ? spreads.reduce(function (sum, value) { return sum + value; }, 0) / spreads.length : 0;
     return '<div class="md-stat"><div class="md-stat-value">' + rows.length + '</div><div class="md-stat-label">Active quotes</div></div>' +
       '<div class="md-stat"><div class="md-stat-value">' + Object.keys(assets).length + '</div><div class="md-stat-label">Assets covered</div></div>' +
-      '<div class="md-stat"><div class="md-stat-value">P2P</div><div class="md-stat-label">Live contributor + platform mix</div></div>';
+      '<div class="md-stat"><div class="md-stat-value">' + avgSpread.toFixed(1) + '%</div><div class="md-stat-label">Avg spread</div></div>';
   },
   renderCard: function (row, helpers) {
-    return '<article class="md-card"><h3>' + helpers.escapeHtml((row.platform || 'Market') + ' - ' + (row.asset || 'USD') + '/' + (row.fiat || 'LOCAL')) + '</h3>' +
-      '<p>Buy: ' + helpers.escapeHtml(row.buy_price) + ' | Sell: ' + helpers.escapeHtml(row.sell_price) + '</p>' +
-      '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml((row.countries || []).join(', ') || 'Pan-Africa') + '</span><span class="md-pill">Trust ' + helpers.escapeHtml(row.trust_score || 0) + '</span></div></article>';
+    var buy = Number(row.buy_price || row.buy_rate || 0);
+    var sell = Number(row.sell_price || row.sell_rate || 0);
+    var mid = (buy + sell) / 2;
+    var spread = buy && sell && mid ? ((sell - buy) / mid) * 100 : 0;
+    return '<article class="md-card"><h3>' + helpers.escapeHtml((row.platform || row.provider_name || 'Market') + ' - ' + (row.asset || row.base_currency || 'USD') + '/' + (row.fiat || row.target_currency || row.currency_code || 'LOCAL')) + '</h3>' +
+      '<p>Buy: ' + helpers.escapeHtml(row.buy_price || row.buy_rate || '') + ' | Sell: ' + helpers.escapeHtml(row.sell_price || row.sell_rate || '') + '</p>' +
+      '<div class="md-meta"><span class="md-pill">Spread ' + spread.toFixed(2) + '%</span><span class="md-pill">' + helpers.escapeHtml(row.market_type || 'Market') + '</span><span class="md-pill">Trust ' + helpers.escapeHtml(row.trust_score || 0) + '</span></div></article>';
   }
 });
+renderFxDesk();
 </script>
 </body>
 </html>

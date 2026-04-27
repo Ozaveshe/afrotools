@@ -24,12 +24,33 @@
 <link rel="stylesheet" href="/tools/africa-conflict/style.css?v=20260414a">
 <link rel="stylesheet" href="/tools/africa-conflict/dashboard.css?v=20260416a">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  .acd-brief-builder{padding:28px 24px 6px;background:#07111f}
+  .acd-brief-builder-shell{max-width:1180px;margin:0 auto;border:1px solid rgba(148,163,184,0.22);border-radius:8px;background:linear-gradient(180deg,rgba(15,23,42,0.98),rgba(30,41,59,0.94));padding:22px;color:#e5e7eb}
+  .acd-brief-builder-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}
+  .acd-brief-builder-head h2{margin:0 0 6px;color:#fff;font-size:1.28rem}
+  .acd-brief-builder-head p{margin:0;max-width:680px;color:#94a3b8;line-height:1.6;font-size:0.9rem}
+  .acd-brief-form{display:grid;grid-template-columns:1.4fr 0.9fr 0.8fr auto;gap:12px;align-items:end;margin-bottom:16px}
+  .acd-brief-field label{display:block;font-size:0.68rem;font-weight:800;letter-spacing:0.09em;text-transform:uppercase;color:#94a3b8;margin-bottom:6px}
+  .acd-brief-field select{width:100%;min-height:44px;border:1px solid rgba(148,163,184,0.28);border-radius:8px;background:#0f172a;color:#f8fafc;padding:10px 12px;font:inherit}
+  .acd-brief-result{border-top:1px solid rgba(148,163,184,0.18);padding-top:16px}
+  .acd-brief-result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  .acd-brief-result-grid div{border:1px solid rgba(148,163,184,0.18);border-radius:8px;background:rgba(15,23,42,0.8);padding:12px}
+  .acd-brief-result-grid span{display:block;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#94a3b8;margin-bottom:4px}
+  .acd-brief-result-grid strong{color:#fff;font-size:0.96rem}
+  .acd-brief-result p{margin:8px 0 0;color:#cbd5e1;line-height:1.65;font-size:0.9rem}
+  .acd-brief-builder-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  @media (max-width:900px){.acd-brief-form{grid-template-columns:1fr 1fr}.acd-brief-result-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.acd-brief-builder{padding-inline:14px}.acd-brief-builder-shell{padding:18px}.acd-brief-builder-head{flex-direction:column}.acd-brief-form,.acd-brief-result-grid{grid-template-columns:1fr}.acd-brief-builder-actions .acd-btn{width:100%;justify-content:center}}
+</style>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script src="/assets/js/supabase-auth.js?v=3978e101" defer></script>
 <script src="/engines/africa-conflict-engine.js?v=3f1cd07e" defer></script>
 <script src="/tools/africa-conflict/static-routes.js?v=20260424a" defer></script>
 <meta property="article:modified_time" content="2026-04-14">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -144,6 +165,45 @@
       <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
       <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
       <div class="acd-kpi-card acd-skeleton" style="height:108px"></div>
+    </div>
+  </section>
+
+  <section class="acd-brief-builder" aria-labelledby="acd-brief-builder-title">
+    <div class="acd-brief-builder-shell">
+      <div class="acd-brief-builder-head">
+        <div>
+          <p class="acd-section-kicker">Brief builder</p>
+          <h2 id="acd-brief-builder-title">Turn the dashboard into a situation brief</h2>
+          <p>Create a copyable field note for humanitarian, security, media, or supply-chain users. This does not replace source verification; it packages the current dashboard data so teams know what to check next.</p>
+        </div>
+        <a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology/">Source notes</a>
+      </div>
+      <div class="acd-brief-form">
+        <label class="acd-brief-field">
+          <span>Conflict</span>
+          <select id="acd-brief-conflict"><option value="">Loading conflicts...</option></select>
+        </label>
+        <label class="acd-brief-field">
+          <span>Audience</span>
+          <select id="acd-brief-audience">
+            <option value="humanitarian">Humanitarian coordination</option>
+            <option value="security">Security brief</option>
+            <option value="media">Media explainer</option>
+            <option value="supply">Supply-chain risk</option>
+          </select>
+        </label>
+        <label class="acd-brief-field">
+          <span>Length</span>
+          <select id="acd-brief-length">
+            <option value="short">Short note</option>
+            <option value="ops">Ops checklist</option>
+          </select>
+        </label>
+        <button class="acd-btn acd-btn-primary" id="acd-brief-copy" type="button">Copy brief</button>
+      </div>
+      <div class="acd-brief-result" id="acd-brief-result" aria-live="polite">
+        <p>Loading conflict options...</p>
+      </div>
     </div>
   </section>
 
@@ -324,9 +384,149 @@
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.js?v=bd86f22e" defer></script>
-<script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
+<script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script>
+<script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
 <script src="/tools/africa-conflict/dashboard.js?v=20260416a" defer></script>
+<script>
+(function () {
+  'use strict';
+  var conflicts = [];
+  var lastBrief = '';
+  function $(id) { return document.getElementById(id); }
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  function apiPath(path) {
+    var local = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    return (local ? 'https://afrotools.com' : '') + path;
+  }
+  function fmtNumber(value) {
+    if (window.AfroConflict && AfroConflict.formatNumber) return AfroConflict.formatNumber(value);
+    var n = Number(value || 0);
+    return n >= 1000000 ? (n / 1000000).toFixed(1) + 'M' : n.toLocaleString();
+  }
+  function fmtRange(min, max) {
+    if (window.AfroConflict && AfroConflict.formatRange) return AfroConflict.formatRange(min, max);
+    return fmtNumber(min) + '-' + fmtNumber(max);
+  }
+  function routeFor(slug) {
+    if (window.AfroConflictStaticRoutes && typeof AfroConflictStaticRoutes.conflict === 'function') {
+      return AfroConflictStaticRoutes.conflict(slug);
+    }
+    return '/tools/africa-conflict/detail.html?id=' + encodeURIComponent(slug || '');
+  }
+  function displaced(conflict) {
+    return Number(conflict.idps_count || 0) + Number(conflict.refugees_count || 0);
+  }
+  function pickDefaultConflict() {
+    return conflicts.slice().sort(function (a, b) {
+      var riskOrder = { critical: 0, high: 1, medium: 2, low: 3, minimal: 4 };
+      var ar = riskOrder[a.escalation_risk] == null ? 9 : riskOrder[a.escalation_risk];
+      var br = riskOrder[b.escalation_risk] == null ? 9 : riskOrder[b.escalation_risk];
+      return ar - br || displaced(b) - displaced(a);
+    })[0] || null;
+  }
+  function audienceNote(conflict, audience) {
+    var spillover = (conflict.spillover_countries || []).length;
+    if (audience === 'security') return 'Security lens: monitor escalation risk, exposed neighboring states, actor shifts, and recent fatal events before travel or field movement.';
+    if (audience === 'media') return 'Media lens: explain the conflict driver, civilian impact, and source limits. Avoid treating fatality or displacement estimates as exact counts.';
+    if (audience === 'supply') return 'Supply-chain lens: review border exposure, fuel corridors, port/road alternatives, insurance terms, and supplier concentration.';
+    return 'Humanitarian lens: prioritize civilian access, displacement pressure, exposed border communities, and coordination with verified operational data sources.';
+  }
+  function renderBrief() {
+    var select = $('acd-brief-conflict');
+    var result = $('acd-brief-result');
+    if (!select || !result) return;
+    var conflict = conflicts.find(function (item) { return item.slug === select.value; }) || pickDefaultConflict();
+    if (!conflict) {
+      result.innerHTML = '<p>Conflict data is unavailable right now.</p>';
+      return;
+    }
+    select.value = conflict.slug;
+    var audience = ($('acd-brief-audience') || {}).value || 'humanitarian';
+    var length = ($('acd-brief-length') || {}).value || 'short';
+    var spilloverStates = (conflict.spillover_countries || []).join(', ') || 'none listed';
+    var summary = conflict.summary || conflict.why_persists || conflict.peace_efforts || 'Analyst summary is still being added for this dossier.';
+    var nextChecks = [
+      'Open dossier and methodology notes',
+      'Cross-check displacement with UNHCR/OCHA or national source',
+      'Cross-check event trend with ACLED or verified local reporting'
+    ];
+    if (length === 'ops') {
+      nextChecks.push('Document assumptions before making operational decisions');
+      nextChecks.push('Record last updated time and source owner');
+    }
+    lastBrief = [
+      'AfroConflict situation brief',
+      'Conflict: ' + (conflict.short_name || conflict.name),
+      'Country/theatre: ' + (conflict.primary_country || 'Africa'),
+      'Status/risk: ' + (conflict.status || 'unknown') + ' / ' + (conflict.escalation_risk || 'unknown'),
+      'Fatalities estimate: ' + fmtRange(conflict.fatalities_min, conflict.fatalities_max),
+      'Displaced estimate: ' + fmtNumber(displaced(conflict)),
+      'Spillover exposure: ' + spilloverStates,
+      'Audience note: ' + audienceNote(conflict, audience),
+      'Summary: ' + summary,
+      'Next checks: ' + nextChecks.join('; '),
+      'Caution: Use this as situational awareness only. Verify with primary sources before operational action.'
+    ].join('\n');
+    result.innerHTML =
+      '<div class="acd-brief-result-grid">' +
+        '<div><span>Status</span><strong>' + esc(conflict.status || 'Unknown') + '</strong></div>' +
+        '<div><span>Escalation</span><strong>' + esc(conflict.escalation_risk || 'Unknown') + '</strong></div>' +
+        '<div><span>Displaced</span><strong>' + esc(fmtNumber(displaced(conflict))) + '</strong></div>' +
+        '<div><span>Fatalities</span><strong>' + esc(fmtRange(conflict.fatalities_min, conflict.fatalities_max)) + '</strong></div>' +
+      '</div>' +
+      '<p><strong>' + esc(conflict.short_name || conflict.name) + ':</strong> ' + esc(summary) + '</p>' +
+      '<p>' + esc(audienceNote(conflict, audience)) + '</p>' +
+      '<p><strong>Verification caution:</strong> Use this brief as situational awareness only, then verify event and displacement figures against primary sources.</p>' +
+      '<div class="acd-brief-builder-actions"><a class="acd-btn acd-btn-outline" href="' + esc(routeFor(conflict.slug)) + '">Open dossier</a><a class="acd-btn acd-btn-outline" href="/tools/africa-conflict/methodology/">Check methodology</a></div>';
+  }
+  function initBriefBuilder() {
+    var select = $('acd-brief-conflict');
+    if (!select) return;
+    fetch(apiPath('/api/conflicts'))
+      .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('conflict feed unavailable')); })
+      .then(function (json) {
+        conflicts = Array.isArray(json.data) ? json.data.filter(function (item) { return item.is_african; }) : [];
+        conflicts.sort(function (a, b) { return (a.short_name || a.name || '').localeCompare(b.short_name || b.name || ''); });
+        select.innerHTML = conflicts.map(function (item) {
+          return '<option value="' + esc(item.slug) + '">' + esc((item.short_name || item.name || 'Unnamed conflict') + ' - ' + (item.primary_country || 'Africa')) + '</option>';
+        }).join('');
+        var top = pickDefaultConflict();
+        if (top) select.value = top.slug;
+        renderBrief();
+      })
+      .catch(function () {
+        select.innerHTML = '<option value="">Feed unavailable</option>';
+        $('acd-brief-result').innerHTML = '<p>Brief builder could not load the conflict feed. Refresh the page or open the methodology notes.</p>';
+      });
+    ['acd-brief-conflict', 'acd-brief-audience', 'acd-brief-length'].forEach(function (id) {
+      var el = $(id);
+      if (el) el.addEventListener('change', renderBrief);
+    });
+    var copy = $('acd-brief-copy');
+    if (copy) {
+      copy.addEventListener('click', function () {
+        if (!lastBrief) renderBrief();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(lastBrief).then(function () {
+            copy.textContent = 'Copied';
+            setTimeout(function () { copy.textContent = 'Copy brief'; }, 1400);
+          });
+        } else {
+          window.prompt('Copy situation brief', lastBrief);
+        }
+      });
+    }
+  }
+  document.addEventListener('DOMContentLoaded', initBriefBuilder);
+})();
+</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

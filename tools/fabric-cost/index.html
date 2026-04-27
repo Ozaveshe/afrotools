@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/energy.css?v=ca21dbe3">
+<link rel="stylesheet" href="/assets/css/energy.css?v=f8aae7a5">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -20,9 +20,18 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 a{text-decoration:none;color:inherit}
 :root{--en-accent:#DB2777;--en-accent-dark:#BE185D;--en-accent-light:#FCE7F3;--en-accent-pale:#FDF4FF;--en-shadow-hover:0 4px 16px rgba(219,39,119,.18),0 1px 4px rgba(0,0,0,.08)}
 .en-hero,.en-tool-hero,.en-results-hero,.en-tool-hub-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a14 50%,#3d0a1e 100%)!important}
+.garment-planner{border:1px solid #fbcfe8;background:#fff7fb}
+.garment-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.garment-quote{background:#fff;border:1px solid #f9a8d4;border-radius:12px;padding:18px;line-height:1.65}
+.garment-quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-bottom:14px}
+.garment-quote-metric{background:#fdf2f8;border:1px solid #fbcfe8;border-radius:10px;padding:12px}
+.garment-quote-metric span{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#9d174d;margin-bottom:4px}
+.garment-quote-metric strong{font-size:1.1rem;color:#831843}
 </style>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <meta property="og:url" content="https://afrotools.com/tools/fabric-cost/">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar theme="dark" active="creative"></afro-navbar>
@@ -101,6 +110,53 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
   </div>
+  <div class="en-card garment-planner">
+    <div class="en-card-title"><div class="en-card-title-icon">&#x1f457;</div>Garment Yardage &amp; Pricing</div>
+    <div class="en-form-grid">
+      <div class="en-field">
+        <label class="en-label">Garment Type</label>
+        <select id="garmentType" class="en-select">
+          <option value="shirt">Shirt / Blouse</option>
+          <option value="dress">Dress / Gown</option>
+          <option value="twoPiece">Two-piece Set</option>
+          <option value="agbada">Agbada / Grand Boubou</option>
+          <option value="kaftan">Kaftan / Tunic</option>
+          <option value="trousers">Trousers</option>
+          <option value="skirt">Skirt</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Size / Fit</label>
+        <select id="garmentSize" class="en-select">
+          <option value="child">Child</option>
+          <option value="small">Small</option>
+          <option value="medium" selected>Medium</option>
+          <option value="large">Large</option>
+          <option value="xl">XL / Plus</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Complexity</label>
+        <select id="garmentComplexity" class="en-select">
+          <option value="simple">Simple</option>
+          <option value="standard" selected>Standard</option>
+          <option value="lined">Lined / Interfaced</option>
+          <option value="patterned">Pattern Matching</option>
+        </select>
+      </div>
+      <div class="en-field">
+        <label class="en-label">Tailor Labour</label>
+        <input type="number" id="garmentLabour" class="en-input" value="10000" min="0">
+      </div>
+      <div class="en-field">
+        <label class="en-label">Target Margin %</label>
+        <input type="number" id="targetMargin" class="en-input" value="40" min="0" max="300">
+      </div>
+    </div>
+    <div class="garment-actions">
+      <button class="en-btn en-btn-secondary" type="button" onclick="applyYardageEstimate()">Estimate yards</button>
+    </div>
+  </div>
   <div class="en-card">
     <div class="en-card-title"><div class="en-card-title-icon">&#x1f9f5;</div>Notions &amp; Accessories</div>
     <div class="en-form-grid">
@@ -155,6 +211,10 @@ a{text-decoration:none;color:inherit}
         </table>
       </div>
     </div>
+    <div class="en-card">
+      <div class="en-card-title"><div class="en-card-title-icon">&#x1f4dd;</div>Tailor Quote</div>
+      <div class="garment-quote" id="garmentQuote"></div>
+    </div>
     <div class="en-tip">
       <div class="en-tip-icon">&#x1f4a1;</div>
       <div class="en-tip-body">
@@ -172,12 +232,31 @@ a{text-decoration:none;color:inherit}
 <script>
 var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48,CI:615,TZ:2600,MA:10};
 var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP ',CI:'XOF ',TZ:'TZS ',MA:'MAD '};
+var lastGarmentQuote='';
 function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function applyYardageEstimate(){
+  var width=parseFloat(document.getElementById('fabricWidth').value)||1.12;
+  var type=document.getElementById('garmentType').value;
+  var size=document.getElementById('garmentSize').value;
+  var complexity=document.getElementById('garmentComplexity').value;
+  var base={shirt:2,dress:4,twoPiece:5.5,agbada:8,kaftan:4.5,trousers:2.5,skirt:2}[type]||3;
+  var sizeMult={child:.65,small:.9,medium:1,large:1.12,xl:1.25}[size]||1;
+  var complexityMult={simple:.95,standard:1,lined:1.15,patterned:1.2}[complexity]||1;
+  var widthMult=1.12/width;
+  var estimate=Math.max(.5,Math.ceil((base*sizeMult*complexityMult*widthMult)*2)/2);
+  document.getElementById('yardsNeeded').value=estimate;
+  if(complexity==='patterned'){document.getElementById('wastage').value='20';}
+}
 function calculate(){
   var country=document.getElementById('country').value;
   var sym=SYM[country];
   var pricePerYard=parseFloat(document.getElementById('pricePerYard').value)||0;
   var yards=parseFloat(document.getElementById('yardsNeeded').value)||3;
+  var garmentType=document.getElementById('garmentType').value;
+  var garmentSize=document.getElementById('garmentSize').value;
+  var garmentComplexity=document.getElementById('garmentComplexity').value;
+  var labour=parseFloat(document.getElementById('garmentLabour').value)||0;
+  var margin=parseFloat(document.getElementById('targetMargin').value)||0;
   var wastage=parseFloat(document.getElementById('wastage').value)/100;
   var yardsWithWaste=yards*(1+wastage);
   var fabricCost=pricePerYard*yardsWithWaste;
@@ -201,8 +280,38 @@ function calculate(){
     bulkHtml+='<tr><td>'+qty+' pieces</td><td>'+sym+fmt(bulk)+'</td><td style="color:#16a34a">-'+sym+fmt(disc)+'</td><td class="en-td-highlight">'+sym+fmt(net)+'</td><td>'+sym+fmt(minSell)+'/pc</td></tr>';
   });
   document.getElementById('bulkTable').innerHTML=bulkHtml;
+  renderGarmentQuote({country:country,sym:sym,rate:FX[country],materialCost:totalPerPiece,labour:labour,margin:margin,garmentType:garmentType,garmentSize:garmentSize,garmentComplexity:garmentComplexity,yardsWithWaste:yardsWithWaste});
   document.getElementById('results').classList.add('on');
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderGarmentQuote(data){
+  var productionCost=data.materialCost+data.labour;
+  var quotePrice=productionCost*(1+(data.margin/100));
+  var profit=quotePrice-productionCost;
+  var usd=quotePrice/(data.rate||1);
+  lastGarmentQuote=[
+    'Fabric tailor quote',
+    'Garment: '+data.garmentSize+' '+data.garmentType+' ('+data.garmentComplexity+')',
+    'Estimated yards with waste: '+data.yardsWithWaste.toFixed(1),
+    'Material and notions: '+data.sym+fmt(data.materialCost),
+    'Labour: '+data.sym+fmt(data.labour),
+    'Suggested client price: '+data.sym+fmt(quotePrice),
+    'Gross profit: '+data.sym+fmt(profit),
+    'USD equivalent: $'+usd.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})
+  ].join('\n');
+  document.getElementById('garmentQuote').innerHTML=
+    '<div class="garment-quote-grid">'+
+      '<div class="garment-quote-metric"><span>Production cost</span><strong>'+data.sym+fmt(productionCost)+'</strong></div>'+
+      '<div class="garment-quote-metric"><span>Client quote</span><strong>'+data.sym+fmt(quotePrice)+'</strong></div>'+
+      '<div class="garment-quote-metric"><span>Gross profit</span><strong>'+data.sym+fmt(profit)+'</strong></div>'+
+      '<div class="garment-quote-metric"><span>Yards with waste</span><strong>'+data.yardsWithWaste.toFixed(1)+'</strong></div>'+
+    '</div>'+
+    '<p><strong>Pricing note:</strong> this quote adds labour and '+fmt(data.margin)+'% margin to material cost. Increase margin for rush jobs, pattern matching, hand embroidery, or courier delivery.</p>'+
+    '<p><strong>Fit note:</strong> confirm measurements, fabric width, lining, and whether the client or tailor supplies notions before taking deposit.</p>'+
+    '<div class="garment-actions"><button class="en-btn en-btn-secondary" type="button" onclick="copyGarmentQuote()">Copy tailor quote</button></div>';
+}
+function copyGarmentQuote(){
+  if(lastGarmentQuote&&navigator.clipboard){navigator.clipboard.writeText(lastGarmentQuote).then(function(){alert('Tailor quote copied.');});}
 }
 </script>
 </body>

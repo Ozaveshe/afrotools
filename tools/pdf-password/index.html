@@ -3,124 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Password Protection — AES-256 Encrypt & Decrypt | AfroTools</title>
-<meta name="description" content="Encrypt and decrypt PDFs in your browser with AES-256 password protection. No upload, no server storage, powered by QPDF WebAssembly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Password Protect and Unlock | AES-256 Browser Tool | AfroTools</title>
+<meta name="description" content="Protect PDFs with AES-256 passwords, owner permissions, password strength checks, and batch ZIP output. Unlock PDFs when you know the password.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-password/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Password Protection — AES-256 Encrypt & Decrypt | AfroTools">
-<meta property="og:description" content="Encrypt and decrypt PDFs locally with AES-256 password protection. Files never leave your browser.">
+<meta property="og:title" content="PDF Password Protect and Unlock | AfroTools">
+<meta property="og:description" content="Encrypt PDFs locally with AES-256, set print/copy/edit permissions, or unlock protected PDFs when you know the password.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-password/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
 <meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Password Protection | AfroTools">
-<meta name="twitter:description" content="AES-256 PDF encryption and decryption in your browser. No uploads.">
+<meta name="twitter:title" content="PDF Password Protect and Unlock | AfroTools">
+<meta name="twitter:description" content="AES-256 PDF password protection and unlock in your browser. No uploads.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<meta property="article:modified_time" content="2026-04-27">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-password/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-password/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <style>
   :root {
-    --afro-green: var(--color-primary);
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
+    --pw-blue: var(--color-primary);
+    --pw-dark: #0f1419;
+    --pw-ink: #0f172a;
+    --pw-muted: #64748b;
+    --pw-soft: #eff6ff;
+    --pw-gold: #b7791f;
+    --pw-green: #047857;
+    --pw-red: #b91c1c;
   }
 
   .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    background: linear-gradient(135deg, var(--pw-dark) 0%, #1a1f2e 100%);
     padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
   }
 
-  .tool-hero::after {
-    content: '\1F510';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
+  .tool-hero-inner,
+  .tool-main-inner {
+    max-width: 1220px;
     margin: 0 auto;
     padding: 0 24px;
-    position: relative;
   }
 
   .breadcrumb {
     font-size: 0.72rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255,255,255,0.34);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
 
   .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255,255,255,0.34);
     text-decoration: none;
   }
 
   .breadcrumb span {
-    color: var(--afro-green);
+    color: #60a5fa;
   }
 
   h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
+    font-size: clamp(1.65rem, 4vw, 2.55rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.08;
+    margin: 0 0 10px;
   }
 
   h1 em {
-    color: var(--afro-green);
+    color: #60a5fa;
     font-style: normal;
   }
 
   .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.9rem;
+    line-height: 1.62;
+    max-width: 720px;
+    margin: 0 0 14px;
   }
 
   .hero-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
-    margin-bottom: 6px;
   }
 
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    min-height: 26px;
     padding: 4px 11px;
     border-radius: 4px;
+    border: 1px solid rgba(96,165,250,0.42);
+    background: rgba(37,99,235,0.18);
+    color: #bfdbfe;
     font-size: 0.68rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
+  .badge.gold {
+    border-color: rgba(245,158,11,0.4);
+    background: rgba(245,158,11,0.12);
+    color: #fde68a;
   }
 
   .tool-main {
@@ -128,11 +132,8 @@
   }
 
   .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: minmax(0, 1fr) 390px;
     gap: 22px;
     align-items: start;
   }
@@ -140,9 +141,9 @@
   .card {
     background: #fff;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 8px rgba(15,23,42,0.05);
   }
 
   .card + .card {
@@ -153,189 +154,335 @@
     padding: 15px 22px;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    gap: 12px;
+    align-items: center;
     background: #f9fafb;
   }
 
   .card-title {
+    color: #374151;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #374151;
+  }
+
+  .card-kicker {
+    color: var(--pw-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
   }
 
   .card-body {
     padding: 22px;
   }
 
+  .segmented {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mode-btn,
+  .mini-btn,
+  .toggle-password {
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    background: var(--pw-soft);
+    color: #1e40af;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    transition: border-color 0.16s, background 0.16s, color 0.16s, box-shadow 0.16s;
+  }
+
+  .mode-btn {
+    padding: 12px 14px;
+    font-size: 0.75rem;
+  }
+
+  .mode-btn:hover,
+  .mini-btn:hover,
+  .toggle-password:hover,
+  .mode-btn:focus-visible,
+  .mini-btn:focus-visible,
+  .toggle-password:focus-visible {
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .mode-btn.on {
+    background: var(--pw-blue);
+    border-color: var(--pw-blue);
+    color: #fff;
+  }
+
+  .drop-zone {
+    border: 2px dashed #bfdbfe;
+    border-radius: 8px;
+    background: var(--pw-soft);
+    cursor: pointer;
+    padding: 30px 18px;
+    text-align: center;
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover,
+  .drop-zone:focus-visible {
+    background: #fff;
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .drop-title {
+    color: #1e293b;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .drop-hint {
+    color: #6b8cae;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .file-summary {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    background: #f8fbff;
+    border-radius: 7px;
+  }
+
+  .file-summary.on {
+    display: flex;
+  }
+
+  .file-summary-text {
+    color: #1e40af;
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .file-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+
+  .file-info {
+    min-width: 0;
+  }
+
+  .file-name {
+    color: #1e293b;
+    font-size: 0.82rem;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-meta,
+  .field-hint {
+    color: var(--pw-muted);
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .mini-btn,
+  .toggle-password {
+    min-height: 32px;
+    padding: 6px 10px;
+    font-size: 0.68rem;
+  }
+
+  .panel {
+    display: block;
+  }
+
+  .panel.hidden {
+    display: none;
+  }
+
   .field {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   .field:last-child {
     margin-bottom: 0;
   }
 
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #1e293b;
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1e293b;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .f-input:focus {
-    border-color: var(--afro-green);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .mode-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-
-  .mode-btn {
-    padding: 12px 16px;
-    background: #EFF6FF;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #334155;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .mode-btn:hover {
-    border-color: var(--afro-green);
-  }
-
-  .mode-btn.on {
-    border-color: var(--afro-green);
-    background: var(--color-primary);
-    color: #fff;
-  }
-
-  .file-input-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-  }
-
-  .file-input-wrapper input[type="file"] {
-    position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;
-  }
-
-  .file-input-label {
-    display: block;
-    padding: 20px;
-    background: #EFF6FF;
-    border: 2px dashed #e5e7eb;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-    color: #334155;
-    font-weight: 600;
-  }
-
-  .file-input-label:hover {
-    border-color: var(--afro-green);
-    background: #EFF6FF;
-  }
-
-  .file-input-label.dragover {
-    border-color: var(--afro-green);
-    background: rgba(0, 113, 227, 0.1);
-  }
-
-  .checkbox-group {
-    margin-bottom: 18px;
-  }
-
-  .checkbox-item {
+  .label-row {
     display: flex;
-    align-items: center;
+    align-items: baseline;
+    justify-content: space-between;
     gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 6px;
   }
 
-  .checkbox-item:last-child {
-    border-bottom: none;
+  .label-text {
+    color: #1e293b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
   }
 
-  .checkbox-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: var(--afro-green);
+  .input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
   }
 
-  .checkbox-item label {
-    flex: 1;
-    cursor: pointer;
-    font-size: 0.85rem;
-    color: #334155;
-    font-weight: 600;
-  }
-
-  .calc-btn {
+  .input {
     width: 100%;
-    padding: 14px;
-    background: var(--color-primary);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    color: #1e293b;
     font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 650;
+    outline: none;
   }
 
-  .calc-btn:hover {
-    background: #0059B3;
+  .input:focus {
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .grid-2,
+  .permission-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .permission-grid {
+    margin-top: 8px;
+  }
+
+  .check-option {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    min-height: 46px;
+    padding: 10px 11px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .check-option input {
+    accent-color: var(--pw-blue);
+    margin-top: 2px;
+  }
+
+  .password-strength {
+    display: none;
+    margin-top: 8px;
+  }
+
+  .password-strength.on {
+    display: block;
+  }
+
+  .strength-meter {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 5px;
+  }
+
+  .strength-meter span {
+    height: 5px;
+    border-radius: 999px;
+    background: #e5e7eb;
+  }
+
+  .strength-meter[data-score="1"] span:nth-child(-n+1) { background: var(--pw-red); }
+  .strength-meter[data-score="2"] span:nth-child(-n+2) { background: #d97706; }
+  .strength-meter[data-score="3"] span:nth-child(-n+3) { background: var(--pw-gold); }
+  .strength-meter[data-score="4"] span:nth-child(-n+4) { background: #059669; }
+  .strength-meter[data-score="5"] span:nth-child(-n+5) { background: var(--pw-green); }
+
+  .strength-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: #475569;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .calc-btn,
+  .act-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 7px;
+    background: var(--pw-blue);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 800;
+    padding: 13px 16px;
+    transition: transform 0.16s, box-shadow 0.16s, opacity 0.16s;
+  }
+
+  .calc-btn:hover,
+  .act-btn:hover,
+  .calc-btn:focus-visible,
+  .act-btn:focus-visible {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 10px 22px rgba(0,113,227,0.22);
+    outline: none;
   }
 
-  .calc-btn:disabled {
-    background: #93c5fd;
+  .calc-btn:disabled,
+  .mini-btn:disabled,
+  .toggle-password:disabled {
     cursor: not-allowed;
+    opacity: 0.55;
     transform: none;
+    box-shadow: none;
   }
 
   .result-card {
-    background: #f9fafb;
-    border: 1.5px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 20px;
     display: none;
   }
 
@@ -344,106 +491,238 @@
   }
 
   .result-text {
-    font-size: 0.85rem;
     color: #1e293b;
-    margin-bottom: 12px;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .act-btn {
-    padding: 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-family: 'DM Sans', sans-serif;
-    border: none;
-  }
-
-  .act-download {
-    background: rgba(0, 113, 227, 0.1);
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    color: #1e40af;
-  }
-
-  .act-download:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #374151;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #334155;
-    line-height: 1.6;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.55;
   }
 
   .progress-bar {
+    display: none;
     width: 100%;
-    height: 4px;
-    background: #e5e7eb;
-    border-radius: 2px;
-    overflow: hidden;
+    height: 6px;
     margin-top: 12px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    overflow: hidden;
+  }
+
+  .progress-bar.on {
+    display: block;
   }
 
   .progress-fill {
+    width: 0%;
     height: 100%;
-    background: var(--color-primary);
-    width: 100%;
-    transition: width 0.3s;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--pw-blue), #60a5fa);
+    transition: width 0.25s;
   }
 
-  @media (max-width: 768px) {
+  .result-rows {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .result-row {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #f8fafc;
+  }
+
+  .result-row.error {
+    border-color: #fecaca;
+    background: #fff7f7;
+  }
+
+  .result-name {
+    color: #1e293b;
+    font-size: 0.76rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  .result-meta {
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-top: 3px;
+  }
+
+  .result-row.error .result-meta {
+    color: var(--pw-red);
+  }
+
+  .result-note {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    background: var(--pw-soft);
+    color: #334155;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .result-note.on {
+    display: block;
+  }
+
+  .action-row {
+    display: none;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .action-row.on {
+    display: grid;
+  }
+
+  .info-card {
+    margin-top: 18px;
+    border-left: 4px solid var(--pw-blue);
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 18px;
+  }
+
+  .info-card.gold {
+    border-left-color: var(--pw-gold);
+    background: #fffaf0;
+  }
+
+  .info-title {
+    color: var(--pw-ink);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .info-text {
+    color: #475569;
+    font-size: 0.82rem;
+    font-weight: 650;
+    line-height: 1.62;
+  }
+
+  .info-text ul {
+    margin: 10px 0 0;
+    padding-left: 18px;
+  }
+
+  .seo-section {
+    max-width: 920px;
+    margin: 32px auto;
+    padding: 0 20px 44px;
+  }
+
+  .seo-section h2,
+  .seo-section h3 {
+    color: var(--pw-ink);
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .seo-section h2 {
+    font-size: 1.2rem;
+    margin: 0 0 12px;
+  }
+
+  .seo-section h3 {
+    font-size: 1rem;
+    margin: 22px 0 10px;
+  }
+
+  .seo-section p,
+  .seo-section li {
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .faq-list details {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 14px 18px;
+  }
+
+  .faq-list summary {
+    color: var(--pw-ink);
+    cursor: pointer;
+    font-size: 0.86rem;
+    font-weight: 800;
+  }
+
+  @media (max-width: 900px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
     }
+  }
 
-    .mode-row {
+  @media (max-width: 640px) {
+    .tool-hero {
+      padding: 34px 0 30px;
+    }
+
+    .tool-hero-inner,
+    .tool-main-inner {
+      padding: 0 16px;
+    }
+
+    .segmented,
+    .grid-2,
+    .permission-grid,
+    .input-row {
       grid-template-columns: 1fr;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .file-summary {
+      align-items: flex-start;
+      flex-direction: column;
     }
   }
 </style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Password Protection","description":"Encrypt and decrypt PDF files locally in the browser with AES-256 password protection and owner/user permissions.","url":"https://afrotools.com/tools/pdf-password/","inLanguage":"en","applicationCategory":"SecurityApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and WebAssembly","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-password.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Password Protection — AES-256 Encrypt & Decrypt","url":"https://afrotools.com/tools/pdf-password/","description":"Password-protect PDFs with AES-256 encryption or remove encryption when you know the password. All processing stays in your browser.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-password.webp"}</script>
-<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-password/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-password/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PDF Password Protect and Unlock",
+  "description": "Protect PDFs with AES-256 passwords, owner permissions, password strength checks, and batch ZIP output. Unlock PDFs when you know the password.",
+  "url": "https://afrotools.com/tools/pdf-password/",
+  "inLanguage": "en",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript and WebAssembly",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/pdf-password.webp"
+}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -464,774 +743,252 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "PDF Password Protection",
+      "name": "PDF Password",
       "item": "https://afrotools.com/tools/pdf-password/"
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can AfroTools remove a PDF password without the password?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The unlock tool creates an unencrypted copy only when you provide a correct open or owner password."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What encryption does the protect tool use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "New protected PDFs use PDF AES-256 encryption through QPDF compiled to WebAssembly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the PDF files uploaded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Files and passwords are processed locally in the browser tab."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
+<section class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>PDF <em>Password</em></h1>
-    <p class="hero-sub">Encrypt PDFs with AES-256 password protection or remove encryption when you know the password. Everything runs locally in your browser with QPDF WebAssembly.</p>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>PDF <em>Password</em> Protect and Unlock</h1>
+    <p class="hero-sub">Protect PDFs with AES-256 encryption, set owner permissions, batch export protected files, or unlock PDFs when you already know the password.</p>
     <div class="hero-badges">
-      <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Fast</span>
+      <span class="badge">AES-256</span>
+      <span class="badge">Local processing</span>
+      <span class="badge gold">Batch ZIP</span>
+      <span class="badge">QPDF WebAssembly</span>
     </div>
   </div>
-</div>
+</section>
 
-<div class="tool-main">
+<main class="tool-main">
   <div class="tool-main-inner">
-    <div>
-      <!-- Mode Selection -->
+    <section>
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Operation</span>
+          <span class="card-title">Mode</span>
+          <span class="card-kicker">Protect or unlock</span>
         </div>
         <div class="card-body">
-          <div class="mode-row">
-            <button class="mode-btn on" data-mode="encrypt">Encrypt PDF</button>
-            <button class="mode-btn" data-mode="decrypt">Decrypt PDF</button>
+          <div class="segmented" role="group" aria-label="PDF password mode">
+            <button class="mode-btn on" id="modeProtect" type="button" aria-pressed="true">Protect PDF</button>
+            <button class="mode-btn" id="modeUnlock" type="button" aria-pressed="false">Unlock PDF</button>
           </div>
         </div>
       </div>
 
-      <!-- Encrypt Card -->
-      <div class="card" id="encrypt-card">
+      <div class="card">
         <div class="card-head">
-          <span class="card-title">Upload PDF to Encrypt</span>
+          <span class="card-title" id="fileModeLabel">Upload PDFs to protect</span>
+          <span class="card-kicker">PDF only</span>
         </div>
         <div class="card-body">
-          <div class="file-input-wrapper">
-            <input type="file" id="encryptFileInput" accept=".pdf">
-            <label for="encryptFileInput" class="file-input-label">
-              Select or drag & drop a PDF here
-            </label>
+          <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-controls="pdfFileInput">
+            <div class="drop-title" id="dropTitle">Choose PDFs to password-protect</div>
+            <div class="drop-hint" id="dropHint">Single PDF downloads as a PDF. Multiple PDFs download as a ZIP.</div>
+            <input class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
           </div>
-
-          <div id="encryptFileInfo" style="display:none; margin-top:12px; padding:10px 14px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px;">
-            <span style="font-size:0.82rem;font-weight:700;color:#1e40af;" id="encryptFileName"></span>
+          <div class="file-summary" id="fileSummary">
+            <span class="file-summary-text" id="fileSummaryText">No PDFs selected.</span>
+            <button class="mini-btn" id="clearFilesBtn" type="button">Clear</button>
           </div>
+          <div class="file-list" id="fileList" aria-live="polite"></div>
+        </div>
+      </div>
 
-          <div class="field" style="margin-top:18px;">
-            <label class="f-label-text">User Password</label>
-            <input type="password" class="f-input" id="userPassword" placeholder="Password to open PDF">
-            <div id="passwordStrength" style="margin-top:6px;display:none;">
-              <div style="display:flex;gap:3px;margin-bottom:4px;">
-                <div id="str1" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
-                <div id="str2" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
-                <div id="str3" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
-                <div id="str4" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
+      <div class="card panel" id="protectPanel">
+        <div class="card-head">
+          <span class="card-title">Protection Settings</span>
+          <span class="card-kicker">AES-256 standard security</span>
+        </div>
+        <div class="card-body">
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="openPassword">Open Password</label></div>
+              <div class="input-row">
+                <input class="input" id="openPassword" type="password" autocomplete="new-password" placeholder="Password to open">
+                <button class="toggle-password" type="button" data-target="openPassword">Show</button>
               </div>
-              <span id="strLabel" style="font-size:0.68rem;font-weight:700;"></span>
+              <div class="password-strength" id="passwordStrength">
+                <div class="strength-meter" id="strengthMeter" data-score="0"><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="strength-line"><span id="strengthLabel">Empty</span><span id="strengthHint"></span></div>
+              </div>
             </div>
-          </div>
-
-          <div class="field">
-            <label class="f-label-text">Owner Password (Optional)</label>
-            <input type="password" class="f-input" id="ownerPassword" placeholder="Password for full access">
-          </div>
-
-          <div class="field">
-            <label class="f-label-text">Permissions</label>
-            <div class="checkbox-group">
-              <div class="checkbox-item">
-                <input type="checkbox" id="allowPrint" checked>
-                <label for="allowPrint">Allow Printing</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" id="allowCopy" checked>
-                <label for="allowCopy">Allow Copying Text</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" id="allowEdit" checked>
-                <label for="allowEdit">Allow Editing</label>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="confirmPassword">Confirm Password</label></div>
+              <div class="input-row">
+                <input class="input" id="confirmPassword" type="password" autocomplete="new-password" placeholder="Repeat password">
+                <button class="toggle-password" type="button" data-target="confirmPassword">Show</button>
               </div>
             </div>
           </div>
 
-          <button class="calc-btn" id="encryptBtn" disabled>Encrypt PDF with AES-256</button>
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="ownerPassword">Owner Password</label><span class="field-hint">Optional</span></div>
+              <div class="input-row">
+                <input class="input" id="ownerPassword" type="password" autocomplete="new-password" placeholder="Full-access password">
+                <button class="toggle-password" type="button" data-target="ownerPassword">Show</button>
+              </div>
+              <div class="field-hint">Leave blank to generate an internal owner key.</div>
+            </div>
+            <div class="field">
+              <div class="label-row"><span class="label-text">Password Tool</span></div>
+              <button class="mini-btn" id="generatePassword" type="button">Generate Strong Password</button>
+              <div class="field-hint" style="margin-top:6px;">Store the password safely. Lost open passwords cannot be recovered.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><span class="label-text">Viewer Permissions</span><span class="field-hint">Compliant viewers</span></div>
+            <div class="permission-grid">
+              <label class="check-option"><input type="checkbox" id="allowPrint" checked> Allow printing</label>
+              <label class="check-option"><input type="checkbox" id="allowCopy" checked> Allow text and image copying</label>
+              <label class="check-option"><input type="checkbox" id="allowEdit" checked> Allow document editing</label>
+              <label class="check-option"><input type="checkbox" id="allowAnnotate" checked> Allow comments and annotations</label>
+              <label class="check-option"><input type="checkbox" id="allowForm" checked> Allow form filling</label>
+              <label class="check-option"><input type="checkbox" id="allowAssemble" checked> Allow page extraction and assembly</label>
+            </div>
+          </div>
+
+          <button class="calc-btn" id="processBtn" type="button" disabled>Protect PDF</button>
         </div>
       </div>
 
-      <!-- Decrypt Card -->
-      <div class="card" id="decrypt-card" style="display:none;">
+      <div class="card panel hidden" id="unlockPanel">
         <div class="card-head">
-          <span class="card-title">Upload Password-Protected PDF</span>
+          <span class="card-title">Unlock Settings</span>
+          <span class="card-kicker">Known password required</span>
         </div>
         <div class="card-body">
-          <div class="file-input-wrapper">
-            <input type="file" id="decryptFileInput" accept=".pdf">
-            <label for="decryptFileInput" class="file-input-label">
-              Select or drag & drop a PDF here
-            </label>
+          <div class="field">
+            <div class="label-row"><label class="label-text" for="unlockPassword">PDF Password</label></div>
+            <div class="input-row">
+              <input class="input" id="unlockPassword" type="password" autocomplete="current-password" placeholder="Open or owner password">
+              <button class="toggle-password" type="button" data-target="unlockPassword">Show</button>
+            </div>
+            <div class="field-hint">This tool cannot guess, bypass, or recover an unknown open password.</div>
           </div>
-
-          <div class="field" style="margin-top:18px;">
-            <label class="f-label-text">Password</label>
-            <input type="password" class="f-input" id="decryptPassword" placeholder="Enter password">
-          </div>
-
-          <button class="calc-btn" id="decryptBtn" disabled>Decrypt PDF</button>
+          <button class="calc-btn" id="unlockProcessBtn" type="button" disabled>Unlock PDF</button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Result Card -->
+    <aside>
       <div class="card result-card" id="resultCard">
-        <div class="card-head">
-          <span class="card-title">Result</span>
-        </div>
+        <div class="card-head"><span class="card-title">Result</span></div>
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
-          <div class="progress-bar" id="progressBar" style="display:none;">
-            <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-rows" id="resultRows"></div>
+          <div class="result-note" id="resultNote"></div>
+          <div class="action-row" id="actionRow">
+            <button class="act-btn" id="downloadBtn" type="button">Download PDF</button>
+            <share-result-button tool-name="PDF Password" tool-slug="pdf-password"></share-result-button>
           </div>
-          <div class="action-row" id="actionRow" style="display:none;">
-            <button class="act-btn act-download" id="downloadBtn">Download</button>
-          </div>
-<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-  <share-result-button
-    tool-name="Pdf Password"
-    tool-slug="pdf-password">
-  </share-result-button>
-</div>
         </div>
       </div>
 
-      <!-- Info Card -->
       <div class="info-card">
-        <div class="info-title">Status</div>
+        <div class="info-title">Security Model</div>
         <div class="info-text">
-          <strong>Encrypt:</strong> Uses QPDF WebAssembly to create standard AES-256 encrypted PDFs.
-          <br><br>
-          <strong>Decrypt:</strong> Removes encryption only when you provide the correct user or owner password.
-          <br><br>
-          Your files and passwords stay in this browser tab. Nothing is uploaded to AfroTools.
-          <ul style="margin-top:10px;padding-left:16px;">
-            <li>Client-side processing</li>
-            <li>No data sent to servers</li>
-            <li>Broken protection flow disabled</li>
+          QPDF WebAssembly applies PDF standard security locally in the browser. Files and passwords are not uploaded to AfroTools.
+          <ul>
+            <li>AES-256 protect output.</li>
+            <li>User and owner password support.</li>
+            <li>Single PDF or batch ZIP downloads.</li>
           </ul>
         </div>
       </div>
-    </div>
+
+      <div class="info-card gold">
+        <div class="info-title">Important</div>
+        <div class="info-text">
+          PDF permission flags restrict actions in compliant readers, but they are not the same as document rights management. Keep a clean original and store passwords securely.
+        </div>
+      </div>
+    </aside>
   </div>
-</div>
+</main>
 
-
-<afro-related-tools category="document-pdf" current="pdf-password"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
-
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">PDF Password Protection: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>AfroTools PDF Password Protection uses QPDF compiled to WebAssembly to apply PDF Standard Security encryption in your browser. New protected files use 256-bit AES with separate user and owner password support, plus print, copy, and edit permission flags. File handling remains local to your device.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What permissions can I control?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">You can independently control printing, text copying, and document editing permissions. This allows you to share a PDF for viewing and printing while preventing recipients from copying content or making changes.</p>
+<section class="seo-section">
+  <h2>Free PDF Password Protection Tool</h2>
+  <p>AfroTools protects PDF files in the browser using QPDF compiled to WebAssembly. You can add an open password, use a separate owner password, control printing, copying, editing, comments, forms, and page assembly, then export one protected PDF or a ZIP of protected PDFs.</p>
+  <h3>Unlock PDFs With a Known Password</h3>
+  <p>The unlock mode removes password protection only after the correct open or owner password is accepted. It creates a new unencrypted PDF copy for easier printing, editing, or archiving.</p>
+  <h3>Privacy and Compatibility</h3>
+  <p>The workflow runs locally in your browser tab, so sensitive PDFs and passwords are not uploaded. New protected files use AES-256 PDF standard security. Permission behavior can vary by PDF reader, so always test a protected file in the reader your recipient will use.</p>
+  <div class="faq-list">
+    <details>
+      <summary>Can I protect many PDFs at once?</summary>
+      <p>Yes. Select multiple PDFs, set the password and permissions once, then download a ZIP containing each protected file.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Can I remove a password from a PDF?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Yes. Upload the protected PDF, enter the correct password, and download an unencrypted copy.</p>
+    <details>
+      <summary>Can this recover a lost PDF password?</summary>
+      <p>No. AfroTools does not guess, crack, or recover unknown passwords. Unlock requires a valid open or owner password.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How secure is the encryption?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">New encrypted PDFs use AES-256 PDF encryption. Security still depends on password strength, so use a long unique passphrase.</p>
+    <details>
+      <summary>Does password protection change PDF quality?</summary>
+      <p>No. Encryption does not rasterize pages or recompress images. The document content is preserved while the PDF security dictionary is updated.</p>
     </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is my password stored anywhere?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">No. Your password is used only during the encryption process in your browser and is never stored, transmitted, or logged. Make sure to remember your password, as it cannot be recovered.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Is there a file size limit?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">There is no server-imposed limit since everything runs in your browser. Large PDFs may take a few seconds longer to process. For most documents, encryption is completed in seconds.</p>
+    <details>
+      <summary>Why use an owner password?</summary>
+      <p>The owner password controls permission changes and full access. If you leave it blank, AfroTools generates an internal owner key so the protected file does not use an empty owner password.</p>
     </details>
   </div>
 </section>
 
+<afro-related-tools category="document-pdf" current="pdf-password"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.js?v=7785bbdc" defer></script>
+
+<script src="/assets/js/lib/qpdf-aes.js?v=9012a71d"></script>
+<script src="/tools/pdf-password/app.js?v=397af8ef"></script>
+<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
-<script src="/assets/js/lib/qpdf-aes.js?v=68e33bea"></script>
-
-<script>
-  function getPDFLib() {
-    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
-    return window.PDFLib;
-  }
-  let currentMode = 'encrypt';
-  let currentFile = null;
-  let processedPdf = null;
-
-  const modeButtons = document.querySelectorAll('.mode-btn');
-  const encryptCard = document.getElementById('encrypt-card');
-  const decryptCard = document.getElementById('decrypt-card');
-  const encryptFileInput = document.getElementById('encryptFileInput');
-  const decryptFileInput = document.getElementById('decryptFileInput');
-  const userPassword = document.getElementById('userPassword');
-  const ownerPassword = document.getElementById('ownerPassword');
-  const allowPrint = document.getElementById('allowPrint');
-  const allowCopy = document.getElementById('allowCopy');
-  const allowEdit = document.getElementById('allowEdit');
-  const decryptPassword = document.getElementById('decryptPassword');
-  const encryptBtn = document.getElementById('encryptBtn');
-  const decryptBtn = document.getElementById('decryptBtn');
-  const resultCard = document.getElementById('resultCard');
-  const resultText = document.getElementById('resultText');
-  const progressBar = document.getElementById('progressBar');
-  const progressFill = document.getElementById('progressFill');
-  const actionRow = document.getElementById('actionRow');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const PASSWORD_WORKFLOW_AVAILABLE = true;
-
-  function renderPasswordUnavailableNotice() {
-    resultCard.classList.remove('on');
-    progressBar.style.display = 'none';
-    actionRow.style.display = 'none';
-  }
-
-  function syncPasswordAvailabilityState() {
-    encryptBtn.disabled = !(currentMode === 'encrypt' && currentFile && userPassword.value);
-    decryptBtn.disabled = !(currentMode === 'decrypt' && currentFile && decryptPassword.value);
-    encryptBtn.textContent = 'Encrypt PDF with AES-256';
-    decryptBtn.textContent = 'Decrypt PDF';
-  }
-
-  syncPasswordAvailabilityState();
-
-  // Mode switching
-  modeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentMode = btn.dataset.mode;
-      modeButtons.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-
-      encryptCard.style.display = currentMode === 'encrypt' ? '' : 'none';
-      decryptCard.style.display = currentMode === 'decrypt' ? '' : 'none';
-      renderPasswordUnavailableNotice();
-    });
-  });
-
-  // Password strength indicator
-  userPassword.addEventListener('input', () => {
-    const pw = userPassword.value;
-    const strengthDiv = document.getElementById('passwordStrength');
-    if (!pw) { strengthDiv.style.display = 'none'; return; }
-    strengthDiv.style.display = 'block';
-
-    let score = 0;
-    if (pw.length >= 6) score++;
-    if (pw.length >= 10) score++;
-    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
-    if (/[0-9]/.test(pw) && /[^A-Za-z0-9]/.test(pw)) score++;
-
-    const colors = ['#ef4444', '#f59e0b', '#3b82f6', '#22c55e'];
-    const labels = ['Weak', 'Fair', 'Good', 'Strong'];
-    const labelColors = ['#ef4444', '#f59e0b', '#3b82f6', '#22c55e'];
-
-    for (let i = 1; i <= 4; i++) {
-      document.getElementById('str' + i).style.background = i <= score ? colors[score - 1] : '#e5e7eb';
-    }
-    document.getElementById('strLabel').textContent = labels[score - 1] || 'Too short';
-    document.getElementById('strLabel').style.color = labelColors[score - 1] || '#9ca3af';
-    syncPasswordAvailabilityState();
-  });
-
-  decryptPassword.addEventListener('input', syncPasswordAvailabilityState);
-
-  function isPdfFile(file) {
-    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
-  }
-
-  // Encrypt file input
-  encryptFileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (isPdfFile(file)) {
-      currentFile = file;
-      syncPasswordAvailabilityState();
-      document.getElementById('encryptFileName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-      document.getElementById('encryptFileInfo').style.display = 'block';
-    }
-  });
-
-  // Decrypt file input
-  decryptFileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (isPdfFile(file)) {
-      currentFile = file;
-      syncPasswordAvailabilityState();
-    }
-  });
-
-  // Drag and drop for encrypt
-  const encryptLabel = document.querySelector('#encrypt-card .file-input-label');
-  encryptLabel.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    encryptLabel.classList.add('dragover');
-  });
-
-  encryptLabel.addEventListener('dragleave', () => {
-    encryptLabel.classList.remove('dragover');
-  });
-
-  encryptLabel.addEventListener('drop', (e) => {
-    e.preventDefault();
-    encryptLabel.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (isPdfFile(file)) {
-      currentFile = file;
-      syncPasswordAvailabilityState();
-      document.getElementById('encryptFileName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-      document.getElementById('encryptFileInfo').style.display = 'block';
-    }
-  });
-
-  // Drag and drop for decrypt
-  const decryptLabel = document.querySelector('#decrypt-card .file-input-label');
-  decryptLabel.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    decryptLabel.classList.add('dragover');
-  });
-
-  decryptLabel.addEventListener('dragleave', () => {
-    decryptLabel.classList.remove('dragover');
-  });
-
-  decryptLabel.addEventListener('drop', (e) => {
-    e.preventDefault();
-    decryptLabel.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (isPdfFile(file)) {
-      currentFile = file;
-      syncPasswordAvailabilityState();
-    }
-  });
-
-  // -- RC4-based PDF encryption (works in all browsers) --------------
-  function rc4(key, data) {
-    var S = new Uint8Array(256);
-    for (var i = 0; i < 256; i++) S[i] = i;
-    var j = 0;
-    for (var i = 0; i < 256; i++) { j = (j + S[i] + key[i % key.length]) & 255; var t = S[i]; S[i] = S[j]; S[j] = t; }
-    var out = new Uint8Array(data.length);
-    var i = 0, j = 0;
-    for (var k = 0; k < data.length; k++) { i = (i + 1) & 255; j = (j + S[i]) & 255; var t = S[i]; S[i] = S[j]; S[j] = t; out[k] = data[k] ^ S[(S[i] + S[j]) & 255]; }
-    return out;
-  }
-
-  function md5(data) {
-    // Simple MD5 for PDF encryption
-    function md5cycle(x, k) {
-      var a = x[0], b = x[1], c = x[2], d = x[3];
-      a = ff(a,b,c,d,k[0],7,-680876936);d = ff(d,a,b,c,k[1],12,-389564586);c = ff(c,d,a,b,k[2],17,606105819);b = ff(b,c,d,a,k[3],22,-1044525330);
-      a = ff(a,b,c,d,k[4],7,-176418897);d = ff(d,a,b,c,k[5],12,1200080426);c = ff(c,d,a,b,k[6],17,-1473231341);b = ff(b,c,d,a,k[7],22,-45705983);
-      a = ff(a,b,c,d,k[8],7,1770035416);d = ff(d,a,b,c,k[9],12,-1958414417);c = ff(c,d,a,b,k[10],17,-42063);b = ff(b,c,d,a,k[11],22,-1990404162);
-      a = ff(a,b,c,d,k[12],7,1804603682);d = ff(d,a,b,c,k[13],12,-40341101);c = ff(c,d,a,b,k[14],17,-1502002290);b = ff(b,c,d,a,k[15],22,1236535329);
-      a = gg(a,b,c,d,k[1],5,-165796510);d = gg(d,a,b,c,k[6],9,-1069501632);c = gg(c,d,a,b,k[11],14,643717713);b = gg(b,c,d,a,k[0],20,-373897302);
-      a = gg(a,b,c,d,k[5],5,-701558691);d = gg(d,a,b,c,k[10],9,38016083);c = gg(c,d,a,b,k[15],14,-660478335);b = gg(b,c,d,a,k[4],20,-405537848);
-      a = gg(a,b,c,d,k[9],5,568446438);d = gg(d,a,b,c,k[14],9,-1019803690);c = gg(c,d,a,b,k[3],14,-187363961);b = gg(b,c,d,a,k[8],20,1163531501);
-      a = gg(a,b,c,d,k[13],5,-1444681467);d = gg(d,a,b,c,k[2],9,-51403784);c = gg(c,d,a,b,k[7],14,1735328473);b = gg(b,c,d,a,k[12],20,-1926607734);
-      a = hh(a,b,c,d,k[5],4,-378558);d = hh(d,a,b,c,k[8],11,-2022574463);c = hh(c,d,a,b,k[11],16,1839030562);b = hh(b,c,d,a,k[14],23,-35309556);
-      a = hh(a,b,c,d,k[1],4,-1530992060);d = hh(d,a,b,c,k[4],11,1272893353);c = hh(c,d,a,b,k[7],16,-155497632);b = hh(b,c,d,a,k[10],23,-1094730640);
-      a = hh(a,b,c,d,k[13],4,681279174);d = hh(d,a,b,c,k[0],11,-358537222);c = hh(c,d,a,b,k[3],16,-722521979);b = hh(b,c,d,a,k[6],23,76029189);
-      a = hh(a,b,c,d,k[9],4,-640364487);d = hh(d,a,b,c,k[12],11,-421815835);c = hh(c,d,a,b,k[15],16,530742520);b = hh(b,c,d,a,k[2],23,-995338651);
-      a = ii(a,b,c,d,k[0],6,-198630844);d = ii(d,a,b,c,k[7],10,1126891415);c = ii(c,d,a,b,k[14],15,-1416354905);b = ii(b,c,d,a,k[5],21,-57434055);
-      a = ii(a,b,c,d,k[12],6,1700485571);d = ii(d,a,b,c,k[3],10,-1894986606);c = ii(c,d,a,b,k[10],15,-1051523);b = ii(b,c,d,a,k[1],21,-2054922799);
-      a = ii(a,b,c,d,k[8],6,1873313359);d = ii(d,a,b,c,k[15],10,-30611744);c = ii(c,d,a,b,k[6],15,-1560198380);b = ii(b,c,d,a,k[13],21,1309151649);
-      a = ii(a,b,c,d,k[4],6,-145523070);d = ii(d,a,b,c,k[11],10,-1120210379);c = ii(c,d,a,b,k[2],15,718787259);b = ii(b,c,d,a,k[9],21,-343485551);
-      x[0] = add32(a, x[0]); x[1] = add32(b, x[1]); x[2] = add32(c, x[2]); x[3] = add32(d, x[3]);
-    }
-    function cmn(q, a, b, x, s, t) { a = add32(add32(a, q), add32(x, t)); return add32((a << s) | (a >>> (32 - s)), b); }
-    function ff(a,b,c,d,x,s,t) { return cmn((b & c) | ((~b) & d), a, b, x, s, t); }
-    function gg(a,b,c,d,x,s,t) { return cmn((b & d) | (c & (~d)), a, b, x, s, t); }
-    function hh(a,b,c,d,x,s,t) { return cmn(b ^ c ^ d, a, b, x, s, t); }
-    function ii(a,b,c,d,x,s,t) { return cmn(c ^ (b | (~d)), a, b, x, s, t); }
-    function add32(a, b) { return (a + b) & 0xFFFFFFFF; }
-    function md5blk(s) {
-      var md5blks = [], i;
-      for (i = 0; i < 64; i += 4) md5blks[i >> 2] = s[i] + (s[i+1] << 8) + (s[i+2] << 16) + (s[i+3] << 24);
-      return md5blks;
-    }
-    var n = data.length, state = [1732584193, -271733879, -1732584194, 271733878], i;
-    var tail = new Uint8Array(((n + 8 >> 6) + 1) * 64);
-    for (i = 0; i < n; i++) tail[i] = data[i];
-    tail[n] = 0x80;
-    var bits = n * 8;
-    tail[tail.length - 8] = bits & 0xff; tail[tail.length - 7] = (bits >> 8) & 0xff;
-    tail[tail.length - 6] = (bits >> 16) & 0xff; tail[tail.length - 5] = (bits >> 24) & 0xff;
-    for (i = 0; i < tail.length; i += 64) md5cycle(state, md5blk(tail.subarray(i, i + 64)));
-    var out = new Uint8Array(16);
-    for (i = 0; i < 4; i++) { out[i*4] = state[i] & 0xff; out[i*4+1] = (state[i] >> 8) & 0xff; out[i*4+2] = (state[i] >> 16) & 0xff; out[i*4+3] = (state[i] >> 24) & 0xff; }
-    return out;
-  }
-
-  var PDF_PADDING = new Uint8Array([0x28,0xBF,0x4E,0x5E,0x4E,0x75,0x8A,0x41,0x64,0x00,0x4E,0x56,0xFF,0xFA,0x01,0x08,0x2E,0x2E,0x00,0xB6,0xD0,0x68,0x3E,0x80,0x2F,0x0C,0xA9,0xFE,0x64,0x53,0x69,0x7A]);
-
-  function computeEncKey(userPwd, ownerHash, permissions, fileId, keyLen) {
-    var pwd = new Uint8Array(32);
-    var enc = new TextEncoder();
-    var pwdBytes = enc.encode(userPwd);
-    for (var i = 0; i < 32; i++) pwd[i] = i < pwdBytes.length ? pwdBytes[i] : PDF_PADDING[i - pwdBytes.length];
-    var buf = new Uint8Array(pwd.length + ownerHash.length + 4 + fileId.length);
-    var off = 0;
-    buf.set(pwd, off); off += pwd.length;
-    buf.set(ownerHash, off); off += ownerHash.length;
-    buf[off++] = permissions & 0xff; buf[off++] = (permissions >> 8) & 0xff;
-    buf[off++] = (permissions >> 16) & 0xff; buf[off++] = (permissions >> 24) & 0xff;
-    buf.set(fileId, off);
-    var hash = md5(buf);
-    if (keyLen > 5) { for (var i = 0; i < 50; i++) hash = md5(hash.subarray(0, keyLen)); }
-    return hash.subarray(0, keyLen);
-  }
-
-  function computeOwnerHash(ownerPwd, userPwd, keyLen) {
-    var enc = new TextEncoder();
-    var opwd = new Uint8Array(32);
-    var oBytes = enc.encode(ownerPwd);
-    for (var i = 0; i < 32; i++) opwd[i] = i < oBytes.length ? oBytes[i] : PDF_PADDING[i - oBytes.length];
-    var hash = md5(opwd);
-    if (keyLen > 5) { for (var i = 0; i < 50; i++) hash = md5(hash); }
-    var key = hash.subarray(0, keyLen);
-    var upwd = new Uint8Array(32);
-    var uBytes = enc.encode(userPwd);
-    for (var i = 0; i < 32; i++) upwd[i] = i < uBytes.length ? uBytes[i] : PDF_PADDING[i - uBytes.length];
-    var encrypted = rc4(key, upwd);
-    if (keyLen > 5) {
-      for (var round = 1; round <= 19; round++) {
-        var dk = new Uint8Array(keyLen);
-        for (var i = 0; i < keyLen; i++) dk[i] = key[i] ^ round;
-        encrypted = rc4(dk, encrypted);
-      }
-    }
-    return encrypted;
-  }
-
-  function computeUserHash(encKey, fileId, keyLen) {
-    if (keyLen <= 5) return rc4(encKey, PDF_PADDING);
-    var buf = new Uint8Array(PDF_PADDING.length + fileId.length);
-    buf.set(PDF_PADDING, 0); buf.set(fileId, PDF_PADDING.length);
-    var hash = md5(buf);
-    var encrypted = rc4(encKey, hash);
-    for (var round = 1; round <= 19; round++) {
-      var dk = new Uint8Array(keyLen);
-      for (var i = 0; i < keyLen; i++) dk[i] = encKey[i] ^ round;
-      encrypted = rc4(dk, encrypted);
-    }
-    var result = new Uint8Array(32);
-    result.set(encrypted, 0);
-    for (var i = encrypted.length; i < 32; i++) result[i] = 0;
-    return result;
-  }
-
-  function generateFileId() {
-    var id = new Uint8Array(16);
-    crypto.getRandomValues(id);
-    return id;
-  }
-
-  function hexStr(bytes) {
-    return Array.from(bytes).map(function(b) { return b.toString(16).padStart(2, '0').toUpperCase(); }).join('');
-  }
-
-  function buildEncryptedPdf(pdfBytes, userPwd, ownerPwd, perms) {
-    // Parse PDF to find/replace trailer and add encryption dictionary
-    var text = new TextDecoder('latin1').decode(pdfBytes);
-    var keyLen = 16; // 128-bit RC4
-    var permFlags = -3904; // Default: all allowed
-    if (!perms.print) permFlags &= ~4;
-    if (!perms.copy) permFlags &= ~16;
-    if (!perms.edit) permFlags &= ~8;
-
-    // Generate file ID
-    var fileId = generateFileId();
-    var ownerHash = computeOwnerHash(ownerPwd, userPwd, keyLen);
-    var encKey = computeEncKey(userPwd, ownerHash, permFlags, fileId, keyLen);
-    var userHash = computeUserHash(encKey, fileId, keyLen);
-
-    // Build encryption dictionary
-    var encDict = '\n% Encryption\n' +
-      (text.match(/\d+ \d+ obj/) ? '' : '') +
-      'encrypt_obj 0 obj\n' +
-      '<< /Type /Encrypt /Filter /Standard /V 4 /R 4 /Length 128\n' +
-      '   /CF << /StdCF << /Type /CryptFilter /CFM /V2 /Length 16 /AuthEvent /DocOpen >> >>\n' +
-      '   /StmF /StdCF /StrF /StdCF\n' +
-      '   /O <' + hexStr(ownerHash) + '>\n' +
-      '   /U <' + hexStr(userHash) + '>\n' +
-      '   /P ' + permFlags + '\n' +
-      '>>\nendobj\n';
-
-    // Find the highest object number
-    var maxObj = 0;
-    var objPattern = /(\d+)\s+\d+\s+obj/g;
-    var match;
-    while ((match = objPattern.exec(text)) !== null) {
-      var num = parseInt(match[1]);
-      if (num > maxObj) maxObj = num;
-    }
-    var encObjNum = maxObj + 1;
-    encDict = encDict.replace('encrypt_obj', encObjNum);
-
-    // Find trailer and add /Encrypt reference
-    var trailerMatch = text.match(/trailer\s*<<([^>]*(?:<<[^>]*>>[^>]*)*)>>/);
-    if (!trailerMatch) {
-      // Try xref stream approach
-      throw new Error('Could not find PDF trailer. Try a simpler PDF file.');
-    }
-
-    var trailerContent = trailerMatch[1];
-    // Add /Encrypt and /ID entries
-    var newTrailer = trailerContent;
-    if (!newTrailer.includes('/Encrypt')) {
-      newTrailer += '\n/Encrypt ' + encObjNum + ' 0 R';
-    }
-    if (!newTrailer.includes('/ID')) {
-      newTrailer += '\n/ID [<' + hexStr(fileId) + '><' + hexStr(fileId) + '>]';
-    }
-
-    // Replace trailer
-    var newText = text.replace(trailerMatch[0], 'trailer <<' + newTrailer + '>>');
-
-    // Insert encryption object before xref
-    var xrefPos = newText.lastIndexOf('xref');
-    if (xrefPos === -1) throw new Error('Could not find xref table.');
-    newText = newText.substring(0, xrefPos) + encDict + newText.substring(xrefPos);
-
-    // Encode back to bytes
-    var encoder = new TextEncoder();
-    return new Uint8Array(Array.from(newText).map(function(c) { return c.charCodeAt(0) & 0xFF; }));
-  }
-
-  // Encrypt function — uses proper RC4-128 encryption
-  encryptBtn.addEventListener('click', async () => {
-    if (!PASSWORD_WORKFLOW_AVAILABLE) {
-      renderPasswordUnavailableNotice();
-      return;
-    }
-
-    if (!currentFile || !userPassword.value) {
-      resultText.textContent = '';
-      const warnSpan = document.createElement('span');
-      warnSpan.style.color = '#c0392b';
-      warnSpan.textContent = 'Please select a PDF file and enter a password.';
-      resultText.appendChild(warnSpan);
-      resultCard.classList.add('on');
-      return;
-    }
-
-    progressBar.style.cssText = 'position:static;width:100%;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin:10px 0;';
-    progressFill.style.width = '30%';
-    resultText.textContent = 'Adding password protection…';
-    actionRow.style.cssText = 'position:static;width:100%;';
-    actionRow.style.display = 'none';
-    resultCard.classList.add('on');
-
-    try {
-      const arrayBuffer = await currentFile.arrayBuffer();
-      progressFill.style.width = '50%';
-
-      // First normalize the PDF through pdf-lib to get clean bytes
-      const pdf = await getPDFLib().PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-      const cleanBytes = await pdf.save({ useObjectStreams: false });
-      progressFill.style.width = '70%';
-
-      const printEl = document.getElementById('allowPrint');
-      const copyEl = document.getElementById('allowCopy');
-      const editEl = document.getElementById('allowEdit');
-      const perms = {
-        print: printEl ? printEl.checked : true,
-        copy: copyEl ? copyEl.checked : true,
-        edit: editEl ? editEl.checked : true
-      };
-
-      const oPwd = ownerPassword?.value || (userPassword.value + '_owner');
-      processedPdf = buildEncryptedPdf(new Uint8Array(cleanBytes), userPassword.value, oPwd, perms);
-      progressFill.style.width = '100%';
-
-      progressBar.style.display = 'none';
-      resultText.textContent = '';
-      const successSpan = document.createElement('span');
-      successSpan.style.cssText = 'color:#1E3A5F;font-weight:700;';
-      successSpan.textContent = '\u2713 PDF password-protected successfully!';
-      const infoDiv = document.createElement('div');
-      infoDiv.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;';
-      infoDiv.textContent = 'Users will need the password you set to open this file. Keep it somewhere safe.';
-      resultText.appendChild(successSpan);
-      resultText.appendChild(infoDiv);
-      actionRow.style.display = 'grid';
-    } catch (err) {
-      progressBar.style.display = 'none';
-      console.error('Encrypt error:', err);
-      resultText.textContent = '';
-      const errSpan = document.createElement('span');
-      errSpan.style.color = '#c0392b';
-      errSpan.textContent = 'Encryption failed: ' + (err.message || 'Unknown error');
-      const helpDiv = document.createElement('div');
-      helpDiv.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;';
-      helpDiv.textContent = 'Try a different PDF or ensure the file is not already encrypted.';
-      resultText.appendChild(errSpan);
-      resultText.appendChild(helpDiv);
-    }
-  });
-
-  // Decrypt function
-  decryptBtn.addEventListener('click', async () => {
-    if (!PASSWORD_WORKFLOW_AVAILABLE) {
-      renderPasswordUnavailableNotice();
-      return;
-    }
-
-    if (!currentFile || !decryptPassword.value) {
-      alert('Please select a file and enter a password');
-      return;
-    }
-
-    progressBar.style.display = 'block';
-    progressFill.style.width = '50%';
-    actionRow.style.display = 'none';
-    resultText.textContent = 'Attempting to decrypt...';
-    resultCard.classList.add('on');
-
-    try {
-      const arrayBuffer = await currentFile.arrayBuffer();
-      const pdf = await getPDFLib().PDFDocument.load(arrayBuffer, {
-        password: decryptPassword.value,
-        updateMetadata: false
-      });
-
-      progressFill.style.width = '80%';
-
-      // Save without encryption — produces an unprotected copy
-      processedPdf = await pdf.save({ useObjectStreams: false });
-      progressFill.style.width = '100%';
-      resultText.textContent = 'PDF decrypted successfully. Password protection removed.';
-      actionRow.style.display = 'grid';
-      progressBar.style.display = 'none';
-    } catch (err) {
-      progressBar.style.display = 'none';
-      if (err.message && err.message.includes('password')) {
-        resultText.textContent = 'Incorrect password. Please try again.';
-      } else {
-        resultText.textContent = 'Could not decrypt. The file may not be password-protected, or the encryption type is unsupported.';
-      }
-    }
-  });
-
-  // QPDF AES-256 handlers run in capture phase so the retired RC4 handler above never executes.
-  encryptBtn.addEventListener('click', async (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if (!currentFile || !userPassword.value) {
-      resultText.textContent = 'Please select a PDF file and enter a password.';
-      resultCard.classList.add('on');
-      return;
-    }
-
-    progressBar.style.cssText = 'position:static;width:100%;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin:10px 0;';
-    progressFill.style.width = '20%';
-    actionRow.style.display = 'none';
-    resultCard.classList.add('on');
-    resultText.textContent = 'Loading AES-256 encryption engine...';
-
-    try {
-      const arrayBuffer = await currentFile.arrayBuffer();
-      progressFill.style.width = '45%';
-      resultText.textContent = 'Encrypting with AES-256...';
-      const result = await window.AfroQPDF.encrypt(arrayBuffer, {
-        userPassword: userPassword.value,
-        ownerPassword: ownerPassword.value,
-        allowPrint: allowPrint.checked,
-        allowCopy: allowCopy.checked,
-        allowEdit: allowEdit.checked
-      });
-      processedPdf = result.bytes;
-      progressFill.style.width = '100%';
-      progressBar.style.display = 'none';
-      resultText.textContent = '';
-      const successSpan = document.createElement('span');
-      successSpan.style.cssText = 'color:#1E3A5F;font-weight:700;';
-      successSpan.textContent = '\u2713 PDF encrypted with AES-256.';
-      const detail = document.createElement('div');
-      detail.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;line-height:1.6;';
-      detail.textContent = ownerPassword.value ? 'Keep both passwords safe. The owner password controls permission changes.' : 'An internal owner password was generated so the file is not left with an empty owner key.';
-      resultText.appendChild(successSpan);
-      resultText.appendChild(detail);
-      actionRow.style.display = 'grid';
-    } catch (err) {
-      progressBar.style.display = 'none';
-      console.error('QPDF encrypt error:', err);
-      resultText.textContent = 'Encryption failed: ' + (err.message || 'Unknown error');
-    }
-  }, true);
-
-  decryptBtn.addEventListener('click', async (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if (!currentFile || !decryptPassword.value) {
-      resultText.textContent = 'Please select a PDF file and enter the password.';
-      resultCard.classList.add('on');
-      return;
-    }
-
-    progressBar.style.cssText = 'position:static;width:100%;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin:10px 0;';
-    progressFill.style.width = '35%';
-    actionRow.style.display = 'none';
-    resultText.textContent = 'Decrypting PDF...';
-    resultCard.classList.add('on');
-
-    try {
-      const arrayBuffer = await currentFile.arrayBuffer();
-      processedPdf = await window.AfroQPDF.decrypt(arrayBuffer, decryptPassword.value);
-      progressFill.style.width = '100%';
-      progressBar.style.display = 'none';
-      resultText.textContent = 'PDF decrypted successfully. Password protection removed.';
-      actionRow.style.display = 'grid';
-    } catch (err) {
-      progressBar.style.display = 'none';
-      const msg = (err.message || '').toLowerCase().includes('password') ? 'Incorrect password. Please try again.' : 'Could not decrypt: ' + (err.message || 'unsupported encryption or invalid PDF');
-      resultText.textContent = msg;
-    }
-  }, true);
-
-  // Download with email gate
-  function doPasswordDownload() {
-    if (!processedPdf) return;
-    const link = document.createElement('a');
-    const filename = currentMode === 'encrypt' ? 'encrypted.pdf' : 'decrypted.pdf';
-    const url = URL.createObjectURL(new Blob([processedPdf], { type: 'application/pdf' }));
-    link.href = url;
-    link.download = filename;
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-  }
-  downloadBtn.addEventListener('click', () => {
-    if (!processedPdf) return;
-    const gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doPasswordDownload); } else { doPasswordDownload(); }
-  });
-</script>
 <email-gate-modal></email-gate-modal>
 <script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

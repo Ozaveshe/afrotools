@@ -25,7 +25,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <meta name="tool-id" content="fuel-cost">
@@ -104,6 +104,17 @@
     .result-stat .value { font-size: 1.4rem; font-weight: 700; color: var(--green); }
     .result-stat .sub { font-size: .85rem; color: #666; margin-top: .15rem; }
     .actions-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+    .route-planner { background:#f8fbff; border:1.5px solid #dbeafe; border-radius:12px; padding:1rem; margin:1rem 0; }
+    .route-planner-title { font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--green); margin-bottom:.75rem; }
+    .planner-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; }
+    @media(max-width:680px){ .planner-grid { grid-template-columns:1fr; } }
+    .fuel-plan { margin-top:1rem; border:1.5px solid #dbeafe; border-radius:12px; overflow:hidden; background:#fff; }
+    .fuel-plan-head { display:flex; justify-content:space-between; gap:.75rem; align-items:center; flex-wrap:wrap; padding:.9rem 1rem; background:#f8fbff; border-bottom:1px solid #dbeafe; }
+    .fuel-plan-title { font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#0f172a; }
+    .fuel-plan-copy { border:1.5px solid #bfdbfe; background:#fff; color:var(--green); border-radius:999px; padding:.45rem .8rem; font-size:.74rem; font-weight:800; cursor:pointer; }
+    .fuel-plan-body { padding:1rem; }
+    .fuel-plan-list { display:grid; gap:.5rem; padding:0; margin:0; list-style:none; }
+    .fuel-plan-list li { background:#eff6ff; border:1px solid #bfdbfe; border-radius:9px; color:#1e3a8a; padding:.55rem .7rem; font-size:.82rem; line-height:1.5; }
     .copy-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: .65rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: .9rem; opacity: 0; transition: opacity .3s; z-index: 999; }
     .copy-toast.show { opacity: 1; }
     .faq-section { margin-top: 2rem; }
@@ -162,6 +173,7 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fuel-cost/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fuel-cost/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-za-mafuta/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <script type="application/ld+json">
@@ -193,6 +205,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -286,6 +300,29 @@
       <label for="roundTrip" style="margin:0; font-weight:500;">Round trip (double distance)</label>
     </div>
 
+    <div class="route-planner">
+      <div class="route-planner-title">Route budget planner</div>
+      <div class="planner-grid">
+        <div class="input-group">
+          <label>Road / Traffic Condition</label>
+          <select id="routeCondition">
+            <option value="highway">Mostly highway</option>
+            <option value="mixed" selected>Mixed city and highway</option>
+            <option value="traffic">Heavy city traffic</option>
+            <option value="rough">Rough road / detours</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>People Sharing Cost</label>
+          <input type="number" id="passengers" min="1" step="1" value="1">
+        </div>
+        <div class="input-group">
+          <label>Contingency Fuel %</label>
+          <input type="number" id="reservePct" min="0" max="50" step="1" value="10">
+        </div>
+      </div>
+    </div>
+
     <button class="btn btn-primary" onclick="calcTrip()">Calculate Cost</button>
   </div>
 
@@ -353,6 +390,7 @@
   <div id="resultCard" class="card" style="display:none;">
     <h2>Results</h2>
     <div class="result-grid" id="resultGrid"></div>
+    <div id="fuelPlan"></div>
     <div id="xfunSection"></div>
   </div>
 
@@ -416,6 +454,8 @@
 <afro-footer></afro-footer>
 
 <script>
+var LAST_FUEL_PLAN = '';
+
 /* Popular African road routes */
 var ROUTES = [
   {label:'Lagos → Abuja',km:760,country:'NG',flag:'🇳🇬'},
@@ -514,6 +554,9 @@ function calcTrip() {
   const unit = document.getElementById('distUnit').value;
   const consUnit = document.getElementById('consUnit').value;
   const rt = document.getElementById('roundTrip').checked;
+  const condition = document.getElementById('routeCondition').value;
+  const passengers = Math.max(1, parseInt(document.getElementById('passengers').value) || 1);
+  const reservePct = Math.max(0, Math.min(50, parseFloat(document.getElementById('reservePct').value) || 0));
   if (!dist || !cons || !price) { showToast('Fill in all fields'); return; }
 
   let distKm = unit === 'mi' ? dist * 1.60934 : dist;
@@ -524,7 +567,13 @@ function calcTrip() {
   else if (consUnit === 'kml') litresPerKm = 1 / cons;
   else litresPerKm = 1 / (cons * 1.60934 / 3.78541); // MPG to L/km
 
-  const totalLitres = distKm * litresPerKm;
+  const conditionFactors = { highway: 1, mixed: 1.15, traffic: 1.3, rough: 1.25 };
+  const conditionLabels = { highway: 'Mostly highway', mixed: 'Mixed city and highway', traffic: 'Heavy city traffic', rough: 'Rough road or detours' };
+  const factor = conditionFactors[condition] || 1;
+  const baseLitres = distKm * litresPerKm;
+  const adjustedLitres = baseLitres * factor;
+  const reserveLitres = adjustedLitres * reservePct / 100;
+  const totalLitres = adjustedLitres + reserveLitres;
   const totalCost = totalLitres * price;
   const opt = getOpt(document.getElementById('country'));
   const sym = opt.dataset.symbol || '';
@@ -535,8 +584,16 @@ function calcTrip() {
     { label: 'Total Distance', value: distKm.toFixed(1) + ' km', sub: rt ? '(round trip)' : '' },
     { label: 'Fuel Needed', value: totalLitres.toFixed(1) + ' L', sub: '' },
     { label: 'Total Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
-    { label: 'Cost per km', value: sym + (totalCost / distKm).toFixed(1), sub: '' }
+    { label: 'Cost per km', value: sym + (totalCost / distKm).toFixed(1), sub: '' },
+    { label: 'Per Person', value: sym + (totalCost / passengers).toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: passengers + ' sharing' },
+    { label: 'Buffer Fuel', value: reserveLitres.toFixed(1) + ' L', sub: reservePct + '% contingency' }
   ]);
+  renderFuelTripPlan({
+    sym: sym, curr: curr, countryCode: countryCode, distance: distKm, baseLitres: baseLitres,
+    adjustedLitres: adjustedLitres, reserveLitres: reserveLitres, totalLitres: totalLitres,
+    totalCost: totalCost, passengers: passengers, perPerson: totalCost / passengers,
+    condition: conditionLabels[condition] || condition, factor: factor, price: price
+  });
   showFunComparisons(totalCost, countryCode);
 }
 
@@ -577,6 +634,7 @@ function calcGen() {
   }
 
   showResults(stats);
+  renderGeneratorFuelPlan({ sym: sym, curr: curr, kva: kva, hours: hours, burnRate: burnRate, totalLitres: totalLitres, totalCost: totalCost, price: price, monthly: document.getElementById('monthlyGen').checked, days: parseInt(document.getElementById('genDays').value) || 25 });
   showFunComparisons(totalCost, countryCode);
 }
 
@@ -588,6 +646,66 @@ function showResults(stats) {
   ).join('');
   document.getElementById('resultCard').style.display = '';
 }
+
+function renderFuelTripPlan(data) {
+  const actions = [
+    'Use ' + data.totalLitres.toFixed(1) + 'L as the buy quantity, not the clean-road estimate of ' + data.baseLitres.toFixed(1) + 'L.',
+    data.factor > 1 ? data.condition + ' adds about ' + ((data.factor - 1) * 100).toFixed(0) + '% to fuel use.' : 'Highway assumptions used, so add a buffer if you expect traffic or detours.',
+    'Shared cost is ' + data.sym + data.perPerson.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}) + ' per person for ' + data.passengers + ' people.',
+    data.reserveLitres > 0 ? 'Keep ' + data.reserveLitres.toFixed(1) + 'L as contingency for queues, diversions, and idling.' : 'No contingency fuel added. Consider 5-10% for long routes.',
+    'At ' + data.sym + data.price + '/L, every extra 10km costs about ' + data.sym + ((data.totalCost / data.distance) * 10).toFixed(0) + '.'
+  ];
+  LAST_FUEL_PLAN = [
+    'Fuel route budget',
+    'Distance: ' + data.distance.toFixed(1) + 'km | Fuel: ' + data.totalLitres.toFixed(1) + 'L | Cost: ' + data.sym + data.totalCost.toLocaleString('en', {maximumFractionDigits:0}) + ' ' + data.curr,
+    'Condition: ' + data.condition + ' | Passenger split: ' + data.sym + data.perPerson.toLocaleString('en', {maximumFractionDigits:0}) + ' each.',
+    actions.join(' ')
+  ].join('\n');
+  document.getElementById('fuelPlan').innerHTML = '<div class="fuel-plan"><div class="fuel-plan-head"><div class="fuel-plan-title">Route budget decision plan</div><button class="fuel-plan-copy" onclick="copyFuelPlan(this)">Copy plan</button></div><div class="fuel-plan-body"><ul class="fuel-plan-list">' + actions.map(function(a){ return '<li>' + escFuel(a) + '</li>'; }).join('') + '</ul></div></div>';
+}
+
+function renderGeneratorFuelPlan(data) {
+  const monthlyLitres = data.monthly ? data.totalLitres * data.days : 0;
+  const monthlyCost = data.monthly ? data.totalCost * data.days : 0;
+  const actions = [
+    'Use ' + data.burnRate.toFixed(2) + 'L/hr as the working burn rate for this ' + data.kva + 'kVA generator.',
+    'Daily fuel cost is ' + data.sym + data.totalCost.toLocaleString('en', {maximumFractionDigits:0}) + ' for ' + data.hours + ' hours.',
+    data.monthly ? 'Monthly planning figure: ' + monthlyLitres.toFixed(0) + 'L and ' + data.sym + monthlyCost.toLocaleString('en', {maximumFractionDigits:0}) + ' across ' + data.days + ' days.' : 'Turn on monthly mode if this is a regular outage schedule.',
+    'Add oil, servicing, transport to station, and noise restrictions before comparing with inverter or solar.'
+  ];
+  LAST_FUEL_PLAN = ['Generator fuel budget', actions.join(' ')].join('\n');
+  document.getElementById('fuelPlan').innerHTML = '<div class="fuel-plan"><div class="fuel-plan-head"><div class="fuel-plan-title">Generator operating plan</div><button class="fuel-plan-copy" onclick="copyFuelPlan(this)">Copy plan</button></div><div class="fuel-plan-body"><ul class="fuel-plan-list">' + actions.map(function(a){ return '<li>' + escFuel(a) + '</li>'; }).join('') + '</ul></div></div>';
+}
+
+function copyFuelPlan(btn) {
+  if (!LAST_FUEL_PLAN) return;
+  const done = function() {
+    if (btn) {
+      const old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function(){ btn.textContent = old; }, 1300);
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(LAST_FUEL_PLAN).then(done).catch(function(){ fallbackCopyFuelPlan(done); });
+  } else {
+    fallbackCopyFuelPlan(done);
+  }
+}
+
+function fallbackCopyFuelPlan(done) {
+  const area = document.createElement('textarea');
+  area.value = LAST_FUEL_PLAN;
+  area.setAttribute('readonly','');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(area);
+}
+
+function escFuel(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function showToast(msg) {
   const t = document.getElementById('toast');

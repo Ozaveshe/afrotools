@@ -20,7 +20,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 50%,#0063D1 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -48,13 +48,21 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .schedule-table tr.paid{color:#94a3b8}
 .status-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.66rem;font-weight:700}
 .status-paid{background:#DBEAFE;color:#007AFF}.status-next{background:#dbeafe;color:#2563eb}.status-pending{background:#f1f5f9;color:#94a3b8}
+.rule-panel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:14px}
+.rule-panel strong{display:block;color:#0A1628;margin-bottom:4px}
+.rule-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+.rule-card{background:#fff;border:1px solid #dbeafe;border-radius:8px;padding:10px}
+.rule-card .num{font-weight:800;color:#007AFF;font-size:1rem}
+.rule-card .lbl{font-size:.64rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-top:2px}
+.card-head-actions{display:flex;gap:8px;flex-wrap:wrap}
 .sidebar .info-card{background:#E8F2FF;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0A1628;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#0A1628;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}.row3{grid-template-columns:1fr}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid,.rule-grid{grid-template-columns:1fr 1fr}.row3{grid-template-columns:1fr}}
+@media(max-width:520px){.result-grid,.rule-grid{grid-template-columns:1fr}}
 .mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .mfun-card{padding:16px;border-radius:10px;text-align:center}
 .mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
@@ -114,6 +122,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -159,16 +169,27 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <label>Member Names (comma-separated, optional)</label>
 <input type="text" id="memberNames" placeholder="Ama, Kofi, Kwame, Adjoa, Yaw, Akua, Kweku, Aba, Kojo, Adwoa">
 </div>
+<div class="row3 field">
+<div><label>Cycle Start Date</label><input type="date" id="startDate"></div>
+<div><label>Collector/Admin Fee %</label><input type="number" id="collectorFee" value="0" min="0" max="30" step="0.5"></div>
+<div><label>Reserve Fund %</label><input type="number" id="reservePct" value="0" min="0" max="50" step="0.5"></div>
+</div>
+<div class="row3 field">
+<div><label>Late Grace Days</label><input type="number" id="graceDays" value="3" min="0" max="30"></div>
+<div><label>Late Penalty per Miss</label><input type="number" id="latePenalty" value="0" min="0" step="100"></div>
+<div><label>Missed Payments Now</label><input type="number" id="missedPayments" value="0" min="0" max="50"></div>
+</div>
 <button class="btn btn-primary btn-block" onclick="generate()">Generate Schedule</button>
 </div></div>
 
 <div class="card" id="resultCard" style="display:none">
 <div class="card-head">
 <span class="card-title">Payout Schedule</span>
-<button class="btn btn-sm btn-outline" onclick="downloadCSV()">Download CSV</button>
+<div class="card-head-actions"><button class="btn btn-sm btn-outline" onclick="copyGroupBrief()">Copy Brief</button><button class="btn btn-sm btn-outline" onclick="downloadCSV()">Download CSV</button></div>
 </div>
 <div class="card-body">
 <div class="result-grid" id="summaryGrid"></div>
+<div id="ruleBrief" class="rule-panel"></div>
 <table class="schedule-table" id="scheduleTable"></table>
 </div></div>
 </div>
@@ -243,6 +264,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <script>
 let scheduleData=[];
+let lastGroupBrief='';
+
+function escapeHtml(value){
+  return String(value||'').replace(/[&<>"']/g,function(ch){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);});
+}
+
+function addPeriod(start, freq, index){
+  const d=new Date(start.getTime());
+  if(freq==='weekly')d.setDate(d.getDate()+index*7);
+  else if(freq==='biweekly')d.setDate(d.getDate()+index*14);
+  else d.setMonth(d.getMonth()+index);
+  return d;
+}
+
+function fmtDate(date){
+  return date.toLocaleDateString('en',{year:'numeric',month:'short',day:'numeric'});
+}
 
 function generate(){
   const type=document.getElementById('groupType').value;
@@ -251,6 +289,13 @@ function generate(){
   const contrib=+document.getElementById('contribution').value;
   const freq=document.getElementById('frequency').value;
   const namesInput=document.getElementById('memberNames').value.trim();
+  const startRaw=document.getElementById('startDate').value;
+  const startDate=startRaw?new Date(startRaw+'T00:00:00'):new Date();
+  const feePct=+document.getElementById('collectorFee').value||0;
+  const reservePct=+document.getElementById('reservePct').value||0;
+  const graceDays=+document.getElementById('graceDays').value||0;
+  const latePenalty=+document.getElementById('latePenalty').value||0;
+  const missedPayments=+document.getElementById('missedPayments').value||0;
 
   let names=[];
   if(namesInput){
@@ -260,6 +305,11 @@ function generate(){
   names=names.slice(0,n);
 
   const potSize=contrib*n;
+  const feeAmount=potSize*feePct/100;
+  const reserveAmount=potSize*reservePct/100;
+  const netPot=Math.max(0,potSize-feeAmount-reserveAmount);
+  const defaultExposure=missedPayments*contrib;
+  const penaltyDue=missedPayments*latePenalty;
   const totalCycles=n;
   const freqLabel={weekly:'Week',biweekly:'Fortnight',monthly:'Month'}[freq];
   const freqPerYear={weekly:52,biweekly:26,monthly:12}[freq];
@@ -269,32 +319,46 @@ function generate(){
   // Summary
   let sHtml='';
   sHtml+=`<div class="result-box"><div class="num">${n}</div><div class="lbl">Members</div></div>`;
-  sHtml+=`<div class="result-box"><div class="num">${fmt(potSize)}</div><div class="lbl">Pot Size / Round</div></div>`;
+  sHtml+=`<div class="result-box"><div class="num">${fmt(netPot)}</div><div class="lbl">Net Payout / Round</div></div>`;
   sHtml+=`<div class="result-box"><div class="num">${totalCycles} ${freqLabel}s</div><div class="lbl">Full Cycle</div></div>`;
   document.getElementById('summaryGrid').innerHTML=sHtml;
 
+  const cycleEnd=addPeriod(startDate,freq,totalCycles-1);
+  const riskLabel=missedPayments>1?'High collection risk':missedPayments===1?'Watch one missed payment':'On track';
+  lastGroupBrief='Susu group brief: '+n+' members contribute '+fmt(contrib)+' '+freq+'. Gross pot '+fmt(potSize)+', net payout '+fmt(netPot)+', reserve '+fmt(reserveAmount)+', collector/admin fee '+fmt(feeAmount)+'. Cycle starts '+fmtDate(startDate)+' and ends '+fmtDate(cycleEnd)+'. Grace period '+graceDays+' days, late penalty '+fmt(latePenalty)+'. '+riskLabel+'.';
+  document.getElementById('ruleBrief').innerHTML=
+    '<strong>Cycle readiness</strong><span>'+escapeHtml(lastGroupBrief)+'</span>'+
+    '<div class="rule-grid">'+
+    '<div class="rule-card"><div class="num">'+fmt(feeAmount)+'</div><div class="lbl">Admin fee</div></div>'+
+    '<div class="rule-card"><div class="num">'+fmt(reserveAmount)+'</div><div class="lbl">Reserve fund</div></div>'+
+    '<div class="rule-card"><div class="num">'+fmt(defaultExposure)+'</div><div class="lbl">Missed exposure</div></div>'+
+    '<div class="rule-card"><div class="num">'+fmt(penaltyDue)+'</div><div class="lbl">Penalty due</div></div>'+
+    '</div>';
+
   // Schedule
   scheduleData=[];
-  let tbl='<tr><th>#</th><th>'+freqLabel+'</th><th>Each Pays</th><th>Pot Total</th><th>Recipient</th><th>Status</th></tr>';
+  let tbl='<tr><th>#</th><th>Due Date</th><th>Each Pays</th><th>Net Pot</th><th>Recipient</th><th>Status</th></tr>';
 
   if(type==='rotating'){
     for(let i=0;i<n;i++){
+      const dueDate=fmtDate(addPeriod(startDate,freq,i));
       const status=i===0?'next':'pending';
       const statusHtml=i===0?'<span class="status-badge status-next">NEXT</span>':'<span class="status-badge status-pending">Pending</span>';
       const rowClass=i===0?' class="current"':'';
-      tbl+=`<tr${rowClass}><td>${i+1}</td><td>${freqLabel} ${i+1}</td><td>${fmt(contrib)}</td><td>${fmt(potSize)}</td><td>${names[i]}</td><td>${statusHtml}</td></tr>`;
-      scheduleData.push({round:i+1,period:`${freqLabel} ${i+1}`,contribution:contrib,pot:potSize,recipient:names[i],status});
+      tbl+=`<tr${rowClass}><td>${i+1}</td><td>${dueDate}</td><td>${fmt(contrib)}</td><td>${fmt(netPot)}</td><td>${escapeHtml(names[i])}</td><td>${statusHtml}</td></tr>`;
+      scheduleData.push({round:i+1,period:dueDate,contribution:contrib,pot:netPot,recipient:names[i],status});
     }
   } else {
     for(let i=0;i<n;i++){
-      tbl+=`<tr><td>${i+1}</td><td>${freqLabel} ${i+1}</td><td>${fmt(contrib)}</td><td>${fmt(contrib*(i+1))}</td><td>—</td><td><span class="status-badge status-pending">Saving</span></td></tr>`;
-      scheduleData.push({round:i+1,period:`${freqLabel} ${i+1}`,contribution:contrib,pot:contrib*(i+1),recipient:'Pool',status:'saving'});
+      const dueDate=fmtDate(addPeriod(startDate,freq,i));
+      tbl+=`<tr><td>${i+1}</td><td>${dueDate}</td><td>${fmt(contrib)}</td><td>${fmt(Math.max(0,contrib*(i+1)-feeAmount-reserveAmount))}</td><td>Pool</td><td><span class="status-badge status-pending">Saving</span></td></tr>`;
+      scheduleData.push({round:i+1,period:dueDate,contribution:contrib,pot:contrib*(i+1),recipient:'Pool',status:'saving'});
     }
-    tbl+=`<tr class="current" style="font-weight:800;background:#E8F2FF"><td></td><td>End</td><td>—</td><td>${fmt(potSize)}</td><td>All Members</td><td><span class="status-badge status-next">PAYOUT</span></td></tr>`;
+    tbl+=`<tr class="current" style="font-weight:800;background:#E8F2FF"><td></td><td>${fmtDate(cycleEnd)}</td><td></td><td>${fmt(netPot)}</td><td>All Members</td><td><span class="status-badge status-next">PAYOUT</span></td></tr>`;
   }
 
   // Totals
-  tbl+=`<tr style="background:#f8fafc;font-weight:700;border-top:2px solid #e2e8f0"><td colspan="2">Total per member</td><td>${fmt(contrib*totalCycles)}</td><td>—</td><td>Receives ${fmt(potSize)}</td><td>—</td></tr>`;
+  tbl+=`<tr style="background:#f8fafc;font-weight:700;border-top:2px solid #e2e8f0"><td colspan="2">Total per member</td><td>${fmt(contrib*totalCycles)}</td><td></td><td>Receives ${fmt(netPot)}</td><td></td></tr>`;
 
   document.getElementById('scheduleTable').innerHTML=tbl;
   document.getElementById('resultCard').style.display='block';
@@ -339,6 +403,16 @@ function downloadCSV(){
   a.download='susu-schedule.csv';
   a.click();
 }
+
+function copyGroupBrief(){
+  if(!lastGroupBrief)generate();
+  navigator.clipboard.writeText(lastGroupBrief).catch(function(){
+    window.prompt('Copy group brief',lastGroupBrief);
+  });
+}
+
+const startDateInput=document.getElementById('startDate');
+if(startDateInput&&!startDateInput.value)startDateInput.valueAsDate=new Date();
 </script>
 
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

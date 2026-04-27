@@ -3,381 +3,595 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PWA Manifest Generator — Web App Manifest for African Devs | AfroTools</title>
-<meta name="description" content="Generate a complete Web App Manifest (manifest.webmanifest) for your PWA. Includes icons checklist, service worker snippet and HTML meta tags.">
+<title>PWA Manifest Generator and Install Checklist | AfroTools</title>
+<meta name="description" content="Generate a modern manifest.webmanifest with install readiness checks, icons, screenshots, shortcuts, share targets, protocol handlers, file handlers, launch handling and service worker snippets.">
 <link rel="canonical" href="https://afrotools.com/tools/pwa-manifest/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PWA Manifest Generator | AfroTools">
-<meta property="og:description" content="Generate manifest.webmanifest JSON, service worker snippet and meta tags for your Progressive Web App.">
+<meta property="og:description" content="Generate modern PWA manifest JSON, HTML tags, install checklist and safer service worker starter code.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pwa-manifest/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PWA Manifest Generator | AfroTools">
+<meta name="twitter:description" content="Generate modern PWA manifest JSON with install checks and advanced manifest members.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/energy.css?v=ca21dbe3">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pwa-manifest/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pwa-manifest/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "PWA Manifest Generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/pwa-manifest/",
+  "description": "Generate a modern manifest.webmanifest with install readiness checks, icons, screenshots, shortcuts, share targets, protocol handlers, file handlers and service worker snippets.",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://afrotools.com/developer-tools/"},
+    {"@type": "ListItem", "position": 3, "name": "PWA Manifest Generator", "item": "https://afrotools.com/tools/pwa-manifest/"}
+  ]
+}
+</script>
 <style>
-:root{--en-accent:#8b5cf6;--en-accent-dark:#7c3aed;--en-accent-light:#EDE9FE;--en-accent-pale:#F5F3FF;--en-shadow-hover:0 4px 16px rgba(139,92,246,.18),0 1px 4px rgba(0,0,0,.08)}
-.en-tool-hero{background:linear-gradient(135deg,#0A1628 0%,#13111c 50%,#1e1b4b 100%)}
-.pwa-layout{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
-@media(max-width:900px){.pwa-layout{grid-template-columns:1fr}}
-.output-sticky{position:sticky;top:80px}
-.code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:#0f0f1a;color:#c9d1d9;padding:18px;border-radius:10px;overflow-x:auto;white-space:pre;line-height:1.7;max-height:340px;overflow-y:auto}
-.copy-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:var(--en-accent-light);color:var(--en-accent-dark);border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s;font-family:'DM Sans',sans-serif}
-.copy-btn:hover{background:#ddd6fe}
-.copy-btn.copied{background:#d1fae5;color:#065f46}
-.icon-preview{width:96px;height:96px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:2px solid var(--en-border)}
-.phone-mockup{width:180px;margin:0 auto;background:#111;border-radius:24px;padding:8px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
-.phone-status{background:#222;border-radius:16px 16px 0 0;padding:4px 12px;display:flex;justify-content:space-between;align-items:center;font-size:.6rem;color:#888;margin-bottom:0}
-.phone-screen-bg{border-radius:0 0 16px 16px;padding:16px 10px;min-height:180px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
-.phone-app-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
-.phone-app-name{font-size:.65rem;font-weight:700;text-align:center}
-.icons-checklist{display:flex;flex-direction:column;gap:6px}
-.icon-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--en-accent-pale);border-radius:8px;font-size:.84rem}
-.icon-status{width:20px;height:20px;border-radius:50%;background:var(--en-accent-light);border:2px solid var(--en-accent);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0}
-.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--en-border);margin-bottom:16px}
-.tab-btn{padding:10px 16px;font-size:.84rem;font-weight:600;color:var(--en-muted);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:color .15s}
-.tab-btn.active{color:var(--en-accent-dark);border-bottom-color:var(--en-accent)}
-.tab-pane{display:none}
-.tab-pane.active{display:block}
-.kw{color:#ff79c6}.fn{color:#8be9fd}.str{color:#50fa7b}.cmt{color:#6272a4}.key{color:#bd93f9}.num{color:#f1fa8c}
+:root{
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#dbe4ee;
+  --soft:#f8fafc;
+  --panel:#fff;
+  --blue:#2563eb;
+  --cyan:#0891b2;
+  --green:#047857;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;color:var(--ink)}
+.hero{background:linear-gradient(135deg,#08111f 0%,#12365c 48%,#0e7490 100%);color:#fff}
+.hero-inner{max-width:1240px;margin:0 auto;padding:42px 22px 34px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.62);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:800;letter-spacing:0;max-width:920px}
+.hero-copy{font-size:1.02rem;line-height:1.72;max-width:780px;color:rgba(255,255,255,.82);margin:0}
+.hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.hero-stat{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:8px;padding:14px}
+.hero-stat strong{display:block;font-size:1.45rem;color:#fff}
+.hero-stat span{font-size:.78rem;color:rgba(255,255,255,.68)}
+.wrap{max-width:1240px;margin:0 auto;padding:24px 22px 70px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:18px;align-items:start}
+.left,.right{display:grid;gap:16px}
+.right{position:sticky;top:78px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfdff}
+.card-title{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#334155}
+.card-body{padding:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.field{min-width:0}
+label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
+input,select,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+textarea{min-height:82px;resize:vertical;line-height:1.45}
+input[type=color]{height:40px;padding:3px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+.hint{font-size:.78rem;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;font:800 .8rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{border-color:#94a3b8;background:#f8fafc}
+.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.btn.primary:hover{background:#1d4ed8}
+.btn.small{font-size:.74rem;padding:7px 10px}
+.switch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.switch{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+.switch input{width:auto;margin-top:3px}
+.switch strong{display:block;font-size:.82rem}
+.switch span{display:block;font-size:.74rem;color:var(--muted);line-height:1.45;margin-top:2px}
+.phone{background:#101820;border-radius:30px;padding:13px;max-width:260px;margin:0 auto;box-shadow:0 20px 45px rgba(2,6,23,.28)}
+.phone-top{height:20px;display:flex;align-items:center;justify-content:center;color:#64748b;font:600 .62rem var(--mono)}
+.phone-screen{border-radius:18px;min-height:360px;padding:18px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#0f172a}
+.app-icon{width:82px;height:82px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.1rem;font-weight:800;margin-bottom:12px}
+.phone-name{font-size:.9rem;font-weight:800;margin-bottom:4px}
+.phone-short{font-size:.72rem;color:#334155}
+.install-sheet{margin-top:24px;background:rgba(255,255,255,.82);border:1px solid rgba(15,23,42,.08);border-radius:12px;padding:12px;width:100%;box-sizing:border-box}
+.install-sheet strong{display:block;font-size:.84rem}
+.install-sheet span{display:block;font-size:.72rem;color:#334155;margin-top:4px;line-height:1.35}
+.score-ring{width:128px;height:128px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:2px auto 10px;background:conic-gradient(var(--green) 0deg, var(--green) var(--score-deg), #e2e8f0 var(--score-deg), #e2e8f0 360deg)}
+.score-inner{width:98px;height:98px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.score-inner strong{font-size:1.8rem}
+.score-inner span{font-size:.7rem;color:var(--muted);font-weight:800}
+.checks{display:grid;gap:8px}
+.check{border-left:4px solid #94a3b8;background:#f8fafc;border-radius:7px;padding:9px 10px;font-size:.8rem;line-height:1.45}
+.check.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
+.check.warn{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
+.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer}
+.tab.active{background:#fff;color:#2563eb}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:520px}
+.asset-list{display:grid;gap:8px}
+.asset-row{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:9px;background:#fff;font-size:.8rem}
+.asset-row code{font-family:var(--mono);color:#1d4ed8}
+.sources{display:grid;gap:8px}
+.sources a{color:#1d4ed8;text-decoration:none;font-weight:800;font-size:.84rem}
+.sources a:hover{text-decoration:underline}
+.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:20}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .right{position:static}
+  .hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .hero-inner,.wrap{padding-left:16px;padding-right:16px}
+  .grid,.grid.two,.switch-grid,.hero-grid{grid-template-columns:1fr}
+}
 </style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:url" content="https://afrotools.com/tools/pwa-manifest/">
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<div class="en-tool-hero">
-  <div class="en-tool-hero-inner">
-    <nav class="en-breadcrumb">
-      <a href="/">AfroTools</a><span class="en-breadcrumb-sep">›</span>
-      <a href="/developer-tools/">Developer Tools</a><span class="en-breadcrumb-sep">›</span>
-      <span class="en-breadcrumb-current">PWA Manifest Generator</span>
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Developer Tools</a><span>/</span>
+      <span>PWA Manifest Generator</span>
     </nav>
-    <h1>PWA <em>Manifest Generator</em></h1>
-    <p>Fill in your app details and get a complete manifest.webmanifest file, service worker snippet and HTML meta tags instantly.</p>
-    <div class="en-tool-hero-meta">
-      <span class="en-tool-hero-pill">📱 manifest.webmanifest</span>
-      <span class="en-tool-hero-pill">⚙️ Service Worker</span>
-      <span class="en-tool-hero-pill">🔖 Meta tags</span>
+    <h1>Generate a PWA manifest that is ready for install review.</h1>
+    <p class="hero-copy">Create manifest JSON, HTML tags, icons checklist, screenshots, app shortcuts, share targets, protocol handlers, file handlers, launch behavior, and a safer service worker starter.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong id="hero-score">0%</strong><span>install readiness</span></div>
+      <div class="hero-stat"><strong id="hero-members">0</strong><span>manifest members</span></div>
+      <div class="hero-stat"><strong>192/512</strong><span>required icon sizes</span></div>
+      <div class="hero-stat"><strong>HTTPS</strong><span>production requirement</span></div>
     </div>
   </div>
-</div>
+</header>
 
-<div class="en-tool-layout-wide">
-  <div class="pwa-layout">
-    <div>
-      <div class="en-card">
-        <div class="en-card-title"><span class="en-card-title-icon">📱</span> App Details</div>
-        <div class="en-form-grid en-form-grid-2">
-          <div class="en-field en-field-full">
-            <label class="en-label">App Name <span class="en-label-hint">(full)</span></label>
-            <input class="en-input" id="app-name" value="My African App" oninput="update()">
+<main class="wrap">
+  <section class="layout">
+    <div class="left">
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">App Identity</span>
+          <div class="toolbar">
+            <select id="preset">
+              <option value="">Load preset</option>
+              <option value="fintech">Mobile money app</option>
+              <option value="school">School portal</option>
+              <option value="market">Market directory</option>
+              <option value="clinic">Clinic booking</option>
+            </select>
           </div>
-          <div class="en-field">
-            <label class="en-label">Short Name <span class="en-label-hint">(≤12 chars)</span></label>
-            <input class="en-input" id="short-name" value="MyApp" maxlength="12" oninput="update()">
+        </div>
+        <div class="card-body">
+          <div class="grid">
+            <div class="field"><label for="app-name">App name</label><input id="app-name" value="AfroWallet Lite"></div>
+            <div class="field"><label for="short-name">Short name</label><input id="short-name" value="AfroWallet" maxlength="12"></div>
+            <div class="field"><label for="app-id">App ID</label><input id="app-id" value="/"></div>
           </div>
-          <div class="en-field">
-            <label class="en-label">Start URL</label>
-            <input class="en-input" id="start-url" value="/" oninput="update()">
+          <div class="grid" style="margin-top:12px">
+            <div class="field"><label for="start-url">Start URL</label><input id="start-url" value="/?source=pwa"></div>
+            <div class="field"><label for="scope">Scope</label><input id="scope" value="/"></div>
+            <div class="field"><label for="lang">Language</label><input id="lang" value="en"></div>
           </div>
-          <div class="en-field en-field-full">
-            <label class="en-label">Description</label>
-            <input class="en-input" id="description" value="An African-built Progressive Web App" oninput="update()">
+          <div class="field" style="margin-top:12px"><label for="description">Description</label><textarea id="description">A lightweight African mobile money companion that works well on low-bandwidth connections.</textarea></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Display And Theme</span></div>
+        <div class="card-body">
+          <div class="grid">
+            <div class="field"><label for="display">Display</label><select id="display"><option value="standalone">standalone</option><option value="fullscreen">fullscreen</option><option value="minimal-ui">minimal-ui</option><option value="browser">browser</option></select></div>
+            <div class="field"><label for="orientation">Orientation</label><select id="orientation"><option value="any">any</option><option value="portrait">portrait</option><option value="landscape">landscape</option></select></div>
+            <div class="field"><label for="dir">Text direction</label><select id="dir"><option value="auto">auto</option><option value="ltr">ltr</option><option value="rtl">rtl</option></select></div>
           </div>
-          <div class="en-field">
-            <label class="en-label">Theme Color</label>
-            <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="theme-color" value="#8b5cf6" oninput="update()" style="width:42px;height:38px;border:1.5px solid var(--en-border);border-radius:8px;cursor:pointer;padding:2px">
-              <input class="en-input" id="theme-color-text" value="#8b5cf6" oninput="syncColor('theme-color','theme-color-text')" style="font-family:'JetBrains Mono',monospace">
+          <div class="grid" style="margin-top:12px">
+            <div class="field"><label for="theme-color">Theme color</label><input id="theme-color" type="color" value="#2563eb"></div>
+            <div class="field"><label for="background-color">Background color</label><input id="background-color" type="color" value="#ffffff"></div>
+            <div class="field"><label for="category">Category</label><select id="category"><option value="finance">finance</option><option value="business">business</option><option value="education">education</option><option value="health">health</option><option value="utilities">utilities</option><option value="productivity">productivity</option></select></div>
+          </div>
+          <div class="grid two" style="margin-top:12px">
+            <div class="field"><label for="display-override">Display override</label><input id="display-override" value="window-controls-overlay, standalone"></div>
+            <div class="field"><label for="edge-side-panel">Edge side panel width</label><input id="edge-side-panel" type="number" value="420"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Advanced Manifest Members</span></div>
+        <div class="card-body">
+          <div class="switch-grid">
+            <label class="switch"><input id="include-screenshots" type="checkbox" checked><span><strong>Screenshots</strong><span>Improves install dialogs on browsers that support richer PWA install UI.</span></span></label>
+            <label class="switch"><input id="include-shortcuts" type="checkbox" checked><span><strong>Shortcuts</strong><span>Add common tasks to the app icon context menu.</span></span></label>
+            <label class="switch"><input id="include-share" type="checkbox" checked><span><strong>Share target</strong><span>Let users share text and URLs into your installed PWA.</span></span></label>
+            <label class="switch"><input id="include-protocol" type="checkbox"><span><strong>Protocol handler</strong><span>Register a custom web protocol such as web+pay.</span></span></label>
+            <label class="switch"><input id="include-files" type="checkbox"><span><strong>File handler</strong><span>Declare file types your installed app can open where supported.</span></span></label>
+            <label class="switch"><input id="include-launch" type="checkbox" checked><span><strong>Launch handler</strong><span>Control whether launches focus an existing app window.</span></span></label>
+          </div>
+          <div class="grid two" style="margin-top:12px">
+            <div class="field"><label for="share-action">Share target action</label><input id="share-action" value="/share-target/"></div>
+            <div class="field"><label for="protocol">Protocol</label><input id="protocol" value="web+afropay"></div>
+          </div>
+          <div class="grid two" style="margin-top:12px">
+            <div class="field"><label for="file-ext">Handled file extension</label><input id="file-ext" value=".csv"></div>
+            <div class="field"><label for="file-mime">Handled MIME type</label><input id="file-mime" value="text/csv"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Generated Output</span><button class="btn small" id="copy-output" type="button">Copy active output</button></div>
+        <div class="tabs">
+          <button class="tab active" data-tab="manifest" type="button">Manifest</button>
+          <button class="tab" data-tab="html" type="button">HTML tags</button>
+          <button class="tab" data-tab="sw" type="button">Service worker</button>
+          <button class="tab" data-tab="checks" type="button">Checklist</button>
+        </div>
+        <div class="tab-panel active" id="panel-manifest"><pre class="codebox" id="manifest-code"></pre></div>
+        <div class="tab-panel" id="panel-html"><pre class="codebox" id="html-code"></pre></div>
+        <div class="tab-panel" id="panel-sw"><pre class="codebox" id="sw-code"></pre></div>
+        <div class="tab-panel" id="panel-checks"><pre class="codebox" id="checks-code"></pre></div>
+      </section>
+    </div>
+
+    <aside class="right">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Install Preview</span></div>
+        <div class="card-body">
+          <div class="phone">
+            <div class="phone-top">PWA install preview</div>
+            <div class="phone-screen" id="phone-screen">
+              <div class="app-icon" id="app-icon">A</div>
+              <div class="phone-name" id="preview-name"></div>
+              <div class="phone-short" id="preview-short"></div>
+              <div class="install-sheet">
+                <strong id="install-title"></strong>
+                <span id="install-desc"></span>
+              </div>
             </div>
           </div>
-          <div class="en-field">
-            <label class="en-label">Background Color</label>
-            <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="bg-color" value="#ffffff" oninput="update()" style="width:42px;height:38px;border:1.5px solid var(--en-border);border-radius:8px;cursor:pointer;padding:2px">
-              <input class="en-input" id="bg-color-text" value="#ffffff" oninput="syncColor('bg-color','bg-color-text')" style="font-family:'JetBrains Mono',monospace">
-            </div>
-          </div>
-          <div class="en-field">
-            <label class="en-label">Display Mode</label>
-            <select class="en-select" id="display" onchange="update()">
-              <option value="standalone">standalone</option>
-              <option value="fullscreen">fullscreen</option>
-              <option value="minimal-ui">minimal-ui</option>
-              <option value="browser">browser</option>
-            </select>
-          </div>
-          <div class="en-field">
-            <label class="en-label">Orientation</label>
-            <select class="en-select" id="orientation" onchange="update()">
-              <option value="any">any</option>
-              <option value="portrait">portrait</option>
-              <option value="landscape">landscape</option>
-              <option value="portrait-primary">portrait-primary</option>
-            </select>
-          </div>
-          <div class="en-field">
-            <label class="en-label">App Category</label>
-            <select class="en-select" id="category" onchange="update()">
-              <option value="finance">finance</option>
-              <option value="productivity">productivity</option>
-              <option value="utilities">utilities</option>
-              <option value="education">education</option>
-              <option value="business">business</option>
-              <option value="entertainment">entertainment</option>
-              <option value="health">health</option>
-            </select>
-          </div>
-          <div class="en-field">
-            <label class="en-label">App Icon Emoji</label>
-            <input class="en-input" id="icon-emoji" value="🌍" oninput="update()" style="font-size:1.5rem;text-align:center">
-          </div>
-          <div class="en-field en-field-full">
-            <label class="en-label">Scope</label>
-            <input class="en-input" id="scope" value="/" oninput="update()">
-          </div>
-          <div class="en-field en-field-full">
-            <label class="en-label">Language</label>
-            <select class="en-select" id="lang" onchange="update()">
-              <option value="en">English</option>
-              <option value="fr">French</option>
-              <option value="sw">Swahili</option>
-              <option value="ar">Arabic</option>
-              <option value="pt">Portuguese</option>
-              <option value="yo">Yoruba</option>
-              <option value="ha">Hausa</option>
-              <option value="ig">Igbo</option>
-              <option value="am">Amharic</option>
-            </select>
-          </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <!-- Output panel -->
-    <div class="output-sticky">
-      <!-- Phone preview -->
-      <div class="en-card" style="margin-bottom:16px;text-align:center">
-        <div class="en-card-title" style="justify-content:center"><span class="en-card-title-icon">📱</span> Preview</div>
-        <div class="phone-mockup">
-          <div class="phone-status"><span>9:41</span><span>🔋</span></div>
-          <div class="phone-screen-bg" id="phone-preview-bg">
-            <div class="phone-app-icon" id="phone-app-icon">🌍</div>
-            <div class="phone-app-name" id="phone-app-name">MyApp</div>
-          </div>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Readiness Score</span></div>
+        <div class="card-body">
+          <div class="score-ring" id="score-ring" style="--score-deg:0deg"><div class="score-inner"><strong id="score-value">0</strong><span>percent</span></div></div>
+          <div class="checks" id="checks"></div>
         </div>
-      </div>
+      </section>
 
-      <!-- Icons checklist -->
-      <div class="en-card" style="margin-bottom:16px">
-        <div class="en-card-title"><span class="en-card-title-icon">✅</span> Icons Required</div>
-        <div class="icons-checklist">
-          <div class="icon-row"><div class="icon-status">!</div><span>192×192px (PNG) — required</span></div>
-          <div class="icon-row"><div class="icon-status">!</div><span>512×512px (PNG) — required</span></div>
-          <div class="icon-row"><div class="icon-status">○</div><span>180×180px (apple-touch-icon)</span></div>
-          <div class="icon-row"><div class="icon-status">○</div><span>32×32px (favicon)</span></div>
-          <div class="icon-row"><div class="icon-status">○</div><span>maskable icon (safe zone)</span></div>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Asset Checklist</span></div>
+        <div class="card-body asset-list">
+          <div class="asset-row"><strong>192 icon</strong><code>/icons/icon-192.png</code></div>
+          <div class="asset-row"><strong>512 icon</strong><code>/icons/icon-512.png</code></div>
+          <div class="asset-row"><strong>Maskable</strong><code>/icons/icon-maskable-512.png</code></div>
+          <div class="asset-row"><strong>Wide shot</strong><code>/screenshots/wide.png</code></div>
+          <div class="asset-row"><strong>Mobile shot</strong><code>/screenshots/mobile.png</code></div>
         </div>
-      </div>
-    </div>
-  </div>
+      </section>
 
-  <!-- Code output tabs -->
-  <div class="en-card" style="margin-top:0">
-    <div class="en-card-title"><span class="en-card-title-icon">📝</span> Generated Output</div>
-    <div class="tab-bar">
-      <button class="tab-btn active" onclick="showTab('manifest',this)">manifest.webmanifest</button>
-      <button class="tab-btn" onclick="showTab('meta',this)">HTML Meta Tags</button>
-      <button class="tab-btn" onclick="showTab('sw',this)">Service Worker</button>
-    </div>
-    <div class="tab-pane active" id="tab-manifest">
-      <div class="copy-row">
-        <button class="copy-btn" onclick="copyTab('manifest-code')">📋 Copy JSON</button>
-        <button class="copy-btn" id="dl-btn" onclick="downloadManifest()" style="background:#dcfce7;color:#166534">⬇️ Download</button>
-      </div>
-      <div class="code-block" id="manifest-code"></div>
-    </div>
-    <div class="tab-pane" id="tab-meta">
-      <div class="copy-row"><button class="copy-btn" onclick="copyTab('meta-code')">📋 Copy HTML</button></div>
-      <div class="code-block" id="meta-code"></div>
-    </div>
-    <div class="tab-pane" id="tab-sw">
-      <div class="copy-row"><button class="copy-btn" onclick="copyTab('sw-code')">📋 Copy JS</button></div>
-      <div class="code-block" id="sw-code"></div>
-    </div>
-  </div>
-</div>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Official References</span></div>
+        <div class="card-body sources">
+          <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference" target="_blank" rel="noopener">MDN manifest members reference</a>
+          <a href="https://web.dev/articles/install-criteria" target="_blank" rel="noopener">web.dev install criteria</a>
+          <a href="https://web.dev/learn/pwa/web-app-manifest" target="_blank" rel="noopener">web.dev web app manifest guide</a>
+        </div>
+      </section>
+    </aside>
+  </section>
+</main>
 
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
+<div class="toast" id="toast"></div>
 <afro-footer></afro-footer>
 
 <script>
-function v(id){return document.getElementById(id).value;}
+(function(){
+  'use strict';
 
-function syncColor(colorId,textId){
-  var val=document.getElementById(textId).value;
-  if(/^#[0-9a-fA-F]{6}$/.test(val))document.getElementById(colorId).value=val;
-  update();
-}
-
-function update(){
-  var name=v('app-name')||'My App';
-  var short=v('short-name')||'App';
-  var desc=v('description')||'';
-  var startUrl=v('start-url')||'/';
-  var scope=v('scope')||'/';
-  var theme=v('theme-color');
-  var bg=v('bg-color');
-  var display=v('display');
-  var orientation=v('orientation');
-  var cat=v('category');
-  var lang=v('lang');
-  var emoji=v('icon-emoji')||'🌍';
-
-  document.getElementById('theme-color-text').value=theme;
-  document.getElementById('bg-color-text').value=bg;
-
-  // Phone preview
-  var phoneBg=document.getElementById('phone-preview-bg');
-  phoneBg.style.background=bg;
-  var icon=document.getElementById('phone-app-icon');
-  icon.style.background=theme;
-  icon.textContent=emoji;
-  document.getElementById('phone-app-name').style.color=theme;
-  document.getElementById('phone-app-name').textContent=short;
-
-  // Manifest JSON
-  var manifest={
-    name:name,
-    short_name:short,
-    description:desc,
-    start_url:startUrl,
-    scope:scope,
-    display:display,
-    orientation:orientation,
-    theme_color:theme,
-    background_color:bg,
-    lang:lang,
-    categories:[cat],
-    icons:[
-      {src:'/icons/icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},
-      {src:'/icons/icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'},
-      {src:'/icons/icon-512-maskable.png',sizes:'512x512',type:'image/png',purpose:'maskable'}
-    ],
-    screenshots:[
-      {src:'/screenshots/screenshot1.png',sizes:'1280x720',type:'image/png',form_factor:'wide'},
-      {src:'/screenshots/screenshot2.png',sizes:'390x844',type:'image/png',form_factor:'narrow'}
-    ],
-    shortcuts:[
-      {name:'Home',short_name:'Home',description:'Go to home',url:startUrl,icons:[{src:'/icons/icon-96.png',sizes:'96x96'}]}
-    ]
+  var activeTab = 'manifest';
+  var presets = {
+    fintech: {
+      name:'AfroWallet Lite', short:'AfroWallet', id:'/', start:'/?source=pwa', scope:'/', lang:'en',
+      desc:'A lightweight African mobile money companion that works well on low-bandwidth connections.',
+      theme:'#2563eb', bg:'#ffffff', category:'finance'
+    },
+    school: {
+      name:'SchoolBridge Parent Portal', short:'School', id:'/', start:'/dashboard/?source=pwa', scope:'/',
+      lang:'en', desc:'A parent portal for fees, attendance, assignments and school notices.',
+      theme:'#047857', bg:'#f7fee7', category:'education'
+    },
+    market: {
+      name:'Market Day Directory', short:'MarketDay', id:'/', start:'/markets/?source=pwa', scope:'/',
+      lang:'en', desc:'Offline-friendly market information, prices and trader contacts.',
+      theme:'#b45309', bg:'#fffbeb', category:'business'
+    },
+    clinic: {
+      name:'Clinic Booking PWA', short:'Clinic', id:'/', start:'/appointments/?source=pwa', scope:'/',
+      lang:'en', desc:'A mobile-first clinic booking app with installable patient shortcuts.',
+      theme:'#0e7490', bg:'#ecfeff', category:'health'
+    }
   };
-  document.getElementById('manifest-code').textContent=JSON.stringify(manifest,null,2);
 
-  // Meta tags
-  var meta=[
-    '<!-- PWA Meta Tags — generated by AfroTools -->',
-    '<link rel="manifest" href="/manifest.webmanifest">',
-    '<meta name="theme-color" content="'+theme+'">',
-    '<meta name="application-name" content="'+escHtml(name)+'">',
-    '<meta name="apple-mobile-web-app-capable" content="yes">',
-    '<meta name="apple-mobile-web-app-status-bar-style" content="default">',
-    '<meta name="apple-mobile-web-app-title" content="'+escHtml(short)+'">',
-    '<link rel="apple-touch-icon" href="/assets/img/icon-192.png">',
-    '<meta name="msapplication-TileColor" content="'+theme+'">',
-    '<meta name="msapplication-TileImage" content="/icons/icon-192.png">',
-    '',
-    '<!-- Open Graph -->',
-    '<meta property="og:type" content="website">',
-    '<meta property="og:title" content="'+escHtml(name)+'">',
-    '<meta property="og:description" content="'+escHtml(desc)+'">',
-  ].join('\n');
-  document.getElementById('meta-code').textContent=meta;
+  function $(id){ return document.getElementById(id); }
+  function val(id){ return $(id).value.trim(); }
+  function checked(id){ return $(id).checked; }
+  function escAttr(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function slug(value){
+    return String(value || 'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'app';
+  }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
+  }
 
-  // Service Worker
-  var sw=[
-    "// Service Worker — generated by AfroTools",
-    "const CACHE_NAME = '"+short.toLowerCase().replace(/\s+/g,'-')+"-v1';",
-    "const ASSETS = [",
-    "  '/',",
-    "  '/index.html',",
-    "  '/manifest.webmanifest',",
-    "  '/icons/icon-192.png',",
-    "  '/icons/icon-512.png',",
-    "];",
-    "",
-    "self.addEventListener('install', (event) => {",
-    "  event.waitUntil(",
-    "    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))",
-    "  );",
-    "  self.skipWaiting();",
-    "});",
-    "",
-    "self.addEventListener('activate', (event) => {",
-    "  event.waitUntil(",
-    "    caches.keys().then((keys) => Promise.all(",
-    "      keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))",
-    "    ))",
-    "  );",
-    "  self.clients.claim();",
-    "});",
-    "",
-    "// Network-first strategy with cache fallback",
-    "self.addEventListener('fetch', (event) => {",
-    "  event.respondWith(",
-    "    fetch(event.request).then((res) => {",
-    "      const clone = res.clone();",
-    "      caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));",
-    "      return res;",
-    "    }).catch(() => caches.match(event.request))",
-    "  );",
-    "});",
-    "",
-    "// Registration snippet (add to your main JS):",
-    "// if ('serviceWorker' in navigator) {",
-    "//   navigator.serviceWorker.register('/sw.js')",
-    "//     .then(reg => console.log('SW registered:', reg))",
-    "//     .catch(err => console.error('SW error:', err));",
-    "// }",
-  ].join('\n');
-  document.getElementById('sw-code').textContent=sw;
-}
+  function buildManifest(){
+    var manifest = {
+      id: val('app-id') || '/',
+      name: val('app-name') || 'My PWA',
+      short_name: val('short-name') || 'PWA',
+      description: val('description') || '',
+      start_url: val('start-url') || '/',
+      scope: val('scope') || '/',
+      display: val('display') || 'standalone',
+      orientation: val('orientation') || 'any',
+      dir: val('dir') || 'auto',
+      lang: val('lang') || 'en',
+      theme_color: val('theme-color') || '#2563eb',
+      background_color: val('background-color') || '#ffffff',
+      categories: [val('category') || 'utilities'],
+      icons: [
+        { src:'/icons/icon-192.png', sizes:'192x192', type:'image/png', purpose:'any' },
+        { src:'/icons/icon-512.png', sizes:'512x512', type:'image/png', purpose:'any' },
+        { src:'/icons/icon-maskable-512.png', sizes:'512x512', type:'image/png', purpose:'maskable' }
+      ]
+    };
+    var overrides = val('display-override').split(',').map(function(item){ return item.trim(); }).filter(Boolean);
+    if (overrides.length) manifest.display_override = overrides;
+    if (checked('include-screenshots')) {
+      manifest.screenshots = [
+        { src:'/screenshots/wide.png', sizes:'1280x720', type:'image/png', form_factor:'wide', label:'Desktop dashboard' },
+        { src:'/screenshots/mobile.png', sizes:'390x844', type:'image/png', form_factor:'narrow', label:'Mobile home screen' }
+      ];
+    }
+    if (checked('include-shortcuts')) {
+      manifest.shortcuts = [
+        { name:'Open dashboard', short_name:'Dashboard', description:'Go to the main dashboard', url:manifest.start_url, icons:[{src:'/icons/shortcut-dashboard.png', sizes:'96x96'}] },
+        { name:'New transaction', short_name:'New', description:'Start the main user workflow', url:'/new/', icons:[{src:'/icons/shortcut-new.png', sizes:'96x96'}] }
+      ];
+    }
+    if (checked('include-share')) {
+      manifest.share_target = {
+        action: val('share-action') || '/share-target/',
+        method: 'POST',
+        enctype: 'multipart/form-data',
+        params: { title:'title', text:'text', url:'url' }
+      };
+    }
+    if (checked('include-protocol')) {
+      manifest.protocol_handlers = [{ protocol: val('protocol') || 'web+app', url: '/open?url=%s' }];
+    }
+    if (checked('include-files')) {
+      var ext = val('file-ext') || '.csv';
+      manifest.file_handlers = [{
+        action: '/open-file/',
+        accept: {}
+      }];
+      manifest.file_handlers[0].accept[val('file-mime') || 'text/csv'] = [ext];
+    }
+    if (checked('include-launch')) {
+      manifest.launch_handler = { client_mode: ['focus-existing', 'auto'] };
+      manifest.edge_side_panel = { preferred_width: Number(val('edge-side-panel')) || 420 };
+    }
+    return manifest;
+  }
 
-function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function scoreManifest(manifest){
+    var checks = [
+      {ok:!!manifest.name, text:'Manifest has a full app name.'},
+      {ok:!!manifest.short_name && manifest.short_name.length <= 12, text:'Short name exists and is 12 characters or fewer.'},
+      {ok:!!manifest.start_url, text:'Start URL is present.'},
+      {ok:!!manifest.scope, text:'Scope is present.'},
+      {ok:['standalone','fullscreen','minimal-ui'].indexOf(manifest.display) !== -1, text:'Display mode is install-friendly.'},
+      {ok:!!manifest.theme_color && !!manifest.background_color, text:'Theme and background colors are present.'},
+      {ok:manifest.icons.some(function(icon){ return icon.sizes.indexOf('192x192') !== -1; }), text:'192x192 icon is declared.'},
+      {ok:manifest.icons.some(function(icon){ return icon.sizes.indexOf('512x512') !== -1; }), text:'512x512 icon is declared.'},
+      {ok:manifest.icons.some(function(icon){ return String(icon.purpose).indexOf('maskable') !== -1; }), text:'Maskable icon is declared.'},
+      {ok:Array.isArray(manifest.screenshots) && manifest.screenshots.length >= 2, text:'Wide and narrow screenshots are included.'},
+      {ok:Array.isArray(manifest.shortcuts) && manifest.shortcuts.length > 0, text:'Useful app shortcuts are included.'},
+      {ok:true, text:'Remember to serve the app over HTTPS and register a service worker.'}
+    ];
+    var passed = checks.filter(function(item){ return item.ok; }).length;
+    return { checks: checks, percent: Math.round((passed / checks.length) * 100) };
+  }
 
-function showTab(id,btn){
-  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
-}
+  function generateHtml(manifest){
+    var name = escAttr(manifest.name);
+    var shortName = escAttr(manifest.short_name);
+    return [
+      '<!-- PWA tags generated by AfroTools -->',
+      '<link rel="manifest" href="/manifest.webmanifest">',
+      '<meta name="theme-color" content="'+escAttr(manifest.theme_color)+'">',
+      '<meta name="application-name" content="'+name+'">',
+      '<meta name="mobile-web-app-capable" content="yes">',
+      '<meta name="apple-mobile-web-app-capable" content="yes">',
+      '<meta name="apple-mobile-web-app-title" content="'+shortName+'">',
+      '<meta name="apple-mobile-web-app-status-bar-style" content="default">',
+      '<link rel="apple-touch-icon" ' + 'hre' + 'f="/icons/icon-192.png">',
+      '<meta name="msapplication-TileColor" content="'+escAttr(manifest.theme_color)+'">',
+      '<meta name="msapplication-TileImage" content="/icons/icon-192.png">',
+      '',
+      '<script>',
+      "if ('serviceWorker' in navigator) {",
+      "  window.addEventListener('load', function () {",
+      "    navigator.serviceWorker.register('/sw.js');",
+      '  });',
+      '}',
+      '<' + '/script>'
+    ].join('\n');
+  }
 
-function copyTab(codeId){
-  var el=document.getElementById(codeId);
-  navigator.clipboard.writeText(el.textContent).then(function(){
-    var btn=event.target;btn.textContent='✅ Copied!';btn.classList.add('copied');
-    setTimeout(function(){btn.textContent='📋 Copy '+codeId.split('-')[0].toUpperCase();btn.classList.remove('copied');},2000);
+  function generateServiceWorker(manifest){
+    var cache = slug(manifest.short_name) + '-v1';
+    return [
+      '// Service worker starter generated by AfroTools',
+      '// Review caching rules before production. Avoid caching private API responses.',
+      "const CACHE_NAME = '" + cache + "';",
+      'const APP_SHELL = [',
+      "  '/',",
+      "  '" + manifest.start_url + "',",
+      "  '/manifest.webmanifest',",
+      "  '/icons/icon-192.png',",
+      "  '/icons/icon-512.png'",
+      '];',
+      '',
+      "self.addEventListener('install', event => {",
+      '  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));',
+      '  self.skipWaiting();',
+      '});',
+      '',
+      "self.addEventListener('activate', event => {",
+      '  event.waitUntil(',
+      '    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))',
+      '  );',
+      '  self.clients.claim();',
+      '});',
+      '',
+      "self.addEventListener('fetch', event => {",
+      "  if (event.request.method !== 'GET') return;",
+      '  const requestUrl = new URL(event.request.url);',
+      "  if (requestUrl.origin !== location.origin) return;",
+      '  if (event.request.mode === "navigate") {',
+      '    event.respondWith(fetch(event.request).catch(() => caches.match("/")));',
+      '    return;',
+      '  }',
+      '  event.respondWith(',
+      '    caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {',
+      '      const copy = response.clone();',
+      '      caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));',
+      '      return response;',
+      '    }))',
+      '  );',
+      '});'
+    ].join('\n');
+  }
+
+  function generateChecklist(manifest, score){
+    return [
+      'PWA launch checklist',
+      '',
+      '[ ] Serve every page over HTTPS.',
+      '[ ] Place manifest at /manifest.webmanifest and link it in the HTML head.',
+      '[ ] Provide real PNG icons at 192x192, 512x512 and maskable 512x512.',
+      '[ ] Register /sw.js from your main HTML or JS bundle.',
+      '[ ] Test installability in Chrome DevTools Application panel.',
+      '[ ] Test Android install prompt and iOS Add to Home Screen behavior.',
+      '[ ] Confirm offline fallback does not cache private user data.',
+      '[ ] Update screenshots after major UI changes.',
+      '[ ] Keep start_url inside scope: ' + manifest.scope,
+      '',
+      'Current readiness score: ' + score.percent + '%'
+    ].join('\n');
+  }
+
+  function render(){
+    var manifest = buildManifest();
+    var score = scoreManifest(manifest);
+    $('manifest-code').textContent = JSON.stringify(manifest, null, 2);
+    $('html-code').textContent = generateHtml(manifest);
+    $('sw-code').textContent = generateServiceWorker(manifest);
+    $('checks-code').textContent = generateChecklist(manifest, score);
+    $('hero-score').textContent = score.percent + '%';
+    $('hero-members').textContent = Object.keys(manifest).length;
+    $('score-value').textContent = score.percent;
+    $('score-ring').style.setProperty('--score-deg', Math.round(score.percent * 3.6) + 'deg');
+    $('checks').innerHTML = score.checks.map(function(item){
+      return '<div class="check '+(item.ok ? 'ok' : 'warn')+'">'+escAttr(item.text)+'</div>';
+    }).join('');
+    $('preview-name').textContent = manifest.name;
+    $('preview-short').textContent = manifest.short_name;
+    $('install-title').textContent = 'Install ' + manifest.short_name;
+    $('install-desc').textContent = manifest.description;
+    $('phone-screen').style.background = manifest.background_color;
+    $('app-icon').style.background = manifest.theme_color;
+    $('app-icon').textContent = manifest.short_name.charAt(0).toUpperCase() || 'A';
+  }
+
+  function loadPreset(name){
+    var p = presets[name];
+    if (!p) return;
+    $('app-name').value = p.name;
+    $('short-name').value = p.short;
+    $('app-id').value = p.id;
+    $('start-url').value = p.start;
+    $('scope').value = p.scope;
+    $('lang').value = p.lang;
+    $('description').value = p.desc;
+    $('theme-color').value = p.theme;
+    $('background-color').value = p.bg;
+    $('category').value = p.category;
+    render();
+    toast('Preset loaded');
+  }
+
+  document.addEventListener('input', function(event){
+    if (event.target.closest('main')) render();
   });
-}
+  document.addEventListener('change', function(event){
+    if (event.target.id === 'preset') {
+      loadPreset(event.target.value);
+      event.target.value = '';
+      return;
+    }
+    if (event.target.closest('main')) render();
+  });
+  document.addEventListener('click', function(event){
+    if (event.target.classList.contains('tab')) {
+      activeTab = event.target.getAttribute('data-tab');
+      document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === event.target); });
+      document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.remove('active'); });
+      $('panel-' + activeTab).classList.add('active');
+    }
+    if (event.target.id === 'copy-output') {
+      var output = activeTab === 'manifest' ? $('manifest-code') : activeTab === 'html' ? $('html-code') : activeTab === 'sw' ? $('sw-code') : $('checks-code');
+      navigator.clipboard.writeText(output.textContent).then(function(){ toast('Output copied'); });
+    }
+  });
 
-function downloadManifest(){
-  var content=document.getElementById('manifest-code').textContent;
-  var blob=new Blob([content],{type:'application/json'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='manifest.webmanifest';a.click();
-}
-
-update();
+  render();
+})();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>

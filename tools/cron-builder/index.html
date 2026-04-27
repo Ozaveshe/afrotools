@@ -1,15 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cron Builder — Build Cron Expressions | AfroTools</title>
-<meta name="description" content="Free cron expression builder. Visual cron builder with dropdowns. Human-readable descriptions and next 5 run times. Common presets for every minute, hourly, daily, weekly, monthly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cron Expression Builder for DevOps | AfroTools</title>
+<meta name="description" content="Build, validate and export cron expressions for Linux crontab, GitHub Actions, Kubernetes CronJobs and AWS EventBridge with timezone notes, warnings and next run previews.">
 <link rel="canonical" href="https://afrotools.com/tools/cron-builder/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Cron Builder | AfroTools">
-<meta property="og:description" content="Build cron expressions visually with human-readable descriptions and upcoming run times.">
+<meta property="og:title" content="Cron Expression Builder | AfroTools">
+<meta property="og:description" content="Build cron schedules with platform warnings, timezone previews, next run times and deployment snippets.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/cron-builder/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -17,8 +17,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cron Builder | AfroTools">
-<meta name="twitter:description" content="Visual cron expression builder with preview times.">
+<meta name="twitter:title" content="Cron Expression Builder | AfroTools">
+<meta name="twitter:description" content="Build cron schedules for real deployment targets, not just memorised syntax.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,740 +26,683 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cron Expression Builder","applicationCategory":"DeveloperApplication","operatingSystem":"Web","url":"https://afrotools.com/tools/cron-builder/","description":"Build, validate and export cron expressions for Linux crontab, GitHub Actions, Kubernetes CronJobs and AWS EventBridge with timezone notes, warnings and next run previews.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"Cron Expression Builder","item":"https://afrotools.com/tools/cron-builder/"}]}</script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
-  :root {
-    --afro-green: var(--color-primary);
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
+  :root{
+    --ink:#101828;
+    --muted:#5d6b82;
+    --line:#d8e2ee;
+    --soft:#f5f8fc;
+    --panel:#ffffff;
+    --blue:#0b66d8;
+    --green:#087443;
+    --amber:#a15c07;
+    --red:#b42318;
+    --violet:#5b4bc4;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
   }
-
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
+  *{box-sizing:border-box}
+  body{margin:0;background:#edf3f8;color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+  .hero{background:#101828;color:#fff;padding:44px 0 36px}
+  .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
+  .crumb{font-size:13px;color:#c5d0df;margin-bottom:16px}
+  .crumb a{color:#dce6f3;text-decoration:none}
+  .hero h1{font-size:42px;line-height:1.08;margin:0 0 14px;font-weight:800;max-width:820px;color:#fff}
+  .lead{font-size:18px;line-height:1.55;color:#d5deea;max-width:850px;margin:0 0 22px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700}
+  .main{padding:26px 0 64px}
+  .grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(360px,.72fr);gap:16px;align-items:start}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 12px 30px rgba(16,24,40,.07)}
+  .panel-head{padding:16px 18px;border-bottom:1px solid var(--line);background:#f9fbfd;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .panel-title{font-size:17px;font-weight:800;margin:0}
+  .panel-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .panel-body{padding:18px}
+  .stack{display:grid;gap:16px}
+  .field-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  label{display:grid;gap:6px;font-size:13px;font-weight:800;color:#344054}
+  input,select,textarea{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
+  input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,102,216,.13)}
+  textarea{min-height:170px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
+  .cron-input{font-family:var(--mono);font-size:24px;font-weight:800;letter-spacing:0}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
+  button:hover{border-color:var(--blue);color:var(--blue)}
+  .primary{background:var(--blue);border-color:var(--blue);color:#fff}
+  .primary:hover{background:#0755b7;color:#fff}
+  .good{background:#ecfdf3;color:#067647;border-color:#abefc6}
+  .warn{background:#fffaeb;color:#93370d;border-color:#fedf89}
+  .bad{background:#fef3f2;color:#b42318;border-color:#fecdca}
+  .preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .preset{padding:12px;text-align:left}
+  .preset strong{display:block;font-size:13px;color:#182230}
+  .preset span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:4px}
+  .status-line{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);padding:6px 10px;font-size:12px;font-weight:800}
+  .expression{font-family:var(--mono);font-size:24px;font-weight:800;padding:14px;border:1px solid #cfd9e6;border-radius:8px;background:#f8fbff;word-break:break-word}
+  .desc{font-size:15px;line-height:1.6;color:#344054}
+  .runs{display:grid;gap:8px}
+  .run{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:10px;border:1px solid #e4eaf2;border-radius:8px;background:#fbfdff}
+  .run-num{font-family:var(--mono);font-weight:800;color:var(--blue)}
+  .run-time{font-weight:800}
+  .run-alt{font-size:12px;color:var(--muted);margin-top:3px}
+  .breakdown{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .part{border:1px solid #e4eaf2;border-radius:8px;padding:10px;background:#fbfdff}
+  .part b{display:block;font-size:12px;color:#475467;margin-bottom:4px}
+  .part code{font-family:var(--mono);font-size:15px;color:#101828}
+  .messages{display:grid;gap:8px}
+  .message{border-radius:8px;border:1px solid var(--line);padding:10px 12px;font-size:13px;line-height:1.45}
+  .snippet{white-space:pre-wrap;font-family:var(--mono);font-size:13px;line-height:1.5;background:#101828;color:#eef4ff;border-radius:8px;padding:14px;overflow:auto;min-height:210px}
+  .source-list{display:grid;gap:10px}
+  .source-row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid #e4eaf2;border-radius:8px;padding:11px;background:#fbfdff}
+  .source-row a{color:#0b66d8;font-weight:800}
+  .source-row span{font-size:12px;color:var(--muted)}
+  .source-row div span{display:block;margin-top:4px}
+  .source-row > span{white-space:nowrap}
+  .mini{font-size:12px;color:var(--muted);line-height:1.5}
+  .faq{width:min(900px,calc(100% - 32px));margin:18px auto 0;display:grid;gap:8px}
+  details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
+  summary{font-weight:800;cursor:pointer}
+  details p{color:var(--muted);line-height:1.6;margin:10px 0 0}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  @media (max-width: 920px){
+    .hero h1{font-size:34px}
+    .grid{grid-template-columns:1fr}
+    .field-grid,.breakdown{grid-template-columns:repeat(2,1fr)}
+    .preset-grid{grid-template-columns:1fr}
   }
-
-  .tool-hero::after {
-    content: '⏲️';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
-
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
-
-  .breadcrumb span {
-    color: var(--afro-green);
-  }
-
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
-
-  h1 em {
-    color: var(--afro-green);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
-
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 6px;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
-
-  .b-green {
-    background: rgba(0, 113, 227, 0.18);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
-  }
-
-  .tool-main {
-    padding: 28px 0 72px;
-  }
-
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .card + .card {
-    margin-top: 18px;
-  }
-
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #EFF6FF;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #F5F9FF;
-  }
-
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
-
-  .card-body {
-    padding: 22px;
-  }
-
-  .field {
-    margin-bottom: 18px;
-  }
-
-  .field:last-child {
-    margin-bottom: 0;
-  }
-
-  .f-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-  }
-
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'Courier New', monospace;
-  }
-
-  .f-input:focus {
-    border-color: var(--afro-green);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-  }
-
-  .preset-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-
-  .preset-btn {
-    text-align: left;
-    padding: 8px 12px;
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .preset-btn:hover {
-    border-color: var(--afro-green);
-  }
-
-  .preset-name {
-    display: block;
-    font-weight: 700;
-  }
-
-  .preset-value {
-    display: block;
-    font-size: 0.65rem;
-    color: #6B8CAE;
-    font-family: 'Courier New', monospace;
-  }
-
-  .output-box {
-    background: #EFF6FF;
-    border: 1.5px solid #BFDBFE;
-    border-radius: 6px;
-    padding: 12px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    color: #0d2813;
-    word-break: break-all;
-  }
-
-  .copy-btn {
-    width: 100%;
-    padding: 10px;
-    background: rgba(0, 113, 227, 0.1);
-    border: 1.5px solid rgba(0, 113, 227, 0.35);
-    color: #1a5c3a;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.72rem;
-    font-weight: 700;
-    margin-top: 8px;
-    transition: all 0.15s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .copy-btn:hover {
-    background: rgba(0, 113, 227, 0.2);
-  }
-
-  .description-box {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 6px;
-    padding: 12px;
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.5;
-    margin-top: 8px;
-  }
-
-  .runs-list {
-    font-size: 0.75rem;
-    color: #6B8CAE;
-    margin-top: 8px;
-    line-height: 1.4;
-  }
-
-  .runs-list strong {
-    color: #244d2c;
-  }
-
-  .runs-item {
-    padding: 4px 0;
-    border-bottom: 1px solid rgba(0, 113, 227, 0.1);
-  }
-
-  .runs-item:last-child {
-    border-bottom: none;
-  }
-
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card {
-    background: #F5F9FF;
-    border: 1px solid #DBEAFE;
-    border-radius: 10px;
-    padding: 16px;
-  }
-
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
-
-  .info-text li {
-    margin-bottom: 8px;
-  }
-
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
+  @media (max-width: 560px){
+    .wrap{width:min(100% - 20px,1200px)}
+    .hero{padding:30px 0}
+    .hero h1{font-size:28px}
+    .lead{font-size:16px}
+    .field-grid,.breakdown{grid-template-columns:1fr}
+    .cron-input,.expression{font-size:18px}
+    .panel-head{display:block}
   }
 </style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cron-builder/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cron-builder/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Cron Builder",
-      "item": "https://afrotools.com/tools/cron-builder/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
 </head>
 <body>
-<afro-navbar active="tools"></afro-navbar>
+<afro-navbar></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>Cron <em>Builder</em></h1>
-    <p class="hero-sub">Build cron expressions visually with dropdowns. Human-readable descriptions and preview of next 5 run times. Common presets included.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">Visual Builder</span>
-      <span class="badge b-green">Descriptions</span>
-      <span class="badge b-green">Next 5 Runs</span>
+<section class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Developer Tools</a> / Cron Builder</div>
+    <h1>Build cron schedules that survive real deployment targets.</h1>
+    <p class="lead">Compose a five-field cron expression, preview runs in African time zones, and export snippets for Linux crontab, GitHub Actions, Kubernetes CronJobs, or AWS EventBridge with the warnings developers usually learn the hard way.</p>
+    <div class="chips" aria-label="Tool capabilities">
+      <span class="chip">Next run preview</span>
+      <span class="chip">Platform snippets</span>
+      <span class="chip">Timezone warnings</span>
+      <span class="chip">EventBridge conversion</span>
     </div>
   </div>
-</div>
+</section>
 
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div>
-      <!-- Presets Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Quick Presets</span>
+<main class="main">
+  <div class="wrap grid">
+    <section class="stack" aria-label="Cron builder">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Expression</h2>
+            <div class="panel-sub">Five-field POSIX cron: minute, hour, day of month, month, day of week.</div>
+          </div>
+          <div class="status-line" id="statusLine"></div>
         </div>
-        <div class="card-body">
+        <div class="panel-body stack">
+          <label for="cronInput">Cron expression</label>
+          <input id="cronInput" class="cron-input" value="15 4 * * 1-5" spellcheck="false" autocomplete="off">
+          <div class="field-grid" aria-label="Cron fields">
+            <label>Minute <input id="minuteField" value="15" inputmode="numeric"></label>
+            <label>Hour <input id="hourField" value="4" inputmode="numeric"></label>
+            <label>Day <input id="dayField" value="*"></label>
+            <label>Month <input id="monthField" value="*"></label>
+            <label>Weekday <input id="dowField" value="1-5"></label>
+          </div>
+          <div class="row">
+            <button class="primary" id="copyExpression" type="button">Copy Expression</button>
+            <button id="copySnippet" type="button">Copy Snippet</button>
+            <button id="saveSchedule" type="button">Save Schedule</button>
+            <button id="clearHistory" type="button">Clear History</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Builder Controls</h2>
+            <div class="panel-sub">Use presets, then fine tune the fields directly.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="row">
+            <label style="min-width:220px">Target platform
+              <select id="platformSelect">
+                <option value="linux">Linux crontab</option>
+                <option value="github">GitHub Actions</option>
+                <option value="kubernetes">Kubernetes CronJob</option>
+                <option value="eventbridge">AWS EventBridge</option>
+              </select>
+            </label>
+            <label style="min-width:220px">Schedule timezone
+              <select id="timezoneSelect">
+                <option value="local">Local browser timezone</option>
+                <option value="UTC">UTC</option>
+                <option value="Africa/Lagos">Africa/Lagos</option>
+                <option value="Africa/Nairobi">Africa/Nairobi</option>
+                <option value="Africa/Johannesburg">Africa/Johannesburg</option>
+                <option value="Africa/Accra">Africa/Accra</option>
+                <option value="Africa/Cairo">Africa/Cairo</option>
+                <option value="Africa/Casablanca">Africa/Casablanca</option>
+              </select>
+            </label>
+          </div>
           <div class="preset-grid">
-            <button class="preset-btn" data-cron="* * * * *" data-name="Every minute">
-              <span class="preset-name">Every Minute</span>
-              <span class="preset-value">* * * * *</span>
-            </button>
-            <button class="preset-btn" data-cron="0 * * * *" data-name="Every hour">
-              <span class="preset-name">Every Hour</span>
-              <span class="preset-value">0 * * * *</span>
-            </button>
-            <button class="preset-btn" data-cron="0 0 * * *" data-name="Daily at midnight">
-              <span class="preset-name">Daily at Midnight</span>
-              <span class="preset-value">0 0 * * *</span>
-            </button>
-            <button class="preset-btn" data-cron="0 0 * * 1" data-name="Every Monday">
-              <span class="preset-name">Weekly (Monday)</span>
-              <span class="preset-value">0 0 * * 1</span>
-            </button>
-            <button class="preset-btn" data-cron="0 0 1 * *" data-name="First day of month">
-              <span class="preset-name">Monthly (1st)</span>
-              <span class="preset-value">0 0 1 * *</span>
-            </button>
+            <button class="preset" type="button" data-cron="*/5 * * * *"><strong>Heartbeat every 5 minutes</strong><span>*/5 * * * *</span></button>
+            <button class="preset" type="button" data-cron="15 4 * * 1-5"><strong>Weekday morning job</strong><span>15 4 * * 1-5</span></button>
+            <button class="preset" type="button" data-cron="0 2 * * *"><strong>Nightly backup</strong><span>0 2 * * *</span></button>
+            <button class="preset" type="button" data-cron="30 6 1 * *"><strong>Monthly billing close</strong><span>30 6 1 * *</span></button>
+            <button class="preset" type="button" data-cron="0 7 * * 1"><strong>Monday digest</strong><span>0 7 * * 1</span></button>
+            <button class="preset" type="button" data-cron="45 16 * * 1-5"><strong>FX rates refresh</strong><span>45 16 * * 1-5</span></button>
           </div>
         </div>
       </div>
 
-      <!-- Builder Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Builder</span>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Generated Snippet</h2>
+            <div class="panel-sub" id="snippetSub">Deployment-ready starter for the selected platform.</div>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Minute (0-59)</span>
-            </label>
-            <input type="text" class="f-input" id="minute" value="0" placeholder="*/15, 0, 15, 30, 45">
-          </div>
+        <div class="panel-body">
+          <pre class="snippet" id="snippetOutput"></pre>
+        </div>
+      </div>
+    </section>
 
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Hour (0-23)</span>
-            </label>
-            <input type="text" class="f-input" id="hour" value="0" placeholder="*, 9, 12, 18">
+    <aside class="stack" aria-label="Cron output">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Meaning</h2>
+            <div class="panel-sub">Plain-language readout plus field breakdown.</div>
           </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Day of Month (1-31)</span>
-            </label>
-            <input type="text" class="f-input" id="day" value="*" placeholder="*, 1, 15">
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Month (1-12)</span>
-            </label>
-            <input type="text" class="f-input" id="month" value="*" placeholder="*, 1, 12">
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Day of Week (0-6, 0=Sunday)</span>
-            </label>
-            <input type="text" class="f-input" id="dow" value="*" placeholder="*, 0, 1-5">
-          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="expression" id="expressionOutput"></div>
+          <div class="desc" id="descriptionOutput"></div>
+          <div class="breakdown" id="breakdownOutput"></div>
         </div>
       </div>
 
-      <!-- Output Card -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Cron Expression</span>
-        </div>
-        <div class="card-body">
-          <div class="output-box" id="cronOutput">0 0 * * *</div>
-          <button class="copy-btn" id="copyBtn">📋 Copy Expression</button>
-          <div class="description-box" id="cronDesc">Daily at midnight</div>
-          <div class="runs-list" id="nextRuns">
-            <strong style="display: block; margin-bottom: 6px;">Next 5 runs (local time):</strong>
-            <div id="runsList"></div>
-            <div style="font-size: 0.65rem; color: #6B8CAE; margin-top: 6px;" id="tzNote"></div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Next Runs</h2>
+            <div class="panel-sub" id="timezoneNote">Estimated from this browser.</div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Info Card -->
-      <div class="info-card">
-        <div class="info-title">Cron Format</div>
-        <div class="info-text">
-          5-field cron format:
-          <div style="font-family: 'Courier New', monospace; margin-top: 8px; background: rgba(0, 113, 227, 0.05); padding: 8px; border-radius: 4px; font-size: 0.75rem;">
-            <div>Minute Hour Day Month DayOfWeek</div>
-          </div>
-          <ul style="margin-top:10px;">
-            <li>✓ * = any value</li>
-            <li>✓ , = multiple</li>
-            <li>✓ - = range</li>
-            <li>✓ / = interval</li>
-          </ul>
+        <div class="panel-body">
+          <div class="runs" id="runsOutput"></div>
         </div>
       </div>
 
-      <!-- Help Card -->
-      <div class="info-card">
-        <div class="info-title">Examples</div>
-        <div class="info-text" style="font-size: 0.75rem;">
-          <div><strong>0 9 * * *</strong> - 9 AM daily</div>
-          <div style="margin-top: 6px;"><strong>0 0 * * 0</strong> - Midnight Sunday</div>
-          <div style="margin-top: 6px;"><strong>*/30 * * * *</strong> - Every 30 mins</div>
-          <div style="margin-top: 6px;"><strong>0 12 1 * *</strong> - Noon on 1st</div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Warnings</h2>
+            <div class="panel-sub">Cron engines are similar, not identical.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="messagesOutput"></div>
         </div>
       </div>
-    </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Saved Schedules</h2>
+            <div class="panel-sub">Stored in this browser only.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="historyOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Reference Sources</h2>
+            <div class="panel-sub">Official docs used for the warnings.</div>
+          </div>
+        </div>
+        <div class="panel-body source-list">
+          <div class="source-row"><div><a href="https://man7.org/linux/man-pages/man5/crontab.5.html" target="_blank" rel="noopener">Linux crontab manual</a><span>Five fields, steps, ranges, names, DOM/DOW matching, DST caveats.</span></div><span>Official manual</span></div>
+          <div class="source-row"><div><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule" target="_blank" rel="noopener">GitHub Actions schedule</a><span>Five-field syntax, default branch behavior, 5-minute minimum and delay warnings.</span></div><span>GitHub Docs</span></div>
+          <div class="source-row"><div><a href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/" target="_blank" rel="noopener">Kubernetes CronJob</a><span>Schedule syntax, timeZone field, concurrency policies and approximate job creation.</span></div><span>Kubernetes Docs</span></div>
+          <div class="source-row"><div><a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html" target="_blank" rel="noopener">AWS EventBridge cron</a><span>Six required fields, ? rules, rate expressions and UTC examples.</span></div><span>AWS Docs</span></div>
+        </div>
+      </div>
+    </aside>
   </div>
-</div>
-
+</main>
 
 <afro-related-tools category="developer" current="cron-builder"></afro-related-tools>
 
-<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
-  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Cron Expression Builder: How It Works</h2>
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The AfroTools Cron Builder takes the guesswork out of writing cron expressions. Instead of memorising the five-field cron syntax, use the visual dropdown interface to select your desired schedule — minute, hour, day of month, month, and day of week. The tool instantly generates the correct cron expression and displays a human-readable description so you can verify the schedule at a glance. It also shows the next five run times so you can confirm the expression triggers exactly when you expect. Common presets are included for frequently used schedules: every minute, every five minutes, hourly, daily at midnight, weekly on Monday, and monthly on the first. This tool is essential for developers and system administrators who work with cron jobs on Linux servers, CI/CD pipelines, cloud schedulers like AWS CloudWatch or Google Cloud Scheduler, and task automation platforms. Copy the generated expression with one click and paste it directly into your crontab, GitHub Actions workflow, or configuration file.</p>
-  </div>
-  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Frequently Asked Questions</h3>
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What is a cron expression?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">A cron expression is a string of five fields (minute, hour, day of month, month, day of week) that defines a recurring schedule. It is used by Unix-like operating systems, cloud platforms, and CI/CD tools to automate tasks.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Does this support six-field or seven-field cron syntax?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">This builder uses the standard five-field cron format (minute, hour, day of month, month, day of week), which is compatible with the vast majority of cron implementations including crontab, AWS, and GitHub Actions.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">How do I use the generated expression?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Click the copy button to copy the expression to your clipboard, then paste it into your crontab file, CI/CD configuration, cloud scheduler, or any tool that accepts cron expressions.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What do the next run times show?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">The next five run times show the exact dates and times your cron expression will trigger next. This helps you verify the schedule is correct before deploying it to production.</p>
-    </details>
-    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
-      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">What are the common presets?</summary>
-      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Presets include every minute, every 5 minutes, every 15 minutes, hourly, daily at midnight, weekly on Monday, and monthly on the first day. Click any preset to instantly populate the fields and see the expression.</p>
-    </details>
-  </div>
+<section class="faq">
+  <details>
+    <summary>Why does AWS EventBridge output look different?</summary>
+    <p>EventBridge scheduled rules use six fields wrapped in cron(...), including a year field. It also requires a question mark in either day-of-month or day-of-week when the other field is constrained. This builder converts simple five-field schedules and flags ambiguous cases.</p>
+  </details>
+  <details>
+    <summary>Are the next run times exact?</summary>
+    <p>They are a browser-side preview based on the selected timezone and common cron semantics. Always verify in the target scheduler before production, especially around daylight saving changes, missed runs and platform-specific retry behavior.</p>
+  </details>
+  <details>
+    <summary>What is the biggest cron mistake?</summary>
+    <p>The most common mistake is assuming every platform uses the same timezone and day matching rules. GitHub, Kubernetes, Linux cron and EventBridge all have their own deployment details.</p>
+  </details>
 </section>
 
 <afro-footer></afro-footer>
 
 <script>
-  const minute = document.getElementById('minute');
-  const hour = document.getElementById('hour');
-  const day = document.getElementById('day');
-  const month = document.getElementById('month');
-  const dow = document.getElementById('dow');
-  const cronOutput = document.getElementById('cronOutput');
-  const cronDesc = document.getElementById('cronDesc');
-  const nextRuns = document.getElementById('runsList');
-  const copyBtn = document.getElementById('copyBtn');
-  const presetBtns = document.querySelectorAll('.preset-btn');
-
-  const inputs = [minute, hour, day, month, dow];
-
-  function updateCron() {
-    const cron = [minute.value, hour.value, day.value, month.value, dow.value].join(' ');
-    cronOutput.textContent = cron;
-    describeCron(cron);
-    calculateNextRuns(cron);
+(function(){
+  var storeKey = 'afrotools.cronBuilder.history.v1';
+  var weekdayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var weekdayShort = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  var monthShort = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var monthMap = monthShort.reduce(function(map, name, index){ map[name] = index + 1; return map; }, {});
+  var dowMap = weekdayShort.reduce(function(map, name, index){ map[name] = index; return map; }, {});
+  var macros = {
+    '@yearly':'0 0 1 1 *',
+    '@annually':'0 0 1 1 *',
+    '@monthly':'0 0 1 * *',
+    '@weekly':'0 0 * * 0',
+    '@daily':'0 0 * * *',
+    '@midnight':'0 0 * * *',
+    '@hourly':'0 * * * *'
+  };
+  var labels = [
+    { key:'minute', label:'Minute', range:'0-59' },
+    { key:'hour', label:'Hour', range:'0-23' },
+    { key:'dom', label:'Day', range:'1-31' },
+    { key:'month', label:'Month', range:'1-12 or JAN-DEC' },
+    { key:'dow', label:'Weekday', range:'0-7 or SUN-SAT' }
+  ];
+  var fields = {
+    minute: document.getElementById('minuteField'),
+    hour: document.getElementById('hourField'),
+    dom: document.getElementById('dayField'),
+    month: document.getElementById('monthField'),
+    dow: document.getElementById('dowField')
+  };
+  var cronInput = document.getElementById('cronInput');
+  var platformSelect = document.getElementById('platformSelect');
+  var timezoneSelect = document.getElementById('timezoneSelect');
+  var syncing = false;
+  function esc(value){
+    return String(value).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
   }
-
-  function describeCron(cron) {
-    const parts = cron.split(' ');
-    const [m, h, d, mo, dow_val] = parts;
-
-    let desc = '';
-
-    if (m === '*' && h === '*') {
-      desc = 'Every minute';
-    } else if (m.includes('/')) {
-      const interval = parseInt(m.split('/')[1]);
-      if (h === '*') {
-        desc = `Every ${interval} minutes`;
-      } else {
-        desc = `Every ${interval} minutes, every hour`;
-      }
-    } else if (h === '*') {
-      desc = `Every hour at minute ${m}`;
-    } else if (h === '0' && m === '0') {
-      if (d !== '*' && d !== '1') {
-        desc = `Daily at midnight on day ${d}`;
-      } else if (dow_val !== '*') {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const dayNames = [];
-        if (dow_val.includes(',')) {
-          dow_val.split(',').forEach(dv => {
-            if (!isNaN(dv)) dayNames.push(days[parseInt(dv)]);
-          });
-          desc = `${dayNames.join(', ')} at midnight`;
-        } else if (!isNaN(dow_val)) {
-          desc = `${days[parseInt(dow_val)]} at midnight`;
-        } else {
-          desc = 'Daily at midnight';
-        }
-      } else if (mo !== '*') {
-        desc = `Daily at midnight in month ${mo}`;
-      } else {
-        desc = 'Daily at midnight';
-      }
+  function selectedZone(){
+    return timezoneSelect.value === 'local' ? Intl.DateTimeFormat().resolvedOptions().timeZone : timezoneSelect.value;
+  }
+  function normalizeCron(raw){
+    var value = String(raw || '').trim().replace(/\s+/g, ' ');
+    var macro = macros[value.toLowerCase()];
+    return { raw:value, expression:macro || value, macro:macro ? value.toLowerCase() : '' };
+  }
+  function fieldIsWildcard(field){
+    return field === '*' || field === '?';
+  }
+  function namedValue(token, names, isDow){
+    var clean = String(token).trim().toUpperCase();
+    if (names && Object.prototype.hasOwnProperty.call(names, clean)) return names[clean];
+    if (!/^\d+$/.test(clean)) return NaN;
+    var num = Number(clean);
+    if (isDow && num === 7) return 0;
+    return num;
+  }
+  function parsePart(part, min, max, names, isDow){
+    var errors = [];
+    var values = [];
+    var step = 1;
+    var base = part;
+    if (part.indexOf('/') !== -1) {
+      var stepParts = part.split('/');
+      base = stepParts[0] || '*';
+      step = Number(stepParts[1]);
+      if (!Number.isInteger(step) || step < 1) errors.push('Invalid step "' + part + '".');
+    }
+    var start;
+    var end;
+    if (base === '*' || base === '?') {
+      start = min;
+      end = max;
+    } else if (base.indexOf('-') !== -1) {
+      var range = base.split('-');
+      start = namedValue(range[0], names, isDow);
+      end = namedValue(range[1], names, isDow);
     } else {
-      const hour_padded = String(h).padStart(2, '0');
-      const min_padded = String(m).padStart(2, '0');
-      desc = `At ${hour_padded}:${min_padded}`;
-
-      if (dow_val !== '*' && dow_val !== '0-6') {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        if (!isNaN(dow_val)) {
-          desc += ` on ${days[parseInt(dow_val)]}`;
-        }
-      }
-      if (d !== '*') {
-        desc += ` on day ${d}`;
+      start = namedValue(base, names, isDow);
+      end = part.indexOf('/') !== -1 ? max : start;
+    }
+    if (!Number.isInteger(start) || !Number.isInteger(end)) errors.push('Invalid value "' + part + '".');
+    if (start < min || start > max || end < min || end > max) errors.push('Value "' + part + '" is outside ' + min + '-' + max + '.');
+    if (!errors.length) {
+      if (start <= end) {
+        for (var i = start; i <= end; i += step) values.push(i);
+      } else if (isDow) {
+        for (var a = start; a <= max; a += step) values.push(a);
+        for (var b = min; b <= end; b += step) values.push(b);
+      } else {
+        errors.push('Range "' + part + '" must go low to high.');
       }
     }
-
-    cronDesc.textContent = desc;
+    return { values:values, errors:errors };
   }
-
-  function calculateNextRuns(cron) {
-    const parts = cron.split(' ');
-    const [cron_m, cron_h, cron_d, cron_mo, cron_dow] = parts;
-
-    const nextRunsList = [];
-    let current = new Date();
-    // Search up to 525600 minutes (1 year) to find 5 matching runs
-    for (let i = 0; i < 525600 && nextRunsList.length < 5; i++) {
-      current = new Date(current.getTime() + 60000);
-
-      const cm = current.getMinutes();
-      const ch = current.getHours();
-      const cd = current.getDate();
-      const cmon = current.getMonth() + 1;
-      const cdow = current.getDay();
-
-      let matches = true;
-
-      if (cron_m !== '*' && !matchesCronField(cm, cron_m)) matches = false;
-      if (cron_h !== '*' && !matchesCronField(ch, cron_h)) matches = false;
-      if (cron_d !== '*' && !matchesCronField(cd, cron_d)) matches = false;
-      if (cron_mo !== '*' && !matchesCronField(cmon, cron_mo)) matches = false;
-      if (cron_dow !== '*' && !matchesCronField(cdow, cron_dow)) matches = false;
-
-      if (matches) {
-        nextRunsList.push(current.toLocaleString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        }));
-      }
-    }
-
-    nextRuns.innerHTML = nextRunsList.map((run, i) => `
-      <div class="runs-item">${i + 1}. ${run}</div>
-    `).join('');
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    document.getElementById('tzNote').innerHTML = 'Times shown in your local timezone: <strong>' + tz + '</strong>.<br>Note: Cron expressions are typically evaluated in UTC or your server\u2019s configured timezone, which may differ from your local time.';
+  function parseField(field, min, max, names, isDow){
+    var original = String(field || '').trim().toUpperCase();
+    var errors = [];
+    if (!original) return { original:field, wildcard:false, values:new Set(), errors:['Empty field.'] };
+    if (fieldIsWildcard(original)) return { original:original, wildcard:true, values:new Set(), errors:[] };
+    if (/[\?LW#]/.test(original)) errors.push('This preview supports common five-field cron only. Platform snippets may still show special syntax notes.');
+    var set = new Set();
+    original.split(',').forEach(function(part){
+      var parsed = parsePart(part.trim(), min, max, names, isDow);
+      parsed.values.forEach(function(value){ set.add(value); });
+      parsed.errors.forEach(function(error){ errors.push(error); });
+    });
+    return { original:original, wildcard:false, values:set, errors:errors };
   }
-
-  function matchesCronField(value, field) {
-    if (field === '*') return true;
-    if (field.includes(',')) {
-      return field.split(',').some(f => matchesCronField(value, f.trim()));
+  function parseCron(raw){
+    var normalized = normalizeCron(raw);
+    var parts = normalized.expression.split(' ');
+    var errors = [];
+    if (parts.length !== 5) {
+      errors.push('Use exactly five fields: minute hour day month weekday.');
+      parts = ['*','*','*','*','*'];
     }
-    if (field.includes('/')) {
-      const [range, step] = field.split('/');
-      const stepNum = parseInt(step);
-      if (range === '*') return value % stepNum === 0;
-      if (range.includes('-')) {
-        const [start, end] = range.split('-').map(Number);
-        for (let v = start; v <= end; v += stepNum) {
-          if (v === value) return true;
-        }
-        return false;
-      }
-      // e.g. "5/10" means starting at 5, every 10
-      const start = parseInt(range);
-      return value >= start && (value - start) % stepNum === 0;
-    }
-    if (field.includes('-')) {
-      const [start, end] = field.split('-').map(Number);
-      return value >= start && value <= end;
-    }
-    return parseInt(field) === value;
+    var parsed = {
+      normalized: normalized,
+      parts: parts,
+      minute: parseField(parts[0], 0, 59, null, false),
+      hour: parseField(parts[1], 0, 23, null, false),
+      dom: parseField(parts[2], 1, 31, null, false),
+      month: parseField(parts[3], 1, 12, monthMap, false),
+      dow: parseField(parts[4], 0, 6, dowMap, true),
+      errors: errors
+    };
+    labels.forEach(function(item){
+      parsed[item.key].errors.forEach(function(error){ parsed.errors.push(item.label + ': ' + error); });
+    });
+    return parsed;
   }
-
-  inputs.forEach(input => {
-    input.addEventListener('input', updateCron);
+  function matchesField(parsed, value){
+    return parsed.wildcard || parsed.values.has(value);
+  }
+  function matchesDay(parsed, dom, dow){
+    var domRestricted = !parsed.dom.wildcard;
+    var dowRestricted = !parsed.dow.wildcard;
+    var domMatch = matchesField(parsed.dom, dom);
+    var dowMatch = matchesField(parsed.dow, dow);
+    if (domRestricted && dowRestricted) return domMatch || dowMatch;
+    return domMatch && dowMatch;
+  }
+  var formatterCache = {};
+  function partsFor(date, zone){
+    var key = zone;
+    if (!formatterCache[key]) {
+      formatterCache[key] = new Intl.DateTimeFormat('en-US', {
+        timeZone: zone,
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        weekday: 'short',
+        hourCycle: 'h23'
+      });
+    }
+    var out = {};
+    formatterCache[key].formatToParts(date).forEach(function(part){
+      if (part.type !== 'literal') out[part.type] = part.value;
+    });
+    return {
+      minute: Number(out.minute),
+      hour: Number(out.hour),
+      day: Number(out.day),
+      month: Number(out.month),
+      dow: dowMap[String(out.weekday).toUpperCase()]
+    };
+  }
+  function formatInZone(date, zone){
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: zone,
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23'
+    }).format(date);
+  }
+  function getNextRuns(parsed, zone){
+    if (parsed.errors.length) return [];
+    var runs = [];
+    var cursor = new Date(Date.now() + 60000);
+    cursor.setSeconds(0, 0);
+    var maxMinutes = 366 * 24 * 60 * 3;
+    for (var i = 0; i < maxMinutes && runs.length < 8; i++) {
+      var p = partsFor(cursor, zone);
+      if (matchesField(parsed.minute, p.minute) && matchesField(parsed.hour, p.hour) && matchesField(parsed.month, p.month) && matchesDay(parsed, p.day, p.dow)) {
+        runs.push(new Date(cursor.getTime()));
+      }
+      cursor = new Date(cursor.getTime() + 60000);
+    }
+    return runs;
+  }
+  function readableField(field, label, names){
+    if (field.wildcard) return 'any ' + label.toLowerCase();
+    var values = Array.from(field.values).sort(function(a,b){ return a - b; });
+    if (!values.length) return field.original;
+    if (names) {
+      values = values.map(function(value){ return names[value] || value; });
+    }
+    return values.length > 8 ? field.original : values.join(', ');
+  }
+  function describe(parsed){
+    if (parsed.errors.length) return 'Fix the highlighted cron syntax before deploying this schedule.';
+    var p = parsed.parts;
+    if (p.join(' ') === '* * * * *') return 'Runs every minute.';
+    if (/^\*\/\d+$/.test(p[0]) && p[1] === '*' && p[2] === '*' && p[3] === '*' && p[4] === '*') return 'Runs every ' + p[0].split('/')[1] + ' minutes.';
+    if (p[0] === '0' && p[1] === '*' && p[2] === '*' && p[3] === '*' && p[4] === '*') return 'Runs at the top of every hour.';
+    var time = (p[1] === '*' ? 'every hour' : String(p[1]).padStart(2, '0')) + ':' + (p[0] === '*' ? 'every minute' : String(p[0]).padStart(2, '0'));
+    var pieces = ['Runs at ' + time];
+    if (p[4] !== '*') pieces.push('on ' + readableField(parsed.dow, 'weekday', weekdayNames));
+    if (p[2] !== '*') pieces.push('on day ' + p[2]);
+    if (p[3] !== '*') pieces.push('in ' + readableField(parsed.month, 'month', monthShort));
+    return pieces.join(' ') + '.';
+  }
+  function eventBridgeDow(value){
+    return String(value).toUpperCase().replace(/\b7\b/g, 'SUN').replace(/\b0\b/g, 'SUN').replace(/\b1\b/g, 'MON').replace(/\b2\b/g, 'TUE').replace(/\b3\b/g, 'WED').replace(/\b4\b/g, 'THU').replace(/\b5\b/g, 'FRI').replace(/\b6\b/g, 'SAT');
+  }
+  function toEventBridge(parsed){
+    var p = parsed.parts.slice();
+    var warnings = [];
+    var domRestricted = p[2] !== '*';
+    var dowRestricted = p[4] !== '*';
+    if (domRestricted && dowRestricted) {
+      warnings.push('EventBridge cannot restrict day-of-month and day-of-week together. The snippet keeps day-of-month and sets weekday to ?.');
+      p[4] = '?';
+    } else if (dowRestricted) {
+      p[2] = '?';
+    } else {
+      p[4] = '?';
+    }
+    p[4] = eventBridgeDow(p[4]);
+    return { expression:'cron(' + p.concat('*').join(' ') + ')', warnings:warnings };
+  }
+  function buildSnippet(parsed, zone){
+    var cron = parsed.normalized.expression;
+    var platform = platformSelect.value;
+    var command = '/usr/local/bin/run-afrotools-job';
+    if (platform === 'github') {
+      return 'name: Scheduled job\n\non:\n  schedule:\n    - cron: ' + JSON.stringify(cron) + (zone ? '\n      timezone: ' + JSON.stringify(zone) : '') + '\n  workflow_dispatch:\n\njobs:\n  run:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Run scheduled task\n        run: npm run scheduled-task';
+    }
+    if (platform === 'kubernetes') {
+      return 'apiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: afrotools-scheduled-job\nspec:\n  schedule: ' + JSON.stringify(cron) + '\n  timeZone: ' + JSON.stringify(zone) + '\n  concurrencyPolicy: Forbid\n  startingDeadlineSeconds: 600\n  successfulJobsHistoryLimit: 3\n  failedJobsHistoryLimit: 1\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          restartPolicy: OnFailure\n          containers:\n            - name: job\n              image: ghcr.io/your-org/your-job:latest\n              command: [\"/bin/sh\", \"-lc\", \"npm run scheduled-task\"]';
+    }
+    if (platform === 'eventbridge') {
+      var event = toEventBridge(parsed);
+      return 'aws events put-rule \\\n  --name afrotools-scheduled-job \\\n  --schedule-expression ' + JSON.stringify(event.expression) + '\n\n# Pair the rule with an EventBridge target and permissions.\n# EventBridge examples are UTC unless you use EventBridge Scheduler timezone features.';
+    }
+    return '# Verify CRON_TZ support on your cron daemon before relying on this line.\nCRON_TZ=' + zone + '\nSHELL=/bin/bash\nPATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n\n' + cron + ' ' + command + ' >> /var/log/afrotools-job.log 2>&1';
+  }
+  function warningsFor(parsed, zone){
+    var warnings = [];
+    if (parsed.normalized.macro && platformSelect.value === 'github') warnings.push('GitHub Actions does not support @daily, @hourly or other non-standard cron macros. This page expands the macro to five fields.');
+    if (parsed.parts[0] === '*' || parsed.parts[0] === '*/1') warnings.push('This schedule can run every minute. GitHub Actions scheduled workflows have a 5-minute minimum, and many hosted schedulers throttle aggressive jobs.');
+    if (platformSelect.value === 'github' && /^0([,\-\/]|$)/.test(parsed.parts[0])) warnings.push('GitHub notes that jobs near the start of the hour can be delayed or dropped during high load. Consider minute 7, 17, 37 or 47.');
+    if (parsed.parts[2] !== '*' && parsed.parts[4] !== '*') warnings.push('Linux cron runs when either day-of-month or day-of-week matches if both fields are restricted. Split into two schedules if you intended AND behavior.');
+    if (zone !== 'UTC' && /^(0|1|2|3)$/.test(parsed.parts[1])) warnings.push('Early-morning local schedules can be affected by daylight saving time in zones that observe DST.');
+    if (platformSelect.value === 'kubernetes') warnings.push('Kubernetes CronJobs can create zero or more than one Job in edge cases. Make the job idempotent and choose a concurrencyPolicy intentionally.');
+    if (platformSelect.value === 'eventbridge') {
+      toEventBridge(parsed).warnings.forEach(function(warning){ warnings.push(warning); });
+      warnings.push('EventBridge scheduled rules use six required fields. This tool converts common five-field cron, but advanced L, W and # syntax should be checked in AWS.');
+    }
+    return warnings;
+  }
+  function renderMessages(parsed, warnings){
+    var box = document.getElementById('messagesOutput');
+    var html = [];
+    parsed.errors.forEach(function(error){ html.push('<div class="message bad">' + esc(error) + '</div>'); });
+    warnings.forEach(function(warning){ html.push('<div class="message warn">' + esc(warning) + '</div>'); });
+    if (!html.length) html.push('<div class="message good">No obvious syntax or platform warnings for this schedule.</div>');
+    box.innerHTML = html.join('');
+  }
+  function renderBreakdown(parsed){
+    document.getElementById('breakdownOutput').innerHTML = labels.map(function(item, index){
+      return '<div class="part"><b>' + item.label + '</b><code>' + esc(parsed.parts[index] || '') + '</code><div class="mini">' + item.range + '</div></div>';
+    }).join('');
+  }
+  function renderRuns(parsed, zone){
+    var runs = getNextRuns(parsed, zone);
+    document.getElementById('timezoneNote').textContent = 'Schedule evaluated in ' + zone + '. UTC shown for deployment checks.';
+    if (!runs.length) {
+      document.getElementById('runsOutput').innerHTML = '<div class="message warn">No run found in the preview window. Check rare dates, impossible days like February 31, or unsupported syntax.</div>';
+      return;
+    }
+    document.getElementById('runsOutput').innerHTML = runs.map(function(run, index){
+      return '<div class="run"><div class="run-num">' + (index + 1) + '</div><div><div class="run-time">' + esc(formatInZone(run, zone)) + '</div><div class="run-alt">' + esc(formatInZone(run, 'UTC')) + ' UTC</div></div></div>';
+    }).join('');
+  }
+  function renderHistory(){
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch(_) {}
+    if (!list.length) {
+      document.getElementById('historyOutput').innerHTML = '<div class="message">No saved schedules yet.</div>';
+      return;
+    }
+    document.getElementById('historyOutput').innerHTML = list.slice(0, 8).map(function(item){
+      return '<button type="button" class="message" data-load-cron="' + esc(item.cron) + '" data-load-platform="' + esc(item.platform) + '" data-load-zone="' + esc(item.zone) + '"><strong>' + esc(item.cron) + '</strong><br><span class="mini">' + esc(item.platform) + ' in ' + esc(item.zone) + '</span></button>';
+    }).join('');
+  }
+  function copyText(text, button){
+    navigator.clipboard.writeText(text).then(function(){
+      var original = button.textContent;
+      button.textContent = 'Copied';
+      setTimeout(function(){ button.textContent = original; }, 1200);
+    });
+  }
+  function syncFieldsFromCron(){
+    if (syncing) return;
+    var normalized = normalizeCron(cronInput.value);
+    var parts = normalized.expression.split(' ');
+    if (parts.length !== 5) return;
+    syncing = true;
+    fields.minute.value = parts[0];
+    fields.hour.value = parts[1];
+    fields.dom.value = parts[2];
+    fields.month.value = parts[3];
+    fields.dow.value = parts[4];
+    syncing = false;
+  }
+  function syncCronFromFields(){
+    if (syncing) return;
+    syncing = true;
+    cronInput.value = [fields.minute.value, fields.hour.value, fields.dom.value, fields.month.value, fields.dow.value].map(function(value){ return value.trim() || '*'; }).join(' ');
+    syncing = false;
+  }
+  function render(){
+    var zone = selectedZone();
+    var parsed = parseCron(cronInput.value);
+    var expression = parsed.normalized.expression;
+    var snippet = buildSnippet(parsed, zone);
+    var warnings = warningsFor(parsed, zone);
+    document.getElementById('expressionOutput').textContent = expression;
+    document.getElementById('descriptionOutput').textContent = describe(parsed);
+    document.getElementById('snippetOutput').textContent = snippet;
+    document.getElementById('statusLine').innerHTML = parsed.errors.length ? '<span class="pill bad">Needs syntax fix</span>' : '<span class="pill good">Valid five-field cron</span><span class="pill">' + esc(platformSelect.options[platformSelect.selectedIndex].text) + '</span>';
+    renderBreakdown(parsed);
+    renderRuns(parsed, zone);
+    renderMessages(parsed, warnings);
+    renderHistory();
+  }
+  cronInput.addEventListener('input', function(){ syncFieldsFromCron(); render(); });
+  Object.keys(fields).forEach(function(key){
+    fields[key].addEventListener('input', function(){ syncCronFromFields(); render(); });
   });
-
-  presetBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const cronStr = btn.dataset.cron;
-      const [m, h, d, mo, dw] = cronStr.split(' ');
-      minute.value = m;
-      hour.value = h;
-      day.value = d;
-      month.value = mo;
-      dow.value = dw;
-      updateCron();
+  platformSelect.addEventListener('change', render);
+  timezoneSelect.addEventListener('change', render);
+  document.querySelectorAll('.preset').forEach(function(button){
+    button.addEventListener('click', function(){
+      cronInput.value = button.getAttribute('data-cron');
+      syncFieldsFromCron();
+      render();
     });
   });
-
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(cronOutput.textContent);
-    copyBtn.textContent = '✓ Copied!';
-    setTimeout(() => {
-      copyBtn.textContent = '📋 Copy Expression';
-    }, 2000);
+  document.getElementById('copyExpression').addEventListener('click', function(){ copyText(document.getElementById('expressionOutput').textContent, this); });
+  document.getElementById('copySnippet').addEventListener('click', function(){ copyText(document.getElementById('snippetOutput').textContent, this); });
+  document.getElementById('saveSchedule').addEventListener('click', function(){
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch(_) {}
+    list.unshift({ cron:normalizeCron(cronInput.value).expression, platform:platformSelect.value, zone:selectedZone(), at:new Date().toISOString() });
+    localStorage.setItem(storeKey, JSON.stringify(list.slice(0, 20)));
+    renderHistory();
   });
-
-  updateCron();
+  document.getElementById('clearHistory').addEventListener('click', function(){
+    localStorage.removeItem(storeKey);
+    renderHistory();
+  });
+  document.getElementById('historyOutput').addEventListener('click', function(event){
+    var button = event.target.closest('button[data-load-cron]');
+    if (!button) return;
+    cronInput.value = button.getAttribute('data-load-cron');
+    platformSelect.value = button.getAttribute('data-load-platform') || 'linux';
+    var zone = button.getAttribute('data-load-zone') || 'local';
+    timezoneSelect.value = Array.from(timezoneSelect.options).some(function(option){ return option.value === zone; }) ? zone : 'local';
+    syncFieldsFromCron();
+    render();
+  });
+  syncFieldsFromCron();
+  render();
+})();
 </script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Cron Builder" tool-slug="cron-builder"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

@@ -23,10 +23,29 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=2a04b1e0">
 <link rel="stylesheet" href="account-system.css?v=20260424">
+<style>
+  .ap-planner-section{padding:48px 20px;background:#fff;border-top:1px solid var(--color-border,#e2e8f0)}
+  .ap-planner-card{max-width:1100px;margin:0 auto;border:1.5px solid var(--color-border,#e2e8f0);border-radius:8px;background:linear-gradient(180deg,#fff 0%,#fffaf0 100%);padding:24px;box-shadow:0 12px 30px rgba(15,23,42,0.04)}
+  .ap-planner-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px}
+  .ap-planner-head .ap-section-title,.ap-planner-head .ap-section-sub{text-align:left;margin-left:0;margin-right:0}
+  .ap-planner-head .ap-section-sub{margin-bottom:0}
+  .ap-planner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+  .ap-planner-result{border-top:1px solid rgba(226,232,240,0.9);padding-top:16px}
+  .ap-planner-result p{font-size:0.84rem;line-height:1.6;color:var(--color-text-muted,#64748b);margin:8px 0 0}
+  .ap-planner-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .ap-planner-metrics div{background:#fff;border:1px solid var(--color-border,#e2e8f0);border-radius:8px;padding:12px}
+  .ap-planner-metrics span{display:block;font-size:max(0.66rem,11px);font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-muted,#64748b);margin-bottom:4px}
+  .ap-planner-metrics strong{font-size:1.02rem;color:var(--color-text,#0f172a)}
+  .ap-planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  @media (max-width:900px){.ap-planner-grid{grid-template-columns:repeat(2,1fr)}.ap-planner-metrics{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.ap-planner-card{padding:18px}.ap-planner-head{flex-direction:column}.ap-planner-grid,.ap-planner-metrics{grid-template-columns:1fr}.ap-planner-actions .ap-cta{width:100%}}
+</style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroPoints — Crowdsourced Data Rewards","description":"Earn money by contributing real-world African market data. Prices, rates, salaries — earn points, cash out via mobile money.","url":"https://afrotools.com/tools/afropoints/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afropoints.webp"}</script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afropoints/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afropoints/">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afropoints.webp">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -89,6 +108,57 @@
     </div>
     <div class="ap-account-body" id="accountCockpitBody">
       <div class="ap-state-note">Loading AfroPoints account state...</div>
+    </div>
+  </div>
+</section>
+
+<section class="ap-planner-section" id="earningsPlanner">
+  <div class="ap-section-inner">
+    <div class="ap-planner-card">
+      <div class="ap-planner-head">
+        <div>
+          <div class="ap-account-kicker">Earnings planner</div>
+          <h2 class="ap-section-title">Plan Your Path To Cashout</h2>
+          <p class="ap-section-sub">Estimate how many high-quality reports you need, then choose a repeatable weekly route.</p>
+        </div>
+        <a class="ap-cta ap-cta--sm ap-cta--ghost" href="good-submission-examples.html">Quality examples</a>
+      </div>
+      <div class="ap-planner-grid">
+        <label class="ap-field">
+          <span class="ap-label">Current points</span>
+          <input class="ap-input" id="apPlanCurrent" type="number" min="0" step="1" value="0">
+        </label>
+        <label class="ap-field">
+          <span class="ap-label">Goal</span>
+          <select class="ap-select" id="apPlanGoal">
+            <option value="2000">Cashout - 2,000 pts</option>
+            <option value="500">Trusted rank - 500 pts</option>
+            <option value="100">Contributor rank - 100 pts</option>
+            <option value="custom">Custom target</option>
+          </select>
+        </label>
+        <label class="ap-field" id="apPlanCustomWrap" style="display:none">
+          <span class="ap-label">Custom target</span>
+          <input class="ap-input" id="apPlanCustom" type="number" min="1" step="1" value="2000">
+        </label>
+        <label class="ap-field">
+          <span class="ap-label">Report type</span>
+          <select class="ap-select" id="apPlanCategory"></select>
+        </label>
+        <label class="ap-field">
+          <span class="ap-label">Reports per week</span>
+          <input class="ap-input" id="apPlanWeekly" type="number" min="1" max="140" step="1" value="8">
+        </label>
+        <label class="ap-field">
+          <span class="ap-label">Proof habit</span>
+          <select class="ap-select" id="apPlanProof">
+            <option value="repeat">Repeat route + receipt/photo</option>
+            <option value="photo">Photo or receipt when possible</option>
+            <option value="basic">Typed observation only</option>
+          </select>
+        </label>
+      </div>
+      <div class="ap-planner-result" id="apPlanResult" aria-live="polite"></div>
     </div>
   </div>
 </section>
@@ -421,6 +491,94 @@
     ];
     return Math.round((checks.filter(Boolean).length / checks.length) * 100);
   }
+  function copyText(text, button, original) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        if (button) {
+          button.textContent = 'Copied';
+          setTimeout(function () { button.textContent = original; }, 1300);
+        }
+      });
+    } else {
+      window.prompt('Copy this plan', text);
+    }
+  }
+  function initEarningsPlanner() {
+    var categorySelect = $('apPlanCategory');
+    var result = $('apPlanResult');
+    if (!categorySelect || !result) return;
+    var currentInput = $('apPlanCurrent');
+    var goalSelect = $('apPlanGoal');
+    var customInput = $('apPlanCustom');
+    var customWrap = $('apPlanCustomWrap');
+    var weeklyInput = $('apPlanWeekly');
+    var proofSelect = $('apPlanProof');
+    var planText = '';
+
+    categorySelect.innerHTML = AP.CATEGORIES.map(function (cat) {
+      return '<option value="' + esc(cat.id) + '">' + esc(cat.label) + ' - ' + cat.points + ' pts</option>';
+    }).join('');
+
+    function proofMultiplier() {
+      var value = proofSelect ? proofSelect.value : 'repeat';
+      if (value === 'repeat') return 1.2;
+      if (value === 'photo') return 1.1;
+      return 1;
+    }
+    function proofNote() {
+      var value = proofSelect ? proofSelect.value : 'repeat';
+      if (value === 'repeat') return 'Best for trust: repeat the same route, market, or provider and attach proof when available.';
+      if (value === 'photo') return 'Good quality: attach a receipt, menu, meter, shelf photo, or screenshot when it is safe and allowed.';
+      return 'Basic reports can still help, but weak proof may move records into review instead of fast confirmation.';
+    }
+    function renderPlan() {
+      var current = Math.max(0, Number(currentInput && currentInput.value ? currentInput.value : 0));
+      var target = goalSelect && goalSelect.value === 'custom' ? Math.max(1, Number(customInput && customInput.value ? customInput.value : 2000)) : Math.max(1, Number(goalSelect && goalSelect.value ? goalSelect.value : 2000));
+      var weekly = Math.max(1, Number(weeklyInput && weeklyInput.value ? weeklyInput.value : 1));
+      var cat = AP.getCategoryById(categorySelect.value) || AP.CATEGORIES[0];
+      var perReport = Math.max(1, Math.round(cat.points * proofMultiplier()));
+      var needed = Math.max(0, target - current);
+      var reportsNeeded = needed ? Math.ceil(needed / perReport) : 0;
+      var weeks = reportsNeeded ? Math.ceil(reportsNeeded / weekly) : 0;
+      var dailyPace = Math.ceil(weekly / 7);
+      var limitNote = dailyPace > AP.DAILY_LIMIT ? 'This pace is above the daily limit. Reduce weekly target or spread reports across days.' : 'This pace fits the daily submission limit.';
+      var focus = cat.consensus > 1 ? cat.consensus + ' nearby confirmations usually strengthen this data type.' : 'This data type can be useful from a single strong report, but proof still matters.';
+
+      planText = 'AfroPoints plan\n' +
+        'Goal: ' + AP.formatPoints(target) + ' pts\n' +
+        'Current: ' + AP.formatPoints(current) + ' pts\n' +
+        'Report type: ' + cat.label + '\n' +
+        'Estimated points per strong report: ' + perReport + '\n' +
+        'Reports needed: ' + reportsNeeded + '\n' +
+        'Weekly pace: ' + weekly + ' reports for about ' + weeks + ' week(s)\n' +
+        'Quality habit: ' + proofNote();
+
+      result.innerHTML =
+        '<div class="ap-planner-metrics">' +
+          '<div><span>Needed</span><strong>' + AP.formatPoints(needed) + ' pts</strong></div>' +
+          '<div><span>Reports</span><strong>' + reportsNeeded + '</strong></div>' +
+          '<div><span>Timeline</span><strong>' + weeks + ' week' + (weeks === 1 ? '' : 's') + '</strong></div>' +
+          '<div><span>Daily pace</span><strong>' + dailyPace + '/day</strong></div>' +
+        '</div>' +
+        '<p><strong>' + esc(cat.label) + ':</strong> ' + esc(focus) + '</p>' +
+        '<p>' + esc(proofNote()) + '</p>' +
+        '<p>' + esc(limitNote) + '</p>' +
+        '<div class="ap-planner-actions"><a class="ap-cta ap-cta--sm" href="contribute.html?cat=' + encodeURIComponent(cat.id) + '">Submit ' + esc(cat.label) + '</a><button class="ap-cta ap-cta--sm ap-cta--ghost" type="button" id="apPlanCopy">Copy plan</button></div>';
+      var copyBtn = $('apPlanCopy');
+      if (copyBtn) copyBtn.addEventListener('click', function () { copyText(planText, copyBtn, 'Copy plan'); });
+    }
+    [currentInput, goalSelect, customInput, categorySelect, weeklyInput, proofSelect].forEach(function (el) {
+      if (el) el.addEventListener('input', renderPlan);
+      if (el) el.addEventListener('change', renderPlan);
+    });
+    if (goalSelect) {
+      goalSelect.addEventListener('change', function () {
+        if (customWrap) customWrap.style.display = goalSelect.value === 'custom' ? '' : 'none';
+        renderPlan();
+      });
+    }
+    renderPlan();
+  }
   function renderCockpitSignedOut() {
     var body = $('accountCockpitBody');
     if (!body) return;
@@ -526,6 +684,7 @@
       showcase.appendChild(link);
     });
   }
+  initEarningsPlanner();
 
   // Load badges (public, no auth needed)
   AP.getBadges().then(function (badges) {

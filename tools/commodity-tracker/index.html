@@ -8,7 +8,7 @@
 <meta name="description" content="Track Africa's top traded commodities. See import and export volumes for Nigeria, Kenya, South Africa, Ghana, Egypt and more. Trade balance, commodity prices, and top trading partners.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<link rel="stylesheet" href="/assets/css/tool-landing.css?v=66f6f0c0">
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=5ea7102b">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 /* ── Tool Shell, Hero & Navigation ──────────────── */
@@ -89,6 +89,7 @@
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<link rel="stylesheet" href="/assets/css/trade-toolkit.css">
 </head>
 <body>
 <afro-navbar active="trade"></afro-navbar>
@@ -264,7 +265,24 @@ function renderExportImport() {
 
 function renderBalance(summary, balance) {
   if (balanceChart) { balanceChart.destroy(); balanceChart = null; }
-  var ctx = document.getElementById('balanceChart').getContext('2d');
+  var canvas = document.getElementById('balanceChart');
+  var fallback = document.getElementById('balanceFallback');
+  if (!fallback) {
+    fallback = document.createElement('div');
+    fallback.id = 'balanceFallback';
+    fallback.className = 'obs-box';
+    fallback.style.marginTop = '10px';
+    canvas.parentNode.appendChild(fallback);
+  }
+  if (typeof Chart === 'undefined') {
+    canvas.style.display = 'none';
+    fallback.style.display = 'block';
+    fallback.innerHTML = '<strong>Exports:</strong> ' + fmtB(summary.totalExports) + ' &nbsp; <strong>Imports:</strong> ' + fmtB(summary.totalImports) + ' &nbsp; <strong>Balance:</strong> ' + fmtB(balance);
+    return;
+  }
+  canvas.style.display = 'block';
+  fallback.style.display = 'none';
+  var ctx = canvas.getContext('2d');
   balanceChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -359,5 +377,6 @@ buildPriceTable();
 selectCountry('NG');
 overlayLivePrices();
 </script>
+<script src="/assets/js/trade-toolkit.js" defer></script>
 </body>
 </html>

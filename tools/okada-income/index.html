@@ -19,7 +19,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f"><link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script><script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#007AFF 50%,#0063D1 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -49,6 +49,14 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .breakdown-table tr.expense{color:#dc2626}
 .profit-bar{height:24px;border-radius:6px;margin-top:14px;overflow:hidden;display:flex;font-size:.68rem;font-weight:700;color:#fff}
 .profit-bar .income-fill{background:#007AFF}.profit-bar .expense-fill{background:#dc2626}
+.rider-plan{margin-top:16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;padding:16px}
+.rider-plan h3{font-size:.9rem;margin:0 0 10px;color:#0A1628}
+.rider-plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.rider-plan-box{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px}
+.rider-plan-box span{display:block;font-size:.64rem;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.rider-plan-box strong{font-size:.88rem;color:#0f172a}
+.rider-plan p{font-size:.78rem;line-height:1.65;color:#475569;margin:6px 0}
+.rider-copy{border:1.5px solid #007AFF;background:#fff;color:#0063D1;border-radius:7px;padding:8px 11px;font-weight:800;font-family:inherit;cursor:pointer}
 .sidebar .info-card{background:#E8F2FF;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
 .info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0A1628;margin-bottom:8px}
 .info-card p,.info-card li{font-size:.78rem;color:#0A1628;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
@@ -56,6 +64,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}.row3{grid-template-columns:1fr}}
+@media(max-width:820px){.rider-plan-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.rider-plan-grid{grid-template-columns:1fr}}
 .xfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .xfun-card{padding:16px;border-radius:10px;text-align:center}
 .xfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
@@ -83,6 +93,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/okada-income/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/okada-income/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mapato-ya-okada-boda/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
@@ -115,6 +126,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -163,6 +176,15 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <span style="font-size:.68rem;color:#94a3b8">0% if not on app platform</span></div>
 <div><label>Monthly Loan/Savings Payment</label><input type="number" id="loan" value="0" min="0" step="500"></div>
 </div>
+<div class="row3 field">
+<div><label>Rainy / Slow Days per Month</label><input type="number" id="slowDays" value="3" min="0" max="20"></div>
+<div><label>Daily Parking / Permit Fees</label><input type="number" id="parking" value="0" min="0" step="50"></div>
+<div><label>Profit to Save (%)</label><input type="number" id="savePct" value="20" min="0" max="80"></div>
+</div>
+<div class="row field">
+<div><label>Bike Ownership Goal</label><input type="number" id="bikeGoal" value="700000" min="0" step="5000"></div>
+<div><label>Emergency Reserve Target</label><input type="number" id="reserveGoal" value="100000" min="0" step="5000"></div>
+</div>
 <button class="btn btn-primary" onclick="calculate()">Calculate Income</button>
 </div></div>
 
@@ -172,6 +194,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="result-grid" id="resultGrid"></div>
 <div class="profit-bar" id="profitBar"></div>
 <table class="breakdown-table" id="breakdownTable"></table>
+<div id="riderPlan"></div>
 <div id="xfunSection"></div>
 </div></div>
 </div>
@@ -242,11 +265,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <script>
 const DEFAULTS={
-  ng:{trips:15,fare:300,fuel:1500,owner:2000,maint:500,ins:0,phone:2000,cur:'₦'},
-  ke:{trips:12,fare:150,fuel:400,owner:500,maint:200,ins:500,phone:1000,cur:'KSh '},
-  ug:{trips:12,fare:3000,fuel:8000,owner:10000,maint:5000,ins:0,phone:5000,cur:'UGX '},
-  gh:{trips:10,fare:8,fuel:40,owner:30,maint:15,ins:0,phone:50,cur:'GH₵'}
+  ng:{trips:15,fare:300,fuel:1500,owner:2000,maint:500,ins:0,phone:2000,cur:'₦',bike:700000,reserve:100000},
+  ke:{trips:12,fare:150,fuel:400,owner:500,maint:200,ins:500,phone:1000,cur:'KSh ',bike:180000,reserve:25000},
+  ug:{trips:12,fare:3000,fuel:8000,owner:10000,maint:5000,ins:0,phone:5000,cur:'UGX ',bike:5500000,reserve:500000},
+  gh:{trips:10,fare:8,fuel:40,owner:30,maint:15,ins:0,phone:50,cur:'GH₵',bike:18000,reserve:2500}
 };
+var lastRiderPlan='';
 
 function updateDefaults(){
   const c=document.getElementById('country').value;
@@ -259,6 +283,8 @@ function updateDefaults(){
   document.getElementById('maintenance').value=d.maint;
   document.getElementById('insurance').value=d.ins;
   document.getElementById('phone').value=d.phone;
+  document.getElementById('bikeGoal').value=d.bike;
+  document.getElementById('reserveGoal').value=d.reserve;
 }
 
 function calculate(){
@@ -274,8 +300,13 @@ function calculate(){
   const monthlyPhone=+document.getElementById('phone').value;
   const commPct=(+document.getElementById('commission').value)/100;
   const monthlyLoan=+document.getElementById('loan').value;
+  const slowDays=+document.getElementById('slowDays').value||0;
+  const parking=+document.getElementById('parking').value||0;
+  const savePct=(+document.getElementById('savePct').value||0)/100;
+  const bikeGoal=+document.getElementById('bikeGoal').value||0;
+  const reserveGoal=+document.getElementById('reserveGoal').value||0;
 
-  const daysPerMonth=daysPerWeek*4.33;
+  const daysPerMonth=Math.max(1,daysPerWeek*4.33-slowDays);
 
   // Daily
   const dailyGross=trips*fare;
@@ -291,12 +322,19 @@ function calculate(){
   const monthlyOwner=ownerPay*daysPerMonth;
   const monthlyMaint=weeklyMaint*4.33;
   const monthlyComm=dailyCommission*daysPerMonth;
-  const totalExpenses=monthlyFuel+monthlyOwner+monthlyMaint+monthlyIns+monthlyPhone+monthlyComm+monthlyLoan;
+  const monthlyParking=parking*daysPerMonth;
+  const totalExpenses=monthlyFuel+monthlyOwner+monthlyMaint+monthlyIns+monthlyPhone+monthlyComm+monthlyLoan+monthlyParking;
 
   const monthlyProfit=monthlyGross-totalExpenses;
   const weeklyProfit=monthlyProfit/4.33;
   const dailyProfit=monthlyProfit/daysPerMonth;
   const profitMargin=monthlyGross>0?(monthlyProfit/monthlyGross*100):0;
+  const dailyFixedCost=fuel+ownerPay+parking+(weeklyMaint/Math.max(1,daysPerWeek))+(monthlyIns/daysPerMonth)+(monthlyPhone/daysPerMonth)+(monthlyLoan/daysPerMonth);
+  const perTripNet=Math.max(1,fare*(1-commPct));
+  const breakEvenTrips=Math.ceil(dailyFixedCost/perTripNet);
+  const monthlySavings=Math.max(0,monthlyProfit*savePct);
+  const bikeMonths=monthlySavings>0&&bikeGoal>0?bikeGoal/monthlySavings:0;
+  const reserveMonths=monthlySavings>0&&reserveGoal>0?reserveGoal/monthlySavings:0;
 
   const fmt=n=>cur+Math.round(n).toLocaleString('en');
 
@@ -322,6 +360,7 @@ function calculate(){
     ['Fuel',fuel,fuel*daysPerWeek,monthlyFuel],
     ['Platform Commission',dailyCommission,dailyCommission*daysPerWeek,monthlyComm],
     ['Owner Payment',ownerPay,ownerPay*daysPerWeek,monthlyOwner],
+    ['Parking / Permits',parking,parking*daysPerWeek,monthlyParking],
     ['Maintenance',weeklyMaint/daysPerWeek,weeklyMaint,monthlyMaint],
     ['Insurance',monthlyIns/daysPerMonth,monthlyIns/4.33,monthlyIns],
     ['Phone/Data',monthlyPhone/daysPerMonth,monthlyPhone/4.33,monthlyPhone],
@@ -334,6 +373,31 @@ function calculate(){
   tbl+=`<tr style="font-size:.72rem;color:#64748b"><td>Annual Projection</td><td colspan="3" style="text-align:right;font-weight:700;color:#007AFF">${fmt(monthlyProfit*12)}/year</td></tr>`;
 
   document.getElementById('breakdownTable').innerHTML=tbl;
+
+  var ownershipPlan=document.getElementById('ownership').value==='hire'
+    ? 'Because this bike is hired, your biggest improvement lever is replacing daily owner payment with a cooperative loan, SACCO, or structured hire-purchase deal.'
+    : 'Because you own the bike, keep a real repair reserve so one breakdown does not wipe out the month.';
+  var saveLine=monthlySavings>0
+    ? 'Saving '+Math.round(savePct*100)+'% of profit gives '+fmt(monthlySavings)+' per month. Bike goal runway: '+(bikeMonths?bikeMonths.toFixed(1)+' months':'n/a')+'. Emergency reserve runway: '+(reserveMonths?reserveMonths.toFixed(1)+' months':'n/a')+'.'
+    : 'Set a realistic savings percentage so the tool can show ownership and emergency reserve runway.';
+  lastRiderPlan=[
+    'OKADA / BODA BODA OPERATING PLAN',
+    'Daily net profit: '+fmt(dailyProfit),
+    'Monthly net profit: '+fmt(monthlyProfit),
+    'Break-even trips per working day: '+breakEvenTrips,
+    'Slow days allowed this month: '+slowDays,
+    saveLine,
+    ownershipPlan
+  ].join('\n');
+  document.getElementById('riderPlan').innerHTML=
+    '<div class="rider-plan"><h3>Rider Operating Plan</h3>'+
+    '<div class="rider-plan-grid">'+
+    '<div class="rider-plan-box"><span>Break-even</span><strong>'+breakEvenTrips+' trips/day</strong></div>'+
+    '<div class="rider-plan-box"><span>Work days used</span><strong>'+daysPerMonth.toFixed(1)+'/mo</strong></div>'+
+    '<div class="rider-plan-box"><span>Monthly saving</span><strong>'+fmt(monthlySavings)+'</strong></div>'+
+    '<div class="rider-plan-box"><span>Bike goal</span><strong>'+(bikeMonths?bikeMonths.toFixed(1)+' mo':'n/a')+'</strong></div>'+
+    '</div><p>'+ownershipPlan+'</p><p>'+saveLine+'</p>'+
+    '<button class="rider-copy" type="button" onclick="copyRiderPlan()">Copy rider plan</button></div>';
 
   // Fun comparisons based on daily profit
   var eggTrays=Math.round(dailyProfit/3500*10)/10;
@@ -353,6 +417,10 @@ function calculate(){
 
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+function copyRiderPlan(){
+  if(lastRiderPlan&&navigator.clipboard)navigator.clipboard.writeText(lastRiderPlan);
 }
 </script>
 

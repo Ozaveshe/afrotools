@@ -210,7 +210,15 @@
     var options = [];
     for (var i = 0; i < isps.length; i++) {
       var isp = isps[i];
-      var ispSpeed = parseInt(isp.speed) || 0;
+      var speeds = isp.speeds || [];
+      var prices = isp.prices || [];
+      var chosenIdx = 0;
+      for (var p = 0; p < speeds.length; p++) {
+        if ((parseInt(speeds[p], 10) || 0) >= recBW) { chosenIdx = p; break; }
+        chosenIdx = p;
+      }
+      var ispSpeed = parseInt(isp.speed || speeds[chosenIdx], 10) || 0;
+      var monthly = isp.monthly || prices[chosenIdx] || prices[0] || 0;
       var type = (isp.type || 'fiber').toLowerCase();
       var typeClass = type.indexOf('fiber') >= 0 ? 'fiber' : (type.indexOf('lte') >= 0 ? 'lte' : 'mobile');
       options.push({
@@ -218,7 +226,7 @@
         type: isp.type || 'Fiber',
         typeClass: typeClass,
         speed: ispSpeed || speed,
-        monthly: isp.monthly || 0,
+        monthly: monthly,
         setup: isp.setup || 0,
         dataCap: isp.dataCap || 'Unlimited'
       });
@@ -306,5 +314,6 @@
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script src="/assets/js/telecom-toolkit.js" defer></script>
 </body>
 </html>

@@ -701,6 +701,15 @@ async function buildManifest(options) {
       .order("step_number", { ascending: true })
   );
 
+  const recipeMedia = await fetchAllRows(() =>
+    supabase
+      .from("recipe_media")
+      .select("*")
+      .order("recipe_id", { ascending: true })
+      .order("sort_order", { ascending: true })
+      .order("id", { ascending: true })
+  );
+
   const reviews = await fetchAllRows(() =>
     supabase
       .from("recipe_reviews")
@@ -718,6 +727,7 @@ async function buildManifest(options) {
 
   const ingredientMap = groupRowsBy(ingredients, "recipe_id");
   const stepMap = groupRowsBy(steps, "recipe_id");
+  const mediaMap = groupRowsBy(recipeMedia, "recipe_id");
   const reviewMap = groupRowsBy(reviews, "recipe_id");
 
   const attachedRecipes = recipes.map((recipe) => {
@@ -729,6 +739,7 @@ async function buildManifest(options) {
       ...recipe,
       ingredients: ingredientMap.get(recipe.id) || [],
       steps: stepMap.get(recipe.id) || [],
+      media: mediaMap.get(recipe.id) || [],
       reviews: reviewRows,
       avg_rating: reviewCount ? Math.round((ratingTotal / reviewCount) * 10) / 10 : null,
       review_count: reviewCount
@@ -800,6 +811,7 @@ async function buildManifest(options) {
       collection_count: collections.length,
       featured_collection_count: collections.filter((collection) => collection.is_featured).length,
       collection_membership_count: collectionMembershipCount,
+      recipe_media_count: recipeMedia.length,
       image_url_coverage: recipesWithCollections.filter((recipe) => normalizeText(recipe.image_url)).length,
       story_coverage: recipesWithCollections.filter((recipe) => normalizeText(recipe.story)).length
     },

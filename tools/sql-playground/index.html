@@ -2,586 +2,732 @@
 <html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SQL Playground — Practice SQL Queries Online | AfroTools</title>
-<meta name="description" content="Free browser-based SQL playground. Write and run SQL queries against sample databases. Perfect for learning SQL, practicing for interviews, and testing queries.">
-<meta name="keywords" content="SQL playground, practice SQL online, SQL editor, learn SQL, SQL tutorial, database query, SELECT, JOIN, GROUP BY">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Playground for African Business Data | AfroTools</title>
+<meta name="description" content="Practice SQL in your browser with African commerce, school, clinic and mobile money datasets. Run SQLite queries, inspect schemas, import CSV, export results, view query plans and complete guided challenges.">
 <link rel="canonical" href="https://afrotools.com/tools/sql-playground/">
-<meta property="og:title" content="SQL Playground — Practice SQL Online">
-<meta property="og:description" content="Write and run SQL queries in your browser. Sample databases included. No setup required.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="SQL Playground for African Business Data | AfroTools">
+<meta property="og:description" content="Run SQLite in-browser with African datasets, guided challenges, query plans, CSV import and result export.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/sql-playground/">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<style>
-:root{--sky:var(--color-primary,#007AFF);--sky-light:#E8F2FF;--sky-dark:#0063D1}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
-
-.hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 50%,#007AFF 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 80%,rgba(77,163,255,.2),transparent 50%),radial-gradient(circle at 80% 20%,rgba(0,99,209,.15),transparent 50%);pointer-events:none}
-.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem;position:relative}
-.hero h1 em{color:#4DA3FF;font-style:normal}
-.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto;position:relative}
-.hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;position:relative}
-.hero-badges span{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:4px;font-size:.7rem;font-weight:700;letter-spacing:.04em;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9)}
-.stats-bar{display:flex;justify-content:center;gap:28px;margin-top:18px;position:relative}
-.stats-bar .stat{text-align:center}
-.stats-bar .stat-n{font-size:1.4rem;font-weight:800;color:#4DA3FF}
-.stats-bar .stat-l{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:2px}
-.loading-overlay{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#fff;font-weight:600}
-.loading-overlay.hidden{display:none}
-.spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#4DA3FF;border-radius:50%;animation:spin .6s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.container{max-width:1100px;margin:0 auto;padding:1.5rem}
-
-.playground-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
-@media(max-width:768px){.playground-grid{grid-template-columns:1fr}}
-
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0A1628}
-
-.editor-wrap{position:relative}
-#sql-editor{width:100%;min-height:200px;font-family:'Fira Code','Courier New',monospace;font-size:.9rem;line-height:1.5;padding:1rem;border:1.5px solid #cbd5e1;border-radius:7px;background:#0f172a;color:#e2e8f0;resize:vertical;tab-size:2}
-#sql-editor:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
-#sql-editor::placeholder{color:#64748b}
-
-.toolbar{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap;align-items:center}
-.btn{padding:.6rem 1.2rem;border:none;border-radius:7px;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
-.btn-primary{background:var(--sky);color:#fff}
-.btn-primary:hover{background:var(--sky-dark)}
-.btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
-.btn-secondary:hover{background:#e2e8f0}
-.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
-.btn-danger:hover{background:#fee2e2}
-
-.sample-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-.sample-btn{padding:.35rem .75rem;border:1px solid rgba(0,122,255,.2);background:#E8F2FF;color:#0063D1;border-radius:5px;font-size:.8rem;cursor:pointer;font-weight:500;transition:all .2s}
-.sample-btn:hover,.sample-btn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
-
-.db-selector{margin-bottom:1rem}
-.db-selector label{font-weight:600;font-size:.85rem;color:#475569;display:block;margin-bottom:.4rem}
-.db-selector select{width:100%;padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.9rem;background:#f8fafc;font-family:inherit}
-.db-selector select:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
-
-.results-area{margin-top:1rem;overflow-x:auto}
-.results-table{width:100%;border-collapse:collapse;font-size:.85rem}
-.results-table th{background:#E8F2FF;color:#0A1628;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid rgba(0,122,255,.2);white-space:nowrap}
-.results-table td{padding:.5rem .75rem;border-bottom:1px solid #f1f5f9;white-space:nowrap}
-.results-table tr:hover td{background:#f8fafc}
-
-.result-meta{display:flex;gap:1.5rem;margin-top:.75rem;font-size:.8rem;color:#64748b}
-.result-meta span{display:flex;align-items:center;gap:.3rem}
-
-.error-msg{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:.75rem 1rem;border-radius:7px;font-size:.85rem;margin-top:.75rem}
-.success-msg{background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;padding:.75rem 1rem;border-radius:7px;font-size:.85rem;margin-top:.75rem}
-
-.schema-section{margin-top:1.5rem}
-.schema-table{margin-bottom:1rem}
-.schema-table h3{font-size:.95rem;font-weight:700;color:#0063D1;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;cursor:pointer}
-.schema-table h3::before{content:'';display:inline-block;width:10px;height:10px;background:var(--sky);border-radius:2px}
-.schema-cols{font-size:.8rem;color:#475569;padding:.5rem .75rem;background:#f8fafc;border-radius:5px;border:1px solid #e2e8f0}
-.schema-cols code{font-family:'Fira Code','Courier New',monospace;color:#0063D1;font-size:.78rem}
-
-.history-item{padding:.5rem .75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;margin-bottom:.4rem;font-size:.8rem;font-family:monospace;cursor:pointer;transition:all .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.history-item:hover{background:#E8F2FF;border-color:rgba(0,122,255,.2)}
-
-.full-width{grid-column:1/-1}
-
-.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.seo-section h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
-.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
-.seo-section p{color:#475569;margin-bottom:1rem}
-
-.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.faq h2{font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
-.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
-.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
-.faq details[open] summary::after{content:'-'}
-.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
-</style>
-<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sql-playground/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sql-playground/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SQL Playground — Practice SQL Online">
-<meta name="twitter:description" content="Write and run SQL queries in your browser. Sample databases included. No setup required.">
+<meta name="twitter:title" content="SQL Playground for African Business Data | AfroTools">
+<meta name="twitter:description" content="Practice SQL with African datasets, guided challenges, query plans and CSV import.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sql-playground/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sql-playground/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SQL Playground for African Business Data",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/tools/sql-playground/",
+  "description": "Browser-based SQLite playground with African datasets, guided challenges, query plans, CSV import and result export.",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "SQL Playground",
-      "item": "https://afrotools.com/tools/sql-playground/"
-    }
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://afrotools.com/developer-tools/"},
+    {"@type": "ListItem", "position": 3, "name": "SQL Playground", "item": "https://afrotools.com/tools/sql-playground/"}
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<style>
+:root{
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#dbe4ee;
+  --soft:#f8fafc;
+  --panel:#fff;
+  --blue:#2563eb;
+  --green:#047857;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;color:var(--ink)}
+.hero{background:linear-gradient(135deg,#08111f 0%,#12365c 48%,#2563eb 100%);color:#fff}
+.hero-inner{max-width:1280px;margin:0 auto;padding:42px 22px 34px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.62);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:800;letter-spacing:0;max-width:920px}
+.hero-copy{font-size:1.02rem;line-height:1.72;max-width:800px;color:rgba(255,255,255,.82);margin:0}
+.hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.hero-stat{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:8px;padding:14px}
+.hero-stat strong{display:block;font-size:1.45rem;color:#fff}
+.hero-stat span{font-size:.78rem;color:rgba(255,255,255,.68)}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 22px 70px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start}
+.left,.right{display:grid;gap:16px}
+.right{position:sticky;top:78px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfdff}
+.card-title{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#334155}
+.card-body{padding:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
+select,input,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+textarea{min-height:260px;resize:vertical;line-height:1.55;font-family:var(--mono);background:#0b1220;color:#dbeafe;border-color:#1e293b;tab-size:2}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;font:800 .8rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{border-color:#94a3b8;background:#f8fafc}
+.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.btn.primary:hover{background:#1d4ed8}
+.btn.small{font-size:.74rem;padding:7px 10px}
+.btn.warn{color:var(--amber)}
+.hint{font-size:.78rem;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;font-size:.78rem;font-weight:800;color:#334155;cursor:pointer}
+.pill.active,.pill:hover{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+.result-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.meta{border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 9px;font-size:.76rem;color:#475569;font-weight:700}
+.results{overflow:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+.results table{border-collapse:collapse;width:100%;font-size:.82rem}
+.results th{background:#eff6ff;color:#1e293b;text-align:left;padding:9px;border-bottom:1px solid #bfdbfe;white-space:nowrap}
+.results td{padding:8px 9px;border-bottom:1px solid #eef2f7;white-space:nowrap}
+.results tr:hover td{background:#f8fafc}
+.empty{color:#94a3b8;text-align:center;padding:42px 16px;font-size:.9rem}
+.alert{border-left:4px solid #94a3b8;background:#f8fafc;border-radius:7px;padding:10px 11px;font-size:.82rem;line-height:1.45}
+.alert.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
+.alert.warn{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
+.alert.error{border-left-color:var(--red);background:#fef2f2;color:#7f1d1d}
+.schema-list,.history-list,.challenge-list{display:grid;gap:8px}
+.schema-table{border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+.schema-table summary{padding:10px 12px;font-size:.84rem;font-weight:800;cursor:pointer;color:#1e293b}
+.schema-table code{display:block;padding:0 12px 12px;font:500 .76rem var(--mono);color:#1d4ed8;white-space:pre-wrap}
+.history-item,.challenge-item{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 11px;cursor:pointer}
+.history-item:hover,.challenge-item:hover{background:#f8fafc;border-color:#bfdbfe}
+.history-item code{font:500 .74rem var(--mono);color:#334155;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.challenge-item strong{display:block;font-size:.84rem}
+.challenge-item span{display:block;margin-top:3px;font-size:.74rem;color:#64748b;line-height:1.4}
+.challenge-item.active{border-color:#2563eb;background:#eff6ff}
+.score-card{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.score{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}
+.score strong{display:block;font-size:1.4rem}
+.score span{font-size:.74rem;color:var(--muted);font-weight:700}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
+.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer}
+.tab.active{background:#fff;color:#2563eb}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:360px}
+.loading{position:fixed;inset:0;background:rgba(15,23,42,.78);color:#fff;z-index:50;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-weight:800}
+.loading.hidden{display:none}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:60}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1040px){
+  .layout{grid-template-columns:1fr}
+  .right{position:static}
+  .hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .hero-inner,.wrap{padding-left:16px;padding-right:16px}
+  .grid,.score-card,.hero-grid{grid-template-columns:1fr}
+  textarea{min-height:220px}
+}
+</style>
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<section class="hero">
-<h1>SQL <em>Playground</em></h1>
-<p>Write and run SQL queries in your browser. Practice with sample African business databases — no setup required.</p>
-<div class="hero-badges">
-  <span>WebAssembly Powered</span>
-  <span>3 Sample Databases</span>
-  <span>100% Client-Side</span>
-</div>
-<div class="stats-bar">
-  <div class="stat"><div class="stat-n">12</div><div class="stat-l">Tables</div></div>
-  <div class="stat"><div class="stat-n">100+</div><div class="stat-l">Sample Rows</div></div>
-  <div class="stat"><div class="stat-n">15</div><div class="stat-l">Preset Queries</div></div>
-</div>
-</section>
-<div id="loadingOverlay" class="loading-overlay">
-  <div class="spinner"></div>
-  <div>Loading SQL engine...</div>
-</div>
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Developer Tools</a><span>/</span>
+      <span>SQL Playground</span>
+    </nav>
+    <h1>Practice SQL on data that feels like the work.</h1>
+    <p class="hero-copy">Run SQLite in your browser with African commerce, school, clinic and mobile money datasets. Inspect schemas, complete challenges, import CSV, explain query plans and export results without a server.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong id="hero-datasets">4</strong><span>sample datasets</span></div>
+      <div class="hero-stat"><strong id="hero-challenges">0</strong><span>guided challenges</span></div>
+      <div class="hero-stat"><strong id="hero-runs">0</strong><span>queries this session</span></div>
+      <div class="hero-stat"><strong>SQLite</strong><span>via sql.js WebAssembly</span></div>
+    </div>
+  </div>
+</header>
 
-<div class="container">
-<div class="playground-grid">
-<!-- Editor Panel -->
-<div class="card">
-<h2>Query Editor</h2>
-<div class="db-selector">
-<label for="dbSelect">Sample Database</label>
-<select id="dbSelect">
-<option value="ecommerce">African E-Commerce Store</option>
-<option value="school">School Management System</option>
-<option value="hospital">Hospital Records</option>
-</select>
-</div>
-<div class="sample-btns" id="sampleBtns"></div>
-<div class="editor-wrap">
-<textarea id="sql-editor" placeholder="-- Write your SQL query here&#10;SELECT * FROM products LIMIT 10;" spellcheck="false">SELECT * FROM products LIMIT 10;</textarea>
-</div>
-<div class="toolbar">
-<button class="btn btn-primary" onclick="runQuery()">Run Query (Ctrl+Enter)</button>
-<button class="btn btn-secondary" onclick="formatQuery()">Format</button>
-<button class="btn btn-danger" onclick="clearEditor()">Clear</button>
-</div>
-</div>
+<div class="loading" id="loading"><div class="spinner"></div><div>Loading SQLite engine...</div></div>
 
-<!-- Results Panel -->
-<div class="card">
-<h2>Results</h2>
-<div id="resultsArea">
-<p style="color:#94a3b8;font-size:.9rem;text-align:center;padding:3rem 1rem">Run a query to see results here</p>
-</div>
-</div>
+<main class="wrap">
+  <section class="layout">
+    <div class="left">
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Workspace</span>
+          <div class="toolbar">
+            <button class="btn small" id="import-csv" type="button">Import CSV</button>
+            <button class="btn small" id="export-db" type="button">Export SQLite DB</button>
+            <input id="csv-file" type="file" accept=".csv,text/csv" hidden>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="grid">
+            <div><label for="dataset">Dataset</label><select id="dataset"></select></div>
+            <div><label for="difficulty">Challenge filter</label><select id="difficulty"><option value="">All levels</option><option>Beginner</option><option>Intermediate</option><option>Interview</option></select></div>
+            <div><label for="dialect">Dialect note</label><input id="dialect" value="SQLite, close to standard SQL" readonly></div>
+          </div>
+          <p class="hint">Your queries run locally inside the browser. Imported CSV tables last for this session unless you export the SQLite database.</p>
+        </div>
+      </section>
 
-<!-- Schema Browser -->
-<div class="card">
-<h2>Database Schema</h2>
-<div id="schemaArea" class="schema-section"></div>
-</div>
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">SQL Editor</span>
+          <div class="toolbar">
+            <button class="btn primary" id="run-query" type="button">Run Ctrl+Enter</button>
+            <button class="btn" id="explain-query" type="button">Explain plan</button>
+            <button class="btn" id="format-query" type="button">Format</button>
+            <button class="btn warn" id="clear-query" type="button">Clear</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="pill-row" id="samples"></div>
+          <textarea id="editor" spellcheck="false">SELECT * FROM products LIMIT 10;</textarea>
+          <div id="lint" style="margin-top:10px"></div>
+        </div>
+      </section>
 
-<!-- Query History -->
-<div class="card">
-<h2>Query History</h2>
-<div id="historyArea">
-<p style="color:#94a3b8;font-size:.85rem">Your queries will appear here</p>
-</div>
-</div>
-</div>
-</div>
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Results</span>
+          <div class="toolbar">
+            <button class="btn small" id="copy-results" type="button">Copy results</button>
+            <button class="btn small" id="export-csv" type="button">Export CSV</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="result-meta" id="result-meta"><span class="meta">No query run yet</span></div>
+          <div class="results" id="results"><div class="empty">Run a query to see rows here.</div></div>
+        </div>
+      </section>
 
-<section class="seo-section">
-<h2>Free Browser-Based SQL Playground</h2>
-<p>Learning SQL is one of the most valuable skills for anyone working with data in Africa's growing tech ecosystem. Whether you're a computer science student in Lagos, a data analyst in Nairobi, or a developer in Johannesburg, SQL proficiency opens doors to countless opportunities in tech, finance, and business intelligence.</p>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Explain And Export</span><button class="btn small" id="copy-plan" type="button">Copy active panel</button></div>
+        <div class="tabs">
+          <button class="tab active" data-tab="plan" type="button">Query plan</button>
+          <button class="tab" data-tab="schemaSql" type="button">Schema SQL</button>
+          <button class="tab" data-tab="lesson" type="button">Lesson notes</button>
+        </div>
+        <div class="tab-panel active" id="panel-plan"><pre class="codebox" id="plan-output">Run Explain plan to inspect how SQLite will execute your query.</pre></div>
+        <div class="tab-panel" id="panel-schemaSql"><pre class="codebox" id="schema-sql-output"></pre></div>
+        <div class="tab-panel" id="panel-lesson"><pre class="codebox" id="lesson-output"></pre></div>
+      </section>
+    </div>
 
-<h3>Practice with Realistic African Datasets</h3>
-<p>Unlike generic SQL tutorials, our playground includes sample databases modelled on real African business scenarios. Practice queries against an e-commerce store with products priced in Naira, Shillings, and Rand. Explore a school management system reflecting African educational structures, or query hospital records that mirror healthcare data across the continent.</p>
+    <aside class="right">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Challenge Score</span></div>
+        <div class="card-body">
+          <div class="score-card">
+            <div class="score"><strong id="score-done">0</strong><span>passed</span></div>
+            <div class="score"><strong id="score-runs">0</strong><span>runs</span></div>
+            <div class="score"><strong id="score-last">--</strong><span>last result</span></div>
+          </div>
+          <div id="challenge-feedback" style="margin-top:12px"><div class="alert">Choose a challenge to get result-based feedback.</div></div>
+        </div>
+      </section>
 
-<h3>No Installation Required</h3>
-<p>This SQL playground runs entirely in your browser using sql.js (SQLite compiled to WebAssembly). There's nothing to download, no database server to configure, and no account to create. Simply type your query and press Ctrl+Enter to see results instantly. It's perfect for quick practice during lunch breaks, interview preparation, or classroom demonstrations.</p>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Guided Challenges</span></div>
+        <div class="card-body"><div class="challenge-list" id="challenges"></div></div>
+      </section>
 
-<h3>Key SQL Concepts You Can Practice</h3>
-<p>Start with basic SELECT statements and work your way up to complex queries. Practice JOINs to combine data across tables, GROUP BY with aggregate functions for summary reports, subqueries for nested logic, and window functions for advanced analytics. Each sample database includes enough data to produce meaningful results for all these concepts. The schema browser shows all available tables and columns so you always know what data you can query.</p>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Schema Browser</span></div>
+        <div class="card-body"><div class="schema-list" id="schema"></div></div>
+      </section>
 
-<p>SQL skills are in high demand across Africa's tech hubs. From Lagos to Cape Town, companies are hiring data professionals who can extract insights from databases. This free tool gives you unlimited practice time with instant feedback — no paid subscriptions, no signup walls. Start writing queries now and level up your database skills for your next job interview or data project.</p>
-</section>
+      <section class="card">
+        <div class="card-head"><span class="card-title">Query History</span><button class="btn small" id="clear-history" type="button">Clear</button></div>
+        <div class="card-body"><div class="history-list" id="history"></div></div>
+      </section>
+    </aside>
+  </section>
+</main>
 
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-<section class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>Is my data saved anywhere?</summary><p>No. Everything runs locally in your browser using WebAssembly. No data is sent to any server. When you refresh the page, the sample databases are recreated fresh.</p></details>
-<details><summary>What SQL dialect does this support?</summary><p>This playground uses SQLite syntax, which is very close to standard SQL. Most SELECT, INSERT, UPDATE, DELETE, JOIN, GROUP BY, and aggregate function queries work exactly as expected. Some advanced features specific to PostgreSQL or MySQL (like stored procedures) are not available.</p></details>
-<details><summary>Can I create my own tables?</summary><p>Yes! You can run CREATE TABLE, INSERT INTO, and other DDL/DML statements. Your custom tables exist for the duration of your session. Switch between sample databases to get fresh starting data at any time.</p></details>
-<details><summary>Can I use this for interview preparation?</summary><p>Absolutely. The sample queries cover common interview topics including JOINs, aggregations, subqueries, and window functions. Practice these patterns and you'll be well-prepared for SQL technical interviews at African and international tech companies.</p></details>
-<details><summary>Why African-themed databases?</summary><p>We believe learning is more effective when the data feels familiar. Our sample databases use African currencies, city names, and business contexts that reflect the environments where many of our users work and live.</p></details>
-</section>
-
-<afro-related-tools></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
+<div class="toast" id="toast"></div>
 <afro-footer></afro-footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script><script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
-
-<script src="/assets/js/components/navbar.js?v=bd86f22e" defer></script>
-<script src="/assets/js/components/footer.js?v=b612b5b2" defer></script>
-<script src="/assets/js/components/related-tools.js?v=7785bbdc" defer></script>
-<script src="/assets/js/components/newsletter-cta.js?v=e6a5a0cd" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
 <script>
-const DATABASES = {
-  ecommerce: {
-    name: 'African E-Commerce Store',
-    schema: {
-      customers: { cols: 'id INTEGER PK, name TEXT, email TEXT, city TEXT, country TEXT, joined DATE', create: `CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, email TEXT, city TEXT, country TEXT, joined DATE);` },
-      products: { cols: 'id INTEGER PK, name TEXT, category TEXT, price REAL, currency TEXT, stock INTEGER', create: `CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, category TEXT, price REAL, currency TEXT, stock INTEGER);` },
-      orders: { cols: 'id INTEGER PK, customer_id INTEGER FK, order_date DATE, total REAL, currency TEXT, status TEXT', create: `CREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, order_date DATE, total REAL, currency TEXT, status TEXT);` },
-      order_items: { cols: 'id INTEGER PK, order_id INTEGER FK, product_id INTEGER FK, quantity INTEGER, unit_price REAL', create: `CREATE TABLE order_items (id INTEGER PRIMARY KEY, order_id INTEGER, product_id INTEGER, quantity INTEGER, unit_price REAL);` }
-    },
-    seed: `
-INSERT INTO customers VALUES (1,'Amina Bello','amina@email.com','Lagos','Nigeria','2024-01-15');
-INSERT INTO customers VALUES (2,'Kwame Asante','kwame@email.com','Accra','Ghana','2024-02-20');
-INSERT INTO customers VALUES (3,'Wanjiku Mwangi','wanjiku@email.com','Nairobi','Kenya','2024-03-10');
-INSERT INTO customers VALUES (4,'Sipho Ndlovu','sipho@email.com','Johannesburg','South Africa','2024-01-08');
-INSERT INTO customers VALUES (5,'Fatima Diallo','fatima@email.com','Dakar','Senegal','2024-04-01');
-INSERT INTO customers VALUES (6,'Chidi Okafor','chidi@email.com','Abuja','Nigeria','2024-02-14');
-INSERT INTO customers VALUES (7,'Ama Mensah','ama@email.com','Kumasi','Ghana','2024-05-12');
-INSERT INTO customers VALUES (8,'James Otieno','james@email.com','Mombasa','Kenya','2024-03-25');
-INSERT INTO customers VALUES (9,'Thabo Molefe','thabo@email.com','Cape Town','South Africa','2024-06-01');
-INSERT INTO customers VALUES (10,'Ngozi Eze','ngozi@email.com','Enugu','Nigeria','2024-04-18');
-INSERT INTO products VALUES (1,'Ankara Fabric (6 yards)','Fashion',8500,'NGN',120);
-INSERT INTO products VALUES (2,'Kente Cloth Strip','Fashion',450,'GHS',80);
-INSERT INTO products VALUES (3,'Maasai Beaded Necklace','Jewelry',2500,'KES',45);
-INSERT INTO products VALUES (4,'Shea Butter (500g)','Beauty',3200,'NGN',200);
-INSERT INTO products VALUES (5,'Rooibos Tea (100g)','Food',89.99,'ZAR',150);
-INSERT INTO products VALUES (6,'African Black Soap','Beauty',1500,'NGN',300);
-INSERT INTO products VALUES (7,'Dashiki Shirt','Fashion',12000,'NGN',60);
-INSERT INTO products VALUES (8,'Moringa Powder (250g)','Health',180,'GHS',95);
-INSERT INTO products VALUES (9,'Kilim Basket (Large)','Home',3800,'KES',25);
-INSERT INTO products VALUES (10,'Biltong (500g)','Food',159.99,'ZAR',110);
-INSERT INTO products VALUES (11,'Palm Oil (1L)','Food',4500,'NGN',180);
-INSERT INTO products VALUES (12,'Cocoa Butter Cream','Beauty',120,'GHS',140);
-INSERT INTO orders VALUES (1,1,'2024-06-01',25500,'NGN','delivered');
-INSERT INTO orders VALUES (2,2,'2024-06-03',630,'GHS','delivered');
-INSERT INTO orders VALUES (3,3,'2024-06-05',6300,'KES','shipped');
-INSERT INTO orders VALUES (4,4,'2024-06-07',249.98,'ZAR','delivered');
-INSERT INTO orders VALUES (5,1,'2024-06-10',15500,'NGN','processing');
-INSERT INTO orders VALUES (6,6,'2024-06-12',8500,'NGN','delivered');
-INSERT INTO orders VALUES (7,5,'2024-06-15',8500,'NGN','shipped');
-INSERT INTO orders VALUES (8,3,'2024-06-18',3800,'KES','delivered');
-INSERT INTO orders VALUES (9,7,'2024-06-20',750,'GHS','processing');
-INSERT INTO orders VALUES (10,8,'2024-06-22',2500,'KES','shipped');
-INSERT INTO orders VALUES (11,9,'2024-06-25',319.98,'ZAR','delivered');
-INSERT INTO orders VALUES (12,10,'2024-06-28',9700,'NGN','processing');
-INSERT INTO order_items VALUES (1,1,1,2,8500);INSERT INTO order_items VALUES (2,1,6,3,1500);INSERT INTO order_items VALUES (3,1,4,1,3200);
-INSERT INTO order_items VALUES (4,2,2,1,450);INSERT INTO order_items VALUES (5,2,8,1,180);
-INSERT INTO order_items VALUES (6,3,3,2,2500);INSERT INTO order_items VALUES (7,3,9,1,3800);
-INSERT INTO order_items VALUES (8,4,5,1,89.99);INSERT INTO order_items VALUES (9,4,10,1,159.99);
-INSERT INTO order_items VALUES (10,5,7,1,12000);INSERT INTO order_items VALUES (11,5,6,1,1500);INSERT INTO order_items VALUES (12,5,11,1,4500);
-INSERT INTO order_items VALUES (13,6,1,1,8500);
-INSERT INTO order_items VALUES (14,7,7,1,12000);
-INSERT INTO order_items VALUES (15,8,9,1,3800);
-INSERT INTO order_items VALUES (16,9,2,1,450);INSERT INTO order_items VALUES (17,9,12,2,120);
-INSERT INTO order_items VALUES (18,10,3,1,2500);
-INSERT INTO order_items VALUES (19,11,5,2,89.99);INSERT INTO order_items VALUES (20,11,10,1,159.99);
-INSERT INTO order_items VALUES (21,12,4,2,3200);INSERT INTO order_items VALUES (22,12,11,1,4500);
-`
-  },
-  school: {
-    name: 'School Management System',
-    schema: {
-      students: { cols: 'id INTEGER PK, name TEXT, class TEXT, stream TEXT, gender TEXT, county TEXT', create: `CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, class TEXT, stream TEXT, gender TEXT, county TEXT);` },
-      subjects: { cols: 'id INTEGER PK, name TEXT, department TEXT, credit_hours INTEGER', create: `CREATE TABLE subjects (id INTEGER PRIMARY KEY, name TEXT, department TEXT, credit_hours INTEGER);` },
-      grades: { cols: 'id INTEGER PK, student_id INTEGER FK, subject_id INTEGER FK, term TEXT, score INTEGER, grade TEXT', create: `CREATE TABLE grades (id INTEGER PRIMARY KEY, student_id INTEGER, subject_id INTEGER, term TEXT, score INTEGER, grade TEXT);` },
-      teachers: { cols: 'id INTEGER PK, name TEXT, subject TEXT, experience_years INTEGER, qualification TEXT', create: `CREATE TABLE teachers (id INTEGER PRIMARY KEY, name TEXT, subject TEXT, experience_years INTEGER, qualification TEXT);` }
-    },
-    seed: `
-INSERT INTO students VALUES (1,'Adaeze Okoro','SS3','Science','F','Lagos');
-INSERT INTO students VALUES (2,'Kofi Mensah','SS3','Arts','M','Central');
-INSERT INTO students VALUES (3,'Faith Wambui','Form 4','Science','F','Kiambu');
-INSERT INTO students VALUES (4,'Tendai Moyo','Form 5','Commerce','M','Harare');
-INSERT INTO students VALUES (5,'Bola Adeyemi','SS2','Science','M','Oyo');
-INSERT INTO students VALUES (6,'Esi Appiah','SS3','Science','F','Ashanti');
-INSERT INTO students VALUES (7,'Peter Kamau','Form 4','Arts','M','Nakuru');
-INSERT INTO students VALUES (8,'Zainab Musa','SS2','Arts','F','Kano');
-INSERT INTO students VALUES (9,'Thandiwe Dube','Form 5','Science','F','Bulawayo');
-INSERT INTO students VALUES (10,'Emeka Nwosu','SS3','Commerce','M','Anambra');
-INSERT INTO subjects VALUES (1,'Mathematics','Science',4);INSERT INTO subjects VALUES (2,'English','Languages',3);INSERT INTO subjects VALUES (3,'Physics','Science',4);
-INSERT INTO subjects VALUES (4,'Chemistry','Science',4);INSERT INTO subjects VALUES (5,'Biology','Science',4);INSERT INTO subjects VALUES (6,'Economics','Commerce',3);
-INSERT INTO subjects VALUES (7,'History','Arts',3);INSERT INTO subjects VALUES (8,'Geography','Arts',3);
-INSERT INTO grades VALUES (1,1,1,'Term 1',85,'A');INSERT INTO grades VALUES (2,1,2,'Term 1',78,'B');INSERT INTO grades VALUES (3,1,3,'Term 1',92,'A');INSERT INTO grades VALUES (4,1,4,'Term 1',88,'A');
-INSERT INTO grades VALUES (5,2,2,'Term 1',72,'B');INSERT INTO grades VALUES (6,2,7,'Term 1',81,'A');INSERT INTO grades VALUES (7,2,8,'Term 1',67,'C');
-INSERT INTO grades VALUES (8,3,1,'Term 1',90,'A');INSERT INTO grades VALUES (9,3,3,'Term 1',76,'B');INSERT INTO grades VALUES (10,3,5,'Term 1',94,'A');
-INSERT INTO grades VALUES (11,4,6,'Term 1',69,'C');INSERT INTO grades VALUES (12,4,2,'Term 1',74,'B');INSERT INTO grades VALUES (13,4,1,'Term 1',58,'C');
-INSERT INTO grades VALUES (14,5,1,'Term 1',82,'A');INSERT INTO grades VALUES (15,5,4,'Term 1',71,'B');INSERT INTO grades VALUES (16,5,5,'Term 1',79,'B');
-INSERT INTO grades VALUES (17,6,1,'Term 1',95,'A');INSERT INTO grades VALUES (18,6,3,'Term 1',89,'A');INSERT INTO grades VALUES (19,6,4,'Term 1',91,'A');
-INSERT INTO grades VALUES (20,7,7,'Term 1',64,'C');INSERT INTO grades VALUES (21,7,8,'Term 1',73,'B');INSERT INTO grades VALUES (22,7,2,'Term 1',68,'C');
-INSERT INTO grades VALUES (23,8,2,'Term 1',82,'A');INSERT INTO grades VALUES (24,8,7,'Term 1',77,'B');INSERT INTO grades VALUES (25,8,6,'Term 1',71,'B');
-INSERT INTO grades VALUES (26,9,1,'Term 1',87,'A');INSERT INTO grades VALUES (27,9,3,'Term 1',83,'A');INSERT INTO grades VALUES (28,9,5,'Term 1',90,'A');
-INSERT INTO grades VALUES (29,10,6,'Term 1',76,'B');INSERT INTO grades VALUES (30,10,2,'Term 1',70,'B');INSERT INTO grades VALUES (31,10,1,'Term 1',65,'C');
-INSERT INTO teachers VALUES (1,'Mrs. Adebayo','Mathematics',15,'M.Ed');INSERT INTO teachers VALUES (2,'Mr. Osei','English',8,'B.Ed');INSERT INTO teachers VALUES (3,'Dr. Kimani','Physics',20,'PhD');
-INSERT INTO teachers VALUES (4,'Ms. Mutasa','Chemistry',12,'M.Sc');INSERT INTO teachers VALUES (5,'Mr. Okello','Biology',6,'B.Sc');INSERT INTO teachers VALUES (6,'Mrs. Balogun','Economics',10,'MBA');
-`
-  },
-  hospital: {
-    name: 'Hospital Records',
-    schema: {
-      patients: { cols: 'id INTEGER PK, name TEXT, age INTEGER, gender TEXT, blood_type TEXT, city TEXT', create: `CREATE TABLE patients (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, gender TEXT, blood_type TEXT, city TEXT);` },
-      doctors: { cols: 'id INTEGER PK, name TEXT, specialty TEXT, hospital TEXT, years_exp INTEGER', create: `CREATE TABLE doctors (id INTEGER PRIMARY KEY, name TEXT, specialty TEXT, hospital TEXT, years_exp INTEGER);` },
-      visits: { cols: 'id INTEGER PK, patient_id INTEGER FK, doctor_id INTEGER FK, visit_date DATE, diagnosis TEXT, cost REAL, currency TEXT', create: `CREATE TABLE visits (id INTEGER PRIMARY KEY, patient_id INTEGER, doctor_id INTEGER, visit_date DATE, diagnosis TEXT, cost REAL, currency TEXT);` },
-      prescriptions: { cols: 'id INTEGER PK, visit_id INTEGER FK, medication TEXT, dosage TEXT, days INTEGER, cost REAL', create: `CREATE TABLE prescriptions (id INTEGER PRIMARY KEY, visit_id INTEGER, medication TEXT, dosage TEXT, days INTEGER, cost REAL);` }
-    },
-    seed: `
-INSERT INTO patients VALUES (1,'Amara Diop',34,'F','O+','Dakar');INSERT INTO patients VALUES (2,'Oluwaseun Ade',28,'M','A+','Lagos');
-INSERT INTO patients VALUES (3,'Grace Achieng',45,'F','B+','Kisumu');INSERT INTO patients VALUES (4,'Mohammed Ali',52,'M','O-','Dar es Salaam');
-INSERT INTO patients VALUES (5,'Naledi Tau',29,'F','AB+','Gaborone');INSERT INTO patients VALUES (6,'Emmanuel Kojo',61,'M','A-','Accra');
-INSERT INTO patients VALUES (7,'Amina Hassan',38,'F','O+','Mombasa');INSERT INTO patients VALUES (8,'Tunde Bello',43,'M','B-','Ibadan');
-INSERT INTO patients VALUES (9,'Lindiwe Zulu',55,'F','A+','Durban');INSERT INTO patients VALUES (10,'Yaw Boateng',31,'M','O+','Kumasi');
-INSERT INTO doctors VALUES (1,'Dr. Nkemelu','General Medicine','Lagos General Hospital',18);INSERT INTO doctors VALUES (2,'Dr. Odhiambo','Pediatrics','Kenyatta National Hospital',12);
-INSERT INTO doctors VALUES (3,'Dr. Van der Merwe','Cardiology','Groote Schuur Hospital',22);INSERT INTO doctors VALUES (4,'Dr. Asare','Obstetrics','Korle Bu Teaching Hospital',15);
-INSERT INTO doctors VALUES (5,'Dr. Mwanza','Surgery','Muhimbili Hospital',10);
-INSERT INTO visits VALUES (1,1,1,'2024-06-01','Malaria',15000,'NGN');INSERT INTO visits VALUES (2,2,1,'2024-06-03','Typhoid',22000,'NGN');
-INSERT INTO visits VALUES (3,3,2,'2024-06-05','Pneumonia',8500,'KES');INSERT INTO visits VALUES (4,4,5,'2024-06-07','Appendicitis',450000,'TZS');
-INSERT INTO visits VALUES (5,5,3,'2024-06-10','Hypertension',850,'BWP');INSERT INTO visits VALUES (6,6,4,'2024-06-12','Diabetes Checkup',350,'GHS');
-INSERT INTO visits VALUES (7,7,2,'2024-06-15','Malaria',6500,'KES');INSERT INTO visits VALUES (8,8,1,'2024-06-18','Fracture',35000,'NGN');
-INSERT INTO visits VALUES (9,9,3,'2024-06-20','Heart Palpitations',2800,'ZAR');INSERT INTO visits VALUES (10,10,4,'2024-06-22','General Checkup',200,'GHS');
-INSERT INTO visits VALUES (11,2,1,'2024-07-01','Follow-up',8000,'NGN');INSERT INTO visits VALUES (12,3,2,'2024-07-05','Follow-up',3500,'KES');
-INSERT INTO prescriptions VALUES (1,1,'Artemether-Lumefantrine','80/480mg twice daily',3,4500);INSERT INTO prescriptions VALUES (2,1,'Paracetamol','1g three times daily',5,800);
-INSERT INTO prescriptions VALUES (3,2,'Ciprofloxacin','500mg twice daily',7,3200);INSERT INTO prescriptions VALUES (4,2,'ORS Sachets','1 sachet in 1L water',5,600);
-INSERT INTO prescriptions VALUES (5,3,'Amoxicillin','500mg three times daily',7,2100);INSERT INTO prescriptions VALUES (6,5,'Amlodipine','5mg once daily',30,180);
-INSERT INTO prescriptions VALUES (7,6,'Metformin','500mg twice daily',30,95);INSERT INTO prescriptions VALUES (8,7,'Artemether-Lumefantrine','80/480mg twice daily',3,1800);
-INSERT INTO prescriptions VALUES (9,8,'Ibuprofen','400mg three times daily',10,1500);INSERT INTO prescriptions VALUES (10,9,'Aspirin','75mg once daily',30,450);
-`
-  }
-};
-
-const SAMPLE_QUERIES = {
-  ecommerce: [
-    { label: 'All Products', sql: 'SELECT * FROM products ORDER BY price DESC;' },
-    { label: 'Customer Orders', sql: 'SELECT c.name, c.country, COUNT(o.id) as order_count, SUM(o.total) as total_spent\nFROM customers c\nJOIN orders o ON c.id = o.customer_id\nGROUP BY c.id\nORDER BY total_spent DESC;' },
-    { label: 'Top Products', sql: 'SELECT p.name, p.category, SUM(oi.quantity) as units_sold\nFROM products p\nJOIN order_items oi ON p.id = oi.product_id\nGROUP BY p.id\nORDER BY units_sold DESC\nLIMIT 5;' },
-    { label: 'Revenue by Country', sql: 'SELECT c.country, o.currency, COUNT(o.id) as orders, SUM(o.total) as revenue\nFROM orders o\nJOIN customers c ON o.customer_id = c.id\nGROUP BY c.country\nORDER BY revenue DESC;' },
-    { label: 'JOIN Example', sql: 'SELECT o.id as order_id, c.name as customer, p.name as product,\n       oi.quantity, oi.unit_price\nFROM order_items oi\nJOIN orders o ON oi.order_id = o.id\nJOIN customers c ON o.customer_id = c.id\nJOIN products p ON oi.product_id = p.id\nORDER BY o.id;' }
-  ],
-  school: [
-    { label: 'All Students', sql: 'SELECT * FROM students ORDER BY name;' },
-    { label: 'Top Scorers', sql: 'SELECT s.name, s.class, ROUND(AVG(g.score),1) as avg_score\nFROM students s\nJOIN grades g ON s.id = g.student_id\nGROUP BY s.id\nHAVING AVG(g.score) >= 80\nORDER BY avg_score DESC;' },
-    { label: 'Subject Averages', sql: 'SELECT sub.name as subject, sub.department,\n       ROUND(AVG(g.score),1) as avg_score,\n       MIN(g.score) as lowest, MAX(g.score) as highest\nFROM subjects sub\nJOIN grades g ON sub.id = g.subject_id\nGROUP BY sub.id\nORDER BY avg_score DESC;' },
-    { label: 'Grade Distribution', sql: 'SELECT g.grade, COUNT(*) as count,\n       ROUND(COUNT(*)*100.0/(SELECT COUNT(*) FROM grades),1) as percentage\nFROM grades g\nGROUP BY g.grade\nORDER BY g.grade;' },
-    { label: 'Gender Analysis', sql: 'SELECT s.gender, COUNT(DISTINCT s.id) as students,\n       ROUND(AVG(g.score),1) as avg_score\nFROM students s\nJOIN grades g ON s.id = g.student_id\nGROUP BY s.gender;' }
-  ],
-  hospital: [
-    { label: 'All Patients', sql: 'SELECT * FROM patients ORDER BY name;' },
-    { label: 'Visit Summary', sql: 'SELECT p.name, p.city, v.visit_date, v.diagnosis, v.cost, v.currency\nFROM visits v\nJOIN patients p ON v.patient_id = p.id\nORDER BY v.visit_date DESC;' },
-    { label: 'Doctor Workload', sql: 'SELECT d.name, d.specialty, d.hospital, COUNT(v.id) as visit_count\nFROM doctors d\nLEFT JOIN visits v ON d.id = v.doctor_id\nGROUP BY d.id\nORDER BY visit_count DESC;' },
-    { label: 'Common Diagnoses', sql: 'SELECT diagnosis, COUNT(*) as cases\nFROM visits\nGROUP BY diagnosis\nORDER BY cases DESC;' },
-    { label: 'Prescriptions', sql: 'SELECT p.name as patient, v.diagnosis, rx.medication, rx.dosage, rx.days\nFROM prescriptions rx\nJOIN visits v ON rx.visit_id = v.id\nJOIN patients p ON v.patient_id = p.id\nORDER BY p.name;' }
-  ]
-};
-
-let db = null;
-let currentDb = 'ecommerce';
-let queryHistory = [];
-
-async function initSQL() {
-  const overlay = document.getElementById('loadingOverlay');
-  try {
-    const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}` });
-    loadDatabase(currentDb, SQL);
-    if (overlay) overlay.classList.add('hidden');
-  } catch(e1) {
-    try {
-      const SQL = await initSqlJs({ locateFile: file => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${file}` });
-      loadDatabase(currentDb, SQL);
-      if (overlay) overlay.classList.add('hidden');
-    } catch(e2) {
-      if (overlay) overlay.innerHTML = '<div style="text-align:center;max-width:400px"><div style="font-size:2rem;margin-bottom:12px">Database Engine Error</div><p style="opacity:.8;margin-bottom:16px">Could not load the SQL engine. Please refresh the page or check your internet connection.</p><button onclick="location.reload()" style="padding:10px 24px;border:none;border-radius:8px;background:#007AFF;color:#fff;font-weight:700;cursor:pointer;font-size:.9rem">Retry</button></div>';
-    }
-  }
-}
-
-function loadDatabase(dbKey, SQLoverride) {
-  currentDb = dbKey;
-  const dbDef = DATABASES[dbKey];
-  const SQLclass = SQLoverride || window._SQL;
-  if (SQLoverride) window._SQL = SQLoverride;
-
-  if (db) db.close();
-  db = new (window._SQL || SQLclass).Database();
-
-  for (const [tbl, def] of Object.entries(dbDef.schema)) {
-    db.run(def.create);
-  }
-  db.run(dbDef.seed);
-
-  renderSchema(dbDef);
-  renderSampleButtons(dbKey);
-}
-
-function renderSchema(dbDef) {
-  const area = document.getElementById('schemaArea');
-  area.innerHTML = Object.entries(dbDef.schema).map(([name, def]) => `
-    <div class="schema-table">
-      <h3>${name}</h3>
-      <div class="schema-cols"><code>${def.cols}</code></div>
-    </div>
-  `).join('');
-}
-
-function renderSampleButtons(dbKey) {
-  const area = document.getElementById('sampleBtns');
-  area.innerHTML = SAMPLE_QUERIES[dbKey].map((q, i) => `
-    <button class="sample-btn" onclick="loadSample(${i})">${q.label}</button>
-  `).join('');
-}
-
-function loadSample(idx) {
-  const q = SAMPLE_QUERIES[currentDb][idx];
-  document.getElementById('sql-editor').value = q.sql;
-  document.querySelectorAll('.sample-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-}
-
-let queryCount = 0;
-
-function runQuery() {
-  const sql = document.getElementById('sql-editor').value.trim();
-  if (!sql) return;
-  if (!db) { document.getElementById('resultsArea').innerHTML = '<div class="error-msg">Database not loaded yet. Please wait or refresh.</div>'; return; }
-
-  const area = document.getElementById('resultsArea');
-  const start = performance.now();
-
-  try {
-    const results = db.exec(sql);
-    const elapsed = (performance.now() - start).toFixed(1);
-    queryCount++;
-
-    if (results.length === 0) {
-      area.innerHTML = `<div class="success-msg">Query executed successfully. No rows returned.</div>
-        <div class="result-meta"><span>Time: ${elapsed}ms</span><span>Query #${queryCount}</span></div>`;
-    } else {
-      const res = results[0];
-      const rowCount = res.values.length;
-      area.innerHTML = `
-        <div class="results-area">
-          <table class="results-table">
-            <thead><tr>${res.columns.map(c => `<th>${c}</th>`).join('')}</tr></thead>
-            <tbody>${res.values.map(row => `<tr>${row.map(v => `<td>${v === null ? '<em style="color:#94a3b8">NULL</em>' : v}</td>`).join('')}</tr>`).join('')}</tbody>
-          </table>
-        </div>
-        <div class="result-meta">
-          <span>${rowCount} row${rowCount !== 1 ? 's' : ''}</span>
-          <span>${res.columns.length} column${res.columns.length !== 1 ? 's' : ''}</span>
-          <span>${elapsed}ms</span>
-          <span>Query #${queryCount}</span>
-          <button onclick="exportCSV()" style="margin-left:auto;padding:4px 12px;border:1px solid #e2e8f0;border-radius:5px;background:#fff;color:#475569;font-size:.78rem;cursor:pointer;font-weight:600">Export CSV</button>
-        </div>`;
-      window._lastResult = res;
-    }
-
-    addToHistory(sql);
-  } catch (e) {
-    area.innerHTML = `<div class="error-msg"><strong>Error:</strong> ${e.message}</div>`;
-  }
-}
-
-function exportCSV() {
-  if (!window._lastResult) return;
-  const res = window._lastResult;
-  let csv = res.columns.join(',') + '\n';
-  res.values.forEach(row => { csv += row.map(v => v === null ? '' : '"' + String(v).replace(/"/g, '""') + '"').join(',') + '\n'; });
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'query-results.csv';
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-function addToHistory(sql) {
-  queryHistory.unshift(sql);
-  if (queryHistory.length > 20) queryHistory.pop();
-  const area = document.getElementById('historyArea');
-  area.innerHTML = queryHistory.map((q, i) => `
-    <div class="history-item" onclick="document.getElementById('sql-editor').value=queryHistory[${i}]" title="${q.replace(/"/g, '&quot;')}">${q}</div>
-  `).join('');
-}
-
-function formatQuery() {
-  const editor = document.getElementById('sql-editor');
-  let sql = editor.value;
-  const keywords = ['SELECT','FROM','WHERE','JOIN','LEFT JOIN','RIGHT JOIN','INNER JOIN','OUTER JOIN','ON','AND','OR','GROUP BY','ORDER BY','HAVING','LIMIT','INSERT INTO','VALUES','UPDATE','SET','DELETE FROM','CREATE TABLE','ALTER TABLE','DROP TABLE','UNION','UNION ALL','CASE','WHEN','THEN','ELSE','END','AS','IN','NOT','EXISTS','BETWEEN','LIKE','IS NULL','IS NOT NULL','ASC','DESC','DISTINCT','COUNT','SUM','AVG','MIN','MAX','ROUND'];
-  keywords.forEach(kw => {
-    const regex = new RegExp('\\b' + kw.replace(/\s+/g, '\\s+') + '\\b', 'gi');
-    sql = sql.replace(regex, kw);
-  });
-  editor.value = sql;
-}
-
-function clearEditor() {
-  document.getElementById('sql-editor').value = '';
-  document.getElementById('sql-editor').focus();
-}
-
-document.getElementById('dbSelect').addEventListener('change', function() {
-  loadDatabase(this.value);
-  document.getElementById('resultsArea').innerHTML = '<p style="color:#94a3b8;font-size:.9rem;text-align:center;padding:3rem 1rem">Database loaded. Run a query to see results.</p>';
-});
-
-document.getElementById('sql-editor').addEventListener('keydown', function(e) {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-    e.preventDefault();
-    runQuery();
-  }
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const start = this.selectionStart;
-    const end = this.selectionEnd;
-    this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
-    this.selectionStart = this.selectionEnd = start + 2;
-  }
-});
-
-initSQL();
-</script>
-
-<script>
-// Save/Share buttons — manual placement needed
 (function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="SQL Playground" tool-slug="sql-playground"></share-result-button>';
-  target.appendChild(div);
+  'use strict';
+
+  var HISTORY_KEY = 'afrotools.sqlPlayground.history.v2';
+  var activeTab = 'plan';
+  var SQL = null;
+  var db = null;
+  var currentDataset = 'commerce';
+  var activeChallenge = null;
+  var runs = 0;
+  var passed = {};
+  var lastResult = null;
+
+  var DATASETS = {
+    commerce: {
+      name:'African Commerce',
+      lesson:'Practice SELECT, JOIN, GROUP BY, HAVING and revenue analysis on marketplace orders across Lagos, Nairobi, Accra and Cape Town.',
+      schema:[
+        'CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, country TEXT, city TEXT, segment TEXT);',
+        'CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, category TEXT, price REAL, currency TEXT, supplier_country TEXT);',
+        'CREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, order_date TEXT, channel TEXT, total REAL, currency TEXT);',
+        'CREATE TABLE order_items (id INTEGER PRIMARY KEY, order_id INTEGER, product_id INTEGER, quantity INTEGER, unit_price REAL);'
+      ],
+      seed:[
+        "INSERT INTO customers VALUES (1,'Amina Bello','Nigeria','Lagos','Retail'),(2,'Kwame Mensah','Ghana','Accra','Wholesale'),(3,'Grace Wanjiku','Kenya','Nairobi','Retail'),(4,'Thabo Mokoena','South Africa','Cape Town','SME'),(5,'Fatou Ndiaye','Senegal','Dakar','Retail'),(6,'Esi Appiah','Ghana','Kumasi','SME');",
+        "INSERT INTO products VALUES (1,'Ankara Laptop Sleeve','Accessories',9500,'NGN','Nigeria'),(2,'Solar Power Bank','Electronics',4200,'KES','Kenya'),(3,'Shea Butter Pack','Beauty',120,'GHS','Ghana'),(4,'Beaded Sandals','Fashion',380,'ZAR','South Africa'),(5,'Kente Tote Bag','Fashion',180,'GHS','Ghana'),(6,'Mini POS Stand','Retail',14500,'NGN','Nigeria');",
+        "INSERT INTO orders VALUES (1,1,'2026-01-05','WhatsApp',28500,'NGN'),(2,2,'2026-01-07','Web',540,'GHS'),(3,3,'2026-01-09','Web',12600,'KES'),(4,4,'2026-01-12','Agent',1140,'ZAR'),(5,5,'2026-01-15','Web',360,'GHS'),(6,1,'2026-02-02','Agent',14500,'NGN'),(7,6,'2026-02-09','WhatsApp',360,'GHS'),(8,3,'2026-02-14','Web',8400,'KES');",
+        "INSERT INTO order_items VALUES (1,1,1,3,9500),(2,2,5,3,180),(3,3,2,3,4200),(4,4,4,3,380),(5,5,3,3,120),(6,6,6,1,14500),(7,7,3,3,120),(8,8,2,2,4200);"
+      ],
+      samples:[
+        {label:'Products', sql:'SELECT * FROM products ORDER BY category, name LIMIT 20;'},
+        {label:'Revenue by country', sql:'SELECT c.country, o.currency, COUNT(o.id) AS orders, SUM(o.total) AS revenue\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nGROUP BY c.country, o.currency\nORDER BY revenue DESC;'},
+        {label:'Top products', sql:'SELECT p.name, p.category, SUM(oi.quantity) AS units_sold, SUM(oi.quantity * oi.unit_price) AS gross_sales\nFROM order_items oi\nJOIN products p ON p.id = oi.product_id\nGROUP BY p.id\nORDER BY gross_sales DESC;'}
+      ],
+      challenges:[
+        {id:'commerce-revenue', level:'Beginner', title:'Revenue by country', goal:'Return country, orders and revenue for each country.', sql:'SELECT c.country, COUNT(o.id) AS orders, SUM(o.total) AS revenue\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nGROUP BY c.country\nORDER BY revenue DESC;', expect:{columns:['country','orders','revenue'], minRows:4}},
+        {id:'commerce-fashion', level:'Intermediate', title:'Fashion product sales', goal:'Find products in Fashion and total units sold.', sql:"SELECT p.name, SUM(oi.quantity) AS units_sold\nFROM products p\nJOIN order_items oi ON oi.product_id = p.id\nWHERE p.category = 'Fashion'\nGROUP BY p.id\nORDER BY units_sold DESC;", expect:{columns:['name','units_sold'], minRows:2}},
+        {id:'commerce-repeat', level:'Interview', title:'Repeat customers', goal:'Show customers with more than one order using HAVING.', sql:'SELECT c.name, COUNT(o.id) AS order_count\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nGROUP BY c.id\nHAVING COUNT(o.id) > 1;', expect:{columns:['name','order_count'], minRows:1}}
+      ]
+    },
+    school: {
+      name:'School Records',
+      lesson:'Practice aggregate scores, subject performance, grade distribution and ranking with secondary school records.',
+      schema:[
+        'CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, class TEXT, track TEXT, gender TEXT, county TEXT);',
+        'CREATE TABLE subjects (id INTEGER PRIMARY KEY, name TEXT, department TEXT);',
+        'CREATE TABLE grades (id INTEGER PRIMARY KEY, student_id INTEGER, subject_id INTEGER, term TEXT, score INTEGER);'
+      ],
+      seed:[
+        "INSERT INTO students VALUES (1,'Maryam Okonkwo','SS3','Science','F','Lagos'),(2,'Kojo Boateng','SHS3','Business','M','Ashanti'),(3,'Wanjiru Njoroge','Form 4','Science','F','Kiambu'),(4,'Naledi Dube','Grade 12','Arts','F','Gauteng'),(5,'Samuel Musa','SS2','Science','M','Kano'),(6,'Eunice Adjei','SHS2','Arts','F','Greater Accra');",
+        "INSERT INTO subjects VALUES (1,'Mathematics','Science'),(2,'English','Languages'),(3,'Physics','Science'),(4,'Economics','Business'),(5,'History','Arts');",
+        "INSERT INTO grades VALUES (1,1,1,'Term 1',88),(2,1,3,'Term 1',91),(3,1,2,'Term 1',79),(4,2,4,'Term 1',84),(5,2,2,'Term 1',76),(6,3,1,'Term 1',94),(7,3,3,'Term 1',89),(8,4,5,'Term 1',86),(9,4,2,'Term 1',81),(10,5,1,'Term 1',67),(11,5,3,'Term 1',73),(12,6,5,'Term 1',78),(13,6,2,'Term 1',82);"
+      ],
+      samples:[
+        {label:'All students', sql:'SELECT * FROM students ORDER BY county, name;'},
+        {label:'Average score', sql:'SELECT s.name, s.class, ROUND(AVG(g.score), 1) AS average_score\nFROM students s\nJOIN grades g ON g.student_id = s.id\nGROUP BY s.id\nORDER BY average_score DESC;'},
+        {label:'Subject averages', sql:'SELECT sub.name, ROUND(AVG(g.score), 1) AS average_score, MIN(g.score) AS lowest, MAX(g.score) AS highest\nFROM subjects sub\nJOIN grades g ON g.subject_id = sub.id\nGROUP BY sub.id\nORDER BY average_score DESC;'}
+      ],
+      challenges:[
+        {id:'school-top', level:'Beginner', title:'Top students', goal:'Return student names and average scores over 80.', sql:'SELECT s.name, ROUND(AVG(g.score), 1) AS average_score\nFROM students s\nJOIN grades g ON g.student_id = s.id\nGROUP BY s.id\nHAVING AVG(g.score) > 80\nORDER BY average_score DESC;', expect:{columns:['name','average_score'], minRows:3}},
+        {id:'school-science', level:'Intermediate', title:'Science track performance', goal:'Average score for Science track students.', sql:"SELECT s.track, ROUND(AVG(g.score), 1) AS average_score\nFROM students s\nJOIN grades g ON g.student_id = s.id\nWHERE s.track = 'Science'\nGROUP BY s.track;", expect:{columns:['track','average_score'], minRows:1}}
+      ]
+    },
+    clinic: {
+      name:'Clinic Visits',
+      lesson:'Practice joins, case counts and cost summaries with clinic visits, doctors and prescriptions.',
+      schema:[
+        'CREATE TABLE patients (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, gender TEXT, city TEXT);',
+        'CREATE TABLE doctors (id INTEGER PRIMARY KEY, name TEXT, specialty TEXT, hospital TEXT);',
+        'CREATE TABLE visits (id INTEGER PRIMARY KEY, patient_id INTEGER, doctor_id INTEGER, visit_date TEXT, diagnosis TEXT, cost REAL, currency TEXT);',
+        'CREATE TABLE prescriptions (id INTEGER PRIMARY KEY, visit_id INTEGER, medication TEXT, days INTEGER, cost REAL);'
+      ],
+      seed:[
+        "INSERT INTO patients VALUES (1,'Amara Diop',34,'F','Dakar'),(2,'Oluwaseun Ade',28,'M','Lagos'),(3,'Grace Achieng',45,'F','Kisumu'),(4,'Mohammed Ali',52,'M','Dar es Salaam'),(5,'Lindiwe Zulu',55,'F','Durban');",
+        "INSERT INTO doctors VALUES (1,'Dr Nkemelu','General Medicine','Lagos General'),(2,'Dr Odhiambo','Pediatrics','Kenyatta'),(3,'Dr Van Wyk','Cardiology','Groote Schuur');",
+        "INSERT INTO visits VALUES (1,1,1,'2026-02-01','Malaria',15000,'NGN'),(2,2,1,'2026-02-03','Typhoid',22000,'NGN'),(3,3,2,'2026-02-05','Pneumonia',8500,'KES'),(4,4,1,'2026-02-07','Malaria',12000,'TZS'),(5,5,3,'2026-02-10','Hypertension',2800,'ZAR'),(6,2,1,'2026-03-02','Follow-up',8000,'NGN');",
+        "INSERT INTO prescriptions VALUES (1,1,'Artemether-Lumefantrine',3,4500),(2,1,'Paracetamol',5,800),(3,2,'Ciprofloxacin',7,3200),(4,5,'Amlodipine',30,450);"
+      ],
+      samples:[
+        {label:'Visit summary', sql:'SELECT p.name, p.city, v.visit_date, v.diagnosis, v.cost, v.currency\nFROM visits v\nJOIN patients p ON p.id = v.patient_id\nORDER BY v.visit_date DESC;'},
+        {label:'Diagnosis counts', sql:'SELECT diagnosis, COUNT(*) AS cases\nFROM visits\nGROUP BY diagnosis\nORDER BY cases DESC;'},
+        {label:'Doctor workload', sql:'SELECT d.name, d.specialty, COUNT(v.id) AS visits\nFROM doctors d\nLEFT JOIN visits v ON v.doctor_id = d.id\nGROUP BY d.id\nORDER BY visits DESC;'}
+      ],
+      challenges:[
+        {id:'clinic-cases', level:'Beginner', title:'Common diagnoses', goal:'Count cases by diagnosis.', sql:'SELECT diagnosis, COUNT(*) AS cases\nFROM visits\nGROUP BY diagnosis\nORDER BY cases DESC;', expect:{columns:['diagnosis','cases'], minRows:4}},
+        {id:'clinic-cost', level:'Intermediate', title:'Clinic cost by city', goal:'Join patients to visits and total visit cost by city.', sql:'SELECT p.city, v.currency, SUM(v.cost) AS total_cost\nFROM visits v\nJOIN patients p ON p.id = v.patient_id\nGROUP BY p.city, v.currency\nORDER BY total_cost DESC;', expect:{columns:['city','currency','total_cost'], minRows:4}}
+      ]
+    },
+    mobile: {
+      name:'Mobile Money',
+      lesson:'Practice transaction analytics with agents, wallets, fees and failed transactions.',
+      schema:[
+        'CREATE TABLE agents (id INTEGER PRIMARY KEY, name TEXT, city TEXT, network TEXT);',
+        'CREATE TABLE wallets (id INTEGER PRIMARY KEY, customer_name TEXT, country TEXT, segment TEXT);',
+        'CREATE TABLE transactions (id INTEGER PRIMARY KEY, wallet_id INTEGER, agent_id INTEGER, tx_date TEXT, tx_type TEXT, amount REAL, fee REAL, status TEXT, currency TEXT);'
+      ],
+      seed:[
+        "INSERT INTO agents VALUES (1,'Ikeja Agent 12','Lagos','MTN'),(2,'Eastleigh Kiosk','Nairobi','Safaricom'),(3,'Osu Mobile Hub','Accra','MTN'),(4,'Mbare Booth','Harare','EcoCash');",
+        "INSERT INTO wallets VALUES (1,'Adaeze Okafor','Nigeria','Personal'),(2,'Brian Otieno','Kenya','Merchant'),(3,'Abena Sarpong','Ghana','Personal'),(4,'Tariro Moyo','Zimbabwe','Merchant'),(5,'Yusuf Bello','Nigeria','Merchant');",
+        "INSERT INTO transactions VALUES (1,1,1,'2026-03-01','cash_in',45000,250,'success','NGN'),(2,2,2,'2026-03-02','merchant_pay',8200,82,'success','KES'),(3,3,3,'2026-03-03','transfer',600,6,'failed','GHS'),(4,4,4,'2026-03-04','cash_out',120,2,'success','USD'),(5,5,1,'2026-03-05','merchant_pay',75000,600,'success','NGN'),(6,1,1,'2026-03-07','transfer',15000,100,'failed','NGN'),(7,2,2,'2026-03-08','cash_in',12000,100,'success','KES');"
+      ],
+      samples:[
+        {label:'Transactions', sql:'SELECT * FROM transactions ORDER BY tx_date DESC LIMIT 20;'},
+        {label:'Agent volume', sql:'SELECT a.name, a.city, COUNT(t.id) AS tx_count, SUM(t.amount) AS volume\nFROM agents a\nJOIN transactions t ON t.agent_id = a.id\nWHERE t.status = "success"\nGROUP BY a.id\nORDER BY volume DESC;'},
+        {label:'Failure rate', sql:'SELECT status, COUNT(*) AS tx_count, ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM transactions), 1) AS pct\nFROM transactions\nGROUP BY status;'}
+      ],
+      challenges:[
+        {id:'mobile-volume', level:'Beginner', title:'Successful volume by network', goal:'Return network and successful transaction volume.', sql:"SELECT a.network, SUM(t.amount) AS volume\nFROM transactions t\nJOIN agents a ON a.id = t.agent_id\nWHERE t.status = 'success'\nGROUP BY a.network\nORDER BY volume DESC;", expect:{columns:['network','volume'], minRows:3}},
+        {id:'mobile-failed', level:'Interview', title:'Failed customer transactions', goal:'Show failed transactions with customer name and amount.', sql:"SELECT w.customer_name, t.tx_type, t.amount, t.currency\nFROM transactions t\nJOIN wallets w ON w.id = t.wallet_id\nWHERE t.status = 'failed'\nORDER BY t.amount DESC;", expect:{columns:['customer_name','tx_type','amount','currency'], minRows:2}}
+      ]
+    }
+  };
+
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
+  }
+  function normalize(sql){ return String(sql || '').replace(/\s+/g,' ').trim().toLowerCase(); }
+  function readHistory(){
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function writeHistory(items){
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, 30))); } catch(e) {}
+  }
+
+  async function init(){
+    $('hero-datasets').textContent = Object.keys(DATASETS).length;
+    $('dataset').innerHTML = Object.keys(DATASETS).map(function(key){ return '<option value="'+key+'">'+esc(DATASETS[key].name)+'</option>'; }).join('');
+    try {
+      SQL = await initSqlJs({ locateFile: function(file){ return 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/' + file; } });
+      loadDataset(currentDataset);
+      $('loading').classList.add('hidden');
+    } catch(e) {
+      $('loading').innerHTML = '<div class="alert error">Could not load sql.js. Refresh the page or check your connection.</div>';
+    }
+    bind();
+  }
+
+  function bind(){
+    $('dataset').addEventListener('change', function(){ loadDataset(this.value); });
+    $('difficulty').addEventListener('change', renderChallenges);
+    $('run-query').addEventListener('click', runQuery);
+    $('explain-query').addEventListener('click', explainQuery);
+    $('format-query').addEventListener('click', formatQuery);
+    $('clear-query').addEventListener('click', function(){ $('editor').value = ''; $('editor').focus(); lintEditor(); });
+    $('editor').addEventListener('input', lintEditor);
+    $('editor').addEventListener('keydown', function(e){
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runQuery(); }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+        this.value = this.value.slice(0, start) + '  ' + this.value.slice(end);
+        this.selectionStart = this.selectionEnd = start + 2;
+      }
+    });
+    $('copy-results').addEventListener('click', copyResults);
+    $('export-csv').addEventListener('click', exportCSV);
+    $('export-db').addEventListener('click', exportDatabase);
+    $('import-csv').addEventListener('click', function(){ $('csv-file').click(); });
+    $('csv-file').addEventListener('change', function(){ if (this.files[0]) importCSV(this.files[0]); this.value = ''; });
+    $('clear-history').addEventListener('click', function(){ writeHistory([]); renderHistory(); });
+    $('copy-plan').addEventListener('click', function(){
+      var el = activeTab === 'plan' ? $('plan-output') : activeTab === 'schemaSql' ? $('schema-sql-output') : $('lesson-output');
+      navigator.clipboard.writeText(el.textContent).then(function(){ toast('Panel copied'); });
+    });
+    document.addEventListener('click', function(event){
+      if (event.target.classList.contains('pill')) loadSample(Number(event.target.getAttribute('data-index')));
+      if (event.target.closest('.history-item')) {
+        $('editor').value = event.target.closest('.history-item').getAttribute('data-sql');
+        lintEditor();
+      }
+      if (event.target.closest('.challenge-item')) {
+        loadChallenge(event.target.closest('.challenge-item').getAttribute('data-id'));
+      }
+      if (event.target.classList.contains('tab')) {
+        activeTab = event.target.getAttribute('data-tab');
+        document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === event.target); });
+        document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.remove('active'); });
+        $('panel-' + activeTab).classList.add('active');
+      }
+    });
+  }
+
+  function loadDataset(key){
+    currentDataset = key;
+    var data = DATASETS[key];
+    if (db) db.close();
+    db = new SQL.Database();
+    data.schema.forEach(function(sql){ db.run(sql); });
+    data.seed.forEach(function(sql){ db.run(sql); });
+    $('editor').value = data.samples[0].sql;
+    $('lesson-output').textContent = data.lesson + '\n\nTry a challenge, then run EXPLAIN QUERY PLAN to see how SQLite scans and joins the tables.';
+    $('schema-sql-output').textContent = data.schema.join('\n\n') + '\n\n' + data.seed.join('\n');
+    $('results').innerHTML = '<div class="empty">Dataset loaded. Run a query to see rows here.</div>';
+    $('result-meta').innerHTML = '<span class="meta">'+esc(data.name)+'</span><span class="meta">Ready</span>';
+    lastResult = null;
+    activeChallenge = null;
+    renderSamples();
+    renderSchema();
+    renderChallenges();
+    renderHistory();
+    lintEditor();
+  }
+
+  function renderSamples(){
+    $('samples').innerHTML = DATASETS[currentDataset].samples.map(function(item, index){
+      return '<button class="pill" data-index="'+index+'" type="button">'+esc(item.label)+'</button>';
+    }).join('');
+  }
+  function loadSample(index){
+    $('editor').value = DATASETS[currentDataset].samples[index].sql;
+    document.querySelectorAll('.pill').forEach(function(btn){ btn.classList.toggle('active', Number(btn.getAttribute('data-index')) === index); });
+    activeChallenge = null;
+    renderChallenges();
+    lintEditor();
+  }
+  function renderSchema(){
+    $('schema').innerHTML = DATASETS[currentDataset].schema.map(function(sql){
+      var table = (sql.match(/CREATE TABLE\s+([a-z_]+)/i) || [,'table'])[1];
+      return '<details class="schema-table" open><summary>'+esc(table)+'</summary><code>'+esc(sql)+'</code></details>';
+    }).join('');
+  }
+  function renderChallenges(){
+    var filter = $('difficulty').value;
+    var list = DATASETS[currentDataset].challenges.filter(function(item){ return !filter || item.level === filter; });
+    $('hero-challenges').textContent = DATASETS[currentDataset].challenges.length;
+    $('challenges').innerHTML = list.map(function(item){
+      return '<div class="challenge-item '+(activeChallenge && activeChallenge.id === item.id ? 'active' : '')+'" data-id="'+esc(item.id)+'">'+
+        '<strong>'+esc(item.title)+'</strong><span>'+esc(item.level)+' - '+esc(item.goal)+'</span></div>';
+    }).join('') || '<div class="alert">No challenges match this level.</div>';
+  }
+  function loadChallenge(id){
+    activeChallenge = DATASETS[currentDataset].challenges.find(function(item){ return item.id === id; });
+    if (!activeChallenge) return;
+    $('editor').value = activeChallenge.sql;
+    $('challenge-feedback').innerHTML = '<div class="alert">Challenge loaded: '+esc(activeChallenge.goal)+'</div>';
+    renderChallenges();
+    lintEditor();
+  }
+
+  function lintEditor(){
+    var sql = $('editor').value.trim();
+    var notes = [];
+    if (!sql) notes.push({type:'warn', text:'Write a SQL statement before running.'});
+    if (/^\s*select\s+\*/i.test(sql) && !/\blimit\b/i.test(sql)) notes.push({type:'warn', text:'SELECT * without LIMIT can create noisy result sets. Add LIMIT while exploring.'});
+    if (/\b(drop|delete|update)\b/i.test(sql)) notes.push({type:'warn', text:'This query changes data. Export the database first if you want to keep a copy.'});
+    if (/\bright\s+join|\bfull\s+join/i.test(sql)) notes.push({type:'warn', text:'SQLite does not support every JOIN variant in every version. Prefer LEFT JOIN for practice here.'});
+    if (!notes.length) notes.push({type:'ok', text:'Looks ready. Run with Ctrl+Enter.'});
+    $('lint').innerHTML = notes.map(function(note){ return '<div class="alert '+note.type+'">'+esc(note.text)+'</div>'; }).join('');
+  }
+
+  function runQuery(){
+    var sql = $('editor').value.trim();
+    if (!sql || !db) return;
+    var start = performance.now();
+    try {
+      var results = db.exec(sql);
+      runs += 1;
+      $('hero-runs').textContent = runs;
+      $('score-runs').textContent = runs;
+      if (!results.length) {
+        lastResult = null;
+        $('results').innerHTML = '<div class="empty">Query executed successfully. No rows returned.</div>';
+        $('result-meta').innerHTML = '<span class="meta">0 rows</span><span class="meta">'+(performance.now() - start).toFixed(1)+'ms</span>';
+        $('score-last').textContent = 'OK';
+      } else {
+        lastResult = results[0];
+        renderResult(lastResult, performance.now() - start);
+        gradeChallenge(lastResult);
+      }
+      addHistory(sql);
+    } catch(e) {
+      $('results').innerHTML = '<div class="alert error"><strong>Error:</strong> '+esc(e.message)+'</div>';
+      $('score-last').textContent = 'Error';
+      $('challenge-feedback').innerHTML = '<div class="alert error">'+esc(e.message)+'</div>';
+    }
+  }
+
+  function renderResult(result, elapsed){
+    var rows = result.values || [];
+    $('result-meta').innerHTML = '<span class="meta">'+rows.length+' rows</span><span class="meta">'+result.columns.length+' columns</span><span class="meta">'+elapsed.toFixed(1)+'ms</span>';
+    $('results').innerHTML = '<table><thead><tr>'+result.columns.map(function(col){ return '<th>'+esc(col)+'</th>'; }).join('')+'</tr></thead><tbody>'+
+      rows.map(function(row){ return '<tr>'+row.map(function(value){ return '<td>'+esc(value == null ? 'NULL' : value)+'</td>'; }).join('')+'</tr>'; }).join('')+
+      '</tbody></table>';
+    $('score-last').textContent = rows.length + ' rows';
+  }
+
+  function gradeChallenge(result){
+    if (!activeChallenge) {
+      $('challenge-feedback').innerHTML = '<div class="alert ok">Query ran. Choose a challenge for scoring feedback.</div>';
+      return;
+    }
+    var expect = activeChallenge.expect;
+    var cols = result.columns.map(function(col){ return col.toLowerCase(); });
+    var missing = expect.columns.filter(function(col){ return cols.indexOf(col.toLowerCase()) === -1; });
+    var enoughRows = result.values.length >= expect.minRows;
+    if (!missing.length && enoughRows) {
+      passed[activeChallenge.id] = true;
+      $('score-done').textContent = Object.keys(passed).length;
+      $('challenge-feedback').innerHTML = '<div class="alert ok">Passed: result includes expected columns and enough rows.</div>';
+    } else {
+      var parts = [];
+      if (missing.length) parts.push('Missing columns: ' + missing.join(', '));
+      if (!enoughRows) parts.push('Expected at least ' + expect.minRows + ' rows.');
+      $('challenge-feedback').innerHTML = '<div class="alert warn">'+esc(parts.join(' '))+'</div>';
+    }
+  }
+
+  function explainQuery(){
+    var sql = $('editor').value.trim().replace(/;+\s*$/,'');
+    if (!sql || !db) return;
+    if (!/^\s*select\b/i.test(sql)) {
+      $('plan-output').textContent = 'EXPLAIN QUERY PLAN is safest here for SELECT statements. Run your data-changing statement directly if needed.';
+      return;
+    }
+    try {
+      var res = db.exec('EXPLAIN QUERY PLAN ' + sql);
+      if (!res.length) return;
+      $('plan-output').textContent = [res[0].columns.join(' | ')].concat(res[0].values.map(function(row){ return row.join(' | '); })).join('\n');
+    } catch(e) {
+      $('plan-output').textContent = e.message;
+    }
+  }
+
+  function formatQuery(){
+    var sql = $('editor').value;
+    ['SELECT','FROM','WHERE','JOIN','LEFT JOIN','ON','GROUP BY','ORDER BY','HAVING','LIMIT','CASE','WHEN','THEN','ELSE','END','INSERT INTO','VALUES','CREATE TABLE','UPDATE','SET','DELETE FROM'].forEach(function(keyword){
+      sql = sql.replace(new RegExp('\\b' + keyword.replace(/\s+/g,'\\s+') + '\\b','gi'), keyword);
+    });
+    sql = sql.replace(/\s+(FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT)\b/g, '\n$1')
+             .replace(/\s+(JOIN|LEFT JOIN)\b/g, '\n$1')
+             .replace(/\s+(AND|OR)\b/g, '\n  $1');
+    $('editor').value = sql.trim();
+    lintEditor();
+  }
+
+  function addHistory(sql){
+    var items = readHistory().filter(function(item){ return normalize(item) !== normalize(sql); });
+    items.unshift(sql);
+    writeHistory(items);
+    renderHistory();
+  }
+  function renderHistory(){
+    var items = readHistory();
+    $('history').innerHTML = items.map(function(sql){ return '<div class="history-item" data-sql="'+esc(sql)+'"><code>'+esc(sql)+'</code></div>'; }).join('') || '<div class="alert">No history yet.</div>';
+  }
+
+  function resultToCSV(result){
+    if (!result) return '';
+    var lines = [result.columns.join(',')];
+    result.values.forEach(function(row){
+      lines.push(row.map(function(value){ return value == null ? '' : '"' + String(value).replace(/"/g,'""') + '"'; }).join(','));
+    });
+    return lines.join('\n');
+  }
+  function exportCSV(){
+    if (!lastResult) { toast('Run a SELECT query first'); return; }
+    download(resultToCSV(lastResult), 'query-results.csv', 'text/csv');
+  }
+  function copyResults(){
+    if (!lastResult) { toast('Run a SELECT query first'); return; }
+    navigator.clipboard.writeText(resultToCSV(lastResult)).then(function(){ toast('Results copied as CSV'); });
+  }
+  function exportDatabase(){
+    if (!db) return;
+    var bytes = db.export();
+    var blob = new Blob([bytes], {type:'application/octet-stream'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = currentDataset + '-playground.sqlite';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  function download(text, filename, type){
+    var blob = new Blob([text], {type:type});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function parseCSV(text){
+    var rows = [];
+    var row = [];
+    var value = '';
+    var quoted = false;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      var next = text[i + 1];
+      if (ch === '"' && quoted && next === '"') { value += '"'; i++; continue; }
+      if (ch === '"') { quoted = !quoted; continue; }
+      if (ch === ',' && !quoted) { row.push(value); value = ''; continue; }
+      if ((ch === '\n' || ch === '\r') && !quoted) {
+        if (ch === '\r' && next === '\n') i++;
+        row.push(value);
+        if (row.some(function(cell){ return cell.trim() !== ''; })) rows.push(row);
+        row = [];
+        value = '';
+        continue;
+      }
+      value += ch;
+    }
+    row.push(value);
+    if (row.some(function(cell){ return cell.trim() !== ''; })) rows.push(row);
+    return rows;
+  }
+  function importCSV(file){
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        var rows = parseCSV(reader.result);
+        if (rows.length < 2) throw new Error('CSV needs a header row and at least one data row.');
+        var headers = rows[0].map(function(col, index){ return (col || 'column_' + (index + 1)).toLowerCase().replace(/[^a-z0-9_]+/g,'_').replace(/^_+|_+$/g,'') || 'column_' + (index + 1); });
+        var table = file.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9_]+/g,'_').replace(/^_+|_+$/g,'') || 'imported_csv';
+        db.run('DROP TABLE IF EXISTS ' + table);
+        db.run('CREATE TABLE ' + table + ' (' + headers.map(function(h){ return h + ' TEXT'; }).join(', ') + ')');
+        var stmt = db.prepare('INSERT INTO ' + table + ' VALUES (' + headers.map(function(){ return '?'; }).join(', ') + ')');
+        rows.slice(1).forEach(function(row){ stmt.run(headers.map(function(_, i){ return row[i] || ''; })); });
+        stmt.free();
+        DATASETS[currentDataset].schema.push('CREATE TABLE ' + table + ' (' + headers.map(function(h){ return h + ' TEXT'; }).join(', ') + ');');
+        $('editor').value = 'SELECT * FROM ' + table + ' LIMIT 20;';
+        renderSchema();
+        $('schema-sql-output').textContent += '\n\n-- Imported CSV\nCREATE TABLE ' + table + ' (' + headers.map(function(h){ return h + ' TEXT'; }).join(', ') + ');';
+        toast('CSV imported as ' + table);
+      } catch(e) {
+        toast(e.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  init();
 })();
 </script>
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

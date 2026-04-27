@@ -23,7 +23,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <meta name="tool-id" content="lobola-calculator">
@@ -106,6 +106,18 @@
     .payment-option .po-sub{font-size:11px;color:var(--muted);margin-top:4px}
     .po-badge{display:inline-block;padding:2px 8px;background:var(--accent);color:#fff;border-radius:4px;font-size:9px;font-weight:700;margin-bottom:6px}
 
+    /* Negotiation plan */
+    .negotiation-section{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+    .negotiation-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+    .negotiation-title{font-size:14px;font-weight:800;color:var(--text)}
+    .copy-plan{border:1.5px solid var(--border);background:#fff;color:var(--accent);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer}
+    .negotiation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+    .negotiation-card{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+    .negotiation-k{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+    .negotiation-v{font-size:16px;font-weight:900;color:var(--accent)}
+    .brief-list{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+    .brief-list li{background:var(--accent-pale);border:1px solid rgba(0,122,255,.15);border-radius:9px;padding:9px 11px;font-size:12px;color:#1e3a8a;line-height:1.55}
+
     /* Cultural context */
     .context-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
     .context-card h3{font-size:14px;font-weight:800;margin-bottom:8px}
@@ -146,8 +158,9 @@
       .form-row,.chart-row{grid-template-columns:1fr}
       .stat-row{grid-template-columns:1fr 1fr}
       .payment-grid{grid-template-columns:1fr}
+      .negotiation-grid{grid-template-columns:1fr 1fr}
     }
-    @media(max-width:480px){.stat-row{grid-template-columns:1fr}}
+    @media(max-width:480px){.stat-row,.negotiation-grid{grid-template-columns:1fr}.copy-plan{width:100%}}
   </style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Lobola / Bride Price Calculator","description":"Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Interactive charts, payment plans, country comparisons.","url":"https://afrotools.com/tools/lobola-calculator/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Lobola / Bride Price Calculator","url":"https://afrotools.com/tools/lobola-calculator/","description":"Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Interactive charts, payment plans, country comparisons.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
@@ -191,6 +204,8 @@
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="/assets/js/wise-cta.js?v=10209ee0" defer></script>
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=20260428">
+<script src="/assets/js/african-workflow.js?v=20260428" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -291,6 +306,26 @@
         <input type="number" id="zwCustom" value="0" min="0">
       </div>
     </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Family Contribution Already Saved</label>
+        <input type="number" id="savedAmount" value="0" min="0">
+      </div>
+      <div class="field">
+        <label>Gift / Ceremony Buffer</label>
+        <input type="number" id="giftBuffer" value="10" min="0" max="100">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Initial Deposit %</label>
+        <input type="number" id="depositPct" value="25" min="0" max="100">
+      </div>
+      <div class="field">
+        <label>Target Timeline (months)</label>
+        <input type="number" id="timelineMonths" value="6" min="1" max="48">
+      </div>
+    </div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="calculate()">Calculate Lobola Estimate</button>
       <button class="btn btn-outline" onclick="resetCalc()">Reset</button>
@@ -361,6 +396,8 @@
       <div class="payment-grid" id="paymentGrid"></div>
     </div>
 
+    <div class="negotiation-section" id="negotiationPlan"></div>
+
     <!-- Fun Comparisons -->
     <div class="card" style="margin-bottom:16px">
       <div class="card-title"><span>😂</span> Fun Comparisons</div>
@@ -412,6 +449,9 @@
 
 <afro-related-tools category="african" current="lobola-calculator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="rs-upgrade-shell" data-rs-tool-id="lobola-calculator"></section>
+<script src="/assets/js/religious-cultural-apps.js" defer></script>
 <afro-footer></afro-footer>
 
 <script>
@@ -453,6 +493,7 @@ var PROF = { unemployed:0.85, entry:0.95, skilled:1.0, senior:1.1, executive:1.2
 var FAMILY = { regular:1.0, chief:1.5, prominent:1.3 };
 var MARRIAGE = { first:1.0, second:0.75, hasChildren:0.85 };
 var EDU_LABELS = { none:'No Qual', matric:'Matric', diploma:'Diploma', degree:'Degree', honours:'Honours', masters:'Masters', doctorate:'PhD' };
+var lastLobolaBrief = '';
 
 function fmt(n) { return n.toLocaleString('en-US',{maximumFractionDigits:0}); }
 
@@ -481,6 +522,10 @@ function calculate() {
   var fam = document.getElementById('familyStatus').value;
   var mar = document.getElementById('marriageType').value;
   var customCattle = parseInt(document.getElementById('customCattle').value);
+  var savedAmount = parseFloat(document.getElementById('savedAmount').value) || 0;
+  var giftBuffer = Math.max(0, parseFloat(document.getElementById('giftBuffer').value) || 0);
+  var depositPct = Math.max(0, Math.min(100, parseFloat(document.getElementById('depositPct').value) || 0));
+  var timelineMonths = Math.max(1, parseInt(document.getElementById('timelineMonths').value) || 1);
 
   var cattleCount = customCattle || getCattleCount(countryKey, edu, prof, fam, mar);
   var cattlePrice, totalValue, breakdown = [];
@@ -555,6 +600,21 @@ function calculate() {
   }).join('');
 
   // ── Fun comparisons ──
+  renderNegotiationPlan({
+    country: d.name,
+    symbol: d.symbol,
+    currency: d.currency,
+    cattleCount: cattleCount,
+    cattlePrice: cattlePrice,
+    totalValue: totalValue,
+    savedAmount: savedAmount,
+    giftBuffer: giftBuffer,
+    depositPct: depositPct,
+    timelineMonths: timelineMonths,
+    region: document.getElementById('region').value,
+    familyStatus: fam
+  });
+
   var usdVal = totalValue / d.usdRate;
   var funItems = [
     {emoji:'📱',title:'In iPhones',text:'Could buy ~'+Math.round(usdVal/1200)+' iPhone 16 Pros',color:'blue'},
@@ -586,6 +646,68 @@ function calculate() {
   drawCountryChart(edu, prof, fam, mar, cattlePrice);
   drawEducationChart(countryKey, prof, fam, mar);
   document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function renderNegotiationPlan(data) {
+  var target = document.getElementById('negotiationPlan');
+  if (!target) return;
+  var bufferAmount = data.totalValue * data.giftBuffer / 100;
+  var fullBudget = data.totalValue + bufferAmount;
+  var remaining = Math.max(0, fullBudget - data.savedAmount);
+  var deposit = fullBudget * data.depositPct / 100;
+  var monthly = remaining / data.timelineMonths;
+  var familyLabel = data.familyStatus === 'chief' ? 'royal or chiefly protocol' : data.familyStatus === 'prominent' ? 'prominent family expectations' : 'regular family expectations';
+  var actions = [
+    'Open the conversation with elders or appointed negotiators, not as a couple-only price discussion.',
+    'Budget ' + data.symbol + ' ' + fmt(fullBudget) + ' including a ' + data.giftBuffer + '% gift and ceremony buffer.',
+    'Initial deposit target: ' + data.symbol + ' ' + fmt(deposit) + ' if both families accept a staged plan.',
+    'Monthly saving target after saved contribution: ' + data.symbol + ' ' + fmt(monthly) + ' for ' + data.timelineMonths + ' months.',
+    'Confirm whether cattle, cash equivalent, gifts, blankets, mother/father cows, or ceremony items are expected in ' + data.region + '.',
+    'Write down agreed instalments, dates, witnesses, and what each payment represents.'
+  ];
+  lastLobolaBrief = [
+    'Lobola preparation brief',
+    data.country + ' | ' + data.region + ' | ' + data.cattleCount + ' cattle at ' + data.symbol + ' ' + fmt(data.cattlePrice) + ' per head.',
+    'Estimate: ' + data.symbol + ' ' + fmt(data.totalValue) + ' ' + data.currency + ' | Full planning budget: ' + data.symbol + ' ' + fmt(fullBudget) + '.',
+    'Context: ' + familyLabel + '.',
+    actions.join(' ')
+  ].join('\n');
+  target.innerHTML =
+    '<div class="negotiation-head"><div class="negotiation-title">Family negotiation preparation plan</div><button type="button" class="copy-plan" onclick="copyLobolaBrief(this)">Copy brief</button></div>' +
+    '<div class="negotiation-grid">' +
+      '<div class="negotiation-card"><div class="negotiation-k">Planning budget</div><div class="negotiation-v">' + data.symbol + ' ' + fmt(fullBudget) + '</div></div>' +
+      '<div class="negotiation-card"><div class="negotiation-k">Initial deposit</div><div class="negotiation-v">' + data.symbol + ' ' + fmt(deposit) + '</div></div>' +
+      '<div class="negotiation-card"><div class="negotiation-k">Monthly target</div><div class="negotiation-v">' + data.symbol + ' ' + fmt(monthly) + '</div></div>' +
+      '<div class="negotiation-card"><div class="negotiation-k">Remaining</div><div class="negotiation-v">' + data.symbol + ' ' + fmt(remaining) + '</div></div>' +
+    '</div><ul class="brief-list">' + actions.map(function(action){ return '<li>' + action + '</li>'; }).join('') + '</ul>';
+}
+
+function copyLobolaBrief(btn) {
+  if (!lastLobolaBrief) return;
+  var done = function() {
+    if (btn) {
+      var old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function(){ btn.textContent = old; }, 1300);
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(lastLobolaBrief).then(done).catch(function(){ fallbackCopyLobolaBrief(done); });
+  } else {
+    fallbackCopyLobolaBrief(done);
+  }
+}
+
+function fallbackCopyLobolaBrief(done) {
+  var area = document.createElement('textarea');
+  area.value = lastLobolaBrief;
+  area.setAttribute('readonly','');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(area);
 }
 
 function drawCountryChart(edu, prof, fam, mar) {
@@ -664,6 +786,10 @@ function resetCalc() {
   document.getElementById('familyStatus').value = 'regular';
   document.getElementById('marriageType').value = 'first';
   document.getElementById('customCattle').value = '';
+  document.getElementById('savedAmount').value = '0';
+  document.getElementById('giftBuffer').value = '10';
+  document.getElementById('depositPct').value = '25';
+  document.getElementById('timelineMonths').value = '6';
   updateCountryFields();
   document.getElementById('results').classList.remove('show');
 }

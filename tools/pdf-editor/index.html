@@ -4,31 +4,33 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Editor &#8212; Add Text, Images, Shapes, Draw Free | AfroTools</title>
-<meta name="description" content="Edit PDFs online for free. Add text, images, shapes, highlights, and freehand drawings. 100% private, browser-based, no upload required.">
+<title>PDF Editor - Add Text, Images, Signatures, Stamps | AfroTools</title>
+<meta name="description" content="Edit PDFs in your browser. Add text, images, shapes, highlights, signatures, stamps, whiteout, freehand drawings, and flattened PDF exports.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-editor/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AfroTools">
-<meta property="og:title" content="PDF Editor &#8212; Add Text, Images, Shapes, Draw Free | AfroTools">
-<meta property="og:description" content="Edit PDFs online. Add text, images, shapes, highlights, freehand drawing. 100% private.">
+<meta property="og:title" content="PDF Editor - Add Text, Images, Signatures, Stamps | AfroTools">
+<meta property="og:description" content="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, and freehand drawing.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-editor.webp">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-editor/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PDF Editor | AfroTools">
-<meta name="twitter:description" content="Edit PDFs in the browser — add text, images, draw, highlight, and more.">
+<meta name="twitter:description" content="Edit PDFs in the browser with text, images, signatures, stamps, drawing, highlights, and shapes.">
 <meta name="robots" content="index, follow">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-editor.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-editor.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Editor","description":"Browser-only PDF editor for adding text, images, shapes, highlights, signatures, stamps, whiteout, and freehand drawings to PDF files.","url":"https://afrotools.com/tools/pdf-editor/","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-editor.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are PDFs uploaded to AfroTools?","acceptedAnswer":{"@type":"Answer","text":"No. The PDF editor renders, edits, and exports files in your browser."}},{"@type":"Question","name":"Can I sign a PDF?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can add a typed signature, freehand signature strokes, or upload a signature image."}},{"@type":"Question","name":"Can I edit existing PDF text?","acceptedAnswer":{"@type":"Answer","text":"This editor adds flattened content on top of the PDF. To replace existing text, cover it with whiteout and add new text."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=fedf5b41" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=8e0b9882" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <style>
 /* ─── RESET & BASE ─── */
 .pe-page h1,.pe-page h2,.pe-page h3,.pe-page h4{text-transform:none!important;letter-spacing:normal!important;font-family:'DM Sans',sans-serif!important}
@@ -55,6 +57,7 @@
 
 /* ─── WORKSPACE (full-screen) ─── */
 .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}.ws.on{display:flex}
+body.pdf-editor-open #afro-cookie-consent{display:none!important}
 
 /* ─── TOOLBAR ─── */
 .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 12px;display:flex;align-items:center;height:50px;gap:2px;overflow-x:auto;flex-shrink:0}.toolbar::-webkit-scrollbar{height:0}
@@ -83,6 +86,8 @@
 .prop-bar input[type="number"]{width:52px;padding:4px 6px;border:1.5px solid #e5e7eb;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;text-align:center;outline:none}
 .prop-bar input[type="number"]:focus{border-color:var(--color-primary)}
 .prop-bar input[type="color"]{width:28px;height:28px;border:1.5px solid #e5e7eb;border-radius:5px;padding:1px;cursor:pointer;background:#fff}
+.prop-bar select{height:28px;padding:3px 28px 3px 8px;border:1.5px solid #e5e7eb;border-radius:5px;background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:#374151}
+.prop-bar select:focus{outline:none;border-color:var(--color-primary)}
 .prop-bar .pb-toggle{height:28px;padding:0 10px;border:1.5px solid #e5e7eb;background:#fff;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:#6b7280;transition:.15s}
 .prop-bar .pb-toggle.on{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);color:#fff;border-color:var(--color-primary)}
 .prop-bar .pb-sep{width:1px;height:20px;background:#e5e7eb;flex-shrink:0}
@@ -237,13 +242,13 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "PDF Editor &#8212; Add Text, Images, Shapes, Draw Free",
+      "name": "PDF Editor",
       "item": "https://afrotools.com/tools/pdf-editor/"
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 </head>
 <body>
 <div class="priv-bar">&#128274; Your files <strong>never leave your browser</strong> &#8212; zero server uploads</div>
@@ -254,7 +259,7 @@
 <!-- ═══ UPLOAD SCREEN ═══ -->
 <div class="up-screen" id="upScreen">
   <h1>Your <b>PDF Editor</b></h1>
-  <p>Add text, images, shapes, highlights, and freehand drawings to any PDF &#8212; entirely in your browser.</p>
+  <p>Add text, images, signatures, stamps, shapes, highlights, whiteout, and drawings to any PDF - entirely in your browser.</p>
   <div class="dz" id="dz">
     <div class="dz-ico">&#128221;</div>
     <h3>Drop a PDF here to start editing</h3>
@@ -264,9 +269,11 @@
   <div class="feat-pills">
     <span class="fp-g">Add Text</span>
     <span class="fp-g">Insert Images</span>
+    <span class="fp-g">Sign PDFs</span>
+    <span class="fp-g">Stamps</span>
     <span class="fp-g">Draw Shapes</span>
     <span class="fp-g">Highlight Text</span>
-    <span class="fp-g">Freehand Draw</span>
+    <span class="fp-g">Whiteout</span>
     <span class="fp-o">100% Private &middot; No Upload</span>
   </div>
   <div class="up-feats">
@@ -298,6 +305,8 @@
     <button class="tb-btn" id="tbHighlight" title="Highlight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg><span>Highlight</span></button>
     <button class="tb-btn" id="tbDraw" title="Freehand Draw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg><span>Draw</span></button>
     <button class="tb-btn" id="tbEraser" title="Eraser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20H7L3 16l9-9 8 8-4 4"/><line x1="6" y1="11" x2="13" y2="18"/></svg><span>Eraser</span></button>
+    <button class="tb-btn" id="tbSign" title="Typed Signature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17c4-9 7 6 11-2 2-4 4-2 7-1"/><path d="M4 21h16"/></svg><span>Sign</span></button>
+    <button class="tb-btn" id="tbStamp" title="Add Stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6l1 7H8l1-7z"/><path d="M6 14h12v6H6z"/><path d="M5 21h14"/></svg><span>Stamp</span></button>
 
     <div class="tb-sep"></div>
 
@@ -355,6 +364,20 @@
     <div id="propEraser" style="display:none;align-items:center;gap:10px">
       <label>Size</label>
       <input type="number" id="propEraserSize" value="20" min="5" max="100">
+    </div>
+    <!-- Stamp properties -->
+    <div id="propStamp" style="display:none;align-items:center;gap:10px">
+      <label>Stamp</label>
+      <select id="propStampText">
+        <option value="APPROVED">APPROVED</option>
+        <option value="REVIEWED">REVIEWED</option>
+        <option value="CONFIDENTIAL">CONFIDENTIAL</option>
+        <option value="DRAFT">DRAFT</option>
+        <option value="PAID">PAID</option>
+        <option value="VOID">VOID</option>
+      </select>
+      <label>Color</label>
+      <input type="color" id="propStampColor" value="#dc2626">
     </div>
   </div>
 
@@ -414,6 +437,8 @@
   <button id="mHighlight" title="Highlight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg></button>
   <button id="mDraw" title="Draw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg></button>
   <button id="mEraser" title="Eraser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20H7L3 16l9-9 8 8-4 4"/></svg></button>
+  <button id="mSign" title="Sign"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17c4-9 7 6 11-2 2-4 4-2 7-1"/><path d="M4 21h16"/></svg></button>
+  <button id="mStamp" title="Stamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6l1 7H8l1-7z"/><path d="M6 14h12v6H6z"/></svg></button>
   <button id="mUndo" title="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 105.64-8.36L1 10"/></svg></button>
   <span id="mobPg" style="font-size:11px;font-weight:700;color:#6b7280;min-width:40px;text-align:center;flex-shrink:0">1/1</span>
   <button class="mob-dl" id="mobDl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
@@ -428,7 +453,7 @@
 <!-- ═══ SEO SECTION ═══ -->
 <section style="max-width:860px;margin:48px auto;padding:0 24px;font-family:'DM Sans',system-ui,sans-serif;color:#374151;line-height:1.8">
   <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin-bottom:16px">Free Online PDF Editor</h2>
-  <p>The AfroTools PDF Editor lets you annotate and modify PDF documents directly in your browser. Add text anywhere on a page, insert images with drag-and-resize controls, draw rectangles, circles, and lines, highlight important passages, or sketch freehand notes. Every edit happens client-side using JavaScript, so your files never leave your device.</p>
+  <p>The AfroTools PDF Editor lets you annotate and modify PDF documents directly in your browser. Add text anywhere on a page, insert images with drag-and-resize controls, draw rectangles, circles, and lines, highlight important passages, place signatures, stamp review status, white out old content, or sketch freehand notes. Every edit happens client-side using JavaScript, so your files never leave your device.</p>
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Editing Features</h3>
   <ul style="padding-left:20px;margin-bottom:16px">
@@ -437,7 +462,9 @@
     <li><strong>Shape Drawing</strong> &#8212; Draw rectangles, circles, and lines with configurable stroke and fill colors.</li>
     <li><strong>Highlighter</strong> &#8212; Drag to highlight text passages with a semi-transparent overlay.</li>
     <li><strong>Freehand Draw</strong> &#8212; Natural pen strokes with smooth bezier interpolation.</li>
-    <li><strong>Eraser</strong> &#8212; White-out areas to cover existing content.</li>
+    <li><strong>Signature</strong> &#8212; Place a typed signature or use the drawing/image tools for hand signatures.</li>
+    <li><strong>Stamp</strong> &#8212; Add Approved, Reviewed, Confidential, Draft, Paid, or Void labels.</li>
+    <li><strong>Whiteout</strong> &#8212; Cover existing content before replacing it with new text.</li>
     <li><strong>Undo / Redo</strong> &#8212; Full history with Ctrl+Z and Ctrl+Y keyboard shortcuts.</li>
   </ul>
 
@@ -447,7 +474,7 @@
   <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">How to Use</h3>
   <ol style="padding-left:20px;margin-bottom:16px">
     <li><strong>Upload your PDF</strong> &#8212; Drag and drop a file or click to browse. The file stays in your browser.</li>
-    <li><strong>Select a tool</strong> &#8212; Choose from the toolbar: Text, Image, Shape, Highlight, Draw, or Eraser.</li>
+    <li><strong>Select a tool</strong> &#8212; Choose from the toolbar: Text, Image, Shape, Highlight, Draw, Whiteout, Sign, or Stamp.</li>
     <li><strong>Edit the page</strong> &#8212; Click or drag on the PDF page to add your content. Use the properties bar to adjust colors, sizes, and styles.</li>
     <li><strong>Navigate pages</strong> &#8212; Click thumbnails in the left sidebar or use arrow keys to move between pages.</li>
     <li><strong>Undo mistakes</strong> &#8212; Press Ctrl+Z to undo or Ctrl+Y to redo. The full edit history is preserved.</li>
@@ -463,6 +490,8 @@
     <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Circle</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">C</kbd></div>
     <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Line</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">L</kbd></div>
     <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Eraser</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">E</kbd></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Signature</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">G</kbd></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Stamp</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">P</kbd></div>
     <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Undo</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">Ctrl+Z</kbd></div>
     <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Redo</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">Ctrl+Y</kbd></div>
     <div style="display:flex;justify-content:space-between;padding:8px 12px;background:#f9fafb;border-radius:6px;font-size:13px"><span style="color:#6b7280">Save</span><kbd style="background:#e5e7eb;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px">Ctrl+S</kbd></div>
@@ -471,7 +500,7 @@
   </div>
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Supported File Types</h3>
-  <p>The PDF Editor accepts standard PDF files of any size. For image insertion, PNG, JPEG, and WebP formats are supported. WebP images are automatically converted to PNG during the save process to ensure maximum compatibility across PDF readers.</p>
+  <p>The PDF Editor accepts standard PDF files. Very large documents depend on your device memory because rendering and export happen locally. For image insertion, PNG, JPEG, and WebP formats are supported. WebP images are converted to PNG during export for PDF reader compatibility.</p>
 
   <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Frequently Asked Questions</h3>
   <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
@@ -481,6 +510,10 @@
   <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
     <summary style="font-weight:600;color:#111827;cursor:pointer">What image formats can I insert?</summary>
     <p style="margin-top:8px">You can insert PNG, JPEG, and WebP images. They will be embedded directly into the PDF when you download the edited file.</p>
+  </details>
+  <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
+    <summary style="font-weight:600;color:#111827;cursor:pointer">Can I sign and stamp a PDF?</summary>
+    <p style="margin-top:8px">Yes. Use Sign for a typed signature, Draw or Image for a hand signature, and Stamp for common workflow labels such as Approved, Reviewed, Confidential, Draft, Paid, or Void.</p>
   </details>
   <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
     <summary style="font-weight:600;color:#111827;cursor:pointer">Is there a file size limit?</summary>
@@ -514,7 +547,7 @@
 <afro-related-tools category="document-pdf" current="pdf-editor"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.js?v=7785bbdc" defer></script>
+<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
@@ -522,7 +555,7 @@
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- ENGINE -->
 <!-- ═══════════════════════════════════════════════════ -->
-<script src="/assets/js/lib/pdf-utils.js?v=38dbd587"></script>
+<script src="/assets/js/lib/pdf-utils.js?v=20260428"></script>
 <script>
 (function(){
 'use strict';
@@ -533,6 +566,8 @@ function isPdfFile(file){return !!(file&&((file.type&&file.type==="application/p
 function toast(msg,err){var t=$('toast');t.textContent=msg;t.className='toast'+(err?' err':'')+' on';clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},3500)}
 function showProc(t,s){$('pT').textContent=t||'Processing...';$('pS').textContent=s||'';$('pOv').classList.add('on')}
 function hideProc(){$('pOv').classList.remove('on')}
+function loadScript(src){return new Promise(function(resolve,reject){var existing=document.querySelector('script[src^="'+src.split('?')[0]+'"]');if(existing){if(window.PDFLib||window.pdfjsLib){resolve();return}existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',function(){reject(new Error('Failed to load '+src))},{once:true});return}var s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=function(){reject(new Error('Failed to load '+src))};document.head.appendChild(s)})}
+async function ensurePdfLib(){if(window.PDFLib&&window.PDFLib.PDFDocument)return window.PDFLib;await loadScript('/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1');if(!window.PDFLib||!window.PDFLib.PDFDocument)throw new Error('PDF editing library failed to load. Please refresh the page.');return window.PDFLib}
 
 /* ─── STATE ─── */
 var pdfBytes=null;         // original ArrayBuffer
@@ -541,7 +576,7 @@ var pageCount=0;
 var fileName='document.pdf';
 var currentPage=1;
 var zoom=1.5;
-var activeTool=null;       // 'text','image','rect','circle','line','highlight','draw','eraser'
+var activeTool=null;       // text, signature, stamp, shapes, highlight, draw, eraser
 var shapeType='rect';      // current shape sub-tool
 var operations=[];         // all editing ops
 var undoStack=[];          // for undo
@@ -583,6 +618,8 @@ async function init(){
   $('tbHighlight').onclick=function(){setTool('highlight')};
   $('tbDraw').onclick=function(){setTool('draw')};
   $('tbEraser').onclick=function(){setTool('eraser')};
+  $('tbSign').onclick=function(){setTool('signature')};
+  $('tbStamp').onclick=function(){setTool('stamp')};
   $('tbUndo').onclick=undo;
   $('tbRedo').onclick=redo;
   $('tbDL').onclick=savePDF;
@@ -651,6 +688,8 @@ async function init(){
       else if(e.key==='c'||e.key==='C'){setTool('circle');showShortcut('Circle')}
       else if(e.key==='l'||e.key==='L'){setTool('line');showShortcut('Line')}
       else if(e.key==='e'||e.key==='E'){setTool('eraser');showShortcut('Eraser')}
+      else if(e.key==='g'||e.key==='G'){setTool('signature');showShortcut('Signature')}
+      else if(e.key==='p'||e.key==='P'){setTool('stamp');showShortcut('Stamp')}
       else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goPage(-1)}
       else if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();goPage(1)}
       else if(e.key==='+'||e.key==='='){doZoom(.25)}
@@ -704,6 +743,8 @@ async function init(){
   if($('mHighlight'))$('mHighlight').onclick=function(){setTool('highlight')};
   if($('mDraw'))$('mDraw').onclick=function(){setTool('draw')};
   if($('mEraser'))$('mEraser').onclick=function(){setTool('eraser')};
+  if($('mSign'))$('mSign').onclick=function(){setTool('signature')};
+  if($('mStamp'))$('mStamp').onclick=function(){setTool('stamp')};
   if($('mUndo'))$('mUndo').onclick=undo;
   if($('mobDl'))$('mobDl').onclick=savePDF;
   if($('sbTog'))$('sbTog').onclick=function(){$('sb').classList.toggle('open')};
@@ -739,6 +780,7 @@ async function openPDF(file){
     $('tbFn').textContent=fileName;
     $('upScreen').style.display='none';
     $('ws').classList.add('on');
+    document.body.classList.add('pdf-editor-open');
 
     await renderThumbnails();
     await renderCurrentPage();
@@ -839,6 +881,32 @@ function drawOperation(ctx,op){
         ctx.fillText(line,op.x*s,op.y*s+i*Math.round(op.fontSize*s*1.3));
       });
       break;
+    case 'signature':
+      ctx.font='italic '+Math.round((op.fontSize||28)*s)+'px "Bricolage Grotesque","DM Sans",sans-serif';
+      ctx.fillStyle=op.color||'#111827';
+      ctx.textBaseline='top';
+      ctx.fillText(op.content,op.x*s,op.y*s);
+      ctx.strokeStyle=op.color||'#111827';
+      ctx.lineWidth=Math.max(1,1.3*s);
+      ctx.beginPath();
+      ctx.moveTo(op.x*s,(op.y+(op.fontSize||28)+7)*s);
+      ctx.lineTo((op.x+(op.width||180))*s,(op.y+(op.fontSize||28)+7)*s);
+      ctx.stroke();
+      break;
+    case 'stamp':
+      ctx.translate(op.x*s,op.y*s);
+      ctx.rotate((op.rotation|| -12)*Math.PI/180);
+      ctx.font='bold '+Math.round((op.fontSize||24)*s)+'px "DM Sans",sans-serif';
+      ctx.globalAlpha=op.opacity||0.78;
+      ctx.strokeStyle=op.color||'#dc2626';
+      ctx.fillStyle=op.color||'#dc2626';
+      ctx.lineWidth=Math.max(2,2*s);
+      var stampText=op.content||'APPROVED';
+      var sw=ctx.measureText(stampText).width;
+      var pad=10*s;
+      ctx.strokeRect(-pad,-(op.fontSize||24)*s-pad,sw+pad*2,(op.fontSize||24)*s+pad*1.75);
+      ctx.fillText(stampText,0,-(op.fontSize||24)*s*0.08);
+      break;
     case 'image':
       if(op._imgEl){
         ctx.drawImage(op._imgEl,op.x*s,op.y*s,op.width*s,op.height*s);
@@ -917,16 +985,17 @@ function drawOperation(ctx,op){
 function setTool(tool){
   activeTool=tool;
   // Update toolbar active states
-  var toolBtns={text:'tbText',highlight:'tbHighlight',draw:'tbDraw',eraser:'tbEraser'};
-  ['tbText','tbImage','tbShape','tbHighlight','tbDraw','tbEraser'].forEach(function(id){
+  ['tbText','tbImage','tbShape','tbHighlight','tbDraw','tbEraser','tbSign','tbStamp'].forEach(function(id){
     $(id).classList.remove('active');
   });
   // Mobile buttons
-  ['mText','mImage','mShape','mHighlight','mDraw','mEraser'].forEach(function(id){
+  ['mText','mImage','mShape','mHighlight','mDraw','mEraser','mSign','mStamp'].forEach(function(id){
     if($(id))$(id).classList.remove('active');
   });
 
   if(tool==='text'){$('tbText').classList.add('active');if($('mText'))$('mText').classList.add('active')}
+  else if(tool==='signature'){$('tbSign').classList.add('active');if($('mSign'))$('mSign').classList.add('active')}
+  else if(tool==='stamp'){$('tbStamp').classList.add('active');if($('mStamp'))$('mStamp').classList.add('active')}
   else if(tool==='highlight'){$('tbHighlight').classList.add('active');if($('mHighlight'))$('mHighlight').classList.add('active')}
   else if(tool==='draw'){$('tbDraw').classList.add('active');if($('mDraw'))$('mDraw').classList.add('active')}
   else if(tool==='eraser'){$('tbEraser').classList.add('active');if($('mEraser'))$('mEraser').classList.add('active')}
@@ -936,10 +1005,10 @@ function setTool(tool){
   showPropBar(tool);
 
   // Update cursor
-  if(tool==='text')overlay.style.cursor='text';
+  if(tool==='text'||tool==='signature')overlay.style.cursor='text';
   else if(tool==='draw'||tool==='highlight')overlay.style.cursor='crosshair';
   else if(tool==='eraser')overlay.style.cursor='none'; // custom cursor
-  else if(tool==='rect'||tool==='circle'||tool==='line')overlay.style.cursor='crosshair';
+  else if(tool==='rect'||tool==='circle'||tool==='line'||tool==='stamp')overlay.style.cursor='crosshair';
   else overlay.style.cursor='default';
 
   // Hide eraser cursor if not eraser
@@ -962,12 +1031,14 @@ function showPropBar(tool){
   $('propHighlight').style.display='none';
   $('propDraw').style.display='none';
   $('propEraser').style.display='none';
+  $('propStamp').style.display='none';
 
-  if(tool==='text'){$('propText').style.display='flex';bar.classList.add('on')}
+  if(tool==='text'||tool==='signature'){$('propText').style.display='flex';bar.classList.add('on')}
   else if(tool==='rect'||tool==='circle'||tool==='line'){$('propShape').style.display='flex';bar.classList.add('on')}
   else if(tool==='highlight'){$('propHighlight').style.display='flex';bar.classList.add('on')}
   else if(tool==='draw'){$('propDraw').style.display='flex';bar.classList.add('on')}
   else if(tool==='eraser'){$('propEraser').style.display='flex';bar.classList.add('on')}
+  else if(tool==='stamp'){$('propStamp').style.display='flex';bar.classList.add('on')}
   else{bar.classList.remove('on')}
 }
 
@@ -1036,7 +1107,22 @@ function handlePointerDown(coords){
 
   switch(activeTool){
     case 'text':
-      showTextInput(coords.x,coords.y,un.x,un.y);
+      showTextInput(coords.x,coords.y,un.x,un.y,'text');
+      break;
+    case 'signature':
+      showTextInput(coords.x,coords.y,un.x,un.y,'signature');
+      break;
+    case 'stamp':
+      addOp({
+        type:'stamp',page:currentPage,
+        x:un.x,y:un.y,
+        content:$('propStampText').value,
+        color:$('propStampColor').value,
+        fontSize:24,
+        rotation:-12,
+        opacity:0.78
+      });
+      redrawOverlay();
       break;
     case 'rect':
     case 'circle':
@@ -1177,7 +1263,7 @@ function handlePointerUp(){
 }
 
 /* ─── TEXT INPUT ─── */
-function showTextInput(cx,cy,ux,uy){
+function showTextInput(cx,cy,ux,uy,mode){
   var ti=$('textInput');
   var ta=$('tioText');
   ti.style.display='block';
@@ -1185,10 +1271,14 @@ function showTextInput(cx,cy,ux,uy){
   ti.style.top=cy+'px';
   ti._ux=ux;
   ti._uy=uy;
+  ti._mode=mode||'text';
   var fs=parseInt($('propFontSize').value)||16;
+  if(ti._mode==='signature')fs=Math.max(22,fs);
   ta.style.fontSize=Math.round(fs*zoom)+'px';
   ta.style.color=$('propTextColor').value;
+  ta.style.fontStyle=ti._mode==='signature'?'italic':'normal';
   ta.style.fontWeight=$('propBold').classList.contains('on')?'bold':'normal';
+  ta.placeholder=ti._mode==='signature'?'Type your signature...':'Type here...';
   ta.value='';
   ta.focus();
 }
@@ -1198,6 +1288,21 @@ function confirmText(){
   var ta=$('tioText');
   var text=ta.value.trim();
   if(!text){cancelText();return}
+  if(ti._mode==='signature'){
+    var sigSize=Math.max(22,parseInt($('propFontSize').value)||28);
+    addOp({
+      type:'signature',page:currentPage,
+      x:ti._ux,y:ti._uy,
+      content:text,
+      fontSize:sigSize,
+      color:$('propTextColor').value,
+      width:Math.max(150,text.length*sigSize*0.58)
+    });
+    ti.style.display='none';
+    ta.value='';
+    redrawOverlay();
+    return;
+  }
   addOp({
     type:'text',page:currentPage,
     x:ti._ux,y:ti._uy,
@@ -1214,6 +1319,7 @@ function confirmText(){
 function cancelText(){
   $('textInput').style.display='none';
   $('tioText').value='';
+  $('tioText').style.fontStyle='normal';
 }
 
 /* ─── IMAGE TOOL ─── */
@@ -1508,15 +1614,7 @@ async function savePDF(){
   showProc('Saving PDF...','Applying your edits');
 
   try{
-    // Load pdf-lib dynamically
-    if(!window.PDFLib){
-      var s=document.createElement('script');
-      s.src='https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
-      document.head.appendChild(s);
-      await new Promise(function(r,j){s.onload=r;s.onerror=j});
-    }
-
-    var PDFLib=window.PDFLib;
+    var PDFLib=await ensurePdfLib();
     var pdfDoc=await PDFLib.PDFDocument.load(pdfBytes);
     var pages=pdfDoc.getPages();
 
@@ -1572,6 +1670,54 @@ async function applyOpToPdfLib(pdfDoc,page,op,pH,pW){
           font:font,
           color:hexToRgb(op.color)
         });
+      });
+      break;
+
+    case 'signature':
+      var sigFont=await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaOblique);
+      var sigSize=op.fontSize||28;
+      var sigY=pH-op.y-sigSize;
+      page.drawText(op.content,{
+        x:op.x,
+        y:sigY,
+        size:sigSize,
+        font:sigFont,
+        color:hexToRgb(op.color||'#111827')
+      });
+      page.drawLine({
+        start:{x:op.x,y:sigY-7},
+        end:{x:op.x+(op.width||180),y:sigY-7},
+        thickness:1.2,
+        color:hexToRgb(op.color||'#111827')
+      });
+      break;
+
+    case 'stamp':
+      var stampFont=await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+      var stampSize=op.fontSize||24;
+      var stampColor=hexToRgb(op.color||'#dc2626');
+      var textWidth=stampFont.widthOfTextAtSize(op.content||'APPROVED',stampSize);
+      var pad=10;
+      var stampY=pH-op.y;
+      var angle=PDFLib.degrees(op.rotation||-12);
+      page.drawRectangle({
+        x:op.x-pad,
+        y:stampY-stampSize-pad,
+        width:textWidth+pad*2,
+        height:stampSize+pad*1.7,
+        borderWidth:2,
+        borderColor:stampColor,
+        opacity:op.opacity||0.78,
+        rotate:angle
+      });
+      page.drawText(op.content||'APPROVED',{
+        x:op.x,
+        y:stampY-stampSize*0.55,
+        size:stampSize,
+        font:stampFont,
+        color:stampColor,
+        opacity:op.opacity||0.78,
+        rotate:angle
       });
       break;
 
@@ -1713,6 +1859,7 @@ function closeWorkspace(){
     if(!confirm('You have unsaved edits. Close anyway?'))return;
   }
   $('ws').classList.remove('on');
+  document.body.classList.remove('pdf-editor-open');
   $('upScreen').style.display='';
   pjsDoc=null;
   pdfBytes=null;

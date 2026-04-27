@@ -728,6 +728,15 @@ For the second Swahili fintech layer, extend `/sw/fintech/` beyond money movemen
 - Use paired English tool pages for formulas, inputs, scripts, provider assumptions, and disclaimer posture. Do not invent rates, provider rules, or legal requirements.
 
 
+
+### Agriculture and Smallholder Business Pattern
+
+Use `/sw/kilimo/` as the durable Swahili hub for top-level agriculture, farm planning, smallholder finance, and agri-business. Group the hub in this order: planting season planning, seed/fertilizer/irrigation, yield/harvest/farm profit, loans/payroll/farm finance, poultry/livestock/fish/greenhouse, cassava processing/export docs, then crop insurance plus business/VAT/salary links.
+
+Retain agriculture and trade terms only when they help search or clarity: NPK, ROI, SACCO, greenhouse, cassava, AfCFTA, HS code, export docs, and subsidy. Explain each retained term in Swahili context on first use.
+
+Do not overclaim yields, live input prices, subsidy access, loan approval, harvest dates, export clearance, insurance coverage, or agronomic accuracy. Use paired English agriculture pages for supported coverage, scripts, assumptions, formulas, and disclaimer posture. Country-specific agriculture subroutes should remain out of scope unless explicitly batched.
+
 ### Property, Housing, and Land Pattern
 
 Use `/sw/nyumba-na-ardhi/` as the durable Swahili hub for property planning. Group pages in this order: buying and mortgage, renting and tenancy, land title and registry, taxes and transfer costs, investment and diaspora, construction and permits, then cross-links to insurance, fintech loans, salary/PAYE, VAT, and business compliance.
@@ -745,6 +754,17 @@ For Swahili insurance expansion, treat household protection, health cover, vehic
 - Explain retained terms in Kiswahili on first use instead of leaving them as unexplained English labels.
 - Use paired English insurance pages as the source of country coverage, scripts, assumptions, formulas, and disclaimer posture. Do not invent premiums, provider rules, legal requirements, country coverage, or live quote accuracy.
 - If the English page covers 15 countries, the Swahili page must say 15. If it covers 54 countries, the Swahili page can say 54. Engine-backed single-page calculators should not claim country-level pages that were not created.
+
+
+### Career, Jobs, CV, and Workplace Documents Pattern
+
+Use `/sw/kazi-na-ajira/` as the durable Swahili hub for careers, job applications, CVs, offers, salary negotiation, freelancing, side hustles, workplace documents, payslips, and working-day planning. Group the hub in this order: CV/barua ya ombi/profile ya kazi, interview/offer/salary negotiation, career growth/switching/retirement, freelance/side hustle/pricing, contracts/payslip/working days, teacher/domestic-worker salary, then links to education, PAYE, insurance, and fintech.
+
+Retain career terms only when they match how users search or read workplace documents: `CV`, `resume`, `LinkedIn`, `personal brand`, `freelance`, `side hustle`, `payslip`, `offer`, `negotiation`, `interview`, and `teacher scale`. Explain each term in Swahili context rather than leaving English labels unsupported.
+
+`jobs/index.html` is a redirect shell and should not be paired or edited during this lane. Pair `career/index.html` to `/sw/kazi-na-ajira/`, polish existing Sw CV and cover-letter pages in place, and link existing salary comparison, leave, workers-comp, salary/PAYE, and education routes instead of duplicating them.
+
+Never overclaim job outcomes, legal enforceability, salary levels, promotion timelines, freelance market rates, retirement outcomes, payslip legality, or contract validity. Use paired English career pages for source behavior, scripts, inputs, assumptions, and disclaimer posture, and keep Swahili pages as planning aids that point users to employers, HR, official portals, lawyers, accountants, and qualified advisors.
 
 ## Recommended Execution Order
 
@@ -815,3 +835,49 @@ Swahili should expand like a product line:
 - supporting content fifth
 
 If there is a tradeoff, choose fewer but better Swahili pages with cleaner SEO, better copy, and clearer ownership.
+
+### Trade, Customs, Shipping, and Trade Finance Pattern
+
+Use `/sw/biashara-ya-nje/` as the durable Swahili hub for import, export, customs, shipping, and trade finance. Group the hub in this order: ushuru/forodha/gharama iliyofika, HS codes/AfCFTA/cheti cha asili, export/import documents, shipping/weight/demurrage, LC/trade finance/international payments, mini-importation, then links to FX, VAT, TIN, kilimo, and broader business compliance.
+
+Retain trade terms only when they match how users search or read trade documents: `AfCFTA`, `HS code`, `Incoterms`, `CIF`, `FOB`, `LC`, `T/T`, `CAD`, `SBLC`, `Bill of Lading`, `demurrage`, and `landed cost`. Explain each term in Swahili context on first use instead of leaving it as unexplained English.
+
+Never overclaim customs rates, HS classification, AfCFTA eligibility, bank fees, port charges, shipping timelines, clearance requirements, or legal enforceability. Use paired English trade pages for source behavior, scripts, assumptions, supported coverage, and disclaimer posture. Do not duplicate agriculture export-docs or vehicle/car import surfaces unless a future batch explicitly resolves the product-truth pairing.
+
+
+### Transport, Vehicles, Fuel, and Logistics Pattern
+
+Use `/sw/usafiri-na-magari/` as the durable Swahili hub for transport, vehicles, fuel, routes, urban mobility, delivery, fleet, and logistics. Group the hub in this order: importing a vehicle and customs costs, car loans and ownership cost, fuel/toll/trip cost, ride-hailing and urban fares, Boda Boda/Okada/Matatu/Danfo/Trotro, delivery/fleet/logistics, then registration/roadworthiness/insurance/tracker.
+
+Retain transport terms only when they match how users search or read provider documents: `ride-hailing`, `Boda Boda`, `Okada`, `Matatu`, `Danfo`, `Trotro`, `fleet`, `last-mile`, `toll`, `roadworthiness`, `tracker`, `CIF`, and `landed cost`. Explain each term in Swahili context on first use instead of leaving it as an unexplained English label.
+
+Never overclaim live fuel prices, fares, tolls, import costs, customs duty, registration outcomes, roadworthiness status, insurance status, tracker savings, delivery quotes, or fleet savings. Use paired English transport pages for behavior, assumptions, supported coverage, scripts, and disclaimer posture. Do not localize the car-price directory under `cars/index.html` until a separate product-truth review scopes that surface.
+
+
+### Health, Family Health, and Care-Cost Pattern
+
+Use `/sw/afya/` as the durable Swahili hub for health, family health, risk checks, and care-cost planning. Group the hub in this order: body measurements and nutrition, blood pressure/diabetes/risk checks, malaria/water/environmental safety, fertility/pregnancy/child growth, vaccines/genotype/family health, dosage/lab reports/hospital costs, then health insurance and family protection.
+
+Retain medical terms only when they match user search or clinical documents: `BMI`, `BP`, `genotype`, `AA`, `AS`, `SS`, `malaria`, `diabetes`, `ovulation`, `vaccine`, `dosage`, and `lab report`. Explain each in Swahili context on first use and keep the tone calm, practical, and non-alarming.
+
+Every risk, dosage, medical-report, pregnancy, vaccine, child-growth, and water-safety page must say it is informational and not a substitute for a clinician, emergency care, pharmacist, lab, ministry guidance, or local public-health authority. Do not invent medical guidance, thresholds, diagnoses, vaccine schedules, treatment advice, or dosing rules. Use paired English pages for source behavior, assumptions, scripts, and disclaimer posture.
+
+For duplicate English routes, prefer the `health/` source when it is the stronger health surface: `health/bmi-calculator/`, `health/calorie-counter/`, and `health/pregnancy-due-date/`. Do not add Swahili hreflang to duplicate `tools/` routes unless that exact route is intentionally paired in a future batch.
+
+### Education, Exams, Scholarships, and Student Finance Pattern
+
+Use `/sw/elimu/` as the durable Swahili hub for education, exams, scholarships, student finance, and study tools. Group the hub in this order: education hub and study plan, exams and grade calculators, GPA/CGPA and grade tracking, scholarships/fees/student loans, university/degree/study-abroad pathways, flashcards/timetables/learning tools, then links to student budget, health, work, and fintech.
+
+Retain education terms only when they match official exam names, scholarship forms, or user search: `WAEC`, `NECO`, `JAMB`, `KCSE`, `APS`, `Matric`, `GPA`, `CGPA`, `IELTS`, `HELB`, `NSFAS`, `NYSC`, and `NSS`. Explain each retained term in Swahili framing instead of leaving acronyms unsupported.
+
+For the overlapping student-loan routes, use `tools/student-loan-repay/` as the paired source for Swahili repayment planning unless a future product-truth review explicitly canonicalizes `tools/student-loan/`. Do not add Swahili hreflang to the duplicate route unless that route is intentionally localized.
+
+Never overclaim official cutoffs, admission decisions, scholarship eligibility, loan approval, school fees, degree recognition, visa outcomes, or study-abroad success. Use paired English pages for formulas, supported inputs, scripts, assumptions, and disclaimer posture, and keep Swahili pages as planning aids that point users back to official portals and qualified advisors.
+
+### Government, Identity, and Civic Documents Pattern
+
+For Swahili civic identity pages, keep `/sw/zana/mwongozo-kitambulisho-taifa/` as a practical planning surface for national ID systems such as `NIN`, `Ghana Card`, `Huduma Namba`, `Smart ID`, `NIDA`, and `Indangamuntu`.
+
+Retain official ID names and acronyms when they match how users search or read government forms, then explain them in Kiswahili context on first use. Link identity pages to country hubs, TIN, VAT, business registration, education, health, and salary/PAYE only where those workflows naturally require identity or KYC.
+
+Never overclaim live government requirements, legal status, processing timelines, fees, enrollment-center availability, travel eligibility, or KYC acceptance. Use the paired English civic page as the source for supported countries, scripts, assumptions, and disclaimer posture. If a future passport, voter, visa, or civil-certificate route overlaps with the ID page, inspect product truth first and pair only the real source route.
