@@ -91,6 +91,37 @@ function findHTMLFiles(dir) {
   return results;
 }
 
+function existsPathCaseSensitive(targetPath) {
+  const resolved = path.resolve(targetPath);
+  if (!fs.existsSync(resolved)) return false;
+
+  const parsed = path.parse(resolved);
+  let current = parsed.root;
+  const parts = path.relative(parsed.root, resolved).split(path.sep).filter(Boolean);
+
+  for (const part of parts) {
+    let entries;
+    try {
+      entries = fs.readdirSync(current);
+    } catch {
+      return false;
+    }
+    if (!entries.includes(part)) return false;
+    current = path.join(current, part);
+  }
+
+  return true;
+}
+
+function existsFileCaseSensitive(targetPath) {
+  if (!existsPathCaseSensitive(targetPath)) return false;
+  try {
+    return fs.statSync(targetPath).isFile();
+  } catch {
+    return false;
+  }
+}
+
 function extractLinks(html) {
   const links = [];
   const re = /href=["']([^"'#?]+)/g;
@@ -117,7 +148,7 @@ function resolveLink(href, redirectRules) {
   ];
 
   for (const t of tries) {
-    if (fs.existsSync(t)) return true;
+    if (existsFileCaseSensitive(t)) return true;
   }
   if (redirectRules.some((rule) => rule.re.test(target))) return true;
   return false;

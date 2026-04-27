@@ -155,7 +155,24 @@ async function run() {
   }
 
   // Find all non-min JS files across the entire project
-  const SKIP_DIRS = ['node_modules', '.git', 'scripts', 'netlify', '.claude'];
+  const SKIP_DIRS = [
+    'node_modules',
+    '.git',
+    'scripts',
+    'netlify',
+    '.claude',
+    '.codex',
+    '.jamb',
+    '.jamb-tools',
+    '.netlify',
+    '.playwright',
+    '.playwright-cli',
+    '.tmp-validation',
+    'dist',
+    'output',
+    'reports',
+    'test-results',
+  ];
   function walkAll(dir) {
     const results = [];
     if (!fs.existsSync(dir)) return results;
