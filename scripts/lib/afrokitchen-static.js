@@ -14,6 +14,9 @@ const MANIFEST_PATH = path.join(TOOL_DIR, "seo-manifest.json");
 const ROUTES_PATH = path.join(TOOL_DIR, "static-routes.js");
 const SITE_ORIGIN = "https://afrotools.com";
 const TOOL_OG_IMAGE = `${SITE_ORIGIN}/assets/img/tools/afrokitchen.webp`;
+const LOCAL_RECIPE_IMAGE_ALIASES = {
+  "jollof-rice-ng": ["ng_jollof_rice"]
+};
 const SUPABASE_URL =
   process.env.SUPABASE_AUTH_URL || "https://zpclagtgczsygrgztlts.supabase.co";
 const SUPABASE_KEY =
@@ -139,20 +142,75 @@ function loadAfroKitchenEngine() {
 
 function loadRecipeImages() {
   const imagePath = path.join(TOOL_DIR, "recipe-images.json");
-  if (!fs.existsSync(imagePath)) return {};
+  const overridePath = path.join(TOOL_DIR, "recipe-images-override.json");
+  let recipes = {};
 
-  try {
-    const parsed = JSON.parse(fs.readFileSync(imagePath, "utf8"));
-    return parsed && parsed.recipes ? parsed.recipes : {};
-  } catch (error) {
-    console.warn("Unable to parse recipe-images.json, falling back to tool image.", error.message);
-    return {};
+  if (fs.existsSync(imagePath)) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(imagePath, "utf8"));
+      recipes = parsed && parsed.recipes ? parsed.recipes : {};
+    } catch (error) {
+      console.warn("Unable to parse recipe-images.json, falling back to tool image.", error.message);
+    }
   }
+
+  if (fs.existsSync(overridePath)) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(overridePath, "utf8"));
+      const overrides = parsed && parsed.recipes ? parsed.recipes : {};
+      Object.keys(overrides).forEach((slug) => {
+        if (slug.startsWith("_")) return;
+        recipes[slug] = {
+          ...recipes[slug],
+          ...overrides[slug],
+          manual_override: true
+        };
+      });
+    } catch (error) {
+      console.warn("Unable to parse recipe-images-override.json.", error.message);
+    }
+  }
+
+  return recipes;
+}
+
+function findLocalRecipeImage(slug) {
+  const safeSlug = slugify(slug);
+  if (!safeSlug) return null;
+
+  const aliases = LOCAL_RECIPE_IMAGE_ALIASES[safeSlug] || [];
+  for (const asset of aliases) {
+    const relativePath = `/assets/img/kitchen/${asset}`;
+    const absolutePath = path.join(ROOT, relativePath.replace(/^\//, ""));
+    if (fs.existsSync(absolutePath)) {
+      return relativePath;
+    }
+  }
+
+  const extensions = [".webp", ".jpg", ".jpeg", ".png"];
+  for (const extension of extensions) {
+    const relativePath = `/assets/img/kitchen/${safeSlug}${extension}`;
+    const absolutePath = path.join(ROOT, relativePath.replace(/^\//, ""));
+    if (fs.existsSync(absolutePath)) {
+      return relativePath;
+    }
+  }
+
+  return null;
 }
 
 function resolveRecipeMedia(recipe, recipeImages) {
+  const localImage = findLocalRecipeImage(recipe.slug);
+  if (localImage) {
+    return {
+      pageImage: localImage,
+      socialImage: `${SITE_ORIGIN}${localImage}`,
+      credit: null
+    };
+  }
+
   const fromManifest = recipeImages[recipe.slug];
-  if (fromManifest && fromManifest.full) {
+  if (fromManifest && fromManifest.full && fromManifest.manual_override) {
     return {
       pageImage: fromManifest.full,
       socialImage: fromManifest.full,
@@ -902,6 +960,7 @@ module.exports = {
   fallbackCollectionUrl,
   loadAfroKitchenEngine,
   loadRecipeImages,
+  findLocalRecipeImage,
   resolveRecipeMedia,
   buildManifest,
   writeManifest,

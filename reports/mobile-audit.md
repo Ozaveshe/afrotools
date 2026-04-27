@@ -1,26 +1,26 @@
 # Mobile Audit
 
-Generated: 2026-04-24T11:56:47.611Z
+Generated: 2026-04-24T22:24:31.424Z
 
 ## Scope
 
-- HTML pages audited: 6054
-- Pages with issues: 911
-- Pages without issues: 5143
-- Pages using shared CSS foundation: 5815
-- Pages using shared navbar: 5777
+- HTML pages audited: 6108
+- Pages with issues: 907
+- Pages without issues: 5201
+- Pages using shared CSS foundation: 5868
+- Pages using shared navbar: 5830
 
 ## Top 20 Highest-Leverage Issue Clusters
 
 | # | Cluster | Pages | Score | Shared levers | Sample pages |
 | --- | --- | ---: | ---: | --- | --- |
-| 1 | sw / zana: Multi-column layout stays multi-column too long | 92 | 2112 | shared early-collapse layout pattern<br>sw/zana/ada-lc/index.html<br>sw/zana/ada-pesa-simu/index.html<br>sw/zana/barua-ombi/index.html | `sw/zana/ada-lc/index.html`<br>`sw/zana/ada-pesa-simu/index.html`<br>`sw/zana/barua-ombi/index.html` |
+| 1 | sw / zana: Multi-column layout stays multi-column too long | 32 | 792 | shared early-collapse layout pattern<br>sw/zana/ada-lc/index.html<br>sw/zana/ada-pesa-simu/index.html<br>sw/zana/barua-ombi/index.html | `sw/zana/ada-lc/index.html`<br>`sw/zana/ada-pesa-simu/index.html`<br>`sw/zana/barua-ombi/index.html` |
 | 2 | fr / tools: Multi-column layout stays multi-column too long | 31 | 770 | shared early-collapse layout pattern<br>assets/css/import-duty.css<br>assets/css/invoice-generator.css<br>assets/css/japa-calculator.css | `fr/tools/calculateur-hypothecaire/index.html`<br>`fr/tools/calculateur-japa/index.html`<br>`fr/tools/calculateur-paye/index.html` |
 | 3 | sw / zana: Form controls likely below 16px | 25 | 554 | shared mobile form sizing pattern<br>sw/zana/ada-lc/index.html<br>sw/zana/ada-pesa-simu/index.html<br>sw/zana/bei-mafuta/index.html | `sw/zana/ada-lc/index.html`<br>`sw/zana/ada-pesa-simu/index.html`<br>`sw/zana/bei-mafuta/index.html` |
 | 4 | tools / afrostream: Multi-column layout stays multi-column too long | 14 | 326 | shared early-collapse layout pattern<br>tools/afrostream/university/university.css<br>tools/afrostream/calendar.html<br>tools/afrostream/creator.html | `tools/afrostream/calendar.html`<br>`tools/afrostream/creator.html`<br>`tools/afrostream/index.html` |
 | 5 | telecom: Form controls likely below 16px | 14 | 284 | shared mobile form sizing pattern<br>telecom/airtime-value/index.html<br>telecom/bulk-sms-pricing/index.html<br>telecom/business-internet/index.html | `telecom/airtime-value/index.html`<br>`telecom/bulk-sms-pricing/index.html`<br>`telecom/business-internet/index.html` |
-| 6 | tools / afropoints: Multi-column layout stays multi-column too long | 9 | 228 | shared early-collapse layout pattern<br>tools/afropoints/guide.css<br>tools/afropoints/account-system.css<br>tools/afropoints/style.css | `tools/afropoints/contributor-playbook.html`<br>`tools/afropoints/crypto-payout.html`<br>`tools/afropoints/data-buyers.html` |
-| 7 | sw / zana: Tap targets likely below 44px | 10 | 210 | shared 44px tap target pattern<br>sw/zana/ada-lc/index.html<br>sw/zana/gharama-usafirishaji/index.html<br>sw/zana/jikoni/index.html | `sw/zana/ada-lc/index.html`<br>`sw/zana/gharama-usafirishaji/index.html`<br>`sw/zana/jikoni/index.html` |
+| 6 | sw / zana: Tap targets likely below 44px | 11 | 230 | shared 44px tap target pattern<br>sw/zana/ada-lc/index.html<br>sw/zana/gharama-usafirishaji/index.html<br>sw/zana/jikoni/index.html | `sw/zana/ada-lc/index.html`<br>`sw/zana/gharama-usafirishaji/index.html`<br>`sw/zana/jikoni/index.html` |
+| 7 | tools / afropoints: Multi-column layout stays multi-column too long | 9 | 228 | shared early-collapse layout pattern<br>tools/afropoints/guide.css<br>tools/afropoints/account-system.css<br>tools/afropoints/style.css | `tools/afropoints/contributor-playbook.html`<br>`tools/afropoints/crypto-payout.html`<br>`tools/afropoints/data-buyers.html` |
 | 8 | telecom: Multi-column layout stays multi-column too long | 9 | 210 | shared early-collapse layout pattern<br>telecom/airtime-value/index.html<br>telecom/bulk-sms-pricing/index.html<br>telecom/business-internet/index.html | `telecom/airtime-value/index.html`<br>`telecom/bulk-sms-pricing/index.html`<br>`telecom/business-internet/index.html` |
 | 9 | tools / afrostream: Tap targets likely below 44px | 9 | 208 | shared 44px tap target pattern<br>tools/afrostream/style.css<br>tools/afrostream/admin.html<br>tools/afrostream/article.html | `tools/afrostream/admin.html`<br>`tools/afrostream/article.html`<br>`tools/afrostream/calendar.html` |
 | 10 | crypto: Multi-column layout stays multi-column too long | 9 | 202 | shared early-collapse layout pattern<br>assets/css/crypto.css<br>crypto/address-validator/index.html<br>crypto/dca-calculator/index.html | `crypto/address-validator/index.html`<br>`crypto/dca-calculator/index.html`<br>`crypto/exchange-ratings/index.html` |
@@ -74,23 +74,23 @@ Generated: 2026-04-24T11:56:47.611Z
 
 | Lever | Pages | Score |
 | --- | ---: | ---: |
-| shared early-collapse layout pattern | 729 | 17544 |
+| shared early-collapse layout pattern | 723 | 17412 |
 | shared mobile form sizing pattern | 498 | 11254 |
-| shared 44px tap target pattern | 339 | 7172 |
-| shared sidebar collapse pattern | 188 | 4512 |
-| sw/zana/ada-lc/index.html | 127 | 2876 |
-| sw/zana/ada-pesa-simu/index.html | 117 | 2666 |
-| sw/zana/barua-ombi/index.html | 92 | 2112 |
+| shared 44px tap target pattern | 394 | 8272 |
+| shared sidebar collapse pattern | 242 | 5808 |
+| sw/zana/ada-lc/index.html | 68 | 1576 |
+| sw/zana/ada-pesa-simu/index.html | 57 | 1346 |
 | assets/css/japa-calculator.css | 33 | 822 |
 | assets/css/invoice-generator.css | 32 | 798 |
 | assets/css/import-duty.css | 32 | 794 |
+| sw/zana/barua-ombi/index.html | 32 | 792 |
 | sw/zana/bei-mafuta/index.html | 25 | 554 |
 | telecom/airtime-value/index.html | 23 | 494 |
 
 ## Recommended Next-Fix Order
 
 1. sw / zana: Multi-column layout stays multi-column too long
-   92 pages / 2112 score; strong shared lever through shared early-collapse layout pattern.
+   32 pages / 792 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, sw/zana/ada-lc/index.html, sw/zana/ada-pesa-simu/index.html, sw/zana/barua-ombi/index.html
 2. fr / tools: Multi-column layout stays multi-column too long
    31 pages / 770 score; strong shared lever through shared early-collapse layout pattern.
@@ -104,12 +104,12 @@ Generated: 2026-04-24T11:56:47.611Z
 5. telecom: Form controls likely below 16px
    14 pages / 284 score; strong shared lever through shared mobile form sizing pattern.
    Primary levers: shared mobile form sizing pattern, telecom/airtime-value/index.html, telecom/bulk-sms-pricing/index.html, telecom/business-internet/index.html
-6. tools / afropoints: Multi-column layout stays multi-column too long
+6. sw / zana: Tap targets likely below 44px
+   11 pages / 230 score; strong shared lever through shared 44px tap target pattern.
+   Primary levers: shared 44px tap target pattern, sw/zana/ada-lc/index.html, sw/zana/gharama-usafirishaji/index.html, sw/zana/jikoni/index.html
+7. tools / afropoints: Multi-column layout stays multi-column too long
    9 pages / 228 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, tools/afropoints/guide.css, tools/afropoints/account-system.css, tools/afropoints/style.css
-7. sw / zana: Tap targets likely below 44px
-   10 pages / 210 score; strong shared lever through shared 44px tap target pattern.
-   Primary levers: shared 44px tap target pattern, sw/zana/ada-lc/index.html, sw/zana/gharama-usafirishaji/index.html, sw/zana/jikoni/index.html
 8. telecom: Multi-column layout stays multi-column too long
    9 pages / 210 score; strong shared lever through shared early-collapse layout pattern.
    Primary levers: shared early-collapse layout pattern, telecom/airtime-value/index.html, telecom/bulk-sms-pricing/index.html, telecom/business-internet/index.html

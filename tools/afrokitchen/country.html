@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=20260424a">
+<link rel="stylesheet" href="responsive-fixes.css?v=20260425a">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/afrokitchen/" />
 <meta property="og:locale" content="en_US">
@@ -98,9 +99,9 @@
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
-<script src="image-pipeline.js?v=20260416a"></script>
-<script src="static-routes.js?v=20260416a"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
+<script src="image-pipeline.js?v=20260425a"></script>
+<script src="static-routes.js?v=20260424b"></script>
 <script>
 (function () {
   var AK = AfroKitchenEngine;
@@ -110,6 +111,21 @@
       return '/tools/afrokitchen/recipes/' + encodeURIComponent(slug) + '/';
     }
   };
+  var AK_CATEGORY_OPTIONS = [
+    { id: 'main', label: 'Main dishes', cardLabel: 'Main dish' },
+    { id: 'stew', label: 'Stews', cardLabel: 'Stew' },
+    { id: 'soup', label: 'Soups', cardLabel: 'Soup' },
+    { id: 'sauce', label: 'Sauces', cardLabel: 'Sauce' },
+    { id: 'side', label: 'Sides', cardLabel: 'Side' },
+    { id: 'snack', label: 'Snacks', cardLabel: 'Snack' },
+    { id: 'breakfast', label: 'Breakfast' },
+    { id: 'dessert', label: 'Desserts', cardLabel: 'Dessert' },
+    { id: 'drink', label: 'Drinks', cardLabel: 'Drink' }
+  ];
+  function categoryLabel(value) {
+    var category = AK_CATEGORY_OPTIONS.find(function (item) { return item.id === value; });
+    return category ? (category.cardLabel || category.label) : 'AfroKitchen';
+  }
   function syncPreferredUrlMetadata(url) {
     if (!url) return;
     var canonical = document.querySelector('link[rel="canonical"]');
@@ -126,19 +142,6 @@
   var params = new URLSearchParams(window.location.search);
   var code = params.get('country') || params.get('code');
   var country = code ? AK.COUNTRIES[code] : null;
-  var categoryLabels = {
-    main: 'Main dish',
-    soup_stew: 'Soup or stew',
-    rice: 'Rice dish',
-    snack: 'Snack',
-    dessert: 'Dessert',
-    drink: 'Drink',
-    breakfast: 'Breakfast',
-    side: 'Side',
-    street_food: 'Street food',
-    starter: 'Starter'
-  };
-
   if (!country) {
     document.getElementById('country-title').textContent = 'Country Not Found';
     document.getElementById('recipes-loading').style.display = 'none';
@@ -158,7 +161,7 @@
 
   // Populate filters
   var catSelect = document.getElementById('filter-category');
-  AK.CATEGORIES.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.label; catSelect.appendChild(o); });
+  AK_CATEGORY_OPTIONS.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.label; catSelect.appendChild(o); });
   var diffSelect = document.getElementById('filter-difficulty');
   AK.DIFFICULTIES.forEach(function (d) { var o = document.createElement('option'); o.value = d; o.textContent = d.charAt(0).toUpperCase() + d.slice(1); diffSelect.appendChild(o); });
 
@@ -183,7 +186,7 @@
       card.className = 'ak-recipe-card';
       card.href = AKRoutes.recipe(r.slug);
       var thumbHtml = AKImages.createCardSlotMarkup(r, {
-        label: categoryLabels[r.category] || 'AfroKitchen',
+        label: categoryLabel(r.category),
         title: r.name,
         alt: r.image_alt || r.name
       });

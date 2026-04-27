@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=20260424a">
+<link rel="stylesheet" href="responsive-fixes.css?v=20260425a">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroKitchen — African Recipes","description":"165+ authentic African recipes from all 54 countries. Step-by-step timers, serving scaling, ingredient costs, and AI cooking advisor.","url":"https://afrotools.com/tools/afrokitchen/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AfroKitchen — African Recipes","url":"https://afrotools.com/tools/afrokitchen/","description":"165+ authentic African recipes from all 54 countries. Step-by-step timers, serving scaling, ingredient costs, and AI cooking advisor.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afrokitchen.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many African recipes does AfroKitchen have?","acceptedAnswer":{"@type":"Answer","text":"AfroKitchen currently has over 165 authentic recipes from all 54 African countries, spanning West African, East African, North African, Southern African, and Central African cuisines."}},{"@type":"Question","name":"Can I adjust serving sizes?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every recipe supports dynamic serving size adjustment. Change the number of servings and all ingredient quantities update automatically."}},{"@type":"Question","name":"Does AfroKitchen show ingredient costs?","acceptedAnswer":{"@type":"Answer","text":"Yes. Ingredient costs are shown in local African currencies including NGN, KES, GHS, and ZAR, so you can estimate how much a dish will cost to make."}},{"@type":"Question","name":"Is AfroKitchen free to use?","acceptedAnswer":{"@type":"Answer","text":"Completely free. Browse recipes, use cooking timers, adjust servings, and get AI cooking advice — all at no cost."}},{"@type":"Question","name":"Can I submit my own recipe?","acceptedAnswer":{"@type":"Answer","text":"Yes! Click the 'Submit a Recipe' button to share your family's traditional dish with the AfroKitchen community."}}]}</script>
@@ -165,7 +166,7 @@
       <div class="ak-support-card rv visible">
         <div class="ak-section-kicker">Static route wave</div>
         <h2 class="ak-section-title">Manifest-driven AfroKitchen routes now front the archive</h2>
-        <p class="ak-section-sub">This production wave ships 165 clean recipe routes and 54 country hubs from the verified AfroKitchen inventory. Country hubs map the full archive, and clean recipe routes are preferred wherever this wave has generated them.</p>
+        <p class="ak-section-sub">This production wave ships 164 clean recipe routes and 54 country hubs from the verified AfroKitchen inventory. Country hubs map the full archive, and clean recipe routes are preferred wherever this wave has generated them.</p>
         <div class="ak-hero-route-grid">
           <a class="ak-support-link" href="/tools/afrokitchen/recipes/couscous-royal-dz/">Couscous Royal</a>
 <a class="ak-support-link" href="/tools/afrokitchen/recipes/amiwo-bj/">Amiwo</a>
@@ -489,7 +490,7 @@
 <a class="ak-country-chip" href="/tools/afrokitchen/countries/zimbabwe/">
         <span class="ak-country-chip-flag">ZW</span>
         <span class="ak-country-chip-copy"><strong>Zimbabwe</strong><small>Southern Africa</small></span>
-        <span class="ak-country-chip-count"><strong>6</strong><small>Dishes</small></span>
+        <span class="ak-country-chip-count"><strong>5</strong><small>Dishes</small></span>
       </a>
 <!-- ak-static-country-links:end -->
       </div>
@@ -627,6 +628,7 @@
 
 
 
+
 <!-- seo-internal-links -->
 <nav class="seo-links" aria-label="Afrokitchen — All Pages">
 <h2 class="seo-links-title">Afrokitchen — All Pages</h2>
@@ -639,9 +641,9 @@
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
-<script src="image-pipeline.js?v=20260416a"></script>
-<script src="static-routes.js?v=20260416a"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
+<script src="image-pipeline.js?v=20260425a"></script>
+<script src="static-routes.js?v=20260424b"></script>
 <script>
 (function () {
   'use strict';
@@ -658,6 +660,21 @@
       return '/tools/afrokitchen/collections/' + encodeURIComponent(slug) + '/';
     }
   };
+  var AK_CATEGORY_OPTIONS = [
+    { id: 'main', label: 'Main dishes', cardLabel: 'Main dish' },
+    { id: 'stew', label: 'Stews', cardLabel: 'Stew' },
+    { id: 'soup', label: 'Soups', cardLabel: 'Soup' },
+    { id: 'sauce', label: 'Sauces', cardLabel: 'Sauce' },
+    { id: 'side', label: 'Sides', cardLabel: 'Side' },
+    { id: 'snack', label: 'Snacks', cardLabel: 'Snack' },
+    { id: 'breakfast', label: 'Breakfast' },
+    { id: 'dessert', label: 'Desserts', cardLabel: 'Dessert' },
+    { id: 'drink', label: 'Drinks', cardLabel: 'Drink' }
+  ];
+  function categoryLabel(value) {
+    var category = AK_CATEGORY_OPTIONS.find(function (item) { return item.id === value; });
+    return category ? (category.cardLabel || category.label) : 'AfroKitchen';
+  }
 
   // ── Populate filter dropdowns ──
   var countrySelect = document.getElementById('filter-country');
@@ -670,7 +687,7 @@
   });
 
   var catSelect = document.getElementById('filter-category');
-  AK.CATEGORIES.forEach(function (c) {
+  AK_CATEGORY_OPTIONS.forEach(function (c) {
     var opt = document.createElement('option');
     opt.value = c.id; opt.textContent = c.label;
     catSelect.appendChild(opt);
@@ -713,7 +730,7 @@
       labels.push(AK.COUNTRIES[filters.country].name);
     }
     if (filters.category) {
-      var category = AK.CATEGORIES.find(function (item) { return item.id === filters.category; });
+      var category = AK_CATEGORY_OPTIONS.find(function (item) { return item.id === filters.category; });
       labels.push(category ? category.label : titleCase(filters.category));
     }
     if (filters.diet) {
@@ -761,20 +778,8 @@
     var card = document.createElement('a');
     card.className = 'ak-recipe-card';
     card.href = AKRoutes.recipe(r.slug);
-    var categoryLabels = {
-      main: 'Main dish',
-      soup_stew: 'Soup or stew',
-      rice: 'Rice dish',
-      snack: 'Snack',
-      dessert: 'Dessert',
-      drink: 'Drink',
-      breakfast: 'Breakfast',
-      side: 'Side',
-      street_food: 'Street food',
-      starter: 'Starter'
-    };
     var thumbHtml = AKImages.createCardSlotMarkup(r, {
-      label: categoryLabels[r.category] || 'AfroKitchen',
+      label: categoryLabel(r.category),
       title: r.name,
       alt: r.image_alt || r.name
     });

@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"La Bouillie","description":"A warm, sweet millet porridge flavoured with vanilla, lemon zest, and sugar. A cherished Chadian breakfast served to children and adults alike.","image":"https://images.unsplash.com/photo-1728240257851-145b09662efa?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"4 servings","recipeCategory":"breakfast","recipeCuisine":"Chad, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"260 calories","proteinContent":"6g","carbohydrateContent":"48g","fatContent":"5g","fiberContent":"3g"},"recipeIngredient":["1 cup millet flour, fine","4 cups water","½ cup sugar","1 cup milk","1 tsp vanilla extract","1 whole lemon, zested"],"recipeInstructions":[{"@type":"HowToStep","name":"Make the slurry","text":"Mix the millet flour with 1 cup of cold water until smooth, ensuring there are no lumps.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/","image":"https://images.unsplash.com/photo-1728240257851-145b09662efa?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Cook the porridge","text":"Bring the remaining 3 cups of water to a boil. Slowly pour in the millet slurry while stirring constantly. Reduce heat to medium-low and cook, stirring, for 10 minutes until thickened.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/","image":"https://images.unsplash.com/photo-1728240257851-145b09662efa?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add sweetness and flavour","text":"Stir in the sugar, milk, vanilla extract, and lemon zest. Continue cooking for another 5 minutes until everything is well combined and the porridge reaches your desired consistency.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/","image":"https://images.unsplash.com/photo-1728240257851-145b09662efa?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Serve","text":"Ladle into bowls and serve warm. The porridge can be made thinner or thicker by adjusting the water.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/","image":"https://images.unsplash.com/photo-1728240257851-145b09662efa?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/","keywords":"millet, porridge, breakfast, sweet, chad, vegetarian, gluten-free, nut-free, Breakfast, snack time","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"La Bouillie","description":"A warm, sweet millet porridge flavoured with vanilla, lemon zest, and sugar. A cherished Chadian breakfast served to children and adults alike.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"4 servings","recipeCategory":"breakfast","recipeCuisine":"Chad, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"260 calories","proteinContent":"6g","carbohydrateContent":"48g","fatContent":"5g","fiberContent":"3g"},"recipeIngredient":["1 cup millet flour, fine","4 cups water","½ cup sugar","1 cup milk","1 tsp vanilla extract","1 whole lemon, zested"],"recipeInstructions":[{"@type":"HowToStep","name":"Make the slurry","text":"Mix the millet flour with 1 cup of cold water until smooth, ensuring there are no lumps.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/"},{"@type":"HowToStep","name":"Cook the porridge","text":"Bring the remaining 3 cups of water to a boil. Slowly pour in the millet slurry while stirring constantly. Reduce heat to medium-low and cook, stirring, for 10 minutes until thickened.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/"},{"@type":"HowToStep","name":"Add sweetness and flavour","text":"Stir in the sugar, milk, vanilla extract, and lemon zest. Continue cooking for another 5 minutes until everything is well combined and the porridge reaches your desired consistency.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/"},{"@type":"HowToStep","name":"Serve","text":"Ladle into bowls and serve warm. The porridge can be made thinner or thicker by adjusting the water.","url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/","keywords":"millet, porridge, breakfast, sweet, chad, vegetarian, gluten-free, nut-free, Breakfast, snack time","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Chad","item":"https://afrotools.com/tools/afrokitchen/countries/chad/"},{"@type":"ListItem","position":5,"name":"La Bouillie","item":"https://afrotools.com/tools/afrokitchen/recipes/la-bouillie-td/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Breakfast, snack time</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/chad/">Chad cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/la-bouillie-td/">/tools/afrokitchen/recipes/la-bouillie-td/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@champsara?utm_source=afrotools&amp;utm_medium=referral">AJOY DAS</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">La Bouillie is the breakfast that fuels Chad from N&#39;Djamena to the rural south. This thin, sweet millet porridge is the first food many Chadian children eat, and it remains a comfort throughout life. Street vendors sell it from large pots in the morning, ladling it into bowls for workers and students rushing to start their day.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -269,7 +284,7 @@
         <div class="ak-support-label">Chad | Static route</div>
         <h3>Daraba</h3>
         <p>A thick, creamy stew of mixed greens, okra, tomatoes, and peanut butter, sometimes enriched with smoked fish. A beloved everyda...</p>
-        <div class="ak-static-card-meta">55 min | Recipe</div>
+        <div class="ak-static-card-meta">55 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/boule-td/">
         <div class="ak-support-label">Chad | Static route</div>
@@ -287,7 +302,7 @@
         <div class="ak-support-label">Cameroon | Static route</div>
         <h3>Ndolé</h3>
         <p>Cameroon&#39;s national dish — bitter leaves cooked down with ground peanuts, crayfish, and prawns into a rich, complex stew. Earth...</p>
-        <div class="ak-static-card-meta">90 min | Recipe</div>
+        <div class="ak-static-card-meta">90 min | Stew</div>
       </a></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
@@ -300,7 +315,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"la-bouillie-td","name":"La Bouillie","description":"A warm, sweet millet porridge flavoured with vanilla, lemon zest, and sugar. A cherished Chadian breakfast served to children and adults alike.","story":"La Bouillie is the breakfast that fuels Chad from N'Djamena to the rural south. This thin, sweet millet porridge is the first food many Chadian children eat, and it remains a comfort throughout life. Street vendors sell it from large pots in the morning, ladling it into bowls for workers and students rushing to start their day.","default_servings":4,"serving_unit":"servings","country_name":"Chad","country_code":"TD","region":"Central Africa","difficulty":"easy","category":"breakfast","calories":260,"protein_g":6,"carbs_g":48,"fat_g":5,"fiber_g":3,"ingredients":[{"id":"9c564b2e-e036-4d95-8f64-d6f48619635c","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","ingredient_id":null,"sort_order":1,"group_name":null,"amount":1,"unit":"cup","name":"millet flour","prep_note":"fine","is_optional":false,"substitution":"sorghum flour","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"6774831f-4e11-43e3-abd1-10ef155f53b4","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","ingredient_id":null,"sort_order":2,"group_name":null,"amount":4,"unit":"cups","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"a4e4b05b-a187-430c-8b72-3d27d8e859c6","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"cup","name":"sugar","prep_note":null,"is_optional":false,"substitution":"honey","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"921f220e-f93b-441c-ba73-3bfd277169d5","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","ingredient_id":null,"sort_order":4,"group_name":null,"amount":1,"unit":"cup","name":"milk","prep_note":null,"is_optional":false,"substitution":"coconut milk","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"edcec42a-319d-4799-847b-123ae6fc8590","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","ingredient_id":null,"sort_order":5,"group_name":null,"amount":1,"unit":"tsp","name":"vanilla extract","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"1626830c-e853-4e44-a542-c2cc653b9e61","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","ingredient_id":null,"sort_order":6,"group_name":null,"amount":1,"unit":"whole","name":"lemon","prep_note":"zested","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}],"steps":[{"id":"84ce3a15-8049-4cd9-a5ca-b4cd051d985b","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","step_number":1,"title":"Make the slurry","instruction":"Mix the millet flour with 1 cup of cold water until smooth, ensuring there are no lumps.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"e02b320e-a7c0-4423-b772-72d112966dea","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","step_number":2,"title":"Cook the porridge","instruction":"Bring the remaining 3 cups of water to a boil. Slowly pour in the millet slurry while stirring constantly. Reduce heat to medium-low and cook, stirring, for 10 minutes until thickened.","timer_seconds":600,"timer_label":"Cook porridge","tip":"Constant stirring prevents lumps and scorching.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"82faecbd-2682-49f1-ab48-3663e15c03fe","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","step_number":3,"title":"Add sweetness and flavour","instruction":"Stir in the sugar, milk, vanilla extract, and lemon zest. Continue cooking for another 5 minutes until everything is well combined and the porridge reaches your desired consistency.","timer_seconds":300,"timer_label":"Simmer","tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"905b7e3b-d331-4892-9c8c-f16ae5b17c00","recipe_id":"c5c58ac8-d1bf-4307-b711-46b2f97ee613","step_number":4,"title":"Serve","instruction":"Ladle into bowls and serve warm. The porridge can be made thinner or thicker by adjusting the water.","timer_seconds":null,"timer_label":null,"tip":"Add more milk for a creamier texture, or thin with water for a drinkable consistency.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

@@ -3,11 +3,16 @@
 const { randomUUID } = require('crypto');
 const { getStore } = require('@netlify/blobs');
 
+function cleanEnvValue(value) {
+  return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
 const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_SERVICE_KEY =
+const SUPABASE_SERVICE_KEY = cleanEnvValue(
+  process.env.SUPABASE_AUTH_SERVICE_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_SERVICE_KEY;
+  process.env.SUPABASE_SERVICE_KEY
+);
 
 const COMMUNITY_STORE = 'afrokitchen-community';
 

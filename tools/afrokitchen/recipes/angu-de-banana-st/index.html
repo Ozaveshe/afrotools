@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Angú de Banana","description":"Mashed green banana with palm oil, creating a smooth, savoury side dish. The traditional accompaniment to calulu and other Santomean stews.","image":"https://images.unsplash.com/photo-1674596517835-1cfe6f0f9638?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT10M","cookTime":"PT20M","totalTime":"PT30M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"São Tomé and Príncipe, West Africa","nutrition":{"@type":"NutritionInformation","calories":"240 calories","proteinContent":"3g","carbohydrateContent":"54g","fatContent":"4g","fiberContent":"4g"},"recipeIngredient":["6 whole green bananas, peeled","2 tbsp palm oil","½ tsp salt","1 cup water, for boiling"],"recipeInstructions":[{"@type":"HowToStep","name":"Boil the bananas","text":"Place peeled green bananas in salted boiling water. Cook until very soft, about 15-20 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/","image":"https://images.unsplash.com/photo-1674596517835-1cfe6f0f9638?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Mash","text":"Drain the bananas. Mash with a potato masher or wooden pestle until completely smooth with no lumps.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/","image":"https://images.unsplash.com/photo-1674596517835-1cfe6f0f9638?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add palm oil","text":"Stir in palm oil and salt. Mix until the angú is smooth, golden, and uniform.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/","image":"https://images.unsplash.com/photo-1674596517835-1cfe6f0f9638?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Serve","text":"Shape into a mound and serve alongside calulu or other stews.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/","image":"https://images.unsplash.com/photo-1674596517835-1cfe6f0f9638?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/","keywords":"banana, plantain, mashed, sao-tome, vegan, gluten-free, dairy-free, Daily staple","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Angú de Banana","description":"Mashed green banana with palm oil, creating a smooth, savoury side dish. The traditional accompaniment to calulu and other Santomean stews.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT10M","cookTime":"PT20M","totalTime":"PT30M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"São Tomé and Príncipe, West Africa","nutrition":{"@type":"NutritionInformation","calories":"240 calories","proteinContent":"3g","carbohydrateContent":"54g","fatContent":"4g","fiberContent":"4g"},"recipeIngredient":["6 whole green bananas, peeled","2 tbsp palm oil","½ tsp salt","1 cup water, for boiling"],"recipeInstructions":[{"@type":"HowToStep","name":"Boil the bananas","text":"Place peeled green bananas in salted boiling water. Cook until very soft, about 15-20 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/"},{"@type":"HowToStep","name":"Mash","text":"Drain the bananas. Mash with a potato masher or wooden pestle until completely smooth with no lumps.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/"},{"@type":"HowToStep","name":"Add palm oil","text":"Stir in palm oil and salt. Mix until the angú is smooth, golden, and uniform.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/"},{"@type":"HowToStep","name":"Serve","text":"Shape into a mound and serve alongside calulu or other stews.","url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/","keywords":"banana, plantain, mashed, sao-tome, vegan, gluten-free, dairy-free, Daily staple","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"São Tomé and Príncipe","item":"https://afrotools.com/tools/afrokitchen/countries/sao-tome-and-principe/"},{"@type":"ListItem","position":5,"name":"Angú de Banana","item":"https://afrotools.com/tools/afrokitchen/recipes/angu-de-banana-st/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Daily staple</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/sao-tome-and-principe/">São Tomé and Príncipe cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/angu-de-banana-st/">/tools/afrokitchen/recipes/angu-de-banana-st/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@iamoluwaseuno?utm_source=afrotools&amp;utm_medium=referral">OMOTUNDE OLUWASEUN</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">Angú de banana is as fundamental to Santomean cuisine as rice is to much of West Africa. The green bananas are boiled and mashed with palm oil to create a smooth, starchy base that perfectly absorbs rich stews.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -249,7 +264,7 @@
         <div class="ak-support-label">São Tomé and Príncipe | Static route</div>
         <h3>Calulu</h3>
         <p>Sao Tome&#39;s national dish — smoked and dried fish stewed with okra, tomatoes, and palm oil, layered with eggplant and served ove...</p>
-        <div class="ak-static-card-meta">90 min | Recipe</div>
+        <div class="ak-static-card-meta">90 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/chocolate-quente-st/">
         <div class="ak-support-label">São Tomé and Príncipe | Static route</div>
@@ -280,7 +295,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"angu-de-banana-st","name":"Angú de Banana","description":"Mashed green banana with palm oil, creating a smooth, savoury side dish. The traditional accompaniment to calulu and other Santomean stews.","story":"Angú de banana is as fundamental to Santomean cuisine as rice is to much of West Africa. The green bananas are boiled and mashed with palm oil to create a smooth, starchy base that perfectly absorbs rich stews.","default_servings":6,"serving_unit":"servings","country_name":"São Tomé and Príncipe","country_code":"ST","region":"West Africa","difficulty":"easy","category":"side","calories":240,"protein_g":3,"carbs_g":54,"fat_g":4,"fiber_g":4,"ingredients":[{"id":"14853089-ef6d-4dcd-bbda-e630931c9f75","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","ingredient_id":null,"sort_order":1,"group_name":null,"amount":6,"unit":"whole","name":"green bananas","prep_note":"peeled","is_optional":false,"substitution":"green plantains","created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"acfbeb06-cbcf-4bf1-87f0-72d266aed8a2","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","ingredient_id":null,"sort_order":2,"group_name":null,"amount":2,"unit":"tbsp","name":"palm oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"2457591f-0ab8-4dc9-afba-f86a5fe26e10","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"25dc7825-ace2-4ad7-99e7-e54d92ea839c","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","ingredient_id":null,"sort_order":4,"group_name":null,"amount":1,"unit":"cup","name":"water","prep_note":"for boiling","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"6c3d8372-718b-44c5-b61c-048e05076dbf","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","step_number":1,"title":"Boil the bananas","instruction":"Place peeled green bananas in salted boiling water. Cook until very soft, about 15-20 minutes.","timer_seconds":1200,"timer_label":"Boil bananas","tip":"They should be completely soft — undercooked bananas won't mash smoothly.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"5922f0cf-c1b8-45b9-a0a9-038adf6bc32f","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","step_number":2,"title":"Mash","instruction":"Drain the bananas. Mash with a potato masher or wooden pestle until completely smooth with no lumps.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"ff833f3d-5af6-4200-b16a-c47e26d71aaa","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","step_number":3,"title":"Add palm oil","instruction":"Stir in palm oil and salt. Mix until the angú is smooth, golden, and uniform.","timer_seconds":null,"timer_label":null,"tip":"The palm oil gives it a beautiful golden colour and rich flavour.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"b3024e21-52dc-4e87-8529-3b0d8afec980","recipe_id":"a13d74a3-2d79-40c4-9027-2d9709a05911","step_number":4,"title":"Serve","instruction":"Shape into a mound and serve alongside calulu or other stews.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Akoumé","description":"A firm corn flour dough similar to polenta, steamed until solid and served as the starchy base for Togolese soups and stews.","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Togo, West Africa","nutrition":{"@type":"NutritionInformation","calories":"290 calories","proteinContent":"5g","carbohydrateContent":"62g","fatContent":"2g","fiberContent":"3g"},"recipeIngredient":["2 cups fine corn flour","4 cups water","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Make slurry","text":"Mix 1 cup corn flour with 1 cup cold water to a smooth paste.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Cook","text":"Bring 3 cups water to boil with salt. Pour in slurry, stirring constantly. Cook 5 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Thicken","text":"Add remaining flour gradually, stirring vigorously until very thick and smooth. Cook 10 more minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Shape and serve","text":"Wet a bowl, scoop akoumé in, smooth top, turn out as a mound. Serve with stew.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/","keywords":"corn, staple, dough, togo, vegan, gluten-free, dairy-free, Daily staple","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Akoumé","description":"A firm corn flour dough similar to polenta, steamed until solid and served as the starchy base for Togolese soups and stews.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Togo, West Africa","nutrition":{"@type":"NutritionInformation","calories":"290 calories","proteinContent":"5g","carbohydrateContent":"62g","fatContent":"2g","fiberContent":"3g"},"recipeIngredient":["2 cups fine corn flour","4 cups water","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Make slurry","text":"Mix 1 cup corn flour with 1 cup cold water to a smooth paste.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/"},{"@type":"HowToStep","name":"Cook","text":"Bring 3 cups water to boil with salt. Pour in slurry, stirring constantly. Cook 5 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/"},{"@type":"HowToStep","name":"Thicken","text":"Add remaining flour gradually, stirring vigorously until very thick and smooth. Cook 10 more minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/"},{"@type":"HowToStep","name":"Shape and serve","text":"Wet a bowl, scoop akoumé in, smooth top, turn out as a mound. Serve with stew.","url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/","keywords":"corn, staple, dough, togo, vegan, gluten-free, dairy-free, Daily staple","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Togo","item":"https://afrotools.com/tools/afrokitchen/countries/togo/"},{"@type":"ListItem","position":5,"name":"Akoumé","item":"https://afrotools.com/tools/afrokitchen/recipes/akoume-tg/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Daily staple</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/togo/">Togo cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/akoume-tg/">/tools/afrokitchen/recipes/akoume-tg/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@keeshasskitchen?utm_source=afrotools&amp;utm_medium=referral">Keesha&#39;s Kitchen</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">Akoumé is Togo&#39;s everyday staple, the equivalent of fufu but made from corn flour. Its neutral flavour makes it the perfect vehicle for the bold, spicy stews and sauces of Togolese cuisine.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -285,7 +300,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"akoume-tg","name":"Akoumé","description":"A firm corn flour dough similar to polenta, steamed until solid and served as the starchy base for Togolese soups and stews.","story":"Akoumé is Togo's everyday staple, the equivalent of fufu but made from corn flour. Its neutral flavour makes it the perfect vehicle for the bold, spicy stews and sauces of Togolese cuisine.","default_servings":6,"serving_unit":"servings","country_name":"Togo","country_code":"TG","region":"West Africa","difficulty":"easy","category":"side","calories":290,"protein_g":5,"carbs_g":62,"fat_g":2,"fiber_g":3,"ingredients":[{"id":"fa55230f-97ce-46b0-967d-65c8b31efa40","recipe_id":"3f2c12b9-36b7-4f19-a3ee-e0f6b6cf63d7","ingredient_id":null,"sort_order":1,"group_name":null,"amount":2,"unit":"cups","name":"fine corn flour","prep_note":null,"is_optional":false,"substitution":"cornmeal","created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"09eb42af-bb0b-42b1-a718-d0217595250d","recipe_id":"3f2c12b9-36b7-4f19-a3ee-e0f6b6cf63d7","ingredient_id":null,"sort_order":2,"group_name":null,"amount":4,"unit":"cups","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"1f7ebbdd-7f21-49fe-b8d3-4a8fc8d7c432","recipe_id":"3f2c12b9-36b7-4f19-a3ee-e0f6b6cf63d7","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"1cc49a7a-feee-45ed-aca4-90a68a14d9de","recipe_id":"3f2c12b9-36b7-4f19-a3ee-e0f6b6cf63d7","step_number":1,"title":"Make slurry","instruction":"Mix 1 cup corn flour with 1 cup cold water to a smooth paste.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"c3eeecb5-f480-4c46-a264-df893ff9d3e4","recipe_id":"3f2c12b9-36b7-4f19-a3ee-e0f6b6cf63d7","step_number":2,"title":"Cook","instruction":"Bring 3 cups water to boil with salt. Pour in slurry, stirring constantly. Cook 5 minutes.","timer_seconds":300,"timer_label":"Cook base","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"8cdf12d9-1651-42a2-869f-1e2962591d7f","recipe_id":"3f2c12b9-36b7-4f19-a3ee-e0f6b6cf63d7","step_number":3,"title":"Thicken","instruction":"Add remaining flour gradually, stirring vigorously until very thick and smooth. Cook 10 more minutes.","timer_seconds":600,"timer_label":"Thicken","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"60c97e71-0373-496b-bc2a-b1e9287e13d6","recipe_id":"3f2c12b9-36b7-4f19-a3ee-e0f6b6cf63d7","step_number":4,"title":"Shape and serve","instruction":"Wet a bowl, scoop akoumé in, smooth top, turn out as a mound. Serve with stew.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

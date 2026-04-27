@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Toh","description":"A firm, smooth millet porridge shaped into a mound and served as the base for sauces and stews. Mali's most fundamental staple.","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Mali, West Africa","nutrition":{"@type":"NutritionInformation","calories":"280 calories","proteinContent":"6g","carbohydrateContent":"58g","fatContent":"2g","fiberContent":"4g"},"recipeIngredient":["2 cups millet flour","4 cups water","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Make a slurry","text":"Mix half the millet flour with 1 cup cold water to form a smooth paste.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Boil the water","text":"Bring remaining 3 cups water to a rolling boil with salt.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add the slurry","text":"Pour slurry into boiling water, stirring constantly. Cook 5 minutes on medium heat.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add remaining flour","text":"Gradually add remaining flour, stirring vigorously. Mixture will become very thick.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Shape and serve","text":"When toh pulls from pot sides, wet a bowl, scoop in, smooth top, turn out as a mound.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/","keywords":"millet, staple, porridge, mali, vegan, gluten-free, dairy-free, Daily staple, Tô","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Toh","description":"A firm, smooth millet porridge shaped into a mound and served as the base for sauces and stews. Mali's most fundamental staple.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Mali, West Africa","nutrition":{"@type":"NutritionInformation","calories":"280 calories","proteinContent":"6g","carbohydrateContent":"58g","fatContent":"2g","fiberContent":"4g"},"recipeIngredient":["2 cups millet flour","4 cups water","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Make a slurry","text":"Mix half the millet flour with 1 cup cold water to form a smooth paste.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"},{"@type":"HowToStep","name":"Boil the water","text":"Bring remaining 3 cups water to a rolling boil with salt.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"},{"@type":"HowToStep","name":"Add the slurry","text":"Pour slurry into boiling water, stirring constantly. Cook 5 minutes on medium heat.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"},{"@type":"HowToStep","name":"Add remaining flour","text":"Gradually add remaining flour, stirring vigorously. Mixture will become very thick.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"},{"@type":"HowToStep","name":"Shape and serve","text":"When toh pulls from pot sides, wet a bowl, scoop in, smooth top, turn out as a mound.","url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/","keywords":"millet, staple, porridge, mali, vegan, gluten-free, dairy-free, Daily staple, Tô","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Mali","item":"https://afrotools.com/tools/afrokitchen/countries/mali/"},{"@type":"ListItem","position":5,"name":"Toh","item":"https://afrotools.com/tools/afrokitchen/recipes/toh-ml/"}]}</script>
 </head>
 <body>
@@ -97,15 +113,14 @@
       <aside class="ak-static-hero-card">
         <div class="ak-support-label">Kitchen snapshot</div>
         <h2>Toh</h2>
-        <p>Toh is the daily bread of Mali. Made from millet or sorghum flour, it is the foundation upon which most Malian meals are built.</p>
+        <p>Toh is Mali&#39;s essential millet or sorghum staple, shaped into a smooth mound and served as the anchor for sauces. It is simple in ingredients but demanding in technique: the cook must stir steadily so the flour hydrates evenly and the paste becomes glossy, firm, and lump-free. Toh works like an edible utensil, carrying peanut sauce, okra soup, or leafy stews from the bowl to the hand. Its importance is less about...</p>
         <div class="ak-static-facts">
-          <div><span>Best served with</span><strong>Tigadegena, okra sauce, or any stew</strong></div>
+          <div><span>Best served with</span><strong>Tigadegena, fakoye, okra sauce, or leafy stews</strong></div>
           <div><span>Best occasion</span><strong>Daily staple</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/mali/">Mali cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/toh-ml/">/tools/afrokitchen/recipes/toh-ml/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@femoree?utm_source=afrotools&amp;utm_medium=referral">Femoree</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,8 +129,8 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
-        <p class="ak-section-sub">Toh is the daily bread of Mali. Made from millet or sorghum flour, it is the foundation upon which most Malian meals are built.</p>
+        <h2 class="ak-section-title">What to know before you cook</h2>
+        <p class="ak-section-sub">Toh is Mali&#39;s essential millet or sorghum staple, shaped into a smooth mound and served as the anchor for sauces. It is simple in ingredients but demanding in technique: the cook must stir steadily so the flour hydrates evenly and the paste becomes glossy, firm, and lump-free. Toh works like an edible utensil, carrying peanut sauce, okra soup, or leafy stews from the bowl to the hand. Its importance is less about spectacle and more about daily rhythm across Malian homes.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
             <strong>What the dish tastes like</strong>
@@ -127,7 +142,7 @@
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
-            <p>Tigadegena, okra sauce, or any stew</p>
+            <p>Tigadegena, fakoye, okra sauce, or leafy stews</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>Follow the collection route</strong>
@@ -248,7 +263,7 @@
 
       </article></div>
           <div class="ak-static-helper-note">
-            <p>Regional variations and live helpers layer onto this clean static recipe route without changing the canonical URL.</p>
+            <p>Millet, sorghum, maize, or blended flours may be used depending on region and availability. Texture ranges from soft to very firm by household preference.</p>
           </div>
         </section>
       </div>
@@ -263,13 +278,13 @@
         <div class="ak-support-label">Mali | Static route</div>
         <h3>Tigadegena</h3>
         <p>Mali&#39;s celebrated peanut sauce stew with tender meat, rich and creamy from slow-cooked onions and tomatoes blended with groundn...</p>
-        <div class="ak-static-card-meta">75 min | Recipe</div>
+        <div class="ak-static-card-meta">75 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/fakoye-ml/">
         <div class="ak-support-label">Mali | Static route</div>
         <h3>Fakoye</h3>
         <p>A tangy okra and greens soup with dried fish and dawadawa (fermented locust beans). Deeply rooted in Malian tradition.</p>
-        <div class="ak-static-card-meta">45 min | Recipe</div>
+        <div class="ak-static-card-meta">45 min | Soup</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/amiwo-bj/">
         <div class="ak-support-label">Benin | Static route</div>
@@ -294,8 +309,8 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
-<script>window.__AK_STATIC_RECIPE = {"slug":"toh-ml","name":"Toh","description":"A firm, smooth millet porridge shaped into a mound and served as the base for sauces and stews. Mali's most fundamental staple.","story":"Toh is the daily bread of Mali. Made from millet or sorghum flour, it is the foundation upon which most Malian meals are built.","default_servings":6,"serving_unit":"servings","country_name":"Mali","country_code":"ML","region":"West Africa","difficulty":"easy","category":"side","calories":280,"protein_g":6,"carbs_g":58,"fat_g":2,"fiber_g":4,"ingredients":[{"id":"4498b3c3-8948-441a-8cfa-3eb777df5a42","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","ingredient_id":null,"sort_order":1,"group_name":null,"amount":2,"unit":"cups","name":"millet flour","prep_note":null,"is_optional":false,"substitution":"sorghum flour","created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"0e1ebfe9-d2f1-471d-9307-6c77721436d1","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","ingredient_id":null,"sort_order":2,"group_name":null,"amount":4,"unit":"cups","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"612208ab-2ff5-4301-8844-ec1ab537ac4c","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"f604b9ed-0cc2-40f0-bacb-dde93fa37e6c","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":1,"title":"Make a slurry","instruction":"Mix half the millet flour with 1 cup cold water to form a smooth paste.","timer_seconds":null,"timer_label":null,"tip":"Cold-water slurry prevents lumps.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6c9f0329-6774-4299-9e35-4a36e8c5083d","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":2,"title":"Boil the water","instruction":"Bring remaining 3 cups water to a rolling boil with salt.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"af3b91a9-784b-43f4-bf64-f19e0ca72e41","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":3,"title":"Add the slurry","instruction":"Pour slurry into boiling water, stirring constantly. Cook 5 minutes on medium heat.","timer_seconds":300,"timer_label":"Cook first stage","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"458a257b-a21f-44db-91f3-b0b45e0fec10","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":4,"title":"Add remaining flour","instruction":"Gradually add remaining flour, stirring vigorously. Mixture will become very thick.","timer_seconds":600,"timer_label":"Stir toh","tip":"Use a strong wooden spoon.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"587873dd-5029-4442-b5b0-81c60ca06e3f","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":5,"title":"Shape and serve","instruction":"When toh pulls from pot sides, wet a bowl, scoop in, smooth top, turn out as a mound.","timer_seconds":null,"timer_label":null,"tip":"Serve immediately — toh hardens as it cools.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
+<script>window.__AK_STATIC_RECIPE = {"slug":"toh-ml","name":"Toh","description":"A firm, smooth millet porridge shaped into a mound and served as the base for sauces and stews. Mali's most fundamental staple.","story":"Toh is Mali's essential millet or sorghum staple, shaped into a smooth mound and served as the anchor for sauces. It is simple in ingredients but demanding in technique: the cook must stir steadily so the flour hydrates evenly and the paste becomes glossy, firm, and lump-free. Toh works like an edible utensil, carrying peanut sauce, okra soup, or leafy stews from the bowl to the hand. Its importance is less about spectacle and more about daily rhythm across Malian homes.","default_servings":6,"serving_unit":"servings","country_name":"Mali","country_code":"ML","region":"West Africa","difficulty":"easy","category":"side","calories":280,"protein_g":6,"carbs_g":58,"fat_g":2,"fiber_g":4,"ingredients":[{"id":"4498b3c3-8948-441a-8cfa-3eb777df5a42","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","ingredient_id":null,"sort_order":1,"group_name":null,"amount":2,"unit":"cups","name":"millet flour","prep_note":null,"is_optional":false,"substitution":"sorghum flour","created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"0e1ebfe9-d2f1-471d-9307-6c77721436d1","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","ingredient_id":null,"sort_order":2,"group_name":null,"amount":4,"unit":"cups","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"612208ab-2ff5-4301-8844-ec1ab537ac4c","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"f604b9ed-0cc2-40f0-bacb-dde93fa37e6c","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":1,"title":"Make a slurry","instruction":"Mix half the millet flour with 1 cup cold water to form a smooth paste.","timer_seconds":null,"timer_label":null,"tip":"Cold-water slurry prevents lumps.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"6c9f0329-6774-4299-9e35-4a36e8c5083d","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":2,"title":"Boil the water","instruction":"Bring remaining 3 cups water to a rolling boil with salt.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"af3b91a9-784b-43f4-bf64-f19e0ca72e41","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":3,"title":"Add the slurry","instruction":"Pour slurry into boiling water, stirring constantly. Cook 5 minutes on medium heat.","timer_seconds":300,"timer_label":"Cook first stage","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"458a257b-a21f-44db-91f3-b0b45e0fec10","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":4,"title":"Add remaining flour","instruction":"Gradually add remaining flour, stirring vigorously. Mixture will become very thick.","timer_seconds":600,"timer_label":"Stir toh","tip":"Use a strong wooden spoon.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"587873dd-5029-4442-b5b0-81c60ca06e3f","recipe_id":"e611a458-9a10-4bd7-bbb8-bae1ce456196","step_number":5,"title":"Shape and serve","instruction":"When toh pulls from pot sides, wet a bowl, scoop in, smooth top, turn out as a mound.","timer_seconds":null,"timer_label":null,"tip":"Serve immediately — toh hardens as it cools.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>
 </html>

@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Kelewele","description":"Spiced fried plantain cubes seasoned with ginger, chilli, and cloves. Crispy outside, sweet and soft inside — Ghana's favourite evening street snack.","image":"https://images.unsplash.com/photo-1759316777881-24c0b09c3a63?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT15M","cookTime":"PT10M","totalTime":"PT25M","recipeYield":"4 servings","recipeCategory":"snack","recipeCuisine":"Ghana, West Africa","nutrition":{"@type":"NutritionInformation","calories":"320 calories","proteinContent":"2g","carbohydrateContent":"52g","fatContent":"12g","fiberContent":"4g"},"recipeIngredient":["4 whole ripe plantains, cut into 2cm cubes","1 tbsp fresh ginger, grated","½ tsp cayenne pepper","¼ tsp ground cloves","½ tsp ground nutmeg","2 cups vegetable oil, for deep frying"],"recipeInstructions":[{"@type":"HowToStep","name":"Season the plantain","text":"Combine plantain cubes with ginger, cayenne, cloves, nutmeg, and salt. Toss and let sit 10 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/","image":"https://images.unsplash.com/photo-1759316777881-24c0b09c3a63?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Heat the oil","text":"Heat oil to 180C. Test with a small piece — it should sizzle immediately.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/","image":"https://images.unsplash.com/photo-1759316777881-24c0b09c3a63?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Fry the kelewele","text":"Fry in batches for 3-4 minutes per batch until golden brown and crispy.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/","image":"https://images.unsplash.com/photo-1759316777881-24c0b09c3a63?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Drain and serve","text":"Drain on paper towels. Serve hot with roasted peanuts.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/","image":"https://images.unsplash.com/photo-1759316777881-24c0b09c3a63?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/","keywords":"plantain, fried, street-food, spicy, ghana, vegan, gluten-free, dairy-free, Evening snack","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Kelewele","description":"Spiced fried plantain cubes seasoned with ginger, chilli, and cloves. Crispy outside, sweet and soft inside — Ghana's favourite evening street snack.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT15M","cookTime":"PT10M","totalTime":"PT25M","recipeYield":"4 servings","recipeCategory":"snack","recipeCuisine":"Ghana, West Africa","nutrition":{"@type":"NutritionInformation","calories":"320 calories","proteinContent":"2g","carbohydrateContent":"52g","fatContent":"12g","fiberContent":"4g"},"recipeIngredient":["4 whole ripe plantains, cut into 2cm cubes","1 tbsp fresh ginger, grated","½ tsp cayenne pepper","¼ tsp ground cloves","½ tsp ground nutmeg","2 cups vegetable oil, for deep frying"],"recipeInstructions":[{"@type":"HowToStep","name":"Season the plantain","text":"Combine plantain cubes with ginger, cayenne, cloves, nutmeg, and salt. Toss and let sit 10 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/"},{"@type":"HowToStep","name":"Heat the oil","text":"Heat oil to 180C. Test with a small piece — it should sizzle immediately.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/"},{"@type":"HowToStep","name":"Fry the kelewele","text":"Fry in batches for 3-4 minutes per batch until golden brown and crispy.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/"},{"@type":"HowToStep","name":"Drain and serve","text":"Drain on paper towels. Serve hot with roasted peanuts.","url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/","keywords":"plantain, fried, street-food, spicy, ghana, vegan, gluten-free, dairy-free, Evening snack","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Ghana","item":"https://afrotools.com/tools/afrokitchen/countries/ghana/"},{"@type":"ListItem","position":5,"name":"Kelewele","item":"https://afrotools.com/tools/afrokitchen/recipes/kelewele-gh/"}]}</script>
 </head>
 <body>
@@ -97,15 +113,14 @@
       <aside class="ak-static-hero-card">
         <div class="ak-support-label">Kitchen snapshot</div>
         <h2>Kelewele</h2>
-        <p>Kelewele vendors are a common sight on Ghanaian streets at dusk. The combination of sweet ripe plantain with warming spices makes it irresistibly addictive.</p>
+        <p>Kelewele is one of Ghana&#39;s great evening street foods: ripe plantain cut into small pieces, coated with ginger, chilli, and warm spices, then fried until the edges caramelize. It is sold from roadside stands after dark, often wrapped in paper and eaten with roasted peanuts while the plantain is still hot. The best kelewele balances sweetness, heat, and spice without turning greasy. Very ripe plantain gives the sof...</p>
         <div class="ak-static-facts">
-          <div><span>Best served with</span><strong>Roasted peanuts</strong></div>
+          <div><span>Best served with</span><strong>Roasted peanuts, grilled meat, or a cold malt drink</strong></div>
           <div><span>Best occasion</span><strong>Evening snack</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/ghana/">Ghana cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/kelewele-gh/">/tools/afrokitchen/recipes/kelewele-gh/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@depay_vulola?utm_source=afrotools&amp;utm_medium=referral">Depay Vulola</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,8 +129,8 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
-        <p class="ak-section-sub">Kelewele vendors are a common sight on Ghanaian streets at dusk. The combination of sweet ripe plantain with warming spices makes it irresistibly addictive.</p>
+        <h2 class="ak-section-title">What to know before you cook</h2>
+        <p class="ak-section-sub">Kelewele is one of Ghana&#39;s great evening street foods: ripe plantain cut into small pieces, coated with ginger, chilli, and warm spices, then fried until the edges caramelize. It is sold from roadside stands after dark, often wrapped in paper and eaten with roasted peanuts while the plantain is still hot. The best kelewele balances sweetness, heat, and spice without turning greasy. Very ripe plantain gives the soft interior, while a confident spice mix gives the snack its unmistakable aroma.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
             <strong>What the dish tastes like</strong>
@@ -127,7 +142,7 @@
           </div>
           <div class="ak-static-summary-card">
             <strong>What to serve alongside it</strong>
-            <p>Roasted peanuts</p>
+            <p>Roasted peanuts, grilled meat, or a cold malt drink</p>
           </div>
           <div class="ak-static-summary-card">
             <strong>Follow the collection route</strong>
@@ -254,7 +269,7 @@
 
       </article></div>
           <div class="ak-static-helper-note">
-            <p>Regional variations and live helpers layer onto this clean static recipe route without changing the canonical URL.</p>
+            <p>Street vendors vary the spice blend with cloves, nutmeg, anise, or extra ginger. Some home cooks cube the plantain smaller for crispier edges.</p>
           </div>
         </section>
       </div>
@@ -275,7 +290,7 @@
         <div class="ak-support-label">Ghana | Static route</div>
         <h3>Groundnut Soup</h3>
         <p>A rich, creamy soup from roasted groundnuts simmered with tomatoes and chilli. The natural peanut oils create a velvety broth.</p>
-        <div class="ak-static-card-meta">65 min | Recipe</div>
+        <div class="ak-static-card-meta">65 min | Soup</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/amiwo-bj/">
         <div class="ak-support-label">Benin | Static route</div>
@@ -300,8 +315,8 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
-<script>window.__AK_STATIC_RECIPE = {"slug":"kelewele-gh","name":"Kelewele","description":"Spiced fried plantain cubes seasoned with ginger, chilli, and cloves. Crispy outside, sweet and soft inside — Ghana's favourite evening street snack.","story":"Kelewele vendors are a common sight on Ghanaian streets at dusk. The combination of sweet ripe plantain with warming spices makes it irresistibly addictive.","default_servings":4,"serving_unit":"servings","country_name":"Ghana","country_code":"GH","region":"West Africa","difficulty":"easy","category":"snack","calories":320,"protein_g":2,"carbs_g":52,"fat_g":12,"fiber_g":4,"ingredients":[{"id":"58415af3-ea0d-4990-8345-cecb46d4bac5","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":1,"group_name":null,"amount":4,"unit":"whole","name":"ripe plantains","prep_note":"cut into 2cm cubes","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"cfe34b89-b33b-48e0-88ac-f4f575042696","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":2,"group_name":null,"amount":1,"unit":"tbsp","name":"fresh ginger","prep_note":"grated","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"9f647d4c-8c96-45fa-8bf7-4157a64b576f","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"cayenne pepper","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"aef794e5-2043-4ec8-ab51-69fad2d8091b","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":4,"group_name":null,"amount":0.25,"unit":"tsp","name":"ground cloves","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"077ffb4b-2c24-4f36-bb60-bbfc6a6e1845","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":5,"group_name":null,"amount":0.5,"unit":"tsp","name":"ground nutmeg","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"dbd0abce-94ba-409a-ae3e-2a491d56d037","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":6,"group_name":null,"amount":2,"unit":"cups","name":"vegetable oil","prep_note":"for deep frying","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"59566c45-1854-477d-a9d8-ef56625a4fab","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":1,"title":"Season the plantain","instruction":"Combine plantain cubes with ginger, cayenne, cloves, nutmeg, and salt. Toss and let sit 10 minutes.","timer_seconds":600,"timer_label":"Marinate","tip":"Plantains should be ripe with black spots.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"3ea8c117-882c-4d2e-b1d7-7e39450c5653","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":2,"title":"Heat the oil","instruction":"Heat oil to 180C. Test with a small piece — it should sizzle immediately.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"5c9abdde-796d-49c0-9f84-661f0c8a1818","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":3,"title":"Fry the kelewele","instruction":"Fry in batches for 3-4 minutes per batch until golden brown and crispy.","timer_seconds":240,"timer_label":"Fry plantain","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"f3f8bd94-a1f1-4012-8592-890e2924043b","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":4,"title":"Drain and serve","instruction":"Drain on paper towels. Serve hot with roasted peanuts.","timer_seconds":null,"timer_label":null,"tip":"Best eaten immediately while still hot.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
+<script>window.__AK_STATIC_RECIPE = {"slug":"kelewele-gh","name":"Kelewele","description":"Spiced fried plantain cubes seasoned with ginger, chilli, and cloves. Crispy outside, sweet and soft inside — Ghana's favourite evening street snack.","story":"Kelewele is one of Ghana's great evening street foods: ripe plantain cut into small pieces, coated with ginger, chilli, and warm spices, then fried until the edges caramelize. It is sold from roadside stands after dark, often wrapped in paper and eaten with roasted peanuts while the plantain is still hot. The best kelewele balances sweetness, heat, and spice without turning greasy. Very ripe plantain gives the soft interior, while a confident spice mix gives the snack its unmistakable aroma.","default_servings":4,"serving_unit":"servings","country_name":"Ghana","country_code":"GH","region":"West Africa","difficulty":"easy","category":"snack","calories":320,"protein_g":2,"carbs_g":52,"fat_g":12,"fiber_g":4,"ingredients":[{"id":"58415af3-ea0d-4990-8345-cecb46d4bac5","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":1,"group_name":null,"amount":4,"unit":"whole","name":"ripe plantains","prep_note":"cut into 2cm cubes","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"cfe34b89-b33b-48e0-88ac-f4f575042696","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":2,"group_name":null,"amount":1,"unit":"tbsp","name":"fresh ginger","prep_note":"grated","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"9f647d4c-8c96-45fa-8bf7-4157a64b576f","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"cayenne pepper","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"aef794e5-2043-4ec8-ab51-69fad2d8091b","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":4,"group_name":null,"amount":0.25,"unit":"tsp","name":"ground cloves","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"077ffb4b-2c24-4f36-bb60-bbfc6a6e1845","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":5,"group_name":null,"amount":0.5,"unit":"tsp","name":"ground nutmeg","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"dbd0abce-94ba-409a-ae3e-2a491d56d037","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","ingredient_id":null,"sort_order":6,"group_name":null,"amount":2,"unit":"cups","name":"vegetable oil","prep_note":"for deep frying","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"59566c45-1854-477d-a9d8-ef56625a4fab","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":1,"title":"Season the plantain","instruction":"Combine plantain cubes with ginger, cayenne, cloves, nutmeg, and salt. Toss and let sit 10 minutes.","timer_seconds":600,"timer_label":"Marinate","tip":"Plantains should be ripe with black spots.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"3ea8c117-882c-4d2e-b1d7-7e39450c5653","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":2,"title":"Heat the oil","instruction":"Heat oil to 180C. Test with a small piece — it should sizzle immediately.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"5c9abdde-796d-49c0-9f84-661f0c8a1818","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":3,"title":"Fry the kelewele","instruction":"Fry in batches for 3-4 minutes per batch until golden brown and crispy.","timer_seconds":240,"timer_label":"Fry plantain","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"f3f8bd94-a1f1-4012-8592-890e2924043b","recipe_id":"20ba6835-5c13-4845-a8ad-d58b914d2a48","step_number":4,"title":"Drain and serve","instruction":"Drain on paper towels. Serve hot with roasted peanuts.","timer_seconds":null,"timer_label":null,"tip":"Best eaten immediately while still hot.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>
 </html>

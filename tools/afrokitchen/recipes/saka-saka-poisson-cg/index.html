@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Saka-Saka au Poisson Fumé","description":"Cassava leaves slow-cooked with smoked fish, palm oil, and peanut butter, creating a deeply savoury and nutritious green stew beloved across the Republic of Congo.","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT25M","cookTime":"PT80M","totalTime":"PT105M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Republic of Congo, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"310 calories","proteinContent":"22g","carbohydrateContent":"14g","fatContent":"20g","fiberContent":"8g"},"recipeIngredient":["500 g cassava leaves, frozen and thawed, or fresh and pounded","150 g smoked fish, bones removed, flaked","3 tbsp palm oil","2 tbsp peanut butter, smooth, natural","1 large onion, diced","2 cloves garlic, minced","1 cube stock cube, crumbled"],"recipeInstructions":[{"@type":"HowToStep","name":"Cook the cassava leaves","text":"Place cassava leaves in a large pot with 2 cups of water. Bring to a boil, then reduce to a simmer and cook for 30 minutes until softened.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Prepare the base","text":"In a separate pan, heat palm oil and sauté the onion until golden. Add garlic and cook for 1 minute. Add peanut butter and stir until melted and combined.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Combine everything","text":"Add the onion-peanut mixture and flaked smoked fish to the cassava leaves. Crumble in the stock cube. Stir well to combine.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Slow-cook","text":"Cover and cook on low heat for 40-45 minutes, stirring every 10 minutes to prevent sticking. The dish is ready when the leaves are very tender and the sauce has thickened.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Serve","text":"Taste and adjust salt. Serve hot alongside fufu or chikwangue.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/","image":"https://images.unsplash.com/photo-1664992956749-8b96721304e4?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/","keywords":"cassava-leaves, smoked-fish, greens, traditional, brazzaville, gluten-free, dairy-free, pescatarian, Daily meals, communal gatherings, Saka-Saka na Mbisi ya Kofumba","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Saka-Saka au Poisson Fumé","description":"Cassava leaves slow-cooked with smoked fish, palm oil, and peanut butter, creating a deeply savoury and nutritious green stew beloved across the Republic of Congo.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT25M","cookTime":"PT80M","totalTime":"PT105M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Republic of Congo, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"310 calories","proteinContent":"22g","carbohydrateContent":"14g","fatContent":"20g","fiberContent":"8g"},"recipeIngredient":["500 g cassava leaves, frozen and thawed, or fresh and pounded","150 g smoked fish, bones removed, flaked","3 tbsp palm oil","2 tbsp peanut butter, smooth, natural","1 large onion, diced","2 cloves garlic, minced","1 cube stock cube, crumbled"],"recipeInstructions":[{"@type":"HowToStep","name":"Cook the cassava leaves","text":"Place cassava leaves in a large pot with 2 cups of water. Bring to a boil, then reduce to a simmer and cook for 30 minutes until softened.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"},{"@type":"HowToStep","name":"Prepare the base","text":"In a separate pan, heat palm oil and sauté the onion until golden. Add garlic and cook for 1 minute. Add peanut butter and stir until melted and combined.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"},{"@type":"HowToStep","name":"Combine everything","text":"Add the onion-peanut mixture and flaked smoked fish to the cassava leaves. Crumble in the stock cube. Stir well to combine.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"},{"@type":"HowToStep","name":"Slow-cook","text":"Cover and cook on low heat for 40-45 minutes, stirring every 10 minutes to prevent sticking. The dish is ready when the leaves are very tender and the sauce has thickened.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"},{"@type":"HowToStep","name":"Serve","text":"Taste and adjust salt. Serve hot alongside fufu or chikwangue.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/","keywords":"cassava-leaves, smoked-fish, greens, traditional, brazzaville, gluten-free, dairy-free, pescatarian, Daily meals, communal gatherings, Saka-Saka na Mbisi ya Kofumba","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Republic of Congo","item":"https://afrotools.com/tools/afrokitchen/countries/republic-of-congo/"},{"@type":"ListItem","position":5,"name":"Saka-Saka au Poisson Fumé","item":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-poisson-cg/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Daily meals, communal gatherings</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/republic-of-congo/">Republic of Congo cuisine hub</a></strong></div>
 
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/saka-saka-poisson-cg/">/tools/afrokitchen/recipes/saka-saka-poisson-cg/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@keeshasskitchen?utm_source=afrotools&amp;utm_medium=referral">Keesha&#39;s Kitchen</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">The Brazzaville version of saka-saka distinguishes itself with the addition of peanut butter, which rounds out the bitterness of the cassava leaves and adds creaminess. Smoked fish from the Congo River provides a deep umami backbone. This is a dish of sustenance and community, often prepared in large batches and shared among neighbours.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -290,7 +305,7 @@
         <div class="ak-support-label">Republic of Congo | Static route</div>
         <h3>Poulet à la Muambé</h3>
         <p>Chicken braised in a velvety palm butter sauce with garlic, okra, and chilli. The Congolese version features a lighter, more he...</p>
-        <div class="ak-static-card-meta">75 min | Recipe</div>
+        <div class="ak-static-card-meta">75 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/mbisi-ye-kalou-cg/">
         <div class="ak-support-label">Republic of Congo | Static route</div>
@@ -308,7 +323,7 @@
         <div class="ak-support-label">Cameroon | Static route</div>
         <h3>Ndolé</h3>
         <p>Cameroon&#39;s national dish — bitter leaves cooked down with ground peanuts, crayfish, and prawns into a rich, complex stew. Earth...</p>
-        <div class="ak-static-card-meta">90 min | Recipe</div>
+        <div class="ak-static-card-meta">90 min | Stew</div>
       </a></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
@@ -321,7 +336,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"saka-saka-poisson-cg","name":"Saka-Saka au Poisson Fumé","description":"Cassava leaves slow-cooked with smoked fish, palm oil, and peanut butter, creating a deeply savoury and nutritious green stew beloved across the Republic of Congo.","story":"The Brazzaville version of saka-saka distinguishes itself with the addition of peanut butter, which rounds out the bitterness of the cassava leaves and adds creaminess. Smoked fish from the Congo River provides a deep umami backbone. This is a dish of sustenance and community, often prepared in large batches and shared among neighbours.","default_servings":6,"serving_unit":"servings","country_name":"Republic of Congo","country_code":"CG","region":"Central Africa","difficulty":"medium","category":"side","calories":310,"protein_g":22,"carbs_g":14,"fat_g":20,"fiber_g":8,"ingredients":[{"id":"5e25a9f5-4372-4310-8747-1f7502bb93bf","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","ingredient_id":null,"sort_order":1,"group_name":null,"amount":500,"unit":"g","name":"cassava leaves","prep_note":"frozen and thawed, or fresh and pounded","is_optional":false,"substitution":"spinach","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"343410bf-5441-45b1-af16-051558a0e943","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","ingredient_id":null,"sort_order":2,"group_name":null,"amount":150,"unit":"g","name":"smoked fish","prep_note":"bones removed, flaked","is_optional":false,"substitution":"smoked mackerel","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"c0c4579e-b8bd-4981-b6e7-9e907b18801d","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","ingredient_id":null,"sort_order":3,"group_name":null,"amount":3,"unit":"tbsp","name":"palm oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"c65cbc8f-b190-4ee7-8e8b-8fac81bc87b8","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","ingredient_id":null,"sort_order":4,"group_name":null,"amount":2,"unit":"tbsp","name":"peanut butter","prep_note":"smooth, natural","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"1382f226-1d47-406c-b3b0-820b1dc44d77","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","ingredient_id":null,"sort_order":5,"group_name":null,"amount":1,"unit":"large","name":"onion","prep_note":"diced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"3c5698d9-4fd9-42a1-bd7d-da2a1c6eddad","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","ingredient_id":null,"sort_order":6,"group_name":null,"amount":2,"unit":"cloves","name":"garlic","prep_note":"minced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"58c8fe0e-8f09-47f4-a7fc-7ca1147ac536","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","ingredient_id":null,"sort_order":7,"group_name":null,"amount":1,"unit":"cube","name":"stock cube","prep_note":"crumbled","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}],"steps":[{"id":"f7381130-c92a-4d4c-b2b3-10ef69bcff0f","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","step_number":1,"title":"Cook the cassava leaves","instruction":"Place cassava leaves in a large pot with 2 cups of water. Bring to a boil, then reduce to a simmer and cook for 30 minutes until softened.","timer_seconds":1800,"timer_label":"Boil leaves","tip":"Fresh leaves need longer — up to 60 minutes. Frozen leaves are already partially cooked.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"35fcac53-97b4-4a70-8107-d7b908640acf","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","step_number":2,"title":"Prepare the base","instruction":"In a separate pan, heat palm oil and sauté the onion until golden. Add garlic and cook for 1 minute. Add peanut butter and stir until melted and combined.","timer_seconds":420,"timer_label":"Sauté base","tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"758dc670-9523-48fb-b310-88dba46025f2","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","step_number":3,"title":"Combine everything","instruction":"Add the onion-peanut mixture and flaked smoked fish to the cassava leaves. Crumble in the stock cube. Stir well to combine.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"206c7dc9-6d48-4b05-a856-5a498855f1b6","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","step_number":4,"title":"Slow-cook","instruction":"Cover and cook on low heat for 40-45 minutes, stirring every 10 minutes to prevent sticking. The dish is ready when the leaves are very tender and the sauce has thickened.","timer_seconds":2700,"timer_label":"Slow cook","tip":"The peanut butter will thicken the sauce as it cooks — add water if too thick.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"c23b5d01-c864-4eda-bf0c-10c97d6923d0","recipe_id":"11db5636-9b39-4763-89af-11ecf6912fe9","step_number":5,"title":"Serve","instruction":"Taste and adjust salt. Serve hot alongside fufu or chikwangue.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Fouti","description":"Pounded fonio grain formed into a smooth, light ball and served with rich sauces. Fonio is an ancient grain native to West Africa, prized for its delicate flavour.","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT10M","cookTime":"PT15M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Guinea, West Africa","nutrition":{"@type":"NutritionInformation","calories":"260 calories","proteinContent":"5g","carbohydrateContent":"55g","fatContent":"1g","fiberContent":"3g"},"recipeIngredient":["2 cups fonio grain, washed","2½ cups water","1 tbsp butter or oil","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Wash the fonio","text":"Rinse fonio in several changes of water until the water runs clear. Drain thoroughly.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Cook the fonio","text":"Bring water to a boil with salt and butter. Add the fonio, stir once, cover, and reduce heat to low. Cook 5 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Steam and fluff","text":"Remove from heat and let steam covered for 5 minutes. Fluff with a fork — grains should be separate and light.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Shape and serve","text":"Pack fonio into a wet bowl and turn out as a neat mound. Serve alongside sauces and stews.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/","keywords":"fonio, ancient-grain, staple, guinea, vegan, gluten-free, dairy-free, Honoured guest meals","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Fouti","description":"Pounded fonio grain formed into a smooth, light ball and served with rich sauces. Fonio is an ancient grain native to West Africa, prized for its delicate flavour.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT10M","cookTime":"PT15M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Guinea, West Africa","nutrition":{"@type":"NutritionInformation","calories":"260 calories","proteinContent":"5g","carbohydrateContent":"55g","fatContent":"1g","fiberContent":"3g"},"recipeIngredient":["2 cups fonio grain, washed","2½ cups water","1 tbsp butter or oil","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Wash the fonio","text":"Rinse fonio in several changes of water until the water runs clear. Drain thoroughly.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/"},{"@type":"HowToStep","name":"Cook the fonio","text":"Bring water to a boil with salt and butter. Add the fonio, stir once, cover, and reduce heat to low. Cook 5 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/"},{"@type":"HowToStep","name":"Steam and fluff","text":"Remove from heat and let steam covered for 5 minutes. Fluff with a fork — grains should be separate and light.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/"},{"@type":"HowToStep","name":"Shape and serve","text":"Pack fonio into a wet bowl and turn out as a neat mound. Serve alongside sauces and stews.","url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/","keywords":"fonio, ancient-grain, staple, guinea, vegan, gluten-free, dairy-free, Honoured guest meals","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Guinea","item":"https://afrotools.com/tools/afrokitchen/countries/guinea/"},{"@type":"ListItem","position":5,"name":"Fouti","item":"https://afrotools.com/tools/afrokitchen/recipes/fouti-gn/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Honoured guest meals</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/guinea/">Guinea cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/fouti-gn/">/tools/afrokitchen/recipes/fouti-gn/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@femoree?utm_source=afrotools&amp;utm_medium=referral">Femoree</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">Fonio is one of the oldest cultivated grains in Africa, grown in the Fouta Djallon highlands of Guinea for thousands of years. The Fula people consider it the finest grain, reserving it for honoured guests.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -265,7 +280,7 @@
         <div class="ak-support-label">Guinea | Static route</div>
         <h3>Sauce Feuille</h3>
         <p>A hearty Guinean leaf sauce made with sweet potato leaves, palm oil, smoked fish, and groundnuts. Rich, nutritious, and deeply...</p>
-        <div class="ak-static-card-meta">60 min | Recipe</div>
+        <div class="ak-static-card-meta">60 min | Sauce</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/amiwo-bj/">
         <div class="ak-support-label">Benin | Static route</div>
@@ -290,7 +305,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"fouti-gn","name":"Fouti","description":"Pounded fonio grain formed into a smooth, light ball and served with rich sauces. Fonio is an ancient grain native to West Africa, prized for its delicate flavour.","story":"Fonio is one of the oldest cultivated grains in Africa, grown in the Fouta Djallon highlands of Guinea for thousands of years. The Fula people consider it the finest grain, reserving it for honoured guests.","default_servings":6,"serving_unit":"servings","country_name":"Guinea","country_code":"GN","region":"West Africa","difficulty":"easy","category":"side","calories":260,"protein_g":5,"carbs_g":55,"fat_g":1,"fiber_g":3,"ingredients":[{"id":"9d539ac1-91ce-4956-bc74-14d665551f6c","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","ingredient_id":null,"sort_order":1,"group_name":null,"amount":2,"unit":"cups","name":"fonio grain","prep_note":"washed","is_optional":false,"substitution":"couscous","created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"43278ac3-e103-4868-9096-98e0c32fb504","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","ingredient_id":null,"sort_order":2,"group_name":null,"amount":2.5,"unit":"cups","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"7c7ea81d-a7c8-4c6f-8dcb-d72aa0c6ea66","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","ingredient_id":null,"sort_order":3,"group_name":null,"amount":1,"unit":"tbsp","name":"butter or oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"ac17208f-b8ad-40fc-a30d-a9dd37ce5662","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","ingredient_id":null,"sort_order":4,"group_name":null,"amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"c3357ac8-826e-4a37-8dad-8605d4a19668","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","step_number":1,"title":"Wash the fonio","instruction":"Rinse fonio in several changes of water until the water runs clear. Drain thoroughly.","timer_seconds":null,"timer_label":null,"tip":"Fonio is tiny — use a fine-mesh sieve.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"c1ef03ac-31bd-4591-b870-b3e8a3b40a72","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","step_number":2,"title":"Cook the fonio","instruction":"Bring water to a boil with salt and butter. Add the fonio, stir once, cover, and reduce heat to low. Cook 5 minutes.","timer_seconds":300,"timer_label":"Cook fonio","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"fac0a0b3-10ee-429f-aa8f-77a94db3f093","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","step_number":3,"title":"Steam and fluff","instruction":"Remove from heat and let steam covered for 5 minutes. Fluff with a fork — grains should be separate and light.","timer_seconds":300,"timer_label":"Steam","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"142f9084-b468-46bc-8913-31dbf3151368","recipe_id":"b4d042b8-6ace-4f13-9529-13e5afc9afa0","step_number":4,"title":"Shape and serve","instruction":"Pack fonio into a wet bowl and turn out as a neat mound. Serve alongside sauces and stews.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

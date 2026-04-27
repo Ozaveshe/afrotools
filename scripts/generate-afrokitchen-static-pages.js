@@ -58,6 +58,11 @@ const LEGACY_RECIPE_ALIASES = [
     legacySlug: "ghanaian-waakye",
     targetCountryCode: "GH",
     reason: "Legacy seed route preserved as a noindex compatibility alias because the current verified Supabase inventory does not include a Waakye record yet."
+  },
+  {
+    legacySlug: "dovi",
+    targetRecipeSlug: "dovi-zw",
+    reason: "Duplicate Zimbabwe Dovi route retired in favor of the richer verified dovi-zw recipe record."
   }
 ];
 
@@ -76,6 +81,9 @@ function formatTime(totalSeconds) {
 function categoryLabel(recipe) {
   const labels = {
     main: "Main dish",
+    stew: "Stew",
+    soup: "Soup",
+    sauce: "Sauce",
     soup_stew: "Soup or stew",
     rice: "Rice dish",
     snack: "Snack",
@@ -415,7 +423,9 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -425,7 +435,10 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -453,6 +466,17 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
+    }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
     }
   </style>
   <script type="application/ld+json">${safeJson(recipeSchema)}</script>
@@ -491,9 +515,8 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
           <div><span>Best occasion</span><strong>${escapeHtml(recipe.occasion || "Any time you want to cook deeper into the AfroKitchen archive.")}</strong></div>
           <div><span>Country hub</span><strong><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)} cuisine hub</a></strong></div>
           ${recipe.primary_collection_slug ? `<div><span>Collection route</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
-          <div><span>Canonical route</span><strong><a href="${recipe.route_path}">${escapeHtml(recipe.route_path)}</a></strong></div>
         </div>
-        <div class="ak-static-credit">${media.credit ? `Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.` : "Static SEO content ships even when recipe imagery falls back to the shared AfroKitchen visual set."}</div>
+        ${media.credit ? `<div class="ak-static-credit">Image sourced from ${escapeHtml(media.credit.source)} by <a href="${escapeHtml(media.credit.photographerUrl)}">${escapeHtml(media.credit.photographer)}</a>.</div>` : ""}
       </aside>
     </div>
   </section>
@@ -502,7 +525,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">${escapeHtml(recipe.story || recipe.description)}</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -560,7 +583,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages) {
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=cd2d4746" defer></script>
 <script src="/assets/js/components/footer.min.js?v=f68d6568" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = ${safeJson(recipeData)};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>
@@ -846,6 +869,7 @@ function buildCountryPageHtml(country, manifest) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
     .ak-country-static-page .ak-country-hub-shell,
     .ak-country-static-page .ak-country-hub-card,
@@ -976,6 +1000,7 @@ function buildCollectionPageHtml(collection) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
     .ak-collection-static-page .ak-country-hub-shell,
     .ak-collection-static-page .ak-country-hub-card,

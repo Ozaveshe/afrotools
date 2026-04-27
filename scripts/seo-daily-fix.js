@@ -93,16 +93,19 @@ function isRedirectLike(content) {
   );
 }
 
-function trimTrailingSlash(pathname) {
-  if (!pathname || pathname === '/') return '/';
-  return pathname.replace(/\/+$/, '') || '/';
-}
-
 function normalizeSiteUrl(url) {
   try {
     const parsed = new URL(url, SITE_ORIGIN);
     if (parsed.origin !== SITE_ORIGIN) return '';
-    return `${parsed.origin}${trimTrailingSlash(parsed.pathname)}`;
+
+    let pathname = parsed.pathname;
+    if (pathname.endsWith('/index/')) {
+      pathname = pathname.slice(0, -'index/'.length);
+    } else if (pathname.endsWith('/index')) {
+      pathname = pathname.slice(0, -'index'.length);
+    }
+
+    return `${parsed.origin}${pathname || '/'}`;
   } catch {
     return '';
   }
@@ -141,6 +144,17 @@ function upsertOgUrl(content, url) {
 }
 
 function normalizeKnownSiteUrl(url) {
+  if (
+    typeof url !== 'string' ||
+    (
+      !url.startsWith('/') &&
+      !url.startsWith(`${SITE_ORIGIN}/`) &&
+      url !== SITE_ORIGIN
+    )
+  ) {
+    return url;
+  }
+
   const preferred = preferredPageUrls.get(normalizeSiteUrl(url));
   return preferred || url;
 }

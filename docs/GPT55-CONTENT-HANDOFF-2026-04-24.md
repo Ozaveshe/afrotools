@@ -106,8 +106,8 @@ Current behavior:
 - live admin-auth fallback when MCP write path is blocked
 - explicit blocker reporting instead of pretending live publish worked
 
-Current model setting in both automation TOMLs is still `gpt-5.4`.
-If you want the automations themselves to run on GPT 5.5, update those automation configs first.
+Current model setting in both automation TOMLs was re-checked on 2026-04-27 and is now `gpt-5.5`.
+The earlier `gpt-5.4` action item is resolved for `am-content-batch-2` and `pm-content-batch-2`.
 
 ## Last Known Good Operational State
 
@@ -191,7 +191,7 @@ Do not try to publish normal main-blog articles into `as_news`.
    - `docs/CONTENT-PUBLISHING-WORKFLOW.md`
    - `tools/afrostream/HANDOFF.md`
 2. Inspect the current dirty worktree before editing anything shared
-3. Decide whether to update the two content automations from `gpt-5.4` to `gpt-5.5`
+3. Confirm the two content automations still read `model = "gpt-5.5"` before the batch starts
 4. Keep the current quality bar:
    - long-form main blog
    - real current sources
@@ -211,6 +211,6 @@ Do not try to publish normal main-blog articles into `as_news`.
 
 My first three actions would be:
 
-1. update the AM and PM content automations to `gpt-5.5` if that is now the intended production model
+1. confirm the AM and PM content automations still use `gpt-5.5`
 2. sanity-check current access to Supabase MCP and the fallback admin publish path
 3. run the next batch with the existing quality rules instead of loosening them for volume

@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -65,6 +70,17 @@
       .ak-static-page .ak-static-summary-grid,
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
+    }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
     }
   </style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Saka-Saka","description":"Finely shredded cassava leaves slow-cooked with palm oil, onions, and dried fish until meltingly tender. A beloved Congolese staple rich in iron and flavour.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT30M","cookTime":"PT90M","totalTime":"PT120M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Democratic Republic of Congo, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"280 calories","proteinContent":"18g","carbohydrateContent":"16g","fatContent":"18g","fiberContent":"7g"},"recipeIngredient":["500 g cassava leaves, finely shredded or frozen","100 g dried fish, soaked and flaked","3 tbsp palm oil","1 large onion, finely diced","2 cloves garlic, minced","1 cube stock cube, crumbled","1 whole scotch bonnet pepper, left whole","1 cup water"],"recipeInstructions":[{"@type":"HowToStep","name":"Prepare the leaves","text":"If using fresh cassava leaves, wash thoroughly and pound in a mortar or blend until finely shredded. If using frozen, thaw and squeeze out excess water.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-cd/"},{"@type":"HowToStep","name":"Start the greens","text":"Place the cassava leaves in a large pot with water. Bring to a boil, then reduce heat and simmer for 30 minutes to begin softening the tough leaves.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-cd/"},{"@type":"HowToStep","name":"Build the flavour base","text":"In a separate pan, heat palm oil and sauté the onion until golden. Add garlic and cook for 1 minute. Add the dried fish and crumbled stock cube, stirring to combine.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-cd/"},{"@type":"HowToStep","name":"Combine and slow-cook","text":"Add the onion-fish mixture to the cassava leaves. Drop in the whole scotch bonnet. Stir well, cover, and simmer on low heat for another 45-60 minutes, stirring occasionally, until the leaves are very tender and the sauce has thickened.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-cd/"},{"@type":"HowToStep","name":"Finish and serve","text":"Remove the scotch bonnet. Taste and adjust seasoning with salt. Serve hot as a side dish alongside fufu or boiled cassava.","url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-cd/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-cd/","keywords":"cassava-leaves, greens, traditional, staple, congo, gluten-free, dairy-free, Everyday meals, communal dining","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/saka-saka-cd/"}}</script>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Everyday meals, communal dining</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/democratic-republic-of-congo/">Democratic Republic of Congo cuisine hub</a></strong></div>
 
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/saka-saka-cd/">/tools/afrokitchen/recipes/saka-saka-cd/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Static SEO content ships even when recipe imagery falls back to the shared AfroKitchen visual set.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">Saka-Saka is eaten daily across the Congo, from the streets of Kinshasa to remote villages in the interior. Cassava leaves must be pounded and cooked for a long time to remove bitterness and release their nutrients. The addition of dried fish or smoked meat transforms simple greens into a deeply savoury dish that nourishes millions.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -295,7 +310,7 @@
         <div class="ak-support-label">Democratic Republic of Congo | Static route</div>
         <h3>Moambe Chicken</h3>
         <p>Tender chicken simmered in a rich, earthy palm nut sauce with tomatoes, onions, and spices. Considered the national dish of the...</p>
-        <div class="ak-static-card-meta">85 min | Recipe</div>
+        <div class="ak-static-card-meta">85 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/liboke-ya-mbika-cd/">
         <div class="ak-support-label">Democratic Republic of Congo | Static route</div>
@@ -313,7 +328,7 @@
         <div class="ak-support-label">Cameroon | Static route</div>
         <h3>Ndolé</h3>
         <p>Cameroon&#39;s national dish — bitter leaves cooked down with ground peanuts, crayfish, and prawns into a rich, complex stew. Earth...</p>
-        <div class="ak-static-card-meta">90 min | Recipe</div>
+        <div class="ak-static-card-meta">90 min | Stew</div>
       </a></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
@@ -326,7 +341,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"saka-saka-cd","name":"Saka-Saka","description":"Finely shredded cassava leaves slow-cooked with palm oil, onions, and dried fish until meltingly tender. A beloved Congolese staple rich in iron and flavour.","story":"Saka-Saka is eaten daily across the Congo, from the streets of Kinshasa to remote villages in the interior. Cassava leaves must be pounded and cooked for a long time to remove bitterness and release their nutrients. The addition of dried fish or smoked meat transforms simple greens into a deeply savoury dish that nourishes millions.","default_servings":6,"serving_unit":"servings","country_name":"Democratic Republic of Congo","country_code":"CD","region":"Central Africa","difficulty":"medium","category":"side","calories":280,"protein_g":18,"carbs_g":16,"fat_g":18,"fiber_g":7,"ingredients":[{"id":"ee645349-abbc-4be5-b4f2-466b5e1332fc","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":1,"group_name":null,"amount":500,"unit":"g","name":"cassava leaves","prep_note":"finely shredded or frozen","is_optional":false,"substitution":"spinach and kale mix","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"eef56110-0733-48a3-bd01-3e41570a4b63","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":2,"group_name":null,"amount":100,"unit":"g","name":"dried fish","prep_note":"soaked and flaked","is_optional":false,"substitution":"smoked mackerel","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"5989f30e-3bc2-472b-96b3-804d55f2a3e2","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":3,"group_name":null,"amount":3,"unit":"tbsp","name":"palm oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"2e7980c8-2d92-4ba2-8450-b759fa742795","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":4,"group_name":null,"amount":1,"unit":"large","name":"onion","prep_note":"finely diced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"46f13dcf-bb85-4908-b2f8-2fd123b51019","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":5,"group_name":null,"amount":2,"unit":"cloves","name":"garlic","prep_note":"minced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"a4e20894-9299-4512-a277-cb7c66b92423","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":6,"group_name":null,"amount":1,"unit":"cube","name":"stock cube","prep_note":"crumbled","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"570ec896-f9f0-466d-9cab-411f12ee276c","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":7,"group_name":null,"amount":1,"unit":"whole","name":"scotch bonnet pepper","prep_note":"left whole","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"c69cfc16-8b0c-42aa-9536-43f1e7781f4d","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","ingredient_id":null,"sort_order":8,"group_name":null,"amount":1,"unit":"cup","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}],"steps":[{"id":"88c275ee-f652-4953-94e3-06c1e7627e91","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","step_number":1,"title":"Prepare the leaves","instruction":"If using fresh cassava leaves, wash thoroughly and pound in a mortar or blend until finely shredded. If using frozen, thaw and squeeze out excess water.","timer_seconds":null,"timer_label":null,"tip":"Frozen cassava leaves are widely available in African grocery stores and save significant prep time.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"66974f35-5dd1-4c06-b449-328cdb61f05a","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","step_number":2,"title":"Start the greens","instruction":"Place the cassava leaves in a large pot with water. Bring to a boil, then reduce heat and simmer for 30 minutes to begin softening the tough leaves.","timer_seconds":1800,"timer_label":"Boil leaves","tip":"Cassava leaves require long cooking — do not rush this step.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"f969846a-536f-43c7-a10e-5bcdced0ab5c","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","step_number":3,"title":"Build the flavour base","instruction":"In a separate pan, heat palm oil and sauté the onion until golden. Add garlic and cook for 1 minute. Add the dried fish and crumbled stock cube, stirring to combine.","timer_seconds":420,"timer_label":"Sauté aromatics","tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"ca8f278a-b73b-4812-861d-6a1ab50c8ea1","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","step_number":4,"title":"Combine and slow-cook","instruction":"Add the onion-fish mixture to the cassava leaves. Drop in the whole scotch bonnet. Stir well, cover, and simmer on low heat for another 45-60 minutes, stirring occasionally, until the leaves are very tender and the sauce has thickened.","timer_seconds":3600,"timer_label":"Slow cook","tip":"Add splashes of water if the pot gets dry. The final dish should be moist but not soupy.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"0fc0a860-08be-43a1-a2a5-69e110ec88bb","recipe_id":"17e46310-9080-4558-96f6-221f967798f1","step_number":5,"title":"Finish and serve","instruction":"Remove the scotch bonnet. Taste and adjust seasoning with salt. Serve hot as a side dish alongside fufu or boiled cassava.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

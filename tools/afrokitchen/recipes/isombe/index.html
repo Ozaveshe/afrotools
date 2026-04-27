@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Isombe","description":"Rwandan cassava leaf stew pounded smooth and simmered with palm oil, eggplant, and spinach.","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT30M","cookTime":"PT60M","totalTime":"PT90M","recipeYield":"4 servings","recipeCategory":"stew","recipeCuisine":"Rwanda, East Africa","nutrition":{"@type":"NutritionInformation","calories":"220 calories","proteinContent":"8g","carbohydrateContent":"18g","fatContent":"14g","fiberContent":"6g"},"recipeIngredient":["500 g cassava leaves, pounded to a paste","1 whole eggplant, diced","2 cups spinach, chopped","1 whole onion, diced","3 cloves garlic, minced","3 tbsp palm oil","1 cup water","1 tsp salt","½ tsp black pepper","1 whole scotch bonnet pepper, whole"],"recipeInstructions":[{"@type":"HowToStep","name":"Prepare Leaves","text":"If using fresh cassava leaves, pound them in a mortar until they form a fine green paste. If using frozen pre-pounded leaves, thaw completely.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Saute Base","text":"Heat palm oil in a heavy pot. Saute onions and garlic until soft and fragrant.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add Vegetables","text":"Add the eggplant and cook until softened. Add the pounded cassava leaves and water. Stir well to combine.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Simmer","text":"Bring to a boil, then reduce heat. Add scotch bonnet whole (for mild heat). Simmer, stirring occasionally, until leaves are very tender and sauce is thick.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add Spinach","text":"Stir in chopped spinach and cook for 5 more minutes until wilted. Season with salt and pepper.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Serve","text":"Remove the whole scotch bonnet. Serve isombe with boiled plantains, rice, or ubugari (maize porridge).","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","image":"https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","keywords":"cassava-leaves, traditional, everyday, vegan, gluten-free, dairy-free, nut-free, halal","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Isombe","description":"Rwandan cassava leaf stew pounded smooth and simmered with palm oil, eggplant, and spinach.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT30M","cookTime":"PT60M","totalTime":"PT90M","recipeYield":"4 servings","recipeCategory":"stew","recipeCuisine":"Rwanda, East Africa","nutrition":{"@type":"NutritionInformation","calories":"220 calories","proteinContent":"8g","carbohydrateContent":"18g","fatContent":"14g","fiberContent":"6g"},"recipeIngredient":["500 g cassava leaves, pounded to a paste","1 whole eggplant, diced","2 cups spinach, chopped","1 whole onion, diced","3 cloves garlic, minced","3 tbsp palm oil","1 cup water","1 tsp salt","½ tsp black pepper","1 whole scotch bonnet pepper, whole"],"recipeInstructions":[{"@type":"HowToStep","name":"Prepare Leaves","text":"If using fresh cassava leaves, pound them in a mortar until they form a fine green paste. If using frozen pre-pounded leaves, thaw completely.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"},{"@type":"HowToStep","name":"Saute Base","text":"Heat palm oil in a heavy pot. Saute onions and garlic until soft and fragrant.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"},{"@type":"HowToStep","name":"Add Vegetables","text":"Add the eggplant and cook until softened. Add the pounded cassava leaves and water. Stir well to combine.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"},{"@type":"HowToStep","name":"Simmer","text":"Bring to a boil, then reduce heat. Add scotch bonnet whole (for mild heat). Simmer, stirring occasionally, until leaves are very tender and sauce is thick.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"},{"@type":"HowToStep","name":"Add Spinach","text":"Stir in chopped spinach and cook for 5 more minutes until wilted. Season with salt and pepper.","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"},{"@type":"HowToStep","name":"Serve","text":"Remove the whole scotch bonnet. Serve isombe with boiled plantains, rice, or ubugari (maize porridge).","url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/isombe/","keywords":"cassava-leaves, traditional, everyday, vegan, gluten-free, dairy-free, nut-free, halal","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Rwanda","item":"https://afrotools.com/tools/afrokitchen/countries/rwanda/"},{"@type":"ListItem","position":5,"name":"Isombe","item":"https://afrotools.com/tools/afrokitchen/recipes/isombe/"}]}</script>
 </head>
 <body>
@@ -79,7 +95,7 @@
         <nav class="ak-breadcrumb" aria-label="breadcrumb">
           <a href="/">AfroTools</a><span>/</span><a href="/tools/">Tools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><a href="/tools/afrokitchen/countries/rwanda/">Rwanda</a><span>/</span><span>Isombe</span>
         </nav>
-        <div class="ak-eyebrow">Rwanda | Recipe</div>
+        <div class="ak-eyebrow">Rwanda | Stew</div>
         <h1>Isombe</h1>
         <p class="ak-hero-sub">Rwandan cassava leaf stew pounded smooth and simmered with palm oil, eggplant, and spinach.</p>
         <div class="ak-hero-stats">
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Any time you want to cook deeper into the AfroKitchen archive.</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/rwanda/">Rwanda cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/vegetarian-africa/">Vegetarian Africa</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/isombe/">/tools/afrokitchen/recipes/isombe/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@femoree?utm_source=afrotools&amp;utm_medium=referral">Femoree</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">Isombe is one of Rwanda&#39;s most cherished dishes, made from pounded cassava leaves simmered until silky smooth. It is a staple across all regions and a source of deep nutritional value. Rwandan grandmothers say the secret is in the pounding — the leaves must be ground to a fine paste for the best texture.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -327,7 +342,7 @@
         <div class="ak-support-label">Rwanda | Static route</div>
         <h3>Igisafuria</h3>
         <p>A hearty Rwandan one-pot stew of plantains, vegetables, and meat simmered until everything melds together.</p>
-        <div class="ak-static-card-meta">70 min | Recipe</div>
+        <div class="ak-static-card-meta">70 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/rwandan-brochettes/">
         <div class="ak-support-label">Rwanda | Static route</div>
@@ -339,7 +354,7 @@
         <div class="ak-support-label">Ethiopia | Static route</div>
         <h3>Doro Wat</h3>
         <p>Ethiopia&#39;s celebrated spicy chicken stew simmered in berbere spice and niter kibbeh, served with hard-boiled eggs on injera.</p>
-        <div class="ak-static-card-meta">120 min | Recipe</div>
+        <div class="ak-static-card-meta">120 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/ugali-na-sukuma-wiki/">
         <div class="ak-support-label">Kenya | Static route</div>
@@ -358,7 +373,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"isombe","name":"Isombe","description":"Rwandan cassava leaf stew pounded smooth and simmered with palm oil, eggplant, and spinach.","story":"Isombe is one of Rwanda's most cherished dishes, made from pounded cassava leaves simmered until silky smooth. It is a staple across all regions and a source of deep nutritional value. Rwandan grandmothers say the secret is in the pounding — the leaves must be ground to a fine paste for the best texture.","default_servings":4,"serving_unit":"servings","country_name":"Rwanda","country_code":"RW","region":"East Africa","difficulty":"medium","category":"stew","calories":220,"protein_g":8,"carbs_g":18,"fat_g":14,"fiber_g":6,"ingredients":[{"id":"ee335a05-3a5a-4d2d-b7ae-4d7a0e3fac8a","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":1,"group_name":"Main","amount":500,"unit":"g","name":"cassava leaves","prep_note":"pounded to a paste","is_optional":false,"substitution":"spinach and kale mix","created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"80679506-6373-4cb3-af69-7ba1ece88e31","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":2,"group_name":"Main","amount":1,"unit":"whole","name":"eggplant","prep_note":"diced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"99abc137-46c7-4c07-bb76-ae4fd3a694ec","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":3,"group_name":"Main","amount":2,"unit":"cups","name":"spinach","prep_note":"chopped","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"6a7d9e37-3bc7-4b65-80c8-f43260658215","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":4,"group_name":"Main","amount":1,"unit":"whole","name":"onion","prep_note":"diced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"7c3a34b6-6148-4096-abe7-bcbcab6925fb","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":5,"group_name":"Main","amount":3,"unit":"cloves","name":"garlic","prep_note":"minced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"e109fa11-4771-47cd-887a-b43c86bad6ee","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":6,"group_name":"Main","amount":3,"unit":"tbsp","name":"palm oil","prep_note":null,"is_optional":false,"substitution":"red palm oil","created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"46969a2a-e48f-4656-ab70-f7cce11a1bdd","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":7,"group_name":"Main","amount":1,"unit":"cup","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"109e2a7a-7c57-472d-a004-098efdb3570c","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":8,"group_name":"Main","amount":1,"unit":"tsp","name":"salt","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"6a6b99a5-b284-4a1d-81ec-9b941d327971","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":9,"group_name":"Main","amount":0.5,"unit":"tsp","name":"black pepper","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"c89a4c05-6850-44d4-a26f-b5d27b0e544d","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","ingredient_id":null,"sort_order":10,"group_name":"Main","amount":1,"unit":"whole","name":"scotch bonnet pepper","prep_note":"whole","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}],"steps":[{"id":"6680609e-243b-4267-be56-155a741de01d","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","step_number":1,"title":"Prepare Leaves","instruction":"If using fresh cassava leaves, pound them in a mortar until they form a fine green paste. If using frozen pre-pounded leaves, thaw completely.","timer_seconds":null,"timer_label":null,"tip":"Cassava leaves must be cooked thoroughly — never eat them raw as they contain naturally occurring compounds that break down with heat.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"39b8bab7-5c94-40b2-a2a8-dd4af753173d","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","step_number":2,"title":"Saute Base","instruction":"Heat palm oil in a heavy pot. Saute onions and garlic until soft and fragrant.","timer_seconds":480,"timer_label":"Saute","tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"1e548c00-34d5-4c1a-b899-7cafc1c4ae79","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","step_number":3,"title":"Add Vegetables","instruction":"Add the eggplant and cook until softened. Add the pounded cassava leaves and water. Stir well to combine.","timer_seconds":600,"timer_label":"Cook eggplant","tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"1899558d-4e45-4544-9fc8-6358f2e18989","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","step_number":4,"title":"Simmer","instruction":"Bring to a boil, then reduce heat. Add scotch bonnet whole (for mild heat). Simmer, stirring occasionally, until leaves are very tender and sauce is thick.","timer_seconds":2400,"timer_label":"Simmer","tip":"The longer you simmer, the smoother and more flavorful the isombe becomes.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"be8b2b88-f647-4a0c-8b74-a753cd6fa717","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","step_number":5,"title":"Add Spinach","instruction":"Stir in chopped spinach and cook for 5 more minutes until wilted. Season with salt and pepper.","timer_seconds":300,"timer_label":"Wilt spinach","tip":null,"image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"},{"id":"33124d5d-ff86-44bf-8775-bbd4a514b66e","recipe_id":"e87881f2-749f-435a-b6ea-e3b92f2ad828","step_number":6,"title":"Serve","instruction":"Remove the whole scotch bonnet. Serve isombe with boiled plantains, rice, or ubugari (maize porridge).","timer_seconds":null,"timer_label":null,"tip":"Isombe tastes even better the next day after the flavors have melded.","image_url":null,"created_at":"2026-03-18T00:25:13.245504+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

@@ -17,6 +17,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const { fileToPublicRoute } = require('./lib/canonical-aliases');
+
 const ROOT = path.resolve(__dirname, '..');
 const BASE_URL = 'https://afrotools.com';
 const VALID_LANGS = new Set(['en', 'fr', 'sw', 'yo', 'ha', 'x-default']);
@@ -44,23 +46,25 @@ function walkHtml(dir) {
 }
 
 function filePathToUrl(filePath) {
-  let rel = path.relative(ROOT, filePath).replace(/\\/g, '/');
-  // index.html → directory URL
-  if (rel.endsWith('/index.html')) {
-    rel = rel.slice(0, -'index.html'.length);
-  } else if (rel === 'index.html') {
-    rel = '';
-  } else if (rel.endsWith('.html')) {
-    // Netlify pretty URLs: foo/bar.html → /foo/bar/
-    rel = rel.slice(0, -'.html'.length) + '/';
-  }
-  return BASE_URL + '/' + rel;
+  return BASE_URL + fileToPublicRoute(filePath);
 }
 
 function normalizeUrl(url) {
-  // Normalize to always have trailing slash for comparison
-  const normalized = url.endsWith('/') ? url : url + '/';
-  return normalized.replace(/\/index\/$/, '/');
+  try {
+    const parsed = new URL(url, BASE_URL);
+    if (parsed.origin !== BASE_URL) return url;
+
+    let pathname = parsed.pathname;
+    if (pathname.endsWith('/index/')) {
+      pathname = pathname.slice(0, -'index/'.length);
+    } else if (pathname.endsWith('/index')) {
+      pathname = pathname.slice(0, -'index'.length);
+    }
+
+    return `${parsed.origin}${pathname || '/'}`;
+  } catch {
+    return url;
+  }
 }
 
 function urlExists(url, allUrls) {
@@ -223,11 +227,14 @@ function main() {
 
     for (const h of hreflangs) {
       if (h.lang === 'x-default') continue;
-      const targetData = pageData.get(normalizeUrl(h.href));
+      const targetKey = normalizeUrl(h.href);
+      if (targetKey === normalizedKey) continue;
+
+      const targetData = pageData.get(targetKey);
       if (!targetData) continue; // Already caught by check 6
 
       // Target page should reference back to this page
-      const sourceExpectedLang = inferPageLang(filePath);
+      const sourceExpectedLang = inferPageLang(filePath, data.htmlLang);
       const backRef = targetData.hreflangs.find(th =>
         th.lang === sourceExpectedLang && normalizeUrl(th.href) === normalizedKey
       );

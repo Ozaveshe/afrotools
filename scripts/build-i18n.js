@@ -341,9 +341,9 @@ function discoverExistingFrPages() {
           enPage = enPage.replace(/\/+$/, '').replace(/^\//, '');
         }
 
-        // Build French URL
-        let frUrl = '/fr/' + rel.replace(/\.html$/, '').replace(/\/index$/, '');
-        if (!frUrl.endsWith('/')) frUrl += '/';
+        // Build French URL with canonical route rules:
+        // foo/index.html => /foo/, foo.html => /foo.
+        const frUrl = fileToPublicRoute(path.join(frDir, rel));
 
         // Verify English source exists
         const enExists = enPage && resolveSourceFile(enPage);
@@ -418,9 +418,9 @@ function discoverExistingSwPages() {
           enPage = enPage.replace(/\/+$/, '').replace(/^\//, '');
         }
 
-        // Build Swahili URL
-        let swUrl = '/sw/' + (cleanRel || '');
-        if (swUrl !== '/sw/' && !swUrl.endsWith('/')) swUrl += '/';
+        // Build Swahili URL with canonical route rules:
+        // foo/index.html => /foo/, foo.html => /foo.
+        const swUrl = fileToPublicRoute(path.join(swDir, rel));
 
         // Verify English source exists
         const enExists = enPage && resolveSourceFile(enPage);

@@ -695,6 +695,37 @@ When Swahili TIN coverage is expanded to all African countries, keep it as a com
 - Link TIN pages to VAT, invoice, business registration, and salary/PAYE where those workflows naturally meet.
 - Add reciprocal Swahili hreflang only on the paired English TIN pages in the batch.
 
+### All-Country VAT Coverage
+
+When Swahili VAT coverage is expanded to all African countries, keep each country page paired to the existing English country VAT page and treat that English page as the only source of VAT rates, thresholds, exemptions, scripts, FAQs, and disclaimer posture.
+
+- Create hand-authored Swahili product pages at `/sw/<country>/kikokotoo-vat/` with self canonicals and paired `sw/en/x-default` hreflang.
+- Preserve calculator behavior from the English page: add VAT, remove VAT, custom rate, invoice-style totals, charts, share/PDF language, and estimate disclaimers.
+- Do not invent VAT rates, thresholds, dates, exemptions, penalties, or official guidance; if source data is sparse, tell users to verify with the tax authority or a qualified professional.
+- Surface local VAT as business/compliance support on country hubs while keeping salary/PAYE sections intact.
+- Link VAT pages to invoice, TIN, business registration, and salary/PAYE when payroll context matters; add reciprocal Swahili hreflang only on the paired English VAT pages.
+
+
+### Fintech and Money Movement Pattern
+
+For Swahili fintech expansion, treat currency conversion, remittance comparison, mobile-money fees, POS, merchant fees, marketplace fees, forex profit, and import FX impact as one practical money-movement path.
+
+- Use existing English fintech and payment-fee pages as the source of calculator behavior, provider names, modeled assumptions, scripts, and disclaimer posture.
+- Keep live-rate language cautious: use makadirio, ulinganisho, snapshot, spread, and verify-with-provider wording instead of promising final quotes.
+- Preserve provider names such as M-Pesa, MTN MoMo, Airtel Money, Orange Money, Wise, Remitly, WorldRemit, Western Union, LemFi, Sendwave, Jumia, Konga, Takealot, Kilimall, and Jiji.
+- Surface the cluster manually from Swahili fintech, business, VAT, tools, country, and priority country hubs without registry rows.
+- Cross-link money-movement pages back to VAT, invoices, TIN, and salary/PAYE when pricing, compliance, or payroll context matters.
+
+
+### Fintech Savings, Credit, and Community Finance Pattern
+
+For the second Swahili fintech layer, extend `/sw/fintech/` beyond money movement into savings products, household planning, credit comparison, mtaji wa biashara, and rotating savings groups.
+
+- Keep retained terms when they match real search and user vocabulary: `SACCO`, `Ajo`, `Esusu`, `Chama`, `Stokvel`, `Tontine`, `Susu`, `APR`, `T-bill`, `MMF`, `microfinance`, and `fintech`.
+- Explain retained terms in Kiswahili on first use instead of leaving English or regional labels floating without context.
+- Order `/sw/fintech/` as: Sarafu/FX na uhamisho, Malipo ya biashara, Akiba na mapato, Mikopo na microfinance, SACCO/chama/vikundi vya akiba, kisha Mtaji wa biashara na ada za benki.
+- Rotating-savings pages should respect local names and user intent. Do not flatten Chama, Ajo, Esusu, Stokvel, Tontine, and Susu into one generic term when the local term helps trust and search.
+- Use paired English tool pages for formulas, inputs, scripts, provider assumptions, and disclaimer posture. Do not invent rates, provider rules, or legal requirements.
 
 ## Recommended Execution Order
 

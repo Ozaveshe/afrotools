@@ -47,7 +47,7 @@ exports.handler = async function (event) {
 
   try {
     if (action === 'list') {
-      let url = `${SUPABASE_URL}/rest/v1/recipes?select=*&order=is_featured.desc,view_count.desc`;
+      let url = `${SUPABASE_URL}/rest/v1/recipes?select=*&is_verified=eq.true&order=is_featured.desc,view_count.desc`;
       if (params.country) url += `&country_code=eq.${params.country}`;
       if (params.category) url += `&category=eq.${params.category}`;
       if (params.difficulty) url += `&difficulty=eq.${params.difficulty}`;
@@ -65,7 +65,7 @@ exports.handler = async function (event) {
     if (action === 'get' && params.slug && /^[a-z0-9-]+$/.test(params.slug)) {
       // Get recipe with ingredients, steps, and reviews
       const recipeRes = await fetch(
-        `${SUPABASE_URL}/rest/v1/recipes?slug=eq.${params.slug}&select=*&limit=1`,
+        `${SUPABASE_URL}/rest/v1/recipes?slug=eq.${params.slug}&is_verified=eq.true&select=*&limit=1`,
         { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
       );
       const recipes = await recipeRes.json();

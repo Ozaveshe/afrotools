@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Chabéu","description":"Jollof-style rice from Guinea-Bissau, cooked in a palm oil and tomato base with dried fish and vegetables. The palm oil gives it a distinctive golden-red hue.","image":"https://images.unsplash.com/photo-1702827482556-481adcd68f3b?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT20M","cookTime":"PT50M","totalTime":"PT70M","recipeYield":"6 servings","recipeCategory":"Main Course","recipeCuisine":"Guinea-Bissau, West Africa","nutrition":{"@type":"NutritionInformation","calories":"440 calories","proteinContent":"18g","carbohydrateContent":"60g","fatContent":"16g","fiberContent":"4g"},"recipeIngredient":["3 cups rice, washed","¼ cup palm oil","200 g dried fish, soaked and flaked","3 tbsp tomato paste","2 large onions, chopped","1 medium eggplant, cubed"],"recipeInstructions":[{"@type":"HowToStep","name":"Fry the base","text":"Heat palm oil. Fry onions until golden. Add tomato paste and cook 3 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/","image":"https://images.unsplash.com/photo-1702827482556-481adcd68f3b?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add fish and vegetables","text":"Add dried fish, eggplant, and 5 cups water. Bring to a boil and simmer 10 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/","image":"https://images.unsplash.com/photo-1702827482556-481adcd68f3b?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add rice","text":"Add washed rice. Stir once, cover tightly, and cook on low heat for 25-30 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/","image":"https://images.unsplash.com/photo-1702827482556-481adcd68f3b?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Serve","text":"Fluff rice and serve with the fish and vegetables mixed through.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/","image":"https://images.unsplash.com/photo-1702827482556-481adcd68f3b?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/","keywords":"rice, palm-oil, one-pot, guinea-bissau, gluten-free, dairy-free, pescatarian, Family meals","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Chabéu","description":"Jollof-style rice from Guinea-Bissau, cooked in a palm oil and tomato base with dried fish and vegetables. The palm oil gives it a distinctive golden-red hue.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT20M","cookTime":"PT50M","totalTime":"PT70M","recipeYield":"6 servings","recipeCategory":"Main Course","recipeCuisine":"Guinea-Bissau, West Africa","nutrition":{"@type":"NutritionInformation","calories":"440 calories","proteinContent":"18g","carbohydrateContent":"60g","fatContent":"16g","fiberContent":"4g"},"recipeIngredient":["3 cups rice, washed","¼ cup palm oil","200 g dried fish, soaked and flaked","3 tbsp tomato paste","2 large onions, chopped","1 medium eggplant, cubed"],"recipeInstructions":[{"@type":"HowToStep","name":"Fry the base","text":"Heat palm oil. Fry onions until golden. Add tomato paste and cook 3 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/"},{"@type":"HowToStep","name":"Add fish and vegetables","text":"Add dried fish, eggplant, and 5 cups water. Bring to a boil and simmer 10 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/"},{"@type":"HowToStep","name":"Add rice","text":"Add washed rice. Stir once, cover tightly, and cook on low heat for 25-30 minutes.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/"},{"@type":"HowToStep","name":"Serve","text":"Fluff rice and serve with the fish and vegetables mixed through.","url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/","keywords":"rice, palm-oil, one-pot, guinea-bissau, gluten-free, dairy-free, pescatarian, Family meals","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Guinea-Bissau","item":"https://afrotools.com/tools/afrokitchen/countries/guinea-bissau/"},{"@type":"ListItem","position":5,"name":"Chabéu","item":"https://afrotools.com/tools/afrokitchen/recipes/chabeu-gw/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Family meals</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/guinea-bissau/">Guinea-Bissau cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/one-pot-wonders/">One-Pot Wonders</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/chabeu-gw/">/tools/afrokitchen/recipes/chabeu-gw/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@aburgosphoto?utm_source=afrotools&amp;utm_medium=referral">Alfredo Burgos</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">Chabéu is Guinea-Bissau&#39;s take on the West African one-pot rice tradition. The use of palm oil instead of vegetable oil distinguishes it from other jollof variations, giving it a unique colour and nutty flavour.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -279,7 +294,7 @@
         <div class="ak-support-label">Guinea-Bissau | Static route</div>
         <h3>Caldo de Mancarra</h3>
         <p>Guinea-Bissau&#39;s groundnut soup — a thick peanut broth with chicken and vegetables, reflecting both Portuguese and West African...</p>
-        <div class="ak-static-card-meta">70 min | Recipe</div>
+        <div class="ak-static-card-meta">70 min | Soup</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/arroz-de-caju-gw/">
         <div class="ak-support-label">Guinea-Bissau | Static route</div>
@@ -310,7 +325,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"chabeu-gw","name":"Chabéu","description":"Jollof-style rice from Guinea-Bissau, cooked in a palm oil and tomato base with dried fish and vegetables. The palm oil gives it a distinctive golden-red hue.","story":"Chabéu is Guinea-Bissau's take on the West African one-pot rice tradition. The use of palm oil instead of vegetable oil distinguishes it from other jollof variations, giving it a unique colour and nutty flavour.","default_servings":6,"serving_unit":"servings","country_name":"Guinea-Bissau","country_code":"GW","region":"West Africa","difficulty":"medium","category":"main","calories":440,"protein_g":18,"carbs_g":60,"fat_g":16,"fiber_g":4,"ingredients":[{"id":"6d6d2cca-da32-421b-b71b-6c6ee8f957e3","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","ingredient_id":null,"sort_order":1,"group_name":null,"amount":3,"unit":"cups","name":"rice","prep_note":"washed","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"c97a0838-d1a3-44c4-99d3-d6097386e7fc","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","ingredient_id":null,"sort_order":2,"group_name":null,"amount":0.25,"unit":"cup","name":"palm oil","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"591dd36a-248d-41b2-9650-6395c88117d3","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","ingredient_id":null,"sort_order":3,"group_name":null,"amount":200,"unit":"g","name":"dried fish","prep_note":"soaked and flaked","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"e20749a7-1572-495d-af50-023117105df5","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","ingredient_id":null,"sort_order":4,"group_name":null,"amount":3,"unit":"tbsp","name":"tomato paste","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"5b0a5181-c3bf-4b9b-813c-c210e03ec99c","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","ingredient_id":null,"sort_order":5,"group_name":null,"amount":2,"unit":"large","name":"onions","prep_note":"chopped","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"b06fc46c-5a58-4290-b752-b6d7787923aa","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","ingredient_id":null,"sort_order":6,"group_name":null,"amount":1,"unit":"medium","name":"eggplant","prep_note":"cubed","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}],"steps":[{"id":"df46a468-8d6e-4b74-9fc6-fcc0fed0068e","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","step_number":1,"title":"Fry the base","instruction":"Heat palm oil. Fry onions until golden. Add tomato paste and cook 3 minutes.","timer_seconds":300,"timer_label":"Fry base","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"1768242d-6925-4159-8d1b-5895e25c7538","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","step_number":2,"title":"Add fish and vegetables","instruction":"Add dried fish, eggplant, and 5 cups water. Bring to a boil and simmer 10 minutes.","timer_seconds":600,"timer_label":"Simmer base","tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"018b0b00-42f7-4ab4-9f97-785104ea4734","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","step_number":3,"title":"Add rice","instruction":"Add washed rice. Stir once, cover tightly, and cook on low heat for 25-30 minutes.","timer_seconds":1800,"timer_label":"Cook rice","tip":"Do not lift the lid during cooking.","image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"},{"id":"c94124b8-e18f-4290-bfa9-137c1745f243","recipe_id":"a29b1e9e-f6ea-4057-b147-9d34191e3569","step_number":4,"title":"Serve","instruction":"Fluff rice and serve with the fish and vegetables mixed through.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:24:50.156561+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

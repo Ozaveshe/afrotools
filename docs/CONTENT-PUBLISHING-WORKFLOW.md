@@ -127,8 +127,11 @@ Recommended fields:
 - `category`
 - `published_at`
 - `image_url`
-- `featured`
+- `is_featured` for direct Supabase writes
 - `is_published`
+
+Fallback admin payload caveat: the live `as_news` table uses `is_featured`.
+Do not send a `featured` field through the fallback admin or REST publish path unless that field has been re-confirmed against the live API.
 
 ### Recommended AfroStream categories
 

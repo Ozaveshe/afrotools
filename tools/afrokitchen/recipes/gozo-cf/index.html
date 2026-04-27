@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Gozo","description":"A thick, stiff cassava flour porridge that serves as the staple base for most Central African meals. Smooth, stretchy, and perfect for scooping up stews and sauces.","image":"https://images.unsplash.com/photo-1607900290961-70e90c153415?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Central African Republic, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"220 calories","proteinContent":"2g","carbohydrateContent":"52g","fatContent":"0.5g","fiberContent":"3g"},"recipeIngredient":["3 cups cassava flour, fine","4 cups water","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Boil the water","text":"Bring 4 cups of water to a rolling boil in a heavy-bottomed pot. Add salt if using.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/","image":"https://images.unsplash.com/photo-1607900290961-70e90c153415?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add cassava flour gradually","text":"Reduce heat to medium. Begin adding cassava flour a little at a time, stirring constantly with a strong wooden spoon. Continue adding flour and stirring.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/","image":"https://images.unsplash.com/photo-1607900290961-70e90c153415?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Stir vigorously","text":"Once all the flour is incorporated, stir vigorously for 10-12 minutes. The mixture should pull away from the sides of the pot and form a smooth, stretchy dough.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/","image":"https://images.unsplash.com/photo-1607900290961-70e90c153415?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Shape and serve","text":"Wet your hands and shape the gozo into smooth balls. Place on a plate and serve immediately alongside your choice of stew or sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/","image":"https://images.unsplash.com/photo-1607900290961-70e90c153415?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/","keywords":"cassava, staple, fufu, traditional, central-african-republic, vegetarian, vegan, gluten-free, dairy-free, nut-free, Every meal, daily staple","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Gozo","description":"A thick, stiff cassava flour porridge that serves as the staple base for most Central African meals. Smooth, stretchy, and perfect for scooping up stews and sauces.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT5M","cookTime":"PT20M","totalTime":"PT25M","recipeYield":"6 servings","recipeCategory":"side","recipeCuisine":"Central African Republic, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"220 calories","proteinContent":"2g","carbohydrateContent":"52g","fatContent":"0.5g","fiberContent":"3g"},"recipeIngredient":["3 cups cassava flour, fine","4 cups water","½ tsp salt"],"recipeInstructions":[{"@type":"HowToStep","name":"Boil the water","text":"Bring 4 cups of water to a rolling boil in a heavy-bottomed pot. Add salt if using.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/"},{"@type":"HowToStep","name":"Add cassava flour gradually","text":"Reduce heat to medium. Begin adding cassava flour a little at a time, stirring constantly with a strong wooden spoon. Continue adding flour and stirring.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/"},{"@type":"HowToStep","name":"Stir vigorously","text":"Once all the flour is incorporated, stir vigorously for 10-12 minutes. The mixture should pull away from the sides of the pot and form a smooth, stretchy dough.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/"},{"@type":"HowToStep","name":"Shape and serve","text":"Wet your hands and shape the gozo into smooth balls. Place on a plate and serve immediately alongside your choice of stew or sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/","keywords":"cassava, staple, fufu, traditional, central-african-republic, vegetarian, vegan, gluten-free, dairy-free, nut-free, Every meal, daily staple","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Central African Republic","item":"https://afrotools.com/tools/afrokitchen/countries/central-african-republic/"},{"@type":"ListItem","position":5,"name":"Gozo","item":"https://afrotools.com/tools/afrokitchen/recipes/gozo-cf/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Every meal, daily staple</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/central-african-republic/">Central African Republic cuisine hub</a></strong></div>
           <div><span>Collection route</span><strong><a href="/tools/afrokitchen/collections/quick-and-easy/">Quick &amp; Easy</a></strong></div>
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/gozo-cf/">/tools/afrokitchen/recipes/gozo-cf/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@ernesto_petar?utm_source=afrotools&amp;utm_medium=referral">Petar Avramoski</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">Gozo is the daily bread of the Central African Republic. Made from cassava flour and water, this stiff porridge is shaped into balls and used to scoop up every sauce and stew in the country. Preparing gozo well requires strong arms and practice — the flour must be stirred vigorously and continuously to achieve the right consistency without lumps.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -260,7 +275,7 @@
         <div class="ak-support-label">Central African Republic | Static route</div>
         <h3>Sauce Graine</h3>
         <p>A rich palm fruit sauce simmered with smoked fish, tomatoes, and hot peppers. The quintessential accompaniment to gozo in the C...</p>
-        <div class="ak-static-card-meta">60 min | Recipe</div>
+        <div class="ak-static-card-meta">60 min | Sauce</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/koki-beans-cm/">
         <div class="ak-support-label">Cameroon | Static route</div>
@@ -272,7 +287,7 @@
         <div class="ak-support-label">Cameroon | Static route</div>
         <h3>Ndolé</h3>
         <p>Cameroon&#39;s national dish — bitter leaves cooked down with ground peanuts, crayfish, and prawns into a rich, complex stew. Earth...</p>
-        <div class="ak-static-card-meta">90 min | Recipe</div>
+        <div class="ak-static-card-meta">90 min | Stew</div>
       </a></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
@@ -285,7 +300,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"gozo-cf","name":"Gozo","description":"A thick, stiff cassava flour porridge that serves as the staple base for most Central African meals. Smooth, stretchy, and perfect for scooping up stews and sauces.","story":"Gozo is the daily bread of the Central African Republic. Made from cassava flour and water, this stiff porridge is shaped into balls and used to scoop up every sauce and stew in the country. Preparing gozo well requires strong arms and practice — the flour must be stirred vigorously and continuously to achieve the right consistency without lumps.","default_servings":6,"serving_unit":"servings","country_name":"Central African Republic","country_code":"CF","region":"Central Africa","difficulty":"easy","category":"side","calories":220,"protein_g":2,"carbs_g":52,"fat_g":0.5,"fiber_g":3,"ingredients":[{"id":"e0445890-bfa3-4388-9cf0-5ef065de7bc0","recipe_id":"206e087a-b73d-4bb0-86da-1ea801a4396a","ingredient_id":null,"sort_order":1,"group_name":null,"amount":3,"unit":"cups","name":"cassava flour","prep_note":"fine","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"f0c4d593-bc4f-4e42-bfad-1cbdf9cf4ff8","recipe_id":"206e087a-b73d-4bb0-86da-1ea801a4396a","ingredient_id":null,"sort_order":2,"group_name":null,"amount":4,"unit":"cups","name":"water","prep_note":null,"is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"61b6a056-71a0-4cea-a66d-be27a9fbab31","recipe_id":"206e087a-b73d-4bb0-86da-1ea801a4396a","ingredient_id":null,"sort_order":3,"group_name":null,"amount":0.5,"unit":"tsp","name":"salt","prep_note":null,"is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}],"steps":[{"id":"0f8c3d6d-c891-4d0d-b319-d0eaa2973dbe","recipe_id":"206e087a-b73d-4bb0-86da-1ea801a4396a","step_number":1,"title":"Boil the water","instruction":"Bring 4 cups of water to a rolling boil in a heavy-bottomed pot. Add salt if using.","timer_seconds":null,"timer_label":null,"tip":"Use a heavy pot — you will be stirring vigorously.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"ba07bbe1-577c-4721-8901-b8c27ba91090","recipe_id":"206e087a-b73d-4bb0-86da-1ea801a4396a","step_number":2,"title":"Add cassava flour gradually","instruction":"Reduce heat to medium. Begin adding cassava flour a little at a time, stirring constantly with a strong wooden spoon. Continue adding flour and stirring.","timer_seconds":300,"timer_label":"Add flour","tip":"Add flour slowly to prevent lumps from forming.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"d3ac21b7-3b02-4dfc-8d26-c32a074c50db","recipe_id":"206e087a-b73d-4bb0-86da-1ea801a4396a","step_number":3,"title":"Stir vigorously","instruction":"Once all the flour is incorporated, stir vigorously for 10-12 minutes. The mixture should pull away from the sides of the pot and form a smooth, stretchy dough.","timer_seconds":720,"timer_label":"Stir gozo","tip":"This requires significant arm strength — do not stop stirring or the bottom will scorch.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"56a49f2e-57ba-428c-946d-f22b387f177c","recipe_id":"206e087a-b73d-4bb0-86da-1ea801a4396a","step_number":4,"title":"Shape and serve","instruction":"Wet your hands and shape the gozo into smooth balls. Place on a plate and serve immediately alongside your choice of stew or sauce.","timer_seconds":null,"timer_label":null,"tip":"Dip your hands in water before shaping to prevent sticking.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>

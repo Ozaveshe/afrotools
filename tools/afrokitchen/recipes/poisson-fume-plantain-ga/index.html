@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
+    .ak-static-page .ak-hero-inner > * { min-width: 0; }
     .ak-static-page .ak-hero-sub { max-width: 58ch; margin: 18px 0 0; color: rgba(255,255,255,.82); font-size: 1.02rem; line-height: 1.75; }
     .ak-static-page .ak-static-hero-card,
     .ak-static-page .ak-static-summary-shell,
@@ -37,7 +39,10 @@
     .ak-static-page .ak-static-hero-card h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; line-height: .95; }
     .ak-static-page .ak-static-hero-card p { margin: 0; color: var(--ak-muted); line-height: 1.7; }
     .ak-static-page .ak-static-facts { display: grid; gap: 10px; }
-    .ak-static-page .ak-static-facts div { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ak-line); font-size: .95rem; }
+    .ak-static-page .ak-static-facts span,
+    .ak-static-page .ak-static-facts strong { min-width: 0; }
+    .ak-static-page .ak-static-facts strong { text-align: right; overflow-wrap: anywhere; }
     .ak-static-page .ak-static-facts div:last-child { border-bottom: 0; padding-bottom: 0; }
     .ak-static-page .ak-static-summary-shell { padding: 26px; margin-top: -52px; position: relative; z-index: 2; }
     .ak-static-page .ak-static-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
@@ -66,8 +71,19 @@
       .ak-static-page .ak-static-related-grid { grid-template-columns: 1fr; }
       .ak-static-page .ak-static-summary-shell { margin-top: 24px; }
     }
+    @media (max-width: 560px) {
+      .ak-static-page .ak-hero { padding-left: 16px; padding-right: 16px; }
+      .ak-static-page .ak-hero-inner { grid-template-columns: minmax(0, 1fr); max-width: 100%; }
+      .ak-static-page .ak-hero-text,
+      .ak-static-page .ak-static-hero-card,
+      .ak-static-page .ak-hero-stats,
+      .ak-static-page .ak-hero-actions { width: 100%; max-width: 100%; }
+      .ak-static-page .ak-hero-actions .ak-btn { width: 100%; }
+      .ak-static-page .ak-static-facts div { display: grid; gap: 4px; }
+      .ak-static-page .ak-static-facts strong { text-align: left; }
+    }
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Smoked Fish with Plantains","description":"Flaked smoked fish stewed in a savoury tomato and onion sauce, served over golden fried plantains. A simple and satisfying Gabonese classic.","image":"https://images.unsplash.com/photo-1661939252817-ebb73304f4c7?w=1080&fit=crop&q=80&auto=format","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT15M","cookTime":"PT30M","totalTime":"PT45M","recipeYield":"4 servings","recipeCategory":"Main Course","recipeCuisine":"Gabon, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"410 calories","proteinContent":"28g","carbohydrateContent":"42g","fatContent":"16g","fiberContent":"5g"},"recipeIngredient":["300 g smoked fish, deboned and flaked","4 whole ripe plantains, peeled and sliced diagonally","3 medium tomatoes, chopped","1 large onion, sliced","2 tbsp vegetable oil, for frying","1 whole scotch bonnet pepper, sliced"],"recipeInstructions":[{"@type":"HowToStep","name":"Fry the plantains","text":"Heat oil in a frying pan over medium heat. Fry the plantain slices until golden brown on each side, about 3 minutes per side. Drain on paper towels and set aside.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/","image":"https://images.unsplash.com/photo-1661939252817-ebb73304f4c7?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Make the sauce","text":"In the same pan, add a little more oil if needed. Sauté the sliced onion until soft. Add the chopped tomatoes and scotch bonnet, cooking for 10 minutes until the tomatoes break down into a sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/","image":"https://images.unsplash.com/photo-1661939252817-ebb73304f4c7?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Add the smoked fish","text":"Add the flaked smoked fish to the sauce and stir gently. Cook for 5 minutes to let the fish absorb the flavours of the sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/","image":"https://images.unsplash.com/photo-1661939252817-ebb73304f4c7?w=1080&fit=crop&q=80&auto=format"},{"@type":"HowToStep","name":"Serve","text":"Arrange the fried plantains on a plate and spoon the smoked fish sauce over the top. Serve immediately.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/","image":"https://images.unsplash.com/photo-1661939252817-ebb73304f4c7?w=1080&fit=crop&q=80&auto=format"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/","keywords":"smoked-fish, plantain, tomato, everyday, gabon, gluten-free, dairy-free, nut-free, pescatarian, Weeknight dinner, everyday meals, Poisson Fumé aux Bananes Plantains","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Recipe","name":"Smoked Fish with Plantains","description":"Flaked smoked fish stewed in a savoury tomato and onion sauce, served over golden fried plantains. A simple and satisfying Gabonese classic.","image":"https://afrotools.com/assets/img/tools/afrokitchen.webp","author":{"@type":"Organization","name":"AfroKitchen by AfroTools"},"datePublished":"2026-03-18","prepTime":"PT15M","cookTime":"PT30M","totalTime":"PT45M","recipeYield":"4 servings","recipeCategory":"Main Course","recipeCuisine":"Gabon, Central Africa","nutrition":{"@type":"NutritionInformation","calories":"410 calories","proteinContent":"28g","carbohydrateContent":"42g","fatContent":"16g","fiberContent":"5g"},"recipeIngredient":["300 g smoked fish, deboned and flaked","4 whole ripe plantains, peeled and sliced diagonally","3 medium tomatoes, chopped","1 large onion, sliced","2 tbsp vegetable oil, for frying","1 whole scotch bonnet pepper, sliced"],"recipeInstructions":[{"@type":"HowToStep","name":"Fry the plantains","text":"Heat oil in a frying pan over medium heat. Fry the plantain slices until golden brown on each side, about 3 minutes per side. Drain on paper towels and set aside.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/"},{"@type":"HowToStep","name":"Make the sauce","text":"In the same pan, add a little more oil if needed. Sauté the sliced onion until soft. Add the chopped tomatoes and scotch bonnet, cooking for 10 minutes until the tomatoes break down into a sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/"},{"@type":"HowToStep","name":"Add the smoked fish","text":"Add the flaked smoked fish to the sauce and stir gently. Cook for 5 minutes to let the fish absorb the flavours of the sauce.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/"},{"@type":"HowToStep","name":"Serve","text":"Arrange the fried plantains on a plate and spoon the smoked fish sauce over the top. Serve immediately.","url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/"}],"url":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/","keywords":"smoked-fish, plantain, tomato, everyday, gabon, gluten-free, dairy-free, nut-free, pescatarian, Weeknight dinner, everyday meals, Poisson Fumé aux Bananes Plantains","mainEntityOfPage":{"@type":"WebPage","@id":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroKitchen","item":"https://afrotools.com/tools/afrokitchen/"},{"@type":"ListItem","position":4,"name":"Gabon","item":"https://afrotools.com/tools/afrokitchen/countries/gabon/"},{"@type":"ListItem","position":5,"name":"Smoked Fish with Plantains","item":"https://afrotools.com/tools/afrokitchen/recipes/poisson-fume-plantain-ga/"}]}</script>
 </head>
 <body>
@@ -103,9 +119,8 @@
           <div><span>Best occasion</span><strong>Weeknight dinner, everyday meals</strong></div>
           <div><span>Country hub</span><strong><a href="/tools/afrokitchen/countries/gabon/">Gabon cuisine hub</a></strong></div>
 
-          <div><span>Canonical route</span><strong><a href="/tools/afrokitchen/recipes/poisson-fume-plantain-ga/">/tools/afrokitchen/recipes/poisson-fume-plantain-ga/</a></strong></div>
         </div>
-        <div class="ak-static-credit">Image sourced from unsplash by <a href="https://unsplash.com/@design4business?utm_source=afrotools&amp;utm_medium=referral">Design4business</a>.</div>
+
       </aside>
     </div>
   </section>
@@ -114,7 +129,7 @@
     <div class="ak-container">
       <div class="ak-static-summary-shell rv visible">
         <div class="ak-section-kicker">Recipe overview</div>
-        <h2 class="ak-section-title">Visible recipe content ships in HTML from the first paint</h2>
+        <h2 class="ak-section-title">What to know before you cook</h2>
         <p class="ak-section-sub">This dish reflects the abundant fishing culture of Gabon&#39;s coast and river systems. Smoked fish — preserved for longer shelf life in the tropical climate — is a pantry staple. Paired with sweet, ripe plantains and a quick tomato sauce, this meal comes together effortlessly and is a weeknight favourite across Libreville and beyond.</p>
         <div class="ak-static-summary-grid">
           <div class="ak-static-summary-card">
@@ -282,7 +297,7 @@
         <div class="ak-support-label">Gabon | Static route</div>
         <h3>Nyembwe Chicken</h3>
         <p>Gabon&#39;s national dish — chicken slowly braised in a luscious palm nut sauce until the meat is falling off the bone. Rich, earth...</p>
-        <div class="ak-static-card-meta">80 min | Recipe</div>
+        <div class="ak-static-card-meta">80 min | Stew</div>
       </a>
 <a class="ak-support-card ak-static-related-card" href="/tools/afrokitchen/recipes/koki-beans-cm/">
         <div class="ak-support-label">Cameroon | Static route</div>
@@ -294,7 +309,7 @@
         <div class="ak-support-label">Cameroon | Static route</div>
         <h3>Ndolé</h3>
         <p>Cameroon&#39;s national dish — bitter leaves cooked down with ground peanuts, crayfish, and prawns into a rich, complex stew. Earth...</p>
-        <div class="ak-static-card-meta">90 min | Recipe</div>
+        <div class="ak-static-card-meta">90 min | Stew</div>
       </a></div>
     <div class="ak-hero-actions ak-static-related-actions">
       <a href="/tools/afrokitchen/" class="ak-btn ak-btn-secondary">Browse AfroKitchen</a>
@@ -307,7 +322,7 @@
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.min.js?v=ce75def6" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="/engines/afrokitchen-engine.js?v=2"></script>
+<script src="/engines/afrokitchen-engine.js?v=3"></script>
 <script>window.__AK_STATIC_RECIPE = {"slug":"poisson-fume-plantain-ga","name":"Smoked Fish with Plantains","description":"Flaked smoked fish stewed in a savoury tomato and onion sauce, served over golden fried plantains. A simple and satisfying Gabonese classic.","story":"This dish reflects the abundant fishing culture of Gabon's coast and river systems. Smoked fish — preserved for longer shelf life in the tropical climate — is a pantry staple. Paired with sweet, ripe plantains and a quick tomato sauce, this meal comes together effortlessly and is a weeknight favourite across Libreville and beyond.","default_servings":4,"serving_unit":"servings","country_name":"Gabon","country_code":"GA","region":"Central Africa","difficulty":"easy","category":"main","calories":410,"protein_g":28,"carbs_g":42,"fat_g":16,"fiber_g":5,"ingredients":[{"id":"7435d61e-cf7a-4b2f-8cad-c34ffbf91f44","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","ingredient_id":null,"sort_order":1,"group_name":null,"amount":300,"unit":"g","name":"smoked fish","prep_note":"deboned and flaked","is_optional":false,"substitution":"smoked mackerel","created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"052d05d6-5a54-4099-aa40-4c507bb9db25","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","ingredient_id":null,"sort_order":2,"group_name":null,"amount":4,"unit":"whole","name":"ripe plantains","prep_note":"peeled and sliced diagonally","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"b704b4d2-e9df-4d4f-be85-23113f44f74e","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","ingredient_id":null,"sort_order":3,"group_name":null,"amount":3,"unit":"medium","name":"tomatoes","prep_note":"chopped","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"86f0b9e2-6bfa-4d41-8d4d-fbc237b20a6c","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","ingredient_id":null,"sort_order":4,"group_name":null,"amount":1,"unit":"large","name":"onion","prep_note":"sliced","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"0ee14f76-69df-4b64-a8af-5644f48c31e0","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","ingredient_id":null,"sort_order":5,"group_name":null,"amount":2,"unit":"tbsp","name":"vegetable oil","prep_note":"for frying","is_optional":false,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"f369a34a-6dbc-4a0d-9080-c49ee27c5073","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","ingredient_id":null,"sort_order":6,"group_name":null,"amount":1,"unit":"whole","name":"scotch bonnet pepper","prep_note":"sliced","is_optional":true,"substitution":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}],"steps":[{"id":"4780106e-7efd-40da-80bd-544503d38f2b","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","step_number":1,"title":"Fry the plantains","instruction":"Heat oil in a frying pan over medium heat. Fry the plantain slices until golden brown on each side, about 3 minutes per side. Drain on paper towels and set aside.","timer_seconds":420,"timer_label":"Fry plantains","tip":"Use ripe plantains — yellow with black spots — for natural sweetness.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"e6ea41e1-de12-4913-a532-e919118b307d","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","step_number":2,"title":"Make the sauce","instruction":"In the same pan, add a little more oil if needed. Sauté the sliced onion until soft. Add the chopped tomatoes and scotch bonnet, cooking for 10 minutes until the tomatoes break down into a sauce.","timer_seconds":600,"timer_label":"Cook sauce","tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"9f2f1433-175f-4b8c-ba8b-6ad4da299403","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","step_number":3,"title":"Add the smoked fish","instruction":"Add the flaked smoked fish to the sauce and stir gently. Cook for 5 minutes to let the fish absorb the flavours of the sauce.","timer_seconds":300,"timer_label":"Cook fish","tip":"Be gentle when stirring to keep the fish in nice flakes.","image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"},{"id":"10487b1a-917d-4008-b368-293c44b22e6b","recipe_id":"6573e757-082e-4fec-9ce2-7878559c7dd9","step_number":4,"title":"Serve","instruction":"Arrange the fried plantains on a plate and spoon the smoked fish sauce over the top. Serve immediately.","timer_seconds":null,"timer_label":null,"tip":null,"image_url":null,"created_at":"2026-03-18T00:26:31.902096+00:00"}]};</script>
 <script src="/tools/afrokitchen/static-recipe-runtime.js?v=20260417a" defer></script>
 </body>
