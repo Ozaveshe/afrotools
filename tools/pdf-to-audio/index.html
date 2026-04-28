@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF to Audio | Listen to PDFs Read Aloud | AfroTools</title>
-<meta name="description" content="Convert any PDF to audio and listen to it read aloud. Uses browser text-to-speech with adjustable speed, voice selection, and page navigation. Free, private, no upload required.">
+<title>PDF to Audio Reader - Natural Voices, AI Voice Mode and Study Controls | AfroTools</title>
+<meta name="description" content="Listen to PDFs with ranked browser voices, optional AI voices, page navigation, sentence tracking, text filters, bookmarks, and audio export when enabled.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-to-audio/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF to Audio Reader | AfroTools">
-<meta property="og:description" content="Listen to PDFs read aloud with adjustable speed and voice. Free, private, no upload.">
+<meta property="og:description" content="Listen to PDFs with ranked browser voices, optional AI voices, sentence tracking, bookmarks, text filters, and audio export when enabled.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-to-audio/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PDF to Audio Reader | AfroTools">
-<meta name="twitter:description" content="Listen to PDFs read aloud. Free text-to-speech for any PDF.">
+<meta name="twitter:description" content="Listen to PDFs with better voices, study controls, sentence tracking, and optional AI audio export.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=d667fbec" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -308,6 +308,31 @@
     gap: 12px;
   }
 
+  .voice-engine-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .engine-btn {
+    min-height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.76rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .engine-btn.active {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.18);
+    color: #fff;
+  }
+
   .player-opt-label {
     font-size: 0.68rem;
     font-weight: 700;
@@ -329,6 +354,48 @@
     font-family: 'DM Sans', sans-serif;
     cursor: pointer;
     appearance: none;
+  }
+
+  .voice-tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .voice-tools input,
+  .voice-tools select,
+  .small-input {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .voice-tools option,
+  .small-input option {
+    background: #1a1f2e;
+    color: #fff;
+  }
+
+  .voice-note {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.74rem;
+    line-height: 1.55;
+  }
+
+  .voice-note strong {
+    color: #fff;
   }
 
   .player-select option {
@@ -363,6 +430,128 @@
     margin-top: 14px;
     padding-top: 14px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .advanced-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .range-control {
+    min-width: 0;
+  }
+
+  .range-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--afro-green);
+  }
+
+  .reader-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .reader-btn {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.78);
+    padding: 8px 10px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .reader-btn:hover:not(:disabled) {
+    border-color: var(--afro-green);
+    color: #fff;
+  }
+
+  .reader-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .reader-filters {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .filter-grid label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .filter-grid input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--afro-green);
+  }
+
+  .pronunciation-box {
+    margin-top: 10px;
+    width: 100%;
+    min-height: 58px;
+    padding: 9px 10px;
+    resize: vertical;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 7px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+
+  .listen-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .listen-stat {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+  }
+
+  .listen-stat strong {
+    display: block;
+    color: #111827;
+    font-size: 0.96rem;
+    line-height: 1.1;
+  }
+
+  .listen-stat span {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .auto-advance-row input[type="checkbox"] {
@@ -406,6 +595,45 @@
     background: rgba(0, 113, 227, 0.15);
     color: #1e293b;
     font-weight: 600;
+  }
+
+  .text-display .sentence {
+    cursor: pointer;
+  }
+
+  .text-display .sentence:hover {
+    background: rgba(0, 113, 227, 0.08);
+  }
+
+  .page-strip {
+    display: none;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 0 0;
+  }
+
+  .page-strip.on {
+    display: flex;
+  }
+
+  .page-pill {
+    flex: 0 0 auto;
+    min-width: 86px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    color: #475569;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .page-pill.active {
+    border-color: var(--afro-green);
+    background: #eff6ff;
+    color: #1e40af;
   }
 
   /* Sidebar */
@@ -523,11 +751,19 @@
     .player-options {
       grid-template-columns: 1fr;
     }
+
+    .voice-engine-row,
+    .voice-tools,
+    .advanced-controls,
+    .filter-grid,
+    .listen-stats {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF to Audio Reader","description":"Listen to PDFs with ranked browser voices, optional AI voice generation, sentence tracking, page navigation, bookmarks, text filters, and audio export when enabled.","url":"https://afrotools.com/tools/pdf-to-audio/","inLanguage":"en","applicationCategory":"ProductivityApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and Web Speech API for private browser playback","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF to Audio Reader","url":"https://afrotools.com/tools/pdf-to-audio/","description":"Listen to PDFs with ranked browser voices, optional AI voice generation, sentence tracking, page navigation, bookmarks, text filters, and audio export when enabled.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-to-audio/" />
@@ -561,7 +797,7 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -572,11 +808,11 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>PDF to <em>Audio</em></h1>
-    <p class="hero-sub">Upload a PDF and listen to it read aloud. Adjust speed, choose a voice, and follow along with highlighted text. Everything runs in your browser.</p>
+    <p class="hero-sub">Upload a PDF and listen with the best local voices your browser provides, or switch to modern AI voices when the server voice gateway is configured. Built for study, accessibility, document review, and low-bandwidth listening workflows.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Text-to-Speech</span>
-      <span class="badge b-green">Free</span>
-      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Ranked Voices</span>
+      <span class="badge b-green">AI Voice Ready</span>
+      <span class="badge b-green">Private Local Mode</span>
     </div>
   </div>
 </div>
@@ -618,6 +854,26 @@
           <button class="ctrl-btn" id="nextBtn" title="Next page">&#9654;&#9654;</button>
         </div>
 
+        <div class="voice-engine-row" role="group" aria-label="Voice engine">
+          <button type="button" class="engine-btn active" data-engine="browser" id="browserEngineBtn">Browser Voices</button>
+          <button type="button" class="engine-btn" data-engine="ai" id="aiEngineBtn">AI Voices</button>
+        </div>
+
+        <div class="voice-tools">
+          <select id="voiceLanguage" aria-label="Voice language filter">
+            <option value="all">All languages</option>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="ar">Arabic</option>
+            <option value="pt">Portuguese</option>
+            <option value="sw">Swahili</option>
+            <option value="ha">Hausa</option>
+            <option value="yo">Yoruba</option>
+            <option value="ig">Igbo</option>
+          </select>
+          <input id="voiceSearch" type="search" placeholder="Search voices" aria-label="Search voices">
+        </div>
+
         <div class="player-options">
           <div>
             <div class="player-opt-label">Voice</div>
@@ -628,9 +884,24 @@
           <div>
             <div class="player-opt-label">Speed</div>
             <div class="speed-row">
-              <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="2" step="0.25" value="1">
+              <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="2.5" step="0.1" value="1">
               <span class="speed-val" id="speedVal">1x</span>
             </div>
+          </div>
+        </div>
+
+        <div class="advanced-controls">
+          <div class="range-control">
+            <div class="player-opt-label">Pitch <span id="pitchVal">1.0</span></div>
+            <input type="range" id="pitchSlider" min="0.6" max="1.6" step="0.1" value="1">
+          </div>
+          <div class="range-control">
+            <div class="player-opt-label">Volume <span id="volumeVal">100%</span></div>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1">
+          </div>
+          <div class="range-control">
+            <div class="player-opt-label">Pause <span id="pauseVal">0s</span></div>
+            <input type="range" id="pauseSlider" min="0" max="2" step="0.25" value="0">
           </div>
         </div>
 
@@ -638,6 +909,28 @@
           <input type="checkbox" id="autoAdvance" checked>
           <label for="autoAdvance">Auto-advance to next page</label>
         </div>
+
+        <div class="reader-filters">
+          <div class="player-opt-label">Listening Cleanup</div>
+          <div class="filter-grid">
+            <label><input type="checkbox" id="skipHeaders" checked> Skip repeated headers</label>
+            <label><input type="checkbox" id="skipPageNumbers" checked> Skip page numbers</label>
+            <label><input type="checkbox" id="skipUrls" checked> Skip long URLs</label>
+            <label><input type="checkbox" id="skipCitations"> Skip bracket citations</label>
+          </div>
+          <textarea class="pronunciation-box" id="pronunciationBox" placeholder="Pronunciation fixes, one per line: GRA = G R A"></textarea>
+        </div>
+
+        <div class="reader-actions">
+          <button type="button" class="reader-btn" id="previewVoiceBtn">Preview Voice</button>
+          <button type="button" class="reader-btn" id="bookmarkBtn">Bookmark</button>
+          <button type="button" class="reader-btn" id="resumeBtn">Resume</button>
+          <button type="button" class="reader-btn" id="copyTextBtn">Copy Text</button>
+          <button type="button" class="reader-btn" id="downloadTextBtn">Download Text</button>
+          <button type="button" class="reader-btn" id="downloadAudioBtn" disabled>Download Audio</button>
+        </div>
+
+        <div class="voice-note" id="voiceStatus"><strong>Voice setup:</strong> loading local voices...</div>
       </div>
 
       <!-- Text Display -->
@@ -650,6 +943,15 @@
           <div id="textPlaceholder" style="padding:22px;text-align:center;font-size:0.82rem;color:#9ca3af;font-weight:500;">Upload a PDF to see extracted text here</div>
         </div>
       </div>
+
+      <div class="listen-stats" id="listenStats" aria-label="Listening summary">
+        <div class="listen-stat"><strong id="statPages">0</strong><span>Pages</span></div>
+        <div class="listen-stat"><strong id="statWords">0</strong><span>Words</span></div>
+        <div class="listen-stat"><strong id="statTime">0 min</strong><span>Est. Listen</span></div>
+        <div class="listen-stat"><strong id="statVoices">0</strong><span>Voices</span></div>
+      </div>
+
+      <div class="page-strip" id="pageStrip" aria-label="PDF page navigation"></div>
     </div>
 
     <!-- Sidebar -->
@@ -660,8 +962,8 @@
           <ol style="margin:0;padding-left:18px;">
             <li>Upload any PDF file</li>
             <li>Text is extracted from each page</li>
-            <li>Press play to hear it read aloud</li>
-            <li>Follow along with highlighted text</li>
+            <li>Choose a browser or AI voice</li>
+            <li>Use filters, bookmarks, and sentence tracking while listening</li>
           </ol>
         </div>
       </div>
@@ -670,12 +972,14 @@
         <div class="info-title">Features</div>
         <div class="info-text">
           <ul>
-            <li>Adjustable speed (0.5x - 2x)</li>
-            <li>Multiple voice options</li>
+            <li>Ranked local voices with natural and neural labels</li>
+            <li>Optional AI voices through the secure server gateway</li>
+            <li>Adjustable speed, pitch, volume, and sentence pauses</li>
             <li>Page-by-page navigation</li>
             <li>Auto-advance pages</li>
-            <li>Live text highlighting</li>
-            <li>100% browser-based</li>
+            <li>Click any sentence to start there</li>
+            <li>Text cleanup for headers, URLs, and page numbers</li>
+            <li>Bookmark, resume, copy, text export, and AI audio export</li>
           </ul>
         </div>
       </div>
@@ -683,14 +987,14 @@
       <div class="info-card">
         <div class="info-title">Privacy</div>
         <div class="info-text">
-          Your PDF is processed entirely in your browser using the Web Speech API. No files are uploaded to any server. Your documents remain completely private.
+          Browser voice mode processes the PDF and speech locally. AI voice mode sends only the current text chunk to the configured server voice provider, and only when you choose AI voices.
         </div>
       </div>
 
       <div class="info-card">
         <div class="info-title">Supported Browsers</div>
         <div class="info-text">
-          Works best in Chrome, Edge, and Safari. Firefox has limited voice support. The number of available voices depends on your operating system.
+          Works best in Chrome, Edge, and Safari. Browser voice quality depends on the operating system, so the reader ranks natural, neural, enhanced, online, and premium voices first when they exist.
         </div>
       </div>
     </div>
@@ -699,7 +1003,7 @@
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The PDF to Audio converter transforms your PDF documents into spoken audio using the Web Speech API built into your browser. Upload a PDF, select your preferred voice and speed, and listen to the content read aloud. This is ideal for consuming documents during commutes, exercising, or when you simply prefer listening over reading. The tool extracts text from your PDF locally and processes everything in the browser, so your documents remain private. Students reviewing study materials, professionals catching up on reports, and anyone with visual impairments or reading difficulties will find this a practical way to access written content.</p>
+    <p>The PDF to Audio reader turns PDFs into a guided listening workspace. Browser voice mode keeps everything private on your device, while AI voice mode can use a configured server provider for more natural voices and downloadable audio. The reader includes sentence tracking, page navigation, text cleanup, pronunciation fixes, bookmarks, and export tools for students, professionals, researchers, and accessibility workflows.</p>
   </div>
 </section>
 <!-- FAQs -->
@@ -711,12 +1015,12 @@
 </div>
   <div class="faq-item">
     <button class="faq-q">Does this tool upload my PDF to a server?</button>
-    <div class="faq-a">No. Your PDF is processed entirely in your browser. The text is extracted locally using JavaScript, and the audio is generated by your browser's built-in text-to-speech engine. No data is sent anywhere.</div>
+    <div class="faq-a">Browser voice mode does not upload your PDF. AI voice mode sends only the current text chunk to the configured server voice provider when you choose that mode, so the page labels that difference clearly.</div>
   </div>
 
   <div class="faq-item">
-    <button class="faq-q">Why are no voices available?</button>
-    <div class="faq-a">Voice availability depends on your browser and operating system. Chrome typically offers the most voices. Try reloading the page if voices haven't loaded yet. On some systems, voices are loaded asynchronously and may take a moment to appear.</div>
+    <button class="faq-q">Why do some voices still sound robotic?</button>
+    <div class="faq-a">Browser voices come from your operating system and browser, so quality varies. The reader ranks natural, neural, enhanced, online, and premium voices first when they are available. For consistently modern voices, configure the AI voice gateway.</div>
   </div>
 
   <div class="faq-item">
@@ -725,8 +1029,8 @@
   </div>
 
   <div class="faq-item">
-    <button class="faq-q">What speed settings are available?</button>
-    <div class="faq-a">You can adjust playback speed from 0.5x (half speed) to 2x (double speed) in 0.25x increments. The default is 1x (normal speed). Slower speeds are helpful for complex or technical content.</div>
+    <button class="faq-q">Can I export audio?</button>
+    <div class="faq-a">Text export works in browser mode. Downloadable audio is available after AI voice generation, because browser speech engines do not expose an audio file for download.</div>
   </div>
 
   <div class="faq-item">
@@ -744,7 +1048,8 @@
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
 
-<script>
+<script src="/assets/js/pages/pdf-to-audio.js?v=364fc0ba"></script>
+<script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
 

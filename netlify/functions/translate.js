@@ -10,7 +10,8 @@
  * Supported African languages:
  *   sw (Swahili), ha (Hausa), yo (Yoruba), ig (Igbo), zu (Zulu),
  *   am (Amharic), af (Afrikaans), ar (Arabic), fr (French), pt (Portuguese),
- *   pcm (Nigerian Pidgin — mapped to en for API, with custom post-processing)
+ *   es (Spanish), tw (Twi), wo (Wolof), ln (Lingala), bm (Bambara),
+ *   pcm (Nigerian Pidgin)
  */
 
 const { getAllowedOrigin } = require('./utils/cors');
@@ -56,8 +57,11 @@ const LANG_MAP = {
   'ar': 'ar',      // Arabic
   'fr': 'fr',      // French
   'pt': 'pt',      // Portuguese
+  'es': 'es',      // Spanish
   'en': 'en',      // English
   'so': 'so',      // Somali
+  'wo': 'wo',      // Wolof
+  'tw': 'tw',      // Twi
   'rw': 'rw',      // Kinyarwanda
   'ny': 'ny',      // Chichewa
   'sn': 'sn',      // Shona
@@ -69,6 +73,8 @@ const LANG_MAP = {
   'ti': 'ti',      // Tigrinya
   'om': 'om',      // Oromo
   'mg': 'mg',      // Malagasy
+  'ln': 'ln',      // Lingala
+  'bm': 'bm',      // Bambara
   'pcm': 'pcm',    // Nigerian Pidgin (MyMemory supports it)
 };
 

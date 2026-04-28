@@ -1,4 +1,4 @@
-﻿# AfroTools Swahili Localization Strategy
+# AfroTools Swahili Localization Strategy
 
 ## Purpose
 
@@ -881,3 +881,40 @@ For Swahili civic identity pages, keep `/sw/zana/mwongozo-kitambulisho-taifa/` a
 Retain official ID names and acronyms when they match how users search or read government forms, then explain them in Kiswahili context on first use. Link identity pages to country hubs, TIN, VAT, business registration, education, health, and salary/PAYE only where those workflows naturally require identity or KYC.
 
 Never overclaim live government requirements, legal status, processing timelines, fees, enrollment-center availability, travel eligibility, or KYC acceptance. Use the paired English civic page as the source for supported countries, scripts, assumptions, and disclaimer posture. If a future passport, voter, visa, or civil-certificate route overlaps with the ID page, inspect product truth first and pair only the real source route.
+
+
+The Swahili government, passport, visa, and regulatory filing batch extends this pattern under `/sw/serikali-na-nyaraka/`. Group the hub in this order: kitambulisho na KYC; pasipoti na picha za pasipoti; visa na safari za Afrika; usajili wa mpiga kura; vyeti vya kuzaliwa na kifo; leseni za biashara na vibali; ulinzi wa data, alama za biashara, usajili wa bidhaa, na Made in Africa; kisha cross-links to TIN, usajili wa biashara, VAT, biashara ya nje, fintech/KYC, na usafiri/visa.
+
+Retain official and search-useful terms when they appear in forms or portals: `passport`, `visa`, `e-visa`, `visa on arrival`, `INEC`, `IEBC`, `IEC`, `POPIA`, `NDPR/NDPA`, `DPA`, `ARIPO`, `OAPI`, `Nice Classification`, `NAFDAC`, `KEBS`, `SABS`, `FDA Ghana`, `AfCFTA`, and `Rules of Origin`. Explain these terms in Kiswahili framing and avoid importing mojibake or emoji artifacts from English sources.
+
+Do not duplicate completed surfaces. `/sw/zana/mwongozo-kitambulisho-taifa/` remains the National ID pair; government batches should link it rather than recreate it. Do not add another Swahili alternate to `tools/national-id-guide/` unless that route is intentionally revisited. For sparse government or regulatory data, use verification language and point users to official authorities, qualified professionals, or regulators instead of inventing fees, timelines, eligibility, election dates, visa outcomes, certificates, trademark approval, product-registration success, or data-compliance guarantees.
+
+### Legal Documents, Contracts, and Access-to-Justice Pattern
+
+Use `/sw/biashara-na-uzingatiaji/` as the broad paired Swahili legal/compliance hub unless a future batch deliberately repoints `legal/index.html`. Do not create a competing `/sw/sheria-na-mikataba/` hub while that pairing remains in place.
+
+Group the legal slice in this order: mikataba ya biashara; NDA, ubia, na wanahisa; kiapo na tamko la kisheria; nguvu ya wakili na wosia; msaada wa kisheria, ada za mahakama, na dhamana; then existing ajira, freelance, rental, business-license, data, trademark, TIN, VAT, and government-document links.
+
+Retain legal and search-useful terms when they match forms or user vocabulary: `NDA`, `partnership agreement`, `shareholder agreement`, `affidavit`, `statutory declaration`, `power of attorney`, `will`, `legal aid`, `court fees`, `bail`, `surety`, `notary`, `commissioner for oaths`, `probate`, `tag-along`, `drag-along`, and `vesting`. Explain each term in Kiswahili framing instead of leaving English labels unsupported.
+
+Never claim generated documents are legally valid across every country. Do not invent filing fees, bail outcomes, legal-aid eligibility, estate rules, witness rules, notarization requirements, court acceptance, trademark validity, employment enforceability, or property-transfer outcomes. Keep the pages as planning/checklist tools and point users to lawyers, courts, legal-aid offices, notaries, commissioners for oaths, employers, landlords, company secretaries, and official authorities.
+
+### Data Privacy, DPA, DPIA, and Breach Notification Pattern
+
+Keep Swahili data-privacy pages under the broader business/compliance and government/KYC discovery graph, not as a new top-level hub unless a later product decision deliberately creates one.
+
+Group the slice in this order: sera ya faragha and cookie consent; DPA and controller/processor workflows; DPIA and risk assessment; breach notification; cross-border data transfer; GDPR vs African data laws; country-specific checks for Nigeria NDPA, South Africa POPIA, and Kenya DPA; then links to existing data-compliance, legal documents, business license, fintech/KYC, and government documents.
+
+Retain privacy and regulatory terms when they match official forms, contracts, or user search: `GDPR`, `POPIA`, `NDPR`, `NDPA`, `DPA`, `DPIA`, `cookie consent`, `privacy policy`, `controller`, `processor`, `data subject`, `lawful basis`, `breach notification`, `cross-border transfer`, `Information Regulator`, `NDPC`, and `ODPC`. Explain these terms in Kiswahili framing rather than leaving them as unexplained English labels.
+
+Never claim legal compliance, regulator approval, fine avoidance, or live legal accuracy. Do not invent statutory deadlines, penalty amounts, filing rules, transfer mechanisms, or regulator requirements. Use paired English privacy pages for supported country coverage, scripts, assumptions, and disclaimer posture, and point users to regulators, lawyers, DPOs, privacy professionals, or qualified advisors.
+
+### Company Formation and Corporate Compliance Pattern
+
+Keep company formation and corporate filing tools under `/sw/biashara-na-uzingatiaji/` as an extension of the business/compliance surface. Do not create a separate top-level company hub in this batch unless a later product decision deliberately creates and pairs one.
+
+Group the slice in this order: business registration and company type; Nigeria CAC name check and CAC cost; South Africa CIPC cost; annual returns and compliance calendar; board resolutions; foreign-company registration; winding-up and closure planning; then links to TIN, VAT, business license, legal documents, data privacy, fintech/KYC, trade, and payroll/PAYE where natural.
+
+Retain official and search-useful terms when they match registry portals, forms, or user search: `CAC`, `CIPC`, `annual returns`, `board resolution`, `company type`, `sole proprietor`, `private company`, `public company`, `partnership`, `foreign company`, `branch`, `subsidiary`, `winding-up`, `registrar`, `company secretary`, and `compliance calendar`. Explain them in Kiswahili framing rather than leaving them as unexplained English labels.
+
+Never claim registration approval, name availability, fee accuracy, filing acceptance, tax compliance, company-secretarial compliance, or closure approval. Do not invent filing deadlines, penalties, official forms, or eligibility. Use paired English company/compliance pages for behavior, scripts, assumptions, country coverage, and disclaimer posture, and point users to registrars, company secretaries, lawyers, accountants, tax authorities, or official portals.

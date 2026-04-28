@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Chat with PDF — Ask Questions About Any PDF | AfroTools</title>
-<meta name="description" content="Upload a PDF and chat with AI to get instant answers. Ask questions, get summaries, find key points — all powered by Claude AI. Free and private.">
+<title>Chat with PDF - Ask, Summarize, Cite Pages | AfroTools</title>
+<meta name="description" content="Upload a PDF, ask questions, get summaries, extract key points, search pages, and receive grounded answers with page citations. Browser-first PDF assistant.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-chat/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="AI Chat with PDF | AfroTools">
-<meta property="og:description" content="Upload a PDF and ask AI questions about it. Get summaries, key points, and cited answers instantly.">
+<meta property="og:title" content="Chat with PDF | AfroTools">
+<meta property="og:description" content="Ask questions, summarize, search, and extract key points from PDFs with page citations and browser-first processing.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-chat/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -17,18 +17,18 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI Chat with PDF | AfroTools">
-<meta name="twitter:description" content="Chat with your PDF using AI. Get instant answers, summaries, and key points.">
+<meta name="twitter:title" content="Chat with PDF | AfroTools">
+<meta name="twitter:description" content="Ask questions, summarize, search, and get page-cited answers from PDFs.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AI Chat with PDF","description":"Upload a PDF and chat with AI to get instant answers, summaries, and key points.","url":"https://afrotools.com/tools/pdf-chat/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AI Chat with PDF","url":"https://afrotools.com/tools/pdf-chat/","description":"Upload a PDF and chat with AI to get instant answers, summaries, and key points.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Chat with PDF","description":"Upload a PDF, ask questions, summarize content, search pages, and receive grounded answers with page citations.","url":"https://afrotools.com/tools/pdf-chat/","inLanguage":"en","applicationCategory":"ProductivityApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does Chat with PDF work?","acceptedAnswer":{"@type":"Answer","text":"The tool extracts selectable text in your browser, indexes it by page, and answers questions using the AI endpoint when available or a local grounded retrieval fallback."}},{"@type":"Question","name":"Do answers include citations?","acceptedAnswer":{"@type":"Answer","text":"Yes. Responses include page references so you can jump back to the source page."}},{"@type":"Question","name":"Does it work with scanned PDFs?","acceptedAnswer":{"@type":"Answer","text":"Text-based PDFs work best. Scanned or image-only PDFs should be processed with OCR first."}},{"@type":"Question","name":"Can I export the chat?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can copy or download a transcript of the conversation."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=d667fbec" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
@@ -359,6 +359,45 @@
   .file-bar-close:hover { background: #f1f5f9; color: #475569; }
   .file-bar-close svg { width: 16px; height: 16px; }
 
+  .doc-tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    flex-wrap: wrap;
+  }
+
+  .doc-search {
+    flex: 1;
+    min-width: 180px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font: 600 0.76rem 'DM Sans', sans-serif;
+    color: #334155;
+    outline: none;
+    background: #f8fafc;
+  }
+
+  .doc-search:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,135,81,0.1);
+  }
+
+  .doc-stat {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 700;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+
   .pdf-preview {
     flex: 1;
     overflow-y: auto;
@@ -454,6 +493,34 @@
     font-weight: 500;
   }
 
+  .chat-header-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chat-actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .chat-tool-btn {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    border-radius: 8px;
+    padding: 6px 9px;
+    font: 700 0.68rem 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .chat-tool-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+    background: rgba(0,135,81,0.06);
+  }
+
   /* ── Messages ── */
   .messages {
     flex: 1;
@@ -515,6 +582,24 @@
   .msg-ai .msg-bubble p { margin: 6px 0; }
   .msg-ai .msg-bubble p:first-child { margin-top: 0; }
   .msg-ai .msg-bubble p:last-child { margin-bottom: 0; }
+
+  .citation-btn {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(0,135,81,0.28);
+    background: rgba(0,135,81,0.08);
+    color: var(--afro-green);
+    border-radius: 999px;
+    padding: 2px 8px;
+    margin: 0 2px;
+    font: 700 0.68rem 'DM Sans', sans-serif;
+    cursor: pointer;
+    vertical-align: baseline;
+  }
+
+  .citation-btn:hover {
+    background: rgba(0,135,81,0.14);
+  }
 
   .msg-label {
     font-size: 0.65rem;
@@ -763,7 +848,36 @@
       min-height: 400px;
     }
 
+    .doc-tools {
+      align-items: stretch;
+    }
+
+    .doc-search {
+      flex-basis: 100%;
+    }
+
+    .chat-header {
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .chat-actions {
+      width: 100%;
+      margin-left: 42px;
+    }
+
     .msg { max-width: 92%; }
+  }
+
+  @media (max-width: 480px) {
+    .chat-actions {
+      margin-left: 0;
+    }
+
+    .chat-tool-btn {
+      flex: 1;
+      justify-content: center;
+    }
   }
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
@@ -793,13 +907,13 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "AI Chat with PDF",
+      "name": "Chat with PDF",
       "item": "https://afrotools.com/tools/pdf-chat/"
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -808,14 +922,14 @@
 <section class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
-      <a href="/">Home</a> / <a href="/document-pdf/">PDF Tools</a> / <span>AI Chat with PDF</span>
+      <a href="/">Home</a> / <a href="/document-pdf/">PDF Tools</a> / <span>Chat with PDF</span>
     </div>
-    <h1>AI Chat with <em>PDF</em></h1>
-    <p class="hero-sub">Upload any PDF document and ask questions. Get instant AI-powered answers, summaries, and key points.</p>
+    <h1>Chat with <em>PDF</em></h1>
+    <p class="hero-sub">Upload a PDF, ask questions, summarize, search by page, and get grounded answers with clickable citations.</p>
     <div class="hero-badges">
-      <span class="badge b-blue">AI-Powered</span>
+      <span class="badge b-blue">Grounded Answers</span>
       <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Free</span>
+      <span class="badge b-green">Page Citations</span>
     </div>
   </div>
 </section>
@@ -823,7 +937,7 @@
 <!-- Upload View -->
 <div class="upload-view" id="uploadView">
   <h2 class="upload-title">Chat with your <b>PDF</b></h2>
-  <p class="upload-subtitle">Upload a PDF document and ask questions. AI analyzes the content and gives cited answers.</p>
+  <p class="upload-subtitle">Upload a text-based PDF and ask questions. The assistant indexes pages, answers from the document, and links back to sources.</p>
 
   <div class="drop-zone" id="dropZone">
     <div class="drop-zone-icon">
@@ -855,7 +969,11 @@
     </span>
     <span class="feature-pill">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-      AI-Powered
+      AI + Local Fallback
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5h6M9 12h6m-6 7h6M5 5h.01M5 12h.01M5 19h.01"/></svg>
+      Page Citations
     </span>
   </div>
 </div>
@@ -874,6 +992,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
+    <div class="doc-tools">
+      <input class="doc-search" id="docSearchInput" type="search" placeholder="Search document text or pages...">
+      <button class="chat-tool-btn" id="docSearchBtn">Search</button>
+      <span class="doc-stat" id="docStats">0 words</span>
+    </div>
     <div class="pdf-preview" id="pdfPreview"></div>
     <div class="page-nav">
       <button id="prevPage">Prev</button>
@@ -888,9 +1011,14 @@
       <div class="chat-header-icon">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       </div>
-      <div>
+      <div class="chat-header-main">
         <div class="chat-header-title" id="chatTitle">Chat about your PDF</div>
-        <div class="chat-header-subtitle">AI-powered document analysis</div>
+        <div class="chat-header-subtitle" id="chatMode">Grounded document assistant</div>
+      </div>
+      <div class="chat-actions">
+        <button class="chat-tool-btn" id="copyChatBtn" title="Copy transcript">Copy</button>
+        <button class="chat-tool-btn" id="downloadChatBtn" title="Download transcript">Download</button>
+        <button class="chat-tool-btn" id="clearChatBtn" title="Clear chat">Clear</button>
       </div>
     </div>
 
@@ -900,6 +1028,8 @@
       <button class="quick-btn" data-prompt="Please provide a concise summary of this document.">Summarize</button>
       <button class="quick-btn" data-prompt="What are the key points and main takeaways from this document?">Key Points</button>
       <button class="quick-btn" data-prompt="Explain the main concepts in this document in simple terms.">Explain</button>
+      <button class="quick-btn" data-prompt="Find dates, deadlines, numbers, fees, amounts, and obligations in this document.">Find Details</button>
+      <button class="quick-btn" data-prompt="List risks, warnings, exceptions, or important caveats in this document.">Risks</button>
     </div>
 
     <div class="chat-input-bar">
@@ -914,14 +1044,14 @@
 
 <!-- SEO -->
 <section class="seo-section">
-  <h2>AI Chat with PDF</h2>
-  <p>Chat with any PDF document using AI. Upload contracts, reports, research papers, or textbooks and ask questions in natural language. The AI reads and understands your document, providing accurate answers with relevant context.</p>
+  <h2>Chat with PDF</h2>
+  <p>Chat with any text-based PDF document. Upload contracts, reports, research papers, textbooks, school notes, or business documents, then ask questions in natural language. The assistant indexes extracted text by page, answers with citations, and lets you search, copy, or download a transcript.</p>
 
   <h3>How It Works</h3>
-  <p>Your PDF is processed entirely in your browser using pdf.js. The extracted text is sent to our AI endpoint, which uses Claude to analyze the content and answer your questions. Your document stays private and is never stored on our servers.</p>
+  <p>Your PDF is processed in your browser using pdf.js. Selectable text is extracted and indexed locally by page. When the AI endpoint is available, the assistant can use it for richer answers; when it is unavailable or rate-limited, the local page-citation assistant still returns grounded extractive answers from your document.</p>
 
   <h3>What You Can Do</h3>
-  <p>Ask for summaries, extract key points, get explanations of complex sections, compare different parts of the document, or ask specific questions about the content. The AI maintains conversation context, so you can ask follow-up questions naturally.</p>
+  <p>Ask for summaries, extract key points, find dates and amounts, identify obligations or risks, search a term across pages, copy answers, download the transcript, or click a page citation to inspect the source page.</p>
 </section>
 
 <!-- FAQs -->
@@ -933,7 +1063,7 @@
 
   <div class="faq-item">
     <button class="faq-q">Is my PDF data private and secure?</button>
-    <div class="faq-a"><p>Yes. Your PDF is processed in your browser. Only the extracted text is sent to our AI for analysis. We do not store your documents or conversation history on our servers.</p></div>
+    <div class="faq-a"><p>Your PDF file is parsed in your browser. If the AI endpoint is used, extracted text is sent for analysis, not the original file. The local fallback answers from extracted page text without needing the endpoint.</p></div>
   </div>
 
   <div class="faq-item">
@@ -943,12 +1073,12 @@
 
   <div class="faq-item">
     <button class="faq-q">How many questions can I ask?</button>
-    <div class="faq-a"><p>Free users get a daily limit of AI questions. Sign in to your AfroTools account for additional questions. The limit resets every 24 hours.</p></div>
+    <div class="faq-a"><p>AI-backed responses may have daily limits. If the limit is reached, the local page-citation assistant remains available for summaries, search, details, and extractive answers.</p></div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q">Is there a file size limit?</button>
-    <div class="faq-a"><p>PDFs up to 20 MB are supported. Very large documents are truncated to the first ~8,000 characters of text to stay within AI context limits, but this typically covers the most important content.</p></div>
+    <div class="faq-a"><p>PDFs up to 20 MB are supported. Large documents are indexed locally by page. The AI endpoint receives a capped context window, while local search can still work across all extracted pages.</p></div>
   </div>
 
   <div class="faq-item">
@@ -974,6 +1104,9 @@
   let pdfDoc = null;
   let pdfData = null;
   let context = '';
+  let pageTexts = [];
+  let searchableText = '';
+  let documentStats = { words: 0, characters: 0 };
   let chatHistory = [];
   let currentPage = 1;
   let totalPages = 0;
@@ -992,12 +1125,19 @@
   const chatInput = document.getElementById('chatInput');
   const sendBtn = document.getElementById('sendBtn');
   const chatTitle = document.getElementById('chatTitle');
+  const chatMode = document.getElementById('chatMode');
   const chatFooter = document.getElementById('chatFooter');
   const pageInfo = document.getElementById('pageInfo');
   const prevPageBtn = document.getElementById('prevPage');
   const nextPageBtn = document.getElementById('nextPage');
   const closeBtn = document.getElementById('closeBtn');
   const quickActions = document.getElementById('quickActions');
+  const docStats = document.getElementById('docStats');
+  const docSearchInput = document.getElementById('docSearchInput');
+  const docSearchBtn = document.getElementById('docSearchBtn');
+  const copyChatBtn = document.getElementById('copyChatBtn');
+  const downloadChatBtn = document.getElementById('downloadChatBtn');
+  const clearChatBtn = document.getElementById('clearChatBtn');
 
   /* ── Drag & Drop ── */
   PdfUtils.initDragDrop(dropZone, {
@@ -1031,9 +1171,20 @@
 
       /* Extract text */
       const textData = await PdfUtils.extractText(pdfDoc);
-      const fullText = textData.map(function(p) {
+      pageTexts = textData.map(function(p) {
+        return {
+          page: p.page,
+          text: (p.text || '').replace(/\s+/g, ' ').trim()
+        };
+      });
+      const fullText = pageTexts.map(function(p) {
         return '--- Page ' + p.page + ' ---\n' + p.text;
       }).join('\n\n');
+      searchableText = fullText.toLowerCase();
+      documentStats = {
+        words: (fullText.match(/\b[\w'-]+\b/g) || []).length,
+        characters: fullText.length
+      };
 
       if (!fullText.trim() || fullText.replace(/\s/g, '').length < 30) {
         showUploadError('This PDF appears to be scanned or image-only. Try our <a href="/tools/pdf-ocr/" style="color:var(--color-primary);font-weight:700">OCR tool</a> first to extract text.');
@@ -1044,8 +1195,8 @@
         return;
       }
 
-      var truncated = fullText.length > 8000;
-      context = fullText.substring(0, 8000);
+      var truncated = fullText.length > 18000;
+      context = fullText.substring(0, 18000);
 
       /* Switch to workspace */
       uploadView.classList.add('hidden');
@@ -1055,6 +1206,8 @@
       document.getElementById('fileName').textContent = pdfData.fileName;
       document.getElementById('fileMeta').textContent = totalPages + ' pages  |  ' + PdfUtils.formatSize(pdfData.fileSize);
       chatTitle.textContent = 'Chat about ' + pdfData.fileName;
+      chatMode.textContent = 'Grounded in extracted text with page citations';
+      docStats.textContent = documentStats.words.toLocaleString() + ' words';
 
       /* Render first page */
       currentPage = 1;
@@ -1065,9 +1218,9 @@
       /* Welcome message */
       chatHistory = [];
       messagesEl.innerHTML = '';
-      var welcomeMsg = "I've analyzed your PDF (" + totalPages + " page" + (totalPages > 1 ? 's' : '') + "). What would you like to know? You can ask questions, request a summary, or find key points.";
-      if (truncated) welcomeMsg += "\n\nNote: This is a large document. I'm working with the first ~8,000 characters for best results.";
+      var welcomeMsg = buildDocumentOverview(truncated);
       addMessage('ai', welcomeMsg);
+      chatFooter.textContent = 'Answers are grounded in extracted PDF text. Click page citations to inspect the source.';
 
     } catch (err) {
       console.error('PDF load error:', err);
@@ -1104,6 +1257,18 @@
     nextPageBtn.disabled = currentPage >= totalPages;
   }
 
+  async function goToPage(pageNumber) {
+    const target = Math.max(1, Math.min(totalPages, parseInt(pageNumber, 10) || 1));
+    if (!pdfDoc || target === currentPage || isRendering) return;
+    isRendering = true;
+    prevPageBtn.disabled = true;
+    nextPageBtn.disabled = true;
+    currentPage = target;
+    await renderCurrentPage();
+    isRendering = false;
+    updatePageNav();
+  }
+
   var isRendering = false;
   prevPageBtn.addEventListener('click', async function() {
     if (currentPage > 1 && !isRendering) {
@@ -1137,6 +1302,9 @@
     pdfDoc = null;
     pdfData = null;
     context = '';
+    pageTexts = [];
+    searchableText = '';
+    documentStats = { words: 0, characters: 0 };
     chatHistory = [];
     renderedPages = {};
     messagesEl.innerHTML = '';
@@ -1144,8 +1312,135 @@
     fileInput.value = '';
     chatInput.value = '';
     chatFooter.textContent = '';
+    docSearchInput.value = '';
+    docStats.textContent = '0 words';
     updateSendBtn();
   });
+
+  const STOP_WORDS = new Set('a,an,and,are,as,at,be,by,can,do,does,for,from,how,i,in,is,it,of,on,or,that,the,this,to,what,when,where,which,who,why,with,you,your,about,please,provide,find,list,give,main,key,points,summary,summarize,explain,page,pages,pdf,document,documents'.split(','));
+
+  function tokenize(text) {
+    return (text || '').toLowerCase().match(/[a-z0-9][a-z0-9'-]{1,}/g) || [];
+  }
+
+  function queryTerms(text) {
+    return tokenize(text).filter(function(term) { return !STOP_WORDS.has(term); }).slice(0, 18);
+  }
+
+  function splitSentences(text) {
+    return (text || '')
+      .replace(/\s+/g, ' ')
+      .split(/(?<=[.!?])\s+/)
+      .map(function(sentence) { return sentence.trim(); })
+      .filter(function(sentence) { return sentence.length > 24; });
+  }
+
+  function scoreText(text, terms) {
+    const lower = (text || '').toLowerCase();
+    return terms.reduce(function(score, term) {
+      const matches = lower.split(term).length - 1;
+      return score + matches * (term.length > 4 ? 2 : 1);
+    }, 0);
+  }
+
+  function findRelevantPages(question, limit) {
+    const terms = queryTerms(question);
+    const scored = pageTexts.map(function(page) {
+      return {
+        page: page.page,
+        text: page.text,
+        score: scoreText(page.text, terms)
+      };
+    }).filter(function(item) { return item.score > 0; })
+      .sort(function(a, b) { return b.score - a.score || a.page - b.page; });
+
+    if (scored.length) return scored.slice(0, limit || 4);
+    return pageTexts.filter(function(page) { return page.text; }).slice(0, limit || 3).map(function(page) {
+      return { page: page.page, text: page.text, score: 0 };
+    });
+  }
+
+  function bestSentencesFromPages(pages, terms, maxCount) {
+    const candidates = [];
+    pages.forEach(function(page) {
+      splitSentences(page.text).forEach(function(sentence) {
+        candidates.push({ page: page.page, sentence: sentence, score: scoreText(sentence, terms) });
+      });
+    });
+    candidates.sort(function(a, b) { return b.score - a.score || a.page - b.page; });
+    return candidates.slice(0, maxCount || 5);
+  }
+
+  function topKeywords() {
+    const counts = {};
+    tokenize(searchableText).forEach(function(term) {
+      if (STOP_WORDS.has(term) || term.length < 4) return;
+      counts[term] = (counts[term] || 0) + 1;
+    });
+    return Object.keys(counts).sort(function(a, b) { return counts[b] - counts[a]; }).slice(0, 8);
+  }
+
+  function buildDocumentOverview(truncated) {
+    const keywords = topKeywords();
+    let overview = "I've indexed this PDF across " + totalPages + " page" + (totalPages !== 1 ? 's' : '') + " and " + documentStats.words.toLocaleString() + " words.\n\n";
+    overview += "**What you can ask:**\n";
+    overview += "- Summarize the document\n";
+    overview += "- Find deadlines, amounts, obligations, risks, or names\n";
+    overview += "- Ask about a specific term and jump to the cited page\n";
+    if (keywords.length) overview += "\n**Detected themes:** " + keywords.join(', ') + ".";
+    if (truncated) overview += "\n\nNote: the AI endpoint receives the first 18,000 characters, but the local citation assistant can still search all extracted pages.";
+    return overview;
+  }
+
+  function buildSummaryAnswer() {
+    const pages = findRelevantPages('summary overview introduction conclusion key findings', Math.min(5, totalPages));
+    const sentences = bestSentencesFromPages(pages, ['summary', 'overview', 'findings', 'conclusion', 'purpose'], 5);
+    if (!sentences.length) return 'I could not find enough selectable text to summarize this document confidently.';
+    let answer = '**Summary grounded in the PDF:**\n';
+    sentences.forEach(function(item) {
+      answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+    });
+    return answer;
+  }
+
+  function buildDetailsAnswer(question) {
+    const detailRegex = /\b(?:\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}|\d{4}|[$€£₦R]|USD|NGN|KES|GHS|ZAR|deadline|due|amount|fee|price|cost|rate|percent|%|must|shall|required|risk|warning|exception|penalty|date)\b/ig;
+    const relevant = findRelevantPages(question, 6);
+    const details = [];
+    relevant.forEach(function(page) {
+      splitSentences(page.text).forEach(function(sentence) {
+        if (detailRegex.test(sentence)) details.push({ page: page.page, sentence: sentence });
+        detailRegex.lastIndex = 0;
+      });
+    });
+    if (!details.length) return 'I did not find clear dates, amounts, obligations, or risk language for that request. Try a more specific term.';
+    let answer = '**Details found:**\n';
+    details.slice(0, 7).forEach(function(item) {
+      answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+    });
+    return answer;
+  }
+
+  function buildLocalAnswer(question) {
+    const lower = question.toLowerCase();
+    if (/summary|summarize|overview|gist/.test(lower)) return buildSummaryAnswer();
+    if (/date|deadline|amount|fee|price|cost|risk|warning|obligation|shall|required|penalty|number|detail/.test(lower)) return buildDetailsAnswer(question);
+
+    const terms = queryTerms(question);
+    const relevant = findRelevantPages(question, 4);
+    const sentences = bestSentencesFromPages(relevant, terms, 5);
+
+    if (!sentences.length || !terms.length) {
+      return 'I could not find a strong match in the extracted text. Try asking about a specific phrase, section title, amount, date, or named party.';
+    }
+
+    let answer = '**Best matches from the document:**\n';
+    sentences.forEach(function(item) {
+      answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+    });
+    answer += '\nThese are extractive results from the PDF text, so verify the cited page before relying on them.';
+    return answer;
+  }
 
   /* ── Chat Messages ── */
   function addMessage(role, text) {
@@ -1226,6 +1521,7 @@
     html = html.replace(/\n{2,}/g, '</p><p>');
     html = '<p>' + html + '</p>';
     html = html.replace(/<p>\s*<\/p>/g, '');
+    html = html.replace(/\[Page\s+(\d+)\]/gi, '<button type="button" class="citation-btn" data-page="$1">Page $1</button>');
 
     return html;
   }
@@ -1246,6 +1542,12 @@
     messagesEl.appendChild(msg);
     scrollToBottom();
   }
+
+  messagesEl.addEventListener('click', function(e) {
+    const citation = e.target.closest('.citation-btn');
+    if (!citation) return;
+    goToPage(citation.dataset.page);
+  });
 
   /* ── Send Message ── */
   async function sendMessage(userMessage) {
@@ -1281,7 +1583,10 @@
       removeTypingIndicator();
 
       if (response.status === 429) {
-        addErrorMessage('Daily AI limit reached. <a href="/dashboard/">Sign in</a> for more questions.');
+        const localText = buildLocalAnswer(userMessage);
+        addMessage('ai', localText + '\n\nDaily AI limit reached, so I used the local page-citation assistant for this answer.');
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Daily AI limit reached. Local citation assistant is still available.';
         isSending = false;
         updateSendBtn();
         return;
@@ -1307,12 +1612,10 @@
 
     } catch (err) {
       removeTypingIndicator();
-      console.error('AI error:', err);
-      if (err && err.message === 'ai-service-unavailable') {
-        addErrorMessage('The AI service is unavailable right now. If you are testing locally, start the Netlify function environment; otherwise try again later.');
-      } else {
-        addErrorMessage('Something went wrong. Please try again.');
-      }
+      const localText = buildLocalAnswer(userMessage);
+      addMessage('ai', localText + '\n\nAI endpoint was unavailable, so this answer was generated locally from extracted page text.');
+      chatHistory.push({ role: 'assistant', content: localText });
+      chatFooter.textContent = 'Using local citation assistant. Answers are extractive and grounded in the PDF text.';
     } finally {
       isSending = false;
       updateSendBtn();
@@ -1359,6 +1662,63 @@
     const btn = e.target.closest('.quick-btn');
     if (!btn || isSending) return;
     sendMessage(btn.dataset.prompt);
+  });
+
+  function transcriptText() {
+    return Array.from(messagesEl.querySelectorAll('.msg')).map(function(msg) {
+      const label = msg.querySelector('.msg-label');
+      const bubble = msg.querySelector('.msg-bubble');
+      return (label ? label.textContent : 'Message') + ':\n' + (bubble ? bubble.textContent.trim() : '');
+    }).join('\n\n');
+  }
+
+  function runDocumentSearch() {
+    const query = docSearchInput.value.trim();
+    if (!query || !pageTexts.length) return;
+    addMessage('user', 'Search: ' + query);
+    const relevant = findRelevantPages(query, 5);
+    const terms = queryTerms(query);
+    const sentences = bestSentencesFromPages(relevant, terms, 6);
+    let answer = '**Search results for "' + query + '":**\n';
+    if (!sentences.length) {
+      answer += 'No strong matches found. Try a shorter phrase or exact term.';
+    } else {
+      sentences.forEach(function(item) {
+        answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+      });
+    }
+    addMessage('ai', answer);
+    chatHistory.push({ role: 'user', content: 'Search: ' + query });
+    chatHistory.push({ role: 'assistant', content: answer });
+  }
+
+  docSearchBtn.addEventListener('click', runDocumentSearch);
+  docSearchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') runDocumentSearch();
+  });
+
+  copyChatBtn.addEventListener('click', function() {
+    const text = transcriptText();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(function() {
+      chatFooter.textContent = 'Transcript copied to clipboard.';
+    }).catch(function() {
+      chatFooter.textContent = 'Copy failed. Use Download instead.';
+    });
+  });
+
+  downloadChatBtn.addEventListener('click', function() {
+    const text = transcriptText();
+    if (!text || !window.PdfUtils) return;
+    const baseName = (pdfData && pdfData.fileName ? pdfData.fileName.replace(/\.pdf$/i, '') : 'pdf-chat') + '_transcript.txt';
+    window.PdfUtils.downloadBlob(new Blob([text], { type: 'text/plain' }), baseName);
+  });
+
+  clearChatBtn.addEventListener('click', function() {
+    messagesEl.innerHTML = '';
+    chatHistory = [];
+    addMessage('ai', buildDocumentOverview(context.length >= 18000));
+    chatFooter.textContent = 'Chat cleared. Ask a new question or search the document.';
   });
 
   /* ── FAQs ── */

@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Compare Tool — Side-by-Side Text Diff & Visual Overlay</title>
-<meta name="description" content="Compare two PDFs side-by-side with text diff and visual overlay. See additions, deletions, and changes instantly. 100% client-side, no uploads, free.">
+<title>PDF Compare Tool - Side-by-Side Text, Visual Diff and Review Report</title>
+<meta name="description" content="Compare two PDFs locally with word or line diff, visual overlay, changed-page map, similarity score, copyable summary, and downloadable review report.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-compare/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF Compare Tool | AfroTools">
-<meta property="og:description" content="Compare two PDFs side-by-side with text diff and visual overlay. Spot every change instantly. Free, client-side.">
+<meta property="og:description" content="Compare PDFs locally with text diff, visual overlay, changed-page map, copyable summary, and review report export.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-compare/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -18,11 +18,11 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PDF Compare Tool | AfroTools">
-<meta name="twitter:description" content="Compare two PDFs side-by-side with text diff and visual overlay. Free and client-side.">
+<meta name="twitter:description" content="Compare PDFs locally with text diff, visual overlay, changed-page map, and review report export.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Compare Tool","description":"Compare two PDF documents side-by-side with text diff highlighting and visual overlay to spot every change.","url":"https://afrotools.com/tools/pdf-compare/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Compare Tool","url":"https://afrotools.com/tools/pdf-compare/","description":"Compare two PDF documents side-by-side with text diff highlighting and visual overlay to spot every change.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Compare Tool","description":"Compare two PDF documents locally with text diff highlighting, visual overlay, changed-page map, and downloadable review report.","url":"https://afrotools.com/tools/pdf-compare/","inLanguage":"en","applicationCategory":"ProductivityApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Compare Tool","url":"https://afrotools.com/tools/pdf-compare/","description":"Compare two PDF documents locally with text diff highlighting, visual overlay, changed-page map, and downloadable review report.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -33,7 +33,7 @@
       "name": "How does the text diff work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The tool extracts text from each page of both PDFs, then uses a diff algorithm to find additions, deletions, and unchanged sections. Results are displayed side-by-side with color-coded highlights."
+        "text": "The tool extracts text from each page of both PDFs, compares it at word, sentence, or line level, and highlights additions and deletions side-by-side."
       }
     },
     {
@@ -41,7 +41,7 @@
       "name": "What does the visual diff show?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Visual diff renders both PDF pages as images and uses pixel-level comparison to highlight areas that differ. You can use a slider to blend between the original and modified versions."
+        "text": "Visual diff renders both PDF pages as images, highlights changed pixels, reports a visual-change percentage, and offers slider or side-by-side views."
       }
     },
     {
@@ -54,10 +54,10 @@
     },
     {
       "@type": "Question",
-      "name": "Can I compare PDFs with different page counts?",
+      "name": "Can I export the comparison?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The tool compares pages that exist in both PDFs. Extra pages in either document are flagged as entirely added or removed."
+        "text": "Yes. You can copy the review summary or download a text report with document names, page counts, similarity score, and per-page changes."
       }
     }
   ]
@@ -68,7 +68,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=d667fbec" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
@@ -392,6 +392,59 @@
     cursor: not-allowed;
   }
 
+  .compare-options {
+    margin-top: 18px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+  }
+
+  .compare-options-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .option-grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 1.1fr) repeat(2, minmax(170px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    color: #374151;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .option-item select {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #374151;
+    font: inherit;
+    outline: none;
+  }
+
+  .option-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--afro-green);
+  }
+
   /* === Mode Toggle === */
   .mode-toggle-row {
     display: flex;
@@ -457,6 +510,159 @@
   .stat-sim {
     color: #6b7280;
     margin-left: auto;
+  }
+
+  .stat-neutral {
+    color: #475569;
+  }
+
+  .review-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .review-toolbar-left,
+  .review-toolbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .filter-input {
+    min-width: 220px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #374151;
+    font-size: 0.78rem;
+  }
+
+  .filter-input:focus {
+    border-color: var(--afro-green);
+    outline: 2px solid rgba(0, 135, 81, 0.15);
+  }
+
+  .check-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #374151;
+    white-space: nowrap;
+  }
+
+  .check-row input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--afro-green);
+  }
+
+  .toolbar-btn {
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #374151;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .toolbar-btn:hover:not(:disabled) {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .toolbar-btn:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+  }
+
+  .quality-note {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .quality-note.warn {
+    border-color: #fed7aa;
+    background: #fff7ed;
+    color: #9a3412;
+  }
+
+  .change-map {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 14px;
+    margin-bottom: 2px;
+  }
+
+  .change-page {
+    flex: 0 0 auto;
+    min-width: 118px;
+    text-align: left;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 7px;
+    padding: 9px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .change-page strong {
+    display: block;
+    color: #111827;
+    font-size: 0.78rem;
+    margin-bottom: 3px;
+  }
+
+  .change-page span {
+    display: block;
+    color: #6b7280;
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  .change-page.changed {
+    border-color: #fde68a;
+    background: #fffbeb;
+  }
+
+  .change-page.added {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+  }
+
+  .change-page.removed {
+    border-color: #fecaca;
+    background: #fef2f2;
+  }
+
+  .change-page.no-text {
+    border-color: #c7d2fe;
+    background: #eef2ff;
+  }
+
+  .change-page.active {
+    border-color: var(--afro-green);
+    box-shadow: 0 0 0 2px rgba(0, 135, 81, 0.14);
   }
 
   /* === Page Navigation === */
@@ -562,6 +768,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .visual-metric {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #374151;
+    font-size: 0.78rem;
+    font-weight: 700;
   }
 
   .visual-canvas-wrap {
@@ -797,6 +1014,10 @@
       grid-template-columns: 1fr;
     }
 
+    .option-grid {
+      grid-template-columns: 1fr;
+    }
+
     .diff-panels {
       grid-template-columns: 1fr;
     }
@@ -822,6 +1043,20 @@
 
     .visual-controls input[type="range"] {
       width: 100%;
+    }
+
+    .review-toolbar {
+      align-items: stretch;
+    }
+
+    .review-toolbar-left,
+    .review-toolbar-right,
+    .filter-input {
+      width: 100%;
+    }
+
+    .toolbar-btn {
+      flex: 1 1 auto;
     }
   }
 </style>
@@ -858,7 +1093,7 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 </head>
 <body>
 
@@ -871,11 +1106,11 @@
       <a href="/">Home</a> / <a href="/document-pdf/">PDF Tools</a> / <span>Compare</span>
     </div>
     <h1>PDF <em>Compare</em></h1>
-    <p class="hero-sub">Compare two PDFs side-by-side. See text differences and visual changes instantly &mdash; 100% client-side.</p>
+    <p class="hero-sub">Compare contracts, policies, invoices, and draft PDFs with side-by-side text diff, visual overlay, changed-page navigation, and a downloadable review report. Everything runs locally in your browser.</p>
     <div class="hero-badges">
       <span class="badge b-green">&#8596; Side-by-Side</span>
-      <span class="badge b-blue">&#9998; Text Diff</span>
-      <span class="badge b-purple">&#128065; Visual Overlay</span>
+      <span class="badge b-blue">&#9998; Text + Visual Diff</span>
+      <span class="badge b-purple">&#128203; Review Report</span>
     </div>
   </div>
 </div>
@@ -912,9 +1147,29 @@
             </div>
           </div>
         </div>
+        <div class="compare-options" aria-label="Comparison settings">
+          <div class="compare-options-title">Comparison Settings</div>
+          <div class="option-grid">
+            <label class="option-item">
+              <select id="diffGranularity" aria-label="Diff granularity">
+                <option value="word" selected>Word-level diff</option>
+                <option value="sentence">Sentence-level diff</option>
+                <option value="line">Line-level diff</option>
+              </select>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" id="ignoreWhitespace" checked>
+              Ignore extra whitespace
+            </label>
+            <label class="option-item">
+              <input type="checkbox" id="ignoreCase">
+              Ignore letter case
+            </label>
+          </div>
+        </div>
         <div class="compare-row">
           <button class="compare-btn" id="compareBtn" disabled>
-            <span id="compareBtnText">&#8596; Compare PDFs</span>
+            <span id="compareBtnText">&#8596; Run Comparison</span>
           </button>
         </div>
       </div>
@@ -941,8 +1196,23 @@
               <span class="stat-add" id="statAdd">0 additions</span>
               <span class="stat-del" id="statDel">0 deletions</span>
               <span class="stat-pages" id="statPages">0 / 0 pages changed</span>
+              <span class="stat-neutral" id="statWords">0 words changed</span>
               <span class="stat-sim" id="statSim">100% similar</span>
             </div>
+            <div class="review-toolbar" id="reviewToolbar">
+              <div class="review-toolbar-left">
+                <label class="check-row"><input type="checkbox" id="changedOnly"> Changed pages only</label>
+                <input class="filter-input" type="search" id="changeSearch" placeholder="Find changed text or page note" aria-label="Search comparison results">
+              </div>
+              <div class="review-toolbar-right">
+                <button class="toolbar-btn" id="prevChangeBtn" type="button">Previous Change</button>
+                <button class="toolbar-btn" id="nextChangeBtn" type="button">Next Change</button>
+                <button class="toolbar-btn" id="copySummaryBtn" type="button">Copy Summary</button>
+                <button class="toolbar-btn" id="downloadReportBtn" type="button">Download Report</button>
+              </div>
+            </div>
+            <div class="quality-note" id="qualityNote">Upload two PDFs, then run a comparison to see page-level review notes.</div>
+            <div class="change-map" id="changeMap" aria-label="Changed page map"></div>
             <div class="page-nav" id="textPageNav">
               <button id="textPrevBtn" disabled>&#8592; Prev</button>
               <span class="page-indicator" id="textPageIndicator">Page 1 / 1</span>
@@ -967,6 +1237,7 @@
               <span class="page-indicator" id="visualPageIndicator">Page 1 / 1</span>
               <button id="visualNextBtn" disabled>Next &#8594;</button>
             </div>
+            <div class="visual-metric" id="visualMetric">Open visual diff after comparing to see page-level pixel changes.</div>
             <div class="visual-diff-container" id="visualContainer">
               <div class="empty-state">
                 <span class="empty-icon">&#128065;</span>
@@ -997,9 +1268,9 @@
       <div class="info-title">How to Use</div>
       <div class="info-text">
         <strong>1. Upload</strong> your original PDF on the left and the modified version on the right.<br><br>
-        <strong>2. Compare</strong> &mdash; the tool extracts text and renders pages for both documents.<br><br>
-        <strong>3. Text Diff</strong> highlights additions (green) and deletions (red) side-by-side.<br><br>
-        <strong>4. Visual Diff</strong> overlays rendered pages to show pixel-level differences.
+        <strong>2. Tune</strong> word, sentence, or line comparison and choose whether to ignore whitespace or case changes.<br><br>
+        <strong>3. Compare</strong> to get a changed-page map, similarity score, additions, deletions, and side-by-side review panes.<br><br>
+        <strong>4. Verify</strong> layout with visual diff, then copy the summary or download a review report for your team.
       </div>
     </div>
 
@@ -1007,10 +1278,10 @@
       <div class="info-title">Tips</div>
       <div class="info-text">
         <ul>
-          <li>&#10003; Works best with text-based PDFs (not scanned images)</li>
-          <li>&#10003; Visual diff shows layout and formatting changes</li>
-          <li>&#10003; Text diff shows content-level additions and deletions</li>
-          <li>&#10003; Use page navigation to step through multi-page documents</li>
+          <li>&#10003; Works best with text-based PDFs; use visual diff for scanned pages or layout-only changes</li>
+          <li>&#10003; Visual diff reports a page-level pixel-change percentage</li>
+          <li>&#10003; Changed-page navigation helps review long contracts and policy drafts quickly</li>
+          <li>&#10003; Export the report before sending edits to a lawyer, approver, client, or procurement team</li>
           <li>&#10003; 100% client-side &mdash; nothing is uploaded</li>
         </ul>
       </div>
@@ -1025,7 +1296,7 @@
   <p>
     The AfroTools PDF Compare tool lets you diff two PDF documents side-by-side directly in your browser.
     Whether you need to review contract changes, compare document drafts, or verify edits,
-    this tool highlights every addition, deletion, and modification at both the text and visual level.
+    this tool highlights additions, deletions, changed pages, similarity, and visual layout changes.
   </p>
   <p>
     Everything runs locally in your browser. Your PDF files are never uploaded to any server,
@@ -1039,19 +1310,19 @@
   <div class="faq-list" id="faqList">
     <div class="faq-item">
       <div class="faq-q">How does the text diff work?</div>
-      <div class="faq-a">The tool extracts text from each page of both PDFs, then uses a diff algorithm to find additions, deletions, and unchanged sections. Results are displayed side-by-side with color-coded highlights.</div>
+      <div class="faq-a">The tool extracts text from each page of both PDFs, compares it at word, sentence, or line level, and highlights additions and deletions in side-by-side review panes.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">What does the visual diff show?</div>
-      <div class="faq-a">Visual diff renders both PDF pages as images and uses pixel-level comparison to highlight areas that differ between the two documents. You can also use a slider to blend between original and modified versions.</div>
+      <div class="faq-a">Visual diff renders both PDF pages as images, highlights changed pixels, reports a visual-change percentage, and supports slider or side-by-side review modes.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Is my PDF uploaded to a server?</div>
       <div class="faq-a">No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Can I compare PDFs with different page counts?</div>
-      <div class="faq-a">Yes. The tool compares pages that exist in both PDFs. Extra pages in either document are flagged as entirely added or removed.</div>
+      <div class="faq-q">Can I export the comparison?</div>
+      <div class="faq-a">Yes. You can copy the summary or download a text report with document names, page counts, similarity, and per-page changes.</div>
     </div>
   </div>
 </div>
@@ -1061,7 +1332,6 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
 <script>
 // ============================================================
 // PDF Compare Tool — AfroTools
@@ -1079,6 +1349,9 @@
   var resultsCard  = document.getElementById('resultsCard');
   var progressBar  = document.getElementById('progressBar');
   var progressFill = document.getElementById('progressFill');
+  var diffGranularity = document.getElementById('diffGranularity');
+  var ignoreWhitespace = document.getElementById('ignoreWhitespace');
+  var ignoreCase = document.getElementById('ignoreCase');
 
   // Text diff
   var textDiffView = document.getElementById('textDiffView');
@@ -1088,7 +1361,16 @@
   var statAdd      = document.getElementById('statAdd');
   var statDel      = document.getElementById('statDel');
   var statPages    = document.getElementById('statPages');
+  var statWords    = document.getElementById('statWords');
   var statSim      = document.getElementById('statSim');
+  var changedOnly  = document.getElementById('changedOnly');
+  var changeSearch = document.getElementById('changeSearch');
+  var prevChangeBtn = document.getElementById('prevChangeBtn');
+  var nextChangeBtn = document.getElementById('nextChangeBtn');
+  var copySummaryBtn = document.getElementById('copySummaryBtn');
+  var downloadReportBtn = document.getElementById('downloadReportBtn');
+  var qualityNote = document.getElementById('qualityNote');
+  var changeMap = document.getElementById('changeMap');
   var textPrevBtn  = document.getElementById('textPrevBtn');
   var textNextBtn  = document.getElementById('textNextBtn');
   var textPageInd  = document.getElementById('textPageIndicator');
@@ -1099,6 +1381,7 @@
   var visualPrevBtn = document.getElementById('visualPrevBtn');
   var visualNextBtn = document.getElementById('visualNextBtn');
   var visualPageInd = document.getElementById('visualPageIndicator');
+  var visualMetric  = document.getElementById('visualMetric');
   var blendSlider   = document.getElementById('blendSlider');
   var sliderLabel   = document.getElementById('sliderLabel');
 
@@ -1112,38 +1395,49 @@
   // === State ===
   var pdfOriginal = null;  // { pdfDoc, fileName, pageCount }
   var pdfModified = null;
-  var textResults = [];    // per-page: { leftHtml, rightHtml, adds, dels }
+  var textResults = [];    // per-page comparison details
   var totalAdds = 0;
   var totalDels = 0;
+  var totalChangedWords = 0;
+  var totalChangedChars = 0;
+  var totalComparableChars = 0;
   var pagesChanged = 0;
   var totalPages = 0;
   var currentTextPage = 0;
   var currentVisualPage = 0;
   var currentMode = 'text';       // text | visual
   var currentVMode = 'difference'; // difference | slider | sidebyside
+  var lastSimilarity = 100;
+  var lastOptions = null;
 
   // === Upload handling ===
   function setupUploadZone(dropZone, fileInput, side) {
-    dropZone.addEventListener('click', function(e) {
-      if (e.target.closest('.change-btn')) return;
-      fileInput.click();
-    });
+    dropZone._pdfCompareSide = side;
+    if (!dropZone._pdfCompareBound) {
+      dropZone.addEventListener('click', function(e) {
+        if (e.target.closest('.change-btn')) return;
+        var input = dropZone.querySelector('input[type="file"]');
+        if (input) input.click();
+      });
 
-    fileInput.addEventListener('change', function() {
+      PdfUtils.initDragDrop(dropZone, {
+        accept: '.pdf',
+        multiple: false,
+        onFiles: function(files) {
+          if (files.length > 0 && files[0].name.toLowerCase().endsWith('.pdf')) {
+            handleFile(files[0], dropZone._pdfCompareSide);
+          }
+        }
+      });
+
+      dropZone._pdfCompareBound = true;
+    }
+
+    fileInput.onchange = function() {
       if (fileInput.files.length > 0) {
         handleFile(fileInput.files[0], side);
       }
-    });
-
-    PdfUtils.initDragDrop(dropZone, {
-      accept: '.pdf',
-      multiple: false,
-      onFiles: function(files) {
-        if (files.length > 0 && files[0].name.toLowerCase().endsWith('.pdf')) {
-          handleFile(files[0], side);
-        }
-      }
-    });
+    };
   }
 
   async function handleFile(file, side) {
@@ -1226,6 +1520,8 @@
     resultsCard.classList.add('on');
     progressBar.style.display = 'block';
     progressFill.style.width = '0%';
+    changeSearch.value = '';
+    changedOnly.checked = false;
 
     try {
       // Extract text from both
@@ -1240,51 +1536,25 @@
       textResults = [];
       totalAdds = 0;
       totalDels = 0;
+      totalChangedWords = 0;
+      totalChangedChars = 0;
+      totalComparableChars = 0;
       pagesChanged = 0;
-
-      var dmp = new diff_match_patch();
+      lastOptions = getCompareOptions();
 
       for (var i = 0; i < totalPages; i++) {
         var origText = i < textOrig.length ? textOrig[i].text : '';
         var modText  = i < textMod.length  ? textMod[i].text  : '';
+        var pageResult = comparePageText(origText, modText, i + 1, lastOptions, i >= textOrig.length, i >= textMod.length);
 
-        var diffs = dmp.diff_main(origText, modText);
-        dmp.diff_cleanupSemantic(diffs);
+        totalAdds += pageResult.adds;
+        totalDels += pageResult.dels;
+        totalChangedWords += pageResult.changedWords;
+        totalChangedChars += pageResult.changedChars;
+        totalComparableChars += pageResult.totalChars;
+        if (pageResult.changed) pagesChanged++;
 
-        var leftHtml  = '';
-        var rightHtml = '';
-        var pageAdds = 0;
-        var pageDels = 0;
-
-        for (var j = 0; j < diffs.length; j++) {
-          var op   = diffs[j][0];
-          var text = escapeHtml(diffs[j][1]);
-
-          if (op === 0) {
-            // Equal
-            leftHtml  += text;
-            rightHtml += text;
-          } else if (op === -1) {
-            // Deletion
-            leftHtml += '<span class="diff-del">' + text + '</span>';
-            pageDels++;
-          } else if (op === 1) {
-            // Insertion
-            rightHtml += '<span class="diff-add">' + text + '</span>';
-            pageAdds++;
-          }
-        }
-
-        totalAdds += pageAdds;
-        totalDels += pageDels;
-        if (pageAdds > 0 || pageDels > 0) pagesChanged++;
-
-        textResults.push({
-          leftHtml: leftHtml || '<span style="color:#9ca3af;font-style:italic;">(no text on this page)</span>',
-          rightHtml: rightHtml || '<span style="color:#9ca3af;font-style:italic;">(no text on this page)</span>',
-          adds: pageAdds,
-          dels: pageDels
-        });
+        textResults.push(pageResult);
 
         progressFill.style.width = (60 + (i / totalPages) * 35) + '%';
       }
@@ -1295,29 +1565,20 @@
       statAdd.textContent = totalAdds + ' addition' + (totalAdds !== 1 ? 's' : '');
       statDel.textContent = totalDels + ' deletion' + (totalDels !== 1 ? 's' : '');
       statPages.textContent = pagesChanged + ' / ' + totalPages + ' pages changed';
+      statWords.textContent = totalChangedWords + ' word' + (totalChangedWords !== 1 ? 's' : '') + ' changed';
 
-      // Compute similarity
-      var totalChars = 0;
-      var changedChars = 0;
-      for (var k = 0; k < totalPages; k++) {
-        var oText = k < textOrig.length ? textOrig[k].text : '';
-        var mText = k < textMod.length  ? textMod[k].text  : '';
-        totalChars += Math.max(oText.length, mText.length);
-        // Reuse diffs from diffPages if available, otherwise compute
-        var d = (k < diffPages.length) ? diffPages[k] : dmp.diff_main(oText, mText);
-        for (var q = 0; q < d.length; q++) {
-          if (d[q][0] !== 0) changedChars += d[q][1].length;
-        }
-      }
-      var similarity = totalChars > 0 ? Math.round((1 - changedChars / (totalChars || 1)) * 100) : 100;
-      similarity = Math.max(0, Math.min(100, similarity));
-      statSim.textContent = similarity + '% similar';
+      lastSimilarity = totalComparableChars > 0 ? Math.round((1 - totalChangedChars / totalComparableChars) * 100) : 100;
+      lastSimilarity = Math.max(0, Math.min(100, lastSimilarity));
+      statSim.textContent = lastSimilarity + '% similar';
+      updateQualityNote();
+      renderChangeMap();
 
       // Show first page
       currentTextPage = 0;
       currentVisualPage = 0;
       renderTextPage(0);
       updateTextNav();
+      updateReviewActions();
 
       setTimeout(function() {
         progressBar.style.display = 'none';
@@ -1328,7 +1589,7 @@
       progressBar.style.display = 'none';
     }
 
-    compareBtnText.innerHTML = '&#8596; Compare PDFs';
+    compareBtnText.innerHTML = '&#8596; Run Comparison';
     compareBtn.disabled = false;
   });
 
@@ -1339,6 +1600,7 @@
     diffLeft.innerHTML  = textResults[idx].leftHtml;
     diffRight.innerHTML = textResults[idx].rightHtml;
     updateTextNav();
+    renderChangeMap();
 
     // Sync scroll
     diffLeft.scrollTop = 0;
@@ -1346,17 +1608,20 @@
   }
 
   function updateTextNav() {
-    textPrevBtn.disabled = currentTextPage <= 0;
-    textNextBtn.disabled = currentTextPage >= totalPages - 1;
-    textPageInd.textContent = 'Page ' + (currentTextPage + 1) + ' / ' + totalPages;
+    var visible = getVisiblePageIndexes();
+    var pos = visible.indexOf(currentTextPage);
+    textPrevBtn.disabled = pos <= 0;
+    textNextBtn.disabled = pos === -1 || pos >= visible.length - 1;
+    var suffix = visible.length !== totalPages ? ' (' + visible.length + ' shown)' : '';
+    textPageInd.textContent = 'Page ' + (currentTextPage + 1) + ' / ' + totalPages + suffix;
   }
 
   textPrevBtn.addEventListener('click', function() {
-    if (currentTextPage > 0) renderTextPage(currentTextPage - 1);
+    moveVisiblePage(-1);
   });
 
   textNextBtn.addEventListener('click', function() {
-    if (currentTextPage < totalPages - 1) renderTextPage(currentTextPage + 1);
+    moveVisiblePage(1);
   });
 
   // Sync scroll between panels
@@ -1372,6 +1637,49 @@
     syncing = true;
     diffLeft.scrollTop = diffRight.scrollTop;
     syncing = false;
+  });
+
+  changedOnly.addEventListener('change', function() {
+    applyResultFilters();
+  });
+
+  changeSearch.addEventListener('input', function() {
+    applyResultFilters();
+  });
+
+  prevChangeBtn.addEventListener('click', function() {
+    moveToChangedPage(-1);
+  });
+
+  nextChangeBtn.addEventListener('click', function() {
+    moveToChangedPage(1);
+  });
+
+  copySummaryBtn.addEventListener('click', function() {
+    copySummary();
+  });
+
+  downloadReportBtn.addEventListener('click', function() {
+    downloadReport();
+  });
+
+  changeMap.addEventListener('click', function(e) {
+    var btn = e.target.closest('.change-page');
+    if (!btn) return;
+    var pageIdx = parseInt(btn.getAttribute('data-page'), 10);
+    if (!isNaN(pageIdx)) renderTextPage(pageIdx);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!resultsCard.classList.contains('on')) return;
+    if (/input|textarea|select/i.test(e.target.tagName)) return;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      currentMode === 'visual' ? moveVisualPage(1) : moveVisiblePage(1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      currentMode === 'visual' ? moveVisualPage(-1) : moveVisiblePage(-1);
+    }
   });
 
   // === Mode Toggle ===
@@ -1409,18 +1717,19 @@
   });
 
   visualPrevBtn.addEventListener('click', function() {
-    if (currentVisualPage > 0) {
-      currentVisualPage--;
-      renderVisualPage(currentVisualPage);
-    }
+    moveVisualPage(-1);
   });
 
   visualNextBtn.addEventListener('click', function() {
-    if (currentVisualPage < totalPages - 1) {
-      currentVisualPage++;
-      renderVisualPage(currentVisualPage);
-    }
+    moveVisualPage(1);
   });
+
+  function moveVisualPage(direction) {
+    var nextPage = currentVisualPage + direction;
+    if (nextPage < 0 || nextPage >= totalPages) return;
+    currentVisualPage = nextPage;
+    renderVisualPage(currentVisualPage);
+  }
 
   async function renderVisualPage(pageIdx) {
     if (!pdfOriginal || !pdfModified) return;
@@ -1431,6 +1740,7 @@
     visualPrevBtn.disabled = pageIdx <= 0;
     visualNextBtn.disabled = pageIdx >= totalPages - 1;
     visualPageInd.textContent = 'Page ' + (pageIdx + 1) + ' / ' + totalPages;
+    visualMetric.textContent = 'Rendering visual comparison for page ' + (pageIdx + 1) + '...';
 
     visualContainer.innerHTML = '<div style="text-align:center;padding:30px;color:#6b7280;font-size:0.85rem;"><span class="spinner" style="border-color:rgba(0,0,0,0.15);border-top-color:var(--afro-green);width:24px;height:24px;"></span><br>Rendering...</div>';
 
@@ -1456,6 +1766,7 @@
 
     } catch (err) {
       visualContainer.innerHTML = '<div class="empty-state"><span class="empty-icon">&#9888;</span>Failed to render page: ' + escapeHtml(err.message) + '</div>';
+      visualMetric.textContent = 'Visual comparison could not render this page.';
     }
   }
 
@@ -1465,50 +1776,36 @@
       return;
     }
 
-    // Use the larger dimensions
     var w = Math.max(canvasOrig ? canvasOrig.width : 0, canvasMod ? canvasMod.width : 0);
     var h = Math.max(canvasOrig ? canvasOrig.height : 0, canvasMod ? canvasMod.height : 0);
 
+    var origData = canvasToImageData(canvasOrig, w, h);
+    var modData = canvasToImageData(canvasMod, w, h);
     var canvas = document.createElement('canvas');
     canvas.width = w;
     canvas.height = h;
     var ctx = canvas.getContext('2d');
+    var imageData = ctx.createImageData(w, h);
+    var out = imageData.data;
+    var changedPixels = 0;
+    var threshold = 42;
 
-    // White background
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, w, h);
+    for (var i = 0; i < out.length; i += 4) {
+      var diff = Math.abs(origData[i] - modData[i]) +
+        Math.abs(origData[i + 1] - modData[i + 1]) +
+        Math.abs(origData[i + 2] - modData[i + 2]);
 
-    // Draw original
-    if (canvasOrig) {
-      ctx.drawImage(canvasOrig, 0, 0);
-    }
-
-    // Composite with difference mode
-    if (canvasMod) {
-      ctx.globalCompositeOperation = 'difference';
-      ctx.drawImage(canvasMod, 0, 0);
-      ctx.globalCompositeOperation = 'source-over';
-    }
-
-    // Boost contrast: invert to show changes as bright on dark
-    var imageData = ctx.getImageData(0, 0, w, h);
-    var data = imageData.data;
-    for (var i = 0; i < data.length; i += 4) {
-      // Amplify differences
-      var r = data[i], g = data[i + 1], b = data[i + 2];
-      var brightness = (r + g + b) / 3;
-      if (brightness > 10) {
-        // Mark changed pixels in red
-        data[i]     = 255;  // R
-        data[i + 1] = 60;   // G
-        data[i + 2] = 60;   // B
-        data[i + 3] = Math.min(255, brightness * 3);
+      if (diff > threshold) {
+        changedPixels++;
+        out[i] = 239;
+        out[i + 1] = 68;
+        out[i + 2] = 68;
+        out[i + 3] = Math.min(230, 80 + diff);
       } else {
-        // Unchanged: show faintly
-        data[i]     = 240;
-        data[i + 1] = 240;
-        data[i + 2] = 240;
-        data[i + 3] = 255;
+        out[i] = 248;
+        out[i + 1] = 250;
+        out[i + 2] = 252;
+        out[i + 3] = 255;
       }
     }
     ctx.putImageData(imageData, 0, 0);
@@ -1534,6 +1831,9 @@
     wrap.className = 'visual-canvas-wrap';
     wrap.appendChild(finalCanvas);
     visualContainer.appendChild(wrap);
+
+    var percent = w && h ? (changedPixels / (w * h)) * 100 : 0;
+    visualMetric.textContent = 'Page ' + (currentVisualPage + 1) + ': ' + formatPercent(percent) + '% visual change detected.';
   }
 
   function renderSliderMode(canvasOrig, canvasMod) {
@@ -1572,6 +1872,7 @@
     wrap.className = 'visual-canvas-wrap';
     wrap.appendChild(canvas);
     visualContainer.appendChild(wrap);
+    visualMetric.textContent = 'Page ' + (currentVisualPage + 1) + ': slider blend view. Switch to Difference for pixel-change percentage.';
   }
 
   function renderSideBySideVisual(canvasOrig, canvasMod) {
@@ -1603,6 +1904,477 @@
     wrap.appendChild(makeCol(canvasOrig, 'Original'));
     wrap.appendChild(makeCol(canvasMod, 'Modified'));
     visualContainer.appendChild(wrap);
+    visualMetric.textContent = 'Page ' + (currentVisualPage + 1) + ': side-by-side visual review.';
+  }
+
+  function getCompareOptions() {
+    return {
+      granularity: diffGranularity.value || 'word',
+      ignoreWhitespace: !!ignoreWhitespace.checked,
+      ignoreCase: !!ignoreCase.checked
+    };
+  }
+
+  function comparePageText(originalText, modifiedText, pageNumber, options, originalMissing, modifiedMissing) {
+    var segments = diffTextSegments(originalText, modifiedText, options);
+    var stats = analyzeSegments(segments, originalText, modifiedText, options);
+    var status = getPageStatus(originalText, modifiedText, stats, originalMissing, modifiedMissing);
+    var changed = status !== 'same' && status !== 'no-text';
+    var pageLabel = 'Page ' + pageNumber;
+
+    return {
+      page: pageNumber,
+      leftHtml: buildSideHtml(segments, 'left') || emptyPageHtml(originalMissing ? 'Page not present in original PDF' : 'No extracted text on this page'),
+      rightHtml: buildSideHtml(segments, 'right') || emptyPageHtml(modifiedMissing ? 'Page not present in modified PDF' : 'No extracted text on this page'),
+      originalText: originalText,
+      modifiedText: modifiedText,
+      segments: segments,
+      adds: stats.adds,
+      dels: stats.dels,
+      changedWords: stats.changedWords,
+      changedChars: stats.changedChars,
+      totalChars: stats.totalChars,
+      changed: changed,
+      coarse: stats.coarse,
+      status: status,
+      label: pageLabel,
+      searchText: (pageLabel + ' ' + status + ' ' + originalText + ' ' + modifiedText).toLowerCase()
+    };
+  }
+
+  function diffTextSegments(originalText, modifiedText, options) {
+    var leftTokens = makeCompareTokens(originalText, options);
+    var rightTokens = makeCompareTokens(modifiedText, options);
+
+    if (!leftTokens.length && !rightTokens.length) return [];
+    if (!leftTokens.length) return [{ op: 'insert', leftText: '', rightText: modifiedText, coarse: false }];
+    if (!rightTokens.length) return [{ op: 'delete', leftText: originalText, rightText: '', coarse: false }];
+
+    var prefix = 0;
+    while (prefix < leftTokens.length && prefix < rightTokens.length && leftTokens[prefix].key === rightTokens[prefix].key) {
+      prefix++;
+    }
+
+    var suffix = 0;
+    while (
+      suffix + prefix < leftTokens.length &&
+      suffix + prefix < rightTokens.length &&
+      leftTokens[leftTokens.length - 1 - suffix].key === rightTokens[rightTokens.length - 1 - suffix].key
+    ) {
+      suffix++;
+    }
+
+    var segments = [];
+    for (var p = 0; p < prefix; p++) {
+      pushSegment(segments, 'equal', leftTokens[p].text, rightTokens[p].text, false);
+    }
+
+    var leftMid = leftTokens.slice(prefix, leftTokens.length - suffix);
+    var rightMid = rightTokens.slice(prefix, rightTokens.length - suffix);
+    var maxMatrixCells = 450000;
+
+    if (leftMid.length && rightMid.length && leftMid.length * rightMid.length <= maxMatrixCells) {
+      diffTokensLcs(leftMid, rightMid, segments);
+    } else if (leftMid.length || rightMid.length) {
+      if (leftMid.length) pushSegment(segments, 'delete', joinTokenText(leftMid), '', true);
+      if (rightMid.length) pushSegment(segments, 'insert', '', joinTokenText(rightMid), true);
+    }
+
+    for (var s = suffix; s > 0; s--) {
+      var leftToken = leftTokens[leftTokens.length - s];
+      var rightToken = rightTokens[rightTokens.length - s];
+      pushSegment(segments, 'equal', leftToken.text, rightToken.text, false);
+    }
+
+    return segments;
+  }
+
+  function makeCompareTokens(text, options) {
+    var raw = [];
+    if (!text) return raw;
+
+    if (options.granularity === 'line') {
+      raw = text.match(/[^\r\n]+(?:\r?\n|$)|\r?\n/g) || [text];
+    } else if (options.granularity === 'sentence') {
+      raw = text.match(/[^.!?;:]+[.!?;:]?\s*/g) || [text];
+    } else {
+      raw = text.match(/\S+\s*/g) || [text];
+    }
+
+    var tokens = [];
+    for (var i = 0; i < raw.length; i++) {
+      var key = compareKey(raw[i], options);
+      if (!key) continue;
+      tokens.push({ text: raw[i], key: key });
+    }
+    return tokens;
+  }
+
+  function compareKey(text, options) {
+    var key = String(text || '');
+    if (options.ignoreWhitespace || options.granularity !== 'line') {
+      key = key.replace(/\s+/g, ' ').trim();
+    }
+    if (options.ignoreCase) key = key.toLowerCase();
+    return key;
+  }
+
+  function diffTokensLcs(leftTokens, rightTokens, segments) {
+    var n = leftTokens.length;
+    var m = rightTokens.length;
+    var width = m + 1;
+    var size = (n + 1) * (m + 1);
+    var Table = Math.max(n, m) < 65535 ? Uint16Array : Uint32Array;
+    var dp = new Table(size);
+
+    for (var i = n - 1; i >= 0; i--) {
+      for (var j = m - 1; j >= 0; j--) {
+        if (leftTokens[i].key === rightTokens[j].key) {
+          dp[i * width + j] = dp[(i + 1) * width + (j + 1)] + 1;
+        } else {
+          var down = dp[(i + 1) * width + j];
+          var right = dp[i * width + (j + 1)];
+          dp[i * width + j] = down >= right ? down : right;
+        }
+      }
+    }
+
+    var a = 0;
+    var b = 0;
+    while (a < n && b < m) {
+      if (leftTokens[a].key === rightTokens[b].key) {
+        pushSegment(segments, 'equal', leftTokens[a].text, rightTokens[b].text, false);
+        a++;
+        b++;
+      } else if (dp[(a + 1) * width + b] >= dp[a * width + (b + 1)]) {
+        pushSegment(segments, 'delete', leftTokens[a].text, '', false);
+        a++;
+      } else {
+        pushSegment(segments, 'insert', '', rightTokens[b].text, false);
+        b++;
+      }
+    }
+
+    while (a < n) {
+      pushSegment(segments, 'delete', leftTokens[a].text, '', false);
+      a++;
+    }
+
+    while (b < m) {
+      pushSegment(segments, 'insert', '', rightTokens[b].text, false);
+      b++;
+    }
+  }
+
+  function pushSegment(segments, op, leftText, rightText, coarse) {
+    if (!leftText && !rightText) return;
+    var last = segments[segments.length - 1];
+    if (last && last.op === op && last.coarse === coarse) {
+      last.leftText += leftText || '';
+      last.rightText += rightText || '';
+      return;
+    }
+    segments.push({ op: op, leftText: leftText || '', rightText: rightText || '', coarse: !!coarse });
+  }
+
+  function joinTokenText(tokens) {
+    return tokens.map(function(token) { return token.text; }).join('');
+  }
+
+  function analyzeSegments(segments, originalText, modifiedText, options) {
+    var adds = 0;
+    var dels = 0;
+    var addChars = 0;
+    var delChars = 0;
+    var coarse = false;
+
+    for (var i = 0; i < segments.length; i++) {
+      var segment = segments[i];
+      if (segment.coarse) coarse = true;
+      if (segment.op === 'insert') {
+        adds += countWords(segment.rightText);
+        addChars += comparableLength(segment.rightText, options);
+      } else if (segment.op === 'delete') {
+        dels += countWords(segment.leftText);
+        delChars += comparableLength(segment.leftText, options);
+      }
+    }
+
+    var changedChars = Math.max(addChars, delChars);
+    var totalChars = Math.max(comparableLength(originalText, options), comparableLength(modifiedText, options));
+    return {
+      adds: adds,
+      dels: dels,
+      changedWords: adds + dels,
+      changedChars: changedChars,
+      totalChars: totalChars,
+      coarse: coarse
+    };
+  }
+
+  function getPageStatus(originalText, modifiedText, stats, originalMissing, modifiedMissing) {
+    if (originalMissing && !modifiedMissing) return 'added';
+    if (!originalMissing && modifiedMissing) return 'removed';
+    if (!String(originalText || '').trim() && !String(modifiedText || '').trim()) return 'no-text';
+    if (stats.adds > 0 || stats.dels > 0) return 'changed';
+    return 'same';
+  }
+
+  function comparableLength(text, options) {
+    return compareKey(text, options).length;
+  }
+
+  function countWords(text) {
+    var words = String(text || '').trim().match(/\S+/g);
+    return words ? words.length : 0;
+  }
+
+  function buildSideHtml(segments, side) {
+    var html = '';
+    for (var i = 0; i < segments.length; i++) {
+      var segment = segments[i];
+      if (side === 'left') {
+        if (segment.op === 'equal') html += escapeHtml(segment.leftText);
+        else if (segment.op === 'delete') html += '<span class="diff-del">' + escapeHtml(segment.leftText) + '</span>';
+      } else {
+        if (segment.op === 'equal') html += escapeHtml(segment.rightText);
+        else if (segment.op === 'insert') html += '<span class="diff-add">' + escapeHtml(segment.rightText) + '</span>';
+      }
+    }
+    return html;
+  }
+
+  function emptyPageHtml(text) {
+    return '<span style="color:#9ca3af;font-style:italic;">(' + escapeHtml(text) + ')</span>';
+  }
+
+  function getVisiblePageIndexes() {
+    if (!textResults.length) return [];
+    var query = String(changeSearch.value || '').trim().toLowerCase();
+    var onlyChanged = !!changedOnly.checked;
+    var indexes = [];
+    for (var i = 0; i < textResults.length; i++) {
+      var result = textResults[i];
+      if (onlyChanged && !result.changed) continue;
+      if (query && result.searchText.indexOf(query) === -1) continue;
+      indexes.push(i);
+    }
+    return indexes;
+  }
+
+  function applyResultFilters() {
+    renderChangeMap();
+    var visible = getVisiblePageIndexes();
+    if (!visible.length) {
+      textPrevBtn.disabled = true;
+      textNextBtn.disabled = true;
+      textPageInd.textContent = 'No matching pages';
+      diffLeft.innerHTML = emptyPageHtml('No page matches the current filter');
+      diffRight.innerHTML = emptyPageHtml('No page matches the current filter');
+      updateReviewActions();
+      return;
+    }
+    if (visible.indexOf(currentTextPage) === -1) {
+      renderTextPage(visible[0]);
+    } else {
+      updateTextNav();
+    }
+    updateReviewActions();
+  }
+
+  function moveVisiblePage(direction) {
+    var visible = getVisiblePageIndexes();
+    if (!visible.length) return;
+    var pos = visible.indexOf(currentTextPage);
+    if (pos === -1) pos = direction > 0 ? -1 : visible.length;
+    var nextPos = pos + direction;
+    if (nextPos < 0 || nextPos >= visible.length) return;
+    renderTextPage(visible[nextPos]);
+  }
+
+  function moveToChangedPage(direction) {
+    if (!textResults.length) return;
+    var changed = textResults.map(function(result, idx) {
+      return result.changed ? idx : null;
+    }).filter(function(idx) { return idx !== null; });
+    if (!changed.length) {
+      PdfUtils.showToast('No changed pages found');
+      return;
+    }
+    var currentPos = changed.indexOf(currentTextPage);
+    var nextIdx;
+    if (direction > 0) {
+      nextIdx = changed.find(function(idx) { return idx > currentTextPage; });
+      if (typeof nextIdx === 'undefined') nextIdx = changed[0];
+    } else {
+      for (var i = changed.length - 1; i >= 0; i--) {
+        if (changed[i] < currentTextPage) {
+          nextIdx = changed[i];
+          break;
+        }
+      }
+      if (typeof nextIdx === 'undefined') nextIdx = changed[changed.length - 1];
+    }
+    if (currentPos === -1 && direction < 0) nextIdx = changed[changed.length - 1];
+    renderTextPage(nextIdx);
+  }
+
+  function renderChangeMap() {
+    if (!changeMap || !textResults.length) {
+      if (changeMap) changeMap.innerHTML = '';
+      return;
+    }
+
+    var visible = getVisiblePageIndexes();
+    if (!visible.length) {
+      changeMap.innerHTML = '<div class="quality-note warn" style="margin-bottom:0;">No pages match the current filter.</div>';
+      return;
+    }
+
+    changeMap.innerHTML = visible.map(function(idx) {
+      var result = textResults[idx];
+      var classes = ['change-page', result.status];
+      if (idx === currentTextPage) classes.push('active');
+      return '<button type="button" class="' + classes.join(' ') + '" data-page="' + idx + '">' +
+        '<strong>Page ' + result.page + '</strong>' +
+        '<span>' + pageStatusLabel(result) + '</span>' +
+        '<span>+' + result.adds + ' / -' + result.dels + '</span>' +
+        '</button>';
+    }).join('');
+  }
+
+  function pageStatusLabel(result) {
+    if (result.status === 'same') return 'No text change';
+    if (result.status === 'added') return 'Added page';
+    if (result.status === 'removed') return 'Removed page';
+    if (result.status === 'no-text') return 'No extracted text';
+    return result.coarse ? 'Changed, large page' : 'Changed';
+  }
+
+  function updateQualityNote() {
+    var noTextPages = textResults.filter(function(result) { return result.status === 'no-text'; }).length;
+    var coarsePages = textResults.filter(function(result) { return result.coarse; }).length;
+    var note = 'Text compare complete: ' + pagesChanged + ' changed page' + (pagesChanged !== 1 ? 's' : '') +
+      ', ' + lastSimilarity + '% similar, ' + totalChangedWords + ' changed word' + (totalChangedWords !== 1 ? 's' : '') + '.';
+
+    qualityNote.classList.remove('warn');
+    if (noTextPages || coarsePages) {
+      qualityNote.classList.add('warn');
+      if (noTextPages) note += ' ' + noTextPages + ' page' + (noTextPages !== 1 ? 's' : '') + ' had no extractable text; use visual diff for scanned or image-only pages.';
+      if (coarsePages) note += ' Large-page diff was summarized to keep the browser responsive.';
+    } else {
+      note += ' Use the page map and next-change buttons to review only the pages that matter.';
+    }
+    qualityNote.textContent = note;
+  }
+
+  function updateReviewActions() {
+    var hasResults = textResults.length > 0;
+    prevChangeBtn.disabled = !hasResults || pagesChanged === 0;
+    nextChangeBtn.disabled = !hasResults || pagesChanged === 0;
+    copySummaryBtn.disabled = !hasResults;
+    downloadReportBtn.disabled = !hasResults;
+  }
+
+  function buildSummaryText() {
+    if (!textResults.length) return 'No PDF comparison has been run yet.';
+    return [
+      'AfroTools PDF Compare Summary',
+      'Original: ' + (pdfOriginal ? pdfOriginal.fileName : 'n/a') + ' (' + (pdfOriginal ? pdfOriginal.pageCount : 0) + ' pages)',
+      'Modified: ' + (pdfModified ? pdfModified.fileName : 'n/a') + ' (' + (pdfModified ? pdfModified.pageCount : 0) + ' pages)',
+      'Compared pages: ' + totalPages,
+      'Changed pages: ' + pagesChanged,
+      'Additions: ' + totalAdds,
+      'Deletions: ' + totalDels,
+      'Similarity: ' + lastSimilarity + '%',
+      'Settings: ' + (lastOptions ? lastOptions.granularity : 'word') + ', ignore whitespace=' + (lastOptions && lastOptions.ignoreWhitespace ? 'yes' : 'no') + ', ignore case=' + (lastOptions && lastOptions.ignoreCase ? 'yes' : 'no')
+    ].join('\n');
+  }
+
+  function copySummary() {
+    var text = buildSummaryText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        PdfUtils.showToast('Comparison summary copied');
+      }).catch(function() {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', 'readonly');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    PdfUtils.showToast('Comparison summary copied');
+  }
+
+  function downloadReport() {
+    var report = buildReportText();
+    var name = safeFileBase(pdfOriginal ? pdfOriginal.fileName : 'original') + '_vs_' +
+      safeFileBase(pdfModified ? pdfModified.fileName : 'modified') + '_compare-report.txt';
+    PdfUtils.downloadBlob(new Blob([report], { type: 'text/plain;charset=utf-8' }), name);
+  }
+
+  function buildReportText() {
+    var lines = [buildSummaryText(), '', 'Page Review'];
+    textResults.forEach(function(result) {
+      lines.push('');
+      lines.push('Page ' + result.page + ' - ' + pageStatusLabel(result));
+      lines.push('Additions: ' + result.adds + ', deletions: ' + result.dels);
+      if (result.status === 'no-text') {
+        lines.push('Note: No extractable text was found. Use the visual diff for this page.');
+      }
+      var removed = collectSegmentText(result.segments, 'delete');
+      var added = collectSegmentText(result.segments, 'insert');
+      if (removed) lines.push('Removed: ' + truncateReportText(removed, 900));
+      if (added) lines.push('Added: ' + truncateReportText(added, 900));
+    });
+    lines.push('');
+    lines.push('Privacy: This report was generated in the browser. The PDFs were not uploaded by AfroTools PDF Compare.');
+    return lines.join('\n');
+  }
+
+  function collectSegmentText(segments, op) {
+    return segments.filter(function(segment) { return segment.op === op; })
+      .map(function(segment) { return op === 'insert' ? segment.rightText : segment.leftText; })
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function truncateReportText(text, limit) {
+    if (text.length <= limit) return text;
+    return text.slice(0, limit - 20) + '... [truncated]';
+  }
+
+  function safeFileBase(name) {
+    return String(name || 'document').replace(/\.pdf$/i, '').replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 50) || 'document';
+  }
+
+  function canvasToImageData(sourceCanvas, width, height) {
+    var canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, width, height);
+    if (sourceCanvas) ctx.drawImage(sourceCanvas, 0, 0);
+    return ctx.getImageData(0, 0, width, height).data;
+  }
+
+  function formatPercent(value) {
+    if (value >= 10) return value.toFixed(1);
+    if (value >= 1) return value.toFixed(2);
+    return value.toFixed(3);
   }
 
   // === FAQs ===

@@ -126,6 +126,40 @@ function applyRecipeResearchPatch(recipe, researchAudit) {
     Object.assign(next, patch.recipe);
   }
 
+  if (Array.isArray(patch.replace_ingredients)) {
+    next.ingredients = patch.replace_ingredients.map((ingredient, index) => ({
+      id: `research-${recipe.slug}-replace-ingredient-${index + 1}`,
+      recipe_id: recipe.id,
+      ingredient_id: null,
+      sort_order: ingredient.sort_order || (index + 1) * 10,
+      group_name: null,
+      amount: 0,
+      unit: "",
+      name: "",
+      prep_note: null,
+      is_optional: false,
+      substitution: null,
+      created_at: null,
+      ...ingredient
+    }));
+  }
+
+  if (Array.isArray(patch.replace_steps)) {
+    next.steps = patch.replace_steps.map((step, index) => ({
+      id: `research-${recipe.slug}-replace-step-${index + 1}`,
+      recipe_id: recipe.id,
+      step_number: step.step_number || index + 1,
+      title: "",
+      instruction: "",
+      timer_seconds: null,
+      timer_label: null,
+      tip: null,
+      image_url: null,
+      created_at: null,
+      ...step
+    }));
+  }
+
   if (Array.isArray(patch.update_ingredients)) {
     patch.update_ingredients.forEach((update) => {
       const index = next.ingredients.findIndex((ingredient) => {

@@ -284,7 +284,7 @@
         "id": "pdf-chat",
         "name": "AI Chat with PDF",
         "icon": "💬",
-        "desc": "Upload a PDF and ask questions. AI-powered docum...",
+        "desc": "Ask PDFs questions, summarize, search pages, cit...",
         "href": "/tools/pdf-chat/",
         "category": "document-pdf",
         "lang": "en",
@@ -325,6 +325,17 @@
         "estTraffic": 12000
       },
       {
+        "id": "pdf-translate",
+        "name": "PDF Translator",
+        "icon": "🌍",
+        "desc": "Translate PDFs with API, AI, local African-langu...",
+        "href": "/tools/pdf-translate/",
+        "category": "document-pdf",
+        "lang": "en",
+        "priority": 90,
+        "estTraffic": 10000
+      },
+      {
         "id": "pdf-password",
         "name": "PDF Password Protect",
         "icon": "🔒",
@@ -358,15 +369,15 @@
         "estTraffic": 10000
       },
       {
-        "id": "pdf-translate",
-        "name": "PDF Translator",
-        "icon": "🌍",
-        "desc": "Translate PDFs between 15+ African and global la...",
-        "href": "/tools/pdf-translate/",
+        "id": "pdf-compare",
+        "name": "PDF Compare Tool",
+        "icon": "⚖️",
+        "desc": "Compare PDFs locally with text diff, visual over...",
+        "href": "/tools/pdf-compare/",
         "category": "document-pdf",
         "lang": "en",
         "priority": 88,
-        "estTraffic": 10000
+        "estTraffic": 8000
       },
       {
         "id": "pdf-watermark",
@@ -389,17 +400,6 @@
         "lang": "en",
         "priority": 87,
         "estTraffic": 10000
-      },
-      {
-        "id": "pdf-compare",
-        "name": "PDF Compare Tool",
-        "icon": "⚖️",
-        "desc": "Compare two PDFs side-by-side. Text diff with hi...",
-        "href": "/tools/pdf-compare/",
-        "category": "document-pdf",
-        "lang": "en",
-        "priority": 86,
-        "estTraffic": 8000
       }
     ],
     "en::african": [
@@ -5192,7 +5192,7 @@
         "id": "pdf-chat",
         "name": "AI Chat with PDF",
         "icon": "💬",
-        "desc": "Upload a PDF and ask questions. AI-powered docum...",
+        "desc": "Ask PDFs questions, summarize, search pages, cit...",
         "href": "/tools/pdf-chat/",
         "category": "document-pdf",
         "lang": "en",

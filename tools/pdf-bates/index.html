@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Bates Stamping | Add Bates Numbers to PDF | AfroTools</title>
-<meta name="description" content="Add Bates numbers to PDFs for legal document management. Custom prefix, suffix, zero-padding, position, font size, and color. Client-side processing, instant download.">
+<title>PDF Bates Numbering | Batch Bates Stamp PDFs | AfroTools</title>
+<meta name="description" content="Batch Bates stamp PDFs with continuous numbering, page ranges, prefixes, suffixes, audit logs, ZIP export, and private client-side processing.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-bates/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Bates Stamping | AfroTools">
-<meta property="og:description" content="Add Bates numbers to PDFs for legal document management. Free, client-side, instant.">
+<meta property="og:title" content="PDF Bates Numbering | AfroTools">
+<meta property="og:description" content="Batch Bates stamp legal PDFs with continuous numbering, ranges, formatting, and audit-ready exports.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-bates/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -17,8 +17,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Bates Stamping | AfroTools">
-<meta name="twitter:description" content="Add Bates numbers to PDFs for legal and compliance use.">
+<meta name="twitter:title" content="PDF Bates Numbering | AfroTools">
+<meta name="twitter:description" content="Add continuous Bates stamps to one or many PDFs privately in your browser.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,11 +26,11 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=d667fbec" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
-<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=1.17.1"></script>
+<script src="/assets/vendor/jszip/jszip.min.js?v=3.10.1"></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -230,6 +230,104 @@
     background: rgba(0, 113, 227, 0.1);
   }
 
+  .file-queue {
+    margin-top: 14px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .file-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 11px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .file-name {
+    font-size: 0.83rem;
+    font-weight: 800;
+    color: #111827;
+    overflow-wrap: anywhere;
+  }
+
+  .file-meta {
+    margin-top: 3px;
+    font-size: 0.72rem;
+    color: #64748b;
+  }
+
+  .file-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  .mini-btn,
+  .secondary-btn {
+    border: 1px solid #dbe4f0;
+    background: #fff;
+    color: #1f2937;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    transition: all 0.15s;
+  }
+
+  .mini-btn {
+    min-width: 34px;
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+  }
+
+  .mini-btn:hover,
+  .secondary-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .secondary-btn {
+    padding: 10px 12px;
+    font-size: 0.72rem;
+  }
+
+  .batch-stats {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .stat-pill {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .stat-k {
+    display: block;
+    font-size: 0.66rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .stat-v {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #111827;
+  }
+
   .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -240,6 +338,48 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
+  }
+
+  .section-label {
+    margin: 20px 0 10px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .section-label:first-child {
+    margin-top: 0;
+  }
+
+  .help-text {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  .check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 10px 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .check-row input {
+    margin-top: 2px;
+    accent-color: var(--afro-green);
+  }
+
+  .preset-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
   }
 
   /* Position grid */
@@ -307,6 +447,43 @@
     margin-top: 6px;
   }
 
+  .page-preview {
+    margin-top: 14px;
+    height: 150px;
+    border-radius: 8px;
+    background: linear-gradient(#fff, #f8fafc);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-preview::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    top: 18px;
+    height: 9px;
+    background: #e2e8f0;
+    box-shadow: 0 20px 0 #e2e8f0, 0 40px 0 #e2e8f0, 0 60px 0 #e2e8f0;
+  }
+
+  .page-stamp {
+    position: absolute;
+    min-width: 76px;
+    max-width: 82%;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.82);
+    color: #111827;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-align: center;
+    overflow-wrap: anywhere;
+    transform-origin: center;
+  }
+
   .calc-btn {
     width: 100%;
     padding: 14px;
@@ -355,6 +532,7 @@
     color: #1e293b;
     margin-bottom: 12px;
     font-weight: 600;
+    line-height: 1.55;
   }
 
   .act-btn {
@@ -378,6 +556,34 @@
 
   .act-btn:hover {
     background: rgba(0, 113, 227, 0.2);
+  }
+
+  .action-stack {
+    display: grid;
+    gap: 8px;
+  }
+
+  .manifest-box {
+    margin-top: 12px;
+    max-height: 220px;
+    overflow: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.7rem;
+    line-height: 1.55;
+    color: #334155;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .result-note {
+    margin-top: 10px;
+    font-size: 0.72rem;
+    color: #64748b;
+    line-height: 1.45;
   }
 
   /* Sidebar */
@@ -441,6 +647,10 @@
     color: var(--afro-green);
     min-width: 36px;
     text-align: right;
+  }
+
+  .slider-wide {
+    min-width: 58px;
   }
 
   /* SEO / FAQs */
@@ -520,11 +730,23 @@
     .grid-3 {
       grid-template-columns: 1fr;
     }
+
+    .batch-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .file-row {
+      grid-template-columns: 1fr;
+    }
+
+    .file-actions {
+      justify-content: flex-start;
+    }
   }
 </style>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"https://afrotools.com/","description":"https://afrotools.com/","url":"https://afrotools.com/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"https://afrotools.com/","url":"https://afrotools.com/","description":"https://afrotools.com/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Bates Numbering","description":"Batch Bates stamp PDFs with continuous numbering, prefixes, suffixes, page ranges, formatting controls, audit logs, and private browser-side processing.","url":"https://afrotools.com/tools/pdf-bates/","inLanguage":"en","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser with File API support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Bates Numbering - AfroTools","url":"https://afrotools.com/tools/pdf-bates/","description":"Private online Bates numbering for legal and compliance PDF batches, with continuous ranges, custom stamp templates, and audit-ready downloads.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-bates/" />
@@ -552,13 +774,13 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "PDF Bates Stamping",
+      "name": "PDF Bates Numbering",
       "item": "https://afrotools.com/tools/pdf-bates/"
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -568,12 +790,12 @@
     <div class="breadcrumb">
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
-    <h1>PDF Bates <em>Stamping</em></h1>
-    <p class="hero-sub">Add sequential Bates numbers to every page of your PDF. Customise prefix, suffix, padding, position, and styling for legal compliance.</p>
+    <h1>PDF Bates <em>Numbering</em></h1>
+    <p class="hero-sub">Stamp one PDF or a whole evidence set with continuous Bates numbers, page ranges, formatting, and an audit log without uploading files.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Legal Documents</span>
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Fast</span>
+      <span class="badge b-green">Batch files</span>
+      <span class="badge b-green">Continuous ranges</span>
+      <span class="badge b-green">Private browser processing</span>
     </div>
   </div>
 </div>
@@ -584,14 +806,23 @@
       <!-- File Upload -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Upload PDF</span>
+          <span class="card-title">1. Upload and order files</span>
         </div>
         <div class="card-body">
           <div>
-            <input type="file" id="pdfInput" accept=".pdf" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+            <input type="file" id="pdfInput" accept=".pdf,application/pdf" multiple style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
             <label for="pdfInput" class="file-input-label" id="dropLabel">
-              📁 Click or drag & drop a PDF
+              Click or drag PDF files here
             </label>
+          </div>
+          <div class="file-queue" id="fileQueue" aria-live="polite"></div>
+          <div class="batch-stats" id="batchStats">
+            <div class="stat-pill"><span class="stat-k">Files</span><span class="stat-v" id="statFiles">0</span></div>
+            <div class="stat-pill"><span class="stat-k">Pages</span><span class="stat-v" id="statPages">0</span></div>
+            <div class="stat-pill"><span class="stat-k">To stamp</span><span class="stat-v" id="statStamped">0</span></div>
+          </div>
+          <div class="preset-row">
+            <button class="secondary-btn" id="clearFilesBtn" type="button">Clear files</button>
           </div>
         </div>
       </div>
@@ -599,31 +830,72 @@
       <!-- Bates Settings -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Bates Number Settings</span>
+          <span class="card-title">2. Configure Bates stamp</span>
         </div>
         <div class="card-body">
+          <div class="section-label">Number format</div>
           <div class="grid-2">
             <div class="field">
-              <label class="f-label-text">Prefix</label>
-              <input type="text" class="f-input" id="prefix" placeholder="e.g. ABC-" value="">
+              <label class="f-label-text" for="prefix">Prefix</label>
+              <input type="text" class="f-input" id="prefix" placeholder="CASE-" value="CASE-">
             </div>
             <div class="field">
-              <label class="f-label-text">Suffix</label>
-              <input type="text" class="f-input" id="suffix" placeholder="e.g. -2024" value="">
+              <label class="f-label-text" for="suffix">Suffix</label>
+              <input type="text" class="f-input" id="suffix" placeholder="-CONF" value="">
             </div>
           </div>
 
-          <div class="grid-2">
+          <div class="grid-3">
             <div class="field">
-              <label class="f-label-text">Starting Number</label>
+              <label class="f-label-text" for="startNumber">Start number</label>
               <input type="number" class="f-input" id="startNumber" min="0" value="1">
             </div>
             <div class="field">
-              <label class="f-label-text">Zero-Padding Digits</label>
-              <input type="number" class="f-input" id="zeroPad" min="1" max="12" value="6">
+              <label class="f-label-text" for="zeroPad">Digits</label>
+              <input type="number" class="f-input" id="zeroPad" min="1" max="15" value="6">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="numberStep">Increment</label>
+              <input type="number" class="f-input" id="numberStep" min="1" max="100" value="1">
             </div>
           </div>
 
+          <div class="field">
+            <label class="f-label-text" for="template">Stamp template</label>
+            <input type="text" class="f-input" id="template" value="{prefix}{num}{suffix}" spellcheck="false">
+            <div class="help-text">Tokens: {prefix}, {num}, {suffix}, {file}, {page}, {total}, {date}</div>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text" for="secondLine">Second line</label>
+            <input type="text" class="f-input" id="secondLine" placeholder="Optional: Confidential, Exhibit A, Production 1">
+          </div>
+
+          <div class="section-label">Pages</div>
+          <div class="grid-3">
+            <div class="field">
+              <label class="f-label-text" for="pageMode">Apply to</label>
+              <select class="f-input" id="pageMode">
+                <option value="all">All pages</option>
+                <option value="range">Custom ranges</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="pageRanges">Ranges</label>
+              <input type="text" class="f-input" id="pageRanges" placeholder="1-3, 6, 9-12">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="excludePages">Exclude pages</label>
+              <input type="text" class="f-input" id="excludePages" placeholder="1, 4-5">
+            </div>
+          </div>
+
+          <label class="check-row">
+            <input type="checkbox" id="skipFirstPage">
+            <span>Skip first page of each PDF, useful when cover pages should stay unstamped.</span>
+          </label>
+
+          <div class="section-label">Placement and style</div>
           <div class="field">
             <label class="f-label-text">Position</label>
             <div class="pos-grid">
@@ -636,11 +908,26 @@
             </div>
           </div>
 
+          <div class="grid-2">
+            <div class="field">
+              <label class="f-label-text" for="fontFamily">Font</label>
+              <select class="f-input" id="fontFamily">
+                <option value="courier">Courier</option>
+                <option value="helvetica">Helvetica</option>
+                <option value="times">Times</option>
+              </select>
+            </div>
+            <label class="check-row">
+              <input type="checkbox" id="fontBold">
+              <span>Use bold stamp text</span>
+            </label>
+          </div>
+
           <div class="field">
             <label class="f-label-text">Font Size</label>
             <div class="slider-row">
-              <input type="range" id="fontSize" min="8" max="24" value="10">
-              <span class="slider-val" id="fontSizeVal">10pt</span>
+              <input type="range" id="fontSize" min="7" max="30" value="10">
+              <span class="slider-val slider-wide" id="fontSizeVal">10pt</span>
             </div>
           </div>
 
@@ -653,19 +940,56 @@
               </div>
             </div>
             <div class="field">
-              <label class="f-label-text">Margin (mm)</label>
+              <label class="f-label-text" for="margin">Margin (mm)</label>
               <input type="number" class="f-input" id="margin" min="5" max="40" value="15">
             </div>
           </div>
 
-          <!-- Live Preview -->
-          <div class="preview-box" id="previewBox">
-            <div class="preview-label">Format Preview</div>
-            <div class="preview-text" id="previewText">000001</div>
-            <div class="preview-sequence" id="previewSeq">000001 → 000002 → 000003 → ...</div>
+          <div class="grid-3">
+            <div class="field">
+              <label class="f-label-text" for="offsetX">X offset (mm)</label>
+              <input type="number" class="f-input" id="offsetX" min="-80" max="80" value="0">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="offsetY">Y offset (mm)</label>
+              <input type="number" class="f-input" id="offsetY" min="-80" max="80" value="0">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="rotation">Rotation</label>
+              <div class="slider-row">
+                <input type="range" id="rotation" min="-90" max="90" value="0">
+                <span class="slider-val slider-wide" id="rotationVal">0deg</span>
+              </div>
+            </div>
           </div>
 
-          <button class="calc-btn" id="stampBtn" disabled>Add Bates Numbers</button>
+          <div class="field">
+            <label class="f-label-text">Opacity</label>
+            <div class="slider-row">
+              <input type="range" id="opacity" min="20" max="100" value="90">
+              <span class="slider-val slider-wide" id="opacityVal">90%</span>
+            </div>
+          </div>
+
+          <label class="check-row">
+            <input type="checkbox" id="backgroundPatch" checked>
+            <span>Add a white backing patch behind the stamp for scanned or busy pages.</span>
+          </label>
+
+          <!-- Live Preview -->
+          <div class="preview-box" id="previewBox">
+            <div class="preview-label">Live sequence preview</div>
+            <div class="preview-text" id="previewText">000001</div>
+            <div class="preview-sequence" id="previewSeq">000001 -> 000002 -> 000003 -> ...</div>
+            <div class="page-preview" aria-hidden="true"><div class="page-stamp" id="pageStamp">000001</div></div>
+          </div>
+
+          <div class="preset-row">
+            <button class="secondary-btn" id="savePresetBtn" type="button">Save preset</button>
+            <button class="secondary-btn" id="loadPresetBtn" type="button">Load preset</button>
+          </div>
+
+          <button class="calc-btn" id="stampBtn" disabled>Stamp Bates numbers</button>
         </div>
       </div>
     </div>
@@ -674,34 +998,39 @@
     <div class="sidebar">
       <div class="result-card" id="resultCard">
         <div class="card-head">
-          <span class="card-title">Result</span>
+          <span class="card-title">Result and audit log</span>
         </div>
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
           <div id="actionRow" style="display:none;">
-            <button class="act-btn" id="downloadBtn">📥 Download Stamped PDF</button>
+            <div class="action-stack">
+              <button class="act-btn" id="downloadBtn">Download result</button>
+              <button class="act-btn" id="downloadZipBtn">Download ZIP batch</button>
+              <button class="act-btn" id="manifestBtn">Download audit CSV</button>
+            </div>
           </div>
+          <div class="manifest-box" id="auditManifest">Upload PDFs to see the planned Bates range.</div>
+          <div class="result-note">Files are stamped locally in your browser. The audit CSV records file order, page, stamp value, and Bates range.</div>
         </div>
       </div>
 
       <div class="info-card">
-        <div class="info-title">What is Bates Stamping?</div>
+        <div class="info-title">What is Bates numbering?</div>
         <div class="info-text">
-          Bates stamping (or Bates numbering) assigns a unique sequential identifier to every page in a document set. It is widely used in legal proceedings, regulatory filings, and corporate record-keeping for easy reference and retrieval.
+          Bates numbering assigns a unique sequential identifier to each page in a legal, medical, compliance, or business document set so teams can cite pages consistently across a production.
         </div>
       </div>
 
       <div class="info-card">
-        <div class="info-title">Features</div>
+        <div class="info-title">Modernized features</div>
         <div class="info-text">
           <ul>
-            <li>Custom prefix and suffix</li>
-            <li>Configurable zero-padding</li>
-            <li>6 position options</li>
-            <li>Adjustable font size (8-24pt)</li>
-            <li>Custom stamp colour</li>
-            <li>Courier font for legal readability</li>
-            <li>Client-side processing only</li>
+            <li>Multiple PDFs with continuous numbering</li>
+            <li>Page ranges, exclusions, and skip-cover option</li>
+            <li>Custom template tokens and second-line labels</li>
+            <li>Font, opacity, rotation, offsets, and backing patch</li>
+            <li>ZIP batch export plus audit manifest</li>
+            <li>Client-side processing with local PDF libraries</li>
           </ul>
         </div>
       </div>
@@ -718,7 +1047,7 @@
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The PDF Bates Numbering tool adds sequential identification numbers to every page of your PDF documents, a standard practice in legal discovery, litigation support, and regulatory compliance. Upload your PDF, configure the numbering format including prefix, suffix, starting number, and position, and the tool stamps each page accordingly. It handles multi-page documents efficiently and lets you download the stamped PDF immediately. Lawyers, paralegals, compliance officers, and anyone involved in document-heavy legal proceedings will find this tool essential for organising evidence, referencing specific pages during depositions, and maintaining proper document control.</p>
+    <p>The PDF Bates Numbering tool adds sequential identifiers to one PDF or a full document batch. It supports continuous numbering across files, custom prefix and suffix formats, file/page/date tokens, page ranges, exclusions, reusable presets, and a downloadable audit CSV. It is designed for legal discovery, court bundles, compliance files, medical records, internal investigations, procurement files, and any workflow where every page needs a stable reference without sending sensitive documents to a server.</p>
   </div>
 </section>
 <!-- FAQs -->
@@ -735,12 +1064,12 @@
 
   <div class="faq-item">
     <button class="faq-q">Is my PDF uploaded to a server?</button>
-    <div class="faq-a">No. The entire process runs locally in your browser using JavaScript (pdf-lib). Your file never leaves your device and no data is sent to any server. This ensures complete privacy and confidentiality for sensitive legal documents.</div>
+    <div class="faq-a">No. The entire Bates stamping process runs locally in your browser. Your PDFs are not uploaded to AfroTools, which is important for legal, medical, finance, and HR records.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q">What format should I use for the prefix and suffix?</button>
-    <div class="faq-a">Common formats include a case identifier as the prefix (e.g. "CASE-001-") and a year or document type as the suffix (e.g. "-2024"). The prefix appears before the number and the suffix after. Both are optional.</div>
+    <div class="faq-a">Common formats include a matter or case prefix such as "CASE-" and a suffix such as "-CONF". You can also use the template field with tokens like {file}, {page}, {total}, and {date} for document-aware stamps.</div>
   </div>
 
   <div class="faq-item">
@@ -750,12 +1079,12 @@
 
   <div class="faq-item">
     <button class="faq-q">Can I stamp multiple PDFs with continuous numbering?</button>
-    <div class="faq-a">Currently, this tool stamps one PDF at a time. To maintain continuous numbering across multiple documents, note the last number used and set the starting number for the next document accordingly. For example, if your first 10-page document ends at 000010, set the starting number to 11 for the next document.</div>
+    <div class="faq-a">Yes. Upload multiple PDFs, arrange them in the queue, and the tool will continue the Bates sequence across the whole batch. The output ZIP keeps one stamped PDF per source file and includes an audit CSV.</div>
   </div>
 
   <div class="faq-item">
-    <button class="faq-q">Why is Courier font used?</button>
-    <div class="faq-a">Courier is a monospaced font where every character has the same width. This is the standard for Bates stamps in legal practice because it ensures consistent alignment and easy readability when scanning through pages. All digits occupy equal space, making numbers easy to compare.</div>
+    <button class="faq-q">Can I stamp only specific pages?</button>
+    <div class="faq-a">Yes. Choose custom ranges such as "1-3, 6, 9-12", add exclusions, or skip the first page of each PDF. Numbering advances only on pages that actually receive a Bates stamp.</div>
   </div>
 </div>
 
@@ -766,8 +1095,9 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
+<script src="/assets/js/pages/pdf-bates.js?v=2140948a"></script>
 
-<script>
+<script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
 

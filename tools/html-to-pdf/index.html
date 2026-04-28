@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTML to PDF Converter — Free Online | AfroTools</title>
-<meta name="description" content="Convert HTML code or rich text content to downloadable PDF documents. Client-side conversion with page size, orientation, and margin options. No upload required.">
+<title>HTML to PDF Converter | Private Browser PDF Maker | AfroTools</title>
+<meta name="description" content="Convert HTML or rich text to PDF in your browser with templates, custom CSS, headers, footers, page numbers, quality controls, margins, and live preview.">
 <link rel="canonical" href="https://afrotools.com/tools/html-to-pdf/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="HTML to PDF Converter | AfroTools">
-<meta property="og:description" content="Paste HTML or use the rich text editor to create PDF documents instantly. Free, client-side, no upload.">
+<meta property="og:description" content="Paste HTML or write rich text, preview it, and create a private PDF with page layout, custom CSS, headers, footers, and page numbers.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/html-to-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HTML to PDF Converter | AfroTools">
-<meta name="twitter:description" content="Convert HTML or rich text to PDF. Free, instant, client-side.">
+<meta name="twitter:description" content="Convert HTML or rich text to PDF with custom layout, CSS, headers, footers, and private browser processing.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,9 +26,11 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=d667fbec" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/vendor/html2canvas/html2canvas.min.js?v=1.4.1"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=2.5.1"></script>
 <style>
   :root {
     --afro-accent: var(--color-primary);
@@ -221,6 +223,42 @@
     box-sizing: border-box;
   }
 
+  .sample-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .sample-btn,
+  .mini-action {
+    border: 1.5px solid #BFDBFE;
+    background: #fff;
+    color: #0f172a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    transition: all 0.15s;
+  }
+
+  .sample-btn {
+    padding: 9px 12px;
+    font-size: 0.74rem;
+  }
+
+  .mini-action {
+    padding: 8px 10px;
+    font-size: 0.72rem;
+  }
+
+  .sample-btn:hover,
+  .mini-action:hover {
+    border-color: var(--afro-accent);
+    color: var(--afro-accent);
+    background: #F5F9FF;
+  }
+
   #htmlInput:focus {
     border-color: var(--afro-accent);
     box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
@@ -250,7 +288,9 @@
     margin-bottom: 6px;
   }
 
-  .option-group select {
+  .option-group select,
+  .option-group input,
+  .option-group textarea {
     width: 100%;
     padding: 9px 12px;
     border: 1.5px solid #BFDBFE;
@@ -264,8 +304,65 @@
     outline: none;
   }
 
-  .option-group select:focus {
+  .option-group input,
+  .option-group textarea {
+    cursor: text;
+  }
+
+  .option-group textarea {
+    min-height: 110px;
+    resize: vertical;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    line-height: 1.5;
+  }
+
+  .option-group select:focus,
+  .option-group input:focus,
+  .option-group textarea:focus {
     border-color: var(--afro-accent);
+    background: #fff;
+  }
+
+  .advanced-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 16px 0 18px;
+  }
+
+  .wide-field {
+    grid-column: 1 / -1;
+  }
+
+  .check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .check-row input {
+    margin-top: 2px;
+    accent-color: var(--afro-accent);
+  }
+
+  .hint-line,
+  .doc-stats {
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  .doc-stats {
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    background: #F8FBFF;
+    font-weight: 700;
   }
 
   /* Rich text editor */
@@ -385,6 +482,26 @@
     border: 1.5px solid #BFDBFE;
     border-radius: 6px;
     background: #fff;
+  }
+
+  .html-preview-frame {
+    min-height: 320px;
+  }
+
+  .result-metrics {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    background: #F8FBFF;
+    font-size: 0.78rem;
+    color: #334155;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .result-metrics.visible {
+    display: block;
   }
 
   .download-row {
@@ -535,10 +652,13 @@
     .download-row {
       flex-direction: column;
     }
+    .advanced-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTML to PDF Converter","description":"Convert HTML code or rich text content to downloadable PDF documents. Client-side conversion with page size, orientation, and margin options.","url":"https://afrotools.com/tools/html-to-pdf/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"HTML to PDF Converter","url":"https://afrotools.com/tools/html-to-pdf/","description":"Convert HTML code or rich text content to downloadable PDF documents. Client-side conversion with page size, orientation, and margin options.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTML to PDF Converter","description":"Convert HTML or rich text to PDF in your browser with templates, custom CSS, headers, footers, page numbers, quality controls, margins, and live preview.","url":"https://afrotools.com/tools/html-to-pdf/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser with canvas support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"HTML to PDF Converter","url":"https://afrotools.com/tools/html-to-pdf/","description":"Private browser-based HTML to PDF converter with rich text editing, templates, live preview, custom CSS, headers, footers, and page numbering.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -549,7 +669,7 @@
       "name": "Is my HTML content uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All conversion happens entirely in your browser using html2canvas and jsPDF. Your HTML never leaves your device. Nothing is sent to any server."
+        "text": "No. All conversion happens in your browser using local html2canvas and jsPDF assets. Your HTML never leaves your device."
       }
     },
     {
@@ -557,7 +677,7 @@
       "name": "What page sizes and orientations are supported?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The converter supports A4 and US Letter page sizes in both Portrait and Landscape orientations. You can also choose between Normal, Narrow, and Wide margin settings."
+        "text": "The converter supports A4, A3, Letter, and Legal page sizes in portrait or landscape, plus custom margin values."
       }
     },
     {
@@ -573,7 +693,7 @@
       "name": "Does the converter handle multi-page content?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Long content is automatically split across multiple PDF pages. The converter calculates page break positions based on your chosen page size and margins."
+        "text": "Yes. Long content is split across multiple pages using the selected page size, margins, and render scale. You can also add headers, footers, page numbers, and custom CSS."
       }
     },
     {
@@ -581,7 +701,7 @@
       "name": "Are CSS styles preserved in the PDF?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The converter uses html2canvas to render your HTML with styles into a canvas image, which is then placed into the PDF. Inline styles, classes, and most CSS properties are preserved."
+        "text": "Inline styles and custom CSS are rendered through the browser canvas pipeline. External images may need CORS access to appear in the PDF."
       }
     }
   ]
@@ -620,7 +740,7 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-04-28">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -631,11 +751,11 @@
       <a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>HTML to PDF</span>
     </div>
     <h1>HTML to <em>PDF</em></h1>
-    <p class="hero-sub">Convert HTML code or rich text content into downloadable PDF documents. Choose page size, orientation, and margins. Everything runs in your browser.</p>
+    <p class="hero-sub">Convert HTML code or rich text into a polished PDF with templates, custom CSS, headers, footers, page numbers, quality controls, and private browser processing.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Free</span>
-      <span class="badge b-green">Instant</span>
+      <span class="badge b-green">Local libraries</span>
+      <span class="badge b-green">Headers and footers</span>
+      <span class="badge b-green">Live preview</span>
     </div>
   </div>
 </div>
@@ -657,6 +777,13 @@
       <div class="tool-card">
         <div class="card-head">HTML Input</div>
         <div class="card-body">
+          <div class="sample-strip">
+            <button class="sample-btn" type="button" data-template="invoice">Invoice</button>
+            <button class="sample-btn" type="button" data-template="report">Report</button>
+            <button class="sample-btn" type="button" data-template="letter">Letter</button>
+            <button class="sample-btn" type="button" data-template="certificate">Certificate</button>
+            <button class="mini-action" id="previewHtmlBtn" type="button">Preview HTML</button>
+          </div>
           <textarea id="htmlInput" placeholder="<h1>Hello World</h1>&#10;<p>Paste your HTML code here...</p>&#10;&#10;<ul>&#10;  <li>Supports inline styles</li>&#10;  <li>Tables, images, lists</li>&#10;  <li>Multi-page content</li>&#10;</ul>"></textarea>
 
           <div class="options-row">
@@ -664,7 +791,9 @@
               <label>Page Size</label>
               <select id="pageSize">
                 <option value="a4" selected>A4 (210 x 297 mm)</option>
+                <option value="a3">A3 (297 x 420 mm)</option>
                 <option value="letter">Letter (8.5 x 11 in)</option>
+                <option value="legal">Legal (8.5 x 14 in)</option>
               </select>
             </div>
             <div class="option-group">
@@ -680,9 +809,65 @@
                 <option value="normal" selected>Normal (20mm)</option>
                 <option value="narrow">Narrow (10mm)</option>
                 <option value="wide">Wide (30mm)</option>
+                <option value="none">No margin</option>
+                <option value="custom">Custom</option>
               </select>
             </div>
           </div>
+
+          <div class="advanced-grid">
+            <div class="option-group">
+              <label for="fileName">File name</label>
+              <input id="fileName" type="text" value="afrotools-document.pdf">
+            </div>
+            <div class="option-group">
+              <label for="docTitle">PDF title</label>
+              <input id="docTitle" type="text" value="AfroTools HTML PDF">
+            </div>
+            <div class="option-group">
+              <label for="customMargin">Custom margin (mm)</label>
+              <input id="customMargin" type="number" min="0" max="60" value="16">
+            </div>
+            <div class="option-group">
+              <label for="renderScale">Render scale</label>
+              <select id="renderScale">
+                <option value="1.5">Fast</option>
+                <option value="2" selected>Balanced</option>
+                <option value="2.75">High quality</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label for="imageQuality">Image quality</label>
+              <select id="imageQuality">
+                <option value="0.82">Small file</option>
+                <option value="0.92" selected>Balanced</option>
+                <option value="0.98">High quality</option>
+              </select>
+            </div>
+            <div class="option-group">
+              <label for="headerText">Header</label>
+              <input id="headerText" type="text" placeholder="Optional page header">
+            </div>
+            <div class="option-group">
+              <label for="footerText">Footer</label>
+              <input id="footerText" type="text" placeholder="Optional page footer">
+            </div>
+            <div class="option-group wide-field">
+              <label for="customCss">Custom CSS</label>
+              <textarea id="customCss" spellcheck="false" placeholder="@page { size: A4; }&#10;h1 { color: #0071e3; }&#10;.page-break { break-before: page; }"></textarea>
+              <div class="hint-line">External images may need CORS. Scripts are removed before rendering for safer local conversion.</div>
+            </div>
+            <label class="check-row">
+              <input id="pageNumbers" type="checkbox" checked>
+              <span>Add page numbers</span>
+            </label>
+            <label class="check-row">
+              <input id="includeDate" type="checkbox">
+              <span>Add generated date</span>
+            </label>
+          </div>
+
+          <div class="doc-stats" id="docStats">Ready. Paste HTML or start with a template.</div>
 
           <button class="convert-btn" id="convertHtmlBtn">
             <span class="spinner" id="spinnerHtml"></span>
@@ -726,7 +911,9 @@
           <label>Page Size</label>
           <select id="pageSizeRte">
             <option value="a4" selected>A4 (210 x 297 mm)</option>
+            <option value="a3">A3 (297 x 420 mm)</option>
             <option value="letter">Letter (8.5 x 11 in)</option>
+            <option value="legal">Legal (8.5 x 14 in)</option>
           </select>
         </div>
         <div class="option-group">
@@ -742,6 +929,8 @@
             <option value="normal" selected>Normal (20mm)</option>
             <option value="narrow">Narrow (10mm)</option>
             <option value="wide">Wide (30mm)</option>
+            <option value="none">No margin</option>
+            <option value="custom">Use custom margin above</option>
           </select>
         </div>
       </div>
@@ -755,11 +944,19 @@
     <!-- Preview + Download -->
     <div id="previewSection" class="preview-section">
       <div class="tool-card" style="margin-top:24px">
+        <div class="card-head">HTML Preview</div>
+        <div class="card-body">
+          <iframe id="htmlPreview" class="preview-frame html-preview-frame" title="HTML Preview"></iframe>
+        </div>
+      </div>
+      <div class="tool-card" style="margin-top:24px">
         <div class="card-head">PDF Preview</div>
         <div class="card-body">
           <iframe id="pdfPreview" class="preview-frame" title="PDF Preview"></iframe>
+          <div class="result-metrics" id="resultMetrics"></div>
           <div class="download-row">
             <button class="dl-btn" id="downloadBtn">Download PDF</button>
+            <button class="dl-btn secondary" id="openPreviewBtn">Open Preview</button>
             <button class="dl-btn secondary" id="resetBtn">Convert Another</button>
           </div>
         </div>
@@ -775,8 +972,8 @@
 <!-- SEO Section -->
 <section class="seo-section">
   <h2>Convert HTML to PDF Online</h2>
-  <p>The AfroTools HTML to PDF Converter lets you transform HTML code or rich text content into professional PDF documents. Paste raw HTML with inline styles, tables, images, and lists, or use the built-in rich text editor with a formatting toolbar. Choose your page size (A4 or Letter), orientation (Portrait or Landscape), and margin settings before converting.</p>
-  <p>Everything runs client-side in your browser using html2canvas and jsPDF. Your content never leaves your device, making this tool suitable for confidential documents, reports, and any content you want to keep private.</p>
+  <p>The AfroTools HTML to PDF Converter turns raw HTML or rich text into polished PDF documents with browser-local rendering. Use the templates for invoices, reports, letters, and certificates, or paste your own HTML with inline styles, tables, lists, and images. Choose page size, orientation, margins, render quality, custom CSS, headers, footers, page numbers, and generated dates before exporting.</p>
+  <p>Everything runs client-side using local html2canvas and jsPDF assets. Your content never leaves your device, making this tool suitable for confidential invoices, contracts, reports, receipts, school letters, and internal documents. For pixel-perfect web capture of live URLs, use a server-side renderer; for private pasted HTML and rich text, this local tool gives you speed, privacy, and control.</p>
 </section>
 
 <!-- FAQ Section -->
@@ -791,14 +988,14 @@
         Is my HTML content uploaded to a server?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">No. All conversion happens entirely in your browser using html2canvas and jsPDF. Your HTML never leaves your device. Nothing is sent to any server.</div>
+      <div class="faq-body">No. All conversion happens in your browser using local html2canvas and jsPDF files. Your HTML never leaves your device.</div>
     </details>
     <details>
       <summary>
         What page sizes and orientations are supported?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">The converter supports A4 and US Letter page sizes in both Portrait and Landscape orientations. You can also choose between Normal (20mm), Narrow (10mm), and Wide (30mm) margin settings.</div>
+      <div class="faq-body">The converter supports A4, A3, Letter, and Legal page sizes in portrait or landscape. You can choose normal, narrow, wide, no-margin, or custom margin settings.</div>
     </details>
     <details>
       <summary>
@@ -812,14 +1009,14 @@
         Does the converter handle multi-page content?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Yes. Long content is automatically split across multiple PDF pages. The converter calculates page break positions based on your chosen page size and margins.</div>
+      <div class="faq-body">Yes. Long content is split across multiple PDF pages based on your chosen page size, margins, and render scale. Headers, footers, page numbers, and dates are applied to every page.</div>
     </details>
     <details>
       <summary>
         Are CSS styles preserved in the PDF?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Yes. The converter uses html2canvas to render your HTML with styles into a canvas image, which is then placed into the PDF. Inline styles, classes, and most CSS properties are preserved.</div>
+      <div class="faq-body">Inline styles and the custom CSS field are rendered into the PDF. External images may require CORS access, so embedded or same-origin images are the most reliable.</div>
     </details>
   </div>
 </section>
@@ -828,7 +1025,8 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
-<script>
+<script src="/assets/js/pages/html-to-pdf.js?v=b20535a2"></script>
+<script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
 
@@ -848,8 +1046,8 @@
 
   async function ensureLibs() {
     await Promise.all([
-      loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'),
-      loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js')
+      loadScript('/assets/vendor/html2canvas/html2canvas.min.js?v=1.4.1'),
+      loadScript('/assets/vendor/jspdf/jspdf.umd.min.js?v=2.5.1')
     ]);
     libsLoaded.html2canvas = true;
     libsLoaded.jspdf = true;
