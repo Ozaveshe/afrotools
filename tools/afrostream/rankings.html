@@ -33,7 +33,7 @@
 <link rel="stylesheet" href="style.css?v=2fc66542">
 
 <!-- Components -->
-<script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script>
+<script src="/assets/js/components/navbar.js?v=9f5a30d7" defer></script>
 <script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
 
 <!-- JSON-LD -->
@@ -111,7 +111,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 }
 .as-rankings-title{
   font-family:var(--as-font-heading);font-size:clamp(1.75rem,4vw,3rem);
-  font-weight:400;margin:0 0 12px;line-height:1.15;color:#1e293b;
+  font-weight:760;margin:0 0 12px;line-height:1.15;color:#0f172a;-webkit-text-fill-color:#0f172a;
 }
 .as-rankings-subtitle{
   color:#64748b;font-size:1rem;max-width:540px;margin:0 auto 12px;line-height:1.6;
@@ -197,10 +197,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   transform:translateY(-4px);
   box-shadow:0 8px 32px var(--as-primary-glow);
 }
-.as-podium-gold{border-color:rgba(234,179,8,.35);order:2}
+.as-podium-gold{border-color:rgba(234,179,8,.35);order:1}
 .as-podium-gold:hover{box-shadow:0 8px 32px rgba(234,179,8,.15)}
 .as-podium-gold .as-podium-avatar{border-color:var(--as-gold)}
-.as-podium-silver{border-color:rgba(148,163,184,.35);order:1}
+.as-podium-silver{border-color:rgba(148,163,184,.35);order:2}
 .as-podium-silver:hover{box-shadow:0 8px 32px rgba(148,163,184,.15)}
 .as-podium-silver .as-podium-avatar{border-color:var(--as-silver)}
 .as-podium-bronze{border-color:rgba(217,119,6,.35);order:3}
@@ -221,6 +221,48 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   font-size:1.5rem;font-weight:700;color:#fff;
   border:3px solid var(--as-border);margin-bottom:12px;
   background-size:cover;background-position:center;
+  text-shadow:0 2px 12px rgba(15,23,42,.42);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.36);
+}
+.as-podium-card.has-stream-media{align-items:stretch;padding-top:14px}
+.as-podium-card.has-stream-media .as-podium-avatar{align-self:center}
+.as-stream-media{
+  position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
+  border-radius:16px;margin-bottom:16px;background:#eaf1ff;
+  border:1px solid rgba(30,64,175,.14);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);
+}
+.as-stream-media > img,.as-stream-image{
+  width:100%;height:100%;display:block;object-fit:cover;
+  transition:transform .25s ease,filter .25s ease;
+}
+.as-podium-card:hover .as-stream-media > img{transform:scale(1.035);filter:saturate(1.04)}
+.as-stream-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(15,23,42,0) 36%,rgba(15,23,42,.68));
+  pointer-events:none;
+}
+.as-stream-badge,.as-stream-platform{
+  position:absolute;z-index:2;top:10px;display:inline-flex;align-items:center;
+  min-height:22px;padding:4px 8px;border-radius:999px;
+  font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;background:rgba(15,23,42,.74);backdrop-filter:blur(8px);
+}
+.as-stream-badge{left:10px}
+.as-stream-badge.is-live{background:#dc2626}
+.as-stream-badge.is-hidden{background:#0f172a}
+.as-stream-platform{right:10px}
+.as-stream-meta{
+  position:absolute;z-index:2;left:10px;right:10px;bottom:10px;
+  display:flex;align-items:center;gap:8px;color:#fff;text-align:left;
+}
+.as-stream-title{
+  min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:.76rem;font-weight:700;text-shadow:0 2px 10px rgba(15,23,42,.5);
+}
+.as-stream-viewers{
+  flex-shrink:0;font-family:var(--as-font-mono,monospace);font-size:.68rem;
+  font-weight:800;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.18);
 }
 .as-podium-name{font-weight:600;font-size:1rem;margin:0 0 4px;color:#1e293b}
 .as-podium-country{font-size:.8125rem;color:var(--as-muted);margin-bottom:8px}
@@ -271,8 +313,27 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   display:inline-flex;align-items:center;justify-content:center;
   font-size:.6875rem;font-weight:700;color:#fff;
   background-size:cover;background-position:center;
+  text-shadow:0 1px 6px rgba(15,23,42,.4);
   vertical-align:middle;
 }
+.as-live-thumb{
+  position:relative;display:inline-flex;width:58px;height:34px;min-width:58px;
+  overflow:hidden;border-radius:9px;background:#eaf1ff;border:1px solid rgba(30,64,175,.16);
+}
+.as-live-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.as-live-thumb::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(15,23,42,0),rgba(15,23,42,.28));
+  pointer-events:none;
+}
+.as-live-thumb-dot{
+  position:absolute;top:5px;left:5px;width:7px;height:7px;border-radius:50%;
+  background:#94a3b8;border:1px solid rgba(255,255,255,.8);z-index:2;
+}
+.as-live-thumb-dot.is-live{background:#22c55e}
+.as-live-thumb.is-policy-hidden{border-color:rgba(245,158,11,.34);background:#eef4ff}
+.as-live-thumb.is-policy-hidden .as-live-thumb-dot{background:#f59e0b}
+.as-creator-cell.has-stream-thumb span:last-child{max-width:220px;overflow:hidden;text-overflow:ellipsis}
 .as-creator-cell span{font-weight:600;vertical-align:middle;color:#1e293b}
 .as-score-badge{
   display:inline-block;padding:2px 10px;border-radius:var(--as-radius-pill);
@@ -329,16 +390,24 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   .as-status-panel{grid-template-columns:1fr}
   .as-subnav-search{display:none}
   .as-subnav-actions .as-btn{display:none}
-  .as-subnav-inner{gap:8px}
+  .as-subnav{overflow:hidden}
+  .as-subnav-inner{gap:8px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+  .as-subnav-inner::-webkit-scrollbar{display:none}
+  .as-subnav-links{min-width:0;flex:1;overflow-x:auto;scrollbar-width:none}
+  .as-subnav-links::-webkit-scrollbar{display:none}
   .as-podium-grid{grid-template-columns:1fr;gap:12px;max-width:340px}
   .as-podium-gold,.as-podium-silver,.as-podium-bronze{order:unset}
-  .as-filter-row-wrap{gap:10px}
+  .as-filter-row-wrap{display:grid;grid-template-columns:1fr;gap:12px;min-width:0}
+  .as-filter-group,.as-filter-group.as-filter-grow{width:100%;min-width:0}
+  .as-pills{max-width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .as-pills::-webkit-scrollbar{display:none}
+  .as-select,.as-input-filter{width:100%;max-width:100%}
   .as-rankings-hero{padding:36px 0 20px}
   .as-rankings-title{font-size:1.5rem}
 }
 </style>
 <link rel="stylesheet" href="/tools/afrostream/subnav.css?v=93a02af2">
-<script src="/tools/afrostream/subnav.js?v=96ce4795" defer></script>
+<script src="/tools/afrostream/subnav.js?v=20260501a" defer></script>
 </head>
 <body class="as-page">
 <afro-navbar></afro-navbar>
@@ -353,6 +422,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       <a href="/tools/afrostream/rankings?mode=streamers&amp;period=month" data-as-nav="streamers">Live Streamers</a>
       <a href="/tools/afrostream/news" data-as-nav="news">News</a>
       <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
+      <a href="/tools/afrostream/methodology/" data-as-nav="methodology">Methodology</a>
       <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
       <a href="/tools/afrostream/submit" data-as-nav="submit">Submit</a>
     </div>
@@ -375,7 +445,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       <h1 class="as-rankings-title">Creator Reach and Live Streamer Rankings</h1>
       <p class="as-rankings-subtitle">Two leaderboards, one directory: mega-creators ranked by cross-platform reach, and live streamers ranked by recent stream activity.</p>
       <p class="as-rankings-updated" id="lastUpdated"></p>
-      <p class="as-rankings-updated" style="max-width:720px;margin:8px auto 0">Creator Reach uses AfroScore across followers, views, growth, consistency, engagement, and platform presence. Live Streamers adds recent stream count, peak viewers, and live-platform focus.</p>
+      <p class="as-rankings-updated" style="max-width:720px;margin:8px auto 0">Creator Reach is follower-first with view footprint as context, while AfroScore remains the quality score. Live Streamers adds recent stream count, peak viewers, and live-platform focus.</p>
       <div class="as-status-panel" id="rankingStats" aria-label="Ranking data status"></div>
       <div class="as-data-note" id="dataNote" hidden></div>
     </div>
@@ -453,7 +523,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         <div class="as-filter-group">
           <label class="as-filter-label">Sort by</label>
           <select class="as-select" id="sortFilter">
-            <option value="score">Ranking Score</option>
+            <option value="score">Creator Reach</option>
             <option value="followers">Followers</option>
             <option value="gifts">Gift Revenue</option>
             <option value="peak">Total Views</option>
@@ -484,7 +554,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   <section class="as-table-section rv">
     <div class="as-container">
       <h2 id="rankingTitle" style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:600;color:#1e293b;margin-bottom:16px">Full Creator Reach Ranking</h2>
-      <p id="rankingDescription" style="color:#64748b;font-size:.85rem;margin-bottom:20px">Complete ranked list of African creators sorted by AfroScore. Click any row to view the full creator profile.</p>
+      <p id="rankingDescription" style="color:#64748b;font-size:.85rem;margin-bottom:20px">Complete ranked list of African creators sorted by reach-first ranking, with AfroScore shown as context. Click any row to view the full creator profile.</p>
       <div class="as-table-wrap">
         <table class="as-table" id="rankingsTable">
           <thead>
@@ -496,7 +566,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
               <th>Type</th>
               <th data-sort="followers">Followers</th>
               <th data-sort="gifts">Gifts</th>
-              <th data-sort="peak">Views</th>
+              <th data-sort="peak">Views / Peak</th>
               <th data-sort="networth">Est. Net Worth</th>
               <th data-sort="growth">Growth</th>
               <th data-sort="streams">Streams</th>
@@ -514,7 +584,9 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
 <afro-footer></afro-footer>
 
-<script src="rankings.js?v=20260501"></script>
+<script src="afrostream-media-policy.js?v=20260501c"></script>
+<script src="rankings.js?v=20260501d"></script>
+<script src="rankings-live-media.js?v=20260501d"></script>
 
 <!-- Google Analytics -->
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>

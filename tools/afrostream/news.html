@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=2fc66542">
-<script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script>
+<script src="/assets/js/components/navbar.js?v=9f5a30d7" defer></script>
 <script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroStream Creator News","description":"The pulse of African content creation. Creator milestones, platform updates, collabs, drama, and rising stars.","url":"https://afrotools.com/tools/afrostream/news","inLanguage":"en","applicationCategory":"EntertainmentApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <link rel="alternate" type="application/rss+xml" title="AfroStream News RSS" href="/tools/afrostream/feed.xml">
@@ -325,7 +325,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <link rel="stylesheet" href="/tools/afrostream/subnav.css?v=93a02af2">
-<script src="/tools/afrostream/subnav.js?v=96ce4795" defer></script>
+<script src="/tools/afrostream/subnav.js?v=20260501a" defer></script>
 </head>
 <body class="as-news-page">
 <afro-navbar></afro-navbar>
@@ -342,6 +342,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
       <a href="/tools/afrostream/rankings?mode=streamers&amp;period=month" data-as-nav="streamers">Live Streamers</a>
       <a href="/tools/afrostream/news" data-as-nav="news">News</a>
       <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
+      <a href="/tools/afrostream/methodology/" data-as-nav="methodology">Methodology</a>
       <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
       <a href="/tools/afrostream/submit" data-as-nav="submit">Submit</a>
     </div>
@@ -413,6 +414,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
 <afro-footer></afro-footer>
 
+<script src="/tools/afrostream/news-utils.js?v=20260501a"></script>
 <script>
 /* ================================================================
    AfroStream — Creator News Feed (Rebuilt)
@@ -421,6 +423,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
    ================================================================ */
 (function() {
   'use strict';
+  var AS_UTIL = window.AfroStreamNewsUtils || {};
 
   /* -- DEMO / FALLBACK NEWS DATA -------------------------------- */
   var DEMO_NEWS = [];
@@ -725,12 +728,13 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   }
 
   function imgStyle(n) {
+    if (AS_UTIL.imageStyle) return AS_UTIL.imageStyle(n);
     if (n.imageUrl) return 'background-image:url(' + n.imageUrl + ');background-size:cover;background-position:center;background-repeat:no-repeat';
     return 'background:' + (n.gradient || CAT_GRADIENTS[n.cat] || CAT_GRADIENTS.milestones);
   }
 
   function navigateToArticle(slug) {
-    window.location.href = '/tools/afrostream/news/' + encodeURIComponent(slug);
+    window.location.href = AS_UTIL.articleHref ? AS_UTIL.articleHref(slug) : ('/tools/afrostream/article.html?slug=' + encodeURIComponent(slug));
   }
 
   /* -- HERO RENDER ---------------------------------------------- */
@@ -852,6 +856,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
   /* -- ARTICLE PAGE --------------------------------------------- */
   function parseMarkdown(text) {
+    if (AS_UTIL.renderMarkdown) return AS_UTIL.renderMarkdown(text);
     if (!text) return '';
     return text
       .replace(/^### (.+)$/gm, '<h3>$1</h3>')
@@ -936,7 +941,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         '</div></div>';
     }
 
-    var shareUrl = window.location.origin + '/tools/afrostream/news/' + encodeURIComponent(article.slug);
+    var shareUrl = AS_UTIL.canonicalUrl ? AS_UTIL.canonicalUrl(article.slug) : (window.location.origin + '/tools/afrostream/news/' + encodeURIComponent(article.slug));
     var shareText = encodeURIComponent(article.headline + ' - AfroStream');
 
     var html = '<a href="news.html" class="as-article-back">&larr; Back to News</a>' +

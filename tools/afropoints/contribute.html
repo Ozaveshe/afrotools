@@ -23,6 +23,14 @@
 <link rel="stylesheet" href="style.css?v=8d93e37c">
 <link rel="stylesheet" href="account-system.css?v=20260424">
 <link rel="stylesheet" href="mobile-comfort.css?v=20260501">
+<style>
+  .ap-profile-gate{border:1px solid rgba(0,122,255,.16);background:rgba(0,122,255,.05);border-radius:12px;padding:12px 14px;color:#1d4ed8;font-size:.82rem;line-height:1.55;margin-bottom:14px}
+  .ap-profile-gate.warn{border-color:rgba(245,158,11,.26);background:rgba(245,158,11,.09);color:#92400e}
+  .ap-profile-gate.good{border-color:rgba(34,197,94,.22);background:rgba(34,197,94,.09);color:#166534}
+  .ap-cat-card.is-locked{opacity:.55;cursor:not-allowed;background:#f8fafc}
+  .ap-cat-card.is-locked:hover{transform:none;box-shadow:none;border-color:var(--color-border,#e2e8f0)}
+  .ap-cat-lock{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#92400e;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.22);border-radius:999px;padding:3px 8px}
+</style>
 <meta property="og:url" content="https://afrotools.com/tools/afropoints/contribute">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
@@ -81,6 +89,7 @@
   <div class="ap-card" id="step1">
     <div class="ap-card-header">Select a Category</div>
     <div class="ap-card-body">
+      <div id="profileGateNotice" class="ap-profile-gate warn">Checking your verified contributor profile...</div>
       <div class="ap-cat-grid" id="catGrid"></div>
     </div>
   </div>
@@ -187,7 +196,7 @@
 
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=3e2ee069" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
@@ -195,6 +204,8 @@
 <script>
 var selectedCategory = null;
 var currentStep = 1;
+var contributorProfile = null;
+var contributorGateReady = false;
 var CATEGORY_ALIASES = {
   product_prices: 'staple_price',
   product_price: 'staple_price',
@@ -241,30 +252,20 @@ var CATEGORY_ALIASES = {
   });
   var now = new Date();
   $('apObservedAt').value = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-  // Default to user's country if available
+  var presetCategory = normalizeCategoryFromUrl();
+  renderCategoryCards();
+
+  // Default to user's country if available, then load the Supabase-backed profile gate.
   if (window.AfroAuth && AfroAuth.onReady) {
     AfroAuth.onReady(function () {
       var u = AfroAuth.getUser && AfroAuth.getUser();
       if (u && u.country) countrySelect.value = u.country;
+      loadContributorGate().then(function () {
+        if (presetCategory && AP.getCategoryById(presetCategory)) selectCategory(presetCategory);
+      });
     });
-  }
-
-  // Render category cards
-  var grid = $('catGrid');
-  AP.CATEGORIES.forEach(function (cat) {
-    var card = document.createElement('div');
-    card.className = 'ap-cat-card';
-    card.setAttribute('data-cat', cat.id);
-    card.innerHTML = '<span class="ap-cat-emoji">' + cat.emoji + '</span>' +
-      '<span class="ap-cat-label">' + cat.label + '</span>' +
-      '<span class="ap-cat-pts">+' + cat.points + ' pts</span>';
-    card.onclick = function () { selectCategory(cat.id); };
-    grid.appendChild(card);
-  });
-
-  var presetCategory = normalizeCategoryFromUrl();
-  if (presetCategory && AP.getCategoryById(presetCategory)) {
-    selectCategory(presetCategory);
+  } else {
+    loadContributorGate();
   }
 })();
 
@@ -282,8 +283,118 @@ function normalizeCategoryFromUrl() {
   }
 }
 
+function escapeHtml(value) {
+  var div = document.createElement('div');
+  div.textContent = value == null ? '' : String(value);
+  return div.innerHTML;
+}
+
+function normalizedCoverage() {
+  var coverage = contributorProfile && Array.isArray(contributorProfile.coverage_categories)
+    ? contributorProfile.coverage_categories
+    : [];
+  return coverage.map(function (cat) {
+    return window.AfroPointsEngine && typeof AfroPointsEngine.normalizeCategoryId === 'function'
+      ? (AfroPointsEngine.normalizeCategoryId(cat) || cat)
+      : cat;
+  }).filter(Boolean);
+}
+
+function normalizedCountries() {
+  var AP = window.AfroPointsEngine;
+  var reverse = {};
+  if (AP && AP.COUNTRIES) {
+    Object.keys(AP.COUNTRIES).forEach(function (code) {
+      reverse[String(AP.COUNTRIES[code]).toLowerCase()] = code;
+    });
+  }
+  var countries = contributorProfile && Array.isArray(contributorProfile.regular_countries)
+    ? contributorProfile.regular_countries
+    : [];
+  return countries.map(function (country) {
+    var value = String(country || '').trim();
+    if (!value) return null;
+    if (value.length === 2) return value.toUpperCase();
+    return reverse[value.toLowerCase()] || value.toUpperCase();
+  }).filter(Boolean);
+}
+
+function isContributorProfileReady(profile) {
+  var coverage = profile && Array.isArray(profile.coverage_categories) ? profile.coverage_categories : [];
+  var countries = profile && Array.isArray(profile.regular_countries) ? profile.regular_countries : [];
+  return !!(profile && profile.onboarding_completed_at && coverage.length && countries.length);
+}
+
+function setGateNotice(message, tone) {
+  var notice = document.getElementById('profileGateNotice');
+  if (!notice) return;
+  notice.className = 'ap-profile-gate' + (tone ? ' ' + tone : '');
+  notice.innerHTML = message;
+}
+
+function renderCategoryCards() {
+  var AP = window.AfroPointsEngine;
+  var grid = document.getElementById('catGrid');
+  if (!AP || !grid) return;
+  var coverage = normalizedCoverage();
+  grid.innerHTML = '';
+  AP.CATEGORIES.forEach(function (cat) {
+    var allowed = contributorGateReady && coverage.indexOf(cat.id) !== -1;
+    var card = document.createElement('div');
+    card.className = 'ap-cat-card' + (allowed ? '' : ' is-locked');
+    card.setAttribute('data-cat', cat.id);
+    card.setAttribute('aria-disabled', allowed ? 'false' : 'true');
+    card.innerHTML = '<span class="ap-cat-emoji">' + escapeHtml(cat.emoji) + '</span>' +
+      '<span class="ap-cat-label">' + escapeHtml(cat.label) + '</span>' +
+      '<span class="ap-cat-pts">+' + cat.points + ' pts</span>' +
+      (allowed ? '' : '<span class="ap-cat-lock">Not in profile</span>');
+    card.onclick = function () { selectCategory(cat.id); };
+    grid.appendChild(card);
+  });
+}
+
+async function loadContributorGate() {
+  var AP = window.AfroPointsEngine;
+  contributorProfile = null;
+  contributorGateReady = false;
+
+  if (!window.AfroAuth || !AfroAuth.isLoggedIn()) {
+    setGateNotice('Sign in and verify your AfroPoints contributor profile before submitting data. <a href="contributor-playbook.html" style="font-weight:800;color:inherit;">Set up coverage</a>.', 'warn');
+    renderCategoryCards();
+    return;
+  }
+
+  try {
+    contributorProfile = await AP.getProfile();
+    contributorGateReady = isContributorProfileReady(contributorProfile);
+  } catch (err) {
+    contributorGateReady = false;
+  }
+
+  if (!contributorGateReady) {
+    setGateNotice('Your contributor profile is not ready for submissions yet. Add countries and categories in the profile setup, then return here. <a href="contributor-playbook.html" style="font-weight:800;color:inherit;">Verify profile</a>.', 'warn');
+  } else {
+    var countries = normalizedCountries();
+    var coverage = normalizedCoverage();
+    var countrySelect = document.getElementById('apCountry');
+    if (countrySelect && countries.length) countrySelect.value = countries[0];
+    setGateNotice('Profile verified from Supabase. You can submit ' + coverage.length + ' category type' + (coverage.length === 1 ? '' : 's') + ' in ' + countries.join(', ') + '.', 'good');
+  }
+
+  renderCategoryCards();
+}
+
+function canUseCategory(catId) {
+  return contributorGateReady && normalizedCoverage().indexOf(catId) !== -1;
+}
+
 function selectCategory(catId) {
   var AP = window.AfroPointsEngine;
+  if (!canUseCategory(catId)) {
+    showToast('This category is outside your verified profile coverage', 'error');
+    setGateNotice('Update your AfroPoints profile before submitting this category. <a href="contributor-playbook.html" style="font-weight:800;color:inherit;">Edit coverage</a>.', 'warn');
+    return;
+  }
   selectedCategory = catId;
   // Highlight
   document.querySelectorAll('.ap-cat-card').forEach(function (c) { c.classList.toggle('active', c.getAttribute('data-cat') === catId); });
@@ -434,6 +545,11 @@ function validateLocationFields() {
     return false;
   }
 
+  if (contributorGateReady && normalizedCountries().indexOf(country) === -1) {
+    showToast('This country is outside your verified contributor coverage', 'error');
+    return false;
+  }
+
   if (proofUrl) {
     try {
       new URL(proofUrl);
@@ -479,6 +595,14 @@ async function submitData() {
   var AP = window.AfroPointsEngine;
   if (!window.AfroAuth || !AfroAuth.isLoggedIn()) {
     showToast('Please sign in to submit data', 'error');
+    return;
+  }
+  if (!contributorGateReady) {
+    showToast('Verify your contributor profile before submitting data', 'error');
+    return;
+  }
+  if (!canUseCategory(selectedCategory)) {
+    showToast('This category is outside your verified profile coverage', 'error');
     return;
   }
 

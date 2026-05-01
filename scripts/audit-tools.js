@@ -13,6 +13,11 @@ const code = fs.readFileSync(path.join(ROOT, 'assets/js/components/tool-registry
 const window = {};
 eval(code);
 
+const totalToolInstances = typeof getTotalToolCount === 'function' ? getTotalToolCount() : AFRO_TOOLS.length;
+const liveToolInstances = typeof getTotalToolCount === 'function'
+  ? getTotalToolCount(t => t.status === 'live' || t.status === 'new')
+  : AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').length;
+
 // Count by status
 const counts = {};
 AFRO_TOOLS.forEach(t => { counts[t.status] = (counts[t.status] || 0) + 1; });
@@ -76,7 +81,8 @@ withApp.forEach(id => console.log(`  ${id}`));
 
 // Summary recommendation
 console.log(`\n=== RECOMMENDATION ===`);
-console.log(`  Registry claims ${AFRO_TOOLS.length} total tools`);
-console.log(`  ${found} have landing pages`);
+console.log(`  Registry rows: ${AFRO_TOOLS.length}`);
+console.log(`  Expanded tool instances: ${totalToolInstances}`);
+console.log(`  ${found} live/new registry rows have landing pages`);
 console.log(`  ${withApp.length} have full working apps (app.html)`);
-console.log(`  Homepage should claim: "${found}+" live tools`);
+console.log(`  Homepage should claim: "${liveToolInstances.toLocaleString('en-US')}+" live tools`);

@@ -4,7 +4,7 @@ AfroKitchen now has a source-first intelligence layer for recipe presentation, c
 
 ## Source Files
 
-- `data/afrokitchen/cuisine-intelligence-rules.json` defines regional lanes, pantry/technique notes, curated collection rules, menu boards, image roles, and contribution review steps.
+- `data/afrokitchen/cuisine-intelligence-rules.json` defines regional lanes, pantry/technique notes, curated collection rules, menu boards, social showstoppers, image roles, and contribution review steps.
 - `scripts/lib/afrokitchen-cuisine-intelligence.js` builds the derived product data.
 - `tools/afrokitchen/cuisine-intelligence.json` is the public-safe runtime output.
 - `data/afrokitchen/cuisine-intelligence-report.json` is the backstage quality and image readiness report.
@@ -28,14 +28,15 @@ npm run afrokitchen:verify-intelligence
 
 This keeps recipe pages, country hubs, curated collections, the landing page, image shot lists, and quality reports in sync with the current Supabase-backed manifest.
 
-The verifier checks recipe, country, collection, image, public-payload, collection-page, country-hub, submit-flow, and Kedjenou regression expectations. Run it after generator changes and before broad checks such as `npm test`.
+The verifier checks recipe, country, collection, image, public-payload, social-showcase, collection-page, country-hub, submit-flow, and Kedjenou regression expectations. Run it after generator changes and before broad checks such as `npm test`.
 
 ## Product Surfaces
 
 - Recipe pages show chef notes, readiness cues, regional lane context, pantry notes, serving logic, image galleries, and collection paths.
 - Country hubs show regional cuisine lanes and pantry/technique guides where enough country data exists.
 - Collections include DB-backed collections plus chef-built static collections from the rules file.
-- The landing page exposes regional atlas previews and menu boards.
+- The `Across Africa Showstoppers` collection highlights 20 debate-starting, photo-ready, or festival-worthy dishes, and the matching recipe pages show social hooks, caption starters, hosting moves, and photo angles.
+- The landing page exposes regional atlas previews, menu boards, and the showstopper board.
 - The submission page collects richer editorial detail without requiring extra database columns.
 
 ## Quality Model

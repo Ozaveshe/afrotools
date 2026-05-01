@@ -1,6 +1,6 @@
 # AfroKitchen Cuisine Intelligence
 
-Use this skill when changing AfroKitchen recipe pages, country hubs, collections, image planning, menu-builder behavior, or contribution review workflows.
+Use this skill when changing AfroKitchen recipe pages, country hubs, collections, social-showcase behavior, image planning, menu-builder behavior, or contribution review workflows.
 
 ## Workflow
 
@@ -20,6 +20,6 @@ Use this skill when changing AfroKitchen recipe pages, country hubs, collections
 ## Rules
 
 - Keep raw quality scores internal in `data/afrokitchen/cuisine-intelligence-report.json`.
-- Public pages can show chef notes, readiness cues, regional lanes, pantry notes, menu links, image galleries, and curated collections.
+- Public pages can show chef notes, readiness cues, regional lanes, pantry notes, menu links, image galleries, curated collections, and social-showcase prompts.
 - Image filenames should follow `/assets/img/kitchen/<slug>.webp`, `<slug>-1.webp`, `<slug>-2.webp`, through `<slug>-5.webp`.
 - Extra contribution fields must not break the current Supabase `recipe_submissions` insert contract unless a live schema migration is intentionally performed.

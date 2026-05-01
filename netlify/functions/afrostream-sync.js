@@ -310,19 +310,18 @@ async function syncYouTube() {
   }
 
   // Get creators with youtube_url
-  var creators = await sb('GET', 'as_creators?youtube_url=not.is.null&youtube_url=not.eq.&select=id,name,slug,youtube_url,subscribers,total_views,avatar,country&is_published=eq.true');
+  var creators = await sb('GET', 'as_creators?youtube_url=not.is.null&youtube_url=not.eq.&select=id,name,slug,youtube_url,yt_channel_id,subscribers,total_views,avatar,country&is_published=eq.true');
   if (!Array.isArray(creators) || creators.length === 0) {
     results.errors.push('No creators with YouTube URLs found');
     return results;
   }
 
-  // Rotate through creators in batches to stay within YouTube quota (10K/day).
-  // Handle resolution: ~1 unit each. Channel stats: 1 unit per 50. Live search: 100 each.
-  // Budget per sync run (~12 runs/day): ~800 units → resolve 50 handles + stats + 0 live checks.
+  // Rotate through creators in larger batches while staying inside YouTube quota.
+  // Cached yt_channel_id values avoid repeated handle resolution; channel stats cost 1 unit per 50 IDs.
   // Live checking is handled by afrostream-livecheck.js separately.
-  var MAX_RESOLVE = 50;
-  var syncBatch = Math.floor(Date.now() / 7200000) % Math.ceil(creators.length / MAX_RESOLVE);
-  var batchCreators = creators.slice(syncBatch * MAX_RESOLVE, (syncBatch + 1) * MAX_RESOLVE);
+  var maxPerRun = Math.min(parseInt(process.env.AFROSTREAM_YOUTUBE_SYNC_BATCH_SIZE, 10) || 200, 500);
+  var syncBatch = Math.floor(Date.now() / 7200000) % Math.ceil(creators.length / maxPerRun);
+  var batchCreators = creators.slice(syncBatch * maxPerRun, (syncBatch + 1) * maxPerRun);
   results.batch = syncBatch + 1;
   results.batchSize = batchCreators.length;
   results.totalCreators = creators.length;
@@ -335,9 +334,13 @@ async function syncYouTube() {
     var parsed = extractYoutubeId(batchCreators[i].youtube_url);
     if (!parsed) { results.errors.push('Bad YouTube URL: ' + batchCreators[i].youtube_url); continue; }
 
-    if (parsed.type === 'id') {
+    if (batchCreators[i].yt_channel_id) {
+      channelMap[batchCreators[i].yt_channel_id] = batchCreators[i];
+      channelIds.push(batchCreators[i].yt_channel_id);
+    } else if (parsed.type === 'id') {
       channelMap[parsed.value] = batchCreators[i];
       channelIds.push(parsed.value);
+      try { await sb('PATCH', 'as_creators?id=eq.' + batchCreators[i].id, { yt_channel_id: parsed.value }); } catch (e) {}
     } else {
       try {
         var searchData = await ytGet('channels?part=id&forHandle=' + encodeURIComponent(parsed.value));
@@ -345,12 +348,14 @@ async function syncYouTube() {
           var cid = searchData.items[0].id;
           channelMap[cid] = batchCreators[i];
           channelIds.push(cid);
+          try { await sb('PATCH', 'as_creators?id=eq.' + batchCreators[i].id, { yt_channel_id: cid }); } catch (e) {}
         } else {
           var searchRes = await ytGet('search?part=snippet&type=channel&q=' + encodeURIComponent(parsed.value) + '&maxResults=1');
           if (searchRes.items && searchRes.items.length > 0) {
             var cid2 = searchRes.items[0].snippet.channelId;
             channelMap[cid2] = batchCreators[i];
             channelIds.push(cid2);
+            try { await sb('PATCH', 'as_creators?id=eq.' + batchCreators[i].id, { yt_channel_id: cid2 }); } catch (e) {}
           } else {
             results.errors.push('YouTube channel not found for handle: ' + parsed.value);
           }
@@ -606,12 +611,22 @@ function getTier(score) {
   return 'rising';
 }
 
+function parseMetricValue(value) {
+  if (value == null || value === '') return 0;
+  if (typeof value === 'number') return Number.isFinite(value) ? value : 0;
+  var raw = String(value).trim().toLowerCase();
+  var multiplier = raw.endsWith('b') ? 1000000000 : (raw.endsWith('m') ? 1000000 : (raw.endsWith('k') ? 1000 : 1));
+  var cleaned = raw.replace(/[$,\s]/g, '').replace(/[bmk]$/, '');
+  var parsed = Number(cleaned) * multiplier;
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
 async function computeScores() {
   var results = { scored: 0, snapshots: 0, errors: [] };
 
   try {
     // Fetch all creators with their per-platform data
-    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,primary_platform,subscribers,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
+    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,primary_platform,subscribers,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,net_worth,frequency,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
     if (!Array.isArray(creators) || !creators.length) return results;
 
     // Fetch stream activity (last 30 days)
@@ -672,10 +687,11 @@ async function computeScores() {
       // 6. Stream consistency (streams in last 30 days — not easily tied by ID here, skip for now)
 
       // ── SCORE CALCULATION ──
+      var streamCount30d = streamCounts[String(cr.name || '').trim().toLowerCase()] || 0;
       var followerScore = logScore(totalFollowers, 200000000); // 200M = max (Khaby-level)
       var viewScore = logScore(totalViews, 10000000000);       // 10B = max
       var growthScore = Math.min(100, Math.max(0, growthPct * 5)); // 20% growth = 100
-      var consistencyScore = Math.min(100, (streamCounts[String(cr.name || '').trim().toLowerCase()] || 0) * 10); // 10 streams/month = 100
+      var consistencyScore = Math.min(100, streamCount30d * 10); // 10 streams/month = 100
       var engagementScore = logScore(engagement, 100);         // 100 views/follower = max
       var multiPlatScore = Math.min(100, Math.round(platformCount / 4 * 100)); // 4+ = 100
 
@@ -717,6 +733,11 @@ async function computeScores() {
           ig_followers: igFollowers,
           total_views: totalViews,
           afro_score: afroScore,
+          net_worth_value: parseMetricValue(cr.net_worth),
+          stream_cadence: cr.frequency || '',
+          stream_count_30d: streamCount30d,
+          source_status: 'automated',
+          source_quality: totalFollowers || totalViews ? 80 : 50,
           snapshot_date: today
         }, true);
         results.snapshots++;

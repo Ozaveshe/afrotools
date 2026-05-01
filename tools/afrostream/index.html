@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="style.css?v=2fc66542">
 
 <!-- Components -->
-<script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script>
+<script src="/assets/js/components/navbar.js?v=9f5a30d7" defer></script>
 <script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
 <script src="/engines/afrostream-engine.js?v=43fe8860" defer></script>
 
@@ -48,10 +48,10 @@
   "@type": "FAQPage",
   "mainEntity": [
     { "@type": "Question", "name": "How does AfroStream work?", "acceptedAnswer": { "@type": "Answer", "text": "AfroStream is a discovery hub, not a streaming platform. We aggregate live streams, creator rankings, and news from YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble so you can discover African creators in one place." } },
-    { "@type": "Question", "name": "How are creator rankings calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Creator Reach uses AfroScore: cross-platform followers, total views, growth, consistency, engagement, and multi-platform presence. Live Streamers is a separate leaderboard based on stream activity, live status, peak viewers, and live-platform focus." } },
+    { "@type": "Question", "name": "How are creator rankings calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Creator Reach uses AfroScore: cross-platform followers, total views, growth, consistency, engagement, and multi-platform presence. Live Streamers is a separate leaderboard based on stream activity, live status, peak viewers, and live-platform focus. The public method is documented at /tools/afrostream/afroscore/." } },
     { "@type": "Question", "name": "How is net worth estimated?", "acceptedAnswer": { "@type": "Answer", "text": "Net worth estimates combine publicly available data (gift totals, follower counts, known sponsorship deals) with AI-assisted projections. These are estimates only." } },
     { "@type": "Question", "name": "Can I add my stream to AfroStream?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Submit your creator profile through our form. Once verified, your streams appear in the live feed and you become eligible for rankings." } },
-    { "@type": "Question", "name": "Is it free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, AfroStream is 100% free. Part of the AfroTools suite of 2,550+ free tools for Africa." } },
+    { "@type": "Question", "name": "Is it free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, AfroStream is 100% free. Part of the AfroTools suite of 2,594+ free tools for Africa." } },
     { "@type": "Question", "name": "What platforms are supported?", "acceptedAnswer": { "@type": "Answer", "text": "YouTube, Twitch, TikTok Live, Instagram Live, Kick, and Rumble. More platforms coming." } }
   ]
 }
@@ -305,7 +305,7 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
 }
 </style>
 <link rel="stylesheet" href="/tools/afrostream/subnav.css?v=93a02af2">
-<script src="/tools/afrostream/subnav.js?v=96ce4795" defer></script>
+<script src="/tools/afrostream/subnav.js?v=20260501a" defer></script>
 </head>
 
 <body class="as-page">
@@ -321,6 +321,7 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
       <a href="/tools/afrostream/rankings?mode=streamers&amp;period=month" data-as-nav="streamers">Live Streamers</a>
       <a href="/tools/afrostream/news" data-as-nav="news">News</a>
       <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
+      <a href="/tools/afrostream/methodology/" data-as-nav="methodology">Methodology</a>
       <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
       <a href="/tools/afrostream/submit" data-as-nav="submit">Submit</a>
     </div>
@@ -492,7 +493,7 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
     <h2 class="as-explain-title">What is AfroStream?</h2>
     <p class="as-explain-sub">AfroStream is a free discovery hub for African creators and live streamers. We do not host streams; we help you find creators, live activity, rankings, and news across major platforms.</p>
     <div class="as-landing-features" id="featureCards"></div>
-    <p style="color:var(--as-muted);font-size:.8125rem;margin-top:32px">Powered by <a href="/" style="color:var(--as-primary)">AfroTools</a> &mdash; 2,550+ free tools for Africa</p>
+    <p style="color:var(--as-muted);font-size:.8125rem;margin-top:32px">Powered by <a href="/" style="color:var(--as-primary)">AfroTools</a> &mdash; 2,594+ free tools for Africa</p>
   </div>
 </section>
 
@@ -512,6 +513,7 @@ button.as-faq-q{background:none;border:none;width:100%;text-align:left;font-fami
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
+<script src="/tools/afrostream/news-utils.js?v=20260501a"></script>
 <script>
 /* =================================================================
    AfroStream — Inline JS (demo data + interactivity)
@@ -563,7 +565,7 @@ var COUNTRY_FALLBACK = { code:'--', flag:'\u{1F30D}', name:'Africa' };
 function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function fmtK(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1)+'K':n.toString(); }
 function fmtUSD(n){ return '$'+fmtK(n); }
-function gradClass(i){ return 'as-grad-'+(i%8+1); }
+function gradClass(i){ return 'as-grad-'+(i%2,594+1); }
 function platformBadges(cr){
   var list = cr.platforms || [cr.platform];
   return list.map(function(key){
@@ -728,10 +730,10 @@ var FEATURES = [
 
 var FAQS = [
   { q:'How does AfroStream work?', a:'AfroStream is a discovery hub, not a streaming platform. We aggregate live streams, creator rankings, and news from YouTube, Twitch, TikTok, Instagram Live, Kick, and Rumble so you can discover African creators in one place.' },
-  { q:'How are rankings calculated?', a:'Creator Reach uses AfroScore across followers, views, growth, consistency, engagement, and multi-platform presence. Live Streamers is separate and uses stream count, live status, peak viewers, and live-platform focus so streamers are not buried under celebrity follower totals.' },
+  { q:'How are rankings calculated?', a:'Creator Reach uses AfroScore across followers, views, growth, consistency, engagement, and multi-platform presence. Live Streamers is separate and uses stream count, live status, peak viewers, and live-platform focus. Read the public methodology at /tools/afrostream/afroscore/.' },
   { q:'How is net worth estimated?', a:'Net worth estimates combine publicly available data (gift totals, follower counts, known sponsorship deals) with AI-assisted projections. These are estimates and may not reflect actual earnings.' },
   { q:'Can I add my stream?', a:'Yes! Submit your creator profile through our form. Once verified, your streams appear in the live feed and you become eligible for rankings.' },
-  { q:'Is it free?', a:'Yes, AfroStream is 100% free. It\'s part of the AfroTools suite of 2,550+ free tools for Africa.' },
+  { q:'Is it free?', a:'Yes, AfroStream is 100% free. It\'s part of the AfroTools suite of 2,594+ free tools for Africa.' },
   { q:'What platforms are supported?', a:'YouTube, Twitch, TikTok Live, Instagram Live, Kick, and Rumble. More platforms coming soon.' }
 ];
 
@@ -852,7 +854,7 @@ function resolveLiveThumbnail(stream){
 function renderHeroStats(){
   var el = document.getElementById('heroStats');
   var stats = [
-    { val:'30+', label:'Creators' },
+    { val:'2,594+', label:'Creators' },
     { val: LIVE_STREAMS.length+'', label:'Live Now' },
     { val:'6', label:'Platforms' },
     { val:'12', label:'Countries' }
@@ -1037,12 +1039,12 @@ function renderNews(){
   };
   var shown = NEWS.slice(0,6);
   el.innerHTML = shown.map(function(n,i){
-    var href = n.slug ? '/tools/afrostream/news/'+n.slug : 'news.html';
+    var href = n.slug && window.AfroStreamNewsUtils ? window.AfroStreamNewsUtils.articleHref(n.slug) : (n.slug ? '/tools/afrostream/article.html?slug='+encodeURIComponent(n.slug) : 'news.html');
     var imgUrl = n._raw && n._raw.image_url ? n._raw.image_url : '';
     var bg = catGrads[n.cat] || '';
     var thumbCls = 'as-news-thumb' + (!imgUrl && !bg ? ' '+gradClass(i) : '');
     var thumbSty = '';
-    if (imgUrl) {
+    if (imgUrl && (!window.AfroStreamNewsUtils || !window.AfroStreamNewsUtils.isPlaceholderImage(imgUrl))) {
       thumbSty = ' style="background-image:url(\''+imgUrl+'\');background-size:cover;background-position:center;background-color:#e5e7eb"';
     } else if (bg) {
       thumbSty = ' style="background:'+bg+'"';

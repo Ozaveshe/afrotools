@@ -139,7 +139,7 @@
 
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=3e2ee069" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
@@ -147,6 +147,8 @@
 <script>
 var selectedMethod = null;
 var userBalance = 0;
+var profilePayoutPreference = null;
+var profilePayoutDetails = {};
 
 function $(id) { return document.getElementById(id); }
 function showToast(msg, type) {
@@ -154,6 +156,55 @@ function showToast(msg, type) {
   t.textContent = msg;
   t.className = 'ap-toast show' + (type ? ' ' + type : '');
   setTimeout(function () { t.className = 'ap-toast'; }, 3500);
+}
+
+function setFieldValue(id, value) {
+  var el = $(id);
+  if (el && value) el.value = value;
+}
+
+function hasSavedPayoutDetails(method) {
+  var details = profilePayoutDetails || {};
+  if (method === 'mobile_money') return !!(details.provider && details.phone);
+  if (method === 'bank_transfer') return !!(details.bank && details.account && (details.holder || details.account_name));
+  if (method === 'crypto_wallet') return !!(details.asset && details.network && details.address);
+  if (method === 'pro_credit') return profilePayoutPreference === 'pro_credit';
+  return false;
+}
+
+function prefillSavedPayoutDetails() {
+  if (!selectedMethod || selectedMethod !== profilePayoutPreference) return;
+  var details = profilePayoutDetails || {};
+  if (selectedMethod === 'mobile_money') {
+    setFieldValue('momoProvider', details.provider);
+    setFieldValue('momoPhone', details.phone);
+  } else if (selectedMethod === 'bank_transfer') {
+    setFieldValue('bankName', details.bank);
+    setFieldValue('bankAccount', details.account);
+    setFieldValue('bankHolder', details.holder || details.account_name);
+  } else if (selectedMethod === 'crypto_wallet') {
+    setFieldValue('cryptoAsset', details.asset);
+    setFieldValue('cryptoNetwork', details.network);
+    setFieldValue('cryptoAddress', details.address);
+    setFieldValue('cryptoWalletLabel', details.wallet_label);
+  }
+}
+
+function renderSavedPayoutState() {
+  var card = $('cashoutReadiness');
+  if (!card) return;
+  var old = document.getElementById('cashoutProfileState');
+  if (old) old.remove();
+  if (!profilePayoutPreference) {
+    card.insertAdjacentHTML('beforeend', '<div id="cashoutProfileState" class="ap-inline-note" style="margin-top:14px;">Set a payout preference in your contributor profile so reviewed cashouts can reuse saved account details.</div>');
+    return;
+  }
+  var methodLabel = profilePayoutPreference.replace(/_/g, ' ');
+  if (hasSavedPayoutDetails(profilePayoutPreference)) {
+    card.insertAdjacentHTML('beforeend', '<div id="cashoutProfileState" class="ap-inline-note" style="margin-top:14px;">Saved payout profile: ' + methodLabel + '. Details are on file in Supabase and can be reviewed before each cashout.</div>');
+  } else if (profilePayoutPreference !== 'pro_credit') {
+    card.insertAdjacentHTML('beforeend', '<div id="cashoutProfileState" class="ap-inline-note" style="margin-top:14px;border-color:rgba(245,158,11,.24);background:rgba(245,158,11,.08);color:#92400e;">' + methodLabel + ' is selected, but payout details are missing. Update your contributor setup before requesting a reviewed cashout.</div>');
+  }
 }
 
 function selectMethod(el) {
@@ -214,6 +265,10 @@ function showDetailsForm() {
     $('cashoutAmount').value = 500;
   }
 
+  prefillSavedPayoutDetails();
+  if (selectedMethod === profilePayoutPreference && hasSavedPayoutDetails(selectedMethod)) {
+    form.insertAdjacentHTML('afterbegin', '<div class="ap-inline-note">Saved payout details from your contributor profile are prefilled. Review them before submitting.</div>');
+  }
   $('detailsCard').style.display = '';
   updateEquiv();
 }
@@ -300,10 +355,13 @@ function loadData() {
     var authState = document.getElementById('cashoutAuthState');
     if (authState) authState.remove();
     userBalance = p.current_balance || 0;
+    profilePayoutPreference = p.payout_preference || null;
+    profilePayoutDetails = p.payout_details && typeof p.payout_details === 'object' ? p.payout_details : {};
     $('balanceDisplay').textContent = AP.formatPoints(userBalance);
     $('cashEquiv').textContent = (userBalance / 100).toFixed(2);
     var pct = Math.min(100, (userBalance / 2000) * 100);
     $('cashoutProgress').style.width = pct + '%';
+    renderSavedPayoutState();
 
     var warning = document.getElementById('cashoutWarning');
     if (warning) warning.remove();

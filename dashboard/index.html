@@ -2468,7 +2468,7 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
-    <script src="/assets/js/components/tool-registry.min.js?v=a3d86b37" defer></script>
+    <script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js?v=f9a5f563"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
@@ -2476,10 +2476,12 @@
     <script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
     <script src="/assets/js/tax-calendar.js?v=be0e44a9"></script>
     <script src="/assets/js/dashboard.js?v=c9eef2d3"></script>
+    <script src="/dashboard/dashboard-alerts-hardened.js?v=f3ce87b4"></script>
     <script src="/engines/afropoints-engine.js?v=2"></script>
     <script src="/dashboard/dashboard-app.js?v=05100b7e"></script>
     <script src="/dashboard/afropoints-lane.js?v=275de35a"></script>
-    <script src="/assets/js/components/navbar.min.js?v=19ded6fb"></script>
+    <script src="/dashboard/afropoints-lane-hardened.js?v=c3afd345"></script>
+    <script src="/assets/js/components/navbar.min.js?v=3e2ee069"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
     <script>
@@ -2645,15 +2647,12 @@
             var user = AfroAuth.getUser();
             if (!user || !user.id) return { ok: false, error: 'Not logged in' };
 
-            // Always persist locally for instant display — merge into existing profile
-            // so we keep fields like id, email, avatar_url, tier, created_at
-            var merged = Object.assign({}, extendedProfile || {}, profileData);
-            localStorage.setItem('afro_profile_extended', JSON.stringify(merged));
+            var cleanData = Object.assign({}, profileData);
+            delete cleanData.updated_at;
+            delete cleanData.id;
 
-            // Use Netlify function to save — bypasses ad-blocker/proxy timeout issues
-            var dbSynced = false;
+            // Use Netlify function first because it bypasses browser proxy/ad-blocker issues.
             try {
-                // Get auth token — try async method first (Supabase v2), then sync fallback
                 var token = null;
                 try {
                     if (AfroAuth.getSessionTokenAsync) {
@@ -2666,13 +2665,8 @@
 
                 if (!token) {
                     console.warn('[Profile] No auth token available');
-                    return { ok: true, synced: false };
+                    return { ok: false, synced: false, error: 'Could not verify your signed-in session. Please sign in again.' };
                 }
-
-                // Strip fields the API doesn't need
-                var cleanData = Object.assign({}, profileData);
-                delete cleanData.updated_at;
-                delete cleanData.id;
 
                 console.log('[Profile] Saving via /api/profile...', Object.keys(cleanData));
                 var res = await withTimeout(
@@ -2687,18 +2681,41 @@
                     10000
                 );
                 var result = await res.json();
-                dbSynced = result.synced === true;
 
-                if (dbSynced) {
+                if (res.ok && result.synced === true && !result.partial) {
                     console.log('[Profile] Saved to Supabase via API' + (result.partial ? ' (partial)' : ''));
+                    return { ok: true, synced: true, profile: result.profile || Object.assign({}, extendedProfile || {}, cleanData) };
+                }
+
+                if (result.partial) {
+                    console.warn('[Profile] API saved only basic fields:', result.error || 'partial profile response');
                 } else {
                     console.warn('[Profile] API save returned synced=false:', result.error || 'unknown');
                 }
-
-                return { ok: true, synced: dbSynced };
             } catch(e) {
-                console.warn('[Profile] Save error:', e.message);
-                return { ok: true, synced: false };
+                console.warn('[Profile] API save error:', e.message);
+            }
+
+            // Fallback: direct Supabase write with the user's account session.
+            try {
+                var sb2 = AfroAuth.getSupabase && AfroAuth.getSupabase();
+                if (!sb2) {
+                    return { ok: false, synced: false, error: 'Profile could not reach Supabase. Please try again.' };
+                }
+                var directPayload = Object.assign({ id: user.id }, cleanData);
+                var direct = await withTimeout(
+                    sb2.from('profiles').upsert(directPayload, { onConflict: 'id' }).select('*').single(),
+                    8000
+                );
+                if (direct && !direct.error && direct.data) {
+                    console.log('[Profile] Saved directly to Supabase');
+                    return { ok: true, synced: true, profile: direct.data };
+                }
+                console.warn('[Profile] Direct save failed:', direct && direct.error ? direct.error.message : 'unknown');
+                return { ok: false, synced: false, error: 'Profile could not be synced to Supabase. Please try again.' };
+            } catch(e2) {
+                console.warn('[Profile] Direct save error:', e2.message);
+                return { ok: false, synced: false, error: 'Profile could not be synced to Supabase. Please try again.' };
             }
         }
 
@@ -2933,17 +2950,16 @@
             profileData.currency = COUNTRY_CURRENCY_MAP[countryCode] || '';
             profileData.onboarding_completed = true;
 
-            // Sync name/country to auth user metadata so it persists across sessions
-            if (AfroAuth.updateProfile) {
-                await AfroAuth.updateProfile({ name: name, country: countryCode || country });
-            }
-
             var result = await saveFullProfile(profileData);
             btn.classList.remove('saving');
             btn.disabled = false;
 
             if (result.ok) {
-                extendedProfile = Object.assign(extendedProfile || {}, profileData);
+                // Sync name/country to auth user metadata after the Supabase profile row is saved.
+                if (AfroAuth.updateProfile) {
+                    await AfroAuth.updateProfile({ name: name, country: countryCode || country });
+                }
+                extendedProfile = Object.assign({}, extendedProfile || {}, result.profile || profileData);
                 localStorage.setItem('afro_profile_extended', JSON.stringify(extendedProfile));
                 currentUser = AfroAuth.getUser() || currentUser;
                 currentUser.name = name;
@@ -2951,7 +2967,7 @@
                 loadProfileDisplay();
                 updateCompletenessRing(calculateCompleteness(currentUser, extendedProfile));
                 closeProfileEditor();
-                showToast(result.synced ? 'Profile saved and synced' : 'Profile saved locally — will sync on next login');
+                showToast('Profile saved and synced');
                 renderSmartRecommendations();
                 // Refresh FX and country data with new country
                 if (countryCode) {
@@ -3280,7 +3296,7 @@
             }
 
             document.getElementById('profileEmail').textContent = currentUser.email || '-';
-            var rawCountry = currentUser.country || (extendedProfile && (extendedProfile.country_code || extendedProfile.country)) || '-';
+            var rawCountry = (extendedProfile && (extendedProfile.country_code || extendedProfile.country)) || currentUser.country || '-';
             var displayCountry = rawCountry;
             if (rawCountry && rawCountry.length === 2 && typeof AFRICAN_COUNTRIES !== 'undefined') {
                 var found = AFRICAN_COUNTRIES.find(function(c){ return c.code === rawCountry; });

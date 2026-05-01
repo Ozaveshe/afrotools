@@ -1,6 +1,6 @@
 # AfroKitchen Recipe Research Report
 
-Generated: 2026-05-01T01:13:27.287Z
+Generated: 2026-05-01T10:09:54.361Z
 
 - Canonical recipe pages: 220
 - Audited recipes: 220

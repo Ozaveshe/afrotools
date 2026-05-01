@@ -16,7 +16,9 @@ const paths = {
   shotListCsv: path.join(ROOT, "data", "afrokitchen", "recipe-image-shot-list.csv"),
   landing: path.join(TOOL_DIR, "index.html"),
   submit: path.join(TOOL_DIR, "submit.html"),
-  kedjenou: path.join(TOOL_DIR, "recipes", "kedjenou-ci", "index.html")
+  kedjenou: path.join(TOOL_DIR, "recipes", "kedjenou-ci", "index.html"),
+  jollof: path.join(TOOL_DIR, "recipes", "jollof-rice-ng", "index.html"),
+  showstoppers: path.join(TOOL_DIR, "collections", "across-africa-showstoppers", "index.html")
 };
 
 const failures = [];
@@ -75,16 +77,18 @@ function verifyManifest(manifest, intelligence, publicJsData, rules) {
   const collectionRoutes = ((manifest.routes && manifest.routes.generated_collection_slugs) || []).length;
   const collectionCount = (manifest.collections || []).length;
   const expectedCuratedCount = (rules.curated_collections || []).length;
+  const baseCollectionCount = collectionCount - expectedCuratedCount;
   const membershipCount = (manifest.collections || []).reduce((sum, collection) => sum + Number(collection.total_recipes || 0), 0);
 
   assert(recipeRouteCount === generatedRecipes.length, "Generated recipe route count does not match generated recipe pages");
   assert(recipeRouteCount === recipes.length, "Generated recipe route count does not match manifest recipe count");
   assert((manifest.source || {}).recipe_count === recipes.length, "Manifest source recipe_count does not match recipe array length");
   assert((manifest.source || {}).verified_recipe_count === recipes.length, "Manifest verified_recipe_count does not match recipe array length");
-  assert(collectionCount === 16, `Expected 16 collections, found ${collectionCount}`);
-  assert(collectionRoutes === 16, `Expected 16 generated collection routes, found ${collectionRoutes}`);
-  assert(((manifest.wave || {}).collection_page_count) === 16, "Wave collection page count is not 16");
-  assert(((manifest.source || {}).collection_count) === 16, "Manifest source collection_count is not 16");
+  assert(baseCollectionCount >= 5, `Expected at least 5 base collections before curated additions, found ${baseCollectionCount}`);
+  assert(collectionCount === baseCollectionCount + expectedCuratedCount, "Collection count does not include every curated collection");
+  assert(collectionRoutes === collectionCount, `Generated collection routes ${collectionRoutes} do not match collection count ${collectionCount}`);
+  assert(((manifest.wave || {}).collection_page_count) === collectionCount, "Wave collection page count does not match collection count");
+  assert(((manifest.source || {}).collection_count) === collectionCount, "Manifest source collection_count does not match collection count");
   assert(((manifest.source || {}).curated_collection_count) === expectedCuratedCount, "Curated collection count does not match rules");
   assert(((manifest.source || {}).collection_membership_count) === membershipCount, "Collection membership count excludes generated collections");
 
@@ -92,6 +96,25 @@ function verifyManifest(manifest, intelligence, publicJsData, rules) {
   assert(Object.keys(publicJsData.recipes || {}).length === recipeRouteCount, "Cuisine intelligence JS recipe count does not match public JSON");
   assert(((intelligence.summary || {}).recipe_count) === recipeRouteCount, "Public intelligence summary recipe count does not match routes");
   assert(((publicJsData.summary || {}).recipe_count) === recipeRouteCount, "Cuisine intelligence JS summary recipe count does not match routes");
+}
+
+function verifySocialShowcase(intelligence, publicJsData) {
+  const showcase = intelligence.social_showcase || {};
+  const jsShowcase = publicJsData.social_showcase || {};
+  const recipes = Array.isArray(showcase.recipes) ? showcase.recipes : [];
+  const jsRecipes = Array.isArray(jsShowcase.recipes) ? jsShowcase.recipes : [];
+
+  assert(showcase.slug === "across-africa-showstoppers", "Social showcase slug is missing or incorrect");
+  assert(recipes.length === 20, `Social showcase should expose 20 recipes, found ${recipes.length}`);
+  assert(jsRecipes.length === recipes.length, "Cuisine intelligence JS social showcase does not match public JSON");
+  assert(((intelligence.summary || {}).showstopper_count) === 20, "Public summary showstopper count is not 20");
+
+  recipes.forEach((recipe) => {
+    const publicRecipe = (intelligence.recipes || {})[recipe.slug];
+    assert(publicRecipe, `Social showcase recipe missing from public recipes: ${recipe.slug}`);
+    assert(publicRecipe && publicRecipe.social && publicRecipe.social.is_showstopper, `Recipe ${recipe.slug} is not flagged as a showstopper`);
+    assert(recipe.hook && recipe.caption && recipe.photo_angle, `Recipe ${recipe.slug} is missing social metadata`);
+  });
 }
 
 function verifyPublicSafety(intelligence) {
@@ -140,8 +163,10 @@ function verifyPages(manifest) {
   const landing = readText(paths.landing);
   const submit = readText(paths.submit);
   const kedjenou = readText(paths.kedjenou);
+  const jollof = readText(paths.jollof);
+  const showstoppers = readText(paths.showstoppers);
 
-  includesAll(landing, ["Regional atlas", "Menu builder", "Chef-built collection"], "AfroKitchen landing");
+  includesAll(landing, ["Regional atlas", "Menu builder", "Chef-built collection", "Showstopper board", "Cook, post, compare notes"], "AfroKitchen landing");
   includesAll(
     landing,
     [
@@ -157,6 +182,8 @@ function verifyPages(manifest) {
   includesAll(submit, ["Region / Community", "Review flow", "Photo links"], "AfroKitchen submit page");
   includesAll(kedjenou, ["Chef board", "Akan and Baoule slow table"], "Kedjenou recipe page");
   assert(!kedjenou.includes("Adding too much liquid after the rice"), "Kedjenou inherits a rice-specific chef warning");
+  includesAll(jollof, ["Social plate", "Caption starter", "Open the showstopper board"], "Jollof recipe page");
+  includesAll(showstoppers, ["Across Africa Showstoppers", "Why this collection works", "Showstopper board", "Cook, post, compare notes"], "Showstopper collection page");
 }
 
 function verifyShotList(manifest, report, rules) {
@@ -188,6 +215,7 @@ function main() {
 
   verifyManifest(manifest, intelligence, publicJsData, rules);
   verifyPublicSafety(intelligence);
+  verifySocialShowcase(intelligence, publicJsData);
   verifyCollections(rules);
   verifyCountries(manifest, rules);
   verifyPages(manifest);

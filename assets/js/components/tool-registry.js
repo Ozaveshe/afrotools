@@ -1876,8 +1876,78 @@ function renderToolGrid(containerId, countryCode, opts) {
 // ═══════════════════════════════════════════════════════════
 // STATS HELPER — useful for dashboard/admin pages
 // ═══════════════════════════════════════════════════════════
+function getToolStatsLocale(locale) {
+  var lang = (locale || 'en').toLowerCase();
+  if (lang === 'fr') return 'fr-FR';
+  if (lang === 'sw') return 'sw-TZ';
+  return 'en-US';
+}
+
+function formatToolStatValue(value, locale, includePlus) {
+  var display = Number(value || 0).toLocaleString(getToolStatsLocale(locale));
+  if ((locale || 'en').toLowerCase() === 'fr') {
+    display = display.replace(/\u202f/g, ' ');
+  }
+  return includePlus ? display + '+' : display;
+}
+
+function getPublicToolStats(locale) {
+  var liveRows = 0;
+  var queuedRows = 0;
+  var plannedRows = 0;
+  var byLang = {};
+
+  AFRO_TOOLS.forEach(function(tool) {
+    var lang = tool.lang || 'en';
+    byLang[lang] = (byLang[lang] || 0) + 1;
+
+    if (tool.status === 'live' || tool.status === 'new') liveRows++;
+    else if (tool.status === 'queued') queuedRows++;
+    else if (tool.status === 'planned') plannedRows++;
+  });
+
+  var totalToolInstances = typeof getTotalToolCount === 'function' ? getTotalToolCount() : AFRO_TOOLS.length;
+  var liveToolInstances = typeof getTotalToolCount === 'function'
+    ? getTotalToolCount(function(tool) { return tool.status === 'live' || tool.status === 'new'; })
+    : liveRows;
+  var inDevelopmentToolInstances = typeof getTotalToolCount === 'function'
+    ? getTotalToolCount(function(tool) { return tool.status === 'queued' || tool.status === 'planned'; })
+    : (queuedRows + plannedRows);
+  var categories = Object.keys(AFRO_CATEGORIES || {}).length;
+  var inDevelopmentRows = queuedRows + plannedRows;
+
+  return {
+    locale: locale || 'en',
+    registryEntries: AFRO_TOOLS.length,
+    totalTools: totalToolInstances,
+    liveTools: liveToolInstances,
+    queuedTools: queuedRows,
+    plannedTools: plannedRows,
+    inDevelopmentTools: inDevelopmentToolInstances,
+    liveRegistryEntries: liveRows,
+    queuedRegistryEntries: queuedRows,
+    plannedRegistryEntries: plannedRows,
+    inDevelopmentRegistryEntries: inDevelopmentRows,
+    categories: categories,
+    byLang: byLang,
+    display: {
+      registryEntries: formatToolStatValue(AFRO_TOOLS.length, locale, false),
+      totalTools: formatToolStatValue(totalToolInstances, locale, false),
+      totalToolsPlus: formatToolStatValue(totalToolInstances, locale, true),
+      liveTools: formatToolStatValue(liveToolInstances, locale, false),
+      liveToolsPlus: formatToolStatValue(liveToolInstances, locale, true),
+      liveRegistryEntries: formatToolStatValue(liveRows, locale, false),
+      queuedTools: formatToolStatValue(queuedRows, locale, false),
+      plannedTools: formatToolStatValue(plannedRows, locale, false),
+      inDevelopmentTools: formatToolStatValue(inDevelopmentToolInstances, locale, false),
+      categories: formatToolStatValue(categories, locale, false)
+    }
+  };
+}
+
 function getRegistryStats() {
-  var stats = { total: AFRO_TOOLS.length, toolInstances: getTotalToolCount(), live: 0, queued: 0, planned: 0, byPhase: {}, byCategory: {}, byLang: {}, estMonthlyRevenue: 0 };
+  var publicStats = getPublicToolStats('en');
+  var stats = { total: AFRO_TOOLS.length, toolInstances: getTotalToolCount(), publicLive: publicStats.liveTools, inDevelopment: publicStats.inDevelopmentTools, live: 0, queued: 0, planned: 0, byPhase: {}, byCategory: {}, byLang: {}, estMonthlyRevenue: 0 };
   AFRO_TOOLS.forEach(function(t) {
     if (t.status === 'live' || t.status === 'new') stats.live++;
     else if (t.status === 'queued') stats.queued++;

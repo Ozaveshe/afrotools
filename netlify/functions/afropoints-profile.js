@@ -1,6 +1,10 @@
 const { getAllowedOrigin } = require('./utils/cors');
 const { SUPABASE_URL, SUPABASE_KEY, sbRequest, cleanText } = require('./_shared/market-data');
 
+const PAYOUT_METHODS = ['mobile_money', 'bank_transfer', 'crypto_wallet', 'pro_credit'];
+const CRYPTO_ASSETS = ['USDT', 'USDC', 'BTC', 'ETH'];
+const CRYPTO_NETWORKS = ['TRON', 'Ethereum', 'Polygon', 'Solana', 'Bitcoin'];
+
 function corsHeaders(event) {
   return {
     'Access-Control-Allow-Origin': getAllowedOrigin(event),
@@ -21,6 +25,51 @@ function normalizeStringArray(value) {
     .map(function (item) { return typeof item === 'string' ? item.trim() : ''; })
     .filter(Boolean)
     .filter(function (item, index, items) { return items.indexOf(item) === index; });
+}
+
+function normalizeCountryArray(value) {
+  return normalizeStringArray(value).map(function (country) {
+    return country.length === 2 ? country.toUpperCase() : country;
+  });
+}
+
+function normalizePayoutDetails(method, details) {
+  const payoutMethod = cleanText(method);
+  const input = details && typeof details === 'object' && !Array.isArray(details) ? details : {};
+
+  if (!payoutMethod) return { value: {} };
+  if (!PAYOUT_METHODS.includes(payoutMethod)) return { error: 'Choose a supported payout preference' };
+  if (payoutMethod === 'pro_credit') return { value: {} };
+
+  if (payoutMethod === 'mobile_money') {
+    const provider = cleanText(input.provider);
+    const phone = cleanText(input.phone);
+    const accountName = cleanText(input.account_name || input.holder);
+    if (!provider || !phone) return { error: 'Add mobile money provider and phone number to verify your payout profile' };
+    return { value: { provider, phone, account_name: accountName } };
+  }
+
+  if (payoutMethod === 'bank_transfer') {
+    const bank = cleanText(input.bank);
+    const account = cleanText(input.account);
+    const holder = cleanText(input.holder || input.account_name);
+    const country = cleanText(input.country);
+    if (!bank || !account || !holder) return { error: 'Add bank, account number, and account holder to verify your payout profile' };
+    return { value: { bank, account, holder, country } };
+  }
+
+  if (payoutMethod === 'crypto_wallet') {
+    const asset = cleanText(input.asset);
+    const network = cleanText(input.network);
+    const address = cleanText(input.address);
+    const walletLabel = cleanText(input.wallet_label);
+    if (!asset || !CRYPTO_ASSETS.includes(asset)) return { error: 'Choose a supported crypto asset' };
+    if (!network || !CRYPTO_NETWORKS.includes(network)) return { error: 'Choose a supported crypto network' };
+    if (!address || address.length < 12) return { error: 'Add a complete payout wallet address' };
+    return { value: { asset, network, address, wallet_label: walletLabel } };
+  }
+
+  return { error: 'Unsupported payout preference' };
 }
 
 async function getUser(event) {
@@ -64,6 +113,8 @@ async function getProfile(userId) {
     coverage_categories: [],
     submission_frequency: null,
     payout_preference: null,
+    payout_details: {},
+    payout_details_updated_at: null,
     proof_comfort: null,
     onboarding_completed_at: null
   };
@@ -125,18 +176,26 @@ exports.handler = async function (event) {
     }
 
     const existingProfile = await getProfile(user.id);
+    const payoutPreference = cleanText(body.payout_preference);
+    const payoutValidation = normalizePayoutDetails(payoutPreference, body.payout_details);
+    if (payoutValidation.error) {
+      return reply(400, { error: payoutValidation.error }, headers);
+    }
+    const nowIso = new Date().toISOString();
     const payload = {
       contributor_persona: cleanText(body.contributor_persona),
-      regular_countries: normalizeStringArray(body.regular_countries),
+      regular_countries: normalizeCountryArray(body.regular_countries),
       regular_cities: normalizeStringArray(body.regular_cities),
       regular_neighborhoods: normalizeStringArray(body.regular_neighborhoods),
       regular_routes: normalizeStringArray(body.regular_routes),
       coverage_categories: normalizeStringArray(body.coverage_categories),
       submission_frequency: cleanText(body.submission_frequency),
-      payout_preference: cleanText(body.payout_preference),
+      payout_preference: payoutPreference,
+      payout_details: payoutValidation.value || {},
+      payout_details_updated_at: payoutPreference ? nowIso : null,
       proof_comfort: cleanText(body.proof_comfort),
-      onboarding_completed_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      onboarding_completed_at: nowIso,
+      updated_at: nowIso
     };
 
     if (existingProfile && existingProfile.created_at) {
@@ -156,7 +215,7 @@ exports.handler = async function (event) {
         longest_streak: 0,
         rank: 'newcomer',
         badges: [],
-        created_at: new Date().toISOString(),
+        created_at: nowIso,
         ...payload
       }, {
         Prefer: 'return=minimal'

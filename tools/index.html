@@ -23,8 +23,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-  <script src="/assets/js/components/tool-registry.min.js?v=a3d86b37" defer></script>
-  <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+  <script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=3e2ee069" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -254,7 +254,7 @@
 <div class="search-section">
   <div class="search-bar" role="search">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.4"/><line x1="10.2" y1="10.2" x2="14" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-    <input type="text" id="tool-search" placeholder="Search 2,550+ tools..." aria-label="Search tools" autocomplete="off">
+    <input type="text" id="tool-search" placeholder="Search 2,594+ tools..." aria-label="Search tools" autocomplete="off">
     <kbd>Ctrl+K</kbd>
   </div>
 </div>
@@ -306,12 +306,14 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // Stats
-  var total = typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length;
-  var live = AFRO_TOOLS.filter(function(t) { return t.status === 'live' || t.status === 'new'; }).length;
-  var cats = Object.keys(AFRO_CATEGORIES).length;
+  var stats = typeof getPublicToolStats === 'function' ? getPublicToolStats('en') : null;
+  var total = stats ? stats.totalTools : AFRO_TOOLS.length;
+  var live = stats ? stats.liveTools : AFRO_TOOLS.filter(function(t) { return t.status === 'live' || t.status === 'new'; }).length;
+  var cats = stats ? stats.categories : Object.keys(AFRO_CATEGORIES).length;
   document.getElementById('s-total').textContent = total;
   document.getElementById('s-live').textContent = live;
   document.getElementById('s-cats').textContent = cats;
+  searchInput.placeholder = 'Search ' + (stats ? stats.display.liveToolsPlus : (live.toLocaleString() + '+')) + ' tools...';
 
   // Build filter buttons
   var filterHtml = '<button class="f-tab on" data-cat="all">All Tools</button>';

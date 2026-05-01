@@ -101,7 +101,7 @@
             </div>
           </div>
           <div class="ap-guide-form-grid">
-            <div class="ap-field"><label class="ap-label" for="regularCountries">Regular Countries</label><input id="regularCountries" class="ap-input" placeholder="NG, KE, GH"></div>
+            <div class="ap-field"><label class="ap-label" for="regularCountries">Regular Countries</label><input id="regularCountries" class="ap-input" placeholder="NG, KE, GH"><div style="font-size:0.72rem;color:var(--color-text-muted);">Use two-letter country codes so submissions can be matched to your verified coverage.</div></div>
             <div class="ap-field"><label class="ap-label" for="regularCities">Regular Cities</label><input id="regularCities" class="ap-input" placeholder="Lagos, Nairobi, Accra"></div>
           </div>
           <div class="ap-guide-form-grid">
@@ -128,6 +128,11 @@
                 <option value="rarely">Rarely</option>
               </select>
             </div>
+          </div>
+          <div class="ap-inline-note" id="payoutDetailsWrap" style="display:none;">
+            <strong style="display:block;margin-bottom:8px;color:#1d4ed8;">Payout details</strong>
+            <div id="payoutDetailsForm" class="ap-form"></div>
+            <div style="font-size:0.74rem;margin-top:8px;">These details are saved to your AfroPoints account profile in Supabase and reused when you request a reviewed cashout.</div>
           </div>
           <div>
             <div class="ap-label" style="margin-bottom:8px;">Categories You Can Cover</div>
@@ -157,7 +162,7 @@
 </div>
 <div class="ap-toast" id="playbookToast"></div>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=3e2ee069" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
@@ -178,6 +183,123 @@
 
   function parseList(value) {
     return String(value || '').split(',').map(function (item) { return item.trim(); }).filter(Boolean);
+  }
+
+  function setInputValue(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.value = value || '';
+  }
+
+  function renderPayoutDetails(method, details) {
+    var wrap = document.getElementById('payoutDetailsWrap');
+    var form = document.getElementById('payoutDetailsForm');
+    var saved = details && typeof details === 'object' ? details : {};
+    if (!wrap || !form) return;
+
+    if (!method) {
+      wrap.style.display = 'none';
+      form.innerHTML = '';
+      return;
+    }
+
+    wrap.style.display = '';
+    if (method === 'mobile_money') {
+      form.innerHTML =
+        '<div class="ap-guide-form-grid">' +
+          '<div class="ap-field"><label class="ap-label" for="payoutProvider">Provider</label><input id="payoutProvider" class="ap-input" placeholder="M-Pesa, MTN MoMo, OPay"></div>' +
+          '<div class="ap-field"><label class="ap-label" for="payoutPhone">Phone number</label><input id="payoutPhone" class="ap-input" type="tel" placeholder="+234..."></div>' +
+        '</div>' +
+        '<div class="ap-field"><label class="ap-label" for="payoutAccountName">Account name (optional)</label><input id="payoutAccountName" class="ap-input" placeholder="Name attached to this wallet"></div>';
+      setInputValue('payoutProvider', saved.provider);
+      setInputValue('payoutPhone', saved.phone);
+      setInputValue('payoutAccountName', saved.account_name || saved.holder);
+      return;
+    }
+
+    if (method === 'bank_transfer') {
+      form.innerHTML =
+        '<div class="ap-field"><label class="ap-label" for="payoutBank">Bank name</label><input id="payoutBank" class="ap-input" placeholder="Bank or microfinance institution"></div>' +
+        '<div class="ap-guide-form-grid">' +
+          '<div class="ap-field"><label class="ap-label" for="payoutAccount">Account number</label><input id="payoutAccount" class="ap-input" placeholder="Account number"></div>' +
+          '<div class="ap-field"><label class="ap-label" for="payoutHolder">Account holder</label><input id="payoutHolder" class="ap-input" placeholder="Full legal name"></div>' +
+        '</div>' +
+        '<div class="ap-field"><label class="ap-label" for="payoutBankCountry">Bank country (optional)</label><input id="payoutBankCountry" class="ap-input" placeholder="NG, KE, GH"></div>';
+      setInputValue('payoutBank', saved.bank);
+      setInputValue('payoutAccount', saved.account);
+      setInputValue('payoutHolder', saved.holder || saved.account_name);
+      setInputValue('payoutBankCountry', saved.country);
+      return;
+    }
+
+    if (method === 'crypto_wallet') {
+      form.innerHTML =
+        '<div class="ap-guide-form-grid">' +
+          '<div class="ap-field"><label class="ap-label" for="payoutAsset">Asset</label><select id="payoutAsset" class="ap-select"><option value="USDT">USDT</option><option value="USDC">USDC</option><option value="BTC">BTC</option><option value="ETH">ETH</option></select></div>' +
+          '<div class="ap-field"><label class="ap-label" for="payoutNetwork">Network</label><select id="payoutNetwork" class="ap-select"><option value="TRON">TRON</option><option value="Ethereum">Ethereum</option><option value="Polygon">Polygon</option><option value="Solana">Solana</option><option value="Bitcoin">Bitcoin</option></select></div>' +
+        '</div>' +
+        '<div class="ap-field"><label class="ap-label" for="payoutAddress">Wallet address</label><input id="payoutAddress" class="ap-input" placeholder="Paste payout wallet address"></div>' +
+        '<div class="ap-field"><label class="ap-label" for="payoutWalletLabel">Wallet label (optional)</label><input id="payoutWalletLabel" class="ap-input" placeholder="My USDT payout wallet"></div>';
+      setInputValue('payoutAsset', saved.asset || 'USDT');
+      setInputValue('payoutNetwork', saved.network || 'TRON');
+      setInputValue('payoutAddress', saved.address);
+      setInputValue('payoutWalletLabel', saved.wallet_label);
+      return;
+    }
+
+    form.innerHTML = '<div class="ap-guide-muted">Pro credit redemptions do not need external financial details.</div>';
+  }
+
+  function collectPayoutDetails(method) {
+    if (method === 'mobile_money') {
+      return {
+        provider: (document.getElementById('payoutProvider') || {}).value || '',
+        phone: (document.getElementById('payoutPhone') || {}).value || '',
+        account_name: (document.getElementById('payoutAccountName') || {}).value || ''
+      };
+    }
+    if (method === 'bank_transfer') {
+      return {
+        bank: (document.getElementById('payoutBank') || {}).value || '',
+        account: (document.getElementById('payoutAccount') || {}).value || '',
+        holder: (document.getElementById('payoutHolder') || {}).value || '',
+        country: (document.getElementById('payoutBankCountry') || {}).value || ''
+      };
+    }
+    if (method === 'crypto_wallet') {
+      return {
+        asset: (document.getElementById('payoutAsset') || {}).value || '',
+        network: (document.getElementById('payoutNetwork') || {}).value || '',
+        address: (document.getElementById('payoutAddress') || {}).value || '',
+        wallet_label: (document.getElementById('payoutWalletLabel') || {}).value || ''
+      };
+    }
+    return {};
+  }
+
+  function validatePayoutDetails(method, details) {
+    if (!method || method === 'pro_credit') return '';
+    if (method === 'mobile_money' && (!details.provider.trim() || !details.phone.trim())) return 'Add mobile money provider and phone number.';
+    if (method === 'bank_transfer' && (!details.bank.trim() || !details.account.trim() || !details.holder.trim())) return 'Add bank name, account number, and account holder.';
+    if (method === 'crypto_wallet' && (!details.asset || !details.network || details.address.trim().length < 12)) return 'Add crypto asset, network, and a complete wallet address.';
+    return '';
+  }
+
+  function authHeaders() {
+    var headers = { 'Content-Type': 'application/json' };
+    var token = window.AfroAuth && typeof AfroAuth.getSessionToken === 'function' ? AfroAuth.getSessionToken() : null;
+    if (token) headers.Authorization = 'Bearer ' + token;
+    return headers;
+  }
+
+  async function saveOnboarding(payload) {
+    var response = await fetch(AP.API_BASE + '/afropoints-profile', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify(Object.assign({ action: 'onboarding' }, payload))
+    });
+    var json = await response.json().catch(function () { return null; });
+    if (!response.ok) return json && json.error ? json : { error: 'Profile save failed. Please try again.' };
+    return json || { success: true };
   }
 
   function renderCategories() {
@@ -206,11 +328,16 @@
     document.getElementById('regularRoutes').value = (profile.regular_routes || []).join(', ');
     document.getElementById('submissionFrequency').value = profile.submission_frequency || '';
     document.getElementById('payoutPreference').value = profile.payout_preference || '';
+    renderPayoutDetails(profile.payout_preference || '', profile.payout_details || {});
     document.getElementById('proofComfort').value = profile.proof_comfort || '';
     setCheckedCategories(profile.coverage_categories || []);
   }
 
   renderCategories();
+  renderPayoutDetails('', {});
+  document.getElementById('payoutPreference').addEventListener('change', function () {
+    renderPayoutDetails(this.value, {});
+  });
 
   if (window.AfroAuth && AfroAuth.onReady) {
     AfroAuth.onReady(function () {
@@ -233,7 +360,17 @@
     }
 
     try {
-      var result = await AP.saveOnboarding({
+      var payoutPreference = document.getElementById('payoutPreference').value || null;
+      var payoutDetails = collectPayoutDetails(payoutPreference);
+      var payoutError = validatePayoutDetails(payoutPreference, payoutDetails);
+      if (payoutError) {
+        document.getElementById('playbookError').textContent = payoutError;
+        document.getElementById('playbookError').style.display = 'block';
+        toast(payoutError, 'error');
+        return;
+      }
+
+      var result = await saveOnboarding({
         contributor_persona: document.getElementById('persona').value || null,
         regular_countries: parseList(document.getElementById('regularCountries').value),
         regular_cities: parseList(document.getElementById('regularCities').value),
@@ -241,7 +378,8 @@
         regular_routes: parseList(document.getElementById('regularRoutes').value),
         coverage_categories: collectCategories(),
         submission_frequency: document.getElementById('submissionFrequency').value || null,
-        payout_preference: document.getElementById('payoutPreference').value || null,
+        payout_preference: payoutPreference,
+        payout_details: payoutDetails,
         proof_comfort: document.getElementById('proofComfort').value || null
       });
 

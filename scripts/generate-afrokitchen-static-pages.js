@@ -433,6 +433,53 @@ function renderRecipePairingRail(recipe, insight) {
   </section>`;
 }
 
+function renderRecipeSocialPlate(recipe, insight) {
+  const social = insight && insight.social ? insight.social : null;
+  if (!social || !social.is_showstopper) return "";
+
+  const recipeUrl = `${SITE_ORIGIN}${recipe.route_path}`;
+  const caption = `${social.caption} #AfroKitchen`;
+  const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(recipeUrl)}`;
+  const postUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(recipeUrl)}&text=${encodeURIComponent(caption)}`;
+
+  return `<section class="ak-intel-panel ak-social-plate">
+    <div class="ak-social-plate-head">
+      <div>
+        <div class="ak-section-kicker">Social plate</div>
+        <h2 class="ak-section-title">Why ${escapeHtml(recipe.name)} gets people talking</h2>
+        <p class="ak-section-sub">${escapeHtml(social.why_it_moves)}</p>
+      </div>
+      <div class="ak-social-rank" aria-label="Showstopper rank">
+        <span>#${escapeHtml(String(social.rank))}</span>
+        <small>Showstopper</small>
+      </div>
+    </div>
+    <div class="ak-social-grid">
+      <div class="ak-intel-mini">
+        <strong>Hook</strong>
+        <p>${escapeHtml(social.hook)}</p>
+      </div>
+      <div class="ak-intel-mini">
+        <strong>Caption starter</strong>
+        <p>${escapeHtml(social.caption)}</p>
+      </div>
+      <div class="ak-intel-mini">
+        <strong>Hosting move</strong>
+        <p>${escapeHtml(social.hosting_move)}</p>
+      </div>
+      <div class="ak-intel-mini">
+        <strong>Photo angle</strong>
+        <p>${escapeHtml(social.photo_angle)}</p>
+      </div>
+    </div>
+    <div class="ak-social-actions">
+      <a class="ak-support-link" href="${shareUrl}" target="_blank" rel="noopener">Share this recipe</a>
+      <a class="ak-support-link" href="${postUrl}" target="_blank" rel="noopener">Post the caption</a>
+      <a class="ak-support-link" href="${escapeHtml(social.showcase_route_path)}">Open the showstopper board</a>
+    </div>
+  </section>`;
+}
+
 function renderCountryRegionalAtlas(country, cuisineIntelligence) {
   const insight = getCountryInsight(country, cuisineIntelligence);
   if (!insight || !insight.regions || !insight.regions.length) return "";
@@ -511,6 +558,37 @@ function renderCollectionIntelligence(collection) {
         <p>Use this collection for meal planning, photo batching, and deciding which connected recipes to cook next.</p>
       </div>
     </div>
+  </section>`;
+}
+
+function renderCollectionSocialShowcase(collection, cuisineIntelligence) {
+  const showcase = cuisineIntelligence && cuisineIntelligence.social_showcase ? cuisineIntelligence.social_showcase : null;
+  if (!showcase || collection.slug !== showcase.slug || !Array.isArray(showcase.recipes)) return "";
+
+  const cards = showcase.recipes
+    .map(
+      (recipe) => `<a class="ak-social-showcase-card" href="${recipe.route_path}">
+        <span class="ak-social-showcase-rank">#${escapeHtml(String(recipe.rank))}</span>
+        <h3>${escapeHtml(recipe.name)}</h3>
+        <p>${escapeHtml(recipe.hook)}</p>
+        <small>${escapeHtml(recipe.country_name)}</small>
+      </a>`
+    )
+    .join("\n");
+
+  return `<section class="ak-intel-panel ak-social-showcase-panel">
+    <div class="ak-social-plate-head">
+      <div>
+        <div class="ak-section-kicker">Showstopper board</div>
+        <h2 class="ak-section-title">Cook, post, compare notes</h2>
+        <p class="ak-section-sub">${escapeHtml(showcase.description)}</p>
+      </div>
+      <div class="ak-social-rank">
+        <span>${escapeHtml(String(showcase.total_recipes))}</span>
+        <small>Dishes</small>
+      </div>
+    </div>
+    <div class="ak-social-showcase-grid">${cards}</div>
   </section>`;
 }
 
@@ -836,6 +914,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const renderedGallery = renderRecipePhotoGallery(recipe, galleryImages);
   const renderedInsightCards = renderRecipeIntelligenceCards(recipe, recipeInsight);
   const renderedPairingRail = renderRecipePairingRail(recipe, recipeInsight);
+  const renderedSocialPlate = renderRecipeSocialPlate(recipe, recipeInsight);
   const relatedSection = renderRelatedHtml(recipe, relatedRecipes);
   const storyLead = recipe.story ? excerpt(recipe.story, 420) : description;
   const heroStyle = media.pageImage
@@ -1070,6 +1149,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
 
       ${renderedGallery}
       ${renderedPairingRail}
+      ${renderedSocialPlate}
 
       <div class="ak-cook-shell">
         <div class="ak-static-serving-bar">
@@ -1509,6 +1589,7 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
   const title = `${collection.name} Recipes Collection | AfroKitchen`;
   const description = excerpt(collection.description, 158);
   const collectionIntelligence = renderCollectionIntelligence(collection, cuisineIntelligence);
+  const collectionSocialShowcase = renderCollectionSocialShowcase(collection, cuisineIntelligence);
   const generatedRecipeLead =
     collection.generated_recipe_count === collection.total_recipes
       ? `${collection.total_recipes} dishes are ready to open from this collection`
@@ -1624,6 +1705,7 @@ function buildCollectionPageHtml(collection, cuisineIntelligence) {
       </div>
 
       ${collectionIntelligence}
+      ${collectionSocialShowcase}
       ${renderCollectionCountryLinks(collection)}
     </div>
   </section>
@@ -1763,6 +1845,33 @@ function buildLandingMenuBuilderPreview(cuisineIntelligence) {
       </div>`;
 }
 
+function buildLandingSocialShowcasePreview(cuisineIntelligence) {
+  const showcase =
+    cuisineIntelligence &&
+    cuisineIntelligence.social_showcase &&
+    Array.isArray(cuisineIntelligence.social_showcase.recipes)
+      ? cuisineIntelligence.social_showcase
+      : null;
+  if (!showcase || !showcase.recipes.length) return "";
+
+  const cards = showcase.recipes
+    .slice(0, 6)
+    .map(
+      (recipe) => `<a class="ak-social-card" href="${recipe.route_path}">
+        <span class="ak-social-card-rank">#${escapeHtml(String(recipe.rank))}</span>
+        <h3>${escapeHtml(recipe.name)}</h3>
+        <p>${escapeHtml(recipe.hook)}</p>
+        <small>${escapeHtml(recipe.country_name)}</small>
+      </a>`
+    )
+    .join("\n");
+
+  return `<div class="ak-social-card-grid">${cards}</div>
+      <div class="ak-intel-links ak-social-board-link">
+        <a href="/tools/afrokitchen/collections/${escapeHtml(showcase.slug)}/">Open all ${escapeHtml(String(showcase.total_recipes))} showstoppers</a>
+      </div>`;
+}
+
 function buildLandingWaveMarkup(manifest, cuisineIntelligence) {
   const featuredLinks = manifest.recipes
     .filter((recipe) => recipe.generated_in_wave)
@@ -1774,6 +1883,7 @@ function buildLandingWaveMarkup(manifest, cuisineIntelligence) {
     .join("\n");
   const regionalPreview = buildLandingRegionalPreview(cuisineIntelligence);
   const menuPreview = buildLandingMenuBuilderPreview(cuisineIntelligence);
+  const socialPreview = buildLandingSocialShowcasePreview(cuisineIntelligence);
   const summary = cuisineIntelligence && cuisineIntelligence.summary ? cuisineIntelligence.summary : null;
 
   return `<section class="ak-section ak-section-soft">
@@ -1786,6 +1896,12 @@ function buildLandingWaveMarkup(manifest, cuisineIntelligence) {
           ${featuredLinks}
         </div>
       </div>
+      ${socialPreview ? `<div class="ak-support-card ak-intel-landing-card ak-social-landing-card rv visible">
+        <div class="ak-section-kicker">Showstopper board</div>
+        <h2 class="ak-section-title">Cook, post, compare notes</h2>
+        <p class="ak-section-sub">A social cooking lane for the dishes people photograph first, argue about kindly, and send to friends when the table goes quiet.</p>
+        ${socialPreview}
+      </div>` : ""}
       ${regionalPreview ? `<div class="ak-support-card ak-intel-landing-card rv visible">
         <div class="ak-section-kicker">Regional atlas</div>
         <h2 class="ak-section-title">Countries now open by food lane</h2>

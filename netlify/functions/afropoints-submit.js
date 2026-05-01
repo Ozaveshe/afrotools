@@ -62,6 +62,36 @@ function calculateRank(totalEarned, trustScore) {
   return 'newcomer';
 }
 
+function validateContributionGate(profile, submission) {
+  if (!profile || !profile.onboarding_completed_at) {
+    return 'Set up your contributor profile before submitting AfroPoints data.';
+  }
+
+  const coverage = Array.isArray(profile.coverage_categories) ? profile.coverage_categories : [];
+  if (coverage.length === 0) {
+    return 'Choose the data categories you can cover before submitting.';
+  }
+
+  if (!coverage.includes(submission.subtype)) {
+    return 'This data category is outside your verified contributor coverage. Update your AfroPoints profile to add it.';
+  }
+
+  const countries = Array.isArray(profile.regular_countries)
+    ? profile.regular_countries.map(function (country) {
+      return cleanText(country) ? cleanText(country).toUpperCase() : null;
+    }).filter(Boolean)
+    : [];
+  if (countries.length === 0) {
+    return 'Choose the countries you can cover before submitting.';
+  }
+
+  if (!countries.includes(String(submission.country_code || '').toUpperCase())) {
+    return 'This country is outside your contributor coverage. Update your AfroPoints profile before submitting here.';
+  }
+
+  return null;
+}
+
 async function getUser(event) {
   const auth = event.headers?.authorization || event.headers?.Authorization || '';
   if (!auth.startsWith('Bearer ')) return null;
@@ -144,12 +174,15 @@ exports.handler = async function (event) {
 
   try {
     const submission = normalized.submission;
+    const existingProfile = await fetchProfile(user.id);
+    const gateError = validateContributionGate(existingProfile, submission);
+    if (gateError) return reply(403, { error: gateError, action: 'profile_required' }, headers);
+
     const hasCapacity = await ensureDailyCapacity(user.id, submission.subtype);
     if (!hasCapacity) {
       return reply(429, { error: 'Daily limit reached for this category (20/day)' }, headers);
     }
 
-    const existingProfile = await fetchProfile(user.id);
     const baseline = await getRecentBaseline(submission, 40);
     const reviewReason = getReviewReason(submission, baseline);
     const confidenceScore = calculateConfidence(submission, existingProfile, baseline);

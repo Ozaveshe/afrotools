@@ -52,6 +52,14 @@ Keep these lanes separate in copy, UI, and ranking logic. Do not treat a mega-cr
 - Sync writes `as_creator_snapshots` daily with `on_conflict=creator_id,snapshot_date`. If a Supabase write fails, the sync must report the error in `results.errors`; do not silently pass partial writes.
 - When recomputing totals, preserve the larger of platform follower totals and the existing `subscribers` count so incomplete platform fields do not overwrite rankings to zero.
 
+## Live Media QA
+
+- `public.as_streams.thumbnail` is the first source of truth for Live Streamers imagery.
+- `tools/afrostream/afrostream-media-policy.js` is shared by the browser and Node audit. Update it when a new sensitive stream category or title pattern should use generated preview art.
+- The rankings page should never show a blank live media well. If a thumbnail is missing, broken, or policy-hidden, `rankings-live-media.js` must render generated AfroStream preview art.
+- Recent non-live Twitch `live_user_...` thumbnails should also render generated art because Twitch commonly swaps them to a generic camera placeholder after the stream ends.
+- Run `npm run afrostream:media:audit` before calling live media QA done. Add `-- --endpoint=<url>` to point it at another preview, and `-- --strict` when missing or broken thumbnails should fail.
+
 ## Public API Endpoints
 | Endpoint | Description |
 |----------|-------------|

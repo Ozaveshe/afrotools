@@ -9,7 +9,7 @@
     {
       id: 'financial', label: 'Salary & Tax', labelFr: 'Salaire & Impôts', labelSw: 'Mshahara & Kodi', icon: '💰',
       desc: 'PAYE, income tax, FX, crypto', descFr: 'PAYE, impôt, change, crypto', descSw: 'PAYE, kodi, sarafu, crypto',
-      href: '/salary-tax/', hrefFr: '/fr/', hrefSw: '/sw/mshahara-na-kodi/', color: '#e8f0fd', accent: '#0062CC',
+      href: '/salary-tax/', hrefFr: '/fr/salary-tax/', hrefSw: '/sw/mshahara-na-kodi/', color: '#e8f0fd', accent: '#0062CC',
       tools: [
         { label: 'Nigeria PAYE Calculator', href: '/nigeria/ng-salary-tax', emoji: '🇳🇬', badge: 'LIVE' },
         { label: 'Kenya PAYE Calculator', href: '/kenya/ke-paye', emoji: '🇰🇪', badge: 'LIVE' },
@@ -47,7 +47,7 @@
     {
       id: 'document-pdf', label: 'Document & PDF', labelFr: 'Documents & PDF', labelSw: 'Nyaraka na PDF', icon: '📄',
       desc: 'Merge, split, compress, convert', descFr: 'Fusionner, diviser, compresser, convertir', descSw: 'Unganisha, gawanya, bana, badilisha',
-      href: '/document-pdf/', hrefSw: '/sw/zana-za-pdf/', color: '#eff6ff', accent: '#3b82f6',
+      href: '/document-pdf/', hrefFr: '/fr/document-pdf/', hrefSw: '/sw/hati-na-pdf/', color: '#eff6ff', accent: '#3b82f6',
       tools: [
         { label: 'CV / Resume Builder', href: '/tools/cv-builder/', emoji: '📝', badge: 'LIVE' },
         { label: 'PDF Editor', href: '/tools/pdf-editor/', emoji: '✏️', badge: 'LIVE' },
@@ -60,12 +60,28 @@
         { label: 'PDF eSignature', href: '/tools/pdf-sign/', emoji: '✍️', badge: 'LIVE' },
         { label: 'Cover Letter Generator', href: '/tools/cover-letter-generator/', emoji: '✉️', badge: 'LIVE' },
         { label: 'All PDF Tools →', href: '/document-pdf/', emoji: '📄' },
+      ],
+      toolsFr: [
+        { label: 'Fusionner et diviser PDF', href: '/fr/tools/fusionner-diviser-pdf/', emoji: '📑', badge: 'LIVE' },
+        { label: 'Compresser PDF', href: '/fr/tools/compresser-pdf/', emoji: '🗜️', badge: 'LIVE' },
+        { label: 'Convertir PDF', href: '/fr/tools/convertir-pdf/', emoji: '🔄', badge: 'LIVE' },
+        { label: 'PDF en image', href: '/fr/tools/pdf-en-image/', emoji: '🖼️', badge: 'LIVE' },
+        { label: 'Filigrane PDF', href: '/fr/tools/filigrane-pdf/', emoji: '💧', badge: 'LIVE' },
+        { label: 'Numérotation PDF', href: '/fr/tools/numerotation-pdf/', emoji: '#', badge: 'LIVE' },
+        { label: 'Comparer PDF', href: '/fr/tools/comparer-pdf/', emoji: '🔍', badge: 'LIVE' },
+        { label: 'Réorganiser PDF', href: '/fr/tools/reorganiser-pdf/', emoji: '↕️', badge: 'LIVE' },
+        { label: 'En-tête et pied de page PDF', href: '/fr/tools/entete-pied-pdf/', emoji: '📄', badge: 'LIVE' },
+        { label: 'Numérotation Bates PDF', href: '/fr/tools/numerotation-bates-pdf/', emoji: '🏷️', badge: 'LIVE' },
+        { label: 'Rechercher et remplacer PDF', href: '/fr/tools/rechercher-remplacer-pdf/', emoji: '✏️', badge: 'LIVE' },
+        { label: 'Réparer PDF', href: '/fr/tools/reparer-pdf/', emoji: '🛠️', badge: 'LIVE' },
+        { label: 'HTML en PDF', href: '/fr/tools/html-en-pdf/', emoji: '🌐', badge: 'LIVE' },
+        { label: 'Remplir un formulaire PDF', href: '/fr/tools/remplir-formulaire-pdf/', emoji: '📝', badge: 'LIVE' },
       ]
     },
     {
       id: 'image-design', label: 'Image & Design', labelFr: 'Image & Design', labelSw: 'Picha na Ubunifu', icon: '🖼️',
       desc: 'Compress, resize, QR codes', descFr: 'Compresser, redimensionner, codes QR', descSw: 'Bana, badilisha ukubwa, misimbo QR',
-      href: '/image-design/', color: '#fdf2f8', accent: '#ec4899',
+      href: '/image-design/', hrefFr: '/fr/image-design/', color: '#fdf2f8', accent: '#ec4899',
       tools: [
         { label: 'Image Compressor', href: '/tools/image-compress/', emoji: '📷', badge: 'LIVE' },
         { label: 'Background Remover', href: '/tools/background-remover/', emoji: '✂️', badge: 'LIVE' },
@@ -82,7 +98,7 @@
     {
       id: 'developer', label: 'Developer Tools', labelFr: 'Outils Dev', labelSw: 'Zana za Dev', icon: '⌨️',
       desc: 'JSON, Base64, hash, regex', descFr: 'JSON, Base64, hachage, regex', descSw: 'JSON, Base64, hash, regex',
-      href: '/developer-tools/', color: '#ede9fe', accent: '#8b5cf6',
+      href: '/developer-tools/', hrefFr: '/fr/developer-tools/', color: '#ede9fe', accent: '#8b5cf6',
       tools: [
         { label: 'JSON Formatter & Validator', href: '/tools/json-formatter/', emoji: '{ }', badge: 'LIVE' },
         { label: 'API Tester (Postman Lite)', href: '/tools/api-tester/', emoji: '🧪', badge: 'LIVE' },
@@ -106,7 +122,7 @@
     {
       id: 'education', label: 'Education', labelFr: 'Éducation', labelSw: 'Elimu', icon: '🎓',
       desc: 'GPA, WAEC, loans, fees', descFr: 'GPA, WAEC, prêts, frais scolaires', descSw: 'GPA, NECTA, mikopo, ada',
-      href: '/education/', hrefSw: '/sw/zana-za-elimu/', color: '#EEF4FF', accent: '#3B82F6',
+      href: '/education/', hrefFr: '/fr/education/', hrefSw: '/sw/elimu/', color: '#EEF4FF', accent: '#3B82F6',
       tools: [
         { label: 'AfroJAMB Hub — CBT + AI Tutor', href: '/jamb/', emoji: '🎯', badge: 'NEW' },
         { label: 'JAMB CBT Mock Exam', href: '/jamb/cbt/', emoji: '⚡', badge: 'NEW' },
@@ -136,7 +152,7 @@
     {
       id: 'health', label: 'Health & Wellness', labelFr: 'Santé & Bien-être', labelSw: 'Afya na Ustawi', icon: '🏥',
       desc: 'Disease tools, hospital costs, nutrition — 27 tools, always free', descFr: 'Maladies, frais d\'hôpital, nutrition — 27 outils', descSw: 'Magonjwa, gharama za hospitali, lishe — zana 27',
-      href: '/health/', hrefSw: '/sw/afya-na-bima/', color: '#fce8e8', accent: '#dc2626',
+      href: '/health/', hrefFr: '/fr/health/', hrefSw: '/sw/afya/', color: '#fce8e8', accent: '#dc2626',
       tools: [
         { label: 'Medical Report Interpreter', href: '/tools/medical-report/', emoji: '🩺', badge: 'LIVE' },
         { label: 'Genotype Compatibility Checker', href: '/tools/genotype-checker/', emoji: '🧬', badge: 'NEW' },
@@ -158,7 +174,7 @@
       desc: 'Car, health, life, funeral, business, travel — 300+ calculators, 54 countries',
       descFr: 'Auto, santé, vie, obsèques, entreprise, voyage — 300+ calculateurs, 54 pays',
       descSw: 'Gari, afya, maisha, mazishi, biashara, safari — vikokotoo 300+, nchi 54',
-      href: '/insurance/', color: '#f0f4f8', accent: '#1e3a5f',
+      href: '/insurance/', hrefFr: '/fr/health-insurance/', color: '#f0f4f8', accent: '#1e3a5f',
       tools: [
         { label: 'Car Insurance Estimator', href: '/tools/car-insurance/', emoji: '🚗', badge: 'LIVE' },
         { label: 'Health Insurance Comparator', href: '/tools/health-insurance-compare/', emoji: '🏥', badge: 'LIVE' },
@@ -199,7 +215,7 @@
       desc: 'Crop yield, seed rate, fertilizer, irrigation, farm profit — 54 countries',
       descFr: 'Rendement, semences, engrais, irrigation, profit agricole — 54 pays',
       descSw: 'Mavuno, mbegu, mbolea, umwagiliaji, faida ya shamba — nchi 54',
-      href: '/agriculture/', hrefSw: '/sw/kilimo/', color: '#E8F2FF', accent: '#007AFF',
+      href: '/agriculture/', hrefFr: '/fr/agriculture/', hrefSw: '/sw/kilimo/', color: '#E8F2FF', accent: '#007AFF',
       tools: [
         { label: 'Crop Yield Estimators', href: '/agriculture/crop-yield/', emoji: '🌱', badge: 'LIVE' },
         { label: 'Seed Rate Calculators', href: '/agriculture/seed-rate/', emoji: '🌿', badge: 'LIVE' },
@@ -211,7 +227,7 @@
     {
       id: 'ecommerce', label: 'VAT & Business Tax', labelFr: 'TVA & Fiscalité', labelSw: 'VAT na Kodi', icon: '🧾',
       desc: 'VAT, margins, break-even', descFr: 'TVA, marges, seuil de rentabilité', descSw: 'VAT, faida, hatua ya usawa',
-      href: '/vat-business-tax/', hrefFr: '/fr/', hrefSw: '/sw/vat-na-kodi/', color: '#fff7ed', accent: '#f59e0b',
+      href: '/vat-business-tax/', hrefFr: '/fr/vat-business-tax/', hrefSw: '/sw/vat-na-kodi/', color: '#fff7ed', accent: '#f59e0b',
       tools: [
         { label: 'Pan-African VAT Calculator', href: '/tools/vat-calculator/vat-calc', emoji: '💱', badge: 'LIVE' },
         { label: 'Nigeria VAT (7.5%)', href: '/nigeria/ng-vat', emoji: '🇳🇬', badge: 'LIVE' },
@@ -227,7 +243,7 @@
       desc: 'Business registration, contracts, data privacy, personal legal — 54 countries',
       descFr: 'Enregistrement, contrats, confidentialité, juridique personnel — 54 pays',
       descSw: 'Usajili wa biashara, mikataba, faragha ya data, kisheria — nchi 54',
-      href: '/legal/', color: '#f5f3ff', accent: '#7c3aed',
+      href: '/legal/', hrefFr: '/fr/legal/', color: '#f5f3ff', accent: '#7c3aed',
       tools: [
         { label: 'Business Registration Checklist', href: '/tools/business-registration/', emoji: '📋', badge: 'LIVE' },
         { label: 'Company Type Selector', href: '/tools/company-type-selector/', emoji: '🏢', badge: 'LIVE' },
@@ -244,7 +260,7 @@
     {
       id: 'data-productivity', label: 'Business & ROI', labelFr: 'Business & ROI', labelSw: 'Biashara na Faida', icon: '📊',
       desc: 'Productivity, data, investment', descFr: 'Productivité, données, investissement', descSw: 'Tija, data, uwekezaji',
-      href: '/data-productivity/', hrefSw: '/sw/biashara-na-faida/', color: '#eef2ff', accent: '#6366f1',
+      href: '/data-productivity/', hrefFr: '/fr/data-productivity/', hrefSw: '/sw/data-na-tija/', color: '#eef2ff', accent: '#6366f1',
       tools: [
         { label: 'Monthly Budget Planner', href: '/tools/budget-planner/', emoji: '📋', badge: 'LIVE' },
         { label: 'Unit Converter (African)', href: '/tools/unit-converter/', emoji: '📏', badge: 'LIVE' },
@@ -259,7 +275,7 @@
     {
       id: 'language', label: 'Language & Translation', labelFr: 'Langues & Traduction', labelSw: 'Lugha na Tafsiri', icon: '🗣️',
       desc: 'Yoruba, Swahili, Hausa, Amharic', descFr: 'Yoruba, Swahili, Haoussa, Amharique', descSw: 'Kiyoruba, Kiswahili, Kihausa, Kiamhari',
-      href: '/language/', color: '#faf5ff', accent: '#a855f7',
+      href: '/language/', hrefFr: '/fr/language/', color: '#faf5ff', accent: '#a855f7',
       tools: [
         { label: 'Nigerian Pidgin Translator', href: '/tools/pidgin-translator/', emoji: '🗣️', badge: 'LIVE' },
         { label: 'Swahili Translator', href: '/tools/swahili-translator/', emoji: '🌍', badge: 'LIVE' },
@@ -274,7 +290,7 @@
     {
       id: 'african', label: 'Uniquely African', labelFr: 'Spécialités Africaines', labelSw: 'Vya Kiafrika', icon: '🌍',
       desc: 'Japa, generator, ajo, mobile money', descFr: 'Épargne collective, mobile money, recettes', descSw: 'Japa, jenereta, chama, pesa za simu',
-      href: '/african/', color: '#fef2f2', accent: '#dc2626',
+      href: '/african/', hrefFr: '/fr/african/', color: '#fef2f2', accent: '#dc2626',
       tools: [
         { label: 'AfroPoints — Earn Money', href: '/tools/afropoints/', emoji: '🎯', badge: 'NEW' },
         { label: 'AfroAtlas Explorer', href: '/tools/afroatlas/', emoji: '🌍', badge: 'NEW' },
@@ -307,7 +323,7 @@
     {
       id: 'trade', label: 'Trade & Import', labelFr: 'Commerce & Import', labelSw: 'Biashara na Uagizaji', icon: '🚢',
       desc: 'LC, duties, incoterms, ECOWAS, SADC, AfCFTA', descFr: 'LC, droits de douane, incotermes', descSw: 'LC, ushuru, incoterms, ECOWAS, SADC, AfCFTA',
-      href: '/trade/', color: '#E8F2FF', accent: '#007AFF',
+      href: '/trade/', hrefFr: '/fr/trade/', color: '#E8F2FF', accent: '#007AFF',
       tools: [
         { label: 'AfCFTA Tariff Tracker', href: '/tools/afcfta-tracker/', emoji: '🌍', badge: 'LIVE' },
         { label: 'Landed Cost Calculator', href: '/tools/landed-cost/', emoji: '📦', badge: 'LIVE' },
@@ -723,6 +739,35 @@
       ]
     },
   ];
+
+  const SW_CATEGORY_HREFS = {
+    financial: '/sw/mshahara-na-kodi/',
+    'hr-payroll': '/sw/kazi-na-ajira/',
+    'document-pdf': '/sw/hati-na-pdf/',
+    'image-design': '/sw/picha-na-design/',
+    developer: '/sw/zana-za-developer/',
+    education: '/sw/elimu/',
+    health: '/sw/afya/',
+    insurance: '/sw/bima/',
+    fintech: '/sw/fintech/',
+    agriculture: '/sw/kilimo/',
+    ecommerce: '/sw/vat-na-kodi/',
+    legal: '/sw/biashara-na-uzingatiaji/',
+    'data-productivity': '/sw/data-na-tija/',
+    african: '/sw/nchi/',
+    trade: '/sw/biashara-ya-nje/',
+    government: '/sw/serikali-na-nyaraka/',
+    'small-business': '/sw/biashara-ndogo/',
+    transport: '/sw/usafiri-na-magari/',
+    'personal-finance': '/sw/fintech/',
+    diaspora: '/sw/serikali-na-nyaraka/',
+    'religious-cultural': '/sw/dini-na-utamaduni/',
+    climate: '/sw/hali-ya-hewa-na-mazingira/',
+    energy: '/sw/nishati-na-huduma/',
+    creative: '/sw/ubunifu-na-watayarishi/',
+    career: '/sw/kazi-na-ajira/',
+    afrowork: '/sw/kazi-na-ajira/'
+  };
 
   // 11 main categories shown in the mega menu + "All Categories" card = 12 items (3 rows × 4)
   const MEGA_IDS = [
@@ -1279,13 +1324,21 @@
       return (lang === 'fr' || lang === 'sw') ? NAV_ITEMS.filter(c => c.id !== 'francophone') : NAV_ITEMS;
     }
 
+    _localizedHref(item, lang) {
+      if (!item) return '#';
+      var cur = lang || this._getLang();
+      if (cur === 'fr' && item.hrefFr) return item.hrefFr;
+      if (cur === 'sw') return SW_CATEGORY_HREFS[item.id] || item.hrefSw || item.href || '#';
+      return item.href || '#';
+    }
+
     _megaContent() {
       var lang = this._getLang();
       var isFr = lang === 'fr';
       var isSw = lang === 'sw';
       var featured = MEGA_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
       var html = featured.map(cat => {
-        var href = isSw && cat.hrefSw ? cat.hrefSw : isFr && cat.hrefFr ? cat.hrefFr : cat.href;
+        var href = this._localizedHref(cat, lang);
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
         var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
         return `
@@ -1299,8 +1352,9 @@
       }).join('');
       var allLabel = isSw ? 'Makundi Yote →' : isFr ? 'Toutes les catégories →' : 'All Categories →';
       var allDesc = isSw ? 'Makundi 28 yote' : isFr ? '28 catégories' : 'All 28 categories';
+      var allHref = isFr ? '/fr/categories/' : '/categories/';
       html += `
-        <a href="/categories/" class="mega-col" style="--col-accent:#0062CC">
+        <a href="${allHref}" class="mega-col" style="--col-accent:#0062CC">
           <div class="mega-col-icon" style="background:#EEF4FF">🧭</div>
           <div>
             <div class="mega-col-name">${allLabel}</div>
@@ -1316,7 +1370,7 @@
       var isSw = lang === 'sw';
       var featured = MEGA_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
       var html = featured.map(cat => {
-        var href = isSw && cat.hrefSw ? cat.hrefSw : isFr && cat.hrefFr ? cat.hrefFr : cat.href;
+        var href = this._localizedHref(cat, lang);
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
         var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
         return `
@@ -1331,8 +1385,9 @@
       }).join('');
       var allLabel = isSw ? 'Makundi Yote →' : isFr ? 'Toutes les catégories →' : 'All 28 Categories →';
       var allDesc = isSw ? 'Tazama makundi yote' : isFr ? 'Voir toutes les catégories' : 'Browse every tool category';
+      var allHref = isFr ? '/fr/categories/' : '/categories/';
       html += `
-        <a href="/categories/" class="mob-cat" style="border-top:2px solid #e5e7eb;margin-top:4px">
+        <a href="${allHref}" class="mob-cat" style="border-top:2px solid #e5e7eb;margin-top:4px">
           <div class="mob-cat-icon" style="background:#EEF4FF">🧭</div>
           <div>
             <div class="mob-cat-label" style="color:#0062CC">${allLabel}</div>
@@ -1386,15 +1441,21 @@
       var isFr = lang === 'fr';
       var isSw = lang === 'sw';
       var T = {
+        homeHref:     isSw ? '/sw/'                         : isFr ? '/fr/'                                             : '/',
         tag:          isSw ? 'Jukwaa la Afrika'             : isFr ? 'La plateforme africaine'                          : "Africa's Everything Platform",
         allTools:     isSw ? 'Zana Zote'                    : isFr ? 'Tous les outils'                                  : 'All Tools',
         salaryTax:    isSw ? 'Mshahara &amp; Kodi'          : isFr ? 'Salaire &amp; Impôts'                             : 'Salary &amp; Tax',
-        salaryHref:   isSw ? '/sw/mshahara-na-kodi/'        : isFr ? '/fr/'                                             : '/salary-tax/',
+        salaryHref:   isSw ? '/sw/mshahara-na-kodi/'        : isFr ? '/fr/salary-tax/'                                  : '/salary-tax/',
         pdfTools:     isSw ? 'Zana za PDF'                  : isFr ? 'Outils PDF'                                       : 'PDF Tools',
+        pdfHref:      isSw ? '/sw/hati-na-pdf/'             : isFr ? '/fr/document-pdf/'                                : '/document-pdf/',
         devTools:     isSw ? 'Zana za Dev'                  : isFr ? 'Outils Dev'                                       : 'Dev Tools',
+        devHref:      isSw ? '/sw/zana-za-developer/'       : isFr ? '/fr/developer-tools/'                             : '/developer-tools/',
         african:      isSw ? 'Kiafrika'                     : isFr ? 'Africain'                                         : 'African',
+        africanHref:  isFr ? '/fr/african/'                                     : '/african/',
         education:    isSw ? 'Elimu'                        : isFr ? 'Éducation'                                        : 'Education',
-        insurance:    isSw ? 'Bima'                         : isFr ? 'Assurance'                                        : 'Insurance',
+        educationHref:isSw ? '/sw/elimu/'                   : isFr ? '/fr/education/'                                   : '/education/',
+        insurance:    isSw ? 'Bima'                         : isFr ? 'Santé &amp; Assurance'                            : 'Insurance',
+        insuranceHref:isSw ? '/sw/bima/'                    : isFr ? '/fr/health-insurance/'                            : '/insurance/',
         countries54:  isSw ? '🌍 Nchi 54'                   : isFr ? '🌍 54 pays'                                       : '🌍 54 countries',
         signIn:       isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign in',
         ariaNav:      isSw ? 'Urambazaji mkuu'              : isFr ? 'Navigation principale'                            : 'Main navigation',
@@ -1406,6 +1467,9 @@
         allCats:      isSw ? 'Makundi Yote'                 : isFr ? 'Toutes les catégories'                            : 'All Categories',
         searchPh:     isSw ? 'Tafuta zana...'               : isFr ? 'Rechercher des outils...'                         : 'Search tools...',
         mobSignIn:    isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign In',
+        proHref:      isFr ? '/fr/pro/'                     : '/pro/',
+        dashboardHref:isFr ? '/fr/dashboard/'               : '/dashboard/',
+        vaultHref:    isFr ? '/fr/dashboard/vault/'         : '/dashboard/vault/',
         mobNote:      isSw ? '🌍 Nchi 54 · bure · bila usajili'                 : isFr ? '🌍 54 pays · gratuit · sans inscription'          : '🌍 54 countries · always free · no sign-up required',
         srchEmpty:    isSw ? 'Zana 1,390+ za Afrika'          : isFr ? '1 390+ outils africains'                            : 'Search 1,390+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
@@ -1415,7 +1479,7 @@
         <style>${CSS}</style>
         <nav role="navigation" aria-label="${T.ariaNav}">
           <div class="inner">
-            <a href="/" class="logo" aria-label="AfroTools home">
+            <a href="${T.homeHref}" class="logo" aria-label="AfroTools home">
               ${MARK}
               <div>
                 <span class="logo-name">AFRO<b>TOOLS</b></span>
@@ -1433,17 +1497,17 @@
                 </button>
               </li>
               <li><a href="${T.salaryHref}" class="lnk">${T.salaryTax}</a></li>
-              <li><a href="${isSw ? '/sw/zana-za-pdf/' : '/document-pdf/'}" class="lnk">${T.pdfTools}</a></li>
-              <li><a href="/developer-tools/" class="lnk">${T.devTools}</a></li>
-              <li><a href="/african/" class="lnk">${T.african}</a></li>
-              <li><a href="${isSw ? '/sw/zana-za-elimu/' : '/education/'}" class="lnk">${T.education}</a></li>
-              <li><a href="/insurance/" class="lnk">${T.insurance}</a></li>
+              <li><a href="${T.pdfHref}" class="lnk">${T.pdfTools}</a></li>
+              <li><a href="${T.devHref}" class="lnk">${T.devTools}</a></li>
+              <li><a href="${T.africanHref}" class="lnk">${T.african}</a></li>
+              <li><a href="${T.educationHref}" class="lnk">${T.education}</a></li>
+              <li><a href="${T.insuranceHref}" class="lnk">${T.insurance}</a></li>
             </ul>
 
             <div class="right">
               ${this._langSwitcherHTML()}
-              <a href="/pro/" class="btn-pro">Pro</a>
-              <a href="/dashboard/" class="btn-login">${T.signIn}</a>
+              <a href="${T.proHref}" class="btn-pro">Pro</a>
+              <a href="${T.dashboardHref}" class="btn-login">${T.signIn}</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
               </button>
@@ -1475,8 +1539,8 @@
           </div>
           ${this._mobileLangHTML()}
           <div class="mob-footer">
-            <a href="/dashboard/" class="mob-login">${T.mobSignIn}</a>
-            <a href="/dashboard/vault/" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 My Vault</a>
+            <a href="${T.dashboardHref}" class="mob-login">${T.mobSignIn}</a>
+            <a href="${T.vaultHref}" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 My Vault</a>
             <a href="/tools/afropoints/" class="mob-points-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#F59E0B;border:1.5px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);text-align:center;">🎯 AfroPoints</a>
             <p class="mob-note">${T.mobNote}</p>
           </div>
@@ -1892,8 +1956,36 @@
     }
   }
 
-  /* Expose NAV_ITEMS globally for command palette + other consumers */
-  window.__AFRO_NAV_ITEMS = NAV_ITEMS;
+  function _globalNavLang() {
+    var segs = window.location.pathname.split('/');
+    var first = segs[1];
+    if (['fr','sw','yo','ha'].indexOf(first) !== -1) return first;
+    return document.documentElement.lang || 'en';
+  }
+
+  function _localizedGlobalNavItems() {
+    var lang = _globalNavLang();
+    if (lang !== 'fr' && lang !== 'sw') return NAV_ITEMS;
+    return NAV_ITEMS.map(function(item) {
+      var copy = Object.assign({}, item);
+      if (lang === 'fr') {
+        if (item.hrefFr) copy.href = item.hrefFr;
+        if (item.labelFr) copy.label = item.labelFr;
+        if (item.descFr) copy.desc = item.descFr;
+        if (item.toolsFr) copy.tools = item.toolsFr;
+      } else if (lang === 'sw') {
+        var swHref = SW_CATEGORY_HREFS[item.id] || item.hrefSw;
+        if (swHref) copy.href = swHref;
+        if (item.labelSw) copy.label = item.labelSw;
+        if (item.descSw) copy.desc = item.descSw;
+        if (item.toolsSw) copy.tools = item.toolsSw;
+      }
+      return copy;
+    });
+  }
+
+  /* Expose localized NAV_ITEMS globally for command palette + other consumers */
+  window.__AFRO_NAV_ITEMS = _localizedGlobalNavItems();
 
   if (!customElements.get('afro-navbar')) {
     customElements.define('afro-navbar', AfroNavbar);

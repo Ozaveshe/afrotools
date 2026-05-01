@@ -4,30 +4,30 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tous les outils AfroTools — Plus de 2 550 outils gratuits pour l'Afrique | AfroTools</title>
-<meta name="description" content="Parcourez plus de 2 550 outils gratuits pour l'Afrique : calculateurs d'impôts, frais mobile money, convertisseurs de devises, PDF et plus — 54 pays africains.">
+<title>Tous les outils AfroTools — Plus de 2 594 outils gratuits pour l'Afrique | AfroTools</title>
+<meta name="description" content="Parcourez plus de 2 594 outils gratuits pour l'Afrique : calculateurs d'impôts, frais mobile money, convertisseurs de devises, PDF et plus — 54 pays africains.">
 <link rel="canonical" href="https://afrotools.com/fr/all-tools/">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/fr/all-tools/">
-<meta property="og:title" content="Tous les outils AfroTools — Plus de 2 550 outils gratuits">
+<meta property="og:title" content="Tous les outils AfroTools — Plus de 2 594 outils gratuits">
 <meta property="og:description" content="Explorez la collection complète d'outils AfroTools : impôts, mobile money, devises, PDF et plus pour tous les 54 pays africains.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tous les outils AfroTools — Plus de 2 550 outils gratuits">
-<meta name="twitter:description" content="2 550+ outils gratuits pour l'Afrique — impôts, mobile money, devises, PDF, IA — 54 pays, en français et en anglais.">
+<meta name="twitter:title" content="Tous les outils AfroTools — Plus de 2 594 outils gratuits">
+<meta name="twitter:description" content="2 594+ outils gratuits pour l'Afrique — impôts, mobile money, devises, PDF, IA — 54 pays, en français et en anglais.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Tous les outils AfroTools","description":"Plus de 2 550 outils gratuits pour les 54 pays africains — impôts, mobile money, devises, PDF et plus.","url":"https://afrotools.com/fr/all-tools/","inLanguage":"https://afrotools.com/fr/","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Tous les outils AfroTools","description":"Plus de 2 594 outils gratuits pour les 54 pays africains — impôts, mobile money, devises, PDF et plus.","url":"https://afrotools.com/fr/all-tools/","inLanguage":"https://afrotools.com/fr/","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/tool-registry.min.js?v=a3d86b37" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=3e2ee069" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -331,11 +331,12 @@ function renderTools(){
   }
 
   // Update counts
-  const allLive = AFRO_TOOLS.filter(t => t.status==='live'||t.status==='new').length;
-  const allPlanned = AFRO_TOOLS.filter(t => t.status==='planned').length;
+  const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats('fr') : null;
+  const allLive = publicStats ? publicStats.liveTools : AFRO_TOOLS.filter(t => t.status==='live'||t.status==='new').length;
+  const allPlanned = publicStats ? publicStats.inDevelopmentTools : AFRO_TOOLS.filter(t => t.status==='queued' || t.status==='planned').length;
   document.getElementById('statLive').textContent = allLive;
   document.getElementById('statPlanned').textContent = allPlanned;
-  document.getElementById('countAll').textContent = typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length;
+  document.getElementById('countAll').textContent = publicStats ? publicStats.display.totalTools : (typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length);
   document.getElementById('countLive').textContent = allLive;
   document.getElementById('resultsCount').textContent = tools.length + ' tool' + (tools.length!==1?'s':'');
 

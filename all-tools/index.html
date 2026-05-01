@@ -10,8 +10,8 @@
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/all-tools/">
-<meta property="og:title" content="All 2,550+ Free African Tools | AfroTools">
-<meta property="og:description" content="2,550+ free tools for Africa in English, French & Swahili. PAYE, PDF, CV, Currency, Engineering, AI-powered.">
+<meta property="og:title" content="All AfroTools | Free African Tools">
+<meta property="og:description" content="Browse AfroTools across English, French and Swahili. PAYE, PDF, CV, currency, engineering, AI-powered, and more.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,8 +23,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/tool-registry.min.js?v=a3d86b37" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=3e2ee069" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -53,17 +53,20 @@ a{text-decoration:none;color:inherit;}
 /* ── SEARCH & FILTER ── */
 .filter-bar{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;padding:14px 24px;position:sticky;top:60px;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,.04);}
 .filter-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.search-wrap{position:relative;flex:1;min-width:200px;max-width:340px;}
-.search-input{width:100%;padding:9px 36px 9px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.85rem;color:#111;background:#fafafa;transition:border-color .2s,box-shadow .2s;font-family:'DM Sans',sans-serif;}
+.search-wrap{position:relative;flex:1;min-width:220px;max-width:380px;order:1;}
+.search-input{width:100%;padding:9px 66px 9px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.85rem;color:#111;background:#fafafa;transition:border-color .2s,box-shadow .2s;font-family:'DM Sans',sans-serif;}
 .search-input:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.08);background:#fff;}
 .search-icon{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:.9rem;pointer-events:none;}
-.filter-tabs{display:flex;gap:6px;flex-wrap:wrap;}
-.filter-tab{padding:7px 14px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.search-clear{position:absolute;right:34px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:0;border-radius:50%;background:#e5e7eb;color:#475569;font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s;}
+.search-clear:hover,.search-clear:focus{background:#cbd5e1;color:#0f172a;outline:none;}
+.search-clear[hidden]{display:none;}
+.filter-tabs{display:flex;gap:6px;flex:1 1 100%;max-width:100%;order:3;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:thin;}
+.filter-tab{flex:0 0 auto;padding:7px 14px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .filter-tab:hover{border-color:var(--color-primary);color:var(--color-primary);}
 .filter-tab.active{background:var(--color-primary);border-color:var(--color-primary);color:#fff;}
 .filter-count{font-size:.65rem;background:rgba(0,0,0,.08);border-radius:10px;padding:1px 6px;margin-left:4px;}
 .filter-tab.active .filter-count{background:rgba(255,255,255,.2);}
-.sort-sel{padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:.75rem;font-weight:600;color:#374151;background:#fafafa;cursor:pointer;margin-left:auto;}
+.sort-sel{order:2;padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:.75rem;font-weight:600;color:#374151;background:#fafafa;cursor:pointer;margin-left:auto;}
 .sort-sel:focus{outline:none;border-color:var(--color-primary);}
 
 /* ── MAIN LAYOUT ── */
@@ -111,6 +114,9 @@ a{text-decoration:none;color:inherit;}
 .empty-state{text-align:center;padding:60px 20px;grid-column:1/-1;}
 .empty-state .e-icon{font-size:2.5rem;margin-bottom:12px;}
 .empty-state p{font-size:.9rem;color:#9ca3af;line-height:1.6;}
+.empty-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:18px;}
+.empty-actions button{border:1.5px solid #e5e7eb;background:#fff;border-radius:8px;padding:8px 12px;font:700 .72rem 'DM Sans',sans-serif;color:#475569;cursor:pointer;}
+.empty-actions button:hover,.empty-actions button:focus{border-color:var(--color-primary);color:var(--color-primary);outline:none;}
 
 /* SECTION DIVIDER */
 .sec-divider{height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:32px 0;}
@@ -144,8 +150,8 @@ a{text-decoration:none;color:inherit;}
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:locale:alternate" content="sw_TZ">
 <meta property="og:site_name" content="AfroTools">
-<meta name="twitter:title" content="All 2,550+ Free African Tools | AfroTools">
-<meta name="twitter:description" content="2,550+ free tools for Africa in English, French & Swahili. PAYE, PDF, CV, Currency, Engineering, AI-powered.">
+<meta name="twitter:title" content="All AfroTools | Free African Tools">
+<meta name="twitter:description" content="Browse AfroTools across English, French and Swahili. PAYE, PDF, CV, currency, engineering, AI-powered, and more.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <script type="application/ld+json">
 {
@@ -237,9 +243,9 @@ a{text-decoration:none;color:inherit;}
     <h1>Every Tool for <em>Africa</em></h1>
     <p class="hero-sub">The complete AfroTools library — financial calculators, AI advisors, PDF tools, CV builder, engineering, and more. Built for all 54 African countries. Always free.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="s-lbl">Live Tools</div><div class="s-val blue" id="statLive">2,550+</div></div>
-      <div class="hero-stat"><div class="s-lbl">In Development</div><div class="s-val" id="statPlanned">11</div></div>
-      <div class="hero-stat"><div class="s-lbl">Categories</div><div class="s-val blue">15</div></div>
+      <div class="hero-stat"><div class="s-lbl">Live Tools</div><div class="s-val blue" id="statLive">2,594+</div></div>
+      <div class="hero-stat"><div class="s-lbl">In Development</div><div class="s-val" id="statPlanned">5</div></div>
+      <div class="hero-stat"><div class="s-lbl">Categories</div><div class="s-val blue" id="statCategories">32</div></div>
       <div class="hero-stat"><div class="s-lbl">Countries Supported</div><div class="s-val blue">54</div></div>
       <div class="hero-stat"><div class="s-lbl">Price</div><div class="s-val blue">Free Forever</div></div>
     </div>
@@ -250,12 +256,13 @@ a{text-decoration:none;color:inherit;}
 <div class="filter-bar">
   <div class="filter-inner">
     <div class="search-wrap">
-      <input type="search" class="search-input" id="searchInput" placeholder="Search tools..." oninput="renderTools()">
+      <input type="search" class="search-input" id="searchInput" placeholder="Search by tool, country, category..." aria-label="Search all tools" autocomplete="off" oninput="handleSearchInput()">
+      <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" onclick="clearSearch()" hidden>&times;</button>
       <span class="search-icon">🔍</span>
     </div>
     <div class="filter-tabs" id="filterTabs">
-      <button class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">All <span class="filter-count" id="countAll">2,550+</span></button>
-      <button class="filter-tab" data-filter="live" onclick="setFilter('live',this)">Live <span class="filter-count" id="countLive">2,550+</span></button>
+      <button class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">All <span class="filter-count" id="countAll">2,599</span></button>
+      <button class="filter-tab" data-filter="live" onclick="setFilter('live',this)">Live <span class="filter-count" id="countLive">2,594</span></button>
       <button class="filter-tab" data-filter="ai" onclick="setFilter('ai',this)">✦ AI</button>
       <button class="filter-tab" data-filter="salary-tax" onclick="setFilter('salary-tax',this)">💰 PAYE</button>
       <button class="filter-tab" data-filter="financial" onclick="setFilter('financial',this)">🏦 Finance</button>
@@ -272,8 +279,19 @@ a{text-decoration:none;color:inherit;}
       <button class="filter-tab" data-filter="legal" onclick="setFilter('legal',this)">⚖️ Legal</button>
       <button class="filter-tab" data-filter="language" onclick="setFilter('language',this)">🗣️ Language</button>
       <button class="filter-tab" data-filter="data-productivity" onclick="setFilter('data-productivity',this)">📊 Data</button>
+      <button class="filter-tab" data-filter="government" onclick="setFilter('government',this)">🏛️ Gov</button>
+      <button class="filter-tab" data-filter="small-business" onclick="setFilter('small-business',this)">🏪 SME</button>
+      <button class="filter-tab" data-filter="insurance" onclick="setFilter('insurance',this)">🛡️ Insurance</button>
+      <button class="filter-tab" data-filter="fintech" onclick="setFilter('fintech',this)">💳 Fintech</button>
+      <button class="filter-tab" data-filter="energy" onclick="setFilter('energy',this)">⚡ Energy</button>
+      <button class="filter-tab" data-filter="transport" onclick="setFilter('transport',this)">🚚 Transport</button>
+      <button class="filter-tab" data-filter="travel-tourism" onclick="setFilter('travel-tourism',this)">✈️ Travel</button>
+      <button class="filter-tab" data-filter="creative" onclick="setFilter('creative',this)">🎨 Creative</button>
+      <button class="filter-tab" data-filter="religious-cultural" onclick="setFilter('religious-cultural',this)">🕌 Culture</button>
+      <button class="filter-tab" data-filter="sports" onclick="setFilter('sports',this)">⚽ Sports</button>
+      <button class="filter-tab" data-filter="career" onclick="setFilter('career',this)">📈 Career</button>
     </div>
-    <select class="sort-sel" id="sortSel" onchange="renderTools()">
+    <select class="sort-sel" id="sortSel" aria-label="Sort tools" onchange="renderTools()">
       <option value="priority">Sort: Recommended</option>
       <option value="name">Sort: A–Z</option>
       <option value="live">Sort: Live First</option>
@@ -338,17 +356,134 @@ const CAT_META = {
   'language':{name:'Language',color:'#faf5ff',icon:'🗣️'},
   'african':{name:'African',color:'#fef9ec',icon:'🌍'},
   'engineering':{name:'Engineering',color:'#f5f5f4',icon:'🏗️'},
+  'government':{name:'Government',color:'#eff6ff',icon:'🏛️'},
+  'small-business':{name:'Small Business',color:'#fff7ed',icon:'🏪'},
+  'insurance':{name:'Insurance',color:'#f0fdfa',icon:'🛡️'},
+  'fintech':{name:'Fintech',color:'#ecfdf5',icon:'💳'},
+  'telecom':{name:'Telecom',color:'#eef2ff',icon:'📱'},
+  'energy':{name:'Energy',color:'#fffbeb',icon:'⚡'},
+  'transport':{name:'Transport',color:'#fff7ed',icon:'🚚'},
+  'hr-payroll':{name:'HR & Payroll',color:'#f0fdfa',icon:'💼'},
+  'personal-finance':{name:'Personal Finance',color:'#f5f3ff',icon:'💵'},
+  'diaspora':{name:'Diaspora',color:'#e0f2fe',icon:'🌐'},
+  'religious-cultural':{name:'Religious & Cultural',color:'#fef3c7',icon:'🕌'},
+  'climate':{name:'Climate',color:'#f0fdf4',icon:'🌱'},
+  'sports':{name:'Sports',color:'#fef2f2',icon:'⚽'},
+  'mining':{name:'Mining',color:'#f5f5f4',icon:'⛏️'},
+  'creative':{name:'Creative',color:'#fdf2f8',icon:'🎨'},
+  'security':{name:'Security',color:'#f9fafb',icon:'🔒'},
+  'travel-tourism':{name:'Travel',color:'#e0f2fe',icon:'✈️'},
+  'career':{name:'Career',color:'#f5f3ff',icon:'📈'},
 };
+
+const CATEGORY_ALIASES = {
+  'african':['afro','afrotools','africa','pan african','uniquely african','local africa'],
+  'financial':['money','tax','paye','salary','fx','forex','rates'],
+  'document-pdf':['pdf','document','merge','split','compress','watermark'],
+  'image-design':['image','design','photo','qr','passport'],
+  'developer':['dev','code','api','json','regex','sql'],
+  'education':['school','student','gpa','scholarship','exam'],
+  'health':['medical','clinic','doctor','lab','wellness'],
+  'ecommerce':['business tax','vat','invoice','sales tax'],
+  'small-business':['business','sme','startup','shop','market','pos'],
+  'data-productivity':['productivity','roi','data','dashboard','calculator'],
+  'language':['translation','translate','swahili','yoruba','hausa'],
+  'engineering':['construction','cad','boq','floor plan'],
+  'trade':['import','export','customs','shipping','afcfta'],
+  'government':['civic','passport','visa','id','voter','public service'],
+  'transport':['car','vehicle','logistics','delivery','road'],
+  'travel-tourism':['travel','tourism','safari','hotel','flight'],
+  'creative':['creator','media','design','thumbnail'],
+  'religious-cultural':['religion','culture','zakat','ramadan','hajj'],
+  'energy':['power','electricity','solar','fuel','generator'],
+  'insurance':['cover','premium','claims','policy'],
+  'fintech':['banking','mobile money','payments','crypto'],
+  'telecom':['mobile','data','airtime','network'],
+  'climate':['environment','carbon','flood','sustainability'],
+  'career':['job','cv','resume','salary negotiation']
+};
+
+const SEARCH_STOPWORDS = new Set(['a','an','and','for','in','of','or','the','to','with']);
+const SEARCH_TERM_ALIASES = { 'afrotool':'afro', 'afrotools':'afro', 'biz':'business' };
 
 // AI-powered tools list
 const AI_TOOLS = ['ng-paye','ke-paye','gh-paye','za-paye','eg-paye','tz-paye','et-paye','rw-paye'];
 
 let activeFilter = 'all';
 
+function isAiTool(tool){
+  if(!tool) return false;
+  if(AI_TOOLS.includes(tool.id)) return true;
+  return /\b(ai|advisor|assistant|interpreter)\b/.test(normalizeText([tool.name, tool.desc].join(' ')));
+}
+
+function escapeHtml(value){
+  return String(value||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/'/g,'&#39;')
+    .replace(/"/g,'&quot;');
+}
+
+function normalizeText(value){
+  return String(value||'')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/&/g,' and ')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+
+function tokenizeSearch(value){
+  return normalizeText(value)
+    .split(/\s+/)
+    .map(term => SEARCH_TERM_ALIASES[term] || term)
+    .filter(term => term && !SEARCH_STOPWORDS.has(term));
+}
+
 function setFilter(f, btn){
   activeFilter = f;
-  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.filter-tab').forEach(b => {
+    const isActive = b.dataset.filter === f;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+  if(btn) btn.classList.add('active');
+  renderTools();
+}
+
+function resetFilterToAll(){
+  if(activeFilter === 'all') return;
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-tab').forEach(b => {
+    const isActive = b.dataset.filter === 'all';
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+
+function updateSearchClear(){
+  const input = document.getElementById('searchInput');
+  const clear = document.getElementById('searchClear');
+  if(clear && input) clear.hidden = !input.value.trim();
+}
+
+function handleSearchInput(){
+  const input = document.getElementById('searchInput');
+  if(input && input.value.trim()) resetFilterToAll();
+  updateSearchClear();
+  renderTools();
+}
+
+function clearSearch(){
+  const input = document.getElementById('searchInput');
+  if(input){
+    input.value = '';
+    input.focus();
+  }
+  updateSearchClear();
   renderTools();
 }
 
@@ -363,12 +498,51 @@ function getIcon(tool){
 }
 
 function getCatMeta(cat){
-  return CAT_META[cat] || {name:cat,color:'#f3f4f6',icon:'🔧'};
+  const registryMeta = typeof AFRO_CATEGORIES !== 'undefined' ? AFRO_CATEGORIES[cat] : null;
+  const localMeta = CAT_META[cat] || {};
+  return {
+    name: localMeta.name || (registryMeta && registryMeta.name) || cat || 'Tools',
+    color: localMeta.color || (registryMeta && registryMeta.bg) || '#f3f4f6',
+    icon: localMeta.icon || (registryMeta && registryMeta.icon) || '🔧',
+    desc: (registryMeta && registryMeta.desc) || ''
+  };
+}
+
+function getToolSearchText(tool){
+  const cat = getCatMeta(tool.category);
+  return normalizeText([
+    tool.id,
+    tool.name,
+    tool.desc,
+    tool.category,
+    cat.name,
+    cat.desc,
+    tool.href,
+    tool.tier,
+    tool.phase,
+    (tool.countries||[]).join(' '),
+    (tool.tags||[]).join(' '),
+    (tool.features||[]).join(' '),
+    (CATEGORY_ALIASES[tool.category]||[]).join(' ')
+  ].join(' '));
+}
+
+function toolMatchesSearch(tool, terms){
+  if(!terms.length) return true;
+  const haystack = getToolSearchText(tool);
+  return terms.every(term => haystack.includes(term));
+}
+
+function applySearchSuggestion(query){
+  const input = document.getElementById('searchInput');
+  if(input) input.value = query;
+  handleSearchInput();
 }
 
 function renderTools(){
   const grid = document.getElementById('toolsGrid');
-  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const rawSearch = document.getElementById('searchInput').value.trim();
+  const searchTerms = tokenizeSearch(rawSearch);
   const sort = document.getElementById('sortSel').value;
 
   if(typeof AFRO_TOOLS === 'undefined'){
@@ -376,13 +550,19 @@ function renderTools(){
     return;
   }
 
+  document.querySelectorAll('.filter-tab').forEach(b => {
+    const isActive = b.dataset.filter === activeFilter;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+
   let tools = [...AFRO_TOOLS];
 
   // Filter
   if(activeFilter === 'live'){
     tools = tools.filter(t => t.status === 'live' || t.status === 'new');
   } else if(activeFilter === 'ai'){
-    tools = tools.filter(t => AI_TOOLS.includes(t.id));
+    tools = tools.filter(t => isAiTool(t));
   } else if(activeFilter === 'salary-tax'){
     // PAYE tools have category='financial' in the registry
     tools = tools.filter(t => t.category === 'financial' && (t.id||'').includes('paye'));
@@ -391,12 +571,8 @@ function renderTools(){
   }
 
   // Search
-  if(search){
-    tools = tools.filter(t =>
-      t.name.toLowerCase().includes(search) ||
-      (t.desc||'').toLowerCase().includes(search) ||
-      (t.category||'').toLowerCase().includes(search)
-    );
+  if(searchTerms.length){
+    tools = tools.filter(t => toolMatchesSearch(t, searchTerms));
   }
 
   // Sort
@@ -411,54 +587,67 @@ function renderTools(){
     tools.sort((a,b) => (b.priority||0) - (a.priority||0));
   }
 
-  // Update counts — use getTotalToolCount() for accurate totals
-  // (accounts for hub entries whose country sub-tools aren't individually registered)
-  const totalAll = typeof getTotalToolCount === 'function' ? getTotalToolCount() : AFRO_TOOLS.length;
-  const totalLive = typeof getTotalToolCount === 'function'
-    ? getTotalToolCount(function(t){ return t.status==='live'||t.status==='new'; })
-    : AFRO_TOOLS.filter(t => t.status==='live'||t.status==='new').length;
-  const totalPlanned = typeof getTotalToolCount === 'function'
-    ? getTotalToolCount(function(t){ return t.status==='planned'; })
-    : AFRO_TOOLS.filter(t => t.status==='planned').length;
-  document.getElementById('statLive').textContent = totalLive;
-  document.getElementById('statPlanned').textContent = totalPlanned;
-  document.getElementById('countAll').textContent = totalAll;
-  document.getElementById('countLive').textContent = totalLive;
+  // Update counts using the same registry rows this page actually renders.
+  const publicStats = typeof getPublicToolStats === 'function' ? getPublicToolStats('en') : null;
+  const totalAll = publicStats ? publicStats.totalTools : AFRO_TOOLS.length;
+  const totalLive = publicStats ? publicStats.liveTools : AFRO_TOOLS.filter(t => t.status === 'live' || t.status === 'new').length;
+  const totalQueued = publicStats ? publicStats.inDevelopmentTools : AFRO_TOOLS.filter(t => t.status === 'queued' || t.status === 'planned').length;
+  const totalCategories = publicStats ? publicStats.categories : (typeof AFRO_CATEGORIES !== 'undefined' ? Object.keys(AFRO_CATEGORIES).length : 0);
+  document.getElementById('statLive').textContent = publicStats ? publicStats.display.liveToolsPlus : totalLive.toLocaleString() + '+';
+  document.getElementById('statPlanned').textContent = totalQueued.toLocaleString();
+  document.getElementById('countAll').textContent = totalAll.toLocaleString();
+  document.getElementById('countLive').textContent = totalLive.toLocaleString();
+  if (document.getElementById('statCategories')) {
+    document.getElementById('statCategories').textContent = totalCategories.toLocaleString();
+  }
   document.getElementById('resultsCount').textContent = tools.length + ' tool' + (tools.length!==1?'s':'');
+  document.getElementById('sectionTitle').textContent = rawSearch ? 'Search Results' : (activeFilter === 'all' ? 'All Tools' : getCatMeta(activeFilter).name);
+  updateSearchClear();
 
   // Render
   if(tools.length === 0){
     grid.innerHTML = `<div class="empty-state">
       <div class="e-icon">🔍</div>
-      <p>No tools match "<strong>${search||activeFilter}</strong>".<br>Try a different search or category.</p>
+      <p>No tools match "<strong>${escapeHtml(rawSearch||activeFilter)}</strong>".</p>
+      <div class="empty-actions">
+        <button type="button" onclick="applySearchSuggestion('paye')">PAYE</button>
+        <button type="button" onclick="applySearchSuggestion('pdf')">PDF</button>
+        <button type="button" onclick="applySearchSuggestion('afro')">Afro</button>
+        <button type="button" onclick="applySearchSuggestion('business')">Business</button>
+      </div>
     </div>`;
     return;
   }
 
   const catMeta = getCatMeta;
-  const isAI = id => AI_TOOLS.includes(id);
-  const isNew = t => t.status === 'new' || (t.id && t.id.includes('solar') || t.id.includes('floor-plan') || t.id.includes('boq'));
+  const isNew = t => t.status === 'new' || (t.id && (t.id.includes('solar') || t.id.includes('floor-plan') || t.id.includes('boq')));
 
   grid.innerHTML = tools.map(t => {
     const live = t.status === 'live' || t.status === 'new';
     const cat = catMeta(t.category);
-    const isAiTool = isAI(t.id);
-    const cardClass = isAiTool ? 'tool-card ai-powered' : live && isNew(t) ? 'tool-card new' : 'tool-card';
-    const safeName = (t.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const aiPowered = isAiTool(t);
+    const cardClass = aiPowered ? 'tool-card ai-powered' : live && isNew(t) ? 'tool-card new' : 'tool-card';
+    const safeName = escapeHtml(t.name);
+    const safeDesc = escapeHtml(t.desc);
+    const safeHref = typeof t.href === 'string' && (t.href.startsWith('/') || t.href.startsWith('https://afrotools.com/')) ? t.href : '#';
+    const safeIcon = escapeHtml(t.icon || '🛠️');
+    const safeCatName = escapeHtml(cat.name);
+    const safeCatIcon = escapeHtml(cat.icon);
     const slug = t.id || '';
 
-    return `<a href="${t.href||'#'}" class="${cardClass}">
+    return `<a href="${safeHref}" class="${cardClass}">
       <div class="tc-image" style="background:linear-gradient(135deg,${cat.color},#e2e8f0)">
         ${slug ? `<img src="${getToolIconSrc(slug)}" alt="${safeName}" width="600" height="400" loading="lazy" onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex');};this.src='${getToolIconFallback(slug)}';">` : ''}
-        <div class="tc-image-fallback" style="display:none;background:linear-gradient(135deg,${cat.color},#cbd5e1)">${(t.icon||'🛠️')}</div>
+        <div class="tc-image-fallback" style="display:none;background:linear-gradient(135deg,${cat.color},#cbd5e1)">${safeIcon}</div>
       </div>
       <div class="tc-body">
-        <div class="tc-name">${t.name}</div>
-        <div class="tc-desc">${(t.desc||'').substring(0,100)}${(t.desc||'').length>100?'…':''}</div>
+        <div class="tc-name">${safeName}</div>
+        <div class="tc-desc">${safeDesc.substring(0,100)}${safeDesc.length>100?'…':''}</div>
         <div class="tc-meta">
+          <span class="cat-pill">${safeCatIcon} ${safeCatName}</span>
           <span class="tc-badge ${live?'live':'planned'}">${live?'● Live':'Soon'}</span>
           ${t.tier?`<span class="tc-badge tier${t.tier.replace('T','')}">${t.tier}</span>`:''}
-          ${isAiTool?'<span class="tc-badge" style="background:#ede9fe;color:#6d28d9;">✦ AI</span>':''}
+          ${aiPowered?'<span class="tc-badge" style="background:#ede9fe;color:#6d28d9;">✦ AI</span>':''}
           ${t.countries&&t.countries.length<=4?`<span class="tc-countries">${t.countries.join(' · ')}</span>`:''}
         </div>
       </div>

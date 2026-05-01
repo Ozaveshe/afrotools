@@ -64,6 +64,12 @@ AfroTools should feel precise, modern, and authored. The product language is not
 - Use them where they clarify depth or importance.
 - Do not let every region become a frosted card.
 
+### 9. Standalone metric panels need balance
+
+- Do not use standalone metric containers that park a label block, decorative rail, or empty slab on the left while isolating a giant number on the right.
+- For valuation, revenue, score, and follower panels, lead with the number, then add compact source/status metadata and a short note in the same visual rhythm.
+- If a metric needs emphasis, use typography, spacing, and subtle surface texture before adding extra side ornaments.
+
 ## Internal Surface Rules
 
 - Mission control, admin pages, and internal consoles should still feel branded.

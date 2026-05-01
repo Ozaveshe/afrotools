@@ -184,9 +184,6 @@ exports.handler = async function (event) {
   if (!method || !PAYOUT_METHODS.includes(method)) return reply(400, { error: 'Invalid payout method' }, headers);
   if (!Number.isFinite(pointsAmount) || pointsAmount <= 0) return reply(400, { error: 'Invalid points amount' }, headers);
 
-  const validation = validateDetails(method, details);
-  if (validation.error) return reply(400, { error: validation.error }, headers);
-
   const minRequired = method === 'pro_credit' ? PRO_COST : MIN_CASHOUT;
   if (pointsAmount < minRequired) return reply(400, { error: 'Minimum ' + minRequired + ' points required' }, headers);
 
@@ -198,6 +195,13 @@ exports.handler = async function (event) {
     const profile = await fetchPointsProfile(user.id);
     if (!profile) return reply(400, { error: 'No points profile found' }, headers);
     if ((profile.current_balance || 0) < pointsAmount) return reply(400, { error: 'Insufficient balance' }, headers);
+
+    const savedDetails = profile.payout_preference === method && profile.payout_details && typeof profile.payout_details === 'object'
+      ? profile.payout_details
+      : {};
+    const detailsForValidation = Object.keys(details).length > 0 ? details : savedDetails;
+    const validation = validateDetails(method, detailsForValidation);
+    if (validation.error) return reply(400, { error: validation.error }, headers);
 
     if (method !== 'pro_credit') {
       const pending = await sbFetch('cashout_requests?user_id=eq.' + user.id + '&status=eq.pending');

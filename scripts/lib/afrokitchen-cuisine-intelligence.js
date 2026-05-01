@@ -526,6 +526,56 @@ function buildMenuBuilder(manifest, rules, recipeInsights) {
   };
 }
 
+function summarizeRecipeForSocial(recipe, socialMeta, index, showcase) {
+  const meta = socialMeta || {};
+  return {
+    slug: recipe.slug,
+    name: recipe.name,
+    country_code: recipe.country_code,
+    country_name: recipe.country_name,
+    route_path: recipe.route_path,
+    route_url: recipe.route_url,
+    category: recipe.category,
+    total_time_minutes: recipe.total_time_minutes,
+    rank: index + 1,
+    showcase_slug: showcase.slug,
+    showcase_name: showcase.name,
+    showcase_route_path: `/tools/afrokitchen/collections/${showcase.slug}/`,
+    hook: meta.hook || `${recipe.name} deserves the center of the table.`,
+    why_it_moves: meta.why_it_moves || "It has enough visual, cultural, and serving energy to carry a shared table.",
+    caption: meta.caption || `Cooking ${recipe.name} from ${recipe.country_name}.`,
+    hosting_move: meta.hosting_move || "Serve it family-style so the dish can carry the room.",
+    photo_angle: meta.photo_angle || "Shoot the finished plate in warm natural light with the main texture visible."
+  };
+}
+
+function buildSocialShowcase(manifest, rules) {
+  const socialRules = rules.social_showcase || {};
+  const recipeBySlug = new Map((manifest.recipes || []).map((recipe) => [recipe.slug, recipe]));
+  const showcase = {
+    slug: socialRules.slug || "across-africa-showstoppers",
+    name: socialRules.name || "Across Africa Showstoppers"
+  };
+  const recipes = (socialRules.recipe_slugs || [])
+    .map((slug, index) => {
+      const recipe = recipeBySlug.get(slug);
+      if (!recipe || !recipe.generated_in_wave) return null;
+      return summarizeRecipeForSocial(recipe, (socialRules.recipes || {})[slug], index, showcase);
+    })
+    .filter(Boolean);
+
+  return {
+    ...showcase,
+    description:
+      socialRules.description ||
+      "A social cooking board for the dishes people photograph, debate, serve proudly, and remember.",
+    hashtags: socialRules.hashtags || [],
+    share_actions: socialRules.share_actions || [],
+    total_recipes: recipes.length,
+    recipes
+  };
+}
+
 function attachCollectionRefsToRecipes(recipeInsights, curatedCollections) {
   (curatedCollections || []).forEach((collection) => {
     (collection.recipes || []).forEach((recipe) => {
@@ -537,6 +587,25 @@ function attachCollectionRefsToRecipes(recipeInsights, curatedCollections) {
         route_path: collection.route_path
       });
     });
+  });
+}
+
+function attachSocialRefsToRecipes(recipeInsights, socialShowcase) {
+  (socialShowcase.recipes || []).forEach((recipe) => {
+    const insight = recipeInsights[recipe.slug];
+    if (!insight) return;
+    insight.social = {
+      is_showstopper: true,
+      rank: recipe.rank,
+      showcase_slug: socialShowcase.slug,
+      showcase_name: socialShowcase.name,
+      showcase_route_path: recipe.showcase_route_path,
+      hook: recipe.hook,
+      why_it_moves: recipe.why_it_moves,
+      caption: recipe.caption,
+      hosting_move: recipe.hosting_move,
+      photo_angle: recipe.photo_angle
+    };
   });
 }
 
@@ -603,6 +672,8 @@ function buildCuisineIntelligence(manifest, options) {
   attachCollectionRefsToRecipes(recipeInsights, curatedCollections);
   const countries = buildCountryInsights(manifest, recipeInsights, rules);
   const menuBuilder = buildMenuBuilder(manifest, rules, recipeInsights);
+  const socialShowcase = buildSocialShowcase(manifest, rules);
+  attachSocialRefsToRecipes(recipeInsights, socialShowcase);
   const publicRecipes = {};
   Object.keys(recipeInsights).forEach((slug) => {
     const insight = recipeInsights[slug];
@@ -622,7 +693,8 @@ function buildCuisineIntelligence(manifest, options) {
         missing_roles: insight.image.missing_roles
       },
       menu_tags: insight.menu_tags,
-      curated_collections: insight.curated_collections
+      curated_collections: insight.curated_collections,
+      social: insight.social || null
     };
   });
 
@@ -635,7 +707,8 @@ function buildCuisineIntelligence(manifest, options) {
     hero_image_count: imageRows.filter((row) => row.status !== "missing").length,
     gallery_ready_count: imageRows.filter((row) => row.status === "gallery-ready").length,
     chef_ready_count: qualityRows.filter((row) => row.status === "chef-ready").length,
-    needs_image_count: qualityRows.filter((row) => row.status === "needs-image").length
+    needs_image_count: qualityRows.filter((row) => row.status === "needs-image").length,
+    showstopper_count: socialShowcase.total_recipes
   };
 
   return {
@@ -647,6 +720,7 @@ function buildCuisineIntelligence(manifest, options) {
     countries,
     curated_collections: curatedCollections,
     menu_builder: menuBuilder,
+    social_showcase: socialShowcase,
     contribution_workflow: rules.contribution_workflow,
     report: {
       quality: qualityRows.sort((left, right) => left.score - right.score || left.name.localeCompare(right.name)),
@@ -683,6 +757,7 @@ function publicPayload(intelligence) {
       }))
     })),
     menu_builder: intelligence.menu_builder,
+    social_showcase: intelligence.social_showcase,
     contribution_workflow: intelligence.contribution_workflow
   };
 }

@@ -46,6 +46,7 @@
 - For tool social cards, `scripts/apply-og-fallbacks.js` maps `/assets/img/tools/<tool-id>.*` through `assets/js/components/tool-registry.js`; add the image with the registry `id`, then run `npm run seo:og`. The script should preserve page-specific non-tool images, such as AfroKitchen recipe photos, instead of replacing them with the default OG card.
 - If Search Console starts surfacing `.html` alternates, run `node scripts/fix-canonical-alias-links.js` to collapse internal hrefs onto each page's preferred route and `node scripts/update-html-canonical-redirects.js` to regenerate the 301 block for safe `.html` aliases
 - Treat the file shape as the route source of truth: `foo/index.html` serves `/foo/`, while `foo.html` serves `/foo` with no trailing slash. Keep canonicals, hreflang, JSON-LD, sitemap entries, and injected internal links aligned to that served route rather than to a stale in-page canonical.
+- If public tool-count copy drifts across homepage, search, category, country, French, or Swahili surfaces, run `npm run counts:sync` before SEO review so those static marketing pages inherit the live registry-backed public count from one source.
 - Treat `widgets/iframe/` as embed utility surfaces: keep them `noindex, follow` and canonicalize them to the full tool route with `npm run seo:widgets`
 - Treat thin tool workspace/query/detail subviews under `tools/` as utility surfaces: run `node scripts/fix-thin-tool-pages-seo.js` to set `noindex, follow` and canonicalize them back to `/tools/<tool>/`
 - Keep `npm run seo` from self-canonicalizing `noindex` utility pages; those pages should keep the parent canonical assigned by the thin-page fixer.
@@ -129,8 +130,17 @@
   - `AM Content Batch`
   - `PM Content Batch`
   - `SEO Guardrail Sweep`
-  - `Live Data Freshness Watch`
+  - `Live Data Cross-Product Watch`
   - `Release Safety Sweep`
+- Product freshness agents should stay lane-specific instead of hiding under one broad watcher:
+  - `AfroStream Core Health & Integrity`
+  - `AfroStream Newswire Agent`
+  - `AfroStream Creator Valuation Agent`
+  - `AfroStream Profile Integrity Agent`
+  - `Live Data Product Upgrade Agent`
+  - `AfroKitchen Media Freshness Agent`
+  - `Scholarship Source Expansion Agent`
+  - `Car Price Intelligence Refresh Agent`
 - Prefer `worktree` execution for recurring repo jobs so runs stay isolated from the main checkout.
 - For content-batch automations on Windows, keep the Supabase MCP config in global Codex config so clean worktrees can see it.
 - If a fallback secret appears missing during a Windows worktree run, check the Windows user environment store before concluding the live publish path is blocked.
