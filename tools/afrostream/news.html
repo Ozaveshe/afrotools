@@ -86,6 +86,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 .as-news-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: var(--news-radius); overflow: hidden; min-height: 440px; }
 
 .as-hero-featured { position: relative; cursor: pointer; overflow: hidden; }
+.as-hero-featured, .as-hero-side-card, .as-news-card, .as-related-card { display: block; color: inherit; text-decoration: none; }
 .as-hero-featured-img { position: absolute; inset: 0; transition: transform .6s ease; }
 .as-hero-featured:hover .as-hero-featured-img { transform: scale(1.03); }
 .as-hero-featured-overlay { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.3) 50%, rgba(0,0,0,.1) 100%); z-index: 1; }
@@ -737,6 +738,10 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     window.location.href = AS_UTIL.articleHref ? AS_UTIL.articleHref(slug) : ('/tools/afrostream/article.html?slug=' + encodeURIComponent(slug));
   }
 
+  function articleHref(slug) {
+    return AS_UTIL.articleHref ? AS_UTIL.articleHref(slug) : ('/tools/afrostream/article.html?slug=' + encodeURIComponent(slug));
+  }
+
   /* -- HERO RENDER ---------------------------------------------- */
   function renderHero(items) {
     var heroGrid = document.getElementById('heroGrid');
@@ -749,7 +754,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
     var side1 = items[1] || null;
     var side2 = items[2] || null;
 
-    var html = '<div class="as-hero-featured" data-slug="' + feat.slug + '">' +
+    var html = '<a href="' + articleHref(feat.slug) + '" class="as-hero-featured" data-slug="' + feat.slug + '">' +
       '<div class="as-hero-featured-img" style="' + imgStyle(feat) + '"></div>' +
       '<div class="as-hero-featured-overlay"></div>' +
       '<div class="as-hero-featured-content">' +
@@ -764,12 +769,12 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
           '<span>' + feat.readTime + ' min read</span>' +
         '</div>' +
       '</div>' +
-    '</div>';
+    '</a>';
 
     html += '<div class="as-hero-side">';
     [side1, side2].forEach(function(card) {
       if (!card) return;
-      html += '<div class="as-hero-side-card" data-slug="' + card.slug + '">' +
+      html += '<a href="' + articleHref(card.slug) + '" class="as-hero-side-card" data-slug="' + card.slug + '">' +
         '<div class="as-hero-side-card-img" style="' + imgStyle(card) + '"></div>' +
         '<div class="as-hero-side-card-overlay"></div>' +
         '<div class="as-hero-side-card-content">' +
@@ -777,7 +782,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
           '<h3>' + card.headline + '</h3>' +
           '<div class="as-hero-card-meta">' + relativeDate(card.date) + ' \u00B7 ' + card.readTime + ' min read</div>' +
         '</div>' +
-      '</div>';
+      '</a>';
     });
     html += '</div>';
 
@@ -786,7 +791,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 
   /* -- CARD RENDER ---------------------------------------------- */
   function newsCard(n) {
-    return '<article class="as-news-card rv" data-cat="' + n.cat + '" data-slug="' + n.slug + '">' +
+    return '<a href="' + articleHref(n.slug) + '" class="as-news-card rv" data-cat="' + n.cat + '" data-slug="' + n.slug + '">' +
       '<div class="as-news-card-img">' +
         '<div class="as-news-card-img-inner" style="' + imgStyle(n) + '"></div>' +
         '<span class="as-cat-badge" data-cat="' + n.cat + '">' + n.catLabel + '</span>' +
@@ -802,7 +807,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
           '<span>' + n.author + '</span>' +
         '</div>' +
       '</div>' +
-    '</article>';
+    '</a>';
   }
 
   /* -- RENDER --------------------------------------------------- */
@@ -928,7 +933,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
         '<h3 class="as-related-title">Related Articles</h3>' +
         '<div class="as-related-grid">' +
         related.map(function(r) {
-          return '<div class="as-related-card" data-slug="' + r.slug + '">' +
+          return '<a href="' + articleHref(r.slug) + '" class="as-related-card" data-slug="' + r.slug + '">' +
             '<div class="as-related-card-img" style="' + imgStyle(r) + '">' +
               '<span class="as-cat-badge" data-cat="' + r.cat + '">' + r.catLabel + '</span>' +
             '</div>' +
@@ -936,7 +941,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
               '<h4>' + r.headline + '</h4>' +
               '<div class="as-related-meta">' + relativeDate(r.date) + ' \u00B7 ' + r.readTime + ' min read</div>' +
             '</div>' +
-          '</div>';
+          '</a>';
         }).join('') +
         '</div></div>';
     }
@@ -1040,6 +1045,8 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   document.addEventListener('click', function(e) {
     var card = e.target.closest('.as-news-card, .as-hero-featured, .as-hero-side-card, .as-related-card');
     if (card && card.dataset.slug) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
       navigateToArticle(card.dataset.slug);
     }
   });
