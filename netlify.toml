@@ -115,6 +115,9 @@
 [functions."scheduled-fetch-crypto"]
   schedule = "0 * * * *"
 
+[functions."scheduled-refresh-market-data"]
+  schedule = "0 1 * * *"
+
 # --- Live Monitoring API Redirects ---
 
 # --- Static Source Denylist ---
@@ -280,6 +283,11 @@
 [[redirects]]
   from = "/api/market-data-ingest"
   to = "/.netlify/functions/api-market-data-ingest"
+  status = 200
+
+[[redirects]]
+  from = "/api/market-data-refresh"
+  to = "/.netlify/functions/scheduled-refresh-market-data"
   status = 200
 
 # Public AfroData API v1

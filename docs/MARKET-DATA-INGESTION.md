@@ -39,6 +39,33 @@ The first supported datasets are:
   - creates an ingest run
   - inserts source-backed dataset rows
   - supersedes older public rows from the same source and metric
+- `GET /api/market-data-refresh`
+  - protected by `x-admin-key`
+  - runs the registered source collectors immediately
+  - accepts optional `dataset` or `source_key` filters
+
+## Daily Automation
+
+- `scheduled-refresh-market-data`
+  - runs once per day via Netlify Scheduled Functions
+  - pulls every active supported row from `public.market_data_sources`
+  - fetches the live source page or PDF
+  - parses verified fee or quote rows
+  - writes fresh rows into the public domain tables
+  - logs each attempt in `public.market_data_source_runs`
+
+The first automated collectors cover the currently registered live sources:
+
+- `gh-mtn-momo-tariffs`
+- `ke-safaricom-mpesa-terms`
+- `ke-safaricom-buy-goods-guide`
+- `ug-mtn-momopay-faq`
+- `ug-mtn-momo-campaign-payments-2026`
+- `ug-mtn-international-remittances`
+- `wise-*` corridor sources for remittance quotes
+
+Unsupported source keys stay in inventory but will log a failed run until a collector is added for that key.
+Sites that block server-side fetches can also produce failed runs even when a collector exists; those sources need either a different official endpoint or a browser-assisted refresh lane.
 
 ## POST Shape
 
@@ -87,4 +114,4 @@ The public APIs filter on `expires_at`, so expired rows stop surfacing even if t
 
 ## Next Step
 
-After this foundation is live, add real source collectors or admin workflows that feed this endpoint with official fintech tariff rows and corridor-specific remittance quotes.
+After this foundation is live, keep expanding the source inventory and collector coverage so more provider-country lanes refresh automatically instead of depending on manual inserts.
