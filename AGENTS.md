@@ -26,16 +26,21 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 ## Core Commands
 
 - `npm run build` - full site rebuild and post-processing
+- `npm run build:deploy` - build the publishable `dist/` artifact
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
+- `npm run audit:dist` - audit the generated deploy artifact
+- `npm run security:scan` - scan for secrets and unsafe publish output
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
+- `npm run seo:widgets` - normalize embed utility page SEO
 - `npm run build:i18n -- --all` - regenerate translations
 - `npm run build:i18n:validate` - validate i18n output
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
+- `npm run inventory:site` - rebuild the internal site inventory snapshot
 
 ## Edit Strategy
 
@@ -49,11 +54,14 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `assets/js/components/tool-registry.js`
 - `_redirects`
 - `_headers`
+- `netlify.toml`
 - `netlify/functions/`
 - `scripts/build-*.js`
 - `scripts/generate-*.js`
+- `scripts/audit-dist.js`
 - `sitemap*.xml`
 - `assets/js/bundles/`
+- `dist/`
 - `*.min.js`
 
 Do not hand-edit generated files unless the source is missing or the task explicitly calls for a direct patch.
@@ -76,7 +84,15 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
+- Keep `widgets/iframe/` utility pages `noindex, follow` and normalize them with `npm run seo:widgets`.
+- Keep generated deploy output such as `dist/` out of source SEO scans; regenerate it from source instead of patching generated URLs.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
+
+### Content publishing
+
+- Read `docs/CONTENT-PUBLISHING-WORKFLOW.md`.
+- Treat `/blog/` as static repo-backed content.
+- Treat AfroStream news as a live Supabase-backed publishing surface and use the configured `supabase` MCP server first for live publishing or inspection.
 
 ### i18n work
 
@@ -95,6 +111,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
 - Car data changes: `npm run cars:catalog:refresh`
+- Deploy or publish-surface changes: `npm run build:deploy`, `npm run audit:dist`, and `npm run security:scan`
 - Netlify/server code changes: targeted `node -c` or direct function smoke checks when available
 
 ## Deliverables
