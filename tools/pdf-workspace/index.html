@@ -155,6 +155,7 @@
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-workspace/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/nafasi-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-workspace/" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -305,7 +306,7 @@
 <script src="/assets/js/components/save-to-vault-button.js?v=56fac087" defer></script>
 <script src="/assets/js/afro-vault.js?v=1de55842" defer></script>
 <script src="/assets/js/lib/qpdf-aes.js?v=d44daa51"></script>
-<script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
+<script src="/assets/js/lib/pdf-download-gate.js?v=20260501" defer></script>
 <div class="p-ov" id="pOv"><div class="p-card"><div class="p-spin"></div><h3 id="pT">Processing...</h3><p id="pS"></p><div class="p-bar"><div class="p-fill" id="pF"></div></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -313,8 +314,8 @@
 function loadJS(u){return new Promise(function(r,j){var s=document.createElement("script");s.src=u;s.onload=r;s.onerror=j;document.head.appendChild(s)})}
 var hasPJ=false;
 async function init(){
-  try{await loadJS("https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js")}catch(e){try{await loadJS("https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js")}catch(e2){toast("Cannot load PDF library",1);return}}
-  try{await loadJS("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";hasPJ=true}catch(e){try{await loadJS("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";hasPJ=true}catch(e2){}}
+  try{await loadJS("/assets/vendor/pdf-lib/pdf-lib.min.js")}catch(e){toast("Cannot load PDF library",1);return}
+  try{await loadJS("/assets/vendor/pdfjs/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="/assets/vendor/pdfjs/pdf.worker.min.js";hasPJ=true}catch(e){}
   run();
 }
 init();

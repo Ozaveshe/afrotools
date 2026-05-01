@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uwanja wa SQL - practice SQLite queries | AfroTools</title>
+<meta name="description" content="Practice SQL kwenye browser kwa datasets za biashara, shule, kliniki na mobile money; run SQLite queries, import CSV na export results.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/uwanja-wa-sql/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/uwanja-wa-sql/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sql-playground/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sql-playground/">
+
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Uwanja wa SQL - practice SQLite queries | AfroTools">
+<meta property="og:description" content="Practice SQL kwenye browser kwa datasets za biashara, shule, kliniki na mobile money; run SQLite queries, import CSV na export results.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/uwanja-wa-sql/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Uwanja wa SQL - practice SQLite queries | AfroTools">
+<meta name="twitter:description" content="Practice SQL kwenye browser kwa datasets za biashara, shule, kliniki na mobile money; run SQLite queries, import CSV na export results.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+
+<style>
+:root{
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#dbe4ee;
+  --soft:#f8fafc;
+  --panel:#fff;
+  --blue:#2563eb;
+  --green:#047857;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;color:var(--ink)}
+.hero{background:linear-gradient(135deg,#08111f 0%,#12365c 48%,#2563eb 100%);color:#fff}
+.hero-inner{max-width:1280px;margin:0 auto;padding:42px 22px 34px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.62);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+h1{font-size:clamp(2rem,5vw,4.5rem);line-height:.98;margin:0 0 14px;font-weight:800;letter-spacing:0;max-width:920px}
+.hero-copy{font-size:1.02rem;line-height:1.72;max-width:800px;color:rgba(255,255,255,.82);margin:0}
+.hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.hero-stat{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:8px;padding:14px}
+.hero-stat strong{display:block;font-size:1.45rem;color:#fff}
+.hero-stat span{font-size:.78rem;color:rgba(255,255,255,.68)}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 22px 70px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start}
+.left,.right{display:grid;gap:16px}
+.right{position:sticky;top:78px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfdff}
+.card-title{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#334155}
+.card-body{padding:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
+select,input,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+textarea{min-height:260px;resize:vertical;line-height:1.55;font-family:var(--mono);background:#0b1220;color:#dbeafe;border-color:#1e293b;tab-size:2}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;font:800 .8rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{border-color:#94a3b8;background:#f8fafc}
+.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.btn.primary:hover{background:#1d4ed8}
+.btn.small{font-size:.74rem;padding:7px 10px}
+.btn.warn{color:var(--amber)}
+.hint{font-size:.78rem;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;font-size:.78rem;font-weight:800;color:#334155;cursor:pointer}
+.pill.active,.pill:hover{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+.result-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.meta{border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 9px;font-size:.76rem;color:#475569;font-weight:700}
+.results{overflow:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+.results table{border-collapse:collapse;width:100%;font-size:.82rem}
+.results th{background:#eff6ff;color:#1e293b;text-align:left;padding:9px;border-bottom:1px solid #bfdbfe;white-space:nowrap}
+.results td{padding:8px 9px;border-bottom:1px solid #eef2f7;white-space:nowrap}
+.results tr:hover td{background:#f8fafc}
+.empty{color:#94a3b8;text-align:center;padding:42px 16px;font-size:.9rem}
+.alert{border-left:4px solid #94a3b8;background:#f8fafc;border-radius:7px;padding:10px 11px;font-size:.82rem;line-height:1.45}
+.alert.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
+.alert.warn{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
+.alert.error{border-left-color:var(--red);background:#fef2f2;color:#7f1d1d}
+.schema-list,.history-list,.challenge-list{display:grid;gap:8px}
+.schema-table{border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+.schema-table summary{padding:10px 12px;font-size:.84rem;font-weight:800;cursor:pointer;color:#1e293b}
+.schema-table code{display:block;padding:0 12px 12px;font:500 .76rem var(--mono);color:#1d4ed8;white-space:pre-wrap}
+.history-item,.challenge-item{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 11px;cursor:pointer}
+.history-item:hover,.challenge-item:hover{background:#f8fafc;border-color:#bfdbfe}
+.history-item code{font:500 .74rem var(--mono);color:#334155;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.challenge-item strong{display:block;font-size:.84rem}
+.challenge-item span{display:block;margin-top:3px;font-size:.74rem;color:#64748b;line-height:1.4}
+.challenge-item.active{border-color:#2563eb;background:#eff6ff}
+.score-card{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.score{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}
+.score strong{display:block;font-size:1.4rem}
+.score span{font-size:.74rem;color:var(--muted);font-weight:700}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
+.tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer}
+.tab.active{background:#fff;color:#2563eb}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:360px}
+.loading{position:fixed;inset:0;background:rgba(15,23,42,.78);color:#fff;z-index:50;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-weight:800}
+.loading.hidden{display:none}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:60}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1040px){
+  .layout{grid-template-columns:1fr}
+  .right{position:static}
+  .hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .hero-inner,.wrap{padding-left:16px;padding-right:16px}
+  .grid,.score-card,.hero-grid{grid-template-columns:1fr}
+  textarea{min-height:220px}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Uwanja wa SQL","url":"https://afrotools.com/sw/zana/uwanja-wa-sql/","description":"Practice SQL kwenye browser kwa datasets za biashara, shule, kliniki na mobile money; run SQLite queries, import CSV na export results.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"DeveloperApplication","operatingSystem":"Any"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Uwanja wa SQL","item":"https://afrotools.com/sw/zana/uwanja-wa-sql/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Uwanja wa SQL hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa planning, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch."}}]}</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Zana za Developer</a><span>/</span>
+      <span>SQL Playground</span>
+    </nav>
+    <h1>Practice SQL on data that feels like the work.</h1>
+    <p class="hero-copy">Run SQLite in your browser with Afrikan commerce, school, clinic and mobile money datasets. Inspect schemas, complete challenges, import CSV, explain query plans and export results without a server.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong id="hero-datasets">4</strong><span>sample datasets</span></div>
+      <div class="hero-stat"><strong id="hero-challenges">0</strong><span>guided challenges</span></div>
+      <div class="hero-stat"><strong id="hero-runs">0</strong><span>queries this session</span></div>
+      <div class="hero-stat"><strong>SQLite</strong><span>via sql.js WebAssembly</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="loading" id="loading"><div class="spinner"></div><div>Pakiaing SQLite engine...</div></div>
+
+<main class="wrap">
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Uwanja wa SQL kwa Kiswahili.</strong> Jifunze na test SQL queries kwa datasets za mfano. Matokeo ya practice si database yako ya production. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source output, provider docs na production environment kabla ya launch.</span></div></section>
+  <section class="layout">
+    <div class="left">
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Workspace</span>
+          <div class="toolbar">
+            <button class="btn small" id="import-csv" type="button">Import CSV</button>
+            <button class="btn small" id="export-db" type="button">Export SQLite DB</button>
+            <input id="csv-file" type="file" accept=".csv,text/csv" hidden>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="grid">
+            <div><label for="dataset">Dataset</label><select id="dataset"></select></div>
+            <div><label for="difficulty">Challenge filter</label><select id="difficulty"><option value="">Zote levels</option><option>Beginner</option><option>Intermediate</option><option>Interview</option></select></div>
+            <div><label for="dialect">Dialect note</label><input id="dialect" value="SQLite, close to standard SQL" readonly></div>
+          </div>
+          <p class="hint">Your queries run locally inside the browser. Imported CSV tables last for this session unless you export the SQLite database.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">SQL Kihariri</span>
+          <div class="toolbar">
+            <button class="btn primary" id="run-query" type="button">Run Ctrl+Weka</button>
+            <button class="btn" id="explain-query" type="button">Explain plan</button>
+            <button class="btn" id="format-query" type="button">Format</button>
+            <button class="btn warn" id="clear-query" type="button">Futa</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="pill-row" id="samples"></div>
+          <textarea id="editor" spellcheck="false">SELECT * FROM products LIMIT 10;</textarea>
+          <div id="lint" style="margin-top:10px"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Matokeo</span>
+          <div class="toolbar">
+            <button class="btn small" id="copy-results" type="button">Nakili results</button>
+            <button class="btn small" id="export-csv" type="button">Export CSV</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="result-meta" id="result-meta"><span class="meta">No query run yet</span></div>
+          <div class="results" id="results"><div class="empty">Run a query to see rows here.</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Explain And Export</span><button class="btn small" id="copy-plan" type="button">Nakili active panel</button></div>
+        <div class="tabs">
+          <button class="tab active" data-tab="plan" type="button">Query plan</button>
+          <button class="tab" data-tab="schemaSql" type="button">Schema SQL</button>
+          <button class="tab" data-tab="lesson" type="button">Lesson notes</button>
+        </div>
+        <div class="tab-panel active" id="panel-plan"><pre class="codebox" id="plan-output">Run Explain plan to inspect how SQLite will execute your query.</pre></div>
+        <div class="tab-panel" id="panel-schemaSql"><pre class="codebox" id="schema-sql-output"></pre></div>
+        <div class="tab-panel" id="panel-lesson"><pre class="codebox" id="lesson-output"></pre></div>
+      </section>
+    </div>
+
+    <aside class="right">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Challenge Score</span></div>
+        <div class="card-body">
+          <div class="score-card">
+            <div class="score"><strong id="score-done">0</strong><span>passed</span></div>
+            <div class="score"><strong id="score-runs">0</strong><span>runs</span></div>
+            <div class="score"><strong id="score-last">--</strong><span>last result</span></div>
+          </div>
+          <div id="challenge-feedback" style="margin-top:12px"><div class="alert">Chagua a challenge to get result-based feedback.</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Guided Challenges</span></div>
+        <div class="card-body"><div class="challenge-list" id="challenges"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Schema Vinjarir</span></div>
+        <div class="card-body"><div class="schema-list" id="schema"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Query History</span><button class="btn small" id="clear-history" type="button">Futa</button></div>
+        <div class="card-body"><div class="history-list" id="history"></div></div>
+      </section>
+    </aside>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<afro-footer></afro-footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var HISTORY_KEY = 'afrotools.sqlPlayground.history.v2';
+  var activeTab = 'plan';
+  var SQL = null;
+  var db = null;
+  var currentDataset = 'commerce';
+  var activeChallenge = null;
+  var runs = 0;
+  var passed = {};
+  var lastResult = null;
+
+  var DATASETS = {
+    commerce: {
+      name:'African Commerce',
+      lesson:'Practice SELECT, JOIN, GROUP BY, HAVING and revenue analysis on marketplace orders across Lagos, Nairobi, Accra and Cape Town.',
+      schema:[
+        'CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, country TEXT, city TEXT, segment TEXT);',
+        'CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, category TEXT, price REAL, currency TEXT, supplier_country TEXT);',
+        'CREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, order_date TEXT, channel TEXT, total REAL, currency TEXT);',
+        'CREATE TABLE order_items (id INTEGER PRIMARY KEY, order_id INTEGER, product_id INTEGER, quantity INTEGER, unit_price REAL);'
+      ],
+      seed:[
+        "INSERT INTO customers VALUES (1,'Amina Bello','Nigeria','Lagos','Retail'),(2,'Kwame Mensah','Ghana','Accra','Wholesale'),(3,'Grace Wanjiku','Kenya','Nairobi','Retail'),(4,'Thabo Mokoena','South Africa','Cape Town','SME'),(5,'Fatou Ndiaye','Senegal','Dakar','Retail'),(6,'Esi Appiah','Ghana','Kumasi','SME');",
+        "INSERT INTO products VALUES (1,'Ankara Laptop Sleeve','Accessories',9500,'NGN','Nigeria'),(2,'Solar Power Bank','Electronics',4200,'KES','Kenya'),(3,'Shea Butter Pack','Beauty',120,'GHS','Ghana'),(4,'Beaded Sandals','Fashion',380,'ZAR','South Africa'),(5,'Kente Tote Bag','Fashion',180,'GHS','Ghana'),(6,'Mini POS Stand','Retail',14500,'NGN','Nigeria');",
+        "INSERT INTO orders VALUES (1,1,'2026-01-05','WhatsApp',28500,'NGN'),(2,2,'2026-01-07','Web',540,'GHS'),(3,3,'2026-01-09','Web',12600,'KES'),(4,4,'2026-01-12','Agent',1140,'ZAR'),(5,5,'2026-01-15','Web',360,'GHS'),(6,1,'2026-02-02','Agent',14500,'NGN'),(7,6,'2026-02-09','WhatsApp',360,'GHS'),(8,3,'2026-02-14','Web',8400,'KES');",
+        "INSERT INTO order_items VALUES (1,1,1,3,9500),(2,2,5,3,180),(3,3,2,3,4200),(4,4,4,3,380),(5,5,3,3,120),(6,6,6,1,14500),(7,7,3,3,120),(8,8,2,2,4200);"
+      ],
+      samples:[
+        {label:'Products', sql:'SELECT * FROM products ORDER BY category, name LIMIT 20;'},
+        {label:'Revenue by country', sql:'SELECT c.country, o.currency, COUNT(o.id) AS orders, SUM(o.total) AS revenue\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nGROUP BY c.country, o.currency\nORDER BY revenue DESC;'},
+        {label:'Top products', sql:'SELECT p.name, p.category, SUM(oi.quantity) AS units_sold, SUM(oi.quantity * oi.unit_price) AS gross_sales\nFROM order_items oi\nJOIN products p ON p.id = oi.product_id\nGROUP BY p.id\nORDER BY gross_sales DESC;'}
+      ],
+      challenges:[
+        {id:'commerce-revenue', level:'Beginner', title:'Revenue by country', goal:'Return country, orders and revenue for each country.', sql:'SELECT c.country, COUNT(o.id) AS orders, SUM(o.total) AS revenue\nFROM orders o\nJOIN customers c ON c.id = o.customer_id\nGROUP BY c.country\nORDER BY revenue DESC;', expect:{columns:['country','orders','revenue'], minRows:4}},
+        {id:'commerce-fashion', level:'Intermediate', title:'Fashion product sales', goal:'Find products in Fashion and total units sold.', sql:"SELECT p.name, SUM(oi.quantity) AS units_sold\nFROM products p\nJOIN order_items oi ON oi.product_id = p.id\nWHERE p.category = 'Fashion'\nGROUP BY p.id\nORDER BY units_sold DESC;", expect:{columns:['name','units_sold'], minRows:2}},
+        {id:'commerce-repeat', level:'Interview', title:'Repeat customers', goal:'Show customers with more than one order using HAVING.', sql:'SELECT c.name, COUNT(o.id) AS order_count\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nGROUP BY c.id\nHAVING COUNT(o.id) > 1;', expect:{columns:['name','order_count'], minRows:1}}
+      ]
+    },
+    school: {
+      name:'School Records',
+      lesson:'Practice aggregate scores, subject performance, grade distribution and ranking with secondary school records.',
+      schema:[
+        'CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, class TEXT, track TEXT, gender TEXT, county TEXT);',
+        'CREATE TABLE subjects (id INTEGER PRIMARY KEY, name TEXT, department TEXT);',
+        'CREATE TABLE grades (id INTEGER PRIMARY KEY, student_id INTEGER, subject_id INTEGER, term TEXT, score INTEGER);'
+      ],
+      seed:[
+        "INSERT INTO students VALUES (1,'Maryam Okonkwo','SS3','Science','F','Lagos'),(2,'Kojo Boateng','SHS3','Business','M','Ashanti'),(3,'Wanjiru Njoroge','Form 4','Science','F','Kiambu'),(4,'Naledi Dube','Grade 12','Arts','F','Gauteng'),(5,'Samuel Musa','SS2','Science','M','Kano'),(6,'Eunice Adjei','SHS2','Arts','F','Greater Accra');",
+        "INSERT INTO subjects VALUES (1,'Mathematics','Science'),(2,'English','Languages'),(3,'Physics','Science'),(4,'Economics','Business'),(5,'History','Arts');",
+        "INSERT INTO grades VALUES (1,1,1,'Term 1',88),(2,1,3,'Term 1',91),(3,1,2,'Term 1',79),(4,2,4,'Term 1',84),(5,2,2,'Term 1',76),(6,3,1,'Term 1',94),(7,3,3,'Term 1',89),(8,4,5,'Term 1',86),(9,4,2,'Term 1',81),(10,5,1,'Term 1',67),(11,5,3,'Term 1',73),(12,6,5,'Term 1',78),(13,6,2,'Term 1',82);"
+      ],
+      samples:[
+        {label:'All students', sql:'SELECT * FROM students ORDER BY county, name;'},
+        {label:'Average score', sql:'SELECT s.name, s.class, ROUND(AVG(g.score), 1) AS average_score\nFROM students s\nJOIN grades g ON g.student_id = s.id\nGROUP BY s.id\nORDER BY average_score DESC;'},
+        {label:'Subject averages', sql:'SELECT sub.name, ROUND(AVG(g.score), 1) AS average_score, MIN(g.score) AS lowest, MAX(g.score) AS highest\nFROM subjects sub\nJOIN grades g ON g.subject_id = sub.id\nGROUP BY sub.id\nORDER BY average_score DESC;'}
+      ],
+      challenges:[
+        {id:'school-top', level:'Beginner', title:'Top students', goal:'Return student names and average scores over 80.', sql:'SELECT s.name, ROUND(AVG(g.score), 1) AS average_score\nFROM students s\nJOIN grades g ON g.student_id = s.id\nGROUP BY s.id\nHAVING AVG(g.score) > 80\nORDER BY average_score DESC;', expect:{columns:['name','average_score'], minRows:3}},
+        {id:'school-science', level:'Intermediate', title:'Science track performance', goal:'Average score for Science track students.', sql:"SELECT s.track, ROUND(AVG(g.score), 1) AS average_score\nFROM students s\nJOIN grades g ON g.student_id = s.id\nWHERE s.track = 'Science'\nGROUP BY s.track;", expect:{columns:['track','average_score'], minRows:1}}
+      ]
+    },
+    clinic: {
+      name:'Clinic Visits',
+      lesson:'Practice joins, case counts and cost summaries with clinic visits, doctors and prescriptions.',
+      schema:[
+        'CREATE TABLE patients (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, gender TEXT, city TEXT);',
+        'CREATE TABLE doctors (id INTEGER PRIMARY KEY, name TEXT, specialty TEXT, hospital TEXT);',
+        'CREATE TABLE visits (id INTEGER PRIMARY KEY, patient_id INTEGER, doctor_id INTEGER, visit_date TEXT, diagnosis TEXT, cost REAL, currency TEXT);',
+        'CREATE TABLE prescriptions (id INTEGER PRIMARY KEY, visit_id INTEGER, medication TEXT, days INTEGER, cost REAL);'
+      ],
+      seed:[
+        "INSERT INTO patients VALUES (1,'Amara Diop',34,'F','Dakar'),(2,'Oluwaseun Ade',28,'M','Lagos'),(3,'Grace Achieng',45,'F','Kisumu'),(4,'Mohammed Ali',52,'M','Dar es Salaam'),(5,'Lindiwe Zulu',55,'F','Durban');",
+        "INSERT INTO doctors VALUES (1,'Dr Nkemelu','General Medicine','Lagos General'),(2,'Dr Odhiambo','Pediatrics','Kenyatta'),(3,'Dr Van Wyk','Cardiology','Groote Schuur');",
+        "INSERT INTO visits VALUES (1,1,1,'2026-02-01','Malaria',15000,'NGN'),(2,2,1,'2026-02-03','Typhoid',22000,'NGN'),(3,3,2,'2026-02-05','Pneumonia',8500,'KES'),(4,4,1,'2026-02-07','Malaria',12000,'TZS'),(5,5,3,'2026-02-10','Hypertension',2800,'ZAR'),(6,2,1,'2026-03-02','Follow-up',8000,'NGN');",
+        "INSERT INTO prescriptions VALUES (1,1,'Artemether-Lumefantrine',3,4500),(2,1,'Paracetamol',5,800),(3,2,'Ciprofloxacin',7,3200),(4,5,'Amlodipine',30,450);"
+      ],
+      samples:[
+        {label:'Visit summary', sql:'SELECT p.name, p.city, v.visit_date, v.diagnosis, v.cost, v.currency\nFROM visits v\nJOIN patients p ON p.id = v.patient_id\nORDER BY v.visit_date DESC;'},
+        {label:'Diagnosis counts', sql:'SELECT diagnosis, COUNT(*) AS cases\nFROM visits\nGROUP BY diagnosis\nORDER BY cases DESC;'},
+        {label:'Doctor workload', sql:'SELECT d.name, d.specialty, COUNT(v.id) AS visits\nFROM doctors d\nLEFT JOIN visits v ON v.doctor_id = d.id\nGROUP BY d.id\nORDER BY visits DESC;'}
+      ],
+      challenges:[
+        {id:'clinic-cases', level:'Beginner', title:'Common diagnoses', goal:'Count cases by diagnosis.', sql:'SELECT diagnosis, COUNT(*) AS cases\nFROM visits\nGROUP BY diagnosis\nORDER BY cases DESC;', expect:{columns:['diagnosis','cases'], minRows:4}},
+        {id:'clinic-cost', level:'Intermediate', title:'Clinic cost by city', goal:'Join patients to visits and total visit cost by city.', sql:'SELECT p.city, v.currency, SUM(v.cost) AS total_cost\nFROM visits v\nJOIN patients p ON p.id = v.patient_id\nGROUP BY p.city, v.currency\nORDER BY total_cost DESC;', expect:{columns:['city','currency','total_cost'], minRows:4}}
+      ]
+    },
+    mobile: {
+      name:'Mobile Money',
+      lesson:'Practice transaction analytics with agents, wallets, fees and failed transactions.',
+      schema:[
+        'CREATE TABLE agents (id INTEGER PRIMARY KEY, name TEXT, city TEXT, network TEXT);',
+        'CREATE TABLE wallets (id INTEGER PRIMARY KEY, customer_name TEXT, country TEXT, segment TEXT);',
+        'CREATE TABLE transactions (id INTEGER PRIMARY KEY, wallet_id INTEGER, agent_id INTEGER, tx_date TEXT, tx_type TEXT, amount REAL, fee REAL, status TEXT, currency TEXT);'
+      ],
+      seed:[
+        "INSERT INTO agents VALUES (1,'Ikeja Agent 12','Lagos','MTN'),(2,'Eastleigh Kiosk','Nairobi','Safaricom'),(3,'Osu Mobile Hub','Accra','MTN'),(4,'Mbare Booth','Harare','EcoCash');",
+        "INSERT INTO wallets VALUES (1,'Adaeze Okafor','Nigeria','Personal'),(2,'Brian Otieno','Kenya','Merchant'),(3,'Abena Sarpong','Ghana','Personal'),(4,'Tariro Moyo','Zimbabwe','Merchant'),(5,'Yusuf Bello','Nigeria','Merchant');",
+        "INSERT INTO transactions VALUES (1,1,1,'2026-03-01','cash_in',45000,250,'success','NGN'),(2,2,2,'2026-03-02','merchant_pay',8200,82,'success','KES'),(3,3,3,'2026-03-03','transfer',600,6,'failed','GHS'),(4,4,4,'2026-03-04','cash_out',120,2,'success','USD'),(5,5,1,'2026-03-05','merchant_pay',75000,600,'success','NGN'),(6,1,1,'2026-03-07','transfer',15000,100,'failed','NGN'),(7,2,2,'2026-03-08','cash_in',12000,100,'success','KES');"
+      ],
+      samples:[
+        {label:'Transactions', sql:'SELECT * FROM transactions ORDER BY tx_date DESC LIMIT 20;'},
+        {label:'Agent volume', sql:'SELECT a.name, a.city, COUNT(t.id) AS tx_count, SUM(t.amount) AS volume\nFROM agents a\nJOIN transactions t ON t.agent_id = a.id\nWHERE t.status = "success"\nGROUP BY a.id\nORDER BY volume DESC;'},
+        {label:'Failure rate', sql:'SELECT status, COUNT(*) AS tx_count, ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM transactions), 1) AS pct\nFROM transactions\nGROUP BY status;'}
+      ],
+      challenges:[
+        {id:'mobile-volume', level:'Beginner', title:'Successful volume by network', goal:'Return network and successful transaction volume.', sql:"SELECT a.network, SUM(t.amount) AS volume\nFROM transactions t\nJOIN agents a ON a.id = t.agent_id\nWHERE t.status = 'success'\nGROUP BY a.network\nORDER BY volume DESC;", expect:{columns:['network','volume'], minRows:3}},
+        {id:'mobile-failed', level:'Interview', title:'Failed customer transactions', goal:'Show failed transactions with customer name and amount.', sql:"SELECT w.customer_name, t.tx_type, t.amount, t.currency\nFROM transactions t\nJOIN wallets w ON w.id = t.wallet_id\nWHERE t.status = 'failed'\nORDER BY t.amount DESC;", expect:{columns:['customer_name','tx_type','amount','currency'], minRows:2}}
+      ]
+    }
+  };
+
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1700);
+  }
+  function normalize(sql){ return String(sql || '').replace(/\s+/g,' ').trim().toLowerCase(); }
+  function readHistory(){
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function writeHistory(items){
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, 30))); } catch(e) {}
+  }
+
+  async function init(){
+    $('hero-datasets').textContent = Object.keys(DATASETS).length;
+    $('dataset').innerHTML = Object.keys(DATASETS).map(function(key){ return '<option value="'+key+'">'+esc(DATASETS[key].name)+'</option>'; }).join('');
+    try {
+      SQL = await initSqlJs({ locateFile: function(file){ return 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/' + file; } });
+      loadDataset(currentDataset);
+      $('loading').classList.add('hidden');
+    } catch(e) {
+      $('loading').innerHTML = '<div class="alert error">Could not load sql.js. Refresh the page or check your connection.</div>';
+    }
+    bind();
+  }
+
+  function bind(){
+    $('dataset').addEventListener('change', function(){ loadDataset(this.value); });
+    $('difficulty').addEventListener('change', renderChallenges);
+    $('run-query').addEventListener('click', runQuery);
+    $('explain-query').addEventListener('click', explainQuery);
+    $('format-query').addEventListener('click', formatQuery);
+    $('clear-query').addEventListener('click', function(){ $('editor').value = ''; $('editor').focus(); lintEditor(); });
+    $('editor').addEventListener('input', lintEditor);
+    $('editor').addEventListener('keydown', function(e){
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runQuery(); }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+        this.value = this.value.slice(0, start) + '  ' + this.value.slice(end);
+        this.selectionStart = this.selectionEnd = start + 2;
+      }
+    });
+    $('copy-results').addEventListener('click', copyResults);
+    $('export-csv').addEventListener('click', exportCSV);
+    $('export-db').addEventListener('click', exportDatabase);
+    $('import-csv').addEventListener('click', function(){ $('csv-file').click(); });
+    $('csv-file').addEventListener('change', function(){ if (this.files[0]) importCSV(this.files[0]); this.value = ''; });
+    $('clear-history').addEventListener('click', function(){ writeHistory([]); renderHistory(); });
+    $('copy-plan').addEventListener('click', function(){
+      var el = activeTab === 'plan' ? $('plan-output') : activeTab === 'schemaSql' ? $('schema-sql-output') : $('lesson-output');
+      navigator.clipboard.writeText(el.textContent).then(function(){ toast('Panel copied'); });
+    });
+    document.addEventListener('click', function(event){
+      if (event.target.classList.contains('pill')) loadSample(Number(event.target.getAttribute('data-index')));
+      if (event.target.closest('.history-item')) {
+        $('editor').value = event.target.closest('.history-item').getAttribute('data-sql');
+        lintEditor();
+      }
+      if (event.target.closest('.challenge-item')) {
+        loadChallenge(event.target.closest('.challenge-item').getAttribute('data-id'));
+      }
+      if (event.target.classList.contains('tab')) {
+        activeTab = event.target.getAttribute('data-tab');
+        document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === event.target); });
+        document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.remove('active'); });
+        $('panel-' + activeTab).classList.add('active');
+      }
+    });
+  }
+
+  function loadDataset(key){
+    currentDataset = key;
+    var data = DATASETS[key];
+    if (db) db.close();
+    db = new SQL.Database();
+    data.schema.forEach(function(sql){ db.run(sql); });
+    data.seed.forEach(function(sql){ db.run(sql); });
+    $('editor').value = data.samples[0].sql;
+    $('lesson-output').textContent = data.lesson + '\n\nTry a challenge, then run EXPLAIN QUERY PLAN to see how SQLite scans and joins the tables.';
+    $('schema-sql-output').textContent = data.schema.join('\n\n') + '\n\n' + data.seed.join('\n');
+    $('results').innerHTML = '<div class="empty">Dataset loaded. Run a query to see rows here.</div>';
+    $('result-meta').innerHTML = '<span class="meta">'+esc(data.name)+'</span><span class="meta">Ready</span>';
+    lastResult = null;
+    activeChallenge = null;
+    renderSamples();
+    renderSchema();
+    renderChallenges();
+    renderHistory();
+    lintEditor();
+  }
+
+  function renderSamples(){
+    $('samples').innerHTML = DATASETS[currentDataset].samples.map(function(item, index){
+      return '<button class="pill" data-index="'+index+'" type="button">'+esc(item.label)+'</button>';
+    }).join('');
+  }
+  function loadSample(index){
+    $('editor').value = DATASETS[currentDataset].samples[index].sql;
+    document.querySelectorAll('.pill').forEach(function(btn){ btn.classList.toggle('active', Number(btn.getAttribute('data-index')) === index); });
+    activeChallenge = null;
+    renderChallenges();
+    lintEditor();
+  }
+  function renderSchema(){
+    $('schema').innerHTML = DATASETS[currentDataset].schema.map(function(sql){
+      var table = (sql.match(/CREATE TABLE\s+([a-z_]+)/i) || [,'table'])[1];
+      return '<details class="schema-table" open><summary>'+esc(table)+'</summary><code>'+esc(sql)+'</code></details>';
+    }).join('');
+  }
+  function renderChallenges(){
+    var filter = $('difficulty').value;
+    var list = DATASETS[currentDataset].challenges.filter(function(item){ return !filter || item.level === filter; });
+    $('hero-challenges').textContent = DATASETS[currentDataset].challenges.length;
+    $('challenges').innerHTML = list.map(function(item){
+      return '<div class="challenge-item '+(activeChallenge && activeChallenge.id === item.id ? 'active' : '')+'" data-id="'+esc(item.id)+'">'+
+        '<strong>'+esc(item.title)+'</strong><span>'+esc(item.level)+' - '+esc(item.goal)+'</span></div>';
+    }).join('') || '<div class="alert">No challenges match this level.</div>';
+  }
+  function loadChallenge(id){
+    activeChallenge = DATASETS[currentDataset].challenges.find(function(item){ return item.id === id; });
+    if (!activeChallenge) return;
+    $('editor').value = activeChallenge.sql;
+    $('challenge-feedback').innerHTML = '<div class="alert">Challenge loaded: '+esc(activeChallenge.goal)+'</div>';
+    renderChallenges();
+    lintEditor();
+  }
+
+  function lintEditor(){
+    var sql = $('editor').value.trim();
+    var notes = [];
+    if (!sql) notes.push({type:'warn', text:'Write a SQL statement before running.'});
+    if (/^\s*select\s+\*/i.test(sql) && !/\blimit\b/i.test(sql)) notes.push({type:'warn', text:'SELECT * without LIMIT can create noisy result sets. Add LIMIT while exploring.'});
+    if (/\b(drop|delete|update)\b/i.test(sql)) notes.push({type:'warn', text:'This query changes data. Export the database first if you want to keep a copy.'});
+    if (/\bright\s+join|\bfull\s+join/i.test(sql)) notes.push({type:'warn', text:'SQLite does not support every JOIN variant in every version. Prefer LEFT JOIN for practice here.'});
+    if (!notes.length) notes.push({type:'ok', text:'Looks ready. Run with Ctrl+Enter.'});
+    $('lint').innerHTML = notes.map(function(note){ return '<div class="alert '+note.type+'">'+esc(note.text)+'</div>'; }).join('');
+  }
+
+  function runQuery(){
+    var sql = $('editor').value.trim();
+    if (!sql || !db) return;
+    var start = performance.now();
+    try {
+      var results = db.exec(sql);
+      runs += 1;
+      $('hero-runs').textContent = runs;
+      $('score-runs').textContent = runs;
+      if (!results.length) {
+        lastResult = null;
+        $('results').innerHTML = '<div class="empty">Query executed successfully. No rows returned.</div>';
+        $('result-meta').innerHTML = '<span class="meta">0 rows</span><span class="meta">'+(performance.now() - start).toFixed(1)+'ms</span>';
+        $('score-last').textContent = 'OK';
+      } else {
+        lastResult = results[0];
+        renderResult(lastResult, performance.now() - start);
+        gradeChallenge(lastResult);
+      }
+      addHistory(sql);
+    } catch(e) {
+      $('results').innerHTML = '<div class="alert error"><strong>Error:</strong> '+esc(e.message)+'</div>';
+      $('score-last').textContent = 'Error';
+      $('challenge-feedback').innerHTML = '<div class="alert error">'+esc(e.message)+'</div>';
+    }
+  }
+
+  function renderResult(result, elapsed){
+    var rows = result.values || [];
+    $('result-meta').innerHTML = '<span class="meta">'+rows.length+' rows</span><span class="meta">'+result.columns.length+' columns</span><span class="meta">'+elapsed.toFixed(1)+'ms</span>';
+    $('results').innerHTML = '<table><thead><tr>'+result.columns.map(function(col){ return '<th>'+esc(col)+'</th>'; }).join('')+'</tr></thead><tbody>'+
+      rows.map(function(row){ return '<tr>'+row.map(function(value){ return '<td>'+esc(value == null ? 'NULL' : value)+'</td>'; }).join('')+'</tr>'; }).join('')+
+      '</tbody></table>';
+    $('score-last').textContent = rows.length + ' rows';
+  }
+
+  function gradeChallenge(result){
+    if (!activeChallenge) {
+      $('challenge-feedback').innerHTML = '<div class="alert ok">Query ran. Choose a challenge for scoring feedback.</div>';
+      return;
+    }
+    var expect = activeChallenge.expect;
+    var cols = result.columns.map(function(col){ return col.toLowerCase(); });
+    var missing = expect.columns.filter(function(col){ return cols.indexOf(col.toLowerCase()) === -1; });
+    var enoughRows = result.values.length >= expect.minRows;
+    if (!missing.length && enoughRows) {
+      passed[activeChallenge.id] = true;
+      $('score-done').textContent = Object.keys(passed).length;
+      $('challenge-feedback').innerHTML = '<div class="alert ok">Passed: result includes expected columns and enough rows.</div>';
+    } else {
+      var parts = [];
+      if (missing.length) parts.push('Missing columns: ' + missing.join(', '));
+      if (!enoughRows) parts.push('Expected at least ' + expect.minRows + ' rows.');
+      $('challenge-feedback').innerHTML = '<div class="alert warn">'+esc(parts.join(' '))+'</div>';
+    }
+  }
+
+  function explainQuery(){
+    var sql = $('editor').value.trim().replace(/;+\s*$/,'');
+    if (!sql || !db) return;
+    if (!/^\s*select\b/i.test(sql)) {
+      $('plan-output').textContent = 'EXPLAIN QUERY PLAN is safest here for SELECT statements. Run your data-changing statement directly if needed.';
+      return;
+    }
+    try {
+      var res = db.exec('EXPLAIN QUERY PLAN ' + sql);
+      if (!res.length) return;
+      $('plan-output').textContent = [res[0].columns.join(' | ')].concat(res[0].values.map(function(row){ return row.join(' | '); })).join('\n');
+    } catch(e) {
+      $('plan-output').textContent = e.message;
+    }
+  }
+
+  function formatQuery(){
+    var sql = $('editor').value;
+    ['SELECT','FROM','WHERE','JOIN','LEFT JOIN','ON','GROUP BY','ORDER BY','HAVING','LIMIT','CASE','WHEN','THEN','ELSE','END','INSERT INTO','VALUES','CREATE TABLE','UPDATE','SET','DELETE FROM'].forEach(function(keyword){
+      sql = sql.replace(new RegExp('\\b' + keyword.replace(/\s+/g,'\\s+') + '\\b','gi'), keyword);
+    });
+    sql = sql.replace(/\s+(FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT)\b/g, '\n$1')
+             .replace(/\s+(JOIN|LEFT JOIN)\b/g, '\n$1')
+             .replace(/\s+(AND|OR)\b/g, '\n  $1');
+    $('editor').value = sql.trim();
+    lintEditor();
+  }
+
+  function addHistory(sql){
+    var items = readHistory().filter(function(item){ return normalize(item) !== normalize(sql); });
+    items.unshift(sql);
+    writeHistory(items);
+    renderHistory();
+  }
+  function renderHistory(){
+    var items = readHistory();
+    $('history').innerHTML = items.map(function(sql){ return '<div class="history-item" data-sql="'+esc(sql)+'"><code>'+esc(sql)+'</code></div>'; }).join('') || '<div class="alert">No history yet.</div>';
+  }
+
+  function resultToCSV(result){
+    if (!result) return '';
+    var lines = [result.columns.join(',')];
+    result.values.forEach(function(row){
+      lines.push(row.map(function(value){ return value == null ? '' : '"' + String(value).replace(/"/g,'""') + '"'; }).join(','));
+    });
+    return lines.join('\n');
+  }
+  function exportCSV(){
+    if (!lastResult) { toast('Run a SELECT query first'); return; }
+    download(resultToCSV(lastResult), 'query-results.csv', 'text/csv');
+  }
+  function copyResults(){
+    if (!lastResult) { toast('Run a SELECT query first'); return; }
+    navigator.clipboard.writeText(resultToCSV(lastResult)).then(function(){ toast('Results copied as CSV'); });
+  }
+  function exportDatabase(){
+    if (!db) return;
+    var bytes = db.export();
+    var blob = new Blob([bytes], {type:'application/octet-stream'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = currentDataset + '-playground.sqlite';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  function download(text, filename, type){
+    var blob = new Blob([text], {type:type});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function parseCSV(text){
+    var rows = [];
+    var row = [];
+    var value = '';
+    var quoted = false;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      var next = text[i + 1];
+      if (ch === '"' && quoted && next === '"') { value += '"'; i++; continue; }
+      if (ch === '"') { quoted = !quoted; continue; }
+      if (ch === ',' && !quoted) { row.push(value); value = ''; continue; }
+      if ((ch === '\n' || ch === '\r') && !quoted) {
+        if (ch === '\r' && next === '\n') i++;
+        row.push(value);
+        if (row.some(function(cell){ return cell.trim() !== ''; })) rows.push(row);
+        row = [];
+        value = '';
+        continue;
+      }
+      value += ch;
+    }
+    row.push(value);
+    if (row.some(function(cell){ return cell.trim() !== ''; })) rows.push(row);
+    return rows;
+  }
+  function importCSV(file){
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        var rows = parseCSV(reader.result);
+        if (rows.length < 2) throw new Error('CSV needs a header row and at least one data row.');
+        var headers = rows[0].map(function(col, index){ return (col || 'column_' + (index + 1)).toLowerCase().replace(/[^a-z0-9_]+/g,'_').replace(/^_+|_+$/g,'') || 'column_' + (index + 1); });
+        var table = file.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9_]+/g,'_').replace(/^_+|_+$/g,'') || 'imported_csv';
+        db.run('DROP TABLE IF EXISTS ' + table);
+        db.run('CREATE TABLE ' + table + ' (' + headers.map(function(h){ return h + ' TEXT'; }).join(', ') + ')');
+        var stmt = db.prepare('INSERT INTO ' + table + ' VALUES (' + headers.map(function(){ return '?'; }).join(', ') + ')');
+        rows.slice(1).forEach(function(row){ stmt.run(headers.map(function(_, i){ return row[i] || ''; })); });
+        stmt.free();
+        DATASETS[currentDataset].schema.push('CREATE TABLE ' + table + ' (' + headers.map(function(h){ return h + ' TEXT'; }).join(', ') + ');');
+        $('editor').value = 'SELECT * FROM ' + table + ' LIMIT 20;';
+        renderSchema();
+        $('schema-sql-output').textContent += '\n\n-- Imported CSV\nCREATE TABLE ' + table + ' (' + headers.map(function(h){ return h + ' TEXT'; }).join(', ') + ');';
+        toast('CSV imported as ' + table);
+      } catch(e) {
+        toast(e.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  init();
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script class="sw-dev-runtime-localizer">
+(function(){
+  const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Free forever","Bure daima"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kijaribu Regex - test patterns na Afrikan presets | AfroTools</title>
+<meta name="twitter:description" content="Test JavaScript Regex kwa flags, live matches, capture groups, replacement preview, code snippets na ReDoS warnings.">
+<meta name="twitter:title" content="Kijaribu Regex - test patterns na African presets | AfroTools">
+<meta name="description" content="Test JavaScript Regex kwa flags, live matches, capture groups, replacement preview, code snippets na ReDoS warnings.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/kijaribu-regex/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kijaribu-regex/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/regex-tester/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/regex-tester/">
+
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Kijaribu Regex - test patterns na African presets | AfroTools">
+<meta property="og:description" content="Test JavaScript Regex kwa flags, live matches, capture groups, replacement preview, code snippets na ReDoS warnings.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/kijaribu-regex/">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<style>
+:root{
+  --page:#f6f8fb;
+  --ink:#111827;
+  --muted:#64748b;
+  --line:#dbe4ef;
+  --panel:#fff;
+  --blue:#2563eb;
+  --green:#059669;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --soft-blue:#eaf2ff;
+  --soft-green:#e9f8f1;
+  --soft-amber:#fff6db;
+  --soft-red:#fee2e2;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+  --shadow:0 14px 38px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:var(--blue)}
+.hero{background:#0f172a;color:#fff;border-bottom:1px solid #1e293b}
+.hero-inner{max-width:1240px;margin:0 auto;padding:32px 20px 28px}
+.crumb{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.84rem;color:#b6c6dc;margin-bottom:16px}
+.crumb a{color:#dbeafe;text-decoration:none}
+h1{font-size:44px;line-height:1.02;margin:0 0 12px;color:#fff;letter-spacing:0;max-width:900px}
+.hero p{max-width:860px;margin:0;color:#d7e3f4;font-size:1.02rem;line-height:1.65}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pill{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);border-radius:999px;padding:7px 11px;font-size:.82rem;font-weight:800}
+.layout{max-width:1240px;margin:0 auto;padding:20px 20px 56px}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:#f8fafc}
+.panel-title{font-weight:900}
+.panel-sub{color:var(--muted);font-size:.8rem}
+.body{padding:14px}
+label{display:block;font-weight:900;color:#334155;font-size:.78rem;margin-bottom:6px}
+textarea,input[type="text"],select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:230px;resize:vertical;font-family:var(--mono);font-size:.86rem;line-height:1.55}
+.pattern-row{display:grid;grid-template-columns:1fr auto;gap:10px}
+.pattern-input{font-family:var(--mono);font-size:1rem}
+button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 11px;font:inherit;font-size:.82rem;font-weight:900;color:#1f2937;cursor:pointer}
+button.primary{background:#111827;border-color:#111827;color:#fff}
+button.active{background:var(--soft-blue);border-color:#93c5fd;color:#1d4ed8}
+button.success{background:var(--soft-green);border-color:#86efac;color:#047857}
+button.warn{background:var(--soft-amber);border-color:#fcd34d;color:#92400e}
+button.danger{background:var(--soft-red);border-color:#fecaca;color:var(--red)}
+.flags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.flag{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px;font-weight:900;font-size:.78rem}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{padding:7px 9px;font-size:.76rem}
+.output{min-height:430px;max-height:720px;overflow:auto;padding:14px;background:#fff;font-family:var(--mono);font-size:.84rem;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.highlight{white-space:pre-wrap;word-break:break-word}
+.match{background:#fef08a;color:#111827;border-radius:4px;padding:1px 2px}
+.zero{background:#fee2e2;border:1px solid #fca5a5;border-radius:4px}
+.status{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{border-radius:999px;padding:5px 8px;font-size:.74rem;font-weight:900;background:#f1f5f9;color:#334155}
+.badge.good{background:var(--soft-green);color:#047857}
+.badge.warn{background:var(--soft-amber);color:#92400e}
+.badge.bad{background:var(--soft-red);color:var(--red)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.matches{display:grid;gap:8px}
+.match-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px}
+.match-card strong{font-family:var(--mono)}
+.match-card small{display:block;color:var(--muted);margin-top:3px}
+.groups{margin-top:8px;display:grid;gap:5px}
+.group{background:#f8fafc;border:1px solid var(--line);border-radius:6px;padding:6px;font-family:var(--mono);font-size:.78rem}
+.library{display:grid;gap:8px}
+.preset{display:block;text-align:left;border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px}
+.preset strong{display:block}
+.preset span{display:block;color:var(--muted);font-size:.76rem;margin-top:3px}
+.preset code{display:block;font-family:var(--mono);font-size:.75rem;margin-top:5px;word-break:break-all;color:#334155}
+.source-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.source-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px}
+.source-card strong{display:block;font-size:.84rem}
+.source-card p{margin:5px 0 8px;color:var(--muted);font-size:.78rem;line-height:1.5}
+.history-list{display:grid;gap:8px}
+.history-item{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff}
+.history-item span{color:var(--muted);font-size:.76rem}
+.helper{color:var(--muted);font-size:.84rem;line-height:1.6}
+.toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;border-radius:8px;padding:10px 14px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.18s;z-index:80}
+.toast.on{opacity:1;transform:translateY(0)}
+@media(max-width:980px){
+  .grid,.split,.source-grid{grid-template-columns:1fr}
+  h1{font-size:32px}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kijaribu Regex","url":"https://afrotools.com/sw/zana/kijaribu-regex/","description":"Test JavaScript Regex kwa flags, live matches, capture groups, replacement preview, code snippets na ReDoS warnings.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"DeveloperApplication","operatingSystem":"Any"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Kijaribu Regex","item":"https://afrotools.com/sw/zana/kijaribu-regex/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kijaribu Regex hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa planning, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch."}}]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="crumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Zana za Developer</a><span>/</span>
+      <span>Regex Tester</span>
+    </nav>
+    <h1>Test regex patterns against real Afrikan data shapes.</h1>
+    <p>Debug JavaScript regular expressions with flags, capture groups, replacement previews, generated code and practical validation presets.</p>
+    <div class="hero-meta">
+      <span class="pill">Capture groups</span>
+      <span class="pill">Replacement preview</span>
+      <span class="pill">Afrikan presets</span>
+      <span class="pill">ReDoS diagnostics</span>
+    </div>
+  </div>
+</section>
+
+<main class="layout">
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kijaribu Regex kwa Kiswahili.</strong> Jaribu regular expressions kwa data ya simu, email, IDs, codes na text cleanup. Hakiki ReDoS risks kabla ya kutumia pattern kwenye input isiyoaminika. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source output, provider docs na production environment kabla ya launch.</span></div></section>
+  <section class="grid">
+    <div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Pattern</div>
+            <div class="panel-sub">JavaScript RegExp syntax. Do not wrap with slashes.</div>
+          </div>
+          <div id="validity" class="badge">Waiting</div>
+        </div>
+        <div class="body">
+          <div class="pattern-row">
+            <input id="patternInput" class="pattern-input" type="text" value="^(?:\+234|0)(?:70|80|81|90|91)\d{8}$" aria-label="Regex pattern">
+            <button id="copyPatternBtn" type="button">Nakili</button>
+          </div>
+          <div class="flags" aria-label="Regex flags">
+            <label class="flag"><input id="flagG" type="checkbox" checked> g global</label>
+            <label class="flag"><input id="flagI" type="checkbox"> i ignore case</label>
+            <label class="flag"><input id="flagM" type="checkbox" checked> m multiline</label>
+            <label class="flag"><input id="flagS" type="checkbox"> s dotZote</label>
+            <label class="flag"><input id="flagU" type="checkbox"> u unicode</label>
+            <label class="flag"><input id="flagY" type="checkbox"> y sticky</label>
+            <label class="flag"><input id="flagD" type="checkbox"> d indices</label>
+          </div>
+          <div class="toolbar">
+            <button id="saveBtn" class="success" type="button">Hifadhi Pattern</button>
+            <button id="clearBtn" class="danger" type="button">Futa</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Test Maandishi</div>
+            <div class="panel-sub">Try one value per line for validation work.</div>
+          </div>
+        </div>
+        <div class="body">
+          <textarea id="testInput" spellcheck="false">+2348012345678
+08012345678
++2347012345678
++254712345678
+GHA-123456789-1</textarea>
+          <div class="split" style="margin-top:10px">
+            <div>
+              <label for="replaceInput">Replacement string</label>
+              <input id="replaceInput" type="text" value="MATCH:$&" aria-label="Replacement string">
+            </div>
+            <div>
+              <label for="flavorSelect">Code flavor</label>
+              <select id="flavorSelect">
+                <option value="js">JavaScript</option>
+                <option value="py">Python</option>
+                <option value="php">PHP</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Workbench</div>
+          <div class="panel-sub" id="summary">0 matches</div>
+        </div>
+        <div class="tabs">
+          <button id="tabHighlight" class="active" type="button">Highlight</button>
+          <button id="tabMatches" type="button">Matches</button>
+          <button id="tabReplace" type="button">Replace</button>
+          <button id="tabExplain" type="button">Explain</button>
+          <button id="tabCode" type="button">Code</button>
+          <button id="tabHistory" type="button">History</button>
+        </div>
+      </div>
+      <div id="status" class="status" style="padding:10px 14px;border-bottom:1px solid var(--line)"></div>
+      <div id="output" class="output"></div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Pattern Library</div>
+          <div class="panel-sub">Validation starters. Confirm official formats before production enforcement.</div>
+        </div>
+      </div>
+      <div id="library" class="body library"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Reference Notes</div>
+          <div class="panel-sub">Useful syntax references for the implemented engine.</div>
+        </div>
+      </div>
+      <div class="body source-grid">
+        <div class="source-card">
+          <strong>RegExp basics</strong>
+          <p>JavaScript regex methods include exec, test, match, matchZote, replace, search and split.</p>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions" target="_blank" rel="noopener">MDN guide</a>
+        </div>
+        <div class="source-card">
+          <strong>Groups</strong>
+          <p>Capture groups and named groups are surfaced in the Matches tab.</p>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences" target="_blank" rel="noopener">MDN groups</a>
+        </div>
+        <div class="source-card">
+          <strong>Unicode</strong>
+          <p>Unicode property escapes need the unicode flag in many practical patterns.</p>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape" target="_blank" rel="noopener">MDN unicode</a>
+        </div>
+        <div class="source-card">
+          <strong>Lookbehind</strong>
+          <p>Lookbehind assertions are useful but can behave differently from left-to-right matching intuition.</p>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Lookbehind_assertion" target="_blank" rel="noopener">MDN lookbehind</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  'use strict';
+
+  var storageKey = 'afrotools.regexTester.history.v1';
+  var jsonHistoryKey = 'afrotools.jsonWorkbench.history.v1';
+  var currentTab = 'highlight';
+  var state = { ok:false, regex:null, matches:[], error:'', warnings:[] };
+  var presets = [
+    { group:'General', name:'Email starter', pattern:'^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$', sample:'hello@example.com', note:'Good first-pass email validation, not a full RFC parser.' },
+    { group:'General', name:'UUID v4', pattern:'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', flags:'i', sample:'550e8400-e29b-41d4-a716-446655440000', note:'Case-insensitive UUID v4.' },
+    { group:'General', name:'JWT shape', pattern:'^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$', sample:'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature', note:'Shape check only. It does not verify signature.' },
+    { group:'Nigeria', name:'Nigeria mobile starter', pattern:'^(?:\\+234|0)(?:70|80|81|90|91)\\d{8}$', sample:'+2348012345678', note:'Starter mobile prefix coverage. Operators add prefixes over time.' },
+    { group:'Nigeria', name:'BVN shape', pattern:'^\\d{11}$', sample:'12345678901', note:'Shape only. Real BVN validation needs an official verification flow.' },
+    { group:'Kenya', name:'Kenya mobile starter', pattern:'^(?:\\+254|0)(?:7|1)\\d{8}$', sample:'+254712345678', note:'Covers common mobile starts, not ownership validation.' },
+    { group:'Kenya', name:'M-Pesa receipt starter', pattern:'^[A-Z0-9]{10}$', sample:'QAB12CD34E', note:'Format starter for receipt-like references.' },
+    { group:'South Africa', name:'South Africa mobile starter', pattern:'^(?:\\+27|0)[6-8]\\d{8}$', sample:'+27821234567', note:'Mobile number shape starter.' },
+    { group:'Ghana', name:'Ghana Card starter', pattern:'^GHA-\\d{9}-\\d$', sample:'GHA-123456789-1', note:'Shape check only.' },
+    { group:'Ghana', name:'Ghana mobile starter', pattern:'^(?:\\+233|0)(?:2|5)\\d{8}$', sample:'+233241234567', note:'Starter pattern for common mobile prefixes.' },
+    { group:'East Africa', name:'Tanzania mobile starter', pattern:'^(?:\\+255|0)[67]\\d{8}$', sample:'+255712345678', note:'Starter pattern for common mobile prefixes.' },
+    { group:'East Africa', name:'Uganda mobile starter', pattern:'^(?:\\+256|0)7\\d{8}$', sample:'+256701234567', note:'Starter pattern for common mobile prefixes.' }
+  ];
+
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g,function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('on');
+    setTimeout(function(){ el.classList.remove('on'); }, 1400);
+  }
+  function getFlags(){
+    return ['G','I','M','S','U','Y','D'].map(function(flag){
+      return $('flag' + flag).checked ? flag.toLowerCase() : '';
+    }).join('');
+  }
+  function setFlags(flags){
+    ['G','I','M','S','U','Y','D'].forEach(function(flag){ $('flag' + flag).checked = flags.indexOf(flag.toLowerCase()) !== -1; });
+  }
+  function buildRegex(){
+    try {
+      var regex = new RegExp($('patternInput').value, getFlags());
+      return { ok:true, regex:regex };
+    } catch(err) {
+      return { ok:false, error:err.message };
+    }
+  }
+  function lint(pattern, flags){
+    var warnings = [];
+    if(!pattern) return warnings;
+    if(/(\([^)]*[+*][^)]*\)[+*])|(\.\*[+*])/.test(pattern)) warnings.push('Nested or overlapping quantifiers can create ReDoS risk.');
+    if(/\.\*/.test(pattern) && !/\.\*\?/.test(pattern)) warnings.push('Greedy dot-star can overmatch. Consider a character class or lazy quantifier.');
+    if(/\\p\{/.test(pattern) && !/[uv]/.test(flags)) warnings.push('Unicode property escapes usually require the u or v flag.');
+    if(/\(\?<([A-Za-z][\w]*)>/.test(pattern) && flags.indexOf('g') === -1) warnings.push('Named groups are visible for the first match. Add g to inspect every match.');
+    if(/\(\?<=|\(\?<!/.test(pattern)) warnings.push('Lookbehind support is modern-browser only and can be harder to reason about.');
+    if(!/^\^/.test(pattern) || !/\$$/.test(pattern)) warnings.push('For validation, anchor with ^ and $ if the entire value must match.');
+    return warnings;
+  }
+  function collectMatches(regex, text){
+    var matches = [];
+    var start = performance.now();
+    var cloneFlags = regex.flags.indexOf('g') === -1 ? regex.flags : regex.flags;
+    var re = new RegExp(regex.source, cloneFlags);
+    var max = 1000;
+    if(regex.flags.indexOf('g') === -1){
+      var first = re.exec(text);
+      return first ? [first] : [];
+    }
+    var match;
+    while((match = re.exec(text)) && matches.length < max){
+      matches.push(match);
+      if(match[0] === '') re.lastIndex += 1;
+      if(performance.now() - start > 120){
+        state.warnings.push('Stopped after 120ms. Pattern may be expensive on this input.');
+        break;
+      }
+    }
+    if(matches.length >= max) state.warnings.push('Stopped after 1000 matches to keep the page responsive.');
+    return matches;
+  }
+  function evaluate(){
+    var built = buildRegex();
+    state = { ok:built.ok, regex:built.regex || null, matches:[], error:built.error || '', warnings:[] };
+    var pattern = $('patternInput').value;
+    var flags = getFlags();
+    state.warnings = lint(pattern, flags);
+    if(state.ok && pattern){
+      state.matches = collectMatches(state.regex, $('testInput').value);
+    }
+    render();
+  }
+  function render(){
+    $('validity').className = 'badge ' + (state.ok ? 'good' : 'bad');
+    $('validity').textContent = state.ok ? 'Valid pattern' : 'Invalid pattern';
+    $('summary').textContent = state.ok ? state.matches.length + ' match' + (state.matches.length === 1 ? '' : 'es') : state.error;
+    var badges = [];
+    if(!state.ok) badges.push('<span class="badge bad">'+esc(state.error)+'</span>');
+    else badges.push('<span class="badge good">'+state.matches.length+' match'+(state.matches.length === 1 ? '' : 'es')+'</span>');
+    state.warnings.forEach(function(w){ badges.push('<span class="badge warn">'+esc(w)+'</span>'); });
+    $('status').innerHTML = badges.join('');
+    ['Highlight','Matches','Replace','Explain','Code','History'].forEach(function(name){
+      $('tab' + name).classList.toggle('active', currentTab === name.toLowerCase());
+    });
+    if(!state.ok){ $('output').innerHTML = '<p class="helper">'+esc(state.error)+'</p>'; return; }
+    if(currentTab === 'highlight') renderHighlight();
+    if(currentTab === 'matches') renderMatches();
+    if(currentTab === 'replace') renderReplace();
+    if(currentTab === 'explain') renderExplain();
+    if(currentTab === 'code') renderCode();
+    if(currentTab === 'history') renderHistory();
+  }
+  function renderHighlight(){
+    var text = $('testInput').value;
+    if(!state.matches.length){ $('output').innerHTML = esc(text) || '<p class="helper">No test text.</p>'; return; }
+    var ranges = state.matches.map(function(m){ return { start:m.index, end:m.index + m[0].length }; }).sort(function(a,b){ return a.start - b.start; });
+    var html = '';
+    var pos = 0;
+    ranges.forEach(function(r){
+      html += esc(text.slice(pos, r.start));
+      if(r.start === r.end) html += '<span class="zero">&nbsp;</span>';
+      else html += '<span class="match">'+esc(text.slice(r.start, r.end))+'</span>';
+      pos = r.end;
+    });
+    html += esc(text.slice(pos));
+    $('output').innerHTML = '<div class="highlight">'+html+'</div>';
+  }
+  function renderMatches(){
+    if(!state.matches.length){ $('output').innerHTML = '<p class="helper">No matches found.</p>'; return; }
+    $('output').innerHTML = '<div class="matches">'+state.matches.map(function(m, index){
+      var groups = '';
+      for(var i=1;i<m.length;i++) groups += '<div class="group">$'+i+': '+esc(m[i] === undefined ? 'undefined' : m[i])+'</div>';
+      if(m.groups) Object.keys(m.groups).forEach(function(key){ groups += '<div class="group">'+esc(key)+': '+esc(m.groups[key])+'</div>'; });
+      return '<div class="match-card"><strong>Match '+(index+1)+': '+esc(m[0])+'</strong><small>Index '+m.index+', length '+m[0].length+'</small>'+(groups ? '<div class="groups">'+groups+'</div>' : '')+'</div>';
+    }).join('')+'</div>';
+  }
+  function renderReplace(){
+    try{
+      var replaced = $('testInput').value.replace(state.regex, $('replaceInput').value);
+      $('output').textContent = replaced;
+    }catch(err){
+      $('output').innerHTML = '<p class="helper">'+esc(err.message)+'</p>';
+    }
+  }
+  function renderExplain(){
+    var pattern = $('patternInput').value;
+    var tokens = explain(pattern);
+    $('output').innerHTML = tokens.length ? tokens.map(function(item){ return '<div class="match-card"><strong>'+esc(item.token)+'</strong><small>'+esc(item.note)+'</small></div>'; }).join('') : '<p class="helper">No explanation tokens yet.</p>';
+  }
+  function explain(pattern){
+    var items = [];
+    var map = {
+      '^':'Start anchor',
+      '$':'End anchor',
+      '.':'Any character except newline unless s flag is enabled',
+      '\\d':'Digit',
+      '\\D':'Non-digit',
+      '\\w':'Word character',
+      '\\W':'Non-word character',
+      '\\s':'Whitespace',
+      '\\S':'Non-whitespace',
+      '+':'One or more',
+      '*':'Zero or more',
+      '?':'Optional or lazy modifier',
+      '|':'Alternation',
+      '(?:':'Non-capturing group',
+      '(?=':'Positive lookahead',
+      '(?!':'Negative lookahead',
+      '(?<=':'Positive lookbehind',
+      '(?<!':'Negative lookbehind'
+    };
+    Object.keys(map).sort(function(a,b){ return b.length - a.length; }).forEach(function(token){
+      if(pattern.indexOf(token) !== -1) items.push({ token:token, note:map[token] });
+    });
+    var named = pattern.match(/\(\?<([A-Za-z][\w]*)>/g) || [];
+    named.forEach(function(token){ items.push({ token:token, note:'Named capture group' }); });
+    var quant = pattern.match(/\{\d+(?:,\d*)?\}/g) || [];
+    quant.forEach(function(token){ items.push({ token:token, note:'Bounded repetition quantifier' }); });
+    return items;
+  }
+  function renderCode(){
+    var pattern = $('patternInput').value;
+    var flags = getFlags();
+    var text = $('testInput').value.split(/\r?\n/)[0] || 'sample text';
+    var repl = $('replaceInput').value || 'replacement';
+    var code = '';
+    if($('flavorSelect').value === 'js'){
+      code = "const regex = new RegExp(" + JSON.stringify(pattern) + ", " + JSON.stringify(flags) + ");\nconst text = " + JSON.stringify(text) + ";\nconst matches = [...text.matchAll(new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : regex.flags + 'g'))];\nconsole.log(matches.map(match => ({ value: match[0], index: match.index, groups: match.groups || {} })));\nconsole.log(text.replace(regex, " + JSON.stringify(repl) + "));";
+    }
+    if($('flavorSelect').value === 'py'){
+      code = "import re\n\npattern = r" + JSON.stringify(pattern) + "\ntext = " + JSON.stringify(text) + "\nflags = 0\nmatches = list(re.finditer(pattern, text, flags))\nfor match in matches:\n    print(match.group(0), match.start(), match.groups())\nprint(re.sub(pattern, " + JSON.stringify(repl) + ", text))";
+    }
+    if($('flavorSelect').value === 'php'){
+      code = "<?php\n$pattern = '/" + pattern.replace(/\//g,'\\/').replace(/'/g,"\\'") + "/" + flags.replace('g','') + "';\n$text = " + JSON.stringify(text) + ";\npreg_match_all($pattern, $text, $matches, PREG_OFFSET_CAPTURE);\nprint_r($matches);\necho preg_replace($pattern, " + JSON.stringify(repl) + ", $text);\n?>";
+    }
+    $('output').textContent = code;
+  }
+  function renderHistory(){
+    var list = readHistory();
+    if(!list.length){ $('output').innerHTML = '<p class="helper">No saved patterns yet.</p>'; return; }
+    $('output').innerHTML = '<div class="history-list">'+list.map(function(item, index){
+      return '<div class="history-item"><div><strong>'+esc(item.pattern)+'</strong><br><span>'+esc(item.flags)+' | '+esc(item.at)+'</span></div><button type="button" data-history="'+index+'">Restore</button></div>';
+    }).join('')+'</div>';
+  }
+  function saveHistory(){
+    var list = readHistory();
+    list.unshift({ at:new Date().toISOString(), pattern:$('patternInput').value, flags:getFlags(), text:$('testInput').value });
+    localStorage.setItem(storageKey, JSON.stringify(list.slice(0, 20)));
+  }
+  function readHistory(){
+    try { return JSON.parse(localStorage.getItem(storageKey) || '[]'); }
+    catch(_) { return []; }
+  }
+  function renderLibrary(){
+    var html = '';
+    var group = '';
+    presets.forEach(function(preset){
+      if(preset.group !== group){ group = preset.group; html += '<h3 style="margin:8px 0 0;font-size:.82rem">'+esc(group)+'</h3>'; }
+      html += '<button class="preset" type="button" data-pattern="'+esc(preset.pattern)+'" data-flags="'+esc(preset.flags || 'g')+'" data-sample="'+esc(preset.sample)+'"><strong>'+esc(preset.name)+'</strong><span>'+esc(preset.note)+'</span><code>'+esc(preset.pattern)+'</code></button>';
+    });
+    $('library').innerHTML = html;
+  }
+  function bind(){
+    ['patternInput','testInput','replaceInput','flavorSelect'].forEach(function(id){ $(id).addEventListener('input', evaluate); $(id).addEventListener('change', evaluate); });
+    ['G','I','M','S','U','Y','D'].forEach(function(flag){ $('flag' + flag).addEventListener('change', evaluate); });
+    ['Highlight','Matches','Replace','Explain','Code','History'].forEach(function(name){
+      $('tab' + name).onclick = function(){ currentTab = name.toLowerCase(); render(); };
+    });
+    $('copyPatternBtn').onclick = function(){ navigator.clipboard.writeText('/' + $('patternInput').value + '/' + getFlags()).then(function(){ toast('Pattern copied'); }); };
+    $('saveBtn').onclick = function(){
+      saveHistory();
+      var jsonPayload = JSON.stringify({ pattern:$('patternInput').value, flags:getFlags(), matches:state.matches.map(function(m){ return { value:m[0], index:m.index, groups:m.groups || null }; }) }, null, 2);
+      var existing = [];
+      try { existing = JSON.parse(localStorage.getItem(jsonHistoryKey) || '[]'); } catch(_) {}
+      existing.unshift({ at:new Date().toISOString(), mode:'json', size:jsonPayload.length, text:jsonPayload });
+      localStorage.setItem(jsonHistoryKey, JSON.stringify(existing.slice(0, 10)));
+      toast('Saved pattern and JSON handoff');
+    };
+    $('clearBtn').onclick = function(){ $('patternInput').value = ''; $('testInput').value = ''; evaluate(); };
+    $('library').addEventListener('click', function(event){
+      var button = event.target.closest('button[data-pattern]');
+      if(!button) return;
+      $('patternInput').value = button.getAttribute('data-pattern');
+      $('testInput').value = button.getAttribute('data-sample');
+      setFlags(button.getAttribute('data-flags') || 'g');
+      evaluate();
+      toast('Preset loaded');
+    });
+    $('output').addEventListener('click', function(event){
+      var button = event.target.closest('button[data-history]');
+      if(!button) return;
+      var item = readHistory()[Number(button.getAttribute('data-history'))];
+      if(!item) return;
+      $('patternInput').value = item.pattern;
+      $('testInput').value = item.text || '';
+      setFlags(item.flags || 'g');
+      currentTab = 'highlight';
+      evaluate();
+    });
+  }
+  renderLibrary();
+  bind();
+  evaluate();
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script class="sw-dev-runtime-localizer">
+(function(){
+  const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Free forever","Bure daima"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

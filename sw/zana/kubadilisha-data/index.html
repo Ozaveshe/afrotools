@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubadilisha Data - JSON, CSV, XML, YAML na TOML | AfroTools</title>
+<meta name="description" content="Badilisha data kati ya JSON, CSV, XML, YAML, TSV, TOML na SQL INSERT kwa preview, validation na error details.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/kubadilisha-data/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kubadilisha-data/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/data-converter/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/data-converter/">
+
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Kubadilisha Data - JSON, CSV, XML, YAML na TOML | AfroTools">
+<meta property="og:description" content="Badilisha data kati ya JSON, CSV, XML, YAML, TSV, TOML na SQL INSERT kwa preview, validation na error details.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/kubadilisha-data/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kubadilisha Data - JSON, CSV, XML, YAML na TOML | AfroTools">
+<meta name="twitter:description" content="Badilisha data kati ya JSON, CSV, XML, YAML, TSV, TOML na SQL INSERT kwa preview, validation na error details.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js" defer></script>
+<script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
+<style>
+:root {
+  --afro-green: var(--color-primary);
+  --afro-dark: #0f1419;
+  --afro-light: #f5f7fa;
+}
+
+.tool-hero {
+  background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+  padding: 44px 0 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-hero::after {
+  content: '\1F504';
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.tool-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+}
+
+.breadcrumb {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.breadcrumb a {
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+}
+
+.breadcrumb span {
+  color: var(--afro-green);
+}
+
+h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+h1 em {
+  color: var(--afro-green);
+  font-style: normal;
+}
+
+.hero-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+  max-width: 560px;
+  margin-bottom: 14px;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.b-green {
+  background: rgba(0,113,227,0.18);
+  color: var(--color-primary);
+  border: 1px solid rgba(0,113,227,0.38);
+}
+
+.tool-main {
+  padding: 28px 0 72px;
+}
+
+.tool-main-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 22px;
+  align-items: start;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #DBEAFE;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+
+.card + .card {
+  margin-top: 18px;
+}
+
+.card-head {
+  padding: 15px 22px;
+  border-bottom: 1px solid #EFF6FF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #F5F9FF;
+}
+
+.card-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0a4018;
+}
+
+.card-body {
+  padding: 22px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.f-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.f-label-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #0d2813;
+}
+
+.f-input, .f-select {
+  width: 100%;
+  padding: 11px 13px;
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+  border-radius: 7px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0d2813;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.f-input:focus, .f-select:focus {
+  border-color: var(--afro-green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+}
+
+.f-textarea {
+  width: 100%;
+  padding: 12px;
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #0d2813;
+  outline: none;
+  resize: vertical;
+  min-height: 200px;
+  font-family: 'Courier New', monospace;
+  line-height: 1.5;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.f-textarea:focus {
+  border-color: var(--afro-green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+}
+
+/* CONVERSION MATRIX */
+.conversion-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.conversion-row .f-select {
+  flex: 1;
+}
+
+.conv-arrow {
+  font-size: 1.4rem;
+  color: var(--afro-green);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* BUTTONS */
+.calc-btn {
+  width: 100%;
+  padding: 13px 20px;
+  background: var(--afro-green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.calc-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #244d2c;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-sm:hover {
+  border-color: var(--afro-green);
+  background: rgba(0,113,227,0.08);
+}
+
+.btn-sm.active {
+  background: var(--afro-green);
+  color: #fff;
+  border-color: var(--afro-green);
+}
+
+/* FILE UPLOAD */
+.file-drop {
+  border: 2px dashed #BFDBFE;
+  border-radius: 8px;
+  padding: 18px;
+  text-align: center;
+  cursor: pointer;
+  background: #F5F9FF;
+  transition: all 0.2s;
+  margin-bottom: 14px;
+}
+
+.file-drop:hover, .file-drop.drag-over {
+  border-color: var(--afro-green);
+  background: rgba(0,113,227,0.05);
+}
+
+.file-drop-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6B8CAE;
+}
+
+.file-drop-text span {
+  color: var(--afro-green);
+  font-weight: 700;
+}
+
+/* VALIDATION */
+.validation-msg {
+  padding: 10px 14px;
+  border-radius: 7px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 10px;
+  display: none;
+}
+
+.validation-msg.show {
+  display: block;
+}
+
+.validation-msg.valid {
+  background: rgba(0,113,227,0.08);
+  color: #1a5c3a;
+  border: 1px solid rgba(0,113,227,0.25);
+}
+
+.validation-msg.invalid {
+  background: rgba(220,53,69,0.08);
+  color: #800000;
+  border: 1px solid rgba(220,53,69,0.25);
+}
+
+/* SQL TABLE NAME */
+.sql-table-row {
+  display: none;
+  margin-top: 12px;
+}
+
+.sql-table-row.show {
+  display: block;
+}
+
+/* PREVIEW TABLE */
+.preview-wrap {
+  margin-top: 14px;
+  display: none;
+  overflow-x: auto;
+  border: 1px solid #DBEAFE;
+  border-radius: 8px;
+}
+
+.preview-wrap.show {
+  display: block;
+}
+
+.preview-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+.preview-wrap th {
+  background: #F5F9FF;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #0a4018;
+  border-bottom: 2px solid #DBEAFE;
+  white-space: nowrap;
+}
+
+.preview-wrap td {
+  padding: 6px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-wrap tr:nth-child(even) {
+  background: rgba(248,250,252,0.6);
+}
+
+.preview-label {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* SIDEBAR */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card {
+  background: #F5F9FF;
+  border: 1px solid #DBEAFE;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.info-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0a4018;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.info-text {
+  font-size: 0.8rem;
+  color: #244d2c;
+  line-height: 1.6;
+}
+
+.info-text li {
+  margin-bottom: 8px;
+}
+
+.fmt-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fmt-item:last-child {
+  border-bottom: none;
+}
+
+.fmt-name {
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #0d2813;
+}
+
+.fmt-desc {
+  font-size: 0.72rem;
+  color: #6B8CAE;
+  line-height: 1.5;
+  margin-top: 2px;
+}
+
+.tip-card {
+  background: linear-gradient(135deg, rgba(0,113,227,0.06), rgba(0,113,227,0.02));
+  border: 1px solid rgba(0,113,227,0.2);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.tip-card .info-title {
+  color: var(--afro-green);
+}
+
+.tip-item {
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.5;
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.tip-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--afro-green);
+}
+
+/* AI PANEL */
+.ai-toggle {
+  width: 100%;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #1a1f2e, #0f1419);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.ai-toggle:hover {
+  border-color: var(--afro-green);
+}
+
+.ai-panel {
+  display: none;
+  margin-top: 14px;
+}
+
+.ai-panel.open {
+  display: block;
+}
+
+.ai-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.ai-suggest-btn {
+  padding: 6px 12px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #244d2c;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ai-suggest-btn:hover {
+  border-color: var(--afro-green);
+  background: rgba(0,113,227,0.08);
+}
+
+.ai-messages {
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.ai-msg {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+.ai-msg.user {
+  background: var(--afro-green);
+  color: #fff;
+  margin-left: auto;
+  border-bottom-right-radius: 2px;
+}
+
+.ai-msg.bot {
+  background: #f1f5f9;
+  color: #334155;
+  border-bottom-left-radius: 2px;
+  white-space: pre-wrap;
+}
+
+.ai-msg.err {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.ai-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ai-input-row input {
+  flex: 1;
+}
+
+.ai-input-row button {
+  width: auto;
+  padding: 11px 20px;
+  flex-shrink: 0;
+}
+
+.ai-footer {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+/* FAQ */
+.faq-section {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 24px;
+}
+
+.faq-section h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 14px;
+}
+
+.faq-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.faq-item summary {
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary svg {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.faq-item[open] summary svg {
+  transform: rotate(180deg);
+}
+
+.faq-item .faq-answer {
+  padding: 0 18px 14px;
+  font-size: 0.84rem;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1e293b;
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: toastIn 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+@keyframes toastIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .tool-main-inner {
+    grid-template-columns: 1fr;
+  }
+  .conversion-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .conv-arrow {
+    transform: rotate(90deg);
+  }
+  .f-textarea {
+    min-height: 160px;
+  }
+  .btn-row {
+    flex-direction: column;
+  }
+  .btn-row .btn-sm {
+    width: 100%;
+    text-align: center;
+  }
+}
+</style>
+
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kubadilisha Data","url":"https://afrotools.com/sw/zana/kubadilisha-data/","description":"Badilisha data kati ya JSON, CSV, XML, YAML, TSV, TOML na SQL INSERT kwa preview, validation na error details.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"DeveloperApplication","operatingSystem":"Any"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Kubadilisha Data","item":"https://afrotools.com/sw/zana/kubadilisha-data/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kubadilisha Data hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa planning, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch."}}]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/developer-tools">Zana za Developer</a> / <span>Kubadilisha Data</span>
+    </div>
+    <h1>Data <em>Converter</em></h1>
+    <p class="hero-sub">Convert between JSON, CSV, XML, YAML, TSV, TOML, and SQL INSERT. Auto-detect formats, validate data, and preview tables in your browser.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Auto-Detect</span>
+      <span class="badge b-green">7 Formats</span>
+      <span class="badge b-green">SQL INSERT</span>
+      <span class="badge b-green">100% Client-Side</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- CONVERSION MATRIX -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Format Selection</span>
+          <span style="font-size:0.68rem;color:#6B8CAE;font-weight:600">Auto-detected on paste</span>
+        </div>
+        <div class="card-body">
+          <div class="conversion-row">
+            <select id="inputFormat" class="f-select">
+              <option value="json">JSON</option>
+              <option value="csv">CSV</option>
+              <option value="xml">XML</option>
+              <option value="yaml">YAML</option>
+              <option value="tsv">TSV</option>
+              <option value="toml">TOML</option>
+            </select>
+            <span class="conv-arrow">&rarr;</span>
+            <select id="outputFormat" class="f-select">
+              <option value="json">JSON</option>
+              <option value="csv">CSV</option>
+              <option value="xml">XML</option>
+              <option value="yaml">YAML</option>
+              <option value="tsv">TSV</option>
+              <option value="toml">TOML</option>
+              <option value="sql">SQL INSERT</option>
+            </select>
+          </div>
+          <div class="sql-table-row" id="sqlTableRow">
+            <div class="field" style="margin-top:14px;margin-bottom:0">
+              <label class="f-label"><span class="f-label-text">Table Name</span></label>
+              <input type="text" id="sqlTableName" class="f-input" placeholder="my_table" value="my_table">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Input Data</span>
+          <div class="btn-row">
+            <button class="btn-sm" id="sampleBtn">Pakia Sample</button>
+            <button class="btn-sm" id="clearBtn">Futa</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="file-drop" id="fileDrop">
+            <div class="file-drop-text"><span>Bofya to upload</span> or drag a file here</div>
+          </div>
+          <input type="file" id="fileInput" style="display:none">
+          <textarea class="f-textarea" id="inputData" placeholder="Paste your data here or upload a file..."></textarea>
+          <div class="validation-msg" id="validationMsg"></div>
+        </div>
+      </div>
+
+      <!-- OUTPUT -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Output</span>
+          <div class="btn-row">
+            <button class="btn-sm active" id="prettyBtn">Pretty</button>
+            <button class="btn-sm" id="minifyBtn">Minify</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <textarea class="f-textarea" id="outputData" readonly placeholder="Converted data will appear here..." style="min-height:180px"></textarea>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="calc-btn" id="convertBtn" style="flex:1;min-width:140px">Convert</button>
+            <button class="btn-sm" id="copyBtn" style="flex:0">Nakili</button>
+            <button class="btn-sm" id="downloadBtn" style="flex:0">Pakua</button>
+          </div>
+          <!-- PREVIEW TABLE -->
+          <div class="preview-wrap" id="previewWrap">
+            <div class="preview-label" style="padding:8px 12px 0">Preview (first 10 rows)</div>
+            <table id="previewTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI ADVISOR -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">AI Data Advisor</span>
+        </div>
+        <div class="card-body">
+          <button class="ai-toggle" id="aiToggle">&#10022; Ask AI</button>
+          <div class="ai-panel" id="aiPanel">
+            <div class="ai-suggestions">
+              <button class="ai-suggest-btn" data-q="Convert this messy data to clean JSON">Clean to JSON</button>
+              <button class="ai-suggest-btn" data-q="Generate a JSON schema for this data">JSON Schema</button>
+              <button class="ai-suggest-btn" data-q="What format is this data in?">Detect Format</button>
+              <button class="ai-suggest-btn" data-q="Explain the structure of this data">Explain Structure</button>
+            </div>
+            <div class="ai-messages" id="aiMessages"></div>
+            <div class="ai-input-row">
+              <input type="text" id="aiInput" class="f-input" placeholder="Ask about your data..." style="font-family:'DM Sans',sans-serif">
+              <button class="calc-btn" id="aiSendBtn">Ask</button>
+            </div>
+            <div class="ai-footer">Powered by Claude &bull; <span id="aiRemaining">3 questions remaining</span></div>
+          </div>
+        </div>
+      </div>
+
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kubadilisha Data kwa Kiswahili.</strong> Geuza data kati ya formats za kawaida kwa kazi za APIs, reports, imports, exports na cleanup ya spreadsheet. Hakiki output kabla ya kuiingiza production. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source output, provider docs na production environment kabla ya launch.</span></div></section>
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>This data format converter transforms structured data between JSON, CSV, XML, YAML, TSV, TOML, and SQL INSERT statements with a single click. Paste your data or upload a file and the tool auto-detects the input format, then converts it to your chosen output format instantly. It handles nested objects, arrays, and special characters gracefully, making it ideal for developers migrating data between systems, analysts reformatting exports, or anyone who regularly wrangles data across different platforms. Zote processing happens locally in your browser, so sensitive data stays private. Stop manually reformatting files and let this converter do the heavy lifting.</p>
+  </div>
+</section>
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+      <!-- FAQ -->
+      <section class="faq-section" style="padding:0;margin-top:18px">
+        <h2>Maswali ya mara kwa mara</h2>
+        <details class="faq-item">
+          <summary>What data formats does this converter support?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">This converter supports JSON, CSV, XML, YAML, TSV, and TOML as both input and output formats. You can also generate SQL INSERT statements from any tabular data. The tool auto-detects your input format when you paste or upload data.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How does auto-detect work?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">When you paste or upload data, the converter examines the first 100 characters for format signatures: curly braces or square brackets for JSON, angle brackets for XML, tab characters for TSV, TOML bracket headers, comma-separated headers for CSV, or colon-based key-value pairs for YAML.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I generate SQL INSERT statements from my data?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">Ndiyo. Select "SQL INSERT" as the output format, enter a table name, and the converter generates valid INSERT statements for every row. Values are properly escaped. This works from any input format including CSV, JSON, XML, YAML, TSV, and TOML.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is my data secure?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">Zote conversions happen entirely in your browser. Your data never leaves your device. The only optional network call is the AI advisor, which sends a small context snippet for suggestions. You can use the converter fully offline after the page loads.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What is TOML and when should I use it?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">TOML (Tom's Obvious Minimal Language) is a human-readable configuration format used in Rust (Cargo.toml), Python packaging (pyproject.toml), and static site generators. It is less ambiguous than YAML and easier to read than JSON for configuration files.</div>
+        </details>
+      </section>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Format Reference</div>
+        <div class="fmt-item">
+          <div class="fmt-name">JSON</div>
+          <div class="fmt-desc">JavaScript Object Notation. Key-value pairs with nested objects and arrays.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">CSV</div>
+          <div class="fmt-desc">Comma-separated values. First row is headers. Good for spreadsheets.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">XML</div>
+          <div class="fmt-desc">Extensible Markup Language. Tag-based hierarchical format for structured data.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">YAML</div>
+          <div class="fmt-desc">Human-readable format using indentation. Popular for config files.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">TSV</div>
+          <div class="fmt-desc">Tab-separated values. Like CSV but uses tabs. Good for copy-paste from spreadsheets.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">TOML</div>
+          <div class="fmt-desc">Minimal config format. Used in Rust, Python packaging, and static site generators.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">SQL INSERT</div>
+          <div class="fmt-desc">Output only. Tengenezas INSERT statements for database import.</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="info-title">Conversion Tips</div>
+        <div class="tip-item">Paste data to auto-detect the format</div>
+        <div class="tip-item">Use Pretty mode for readability, Minify for compact output</div>
+        <div class="tip-item">CSV/TSV conversions require flat (non-nested) data</div>
+        <div class="tip-item">SQL INSERT escapes values to prevent injection</div>
+        <div class="tip-item">TOML supports nested tables with [section] headers</div>
+        <div class="tip-item">Buruta and drop files up to 5 MB for instant conversion</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Keyboard Shortcuts</div>
+        <div class="info-text">
+          <ul style="margin:0;padding-left:16px">
+            <li><strong>Ctrl+Weka</strong> &mdash; Convert</li>
+            <li><strong>Ctrl+Shift+C</strong> &mdash; Nakili output</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<email-gate-modal></email-gate-modal>
+<afro-related-tools category="developer" current="data-converter"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DATA CONVERTER ENGINE
+   ═══════════════════════════════════════════════════════ */
+(function() {
+  'use strict';
+
+  /* ── DOM refs ─────────────────────────────────────── */
+  var inputFmt   = document.getElementById('inputFormat');
+  var outputFmt  = document.getElementById('outputFormat');
+  var inputData  = document.getElementById('inputData');
+  var outputData = document.getElementById('outputData');
+  var validMsg   = document.getElementById('validationMsg');
+  var prettyBtn  = document.getElementById('prettyBtn');
+  var minifyBtn  = document.getElementById('minifyBtn');
+  var convertBtn = document.getElementById('convertBtn');
+  var copyBtn    = document.getElementById('copyBtn');
+  var downloadBtn= document.getElementById('downloadBtn');
+  var sampleBtn  = document.getElementById('sampleBtn');
+  var clearBtn   = document.getElementById('clearBtn');
+  var fileDrop   = document.getElementById('fileDrop');
+  var fileInput  = document.getElementById('fileInput');
+  var sqlRow     = document.getElementById('sqlTableRow');
+  var sqlName    = document.getElementById('sqlTableName');
+  var previewWrap= document.getElementById('previewWrap');
+  var previewTbl = document.getElementById('previewTable');
+
+  var isPretty = true;
+
+  /* ── SAMPLES ──────────────────────────────────────── */
+  var samples = {
+    json: '[\n  {"name": "Adaeze", "age": 28, "city": "Lagos"},\n  {"name": "Kamau", "age": 32, "city": "Nairobi"},\n  {"name": "Thabo", "age": 25, "city": "Cape Town"}\n]',
+    csv: 'name,age,city\nAdaeze,28,Lagos\nKamau,32,Nairobi\nThabo,25,Cape Town',
+    xml: '<?xml version="1.0"?>\n<root>\n  <person>\n    <name>Adaeze</name>\n    <age>28</age>\n    <city>Lagos</city>\n  </person>\n  <person>\n    <name>Kamau</name>\n    <age>32</age>\n    <city>Nairobi</city>\n  </person>\n</root>',
+    yaml: 'people:\n  - name: Adaeze\n    age: 28\n    city: Lagos\n  - name: Kamau\n    age: 32\n    city: Nairobi\n  - name: Thabo\n    age: 25\n    city: Cape Town',
+    tsv: 'name\tage\tcity\nAdaeze\t28\tLagos\nKamau\t32\tNairobi\nThabo\t25\tCape Town',
+    toml: '[people]\n\n[[people.person]]\nname = "Adaeze"\nage = 28\ncity = "Lagos"\n\n[[people.person]]\nname = "Kamau"\nage = 32\ncity = "Nairobi"\n\n[[people.person]]\nname = "Thabo"\nage = 25\ncity = "Cape Town"'
+  };
+
+  /* ── AUTO-DETECT FORMAT ───────────────────────────── */
+  function detectFormat(text) {
+    var t = text.trim();
+    if (!t) return null;
+    var head = t.substring(0, 100);
+
+    // JSON: starts with { or [
+    if (/^\s*[\[{]/.test(head)) {
+      try { JSON.parse(t); return 'json'; } catch(e) { return 'json'; }
+    }
+    // XML: starts with < (not counting whitespace)
+    if (/^\s*</.test(head)) return 'xml';
+    // TSV: has tabs in first line
+    var firstLine = head.split('\n')[0];
+    if (firstLine.indexOf('\t') !== -1) return 'tsv';
+    // TOML: has [section] headers or key = "value" patterns
+    if (/^\s*\[[\w.-]+\]/.test(head) || /^\s*\w+\s*=\s*/.test(head)) {
+      // Distinguish from YAML — TOML uses = not :
+      if (head.indexOf('=') !== -1 && head.indexOf(':') === -1) return 'toml';
+      if (/^\s*\[[\w.-]+\]/.test(head)) return 'toml';
+    }
+    // CSV: first line has commas
+    if (firstLine.indexOf(',') !== -1) return 'csv';
+    // YAML: has key: value pattern
+    if (/^\s*\w[\w\s]*:/.test(head)) return 'yaml';
+
+    return null;
+  }
+
+  /* ── PARSERS ──────────────────────────────────────── */
+
+  function parseCSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    if (lines.length < 1) throw new Error('CSV: No data found');
+    var headers = parseCSVLine(lines[0]);
+    var result = [];
+    for (var i = 1; i < lines.length; i++) {
+      var values = parseCSVLine(lines[i]);
+      var obj = {};
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = values[j] || '';
+      }
+      result.push(obj);
+    }
+    return result;
+  }
+
+  // RFC 4180 compliant CSV line parser (handles quoted fields)
+  function parseCSVLine(line) {
+    var result = [];
+    var current = '';
+    var inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (i + 1 < line.length && line[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          current += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+        } else if (ch === ',') {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+    }
+    result.push(current.trim());
+    return result;
+  }
+
+  function parseTSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    if (lines.length < 1) throw new Error('TSV: No data found');
+    var headers = lines[0].split('\t').map(function(h) { return h.trim(); });
+    var result = [];
+    for (var i = 1; i < lines.length; i++) {
+      var values = lines[i].split('\t').map(function(v) { return v.trim(); });
+      var obj = {};
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = values[j] || '';
+      }
+      result.push(obj);
+    }
+    return result;
+  }
+
+  function parseXML(text) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(text, 'text/xml');
+    var errors = doc.getElementsByTagName('parsererror');
+    if (errors.length > 0) {
+      var errText = errors[0].textContent || 'Invalid XML';
+      // Try to extract line/column info
+      var lineMatch = errText.match(/line\s*(\d+)/i);
+      var colMatch = errText.match(/column\s*(\d+)/i);
+      var detail = '';
+      if (lineMatch) detail += ' at line ' + lineMatch[1];
+      if (colMatch) detail += ', column ' + colMatch[1];
+      throw new Error('Invalid XML' + detail + ': ' + errText.substring(0, 120));
+    }
+    function xmlToObj(node) {
+      if (node.nodeType === 3) return node.textContent.trim();
+      var obj = {};
+      for (var c = 0; c < node.childNodes.length; c++) {
+        var child = node.childNodes[c];
+        if (child.nodeType === 1) {
+          var name = child.nodeName;
+          var value = (child.childNodes.length === 1 && child.firstChild.nodeType === 3)
+            ? child.firstChild.textContent.trim()
+            : xmlToObj(child);
+          if (obj[name]) {
+            if (!Array.isArray(obj[name])) obj[name] = [obj[name]];
+            obj[name].push(value);
+          } else {
+            obj[name] = value;
+          }
+        }
+      }
+      return obj;
+    }
+    return xmlToObj(doc.documentElement);
+  }
+
+  function parseYAML(text) {
+    // Use js-yaml CDN if available, else basic fallback
+    if (typeof jsyaml !== 'undefined') {
+      try {
+        return jsyaml.load(text);
+      } catch(e) {
+        var mark = e.mark;
+        if (mark) {
+          throw new Error('YAML error at line ' + (mark.line + 1) + ', column ' + (mark.column + 1) + ': ' + e.reason);
+        }
+        throw e;
+      }
+    }
+    // Basic fallback parser
+    return parseYAMLBasic(text);
+  }
+
+  function parseYAMLBasic(text) {
+    var result = {};
+    var lines = text.split('\n');
+    var stack = [{ obj: result, indent: -1 }];
+    var currentArray = null;
+    var currentArrayKey = null;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.replace(/^\s+/, '');
+      if (!trimmed || trimmed.charAt(0) === '#') continue;
+
+      var indent = line.length - trimmed.length;
+
+      // Pop stack to correct level
+      while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+        stack.pop();
+      }
+      var current = stack[stack.length - 1].obj;
+
+      if (trimmed.charAt(0) === '-' && trimmed.charAt(1) === ' ') {
+        var val = trimmed.substring(2).trim();
+        if (currentArrayKey && current[currentArrayKey] && Array.isArray(current[currentArrayKey])) {
+          if (val.indexOf(':') !== -1) {
+            var parts = val.split(':');
+            var itemObj = {};
+            itemObj[parts[0].trim()] = coerceValue(parts.slice(1).join(':').trim());
+            current[currentArrayKey].push(itemObj);
+          } else {
+            current[currentArrayKey].push(coerceValue(val));
+          }
+        }
+      } else if (trimmed.indexOf(':') !== -1) {
+        var colonIdx = trimmed.indexOf(':');
+        var key = trimmed.substring(0, colonIdx).trim();
+        var rawVal = trimmed.substring(colonIdx + 1).trim();
+
+        if (!rawVal) {
+          // Check if next line is array
+          var nextLine = (i + 1 < lines.length) ? lines[i + 1] : '';
+          var nextTrimmed = nextLine.replace(/^\s+/, '');
+          if (nextTrimmed.charAt(0) === '-') {
+            current[key] = [];
+            currentArrayKey = key;
+          } else {
+            current[key] = {};
+            stack.push({ obj: current[key], indent: indent });
+          }
+        } else {
+          current[key] = coerceValue(rawVal);
+          currentArrayKey = null;
+        }
+      }
+    }
+    return result;
+  }
+
+  function coerceValue(val) {
+    if (val === 'true') return true;
+    if (val === 'false') return false;
+    if (val === 'null' || val === '~') return null;
+    if (/^-?\d+$/.test(val)) return parseInt(val, 10);
+    if (/^-?\d+\.\d+$/.test(val)) return parseFloat(val);
+    // Strip surrounding quotes
+    if ((val.charAt(0) === '"' && val.charAt(val.length - 1) === '"') ||
+        (val.charAt(0) === "'" && val.charAt(val.length - 1) === "'")) {
+      return val.substring(1, val.length - 1);
+    }
+    return val;
+  }
+
+  /* ── TOML PARSER (basic) ──────────────────────────── */
+  function parseTOML(text) {
+    var result = {};
+    var lines = text.split('\n');
+    var currentSection = result;
+    var currentPath = [];
+    var arrayOfTables = {}; // track [[table]] arrays
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line || line.charAt(0) === '#') continue;
+
+      // Array of tables [[name]]
+      var arrMatch = line.match(/^\[\[([^\]]+)\]\]$/);
+      if (arrMatch) {
+        var arrPath = arrMatch[1].split('.').map(function(s) { return s.trim(); });
+        var arrParent = result;
+        for (var a = 0; a < arrPath.length - 1; a++) {
+          if (!arrParent[arrPath[a]]) arrParent[arrPath[a]] = {};
+          arrParent = arrParent[arrPath[a]];
+        }
+        var arrKey = arrPath[arrPath.length - 1];
+        if (!arrParent[arrKey]) arrParent[arrKey] = [];
+        if (!Array.isArray(arrParent[arrKey])) arrParent[arrKey] = [arrParent[arrKey]];
+        var newObj = {};
+        arrParent[arrKey].push(newObj);
+        currentSection = newObj;
+        currentPath = arrPath;
+        continue;
+      }
+
+      // Table [name]
+      var tblMatch = line.match(/^\[([^\]]+)\]$/);
+      if (tblMatch) {
+        var tblPath = tblMatch[1].split('.').map(function(s) { return s.trim(); });
+        currentSection = result;
+        for (var t = 0; t < tblPath.length; t++) {
+          if (!currentSection[tblPath[t]]) currentSection[tblPath[t]] = {};
+          var next = currentSection[tblPath[t]];
+          if (Array.isArray(next)) {
+            currentSection = next[next.length - 1];
+          } else {
+            currentSection = next;
+          }
+        }
+        currentPath = tblPath;
+        continue;
+      }
+
+      // Key = value
+      var eqIdx = line.indexOf('=');
+      if (eqIdx !== -1) {
+        var key = line.substring(0, eqIdx).trim();
+        var rawVal = line.substring(eqIdx + 1).trim();
+        currentSection[key] = parseTOMLValue(rawVal, lines, i);
+      }
+    }
+    return result;
+  }
+
+  function parseTOMLValue(val, lines, lineIdx) {
+    // String
+    if (val.charAt(0) === '"' && val.charAt(val.length - 1) === '"') {
+      return val.substring(1, val.length - 1).replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\\\/g, '\\').replace(/\\"/g, '"');
+    }
+    if (val.charAt(0) === "'" && val.charAt(val.length - 1) === "'") {
+      return val.substring(1, val.length - 1);
+    }
+    // Boolean
+    if (val === 'true') return true;
+    if (val === 'false') return false;
+    // Integer
+    if (/^-?\d+$/.test(val)) return parseInt(val, 10);
+    // Float
+    if (/^-?\d+\.\d+$/.test(val) || val === 'inf' || val === '-inf' || val === 'nan') {
+      return parseFloat(val);
+    }
+    // Inline array
+    if (val.charAt(0) === '[') {
+      try {
+        return JSON.parse(val.replace(/'/g, '"'));
+      } catch(e) {
+        return val;
+      }
+    }
+    // Inline table
+    if (val.charAt(0) === '{' && val.charAt(val.length - 1) === '}') {
+      var inner = val.substring(1, val.length - 1);
+      var obj = {};
+      var pairs = inner.split(',');
+      for (var p = 0; p < pairs.length; p++) {
+        var eq = pairs[p].indexOf('=');
+        if (eq !== -1) {
+          var k = pairs[p].substring(0, eq).trim();
+          var v = pairs[p].substring(eq + 1).trim();
+          obj[k] = parseTOMLValue(v, lines, lineIdx);
+        }
+      }
+      return obj;
+    }
+    // Date/time (return as string)
+    if (/^\d{4}-\d{2}-\d{2}/.test(val)) return val;
+    return val;
+  }
+
+  /* ── SERIALIZERS ──────────────────────────────────── */
+
+  function toCSV(data) {
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0) return '';
+    // Flatten if nested
+    arr = arr.map(flattenObj);
+    var headers = Object.keys(arr[0]);
+    var csv = headers.join(',') + '\n';
+    for (var i = 0; i < arr.length; i++) {
+      csv += headers.map(function(h) {
+        var val = arr[i][h];
+        if (val === undefined || val === null) val = '';
+        val = String(val);
+        if (val.indexOf(',') !== -1 || val.indexOf('"') !== -1 || val.indexOf('\n') !== -1) {
+          val = '"' + val.replace(/"/g, '""') + '"';
+        }
+        return val;
+      }).join(',') + '\n';
+    }
+    return csv;
+  }
+
+  function toTSV(data) {
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0) return '';
+    arr = arr.map(flattenObj);
+    var headers = Object.keys(arr[0]);
+    var tsv = headers.join('\t') + '\n';
+    for (var i = 0; i < arr.length; i++) {
+      tsv += headers.map(function(h) {
+        var val = arr[i][h];
+        return (val === undefined || val === null) ? '' : String(val);
+      }).join('\t') + '\n';
+    }
+    return tsv;
+  }
+
+  function escapeXML(str) {
+    return str.replace(/[<>&"']/g, function(c) {
+      var entities = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' };
+      return entities[c];
+    });
+  }
+
+  function toXML(data, rootName) {
+    rootName = rootName || 'root';
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n<' + rootName + '>\n';
+
+    function serialize(obj, indent) {
+      var sp = '  '.repeat(indent);
+      if (Array.isArray(obj)) {
+        var out = '';
+        for (var i = 0; i < obj.length; i++) {
+          out += sp + '<item>\n';
+          if (typeof obj[i] === 'object' && obj[i] !== null) {
+            out += serialize(obj[i], indent + 1);
+          } else {
+            out += sp + '  ' + escapeXML(String(obj[i])) + '\n';
+          }
+          out += sp + '</item>\n';
+        }
+        return out;
+      }
+      if (typeof obj === 'object' && obj !== null) {
+        var out = '';
+        var keys = Object.keys(obj);
+        for (var k = 0; k < keys.length; k++) {
+          var key = keys[k];
+          var val = obj[key];
+          // Sanitize tag name
+          var tag = key.replace(/[^a-zA-Z0-9_-]/g, '_');
+          if (Array.isArray(val)) {
+            for (var a = 0; a < val.length; a++) {
+              out += sp + '<' + tag + '>\n';
+              if (typeof val[a] === 'object' && val[a] !== null) {
+                out += serialize(val[a], indent + 1);
+              } else {
+                out += sp + '  ' + escapeXML(String(val[a])) + '\n';
+              }
+              out += sp + '</' + tag + '>\n';
+            }
+          } else if (typeof val === 'object' && val !== null) {
+            out += sp + '<' + tag + '>\n' + serialize(val, indent + 1) + sp + '</' + tag + '>\n';
+          } else {
+            out += sp + '<' + tag + '>' + escapeXML(String(val)) + '</' + tag + '>\n';
+          }
+        }
+        return out;
+      }
+      return sp + escapeXML(String(obj)) + '\n';
+    }
+
+    if (Array.isArray(data)) {
+      for (var i = 0; i < data.length; i++) {
+        xml += '  <item>\n';
+        if (typeof data[i] === 'object' && data[i] !== null) {
+          xml += serialize(data[i], 2);
+        } else {
+          xml += '    ' + escapeXML(String(data[i])) + '\n';
+        }
+        xml += '  </item>\n';
+      }
+    } else {
+      xml += serialize(data, 1);
+    }
+
+    xml += '</' + rootName + '>';
+    return xml;
+  }
+
+  function toYAML(data) {
+    if (typeof jsyaml !== 'undefined') {
+      return jsyaml.dump(data, { indent: 2, lineWidth: -1 });
+    }
+    return toYAMLBasic(data);
+  }
+
+  function toYAMLBasic(data, indent) {
+    indent = indent || 0;
+    var sp = '  '.repeat(indent);
+    if (data === null || data === undefined) return sp + 'null\n';
+    if (typeof data === 'boolean') return sp + String(data) + '\n';
+    if (typeof data === 'number') return sp + String(data) + '\n';
+    if (typeof data === 'string') {
+      if (data.indexOf('\n') !== -1 || data.indexOf(':') !== -1 || data.indexOf('#') !== -1) {
+        return sp + '"' + data.replace(/"/g, '\\"') + '"\n';
+      }
+      return sp + data + '\n';
+    }
+    if (Array.isArray(data)) {
+      if (data.length === 0) return sp + '[]\n';
+      var out = '';
+      for (var i = 0; i < data.length; i++) {
+        if (typeof data[i] === 'object' && data[i] !== null && !Array.isArray(data[i])) {
+          var keys = Object.keys(data[i]);
+          out += sp + '- ' + keys[0] + ': ' + formatYAMLValue(data[i][keys[0]]) + '\n';
+          for (var k = 1; k < keys.length; k++) {
+            out += sp + '  ' + keys[k] + ': ' + formatYAMLValue(data[i][keys[k]]) + '\n';
+          }
+        } else {
+          out += sp + '- ' + formatYAMLValue(data[i]) + '\n';
+        }
+      }
+      return out;
+    }
+    if (typeof data === 'object') {
+      var keys = Object.keys(data);
+      if (keys.length === 0) return sp + '{}\n';
+      var out = '';
+      for (var k = 0; k < keys.length; k++) {
+        var val = data[keys[k]];
+        if (typeof val === 'object' && val !== null) {
+          out += sp + keys[k] + ':\n' + toYAMLBasic(val, indent + 1);
+        } else {
+          out += sp + keys[k] + ': ' + formatYAMLValue(val) + '\n';
+        }
+      }
+      return out;
+    }
+    return sp + String(data) + '\n';
+  }
+
+  function formatYAMLValue(val) {
+    if (val === null || val === undefined) return 'null';
+    if (typeof val === 'boolean') return String(val);
+    if (typeof val === 'number') return String(val);
+    if (typeof val === 'string') {
+      if (val.indexOf(':') !== -1 || val.indexOf('#') !== -1 || val.indexOf('"') !== -1 || val === '') {
+        return '"' + val.replace(/"/g, '\\"') + '"';
+      }
+      return val;
+    }
+    return String(val);
+  }
+
+  /* ── TOML SERIALIZER ──────────────────────────────── */
+  function toTOML(data) {
+    if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+      // Wrap arrays in a root key
+      if (Array.isArray(data)) {
+        return toTOMLSection({ items: data }, '');
+      }
+      return '# Unable to serialize this value as TOML\nvalue = ' + JSON.stringify(data) + '\n';
+    }
+    return toTOMLSection(data, '');
+  }
+
+  function toTOMLSection(obj, prefix) {
+    var out = '';
+    var tables = [];
+    var keys = Object.keys(obj);
+
+    // First pass: simple key-value pairs
+    for (var k = 0; k < keys.length; k++) {
+      var key = keys[k];
+      var val = obj[key];
+      if (val === null || val === undefined) {
+        continue;
+      } else if (Array.isArray(val)) {
+        if (val.length > 0 && typeof val[0] === 'object' && val[0] !== null) {
+          tables.push(key);
+        } else {
+          out += key + ' = ' + toTOMLValueInline(val) + '\n';
+        }
+      } else if (typeof val === 'object') {
+        tables.push(key);
+      } else {
+        out += key + ' = ' + toTOMLValue(val) + '\n';
+      }
+    }
+
+    // Second pass: tables and arrays of tables
+    for (var t = 0; t < tables.length; t++) {
+      var tKey = tables[t];
+      var tVal = obj[tKey];
+      var fullKey = prefix ? prefix + '.' + tKey : tKey;
+
+      if (Array.isArray(tVal)) {
+        for (var a = 0; a < tVal.length; a++) {
+          out += '\n[[' + fullKey + ']]\n';
+          if (typeof tVal[a] === 'object' && tVal[a] !== null) {
+            out += toTOMLSection(tVal[a], fullKey);
+          } else {
+            out += 'value = ' + toTOMLValue(tVal[a]) + '\n';
+          }
+        }
+      } else {
+        out += '\n[' + fullKey + ']\n';
+        out += toTOMLSection(tVal, fullKey);
+      }
+    }
+
+    return out;
+  }
+
+  function toTOMLValue(val) {
+    if (typeof val === 'string') return '"' + val.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+    if (typeof val === 'boolean') return String(val);
+    if (typeof val === 'number') return String(val);
+    return '"' + String(val) + '"';
+  }
+
+  function toTOMLValueInline(val) {
+    if (Array.isArray(val)) {
+      return '[' + val.map(function(v) { return toTOMLValue(v); }).join(', ') + ']';
+    }
+    return toTOMLValue(val);
+  }
+
+  /* ── SQL INSERT GENERATOR ─────────────────────────── */
+  function toSQL(data, tableName) {
+    tableName = tableName || 'my_table';
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0) return '-- No data to convert';
+    arr = arr.map(flattenObj);
+    var headers = Object.keys(arr[0]);
+    var statements = [];
+
+    for (var i = 0; i < arr.length; i++) {
+      var vals = headers.map(function(h) {
+        var v = arr[i][h];
+        if (v === null || v === undefined) return 'NULL';
+        if (typeof v === 'number') return String(v);
+        if (typeof v === 'boolean') return v ? '1' : '0';
+        // Escape single quotes
+        return "'" + String(v).replace(/'/g, "''") + "'";
+      });
+      statements.push('INSERT INTO ' + tableName + ' (' + headers.join(', ') + ') VALUES (' + vals.join(', ') + ');');
+    }
+    return statements.join('\n');
+  }
+
+  /* ── HELPERS ──────────────────────────────────────── */
+  function flattenObj(obj, prefix) {
+    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) return obj;
+    var flat = {};
+    var keys = Object.keys(obj);
+    for (var k = 0; k < keys.length; k++) {
+      var key = prefix ? prefix + '.' + keys[k] : keys[k];
+      var val = obj[keys[k]];
+      if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+        var nested = flattenObj(val, key);
+        var nKeys = Object.keys(nested);
+        for (var n = 0; n < nKeys.length; n++) {
+          flat[nKeys[n]] = nested[nKeys[n]];
+        }
+      } else {
+        flat[key] = val;
+      }
+    }
+    return flat;
+  }
+
+  function showToast(msg) {
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 2000);
+  }
+
+  function escapeHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  /* ── VALIDATION ───────────────────────────────────── */
+  function validateInput() {
+    var data = inputData.value.trim();
+    var fmt = inputFmt.value;
+    if (!data) {
+      validMsg.classList.remove('show');
+      return;
+    }
+
+    var isValid = true;
+    var msg = '';
+
+    try {
+      if (fmt === 'json') {
+        JSON.parse(data);
+        msg = 'Valid JSON';
+      } else if (fmt === 'csv') {
+        var csvLines = data.split('\n').filter(function(l) { return l.trim(); });
+        if (csvLines.length < 2) throw new Error('CSV needs at least a header row and one data row');
+        msg = 'Valid CSV (' + (csvLines.length - 1) + ' rows)';
+      } else if (fmt === 'tsv') {
+        var tsvLines = data.split('\n').filter(function(l) { return l.trim(); });
+        if (tsvLines.length < 2) throw new Error('TSV needs at least a header row and one data row');
+        msg = 'Valid TSV (' + (tsvLines.length - 1) + ' rows)';
+      } else if (fmt === 'xml') {
+        parseXML(data);
+        msg = 'Valid XML';
+      } else if (fmt === 'yaml') {
+        parseYAML(data);
+        msg = 'Valid YAML';
+      } else if (fmt === 'toml') {
+        parseTOML(data);
+        msg = 'Valid TOML';
+      }
+    } catch(e) {
+      isValid = false;
+      msg = e.message;
+    }
+
+    validMsg.textContent = (isValid ? '\u2713 ' : '\u2717 ') + msg;
+    validMsg.classList.add('show');
+    validMsg.classList.toggle('valid', isValid);
+    validMsg.classList.toggle('invalid', !isValid);
+  }
+
+  /* ── CONVERT ──────────────────────────────────────── */
+  function convert() {
+    var data = inputData.value.trim();
+    var inFmt = inputFmt.value;
+    var outFmt = outputFmt.value;
+
+    if (!data) {
+      outputData.value = '';
+      hidePreview();
+      return;
+    }
+
+    try {
+      var parsed;
+      if (inFmt === 'json') {
+        try {
+          parsed = JSON.parse(data);
+        } catch(e) {
+          // Better error: find position
+          var match = e.message.match(/position\s*(\d+)/i);
+          if (match) {
+            var pos = parseInt(match[1], 10);
+            var upToError = data.substring(0, pos);
+            var line = upToError.split('\n').length;
+            var col = pos - upToError.lastIndexOf('\n');
+            throw new Error('JSON parse error at line ' + line + ', column ' + col + ': ' + e.message);
+          }
+          throw e;
+        }
+      } else if (inFmt === 'csv') {
+        parsed = parseCSV(data);
+      } else if (inFmt === 'tsv') {
+        parsed = parseTSV(data);
+      } else if (inFmt === 'xml') {
+        parsed = parseXML(data);
+      } else if (inFmt === 'yaml') {
+        parsed = parseYAML(data);
+      } else if (inFmt === 'toml') {
+        parsed = parseTOML(data);
+      }
+
+      var output;
+      if (outFmt === 'json') {
+        output = isPretty ? JSON.stringify(parsed, null, 2) : JSON.stringify(parsed);
+      } else if (outFmt === 'csv') {
+        output = toCSV(parsed);
+      } else if (outFmt === 'tsv') {
+        output = toTSV(parsed);
+      } else if (outFmt === 'xml') {
+        var xmlRaw = toXML(parsed);
+        output = isPretty ? xmlRaw : xmlRaw.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
+      } else if (outFmt === 'yaml') {
+        var yamlRaw = toYAML(parsed);
+        if (isPretty) {
+          output = yamlRaw;
+        } else {
+          // Compact YAML: collapse to flow style via JSON round-trip
+          output = typeof jsyaml !== 'undefined'
+            ? jsyaml.dump(parsed, { flowLevel: 0, lineWidth: -1 })
+            : yamlRaw;
+        }
+      } else if (outFmt === 'toml') {
+        output = toTOML(parsed);
+      } else if (outFmt === 'sql') {
+        var sqlRaw = toSQL(parsed, sqlName.value || 'my_table');
+        output = isPretty ? sqlRaw : sqlRaw.replace(/\n/g, ' ');
+      }
+
+      outputData.value = output;
+
+      // Show preview for tabular output
+      if (outFmt === 'csv' || outFmt === 'tsv') {
+        showPreview(parsed);
+      } else {
+        hidePreview();
+      }
+    } catch(e) {
+      outputData.value = 'Error: ' + e.message;
+      hidePreview();
+    }
+  }
+
+  /* ── PREVIEW TABLE ────────────────────────────────── */
+  function showPreview(data) {
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0 || typeof arr[0] !== 'object') { hidePreview(); return; }
+
+    arr = arr.map(flattenObj);
+    var headers = Object.keys(arr[0]);
+    var rows = arr.slice(0, 10);
+
+    var html = '<thead><tr>';
+    for (var h = 0; h < headers.length; h++) {
+      html += '<th>' + escapeHtml(headers[h]) + '</th>';
+    }
+    html += '</tr></thead><tbody>';
+    for (var r = 0; r < rows.length; r++) {
+      html += '<tr>';
+      for (var c = 0; c < headers.length; c++) {
+        var val = rows[r][headers[c]];
+        html += '<td>' + escapeHtml(val === undefined || val === null ? '' : String(val)) + '</td>';
+      }
+      html += '</tr>';
+    }
+    html += '</tbody>';
+    if (arr.length > 10) {
+      html += '<tfoot><tr><td colspan="' + headers.length + '" style="text-align:center;color:#94a3b8;font-size:0.7rem;padding:8px">Showing 10 of ' + arr.length + ' rows</td></tr></tfoot>';
+    }
+
+    previewTbl.innerHTML = html;
+    previewWrap.classList.add('show');
+  }
+
+  function hidePreview() {
+    previewWrap.classList.remove('show');
+    previewTbl.innerHTML = '';
+  }
+
+  /* ── EVENT LISTENERS ──────────────────────────────── */
+
+  // Auto-detect on input
+  inputData.addEventListener('input', function() {
+    var detected = detectFormat(inputData.value);
+    if (detected && detected !== inputFmt.value) {
+      inputFmt.value = detected;
+    }
+    validateInput();
+  });
+
+  inputFmt.addEventListener('change', validateInput);
+
+  // Show/hide SQL table name
+  outputFmt.addEventListener('change', function() {
+    sqlRow.classList.toggle('show', outputFmt.value === 'sql');
+  });
+
+  sqlName.addEventListener('input', function() {
+    if (outputData.value && outputFmt.value === 'sql') convert();
+  });
+
+  // Convert button
+  convertBtn.addEventListener('click', convert);
+
+  // Pretty / Minify
+  prettyBtn.addEventListener('click', function() {
+    isPretty = true;
+    prettyBtn.classList.add('active');
+    minifyBtn.classList.remove('active');
+    if (outputData.value) convert();
+  });
+
+  minifyBtn.addEventListener('click', function() {
+    isPretty = false;
+    minifyBtn.classList.add('active');
+    prettyBtn.classList.remove('active');
+    if (outputData.value) convert();
+  });
+
+  // Sample data
+  sampleBtn.addEventListener('click', function() {
+    var fmt = inputFmt.value;
+    inputData.value = samples[fmt] || samples.json;
+    validateInput();
+    convert();
+  });
+
+  // Clear
+  clearBtn.addEventListener('click', function() {
+    inputData.value = '';
+    outputData.value = '';
+    validMsg.classList.remove('show');
+    hidePreview();
+  });
+
+  // Copy
+  copyBtn.addEventListener('click', function() {
+    var text = outputData.value;
+    if (!text) { showToast('Nothing to copy'); return; }
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('Copied to clipboard');
+    }).catch(function() {
+      showToast('Copy failed');
+    });
+  });
+
+  // Download (with email gate)
+  function doDownload() {
+    var data = outputData.value;
+    if (!data) { showToast('Nothing to download'); return; }
+    var fmt = outputFmt.value;
+    var ext = { json:'json', csv:'csv', tsv:'tsv', xml:'xml', yaml:'yml', toml:'toml', sql:'sql' }[fmt] || 'txt';
+    var mime = { json:'application/json', csv:'text/csv', tsv:'text/tab-separated-values', xml:'application/xml', yaml:'text/yaml', toml:'text/toml', sql:'application/sql' }[fmt] || 'text/plain';
+    var blob = new Blob([data], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'converted.' + ext;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Downloaded converted.' + ext);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    if (!outputData.value) { showToast('Nothing to download'); return; }
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) {
+      gate.show(doDownload);
+    } else {
+      doDownload();
+    }
+  });
+
+  // File upload
+  fileDrop.addEventListener('click', function() { fileInput.click(); });
+
+  ['dragenter', 'dragover'].forEach(function(evt) {
+    fileDrop.addEventListener(evt, function(e) {
+      e.preventDefault();
+      fileDrop.classList.add('drag-over');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(function(evt) {
+    fileDrop.addEventListener(evt, function(e) {
+      e.preventDefault();
+      fileDrop.classList.remove('drag-over');
+    });
+  });
+
+  fileDrop.addEventListener('drop', function(e) {
+    e.preventDefault();
+    if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]);
+  });
+
+  fileInput.addEventListener('change', function(e) {
+    if (e.target.files.length) readFile(e.target.files[0]);
+  });
+
+  function readFile(file) {
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('File too large (max 5 MB)');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      inputData.value = e.target.result;
+      var detected = detectFormat(e.target.result);
+      if (detected) inputFmt.value = detected;
+      validateInput();
+      convert();
+      showToast('File loaded: ' + file.name);
+    };
+    reader.readAsText(file);
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      convert();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'c') {
+      e.preventDefault();
+      copyBtn.click();
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════════
+     AI ADVISOR
+     ═══════════════════════════════════════════════════════ */
+  var aiToggle = document.getElementById('aiToggle');
+  var aiPanel  = document.getElementById('aiPanel');
+  var aiInput  = document.getElementById('aiInput');
+  var aiSendBtn= document.getElementById('aiSendBtn');
+  var aiMsgs   = document.getElementById('aiMessages');
+  var aiHistory = [];
+  var aiExchanges = 0;
+  var AI_MAX = 3;
+
+  aiToggle.addEventListener('click', function() {
+    aiPanel.classList.toggle('open');
+    aiToggle.textContent = aiPanel.classList.contains('open') ? '\u2716 Close AI' : '\u2726 Ask AI';
+  });
+
+  document.querySelectorAll('.ai-suggest-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      aiInput.value = btn.getAttribute('data-q');
+      sendAI();
+    });
+  });
+
+  aiSendBtn.addEventListener('click', sendAI);
+  aiInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') sendAI();
+  });
+
+  function sendAI() {
+    var msg = aiInput.value.trim();
+    if (!msg) return;
+    if (aiExchanges >= AI_MAX) {
+      showToast('AI limit reached (3 questions per session)');
+      return;
+    }
+    aiInput.value = '';
+
+    aiMsgs.innerHTML += '<div class="ai-msg user">' + escapeHtml(msg) + '</div>';
+
+    // Add data context
+    var context = '';
+    var dataSnippet = inputData.value.trim();
+    if (dataSnippet) {
+      context = ' [Context: Input format=' + inputFmt.value + ', Output format=' + outputFmt.value + ', Data preview=' + dataSnippet.substring(0, 300) + ']';
+    }
+
+    var body = {
+      message: msg + context,
+      toolContext: 'data-converter',
+      history: aiHistory.slice(-6)
+    };
+
+    aiMsgs.innerHTML += '<div class="ai-msg bot" id="aiLoading" style="opacity:.6">Thinking...</div>';
+    aiMsgs.scrollTop = aiMsgs.scrollHeight;
+
+    fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var loadEl = document.getElementById('aiLoading');
+      if (loadEl) loadEl.remove();
+      var reply = data.response || data.message || 'Sorry, I could not generate a response.';
+      aiMsgs.innerHTML += '<div class="ai-msg bot">' + escapeHtml(reply) + '</div>';
+      aiHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
+      aiExchanges++;
+      document.getElementById('aiRemaining').textContent = (AI_MAX - aiExchanges) + ' questions remaining';
+      aiMsgs.scrollTop = aiMsgs.scrollHeight;
+    })
+    .catch(function() {
+      var loadEl = document.getElementById('aiLoading');
+      if (loadEl) loadEl.remove();
+      aiMsgs.innerHTML += '<div class="ai-msg err">Connection error. Please try again.</div>';
+      aiMsgs.scrollTop = aiMsgs.scrollHeight;
+    });
+  }
+
+})();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Data Converter" tool-slug="data-converter"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script class="sw-dev-runtime-localizer">
+(function(){
+  const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Free forever","Bure daima"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

@@ -3,431 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cover Letter Generator | AfroTools</title>
-<meta name="description" content="Generate professional cover letters for African job markets. Free AI-powered tool tailored for Nigeria, Kenya, Ghana, South Africa.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Letter Generator App | AfroTools</title>
+<meta name="description" content="Write tailored cover letters for African and global applications with role templates, job-description matching, readiness checks, and PDF, Word, TXT, and JSON export.">
+<link rel="canonical" href="https://afrotools.com/tools/cover-letter-generator/app">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cover-letter-generator/app">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cover-letter-generator/app">
+<meta name="robots" content="noindex, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
-<script src="/assets/js/lib/save-state-classic.js?v=20260408a"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--pri:#007AFF;--bg:#f5f5f3;--card:#fff;--text:#111;--muted:#6b7280;--border:#e5e7eb;--radius:12px}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* Top bar */
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
-.topbar a{color:var(--muted);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:4px}
-.topbar a:hover{color:var(--text)}
-.topbar-title{font-weight:700;font-size:.95rem;flex:1}
-.topbar-actions{display:flex;gap:8px}
-.btn{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--text);font-family:inherit;transition:.15s}
-.btn:hover{border-color:var(--pri);color:var(--pri)}
-.btn-pri{background:var(--pri);color:#fff;border-color:var(--pri)}
-.btn-pri:hover{background:#0066d6}
-
-/* Layout */
-.app{max-width:1100px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media(max-width:800px){.app{grid-template-columns:1fr}}
-
-/* Form panel */
-.panel{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;overflow-y:auto;max-height:calc(100vh - 100px)}
-.panel h2{font-size:1.1rem;font-weight:800;margin-bottom:16px}
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;color:var(--text);background:#fff;transition:.15s}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
-.form-group textarea{min-height:80px;resize:vertical}
-
-/* Template picker */
-.templates{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:20px}
-.tpl{padding:12px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:.15s;background:#fff}
-.tpl:hover{border-color:var(--pri)}
-.tpl.active{border-color:var(--pri);background:rgba(0,122,255,.04)}
-.tpl-icon{font-size:1.5rem;margin-bottom:4px}
-.tpl-name{font-size:.75rem;font-weight:700}
-
-/* Style picker */
-.styles{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.style-opt{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:600;transition:.15s}
-.style-opt:hover{border-color:var(--pri)}
-.style-opt.active{border-color:var(--pri);background:rgba(0,122,255,.04);color:var(--pri)}
-
-/* Preview panel */
-.preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:40px;min-height:500px;font-size:.9rem;line-height:1.8;color:#333;overflow-y:auto;max-height:calc(100vh - 100px)}
-.preview .sender{margin-bottom:24px}
-.preview .sender div{font-size:.85rem}
-.preview .date{color:var(--muted);font-size:.85rem;margin-bottom:24px}
-.preview .recipient{margin-bottom:24px}
-.preview .recipient div{font-size:.85rem}
-.preview .greeting{font-weight:600;margin-bottom:16px}
-.preview .body-para{margin-bottom:14px;text-align:justify}
-.preview .closing{margin-top:24px}
-.preview .closing .sign{font-weight:600;margin-top:16px}
-
-/* Editable state */
-.preview[contenteditable] .body-para:hover{background:rgba(0,122,255,.03);border-radius:4px}
-.preview[contenteditable]:focus{outline:2px solid rgba(0,122,255,.2);outline-offset:-2px}
-
-.section-divider{border:none;border-top:1px solid var(--border);margin:20px 0}
-</style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cover-letter-generator/app" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cover-letter-generator/app" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<meta property="og:title" content="Cover Letter Generator App | AfroTools">
+<meta property="og:description" content="Tailor cover letters with templates, job-description matching, readiness checks, and private local export.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/cover-letter-generator/app">
 <meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cover Letter Generator | AfroTools">
-<meta name="twitter:description" content="Generate professional cover letters for African job markets. Free AI-powered tool tailored for Nigeria, Kenya, Ghana, South Africa.">
+<meta name="twitter:title" content="Cover Letter Generator App | AfroTools">
+<meta name="twitter:description" content="Create role-ready cover letters with PDF, Word, TXT, JSON, and share-link export.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-28">
-<link rel="canonical" href="https://afrotools.com/tools/cover-letter-generator/app">
-<meta name="robots" content="noindex, follow">
-<meta property="og:url" content="https://afrotools.com/tools/cover-letter-generator/app">
+<meta property="article:modified_time" content="2026-05-01">
+<script src="/assets/js/lib/save-state-classic.js?v=20260408a"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=2.5.1" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f7f3;color:#111827;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:12px clamp(14px,2vw,28px);background:rgba(255,255,255,.94);border-bottom:1px solid #e5e7eb;backdrop-filter:blur(14px)}
+.topbar a{color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
+.topbar-title{font-size:.98rem;font-weight:800;margin-right:auto}
+.topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:38px}
+.btn:hover,.btn:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none}
+.btn-primary{background:#0b63ce;color:#fff;border-color:#0b63ce}
+.btn-primary:hover,.btn-primary:focus-visible{background:#084eaa;color:#fff}
+.btn-soft{background:#eef5ff;color:#0b63ce;border-color:#bfdbfe}
+.btn-danger{color:#b91c1c;border-color:#fecaca}
+.app-shell{width:min(1440px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
+.hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:16px}
+.eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.hero-strip h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.4rem);letter-spacing:0;line-height:1.05}
+.hero-strip p{margin:8px 0 0;color:#4b5563;max-width:760px;line-height:1.55}
+.status-line{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #dbeafe;background:#fff;color:#1f2937;border-radius:999px;padding:8px 10px;font-size:.76rem;font-weight:800}
+.workspace{display:grid;grid-template-columns:minmax(320px,390px) minmax(420px,1fr) minmax(290px,340px);gap:16px;align-items:start}
+.panel,.preview-card,.insights-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
+.panel{padding:18px;max-height:calc(100vh - 112px);overflow:auto}
+.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.panel h2,.preview-card h2,.insights-card h2{margin:0;font-size:1.02rem;line-height:1.2}
+.panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.06em;color:#374151}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field span{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.88rem;line-height:1.35}
+.field textarea{min-height:86px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.field.full{grid-column:1/-1}
+.helper{margin:-4px 0 10px;color:#6b7280;font-size:.78rem;line-height:1.45}
+.segmented{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.template-option{border:1px solid #d1d5db;background:#fff;border-radius:8px;padding:9px 10px;font-size:.78rem;font-weight:800;color:#374151}
+.template-option[aria-pressed="true"]{border-color:#0b63ce;background:#eef5ff;color:#0b63ce}
+.preview-card{overflow:hidden}
+.preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
+.preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.letter-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,420px);gap:0;min-height:710px}
+.letter-text-wrap{padding:16px;border-right:1px solid #e5e7eb;background:#f9fafb}
+#letterText{width:100%;min-height:650px;resize:vertical;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;padding:16px;line-height:1.66;font-family:Georgia,'Times New Roman',serif;font-size:14px}
+#letterText:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.1)}
+.paper-wrap{padding:18px;background:#eceff3;overflow:auto}
+.paper{width:100%;min-height:595px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:38px 34px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.62}
+.paper p{margin:0 0 13px;white-space:pre-wrap}
+.paper .paper-name{font-weight:700;font-size:15px;margin-bottom:2px}
+.paper .paper-muted{font-family:'DM Sans',system-ui,sans-serif;color:#6b7280;font-size:10px;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:8px}
+.insights-card{padding:18px;position:sticky;top:82px}
+.score-ring{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;margin:14px 0}
+.score-number{display:grid;place-items:center;width:92px;height:92px;border-radius:50%;background:conic-gradient(#0b63ce var(--score-deg,0deg),#e5e7eb 0deg);position:relative;font-weight:900;color:#0b63ce}
+.score-number::before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.score-number span{position:relative;font-size:1.45rem}
+.score-copy{font-size:.84rem;color:#4b5563;line-height:1.45}
+.checks{display:grid;gap:8px;margin:14px 0}
+.check{border:1px solid #e5e7eb;border-radius:8px;padding:9px 10px;font-size:.8rem;line-height:1.35;color:#374151}
+.check.good{border-color:#bbf7d0;background:#f0fdf4}
+.check.warn{border-color:#fde68a;background:#fffbeb}
+.chip-row{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 14px}
+.chip{border:1px solid #d1d5db;background:#f9fafb;border-radius:999px;padding:5px 8px;font-size:.72rem;font-weight:800;color:#374151}
+.chip.hit{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.chip.miss{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+.saved-list{display:grid;gap:8px;max-height:240px;overflow:auto;margin-top:10px}
+.saved-item{border:1px solid #e5e7eb;border-radius:9px;padding:10px;background:#fbfcff}
+.saved-title{font-size:.82rem;font-weight:900;margin-bottom:4px}
+.saved-meta{font-size:.72rem;color:#6b7280;margin-bottom:8px}
+.saved-actions{display:flex;gap:6px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.import-input{display:none}
+@media print{body{background:#fff}.topbar,.hero-strip,.panel,.insights-card,.preview-top,.letter-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.letter-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+@media(max-width:1180px){.workspace{grid-template-columns:minmax(300px,390px) minmax(420px,1fr)}.insights-card{grid-column:1/-1;position:static}.letter-editor{grid-template-columns:1fr}}
+@media(max-width:780px){.topbar{align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workspace{grid-template-columns:1fr}.panel{max-height:none}.form-grid{grid-template-columns:1fr}.letter-editor{min-height:auto}.letter-text-wrap{border-right:0;border-bottom:1px solid #e5e7eb}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}}
+</style>
 </head>
 <body>
-<h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0">Cover Letter Generator — African Job Markets</h1>
+<h1 class="sr-only">Cover Letter Generator for African job applications</h1>
 <div class="topbar">
-  <a href="index.html">&#8592; Cover Letter</a>
+  <a href="index.html" aria-label="Back to cover letter landing page">Back</a>
   <div class="topbar-title">Cover Letter Generator</div>
   <div class="topbar-actions">
-    <button class="btn" onclick="saveLetter()">Save</button>
-    <button class="btn btn-pri" onclick="exportPDF()">Download Cover Letter</button>
+    <button class="btn" type="button" data-action="copy">Copy</button>
+    <button class="btn" type="button" data-action="save">Save</button>
+    <button class="btn btn-soft" type="button" data-action="share">Share link</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">PDF</button>
   </div>
 </div>
 
-<div class="app">
-  <!-- LEFT: Form -->
-  <div class="panel">
-    <h2>1. Choose Template</h2>
-    <div class="templates" id="templates"></div>
-
-    <h2>2. Letter Style</h2>
-    <div class="styles" id="styles"></div>
-
-    <hr class="section-divider">
-    <h2>3. Your Details</h2>
-    <div class="form-group"><label>Full Name</label><input type="text" id="fullName" placeholder="e.g. Adaeze Okonkwo" oninput="generate()"></div>
-    <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="e.g. adaeze@email.com" oninput="generate()"></div>
-    <div class="form-group"><label>Phone</label><input type="tel" id="phone" placeholder="e.g. +234 801 234 5678" oninput="generate()"></div>
-    <div class="form-group"><label>City / Location</label><input type="text" id="city" placeholder="e.g. Lagos, Nigeria" oninput="generate()"></div>
-
-    <hr class="section-divider">
-    <h2>4. Target Role</h2>
-    <div class="form-group"><label>Job Title</label><input type="text" id="jobTitle" placeholder="e.g. Software Engineer" oninput="generate()"></div>
-    <div class="form-group"><label>Company Name</label><input type="text" id="company" placeholder="e.g. Paystack" oninput="generate()"></div>
-    <div class="form-group"><label>Hiring Manager (optional)</label><input type="text" id="hiringManager" placeholder="e.g. Ms. Funke Adeyemi" oninput="generate()"></div>
-
-    <hr class="section-divider">
-    <h2>5. Your Experience</h2>
-    <div class="form-group"><label>Years of Experience</label><input type="number" id="years" min="0" max="50" value="3" oninput="generate()"></div>
-    <div class="form-group"><label>Key Skills (comma-separated)</label><input type="text" id="skills" placeholder="e.g. Python, React, Project Management" oninput="generate()"></div>
-    <div class="form-group"><label>Relevant Achievement</label><textarea id="achievement" placeholder="e.g. Led a team of 5 to deliver a payment platform serving 50,000 users" oninput="generate()"></textarea></div>
-    <div class="form-group"><label>Why This Company?</label><textarea id="whyCompany" placeholder="e.g. Paystack's mission to expand financial access across Africa aligns with my passion for fintech" oninput="generate()"></textarea></div>
-  </div>
-
-  <!-- RIGHT: Preview -->
-  <div class="preview" id="preview" contenteditable="true">
-    <div style="color:var(--muted);text-align:center;padding:60px 20px">
-      <div style="font-size:2rem;margin-bottom:12px">&#9997;&#65039;</div>
-      <div style="font-size:1rem;font-weight:700;margin-bottom:8px">Fill in the form to generate your cover letter</div>
-      <div style="font-size:.85rem">Choose a template, enter your details, and watch your letter appear here in real-time.</div>
+<main class="app-shell">
+  <section class="hero-strip" aria-labelledby="app-title">
+    <div>
+      <p class="eyebrow">Private application builder</p>
+      <h2 id="app-title">Tailor a strong cover letter before you apply.</h2>
+      <p>Use role templates, job-description keyword checks, Africa-aware guidance, editable drafts, saved versions, and export formats recruiters actually accept.</p>
     </div>
+    <div class="status-line" aria-label="Feature summary">
+      <span class="pill">10 templates</span>
+      <span class="pill">ATS-style checks</span>
+      <span class="pill">PDF, Word, TXT</span>
+      <span class="pill">Local first</span>
+    </div>
+  </section>
+
+  <div class="workspace">
+    <section class="panel" aria-labelledby="builder-title">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Builder</p>
+          <h2 id="builder-title">Application details</h2>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="rebuild">Rebuild</button>
+      </div>
+
+      <h3>Role fit</h3>
+      <div class="form-grid">
+        <label class="field"><span>Template</span><select id="templateId"></select></label>
+        <label class="field"><span>Tone</span><select id="toneId"></select></label>
+        <label class="field"><span>Market</span><select id="market"></select></label>
+        <label class="field"><span>Length</span><select id="lengthId"></select></label>
+      </div>
+
+      <h3>Your details</h3>
+      <div class="form-grid">
+        <label class="field"><span>Full name</span><input id="fullName" autocomplete="name" placeholder="Adaeze Okonkwo"></label>
+        <label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" placeholder="adaeze@email.com"></label>
+        <label class="field"><span>Phone</span><input id="phone" autocomplete="tel" placeholder="+234 801 234 5678"></label>
+        <label class="field"><span>Location</span><input id="city" autocomplete="address-level2" placeholder="Lagos, Nigeria"></label>
+        <label class="field full"><span>LinkedIn or portfolio</span><input id="portfolio" placeholder="linkedin.com/in/adaeze or portfolio link"></label>
+      </div>
+
+      <h3>Target role</h3>
+      <div class="form-grid">
+        <label class="field"><span>Job title</span><input id="jobTitle" placeholder="Product Manager"></label>
+        <label class="field"><span>Company</span><input id="company" placeholder="Safaricom"></label>
+        <label class="field"><span>Hiring manager</span><input id="hiringManager" placeholder="Ms. Njeri Kamau"></label>
+        <label class="field"><span>Application source</span><input id="source" placeholder="LinkedIn, referral, company site"></label>
+        <label class="field full"><span>Job description</span><textarea id="jobDescription" placeholder="Paste the job post. The checker will compare your letter with the role keywords."></textarea></label>
+      </div>
+
+      <h3>Proof points</h3>
+      <div class="form-grid">
+        <label class="field"><span>Years of experience</span><input id="years" type="number" min="0" max="60" value="3"></label>
+        <label class="field"><span>Top skills</span><input id="skills" placeholder="Operations, Excel, stakeholder management"></label>
+        <label class="field full"><span>Relevant achievement</span><textarea id="achievement" placeholder="Led a team of 5 to cut reconciliation time by 35 percent across 12 branches."></textarea></label>
+        <label class="field full"><span>Why this company?</span><textarea id="whyCompany" placeholder="The company's expansion across East Africa aligns with my experience scaling customer operations."></textarea></label>
+        <label class="field full"><span>Resume summary or background</span><textarea id="resumeSummary" placeholder="Paste a short resume summary or key responsibilities you want the letter to reflect."></textarea></label>
+      </div>
+
+      <h3>Optional context</h3>
+      <div class="form-grid">
+        <label class="field"><span>Availability</span><input id="availability" placeholder="Immediate, 30 days, after notice"></label>
+        <label class="field"><span>Referral</span><input id="referral" placeholder="Name or connection, optional"></label>
+        <label class="field full"><span>Career change or gap note</span><textarea id="contextNote" placeholder="Briefly explain a transition, gap, relocation, or study break if it helps the application."></textarea></label>
+      </div>
+    </section>
+
+    <section class="preview-card" aria-labelledby="preview-title">
+      <div class="preview-top">
+        <div>
+          <p class="eyebrow">Draft</p>
+          <h2 id="preview-title">Editable letter</h2>
+        </div>
+        <div class="preview-tools">
+          <button class="btn" type="button" data-action="word">Word</button>
+          <button class="btn" type="button" data-action="txt">TXT</button>
+          <button class="btn" type="button" data-action="json">Export JSON</button>
+          <button class="btn" type="button" data-action="import">Import</button>
+          <button class="btn" type="button" data-action="print">Print</button>
+          <input class="import-input" id="importInput" type="file" accept="application/json,.json">
+        </div>
+      </div>
+      <div class="letter-editor">
+        <div class="letter-text-wrap">
+          <label class="field full" style="margin:0">
+            <span>Letter text</span>
+            <textarea id="letterText" spellcheck="true" data-testid="letter-text"></textarea>
+          </label>
+          <p class="helper" id="editState">Edit freely. Click Rebuild if you want the form to regenerate the draft.</p>
+        </div>
+        <div class="paper-wrap" aria-label="Print preview">
+          <article class="paper" id="paperPreview"></article>
+        </div>
+      </div>
+    </section>
+
+    <aside class="insights-card" aria-labelledby="insights-title">
+      <p class="eyebrow">Quality check</p>
+      <h2 id="insights-title">Application readiness</h2>
+      <div class="score-ring">
+        <div class="score-number" id="scoreRing"><span id="scoreValue">0</span></div>
+        <div class="score-copy" id="scoreCopy">Add your target role and proof points to start scoring.</div>
+      </div>
+      <div class="checks" id="checksList"></div>
+
+      <h2 style="margin-top:18px">Role keywords</h2>
+      <p class="helper">Paste a job description to see which terms your letter already covers.</p>
+      <div class="chip-row" id="keywordChips"></div>
+
+      <h2 style="margin-top:18px">Saved letters</h2>
+      <div class="saved-list" id="savedList"></div>
+    </aside>
   </div>
-</div>
+</main>
 
-<script>
-const TEMPLATES = [
-  { id: 'tech', icon: '&#128187;', name: 'Technology', opening: 'As a passionate technologist with {years} years of experience in {skills}, I am excited to apply for the {jobTitle} position at {company}.', body: 'Throughout my career, I have developed strong expertise in {skills}. {achievement} This experience has equipped me with the technical depth and problem-solving skills that {company} values in its engineering team.', closing: 'I am particularly drawn to {company} because {whyCompany}. I am confident that my technical skills and collaborative approach would make me a valuable addition to your team.' },
-  { id: 'finance', icon: '&#127974;', name: 'Finance', opening: 'I am writing to express my strong interest in the {jobTitle} role at {company}. With {years} years of experience in {skills}, I bring a proven track record of delivering results in fast-paced financial environments.', body: 'My professional journey has given me deep expertise in {skills}. {achievement} I understand the rigorous standards and attention to detail that financial institutions like {company} demand, and I consistently exceed those expectations.', closing: 'What excites me about {company} is {whyCompany}. I would welcome the opportunity to bring my analytical skills and industry knowledge to your team.' },
-  { id: 'health', icon: '&#127973;', name: 'Healthcare', opening: 'I am writing to apply for the {jobTitle} position at {company}. With {years} years of experience in {skills}, I am passionate about improving healthcare outcomes and patient experiences.', body: 'My experience spans {skills}, and I have consistently focused on patient-centered solutions. {achievement} I understand the critical importance of compliance, empathy, and precision in healthcare settings.', closing: '{company} stands out because {whyCompany}. I would be honored to contribute my skills to your mission of improving health outcomes.' },
-  { id: 'education', icon: '&#127891;', name: 'Education', opening: 'I am excited to apply for the {jobTitle} position at {company}. As an educator with {years} years of experience in {skills}, I am committed to fostering learning environments that inspire growth and excellence.', body: 'Throughout my career in education, I have developed expertise in {skills}. {achievement} I believe that quality education is transformative, and I bring creativity and dedication to every role.', closing: 'I am drawn to {company} because {whyCompany}. I look forward to the opportunity to contribute to your educational mission.' },
-  { id: 'engineering', icon: '&#128736;&#65039;', name: 'Engineering', opening: 'I am writing to apply for the {jobTitle} role at {company}. With {years} years of hands-on experience in {skills}, I bring both technical depth and practical problem-solving ability to every project.', body: 'My engineering career has been defined by {skills}. {achievement} I thrive in environments where precision, innovation, and safety are paramount, which is exactly what I see at {company}.', closing: 'What draws me to {company} is {whyCompany}. I am eager to apply my engineering expertise to your team\'s challenging and impactful projects.' },
-  { id: 'general', icon: '&#128188;', name: 'General', opening: 'I am writing to express my interest in the {jobTitle} position at {company}. With {years} years of professional experience in {skills}, I am confident in my ability to make a meaningful contribution to your team.', body: 'Over the course of my career, I have built strong competencies in {skills}. {achievement} These experiences have shaped me into a versatile professional who adapts quickly and delivers consistently.', closing: 'I am particularly interested in {company} because {whyCompany}. I would be delighted to discuss how my background and skills align with your team\'s needs.' }
-];
-
-const STYLES = [
-  { id: 'professional', name: 'Professional' },
-  { id: 'modern', name: 'Modern' },
-  { id: 'minimal', name: 'Minimal' }
-];
-
-let selectedTemplate = TEMPLATES[0];
-let selectedStyle = STYLES[0];
-
-// Render template picker
-const tplEl = document.getElementById('templates');
-TEMPLATES.forEach((t, i) => {
-  const div = document.createElement('div');
-  div.className = 'tpl' + (i === 0 ? ' active' : '');
-  div.innerHTML = `<div class="tpl-icon">${t.icon}</div><div class="tpl-name">${t.name}</div>`;
-  div.onclick = () => {
-    document.querySelectorAll('.tpl').forEach(e => e.classList.remove('active'));
-    div.classList.add('active');
-    selectedTemplate = t;
-    generate();
-  };
-  tplEl.appendChild(div);
-});
-
-// Render style picker
-const styleEl = document.getElementById('styles');
-STYLES.forEach((s, i) => {
-  const div = document.createElement('div');
-  div.className = 'style-opt' + (i === 0 ? ' active' : '');
-  div.textContent = s.name;
-  div.onclick = () => {
-    document.querySelectorAll('.style-opt').forEach(e => e.classList.remove('active'));
-    div.classList.add('active');
-    selectedStyle = s;
-    generate();
-  };
-  styleEl.appendChild(div);
-});
-
-function getVal(id) { return document.getElementById(id).value.trim(); }
-
-function fillTemplate(template, data) {
-  return template.replace(/\{(\w+)\}/g, (_, key) => data[key] || `[${key}]`);
-}
-
-function generate() {
-  const data = {
-    fullName: getVal('fullName'),
-    email: getVal('email'),
-    phone: getVal('phone'),
-    city: getVal('city'),
-    jobTitle: getVal('jobTitle'),
-    company: getVal('company'),
-    hiringManager: getVal('hiringManager'),
-    years: getVal('years'),
-    skills: getVal('skills'),
-    achievement: getVal('achievement'),
-    whyCompany: getVal('whyCompany')
-  };
-
-  if (!data.fullName && !data.jobTitle && !data.company) return;
-
-  const greeting = data.hiringManager ? `Dear ${data.hiringManager},` : 'Dear Hiring Manager,';
-  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  const opening = fillTemplate(selectedTemplate.opening, data);
-  const body = fillTemplate(selectedTemplate.body, data);
-  const closing = fillTemplate(selectedTemplate.closing, data);
-
-  const isMinimal = selectedStyle.id === 'minimal';
-  const isModern = selectedStyle.id === 'modern';
-
-  let html = '';
-
-  // Sender info
-  if (!isMinimal) {
-    html += `<div class="sender">`;
-    html += `<div style="font-weight:700;${isModern ? 'font-size:1.1rem;color:var(--pri);' : ''}">${data.fullName || '[Your Name]'}</div>`;
-    if (data.email) html += `<div>${data.email}</div>`;
-    if (data.phone) html += `<div>${data.phone}</div>`;
-    if (data.city) html += `<div>${data.city}</div>`;
-    html += `</div>`;
-  }
-
-  html += `<div class="date">${today}</div>`;
-
-  // Recipient
-  html += `<div class="recipient">`;
-  if (data.hiringManager) html += `<div style="font-weight:600">${data.hiringManager}</div>`;
-  if (data.company) html += `<div>${data.company}</div>`;
-  html += `</div>`;
-
-  // Body
-  html += `<div class="greeting">${greeting}</div>`;
-  html += `<div class="body-para">${opening}</div>`;
-  html += `<div class="body-para">${body}</div>`;
-  html += `<div class="body-para">${closing}</div>`;
-  html += `<div class="body-para">Thank you for considering my application. I look forward to the opportunity to discuss how I can contribute to ${data.company || '[Company]'}'s continued success.</div>`;
-
-  // Sign-off
-  html += `<div class="closing">`;
-  html += `<div>Yours sincerely,</div>`;
-  html += `<div class="sign">${data.fullName || '[Your Name]'}</div>`;
-  html += `</div>`;
-
-  document.getElementById('preview').innerHTML = html;
-}
-
-// Save
-const ss = new SaveState('cover-letter');
-
-function saveLetter() {
-  const data = {};
-  ['fullName','email','phone','city','jobTitle','company','hiringManager','years','skills','achievement','whyCompany'].forEach(id => {
-    data[id] = getVal(id);
-  });
-  data.template = selectedTemplate.id;
-  data.style = selectedStyle.id;
-  data.previewHTML = document.getElementById('preview').innerHTML;
-
-  const label = `${data.jobTitle || 'Untitled'} at ${data.company || 'Unknown'}`;
-
-  const params = new URLSearchParams(window.location.search);
-  const existingId = params.get('id');
-
-  ss.save({ id: existingId || undefined, label, data });
-  alert('Cover letter saved!');
-
-  if (!existingId) {
-    const all = ss.getAll();
-    if (all.length) {
-      const newId = all[all.length - 1].id;
-      history.replaceState(null, '', `?id=${newId}`);
-    }
-  }
-}
-
-// Load
-function loadFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  if (!id) return;
-  const item = ss.load(id);
-  if (!item || !item.data) return;
-  const d = item.data;
-
-  ['fullName','email','phone','city','jobTitle','company','hiringManager','years','skills','achievement','whyCompany'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el && d[id] !== undefined) el.value = d[id];
-  });
-
-  if (d.template) {
-    const t = TEMPLATES.find(t => t.id === d.template);
-    if (t) {
-      selectedTemplate = t;
-      document.querySelectorAll('.tpl').forEach(el => {
-        el.classList.toggle('active', el.querySelector('.tpl-name').textContent === t.name);
-      });
-    }
-  }
-  if (d.style) {
-    const s = STYLES.find(s => s.id === d.style);
-    if (s) {
-      selectedStyle = s;
-      document.querySelectorAll('.style-opt').forEach(el => {
-        el.classList.toggle('active', el.textContent === s.name);
-      });
-    }
-  }
-
-  generate();
-}
-
-// PDF export — proper letter format
-function exportPDF() {
-  const preview = document.getElementById('preview');
-  const name = getVal('fullName') || 'Cover Letter';
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Cover Letter - ${name}</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Georgia,'Times New Roman',serif;color:#333;padding:60px 64px;line-height:1.8;font-size:13px;max-width:800px;margin:0 auto}
-.sender{margin-bottom:28px}.sender div{font-size:13px;line-height:1.6}
-.date{color:#555;font-size:13px;margin-bottom:28px}
-.recipient{margin-bottom:28px}.recipient div{font-size:13px;line-height:1.6}
-.greeting{font-weight:600;margin-bottom:18px;font-size:14px}
-.body-para{margin-bottom:16px;text-align:justify}
-.closing{margin-top:28px}.closing .sign{font-weight:600;margin-top:20px}
-.footer{text-align:center;font-size:9px;color:#bbb;margin-top:48px;border-top:1px solid #eee;padding-top:10px}
-@media print{body{padding:40px 48px}.footer{display:none}}
-<meta property="article:modified_time" content="2026-03-28">
-</style></head><body>${preview.innerHTML}<div class="footer">Generated with AfroTools.com</div></body></html>`;
-
-  const blob = new Blob([html], {type:'text/html'});
-  const url = URL.createObjectURL(blob);
-  const w = window.open(url, '_blank');
-  if (w) {
-    w.addEventListener('load', () => { setTimeout(() => { w.print(); }, 400); });
-  } else {
-    // Popup blocked fallback
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name.replace(/[^a-zA-Z0-9 ]/g,'').replace(/ /g,'_') + '_Cover_Letter.html';
-    a.click();
-    alert('Your cover letter has been downloaded. Open it in a browser and use Print > Save as PDF.');
-  }
-  setTimeout(() => URL.revokeObjectURL(url), 30000);
-}
-
-function loadJsPdf() {
-  if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
-  return new Promise(function(resolve, reject) {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
-    script.onload = resolve;
-    script.onerror = function() { reject(new Error('Could not load the PDF export library.')); };
-    document.head.appendChild(script);
-  });
-}
-
-function addPdfText(doc, text, x, y, maxWidth, lineHeight, bottom) {
-  var lines = doc.splitTextToSize(String(text || ''), maxWidth);
-  lines.forEach(function(line) {
-    if (y > bottom) {
-      doc.addPage();
-      y = 24;
-    }
-    doc.text(line, x, y);
-    y += lineHeight;
-  });
-  return y;
-}
-
-// Override the print-fallback exporter with a direct .pdf download.
-async function exportPDF() {
-  try {
-    await loadJsPdf();
-    var preview = document.getElementById('preview');
-    var name = getVal('fullName') || 'Cover Letter';
-    var doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    var pageWidth = doc.internal.pageSize.getWidth();
-    var pageHeight = doc.internal.pageSize.getHeight();
-    var margin = 22;
-    var y = 24;
-
-    doc.setProperties({
-      title: 'Cover Letter - ' + name,
-      subject: 'Cover letter generated with AfroTools',
-      author: name,
-      creator: 'AfroTools Cover Letter Generator'
-    });
-    doc.setFont('times', 'normal');
-    doc.setFontSize(11);
-
-    var blocks = (preview.innerText || '').split(/\n{2,}/).map(function(block) {
-      return block.trim();
-    }).filter(Boolean);
-
-    blocks.forEach(function(block, index) {
-      var compact = block.replace(/\n/g, ' ');
-      doc.setFont('times', index === 0 ? 'bold' : 'normal');
-      y = addPdfText(doc, compact, margin, y, pageWidth - margin * 2, 6.2, pageHeight - 24);
-      y += 4;
-    });
-
-    for (var p = 1; p <= doc.getNumberOfPages(); p++) {
-      doc.setPage(p);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
-      doc.setTextColor(140);
-      doc.text('Generated with AfroTools.com', pageWidth / 2, pageHeight - 10, { align: 'center' });
-      doc.setTextColor(0);
-    }
-
-    doc.save(name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_') + '_Cover_Letter.pdf');
-  } catch (err) {
-    console.error('PDF export error:', err);
-    alert('PDF export failed. Please check your connection and try again.');
-  }
-}
-
-loadFromUrl();
-</script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/js/pages/cover-letter-generator.js?v=20260501" defer></script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=20260501" defer></script>
 </body>
 </html>

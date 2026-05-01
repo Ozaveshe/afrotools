@@ -1,99 +1,443 @@
 <!DOCTYPE html>
-<html lang="sw" data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js">
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kifuatiliaji cha Alama, GPA na CGPA | AfroTools</title>
-<meta name="description" content="Fuatilia assignments, tests, exams na GPA/CGPA estimate ili kujua unahitaji alama gani kufikia lengo lako la masomo.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kifuatiliaji Alama - GPA na CGPA | AfroTools</title>
+<meta name="description" content="Fuatilia alama, GPA na CGPA kwa grading scales za vyuo vya Afrika, na panga target ya semester ijayo.">
+<meta name="keywords" content="GPA calculator, CGPA calculator, student grade tracker, Nigerian university GPA, African grading system, first class GPA, second class upper">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kifuatiliaji-alama/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kifuatiliaji-alama/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/grade-tracker/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/grade-tracker/">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Kifuatiliaji cha Alama, GPA na CGPA | AfroTools">
-<meta property="og:description" content="Fuatilia assignments, tests, exams na GPA/CGPA estimate ili kujua unahitaji alama gani kufikia lengo lako la masomo.">
+
+<meta property="og:title" content="Kifuatiliaji Alama - GPA na CGPA | AfroTools">
+<meta property="og:description" content="Fuatilia alama, GPA na CGPA kwa grading scales za vyuo vya Afrika, na panga target ya semester ijayo.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://afrotools.com/sw/zana/kifuatiliaji-alama/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="sw_TZ">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kifuatiliaji cha Alama, GPA na CGPA | AfroTools">
-<meta name="twitter:description" content="Fuatilia assignments, tests, exams na GPA/CGPA estimate ili kujua unahitaji alama gani kufikia lengo lako la masomo.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kifuatiliaji alama","description":"Fuatilia assignments, tests, exams na GPA/CGPA estimate ili kujua unahitaji alama gani kufikia lengo lako la masomo.","url":"https://afrotools.com/sw/zana/kifuatiliaji-alama/","inLanguage":"sw","applicationCategory":"EducationalApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":2,"name":"Elimu","item":"https://afrotools.com/sw/elimu/"},{"@type":"ListItem","position":3,"name":"Kifuatiliaji alama","item":"https://afrotools.com/sw/zana/kifuatiliaji-alama/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, matokeo haya ni cutoff rasmi au uamuzi wa udahili?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Haya ni makadirio ya kupanga. Thibitisha cutoffs, udahili, udhamini, loan approval na deadlines kwenye chanzo rasmi."}},{"@type":"Question","name":"Kwa nini baadhi ya terms kama GPA, WAEC, HELB au IELTS zimebaki?","acceptedAnswer":{"@type":"Answer","text":"Ni majina na acronyms zinazotumika kwenye mitihani, vyuo, fomu za udhamini na loan portals. Tunazieleza kwa muktadha wa Kiswahili badala ya kuzificha."}}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta property="og:url" content="https://afrotools.com/sw/zana/kifuatiliaji-alama/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
-<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fbff;color:#0f172a}a{color:inherit;text-decoration:none}.skip-link{position:absolute;left:-999px}.skip-link:focus{left:16px;top:16px;z-index:999;background:#fff;padding:10px 14px;border-radius:8px}.edu-wrap{max-width:1120px;margin:0 auto;padding:0 20px}.edu-hero{background:linear-gradient(135deg,#102033 0%,#14536d 48%,#246b54 100%);color:#fff;padding:62px 0 42px}.edu-crumb{font-size:.84rem;color:rgba(255,255,255,.74);margin-bottom:18px}.edu-crumb a{color:#fff;font-weight:800}.edu-kicker{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:#a7f3d0;margin-bottom:10px}.edu-hero h1{font-size:clamp(2rem,5vw,3.45rem);line-height:1;letter-spacing:-.04em;margin:0 0 14px}.edu-sub{max-width:850px;font-size:1.03rem;line-height:1.68;color:rgba(255,255,255,.84);margin:0}.edu-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.edu-action{display:inline-flex;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.1);border-radius:999px;padding:7px 11px;font-size:.8rem;font-weight:900}.edu-main{padding:34px 0 60px}.edu-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);gap:18px;align-items:start}.edu-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;box-shadow:0 14px 35px rgba(15,23,42,.055);margin-bottom:16px}.edu-card h2,.edu-card h3{margin:0 0 10px;color:#0f172a;letter-spacing:-.02em}.edu-card p{margin:0;color:#526071;line-height:1.65}.edu-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#0f766e;font-weight:900;margin-bottom:8px}.edu-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:16px}.edu-field label{display:block;font-size:.79rem;font-weight:900;color:#334155;margin-bottom:6px}.edu-input{width:100%;border:1.5px solid #dbe3ef;border-radius:10px;padding:12px 13px;font:inherit;background:#fff;color:#0f172a}.edu-wide{grid-column:1/-1}.edu-button{display:inline-flex;justify-content:center;align-items:center;border:0;border-radius:10px;background:#0f766e;color:#fff;font-weight:900;padding:12px 16px;font:inherit;cursor:pointer;margin-top:14px}.edu-result{display:none;margin-top:16px;border:1px solid #99f6e4;background:#f0fdfa;border-radius:12px;padding:18px}.edu-result.on{display:block}.edu-primary{font-size:clamp(1.65rem,4vw,2.35rem);font-weight:900;color:#0f766e;letter-spacing:-.03em}.edu-result-sub{color:#475569;line-height:1.5;margin-top:4px}.edu-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px}.edu-metric{border:1px solid #ccfbf1;background:#fbfffe;border-radius:10px;padding:14px}.edu-metric strong{display:block;font-size:1.05rem;color:#0f766e;word-break:break-word}.edu-metric span{display:block;font-size:.78rem;color:#64748b;margin-top:3px}.edu-note{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:12px;padding:16px;line-height:1.65;font-size:.92rem}.edu-link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.edu-link{display:block;border:1px solid #ccfbf1;background:#fbfffe;border-radius:10px;padding:14px}.edu-link strong{display:block;color:#0f172a}.edu-link span{display:block;color:#64748b;font-size:.85rem;margin-top:4px;line-height:1.45}.edu-faq details{border:1px solid #e5e7eb;border-radius:10px;background:#fff;margin-bottom:10px}.edu-faq summary{cursor:pointer;font-weight:900;padding:13px 15px}.edu-faq details div{padding:0 15px 14px;color:#526071;line-height:1.65}.edu-warning{margin-top:14px;color:#7c2d12;font-size:.9rem;line-height:1.55}@media(max-width:880px){.edu-layout{grid-template-columns:1fr}.edu-hero{padding:54px 0 34px}.edu-card{padding:17px}}
+:root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#3b0764 0%,#6d28d9 50%,#8b5cf6 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#3b0764}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group select,.form-group input{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
+.form-group select:focus,.form-group input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.btn{padding:.6rem 1.2rem;border:none;border-radius:7px;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--purple);color:#fff}
+.btn-primary:hover{background:var(--purple-dark)}
+.btn-outline{background:#fff;color:var(--purple);border:1.5px solid var(--purple)}
+.btn-outline:hover{background:var(--purple-light)}
+.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:.8rem;padding:.35rem .6rem}
+
+.course-row{display:grid;grid-template-columns:2.5fr 1fr 1fr auto;gap:.5rem;align-items:end;margin-bottom:.6rem;padding-bottom:.6rem;border-bottom:1px solid #f1f5f9}
+@media(max-width:600px){.course-row{grid-template-columns:1fr 1fr}}
+.course-row label{font-size:.72rem;color:#64748b;font-weight:600;display:block;margin-bottom:.2rem}
+.course-row input,.course-row select{padding:.4rem .6rem;border:1.5px solid #cbd5e1;border-radius:6px;font-size:.85rem;background:#f8fafc;width:100%;font-family:inherit}
+.course-row input:focus,.course-row select:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 2px rgba(124,58,237,.12)}
+
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1rem}
+.result-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;text-align:center}
+.result-card.highlight{background:var(--purple-light);border-color:#c4b5fd}
+.result-label{font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.result-value{font-size:1.5rem;font-weight:800;color:var(--purple);margin-top:.3rem}
+.result-sub{font-size:.8rem;color:#64748b;margin-top:.2rem}
+
+.class-badge{display:inline-flex;padding:.4rem 1rem;border-radius:20px;font-weight:700;font-size:.95rem}
+.class-first{background:#f0fdf4;color:#16a34a;border:1px solid #86efac}
+.class-second-upper{background:#eff6ff;color:#2563eb;border:1px solid #93c5fd}
+.class-second-lower{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.class-third{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.class-pass{background:#f8fafc;color:#64748b;border:1px solid #e2e8f0}
+
+.semester-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.semester-header h2{margin-bottom:0}
+
+.grade-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.75rem}
+.grade-table th{background:var(--purple-light);color:#3b0764;padding:.5rem .6rem;text-align:left;font-weight:600;border-bottom:2px solid #c4b5fd}
+.grade-table td{padding:.4rem .6rem;border-bottom:1px solid #f1f5f9}
+
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#3b0764;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#3b0764;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kifuatiliaji Alama - GPA na CGPA | AfroTools">
+<meta name="twitter:description" content="Fuatilia alama, GPA na CGPA kwa grading scales za vyuo vya Afrika, na panga target ya semester ijayo.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kifuatiliaji Alama","url":"https://afrotools.com/sw/zana/kifuatiliaji-alama/","description":"Fuatilia alama, GPA na CGPA kwa grading scales za vyuo vya Afrika, na panga target ya semester ijayo.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"ProductivityApplication","operatingSystem":"Any"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Data na Tija","item":"https://afrotools.com/sw/data-na-tija/"},{"@type":"ListItem","position":4,"name":"Kifuatiliaji Alama","item":"https://afrotools.com/sw/zana/kifuatiliaji-alama/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kifuatiliaji Alama hutumia data live?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page. Baadhi ya zana hufanya kazi kwenye browser, lakini likizo, time zones, currency au calendar data zinaweza kuhitaji uhakiki kwa vyanzo rasmi."}},{"@type":"Question","name":"Naweza kutumia matokeo haya kama ushauri rasmi?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Matokeo ni makadirio ya planning na productivity. Hakiki dates, likizo, gharama, grades au bajeti kwa chanzo rasmi au mshauri anayefaa."}}]}</script>
 </head>
 <body>
-<a class="skip-link" href="#main-content">Ruka hadi maudhui</a>
-<afro-navbar theme="dark" active="tools"></afro-navbar>
-<header class="edu-hero"><div class="edu-wrap">
-<nav class="edu-crumb" aria-label="Breadcrumb"><a href="/sw/">AfroTools Kiswahili</a> &rsaquo; <a href="/sw/elimu/">Elimu</a> &rsaquo; Kifuatiliaji alama</nav>
-<div class="edu-kicker">GPA na CGPA</div>
-<h1>Kifuatiliaji cha alama</h1>
-<p class="edu-sub">Fuatilia assignments, tests, exams na GPA/CGPA estimate ili kujua unahitaji alama gani kufikia lengo lako la masomo. Tumia matokeo kwa kupanga na maswali ya kuuliza shule, chuo, mkopeshaji au mtoa udhamini.</p>
-<div class="edu-actions"><span class="edu-action">elimu</span><span class="edu-action">mitihani</span><span class="edu-action">fedha za mwanafunzi</span><span class="edu-action">makadirio</span></div>
-</div></header>
-<main class="edu-main" id="main-content"><div class="edu-wrap"><div class="edu-layout">
-<section>
-<div class="edu-card"><div class="edu-eyebrow">Zana</div><h2>Weka taarifa zako</h2><p>Hii ni zana ya kupanga. Usitumie matokeo kama uthibitisho rasmi wa mtihani, udahili, udhamini, mkopo, visa au hati ya ada ya shule.</p><div class="edu-form"><div class="edu-field"><label for="current">Current average (%)</label><input class="edu-input" id="current" type="number" value="68" step="0.01" ></div>
-<div class="edu-field"><label for="target">Target average (%)</label><input class="edu-input" id="target" type="number" value="75" step="0.01" ></div>
-<div class="edu-field"><label for="completedWeight">Weight iliyokamilika (%)</label><input class="edu-input" id="completedWeight" type="number" value="60" step="0.01" ></div>
-<div class="edu-field"><label for="remainingWeight">Weight iliyobaki (%)</label><input class="edu-input" id="remainingWeight" type="number" value="40" step="0.01" ></div>
-<div class="edu-field"><label for="gpaScale">GPA scale</label><input class="edu-input" id="gpaScale" type="number" value="5" step="0.01" ></div></div><button class="edu-button" type="button" onclick="eduCalc('gradeTracker')">Kokotoa makadirio</button><div class="edu-result" id="edu-results"><div class="edu-primary" id="edu-primary"></div><div class="edu-result-sub" id="edu-sub"></div><div class="edu-metrics" id="edu-metrics"></div><div class="edu-warning" id="edu-note"></div></div></div>
-<div class="edu-card"><div class="edu-eyebrow">Tahadhari</div><h2>Thibitisha kabla ya kuamua</h2><p>Cutoffs, ada, scholarship rules, loan approval, university recognition na visa/study-abroad outcomes hubadilika. Tumia tovuti rasmi, ofisi za udahili, exam bodies na qualified advisors kabla ya kulipa au kutuma maombi.</p></div>
-<div class="edu-card edu-faq"><div class="edu-eyebrow">Maswali</div><h2>Maswali yanayoulizwa mara kwa mara</h2><details><summary>Je, matokeo haya ni cutoff rasmi au uamuzi wa udahili?</summary><div>Hapana. Haya ni makadirio ya kupanga. Thibitisha cutoffs, udahili, udhamini, loan approval na deadlines kwenye chanzo rasmi.</div></details>
-<details><summary>Kwa nini baadhi ya terms kama GPA, WAEC, HELB au IELTS zimebaki?</summary><div>Ni majina na acronyms zinazotumika kwenye mitihani, vyuo, fomu za udhamini na loan portals. Tunazieleza kwa muktadha wa Kiswahili badala ya kuzificha.</div></details></div>
+<afro-navbar></afro-navbar>
+<section class="hero">
+<nav style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;"><a href="/" style="color:rgba(255,255,255,0.5);text-decoration:none;">Nyumbani</a> / <a href="/education/" style="color:rgba(255,255,255,0.5);text-decoration:none;">Elimu</a> / <span style="color:#fff;">Kifuatiliaji Alama</span></nav>
+<h1>Kifuatiliaji Alama</h1>
+<p>Hesabu GPA na CGPA kwa grading scales za vyuo vya Afrika. Fuatilia performance yako kwa semesters.</p>
 </section>
-<aside><div class="edu-note"><strong>Kanusho la elimu:</strong> Makadirio haya ni ya kupanga masomo tu. Si taarifa rasmi ya NECO, WAEC, JAMB, KNEC, HELB, NSFAS, NYSC, NSS, chuo, mtoa udhamini, mkopeshaji, ubalozi au ministry. Thibitisha cutoffs, eligibility, ada, udahili, loan approval na deadlines kwenye chanzo rasmi au mshauri aliyehitimu.</div><div class="edu-card"><div class="edu-eyebrow">Angalia pia</div><div class="edu-link-grid"><a class="edu-link" href="/sw/elimu/"><strong>Kitovu cha elimu</strong><span>Mitihani, udhamini, ada, GPA na study tools.</span></a><a class="edu-link" href="/sw/zana/kituo-elimu/"><strong>Kituo cha elimu</strong><span>Njia ya haraka ya kuchagua zana za masomo.</span></a><a class="edu-link" href="/sw/zana/udhamini/"><strong>Udhamini</strong><span>Kupanga scholarship applications.</span></a><a class="edu-link" href="/sw/zana/kikokotoo-gpa/"><strong>GPA na CGPA</strong><span>Fuatilia matokeo yako.</span></a><a class="edu-link" href="/sw/zana/mpango-masomo/"><strong>Mpango wa masomo</strong><span>Ratiba na study plan.</span></a><a class="edu-link" href="/sw/zana/ada-za-shule/"><strong>Ada za shule</strong><span>Bajeti ya fees na costs.</span></a><a class="edu-link" href="/sw/zana/bajeti-ya-mwanafunzi/"><strong>Bajeti ya mwanafunzi</strong><span>Mapato na matumizi ya mwezi.</span></a><a class="edu-link" href="/sw/fintech/"><strong>Fintech</strong><span>Akiba, mikopo na fedha za kila siku.</span></a><a class="edu-link" href="/sw/mshahara-na-kodi/"><strong>Mshahara na kodi</strong><span>Kwa wanafunzi wanaoanza kazi au internship.</span></a><a class="edu-link" href="/sw/afya/"><strong>Afya ya mwanafunzi</strong><span>Afya, maji, lishe na care costs.</span></a></div></div></aside>
-</div></div></main>
-<afro-footer></afro-footer>
+<div class="container">
+<div class="card">
+<h2>Mfumo wa grading</h2>
+<div class="form-grid">
+<div class="form-group">
+<label for="system">Scale ya grading</label>
+<select id="system" onchange="updateGradeOptions()">
+<option value="ng5">Nigerian (5.0 scale)</option>
+<option value="ng4">Nigerian (4.0 scale)</option>
+<option value="ke">Kenyan (4.0 scale)</option>
+<option value="za">South African (% based)</option>
+<option value="gh">Ghanaian (4.0 scale)</option>
+<option value="et">Ethiopian (4.0 scale)</option>
+<option value="rw">Rwandan (4.0 scale)</option>
+<option value="uk">UK Classification</option>
+</select>
+</div>
+<div class="form-group">
+<label>CGPA ya awali (hiari)</label>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+<input type="number" id="prevGpa" placeholder="CGPA" step="0.01" min="0" max="5">
+<input type="number" id="prevCredits" placeholder="Total credits" step="1" min="0">
+</div>
+</div>
+<div class="form-group" style="grid-column:1/-1">
+<label>Mgawanyo wa CA / Mtihani <span style="font-weight:400;color:#94a3b8;font-size:.78rem">(Mfano wa Nigeria: 40% CA + 60% mtihani)</span></label>
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<label style="font-weight:400;font-size:.9rem"><input type="checkbox" id="caSplitMode" onchange="toggleCASplit()" style="width:auto;margin-right:.3rem"> Washa entry ya CA/Exam split</label>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="semester-header">
+<h2>Courses za semester hii</h2>
+<button class="btn btn-outline" onclick="addCourse()" style="font-size:.85rem;padding:.4rem .75rem">+ Ongeza course</button>
+</div>
+<div id="coursesContainer"></div>
+</div>
+
+<div class="card" style="text-align:center">
+<button class="btn btn-primary" onclick="calculate()" style="font-size:1.05rem;padding:.75rem 2.5rem">Hesabu GPA</button>
+</div>
+
+<div id="results" style="display:none">
+<div class="card" style="text-align:center">
+<h2>Matokeo yako</h2>
+<div class="results-grid" id="summaryCards"></div>
+<div id="classBadge" style="margin-top:1rem"></div>
+</div>
+<div class="card">
+<h2>Breakdown ya courses</h2>
+<table class="grade-table" id="breakdownTable"></table>
+</div>
+<div class="card">
+<h2>Reference ya grading scale</h2>
+<table class="grade-table" id="scaleTable"></table>
+</div>
+<div class="card">
+<h2>Ninahitaji GPA gani?</h2>
+<p style="font-size:.82rem;color:#64748b;margin-bottom:12px">Jua GPA unayohitaji semester ijayo kufikia target CGPA.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Target CGPA</label><input type="number" class="f-input" id="targetGpa" value="3.5" step="0.1" min="0" max="5" onchange="calculate()"></div>
+<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Credits zijazo</label><input type="number" class="f-input" id="futureCredits" value="18" min="1" onchange="calculate()"></div>
+</div>
+<div id="whatIfResult" style="font-size:.85rem;color:#475569;line-height:1.7;padding:12px;background:#f8fafc;border-radius:8px"></div>
+</div>
+</div>
+</div>
+
+<section class="seo-section">
+<h2>Kikokotoo GPA na CGPA kwa wanafunzi Afrika</h2>
+<p>Tracking your Grade Point Average (GPA) and Cumulative Grade Point Average (CGPA) is essential for every university student in Africa. Whether you're aiming for first class honours at the University of Lagos, a distinction at the University of Nairobi, or a cum laude at Wits, knowing exactly where you stand academically helps you plan your study strategy and set realistic goals.</p>
+<h3>Inaunga mkono grading systems kadhaa</h3>
+<p>African universities use different grading scales. Most Nigerian universities use a 5.0 scale where A=5 and E=1, while some newer private universities use the 4.0 scale. Kenyan and Ghanaian universities generally use a 4.0 scale. South African universities use percentage-based grading with classifications like distinction (75%+), merit (70-74%), and pass (50-59%). This calculator supports all these systems so you can accurately track your performance regardless of which university you attend.</p>
+<h3>CGPA katika semesters</h3>
+<p>Your semester GPA tells you how you performed in one term, but your CGPA — the cumulative average across all semesters — determines your final degree classification. If you've already completed previous semesters, enter your current CGPA and total credit hours to see how this semester affects your cumulative standing. This is especially useful for final-year students who need to know exactly what grades they need to achieve their target classification.</p>
+<h3>Kuelewa degree classifications</h3>
+<p>In the Nigerian 5.0 system, First Class requires a CGPA of 4.50-5.00, Second Class Upper is 3.50-4.49, Second Class Lower is 2.40-3.49, Third Class is 1.50-2.39, and Pass is 1.00-1.49. In the 4.0 system, First Class is typically 3.50+, and Second Class Upper is 3.00-3.49. South African universities award summa cum laude (above 75%), magna cum laude (70-74%), and cum laude (60-69%). Knowing these thresholds helps you set your academic targets each semester.</p>
+</section>
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq">
+<h2>Maswali ya mara kwa mara</h2>
+<details><summary>How is GPA calculated?</summary><p>GPA = Kwendatal Quality Points / Kwendatal Credit Saa. Quality points for each course = Grade Point x Credit Saa. For example, an A (5 points) in a 3-credit course gives 15 quality points. Sum all quality points and divide by total credit hours.</p></details>
+<details><summary>What GPA do I need for first class?</summary><p>In the Nigerian 5.0 system: 4.50+. In the 4.0 system: 3.50+. In South Africa: 75%+ average. In the UK system: 70%+ (First Class Honours). Requirements can vary slightly between universities.</p></details>
+<details><summary>Naweza kuboresha CGPA iliyo chini?</summary><p>Yes! With strategic planning, you can raise your CGPA by performing well in remaining semesters. The more credit hours remaining, the more room you have to improve. Focus on courses with higher credit loads for maximum impact. Some universities also allow you to retake failed courses.</p></details>
+<details><summary>What's the difference between GPA and CGPA?</summary><p>GPA (Grade Point Average) is your average for a single semester. CGPA (Cumulative Grade Point Average) is your average across ALL semesters from first year to present. Your final degree classification is based on your CGPA.</p></details>
+</section>
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<section class="sw-data-productivity-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kifuatiliaji Alama kwa Kiswahili.</strong> Hesabu GPA na CGPA kwa planning ya masomo. Hakiki formula na ofisi ya chuo kabla ya kutumia kwa maamuzi rasmi. <span>Matokeo ya zana za muda, likizo, bajeti, alama au gharama ni makadirio. Hakiki official dates, policies, receipts, grades au records kabla ya uamuzi muhimu.</span><div class="sw-data-inline-links" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;"><a href="/sw/data-na-tija/">Data na Tija</a><a href="/sw/zana/pomodoro/">Pomodoro</a><a href="/sw/zana/kubadilisha-vipimo/">Vipimo</a><a href="/sw/zana/mpango-bajeti/">Bajeti</a><a href="/sw/zana/hesabu-siku-za-tukio/">Countdown</a><a href="/sw/zana/kalenda-likizo-za-umma/">Likizo</a><a href="/sw/zana/siku-za-kazi/">Siku za kazi</a><a href="/sw/zana/kifuatiliaji-alama/">Alama/GPA</a><a href="/sw/zana/kigawanya-bili-na-tip/">Bili na tip</a></div></div></section><style>.sw-data-inline-links a{background:#fff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:999px;padding:7px 10px;font-weight:800;font-size:.82rem;text-decoration:none}</style>
+<afro-footer></afro-footer><script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+
+<script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script>
+<script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
+<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
+<script src="/assets/js/components/newsletter-cta.js?v=d99e3e5e" defer></script>
 <script>
-var EDU_SYMBOLS={"KES":"KSh ","TZS":"TSh ","UGX":"USh ","RWF":"RF ","NGN":"NGN ","GHS":"GHS ","ZAR":"R ","EGP":"EGP ","ETB":"ETB ","ZMW":"ZK ","USD":"$"};
-function val(id){var el=document.getElementById(id);return el?el.value:''}
-function numv(id){var el=document.getElementById(id);return el?parseFloat(String(el.value||'').replace(/[^0-9.-]/g,''))||0:0}
-function money(x){var s=EDU_SYMBOLS[val('currency')]||'';return s+Math.round(x||0).toLocaleString('en-US')}
-function setResult(primary,sub,metrics,note){document.getElementById('edu-primary').textContent=primary;document.getElementById('edu-sub').textContent=sub;document.getElementById('edu-metrics').innerHTML=metrics.map(function(m){return '<div class="edu-metric"><strong>'+m[1]+'</strong><span>'+m[0]+'</span></div>'}).join('');document.getElementById('edu-note').textContent=note||'';document.getElementById('edu-results').classList.add('on')}
-function pmt(principal, annualRate, years){var months=Math.max(1,years*12);var r=(annualRate/100)/12;if(!r)return principal/months;return principal*(r*Math.pow(1+r,months))/(Math.pow(1+r,months)-1)}
-function daysUntil(d){return Math.ceil((new Date(d)-new Date())/(24*3600*1000))}
-function eduCalc(kind){var total,score,monthly,extra,months,rate,amount,grades,points,citation;
-switch(kind){
-case 'schoolFees':total=numv('tuition')+numv('boarding')+numv('transport')+numv('books')+numv('uniform')+numv('exam')+numv('other')-numv('support');setResult(money(Math.max(0,total)),'Makadirio ya gharama kwa period uliyoweka',[['Tuition',money(numv('tuition'))],['Boarding/transport',money(numv('boarding')+numv('transport'))],['Books/uniform/exam',money(numv('books')+numv('uniform')+numv('exam'))],['Support',money(numv('support'))]],'Omba fee structure rasmi kutoka shule kabla ya kulipa.');break;
-case 'studentLoan':var scheme=val('scheme');var presets={nelfund:[3.5,10,'NGN'],helb:[4,10,'KES'],nsfas:[0,15,'ZAR'],sltf:[10,10,'GHS']};if(presets[scheme]){rate=presets[scheme][0];document.getElementById('rate').value=rate;document.getElementById('years').value=presets[scheme][1];document.getElementById('currency').value=presets[scheme][2];}amount=numv('amount');monthly=Math.max(0,pmt(amount,numv('rate'),numv('years'))-numv('extra'));setResult(money(monthly),'Makadirio ya payment ya mwezi',[['Principal',money(amount)],['Interest rate',numv('rate').toFixed(1)+'%'],['Total repayment',money(monthly*numv('years')*12)],['Extra monthly',money(numv('extra'))]],'Thibitisha terms, grace period na penalties na loan provider rasmi.');break;
-case 'helb':amount=numv('amount')+numv('penalty');monthly=Math.max(0,pmt(amount,numv('rate'),numv('years'))-numv('extra'));setResult(money(monthly),'Makadirio ya HELB repayment ya mwezi',[['Loan + charges',money(amount)],['Rate',numv('rate').toFixed(1)+'%'],['Payoff estimate',numv('years').toFixed(0)+' miaka'],['Extra monthly',money(numv('extra'))]],'HELB statement na portal rasmi ndio source ya balance, penalties na payoff amount.');break;
-case 'waec':grades=['g1','g2','g3','g4','g5','g6','g7','g8','g9'].map(function(id){return numv(id)}).sort(function(a,b){return a-b});points=grades.slice(0,6).reduce(function(a,b){return a+b},0);setResult(points,'Jumla ya best six grades',[['Best six',grades.slice(0,6).join(', ')],['Masomo yaliyowekwa',grades.length],['Alama ndogo ni bora','ndiyo'],['Planning',points<=24?'nzuri':'hakikisha cutoffs']],'WAEC/NECO grades na admission cutoffs lazima zithibitishwe na school au institution husika.');break;
-case 'jamb':score=(numv('utme')/400*100)*(numv('utmeWeight')/100)+numv('post')*(numv('postWeight')/100)+numv('olevel')*(numv('olevelWeight')/100);setResult(score.toFixed(1)+'%','Aggregate ya makadirio',[['UTME',numv('utme')+'/400'],['Post-UTME',numv('post')+'%'],['O-level points',numv('olevel')],['Weights',numv('utmeWeight')+'/'+numv('postWeight')+'/'+numv('olevelWeight')]],'Universities hutumia formulas tofauti. Thibitisha cutoff na admission office.');break;
-case 'kcse':points=numv('points');var mean=points/Math.max(1,numv('subjects'));setResult(mean.toFixed(1),'Average ya subject points',[['Jumla ya points',points],['Masomo',numv('subjects').toFixed(0)],['Kigezo',val('englishMath')],['Band ya kupanga',mean>=10?'A range':mean>=7?'B range':mean>=5?'C range':'hakiki']],'KNEC na KUCCPS ndio sources rasmi za results, cluster points na placement requirements.');break;
-case 'aps':points=['aps1','aps2','aps3','aps4','aps5','aps6','aps7'].reduce(function(a,id){return a+numv(id)},0);setResult(points,'APS points za makadirio',[['Masomo',7],['Average level',(points/7).toFixed(1)],['Muktadha wa Matric','South Africa'],['Hatua inayofuata','hakiki rules za programme']],'Programme requirements hutofautiana kwa faculty na university.');break;
-case 'gradeTracker':var need=(numv('target')-numv('current')*(numv('completedWeight')/100))/(Math.max(1,numv('remainingWeight'))/100);var gpa=Math.max(0,Math.min(numv('gpaScale'),numv('current')/100*numv('gpaScale')));setResult(need.toFixed(1)+'%','Average unayohitaji kwenye work iliyobaki',[['Current average',numv('current')+'%'],['Target',numv('target')+'%'],['GPA estimate',gpa.toFixed(2)],['Remaining weight',numv('remainingWeight')+'%']],'Institution yako inaweza kutumia formula tofauti ya GPA au CGPA.');break;
-case 'flashcards':var unknown=Math.max(0,numv('cards')-numv('known'));setResult(unknown+' cards','Cards za kuweka priority',[['Topic',val('topic')],['Known',numv('known').toFixed(0)],['Daily review',Math.ceil(numv('cards')/Math.max(1,numv('days')))],['Revision days',numv('days').toFixed(0)]],'Rudia cards ambazo hukumbuki mara nyingi zaidi kuliko zile unazojua.');break;
-case 'countdown':var days=Math.max(0,daysUntil(val('examDate')));var studyDays=Math.max(0,days-Math.floor(days/7*numv('restDays')));setResult(days+' siku','Siku zilizobaki kabla ya mtihani',[['Siku za kusoma',studyDays],['Masaa yote ya kusoma',(studyDays*numv('hoursDay')).toFixed(1)],['Masaa kwa somo',(studyDays*numv('hoursDay')/Math.max(1,numv('subjects'))).toFixed(1)],['Masomo',numv('subjects').toFixed(0)]],'Ratiba rasmi ya exam body au school ndio final.');break;
-case 'timetable':var sessions=Math.floor((numv('hoursDay')*60)/Math.max(15,numv('session')));var totalSessions=sessions*numv('days');setResult(totalSessions+' sessions','Sessions za revision za makadirio',[['Sessions per day',sessions],['Sessions per subject',Math.floor(totalSessions/Math.max(1,numv('subjects')))],['Breaks per day',numv('breaks').toFixed(0)],['Session length',numv('session').toFixed(0)+' dk']],'Badilisha ratiba kulingana na official exam timetable na energy yako.');break;
-case 'admission':score=numv('score')*0.55+numv('budget')*0.25+(val('english')==='ready'?10:val('english')==='not-needed'?8:3)+(val('documents')==='ready'?10:val('documents')==='partial'?5:0);setResult(Math.round(score)+'/100','Readiness score ya application',[['Level',val('level')],['Academic',numv('score')+'%'],['English proof',val('english')],['Documents',val('documents')]],'Admission office na programme page ndio hutoa decision na official requirements.');break;
-case 'ranking':score=numv('costWeight')+numv('qualityWeight')+numv('scholarshipWeight');setResult(score+'%','Uzito wa vipaumbele ulivyoweka',[['Nchi',val('country')],['Programme',val('program')],['Uzito wa gharama',numv('costWeight')+'%'],['Uzito wa udhamini',numv('scholarshipWeight')+'%']],'Tumia rankings nyingi, accreditation na graduate outcomes kabla ya kuchagua chuo.');break;
-case 'degree':score=(val('accreditation')==='verified'?40:val('accreditation')==='unknown'?15:0)+(val('transcript')==='ready'?25:val('transcript')==='pending'?12:0)+(val('certificate')==='ready'?25:val('certificate')==='pending'?12:0)+10;setResult(score+'/100','Checklist readiness ya degree',[['Institution',val('institution')],['Accreditation',val('accreditation')],['Transcript',val('transcript')],['Certificate',val('certificate')]],'Thibitisha na regulator, university, employer, embassy au credential evaluator rasmi.');break;
-case 'nysc':total=(numv('monthly')+numv('topup'))*numv('months');var expenses=numv('expenses')*numv('months');var target=total*numv('savePct')/100;setResult(money(total-expenses),'Net estimate baada ya expenses',[['Gross allowance',money(total)],['Expenses',money(expenses)],['Savings target',money(target)],['Months',numv('months').toFixed(0)]],'Thibitisha current allowance na NYSC official channels.');break;
-case 'nss':total=numv('monthly')*numv('months');var costs=(numv('transport')+numv('rent')+numv('food'))*numv('months');setResult(money(total-costs),'Net estimate ya National Service',[['Gross allowance',money(total)],['Living costs',money(costs)],['Monthly balance',money(numv('monthly')-numv('transport')-numv('rent')-numv('food'))],['Months',numv('months').toFixed(0)]],'Thibitisha allowance na postings kupitia NSS official channels.');break;
-case 'studentBudget':var income=numv('allowance')+numv('partTime');var expense=numv('rent')+numv('food')+numv('transport')+numv('data')+numv('fees')+numv('other');setResult(money(income-expense),'Balance ya mwezi',[['Income',money(income)],['Expenses',money(expense)],['Fees contribution',money(numv('fees'))],['Savings signal',income>=expense?'positive':'shortfall']],'Bei za maisha hubadilika; sasisha numbers kila mwezi.');break;
-case 'citation':citation=(val('author')||'Author')+' ('+(val('year')||'n.d.')+'). '+(val('title')||'Title')+'. '+(val('publisher')||'Publisher')+(val('url')?' . '+val('url'):'');if(val('style')==='mla') citation=(val('author')||'Author')+'. "'+(val('title')||'Title')+'." '+(val('publisher')||'Publisher')+', '+(val('year')||'n.d.')+'.';if(val('style')==='chicago') citation=(val('author')||'Author')+'. '+(val('title')||'Title')+'. '+(val('publisher')||'Publisher')+', '+(val('year')||'n.d.')+'.';setResult(citation,'Citation draft ya kukagua',[['Style',val('style').toUpperCase()],['Source type',val('type')],['Author',val('author')||''],['Year',val('year')||'']],'Thibitisha punctuation, italics na rules za style guide yako.');break;
-case 'periodic':var names={1:'Hydrogen H',2:'Helium He',3:'Lithium Li',4:'Beryllium Be',5:'Boron B',6:'Carbon C',7:'Nitrogen N',8:'Oxygen O',9:'Fluorine F',10:'Neon Ne',11:'Sodium Na',12:'Magnesium Mg',13:'Aluminium Al',14:'Silicon Si',15:'Phosphorus P',16:'Sulfur S',17:'Chlorine Cl',18:'Argon Ar',19:'Potassium K',20:'Calcium Ca'};var atomic=Math.max(1,Math.min(20,Math.round(numv('atomic'))));setResult(names[atomic]||('Element '+atomic),'Element estimate kwa atomic number',[['Protons',atomic],['Neutrons estimate',Math.max(0,Math.round(numv('mass')-atomic))],['Electrons entered',numv('electrons').toFixed(0)],['Mass number',numv('mass').toFixed(0)]],'Jedwali hili ni study helper. Tumia textbook au lab instructions kwa data rasmi.');break;
-case 'algebra':var a=numv('a'),b=numv('b'),c=numv('c');var x=a?((c-b)/a):0;setResult('x = '+x.toFixed(2),'Suluhisho la ax + b = c',[['Equation',a+'x + '+b+' = '+c],['Step 1','x = (c - b) / a'],['Step 2','x = ('+c+' - '+b+') / '+a],['Check',(a*x+b).toFixed(2)]],'Tumia hii kuelewa hatua za msingi, kisha jaribu mfano mwingine mwenyewe.');break;
-default:setResult('Tayari','Weka taarifa kisha kokotoa',[],'' );
-}}
+const SYSTEMS={
+  ng5:{name:'Nigerian 5.0',max:5,grades:[{label:'A (70-100%)',gp:5},{label:'B (60-69%)',gp:4},{label:'C (50-59%)',gp:3},{label:'D (45-49%)',gp:2},{label:'E (40-44%)',gp:1},{label:'F (0-39%)',gp:0}],classes:[{name:'First Class',min:4.5,css:'class-first'},{name:'Second Class Upper',min:3.5,css:'class-second-upper'},{name:'Second Class Lower',min:2.4,css:'class-second-lower'},{name:'Third Class',min:1.5,css:'class-third'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  ng4:{name:'Nigerian 4.0',max:4,grades:[{label:'A (70-100%)',gp:4},{label:'B+ (65-69%)',gp:3.5},{label:'B (60-64%)',gp:3},{label:'C+ (55-59%)',gp:2.5},{label:'C (50-54%)',gp:2},{label:'D (45-49%)',gp:1.5},{label:'E (40-44%)',gp:1},{label:'F (0-39%)',gp:0}],classes:[{name:'First Class',min:3.5,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.0,css:'class-second-lower'},{name:'Third Class',min:1.5,css:'class-third'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  ke:{name:'Kenyan 4.0',max:4,grades:[{label:'A (70-100%)',gp:4},{label:'B+ (65-69%)',gp:3.5},{label:'B (60-64%)',gp:3},{label:'B- (55-59%)',gp:2.67},{label:'C+ (50-54%)',gp:2.33},{label:'C (45-49%)',gp:2},{label:'C- (40-44%)',gp:1.67},{label:'D (35-39%)',gp:1},{label:'E (0-34%)',gp:0}],classes:[{name:'First Class Honours',min:3.6,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.5,css:'class-second-lower'},{name:'Pass',min:2.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  za:{name:'South African %',max:100,grades:[{label:'Distinction (75-100%)',gp:82},{label:'Merit (70-74%)',gp:72},{label:'First Class Pass (60-69%)',gp:65},{label:'Second Class Pass (50-59%)',gp:55},{label:'Third Class Pass (40-49%)',gp:45},{label:'Fail (0-39%)',gp:0}],classes:[{name:'Summa Cum Laude',min:75,css:'class-first'},{name:'Magna Cum Laude',min:70,css:'class-second-upper'},{name:'Cum Laude',min:60,css:'class-second-lower'},{name:'Pass',min:50,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  gh:{name:'Ghanaian 4.0',max:4,grades:[{label:'A (80-100%)',gp:4},{label:'B+ (75-79%)',gp:3.5},{label:'B (70-74%)',gp:3},{label:'C+ (65-69%)',gp:2.5},{label:'C (60-64%)',gp:2},{label:'D (55-59%)',gp:1.5},{label:'E (50-54%)',gp:1},{label:'F (0-49%)',gp:0}],classes:[{name:'First Class',min:3.6,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.5,css:'class-second-lower'},{name:'Third Class',min:2.0,css:'class-third'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  et:{name:'Ethiopian 4.0',max:4,grades:[{label:'A (85-100%)',gp:4},{label:'A- (80-84%)',gp:3.75},{label:'B+ (75-79%)',gp:3.5},{label:'B (70-74%)',gp:3},{label:'B- (65-69%)',gp:2.75},{label:'C+ (60-64%)',gp:2.5},{label:'C (55-59%)',gp:2},{label:'C- (50-54%)',gp:1.75},{label:'D (45-49%)',gp:1},{label:'F (<45%)',gp:0}],classes:[{name:'First Class (Distinction)',min:3.75,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.0,css:'class-second-lower'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  rw:{name:'Rwandan 4.0',max:4,grades:[{label:'A (80-100%)',gp:4},{label:'B+ (70-79%)',gp:3.5},{label:'B (60-69%)',gp:3},{label:'C (50-59%)',gp:2},{label:'D (40-49%)',gp:1},{label:'F (<40%)',gp:0}],classes:[{name:'First Class',min:3.5,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.0,css:'class-second-lower'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  uk:{name:'UK Classification',max:4,grades:[{label:'First (70%+)',gp:4},{label:'2:1 (60-69%)',gp:3.3},{label:'2:2 (50-59%)',gp:2.7},{label:'Third (40-49%)',gp:2},{label:'Fail (<40%)',gp:0}],classes:[{name:'First Class Honours',min:3.5,css:'class-first'},{name:'Upper Second (2:1)',min:3.0,css:'class-second-upper'},{name:'Lower Second (2:2)',min:2.5,css:'class-second-lower'},{name:'Third Class',min:2.0,css:'class-third'},{name:'Fail',min:0,css:'class-pass'}]}
+};
+
+let courses=[];
+let courseId=0;
+
+function getSystem(){return SYSTEMS[document.getElementById('system').value];}
+
+function updateGradeOptions(){
+  const sys=getSystem();
+  document.querySelectorAll('.grade-select').forEach(sel=>{
+    sel.innerHTML=sys.grades.map(g=>`<option value="${g.gp}">${g.label}</option>`).join('');
+  });
+  document.getElementById('prevGpa').max=sys.max;
+  document.getElementById('prevGpa').placeholder=`CGPA (max ${sys.max})`;
+}
+
+function toggleCASplit(){
+  const on=document.getElementById('caSplitMode').checked;
+  document.querySelectorAll('.ca-split-fields').forEach(el=>el.style.display=on?'contents':'none');
+  document.querySelectorAll('.normal-grade-field').forEach(el=>el.style.display=on?'none':'block');
+}
+
+function addCourse(data){
+  const id=courseId++;
+  courses.push(id);
+  const sys=getSystem();
+  const d=data||{name:'',credits:3,grade:sys.grades[0].gp};
+  const caMode=document.getElementById('caSplitMode').checked;
+  const div=document.createElement('div');
+  div.className='course-row';
+  div.id=`course-${id}`;
+  if(caMode){
+    div.innerHTML=`
+      <div><label>Course Name</label><input type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
+      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
+      <div class="ca-split-fields" style="display:contents">
+        <div><label>CA Score (40%)</label><input type="number" class="ca-score" min="0" max="40" step="0.5" placeholder="0-40"></div>
+        <div><label>Exam Score (60%)</label><input type="number" class="exam-score" min="0" max="60" step="0.5" placeholder="0-60"></div>
+      </div>
+      <div><label>&nbsp;</label><button class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
+    `;
+  } else {
+    div.innerHTML=`
+      <div><label>Course Name</label><input type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
+      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
+      <div><label>Grade</label><select class="grade-select">${sys.grades.map(g=>`<option value="${g.gp}"${g.gp==d.grade?' selected':''}>${g.label}</option>`).join('')}</select></div>
+      <div><label>&nbsp;</label><button class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
+    `;
+  }
+  document.getElementById('coursesContainer').appendChild(div);
+}
+
+function removeCourse(id){
+  courses=courses.filter(c=>c!==id);
+  document.getElementById(`course-${id}`)?.remove();
+}
+
+function calculate(){
+  const sys=getSystem();
+  const caMode=document.getElementById('caSplitMode').checked;
+  let totalQP=0,totalCredits=0;
+  const courseData=[];
+
+  courses.forEach(id=>{
+    const row=document.getElementById(`course-${id}`);
+    if(!row) return;
+    const inputs=row.querySelectorAll('input');
+    const name=inputs[0].value||'Course';
+    const credits=parseInt(inputs[1].value)||0;
+    let gp, gradeLabel;
+    if(caMode){
+      const caScore=parseFloat(row.querySelector('.ca-score')?.value)||0;
+      const examScore=parseFloat(row.querySelector('.exam-score')?.value)||0;
+      const totalPct=caScore+examScore; // out of 100
+      // Map percentage to grade point using current system
+      const matched=sys.grades.slice().reverse().find(g=>g.gp>0)||(sys.grades[0]);
+      // simple mapping: % to gp proportionally
+      gp=parseFloat((totalPct/100*sys.max).toFixed(2));
+      gradeLabel=`CA:${caScore} + Exam:${examScore} = ${totalPct.toFixed(1)}%`;
+    } else {
+      const sel=row.querySelector('select');
+      gp=parseFloat(sel.value);
+      gradeLabel=sel.options[sel.selectedIndex].text;
+    }
+    const qp=gp*credits;
+    totalQP+=qp;
+    totalCredits+=credits;
+    courseData.push({name,credits,grade:gradeLabel,gp,qp});
+  });
+
+  if(totalCredits===0) return;
+  const gpa=totalQP/totalCredits;
+
+  // CGPA calculation
+  const prevGpa=parseFloat(document.getElementById('prevGpa').value)||0;
+  const prevCredits=parseInt(document.getElementById('prevCredits').value)||0;
+  let cgpa=gpa;
+  if(prevGpa>0&&prevCredits>0){
+    cgpa=(prevGpa*prevCredits+totalQP)/(prevCredits+totalCredits);
+  }
+
+  // Classification
+  const cls=sys.classes.find(c=>cgpa>=c.min)||sys.classes[sys.classes.length-1];
+
+  document.getElementById('summaryCards').innerHTML=`
+    <div class="result-card highlight"><div class="result-label">Semester GPA</div><div class="result-value">${gpa.toFixed(2)}<span style="font-size:.7rem;color:#64748b"> / ${sys.max}</span></div></div>
+    <div class="result-card highlight"><div class="result-label">CGPA</div><div class="result-value">${cgpa.toFixed(2)}<span style="font-size:.7rem;color:#64748b"> / ${sys.max}</span></div></div>
+    <div class="result-card"><div class="result-label">Total Credits</div><div class="result-value">${totalCredits}</div><div class="result-sub">${prevCredits>0?`+ ${prevCredits} previous = ${totalCredits+prevCredits}`:''}</div></div>
+    <div class="result-card"><div class="result-label">Quality Points</div><div class="result-value">${totalQP.toFixed(1)}</div></div>
+  `;
+
+  document.getElementById('classBadge').innerHTML=`<span class="class-badge ${cls.css}">${cls.name}</span>`;
+
+  let table='<thead><tr><th>Course</th><th>Credits</th><th>Grade</th><th>Points</th><th>Quality Points</th></tr></thead><tbody>';
+  courseData.forEach(c=>{
+    table+=`<tr><td>${c.name}</td><td>${c.credits}</td><td>${c.grade}</td><td>${c.gp}</td><td>${c.qp.toFixed(1)}</td></tr>`;
+  });
+  table+=`<tr style="font-weight:700;background:#f5f3ff"><td>Total</td><td>${totalCredits}</td><td></td><td></td><td>${totalQP.toFixed(1)}</td></tr></tbody>`;
+  document.getElementById('breakdownTable').innerHTML=table;
+
+  let scale='<thead><tr><th>Grade</th><th>Points</th><th>Classification</th><th>Min GPA</th></tr></thead><tbody>';
+  sys.grades.forEach(g=>{scale+=`<tr><td>${g.label}</td><td>${g.gp}</td><td></td><td></td></tr>`;});
+  scale+='<tr><td colspan="4" style="background:#f5f3ff;font-weight:700">Degree Classifications</td></tr>';
+  sys.classes.forEach(c=>{scale+=`<tr><td></td><td></td><td><span class="class-badge ${c.css}" style="font-size:.75rem;padding:.2rem .5rem">${c.name}</span></td><td>${c.min}</td></tr>`;});
+  scale+='</tbody>';
+  document.getElementById('scaleTable').innerHTML=scale;
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+
+  // What-if calculator
+  var whatIfEl=document.getElementById('whatIfResult');
+  if(whatIfEl){
+    var targetGpa=parseFloat(document.getElementById('targetGpa').value)||0;
+    var futureCredits=parseInt(document.getElementById('futureCredits').value)||0;
+    var currentTotalCredits=totalCredits+(prevCredits||0);
+    var currentTotalQP=totalQP+(prevGpa*prevCredits||0);
+    if(futureCredits>0&&targetGpa>0){
+      var neededQP=(targetGpa*(currentTotalCredits+futureCredits))-currentTotalQP;
+      var neededGpa=neededQP/futureCredits;
+      var sys2=getSystem();
+      if(neededGpa>sys2.max){
+        whatIfEl.innerHTML='<span style="color:#ef4444;font-weight:700">Not achievable.</span> You would need a GPA of '+neededGpa.toFixed(2)+' which exceeds the maximum of '+sys2.max+'.';
+      } else if(neededGpa<=0){
+        whatIfEl.innerHTML='<span style="color:#10b981;font-weight:700">Already achieved!</span> Even with 0.0 next semester, your CGPA stays above '+targetGpa.toFixed(2)+'.';
+      } else {
+        whatIfEl.innerHTML='You need a GPA of <strong style="color:var(--color-primary)">'+neededGpa.toFixed(2)+'</strong> over the next '+futureCredits+' credits to reach a CGPA of '+targetGpa.toFixed(2)+'.';
+      }
+    }
+  }
+
+  // Save to localStorage
+  try{
+    var saveData={courses:[],system:document.getElementById('system').value,prevGpa:prevGpa,prevCredits:prevCredits};
+    courses.forEach(function(id){
+      var row=document.getElementById('course-'+id);
+      if(!row)return;
+      var inputs=row.querySelectorAll('input');
+      var sel=row.querySelector('select');
+      saveData.courses.push({name:inputs[0].value,credits:inputs[1].value,grade:sel.value});
+    });
+    localStorage.setItem('afro_grades',JSON.stringify(saveData));
+  }catch(e){}
+}
+
+// Load saved data or init with empty rows
+(function(){
+  try{
+    var saved=JSON.parse(localStorage.getItem('afro_grades'));
+    if(saved&&saved.courses&&saved.courses.length){
+      if(saved.system)document.getElementById('system').value=saved.system;
+      updateGradeOptions();
+      if(saved.prevGpa)document.getElementById('prevGpa').value=saved.prevGpa;
+      if(saved.prevCredits)document.getElementById('prevCredits').value=saved.prevCredits;
+      saved.courses.forEach(function(c){
+        addCourse({name:c.name||'',credits:c.credits||3,grade:c.grade||0});
+      });
+      return;
+    }
+  }catch(e){}
+  // Default: 5 empty rows
+  for(var i=0;i<5;i++) addCourse();
+})();
 </script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script class="sw-data-runtime-localizer">
+(function(){
+  const textMap = new Map([["Home","Nyumbani"],["Tools","Zana"],["Education","Elimu"],["Financial","Fedha"],["Productivity","Tija"],["Business & ROI Tools","Zana za Data na Tija"],["Business & ROI","Data na Tija"],["Redirecting to","Inaelekeza kwenda"],["Pomodoro Timer","Pomodoro"],["Focus sessions, break tracking, and daily goal management","Vipindi vya focus, mapumziko na daily goal"],["Work Session","Kipindi cha kazi"],["Work (25m)","Kazi (dakika 25)"],["Break (5m)","Mapumziko (dakika 5)"],["Long (15m)","Mapumziko marefu (dakika 15)"],["Start","Anza"],["Pause","Sitisha"],["Reset","Weka upya"],["Keyboard: Space = start/pause, R = reset, 1/2/3 = work/break/long","Keyboard: Space = anza/sitisha, R = reset, 1/2/3 = kazi/mapumziko/marefu"],["Auto-start breaks","Anza mapumziko automatically"],["Work (minutes)","Dakika za kazi"],["Break (minutes)","Dakika za mapumziko"],["Long Break (min)","Mapumziko marefu (dakika)"],["Sessions/Long","Sessions kabla ya mapumziko marefu"],["Daily Goal","Lengo la siku"],["pomodoros/day","pomodoros kwa siku"],["Today","Leo"],["This Week","Wiki hii"],["Streak","Mfululizo"],["consecutive days","siku mfululizo"],["Best Day","Siku bora"],["focused","za focus"],["Unit Converter","Kubadilisha Vipimo"],["15 Categories · African Units Included","Categories 15 na vipimo vya Afrika"],["for Africa","kwa Afrika"],["20 categories — length, weight, area, force, torque, flow rate, density, electrical, cooking, fuel, and more. Includes Nigerian plots, SA morgen, Egyptian feddan, Kenyan eighth-acres. Click any result to copy.","Categories 20: urefu, uzito, eneo, nguvu, torque, flow rate, density, umeme, kupika, mafuta na zaidi. Ina vipimo kama Nigerian plots, SA morgen, Egyptian feddan na Kenyan eighth-acres. Bofya matokeo kunakili."],["Length","Urefu"],["Weight","Uzito"],["Temperature","Joto"],["Area & Land","Eneo na Ardhi"],["Volume","Volume"],["Speed","Kasi"],["Fuel","Mafuta"],["Cooking","Kupika"],["Data","Data"],["Energy","Nishati"],["Power","Nguvu"],["Pressure","Pressure"],["Time","Muda"],["Angle","Angle"],["Frequency","Frequency"],["Force","Force"],["Torque","Torque"],["Flow Rate","Flow rate"],["Density","Density"],["Electrical","Umeme"],["From","Kutoka"],["To","Kwenda"],["Budget Planner","Mpango wa Bajeti"],["Budget","Bajeti"],["Planner","Mpangaji"],["Plan your monthly budget, categorise expenses, and track how much you can save. Supports African currencies and the 50/30/20 budgeting rule.","Panga bajeti ya mwezi, panga matumizi kwa makundi na fuatilia akiba. Inasaidia currencies za Afrika na 50/30/20 rule."],["18 African Currencies","Currencies 18 za Afrika"],["50/30/20 Rule","50/30/20 rule"],["Household Presets","Presets za kaya"],["Auto-Save","Auto-save"],["Income","Mapato"],["Currency","Sarafu"],["Quick Preset","Preset ya haraka"],["(fills sample figures)","(hujaza figures za mfano)"],["+ Add Income Source","+ Ongeza chanzo cha mapato"],["Expenses","Matumizi"],["+ Add Expense","+ Ongeza matumizi"],["Calculate Budget","Hesabu Bajeti"],["Budget Summary","Muhtasari wa Bajeti"],["Total Income","Jumla ya mapato"],["Total Expenses","Jumla ya matumizi"],["Remaining (Savings)","Kinachobaki (akiba)"],["Savings Rate","Kiwango cha akiba"],["Needs (50%):","Mahitaji (50%):"],["Wants (30%):","Matakwa (30%):"],["Savings (20%):","Akiba (20%):"],["This is a guideline. In high-cost-of-living African cities, needs may exceed 50%. Adjust to your reality.","Huu ni mwongozo. Katika miji yenye gharama kubwa, mahitaji yanaweza kuzidi 50%. Rekebisha kulingana na hali yako."],["African Budgeting Tips","Vidokezo vya bajeti Afrika"],["Why Budgeting Matters in Africa","Kwa nini bajeti ni muhimu Afrika"],["The 50/30/20 Rule Adapted for Africa","50/30/20 rule kwa mazingira ya Afrika"],["Common African Household Expenses","Matumizi ya kawaida ya kaya Afrika"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["Countdown Timer","Countdown ya Tukio"],["Event","Tukio"],["Countdown","Countdown"],["Timer","Timer"],["Count down the days, hours, minutes and seconds until any event — exams, weddings, holidays, product launches, or personal milestones.","Hesabu siku, saa, dakika na sekunde hadi tukio kama mitihani, harusi, likizo, product launch au milestone binafsi."],["Live Timer","Timer hai"],["Save Events","Hifadhi matukio"],["Presets","Presets"],["Set Your Countdown","Weka countdown yako"],["Event Name","Jina la tukio"],["Event Date","Tarehe ya tukio"],["Time (optional)","Muda (hiari)"],["Start Countdown","Anza Countdown"],["Days","Siku"],["Hours","Saa"],["Minutes","Dakika"],["Seconds","Sekunde"],["This event has arrived!","Tukio limefika!"],["Quick Presets","Presets za haraka"],["Save This Countdown","Hifadhi countdown hii"],["About This Tool","Kuhusu zana hii"],["How the Countdown Timer Works","Jinsi countdown inavyofanya kazi"],["How to Use","Jinsi ya kutumia"],["Common Uses in Africa","Matumizi ya kawaida Afrika"],["Saved Countdowns","Countdowns zilizohifadhiwa"],["No saved countdowns yet","Hakuna countdown iliyohifadhiwa bado"],["Upcoming African Holidays","Likizo zijazo Afrika"],["Time Zone Converter","Kigeuzi Saa za Maeneo"],["Time Zone","Time zone"],["Converter","Kigeuzi"],["Convert between African and world time zones. Live clocks and meeting planner to find the best overlap for calls across continents.","Badilisha muda kati ya time zones za Afrika na dunia. Ona live clocks na meeting planner kwa calls za kimataifa."],["African Cities","Miji ya Afrika"],["Live Clocks","Saa za moja kwa moja"],["Meeting Planner","Mpangaji wa meeting"],["Convert Time","Badilisha muda"],["Date & Time","Tarehe na muda"],["Live World Clocks","Saa za dunia"],["Meeting Planner — Find Overlap","Mpangaji wa meeting - tafuta muda unaokutana"],["Green = working hours (9am-6pm). Red = sleeping hours (11pm-6am). White = free time.","Kijani = saa za kazi (3 asubuhi-12 jioni). Nyekundu = saa za kulala. Nyeupe = muda wazi."],["African Time Zones Explained","Time zones za Afrika kwa ufupi"],["Time Zones by Region","Time zones kwa region"],["Scheduling Across Africa and Beyond","Kupanga ratiba Afrika na nje"],["Public Holidays","Likizo za Umma"],["African Public","Likizo za Umma"],["Holidays","Likizo"],["Complete public holiday calendar for 10 African countries. Plan leave days, see countdowns, and export holidays to your calendar.","Kalenda ya likizo za umma kwa nchi 10 za Afrika. Panga leave, angalia countdowns na export kwenda calendar."],["10 Countries","Nchi 10"],["2025-2027","2025-2027"],["Export to Calendar","Export kwenda calendar"],["Export to Calendar (.ics)","Export kwenda calendar (.ics)"],["Country","Nchi"],["Year","Mwaka"],["Filter","Filter"],["All Holidays","Likizo zote"],["Upcoming Only","Zijazo tu"],["Falls on Weekend","Inaangukia weekend"],["Public Holidays in Africa","Likizo za umma Afrika"],["Working Days","Siku za Kazi"],["Calculator","Kikokotoo"],["Count the number of business days between two dates. Automatically excludes weekends and public holidays for 6 African countries.","Hesabu business days kati ya tarehe mbili. Inaondoa weekends na likizo kwa nchi 6 zilizopo kwenye source."],["6 Countries","Nchi 6"],["Instant","Haraka"],["Calculate Working Days","Hesabu siku za kazi"],["Start Date","Tarehe ya kuanza"],["End Date","Tarehe ya mwisho"],["Country (for public holidays)","Nchi (kwa likizo za umma)"],["No holidays (weekends only)","Bila likizo (weekends tu)"],["Calculate","Hesabu"],["Calendar Days","Siku zote"],["Weekend Days","Siku za weekend"],["How the Working Days Calculator Works","Jinsi kikokotoo cha siku za kazi kinavyofanya kazi"],["Common Uses","Matumizi ya kawaida"],["African Working Week","Wiki ya kazi Afrika"],["Age Calculator","Kikokotoo Umri"],["Age","Umri"],["Calculate your exact age in years, months, days, hours, and minutes. Discover your zodiac sign, generation, and days until your next birthday.","Hesabu umri kwa miaka, miezi, siku, saa na dakika. Ona siku hadi birthday ijayo na milestones."],["Exact Age","Umri kamili"],["Zodiac Sign","Zodiac sign"],["Next Birthday","Birthday ijayo"],["Enter Your Date of Birth","Weka tarehe ya kuzaliwa"],["Date of Birth","Tarehe ya kuzaliwa"],["Calculate At (default: today)","Hesabu hadi (default: leo)"],["Calculate Age","Hesabu umri"],["Years","Miaka"],["Months","Miezi"],["Total Months","Jumla ya miezi"],["Total Weeks","Jumla ya wiki"],["Total Days","Jumla ya siku"],["Total Hours","Jumla ya saa"],["Total Minutes","Jumla ya dakika"],["Generation","Kizazi"],["Life Milestones","Milestones za maisha"],["How the Age Calculator Works","Jinsi kikokotoo umri kinavyofanya kazi"],["Did You Know?","Ulijua?"],["Zodiac Signs","Zodiac signs"],["Student Grade Tracker","Kifuatiliaji Alama"],["Grade Tracker","Kifuatiliaji Alama"],["Calculate your GPA and CGPA using African university grading scales. Track your academic performance across semesters.","Hesabu GPA na CGPA kwa grading scales za vyuo vya Afrika. Fuatilia performance yako kwa semesters."],["Grading System","Mfumo wa grading"],["Grading Scale","Scale ya grading"],["Previous CGPA (optional)","CGPA ya awali (hiari)"],["CA / Exam Split","Mgawanyo wa CA / Mtihani"],["(Nigerian-style: 40% CA + 60% Exam)","(Mfano wa Nigeria: 40% CA + 60% mtihani)"],["Enable CA/Exam split entry","Washa entry ya CA/Exam split"],["Current Semester Courses","Courses za semester hii"],["+ Add Course","+ Ongeza course"],["Calculate GPA","Hesabu GPA"],["Your Results","Matokeo yako"],["Course Breakdown","Breakdown ya courses"],["Grading Scale Reference","Reference ya grading scale"],["What GPA Do I Need?","Ninahitaji GPA gani?"],["Find out what GPA you need next semester to reach your target CGPA.","Jua GPA unayohitaji semester ijayo kufikia target CGPA."],["Target CGPA","Target CGPA"],["Future Credits","Credits zijazo"],["GPA & CGPA Calculator for African Students","Kikokotoo GPA na CGPA kwa wanafunzi Afrika"],["Multiple Grading Systems Supported","Inaunga mkono grading systems kadhaa"],["CGPA Across Semesters","CGPA katika semesters"],["Understanding Degree Classifications","Kuelewa degree classifications"],["Random Picker","Chaguo Nasibu"],["Random","Nasibu"],["Picker","Kichagua"],["Fairly pick random names, numbers, or items. Animated spinner with sound effects. Uses cryptographic randomness for truly unbiased results.","Chagua majina, namba au items kwa nasibu. Inatumia browser randomness; usiitumie kama uthibitisho rasmi wa shindano."],["Crypto Random","Randomness ya browser"],["Animated","Animation"],["No Signup","Hakuna signup"],["Pick Something Random","Chagua kitu kwa nasibu"],["items","items"],["Names","Majina"],["Numbers","Namba"],["Coin Flip","Coin flip"],["Teams","Timu"],["Enter names/items (one per line)","Weka majina/items (moja kwa kila mstari)"],["How many to pick?","Uchague ngapi?"],["Options","Options"],["Remove picked items from list","Ondoa zilizochaguliwa kwenye list"],["Pick Random Name(s)","Chagua jina/majina nasibu"],["Minimum","Minimum"],["Maximum","Maximum"],["How many numbers?","Namba ngapi?"],["Allow duplicates?","Ruhusu kurudiwa?"],["Yes, allow repeats","Ndiyo, ruhusu kurudiwa"],["Generate Random Number(s)","Tengeneza namba nasibu"],["Flip Coin","Tupa coin"],["Enter names (one per line)","Weka majina (moja kwa kila mstari)"],["Number of teams","Idadi ya timu"],["Assign Teams Randomly","Gawa timu kwa nasibu"],["History","Historia"],["Clear","Futa"],["About","Kuhusu"],["How It Works","Jinsi inavyofanya kazi"],["Giveaways:","Giveaways:"],["Classrooms:","Madarasa:"],["Team building:","Team building:"],["Decisions:","Maamuzi:"],["Raffles:","Raffles:"],["Meeting Cost","Gharama ya Mkutano"],["How much do your meetings really cost? Calculate the true expense based on attendees' salaries, duration, and frequency. Includes a live cost ticker.","Meetings zako zinagharimu kiasi gani? Kadiria gharama kwa salaries, muda na frequency ya washiriki. Ina live cost ticker."],["Live Ticker","Ticker hai"],["Multi-Currency","Currencies kadhaa"],["Annual Impact","Athari ya mwaka"],["Calculate Meeting Cost","Hesabu gharama ya mkutano"],["Number of Attendees","Idadi ya washiriki"],["Average Annual Salary per Person","Wastani wa salary ya mwaka kwa mtu"],["Meeting Duration (minutes)","Muda wa meeting (dakika)"],["Overhead Multiplier","Overhead multiplier"],["This Meeting Repeats","Meeting hii hurudiwa"],["One-time","Mara moja"],["Weekly","Kila wiki"],["Bi-weekly","Kila wiki mbili"],["Monthly","Kila mwezi"],["Quarterly","Kila robo mwaka"],["Working Hours/Year","Saa za kazi kwa mwaka"],["This Meeting Costs","Meeting hii inagharimu"],["Cost Per Minute","Gharama kwa dakika"],["Annual Cost","Gharama ya mwaka"],["Hours Lost/Year","Saa zinazopotea kwa mwaka"],["The Hidden Cost of Meetings","Gharama iliyofichika ya meetings"],["How the Calculator Works","Jinsi calculator inavyofanya kazi"],["Live Cost","Gharama ya sasa"],["Tip Calculator","Kigawanya Bili na Tip"],["Tip & Bill","Tip na Bili"],["Splitter","Kigawanya"],["Calculate the perfect tip and split bills among friends. Supports Naira, Rand, Shilling, Cedi, CFA, and more. With tax, rounding, and service quality options.","Hesabu tip na gawanya bili kati ya marafiki. Ina currencies za Afrika, tax/service charge, rounding na service quality options."],["Tax + Round","Tax + rounding"],["Bill Amount","Kiasi cha bili"],["Tax / Service Charge %","Tax / service charge %"],["Split Between","Gawanya kati ya watu"],["Service Quality","Ubora wa huduma"],["Poor","Duni"],["Good","Nzuri"],["Great","Bora"],["Tip Percentage","Asilimia ya tip"],["Custom Tip %","Tip custom %"],["Round Up To","Round up hadi"],["Exact","Exact"],["Nearest 10","Karibu 10"],["Nearest 50","Karibu 50"],["Nearest 100","Karibu 100"],["Total with Tip","Jumla pamoja na tip"],["Bill + Tax","Bili + tax"],["Tip Amount","Kiasi cha tip"],["Per Person","Kwa kila mtu"],["Tip / Person","Tip kwa mtu"],["Tipping Guide","Mwongozo wa tip"],["Africa Tip Norms","Mazoea ya tip Afrika"],["Service charges (5-10%) are often added automatically in upscale restaurants. Check your bill before tipping.","Service charge (5-10%) mara nyingi huongezwa automatically kwenye restaurants kubwa. Angalia bili kabla ya kuongeza tip."],["Tips","Vidokezo"],["Tip on pre-tax amount.","Hesabu tip kabla ya tax."],["Cash is king.","Cash bado ni muhimu."],["Group dining?","Mnakula kama group?"],["Copy","Nakili"],["Copied","Imenakiliwa"],["Download","Pakua"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Share","Shiriki"],["Search","Tafuta"],["Result","Matokeo"],["Results","Matokeo"],["Summary","Muhtasari"],["Settings","Mipangilio"],["Select the relevant category (e.g., length), choose your source unit (e.g., kilometres), and your target unit (e.g., miles). Enter a value and the conversion appears instantly. Both metric and imperial units are available in every relevant category.","Chagua category inayofaa, kama urefu, kisha unit ya kuanzia na unit ya mwisho. Weka thamani na conversion itaonekana mara moja. Units za metric na imperial zinapatikana kwenye categories husika."],["Does the cooking converter handle ingredient-specific measurements?","Je, converter ya kupika hushughulikia vipimo vya ingredients?"],["Yes. The cooking category converts between cups, tablespoons, teaspoons, millilitres, fluid ounces, and other common recipe measurements, making it easy to follow recipes from different countries and measurement systems.","Ndiyo. Category ya kupika hubadilisha cups, tablespoons, teaspoons, millilitres, fluid ounces na vipimo vingine vya recipes ili iwe rahisi kufuata mapishi kutoka nchi tofauti."],["Rent, food, transport, utilities, insurance — things you must pay.","Pango, chakula, usafiri, huduma za nyumbani na bima - mambo unayolazimika kulipa."],["Entertainment, dining out, subscriptions, shopping — things you enjoy but could live without.","Burudani, kula nje, subscriptions na shopping - mambo unayofurahia lakini unaweza kupunguza."],["Emergency fund, investments, debt repayment beyond minimums.","Mfuko wa dharura, uwekezaji na kulipa madeni zaidi ya kiwango cha chini."],["How much should I save each month in Africa?","Nihifadhi kiasi gani kila mwezi Afrika?"],["Aim for at least 20% in stable economies (Kenya, South Africa, Ghana). In high-inflation countries like Nigeria or Egypt, aim for 25-30% — and importantly, save in assets that protect value: Treasury Bills, US dollar accounts, money market funds, or stocks. Build a 3-6 month emergency fund first before investing.","Lenga angalau 20% pale hali ya kipato na bei ni tulivu. Katika nchi zenye mfumuko mkubwa wa bei, unaweza kulenga 25-30% ikiwa inawezekana, na uhifadhi kwenye njia zinazolinda thamani kama Treasury Bills, akaunti ya dola, money market funds au hisa. Jenga kwanza mfuko wa dharura wa miezi 3-6 kabla ya kuwekeza."],["Should I include irregular income in my budget?","Niweke mapato yasiyo ya kudumu kwenye bajeti?"],["Use your average monthly income from the past 6 months as your baseline. Bajeti based on your lowest expected month and treat above-average months as surplus for savings or debt repayment.","Tumia wastani wa mapato ya miezi 6 iliyopita kama msingi. Panga bajeti kwa mwezi wa chini unaotarajia, kisha miezi yenye ziada itumike kwa akiba au kulipa madeni."],["What is the 50/30/20 rule and does it work in Africa?","50/30/20 rule ni nini na inafaa Afrika?"],["The 50/30/20 rule allocates 50% of income to needs (rent, food, transport), 30% to wants (entertainment, dining out), and 20% to savings. In many African cities, needs may exceed 50% due to rent and transport costs, so use it as a starting point and adjust realistically.","50/30/20 rule hugawa 50% ya mapato kwa mahitaji, 30% kwa matakwa na 20% kwa akiba. Katika miji mingi ya Afrika, mahitaji yanaweza kuzidi 50% kwa sababu ya pango na usafiri, hivyo tumia kama mwanzo na urekebishe kwa uhalisia."],["What is the best way to automate savings in Africa?","Njia nzuri ya kuendesha akiba kiotomatiki Afrika ni ipi?"],["Set up standing orders or auto-debits on payday where your bank, SACCO, mobile money wallet, or investment app supports it. Keep emergency money accessible and verify fees before choosing a product.","Weka standing order au auto-debit siku ya mshahara pale benki, SACCO, mobile money au app ya uwekezaji inapounga mkono. Weka pesa ya dharura karibu na uhakiki fees kabla ya kuchagua bidhaa."],["Enter a name for your event (e.g., \"WAEC Matokeo\", \"Wedding Day\")","Weka jina la tukio, kwa mfano \"Matokeo ya WAEC\" au \"Siku ya harusi\""],["Select the target date and optionally set a specific time","Chagua tarehe ya tukio na, ukitaka, muda maalum"],["Click \"Anza Countdown\" to begin the live timer","Bofya \"Anza Countdown\" kuanza timer ya moja kwa moja"],["Click \"Hifadhi countdown hii\" to bookmark it in your browser","Bofya \"Hifadhi countdown hii\" kuihifadhi kwenye browser yako"],["Can I save multiple countdowns?","Naweza kuhifadhi countdowns kadhaa?"],["What happens when the countdown reaches zero?","Nini hutokea countdown ikifika sifuri?"],["What is \"Africa time\" and how do I schedule around it?","\"Africa time\" ni nini na nipangeje ratiba bila mkanganyiko?"],["While the stereotype of \"African time\" suggests flexible scheduling, professional environments across Africa increasingly adhere to strict timing. For important meetings, use calendar invites with explicit time zone references (e.g., \"3pm WAT / 2pm GMT\") to avoid confusion.","Ingawa kuna dhana ya ratiba kunyumbulika, mazingira ya kikazi Afrika yanazidi kuzingatia muda. Kwa meetings muhimu, tumia calendar invite yenye time zone wazi, kama \"3pm WAT / 2pm GMT\", ili kuepuka mkanganyiko."],["Why does Nigeria use WAT instead of GMT?","Kwa nini Nigeria hutumia WAT badala ya GMT?"],["Nigeria adopted West Africa Muda (WAT, UTC+1) because it better aligns with the country's geographic longitude. Ghana, which is at a similar longitude, uses GMT (UTC+0) for historical and administrative reasons.","Nigeria hutumia West Africa Time (WAT, UTC+1) kwa sababu inaendana zaidi na eneo lake la kijiografia. Ghana hutumia GMT (UTC+0) kwa sababu za kihistoria na kiutawala."],["Can I export holidays to Google Calendar?","Naweza kupeleka likizo kwenye Google Calendar?"],["Yes. Click the \"Export kwenda calendar\" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files.","Ndiyo. Bofya \"Export kwenda calendar\" kupakua faili la .ics. Liingize kwenye Google Calendar, Apple Calendar, Outlook au app yoyote inayotumia .ics."],["What happens when a holiday falls on a weekend?","Nini hutokea likizo ikiangukia weekend?"],["Policies vary. In South Africa, if a public holiday falls on a Sunday, the Monday is observed. In Nigeria, the Federal Government may declare the Monday as a holiday. Kenya follows a similar Monday-substitution rule.","Kanuni hutofautiana. South Africa mara nyingi huhamishia Jumatatu likizo iliyoangukia Jumapili. Nigeria inaweza kutangaza Jumatatu kuwa likizo, na Kenya ina utaratibu unaofanana katika baadhi ya matukio."],["Why are Islamic holiday dates estimated?","Kwa nini tarehe za likizo za Kiislamu ni makadirio?"],["Islamic holidays follow the lunar calendar, so exact dates depend on moon sighting. Dates shown are estimates based on astronomical calculations and may shift by 1-2 days.","Likizo za Kiislamu hufuata kalenda ya mwezi, hivyo tarehe kamili hutegemea kuonekana kwa mwezi. Tarehe zilizoonyeshwa ni makadirio na zinaweza kusogea kwa siku 1-2."],["Siku za Kazi counts business days between two dates, excluding weekends and public holidays kwa Afrikan countries including Nigeria, Kenya, South Africa, and Ghana. Enter your start and end dates, select your country, and the tool shows the exact number of working days along with a calendar view highlighting excluded days. It is essential for calculating project timelines, employee leave, invoice payment terms, and delivery schedules.","Siku za Kazi huhesabu business days kati ya tarehe mbili, ikiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source kama Nigeria, Kenya, South Africa na Ghana. Weka tarehe ya kuanza na mwisho, chagua nchi, kisha zana itaonyesha idadi ya siku za kazi na calendar view ya siku zilizoondolewa. Tumia kwa project timelines, leave, masharti ya invoice na delivery schedules."],["How are working days counted?","Siku za kazi huhesabiwaje?"],["Which countries' holidays are supported?","Likizo za nchi gani zinaungwa mkono?"],["Are Islamic holidays included?","Likizo za Kiislamu zimejumuishwa?"],["Enter your date of birth using the date picker","Weka tarehe yako ya kuzaliwa kwa kutumia date picker"],["Optionally set a \"Hesabu At\" date to find your age at a specific point","Ukitaka, weka tarehe ya \"Hesabu hadi\" kupata umri kwenye siku maalum"],["Click \"Hesabu umri\" to see your detailed age breakdown","Bofya \"Hesabu umri\" kuona breakdown ya umri wako"],["Zodiac signs and Kizazis","Zodiac signs na vizazi"],["This free online age calculator instantly computes your exact age in years, months, weeks, days, hours, and even seconds from your date of birth. It is perfect for filling out official forms, verifying eligibility requirements, celebrating milestones, or simply satisfying curiosity.","Kikokotoo hiki cha umri hukadiria umri wako kwa miaka, miezi, wiki, siku, saa na hata sekunde kutokana na tarehe ya kuzaliwa. Kinafaa kwa kupanga fomu, eligibility, milestones au udadisi, lakini si uthibitisho rasmi wa umri."],["Can I calculate age between two specific dates?","Naweza kuhesabu umri kati ya tarehe mbili maalum?"],["Does it account for leap years?","Je, inazingatia leap years?"],["Yes. The calculator correctly handles leap years when computing the total number of days you have been alive and when calculating your next birthday.","Ndiyo. Calculator huzingatia leap years inapokadiria jumla ya siku na birthday ijayo."],["Can I improve a bad CGPA?","Naweza kuboresha CGPA iliyo chini?"],["Yes! With strategic planning, you can raise your CGPA by performing well in remaining semesters. The more credit hours remaining, the more room you have to improve. Focus on courses with higher credits and consult your academic advisor for official guidance.","Ndiyo, kwa kupanga vizuri unaweza kuinua CGPA kwa kufanya vizuri kwenye semesters zilizobaki. Kadiri credit hours zilizobaki zinavyoongezeka, ndivyo nafasi ya kuboresha inavyoongezeka. Zingatia courses zenye credits nyingi na hakiki na academic advisor."],["What is the Team Assigner?","Team Assigner ni nini?"],["The Team Assigner randomly distributes a list of names into groups. Enter names, choose how many teams, and the tool shuffles and assigns everyone fairly. Bora for group projects, sports, or team-building exercises.","Team Assigner hugawa orodha ya majina kwenye groups kwa nasibu. Weka majina, chagua idadi ya timu, kisha zana itachanganya na kugawa watu. Inafaa kwa group projects, michezo au team-building."],["Can I remove picked items from the list?","Naweza kuondoa items zilizochaguliwa kwenye list?"],["Yes. It uses the Web Crypto API for cryptographically secure random numbers, making results unpredictable and provably fair.","Ndiyo. Inatumia Web Crypto API kwa random numbers zenye nguvu zaidi, lakini kwa mashindano rasmi bado tumia utaratibu wa audit unaofaa."],["Enter the number of meeting attendees","Weka idadi ya washiriki wa meeting"],["Set the average annual salary for attendees","Weka wastani wa salary ya mwaka kwa washiriki"],["Choose meeting duration and overhead multiplier","Chagua muda wa meeting na overhead multiplier"],["Select how often this meeting recurs for annual impact","Chagua meeting hurudiwa mara ngapi ili kuona athari ya mwaka"],["Does it include overhead costs?","Je, inajumuisha overhead costs?"],["How much should I tip in Africa?","Nitoe tip kiasi gani Afrika?"],["Should I tip on pre-tax or post-tax amount?","Nitoe tip kabla au baada ya tax?"],["What does the rounding option do?","Chaguo la rounding hufanya nini?"],["Yes. We support 12 currencies including Nigerian Naira, Kenyan Shilling, South African Rand, Ghanaian Cedi, CFA Franc (West and Central), Ugandan Shilling, Tanzanian Shilling, Ethiopian Birr, US Dollar, British Pound, and Euro.","Ndiyo. Zana inaunga mkono currencies kadhaa kama Naira ya Nigeria, Shilling ya Kenya, Rand ya South Africa, Cedi ya Ghana, CFA Franc, Shilling ya Uganda, Shilling ya Tanzania, Birr ya Ethiopia, dola ya Marekani, pauni ya Uingereza na euro."],["Click ","Bofya "],["Choose ","Chagua "],["This Countdown Timer calculates the precise time remaining between now and your target date. It updates every second in real-time, showing days, hours, minutes, and seconds remaining. The timer runs entirely in your browser — no server calls needed.","Countdown hii hukadiria muda uliobaki kati ya sasa na tarehe ya tukio. Huonyesha siku, saa, dakika na sekunde na husasisha kila sekunde kwenye browser yako."],["Bofya \"Anza Countdown\" to begin the live timer","Bofya \"Anza Countdown\" kuanza timer ya moja kwa moja"],["Bofya \"Hifadhi countdown hii\" to bookmark it in your browser","Bofya \"Hifadhi countdown hii\" kuihifadhi kwenye browser yako"],["Students use countdown timers for WAEC, JAMB, and NECO exam dates. Businesses track product launches, funding deadlines, and campaign dates. Families count down to weddings, birthdays, travel, and religious holidays.","Wanafunzi hutumia countdown kwa tarehe za mitihani kama WAEC, JAMB na NECO. Biashara hufuatilia product launches, deadlines za funding na kampeni. Familia hupanga harusi, birthday, safari na likizo za kidini."],["Yes. Click the \"Export to Calendar\" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files.","Ndiyo. Bofya \"Export kwenda calendar\" kupakua faili la .ics. Liingize kwenye Google Calendar, Apple Calendar, Outlook au app yoyote inayotumia .ics."],["Yes. Bofya the \"Export kwenda calendar\" button to download an .ics file. Import it into Google Calendar, Apple Calendar, Outlook, or any calendar app that supports .ics files.","Ndiyo. Bofya \"Export kwenda calendar\" kupakua faili la .ics. Liingize kwenye Google Calendar, Apple Calendar, Outlook au app yoyote inayotumia .ics."],["The Siku za Kazi counts business days between two dates, excluding weekends and public holidays kwa Afrikan countries including Nigeria, Kenya, South Africa, and Ghana. Enter your start and end dates, select your country, and the tool shows the exact number of working days along with a calendar view highlighting excluded days. It is essential for calculating project timelines, employee leave balances, contract durations, and payment terms that reference business days.","Siku za Kazi huhesabu business days kati ya tarehe mbili, ikiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source kama Nigeria, Kenya, South Africa na Ghana. Weka tarehe ya kuanza na mwisho, chagua nchi, kisha zana itaonyesha idadi ya siku za kazi na calendar view ya siku zilizoondolewa. Tumia kwa project timelines, leave, contract durations na masharti ya malipo yanayotaja business days."],["The Working Days Calculator counts business days between two dates, excluding weekends and public holidays for African countries including Nigeria, Kenya, South Africa, and Ghana. Enter your start and end dates, select your country, and the tool shows the exact number of working days along with a calendar view highlighting excluded days. It is essential for calculating project timelines, employee leave balances, contract durations, and payment terms that reference business days.","Siku za Kazi huhesabu business days kati ya tarehe mbili, ikiondoa weekends na likizo za umma kwa nchi zilizopo kwenye source kama Nigeria, Kenya, South Africa na Ghana. Weka tarehe ya kuanza na mwisho, chagua nchi, kisha zana itaonyesha idadi ya siku za kazi na calendar view ya siku zilizoondolewa. Tumia kwa project timelines, leave, contract durations na masharti ya malipo yanayotaja business days."],["HR managers, project planners, payroll administrators, and freelancers rely on business day calculations to set realistic deadlines and payment schedules.","Wasimamizi wa HR, project planners, payroll admins na freelancers hutumia business day calculations kupanga deadlines na ratiba za malipo kwa uhalisia."],["This free online age calculator instantly computes your exact age","Kikokotoo hiki cha umri hukadiria umri wako"],["from your date of birth. It is perfect for filling out official forms, verifying eligibility requirements, or simply satisfying curiosity about how many days you have been alive.","kutokana na tarehe yako ya kuzaliwa. Kinafaa kwa kupanga fomu, eligibility au kujua siku ulizoishi, lakini si uthibitisho rasmi."],["The tool accounts for leap years and varying month lengths to provide accurate age calculations in years, months, weeks, days, hours, minutes, and seconds.","Zana huzingatia leap years na urefu tofauti wa miezi ili kutoa makadirio ya umri kwa miaka, miezi, wiki, siku, saa, dakika na sekunde."],["How does the age calculator work?","Kikokotoo cha umri hufanyaje kazi?"],["Enter your date of birth and the calculator computes the exact difference between that date and today, broken down into years, months, days, hours, and minutes. It accounts for leap years and varying month lengths.","Weka tarehe yako ya kuzaliwa na kikokotoo kitakadiria tofauti kati ya tarehe hiyo na leo, kwa miaka, miezi, siku, saa na dakika. Huzingatia leap years na urefu tofauti wa miezi."],["Yes. You can optionally set a custom \"Hesabu at\" date to find the age at any specific point in time, not just today.","Ndiyo. Unaweza kuweka tarehe maalum ya \"Hesabu hadi\" kupata umri kwenye siku yoyote, si leo tu."],["Yes. Check the \"Ondoa zilizochaguliwa kwenye list\" option and each picked name will be automatically removed from the textarea, so they cannot be picked again.","Ndiyo. Weka chaguo la \"Ondoa zilizochaguliwa kwenye list\" na kila jina lililochaguliwa litaondolewa kwenye textarea ili lisichaguliwe tena."],["The Gharama ya Mkutano reveals the true financial cost of your meetings by multiplying participant salaries, meeting duration, and overhead factors. Enter the number of attendees, their average annual salary, and the meeting length, and the tool shows you exactly how much that meeting costs your organisation. It supports multiple currencies including Nigerian Naira, South African Rand, and Kenyan Shilling. Use it to justify reducing unnecessary meetings, shortening agendas, or trimming invite lists.","Gharama ya Mkutano hukadiria gharama ya kifedha ya meetings kwa kutumia salaries za washiriki, muda wa meeting na overhead factors. Weka idadi ya washiriki, wastani wa salary ya mwaka na muda wa meeting, kisha zana itaonyesha makadirio ya gharama. Inaunga mkono currencies kadhaa kama Naira ya Nigeria, Rand ya South Africa na Shilling ya Kenya. Tumia kama mwongozo wa kupunguza meetings zisizo muhimu, kufupisha agenda au kupunguza invite list."],["The AfroTools Event Countdown Timer calculates the precise time remaining between now and your target date. It updates ","Countdown ya Tukio hukadiria muda uliobaki kati ya sasa na tarehe ya tukio. Husasisha "],[" in real-time, showing days, hours, minutes, and seconds remaining. The timer runs entirely in your browser — no server calls needed."," moja kwa moja, ikionyesha siku, saa, dakika na sekunde zilizobaki. Timer hufanya kazi kwenye browser yako."],["Enter a name for your event (e.g., \"WAEC Results\", \"Wedding Day\")","Weka jina la tukio, kwa mfano \"Matokeo ya WAEC\" au \"Siku ya harusi\""],["Click \"Start Countdown\" to begin the live timer","Bofya \"Anza Countdown\" kuanza timer ya moja kwa moja"],["Click \"Save This Countdown\" to bookmark it in your browser","Bofya \"Hifadhi countdown hii\" kuihifadhi kwenye browser yako"],["Businesses track product launches, funding deadlines, and fiscal year-end. Families count down to ","Biashara hufuatilia product launches, deadlines za funding na mwisho wa mwaka wa fedha. Familia huhesabu siku hadi "],[" like Eid, Christmas, and Africa Day. According to "," kama Eid, Christmas na Africa Day. Kwa muktadha wa "],[" celebrations, May 25th is observed across the continent.",", tarehe 25 Mei hutambuliwa katika bara."],["Yes. You can optionally set a custom \"Calculate at\" date to find the age at any specific point in time, not just today.","Ndiyo. Unaweza kuweka tarehe maalum ya \"Hesabu hadi\" kupata umri kwenye siku yoyote, si leo tu."],["This free online age calculator instantly computes your exact age in years, months, weeks, days, hours, and even seconds from your date of birth. It is perfect for filling out official forms, verifying eligibility requirements, or simply satisfying curiosity about how many days you have been alive. The tool accounts for leap years and varying month lengths to deliver precise results every time. Students, parents, HR professionals, and anyone who needs accurate age calculations will find this tool invaluable. Just enter your birth date and the calculator does the rest, showing a detailed breakdown of your age in every unit of time.","Kikokotoo hiki cha umri hukadiria umri wako kwa miaka, miezi, wiki, siku, saa na hata sekunde kutokana na tarehe ya kuzaliwa. Kinafaa kwa kupanga fomu, eligibility au kujua siku ulizoishi, lakini si uthibitisho rasmi wa umri. Zana huzingatia leap years na urefu tofauti wa miezi na huonyesha breakdown ya umri kwa vipimo mbalimbali vya muda."],["Africa's median age","Wastani wa umri Afrika"],[" is just 19.7 years — the youngest continent on Earth. Nigeria's median age is 18.1, Kenya's is 20.0, and South Africa's is 27.6."," ni takribani miaka 19.7, moja ya takwimu zinazotajwa kuonyesha bara lenye watu wengi vijana. Takwimu za nchi hutofautiana na hubadilika kwa muda."],["By 2050, Africa will be home to over 2.5 billion people, with 60% under age 25.","Makadirio ya idadi ya watu hubadilika, hivyo tumia sehemu hii kama muktadha wa jumla na hakiki takwimu rasmi unapohitaji usahihi."],["Yes. Check the \"Remove picked items from list\" option and each picked name will be automatically removed from the textarea, so they cannot be picked again.","Ndiyo. Weka chaguo la \"Ondoa zilizochaguliwa kwenye list\" na kila jina lililochaguliwa litaondolewa kwenye textarea ili lisichaguliwe tena."],["The Team Assigner randomly distributes a list of names into groups. Enter names, choose how many teams, and the tool shuffles and assigns everyone fairly. Great for group projects, sports, or team-building exercises.","Team Assigner hugawa orodha ya majina kwenye groups kwa nasibu. Weka majina, chagua idadi ya timu, kisha zana itachanganya na kugawa watu. Inafaa kwa group projects, michezo au team-building."],["The Meeting Cost Calculator reveals the true financial cost of your meetings by multiplying participant salaries, meeting duration, and overhead factors. Enter the number of attendees, their average annual salary, and the meeting length, and the tool shows you exactly how much that meeting costs your organisation. It supports multiple currencies including Nigerian Naira, South African Rand, and Kenyan Shilling. Use it to justify reducing unnecessary meetings, shortening agendas, or trimming invite lists. Managers, team leads, and executives who want to foster a culture of productive, cost-conscious meetings will find this calculator eye-opening and actionable.","Gharama ya Mkutano hukadiria gharama ya kifedha ya meetings kwa kutumia salaries za washiriki, muda wa meeting na overhead factors. Weka idadi ya washiriki, wastani wa salary ya mwaka na muda wa meeting, kisha zana itaonyesha makadirio ya gharama. Inaunga mkono currencies kadhaa kama Naira ya Nigeria, Rand ya South Africa na Shilling ya Kenya. Tumia kama mwongozo wa kupunguza meetings zisizo muhimu, kufupisha agenda au kupunguza invite list."],["The AfroTools Kubadilisha Vipimo is a comprehensive measurement conversion tool spanning 15 categories with special support kwa Afrika units. Convert between length, weight, temperature, area, volume, speed, fuel economy, cooking measurements, data storage, energy, pressure, and time units.","AfroTools Kubadilisha Vipimo ni zana ya kubadilisha vipimo katika categories kadhaa, ikijumuisha units zinazotumika Afrika. Badilisha urefu, uzito, joto, eneo, volume, speed, fuel economy, vipimo vya kupika, data storage, nishati, pressure na muda."],["What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), feddan (used in Egypt and Sudan), and local cooking measurements.","Kinachosaidia hapa ni kuwepo kwa units zinazotumika katika muktadha wa Afrika, kama acres, plots, morgen, feddan na vipimo vya mapishi. Hakiki conversion muhimu kabla ya kutumia kwa nyaraka rasmi."],["The AfroTools Kikokotoo Umri computes the exact difference between your date of birth and today (or any date you choose). Unlike simple age calculators that only show years, our tool breaks down your age into years, months, days, hours, and minutes","AfroTools Kikokotoo Umri hukadiria tofauti kati ya tarehe yako ya kuzaliwa na leo, au tarehe nyingine unayochagua. Badala ya kuonyesha miaka pekee, huonyesha breakdown ya miaka, miezi, siku, saa na dakika"],["It correctly accounts for leap years, varying month lengths (28-31 days), and time zone differences.","Huzingatia leap years, urefu tofauti wa miezi na tofauti za time zone kwa makadirio ya planning."],["Happy Birthday! You were born exactly years ago today.","Hongera kwa birthday! Ulizaliwa miaka kadhaa iliyopita siku kama ya leo."],["What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), and other region-specific measurements that standard converters typically ignore.","Kinachosaidia ni kujumuisha units za muktadha wa Afrika kama acres, plots, morgen na vipimo vingine vya kanda ambavyo converters za kawaida huacha."],["Simply select a category, choose your \"from\" and \"to\" units, enter a value, and get instant results.","Chagua category, chagua unit ya kuanzia na ya mwisho, weka thamani, kisha upate matokeo mara moja."],["The tool handles both metric and imperial systems, making it useful for students, engineers, cooks, traders, land buyers, and professionals across Africa.","Zana inashughulikia metric na imperial systems, hivyo inafaa kwa wanafunzi, wahandisi, wapishi, wafanyabiashara, wanunuzi wa ardhi na professionals Afrika."],["Bofya \"Hesabu umri\" to see your detailed age breakdown","Bofya \"Hesabu umri\" kuona breakdown ya umri wako"],["The calculator also identifies your Western zodiac sign based on your birth date and your generational cohort (Baby Boomer, Gen X, Millennial, Gen Z, or Gen Alpha).","Calculator pia huonyesha zodiac sign na generation cohort kulingana na tarehe ya kuzaliwa, kama Baby Boomer, Gen X, Millennial, Gen Z au Gen Alpha."],["These labels are for fun and cultural context only, not official records.","Labels hizi ni kwa muktadha wa burudani na utamaduni tu, si rekodi rasmi."],["The AfroTools Unit Converter is a comprehensive measurement conversion tool spanning 15 categories with special support for African units. Convert between length, weight, temperature, area, volume, speed, fuel economy, cooking measurements, data storage, energy, pressure, and time units. What sets this converter apart is its inclusion of African-specific units that are commonly used across the continent — acres and plots (used in Nigerian land measurement), morgen (the South African land unit), and other region-specific measurements that standard converters typically ignore. Simply select a category, choose your \"from\" and \"to\" units, enter a value, and get instant results. The tool handles both metric and imperial systems, making it useful for international trade, academic work, cooking, construction, and everyday calculations. The cooking category includes conversions between cups, tablespoons, millilitres, and grams for common ingredients — perfect for following recipes from different countries. All conversions are calculated instantly in your browser with no internet connection required after the page loads. This is a daily-use tool for students, professionals, traders, and anyone working across measurement systems.","AfroTools Kubadilisha Vipimo ni zana ya kubadilisha vipimo katika categories kadhaa, ikijumuisha units zinazotumika Afrika. Badilisha urefu, uzito, joto, eneo, volume, speed, fuel economy, vipimo vya kupika, data storage, nishati, pressure na muda. Ina units za muktadha wa Afrika kama acres, plots na morgen, pamoja na vipimo vingine vya kanda. Chagua category, unit ya kuanzia na ya mwisho, kisha weka thamani upate matokeo. Matokeo ni ya planning, hivyo hakiki vipimo muhimu kabla ya matumizi rasmi."],["The AfroTools Age Calculator computes the exact difference between your date of birth and today (or any date you choose). Unlike simple age calculators that only show years, our tool breaks down your age into ","AfroTools Kikokotoo Umri hukadiria tofauti kati ya tarehe yako ya kuzaliwa na leo, au tarehe nyingine unayochagua. Badala ya kuonyesha miaka pekee, huonyesha breakdown ya "],["years, months, days, hours, and minutes","miaka, miezi, siku, saa na dakika"],[". It correctly accounts for leap years, varying month lengths (28-31 days), and time zone differences.",". Huzingatia leap years, urefu tofauti wa miezi na tofauti za time zone kwa makadirio ya planning."],["Optionally set a \"Calculate At\" date to find your age at a specific point","Ukitaka, weka tarehe ya \"Hesabu hadi\" kupata umri kwenye siku maalum"],["Click \"Calculate Age\" to see your detailed age breakdown","Bofya \"Hesabu umri\" kuona breakdown ya umri wako"],["The calculator also identifies your ","Calculator pia huonyesha "],["Western zodiac sign","zodiac sign"],[" based on your birth date and your "," kulingana na tarehe ya kuzaliwa na "],["generational cohort","generation cohort"],[" (Baby Boomer, Gen X, Millennial, Gen Z, or Gen Alpha). These are commonly referenced in African and global pop culture. According to "," kama Baby Boomer, Gen X, Millennial, Gen Z au Gen Alpha. Labels hizi ni kwa muktadha wa utamaduni tu. Kwa maelezo ya "],[", understanding your cohort can provide cultural context.",", generation cohort inaweza kutoa muktadha wa jumla."],["Loading...","Inapakia..."],["Processing...","Inachakata..."],["No results","Hakuna matokeo"],["No saved events","Hakuna matukio yaliyohifadhiwa"],["Select a country","Chagua nchi"],["Select country","Chagua nchi"],["Enter a date","Weka tarehe"],["Enter event name","Weka jina la tukio"],["Add item","Ongeza item"],["Remove","Ondoa"],["Save Event","Hifadhi tukio"],["Start Timer","Anza timer"],["Stop Timer","Simamisha timer"],["Generate","Tengeneza"],["Copy to clipboard","Nakili kwenye clipboard"],["Export CSV","Export CSV"],["Export .ics","Export .ics"],["Download .ics","Pakua .ics"],["Add Course","Ongeza course"],["Course Name","Jina la course"],["Credits","Credits"],["Grade","Alama"],["Your GPA","GPA yako"],["Your CGPA","CGPA yako"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) mutation.addedNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+      else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>

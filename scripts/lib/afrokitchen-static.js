@@ -14,9 +14,7 @@ const MANIFEST_PATH = path.join(TOOL_DIR, "seo-manifest.json");
 const ROUTES_PATH = path.join(TOOL_DIR, "static-routes.js");
 const SITE_ORIGIN = "https://afrotools.com";
 const TOOL_OG_IMAGE = `${SITE_ORIGIN}/assets/img/tools/afrokitchen.webp`;
-const LOCAL_RECIPE_IMAGE_ALIASES = {
-  "jollof-rice-ng": ["ng_jollof_rice"]
-};
+const LOCAL_RECIPE_IMAGE_ALIASES = {};
 const SUPABASE_URL =
   process.env.SUPABASE_AUTH_URL || "https://zpclagtgczsygrgztlts.supabase.co";
 const SUPABASE_KEY =
@@ -178,18 +176,28 @@ function findLocalRecipeImage(slug) {
   const safeSlug = slugify(slug);
   if (!safeSlug) return null;
 
-  const aliases = LOCAL_RECIPE_IMAGE_ALIASES[safeSlug] || [];
-  for (const asset of aliases) {
-    const relativePath = `/assets/img/kitchen/${asset}`;
-    const absolutePath = path.join(ROOT, relativePath.replace(/^\//, ""));
-    if (fs.existsSync(absolutePath)) {
-      return relativePath;
+  const stems = [
+    safeSlug,
+    `${safeSlug}-1`,
+    `${safeSlug}-2`,
+    `${safeSlug}-3`,
+    `${safeSlug}-4`,
+    `${safeSlug}-5`,
+  ];
+  const extensions = [".webp", ".jpg", ".jpeg", ".png"];
+  for (const stem of stems) {
+    for (const extension of extensions) {
+      const relativePath = `/assets/img/kitchen/${stem}${extension}`;
+      const absolutePath = path.join(ROOT, relativePath.replace(/^\//, ""));
+      if (fs.existsSync(absolutePath)) {
+        return relativePath;
+      }
     }
   }
 
-  const extensions = [".webp", ".jpg", ".jpeg", ".png"];
-  for (const extension of extensions) {
-    const relativePath = `/assets/img/kitchen/${safeSlug}${extension}`;
+  const aliases = LOCAL_RECIPE_IMAGE_ALIASES[safeSlug] || [];
+  for (const asset of aliases) {
+    const relativePath = `/assets/img/kitchen/${asset}`;
     const absolutePath = path.join(ROOT, relativePath.replace(/^\//, ""));
     if (fs.existsSync(absolutePath)) {
       return relativePath;

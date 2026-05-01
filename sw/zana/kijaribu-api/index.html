@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kijaribu API - REST requests kwa browser | AfroTools</title>
+<meta name="description" content="Test REST APIs kwenye browser kwa environments, cURL import, saved requests, assertions, response headers na code export.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/kijaribu-api/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kijaribu-api/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/api-tester/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/api-tester/">
+
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Kijaribu API - REST requests kwa browser | AfroTools">
+<meta property="og:description" content="Test REST APIs kwenye browser kwa environments, cURL import, saved requests, assertions, response headers na code export.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/kijaribu-api/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kijaribu API - REST requests kwa browser | AfroTools">
+<meta name="twitter:description" content="Test REST APIs kwenye browser kwa environments, cURL import, saved requests, assertions, response headers na code export.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+<style>
+  body{font-family:'DM Sans',sans-serif;background:#f8fafc;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .hero{background:#061522;color:#fff;padding:46px 0 34px;border-bottom:4px solid #0ea5e9}
+  .hero-inner{max-width:1240px;margin:0 auto;padding:0 24px}
+  .crumb{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .crumb a{color:rgba(255,255,255,.45)}.crumb span{color:#bae6fd}
+  h1{font-size:clamp(2rem,4vw,3.35rem);line-height:1;letter-spacing:-.04em;margin:0 0 12px;font-weight:900}
+  h1 em{font-style:normal;color:#7dd3fc}
+  .hero-sub{max-width:760px;color:rgba(255,255,255,.72);font-size:1rem;line-height:1.65;margin:0 0 18px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px}.badge{font-size:.69rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#bae6fd;background:rgba(14,165,233,.14);border:1px solid rgba(125,211,252,.28);border-radius:999px;padding:6px 10px}
+  .main{max-width:1240px;margin:0 auto;padding:28px 24px 76px}
+  .workspace{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+  .stack{display:grid;gap:16px}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,.05);overflow:hidden}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+  .card-title{font-size:.74rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#334155}
+  .card-body{padding:18px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  label{display:block;font-size:.72rem;font-weight:800;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+  input,select,textarea{width:100%;box-sizing:border-box;border:1.5px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;padding:10px 11px;font:inherit;font-size:.84rem;outline:none}
+  textarea{font-family:'Consolas','Courier New',monospace;font-size:.78rem;line-height:1.55;resize:vertical}
+  input:focus,select:focus,textarea:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.13)}
+  .request-line{display:grid;grid-template-columns:126px minmax(0,1fr) auto;gap:10px;align-items:start}
+  .method{font-weight:900}.send{background:#0284c7;color:#fff;border:0;border-radius:8px;padding:11px 22px;font-weight:900;font-size:.84rem;cursor:pointer;min-width:110px}.send:hover{background:#0369a1}
+  .tabs{display:flex;gap:2px;border-bottom:1px solid #e2e8f0;margin:16px -18px 16px;padding:0 18px;overflow:auto}
+  .tab{border:0;background:transparent;color:#64748b;padding:10px 12px;border-bottom:2px solid transparent;font-weight:900;font-size:.77rem;cursor:pointer;white-space:nowrap}
+  .tab.active{color:#0284c7;border-bottom-color:#0284c7}
+  .tab-panel{display:none}.tab-panel.active{display:block}
+  .kv{display:grid;grid-template-columns:minmax(110px,.8fr) minmax(0,1.3fr) 34px;gap:8px;margin-bottom:8px}
+  .kv .remove{border:0;background:#fee2e2;color:#991b1b;border-radius:8px;font-weight:900;cursor:pointer}
+  .link-btn{border:0;background:transparent;color:#0284c7;font-weight:900;font-size:.78rem;cursor:pointer;padding:4px 0}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .mini{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:8px 11px;font-weight:900;font-size:.76rem;cursor:pointer}
+  .mini.primary{background:#0f172a;color:#fff;border-color:#0f172a}.mini.good{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+  .mini.warn{background:#fef3c7;color:#92400e;border-color:#fde68a}
+  .response-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .meta{border-radius:999px;padding:5px 9px;font-size:.72rem;font-weight:900;background:#f1f5f9;color:#475569}
+  .meta.ok{background:#dcfce7;color:#166534}.meta.err{background:#fee2e2;color:#991b1b}.meta.info{background:#e0f2fe;color:#075985}
+  .response-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:12px}
+  .codebox{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;min-height:280px;max-height:560px;overflow:auto;font-family:'Consolas','Courier New',monospace;font-size:.78rem;line-height:1.55;white-space:pre-wrap}
+  .headers-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;max-height:280px;overflow:auto;font-family:'Consolas','Courier New',monospace;font-size:.72rem;color:#334155;white-space:pre-wrap}
+  .test-list{display:grid;gap:8px}.test{border:1px solid #e2e8f0;border-radius:9px;padding:9px;font-size:.78rem;font-weight:800}.test.pass{background:#f0fdf4;color:#166534;border-color:#bbf7d0}.test.fail{background:#fef2f2;color:#991b1b;border-color:#fecaca}.test.skip{background:#f8fafc;color:#64748b}
+  .side{position:sticky;top:80px;display:grid;gap:16px}
+  .preset{display:block;width:100%;text-align:left;border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:11px;cursor:pointer;margin-bottom:8px}
+  .preset:hover{border-color:#0ea5e9;background:#f8fcff}.preset strong{display:block;font-size:.84rem;color:#0f172a;margin-bottom:3px}.preset span{font-size:.74rem;color:#64748b;line-height:1.45;display:block}
+  .list{display:grid;gap:7px}.item{border:1px solid #e2e8f0;background:#fff;border-radius:9px;padding:9px;cursor:pointer}.item:hover{border-color:#0ea5e9}.item strong{display:block;font-size:.78rem}.item span{display:block;color:#64748b;font-size:.7rem;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .note{background:#f0f9ff;border:1px solid #bae6fd;color:#075985;border-radius:10px;padding:12px;font-size:.78rem;line-height:1.55}
+  .warnbox{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:10px;padding:12px;font-size:.78rem;line-height:1.55}
+  .seo-section{max-width:900px;margin:0 auto;padding:42px 24px 72px}.seo-section h2{font-size:1.35rem;font-weight:900;margin:0 0 12px;color:#0f172a}.seo-section p{font-size:.9rem;color:#475569;line-height:1.75;margin:0 0 14px}
+  details.faq-item{border:1px solid #e2e8f0;border-radius:10px;margin-bottom:8px;background:#fff}details.faq-item summary{padding:14px 16px;font-weight:900;cursor:pointer;list-style:none}details.faq-item summary::-webkit-details-marker{display:none}details.faq-item p{padding:0 16px 14px;margin:0;font-size:.84rem;color:#475569;line-height:1.7}
+  @media(max-width:980px){.workspace{grid-template-columns:1fr}.side{position:static}.response-grid{grid-template-columns:1fr}.request-line{grid-template-columns:1fr}.send{width:100%}.grid-2,.grid-3{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kijaribu API","url":"https://afrotools.com/sw/zana/kijaribu-api/","description":"Test REST APIs kwenye browser kwa environments, cURL import, saved requests, assertions, response headers na code export.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"DeveloperApplication","operatingSystem":"Any"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Kijaribu API","item":"https://afrotools.com/sw/zana/kijaribu-api/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kijaribu API hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa planning, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch."}}]}</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="crumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Zana za Developer</a> / <span>API Tester</span></nav>
+    <h1>API <em>Tester</em></h1>
+    <p class="hero-sub">A browser API workbench for quick checks, sandbox calls, webhook debugging and Afrikan API exploration. Build requests, swap environments, import cURL, run assertions, save useful calls and export code.</p>
+    <div class="badges"><span class="badge">Environments</span><span class="badge">cURL import</span><span class="badge">Hifadhid requests</span><span class="badge">Assertions</span><span class="badge">Afrika presets</span></div>
+  </div>
+</section>
+
+<main class="main">
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kijaribu API kwa Kiswahili.</strong> Jaribu APIs na export snippets. Secrets na tokens za production zinahitaji tahadhari kwa sababu requests hutumwa kwa endpoint unayochagua. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source output, provider docs na production environment kabla ya launch.</span></div></section>
+  <div class="workspace">
+    <div class="stack">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Environment</span><button class="mini" id="save-env">Hifadhi variables</button></div>
+        <div class="card-body">
+          <div class="grid-3">
+            <div><label for="env-name">Environment</label><select id="env-name"><option value="none">No environment</option><option value="local">Local API</option><option value="sandbox">Sandbox</option><option value="staging">Staging</option><option value="production">Production</option></select></div>
+            <div><label for="var-baseUrl">baseUrl</label><input id="var-baseUrl" placeholder="https://api.example.com"></div>
+            <div><label for="var-token">token</label><input id="var-token" type="password" placeholder="Optional bearer token"></div>
+          </div>
+          <div class="grid-3" style="margin-top:12px">
+            <div><label for="var-paystackSecret">paystackSecret</label><input id="var-paystackSecret" type="password" placeholder="sk_test_..."></div>
+            <div><label for="var-flutterwaveSecret">flutterwaveSecret</label><input id="var-flutterwaveSecret" type="password" placeholder="FLWSECK_TEST..."></div>
+            <div><label for="var-mpesaBasic">mpesaBasic</label><input id="var-mpesaBasic" type="password" placeholder="Base64 consumer:key"></div>
+          </div>
+          <div class="grid-3" style="margin-top:12px">
+            <div><label for="var-mtnSubscriptionKey">mtnSubscriptionKey</label><input id="var-mtnSubscriptionKey" type="password" placeholder="MTN MoMo key"></div>
+            <div><label for="var-africasTalkingUsername">atUsername</label><input id="var-africasTalkingUsername" placeholder="sandbox"></div>
+            <div><label for="var-africasTalkingApiKey">atApiKey</label><input id="var-africasTalkingApiKey" type="password" placeholder="Africa's Talking key"></div>
+          </div>
+          <p class="warnbox" style="margin:12px 0 0">Variables are replaced in URLs, headers and bodies with <strong>{{baseUrl}}</strong>, <strong>{{token}}</strong>, provider secrets, and Afrikan API keys. Saving variables stores them in this browser only. Do not save production secrets on shared machines.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Request</span><input id="request-name" style="max-width:260px" placeholder="Request name"></div>
+        <div class="card-body">
+          <div class="request-line">
+            <select id="method" class="method"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option></select>
+            <input type="url" id="url" value="https://jsonplaceholder.typicode.com/posts/1" placeholder="{{baseUrl}}/v1/endpoint">
+            <button class="send" id="send-request">Tuma</button>
+          </div>
+
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="params" type="button">Params</button>
+            <button class="tab" data-tab="headers" type="button">Headers</button>
+            <button class="tab" data-tab="body" type="button">Body</button>
+            <button class="tab" data-tab="auth" type="button">Auth</button>
+            <button class="tab" data-tab="tests" type="button">Tests</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-params">
+            <div id="params-rows"></div>
+            <button class="link-btn" id="add-param" type="button">+ Add query parameter</button>
+          </div>
+
+          <div class="tab-panel" id="tab-headers">
+            <div id="header-rows"></div>
+            <button class="link-btn" id="add-header" type="button">+ Add header</button>
+          </div>
+
+          <div class="tab-panel" id="tab-body">
+            <div class="grid-2">
+              <div><label for="body-mode">Body type</label><select id="body-mode"><option value="json">JSON</option><option value="text">Raw text</option><option value="form">Form URL encoded</option></select></div>
+              <div><label for="body-note">Shortcut</label><button class="mini" id="format-body" type="button">Format JSON</button></div>
+            </div>
+            <label for="req-body" style="margin-top:12px">Request body</label>
+            <textarea id="req-body" rows="10">{"title":"Test Post","body":"Hello from AfroTools API Tester","userId":1}</textarea>
+          </div>
+
+          <div class="tab-panel" id="tab-auth">
+            <div class="grid-2">
+              <div><label for="auth-type">Authorization type</label><select id="auth-type"><option value="none">None</option><option value="bearer">Bearer token</option><option value="basic">Basic auth</option><option value="api-key">API key header</option></select></div>
+              <div><label for="auth-token">Token, password or key</label><input id="auth-token" type="password" placeholder="{{token}}"></div>
+            </div>
+            <div class="grid-2" style="margin-top:12px">
+              <div><label for="auth-user">Username or API key header</label><input id="auth-user" placeholder="X-API-Key or username"></div>
+              <div><label for="auth-prefix">Header prefix</label><input id="auth-prefix" value="Bearer" placeholder="Bearer"></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-tests">
+            <div class="grid-2">
+              <div><label for="test-status">Expected status</label><input id="test-status" type="number" placeholder="200"></div>
+              <div><label for="test-time">Max response time (ms)</label><input id="test-time" type="number" placeholder="1000"></div>
+            </div>
+            <div class="grid-2" style="margin-top:12px">
+              <div><label for="test-contains">Response contains</label><input id="test-contains" placeholder="success"></div>
+              <div><label for="test-jsonpath">JSON path exists</label><input id="test-jsonpath" placeholder="$.data.id"></div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="mini primary" id="save-request" type="button">Hifadhi request</button>
+            <button class="mini" id="copy-curl" type="button">Nakili cURL</button>
+            <button class="mini" id="copy-fetch" type="button">Nakili fetch()</button>
+            <button class="mini" id="clear-request" type="button">Futa</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="response-card">
+        <div class="card-head"><span class="card-title">Response</span><div class="actions" style="margin:0"><button class="mini" id="copy-response" type="button">Nakili response</button></div></div>
+        <div class="card-body">
+          <div class="response-meta" id="response-meta"><span class="meta">No request sent yet</span></div>
+          <div class="response-grid">
+            <pre class="codebox" id="response-body">Tuma a request to see the response body here.</pre>
+            <div>
+              <label>Assertions</label>
+              <div class="test-list" id="test-results"><div class="test skip">No tests have run yet.</div></div>
+              <label style="margin-top:14px">Response headers</label>
+              <div class="headers-box" id="response-headers">No headers yet.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Afrika API presets</span></div>
+        <div class="card-body" id="preset-list"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Import cURL</span><button class="mini" id="import-curl" type="button">Import</button></div>
+        <div class="card-body">
+          <textarea id="curl-input" rows="5" placeholder="curl -X POST https://api.example.com -H 'Content-Type: application/json' -d '{...}'"></textarea>
+          <p class="note" style="margin:10px 0 0">Import handles common `curl -X`, `-H`, `-d` and URL patterns. Complex shell scripts should still be checked before sending.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Hifadhid requests</span><button class="mini" id="clear-saved" type="button">Futa</button></div>
+        <div class="card-body"><div class="list" id="saved-list"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">History</span><button class="mini" id="clear-history" type="button">Futa</button></div>
+        <div class="card-body"><div class="list" id="history-list"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-body">
+          <p class="note"><strong>Faragha model:</strong> AfroTools does not proxy these API requests. The browser sends directly to the endpoint, so CORS rules still apply. For APIs that block browser calls, use Nakili cURL and run the request from your terminal or backend.</p>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<section class="seo-section">
+  <h2>API Testing Built For Practical Afrikan Workflows</h2>
+  <p>Generic API testers are useful, but Afrikan developers often need to jump between local services, fintech sandboxes, USSD callbacks, mobile money authentication, identity providers and deployment constraints. This tool keeps the quick browser workflow while adding environments, presets, cURL export and saved requests for repeat debugging.</p>
+  <p>Use the built-in sample endpoint for CORS-friendly tests, then switch to templates for Paystack, Flutterwave, M-Pesa Daraja, MTN MoMo and Afrika's Talking. Some production APIs intentionally reject browser-origin requests. That is not a tool failure. It is a security rule, and the cURL export gives you a safer terminal path for those requests.</p>
+  <h2>Maswali ya mara kwa mara</h2>
+  <details class="faq-item"><summary>Why did my request fail with CORS?</summary><p>Vinjarirs block responses from APIs that do not allow your page origin. If the API is not browser-enabled, copy the generated cURL command and run it from a terminal or backend service.</p></details>
+  <details class="faq-item"><summary>Are my API keys uploaded to AfroTools?</summary><p>Hapana. Requests are sent directly from your browser to the endpoint you choose. If you save environment variables, they are stored in your own browser localStorage, so avoid saving production secrets on shared devices.</p></details>
+  <details class="faq-item"><summary>Can I use this instead of Postman?</summary><p>Use it for quick browser checks, sandbox templates, cURL generation, classroom demos and lightweight debugging. For team workspaces, secrets vaulting and automated CI collections, a full API client is still better.</p></details>
+</section>
+
+<div style="padding:0 20px;max-width:760px;margin:0 auto"></div>
+<afro-related-tools category="developer" current="api-tester"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var STORAGE = {
+    env: 'afrotools.apiTester.env.v1',
+    saved: 'afrotools.apiTester.saved.v1',
+    history: 'afrotools.apiTester.history.v1'
+  };
+
+  var PRESETS = [
+    {
+      id: 'jsonplaceholder',
+      name: 'CORS safe sample',
+      desc: 'GET a public JSONPlaceholder post. Good first smoke test.',
+      method: 'GET',
+      url: 'https://jsonplaceholder.typicode.com/posts/1',
+      headers: [{key:'Accept', value:'application/json'}],
+      body: '',
+      tests: {status:'200', contains:'userId', time:'1500', jsonpath:'$.id'}
+    },
+    {
+      id: 'paystack-init',
+      name: 'Paystack transaction init',
+      desc: 'Template for Nigerian card, bank transfer and USSD payment initialization.',
+      method: 'POST',
+      url: 'https://api.paystack.co/transaction/initialize',
+      headers: [{key:'Authorization', value:'Bearer {{paystackSecret}}'}, {key:'Content-Type', value:'application/json'}],
+      body: '{"email":"customer@example.com","amount":500000,"currency":"NGN","callback_url":"https://example.com/paystack/callback"}',
+      tests: {status:'200', contains:'authorization_url', time:'3000', jsonpath:'$.data.authorization_url'}
+    },
+    {
+      id: 'flutterwave-banks',
+      name: 'Flutterwave banks NG',
+      desc: 'Template for listing Nigerian banks through Flutterwave.',
+      method: 'GET',
+      url: 'https://api.flutterwave.com/v3/banks/NG',
+      headers: [{key:'Authorization', value:'Bearer {{flutterwaveSecret}}'}, {key:'Content-Type', value:'application/json'}],
+      body: '',
+      tests: {status:'200', contains:'banks', time:'3000', jsonpath:'$.data'}
+    },
+    {
+      id: 'mpesa-token',
+      name: 'M-Pesa Daraja token',
+      desc: 'Sandbox OAuth token request. Use cURL export if browser CORS blocks it.',
+      method: 'GET',
+      url: 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
+      headers: [{key:'Authorization', value:'Basic {{mpesaBasic}}'}],
+      body: '',
+      tests: {status:'200', contains:'access_token', time:'3000', jsonpath:'$.access_token'}
+    },
+    {
+      id: 'mtn-momo-token',
+      name: 'MTN MoMo collection token',
+      desc: 'Collection token template with subscription key header.',
+      method: 'POST',
+      url: 'https://sandbox.momodeveloper.mtn.com/collection/token/',
+      headers: [{key:'Authorization', value:'Basic {{token}}'}, {key:'Ocp-Apim-Subscription-Key', value:'{{mtnSubscriptionKey}}'}],
+      body: '',
+      tests: {status:'200', contains:'access_token', time:'3000', jsonpath:'$.access_token'}
+    },
+    {
+      id: 'at-ussd-callback',
+      name: "Africa's Talking USSD callback",
+      desc: 'Local callback simulation payload for a USSD handler.',
+      method: 'POST',
+      url: '{{baseUrl}}/ussd',
+      headers: [{key:'Content-Type', value:'application/x-www-form-urlencoded'}],
+      body: 'sessionId=ATUid_demo&serviceCode=*384*123%23&phoneNumber=%2B254700000000&text=',
+      tests: {status:'200', contains:'CON', time:'1000', jsonpath:''}
+    }
+  ];
+
+  function $(id){ return document.getElementById(id); }
+  function read(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch(e){ return fallback; }
+  }
+  function write(key, value){
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
+  }
+  function esc(s){
+    return String(s || '').replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function toast(msg){
+    var el = document.createElement('div');
+    el.textContent = msg;
+    el.style.cssText = 'position:fixed;right:20px;bottom:20px;background:#0f172a;color:#fff;padding:10px 14px;border-radius:8px;font-size:.82rem;font-weight:800;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.18)';
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 2200);
+  }
+
+  function variables(){
+    var saved = read(STORAGE.env, {});
+    var current = {
+      baseUrl: $('var-baseUrl').value || '',
+      token: $('var-token').value || '',
+      paystackSecret: $('var-paystackSecret').value || '',
+      flutterwaveSecret: $('var-flutterwaveSecret').value || '',
+      mpesaBasic: $('var-mpesaBasic').value || '',
+      mtnSubscriptionKey: $('var-mtnSubscriptionKey').value || '',
+      africasTalkingUsername: $('var-africasTalkingUsername').value || '',
+      africasTalkingApiKey: $('var-africasTalkingApiKey').value || ''
+    };
+    Object.keys(saved).forEach(function(k){ if (!current[k]) current[k] = saved[k]; });
+    return current;
+  }
+
+  function interpolate(str){
+    var vars = variables();
+    return String(str || '').replace(/\{\{([a-zA-Z0-9_]+)\}\}/g, function(_, key){
+      return vars[key] != null ? vars[key] : '';
+    });
+  }
+
+  function rowHtml(key, value){
+    return '<div class="kv"><input class="kv-key" placeholder="Key" value="'+esc(key || '')+'"><input class="kv-value" placeholder="Value" value="'+esc(value || '')+'"><button class="remove" type="button" aria-label="Remove row">x</button></div>';
+  }
+
+  function addRow(target, key, value){
+    var wrap = document.createElement('div');
+    wrap.innerHTML = rowHtml(key, value);
+    var row = wrap.firstElementChild;
+    row.querySelector('.remove').addEventListener('click', function(){ row.remove(); });
+    $(target).appendChild(row);
+  }
+
+  function collectRows(target){
+    var out = [];
+    document.querySelectorAll('#' + target + ' .kv').forEach(function(row){
+      var key = row.querySelector('.kv-key').value.trim();
+      var value = row.querySelector('.kv-value').value;
+      if (key) out.push({key:key, value:value});
+    });
+    return out;
+  }
+
+  function applyRows(target, rows){
+    $(target).innerHTML = '';
+    (rows || []).forEach(function(r){ addRow(target, r.key, r.value); });
+  }
+
+  function requestState(){
+    return {
+      name: $('request-name').value.trim() || ($('method').value + ' ' + $('url').value),
+      method: $('method').value,
+      url: $('url').value,
+      params: collectRows('params-rows'),
+      headers: collectRows('header-rows'),
+      bodyMode: $('body-mode').value,
+      body: $('req-body').value,
+      auth: {
+        type: $('auth-type').value,
+        token: $('auth-token').value,
+        user: $('auth-user').value,
+        prefix: $('auth-prefix').value
+      },
+      tests: {
+        status: $('test-status').value,
+        time: $('test-time').value,
+        contains: $('test-contains').value,
+        jsonpath: $('test-jsonpath').value
+      }
+    };
+  }
+
+  function loadRequest(req){
+    $('request-name').value = req.name || '';
+    $('method').value = req.method || 'GET';
+    $('url').value = req.url || '';
+    applyRows('params-rows', req.params || []);
+    applyRows('header-rows', req.headers || []);
+    $('body-mode').value = req.bodyMode || 'json';
+    $('req-body').value = req.body || '';
+    $('auth-type').value = (req.auth && req.auth.type) || 'none';
+    $('auth-token').value = (req.auth && req.auth.token) || '';
+    $('auth-user').value = (req.auth && req.auth.user) || '';
+    $('auth-prefix').value = (req.auth && req.auth.prefix) || 'Bearer';
+    $('test-status').value = (req.tests && req.tests.status) || '';
+    $('test-time').value = (req.tests && req.tests.time) || '';
+    $('test-contains').value = (req.tests && req.tests.contains) || '';
+    $('test-jsonpath').value = (req.tests && req.tests.jsonpath) || '';
+  }
+
+  function buildUrl(req){
+    var url = interpolate(req.url);
+    var params = req.params.map(function(p){ return {key: interpolate(p.key), value: interpolate(p.value)}; }).filter(function(p){ return p.key; });
+    if (!params.length) return url;
+    var joiner = url.indexOf('?') === -1 ? '?' : '&';
+    return url + joiner + params.map(function(p){ return encodeURIComponent(p.key) + '=' + encodeURIComponent(p.value); }).join('&');
+  }
+
+  function buildHeaders(req){
+    var headers = {};
+    req.headers.forEach(function(h){ if (h.key) headers[interpolate(h.key)] = interpolate(h.value); });
+    if (req.auth.type === 'bearer') {
+      var prefix = req.auth.prefix || 'Bearer';
+      var token = interpolate(req.auth.token || '{{token}}');
+      if (token) headers.Authorization = prefix + ' ' + token;
+    } else if (req.auth.type === 'basic') {
+      headers.Authorization = 'Basic ' + btoa((req.auth.user || '') + ':' + interpolate(req.auth.token || ''));
+    } else if (req.auth.type === 'api-key') {
+      var name = req.auth.user || 'X-API-Key';
+      var value = interpolate(req.auth.token || '');
+      if (value) headers[name] = value;
+    }
+    return headers;
+  }
+
+  function buildOptions(req){
+    var options = { method: req.method, headers: buildHeaders(req) };
+    if (['POST','PUT','PATCH','DELETE'].indexOf(req.method) !== -1 && req.body) {
+      options.body = interpolate(req.body);
+    }
+    return options;
+  }
+
+  function curlFor(req){
+    var url = buildUrl(req);
+    var headers = buildHeaders(req);
+    var parts = ['curl', '-X', req.method, quote(url)];
+    Object.keys(headers).forEach(function(k){ parts.push('-H', quote(k + ': ' + headers[k])); });
+    if (req.body && ['POST','PUT','PATCH','DELETE'].indexOf(req.method) !== -1) parts.push('-d', quote(interpolate(req.body)));
+    return parts.join(' ');
+  }
+
+  function fetchFor(req){
+    return 'fetch(' + JSON.stringify(buildUrl(req)) + ', ' + JSON.stringify(buildOptions(req), null, 2) + ')\n  .then(function(res){ return res.text(); })\n  .then(console.log);';
+  }
+
+  function quote(s){
+    return "'" + String(s || '').replace(/'/g, "'\\''") + "'";
+  }
+
+  function setResponseMeta(items){
+    $('response-meta').innerHTML = items.map(function(i){
+      return '<span class="meta '+(i.kind || '')+'">'+esc(i.text)+'</span>';
+    }).join('');
+  }
+
+  function headersText(headers){
+    var lines = [];
+    headers.forEach(function(value, key){ lines.push(key + ': ' + value); });
+    return lines.join('\n') || 'No response headers exposed by the browser.';
+  }
+
+  function jsonPathExists(obj, path){
+    if (!path) return null;
+    var clean = path.replace(/^\$\./, '').replace(/^\$/, '');
+    if (!clean) return true;
+    var parts = clean.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean);
+    var cur = obj;
+    for (var i = 0; i < parts.length; i++) {
+      if (cur == null || !(parts[i] in Object(cur))) return false;
+      cur = cur[parts[i]];
+    }
+    return true;
+  }
+
+  function runTests(req, result){
+    var tests = [];
+    if (req.tests.status) tests.push({name:'Status is ' + req.tests.status, pass:String(result.status) === String(req.tests.status)});
+    if (req.tests.time) tests.push({name:'Response time under ' + req.tests.time + 'ms', pass:result.elapsed <= Number(req.tests.time)});
+    if (req.tests.contains) tests.push({name:'Response contains "' + req.tests.contains + '"', pass:result.body.indexOf(req.tests.contains) !== -1});
+    if (req.tests.jsonpath) {
+      var pass = false;
+      try { pass = jsonPathExists(JSON.parse(result.body), req.tests.jsonpath); }
+      catch(e){ pass = false; }
+      tests.push({name:'JSON path exists: ' + req.tests.jsonpath, pass:pass});
+    }
+    if (!tests.length) {
+      $('test-results').innerHTML = '<div class="test skip">No assertions configured.</div>';
+      return;
+    }
+    $('test-results').innerHTML = tests.map(function(t){ return '<div class="test '+(t.pass ? 'pass' : 'fail')+'">'+(t.pass ? 'PASS ' : 'FAIL ')+esc(t.name)+'</div>'; }).join('');
+  }
+
+  async function sendRequest(){
+    var req = requestState();
+    var finalUrl = buildUrl(req);
+    if (!finalUrl) { toast('Enter a request URL'); return; }
+    $('response-body').textContent = 'Sending request...';
+    $('response-headers').textContent = '';
+    $('test-results').innerHTML = '<div class="test skip">Waiting for response...</div>';
+    setResponseMeta([{text:req.method + ' ' + finalUrl, kind:'info'}]);
+
+    var start = performance.now();
+    try {
+      var res = await fetch(finalUrl, buildOptions(req));
+      var elapsed = Math.round(performance.now() - start);
+      var text = await res.text();
+      var contentType = res.headers.get('content-type') || '';
+      var body = text;
+      if (contentType.indexOf('json') !== -1 && text) {
+        try { body = JSON.stringify(JSON.parse(text), null, 2); }
+        catch(e){ body = text; }
+      }
+      var size = new Blob([body]).size;
+      $('response-body').textContent = body || '(empty response)';
+      $('response-headers').textContent = headersText(res.headers);
+      setResponseMeta([
+        {text:'Status ' + res.status + ' ' + res.statusText, kind:res.ok ? 'ok' : 'err'},
+        {text:elapsed + 'ms', kind:'info'},
+        {text:size + ' bytes', kind:'info'},
+        {text:contentType || 'unknown type', kind:'info'}
+      ]);
+      runTests(req, {status:res.status, elapsed:elapsed, body:body});
+      pushHistory(req, res.status, elapsed);
+    } catch(err) {
+      var failedElapsed = Math.round(performance.now() - start);
+      $('response-body').textContent = 'Error: ' + err.message + '\n\nThis is commonly caused by CORS. If the API blocks browser requests, use Copy cURL and run the command from your terminal or backend.';
+      $('response-headers').textContent = 'No headers available.';
+      setResponseMeta([{text:'Request failed', kind:'err'}, {text:failedElapsed + 'ms', kind:'info'}]);
+      $('test-results').innerHTML = '<div class="test fail">Request failed before assertions could run.</div>';
+    }
+  }
+
+  function pushHistory(req, status, elapsed){
+    var history = read(STORAGE.history, []);
+    history.unshift({req:req, status:status, elapsed:elapsed, at:new Date().toISOString()});
+    history = history.slice(0, 12);
+    write(STORAGE.history, history);
+    renderHistory();
+  }
+
+  function renderList(id, list, emptyText, onClick){
+    var el = $(id);
+    if (!list.length) { el.innerHTML = '<div class="item"><span>'+esc(emptyText)+'</span></div>'; return; }
+    el.innerHTML = '';
+    list.forEach(function(entry, idx){
+      var item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'item';
+      item.innerHTML = '<strong>'+esc(entry.title)+'</strong><span>'+esc(entry.detail)+'</span>';
+      item.addEventListener('click', function(){ onClick(idx); });
+      el.appendChild(item);
+    });
+  }
+
+  function renderSaved(){
+    var saved = read(STORAGE.saved, []);
+    renderList('saved-list', saved.map(function(r){ return {title:r.name || r.method, detail:r.method + ' ' + r.url}; }), 'No saved requests yet.', function(idx){
+      loadRequest(saved[idx]);
+      toast('Saved request loaded');
+    });
+  }
+
+  function renderHistory(){
+    var history = read(STORAGE.history, []);
+    renderList('history-list', history.map(function(h){ return {title:h.req.method + ' - ' + (h.status || 'ERR'), detail:h.req.url + ' - ' + (h.elapsed || 0) + 'ms'}; }), 'No request history yet.', function(idx){
+      loadRequest(history[idx].req);
+      toast('History request loaded');
+    });
+  }
+
+  function renderPresets(){
+    $('preset-list').innerHTML = '';
+    PRESETS.forEach(function(preset){
+      var btn = document.createElement('button');
+      btn.className = 'preset';
+      btn.type = 'button';
+      btn.innerHTML = '<strong>'+esc(preset.name)+'</strong><span>'+esc(preset.desc)+'</span>';
+      btn.addEventListener('click', function(){
+        loadRequest({
+          name: preset.name,
+          method: preset.method,
+          url: preset.url,
+          params: [],
+          headers: preset.headers,
+          bodyMode: preset.body && preset.body.charAt(0) === '{' ? 'json' : 'form',
+          body: preset.body,
+          auth: {type:'none', token:'', user:'', prefix:'Bearer'},
+          tests: preset.tests
+        });
+        toast('Preset loaded');
+      });
+      $('preset-list').appendChild(btn);
+    });
+  }
+
+  function saveRequest(){
+    var req = requestState();
+    if (!req.url) { toast('Add a URL before saving'); return; }
+    var saved = read(STORAGE.saved, []);
+    saved = saved.filter(function(item){ return item.name !== req.name; });
+    saved.unshift(req);
+    write(STORAGE.saved, saved.slice(0, 20));
+    renderSaved();
+    toast('Request saved');
+  }
+
+  function saveEnv(){
+    var current = variables();
+    current.envName = $('env-name').value;
+    write(STORAGE.env, current);
+    toast('Environment variables saved in this browser');
+  }
+
+  function loadEnv(){
+    var env = read(STORAGE.env, {});
+    if (env.envName) $('env-name').value = env.envName;
+    $('var-baseUrl').value = env.baseUrl || '';
+    $('var-token').value = env.token || '';
+    $('var-paystackSecret').value = env.paystackSecret || '';
+    $('var-flutterwaveSecret').value = env.flutterwaveSecret || '';
+    $('var-mpesaBasic').value = env.mpesaBasic || '';
+    $('var-mtnSubscriptionKey').value = env.mtnSubscriptionKey || '';
+    $('var-africasTalkingUsername').value = env.africasTalkingUsername || '';
+    $('var-africasTalkingApiKey').value = env.africasTalkingApiKey || '';
+  }
+
+  function importCurl(){
+    var curl = $('curl-input').value.trim();
+    if (!curl) { toast('Paste a cURL command first'); return; }
+    var req = parseCurl(curl);
+    loadRequest(req);
+    toast('cURL imported');
+  }
+
+  function parseCurl(curl){
+    var method = (curl.match(/\s-X\s+['"]?([A-Z]+)['"]?/i) || [])[1] || '';
+    var headers = [];
+    var headerRe = /\s-H\s+(['"])(.*?)\1/g;
+    var hm;
+    while ((hm = headerRe.exec(curl))) {
+      var split = hm[2].indexOf(':');
+      if (split !== -1) headers.push({key:hm[2].slice(0, split).trim(), value:hm[2].slice(split + 1).trim()});
+    }
+    var data = (curl.match(/\s--data(?:-raw|-binary)?\s+(['"])([\s\S]*?)\1/) || curl.match(/\s-d\s+(['"])([\s\S]*?)\1/) || [])[2] || '';
+    if (!method) method = data ? 'POST' : 'GET';
+    var withoutFlags = curl.replace(/\s-X\s+['"]?[A-Z]+['"]?/ig,'').replace(/\s-H\s+(['"]).*?\1/g,'').replace(/\s--data(?:-raw|-binary)?\s+(['"])[\s\S]*?\1/g,'').replace(/\s-d\s+(['"])[\s\S]*?\1/g,'');
+    var url = (withoutFlags.match(/https?:\/\/[^\s'"]+/) || withoutFlags.match(/['"](https?:\/\/.*?)['"]/) || [])[1] || (withoutFlags.match(/(https?:\/\/[^\s]+)/) || [])[1] || '';
+    return {name:'Imported cURL', method:method.toUpperCase(), url:url, params:[], headers:headers, bodyMode:data.trim().charAt(0)==='{'?'json':'text', body:data, auth:{type:'none',token:'',user:'',prefix:'Bearer'}, tests:{}};
+  }
+
+  function copyText(text, label){
+    navigator.clipboard.writeText(text).then(function(){ toast(label + ' copied'); }).catch(function(){ toast('Copy failed'); });
+  }
+
+  function bind(){
+    document.querySelectorAll('.tab').forEach(function(tab){
+      tab.addEventListener('click', function(){
+        document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+        tab.classList.add('active');
+        $('tab-' + tab.getAttribute('data-tab')).classList.add('active');
+      });
+    });
+    $('add-header').addEventListener('click', function(){ addRow('header-rows'); });
+    $('add-param').addEventListener('click', function(){ addRow('params-rows'); });
+    $('send-request').addEventListener('click', sendRequest);
+    $('save-request').addEventListener('click', saveRequest);
+    $('save-env').addEventListener('click', saveEnv);
+    $('import-curl').addEventListener('click', importCurl);
+    $('copy-curl').addEventListener('click', function(){ copyText(curlFor(requestState()), 'cURL'); });
+    $('copy-fetch').addEventListener('click', function(){ copyText(fetchFor(requestState()), 'fetch snippet'); });
+    $('copy-response').addEventListener('click', function(){ copyText($('response-body').textContent, 'Response'); });
+    $('format-body').addEventListener('click', function(){
+      try { $('req-body').value = JSON.stringify(JSON.parse($('req-body').value), null, 2); toast('JSON formatted'); }
+      catch(e){ toast('Body is not valid JSON'); }
+    });
+    $('clear-request').addEventListener('click', function(){
+      loadRequest({method:'GET', url:'', params:[], headers:[], body:'', bodyMode:'json', auth:{type:'none',token:'',user:'',prefix:'Bearer'}, tests:{}});
+      $('request-name').value = '';
+    });
+    $('clear-saved').addEventListener('click', function(){ write(STORAGE.saved, []); renderSaved(); });
+    $('clear-history').addEventListener('click', function(){ write(STORAGE.history, []); renderHistory(); });
+    document.addEventListener('keydown', function(e){
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        sendRequest();
+      }
+    });
+  }
+
+  function init(){
+    addRow('header-rows', 'Accept', 'application/json');
+    addRow('header-rows', 'Content-Type', 'application/json');
+    loadEnv();
+    bind();
+    renderPresets();
+    renderSaved();
+    renderHistory();
+  }
+
+  init();
+})();
+</script>
+
+<script>
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="API Tester" tool-slug="api-tester"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script class="sw-dev-runtime-localizer">
+(function(){
+  const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Free forever","Bure daima"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

@@ -53,7 +53,13 @@ async function sb(method, path, body, upsert) {
   if (body) opts.body = JSON.stringify(body);
   var res = await fetch(SUPABASE_URL + '/rest/v1/' + path, opts);
   var text = await res.text();
-  try { return JSON.parse(text); } catch (e) { return text; }
+  var parsed = null;
+  try { parsed = text ? JSON.parse(text) : null; } catch (e) { parsed = text; }
+  if (!res.ok) {
+    var detail = parsed && parsed.message ? parsed.message : text;
+    throw new Error('Supabase ' + method + ' ' + path + ' failed: ' + res.status + (detail ? ' ' + detail : ''));
+  }
+  return parsed;
 }
 
 // ── Twitch API ───────────────────────────────────────────────────
@@ -605,7 +611,7 @@ async function computeScores() {
 
   try {
     // Fetch all creators with their per-platform data
-    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
+    var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,primary_platform,subscribers,yt_subscribers,twitch_followers,kick_followers,tiktok_followers,ig_followers,fb_followers,total_views,yt_views,youtube_url,twitch_url,kick_url,tiktok_url,instagram_url,twitter_url');
     if (!Array.isArray(creators) || !creators.length) return results;
 
     // Fetch stream activity (last 30 days)
@@ -614,7 +620,8 @@ async function computeScores() {
     var streamCounts = {};
     if (Array.isArray(streams)) {
       streams.forEach(function(s) {
-        streamCounts[s.creator_name] = (streamCounts[s.creator_name] || 0) + 1;
+        var key = String(s.creator_name || '').trim().toLowerCase();
+        if (key) streamCounts[key] = (streamCounts[key] || 0) + 1;
       });
     }
 
@@ -630,12 +637,20 @@ async function computeScores() {
 
     for (var i = 0; i < creators.length; i++) {
       var cr = creators[i];
+      var baseSubscribers = Number(cr.subscribers || 0) || 0;
+      var ytSubscribers = Number(cr.yt_subscribers || 0) || 0;
+      var twitchFollowers = Number(cr.twitch_followers || 0) || 0;
+      var kickFollowers = Number(cr.kick_followers || 0) || 0;
+      var tiktokFollowers = Number(cr.tiktok_followers || 0) || 0;
+      var igFollowers = Number(cr.ig_followers || 0) || 0;
+      var fbFollowers = Number(cr.fb_followers || 0) || 0;
 
       // 1. Compute total followers
-      var totalFollowers = (cr.yt_subscribers || 0) + (cr.twitch_followers || 0) + (cr.kick_followers || 0) + (cr.tiktok_followers || 0) + (cr.ig_followers || 0) + (cr.fb_followers || 0);
+      var platformFollowerTotal = ytSubscribers + twitchFollowers + kickFollowers + tiktokFollowers + igFollowers + fbFollowers;
+      var totalFollowers = Math.max(platformFollowerTotal, baseSubscribers);
 
       // 2. Total views
-      var totalViews = cr.total_views || cr.yt_views || 0;
+      var totalViews = Math.max(Number(cr.total_views || 0) || 0, Number(cr.yt_views || 0) || 0);
 
       // 3. Growth rate (week-over-week)
       var prev = prevFollowers[cr.id] || 0;
@@ -660,7 +675,7 @@ async function computeScores() {
       var followerScore = logScore(totalFollowers, 200000000); // 200M = max (Khaby-level)
       var viewScore = logScore(totalViews, 10000000000);       // 10B = max
       var growthScore = Math.min(100, Math.max(0, growthPct * 5)); // 20% growth = 100
-      var consistencyScore = Math.min(100, (streamCounts[cr.name] || 0) * 10); // 10 streams/month = 100
+      var consistencyScore = Math.min(100, (streamCounts[String(cr.name || '').trim().toLowerCase()] || 0) * 10); // 10 streams/month = 100
       var engagementScore = logScore(engagement, 100);         // 100 views/follower = max
       var multiPlatScore = Math.min(100, Math.round(platformCount / 4 * 100)); // 4+ = 100
 
@@ -683,7 +698,6 @@ async function computeScores() {
           afro_score: afroScore,
           afro_tier: tier,
           growth_pct: Math.round(growthPct * 100) / 100,
-          subscribers: totalFollowers, // total cross-platform count
           updated_at: new Date().toISOString()
         });
         results.scored++;
@@ -693,21 +707,21 @@ async function computeScores() {
 
       // Save daily snapshot (upsert)
       try {
-        await sb('POST', 'as_creator_snapshots', {
+        await sb('POST', 'as_creator_snapshots?on_conflict=creator_id,snapshot_date', {
           creator_id: cr.id,
           total_followers: totalFollowers,
-          yt_subscribers: cr.yt_subscribers || 0,
-          twitch_followers: cr.twitch_followers || 0,
-          kick_followers: cr.kick_followers || 0,
-          tiktok_followers: cr.tiktok_followers || 0,
-          ig_followers: cr.ig_followers || 0,
+          yt_subscribers: ytSubscribers,
+          twitch_followers: twitchFollowers,
+          kick_followers: kickFollowers,
+          tiktok_followers: tiktokFollowers,
+          ig_followers: igFollowers,
           total_views: totalViews,
           afro_score: afroScore,
           snapshot_date: today
         }, true);
         results.snapshots++;
       } catch (e) {
-        // Snapshot is non-critical
+        results.errors.push('Snapshot/' + cr.id + ': ' + e.message);
       }
     }
   } catch (e) {

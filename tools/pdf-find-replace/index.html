@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Find &amp; Replace — Visual Text Replacement | AfroTools</title>
-<meta name="description" content="Find text in PDF documents and visually replace it. Client-side processing, no upload to any server. Highlights matches with page navigation and exports the modified PDF.">
+<title>PDF Find &amp; Replace - Visual Text Replacement | AfroTools</title>
+<meta name="description" content="Find and visually replace text in PDFs with page ranges, regex search, selected-match replacement, style controls, preview, undo, and CSV audit export.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-find-replace/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF Find & Replace | AfroTools">
-<meta property="og:description" content="Find and visually replace text in PDFs. No upload, client-side, free.">
+<meta property="og:description" content="Find and visually replace text in PDFs with page ranges, regex search, preview, undo, and CSV audit export.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-find-replace/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PDF Find & Replace | AfroTools">
-<meta name="twitter:description" content="Find and visually replace text in PDF documents. Free, no upload.">
+<meta name="twitter:description" content="Find and visually replace text in PDF documents with page ranges, preview, undo, and audit export.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -272,7 +272,8 @@
     margin-bottom: 6px;
   }
 
-  .fr-row input {
+  .fr-row input,
+  .fr-row select {
     width: 100%;
     padding: 10px 14px;
     border: 1.5px solid #BFDBFE;
@@ -286,9 +287,56 @@
     box-sizing: border-box;
   }
 
-  .fr-row input:focus {
+  .fr-row input[type="color"] {
+    height: 42px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .fr-row input[type="range"] {
+    padding: 0;
+    accent-color: var(--afro-green);
+  }
+
+  .fr-row input:focus,
+  .fr-row select:focus {
     border-color: var(--afro-green);
     box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .control-grid,
+  .style-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+
+  .field-note {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.68rem;
+    line-height: 1.4;
+    color: #64748b;
+  }
+
+  .range-readout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+
+  .section-label {
+    margin: 18px 0 8px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #475569;
   }
 
   /* Options toggles */
@@ -370,6 +418,27 @@
     transform: none;
   }
 
+  .action-btn.secondary-btn {
+    background: #0f172a;
+  }
+
+  .action-btn.secondary-btn:hover {
+    background: #111827;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.24);
+  }
+
+  .action-btn.light-btn {
+    background: #fff;
+    color: #0f172a;
+    border: 1.5px solid #CBD5E1;
+  }
+
+  .action-btn.light-btn:hover {
+    background: #F8FAFC;
+    box-shadow: none;
+    transform: none;
+  }
+
   .action-btn .spinner {
     width: 16px;
     height: 16px;
@@ -391,6 +460,35 @@
 
   .btn-row .action-btn {
     flex: 1;
+  }
+
+  .mini-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 10px 0 4px;
+  }
+
+  .mini-btn {
+    border: 1.5px solid #BFDBFE;
+    background: #EFF6FF;
+    color: #0f172a;
+    border-radius: 7px;
+    padding: 9px 10px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .mini-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .mini-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
   }
 
   /* Preview area */
@@ -536,6 +634,12 @@
     border-radius: 2px;
   }
 
+  .match-item .meta-line {
+    margin-top: 4px;
+    font-size: 0.68rem;
+    color: #94a3af;
+  }
+
   .no-matches {
     padding: 24px 16px;
     text-align: center;
@@ -614,6 +718,52 @@
     border: 1px solid rgba(0, 113, 227, 0.2);
   }
 
+  .result-box {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #334155;
+    display: none;
+  }
+
+  .result-box.on {
+    display: block;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .summary-stat {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .summary-stat strong {
+    display: block;
+    font-size: 1rem;
+    color: #0f172a;
+  }
+
+  .summary-stat span {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.66rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 800;
+  }
+
   /* SEO + FAQ */
   .seo-section {
     max-width: 1200px;
@@ -690,9 +840,20 @@
       position: static;
     }
   }
+
+  @media (max-width: 640px) {
+    .control-grid,
+    .style-grid,
+    .mini-actions,
+    .summary-grid,
+    .btn-row {
+      grid-template-columns: 1fr;
+      flex-direction: column;
+    }
+  }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Find & Replace","description":"Find text in PDF documents and visually replace it. Client-side processing with match highlighting, page navigation, and PDF export.","url":"https://afrotools.com/tools/pdf-find-replace/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Find & Replace","url":"https://afrotools.com/tools/pdf-find-replace/","description":"Find text in PDF documents and visually replace it. Client-side processing with match highlighting, page navigation, and PDF export.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Find & Replace","description":"Find and visually replace text in PDF documents with page ranges, regex search, selected-match replacement, undo, style controls, and CSV audit export.","url":"https://afrotools.com/tools/pdf-find-replace/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Find & Replace","url":"https://afrotools.com/tools/pdf-find-replace/","description":"Find and visually replace text in PDF documents with page ranges, regex search, selected-match replacement, undo, style controls, and CSV audit export.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -711,7 +872,7 @@
       "name": "How does the visual replacement work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The tool draws a white rectangle over the original text and then draws the replacement text on top. This is a visual overlay, not a true text edit. The original text may still be extractable from the PDF data layer."
+        "text": "The tool draws a configurable cover rectangle over the original text and then draws the replacement text on top. This is a visual overlay, not a true text edit. The original text may still be extractable from the PDF data layer."
       }
     },
     {
@@ -724,10 +885,10 @@
     },
     {
       "@type": "Question",
-      "name": "Does find and replace support case-insensitive matching?",
+      "name": "Does find and replace support page ranges and regex?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. By default, the search is case-insensitive. You can enable the Case Sensitive toggle to match exact letter casing. You can also enable Whole Word matching to avoid partial matches within longer words."
+        "text": "Yes. By default, search is case-insensitive across all pages. You can enable case-sensitive matching, whole-word matching, regex search, and custom page ranges such as 1-3, 5, 8."
       }
     },
     {
@@ -735,7 +896,7 @@
       "name": "What font is used for the replacement text?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Replacement text is rendered in Helvetica, a standard PDF font. The font size is automatically calculated to approximate the size of the original text being replaced."
+        "text": "Replacement text is rendered in Helvetica, a standard PDF font. The tool can auto-fit the font size to the covered text box or use a custom point size, with configurable text color, cover color, padding, and opacity."
       }
     }
   ]
@@ -745,6 +906,9 @@
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-find-replace/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-find-replace/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rechercher-remplacer-pdf/" />
+
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tafuta-na-badilisha-pdf/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -774,7 +938,7 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-05-01">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -785,11 +949,12 @@
       <a href="/">AfroTools</a> / <a href="/tools/">Tools</a> / <span>PDF Find &amp; Replace</span>
     </div>
     <h1>PDF Find & <em>Replace</em></h1>
-    <p class="hero-sub">Find text in PDF documents and visually replace it. Highlights matches across pages with a match list and preview. Everything runs in your browser.</p>
+    <p class="hero-sub">Search across a PDF, review every match, replace one match or a scoped range, then export a clean visual overlay PDF with an audit file. Everything runs in your browser.</p>
     <div class="hero-badges">
       <span class="badge b-green">Client-side</span>
       <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Visual Replace</span>
+      <span class="badge b-green">Page Ranges</span>
+      <span class="badge b-green">Audit CSV</span>
     </div>
   </div>
 </div>
@@ -821,7 +986,7 @@
           <div class="card-body">
             <div class="warning-banner">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <div>Visual replacement draws over original text. The underlying original text may still be extractable. For sensitive content, use a dedicated PDF redact tool instead.</div>
+              <div>Visual replacement draws over original text. The original text may still be extractable from the PDF data layer. For sensitive content, use <a href="/tools/pdf-redact/" style="color:#92400E;font-weight:800">PDF Redact</a>.</div>
             </div>
 
             <div class="fr-inputs">
@@ -844,6 +1009,62 @@
                 <input type="checkbox" id="wholeWord">
                 Whole word
               </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="regexMode">
+                Regex
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="fitToBox" checked>
+                Fit replacement
+              </label>
+            </div>
+
+            <div class="control-grid">
+              <div class="fr-row">
+                <label for="pageScope">Pages</label>
+                <select id="pageScope">
+                  <option value="all">All pages</option>
+                  <option value="custom">Custom range</option>
+                </select>
+              </div>
+              <div class="fr-row">
+                <label for="pageRanges">Page range</label>
+                <input type="text" id="pageRanges" placeholder="1-3, 5, 8" disabled>
+                <span class="field-note">Use commas and ranges. Example: 1-2, 5.</span>
+              </div>
+            </div>
+
+            <div class="section-label">Replacement style</div>
+            <div class="style-grid">
+              <div class="fr-row">
+                <label for="textColor">Text color</label>
+                <input type="color" id="textColor" value="#111827">
+              </div>
+              <div class="fr-row">
+                <label for="backgroundColor">Cover color</label>
+                <input type="color" id="backgroundColor" value="#ffffff">
+              </div>
+              <div class="fr-row">
+                <label for="fontSizeMode">Font size</label>
+                <select id="fontSizeMode">
+                  <option value="auto">Auto fit</option>
+                  <option value="custom">Custom points</option>
+                </select>
+              </div>
+              <div class="fr-row">
+                <label for="customFontSize">Custom size</label>
+                <input type="number" id="customFontSize" min="6" max="72" step="1" value="10" disabled>
+              </div>
+              <div class="fr-row">
+                <label for="paddingPt">Cover padding</label>
+                <input type="number" id="paddingPt" min="0" max="18" step="1" value="2">
+                <span class="field-note">Extra points around the original text.</span>
+              </div>
+              <div class="fr-row">
+                <label for="backgroundOpacity">Cover opacity</label>
+                <input type="range" id="backgroundOpacity" min="0" max="100" value="100">
+                <span class="range-readout"><span>Transparent</span><span id="backgroundOpacityValue">100%</span></span>
+              </div>
             </div>
 
             <button class="action-btn" id="findBtn" disabled>
@@ -852,11 +1073,21 @@
             </button>
 
             <div id="replaceActions" style="display:none">
+              <div class="mini-actions">
+                <button class="mini-btn" id="prevMatchBtn" type="button" disabled>Previous match</button>
+                <button class="mini-btn" id="nextMatchBtn" type="button" disabled>Next match</button>
+              </div>
               <div class="btn-row">
+                <button class="action-btn secondary-btn" id="replaceSelectedBtn">Replace Selected</button>
                 <button class="action-btn replace-btn" id="replaceAllBtn">Replace All</button>
+              </div>
+              <div class="btn-row">
+                <button class="action-btn light-btn" id="undoBtn" style="display:none">Undo Output</button>
                 <button class="action-btn dl-btn" id="downloadBtn" style="display:none">Download PDF</button>
+                <button class="action-btn dl-btn" id="downloadReportBtn" style="display:none">Download CSV</button>
               </div>
             </div>
+            <div class="result-box" id="replacementSummary">Upload a PDF and run a search to see replacement details.</div>
           </div>
         </div>
 
@@ -898,12 +1129,11 @@
             <div class="info-card">
               <h4>How it works</h4>
               <ul>
-                <li>Upload any PDF file</li>
-                <li>Enter your find and replace terms</li>
-                <li>Click Find to highlight all matches</li>
-                <li>Review matches in the sidebar</li>
-                <li>Click Replace All to apply changes</li>
-                <li>Download the modified PDF</li>
+                <li>Upload any text-based PDF file</li>
+                <li>Choose case, whole-word, regex, and page range options</li>
+                <li>Review highlighted matches in the preview and sidebar</li>
+                <li>Replace one selected match or every scoped match</li>
+                <li>Undo, download the PDF, or export a CSV audit</li>
               </ul>
             </div>
           </div>
@@ -917,8 +1147,8 @@
 <!-- SEO Section -->
 <section class="seo-section">
   <h2>Find and Replace Text in PDF Documents</h2>
-  <p>The AfroTools PDF Find & Replace tool lets you search for text within any PDF document and visually replace it with new text. The tool renders your PDF in the browser, highlights all matching text occurrences, and lets you navigate through matches by page. When you apply replacements, white rectangles cover the original text and your replacement text is drawn over it in Helvetica font.</p>
-  <p>All processing is client-side. Your PDF never leaves your browser, making this tool suitable for documents that contain private or sensitive information. The tool uses pdf.js for text extraction and rendering, and pdf-lib for applying the visual overlay modifications.</p>
+  <p>The AfroTools PDF Find & Replace tool lets you search for text within a PDF and visually replace it with new text. It supports case-sensitive search, whole-word matching, regex patterns, page ranges, selected-match replacement, style controls, preview navigation, undo, and CSV audit export.</p>
+  <p>All processing is client-side. Your PDF never leaves your browser. The tool uses local pdf.js assets for text extraction and rendering, and a local pdf-lib runtime for applying visual overlay modifications.</p>
 </section>
 
 <!-- FAQ Section -->
@@ -940,7 +1170,7 @@
         How does the visual replacement work?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">The tool draws a white rectangle over the original text and then draws the replacement text on top. This is a visual overlay, not a true text edit. The original text may still be extractable from the PDF data layer.</div>
+      <div class="faq-body">The tool draws a configurable cover rectangle over the original text and then draws the replacement text on top. This is a visual overlay, not a true text edit. The original text may still be extractable from the PDF data layer.</div>
     </details>
     <details>
       <summary>
@@ -951,17 +1181,17 @@
     </details>
     <details>
       <summary>
-        Does find and replace support case-insensitive matching?
+        Does find and replace support page ranges and regex?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Yes. By default the search is case-insensitive. You can enable the Case Sensitive toggle to match exact letter casing. You can also enable Whole Word matching to avoid partial matches within longer words.</div>
+      <div class="faq-body">Yes. By default the search is case-insensitive across all pages. You can enable case-sensitive matching, whole-word matching, regex search, and custom page ranges such as 1-3, 5, 8.</div>
     </details>
     <details>
       <summary>
         What font is used for the replacement text?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Replacement text is rendered in Helvetica, a standard PDF font. The font size is automatically calculated to approximate the size of the original text being replaced.</div>
+      <div class="faq-body">Replacement text is rendered in Helvetica, a standard PDF font. The tool can auto-fit the font size to the covered text box or use a custom point size, with configurable text color, cover color, padding, and opacity.</div>
     </details>
   </div>
 </section>
@@ -971,9 +1201,9 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
-<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
-<script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=1.17.1"></script>
+<script src="/assets/js/pages/pdf-find-replace.js?v=20260501"></script>
+<script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
 
@@ -1504,7 +1734,7 @@
 })();
 </script>
 <email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
+<script src="/assets/js/lib/pdf-download-gate.js?v=20260501" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

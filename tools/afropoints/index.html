@@ -15,6 +15,8 @@
 <meta property="og:url" content="https://afrotools.com/tools/afropoints/">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AfroPoints — Earn Money by Contributing African Data | AfroTools">
+<meta name="twitter:description" content="Earn real money by sharing African market data — prices, rates, salaries, costs. Contribute data, earn points, cash out via mobile money. Join 54 countries.">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -23,6 +25,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
 <link rel="stylesheet" href="style.css?v=2a04b1e0">
 <link rel="stylesheet" href="account-system.css?v=20260424">
+<link rel="stylesheet" href="mobile-comfort.css?v=20260501">
 <style>
   .ap-planner-section{padding:48px 20px;background:#fff;border-top:1px solid var(--color-border,#e2e8f0)}
   .ap-planner-card{max-width:1100px;margin:0 auto;border:1.5px solid var(--color-border,#e2e8f0);border-radius:8px;background:linear-gradient(180deg,#fff 0%,#fffaf0 100%);padding:24px;box-shadow:0 12px 30px rgba(15,23,42,0.04)}
@@ -433,8 +436,9 @@
 </div>
 
 <!-- Mobile sticky CTA -->
-<div class="ap-mobile-cta">
+<div class="ap-mobile-cta" id="apMobileCta" role="region" aria-label="AfroPoints quick action">
   <a href="contribute.html" class="ap-cta ap-cta--full">Start Earning Points</a>
+  <button type="button" class="ap-mobile-cta-close" aria-label="Dismiss start earning prompt"><span aria-hidden="true">&times;</span></button>
 </div>
 
 <!-- seo-internal-links -->
@@ -502,6 +506,19 @@
     } else {
       window.prompt('Copy this plan', text);
     }
+  }
+  function initMobileCta() {
+    var cta = $('apMobileCta');
+    if (!cta) return;
+    var close = cta.querySelector('.ap-mobile-cta-close');
+    var timer = null;
+    function dismiss() {
+      cta.classList.add('is-dismissed');
+      cta.setAttribute('aria-hidden', 'true');
+      if (timer) window.clearTimeout(timer);
+    }
+    if (close) close.addEventListener('click', dismiss);
+    timer = window.setTimeout(dismiss, 12000);
   }
   function initEarningsPlanner() {
     var categorySelect = $('apPlanCategory');
@@ -685,6 +702,7 @@
     });
   }
   initEarningsPlanner();
+  initMobileCta();
 
   // Load badges (public, no auth needed)
   AP.getBadges().then(function (badges) {

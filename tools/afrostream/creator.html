@@ -125,21 +125,25 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 </style>
 <script src="/assets/js/components/navbar.js?v=ba9301d1" defer></script>
 <script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
+<link rel="stylesheet" href="/tools/afrostream/subnav.css?v=20260501">
+<link rel="stylesheet" href="/tools/afrostream/creator-profile.css?v=20260501">
+<script src="/tools/afrostream/subnav.js?v=20260501" defer></script>
 </head>
-<body class="as-body">
+<body class="as-page as-body">
 <afro-navbar></afro-navbar>
 
 <!-- SUB-NAV -->
-<nav class="as-subnav">
+<nav class="as-subnav" aria-label="AfroStream navigation">
   <div class="as-subnav-inner">
-    <a href="/tools/afrostream/" class="as-subnav-logo"><span class="as-logo-icon">&#9655;</span> AfroStream</a>
-    <div class="as-subnav-links">
-      <a href="/tools/afrostream/">Live Now</a>
-      <a href="/tools/afrostream/rankings">Rankings</a>
-      <a href="/tools/afrostream/news">News</a>
-      <a href="/tools/afrostream/calendar">Calendar</a>
-      <a href="/tools/afrostream/university/">University</a>
-      <a href="/tools/afrostream/submit">Submit</a>
+    <a href="/tools/afrostream/" class="as-subnav-logo" data-as-nav-logo><span class="as-logo-icon">&#9655;</span> AfroStream</a>
+        <div class="as-subnav-links">
+      <a href="/tools/afrostream/#live" data-as-nav="live">Live Now</a>
+      <a href="/tools/afrostream/rankings" data-as-nav="rankings">Creator Rankings</a>
+      <a href="/tools/afrostream/rankings?mode=streamers&amp;period=month" data-as-nav="streamers">Live Streamers</a>
+      <a href="/tools/afrostream/news" data-as-nav="news">News</a>
+      <a href="/tools/afrostream/calendar" data-as-nav="calendar">Calendar</a>
+      <a href="/tools/afrostream/university/" data-as-nav="university">University</a>
+      <a href="/tools/afrostream/submit" data-as-nav="submit">Submit</a>
     </div>
     <div class="as-subnav-actions">
       <a href="/tools/afrostream/rankings" class="as-btn as-btn-sm as-btn-outline">&larr; Rankings</a>
@@ -272,6 +276,14 @@ var COUNTRY_META = {
 };
 
 /* ===== NORMALIZE API DATA to local shape ===== */
+function asNumber(value) {
+  if (value == null || value === '') return 0;
+  if (typeof value === 'number') return Number.isFinite(value) ? value : 0;
+  var cleaned = String(value).replace(/[$,\s]/g, '');
+  var parsed = Number(cleaned);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
 function normalizeCreator(d) {
   /* Resolve country: Supabase returns full name (e.g. "Nigeria"), demo uses code ("NG") */
   var countryCode = d.country || '';
@@ -295,8 +307,11 @@ function normalizeCreator(d) {
   }
 
   /* Resolve platforms: derive from URL fields, fallback to primary_platform or demo array */
-  var platforms = d.platforms;
-  if (!platforms || !platforms.length) {
+  var platforms = Array.isArray(d.platforms) ? d.platforms.slice() : [];
+  if (!platforms.length && typeof d.platforms === 'string') {
+    platforms = d.platforms.split(',').map(function(p) { return p.trim().toLowerCase(); }).filter(Boolean);
+  }
+  if (!platforms.length) {
     platforms = [];
     if (d.youtube_url) platforms.push('youtube');
     if (d.twitch_url) platforms.push('twitch');
@@ -306,11 +321,28 @@ function normalizeCreator(d) {
     if (!platforms.length && d.primary_platform) platforms.push(d.primary_platform.toLowerCase());
     if (!platforms.length) platforms = ['youtube'];
   }
+  platforms = platforms.map(function(p) { return String(p).toLowerCase(); });
 
   /* Resolve category: Supabase returns "categories" as "Gaming,Tech", demo uses single lowercase */
   var category = d.category || '';
   if (!category && d.categories) {
     category = d.categories.split(',')[0].trim().toLowerCase();
+  }
+
+  var platformCounts = {
+    youtube: asNumber(d.yt_subscribers || d.youtube_followers || d.youtube_subscribers),
+    twitch: asNumber(d.twitch_followers),
+    tiktok: asNumber(d.tiktok_followers),
+    instagram: asNumber(d.ig_followers || d.instagram_followers),
+    kick: asNumber(d.kick_followers),
+    facebook: asNumber(d.fb_followers || d.facebook_followers)
+  };
+  if (!platformCounts.youtube && platforms.indexOf('youtube') !== -1 && d.subscribers) {
+    platformCounts.youtube = asNumber(d.subscribers);
+  }
+  var followerTotal = asNumber(d.followers || d.total_followers || d.subscribers);
+  if (!followerTotal) {
+    followerTotal = Object.keys(platformCounts).reduce(function(sum, key) { return sum + platformCounts[key]; }, 0);
   }
 
   return {
@@ -324,17 +356,19 @@ function normalizeCreator(d) {
     countryName: countryName,
     category:  category,
     platforms: platforms,
-    followers: d.followers || d.total_followers || d.subscribers || 0,
-    gifts:     d.gifts || d.gift_revenue || 0,
-    peak:      d.peak || d.total_views || d.peak_viewers || 0,
-    growth:    d.growth || d.growth_pct || d.growth_rate || 0,
-    avgDuration: d.avgDuration || d.avg_duration || 0,
-    frequency: d.frequency || d.stream_frequency || 0,
+    followers: followerTotal,
+    platformCounts: platformCounts,
+    views:     asNumber(d.views || d.total_views || d.yt_views),
+    gifts:     asNumber(d.gifts || d.gift_revenue),
+    peak:      asNumber(d.peak_viewers || d.peak),
+    growth:    asNumber(d.growth || d.growth_pct || d.growth_rate),
+    avgDuration: asNumber(d.avgDuration || d.avg_duration),
+    frequency: d.frequency || d.stream_frequency || '',
     bio:       d.bio || '',
-    netWorth:  d.netWorth || d.net_worth || null,
+    netWorth:  asNumber(d.netWorth || d.net_worth),
     streamingSince: d.streaming_since || d.streamingSince || null,
     isPublished: d.is_published != null ? d.is_published : true,
-    score:     d.score || d.afro_score || 0,
+    score:     asNumber(d.score || d.afro_score),
     tier:      d.tier || d.afro_tier || '',
     rank:      d.rank || 0,
     _raw:      d
@@ -440,17 +474,34 @@ function computeRanks(list) {
 
 /* ===== UTILS ===== */
 function fmtNum(n) {
+  n = asNumber(n);
   if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/,'') + 'M';
   if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/,'') + 'K';
   return n.toString();
 }
 function fmtUSD(n) {
+  n = asNumber(n);
   if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/,'') + 'M';
   if (n >= 1000) return '$' + (n / 1000).toFixed(1).replace(/\.0$/,'') + 'K';
-  return '$' + n;
+  return '$' + n.toLocaleString('en-US');
 }
 function fmtUSDFull(n) {
+  n = asNumber(n);
   return '$' + n.toLocaleString('en-US');
+}
+function fmtDuration(n) {
+  n = asNumber(n);
+  return n > 0 ? n + ' min' : 'No stream data';
+}
+function fmtFrequency(value) {
+  if (value == null || value === '') return 'Not listed';
+  if (typeof value === 'number') return value > 0 ? value + 'x/week' : 'Not listed';
+  return String(value).trim();
+}
+function fmtGrowth(value) {
+  value = asNumber(value);
+  if (!value) return 'Baseline';
+  return (value > 0 ? '+' : '') + value + '%';
 }
 function avatarGradient(name) {
   var h = 0;
@@ -559,6 +610,41 @@ function generateNews(c) {
   return news;
 }
 
+function normalizeApiStreams(rows) {
+  if (!Array.isArray(rows)) return [];
+  return rows.filter(function(row) {
+    return row && row.is_published !== false;
+  }).map(function(row) {
+    return {
+      date: new Date(row.stream_date || row.created_at || Date.now()),
+      title: row.title || 'Stream update',
+      platform: String(row.platform || 'youtube').toLowerCase(),
+      duration: asNumber(row.duration || row.duration_minutes),
+      peakViewers: asNumber(row.viewer_count || row.peak_viewers),
+      gifts: asNumber(row.gifts || row.gift_revenue),
+      url: row.url || ''
+    };
+  });
+}
+
+function emptyCard(message) {
+  return '<div class="as-empty-card">' + message + '</div>';
+}
+
+function renderMissingProfile() {
+  var main = document.getElementById('creatorPage');
+  if (!main) return;
+  main.innerHTML = '<section class="as-profile-empty">' +
+    '<div class="as-container">' +
+      '<div class="as-empty-card">' +
+        '<h1>Creator profile unavailable</h1>' +
+        '<p>We could not load this creator profile from the public AfroStream data API. Try the rankings page or check this profile again after the next data sync.</p>' +
+        '<a href="/tools/afrostream/rankings" class="as-btn as-btn-primary">Open rankings</a>' +
+      '</div>' +
+    '</div>' +
+  '</section>';
+}
+
 /* ===== MAIN INIT (async) ===== */
 (async function init() {
   /* Read ?id= param — supports numeric ids and slugs */
@@ -582,6 +668,11 @@ function generateNews(c) {
     creator = CREATORS[0];
   }
 
+  if (!creator) {
+    renderMissingProfile();
+    return;
+  }
+
   /* Make sure creator has rank from the full list */
   var ranked = CREATORS.find(function(c){ return c.id === creator.id || c.slug === creator.slug; });
   if (ranked) {
@@ -603,10 +694,11 @@ function generateNews(c) {
   var countryRank = countryCreators.findIndex(function(c){ return c.id === creator.id || c.slug === creator.slug; }) + 1;
   if (countryRank < 1) countryRank = 1;
 
-  var streams = generateStreams(creator);
-  var upcoming = generateUpcoming(creator);
-  var gifters = generateGifters(creator);
-  var news = generateNews(creator);
+  var streams = normalizeApiStreams(creator._apiStreams);
+  var upcoming = [];
+  var gifters = [];
+  var news = [];
+  var relatedFromApi = Array.isArray(creator._apiSimilar) ? creator._apiSimilar.map(normalizeCreator) : [];
   var creatorKey = creator.slug || creator.id;
   var creatorPath = '/tools/afrostream/creator.html?id=' + encodeURIComponent(creatorKey);
   var creatorUrl = window.location.origin + creatorPath;
@@ -663,13 +755,14 @@ function generateNews(c) {
       var pm = PLATFORM_META[p];
       if (!pm) return;
       var share = idx === 0 ? 0.5 : (idx === 1 ? 0.3 : 0.2);
-      var pFollowers = Math.floor(totalF * share);
+      var exactCount = creator.platformCounts && creator.platformCounts[p] ? creator.platformCounts[p] : 0;
+      var pFollowers = exactCount || Math.floor(totalF * share);
       var href = platURLs[p] || '#';
       var target = href !== '#' ? ' target="_blank" rel="noopener"' : '';
       platHTML += '<a href="' + href + '"' + target + ' class="as-platform-badge" style="border-color:' + pm.color + '">' +
         '<span class="as-platform-badge-icon" style="color:' + pm.color + '">' + pm.icon + '</span>' +
         '<span class="as-platform-badge-name">' + pm.name + '</span>' +
-        '<span class="as-platform-badge-count">' + fmtNum(pFollowers) + '</span>' +
+        '<span class="as-platform-badge-count">' + (exactCount ? fmtNum(pFollowers) : 'Linked') + '</span>' +
       '</a>';
     });
     document.getElementById('profilePlatforms').innerHTML = platHTML;
@@ -731,11 +824,11 @@ function generateNews(c) {
   (function renderStats() {
     var stats = [
       {label:'Total Followers', value: fmtNum(creator.followers), icon:'\uD83D\uDC65'},
-      {label:'Gift Revenue', value: fmtUSD(creator.gifts), icon:'\uD83C\uDF81'},
-      {label:'Peak Viewers', value: fmtNum(creator.peak), icon:'\uD83D\uDCC8'},
-      {label:'Avg Duration', value: creator.avgDuration + ' min', icon:'\u23F1'},
-      {label:'Stream Freq.', value: creator.frequency + 'x/week', icon:'\uD83D\uDCC5'},
-      {label:'Growth Rate', value: '+' + creator.growth + '%', icon:'\uD83D\uDE80'}
+      {label:'Total Views', value: creator.views ? fmtNum(creator.views) : 'Not listed', icon:'\u25B6'},
+      {label:'AfroScore', value: creator.score ? creator.score : 'Baseline', icon:'\u2605'},
+      {label:'Net Worth Est.', value: creator.netWorth ? fmtUSD(creator.netWorth) : 'Not listed', icon:'\uD83D\uDCB0'},
+      {label:'Cadence', value: fmtFrequency(creator.frequency), icon:'\uD83D\uDCC5'},
+      {label:'Growth Rate', value: fmtGrowth(creator.growth), icon:'\uD83D\uDE80'}
     ];
     var html = '';
     stats.forEach(function(s) {
@@ -762,14 +855,20 @@ function generateNews(c) {
     var totalFollowers = creator.followers;
     var growthPct = creator.growth || 25;
 
-    /* Distribute followers across platforms (weighted to primary) */
+    var exactCounts = creator.platformCounts || {};
+    var hasExactCounts = Object.keys(exactCounts).some(function(key) { return exactCounts[key] > 0; });
+
     var platData = [];
     creator.platforms.forEach(function(p, idx) {
       var conf = PLAT_CONFIG[p];
       if (!conf) return;
-      var share = idx === 0 ? 0.55 : (idx === 1 ? 0.28 : 0.17);
-      if (creator.platforms.length === 1) share = 1;
-      var count = Math.floor(totalFollowers * share);
+      var count = exactCounts[p] || 0;
+      if (hasExactCounts && !count) return;
+      if (!count) {
+        var share = idx === 0 ? 0.55 : (idx === 1 ? 0.28 : 0.17);
+        if (creator.platforms.length === 1) share = 1;
+        count = Math.floor(totalFollowers * share);
+      }
       var dailyGain = Math.floor(count * (growthPct / 100) / 365);
 
       /* Generate mini sparkline data (last 12 data points) */
@@ -798,6 +897,11 @@ function generateNews(c) {
 
     /* Render platform cards */
     var grid = document.getElementById('lcGrid');
+    if (!platData.length) {
+      totalEl.textContent = fmtNum(totalFollowers);
+      grid.innerHTML = emptyCard('Platform-level follower counts are not available for this creator yet.');
+      return;
+    }
     var html = '';
     platData.forEach(function(pd) {
       var sparkHTML = '<div class="as-lc-card-spark">';
@@ -885,7 +989,8 @@ function generateNews(c) {
     var sponsorships = Math.floor(streamRev * 1.8);
     var merch = Math.floor(streamRev * 0.6);
     var brandDeals = Math.floor(streamRev * 2.2);
-    var total = streamRev + sponsorships + merch + brandDeals;
+    var earningEstimate = streamRev + sponsorships + merch + brandDeals;
+    var total = creator.netWorth || earningEstimate;
     var maxBar = Math.max(streamRev, sponsorships, merch, brandDeals);
 
     var breakdown = [
@@ -896,38 +1001,46 @@ function generateNews(c) {
     ];
 
     var html = '<div class="as-nw-header">' +
-      '<div class="as-nw-label">Estimated Annual Earnings</div>' +
+      '<div class="as-nw-label">' + (creator.netWorth ? 'Reported Net Worth Estimate' : 'Estimated Annual Earnings') + '</div>' +
       '<div class="as-nw-total">' + fmtUSDFull(total) + '</div>' +
-    '</div>' +
-    '<div class="as-nw-breakdown">';
+    '</div>';
 
-    breakdown.forEach(function(b) {
-      var pct = Math.round(b.amount / maxBar * 100);
-      html += '<div class="as-nw-row">' +
-        '<div class="as-nw-row-label">' + b.label + '</div>' +
-        '<div class="as-nw-row-bar"><div class="as-nw-bar-fill" style="width:' + pct + '%;background:' + b.color + '"></div></div>' +
-        '<div class="as-nw-row-val">' + fmtUSDFull(b.amount) + '</div>' +
-      '</div>';
-    });
+    if (maxBar > 0) {
+      html += '<div class="as-nw-breakdown">';
+      breakdown.forEach(function(b) {
+        var pct = Math.max(2, Math.round(b.amount / maxBar * 100));
+        html += '<div class="as-nw-row">' +
+          '<div class="as-nw-row-label">' + b.label + '</div>' +
+          '<div class="as-nw-row-bar"><div class="as-nw-bar-fill" style="width:' + pct + '%;background:' + b.color + '"></div></div>' +
+          '<div class="as-nw-row-val">' + fmtUSDFull(b.amount) + '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+    } else {
+      html += '<div class="as-nw-empty">Revenue breakdown is not available for this creator yet. The headline estimate comes from the creator profile data source.</div>';
+    }
 
-    html += '</div>' +
-      '<div class="as-nw-disclaimer">Estimated based on public data and community reports. Actual figures may vary.</div>';
+    html += '<div class="as-nw-disclaimer">Estimates are based on public profile data, platform signals, and available creator metadata. Actual figures may vary.</div>';
 
     document.getElementById('networthCard').innerHTML = html;
   })();
 
   /* ===== RENDER STREAM HISTORY ===== */
   (function renderStreams() {
+    if (!streams.length) {
+      document.getElementById('streamHistory').innerHTML = emptyCard('No recent stream records are published for this creator yet.');
+      return;
+    }
     var html = '<div class="as-stream-table"><div class="as-stream-header">' +
       '<span>Date</span><span>Title</span><span>Platform</span><span>Duration</span><span>Peak</span><span>Gifts</span>' +
     '</div>';
     streams.forEach(function(s) {
-      var pm = PLATFORM_META[s.platform];
+      var pm = PLATFORM_META[s.platform] || { color: '#007AFF', icon: '\u25B6', name: s.platform || 'Stream' };
       html += '<div class="as-stream-row">' +
         '<span class="as-stream-date">' + s.date.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + '</span>' +
         '<span class="as-stream-title">' + s.title + '</span>' +
         '<span class="as-stream-plat" style="color:' + pm.color + '">' + pm.icon + ' ' + pm.name + '</span>' +
-        '<span>' + s.duration + ' min</span>' +
+        '<span>' + (s.duration ? s.duration + ' min' : '-') + '</span>' +
         '<span>' + fmtNum(s.peakViewers) + '</span>' +
         '<span class="as-stream-gifts">' + fmtUSD(s.gifts) + '</span>' +
       '</div>';
@@ -938,9 +1051,13 @@ function generateNews(c) {
 
   /* ===== RENDER UPCOMING ===== */
   (function renderUpcoming() {
+    if (!upcoming.length) {
+      document.getElementById('upcomingStreams').innerHTML = emptyCard('No upcoming streams are scheduled in AfroStream yet.');
+      return;
+    }
     var html = '';
     upcoming.forEach(function(u) {
-      var pm = PLATFORM_META[u.platform];
+      var pm = PLATFORM_META[u.platform] || { color: '#007AFF', icon: '\u25B6', name: u.platform || 'Stream' };
       html += '<div class="as-upcoming-card">' +
         '<div class="as-upcoming-date">' +
           '<div class="as-upcoming-day">' + u.date.toLocaleDateString('en-US',{weekday:'short'}) + '</div>' +
@@ -965,6 +1082,10 @@ function generateNews(c) {
 
   /* ===== RENDER GIFTERS ===== */
   (function renderGifters() {
+    if (!gifters.length) {
+      document.getElementById('giftersList').innerHTML = emptyCard('Supporter and gifting data is not available for this creator yet.');
+      return;
+    }
     var html = '';
     gifters.forEach(function(g) {
       var badge = g.rank === 1 ? '<span class="as-gifter-crown">\uD83D\uDC51 Top Supporter</span>' : '';
@@ -979,9 +1100,14 @@ function generateNews(c) {
 
   /* ===== RENDER RELATED ===== */
   (function renderRelated() {
-    var related = CREATORS.filter(function(c) {
+    var related = relatedFromApi.length ? relatedFromApi : CREATORS.filter(function(c) {
       return c.id !== creator.id && c.slug !== creator.slug && (c.category === creator.category || c.country === creator.country);
     }).slice(0, 4);
+
+    if (!related.length) {
+      document.getElementById('relatedGrid').innerHTML = emptyCard('Related creators will appear here after the next ranking sync.');
+      return;
+    }
 
     var html = '';
     related.forEach(function(c) {
@@ -998,6 +1124,10 @@ function generateNews(c) {
 
   /* ===== RENDER NEWS ===== */
   (function renderNews() {
+    if (!news.length) {
+      document.getElementById('newsList').innerHTML = emptyCard('No verified news mentions are attached to this creator profile yet.');
+      return;
+    }
     var html = '';
     news.forEach(function(n) {
       html += '<div class="as-news-card">' +

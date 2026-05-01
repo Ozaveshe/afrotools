@@ -69,7 +69,7 @@ function stabilizeRates(fetchedRates, existingRates, comparisonRates) {
 }
 
 /**
- * Source 1: ExchangeRate-API (free tier)
+ * Source 1: ExchangeRate-API (free endpoint or keyed plan)
  */
 async function fetchFromExchangeRateAPI() {
   const apiKey = process.env.EXCHANGERATE_API_KEY || 'free';
@@ -247,6 +247,8 @@ exports.handler = async function (event) {
     last_fetch: now,
     source: usedSource,
     status: written ? 'ok' : 'write-failed',
+    error: written ? null : 'Write failed',
+    last_attempt: null,
     currencies_count: Object.keys(mergedRates).length,
   });
 

@@ -1,0 +1,2387 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kulinganisha PDF - text diff na visual review | AfroTools</title>
+<meta name="description" content="Linganisha PDF mbili kwa text diff, visual diff, ukurasa uliobadilika, zinafananaity na ripoti ya review kwenye kivinjari.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/kulinganisha-pdf/">
+
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kulinganisha-pdf/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-compare/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-compare/"><link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Kulinganisha PDF - text diff na visual review | AfroTools">
+<meta property="og:description" content="Linganisha PDF mbili kwa text diff, visual diff, ukurasa uliobadilika, zinafananaity na ripoti ya review kwenye kivinjari.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/kulinganisha-pdf/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-compare.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kulinganisha PDF - text diff na visual review | AfroTools">
+<meta name="twitter:description" content="Linganisha PDF mbili kwa text diff, visual diff, ukurasa uliobadilika, zinafananaity na ripoti ya review kwenye kivinjari.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+    --diff-add-bg: #d1fae5;
+    --diff-add-text: #065f46;
+    --diff-del-bg: #fee2e2;
+    --diff-del-text: #991b1b;
+  }
+
+  /* === Hero === */
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '\21C4';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+    color: #fff;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .b-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+  }
+
+  .b-purple {
+    background: rgba(139, 92, 246, 0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+  }
+
+  /* === Main === */
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  /* === Upload Grid === */
+  .upload-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .upload-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .upload-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #374151;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .upload-label .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot-original { background: #6366f1; }
+  .dot-modified { background: #10b981; }
+
+  .upload-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fafbfc;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+  }
+
+  .upload-zone:hover,
+  .upload-zone.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.04);
+  }
+
+  .upload-zone input[type="file"] {
+    display: none;
+  }
+
+  .upload-icon {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .upload-text {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+
+  .upload-hint {
+    font-size: 0.72rem;
+    color: #9ca3af;
+  }
+
+  .upload-zone.has-file {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    cursor: default;
+  }
+
+  .file-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .file-info .file-icon {
+    font-size: 2rem;
+    margin-bottom: 2px;
+  }
+
+  .file-info .file-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1e40af;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-info .file-meta {
+    font-size: 0.72rem;
+    color: #6b7280;
+  }
+
+  .file-info .change-btn {
+    margin-top: 6px;
+    background: none;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .file-info .change-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  /* === Compare Button === */
+  .compare-row {
+    text-align: center;
+    margin-top: 18px;
+  }
+
+  .compare-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 36px;
+    background: var(--afro-green);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .compare-btn:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .compare-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .compare-options {
+    margin-top: 18px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+  }
+
+  .compare-options-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .option-grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 1.1fr) repeat(2, minmax(170px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    color: #374151;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .option-item select {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #374151;
+    font: inherit;
+    outline: none;
+  }
+
+  .option-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--afro-green);
+  }
+
+  /* === Mode Toggle === */
+  .mode-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .mode-btn {
+    padding: 8px 20px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mode-btn:first-child {
+    border-radius: 6px 0 0 6px;
+  }
+
+  .mode-btn:last-child {
+    border-radius: 0 6px 6px 0;
+  }
+
+  .mode-btn.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  /* === Summary Bar === */
+  .summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 18px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .stat-add {
+    color: var(--diff-add-text);
+  }
+
+  .stat-del {
+    color: var(--diff-del-text);
+  }
+
+  .stat-pages {
+    color: #6366f1;
+  }
+
+  .stat-sim {
+    color: #6b7280;
+    margin-left: auto;
+  }
+
+  .stat-neutral {
+    color: #475569;
+  }
+
+  .review-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .review-toolbar-left,
+  .review-toolbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .filter-input {
+    min-width: 220px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #374151;
+    font-size: 0.78rem;
+  }
+
+  .filter-input:focus {
+    border-color: var(--afro-green);
+    outline: 2px solid rgba(0, 135, 81, 0.15);
+  }
+
+  .check-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #374151;
+    white-space: nowrap;
+  }
+
+  .check-row input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--afro-green);
+  }
+
+  .toolbar-btn {
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #374151;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .toolbar-btn:hover:not(:disabled) {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .toolbar-btn:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+  }
+
+  .quality-note {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .quality-note.warn {
+    border-color: #fed7aa;
+    background: #fff7ed;
+    color: #9a3412;
+  }
+
+  .change-map {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 14px;
+    margin-bottom: 2px;
+  }
+
+  .change-page {
+    flex: 0 0 auto;
+    min-width: 118px;
+    text-align: left;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 7px;
+    padding: 9px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .change-page strong {
+    display: block;
+    color: #111827;
+    font-size: 0.78rem;
+    margin-bottom: 3px;
+  }
+
+  .change-page span {
+    display: block;
+    color: #6b7280;
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  .change-page.changed {
+    border-color: #fde68a;
+    background: #fffbeb;
+  }
+
+  .change-page.added {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+  }
+
+  .change-page.removed {
+    border-color: #fecaca;
+    background: #fef2f2;
+  }
+
+  .change-page.no-text {
+    border-color: #c7d2fe;
+    background: #eef2ff;
+  }
+
+  .change-page.active {
+    border-color: var(--afro-green);
+    box-shadow: 0 0 0 2px rgba(0, 135, 81, 0.14);
+  }
+
+  /* === Page Navigation === */
+  .page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .page-nav button {
+    padding: 6px 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .page-nav button:hover:not(:disabled) {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .page-nav button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .page-nav .page-indicator {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6b7280;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* === Text Diff Panels === */
+  .diff-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .diff-panel {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .diff-panel-head {
+    padding: 10px 16px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .diff-panel-body {
+    padding: 16px;
+    max-height: 520px;
+    overflow-y: auto;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #1f2937;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .diff-add {
+    background: var(--diff-add-bg);
+    color: var(--diff-add-text);
+    border-radius: 3px;
+    padding: 1px 3px;
+  }
+
+  .diff-del {
+    background: var(--diff-del-bg);
+    color: var(--diff-del-text);
+    border-radius: 3px;
+    padding: 1px 3px;
+    text-decoration: line-through;
+  }
+
+  /* === Visual Diff === */
+  .visual-diff-container {
+    position: relative;
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .visual-metric {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #374151;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .visual-canvas-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .visual-canvas-wrap canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .visual-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  .visual-controls label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .visual-controls input[type="range"] {
+    width: 180px;
+    accent-color: var(--afro-green);
+  }
+
+  .visual-controls .mode-label {
+    font-size: 0.72rem;
+    color: #6b7280;
+  }
+
+  .visual-btn-group {
+    display: flex;
+    gap: 4px;
+  }
+
+  .visual-btn-group button {
+    padding: 5px 14px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .visual-btn-group button:first-child { border-radius: 5px 0 0 5px; }
+  .visual-btn-group button:last-child { border-radius: 0 5px 5px 0; }
+
+  .visual-btn-group button.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  /* === Results Card === */
+  .results-card {
+    display: none;
+  }
+
+  .results-card.on {
+    display: block;
+  }
+
+  /* === Progress === */
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--afro-green);
+    border-radius: 4px;
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  /* === Empty State === */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #9ca3af;
+    font-size: 0.88rem;
+  }
+
+  .empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  /* === SEO Section === */
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 12px;
+  }
+
+  .seo-section p {
+    font-size: 0.88rem;
+    color: #6b7280;
+    line-height: 1.7;
+    max-width: 720px;
+    margin-bottom: 16px;
+  }
+
+  .faq-list {
+    max-width: 720px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 0;
+  }
+
+  .faq-q {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #111;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #9ca3af;
+    transition: transform 0.2s;
+  }
+
+  .faq-item.open .faq-q::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-a {
+    font-size: 0.85rem;
+    color: #6b7280;
+    line-height: 1.7;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+    padding-top: 0;
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 300px;
+    padding-top: 10px;
+  }
+
+  /* === Info Cards === */
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-top: 18px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #374151;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.82rem;
+    color: #6b7280;
+    line-height: 1.7;
+  }
+
+  .info-text ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .info-text li {
+    padding: 3px 0;
+  }
+
+  /* === Spinner === */
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* === Responsive === */
+  @media (max-width: 768px) {
+    .upload-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .option-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .diff-panels {
+      grid-template-columns: 1fr;
+    }
+
+    .diff-panel-body {
+      max-height: 360px;
+    }
+
+    .summary-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .stat-sim {
+      margin-left: 0;
+    }
+
+    .visual-controls {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .visual-controls input[type="range"] {
+      width: 100%;
+    }
+
+    .review-toolbar {
+      align-items: stretch;
+    }
+
+    .review-toolbar-left,
+    .review-toolbar-right,
+    .filter-input {
+      width: 100%;
+    }
+
+    .toolbar-btn {
+      flex: 1 1 auto;
+    }
+  }
+</style>
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-compare.webp">
+<meta property="article:modified_time" content="2026-04-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kulinganisha PDF","url":"https://afrotools.com/sw/zana/kulinganisha-pdf/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Linganisha PDF mbili kwa text diff, visual diff, ukurasa uliobadilika, similarity na ripoti ya review kwenye kivinjari.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"Kulinganisha PDF","item":"https://afrotools.com/sw/zana/kulinganisha-pdf/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, visual diff ni ukaguzi rasmi?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Inasaidia kuona tofauti za layout na pixels, lakini unapaswa kuhakiki hati mwenyewe au na mtaalamu kabla ya kuidhinisha mabadiliko."}},{"@type":"Question","name":"Je, PDF zinapakiwa?","acceptedAnswer":{"@type":"Answer","text":"Ukurasa hutumia mtiririko wa browser-based. Fuata tahadhari za chanzo na usitumie matokeo bila ukaguzi kwa hati nyeti."}}]}</script>
+</head>
+<body>
+
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">Home</a> / <a href="/document-pdf/">Zana za PDF</a> / <span>Compare</span>
+    </div>
+    <h1>PDF <em>Compare</em></h1>
+    <p class="hero-sub">Linganisha mikataba, sera, invoices na drafts za PDF kwa text diff ya pembeni, visual overlay, navigation ya kurasa zilizobadilika na report ya kupakua. Kazi hufanyika kwenye kivinjari.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">&#8596; Pembeni kwa pembeni</span>
+      <span class="badge b-blue">&#9998; Maandishi na visual diff</span>
+      <span class="badge b-purple">&#128203; Ripoti ya review</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- Pakia Card -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Pakia PDF</span>
+      </div>
+      <div class="card-body">
+        <div class="upload-grid">
+          <!-- Asili -->
+          <div class="upload-col">
+            <div class="upload-label"><span class="dot dot-original"></span> PDF asili</div>
+            <div class="upload-zone" id="dropAsili">
+              <input type="file" id="fileAsili" accept=".pdf">
+              <span class="upload-icon">&#128196;</span>
+              <div class="upload-text">Buruta original PDF here</div>
+              <div class="upload-hint">au bofya browse</div>
+            </div>
+          </div>
+          <!-- Iliyobadilishwa -->
+          <div class="upload-col">
+            <div class="upload-label"><span class="dot dot-modified"></span> PDF iliyobadilishwa</div>
+            <div class="upload-zone" id="dropIliyobadilishwa">
+              <input type="file" id="fileIliyobadilishwa" accept=".pdf">
+              <span class="upload-icon">&#128196;</span>
+              <div class="upload-text">Buruta modified PDF here</div>
+              <div class="upload-hint">au bofya browse</div>
+            </div>
+          </div>
+        </div>
+        <div class="compare-options" aria-label="Comparison settings">
+          <div class="compare-options-title">Mipangilio ya kulinganisha</div>
+          <div class="option-grid">
+            <label class="option-item">
+              <select id="diffGranularity" aria-label="Diff granularity">
+                <option value="word" selected>Diff ya maneno</option>
+                <option value="sentence">Diff ya sentensi</option>
+                <option value="line">Diff ya mistari</option>
+              </select>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" id="ignoreWhitespace" checked>
+              Puuza nafasi za ziada
+            </label>
+            <label class="option-item">
+              <input type="checkbox" id="ignoreCase">
+              Puuza herufi kubwa/ndogo
+            </label>
+          </div>
+        </div>
+        <div class="compare-row">
+          <button class="compare-btn" id="compareBtn" disabled>
+            <span id="compareBtnMaandishi">&#8596; Endesha ulinganisho</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Matokeo -->
+    <div class="results-card" id="resultsCard">
+      <div class="card" style="margin-top:18px;">
+        <div class="card-head">
+          <span class="card-title">Matokeo ya ulinganisho</span>
+          <div class="mode-toggle-row" style="margin-bottom:0;">
+            <button class="mode-btn active" id="modeMaandishi" data-mode="text">&#9998; Maandishi diff</button>
+            <button class="mode-btn" id="modeVisual" data-mode="visual">&#128065; Visual diff</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+
+          <!-- Maandishi diff View -->
+          <div id="textDiffView">
+            <div class="summary-bar" id="summaryBar">
+              <span class="stat-add" id="statAdd">0 zilizoongezwa</span>
+              <span class="stat-del" id="statDel">0 zilizofutwa</span>
+              <span class="stat-pages" id="statKurasa">0 / 0 kurasa zimebadilika</span>
+              <span class="stat-neutral" id="statWords">0 maneno yamebadilika</span>
+              <span class="stat-sim" id="statSim">100% zinafanana</span>
+            </div>
+            <div class="review-toolbar" id="reviewToolbar">
+              <div class="review-toolbar-left">
+                <label class="check-row"><input type="checkbox" id="changedOnly"> Kurasa zilizobadilika tu</label>
+                <input class="filter-input" type="search" id="changeSearch" placeholder="Find changed text or page note" aria-label="Search comparison results">
+              </div>
+              <div class="review-toolbar-right">
+                <button class="toolbar-btn" id="prevChangeBtn" type="button">Badiliko lililopita</button>
+                <button class="toolbar-btn" id="nextChangeBtn" type="button">Badiliko linalofuata</button>
+                <button class="toolbar-btn" id="copySummaryBtn" type="button">Nakili muhtasari</button>
+                <button class="toolbar-btn" id="downloadRipotiBtn" type="button">Pakua ripoti</button>
+              </div>
+            </div>
+            <div class="quality-note" id="qualityNote">Pakia PDF mbili, kisha endesha ulinganisho kuona maelezo ya review kwa kila ukurasa.</div>
+            <div class="change-map" id="changeMap" aria-label="Changed page map"></div>
+            <div class="page-nav" id="textUkurasaNav">
+              <button id="textPrevBtn" disabled>&#8592; Prev</button>
+              <span class="page-indicator" id="textUkurasaIndicator">Ukurasa 1 / 1</span>
+              <button id="textInayofuataBtn" disabled>Inayofuata &#8594;</button>
+            </div>
+            <div class="diff-panels">
+              <div class="diff-panel">
+                <div class="diff-panel-head"><span class="dot dot-original"></span> Asili</div>
+                <div class="diff-panel-body" id="diffLeft"></div>
+              </div>
+              <div class="diff-panel">
+                <div class="diff-panel-head"><span class="dot dot-modified"></span> Iliyobadilishwa</div>
+                <div class="diff-panel-body" id="diffRight"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visual diff View -->
+          <div id="visualDiffView" style="display:none;">
+            <div class="page-nav" id="visualUkurasaNav">
+              <button id="visualPrevBtn" disabled>&#8592; Prev</button>
+              <span class="page-indicator" id="visualUkurasaIndicator">Ukurasa 1 / 1</span>
+              <button id="visualInayofuataBtn" disabled>Inayofuata &#8594;</button>
+            </div>
+            <div class="visual-metric" id="visualMetric">Fungua visual diff baada ya kulinganisha kuona mabadiliko ya pixel kwa ukurasa.</div>
+            <div class="visual-diff-container" id="visualContainer">
+              <div class="empty-state">
+                <span class="empty-icon">&#128065;</span>
+                Select a visual mode below
+              </div>
+            </div>
+            <div class="visual-controls">
+              <label>
+                <span class="mode-label">View:</span>
+                <div class="visual-btn-group">
+                  <button class="active" data-vmode="difference" id="vmodeDiff">Difference</button>
+                  <button data-vmode="slider" id="vmodeSlider">Slider</button>
+                  <button data-vmode="sidebyside" id="vmodeSbs">Side by Side</button>
+                </div>
+              </label>
+              <label id="sliderLabel" style="display:none;">
+                Blend: <input type="range" id="blendSlider" min="0" max="100" value="50">
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Jinsi ya kutumia -->
+    <div class="info-card">
+      <div class="info-title">Jinsi ya kutumia</div>
+      <div class="info-text">
+        <strong>1. Pakia</strong> your original PDF on the left and the modified version on the right.<br><br>
+        <strong>2. Tune</strong> word, sentence, or line comparison and choose whether to ignore whitespace or case changes.<br><br>
+        <strong>3. Compare</strong> to get a changed-page map, zinafananaity score, zilizoongezwa, zilizofutwa, and side-by-side review panes.<br><br>
+        <strong>4. Verify</strong> layout with visual diff, then copy the summary or download a review report for your team.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-title">Vidokezo</div>
+      <div class="info-text">
+        <ul>
+          <li>&#10003; Hufanya kazi vizuri kwa PDF zenye maandishi; tumia visual diff kwa kurasa zilizochanganuliwa au mabadiliko ya layout pekee</li>
+          <li>&#10003; Visual diff huonyesha asilimia ya mabadiliko ya pixel kwa ukurasa</li>
+          <li>&#10003; Navigation ya kurasa zilizobadilika husaidia kupitia mikataba mirefu na drafts za sera haraka</li>
+          <li>&#10003; Export ripoti kabla ya kutuma edits kwa wakili, approver, mteja au timu ya procurement</li>
+          <li>&#10003; 100% client-side &mdash; hakuna kinachopakiwa</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEO + FAQs -->
+<div class="seo-section">
+  <h2>Linganisha PDF mtandaoni bila malipo</h2>
+  <p>
+    Zana ya AfroTools Kulinganisha PDF hukuruhusu kulinganisha PDF mbili pembeni kwa pembeni moja kwa moja kwenye browser.
+    Kama unakagua mabadiliko ya mkataba, kulinganisha drafts au kuhakiki edits,
+    this tool highlights zilizoongezwa, zilizofutwa, changed pages, zinafananaity, and visual layout changes.
+  </p>
+  <p>
+    Kila kitu hufanyika kwenye browser yako. PDF zako hazipakwi kwenye seva yoyote,
+    jambo linalosaidia kulinda faragha ya nyaraka nyeti.
+  </p>
+
+  <h2>Maswali ya mara kwa mara</h2>
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="faq-list" id="faqList">
+    <div class="faq-item">
+      <div class="faq-q">Maandishi diff hufanya kazi vipi?</div>
+      <div class="faq-a">The tool extracts text from each page of both PDFs, compares it at word, sentence, or line level, and highlights zilizoongezwa and zilizofutwa in side-by-side review panes.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What does the visual diff show?</div>
+      <div class="faq-a">Visual diff renders both PDF pages as images, highlights changed pixels, reports a visual-change percentage, and supports slider or side-by-side review modes.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is my PDF uploaded to a server?</div>
+      <div class="faq-a">No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Naweza ku-export ulinganisho?</div>
+      <div class="faq-a">Yes. You can copy the summary or download a text report with document names, page counts, zinafananaity, and per-page changes.</div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-compare"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
+<script>
+// ============================================================
+// PDF Compare Tool — AfroTools
+// ============================================================
+(function() {
+  'use strict';
+
+  // === DOM refs ===
+  var dropOriginal = document.getElementById('dropOriginal');
+  var dropModified = document.getElementById('dropModified');
+  var fileOriginal = document.getElementById('fileOriginal');
+  var fileModified = document.getElementById('fileModified');
+  var compareBtn   = document.getElementById('compareBtn');
+  var compareBtnText = document.getElementById('compareBtnText');
+  var resultsCard  = document.getElementById('resultsCard');
+  var progressBar  = document.getElementById('progressBar');
+  var progressFill = document.getElementById('progressFill');
+  var diffGranularity = document.getElementById('diffGranularity');
+  var ignoreWhitespace = document.getElementById('ignoreWhitespace');
+  var ignoreCase = document.getElementById('ignoreCase');
+
+  // Text diff
+  var textDiffView = document.getElementById('textDiffView');
+  var diffLeft     = document.getElementById('diffLeft');
+  var diffRight    = document.getElementById('diffRight');
+  var summaryBar   = document.getElementById('summaryBar');
+  var statAdd      = document.getElementById('statAdd');
+  var statDel      = document.getElementById('statDel');
+  var statPages    = document.getElementById('statPages');
+  var statWords    = document.getElementById('statWords');
+  var statSim      = document.getElementById('statSim');
+  var changedOnly  = document.getElementById('changedOnly');
+  var changeSearch = document.getElementById('changeSearch');
+  var prevChangeBtn = document.getElementById('prevChangeBtn');
+  var nextChangeBtn = document.getElementById('nextChangeBtn');
+  var copySummaryBtn = document.getElementById('copySummaryBtn');
+  var downloadReportBtn = document.getElementById('downloadReportBtn');
+  var qualityNote = document.getElementById('qualityNote');
+  var changeMap = document.getElementById('changeMap');
+  var textPrevBtn  = document.getElementById('textPrevBtn');
+  var textNextBtn  = document.getElementById('textNextBtn');
+  var textPageInd  = document.getElementById('textPageIndicator');
+
+  // Visual diff
+  var visualDiffView = document.getElementById('visualDiffView');
+  var visualContainer = document.getElementById('visualContainer');
+  var visualPrevBtn = document.getElementById('visualPrevBtn');
+  var visualNextBtn = document.getElementById('visualNextBtn');
+  var visualPageInd = document.getElementById('visualPageIndicator');
+  var visualMetric  = document.getElementById('visualMetric');
+  var blendSlider   = document.getElementById('blendSlider');
+  var sliderLabel   = document.getElementById('sliderLabel');
+
+  // Mode buttons
+  var modeText    = document.getElementById('modeText');
+  var modeVisual  = document.getElementById('modeVisual');
+  var vmodeDiff   = document.getElementById('vmodeDiff');
+  var vmodeSlider = document.getElementById('vmodeSlider');
+  var vmodeSbs    = document.getElementById('vmodeSbs');
+
+  // === State ===
+  var pdfOriginal = null;  // { pdfDoc, fileName, pageCount }
+  var pdfModified = null;
+  var textResults = [];    // per-page comparison details
+  var totalAdds = 0;
+  var totalDels = 0;
+  var totalChangedWords = 0;
+  var totalChangedChars = 0;
+  var totalComparableChars = 0;
+  var pagesChanged = 0;
+  var totalPages = 0;
+  var currentTextPage = 0;
+  var currentVisualPage = 0;
+  var currentMode = 'text';       // text | visual
+  var currentVMode = 'difference'; // difference | slider | sidebyside
+  var lastSimilarity = 100;
+  var lastOptions = null;
+
+  // === Upload handling ===
+  function setupUploadZone(dropZone, fileInput, side) {
+    dropZone._pdfCompareSide = side;
+    if (!dropZone._pdfCompareBound) {
+      dropZone.addEventListener('click', function(e) {
+        if (e.target.closest('.change-btn')) return;
+        var input = dropZone.querySelector('input[type="file"]');
+        if (input) input.click();
+      });
+
+      PdfUtils.initDragDrop(dropZone, {
+        accept: '.pdf',
+        multiple: false,
+        onFiles: function(files) {
+          if (files.length > 0 && files[0].name.toLowerCase().endsWith('.pdf')) {
+            handleFile(files[0], dropZone._pdfCompareSide);
+          }
+        }
+      });
+
+      dropZone._pdfCompareBound = true;
+    }
+
+    fileInput.onchange = function() {
+      if (fileInput.files.length > 0) {
+        handleFile(fileInput.files[0], side);
+      }
+    };
+  }
+
+  async function handleFile(file, side) {
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+      PdfUtils.showToast('Please upload a PDF file', true);
+      return;
+    }
+
+    try {
+      var result = await PdfUtils.loadPdf(file);
+      var dropZone = side === 'original' ? dropOriginal : dropModified;
+
+      if (side === 'original') {
+        pdfOriginal = result;
+      } else {
+        pdfModified = result;
+      }
+
+      // Update UI
+      dropZone.classList.add('has-file');
+      dropZone.innerHTML = '<div class="file-info">' +
+        '<span class="file-icon">&#128196;</span>' +
+        '<span class="file-name">' + escapeHtml(result.fileName) + '</span>' +
+        '<span class="file-meta">' + result.pageCount + ' page' + (result.pageCount !== 1 ? 's' : '') + ' &middot; ' + PdfUtils.formatSize(result.fileSize) + '</span>' +
+        '<button class="change-btn" data-side="' + side + '">Change</button>' +
+        '</div>';
+
+      // Re-bind change button
+      dropZone.querySelector('.change-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        resetSide(side);
+      });
+
+      updateCompareBtn();
+    } catch (err) {
+      PdfUtils.showToast('Failed to load PDF: ' + err.message, true);
+    }
+  }
+
+  function resetSide(side) {
+    var dropZone = side === 'original' ? dropOriginal : dropModified;
+    var fileInput = side === 'original' ? fileOriginal : fileModified;
+    var label = side === 'original' ? 'original' : 'modified';
+
+    if (side === 'original') pdfOriginal = null;
+    else pdfModified = null;
+
+    dropZone.classList.remove('has-file');
+    dropZone.innerHTML = '<input type="file" id="file' + (side === 'original' ? 'Original' : 'Modified') + '" accept=".pdf">' +
+      '<span class="upload-icon">&#128196;</span>' +
+      '<div class="upload-text">Drop ' + label + ' PDF here</div>' +
+      '<div class="upload-hint">or click to browse</div>';
+
+    // Re-get the file input and fully rebind all handlers
+    var newInput = dropZone.querySelector('input[type="file"]');
+    if (side === 'original') {
+      fileOriginal = newInput;
+    } else {
+      fileModified = newInput;
+    }
+    // Re-setup click, change, and drag-drop
+    setupUploadZone(dropZone, newInput, side);
+
+    updateCompareBtn();
+  }
+
+  function updateCompareBtn() {
+    compareBtn.disabled = !(pdfOriginal && pdfModified);
+  }
+
+  setupUploadZone(dropOriginal, fileOriginal, 'original');
+  setupUploadZone(dropModified, fileModified, 'modified');
+
+  // === Compare ===
+  compareBtn.addEventListener('click', async function() {
+    if (!pdfOriginal || !pdfModified) return;
+
+    compareBtnText.innerHTML = '<span class="spinner"></span> Comparing...';
+    compareBtn.disabled = true;
+    resultsCard.classList.add('on');
+    progressBar.style.display = 'block';
+    progressFill.style.width = '0%';
+    changeSearch.value = '';
+    changedOnly.checked = false;
+
+    try {
+      // Extract text from both
+      var textOrig = await PdfUtils.extractText(pdfOriginal.pdfDoc);
+      progressFill.style.width = '30%';
+
+      var textMod = await PdfUtils.extractText(pdfModified.pdfDoc);
+      progressFill.style.width = '60%';
+
+      // Compute diffs
+      totalPages = Math.max(textOrig.length, textMod.length);
+      textResults = [];
+      totalAdds = 0;
+      totalDels = 0;
+      totalChangedWords = 0;
+      totalChangedChars = 0;
+      totalComparableChars = 0;
+      pagesChanged = 0;
+      lastOptions = getCompareOptions();
+
+      for (var i = 0; i < totalPages; i++) {
+        var origText = i < textOrig.length ? textOrig[i].text : '';
+        var modText  = i < textMod.length  ? textMod[i].text  : '';
+        var pageResult = comparePageText(origText, modText, i + 1, lastOptions, i >= textOrig.length, i >= textMod.length);
+
+        totalAdds += pageResult.adds;
+        totalDels += pageResult.dels;
+        totalChangedWords += pageResult.changedWords;
+        totalChangedChars += pageResult.changedChars;
+        totalComparableChars += pageResult.totalChars;
+        if (pageResult.changed) pagesChanged++;
+
+        textResults.push(pageResult);
+
+        progressFill.style.width = (60 + (i / totalPages) * 35) + '%';
+      }
+
+      progressFill.style.width = '100%';
+
+      // Update summary
+      statAdd.textContent = totalAdds + ' addition' + (totalAdds !== 1 ? 's' : '');
+      statDel.textContent = totalDels + ' deletion' + (totalDels !== 1 ? 's' : '');
+      statPages.textContent = pagesChanged + ' / ' + totalPages + ' pages changed';
+      statWords.textContent = totalChangedWords + ' word' + (totalChangedWords !== 1 ? 's' : '') + ' changed';
+
+      lastSimilarity = totalComparableChars > 0 ? Math.round((1 - totalChangedChars / totalComparableChars) * 100) : 100;
+      lastSimilarity = Math.max(0, Math.min(100, lastSimilarity));
+      statSim.textContent = lastSimilarity + '% similar';
+      updateQualityNote();
+      renderChangeMap();
+
+      // Show first page
+      currentTextPage = 0;
+      currentVisualPage = 0;
+      renderTextPage(0);
+      updateTextNav();
+      updateReviewActions();
+
+      setTimeout(function() {
+        progressBar.style.display = 'none';
+      }, 400);
+
+    } catch (err) {
+      PdfUtils.showToast('Comparison failed: ' + err.message, true);
+      progressBar.style.display = 'none';
+    }
+
+    compareBtnText.innerHTML = '&#8596; Run Comparison';
+    compareBtn.disabled = false;
+  });
+
+  // === Render text diff page ===
+  function renderTextPage(idx) {
+    if (idx < 0 || idx >= textResults.length) return;
+    currentTextPage = idx;
+    diffLeft.innerHTML  = textResults[idx].leftHtml;
+    diffRight.innerHTML = textResults[idx].rightHtml;
+    updateTextNav();
+    renderChangeMap();
+
+    // Sync scroll
+    diffLeft.scrollTop = 0;
+    diffRight.scrollTop = 0;
+  }
+
+  function updateTextNav() {
+    var visible = getVisiblePageIndexes();
+    var pos = visible.indexOf(currentTextPage);
+    textPrevBtn.disabled = pos <= 0;
+    textNextBtn.disabled = pos === -1 || pos >= visible.length - 1;
+    var suffix = visible.length !== totalPages ? ' (' + visible.length + ' shown)' : '';
+    textPageInd.textContent = 'Page ' + (currentTextPage + 1) + ' / ' + totalPages + suffix;
+  }
+
+  textPrevBtn.addEventListener('click', function() {
+    moveVisiblePage(-1);
+  });
+
+  textNextBtn.addEventListener('click', function() {
+    moveVisiblePage(1);
+  });
+
+  // Sync scroll between panels
+  var syncing = false;
+  diffLeft.addEventListener('scroll', function() {
+    if (syncing) return;
+    syncing = true;
+    diffRight.scrollTop = diffLeft.scrollTop;
+    syncing = false;
+  });
+  diffRight.addEventListener('scroll', function() {
+    if (syncing) return;
+    syncing = true;
+    diffLeft.scrollTop = diffRight.scrollTop;
+    syncing = false;
+  });
+
+  changedOnly.addEventListener('change', function() {
+    applyResultFilters();
+  });
+
+  changeSearch.addEventListener('input', function() {
+    applyResultFilters();
+  });
+
+  prevChangeBtn.addEventListener('click', function() {
+    moveToChangedPage(-1);
+  });
+
+  nextChangeBtn.addEventListener('click', function() {
+    moveToChangedPage(1);
+  });
+
+  copySummaryBtn.addEventListener('click', function() {
+    copySummary();
+  });
+
+  downloadReportBtn.addEventListener('click', function() {
+    downloadReport();
+  });
+
+  changeMap.addEventListener('click', function(e) {
+    var btn = e.target.closest('.change-page');
+    if (!btn) return;
+    var pageIdx = parseInt(btn.getAttribute('data-page'), 10);
+    if (!isNaN(pageIdx)) renderTextPage(pageIdx);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!resultsCard.classList.contains('on')) return;
+    if (/input|textarea|select/i.test(e.target.tagName)) return;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      currentMode === 'visual' ? moveVisualPage(1) : moveVisiblePage(1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      currentMode === 'visual' ? moveVisualPage(-1) : moveVisiblePage(-1);
+    }
+  });
+
+  // === Mode Toggle ===
+  modeText.addEventListener('click', function() {
+    currentMode = 'text';
+    modeText.classList.add('active');
+    modeVisual.classList.remove('active');
+    textDiffView.style.display = '';
+    visualDiffView.style.display = 'none';
+  });
+
+  modeVisual.addEventListener('click', function() {
+    currentMode = 'visual';
+    modeVisual.classList.add('active');
+    modeText.classList.remove('active');
+    textDiffView.style.display = 'none';
+    visualDiffView.style.display = '';
+    renderVisualPage(currentVisualPage);
+  });
+
+  // === Visual Diff ===
+  var visualModeButtons = [vmodeDiff, vmodeSlider, vmodeSbs];
+  visualModeButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      currentVMode = btn.dataset.vmode;
+      visualModeButtons.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      sliderLabel.style.display = currentVMode === 'slider' ? '' : 'none';
+      renderVisualPage(currentVisualPage);
+    });
+  });
+
+  blendSlider.addEventListener('input', function() {
+    renderVisualPage(currentVisualPage);
+  });
+
+  visualPrevBtn.addEventListener('click', function() {
+    moveVisualPage(-1);
+  });
+
+  visualNextBtn.addEventListener('click', function() {
+    moveVisualPage(1);
+  });
+
+  function moveVisualPage(direction) {
+    var nextPage = currentVisualPage + direction;
+    if (nextPage < 0 || nextPage >= totalPages) return;
+    currentVisualPage = nextPage;
+    renderVisualPage(currentVisualPage);
+  }
+
+  async function renderVisualPage(pageIdx) {
+    if (!pdfOriginal || !pdfModified) return;
+
+    var origPages = pdfOriginal.pdfDoc.numPages;
+    var modPages  = pdfModified.pdfDoc.numPages;
+
+    visualPrevBtn.disabled = pageIdx <= 0;
+    visualNextBtn.disabled = pageIdx >= totalPages - 1;
+    visualPageInd.textContent = 'Page ' + (pageIdx + 1) + ' / ' + totalPages;
+    visualMetric.textContent = 'Rendering visual comparison for page ' + (pageIdx + 1) + '...';
+
+    visualContainer.innerHTML = '<div style="text-align:center;padding:30px;color:#6b7280;font-size:0.85rem;"><span class="spinner" style="border-color:rgba(0,0,0,0.15);border-top-color:var(--afro-green);width:24px;height:24px;"></span><br>Rendering...</div>';
+
+    try {
+      var scale = 1.2;
+      var canvasOrig = null;
+      var canvasMod  = null;
+
+      if (pageIdx < origPages) {
+        canvasOrig = await PdfUtils.renderPage(pdfOriginal.pdfDoc, pageIdx + 1, scale);
+      }
+      if (pageIdx < modPages) {
+        canvasMod = await PdfUtils.renderPage(pdfModified.pdfDoc, pageIdx + 1, scale);
+      }
+
+      if (currentVMode === 'difference') {
+        renderDifferenceMode(canvasOrig, canvasMod);
+      } else if (currentVMode === 'slider') {
+        renderSliderMode(canvasOrig, canvasMod);
+      } else {
+        renderSideBySideVisual(canvasOrig, canvasMod);
+      }
+
+    } catch (err) {
+      visualContainer.innerHTML = '<div class="empty-state"><span class="empty-icon">&#9888;</span>Failed to render page: ' + escapeHtml(err.message) + '</div>';
+      visualMetric.textContent = 'Visual comparison could not render this page.';
+    }
+  }
+
+  function renderDifferenceMode(canvasOrig, canvasMod) {
+    if (!canvasOrig && !canvasMod) {
+      visualContainer.innerHTML = '<div class="empty-state"><span class="empty-icon">&#128196;</span>No pages to compare</div>';
+      return;
+    }
+
+    var w = Math.max(canvasOrig ? canvasOrig.width : 0, canvasMod ? canvasMod.width : 0);
+    var h = Math.max(canvasOrig ? canvasOrig.height : 0, canvasMod ? canvasMod.height : 0);
+
+    var origData = canvasToImageData(canvasOrig, w, h);
+    var modData = canvasToImageData(canvasMod, w, h);
+    var canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    var imageData = ctx.createImageData(w, h);
+    var out = imageData.data;
+    var changedPixels = 0;
+    var threshold = 42;
+
+    for (var i = 0; i < out.length; i += 4) {
+      var diff = Math.abs(origData[i] - modData[i]) +
+        Math.abs(origData[i + 1] - modData[i + 1]) +
+        Math.abs(origData[i + 2] - modData[i + 2]);
+
+      if (diff > threshold) {
+        changedPixels++;
+        out[i] = 239;
+        out[i + 1] = 68;
+        out[i + 2] = 68;
+        out[i + 3] = Math.min(230, 80 + diff);
+      } else {
+        out[i] = 248;
+        out[i + 1] = 250;
+        out[i + 2] = 252;
+        out[i + 3] = 255;
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+
+    // Draw original faintly underneath
+    var finalCanvas = document.createElement('canvas');
+    finalCanvas.width = w;
+    finalCanvas.height = h;
+    var fctx = finalCanvas.getContext('2d');
+
+    // Draw the original at low opacity for context
+    if (canvasOrig) {
+      fctx.globalAlpha = 0.2;
+      fctx.drawImage(canvasOrig, 0, 0);
+      fctx.globalAlpha = 1;
+    }
+
+    // Draw the difference overlay
+    fctx.drawImage(canvas, 0, 0);
+
+    visualContainer.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.className = 'visual-canvas-wrap';
+    wrap.appendChild(finalCanvas);
+    visualContainer.appendChild(wrap);
+
+    var percent = w && h ? (changedPixels / (w * h)) * 100 : 0;
+    visualMetric.textContent = 'Page ' + (currentVisualPage + 1) + ': ' + formatPercent(percent) + '% visual change detected.';
+  }
+
+  function renderSliderMode(canvasOrig, canvasMod) {
+    var w = Math.max(canvasOrig ? canvasOrig.width : 0, canvasMod ? canvasMod.width : 0);
+    var h = Math.max(canvasOrig ? canvasOrig.height : 0, canvasMod ? canvasMod.height : 0);
+
+    if (w === 0 || h === 0) {
+      visualContainer.innerHTML = '<div class="empty-state"><span class="empty-icon">&#128196;</span>No pages to compare</div>';
+      return;
+    }
+
+    var canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+
+    var blend = parseInt(blendSlider.value) / 100;
+
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    if (canvasOrig) {
+      ctx.globalAlpha = 1 - blend;
+      ctx.drawImage(canvasOrig, 0, 0);
+    }
+
+    if (canvasMod) {
+      ctx.globalAlpha = blend;
+      ctx.drawImage(canvasMod, 0, 0);
+    }
+
+    ctx.globalAlpha = 1;
+
+    visualContainer.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.className = 'visual-canvas-wrap';
+    wrap.appendChild(canvas);
+    visualContainer.appendChild(wrap);
+    visualMetric.textContent = 'Page ' + (currentVisualPage + 1) + ': slider blend view. Switch to Difference for pixel-change percentage.';
+  }
+
+  function renderSideBySideVisual(canvasOrig, canvasMod) {
+    visualContainer.innerHTML = '';
+
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;padding:8px;';
+
+    var makeCol = function(canvas, label) {
+      var col = document.createElement('div');
+      col.style.cssText = 'text-align:center;';
+      var lbl = document.createElement('div');
+      lbl.style.cssText = 'font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#374151;margin-bottom:6px;';
+      lbl.textContent = label;
+      col.appendChild(lbl);
+
+      if (canvas) {
+        canvas.style.cssText = 'max-width:100%;height:auto;border-radius:4px;border:1px solid #e5e7eb;';
+        col.appendChild(canvas);
+      } else {
+        var placeholder = document.createElement('div');
+        placeholder.style.cssText = 'padding:60px 20px;color:#9ca3af;font-size:0.85rem;font-style:italic;border:1px dashed #d1d5db;border-radius:4px;';
+        placeholder.textContent = 'No page';
+        col.appendChild(placeholder);
+      }
+      return col;
+    };
+
+    wrap.appendChild(makeCol(canvasOrig, 'Original'));
+    wrap.appendChild(makeCol(canvasMod, 'Modified'));
+    visualContainer.appendChild(wrap);
+    visualMetric.textContent = 'Page ' + (currentVisualPage + 1) + ': side-by-side visual review.';
+  }
+
+  function getCompareOptions() {
+    return {
+      granularity: diffGranularity.value || 'word',
+      ignoreWhitespace: !!ignoreWhitespace.checked,
+      ignoreCase: !!ignoreCase.checked
+    };
+  }
+
+  function comparePageText(originalText, modifiedText, pageNumber, options, originalMissing, modifiedMissing) {
+    var segments = diffTextSegments(originalText, modifiedText, options);
+    var stats = analyzeSegments(segments, originalText, modifiedText, options);
+    var status = getPageStatus(originalText, modifiedText, stats, originalMissing, modifiedMissing);
+    var changed = status !== 'same' && status !== 'no-text';
+    var pageLabel = 'Page ' + pageNumber;
+
+    return {
+      page: pageNumber,
+      leftHtml: buildSideHtml(segments, 'left') || emptyPageHtml(originalMissing ? 'Page not present in original PDF' : 'No extracted text on this page'),
+      rightHtml: buildSideHtml(segments, 'right') || emptyPageHtml(modifiedMissing ? 'Page not present in modified PDF' : 'No extracted text on this page'),
+      originalText: originalText,
+      modifiedText: modifiedText,
+      segments: segments,
+      adds: stats.adds,
+      dels: stats.dels,
+      changedWords: stats.changedWords,
+      changedChars: stats.changedChars,
+      totalChars: stats.totalChars,
+      changed: changed,
+      coarse: stats.coarse,
+      status: status,
+      label: pageLabel,
+      searchText: (pageLabel + ' ' + status + ' ' + originalText + ' ' + modifiedText).toLowerCase()
+    };
+  }
+
+  function diffTextSegments(originalText, modifiedText, options) {
+    var leftTokens = makeCompareTokens(originalText, options);
+    var rightTokens = makeCompareTokens(modifiedText, options);
+
+    if (!leftTokens.length && !rightTokens.length) return [];
+    if (!leftTokens.length) return [{ op: 'insert', leftText: '', rightText: modifiedText, coarse: false }];
+    if (!rightTokens.length) return [{ op: 'delete', leftText: originalText, rightText: '', coarse: false }];
+
+    var prefix = 0;
+    while (prefix < leftTokens.length && prefix < rightTokens.length && leftTokens[prefix].key === rightTokens[prefix].key) {
+      prefix++;
+    }
+
+    var suffix = 0;
+    while (
+      suffix + prefix < leftTokens.length &&
+      suffix + prefix < rightTokens.length &&
+      leftTokens[leftTokens.length - 1 - suffix].key === rightTokens[rightTokens.length - 1 - suffix].key
+    ) {
+      suffix++;
+    }
+
+    var segments = [];
+    for (var p = 0; p < prefix; p++) {
+      pushSegment(segments, 'equal', leftTokens[p].text, rightTokens[p].text, false);
+    }
+
+    var leftMid = leftTokens.slice(prefix, leftTokens.length - suffix);
+    var rightMid = rightTokens.slice(prefix, rightTokens.length - suffix);
+    var maxMatrixCells = 450000;
+
+    if (leftMid.length && rightMid.length && leftMid.length * rightMid.length <= maxMatrixCells) {
+      diffTokensLcs(leftMid, rightMid, segments);
+    } else if (leftMid.length || rightMid.length) {
+      if (leftMid.length) pushSegment(segments, 'delete', joinTokenText(leftMid), '', true);
+      if (rightMid.length) pushSegment(segments, 'insert', '', joinTokenText(rightMid), true);
+    }
+
+    for (var s = suffix; s > 0; s--) {
+      var leftToken = leftTokens[leftTokens.length - s];
+      var rightToken = rightTokens[rightTokens.length - s];
+      pushSegment(segments, 'equal', leftToken.text, rightToken.text, false);
+    }
+
+    return segments;
+  }
+
+  function makeCompareTokens(text, options) {
+    var raw = [];
+    if (!text) return raw;
+
+    if (options.granularity === 'line') {
+      raw = text.match(/[^\r\n]+(?:\r?\n|$)|\r?\n/g) || [text];
+    } else if (options.granularity === 'sentence') {
+      raw = text.match(/[^.!?;:]+[.!?;:]?\s*/g) || [text];
+    } else {
+      raw = text.match(/\S+\s*/g) || [text];
+    }
+
+    var tokens = [];
+    for (var i = 0; i < raw.length; i++) {
+      var key = compareKey(raw[i], options);
+      if (!key) continue;
+      tokens.push({ text: raw[i], key: key });
+    }
+    return tokens;
+  }
+
+  function compareKey(text, options) {
+    var key = String(text || '');
+    if (options.ignoreWhitespace || options.granularity !== 'line') {
+      key = key.replace(/\s+/g, ' ').trim();
+    }
+    if (options.ignoreCase) key = key.toLowerCase();
+    return key;
+  }
+
+  function diffTokensLcs(leftTokens, rightTokens, segments) {
+    var n = leftTokens.length;
+    var m = rightTokens.length;
+    var width = m + 1;
+    var size = (n + 1) * (m + 1);
+    var Table = Math.max(n, m) < 65535 ? Uint16Array : Uint32Array;
+    var dp = new Table(size);
+
+    for (var i = n - 1; i >= 0; i--) {
+      for (var j = m - 1; j >= 0; j--) {
+        if (leftTokens[i].key === rightTokens[j].key) {
+          dp[i * width + j] = dp[(i + 1) * width + (j + 1)] + 1;
+        } else {
+          var down = dp[(i + 1) * width + j];
+          var right = dp[i * width + (j + 1)];
+          dp[i * width + j] = down >= right ? down : right;
+        }
+      }
+    }
+
+    var a = 0;
+    var b = 0;
+    while (a < n && b < m) {
+      if (leftTokens[a].key === rightTokens[b].key) {
+        pushSegment(segments, 'equal', leftTokens[a].text, rightTokens[b].text, false);
+        a++;
+        b++;
+      } else if (dp[(a + 1) * width + b] >= dp[a * width + (b + 1)]) {
+        pushSegment(segments, 'delete', leftTokens[a].text, '', false);
+        a++;
+      } else {
+        pushSegment(segments, 'insert', '', rightTokens[b].text, false);
+        b++;
+      }
+    }
+
+    while (a < n) {
+      pushSegment(segments, 'delete', leftTokens[a].text, '', false);
+      a++;
+    }
+
+    while (b < m) {
+      pushSegment(segments, 'insert', '', rightTokens[b].text, false);
+      b++;
+    }
+  }
+
+  function pushSegment(segments, op, leftText, rightText, coarse) {
+    if (!leftText && !rightText) return;
+    var last = segments[segments.length - 1];
+    if (last && last.op === op && last.coarse === coarse) {
+      last.leftText += leftText || '';
+      last.rightText += rightText || '';
+      return;
+    }
+    segments.push({ op: op, leftText: leftText || '', rightText: rightText || '', coarse: !!coarse });
+  }
+
+  function joinTokenText(tokens) {
+    return tokens.map(function(token) { return token.text; }).join('');
+  }
+
+  function analyzeSegments(segments, originalText, modifiedText, options) {
+    var adds = 0;
+    var dels = 0;
+    var addChars = 0;
+    var delChars = 0;
+    var coarse = false;
+
+    for (var i = 0; i < segments.length; i++) {
+      var segment = segments[i];
+      if (segment.coarse) coarse = true;
+      if (segment.op === 'insert') {
+        adds += countWords(segment.rightText);
+        addChars += comparableLength(segment.rightText, options);
+      } else if (segment.op === 'delete') {
+        dels += countWords(segment.leftText);
+        delChars += comparableLength(segment.leftText, options);
+      }
+    }
+
+    var changedChars = Math.max(addChars, delChars);
+    var totalChars = Math.max(comparableLength(originalText, options), comparableLength(modifiedText, options));
+    return {
+      adds: adds,
+      dels: dels,
+      changedWords: adds + dels,
+      changedChars: changedChars,
+      totalChars: totalChars,
+      coarse: coarse
+    };
+  }
+
+  function getPageStatus(originalText, modifiedText, stats, originalMissing, modifiedMissing) {
+    if (originalMissing && !modifiedMissing) return 'added';
+    if (!originalMissing && modifiedMissing) return 'removed';
+    if (!String(originalText || '').trim() && !String(modifiedText || '').trim()) return 'no-text';
+    if (stats.adds > 0 || stats.dels > 0) return 'changed';
+    return 'same';
+  }
+
+  function comparableLength(text, options) {
+    return compareKey(text, options).length;
+  }
+
+  function countWords(text) {
+    var words = String(text || '').trim().match(/\S+/g);
+    return words ? words.length : 0;
+  }
+
+  function buildSideHtml(segments, side) {
+    var html = '';
+    for (var i = 0; i < segments.length; i++) {
+      var segment = segments[i];
+      if (side === 'left') {
+        if (segment.op === 'equal') html += escapeHtml(segment.leftText);
+        else if (segment.op === 'delete') html += '<span class="diff-del">' + escapeHtml(segment.leftText) + '</span>';
+      } else {
+        if (segment.op === 'equal') html += escapeHtml(segment.rightText);
+        else if (segment.op === 'insert') html += '<span class="diff-add">' + escapeHtml(segment.rightText) + '</span>';
+      }
+    }
+    return html;
+  }
+
+  function emptyPageHtml(text) {
+    return '<span style="color:#9ca3af;font-style:italic;">(' + escapeHtml(text) + ')</span>';
+  }
+
+  function getVisiblePageIndexes() {
+    if (!textResults.length) return [];
+    var query = String(changeSearch.value || '').trim().toLowerCase();
+    var onlyChanged = !!changedOnly.checked;
+    var indexes = [];
+    for (var i = 0; i < textResults.length; i++) {
+      var result = textResults[i];
+      if (onlyChanged && !result.changed) continue;
+      if (query && result.searchText.indexOf(query) === -1) continue;
+      indexes.push(i);
+    }
+    return indexes;
+  }
+
+  function applyResultFilters() {
+    renderChangeMap();
+    var visible = getVisiblePageIndexes();
+    if (!visible.length) {
+      textPrevBtn.disabled = true;
+      textNextBtn.disabled = true;
+      textPageInd.textContent = 'No matching pages';
+      diffLeft.innerHTML = emptyPageHtml('No page matches the current filter');
+      diffRight.innerHTML = emptyPageHtml('No page matches the current filter');
+      updateReviewActions();
+      return;
+    }
+    if (visible.indexOf(currentTextPage) === -1) {
+      renderTextPage(visible[0]);
+    } else {
+      updateTextNav();
+    }
+    updateReviewActions();
+  }
+
+  function moveVisiblePage(direction) {
+    var visible = getVisiblePageIndexes();
+    if (!visible.length) return;
+    var pos = visible.indexOf(currentTextPage);
+    if (pos === -1) pos = direction > 0 ? -1 : visible.length;
+    var nextPos = pos + direction;
+    if (nextPos < 0 || nextPos >= visible.length) return;
+    renderTextPage(visible[nextPos]);
+  }
+
+  function moveToChangedPage(direction) {
+    if (!textResults.length) return;
+    var changed = textResults.map(function(result, idx) {
+      return result.changed ? idx : null;
+    }).filter(function(idx) { return idx !== null; });
+    if (!changed.length) {
+      PdfUtils.showToast('No changed pages found');
+      return;
+    }
+    var currentPos = changed.indexOf(currentTextPage);
+    var nextIdx;
+    if (direction > 0) {
+      nextIdx = changed.find(function(idx) { return idx > currentTextPage; });
+      if (typeof nextIdx === 'undefined') nextIdx = changed[0];
+    } else {
+      for (var i = changed.length - 1; i >= 0; i--) {
+        if (changed[i] < currentTextPage) {
+          nextIdx = changed[i];
+          break;
+        }
+      }
+      if (typeof nextIdx === 'undefined') nextIdx = changed[changed.length - 1];
+    }
+    if (currentPos === -1 && direction < 0) nextIdx = changed[changed.length - 1];
+    renderTextPage(nextIdx);
+  }
+
+  function renderChangeMap() {
+    if (!changeMap || !textResults.length) {
+      if (changeMap) changeMap.innerHTML = '';
+      return;
+    }
+
+    var visible = getVisiblePageIndexes();
+    if (!visible.length) {
+      changeMap.innerHTML = '<div class="quality-note warn" style="margin-bottom:0;">No pages match the current filter.</div>';
+      return;
+    }
+
+    changeMap.innerHTML = visible.map(function(idx) {
+      var result = textResults[idx];
+      var classes = ['change-page', result.status];
+      if (idx === currentTextPage) classes.push('active');
+      return '<button type="button" class="' + classes.join(' ') + '" data-page="' + idx + '">' +
+        '<strong>Page ' + result.page + '</strong>' +
+        '<span>' + pageStatusLabel(result) + '</span>' +
+        '<span>+' + result.adds + ' / -' + result.dels + '</span>' +
+        '</button>';
+    }).join('');
+  }
+
+  function pageStatusLabel(result) {
+    if (result.status === 'same') return 'No text change';
+    if (result.status === 'added') return 'Added page';
+    if (result.status === 'removed') return 'Removed page';
+    if (result.status === 'no-text') return 'No extracted text';
+    return result.coarse ? 'Changed, large page' : 'Changed';
+  }
+
+  function updateQualityNote() {
+    var noTextPages = textResults.filter(function(result) { return result.status === 'no-text'; }).length;
+    var coarsePages = textResults.filter(function(result) { return result.coarse; }).length;
+    var note = 'Text compare complete: ' + pagesChanged + ' changed page' + (pagesChanged !== 1 ? 's' : '') +
+      ', ' + lastSimilarity + '% similar, ' + totalChangedWords + ' changed word' + (totalChangedWords !== 1 ? 's' : '') + '.';
+
+    qualityNote.classList.remove('warn');
+    if (noTextPages || coarsePages) {
+      qualityNote.classList.add('warn');
+      if (noTextPages) note += ' ' + noTextPages + ' page' + (noTextPages !== 1 ? 's' : '') + ' had no extractable text; use visual diff for scanned or image-only pages.';
+      if (coarsePages) note += ' Large-page diff was summarized to keep the browser responsive.';
+    } else {
+      note += ' Use the page map and next-change buttons to review only the pages that matter.';
+    }
+    qualityNote.textContent = note;
+  }
+
+  function updateReviewActions() {
+    var hasResults = textResults.length > 0;
+    prevChangeBtn.disabled = !hasResults || pagesChanged === 0;
+    nextChangeBtn.disabled = !hasResults || pagesChanged === 0;
+    copySummaryBtn.disabled = !hasResults;
+    downloadReportBtn.disabled = !hasResults;
+  }
+
+  function buildSummaryText() {
+    if (!textResults.length) return 'No PDF comparison has been run yet.';
+    return [
+      'AfroTools PDF Compare Summary',
+      'Original: ' + (pdfOriginal ? pdfOriginal.fileName : 'n/a') + ' (' + (pdfOriginal ? pdfOriginal.pageCount : 0) + ' pages)',
+      'Modified: ' + (pdfModified ? pdfModified.fileName : 'n/a') + ' (' + (pdfModified ? pdfModified.pageCount : 0) + ' pages)',
+      'Compared pages: ' + totalPages,
+      'Changed pages: ' + pagesChanged,
+      'Additions: ' + totalAdds,
+      'Deletions: ' + totalDels,
+      'Similarity: ' + lastSimilarity + '%',
+      'Settings: ' + (lastOptions ? lastOptions.granularity : 'word') + ', ignore whitespace=' + (lastOptions && lastOptions.ignoreWhitespace ? 'yes' : 'no') + ', ignore case=' + (lastOptions && lastOptions.ignoreCase ? 'yes' : 'no')
+    ].join('\n');
+  }
+
+  function copySummary() {
+    var text = buildSummaryText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        PdfUtils.showToast('Comparison summary copied');
+      }).catch(function() {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', 'readonly');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    PdfUtils.showToast('Comparison summary copied');
+  }
+
+  function downloadReport() {
+    var report = buildReportText();
+    var name = safeFileBase(pdfOriginal ? pdfOriginal.fileName : 'original') + '_vs_' +
+      safeFileBase(pdfModified ? pdfModified.fileName : 'modified') + '_compare-report.txt';
+    PdfUtils.downloadBlob(new Blob([report], { type: 'text/plain;charset=utf-8' }), name);
+  }
+
+  function buildReportText() {
+    var lines = [buildSummaryText(), '', 'Page Review'];
+    textResults.forEach(function(result) {
+      lines.push('');
+      lines.push('Page ' + result.page + ' - ' + pageStatusLabel(result));
+      lines.push('Additions: ' + result.adds + ', deletions: ' + result.dels);
+      if (result.status === 'no-text') {
+        lines.push('Note: No extractable text was found. Use the visual diff for this page.');
+      }
+      var removed = collectSegmentText(result.segments, 'delete');
+      var added = collectSegmentText(result.segments, 'insert');
+      if (removed) lines.push('Removed: ' + truncateReportText(removed, 900));
+      if (added) lines.push('Added: ' + truncateReportText(added, 900));
+    });
+    lines.push('');
+    lines.push('Privacy: This report was generated in the browser. The PDFs were not uploaded by AfroTools PDF Compare.');
+    return lines.join('\n');
+  }
+
+  function collectSegmentText(segments, op) {
+    return segments.filter(function(segment) { return segment.op === op; })
+      .map(function(segment) { return op === 'insert' ? segment.rightText : segment.leftText; })
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function truncateReportText(text, limit) {
+    if (text.length <= limit) return text;
+    return text.slice(0, limit - 20) + '... [truncated]';
+  }
+
+  function safeFileBase(name) {
+    return String(name || 'document').replace(/\.pdf$/i, '').replace(/[^a-z0-9_-]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 50) || 'document';
+  }
+
+  function canvasToImageData(sourceCanvas, width, height) {
+    var canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, width, height);
+    if (sourceCanvas) ctx.drawImage(sourceCanvas, 0, 0);
+    return ctx.getImageData(0, 0, width, height).data;
+  }
+
+  function formatPercent(value) {
+    if (value >= 10) return value.toFixed(1);
+    if (value >= 1) return value.toFixed(2);
+    return value.toFixed(3);
+  }
+
+  // === FAQs ===
+  document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = q.closest('.faq-item');
+      item.classList.toggle('open');
+    });
+  });
+
+  // === Helpers ===
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+  }
+
+})();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultsCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Pdf Compare" tool-slug="pdf-compare"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script>
+(function(){
+  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza Hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Ready","Tayari"],["Error","Hitilafu"]]);
+  const attrMap = textMap;
+  function swapText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(swapText);
+    root.querySelectorAll && root.querySelectorAll('[placeholder],[aria-label],button,input[type="button"],input[type="submit"]').forEach(el => {
+      ['placeholder','aria-label','value','title'].forEach(attr => {
+        const value = el.getAttribute(attr);
+        if (value && attrMap.has(value.trim())) el.setAttribute(attr, attrMap.get(value.trim()));
+      });
+    });
+  }
+  function run(){ walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) swapText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

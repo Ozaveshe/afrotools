@@ -40,7 +40,7 @@ exports.handler = async function(event) {
   if (qs.platform) parts.push('platform=eq.' + encodeURIComponent(qs.platform));
   if (qs.country) parts.push('country=eq.' + encodeURIComponent(qs.country));
 
-  var limit = Math.min(parseInt(qs.limit, 10) || 50, 100);
+  var limit = Math.min(parseInt(qs.limit, 10) || 50, 500);
   parts.push('limit=' + limit);
 
   try {

@@ -25,6 +25,12 @@ function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function writeFileAtomic(filePath, contents) {
+  const tempPath = filePath + ".tmp-" + process.pid + "-" + Date.now();
+  fs.writeFileSync(tempPath, contents, "utf8");
+  fs.renameSync(tempPath, filePath);
+}
+
 function escapeHtmlAttribute(value) {
   return String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 }
@@ -117,6 +123,16 @@ function getMetaContent(html, attrName, attrValue) {
 
   const contentMatch = tag.match(/\bcontent=["']([^"']+)["']/i);
   return contentMatch ? contentMatch[1] : null;
+}
+
+function getPageTitle(html) {
+  const match = html.match(/<title>([\s\S]*?)<\/title>/i);
+  if (!match) return null;
+
+  return String(match[1] || "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function insertBeforeHeadEnd(html, lines) {
@@ -270,13 +286,21 @@ function mutateSchemaImage(schema, imageUrl) {
     return false;
   }
 
+  let changed = false;
+
+  if (Array.isArray(schema["@graph"])) {
+    schema["@graph"].forEach(function (entry) {
+      changed = mutateSchemaImage(entry, imageUrl) || changed;
+    });
+  }
+
   const types = Array.isArray(schema["@type"]) ? schema["@type"] : [schema["@type"]];
   const supportsImage = types.some(function (type) {
     return /WebApplication|SoftwareApplication|WebPage|CollectionPage/i.test(String(type || ""));
   });
 
   if (!supportsImage || schema.image === imageUrl) {
-    return false;
+    return changed;
   }
 
   schema.image = imageUrl;
@@ -348,25 +372,59 @@ function syncVisibleToolImage(html, relativePath) {
 
 function applyFallbacks(html, filePath) {
   if (!html.includes("</head>")) return { html, changed: false, usedToolImage: false };
-  if (!/<meta\s+(property|name)=["']og:title["']/i.test(html)) return { html, changed: false, usedToolImage: false };
   if (isRedirectLike(html, filePath)) return { html, changed: false, usedToolImage: false };
 
   let next = html;
   let changed = false;
 
   const preferredToolImage = getPreferredToolImage(filePath, html);
+  const hasOgTitle = /<meta\s+(property|name)=["']og:title["']/i.test(html);
+
+  if (!hasOgTitle && !preferredToolImage) {
+    return { html, changed: false, usedToolImage: false };
+  }
+
   const targetImage = preferredToolImage ? preferredToolImage.absoluteUrl : DEFAULT_IMAGE;
   const existingOgImage = getMetaContent(next, "property", "og:image");
   const existingTwitterImage = getMetaContent(next, "name", "twitter:image");
+  const pageTitle = getPageTitle(next);
+  const pageDescription = getMetaContent(next, "name", "description");
 
-  if (existingOgImage !== targetImage) {
-    next = upsertMetaContent(next, "property", "og:image", targetImage, "property", "og:description");
-    changed = true;
+  if (preferredToolImage) {
+    if (pageTitle && !getMetaContent(next, "property", "og:title")) {
+      next = upsertMetaContent(next, "property", "og:title", pageTitle, "name", "description");
+      changed = true;
+    }
+
+    if (pageDescription && !getMetaContent(next, "property", "og:description")) {
+      next = upsertMetaContent(next, "property", "og:description", pageDescription, "property", "og:title");
+      changed = true;
+    }
+
+    if (!getMetaContent(next, "name", "twitter:card")) {
+      next = upsertMetaContent(next, "name", "twitter:card", "summary_large_image", "property", "og:site_name");
+      changed = true;
+    }
+
+    if (pageTitle && !getMetaContent(next, "name", "twitter:title")) {
+      next = upsertMetaContent(next, "name", "twitter:title", pageTitle, "name", "twitter:card");
+      changed = true;
+    }
+
+    if (pageDescription && !getMetaContent(next, "name", "twitter:description")) {
+      next = upsertMetaContent(next, "name", "twitter:description", pageDescription, "name", "twitter:title");
+      changed = true;
+    }
   }
 
-  if (existingTwitterImage !== targetImage) {
+  if (preferredToolImage || !existingOgImage) {
+    next = upsertMetaContent(next, "property", "og:image", targetImage, "property", "og:description");
+    changed = existingOgImage !== targetImage || changed;
+  }
+
+  if (preferredToolImage || !existingTwitterImage) {
     next = upsertMetaContent(next, "name", "twitter:image", targetImage, "name", "twitter:description");
-    changed = true;
+    changed = existingTwitterImage !== targetImage || changed;
   }
 
   if (preferredToolImage) {
@@ -394,14 +452,15 @@ function applyFallbacks(html, filePath) {
       changed = true;
     }
   } else {
+    const usingDefaultImage = !existingOgImage || existingOgImage === DEFAULT_IMAGE;
     const widthBefore = getMetaContent(next, "property", "og:image:width");
-    if (widthBefore !== DEFAULT_WIDTH) {
+    if (usingDefaultImage && widthBefore !== DEFAULT_WIDTH) {
       next = upsertMetaContent(next, "property", "og:image:width", DEFAULT_WIDTH, "property", "og:image");
       changed = true;
     }
 
     const heightBefore = getMetaContent(next, "property", "og:image:height");
-    if (heightBefore !== DEFAULT_HEIGHT) {
+    if (usingDefaultImage && heightBefore !== DEFAULT_HEIGHT) {
       next = upsertMetaContent(next, "property", "og:image:height", DEFAULT_HEIGHT, "property", "og:image:width");
       changed = true;
     }
@@ -425,7 +484,7 @@ function main() {
 
     if (!result.changed) continue;
 
-    fs.writeFileSync(file, result.html, "utf8");
+    writeFileAtomic(file, result.html);
     patched.push(path.relative(ROOT, file).replace(/\\/g, "/"));
     if (result.usedToolImage) {
       toolImagePages += 1;

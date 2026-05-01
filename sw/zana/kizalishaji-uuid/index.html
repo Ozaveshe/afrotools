@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kizalishaji UUID - UUID v4, v7, ULID na NanoID | AfroTools</title>
+<meta name="description" content="Tengeneza UUID v4, UUID v7, ULID na NanoID-style identifiers kwenye browser, pamoja na anatomy, timestamp sorting na export.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/kizalishaji-uuid/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kizalishaji-uuid/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/uuid-generator/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/uuid-generator/">
+
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Kizalishaji UUID - UUID v4, v7, ULID na NanoID | AfroTools">
+<meta property="og:description" content="Tengeneza UUID v4, UUID v7, ULID na NanoID-style identifiers kwenye browser, pamoja na anatomy, timestamp sorting na export.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/kizalishaji-uuid/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kizalishaji UUID - UUID v4, v7, ULID na NanoID | AfroTools">
+<meta name="twitter:description" content="Tengeneza UUID v4, UUID v7, ULID na NanoID-style identifiers kwenye browser, pamoja na anatomy, timestamp sorting na export.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<style>
+  :root{
+    --ink:#101828;
+    --muted:#5f6f86;
+    --line:#d8e2ee;
+    --soft:#f5f8fc;
+    --panel:#fff;
+    --blue:#0b66d8;
+    --green:#087443;
+    --amber:#a15c07;
+    --red:#b42318;
+    --purple:#6941c6;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#edf3f8;color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+  .hero{background:#101828;color:#fff;padding:44px 0 38px}
+  .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
+  .crumb{font-size:13px;color:#c5d0df;margin-bottom:16px}
+  .crumb a{color:#dce6f3;text-decoration:none}
+  .hero h1{font-size:42px;line-height:1.08;margin:0 0 14px;font-weight:800;color:#fff;max-width:860px}
+  .lead{font-size:18px;line-height:1.55;color:#d5deea;max-width:850px;margin:0 0 22px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:800}
+  .main{padding:26px 0 64px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:16px;align-items:start}
+  .stack{display:grid;gap:16px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 12px 30px rgba(16,24,40,.07)}
+  .panel-head{padding:16px 18px;border-bottom:1px solid var(--line);background:#f9fbfd;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .panel-title{font-size:17px;font-weight:800;margin:0}
+  .panel-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .panel-body{padding:18px}
+  label{display:grid;gap:6px;font-size:13px;font-weight:800;color:#344054}
+  textarea,input,select{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
+  textarea:focus,input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,102,216,.13)}
+  textarea{min-height:120px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
+  .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
+  button:hover{border-color:var(--blue);color:var(--blue)}
+  .primary{background:var(--blue);border-color:var(--blue);color:#fff}
+  .primary:hover{background:#0755b7;color:#fff}
+  .danger{background:#fef3f2;border-color:#fecdca;color:#b42318}
+  .pill{display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);padding:6px 10px;font-size:12px;font-weight:800}
+  .good{background:#ecfdf3;color:#067647;border-color:#abefc6}
+  .warn{background:#fffaeb;color:#93370d;border-color:#fedf89}
+  .bad{background:#fef3f2;color:#b42318;border-color:#fecdca}
+  .id-list{display:grid;gap:8px;max-height:420px;overflow:auto}
+  .id-card{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid #e4eaf2;border-radius:8px;background:#fbfdff;padding:10px}
+  .id-card code{font-family:var(--mono);font-size:13px;word-break:break-all}
+  .id-card button{padding:7px 9px}
+  .output{font-family:var(--mono);font-size:13px;line-height:1.55;background:#101828;color:#eef4ff;border-radius:8px;padding:14px;overflow:auto;word-break:break-word}
+  .light-output{font-family:var(--mono);font-size:13px;line-height:1.55;background:#fbfdff;border:1px solid #e4eaf2;border-radius:8px;padding:12px;overflow:auto;word-break:break-word;min-height:48px}
+  .messages{display:grid;gap:8px}
+  .message{border-radius:8px;border:1px solid var(--line);padding:10px 12px;font-size:13px;line-height:1.45}
+  .diff{display:grid;gap:8px}
+  .diff-row{display:grid;grid-template-columns:130px 1fr;gap:10px;border:1px solid #e4eaf2;border-radius:8px;background:#fbfdff;padding:10px;font-size:13px}
+  .diff-row b{color:#344054}
+  .diff-row code{font-family:var(--mono);word-break:break-all}
+  .source-list{display:grid;gap:10px}
+  .source-row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid #e4eaf2;border-radius:8px;padding:11px;background:#fbfdff}
+  .source-row a{color:#0b66d8;font-weight:800}
+  .source-row span{font-size:12px;color:var(--muted)}
+  .source-row div span{display:block;margin-top:4px}
+  .source-row > span{white-space:nowrap}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tab{padding:8px 11px}
+  .tab.active{background:#eaf3ff;border-color:#a8cfff;color:#0b66d8}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+  .seg-time{color:#2563eb}.seg-ver{color:#ea580c}.seg-var{color:#7c3aed}.seg-rand{color:#059669}.seg-dash{color:#667085}
+  .big-id{font-family:var(--mono);font-size:16px;line-height:1.7;word-break:break-all}
+  .mini{font-size:12px;color:var(--muted);line-height:1.5}
+  .faq{width:min(900px,calc(100% - 32px));margin:18px auto 0;display:grid;gap:8px}
+  details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
+  summary{font-weight:800;cursor:pointer}
+  details p{color:var(--muted);line-height:1.6;margin:10px 0 0}
+  @media(max-width:960px){
+    .grid{grid-template-columns:1fr}
+    .field-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:560px){
+    .wrap{width:min(100% - 20px,1200px)}
+    .hero{padding:30px 0}
+    .hero h1{font-size:30px}
+    .lead{font-size:16px}
+    .field-grid,.diff-row,.id-card{grid-template-columns:1fr}
+    .panel-head{display:block}
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kizalishaji UUID","url":"https://afrotools.com/sw/zana/kizalishaji-uuid/","description":"Tengeneza UUID v4, UUID v7, ULID na NanoID-style identifiers kwenye browser, pamoja na anatomy, timestamp sorting na export.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"DeveloperApplication","operatingSystem":"Any"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Kizalishaji UUID","item":"https://afrotools.com/sw/zana/kizalishaji-uuid/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kizalishaji UUID hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa planning, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch."}}]}</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Zana za Developer</a> / UUID Kizalishaji</div>
+    <h1>Tengeneza IDs with the tradeoffs visible.</h1>
+    <p class="lead">Create UUID v4, UUID v7, ULID and NanoID-style identifiers locally. Inspect timestamps, random bits, collision risk, sort behavior and database usage before choosing an ID format.</p>
+    <div class="chips" aria-label="Tool capabilities">
+      <span class="chip">UUID v7 sortable IDs</span>
+      <span class="chip">Local crypto randomness</span>
+      <span class="chip">Collision math</span>
+      <span class="chip">Database snippets</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kizalishaji UUID kwa Kiswahili.</strong> Tengeneza identifiers kwa databases, APIs na tests. Collision risk ni makadirio, si dhamana kwa mifumo yote. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source output, provider docs na production environment kabla ya launch.</span></div></section>
+  <div class="wrap grid">
+    <section class="stack" aria-label="ID generator">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Tengeneza IDs</h2>
+            <div class="panel-sub">Everything runs in this browser using Web Crypto where randomness is needed.</div>
+          </div>
+          <div class="row" id="statusLine"></div>
+        </div>
+        <div class="panel-body stack">
+          <div class="field-grid">
+            <label for="idType">ID type
+              <select id="idType">
+                <option value="uuidv7">UUID v7, sortable</option>
+                <option value="uuidv4">UUID v4, random</option>
+                <option value="ulid">ULID, sortable text</option>
+                <option value="nanoid">NanoID-style</option>
+              </select>
+            </label>
+            <label for="countInput">Count
+              <input id="countInput" type="number" min="1" max="1000" value="25">
+            </label>
+            <label for="formatSelect">UUID format
+              <select id="formatSelect">
+                <option value="canonical">canonical lowercase</option>
+                <option value="uppercase">uppercase</option>
+                <option value="nohyphen">no hyphens</option>
+                <option value="braces">with braces</option>
+                <option value="urn">URN</option>
+              </select>
+            </label>
+            <label for="nanoLength">NanoID length
+              <input id="nanoLength" type="number" min="4" max="64" value="21">
+            </label>
+            <label for="nanoAlphabet">NanoID alphabet
+              <input id="nanoAlphabet" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-">
+            </label>
+            <label for="prefixInput">Optional prefix
+              <input id="prefixInput" placeholder="usr_">
+            </label>
+          </div>
+          <div class="row">
+            <button class="primary" id="generateBtn" type="button">Tengeneza</button>
+            <button id="copyAllBtn" type="button">Nakili Zote</button>
+            <button id="downloadCsvBtn" type="button">Pakua CSV</button>
+            <button id="downloadJsonBtn" type="button">Pakua JSON</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Tengenezad IDs</h2>
+            <div class="panel-sub" id="generatedSub">Fresh IDs appear here.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="id-list" id="idList"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Validate and Inspect</h2>
+            <div class="panel-sub">Paste any UUID, ULID or generated ID to inspect format and anatomy.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <label for="inspectInput">ID to inspect</label>
+          <input id="inspectInput" spellcheck="false">
+          <div class="light-output big-id" id="coloredId"></div>
+          <div class="diff" id="anatomyOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Collision Calculator</h2>
+            <div class="panel-sub">Birthday-bound estimate for random identifier spaces.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="field-grid">
+            <label for="collisionBits">Random bits
+              <select id="collisionBits">
+                <option value="122">UUID v4, 122 random bits</option>
+                <option value="74">UUID v7, about 74 random bits</option>
+                <option value="80">ULID, 80 random bits per millisecond</option>
+                <option value="126">NanoID 21 default alphabet, about 126 bits</option>
+                <option value="custom">Custom</option>
+              </select>
+            </label>
+            <label for="customBits">Custom bits
+              <input id="customBits" type="number" min="1" max="256" value="96">
+            </label>
+            <label for="collisionCount">IDs generated
+              <input id="collisionCount" value="1000000000">
+            </label>
+          </div>
+          <div class="row">
+            <button class="primary" id="collisionBtn" type="button">Calculate Risk</button>
+          </div>
+          <div class="messages" id="collisionOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Implementation Snippets</h2>
+            <div class="panel-sub">Practical storage patterns for generated IDs.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="tabs">
+            <button class="tab active" data-tab="postgres" type="button">Postgres</button>
+            <button class="tab" data-tab="mysql" type="button">MySQL</button>
+            <button class="tab" data-tab="prisma" type="button">Prisma</button>
+            <button class="tab" data-tab="javascript" type="button">JavaScript</button>
+          </div>
+          <div class="tab-panel active" id="tab-postgres"><pre class="output" id="postgresSnippet"></pre></div>
+          <div class="tab-panel" id="tab-mysql"><pre class="output" id="mysqlSnippet"></pre></div>
+          <div class="tab-panel" id="tab-prisma"><pre class="output" id="prismaSnippet"></pre></div>
+          <div class="tab-panel" id="tab-javascript"><pre class="output" id="jsSnippet"></pre></div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="stack" aria-label="ID guidance">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Recommendation</h2>
+            <div class="panel-sub">Which format fits the selected use case?</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="recommendationOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Format Facts</h2>
+            <div class="panel-sub">Bits, sorting and leakage tradeoffs.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="diff" id="factsOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Onyos</h2>
+            <div class="panel-sub">Things to check before production use.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="warningOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Reference Sources</h2>
+            <div class="panel-sub">Specs and docs behind this tool.</div>
+          </div>
+        </div>
+        <div class="panel-body source-list">
+          <div class="source-row"><div><a href="https://www.rfc-editor.org/rfc/rfc9562.html" target="_blank" rel="noopener">RFC 9562 UUIDs</a><span>Current UUID specification, including UUID v4, v7, variants and layouts.</span></div><span>IETF RFC</span></div>
+          <div class="source-row"><div><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" target="_blank" rel="noopener">MDN crypto.randomUUID</a><span>Vinjarir-native UUID v4 generation with cryptographically secure randomness.</span></div><span>MDN</span></div>
+          <div class="source-row"><div><a href="https://github.com/ulid/spec" target="_blank" rel="noopener">ULID specification</a><span>Crockford Base32, 48-bit timestamp, 80-bit randomness and lexical sortability.</span></div><span>Spec</span></div>
+          <div class="source-row"><div><a href="https://github.com/ai/nanoid" target="_blank" rel="noopener">Nano ID project</a><span>URL-friendly random IDs, custom alphabet and collision-size guidance.</span></div><span>Project docs</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<afro-related-tools category="developer" current="uuid-generator"></afro-related-tools>
+
+<section class="faq">
+  <details>
+    <summary>Should I use UUID v4 or UUID v7 for database primary keys?</summary>
+    <p>UUID v4 is excellent for opaque random IDs. UUID v7 includes a Unix-millisecond timestamp prefix, so new IDs sort roughly by creation time and are usually friendlier to database indexes.</p>
+  </details>
+  <details>
+    <summary>Does UUID v7 leak information?</summary>
+    <p>Yes, it leaks approximate creation time. That is usually fine for internal database keys, but may be undesirable for public identifiers where timing reveals business activity.</p>
+  </details>
+  <details>
+    <summary>Are NanoID-style IDs official UUIDs?</summary>
+    <p>Hapana. NanoID-style IDs are compact random strings. They are useful for public slugs and short references, but they do not carry UUID version or variant structure.</p>
+  </details>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var crockford = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  var lastIds = [];
+  function $(id){ return document.getElementById(id); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
+  }
+  function randomBytes(length){
+    var bytes = new Uint8Array(length);
+    crypto.getRandomValues(bytes);
+    return bytes;
+  }
+  function hex(bytes){
+    return Array.from(bytes).map(function(byte){ return byte.toString(16).padStart(2, '0'); }).join('');
+  }
+  function formatUuidFromBytes(bytes){
+    var h = hex(bytes);
+    return h.slice(0,8) + '-' + h.slice(8,12) + '-' + h.slice(12,16) + '-' + h.slice(16,20) + '-' + h.slice(20);
+  }
+  function uuidv4(){
+    if (crypto.randomUUID) return crypto.randomUUID();
+    var bytes = randomBytes(16);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    return formatUuidFromBytes(bytes);
+  }
+  function uuidv7(){
+    var bytes = randomBytes(16);
+    var ms = BigInt(Date.now());
+    for (var i = 5; i >= 0; i--) {
+      bytes[i] = Number(ms & 0xffn);
+      ms >>= 8n;
+    }
+    bytes[6] = (bytes[6] & 0x0f) | 0x70;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    return formatUuidFromBytes(bytes);
+  }
+  function encodeBase32(value, length){
+    var out = '';
+    for (var i = 0; i < length; i++) {
+      out = crockford[Number(value & 31n)] + out;
+      value >>= 5n;
+    }
+    return out;
+  }
+  function ulid(){
+    var time = encodeBase32(BigInt(Date.now()), 10);
+    var bytes = randomBytes(10);
+    var rand = 0n;
+    bytes.forEach(function(byte){ rand = (rand << 8n) | BigInt(byte); });
+    return time + encodeBase32(rand, 16);
+  }
+  function nanoid(){
+    var alphabet = $('nanoAlphabet').value || '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-';
+    var size = Math.max(4, Math.min(64, Number($('nanoLength').value || 21)));
+    var mask = 1;
+    while (mask < alphabet.length - 1) mask = (mask << 1) | 1;
+    var id = '';
+    while (id.length < size) {
+      var bytes = randomBytes(Math.ceil(size * 1.6));
+      for (var i = 0; i < bytes.length && id.length < size; i++) {
+        var index = bytes[i] & mask;
+        if (index < alphabet.length) id += alphabet[index];
+      }
+    }
+    return id;
+  }
+  function applyUuidFormat(id){
+    var format = $('formatSelect').value;
+    if (!/^([0-9a-f]{8}-){1}[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return id;
+    if (format === 'uppercase') return id.toUpperCase();
+    if (format === 'nohyphen') return id.replace(/-/g, '');
+    if (format === 'braces') return '{' + id + '}';
+    if (format === 'urn') return 'urn:uuid:' + id;
+    return id.toLowerCase();
+  }
+  function generateOne(){
+    var type = $('idType').value;
+    var id = type === 'uuidv4' ? uuidv4() : type === 'uuidv7' ? uuidv7() : type === 'ulid' ? ulid() : nanoid();
+    id = type.indexOf('uuid') === 0 ? applyUuidFormat(id) : id;
+    return ($('prefixInput').value || '') + id;
+  }
+  function copyText(text, button){
+    navigator.clipboard.writeText(text || '').then(function(){
+      if (!button) return;
+      var original = button.textContent;
+      button.textContent = 'Copied';
+      setTimeout(function(){ button.textContent = original; }, 1200);
+    });
+  }
+  function generate(){
+    var count = Math.max(1, Math.min(1000, Number($('countInput').value || 1)));
+    lastIds = [];
+    for (var i = 0; i < count; i++) lastIds.push(generateOne());
+    $('generatedSub').textContent = count + ' ' + labelFor($('idType').value) + ' generated locally.';
+    $('statusLine').innerHTML = '<span class="pill good">' + count + ' generated</span>';
+    renderIds();
+    $('inspectInput').value = lastIds[0] || '';
+    inspect();
+    renderGuidance();
+    renderSnippets();
+  }
+  function labelFor(type){
+    return type === 'uuidv4' ? 'UUID v4' : type === 'uuidv7' ? 'UUID v7' : type === 'ulid' ? 'ULID' : 'NanoID-style';
+  }
+  function renderIds(){
+    $('idList').innerHTML = lastIds.map(function(id){
+      return '<div class="id-card"><code>' + esc(id) + '</code><button type="button" data-copy="' + esc(id) + '">Copy</button></div>';
+    }).join('');
+  }
+  function download(content, filename, mime){
+    var blob = new Blob([content], { type:mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  function normalizeUuid(value){
+    var id = String(value || '').trim().replace(/^urn:uuid:/i, '').replace(/[{}-]/g, '').toLowerCase();
+    if (!/^[0-9a-f]{32}$/.test(id)) return null;
+    return id.slice(0,8) + '-' + id.slice(8,12) + '-' + id.slice(12,16) + '-' + id.slice(16,20) + '-' + id.slice(20);
+  }
+  function uuidVariant(firstHex){
+    var value = parseInt(firstHex, 16);
+    if ((value & 8) === 0) return 'NCS reserved';
+    if ((value & 12) === 8) return 'RFC 4122 / RFC 9562';
+    if ((value & 14) === 12) return 'Microsoft reserved';
+    return 'Future reserved';
+  }
+  function inspect(){
+    var raw = $('inspectInput').value.trim();
+    var withoutPrefix = raw.replace(/^[-_A-Za-z0-9]{1,20}_/, function(prefix){
+      return raw.slice(prefix.length);
+    });
+    var uuid = normalizeUuid(raw) || normalizeUuid(withoutPrefix);
+    var rows = [];
+    if (uuid) {
+      var parts = uuid.split('-');
+      var version = parts[2][0];
+      var variant = uuidVariant(parts[3][0]);
+      var color = '<span class="seg-time">' + esc(parts[0]) + '</span><span class="seg-dash">-</span><span class="seg-time">' + esc(parts[1]) + '</span><span class="seg-dash">-</span><span class="seg-ver">' + esc(parts[2][0]) + '</span><span class="seg-rand">' + esc(parts[2].slice(1)) + '</span><span class="seg-dash">-</span><span class="seg-var">' + esc(parts[3][0]) + '</span><span class="seg-rand">' + esc(parts[3].slice(1)) + '</span><span class="seg-dash">-</span><span class="seg-rand">' + esc(parts[4]) + '</span>';
+      $('coloredId').innerHTML = color;
+      rows.push(['Format', 'UUID']);
+      rows.push(['Version', version + (version === '7' ? ', Unix-time ordered' : version === '4' ? ', random' : '')]);
+      rows.push(['Variant', variant]);
+      rows.push(['Canonical', uuid]);
+      if (version === '7') {
+        var ms = parseInt(parts[0] + parts[1], 16);
+        rows.push(['Timestamp', new Date(ms).toISOString()]);
+        rows.push(['Random bits', 'About 74 bits after timestamp, version and variant fields']);
+      } else if (version === '4') {
+        rows.push(['Random bits', '122 bits']);
+      }
+    } else if (/^[0-9A-HJKMNP-TV-Z]{26}$/.test(raw)) {
+      var timePart = raw.slice(0, 10);
+      var value = 0n;
+      for (var i = 0; i < timePart.length; i++) value = value * 32n + BigInt(crockford.indexOf(timePart[i]));
+      $('coloredId').innerHTML = '<span class="seg-time">' + esc(raw.slice(0, 10)) + '</span><span class="seg-rand">' + esc(raw.slice(10)) + '</span>';
+      rows.push(['Format', 'ULID']);
+      rows.push(['Timestamp', new Date(Number(value)).toISOString()]);
+      rows.push(['Random bits', '80 bits']);
+      rows.push(['Sort behavior', 'Lexicographic by timestamp prefix']);
+    } else if (raw) {
+      $('coloredId').textContent = raw;
+      rows.push(['Format', 'Custom or NanoID-style']);
+      rows.push(['Length', String(raw.length)]);
+      var configuredAlphabetSize = $('idType').value === 'nanoid' ? ($('nanoAlphabet').value || '').length : uniqueChars(raw);
+      rows.push(['Entropy estimate', entropyFor(raw.length, configuredAlphabetSize).toFixed(1) + ' bits based on ' + (configuredAlphabetSize === uniqueChars(raw) ? 'observed' : 'configured') + ' alphabet']);
+      rows.push(['Sort behavior', 'Random, not time-sortable']);
+    } else {
+      $('coloredId').textContent = '';
+      rows.push(['Status', 'Generate or paste an ID to inspect it.']);
+    }
+    $('anatomyOutput').innerHTML = rows.map(function(row){ return '<div class="diff-row"><b>' + esc(row[0]) + '</b><code>' + esc(row[1]) + '</code></div>'; }).join('');
+  }
+  function uniqueChars(value){
+    return new Set(String(value).split('')).size || 1;
+  }
+  function entropyFor(length, alphabetLength){
+    return length * Math.log2(Math.max(1, alphabetLength));
+  }
+  function renderGuidance(){
+    var type = $('idType').value;
+    var rec = [];
+    if (type === 'uuidv7') {
+      rec.push(['good','Good default for database primary keys when you want UUID compatibility plus creation-time ordering.']);
+      rec.push(['warn','Leaks approximate creation time. Avoid for public IDs if timing reveals sensitive activity.']);
+    } else if (type === 'uuidv4') {
+      rec.push(['good','Good for opaque public identifiers and correlation IDs where time ordering is not needed.']);
+      rec.push(['warn','Random insertion can fragment some B-tree indexes at high write volume.']);
+    } else if (type === 'ulid') {
+      rec.push(['good','Readable, URL-safe and lexicographically sortable. Useful for logs and client-facing references.']);
+      rec.push(['warn','Not a UUID. Store as text, and decide whether timestamp leakage is acceptable.']);
+    } else {
+      rec.push(['good','Compact and URL-friendly. Useful for public slugs, invites, short references and filenames.']);
+      rec.push(['warn','Collision risk depends on length and alphabet. Keep enough entropy for your volume.']);
+    }
+    $('recommendationOutput').innerHTML = rec.map(function(item){ return '<div class="message ' + item[0] + '">' + esc(item[1]) + '</div>'; }).join('');
+    var facts = factsFor(type);
+    $('factsOutput').innerHTML = facts.map(function(row){ return '<div class="diff-row"><b>' + esc(row[0]) + '</b><code>' + esc(row[1]) + '</code></div>'; }).join('');
+    var warnings = warningsFor(type);
+    $('warningOutput').innerHTML = warnings.map(function(item){ return '<div class="message ' + item[0] + '">' + esc(item[1]) + '</div>'; }).join('');
+  }
+  function factsFor(type){
+    if (type === 'uuidv7') return [['Length','36 chars canonical, 128 bits total'],['Randomness','About 74 random bits plus 48-bit Unix millisecond timestamp'],['Sort','Roughly chronological'],['Standard','RFC 9562']];
+    if (type === 'uuidv4') return [['Length','36 chars canonical, 128 bits total'],['Randomness','122 random bits'],['Sort','Random'],['Standard','RFC 9562 and browser crypto.randomUUID']];
+    if (type === 'ulid') return [['Length','26 chars'],['Randomness','80 random bits plus 48-bit millisecond timestamp'],['Sort','Lexicographic chronological'],['Alphabet','Crockford Base32']];
+    return [['Length',$('nanoLength').value + ' chars'],['Randomness','About ' + entropyFor(Number($('nanoLength').value || 21), ($('nanoAlphabet').value || '').length).toFixed(1) + ' bits'],['Sort','Random'],['Alphabet size',String(($('nanoAlphabet').value || '').length)]];
+  }
+  function warningsFor(type){
+    var list = [];
+    if (!window.crypto || !crypto.getRandomValues) list.push(['bad','Secure browser randomness is unavailable. Do not use generated IDs.']);
+    if (type === 'uuidv7' || type === 'ulid') list.push(['warn','Timestamp-sortable IDs expose approximate creation time.']);
+    if (type === 'nanoid') {
+      if (($('nanoAlphabet').value || '').length < 16) list.push(['bad','Alphabet is very small. Increase alphabet or length to avoid collisions.']);
+      if (Number($('nanoLength').value || 0) < 10) list.push(['warn','Short public IDs are easy to guess and collide at scale.']);
+    }
+    if (type === 'uuidv4') list.push(['warn','UUID v4 is not sequential. It is safe, but may be less index-friendly for very hot tables.']);
+    if (!list.length) list.push(['good','No obvious warnings for this selection.']);
+    return list;
+  }
+  function collision(){
+    var bits = $('collisionBits').value === 'custom' ? Number($('customBits').value || 1) : Number($('collisionBits').value);
+    var n = Number(String($('collisionCount').value || '').replace(/[,\s]/g, ''));
+    if (!Number.isFinite(bits) || bits < 1 || !Number.isFinite(n) || n < 1) {
+      $('collisionOutput').innerHTML = '<div class="message bad">Enter a valid bit count and generated ID count.</div>';
+      return;
+    }
+    var log10Exp = 2 * Math.log10(n) - Math.log10(2) - bits * Math.log10(2);
+    var html;
+    if (log10Exp > -4) {
+      var x = Math.pow(10, log10Exp);
+      var p = 1 - Math.exp(-x);
+      html = '<div class="message ' + (p > 0.01 ? 'bad' : 'warn') + '">Approx collision probability: ' + (p * 100).toPrecision(4) + '%</div>';
+    } else {
+      var invExp = Math.floor(-log10Exp);
+      var mantissa = Math.pow(10, -log10Exp - invExp);
+      html = '<div class="message good">Approx collision odds: 1 in ' + mantissa.toFixed(2) + 'e' + invExp + '</div>';
+    }
+    html += '<div class="message">This is the birthday-bound estimate for uniformly random IDs. Timestamped formats must also avoid generating too many IDs in the same millisecond with weak randomness.</div>';
+    $('collisionOutput').innerHTML = html;
+  }
+  function renderSnippets(){
+    var type = $('idType').value;
+    var uuidDefault = type === 'uuidv7' ? 'UUID v7 generated by your app or extension' : type === 'uuidv4' ? 'gen_random_uuid()' : 'text ID generated by application code';
+    $('postgresSnippet').textContent = type.indexOf('uuid') === 0
+      ? "create extension if not exists pgcrypto;\n\ncreate table orders (\n  id uuid primary key default gen_random_uuid(),\n  created_at timestamptz not null default now()\n);\n\n-- For UUID v7, generate in application code until your database/runtime exposes a vetted v7 function.\n-- Keep the column type as uuid."
+      : "create table public_links (\n  id text primary key,\n  created_at timestamptz not null default now()\n);\n\n-- Generate " + labelFor(type) + " in application code and store as text.";
+    $('mysqlSnippet').textContent = type.indexOf('uuid') === 0
+      ? "create table orders (\n  id char(36) primary key,\n  created_at timestamp default current_timestamp\n);\n\n-- MySQL UUID_TO_BIN(id, 1) is useful for time-ordered UUID layouts, but confirm behavior for UUID v7 in your version."
+      : "create table public_links (\n  id varchar(64) primary key,\n  created_at timestamp default current_timestamp\n);";
+    $('prismaSnippet').textContent = type === 'uuidv4'
+      ? "model Order {\n  id        String   @id @default(uuid()) @db.Uuid\n  createdAt DateTime @default(now())\n}"
+      : type === 'uuidv7'
+      ? "model Order {\n  id        String   @id @db.Uuid\n  createdAt DateTime @default(now())\n}\n\n// Generate UUID v7 in app code before create()."
+      : "model PublicLink {\n  id        String   @id @db.VarChar(64)\n  createdAt DateTime @default(now())\n}\n\n// Generate " + labelFor(type) + " in app code.";
+    $('jsSnippet').textContent = type === 'uuidv4'
+      ? "const id = crypto.randomUUID();\nconsole.log(id);"
+      : type === 'uuidv7'
+      ? "// Use a vetted UUID v7 library in production, or reuse this page's RFC 9562-style layout carefully.\nconst id = generateUuidV7();"
+      : type === 'ulid'
+      ? "// Use a vetted ULID package in production when monotonic same-millisecond ordering matters.\nconst id = generateUlid();"
+      : "import { customAlphabet } from 'nanoid';\n\nconst nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-', " + $('nanoLength').value + ");\nconst id = nanoid();";
+    void uuidDefault;
+  }
+  $('generateBtn').addEventListener('click', generate);
+  ['idType','formatSelect','nanoLength','nanoAlphabet','prefixInput'].forEach(function(id){ $(id).addEventListener('input', function(){ renderGuidance(); renderSnippets(); }); $(id).addEventListener('change', function(){ renderGuidance(); renderSnippets(); }); });
+  $('idList').addEventListener('click', function(event){
+    var button = event.target.closest('button[data-copy]');
+    if (!button) return;
+    copyText(button.getAttribute('data-copy'), button);
+  });
+  $('copyAllBtn').addEventListener('click', function(){ copyText(lastIds.join('\n'), this); });
+  $('downloadCsvBtn').addEventListener('click', function(){
+    download('id\n' + lastIds.map(function(id){ return '"' + String(id).replace(/"/g, '""') + '"'; }).join('\n'), 'afrotools-ids.csv', 'text/csv');
+  });
+  $('downloadJsonBtn').addEventListener('click', function(){
+    download(JSON.stringify({ type:$('idType').value, generatedAt:new Date().toISOString(), ids:lastIds }, null, 2), 'afrotools-ids.json', 'application/json');
+  });
+  $('inspectInput').addEventListener('input', inspect);
+  $('collisionBtn').addEventListener('click', collision);
+  ['collisionBits','customBits','collisionCount'].forEach(function(id){ $(id).addEventListener('input', collision); $(id).addEventListener('change', collision); });
+  document.querySelectorAll('.tab').forEach(function(button){
+    button.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === button); });
+      document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.toggle('active', panel.id === 'tab-' + button.dataset.tab); });
+    });
+  });
+  generate();
+  collision();
+})();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script class="sw-dev-runtime-localizer">
+(function(){
+  const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Free forever","Bure daima"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

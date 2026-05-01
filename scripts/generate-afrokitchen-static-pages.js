@@ -26,6 +26,11 @@ const {
   writeManifest,
   writeStaticRoutes
 } = require("./lib/afrokitchen-static");
+const {
+  buildCuisineIntelligence,
+  writeCuisineIntelligenceFiles,
+  mergeIntelligenceCollections
+} = require("./lib/afrokitchen-cuisine-intelligence");
 
 const LANDING_PATH = path.join(TOOL_DIR, "index.html");
 const RECIPE_RESEARCH_AUDIT_PATH = path.join(ROOT, "data", "afrokitchen", "recipe-research-audit.json");
@@ -358,6 +363,157 @@ function renderRecipeCollectionSummaryCard(recipe) {
           </div>`;
 }
 
+function getRecipeInsight(recipe, cuisineIntelligence) {
+  return cuisineIntelligence && cuisineIntelligence.recipes
+    ? cuisineIntelligence.recipes[recipe.slug]
+    : null;
+}
+
+function getCountryInsight(country, cuisineIntelligence) {
+  return cuisineIntelligence && cuisineIntelligence.countries
+    ? cuisineIntelligence.countries[country.country_code]
+    : null;
+}
+
+function renderRecipeIntelligenceCards(recipe, insight) {
+  if (!insight) return "";
+
+  const lens = insight.region_lens || {};
+  const notes = insight.chef_notes || {};
+  const mistakes = (notes.common_mistakes || []).slice(0, 3);
+  const cues = (notes.readiness_cues || []).slice(0, 3);
+  const pantry = (notes.pantry_notes || []).slice(0, 5);
+
+  return `${lens.name ? `<div class="ak-static-summary-card ak-intel-card">
+            <strong>Regional lane</strong>
+            <p>${escapeHtml(lens.name)}. ${escapeHtml(lens.description || "")}</p>
+          </div>` : ""}
+          ${mistakes.length ? `<div class="ak-static-summary-card ak-intel-card">
+            <strong>Chef watch-outs</strong>
+            <ul>${mistakes.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+          </div>` : ""}
+          ${cues.length ? `<div class="ak-static-summary-card ak-intel-card">
+            <strong>How you know it is ready</strong>
+            <ul>${cues.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+          </div>` : ""}
+          ${pantry.length ? `<div class="ak-static-summary-card ak-intel-card">
+            <strong>Pantry lane</strong>
+            <p>${escapeHtml(pantry.join(", "))}</p>
+          </div>` : ""}`;
+}
+
+function renderRecipePairingRail(recipe, insight) {
+  if (!insight) return "";
+
+  const notes = insight.chef_notes || {};
+  const collections = (insight.curated_collections || []).slice(0, 3);
+  const collectionLinks = collections
+    .map(
+      (collection) =>
+        `<a class="ak-support-link" href="${collection.route_path}">${escapeHtml(collection.name)}</a>`
+    )
+    .join("\n");
+
+  return `<section class="ak-intel-panel ak-recipe-intel-panel">
+    <div>
+      <div class="ak-section-kicker">Chef board</div>
+      <h2 class="ak-section-title">Build the table around ${escapeHtml(recipe.name)}</h2>
+      <p class="ak-section-sub">${escapeHtml(notes.serve_with || recipe.best_served_with || "Use the country hub to choose a side, sauce, starch, drink, or nearby dish.")}</p>
+    </div>
+    <div class="ak-intel-split">
+      <div class="ak-intel-mini">
+        <strong>Best route from here</strong>
+        <p>${escapeHtml((insight.region_lens && insight.region_lens.name) || `${recipe.country_name} national table`)}</p>
+      </div>
+      <div class="ak-intel-mini">
+        <strong>Collections to keep cooking</strong>
+        <div class="ak-intel-links">${collectionLinks || `<a class="ak-support-link" href="${recipe.country_route_path}">Explore ${escapeHtml(recipe.country_name)} recipes</a>`}</div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderCountryRegionalAtlas(country, cuisineIntelligence) {
+  const insight = getCountryInsight(country, cuisineIntelligence);
+  if (!insight || !insight.regions || !insight.regions.length) return "";
+  const hasOnlyNationalFallback = insight.regions.length === 1 && insight.regions[0].slug === "national-table";
+  if (hasOnlyNationalFallback) return "";
+
+  const cards = insight.regions
+    .map(
+      (region) => `<article class="ak-country-region-card">
+        <div class="ak-support-label">${escapeHtml(String(region.recipe_count))} dishes</div>
+        <h3>${escapeHtml(region.name)}</h3>
+        <p>${escapeHtml(region.description)}</p>
+        <div class="ak-region-recipe-list">
+          ${(region.recipes || [])
+            .slice(0, 5)
+            .map((recipe) => `<a href="${recipe.route_path}">${escapeHtml(recipe.name)}</a>`)
+            .join("")}
+        </div>
+      </article>`
+    )
+    .join("\n");
+
+  return `<section class="ak-section ak-country-intel-section">
+    <div class="ak-section-head rv visible">
+      <div class="ak-section-eyebrow">Regional depth</div>
+      <h2 class="ak-section-title">Cook ${escapeHtml(country.country_name)} by region and food culture</h2>
+      <p class="ak-section-sub">Country cuisine is not one flat list. This hub now groups dishes into practical lanes so you can explore the table with more context.</p>
+    </div>
+    <div class="ak-country-region-grid">${cards}</div>
+  </section>`;
+}
+
+function renderCountryPantryGuide(country, cuisineIntelligence) {
+  const insight = getCountryInsight(country, cuisineIntelligence);
+  if (!insight) return "";
+
+  const pantry = (insight.pantry || []).slice(0, 8);
+  const techniques = (insight.techniques || []).slice(0, 6);
+  if (!pantry.length && !techniques.length) return "";
+
+  return `<section class="ak-intel-panel ak-country-pantry-panel">
+    <div>
+      <div class="ak-section-kicker">Pantry and technique</div>
+      <h2 class="ak-section-title">What gives ${escapeHtml(country.country_name)} recipes their shape</h2>
+      <p class="ak-section-sub">Use this as a shopping and cooking compass before you jump into the individual recipes.</p>
+    </div>
+    <div class="ak-intel-chip-grid">
+      ${pantry.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+      ${techniques.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+    </div>
+  </section>`;
+}
+
+function renderCollectionIntelligence(collection) {
+  if (!collection.is_cuisine_intelligence) return "";
+
+  const countries = (collection.related_countries || [])
+    .slice(0, 5)
+    .map((country) => country.country_name)
+    .join(", ");
+  const dishes = (collection.top_recipe_names || []).join(", ");
+
+  return `<section class="ak-intel-panel ak-collection-intel-panel">
+    <div>
+      <div class="ak-section-kicker">Why this collection works</div>
+      <h2 class="ak-section-title">A practical cooking lane, not a random shelf</h2>
+      <p class="ak-section-sub">Start with ${escapeHtml(dishes || collection.name)}, then use the country links and related dishes to build a complete table.</p>
+    </div>
+    <div class="ak-intel-split">
+      <div class="ak-intel-mini">
+        <strong>Country spread</strong>
+        <p>${escapeHtml(countries || "Multiple AfroKitchen country hubs")}</p>
+      </div>
+      <div class="ak-intel-mini">
+        <strong>Best use</strong>
+        <p>Use this collection for meal planning, photo batching, and deciding which connected recipes to cook next.</p>
+      </div>
+    </div>
+  </section>`;
+}
+
 function toAbsoluteSchemaUrl(value) {
   const input = String(value || "").trim();
   if (!input) return "";
@@ -660,8 +816,9 @@ function buildRecipeSchemas(recipe, engine, socialImage, galleryImages) {
   return { recipeSchema, breadcrumbSchema };
 }
 
-function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit) {
+function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAudit, cuisineIntelligence) {
   recipe = applyRecipeResearchPatch(recipe, researchAudit);
+  const recipeInsight = getRecipeInsight(recipe, cuisineIntelligence);
   const relatedRecipes = pickRelatedRecipes(recipe, manifest);
   const media = resolveRecipeMedia(recipe, recipeImages);
   const galleryImages = collectRecipeGalleryImages(recipe, media, recipeImages);
@@ -677,6 +834,8 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   const renderedNutrition = renderNutritionHtml(engine, recipe);
   const renderedSteps = renderStepsHtml(recipe);
   const renderedGallery = renderRecipePhotoGallery(recipe, galleryImages);
+  const renderedInsightCards = renderRecipeIntelligenceCards(recipe, recipeInsight);
+  const renderedPairingRail = renderRecipePairingRail(recipe, recipeInsight);
   const relatedSection = renderRelatedHtml(recipe, relatedRecipes);
   const storyLead = recipe.story ? excerpt(recipe.story, 420) : description;
   const heroStyle = media.pageImage
@@ -702,7 +861,10 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
     fiber_g: recipe.fiber_g || null,
     ingredients: recipe.ingredients || [],
     steps: recipe.steps || [],
-    gallery_images: galleryImages
+    gallery_images: galleryImages,
+    region_lens: recipeInsight ? recipeInsight.region_lens : null,
+    chef_notes: recipeInsight ? recipeInsight.chef_notes : null,
+    image_status: recipeInsight ? recipeInsight.image : null
   };
 
   return `<!DOCTYPE html>
@@ -732,6 +894,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=20260501a">
   <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
     .ak-static-page .ak-hero-inner > * { min-width: 0; }
@@ -872,6 +1035,7 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
         <div class="ak-static-facts">
           <div><span>Best served with</span><strong>${escapeHtml(recipe.best_served_with || "Browse the country hub for pairing ideas and nearby dishes.")}</strong></div>
           <div><span>Best occasion</span><strong>${escapeHtml(recipe.occasion || "Any time you want to cook deeper into the AfroKitchen archive.")}</strong></div>
+          ${recipeInsight && recipeInsight.region_lens ? `<div><span>Regional lane</span><strong>${escapeHtml(recipeInsight.region_lens.name)}</strong></div>` : ""}
           <div><span>Country hub</span><strong><a href="${recipe.country_route_path}">${escapeHtml(recipe.country_name)} cuisine hub</a></strong></div>
           ${recipe.primary_collection_slug ? `<div><span>Collection</span><strong><a href="${recipe.primary_collection_route_path}">${escapeHtml(recipe.primary_collection_name)}</a></strong></div>` : ""}
         </div>
@@ -900,10 +1064,12 @@ function buildRecipePageHtml(recipe, manifest, engine, recipeImages, researchAud
             <p>${escapeHtml(recipe.best_served_with || "Use the country hub to explore pairings and nearby dishes.")}</p>
           </div>
           ${renderRecipeCollectionSummaryCard(recipe)}
+          ${renderedInsightCards}
         </div>
       </div>
 
       ${renderedGallery}
+      ${renderedPairingRail}
 
       <div class="ak-cook-shell">
         <div class="ak-static-serving-bar">
@@ -1202,10 +1368,12 @@ function renderCollectionCountryLinks(collection) {
   </section>`;
 }
 
-function buildCountryPageHtml(country, manifest) {
+function buildCountryPageHtml(country, manifest, cuisineIntelligence) {
   const { collectionPageSchema, itemListSchema, breadcrumbSchema } = buildCountrySchemas(country);
   const title = `${country.country_name} Recipes & Traditional Dishes | AfroKitchen`;
   const description = excerpt(country.description, 158);
+  const countryRegionalAtlas = renderCountryRegionalAtlas(country, cuisineIntelligence);
+  const countryPantryGuide = renderCountryPantryGuide(country, cuisineIntelligence);
   const generatedRecipeLead =
     country.generated_recipe_count === country.total_recipes
       ? `${country.total_recipes} dishes are ready to open and cook`
@@ -1244,6 +1412,7 @@ function buildCountryPageHtml(country, manifest) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=20260501a">
   <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
     .ak-country-static-page .ak-country-hub-shell,
@@ -1319,6 +1488,8 @@ function buildCountryPageHtml(country, manifest) {
         </div>
       </div>
 
+      ${countryPantryGuide}
+      ${countryRegionalAtlas}
       ${renderCountryCollectionLinks(country)}
       ${renderNeighborCountryLinks(country, manifest)}
     </div>
@@ -1332,11 +1503,12 @@ function buildCountryPageHtml(country, manifest) {
 `;
 }
 
-function buildCollectionPageHtml(collection) {
+function buildCollectionPageHtml(collection, cuisineIntelligence) {
   const { collectionPageSchema, itemListSchema, breadcrumbSchema } =
     buildCollectionSchemas(collection);
   const title = `${collection.name} Recipes Collection | AfroKitchen`;
   const description = excerpt(collection.description, 158);
+  const collectionIntelligence = renderCollectionIntelligence(collection, cuisineIntelligence);
   const generatedRecipeLead =
     collection.generated_recipe_count === collection.total_recipes
       ? `${collection.total_recipes} dishes are ready to open from this collection`
@@ -1375,6 +1547,7 @@ function buildCollectionPageHtml(collection) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b8aa6b54">
   <link rel="stylesheet" href="/tools/afrokitchen/style.css?v=20260424a">
+  <link rel="stylesheet" href="/tools/afrokitchen/cuisine-intelligence.css?v=20260501a">
   <link rel="stylesheet" href="/tools/afrokitchen/responsive-fixes.css?v=20260425a">
   <style>
     .ak-collection-static-page .ak-country-hub-shell,
@@ -1450,6 +1623,7 @@ function buildCollectionPageHtml(collection) {
         </div>
       </div>
 
+      ${collectionIntelligence}
       ${renderCollectionCountryLinks(collection)}
     </div>
   </section>
@@ -1521,9 +1695,13 @@ function syncGeneratedDirectory(baseDir, keepSlugs) {
   });
 }
 
+function trimTrailingWhitespace(content) {
+  return String(content).replace(/[ \t]+$/gm, "");
+}
+
 function writeHtmlPage(outputDir, html) {
   ensureDir(outputDir);
-  fs.writeFileSync(path.join(outputDir, "index.html"), html, "utf8");
+  fs.writeFileSync(path.join(outputDir, "index.html"), trimTrailingWhitespace(html), "utf8");
 }
 
 function replaceMarkedBlock(content, startMarker, endMarker, replacement) {
@@ -1536,7 +1714,56 @@ function replaceMarkedBlock(content, startMarker, endMarker, replacement) {
   return `${content.slice(0, start + startMarker.length)}\n${replacement}\n${content.slice(end)}`;
 }
 
-function buildLandingWaveMarkup(manifest) {
+function buildLandingRegionalPreview(cuisineIntelligence) {
+  if (!cuisineIntelligence || !cuisineIntelligence.countries) return "";
+  const countries = Object.values(cuisineIntelligence.countries)
+    .filter((country) => country.regions && country.regions.length > 1)
+    .sort((left, right) => right.regions.length - left.regions.length || left.country_name.localeCompare(right.country_name))
+    .slice(0, 4);
+  if (!countries.length) return "";
+
+  return `<div class="ak-intel-preview-grid">
+        ${countries
+          .map(
+            (country) => `<a class="ak-intel-preview-card" href="${country.route_path}">
+          <div class="ak-support-label">${escapeHtml(String(country.regions.length))} regional lanes</div>
+          <h3>${escapeHtml(country.country_name)}</h3>
+          <p>${escapeHtml(country.regions.slice(0, 3).map((region) => region.name).join(", "))}</p>
+        </a>`
+          )
+          .join("\n")}
+      </div>`;
+}
+
+function buildLandingMenuBuilderPreview(cuisineIntelligence) {
+  const menus =
+    cuisineIntelligence &&
+    cuisineIntelligence.menu_builder &&
+    Array.isArray(cuisineIntelligence.menu_builder.menus)
+      ? cuisineIntelligence.menu_builder.menus.slice(0, 4)
+      : [];
+  if (!menus.length) return "";
+
+  return `<div class="ak-intel-preview-grid ak-menu-preview-grid">
+        ${menus
+          .map(
+            (menu) => `<article class="ak-intel-preview-card">
+          <div class="ak-support-label">${escapeHtml(String(menu.recipes.length))} dishes</div>
+          <h3>${escapeHtml(menu.name)}</h3>
+          <p>${escapeHtml(menu.description)}</p>
+          <div class="ak-intel-links">
+            ${menu.recipes
+              .slice(0, 3)
+              .map((recipe) => `<a href="${recipe.route_path}">${escapeHtml(recipe.name)}</a>`)
+              .join("")}
+          </div>
+        </article>`
+          )
+          .join("\n")}
+      </div>`;
+}
+
+function buildLandingWaveMarkup(manifest, cuisineIntelligence) {
   const featuredLinks = manifest.recipes
     .filter((recipe) => recipe.generated_in_wave)
     .slice(0, 12)
@@ -1545,17 +1772,32 @@ function buildLandingWaveMarkup(manifest) {
         `<a class="ak-support-link" href="${recipe.route_path}">${escapeHtml(recipe.name)}</a>`
     )
     .join("\n");
+  const regionalPreview = buildLandingRegionalPreview(cuisineIntelligence);
+  const menuPreview = buildLandingMenuBuilderPreview(cuisineIntelligence);
+  const summary = cuisineIntelligence && cuisineIntelligence.summary ? cuisineIntelligence.summary : null;
 
   return `<section class="ak-section ak-section-soft">
     <div class="ak-container">
       <div class="ak-support-card rv visible">
         <div class="ak-section-kicker">First bites</div>
         <h2 class="ak-section-title">Popular dishes to open first</h2>
-        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. Open one now, or keep browsing by country, collection, ingredient, or difficulty.</p>
+        <p class="ak-section-sub">A quick tasting board from the wider AfroKitchen atlas. ${summary ? `${escapeHtml(String(summary.recipe_count))} recipes, ${escapeHtml(String(summary.country_count))} country hubs, and ${escapeHtml(String(summary.curated_collection_count))} new chef-built collections are now wired into the archive.` : "Open one now, or keep browsing by country, collection, ingredient, or difficulty."}</p>
         <div class="ak-hero-route-grid">
           ${featuredLinks}
         </div>
       </div>
+      ${regionalPreview ? `<div class="ak-support-card ak-intel-landing-card rv visible">
+        <div class="ak-section-kicker">Regional atlas</div>
+        <h2 class="ak-section-title">Countries now open by food lane</h2>
+        <p class="ak-section-sub">Regional cuisine is visible inside country hubs, so Nigeria, Ethiopia, Morocco, Senegal, Ghana, Ivory Coast, Cameroon, and South Africa no longer feel like flat recipe lists.</p>
+        ${regionalPreview}
+      </div>` : ""}
+      ${menuPreview ? `<div class="ak-support-card ak-intel-landing-card rv visible">
+        <div class="ak-section-kicker">Menu builder</div>
+        <h2 class="ak-section-title">Start with a table, not one lonely recipe</h2>
+        <p class="ak-section-sub">These menu boards connect mains, sides, soups, snacks, and serving logic so AfroKitchen can help people cook a real spread.</p>
+        ${menuPreview}
+      </div>` : ""}
     </div>
   </section>`;
 }
@@ -1577,7 +1819,7 @@ function buildLandingCollectionLinksMarkup(manifest) {
   return (manifest.collections || [])
     .map(
       (collection) => `<a class="ak-collection-card" href="${collection.route_path}">
-        <div class="ak-collection-card-kicker">${collection.is_featured ? "Featured collection" : "Collection"}</div>
+        <div class="ak-collection-card-kicker">${collection.is_cuisine_intelligence ? "Chef-built collection" : collection.is_featured ? "Featured collection" : "Collection"}</div>
         <h3>${escapeHtml(collection.name)}</h3>
         <p>${escapeHtml(collection.description)}</p>
         <span class="ak-collection-card-link">Open collection</span>
@@ -1586,13 +1828,52 @@ function buildLandingCollectionLinksMarkup(manifest) {
     .join("\n");
 }
 
-function updateLandingSource(manifest) {
+function updateLandingInventoryCopy(content, manifest) {
+  const recipeCount = manifest.recipes.length;
+  const countryHubCount = manifest.countries.length;
+  const collectionCount = (manifest.collections || []).length;
+  const description = `A warm African recipe atlas with ${recipeCount} dishes across ${countryHubCount} country hubs. Search by country, ingredient, occasion, difficulty, or collection.`;
+  const socialDescription = `Browse a warmer AfroKitchen recipe atlas with ${recipeCount} dishes across ${countryHubCount} African country hubs.`;
+  const faqAnswer = `AfroKitchen has ${recipeCount} recipes across ${countryHubCount} African country hubs, spanning`;
+
+  return content
+    .replace(
+      /A warm African recipe atlas with \d+\+? dishes (?:from all \d+ countries|across \d+ country hubs)\. Search by country, ingredient, occasion, difficulty, or collection\./g,
+      description
+    )
+    .replace(
+      /Browse a warmer AfroKitchen recipe atlas with \d+\+? dishes (?:from all \d+ African countries|across \d+ African country hubs)\./g,
+      socialDescription
+    )
+    .replace(
+      /AfroKitchen has \d+\+? recipes (?:from all \d+ African countries|across \d+ African country hubs), spanning/g,
+      faqAnswer
+    )
+    .replace(/<span class="ak-badge ak-badge-live">\d+\+? recipes<\/span>/, `<span class="ak-badge ak-badge-live">${recipeCount} recipes</span>`)
+    .replace(/<span class="ak-badge ak-badge-ai">\d+ (?:countries|country hubs)<\/span>/, `<span class="ak-badge ak-badge-ai">${countryHubCount} country hubs</span>`)
+    .replace(/(<div class="ak-stat-val accent" id="recipe-total">)\d+(\<\/div>)/, `$1${recipeCount}$2`)
+    .replace(
+      /<div class="ak-stat-lbl">(?:Countries|Country hubs)<\/div><div class="ak-stat-val">\d+<\/div>/,
+      `<div class="ak-stat-lbl">Country hubs</div><div class="ak-stat-val">${countryHubCount}</div>`
+    )
+    .replace(
+      /<div class="ak-stat-lbl">Collections<\/div><div class="ak-stat-val">\d+<\/div>/,
+      `<div class="ak-stat-lbl">Collections</div><div class="ak-stat-val">${collectionCount}</div>`
+    )
+    .replace(
+      /<div class="ak-section-eyebrow">\d+ (?:COUNTRIES|COUNTRY HUBS)<\/div>/,
+      `<div class="ak-section-eyebrow">${countryHubCount} COUNTRY HUBS</div>`
+    );
+}
+
+function updateLandingSource(manifest, cuisineIntelligence) {
   let content = fs.readFileSync(LANDING_PATH, "utf8");
+  content = updateLandingInventoryCopy(content, manifest);
   content = replaceMarkedBlock(
     content,
     "<!-- ak-static-wave:start -->",
     "<!-- ak-static-wave:end -->",
-    buildLandingWaveMarkup(manifest)
+    buildLandingWaveMarkup(manifest, cuisineIntelligence)
   );
   content = replaceMarkedBlock(
     content,
@@ -1606,7 +1887,7 @@ function updateLandingSource(manifest) {
     "<!-- ak-static-collection-links:end -->",
     buildLandingCollectionLinksMarkup(manifest)
   );
-  fs.writeFileSync(LANDING_PATH, content, "utf8");
+  fs.writeFileSync(LANDING_PATH, trimTrailingWhitespace(content), "utf8");
 }
 
 async function main() {
@@ -1622,9 +1903,16 @@ async function main() {
     country_route_url: countryUrl(recipe.country_slug)
   }));
 
+  const cuisineIntelligence = buildCuisineIntelligence(manifest, {
+    recipeImages,
+    researchAudit: recipeResearchAudit
+  });
+  mergeIntelligenceCollections(manifest, cuisineIntelligence);
+  writeCuisineIntelligenceFiles(cuisineIntelligence);
+
   writeManifest(manifest, MANIFEST_PATH);
   writeStaticRoutes(manifest);
-  updateLandingSource(manifest);
+  updateLandingSource(manifest, cuisineIntelligence);
 
   const keepRecipeSlugs = new Set(manifest.routes.generated_recipe_slugs);
   LEGACY_RECIPE_ALIASES.forEach((alias) => keepRecipeSlugs.add(alias.legacySlug));
@@ -1635,17 +1923,24 @@ async function main() {
   manifest.recipes
     .filter((recipe) => recipe.generated_in_wave)
     .forEach((recipe) => {
-      const html = buildRecipePageHtml(recipe, manifest, engine, recipeImages, recipeResearchAudit);
+      const html = buildRecipePageHtml(
+        recipe,
+        manifest,
+        engine,
+        recipeImages,
+        recipeResearchAudit,
+        cuisineIntelligence
+      );
       writeHtmlPage(path.join(RECIPES_DIR, recipe.slug), html);
     });
 
   manifest.countries.forEach((country) => {
-    const html = buildCountryPageHtml(country, manifest);
+    const html = buildCountryPageHtml(country, manifest, cuisineIntelligence);
     writeHtmlPage(path.join(COUNTRIES_DIR, country.country_slug), html);
   });
 
   (manifest.collections || []).forEach((collection) => {
-    const html = buildCollectionPageHtml(collection);
+    const html = buildCollectionPageHtml(collection, cuisineIntelligence);
     writeHtmlPage(path.join(COLLECTIONS_DIR, collection.slug), html);
   });
 

@@ -29,7 +29,8 @@
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js"></script>
+<script src="/assets/vendor/tesseract/tesseract.min.js"></script>
 <style>
   :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; }
 
@@ -422,6 +423,7 @@
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-ocr/" />
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ocr-pdf/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-ocr/" />
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -573,7 +575,7 @@
       </div>
 
       <div class="note-box">
-        <strong>Note:</strong> OCR on large PDFs can take several minutes. The first run downloads language data (~2-5 MB). Processing happens entirely in your browser -- your files are never uploaded.
+        <strong>Note:</strong> OCR on large PDFs can take several minutes. The OCR engine and language data load from AfroTools local assets. Processing happens entirely in your browser -- your files are never uploaded.
       </div>
 
       <div class="info-card">
@@ -622,11 +624,9 @@
 <canvas id="renderCanvas" style="display:none;"></canvas>
 
 <script type="module">
-// Import pdf.js as ES module
-import * as pdfjsModule from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs';
-
-const pdfjsLib = pdfjsModule;
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+const pdfjsLib = window.pdfjsLib;
+if (!pdfjsLib) throw new Error('PDF preview library failed to load. Please refresh the page.');
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js';
 
 // DOM refs
 const fileInput = document.getElementById('fileInput');
@@ -757,6 +757,11 @@ extractBtn.addEventListener('click', async () => {
 
     // Create Tesseract worker with detailed progress
     const worker = await Tesseract.createWorker(language, 1, {
+      workerPath: '/assets/vendor/tesseract/worker.min.js',
+      corePath: '/assets/vendor/tesseract/core',
+      langPath: '/assets/vendor/tesseract/lang',
+      workerBlobURL: false,
+      gzip: true,
       logger: (m) => {
         if (m.status === 'loading tesseract core') {
           showProgress(5, 'Loading OCR core...');
@@ -764,7 +769,7 @@ extractBtn.addEventListener('click', async () => {
           showProgress(6, 'Initializing OCR...');
         } else if (m.status === 'loading language traineddata') {
           var pct = typeof m.progress === 'number' ? Math.round(m.progress * 100) : 0;
-          showProgress(6 + pct * 0.04, 'Downloading language data... ' + pct + '%');
+          showProgress(6 + pct * 0.04, 'Loading local language data... ' + pct + '%');
         } else if (m.status === 'loaded language traineddata') {
           showProgress(10, 'Language data loaded!');
         } else if (m.status === 'initializing api') {
@@ -926,5 +931,7 @@ downloadBtn.addEventListener('click', () => {
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/pdf-download-gate.js?v=20260501" defer></script>
 </body>
 </html>

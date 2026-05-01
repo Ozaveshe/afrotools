@@ -89,7 +89,9 @@ function main() {
     "",
     "## Next Pending",
     "",
-    ...pending.slice(0, 40).map((row) => `- ${row.name} (${row.country}) - ${row.search_query}`)
+    ...(pending.length
+      ? pending.slice(0, 40).map((row) => `- ${row.name} (${row.country}) - ${row.search_query}`)
+      : ["No pending recipes."])
   ].join("\n");
 
   fs.writeFileSync(OUT_REPORT, report + "\n");

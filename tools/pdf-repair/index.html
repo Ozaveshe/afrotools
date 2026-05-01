@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Repair — Fix Corrupt PDF Files Instantly | AfroTools</title>
-<meta name="description" content="Repair corrupt or damaged PDF files instantly. Recovers pages from broken PDFs, fixes structural errors, and lets you download a clean copy. 100% client-side.">
+<title>PDF Repair - Rebuild Damaged PDF Files | AfroTools</title>
+<meta name="description" content="Repair damaged PDFs in your browser with qpdf rebuild, pdf-lib normalization, raster salvage fallback, diagnostics, batch ZIP export, and repair reports.">
 <link rel="canonical" href="https://afrotools.com/tools/pdf-repair/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF Repair Tool | AfroTools">
-<meta property="og:description" content="Fix corrupt or damaged PDF files instantly. Recover pages and download a repaired copy.">
+<meta property="og:description" content="Repair damaged PDFs with local diagnostics, qpdf rebuild, fallback salvage, batch ZIP export, and downloadable reports.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/pdf-repair/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -18,11 +18,11 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PDF Repair Tool | AfroTools">
-<meta name="twitter:description" content="Fix corrupt or damaged PDF files. Recover pages and re-save a clean copy instantly.">
+<meta name="twitter:description" content="Repair damaged PDFs locally with diagnostics, fallback salvage, and ZIP/report export.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Repair","description":"Repair corrupt or damaged PDF files. Recovers pages and structural data from broken PDFs.","url":"https://afrotools.com/tools/pdf-repair/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Repair","url":"https://afrotools.com/tools/pdf-repair/","description":"Repair corrupt or damaged PDF files. Recovers pages and structural data from broken PDFs.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PDF Repair","description":"Repair damaged PDFs in the browser with local diagnostics, qpdf structural rebuild, pdf-lib normalization, raster salvage fallback, batch ZIP export, and repair reports.","url":"https://afrotools.com/tools/pdf-repair/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"PDF Repair","url":"https://afrotools.com/tools/pdf-repair/","description":"Repair damaged PDFs in the browser with local diagnostics, qpdf structural rebuild, fallback salvage, ZIP export, and downloadable reports.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
@@ -31,8 +31,6 @@
 <script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
-<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -237,6 +235,99 @@
     font-weight: 600;
   }
 
+  .queue-list {
+    margin-top: 14px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .queue-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 11px 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  .queue-name {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #1e293b;
+    word-break: break-word;
+  }
+
+  .queue-meta {
+    margin-top: 3px;
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 700;
+  }
+
+  .queue-state {
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #EFF6FF;
+    color: #1e40af;
+    font-size: 0.68rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .repair-options {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .field-row label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .field-row input,
+  .field-row select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    background: #EFF6FF;
+    color: #0f172a;
+    font: 700 0.82rem 'DM Sans', sans-serif;
+    outline: none;
+  }
+
+  .field-row input:focus,
+  .field-row select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .field-note {
+    display: block;
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
+  }
+
   .calc-btn {
     width: 100%;
     padding: 14px;
@@ -251,6 +342,23 @@
     transition: all 0.18s;
     margin-top: 16px;
     font-family: 'DM Sans', sans-serif;
+  }
+
+  .ghost-btn {
+    padding: 13px 16px;
+    background: #fff;
+    color: #0f172a;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ghost-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 
   .calc-btn:hover {
@@ -400,6 +508,61 @@
     background: rgba(0, 113, 227, 0.2);
   }
 
+  .act-secondary {
+    background: #fff;
+    border: 1.5px solid #cbd5e1;
+    color: #0f172a;
+  }
+
+  .act-secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .repair-log {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.74rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    max-height: 180px;
+    overflow: auto;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .summary-stat {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+  }
+
+  .summary-stat strong {
+    display: block;
+    color: #0f172a;
+    font-size: 1rem;
+  }
+
+  .summary-stat span {
+    display: block;
+    margin-top: 2px;
+    color: #64748b;
+    font-size: 0.64rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
   .info-card {
     background: #f9fafb;
     border: 1px solid #e5e7eb;
@@ -495,12 +658,22 @@
     .tool-main-inner {
       grid-template-columns: 1fr;
     }
+
+    .repair-options,
+    .btn-grid,
+    .summary-grid,
+    .queue-row {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-repair/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-repair/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/reparer-pdf/" />
+
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kurekebisha-pdf/">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -530,7 +703,7 @@
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-05-01">
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -541,11 +714,12 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>PDF <em>Repair</em></h1>
-    <p class="hero-sub">Fix corrupt or damaged PDF files. Recovers pages, repairs structural errors, and produces a clean downloadable copy.</p>
+    <p class="hero-sub">Rebuild damaged PDFs locally with qpdf, normalize valid-but-fragile files, and fall back to image-based page salvage when structure repair cannot recover the document.</p>
     <div class="hero-badges">
       <span class="badge b-green">No Upload</span>
       <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">Fast</span>
+      <span class="badge b-green">Batch ZIP</span>
+      <span class="badge b-green">Diagnostics</span>
     </div>
   </div>
 </div>
@@ -560,10 +734,10 @@
         </div>
         <div class="card-body">
           <div class="file-input-wrapper">
-            <input type="file" id="pdfFileInput" accept=".pdf">
+            <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple>
             <label for="pdfFileInput" class="file-input-label" id="dropLabel">
-              Drop your corrupt PDF here or click to select
-              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Accepts .pdf files</div>
+              Drop damaged PDFs here or click to select
+              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Accepts one or many .pdf files</div>
             </label>
           </div>
 
@@ -571,8 +745,44 @@
             <span class="file-info-name" id="fileName"></span>
             <span class="file-info-size" id="fileSize"></span>
           </div>
+          <div class="queue-list" id="queueList"></div>
 
-          <button class="calc-btn" id="repairBtn" disabled>Repair PDF</button>
+          <div class="repair-options">
+            <div class="field-row">
+              <label for="repairMode">Repair strategy</label>
+              <select id="repairMode">
+                <option value="auto">Auto: qpdf, normalize, then salvage</option>
+                <option value="qpdf">Structural rebuild with qpdf</option>
+                <option value="normalize">Normalize with pdf-lib</option>
+                <option value="raster">Raster salvage pages</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label for="rasterScale">Salvage quality</label>
+              <select id="rasterScale">
+                <option value="1.25">Balanced</option>
+                <option value="1.6">High</option>
+                <option value="1">Small file</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label for="openPassword">Password</label>
+              <input id="openPassword" type="password" autocomplete="off" placeholder="Optional open password">
+              <span class="field-note">Used only inside your browser for encrypted PDFs.</span>
+            </div>
+            <div class="field-row">
+              <label for="reportFormat">Report</label>
+              <select id="reportFormat">
+                <option value="json">Detailed JSON</option>
+                <option value="csv">Spreadsheet CSV</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-grid">
+            <button class="calc-btn" id="repairBtn" disabled>Repair PDF</button>
+            <button class="ghost-btn" id="clearBtn" type="button" disabled>Clear</button>
+          </div>
 
           <div class="progress-bar" id="progressBar">
             <div class="progress-fill" id="progressFill"></div>
@@ -598,6 +808,8 @@
           </div>
           <div class="action-row" id="actionRow" style="display:none;">
             <button class="act-btn act-download" id="downloadBtn">Download Repaired PDF</button>
+            <button class="act-btn act-download" id="downloadZipBtn" style="display:none">Download ZIP</button>
+            <button class="act-btn act-secondary" id="downloadReportBtn">Download Report</button>
           </div>
 <div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
   <share-result-button
@@ -612,15 +824,15 @@
       <div class="info-card">
         <div class="info-title">How PDF Repair Works</div>
         <div class="info-text">
-          This tool attempts to recover your PDF by parsing and re-saving the document structure using pdf-lib.
+          This tool attempts repair in layers, starting with structural repair and ending with visual page salvage if the file is still readable.
           <ul style="margin-top:10px;padding-left:16px;">
-            <li>Reads the raw file bytes and attempts to load the PDF structure</li>
-            <li>Skips over corrupt objects and recovers valid pages</li>
-            <li>Rebuilds the cross-reference table and file trailer</li>
-            <li>Saves a clean copy with repaired structure</li>
+            <li>Checks headers, xref, trailer, EOF marker, encryption, and object hints</li>
+            <li>Uses local qpdf/WASM to rebuild damaged structure</li>
+            <li>Normalizes valid PDFs with compatibility-friendly output</li>
+            <li>Can rasterize recoverable pages into a fresh PDF when structure repair fails</li>
           </ul>
           <div style="margin-top:12px;padding:10px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;font-size:0.75rem;">
-            <strong>Works best on:</strong> PDFs with damaged headers, broken cross-references, or incomplete writes. Severely corrupted files with destroyed page data may not be fully recoverable.
+            <strong>Works best on:</strong> damaged headers, broken cross-reference tables, incomplete downloads, extra bytes before the PDF header, and PDFs that open in browsers but fail in stricter readers.
           </div>
         </div>
       </div>
@@ -638,7 +850,7 @@
 
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The PDF Repair tool attempts to fix corrupted or damaged PDF files that fail to open in standard readers. It analyses the internal structure of your PDF, identifies broken cross-reference tables, missing objects, and encoding errors, then reconstructs the document where possible. Upload your problematic PDF and the tool processes it entirely in your browser without sending your file to any server. While not every corruption can be fixed, the tool successfully recovers many common issues caused by incomplete downloads, email attachment corruption, or storage errors. It is a valuable first step before resorting to expensive professional recovery services.</p>
+    <p>The PDF Repair tool attempts to fix damaged files that fail to open in strict readers. It inspects the file header, EOF marker, xref and trailer hints, encryption markers, and page recovery signals, then tries a local qpdf rebuild, a pdf-lib compatibility save, and an optional raster-page salvage. Your PDFs are processed entirely in your browser and can be downloaded individually, bundled as a ZIP, or documented with a JSON or CSV repair report.</p>
   </div>
 </section>
 <!-- FAQs -->
@@ -650,7 +862,7 @@
 </div>
   <div class="faq-item">
     <button class="faq-q">What types of PDF corruption can this tool fix?</button>
-    <div class="faq-a">This tool can fix PDFs with damaged headers, broken cross-reference tables, incomplete file trailers, and corrupt object streams. It works by re-parsing the document structure and rebuilding a clean version. It handles most cases where the PDF viewer shows an error but the page data is still intact.</div>
+    <div class="faq-a">It can often recover PDFs with extra bytes before the PDF header, broken cross-reference tables, incomplete trailers, missing EOF markers, and fragile object streams. It works best when the page content still exists somewhere inside the file.</div>
   </div>
 
   <div class="faq-item">
@@ -659,18 +871,18 @@
   </div>
 
   <div class="faq-item">
-    <button class="faq-q">What does "partial repair" mean?</button>
-    <div class="faq-a">A partial repair means the tool was able to load and re-save the PDF, but had to skip some corrupt objects. The repaired file may be missing images, fonts, or other embedded resources, but the page structure and text content should be recovered.</div>
+    <button class="faq-q">What does raster salvage mean?</button>
+    <div class="faq-a">Raster salvage renders each readable page as an image and places those images into a new PDF. It can rescue a document that still displays, but the resulting file is image-based and may lose selectable text, links, forms, and tags.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q">Why did the repair fail?</button>
-    <div class="faq-a">Repair can fail when the PDF file is too severely damaged for the parser to find any valid structure. This typically happens with truncated downloads, files corrupted by malware, or files that are not actually PDFs. Try downloading the original file again if possible.</div>
+    <div class="faq-a">Repair can fail when the file is not a PDF, the page data is missing, the file is heavily truncated, or an encrypted document needs a password that was not provided. Try re-downloading the original file if possible.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q">Will the repaired PDF look identical to the original?</button>
-    <div class="faq-a">In most cases, yes. The tool preserves all recoverable pages, text, images, and formatting. However, if some objects were corrupt and had to be skipped, there may be minor differences such as missing images or font substitutions.</div>
+    <div class="faq-a">Structural rebuilds should preserve recoverable content closely. Raster salvage prioritizes readability over editability, so the page appearance is preserved as images while selectable text and form behavior may not survive.</div>
   </div>
 </div>
 
@@ -681,8 +893,13 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
+<script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=1.17.1"></script>
+<script src="/assets/vendor/qpdf/qpdf.js?v=20260501"></script>
+<script src="/assets/vendor/jszip/jszip.min.js?v=3.10.1"></script>
+<script src="/assets/js/pages/pdf-repair.js?v=20260501"></script>
 
-<script>
+<script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
 
@@ -942,7 +1159,7 @@
 })();
 </script>
 <email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
+<script src="/assets/js/lib/pdf-download-gate.js?v=20260501" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

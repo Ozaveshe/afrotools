@@ -6,6 +6,9 @@
 <title>Creative Tools for African Creators | One Creative System | AfroTools</title>
 <meta name="description" content="Creative tools and product surfaces for African creators across content creation, visual editing, business, audience growth, monetization, and creator platforms.">
 <link rel="canonical" href="https://afrotools.com/creative/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/creative/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/creative/">
+  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/ubunifu-na-watayarishi/">
 <meta property="og:title" content="Creative Tools for African Creators | AfroTools">
 <meta property="og:description" content="One creative system for African creators: registry-backed tools, creator platforms, and product surfaces that fit together cleanly.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -139,15 +142,14 @@ button:focus-visible {
   box-shadow: 0 0 18px rgba(251, 191, 36, 0.8);
 }
 
-.creative-hero-copy h1,
-.creative-cta-inner h2 {
+.creative-hero-copy h1 {
   margin: 18px 0 14px;
   font-family: 'Instrument Serif', Georgia, serif;
-  font-size: clamp(2.7rem, 6vw, 4.85rem);
+  font-size: 4.65rem;
   font-weight: 400;
   line-height: 0.98;
-  letter-spacing: -0.04em;
-  max-width: 11ch;
+  letter-spacing: 0;
+  max-width: 12ch;
 }
 
 .creative-hero-copy p {
@@ -668,31 +670,118 @@ button:focus-visible {
 }
 
 .creative-cta-inner {
-  padding: 36px;
-  border-radius: 34px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(310px, 0.92fr);
+  gap: 28px;
+  align-items: center;
+  padding: 34px;
+  border-radius: 28px;
   color: #fff;
   background:
-    radial-gradient(circle at 16% 12%, rgba(251, 191, 36, 0.18), transparent 28%),
-    radial-gradient(circle at 86% 22%, rgba(37, 99, 235, 0.22), transparent 32%),
-    linear-gradient(145deg, #091120 0%, #13253f 54%, #24171d 100%);
-  box-shadow: 0 28px 54px rgba(15, 23, 42, 0.14);
+    radial-gradient(circle at 10% 16%, rgba(245, 166, 35, 0.2), transparent 28%),
+    radial-gradient(circle at 86% 20%, rgba(77, 163, 255, 0.22), transparent 32%),
+    linear-gradient(135deg, #07111f 0%, #102742 54%, #201821 100%);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.16);
 }
 
-.creative-cta-inner p {
+.creative-cta .creative-section-eyebrow {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.creative-cta-copy,
+.creative-cta-panel {
+  min-width: 0;
+}
+
+.creative-cta-copy h2 {
+  margin: 14px 0;
+  max-width: 16ch;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 3.35rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #fff;
+}
+
+.creative-cta-copy p {
   max-width: 58ch;
   margin: 0;
   font-size: 0.98rem;
   line-height: 1.76;
-  color: rgba(255, 255, 255, 0.76);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.creative-cta-panel {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.creative-cta-panel-label {
+  margin-bottom: 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.creative-stream-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.creative-stream-item:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.creative-stream-item strong {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.creative-stream-item span {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.creative-stream-item::after {
+  content: "Open";
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #f5a623;
 }
 
 .creative-reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.creative-reveal.is-pending {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.creative-reveal.is-visible {
+.creative-reveal.is-pending.is-visible {
   opacity: 1;
   transform: none;
 }
@@ -791,6 +880,19 @@ button:focus-visible {
     display: grid;
   }
 
+  .creative-hero-copy h1 {
+    font-size: 3.6rem;
+  }
+
+  .creative-cta-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .creative-cta-copy h2 {
+    font-size: 2.9rem;
+    max-width: 18ch;
+  }
+
   .creative-surface-grid,
   .creative-taxonomy-grid,
   .creative-featured-grid {
@@ -814,6 +916,10 @@ button:focus-visible {
     padding-right: 20px;
   }
 
+  .creative-cta {
+    overflow: hidden;
+  }
+
   .creative-ledger-grid,
   .creative-surface-grid,
   .creative-taxonomy-grid,
@@ -827,9 +933,51 @@ button:focus-visible {
     padding: 22px;
   }
 
-  .creative-hero-copy h1,
-  .creative-cta-inner h2 {
+  .creative-cta-inner {
+    width: calc(100vw - 80px);
+    max-width: calc(100vw - 80px);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .creative-hero-copy h1 {
+    font-size: 2.7rem;
     max-width: none;
+    overflow-wrap: anywhere;
+  }
+
+  .creative-cta-copy,
+  .creative-cta-panel,
+  .creative-cta-actions,
+  .creative-cta-copy p {
+    max-width: 100%;
+  }
+
+  .creative-cta-copy h2 {
+    font-size: 2.22rem;
+    line-height: 1.06;
+    max-width: 10ch;
+    overflow-wrap: anywhere;
+  }
+
+  .creative-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .creative-cta-actions .creative-button {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .creative-stream-item {
+    grid-template-columns: 1fr;
+  }
+
+  .creative-stream-item::after {
+    content: "";
+    display: none;
   }
 }
 </style>
@@ -925,15 +1073,30 @@ button:focus-visible {
   </section>
 </main>
 
-<section class="creative-cta">
-  <div class="creative-cta-inner creative-reveal">
-    <div class="creative-section-eyebrow" style="color: rgba(255,255,255,.72);">Creative system</div>
-    <h2>Start with the right surface, then move through the registry with fewer guesses.</h2>
-    <p>Use the taxonomy when you need tool coverage. Use the product surfaces when you need orientation. That split is now explicit throughout the Creative hub.</p>
-    <div class="creative-cta-actions">
-      <a class="creative-button primary" href="#surfaces">Compare surfaces</a>
-      <a class="creative-button secondary" href="#content-creation">Open content creation</a>
-      <a class="creative-button secondary" href="/tools/afrostream/">Open AfroStream</a>
+<section class="creative-cta creative-afrostream-spotlight" aria-labelledby="afrostream-spotlight-title">
+  <div class="creative-cta-inner">
+    <div class="creative-cta-copy">
+      <div class="creative-section-eyebrow">AfroStream</div>
+      <h2 id="afrostream-spotlight-title">A clearer front door for African creator discovery.</h2>
+      <p>Use AfroStream when you want the live surface: creator news, rankings, community, calendar, and Streamer University without guessing which registry tool to open first.</p>
+      <div class="creative-cta-actions">
+        <a class="creative-button primary" href="/tools/afrostream/">Open AfroStream</a>
+        <a class="creative-button secondary" href="/tools/afrostream/news">Latest creator news</a>
+        <a class="creative-button secondary" href="/tools/afrostream/university/">Streamer University</a>
+      </div>
+    </div>
+
+    <div class="creative-cta-panel" aria-label="AfroStream route map">
+      <div class="creative-cta-panel-label">Live surface map</div>
+      <a class="creative-stream-item" href="/tools/afrostream/rankings">
+        <span><strong>Rankings</strong>AfroScore, creator tiers, and cross-platform discovery.</span>
+      </a>
+      <a class="creative-stream-item" href="/tools/afrostream/news">
+        <span><strong>Creator news</strong>Fresh African creator economy updates and story routes.</span>
+      </a>
+      <a class="creative-stream-item" href="/tools/afrostream/community">
+        <span><strong>Community</strong>Creator profiles, submissions, and ecosystem signals.</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1096,9 +1259,14 @@ button:focus-visible {
     var reveals = document.querySelectorAll('.creative-reveal');
     if (!reveals.length) return;
 
+    reveals.forEach(function (element) {
+      element.classList.add('is-pending');
+    });
+
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reducedMotion || !('IntersectionObserver' in window)) {
       reveals.forEach(function (element) {
+        element.classList.remove('is-pending');
         element.classList.add('is-visible');
       });
       return;
@@ -1108,6 +1276,7 @@ button:focus-visible {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
+          entry.target.classList.remove('is-pending');
           observer.unobserve(entry.target);
         }
       });
@@ -1115,6 +1284,20 @@ button:focus-visible {
 
     reveals.forEach(function (element) {
       observer.observe(element);
+    });
+  }
+
+  function restoreHashTarget() {
+    if (!window.location.hash) return;
+
+    var targetId = window.location.hash.slice(1);
+    if (!targetId) return;
+
+    var target = document.getElementById(decodeURIComponent(targetId));
+    if (!target) return;
+
+    window.requestAnimationFrame(function () {
+      target.scrollIntoView({ block: 'start', behavior: 'auto' });
     });
   }
 
@@ -1210,6 +1393,7 @@ button:focus-visible {
 
     bindStickyNav();
     mountRevealObserver();
+    restoreHashTarget();
   }
 
   if (typeof onRegistryReady === 'function') {

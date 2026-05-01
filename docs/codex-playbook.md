@@ -24,6 +24,14 @@
 - Update source files, not minified bundles
 - Run `npm run check-links` and `npm run audit`
 
+### PDF and document tools
+
+- Read `docs/PDF-CATEGORY-WORKFLOW.md`
+- Keep generated files local to the browser unless the page explicitly documents an API-backed flow
+- Load `assets/js/lib/pdf-download-gate.js` on PDF-category tools that generate downloads
+- Use `window.AfroPdfDownloadGate.guard(callback)` or the `email-gate-modal.show(callback)` compatibility API before download callbacks
+- Verify both guest-blocked and registered-user download paths on `pdf-merge-split` before calling the category gate complete
+
 ### Add or repair a country surface
 
 - Read `docs/ADDING-A-COUNTRY.md`
@@ -35,6 +43,7 @@
 
 - Use `afrotools-seo-ops`
 - Start with existing scripts in `scripts/seo-*.js`, `scripts/build-seo-system.js`, `scripts/apply-og-fallbacks.js`, and `scripts/inject-internal-links.js`
+- For tool social cards, `scripts/apply-og-fallbacks.js` maps `/assets/img/tools/<tool-id>.*` through `assets/js/components/tool-registry.js`; add the image with the registry `id`, then run `npm run seo:og`. The script should preserve page-specific non-tool images, such as AfroKitchen recipe photos, instead of replacing them with the default OG card.
 - If Search Console starts surfacing `.html` alternates, run `node scripts/fix-canonical-alias-links.js` to collapse internal hrefs onto each page's preferred route and `node scripts/update-html-canonical-redirects.js` to regenerate the 301 block for safe `.html` aliases
 - Treat the file shape as the route source of truth: `foo/index.html` serves `/foo/`, while `foo.html` serves `/foo` with no trailing slash. Keep canonicals, hreflang, JSON-LD, sitemap entries, and injected internal links aligned to that served route rather than to a stale in-page canonical.
 - Treat `widgets/iframe/` as embed utility surfaces: keep them `noindex, follow` and canonicalize them to the full tool route with `npm run seo:widgets`
@@ -42,6 +51,8 @@
 - Keep `npm run seo` from self-canonicalizing `noindex` utility pages; those pages should keep the parent canonical assigned by the thin-page fixer.
 - Keep `noindex` utility pages out of sitemap generation so auth, offline, app workspaces, and other thin utility routes do not leak into search-facing indexes
 - For AfroKitchen static-route work, use the manifest-driven flow in order: `node scripts/export-afrokitchen-seo-manifest.js`, `node scripts/generate-afrokitchen-static-pages.js`, `node scripts/generate-sitemaps.js`, `npm run seo`, then `npm run seo:report`
+- For AfroKitchen local recipe images, prefer `/assets/img/kitchen/<recipe-slug>.webp`; if the generated image batch uses numbered files, `<recipe-slug>-1.webp` is the main image and `<recipe-slug>-2.webp` and later files can be picked up as gallery images.
+- For AfroKitchen recipe, country, collection, menu, image-shot-list, or contribution workflow changes, keep `docs/AFROKITCHEN-CUISINE-INTELLIGENCE.md`, `data/afrokitchen/cuisine-intelligence-rules.json`, and `scripts/lib/afrokitchen-cuisine-intelligence.js` aligned. The static generator now rebuilds the public cuisine intelligence JSON and backstage quality report automatically.
 - For Africa Conflict static-dossier work, use the live Supabase-backed manifest flow in order: `node scripts/export-africa-conflict-seo-manifest.js`, `node scripts/generate-africa-conflict-static-pages.js`, `node scripts/generate-sitemaps.js`, `npm run seo`, then `npm run seo:report`
 - Treat `npm run seo` as the sitemap normalization pass after regeneration: it now normalizes generated sitemap files against each page's preferred canonical URL rather than relying on hand-edited XML cleanup
 - Keep `scripts/generate-sitemaps.js` and `scripts/seo-daily-fix.js` aligned on stale `<lastmod>` handling so a fresh sitemap generation does not leave predictable report-only sitemap fixes.

@@ -3,509 +3,287 @@
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meeting Minutes Generator | AfroTools</title>
-<meta name="description" content="Turn meeting notes into clear minutes with decisions, action items, owners, and printable summaries.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Minutes Generator App | AfroTools</title>
+<meta name="description" content="Create structured meeting minutes with agendas, attendees, decisions, actions, owners, deadlines, follow-ups, and PDF, Word, TXT, CSV, ICS, and JSON export.">
+<link rel="canonical" href="https://afrotools.com/tools/meeting-minutes/app">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/meeting-minutes/app">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/meeting-minutes/app">
+<meta name="robots" content="noindex, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript></noscript>
-<script src="/assets/js/lib/save-state-classic.js?v=20260408a"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--pri:#007AFF;--bg:#f5f5f3;--card:#fff;--text:#111;--muted:#6b7280;--border:#e5e7eb;--radius:12px;--green:#059669;--red:#dc2626;--amber:#d97706}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
-.topbar a{color:var(--muted);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:4px}
-.topbar a:hover{color:var(--text)}
-.topbar-title{font-weight:700;font-size:.95rem;flex:1}
-.topbar-actions{display:flex;gap:8px}
-.btn{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--text);font-family:inherit;transition:.15s}
-.btn:hover{border-color:var(--pri);color:var(--pri)}
-.btn-pri{background:var(--pri);color:#fff;border-color:var(--pri)}
-.btn-pri:hover{background:#0066d6}
-.btn-sm{padding:5px 10px;font-size:.75rem}
-.btn-danger{border-color:var(--red);color:var(--red)}
-.btn-danger:hover{background:#fef2f2}
-
-.app{max-width:800px;margin:0 auto;padding:24px 20px}
-
-.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:16px}
-.card h2{font-size:1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.card h2 .num{width:24px;height:24px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
-
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-@media(max-width:600px){.form-row{grid-template-columns:1fr}}
-.form-group{margin-bottom:12px}
-.form-group label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;color:var(--text);background:#fff}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
-.form-group textarea{min-height:60px;resize:vertical;line-height:1.6}
-
-/* Templates */
-.templates{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.tpl{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:600;transition:.15s}
-.tpl:hover{border-color:var(--pri)}
-.tpl.active{border-color:var(--pri);background:rgba(0,122,255,.04);color:var(--pri)}
-
-/* List items */
-.list-item{display:flex;gap:10px;padding:10px;background:#f9fafb;border-radius:8px;margin-bottom:8px;align-items:flex-start}
-.list-item-body{flex:1;min-width:0}
-.list-item-name{font-size:.85rem;font-weight:700}
-.list-item-meta{font-size:.72rem;color:var(--muted)}
-.list-item-actions{display:flex;gap:4px;flex-shrink:0}
-
-.add-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-.add-row input,.add-row select{flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.82rem}
-.add-row input:focus{outline:none;border-color:var(--pri)}
-
-/* Agenda items */
-.agenda-item{border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;background:#fff}
-.agenda-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.agenda-num{width:24px;height:24px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--muted);flex-shrink:0}
-.agenda-title-input{flex:1;font-weight:700;font-size:.9rem;border:none;background:transparent;font-family:inherit;color:var(--text)}
-.agenda-title-input:focus{outline:none}
-
-/* Action items */
-.action-item{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;background:#f9fafb;border-radius:8px;margin-bottom:6px}
-.action-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:.15s}
-.action-check.done{background:var(--green);border-color:var(--green);color:#fff}
-.action-body{flex:1}
-.action-text{font-size:.85rem;font-weight:600}
-.action-text.done{text-decoration:line-through;color:var(--muted)}
-.action-meta{font-size:.72rem;color:var(--muted)}
-.priority{display:inline-block;padding:1px 6px;border-radius:4px;font-size:.65rem;font-weight:700;text-transform:uppercase}
-.priority-high{background:#fef2f2;color:var(--red)}
-.priority-medium{background:#fffbeb;color:var(--amber)}
-.priority-low{background:#f0fdf4;color:var(--green)}
-</style>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/meeting-minutes/app" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/meeting-minutes/app" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<meta property="og:title" content="Meeting Minutes Generator App | AfroTools">
+<meta property="og:description" content="Turn meeting notes into decisions, actions, owners, deadlines, recaps, and private local exports.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/meeting-minutes/app">
 <meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Meeting Minutes Generator | AfroTools">
+<meta name="twitter:title" content="Meeting Minutes Generator App | AfroTools">
+<meta name="twitter:description" content="Create structured meeting minutes with PDF, Word, TXT, CSV, ICS, JSON, and share-link export.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-28">
-<link rel="canonical" href="https://afrotools.com/tools/meeting-minutes/app">
-<meta name="robots" content="noindex, follow">
-<meta property="og:url" content="https://afrotools.com/tools/meeting-minutes/app">
+<meta property="article:modified_time" content="2026-05-01">
+<script src="/assets/js/lib/save-state-classic.js?v=20260408a"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=2.5.1" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f7f3;color:#111827;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:12px clamp(14px,2vw,28px);background:rgba(255,255,255,.94);border-bottom:1px solid #e5e7eb;backdrop-filter:blur(14px)}
+.topbar a{color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
+.topbar-title{font-size:.98rem;font-weight:800;margin-right:auto}
+.topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:38px}
+.btn:hover,.btn:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none}
+.btn-primary{background:#0b63ce;color:#fff;border-color:#0b63ce}
+.btn-primary:hover,.btn-primary:focus-visible{background:#084eaa;color:#fff}
+.btn-soft{background:#eef5ff;color:#0b63ce;border-color:#bfdbfe}
+.btn-danger{color:#b91c1c;border-color:#fecaca}
+.app-shell{width:min(1500px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
+.hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:16px}
+.eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.hero-strip h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.4rem);letter-spacing:0;line-height:1.05}
+.hero-strip p{margin:8px 0 0;color:#4b5563;max-width:820px;line-height:1.55}
+.status-line{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;border:1px solid #dbeafe;background:#fff;color:#1f2937;border-radius:999px;padding:8px 10px;font-size:.76rem;font-weight:800}
+.workspace{display:grid;grid-template-columns:minmax(330px,430px) minmax(460px,1fr) minmax(300px,350px);gap:16px;align-items:start}
+.panel,.preview-card,.insights-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
+.panel{padding:18px;max-height:calc(100vh - 112px);overflow:auto}
+.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.panel h2,.preview-card h2,.insights-card h2{margin:0;font-size:1.02rem;line-height:1.2}
+.panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.06em;color:#374151}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field span{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.88rem;line-height:1.35}
+.field textarea{min-height:84px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.field.full{grid-column:1/-1}
+.helper{margin:-4px 0 10px;color:#6b7280;font-size:.78rem;line-height:1.45}
+.row-builder{border:1px solid #e5e7eb;background:#fbfcff;border-radius:10px;padding:12px;margin:10px 0}
+.row-builder .form-grid{grid-template-columns:1fr 1fr}
+.list{display:grid;gap:8px;margin:8px 0 12px}
+.list-item{border:1px solid #e5e7eb;border-radius:9px;background:#fff;padding:10px;display:grid;gap:7px}
+.list-title{font-size:.86rem;font-weight:900;color:#111827}
+.list-meta{font-size:.76rem;color:#6b7280;line-height:1.4}
+.list-actions{display:flex;gap:6px;flex-wrap:wrap}
+.agenda-card{border:1px solid #e5e7eb;border-radius:10px;padding:12px;background:#fff;margin-bottom:10px}
+.agenda-top{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.agenda-index{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#eef5ff;color:#0b63ce;font-size:.78rem;font-weight:900;flex:0 0 auto}
+.action-status{display:inline-flex;border-radius:999px;padding:3px 7px;font-size:.68rem;font-weight:900;text-transform:uppercase}
+.status-open{background:#eff6ff;color:#1d4ed8}
+.status-progress{background:#fffbeb;color:#92400e}
+.status-done{background:#f0fdf4;color:#166534}
+.priority-high{color:#991b1b}.priority-medium{color:#92400e}.priority-low{color:#166534}
+.preview-card{overflow:hidden}
+.preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
+.preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.minutes-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,430px);gap:0;min-height:760px}
+.minutes-text-wrap{padding:16px;border-right:1px solid #e5e7eb;background:#f9fafb}
+#minutesText{width:100%;min-height:700px;resize:vertical;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#111827;padding:16px;line-height:1.58;font-family:Consolas,'JetBrains Mono',monospace;font-size:13px}
+#minutesText:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.1)}
+.paper-wrap{padding:18px;background:#eceff3;overflow:auto}
+.paper{width:100%;min-height:650px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:34px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:12.5px;line-height:1.58}
+.paper h3{font-family:'DM Sans',system-ui,sans-serif;margin:18px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#0b63ce}
+.paper p{margin:0 0 10px;white-space:pre-wrap}
+.paper .paper-title{font-size:19px;font-weight:700;margin-bottom:4px}
+.paper .paper-muted{font-family:'DM Sans',system-ui,sans-serif;color:#6b7280;font-size:10px;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:8px}
+.insights-card{padding:18px;position:sticky;top:82px}
+.score-ring{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;margin:14px 0}
+.score-number{display:grid;place-items:center;width:92px;height:92px;border-radius:50%;background:conic-gradient(#0b63ce var(--score-deg,0deg),#e5e7eb 0deg);position:relative;font-weight:900;color:#0b63ce}
+.score-number::before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.score-number span{position:relative;font-size:1.45rem}
+.score-copy{font-size:.84rem;color:#4b5563;line-height:1.45}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.metric{border:1px solid #e5e7eb;border-radius:9px;padding:10px;background:#fbfcff}
+.metric strong{display:block;font-size:1.22rem;color:#111827}
+.metric span{font-size:.72rem;color:#6b7280;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.checks{display:grid;gap:8px;margin:14px 0}
+.check{border:1px solid #e5e7eb;border-radius:8px;padding:9px 10px;font-size:.8rem;line-height:1.35;color:#374151}
+.check.good{border-color:#bbf7d0;background:#f0fdf4}
+.check.warn{border-color:#fde68a;background:#fffbeb}
+.saved-list{display:grid;gap:8px;max-height:240px;overflow:auto;margin-top:10px}
+.saved-item{border:1px solid #e5e7eb;border-radius:9px;padding:10px;background:#fbfcff}
+.saved-title{font-size:.82rem;font-weight:900;margin-bottom:4px}
+.saved-meta{font-size:.72rem;color:#6b7280;margin-bottom:8px}
+.toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.import-input{display:none}
+@media print{body{background:#fff}.topbar,.hero-strip,.panel,.insights-card,.preview-top,.minutes-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.minutes-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+@media(max-width:1220px){.workspace{grid-template-columns:minmax(310px,430px) minmax(440px,1fr)}.insights-card{grid-column:1/-1;position:static}.minutes-editor{grid-template-columns:1fr}}
+@media(max-width:780px){.topbar{align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workspace{grid-template-columns:1fr}.panel{max-height:none}.form-grid,.row-builder .form-grid{grid-template-columns:1fr}.minutes-editor{min-height:auto}.minutes-text-wrap{border-right:0;border-bottom:1px solid #e5e7eb}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}}
+</style>
 </head>
 <body>
+<h1 class="sr-only">Meeting Minutes Generator for professional meeting follow-up</h1>
 <div class="topbar">
-  <a href="index.html">&#8592; Meeting Minutes</a>
+  <a href="index.html" aria-label="Back to meeting minutes landing page">Back</a>
   <div class="topbar-title">Meeting Minutes Generator</div>
   <div class="topbar-actions">
-    <button class="btn" onclick="saveMinutes()">Save</button>
-    <button class="btn btn-pri" onclick="exportPDF()">Export PDF</button>
+    <button class="btn" type="button" data-action="copy">Copy recap</button>
+    <button class="btn" type="button" data-action="save">Save</button>
+    <button class="btn btn-soft" type="button" data-action="share">Share link</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">PDF</button>
   </div>
 </div>
 
-<div class="app">
-  <!-- Template -->
-  <div class="card">
-    <h2>Template</h2>
-    <div class="templates" id="templates"></div>
-  </div>
-
-  <!-- Meeting Info -->
-  <div class="card">
-    <h2><span class="num">1</span> Meeting Details</h2>
-    <div class="form-group"><label>Meeting Title</label><input type="text" id="meetingTitle" placeholder="e.g. Q1 Budget Review"></div>
-    <div class="form-row">
-      <div class="form-group"><label>Date</label><input type="date" id="meetingDate"></div>
-      <div class="form-group"><label>Time</label><input type="time" id="meetingTime"></div>
+<main class="app-shell">
+  <section class="hero-strip" aria-labelledby="app-title">
+    <div>
+      <p class="eyebrow">Meeting operating system</p>
+      <h2 id="app-title">Turn notes into decisions, owners, and follow-through.</h2>
+      <p>Build minutes before, during, or after the meeting. Capture agenda discussion, decisions, action owners, due dates, risks, and next steps without sending private notes to a server.</p>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label>Location / Platform</label><input type="text" id="location" placeholder="e.g. Conference Room A / Zoom"></div>
-      <div class="form-group"><label>Meeting Called By</label><input type="text" id="calledBy" placeholder="e.g. John Mensah"></div>
+    <div class="status-line" aria-label="Feature summary">
+      <span class="pill">Agenda</span>
+      <span class="pill">Decisions</span>
+      <span class="pill">Actions CSV</span>
+      <span class="pill">PDF, Word, TXT</span>
     </div>
-  </div>
+  </section>
 
-  <!-- Attendees -->
-  <div class="card">
-    <h2><span class="num">2</span> Attendees</h2>
-    <div id="attendees-list"></div>
-    <div class="add-row">
-      <input type="text" id="newAttendeeName" placeholder="Name">
-      <input type="text" id="newAttendeeRole" placeholder="Role (optional)">
-      <select id="newAttendeeStatus">
-        <option value="present">Present</option>
-        <option value="remote">Remote</option>
-        <option value="absent">Absent</option>
-      </select>
-      <button class="btn btn-sm btn-pri" onclick="addAttendee()">Add</button>
-    </div>
-  </div>
-
-  <!-- Agenda -->
-  <div class="card">
-    <h2><span class="num">3</span> Agenda & Discussion</h2>
-    <div id="agenda-list"></div>
-    <button class="btn" onclick="addAgendaItem()" style="margin-top:8px">+ Add Agenda Item</button>
-  </div>
-
-  <!-- Action Items -->
-  <div class="card">
-    <h2><span class="num">4</span> Action Items</h2>
-    <div id="actions-list"></div>
-    <div class="add-row">
-      <input type="text" id="newActionText" placeholder="Action description" style="flex:2">
-      <input type="text" id="newActionOwner" placeholder="Assigned to">
-      <input type="date" id="newActionDue">
-      <select id="newActionPriority">
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-        <option value="low">Low</option>
-      </select>
-      <button class="btn btn-sm btn-pri" onclick="addAction()">Add</button>
-    </div>
-  </div>
-
-  <!-- Next Meeting -->
-  <div class="card">
-    <h2><span class="num">5</span> Next Meeting</h2>
-    <div class="form-row">
-      <div class="form-group"><label>Date</label><input type="date" id="nextDate"></div>
-      <div class="form-group"><label>Time</label><input type="time" id="nextTime"></div>
-    </div>
-    <div class="form-group"><label>Proposed Agenda</label><textarea id="nextAgenda" placeholder="Key topics for the next meeting..."></textarea></div>
-  </div>
-</div>
-
-<script>
-let attendees = [];
-let agendaItems = [];
-let actions = [];
-
-const TEMPLATES_DATA = [
-  { id: 'blank', name: 'Blank', agenda: [] },
-  { id: 'board', name: 'Board Meeting', agenda: ['Call to Order','Approval of Previous Minutes','Chairman\'s Report','Financial Report','Resolutions','Any Other Business','Adjournment'] },
-  { id: 'standup', name: 'Team Standup', agenda: ['What was done yesterday','What is planned today','Blockers & Issues'] },
-  { id: 'project', name: 'Project Review', agenda: ['Project Status Update','Deliverables Review','Timeline & Milestones','Risks & Issues','Resource Needs','Next Steps'] }
-];
-
-let selectedTemplate = TEMPLATES_DATA[0];
-
-// Render templates
-const tplEl = document.getElementById('templates');
-TEMPLATES_DATA.forEach((t, i) => {
-  const div = document.createElement('div');
-  div.className = 'tpl' + (i === 0 ? ' active' : '');
-  div.textContent = t.name;
-  div.onclick = () => {
-    document.querySelectorAll('.tpl').forEach(e => e.classList.remove('active'));
-    div.classList.add('active');
-    selectedTemplate = t;
-    if (t.agenda.length && agendaItems.length === 0) {
-      agendaItems = t.agenda.map(title => ({ title, discussion: '', decision: '' }));
-      renderAgenda();
-    }
-  };
-  tplEl.appendChild(div);
-});
-
-// Set default date/time
-document.getElementById('meetingDate').value = new Date().toISOString().split('T')[0];
-document.getElementById('meetingTime').value = new Date().toTimeString().slice(0, 5);
-
-// Attendees
-function addAttendee() {
-  const name = document.getElementById('newAttendeeName').value.trim();
-  if (!name) return;
-  const role = document.getElementById('newAttendeeRole').value.trim();
-  const status = document.getElementById('newAttendeeStatus').value;
-  attendees.push({ name, role, status });
-  document.getElementById('newAttendeeName').value = '';
-  document.getElementById('newAttendeeRole').value = '';
-  renderAttendees();
-}
-
-function removeAttendee(i) {
-  attendees.splice(i, 1);
-  renderAttendees();
-}
-
-function renderAttendees() {
-  const el = document.getElementById('attendees-list');
-  if (!attendees.length) { el.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">No attendees added yet.</div>'; return; }
-  el.innerHTML = attendees.map((a, i) => {
-    const statusIcon = a.status === 'present' ? '&#9989;' : a.status === 'remote' ? '&#128187;' : '&#10060;';
-    return `<div class="list-item">
-      <span style="font-size:1rem">${statusIcon}</span>
-      <div class="list-item-body">
-        <div class="list-item-name">${a.name}</div>
-        ${a.role ? `<div class="list-item-meta">${a.role}</div>` : ''}
+  <div class="workspace">
+    <section class="panel" aria-labelledby="builder-title">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Builder</p>
+          <h2 id="builder-title">Meeting details</h2>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="rebuild">Rebuild</button>
       </div>
-      <div class="list-item-actions"><button class="btn btn-sm btn-danger" onclick="removeAttendee(${i})">&times;</button></div>
-    </div>`;
-  }).join('');
-}
 
-// Agenda
-function addAgendaItem(title) {
-  agendaItems.push({ title: title || '', discussion: '', decision: '' });
-  renderAgenda();
-}
-
-function removeAgendaItem(i) {
-  agendaItems.splice(i, 1);
-  renderAgenda();
-}
-
-function updateAgenda(i, field, value) {
-  agendaItems[i][field] = value;
-}
-
-function renderAgenda() {
-  const el = document.getElementById('agenda-list');
-  if (!agendaItems.length) { el.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">No agenda items. Add items or choose a template.</div>'; return; }
-  el.innerHTML = agendaItems.map((item, i) => `
-    <div class="agenda-item">
-      <div class="agenda-header">
-        <div class="agenda-num">${i + 1}</div>
-        <input class="agenda-title-input" value="${item.title}" placeholder="Agenda item title" oninput="updateAgenda(${i},'title',this.value)">
-        <button class="btn btn-sm btn-danger" onclick="removeAgendaItem(${i})">&times;</button>
+      <h3>Setup</h3>
+      <div class="form-grid">
+        <label class="field"><span>Template</span><select id="templateId"></select></label>
+        <label class="field"><span>Minutes style</span><select id="styleId"></select></label>
+        <label class="field"><span>Meeting title</span><input id="meetingTitle" placeholder="Q2 Expansion Review"></label>
+        <label class="field"><span>Organization</span><input id="organization" placeholder="Afro Foods Ltd"></label>
+        <label class="field"><span>Date</span><input id="meetingDate" type="date"></label>
+        <label class="field"><span>Start time</span><input id="startTime" type="time"></label>
+        <label class="field"><span>End time</span><input id="endTime" type="time"></label>
+        <label class="field"><span>Location or platform</span><input id="location" placeholder="Boardroom, Zoom, Teams"></label>
+        <label class="field"><span>Chair</span><input id="chair" placeholder="Aisha Bello"></label>
+        <label class="field"><span>Minute taker</span><input id="minuteTaker" placeholder="Kofi Mensah"></label>
       </div>
-      <div class="form-group" style="margin-bottom:8px">
-        <label>Discussion Notes</label>
-        <textarea placeholder="Key points discussed..." oninput="updateAgenda(${i},'discussion',this.value)">${item.discussion}</textarea>
+
+      <h3>Attendees</h3>
+      <div class="list" id="attendeeList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field"><span>Name</span><input id="attendeeName" placeholder="Name"></label>
+          <label class="field"><span>Role</span><input id="attendeeRole" placeholder="Finance lead"></label>
+          <label class="field"><span>Status</span><select id="attendeeStatus"><option value="present">Present</option><option value="remote">Remote</option><option value="apology">Apology</option><option value="absent">Absent</option></select></label>
+          <label class="field"><span>Email optional</span><input id="attendeeEmail" type="email" placeholder="name@example.com"></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-attendee">Add attendee</button>
       </div>
-      <div class="form-group" style="margin-bottom:0">
-        <label>Decision / Outcome</label>
-        <input type="text" placeholder="What was decided?" value="${item.decision}" oninput="updateAgenda(${i},'decision',this.value)">
+
+      <h3>Agenda and discussion</h3>
+      <div id="agendaList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field full"><span>Agenda title</span><input id="agendaTitle" placeholder="Budget approval"></label>
+          <label class="field full"><span>Discussion notes</span><textarea id="agendaDiscussion" placeholder="Key points, objections, updates, or context."></textarea></label>
+          <label class="field full"><span>Decision or outcome</span><input id="agendaDecision" placeholder="Budget approved with revised supplier cap."></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-agenda">Add agenda item</button>
       </div>
-    </div>
-  `).join('');
-}
 
-// Action Items
-function addAction() {
-  const text = document.getElementById('newActionText').value.trim();
-  if (!text) return;
-  const owner = document.getElementById('newActionOwner').value.trim();
-  const due = document.getElementById('newActionDue').value;
-  const priority = document.getElementById('newActionPriority').value;
-  actions.push({ text, owner, due, priority, done: false });
-  document.getElementById('newActionText').value = '';
-  document.getElementById('newActionOwner').value = '';
-  renderActions();
-}
+      <h3>Decisions</h3>
+      <div class="list" id="decisionList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field full"><span>Decision</span><input id="decisionText" placeholder="Approved hiring two regional coordinators."></label>
+          <label class="field"><span>Owner</span><input id="decisionOwner" placeholder="Managing Director"></label>
+          <label class="field"><span>Status</span><select id="decisionStatus"><option value="approved">Approved</option><option value="deferred">Deferred</option><option value="rejected">Rejected</option><option value="noted">Noted</option></select></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-decision">Add decision</button>
+      </div>
 
-function removeAction(i) {
-  actions.splice(i, 1);
-  renderActions();
-}
+      <h3>Action items</h3>
+      <div class="list" id="actionList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field full"><span>Action</span><input id="actionText" placeholder="Send revised procurement schedule."></label>
+          <label class="field"><span>Owner</span><input id="actionOwner" placeholder="Njeri"></label>
+          <label class="field"><span>Due date</span><input id="actionDue" type="date"></label>
+          <label class="field"><span>Priority</span><select id="actionPriority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></label>
+          <label class="field"><span>Status</span><select id="actionStatus"><option value="open">Open</option><option value="progress">In progress</option><option value="done">Done</option></select></label>
+          <label class="field"><span>Source</span><input id="actionSource" placeholder="Agenda item or decision"></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-action">Add action</button>
+      </div>
 
-function toggleAction(i) {
-  actions[i].done = !actions[i].done;
-  renderActions();
-}
+      <h3>Follow-up context</h3>
+      <div class="form-grid">
+        <label class="field full"><span>Risks or blockers</span><textarea id="risks" placeholder="Risks, blockers, dependencies, compliance concerns."></textarea></label>
+        <label class="field full"><span>Parking lot</span><textarea id="parkingLot" placeholder="Useful topics that were not resolved in this meeting."></textarea></label>
+        <label class="field"><span>Next date</span><input id="nextDate" type="date"></label>
+        <label class="field"><span>Next time</span><input id="nextTime" type="time"></label>
+        <label class="field full"><span>Next agenda</span><textarea id="nextAgenda" placeholder="Topics proposed for the next meeting."></textarea></label>
+      </div>
+    </section>
 
-function renderActions() {
-  const el = document.getElementById('actions-list');
-  if (!actions.length) { el.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">No action items yet.</div>'; return; }
-  el.innerHTML = actions.map((a, i) => `
-    <div class="action-item">
-      <div class="action-check ${a.done ? 'done' : ''}" onclick="toggleAction(${i})">${a.done ? '&#10003;' : ''}</div>
-      <div class="action-body">
-        <div class="action-text ${a.done ? 'done' : ''}">${a.text}</div>
-        <div class="action-meta">
-          ${a.owner ? `<strong>${a.owner}</strong>` : ''}
-          ${a.due ? ` | Due: ${new Date(a.due).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}` : ''}
-          ${a.priority ? ` <span class="priority priority-${a.priority}">${a.priority}</span>` : ''}
+    <section class="preview-card" aria-labelledby="preview-title">
+      <div class="preview-top">
+        <div>
+          <p class="eyebrow">Draft minutes</p>
+          <h2 id="preview-title">Editable recap</h2>
+        </div>
+        <div class="preview-tools">
+          <button class="btn" type="button" data-action="word">Word</button>
+          <button class="btn" type="button" data-action="txt">TXT</button>
+          <button class="btn" type="button" data-action="csv">Actions CSV</button>
+          <button class="btn" type="button" data-action="ics">ICS</button>
+          <button class="btn" type="button" data-action="json">JSON</button>
+          <button class="btn" type="button" data-action="import">Import</button>
+          <button class="btn" type="button" data-action="print">Print</button>
+          <input class="import-input" id="importInput" type="file" accept="application/json,.json">
         </div>
       </div>
-      <button class="btn btn-sm btn-danger" onclick="removeAction(${i})">&times;</button>
-    </div>
-  `).join('');
-}
+      <div class="minutes-editor">
+        <div class="minutes-text-wrap">
+          <label class="field full" style="margin:0">
+            <span>Minutes text</span>
+            <textarea id="minutesText" spellcheck="true" data-testid="minutes-text"></textarea>
+          </label>
+          <p class="helper" id="editState">Edit freely. Click Rebuild to regenerate from the structured form.</p>
+        </div>
+        <div class="paper-wrap" aria-label="Print preview">
+          <article class="paper" id="minutesPreview"></article>
+        </div>
+      </div>
+    </section>
 
-// Save/Load
-const ss = new SaveState('meeting-minutes');
+    <aside class="insights-card" aria-labelledby="insights-title">
+      <p class="eyebrow">Meeting quality</p>
+      <h2 id="insights-title">Follow-through readiness</h2>
+      <div class="score-ring">
+        <div class="score-number" id="scoreRing"><span id="scoreValue">0</span></div>
+        <div class="score-copy" id="scoreCopy">Add attendees, decisions, and action owners to start scoring.</div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric"><strong id="metricAttendees">0</strong><span>Attendees</span></div>
+        <div class="metric"><strong id="metricAgenda">0</strong><span>Agenda</span></div>
+        <div class="metric"><strong id="metricDecisions">0</strong><span>Decisions</span></div>
+        <div class="metric"><strong id="metricActions">0</strong><span>Actions</span></div>
+      </div>
+      <div class="checks" id="checksList"></div>
 
-function gv(id) { return document.getElementById(id).value.trim(); }
+      <h2 style="margin-top:18px">Saved minutes</h2>
+      <div class="saved-list" id="savedList"></div>
+    </aside>
+  </div>
+</main>
 
-function saveMinutes() {
-  const data = {
-    meetingTitle: gv('meetingTitle'),
-    meetingDate: gv('meetingDate'),
-    meetingTime: gv('meetingTime'),
-    location: gv('location'),
-    calledBy: gv('calledBy'),
-    attendees,
-    agendaItems,
-    actions,
-    nextDate: gv('nextDate'),
-    nextTime: gv('nextTime'),
-    nextAgenda: gv('nextAgenda'),
-    template: selectedTemplate.id
-  };
-  const label = data.meetingTitle || 'Untitled Meeting';
-
-  const params = new URLSearchParams(window.location.search);
-  const existingId = params.get('id');
-
-  ss.save({ id: existingId || undefined, label, data });
-  alert('Minutes saved!');
-
-  if (!existingId) {
-    const all = ss.getAll();
-    if (all.length) history.replaceState(null, '', `?id=${all[all.length - 1].id}`);
-  }
-}
-
-function loadFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  if (!id) return;
-  const item = ss.load(id);
-  if (!item || !item.data) return;
-  const d = item.data;
-
-  ['meetingTitle','meetingDate','meetingTime','location','calledBy','nextDate','nextTime','nextAgenda'].forEach(key => {
-    const el = document.getElementById(key);
-    if (el && d[key]) el.value = d[key];
-  });
-
-  if (d.attendees) attendees = d.attendees;
-  if (d.agendaItems) agendaItems = d.agendaItems;
-  if (d.actions) actions = d.actions;
-  if (d.template) {
-    const t = TEMPLATES_DATA.find(t => t.id === d.template);
-    if (t) {
-      selectedTemplate = t;
-      document.querySelectorAll('.tpl').forEach(el => el.classList.toggle('active', el.textContent === t.name));
-    }
-  }
-
-  renderAttendees();
-  renderAgenda();
-  renderActions();
-}
-
-// Lazy-load jsPDF + html2canvas for proper PDF generation
-var _pdfLibsLoaded = false;
-function loadPdfLibs() {
-  if (_pdfLibsLoaded) return Promise.resolve();
-  return Promise.all([
-    new Promise(function(r,j){ var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s); }),
-    new Promise(function(r,j){ var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s); })
-  ]).then(function(){ _pdfLibsLoaded = true; });
-}
-
-function exportPDF() {
-  // Email gate for non-signed-up users
-  var gate = document.querySelector('email-gate-modal');
-  if (gate) { gate.show(doExportPDF); } else { doExportPDF(); }
-}
-
-async function doExportPDF() {
-  const title = gv('meetingTitle') || 'Meeting Minutes';
-  const date = gv('meetingDate') ? new Date(gv('meetingDate')).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-  const time = gv('meetingTime');
-  const loc = gv('location');
-  const calledBy = gv('calledBy');
-
-  // Build HTML content for PDF rendering
-  let html = '<div style="font-family:Arial,sans-serif;padding:40px;color:#333;font-size:13px;line-height:1.7;max-width:700px;margin:0 auto;">';
-  html += '<h1 style="font-size:22px;margin-bottom:8px;">' + esc(title) + '</h1>';
-  html += '<div style="font-size:12px;color:#666;margin-bottom:20px;">';
-  if (date) html += '<strong>Date:</strong> ' + esc(date);
-  if (time) html += ' | <strong>Time:</strong> ' + esc(time);
-  if (loc) html += ' | <strong>Location:</strong> ' + esc(loc);
-  if (calledBy) html += ' | <strong>Called by:</strong> ' + esc(calledBy);
-  html += '</div>';
-
-  if (attendees.length) {
-    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Attendees</h2><table style="width:100%;border-collapse:collapse;margin:10px 0 16px;"><thead><tr><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;border-bottom:2px solid #ddd;">Name</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;border-bottom:2px solid #ddd;">Role</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;border-bottom:2px solid #ddd;">Status</th></tr></thead><tbody>';
-    attendees.forEach(function(a) { html += '<tr><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.name) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.role || '--') + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.status) + '</td></tr>'; });
-    html += '</tbody></table>';
-  }
-
-  if (agendaItems.length) {
-    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Agenda &amp; Discussion</h2>';
-    agendaItems.forEach(function(item, i) {
-      html += '<h3 style="font-size:14px;margin:12px 0 6px;color:#374151;">' + (i+1) + '. ' + esc(item.title || 'Untitled') + '</h3>';
-      if (item.discussion) html += '<p style="margin-bottom:8px;"><strong>Discussion:</strong> ' + esc(item.discussion) + '</p>';
-      if (item.decision) html += '<p style="margin-bottom:8px;"><strong>Decision:</strong> ' + esc(item.decision) + '</p>';
-    });
-  }
-
-  if (actions.length) {
-    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Action Items</h2><table style="width:100%;border-collapse:collapse;margin:10px 0 16px;"><thead><tr><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Action</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Owner</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Due</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Priority</th><th style="background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;border-bottom:2px solid #ddd;">Status</th></tr></thead><tbody>';
-    actions.forEach(function(a) {
-      var due = a.due ? new Date(a.due).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '--';
-      html += '<tr><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.text) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.owner || '--') + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(due) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + esc(a.priority) + '</td><td style="padding:6px 10px;border-bottom:1px solid #eee;">' + (a.done ? 'Done' : 'Pending') + '</td></tr>';
-    });
-    html += '</tbody></table>';
-  }
-
-  var nextDate = gv('nextDate'), nextTime = gv('nextTime'), nextAgenda = gv('nextAgenda');
-  if (nextDate || nextAgenda) {
-    html += '<h2 style="font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb;">Next Meeting</h2>';
-    if (nextDate) html += '<p style="margin-bottom:8px;"><strong>Date:</strong> ' + new Date(nextDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + (nextTime ? ' at ' + esc(nextTime) : '') + '</p>';
-    if (nextAgenda) html += '<p style="margin-bottom:8px;"><strong>Proposed Agenda:</strong> ' + esc(nextAgenda) + '</p>';
-  }
-  html += '<div style="margin-top:30px;padding-top:12px;border-top:1px solid #eee;font-size:10px;color:#999;text-align:center;">Generated by AfroTools Meeting Minutes Generator</div>';
-  html += '</div>';
-
-  try {
-    await loadPdfLibs();
-    // Render HTML to a hidden div
-    var container = document.createElement('div');
-    container.style.cssText = 'position:absolute;left:-9999px;top:0;width:700px;background:#fff;';
-    container.innerHTML = html;
-    document.body.appendChild(container);
-
-    var canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#fff' });
-    document.body.removeChild(container);
-
-    var imgData = canvas.toDataURL('image/jpeg', 0.95);
-    var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    var pageWidth = pdf.internal.pageSize.getWidth();
-    var pageHeight = pdf.internal.pageSize.getHeight();
-    var imgWidth = pageWidth - 20;
-    var imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    var y = 10;
-    if (imgHeight <= pageHeight - 20) {
-      pdf.addImage(imgData, 'JPEG', 10, y, imgWidth, imgHeight);
-    } else {
-      // Multi-page
-      var remaining = imgHeight;
-      var srcY = 0;
-      while (remaining > 0) {
-        var sliceH = Math.min(remaining, pageHeight - 20);
-        pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight, undefined, 'FAST', 0);
-        remaining -= sliceH;
-        if (remaining > 0) { pdf.addPage(); }
-        srcY += sliceH;
-      }
-    }
-    pdf.save((title.replace(/[^a-zA-Z0-9]/g, '_') || 'Meeting_Minutes') + '.pdf');
-  } catch (err) {
-    console.error('PDF export error:', err);
-    // Fallback to print
-    var w = window.open('', '_blank');
-    w.document.write('<!DOCTYPE html><html><head><title>' + esc(title) + '</title></head><body>' + html + '</body></html>');
-    w.document.close();
-    setTimeout(function(){ w.print(); }, 300);
-  }
-}
-
-function esc(s) { return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
-
-// Init
-loadFromUrl();
-renderAttendees();
-renderAgenda();
-renderActions();
-</script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/js/pages/meeting-minutes.js?v=20260501" defer></script>
 <email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
+<script src="/assets/js/lib/pdf-download-gate.js?v=20260501" defer></script>
 </body>
 </html>

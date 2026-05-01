@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Namba Bates za PDF - Bates numbering na audit CSV | AfroTools</title>
+<meta name="description" content="Weka namba Bates kwenye PDF moja au kundi la PDF kwa mpangilio endelevu, prefix, suffix, ZIP export na audit CSV ndani ya kivinjari.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/namba-bates-pdf/">
+
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/namba-bates-pdf/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-bates/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-bates/"><link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Namba Bates za PDF - Bates numbering na audit CSV | AfroTools">
+<meta property="og:description" content="Weka namba Bates kwenye PDF moja au kundi la PDF kwa mpangilio endelevu, prefix, suffix, ZIP export na audit CSV ndani ya kivinjari.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/namba-bates-pdf/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Namba Bates za PDF - Bates numbering na audit CSV | AfroTools">
+<meta name="twitter:description" content="Weka namba Bates kwenye PDF moja au kundi la PDF kwa mpangilio endelevu, prefix, suffix, ZIP export na audit CSV ndani ya kivinjari.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=1.17.1"></script>
+<script src="/assets/vendor/jszip/jszip.min.js?v=3.10.1"></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '\1F4C4';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #1e293b;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .file-input-label {
+    display: block;
+    padding: 20px;
+    background: #EFF6FF;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--afro-green);
+  }
+
+  .file-input-label.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.1);
+  }
+
+  .file-queue {
+    margin-top: 14px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .file-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 11px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .file-name {
+    font-size: 0.83rem;
+    font-weight: 800;
+    color: #111827;
+    overflow-wrap: anywhere;
+  }
+
+  .file-meta {
+    margin-top: 3px;
+    font-size: 0.72rem;
+    color: #64748b;
+  }
+
+  .file-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  .mini-btn,
+  .secondary-btn {
+    border: 1px solid #dbe4f0;
+    background: #fff;
+    color: #1f2937;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    transition: all 0.15s;
+  }
+
+  .mini-btn {
+    min-width: 34px;
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+  }
+
+  .mini-btn:hover,
+  .secondary-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .secondary-btn {
+    padding: 10px 12px;
+    font-size: 0.72rem;
+  }
+
+  .batch-stats {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .stat-pill {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .stat-k {
+    display: block;
+    font-size: 0.66rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .stat-v {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  .section-label {
+    margin: 20px 0 10px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .section-label:first-child {
+    margin-top: 0;
+  }
+
+  .help-text {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  .check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 10px 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .check-row input {
+    margin-top: 2px;
+    accent-color: var(--afro-green);
+  }
+
+  .preset-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  /* Position grid */
+  .pos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .pos-btn {
+    padding: 10px 6px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 6px;
+    background: #EFF6FF;
+    cursor: pointer;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #374151;
+    text-align: center;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .pos-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .pos-btn.active {
+    background: rgba(0, 113, 227, 0.12);
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  /* Preview box */
+  .preview-box {
+    background: #0f1419;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-top: 14px;
+  }
+
+  .preview-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .preview-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--afro-green);
+    letter-spacing: 0.04em;
+    word-break: break-all;
+  }
+
+  .preview-sequence {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 6px;
+  }
+
+  .page-preview {
+    margin-top: 14px;
+    height: 150px;
+    border-radius: 8px;
+    background: linear-gradient(#fff, #f8fafc);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-preview::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    top: 18px;
+    height: 9px;
+    background: #e2e8f0;
+    box-shadow: 0 20px 0 #e2e8f0, 0 40px 0 #e2e8f0, 0 60px 0 #e2e8f0;
+  }
+
+  .page-stamp {
+    position: absolute;
+    min-width: 76px;
+    max-width: 82%;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.82);
+    color: #111827;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-align: center;
+    overflow-wrap: anywhere;
+    transform-origin: center;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Result card */
+  .result-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    font-size: 0.85rem;
+    color: #1e293b;
+    margin-bottom: 12px;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+
+  .act-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    background: rgba(0, 113, 227, 0.1);
+    border: 1.5px solid rgba(0, 113, 227, 0.35);
+    color: #1e40af;
+  }
+
+  .act-btn:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .action-stack {
+    display: grid;
+    gap: 8px;
+  }
+
+  .manifest-box {
+    margin-top: 12px;
+    max-height: 220px;
+    overflow: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.7rem;
+    line-height: 1.55;
+    color: #334155;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .result-note {
+    margin-top: 10px;
+    font-size: 0.72rem;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.6;
+  }
+
+  .info-text ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .info-text li {
+    margin-bottom: 6px;
+  }
+
+  .info-text li::marker {
+    color: var(--afro-green);
+  }
+
+  /* Font size slider display */
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .slider-row input[type="range"] {
+    flex: 1;
+    accent-color: var(--afro-green);
+    cursor: pointer;
+  }
+
+  .slider-val {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--afro-green);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .slider-wide {
+    min-width: 58px;
+  }
+
+  /* SEO / FAQs */
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    width: 100%;
+    padding: 14px 18px;
+    background: #f9fafb;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    transition: transform 0.2s;
+  }
+
+  .faq-q.open::after {
+    content: '-';
+  }
+
+  .faq-a {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    font-size: 0.82rem;
+    color: #374151;
+    line-height: 1.7;
+  }
+
+  .faq-a.open {
+    padding: 14px 18px;
+    max-height: 400px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .batch-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .file-row {
+      grid-template-columns: 1fr;
+    }
+
+    .file-actions {
+      justify-content: flex-start;
+    }
+  }
+</style>
+
+<script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
+
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-04-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Namba Bates za PDF","url":"https://afrotools.com/sw/zana/namba-bates-pdf/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Weka namba Bates kwenye PDF moja au kundi la PDF kwa mpangilio endelevu, prefix, suffix, ZIP export na audit CSV ndani ya kivinjari.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"Namba Bates za PDF","item":"https://afrotools.com/sw/zana/namba-bates-pdf/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Bates numbering ni nini?","acceptedAnswer":{"@type":"Answer","text":"Bates numbering ni njia ya kuweka kitambulisho cha mfululizo kwenye kila ukurasa ili timu ziweze kurejea ukurasa kwa usahihi katika bundle ya hati."}},{"@type":"Question","name":"Je, audit CSV ni ushahidi rasmi?","acceptedAnswer":{"@type":"Answer","text":"CSV ni rekodi ya kupanga kazi na ukaguzi wa ndani. Kwa matumizi ya mahakama, hospitali au compliance, hakiki na wakili, afisa husika au mtaalamu aliyehitimu."}}]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>PDF Bates <em>Numbering</em></h1>
+    <p class="hero-sub">Weka namba Bates kwenye PDF moja au kundi la ushahidi kwa namba zinazoendelea, range za kurasa, format na audit log bila kupakia faili.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Faili nyingi</span>
+      <span class="badge b-green">Namba zinazoendelea</span>
+      <span class="badge b-green">Uchakataji wa faragha kwenye kivinjari</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Faili Pakia -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">1. Pakia na panga faili</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <input type="file" id="pdfInput" accept=".pdf,application/pdf" multiple style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+            <label for="pdfInput" class="file-input-label" id="dropLabel">
+              Bofya au buruta PDF hapa
+            </label>
+          </div>
+          <div class="file-queue" id="fileQueue" aria-live="polite"></div>
+          <div class="batch-stats" id="batchStats">
+            <div class="stat-pill"><span class="stat-k">Faili</span><span class="stat-v" id="statFaili">0</span></div>
+            <div class="stat-pill"><span class="stat-k">Kurasa</span><span class="stat-v" id="statKurasa">0</span></div>
+            <div class="stat-pill"><span class="stat-k">To stamp</span><span class="stat-v" id="statStamped">0</span></div>
+          </div>
+          <div class="preset-row">
+            <button class="secondary-btn" id="clearFailiBtn" type="button">Ondoa faili</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bates Mipangilio -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">2. Sanidi stempu ya Bates</span>
+        </div>
+        <div class="card-body">
+          <div class="section-label">Muundo wa namba</div>
+          <div class="grid-2">
+            <div class="field">
+              <label class="f-label-text" for="prefix">Prefix</label>
+              <input type="text" class="f-input" id="prefix" placeholder="CASE-" value="CASE-">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="suffix">Suffix</label>
+              <input type="text" class="f-input" id="suffix" placeholder="-CONF" value="">
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <label class="f-label-text" for="startNumber">Namba ya kuanzia</label>
+              <input type="number" class="f-input" id="startNumber" min="0" value="1">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="zeroPad">Idadi ya tarakimu</label>
+              <input type="number" class="f-input" id="zeroPad" min="1" max="15" value="6">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="numberStep">Ongezeko</label>
+              <input type="number" class="f-input" id="numberStep" min="1" max="100" value="1">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text" for="template">Template ya stempu</label>
+            <input type="text" class="f-input" id="template" value="{prefix}{num}{suffix}" spellcheck="false">
+            <div class="help-text">Tokens: {prefix}, {num}, {suffix}, {file}, {page}, {total}, {date}</div>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text" for="secondLine">Mstari wa pili</label>
+            <input type="text" class="f-input" id="secondLine" placeholder="Optional: Confidential, Exhibit A, Production 1">
+          </div>
+
+          <div class="section-label">Kurasa</div>
+          <div class="grid-3">
+            <div class="field">
+              <label class="f-label-text" for="pageMode">Tumia kwenye</label>
+              <select class="f-input" id="pageMode">
+                <option value="all">Kurasa zote</option>
+                <option value="range">Range maalum</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="pageRanges">Ranges</label>
+              <input type="text" class="f-input" id="pageRanges" placeholder="1-3, 6, 9-12">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="excludeKurasa">Ondoa kurasa</label>
+              <input type="text" class="f-input" id="excludeKurasa" placeholder="1, 4-5">
+            </div>
+          </div>
+
+          <label class="check-row">
+            <input type="checkbox" id="skipFirstUkurasa">
+            <span>Ruka ukurasa wa kwanza wa kila PDF, hasa kama cover page haitakiwi kupata stempu.</span>
+          </label>
+
+          <div class="section-label">Mahali na mwonekano</div>
+          <div class="field">
+            <label class="f-label-text">Mahali</label>
+            <div class="pos-grid">
+              <button class="pos-btn" data-pos="top-left">Juu kushoto</button>
+              <button class="pos-btn" data-pos="top-center">Juu katikati</button>
+              <button class="pos-btn" data-pos="top-right">Juu kulia</button>
+              <button class="pos-btn" data-pos="bottom-left">Chini kushoto</button>
+              <button class="pos-btn active" data-pos="bottom-center">Chini katikati</button>
+              <button class="pos-btn" data-pos="bottom-right">Chini kulia</button>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="f-label-text" for="fontFamily">Font</label>
+              <select class="f-input" id="fontFamily">
+                <option value="courier">Courier</option>
+                <option value="helvetica">Helvetica</option>
+                <option value="times">Times</option>
+              </select>
+            </div>
+            <label class="check-row">
+              <input type="checkbox" id="fontBold">
+              <span>Tumia maandishi mazito</span>
+            </label>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text">Ukubwa wa fonti</label>
+            <div class="slider-row">
+              <input type="range" id="fontSize" min="7" max="30" value="10">
+              <span class="slider-val slider-wide" id="fontSizeVal">10pt</span>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="f-label-text">Rangi</label>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <input type="color" id="stampRangi" value="#000000" style="width:60px;height:40px;border:1.5px solid #e5e7eb;border-radius:7px;cursor:pointer;background:#EFF6FF;">
+                <span id="stampRangiHex" style="font-size:0.75rem;font-weight:700;color:#1e293b;">#000000</span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="margin">Margin (mm)</label>
+              <input type="number" class="f-input" id="margin" min="5" max="40" value="15">
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <label class="f-label-text" for="offsetX">Offset X (mm)</label>
+              <input type="number" class="f-input" id="offsetX" min="-80" max="80" value="0">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="offsetY">Offset Y (mm)</label>
+              <input type="number" class="f-input" id="offsetY" min="-80" max="80" value="0">
+            </div>
+            <div class="field">
+              <label class="f-label-text" for="rotation">Mzunguko</label>
+              <div class="slider-row">
+                <input type="range" id="rotation" min="-90" max="90" value="0">
+                <span class="slider-val slider-wide" id="rotationVal">0deg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text">Opacity</label>
+            <div class="slider-row">
+              <input type="range" id="opacity" min="20" max="100" value="90">
+              <span class="slider-val slider-wide" id="opacityVal">90%</span>
+            </div>
+          </div>
+
+          <label class="check-row">
+            <input type="checkbox" id="backgroundPatch" checked>
+            <span>Ongeza sehemu nyeupe nyuma ya stempu kwa kurasa zilizochanganuliwa au zenye maandishi mengi.</span>
+          </label>
+
+          <!-- Live Preview -->
+          <div class="preview-box" id="previewBox">
+            <div class="preview-label">Muonekano wa mpangilio</div>
+            <div class="preview-text" id="previewMaandishi">000001</div>
+            <div class="preview-sequence" id="previewSeq">000001 -> 000002 -> 000003 -> ...</div>
+            <div class="page-preview" aria-hidden="true"><div class="page-stamp" id="pageStamp">000001</div></div>
+          </div>
+
+          <div class="preset-row">
+            <button class="secondary-btn" id="savePresetBtn" type="button">Hifadhi preset</button>
+            <button class="secondary-btn" id="loadPresetBtn" type="button">Pakia preset</button>
+          </div>
+
+          <button class="calc-btn" id="stampBtn" disabled>Weka namba Bates</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="result-card" id="resultCard">
+        <div class="card-head">
+          <span class="card-title">Matokeo na audit log</span>
+        </div>
+        <div class="card-body">
+          <div class="result-text" id="resultMaandishi"></div>
+          <div id="actionRow" style="display:none;">
+            <div class="action-stack">
+              <button class="act-btn" id="downloadBtn">Pakua matokeo</button>
+              <button class="act-btn" id="downloadZipBtn">Pakua ZIP ya kundi</button>
+              <button class="act-btn" id="manifestBtn">Pakua audit CSV</button>
+            </div>
+          </div>
+          <div class="manifest-box" id="auditManifest">Pakia PDF ili kuona range ya Bates iliyopangwa.</div>
+          <div class="result-note">Faili huwekewa stempu kwenye kivinjari chako. Audit CSV huhifadhi mpangilio wa faili, ukurasa, thamani ya stempu na range ya Bates.</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Bates numbering ni nini?</div>
+        <div class="info-text">
+          Bates numbering assigns a unique sequential identifier to each page in a legal, medical, compliance, or business document set so teams can cite pages consistently across a production.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Vipengele muhimu</div>
+        <div class="info-text">
+          <ul>
+            <li>PDF nyingi zenye namba zinazoendelea</li>
+            <li>Range za kurasa, kurasa za kuondoa na chaguo la kuruka cover</li>
+            <li>Token za template na lebo ya mstari wa pili</li>
+            <li>Fonti, opacity, mzunguko, offset na sehemu ya nyuma</li>
+            <li>ZIP export pamoja na audit manifest</li>
+            <li>Uchakataji wa browser-based kwa maktaba za PDF za ndani</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Faragha</div>
+        <div class="info-text">
+          PDF yako huchakatwa ndani ya kivinjari. Hakuna faili inayopakiwa kwenye seva. Hati yenye stempu hutengenezwa kwenye kifaa chako.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Zana ya Namba Bates za PDF huongeza vitambulisho vya mfululizo kwenye PDF moja au kundi la nyaraka. It supports continuous numbering across files, custom prefix and suffix formats, file/page/date tokens, page ranges, exclusions, reusable presets, and a downloadable audit CSV. It is designed for legal discovery, court bundles, compliance files, medical records, internal investigations, procurement files, and any workflow where every page needs a stable reference without sending sensitive documents to a server.</p>
+  </div>
+</section>
+<!-- FAQs -->
+<div class="seo-section">
+  <h2>Maswali ya mara kwa mara</h2>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="faq-item">
+    <button class="faq-q">What is Bates numbering used for?</button>
+    <div class="faq-a">Bates numbering is primarily used in legal and business settings to assign unique, sequential identifiers to pages in a document set. This makes it easy to reference specific pages during depositions, court proceedings, regulatory audits, and large-scale document reviews.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Is my PDF uploaded to a server?</button>
+    <div class="faq-a">No. The entire Bates stamping process runs locally in your browser. Your PDFs are not uploaded to AfroTools, which is important for legal, medical, finance, and HR records.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">What format should I use for the prefix and suffix?</button>
+    <div class="faq-a">Common formats include a matter or case prefix such as "CASE-" and a suffix such as "-CONF". You can also use the template field with tokens like {file}, {page}, {total}, and {date} for document-aware stamps.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Zero-padding hufanya kazi vipi?</button>
+    <div class="faq-a">Zero-padding huongeza sifuri mwanzoni ili namba zote ziwe na urefu sawa. Kwa tarakimu 6, namba 1 huwa "000001", 42 huwa "000042", na kadhalika. Hii hufanya stempu ziwe na upana unaolingana kwenye hati.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Naweza kuweka namba zinazoendelea kwenye PDF nyingi?</button>
+    <div class="faq-a">Yes. Pakia multiple PDFs, arrange them in the queue, and the tool will continue the Bates sequence across the whole batch. The output ZIP keeps one stamped PDF per source file and includes an audit CSV.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Naweza kuweka stempu kwenye kurasa maalum tu?</button>
+    <div class="faq-a">Ndiyo. Chagua range kama "1-3, 6, 9-12", ongeza exclusions, au ruka ukurasa wa kwanza wa kila PDF. Namba huongezeka tu kwenye kurasa zinazopata stempu ya Bates.</div>
+  </div>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-bates"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
+<script src="/assets/js/pages/pdf-bates.js?v=2140948a"></script>
+
+<script type="application/x-afrotools-legacy-disabled">
+(function() {
+  'use strict';
+
+  function getPDFLib() {
+    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+    return window.PDFLib;
+  }
+
+  let currentFile = null;
+  let resultPdf = null;
+  let selectedPosition = 'bottom-center';
+
+  // DOM refs
+  const pdfInput = document.getElementById('pdfInput');
+  const dropLabel = document.getElementById('dropLabel');
+  const stampBtn = document.getElementById('stampBtn');
+  const resultCard = document.getElementById('resultCard');
+  const resultText = document.getElementById('resultText');
+  const actionRow = document.getElementById('actionRow');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const prefix = document.getElementById('prefix');
+  const suffix = document.getElementById('suffix');
+  const startNumber = document.getElementById('startNumber');
+  const zeroPad = document.getElementById('zeroPad');
+  const fontSize = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const stampColor = document.getElementById('stampColor');
+  const stampColorHex = document.getElementById('stampColorHex');
+  const marginInput = document.getElementById('margin');
+  const previewText = document.getElementById('previewText');
+  const previewSeq = document.getElementById('previewSeq');
+
+  // Position buttons
+  document.querySelectorAll('.pos-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.pos-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedPosition = btn.dataset.pos;
+    });
+  });
+
+  // Font size slider
+  fontSize.addEventListener('input', function() {
+    fontSizeVal.textContent = this.value + 'pt';
+  });
+
+  // Color picker
+  stampColor.addEventListener('change', function() {
+    stampColorHex.textContent = this.value.toUpperCase();
+  });
+
+  // Live preview update
+  function updatePreview() {
+    var p = prefix.value;
+    var s = suffix.value;
+    var start = parseInt(startNumber.value) || 0;
+    var pad = parseInt(zeroPad.value) || 6;
+
+    var n1 = String(start).padStart(pad, '0');
+    var n2 = String(start + 1).padStart(pad, '0');
+    var n3 = String(start + 2).padStart(pad, '0');
+
+    previewText.textContent = p + n1 + s;
+    previewSeq.textContent = p + n1 + s + ' \u2192 ' + p + n2 + s + ' \u2192 ' + p + n3 + s + ' \u2192 ...';
+  }
+
+  prefix.addEventListener('input', updatePreview);
+  suffix.addEventListener('input', updatePreview);
+  startNumber.addEventListener('input', updatePreview);
+  zeroPad.addEventListener('input', updatePreview);
+  updatePreview();
+
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
+  // File handling
+  pdfInput.addEventListener('change', function(e) {
+    if (isPdfFile(e.target.files[0])) {
+      currentFile = e.target.files[0];
+      stampBtn.disabled = false;
+      resultCard.classList.remove('on');
+      dropLabel.textContent = currentFile.name;
+    }
+  });
+
+  dropLabel.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropLabel.classList.add('dragover');
+  });
+
+  dropLabel.addEventListener('dragleave', function() {
+    dropLabel.classList.remove('dragover');
+  });
+
+  dropLabel.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropLabel.classList.remove('dragover');
+    var file = e.dataTransfer.files[0];
+    if (isPdfFile(file)) {
+      currentFile = file;
+      stampBtn.disabled = false;
+      resultCard.classList.remove('on');
+      dropLabel.textContent = file.name;
+    }
+  });
+
+  // Stamp PDF
+  stampBtn.addEventListener('click', async function() {
+    if (!currentFile) return;
+
+    stampBtn.disabled = true;
+    resultText.textContent = 'Adding Bates numbers...';
+    actionRow.style.display = 'none';
+    resultCard.classList.add('on');
+
+    try {
+      var arrayBuffer = await currentFile.arrayBuffer();
+      var pdf = await getPDFLib().PDFDocument.load(arrayBuffer);
+      var font = await pdf.embedFont(getPDFLib().StandardFonts.Courier);
+      var pages = pdf.getPages();
+
+      var p = prefix.value;
+      var s = suffix.value;
+      var start = parseInt(startNumber.value) || 0;
+      var pad = parseInt(zeroPad.value) || 6;
+      var size = parseInt(fontSize.value) || 10;
+      var marginMm = parseInt(marginInput.value) || 15;
+      var margin = marginMm * 2.835; // mm to points
+
+      var colorHex = stampColor.value;
+      var cr = parseInt(colorHex.slice(1, 3), 16) / 255;
+      var cg = parseInt(colorHex.slice(3, 5), 16) / 255;
+      var cb = parseInt(colorHex.slice(5, 7), 16) / 255;
+
+      pages.forEach(function(page, index) {
+        var num = start + index;
+        var padded = String(num).padStart(pad, '0');
+        var stamp = p + padded + s;
+        var pageSize = page.getSize();
+        var w = pageSize.width;
+        var h = pageSize.height;
+        var textWidth = font.widthOfTextAtSize(stamp, size);
+
+        var x, y;
+
+        // Vertical position
+        if (selectedPosition.startsWith('top')) {
+          y = h - margin;
+        } else {
+          y = margin;
+        }
+
+        // Horizontal position
+        if (selectedPosition.includes('center')) {
+          x = (w - textWidth) / 2;
+        } else if (selectedPosition.includes('right')) {
+          x = w - margin - textWidth;
+        } else {
+          x = margin;
+        }
+
+        page.drawText(stamp, {
+          x: x,
+          y: y,
+          size: size,
+          font: font,
+          color: getPDFLib().rgb(cr, cg, cb),
+          opacity: 0.85
+        });
+      });
+
+      resultPdf = await pdf.save();
+      resultText.textContent = '\u2713 Bates numbers added to ' + pages.length + ' page' + (pages.length !== 1 ? 's' : '') + '!';
+      actionRow.style.display = 'block';
+    } catch (err) {
+      resultText.textContent = '\u2717 Error: ' + err.message;
+    }
+    stampBtn.disabled = false;
+  });
+
+  // Download
+  function doActualDownload() {
+    if (!resultPdf) return;
+    var link = document.createElement('a');
+    var url = URL.createObjectURL(new Blob([resultPdf], { type: 'application/pdf' }));
+    link.href = url;
+    link.download = currentFile.name.replace(/\.pdf$/i, '_bates.pdf');
+    link.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    var gate = document.querySelector('email-gate-modal');
+    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+  });
+
+  // FAQ toggles
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var answer = btn.nextElementSibling;
+      var isOpen = btn.classList.contains('open');
+      document.querySelectorAll('.faq-q').forEach(function(b) { b.classList.remove('open'); });
+      document.querySelectorAll('.faq-a').forEach(function(a) { a.classList.remove('open'); });
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    });
+  });
+
+})();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Pdf Bates" tool-slug="pdf-bates"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<email-gate-modal></email-gate-modal>
+<script src="/assets/js/lib/auto-email-gate.js?v=840039a3" defer></script>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script>
+(function(){
+  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza Hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Ready","Tayari"],["Error","Hitilafu"]]);
+  const attrMap = textMap;
+  function swapText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(swapText);
+    root.querySelectorAll && root.querySelectorAll('[placeholder],[aria-label],button,input[type="button"],input[type="submit"]').forEach(el => {
+      ['placeholder','aria-label','value','title'].forEach(attr => {
+        const value = el.getAttribute(attr);
+        if (value && attrMap.has(value.trim())) el.setAttribute(attr, attrMap.get(value.trim()));
+      });
+    });
+  }
+  function run(){ walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) swapText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

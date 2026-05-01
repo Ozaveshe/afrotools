@@ -1,1 +1,197 @@
-!function(){"use strict";var a="/assets/img/kitchen",e={"amiwo-bj":["amiwo-bj.jpg"],"chakhchoukha-dz":["chakhchoukha-dz.jpg"],"couscous-royal-dz":["couscous-royal-dz.jpg"],"jollof-rice-ng":["ng_jollof_rice"],"kuli-kuli-bj":["kuli-kuli-bj.webp"],"morogo-bw":["morogo-bw.jpg"],"wagasi-grille-bj":["wagasi-grille-bj.jpg"]};function t(a){return a?"string"==typeof a?a.trim():String(a.slug||"").trim():""}function n(n){var r=t(n);return r?(e[r]||[]).map(function(e){return a+"/"+e}):[]}function r(a){return String(a||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function i(a,e,t,n){var r=0;!function i(){if(r>=a.length)n&&n();else{var l=new Image,c=a[r];r+=1,l.decoding="async",e&&e(l),l.onload=function(){t&&t(l,c)},l.onerror=i,l.src=c}}()}window.AfroKitchenImages={rootPath:a,extensions:[".webp",".jpg",".jpeg",".png"].slice(),getFilename:function(a,e){var n=t(a);return n?n+(e||".webp"):""},getPath:function(a){var e=n(a);return e.length?e[0]:""},getCandidatePaths:n,createCardSlotMarkup:function(a,e){var n=e||{},i=t(a),l=r(n.alt||a.image_alt||a.name||""),c=r(n.label||"AfroKitchen"),o=r(n.title||a.name||"Recipe");return'<div class="ak-recipe-card-thumb ak-img-fallback" data-ak-image-slot="card" data-ak-image-slug="'+r(i)+'" data-ak-image-alt="'+l+'"><div class="ak-card-fallback"><div class="ak-card-fallback-label">'+c+'</div><p class="ak-card-fallback-title">'+o+"</p></div></div>"},createFeaturedSlotMarkup:function(a,e){var n=e||{},i=t(a),l=r(n.alt||a.image_alt||a.name||"");return'<div class="ak-featured-fallback" data-ak-image-slot="featured" data-ak-image-slug="'+r(i)+'" data-ak-image-alt="'+l+'" aria-hidden="true"></div>'},hydrate:function(a){(a||document).querySelectorAll("[data-ak-image-slot][data-ak-image-slug]").forEach(function(a){"true"!==a.dataset.akImageBound&&(a.dataset.akImageBound="true",i(n(a.dataset.akImageSlug),function(e){"card"===a.dataset.akImageSlot&&(e.loading="lazy")},function(e){if(e.alt=a.dataset.akImageAlt||"","featured"===a.dataset.akImageSlot)return e.className="ak-featured-img",void a.replaceWith(e);a.className="ak-recipe-card-thumb",a.innerHTML="",e.className="ak-recipe-card-img",a.appendChild(e)},function(){a.dataset.akImageMissing="true"}))})},applyHeroBackground:function(a,e,t){return a?(t&&(a.style.background=t),a.style.backgroundImage="none",new Promise(function(t){i(n(e),null,function(e,n){a.style.backgroundImage="url("+n+")",a.style.backgroundPosition="center",a.style.backgroundSize="cover",t(n)},function(){t(null)})})):Promise.resolve(null)}}}();
+(function () {
+  "use strict";
+
+  var rootPath = "/assets/img/kitchen";
+  var extensions = [".webp", ".jpg", ".jpeg", ".png"];
+  var legacyAliases = {};
+
+  function slugOf(input) {
+    if (!input) return "";
+    return (typeof input === "string" ? input : String(input.slug || "")).trim();
+  }
+
+  function unique(items) {
+    var seen = {};
+    return items.filter(function (item) {
+      if (!item || seen[item]) return false;
+      seen[item] = true;
+      return true;
+    });
+  }
+
+  function candidateFiles(slug) {
+    var safeSlug = slugOf(slug);
+    if (!safeSlug) return [];
+
+    var stems = [safeSlug, safeSlug + "-1", safeSlug + "-2", safeSlug + "-3", safeSlug + "-4", safeSlug + "-5"];
+    var files = [];
+
+    stems.forEach(function (stem) {
+      extensions.forEach(function (extension) {
+        files.push(stem + extension);
+      });
+    });
+
+    return unique(files.concat(legacyAliases[safeSlug] || []));
+  }
+
+  function getCandidatePaths(input) {
+    return unique([getKnownHeroSrc(input)].concat(candidateFiles(input).map(function (file) {
+      return rootPath + "/" + file;
+    })));
+  }
+
+  function getIntelligenceEntry(input) {
+    var slug = slugOf(input);
+    var data = window.AfroKitchenCuisineIntelligence;
+    if (!slug || !data || !data.recipes) return null;
+    return data.recipes[slug] || null;
+  }
+
+  function getKnownHeroSrc(input) {
+    var entry = getIntelligenceEntry(input);
+    return entry && entry.image && entry.image.hero_src ? entry.image.hero_src : "";
+  }
+
+  function shouldProbeForImage(input) {
+    var entry = getIntelligenceEntry(input);
+    if (!entry || !entry.image) return true;
+    return entry.image.hero_ready !== false;
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function loadFirst(paths, configure, onLoad, onMissing) {
+    var index = 0;
+
+    (function tryNext() {
+      if (index >= paths.length) {
+        if (onMissing) onMissing();
+        return;
+      }
+
+      var image = new Image();
+      var src = paths[index];
+      index += 1;
+      image.decoding = "async";
+      if (configure) configure(image);
+      image.onload = function () {
+        if (onLoad) onLoad(image, src);
+      };
+      image.onerror = tryNext;
+      image.src = src;
+    })();
+  }
+
+  window.AfroKitchenImages = {
+    rootPath: rootPath,
+    extensions: extensions.slice(),
+    getFilename: function (input, extension) {
+      var slug = slugOf(input);
+      return slug ? slug + (extension || ".webp") : "";
+    },
+    getPath: function (input) {
+      var paths = getCandidatePaths(input);
+      return paths.length ? paths[0] : "";
+    },
+    getImageUrl: function (input) {
+      var knownHeroSrc = getKnownHeroSrc(input);
+      if (knownHeroSrc) return knownHeroSrc;
+      if (!shouldProbeForImage(input)) return "/assets/img/tools/afrokitchen.webp";
+      var paths = getCandidatePaths(input);
+      return paths.length ? paths[0] : "/assets/img/tools/afrokitchen.webp";
+    },
+    getCandidatePaths: getCandidatePaths,
+    createCardSlotMarkup: function (recipe, options) {
+      var settings = options || {};
+      var slug = slugOf(recipe);
+      var alt = escapeHtml(settings.alt || recipe.image_alt || recipe.name || "");
+      var label = escapeHtml(settings.label || "AfroKitchen");
+      var title = escapeHtml(settings.title || recipe.name || "Recipe");
+
+      return '<div class="ak-recipe-card-thumb ak-img-fallback" data-ak-image-slot="card" data-ak-image-slug="' +
+        escapeHtml(slug) +
+        '" data-ak-image-alt="' +
+        alt +
+        '"><div class="ak-card-fallback"><div class="ak-card-fallback-label">' +
+        label +
+        '</div><p class="ak-card-fallback-title">' +
+        title +
+        "</p></div></div>";
+    },
+    createFeaturedSlotMarkup: function (recipe, options) {
+      var settings = options || {};
+      var slug = slugOf(recipe);
+      var alt = escapeHtml(settings.alt || recipe.image_alt || recipe.name || "");
+
+      return '<div class="ak-featured-fallback" data-ak-image-slot="featured" data-ak-image-slug="' +
+        escapeHtml(slug) +
+        '" data-ak-image-alt="' +
+        alt +
+        '" aria-hidden="true"></div>';
+    },
+    hydrate: function (root) {
+      (root || document).querySelectorAll("[data-ak-image-slot][data-ak-image-slug]").forEach(function (slot) {
+        if (slot.dataset.akImageBound === "true") return;
+        slot.dataset.akImageBound = "true";
+        if (!shouldProbeForImage(slot.dataset.akImageSlug)) {
+          slot.dataset.akImageMissing = "true";
+          return;
+        }
+
+        loadFirst(
+          getCandidatePaths(slot.dataset.akImageSlug),
+          function (image) {
+            if (slot.dataset.akImageSlot === "card") image.loading = "lazy";
+          },
+          function (image) {
+            image.alt = slot.dataset.akImageAlt || "";
+
+            if (slot.dataset.akImageSlot === "featured") {
+              image.className = "ak-featured-img";
+              slot.replaceWith(image);
+              return;
+            }
+
+            slot.className = "ak-recipe-card-thumb";
+            slot.innerHTML = "";
+            image.className = "ak-recipe-card-img";
+            slot.appendChild(image);
+          },
+          function () {
+            slot.dataset.akImageMissing = "true";
+          }
+        );
+      });
+    },
+    applyHeroBackground: function (element, recipe, fallbackBackground) {
+      if (!element) return Promise.resolve(null);
+      if (fallbackBackground) element.style.background = fallbackBackground;
+      element.style.backgroundImage = "none";
+      if (!shouldProbeForImage(recipe)) return Promise.resolve(null);
+
+      return new Promise(function (resolve) {
+        loadFirst(
+          getCandidatePaths(recipe),
+          null,
+          function (_image, src) {
+            element.style.backgroundImage = "url(" + src + ")";
+            element.style.backgroundPosition = "center";
+            element.style.backgroundSize = "cover";
+            resolve(src);
+          },
+          function () {
+            resolve(null);
+          }
+        );
+      });
+    }
+  };
+})();

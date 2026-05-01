@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.e57fe38a.min.js" lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cron Builder - tengeneza cron expressions | AfroTools</title>
+<meta name="description" content="Jenga na validate cron expressions kwa Linux crontab, GitHub Actions, Kubernetes CronJobs na AWS EventBridge kwa timezone notes.">
+<link rel="canonical" href="https://afrotools.com/sw/zana/cron/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/cron/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cron-builder/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cron-builder/">
+
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Cron Builder - tengeneza cron expressions | AfroTools">
+<meta property="og:description" content="Jenga na validate cron expressions kwa Linux crontab, GitHub Actions, Kubernetes CronJobs na AWS EventBridge kwa timezone notes.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/sw/zana/cron/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cron Builder - tengeneza cron expressions | AfroTools">
+<meta name="twitter:description" content="Jenga na validate cron expressions kwa Linux crontab, GitHub Actions, Kubernetes CronJobs na AWS EventBridge kwa timezone notes.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+<style>
+  :root{
+    --ink:#101828;
+    --muted:#5d6b82;
+    --line:#d8e2ee;
+    --soft:#f5f8fc;
+    --panel:#ffffff;
+    --blue:#0b66d8;
+    --green:#087443;
+    --amber:#a15c07;
+    --red:#b42318;
+    --violet:#5b4bc4;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#edf3f8;color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
+  .hero{background:#101828;color:#fff;padding:44px 0 36px}
+  .wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
+  .crumb{font-size:13px;color:#c5d0df;margin-bottom:16px}
+  .crumb a{color:#dce6f3;text-decoration:none}
+  .hero h1{font-size:42px;line-height:1.08;margin:0 0 14px;font-weight:800;max-width:820px;color:#fff}
+  .lead{font-size:18px;line-height:1.55;color:#d5deea;max-width:850px;margin:0 0 22px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700}
+  .main{padding:26px 0 64px}
+  .grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(360px,.72fr);gap:16px;align-items:start}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 12px 30px rgba(16,24,40,.07)}
+  .panel-head{padding:16px 18px;border-bottom:1px solid var(--line);background:#f9fbfd;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .panel-title{font-size:17px;font-weight:800;margin:0}
+  .panel-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .panel-body{padding:18px}
+  .stack{display:grid;gap:16px}
+  .field-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  label{display:grid;gap:6px;font-size:13px;font-weight:800;color:#344054}
+  input,select,textarea{width:100%;border:1px solid #cfd9e6;border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:10px 11px;outline:none}
+  input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,102,216,.13)}
+  textarea{min-height:170px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
+  .cron-input{font-family:var(--mono);font-size:24px;font-weight:800;letter-spacing:0}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{border:1px solid #cfd9e6;background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:#21324a;cursor:pointer}
+  button:hover{border-color:var(--blue);color:var(--blue)}
+  .primary{background:var(--blue);border-color:var(--blue);color:#fff}
+  .primary:hover{background:#0755b7;color:#fff}
+  .good{background:#ecfdf3;color:#067647;border-color:#abefc6}
+  .warn{background:#fffaeb;color:#93370d;border-color:#fedf89}
+  .bad{background:#fef3f2;color:#b42318;border-color:#fecdca}
+  .preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .preset{padding:12px;text-align:left}
+  .preset strong{display:block;font-size:13px;color:#182230}
+  .preset span{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:4px}
+  .status-line{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{display:inline-flex;align-items:center;border-radius:999px;border:1px solid var(--line);padding:6px 10px;font-size:12px;font-weight:800}
+  .expression{font-family:var(--mono);font-size:24px;font-weight:800;padding:14px;border:1px solid #cfd9e6;border-radius:8px;background:#f8fbff;word-break:break-word}
+  .desc{font-size:15px;line-height:1.6;color:#344054}
+  .runs{display:grid;gap:8px}
+  .run{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:10px;border:1px solid #e4eaf2;border-radius:8px;background:#fbfdff}
+  .run-num{font-family:var(--mono);font-weight:800;color:var(--blue)}
+  .run-time{font-weight:800}
+  .run-alt{font-size:12px;color:var(--muted);margin-top:3px}
+  .breakdown{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .part{border:1px solid #e4eaf2;border-radius:8px;padding:10px;background:#fbfdff}
+  .part b{display:block;font-size:12px;color:#475467;margin-bottom:4px}
+  .part code{font-family:var(--mono);font-size:15px;color:#101828}
+  .messages{display:grid;gap:8px}
+  .message{border-radius:8px;border:1px solid var(--line);padding:10px 12px;font-size:13px;line-height:1.45}
+  .snippet{white-space:pre-wrap;font-family:var(--mono);font-size:13px;line-height:1.5;background:#101828;color:#eef4ff;border-radius:8px;padding:14px;overflow:auto;min-height:210px}
+  .source-list{display:grid;gap:10px}
+  .source-row{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid #e4eaf2;border-radius:8px;padding:11px;background:#fbfdff}
+  .source-row a{color:#0b66d8;font-weight:800}
+  .source-row span{font-size:12px;color:var(--muted)}
+  .source-row div span{display:block;margin-top:4px}
+  .source-row > span{white-space:nowrap}
+  .mini{font-size:12px;color:var(--muted);line-height:1.5}
+  .faq{width:min(900px,calc(100% - 32px));margin:18px auto 0;display:grid;gap:8px}
+  details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
+  summary{font-weight:800;cursor:pointer}
+  details p{color:var(--muted);line-height:1.6;margin:10px 0 0}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  @media (max-width: 920px){
+    .hero h1{font-size:34px}
+    .grid{grid-template-columns:1fr}
+    .field-grid,.breakdown{grid-template-columns:repeat(2,1fr)}
+    .preset-grid{grid-template-columns:1fr}
+  }
+  @media (max-width: 560px){
+    .wrap{width:min(100% - 20px,1200px)}
+    .hero{padding:30px 0}
+    .hero h1{font-size:28px}
+    .lead{font-size:16px}
+    .field-grid,.breakdown{grid-template-columns:1fr}
+    .cron-input,.expression{font-size:18px}
+    .panel-head{display:block}
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Cron Builder","url":"https://afrotools.com/sw/zana/cron/","description":"Jenga na validate cron expressions kwa Linux crontab, GitHub Actions, Kubernetes CronJobs na AWS EventBridge kwa timezone notes.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"applicationCategory":"DeveloperApplication","operatingSystem":"Any"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Cron Builder","item":"https://afrotools.com/sw/zana/cron/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cron Builder hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa planning, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch."}}]}</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Zana za Developer</a> / Cron Builder</div>
+    <h1>Build cron schedules that survive real deployment targets.</h1>
+    <p class="lead">Compose a five-field cron expression, preview runs in Afrikan time zones, and export snippets for Linux crontab, GitHub Actions, Kubernetes CronJobs, or AWS EventBridge with the warnings developers usually learn the hard way.</p>
+    <div class="chips" aria-label="Tool capabilities">
+      <span class="chip">Next run preview</span>
+      <span class="chip">Platform snippets</span>
+      <span class="chip">Timezone warnings</span>
+      <span class="chip">EventBridge conversion</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Cron Builder kwa Kiswahili.</strong> Tengeneza ratiba za jobs na preview ya next runs. Hakiki timezone na mazingira ya deployment kabla ya kuendesha production jobs. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source output, provider docs na production environment kabla ya launch.</span></div></section>
+  <div class="wrap grid">
+    <section class="stack" aria-label="Cron builder">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Expression</h2>
+            <div class="panel-sub">Five-field POSIX cron: minute, hour, day of month, month, day of week.</div>
+          </div>
+          <div class="status-line" id="statusLine"></div>
+        </div>
+        <div class="panel-body stack">
+          <label for="cronInput">Cron expression</label>
+          <input id="cronInput" class="cron-input" value="15 4 * * 1-5" spellcheck="false" autocomplete="off">
+          <div class="field-grid" aria-label="Cron fields">
+            <label>Minute <input id="minuteField" value="15" inputmode="numeric"></label>
+            <label>Hour <input id="hourField" value="4" inputmode="numeric"></label>
+            <label>Day <input id="dayField" value="*"></label>
+            <label>Month <input id="monthField" value="*"></label>
+            <label>Weekday <input id="dowField" value="1-5"></label>
+          </div>
+          <div class="row">
+            <button class="primary" id="copyExpression" type="button">Nakili Expression</button>
+            <button id="copySnippet" type="button">Nakili Snippet</button>
+            <button id="saveSchedule" type="button">Hifadhi Schedule</button>
+            <button id="clearHistory" type="button">Futa History</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Builder Controls</h2>
+            <div class="panel-sub">Use presets, then fine tune the fields directly.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="row">
+            <label style="min-width:220px">Target platform
+              <select id="platformSelect">
+                <option value="linux">Linux crontab</option>
+                <option value="github">GitHub Actions</option>
+                <option value="kubernetes">Kubernetes CronJob</option>
+                <option value="eventbridge">AWS EventBridge</option>
+              </select>
+            </label>
+            <label style="min-width:220px">Schedule timezone
+              <select id="timezoneSelect">
+                <option value="local">Local browser timezone</option>
+                <option value="UTC">UTC</option>
+                <option value="Africa/Lagos">Afrika/Lagos</option>
+                <option value="Africa/Nairobi">Afrika/Nairobi</option>
+                <option value="Africa/Johannesburg">Afrika/Johannesburg</option>
+                <option value="Africa/Accra">Afrika/Accra</option>
+                <option value="Africa/Cairo">Afrika/Cairo</option>
+                <option value="Africa/Casablanca">Afrika/Casablanca</option>
+              </select>
+            </label>
+          </div>
+          <div class="preset-grid">
+            <button class="preset" type="button" data-cron="*/5 * * * *"><strong>Heartbeat every 5 minutes</strong><span>*/5 * * * *</span></button>
+            <button class="preset" type="button" data-cron="15 4 * * 1-5"><strong>Weekday morning job</strong><span>15 4 * * 1-5</span></button>
+            <button class="preset" type="button" data-cron="0 2 * * *"><strong>Nightly backup</strong><span>0 2 * * *</span></button>
+            <button class="preset" type="button" data-cron="30 6 1 * *"><strong>Kila mwezi billing close</strong><span>30 6 1 * *</span></button>
+            <button class="preset" type="button" data-cron="0 7 * * 1"><strong>Monday digest</strong><span>0 7 * * 1</span></button>
+            <button class="preset" type="button" data-cron="45 16 * * 1-5"><strong>FX rates refresh</strong><span>45 16 * * 1-5</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Tengenezad Snippet</h2>
+            <div class="panel-sub" id="snippetSub">Deployment-ready starter for the selected platform.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <pre class="snippet" id="snippetOutput"></pre>
+        </div>
+      </div>
+    </section>
+
+    <aside class="stack" aria-label="Cron output">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Meaning</h2>
+            <div class="panel-sub">Plain-language readout plus field breakdown.</div>
+          </div>
+        </div>
+        <div class="panel-body stack">
+          <div class="expression" id="expressionOutput"></div>
+          <div class="desc" id="descriptionOutput"></div>
+          <div class="breakdown" id="breakdownOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Next Runs</h2>
+            <div class="panel-sub" id="timezoneNote">Estimated from this browser.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="runs" id="runsOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Onyos</h2>
+            <div class="panel-sub">Cron engines are similar, not identical.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="messagesOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Hifadhid Schedules</h2>
+            <div class="panel-sub">Stored in this browser only.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="messages" id="historyOutput"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Reference Sources</h2>
+            <div class="panel-sub">Official docs used for the warnings.</div>
+          </div>
+        </div>
+        <div class="panel-body source-list">
+          <div class="source-row"><div><a href="https://man7.org/linux/man-pages/man5/crontab.5.html" target="_blank" rel="noopener">Linux crontab manual</a><span>Five fields, steps, ranges, names, DOM/DOW matching, DST caveats.</span></div><span>Official manual</span></div>
+          <div class="source-row"><div><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule" target="_blank" rel="noopener">GitHub Actions schedule</a><span>Five-field syntax, default branch behavior, 5-minute minimum and delay warnings.</span></div><span>GitHub Docs</span></div>
+          <div class="source-row"><div><a href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/" target="_blank" rel="noopener">Kubernetes CronJob</a><span>Schedule syntax, timeZone field, concurrency policies and approximate job creation.</span></div><span>Kubernetes Docs</span></div>
+          <div class="source-row"><div><a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html" target="_blank" rel="noopener">AWS EventBridge cron</a><span>Six required fields, ? rules, rate expressions and UTC examples.</span></div><span>AWS Docs</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<afro-related-tools category="developer" current="cron-builder"></afro-related-tools>
+
+<section class="faq">
+  <details>
+    <summary>Why does AWS EventBridge output look different?</summary>
+    <p>EventBridge scheduled rules use six fields wrapped in cron(...), including a year field. It also requires a question mark in either day-of-month or day-of-week when the other field is constrained. This builder converts simple five-field schedules and flags ambiguous cases.</p>
+  </details>
+  <details>
+    <summary>Are the next run times exact?</summary>
+    <p>They are a browser-side preview based on the selected timezone and common cron semantics. Always verify in the target scheduler before production, especially around daylight saving changes, missed runs and platform-specific retry behavior.</p>
+  </details>
+  <details>
+    <summary>What is the biggest cron mistake?</summary>
+    <p>The most common mistake is assuming every platform uses the same timezone and day matching rules. GitHub, Kubernetes, Linux cron and EventBridge all have their own deployment details.</p>
+  </details>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var storeKey = 'afrotools.cronBuilder.history.v1';
+  var weekdayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var weekdayShort = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  var monthShort = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var monthMap = monthShort.reduce(function(map, name, index){ map[name] = index + 1; return map; }, {});
+  var dowMap = weekdayShort.reduce(function(map, name, index){ map[name] = index; return map; }, {});
+  var macros = {
+    '@yearly':'0 0 1 1 *',
+    '@annually':'0 0 1 1 *',
+    '@monthly':'0 0 1 * *',
+    '@weekly':'0 0 * * 0',
+    '@daily':'0 0 * * *',
+    '@midnight':'0 0 * * *',
+    '@hourly':'0 * * * *'
+  };
+  var labels = [
+    { key:'minute', label:'Minute', range:'0-59' },
+    { key:'hour', label:'Hour', range:'0-23' },
+    { key:'dom', label:'Day', range:'1-31' },
+    { key:'month', label:'Month', range:'1-12 or JAN-DEC' },
+    { key:'dow', label:'Weekday', range:'0-7 or SUN-SAT' }
+  ];
+  var fields = {
+    minute: document.getElementById('minuteField'),
+    hour: document.getElementById('hourField'),
+    dom: document.getElementById('dayField'),
+    month: document.getElementById('monthField'),
+    dow: document.getElementById('dowField')
+  };
+  var cronInput = document.getElementById('cronInput');
+  var platformSelect = document.getElementById('platformSelect');
+  var timezoneSelect = document.getElementById('timezoneSelect');
+  var syncing = false;
+  function esc(value){
+    return String(value).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
+  }
+  function selectedZone(){
+    return timezoneSelect.value === 'local' ? Intl.DateTimeFormat().resolvedOptions().timeZone : timezoneSelect.value;
+  }
+  function normalizeCron(raw){
+    var value = String(raw || '').trim().replace(/\s+/g, ' ');
+    var macro = macros[value.toLowerCase()];
+    return { raw:value, expression:macro || value, macro:macro ? value.toLowerCase() : '' };
+  }
+  function fieldIsWildcard(field){
+    return field === '*' || field === '?';
+  }
+  function namedValue(token, names, isDow){
+    var clean = String(token).trim().toUpperCase();
+    if (names && Object.prototype.hasOwnProperty.call(names, clean)) return names[clean];
+    if (!/^\d+$/.test(clean)) return NaN;
+    var num = Number(clean);
+    if (isDow && num === 7) return 0;
+    return num;
+  }
+  function parsePart(part, min, max, names, isDow){
+    var errors = [];
+    var values = [];
+    var step = 1;
+    var base = part;
+    if (part.indexOf('/') !== -1) {
+      var stepParts = part.split('/');
+      base = stepParts[0] || '*';
+      step = Number(stepParts[1]);
+      if (!Number.isInteger(step) || step < 1) errors.push('Invalid step "' + part + '".');
+    }
+    var start;
+    var end;
+    if (base === '*' || base === '?') {
+      start = min;
+      end = max;
+    } else if (base.indexOf('-') !== -1) {
+      var range = base.split('-');
+      start = namedValue(range[0], names, isDow);
+      end = namedValue(range[1], names, isDow);
+    } else {
+      start = namedValue(base, names, isDow);
+      end = part.indexOf('/') !== -1 ? max : start;
+    }
+    if (!Number.isInteger(start) || !Number.isInteger(end)) errors.push('Invalid value "' + part + '".');
+    if (start < min || start > max || end < min || end > max) errors.push('Value "' + part + '" is outside ' + min + '-' + max + '.');
+    if (!errors.length) {
+      if (start <= end) {
+        for (var i = start; i <= end; i += step) values.push(i);
+      } else if (isDow) {
+        for (var a = start; a <= max; a += step) values.push(a);
+        for (var b = min; b <= end; b += step) values.push(b);
+      } else {
+        errors.push('Range "' + part + '" must go low to high.');
+      }
+    }
+    return { values:values, errors:errors };
+  }
+  function parseField(field, min, max, names, isDow){
+    var original = String(field || '').trim().toUpperCase();
+    var errors = [];
+    if (!original) return { original:field, wildcard:false, values:new Set(), errors:['Empty field.'] };
+    if (fieldIsWildcard(original)) return { original:original, wildcard:true, values:new Set(), errors:[] };
+    if (/[\?LW#]/.test(original)) errors.push('This preview supports common five-field cron only. Platform snippets may still show special syntax notes.');
+    var set = new Set();
+    original.split(',').forEach(function(part){
+      var parsed = parsePart(part.trim(), min, max, names, isDow);
+      parsed.values.forEach(function(value){ set.add(value); });
+      parsed.errors.forEach(function(error){ errors.push(error); });
+    });
+    return { original:original, wildcard:false, values:set, errors:errors };
+  }
+  function parseCron(raw){
+    var normalized = normalizeCron(raw);
+    var parts = normalized.expression.split(' ');
+    var errors = [];
+    if (parts.length !== 5) {
+      errors.push('Use exactly five fields: minute hour day month weekday.');
+      parts = ['*','*','*','*','*'];
+    }
+    var parsed = {
+      normalized: normalized,
+      parts: parts,
+      minute: parseField(parts[0], 0, 59, null, false),
+      hour: parseField(parts[1], 0, 23, null, false),
+      dom: parseField(parts[2], 1, 31, null, false),
+      month: parseField(parts[3], 1, 12, monthMap, false),
+      dow: parseField(parts[4], 0, 6, dowMap, true),
+      errors: errors
+    };
+    labels.forEach(function(item){
+      parsed[item.key].errors.forEach(function(error){ parsed.errors.push(item.label + ': ' + error); });
+    });
+    return parsed;
+  }
+  function matchesField(parsed, value){
+    return parsed.wildcard || parsed.values.has(value);
+  }
+  function matchesDay(parsed, dom, dow){
+    var domRestricted = !parsed.dom.wildcard;
+    var dowRestricted = !parsed.dow.wildcard;
+    var domMatch = matchesField(parsed.dom, dom);
+    var dowMatch = matchesField(parsed.dow, dow);
+    if (domRestricted && dowRestricted) return domMatch || dowMatch;
+    return domMatch && dowMatch;
+  }
+  var formatterCache = {};
+  function partsFor(date, zone){
+    var key = zone;
+    if (!formatterCache[key]) {
+      formatterCache[key] = new Intl.DateTimeFormat('en-US', {
+        timeZone: zone,
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        weekday: 'short',
+        hourCycle: 'h23'
+      });
+    }
+    var out = {};
+    formatterCache[key].formatToParts(date).forEach(function(part){
+      if (part.type !== 'literal') out[part.type] = part.value;
+    });
+    return {
+      minute: Number(out.minute),
+      hour: Number(out.hour),
+      day: Number(out.day),
+      month: Number(out.month),
+      dow: dowMap[String(out.weekday).toUpperCase()]
+    };
+  }
+  function formatInZone(date, zone){
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: zone,
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23'
+    }).format(date);
+  }
+  function getNextRuns(parsed, zone){
+    if (parsed.errors.length) return [];
+    var runs = [];
+    var cursor = new Date(Date.now() + 60000);
+    cursor.setSeconds(0, 0);
+    var maxMinutes = 366 * 24 * 60 * 3;
+    for (var i = 0; i < maxMinutes && runs.length < 8; i++) {
+      var p = partsFor(cursor, zone);
+      if (matchesField(parsed.minute, p.minute) && matchesField(parsed.hour, p.hour) && matchesField(parsed.month, p.month) && matchesDay(parsed, p.day, p.dow)) {
+        runs.push(new Date(cursor.getTime()));
+      }
+      cursor = new Date(cursor.getTime() + 60000);
+    }
+    return runs;
+  }
+  function readableField(field, label, names){
+    if (field.wildcard) return 'any ' + label.toLowerCase();
+    var values = Array.from(field.values).sort(function(a,b){ return a - b; });
+    if (!values.length) return field.original;
+    if (names) {
+      values = values.map(function(value){ return names[value] || value; });
+    }
+    return values.length > 8 ? field.original : values.join(', ');
+  }
+  function describe(parsed){
+    if (parsed.errors.length) return 'Fix the highlighted cron syntax before deploying this schedule.';
+    var p = parsed.parts;
+    if (p.join(' ') === '* * * * *') return 'Runs every minute.';
+    if (/^\*\/\d+$/.test(p[0]) && p[1] === '*' && p[2] === '*' && p[3] === '*' && p[4] === '*') return 'Runs every ' + p[0].split('/')[1] + ' minutes.';
+    if (p[0] === '0' && p[1] === '*' && p[2] === '*' && p[3] === '*' && p[4] === '*') return 'Runs at the top of every hour.';
+    var time = (p[1] === '*' ? 'every hour' : String(p[1]).padStart(2, '0')) + ':' + (p[0] === '*' ? 'every minute' : String(p[0]).padStart(2, '0'));
+    var pieces = ['Runs at ' + time];
+    if (p[4] !== '*') pieces.push('on ' + readableField(parsed.dow, 'weekday', weekdayNames));
+    if (p[2] !== '*') pieces.push('on day ' + p[2]);
+    if (p[3] !== '*') pieces.push('in ' + readableField(parsed.month, 'month', monthShort));
+    return pieces.join(' ') + '.';
+  }
+  function eventBridgeDow(value){
+    return String(value).toUpperCase().replace(/\b7\b/g, 'SUN').replace(/\b0\b/g, 'SUN').replace(/\b1\b/g, 'MON').replace(/\b2\b/g, 'TUE').replace(/\b3\b/g, 'WED').replace(/\b4\b/g, 'THU').replace(/\b5\b/g, 'FRI').replace(/\b6\b/g, 'SAT');
+  }
+  function toEventBridge(parsed){
+    var p = parsed.parts.slice();
+    var warnings = [];
+    var domRestricted = p[2] !== '*';
+    var dowRestricted = p[4] !== '*';
+    if (domRestricted && dowRestricted) {
+      warnings.push('EventBridge cannot restrict day-of-month and day-of-week together. The snippet keeps day-of-month and sets weekday to ?.');
+      p[4] = '?';
+    } else if (dowRestricted) {
+      p[2] = '?';
+    } else {
+      p[4] = '?';
+    }
+    p[4] = eventBridgeDow(p[4]);
+    return { expression:'cron(' + p.concat('*').join(' ') + ')', warnings:warnings };
+  }
+  function buildSnippet(parsed, zone){
+    var cron = parsed.normalized.expression;
+    var platform = platformSelect.value;
+    var command = '/usr/local/bin/run-afrotools-job';
+    if (platform === 'github') {
+      return 'name: Scheduled job\n\non:\n  schedule:\n    - cron: ' + JSON.stringify(cron) + (zone ? '\n      timezone: ' + JSON.stringify(zone) : '') + '\n  workflow_dispatch:\n\njobs:\n  run:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Run scheduled task\n        run: npm run scheduled-task';
+    }
+    if (platform === 'kubernetes') {
+      return 'apiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: afrotools-scheduled-job\nspec:\n  schedule: ' + JSON.stringify(cron) + '\n  timeZone: ' + JSON.stringify(zone) + '\n  concurrencyPolicy: Forbid\n  startingDeadlineSeconds: 600\n  successfulJobsHistoryLimit: 3\n  failedJobsHistoryLimit: 1\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          restartPolicy: OnFailure\n          containers:\n            - name: job\n              image: ghcr.io/your-org/your-job:latest\n              command: [\"/bin/sh\", \"-lc\", \"npm run scheduled-task\"]';
+    }
+    if (platform === 'eventbridge') {
+      var event = toEventBridge(parsed);
+      return 'aws events put-rule \\\n  --name afrotools-scheduled-job \\\n  --schedule-expression ' + JSON.stringify(event.expression) + '\n\n# Pair the rule with an EventBridge target and permissions.\n# EventBridge examples are UTC unless you use EventBridge Scheduler timezone features.';
+    }
+    return '# Verify CRON_TZ support on your cron daemon before relying on this line.\nCRON_TZ=' + zone + '\nSHELL=/bin/bash\nPATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n\n' + cron + ' ' + command + ' >> /var/log/afrotools-job.log 2>&1';
+  }
+  function warningsFor(parsed, zone){
+    var warnings = [];
+    if (parsed.normalized.macro && platformSelect.value === 'github') warnings.push('GitHub Actions does not support @daily, @hourly or other non-standard cron macros. This page expands the macro to five fields.');
+    if (parsed.parts[0] === '*' || parsed.parts[0] === '*/1') warnings.push('This schedule can run every minute. GitHub Actions scheduled workflows have a 5-minute minimum, and many hosted schedulers throttle aggressive jobs.');
+    if (platformSelect.value === 'github' && /^0([,\-\/]|$)/.test(parsed.parts[0])) warnings.push('GitHub notes that jobs near the start of the hour can be delayed or dropped during high load. Consider minute 7, 17, 37 or 47.');
+    if (parsed.parts[2] !== '*' && parsed.parts[4] !== '*') warnings.push('Linux cron runs when either day-of-month or day-of-week matches if both fields are restricted. Split into two schedules if you intended AND behavior.');
+    if (zone !== 'UTC' && /^(0|1|2|3)$/.test(parsed.parts[1])) warnings.push('Early-morning local schedules can be affected by daylight saving time in zones that observe DST.');
+    if (platformSelect.value === 'kubernetes') warnings.push('Kubernetes CronJobs can create zero or more than one Job in edge cases. Make the job idempotent and choose a concurrencyPolicy intentionally.');
+    if (platformSelect.value === 'eventbridge') {
+      toEventBridge(parsed).warnings.forEach(function(warning){ warnings.push(warning); });
+      warnings.push('EventBridge scheduled rules use six required fields. This tool converts common five-field cron, but advanced L, W and # syntax should be checked in AWS.');
+    }
+    return warnings;
+  }
+  function renderMessages(parsed, warnings){
+    var box = document.getElementById('messagesOutput');
+    var html = [];
+    parsed.errors.forEach(function(error){ html.push('<div class="message bad">' + esc(error) + '</div>'); });
+    warnings.forEach(function(warning){ html.push('<div class="message warn">' + esc(warning) + '</div>'); });
+    if (!html.length) html.push('<div class="message good">No obvious syntax or platform warnings for this schedule.</div>');
+    box.innerHTML = html.join('');
+  }
+  function renderBreakdown(parsed){
+    document.getElementById('breakdownOutput').innerHTML = labels.map(function(item, index){
+      return '<div class="part"><b>' + item.label + '</b><code>' + esc(parsed.parts[index] || '') + '</code><div class="mini">' + item.range + '</div></div>';
+    }).join('');
+  }
+  function renderRuns(parsed, zone){
+    var runs = getNextRuns(parsed, zone);
+    document.getElementById('timezoneNote').textContent = 'Schedule evaluated in ' + zone + '. UTC shown for deployment checks.';
+    if (!runs.length) {
+      document.getElementById('runsOutput').innerHTML = '<div class="message warn">No run found in the preview window. Check rare dates, impossible days like February 31, or unsupported syntax.</div>';
+      return;
+    }
+    document.getElementById('runsOutput').innerHTML = runs.map(function(run, index){
+      return '<div class="run"><div class="run-num">' + (index + 1) + '</div><div><div class="run-time">' + esc(formatInZone(run, zone)) + '</div><div class="run-alt">' + esc(formatInZone(run, 'UTC')) + ' UTC</div></div></div>';
+    }).join('');
+  }
+  function renderHistory(){
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch(_) {}
+    if (!list.length) {
+      document.getElementById('historyOutput').innerHTML = '<div class="message">No saved schedules yet.</div>';
+      return;
+    }
+    document.getElementById('historyOutput').innerHTML = list.slice(0, 8).map(function(item){
+      return '<button type="button" class="message" data-load-cron="' + esc(item.cron) + '" data-load-platform="' + esc(item.platform) + '" data-load-zone="' + esc(item.zone) + '"><strong>' + esc(item.cron) + '</strong><br><span class="mini">' + esc(item.platform) + ' in ' + esc(item.zone) + '</span></button>';
+    }).join('');
+  }
+  function copyText(text, button){
+    navigator.clipboard.writeText(text).then(function(){
+      var original = button.textContent;
+      button.textContent = 'Copied';
+      setTimeout(function(){ button.textContent = original; }, 1200);
+    });
+  }
+  function syncFieldsFromCron(){
+    if (syncing) return;
+    var normalized = normalizeCron(cronInput.value);
+    var parts = normalized.expression.split(' ');
+    if (parts.length !== 5) return;
+    syncing = true;
+    fields.minute.value = parts[0];
+    fields.hour.value = parts[1];
+    fields.dom.value = parts[2];
+    fields.month.value = parts[3];
+    fields.dow.value = parts[4];
+    syncing = false;
+  }
+  function syncCronFromFields(){
+    if (syncing) return;
+    syncing = true;
+    cronInput.value = [fields.minute.value, fields.hour.value, fields.dom.value, fields.month.value, fields.dow.value].map(function(value){ return value.trim() || '*'; }).join(' ');
+    syncing = false;
+  }
+  function render(){
+    var zone = selectedZone();
+    var parsed = parseCron(cronInput.value);
+    var expression = parsed.normalized.expression;
+    var snippet = buildSnippet(parsed, zone);
+    var warnings = warningsFor(parsed, zone);
+    document.getElementById('expressionOutput').textContent = expression;
+    document.getElementById('descriptionOutput').textContent = describe(parsed);
+    document.getElementById('snippetOutput').textContent = snippet;
+    document.getElementById('statusLine').innerHTML = parsed.errors.length ? '<span class="pill bad">Needs syntax fix</span>' : '<span class="pill good">Valid five-field cron</span><span class="pill">' + esc(platformSelect.options[platformSelect.selectedIndex].text) + '</span>';
+    renderBreakdown(parsed);
+    renderRuns(parsed, zone);
+    renderMessages(parsed, warnings);
+    renderHistory();
+  }
+  cronInput.addEventListener('input', function(){ syncFieldsFromCron(); render(); });
+  Object.keys(fields).forEach(function(key){
+    fields[key].addEventListener('input', function(){ syncCronFromFields(); render(); });
+  });
+  platformSelect.addEventListener('change', render);
+  timezoneSelect.addEventListener('change', render);
+  document.querySelectorAll('.preset').forEach(function(button){
+    button.addEventListener('click', function(){
+      cronInput.value = button.getAttribute('data-cron');
+      syncFieldsFromCron();
+      render();
+    });
+  });
+  document.getElementById('copyExpression').addEventListener('click', function(){ copyText(document.getElementById('expressionOutput').textContent, this); });
+  document.getElementById('copySnippet').addEventListener('click', function(){ copyText(document.getElementById('snippetOutput').textContent, this); });
+  document.getElementById('saveSchedule').addEventListener('click', function(){
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch(_) {}
+    list.unshift({ cron:normalizeCron(cronInput.value).expression, platform:platformSelect.value, zone:selectedZone(), at:new Date().toISOString() });
+    localStorage.setItem(storeKey, JSON.stringify(list.slice(0, 20)));
+    renderHistory();
+  });
+  document.getElementById('clearHistory').addEventListener('click', function(){
+    localStorage.removeItem(storeKey);
+    renderHistory();
+  });
+  document.getElementById('historyOutput').addEventListener('click', function(event){
+    var button = event.target.closest('button[data-load-cron]');
+    if (!button) return;
+    cronInput.value = button.getAttribute('data-load-cron');
+    platformSelect.value = button.getAttribute('data-load-platform') || 'linux';
+    var zone = button.getAttribute('data-load-zone') || 'local';
+    timezoneSelect.value = Array.from(timezoneSelect.options).some(function(option){ return option.value === zone; }) ? zone : 'local';
+    syncFieldsFromCron();
+    render();
+  });
+  syncFieldsFromCron();
+  render();
+})();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<script class="sw-dev-runtime-localizer">
+(function(){
+  const textMap = new Map([["Developer Tools for African Builders","Zana za Developer kwa Afrika"],["Developer Tools for Africa","Zana za Developer kwa Afrika"],["Developer Tools","Zana za Developer"],["Tools for builders who ship in","Zana kwa builders wanaoship"],["Africa","Afrika"],["Private, browser-based developer tools for African builders: API testing, USSD flows, JSON, JWT, regex, SQL, Docker, PWA, hosting, domains, SEO and launch utilities.","Zana za developer zinazofanya kazi kwenye browser kwa builders wa Afrika: API testing, USSD flows, JSON, JWT, Regex, SQL, Docker, PWA, hosting, domains, SEO na launch utilities."],["API testing, USSD flow design, data cleanup, SQL practice, Docker, PWA, hosting, domains and launch checks. Fast browser utilities with a practical bias toward African developer workflows.","API testing, design ya USSD flow, data cleanup, mazoezi ya SQL, Docker, PWA, hosting, domains na launch checks. Utilities za browser kwa workflows za developer Afrika."],["Open API Tester","Fungua Kijaribu API"],["Build a USSD flow","Jenga USSD flow"],["Live tools","Zana hai"],["Flagship apps","Apps kuu"],["Server uploads","Upakiaji wa server"],["No signup core","Core bila signup"],["Product thesis","Mwelekeo wa bidhaa"],["Not just another pile of formatters.","Si mkusanyiko wa formatters pekee."],["The small tools stay fast, but the section now points users toward the work that AfroTools can uniquely own: African APIs, USSD, local hosting decisions, offline-friendly data work, and web launch readiness.","Zana ndogo zinabaki haraka, lakini sehemu hii inaelekeza kwenye kazi ambazo AfroTools inaweza kumiliki vizuri: APIs za Afrika, USSD, maamuzi ya hosting ya ndani, data work inayofaa offline na maandalizi ya web launch."],["Africa API aware","Inajali APIs za Afrika"],["Presets and links for payment, telecom, identity and mobile money work.","Presets na links kwa payment, telecom, identity na mobile money work."],["Privacy first","Faragha kwanza"],["Formatting, encoding, hashing and editing happen in the browser where practical.","Formatting, encoding, hashing na editing hufanyika kwenye browser inapowezekana."],["Workflow based","Inaangalia workflow"],["Flagship apps should save requests, export code, validate output and teach next steps.","Apps kuu zinapaswa kuhifadhi requests, export code, validate output na kuelekeza hatua inayofuata."],["Low bandwidth","Bandwidth ndogo"],["Useful on older devices and unstable connections, with no account required for core use.","Inafaa kwenye vifaa vya zamani na connection zisizo thabiti, bila account kwa matumizi ya msingi."],["Search JSON, API, USSD, JWT, regex, Docker, PWA...","Tafuta JSON, API, USSD, JWT, Regex, Docker, PWA..."],["All","Zote"],["Flagship","Kuu"],["Data","Data"],["Launch","Launch"],["Utility","Utility"],["Developer Tools FAQ","Maswali ya Zana za Developer"],["Are these tools free?","Je, zana hizi ni bure?"],["Yes. The core developer utilities are free and do not require an account.","Ndiyo. Utilities za msingi ni bure na hazihitaji account."],["Is my data sent to AfroTools?","Je, data yangu hutumwa AfroTools?"],["Most utilities process data in your browser. API Tester sends the request directly from your browser to the URL you choose, so production secrets should still be handled carefully.","Utilities nyingi huchakata data kwenye browser. Kijaribu API hutuma request moja kwa moja kutoka browser yako kwenda URL unayochagua, hivyo secrets za production zinahitaji tahadhari."],["Why are African APIs and USSD highlighted?","Kwa nini APIs za Afrika na USSD zimepewa kipaumbele?"],["Those are the workflows where AfroTools can be more useful than generic global utilities: mobile money, telecom, identity, USSD menus, local payment constraints and deployment choices.","Hizo ndizo workflows ambazo AfroTools inaweza kuwa muhimu zaidi kuliko utilities za jumla: mobile money, telecom, identity, USSD menus, payment constraints za ndani na deployment choices."],["Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.","Zana za developer: JSON/CSV/XML converter, hash generator, Base64 encoder, Regex tester, JWT decoder, UUID generator, diff checker, Markdown editor na Cron builder. Zote client-side."],["Free forever","Bure daima"],["All Developer Tools","Zana zote za Developer"],["Live tools you can use now, plus what's coming next in this category.","Zana hai unazoweza kutumia sasa, pamoja na zinazokuja kwenye category hii."],["Search tools — e.g. JSON, regex, JWT, UUID…","Tafuta zana, mfano JSON, Regex, JWT, UUID..."],["Available Now","Zinapatikana sasa"],["Coming Soon","Zinakuja"],["Browse","Vinjari"],["All Categories","Categories zote"],["Explore other tool categories across AfroTools.","Vinjari categories nyingine za AfroTools."],["Can't find what you need?","Hujapata unachohitaji?"],["Tell us what tool to build next. We ship new tools every week.","Tuambie zana gani tujenge ijayo. Tunaongeza zana mpya mara kwa mara."],["Request a Tool →","Omba zana ->"],["Format","Format"],["Validate","Validate"],["Repair","Repair"],["Generate","Tengeneza"],["Encode","Encode"],["Decode","Decode"],["Copy","Nakili"],["Clear","Futa"],["Reset","Reset"],["Download","Pakua"],["Upload","Pakia"],["Export","Export"],["Import","Import"],["Save","Hifadhi"],["Load","Pakia"],["Run","Run"],["Test","Test"],["Send","Tuma"],["Search","Tafuta"],["Filter","Filter"],["Preview","Preview"],["Input","Input"],["Output","Output"],["Result","Matokeo"],["Results","Matokeo"],["Settings","Mipangilio"],["Options","Options"],["Example","Mfano"],["Examples","Mifano"],["Error","Hitilafu"],["Warning","Onyo"],["Valid","Valid"],["Invalid","Invalid"],["Line","Mstari"],["Lines","Mistari"],["Text","Maandishi"],["File","Faili"],["Files","Faili"],["Password","Nenosiri"],["Length","Urefu"],["Uppercase","Herufi kubwa"],["Lowercase","Herufi ndogo"],["Numbers","Namba"],["Symbols","Alama"],["Secret","Secret"],["Key","Key"],["Algorithm","Algorithm"],["Header","Header"],["Payload","Payload"],["Signature","Signature"],["Claims","Claims"],["Token","Token"],["Expired","Ime-expire"],["Method","Method"],["Headers","Headers"],["Body","Body"],["Response","Response"],["Authorization","Authorization"],["Environment","Environment"],["Query","Query"],["Parameters","Parameters"],["Country","Nchi"],["Provider","Provider"],["Price","Bei"],["Monthly","Kila mwezi"],["Annual","Kila mwaka"],["Notes","Notes"],["Checklist","Checklist"],["Frequently Asked Questions","Maswali ya mara kwa mara"],["How it works","Jinsi inavyofanya kazi"],["How It Works","Jinsi inavyofanya kazi"],["Privacy","Faragha"],["Local processing","Uchakataji wa ndani"],["No upload","Hakuna upload"],["No Upload","Hakuna upload"],["Client-side","Client-side"],["Browser-based","Browser-based"],["Free online tool","Zana ya bure mtandaoni"],["Click","Bofya"],["Drag","Buruta"],["Drop","Dondosha"],["Choose","Chagua"],["Submit","Wasilisha"],["Enter","Weka"],["Yes.","Ndiyo."],["No.","Hapana."],["Editor","Kihariri"],["Live Preview","Preview hai"],["Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save locally, with signed-in draft sync across devices.","Andika Markdown ukiwa na preview ya moja kwa moja. Kuna toolbar ya formatting, hesabu ya maneno, makisio ya muda wa kusoma, export kwenda HTML au download ya .md/.html. Auto-save hufanyika kwenye kifaa, na draft sync hutegemea hali ya akaunti."],["This Markdown editor provides a split-pane writing environment with live preview, letting you write in Markdown syntax on the left and see the formatted output on the right in real time. It supports full GitHub-Flavoured Markdown including tables, task lists, code blocks with syntax highlighting, and embedded images. Export your document as HTML, copy the rendered output, or download the raw Markdown file. The editor is perfect for developers writing documentation, bloggers drafting posts, students taking notes, and anyone who prefers writing in plain text with lightweight formatting. Everything runs locally with no account required.","Kihariri hiki cha Markdown kinatoa sehemu mbili: upande wa kuandika na upande wa preview. Unaweza kuandika Markdown, kuona matokeo yaliyopangwa, kutumia tables, task lists, code blocks na picha zilizowekwa kwenye maandishi. Unaweza kupakua Markdown, ku-export HTML au kunakili output iliyopangwa. Ni msaada kwa docs, posts, notes na kazi za plain text, huku ukihakiki export kabla ya kuchapisha."],["Does the AfroTools Markdown Editor support GitHub Flavored Markdown?","Je, kihariri cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Does the AfroTools Kihariri Markdown support GitHub Flavored Markdown?","Je, Kihariri Markdown cha AfroTools kinaunga mkono GitHub Flavored Markdown?"],["Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.","Ndiyo. Kihariri kinatumia marked.js na GFM mode kwa tables, fenced code blocks, strikethrough, task lists na autolinks."],["Can I export my markdown to HTML?","Naweza ku-export Markdown kwenda HTML?"],["Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Yes. AfroTools Kihariri Markdown offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.","Ndiyo. Unaweza kupakua .md, kupakua .html yenye style, au kunakili HTML kwenda clipboard kwa matumizi kwenye apps nyingine."],["Does the markdown editor work offline?","Je, kihariri cha Markdown hufanya kazi offline?"],["How do I create a markdown table quickly?","Nitatengeneza jedwali la Markdown haraka vipi?"],["Click the \"Table+\" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.","Bofya kitufe cha \"Table+\" kwenye toolbar kufungua generator ya jedwali. Weka idadi ya rows na columns, kisha template ya Markdown itawekwa kwenye cursor. Unaweza pia kutumia mshauri wa AI kugeuza data kuwa jedwali la Markdown."],["Fix formatting","Rekebisha formatting"],["Convert to markdown","Geuza kuwa Markdown"],["Generate table","Tengeneza jedwali"],["Tengeneza table","Tengeneza jedwali"],["Improve readability","Boresha usomekaji"],["Generate Markdown Table","Tengeneza Jedwali la Markdown"],["Rows (excluding header)","Rows bila header"],["Columns","Columns"],["Ask about your markdown...","Uliza kuhusu Markdown yako..."],["Markdown file downloaded","Faili ya Markdown imepakuliwa"],["HTML copied to clipboard","HTML imenakiliwa kwenye clipboard"],["Generator","Kizalishaji"],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side - nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Generate strong, random, and secure passwords instantly. Customize length, character types, and generate in bulk. 100% client-side — nothing leaves your browser.","Tengeneza passwords random zenye nguvu haraka. Badilisha length, aina za characters na tengeneza nyingi kwa pamoja. Hufanyika upande wa browser kulingana na source page."],["Cryptographically Secure","Randomness ya Web Crypto"],["Bulk passwords will appear here...","Passwords nyingi zitaonekana hapa..."],["How the Password Generator Works","Jinsi Kizalishaji Nenosiri kinavyofanya kazi"],["The AfroTools Password Generator creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["The AfroTools Kizalishaji Nenosiri creates cryptographically secure random passwords using your browser's built-in Web Crypto API (crypto.getRandomValues()). Unlike many online password generators that use Math.random(), our tool uses a true cryptographic random number generator, making the passwords virtually impossible to predict.","Kizalishaji Nenosiri cha AfroTools hutumia Web Crypto API ya browser yako (crypto.getRandomValues()) kutengeneza passwords random kwa matumizi ya kawaida. Hii ni bora kuliko Math.random(), lakini bado unapaswa kuhifadhi passwords kwa password manager na kufuata sera za usalama za mfumo wako."],["How to Use","Jinsi ya kutumia"],["Adjust the password length using the slider (recommended: 16+ characters)","Badilisha urefu wa password kwa slider; kwa akaunti muhimu, 16+ characters ni mwanzo mzuri"],["Toggle character types on/off - uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Toggle character types on/off — uppercase, lowercase, numbers, symbols","Washa au zima aina za characters: uppercase, lowercase, numbers na symbols"],["Click \"Generate Password\" to create a new password","Bofya \"Tengeneza Nenosiri\" kutengeneza password mpya"],["Click \"Copy\" to copy it to your clipboard","Bofya \"Nakili\" kuiweka kwenye clipboard"],["Use \"Bulk Generate\" to create multiple passwords at once","Tumia \"Tengeneza Bulk\" kutengeneza passwords nyingi kwa pamoja"],["Why Strong Passwords Matter","Kwa nini passwords zenye nguvu ni muhimu"],["Why Strong Nenosiris Matter","Kwa nini passwords zenye nguvu ni muhimu"],["In 2026, data breaches continue to affect millions of users across Africa and worldwide. A password like \"password123\" can be cracked in under a second using modern hardware. An 8-character password with mixed characters takes about 5 minutes. But a 16-character password with all character types would take billions of years to brute-force.","Mwaka 2026, data breaches bado zinaathiri watumiaji wengi Afrika na duniani. Password rahisi kama \"password123\" inaweza kubashiriwa haraka kwa vifaa vya kisasa. Password ndefu yenye mchanganyiko wa characters huongeza ugumu wa brute-force, lakini usiichukulie kama dhamana ya usalama wa mfumo mzima."],["The NIST Digital Identity Guidelines recommend passwords of at least 8 characters, but security experts now suggest 14-16 characters as a minimum for important accounts. Our generator defaults to 16 characters for optimal security.","Mwongozo wa NIST Digital Identity Guidelines unapendekeza password za angalau characters 8, na wataalamu wengi hupendekeza 14-16+ kwa akaunti muhimu. Default ya generator ni 16 kama hatua ya tahadhari."],["This password generator creates strong, random passwords using cryptographically secure randomness from the Web Crypto API. Customise length, and choose whether to include uppercase letters, lowercase letters, numbers, and special characters. The tool also calculates password entropy and estimates crack time so you can gauge the strength of each generated password. You can generate multiple passwords at once and copy them with a single click. Anyone creating accounts, managing credentials, or setting up secure systems will benefit from passwords that are truly random rather than based on predictable patterns that attackers can easily guess.","Kizalishaji hiki hutengeneza passwords random kwa Web Crypto API, huku kikikuruhusu kuchagua length, uppercase, lowercase, numbers na symbols. Pia kinaonyesha makadirio ya nguvu ya password ili uone kama inafaa kwa matumizi yako. Tumia matokeo kama msaada wa planning, kisha hifadhi passwords kwenye password manager na fuata sera za usalama za shirika lako."],["How does the password generator work?","Kizalishaji cha password hufanya kazi vipi?"],["Are the generated passwords stored anywhere?","Passwords zinazotengenezwa huhifadhiwa mahali popote?"],["No. Passwords are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["Hapana. Nenosiris are generated entirely in your browser. Nothing is sent to any server or stored anywhere. Once you close the page, the password exists only if you copied it.","Hapana. Passwords hutengenezwa kwenye browser kulingana na source behavior. Ukifunga ukurasa, password itabaki tu kama uliinakili au kuihifadhi wewe mwenyewe."],["What makes a strong password?","Password yenye nguvu ina nini?"],["A strong password is at least 12 characters long and includes a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid dictionary words, personal information, and reusing passwords across sites.","Password yenye nguvu huwa ndefu, random na ina mchanganyiko wa uppercase, lowercase, numbers na symbols. Epuka maneno ya kamusi, taarifa binafsi na kutumia password ileile kwenye sites nyingi."],["Can I generate multiple passwords at once?","Naweza kutengeneza passwords nyingi kwa pamoja?"],["Yes. Use the Bulk Generate feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Ndiyo. Use the Bulk Tengeneza feature to create up to 50 passwords at once with your chosen settings. You can copy all of them with one click.","Ndiyo. Tumia kipengele cha Bulk kutengeneza hadi passwords 50 kwa mipangilio uliyochagua, kisha uzinakili kwa pamoja."],["Password Tips","Vidokezo vya Password"],["Use at least 16 characters for important accounts (banking, email)","Tumia angalau characters 16 kwa akaunti muhimu kama benki na email"],["Never reuse passwords across different websites","Usitumie password ileile kwenye websites tofauti"],["Use a password manager (Bitwarden, 1Password) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Use a password manager (Bitwarden, 1Nenosiri) to store them safely","Tumia password manager kama Bitwarden au 1Password kuhifadhi passwords kwa usalama"],["Enable two-factor authentication (2FA) wherever possible","Washa two-factor authentication (2FA) inapowezekana"],["Change passwords immediately if a service reports a data breach","Badilisha passwords mara moja kama service imetangaza data breach"],["6 chars (letters):","Characters 6 (herufi):"],["8 chars (mixed):","Characters 8 (mchanganyiko):"],["10 chars (mixed):","Characters 10 (mchanganyiko):"],["12 chars (mixed):","Characters 12 (mchanganyiko):"],["16 chars (all types):","Characters 16 (aina zote):"],["~5 seconds","~sekunde 5"],["~5 minutes","~dakika 5"],["~2 weeks","~wiki 2"],["~200 years","~miaka 200"],["~billions of years","~mabilioni ya miaka"],["Source: Hive Systems, 2025 estimates with modern GPUs","Chanzo: Hive Systems, makadirio ya 2025 kwa GPUs za kisasa"],["Free","Bure"],["Copy to Clipboard","Nakili kwenye clipboard"],["Copied!","Imenakiliwa!"],["Download File","Pakua faili"],["Choose file","Chagua faili"],["Drop file here","Buruta faili hapa"],["Drag and drop","Buruta na udondoshe"],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Loading...","Inapakia..."],["Ready","Tayari"],["Try sample","Jaribu sample"],["Use sample","Tumia sample"],["Copied to clipboard","Imenakiliwa kwenye clipboard"],["Request failed","Request imeshindikana"],["Invalid JSON","JSON si valid"],["Valid JSON","JSON iko valid"]]);
+  function localizeText(node){
+    const raw = node.textContent || '';
+    const trimmed = raw.trim();
+    if (!trimmed || !textMap.has(trimmed)) return;
+    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
+  }
+  function walk(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(localizeText);
+    if (root.querySelectorAll) {
+      root.querySelectorAll('[placeholder],[aria-label],[title],input[type="button"],input[type="submit"]').forEach(el => {
+        ['placeholder','aria-label','title','value'].forEach(attr => {
+          const value = el.getAttribute(attr);
+          if (value && textMap.has(value.trim())) el.setAttribute(attr, textMap.get(value.trim()));
+        });
+      });
+    }
+  }
+  function run(){ if (document.body) walk(document.body); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) localizeText(node);
+        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
+      });
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>
