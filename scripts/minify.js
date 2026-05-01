@@ -57,6 +57,16 @@ function isValidJavaScript(code, filename) {
   }
 }
 
+async function minifyToFixedPoint(code, options, maxPasses = 3) {
+  let current = code;
+  for (let pass = 0; pass < maxPasses; pass++) {
+    const result = await minify(current, options);
+    if (!result.code || result.code === current) return current;
+    current = result.code;
+  }
+  return current;
+}
+
 async function run() {
   let jsTotal = { before: 0, after: 0, count: 0 };
   let cssTotal = { before: 0, after: 0, count: 0 };
@@ -198,14 +208,14 @@ async function run() {
     if (srcSize < 100) continue; // skip tiny files
 
     try {
-      const result = await minify(code, {
+      const finalCode = await minifyToFixedPoint(code, {
         compress: { dead_code: true, passes: 1 },
         mangle: { reserved: ['AFRO_TOOLS', 'AFRO_CATEGORIES', 'onRegistryReady', 'AfroAuth', 'AfroData'] },
         output: { comments: /^!/ },
       });
-      if (result.code) {
-        fs.writeFileSync(filePath, result.code, 'utf8');
-        const minSize = Buffer.byteLength(result.code);
+      if (finalCode && isValidJavaScript(finalCode, filePath)) {
+        fs.writeFileSync(filePath, finalCode, 'utf8');
+        const minSize = Buffer.byteLength(finalCode);
         inplaceTotal.before += srcSize;
         inplaceTotal.after += minSize;
         inplaceTotal.count++;
