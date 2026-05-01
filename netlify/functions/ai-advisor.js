@@ -9,6 +9,14 @@ const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqh
 const SUPABASE_DATA_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_AUTH_KEY = process.env.SUPABASE_AUTH_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY;
+const DEFAULT_ANTHROPIC_INPUT_CHAR_LIMIT = 500000;
+const ANTHROPIC_INPUT_CHAR_LIMIT = Math.max(
+  50000,
+  Math.min(
+    700000,
+    Number(process.env.ANTHROPIC_INPUT_CHAR_LIMIT || DEFAULT_ANTHROPIC_INPUT_CHAR_LIMIT)
+  )
+);
 
 // In-memory rate limit store (per instance — Netlify Blobs for persistence)
 let _rateStore;
@@ -964,6 +972,64 @@ function sanitizeMessages(messages) {
   }));
 }
 
+function truncateTextForAnthropic(value, limit, label) {
+  if (typeof value !== 'string') return value;
+  if (!Number.isFinite(limit) || limit <= 0 || value.length <= limit) return value;
+
+  const notice = `\n\n[${label || 'Content'} truncated to keep the AI request under Anthropic's 200K-token input limit.]`;
+  const allowed = Math.max(0, limit - notice.length);
+  if (allowed <= 0) return notice.trim();
+
+  const headLength = Math.ceil(allowed * 0.75);
+  const tailLength = allowed - headLength;
+  return value.slice(0, headLength) + notice + (tailLength > 0 ? '\n\n' + value.slice(-tailLength) : '');
+}
+
+function messageTextLength(message) {
+  if (!message) return 0;
+  if (typeof message.content === 'string') return message.content.length;
+  if (Array.isArray(message.content)) {
+    return message.content.reduce((total, block) => {
+      return total + (block && typeof block.text === 'string' ? block.text.length : 0);
+    }, 0);
+  }
+  return 0;
+}
+
+function trimMessagesForAnthropic(messages, budget) {
+  if (!Array.isArray(messages) || messages.length === 0 || budget <= 0) return messages;
+
+  const trimmed = [];
+  let remaining = budget;
+
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    const length = messageTextLength(message);
+
+    if (length <= remaining) {
+      trimmed.unshift(message);
+      remaining -= length;
+      continue;
+    }
+
+    if (remaining > 2000) {
+      const copy = { ...message };
+      if (typeof copy.content === 'string') {
+        copy.content = truncateTextForAnthropic(copy.content, remaining, 'Conversation history');
+      } else if (Array.isArray(copy.content)) {
+        copy.content = copy.content.map((block) => {
+          if (!block || typeof block.text !== 'string') return block;
+          return { ...block, text: truncateTextForAnthropic(block.text, remaining, 'Conversation history') };
+        });
+      }
+      trimmed.unshift(copy);
+    }
+    break;
+  }
+
+  return trimmed.length ? trimmed : messages.slice(-1);
+}
+
 exports.handler = async function(event) {
   // CORS: allow production + Netlify preview deployments + localhost dev
   const origin = event.headers?.origin || event.headers?.Origin || "";
@@ -1081,10 +1147,11 @@ exports.handler = async function(event) {
     }
 
     if (context) {
+      var safeContext = truncateTextForAnthropic(String(context), Math.floor(ANTHROPIC_INPUT_CHAR_LIMIT * 0.72), 'Page context');
       if (isPdfDoc) {
-        systemPrompt += `Document text extracted from the user's PDF: ${context}. Answer based on this document content. `;
+        systemPrompt += `Document text extracted from the user's PDF: ${safeContext}. Answer based on this document content. `;
       } else {
-        systemPrompt += `Live calculation data from the page: ${context}. Reference these exact figures in your answer. `;
+        systemPrompt += `Live calculation data from the page: ${safeContext}. Reference these exact figures in your answer. `;
       }
     }
 
@@ -1118,8 +1185,11 @@ exports.handler = async function(event) {
     const timeout = setTimeout(() => controller.abort(), 15000);
 
     // Sanitize all text to remove lone surrogates that break JSON
-    const safeSystem = sanitizeString(systemPrompt);
-    const safeMessages = sanitizeMessages(apiMessages);
+    const safeSystem = sanitizeString(
+      truncateTextForAnthropic(systemPrompt, Math.floor(ANTHROPIC_INPUT_CHAR_LIMIT * 0.82), 'System context')
+    );
+    const messageBudget = Math.max(5000, ANTHROPIC_INPUT_CHAR_LIMIT - safeSystem.length);
+    const safeMessages = sanitizeMessages(trimMessagesForAnthropic(apiMessages, messageBudget));
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",

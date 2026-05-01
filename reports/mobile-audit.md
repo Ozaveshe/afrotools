@@ -1,14 +1,14 @@
 # Mobile Audit
 
-Generated: 2026-05-01T05:27:39.420Z
+Generated: 2026-05-01T06:41:23.395Z
 
 ## Scope
 
-- HTML pages audited: 6583
+- HTML pages audited: 6586
 - Pages with issues: 1595
-- Pages without issues: 4988
-- Pages using shared CSS foundation: 6333
-- Pages using shared navbar: 6292
+- Pages without issues: 4991
+- Pages using shared CSS foundation: 6336
+- Pages using shared navbar: 6295
 
 ## Top 20 Highest-Leverage Issue Clusters
 
@@ -65,10 +65,10 @@ Generated: 2026-05-01T05:27:39.420Z
 | 24 | `/tools/pension-proj/` | 100 | tools / pension proj | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
 | 25 | `/sw/zana/tafuta-na-badilisha-pdf/` | 98 | sw / zana | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
 | 26 | `/tools/afrokitchen/` | 98 | tools / afrokitchen | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
-| 27 | `/tools/blood-group/` | 98 | tools / blood group | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
-| 28 | `/tools/cac-cost/` | 98 | tools / cac cost | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
-| 29 | `/tools/dental-cost/` | 98 | tools / dental cost | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
-| 30 | `/tools/genotype-checker/` | 98 | tools / genotype checker | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
+| 27 | `/tools/afrostream/creator.html` | 98 | tools / afrostream | Tap targets, Late collapse, Fixed sidebar, Overflow risk |
+| 28 | `/tools/blood-group/` | 98 | tools / blood group | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
+| 29 | `/tools/cac-cost/` | 98 | tools / cac cost | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
+| 30 | `/tools/dental-cost/` | 98 | tools / dental cost | Sub-16 controls, Tap targets, Late collapse, Fixed sidebar |
 
 ## Shared Files Or Patterns That Fix The Most Pages
 
@@ -76,7 +76,7 @@ Generated: 2026-05-01T05:27:39.420Z
 | --- | ---: | ---: |
 | shared 44px tap target pattern | 998 | 21284 |
 | shared early-collapse layout pattern | 902 | 21802 |
-| shared sidebar collapse pattern | 596 | 14744 |
+| shared sidebar collapse pattern | 597 | 14768 |
 | shared mobile form sizing pattern | 570 | 12998 |
 | tools/afrokitchen/style.css | 370 | 9186 |
 | tools/afrokitchen/cuisine-intelligence.css | 303 | 6664 |

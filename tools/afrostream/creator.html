@@ -127,6 +127,7 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
 <script src="/assets/js/components/footer.js?v=42461b5b" defer></script>
 <link rel="stylesheet" href="/tools/afrostream/subnav.css?v=93a02af2">
 <link rel="stylesheet" href="/tools/afrostream/creator-profile.css?v=2d1c0532">
+<link rel="stylesheet" href="/tools/afrostream/creator-live-count.css?v=6736eeb1">
 <script src="/tools/afrostream/subnav.js?v=96ce4795" defer></script>
 </head>
 <body class="as-page as-body">
@@ -190,12 +191,12 @@ img.emoji{height:1em!important;width:1em!important;margin:0 .05em 0 .1em!importa
   <section class="as-live-counters rv" id="liveCounters">
     <div class="as-container">
       <div class="as-lc-header">
-        <h2 class="as-section-title"><span class="as-lc-pulse"></span> Live Follower Count</h2>
-        <span class="as-lc-badge">REAL-TIME</span>
+        <h2 class="as-section-title"><span class="as-lc-pulse"></span> Follower Snapshot</h2>
+        <span class="as-lc-badge">SOURCE DATA</span>
       </div>
       <div class="as-lc-total" id="lcTotal">
         <div class="as-lc-total-label">Total Followers</div>
-        <div class="as-lc-total-num" id="lcTotalNum">0</div>
+        <div class="as-lc-total-num" id="lcTotalNum">Loading</div>
         <div class="as-lc-total-delta" id="lcTotalDelta"></div>
       </div>
       <div class="as-lc-grid" id="lcGrid"></div>
@@ -893,12 +894,14 @@ function renderMissingProfile() {
     var totalEl = document.getElementById('lcTotalNum');
     var deltaEl = document.getElementById('lcTotalDelta');
     var totalDailyGain = platData.reduce(function(s, p) { return s + p.dailyGain; }, 0);
-    deltaEl.textContent = '+' + totalDailyGain.toLocaleString() + ' today (est.)';
+    totalEl.textContent = totalFollowers.toLocaleString();
+    deltaEl.textContent = totalDailyGain > 0 ? '+' + totalDailyGain.toLocaleString() + ' today (est.)' : 'Growth estimate unavailable';
 
     /* Render platform cards */
     var grid = document.getElementById('lcGrid');
+    grid.setAttribute('data-count', String(platData.length));
     if (!platData.length) {
-      totalEl.textContent = fmtNum(totalFollowers);
+      totalEl.textContent = totalFollowers ? totalFollowers.toLocaleString() : 'Not available';
       grid.innerHTML = emptyCard('Platform-level follower counts are not available for this creator yet.');
       return;
     }
@@ -923,64 +926,9 @@ function renderMissingProfile() {
     grid.innerHTML = html;
 
     /* ── ANIMATE: Odometer-style counting ─────────────── */
-    /* Animate total from 0 to actual */
-    var totalTarget = totalFollowers;
-    var totalCurrent = 0;
-    var totalStep = Math.max(1, Math.floor(totalTarget / 80));
-    function animateTotal() {
-      totalCurrent += totalStep;
-      if (totalCurrent >= totalTarget) { totalCurrent = totalTarget; totalEl.textContent = totalTarget.toLocaleString(); return; }
-      totalEl.textContent = totalCurrent.toLocaleString();
-      requestAnimationFrame(animateTotal);
-    }
-    /* Start animation when section scrolls into view */
-    var lcSection = document.getElementById('liveCounters');
-    var lcAnimated = false;
-    var lcObs = new IntersectionObserver(function(entries) {
-      if (entries[0].isIntersecting && !lcAnimated) {
-        lcAnimated = true;
-        animateTotal();
-        lcObs.disconnect();
-      }
-    }, { threshold: 0.2 });
-    lcObs.observe(lcSection);
-
     /* ── LIVE TICK: Increment counters every few seconds ── */
-    var tickAccum = {};
-    platData.forEach(function(pd) { tickAccum[pd.platform] = pd.count; });
-    var totalAccum = totalFollowers;
-
-    setInterval(function() {
-      platData.forEach(function(pd) {
-        /* Random chance to tick (based on rate) */
-        if (Math.random() < 0.4 + pd.ratePerMin * 0.05) {
-          var bump = Math.ceil(Math.random() * Math.max(1, pd.ratePerMin));
-          tickAccum[pd.platform] += bump;
-          totalAccum += bump;
-
-          var el = document.getElementById('lc-' + pd.platform);
-          if (el) {
-            el.textContent = tickAccum[pd.platform].toLocaleString();
-            el.style.transition = 'transform .15s,color .15s';
-            el.style.transform = 'scale(1.04)';
-            el.style.color = pd.color;
-            setTimeout(function() { el.style.transform = ''; el.style.color = ''; }, 300);
-          }
-        }
-      });
-      if (lcAnimated) {
-        totalEl.textContent = totalAccum.toLocaleString();
-      }
-    }, 2000 + Math.floor(Math.random() * 1500));
-
     /* Update sparkline bars randomly */
-    setInterval(function() {
-      document.querySelectorAll('.as-lc-card-spark').forEach(function(spark) {
-        var bars = spark.querySelectorAll('span');
-        var idx = Math.floor(Math.random() * bars.length);
-        bars[idx].style.height = (40 + Math.floor(Math.random() * 60)) + '%';
-      });
-    }, 3000);
+    /* Static source-data snapshot: do not invent live movement between syncs. */
   })();
 
   /* ===== RENDER NET WORTH ===== */

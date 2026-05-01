@@ -67,6 +67,21 @@ The first automated collectors cover the currently registered live sources:
 Unsupported source keys stay in inventory but will log a failed run until a collector is added for that key.
 Sites that block server-side fetches can also produce failed runs even when a collector exists; those sources need either a different official endpoint or a browser-assisted refresh lane.
 
+## AfroAlerts Change Detection
+
+- `scheduled-detect-changes`
+  - runs every 6 hours via Netlify Scheduled Functions
+  - compares `fuel-latest`, `electricity-latest`, and `commodity-prices-latest` against their `prev-*` snapshots
+  - writes public rows to `public.alerts`
+  - sends an email only for newly inserted high-severity alerts
+
+Alert guardrails:
+
+- The first real commodity snapshot after `reference-fallback` should seed `prev-commodities` without sending a dramatic baseline email.
+- Generated alerts expire after `AFROALERTS_EXPIRY_DAYS` days, defaulting to 30.
+- Duplicate active alerts with the same title and effective date are skipped before insert and email delivery.
+- Set `AFROALERTS_EMAIL_TO` to a comma-separated recipient list. The fallback recipient is the owner inbox.
+
 ## POST Shape
 
 ```json
