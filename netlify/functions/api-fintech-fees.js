@@ -11,6 +11,7 @@ exports.handler = async function (event) {
     responseKey: 'fees',
     extendFilters(filters, params, appendFilter) {
       if (params.fee_type) appendFilter(filters, 'fee_type', params.fee_type);
+      if (params.channel || params.transaction_channel) appendFilter(filters, 'transaction_channel', params.channel || params.transaction_channel);
     }
   });
 };

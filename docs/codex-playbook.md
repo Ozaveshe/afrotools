@@ -100,6 +100,7 @@
 
 - Use `afrotools-supabase-ops`
 - Use the configured `supabase` MCP server first for live schema, SQL, logs, auth, storage, or types
+- For source-backed market-data ingest or freshness work, read `docs/MARKET-DATA-INGESTION.md`
 
 ### Scholarship platform task
 

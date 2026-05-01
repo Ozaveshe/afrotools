@@ -54,6 +54,8 @@ async function handleMarketDataRequest(event, config) {
   const filters = [].concat(config.baseFilters || []);
   const limit = Math.min(parseInt(params.limit, 10) || config.defaultLimit || 50, config.maxLimit || 100);
   const order = config.order || 'observed_at.desc';
+  const freshnessField = config.freshnessField || 'expires_at';
+  const requireFresh = config.requireFresh !== false;
 
   const country = cleanText(params.country || params.country_code);
   const city = cleanText(params.city);
@@ -62,6 +64,10 @@ async function handleMarketDataRequest(event, config) {
   if (country) appendFilter(filters, config.countryField || 'country_code', country.toUpperCase());
   if (city) appendFilter(filters, config.cityField || 'city', city);
   if (provider && config.providerField) appendFilter(filters, config.providerField, provider);
+
+  if (requireFresh && freshnessField) {
+    filters.push('or=(' + freshnessField + '.is.null,' + freshnessField + '.gte.' + encodeURIComponent(new Date().toISOString()) + ')');
+  }
 
   if (typeof config.extendFilters === 'function') {
     config.extendFilters(filters, params, appendFilter);

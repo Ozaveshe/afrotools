@@ -8,6 +8,12 @@ exports.handler = async function (event) {
     select: '*',
     baseFilters: ['is_public=eq.true'],
     providerField: 'provider_name',
-    responseKey: 'quotes'
+    responseKey: 'quotes',
+    extendFilters(filters, params, appendFilter) {
+      if (params.send_country) appendFilter(filters, 'send_country', params.send_country.toUpperCase());
+      if (params.receive_country) appendFilter(filters, 'receive_country', params.receive_country.toUpperCase());
+      if (params.payout_method) appendFilter(filters, 'payout_method', params.payout_method);
+      if (params.funding_method) appendFilter(filters, 'funding_method', params.funding_method);
+    }
   });
 };

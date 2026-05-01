@@ -34,14 +34,14 @@
     <div class="md-breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/afropoints/">AfroPoints</a><span>/</span><span>Fintech Fee Watch</span></div>
     <div class="md-eyebrow">Fintech Fees</div>
     <h1>Fintech Fee Watch</h1>
-    <p>Compare transfer, withdrawal, ATM, POS, and USSD fees by provider and amount band, then submit the tariff you actually see in-market.</p>
+    <p>Track published fee coverage for transfers, withdrawals, ATM, POS, and USSD charges, then submit the tariff you actually see in-market to help build the verified feed.</p>
     <div class="md-chip-row"><span class="md-chip">ATM and cash-out</span><span class="md-chip">Mobile money and bank</span><span class="md-chip">App and USSD channels</span></div>
   </div>
 </section>
 <div class="md-shell">
   <div class="md-main">
     <div class="md-panel">
-      <div class="md-panel-head"><div class="md-panel-title">Verified Fee Feed</div><div class="md-panel-subtitle">Public fee reports that passed verification or corroboration.</div></div>
+      <div class="md-panel-head"><div class="md-panel-title">Verified Fee Feed</div><div class="md-panel-subtitle">Published fee reports that passed verification or corroboration. Coverage is still expanding country by country.</div></div>
       <div class="md-panel-body">
         <div class="md-toolbar">
           <div class="md-field"><label for="mdCountry">Country</label><select id="mdCountry" class="md-select" data-md-filter="country"></select></div>
@@ -51,13 +51,13 @@
         </div>
         <div class="md-actions"><button class="md-btn md-btn-secondary" id="mdRefresh">Refresh feed</button></div>
         <div class="md-summary" id="mdSummary"></div>
-        <div class="md-grid" id="mdList"><div class="md-empty">Loading verified fee data...</div></div>
+        <div class="md-grid" id="mdList"><div class="md-empty">Loading published fee coverage...</div></div>
       </div>
     </div>
   </div>
   <aside class="md-side">
     <div class="md-panel">
-      <div class="md-panel-head"><div class="md-panel-title">Submit a Fee Report</div><div class="md-panel-subtitle">Fee evidence powers buyer-facing benchmark dashboards and alerting.</div></div>
+      <div class="md-panel-head"><div class="md-panel-title">Submit a Fee Report</div><div class="md-panel-subtitle">Your report helps turn empty corridors into published fee coverage after review.</div></div>
       <div class="md-panel-body">
         <div class="md-form-field"><label for="mdReportCountry">Country</label><select id="mdReportCountry" class="md-select"></select></div>
         <div class="md-form-field"><label for="mdReportCity">City</label><input id="mdReportCity" class="md-input" placeholder="e.g. Kampala"></div>
@@ -81,7 +81,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afropoints-engine.js?v=2"></script>
-<script src="/assets/js/market-data-app.js?v=9eeda2f8"></script>
+<script src="/assets/js/market-data-app.js?v=d189d542"></script>
 <script>
 document.getElementById('mdObservedAt').value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 window.MarketDataApp.mount({
@@ -112,6 +112,11 @@ window.MarketDataApp.mount({
     };
   },
   renderSummary: function (rows, response, helpers) {
+    if (!rows.length) {
+      return '<div class="md-stat"><div class="md-stat-value">0</div><div class="md-stat-label">Published fee rows</div></div>' +
+        '<div class="md-stat"><div class="md-stat-value">Building</div><div class="md-stat-label">Coverage status</div></div>' +
+        '<div class="md-stat"><div class="md-stat-value">Submit first report</div><div class="md-stat-label">Next step</div></div>';
+    }
     var feeRows = rows.filter(function (row) { return Number.isFinite(Number(row.fee_amount)); });
     var avg = feeRows.length ? feeRows.reduce(function (sum, row) { return sum + Number(row.fee_amount || 0); }, 0) / feeRows.length : 0;
     var official = rows.filter(function (row) { return row.source_type === 'official_notice' || row.proof_url; }).length;
@@ -129,6 +134,9 @@ window.MarketDataApp.mount({
       '<div class="md-meta"><span class="md-pill">' + helpers.escapeHtml(row.currency_code || '') + ' ' + helpers.escapeHtml(row.fee_amount || '') + '</span><span class="md-pill">' + helpers.escapeHtml(row.transaction_channel || 'Channel') + '</span></div>' +
       '<div class="ff-card-line"><span class="md-pill">' + helpers.escapeHtml(observedText) + '</span><span class="md-pill">' + helpers.escapeHtml(proof) + '</span></div>' +
       '<div class="ff-source">Source: ' + helpers.escapeHtml(source) + '</div></article>';
+  },
+  renderEmptyState: function () {
+    return 'No verified fee rows are published yet for this feed. Use the report form to submit the first tariff with a proof link, receipt, or official fee page.';
   }
 });
 

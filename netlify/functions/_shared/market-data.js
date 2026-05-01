@@ -163,6 +163,25 @@ const SUBTYPE_CONFIGS = {
   }
 };
 
+const SOURCE_TTL_HOURS = {
+  fintech_fee: {
+    official_notice: 24 * 30,
+    receipt: 24 * 14,
+    self_observed: 24 * 7,
+    merchant_quote: 24 * 7,
+    community_check: 24 * 7,
+    default: 24 * 7
+  },
+  remittance_quote: {
+    official_notice: 24,
+    receipt: 24,
+    self_observed: 24,
+    merchant_quote: 12,
+    community_check: 12,
+    default: 12
+  }
+};
+
 const SUBTYPE_ALIASES = {
   informal_fx_rate: 'informal_fx_rate',
   forex_rate: 'informal_fx_rate',
@@ -249,6 +268,31 @@ function getSubmissionPoints(subtype) {
 
 function getConfirmationBonus(subtype) {
   return getSubtypeConfig(subtype)?.bonus || 0;
+}
+
+function addHours(isoString, hours) {
+  const base = isoString ? new Date(isoString) : new Date();
+  if (!Number.isFinite(base.getTime())) return null;
+  return new Date(base.getTime() + hours * 3600000).toISOString();
+}
+
+function getSourceTtlHours(submission, overrideHours) {
+  const subtype = submission?.subtype;
+  const sourceType = cleanText(submission?.source_type) || 'default';
+  const config = SOURCE_TTL_HOURS[subtype] || {};
+  const manualOverride = normalizeNumber(overrideHours);
+  if (manualOverride && manualOverride > 0) return manualOverride;
+  return config[sourceType] || config.default || null;
+}
+
+function buildExpiresAt(submission, overrideHours) {
+  const ttlHours = getSourceTtlHours(submission, overrideHours);
+  if (!ttlHours) return null;
+  return addHours(submission?.observed_at, ttlHours);
+}
+
+function buildPublishedAt(reviewReason) {
+  return reviewReason ? null : new Date().toISOString();
 }
 
 function getRouteName(submission) {
@@ -584,6 +628,8 @@ function buildContributionRecord(userId, submission, confidenceScore, reviewReas
 
 function buildDomainRecord(submission, userId, contributionId, confidenceScore, reviewReason) {
   const payload = submission.payload || {};
+  const sourceName = cleanText(submission.source_name) || submission.provider_name;
+  const sourceUrl = cleanText(submission.source_url) || submission.proof_url;
   const baseRecord = {
     contribution_id: contributionId,
     user_id: userId,
@@ -596,9 +642,15 @@ function buildDomainRecord(submission, userId, contributionId, confidenceScore, 
     neighborhood: submission.neighborhood,
     observed_at: submission.observed_at,
     source_type: submission.source_type,
+    source_name: sourceName,
+    source_url: sourceUrl,
+    ingestion_method: cleanText(submission.ingestion_method) || 'community',
     proof_url: submission.proof_url,
     photo_url: submission.photo_url,
     payload,
+    published_at: buildPublishedAt(reviewReason),
+    expires_at: buildExpiresAt(submission, payload.ttl_hours),
+    last_checked_at: new Date().toISOString(),
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
@@ -617,7 +669,8 @@ function buildDomainRecord(submission, userId, contributionId, confidenceScore, 
         received_amount: normalizeNumber(payload.received_amount),
         delivery_minutes: normalizeNumber(payload.delivery_minutes),
         provider_name: submission.provider_name,
-        payout_method: cleanText(payload.payout_method)
+        payout_method: cleanText(payload.payout_method),
+        funding_method: cleanText(payload.funding_method)
       };
     case 'transport_fare':
       return {
@@ -678,7 +731,8 @@ function buildDomainRecord(submission, userId, contributionId, confidenceScore, 
         amount_band: cleanText(payload.amount_range) || cleanText(payload.amount_band),
         fee_amount: normalizeNumber(payload.fee_amount),
         fee_percentage: normalizeNumber(payload.fee_percentage),
-        transaction_channel: cleanText(payload.transaction_channel)
+        transaction_channel: cleanText(payload.transaction_channel),
+        customer_segment: cleanText(payload.customer_segment)
       };
     case 'backup_power_cost':
       return {
@@ -741,6 +795,114 @@ function buildDomainRecord(submission, userId, contributionId, confidenceScore, 
   }
 }
 
+function buildImportedSourceRecord(dataset, source) {
+  const normalizedDataset = normalizeSubtype(dataset) || dataset;
+  const sourceKey = cleanText(source?.source_key) ||
+    [normalizedDataset, cleanText(source?.source_name) || cleanText(source?.provider_name) || 'source']
+      .filter(Boolean)
+      .join(':')
+      .toLowerCase()
+      .replace(/[^a-z0-9:_-]+/g, '-');
+
+  return {
+    dataset: normalizedDataset,
+    source_key: sourceKey,
+    source_name: cleanText(source?.source_name) || cleanText(source?.provider_name) || 'Unknown source',
+    source_type: cleanText(source?.source_type) || 'official_notice',
+    base_url: cleanText(source?.base_url) || cleanText(source?.source_url),
+    country_scope: Array.isArray(source?.country_scope) ? source.country_scope.filter(Boolean) : [],
+    provider_scope: Array.isArray(source?.provider_scope) ? source.provider_scope.filter(Boolean) : [],
+    cadence_hours: normalizeNumber(source?.cadence_hours) || 24,
+    ttl_hours: normalizeNumber(source?.ttl_hours) || getSourceTtlHours({ subtype: normalizedDataset, source_type: cleanText(source?.source_type) || 'official_notice' }) || 24,
+    active: source?.active !== false,
+    notes: cleanText(source?.notes),
+    updated_at: new Date().toISOString()
+  };
+}
+
+function buildImportedSubmission(dataset, record, sourceRecord) {
+  const normalizedSubtype = normalizeSubtype(dataset);
+  const payload = safePayload(record?.payload);
+  const receiveCountry = cleanText(record?.receive_country) || cleanText(payload.receive_country) || cleanText(record?.country_code);
+  const countryCode = cleanText(record?.country_code) || receiveCountry;
+  const city = cleanText(record?.city) || cleanText(payload.city) || (normalizedSubtype === 'remittance_quote' ? 'Online' : 'National');
+  const currencyCode = cleanText(record?.currency_code) ||
+    cleanText(record?.receive_currency) ||
+    cleanText(payload.currency_code) ||
+    cleanText(payload.receive_currency) ||
+    'USD';
+  const observedAt = cleanText(record?.observed_at) || cleanText(record?.quoted_at) || cleanText(payload.observed_at) || new Date().toISOString();
+  const sourceType = cleanText(record?.source_type) || cleanText(sourceRecord?.source_type) || 'official_notice';
+  const providerName = cleanText(record?.provider_name) || cleanText(payload.provider_name) || cleanText(payload.provider);
+  const sourceUrl = cleanText(record?.source_url) || cleanText(record?.proof_url) || cleanText(sourceRecord?.base_url);
+  const observedDate = new Date(observedAt);
+  const observedIso = Number.isFinite(observedDate.getTime()) ? observedDate.toISOString() : new Date().toISOString();
+
+  return {
+    subtype: normalizedSubtype,
+    vertical: getVertical(normalizedSubtype),
+    category: normalizedSubtype,
+    country_code: (countryCode || '').toUpperCase(),
+    city,
+    neighborhood: cleanText(record?.neighborhood) || cleanText(payload.neighborhood),
+    observed_at: observedIso,
+    source_type: sourceType,
+    source_name: cleanText(record?.source_name) || cleanText(sourceRecord?.source_name) || providerName,
+    source_url: sourceUrl,
+    proof_url: cleanText(record?.proof_url) || sourceUrl,
+    photo_url: cleanText(record?.photo_url),
+    currency_code: (currencyCode || 'USD').toUpperCase(),
+    provider_name: providerName,
+    merchant_name: cleanText(record?.merchant_name),
+    route_name: cleanText(record?.route_name),
+    business_context: cleanText(record?.business_context),
+    payload: {
+      ...payload,
+      send_country: cleanText(record?.send_country) || cleanText(payload.send_country),
+      receive_country: receiveCountry ? receiveCountry.toUpperCase() : null,
+      send_currency: cleanText(record?.send_currency) || cleanText(payload.send_currency),
+      receive_currency: cleanText(record?.receive_currency) || cleanText(payload.receive_currency) || currencyCode,
+      send_amount: normalizeNumber(record?.send_amount) || normalizeNumber(payload.send_amount),
+      fee_amount: normalizeNumber(record?.fee_amount) || normalizeNumber(payload.fee_amount),
+      fx_rate: normalizeNumber(record?.fx_rate) || normalizeNumber(payload.fx_rate),
+      received_amount: normalizeNumber(record?.received_amount) || normalizeNumber(payload.received_amount),
+      delivery_minutes: normalizeNumber(record?.delivery_minutes) || normalizeNumber(payload.delivery_minutes),
+      payout_method: cleanText(record?.payout_method) || cleanText(payload.payout_method),
+      funding_method: cleanText(record?.funding_method) || cleanText(payload.funding_method),
+      fee_type: cleanText(record?.fee_type) || cleanText(payload.fee_type),
+      amount_band: cleanText(record?.amount_band) || cleanText(payload.amount_band),
+      fee_percentage: normalizeNumber(record?.fee_percentage) || normalizeNumber(payload.fee_percentage),
+      transaction_channel: cleanText(record?.transaction_channel) || cleanText(payload.transaction_channel),
+      customer_segment: cleanText(record?.customer_segment) || cleanText(payload.customer_segment),
+      ttl_hours: normalizeNumber(record?.ttl_hours) || normalizeNumber(payload.ttl_hours) || normalizeNumber(sourceRecord?.ttl_hours)
+    },
+    ingestion_method: cleanText(record?.ingestion_method) || 'official_ingest'
+  };
+}
+
+function buildImportedDomainRecord(dataset, sourceRecord, record, options) {
+  const submission = buildImportedSubmission(dataset, record, sourceRecord);
+  const confidenceScore = normalizeNumber(record?.confidence_score) || 90;
+  const publish = options?.publish !== false;
+  const now = new Date().toISOString();
+  const domainRecord = buildDomainRecord(submission, null, null, confidenceScore, publish ? null : 'manual_review_required');
+  if (!domainRecord) return null;
+
+  return {
+    ...domainRecord,
+    source_id: sourceRecord?.id || null,
+    source_name: submission.source_name,
+    source_url: submission.source_url,
+    ingestion_method: submission.ingestion_method || 'official_ingest',
+    verification_state: publish ? 'verified' : 'needs_review',
+    review_status: publish ? 'approved' : 'pending',
+    is_public: publish,
+    published_at: publish ? now : null,
+    verified_at: publish ? now : null,
+    last_checked_at: now
+  };
+}
+
 function normalizeLeaseTerm(payload) {
   const direct = normalizeNumber(payload.lease_term_months);
   if (direct) return direct;
@@ -753,11 +915,15 @@ function normalizeLeaseTerm(payload) {
 async function publishToDomain(submission, contribution, verificationState) {
   const table = getSubtypeConfig(submission.subtype)?.table;
   if (table) {
+    const isVerified = verificationState === 'verified';
     await sbRequest('PATCH', table + '?contribution_id=eq.' + contribution.id, {
       verification_state: verificationState,
-      review_status: verificationState === 'verified' ? 'approved' : 'rejected',
-      is_public: verificationState === 'verified',
-      verified_at: verificationState === 'verified' ? new Date().toISOString() : null,
+      review_status: isVerified ? 'approved' : 'rejected',
+      is_public: isVerified,
+      published_at: isVerified ? new Date().toISOString() : null,
+      verified_at: isVerified ? new Date().toISOString() : null,
+      expires_at: isVerified ? buildExpiresAt(submission, submission.payload?.ttl_hours) : null,
+      last_checked_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     }, { Prefer: 'return=representation' });
   }
@@ -837,6 +1003,8 @@ module.exports = {
   getVertical,
   getSubmissionPoints,
   getConfirmationBonus,
+  getSourceTtlHours,
+  buildExpiresAt,
   getMetricKey,
   getNumericValue,
   getRecentBaseline,
@@ -845,6 +1013,9 @@ module.exports = {
   normalizeSubmission,
   buildContributionRecord,
   buildDomainRecord,
+  buildImportedSourceRecord,
+  buildImportedSubmission,
+  buildImportedDomainRecord,
   publishToDomain,
   sbRequest
 };
