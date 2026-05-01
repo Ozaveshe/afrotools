@@ -26,9 +26,12 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 ## Core Commands
 
 - `npm run build` - full site rebuild and post-processing
+- `npm run build:deploy` - rebuild and prepare the publishable `dist/` artifact
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
+- `npm run audit:dist` - verify the deploy artifact only contains publishable output
+- `npm run security:scan` - scan publish surfaces for leaked repo internals and risky files
 - `npm run seo` - SEO daily fix pass
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
@@ -36,6 +39,7 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 - `npm run build:i18n:validate` - validate i18n output
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
+- `npm run inventory:site` - refresh the internal site ledger used by `mc-7a2f9x.html`
 
 ## Edit Strategy
 
@@ -76,6 +80,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
+- Keep generated deploy output such as `dist/` out of source SEO scans.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
 
 ### i18n work
@@ -88,6 +93,17 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - Use the configured `supabase` MCP server first whenever a task needs live project access, schema inspection, SQL execution, logs, storage, auth, or generated types.
 - Keep repo edits and live project actions conceptually separate in your notes and summaries.
 
+### Release and publish-surface work
+
+- Read `docs/release-checklist.md`.
+- Netlify must publish `dist/`, never the repo root.
+- For Netlify, redirects, functions, or publish-surface changes, run `npm run security:scan`, `npm run build:deploy`, and `npm run audit:dist`.
+- Inspect `dist/` directly when validating a release or deploy-surface fix.
+
+### Internal inventory work
+
+- If `mc-7a2f9x.html` counts look stale after registry or page changes, run `npm run inventory:site` before relying on the dashboard.
+
 ## Preferred Validation
 
 - HTML or content changes: `npm test`
@@ -95,7 +111,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
 - Car data changes: `npm run cars:catalog:refresh`
-- Netlify/server code changes: targeted `node -c` or direct function smoke checks when available
+- Netlify/server code changes: `npm run security:scan`, `npm run build:deploy`, `npm run audit:dist`, plus targeted `node -c` or direct function smoke checks when available
 
 ## Deliverables
 
