@@ -24,13 +24,13 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
-<script src="/assets/js/components/related-tools-data.min.js?v=c91db2ae" defer></script>
+<script src="/assets/js/components/related-tools-data.min.js?v=34121d56" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=19ded6fb" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.js?v=2d529e66" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=ff6792d6" defer></script>
-<script src="/assets/vendor/pdfjs/pdf.min.js"></script>
-<script src="/assets/vendor/tesseract/tesseract.min.js"></script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<script src="/assets/vendor/tesseract/tesseract.min.js?v=762c4256"></script>
 <style>
   :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; }
 
@@ -626,7 +626,7 @@
 <script type="module">
 const pdfjsLib = window.pdfjsLib;
 if (!pdfjsLib) throw new Error('PDF preview library failed to load. Please refresh the page.');
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
 
 // DOM refs
 const fileInput = document.getElementById('fileInput');
@@ -757,7 +757,7 @@ extractBtn.addEventListener('click', async () => {
 
     // Create Tesseract worker with detailed progress
     const worker = await Tesseract.createWorker(language, 1, {
-      workerPath: '/assets/vendor/tesseract/worker.min.js',
+      workerPath: '/assets/vendor/tesseract/worker.min.js?v=65249fe4',
       corePath: '/assets/vendor/tesseract/core',
       langPath: '/assets/vendor/tesseract/lang',
       workerBlobURL: false,
@@ -932,6 +932,6 @@ downloadBtn.addEventListener('click', () => {
 <script src="/assets/js/favorites-widget.js?v=7f046e98" defer></script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=20260501" defer></script>
+<script src="/assets/js/lib/pdf-download-gate.js?v=56f492c4" defer></script>
 </body>
 </html>

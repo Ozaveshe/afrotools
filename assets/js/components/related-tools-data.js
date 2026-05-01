@@ -226,6 +226,17 @@
         "estTraffic": 40000
       },
       {
+        "id": "invoice-generator",
+        "name": "Invoice Generator",
+        "icon": "🧾",
+        "desc": "Create African invoices with VAT, payment detail...",
+        "href": "/tools/invoice-generator/",
+        "category": "document-pdf",
+        "lang": "en",
+        "priority": 96,
+        "estTraffic": 15000
+      },
+      {
         "id": "pdf-merge-split",
         "name": "PDF Merge & Split",
         "icon": "📑",
@@ -246,17 +257,6 @@
         "lang": "en",
         "priority": 95,
         "estTraffic": 25000
-      },
-      {
-        "id": "invoice-generator",
-        "name": "Invoice Generator",
-        "icon": "🧾",
-        "desc": "Create professional invoices with VAT, multi-cur...",
-        "href": "/tools/invoice-generator/",
-        "category": "document-pdf",
-        "lang": "en",
-        "priority": 95,
-        "estTraffic": 15000
       },
       {
         "id": "pdf-convert",
@@ -292,6 +292,28 @@
         "estTraffic": 20000
       },
       {
+        "id": "cover-letter",
+        "name": "Cover Letter Generator",
+        "icon": "✉️",
+        "desc": "Create tailored cover letters with job matching,...",
+        "href": "/tools/cover-letter-generator/",
+        "category": "document-pdf",
+        "lang": "en",
+        "priority": 93,
+        "estTraffic": 12000
+      },
+      {
+        "id": "meeting-minutes",
+        "name": "Meeting Minutes Generator",
+        "icon": "📋",
+        "desc": "Create agenda-led minutes with decisions, action...",
+        "href": "/tools/meeting-minutes/",
+        "category": "document-pdf",
+        "lang": "en",
+        "priority": 91,
+        "estTraffic": 10000
+      },
+      {
         "id": "pdf-image-convert",
         "name": "PDF ↔ Image Converter",
         "icon": "🖼️",
@@ -301,17 +323,6 @@
         "lang": "en",
         "priority": 90,
         "estTraffic": 15000
-      },
-      {
-        "id": "cover-letter",
-        "name": "Cover Letter Generator",
-        "icon": "✉️",
-        "desc": "Write professional cover letters with industry t...",
-        "href": "/tools/cover-letter-generator/",
-        "category": "document-pdf",
-        "lang": "en",
-        "priority": 90,
-        "estTraffic": 12000
       },
       {
         "id": "pdf-sign",
@@ -356,17 +367,6 @@
         "lang": "en",
         "priority": 88,
         "estTraffic": 12000
-      },
-      {
-        "id": "meeting-minutes",
-        "name": "Meeting Minutes Generator",
-        "icon": "📋",
-        "desc": "Create professional meeting minutes. Attendees, ...",
-        "href": "/tools/meeting-minutes/",
-        "category": "document-pdf",
-        "lang": "en",
-        "priority": 88,
-        "estTraffic": 10000
       },
       {
         "id": "pdf-compare",
@@ -5321,23 +5321,23 @@
         "estTraffic": 15000
       },
       {
+        "id": "invoice-generator",
+        "name": "Invoice Generator",
+        "icon": "🧾",
+        "desc": "Create African invoices with VAT, payment detail...",
+        "href": "/tools/invoice-generator/",
+        "category": "document-pdf",
+        "lang": "en",
+        "priority": 96,
+        "estTraffic": 15000
+      },
+      {
         "id": "import-duty",
         "name": "Import Duty Calculator",
         "icon": "🚢",
         "desc": "Real NCS, KRA, SARS, GRA customs duty rates + al...",
         "href": "/tools/import-duty/",
         "category": "financial",
-        "lang": "en",
-        "priority": 95,
-        "estTraffic": 15000
-      },
-      {
-        "id": "invoice-generator",
-        "name": "Invoice Generator",
-        "icon": "🧾",
-        "desc": "Create professional invoices with VAT, multi-cur...",
-        "href": "/tools/invoice-generator/",
-        "category": "document-pdf",
         "lang": "en",
         "priority": 95,
         "estTraffic": 15000
