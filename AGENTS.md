@@ -27,17 +27,21 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 
 - `npm run build` - full site rebuild and post-processing
 - `npm run build:deploy` - rebuild and prepare the publishable `dist/` artifact
+- `npm run sitemap` - regenerate sitemap files from source routes
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
 - `npm run audit` - tool audit
 - `npm run audit:dist` - verify the deploy artifact only contains publishable output
+- `npm run pdf:verify` - verify PDF category gate coverage and workflow wiring
 - `npm run security:scan` - scan publish surfaces for leaked repo internals and risky files
 - `npm run seo` - SEO daily fix pass
+- `npm run seo:og` - apply or refresh OG image fallbacks for tool routes
 - `npm run seo:report` - SEO report mode
 - `npm run seo:priority` - rebuild SEO system
 - `npm run seo:widgets` - normalize embed and thin utility surface SEO
 - `npm run build:i18n -- --all` - regenerate translations
 - `npm run build:i18n:validate` - validate i18n output
+- `npm run build:i18n:full` - rebuild i18n output and validate hreflang together
 - `npm run validate:hreflang` - hreflang validation
 - `npm run cars:catalog:refresh` - validate and rebuild car catalog data
 - `npm run inventory:site` - refresh the internal site ledger used by `mc-7a2f9x.html`
@@ -74,6 +78,13 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - If adding or changing a country surface, review `docs/ADDING-A-COUNTRY.md`.
 - If registry entries change, validate links and audit tool metadata.
 
+### PDF and document tools
+
+- Read `docs/PDF-CATEGORY-WORKFLOW.md`.
+- Keep processing local first unless the tool explicitly documents a server-backed flow.
+- Load `assets/js/lib/pdf-download-gate.js` on PDF-category tools that generate downloads, and wrap direct download callbacks with the shared gate.
+- Treat the shared gate's intercepted `<a download>` behavior as fallback coverage, not a replacement for wiring the main action.
+
 ### Design and UI work
 
 - Start from `assets/css/design-system.css`, `style-guide.html`, and `docs/design-doctrine.md`.
@@ -86,6 +97,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 - Do not manually edit sitemap files as a first choice.
 - Keep `widgets/iframe/` utility pages `noindex, follow` and normalize them with `npm run seo:widgets`.
 - Keep generated deploy output such as `dist/` out of source SEO scans; regenerate it from source instead of patching generated URLs.
+- For tool social-card changes, add the matching route image and run `npm run seo:og`.
 - If canonical, OG, internal linking, or alias behavior changes, run the relevant SEO scripts and record the workflow in docs if it is new.
 
 ### Content publishing
@@ -118,6 +130,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 ## Preferred Validation
 
 - HTML or content changes: `npm test`
+- PDF/document tool changes: `npm run pdf:verify`, `npm run audit`, plus a guest and registered-user browser smoke when downloads changed
 - Registry or navigation changes: `npm run check-links` and `npm run audit`
 - SEO changes: `npm run seo:report` or the narrower script that matches the change
 - i18n changes: `npm run build:i18n:validate` and `npm run validate:hreflang`
