@@ -3,7 +3,7 @@
 Use this as the working list for generating and saving recipe images.
 
 - Canonical recipe pages needing image coverage: 220
-- Recipes with at least one image detected: 9
+- Recipes with at least one image detected: 29
 - Gallery-ready recipes with three or more images: 0
 - Save finished images under `assets/img/kitchen/`
 - Preferred format: `.webp` at roughly 1600x1200 or 1200x900

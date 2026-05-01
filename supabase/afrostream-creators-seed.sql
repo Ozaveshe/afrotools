@@ -728,3 +728,30 @@ INSERT INTO as_creators (name, slug, country, bio, categories, primary_platform,
 
 INSERT INTO as_creators (name, slug, country, bio, categories, primary_platform, youtube_url, twitch_url, tiktok_url, kick_url, instagram_url, twitter_url, subscribers, total_views, gift_revenue, net_worth, growth_rate, streaming_since, frequency, languages, tags, verified, is_published) VALUES
 ('Anes Tina', 'anes-tina', 'DZ', 'Algerian comedian and YouTube star known for comedy series and viral sketches with millions of views.', 'Comedy, Entertainment', 'youtube', 'https://youtube.com/@AnesTina', NULL, 'https://tiktok.com/@anestina', NULL, 'https://instagram.com/anestina', NULL, 3500000, 1000000000, '0.00', '$500000', '2.0', '2016', '2x/week', 'Arabic, French', 'comedy, sketches, algerian, series, humor', true, true);
+
+-- Local creator avatars generated for the AfroStream card/profile image pass.
+UPDATE as_creators AS c
+SET avatar = v.avatar
+FROM (VALUES
+  ('aya-nakamura', '/assets/img/afrostream/creators/aya-nakamura.webp'),
+  ('creative-crafts-5min', '/assets/img/afrostream/creators/creative-crafts-5min.webp'),
+  ('diamond-platnumz', '/assets/img/afrostream/creators/diamond-platnumz.webp'),
+  ('douha-laribi', '/assets/img/afrostream/creators/douha-laribi.webp'),
+  ('hamoda-gaming', '/assets/img/afrostream/creators/hamoda-gaming.webp'),
+  ('jaymondy', '/assets/img/afrostream/creators/jaymondy.webp'),
+  ('joe-hattab', '/assets/img/afrostream/creators/joe-hattab.webp'),
+  ('khaby-lame', '/assets/img/afrostream/creators/khaby-lame.webp'),
+  ('maitre-gims', '/assets/img/afrostream/creators/maitre-gims.webp'),
+  ('mark-angel-comedy', '/assets/img/afrostream/creators/mark-angel-comedy.webp'),
+  ('mohamed-ramadan', '/assets/img/afrostream/creators/mohamed-ramadan.webp'),
+  ('noor-stars', '/assets/img/afrostream/creators/noor-stars.webp'),
+  ('omar-shawar', '/assets/img/afrostream/creators/omar-shawar.webp'),
+  ('oum-walid', '/assets/img/afrostream/creators/oum-walid.webp'),
+  ('princess-sachiko', '/assets/img/afrostream/creators/princess-sachiko.webp'),
+  ('rico-animations', '/assets/img/afrostream/creators/rico-animations.webp'),
+  ('ryan-hd', '/assets/img/afrostream/creators/ryan-hd.webp'),
+  ('saad-lamjarred', '/assets/img/afrostream/creators/saad-lamjarred.webp'),
+  ('soolking', '/assets/img/afrostream/creators/soolking.webp'),
+  ('william-last-krm', '/assets/img/afrostream/creators/william-last-krm.webp')
+) AS v(slug, avatar)
+WHERE c.slug = v.slug;

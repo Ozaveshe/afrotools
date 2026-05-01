@@ -285,6 +285,10 @@ function asNumber(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function isImageUrl(value) {
+  return typeof value === 'string' && (value.indexOf('http') === 0 || value.charAt(0) === '/');
+}
+
 function normalizeCreator(d) {
   /* Resolve country: Supabase returns full name (e.g. "Nigeria"), demo uses code ("NG") */
   var countryCode = d.country || '';
@@ -350,8 +354,8 @@ function normalizeCreator(d) {
     id:        d.id,
     slug:      d.slug || '',
     name:      d.name || '',
-    avatarUrl: (d.avatar && d.avatar.startsWith('http')) ? d.avatar : ((d.avatar_url && d.avatar_url.startsWith('http')) ? d.avatar_url : ''),
-    avatar:    (d.avatar && !d.avatar.startsWith('http')) ? d.avatar : (d.name ? d.name.replace(/[a-z ]/g,'').slice(0,2) || d.name.slice(0,2).toUpperCase() : '??'),
+    avatarUrl: isImageUrl(d.avatar) ? d.avatar : (isImageUrl(d.avatar_url) ? d.avatar_url : ''),
+    avatar:    (d.avatar && !isImageUrl(d.avatar)) ? d.avatar : (d.name ? d.name.replace(/[a-z ]/g,'').slice(0,2) || d.name.slice(0,2).toUpperCase() : '??'),
     country:   countryCode,
     flag:      flag,
     countryName: countryName,
