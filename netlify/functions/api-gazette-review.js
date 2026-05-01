@@ -58,6 +58,7 @@ exports.handler = async function(event) {
     var gazetteRes;
     var reviewRes;
     try {
+      await reconcileRejectedGazetteChanges(SUPABASE_URL, SUPABASE_KEY);
       [gazetteRes, reviewRes] = await Promise.all([
         fetch(SUPABASE_URL + '/rest/v1/gazette_changes?applied_to_tools=eq.false&order=detected_at.desc&limit=50', {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
@@ -207,4 +208,39 @@ function getSupabaseUrl() {
   return /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(candidate)
     ? candidate
     : DEFAULT_SUPABASE_URL;
+}
+
+async function reconcileRejectedGazetteChanges(supabaseUrl, supabaseKey) {
+  var reviewRes = await fetch(
+    supabaseUrl + '/rest/v1/review_queue?category=eq.gazette&reason=eq.gazette_detected&status=eq.rejected&select=country_code,metric,reviewed_at',
+    { headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey } }
+  );
+  if (!reviewRes.ok) return;
+
+  var rows = await reviewRes.json();
+  if (!Array.isArray(rows) || !rows.length) return;
+
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    if (!row || !row.country_code || !row.metric) continue;
+
+    await fetch(
+      supabaseUrl + '/rest/v1/gazette_changes?country_code=eq.' + encodeURIComponent(row.country_code) +
+        '&change_type=eq.' + encodeURIComponent(row.metric) +
+        '&applied_to_tools=eq.false',
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': 'Bearer ' + supabaseKey,
+        },
+        body: JSON.stringify({
+          verified: false,
+          verified_at: row.reviewed_at || new Date().toISOString(),
+          applied_to_tools: true,
+        }),
+      }
+    );
+  }
 }

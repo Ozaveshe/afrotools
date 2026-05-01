@@ -25,7 +25,9 @@ exports.handler = async function(event) {
   var parts = ['is_published=eq.true'];
 
   if (qs.live === 'true') {
+    var liveCutoff = new Date(Date.now() - (24 * 60 * 60 * 1000)).toISOString();
     parts.push('is_live=eq.true');
+    parts.push('stream_date=gte.' + liveCutoff);
     parts.push('order=stream_date.desc');
   } else if (qs.live === 'false') {
     parts.push('is_live=eq.false');
