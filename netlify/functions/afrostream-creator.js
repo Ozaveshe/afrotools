@@ -33,6 +33,31 @@ async function safeSb(path, fallback) {
   }
 }
 
+async function sbCount(path) {
+  var res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: 'Bearer ' + SUPABASE_KEY,
+      Prefer: 'count=exact',
+      Range: '0-0'
+    }
+  });
+  if (!res.ok) {
+    throw new Error('Supabase count failed: ' + res.status);
+  }
+  var contentRange = res.headers.get('content-range') || '';
+  var match = /\/(\d+)$/.exec(contentRange);
+  return match ? Number(match[1]) : 0;
+}
+
+async function safeSbCount(path, fallback) {
+  try {
+    return await sbCount(path);
+  } catch (e) {
+    return fallback;
+  }
+}
+
 exports.handler = async function(event) {
   var h = cors(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: h, body: '' };
@@ -56,13 +81,19 @@ exports.handler = async function(event) {
     var supportersPath = 'as_creator_supporters?creator_id=eq.' + id + '&is_published=eq.true&order=amount.desc,event_date.desc&limit=10';
     var similarPath = 'as_creators?country=eq.' + encodeURIComponent(creator.country) + '&slug=neq.' + encodeURIComponent(slug) + '&is_published=eq.true&order=total_followers.desc&limit=5';
     var mentionPath = 'as_news_creator_mentions?creator_id=eq.' + id + '&order=detected_at.desc&limit=10';
+    var supportersCoveragePath = 'as_creator_supporters?select=id&is_published=eq.true';
+    var mentionCoveragePath = 'as_news_creator_mentions?select=id';
+    var publishedNewsCoveragePath = 'as_news?select=id&is_published=eq.true';
 
     var results = await Promise.all([
       safeSb(streamsPath, []),
       safeSb(snapshotsPath, []),
       safeSb(supportersPath, []),
       safeSb(mentionPath, []),
-      safeSb(similarPath, [])
+      safeSb(similarPath, []),
+      safeSbCount(supportersCoveragePath, null),
+      safeSbCount(mentionCoveragePath, null),
+      safeSbCount(publishedNewsCoveragePath, null)
     ]);
 
     var streams = results[0];
@@ -91,7 +122,12 @@ exports.handler = async function(event) {
           snapshots: results[1] || [],
           supporters: results[2] || [],
           news: newsRows || [],
-          similar: results[4] || []
+          similar: results[4] || [],
+          coverage: {
+            supportersPublishedCount: results[5],
+            newsMentionLinkCount: results[6],
+            publishedNewsCount: results[7]
+          }
         }
       })
     };
