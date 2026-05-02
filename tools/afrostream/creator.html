@@ -560,6 +560,7 @@ async function fetchCreator(idOrSlug) {
       c._apiSnapshots = (json.data.snapshots || []).map(normalizeSnapshot);
       c._apiSupporters = (json.data.supporters || []).map(normalizeSupporter);
       c._apiNews = (json.data.news || []).map(normalizeNews);
+      c._apiCoverage = json.data.coverage || {};
       await hydrateCreatorExtras(c);
       return c;
     }
@@ -881,6 +882,7 @@ function renderMissingProfile() {
     .sort(function(a, b) { return a.date - b.date; });
   var gifters = creator._apiSupporters || [];
   var news = creator._apiNews || [];
+  var coverage = creator._apiCoverage || {};
   var relatedFromApi = Array.isArray(creator._apiSimilar) ? creator._apiSimilar.map(normalizeCreator) : [];
   var creatorKey = creator.slug || creator.id;
   var creatorPath = '/tools/afrostream/creator.html?id=' + encodeURIComponent(creatorKey);
@@ -1234,7 +1236,11 @@ function renderMissingProfile() {
   /* ===== RENDER GIFTERS ===== */
   (function renderGifters() {
     if (!gifters.length) {
-      document.getElementById('giftersList').innerHTML = emptyCard('Verified gifter tracking is active, but no public supporter rows are available for this creator yet.');
+      var supporterRowsPublished = Number(coverage.supportersPublishedCount || 0);
+      var supporterMessage = supporterRowsPublished === 0
+        ? 'AfroStream supporter tracking is not wired into live published data yet, so this panel is intentionally empty.'
+        : 'No public supporter rows are available for this creator yet.';
+      document.getElementById('giftersList').innerHTML = emptyCard(supporterMessage);
       return;
     }
     var html = '';
@@ -1276,7 +1282,15 @@ function renderMissingProfile() {
   /* ===== RENDER NEWS ===== */
   (function renderNews() {
     if (!news.length) {
-      document.getElementById('newsList').innerHTML = emptyCard('No verified news mentions are attached to this creator profile yet. RSS mention monitoring is ready for configured sources.');
+      var publishedNewsCount = Number(coverage.publishedNewsCount || 0);
+      var newsMentionLinkCount = Number(coverage.newsMentionLinkCount || 0);
+      var newsMessage = 'No verified news mentions are attached to this creator profile yet.';
+      if (publishedNewsCount > 0 && newsMentionLinkCount === 0) {
+        newsMessage = 'AfroStream news is live, but creator-to-news linking is not wired yet, so this panel is intentionally empty.';
+      } else if (publishedNewsCount > 0 && newsMentionLinkCount < publishedNewsCount) {
+        newsMessage = 'AfroStream news is live, but creator-to-news linking only covers part of the feed right now, so some creator pages will stay empty.';
+      }
+      document.getElementById('newsList').innerHTML = emptyCard(newsMessage);
       return;
     }
     var html = '';
