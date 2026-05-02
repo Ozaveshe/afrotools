@@ -21,6 +21,15 @@ function isAuthorized(event) {
   return auth === 'Bearer ' + ADMIN_SECRET;
 }
 
+function isTruthy(value) {
+  return /^(1|true|yes)$/i.test(String(value || '').trim());
+}
+
+function isDryRun(event) {
+  var qs = event.queryStringParameters || {};
+  return isTruthy(qs.dry_run) || isTruthy(qs.dryRun) || isTruthy(qs.review_only);
+}
+
 async function sb(method, path, body, upsert) {
   var opts = {
     method: method,
@@ -126,12 +135,62 @@ function parseFeed(xml) {
   return items;
 }
 
+function normalizeForMatch(value) {
+  return stripHtml(value)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function creatorAliases(name) {
+  var raw = String(name || '').trim();
+  var aliases = [raw];
+  var withoutParenthetical = raw.replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+  if (withoutParenthetical && withoutParenthetical !== raw) aliases.push(withoutParenthetical);
+  var parenthetical = raw.match(/\(([^)]+)\)/);
+  if (parenthetical && parenthetical[1]) aliases.push(parenthetical[1]);
+  return aliases.filter(function(alias, idx, all) {
+    return alias && all.indexOf(alias) === idx;
+  });
+}
+
+function aliasMatches(haystack, alias) {
+  var normalizedAlias = normalizeForMatch(alias);
+  if (!normalizedAlias) return false;
+  var tokens = normalizedAlias.split(' ').filter(Boolean);
+  if (tokens.length === 1 && tokens[0].length < 4) return false;
+  return (' ' + haystack + ' ').indexOf(' ' + normalizedAlias + ' ') !== -1;
+}
+
+function isEditoriallyRelevant(item, source) {
+  var haystack = normalizeForMatch([
+    source && source.category,
+    item.title,
+    item.description
+  ].join(' '));
+  var keywords = [
+    'album', 'award', 'awards', 'business', 'chart', 'collaboration',
+    'concert', 'creator', 'creators', 'creator economy', 'festival',
+    'film', 'funding', 'game', 'gaming', 'launch', 'line up', 'lineup',
+    'livestream', 'monetisation', 'monetization', 'music', 'partnership',
+    'platform', 'podcast', 'payout', 'record', 'single', 'spotify',
+    'streaming', 'studio', 'tiktok', 'tour', 'youtube'
+  ];
+  return keywords.some(function(keyword) {
+    return (' ' + haystack + ' ').indexOf(' ' + keyword + ' ') !== -1;
+  });
+}
+
 function findCreatorMatches(item, creators) {
-  var haystack = (item.title + ' ' + item.description).toLowerCase();
+  var haystack = normalizeForMatch(item.title + ' ' + item.description);
   return creators.filter(function(creator) {
-    var name = String(creator.name || '').toLowerCase();
-    if (!name || name.length < 3) return false;
-    return haystack.indexOf(name) !== -1;
+    return creatorAliases(creator.name).some(function(alias) {
+      return aliasMatches(haystack, alias);
+    });
   });
 }
 
@@ -140,7 +199,23 @@ exports.handler = async function(event) {
   if (!isAuthorized(event)) return { statusCode: 401, headers: headers(), body: JSON.stringify({ success: false, error: 'Unauthorized' }) };
   if (!SUPABASE_SERVICE_KEY) return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: 'Supabase service key not configured' }) };
 
-  var summary = { sources: 0, items_seen: 0, mentions: 0, inserted_news: 0, errors: [] };
+  var dryRun = isDryRun(event);
+  var summary = {
+    dry_run: dryRun,
+    sources: 0,
+    creators: 0,
+    items_seen: 0,
+    matched_items: 0,
+    would_insert_news: 0,
+    existing_news: 0,
+    would_create_mentions: 0,
+    skipped_matches: 0,
+    mentions: 0,
+    inserted_news: 0,
+    matches: [],
+    skipped: [],
+    errors: []
+  };
 
   try {
     var dbSources = await sb('GET', 'as_news_sources?is_active=eq.true&select=name,feed_url,category');
@@ -158,6 +233,7 @@ exports.handler = async function(event) {
 
     var creators = await sb('GET', 'as_creators?is_published=eq.true&select=id,name,slug');
     creators = Array.isArray(creators) ? creators : [];
+    summary.creators = creators.length;
 
     for (var s = 0; s < sources.length; s++) {
       var source = sources[s];
@@ -180,8 +256,43 @@ exports.handler = async function(event) {
           var item = items[i];
           var matches = findCreatorMatches(item, creators);
           if (!matches.length) continue;
+          if (!isEditoriallyRelevant(item, source)) {
+            summary.skipped_matches++;
+            if (summary.skipped.length < 25) {
+              summary.skipped.push({
+                source: source.name || 'RSS source',
+                title: item.title,
+                source_url: item.link || source.feed_url,
+                reason: 'Matched a creator name but lacked a creator, platform, music, gaming, business, or milestone signal.'
+              });
+            }
+            continue;
+          }
 
           var externalId = hash(source.feed_url + '|' + item.guid);
+          var existingRows = await sb('GET', 'as_news?external_id=eq.' + encodeURIComponent(externalId) + '&select=id,slug,external_id');
+          var existingNews = Array.isArray(existingRows) && existingRows.length ? existingRows[0] : null;
+          summary.matched_items++;
+
+          if (dryRun) {
+            if (existingNews) summary.existing_news++;
+            else summary.would_insert_news++;
+            summary.would_create_mentions += matches.length;
+            if (summary.matches.length < 25) {
+              summary.matches.push({
+                source: source.name || 'RSS source',
+                title: item.title,
+                source_url: item.link || source.feed_url,
+                external_id: externalId,
+                existing_news_id: existingNews ? existingNews.id : null,
+                matched_creators: matches.map(function(match) {
+                  return { id: match.id, name: match.name, slug: match.slug };
+                })
+              });
+            }
+            continue;
+          }
+
           var newsRows = await sb('POST', 'as_news?on_conflict=external_id', {
             title: item.title,
             slug: slugify(item.title) + '-' + externalId.slice(0, 6),
@@ -198,7 +309,8 @@ exports.handler = async function(event) {
           }, true);
           var news = Array.isArray(newsRows) ? newsRows[0] : null;
           if (!news || !news.id) continue;
-          summary.inserted_news++;
+          if (existingNews) summary.existing_news++;
+          else summary.inserted_news++;
 
           for (var m = 0; m < matches.length; m++) {
             await sb('POST', 'as_news_creator_mentions?on_conflict=news_id,creator_id', {
