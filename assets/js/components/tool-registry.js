@@ -1794,83 +1794,541 @@ function getToolGridLabels(locale) {
   var normalized = String(locale || 'en').toLowerCase();
   if (normalized.indexOf('sw') === 0) {
     return {
-      available: 'Inapatikana Sasa',
-      coming: 'Inakuja Hivi Karibuni',
+      available: 'Zana Zinazopatikana',
+      coming: 'Zinakuja Hivi Karibuni',
       live: 'Hai',
-      fresh: 'Mpya'
+      fresh: 'Mpya',
+      all: 'Zote',
+      madeFor: 'Za {country}',
+      africaWide: 'Afrika nzima',
+      searchLabel: 'Tafuta zana za nchi',
+      searchPlaceholder: 'Tafuta kwa jina, aina au hitaji',
+      showing: 'Inaonyesha',
+      of: 'kati ya',
+      tools: 'zana',
+      loadMore: 'Onyesha zana zaidi',
+      noResults: 'Hakuna zana zinazolingana na utafutaji huo.',
+      localPulse: 'Takwimu za Sasa',
+      usdExchange: 'USD kwa sarafu ya ndani',
+      policyRate: 'Riba kuu',
+      inflation: 'Mfumuko wa bei',
+      startHere: 'Anza hapa',
+      open: 'Fungua',
+      loading: 'Inapakia...',
+      unavailable: 'Haipatikani sasa'
     };
   }
   if (normalized.indexOf('fr') === 0) {
     return {
-      available: 'Disponibles',
-      coming: 'Bient&ocirc;t Disponibles',
+      available: 'Outils Disponibles',
+      coming: 'Bientot Disponibles',
       live: 'En ligne',
-      fresh: 'Nouveau'
+      fresh: 'Nouveau',
+      all: 'Tous',
+      madeFor: 'Pour {country}',
+      africaWide: 'Afrique entiere',
+      searchLabel: 'Rechercher des outils pays',
+      searchPlaceholder: 'Chercher par nom, categorie ou besoin',
+      showing: 'Affichage',
+      of: 'sur',
+      tools: 'outils',
+      loadMore: 'Afficher plus d outils',
+      noResults: 'Aucun outil ne correspond a cette recherche.',
+      localPulse: 'Donnees en Direct',
+      usdExchange: 'USD vers devise locale',
+      policyRate: 'Taux directeur',
+      inflation: 'Inflation',
+      startHere: 'Commencer ici',
+      open: 'Ouvrir',
+      loading: 'Chargement...',
+      unavailable: 'Indisponible'
     };
   }
   return {
     available: 'Available Now',
     coming: 'Coming Soon',
     live: 'Live',
-    fresh: 'New'
+    fresh: 'New',
+    all: 'All',
+    madeFor: 'Made for {country}',
+    africaWide: 'Africa-wide',
+    searchLabel: 'Search country tools',
+    searchPlaceholder: 'Search by name, category, or need',
+    showing: 'Showing',
+    of: 'of',
+    tools: 'tools',
+    loadMore: 'Load more tools',
+    noResults: 'No tools match that search.',
+    localPulse: 'Local Live Data',
+    usdExchange: 'USD to local currency',
+    policyRate: 'Policy rate',
+    inflation: 'Inflation',
+    startHere: 'Start here',
+    open: 'Open',
+    loading: 'Loading...',
+    unavailable: 'Unavailable'
   };
+}
+
+var COUNTRY_HUB_DATA = {
+  DZ: { name: 'Algeria', currency: 'DZD' },
+  AO: { name: 'Angola', currency: 'AOA' },
+  BJ: { name: 'Benin', currency: 'XOF' },
+  BW: { name: 'Botswana', currency: 'BWP' },
+  BF: { name: 'Burkina Faso', currency: 'XOF' },
+  BI: { name: 'Burundi', currency: 'BIF' },
+  CV: { name: 'Cape Verde', currency: 'CVE' },
+  CM: { name: 'Cameroon', currency: 'XAF' },
+  CF: { name: 'Central African Republic', currency: 'XAF' },
+  TD: { name: 'Chad', currency: 'XAF' },
+  KM: { name: 'Comoros', currency: 'KMF' },
+  CG: { name: 'Republic of Congo', currency: 'XAF' },
+  CD: { name: 'DR Congo', currency: 'CDF' },
+  CI: { name: "Cote d'Ivoire", currency: 'XOF' },
+  DJ: { name: 'Djibouti', currency: 'DJF' },
+  EG: { name: 'Egypt', currency: 'EGP' },
+  GQ: { name: 'Equatorial Guinea', currency: 'XAF' },
+  ER: { name: 'Eritrea', currency: 'ERN' },
+  SZ: { name: 'Eswatini', currency: 'SZL' },
+  ET: { name: 'Ethiopia', currency: 'ETB' },
+  GA: { name: 'Gabon', currency: 'XAF' },
+  GM: { name: 'Gambia', currency: 'GMD' },
+  GH: { name: 'Ghana', currency: 'GHS' },
+  GN: { name: 'Guinea', currency: 'GNF' },
+  GW: { name: 'Guinea-Bissau', currency: 'XOF' },
+  KE: { name: 'Kenya', currency: 'KES' },
+  LS: { name: 'Lesotho', currency: 'LSL' },
+  LR: { name: 'Liberia', currency: 'LRD' },
+  LY: { name: 'Libya', currency: 'LYD' },
+  MG: { name: 'Madagascar', currency: 'MGA' },
+  MW: { name: 'Malawi', currency: 'MWK' },
+  ML: { name: 'Mali', currency: 'XOF' },
+  MR: { name: 'Mauritania', currency: 'MRU' },
+  MU: { name: 'Mauritius', currency: 'MUR' },
+  MA: { name: 'Morocco', currency: 'MAD' },
+  MZ: { name: 'Mozambique', currency: 'MZN' },
+  NA: { name: 'Namibia', currency: 'NAD' },
+  NE: { name: 'Niger', currency: 'XOF' },
+  NG: { name: 'Nigeria', currency: 'NGN' },
+  RW: { name: 'Rwanda', currency: 'RWF' },
+  ST: { name: 'Sao Tome and Principe', currency: 'STN' },
+  SN: { name: 'Senegal', currency: 'XOF' },
+  SC: { name: 'Seychelles', currency: 'SCR' },
+  SL: { name: 'Sierra Leone', currency: 'SLE' },
+  SO: { name: 'Somalia', currency: 'SOS' },
+  ZA: { name: 'South Africa', currency: 'ZAR' },
+  SS: { name: 'South Sudan', currency: 'SSP' },
+  SD: { name: 'Sudan', currency: 'SDG' },
+  TZ: { name: 'Tanzania', currency: 'TZS' },
+  TG: { name: 'Togo', currency: 'XOF' },
+  TN: { name: 'Tunisia', currency: 'TND' },
+  UG: { name: 'Uganda', currency: 'UGX' },
+  ZM: { name: 'Zambia', currency: 'ZMW' },
+  ZW: { name: 'Zimbabwe', currency: 'USD' }
+};
+
+var TOOL_CARD_IMAGE_EXTENSIONS={"afcfta-tracker":"webp","africa-conflict":"webp","african-meal-plan":"webp","african-name-meaning":"webp","afroatlas":"webp","afrodraft":"webp","afrokitchen":"webp","afroplan-floor-planner":"webp","afropoints":"webp","afroprices":"webp","afrorates":"webp","afrostream":"webp","afrotools-pro":"svg","age-calculator":"svg","agric-profit":"webp","ajo-chama":"webp","ajo-interest":"svg","algebra-solver":"webp","amharic-translator":"svg","amount-words-gh":"svg","amount-words-ke":"svg","ao-paye":"webp","ao-vat":"webp","api-tester":"svg","appliance-power":"webp","arabic-calc":"svg","background-remover":"svg","backup-power-costs":"webp","bank-charges":"svg","base64":"svg","battery-sizing":"webp","bf-paye":"webp","bf-paye-fr":"webp","bf-tva-fr":"webp","bf-vat":"webp","bi-paye":"webp","bi-vat":"webp","binary-converter":"webp","bj-paye":"webp","bj-vat":"webp","blood-group":"webp","blood-pressure":"svg","bmi-calculator":"webp","boda-income":"webp","bond-yield":"webp","boq-generator":"webp","borehole-cost":"webp","break-even":"webp","brideprice-advisor":"webp","budget-planner":"webp","building-materials":"webp","burial-cost":"webp","burn-rate":"webp","business-continuity":"webp","business-insurance":"webp","business-license":"webp","business-name-gen":"webp","business-plan":"webp","business-plan-builder":"svg","business-planner":"webp","business-registration":"webp","bw-paye":"webp","bw-vat":"webp","cac-checker":"svg","cac-cost":"svg","calorie-counter":"svg","car-import-cost":"webp","car-insurance":"webp","car-loan":"webp","car-loan-vs-cash":"webp","car-price-intelligence":"webp","cash-flow-forecast":"webp","cassava-processing-angola":"webp","cassava-processing-benin":"webp","cassava-processing-calculator":"webp","cassava-processing-cameroon":"webp","cassava-processing-cote-d-ivoire":"webp","cassava-processing-dr-congo":"webp","cassava-processing-ghana":"webp","cassava-processing-guinea":"webp","cassava-processing-malawi":"webp","cassava-processing-mozambique":"webp","cassava-processing-nigeria":"webp","cassava-processing-sierra-leone":"webp","cassava-processing-tanzania":"webp","cassava-processing-togo":"webp","cassava-processing-uganda":"webp","cd-paye":"webp","cd-vat":"webp","certificate-maker":"svg","cf-paye":"webp","cf-vat":"webp","cg-paye":"webp","cg-paye-fr":"webp","cg-vat":"webp","child-growth":"webp","child-support":"webp","childbirth-cost":"webp","churn-rate":"webp","ci-paye":"webp","ci-paye-fr":"webp","ci-vat":"webp","cipc-cost":"svg","citation-generator":"webp","clinic-costs":"webp","cm-paye":"webp","cm-paye-fr":"webp","cm-vat":"webp","cocoa-tracker":"webp","coffee-calculator":"webp","color-contrast":"svg","color-picker":"svg","colour-palette":"svg","commodity-prices":"webp","company-type-selector":"webp","compound-interest":"webp","concrete-calc":"svg","construction-budget":"webp","contract-gen":"svg","cooperative-calculator":"webp","cost-of-living":"svg","countdown-timer":"svg","cover-letter":"webp","creator-analytics":"webp","creator-bios":"webp","creator-brand":"webp","creator-calendar":"webp","creator-captions":"webp","creator-carousel":"webp","creator-course":"webp","creator-hashtags":"webp","creator-hooks":"webp","creator-invoice":"webp","creator-kit":"webp","creator-money":"webp","creator-pricing":"webp","creator-repurpose":"webp","creator-research":"webp","creator-resize":"webp","creator-scripts":"webp","creator-thumb":"webp","creator-titles":"webp","cron-builder":"svg","crop-rotation-planner":"webp","crop-yield-angola":"webp","crop-yield-cameroon":"webp","crop-yield-dr-congo":"webp","crop-yield-egypt":"webp","crop-yield-estimator":"webp","crop-yield-ethiopia":"webp","crop-yield-ghana":"webp","crop-yield-kenya":"webp","crop-yield-morocco":"webp","crop-yield-nigeria":"webp","crop-yield-senegal":"webp","crop-yield-south-africa":"webp","crop-yield-tanzania":"webp","crop-yield-uganda":"webp","crop-yield-zambia":"webp","crypto-arbitrage":"webp","crypto-contract":"webp","crypto-dca":"webp","crypto-p2p":"webp","crypto-portfolio":"webp","crypto-prices":"webp","crypto-profit":"webp","crypto-remittance":"webp","crypto-scam":"webp","crypto-stablecoins":"webp","crypto-tax":"svg","crypto-tax-africa":"svg","csection-vs-natural":"webp","css-gradient":"svg","currency-converter":"webp","cv-builder":"webp","cv-paye":"webp","cv-vat":"webp","data-compliance":"svg","data-converter":"svg","dca-calc":"webp","debt-snowball":"webp","degree-checker":"webp","delivery-cost":"webp","dental-cost":"webp","diabetes-risk":"svg","diaspora-guide":"svg","diaspora-property":"webp","diff-checker":"svg","digital-lending":"webp","discount-calc":"svg","dividend-yield":"webp","dj-paye":"webp","dj-vat":"webp","drug-dosage":"svg","drug-price-compare":"webp","due-date":"svg","dz-paye":"webp","dz-vat":"webp","education-hub":"webp","eg-paye":"webp","eg-vat":"webp","electrical-load":"svg","electricity-bill-verify":"webp","electricity-estimator":"svg","electricity-tariff":"webp","emergency-fund":"webp","employment-contract":"svg","energy-audit":"webp","er-paye":"webp","er-vat":"webp","et-paye":"webp","et-vat":"webp","exam-countdown":"webp","farm-budget":"webp","farm-payroll-calculator":"webp","farm-profit-calculator":"webp","farm-size-converter":"webp","favicon-generator":"svg","fertilizer-angola":"webp","fertilizer-calc":"svg","fertilizer-calculator":"webp","fertilizer-cote-d-ivoire":"webp","fertilizer-egypt":"webp","fertilizer-ethiopia":"webp","fertilizer-ghana":"webp","fertilizer-kenya":"webp","fertilizer-mali":"webp","fertilizer-mozambique":"webp","fertilizer-niger":"webp","fertilizer-nigeria":"webp","fertilizer-rwanda":"webp","fertilizer-senegal":"webp","fertilizer-south-africa":"webp","fertilizer-tanzania":"webp","fertilizer-uganda":"webp","fertilizer-zambia":"webp","fintech-fee-watch":"webp","fire-calc":"webp","fish-farming-roi":"webp","fixed-deposit":"webp","flashcard-maker":"webp","floor-plan":"svg","flyer-maker":"svg","forex-profit":"svg","fraction-calc":"webp","french-african":"svg","fuel-cost":"webp","fuel-tracker":"svg","ga-paye":"webp","ga-vat":"webp","gas-lpg-cost":"webp","generator-fuel":"webp","generator-sizing":"svg","genotype-checker":"webp","gh-paye":"webp","gh-paye-2":"svg","gh-ssnit":"webp","gh-vat":"webp","gm-paye":"webp","gm-vat":"webp","gn-paye":"webp","gn-vat":"webp","gov-scholarship":"webp","gpa-calculator":"webp","gq-paye":"webp","gq-vat":"webp","grade-tracker":"svg","greenhouse-cost-estimator":"webp","gw-paye":"webp","gw-vat":"webp","hash-generator":"svg","hausa-translator":"svg","hawala-tracker":"svg","health-contribution":"webp","health-insurance-compare":"webp","hospital-cost":"svg","htaccess-gen":"svg","html-entities":"svg","html-to-pdf":"webp","ielts-calculator":"webp","igbo-translator":"svg","image-compress":"webp","image-crop":"svg","image-filters":"svg","image-format-convert":"svg","image-resize":"svg","image-to-text":"svg","import-duty":"webp","inflation-calc":"svg","informal-fx-watch":"webp","interest-rate-ref":"svg","inventory":"svg","investment-return":"svg","invoice-generator":"webp","ip-rights-africa":"svg","irrigation-algeria":"webp","irrigation-angola":"webp","irrigation-benin":"webp","irrigation-calculator":"webp","irrigation-cameroon":"webp","irrigation-dr-congo":"webp","irrigation-egypt":"webp","irrigation-ethiopia":"webp","irrigation-ghana":"webp","irrigation-guinea":"webp","irrigation-kenya":"webp","irrigation-mali":"webp","irrigation-morocco":"webp","irrigation-mozambique":"webp","irrigation-niger":"webp","irrigation-nigeria":"webp","irrigation-rwanda":"webp","irrigation-senegal":"webp","irrigation-somalia":"webp","irrigation-south-africa":"webp","irrigation-sudan":"webp","irrigation-tanzania":"webp","irrigation-uganda":"webp","irrigation-zambia":"webp","irrigation-zimbabwe":"webp","jamb-aggregate":"webp","japa-calculator":"webp","job-offer-evaluator":"webp","json-formatter":"webp","jwt-decoder":"svg","ke-cgt":"webp","ke-helb":"webp","ke-nssf":"webp","ke-paye":"webp","ke-stamp-duty":"svg","ke-vat":"webp","ke-wht":"webp","km-paye":"webp","km-vat":"webp","labour-law-advisor":"webp","land-registry-fees":"webp","land-size":"svg","land-title-check":"webp","landed-cost":"webp","lease-risk-check":"webp","leave-calculator":"webp","leave-days":"svg","life-insurance-calc":"webp","loan-compare":"webp","loan-shark-compare":"webp","lobola-calculator":"svg","logo-maker":"svg","lr-paye":"svg","lr-vat":"webp","ls-paye":"webp","ls-vat":"webp","ly-paye":"webp","ly-vat":"webp","ma-paye":"webp","ma-paye-fr":"webp","ma-vat":"webp","malaria-risk":"svg","mama-put":"webp","markdown-editor":"svg","market-days":"svg","market-stall-profit":"svg","marketplace-fees":"webp","markup-calc":"svg","marriage-cert":"webp","matatu-fare":"webp","maternal-mortality":"webp","matric-points":"webp","medical-report":"svg","meeting-cost":"svg","meeting-minutes":"webp","meme-generator":"svg","meta-tag-gen":"svg","meta-tag-generator":"svg","mg-paye":"webp","mg-vat":"webp","microfinance-calc":"svg","microfinance-loan":"webp","mini-importation":"webp","minimum-wage":"webp","ml-paye":"webp","ml-vat":"webp","mobile-money-fees":"webp","mobile-vs-bank":"webp","money-market":"webp","mortgage-calculator":"webp","motor-third-party":"webp","mr-paye":"webp","mr-vat":"webp","mu-paye":"webp","mu-vat":"webp","mw-paye":"webp","mw-vat":"webp","mz-paye":"webp","mz-vat":"webp","na-paye":"webp","na-vat":"webp","naira-to-words":"svg","national-id-guide":"webp","national-pension":"webp","nda-generator":"webp","ne-paye":"webp","ne-vat":"webp","net-worth":"webp","ng-cgt":"webp","ng-cit":"webp","ng-land-use":"svg","ng-nhf":"svg","ng-paye":"webp","ng-paye-v2":"svg","ng-pension":"webp","ng-vat":"webp","ng-wht":"webp","nollywood-pitch":"svg","nysc-allowance":"webp","offplan-vs-ready":"webp","okada-income":"webp","outage-cost":"webp","overtime-calc":"webp","ovulation-calc":"svg","paint-calc":"svg","passport-checklist":"webp","passport-photo":"svg","password-gen":"svg","payment-gateway":"webp","payslip-generator":"webp","pdf-chat":"webp","pdf-compare":"webp","pdf-compress":"webp","pdf-convert":"webp","pdf-editor":"webp","pdf-form-filler":"webp","pdf-header-footer":"webp","pdf-image-convert":"svg","pdf-merge-split":"webp","pdf-ocr":"webp","pdf-page-numbers":"webp","pdf-password":"webp","pdf-redact":"webp","pdf-reorder":"webp","pdf-sign":"webp","pdf-to-audio":"webp","pdf-translate":"webp","pdf-watermark":"webp","pdf-workflow":"webp","pdf-workspace":"webp","pension-proj":"webp","percentage-calc":"webp","periodic-table":"webp","pharmacy-prices":"webp","pidgin-translator":"svg","planting-calendar":"svg","plot-converter":"webp","plumbing-material":"webp","pomodoro":"svg","popia-checker":"webp","pos-agent":"webp","poultry-roi-calculator":"webp","prayer-times":"webp","prepaid-meter":"webp","privacy-policy-gen":"webp","profit-margin":"svg","proforma-invoice":"webp","property-cgt":"webp","property-mgmt-fees":"webp","property-tax":"svg","property-transfer-cost":"webp","property-valuation":"webp","public-holidays":"svg","qr-generator":"webp","random-picker":"svg","real-return":"webp","receipt-generator":"svg","regex-tester":"svg","remittance-compare":"webp","remittance-v2":"svg","rent-affordability":"webp","rent-intelligence":"webp","rental-agreement":"webp","rental-yield":"svg","retirement-planner":"svg","ride-fare":"webp","road-construction-cost":"webp","roadworthiness":"webp","robots-txt":"svg","roman-numerals":"svg","roofing-calc":"svg","route-fares":"webp","rw-paye":"webp","rw-vat":"webp","sacco-calc":"webp","sadc-roo":"webp","salary-compare":"webp","salary-intelligence":"webp","savings-goal":"webp","sc-paye":"webp","sc-vat":"webp","scaffolding-calc":"webp","scholarship-finder":"webp","school-fees":"webp","scientific-calc":"webp","sd-paye":"webp","sd-vat":"webp","seed-rate-ao":"webp","seed-rate-calculator":"webp","seed-rate-ci":"webp","seed-rate-cm":"webp","seed-rate-eg":"webp","seed-rate-et":"webp","seed-rate-gh":"webp","seed-rate-ke":"webp","seed-rate-ma":"webp","seed-rate-mz":"webp","seed-rate-ng":"webp","seed-rate-tz":"webp","seed-rate-ug":"webp","seed-rate-za":"webp","seed-rate-zm":"webp","seed-rate-zw":"webp","septic-tank":"webp","service-charge":"webp","shipping-calc":"svg","short-let-calc":"webp","sickle-cell":"svg","side-hustle-tax":"svg","site-clearing":"webp","sitemap-gen":"svg","sl-paye":"webp","sl-vat":"webp","sn-paye":"webp","sn-paye-fr":"webp","sn-vat":"webp","so-paye":"webp","so-vat":"webp","social-card":"svg","social-security":"webp","social-welfare":"webp","soil-ph-calculator":"webp","solar-calculator":"svg","solar-roi":"webp","solar-sizing":"webp","solar-vs-generator":"webp","sql-formatter":"svg","sql-playground":"svg","ss-paye":"webp","ss-vat":"webp","st-paye":"webp","st-vat":"webp","staff-cost":"webp","stamp-duty":"svg","staple-basket":"webp","startup-runway":"webp","startup-valuation":"svg","statistics-calc":"webp","stock-portfolio":"webp","storage-loss":"webp","structural-calc":"svg","student-budget":"webp","student-loan":"svg","student-loan-repay":"webp","study-abroad-cost":"webp","study-planner":"svg","susu-tracker":"svg","swahili-translator":"svg","swimming-pool-cost":"webp","sz-paye":"webp","sz-vat":"webp","tam-sam-som":"webp","tbill-calc":"webp","td-paye":"webp","td-vat":"webp","teacher-salary":"webp","telecom-bulk-sms":"webp","telecom-data-plan":"webp","telecom-data-usage":"webp","telecom-fiber-lte-5g":"webp","telecom-internet":"webp","telecom-roaming":"webp","telecom-starlink":"webp","telecom-ussd":"webp","telecom-whatsapp-vs-sms":"webp","tenancy-agreement":"svg","tenancy-deposit":"svg","tg-paye":"webp","tg-vat":"webp","thumbnail-maker":"svg","tiles-calc":"svg","time-zone":"svg","tip-calculator":"svg","tithe-offering":"svg","tn-paye":"webp","tn-vat":"webp","tractor-calculator":"webp","transfer-pricing":"webp","transliterate":"svg","travel-insurance":"webp","tz-paye":"webp","tz-vat":"webp","ug-paye":"webp","ug-vat":"webp","unit-converter":"svg","unit-economics":"webp","university-admission":"webp","university-ranking":"webp","url-encoder":"svg","ussd-simulator":"svg","uuid-generator":"svg","vaccination-schedule":"webp","vaccine-schedule":"svg","vat-calc-pan-african":"webp","vat-calculator":"webp","vehicle-import-duty":"webp","visa-checker":"webp","visa-cost":"svg","waec-calculator":"webp","waist-hip-ratio":"svg","water-bill":"webp","water-intake":"svg","water-quality":"svg","water-tank":"svg","watermark-bulk":"svg","whatsapp-link":"svg","wholesale-retail-spread":"webp","will-generator":"webp","word-counter":"webp","working-days":"svg","yoruba-translator":"svg","za-cgt":"webp","za-dividend-tax":"webp","za-gepf":"webp","za-paye":"webp","za-transfer-duty":"svg","za-uif":"webp","za-vat":"webp","zakat-calculator":"webp","zm-paye":"webp","zm-vat":"webp","zulu-translator":"svg","zw-paye":"webp","zw-vat":"webp"};
+
+function countryHubEsc(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+  });
+}
+
+function countryHubLabel(labels, key, countryName) {
+  return countryHubEsc((labels[key] || '').replace('{country}', countryName || ''));
+}
+
+function getCountryHubMeta(countryCode) {
+  var code = String(countryCode || '').toUpperCase();
+  var meta = COUNTRY_HUB_DATA[code] || { name: code, currency: 'USD' };
+  if (typeof AFRICAN_COUNTRIES !== 'undefined' && Array.isArray(AFRICAN_COUNTRIES)) {
+    for (var i = 0; i < AFRICAN_COUNTRIES.length; i++) {
+      if (AFRICAN_COUNTRIES[i].code === code) {
+        return {
+          name: AFRICAN_COUNTRIES[i].name || meta.name,
+          currency: AFRICAN_COUNTRIES[i].currency || meta.currency
+        };
+      }
+    }
+  }
+  return meta;
+}
+
+function sortCountryHubTools(tools, countryCode) {
+  var code = String(countryCode || '').toUpperCase();
+  var statusOrder = { 'new': 0, live: 1, queued: 2, planned: 3 };
+  return tools.slice().sort(function(a, b) {
+    var aLocal = a.countries && a.countries.indexOf(code) !== -1 ? 0 : 1;
+    var bLocal = b.countries && b.countries.indexOf(code) !== -1 ? 0 : 1;
+    if (aLocal !== bLocal) return aLocal - bLocal;
+    var aStatus = statusOrder[a.status] == null ? 9 : statusOrder[a.status];
+    var bStatus = statusOrder[b.status] == null ? 9 : statusOrder[b.status];
+    if (aStatus !== bStatus) return aStatus - bStatus;
+    var aPriority = Number(a.priority || 0);
+    var bPriority = Number(b.priority || 0);
+    if (aPriority !== bPriority) return bPriority - aPriority;
+    return String(a.name || '').localeCompare(String(b.name || ''));
+  });
+}
+
+function countryHubCategoryCounts(tools) {
+  var counts = {};
+  tools.forEach(function(tool) {
+    var key = tool.category || 'other';
+    counts[key] = (counts[key] || 0) + 1;
+  });
+  return Object.keys(counts).sort(function(a, b) {
+    if (counts[b] !== counts[a]) return counts[b] - counts[a];
+    var an = (AFRO_CATEGORIES[a] && AFRO_CATEGORIES[a].name) || a;
+    var bn = (AFRO_CATEGORIES[b] && AFRO_CATEGORIES[b].name) || b;
+    return an.localeCompare(bn);
+  }).map(function(key) {
+    return { key: key, count: counts[key], category: AFRO_CATEGORIES[key] || { name: key, color: '#4b5563', bg: '#f3f4f6' } };
+  });
+}
+
+function ensureCountryHubStyles() {
+  if (typeof document === 'undefined' || document.getElementById('afro-country-hub-tools-css')) return;
+  var style = document.createElement('style');
+  style.id = 'afro-country-hub-tools-css';
+  style.textContent = [
+    '.country-hub-tools{margin-top:4px}',
+    '.country-hub-pulse{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 22px}',
+    '.country-hub-pulse-card{min-height:118px;background:linear-gradient(180deg,#fff,#f8fbff);border:1px solid #dbe7f3;border-radius:10px;padding:14px;text-decoration:none;color:#111827;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .18s,box-shadow .18s,transform .18s}',
+    '.country-hub-pulse-card:hover{border-color:var(--color-primary,#0062CC);box-shadow:0 12px 28px rgba(15,23,42,.08);transform:translateY(-2px)}',
+    '.country-hub-pulse-card:focus-visible{outline:2px solid var(--color-primary,#0062CC);outline-offset:3px}',
+    '.country-hub-pulse-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748b}',
+    '.country-hub-pulse-value{font-size:clamp(1.1rem,2vw,1.38rem);font-weight:800;color:#0f172a;line-height:1.15;margin-top:10px}',
+    '.country-hub-pulse-note{font-size:.76rem;line-height:1.45;color:#5b6778;margin-top:10px}',
+    '.country-tool-controls{background:#fff;border:1px solid #dbe7f3;border-radius:10px;padding:14px;margin:0 0 18px}',
+    '.country-tool-search-row{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:center;margin-bottom:12px}',
+    '.country-tool-search{position:relative}',
+    '.country-tool-search .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}',
+    '.country-tool-search input{width:100%;height:46px;border:1px solid #cbd5e1;border-radius:8px;padding:0 14px 0 42px;font:600 .9rem/1 "DM Sans",sans-serif;color:#0f172a;background:#f8fafc}',
+    '.country-tool-search input:focus{outline:2px solid rgba(0,98,204,.18);border-color:var(--color-primary,#0062CC);background:#fff}',
+    '.country-tool-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:#64748b;pointer-events:none}',
+    '.country-tool-result-count{font-size:.78rem;font-weight:700;color:#475569;white-space:nowrap}',
+    '.country-tool-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}',
+    '.country-tool-filter{border:1px solid #dbe7f3;background:#fff;color:#334155;border-radius:999px;padding:7px 11px;font:700 .76rem/1 "DM Sans",sans-serif;cursor:pointer;display:inline-flex;gap:7px;align-items:center}',
+    '.country-tool-filter span{color:#64748b;font-weight:800}',
+    '.country-tool-filter:hover{border-color:var(--color-primary,#0062CC);background:#f8fbff}',
+    '.country-tool-filter.active{background:#0f172a;border-color:#0f172a;color:#fff}',
+    '.country-tool-filter.active span{color:#bfdbfe}',
+    '.country-tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:16px}',
+    '.country-tool-card{background:#fff;border:1px solid #dbe7f3;border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;display:flex;min-height:316px;flex-direction:column;transition:border-color .18s,box-shadow .18s,transform .18s}',
+    '.country-tool-card:hover{border-color:var(--color-primary,#0062CC);box-shadow:0 14px 32px rgba(15,23,42,.10);transform:translateY(-2px)}',
+    '.country-tool-card:focus-visible{outline:2px solid var(--color-primary,#0062CC);outline-offset:3px}',
+    '.country-tool-card-media{height:118px;position:relative;background:#eef4ff;overflow:hidden}',
+    '.country-tool-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1;background:#eef4ff}',
+    '.country-tool-card-img.is-error{display:none}',
+    '.country-tool-card-media.has-image .country-tool-card-icon{opacity:0}',
+    '.country-tool-card-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:#0f172a;transition:opacity .18s}',
+    '.country-tool-badge{position:absolute;top:10px;right:10px;z-index:2;border-radius:999px;padding:4px 9px;font-size:.64rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;background:#eef4ff;color:var(--color-primary,#0062CC);border:1px solid rgba(0,98,204,.18)}',
+    '.country-tool-badge.new{background:#fffbeb;color:#92400e;border-color:#fde68a}',
+    '.country-tool-card-body{padding:15px 15px 14px;display:flex;flex-direction:column;gap:9px;flex:1}',
+    '.country-tool-card-category{align-self:flex-start;border-radius:999px;padding:4px 9px;font-size:.67rem;font-weight:800;color:var(--cat-color,#334155);background:var(--cat-bg,#f1f5f9)}',
+    '.country-tool-card h3{font-size:1rem;line-height:1.25;margin:0;color:#111827;font-weight:800;letter-spacing:0}',
+    '.country-tool-card p{font-size:.82rem;line-height:1.55;color:#475569;margin:0;flex:1}',
+    '.country-tool-card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #eef2f7;padding-top:10px;color:#64748b;font-size:.74rem;font-weight:700}',
+    '.country-tool-card-arrow{color:var(--color-primary,#0062CC);font-size:1.1rem;line-height:1}',
+    '.country-tool-load{display:flex;justify-content:center;margin:22px 0 0}',
+    '.country-tool-load button{height:42px;border:1px solid #0f172a;background:#0f172a;color:#fff;border-radius:8px;padding:0 16px;font:800 .84rem/1 "DM Sans",sans-serif;cursor:pointer}',
+    '.country-tool-empty{border:1px dashed #cbd5e1;border-radius:10px;padding:24px;text-align:center;color:#64748b;font-size:.9rem;background:#f8fafc}',
+    '.country-coming{margin-top:28px;border-top:1px solid #e5edf6;padding-top:22px}',
+    '.country-coming h3{margin:0 0 12px;font-size:1rem;color:#111827;font-weight:800}',
+    '.country-coming-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}',
+    '.country-coming-card{border:1px solid #e5e7eb;border-radius:10px;padding:13px;background:#f8fafc;color:#64748b}',
+    '.country-coming-card strong{display:block;color:#334155;font-size:.86rem;margin-bottom:5px}',
+    '@media(max-width:860px){.country-hub-pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.country-tool-search-row{grid-template-columns:1fr}.country-tool-result-count{white-space:normal}}',
+    '@media(max-width:560px){.country-hub-pulse{grid-template-columns:1fr}.country-tool-grid{grid-template-columns:1fr}.country-tool-controls{padding:12px}.country-tool-card{min-height:0}.country-tool-card-media{height:104px}}'
+  ].join('\n');
+  document.head.appendChild(style);
+}
+
+function formatCountryHubNumber(value, decimals) {
+  var num = Number(value);
+  if (!isFinite(num)) return '';
+  return num.toLocaleString(undefined, { maximumFractionDigits: decimals, minimumFractionDigits: 0 });
+}
+
+function getToolCardImagePath(tool) {
+  var id = tool && tool.id;
+  var ext = id && TOOL_CARD_IMAGE_EXTENSIONS[id];
+  if (!id || !ext) return '';
+  return '/assets/img/tools/' + encodeURIComponent(id) + '.' + ext;
+}
+
+function fetchCountryHubJson(path) {
+  var cacheKey = 'aft_country_hub_live:' + path;
+  try {
+    var cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+    if (cached && cached.ts && Date.now() - cached.ts < 10 * 60 * 1000) {
+      return Promise.resolve(cached.data);
+    }
+  } catch (err) {}
+  var host = typeof location !== 'undefined' ? location.hostname : '';
+  var hasLocalApi = /^(www\.)?afrotools\.com$/i.test(host) || /--afrotools\.netlify\.app$/i.test(host);
+  var urls = hasLocalApi ? [path, 'https://afrotools.com' + path] : ['https://afrotools.com' + path, path];
+  function attempt(index) {
+    return fetch(urls[index], { headers: { Accept: 'application/json' } }).then(function(res) {
+      if (!res.ok) {
+        var httpErr = new Error('HTTP ' + res.status);
+        httpErr.noFallback = res.status === 404;
+        throw httpErr;
+      }
+      return res.json().then(function(data) {
+        try {
+          sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: data }));
+        } catch (err) {}
+        return data;
+      });
+    }).catch(function(err) {
+      if (!err.noFallback && index + 1 < urls.length) return attempt(index + 1);
+      throw err;
+    });
+  }
+  return attempt(0);
+}
+
+function renderCountryPulseShell(countryCode, meta, labels, tools) {
+  var topTool = tools.filter(function(tool) {
+    return tool.countries && tool.countries.indexOf(countryCode) !== -1;
+  })[0] || tools[0] || { href: '/tools/currency-converter/', name: 'AfroFX' };
+  var currency = countryHubEsc(meta.currency || 'USD');
+  return '' +
+    '<div class="country-hub-pulse" data-country-pulse="' + countryHubEsc(countryCode) + '">' +
+      '<a class="country-hub-pulse-card" href="/tools/currency-converter/?from=USD&amp;to=' + currency + '">' +
+        '<div><div class="country-hub-pulse-label">' + countryHubEsc(labels.usdExchange) + '</div>' +
+        '<div class="country-hub-pulse-value" data-pulse-value="fx">' + countryHubEsc(labels.loading) + '</div></div>' +
+        '<div class="country-hub-pulse-note" data-pulse-note="fx">AfroFX</div>' +
+      '</a>' +
+      '<a class="country-hub-pulse-card" href="/tools/afrorates/?country=' + countryHubEsc(countryCode) + '">' +
+        '<div><div class="country-hub-pulse-label">' + countryHubEsc(labels.policyRate) + '</div>' +
+        '<div class="country-hub-pulse-value" data-pulse-value="policy">' + countryHubEsc(labels.loading) + '</div></div>' +
+        '<div class="country-hub-pulse-note" data-pulse-note="policy">AfroRates</div>' +
+      '</a>' +
+      '<a class="country-hub-pulse-card" href="/tools/afrorates/?country=' + countryHubEsc(countryCode) + '&amp;metric=inflation">' +
+        '<div><div class="country-hub-pulse-label">' + countryHubEsc(labels.inflation) + '</div>' +
+        '<div class="country-hub-pulse-value" data-pulse-value="inflation">' + countryHubEsc(labels.loading) + '</div></div>' +
+        '<div class="country-hub-pulse-note" data-pulse-note="inflation">World Bank CPI</div>' +
+      '</a>' +
+      '<a class="country-hub-pulse-card" href="' + countryHubEsc(topTool.href || '/tools/') + '">' +
+        '<div><div class="country-hub-pulse-label">' + countryHubEsc(labels.startHere) + '</div>' +
+        '<div class="country-hub-pulse-value">' + countryHubEsc(topTool.name || labels.available) + '</div></div>' +
+        '<div class="country-hub-pulse-note">' + countryHubEsc(labels.open) + ' ' + countryHubEsc(meta.name || countryCode) + '</div>' +
+      '</a>' +
+    '</div>';
+}
+
+function refreshCountryPulse(container, countryCode, meta, labels) {
+  var currency = meta.currency || 'USD';
+  var fxValue = container.querySelector('[data-pulse-value="fx"]');
+  var fxNote = container.querySelector('[data-pulse-note="fx"]');
+  var policyValue = container.querySelector('[data-pulse-value="policy"]');
+  var policyNote = container.querySelector('[data-pulse-note="policy"]');
+  var inflationValue = container.querySelector('[data-pulse-value="inflation"]');
+  var inflationNote = container.querySelector('[data-pulse-note="inflation"]');
+
+  if (currency === 'USD') {
+    if (fxValue) fxValue.textContent = '1 USD = 1 USD';
+    if (fxNote) fxNote.textContent = 'AfroFX';
+  } else {
+    fetchCountryHubJson('/api/forex?from=USD&to=' + encodeURIComponent(currency)).then(function(data) {
+      var rate = Number(data && data.rate);
+      var decimals = rate >= 100 ? 0 : rate >= 10 ? 1 : rate >= 1 ? 2 : 4;
+      if (fxValue && isFinite(rate)) fxValue.textContent = '1 USD = ' + formatCountryHubNumber(rate, decimals) + ' ' + currency;
+      if (fxNote && data && data.timestamp) fxNote.textContent = 'Updated ' + String(data.timestamp).slice(0, 10);
+    }).catch(function() {
+      if (fxValue) fxValue.textContent = labels.unavailable;
+      if (fxNote) fxNote.textContent = 'Open AfroFX';
+    });
+  }
+
+  fetchCountryHubJson('/api/rates?country=' + encodeURIComponent(countryCode)).then(function(data) {
+    var country = data && data.country || {};
+    var policy = country.policy_rate;
+    var inflation = country.inflation || {};
+    var headline = inflation.wb_headline != null ? inflation.wb_headline : inflation.headline;
+    if (policyValue) policyValue.textContent = policy != null ? formatCountryHubNumber(policy, 2) + '%' : labels.unavailable;
+    if (policyNote) policyNote.textContent = (country.central_bank || 'Central bank') + (country.policy_rate_source_date ? ' - ' + country.policy_rate_source_date : '');
+    if (inflationValue) inflationValue.textContent = headline != null ? formatCountryHubNumber(headline, 2) + '%' : labels.unavailable;
+    if (inflationNote) inflationNote.textContent = inflation.wb_date ? 'CPI ' + inflation.wb_date : 'Latest CPI';
+  }).catch(function() {
+    if (policyValue) policyValue.textContent = labels.unavailable;
+    if (inflationValue) inflationValue.textContent = labels.unavailable;
+    if (policyNote) policyNote.textContent = 'Open AfroRates';
+    if (inflationNote) inflationNote.textContent = 'Open AfroRates';
+  });
+}
+
+function renderCountryToolCard(tool, countryCode, labels, countryName) {
+  var cat = AFRO_CATEGORIES[tool.category] || { name: tool.category || 'Tool', color: '#334155', bg: '#f1f5f9' };
+  var local = tool.countries && tool.countries.indexOf(countryCode) !== -1;
+  var badge = tool.status === 'new'
+    ? '<span class="country-tool-badge new">' + countryHubEsc(labels.fresh) + '</span>'
+    : '<span class="country-tool-badge">' + countryHubEsc(labels.live) + '</span>';
+  var img = getToolCardImagePath(tool);
+  return '' +
+    '<a class="country-tool-card" href="' + countryHubEsc(tool.href || '#') + '" data-tool-id="' + countryHubEsc(tool.id || '') + '">' +
+      '<div class="country-tool-card-media">' +
+        '<span class="country-tool-card-icon" aria-hidden="true">' + countryHubEsc(tool.icon || '') + '</span>' +
+        (img ? '<img class="country-tool-card-img" src="' + countryHubEsc(img) + '" alt="" loading="lazy" decoding="async">' : '') +
+        badge +
+      '</div>' +
+      '<div class="country-tool-card-body">' +
+        '<span class="country-tool-card-category" style="--cat-color:' + countryHubEsc(cat.color || '#334155') + ';--cat-bg:' + countryHubEsc(cat.bg || '#f1f5f9') + '">' + countryHubEsc(cat.name || tool.category || 'Tool') + '</span>' +
+        '<h3>' + countryHubEsc(tool.name || '') + '</h3>' +
+        '<p>' + countryHubEsc(tool.desc || '') + '</p>' +
+        '<div class="country-tool-card-meta"><span>' + countryHubEsc(local ? labels.madeFor.replace('{country}', countryName || countryCode) : labels.africaWide) + '</span><span class="country-tool-card-arrow" aria-hidden="true">&rsaquo;</span></div>' +
+      '</div>' +
+    '</a>';
+}
+
+function bindCountryToolImages(container) {
+  container.querySelectorAll('.country-tool-card-img').forEach(function(img) {
+    var media = img.closest('.country-tool-card-media');
+    img.addEventListener('load', function() {
+      if (media) media.classList.add('has-image');
+    }, { once: true });
+    img.addEventListener('error', function() {
+      img.classList.add('is-error');
+      if (media) media.classList.remove('has-image');
+    }, { once: true });
+    if (img.complete && img.naturalWidth > 0 && media) media.classList.add('has-image');
+    if (img.complete && img.naturalWidth === 0) img.classList.add('is-error');
+  });
 }
 
 function renderToolGrid(containerId, countryCode, opts) {
   opts = opts || {};
   var showComing = opts.showComing !== false;
-  var maxLive = opts.maxLive || 50;
   var maxComing = opts.maxComing || 12;
+  var initialLimit = opts.initialLimit || 24;
+  var loadStep = opts.loadStep || 24;
 
   var container = document.getElementById(containerId);
   if (!container) return;
 
+  ensureCountryHubStyles();
+
+  var normalizedCountry = String(countryCode || '').toUpperCase();
+  var meta = getCountryHubMeta(normalizedCountry);
   var labels = getToolGridLabels(opts.locale || document.documentElement.lang || 'en');
-  var liveTools = getToolsFor(countryCode, 'live');
-  var newTools  = getToolsFor(countryCode, 'new');
-  var queuedTools = getToolsFor(countryCode, 'queued');
-  var comingTools = queuedTools.concat(getToolsFor(countryCode, 'planned'));
+  var liveTools = getToolsFor(normalizedCountry, 'live');
+  var newTools  = getToolsFor(normalizedCountry, 'new');
+  var queuedTools = getToolsFor(normalizedCountry, 'queued');
+  var comingTools = sortCountryHubTools(queuedTools.concat(getToolsFor(normalizedCountry, 'planned')), normalizedCountry);
+  var allLive = sortCountryHubTools(liveTools.concat(newTools), normalizedCountry);
+  if (opts.maxLive) allLive = allLive.slice(0, opts.maxLive);
 
-  var allLive = liveTools.concat(newTools).slice(0, maxLive);
-  var html = '';
+  var categories = countryHubCategoryCounts(allLive);
+  var localCount = allLive.filter(function(tool) { return tool.countries && tool.countries.indexOf(normalizedCountry) !== -1; }).length;
+  var panCount = allLive.filter(function(tool) { return tool.countries && tool.countries.indexOf('ALL') !== -1; }).length;
+  var countryName = meta.name || normalizedCountry;
 
-  if (allLive.length) {
-    html += '<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:\'DM Sans\',sans-serif">'
-          + '<span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary);flex-shrink:0"></span> ' + labels.available + '</h2>';
-    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
-    allLive.forEach(function(t) {
-      var cat = AFRO_CATEGORIES[t.category] || { color: '#888', bg: '#f0f0f0' };
-      var badge = t.status === 'new'
-        ? '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">' + labels.fresh + '</span>'
-        : '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#EEF4FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;font-weight:700;color:var(--color-primary);text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:var(--color-primary);border-radius:50%;animation:pulse 2s infinite"></span>' + labels.live + '</span>';
-      html += '<a href="'+t.href+'" style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;text-decoration:none;color:inherit;transition:.25s;display:block;position:relative;overflow:hidden;padding:24px 22px">'
-            + badge
-            + '<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+cat.bg+'">'+t.icon+'</div>'
-            + '<h3 style="font-size:16px;font-weight:700;margin-bottom:6px;color:#111;font-family:\'DM Sans\',sans-serif">'+t.name+'</h3>'
-            + '<p style="font-size:14px;color:#374151;line-height:1.6">'+t.desc+'</p>'
-            + '</a>';
+  var categoryButtons = '<button class="country-tool-filter active" type="button" data-filter-type="category" data-filter-value="all">' + countryHubEsc(labels.all) + ' <span>' + allLive.length + '</span></button>';
+  categories.forEach(function(item) {
+    categoryButtons += '<button class="country-tool-filter" type="button" data-filter-type="category" data-filter-value="' + countryHubEsc(item.key) + '">' + countryHubEsc(item.category.name || item.key) + ' <span>' + item.count + '</span></button>';
+  });
+
+  container.innerHTML = '' +
+    '<div class="country-hub-tools">' +
+      renderCountryPulseShell(normalizedCountry, meta, labels, allLive) +
+      '<div class="country-tool-controls">' +
+        '<div class="country-tool-search-row">' +
+          '<label class="country-tool-search">' +
+            '<span class="sr-only">' + countryHubEsc(labels.searchLabel) + '</span>' +
+            '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="M13 13l4 4"></path></svg>' +
+            '<input type="search" data-country-tool-search placeholder="' + countryHubEsc(labels.searchPlaceholder) + '">' +
+          '</label>' +
+          '<div class="country-tool-result-count" data-country-tool-count></div>' +
+        '</div>' +
+        '<div class="country-tool-filter-row" aria-label="Tool scope">' +
+          '<button class="country-tool-filter active" type="button" data-filter-type="scope" data-filter-value="all">' + countryHubEsc(labels.all) + ' <span>' + allLive.length + '</span></button>' +
+          '<button class="country-tool-filter" type="button" data-filter-type="scope" data-filter-value="local">' + countryHubLabel(labels, 'madeFor', countryName) + ' <span>' + localCount + '</span></button>' +
+          '<button class="country-tool-filter" type="button" data-filter-type="scope" data-filter-value="pan">' + countryHubEsc(labels.africaWide) + ' <span>' + panCount + '</span></button>' +
+        '</div>' +
+        '<div class="country-tool-filter-row" aria-label="Tool categories">' + categoryButtons + '</div>' +
+      '</div>' +
+      '<div class="country-tool-grid" data-country-tool-grid></div>' +
+      '<div class="country-tool-empty" data-country-tool-empty hidden>' + countryHubEsc(labels.noResults) + '</div>' +
+      '<div class="country-tool-load" data-country-tool-load-wrap hidden><button type="button" data-country-tool-load>' + countryHubEsc(labels.loadMore) + '</button></div>' +
+      (showComing && comingTools.length ? '<div class="country-coming"><h3>' + countryHubEsc(labels.coming) + '</h3><div class="country-coming-grid">' + comingTools.slice(0, maxComing).map(function(tool) { return '<div class="country-coming-card"><strong>' + countryHubEsc(tool.name || '') + '</strong><span>' + countryHubEsc(tool.desc || '') + '</span></div>'; }).join('') + '</div></div>' : '') +
+    '</div>';
+
+  var state = { query: '', category: 'all', scope: 'all', limit: initialLimit };
+  var search = container.querySelector('[data-country-tool-search]');
+  var grid = container.querySelector('[data-country-tool-grid]');
+  var count = container.querySelector('[data-country-tool-count]');
+  var empty = container.querySelector('[data-country-tool-empty]');
+  var loadWrap = container.querySelector('[data-country-tool-load-wrap]');
+  var loadButton = container.querySelector('[data-country-tool-load]');
+
+  function filteredTools() {
+    var query = state.query.trim().toLowerCase();
+    return allLive.filter(function(tool) {
+      if (state.category !== 'all' && tool.category !== state.category) return false;
+      if (state.scope === 'local' && (!tool.countries || tool.countries.indexOf(normalizedCountry) === -1)) return false;
+      if (state.scope === 'pan' && (!tool.countries || tool.countries.indexOf('ALL') === -1)) return false;
+      if (!query) return true;
+      var cat = AFRO_CATEGORIES[tool.category] || {};
+      var haystack = [
+        tool.name, tool.desc, tool.id, tool.revenue, tool.category, cat.name,
+        (Array.isArray(tool.tags) ? tool.tags.join(' ') : (tool.tags || ''))
+      ].join(' ').toLowerCase();
+      return haystack.indexOf(query) !== -1;
     });
-    html += '</div>';
   }
 
-  if (showComing && comingTools.length) {
-    var shown = comingTools.slice(0, maxComing);
-    html += '<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:\'DM Sans\',sans-serif">'
-          + '<span style="width:8px;height:8px;border-radius:50%;background:#d1d5db;flex-shrink:0"></span> ' + labels.coming + '</h2>';
-    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
-    shown.forEach(function(t) {
-      var cat = AFRO_CATEGORIES[t.category] || { color: '#888', bg: '#f0f0f0' };
-      html += '<div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;position:relative;opacity:.6;overflow:hidden;padding:24px 22px">'
-            + '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase">' + labels.coming + '</span>'
-            + '<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+cat.bg+'">'+t.icon+'</div>'
-            + '<h3 style="font-size:16px;font-weight:700;margin-bottom:6px;color:#374151;font-family:\'DM Sans\',sans-serif">'+t.name+'</h3>'
-            + '<p style="font-size:14px;color:#6b7280;line-height:1.6">'+t.desc+'</p>'
-            + '</div>';
+  function updateActiveButtons() {
+    container.querySelectorAll('[data-filter-type="category"]').forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-filter-value') === state.category);
     });
-    html += '</div>';
+    container.querySelectorAll('[data-filter-type="scope"]').forEach(function(btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-filter-value') === state.scope);
+    });
   }
 
-  container.innerHTML = html;
+  function updateList() {
+    var tools = filteredTools();
+    var shown = tools.slice(0, state.limit);
+    if (grid) grid.innerHTML = shown.map(function(tool) { return renderCountryToolCard(tool, normalizedCountry, labels, countryName); }).join('');
+    if (count) count.textContent = labels.showing + ' ' + shown.length + ' ' + labels.of + ' ' + tools.length + ' ' + labels.tools;
+    if (empty) empty.hidden = tools.length !== 0;
+    if (loadWrap) loadWrap.hidden = shown.length >= tools.length;
+    updateActiveButtons();
+    bindCountryToolImages(container);
+  }
+
+  if (search) {
+    search.addEventListener('input', function() {
+      state.query = search.value || '';
+      state.limit = initialLimit;
+      updateList();
+    });
+  }
+
+  container.querySelectorAll('[data-filter-type]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var type = btn.getAttribute('data-filter-type');
+      var value = btn.getAttribute('data-filter-value') || 'all';
+      if (type === 'category') state.category = value;
+      if (type === 'scope') state.scope = value;
+      state.limit = initialLimit;
+      updateList();
+    });
+  });
+
+  if (loadButton) {
+    loadButton.addEventListener('click', function() {
+      state.limit += loadStep;
+      updateList();
+    });
+  }
+
+  updateList();
+  refreshCountryPulse(container, normalizedCountry, meta, labels);
 }
 
 // ═══════════════════════════════════════════════════════════

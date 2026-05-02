@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GET /api/rates — Central Bank Rates — AfroTools API Docs</title>
+<title>GET /api/v1/rates/central-bank — Central Bank Rates — AfroTools API Docs</title>
 <meta name="description" content="Get central bank policy rates, inflation, T-bill yields, and MPC meeting dates for any African country.">
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/rates/central-bank">
@@ -31,7 +31,7 @@
 
         <div class="endpoint-header">
           <span class="endpoint-method endpoint-method--get">GET</span>
-          <span class="endpoint-url">https://afrotools.com/api/rates</span>
+          <span class="endpoint-url">https://afrotools.com/api/v1/rates/central-bank</span>
         </div>
 
         <div class="api-callout api-callout--info">
@@ -101,10 +101,10 @@
             <button class="code-tab" data-lang="node">Node.js</button>
             <button class="code-tab" data-lang="php">PHP</button>
           </div>
-          <div class="code-panel code-panel--active" data-lang="curl">curl "https://afrotools.com/api/rates?country=NG" \
+          <div class="code-panel code-panel--active" data-lang="curl">curl "https://afrotools.com/api/v1/rates/central-bank?country=NG" \
   -H "x-api-key: afro_live_your_key_here"</div>
           <div class="code-panel" data-lang="js">const res = await fetch(
-  "https://afrotools.com/api/rates?country=NG",
+  "https://afrotools.com/api/v1/rates/central-bank?country=NG",
   { headers: { "x-api-key": "afro_live_your_key_here" } }
 );
 const data = await res.json();
@@ -112,7 +112,7 @@ console.log(`Policy Rate: ${data.data.policy_rate}%`);</div>
           <div class="code-panel" data-lang="python">import requests
 
 resp = requests.get(
-    "https://afrotools.com/api/rates",
+    "https://afrotools.com/api/v1/rates/central-bank",
     params={"country": "NG"},
     headers={"x-api-key": "afro_live_your_key_here"}
 )
@@ -121,14 +121,14 @@ print(f"Policy Rate: {data['data']['policy_rate']}%")</div>
           <div class="code-panel" data-lang="node">const axios = require("axios");
 
 const { data } = await axios.get(
-  "https://afrotools.com/api/rates",
+  "https://afrotools.com/api/v1/rates/central-bank",
   {
     params: { country: "NG" },
     headers: { "x-api-key": "afro_live_your_key_here" }
   }
 );
 console.log(`Policy Rate: ${data.data.policy_rate}%`);</div>
-          <div class="code-panel" data-lang="php">$ch = curl_init("https://afrotools.com/api/rates?country=NG");
+          <div class="code-panel" data-lang="php">$ch = curl_init("https://afrotools.com/api/v1/rates/central-bank?country=NG");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "x-api-key: afro_live_your_key_here"
 ]);
@@ -170,7 +170,7 @@ echo "Policy Rate: " . $data["data"]["policy_rate"] . "%";</div>
 
         <div class="code-label">Filter by Indicator</div>
         <div class="code-example"><span class="c"># Get only inflation data</span>
-curl "https://afrotools.com/api/rates?country=KE&indicator=inflation" \
+curl "https://afrotools.com/api/v1/rates/central-bank?country=KE&indicator=inflation" \
   -H "x-api-key: afro_test_abc123"</div>
         <div class="code-example">{
   "success": true,

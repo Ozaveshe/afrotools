@@ -6,6 +6,7 @@
  */
 const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
+const { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -413,9 +414,13 @@ function round2(n) {
 async function validateApiKey(apiKey) {
   if (!apiKey) return { valid: false };
 
-  // Sandbox / test keys always pass
+  // Sandbox keys use deterministic data and their own free-tier limits.
   if (apiKey.startsWith('afro_test_')) {
-    return { valid: true, tier: 'free', sandbox: true, remaining: 999, limit: 1000 };
+    const key = 'sandbox:vat:' + apiKey;
+    if (!checkRateLimit(key, LIMITS.free.day)) {
+      return { valid: true, tier: 'sandbox', sandbox: true, remaining: 0, limit: LIMITS.free.day, resetAt: 'midnight UTC' };
+    }
+    return { valid: true, tier: 'sandbox', sandbox: true, remaining: getRemaining(key, LIMITS.free.day), limit: LIMITS.free.day };
   }
 
   try {
@@ -471,6 +476,7 @@ exports.handler = async (event) => {
   /* ---- Authenticate ---- */
   const apiKey =
     event.headers['x-api-key'] ||
+    event.headers['X-Api-Key'] ||
     (event.queryStringParameters || {}).api_key;
 
   const auth = await validateApiKey(apiKey);
@@ -499,6 +505,36 @@ exports.handler = async (event) => {
   /* ---- GET: country VAT info / list all ---- */
   if (event.httpMethod === 'GET') {
     const country = ((event.queryStringParameters || {}).country || '').toUpperCase();
+
+    if (auth.sandbox) {
+      const sandboxCountry = {
+        code: 'NG',
+        name: 'Nigeria Sandbox',
+        currency: 'NGN',
+        rate: 7.5,
+        hasReducedRates: false,
+        sandbox: true,
+        data_policy: 'deterministic sandbox data'
+      };
+      if (!country) {
+        return respond(200, { status: 'success', total: 1, countries: [sandboxCountry], sandbox: true });
+      }
+      return respond(200, {
+        status: 'success',
+        country: 'NG',
+        name: 'Nigeria Sandbox',
+        currency: 'NGN',
+        rate: 7.5,
+        reducedRates: [],
+        authority: 'AfroTools Sandbox',
+        exemptions: [],
+        notes: 'Deterministic sandbox data for development.',
+        lastUpdated: '2026-01-01',
+        source: 'AfroTools sandbox data',
+        sandbox: true,
+        data_policy: 'deterministic sandbox data'
+      });
+    }
 
     if (!country) {
       // Return all countries with VAT summary
@@ -542,6 +578,31 @@ exports.handler = async (event) => {
     }
 
     const { country, amount, operation, customRate } = body;
+
+    if (auth.sandbox) {
+      const numAmount = Number(amount || 1000);
+      const vatAmount = round2(numAmount * 0.075);
+      return respond(200, {
+        status: 'success',
+        country: String(country || 'NG').toUpperCase(),
+        countryName: 'Nigeria Sandbox',
+        operation: operation || 'add',
+        amountExclusive: round2(numAmount),
+        vatRate: 7.5,
+        vatAmount,
+        amountInclusive: round2(numAmount + vatAmount),
+        currency: 'NGN',
+        sandbox: true,
+        data_policy: 'deterministic sandbox data',
+        _meta: {
+          api: 'AfroVAT',
+          version: 'v1',
+          timestamp: new Date().toISOString(),
+          sandbox: true,
+          docs: 'https://afrotools.com/docs/api/vat'
+        }
+      });
+    }
 
     if (!country) {
       return respond(400, {

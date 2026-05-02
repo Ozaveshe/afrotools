@@ -1,14 +1,15 @@
 /**
  * api-fx-rates.js — Serves latest FX rates from fx_snapshots table
  *
- * GET /api/fx-rates?base=USD&target=NGN          → single pair
- * GET /api/fx-rates?base=USD                      → all African pairs for USD
- * GET /api/fx-rates?target=NGN                    → all base currencies for NGN
- * GET /api/fx-rates?base=USD&target=NGN&days=30   → 30-day history
+ * GET /api/v1/fx/rates?base=USD&target=NGN          -> single pair
+ * GET /api/v1/fx/rates?base=USD                     -> all African pairs for USD
+ * GET /api/v1/fx/rates?target=NGN                   -> all base currencies for NGN
+ * GET /api/v1/fx/rates?base=USD&target=NGN&days=30  -> 30-day history
  */
 
 var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
 var { getAllowedOrigin } = require('./utils/cors');
+var { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -32,6 +33,34 @@ async function querySupabase(path) {
   return res.json();
 }
 
+function sandboxFxResponse(params) {
+  params = params || {};
+  var base = (params.base || 'USD').toUpperCase();
+  var target = (params.target || 'NGN').toUpperCase();
+  if (base && target) {
+    var amount = Number(params.amount || 0);
+    return {
+      base: base,
+      target: target,
+      rate: 1500.25,
+      amount: amount || undefined,
+      converted_amount: amount ? Math.round(amount * 1500.25 * 100) / 100 : undefined,
+      source: 'AfroTools sandbox data',
+      updated_at: '2026-01-01T00:00:00.000Z',
+      change_24h: 0,
+      sandbox: true,
+      data_policy: 'deterministic sandbox data'
+    };
+  }
+  return {
+    base: base,
+    updated_at: '2026-01-01T00:00:00.000Z',
+    rates: { NGN: 1500.25, KES: 129.5, ZAR: 18.2, GHS: 12.8 },
+    sandbox: true,
+    data_policy: 'deterministic sandbox data'
+  };
+}
+
 exports.handler = async function (event) {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
@@ -47,6 +76,32 @@ exports.handler = async function (event) {
       return { statusCode: auth.status || 401, headers: Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS), body: JSON.stringify({ error: auth.error }) };
     }
     rlHeaders = rateLimitHeaders(auth);
+    if (auth.sandbox) {
+      return {
+        statusCode: 200,
+        headers: Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS, rlHeaders),
+        body: JSON.stringify(sandboxFxResponse(event.queryStringParameters || {}))
+      };
+    }
+  } else {
+    var clientIp = String(
+      (event.headers || {})['x-nf-client-connection-ip'] ||
+      (event.headers || {})['client-ip'] ||
+      (event.headers || {})['x-forwarded-for'] ||
+      'unknown'
+    ).split(',')[0].trim() || 'unknown';
+    var limitKey = 'anon:fx-rates:' + clientIp;
+    if (!checkRateLimit(limitKey, 100)) {
+      return {
+        statusCode: 429,
+        headers: Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS, {
+          'X-RateLimit-Limit': '100',
+          'X-RateLimit-Remaining': '0'
+        }),
+        body: JSON.stringify({ error: 'Rate limit exceeded', message: 'Free tier allows 100 requests/day and 3,000/month. Generate an API key from your dashboard for authenticated limits.' })
+      };
+    }
+    rlHeaders = { 'X-RateLimit-Limit': '100', 'X-RateLimit-Remaining': String(getRemaining(limitKey, 100)) };
   }
 
   var headers = Object.assign({ 'Content-Type': 'application/json' }, CORS_HEADERS, rlHeaders);
@@ -84,6 +139,7 @@ exports.handler = async function (event) {
 
     // Single pair
     if (base && target) {
+      var amount = parseFloat(params.amount) || 0;
       var rows = await querySupabase(
         `fx_snapshots?base_currency=eq.${base}&quote_currency=eq.${target}` +
         `&order=captured_at.desc&limit=2`
@@ -106,6 +162,8 @@ exports.handler = async function (event) {
           base: base,
           target: target,
           rate: Number(latest.bank_rate),
+          amount: amount || undefined,
+          converted_amount: amount ? Math.round(amount * Number(latest.bank_rate) * 100) / 100 : undefined,
           source: latest.source,
           updated_at: latest.captured_at,
           change_24h: change24h

@@ -1,13 +1,14 @@
 /**
- * Public API key creation — no auth required (email-gated)
+ * Public API key creation. Requires a verified AfroTools session.
  * POST /api/keys/create
- * Body: { email, name, useCase }
+ * Body: { name, useCase }
  * Returns: { apiKey, tier, message }
  */
 var { getStore } = require('@netlify/blobs');
 var { randomBytes } = require('crypto');
 var { getAllowedOrigin } = require('./utils/cors');
 var { checkRateLimit } = require('./_shared/rate-limit');
+var { resolveAuthenticatedUser } = require('./utils/supabase-session');
 
 function cleanEnvValue(value) {
   return String(value || '').trim().replace(/^['"]|['"]$/g, '');
@@ -16,7 +17,7 @@ function cleanEnvValue(value) {
 var CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Content-Type': 'application/json'
 };
 
@@ -61,9 +62,12 @@ exports.handler = async function(event) {
   var body;
   try { body = parseBody(event); } catch(e) { return json(400, { error: 'Invalid request body' }); }
 
-  var email = (body.email || '').trim().toLowerCase();
+  var user = await resolveAuthenticatedUser(event, { requireVerifiedEmail: true });
+  if (user.error) return json(user.status || 401, { error: user.error });
+
+  var email = (user.email || body.email || '').trim().toLowerCase();
   if (!email || !email.includes('@')) {
-    return json(400, { error: 'Valid email address is required.' });
+    return json(400, { error: 'Verified account email is required.' });
   }
 
   // Rate limit: max 3 keys per email (check existing keys)
@@ -75,7 +79,7 @@ exports.handler = async function(event) {
       if (!entry.key.startsWith('afro_live_')) continue;
       try {
         var kd = await store.get(entry.key, { type: 'json' });
-        if (kd && kd.email === email) existingCount++;
+        if (kd && (kd.userId === user.userId || kd.email === email)) existingCount++;
         if (existingCount >= 3) break;
       } catch(e) { /* skip */ }
     }
@@ -89,6 +93,7 @@ exports.handler = async function(event) {
   var apiKey = 'afro_live_' + randomBytes(16).toString('hex');
   var keyData = {
     email: email,
+    userId: user.userId,
     name: (body.name || '').trim().slice(0, 100) || 'API User',
     useCase: (body.useCase || body.use_case || 'other').slice(0, 50),
     tier: 'free',
@@ -135,8 +140,9 @@ exports.handler = async function(event) {
   return json(200, {
     ok: true,
     apiKey: apiKey,
+    key: apiKey,
     tier: 'free',
-    rateLimit: 100,
+    rateLimit: { requests_per_day: 100, requests_per_month: 3000 },
     message: 'Store this key securely. It will not be shown again in full.'
   });
 };

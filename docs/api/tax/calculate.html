@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>POST /api/tax — Calculate Tax — AfroTools API Docs</title>
+<title>POST /api/v1/tax/paye — Calculate Tax — AfroTools API Docs</title>
 <meta name="description" content="Calculate income tax, corporate tax, or withholding tax for any of the 54 African countries using the AfroTax API.">
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/tax/calculate">
@@ -27,11 +27,11 @@
     <div class="api-two-panel api-two-panel--wide-left">
       <div class="api-content__left">
         <h1 class="mt-0">Calculate Tax</h1>
-        <p class="api-subtitle">Calculate income tax, corporate tax, or withholding tax for a given country and amount.</p>
+        <p class="api-subtitle">Calculate PAYE salary tax for a supported country using gross-to-net or net-to-gross inputs.</p>
 
         <div class="endpoint-header">
           <span class="endpoint-method endpoint-method--post">POST</span>
-          <span class="endpoint-url">https://afrotools.com/api/tax</span>
+          <span class="endpoint-url">https://afrotools.com/api/v1/tax/paye</span>
         </div>
 
         <div class="api-callout api-callout--info">
@@ -49,37 +49,38 @@
               <td>ISO 3166-1 alpha-2 country code (e.g., <code>NG</code>, <code>KE</code>, <code>ZA</code>).</td>
             </tr>
             <tr>
-              <td><span class="param-name">amount</span> <span class="param-required">required</span></td>
+              <td><span class="param-name">grossMonthly</span> <span class="param-required">*</span></td>
               <td><span class="param-type">number</span></td>
-              <td>The monetary amount in the country's local currency.</td>
+              <td>Monthly gross salary in the country's local currency.</td>
             </tr>
             <tr>
-              <td><span class="param-name">type</span> <span class="param-required">required</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>Tax type: <code>income</code>, <code>corporate</code>, <code>withholding</code>, or <code>capital_gains</code>.</td>
+              <td><span class="param-name">grossAnnual</span> <span class="param-required">*</span></td>
+              <td><span class="param-type">number</span></td>
+              <td>Annual gross salary. Use this instead of <code>grossMonthly</code>.</td>
             </tr>
             <tr>
-              <td><span class="param-name">period</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>Pay period: <code>monthly</code> (default), <code>annual</code>, <code>weekly</code>, or <code>biweekly</code>.</td>
+              <td><span class="param-name">netMonthly</span> <span class="param-required">*</span></td>
+              <td><span class="param-type">number</span></td>
+              <td>Monthly net salary for net-to-gross calculation.</td>
             </tr>
             <tr>
-              <td><span class="param-name">mode</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">string</span></td>
-              <td>Calculation mode: <code>gross_to_net</code> (default) or <code>net_to_gross</code>.</td>
+              <td><span class="param-name">netAnnual</span> <span class="param-required">*</span></td>
+              <td><span class="param-type">number</span></td>
+              <td>Annual net salary for net-to-gross calculation.</td>
             </tr>
             <tr>
-              <td><span class="param-name">include_pension</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-name">pension</span> <span class="param-optional">optional</span></td>
               <td><span class="param-type">boolean</span></td>
               <td>Include pension/social security deductions. Default: <code>true</code>.</td>
             </tr>
             <tr>
-              <td><span class="param-name">tax_year</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-name">regime</span> <span class="param-optional">optional</span></td>
               <td><span class="param-type">string</span></td>
-              <td>Tax year (e.g., <code>2026</code>). Defaults to current year.</td>
+              <td>Country-specific tax regime where supported.</td>
             </tr>
           </tbody>
         </table>
+        <p><em>* Provide exactly one of <code>grossMonthly</code>, <code>grossAnnual</code>, <code>netMonthly</code>, or <code>netAnnual</code>.</em></p>
 
         <h2>Response Fields</h2>
         <table class="param-table">
@@ -87,15 +88,10 @@
           <tbody>
             <tr><td><span class="param-name">country</span></td><td><span class="param-type">string</span></td><td>ISO country code.</td></tr>
             <tr><td><span class="param-name">currency</span></td><td><span class="param-type">string</span></td><td>ISO currency code.</td></tr>
-            <tr><td><span class="param-name">gross_amount</span></td><td><span class="param-type">number</span></td><td>Gross salary/amount before tax.</td></tr>
-            <tr><td><span class="param-name">tax_amount</span></td><td><span class="param-type">number</span></td><td>Total tax calculated.</td></tr>
-            <tr><td><span class="param-name">pension</span></td><td><span class="param-type">number</span></td><td>Pension/social security deduction (if applicable).</td></tr>
-            <tr><td><span class="param-name">net_amount</span></td><td><span class="param-type">number</span></td><td>Net amount after tax and deductions.</td></tr>
-            <tr><td><span class="param-name">effective_rate</span></td><td><span class="param-type">number</span></td><td>Effective tax rate as a percentage.</td></tr>
-            <tr><td><span class="param-name">brackets</span></td><td><span class="param-type">array</span></td><td>Tax brackets applied with from/to ranges and rates.</td></tr>
-            <tr><td><span class="param-name">type</span></td><td><span class="param-type">string</span></td><td>Tax type that was calculated.</td></tr>
-            <tr><td><span class="param-name">period</span></td><td><span class="param-type">string</span></td><td>Pay period used.</td></tr>
-            <tr><td><span class="param-name">tax_year</span></td><td><span class="param-type">string</span></td><td>Tax year applied.</td></tr>
+            <tr><td><span class="param-name">deductions</span></td><td><span class="param-type">object</span></td><td>Pension, social security, and other deductions where applicable.</td></tr>
+            <tr><td><span class="param-name">tax</span></td><td><span class="param-type">object</span></td><td>Taxable income, net tax, and tax-band details.</td></tr>
+            <tr><td><span class="param-name">result</span></td><td><span class="param-type">object</span></td><td>Net annual, net monthly, and effective rate output.</td></tr>
+            <tr><td><span class="param-name">_meta</span></td><td><span class="param-type">object</span></td><td>API version, response time, timestamp, and sandbox flag.</td></tr>
           </tbody>
         </table>
 
@@ -104,8 +100,8 @@
           <thead><tr><th>Status</th><th>Code</th><th>Description</th></tr></thead>
           <tbody>
             <tr><td>400</td><td><span class="param-name">invalid_country</span></td><td>The country code is not supported.</td></tr>
-            <tr><td>400</td><td><span class="param-name">invalid_amount</span></td><td>The amount must be a positive number.</td></tr>
-            <tr><td>400</td><td><span class="param-name">invalid_tax_type</span></td><td>The tax type is not supported for this country.</td></tr>
+            <tr><td>400</td><td><span class="param-name">INVALID_SALARY_INPUT</span></td><td>Provide exactly one salary input.</td></tr>
+            <tr><td>400</td><td><span class="param-name">MISSING_REQUIRED_FIELD</span></td><td>A required field is missing.</td></tr>
             <tr><td>401</td><td><span class="param-name">missing_api_key</span></td><td>No API key was provided.</td></tr>
             <tr><td>429</td><td><span class="param-name">rate_limit_exceeded</span></td><td>Rate limit exceeded for your plan.</td></tr>
           </tbody>
@@ -122,16 +118,15 @@
             <button class="code-tab" data-lang="node">Node.js</button>
             <button class="code-tab" data-lang="php">PHP</button>
           </div>
-          <div class="code-panel code-panel--active" data-lang="curl">curl -X POST https://afrotools.com/api/tax \
+          <div class="code-panel code-panel--active" data-lang="curl">curl -X POST https://afrotools.com/api/v1/tax/paye \
   -H "x-api-key: afro_live_your_key_here" \
   -H "Content-Type: application/json" \
   -d '{
     "country": "NG",
-    "amount": 500000,
-    "type": "income",
-    "period": "monthly"
+    "grossMonthly": 500000,
+    "pension": true
   }'</div>
-          <div class="code-panel" data-lang="js">const res = await fetch("https://afrotools.com/api/tax", {
+          <div class="code-panel" data-lang="js">const res = await fetch("https://afrotools.com/api/v1/tax/paye", {
   method: "POST",
   headers: {
     "x-api-key": "afro_live_your_key_here",
@@ -139,9 +134,8 @@
   },
   body: JSON.stringify({
     country: "NG",
-    amount: 500000,
-    type: "income",
-    period: "monthly"
+    grossMonthly: 500000,
+    pension: true
   })
 });
 const data = await res.json();
@@ -149,13 +143,12 @@ console.log(data);</div>
           <div class="code-panel" data-lang="python">import requests
 
 resp = requests.post(
-    "https://afrotools.com/api/tax",
+    "https://afrotools.com/api/v1/tax/paye",
     headers={"x-api-key": "afro_live_your_key_here"},
     json={
         "country": "NG",
-        "amount": 500000,
-        "type": "income",
-        "period": "monthly"
+        "grossMonthly": 500000,
+        "pension": True
     }
 )
 data = resp.json()
@@ -163,12 +156,11 @@ print(data)</div>
           <div class="code-panel" data-lang="node">const axios = require("axios");
 
 const { data } = await axios.post(
-  "https://afrotools.com/api/tax",
+  "https://afrotools.com/api/v1/tax/paye",
   {
     country: "NG",
-    amount: 500000,
-    type: "income",
-    period: "monthly"
+    grossMonthly: 500000,
+    pension: true
   },
   {
     headers: { "x-api-key": "afro_live_your_key_here" }
@@ -177,12 +169,11 @@ const { data } = await axios.post(
 console.log(data);</div>
           <div class="code-panel" data-lang="php">$payload = json_encode([
     "country" => "NG",
-    "amount" => 500000,
-    "type" => "income",
-    "period" => "monthly"
+    "grossMonthly" => 500000,
+    "pension" => true
 ]);
 
-$ch = curl_init("https://afrotools.com/api/tax");
+$ch = curl_init("https://afrotools.com/api/v1/tax/paye");
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -200,28 +191,34 @@ print_r($data);</div>
 
         <div class="code-label">Response (200 OK)</div>
         <div class="code-example">{
-  "success": true,
-  "data": {
+  "status": "success",
+  "input": {
     "country": "NG",
-    "currency": "NGN",
-    "gross_amount": 500000,
-    "tax_amount": 78400,
-    "pension": 40000,
-    "net_amount": 381600,
-    "effective_rate": 15.68,
-    "type": "income",
-    "period": "monthly",
-    "mode": "gross_to_net",
-    "brackets": [
-      { "from": 0, "to": 300000, "rate": 7, "tax": 21000 },
-      { "from": 300001, "to": 600000, "rate": 11, "tax": 22000 },
-      { "from": 600001, "to": 1100000, "rate": 15, "tax": 0 },
-      { "from": 1100001, "to": 1600000, "rate": 19, "tax": 0 },
-      { "from": 1600001, "to": 3200000, "rate": 21, "tax": 0 },
-      { "from": 3200001, "to": null, "rate": 24, "tax": 0 }
-    ],
-    "tax_year": "2026",
-    "include_pension": true
+    "grossAnnual": 6000000
+  },
+  "currency": "NGN",
+  "deductions": {
+    "pension": 480000,
+    "totalDeductions": 480000
+  },
+  "tax": {
+    "taxableIncome": 5520000,
+    "netTax": 847800,
+    "bands": [
+      { "label": "First NGN 300,000", "rate": 0.07, "amount": 21000 },
+      { "label": "Next NGN 300,000", "rate": 0.11, "amount": 33000 }
+    ]
+  },
+  "result": {
+    "netAnnual": 4672200,
+    "netMonthly": 389350,
+    "effectiveRate": "14.13%"
+  },
+  "_meta": {
+    "api": "AfroTax",
+    "version": "1.0",
+    "sandbox": false,
+    "docs": "https://afrotools.com/docs/api/tax"
   }
 }</div>
 
@@ -229,12 +226,8 @@ print_r($data);</div>
 
         <div class="code-label">Error Response (400)</div>
         <div class="code-example">{
-  "success": false,
-  "error": {
-    "code": "invalid_country",
-    "message": "Country code 'XX' is not supported.",
-    "docs": "https://afrotools.com/docs/api/tax/countries.html"
-  }
+  "error": "Provide exactly one of grossAnnual, grossMonthly, netAnnual, or netMonthly",
+  "code": "MISSING_REQUIRED_FIELD"
 }</div>
       </div>
     </div>

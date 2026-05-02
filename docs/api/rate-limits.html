@@ -117,7 +117,7 @@
         <p>If you consistently hit rate limits, consider <a href="/docs/api/pricing/">upgrading your plan</a> for higher daily and monthly quotas.</p>
 
         <div class="api-callout api-callout--info">
-          <strong>Sandbox keys.</strong> Test keys (<code>afro_test_*</code>) share the Free plan limits but do not count against your production quota.
+          <strong>Sandbox keys.</strong> Test keys (<code>afro_test_*</code>) return deterministic sandbox data with separate sandbox limits.
         </div>
       </div>
 
@@ -189,8 +189,8 @@ def fetch_with_retry(url, headers, retries=3):
 
 # Check usage
 resp = requests.get(
-    "https://afrotools.com/api/forex",
-    params={"from": "USD", "to": "NGN"},
+    "https://afrotools.com/api/v1/fx/rates",
+    params={"base": "USD", "target": "NGN"},
     headers={"x-api-key": "afro_live_your_key"}
 )
 remaining = resp.headers.get("X-RateLimit-Remaining")

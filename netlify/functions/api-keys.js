@@ -1,6 +1,7 @@
 const { getStore } = require('@netlify/blobs');
-const { createHmac, randomBytes } = require('crypto');
+const { randomBytes } = require('crypto');
 const { getAllowedOrigin } = require('./utils/cors');
+const { resolveAuthenticatedUser } = require('./utils/supabase-session');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -18,18 +19,6 @@ const LIMITS = {
 
 function json(status, body) {
   return { statusCode: status, headers: CORS, body: JSON.stringify(body) };
-}
-
-function verifyToken(token, secret) {
-  if (!token || !token.includes('.')) return null;
-  const [b64, sig] = token.split('.');
-  const expected = createHmac('sha256', secret).update(b64).digest('base64url');
-  if (sig !== expected) return null;
-  try {
-    const payload = JSON.parse(Buffer.from(b64, 'base64url').toString());
-    if (payload.exp < Date.now()) return null;
-    return payload;
-  } catch { return null; }
 }
 
 /**
@@ -68,6 +57,46 @@ function summariseUsage(usage) {
   };
 }
 
+async function aggregateUserUsage(store, userId) {
+  const today = new Date().toISOString().split('T')[0];
+  const month = today.slice(0, 7);
+  const daily = {};
+  let callsToday = 0;
+  let callsMonth = 0;
+  let tier = 'free';
+  try {
+    const { blobs } = await store.list();
+    for (const entry of blobs) {
+      const key = entry.key;
+      if (!key.startsWith('afro_live_')) continue;
+      try {
+        const data = await store.get(key, { type: 'json' });
+        if (!data || data.userId !== userId) continue;
+        if (data.tier && data.tier !== 'free') tier = data.tier;
+        const usage = data.usage || data.monthlyUsage || {};
+        callsToday += usage[today] || 0;
+        callsMonth += usage[month] || 0;
+        Object.entries(usage).forEach(([bucket, value]) => {
+          if (bucket.length === 10 && typeof value === 'number') {
+            daily[bucket] = (daily[bucket] || 0) + value;
+          }
+        });
+      } catch { /* skip unreadable entries */ }
+    }
+  } catch (err) {
+    console.error('aggregateUserUsage error:', err.message);
+  }
+  const limits = LIMITS[tier] || LIMITS.free;
+  return {
+    tier,
+    daily_limit: limits.day === -1 ? 1000000 : limits.day,
+    monthly_limit: limits.month === -1 ? 30000000 : limits.month,
+    calls_today: callsToday,
+    calls_month: callsMonth,
+    daily: Object.keys(daily).sort().map((date) => ({ date, count: daily[date] }))
+  };
+}
+
 /**
  * List all keys belonging to a user by scanning the store.
  */
@@ -82,13 +111,21 @@ async function listUserKeys(store, userId) {
         const data = await store.get(key, { type: 'json' });
         if (data && data.userId === userId) {
           results.push({
+            id: key.slice(0, 18),
+            key_id: key.slice(0, 18),
+            key_prefix: maskKey(key),
             keyPrefix: maskKey(key),
             keyId: key.slice(0, 18),
             name: data.name || 'Unnamed key',
             tier: data.tier || 'free',
+            plan: data.tier || 'free',
+            created_at: data.createdAt,
             createdAt: data.createdAt,
+            last_used_at: data.lastUsed || null,
             lastUsed: data.lastUsed || null,
-            usage: summariseUsage(data.usage || data.monthlyUsage || {})
+            usage: summariseUsage(data.usage || data.monthlyUsage || {}),
+            calls_today: summariseUsage(data.usage || data.monthlyUsage || {}).today,
+            calls_month: summariseUsage(data.usage || data.monthlyUsage || {}).thisMonth
           });
         }
       } catch { /* skip unreadable entries */ }
@@ -123,13 +160,9 @@ exports.handler = async function (event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
 
-  const secret = process.env.AUTH_SECRET;
-  if (!secret) return json(200, { ok: false, error: 'Auth not configured' });
-
-  // Require auth
-  const token = (event.headers.authorization || '').replace('Bearer ', '');
-  const payload = verifyToken(token, secret);
-  if (!payload) return json(401, { error: 'Not authenticated. Log in first.' });
+  // Require a verified Supabase session, with legacy dashboard-token fallback.
+  const payload = await resolveAuthenticatedUser(event, { requireVerifiedEmail: true });
+  if (payload.error) return json(payload.status || 401, { error: payload.error });
 
   let body;
   try { body = JSON.parse(event.body); } catch { return json(400, { error: 'Invalid JSON' }); }
@@ -154,9 +187,11 @@ exports.handler = async function (event) {
     await store.setJSON(key, keyData);
     return json(200, {
       ok: true,
+      key,
       apiKey: key,
       name: keyData.name,
       tier: 'free',
+      rateLimit: { requests_per_day: 100, requests_per_month: 3000 },
       message: 'Store this key securely. It will not be shown again in full.'
     });
   }
@@ -166,14 +201,15 @@ exports.handler = async function (event) {
      ---------------------------------------------------------------- */
   if (action === 'list') {
     const keys = await listUserKeys(store, payload.userId);
-    return json(200, { ok: true, keys, total: keys.length });
+    const plan = await aggregateUserUsage(store, payload.userId);
+    return json(200, { ok: true, keys, total: keys.length, plan });
   }
 
   /* ----------------------------------------------------------------
      ACTION: revoke — delete a key
      ---------------------------------------------------------------- */
   if (action === 'revoke') {
-    const keyId = body.apiKey || body.keyId;
+    const keyId = body.apiKey || body.keyId || body.key_id;
     if (!keyId) return json(400, { error: 'Provide apiKey or keyId to revoke.' });
 
     // Full key provided — verify ownership then delete
@@ -206,7 +242,7 @@ exports.handler = async function (event) {
      ACTION: rename — rename a key
      ---------------------------------------------------------------- */
   if (action === 'rename') {
-    const keyId = body.apiKey || body.keyId;
+    const keyId = body.apiKey || body.keyId || body.key_id;
     const newName = body.name;
     if (!keyId) return json(400, { error: 'Provide apiKey or keyId to rename.' });
     if (!newName || typeof newName !== 'string' || newName.trim().length === 0) {
@@ -236,8 +272,11 @@ exports.handler = async function (event) {
      ACTION: usage — detailed usage stats for a specific key
      ---------------------------------------------------------------- */
   if (action === 'usage') {
-    const keyId = body.apiKey || body.keyId;
-    if (!keyId) return json(400, { error: 'Provide apiKey or keyId.' });
+    const keyId = body.apiKey || body.keyId || body.key_id;
+    if (!keyId) {
+      const plan = await aggregateUserUsage(store, payload.userId);
+      return json(200, { ok: true, plan, daily: plan.daily, keys: plan.keys || 0 });
+    }
 
     let data;
 

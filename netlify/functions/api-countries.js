@@ -94,6 +94,22 @@ function getToolsAvailable(code) {
   return tools;
 }
 
+function sandboxCountries(code) {
+  var entry = {
+    code: 'NG',
+    name: 'Nigeria Sandbox',
+    currency: 'NGN',
+    currency_symbol: 'NGN',
+    region: 'West Africa',
+    population: 230000000,
+    tools_available: ['paye', 'vat', 'fx'],
+    sandbox: true,
+    data_policy: 'deterministic sandbox data'
+  };
+  if (code) return entry;
+  return { countries: [entry], total: 1, sandbox: true, data_policy: 'deterministic sandbox data' };
+}
+
 exports.handler = async function(event) {
   CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
@@ -106,6 +122,10 @@ exports.handler = async function(event) {
   var rlHeaders = rateLimitHeaders(auth);
   var params = event.queryStringParameters || {};
   var code = (params.code || '').toUpperCase();
+
+  if (auth.sandbox) {
+    return respond(200, sandboxCountries(code), rlHeaders);
+  }
 
   /* ---- Single country ---- */
   if (code) {

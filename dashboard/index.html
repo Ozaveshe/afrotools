@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
     <link rel="stylesheet" href="/assets/css/dashboard.css?v=844a7bfe">
+    <script src="/assets/js/components/country-selector.js?v=1" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Instrument+Serif:ital@0;1&display=swap">
@@ -98,6 +99,18 @@
         .dashboard.active { display: block; }
         .auth-container[hidden],
         .dashboard[hidden] { display: none !important; }
+        .dashboard-country-onboarding {
+            margin: 0 auto 1rem;
+            max-width: 340px;
+            text-align: left;
+        }
+        .dashboard-country-hint {
+            margin-top: 0.65rem;
+            color: var(--dash-text-muted, #8E9BB3);
+            font-size: 0.78rem;
+            line-height: 1.45;
+            text-align: center;
+        }
 
         /* ===================== PROFILE HEADER ===================== */
         .profile-header {
@@ -2128,8 +2141,12 @@
             <div style="width:64px;height:64px;margin:0 auto 1.25rem;background:var(--dash-accent-pale,#EBF4FF);border-radius:16px;display:flex;align-items:center;justify-content:center;">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--dash-accent,#007AFF)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
-            <h1 id="authStateTitle" style="font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;color:var(--dash-text-primary,#0A1628);letter-spacing:-.02em;">Sign in to your dashboard</h1>
+            <h1 id="authStateTitle" style="font-size:1.6rem;font-weight:650;margin-bottom:0.5rem;color:#111827;letter-spacing:0;">Sign in to your dashboard</h1>
             <p id="authStateMessage" role="status" aria-live="polite" style="color:var(--dash-text-secondary,#5B6B82);margin-bottom:1rem;font-size:0.92rem;line-height:1.5;">Access your saved calculations, favorite tools, workspace items, and AfroPoints contribution status from one account dashboard.</p>
+            <div class="dashboard-country-onboarding">
+                <afro-country-selector id="dashboardCountrySelector" variant="inline" redirect="none" sync-profile diaspora label="Set your country before sign in"></afro-country-selector>
+                <p class="dashboard-country-hint">Your dashboard will open with local salary, tax, currency, legal and business tools first.</p>
+            </div>
             <div id="authStateError" role="alert" hidden style="margin:0 auto 1rem;max-width:340px;padding:0.85rem 1rem;border:1px solid #F59E0B;border-radius:10px;background:#FFFBEB;color:#92400E;font-size:0.86rem;line-height:1.45;"></div>
             <a href="/auth/?mode=login&amp;next=/dashboard/" style="max-width:300px;margin:0 auto;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:var(--dash-accent,#007AFF);color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(0,122,255,.2);transition:all 220ms ease;text-decoration:none;">
                 Sign in to get started
@@ -2137,6 +2154,7 @@
             <a href="/auth/?mode=signup&amp;next=/dashboard/" style="max-width:300px;margin:0.75rem auto 0;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:#fff;color:var(--dash-accent,#007AFF);border:1px solid var(--dash-accent,#007AFF);font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;">
                 Create a free account
             </a>
+            <p style="margin:1rem auto 0;max-width:360px;font-size:0.84rem;line-height:1.5;color:#526173;">Need Pro? Sign in first, then use the blue Pro button in the navbar or <a href="/pro/" style="color:var(--dash-accent,#007AFF);font-weight:700;text-decoration:none;">choose a Pro plan</a>.</p>
             <p style="margin-top:1.5rem;font-size:0.82rem;color:var(--dash-text-muted,#8E9BB3);">Free forever. No credit card required.</p>
             <div id="authTradePackNudge" class="auth-local-nudge" style="display:none;"></div>
         </div>
@@ -2473,8 +2491,14 @@
             <!-- AfroTools Pro Upsell -->
             <div id="proUpsell" class="pro-upsell">
               <h3>Upgrade to AfroTools Pro</h3>
-              <p>Unlimited AI advisor, clean PDF exports, saved history, tax law alerts.</p>
-              <a href="/pro/">Upgrade &mdash; $5/month</a>
+              <p>Pro adds a workspace shortcut, clean exports, deeper history, and account-bound workflow tools for heavier tax, payroll, PDF, and business work.</p>
+              <a href="/pro/">View Pro plans</a>
+            </div>
+
+            <div id="proWelcome" class="pro-upsell" style="display:none;">
+              <h3>Pro active on this account</h3>
+              <p>Your dashboard now links directly into the Pro Workspace, Pro Vault, team settings, and higher-limit workflow surfaces.</p>
+              <a href="/pro/workspace/">Open Pro Workspace</a>
             </div>
         </div>
     </main>
@@ -2485,7 +2509,7 @@
     <script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js?v=3f65305a"></script>
-    <script src="/assets/js/auth-cookie-upgrade.js?v=2"></script>
+    <script src="/assets/js/auth-cookie-upgrade.js?v=dc7270c7"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
     <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
     <script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
@@ -2495,7 +2519,7 @@
     <script src="/engines/afropoints-engine.js?v=2"></script>
     <script src="/dashboard/dashboard-app.js?v=05100b7e"></script>
     <script src="/dashboard/afropoints-lane-account.js?v=20260502a"></script>
-    <script src="/assets/js/components/navbar.min.js?v=71262699"></script>
+    <script src="/assets/js/components/navbar.min.js?v=16823958"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
     <script>
@@ -2872,7 +2896,11 @@
                     countrySel.appendChild(opt);
                 });
             }
-            var editCountryVal = (p && p.country_code) || currentUser.country || (p && p.country) || '';
+            var selectedCountryContext = null;
+            try {
+                selectedCountryContext = window.AfroCountry && window.AfroCountry.getSelected ? window.AfroCountry.getSelected() : null;
+            } catch(e) {}
+            var editCountryVal = (p && p.country_code) || currentUser.country || (p && p.country) || (selectedCountryContext && selectedCountryContext.code) || '';
             if (editCountryVal && editCountryVal.length > 2) {
                 var cc = COUNTRY_CODE_MAP[editCountryVal.toLowerCase()];
                 if (cc) editCountryVal = cc;
@@ -3100,8 +3128,12 @@
 
         function init() {
             setupEventListeners();
-            var isOAuthCallback = new URLSearchParams(window.location.search).get('auth') === 'callback' || window.location.hash.indexOf('access_token') > -1;
-            runDashboardSessionCheck({ oauthCallback: isOAuthCallback });
+            var authParams = new URLSearchParams(window.location.search);
+            var isOAuthCallback = authParams.get('auth') === 'callback' || window.location.hash.indexOf('access_token') > -1;
+            runDashboardSessionCheck({
+                oauthCallback: isOAuthCallback,
+                next: dashboardSafeNext(authParams.get('next') || '')
+            });
         }
 
         function setDashboardAuthState(nextState, options) {
@@ -3198,9 +3230,19 @@
                 email: user.email,
                 name: user.name || (user.email ? user.email.split('@')[0] : 'AfroTools user'),
                 country: user.country || '',
-                tier: user.tier || 'free',
+                tier: user.subscription_tier || user.tier || user.plan || 'free',
+                subscription_tier: user.subscription_tier || user.tier || user.plan || 'free',
+                role: user.role || '',
+                subscription_expires_at: user.subscription_expires_at || user.pro_expires_at || user.expires_at || null,
                 createdAt: user.createdAt || user.created_at || new Date().toISOString()
             };
+        }
+
+        function isDashboardProTier(user) {
+            var tier = String((user && (user.subscription_tier || user.tier || user.plan)) || '').toLowerCase();
+            var role = String((user && user.role) || '').toLowerCase();
+            if (role === 'admin' || role === 'owner') return true;
+            return ['pro', 'premium', 'team', 'business', 'enterprise', 'lifetime', 'trialing'].indexOf(tier) !== -1;
         }
 
         function getCachedDashboardUser() {
@@ -3217,20 +3259,50 @@
             } catch(e) {}
         }
 
+        function clearDashboardAuthCache(reason) {
+            if (window.AfroAuthSessionBridge && typeof window.AfroAuthSessionBridge.clear === 'function') {
+                window.AfroAuthSessionBridge.clear(reason || 'dashboard-session-rejected');
+                return;
+            }
+            try {
+                localStorage.removeItem('afro_auth_v2');
+                localStorage.removeItem('afro_session_v3');
+                localStorage.removeItem('afro_profile_cache');
+            } catch(e) {}
+            try {
+                window.dispatchEvent(new CustomEvent('afro-auth-change', {
+                    detail: { user: null, authenticated: false, reason: reason || 'dashboard-session-rejected' }
+                }));
+            } catch(e) {}
+        }
+
+        function dashboardSafeNext(value) {
+            if (!value || value.charAt(0) !== '/' || value.indexOf('//') === 0 || value.indexOf('\\') !== -1) return '';
+            return value;
+        }
+
         function delay(ms) {
             return new Promise(function(resolve) { setTimeout(resolve, ms); });
         }
 
         async function fetchDashboardSession() {
             try {
+                var headers = { 'Accept': 'application/json' };
+                var token = null;
+                try { if (window.AfroAuth && AfroAuth.getSessionTokenAsync) token = await AfroAuth.getSessionTokenAsync(); } catch(e) {}
+                if (!token) {
+                    try { if (window.AfroAuth && AfroAuth.getSessionToken) token = AfroAuth.getSessionToken(); } catch(e) {}
+                }
+                if (token) headers.Authorization = 'Bearer ' + token;
                 var res = await withTimeout(fetch('/api/auth/session', {
                     credentials: 'same-origin',
                     cache: 'no-store',
-                    headers: { 'Accept': 'application/json' }
+                    headers: headers
                 }), 7000);
                 var data = {};
                 try { data = await res.json(); } catch(e) {}
                 if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) clearDashboardAuthCache('dashboard-session-rejected');
                     return {
                         ok: false,
                         state: DASHBOARD_AUTH_STATES.sessionError,
@@ -3256,6 +3328,7 @@
             var session = await fetchDashboardSession();
             if (session.ok) return session;
             if (session.state === DASHBOARD_AUTH_STATES.signedOut && cachedUser) {
+                clearDashboardAuthCache('dashboard-session-expired');
                 return {
                     ok: false,
                     state: DASHBOARD_AUTH_STATES.sessionError,
@@ -3278,10 +3351,15 @@
                     isLoggedIn = true;
                     currentUser = result.user;
                     cacheDashboardUser(currentUser);
-                    showDashboard(currentUser);
                     if (options.oauthCallback) {
+                        var callbackNext = dashboardSafeNext(options.next || '');
+                        if (callbackNext && callbackNext !== window.location.pathname) {
+                            window.location.replace(callbackNext);
+                            return;
+                        }
                         window.history.replaceState({}, '', window.location.pathname);
                     }
+                    showDashboard(currentUser);
                     return;
                 }
                 if (!options.oauthCallback || attempt === maxAttempts - 1) {
@@ -3531,7 +3609,8 @@
             document.getElementById('profileMemberSince').textContent = isNaN(createdDate.getTime()) ? '-' : createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 
             var badge = document.getElementById('profilePlanBadge');
-            if (currentUser.tier === 'pro') {
+            var hasProAccess = isDashboardProTier(currentUser);
+            if (hasProAccess) {
                 badge.textContent = 'Pro';
                 badge.className = 'plan-badge pro';
             } else {
@@ -3540,7 +3619,9 @@
             }
 
             var proUpsell = document.getElementById('proUpsell');
-            if (proUpsell) proUpsell.style.display = currentUser.tier === 'pro' ? 'none' : '';
+            var proWelcome = document.getElementById('proWelcome');
+            if (proUpsell) proUpsell.style.display = hasProAccess ? 'none' : '';
+            if (proWelcome) proWelcome.style.display = hasProAccess ? '' : 'none';
 
             renderAvatar();
         }
@@ -4266,7 +4347,7 @@
                 });
             }
 
-            if (actions.length < 4 && currentUser && currentUser.tier !== 'pro') {
+            if (actions.length < 4 && currentUser && !isDashboardProTier(currentUser)) {
                 add({
                     key: 'pro',
                     tag: 'Plan',
@@ -6142,7 +6223,7 @@
                 if (statCalcs) statCalcs.textContent = calcs;
 
                 var statPlan = document.getElementById('stat-plan');
-                if (statPlan && currentUser) statPlan.textContent = currentUser.tier === 'pro' ? 'Pro' : 'Free';
+                if (statPlan && currentUser) statPlan.textContent = isDashboardProTier(currentUser) ? 'Pro' : 'Free';
 
                 var statDocs = document.getElementById('stat-docs');
                 if (statDocs) {

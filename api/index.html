@@ -20,7 +20,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-  <script src="/assets/js/components/navbar.min.js?v=71262699" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=87c5cdb1" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -169,39 +169,44 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   </div>
   <div class="code-block active" id="code-curl">
 <pre><span class="comment"># Get Nigeria PAYE tax breakdown</span>
-curl -X GET <span class="string">"https://api.afrotools.com/v1/tax/paye?country=NG&salary=500000"</span> \
-  -H <span class="string">"Authorization: Bearer YOUR_API_KEY"</span></pre>
+curl -X POST <span class="string">"https://afrotools.com/api/v1/tax/paye"</span> \
+  -H <span class="string">"x-api-key: YOUR_API_KEY"</span> \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"country":"NG","grossMonthly":500000}'</span></pre>
   </div>
   <div class="code-block" id="code-js">
 <pre><span class="comment">// Get Nigeria PAYE tax breakdown</span>
 <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(
-  <span class="string">'https://api.afrotools.com/v1/tax/paye?country=NG&salary=500000'</span>,
+  <span class="string">'https://afrotools.com/api/v1/tax/paye'</span>,
   {
+    method: <span class="string">'POST'</span>,
     headers: {
-      <span class="string">'Authorization'</span>: <span class="string">'Bearer YOUR_API_KEY'</span>
-    }
+      <span class="string">'x-api-key'</span>: <span class="string">'YOUR_API_KEY'</span>,
+      <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>
+    },
+    body: JSON.stringify({ country: <span class="string">'NG'</span>, grossMonthly: 500000 })
   }
 );
 <span class="keyword">const</span> data = <span class="keyword">await</span> response.json();
-console.log(data.tax_breakdown);</pre>
+console.log(data.result);</pre>
   </div>
   <div class="code-block" id="code-python">
 <pre><span class="comment"># Get Nigeria PAYE tax breakdown</span>
 <span class="keyword">import</span> requests
 
-response = requests.get(
-    <span class="string">"https://api.afrotools.com/v1/tax/paye"</span>,
-    params={<span class="string">"country"</span>: <span class="string">"NG"</span>, <span class="string">"salary"</span>: <span class="string">"500000"</span>},
-    headers={<span class="string">"Authorization"</span>: <span class="string">"Bearer YOUR_API_KEY"</span>}
+response = requests.post(
+    <span class="string">"https://afrotools.com/api/v1/tax/paye"</span>,
+    json={<span class="string">"country"</span>: <span class="string">"NG"</span>, <span class="string">"grossMonthly"</span>: <span class="string">"500000"</span>},
+    headers={<span class="string">"x-api-key"</span>: <span class="string">"YOUR_API_KEY"</span>}
 )
 data = response.json()
-print(data[<span class="string">"tax_breakdown"</span>])</pre>
+print(data[<span class="string">"result"</span>])</pre>
   </div>
 </section>
 
 <!-- Getting Started -->
 <section class="getting-started">
-  <h2>Get Started in 3 Steps</h2>
+  <h2>Get Started Safely</h2>
   <div class="step">
     <div class="step-num">1</div>
     <div class="step-content">
@@ -213,7 +218,7 @@ print(data[<span class="string">"tax_breakdown"</span>])</pre>
     <div class="step-num">2</div>
     <div class="step-content">
       <h3>Get your API key</h3>
-      <p>Generate an API key from your dashboard. Free tier includes 100 calls/day.</p>
+      <p>Generate an API key from your dashboard after sign-in and email verification. Free tier includes 100 requests/day and 3,000/month.</p>
     </div>
   </div>
   <div class="step">
@@ -223,12 +228,19 @@ print(data[<span class="string">"tax_breakdown"</span>])</pre>
       <p>Use our RESTful JSON endpoints to integrate African financial data into your app.</p>
     </div>
   </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <h3>Keep keys server-side</h3>
+      <p>Use <code>https://afrotools.com/api/v1</code> as the base URL, check <code>/api/status</code> for health, and keep production keys out of public client code.</p>
+    </div>
+  </div>
 </section>
 
 <!-- CTA -->
 <section class="api-cta">
   <h2>Ready to Build?</h2>
-  <p>Start with 100 free API calls per day. No credit card required.</p>
+  <p>Start with 100 free API requests per day and 3,000 per month. No credit card required.</p>
   <a href="/auth/?mode=signup&amp;intent=api-key&amp;next=/dashboard/api/">Get Your API Key</a>
 </section>
 

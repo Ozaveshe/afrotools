@@ -44,20 +44,21 @@
   <!-- Full CSS loaded async — non-blocking -->
   <link rel="preload" href="/assets/css/tokens.min.css?v=21a946c0" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="/assets/css/global.min.css?v=b0e455ea" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
+  <script src="/assets/js/components/country-selector.js?v=1" defer></script>
 
-  <script src="/assets/js/components/navbar.min.js?v=71262699" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=16823958" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <script src="/assets/js/bundles/core.e8b72bfa.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
   <!-- Twemoji: consistent flag rendering on Windows -->
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 
   <link rel="preload" href="/assets/css/homepage.css?v=e76f5fac" as="style" onload="this.onload=null;this.rel='stylesheet';document.documentElement.classList.add('css-ready')">
-  <link rel="preload" href="/assets/css/homepage-refine.css?v=53923f5a" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/assets/css/homepage-refine.css?v=9a54c1b2" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
     <link rel="stylesheet" href="/assets/css/homepage.css?v=e76f5fac">
-    <link rel="stylesheet" href="/assets/css/homepage-refine.css?v=53923f5a">
+    <link rel="stylesheet" href="/assets/css/homepage-refine.css?v=9a54c1b2">
     <style>.sec,.sec--dark2,.sec--countries{opacity:1!important}</style>
   </noscript>
   <script src="/assets/js/favorites.js?v=163519f9" defer></script>
@@ -160,9 +161,12 @@
       </div>
       <div class="search-dropdown" id="search-dropdown" role="listbox"></div>
     </div>
+    <div style="max-width:440px;margin:18px auto 0;text-align:left;">
+      <afro-country-selector id="homeHeroCountrySelector" variant="hero" redirect="none" sync-profile diaspora label="Use AfroTools for"></afro-country-selector>
+    </div>
     <div class="hero-btns">
-      <a href="/all-tools/" class="btn-primary">Explore tools &rarr;</a>
-      <a href="#start-country" class="btn-secondary">Choose your country</a>
+      <a href="/tools/" class="btn-primary" data-country-tools-href>Explore local tools &rarr;</a>
+      <a href="/start/" class="btn-secondary">Start by country</a>
     </div>
     <div class="home-trust-row" aria-label="AfroTools trust signals">
       <div><strong id="hp-stat-tools">2,594+</strong><span>tools</span></div>
@@ -182,7 +186,11 @@
         <div class="preview-tool-list">
           <div class="preview-tool-row">
             <span class="preview-tool-icon">PAYE</span>
-            <div><strong>Nigeria PAYE Calculator</strong><small>FIRS tax, pension, NHF</small></div>
+            <div><strong id="home-preview-paye-name" data-country-paye-name>Nigeria PAYE Calculator</strong><small id="home-preview-paye-meta" data-country-tax-ref>FIRS PAYE, pension, NHF and national payroll assumptions.</small></div>
+          </div>
+          <div class="preview-tool-row">
+            <span class="preview-tool-icon">VAT</span>
+            <div><strong id="home-preview-vat-name" data-country-vat-name>Nigeria VAT Calculator</strong><small id="home-preview-vat-meta">NGN business VAT workflow</small></div>
           </div>
           <div class="preview-tool-row">
             <span class="preview-tool-icon">PDF</span>
@@ -199,14 +207,15 @@
         <div class="preview-result-card">
           <div class="preview-result-head">
             <span>Take-home estimate</span>
-            <strong>NGN</strong>
+            <strong id="home-preview-currency-code" data-country-currency>NGN</strong>
           </div>
+          <div id="home-preview-currency-badge" style="display:inline-flex;margin:0 0 10px;padding:5px 9px;border-radius:999px;background:#eef5ff;color:#0062cc;font-size:.74rem;font-weight:800;">NGN currency</div>
           <div class="preview-result-main">3,713,750</div>
           <div class="preview-result-grid">
             <div><span>Income tax</span><strong>-823,750</strong></div>
             <div><span>Pension</span><strong>-400,000</strong></div>
           </div>
-          <p>Uses country-specific tax logic and keeps calculation data in your browser.</p>
+          <p id="home-preview-country-copy">Suggestions, examples and disclaimers now use Nigeria context.</p>
         </div>
       </div>
     </div>
@@ -220,22 +229,30 @@
       <h2>Use the rules, currency, and workflows that match where you work.</h2>
     </div>
     <div class="country-picker-card">
-      <form class="country-picker-form" onsubmit="var v=this.elements.country.value;if(v){window.location.href=v;}return false;">
-        <label for="home-country-select">Search or choose a country</label>
-        <div>
-          <select id="home-country-select" name="country" aria-label="Choose country">
-            <option value="/nigeria/">Nigeria</option>
-            <option value="/kenya/">Kenya</option>
-            <option value="/ghana/">Ghana</option>
-            <option value="/south-africa/">South Africa</option>
-            <option value="/egypt/">Egypt</option>
-            <option value="/tanzania/">Tanzania</option>
-            <option value="/rwanda/">Rwanda</option>
-            <option value="/senegal/">Senegal</option>
-          </select>
-          <button type="submit">Open</button>
-        </div>
-      </form>
+      <afro-country-selector id="homeCountrySelector" variant="inline" redirect="none" sync-profile diaspora label="Search or choose a country"></afro-country-selector>
+      <div class="country-popular-list" aria-label="Selected country actions" style="margin-top:14px;">
+        <a href="/nigeria/" data-country-home-href>Open country hub</a>
+        <a href="/tools/?country=NG" data-country-tools-href>Browse local tools</a>
+        <a href="/start/">Choose goal</a>
+      </div>
+      <noscript>
+        <form class="country-picker-form" onsubmit="var v=this.elements.country.value;if(v){window.location.href=v;}return false;">
+          <label for="home-country-select">Search or choose a country</label>
+          <div>
+            <select id="home-country-select" name="country" aria-label="Choose country">
+              <option value="/nigeria/">Nigeria</option>
+              <option value="/kenya/">Kenya</option>
+              <option value="/ghana/">Ghana</option>
+              <option value="/south-africa/">South Africa</option>
+              <option value="/egypt/">Egypt</option>
+              <option value="/tanzania/">Tanzania</option>
+              <option value="/rwanda/">Rwanda</option>
+              <option value="/senegal/">Senegal</option>
+            </select>
+            <button type="submit">Open</button>
+          </div>
+        </form>
+      </noscript>
       <div class="country-popular-list" aria-label="Popular countries">
         <a href="/nigeria/">Nigeria</a>
         <a href="/kenya/">Kenya</a>
@@ -1691,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  fetch('/api/forex?base=USD').then(function(r){
+  fetch('/api/v1/fx/rates?base=USD').then(function(r){
     if (!r.ok) throw new Error('live forex unavailable');
     return r.json();
   }).then(function(d){
@@ -1975,6 +1992,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   // MY TOOLS — Favorites system (Supabase-backed, sign-in required)
+  function hideMyTools(section, grid, countEl) {
+    section.classList.remove('has-favs');
+    grid.innerHTML = '';
+    if (countEl) countEl.textContent = '';
+  }
+
   function renderMyTools() {
     if (typeof AFRO_TOOLS === 'undefined') return;
     var section = document.getElementById('myToolsSection');
@@ -1982,12 +2005,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var countEl = document.getElementById('myToolsCount');
     if (!section || !grid) return;
 
-    // Only show My Tools for signed-in users
-    var isLoggedIn = typeof AfroAuth !== 'undefined' && AfroAuth.isLoggedIn();
-    if (!isLoggedIn) {
-      section.classList.add('has-favs');
-      grid.innerHTML = '<div class="my-tools-empty"><a href="/auth/?mode=login&amp;next=/dashboard/" style="color:#0062CC;font-weight:600;text-decoration:none;">Sign in</a> to save and sync your favourite tools across devices.</div>';
-      if (countEl) countEl.textContent = '';
+    // My Tools is a saved-tools surface only. Guests should not see a sign-in strip here.
+    var authReady = typeof AfroAuth !== 'undefined' && typeof AfroAuth.isLoggedIn === 'function';
+    var isLoggedIn = authReady && AfroAuth.isLoggedIn();
+    if (!authReady || !isLoggedIn) {
+      hideMyTools(section, grid, countEl);
       return;
     }
 
@@ -1997,10 +2019,11 @@ document.addEventListener('DOMContentLoaded', function() {
       window._savedToolsInstance.getAll().then(function(items) {
         var favIds = items.map(function(i) { return i.slug; });
         _renderMyToolsGrid(favIds, section, grid, countEl);
+      }).catch(function() {
+        hideMyTools(section, grid, countEl);
       });
     } else {
-      section.classList.add('has-favs');
-      grid.innerHTML = '<div class="my-tools-empty">No saved tools yet. Browse tools and click the star to save them.</div>';
+      hideMyTools(section, grid, countEl);
     }
   }
 
@@ -2046,8 +2069,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   renderMyTools();
 
-  // Re-render when auth state changes (user logs in/out — favorites may differ)
-  document.addEventListener('afro-auth-change', function() { renderMyTools(); });
+  // AfroAuth dispatches this event on window. Keep this surface in sync with login/logout.
+  window.addEventListener('afro-auth-change', function() { renderMyTools(); });
+  window.setTimeout(renderMyTools, 600);
+  window.setTimeout(renderMyTools, 1600);
+  window.setTimeout(renderMyTools, 3200);
 
 }); // end DOMContentLoaded
 </script>

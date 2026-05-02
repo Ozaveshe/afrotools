@@ -24,7 +24,8 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
   <script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
-  <script src="/assets/js/components/navbar.min.js?v=71262699" defer></script>
+  <script src="/assets/js/components/country-selector.js?v=1" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=87c5cdb1" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -64,7 +65,10 @@
     .f-tab{padding:8px 16px;border-radius:100px;border:1.5px solid #e2e8f0;background:#fff;color:#64748b;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;white-space:nowrap}
     .f-tab:hover{border-color:var(--color-primary);color:var(--color-primary);background:rgba(0,122,255,.03)}
     .f-tab.on{background:linear-gradient(135deg,#007AFF,#0055D4);box-shadow:0 4px 14px rgba(0,122,255,.35);border-color:var(--color-primary);color:#fff;box-shadow:0 2px 8px rgba(0,122,255,.25)}
-    .directory-controls{max-width:1200px;margin:-16px auto 30px;padding:0 20px;display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:10px}
+    .directory-country{max-width:1200px;margin:-18px auto 18px;padding:0 20px;display:grid;grid-template-columns:minmax(260px,420px) minmax(0,1fr);gap:14px;align-items:end}
+    .directory-country-note{border:1px solid #dbe4ef;background:#fff;border-radius:12px;padding:12px 14px;color:#475569;font-size:.82rem;line-height:1.55;font-weight:600}
+    .directory-country-note[hidden]{display:none}
+    .directory-controls{max-width:1200px;margin:0 auto 30px;padding:0 20px;display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:10px}
     .directory-controls select{width:100%;border:1.5px solid #e5e7eb;background:#fff;border-radius:10px;padding:10px 12px;font:inherit;font-size:.82rem;color:#334155}
     .directory-note{max-width:1160px;margin:0 auto 18px;padding:0 20px;color:#64748b;font-size:.82rem;line-height:1.6}
 
@@ -128,6 +132,7 @@
       .filter-wrap{padding:0 16px}
       .filter-bar{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
       .filter-bar::-webkit-scrollbar{display:none}
+      .directory-country{grid-template-columns:1fr;padding:0 16px;margin-top:-18px}
       .directory-controls{grid-template-columns:1fr;padding:0 16px;margin-top:-18px}
       .section-header{padding:0 16px}
       .search-bar kbd{display:none}
@@ -267,6 +272,11 @@
 
 <div class="filter-wrap">
   <div class="filter-bar" id="filter-bar"></div>
+</div>
+
+<div class="directory-country" aria-label="Country context">
+  <afro-country-selector id="toolsCountrySelector" variant="inline" redirect="none" diaspora label="Use tools for"></afro-country-selector>
+  <div class="directory-country-note" id="tools-country-context" hidden></div>
 </div>
 
 <div class="directory-controls" aria-label="Directory filters">
@@ -7968,6 +7978,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var statusFilter = document.getElementById('status-filter');
   var languageFilter = document.getElementById('language-filter');
   var sortFilter = document.getElementById('sort-filter');
+  var countryContext = document.getElementById('tools-country-context');
   var activeFilter = 'all';
 
   var ACCENT_MAP = {
@@ -8037,7 +8048,7 @@ document.addEventListener('DOMContentLoaded', function() {
       inferCountries(tool).forEach(function(country) { countries[country] = true; });
     });
     countryFilter.innerHTML = '<option value="all">All countries</option>' + Object.keys(countries).sort().map(function(country) {
-      return '<option value="' + esc(country) + '">' + esc(country) + '</option>';
+      return '<option value="' + esc(country) + '">' + esc(countryDisplay(country)) + '</option>';
     }).join('');
   }
 
@@ -8054,6 +8065,90 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function countryDisplay(value) {
+    if (window.AfroCountry && typeof window.AfroCountry.get === 'function') {
+      var country = window.AfroCountry.get(value);
+      if (country) return country.name + ' (' + country.code + ')';
+    }
+    return value;
+  }
+
+  function countryCandidates(country) {
+    if (!country) return [];
+    return [country.code, country.name, country.slug].filter(Boolean);
+  }
+
+  function ensureCountryOption(value, label) {
+    if (!countryFilter || !value) return;
+    var exists = Array.prototype.some.call(countryFilter.options, function(option) { return option.value === value; });
+    if (!exists) {
+      var opt = document.createElement('option');
+      opt.value = value;
+      opt.textContent = label || value;
+      countryFilter.appendChild(opt);
+    }
+  }
+
+  function updateCountryContext(country) {
+    if (!countryContext) return;
+    if (!country) {
+      countryContext.hidden = true;
+      countryContext.textContent = '';
+      return;
+    }
+    var profile = window.AfroCountry && typeof window.AfroCountry.profileFor === 'function'
+      ? window.AfroCountry.profileFor(country)
+      : null;
+    var paye = profile && profile.payeName ? profile.payeName : country.name + ' PAYE Calculator';
+    var vat = profile && profile.vatName ? profile.vatName : country.name + ' VAT Calculator';
+    var refs = profile && profile.taxRef ? profile.taxRef : country.name + ' tax references';
+    countryContext.hidden = false;
+    countryContext.textContent = 'Showing ' + country.name + ' first. Currency defaults to ' + country.currency + '. Suggested: ' + paye + ', ' + vat + '. ' + refs;
+  }
+
+  function applyCountryFilter(country) {
+    if (!countryFilter || !country) return false;
+    var candidates = countryCandidates(country);
+    var matched = '';
+    candidates.some(function(candidate) {
+      var has = Array.prototype.some.call(countryFilter.options, function(option) {
+        return normalizeText(option.value) === normalizeText(candidate);
+      });
+      if (has) matched = candidate;
+      return has;
+    });
+    if (!matched) {
+      matched = country.code;
+      ensureCountryOption(matched, country.name + ' (' + country.code + ')');
+    }
+    countryFilter.value = matched;
+    updateCountryContext(country);
+    return true;
+  }
+
+  function storedCountry() {
+    if (!window.AfroCountry || typeof window.AfroCountry.get !== 'function') return null;
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var requested = params.get('country');
+      if (requested) return window.AfroCountry.get(requested);
+      var raw = window.localStorage.getItem(window.AfroCountry.storageKey);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      return window.AfroCountry.get(parsed.code || parsed.slug || parsed.name);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  function updateCountryContextFromFilter() {
+    if (!countryFilter || countryFilter.value === 'all' || !window.AfroCountry) {
+      updateCountryContext(null);
+      return;
+    }
+    updateCountryContext(window.AfroCountry.get(countryFilter.value));
+  }
 
   var arrowSvg = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -8169,7 +8264,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   [countryFilter, statusFilter, languageFilter, sortFilter].forEach(function(control) {
-    if (control) control.addEventListener('change', render);
+    if (control) control.addEventListener('change', function() {
+      if (control === countryFilter) updateCountryContextFromFilter();
+      render();
+    });
+  });
+
+  window.addEventListener('afro-country-change', function(event) {
+    var country = event && event.detail && event.detail.country;
+    if (applyCountryFilter(country)) render();
   });
 
   // Ctrl+K shortcut
@@ -8182,6 +8285,8 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Initial render
+  var firstCountry = storedCountry();
+  if (firstCountry) applyCountryFilter(firstCountry);
   render();
 });
 </script>

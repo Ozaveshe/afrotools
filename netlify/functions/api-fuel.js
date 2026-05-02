@@ -7,13 +7,14 @@
  * GET /api/fuel?sort=petrol_asc — sorted results
  * GET /api/fuel?history=12m&country=NG — historical data
  *
- * Headers: x-api-key for authenticated access (bypasses rate limiting)
- * Rate limit: 100 requests/day without API key
+ * Headers: x-api-key for authenticated access
+ * Free tier: 100 requests/day and 3,000/month
  */
 
 const { getData } = require('./_shared/data-store');
 const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 const { getAllowedOrigin } = require('./utils/cors');
+const { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -51,6 +52,41 @@ function jsonResponse(statusCode, body, extraHeaders = {}) {
   };
 }
 
+function sandboxFuelResponse(params) {
+  params = params || {};
+  const country = {
+    code: 'NG',
+    name: 'Nigeria Sandbox',
+    region: 'west',
+    currency: 'NGN',
+    petrol: { local: 850, usd: 0.57 },
+    diesel: { local: 1050, usd: 0.7 },
+    lpg: { local: 1200, usd: 0.8 },
+    source: 'AfroTools sandbox data'
+  };
+  if (params.country) {
+    return {
+      timestamp: '2026-01-01T00:00:00.000Z',
+      country,
+      sandbox: true,
+      data_policy: 'deterministic sandbox data'
+    };
+  }
+  return {
+    timestamp: '2026-01-01T00:00:00.000Z',
+    summary: {
+      total_countries: 1,
+      petrol_avg_usd: 0.57,
+      petrol_min_usd: 0.57,
+      petrol_max_usd: 0.57,
+      diesel_avg_usd: 0.7
+    },
+    countries: [country],
+    sandbox: true,
+    data_policy: 'deterministic sandbox data'
+  };
+}
+
 exports.handler = async function (event) {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
@@ -61,20 +97,25 @@ exports.handler = async function (event) {
     return jsonResponse(405, { error: 'Method not allowed' });
   }
 
-  // Rate limiting
-  const apiKey = event.headers['x-api-key'];
-  const hasValidKey = apiKey && apiKey.length > 10;
-  if (!hasValidKey) {
+  const params = event.queryStringParameters || {};
+
+  // Rate limiting and sandbox handling
+  const apiKey = event.headers['x-api-key'] || event.headers['X-Api-Key'] || params.api_key;
+  var rlHeaders = {};
+  if (apiKey) {
+    var auth = await validateApiKey(event);
+    if (!auth.valid) return jsonResponse(auth.status || 401, { error: auth.error });
+    rlHeaders = rateLimitHeaders(auth);
+    if (auth.sandbox) return jsonResponse(200, sandboxFuelResponse(params), rlHeaders);
+  } else {
     const clientIp = event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown';
     if (!checkRateLimit(clientIp)) {
       return jsonResponse(429, {
         error: 'Rate limit exceeded',
-        message: 'Free tier allows 100 requests/day. Add x-api-key header for unlimited access.',
+        message: 'Free tier allows 100 requests/day and 3,000/month. Generate an API key from your dashboard for authenticated limits.',
       });
     }
   }
-
-  const params = event.queryStringParameters || {};
 
   // --- Historical data ---
   if (params.history && params.country) {
@@ -86,7 +127,7 @@ exports.handler = async function (event) {
         available: ['NG/12m'],
       });
     }
-    return jsonResponse(200, historyData, { 'Cache-Control': 'public, max-age=3600, s-maxage=7200' });
+    return jsonResponse(200, historyData, Object.assign({ 'Cache-Control': 'public, max-age=3600, s-maxage=7200' }, rlHeaders));
   }
 
   // --- Load latest fuel data (with in-memory + Blobs cache) ---
@@ -108,7 +149,7 @@ exports.handler = async function (event) {
     return jsonResponse(200, {
       timestamp: data.timestamp,
       country,
-    });
+    }, rlHeaders);
   }
 
   // --- Region filter: ?region=west ---
@@ -161,5 +202,5 @@ exports.handler = async function (event) {
     timestamp: data.timestamp,
     summary,
     countries,
-  });
+  }, rlHeaders);
 };

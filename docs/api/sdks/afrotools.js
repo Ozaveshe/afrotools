@@ -1,1 +1,49 @@
-class AfroTools{constructor(t,e={}){if(!t)throw new Error("AfroTools: API key is required");this.apiKey=t,this.baseURL=(e.baseURL||"https://afrotools.com/api").replace(/\/+$/,""),this.tax={countries:()=>this._get("/tax"),country:t=>this._get(`/tax?country=${encodeURIComponent(t)}`),calculate:t=>this._post("/tax",t)},this.forex={latest:t=>this._get("/forex",t)},this.fuel={prices:t=>this._get("/fuel"+(t?"?country="+encodeURIComponent(t):""))},this.rates={all:()=>this._get("/rates"),country:t=>this._get(`/rates?country=${encodeURIComponent(t)}`)},this.vat={calculate:t=>this._post("/vat",t),rates:()=>this._get("/vat")}}async _get(t,e={}){const s=new URL(this.baseURL+t);Object.entries(e).forEach(([t,e])=>{null!=e&&s.searchParams.set(t,e)});const o=await fetch(s.toString(),{headers:{"x-api-key":this.apiKey}}),r=await o.json();if(!o.ok)throw Object.assign(new Error(r.error||`API error ${o.status}`),{status:o.status,data:r});return r}async _post(t,e){const s=await fetch(this.baseURL+t,{method:"POST",headers:{"x-api-key":this.apiKey,"Content-Type":"application/json"},body:JSON.stringify(e)}),o=await s.json();if(!s.ok)throw Object.assign(new Error(o.error||`API error ${s.status}`),{status:s.status,data:o});return o}}"undefined"!=typeof module&&module.exports&&(module.exports=AfroTools),"undefined"!=typeof window&&(window.AfroTools=AfroTools);
+class AfroTools {
+  constructor(apiKey, options = {}) {
+    if (!apiKey) throw new Error('AfroTools: API key is required');
+    this.apiKey = apiKey;
+    this.baseURL = (options.baseURL || 'https://afrotools.com/api/v1').replace(/\/+$/, '');
+    this.tax = {
+      countries: () => this._get('/countries'),
+      country: (country) => this._get('/tax/paye', { country }),
+      calculate: (params) => this._post('/tax/paye', params),
+      rates: (params = {}) => this._get('/tax/rates', params)
+    };
+    this.fx = {
+      rates: (params = {}) => this._get('/fx/rates', params)
+    };
+    this.forex = this.fx;
+    this.fuel = {
+      prices: (params = {}) => this._get('/fuel/prices', typeof params === 'string' ? { country: params } : params)
+    };
+    this.countries = {
+      list: () => this._get('/countries'),
+      get: (code) => this._get('/countries', { code })
+    };
+  }
+
+  async _get(path, params = {}) {
+    const url = new URL(this.baseURL + path);
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) url.searchParams.set(key, value);
+    });
+    const res = await fetch(url.toString(), { headers: { 'x-api-key': this.apiKey } });
+    const data = await res.json();
+    if (!res.ok) throw Object.assign(new Error(data.error || `API error ${res.status}`), { status: res.status, data });
+    return data;
+  }
+
+  async _post(path, body) {
+    const res = await fetch(this.baseURL + path, {
+      method: 'POST',
+      headers: { 'x-api-key': this.apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) throw Object.assign(new Error(data.error || `API error ${res.status}`), { status: res.status, data });
+    return data;
+  }
+}
+
+if (typeof module !== 'undefined' && module.exports) module.exports = AfroTools;
+if (typeof window !== 'undefined') window.AfroTools = AfroTools;

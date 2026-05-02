@@ -8,6 +8,7 @@ const engines = require('./_engines/index');
 const { getStore } = require('@netlify/blobs');
 const { getAllowedOrigin } = require('./utils/cors');
 const { normalizeTaxOptions, resolveAnnualSalaryInputs } = require('./_shared/tax-request');
+const { checkRateLimit, getRemaining } = require('./_shared/rate-limit');
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -27,12 +28,64 @@ function respond(status, body, extra = {}) {
   return { statusCode: status, headers: { ...CORS, ...extra }, body: JSON.stringify(body) };
 }
 
-async function validateApiKey(apiKey) {
+function sandboxRateKey(apiKey, event) {
+  const headers = event.headers || {};
+  const ip = String(
+    headers['x-nf-client-connection-ip'] ||
+    headers['client-ip'] ||
+    headers['x-forwarded-for'] ||
+    'unknown'
+  ).split(',')[0].trim() || 'unknown';
+  return 'sandbox:' + apiKey + ':' + ip;
+}
+
+function sandboxTaxResponse(body) {
+  const country = String((body && body.country) || 'NG').toUpperCase();
+  const grossAnnual = Number((body && (body.grossAnnual || (body.grossMonthly ? body.grossMonthly * 12 : 0))) || 7200000);
+  const taxAnnual = Math.round(grossAnnual * 0.1413);
+  const pension = Math.round(grossAnnual * 0.08);
+  const netAnnual = Math.max(0, grossAnnual - taxAnnual - pension);
+  return {
+    status: 'success',
+    sandbox: true,
+    input: { country, grossAnnual },
+    deductions: {
+      pension,
+      totalDeductions: pension
+    },
+    tax: {
+      taxableIncome: Math.max(0, grossAnnual - pension),
+      netTax: taxAnnual,
+      bands: [
+        { label: 'Sandbox PAYE estimate', rate: 0.1413, amount: taxAnnual }
+      ]
+    },
+    result: {
+      netAnnual,
+      netMonthly: Math.round(netAnnual / 12),
+      effectiveRate: '14.13%'
+    },
+    _meta: {
+      api: 'AfroTax',
+      version: 'v1',
+      timestamp: new Date().toISOString(),
+      sandbox: true,
+      dataPolicy: 'deterministic sandbox data',
+      docs: 'https://afrotools.com/docs/api/tax'
+    }
+  };
+}
+
+async function validateApiKey(apiKey, event) {
   if (!apiKey) return { valid: false };
 
-  // Sandbox / test keys always pass
+  // Sandbox keys use deterministic data and their own free-tier limits.
   if (apiKey.startsWith('afro_test_')) {
-    return { valid: true, tier: 'free', sandbox: true, remaining: 999, limit: 1000 };
+    const key = sandboxRateKey(apiKey, event);
+    if (!checkRateLimit(key, LIMITS.free.day)) {
+      return { valid: true, tier: 'sandbox', sandbox: true, remaining: 0, limit: LIMITS.free.day, resetAt: 'midnight UTC' };
+    }
+    return { valid: true, tier: 'sandbox', sandbox: true, remaining: getRemaining(key, LIMITS.free.day), limit: LIMITS.free.day };
   }
 
   try {
@@ -88,9 +141,10 @@ exports.handler = async (event) => {
   /* ---- Authenticate ---- */
   const apiKey =
     event.headers['x-api-key'] ||
+    event.headers['X-Api-Key'] ||
     (event.queryStringParameters || {}).api_key;
 
-  const auth = await validateApiKey(apiKey);
+  const auth = await validateApiKey(apiKey, event);
 
   if (!auth.valid) {
     return respond(401, {
@@ -116,6 +170,29 @@ exports.handler = async (event) => {
   /* ---- GET: country info / list ---- */
   if (event.httpMethod === 'GET') {
     const country = (event.queryStringParameters || {}).country;
+
+    if (auth.sandbox) {
+      if (!country) {
+        return respond(200, {
+          status: 'success',
+          sandbox: true,
+          countries: [{ country: 'NG', name: 'Nigeria Sandbox', currency: 'NGN' }],
+          total: 1,
+          dataPolicy: 'deterministic sandbox data'
+        });
+      }
+      return respond(200, {
+        status: 'success',
+        sandbox: true,
+        country: 'NG',
+        name: 'Nigeria Sandbox',
+        currency: 'NGN',
+        regimes: ['SANDBOX_2026'],
+        options: { pension: true },
+        lastUpdated: '2026-01-01',
+        source: 'AfroTools sandbox data'
+      });
+    }
 
     if (!country) {
       return respond(200, {
@@ -153,6 +230,10 @@ exports.handler = async (event) => {
       body = JSON.parse(event.body);
     } catch {
       return respond(400, { error: 'Invalid JSON body', code: 'INVALID_JSON' });
+    }
+
+    if (auth.sandbox) {
+      return respond(200, sandboxTaxResponse(body));
     }
 
     const {

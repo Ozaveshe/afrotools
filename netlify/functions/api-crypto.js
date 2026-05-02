@@ -8,8 +8,8 @@
  * Adds CORS headers, rate limit info, API key validation (optional).
  * Returns JSON with proper error handling.
  *
- * Headers: x-api-key for authenticated access (bypasses rate limiting)
- * Rate limit: 100 requests/day without API key
+ * Headers: x-api-key for authenticated access
+ * Free tier: 100 requests/day and 3,000/month
  */
 
 const { getAllowedOrigin } = require('./utils/cors');
@@ -129,7 +129,7 @@ exports.handler = async function (event) {
     if (!rateCheck.allowed) {
       return jsonResponse(429, {
         error: 'Rate limit exceeded',
-        message: 'Free tier allows 100 requests/day. Add x-api-key header for unlimited access.',
+        message: 'Free tier allows 100 requests/day and 3,000/month. Generate an API key from your dashboard for authenticated limits.',
         docs: 'https://afrotools.org/api-docs',
       }, rateLimitHeaders);
     }

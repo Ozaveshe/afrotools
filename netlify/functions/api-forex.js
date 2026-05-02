@@ -6,8 +6,8 @@
  * GET /api/forex?pairs=USD-NGN,USD-KES    — multiple pairs
  * GET /api/forex?history=30d&pair=USD-NGN  — historical data
  *
- * Headers: x-api-key for authenticated access (bypasses rate limiting)
- * Rate limit: 100 requests/day without API key
+ * Headers: x-api-key for authenticated access
+ * Free tier: 100 requests/day and 3,000/month
  */
 
 const { getData } = require('./_shared/data-store');
@@ -77,7 +77,7 @@ exports.handler = async function (event) {
     if (!checkRateLimit(clientIp)) {
       return jsonResponse(429, {
         error: 'Rate limit exceeded',
-        message: 'Free tier allows 100 requests/day. Add x-api-key header for unlimited access.',
+        message: 'Free tier allows 100 requests/day and 3,000/month. Generate an API key from your dashboard for authenticated limits.',
       });
     }
   }

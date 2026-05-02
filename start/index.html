@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://afrotools.com/start/">
+  <meta name="description" content="Choose your African country and goal to start AfroTools with local salary, tax, VAT, currency, legal, business, and API examples.">
+  <title>Start by Country | AfroTools</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
+  <script src="/assets/js/components/country-selector.js?v=1" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=16823958" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
+  <style>
+    body{margin:0;background:#f7f9fc;color:#0f172a;font-family:"DM Sans",system-ui,sans-serif}
+    .start-main{min-height:calc(100vh - 160px);padding:100px 20px 72px}
+    .start-wrap{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.85fr) minmax(340px,1fr);gap:44px;align-items:start}
+    .start-kicker{display:inline-flex;margin-bottom:16px;padding:7px 12px;border:1px solid #c7ddf8;border-radius:8px;background:#fff;color:#074f9f;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+    .start-title{font-size:clamp(2.25rem,5vw,4.4rem);line-height:1.02;letter-spacing:0;margin:0 0 16px;font-weight:800;color:#111827}
+    .start-copy{max-width:580px;margin:0;color:#526173;font-size:1.04rem;line-height:1.7}
+    .start-list{margin-top:24px;display:grid;gap:11px;color:#334155;font-weight:700}
+    .start-list span{display:flex;gap:10px;align-items:flex-start}
+    .start-list b{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#e8f7ee;color:#166534;font-size:.76rem;flex:0 0 auto}
+    .start-panel{background:#fff;border:1px solid #dbe4ef;border-radius:14px;box-shadow:0 22px 60px rgba(15,23,42,.08);padding:26px}
+    .start-form{display:grid;gap:18px}
+    .field{display:grid;gap:8px}
+    .field label{font-size:.82rem;font-weight:800;color:#334155}
+    .field select{width:100%;min-height:46px;border:1.5px solid #dbe4ef;border-radius:12px;background:#fff;color:#0f172a;font:inherit;font-weight:700;padding:10px 12px}
+    .start-submit{min-height:48px;border:0;border-radius:12px;background:#0062cc;color:#fff;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(0,98,204,.2)}
+    .start-submit:hover{background:#074f9f}
+    .start-suggestions{margin-top:18px;border-top:1px solid #e5edf7;padding-top:16px;display:grid;gap:10px}
+    .start-suggestions a{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 12px;border:1px solid #dbe4ef;border-radius:10px;color:#0f172a;text-decoration:none;font-weight:800;background:#fbfdff}
+    .start-suggestions a:hover{border-color:#0062cc;color:#0062cc}
+    .start-note{margin-top:12px;color:#64748b;font-size:.8rem;line-height:1.55}
+    .start-note code{word-break:break-word;color:#0f172a;font-family:var(--font-mono,"JetBrains Mono",monospace);font-size:.78rem}
+    @media(max-width:860px){.start-main{padding-top:84px}.start-wrap{grid-template-columns:1fr;gap:28px}.start-panel{padding:20px}}
+  </style>
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+  <main class="start-main">
+    <div class="start-wrap">
+      <section aria-labelledby="start-title">
+        <div class="start-kicker">Country-first setup</div>
+        <h1 class="start-title" id="start-title">Start with the country that matters.</h1>
+        <p class="start-copy">AfroTools will use your country for currencies, salary and tax defaults, VAT suggestions, legal notes, language hints, and API examples.</p>
+        <div class="start-list" aria-label="Country context benefits">
+          <span><b>1</b>PAYE, VAT and salary tools open with local assumptions.</span>
+          <span><b>2</b>Currency, language and government guidance stop feeling generic.</span>
+          <span><b>3</b>Diaspora users can manage money in one country while living elsewhere.</span>
+        </div>
+      </section>
+
+      <section class="start-panel" aria-label="Choose country and goal">
+        <form class="start-form" id="startForm" action="/tools/" method="get">
+          <afro-country-selector id="startCountrySelector" variant="inline" redirect="none" sync-profile diaspora label="Country"></afro-country-selector>
+          <div class="field">
+            <label for="startGoal">Goal</label>
+            <select id="startGoal" name="goal">
+              <option value="country">Open my country hub</option>
+              <option value="tax">Salary, PAYE and VAT</option>
+              <option value="business">Business and invoices</option>
+              <option value="documents">PDF and documents</option>
+              <option value="currency">Currency and live data</option>
+              <option value="api">API examples</option>
+              <option value="browse">Browse local tools</option>
+            </select>
+          </div>
+          <button class="start-submit" type="submit">Continue</button>
+        </form>
+        <div class="start-suggestions" aria-label="Selected country suggestions">
+          <a href="/nigeria/ng-salary-tax" data-country-paye-href><span data-country-paye-name>Nigeria PAYE Calculator</span><span>Open</span></a>
+          <a href="/nigeria/ng-vat" data-country-vat-href><span data-country-vat-name>Nigeria VAT Calculator</span><span>Open</span></a>
+          <a href="/tools/?country=NG" data-country-tools-href><span><span data-country-currency-label>NGN currency</span> tools</span><span>Browse</span></a>
+        </div>
+        <p class="start-note" data-country-tax-ref>FIRS PAYE, pension, NHF and national payroll assumptions.</p>
+        <p class="start-note"><strong>Language suggestions:</strong> <span data-country-language>English, Hausa, Yoruba, Igbo</span></p>
+        <p class="start-note"><strong>Legal note:</strong> <span data-country-legal-note>Nigeria legal and government guidance varies by federal and state authority.</span></p>
+        <p class="start-note"><strong>API example:</strong> <code data-country-api-example>curl https://api.afrotools.com/v1/tax/paye?country=NG&amp;currency=NGN</code></p>
+        <noscript>
+          <form class="start-form" action="/tools/" method="get">
+            <div class="field">
+              <label for="country">Country code</label>
+              <select id="country" name="country">
+                <option value="NG">Nigeria</option>
+                <option value="KE">Kenya</option>
+                <option value="GH">Ghana</option>
+                <option value="ZA">South Africa</option>
+              </select>
+            </div>
+            <button class="start-submit" type="submit">Browse local tools</button>
+          </form>
+        </noscript>
+      </section>
+    </div>
+  </main>
+  <afro-footer></afro-footer>
+  <script>
+  (function(){
+    var form = document.getElementById('startForm');
+    var goal = document.getElementById('startGoal');
+    if (!form || !goal) return;
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var country = window.AfroCountry && window.AfroCountry.getSelected ? window.AfroCountry.getSelected() : null;
+      if (!country) {
+        window.location.href = '/tools/';
+        return;
+      }
+      var selectedGoal = goal.value || 'country';
+      if (selectedGoal === 'country') {
+        window.location.href = window.AfroCountry.countryUrl(country);
+        return;
+      }
+      window.location.href = window.AfroCountry.toolsUrl(country) + '&goal=' + encodeURIComponent(selectedGoal);
+    });
+  })();
+  </script>
+</body>
+</html>

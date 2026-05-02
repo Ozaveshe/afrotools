@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GET /api/forex — Latest Rates — AfroTools API Docs</title>
+<title>GET /api/v1/fx/rates - Latest Rates - AfroTools API Docs</title>
 <meta name="description" content="Get the latest exchange rate between any two supported currencies with bid/ask spreads via the AfroFX API.">
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/forex/latest">
@@ -31,7 +31,7 @@
 
         <div class="endpoint-header">
           <span class="endpoint-method endpoint-method--get">GET</span>
-          <span class="endpoint-url">https://afrotools.com/api/forex</span>
+          <span class="endpoint-url">https://afrotools.com/api/v1/fx/rates</span>
         </div>
 
         <div class="api-callout api-callout--info">
@@ -43,14 +43,14 @@
           <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
             <tr>
-              <td><span class="param-name">from</span> <span class="param-required">required</span></td>
+              <td><span class="param-name">base</span> <span class="param-required">required</span></td>
               <td><span class="param-type">string</span></td>
-              <td>Source currency code (e.g., <code>USD</code>, <code>EUR</code>, <code>GBP</code>, <code>BTC</code>).</td>
+              <td>Base currency code (e.g., <code>USD</code>, <code>EUR</code>, <code>GBP</code>, <code>BTC</code>).</td>
             </tr>
             <tr>
-              <td><span class="param-name">to</span> <span class="param-required">required</span></td>
+              <td><span class="param-name">target</span> <span class="param-required">required</span></td>
               <td><span class="param-type">string</span></td>
-              <td>Target currency code (e.g., <code>NGN</code>, <code>KES</code>, <code>ZAR</code>).</td>
+              <td>Quote currency code (e.g., <code>NGN</code>, <code>KES</code>, <code>ZAR</code>).</td>
             </tr>
             <tr>
               <td><span class="param-name">amount</span> <span class="param-optional">optional</span></td>
@@ -69,8 +69,8 @@
         <table class="param-table">
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><span class="param-name">from</span></td><td><span class="param-type">string</span></td><td>Source currency code.</td></tr>
-            <tr><td><span class="param-name">to</span></td><td><span class="param-type">string</span></td><td>Target currency code.</td></tr>
+            <tr><td><span class="param-name">base</span></td><td><span class="param-type">string</span></td><td>Base currency code.</td></tr>
+            <tr><td><span class="param-name">target</span></td><td><span class="param-type">string</span></td><td>Quote currency code.</td></tr>
             <tr><td><span class="param-name">rate</span></td><td><span class="param-type">number</span></td><td>Mid-market exchange rate.</td></tr>
             <tr><td><span class="param-name">bid</span></td><td><span class="param-type">number</span></td><td>Bid price (buy rate).</td></tr>
             <tr><td><span class="param-name">ask</span></td><td><span class="param-type">number</span></td><td>Ask price (sell rate).</td></tr>
@@ -86,7 +86,7 @@
         <table class="param-table">
           <thead><tr><th>Status</th><th>Code</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td>400</td><td><span class="param-name">invalid_currency</span></td><td>One or both currency codes are not supported.</td></tr>
+            <tr><td>400</td><td><span class="param-name">invalid_currency</span></td><td>Base or target currency codes are not supported.</td></tr>
             <tr><td>400</td><td><span class="param-name">invalid_date</span></td><td>Date format is invalid or date is in the future.</td></tr>
             <tr><td>401</td><td><span class="param-name">missing_api_key</span></td><td>No API key was provided.</td></tr>
             <tr><td>403</td><td><span class="param-name">plan_required</span></td><td>Historical data requires Pro plan or above.</td></tr>
@@ -105,10 +105,10 @@
             <button class="code-tab" data-lang="node">Node.js</button>
             <button class="code-tab" data-lang="php">PHP</button>
           </div>
-          <div class="code-panel code-panel--active" data-lang="curl">curl "https://afrotools.com/api/forex?from=USD&to=NGN" \
+          <div class="code-panel code-panel--active" data-lang="curl">curl "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN" \
   -H "x-api-key: afro_live_your_key_here"</div>
           <div class="code-panel" data-lang="js">const res = await fetch(
-  "https://afrotools.com/api/forex?from=USD&to=NGN",
+  "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN",
   { headers: { "x-api-key": "afro_live_your_key_here" } }
 );
 const data = await res.json();
@@ -116,8 +116,8 @@ console.log(`1 USD = ${data.data.rate} NGN`);</div>
           <div class="code-panel" data-lang="python">import requests
 
 resp = requests.get(
-    "https://afrotools.com/api/forex",
-    params={"from": "USD", "to": "NGN"},
+    "https://afrotools.com/api/v1/fx/rates",
+    params={"base": "USD", "target": "NGN"},
     headers={"x-api-key": "afro_live_your_key_here"}
 )
 data = resp.json()
@@ -125,15 +125,15 @@ print(f"1 USD = {data['data']['rate']} NGN")</div>
           <div class="code-panel" data-lang="node">const axios = require("axios");
 
 const { data } = await axios.get(
-  "https://afrotools.com/api/forex",
+  "https://afrotools.com/api/v1/fx/rates",
   {
-    params: { from: "USD", to: "NGN" },
+    params: { base: "USD", target: "NGN" },
     headers: { "x-api-key": "afro_live_your_key_here" }
   }
 );
 console.log(`1 USD = ${data.data.rate} NGN`);</div>
           <div class="code-panel" data-lang="php">$ch = curl_init(
-  "https://afrotools.com/api/forex?from=USD&to=NGN"
+  "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN"
 );
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "x-api-key: afro_live_your_key_here"
@@ -151,8 +151,8 @@ echo "1 USD = " . $data["data"]["rate"] . " NGN";</div>
         <div class="code-example">{
   "success": true,
   "data": {
-    "from": "USD",
-    "to": "NGN",
+    "base": "USD",
+    "target": "NGN",
     "rate": 1580.25,
     "bid": 1578.50,
     "ask": 1582.00,
@@ -167,13 +167,13 @@ echo "1 USD = " . $data["data"]["rate"] . " NGN";</div>
 
         <div class="code-label">With Amount Conversion</div>
         <div class="code-example"><span class="c"># Convert 1000 USD to NGN</span>
-curl "https://afrotools.com/api/forex?from=USD&to=NGN&amount=1000" \
+curl "https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN&amount=1000" \
   -H "x-api-key: afro_test_abc123"</div>
         <div class="code-example">{
   "success": true,
   "data": {
-    "from": "USD",
-    "to": "NGN",
+    "base": "USD",
+    "target": "NGN",
     "rate": 1580.25,
     "amount": 1580250.00,
     "bid": 1578500.00,

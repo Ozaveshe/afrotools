@@ -8,7 +8,7 @@
  *   POST /api/auth/login    — { email, password }
  *   POST /api/auth/signup   — { email, password, name, country }
  *   POST /api/auth/logout   — clears session cookie
- *   GET  /api/auth/session   — returns current user from cookie
+ *   GET  /api/auth/session   — returns current user from cookie or verified Bearer token
  *   POST /api/auth/refresh  — refreshes token using refresh_token cookie
  *
  * Cookies set:
@@ -56,6 +56,22 @@ function parseCookies(cookieHeader) {
     }
   });
   return cookies;
+}
+
+function getHeader(headers, name) {
+  headers = headers || {};
+  var wanted = String(name || '').toLowerCase();
+  var keys = Object.keys(headers);
+  for (var i = 0; i < keys.length; i++) {
+    if (keys[i].toLowerCase() === wanted) return headers[keys[i]];
+  }
+  return '';
+}
+
+function getBearerToken(headers) {
+  var auth = String(getHeader(headers, 'authorization') || '');
+  var match = auth.match(/^Bearer\s+(.+)$/i);
+  return match ? match[1].trim() : '';
 }
 
 function jsonResponse(statusCode, body, extraHeaders, multiValueHeaders) {
@@ -141,6 +157,14 @@ function sessionCookieHeaders(session) {
   };
 }
 
+function accessCookieHeaders(accessToken, maxAge) {
+  return {
+    'Set-Cookie': [
+      setCookie('afro_session', accessToken, maxAge || 3600),
+    ],
+  };
+}
+
 function clearCookieHeaders() {
   return {
     'Set-Cookie': [
@@ -188,12 +212,13 @@ exports.handler = async function (event) {
   var action = pathParts[pathParts.length - 1]; // login, signup, logout, session, refresh
   var requestHeaders = event.headers || {};
   var cookies = parseCookies(requestHeaders.cookie || requestHeaders.Cookie || '');
+  var bearerToken = getBearerToken(requestHeaders);
 
   if (!SUPABASE_ANON_KEY) {
     if (action === 'logout') {
       return jsonResponse(200, { ok: true }, Object.assign({}, cors), clearCookieHeaders());
     }
-    if (action === 'session' && event.httpMethod === 'GET' && !cookies.afro_session && !cookies.afro_refresh) {
+    if (action === 'session' && event.httpMethod === 'GET' && !cookies.afro_session && !cookies.afro_refresh && !bearerToken) {
       return jsonResponse(200, { user: null, authenticated: false }, cors);
     }
     return jsonResponse(500, { error: 'Server config error: missing auth key' }, cors);
@@ -290,7 +315,8 @@ exports.handler = async function (event) {
 
   // ── SESSION (get current user) ──
   if (action === 'session' && event.httpMethod === 'GET') {
-    var token = cookies.afro_session;
+    var token = cookies.afro_session || bearerToken;
+    var tokenFromBearer = !!(!cookies.afro_session && bearerToken);
     if (!token) {
       return jsonResponse(200, { user: null, authenticated: false }, cors);
     }
@@ -300,7 +326,16 @@ exports.handler = async function (event) {
     });
 
     if (result.status === 200 && result.data && result.data.id) {
-      return jsonResponse(200, { user: buildUser(result.data), authenticated: true }, cors);
+      var user = buildUser(result.data);
+      if (tokenFromBearer) {
+        var bearerHeaders = Object.assign({}, cors);
+        return jsonResponse(200, { user: user, authenticated: true, bridged: true }, bearerHeaders, accessCookieHeaders(token));
+      }
+      return jsonResponse(200, { user: user, authenticated: true }, cors);
+    }
+
+    if (tokenFromBearer) {
+      return jsonResponse(401, { user: null, authenticated: false, error: 'Session token expired. Sign in again.' }, cors);
     }
 
     // Token expired — try refresh

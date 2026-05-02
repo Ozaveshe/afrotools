@@ -38,6 +38,7 @@ The country hub shows:
 - Country overview (flag, key facts)
 - Quick tax reference table
 - Tool listing via `renderToolGrid('tool-grid', 'XX')` or `<afro-country-tools country="XX">`
+- The shared `renderToolGrid` country-hub view adds local live-data cards, category counts, search, load-more paging, and image-backed tool cards from `/assets/img/tools/{tool-id}.webp`
 - "What Changed" section for current tax year
 
 Use the registry-ready pattern:

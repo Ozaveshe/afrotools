@@ -771,16 +771,60 @@
     afrowork: '/sw/kazi-na-ajira/'
   };
 
-  // 11 main categories shown in the mega menu + "All Categories" card = 12 items (3 rows × 4)
-  const MEGA_IDS = [
-    'financial', 'document-pdf', 'image-design', 'developer',
-    'education', 'health', 'fintech', 'trade',
-    'energy', 'small-business', 'legal'
+  // 16 categories for the Tools dropdown. Keep top-level navbar categories out of this grid.
+  const TOOL_MENU_IDS = [
+    'image-design', 'developer', 'education', 'health',
+    'insurance', 'fintech', 'agriculture', 'legal',
+    'language', 'trade', 'telecom', 'energy',
+    'engineering', 'government', 'transport', 'personal-finance'
   ];
 
-  const TOOL_MENU_IDS = [
-    'financial', 'document-pdf', 'ecommerce', 'small-business', 'career', 'developer'
-  ];
+  const TOOL_MENU_COPY = {
+    yo: {
+      'image-design': { label: 'Àwòrán àti Dísáìn', desc: 'Dín, tún iwọn ṣe, QR kóòdù' },
+      developer: { label: 'Irinṣẹ́ Olùdàgbàsókè', desc: 'JSON, Base64, hash, regex' },
+      education: { label: 'Ẹ̀kọ́', desc: 'GPA, WAEC, awin, owó ilé-ẹ̀kọ́' },
+      health: { label: 'Ìlera àti Ìtọju Ara', desc: 'Àrùn, owó ilé ìwòsàn, ounjẹ' },
+      insurance: { label: 'Ìdánilójú', desc: 'Ọkọ, ìlera, ìgbésí ayé, ìrìnàjò' },
+      fintech: { label: 'Fintech àti Bánkì', desc: 'Ìfipamọ́, awin, mobile money' },
+      agriculture: { label: 'Ọ̀gbìn', desc: 'Ìkórè, irúgbìn, ajílẹ̀, omi' },
+      legal: { label: 'Òfin àti Ìbámu', desc: 'Ìforúkọsílẹ̀, adehun, data privacy' },
+      language: { label: 'Èdè àti Ìtumọ̀', desc: 'Yorùbá, Swahili, Hausa, Amharic' },
+      trade: { label: 'Ìṣòwò àti Gbigbewọlé', desc: 'Ọkọ ojú omi, duty, incoterms' },
+      telecom: { label: 'Tẹlifoonu àti Móbáìlì', desc: 'Data, USSD, roaming, ISP' },
+      energy: { label: 'Agbára àti Ìpèsè', desc: 'Ina, solar, generator, omi' },
+      engineering: { label: 'Ìmọ̀ Ẹ̀rọ', desc: 'BOQ, concrete, ina, ikọ́lé' },
+      government: { label: 'Ìjọba àti Ara Ìlú', desc: 'Passport, ID, ìforúkọsílẹ̀ olùdìbò' },
+      transport: { label: 'Ìrìnàjò àti Ẹru', desc: 'Epo, ọkọ, delivery, naira ọkọ' },
+      'personal-finance': { label: 'Ìṣúná Ara Ẹni', desc: 'Budget, ìdílé, owó-ori' }
+    },
+    ha: {
+      'image-design': { label: 'Hoto da Zane', desc: 'Matsa hoto, canja girma, QR code' },
+      developer: { label: 'Kayan Developer', desc: 'JSON, Base64, hash, regex' },
+      education: { label: 'Ilimi', desc: 'GPA, WAEC, rance, kuɗin makaranta' },
+      health: { label: 'Lafiya da Walwala', desc: 'Cuta, kuɗin asibiti, abinci' },
+      insurance: { label: 'Inshora', desc: 'Mota, lafiya, rai, tafiya' },
+      fintech: { label: 'Fintech da Banki', desc: 'Ajiya, rance, mobile money' },
+      agriculture: { label: 'Noma', desc: 'Amfanin gona, iri, taki, ban ruwa' },
+      legal: { label: "Doka da Bin Ka'ida", desc: "Rajista, kwangila, sirrin bayanai" },
+      language: { label: 'Harshe da Fassara', desc: 'Yoruba, Swahili, Hausa, Amharic' },
+      trade: { label: 'Kasuwanci da Shigo da Kaya', desc: 'Jirgi, haraji, incoterms' },
+      telecom: { label: 'Sadarwa da Wayar Hannu', desc: 'Data, USSD, roaming, ISP' },
+      energy: { label: 'Makamashi da Ayyuka', desc: 'Wutar lantarki, solar, generator' },
+      engineering: { label: 'Injiniyanci', desc: 'BOQ, kankare, lantarki, gini' },
+      government: { label: "Gwamnati da Jama'a", desc: "Fasfo, ID, rajistar zaɓe" },
+      transport: { label: 'Sufuri da Jigila', desc: 'Mai, mota, delivery, farashi' },
+      'personal-finance': { label: 'Kuɗin Kai', desc: 'Budget, al’amuran gida, haraji' }
+    }
+  };
+
+  function localizedItemText(item, field, lang) {
+    var overrides = TOOL_MENU_COPY[lang] && TOOL_MENU_COPY[lang][item.id];
+    if (overrides && overrides[field]) return overrides[field];
+    if (lang === 'fr' && item[field + 'Fr']) return item[field + 'Fr'];
+    if (lang === 'sw' && item[field + 'Sw']) return item[field + 'Sw'];
+    return item[field] || '';
+  }
 
   const COUNTRY_LINKS = [
     { label: 'Nigeria', href: '/nigeria/' },
@@ -891,6 +935,11 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
+    .tools-mega-grid {
+      max-width: 1240px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
 
     .mega-col {
       border-radius: 12px; padding: 15px;
@@ -906,8 +955,8 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; flex-shrink: 0;
     }
-    .mega-col-name { font-size: 0.83rem; font-weight: 800; color: #111827; line-height: 1.2; }
-    .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #9ca3af; margin-top: 1px; }
+    .mega-col-name { font-size: 0.83rem; font-weight: 600; color: #334155; line-height: 1.2; }
+    .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #64748b; margin-top: 1px; }
 
     .mega-footer {
       max-width: 1200px; margin: 0 auto;
@@ -987,6 +1036,7 @@
 
     /* RIGHT */
     .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+    .country-control-shell { width: 156px; flex: 0 0 156px; }
     .pill-54 { font-size: 0.66rem; font-weight: 600; color: #6b7280; padding: 4px 10px; border-radius: 20px; border: 1px solid #e5e7eb; background: #f9fafb; white-space: nowrap; }
 
     .btn-login {
@@ -1003,18 +1053,30 @@
     .btn-pro {
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 56px; padding: 7px 14px; border-radius: 980px;
-      border: 1.5px solid rgba(245,166,35,0.28);
-      background: linear-gradient(180deg, rgba(255,243,205,0.78), rgba(255,249,235,0.96));
-      color: #9a5b00; text-decoration: none; white-space: nowrap;
-      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.01em;
-      transition: transform 0.13s, box-shadow 0.13s, border-color 0.13s;
-      box-shadow: 0 1px 8px rgba(245,166,35,0.12);
+      border: 1.5px solid #BFDBFE;
+      background: #fff;
+      color: #0B63CE; text-decoration: none; white-space: nowrap;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0;
+      transition: transform 0.13s, box-shadow 0.13s, background 0.13s, border-color 0.13s;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.05);
       min-height: 40px;
     }
     .btn-pro:hover {
-      border-color: rgba(245,166,35,0.52);
-      box-shadow: 0 4px 16px rgba(245,166,35,0.18);
+      background: #EFF6FF;
+      border-color: #0062CC;
+      box-shadow: 0 5px 14px rgba(0,98,204,0.12);
       transform: translateY(-1px);
+    }
+    .btn-pro.is-free {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #0F172A;
+    }
+    .btn-pro.is-pro {
+      background: #ECFDF5;
+      border-color: #A7F3D0;
+      color: #047857;
+      box-shadow: 0 3px 10px rgba(4,120,87,0.08);
     }
 
     .cta {
@@ -1086,6 +1148,7 @@
       padding-left: var(--nav-safe-left);
     }
     .mob.open { opacity: 1; pointer-events: all; }
+    .mob-country-context { padding: 16px 18px 0; }
 
     .mob-section-label {
       font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
@@ -1153,7 +1216,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1.1rem; flex-shrink: 0;
     }
-    .mob-cat-label { font-size: 0.92rem; font-weight: 700; color: #111827; }
+    .mob-cat-label { font-size: 0.92rem; font-weight: 600; color: #334155; }
     .mob-cat-desc  { font-size: 0.7rem; font-weight: 400; color: #6b7280; margin-top: 1px; }
     .mob-arr { margin-left: auto; font-size: 0.7rem; color: #9ca3af; }
 
@@ -1172,11 +1235,28 @@
       padding: 13px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
       text-decoration: none; border: 1.5px solid #e5e7eb; color: #374151;
     }
+    .mob-pro-link {
+      display: flex; align-items: center; justify-content: center;
+      padding: 13px; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
+      text-decoration: none; border: 1.5px solid #BFDBFE; color: #0B63CE; background: #fff;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+    }
+    .mob-pro-link.is-free {
+      border-color: #CBD5E1;
+      color: #0F172A;
+      background: #F8FAFC;
+    }
+    .mob-pro-link.is-pro {
+      border-color: #A7F3D0;
+      color: #047857;
+      background: #ECFDF5;
+    }
     .mob-note { text-align: center; font-size: 0.7rem; font-weight: 500; color: #9ca3af; }
 
     /* RESPONSIVE — progressive collapse */
     .pill-54 { display: none; }
     @media (max-width: 1100px) {
+      .country-control-shell { display: none; }
       .cta { display: none; }
       .lang-btn-label { display: none; }
       .lang-btn { padding: 5px 7px; font-size: 0.9rem; }
@@ -1214,7 +1294,7 @@
       transition: all 0.13s; flex-shrink: 0;
     }
     .search-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
-    .search-btn:focus-visible, .lnk:focus-visible, .btn-login:focus-visible, .burger:focus-visible, .lang-btn:focus-visible {
+    .search-btn:focus-visible, .lnk:focus-visible, .btn-login:focus-visible, .btn-pro:focus-visible, .mob-pro-link:focus-visible, .burger:focus-visible, .lang-btn:focus-visible {
       outline: 3px solid rgba(0,98,204,0.22);
       outline-offset: 2px;
     }
@@ -1479,8 +1559,8 @@
       var featured = TOOL_MENU_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
       var html = featured.map(cat => {
         var href = this._localizedHref(cat, lang);
-        var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
-        var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
+        var label = localizedItemText(cat, 'label', lang);
+        var desc = localizedItemText(cat, 'desc', lang);
         return `
         <a href="${href}" class="mega-col" data-cat="${cat.id}" style="--col-accent:${cat.accent}">
           <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
@@ -1490,20 +1570,6 @@
           </div>
         </a>`;
       }).join('');
-      var allLabel = isSw ? 'Makundi Yote →' : isFr ? 'Toutes les catégories →' : 'All Categories →';
-      var allDesc = isSw ? 'Makundi 28 yote' : isFr ? '28 catégories' : 'All 28 categories';
-      var allHref = isFr ? '/fr/categories/' : '/categories/';
-      allLabel = isSw ? 'Zana Zote ->' : isFr ? 'Tous les outils ->' : 'All Tools ->';
-      allDesc = isSw ? 'Tafuta na chuja zana zote' : isFr ? 'Rechercher et filtrer tous les outils' : 'Search and filter the full directory';
-      allHref = isSw ? '/sw/zana-zote/' : isFr ? '/fr/all-tools/' : '/all-tools/';
-      html += `
-        <a href="${allHref}" class="mega-col" style="--col-accent:#0062CC">
-          <div class="mega-col-icon" style="background:#EEF4FF">🧭</div>
-          <div>
-            <div class="mega-col-name">${allLabel}</div>
-            <div class="mega-col-desc">${allDesc}</div>
-          </div>
-        </a>`;
       return html;
     }
 
@@ -1559,8 +1625,8 @@
       var featured = TOOL_MENU_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
       var html = featured.map(cat => {
         var href = this._localizedHref(cat, lang);
-        var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
-        var desc = isSw && cat.descSw ? cat.descSw : isFr && cat.descFr ? cat.descFr : cat.desc;
+        var label = localizedItemText(cat, 'label', lang);
+        var desc = localizedItemText(cat, 'desc', lang);
         return `
         <a href="${href}" class="mob-cat">
           <div class="mob-cat-icon" style="background:${cat.color}">${cat.icon}</div>
@@ -1739,6 +1805,9 @@
         searchPh:     isSw ? 'Tafuta zana...'               : isFr ? 'Rechercher des outils...'                         : 'Search tools...',
         mobSignIn:    isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign In',
         proHref:      isFr ? '/fr/pro/'                     : '/pro/',
+        proLabel:     isSw ? 'Pro'                          : isFr ? 'Pro'                                              : 'Pro',
+        proUpgrade:   isSw ? 'Pata Pro'                     : isFr ? 'Passer Pro'                                       : 'Upgrade Pro',
+        proWorkspace: isSw ? 'Pro Workspace'                : isFr ? 'Espace Pro'                                       : 'Pro Workspace',
         dashboardHref:isFr ? '/fr/dashboard/'               : '/dashboard/',
         authHref:     '/auth/?mode=login&next=' + encodeURIComponent(isFr ? '/fr/dashboard/' : '/dashboard/'),
         vaultHref:    isFr ? '/fr/dashboard/vault/'         : '/dashboard/vault/',
@@ -1746,6 +1815,63 @@
         srchEmpty:    isSw ? 'Zana 1,390+ za Afrika'          : isFr ? '1 390+ outils africains'                            : 'Search 1,390+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
       };
+      var T_BY_LANG = {
+        yo: {
+          tag: 'Pẹpẹ irinṣẹ Afirika',
+          allTools: 'Gbogbo irinṣẹ',
+          tools: 'Irinṣẹ',
+          countries: 'Orilẹ-ede',
+          business: 'Iṣowo',
+          resources: 'Ìmọ̀ràn',
+          search: 'Wa',
+          startByCountry: 'Bẹrẹ pẹ̀lú orilẹ-ede',
+          countrySearchPh: 'Wa orilẹ-ede...',
+          salaryTax: 'Owó iṣẹ́ &amp; Owo-ori',
+          signIn: 'Wọlé',
+          ariaNav: 'Ìrìnàjò àkọ́kọ́',
+          ariaMenu: 'Menyu ìrìnàjò',
+          ariaSearch: 'Wa irinṣẹ',
+          megaNote: 'Orílẹ̀-èdè Afirika 54 · ọfẹ · kò sí ìforúkọsílẹ̀',
+          browseAll: 'Wo gbogbo irinṣẹ ->',
+          allCats: 'Gbogbo Ẹ̀ka',
+          searchPh: 'Wa irinṣẹ...',
+          mobSignIn: 'Wọlé',
+          proLabel: 'Pro',
+          proUpgrade: 'Ṣí Pro',
+          proWorkspace: 'Pro Workspace',
+          mobNote: 'Orílẹ̀-èdè 54 · ọfẹ · kò sí ìforúkọsílẹ̀',
+          srchEmpty: 'Wa irinṣẹ Afirika 1,390+',
+          srchHint: 'Gbìyànjú "PAYE", "PDF", "owo-ori"...'
+        },
+        ha: {
+          tag: 'Dandalin kayan aikin Afirka',
+          allTools: 'Dukkan kayan aiki',
+          tools: 'Kayan aiki',
+          countries: 'Kasashe',
+          business: 'Kasuwanci',
+          resources: 'Albarkatu',
+          search: 'Bincike',
+          startByCountry: 'Fara da kasa',
+          countrySearchPh: 'Nemi kasa...',
+          salaryTax: 'Albashi &amp; Haraji',
+          signIn: 'Shiga',
+          ariaNav: 'Babban kewayawa',
+          ariaMenu: 'Menu na kewayawa',
+          ariaSearch: 'Bincika kayan aiki',
+          megaNote: 'Kasashen Afirka 54 · kyauta · babu rajista',
+          browseAll: 'Duba duk kayan aiki ->',
+          allCats: 'Dukkan Rukuni',
+          searchPh: 'Bincika kayan aiki...',
+          mobSignIn: 'Shiga',
+          proLabel: 'Pro',
+          proUpgrade: 'Bude Pro',
+          proWorkspace: 'Pro Workspace',
+          mobNote: 'Kasashe 54 · kyauta · babu rajista',
+          srchEmpty: 'Bincika kayan aikin Afirka 1,390+',
+          srchHint: 'Gwada "PAYE", "PDF", "haraji"...'
+        }
+      };
+      if (T_BY_LANG[lang]) Object.assign(T, T_BY_LANG[lang]);
 
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>
@@ -1783,6 +1909,9 @@
             </ul>
 
             <div class="right">
+              <div class="country-control-shell">
+                <afro-country-selector variant="nav" redirect="country" label="Change country"></afro-country-selector>
+              </div>
               ${this._langSwitcherHTML()}
               <button class="search-btn cp-trigger" id="searchBtn" type="button" aria-label="${T.ariaSearch}">
                 <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
@@ -1791,6 +1920,7 @@
                 <span class="search-btn-label">${T.search}</span>
                 <span class="search-kbd cp-trigger-kbd">Ctrl K</span>
               </button>
+              <a href="${T.proHref}" class="btn-pro" data-pro-nav="true">${T.proLabel}</a>
               <a href="${T.authHref}" class="btn-login">${T.signIn}</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
@@ -1800,7 +1930,7 @@
         </nav>
 
         <div class="mega" id="mega" role="menu" aria-label="${T.allTools}">
-          <div class="mega-inner">
+          <div class="mega-inner tools-mega-grid">
             ${this._megaContent()}
           </div>
           <div class="mega-footer">
@@ -1840,7 +1970,11 @@
             ${this._mobileContent()}
           </div>
           ${this._mobileLangHTML()}
+          <div class="mob-country-context">
+            <afro-country-selector variant="mobile" redirect="country" diaspora label="${T.startByCountry}"></afro-country-selector>
+          </div>
           <div class="mob-footer">
+            <a href="${T.proHref}" class="mob-pro-link" data-pro-nav="mobile">${T.proLabel}</a>
             <a href="${T.authHref}" class="mob-login">${T.mobSignIn}</a>
             <a href="${T.vaultHref}" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 My Vault</a>
             <a href="/tools/afropoints/" class="mob-points-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#F59E0B;border:1.5px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);text-align:center;">🎯 AfroPoints</a>
@@ -2257,17 +2391,137 @@
       // Clear mobile search when closing drawer
       // ── AUTH STATE: update Sign-in button when user logs in/out ──
       const loginBtn = sr.querySelector('.btn-login');
+      const proBtn = sr.querySelector('.btn-pro');
       const mobLoginBtn = sr.querySelector('.mob-login');
+      const mobProLink = sr.querySelector('.mob-pro-link');
       const mobVaultLink = sr.querySelector('.mob-vault-link');
       const mobPointsLink = sr.querySelector('.mob-points-link');
 
       var _apBadgeLoaded = false;
+      var _apBadgeRequestToken = '';
+      var _proNavRequestToken = 0;
+      const readNavJson = (key) => {
+        try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) { return null; }
+      };
+      const isExpiredProValue = (value) => {
+        if (!value) return false;
+        var time = Date.parse(value);
+        return !Number.isNaN(time) && time <= Date.now();
+      };
+      const sameNavUser = (base, extra) => {
+        if (!base || !extra) return false;
+        if (base.id && extra.id && base.id === extra.id) return true;
+        if (base.email && extra.email && String(base.email).toLowerCase() === String(extra.email).toLowerCase()) return true;
+        return false;
+      };
+      const mergeCachedProUser = (user, status) => {
+        if (!user || !user.id) return null;
+        var merged = Object.assign({}, user);
+        var profile = status && status.profile || status && status.user || null;
+        if (profile && sameNavUser(user, profile)) {
+          merged = Object.assign(merged, profile, {
+            tier: profile.subscription_tier || profile.tier || merged.tier || 'free',
+            subscription_tier: profile.subscription_tier || profile.tier || merged.subscription_tier || merged.tier || 'free',
+            subscription_expires_at: profile.subscription_expires_at || merged.subscription_expires_at || null
+          });
+        }
+        var cachedProfile = readNavJson('afro_profile_cache');
+        if (cachedProfile && cachedProfile.user && sameNavUser(user, cachedProfile.user)) {
+          var cachedUser = cachedProfile.user;
+          merged = Object.assign(merged, cachedUser, {
+            tier: cachedUser.subscription_tier || cachedUser.tier || merged.tier || 'free',
+            subscription_tier: cachedUser.subscription_tier || cachedUser.tier || merged.subscription_tier || merged.tier || 'free',
+            subscription_expires_at: cachedUser.subscription_expires_at || merged.subscription_expires_at || null
+          });
+        }
+        var cachedStatus = readNavJson('afro_pro_status_cache');
+        var cacheFresh = cachedStatus && cachedStatus.cachedAt && Date.now() - Number(cachedStatus.cachedAt) < 5 * 60 * 1000;
+        var cacheMatches = cachedStatus && (!cachedStatus.email || String(cachedStatus.email).toLowerCase() === String(user.email || '').toLowerCase());
+        if (cacheFresh && cacheMatches) {
+          merged.tier = cachedStatus.tier || merged.tier;
+          merged.subscription_tier = cachedStatus.tier || merged.subscription_tier || merged.tier;
+          merged.subscription_expires_at = cachedStatus.expiresAt || merged.subscription_expires_at || null;
+          if (cachedStatus.isPro && !isExpiredProValue(merged.subscription_expires_at)) {
+            merged.tier = merged.tier || 'pro';
+            merged.subscription_tier = merged.subscription_tier || 'pro';
+          }
+        }
+        return merged;
+      };
+      const isProUser = (user) => {
+        var tier = String((user && (user.subscription_tier || user.tier || user.plan)) || '').toLowerCase();
+        var role = String((user && user.role) || '').toLowerCase();
+        var expiry = user && (user.subscription_expires_at || user.pro_expires_at || user.expires_at);
+        return (role === 'admin' || role === 'owner' || ['pro', 'premium', 'team', 'business', 'enterprise', 'lifetime', 'trialing'].indexOf(tier) !== -1) && !isExpiredProValue(expiry);
+      };
+      const setProNav = (user, status) => {
+        user = mergeCachedProUser(user, status);
+        var _lang = this._getLang();
+        var _proHref = _lang === 'fr' ? '/fr/pro/' : '/pro/';
+        var _workspaceHref = _lang === 'fr' ? '/fr/pro/' : '/pro/workspace/';
+        var _isPro = isProUser(user);
+        var _hasUser = !!(user && user.id);
+        var _label = _isPro
+          ? (_lang === 'fr' ? 'Continuer Pro' : 'Continue Pro work')
+          : _hasUser
+            ? (_lang === 'sw' ? 'Pata Pro' : _lang === 'fr' ? 'Passer Pro' : 'Upgrade Pro')
+            : 'Pro';
+        var _href = _isPro ? _workspaceHref : _proHref;
+        if (proBtn) {
+          proBtn.textContent = _label;
+          proBtn.href = _href;
+          proBtn.className = 'btn-pro' + (_isPro ? ' is-pro' : _hasUser ? ' is-free' : '');
+          proBtn.setAttribute('aria-label', _isPro ? 'Open AfroTools Pro Workspace' : 'Open AfroTools Pro plans');
+        }
+        if (mobProLink) {
+          mobProLink.textContent = _isPro ? _label : (_hasUser ? _label : 'AfroTools Pro');
+          mobProLink.href = _href;
+          mobProLink.className = 'mob-pro-link' + (_isPro ? ' is-pro' : _hasUser ? ' is-free' : '');
+          mobProLink.setAttribute('aria-label', _isPro ? 'Open AfroTools Pro Workspace' : 'Open AfroTools Pro plans');
+        }
+      };
+      const refreshProNavFromGate = (user) => {
+        if (!user || !user.id || !window.AfroProGate || typeof window.AfroProGate.getStatus !== 'function') return;
+        var requestToken = ++_proNavRequestToken;
+        window.AfroProGate.getStatus({ fresh: false }).then(function(status) {
+          if (requestToken !== _proNavRequestToken) return;
+          if (!window.AfroAuth || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) return;
+          var activeUser = AfroAuth.getUser ? AfroAuth.getUser() : user;
+          if (!sameNavUser(user, activeUser)) return;
+          setProNav(activeUser, status);
+        }).catch(function() {});
+      };
+      const resetSignedOutAuthUI = () => {
+        _apBadgeLoaded = false;
+        _apBadgeRequestToken = '';
+        sr.querySelectorAll('.ap-nav-badge').forEach(function(el) { el.remove(); });
+        setProNav(null);
+        if (mobVaultLink) mobVaultLink.style.display = 'none';
+        if (mobPointsLink) {
+          mobPointsLink.style.display = 'none';
+          mobPointsLink.textContent = '🎯 AfroPoints';
+        }
+      };
+      const clearRejectedAuth = (reason) => {
+        if (window.AfroAuthSessionBridge && typeof window.AfroAuthSessionBridge.clear === 'function') {
+          window.AfroAuthSessionBridge.clear(reason);
+          return;
+        }
+        try {
+          localStorage.removeItem('afro_auth_v2');
+          localStorage.removeItem('afro_session_v3');
+          localStorage.removeItem('afro_profile_cache');
+        } catch(e) {}
+        window.dispatchEvent(new CustomEvent('afro-auth-change', { detail: { user: null, authenticated: false, reason: reason || 'session-rejected' } }));
+      };
       const updateAuthUI = () => {
         var _lang = this._getLang();
         var _dashboardHref = _lang === 'fr' ? '/fr/dashboard/' : '/dashboard/';
         var _authHref = '/auth/?mode=login&next=' + encodeURIComponent(_dashboardHref);
         var _dashboardLabel = _lang === 'fr' ? 'Tableau de bord' : 'Dashboard';
+        setProNav(null);
         if (typeof AfroAuth === 'undefined' || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
+          resetSignedOutAuthUI();
           // Not logged in — show Sign in (i18n)
           var _signLabel = _lang === 'sw' ? 'Ingia' : _lang === 'fr' ? 'Connexion' : 'Sign in';
           if (loginBtn) {
@@ -2280,11 +2534,11 @@
             mobLoginBtn.href = _authHref;
             mobLoginBtn.onclick = function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
           }
-          if (mobVaultLink) mobVaultLink.style.display = 'none';
-          if (mobPointsLink) mobPointsLink.style.display = 'none';
           return;
         }
         const user = AfroAuth.getUser();
+        setProNav(user);
+        refreshProNavFromGate(user);
         const displayName = this._cleanDisplayName(user && user.name, _dashboardLabel);
         const name = displayName.split(' ')[0] || _dashboardLabel;
         const safeName = this._escapeHtml(name);
@@ -2300,10 +2554,21 @@
           try {
             var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
             if (token) {
+              _apBadgeRequestToken = token;
               fetch('/.netlify/functions/afropoints-profile', { headers: { Authorization: 'Bearer ' + token } })
-                .then(function(r) { return r.json(); })
+                .then(function(r) {
+                  if (r.status === 401 || r.status === 403) {
+                    resetSignedOutAuthUI();
+                    clearRejectedAuth('afropoints-profile-rejected');
+                    return null;
+                  }
+                  return r.json();
+                })
                 .then(function(p) {
                   if (!p || p.error || !(p.current_balance >= 0)) return;
+                  var activeToken = null;
+                  try { activeToken = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null; } catch(e) {}
+                  if (!AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn() || activeToken !== _apBadgeRequestToken) return;
                   sr.querySelectorAll('.ap-nav-badge').forEach(function(el) { el.remove(); });
                   var badge = document.createElement('a');
                   badge.href = '/tools/afropoints/';
@@ -2343,6 +2608,14 @@
 
       // Listen for auth state changes
       window.addEventListener('afro-auth-change', updateAuthUI);
+      window.addEventListener('afro-pro-gate-ready', updateAuthUI);
+      window.addEventListener('dashboard-auth-state-change', function(event) {
+        var state = event && event.detail && event.detail.state;
+        if (state === 'signedOut' || state === 'sessionError') {
+          resetSignedOutAuthUI();
+          clearRejectedAuth('dashboard-' + state);
+        }
+      });
     }
 
     _lockBodyScroll() {
@@ -2379,7 +2652,7 @@
 
   function _localizedGlobalNavItems() {
     var lang = _globalNavLang();
-    if (lang !== 'fr' && lang !== 'sw') return NAV_ITEMS;
+    if (lang !== 'fr' && lang !== 'sw' && lang !== 'yo' && lang !== 'ha') return NAV_ITEMS;
     return NAV_ITEMS.map(function(item) {
       var copy = Object.assign({}, item);
       if (lang === 'fr') {
@@ -2393,6 +2666,9 @@
         if (item.labelSw) copy.label = item.labelSw;
         if (item.descSw) copy.desc = item.descSw;
         if (item.toolsSw) copy.tools = item.toolsSw;
+      } else if (lang === 'yo' || lang === 'ha') {
+        copy.label = localizedItemText(item, 'label', lang);
+        copy.desc = localizedItemText(item, 'desc', lang);
       }
       return copy;
     });
@@ -2404,6 +2680,16 @@
   if (!customElements.get('afro-navbar')) {
     customElements.define('afro-navbar', AfroNavbar);
   }
+
+  (function _countrySelectorLoader() {
+    if (customElements.get('afro-country-selector')) return;
+    if (document.querySelector('script[src*="country-selector.js"]')) return;
+    var s = document.createElement('script');
+    s.id = 'afro-country-selector-js';
+    s.src = '/assets/js/components/country-selector.js?v=1';
+    s.defer = true;
+    document.head.appendChild(s);
+  })();
 
   /* ── LAZY-LOAD AUTH SYSTEM (every page gets login/signup capability) ── */
   setTimeout(function() {
@@ -2418,7 +2704,7 @@
     _authLS('/assets/js/data/african-countries.js', function() {
       _authLS('/assets/js/afro-auth.js', function() {
         _authLS('/assets/js/components/auth-modal.js', function() {
-          _authLS('/assets/js/auth-cookie-upgrade.js');
+          _authLS('/assets/js/auth-cookie-upgrade.js?v=4');
         });
       });
     });
@@ -2475,8 +2761,13 @@
     }
 
     /* Pro gate */
-    var pg = document.createElement('script'); pg.src = '/assets/js/pro-gate.js'; pg.defer = true;
-    document.head.appendChild(pg);
+    if (window.AfroProGate || document.getElementById('afro-pro-gate-js') || document.querySelector('script[src*="/assets/js/pro-gate.js"]')) {
+      window.dispatchEvent(new CustomEvent('afro-pro-gate-ready'));
+    } else {
+      var pg = document.createElement('script'); pg.id = 'afro-pro-gate-js'; pg.src = '/assets/js/pro-gate.js'; pg.defer = true;
+      pg.onload = function() { window.dispatchEvent(new CustomEvent('afro-pro-gate-ready')); };
+      document.head.appendChild(pg);
+    }
 
     /* Share image (tool pages only) */
     if (document.querySelector('.action-row') && !document.getElementById('afro-share-img-js')) {

@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=1">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=1">
   <script src="/assets/js/afro-auth.js?v=6"></script>
-  <script src="/assets/js/pro-gate.js?v=20260502a"></script>
+  <script src="/assets/js/pro-gate.js?v=3c7ae705"></script>
   <script src="/assets/js/lib/pro-app-registry.js?v=20260502a"></script>
   <script src="/assets/js/lib/pro-daily-os-registry.js?v=20260502a"></script>
   <script src="/assets/js/lib/pro-architecture.js?v=20260502a"></script>
@@ -254,6 +254,9 @@
         <div class="pc-top-actions">
           <button class="pc-btn" type="button" id="refreshBtn">Refresh</button>
           <a class="pc-btn" href="/dashboard/">Account</a>
+          <a class="pc-btn" href="/pro/vault/">Vault</a>
+          <a class="pc-btn" href="/pro/team/">Team</a>
+          <a class="pc-btn" href="/pro/settings/">Settings</a>
           <a class="pc-btn primary" href="/tools/afropayroll-os/workspace">Payroll workspace</a>
         </div>
       </header>
@@ -311,8 +314,8 @@
 
         <section class="pc-metrics" aria-label="Dashboard metrics">
           <div class="pc-metric"><strong id="metricApps">20</strong><span>Pro apps</span><small>Architecture registry</small></div>
-          <div class="pc-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Cloud payroll if signed in</small></div>
-          <div class="pc-metric"><strong id="metricRuns">0</strong><span>Payroll runs</span><small>Cloud plus local saves</small></div>
+          <div class="pc-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Account-backed payroll if signed in</small></div>
+          <div class="pc-metric"><strong id="metricRuns">0</strong><span>Payroll runs</span><small>Account-backed plus local saves</small></div>
           <div class="pc-metric"><strong id="metricQueue">0</strong><span>Work queue</span><small>Real and shell tasks</small></div>
           <div class="pc-metric"><strong id="metricVault">0</strong><span>Vault entries</span><small>Local plus account-backed</small></div>
         </section>
@@ -348,7 +351,7 @@
                 <div>
                   <div class="pc-kicker">Recent activity</div>
                   <h2 class="pc-h2" id="activity-title">Payroll and registry activity</h2>
-                  <p class="pc-section-note">Activity is sourced from AfroPayroll cloud runs and local browser saves. Registry entries appear only as shell status notes.</p>
+                  <p class="pc-section-note">Activity is sourced from AfroPayroll account-backed runs and local browser saves. Registry entries appear only as shell status notes.</p>
                 </div>
                 <button class="pc-btn" type="button" id="reloadPayrollBtn">Reload payroll</button>
               </div>
@@ -418,7 +421,7 @@
                   <div class="pc-usage-cell"><strong id="usageRoutes">20</strong><span>Linked app routes</span></div>
                   <div class="pc-usage-cell"><strong id="usageLive">1</strong><span>Live-backed app</span></div>
                   <div class="pc-usage-cell"><strong id="usageLocal">0</strong><span>Local payroll saves</span></div>
-                  <div class="pc-usage-cell"><strong id="usageCloud">0</strong><span>Cloud payroll runs</span></div>
+                  <div class="pc-usage-cell"><strong id="usageCloud">0</strong><span>Account payroll runs</span></div>
                 </div>
                 <div class="pc-danger-note pc-note-spaced">Payroll salary data remains local-only until a signed-in user deliberately syncs it through the AfroPayroll API.</div>
               </div>
@@ -855,7 +858,7 @@
       var localRuns = state.local.savedRuns.length;
       var review = dashboardReviewCount();
       if (cloudRuns) {
-        return "Real dashboard: " + cloudRuns + " cloud runs, " + number(dashboard.total_rows) + " rows, " + review + " review signals.";
+        return "Real dashboard: " + cloudRuns + " account-backed runs, " + number(dashboard.total_rows) + " rows, " + review + " review signals.";
       }
       if (localRuns) {
         return "Local payroll state: " + localRuns + " browser saves, " + state.local.rowCount + " saved rows, " + review + " review signals.";
@@ -946,10 +949,10 @@
       asArray(state.cloud.runs).slice(0, 5).forEach(function (run) {
         items.push({
           title: text(run.company_name || run.title, "Payroll run"),
-          meta: "Cloud payroll - " + text(run.status, "draft") + " - pay " + dateLabel(run.pay_date),
+          meta: "Account payroll - " + text(run.status, "draft") + " - pay " + dateLabel(run.pay_date),
           time: run.updated_at || run.created_at || "",
           tone: number(run.warning_count) || number(run.needs_review_count) ? "warn" : "real",
-          label: "Cloud"
+          label: "Account"
         });
       });
       state.local.savedRuns.slice(0, 5).forEach(function (run) {
@@ -1005,10 +1008,10 @@
         queue.push({ title: "Pro access gate is locked", copy: "The dashboard uses assets/js/pro-gate.js and needs an active Pro profile before account-backed work opens.", label: "Access", tone: "lock" });
       }
       if (review > 0) {
-        queue.push({ title: "Payroll items need review", copy: review + " cloud payroll review or approval signals need attention.", label: "Payroll", tone: "warn" });
+        queue.push({ title: "Payroll items need review", copy: review + " account-backed payroll review or approval signals need attention.", label: "Payroll", tone: "warn" });
       }
       if (state.local.reviewCount > 0) {
-        queue.push({ title: "Local payroll saves have warnings", copy: state.local.reviewCount + " local review signals exist in this browser and are not cloud-synced proof.", label: "Local", tone: "local" });
+        queue.push({ title: "Local payroll saves have warnings", copy: state.local.reviewCount + " local review signals exist in this browser and are not account-sync proof.", label: "Local", tone: "local" });
       }
       if (state.local.savedRuns.length && !cloudRuns.length) {
         queue.push({ title: "Local payroll runs are not synced", copy: "Saved runs exist in localStorage, but no account-backed payroll run was returned by the API.", label: "Local", tone: "local" });
@@ -1052,8 +1055,8 @@
       var rows = [
         ["Payroll local saves", state.local.savedRuns.length, "Browser-only saved runs from afropayroll_pro_saved_runs.", "local"],
         ["Employee master records", state.local.employeeCount, "Local employee master data from the payroll workspace.", "local"],
-        ["Cloud payroll runs", asArray(state.cloud.runs).length, "Account-backed runs returned by /api/afropayroll.", "real"],
-        ["Cloud payroll clients", asArray(state.cloud.clients).length, "Synced payroll client records available to the signed-in account.", "real"],
+        ["Account payroll runs", asArray(state.cloud.runs).length, "Account-backed runs returned by /api/afropayroll.", "real"],
+        ["Account payroll clients", asArray(state.cloud.clients).length, "Payroll client records returned for the signed-in account.", "real"],
         ["Shared Pro vault schema", "Needed", "No cross-app Pro vault schema is wired yet.", "warn"]
       ];
       rows.forEach(function (row) {
@@ -1097,7 +1100,7 @@
     }
 
     function refreshLastUpdated() {
-      els.lastUpdated.textContent = "Last refreshed " + timeLabel(new Date().toISOString()) + ". Payroll cloud source: " + state.cloud.source + ".";
+      els.lastUpdated.textContent = "Last refreshed " + timeLabel(new Date().toISOString()) + ". Payroll account data source: " + state.cloud.source + ".";
     }
 
     async function refreshAll() {

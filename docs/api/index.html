@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/">
 <meta property="og:title" content="The Africa Finance API — AfroTools API Documentation">
-<meta property="og:description" content="REST API for African forex rates, tax calculations, fuel prices, and central bank data. Free tier: 100 calls/day.">
+<meta property="og:description" content="REST API for African forex rates, tax calculations, fuel prices, and central bank data. Free tier: 100 requests/day and 3,000/month.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,7 +20,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Africa Finance API — AfroTools API Documentation">
-<meta name="twitter:description" content="REST API for African forex rates, tax calculations, fuel prices, and central bank data. Free tier: 100 calls/day.">
+<meta name="twitter:description" content="REST API for African forex rates, tax calculations, fuel prices, and central bank data. Free tier: 100 requests/day and 3,000/month.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
 <link rel="stylesheet" href="/assets/css/design-system.css?v=df6f3e05">
@@ -86,7 +86,7 @@
         <div class="api-step">
           <div class="api-step__num">1</div>
           <h3>Get an API Key</h3>
-          <p>Sign up for free and receive your <code>afro_test_</code> key instantly.</p>
+          <p>Sign up, verify your email, and generate your API key from the dashboard. Test keys return deterministic sandbox data with separate sandbox limits.</p>
         </div>
         <div class="api-step">
           <div class="api-step__num">2</div>
@@ -102,10 +102,30 @@
 
       <div class="code-example" style="max-width:700px;margin:24px auto 0">
 <span class="c"># Calculate Nigerian tax on a 500,000 NGN salary</span>
-curl -X POST https://afrotools.com/api/tax \
+curl -X POST https://afrotools.com/api/v1/tax/paye \
   -H "x-api-key: afro_test_abc123" \
   -H "Content-Type: application/json" \
-  -d '{"country":"NG","amount":500000,"type":"income"}'</div>
+  -d '{"country":"NG","grossMonthly":500000}'</div>
+    </section>
+
+    <!-- Status, Versioning, Security -->
+    <section class="api-full-width">
+      <h2 class="pt-0">Status, Versioning, and Security</h2>
+      <p style="color:#6B7280;font-size:.9rem;margin-bottom:20px">Current base URL: <code>https://afrotools.com/api/v1</code>. Service status is available at <a href="/api/status">/api/status</a>.</p>
+      <div class="use-cases-grid">
+        <div class="use-case-card">
+          <h4>Current version</h4>
+          <p>API v1 is the stable public version. Breaking changes will ship under a new URL version with at least 90 days of deprecation notice.</p>
+        </div>
+        <div class="use-case-card">
+          <h4>Sandbox keys</h4>
+          <p>Test keys return deterministic sandbox data and have separate sandbox limits. They do not access live production data.</p>
+        </div>
+        <div class="use-case-card">
+          <h4>Protect production keys</h4>
+          <p>Do not expose production keys in browser or mobile client code. Put calls behind your own backend and rotate keys from the dashboard when needed.</p>
+        </div>
+      </div>
     </section>
 
     <!-- Product Cards -->
@@ -230,7 +250,7 @@ curl -X POST https://afrotools.com/api/tax \
         </div>
         <div class="api-explorer__row">
           <button class="api-explorer__method" id="explorerMethod">GET</button>
-          <input type="text" class="api-explorer__url" id="explorerUrl" value="https://afrotools.com/api/forex?from=USD&to=NGN">
+          <input type="text" class="api-explorer__url" id="explorerUrl" value="https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN">
           <button class="api-explorer__send" id="explorerSend">Send Request</button>
         </div>
         <div class="api-explorer__output" id="explorerOutput">// Response will appear here...</div>
@@ -247,7 +267,7 @@ curl -X POST https://afrotools.com/api/tax \
           <div class="price">$0</div>
           <div class="billing">Forever free</div>
           <ul>
-            <li>100 calls/day</li>
+            <li>100 requests/day and 3,000/month</li>
             <li>Latest data only</li>
             <li>All 5 API products</li>
             <li>JSON responses</li>
@@ -259,7 +279,7 @@ curl -X POST https://afrotools.com/api/tax \
           <div class="price">$29<small>/mo</small></div>
           <div class="billing">Billed monthly</div>
           <ul>
-            <li>10,000 calls/day</li>
+            <li>10,000 requests/day</li>
             <li>30-day historical data</li>
             <li>All 5 API products</li>
             <li>CSV &amp; XML export</li>
@@ -271,7 +291,7 @@ curl -X POST https://afrotools.com/api/tax \
           <div class="price">$99<small>/mo</small></div>
           <div class="billing">Billed monthly</div>
           <ul>
-            <li>100,000 calls/day</li>
+            <li>100,000 requests/day</li>
             <li>Full historical data</li>
             <li>Webhooks &amp; alerts</li>
             <li>Batch requests</li>
@@ -283,7 +303,7 @@ curl -X POST https://afrotools.com/api/tax \
           <div class="price">$299<small>/mo</small></div>
           <div class="billing">Billed monthly</div>
           <ul>
-            <li>Unlimited calls</li>
+            <li>Unlimited requests</li>
             <li>Full historical data</li>
             <li>99.9% SLA</li>
             <li>Dedicated account manager</li>

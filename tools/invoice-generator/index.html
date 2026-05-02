@@ -71,43 +71,270 @@
 }
 .inv-payment-note strong { color: #1e293b; }
 .import-json-input { display: none; }
+.inv-page {
+  --inv-surface: var(--color-surface, #fff);
+  --inv-muted-surface: var(--color-surface-muted, #f8fafc);
+  --inv-border: var(--color-border, #e2e8f0);
+  --inv-text: var(--color-text, #0f172a);
+  --inv-muted: var(--color-text-muted, #64748b);
+}
+.inv-hero {
+  background:
+    radial-gradient(circle at 78% 10%, rgba(96,165,250,0.16), transparent 30%),
+    linear-gradient(135deg, #0f172a 0%, #111827 58%, #0b1120 100%);
+  padding: 56px 0 46px;
+}
+.breadcrumb,
+.breadcrumb a { color: rgba(226,232,240,0.72); }
+.breadcrumb span { color: rgba(226,232,240,0.38); }
+.inv-hero h1 {
+  max-width: 760px;
+  color: #f8fafc;
+  font-size: 3.1rem;
+  letter-spacing: 0;
+}
+.inv-hero h1 em { color: #93c5fd; }
+.inv-hero-sub {
+  max-width: 720px;
+  color: #cbd5e1;
+  font-size: 1rem;
+}
+.hero-badges .badge {
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+.badge-grey { color: #dbeafe; border-color: rgba(191,219,254,0.24); }
+.inv-main { padding: 32px 0 72px; }
+.inv-grid {
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.86fr);
+  gap: 28px;
+}
+.inv-preview-col { top: 84px !important; }
+.card {
+  border-color: var(--inv-border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.045);
+}
+.card-head {
+  background: linear-gradient(180deg, #fff, #fbfdff);
+  padding: 18px 22px;
+}
+.card-title {
+  color: var(--inv-text);
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.card-sub { color: var(--inv-muted); }
+.card-body { padding: 22px; }
+.inv-section-note {
+  margin: -4px 0 18px;
+  color: var(--inv-muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+.advanced-panel {
+  margin-top: 14px;
+  border: 1px solid var(--inv-border);
+  border-radius: 10px;
+  background: var(--inv-muted-surface);
+}
+.advanced-panel summary,
+.inv-advanced-card > summary {
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+}
+.advanced-panel summary::-webkit-details-marker,
+.inv-advanced-card > summary::-webkit-details-marker { display: none; }
+.advanced-panel summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  color: var(--inv-text);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+.advanced-panel summary::after,
+.inv-advanced-card > summary::after {
+  content: "+";
+  color: var(--color-primary, #0062cc);
+  font-weight: 900;
+}
+.advanced-panel[open] summary::after,
+.inv-advanced-card[open] > summary::after { content: "-"; }
+.advanced-panel-body { padding: 0 14px 14px; }
+.inv-actions-primary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(0, 0.85fr)) auto;
+  gap: 10px;
+  align-items: start;
+  margin-top: 20px;
+}
+.inv-actions-primary .btn,
+.action-more summary {
+  min-height: 44px;
+  justify-content: center;
+}
+.action-more { position: relative; }
+.action-more summary {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+.action-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 20;
+  min-width: 220px;
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--inv-border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(15,23,42,0.14);
+}
+.action-menu .btn { width: 100%; text-align: left; justify-content: flex-start; }
+.action-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--inv-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.62;
+  filter: grayscale(0.1);
+}
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+  background: #94a3b8;
+  border-color: #94a3b8;
+  box-shadow: none;
+}
+.totals {
+  border: 1px solid var(--inv-border);
+  border-radius: 10px;
+  background: var(--inv-muted-surface);
+  padding: 12px 14px;
+}
+.totals-row.total,
+.inv-total-row.grand {
+  color: var(--color-primary, #0062cc);
+  font-size: 1.18rem;
+}
+.preview-empty-state {
+  margin: 16px;
+  padding: 16px;
+  border: 1px dashed #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+.invoice-preview.is-empty { opacity: 0.58; }
+.empty-state-copy {
+  margin: 0;
+  color: var(--inv-muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+.mobile-primary-bar { display: none; }
 @media (max-width: 640px) {
   .invoice-mini-toolbar { align-items: stretch; }
   .invoice-mini-toolbar .f-input,
   .invoice-mini-toolbar .btn { width: 100%; }
+  .inv-main { padding-bottom: 104px; }
+  .inv-grid { display: block; }
+  .inv-hero { padding: 40px 0 34px; }
+  .inv-hero h1 { font-size: 2rem; }
+  .hero-badges { gap: 6px; }
+  .card { border-radius: 9px; margin-bottom: 14px; }
+  .card-body { padding: 16px; }
+  .card-head { padding: 15px 16px; }
+  .inv-actions-primary { grid-template-columns: 1fr; }
+  .action-more { position: static; }
+  .action-menu { position: static; box-shadow: none; margin-top: 8px; }
   .items-table-wrap {
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden !important;
   }
-  .items-table {
-    min-width: 0 !important;
-    width: 100%;
-    table-layout: fixed;
-    font-size: 0.72rem;
+  .items-table,
+  .items-table tbody,
+  .items-table tr,
+  .items-table td { display: block; width: 100%; }
+  .items-table { margin: 0; min-width: 0 !important; }
+  .items-table thead { display: none; }
+  .items-table tr {
+    padding: 12px;
+    border: 1px solid var(--inv-border);
+    border-radius: 10px;
+    background: #fff;
+    margin-bottom: 12px;
   }
-  .items-table th,
   .items-table td {
-    padding: 6px 3px;
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    border-bottom: 0;
+    padding: 7px 0;
   }
-  .items-table th:nth-child(1) { width: 34% !important; }
-  .items-table th:nth-child(2) { width: 12% !important; }
-  .items-table th:nth-child(3) { width: 16% !important; }
-  .items-table th:nth-child(4) { width: 10% !important; }
-  .items-table th:nth-child(5) { width: 18% !important; }
-  .items-table th:nth-child(6) { width: 10% !important; }
+  .items-table td::before {
+    color: var(--inv-muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+  .items-table td:nth-child(1)::before { content: "Description"; }
+  .items-table td:nth-child(2)::before { content: "Quantity"; }
+  .items-table td:nth-child(3)::before { content: "Unit price"; }
+  .items-table td:nth-child(4)::before { content: "Tax"; }
+  .items-table td:nth-child(5)::before { content: "Total"; }
+  .items-table td:nth-child(6) {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+  }
+  .items-table td:nth-child(6)::before { content: ""; }
   .items-table input {
     min-width: 0;
-    padding: 8px 5px;
+    padding: 10px 12px;
   }
   .items-table .li-total {
-    font-size: 0.68rem;
+    font-size: 0.92rem;
     word-break: break-word;
+  }
+  .mobile-primary-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120000;
+    display: grid;
+    gap: 6px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--inv-border);
+    background: #fff;
+    box-shadow: 0 -10px 28px rgba(15,23,42,0.12);
+  }
+  .mobile-primary-bar .btn { width: 100%; }
+  .mobile-primary-hint {
+    color: var(--inv-muted);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    text-align: center;
   }
 }
 </style>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=94dd9137" defer></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/invoice-generator/" />
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/invoice-generator/" />
 
@@ -143,14 +370,13 @@
 <section class="inv-hero">
 <div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span>Invoice Generator</nav>
-  <h1>African <em>Invoice Generator</em></h1>
-  <p class="inv-hero-sub">Create professional invoices for your African business in seconds. Multi-currency VAT, reusable clients and items, payment instructions, saved drafts, share links, and real PDF export.</p>
+  <h1>Invoice Generator</h1>
+  <p class="inv-hero-sub">Create professional invoices with African currencies, VAT, withholding, mobile money, and PDF export.</p>
   <div class="hero-badges">
-    <span class="badge badge-green">FREE &amp; UNLIMITED</span>
-    <span class="badge badge-blue">20+ CURRENCIES</span>
-    <span class="badge badge-grey">AUTO VAT</span>
-    <span class="badge badge-grey">BALANCE DUE</span>
-    <span class="badge badge-grey">REAL PDF EXPORT</span>
+    <span class="badge badge-green">Free</span>
+    <span class="badge badge-blue">20+ currencies</span>
+    <span class="badge badge-grey">VAT-aware</span>
+    <span class="badge badge-grey">Browser-private</span>
   </div>
 </div>
 </section>
@@ -192,6 +418,9 @@
         <label class="f-label" for="companyName">Company Name *</label>
         <input class="f-input" id="companyName" type="text" placeholder="e.g., Tech Solutions Ltd" required>
       </div>
+      <details class="advanced-panel">
+        <summary>Business contact, logo and tax ID</summary>
+        <div class="advanced-panel-body">
       <div class="field">
         <label class="f-label" for="logoInput">Business Logo</label>
         <div style="display:flex;gap:12px;align-items:center;">
@@ -218,6 +447,8 @@
         <label class="f-label" for="taxID">Tax ID / Registration #</label>
         <input class="f-input" id="taxID" type="text" placeholder="e.g., 12345678901">
       </div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -228,13 +459,16 @@
       <span class="card-sub" id="clientCount">0 saved clients</span>
     </div>
     <div class="card-body">
-      <!-- Client Database -->
-      <div id="clientDbSection" style="margin-bottom:14px;">
-        <div class="client-list" id="clientList"></div>
-      </div>
       <div class="field">
         <label class="f-label" for="clientName">Client Name *</label>
         <input class="f-input" id="clientName" type="text" placeholder="e.g., John Doe" required>
+      </div>
+      <details class="advanced-panel">
+        <summary>Saved clients and billing details</summary>
+        <div class="advanced-panel-body">
+      <!-- Client Database -->
+      <div id="clientDbSection" style="margin-bottom:14px;">
+        <div class="client-list" id="clientList"></div>
       </div>
       <div class="field">
         <label class="f-label" for="clientCompany">Client Company</label>
@@ -252,6 +486,8 @@
         <button class="btn" id="btnSaveClient" type="button" style="font-size:0.72rem;padding:8px 14px;" aria-label="Save client to database">+ Save Client</button>
         <button class="btn" id="btnClearClient" type="button" style="font-size:0.72rem;padding:8px 14px;" aria-label="Clear client fields">Clear</button>
       </div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -276,34 +512,37 @@
           <input class="f-input" id="dueDate" type="date" required>
         </div>
       </div>
+      <div class="field">
+        <label class="f-label" for="currency">Currency *</label>
+        <select class="f-input" id="currency" required>
+          <option value="NGN" selected>NGN - Nigeria</option>
+          <option value="KES">KES - Kenya</option>
+          <option value="GHS">GHS - Ghana</option>
+          <option value="ZAR">ZAR - South Africa</option>
+          <option value="RWF">RWF - Rwanda</option>
+          <option value="TZS">TZS - Tanzania</option>
+          <option value="ETB">ETB - Ethiopia</option>
+          <option value="UGX">UGX - Uganda</option>
+          <option value="XOF">XOF - West Africa CFA</option>
+          <option value="XAF">XAF - Central Africa CFA</option>
+          <option value="EGP">EGP - Egypt</option>
+          <option value="MAD">MAD - Morocco</option>
+          <option value="TND">TND - Tunisia</option>
+          <option value="SDG">SDG - Sudan</option>
+          <option value="SOS">SOS - Somalia</option>
+          <option value="MUR">MUR - Mauritius</option>
+          <option value="SCR">SCR - Seychelles</option>
+          <option value="BWP">BWP - Botswana</option>
+          <option value="MZN">MZN - Mozambique</option>
+          <option value="USD">USD - US Dollar</option>
+          <option value="GBP">GBP - British Pound</option>
+          <option value="EUR">EUR - Euro</option>
+        </select>
+      </div>
+      <details class="advanced-panel">
+        <summary>Terms and tax settings</summary>
+        <div class="advanced-panel-body">
       <div class="f-row">
-        <div class="field">
-          <label class="f-label" for="currency">Currency *</label>
-          <select class="f-input" id="currency" required>
-            <option value="NGN" selected>NGN - Nigeria</option>
-            <option value="KES">KES - Kenya</option>
-            <option value="GHS">GHS - Ghana</option>
-            <option value="ZAR">ZAR - South Africa</option>
-            <option value="RWF">RWF - Rwanda</option>
-            <option value="TZS">TZS - Tanzania</option>
-            <option value="ETB">ETB - Ethiopia</option>
-            <option value="UGX">UGX - Uganda</option>
-            <option value="XOF">XOF - West Africa CFA</option>
-            <option value="XAF">XAF - Central Africa CFA</option>
-            <option value="EGP">EGP - Egypt</option>
-            <option value="MAD">MAD - Morocco</option>
-            <option value="TND">TND - Tunisia</option>
-            <option value="SDG">SDG - Sudan</option>
-            <option value="SOS">SOS - Somalia</option>
-            <option value="MUR">MUR - Mauritius</option>
-            <option value="SCR">SCR - Seychelles</option>
-            <option value="BWP">BWP - Botswana</option>
-            <option value="MZN">MZN - Mozambique</option>
-            <option value="USD">USD - US Dollar</option>
-            <option value="GBP">GBP - British Pound</option>
-            <option value="EUR">EUR - Euro</option>
-          </select>
-        </div>
         <div class="field">
           <label class="f-label" for="paymentTerms">Payment Terms</label>
           <select class="f-input" id="paymentTerms">
@@ -332,6 +571,8 @@
           <input class="f-input" id="taxRate" type="number" placeholder="15" min="0" max="100" step="0.01">
         </div>
       </div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -342,6 +583,14 @@
       <span class="card-sub">Africa-ready details</span>
     </div>
     <div class="card-body">
+      <p class="inv-section-note">Add settlement instructions when you are ready to send the invoice.</p>
+      <div class="field">
+        <label class="f-label" for="bankDetails">Bank / Payment Instructions</label>
+        <textarea class="f-input" id="bankDetails" rows="3" placeholder="Bank name, account name, account number, branch, SWIFT, payment reference, or local mobile-money instructions"></textarea>
+      </div>
+      <details class="advanced-panel">
+        <summary>Advanced payment and compliance options</summary>
+        <div class="advanced-panel-body">
       <div class="f-row">
         <div class="field">
           <label class="f-label" for="poNumber">PO / Reference</label>
@@ -368,10 +617,6 @@
           <input class="f-input" id="mobileMoney" type="text" placeholder="M-Pesa, MoMo, Airtel Money, WhatsApp">
         </div>
       </div>
-      <div class="field">
-        <label class="f-label" for="bankDetails">Bank / Payment Instructions</label>
-        <textarea class="f-input" id="bankDetails" rows="3" placeholder="Bank name, account name, account number, branch, SWIFT, payment reference, or local mobile-money instructions"></textarea>
-      </div>
       <div class="f-row">
         <div class="field">
           <label class="f-label" for="amountPaid">Amount Paid</label>
@@ -382,6 +627,8 @@
           <input class="f-input" id="withholdingPercent" type="number" value="0" min="0" max="100" step="0.01">
         </div>
       </div>
+        </div>
+      </details>
       <div class="invoice-status-panel" id="invoiceStatusPanel">
         <strong>Ready:</strong> add payment instructions to make the invoice easier to settle.
       </div>
@@ -420,6 +667,9 @@
         </table>
       </div>
       <button type="button" class="btn-add" id="btnAddItem" aria-label="Add a new line item">+ Add Line Item</button>
+      <details class="advanced-panel">
+        <summary>Reusable saved items</summary>
+        <div class="advanced-panel-body">
       <div class="invoice-mini-toolbar" aria-label="Saved item actions">
         <button type="button" class="btn" id="btnSaveItem">Save item</button>
         <select class="f-input" id="savedItemSelect" aria-label="Saved item library">
@@ -427,6 +677,8 @@
         </select>
         <button type="button" class="btn" id="btnApplySavedItem">Quick add</button>
       </div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -454,7 +706,7 @@
       </div>
 
       <div class="field" style="margin-top:18px;">
-        <label class="f-label" for="notes">Notes / Payment Instructions</label>
+        <label class="f-label" for="notes">Notes</label>
         <textarea class="f-input" id="notes" placeholder="Thank you for your business! Payment should be made to..." rows="3"></textarea>
       </div>
 
@@ -463,33 +715,39 @@
         <label for="markPaid">Mark invoice as PAID</label>
       </div>
 
-      <div class="btn-row" role="group" aria-label="Invoice actions">
+      <div class="btn-row inv-actions-primary" role="group" aria-label="Invoice actions">
         <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Download invoice as PDF">Download PDF</button>
         <button class="btn" id="btnShare" type="button" aria-label="Share invoice link">Share Link</button>
         <button class="btn" id="btnSaveInvoice" type="button" aria-label="Save invoice draft">Save Invoice</button>
-        <button class="btn" id="btnSaveTemplate" type="button" aria-label="Save current invoice as template">Save Template</button>
-        <button class="btn" id="btnReminder" type="button" aria-label="Copy payment reminder">Copy Reminder</button>
-        <button class="btn" id="btnPrint" type="button" aria-label="Print invoice">Print</button>
-        <button class="btn" id="btnExportJson" type="button" aria-label="Export invoice JSON">Export JSON</button>
-        <button class="btn" id="btnImportJson" type="button" aria-label="Import invoice JSON">Import JSON</button>
+        <details class="action-more">
+          <summary class="btn" aria-label="More invoice actions">More</summary>
+          <div class="action-menu">
+            <button class="btn" id="btnPrint" type="button" aria-label="Print invoice">Print</button>
+            <button class="btn" id="btnExportJson" type="button" aria-label="Export invoice JSON">Export JSON</button>
+            <button class="btn" id="btnImportJson" type="button" aria-label="Import invoice JSON">Import JSON</button>
+            <button class="btn" id="btnSaveTemplate" type="button" aria-label="Save current invoice as template">Save Template</button>
+            <button class="btn" id="btnReminder" type="button" aria-label="Copy payment reminder">Copy Reminder</button>
+            <button class="btn" id="btnNewInvoice" type="button" aria-label="Start a new blank invoice">New Invoice</button>
+          </div>
+        </details>
         <input class="import-json-input" id="importJsonInput" type="file" accept="application/json,.json">
-        <button class="btn" id="btnNewInvoice" type="button" aria-label="Start a new blank invoice">New Invoice</button>
+        <p class="action-hint" id="invoiceActionHint" aria-live="polite"></p>
       </div>
     </div>
   </div>
 
   <!-- Saved Templates -->
-  <div class="card" id="templatesCard">
-    <div class="card-head">
+  <details class="card inv-advanced-card" id="templatesCard">
+    <summary class="card-head">
       <span class="card-title">Saved Templates</span>
       <span class="card-sub" id="tplCountLabel">0 saved</span>
-    </div>
+    </summary>
     <div class="card-body">
       <div id="templatesContainer">
-        <p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">No saved templates yet.</p>
+        <p class="empty-state-copy"><strong>No saved templates yet.</strong><br>Save a template after creating your first invoice.</p>
       </div>
     </div>
-  </div>
+  </details>
 
 </div><!-- end form col -->
 
@@ -506,6 +764,10 @@
       <!-- Overdue Warning -->
       <div class="inv-overdue" id="overdueBar" style="display:none;margin:12px 16px 0;">
         This invoice is <strong>overdue</strong>. Due date has passed.
+      </div>
+
+      <div class="preview-empty-state" id="previewEmptyState">
+        Add business, client, and line items to preview your invoice.
       </div>
 
       <div class="invoice-preview" id="invoicePreview" data-tpl="modern" role="region" aria-label="Invoice preview">
@@ -600,6 +862,11 @@
 </div>
 </main>
 
+<div class="mobile-primary-bar" aria-label="Primary invoice action">
+  <button class="btn btn-primary" id="btnPDFMobile" type="button">Download PDF</button>
+  <span class="mobile-primary-hint" id="invoiceMobileHint"></span>
+</div>
+
 <!-- Wise Affiliate CTA -->
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
   <wise-cta context="invoice"></wise-cta>
@@ -659,7 +926,7 @@
 
 <!-- Required Scripts -->
 <script src="/assets/js/components/related-tools-data.min.js?v=34121d56" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=71262699" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=87c5cdb1" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
@@ -762,7 +1029,7 @@ function renderClients() {
   $('clientCount').textContent = clients.length + ' saved client' + (clients.length !== 1 ? 's' : '');
   const list = $('clientList');
   if (clients.length === 0) {
-    list.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.78rem;padding:10px;">No saved clients. Fill in details and click "Save Client".</p>';
+    list.innerHTML = '<p class="empty-state-copy"><strong>No saved clients yet</strong><br>Save a client to reuse billing details.</p>';
     return;
   }
   list.innerHTML = clients.map((c, i) => `
@@ -903,6 +1170,39 @@ function applyTemplate(tpl) {
   }
 }
 
+function parseInvoiceDate(value) {
+  if (!value) return null;
+  const date = new Date(value + 'T00:00:00');
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function getInvoiceReadyState() {
+  if (!$('companyName').value.trim()) return { valid: false, reason: 'Add your business name to download the PDF.' };
+  if (!$('clientName').value.trim()) return { valid: false, reason: 'Add the client name to download the PDF.' };
+  if (!$('invoiceNumber').value.trim()) return { valid: false, reason: 'Add an invoice number to download the PDF.' };
+  if (!parseInvoiceDate($('invoiceDate').value)) return { valid: false, reason: 'Choose a valid invoice date.' };
+  if (!parseInvoiceDate($('dueDate').value)) return { valid: false, reason: 'Choose a valid due date.' };
+  const hasItem = Array.from(qsa('.line-item')).some(row => row.querySelector('.li-desc').value.trim());
+  if (!hasItem) return { valid: false, reason: 'Add at least one line item description.' };
+  return { valid: true, reason: 'Ready to download.' };
+}
+
+function updateActionState() {
+  const state = getInvoiceReadyState();
+  const pdfBtn = $('btnPDF');
+  const mobileBtn = $('btnPDFMobile');
+  const hint = $('invoiceActionHint');
+  const mobileHint = $('invoiceMobileHint');
+  [pdfBtn, mobileBtn].forEach(btn => {
+    if (!btn) return;
+    btn.disabled = !state.valid;
+    btn.setAttribute('aria-disabled', String(!state.valid));
+    btn.title = state.valid ? 'Download invoice as PDF' : state.reason;
+  });
+  if (hint) hint.textContent = state.valid ? '' : state.reason;
+  if (mobileHint) mobileHint.textContent = state.valid ? 'Ready to export.' : state.reason;
+}
+
 /* ── CURRENCY CHANGE → AUTO TAX ── */
 $('currency').addEventListener('change', function() {
   const rate = TAX_RATES[this.value];
@@ -975,6 +1275,11 @@ function updatePreview() {
   const cParts = [$('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean);
   $('pClientDetail').innerHTML = cParts.join('<br>');
 
+  const hasPreviewBasics = Boolean($('companyName').value.trim() && $('clientName').value.trim() && items.length);
+  const previewEmpty = $('previewEmptyState');
+  if (previewEmpty) previewEmpty.style.display = hasPreviewBasics ? 'none' : '';
+  $('invoicePreview').classList.toggle('is-empty', !hasPreviewBasics);
+
   // Preview — meta
   $('pInvNum').textContent = $('invoiceNumber').value || 'INV-2026-001';
   $('pDate').textContent = $('invoiceDate').value || '-';
@@ -1019,9 +1324,16 @@ function updatePreview() {
 
   // Overdue check
   const dueVal = $('dueDate').value;
-  const isOverdue = !paid && dueVal && new Date(dueVal) < new Date(new Date().toISOString().slice(0,10));
+  const dueDate = parseInvoiceDate(dueVal);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const isOverdue = !paid && dueDate && dueDate < today;
   $('overdueBar').style.display = isOverdue ? '' : 'none';
-  if (isOverdue) $('previewStatus').textContent = 'Overdue';
+  if (isOverdue) {
+    $('previewStatus').textContent = 'Overdue';
+    $('previewStatus').style.color = '#991b1b';
+  }
+  updateActionState();
 }
 
 function escapeHtml(str) {
@@ -1180,6 +1492,13 @@ $('btnPDF').addEventListener('click', () => {
   }
 });
 
+const btnPDFMobile = $('btnPDFMobile');
+if (btnPDFMobile) {
+  btnPDFMobile.addEventListener('click', () => {
+    if (!$('btnPDF').disabled) $('btnPDF').click();
+  });
+}
+
 /* ── SHARE LINK ── */
 $('btnShare').addEventListener('click', () => {
   if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
@@ -1285,7 +1604,7 @@ function renderTemplates() {
   $('tplCountLabel').textContent = templates.length + ' saved';
   const container = $('templatesContainer');
   if (templates.length === 0) {
-    container.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">No saved templates yet.</p>';
+    container.innerHTML = '<p class="empty-state-copy"><strong>No saved templates yet</strong><br>Save a template after creating your first invoice.</p>';
     return;
   }
   container.innerHTML = templates.map(t => `
@@ -1452,18 +1771,6 @@ init();
 })();
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Invoice Generator" tool-slug="invoice-generator"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <script defer src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 </body>
 </html>

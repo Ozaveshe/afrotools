@@ -137,6 +137,34 @@ function buildCountryData(code) {
   return result;
 }
 
+function sandboxTaxRates(country, type) {
+  var base = {
+    country: 'NG',
+    country_name: 'Nigeria Sandbox',
+    currency: 'NGN',
+    tax_authority: 'AfroTools Sandbox',
+    sandbox: true,
+    data_policy: 'deterministic sandbox data'
+  };
+  if (type !== 'vat') {
+    base.paye = {
+      regimes: ['SANDBOX_2026'],
+      options: { pension: true },
+      year: '2026',
+      source: 'AfroTools sandbox data'
+    };
+  }
+  if (type !== 'paye') {
+    base.vat = {
+      standard_rate: 0.075,
+      currency: 'NGN',
+      year: '2026'
+    };
+  }
+  if (country) return base;
+  return { countries: [base], total: 1, sandbox: true, data_policy: 'deterministic sandbox data' };
+}
+
 exports.handler = async function(event) {
   CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
@@ -150,6 +178,10 @@ exports.handler = async function(event) {
   var params = event.queryStringParameters || {};
   var country = (params.country || '').toUpperCase();
   var type = (params.type || '').toLowerCase();
+
+  if (auth.sandbox) {
+    return respond(200, sandboxTaxRates(country, type), rlHeaders);
+  }
 
   /* ---- Single country ---- */
   if (country) {

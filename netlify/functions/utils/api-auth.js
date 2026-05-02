@@ -8,6 +8,7 @@
  *   if (!auth.valid) return respond(auth.status, { error: auth.error });
  */
 const { getStore } = require('@netlify/blobs');
+const { checkRateLimit, getRemaining } = require('../_shared/rate-limit');
 
 const LIMITS = {
   free:       { day: 100,    month: 3000 },
@@ -17,28 +18,54 @@ const LIMITS = {
 };
 
 async function validateApiKey(event) {
+  var headers = event.headers || {};
   var apiKey =
-    (event.headers || {})['x-api-key'] ||
+    headers['x-api-key'] ||
+    headers['X-Api-Key'] ||
     ((event.queryStringParameters || {}).api_key);
+  var clientIp = String(
+    headers['x-nf-client-connection-ip'] ||
+    headers['client-ip'] ||
+    headers['x-forwarded-for'] ||
+    'unknown'
+  ).split(',')[0].trim() || 'unknown';
 
   if (!apiKey) {
     return {
       valid: false,
       status: 401,
-      error: 'Missing API key. Include x-api-key header or api_key query param. Get one at afrotools.com/api'
+      error: 'Missing API key. Include x-api-key header or api_key query param. Get one at https://afrotools.com/dashboard/api/'
     };
   }
 
-  // Sandbox / test keys always pass
+  // Sandbox keys use deterministic data and their own free-tier limits.
   if (apiKey.startsWith('afro_test_')) {
-    return { valid: true, tier: 'free', sandbox: true, remaining: 999, limit: 1000 };
+    var sandboxKey = 'sandbox:' + apiKey + ':' + clientIp;
+    if (!checkRateLimit(sandboxKey, LIMITS.free.day)) {
+      return {
+        valid: false,
+        status: 429,
+        error: 'Sandbox daily rate limit exceeded. Test keys use deterministic sandbox data with separate sandbox limits.',
+        tier: 'sandbox',
+        sandbox: true,
+        remaining: 0,
+        limit: LIMITS.free.day
+      };
+    }
+    return {
+      valid: true,
+      tier: 'sandbox',
+      sandbox: true,
+      remaining: getRemaining(sandboxKey, LIMITS.free.day),
+      limit: LIMITS.free.day
+    };
   }
 
   try {
     var store = getStore('apikeys');
     var data = await store.get(apiKey, { type: 'json' });
     if (!data) {
-      return { valid: false, status: 403, error: 'Invalid API key. Get one at afrotools.com/api' };
+      return { valid: false, status: 403, error: 'Invalid API key. Get one at https://afrotools.com/dashboard/api/' };
     }
 
     var tier = data.tier || 'free';

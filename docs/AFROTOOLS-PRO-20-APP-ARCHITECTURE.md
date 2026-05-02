@@ -43,6 +43,29 @@ Required methods:
 - `isReadyForTwentyApps()`
 - `safeRoute(item)`
 
+## UX Behavior Model
+
+The public homepage stays primarily about free AfroTools discovery. Pro should remain discoverable through the shared navbar and contextual Pro links, not through a large homepage sales section.
+
+Guest users:
+
+- Navbar shows a quiet `Pro` link to `/pro/`.
+- `/pro/` explains pricing, current Pro value, and account requirements.
+- Pro-gated routes stay locked behind `assets/js/pro-gate.js` and link guests to sign in or view Pro.
+
+Logged-in free users:
+
+- Navbar shows a restrained `Upgrade` entry that points to `/pro/`.
+- Upgrade prompts should appear only near Pro-gated features or plan decisions.
+- The workspace and app directory must not render as if Pro access is active.
+
+Logged-in Pro users:
+
+- Navbar shows `Continue Pro work` and points directly to `/pro/workspace/`.
+- `/pro/` should still show pricing and value, but its account status block points active users toward `/pro/workspace/`.
+- `/pro/workspace/` is the SaaS start screen: work queue, app entry points, Vault, Team, Settings, recent activity, account status, and ready/local/schema labels.
+- `/pro/apps/` remains the dense 20-app directory and should not become the main workspace.
+
 ## App Universe
 
 ### Control Apps

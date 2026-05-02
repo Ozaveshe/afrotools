@@ -26,7 +26,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-  <script src="/assets/js/components/navbar.min.js?v=71262699" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=87c5cdb1" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -182,10 +182,10 @@ pre .num{color:#FBBF24}
     <!-- Overview -->
     <h2 id="overview">Overview</h2>
     <p>The AfroTools API provides programmatic access to African financial data — tax rates, exchange rates, salary benchmarks, and PAYE calculations covering all 54 African countries.</p>
-    <p>Built for fintechs, HR platforms, payroll systems, and developer tools. Start with the free tier (100 requests/day) — no credit card required.</p>
+    <p>Built for fintechs, HR platforms, payroll systems, and developer tools. Start with the free tier (100 requests/day and 3,000/month). No credit card required.</p>
 
     <div class="info-box">
-      <strong>Base URL:</strong> <code style="background:none;color:inherit">https://afrotools.com/api/</code><br>
+      <strong>Base URL:</strong> <code style="background:none;color:inherit">https://afrotools.com/api/v1</code><br>
       All endpoints return JSON with <code style="background:none;color:inherit">Content-Type: application/json</code>.
     </div>
 
@@ -199,11 +199,11 @@ x-api-key: afro_live_xxxxxxxxxxxxx
 ?api_key=afro_live_xxxxxxxxxxxxx</code></pre>
 
     <h3>Example with cURL</h3>
-    <pre><code>curl <span class="str">"https://afrotools.com/api/tax-rates?country=NG"</span> \
+    <pre><code>curl <span class="str">"https://afrotools.com/api/v1/tax/rates?country=NG"</span> \
   -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
 
     <h3>Example with JavaScript</h3>
-    <pre><code><span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">'https://afrotools.com/api/tax-rates?country=NG'</span>, {
+    <pre><code><span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">'https://afrotools.com/api/v1/tax/rates?country=NG'</span>, {
   headers: { <span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span> }
 });
 <span class="kw">const</span> data = <span class="kw">await</span> res.json();</code></pre>
@@ -212,13 +212,13 @@ x-api-key: afro_live_xxxxxxxxxxxxx
     <pre><code><span class="kw">import</span> requests
 
 data = requests.get(
-    <span class="str">"https://afrotools.com/api/tax-rates"</span>,
+    <span class="str">"https://afrotools.com/api/v1/tax/rates"</span>,
     params={<span class="str">"country"</span>: <span class="str">"NG"</span>},
     headers={<span class="str">"x-api-key"</span>: <span class="str">"YOUR_API_KEY"</span>}
 ).json()</code></pre>
 
     <div class="info-box">
-      <strong>Test keys:</strong> Keys starting with <code style="background:none;color:inherit">afro_test_</code> bypass rate limits and return live data. Use for development.
+      <strong>Test keys:</strong> Keys starting with <code style="background:none;color:inherit">afro_test_</code> return deterministic sandbox data and have separate sandbox limits. Use live keys for production data.
     </div>
 
     <!-- Rate Limits -->
@@ -234,6 +234,13 @@ data = requests.get(
     <pre><code>X-RateLimit-Limit: <span class="num">100</span>
 X-RateLimit-Remaining: <span class="num">87</span></code></pre>
     <p>Limits reset at midnight UTC daily.</p>
+
+    <h2 id="status-versioning">Status, Versioning, and Key Security</h2>
+    <div class="info-box">
+      <strong>Current version:</strong> <code style="background:none;color:inherit">v1</code><br>
+      <strong>Status endpoint:</strong> <code style="background:none;color:inherit">https://afrotools.com/api/status</code><br>
+      Breaking changes ship under a new URL version with at least 90 days of deprecation notice. Do not expose production keys in browser or mobile client code. Use a backend proxy and rotate keys from the dashboard.
+    </div>
 
     <!-- Errors -->
     <h2 id="errors">Error Codes</h2>
@@ -263,7 +270,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
 
     <div class="endpoint">
       <span class="method method-post">POST</span>
-      <span class="path">/api/v1/tax</span>
+      <span class="path">/api/v1/tax/paye</span>
       <p class="desc">Calculate income tax for any supported African country.</p>
     </div>
 
@@ -282,7 +289,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
     <p>* Provide one of <code>grossAnnual</code>, <code>grossMonthly</code>, <code>netAnnual</code>, or <code>netMonthly</code>.</p>
 
     <h3>Example Request</h3>
-    <pre><code>curl -X POST <span class="str">"https://afrotools.com/api/v1/tax"</span> \
+    <pre><code>curl -X POST <span class="str">"https://afrotools.com/api/v1/tax/paye"</span> \
   -H <span class="str">"x-api-key: YOUR_API_KEY"</span> \
   -H <span class="str">"Content-Type: application/json"</span> \
   -d <span class="str">'{"country":"NG","grossAnnual":7200000}'</span></code></pre>
@@ -311,10 +318,10 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
     <h3>GET: List Supported Countries</h3>
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="path">/api/v1/tax?country=NG</span>
+      <span class="path">/api/v1/tax/paye?country=NG</span>
       <p class="desc">Get country tax info, supported regimes, and available options.</p>
     </div>
-    <pre><code>curl <span class="str">"https://afrotools.com/api/v1/tax"</span> \
+    <pre><code>curl <span class="str">"https://afrotools.com/api/v1/tax/paye"</span> \
   -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
 
     <!-- Tax Rates -->
@@ -323,7 +330,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
 
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="path">/api/tax-rates</span>
+      <span class="path">/api/v1/tax/rates</span>
       <p class="desc">Get tax rate data for one or all African countries.</p>
     </div>
 
@@ -337,7 +344,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
     </table>
 
     <h3>Example Request</h3>
-    <pre><code>curl <span class="str">"https://afrotools.com/api/tax-rates?country=NG"</span> \
+    <pre><code>curl <span class="str">"https://afrotools.com/api/v1/tax/rates?country=NG"</span> \
   -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
 
     <h3>Example Response</h3>
@@ -363,7 +370,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
 
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="path">/api/fx-rates</span>
+      <span class="path">/api/v1/fx/rates</span>
       <p class="desc">Get current or historical exchange rates.</p>
     </div>
 
@@ -378,7 +385,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
     </table>
 
     <h3>Example Request</h3>
-    <pre><code>curl <span class="str">"https://afrotools.com/api/fx-rates?base=USD&target=NGN"</span> \
+    <pre><code>curl <span class="str">"https://afrotools.com/api/v1/fx/rates?base=USD&target=NGN"</span> \
   -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
 
     <h3>Example Response</h3>
@@ -427,7 +434,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
 
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="path">/api/countries</span>
+      <span class="path">/api/v1/countries</span>
       <p class="desc">List all African countries or get detail for one.</p>
     </div>
 
@@ -452,15 +459,18 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
 
     <!-- Get API Key -->
     <h2 id="get-key">Get Your API Key</h2>
-    <p>Sign up below to get a free API key instantly. 100 requests/day, no credit card required.</p>
+    <p>Enter your email to start signup. Keys are generated only after sign-in and email verification. Free tier includes 100 requests/day and 3,000/month.</p>
 
     <div class="key-form" id="keyFormWrapper">
-      <form id="apiKeyForm">
+      <form id="apiKeyForm" action="/auth/" method="get">
+        <input type="hidden" name="mode" value="signup">
+        <input type="hidden" name="intent" value="api-key">
+        <input type="hidden" name="next" value="/dashboard/api/">
         <label for="keyEmail">Email address</label>
-        <input type="email" id="keyEmail" placeholder="you@company.com" required>
+        <input type="email" id="keyEmail" name="email" placeholder="you@company.com" required>
 
         <label for="keyName">Your name or company</label>
-        <input type="text" id="keyName" placeholder="Acme Fintech">
+        <input type="text" id="keyName" name="name" placeholder="Acme Fintech">
 
         <label for="keyUseCase">Use case</label>
         <select id="keyUseCase">
@@ -471,12 +481,12 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
           <option value="other">Other</option>
         </select>
 
-        <button type="submit" id="keySubmitBtn">Get Free API Key</button>
+        <button type="submit" id="keySubmitBtn">Continue to verified signup</button>
       </form>
       <div class="key-result" id="keyResult">
         <span id="keyValue"></span>
         <button id="keyCopyBtn" style="display:inline-block;margin-top:10px;padding:6px 16px;background:#008751;color:#fff;border:none;border-radius:6px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Copy</button>
-        <span class="warn">Save this key now. It will not be shown in full again.</span>
+        <span class="warn">Save production keys server-side only. Rotate keys from your dashboard.</span>
       </div>
     </div>
 
@@ -529,39 +539,17 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
     });
   }
 
-  // API Key form
+  // API Key signup handoff
   var form = document.getElementById('apiKeyForm');
   if (form) {
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      var btn = document.getElementById('keySubmitBtn');
-      btn.disabled = true;
-      btn.textContent = 'Creating key...';
-
-      try {
-        var res = await fetch('/api/get-key', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: document.getElementById('keyEmail').value,
-            name: document.getElementById('keyName').value,
-            use_case: document.getElementById('keyUseCase').value
-          })
-        });
-        var data = await res.json();
-        if (data.apiKey || data.ok) {
-          var resultEl = document.getElementById('keyResult');
-          document.getElementById('keyValue').textContent = data.apiKey;
-          resultEl.style.display = 'block';
-          form.style.display = 'none';
-        } else {
-          btn.textContent = data.error || 'Error — try again';
-          btn.disabled = false;
-        }
-      } catch (err) {
-        btn.textContent = 'Error — try again';
-        btn.disabled = false;
-      }
+      var email = document.getElementById('keyEmail').value || '';
+      var name = document.getElementById('keyName').value || '';
+      var url = '/auth/?mode=signup&intent=api-key&next=/dashboard/api/';
+      if (email) url += '&email=' + encodeURIComponent(email);
+      if (name) url += '&name=' + encodeURIComponent(name);
+      window.location.href = url;
     });
   }
 })();
@@ -574,8 +562,8 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
   if (!main) return;
 
   var endpoints = [
-    { id: 'v1-forex', title: 'Forex Rates', method: 'GET', path: '/api/v1/forex', params: 'base, target', example: 'curl "https://afrotools.com/api/v1/forex?base=NGN&target=KES"', desc: 'Live exchange rates for all African + major global currencies. Supports single pair, base conversion, or full rate table.' },
-    { id: 'v1-fuel', title: 'Fuel Prices', method: 'GET', path: '/api/v1/fuel', params: 'country, region', example: 'curl "https://afrotools.com/api/v1/fuel?country=NG"', desc: 'Petrol, diesel, and LPG prices for 54 African countries in local currency and USD. Updated every 6 hours.' },
+    { id: 'v1-forex', title: 'Forex Rates', method: 'GET', path: '/api/v1/fx/rates', params: 'base, target', example: 'curl "https://afrotools.com/api/v1/fx/rates?base=NGN&target=KES"', desc: 'Latest available exchange rates for all African + major global currencies. Supports single pair, base conversion, or full rate table.' },
+    { id: 'v1-fuel', title: 'Fuel Prices', method: 'GET', path: '/api/v1/fuel/prices', params: 'country, region', example: 'curl "https://afrotools.com/api/v1/fuel/prices?country=NG"', desc: 'Petrol, diesel, and LPG prices for 54 African countries in local currency and USD. Updated every 6 hours.' },
     { id: 'v1-commodities', title: 'Commodity Prices', method: 'GET', path: '/api/v1/commodities', params: 'id, category', example: 'curl "https://afrotools.com/api/v1/commodities?id=gold"', desc: 'Live prices for 20+ commodities: crude oil, gold, cocoa, coffee, tea, cotton, copper, platinum, and more. Updated daily.' },
     { id: 'v1-electricity', title: 'Electricity Tariffs', method: 'GET', path: '/api/v1/electricity', params: 'country, region, sort', example: 'curl "https://afrotools.com/api/v1/electricity?country=KE"', desc: 'Residential electricity tariffs in local currency and USD/kWh. 46+ African countries. Sort by cheapest or most expensive.' },
     { id: 'v1-telecom', title: 'Telecom Plans', method: 'GET', path: '/api/v1/telecom', params: 'country, provider, sort', example: 'curl "https://afrotools.com/api/v1/telecom?country=GH&provider=MTN"', desc: 'Mobile data plan pricing by country and provider. Average and cheapest cost per GB. 30 countries, all major MNOs.' },
@@ -588,7 +576,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
   ];
 
   var html = '<h2 style="margin-top:48px;padding-top:24px;border-top:2px solid #e2e8f0">AfroData API v1</h2>' +
-    '<p style="color:#64748b;margin-bottom:24px">Live African data across 14 categories. Base URL: <code>https://afrotools.com/api/v1/</code></p>';
+    '<p style="color:#64748b;margin-bottom:24px">Live African data across 14 categories. Base URL: <code>https://afrotools.com/api/v1</code></p>';
 
   endpoints.forEach(function(ep) {
     html += '<div class="endpoint-block" id="' + ep.id + '" style="margin-bottom:32px">' +

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GET /api/fuel — Fuel Prices — AfroTools API Docs</title>
+<title>GET /api/v1/fuel/prices — Fuel Prices — AfroTools API Docs</title>
 <meta name="description" content="Get current fuel prices (petrol, diesel, kerosene, LPG) for any African country via the AfroFuel API.">
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/fuel/prices">
@@ -31,7 +31,7 @@
 
         <div class="endpoint-header">
           <span class="endpoint-method endpoint-method--get">GET</span>
-          <span class="endpoint-url">https://afrotools.com/api/fuel</span>
+          <span class="endpoint-url">https://afrotools.com/api/v1/fuel/prices</span>
         </div>
 
         <div class="api-callout api-callout--info">
@@ -102,10 +102,10 @@
             <button class="code-tab" data-lang="node">Node.js</button>
             <button class="code-tab" data-lang="php">PHP</button>
           </div>
-          <div class="code-panel code-panel--active" data-lang="curl">curl "https://afrotools.com/api/fuel?country=NG" \
+          <div class="code-panel code-panel--active" data-lang="curl">curl "https://afrotools.com/api/v1/fuel/prices?country=NG" \
   -H "x-api-key: afro_live_your_key_here"</div>
           <div class="code-panel" data-lang="js">const res = await fetch(
-  "https://afrotools.com/api/fuel?country=NG",
+  "https://afrotools.com/api/v1/fuel/prices?country=NG",
   { headers: { "x-api-key": "afro_live_your_key_here" } }
 );
 const data = await res.json();
@@ -113,7 +113,7 @@ console.log(`Petrol: ${data.data.fuels.petrol.price} NGN/litre`);</div>
           <div class="code-panel" data-lang="python">import requests
 
 resp = requests.get(
-    "https://afrotools.com/api/fuel",
+    "https://afrotools.com/api/v1/fuel/prices",
     params={"country": "NG"},
     headers={"x-api-key": "afro_live_your_key_here"}
 )
@@ -122,14 +122,14 @@ print(f"Petrol: {data['data']['fuels']['petrol']['price']} NGN/litre")</div>
           <div class="code-panel" data-lang="node">const axios = require("axios");
 
 const { data } = await axios.get(
-  "https://afrotools.com/api/fuel",
+  "https://afrotools.com/api/v1/fuel/prices",
   {
     params: { country: "NG" },
     headers: { "x-api-key": "afro_live_your_key_here" }
   }
 );
 console.log(`Petrol: ${data.data.fuels.petrol.price} NGN/litre`);</div>
-          <div class="code-panel" data-lang="php">$ch = curl_init("https://afrotools.com/api/fuel?country=NG");
+          <div class="code-panel" data-lang="php">$ch = curl_init("https://afrotools.com/api/v1/fuel/prices?country=NG");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "x-api-key: afro_live_your_key_here"
 ]);
@@ -179,7 +179,7 @@ echo "Petrol: " . $data["data"]["fuels"]["petrol"]["price"] . " NGN/litre";</div
 
         <div class="code-label">All Countries (no country param)</div>
         <div class="code-example"><span class="c"># Get fuel prices for all countries</span>
-curl "https://afrotools.com/api/fuel" \
+curl "https://afrotools.com/api/v1/fuel/prices" \
   -H "x-api-key: afro_test_abc123"</div>
         <div class="code-example">{
   "success": true,

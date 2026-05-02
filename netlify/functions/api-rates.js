@@ -8,13 +8,14 @@
  * GET /api/rates?metric=policy_rate — just policy rates
  * GET /api/rates?sort=inflation_desc — sorted results
  *
- * Headers: x-api-key for authenticated access (bypasses rate limiting)
- * Rate limit: 100 requests/day without API key
+ * Headers: x-api-key for authenticated access
+ * Free tier: 100 requests/day and 3,000/month
  */
 
 const { getData } = require('./_shared/data-store');
 const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 const { getAllowedOrigin } = require('./utils/cors');
+const { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -52,6 +53,31 @@ function jsonResponse(statusCode, body, extraHeaders = {}) {
   };
 }
 
+function sandboxRatesResponse(params) {
+  params = params || {};
+  const country = {
+    code: 'NG',
+    name: 'Nigeria Sandbox',
+    central_bank: 'AfroTools Sandbox Bank',
+    currency: 'NGN',
+    region: 'west',
+    policy_rate: 18.75,
+    policy_rate_name: 'Sandbox policy rate',
+    inflation: { headline: 12.5 },
+    next_mpc: '2026-02-01'
+  };
+  if (params.country) {
+    return { timestamp: '2026-01-01T00:00:00.000Z', country, sandbox: true, data_policy: 'deterministic sandbox data' };
+  }
+  return {
+    timestamp: '2026-01-01T00:00:00.000Z',
+    summary: { total_countries: 1, avg_policy_rate: 18.75, max_policy_rate: 18.75, min_policy_rate: 18.75, avg_inflation: 12.5 },
+    countries: [country],
+    sandbox: true,
+    data_policy: 'deterministic sandbox data'
+  };
+}
+
 exports.handler = async function (event) {
   CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
@@ -62,20 +88,25 @@ exports.handler = async function (event) {
     return jsonResponse(405, { error: 'Method not allowed' });
   }
 
-  // Rate limiting
-  const apiKey = event.headers['x-api-key'];
-  const hasValidKey = apiKey && apiKey.length > 10;
-  if (!hasValidKey) {
+  const params = event.queryStringParameters || {};
+
+  // Rate limiting and sandbox handling
+  const apiKey = event.headers['x-api-key'] || event.headers['X-Api-Key'] || params.api_key;
+  var rlHeaders = {};
+  if (apiKey) {
+    var auth = await validateApiKey(event);
+    if (!auth.valid) return jsonResponse(auth.status || 401, { error: auth.error });
+    rlHeaders = rateLimitHeaders(auth);
+    if (auth.sandbox) return jsonResponse(200, sandboxRatesResponse(params), rlHeaders);
+  } else {
     const clientIp = event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown';
     if (!checkRateLimit(clientIp)) {
       return jsonResponse(429, {
         error: 'Rate limit exceeded',
-        message: 'Free tier allows 100 requests/day. Add x-api-key header for unlimited access.',
+        message: 'Free tier allows 100 requests/day and 3,000/month. Generate an API key from your dashboard for authenticated limits.',
       });
     }
   }
-
-  const params = event.queryStringParameters || {};
 
   // --- Load latest rates data (with in-memory + Blobs cache) ---
   const { data, fromCache } = await getOrFetch('rates-latest', 21600000); // 6hr memory TTL
@@ -96,7 +127,7 @@ exports.handler = async function (event) {
     return jsonResponse(200, {
       timestamp: data.timestamp,
       country,
-    });
+    }, rlHeaders);
   }
 
   // --- Region filter: ?region=west ---
@@ -128,7 +159,7 @@ exports.handler = async function (event) {
         timestamp: data.timestamp,
         metric: 'inflation',
         countries: inflationData,
-      });
+      }, rlHeaders);
     }
 
     if (metric === 'policy_rate') {
@@ -148,7 +179,7 @@ exports.handler = async function (event) {
         timestamp: data.timestamp,
         metric: 'policy_rate',
         countries: rateData,
-      });
+      }, rlHeaders);
     }
 
     if (metric === 'tbills') {
@@ -169,7 +200,7 @@ exports.handler = async function (event) {
         timestamp: data.timestamp,
         metric: 'tbills',
         countries: tbillData,
-      });
+      }, rlHeaders);
     }
 
     return jsonResponse(400, {
@@ -221,5 +252,5 @@ exports.handler = async function (event) {
     timestamp: data.timestamp,
     summary,
     countries,
-  });
+  }, rlHeaders);
 };
