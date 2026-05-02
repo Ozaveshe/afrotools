@@ -27,6 +27,7 @@ AfroTools is a static-first, multi-surface product for African tools, country hu
 
 - `npm run build` - full site rebuild and post-processing
 - `npm run build:deploy` - rebuild and prepare the publishable `dist/` artifact
+- `npm run counts:sync` - refresh public tool-count copy from the registry-backed source of truth
 - `npm run sitemap` - regenerate sitemap files from source routes
 - `npm test` - link check plus tool audit
 - `npm run check-links` - broken links and routing smoke check
@@ -88,6 +89,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 ### Design and UI work
 
 - Start from `assets/css/design-system.css`, `style-guide.html`, and `docs/design-doctrine.md`.
+- Use `docs/MOBILE-AUDIT-WORKFLOW.md` and `node scripts/mobile-audit.js` for repo-wide mobile risk sweeps before broad page-by-page fixes.
 - Reuse repo tokens, type, spacing, radii, shadows, and motion rules before inventing new ones.
 - Prefer stronger composition and hierarchy over piling on more cards or controls.
 
@@ -95,6 +97,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 
 - Use existing SEO scripts before writing a new fixer.
 - Do not manually edit sitemap files as a first choice.
+- `scripts/generate-sitemaps.js` preserves existing sitemap `<lastmod>` values by default; set `AFROTOOLS_REFRESH_SITEMAP_LASTMOD=1` only when intentionally restamping sitemap dates.
 - Keep `widgets/iframe/` utility pages `noindex, follow` and normalize them with `npm run seo:widgets`.
 - Keep generated deploy output such as `dist/` out of source SEO scans; regenerate it from source instead of patching generated URLs.
 - For tool social-card changes, add the matching route image and run `npm run seo:og`.
@@ -126,6 +129,7 @@ Do not hand-edit generated files unless the source is missing or the task explic
 ### Internal inventory work
 
 - If `mc-7a2f9x.html` counts look stale after registry or page changes, run `npm run inventory:site` before relying on the dashboard.
+- If public tool-count copy drifts across homepage, search, category, or country surfaces, run `npm run counts:sync` before SEO review so static marketing pages inherit the current registry-backed total.
 
 ## Preferred Validation
 
