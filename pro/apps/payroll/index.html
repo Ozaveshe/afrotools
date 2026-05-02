@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfroPayroll OS | Pro App</title>
+  <meta name="description" content="AfroPayroll OS command center for payroll runs, clients, employee readiness, statutory review packs, approvals, and handoff exports.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="afropayroll-os-pro-app">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="canonical" href="https://afrotools.com/pro/apps/payroll/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=1">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1">
+  <script src="/assets/js/components/navbar.min.js?v=1" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=1" defer></script>
+  <script src="/assets/js/bundles/core.6b2634cc.min.js" defer></script>
+  <script src="/assets/js/afro-auth.js?v=6"></script>
+  <script src="/assets/js/pro-gate.js?v=20260502a"></script>
+  <style>
+    :root{
+      --apo-bg:#f4f7fb;
+      --apo-surface:#fff;
+      --apo-ink:#0f172a;
+      --apo-muted:#64748b;
+      --apo-line:#dbe4f0;
+      --apo-blue:#1d4ed8;
+      --apo-blue-900:#1e3a8a;
+      --apo-blue-soft:#eff6ff;
+      --apo-green:#047857;
+      --apo-green-soft:#ecfdf5;
+      --apo-amber:#a16207;
+      --apo-amber-soft:#fffbeb;
+      --apo-red:#b91c1c;
+      --apo-red-soft:#fef2f2;
+      --apo-violet:#6d28d9;
+      --apo-violet-soft:#f5f3ff;
+      --apo-shadow:0 14px 36px rgba(15,23,42,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--apo-bg);color:var(--apo-ink);font-family:"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit}
+    button,input,select{font:inherit}
+    .apo-shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:calc(100vh - 80px)}
+    .apo-side{position:sticky;top:0;align-self:start;height:100vh;background:#0f172a;color:#e5eefb;padding:18px 14px;border-right:1px solid rgba(255,255,255,.08)}
+    .apo-brand{display:flex;align-items:center;gap:10px;padding:9px 8px 18px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:14px}
+    .apo-mark{width:34px;height:34px;border-radius:10px;background:#fff;color:#0f172a;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;letter-spacing:.06em}
+    .apo-brand strong{display:block;font-size:.92rem;line-height:1.1}
+    .apo-brand span{display:block;font-size:.68rem;color:#a7b3c5;margin-top:3px}
+    .apo-nav{display:grid;gap:5px}
+    .apo-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px;padding:9px 10px;border-radius:9px;color:#cbd5e1;text-decoration:none;font-size:.78rem;font-weight:800}
+    .apo-nav a:hover,.apo-nav a.active{background:rgba(255,255,255,.09);color:#fff}
+    .apo-side-foot{position:absolute;left:14px;right:14px;bottom:16px;padding:12px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.06);font-size:.74rem;line-height:1.45;color:#cbd5e1}
+    .apo-main{min-width:0;padding:20px 0 56px}
+    .apo-wrap{max-width:1360px;margin:0 auto;padding:0 20px}
+    .apo-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:16px}
+    .apo-crumb{font-size:.7rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--apo-muted);margin-bottom:7px}
+    .apo-crumb a{text-decoration:none;color:var(--apo-muted)}
+    .apo-title{font-size:clamp(1.55rem,3vw,2.45rem);line-height:1.05;letter-spacing:-.02em;font-weight:900;margin:0 0 8px}
+    .apo-sub{max-width:880px;margin:0;color:var(--apo-muted);font-size:.92rem;line-height:1.62}
+    .apo-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+    .apo-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;border-radius:9px;border:1px solid var(--apo-line);padding:9px 13px;background:#fff;color:var(--apo-ink);font-size:.8rem;font-weight:900;text-decoration:none;cursor:pointer;white-space:nowrap}
+    .apo-btn.primary{background:var(--apo-blue);border-color:var(--apo-blue);color:#fff}
+    .apo-btn.success{background:var(--apo-green);border-color:var(--apo-green);color:#fff}
+    .apo-btn:disabled{opacity:.55;cursor:not-allowed;background:#edf2f7;color:#64748b}
+    .apo-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;min-height:24px;padding:4px 8px;border:1px solid var(--apo-line);background:#f8fafc;color:#475569;font-size:.64rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+    .apo-pill.pro{background:var(--apo-green-soft);border-color:#a7f3d0;color:#065f46}
+    .apo-pill.warn{background:var(--apo-amber-soft);border-color:#fde68a;color:#92400e}
+    .apo-pill.stop{background:var(--apo-red-soft);border-color:#fecaca;color:#991b1b}
+    .apo-pill.blue{background:var(--apo-blue-soft);border-color:#bfdbfe;color:#1e40af}
+    .apo-pill.violet{background:var(--apo-violet-soft);border-color:#ddd6fe;color:#5b21b6}
+    .apo-command{display:grid;grid-template-columns:minmax(0,1.22fr) repeat(5,minmax(112px,.4fr));gap:10px;margin-bottom:16px}
+    .apo-card,.apo-panel,.apo-metric,.apo-task,.apo-lane,.apo-workflow,.apo-stage,.apo-check{background:var(--apo-surface);border:1px solid var(--apo-line);border-radius:12px;box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .apo-card{padding:14px 15px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .apo-card-label{font-size:.7rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--apo-muted);margin-bottom:5px}
+    .apo-card-main{font-size:1rem;font-weight:900;line-height:1.3}
+    .apo-card-note{font-size:.76rem;line-height:1.45;color:var(--apo-muted);margin-top:4px}
+    .apo-metric{padding:13px 14px}
+    .apo-metric strong{display:block;font-size:1.55rem;line-height:1;font-weight:900;letter-spacing:-.02em}
+    .apo-metric span{display:block;margin-top:8px;font-size:.67rem;font-weight:900;color:var(--apo-muted);letter-spacing:.08em;text-transform:uppercase}
+    .apo-metric small{display:block;margin-top:5px;color:var(--apo-muted);font-size:.72rem;line-height:1.32}
+    .apo-layout{display:grid;grid-template-columns:minmax(0,1fr) 398px;gap:16px;align-items:start}
+    .apo-panel{margin-bottom:16px;overflow:hidden}
+    .apo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #edf2f7;background:#fff}
+    .apo-kicker{font-size:.67rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--apo-blue);margin-bottom:4px}
+    .apo-h2{font-size:1rem;font-weight:900;line-height:1.25;margin:0}
+    .apo-note{font-size:.77rem;line-height:1.5;color:var(--apo-muted);margin:5px 0 0}
+    .apo-body{padding:15px 16px}
+    .apo-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .apo-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .apo-lane{padding:13px;min-height:150px;display:flex;flex-direction:column}
+    .apo-lane-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}
+    .apo-lane h3{font-size:.9rem;line-height:1.25;font-weight:900;margin:0 0 5px}
+    .apo-lane p{font-size:.76rem;line-height:1.48;color:var(--apo-muted);margin:0}
+    .apo-lane-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:12px}
+    .apo-work-list,.apo-task-list,.apo-workflow-list{display:grid;gap:9px}
+    .apo-workflow{padding:12px 13px;display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:11px;align-items:start}
+    .apo-step{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:9px;background:var(--apo-blue-soft);color:#1e40af;font-size:.74rem;font-weight:900}
+    .apo-workflow h3,.apo-task h3{font-size:.84rem;line-height:1.3;font-weight:900;margin:0 0 4px}
+    .apo-workflow p,.apo-task p{font-size:.73rem;line-height:1.42;color:var(--apo-muted);margin:0}
+    .apo-task{padding:12px 13px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
+    .apo-task-meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+    .apo-table-wrap{overflow:auto;border:1px solid var(--apo-line);border-radius:12px;background:#fff}
+    .apo-table{width:100%;min-width:760px;border-collapse:collapse}
+    .apo-table th,.apo-table td{padding:10px 11px;border-bottom:1px solid #edf2f7;text-align:left;vertical-align:top;font-size:.78rem}
+    .apo-table th{background:#f8fafc;color:#52627a;font-size:.64rem;text-transform:uppercase;letter-spacing:.08em}
+    .apo-table tr:last-child td{border-bottom:0}
+    .apo-empty{border:1px dashed var(--apo-line);border-radius:11px;padding:16px;text-align:center;color:var(--apo-muted);font-size:.83rem;line-height:1.55;background:#fff}
+    .apo-warning{padding:12px 13px;border:1px solid #fde68a;background:var(--apo-amber-soft);border-radius:11px;color:#78350f;font-size:.77rem;line-height:1.48}
+    .apo-score{display:grid;grid-template-columns:180px minmax(0,1fr);gap:14px;align-items:center;margin-bottom:12px}
+    .apo-score-card{border:1px solid var(--apo-line);border-radius:12px;background:#fff;padding:14px}
+    .apo-score-value{font-size:2.1rem;line-height:1;font-weight:900;letter-spacing:-.04em}
+    .apo-score-label{font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--apo-muted);margin-top:6px}
+    .apo-progress{height:10px;border-radius:999px;background:#e2e8f0;overflow:hidden;margin-top:10px}
+    .apo-progress span{display:block;height:100%;width:0;background:var(--apo-blue);border-radius:999px;transition:width .18s ease}
+    .apo-score-copy{font-size:.78rem;line-height:1.5;color:var(--apo-muted);margin:0}
+    .apo-stage-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .apo-stage{padding:12px;min-height:134px}
+    .apo-stage-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:9px}
+    .apo-stage h3{font-size:.83rem;font-weight:900;line-height:1.25;margin:0}
+    .apo-stage p{font-size:.72rem;line-height:1.42;color:var(--apo-muted);margin:0}
+    .apo-stage-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+    .apo-check-list{display:grid;gap:8px}
+    .apo-check{padding:10px 11px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+    .apo-check strong{font-size:.78rem;line-height:1.25}
+    .apo-check span{display:block;font-size:.7rem;color:var(--apo-muted);line-height:1.36;margin-top:2px}
+    .apo-split-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .apo-guard{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+    .apo-guard li{display:flex;gap:8px;font-size:.76rem;line-height:1.45;color:#475569}
+    .apo-dot{width:8px;height:8px;border-radius:50%;background:var(--apo-amber);flex:0 0 auto;margin-top:6px}
+    @media(max-width:1180px){
+      .apo-shell{grid-template-columns:1fr}
+      .apo-side{position:relative;height:auto}
+      .apo-side-foot{position:static;margin-top:14px}
+      .apo-nav{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .apo-command{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .apo-card{grid-column:1/-1}
+      .apo-layout{grid-template-columns:1fr}
+    }
+    @media(max-width:760px){
+      .apo-main{padding-top:16px}
+      .apo-wrap{padding:0 14px}
+      .apo-top{display:block}
+      .apo-actions{justify-content:flex-start;margin-top:14px}
+      .apo-command,.apo-grid-2,.apo-grid-3,.apo-nav{grid-template-columns:1fr}
+      .apo-workflow,.apo-task{grid-template-columns:1fr}
+      .apo-task-meta{justify-content:flex-start}
+      .apo-score,.apo-stage-grid,.apo-split-actions{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+  <div class="apo-shell pro-gated-content">
+    <aside class="apo-side" aria-label="AfroPayroll navigation">
+      <div class="apo-brand">
+        <div class="apo-mark">AP</div>
+        <div>
+          <strong>AfroPayroll OS</strong>
+          <span>Pro command app</span>
+        </div>
+      </div>
+      <nav class="apo-nav">
+        <a class="active" href="#command">Command <span>01</span></a>
+        <a href="#workflows">Workflows <span>02</span></a>
+        <a href="#runs">Runs <span>03</span></a>
+        <a href="#readiness">Readiness <span>04</span></a>
+        <a href="#clients">Clients <span>05</span></a>
+        <a href="#close">Close board <span>06</span></a>
+        <a href="#guardrails">Guardrails <span>07</span></a>
+        <a href="/pro/workspace/">Pro home <span>go</span></a>
+        <a href="/pro/apps/">All apps <span>go</span></a>
+        <a href="/dashboard/">Account <span>go</span></a>
+      </nav>
+      <div class="apo-side-foot">
+        Pro app shell for accountants, SMEs, schools, clinics, NGOs, and multi-country operators. Review packets only; no filing or money movement.
+      </div>
+    </aside>
+
+    <main class="apo-main">
+      <div class="apo-wrap">
+        <header class="apo-top" id="command">
+          <div>
+            <div class="apo-crumb"><a href="/pro/workspace/">Pro Workspace</a> / Apps / Payroll</div>
+            <h1 class="apo-title">AfroPayroll OS</h1>
+            <p class="apo-sub">A paid payroll operating console layered above the run workspace: client context, employee readiness, statutory review packs, payment handoff, approvals, audit trail, and accountant delivery.</p>
+          </div>
+          <div class="apo-actions">
+            <button class="apo-btn" id="refreshBtn" type="button">Refresh</button>
+            <a class="apo-btn" href="/pro/apps/">Browse apps</a>
+            <a class="apo-btn" href="/dashboard/">Account</a>
+            <a class="apo-btn" href="/tools/afropayroll-os/support.html">Pack support</a>
+            <a class="apo-btn" href="/tools/afropayroll-os/employee.html">Employee portal</a>
+            <a class="apo-btn primary" href="/tools/afropayroll-os/workspace.html">Open run workspace</a>
+          </div>
+        </header>
+
+        <section class="apo-command" aria-label="Payroll command metrics">
+          <div class="apo-card" id="accountCard">
+            <div>
+              <div class="apo-card-label">Account</div>
+              <div class="apo-card-main">Checking Pro status...</div>
+              <div class="apo-card-note">Live profile tier is read before account-backed workflows load.</div>
+            </div>
+            <span class="apo-pill warn">Checking</span>
+          </div>
+          <div class="apo-metric"><strong id="metricClients">0</strong><span>Clients</span><small>Cloud workspace</small></div>
+          <div class="apo-metric"><strong id="metricRuns">0</strong><span>Runs</span><small>Cloud and local</small></div>
+          <div class="apo-metric"><strong id="metricReview">0</strong><span>Needs review</span><small>Rows or runs</small></div>
+          <div class="apo-metric"><strong id="metricEmployees">0</strong><span>Employees</span><small>Local master</small></div>
+          <div class="apo-metric"><strong id="metricReadiness">0%</strong><span>Readiness</span><small>Close score</small></div>
+        </section>
+
+        <div class="apo-layout">
+          <div>
+            <section class="apo-panel" aria-labelledby="workflows-title" id="workflows">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Operating workflows</div>
+                  <h2 class="apo-h2" id="workflows-title">What a paid user should be able to do</h2>
+                  <p class="apo-note">These are the payroll jobs we are turning into real SaaS flows, not one-off calculators.</p>
+                </div>
+                <span class="apo-pill pro">App 1</span>
+              </div>
+              <div class="apo-body">
+                <div class="apo-workflow-list" id="workflowList"></div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="close-title" id="close">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Month close control</div>
+                  <h2 class="apo-h2" id="close-title">Payroll close board</h2>
+                  <p class="apo-note">A control model for capture, review, approval, and handoff. It uses cloud run state where available and browser-local state where the user has not synced.</p>
+                </div>
+                <span class="apo-pill warn">Review model</span>
+              </div>
+              <div class="apo-body">
+                <div class="apo-score" aria-live="polite">
+                  <div class="apo-score-card">
+                    <div class="apo-score-value" id="readinessScore">0%</div>
+                    <div class="apo-score-label" id="readinessLabel">Calculating</div>
+                    <div class="apo-progress"><span id="readinessBar"></span></div>
+                  </div>
+                  <p class="apo-score-copy" id="readinessCopy">Readiness combines employee master completeness, cloud run warnings, approval state, export state, and whether salary data is still local-only.</p>
+                </div>
+                <div class="apo-stage-grid" id="closeStageBoard"></div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="lanes-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Product lanes</div>
+                  <h2 class="apo-h2" id="lanes-title">AfroPayroll app modules</h2>
+                  <p class="apo-note">Each lane maps to a competitor-grade expectation: self-service, statutory workflow, payment handoff, approval, and evidence.</p>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-grid-3">
+                  <article class="apo-lane">
+                    <div class="apo-lane-top"><h3>Run workspace</h3><span class="apo-pill pro">Active</span></div>
+                    <p>Monthly pay inputs, preview calculations, saved runs, country-pack status, and export packets.</p>
+                    <div class="apo-lane-actions"><a class="apo-btn primary" href="/tools/afropayroll-os/workspace.html">Open</a></div>
+                  </article>
+                  <article class="apo-lane">
+                    <div class="apo-lane-top"><h3>Employee master</h3><span class="apo-pill blue">Linked</span></div>
+                    <p>Employee records, payment route, statutory IDs, payroll readiness, and portal invite preparation.</p>
+                    <div class="apo-lane-actions"><a class="apo-btn" href="/tools/afropayroll-os/workspace.html#employee-master-title">Review employees</a></div>
+                  </article>
+                  <article class="apo-lane">
+                    <div class="apo-lane-top"><h3>Client board</h3><span class="apo-pill blue">Linked</span></div>
+                    <p>Accountant-facing client and company board for monthly run status, contacts, and review counts.</p>
+                    <div class="apo-lane-actions"><a class="apo-btn" href="/tools/afropayroll-os/workspace.html#client-board-title">Open board</a></div>
+                  </article>
+                  <article class="apo-lane">
+                    <div class="apo-lane-top"><h3>Compliance pack</h3><span class="apo-pill warn">Review only</span></div>
+                    <p>Statutory calendar prompts, source-linked review evidence, warnings, and human sign-off fields.</p>
+                    <div class="apo-lane-actions"><a class="apo-btn" href="/tools/afropayroll-os/workspace.html#compliance-title">Open pack</a></div>
+                  </article>
+                  <article class="apo-lane">
+                    <div class="apo-lane-top"><h3>Payment handoff</h3><span class="apo-pill warn">Drafts</span></div>
+                    <p>Bank CSV, mobile money CSV, missing payment details, accounting journal, and handoff note.</p>
+                    <div class="apo-lane-actions"><a class="apo-btn" href="/tools/afropayroll-os/workspace.html#handoff-title">Export drafts</a></div>
+                  </article>
+                  <article class="apo-lane">
+                    <div class="apo-lane-top"><h3>Employee portal</h3><span class="apo-pill violet">Token route</span></div>
+                    <p>Payslip viewing and profile confirmation for employees invited from synced runs.</p>
+                    <div class="apo-lane-actions"><a class="apo-btn" href="/tools/afropayroll-os/employee.html">Open portal</a></div>
+                  </article>
+                </div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="runs-title" id="runs">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Run control</div>
+                  <h2 class="apo-h2" id="runs-title">Payroll run queue</h2>
+                  <p class="apo-note">Cloud runs load from the account API when signed in. Local snapshots are browser-only and marked separately.</p>
+                </div>
+                <button class="apo-btn" id="runRefreshBtn" type="button">Reload</button>
+              </div>
+              <div class="apo-body">
+                <div class="apo-task-list" id="runQueue"><div class="apo-empty">Loading payroll runs...</div></div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="recent-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Recent cloud runs</div>
+                  <h2 class="apo-h2" id="recent-title">Account-backed status table</h2>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-table-wrap">
+                  <table class="apo-table" aria-label="Recent payroll runs">
+                    <thead>
+                      <tr>
+                        <th>Run</th>
+                        <th>Status</th>
+                        <th>Approval</th>
+                        <th>Rows</th>
+                        <th>Warnings</th>
+                        <th>Updated</th>
+                      </tr>
+                    </thead>
+                    <tbody id="recentRunsBody"><tr><td colspan="6">Loading...</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="local-work-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Local work</div>
+                  <h2 class="apo-h2" id="local-work-title">Unsynced browser queue</h2>
+                  <p class="apo-note">Local saved runs and drafts are useful during testing, but they are not shared account history.</p>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-task-list" id="localWorkQueue"></div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="apo-panel" aria-labelledby="readiness-title" id="readiness">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Readiness</div>
+                  <h2 class="apo-h2" id="readiness-title">What needs attention</h2>
+                  <p class="apo-note">Generated from local employee state and cloud run status when available.</p>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-task-list" id="readinessList"></div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="close-checklist-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Close checklist</div>
+                  <h2 class="apo-h2" id="close-checklist-title">Before handoff</h2>
+                  <p class="apo-note">This checklist is a decision aid. It does not certify payroll compliance.</p>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-check-list" id="closeChecklist"></div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="clients-title" id="clients">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Clients</div>
+                  <h2 class="apo-h2" id="clients-title">Accountant view</h2>
+                  <p class="apo-note">Client/company records appear after cloud sync.</p>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-task-list" id="clientList"><div class="apo-empty">Loading clients...</div></div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="feeders-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Feeder tools</div>
+                  <h2 class="apo-h2" id="feeders-title">Free tools that create Pro intent</h2>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-grid-2">
+                  <a class="apo-btn" href="/tools/payslip-generator/">Payslip</a>
+                  <a class="apo-btn" href="/tools/staff-cost/">Staff cost</a>
+                  <a class="apo-btn" href="/tools/minimum-wage/">Minimum wage</a>
+                  <a class="apo-btn" href="/tools/leave-calculator/">Leave</a>
+                  <a class="apo-btn" href="/tools/social-security/">Social security</a>
+                  <a class="apo-btn" href="/pro/apps/tax-compliance/">Tax OS</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="support-title">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Support ops</div>
+                  <h2 class="apo-h2" id="support-title">Payroll support consoles</h2>
+                  <p class="apo-note">Internal read-only pages for pack health and source review.</p>
+                </div>
+              </div>
+              <div class="apo-body">
+                <div class="apo-split-actions">
+                  <a class="apo-btn" href="/tools/afropayroll-os/support.html">Country pack support</a>
+                  <a class="apo-btn" href="/pro/workspace/">Pro control</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="apo-panel" aria-labelledby="guardrails-title" id="guardrails">
+              <div class="apo-head">
+                <div>
+                  <div class="apo-kicker">Trust rules</div>
+                  <h2 class="apo-h2" id="guardrails-title">No fake compliance claims</h2>
+                </div>
+              </div>
+              <div class="apo-body">
+                <ul class="apo-guard">
+                  <li><span class="apo-dot"></span><span>Engine-backed previews still need human review before payroll sign-off.</span></li>
+                  <li><span class="apo-dot"></span><span>Compliance packs are evidence and checklist exports, not statutory filing.</span></li>
+                  <li><span class="apo-dot"></span><span>Payment files are handoff drafts. AfroTools does not move money.</span></li>
+                  <li><span class="apo-dot"></span><span>Local salary drafts stay in this browser until explicitly synced by the user.</span></li>
+                </ul>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+  <afro-footer></afro-footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var API = "/api/afropayroll";
+    var SAVED_RUNS_KEY = "afropayroll_pro_saved_runs";
+    var DRAFT_KEY = "afropayroll_pro_workspace_preview";
+    var EMPLOYEE_KEY = "afropayroll_pro_employee_master";
+
+    var workflows = [
+      ["01", "Create a client payroll month", "Select client/company, pay period, country lane, language lane, and default currency.", "Run setup"],
+      ["02", "Load employees and pay inputs", "Use employee master records, import roster rows, or add linked payroll rows manually.", "Data capture"],
+      ["03", "Preview calculations and warnings", "Use full-pack engines where available and estimate-only logic where the country pack is not ready.", "Review"],
+      ["04", "Prepare evidence and handoff", "Generate payslips, statutory review packs, bank/mobile-money drafts, accounting journals, and notes.", "Exports"],
+      ["05", "Request approval and lock the run", "Move from draft to review, approval, finalized, exported, or reopened with audit trail evidence.", "Control"]
+    ];
+
+    var els = {
+      accountCard: document.getElementById("accountCard"),
+      metricClients: document.getElementById("metricClients"),
+      metricRuns: document.getElementById("metricRuns"),
+      metricReview: document.getElementById("metricReview"),
+      metricEmployees: document.getElementById("metricEmployees"),
+      metricReadiness: document.getElementById("metricReadiness"),
+      workflowList: document.getElementById("workflowList"),
+      runQueue: document.getElementById("runQueue"),
+      recentRunsBody: document.getElementById("recentRunsBody"),
+      readinessList: document.getElementById("readinessList"),
+      clientList: document.getElementById("clientList"),
+      readinessScore: document.getElementById("readinessScore"),
+      readinessLabel: document.getElementById("readinessLabel"),
+      readinessBar: document.getElementById("readinessBar"),
+      readinessCopy: document.getElementById("readinessCopy"),
+      closeStageBoard: document.getElementById("closeStageBoard"),
+      closeChecklist: document.getElementById("closeChecklist"),
+      localWorkQueue: document.getElementById("localWorkQueue"),
+      refreshBtn: document.getElementById("refreshBtn"),
+      runRefreshBtn: document.getElementById("runRefreshBtn")
+    };
+
+    function readJson(key, fallback) {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (err) {
+        return fallback;
+      }
+    }
+
+    function text(value, fallback) {
+      value = value === undefined || value === null ? "" : String(value);
+      return value.trim() || fallback || "";
+    }
+
+    function escapeHtml(value) {
+      return text(value).replace(/[&<>"']/g, function (ch) {
+        return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+      });
+    }
+
+    function formatDate(value) {
+      if (!value) return "-";
+      var date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value).slice(0, 10);
+      return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+    }
+
+    function clamp(value, min, max) {
+      value = Number(value || 0);
+      if (Number.isNaN(value)) value = 0;
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function countRowsFromLocal(local) {
+      var draftRows = local.draft && Array.isArray(local.draft.rows) ? local.draft.rows.length : 0;
+      var savedRows = local.savedRuns.reduce(function (sum, run) {
+        var rows = run && Array.isArray(run.rows) ? run.rows.length : 0;
+        return sum + rows;
+      }, 0);
+      return draftRows + savedRows;
+    }
+
+    function statusPill(status) {
+      var label = text(status, "draft").replace(/_/g, " ");
+      var cls = "apo-pill blue";
+      if (/approved|ready|finalized|exported/.test(label)) cls = "apo-pill pro";
+      if (/review|submitted|pending|changes/.test(label)) cls = "apo-pill warn";
+      if (/archived|rejected/.test(label)) cls = "apo-pill stop";
+      return '<span class="' + cls + '">' + escapeHtml(label) + "</span>";
+    }
+
+    function localState() {
+      var saves = readJson(SAVED_RUNS_KEY, []);
+      var employees = readJson(EMPLOYEE_KEY, []);
+      var draft = readJson(DRAFT_KEY, null);
+      if (!Array.isArray(saves)) saves = [];
+      if (!Array.isArray(employees)) employees = [];
+      return {
+        savedRuns: saves,
+        employees: employees,
+        draft: draft,
+        hasDraft: !!(draft && (draft.companyName || draft.payPeriod || draft.rows))
+      };
+    }
+
+    function buildPayrollModel(data) {
+      var local = localState();
+      var runs = data && Array.isArray(data.runs) ? data.runs : [];
+      var clients = data && Array.isArray(data.clients) ? data.clients : [];
+      var employees = local.employees;
+      var activeEmployees = employees.filter(function (employee) {
+        return text(employee.status, "active") !== "inactive";
+      });
+      var missingPayment = activeEmployees.filter(function (employee) {
+        return !text(employee.bankAccountOrMobile || employee.bankAccount || employee.mobileMoney);
+      }).length;
+      var missingStat = activeEmployees.filter(function (employee) {
+        return !text(employee.taxId || employee.socialSecurityId);
+      }).length;
+      var approvalPending = runs.filter(function (run) {
+        return run.approval_status === "pending" || run.status === "submitted" || run.status === "approval_requested";
+      }).length;
+      var approvedRuns = runs.filter(function (run) {
+        return /approved|finalized|exported/.test(text(run.status));
+      }).length;
+      var exportedRuns = runs.filter(function (run) {
+        return /exported|closed/.test(text(run.status));
+      }).length;
+      var warnings = runs.reduce(function (sum, run) {
+        return sum + Number(run.warning_count || 0) + Number(run.needs_review_count || 0);
+      }, 0);
+      var cloudRows = runs.reduce(function (sum, run) {
+        return sum + Number(run.row_count || 0);
+      }, 0);
+      var localRows = countRowsFromLocal(local);
+      var unsyncedItems = local.savedRuns.length + (local.hasDraft ? 1 : 0);
+      var hasPayrollWork = cloudRows > 0 || localRows > 0 || activeEmployees.length > 0;
+      var score = 100;
+
+      if (!hasPayrollWork) score -= 32;
+      if (!activeEmployees.length) score -= 18;
+      score -= clamp(missingPayment * 7, 0, 24);
+      score -= clamp(missingStat * 6, 0, 22);
+      score -= clamp(warnings * 2, 0, 24);
+      score -= clamp(approvalPending * 8, 0, 20);
+      score -= clamp(unsyncedItems * 5, 0, 18);
+      if (runs.length && !approvedRuns) score -= 10;
+      if (runs.length && !exportedRuns) score -= 6;
+      score = clamp(Math.round(score), 0, 100);
+
+      return {
+        local: local,
+        runs: runs,
+        clients: clients,
+        activeEmployees: activeEmployees.length,
+        missingPayment: missingPayment,
+        missingStat: missingStat,
+        approvalPending: approvalPending,
+        approvedRuns: approvedRuns,
+        exportedRuns: exportedRuns,
+        warnings: warnings,
+        cloudRows: cloudRows,
+        localRows: localRows,
+        unsyncedItems: unsyncedItems,
+        hasPayrollWork: hasPayrollWork,
+        score: score
+      };
+    }
+
+    function authToken() {
+      try {
+        return window.AfroAuth && window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : "";
+      } catch (err) {
+        return "";
+      }
+    }
+
+    function setAccount(status) {
+      var profile = status.profile || status.user || {};
+      var email = profile.email || "Not signed in";
+      var expires = profile.subscription_expires_at ? "Expires " + formatDate(profile.subscription_expires_at) : "Profile tier checked live.";
+      var pill = status.isPro ? '<span class="apo-pill pro">Pro active</span>' : '<span class="apo-pill stop">Locked</span>';
+      els.accountCard.innerHTML = [
+        "<div>",
+        '<div class="apo-card-label">Account</div>',
+        '<div class="apo-card-main">',
+        escapeHtml(email),
+        "</div>",
+        '<div class="apo-card-note">',
+        escapeHtml(status.isPro ? expires : "Sign in with a Pro account to unlock account-backed workflows."),
+        "</div>",
+        "</div>",
+        pill
+      ].join("");
+    }
+
+    function renderWorkflows() {
+      els.workflowList.innerHTML = workflows.map(function (item) {
+        return [
+          '<article class="apo-workflow">',
+          '<div class="apo-step">',
+          escapeHtml(item[0]),
+          "</div>",
+          "<div>",
+          "<h3>",
+          escapeHtml(item[1]),
+          "</h3>",
+          "<p>",
+          escapeHtml(item[2]),
+          "</p>",
+          "</div>",
+          '<span class="apo-pill blue">',
+          escapeHtml(item[3]),
+          "</span>",
+          "</article>"
+        ].join("");
+      }).join("");
+    }
+
+    function renderReadiness(data) {
+      var model = buildPayrollModel(data);
+
+      var tasks = [
+        [model.missingPayment, "Missing payment details", "Active employee records without a bank or mobile-money route.", "warn"],
+        [model.missingStat, "Missing statutory IDs", "Employee records missing tax, pension, or social security identifiers.", "warn"],
+        [model.approvalPending, "Approval pending", "Cloud runs waiting for reviewer action.", "blue"],
+        [model.warnings, "Run warnings", "Rows needing human review before handoff.", "warn"],
+        [model.unsyncedItems, "Local-only payroll work", "Browser-only drafts or saved runs that are not account-backed sync.", "blue"]
+      ];
+
+      els.metricEmployees.textContent = model.local.employees.length;
+      els.readinessList.innerHTML = tasks.map(function (task) {
+        return [
+          '<article class="apo-task">',
+          "<div>",
+          "<h3>",
+          escapeHtml(task[1]),
+          "</h3>",
+          "<p>",
+          escapeHtml(task[2]),
+          "</p>",
+          "</div>",
+          '<div class="apo-task-meta"><span class="apo-pill ',
+          task[3],
+          '">',
+          escapeHtml(String(task[0])),
+          "</span></div>",
+          "</article>"
+        ].join("");
+      }).join("");
+      renderCloseControls(data);
+      renderLocalWorkQueue(data);
+    }
+
+    function readinessLabel(score) {
+      if (score >= 82) return "Close-ready";
+      if (score >= 64) return "Almost ready";
+      if (score >= 42) return "Needs review";
+      if (score > 0) return "Setup needed";
+      return "No payroll work";
+    }
+
+    function renderCloseControls(data) {
+      var model = buildPayrollModel(data);
+      var score = model.score;
+      els.metricReadiness.textContent = score + "%";
+      els.readinessScore.textContent = score + "%";
+      els.readinessLabel.textContent = readinessLabel(score);
+      els.readinessBar.style.width = score + "%";
+      els.readinessBar.style.background = score >= 82 ? "var(--apo-green)" : score >= 64 ? "var(--apo-blue)" : score >= 42 ? "var(--apo-amber)" : "var(--apo-red)";
+      els.readinessCopy.textContent = "Score is reduced by missing payment routes, missing statutory IDs, run warnings, pending approvals, unexported runs, and local-only salary work.";
+
+      var captureTone = model.hasPayrollWork ? "pro" : "warn";
+      var reviewTone = model.warnings ? "warn" : model.hasPayrollWork ? "pro" : "blue";
+      var approvalTone = model.approvedRuns ? "pro" : model.approvalPending ? "warn" : "blue";
+      var handoffTone = model.exportedRuns ? "pro" : model.hasPayrollWork ? "warn" : "blue";
+      var stages = [
+        ["Capture", captureTone, model.cloudRows + model.localRows + " rows", model.activeEmployees + " active employee records", model.hasPayrollWork ? "Payroll data exists. Check completeness before review." : "Create a draft run or import employees to start."],
+        ["Review", reviewTone, model.warnings + " warnings", model.missingPayment + model.missingStat + " employee gaps", model.warnings ? "Resolve warnings before accountant handoff." : "No cloud warning rows loaded yet."],
+        ["Approve", approvalTone, model.approvalPending + " pending", model.approvedRuns + " approved", model.approvalPending ? "Reviewer action is needed." : "No pending approval found in loaded cloud runs."],
+        ["Handoff", handoffTone, model.exportedRuns + " exported", model.unsyncedItems + " local-only", model.exportedRuns ? "At least one cloud run is exported." : "Generate handoff exports after review and approval."]
+      ];
+
+      els.closeStageBoard.innerHTML = stages.map(function (stage) {
+        return [
+          '<article class="apo-stage">',
+          '<div class="apo-stage-head"><h3>',
+          escapeHtml(stage[0]),
+          '</h3><span class="apo-pill ',
+          escapeHtml(stage[1]),
+          '">',
+          escapeHtml(stage[1] === "pro" ? "Ready" : stage[1] === "warn" ? "Review" : "Open"),
+          "</span></div>",
+          "<p>",
+          escapeHtml(stage[4]),
+          "</p>",
+          '<div class="apo-stage-meta"><span class="apo-pill blue">',
+          escapeHtml(stage[2]),
+          '</span><span class="apo-pill">',
+          escapeHtml(stage[3]),
+          "</span></div>",
+          "</article>"
+        ].join("");
+      }).join("");
+
+      var checks = [
+        [model.clients.length > 0, "Client or company context", "Cloud client metadata is loaded for the signed-in account."],
+        [model.activeEmployees > 0, "Employee records", "At least one active employee record exists in local payroll master data."],
+        [model.missingPayment === 0 && model.activeEmployees > 0, "Payment route coverage", "Active employees have bank or mobile-money handoff details."],
+        [model.missingStat === 0 && model.activeEmployees > 0, "Statutory ID coverage", "Active employees have tax or pension/social security identifiers."],
+        [model.warnings === 0 && model.hasPayrollWork, "Warnings cleared", "Loaded cloud runs do not show unresolved review warnings."],
+        [model.approvalPending === 0 && model.hasPayrollWork, "Approval queue clear", "No loaded cloud run is waiting for reviewer action."],
+        [model.exportedRuns > 0, "Handoff exports", "At least one loaded cloud run has reached exported state."],
+        [model.unsyncedItems === 0, "Local-only data resolved", "No local browser draft or saved run is waiting to be synced."]
+      ];
+
+      els.closeChecklist.innerHTML = checks.map(function (check) {
+        var done = !!check[0];
+        return [
+          '<article class="apo-check">',
+          "<div><strong>",
+          escapeHtml(check[1]),
+          "</strong><span>",
+          escapeHtml(check[2]),
+          "</span></div>",
+          '<span class="apo-pill ',
+          done ? "pro" : "warn",
+          '">',
+          done ? "OK" : "Open",
+          "</span>",
+          "</article>"
+        ].join("");
+      }).join("");
+    }
+
+    function renderLocalWorkQueue(data) {
+      var model = buildPayrollModel(data);
+      var rows = [];
+      if (model.local.hasDraft) {
+        rows.push(["Current draft", model.local.draft.companyName || "Untitled company", model.local.draft.payPeriod || "No period", "Browser-only"]);
+      }
+      model.local.savedRuns.slice(0, 6).forEach(function (run, index) {
+        rows.push(["Saved run " + (index + 1), run.companyName || run.company || "Saved payroll run", run.payPeriod || "No period", "Local snapshot"]);
+      });
+      if (!rows.length) {
+        els.localWorkQueue.innerHTML = '<div class="apo-empty">No local draft or saved payroll run found on this device.</div>';
+        return;
+      }
+      els.localWorkQueue.innerHTML = rows.map(function (row) {
+        return [
+          '<article class="apo-task">',
+          "<div><h3>",
+          escapeHtml(row[0] + ": " + row[1]),
+          "</h3><p>",
+          escapeHtml(row[2] + " - " + row[3]),
+          "</p></div>",
+          '<div class="apo-task-meta"><span class="apo-pill warn">Local only</span></div>',
+          "</article>"
+        ].join("");
+      }).join("");
+    }
+
+    function renderCloudEmpty(message) {
+      var local = localState();
+      els.metricClients.textContent = "0";
+      els.metricRuns.textContent = String(local.savedRuns.length + (local.hasDraft ? 1 : 0));
+      els.metricReview.textContent = "0";
+      els.runQueue.innerHTML = '<div class="apo-empty">' + escapeHtml(message || "No cloud payroll runs yet.") + "</div>";
+      els.recentRunsBody.innerHTML = '<tr><td colspan="6">' + escapeHtml(message || "No cloud payroll runs yet.") + "</td></tr>";
+      els.clientList.innerHTML = '<div class="apo-empty">No cloud clients loaded yet.</div>';
+      renderReadiness(null);
+    }
+
+    function renderCloud(data) {
+      var local = localState();
+      var dashboard = data.dashboard || {};
+      var runs = Array.isArray(data.runs) ? data.runs : [];
+      var clients = Array.isArray(data.clients) ? data.clients : [];
+      var review = Number(dashboard.needs_review_runs || 0) + Number(dashboard.warning_rows || 0) + Number(dashboard.approval_runs || 0);
+
+      els.metricClients.textContent = String(clients.length);
+      els.metricRuns.textContent = String(Number(dashboard.run_count || runs.length) + local.savedRuns.length + (local.hasDraft ? 1 : 0));
+      els.metricReview.textContent = String(review);
+
+      if (!runs.length) {
+        els.runQueue.innerHTML = '<div class="apo-empty">No cloud payroll runs yet. Open the run workspace, prepare a payroll month, then sync it to make this queue live.</div>';
+        els.recentRunsBody.innerHTML = '<tr><td colspan="6">No cloud runs yet.</td></tr>';
+      } else {
+        var priority = runs.slice().sort(function (a, b) {
+          var aScore = Number(a.warning_count || 0) + Number(a.needs_review_count || 0) + (a.approval_status === "pending" ? 20 : 0);
+          var bScore = Number(b.warning_count || 0) + Number(b.needs_review_count || 0) + (b.approval_status === "pending" ? 20 : 0);
+          return bScore - aScore;
+        }).slice(0, 6);
+
+        els.runQueue.innerHTML = priority.map(function (run) {
+          return [
+            '<article class="apo-task">',
+            "<div>",
+            "<h3>",
+            escapeHtml(run.company_name || run.title || "Payroll run"),
+            "</h3>",
+            "<p>",
+            escapeHtml(formatDate(run.pay_period_start) + " to " + formatDate(run.pay_period_end) + " - Pay " + formatDate(run.pay_date)),
+            "</p>",
+            "</div>",
+            '<div class="apo-task-meta">',
+            statusPill(run.status),
+            '<span class="apo-pill warn">',
+            escapeHtml(String(Number(run.warning_count || 0))),
+            " warnings</span>",
+            "</div>",
+            "</article>"
+          ].join("");
+        }).join("");
+
+        els.recentRunsBody.innerHTML = runs.slice(0, 14).map(function (run) {
+          return [
+            "<tr>",
+            "<td><strong>",
+            escapeHtml(run.company_name || run.title || "Payroll run"),
+            "</strong><br>",
+            escapeHtml(formatDate(run.pay_period_start) + " - " + formatDate(run.pay_period_end)),
+            "</td>",
+            "<td>",
+            statusPill(run.status),
+            "</td>",
+            "<td>",
+            statusPill(run.approval_status || "not requested"),
+            "</td>",
+            "<td>",
+            escapeHtml(String(Number(run.row_count || 0))),
+            "</td>",
+            "<td>",
+            escapeHtml(String(Number(run.warning_count || 0))),
+            "</td>",
+            "<td>",
+            escapeHtml(formatDate(run.updated_at)),
+            "</td>",
+            "</tr>"
+          ].join("");
+        }).join("");
+      }
+
+      if (!clients.length) {
+        els.clientList.innerHTML = '<div class="apo-empty">No cloud clients yet. Save client metadata from the run workspace to activate this board.</div>';
+      } else {
+        els.clientList.innerHTML = clients.slice(0, 8).map(function (client) {
+          var country = client.default_country || client.country || "Country";
+          return [
+            '<article class="apo-task">',
+            "<div>",
+            "<h3>",
+            escapeHtml(client.name || client.company_name || "Client"),
+            "</h3>",
+            "<p>",
+            escapeHtml(country + " - " + (client.default_currency || client.currency || "Currency pending")),
+            "</p>",
+            "</div>",
+            '<div class="apo-task-meta">',
+            statusPill(client.status || "active"),
+            "</div>",
+            "</article>"
+          ].join("");
+        }).join("");
+      }
+
+      renderReadiness(data);
+    }
+
+    async function loadPayrollDashboard() {
+      var token = authToken();
+      if (!token) {
+        renderCloudEmpty("Sign in to load account-backed payroll dashboard data.");
+        return null;
+      }
+      var res = await fetch(API + "?action=dashboard&limit=100", {
+        headers: { Authorization: "Bearer " + token, Accept: "application/json" },
+        credentials: "same-origin"
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data && data.error ? data.error : "Payroll dashboard failed");
+      renderCloud(data);
+      return data;
+    }
+
+    async function refreshAll() {
+      renderWorkflows();
+      renderReadiness(null);
+      if (window.AfroProGate && window.AfroProGate.getStatus) {
+        try {
+          setAccount(await window.AfroProGate.getStatus({ fresh: true }));
+        } catch (err) {
+          els.accountCard.innerHTML = '<div><div class="apo-card-label">Account</div><div class="apo-card-main">Could not read Pro status</div><div class="apo-card-note">' + escapeHtml(err.message || "Refresh after signing in.") + '</div></div><span class="apo-pill stop">Check failed</span>';
+        }
+      }
+      try {
+        await loadPayrollDashboard();
+      } catch (err) {
+        renderCloudEmpty("Cloud payroll dashboard could not load: " + (err.message || "unknown error"));
+      }
+    }
+
+    els.refreshBtn.addEventListener("click", refreshAll);
+    els.runRefreshBtn.addEventListener("click", refreshAll);
+    window.addEventListener("afro-auth-change", refreshAll);
+    refreshAll();
+  })();
+  </script>
+</body>
+</html>

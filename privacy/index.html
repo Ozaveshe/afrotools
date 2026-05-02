@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <title>Privacy Policy — AfroTools</title>
-<meta name="description" content="AfroTools privacy policy. How we handle your data, cookies, and calculator usage. Your calculations and PDF files never leave your browser.">
+<meta name="description" content="AfroTools privacy policy. How we handle local tools, AI Advisor requests, account sync, analytics, cookies, forms, and PDF processing.">
 <link rel="canonical" href="https://afrotools.com/privacy/">
 <meta property="og:title" content="Privacy Policy — AfroTools">
-<meta property="og:description" content="AfroTools privacy policy — your calculations never leave your browser.">
+<meta property="og:description" content="Feature-specific privacy states for local tools, AI Advisor, account sync, forms, analytics, and PDF processing.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -265,6 +265,26 @@
     margin: 0;
     line-height: 1.5;
   }
+  .data-flow-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.78rem;
+    color: #374151;
+  }
+  .data-flow-table th,
+  .data-flow-table td {
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .data-flow-table th {
+    background: #f8fafc;
+    color: #111827;
+    font-weight: 700;
+  }
 
   @media (max-width: 760px) {
     .layout { grid-template-columns: 1fr; }
@@ -280,7 +300,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Privacy Policy — AfroTools">
-<meta name="twitter:description" content="AfroTools privacy policy — your calculations never leave your browser.">
+<meta name="twitter:description" content="Feature-specific privacy states for local tools, AI Advisor, account sync, forms, analytics, and PDF processing.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <script type="application/ld+json">
 {
@@ -325,7 +345,7 @@
   <div class="pledge-strip">
     <div class="pledge-item">
       <div class="pledge-icon">&#128274;</div>
-      Calculations never leave your browser
+      Local tools stay on device by default
     </div>
     <div class="pledge-item">
       <div class="pledge-icon">&#128683;</div>
@@ -394,7 +414,7 @@
         <li><strong>Email address</strong> &mdash; collected only when you voluntarily subscribe to updates, create an AfroTools Pro account, or request a PDF report via email. We never require an account to use any free tool.</li>
         <li><strong>Account information</strong> &mdash; if you create an AfroTools Pro account, we store your email, hashed password (via Supabase authentication), subscription status, and account preferences.</li>
         <li><strong>Usage analytics</strong> &mdash; anonymised page views, device type, country, and session duration collected via Google Analytics 4 (GA4). No personal identifiers are linked to browsing behaviour. IP anonymisation is enabled.</li>
-        <li><strong>Calculator inputs</strong> &mdash; salary, tax, and financial inputs are processed entirely in your browser using JavaScript. We do not store, transmit, or have access to your calculation data unless you explicitly choose to save results to your account.</li>
+        <li><strong>Calculator inputs</strong> &mdash; local-only tools process salary, tax, health, and financial inputs in your browser. AI-assisted tools send a calculation summary and your question only after you continue from the AI notice. Saved scenarios are stored only when you use account sync.</li>
         <li><strong>Payment information</strong> &mdash; if you subscribe to AfroTools Pro, payment details are processed directly by our payment processors (Paystack and/or Stripe). We never see, store, or have access to your full card number, CVV, or banking details.</li>
         <li><strong>Contact form submissions</strong> &mdash; when you use our contact form, your name, email, and message are stored securely for the purpose of responding to your enquiry.</li>
       </ul>
@@ -447,12 +467,24 @@
           <h2>Calculator &amp; PDF Data</h2>
         </div>
       </div>
-      <p>This is our strongest privacy commitment: <strong>all calculations happen locally in your browser</strong> using JavaScript. Your salary figures, tax inputs, health data, and results are never sent to our servers.</p>
-      <p>When you download a PDF report, it is generated entirely in your browser and saved directly to your device. No data passes through our servers during this process.</p>
-      <p><strong>PDF tools (merge, split, compress, convert):</strong> Files you upload to our PDF Workspace are processed entirely within your browser using client-side JavaScript. Your files are never uploaded to our servers, never transmitted over the internet, and never stored anywhere outside your device. Closing the browser tab permanently removes all file data from memory.</p>
+      <p>AfroTools labels privacy by feature, because not every workflow has the same data flow. Local calculators and local PDF tools stay in the browser by default. AI Advisor, account sync, email delivery, contact forms, analytics, and payments use the limited services described below.</p>
+      <table class="data-flow-table">
+        <thead>
+          <tr><th>Feature</th><th>Where processed</th><th>Third party</th><th>Retention</th><th>User control</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Local calculators</td><td>Browser JavaScript</td><td>None unless you choose AI or account sync</td><td>Browser session or localStorage only</td><td>Clear the page or browser storage</td></tr>
+          <tr><td>AI Advisor</td><td>AfroTools function, then Anthropic</td><td>Anthropic Claude API</td><td>No saved calculation record by AfroTools unless you separately save to your account</td><td>Continue or cancel at the AI notice before the request is sent</td></tr>
+          <tr><td>Cloud sync and dashboard</td><td>AfroTools account services</td><td>Supabase</td><td>While your account or saved scenario exists</td><td>Delete saved data or request account deletion</td></tr>
+          <tr><td>Contact, newsletter, and email reports</td><td>AfroTools forms and email workflows</td><td>Netlify or email provider</td><td>Only as long as needed for the stated purpose</td><td>Unsubscribe or request deletion</td></tr>
+          <tr><td>PDF Workspace</td><td>Browser by default</td><td>None for local processing</td><td>Tab memory and local downloads</td><td>Close the tab and delete downloaded files</td></tr>
+          <tr><td>Analytics and fonts</td><td>Browser request metadata</td><td>Google Analytics 4 and Google Fonts</td><td>GA4 retention is 14 months</td><td>Cookie controls and browser privacy settings</td></tr>
+        </tbody>
+      </table>
+      <p><strong>PDF tools (merge, split, compress, convert):</strong> Files you upload to our PDF Workspace are processed within your browser for the local workflow. If a future tool offers cloud sharing, email delivery, or account sync, that workflow must be labeled before upload.</p>
       <div class="highlight-box">
         <span class="highlight-box-icon">&#128737;&#65039;</span>
-        <p>Your files never leave your browser. We have zero access to the documents you process with our PDF tools. This is by design, not by policy.</p>
+        <p>Local-only means no server upload. AI-assisted, cloud sync, contact, email, analytics, payment, and font services are labeled separately so you can decide before data moves.</p>
       </div>
     </div>
 
@@ -471,7 +503,7 @@
         <li><strong>Paystack</strong> &mdash; processes payments for AfroTools Pro subscriptions in African currencies. Paystack is PCI DSS Level 1 compliant. We never receive or store your card details. <a href="https://paystack.com/privacy" target="_blank" rel="noopener">Paystack Privacy Policy</a></li>
         <li><strong>Stripe</strong> &mdash; processes international payments for AfroTools Pro. Stripe is PCI DSS Level 1 certified. We never receive or store your card details. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a></li>
         <li><strong>Netlify</strong> &mdash; hosts AfroTools and processes form submissions. May log basic request metadata. <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify Privacy Policy</a></li>
-        <li><strong>Anthropic Claude API</strong> &mdash; the AI Advisor features send anonymised calculation summaries (not your name, email, or personal identifiers) to generate advice. <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy</a></li>
+        <li><strong>Anthropic Claude API</strong> &mdash; the AI Advisor features send anonymised calculation summaries and your question (not your name, email, or personal identifiers) only after you continue from the AI notice. <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy</a></li>
         <li><strong>Google Fonts</strong> &mdash; typography loaded from Google's CDN. Google may log the request IP address. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
       </ul>
       <p>We do not sell, trade, or otherwise transfer your personal information to any parties other than those listed above, and only to the extent necessary for the stated purposes.</p>
@@ -491,7 +523,7 @@
         <li><strong>Pro accounts</strong> &mdash; account data is retained while your subscription is active and for 30 days after cancellation to allow reactivation</li>
         <li><strong>Contact form submissions</strong> &mdash; retained for 90 days, then automatically deleted</li>
         <li><strong>Analytics data</strong> &mdash; Google Analytics data is retained for 14 months per our GA4 configuration</li>
-        <li><strong>Calculator inputs</strong> &mdash; never stored on our servers; exist only in your browser session</li>
+        <li><strong>Local calculator inputs</strong> &mdash; not stored on our servers unless you explicitly save a scenario to your account</li>
       </ul>
       <p>You may request deletion of your data at any time by emailing <a href="mailto:privacy@afrotools.com">privacy@afrotools.com</a>. We will confirm deletion within 7 business days.</p>
     </div>

@@ -62,9 +62,17 @@ assertIncludes('assets/js/lib/paye-report-sync.js', 'afro_salary_reports_v1', 's
 assertIncludes('assets/js/lib/paye-report-sync.js', 'salary-report', 'salary report workspace item type');
 assertIncludes('assets/js/lib/salary-tax-workflow.js', 'afro_salary_workflow_plan_v1', 'salary planner local store');
 assertIncludes('assets/js/lib/salary-tax-workflow.js', 'afro_salary_handoff_briefs_v1', 'salary handoff local store');
+assertIncludes('assets/js/lib/salary-tax-workflow.js', 'afro_salary_run_readiness_v1', 'salary readiness local store');
+assertIncludes('assets/js/lib/salary-tax-workflow.js', 'afro_salary_audit_packets_v1', 'salary audit packet local store');
 assertIncludes('assets/js/lib/salary-tax-workflow.js', 'salary-handoff', 'salary handoff workspace item type');
+assertIncludes('assets/js/lib/salary-tax-workflow.js', 'salary-run-readiness', 'salary readiness item type');
+assertIncludes('assets/js/lib/salary-tax-workflow.js', 'salary-audit-packet', 'salary audit packet workspace item type');
 assertIncludes('assets/js/lib/salary-tax-workflow.js', 'guardPromise', 'gated handoff download');
+assertIncludes('assets/js/lib/salary-tax-workflow.js', 'Exception queue', 'salary exception queue UI');
+assertIncludes('assets/js/lib/salary-tax-workflow.js', 'Run readiness', 'salary readiness score UI');
 assertIncludes('assets/css/salary-tax-workflow.css', '.salary-flow-lab', 'salary workflow planner styles');
+assertIncludes('assets/css/salary-tax-workflow.css', '.salary-flow-checklist', 'salary checklist styles');
+assertIncludes('assets/css/salary-tax-workflow.css', '.salary-flow-exceptions', 'salary exception styles');
 
 const workflowJs = read('assets/js/lib/salary-tax-workflow.js');
 const workflowRoutes = new Set();
@@ -90,12 +98,19 @@ for (const alias of ['/assets/js/bundles/tool-page.4701dd1d.min.js', '/assets/js
 
 assertIncludes('dashboard/index.html', 'afro_salary_reports_v1', 'salary report local dashboard source');
 assertIncludes('dashboard/index.html', 'afro_salary_handoff_briefs_v1', 'salary handoff local dashboard source');
+assertIncludes('dashboard/index.html', 'afro_salary_run_readiness_v1', 'salary readiness local dashboard source');
+assertIncludes('dashboard/index.html', 'afro_salary_audit_packets_v1', 'salary audit local dashboard source');
 assertIncludes('dashboard/index.html', 'salary-report', 'salary report workspace item type');
 assertIncludes('dashboard/index.html', 'salary-handoff', 'salary handoff workspace item type');
+assertIncludes('dashboard/index.html', 'salary-audit-packet', 'salary audit packet workspace item type');
+assertIncludes('dashboard/index.html', 'Readiness boards', 'salary readiness dashboard section');
+assertIncludes('dashboard/index.html', 'Audit packets', 'salary audit dashboard section');
 assertIncludes('dashboard/index.html', 'ws-salary', 'salary report dashboard tab');
 assertIncludes('docs/PAYE-STANDARD.md', 'item_type = \'salary-report\'', 'PAYE report workspace contract');
 assertIncludes('docs/PAYE-STANDARD.md', 'item_type = \'salary-handoff\'', 'PAYE handoff workspace contract');
+assertIncludes('docs/PAYE-STANDARD.md', 'item_type = \'salary-audit-packet\'', 'PAYE audit packet workspace contract');
 assertIncludes('docs/PDF-CATEGORY-WORKFLOW.md', 'pdf-download-gate.js?v=20260502', 'current PDF gate version');
+assertIncludes('docs/PDF-CATEGORY-WORKFLOW.md', 'audit packets', 'metadata audit packet gate policy');
 
 if (failures.length) {
   console.error('Salary and PAYE workflow verification failed:');

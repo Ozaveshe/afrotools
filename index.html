@@ -52,10 +52,12 @@
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 
   <link rel="preload" href="/assets/css/homepage.css?v=e76f5fac" as="style" onload="this.onload=null;this.rel='stylesheet';document.documentElement.classList.add('css-ready')">
+  <link rel="preload" href="/assets/css/homepage-refine.css?v=20260502" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
     <link rel="stylesheet" href="/assets/css/homepage.css?v=e76f5fac">
+    <link rel="stylesheet" href="/assets/css/homepage-refine.css?v=20260502">
     <style>.sec,.sec--dark2,.sec--countries{opacity:1!important}</style>
   </noscript>
   <script src="/assets/js/favorites.js?v=163519f9" defer></script>
@@ -107,10 +109,27 @@
 
 <afro-navbar theme="dark"></afro-navbar>
 <div class="signup-bar" id="signup-bar" role="banner" aria-label="Sign up prompt">
-  <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> <strong>Save your calculations, sync across devices</strong> &mdash; create a free AfroTools account</span>
-  <a href="/auth/" class="signup-bar-btn">Sign Up Free &rarr;</a>
-  <button class="signup-bar-close" onclick="document.getElementById('signup-bar').style.display='none'" aria-label="Dismiss">&times;</button>
+  <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Use tools free without an account. Create one only to save and sync calculations.</span>
+  <a href="/auth/?mode=signup&amp;next=/dashboard/" class="signup-bar-btn">Save and sync &rarr;</a>
+  <button class="signup-bar-close" onclick="window.dismissSignupBar && window.dismissSignupBar()" aria-label="Dismiss">&times;</button>
 </div>
+<script>
+(function () {
+  var key = 'afrotools.signupBar.dismissed.v1';
+  var bar = document.getElementById('signup-bar');
+  if (!bar) return;
+  try {
+    if (localStorage.getItem(key) === '1') {
+      bar.hidden = true;
+      return;
+    }
+  } catch (err) {}
+  window.dismissSignupBar = function () {
+    bar.hidden = true;
+    try { localStorage.setItem(key, '1'); } catch (err) {}
+  };
+})();
+</script>
 <noscript>
 <nav style="background:#0a1628;padding:12px 24px;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;font-size:.82rem">
 <a href="/" style="color:#93c5fd;font-weight:700">AfroTools</a>
@@ -128,73 +147,143 @@
 
 <!-- HERO -->
 <section class="hero" aria-label="Hero">
-  <div class="hero-center">
-    <div class="trusted-badge"><span class="trusted-dot"></span> Trusted by professionals across 54 African nations &middot; Free forever</div>
-    <h1 class="hero-h1" id="hero-h1">The tools Africa<br><em>actually needs.</em></h1>
-    <p class="hero-sub">From <strong>PAYE tax</strong> to <strong>thumbnail makers</strong>. From <strong>recipe costing</strong> to <strong>2D CAD</strong>. <strong id="stat-total">2,594+</strong> free tools built for African context &mdash; not Western defaults.</p>
-    <div class="hero-btns">
-      <a href="/all-tools/" class="btn-primary">Explore All Tools &rarr;</a>
-      <a href="/creative/" class="btn-secondary">Creator Studio</a>
-    </div>
+  <div class="home-hero-grid wrap">
+    <div class="hero-center">
+    <div class="trusted-badge">Built for African countries</div>
+    <h1 class="hero-h1" id="hero-h1">Free financial and productivity tools for Africa</h1>
+    <p class="hero-sub">Calculate PAYE, create invoices, edit PDFs, convert currencies, and plan business decisions with tools built around African currencies, laws, and workflows.</p>
     <div class="hero-search-wrap">
       <div class="hero-search" role="search">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="10.2" y1="10.2" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <input type="text" id="hero-search-input" placeholder="Search 2,594+ tools..." aria-label="Search tools" autocomplete="off" spellcheck="false">
+        <input type="text" id="hero-search-input" placeholder="Search PAYE, invoice, PDF, VAT, currency..." aria-label="Search tools" autocomplete="off" spellcheck="false">
         <button class="hero-search-btn" type="button" id="hero-search-btn">Search</button>
       </div>
       <div class="search-dropdown" id="search-dropdown" role="listbox"></div>
     </div>
-    <div class="hero-quicklinks rv d1" aria-label="Popular tools">
-      <span class="hero-quicklinks-label">Start with</span>
-      <a class="hero-quicklink" href="/nigeria/ng-salary-tax/">Nigeria PAYE</a>
-      <a class="hero-quicklink" href="/ghana/gh-paye/">Ghana PAYE</a>
-      <a class="hero-quicklink" href="/tools/pdf-workspace/">PDF Workspace</a>
-      <a class="hero-quicklink" href="/tools/vat-calculator/">VAT Calculator</a>
-      <a class="hero-quicklink" href="/agriculture/">Agriculture Tools</a>
+    <div class="hero-btns">
+      <a href="/all-tools/" class="btn-primary">Explore tools &rarr;</a>
+      <a href="#start-country" class="btn-secondary">Choose your country</a>
     </div>
-  </div>
-  <div class="hero-visual-wrap" aria-hidden="true">
-    <div class="hero-float-cards">
-      <div class="hero-float-card hero-float-card--a">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        <div><div>NGN/USD Live</div><div class="hero-float-sub" id="hero-fx-ngn">1 USD = -- NGN</div></div>
-      </div>
-      <div class="hero-float-card hero-float-card--b">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <div><div>AI Advisor</div><div class="hero-float-sub">Powered by Claude</div></div>
-      </div>
-      <div class="hero-float-card hero-float-card--c">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"/></svg>
-        <div><div>54 Countries</div><div class="hero-float-sub">All Africa, free forever</div></div>
-      </div>
+    <div class="home-trust-row" aria-label="AfroTools trust signals">
+      <div><strong id="hp-stat-tools">2,594+</strong><span>tools</span></div>
+      <div><strong>54</strong><span>countries</span></div>
+      <div><strong>Browser-private</strong><span>where possible</span></div>
+      <div><strong>Free core</strong><span>tools</span></div>
     </div>
-    <div class="hero-browser">
-      <div class="hero-browser-bar">
-        <span class="hero-browser-dot r"></span>
-        <span class="hero-browser-dot y"></span>
-        <span class="hero-browser-dot g"></span>
-        <div class="hero-browser-url">afrotools.com &middot; Nigeria PAYE &amp; PDF Workspace</div>
-      </div>
-      <div class="hero-browser-body">
-        <img src="/assets/img/tools/ng-paye.webp" alt="Nigeria PAYE Calculator" class="hero-browser-img" width="600" height="220" loading="eager" onerror="this.style.background='#f1f5f9'">
-        <img src="/assets/img/tools/pdf-workspace.webp" alt="PDF Workspace" class="hero-browser-img" width="600" height="220" loading="eager" onerror="this.style.background='#f1f5f9'">
-      </div>
     </div>
-  </div>
-  <div class="hero-stats">
-    <div class="hero-stats-inner">
-      <div class="hero-stat rv"><div class="hero-stat-num c1" id="hp-stat-tools">2,594+</div><div class="hero-stat-lbl">Tools</div></div>
-      <div class="hero-stat rv d1"><div class="hero-stat-num c2" id="hp-stat-categories">32</div><div class="hero-stat-lbl">Categories</div></div>
-      <div class="hero-stat rv d2"><div class="hero-stat-num c3">54</div><div class="hero-stat-lbl">Countries</div></div>
-      <div class="hero-stat rv d3"><div class="hero-stat-num c4">AI</div><div class="hero-stat-lbl">Powered</div></div>
+
+    <div class="home-preview-card" aria-label="AfroTools product preview">
+      <div class="preview-search-panel">
+        <div class="preview-kicker">Popular workflows</div>
+        <div class="preview-search-line">
+          <span></span>
+          <strong>Search PAYE, invoice, PDF...</strong>
+        </div>
+        <div class="preview-tool-list">
+          <div class="preview-tool-row">
+            <span class="preview-tool-icon">PAYE</span>
+            <div><strong>Nigeria PAYE Calculator</strong><small>FIRS tax, pension, NHF</small></div>
+          </div>
+          <div class="preview-tool-row">
+            <span class="preview-tool-icon">PDF</span>
+            <div><strong>PDF Workspace</strong><small>Merge, split, compress locally</small></div>
+          </div>
+          <div class="preview-tool-row">
+            <span class="preview-tool-icon">INV</span>
+            <div><strong>Invoice Generator</strong><small>VAT-aware African currencies</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-result-panel">
+        <div class="preview-kicker">Calculator preview</div>
+        <div class="preview-result-card">
+          <div class="preview-result-head">
+            <span>Take-home estimate</span>
+            <strong>NGN</strong>
+          </div>
+          <div class="preview-result-main">3,713,750</div>
+          <div class="preview-result-grid">
+            <div><span>Income tax</span><strong>-823,750</strong></div>
+            <div><span>Pension</span><strong>-400,000</strong></div>
+          </div>
+          <p>Uses country-specific tax logic and keeps calculation data in your browser.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<section class="home-entry-section" id="start-country" aria-label="Start by country">
+  <div class="wrap home-entry-grid">
+    <div class="home-entry-copy">
+      <div class="sec-eyebrow">Start by country</div>
+      <h2>Use the rules, currency, and workflows that match where you work.</h2>
+    </div>
+    <div class="country-picker-card">
+      <form class="country-picker-form" onsubmit="var v=this.elements.country.value;if(v){window.location.href=v;}return false;">
+        <label for="home-country-select">Search or choose a country</label>
+        <div>
+          <select id="home-country-select" name="country" aria-label="Choose country">
+            <option value="/nigeria/">Nigeria</option>
+            <option value="/kenya/">Kenya</option>
+            <option value="/ghana/">Ghana</option>
+            <option value="/south-africa/">South Africa</option>
+            <option value="/egypt/">Egypt</option>
+            <option value="/tanzania/">Tanzania</option>
+            <option value="/rwanda/">Rwanda</option>
+            <option value="/senegal/">Senegal</option>
+          </select>
+          <button type="submit">Open</button>
+        </div>
+      </form>
+      <div class="country-popular-list" aria-label="Popular countries">
+        <a href="/nigeria/">Nigeria</a>
+        <a href="/kenya/">Kenya</a>
+        <a href="/ghana/">Ghana</a>
+        <a href="/south-africa/">South Africa</a>
+        <a href="/egypt/">Egypt</a>
+        <a href="/tanzania/">Tanzania</a>
+        <a href="/rwanda/">Rwanda</a>
+        <a href="/senegal/">Senegal</a>
+        <a href="/countries/">All countries</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-entry-section home-entry-section--tools" aria-label="Top tools">
+  <div class="wrap">
+    <div class="home-section-heading">
+      <div class="sec-eyebrow">Start with the common jobs</div>
+      <h2>Six useful ways into AfroTools</h2>
+      <p>Focused entry points first. The full directory stays available when you need the long tail.</p>
+    </div>
+    <div class="home-tool-six-grid">
+      <a class="home-tool-card" href="/salary-tax/"><span>PAYE</span><strong>Salary &amp; Tax</strong><p>Country-accurate take-home pay and deductions.</p><em>Calculate tax &rarr;</em></a>
+      <a class="home-tool-card" href="/tools/pdf-workspace/"><span>PDF</span><strong>PDF Workspace</strong><p>Merge, split, compress, watermark, and protect files locally.</p><em>Open workspace &rarr;</em></a>
+      <a class="home-tool-card" href="/tools/invoice-generator/"><span>INV</span><strong>Invoice Generator</strong><p>Create VAT-aware invoices in African currencies.</p><em>Create invoice &rarr;</em></a>
+      <a class="home-tool-card" href="/tools/currency-converter/"><span>FX</span><strong>Currency &amp; FX</strong><p>Convert currencies and compare African money flows.</p><em>Convert money &rarr;</em></a>
+      <a class="home-tool-card" href="/vat-business-tax/"><span>VAT</span><strong>VAT &amp; Business Tax</strong><p>VAT, margin, markup, and break-even tools.</p><em>Explore VAT tools &rarr;</em></a>
+      <a class="home-tool-card" href="/tools/cv-builder/"><span>CV</span><strong>Career &amp; CV</strong><p>Build practical documents for African job markets.</p><em>Build CV &rarr;</em></a>
+    </div>
+  </div>
+</section>
+
+<section class="home-trust-section" aria-label="Why trust AfroTools">
+  <div class="wrap home-trust-grid">
+    <div><strong>Built around local rules</strong><p>Tax, VAT, salary, and compliance tools name the country logic they use.</p></div>
+    <div><strong>Runs in your browser</strong><p>Most calculators and document tools keep your inputs on your device.</p></div>
+    <div><strong>No account required</strong><p>Core tools are free to use. Accounts are optional for saving history.</p></div>
+    <div><strong>Updated when laws change</strong><p>Country pages and tax calculators are maintained around official changes.</p></div>
+  </div>
+</section>
 <!-- WHAT IS AFROTOOLS — citation-ready definitional paragraph for AI search -->
-<section class="sec" style="padding:32px 0 0" aria-label="What is AfroTools">
-  <div class="wrap" style="max-width:760px">
-    <p style="font-size:.95rem;color:#374151;line-height:1.8;text-align:center">
-      <strong>AfroTools</strong> is a free financial platform serving all 54 African countries with <span id="home-about-count">2,594+</span> tools including PAYE tax calculators, currency converters, budget planners, PDF workspace, invoice generators, and an AI-powered financial advisor. Founded in 2025, AfroTools sources tax logic directly from national revenue authorities — FIRS (Nigeria), KRA (Kenya), GRA (Ghana), SARS (South Africa), TRA (Tanzania), and more — and operates in English, French, and Swahili. All calculations run entirely in-browser for privacy; no data is sent to external servers.
+<section class="home-about-section" aria-label="What is AfroTools">
+  <div class="wrap home-about-card">
+    <div class="sec-eyebrow">About AfroTools</div>
+    <h2>Why AfroTools exists</h2>
+    <p>
+      <strong>AfroTools</strong> is a free financial platform serving all 54 African countries with <span id="home-about-count">2,594+</span> tools including PAYE tax calculators, currency converters, budget planners, PDF workspace, invoice generators, and an AI-powered financial advisor. Founded in 2025, AfroTools sources tax logic directly from national revenue authorities — FIRS (Nigeria), KRA (Kenya), GRA (Ghana), SARS (South Africa), TRA (Tanzania), and more — and operates in English, French, and Swahili. Local calculators run in the browser by default; AI Advisor requests send a calculation summary to Anthropic only after you invoke AI, and signed-in save/sync stores selected data in your account.
     </p>
   </div>
 </section>
@@ -313,24 +402,24 @@
       <div class="showcase-split">
         <div class="showcase-text">
           <div class="showcase-eyebrow">Business &amp; FX</div>
-          <h3 class="showcase-h3">Live rates across <em>every African currency.</em></h3>
-          <p class="showcase-p">Real-time exchange rates, remittance corridors, VAT calculators, and business tools for African entrepreneurs trading across borders.</p>
+          <h3 class="showcase-h3">Latest available rates across <em>African currencies.</em></h3>
+          <p class="showcase-p">Timestamped exchange-rate snapshots, remittance corridors, VAT calculators, and business tools for African entrepreneurs trading across borders.</p>
           <ul class="showcase-bullets">
-            <li><span class="showcase-check">&#x2713;</span> Live FX rates: NGN, KES, GHS, ZAR &amp; 50 more</li>
+            <li><span class="showcase-check">&#x2713;</span> Timestamped FX rates: NGN, KES, GHS, ZAR &amp; 50 more</li>
             <li><span class="showcase-check">&#x2713;</span> Bank vs. parallel market rate comparison</li>
             <li><span class="showcase-check">&#x2713;</span> VAT calculator for 54 African jurisdictions</li>
             <li><span class="showcase-check">&#x2713;</span> Remittance cost comparison &mdash; best corridors</li>
           </ul>
-          <a href="/tools/currency-converter/" class="showcase-cta-link">Check live rates &rarr;</a>
+          <a href="/tools/currency-converter/" class="showcase-cta-link">Check latest rates &rarr;</a>
         </div>
         <div class="showcase-visual">
           <div class="showcase-mockup">
-            <div class="mockup-bar"><span class="mkdot r"></span><span class="mkdot y"></span><span class="mkdot g"></span><span class="mockup-title-txt">LIVE FX RATES</span></div>
+            <div class="mockup-bar"><span class="mkdot r"></span><span class="mkdot y"></span><span class="mockup-title-txt">LATEST FX RATES</span></div>
             <div class="mockup-body">
-              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F3;&#x1F1EC;</span><div class="mk-fx-body"><div class="mk-fx-code">NGN</div><div class="mk-fx-name">Nigerian Naira</div></div><span class="mk-fx-rate" id="mk-fx-ngn">1 USD = --</span></div>
-              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F0;&#x1F1EA;</span><div class="mk-fx-body"><div class="mk-fx-code">KES</div><div class="mk-fx-name">Kenyan Shilling</div></div><span class="mk-fx-rate" id="mk-fx-kes">1 USD = --</span></div>
-              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1EC;&#x1F1ED;</span><div class="mk-fx-body"><div class="mk-fx-code">GHS</div><div class="mk-fx-name">Ghana Cedi</div></div><span class="mk-fx-rate" id="mk-fx-ghs">1 USD = --</span></div>
-              <div class="mk-fx-swap" id="mk-fx-updated">Loading live rates &middot; <a href="/tools/currency-converter/" style="color:#007AFF">All rates &rarr;</a></div>
+              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F3;&#x1F1EC;</span><div class="mk-fx-body"><div class="mk-fx-code">NGN</div><div class="mk-fx-name">Nigerian Naira</div></div><span class="mk-fx-rate" id="mk-fx-ngn">Checking latest rates...</span></div>
+              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1F0;&#x1F1EA;</span><div class="mk-fx-body"><div class="mk-fx-code">KES</div><div class="mk-fx-name">Kenyan Shilling</div></div><span class="mk-fx-rate" id="mk-fx-kes">Checking latest rates...</span></div>
+              <div class="mk-fx-row"><span class="mk-fx-flag">&#x1F1EC;&#x1F1ED;</span><div class="mk-fx-body"><div class="mk-fx-code">GHS</div><div class="mk-fx-name">Ghana Cedi</div></div><span class="mk-fx-rate" id="mk-fx-ghs">Checking latest rates...</span></div>
+              <div class="mk-fx-swap" id="mk-fx-updated">Checking latest rates... &middot; <a href="/tools/currency-converter/" style="color:#007AFF">All rates &rarr;</a></div>
             </div>
           </div>
         </div>
@@ -408,7 +497,7 @@
     if (el) el.textContent = countText;
 
     el = document.getElementById('hero-search-input');
-    if (el) el.placeholder = 'Search ' + countText + ' tools...';
+    if (el) el.placeholder = 'Search PAYE, invoice, PDF, VAT, currency...';
 
     el = document.getElementById('cats-heading');
     if (el) el.innerHTML = countText + ' Tools. 54 Countries. <span id="cats-tool-count">English, French &amp; Swahili</span>.';
@@ -651,7 +740,7 @@
         <div class="tc-body">
           <div class="tc-badge tc-badge--live">● Available Now</div>
           <div class="tc-name">AfroTools PDF Workspace</div>
-          <div class="tc-desc">Everything PDF in one place — merge, split, compress, convert to images, add watermarks, password protect, and add page numbers. All browser-based. Files never leave your device.</div>
+          <div class="tc-desc">Everything PDF in one place — merge, split, compress, convert to images, add watermarks, password protect, and add page numbers. Local PDF workflows run in your browser by default.</div>
           <div class="tc-tools-row">
             <span class="tc-mini">🔗 Merge &amp; Split</span>
             <span class="tc-mini">🗜️ Compress</span>
@@ -674,7 +763,7 @@
           </div>
           <div class="ut-body">
           <div class="ut-name">Currency Converter</div>
-          <div class="ut-desc">Live forex & crypto rates for all 54 African currencies. Bank rate comparison & remittance corridors.</div>
+        <div class="ut-desc">Latest available forex and crypto rates for African currencies. Bank rate comparison and remittance corridors.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-live">● Live</span>
             <span class="ut-cta">Open Tool →</span>
@@ -950,8 +1039,8 @@
   <a href="/tools/currency-converter/" class="cat-card rv">
     <div class="cat-icon-wrap" style="background:#ecfdf5"><img src="/assets/img/categories/currency-fx.png" alt="Currency & FX" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">Currency &amp; FX</div>
-    <div class="cat-desc">Live rates for 42 African currencies. Bank vs parallel market, crypto, remittance.</div>
-    <div class="cat-count">42 currencies &middot; Live rates</div>
+      <div class="cat-desc">Latest available rates for 42 African currencies. Bank vs parallel market, crypto, remittance.</div>
+      <div class="cat-count">42 currencies &middot; Timestamped rates</div>
   </a>
   <a href="/engineering/afrodraft/" class="cat-card rv d1">
     <div class="cat-icon-wrap" style="background:#f0f9ff"><img src="/assets/img/categories/engineering-cad.png" alt="Engineering & CAD" width="64" height="64" onerror="this.style.display='none'"></div>
@@ -965,11 +1054,11 @@
     <div class="cat-desc">Crop yield, livestock cost, farm profit estimators &mdash; African varieties &amp; markets.</div>
     <div class="cat-count">30+ tools &middot; 54 countries</div>
   </a>
-  <a href="/all-tools/" class="cat-card rv d3" style="border-color:#007AFF;background:#eff6ff">
+  <a href="/tools/" class="cat-card rv d3" style="border-color:#007AFF;background:#eff6ff">
     <div class="cat-icon-wrap" style="background:#dbeafe"><img src="/assets/img/categories/all-categories.png" alt="All Categories" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name" id="cats-all-label">All 32 Categories</div>
     <div class="cat-desc">Finance, Health, Transport, Education, Energy, Legal, Climate, Diaspora &amp; more.</div>
-    <div class="cat-count" style="color:#0063d1">Browse <span id="cats-browse-count">1,336+</span> tools &rarr;</div>
+    <div class="cat-count" style="color:#0063d1">Browse <span id="cats-browse-count">2,594+</span> tools &rarr;</div>
   </a>
 </div>
   </div>
@@ -1083,31 +1172,30 @@
 </section>
 
 
-<!-- ── LIVE MONITORING SECTION ── -->
+<!-- ── MARKET DATA SECTION ── -->
 <section class="sec sec--white" style="border-top:1px solid #f3f4f6" id="live-data">
   <div class="wrap">
-    <div class="eyebrow"><span class="live-dot"></span> Live Data</div>
-    <h2 class="sec-title">Live African Market Data</h2>
-    <p class="sec-sub">Real-time financial data for all 54 African countries. Updated every 15 minutes.</p>
+    <div class="eyebrow"><span class="live-dot"></span> Market Data</div>
+    <h2 class="sec-title">Latest African Market Data</h2>
+    <p class="sec-sub">Timestamped financial snapshots for African markets, with freshness labels and fallback states when a feed is unavailable.</p>
 
     <div class="ld-grid">
       <a href="/tools/currency-converter/" class="ld-card">
-        <div class="ld-top"><span class="ld-icon">💱</span><span class="ld-badge"><span class="live-dot"></span> LIVE</span></div>
+        <div class="ld-top"><span class="ld-icon">💱</span><span class="ld-badge"><span class="live-dot"></span> LATEST</span></div>
         <h3 class="ld-title">AfroFX</h3>
-        <p class="ld-desc">Live forex rates for 42 African currencies. Historical charts, crypto prices, cross-rate matrix.</p>
+        <p class="ld-desc">Latest available forex rates for 42 African currencies. Historical charts, crypto prices, cross-rate matrix.</p>
         <div class="ld-tags">
           <span class="ld-tag">42 Currencies</span>
-          <span class="ld-tag">15-min Updates</span>
+          <span class="ld-tag">Freshness Labels</span>
           <span class="ld-tag">API Access</span>
         </div>
         <div id="fx-preview" style="display:flex;gap:16px;margin-top:14px;font-size:.78rem;font-weight:600;color:#374151">
-          <span>USD/NGN <strong style="color:#0062CC">--</strong></span>
-          <span>USD/KES <strong style="color:#0062CC">--</strong></span>
+          <span>Checking latest available rates...</span>
         </div>
       </a>
 
       <a href="/tools/fuel-tracker/" class="ld-card">
-        <div class="ld-top"><span class="ld-icon">⛽</span><span class="ld-badge"><span class="live-dot"></span> LIVE</span></div>
+        <div class="ld-top"><span class="ld-icon">⛽</span><span class="ld-badge"><span class="live-dot"></span> LATEST</span></div>
         <h3 class="ld-title">AfroFuel</h3>
         <p class="ld-desc">Pan-African fuel price tracker. Interactive map, country comparison, generator cost calculator.</p>
         <div class="ld-tags">
@@ -1118,7 +1206,7 @@
       </a>
 
       <a href="/tools/afrorates/" class="ld-card">
-        <div class="ld-top"><span class="ld-icon">🏦</span><span class="ld-badge"><span class="live-dot"></span> LIVE</span></div>
+        <div class="ld-top"><span class="ld-icon">🏦</span><span class="ld-badge"><span class="live-dot"></span> LATEST</span></div>
         <h3 class="ld-title">AfroRates</h3>
         <p class="ld-desc">Central bank rates, inflation, T-bill yields, and MPC calendar for all 54 African countries.</p>
         <div class="ld-tags">
@@ -1143,7 +1231,7 @@
       <div class="why-card rv"><div class="why-n" aria-hidden="true">01</div><div class="why-t">Local Accuracy First</div><p class="why-d">Every rate pulled from FIRS, KRA, GRA, SARS. When Kenya repealed SHIF relief in Dec 2024, we updated same day. When Ethiopia restructured to 6 bands in July 2025, same day.</p></div>
       <div class="why-card rv d1"><div class="why-n" aria-hidden="true">02</div><div class="why-t">African Context</div><p class="why-d">Nigerian plots. South African morgen. M-Pesa till QR codes. WAEC grade scales. Generator fuel vs solar ROI. No tool is built for London and relabelled for Lagos.</p></div>
       <div class="why-card rv d2"><div class="why-n" aria-hidden="true">03</div><div class="why-t">AI That Explains</div><p class="why-d">Select tools include an AI Advisor — not just numbers, but context. What your effective tax rate actually means. Powered by Claude Sonnet.</p></div>
-      <div class="why-card rv d3"><div class="why-n" aria-hidden="true">04</div><div class="why-t">Privacy by Default</div><p class="why-d">PDF tools process entirely in your browser. Files never leave your device, never uploaded to any server. No accounts needed for any tool.</p></div>
+      <div class="why-card rv d3"><div class="why-n" aria-hidden="true">04</div><div class="why-t">Clear Privacy States</div><p class="why-d">Local tools stay in your browser by default. AI, account sync, email, forms, analytics, and payments are labeled separately before data moves.</p></div>
       <div class="why-card rv d4"><div class="why-n" aria-hidden="true">05</div><div class="why-t">Mobile First, Bandwidth Aware</div><p class="why-d">Over 60% of Africa's internet users are on mobile. Image compressor defaults to minimal output. Every tool under 100KB uncompressed. Works on 2G.</p></div>
       <div class="why-card rv d5"><div class="why-n" aria-hidden="true">06</div><div class="why-t">Built to Last</div><p class="why-d">Plain HTML, CSS, and JavaScript. No React, no frameworks, no CDN dependencies for core logic. Every tool will still work in 10 years.</p></div>
     </div>
@@ -1522,7 +1610,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── LOAD LIVE DATA PREVIEWS FOR HOMEPAGE CARDS ──
   function formatHomepageRate(code, value) {
-    if (typeof value !== 'number' || !isFinite(value)) return '--';
+    if (typeof value !== 'number' || !isFinite(value)) return null;
     if (code === 'NGN') return Math.round(value).toLocaleString();
     if (value >= 100) return value.toLocaleString(undefined, { maximumFractionDigits: 1 });
     return value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 });
@@ -1530,7 +1618,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function formatHomepageUpdate(timestamp) {
     var parsed = Date.parse(timestamp || '');
-    if (!isFinite(parsed)) return 'Updated live';
+    if (!isFinite(parsed)) return 'Latest available snapshot';
 
     var diffMinutes = Math.max(0, Math.round((Date.now() - parsed) / 60000));
     if (diffMinutes < 60) return 'Updated ' + Math.max(1, diffMinutes) + ' min ago';
@@ -1542,34 +1630,64 @@ document.addEventListener('DOMContentLoaded', function() {
     return 'Updated ' + diffDays + 'd ago';
   }
 
+  function sanitizeHomepageText(value) {
+    return String(value || '').replace(/[<>&"']/g, '');
+  }
+
+  function setHomepageFxUnavailable() {
+    var fx = document.getElementById('fx-preview');
+    if (fx) {
+      fx.innerHTML = '<span>Rates temporarily unavailable</span>';
+    }
+
+    var heroNgn = document.getElementById('hero-fx-ngn');
+    if (heroNgn) heroNgn.textContent = 'Rates temporarily unavailable';
+
+    ['mk-fx-ngn', 'mk-fx-kes', 'mk-fx-ghs'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = 'Temporarily unavailable';
+    });
+
+    var mockupUpdated = document.getElementById('mk-fx-updated');
+    if (mockupUpdated) {
+      mockupUpdated.innerHTML = 'Rates temporarily unavailable &middot; <a href="/tools/currency-converter/" style="color:#007AFF">Currency tools &rarr;</a>';
+    }
+  }
+
   function applyHomepageFxPreview(data) {
-    if (!data || !data.rates) return;
+    if (!data || !data.rates) {
+      setHomepageFxUnavailable();
+      return;
+    }
 
     var ngn = formatHomepageRate('NGN', data.rates.NGN);
     var kes = formatHomepageRate('KES', data.rates.KES);
     var ghs = formatHomepageRate('GHS', data.rates.GHS);
     var updateLabel = formatHomepageUpdate(data.timestamp);
+    var sourceLabel = data.source ? 'Source: ' + sanitizeHomepageText(data.source) : 'Source: AfroTools FX feed';
 
     var fx = document.getElementById('fx-preview');
     if (fx) {
-      fx.innerHTML = '<span>USD/NGN <strong style="color:#0062CC">' + ngn + '</strong></span><span>USD/KES <strong style="color:#0062CC">KSh' + kes + '</strong></span>';
+      fx.innerHTML = (ngn || kes)
+        ? '<span>USD/NGN <strong style="color:#0062CC">' + (ngn || 'Unavailable') + '</strong></span><span>USD/KES <strong style="color:#0062CC">' + (kes ? 'KSh' + kes : 'Unavailable') + '</strong></span>'
+        : '<span>Rates temporarily unavailable</span>';
     }
 
     var heroNgn = document.getElementById('hero-fx-ngn');
-    if (heroNgn) heroNgn.textContent = '1 USD = ' + ngn + ' NGN';
+    if (heroNgn) heroNgn.textContent = ngn ? '1 USD = ' + ngn + ' NGN' : 'Rates temporarily unavailable';
 
     var mockupNgn = document.getElementById('mk-fx-ngn');
-    if (mockupNgn) mockupNgn.textContent = '1 USD = ' + ngn;
+    if (mockupNgn) mockupNgn.textContent = ngn ? '1 USD = ' + ngn : 'Temporarily unavailable';
 
     var mockupKes = document.getElementById('mk-fx-kes');
-    if (mockupKes) mockupKes.textContent = '1 USD = ' + kes;
+    if (mockupKes) mockupKes.textContent = kes ? '1 USD = ' + kes : 'Temporarily unavailable';
 
     var mockupGhs = document.getElementById('mk-fx-ghs');
-    if (mockupGhs) mockupGhs.textContent = '1 USD = ' + ghs;
+    if (mockupGhs) mockupGhs.textContent = ghs ? '1 USD = ' + ghs : 'Temporarily unavailable';
 
     var mockupUpdated = document.getElementById('mk-fx-updated');
     if (mockupUpdated) {
-      mockupUpdated.innerHTML = updateLabel + ' &middot; <a href="/tools/currency-converter/" style="color:#007AFF">All rates &rarr;</a>';
+      mockupUpdated.innerHTML = updateLabel + ' &middot; ' + sourceLabel + ' &middot; <a href="/tools/currency-converter/" style="color:#007AFF">All rates &rarr;</a>';
     }
   }
 
@@ -1581,7 +1699,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }).catch(function(){
     fetch('/data/forex/latest.json').then(function(r){ return r.json(); }).then(function(d){
       applyHomepageFxPreview(d);
-    }).catch(function(){});
+    }).catch(setHomepageFxUnavailable);
   });
 
   // ── HERO SEARCH WITH LIVE DROPDOWN ──
@@ -1868,7 +1986,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var isLoggedIn = typeof AfroAuth !== 'undefined' && AfroAuth.isLoggedIn();
     if (!isLoggedIn) {
       section.classList.add('has-favs');
-      grid.innerHTML = '<div class="my-tools-empty"><a href="/dashboard/" style="color:#0062CC;font-weight:600;text-decoration:none;">Sign in</a> to save and sync your favourite tools across devices.</div>';
+      grid.innerHTML = '<div class="my-tools-empty"><a href="/auth/?mode=login&amp;next=/dashboard/" style="color:#0062CC;font-weight:600;text-decoration:none;">Sign in</a> to save and sync your favourite tools across devices.</div>';
       if (countEl) countEl.textContent = '';
       return;
     }

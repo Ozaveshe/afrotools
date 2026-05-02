@@ -158,6 +158,48 @@ function showToast(msg, type) {
   setTimeout(function () { t.className = 'ap-toast'; }, 3500);
 }
 
+var accountSnapshotCache = null;
+var accountSnapshotPromise = null;
+
+function authHeaders() {
+  var headers = {};
+  var token = window.AfroAuth && typeof AfroAuth.getSessionToken === 'function' ? AfroAuth.getSessionToken() : null;
+  if (token) headers.Authorization = 'Bearer ' + token;
+  return headers;
+}
+
+function notifyAccountChanged(action) {
+  accountSnapshotCache = null;
+  accountSnapshotPromise = null;
+  try {
+    localStorage.removeItem('ap_profile');
+    localStorage.removeItem('afropoints_dashboard_lane_cache');
+  } catch (err) {}
+  try {
+    window.dispatchEvent(new CustomEvent('afropoints-account-change', { detail: { action: action || 'cashout' } }));
+  } catch (err) {}
+}
+
+function fetchAccountSnapshot(force) {
+  if (!force && accountSnapshotCache) return Promise.resolve(accountSnapshotCache);
+  if (accountSnapshotPromise) return accountSnapshotPromise;
+  accountSnapshotPromise = fetch('/.netlify/functions/afropoints-account?activity_limit=1&contribution_limit=1&cashout_limit=20', {
+    headers: authHeaders(),
+    credentials: 'same-origin'
+  }).then(function (response) {
+    return response.json().then(function (json) {
+      if (!response.ok || (json && json.error)) {
+        throw new Error((json && json.error) || 'AfroPoints account unavailable');
+      }
+      accountSnapshotCache = json || null;
+      return accountSnapshotCache;
+    });
+  }).finally(function () {
+    accountSnapshotPromise = null;
+  });
+  return accountSnapshotPromise;
+}
+
 function setFieldValue(id, value) {
   var el = $(id);
   if (el && value) el.value = value;
@@ -329,6 +371,7 @@ async function confirmCashout() {
         showToast('Cashout request submitted!', 'success');
       }
       hideDetails();
+      notifyAccountChanged('cashout');
       loadData();
     }
   } catch (err) {
@@ -337,6 +380,49 @@ async function confirmCashout() {
 
   btn.disabled = false;
   btn.textContent = 'Confirm Cashout';
+}
+
+function renderProfile(p) {
+  var AP = window.AfroPointsEngine;
+  if (!p || p.error) return;
+  var authState = document.getElementById('cashoutAuthState');
+  if (authState) authState.remove();
+  userBalance = p.current_balance || 0;
+  profilePayoutPreference = p.payout_preference || null;
+  profilePayoutDetails = p.payout_details && typeof p.payout_details === 'object' ? p.payout_details : {};
+  $('balanceDisplay').textContent = AP.formatPoints(userBalance);
+  $('cashEquiv').textContent = (userBalance / 100).toFixed(2);
+  var pct = Math.min(100, (userBalance / 2000) * 100);
+  $('cashoutProgress').style.width = pct + '%';
+  renderSavedPayoutState();
+
+  var warning = document.getElementById('cashoutWarning');
+  if (warning) warning.remove();
+  if (userBalance < 500) {
+    $('optionsCard').querySelector('.ap-card-body').insertAdjacentHTML('afterbegin',
+      '<div id="cashoutWarning" style="background:rgba(245,158,11,0.08); padding:12px 16px; border-radius:10px; margin-bottom:12px; font-size:0.82rem; color:var(--color-text-muted);">You need at least 500 points to convert to Pro, or 2,000 points to cash out by bank, mobile money, or crypto. <a href="contribute.html" style="color:#F59E0B; font-weight:600;">Start contributing &rarr;</a></div>'
+    );
+  }
+}
+
+function renderCashoutHistory(history) {
+  if (!Array.isArray(history) || history.length === 0) return;
+  var body = $('historyBody');
+  body.innerHTML = '';
+  history.forEach(function (h) {
+    var statusColor = h.status === 'completed' ? '#22c55e' : h.status === 'pending' ? '#F59E0B' : h.status === 'processing' ? '#3b82f6' : '#ef4444';
+    var d = document.createElement('div');
+    d.className = 'ap-activity-item';
+    var detailLine = '';
+    if (h.payout_method === 'crypto_wallet' && h.payout_details && h.payout_details.asset) {
+      detailLine = '<br><span style="font-size:0.7rem;">' + h.payout_details.asset + ' on ' + h.payout_details.network + '</span>';
+    }
+    d.innerHTML =
+      '<div class="ap-activity-icon spend">💸</div>' +
+      '<div class="ap-activity-text">' + h.payout_method.replace(/_/g, ' ') + ' — $' + (h.cash_amount || 0).toFixed(2) + detailLine + '<br><span style="font-size:0.7rem;">' + new Date(h.created_at).toLocaleDateString() + '</span></div>' +
+      '<span class="ap-rank-badge" style="background:' + statusColor + '22;color:' + statusColor + ';">' + h.status + '</span>';
+    body.appendChild(d);
+  });
 }
 
 function loadData() {
@@ -350,46 +436,12 @@ function loadData() {
     return;
   }
 
-  AP.getProfile().then(function (p) {
-    if (!p || p.error) return;
-    var authState = document.getElementById('cashoutAuthState');
-    if (authState) authState.remove();
-    userBalance = p.current_balance || 0;
-    profilePayoutPreference = p.payout_preference || null;
-    profilePayoutDetails = p.payout_details && typeof p.payout_details === 'object' ? p.payout_details : {};
-    $('balanceDisplay').textContent = AP.formatPoints(userBalance);
-    $('cashEquiv').textContent = (userBalance / 100).toFixed(2);
-    var pct = Math.min(100, (userBalance / 2000) * 100);
-    $('cashoutProgress').style.width = pct + '%';
-    renderSavedPayoutState();
-
-    var warning = document.getElementById('cashoutWarning');
-    if (warning) warning.remove();
-    if (userBalance < 500) {
-      $('optionsCard').querySelector('.ap-card-body').insertAdjacentHTML('afterbegin',
-        '<div id="cashoutWarning" style="background:rgba(245,158,11,0.08); padding:12px 16px; border-radius:10px; margin-bottom:12px; font-size:0.82rem; color:var(--color-text-muted);">You need at least 500 points to convert to Pro, or 2,000 points to cash out by bank, mobile money, or crypto. <a href="contribute.html" style="color:#F59E0B; font-weight:600;">Start contributing &rarr;</a></div>'
-      );
-    }
-  });
-
-  AP.getCashoutHistory().then(function (history) {
-    if (!Array.isArray(history) || history.length === 0) return;
-    var body = $('historyBody');
-    body.innerHTML = '';
-    history.forEach(function (h) {
-      var statusColor = h.status === 'completed' ? '#22c55e' : h.status === 'pending' ? '#F59E0B' : h.status === 'processing' ? '#3b82f6' : '#ef4444';
-      var d = document.createElement('div');
-      d.className = 'ap-activity-item';
-      var detailLine = '';
-      if (h.payout_method === 'crypto_wallet' && h.payout_details && h.payout_details.asset) {
-        detailLine = '<br><span style="font-size:0.7rem;">' + h.payout_details.asset + ' on ' + h.payout_details.network + '</span>';
-      }
-      d.innerHTML =
-        '<div class="ap-activity-icon spend">💸</div>' +
-        '<div class="ap-activity-text">' + h.payout_method.replace(/_/g, ' ') + ' — $' + (h.cash_amount || 0).toFixed(2) + detailLine + '<br><span style="font-size:0.7rem;">' + new Date(h.created_at).toLocaleDateString() + '</span></div>' +
-        '<span class="ap-rank-badge" style="background:' + statusColor + '22;color:' + statusColor + ';">' + h.status + '</span>';
-      body.appendChild(d);
-    });
+  fetchAccountSnapshot().then(function (snapshot) {
+    if (snapshot && snapshot.profile) renderProfile(snapshot.profile);
+    renderCashoutHistory(snapshot && snapshot.cashouts);
+  }).catch(function () {
+    AP.getProfile().then(renderProfile);
+    AP.getCashoutHistory().then(renderCashoutHistory);
   });
 }
 

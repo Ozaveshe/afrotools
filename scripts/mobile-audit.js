@@ -786,9 +786,16 @@ function isControlRule(rule, html) {
 function isInteractiveRule(rule, html) {
   if (isStaticTableRule(rule)) return false;
   if (isStaticBadgeRule(rule, html)) return false;
+  if (isDecorativeControlSubpartRule(rule)) return false;
   if (/(button|summary|role-button)/i.test(rule.tokens.join(' '))) return true;
   if (/\bcursor\s*:\s*pointer/i.test(rule.rawBlockLower) && INTERACTIVE_SELECTOR_RE.test(rule.selectorsLower)) return true;
   return INTERACTIVE_SELECTOR_RE.test(rule.selectorsLower);
+}
+
+function isDecorativeControlSubpartRule(rule) {
+  const selector = rule.selectorsLower;
+  return /(?:^|[.#\s>+~,(])(?:toggle-knob|toggle-track)(?:\b|::)/i.test(selector)
+    || /\.toggle\b[^,{]*\.slider::(?:before|after)/i.test(selector);
 }
 
 function isLabelOnlyRule(rule) {
@@ -1172,7 +1179,6 @@ function renderMarkdown(report) {
   lines.push('## Assumptions And Blind Spots');
   lines.push('');
   report.assumptions.forEach((item) => lines.push(`- ${item}`));
-  lines.push('');
   return `${lines.join('\n')}\n`;
 }
 

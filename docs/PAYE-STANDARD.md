@@ -27,6 +27,7 @@ The `/salary-tax/` category is a workflow surface, not only a list of PAYE calcu
 5. Generate a report, source note, PDF, payslip-style summary, or payroll review item.
 6. Continue employer work in `/tools/afropayroll-os/workspace.html` when a single calculator result becomes a payroll run draft.
 7. Use the Salary hub planner to choose a country/job route and create a metadata-only handoff brief when the user is ready to continue.
+8. Review a local readiness board with approval status, exception queue, and audit-packet export before payroll handoff.
 
 The category count should come from the curated hub map in `assets/js/salary-tax-index.js`, not from a plain `category === 'financial'` registry filter. As of this standard, the expected curated total is `188` unique tools across:
 
@@ -62,6 +63,7 @@ Every PAYE page should provide:
 7. Reopen support from dashboard back into the calculator state.
 8. Account-gated PDF/report downloads with report metadata saved for later follow-up.
 9. Category-level planner and handoff briefs that connect a single calculation to employer, advisory, and dashboard workflows.
+10. Payroll-style readiness workflow with approval status, exception queue, and metadata-only audit packets.
 
 ## Required Data Flows
 
@@ -110,6 +112,18 @@ Every PAYE page should provide:
 - Handoff downloads use the same account gate before generating the JSON brief.
 - The dashboard Salary Workspace should show both `salary-report` trails and `salary-handoff` briefs.
 - The planner must route users only to verified local routes and must not invent tax deductions, filings, or compliance status.
+
+### 6. Readiness board, approvals, exceptions, and audit packets
+
+- Readiness boards are saved locally under `afro_salary_run_readiness_v1`.
+- Audit packets are saved locally under `afro_salary_audit_packets_v1`.
+- Signed-in audit packet metadata syncs to the dashboard workspace as `item_type = 'salary-audit-packet'`.
+- The readiness board is a workflow checklist, not an official compliance verdict.
+- Readiness score can use local evidence such as generated report presence, handoff presence, payroll-ready country support, checklist completion, and approval status.
+- The exception queue should surface missing report, missing handoff, estimate-only country support, employee/client review pending, approver missing, and funding note missing.
+- Audit packet exports must remain metadata-only and should be account-gated before download.
+- Do not save raw salary inputs, generated PDF blobs, employee records, payment details, or filing claims in the category-level audit packet.
+- Dashboard Salary Workspace should show readiness boards, audit packets, handoff briefs, and report trails in one place.
 
 ## Payload Contract
 
@@ -274,6 +288,7 @@ When upgrading another PAYE page to this standard:
 10. Load `assets/js/lib/paye-report-sync.js` after `paye-calculation-sync.js` when the page can generate a PDF/report.
 11. Verify guest report download opens the account gate, signed-in report download bypasses it, and the dashboard shows the saved salary report metadata.
 12. Verify the Salary hub planner can save a route, create a handoff brief, gate the brief download, and show the handoff in the dashboard Salary Workspace.
+13. Verify the readiness board, approval status, exception queue, gated audit packet download, and dashboard Salary Workspace audit section.
 
 ## Current Scope
 

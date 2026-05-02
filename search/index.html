@@ -23,6 +23,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css">
   <script src="/assets/js/components/navbar.min.js?v=12cea766" defer></script>
   <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
   <script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
@@ -168,15 +169,29 @@
     @media(max-width:640px) { .search-hint { display: none; } }
 
     /* ── FILTER CHIPS ── */
+    .filter-toolbar {
+      padding-bottom: 16px;
+    }
+    .filter-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
     .filter-scroll {
       display: flex;
-      gap: 7px;
-      overflow-x: auto;
-      padding-bottom: 16px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .filter-scroll::-webkit-scrollbar { display: none; }
     .chip {
       flex-shrink: 0;
       padding: 7px 14px;
@@ -199,6 +214,11 @@
       border-color: var(--green);
       color: #fff;
     }
+    .chip[aria-pressed="true"] {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
     .chip-count {
       font-size: 0.65rem;
       background: rgba(255,255,255,0.15);
@@ -207,6 +227,53 @@
       font-weight: 700;
     }
     .chip.active .chip-count { background: rgba(255,255,255,0.25); }
+    .more-filters {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .more-filters summary {
+      list-style: none;
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.62);
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .more-filters summary::-webkit-details-marker { display: none; }
+    .more-filter-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      z-index: 120;
+      display: grid;
+      gap: 8px;
+      min-width: 230px;
+      padding: 10px;
+      background: var(--color-surface, #fff);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg, 0 18px 44px rgba(15,23,42,0.16));
+    }
+    .more-filter-menu .chip {
+      width: 100%;
+      justify-content: flex-start;
+      color: var(--ink);
+      background: var(--card-bg);
+      border-color: var(--border);
+    }
+    .more-filter-menu .chip:hover {
+      color: var(--green);
+      border-color: rgba(0,122,255,0.32);
+    }
+    .more-filter-menu .chip.active,
+    .more-filter-menu .chip[aria-pressed="true"] {
+      color: #fff;
+      border-color: var(--green);
+      background: var(--green);
+    }
 
     /* ── MAIN CONTENT ── */
     .search-body {
@@ -242,12 +309,56 @@
       cursor: pointer;
       outline: none;
     }
+    .sort-select:disabled {
+      opacity: 0.58;
+      cursor: wait;
+    }
 
     /* ── RESULT CARDS ── */
     .results-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
+    }
+    .skeleton-list {
+      pointer-events: none;
+    }
+    .skeleton-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .skeleton-icon,
+    .skeleton-line {
+      border-radius: 999px;
+      background: linear-gradient(90deg, #eef2f7 0%, #f8fafc 45%, #eef2f7 100%);
+      background-size: 200% 100%;
+      animation: skeletonPulse 1.3s ease-in-out infinite;
+    }
+    .skeleton-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+    }
+    .skeleton-copy {
+      display: grid;
+      gap: 9px;
+      padding-top: 2px;
+    }
+    .skeleton-line {
+      height: 11px;
+    }
+    .skeleton-line.short { width: 42%; }
+    .skeleton-line.medium { width: 68%; }
+    .skeleton-line.long { width: 92%; }
+    @keyframes skeletonPulse {
+      0% { background-position: 100% 50%; }
+      100% { background-position: -100% 50%; }
     }
     .result-card {
       background: var(--card-bg);
@@ -433,6 +544,7 @@
       flex-wrap: wrap;
       gap: 8px;
       justify-content: center;
+      margin-bottom: 18px;
     }
     .sug-chip {
       padding: 8px 16px;
@@ -446,6 +558,13 @@
       transition: all 0.15s;
     }
     .sug-chip:hover { border-color: var(--green); color: var(--green); }
+    .empty-cta {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
 
     /* ── DEFAULT STATE (no query) ── */
     .default-state { padding: 4px 0; }
@@ -474,6 +593,7 @@
     }
     @media(min-width:600px) { .trending-grid { grid-template-columns: repeat(3, 1fr); } }
     .trend-card {
+      width: 100%;
       background: var(--card-bg);
       border: 1.5px solid var(--border);
       border-radius: 12px;
@@ -481,6 +601,7 @@
       display: flex;
       align-items: center;
       gap: 11px;
+      text-align: left;
       cursor: pointer;
       transition: all 0.15s;
     }
@@ -528,6 +649,30 @@
     }
     .load-more-btn:hover { border-color: var(--green); color: var(--green); }
 
+    .chip:focus-visible,
+    .more-filters summary:focus-visible,
+    .filter-toggle:focus-visible,
+    .sort-select:focus-visible,
+    .result-card:focus-visible,
+    .trend-card:focus-visible,
+    .cat-pill:focus-visible,
+    .sug-chip:focus-visible,
+    .load-more-btn:focus-visible,
+    .search-clear:focus-visible {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: var(--shadow-focus, 0 0 0 3px rgba(0,122,255,0.22));
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     /* ── RESPONSIVE ── */
     @media(max-width:640px) {
       .search-header { padding: 12px 16px 0; }
@@ -538,6 +683,71 @@
       .rc-name { font-size: 0.88rem; }
       .search-hint { display: none; }
       .search-body { padding: 20px 16px 48px; }
+      .filter-toolbar {
+        display: flex;
+        justify-content: flex-start;
+        padding-bottom: 14px;
+      }
+      .filter-toggle {
+        display: inline-flex;
+      }
+      .filter-panel {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 300;
+        max-height: min(72vh, 540px);
+        overflow-y: auto;
+        padding: 16px;
+        background: var(--color-surface, #fff);
+        border: 1.5px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow-lg, 0 24px 60px rgba(15,23,42,0.22));
+        transform: translateY(calc(100% + 24px));
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+      .filter-panel.is-open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .filter-scroll {
+        gap: 8px;
+      }
+      .filter-panel .chip,
+      .filter-panel .more-filters summary {
+        color: var(--ink);
+        background: var(--card-bg);
+        border-color: var(--border);
+      }
+      .filter-panel .chip.active,
+      .filter-panel .chip[aria-pressed="true"] {
+        color: #fff;
+        background: var(--green);
+        border-color: var(--green);
+      }
+      .more-filters {
+        width: 100%;
+      }
+      .more-filters summary {
+        display: inline-flex;
+      }
+      .more-filter-menu {
+        position: static;
+        min-width: 0;
+        padding: 10px 0 0;
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .more-filter-menu .chip {
+        width: auto;
+      }
     }
   </style>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/search/" />
@@ -585,18 +795,34 @@
     </div>
 
     <!-- FILTER CHIPS -->
-    <div class="filter-scroll" id="filter-chips" role="tablist" aria-label="Filter by category">
-      <button class="chip active" data-filter="all" role="tab">All <span class="chip-count" id="chip-count-all">0</span></button>
-      <button class="chip" data-filter="live" role="tab">🟢 Available Now <span class="chip-count" id="chip-count-live">0</span></button>
-      <button class="chip" data-filter="financial" role="tab">💰 Salary & Tax</button>
-      <button class="chip" data-filter="document-pdf" role="tab">📄 PDF & Docs</button>
-      <button class="chip" data-filter="image-design" role="tab">🖼️ Image & Design</button>
-      <button class="chip" data-filter="african" role="tab">⚡ Uniquely African</button>
-      <button class="chip" data-filter="developer" role="tab">⌨️ Dev Tools</button>
-      <button class="chip" data-filter="education" role="tab">🎓 Education</button>
-      <button class="chip" data-filter="health" role="tab">🏥 Health & Agri</button>
-      <button class="chip" data-filter="ecommerce" role="tab">🧾 VAT & Business</button>
-      <button class="chip" data-filter="legal" role="tab">🏠 Mortgage</button>
+    <div class="filter-toolbar">
+      <button class="filter-toggle" id="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-panel">Filters</button>
+      <div class="filter-panel" id="filter-panel">
+        <div class="filter-scroll" id="filter-chips" role="group" aria-label="Filter by category">
+          <button class="chip active" data-filter="all" type="button" aria-pressed="true">All <span class="chip-count" id="chip-count-all" hidden></span></button>
+          <button class="chip" data-filter="live" type="button" aria-pressed="false">Available Now <span class="chip-count" id="chip-count-live" hidden></span></button>
+          <button class="chip" data-filter="financial" type="button" aria-pressed="false">Salary & Tax</button>
+          <button class="chip" data-filter="document-pdf" type="button" aria-pressed="false">PDF & Docs</button>
+          <button class="chip" data-filter="ecommerce" type="button" aria-pressed="false">VAT & Business</button>
+          <button class="chip" data-filter="data-productivity" type="button" aria-pressed="false">Data & Productivity</button>
+          <details class="more-filters" id="more-filters">
+            <summary>More filters</summary>
+            <div class="more-filter-menu">
+              <button class="chip" data-filter="image-design" type="button" aria-pressed="false">Image & Design</button>
+              <button class="chip" data-filter="african" type="button" aria-pressed="false">Uniquely African</button>
+              <button class="chip" data-filter="developer" type="button" aria-pressed="false">Developer Tools</button>
+              <button class="chip" data-filter="education" type="button" aria-pressed="false">Education</button>
+              <button class="chip" data-filter="health" type="button" aria-pressed="false">Health</button>
+              <button class="chip" data-filter="agriculture" type="button" aria-pressed="false">Agriculture</button>
+              <button class="chip" data-filter="small-business" type="button" aria-pressed="false">Small Business</button>
+              <button class="chip" data-filter="fintech" type="button" aria-pressed="false">Fintech & Banking</button>
+              <button class="chip" data-filter="language" type="button" aria-pressed="false">Language</button>
+              <button class="chip" data-filter="engineering" type="button" aria-pressed="false">Engineering & CAD</button>
+              <button class="chip" data-filter="legal" type="button" aria-pressed="false">Legal & Compliance</button>
+            </div>
+          </details>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -606,16 +832,16 @@
 
   <!-- Results meta bar -->
   <div class="results-meta" id="results-meta" style="display:none">
-    <div class="results-count" id="results-count"></div>
+    <div class="results-count" id="results-count" role="status" aria-live="polite"></div>
     <select class="sort-select" id="sort-select" aria-label="Sort results">
-      <option value="relevance">Most Relevant</option>
-      <option value="live-first">Live First</option>
-      <option value="az">A → Z</option>
+      <option value="relevance">Recommended</option>
+      <option value="live-first">Live first</option>
+      <option value="az">A-Z</option>
     </select>
   </div>
 
   <!-- Results -->
-  <div id="results-container"></div>
+  <div id="results-container" aria-busy="true"></div>
 
   <!-- Load more -->
   <div class="load-more-wrap" id="load-more-wrap" style="display:none">
@@ -639,13 +865,18 @@ var CATEGORY_NAMES = {
   'image-design':      'Image & Design',
   'developer':         'Developer Tools',
   'education':         'Education',
-  'health':            'Health & Agriculture',
+  'health':            'Health',
+  'agriculture':       'Agriculture',
   'african':           'Uniquely African',
   'data-productivity': 'Data & Productivity',
+  'small-business':    'Small Business',
+  'fintech':           'Fintech & Banking',
+  'trade':             'Trade',
+  'energy':            'Energy',
   'language':          'Language & Translation',
   'engineering':       'Engineering & CAD',
   'ecommerce':         'VAT & Business',
-  'legal':             'Mortgage & Property',
+  'legal':             'Legal & Compliance',
 };
 
 var COUNTRY_NAMES = {
@@ -666,9 +897,7 @@ var TRENDING = [
 ];
 
 var SUGGESTIONS = [
-  'PAYE calculator','PDF merge','VAT calculator','tax take-home',
-  'salary after tax','Kenya PAYE','Nigeria income tax','Japa relocation',
-  'CV builder','currency converter',
+  'Nigeria PAYE','Kenya PAYE','VAT','Invoice','PDF','Currency',
 ];
 
 // State
@@ -690,6 +919,10 @@ var sortSelect    = document.getElementById('sort-select');
 var loadMoreWrap  = document.getElementById('load-more-wrap');
 var loadMoreBtn   = document.getElementById('load-more-btn');
 var filterChips   = document.getElementById('filter-chips');
+var filterPanel   = document.getElementById('filter-panel');
+var filterToggle  = document.getElementById('filter-toggle');
+var moreFilters   = document.getElementById('more-filters');
+var isSearchReady = false;
 
 // ════════════════════════════════════════════════════════════
 // SEARCH LOGIC
@@ -769,7 +1002,7 @@ function getCountryLabel(countries) {
 }
 
 function search(query, filter, sort) {
-  if (typeof AFRO_TOOLS === 'undefined') return [];
+  if (!Array.isArray(window.AFRO_TOOLS) || !AFRO_TOOLS.length) return [];
 
   var tokens = tokenise(query);
 
@@ -820,10 +1053,9 @@ function renderCard(tool, tokens) {
 
   // Badges
   var badges = '';
-  if (isLive)  badges += '<span class="badge badge-live">● Live</span>';
-  if (isNew)   badges += '<span class="badge badge-new">✨ New</span>';
+  if (isLive)  badges += '<span class="badge badge-live">Live</span>';
+  if (isNew)   badges += '<span class="badge badge-new">New</span>';
   if (!isAvail) badges += '<span class="badge badge-soon">Coming Soon</span>';
-  if (tool.tier === 'T1') badges += '<span class="badge badge-ai">✦ AI Advisor</span>';
 
   // Category bg colour
   var catBg = {
@@ -843,7 +1075,7 @@ function renderCard(tool, tokens) {
   var href = isAvail ? tool.href : '#notify-' + tool.id;
   var tag  = isAvail ? 'a' : 'div';
 
-  return '<'+tag+(isAvail?' href="'+tool.href+'"':'')+' class="'+cardClass+'" '+(isAvail?'':'onclick="handleComingSoon(\''+escHtml(tool.name)+'\')"')+' role="'+(isAvail?'link':'button')+'" aria-label="'+escHtml(tool.name)+'">'
+  return '<'+tag+(isAvail?' href="'+tool.href+'"':' data-notify-name="'+escHtml(tool.name)+'" tabindex="0"')+' class="'+cardClass+'" role="'+(isAvail?'link':'button')+'" aria-label="'+escHtml(tool.name)+'">'
     + '<div class="rc-icon" style="background:'+catBg+'">'+escHtml(tool.icon || '🔧')+'</div>'
     + '<div class="rc-body">'
       + '<div class="rc-top">'
@@ -862,9 +1094,43 @@ function renderCard(tool, tokens) {
   + '</'+tag+'>';
 }
 
+function renderLoadingState() {
+  resultsEl.setAttribute('aria-busy', 'true');
+  resultsMeta.style.display = 'flex';
+  resultsCount.textContent = 'Loading tools...';
+  sortSelect.disabled = true;
+  loadMoreWrap.style.display = 'none';
+
+  var skeleton = '<div class="results-list skeleton-list" aria-hidden="true">';
+  for (var i = 0; i < 6; i++) {
+    skeleton += '<div class="skeleton-card">'
+      + '<div class="skeleton-icon"></div>'
+      + '<div class="skeleton-copy">'
+        + '<div class="skeleton-line medium"></div>'
+        + '<div class="skeleton-line long"></div>'
+        + '<div class="skeleton-line short"></div>'
+      + '</div>'
+    + '</div>';
+  }
+  skeleton += '</div>';
+  resultsEl.innerHTML = skeleton;
+}
+
+function renderRegistryUnavailable() {
+  if (isSearchReady) return;
+  resultsEl.setAttribute('aria-busy', 'false');
+  resultsMeta.style.display = 'none';
+  sortSelect.disabled = true;
+  loadMoreWrap.style.display = 'none';
+  resultsEl.innerHTML = '<div class="empty-state" role="status">'
+    + '<div class="empty-title">Tools are temporarily unavailable</div>'
+    + '<div class="empty-sub">Refresh the page or try again in a moment.</div>'
+  + '</div>';
+}
+
 function renderDefaultState() {
-  if (typeof AFRO_TOOLS === 'undefined') {
-    resultsEl.innerHTML = '<p style="color:var(--muted);padding:40px 0;text-align:center">Loading tools…</p>';
+  if (!isSearchReady) {
+    renderLoadingState();
     return;
   }
 
@@ -875,52 +1141,57 @@ function renderDefaultState() {
     var tool = AFRO_TOOLS.find(function(x) { return x.id === t.id; });
     if (!tool) return;
     var isAvail = tool.status === 'live' || tool.status === 'new';
-    trendHtml += '<div class="trend-card" onclick="setQuery(\''+escHtml(t.query)+'\')" role="button" tabindex="0">'
+    trendHtml += '<button class="trend-card" type="button" data-query="'+escHtml(t.query)+'">'
       + '<div class="trend-icon">'+escHtml(tool.icon || '🔧')+'</div>'
       + '<div>'
         + '<div class="trend-name">'+escHtml(tool.name)+'</div>'
-        + '<div class="trend-badge">'+(isAvail ? '● Live' : 'Coming Soon')+'</div>'
+        + '<div class="trend-badge">'+(isAvail ? 'Live' : 'Coming Soon')+'</div>'
       + '</div>'
-    + '</div>';
+    + '</button>';
   });
   trendHtml += '</div></div>';
 
   // Category pills
   trendHtml += '<div class="default-section"><div class="default-heading">Browse by Category</div><div class="category-pills">';
   Object.keys(CATEGORY_NAMES).forEach(function(key) {
-    var catEmoji = { 'financial':'💰','document-pdf':'📄','image-design':'🖼️','developer':'⌨️','education':'🎓','health':'🏥','african':'⚡','data-productivity':'📈','language':'🌍','engineering':'🏗️','ecommerce':'🧾','legal':'🏠' }[key] || '🔧';
-    trendHtml += '<button class="cat-pill" onclick="setFilter(\''+key+'\')">'+catEmoji+' '+escHtml(CATEGORY_NAMES[key])+'</button>';
+    trendHtml += '<button class="cat-pill" type="button" data-filter-option="'+key+'">'+escHtml(CATEGORY_NAMES[key])+'</button>';
   });
   trendHtml += '</div></div>';
 
   // Try searching
   trendHtml += '<div class="default-section"><div class="default-heading">Try Searching</div><div class="empty-suggestions">';
   SUGGESTIONS.forEach(function(s) {
-    trendHtml += '<button class="sug-chip" onclick="setQuery(\''+escHtml(s)+'\')">'+escHtml(s)+'</button>';
+    trendHtml += '<button class="sug-chip" type="button" data-query="'+escHtml(s)+'">'+escHtml(s)+'</button>';
   });
   trendHtml += '</div></div></div>';
 
   resultsEl.innerHTML = trendHtml;
+  resultsEl.setAttribute('aria-busy', 'false');
+  sortSelect.disabled = false;
   resultsMeta.style.display = 'none';
   loadMoreWrap.style.display = 'none';
 }
 
 function renderResults(results, tokens, page) {
+  resultsEl.setAttribute('aria-busy', 'false');
+  sortSelect.disabled = false;
   var total = results.length;
   var shown = Math.min(total, page * state.PAGE_SIZE);
   var slice = results.slice(0, shown);
 
   if (!total) {
-    resultsEl.innerHTML = '<div class="empty-state">'
-      + '<div class="empty-emoji">🔍</div>'
-      + '<div class="empty-title">No tools found for "'+escHtml(state.query)+'"</div>'
-      + '<div class="empty-sub">Try a different keyword, or browse by category below.</div>'
+    resultsEl.innerHTML = '<div class="empty-state" role="status">'
+      + '<div class="empty-title">No tools found</div>'
+      + '<div class="empty-sub">Try a country, currency, tax, PDF, invoice, or business keyword.</div>'
       + '<div class="empty-suggestions">'
       + SUGGESTIONS.slice(0,6).map(function(s) {
-          return '<button class="sug-chip" onclick="setQuery(\''+escHtml(s)+'\')">'+escHtml(s)+'</button>';
+          return '<button class="sug-chip" type="button" data-query="'+escHtml(s)+'">'+escHtml(s)+'</button>';
         }).join('')
-      + '</div></div>';
-    resultsMeta.style.display = 'none';
+      + '</div>'
+      + '<a class="btn btn-primary empty-cta" href="/contact/">Request a tool</a>'
+      + '</div>';
+    resultsCount.textContent = 'No tools found';
+    resultsMeta.style.display = 'flex';
     loadMoreWrap.style.display = 'none';
     return;
   }
@@ -948,6 +1219,11 @@ function renderResults(results, tokens, page) {
 }
 
 function doRender() {
+  if (!isSearchReady) {
+    renderLoadingState();
+    return;
+  }
+
   var query = state.query.trim();
   var tokens = tokenise(query);
 
@@ -963,15 +1239,52 @@ function doRender() {
 // ════════════════════════════════════════════════════════════
 // CHIP COUNTS
 // ════════════════════════════════════════════════════════════
+function formatCount(num) {
+  return Number(num || 0).toLocaleString('en-US');
+}
+
+function setChipCount(id, count) {
+  var el = document.getElementById(id);
+  var numeric = Number(count);
+  if (!el) return;
+  if (!Number.isFinite(numeric) || numeric <= 0) {
+    el.hidden = true;
+    el.textContent = '';
+    return;
+  }
+  el.textContent = formatCount(numeric);
+  el.hidden = false;
+}
+
+function getSearchStats() {
+  if (typeof getPublicToolStats === 'function') return getPublicToolStats('en');
+  if (Array.isArray(window.AFRO_TOOLS) && AFRO_TOOLS.length) {
+    var liveRows = AFRO_TOOLS.filter(function(tool) {
+      return tool.status === 'live' || tool.status === 'new';
+    }).length;
+    return { totalTools: AFRO_TOOLS.length, liveTools: liveRows };
+  }
+  return null;
+}
+
 function updateChipCounts() {
-  if (typeof getPublicToolStats !== 'function') return;
-  var stats = getPublicToolStats('en');
-  var allCount = stats.totalTools;
-  var liveCount = stats.liveTools;
-  var el1 = document.getElementById('chip-count-all');
-  var el2 = document.getElementById('chip-count-live');
-  if (el1) el1.textContent = allCount;
-  if (el2) el2.textContent = liveCount;
+  var stats = getSearchStats();
+  if (!stats) return;
+  setChipCount('chip-count-all', stats.totalTools);
+  setChipCount('chip-count-live', stats.liveTools);
+}
+
+function syncFilterUI() {
+  document.querySelectorAll('.chip[data-filter]').forEach(function(c) {
+    var active = c.dataset.filter === state.filter;
+    c.classList.toggle('active', active);
+    c.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+
+  if (moreFilters) {
+    var activeInMore = moreFilters.querySelector('.chip.active');
+    if (activeInMore) moreFilters.open = true;
+  }
 }
 
 // ════════════════════════════════════════════════════════════
@@ -986,11 +1299,7 @@ function readURL() {
   state.page = 1;
   searchInput.value = q;
   updateClearBtns(q);
-
-  // Activate correct chip
-  document.querySelectorAll('.chip').forEach(function(c) {
-    c.classList.toggle('active', c.dataset.filter === state.filter);
-  });
+  syncFilterUI();
 }
 
 function pushURL() {
@@ -1015,15 +1324,16 @@ function setQuery(q) {
 }
 
 function setFilter(f) {
+  if (!f) return;
   state.filter = f;
   state.page = 1;
-  document.querySelectorAll('.chip').forEach(function(c) {
-    c.classList.toggle('active', c.dataset.filter === f);
-  });
+  syncFilterUI();
 
   // Scroll chip into view
   var activeChip = document.querySelector('.chip.active');
   if (activeChip) activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  if (filterPanel) filterPanel.classList.remove('is-open');
+  if (filterToggle) filterToggle.setAttribute('aria-expanded', 'false');
 
   pushURL();
   doRender();
@@ -1060,7 +1370,38 @@ searchClear.addEventListener('click', function() { setQuery(''); });
 // Filter chips
 filterChips.addEventListener('click', function(e) {
   var chip = e.target.closest('.chip');
-  if (chip) setFilter(chip.dataset.filter);
+  if (chip && chip.dataset.filter) setFilter(chip.dataset.filter);
+});
+
+if (filterToggle && filterPanel) {
+  filterToggle.addEventListener('click', function() {
+    var open = !filterPanel.classList.contains('is-open');
+    filterPanel.classList.toggle('is-open', open);
+    filterToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+
+resultsEl.addEventListener('click', function(e) {
+  var notifyCard = e.target.closest('[data-notify-name]');
+  if (notifyCard) {
+    handleComingSoon(notifyCard.dataset.notifyName || '');
+    return;
+  }
+  var queryBtn = e.target.closest('[data-query]');
+  if (queryBtn) {
+    setQuery(queryBtn.dataset.query || '');
+    return;
+  }
+  var filterBtn = e.target.closest('[data-filter-option]');
+  if (filterBtn) setFilter(filterBtn.dataset.filterOption);
+});
+
+resultsEl.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  var notifyCard = e.target.closest('[data-notify-name]');
+  if (!notifyCard) return;
+  e.preventDefault();
+  handleComingSoon(notifyCard.dataset.notifyName || '');
 });
 
 // Sort
@@ -1091,6 +1432,12 @@ document.addEventListener('keydown', function(e) {
     searchInput.focus();
     searchInput.select();
   }
+  if (e.key === 'Escape' && filterPanel && filterPanel.classList.contains('is-open')) {
+    filterPanel.classList.remove('is-open');
+    if (filterToggle) filterToggle.setAttribute('aria-expanded', 'false');
+    filterToggle && filterToggle.focus();
+    return;
+  }
   if (e.key === 'Escape' && document.activeElement === searchInput) {
     setQuery('');
   }
@@ -1100,17 +1447,32 @@ document.addEventListener('keydown', function(e) {
 // INIT
 // ════════════════════════════════════════════════════════════
 (function init() {
-  // Wait for registry to be available
-  function tryInit() {
-    if (typeof AFRO_TOOLS === 'undefined') {
-      setTimeout(tryInit, 50);
-      return;
-    }
+  renderLoadingState();
+
+  function startSearch() {
+    if (isSearchReady) return true;
+    if (!Array.isArray(window.AFRO_TOOLS) || !AFRO_TOOLS.length) return false;
+    isSearchReady = true;
+    resultsEl.setAttribute('aria-busy', 'false');
+    sortSelect.disabled = false;
     updateChipCounts();
     readURL();
     doRender();
+    return true;
   }
+
+  function tryInit() {
+    if (startSearch()) return;
+    setTimeout(tryInit, 50);
+  }
+
+  if (typeof onRegistryReady === 'function') {
+    onRegistryReady(startSearch);
+  }
+
+  document.addEventListener('afrotools:registry-ready', startSearch, { once: true });
   tryInit();
+  setTimeout(renderRegistryUnavailable, 8000);
 })();
 </script>
 

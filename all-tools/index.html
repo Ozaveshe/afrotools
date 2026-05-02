@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>All Tools for Africa — Free Financial & AI Tools | AfroTools</title>
 <meta name="description" content="Browse every AfroTools tool: PAYE calculators, PDF workspace, CV builder, currency converter, engineering tools, and more — built for all 54 African countries.">
-<link rel="canonical" href="https://afrotools.com/all-tools/">
+<link rel="canonical" href="https://afrotools.com/tools/">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/all-tools/">
+<meta property="og:url" content="https://afrotools.com/tools/">
 <meta property="og:title" content="All AfroTools | Free African Tools">
 <meta property="og:description" content="Browse AfroTools across English, French and Swahili. PAYE, PDF, CV, currency, engineering, AI-powered, and more.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -23,12 +23,13 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+<link rel="stylesheet" href="/assets/css/design-system.min.css">
 <script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=12cea766" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
+body{font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
 a{text-decoration:none;color:inherit;}
 
 /* ── HERO ── */
@@ -51,22 +52,22 @@ a{text-decoration:none;color:inherit;}
 .hero-stat .s-val.blue{color:var(--color-primary);}
 
 /* ── SEARCH & FILTER ── */
-.filter-bar{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;padding:14px 24px;position:sticky;top:60px;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,.04);}
+.filter-bar{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--color-border);padding:14px 24px;position:sticky;top:60px;z-index:100;box-shadow:var(--shadow-sm);}
 .filter-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .search-wrap{position:relative;flex:1;min-width:220px;max-width:380px;order:1;}
-.search-input{width:100%;padding:9px 66px 9px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.85rem;color:#111;background:#fafafa;transition:border-color .2s,box-shadow .2s;font-family:'DM Sans',sans-serif;}
-.search-input:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.08);background:#fff;}
+.search-input{width:100%;padding:9px 66px 9px 14px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:.85rem;color:var(--color-text);background:var(--color-surface-muted);transition:border-color .2s,box-shadow .2s;background-clip:padding-box;font-family:var(--font-sans);}
+.search-input:focus{outline:none;border-color:var(--color-primary);box-shadow:var(--shadow-focus);background:var(--color-surface);}
 .search-icon{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:.9rem;pointer-events:none;}
 .search-clear{position:absolute;right:34px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:0;border-radius:50%;background:#e5e7eb;color:#475569;font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s;}
 .search-clear:hover,.search-clear:focus{background:#cbd5e1;color:#0f172a;outline:none;}
 .search-clear[hidden]{display:none;}
 .filter-tabs{display:flex;gap:6px;flex:1 1 100%;max-width:100%;order:3;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:thin;}
-.filter-tab{flex:0 0 auto;padding:7px 14px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;font-size:.72rem;font-weight:700;color:#6b7280;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.filter-tab{flex:0 0 auto;padding:7px 14px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-muted);font-size:.72rem;font-weight:700;color:var(--color-text-muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
 .filter-tab:hover{border-color:var(--color-primary);color:var(--color-primary);}
 .filter-tab.active{background:var(--color-primary);border-color:var(--color-primary);color:#fff;}
 .filter-count{font-size:.65rem;background:rgba(0,0,0,.08);border-radius:10px;padding:1px 6px;margin-left:4px;}
 .filter-tab.active .filter-count{background:rgba(255,255,255,.2);}
-.sort-sel{order:2;padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:.75rem;font-weight:600;color:#374151;background:#fafafa;cursor:pointer;margin-left:auto;}
+.sort-sel{order:2;padding:8px 12px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:.75rem;font-weight:600;color:var(--color-text);background:var(--color-surface-muted);cursor:pointer;margin-left:auto;}
 .sort-sel:focus{outline:none;border-color:var(--color-primary);}
 
 /* ── MAIN LAYOUT ── */
@@ -261,7 +262,7 @@ a{text-decoration:none;color:inherit;}
       <span class="search-icon">🔍</span>
     </div>
     <div class="filter-tabs" id="filterTabs">
-      <button class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">All <span class="filter-count" id="countAll">2,599</span></button>
+      <button class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">All <span class="filter-count" id="countAll">2,594</span></button>
       <button class="filter-tab" data-filter="live" onclick="setFilter('live',this)">Live <span class="filter-count" id="countLive">2,594</span></button>
       <button class="filter-tab" data-filter="ai" onclick="setFilter('ai',this)">✦ AI</button>
       <button class="filter-tab" data-filter="salary-tax" onclick="setFilter('salary-tax',this)">💰 PAYE</button>

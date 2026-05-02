@@ -24,6 +24,7 @@ The product should feel like affordable payroll operations software:
 | Country pack data | `data/hr/afropayroll-country-packs.js` |
 | Country pack helper | `assets/js/lib/afropayroll-country-packs.js` |
 | Language labels | `assets/js/lib/afropayroll-language-packs.js` |
+| Import mapper | `assets/js/lib/afropayroll-import-mapper.js` |
 | Pro architecture contract | `assets/js/lib/afropayroll-pro-architecture.js` |
 | Cloud API | `netlify/functions/api-afropayroll.js` |
 | Database schema | `supabase/migrations/033-afropayroll-pro-schema.sql` |
@@ -52,6 +53,7 @@ flowchart LR
 ```mermaid
 flowchart TB
   UI["Local Draft Workspace"]
+  Employee["Employee Master Record Layer"]
   Lang["Language Label Layer"]
   Country["Country Pack Confidence Layer"]
   Calc["Calculation Preview Layer"]
@@ -61,10 +63,12 @@ flowchart TB
   Growth["Free Tool Cross-Sell Layer"]
 
   UI --> Lang
+  UI --> Employee
   UI --> Country
   UI --> Calc
   UI --> Outputs
   UI --> API
+  Employee --> API
   API --> DB
   Outputs --> API
   Growth --> UI
@@ -75,6 +79,7 @@ flowchart TB
 Responsibility:
 
 - Company header.
+- Local employee master records.
 - Pay period and pay date.
 - Row-level employee payroll inputs.
 - Local calculations and warnings.
@@ -88,6 +93,24 @@ Persistence:
 Hard rule:
 
 - Local salary data must never be described as cloud-saved.
+
+### Employee Master Record Layer
+
+Responsibility:
+
+- Store reusable employee ID, name, email, phone, country, tax ID, pension/social security ID, bank or mobile-money details, department, role, start date, employment type, and active/inactive status.
+- Let payroll rows link to a master employee record instead of retyping identity and operations fields every month.
+- Warn when linked employee records are missing payment, statutory, or payslip delivery details.
+- Import and export employee roster rows for low-bandwidth payroll admin work.
+
+Persistence:
+
+- Browser localStorage first.
+- Supabase `payroll_employees` only when a signed-in user explicitly syncs an account-backed run through `/api/afropayroll`.
+
+Hard rule:
+
+- Employee bank, mobile-money, tax, pension, and social-security identifiers are payroll operations data. They do not prove payment, filing, employee confirmation, or compliance.
 
 ### Country Pack Confidence Layer
 
@@ -284,10 +307,10 @@ All actions use `/api/afropayroll`.
 | --- | --- | --- | --- | --- |
 | `list` | GET | `viewPayroll` | `payroll_run_dashboard` | No |
 | `dashboard` | GET | `viewPayroll` | `payroll_run_dashboard` | No |
-| `load` | GET | `viewPayroll` | `payroll_runs`, `payroll_run_rows`, `payroll_companies` | No |
 | `roles` | GET | `viewPayroll` | `payroll_role_permissions`, `payroll_memberships` | No |
 | `audit` | GET | `viewPayroll` | `payroll_audit_events` | No |
-| `save_run` | POST | `editPayroll` | `payroll_runs`, `payroll_run_rows`, `payroll_companies` | Yes |
+| `load` | GET | `viewPayroll` | `payroll_runs`, `payroll_run_rows`, `payroll_companies`, `payroll_employees` | No |
+| `save_run` | POST | `editPayroll` | `payroll_runs`, `payroll_run_rows`, `payroll_companies`, `payroll_employees` | Yes |
 | `request_approval` | POST | `editPayroll` | `payroll_approvals`, `payroll_runs` | Yes |
 | `approve_run` | POST | `approvePayroll` | `payroll_approvals`, `payroll_runs` | Yes |
 | `reject_run` | POST | `approvePayroll` | `payroll_approvals`, `payroll_runs` | Yes |
@@ -326,12 +349,13 @@ Use this when splitting programmer agents.
 
 1. Split the workspace monolith into small helpers:
    - run model and row normalization
+   - employee master record normalization and import parser
    - calculation adapter
    - import parser
    - export packet builder
    - cloud sync client
 2. Promote payslip HTML to branded PDF-grade output.
-3. Add company and employee profile screens for signed-in users.
+3. Add signed-in company and employee profile screens beyond the workspace roster.
 4. Add recurring monthly run cloning from a previous run.
 5. Add statutory pack renderer per full-pack country.
 6. Add role-specific UI states that hide unsafe actions instead of only letting the API reject them.

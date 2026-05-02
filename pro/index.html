@@ -35,13 +35,37 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .pro-hero h1{font-size:clamp(32px,6vw,56px);font-weight:800;color:#fff;margin:0 0 16px;line-height:1.1;letter-spacing:-.03em}
 .pro-hero h1 span{color:#F5A623}
 .pro-hero p{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.7);max-width:600px;margin:0 auto 32px;line-height:1.7}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
 .hero-cta{display:inline-block;background:#fff;color:var(--color-primary);padding:16px 40px;border-radius:980px;font-weight:800;font-size:17px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.hero-cta.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.38)}
 .hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
 .hero-sub{font-size:13px;color:rgba(255,255,255,.5);margin-top:12px}
 
 /* Guarantee strip */
 .guarantee-strip{background:#DBEAFE;padding:16px 24px;text-align:center;font-size:14px;font-weight:600;color:#1e40af;display:flex;align-items:center;justify-content:center;gap:8px}
 .guarantee-strip svg{flex-shrink:0}
+
+/* Pro app lab */
+.pro-lab{max-width:1080px;margin:0 auto;padding:56px 24px 12px}
+.pro-lab-head{max-width:720px;margin-bottom:22px}
+.pro-lab-eyebrow{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--color-primary);margin-bottom:8px}
+.pro-lab h2{font-size:clamp(24px,4vw,34px);font-weight:900;line-height:1.12;margin:0 0 10px;color:#111827;text-transform:uppercase;letter-spacing:.01em}
+.pro-lab p{font-size:15px;line-height:1.65;color:#5f6b7a;margin:0}
+.pro-account-status{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#F8FAFC;border:1px solid #D8E2EE;border-radius:12px;padding:13px 15px;font-size:13px;font-weight:800;color:#334155;margin-bottom:18px}
+.pro-account-status strong{color:#111827}
+.pro-account-status .status-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 10px;background:#E0F2FE;color:#075985;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.pro-account-status.is-pro{background:#ECFDF5;border-color:#A7F3D0;color:#065F46}
+.pro-account-status.is-free{background:#FFF7ED;border-color:#FDBA74;color:#9A3412}
+.pro-lab-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:stretch}
+.pro-lab-card{border:1px solid #D8E2EE;border-radius:14px;background:#fff;padding:22px;box-shadow:0 10px 28px rgba(15,23,42,.06)}
+.pro-lab-card h3{font-size:18px;line-height:1.25;margin:0 0 8px;color:#111827;font-weight:900}
+.pro-lab-card ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:9px}
+.pro-lab-card li{font-size:13px;line-height:1.45;color:#475569;display:flex;gap:9px}
+.pro-lab-card li::before{content:"";width:7px;height:7px;border-radius:50%;background:#007AFF;flex-shrink:0;margin-top:6px}
+.pro-lab-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.pro-lab-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 16px;border-radius:9px;font-size:13px;font-weight:900;text-decoration:none;border:1px solid #D8E2EE;color:#111827;background:#fff}
+.pro-lab-actions a.primary{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.pro-lab-small{font-size:12px;line-height:1.55;color:#64748B;margin-top:14px}
 
 /* Pricing cards */
 .pricing-section{max-width:880px;margin:0 auto;padding:80px 24px}
@@ -107,6 +131,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 /* Responsive */
 @media(max-width:768px){
   .pro-hero{padding:80px 20px 64px}
+  .pro-lab-grid{grid-template-columns:1fr}
+  .pro-account-status{align-items:flex-start;flex-direction:column}
   .pricing-grid{grid-template-columns:1fr;gap:20px}
   .p-card{padding:32px 24px}
   .testimonial-grid{grid-template-columns:1fr;gap:16px}
@@ -154,10 +180,13 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 <!-- Hero -->
 <section class="pro-hero">
   <span class="badge">AFROTOOLS PRO</span>
-  <h1>Upgrade to AfroTools Pro<br><span>$5/month</span></h1>
-  <p>Unlimited AI Advisor, clean PDF exports, cloud history, API access, and more. Built for African professionals who need more.</p>
-  <a href="#pricing" class="hero-cta">Start 7-Day Free Trial</a>
-  <div class="hero-sub">No credit card required to start. Cancel anytime.</div>
+  <h1>Open AfroTools Pro<br><span>Control Workspace</span></h1>
+  <p>The real Pro app entry is the shared control dashboard. Start work there, then open Payroll, Tax, Books, HR, Trade, Legal, Grants, Creator, Stream, Property, Vault, Team, or Settings.</p>
+  <div class="hero-actions">
+    <a href="/pro/workspace/" class="hero-cta">Open Pro Workspace</a>
+    <a href="/pro/apps/" class="hero-cta secondary">Browse Pro Apps</a>
+  </div>
+  <div class="hero-sub">Pricing remains below. The operations console starts at /pro/workspace/.</div>
 </section>
 
 <!-- Money-back guarantee -->
@@ -165,6 +194,46 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#007AFF"/><path d="M6 10l3 3 5-5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
   30-day money-back guarantee — no questions asked
 </div>
+
+<!-- Pro App Lab -->
+<section class="pro-lab" aria-labelledby="pro-lab-title">
+  <div class="pro-lab-head">
+    <div class="pro-lab-eyebrow">Pro app lab</div>
+    <h2 id="pro-lab-title">Pro operating systems lab</h2>
+    <p>Use the Pro Workspace as the start point for all app work. The directory, vault, team, and settings routes are shared control surfaces, while pricing and plan details remain on this page.</p>
+  </div>
+  <div class="pro-account-status" id="pro-account-status">
+    <span>Checking your Pro access...</span>
+    <span class="status-pill">Checking</span>
+  </div>
+  <div class="pro-lab-grid">
+    <article class="pro-lab-card">
+      <h3>AfroPayroll Pro workspace</h3>
+      <p>Built for accountants, small employers, clinics, schools, NGOs, and multi-country operators who need payroll workflow, not just one calculator.</p>
+      <ul>
+        <li>Saved payroll runs with browser history and account sync.</li>
+        <li>Payslip packets, statutory draft CSVs, branded handoff notes, and review warnings.</li>
+        <li>Approval workflow, role invites, cloud audit events, and run dashboard states.</li>
+        <li>Country-pack confidence for Nigeria, Kenya, Ghana, South Africa, and next-pack markets.</li>
+      </ul>
+      <div class="pro-lab-actions">
+        <a class="primary" href="/pro/workspace/">Open Pro Workspace</a>
+        <a href="/pro/apps/">Browse Pro Apps</a>
+        <a href="/pro/vault/">Open Pro Vault</a>
+        <a href="/pro/team/">Team</a>
+        <a href="/pro/settings/">Settings</a>
+        <a href="/pro/apps/daily-os/">Explore Daily OS Shells</a>
+        <a href="/tools/afropayroll-os/workspace.html">Open AfroPayroll Pro</a>
+        <a href="/tools/payslip-generator/">Start from Payslip Tool</a>
+      </div>
+    </article>
+    <aside class="pro-lab-card">
+      <h3>New Pro direction</h3>
+      <p>The next paid layer is not just compliance. It is daily-life software: saved records, reminders, exports, portals, WhatsApp templates, team handoff, and affordable vertical workflows.</p>
+      <div class="pro-lab-small">AfroSeller, AfroEvents, and AfroBeauty are the first three daily OS shells to deepen because their value can be felt in one working day.</div>
+    </aside>
+  </div>
+</section>
 
 <!-- Pricing Cards -->
 <section class="pricing-section" id="pricing">
@@ -194,7 +263,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         <li>100 API calls/day</li>
         <li>Email support</li>
       </ul>
-      <a href="/pricing/" class="card-cta cta-monthly" id="btn-monthly" role="button">Start Free Trial</a>
+      <a href="/auth/?mode=signup&amp;intent=pro-trial&amp;next=/pro/" class="card-cta cta-monthly" id="btn-monthly" role="button">Start Free Trial</a>
     </div>
     <!-- Annual -->
     <div class="p-card featured">
@@ -209,7 +278,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
         <li>100 API calls/day</li>
         <li>Priority email support</li>
       </ul>
-      <a href="/pricing/" class="card-cta cta-annual" id="btn-annual" role="button">Start Free Trial</a>
+      <a href="/auth/?mode=signup&amp;intent=pro-trial&amp;next=/pro/" class="card-cta cta-annual" id="btn-annual" role="button">Start Free Trial</a>
     </div>
   </div>
 </section>
@@ -225,6 +294,7 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       <tr><td class="feat">All Calculators & Tools</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
       <tr><td class="feat">Business Action Plan</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
       <tr><td class="feat">Full AI Business Plan (Executive Summary, SWOT, Market Analysis, Projections)</td><td><span class="cross">&#10007;</span></td><td><strong>Included</strong></td></tr>
+      <tr><td class="feat">AfroPayroll Pro workspace</td><td><span class="cross">&#10007;</span></td><td><strong>Testing access</strong></td></tr>
       <tr><td class="feat">AI Advisor</td><td>3 questions/day</td><td><strong>Unlimited</strong></td></tr>
       <tr><td class="feat">PDF Export</td><td>With watermark</td><td><strong>Clean, no watermark</strong></td></tr>
       <tr><td class="feat">Calculation History</td><td>Last 5</td><td><strong>Unlimited (cloud)</strong></td></tr>
@@ -292,17 +362,50 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 
 <!-- Bottom CTA -->
 <section class="bottom-cta">
-  <h2>Ready to Go Pro?</h2>
-  <p>Join thousands of African professionals using AfroTools Pro every day.</p>
-  <a href="#pricing">Start 7-Day Free Trial</a>
+  <h2>Ready to Start Work?</h2>
+  <p>Open the Pro Workspace first. Pricing and plan details stay available above.</p>
+  <a href="/pro/workspace/">Open Pro Workspace</a>
   <div class="cta-sub">$5/month or $30/year. 30-day money-back guarantee.</div>
 </section>
 
 <afro-footer></afro-footer>
 
 <script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/assets/js/pro-gate.js?v=20260502a"></script>
 <script>
 (function(){
+  var statusEl = document.getElementById('pro-account-status');
+
+  function setStatus(className, message, pill) {
+    if (!statusEl) return;
+    statusEl.className = 'pro-account-status ' + (className || '');
+    statusEl.innerHTML = '<span></span><span class="status-pill"></span>';
+    statusEl.querySelector('span:first-child').textContent = message;
+    statusEl.querySelector('.status-pill').textContent = pill;
+  }
+
+  async function renderProStatus() {
+    if (!statusEl || !window.AfroProGate) return;
+    try {
+      var status = await window.AfroProGate.getStatus({ fresh: true });
+      var profile = status.profile || status.user || {};
+      var email = profile.email || 'this account';
+      if (status.isPro) {
+        var expires = profile.subscription_expires_at ? ' until ' + profile.subscription_expires_at.slice(0, 10) : '';
+        setStatus('is-pro', 'Signed in as ' + email + '. Pro access is active' + expires + '.', 'Pro active');
+      } else if (status.user) {
+        setStatus('is-free', 'Signed in as ' + email + '. This account is not reading as Pro yet.', 'Free');
+      } else {
+        setStatus('is-free', 'Not signed in. The current Pro test account is momohozaveshe@gmail.com.', 'Sign in');
+      }
+    } catch (err) {
+      setStatus('is-free', 'Could not read Pro status yet. Sign in and refresh this page.', 'Check failed');
+    }
+  }
+
+  renderProStatus();
+  window.addEventListener('afro-auth-change', renderProStatus);
+
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -349,14 +452,13 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     }
 
     // Require login to subscribe
-    if (!window.AfroAuth || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
-      alert('Please sign in first to subscribe to Pro.');
-      if (AfroAuth && AfroAuth.showLogin) AfroAuth.showLogin();
+    if (!window.AfroAuth || !window.AfroAuth.isLoggedIn || !window.AfroAuth.isLoggedIn()) {
+      window.location.href = '/auth/?mode=signup&intent=pro-trial&next=/pro/';
       return;
     }
-    var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
+    var token = window.AfroAuth.getSessionToken ? window.AfroAuth.getSessionToken() : null;
     if (!token) {
-      alert('Please sign in first to subscribe to Pro.');
+      window.location.href = '/auth/?mode=signup&intent=pro-trial&next=/pro/';
       return;
     }
 

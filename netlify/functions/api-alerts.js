@@ -17,6 +17,8 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type, x-admin-key',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Content-Type': 'application/json',
+  'Cache-Control': 'private, no-store, max-age=0',
+  'Vary': 'Origin',
 };
 
 function jsonResponse(statusCode, body, extraHeaders = {}) {

@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfroTax Compliance OS | AfroTools Pro</title>
+  <meta name="description" content="AfroTax Compliance OS is a Pro workflow shell for tax calendars, evidence packs, source review, filing checklists, and accountant handoff across African markets.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="afrotax-compliance-os">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="canonical" href="https://afrotools.com/pro/apps/tax-compliance/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=1">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1">
+  <script src="/assets/js/afro-auth.js?v=6"></script>
+  <script src="/assets/js/pro-gate.js?v=20260502a"></script>
+  <style>
+    :root{
+      --at-bg:var(--color-bg,#F8FAFD);
+      --at-surface:#ffffff;
+      --at-soft:#F8FAFC;
+      --at-ink:var(--color-text,#0f172a);
+      --at-muted:var(--color-text-muted,#64748b);
+      --at-subtle:var(--color-text-subtle,#94a3af);
+      --at-line:var(--color-border,#e2e8f0);
+      --at-line-strong:var(--color-border-strong,#cbd5e1);
+      --at-blue:var(--color-primary,#0062CC);
+      --at-blue-soft:var(--color-primary-pale,rgba(0,122,255,.08));
+      --at-gold:var(--color-gold,#F5A623);
+      --at-gold-soft:var(--color-gold-pale,#fff3cd);
+      --at-green:#047857;
+      --at-green-soft:#ECFDF5;
+      --at-amber:#A16207;
+      --at-amber-soft:#FFFBEB;
+      --at-red:#B91C1C;
+      --at-red-soft:#FEF2F2;
+      --at-purple:#6D28D9;
+      --at-purple-soft:#F5F3FF;
+      --at-radius:var(--radius-sm,6px);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--at-bg);color:var(--at-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
+    button,a,input,select{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .tax-shell h1,.tax-shell h2,.tax-shell h3,.tax-shell h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .tax-shell{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr);background:var(--at-bg)}
+    .tax-side{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--at-line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;z-index:10}
+    .tax-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--at-line)}
+    .tax-brand-mark{width:34px;height:34px;border-radius:var(--at-radius);display:flex;align-items:center;justify-content:center;background:var(--at-blue);color:#fff;font-size:12px;font-weight:900}
+    .tax-brand-title{font-size:13px;font-weight:900;line-height:1.15}
+    .tax-brand-meta{font-size:11px;color:var(--at-muted);margin-top:2px}
+    .tax-nav{display:grid;gap:4px}
+    .tax-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;padding:8px 9px;border-radius:var(--at-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .tax-nav a:hover,.tax-nav a:focus-visible{background:var(--at-blue-soft);color:var(--at-blue)}
+    .tax-nav span{font-size:11px;color:var(--at-subtle);font-weight:800}
+    .tax-side-box{border:1px solid var(--at-line);border-radius:var(--at-radius);background:var(--at-soft);padding:10px;display:grid;gap:8px}
+    .tax-side-box strong{font-size:12px;font-weight:900}
+    .tax-side-box p{font-size:11px;line-height:1.45;color:var(--at-muted);margin:0}
+    .tax-side-foot{margin-top:auto;display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--at-line)}
+    .tax-main{min-width:0}
+    .tax-topbar{position:sticky;top:0;z-index:9;min-height:64px;border-bottom:1px solid var(--at-line);background:rgba(248,250,253,.94);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px}
+    .tax-context{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+    .tax-field{display:grid;gap:3px;min-width:220px}
+    .tax-label{font-size:11px;font-weight:900;color:var(--at-muted)}
+    .tax-select{height:36px;border:1px solid var(--at-line-strong);border-radius:var(--at-radius);background:#fff;color:var(--at-ink);padding:0 10px;font-size:13px;font-weight:800}
+    .tax-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .tax-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;border:1px solid var(--at-line-strong);border-radius:var(--at-radius);background:#fff;color:var(--at-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1}
+    .tax-btn:hover{border-color:var(--at-blue);color:var(--at-blue);background:var(--at-blue-soft)}
+    .tax-btn.primary{background:var(--at-blue);border-color:var(--at-blue);color:#fff}
+    .tax-btn.primary:hover{background:#004BA0;color:#fff}
+    .tax-btn.warn{border-color:#FDE68A;background:var(--at-amber-soft);color:#78350F}
+    .tax-btn:disabled{opacity:.58;cursor:not-allowed}
+    .tax-content{padding:18px;max-width:1480px;margin:0 auto}
+    .tax-command-grid{display:grid;grid-template-columns:minmax(0,1.5fr) 380px;gap:12px;margin-bottom:12px}
+    .tax-command,.tax-panel,.tax-card,.tax-metric,.tax-row,.tax-lane,.tax-deadline,.tax-pack,.tax-source,.tax-export{background:var(--at-surface);border:1px solid var(--at-line);border-radius:var(--at-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .tax-command{padding:16px;display:grid;gap:12px}
+    .tax-kicker{font-size:11px;font-weight:900;color:var(--at-blue);margin-bottom:4px}
+    .tax-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .tax-title{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900;color:var(--at-ink)}
+    .tax-subtitle{font-size:13px;line-height:1.55;color:var(--at-muted);max-width:820px;margin:0}
+    .tax-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--at-line);background:var(--at-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap}
+    .tax-pill.ready,.tax-pill.exported{background:var(--at-green-soft);border-color:#A7F3D0;color:#065F46}
+    .tax-pill.collecting,.tax-pill.upcoming{background:var(--at-blue-soft);border-color:#BFDBFE;color:#1E40AF}
+    .tax-pill.review,.tax-pill.expired,.tax-pill.warning{background:var(--at-amber-soft);border-color:#FDE68A;color:#92400E}
+    .tax-pill.not-started,.tax-pill.missing{background:var(--at-red-soft);border-color:#FECACA;color:#991B1B}
+    .tax-pill.shell{background:var(--at-purple-soft);border-color:#DDD6FE;color:#5B21B6}
+    .tax-attention-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .tax-attention{border:1px solid var(--at-line);border-radius:var(--at-radius);background:var(--at-soft);padding:10px;min-height:80px}
+    .tax-attention strong{display:block;font-size:20px;line-height:1;font-weight:900}
+    .tax-attention span{display:block;font-size:11px;font-weight:800;color:var(--at-muted);margin-top:6px}
+    .tax-guard{padding:14px;display:grid;gap:10px}
+    .tax-guard h2{font-size:16px;margin:0;font-weight:900}
+    .tax-guard p{font-size:12px;line-height:1.5;color:#78350F;margin:0}
+    .tax-guard{background:var(--at-amber-soft);border-color:#FDE68A;color:#78350F}
+    .tax-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .tax-metric{padding:12px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
+    .tax-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}
+    .tax-metric span{display:block;font-size:11px;color:var(--at-muted);font-weight:900;margin-top:7px}
+    .tax-metric small{display:block;font-size:11px;color:var(--at-subtle);line-height:1.35;margin-top:4px}
+    .tax-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .tax-panel{overflow:hidden;margin-bottom:12px}
+    .tax-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--at-line);background:#fff}
+    .tax-panel-body{padding:12px 13px}
+    .tax-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
+    .tax-note{font-size:12px;line-height:1.45;color:var(--at-muted);margin:3px 0 0;max-width:760px}
+    .tax-lane-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .tax-lane{padding:12px;display:grid;gap:9px;min-height:198px}
+    .tax-lane-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .tax-lane h3{font-size:15px;line-height:1.2;margin:0;font-weight:900}
+    .tax-lane-meta{font-size:11px;color:var(--at-muted);font-weight:800;margin-top:3px}
+    .tax-lane p{font-size:12px;line-height:1.45;color:var(--at-muted);margin:0}
+    .tax-state-select{width:100%;height:34px;border:1px solid var(--at-line-strong);border-radius:var(--at-radius);background:#fff;padding:0 8px;font-size:12px;font-weight:800}
+    .tax-calendar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .tax-deadline{padding:11px;display:grid;gap:8px;min-height:132px}
+    .tax-deadline h3{font-size:14px;line-height:1.2;margin:0;font-weight:900}
+    .tax-deadline p{font-size:12px;line-height:1.45;color:var(--at-muted);margin:0}
+    .tax-date{font-family:var(--font-mono,"JetBrains Mono",monospace);font-size:13px;font-weight:900;color:var(--at-ink)}
+    .tax-list{display:grid;gap:8px}
+    .tax-row,.tax-pack,.tax-source,.tax-export{padding:10px 11px}
+    .tax-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .tax-row-title{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .tax-row-meta{font-size:11px;color:var(--at-muted);line-height:1.42;margin-top:3px}
+    .tax-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .tax-checklist{display:grid;gap:8px}
+    .tax-check{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:8px;align-items:start;padding:10px;border:1px solid var(--at-line);border-radius:var(--at-radius);background:#fff}
+    .tax-check input{width:16px;height:16px;margin-top:1px}
+    .tax-check strong{display:block;font-size:13px}
+    .tax-check span{display:block;font-size:11px;color:var(--at-muted);line-height:1.42;margin-top:2px}
+    .tax-pack-grid,.tax-source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .tax-pack h3,.tax-source h3,.tax-export h3{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .tax-pack p,.tax-source p,.tax-export p{font-size:11px;line-height:1.42;color:var(--at-muted);margin:4px 0 0}
+    .tax-tool-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+    .tax-tool{display:grid;gap:4px;border:1px solid var(--at-line);border-radius:var(--at-radius);background:#fff;padding:10px;text-decoration:none;min-height:74px}
+    .tax-tool strong{font-size:12px;font-weight:900}
+    .tax-tool span{font-size:11px;color:var(--at-muted);line-height:1.35}
+    .tax-tool:hover{border-color:var(--at-blue);background:var(--at-blue-soft)}
+    .tax-empty{border:1px dashed var(--at-line-strong);border-radius:var(--at-radius);padding:14px;background:#fff;color:var(--at-muted);font-size:12px;line-height:1.5;text-align:center}
+    .tax-note-box{border:1px solid #FDE68A;background:var(--at-amber-soft);color:#78350F;border-radius:var(--at-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    .tax-spaced{margin-top:10px}
+    @media(max-width:1280px){
+      .tax-lane-grid,.tax-calendar{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tax-tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .tax-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media(max-width:1040px){
+      .tax-shell{grid-template-columns:1fr}
+      .tax-side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--at-line)}
+      .tax-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .tax-layout,.tax-command-grid{grid-template-columns:1fr}
+      .tax-topbar{position:relative;align-items:flex-start;flex-direction:column}
+      .tax-actions{justify-content:flex-start}
+    }
+    @media(max-width:760px){
+      .tax-content{padding:12px}
+      .tax-title{font-size:24px}
+      .tax-nav,.tax-lane-grid,.tax-calendar,.tax-metrics,.tax-attention-grid,.tax-tool-grid,.tax-pack-grid,.tax-source-grid{grid-template-columns:1fr}
+      .tax-field{min-width:0;width:100%}
+      .tax-row{grid-template-columns:1fr}
+      .tax-row-actions{justify-content:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <main class="tax-shell pro-gated-content">
+    <aside class="tax-side" aria-label="AfroTax navigation">
+      <div class="tax-brand">
+        <div class="tax-brand-mark" aria-hidden="true">TC</div>
+        <div>
+          <div class="tax-brand-title">AfroTax Compliance OS</div>
+          <div class="tax-brand-meta">Pro app shell</div>
+        </div>
+      </div>
+      <nav class="tax-nav" aria-label="Tax OS sections">
+        <a href="#overview">Overview <span>00</span></a>
+        <a href="#calendar">Calendar <span id="navDeadlineCount">0</span></a>
+        <a href="#countries">Country packs <span>08</span></a>
+        <a href="#queue">Queue <span id="navQueueCount">0</span></a>
+        <a href="#evidence">Evidence <span id="navPackCount">0</span></a>
+        <a href="/pro/workspace/">Pro control <span>Back</span></a>
+        <a href="/pro/apps/">Browse apps <span>Index</span></a>
+        <a href="/dashboard/">Account <span>Acct</span></a>
+      </nav>
+      <div class="tax-side-box">
+        <strong>Honest boundary</strong>
+        <p>This shell prepares checklists and handoff packets only. It does not file returns, remit tax, move salary funds, or certify compliance.</p>
+      </div>
+      <div class="tax-side-foot">
+        <a class="tax-btn" href="/pro/apps/">Browse Pro Apps</a>
+        <a class="tax-btn" href="/dashboard/">Account</a>
+        <a class="tax-btn primary" href="/tools/afropayroll-os/workspace.html">Open AfroPayroll</a>
+        <a class="tax-btn" href="/salary-tax/">Salary tax tools</a>
+      </div>
+    </aside>
+
+    <section class="tax-main" aria-label="AfroTax Compliance OS dashboard">
+      <header class="tax-topbar">
+        <div class="tax-context">
+          <div class="tax-field">
+            <label class="tax-label" for="clientSelect">Client or company</label>
+            <select class="tax-select" id="clientSelect">
+              <option value="local-demo">Local demo company</option>
+              <option value="accountant-book">Accountant book placeholder</option>
+              <option value="payroll-client">Payroll client placeholder</option>
+            </select>
+          </div>
+          <div class="tax-field">
+            <label class="tax-label" for="countrySelect">Country lane</label>
+            <select class="tax-select" id="countrySelect"></select>
+          </div>
+          <div class="tax-field">
+            <label class="tax-label" for="periodSelect">Compliance period</label>
+            <select class="tax-select" id="periodSelect">
+              <option value="2026-05">May 2026</option>
+              <option value="2026-06">June 2026</option>
+              <option value="2026-Q2">Q2 2026</option>
+              <option value="2026-YTD">2026 year to date</option>
+            </select>
+          </div>
+        </div>
+        <div class="tax-actions">
+          <a class="tax-btn" href="/pro/workspace/">Pro workspace</a>
+          <a class="tax-btn" href="/pro/apps/">Browse apps</a>
+          <a class="tax-btn" href="/dashboard/">Account</a>
+          <button class="tax-btn" type="button" id="refreshBtn">Refresh</button>
+          <button class="tax-btn warn" type="button" id="resetBtn">Reset local demo</button>
+          <button class="tax-btn primary" type="button" id="exportBtn">Prepare export packet</button>
+        </div>
+      </header>
+
+      <div class="tax-content">
+        <section class="tax-command-grid" id="overview" aria-label="Tax command center">
+          <article class="tax-command">
+            <div class="tax-title-row">
+              <div>
+                <div class="tax-kicker">What needs attention</div>
+                <h1 class="tax-title">AfroTax Compliance OS</h1>
+                <p class="tax-subtitle">A Pro workflow shell for tax calendars, source review, evidence packs, filing checklists, and accountant handoff across African markets. It is workflow software, not a statutory filing engine.</p>
+              </div>
+              <span class="tax-pill shell" id="modePill">Local shell</span>
+            </div>
+            <div class="tax-attention-grid">
+              <div class="tax-attention"><strong id="metricMissing">0</strong><span>Missing payroll data</span></div>
+              <div class="tax-attention"><strong id="metricExpired">0</strong><span>Expired source reviews</span></div>
+              <div class="tax-attention"><strong id="metricUpcoming">0</strong><span>Upcoming deadlines</span></div>
+              <div class="tax-attention"><strong id="metricWarnings">0</strong><span>Unresolved warnings</span></div>
+            </div>
+          </article>
+          <article class="tax-guard">
+            <div>
+              <div class="tax-kicker">Compliance boundary</div>
+              <h2>Review packet only</h2>
+            </div>
+            <p>AfroTax can organize draft data, evidence, review notes, and export packets. A qualified accountant or tax practitioner must confirm local obligations before filing or payment.</p>
+            <div class="tax-actions">
+              <a class="tax-btn" href="/tools/vat-calculator/">VAT calculator</a>
+              <a class="tax-btn" href="/tools/social-security/">Social security</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="tax-metrics" aria-label="Tax OS metrics">
+          <div class="tax-metric"><strong id="metricCountries">8</strong><span>Country lanes</span><small>Starter pack list</small></div>
+          <div class="tax-metric"><strong id="metricReady">0</strong><span>Ready lanes</span><small>Ready for accountant or exported</small></div>
+          <div class="tax-metric"><strong id="metricChecklist">0/0</strong><span>Checklist</span><small>Local state only</small></div>
+          <div class="tax-metric"><strong id="metricPackets">0</strong><span>Export packets</span><small>Browser demo packets</small></div>
+          <div class="tax-metric"><strong id="metricLocal">Saved</strong><span>Storage</span><small>localStorage only</small></div>
+        </section>
+
+        <div class="tax-layout">
+          <div>
+            <section class="tax-panel" id="calendar" aria-labelledby="calendarTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Tax calendar</div>
+                  <h2 class="tax-h2" id="calendarTitle">Upcoming compliance calendar</h2>
+                  <p class="tax-note">Demo deadlines are placeholders for workflow design. They should be replaced by verified country calendar records before production use.</p>
+                </div>
+                <span class="tax-pill upcoming" id="deadlineSummary">0 upcoming</span>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-calendar" id="calendarGrid"></div>
+              </div>
+            </section>
+
+            <section class="tax-panel" id="countries" aria-labelledby="countryTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Country packs</div>
+                  <h2 class="tax-h2" id="countryTitle">Starter country lanes</h2>
+                  <p class="tax-note">Each lane tracks workflow state, evidence readiness, and source-review status without claiming filing readiness.</p>
+                </div>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-lane-grid" id="countryGrid"></div>
+              </div>
+            </section>
+
+            <section class="tax-panel" id="evidence" aria-labelledby="evidenceTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Evidence packs</div>
+                  <h2 class="tax-h2" id="evidenceTitle">Accountant handoff evidence</h2>
+                  <p class="tax-note">Evidence packs are draft folders for review, not confirmations that obligations have been met.</p>
+                </div>
+                <button class="tax-btn" type="button" id="addEvidenceBtn">Add demo evidence</button>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-pack-grid" id="evidenceGrid"></div>
+              </div>
+            </section>
+
+            <section class="tax-panel" aria-labelledby="toolsTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Linked tools</div>
+                  <h2 class="tax-h2" id="toolsTitle">Existing tax and payroll workbenches</h2>
+                  <p class="tax-note">These tools remain separate. AfroTax links to them as source work surfaces.</p>
+                </div>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-tool-grid">
+                  <a class="tax-tool" href="/salary-tax/"><strong>Salary tax</strong><span>Country salary and PAYE tools.</span></a>
+                  <a class="tax-tool" href="/tools/vat-calculator/"><strong>VAT calculator</strong><span>VAT estimate work surface.</span></a>
+                  <a class="tax-tool" href="/tools/social-security/"><strong>Social security</strong><span>Contribution reference workflow.</span></a>
+                  <a class="tax-tool" href="/tools/minimum-wage/"><strong>Minimum wage</strong><span>Wage-floor checks for payroll review.</span></a>
+                  <a class="tax-tool" href="/tools/afropayroll-os/workspace.html"><strong>AfroPayroll</strong><span>Payroll run data and handoff packets.</span></a>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="tax-panel" id="queue" aria-labelledby="queueTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Deadline queue</div>
+                  <h2 class="tax-h2" id="queueTitle">Needs attention</h2>
+                  <p class="tax-note">Includes missing payroll data, source review expiry, upcoming deadlines, and unresolved warnings.</p>
+                </div>
+                <span class="tax-pill warning" id="queueCount">0 open</span>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-list" id="queueList"></div>
+              </div>
+            </section>
+
+            <section class="tax-panel" aria-labelledby="checklistTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Filing checklist</div>
+                  <h2 class="tax-h2" id="checklistTitle">Draft review checklist</h2>
+                  <p class="tax-note">Checklist progress is saved locally for this demo shell.</p>
+                </div>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-checklist" id="checklist"></div>
+              </div>
+            </section>
+
+            <section class="tax-panel" aria-labelledby="sourceTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Source review</div>
+                  <h2 class="tax-h2" id="sourceTitle">Review status</h2>
+                  <p class="tax-note">Source dates are demo metadata until backed by verified source tables.</p>
+                </div>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-source-grid" id="sourceGrid"></div>
+              </div>
+            </section>
+
+            <section class="tax-panel" aria-labelledby="exportTitle">
+              <div class="tax-panel-head">
+                <div>
+                  <div class="tax-kicker">Export packet area</div>
+                  <h2 class="tax-h2" id="exportTitle">Draft export packets</h2>
+                  <p class="tax-note">Generated records are demo packet manifests stored in localStorage only.</p>
+                </div>
+              </div>
+              <div class="tax-panel-body">
+                <div class="tax-list" id="exportList"></div>
+                <div class="tax-note-box tax-spaced">Exports here are checklists and evidence summaries. They do not submit, file, pay, or certify anything.</div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var STORAGE_KEY = "afrotax_compliance_os_demo_v1";
+    var PAYROLL_SAVES_KEY = "afropayroll_pro_saved_runs";
+    var PAYROLL_DRAFT_KEY = "afropayroll_pro_workspace_preview";
+    var WORKFLOW_STATES = ["not started", "collecting data", "needs review", "ready for accountant", "exported"];
+
+    var countries = [
+      { id: "ng", name: "Nigeria", authority: "FIRS and state tax authorities", currency: "NGN", deadline: "2026-05-21", pack: "PAYE, VAT, WHT", source: "expired", warning: "Payroll run needed" },
+      { id: "ke", name: "Kenya", authority: "KRA", currency: "KES", deadline: "2026-05-20", pack: "PAYE, VAT, SHIF/NSSF", source: "valid", warning: "Upcoming deadline" },
+      { id: "gh", name: "Ghana", authority: "GRA", currency: "GHS", deadline: "2026-05-15", pack: "PAYE, VAT, SSNIT", source: "review due", warning: "Source review due" },
+      { id: "za", name: "South Africa", authority: "SARS", currency: "ZAR", deadline: "2026-05-07", pack: "PAYE, VAT, UIF", source: "valid", warning: "VAT support shell" },
+      { id: "rw", name: "Rwanda", authority: "RRA", currency: "RWF", deadline: "2026-05-15", pack: "PAYE, VAT, RSSB", source: "expired", warning: "Source review expired" },
+      { id: "sn", name: "Senegal", authority: "DGID", currency: "XOF", deadline: "2026-05-15", pack: "Payroll tax, VAT, CSS/IPRES", source: "review due", warning: "French pack review needed" },
+      { id: "cm", name: "Cameroon", authority: "DGI", currency: "XAF", deadline: "2026-05-15", pack: "PAYE, VAT, CNPS", source: "expired", warning: "Bilingual source review needed" },
+      { id: "eg", name: "Egypt", authority: "ETA", currency: "EGP", deadline: "2026-05-31", pack: "Salary tax, VAT, social insurance", source: "valid", warning: "Arabic source handoff needed" }
+    ];
+
+    var checklistItems = [
+      { id: "payroll", title: "Payroll data collected", meta: "Run totals, employee rows, PAYE estimates, and contribution notes." },
+      { id: "vat", title: "VAT inputs reviewed", meta: "Sales, purchases, exempt lines, and source documents gathered." },
+      { id: "ss", title: "Social contribution checks prepared", meta: "Employer and employee contribution assumptions documented." },
+      { id: "sources", title: "Source dates reviewed", meta: "Authority source links, review dates, and reviewer notes logged." },
+      { id: "warnings", title: "Warnings resolved or assigned", meta: "Open issues are either fixed or sent to accountant review." },
+      { id: "export", title: "Accountant handoff packet prepared", meta: "Draft packet created for review outside AfroTax." }
+    ];
+
+    var els = {};
+
+    function byId(id) {
+      return document.getElementById(id);
+    }
+
+    function create(tag, className, content) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (content !== undefined && content !== null) node.textContent = String(content);
+      return node;
+    }
+
+    function clear(node) {
+      if (!node) return;
+      while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function readJson(key, fallback) {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (err) {
+        return fallback;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function text(value, fallback) {
+      value = value === undefined || value === null ? "" : String(value);
+      return value.trim() || fallback || "";
+    }
+
+    function asArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function todayIso() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function daysUntil(dateValue) {
+      var start = Date.parse(todayIso() + "T00:00:00Z");
+      var end = Date.parse(dateValue + "T00:00:00Z");
+      if (!Number.isFinite(end)) return 999;
+      return Math.round((end - start) / 86400000);
+    }
+
+    function dateLabel(value) {
+      var date = new Date(value + "T00:00:00");
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+    }
+
+    function stampLabel(value) {
+      if (!value) return "Not generated";
+      var date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString(undefined, { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function classForState(value) {
+      var stateValue = text(value, "not started");
+      if (stateValue === "not started") return "not-started";
+      if (stateValue === "collecting data") return "collecting";
+      if (stateValue === "needs review") return "review";
+      if (stateValue === "ready for accountant") return "ready";
+      if (stateValue === "exported") return "exported";
+      return "";
+    }
+
+    function classForSource(value) {
+      value = text(value, "").toLowerCase();
+      if (value === "valid") return "ready";
+      if (value === "review due") return "warning";
+      return "expired";
+    }
+
+    function pill(label, tone) {
+      return create("span", "tax-pill " + (tone || ""), label);
+    }
+
+    function defaultState() {
+      var laneState = {};
+      countries.forEach(function (country, index) {
+        laneState[country.id] = index < 2 ? "collecting data" : index === 2 ? "needs review" : "not started";
+      });
+      return {
+        client: "local-demo",
+        country: "ng",
+        period: "2026-05",
+        lanes: laneState,
+        checklist: {},
+        evidence: [
+          { id: "payroll-summary", title: "Payroll summary", status: "missing", note: "Attach run totals from AfroPayroll." },
+          { id: "source-log", title: "Source log", status: "needs review", note: "Authority links and review dates need owner sign-off." },
+          { id: "vat-workpaper", title: "VAT workpaper", status: "not started", note: "Draft VAT input and output schedule." },
+          { id: "accountant-note", title: "Accountant note", status: "not started", note: "Prepare assumptions and unresolved questions." }
+        ],
+        exports: []
+      };
+    }
+
+    var state = Object.assign(defaultState(), readJson(STORAGE_KEY, {}));
+    state.lanes = Object.assign(defaultState().lanes, state.lanes || {});
+    state.checklist = Object.assign({}, state.checklist || {});
+    state.evidence = asArray(state.evidence).length ? state.evidence : defaultState().evidence;
+    state.exports = asArray(state.exports);
+
+    function payrollSignals() {
+      var saves = asArray(readJson(PAYROLL_SAVES_KEY, []));
+      var draft = readJson(PAYROLL_DRAFT_KEY, null);
+      var rows = 0;
+      saves.forEach(function (run) {
+        rows += asArray(run && run.rows).length;
+      });
+      if (draft && asArray(draft.rows).length) rows += asArray(draft.rows).length;
+      return {
+        runs: saves.length + (draft ? 1 : 0),
+        rows: rows,
+        hasData: !!(rows || saves.length || draft)
+      };
+    }
+
+    function sourceExpiredCount() {
+      return countries.filter(function (country) {
+        return country.source === "expired";
+      }).length;
+    }
+
+    function upcomingDeadlines() {
+      return countries.filter(function (country) {
+        var days = daysUntil(country.deadline);
+        return days >= 0 && days <= 30;
+      });
+    }
+
+    function unresolvedWarnings() {
+      return countries.filter(function (country) {
+        var lane = state.lanes[country.id];
+        return lane === "not started" || lane === "needs review" || country.source !== "valid";
+      }).length;
+    }
+
+    function missingPayrollCount() {
+      return payrollSignals().hasData ? 0 : 1;
+    }
+
+    function readyCount() {
+      return countries.filter(function (country) {
+        return state.lanes[country.id] === "ready for accountant" || state.lanes[country.id] === "exported";
+      }).length;
+    }
+
+    function checklistDoneCount() {
+      return checklistItems.filter(function (item) {
+        return !!state.checklist[item.id];
+      }).length;
+    }
+
+    function bindElements() {
+      [
+        "clientSelect", "countrySelect", "periodSelect", "refreshBtn", "resetBtn", "exportBtn", "addEvidenceBtn",
+        "metricMissing", "metricExpired", "metricUpcoming", "metricWarnings", "metricCountries", "metricReady",
+        "metricChecklist", "metricPackets", "metricLocal", "deadlineSummary", "calendarGrid", "countryGrid",
+        "queueList", "queueCount", "checklist", "sourceGrid", "evidenceGrid", "exportList", "navDeadlineCount",
+        "navQueueCount", "navPackCount", "modePill"
+      ].forEach(function (id) {
+        els[id] = byId(id);
+      });
+    }
+
+    function renderSelectors() {
+      els.clientSelect.value = state.client || "local-demo";
+      els.periodSelect.value = state.period || "2026-05";
+      clear(els.countrySelect);
+      countries.forEach(function (country) {
+        var option = create("option", "", country.name);
+        option.value = country.id;
+        els.countrySelect.appendChild(option);
+      });
+      els.countrySelect.value = state.country || countries[0].id;
+    }
+
+    function renderMetrics() {
+      var upcoming = upcomingDeadlines().length;
+      var queueTotal = missingPayrollCount() + sourceExpiredCount() + upcoming + unresolvedWarnings();
+      els.metricMissing.textContent = String(missingPayrollCount());
+      els.metricExpired.textContent = String(sourceExpiredCount());
+      els.metricUpcoming.textContent = String(upcoming);
+      els.metricWarnings.textContent = String(unresolvedWarnings());
+      els.metricCountries.textContent = String(countries.length);
+      els.metricReady.textContent = String(readyCount());
+      els.metricChecklist.textContent = checklistDoneCount() + "/" + checklistItems.length;
+      els.metricPackets.textContent = String(state.exports.length);
+      els.navDeadlineCount.textContent = String(upcoming);
+      els.navQueueCount.textContent = String(queueTotal);
+      els.navPackCount.textContent = String(state.evidence.length);
+      els.queueCount.textContent = queueTotal + " open";
+      els.deadlineSummary.textContent = upcoming + " upcoming";
+      els.modePill.textContent = "localStorage only";
+    }
+
+    function renderCalendar() {
+      clear(els.calendarGrid);
+      countries.forEach(function (country) {
+        var days = daysUntil(country.deadline);
+        var tone = days < 0 ? "expired" : days <= 14 ? "upcoming" : "collecting";
+        var card = create("article", "tax-deadline");
+        var top = create("div", "tax-lane-head");
+        top.appendChild(create("h3", "", country.name));
+        top.appendChild(pill(days < 0 ? "past" : days + " days", tone));
+        card.appendChild(top);
+        card.appendChild(create("div", "tax-date", dateLabel(country.deadline)));
+        card.appendChild(create("p", "", country.pack + ". Authority: " + country.authority + "."));
+        els.calendarGrid.appendChild(card);
+      });
+    }
+
+    function renderCountries() {
+      clear(els.countryGrid);
+      countries.forEach(function (country) {
+        var laneState = state.lanes[country.id] || "not started";
+        var card = create("article", "tax-lane");
+        var top = create("div", "tax-lane-head");
+        var title = create("div", "");
+        title.appendChild(create("h3", "", country.name));
+        title.appendChild(create("div", "tax-lane-meta", country.currency + " - " + country.authority));
+        top.appendChild(title);
+        top.appendChild(pill(laneState, classForState(laneState)));
+        card.appendChild(top);
+        card.appendChild(create("p", "", country.pack + ". " + country.warning + "."));
+        var select = create("select", "tax-state-select");
+        select.setAttribute("data-country-state", country.id);
+        WORKFLOW_STATES.forEach(function (workflowState) {
+          var option = create("option", "", workflowState);
+          option.value = workflowState;
+          select.appendChild(option);
+        });
+        select.value = laneState;
+        card.appendChild(select);
+        card.appendChild(pill("source " + country.source, classForSource(country.source)));
+        els.countryGrid.appendChild(card);
+      });
+      document.querySelectorAll("[data-country-state]").forEach(function (select) {
+        select.addEventListener("change", function () {
+          state.lanes[select.getAttribute("data-country-state")] = select.value;
+          saveState();
+          renderAll();
+        });
+      });
+    }
+
+    function queueItems() {
+      var items = [];
+      if (missingPayrollCount()) {
+        items.push({ title: "Missing payroll data", meta: "Open AfroPayroll and prepare a run before building PAYE evidence.", label: "missing", tone: "missing" });
+      }
+      countries.forEach(function (country) {
+        if (country.source === "expired") {
+          items.push({ title: country.name + " source review expired", meta: "Refresh authority source links before accountant handoff.", label: "source review expired", tone: "expired" });
+        }
+      });
+      upcomingDeadlines().forEach(function (country) {
+        items.push({ title: country.name + " upcoming deadline", meta: dateLabel(country.deadline) + " placeholder deadline. Verify before use.", label: "upcoming deadline", tone: "upcoming" });
+      });
+      countries.forEach(function (country) {
+        if (state.lanes[country.id] === "needs review") {
+          items.push({ title: country.name + " unresolved warning", meta: country.warning, label: "unresolved warning", tone: "warning" });
+        }
+      });
+      return items;
+    }
+
+    function renderQueue() {
+      clear(els.queueList);
+      var items = queueItems();
+      if (!items.length) {
+        els.queueList.appendChild(create("div", "tax-empty", "No open queue items in the local demo state."));
+        return;
+      }
+      items.slice(0, 10).forEach(function (item) {
+        var row = create("article", "tax-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "tax-row-title", item.title));
+        copy.appendChild(create("div", "tax-row-meta", item.meta));
+        row.appendChild(copy);
+        var actions = create("div", "tax-row-actions");
+        actions.appendChild(pill(item.label, item.tone));
+        row.appendChild(actions);
+        els.queueList.appendChild(row);
+      });
+    }
+
+    function renderChecklist() {
+      clear(els.checklist);
+      checklistItems.forEach(function (item) {
+        var row = create("label", "tax-check");
+        var input = create("input", "");
+        input.type = "checkbox";
+        input.checked = !!state.checklist[item.id];
+        input.setAttribute("data-check-id", item.id);
+        var copy = create("span", "");
+        copy.appendChild(create("strong", "", item.title));
+        copy.appendChild(create("span", "", item.meta));
+        row.appendChild(input);
+        row.appendChild(copy);
+        row.appendChild(pill(input.checked ? "done" : "open", input.checked ? "ready" : "not-started"));
+        els.checklist.appendChild(row);
+      });
+      document.querySelectorAll("[data-check-id]").forEach(function (input) {
+        input.addEventListener("change", function () {
+          state.checklist[input.getAttribute("data-check-id")] = input.checked;
+          saveState();
+          renderAll();
+        });
+      });
+    }
+
+    function renderSources() {
+      clear(els.sourceGrid);
+      countries.forEach(function (country) {
+        var card = create("article", "tax-source");
+        var top = create("div", "tax-lane-head");
+        top.appendChild(create("h3", "", country.name));
+        top.appendChild(pill(country.source, classForSource(country.source)));
+        card.appendChild(top);
+        card.appendChild(create("p", "", "Authority: " + country.authority + ". Review status is demo metadata."));
+        els.sourceGrid.appendChild(card);
+      });
+    }
+
+    function renderEvidence() {
+      clear(els.evidenceGrid);
+      state.evidence.forEach(function (item) {
+        var card = create("article", "tax-pack");
+        var top = create("div", "tax-lane-head");
+        top.appendChild(create("h3", "", item.title));
+        top.appendChild(pill(item.status, item.status === "ready" ? "ready" : item.status === "missing" ? "missing" : "warning"));
+        card.appendChild(top);
+        card.appendChild(create("p", "", item.note));
+        els.evidenceGrid.appendChild(card);
+      });
+    }
+
+    function renderExports() {
+      clear(els.exportList);
+      if (!state.exports.length) {
+        els.exportList.appendChild(create("div", "tax-empty", "No export packet manifests generated yet."));
+        return;
+      }
+      state.exports.slice().reverse().forEach(function (packet) {
+        var row = create("article", "tax-export");
+        var top = create("div", "tax-lane-head");
+        top.appendChild(create("h3", "", packet.title));
+        top.appendChild(pill("draft packet", "shell"));
+        row.appendChild(top);
+        row.appendChild(create("p", "", packet.note + " Generated " + stampLabel(packet.createdAt) + "."));
+        els.exportList.appendChild(row);
+      });
+    }
+
+    function addEvidence() {
+      state.evidence.push({
+        id: "evidence-" + Date.now(),
+        title: "Reviewer note " + (state.evidence.length + 1),
+        status: "needs review",
+        note: "Local demo note for accountant review. Replace with a sourced document before production use."
+      });
+      saveState();
+      renderAll();
+    }
+
+    function prepareExportPacket() {
+      var country = countries.filter(function (item) { return item.id === state.country; })[0] || countries[0];
+      state.exports.push({
+        id: "packet-" + Date.now(),
+        title: country.name + " " + state.period + " review packet",
+        createdAt: new Date().toISOString(),
+        note: "Checklist " + checklistDoneCount() + "/" + checklistItems.length + ", lane state " + (state.lanes[country.id] || "not started") + "."
+      });
+      state.lanes[country.id] = "exported";
+      state.checklist.export = true;
+      saveState();
+      renderAll();
+    }
+
+    function resetLocalDemo() {
+      localStorage.removeItem(STORAGE_KEY);
+      state = defaultState();
+      saveState();
+      renderAll();
+    }
+
+    function renderAll() {
+      renderSelectors();
+      renderMetrics();
+      renderCalendar();
+      renderCountries();
+      renderQueue();
+      renderChecklist();
+      renderSources();
+      renderEvidence();
+      renderExports();
+    }
+
+    function boot() {
+      bindElements();
+      renderAll();
+      els.clientSelect.addEventListener("change", function () {
+        state.client = els.clientSelect.value;
+        saveState();
+      });
+      els.countrySelect.addEventListener("change", function () {
+        state.country = els.countrySelect.value;
+        saveState();
+      });
+      els.periodSelect.addEventListener("change", function () {
+        state.period = els.periodSelect.value;
+        saveState();
+      });
+      els.refreshBtn.addEventListener("click", renderAll);
+      els.resetBtn.addEventListener("click", resetLocalDemo);
+      els.exportBtn.addEventListener("click", prepareExportPacket);
+      els.addEvidenceBtn.addEventListener("click", addEvidence);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+  })();
+  </script>
+</body>
+</html>

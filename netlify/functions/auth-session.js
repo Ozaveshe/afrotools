@@ -68,6 +68,70 @@ function jsonResponse(statusCode, body, extraHeaders, multiValueHeaders) {
   return response;
 }
 
+function rawRequestBody(event) {
+  var body = event.body || '';
+  if (event.isBase64Encoded) {
+    try { return Buffer.from(body, 'base64').toString('utf8'); } catch (e) { return ''; }
+  }
+  return body;
+}
+
+function parseRequestBody(event) {
+  var contentType = String((event.headers && (event.headers['content-type'] || event.headers['Content-Type'])) || '').toLowerCase();
+  var raw = rawRequestBody(event);
+  if (contentType.indexOf('application/x-www-form-urlencoded') !== -1 || contentType.indexOf('multipart/form-data') !== -1) {
+    var formBody = {};
+    try {
+      var params = new URLSearchParams(raw);
+      params.forEach(function (value, key) { formBody[key] = value; });
+      return { body: formBody, isForm: true };
+    } catch (e) {
+      return { body: {}, isForm: true, error: 'Invalid form submission' };
+    }
+  }
+  try {
+    return { body: JSON.parse(raw || '{}'), isForm: false };
+  } catch (e) {
+    return { body: {}, isForm: false, error: 'Invalid JSON' };
+  }
+}
+
+function safeRedirectTarget(value, fallback) {
+  var target = String(value || '').trim();
+  if (!target || target.charAt(0) !== '/' || target.indexOf('//') === 0 || target.indexOf('\\') !== -1) {
+    return fallback || '/dashboard/';
+  }
+  return target;
+}
+
+function redirectResponse(location, extraHeaders, multiValueHeaders) {
+  var headers = Object.assign({}, extraHeaders || {}, {
+    Location: location,
+    'Cache-Control': 'no-store',
+  });
+  var response = { statusCode: 303, headers: headers, body: '' };
+  if (multiValueHeaders && Object.keys(multiValueHeaders).length) {
+    response.multiValueHeaders = multiValueHeaders;
+  }
+  return response;
+}
+
+function authErrorResponse(mode, statusCode, message, cors, isForm, next) {
+  if (isForm) {
+    var location = '/auth/?mode=' + encodeURIComponent(mode || 'login') + '&error=' + encodeURIComponent(message || 'Auth failed');
+    if (next) location += '&next=' + encodeURIComponent(safeRedirectTarget(next, '/dashboard/'));
+    return redirectResponse(location, cors);
+  }
+  return jsonResponse(statusCode, { ok: false, error: message }, cors);
+}
+
+function authSuccessResponse(statusCode, body, cors, multiValueHeaders, isForm, next) {
+  if (isForm) {
+    return redirectResponse(safeRedirectTarget(next, '/dashboard/'), cors, multiValueHeaders);
+  }
+  return jsonResponse(statusCode, body, cors, multiValueHeaders);
+}
+
 function sessionCookieHeaders(session) {
   return {
     'Set-Cookie': [
@@ -137,12 +201,14 @@ exports.handler = async function (event) {
 
   // ── LOGIN ──
   if (action === 'login' && event.httpMethod === 'POST') {
-    var body;
-    try { body = JSON.parse(event.body); } catch (e) {
-      return jsonResponse(400, { error: 'Invalid JSON' }, cors);
+    var parsed = parseRequestBody(event);
+    var body = parsed.body;
+    var loginNext = safeRedirectTarget(body.next || body.redirect || '/dashboard/', '/dashboard/');
+    if (parsed.error) {
+      return authErrorResponse('login', 400, parsed.error, cors, parsed.isForm, loginNext);
     }
     if (!body.email || !body.password) {
-      return jsonResponse(400, { error: 'Email and password required' }, cors);
+      return authErrorResponse('login', 400, 'Email and password required', cors, parsed.isForm, loginNext);
     }
 
     var result = await supaFetch('/auth/v1/token?grant_type=password', {
@@ -152,24 +218,26 @@ exports.handler = async function (event) {
 
     if (result.status !== 200 || !result.data.access_token) {
       var errMsg = (result.data && result.data.error_description) || (result.data && result.data.msg) || 'Invalid credentials';
-      return jsonResponse(401, { ok: false, error: errMsg }, cors);
+      return authErrorResponse('login', 401, errMsg, cors, parsed.isForm, loginNext);
     }
 
     var session = result.data;
     var user = buildUser(session.user);
 
     var respHeaders = Object.assign({}, cors);
-    return jsonResponse(200, { ok: true, user: user }, respHeaders, sessionCookieHeaders(session));
+    return authSuccessResponse(200, { ok: true, user: user }, respHeaders, sessionCookieHeaders(session), parsed.isForm, loginNext);
   }
 
   // ── SIGNUP ──
   if (action === 'signup' && event.httpMethod === 'POST') {
-    var body;
-    try { body = JSON.parse(event.body); } catch (e) {
-      return jsonResponse(400, { error: 'Invalid JSON' }, cors);
+    var parsed = parseRequestBody(event);
+    var body = parsed.body;
+    var signupNext = safeRedirectTarget(body.next || body.redirect || '/dashboard/', '/dashboard/');
+    if (parsed.error) {
+      return authErrorResponse('signup', 400, parsed.error, cors, parsed.isForm, signupNext);
     }
     if (!body.email || !body.password || body.password.length < 6) {
-      return jsonResponse(400, { error: 'Email and password (min 6 chars) required' }, cors);
+      return authErrorResponse('signup', 400, 'Email and password (min 6 chars) required', cors, parsed.isForm, signupNext);
     }
 
     var result = await supaFetch('/auth/v1/signup', {
@@ -187,7 +255,7 @@ exports.handler = async function (event) {
 
     if (result.status >= 400 || (result.data && result.data.error)) {
       var errMsg = (result.data && result.data.error_description) || (result.data && result.data.msg) || 'Signup failed';
-      return jsonResponse(result.status, { ok: false, error: errMsg }, cors);
+      return authErrorResponse('signup', result.status, errMsg, cors, parsed.isForm, signupNext);
     }
 
     var session = result.data;
@@ -195,10 +263,13 @@ exports.handler = async function (event) {
 
     if (session.access_token) {
       var respHeaders = Object.assign({}, cors);
-      return jsonResponse(200, { ok: true, user: user }, respHeaders, sessionCookieHeaders(session));
+      return authSuccessResponse(200, { ok: true, user: user }, respHeaders, sessionCookieHeaders(session), parsed.isForm, signupNext);
     }
 
     // If email confirmation required, user is returned but no session
+    if (parsed.isForm) {
+      return redirectResponse('/auth/?mode=login&confirm=email&next=' + encodeURIComponent(signupNext), cors);
+    }
     return jsonResponse(200, { ok: true, user: user, confirmEmail: true }, cors);
   }
 

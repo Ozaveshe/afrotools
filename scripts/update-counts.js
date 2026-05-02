@@ -179,6 +179,7 @@ updateFile('index.html', (content) => {
     .replace(/id="stat-total">[^<]+</, 'id="stat-total">' + stats.en.display.liveToolsPlus + '<')
     .replace(/id="hp-stat-tools">[^<]+</, 'id="hp-stat-tools">' + stats.en.display.liveToolsPlus + '<')
     .replace(/id="home-about-count">[^<]+</, 'id="home-about-count">' + stats.en.display.liveToolsPlus + '<')
+    .replace(/id="cats-browse-count">[^<]+</, 'id="cats-browse-count">' + stats.en.display.liveToolsPlus + '<')
     .replace(/placeholder="Search [^"]+ tools\.\.\."/g, 'placeholder="Search ' + stats.en.display.liveToolsPlus + ' tools..."')
     .replace(/id="cats-heading">[^<]+ Tools\. 54 Countries\./, 'id="cats-heading">' + stats.en.display.liveToolsPlus + ' Tools. 54 Countries.');
 });
@@ -188,8 +189,14 @@ updateFile('all-tools/index.html', (content) => {
     .replace(/id="statLive">[^<]+</, 'id="statLive">' + stats.en.display.liveToolsPlus + '<')
     .replace(/id="statPlanned">[^<]+</, 'id="statPlanned">' + stats.en.display.inDevelopmentTools + '<')
     .replace(/id="statCategories">[^<]+</, 'id="statCategories">' + stats.en.display.categories + '<')
-    .replace(/id="countAll">[^<]+</, 'id="countAll">' + stats.en.display.totalTools + '<')
+    .replace(/id="countAll">[^<]+</, 'id="countAll">' + stats.en.display.liveTools + '<')
     .replace(/id="countLive">[^<]+</, 'id="countLive">' + stats.en.display.liveTools + '<');
+});
+
+updateFile('advertise/index.html', (content) => {
+  return content
+    .replace(/>100\+<\/div>\s*<div style="font-size:0\.72rem;color:#6b7280;font-weight:600;">Live Tools</, '>' + stats.en.display.liveToolsPlus + '</div>\n        <div style="font-size:0.72rem;color:#6b7280;font-weight:600;">Live Tools<')
+    .replace(/>12<\/div>\s*<div style="font-size:0\.72rem;color:#6b7280;font-weight:600;">Tool Categories</, '>' + stats.en.display.categories + '</div>\n        <div style="font-size:0.72rem;color:#6b7280;font-weight:600;">Tool Categories<');
 });
 
 updateFile('tools/index.html', (content) => {

@@ -275,7 +275,7 @@
     {
       id: 'language', label: 'Language & Translation', labelFr: 'Langues & Traduction', labelSw: 'Lugha na Tafsiri', icon: '🗣️',
       desc: 'Yoruba, Swahili, Hausa, Amharic', descFr: 'Yoruba, Swahili, Haoussa, Amharique', descSw: 'Kiyoruba, Kiswahili, Kihausa, Kiamhari',
-      href: '/language/', hrefFr: '/fr/language/', color: '#faf5ff', accent: '#a855f7',
+      href: '/language/', hrefFr: '/fr/language/', hrefSw: '/sw/lugha-na-tafsiri/', color: '#faf5ff', accent: '#a855f7',
       tools: [
         { label: 'Nigerian Pidgin Translator', href: '/tools/pidgin-translator/', emoji: '🗣️', badge: 'LIVE' },
         { label: 'Swahili Translator', href: '/tools/swahili-translator/', emoji: '🌍', badge: 'LIVE' },
@@ -395,7 +395,7 @@
     {
       id: 'engineering', label: 'Engineering', labelFr: 'Ingénierie', labelSw: 'Uhandisi', icon: '🔧',
       desc: 'BOQ, concrete, electrical, rebar, roofing, construction budgets', descFr: 'Métré, béton, électrique, ferraillage', descSw: 'BOQ, zege, umeme, nondo, paa',
-      href: '/engineering/', color: '#f5f5f4', accent: '#78716c',
+      href: '/engineering/', hrefSw: '/sw/ujenzi-na-uhandisi/', color: '#f5f5f4', accent: '#78716c',
       tools: [
         { label: 'BOQ Builder', href: '/tools/boq-builder/', emoji: '📋', badge: 'LIVE' },
         { label: 'Concrete Mix', href: '/tools/concrete-mix/', emoji: '🏗️', badge: 'LIVE' },
@@ -765,7 +765,8 @@
     'religious-cultural': '/sw/dini-na-utamaduni/',
     climate: '/sw/hali-ya-hewa-na-mazingira/',
     energy: '/sw/nishati-na-huduma/',
-    creative: '/sw/ubunifu-na-watayarishi/',
+    engineering: '/sw/ujenzi-na-uhandisi/',
+        creative: '/sw/ubunifu-na-watayarishi/',
     career: '/sw/kazi-na-ajira/',
     afrowork: '/sw/kazi-na-ajira/'
   };
@@ -775,6 +776,21 @@
     'financial', 'document-pdf', 'image-design', 'developer',
     'education', 'health', 'fintech', 'trade',
     'energy', 'small-business', 'legal'
+  ];
+
+  const TOOL_MENU_IDS = [
+    'financial', 'document-pdf', 'ecommerce', 'small-business', 'career', 'developer'
+  ];
+
+  const COUNTRY_LINKS = [
+    { label: 'Nigeria', href: '/nigeria/' },
+    { label: 'Kenya', href: '/kenya/' },
+    { label: 'Ghana', href: '/ghana/' },
+    { label: 'South Africa', href: '/south-africa/' },
+    { label: 'Egypt', href: '/egypt/' },
+    { label: 'Tanzania', href: '/tanzania/' },
+    { label: 'Rwanda', href: '/rwanda/' },
+    { label: 'Senegal', href: '/senegal/' },
   ];
 
   const MARK = `<svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:30px;width:30px;flex-shrink:0">
@@ -793,7 +809,7 @@
       position: sticky;
       top: 0;
       z-index: 500;
-      --nav-shell-height: 60px;
+      --nav-shell-height: 64px;
       --nav-inline-pad: 20px;
       --nav-safe-top: env(safe-area-inset-top, 0px);
       --nav-safe-right: env(safe-area-inset-right, 0px);
@@ -804,7 +820,7 @@
     nav {
       position: relative;
       height: var(--nav-shell-height);
-      background: rgba(248, 250, 253, 0.98);
+      background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
@@ -812,11 +828,11 @@
       padding: 0 max(var(--nav-inline-pad), var(--nav-safe-right)) 0 max(var(--nav-inline-pad), var(--nav-safe-left));
       transition: box-shadow 0.2s;
     }
-    nav.scrolled { box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 24px rgba(0,0,0,0.04); }
+    nav.scrolled { box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
 
     .inner {
       max-width: 1200px; margin: 0 auto; width: 100%;
-      display: flex; align-items: center; gap: 2px;
+      display: flex; align-items: center; gap: 12px;
     }
 
     /* LOGO */
@@ -829,7 +845,7 @@
     .logo-tag { font-size: 0.44rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #9ca3af; display: block; margin-top: 2px; }
 
     /* NAV LINKS */
-    .nav-links { display: flex; align-items: center; list-style: none; flex: 1; gap: 0; overflow: hidden; min-width: 0; }
+    .nav-links { display: flex; align-items: center; justify-content: center; list-style: none; flex: 1; gap: 4px; overflow: hidden; min-width: 0; }
     li { position: relative; }
 
     .lnk {
@@ -855,7 +871,7 @@
       -webkit-backdrop-filter: saturate(180%) blur(20px);
       backdrop-filter: saturate(180%) blur(20px);
       border-bottom: 1px solid rgba(0,0,0,0.07);
-      box-shadow: 0 16px 48px rgba(0,71,227,0.07), 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: 0 18px 42px rgba(15,23,42,0.08);
       opacity: 0; visibility: hidden;
       transform: translateY(-6px);
       transition: opacity 0.16s ease, visibility 0.16s ease, transform 0.16s ease;
@@ -870,20 +886,20 @@
 
     .mega-inner {
       max-width: 1200px; margin: 0 auto;
-      padding: 20px;
+      padding: 22px 20px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
     }
 
     .mega-col {
-      border-radius: 10px; padding: 14px;
-      border: 1.5px solid transparent;
+      border-radius: 12px; padding: 15px;
+      border: 1px solid #edf1f7;
       transition: border-color 0.13s, background 0.13s;
       display: flex; align-items: center; gap: 9px;
       text-decoration: none; cursor: pointer;
     }
-    .mega-col:hover { border-color: var(--col-accent, #0062CC); background: #f0f7ff; }
+    .mega-col:hover { border-color: var(--col-accent, #0062CC); background: #f8fbff; }
 
     .mega-col-icon {
       width: 34px; height: 34px; border-radius: 8px;
@@ -899,9 +915,75 @@
       border-top: 1px solid #f3f4f6;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .mega-footer-note { font-size: 0.68rem; color: #9ca3af; font-weight: 500; }
+    .mega-footer-note { font-size: 0.68rem; color: #64748b; font-weight: 600; }
     .mega-footer-lnk { font-size: 0.72rem; font-weight: 700; color: #0062CC; text-decoration: none; }
     .mega-footer-lnk:hover { text-decoration: underline; }
+
+    .country-search-panel {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(240px, 360px) 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 2px 0 8px;
+    }
+    .country-search-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .country-search-box {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      background: #fff;
+      padding: 0 12px;
+    }
+    .country-search-box:focus-within {
+      border-color: #0062CC;
+      box-shadow: 0 0 0 3px rgba(0,98,204,0.12);
+    }
+    .country-search-input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #111827;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .country-search-input::placeholder { color: #94a3b8; font-weight: 500; }
+    .country-search-results {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      min-height: 0;
+    }
+    .country-search-results:empty { display: none; }
+    .country-search-result {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #edf1f7;
+      color: #1f2937;
+      text-decoration: none;
+      background: #fff;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+    .country-search-result:hover { border-color: #0062CC; color: #0062CC; background: #f8fbff; }
+    .country-search-meta { color: #64748b; font-size: 0.68rem; font-weight: 700; }
 
     /* RIGHT */
     .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
@@ -1009,6 +1091,57 @@
       font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
       color: #9ca3af; padding: 14px 20px 6px;
     }
+    .mob-country-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 0 16px 8px;
+    }
+    .mob-country-link {
+      min-height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      color: #1f2937;
+      background: #fff;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .mob-country-link:hover { border-color: #0062CC; color: #0062CC; background: #f8fbff; }
+    .mob-country-search {
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      margin: 0 16px 10px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid #dbe3ef;
+      background: #fff;
+    }
+    .mob-country-search:focus-within {
+      border-color: #0062CC;
+      box-shadow: 0 0 0 3px rgba(0,98,204,0.12);
+    }
+    .mob-country-search-input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #111827;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .mob-country-results {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 0 16px 8px;
+    }
+    .mob-country-results:empty { display: none; }
+    .mob-country-results .country-search-result { width: 100%; }
     .mob-cat {
       display: flex; align-items: center; gap: 12px;
       padding: 13px 20px; border-bottom: 1px solid #f9fafb;
@@ -1052,7 +1185,7 @@
     @media (max-width: 940px) {
       .nav-links, .pill-54, .cta, .btn-pro { display: none; }
       .lang-switch { display: none; }
-      .btn-login { border: none; padding: 4px 8px; max-width: none; overflow: hidden; font-size: 0.75rem; }
+      .btn-login { display: none; }
       .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; font-size: 0 !important; }
       .btn-login span:first-child { margin-right: 0 !important; }
       .burger { display: flex; }
@@ -1081,7 +1214,12 @@
       transition: all 0.13s; flex-shrink: 0;
     }
     .search-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
+    .search-btn:focus-visible, .lnk:focus-visible, .btn-login:focus-visible, .burger:focus-visible, .lang-btn:focus-visible {
+      outline: 3px solid rgba(0,98,204,0.22);
+      outline-offset: 2px;
+    }
     .search-btn svg { width: 16px; height: 16px; }
+    .search-btn-label { display: none; font-size: 0.79rem; font-weight: 700; }
     .search-kbd {
       font-size: 0.65rem; font-weight: 600; color: #9ca3af;
       margin-left: 4px; background: #f3f4f6; border-radius: 4px;
@@ -1090,6 +1228,7 @@
     }
     @media (min-width: 941px) {
       .search-btn { width: auto; padding: 0 10px; gap: 6px; }
+      .search-btn-label { display: inline; }
       .search-kbd { display: inline; }
     }
 
@@ -1337,7 +1476,7 @@
       var lang = this._getLang();
       var isFr = lang === 'fr';
       var isSw = lang === 'sw';
-      var featured = MEGA_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
+      var featured = TOOL_MENU_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
       var html = featured.map(cat => {
         var href = this._localizedHref(cat, lang);
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
@@ -1354,9 +1493,57 @@
       var allLabel = isSw ? 'Makundi Yote →' : isFr ? 'Toutes les catégories →' : 'All Categories →';
       var allDesc = isSw ? 'Makundi 28 yote' : isFr ? '28 catégories' : 'All 28 categories';
       var allHref = isFr ? '/fr/categories/' : '/categories/';
+      allLabel = isSw ? 'Zana Zote ->' : isFr ? 'Tous les outils ->' : 'All Tools ->';
+      allDesc = isSw ? 'Tafuta na chuja zana zote' : isFr ? 'Rechercher et filtrer tous les outils' : 'Search and filter the full directory';
+      allHref = isSw ? '/sw/zana-zote/' : isFr ? '/fr/all-tools/' : '/all-tools/';
       html += `
         <a href="${allHref}" class="mega-col" style="--col-accent:#0062CC">
           <div class="mega-col-icon" style="background:#EEF4FF">🧭</div>
+          <div>
+            <div class="mega-col-name">${allLabel}</div>
+            <div class="mega-col-desc">${allDesc}</div>
+          </div>
+        </a>`;
+      return html;
+    }
+
+    _countriesHref() {
+      var lang = this._getLang();
+      if (lang === 'fr') return '/fr/countries/';
+      if (lang === 'sw') return '/sw/nchi/';
+      return '/countries/';
+    }
+
+    _countriesContent() {
+      var lang = this._getLang();
+      var isFr = lang === 'fr';
+      var isSw = lang === 'sw';
+      var searchLabel = isSw ? 'Tafuta nchi' : isFr ? 'Rechercher un pays' : 'Country search';
+      var searchPlaceholder = isSw ? 'Tafuta Nigeria, Kenya...' : isFr ? 'Rechercher Nigeria, Kenya...' : 'Search Nigeria, Kenya, Ghana...';
+      var itemDesc = isSw ? 'Zana za nchi' : isFr ? 'Outils par pays' : 'Country tools and tax pages';
+      var html = `
+        <div class="country-search-panel">
+          <div>
+            <label class="country-search-label" for="countrySearchInput">${searchLabel}</label>
+            <div class="country-search-box">
+              <input id="countrySearchInput" class="country-search-input" type="search" placeholder="${searchPlaceholder}" autocomplete="off" aria-label="${searchLabel}">
+            </div>
+          </div>
+          <div class="country-search-results" id="countrySearchResults" role="listbox" aria-label="${searchLabel}"></div>
+        </div>`;
+      html += COUNTRY_LINKS.map(country => `
+        <a href="${this._countryHref(country.label)}" class="mega-col" style="--col-accent:#0062CC">
+          <div class="mega-col-icon" style="background:#EEF4FF">${country.label.charAt(0)}</div>
+          <div>
+            <div class="mega-col-name">${country.label}</div>
+            <div class="mega-col-desc">${itemDesc}</div>
+          </div>
+        </a>`).join('');
+      var allLabel = isSw ? 'Nchi zote 54 ->' : isFr ? 'Les 54 pays ->' : 'All 54 countries ->';
+      var allDesc = isSw ? 'Chagua nchi yako' : isFr ? 'Choisissez votre pays' : 'Choose your country';
+      html += `
+        <a href="${this._countriesHref()}" class="mega-col" style="--col-accent:#0062CC">
+          <div class="mega-col-icon" style="background:#EEF4FF">54</div>
           <div>
             <div class="mega-col-name">${allLabel}</div>
             <div class="mega-col-desc">${allDesc}</div>
@@ -1369,7 +1556,7 @@
       var lang = this._getLang();
       var isFr = lang === 'fr';
       var isSw = lang === 'sw';
-      var featured = MEGA_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
+      var featured = TOOL_MENU_IDS.map(id => this._navItems().find(c => c.id === id)).filter(Boolean);
       var html = featured.map(cat => {
         var href = this._localizedHref(cat, lang);
         var label = isSw && cat.labelSw ? cat.labelSw : isFr && cat.labelFr ? cat.labelFr : cat.label;
@@ -1387,6 +1574,9 @@
       var allLabel = isSw ? 'Makundi Yote →' : isFr ? 'Toutes les catégories →' : 'All 28 Categories →';
       var allDesc = isSw ? 'Tazama makundi yote' : isFr ? 'Voir toutes les catégories' : 'Browse every tool category';
       var allHref = isFr ? '/fr/categories/' : '/categories/';
+      allLabel = isSw ? 'Zana Zote ->' : isFr ? 'Tous les outils ->' : 'All Tools ->';
+      allDesc = isSw ? 'Tafuta na chuja zana zote' : isFr ? 'Rechercher et filtrer tous les outils' : 'Search and filter every tool';
+      allHref = isSw ? '/sw/zana-zote/' : isFr ? '/fr/all-tools/' : '/all-tools/';
       html += `
         <a href="${allHref}" class="mob-cat" style="border-top:2px solid #e5e7eb;margin-top:4px">
           <div class="mob-cat-icon" style="background:#EEF4FF">🧭</div>
@@ -1397,6 +1587,76 @@
           <span class="mob-arr">›</span>
         </a>`;
       return html;
+    }
+
+    _mobileCountriesContent() {
+      var html = COUNTRY_LINKS.slice(0, 6).map(country => {
+        return '<a href="' + this._countryHref(country.label) + '" class="mob-country-link">' + country.label + '</a>';
+      }).join('');
+      var lang = this._getLang();
+      var allLabel = lang === 'sw' ? 'Nchi zote' : lang === 'fr' ? 'Tous les pays' : 'All countries';
+      html += '<a href="' + this._countriesHref() + '" class="mob-country-link">' + allLabel + '</a>';
+      return html;
+    }
+
+    _countryHref(name) {
+      var lang = this._getLang();
+      var overrides = {
+        'Cabo Verde': 'cape-verde',
+        'Central African Republic': lang === 'sw' ? 'central-african-republic' : 'central-africa',
+        'Côte d\'Ivoire': 'cote-divoire',
+        'DR Congo': lang === 'en' ? 'drc' : 'dr-congo',
+        'Republic of the Congo': 'congo',
+        'Congo': 'congo',
+        'São Tomé and Príncipe': 'sao-tome',
+        'São Tomé & Príncipe': 'sao-tome',
+      };
+      var slug = overrides[name] || String(name || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      var prefix = lang === 'fr' ? '/fr' : lang === 'sw' ? '/sw' : '';
+      return slug ? prefix + '/' + slug + '/' : this._countriesHref();
+    }
+
+    _countrySearchItems(countries) {
+      var source = Array.isArray(countries) && countries.length ? countries : COUNTRY_LINKS.map(function(country) {
+        return { name: country.label };
+      });
+      return source.map(country => {
+        var name = country.name || country.label || '';
+        return {
+          label: name,
+          href: country.href || this._countryHref(name),
+          meta: country.currency || '',
+        };
+      });
+    }
+
+    _loadCountryData() {
+      return new Promise(resolve => {
+        if (Array.isArray(window.AFRICAN_COUNTRIES)) {
+          resolve(window.AFRICAN_COUNTRIES);
+          return;
+        }
+        var src = '/assets/js/data/african-countries.js';
+        var existing = document.querySelector('script[src="' + src + '"], script[src$="/assets/js/data/african-countries.js"]');
+        var finish = () => resolve(Array.isArray(window.AFRICAN_COUNTRIES) ? window.AFRICAN_COUNTRIES : []);
+        if (existing) {
+          existing.addEventListener('load', finish, { once: true });
+          existing.addEventListener('error', () => resolve([]), { once: true });
+          setTimeout(finish, 500);
+          return;
+        }
+        var script = document.createElement('script');
+        script.src = src;
+        script.onload = finish;
+        script.onerror = () => resolve([]);
+        document.head.appendChild(script);
+      });
     }
 
     _mobileLangHTML() {
@@ -1445,6 +1705,16 @@
         homeHref:     isSw ? '/sw/'                         : isFr ? '/fr/'                                             : '/',
         tag:          isSw ? 'Jukwaa la Afrika'             : isFr ? 'La plateforme africaine'                          : "Africa's Everything Platform",
         allTools:     isSw ? 'Zana Zote'                    : isFr ? 'Tous les outils'                                  : 'All Tools',
+        tools:        isSw ? 'Zana'                         : isFr ? 'Outils'                                           : 'Tools',
+        countries:    isSw ? 'Nchi'                         : isFr ? 'Pays'                                             : 'Countries',
+        countriesHref:isSw ? '/sw/nchi/'                    : isFr ? '/fr/countries/'                                  : '/countries/',
+        business:     isSw ? 'Biashara'                     : isFr ? 'Business'                                         : 'Business',
+        businessHref: isSw ? '/sw/biashara-ndogo/'          : isFr ? '/fr/business/'                                    : '/business/',
+        resources:    isSw ? 'Rasilimali'                   : isFr ? 'Ressources'                                       : 'Resources',
+        resourcesHref:isSw ? '/sw/'                         : isFr ? '/fr/blog/'                                        : '/blog/',
+        search:       isSw ? 'Tafuta'                       : isFr ? 'Recherche'                                        : 'Search',
+        startByCountry:isSw ? 'Anza kwa nchi'               : isFr ? 'Commencer par pays'                               : 'Start by country',
+        countrySearchPh:isSw ? 'Tafuta nchi...'             : isFr ? 'Rechercher un pays...'                            : 'Search countries...',
         salaryTax:    isSw ? 'Mshahara &amp; Kodi'          : isFr ? 'Salaire &amp; Impôts'                             : 'Salary &amp; Tax',
         salaryHref:   isSw ? '/sw/mshahara-na-kodi/'        : isFr ? '/fr/salary-tax/'                                  : '/salary-tax/',
         pdfTools:     isSw ? 'Zana za PDF'                  : isFr ? 'Outils PDF'                                       : 'PDF Tools',
@@ -1470,6 +1740,7 @@
         mobSignIn:    isSw ? 'Ingia'                        : isFr ? 'Connexion'                                        : 'Sign In',
         proHref:      isFr ? '/fr/pro/'                     : '/pro/',
         dashboardHref:isFr ? '/fr/dashboard/'               : '/dashboard/',
+        authHref:     '/auth/?mode=login&next=' + encodeURIComponent(isFr ? '/fr/dashboard/' : '/dashboard/'),
         vaultHref:    isFr ? '/fr/dashboard/vault/'         : '/dashboard/vault/',
         mobNote:      isSw ? '🌍 Nchi 54 · bure · bila usajili'                 : isFr ? '🌍 54 pays · gratuit · sans inscription'          : '🌍 54 countries · always free · no sign-up required',
         srchEmpty:    isSw ? 'Zana 1,390+ za Afrika'          : isFr ? '1 390+ outils africains'                            : 'Search 1,390+ African tools',
@@ -1491,24 +1762,36 @@
             <ul class="nav-links">
               <li>
                 <button class="lnk" id="allBtn" type="button" aria-haspopup="true" aria-expanded="false">
-                  ${T.allTools}
+                  ${T.tools}
+                  <svg class="chev" viewBox="0 0 7 4" fill="none">
+                    <polyline points="0.5,0.5 3.5,3.5 6.5,0.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </li>
+              <li>
+                <button class="lnk" id="countriesBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                  ${T.countries}
                   <svg class="chev" viewBox="0 0 7 4" fill="none">
                     <polyline points="0.5,0.5 3.5,3.5 6.5,0.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
               </li>
               <li><a href="${T.salaryHref}" class="lnk">${T.salaryTax}</a></li>
-              <li><a href="${T.pdfHref}" class="lnk">${T.pdfTools}</a></li>
-              <li><a href="${T.devHref}" class="lnk">${T.devTools}</a></li>
-              <li><a href="${T.africanHref}" class="lnk">${T.african}</a></li>
-              <li><a href="${T.educationHref}" class="lnk">${T.education}</a></li>
-              <li><a href="${T.insuranceHref}" class="lnk">${T.insurance}</a></li>
+              <li><a href="${T.pdfHref}" class="lnk">PDF</a></li>
+              <li><a href="${T.businessHref}" class="lnk">${T.business}</a></li>
+              <li><a href="${T.resourcesHref}" class="lnk">${T.resources}</a></li>
             </ul>
 
             <div class="right">
               ${this._langSwitcherHTML()}
-              <a href="${T.proHref}" class="btn-pro">Pro</a>
-              <a href="${T.dashboardHref}" class="btn-login">${T.signIn}</a>
+              <button class="search-btn cp-trigger" id="searchBtn" type="button" aria-label="${T.ariaSearch}">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+                </svg>
+                <span class="search-btn-label">${T.search}</span>
+                <span class="search-kbd cp-trigger-kbd">Ctrl K</span>
+              </button>
+              <a href="${T.authHref}" class="btn-login">${T.signIn}</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
               </button>
@@ -1526,6 +1809,16 @@
           </div>
         </div>
 
+        <div class="mega" id="countriesMega" role="menu" aria-label="${T.countries}">
+          <div class="mega-inner">
+            ${this._countriesContent()}
+          </div>
+          <div class="mega-footer">
+            <span class="mega-footer-note">${T.countries} - 54 African countries</span>
+            <a href="${T.countriesHref}" class="mega-footer-lnk">View all</a>
+          </div>
+        </div>
+
         <div class="mob" role="dialog" aria-modal="true" aria-label="${T.ariaMenu}">
           <div class="mob-search-bar">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1534,13 +1827,21 @@
             <input class="mob-search-input" type="text" placeholder="${T.searchPh}" aria-label="${T.ariaSearch}" autocomplete="off"/>
           </div>
           <div class="mob-search-results" id="mobSearchResults" role="listbox" aria-label="Search results"></div>
+          <div class="mob-country-block">
+            <div class="mob-section-label">${T.startByCountry}</div>
+            <div class="mob-country-search">
+              <input id="mobileCountrySearchInput" class="mob-country-search-input" type="search" placeholder="${T.countrySearchPh}" autocomplete="off" aria-label="${T.startByCountry}">
+            </div>
+            <div class="mob-country-results" id="mobileCountrySearchResults" role="listbox" aria-label="${T.startByCountry}"></div>
+            <div class="mob-country-grid">${this._mobileCountriesContent()}</div>
+          </div>
           <div id="mobCategoriesWrap">
             <div class="mob-section-label">${T.allCats}</div>
             ${this._mobileContent()}
           </div>
           ${this._mobileLangHTML()}
           <div class="mob-footer">
-            <a href="${T.dashboardHref}" class="mob-login">${T.mobSignIn}</a>
+            <a href="${T.authHref}" class="mob-login">${T.mobSignIn}</a>
             <a href="${T.vaultHref}" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 My Vault</a>
             <a href="/tools/afropoints/" class="mob-points-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#F59E0B;border:1.5px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);text-align:center;">🎯 AfroPoints</a>
             <p class="mob-note">${T.mobNote}</p>
@@ -1555,6 +1856,9 @@
       const nav    = sr.querySelector('nav');
       const allBtn = sr.querySelector('#allBtn');
       const mega   = sr.querySelector('#mega');
+      const countriesBtn = sr.querySelector('#countriesBtn');
+      const countriesMega = sr.querySelector('#countriesMega');
+      const searchBtn = sr.querySelector('#searchBtn');
       const burger = sr.querySelector('.burger');
       const mob    = sr.querySelector('.mob');
 
@@ -1564,15 +1868,46 @@
       window.addEventListener('scroll', this._scrollFn, { passive: true });
       this._scrollFn();
 
-      const openMega  = () => { this._megaOpen = true;  allBtn.classList.add('open'); mega.classList.add('open'); allBtn.setAttribute('aria-expanded','true'); };
-      const closeMega = () => { this._megaOpen = false; allBtn.classList.remove('open'); mega.classList.remove('open'); allBtn.setAttribute('aria-expanded','false'); };
+      const openMega  = () => {
+        this._megaOpen = true;
+        closeCountries();
+        allBtn?.classList.add('open');
+        mega?.classList.add('open');
+        allBtn?.setAttribute('aria-expanded','true');
+      };
+      const closeMega = () => {
+        this._megaOpen = false;
+        allBtn?.classList.remove('open');
+        mega?.classList.remove('open');
+        allBtn?.setAttribute('aria-expanded','false');
+      };
+      const openCountries = () => {
+        this._countriesOpen = true;
+        closeMega();
+        countriesBtn?.classList.add('open');
+        countriesMega?.classList.add('open');
+        countriesBtn?.setAttribute('aria-expanded','true');
+      };
+      const closeCountries = () => {
+        this._countriesOpen = false;
+        countriesBtn?.classList.remove('open');
+        countriesMega?.classList.remove('open');
+        countriesBtn?.setAttribute('aria-expanded','false');
+      };
+      const closeMenus = () => { closeMega(); closeCountries(); };
       const resetMobileSearch = () => {
         const mobSearchInput = sr.querySelector('.mob-search-input');
         const mobSearchResults = sr.querySelector('#mobSearchResults');
         const mobCategoriesWrap = sr.querySelector('#mobCategoriesWrap');
+        const mobCountryBlock = sr.querySelector('.mob-country-block');
+        const mobileCountrySearchInput = sr.querySelector('#mobileCountrySearchInput');
+        const mobileCountrySearchResults = sr.querySelector('#mobileCountrySearchResults');
         if (mobSearchInput) mobSearchInput.value = '';
         if (mobSearchResults) mobSearchResults.innerHTML = '';
         if (mobCategoriesWrap) mobCategoriesWrap.style.display = '';
+        if (mobCountryBlock) mobCountryBlock.style.display = '';
+        if (mobileCountrySearchInput) mobileCountrySearchInput.value = '';
+        if (mobileCountrySearchResults) mobileCountrySearchResults.innerHTML = '';
       };
       const setMenuOpen = (isOpen) => {
         this._menuOpen = isOpen;
@@ -1580,7 +1915,7 @@
         mob?.classList.toggle('open', this._menuOpen);
         burger?.setAttribute('aria-expanded', String(this._menuOpen));
         if (this._menuOpen) {
-          closeMega();
+          closeMenus();
           this._lockBodyScroll();
           return;
         }
@@ -1590,6 +1925,15 @@
 
       // Click toggle
       allBtn?.addEventListener('click', e => { e.stopPropagation(); this._megaOpen ? closeMega() : openMega(); });
+      countriesBtn?.addEventListener('click', e => { e.stopPropagation(); this._countriesOpen ? closeCountries() : openCountries(); });
+      searchBtn?.addEventListener('click', e => {
+        e.preventDefault();
+        if (typeof window.__openCommandPalette === 'function') {
+          window.__openCommandPalette();
+          return;
+        }
+        window.location.href = '/search/';
+      });
 
       // Hover — keep open while moving between button and mega
       let hoverTimer;
@@ -1599,11 +1943,18 @@
       mega?.addEventListener('mouseenter', () => clearTimeout(hoverTimer));
       mega?.addEventListener('mouseleave', () => { hoverTimer = setTimeout(closeMega, 200); });
 
+      let countriesHoverTimer;
+      const countriesNavEl = countriesBtn?.closest('li');
+      countriesNavEl?.addEventListener('mouseenter', () => { clearTimeout(countriesHoverTimer); openCountries(); });
+      countriesNavEl?.addEventListener('mouseleave', () => { countriesHoverTimer = setTimeout(closeCountries, 200); });
+      countriesMega?.addEventListener('mouseenter', () => clearTimeout(countriesHoverTimer));
+      countriesMega?.addEventListener('mouseleave', () => { countriesHoverTimer = setTimeout(closeCountries, 200); });
+
       // Tool sub-panels: disabled — category cards navigate directly to their pages
 
       // Click outside
       if (this._outsideFn) document.removeEventListener('click', this._outsideFn);
-      this._outsideFn = e => { if (!this.contains(e.target)) closeMega(); };
+      this._outsideFn = e => { if (!this.contains(e.target)) closeMenus(); };
       document.addEventListener('click', this._outsideFn);
 
       // Language switcher toggle
@@ -1618,7 +1969,7 @@
       // Escape
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
-          closeMega();
+          closeMenus();
           langDrop?.classList.remove('open');
           if (this._menuOpen) setMenuOpen(false);
         }
@@ -1641,6 +1992,13 @@
           link.classList.add('active');
         }
       });
+      const activePath = path.replace(/^\/(fr|sw)(?=\/)/, '');
+      if (/^\/(countries|nchi|nigeria|kenya|ghana|south-africa|egypt|tanzania|rwanda|senegal)(\/|$)/.test(activePath)) {
+        countriesBtn?.classList.add('active');
+      }
+      if (/^\/(all-tools|zana-zote|categories|tools|zana)(\/|$)/.test(activePath)) {
+        allBtn?.classList.add('active');
+      }
 
       // ── RECENTLY USED TOOLS (localStorage) ──
       const RECENT_KEY = 'aft_recent_tools';
@@ -1673,6 +2031,11 @@
       const mobSearchInput   = sr.querySelector('.mob-search-input');
       const mobSearchResults = sr.querySelector('#mobSearchResults');
       const mobCategoriesWrap = sr.querySelector('#mobCategoriesWrap');
+      const mobCountryBlock = sr.querySelector('.mob-country-block');
+      const countrySearchInput = sr.querySelector('#countrySearchInput');
+      const countrySearchResults = sr.querySelector('#countrySearchResults');
+      const mobileCountrySearchInput = sr.querySelector('#mobileCountrySearchInput');
+      const mobileCountrySearchResults = sr.querySelector('#mobileCountrySearchResults');
 
       let _activeIdx = -1;
 
@@ -1721,6 +2084,49 @@
         scored.sort((a, b) => b.score - a.score);
         return scored.slice(0, 8).map(s => s.tool);
       };
+
+      const normalizeCountryQuery = value => String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+      const renderCountryResults = (input, container, limit) => {
+        if (!input || !container) return;
+        var query = input.value.trim();
+        if (!query) {
+          container.innerHTML = '';
+          return;
+        }
+        container.innerHTML = '<div class="country-search-result" aria-live="polite">Loading countries...</div>';
+        this._loadCountryData().then(countries => {
+          var q = normalizeCountryQuery(query);
+          var results = this._countrySearchItems(countries).filter(country => {
+            return normalizeCountryQuery(country.label + ' ' + country.meta).indexOf(q) !== -1;
+          }).slice(0, limit || 6);
+          if (!results.length) {
+            container.innerHTML = '<a class="country-search-result" href="' + this._countriesHref() + '"><span>No exact country found</span><span class="country-search-meta">View all</span></a>';
+            return;
+          }
+          container.innerHTML = results.map(country => {
+            return '<a class="country-search-result" role="option" href="' + country.href + '"><span>' + escapeHtml(country.label) + '</span><span class="country-search-meta">' + escapeHtml(country.meta || 'Open') + '</span></a>';
+          }).join('');
+        });
+      };
+
+      const bindCountrySearch = (input, container, limit) => {
+        if (!input || !container) return;
+        input.addEventListener('focus', () => this._loadCountryData());
+        input.addEventListener('input', () => renderCountryResults(input, container, limit));
+        input.addEventListener('keydown', e => {
+          if (e.key !== 'Enter') return;
+          e.preventDefault();
+          var first = container.querySelector('a');
+          window.location.href = first ? first.href : this._countriesHref();
+        });
+      };
+
+      bindCountrySearch(countrySearchInput, countrySearchResults, 6);
+      bindCountrySearch(mobileCountrySearchInput, mobileCountrySearchResults, 5);
 
       // ── Search capture: send queries to /api/capture-search for product intelligence ──
       let _captureTimer = null;
@@ -1808,17 +2214,20 @@
           if (!q) {
             mobSearchResults.innerHTML = '';
             mobCategoriesWrap.style.display = '';
+            if (mobCountryBlock) mobCountryBlock.style.display = '';
             return;
           }
           const results = searchTools(q);
           if (results === null) {
             mobSearchResults.innerHTML = '<div class="mob-search-empty">Loading tools…</div>';
             mobCategoriesWrap.style.display = 'none';
+            if (mobCountryBlock) mobCountryBlock.style.display = 'none';
             return;
           }
           if (results.length === 0) {
             mobSearchResults.innerHTML = '<div class="mob-search-empty">No tools found</div>';
             mobCategoriesWrap.style.display = 'none';
+            if (mobCountryBlock) mobCountryBlock.style.display = 'none';
             // Analytics: track mobile search no results
             if (q && q.length >= 2 && window.AfroTools?.analytics) {
               window.AfroTools.analytics.trackSearch(q, 0, 'navbar');
@@ -1828,6 +2237,7 @@
             return;
           }
           mobCategoriesWrap.style.display = 'none';
+          if (mobCountryBlock) mobCountryBlock.style.display = 'none';
           mobSearchResults.innerHTML = results.map(t => `
             <a href="${t.href}" class="search-result" role="option">
               <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
@@ -1853,32 +2263,35 @@
 
       var _apBadgeLoaded = false;
       const updateAuthUI = () => {
+        var _lang = this._getLang();
+        var _dashboardHref = _lang === 'fr' ? '/fr/dashboard/' : '/dashboard/';
+        var _authHref = '/auth/?mode=login&next=' + encodeURIComponent(_dashboardHref);
+        var _dashboardLabel = _lang === 'fr' ? 'Tableau de bord' : 'Dashboard';
         if (typeof AfroAuth === 'undefined' || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
           // Not logged in — show Sign in (i18n)
-          var _lang = this._getLang();
           var _signLabel = _lang === 'sw' ? 'Ingia' : _lang === 'fr' ? 'Connexion' : 'Sign in';
           if (loginBtn) {
             loginBtn.textContent = _signLabel;
-            loginBtn.href = '#';
-            loginBtn.onclick = function(e) { e.preventDefault(); if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) AfroAuth.openModal(); else window.location.href = '/dashboard/'; };
+            loginBtn.href = _authHref;
+            loginBtn.onclick = function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
           }
           if (mobLoginBtn) {
             mobLoginBtn.textContent = _signLabel;
-            mobLoginBtn.href = '#';
-            mobLoginBtn.onclick = function(e) { e.preventDefault(); if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) AfroAuth.openModal(); else window.location.href = '/dashboard/'; };
+            mobLoginBtn.href = _authHref;
+            mobLoginBtn.onclick = function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
           }
           if (mobVaultLink) mobVaultLink.style.display = 'none';
           if (mobPointsLink) mobPointsLink.style.display = 'none';
           return;
         }
         const user = AfroAuth.getUser();
-        const displayName = this._cleanDisplayName(user && user.name, 'Dashboard');
-        const name = displayName.split(' ')[0] || 'Dashboard';
+        const displayName = this._cleanDisplayName(user && user.name, _dashboardLabel);
+        const name = displayName.split(' ')[0] || _dashboardLabel;
         const safeName = this._escapeHtml(name);
         const initial = this._escapeHtml((name[0] || 'D').toUpperCase());
         // Desktop: show avatar initial + first name
         if (loginBtn) {
-          loginBtn.href = '/dashboard/';
+          loginBtn.href = _dashboardHref;
           loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0062CC;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + safeName + '</span>';
         }
         // AfroPoints badge — show points balance next to avatar (once only)
@@ -1910,8 +2323,8 @@
         }
         // Mobile: show name + vault link
         if (mobLoginBtn) {
-          mobLoginBtn.href = '/dashboard/';
-          mobLoginBtn.textContent = name + ' \u2014 Dashboard';
+          mobLoginBtn.href = _dashboardHref;
+          mobLoginBtn.textContent = name + ' \u2014 ' + _dashboardLabel;
         }
         if (mobVaultLink) mobVaultLink.style.display = '';
         if (mobPointsLink) mobPointsLink.style.display = '';

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stream Intelligence | AfroTools Pro</title>
+  <meta name="description" content="Blocked AfroTools Pro shell for stream and creator intelligence source review, signal queues, and editorial boundaries.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="afrostream-intelligence-pro">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="canonical" href="https://afrotools.com/pro/apps/stream-intelligence/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=1">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1">
+  <script src="/assets/js/afro-auth.js?v=6"></script>
+  <script src="/assets/js/pro-gate.js?v=20260502a"></script>
+  <style>
+    :root{
+      --si-bg:var(--color-bg,#f8fafd);
+      --si-surface:#fff;
+      --si-soft:#f8fafc;
+      --si-ink:var(--color-text,#0f172a);
+      --si-muted:var(--color-text-muted,#64748b);
+      --si-line:var(--color-border,#e2e8f0);
+      --si-line-strong:var(--color-border-strong,#cbd5e1);
+      --si-blue:var(--color-primary,#0062cc);
+      --si-blue-soft:var(--color-primary-pale,rgba(0,122,255,.08));
+      --si-red:#b91c1c;
+      --si-red-soft:#fef2f2;
+      --si-amber:#92400e;
+      --si-amber-soft:#fffbeb;
+      --si-green:#047857;
+      --si-green-soft:#ecfdf5;
+      --si-purple:#5b21b6;
+      --si-purple-soft:#f5f3ff;
+      --si-radius:6px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--si-bg);color:var(--si-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45}
+    a,button{font:inherit;color:inherit}
+    .si-shell{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr);background:var(--si-bg)}
+    .si-side{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--si-line);padding:16px 12px;display:flex;flex-direction:column;gap:14px}
+    .si-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--si-line)}
+    .si-mark{width:34px;height:34px;border-radius:var(--si-radius);display:flex;align-items:center;justify-content:center;background:var(--si-blue);color:#fff;font-size:12px;font-weight:900}
+    .si-brand strong{display:block;font-size:13px;font-weight:900;line-height:1.15}
+    .si-brand span{display:block;font-size:11px;color:var(--si-muted);margin-top:2px}
+    .si-nav{display:grid;gap:4px}
+    .si-nav a{display:flex;align-items:center;justify-content:space-between;min-height:36px;padding:8px 9px;border-radius:var(--si-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .si-nav a:hover{background:var(--si-blue-soft);color:var(--si-blue)}
+    .si-side-note{border:1px solid var(--si-line);border-radius:var(--si-radius);background:var(--si-soft);padding:10px;font-size:12px;line-height:1.48;color:var(--si-muted)}
+    .si-main{min-width:0}
+    .si-topbar{min-height:62px;border-bottom:1px solid var(--si-line);background:rgba(248,250,253,.94);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 18px;position:sticky;top:0;z-index:5}
+    .si-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .si-btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;border:1px solid var(--si-line-strong);border-radius:var(--si-radius);background:#fff;color:var(--si-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900}
+    .si-btn.primary{background:var(--si-blue);border-color:var(--si-blue);color:#fff}
+    .si-content{padding:18px;max-width:1420px;margin:0 auto}
+    .si-command,.si-panel,.si-card,.si-metric{background:#fff;border:1px solid var(--si-line);border-radius:var(--si-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .si-command{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:12px;padding:16px;margin-bottom:12px}
+    .si-kicker{font-size:11px;font-weight:900;color:var(--si-blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+    .si-title{font-size:28px;line-height:1.1;font-weight:900;margin:0 0 7px}
+    .si-sub{font-size:13px;line-height:1.55;color:var(--si-muted);margin:0;max-width:820px}
+    .si-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--si-line);background:var(--si-soft);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .si-pill.blocked{background:var(--si-red-soft);border-color:#fecaca;color:#991b1b}
+    .si-pill.schema{background:var(--si-amber-soft);border-color:#fde68a;color:#92400e}
+    .si-pill.local{background:var(--si-purple-soft);border-color:#ddd6fe;color:#5b21b6}
+    .si-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+    .si-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+    .si-metric{padding:12px;min-height:82px}
+    .si-metric strong{display:block;font-size:22px;line-height:1;font-weight:900}
+    .si-metric span{display:block;margin-top:8px;font-size:11px;color:var(--si-muted);font-weight:900}
+    .si-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .si-panel{overflow:hidden;margin-bottom:12px}
+    .si-panel-head{padding:12px 13px;border-bottom:1px solid var(--si-line)}
+    .si-h2{font-size:17px;line-height:1.2;font-weight:900;margin:0}
+    .si-note{font-size:12px;line-height:1.45;color:var(--si-muted);margin:3px 0 0}
+    .si-panel-body{padding:12px 13px}
+    .si-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .si-card{padding:10px 11px}
+    .si-card strong{display:block;font-size:13px;font-weight:900;line-height:1.25}
+    .si-card span{display:block;font-size:11px;color:var(--si-muted);line-height:1.42;margin-top:4px}
+    .si-warning{border:1px solid #fde68a;background:var(--si-amber-soft);color:#78350f;border-radius:var(--si-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    @media(max-width:980px){.si-shell,.si-command,.si-layout{grid-template-columns:1fr}.si-side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--si-line)}.si-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:640px){.si-content{padding:12px}.si-grid,.si-metrics{grid-template-columns:1fr}.si-title{font-size:24px}}
+  </style>
+</head>
+<body>
+  <main class="si-shell pro-gated-content">
+    <aside class="si-side" aria-label="Stream Intelligence navigation">
+      <div class="si-brand">
+        <div class="si-mark">SI</div>
+        <div>
+          <strong>Stream Intelligence</strong>
+          <span>Blocked shell</span>
+        </div>
+      </div>
+      <nav class="si-nav" aria-label="Pro navigation">
+        <a href="/pro/workspace/">Pro workspace <span>Home</span></a>
+        <a href="/pro/apps/">App directory <span>Apps</span></a>
+        <a href="/dashboard/">Account <span>Profile</span></a>
+        <a href="/pro/apps/creator-studio/">Creator Studio <span>Shell</span></a>
+        <a href="/tools/afrostream/">AfroStream <span>Public</span></a>
+      </nav>
+      <div class="si-side-note">This route exists to close the navigation gap. It must stay blocked until source review, inference labels, and user-edit boundaries are designed.</div>
+    </aside>
+
+    <section class="si-main" aria-label="Stream Intelligence blocked shell">
+      <header class="si-topbar">
+        <strong>AfroTools Pro</strong>
+        <div class="si-actions">
+          <a class="si-btn" href="/pro/apps/">Directory</a>
+          <a class="si-btn primary" href="/pro/apps/creator-studio/">Creator Studio</a>
+        </div>
+      </header>
+
+      <div class="si-content">
+        <section class="si-command">
+          <div>
+            <div class="si-kicker">Media intelligence</div>
+            <h1 class="si-title">Stream Intelligence</h1>
+            <p class="si-sub">A blocked Pro shell for creator movement, stream signals, news freshness, sponsorship notes, and source review. It is not active intelligence software yet.</p>
+            <div class="si-pills">
+              <span class="si-pill blocked">Blocked</span>
+              <span class="si-pill schema">Needs schema</span>
+              <span class="si-pill local">No private queue</span>
+            </div>
+          </div>
+          <aside class="si-warning">
+            Do not show inferred net worth, claims about creators, sponsorship movement, or private intelligence until the source and review model is built.
+          </aside>
+        </section>
+
+        <section class="si-metrics" aria-label="Stream Intelligence status metrics">
+          <article class="si-metric"><strong>0</strong><span>Private signals wired</span></article>
+          <article class="si-metric"><strong>0</strong><span>Reviewed claims</span></article>
+          <article class="si-metric"><strong>4</strong><span>Boundary decisions</span></article>
+          <article class="si-metric"><strong>1</strong><span>Safe public source lane</span></article>
+        </section>
+
+        <section class="si-layout">
+          <div>
+            <section class="si-panel">
+              <div class="si-panel-head">
+                <div class="si-kicker">Before activation</div>
+                <h2 class="si-h2">Required build gates</h2>
+                <p class="si-note">These gates stop the app from becoming a rumor machine.</p>
+              </div>
+              <div class="si-panel-body">
+                <div class="si-grid">
+                  <article class="si-card"><strong>Source model</strong><span>Define official, publisher, social, and user-entered source tiers.</span></article>
+                  <article class="si-card"><strong>Inference labels</strong><span>Separate verified facts, estimates, signals, and user notes.</span></article>
+                  <article class="si-card"><strong>Review workflow</strong><span>Add reviewer status before export or client handoff.</span></article>
+                  <article class="si-card"><strong>Storage boundary</strong><span>Separate public AfroStream data from private Pro workspace records.</span></article>
+                </div>
+              </div>
+            </section>
+
+            <section class="si-panel">
+              <div class="si-panel-head">
+                <div class="si-kicker">Future workspace</div>
+                <h2 class="si-h2">Safe first slices</h2>
+              </div>
+              <div class="si-panel-body">
+                <div class="si-grid">
+                  <article class="si-card"><strong>Creator watchlist</strong><span>Private list with source URLs and review dates.</span></article>
+                  <article class="si-card"><strong>Freshness queue</strong><span>Items needing source refresh, not automatic claims.</span></article>
+                  <article class="si-card"><strong>Sponsor notes</strong><span>User-entered notes with clear ownership and timestamps.</span></article>
+                  <article class="si-card"><strong>Export packet</strong><span>Reviewed sources and caveats only.</span></article>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="si-panel">
+              <div class="si-panel-head">
+                <div class="si-kicker">Safe links</div>
+                <h2 class="si-h2">Related surfaces</h2>
+              </div>
+              <div class="si-panel-body">
+                <div class="si-grid">
+                  <a class="si-card" href="/pro/apps/creator-studio/"><strong>Creator Studio</strong><span>Private creator business shell.</span></a>
+                  <a class="si-card" href="/tools/afrostream/"><strong>AfroStream</strong><span>Public creator/news surface.</span></a>
+                  <a class="si-card" href="/pro/vault/"><strong>Pro Vault</strong><span>Future export packet destination.</span></a>
+                  <a class="si-card" href="/pro/apps/"><strong>App Directory</strong><span>Route truth and build status.</span></a>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

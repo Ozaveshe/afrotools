@@ -22,7 +22,11 @@ function pass(message) {
 
 const payload = architecture.payload;
 const apiFile = read("netlify/functions/api-afropayroll.js");
-const migration = read("supabase/migrations/033-afropayroll-pro-schema.sql");
+const migration = fs.readdirSync(path.join(root, "supabase/migrations"))
+  .filter((file) => file.endsWith(".sql"))
+  .sort()
+  .map((file) => read(path.join("supabase/migrations", file)))
+  .join("\n");
 const workspace = read("tools/afropayroll-os/workspace.html");
 
 if (!payload || payload.product !== "AfroPayroll Pro") fail("architecture payload missing product");

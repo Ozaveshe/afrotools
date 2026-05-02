@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfroBooks Finance OS | AfroTools Pro</title>
+  <meta name="description" content="AfroBooks Finance OS is a Pro finance workflow shell for African SMEs, freelancers, accountants, schools, clinics, NGOs, and small importers.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="afrobooks-finance-os">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="canonical" href="https://afrotools.com/pro/apps/books/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=1">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1">
+  <script src="/assets/js/afro-auth.js?v=6"></script>
+  <script src="/assets/js/pro-gate.js?v=20260502a"></script>
+  <style>
+    :root{
+      --bk-bg:var(--color-bg,#F8FAFD);
+      --bk-surface:#ffffff;
+      --bk-soft:#F8FAFC;
+      --bk-ink:var(--color-text,#0f172a);
+      --bk-muted:var(--color-text-muted,#64748b);
+      --bk-subtle:var(--color-text-subtle,#94a3af);
+      --bk-line:var(--color-border,#e2e8f0);
+      --bk-line-strong:var(--color-border-strong,#cbd5e1);
+      --bk-blue:var(--color-primary,#0062CC);
+      --bk-blue-soft:var(--color-primary-pale,rgba(0,122,255,.08));
+      --bk-gold:var(--color-gold,#F5A623);
+      --bk-gold-soft:var(--color-gold-pale,#fff3cd);
+      --bk-green:#047857;
+      --bk-green-soft:#ECFDF5;
+      --bk-amber:#A16207;
+      --bk-amber-soft:#FFFBEB;
+      --bk-red:#B91C1C;
+      --bk-red-soft:#FEF2F2;
+      --bk-purple:#6D28D9;
+      --bk-purple-soft:#F5F3FF;
+      --bk-radius:var(--radius-sm,6px);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bk-bg);color:var(--bk-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
+    button,a,input,select{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .books-shell h1,.books-shell h2,.books-shell h3,.books-shell h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .books-shell{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr);background:var(--bk-bg)}
+    .books-side{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--bk-line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;z-index:10}
+    .books-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--bk-line)}
+    .books-brand-mark{width:34px;height:34px;border-radius:var(--bk-radius);display:flex;align-items:center;justify-content:center;background:var(--bk-blue);color:#fff;font-size:12px;font-weight:900}
+    .books-brand-title{font-size:13px;font-weight:900;line-height:1.15}
+    .books-brand-meta{font-size:11px;color:var(--bk-muted);margin-top:2px}
+    .books-nav{display:grid;gap:4px}
+    .books-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;padding:8px 9px;border-radius:var(--bk-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .books-nav a:hover,.books-nav a:focus-visible{background:var(--bk-blue-soft);color:var(--bk-blue)}
+    .books-nav span{font-size:11px;color:var(--bk-subtle);font-weight:800}
+    .books-side-box{border:1px solid var(--bk-line);border-radius:var(--bk-radius);background:var(--bk-soft);padding:10px;display:grid;gap:8px}
+    .books-side-box strong{font-size:12px;font-weight:900}
+    .books-side-box p{font-size:11px;line-height:1.45;color:var(--bk-muted);margin:0}
+    .books-side-foot{margin-top:auto;display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--bk-line)}
+    .books-main{min-width:0}
+    .books-topbar{position:sticky;top:0;z-index:9;min-height:64px;border-bottom:1px solid var(--bk-line);background:rgba(248,250,253,.94);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px}
+    .books-context{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+    .books-field{display:grid;gap:3px;min-width:220px}
+    .books-label{font-size:11px;font-weight:900;color:var(--bk-muted)}
+    .books-select{height:36px;border:1px solid var(--bk-line-strong);border-radius:var(--bk-radius);background:#fff;color:var(--bk-ink);padding:0 10px;font-size:13px;font-weight:800}
+    .books-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .books-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;border:1px solid var(--bk-line-strong);border-radius:var(--bk-radius);background:#fff;color:var(--bk-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1}
+    .books-btn:hover{border-color:var(--bk-blue);color:var(--bk-blue);background:var(--bk-blue-soft)}
+    .books-btn.primary{background:var(--bk-blue);border-color:var(--bk-blue);color:#fff}
+    .books-btn.primary:hover{background:#004BA0;color:#fff}
+    .books-btn.warn{border-color:#FDE68A;background:var(--bk-amber-soft);color:#78350F}
+    .books-btn:disabled{opacity:.58;cursor:not-allowed}
+    .books-content{padding:18px;max-width:1480px;margin:0 auto}
+    .books-command-grid{display:grid;grid-template-columns:minmax(0,1.5fr) 380px;gap:12px;margin-bottom:12px}
+    .books-command,.books-panel,.books-card,.books-metric,.books-row,.books-workflow,.books-currency,.books-report,.books-handoff{background:var(--bk-surface);border:1px solid var(--bk-line);border-radius:var(--bk-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .books-command{padding:16px;display:grid;gap:12px}
+    .books-kicker{font-size:11px;font-weight:900;color:var(--bk-blue);margin-bottom:4px}
+    .books-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .books-title{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900;color:var(--bk-ink)}
+    .books-subtitle{font-size:13px;line-height:1.55;color:var(--bk-muted);max-width:830px;margin:0}
+    .books-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--bk-line);background:var(--bk-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap}
+    .books-pill.ready,.books-pill.paid,.books-pill.closed{background:var(--bk-green-soft);border-color:#A7F3D0;color:#065F46}
+    .books-pill.open,.books-pill.pending{background:var(--bk-blue-soft);border-color:#BFDBFE;color:#1E40AF}
+    .books-pill.review,.books-pill.cash{background:var(--bk-amber-soft);border-color:#FDE68A;color:#92400E}
+    .books-pill.missing,.books-pill.overdue{background:var(--bk-red-soft);border-color:#FECACA;color:#991B1B}
+    .books-pill.shell{background:var(--bk-purple-soft);border-color:#DDD6FE;color:#5B21B6}
+    .books-snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .books-snap{border:1px solid var(--bk-line);border-radius:var(--bk-radius);background:var(--bk-soft);padding:10px;min-height:80px}
+    .books-snap strong{display:block;font-size:20px;line-height:1;font-weight:900}
+    .books-snap span{display:block;font-size:11px;font-weight:800;color:var(--bk-muted);margin-top:6px}
+    .books-boundary{padding:14px;display:grid;gap:10px;background:var(--bk-amber-soft);border-color:#FDE68A;color:#78350F}
+    .books-boundary h2{font-size:16px;margin:0;font-weight:900}
+    .books-boundary p{font-size:12px;line-height:1.5;color:#78350F;margin:0}
+    .books-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .books-metric{padding:12px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
+    .books-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}
+    .books-metric span{display:block;font-size:11px;color:var(--bk-muted);font-weight:900;margin-top:7px}
+    .books-metric small{display:block;font-size:11px;color:var(--bk-subtle);line-height:1.35;margin-top:4px}
+    .books-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .books-panel{overflow:hidden;margin-bottom:12px}
+    .books-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--bk-line);background:#fff}
+    .books-panel-body{padding:12px 13px}
+    .books-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
+    .books-note{font-size:12px;line-height:1.45;color:var(--bk-muted);margin:3px 0 0;max-width:780px}
+    .books-workflows{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .books-workflow{padding:12px;display:grid;gap:8px;min-height:166px}
+    .books-workflow h3{font-size:14px;line-height:1.2;margin:0;font-weight:900}
+    .books-workflow p{font-size:11px;line-height:1.42;color:var(--bk-muted);margin:0}
+    .books-list{display:grid;gap:8px}
+    .books-row,.books-report,.books-handoff{padding:10px 11px}
+    .books-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .books-row-title{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .books-row-meta{font-size:11px;color:var(--bk-muted);line-height:1.42;margin-top:3px}
+    .books-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .books-table-wrap{overflow:auto;border:1px solid var(--bk-line);border-radius:var(--bk-radius);background:#fff}
+    .books-table{width:100%;border-collapse:collapse;min-width:760px}
+    .books-table th,.books-table td{padding:9px 10px;border-bottom:1px solid var(--bk-line);text-align:left;vertical-align:top;font-size:12px}
+    .books-table th{background:var(--bk-soft);color:#475569;font-size:11px;font-weight:900}
+    .books-table tr:last-child td{border-bottom:0}
+    .books-table strong{font-weight:900}
+    .books-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .books-currency{padding:10px 11px;display:grid;gap:7px}
+    .books-currency h3{font-size:13px;font-weight:900;margin:0}
+    .books-currency p{font-size:11px;line-height:1.42;color:var(--bk-muted);margin:0}
+    .books-report h3,.books-handoff h3{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .books-report p,.books-handoff p{font-size:11px;line-height:1.42;color:var(--bk-muted);margin:4px 0 0}
+    .books-tool-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+    .books-tool{display:grid;gap:4px;border:1px solid var(--bk-line);border-radius:var(--bk-radius);background:#fff;padding:10px;text-decoration:none;min-height:74px}
+    .books-tool strong{font-size:12px;font-weight:900}
+    .books-tool span{font-size:11px;color:var(--bk-muted);line-height:1.35}
+    .books-tool:hover{border-color:var(--bk-blue);background:var(--bk-blue-soft)}
+    .books-empty{border:1px dashed var(--bk-line-strong);border-radius:var(--bk-radius);padding:14px;background:#fff;color:var(--bk-muted);font-size:12px;line-height:1.5;text-align:center}
+    .books-note-box{border:1px solid #FDE68A;background:var(--bk-amber-soft);color:#78350F;border-radius:var(--bk-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    .books-hidden{display:none}
+    .books-spaced{margin-top:10px}
+    @media(max-width:1280px){
+      .books-workflows,.books-tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .books-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media(max-width:1040px){
+      .books-shell{grid-template-columns:1fr}
+      .books-side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--bk-line)}
+      .books-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .books-layout,.books-command-grid{grid-template-columns:1fr}
+      .books-topbar{position:relative;align-items:flex-start;flex-direction:column}
+      .books-actions{justify-content:flex-start}
+    }
+    @media(max-width:760px){
+      .books-content{padding:12px}
+      .books-title{font-size:24px}
+      .books-nav,.books-workflows,.books-metrics,.books-snapshot,.books-tool-grid,.books-grid-2{grid-template-columns:1fr}
+      .books-field{min-width:0;width:100%}
+      .books-row{grid-template-columns:1fr}
+      .books-row-actions{justify-content:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <main class="books-shell pro-gated-content">
+    <aside class="books-side" aria-label="AfroBooks navigation">
+      <div class="books-brand">
+        <div class="books-brand-mark" aria-hidden="true">BK</div>
+        <div>
+          <div class="books-brand-title">AfroBooks Finance OS</div>
+          <div class="books-brand-meta">Pro app shell</div>
+        </div>
+      </div>
+      <nav class="books-nav" aria-label="Finance OS sections">
+        <a href="#overview">Overview <span>00</span></a>
+        <a href="#workflows">Workflows <span>05</span></a>
+        <a href="#invoices">Invoices <span id="navInvoiceCount">0</span></a>
+        <a href="#expenses">Expenses <span id="navExpenseCount">0</span></a>
+        <a href="#close-pack">Close pack <span id="navPackCount">0</span></a>
+        <a href="/pro/workspace/">Pro control <span>Back</span></a>
+        <a href="/pro/apps/">Browse apps <span>Index</span></a>
+        <a href="/dashboard/">Account <span>Acct</span></a>
+      </nav>
+      <div class="books-side-box">
+        <strong>Honest boundary</strong>
+        <p>This shell organizes books, invoices, expenses, journals, and accountant handoff. It does not sync bank feeds, post to accounting systems, file tax, or remit funds.</p>
+      </div>
+      <div class="books-side-foot">
+        <a class="books-btn" href="/pro/apps/">Browse Pro Apps</a>
+        <a class="books-btn" href="/dashboard/">Account</a>
+        <a class="books-btn primary" href="/tools/invoice-generator/">Invoice tool</a>
+        <a class="books-btn" href="/tools/business-planner/">Business planner</a>
+      </div>
+    </aside>
+
+    <section class="books-main" aria-label="AfroBooks Finance OS dashboard">
+      <header class="books-topbar">
+        <div class="books-context">
+          <div class="books-field">
+            <label class="books-label" for="entitySelect">Business or client</label>
+            <select class="books-select" id="entitySelect">
+              <option value="sme">SME trading company</option>
+              <option value="freelancer">Freelancer book</option>
+              <option value="school">School or clinic placeholder</option>
+              <option value="ngo">NGO project book</option>
+              <option value="importer">Small importer book</option>
+            </select>
+          </div>
+          <div class="books-field">
+            <label class="books-label" for="currencySelect">Currency view</label>
+            <select class="books-select" id="currencySelect">
+              <option value="NGN">NGN - Nigeria naira</option>
+              <option value="KES">KES - Kenya shilling</option>
+              <option value="GHS">GHS - Ghana cedi</option>
+              <option value="ZAR">ZAR - South African rand</option>
+              <option value="XOF">XOF - West African CFA</option>
+              <option value="XAF">XAF - Central African CFA</option>
+              <option value="EGP">EGP - Egyptian pound</option>
+              <option value="USD">USD - hard currency view</option>
+            </select>
+          </div>
+          <div class="books-field">
+            <label class="books-label" for="periodSelect">Books period</label>
+            <select class="books-select" id="periodSelect">
+              <option value="2026-05">May 2026</option>
+              <option value="2026-06">June 2026</option>
+              <option value="2026-Q2">Q2 2026</option>
+              <option value="2026-YTD">2026 year to date</option>
+            </select>
+          </div>
+        </div>
+        <div class="books-actions">
+          <a class="books-btn" href="/pro/workspace/">Pro workspace</a>
+          <a class="books-btn" href="/pro/apps/">Browse apps</a>
+          <a class="books-btn" href="/dashboard/">Account</a>
+          <button class="books-btn" type="button" id="refreshBtn">Refresh</button>
+          <button class="books-btn warn" type="button" id="resetBtn">Reset local demo</button>
+          <button class="books-btn primary" type="button" id="exportPacketBtn">Export accountant packet</button>
+        </div>
+      </header>
+
+      <div class="books-content">
+        <section class="books-command-grid" id="overview" aria-label="Finance command center">
+          <article class="books-command">
+            <div class="books-title-row">
+              <div>
+                <div class="books-kicker">Cashflow snapshot</div>
+                <h1 class="books-title">AfroBooks Finance OS</h1>
+                <p class="books-subtitle">A Pro finance workflow shell for African SMEs, freelancers, accountants, schools, clinics, NGOs, and small importers. It tracks local demo books, invoices, expenses, payroll journals, receivables, payables, and accountant handoff without claiming bank sync or live accounting integrations.</p>
+              </div>
+              <span class="books-pill shell" id="modePill">localStorage only</span>
+            </div>
+            <div class="books-snapshot">
+              <div class="books-snap"><strong id="cashIn">0</strong><span>Cash in</span></div>
+              <div class="books-snap"><strong id="cashOut">0</strong><span>Cash out</span></div>
+              <div class="books-snap"><strong id="cashNet">0</strong><span>Net cashflow</span></div>
+              <div class="books-snap"><strong id="cashReview">0</strong><span>Review flags</span></div>
+            </div>
+          </article>
+          <article class="books-boundary">
+            <div>
+              <div class="books-kicker">Current product boundary</div>
+              <h2>Workflow shell, not a ledger sync</h2>
+            </div>
+            <p>AfroBooks prepares local draft records, monthly close notes, and accountant packets. It does not connect to banks, mobile money providers, live accounting platforms, or tax filing systems yet.</p>
+            <div class="books-actions">
+              <a class="books-btn" href="/tools/vat-calculator/">VAT calculator</a>
+              <a class="books-btn" href="/tools/staff-cost/">Staff cost</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="books-metrics" aria-label="Finance metrics">
+          <div class="books-metric"><strong id="metricInvoices">0</strong><span>Invoices</span><small>Local invoice batch</small></div>
+          <div class="books-metric"><strong id="metricExpenses">0</strong><span>Expenses</span><small>Manual and CSV demo rows</small></div>
+          <div class="books-metric"><strong id="metricPayroll">0</strong><span>Payroll journals</span><small>Local payroll journal imports</small></div>
+          <div class="books-metric"><strong id="metricReports">0</strong><span>Tax-ready reports</span><small>Draft reports only</small></div>
+          <div class="books-metric"><strong id="metricPackets">0</strong><span>Handoff packets</span><small>Accountant review packets</small></div>
+        </section>
+
+        <section class="books-panel" id="workflows" aria-labelledby="workflowTitle">
+          <div class="books-panel-head">
+            <div>
+              <div class="books-kicker">Starter workflows</div>
+              <h2 class="books-h2" id="workflowTitle">Finance operations workflow launcher</h2>
+              <p class="books-note">Each action writes a local demo record only. CSV import reads the file in the browser and does not upload it.</p>
+            </div>
+          </div>
+          <div class="books-panel-body">
+            <div class="books-workflows">
+              <article class="books-workflow">
+                <span class="books-pill open">Sales</span>
+                <h3>Create invoice batch</h3>
+                <p>Seed local invoices with mobile money, bank transfer, and cash collection labels.</p>
+                <button class="books-btn primary" type="button" id="invoiceBatchBtn">Create batch</button>
+              </article>
+              <article class="books-workflow">
+                <span class="books-pill cash">CSV</span>
+                <h3>Import expenses CSV</h3>
+                <p>Parse date, vendor, category, amount, payment rail, and notes into local expense rows.</p>
+                <button class="books-btn" type="button" id="importCsvBtn">Choose CSV</button>
+                <input class="books-hidden" id="expenseCsvInput" type="file" accept=".csv,text/csv">
+              </article>
+              <article class="books-workflow">
+                <span class="books-pill pending">Payroll</span>
+                <h3>Record payroll journal</h3>
+                <p>Use AfroPayroll local saves when present, otherwise create a demo salary journal.</p>
+                <button class="books-btn" type="button" id="payrollJournalBtn">Record journal</button>
+              </article>
+              <article class="books-workflow">
+                <span class="books-pill review">Close</span>
+                <h3>Prepare monthly close pack</h3>
+                <p>Generate a local close checklist for revenue, expenses, tax, payroll, and review flags.</p>
+                <button class="books-btn" type="button" id="closePackBtn">Prepare pack</button>
+              </article>
+              <article class="books-workflow">
+                <span class="books-pill shell">Handoff</span>
+                <h3>Export accountant packet</h3>
+                <p>Create a local accountant packet manifest with unresolved notes and draft report counts.</p>
+                <button class="books-btn" type="button" id="packetBtn">Export packet</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <div class="books-layout">
+          <div>
+            <section class="books-panel" id="invoices" aria-labelledby="invoiceTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Invoices</div>
+                  <h2 class="books-h2" id="invoiceTitle">Invoice pipeline</h2>
+                  <p class="books-note">Tracks draft, sent, paid, and overdue invoices for the local demo book.</p>
+                </div>
+                <a class="books-btn" href="/tools/invoice-generator/">Open invoice tool</a>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-table-wrap">
+                  <table class="books-table" aria-label="Invoices">
+                    <thead>
+                      <tr><th>Invoice</th><th>Client</th><th>Amount</th><th>Rail</th><th>Status</th><th>Due</th></tr>
+                    </thead>
+                    <tbody id="invoiceBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="books-panel" id="expenses" aria-labelledby="expenseTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Expenses</div>
+                  <h2 class="books-h2" id="expenseTitle">Expense register</h2>
+                  <p class="books-note">Designed for bank transfer, mobile money, card, supplier credit, and informal cash expenses that need accountant review.</p>
+                </div>
+                <button class="books-btn" type="button" id="addExpenseBtn">Add cash expense</button>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-table-wrap">
+                  <table class="books-table" aria-label="Expenses">
+                    <thead>
+                      <tr><th>Date</th><th>Vendor</th><th>Category</th><th>Amount</th><th>Rail</th><th>Review</th></tr>
+                    </thead>
+                    <tbody id="expenseBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="books-panel" aria-labelledby="toolsTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Linked tools</div>
+                  <h2 class="books-h2" id="toolsTitle">Existing finance work surfaces</h2>
+                  <p class="books-note">AfroBooks links into existing calculators and document tools while the Pro accounting backend is still pending.</p>
+                </div>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-tool-grid">
+                  <a class="books-tool" href="/tools/invoice-generator/"><strong>Invoice generator</strong><span>Create simple client invoices.</span></a>
+                  <a class="books-tool" href="/tools/proforma-invoice/"><strong>Proforma invoice</strong><span>Quote before final billing.</span></a>
+                  <a class="books-tool" href="/tools/freelance-invoice/"><strong>Freelance invoice</strong><span>Freelancer billing workflow.</span></a>
+                  <a class="books-tool" href="/tools/staff-cost/"><strong>Staff cost</strong><span>Payroll cost planning.</span></a>
+                  <a class="books-tool" href="/tools/afropayroll-os/workspace.html"><strong>AfroPayroll</strong><span>Payroll runs and journals.</span></a>
+                  <a class="books-tool" href="/tools/vat-calculator/"><strong>VAT calculator</strong><span>VAT estimate surface.</span></a>
+                  <a class="books-tool" href="/tools/business-planner/"><strong>Business planner</strong><span>Planning and reports.</span></a>
+                  <a class="books-tool" href="/tools/mobile-money-fees/"><strong>Mobile money fees</strong><span>Payment fee context.</span></a>
+                  <a class="books-tool" href="/tools/bank-charges/"><strong>Bank charges</strong><span>Bank cost context.</span></a>
+                  <a class="books-tool" href="/tools/payment-gateway/"><strong>Payment gateway</strong><span>Collection rail planning.</span></a>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="books-panel" id="receivables" aria-labelledby="recvTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Receivables and payables</div>
+                  <h2 class="books-h2" id="recvTitle">Aged position</h2>
+                  <p class="books-note">A local snapshot for review, not a bank-confirmed balance.</p>
+                </div>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-list" id="receivableList"></div>
+              </div>
+            </section>
+
+            <section class="books-panel" id="payroll-journals" aria-labelledby="payrollTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Payroll journal imports</div>
+                  <h2 class="books-h2" id="payrollTitle">Salary journals</h2>
+                  <p class="books-note">Reads only local AfroPayroll save signals until a real books API exists.</p>
+                </div>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-list" id="payrollList"></div>
+              </div>
+            </section>
+
+            <section class="books-panel" id="reports" aria-labelledby="reportTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Tax-ready reports</div>
+                  <h2 class="books-h2" id="reportTitle">Draft report pack</h2>
+                  <p class="books-note">Report names are workflow placeholders for accountant review.</p>
+                </div>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-list" id="reportList"></div>
+              </div>
+            </section>
+
+            <section class="books-panel" id="currency" aria-labelledby="currencyTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Currency view</div>
+                  <h2 class="books-h2" id="currencyTitle">Multi-currency operating view</h2>
+                  <p class="books-note">Manual currency labels only. No live FX or bank balance integration yet.</p>
+                </div>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-grid-2" id="currencyGrid"></div>
+              </div>
+            </section>
+
+            <section class="books-panel" id="close-pack" aria-labelledby="handoffTitle">
+              <div class="books-panel-head">
+                <div>
+                  <div class="books-kicker">Accountant handoff</div>
+                  <h2 class="books-h2" id="handoffTitle">Monthly close pack</h2>
+                  <p class="books-note">Packets are local manifests for review outside AfroBooks.</p>
+                </div>
+              </div>
+              <div class="books-panel-body">
+                <div class="books-list" id="handoffList"></div>
+                <div class="books-note-box books-spaced">No bank sync, live accounting integration, tax filing, or tax remittance is active in this shell.</div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var STORAGE_KEY = "afrobooks_finance_os_demo_v1";
+    var PAYROLL_SAVES_KEY = "afropayroll_pro_saved_runs";
+    var PAYROLL_DRAFT_KEY = "afropayroll_pro_workspace_preview";
+    var CURRENCIES = ["NGN", "KES", "GHS", "ZAR", "XOF", "XAF", "EGP", "USD"];
+
+    var els = {};
+
+    function byId(id) {
+      return document.getElementById(id);
+    }
+
+    function create(tag, className, content) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (content !== undefined && content !== null) node.textContent = String(content);
+      return node;
+    }
+
+    function clear(node) {
+      if (!node) return;
+      while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function readJson(key, fallback) {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (err) {
+        return fallback;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function asArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function text(value, fallback) {
+      value = value === undefined || value === null ? "" : String(value);
+      return value.trim() || fallback || "";
+    }
+
+    function number(value) {
+      var parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function todayIso() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function dateLabel(value) {
+      if (!value) return "-";
+      var date = new Date(value + "T00:00:00");
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+    }
+
+    function stampLabel(value) {
+      if (!value) return "Not generated";
+      var date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString(undefined, { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function money(value) {
+      var n = Math.round(number(value));
+      return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+
+    function pill(label, tone) {
+      return create("span", "books-pill " + (tone || ""), label);
+    }
+
+    function defaultState() {
+      return {
+        entity: "sme",
+        currency: "NGN",
+        period: "2026-05",
+        invoices: [],
+        expenses: [],
+        payrollJournals: [],
+        reports: [
+          { id: "profit-loss", title: "Profit and loss draft", status: "missing", note: "Needs invoice and expense rows before review." },
+          { id: "vat-summary", title: "VAT-ready summary", status: "missing", note: "Draft only. Does not file VAT." },
+          { id: "cash-book", title: "Cash book review", status: "open", note: "Separate bank, mobile money, and cash expense trails." }
+        ],
+        handoffs: []
+      };
+    }
+
+    var state = Object.assign(defaultState(), readJson(STORAGE_KEY, {}));
+    state.invoices = asArray(state.invoices);
+    state.expenses = asArray(state.expenses);
+    state.payrollJournals = asArray(state.payrollJournals);
+    state.reports = asArray(state.reports).length ? state.reports : defaultState().reports;
+    state.handoffs = asArray(state.handoffs);
+
+    function bindElements() {
+      [
+        "entitySelect", "currencySelect", "periodSelect", "refreshBtn", "resetBtn", "exportPacketBtn",
+        "invoiceBatchBtn", "importCsvBtn", "expenseCsvInput", "payrollJournalBtn", "closePackBtn", "packetBtn",
+        "addExpenseBtn", "cashIn", "cashOut", "cashNet", "cashReview", "metricInvoices", "metricExpenses",
+        "metricPayroll", "metricReports", "metricPackets", "navInvoiceCount", "navExpenseCount", "navPackCount",
+        "invoiceBody", "expenseBody", "receivableList", "payrollList", "reportList", "currencyGrid", "handoffList"
+      ].forEach(function (id) {
+        els[id] = byId(id);
+      });
+    }
+
+    function paymentRail(index) {
+      return ["mobile money", "bank transfer", "cash", "card", "supplier credit"][index % 5];
+    }
+
+    function createInvoiceBatch() {
+      var base = state.invoices.length + 1;
+      var customers = ["Clinic retainer", "School fees batch", "Importer supply", "NGO project", "Freelance client"];
+      for (var i = 0; i < 3; i += 1) {
+        state.invoices.push({
+          id: "INV-" + String(base + i).padStart(4, "0"),
+          client: customers[(base + i - 1) % customers.length],
+          amount: 125000 + (base + i) * 42000,
+          currency: state.currency,
+          rail: paymentRail(i),
+          status: i === 2 ? "overdue" : "open",
+          due: "2026-05-" + String(18 + i * 4).padStart(2, "0")
+        });
+      }
+      saveState();
+      renderAll();
+    }
+
+    function addCashExpense() {
+      state.expenses.push({
+        date: todayIso(),
+        vendor: "Cash market vendor",
+        category: "informal cash expense",
+        amount: 18500 + state.expenses.length * 2500,
+        currency: state.currency,
+        rail: "cash",
+        review: "receipt needed"
+      });
+      saveState();
+      renderAll();
+    }
+
+    function parseCsvLine(line) {
+      var cells = [];
+      var current = "";
+      var quoted = false;
+      for (var i = 0; i < line.length; i += 1) {
+        var ch = line.charAt(i);
+        if (ch === '"') {
+          quoted = !quoted;
+        } else if (ch === "," && !quoted) {
+          cells.push(current.trim());
+          current = "";
+        } else {
+          current += ch;
+        }
+      }
+      cells.push(current.trim());
+      return cells;
+    }
+
+    function importExpensesCsv(file) {
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var lines = String(reader.result || "").split(/\r?\n/).filter(function (line) { return line.trim(); });
+        var rows = lines.slice(0, 30);
+        if (rows.length && /date|vendor|amount/i.test(rows[0])) rows = rows.slice(1);
+        rows.forEach(function (line, index) {
+          var cells = parseCsvLine(line);
+          state.expenses.push({
+            date: text(cells[0], todayIso()),
+            vendor: text(cells[1], "CSV vendor " + (index + 1)),
+            category: text(cells[2], "operating expense"),
+            amount: number(cells[3]) || 1000,
+            currency: text(cells[4], state.currency),
+            rail: text(cells[5], "bank transfer"),
+            review: text(cells[6], "import review")
+          });
+        });
+        saveState();
+        renderAll();
+        els.expenseCsvInput.value = "";
+      };
+      reader.readAsText(file);
+    }
+
+    function payrollSignals() {
+      var saves = asArray(readJson(PAYROLL_SAVES_KEY, []));
+      var draft = readJson(PAYROLL_DRAFT_KEY, null);
+      var latest = saves[0] || draft || null;
+      var rows = 0;
+      var total = 0;
+      saves.forEach(function (run) {
+        asArray(run && run.rows).forEach(function (row) {
+          rows += 1;
+          total += number(row.gross || row.previewGross || row.net || row.netPay);
+        });
+      });
+      if (draft && asArray(draft.rows).length) {
+        asArray(draft.rows).forEach(function (row) {
+          rows += 1;
+          total += number(row.gross || row.previewGross || row.net || row.netPay);
+        });
+      }
+      return { saves: saves.length, rows: rows, total: total, latest: latest };
+    }
+
+    function recordPayrollJournal() {
+      var signal = payrollSignals();
+      state.payrollJournals.push({
+        id: "PAY-JRN-" + String(state.payrollJournals.length + 1).padStart(3, "0"),
+        period: state.period,
+        amount: signal.total || 245000,
+        currency: state.currency,
+        source: signal.rows ? "AfroPayroll local signal" : "demo payroll journal",
+        rows: signal.rows,
+        status: signal.rows ? "ready" : "review"
+      });
+      saveState();
+      renderAll();
+    }
+
+    function prepareMonthlyClosePack() {
+      state.reports = [
+        { id: "profit-loss", title: "Profit and loss draft", status: state.invoices.length || state.expenses.length ? "ready" : "missing", note: "Revenue, expenses, payroll journals, and cash notes prepared for review." },
+        { id: "vat-summary", title: "VAT-ready summary", status: "review", note: "Draft VAT summary. It does not file or remit VAT." },
+        { id: "cash-book", title: "Cash book review", status: "review", note: "Cash, mobile money, and bank transfer rails need accountant review." },
+        { id: "payables", title: "Payables and supplier credit", status: "open", note: "Supplier credit and unpaid expenses need ageing checks." }
+      ];
+      saveState();
+      renderAll();
+    }
+
+    function exportAccountantPacket() {
+      state.handoffs.push({
+        id: "PACK-" + String(state.handoffs.length + 1).padStart(3, "0"),
+        createdAt: new Date().toISOString(),
+        title: state.period + " accountant packet",
+        note: state.invoices.length + " invoices, " + state.expenses.length + " expenses, " + state.payrollJournals.length + " payroll journals, " + reviewFlagCount() + " review flags."
+      });
+      saveState();
+      renderAll();
+    }
+
+    function resetLocalDemo() {
+      localStorage.removeItem(STORAGE_KEY);
+      state = defaultState();
+      saveState();
+      renderAll();
+    }
+
+    function totalInvoices() {
+      return state.invoices.reduce(function (sum, item) { return sum + number(item.amount); }, 0);
+    }
+
+    function totalExpenses() {
+      return state.expenses.reduce(function (sum, item) { return sum + number(item.amount); }, 0) +
+        state.payrollJournals.reduce(function (sum, item) { return sum + number(item.amount); }, 0);
+    }
+
+    function reviewFlagCount() {
+      var flags = 0;
+      state.invoices.forEach(function (item) {
+        if (item.status === "overdue") flags += 1;
+      });
+      state.expenses.forEach(function (item) {
+        if (/cash|receipt|review/i.test(item.rail + " " + item.review)) flags += 1;
+      });
+      state.payrollJournals.forEach(function (item) {
+        if (item.status !== "ready") flags += 1;
+      });
+      return flags;
+    }
+
+    function renderSelectors() {
+      els.entitySelect.value = state.entity || "sme";
+      els.currencySelect.value = state.currency || "NGN";
+      els.periodSelect.value = state.period || "2026-05";
+    }
+
+    function renderMetrics() {
+      var cashIn = totalInvoices();
+      var cashOut = totalExpenses();
+      els.cashIn.textContent = state.currency + " " + money(cashIn);
+      els.cashOut.textContent = state.currency + " " + money(cashOut);
+      els.cashNet.textContent = state.currency + " " + money(cashIn - cashOut);
+      els.cashReview.textContent = String(reviewFlagCount());
+      els.metricInvoices.textContent = String(state.invoices.length);
+      els.metricExpenses.textContent = String(state.expenses.length);
+      els.metricPayroll.textContent = String(state.payrollJournals.length);
+      els.metricReports.textContent = String(state.reports.length);
+      els.metricPackets.textContent = String(state.handoffs.length);
+      els.navInvoiceCount.textContent = String(state.invoices.length);
+      els.navExpenseCount.textContent = String(state.expenses.length);
+      els.navPackCount.textContent = String(state.handoffs.length);
+    }
+
+    function tableEmpty(tbody, cols, message) {
+      var tr = document.createElement("tr");
+      var td = document.createElement("td");
+      td.colSpan = cols;
+      td.appendChild(create("div", "books-empty", message));
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    }
+
+    function renderInvoices() {
+      clear(els.invoiceBody);
+      if (!state.invoices.length) {
+        tableEmpty(els.invoiceBody, 6, "No local invoices yet. Use Create invoice batch to seed a demo pipeline.");
+        return;
+      }
+      state.invoices.forEach(function (item) {
+        var tr = document.createElement("tr");
+        [
+          item.id,
+          item.client,
+          item.currency + " " + money(item.amount),
+          item.rail,
+          item.status,
+          dateLabel(item.due)
+        ].forEach(function (value, index) {
+          var td = document.createElement("td");
+          if (index === 0) td.appendChild(create("strong", "", value));
+          else if (index === 4) td.appendChild(pill(value, value));
+          else td.textContent = value;
+          tr.appendChild(td);
+        });
+        els.invoiceBody.appendChild(tr);
+      });
+    }
+
+    function renderExpenses() {
+      clear(els.expenseBody);
+      if (!state.expenses.length) {
+        tableEmpty(els.expenseBody, 6, "No local expenses yet. Add a cash expense or import a CSV file.");
+        return;
+      }
+      state.expenses.forEach(function (item) {
+        var tr = document.createElement("tr");
+        [
+          dateLabel(item.date),
+          item.vendor,
+          item.category,
+          item.currency + " " + money(item.amount),
+          item.rail,
+          item.review
+        ].forEach(function (value, index) {
+          var td = document.createElement("td");
+          if (index === 4) td.appendChild(pill(value, /cash/i.test(value) ? "cash" : "open"));
+          else if (index === 5) td.appendChild(pill(value, /needed|review/i.test(value) ? "review" : "ready"));
+          else td.textContent = value;
+          tr.appendChild(td);
+        });
+        els.expenseBody.appendChild(tr);
+      });
+    }
+
+    function renderReceivables() {
+      clear(els.receivableList);
+      var openInvoices = state.invoices.filter(function (item) { return item.status !== "paid"; });
+      var unpaidExpenses = state.expenses.filter(function (item) { return /supplier credit|review|receipt/i.test(item.rail + " " + item.review); });
+      var rows = [
+        { title: "Receivables", amount: openInvoices.reduce(function (sum, item) { return sum + number(item.amount); }, 0), meta: openInvoices.length + " open invoices", tone: openInvoices.length ? "open" : "ready" },
+        { title: "Payables", amount: unpaidExpenses.reduce(function (sum, item) { return sum + number(item.amount); }, 0), meta: unpaidExpenses.length + " expense rows need review", tone: unpaidExpenses.length ? "review" : "ready" },
+        { title: "Informal cash review", amount: state.expenses.filter(function (item) { return /cash/i.test(item.rail); }).length, meta: "Cash rows need receipt or owner note", tone: "cash", countOnly: true }
+      ];
+      rows.forEach(function (item) {
+        var row = create("article", "books-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "books-row-title", item.title));
+        copy.appendChild(create("div", "books-row-meta", item.meta));
+        row.appendChild(copy);
+        var actions = create("div", "books-row-actions");
+        actions.appendChild(create("strong", "", item.countOnly ? String(item.amount) : state.currency + " " + money(item.amount)));
+        actions.appendChild(pill(item.tone === "ready" ? "clear" : "review", item.tone));
+        row.appendChild(actions);
+        els.receivableList.appendChild(row);
+      });
+    }
+
+    function renderPayroll() {
+      clear(els.payrollList);
+      if (!state.payrollJournals.length) {
+        els.payrollList.appendChild(create("div", "books-empty", "No payroll journals yet. Record payroll journal to bring payroll cost into the local book."));
+        return;
+      }
+      state.payrollJournals.slice().reverse().forEach(function (item) {
+        var row = create("article", "books-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "books-row-title", item.id));
+        copy.appendChild(create("div", "books-row-meta", item.source + " - " + item.rows + " payroll rows - " + item.period));
+        row.appendChild(copy);
+        var actions = create("div", "books-row-actions");
+        actions.appendChild(create("strong", "", item.currency + " " + money(item.amount)));
+        actions.appendChild(pill(item.status, item.status));
+        row.appendChild(actions);
+        els.payrollList.appendChild(row);
+      });
+    }
+
+    function renderReports() {
+      clear(els.reportList);
+      state.reports.forEach(function (item) {
+        var row = create("article", "books-report");
+        var top = create("div", "books-title-row");
+        top.appendChild(create("h3", "", item.title));
+        top.appendChild(pill(item.status, item.status));
+        row.appendChild(top);
+        row.appendChild(create("p", "", item.note));
+        els.reportList.appendChild(row);
+      });
+    }
+
+    function renderCurrency() {
+      clear(els.currencyGrid);
+      CURRENCIES.forEach(function (currency) {
+        var card = create("article", "books-currency");
+        card.appendChild(create("h3", "", currency));
+        var isActive = currency === state.currency;
+        card.appendChild(create("p", "", isActive ? "Active manual view. No live FX or bank balances." : "Available label for multi-currency records."));
+        card.appendChild(pill(isActive ? "active" : "manual", isActive ? "open" : "shell"));
+        els.currencyGrid.appendChild(card);
+      });
+    }
+
+    function renderHandoffs() {
+      clear(els.handoffList);
+      if (!state.handoffs.length) {
+        els.handoffList.appendChild(create("div", "books-empty", "No accountant packet manifests yet. Prepare a monthly close pack, then export a packet."));
+        return;
+      }
+      state.handoffs.slice().reverse().forEach(function (item) {
+        var row = create("article", "books-handoff");
+        var top = create("div", "books-title-row");
+        top.appendChild(create("h3", "", item.title));
+        top.appendChild(pill("draft packet", "shell"));
+        row.appendChild(top);
+        row.appendChild(create("p", "", item.note + " Generated " + stampLabel(item.createdAt) + "."));
+        els.handoffList.appendChild(row);
+      });
+    }
+
+    function renderAll() {
+      renderSelectors();
+      renderMetrics();
+      renderInvoices();
+      renderExpenses();
+      renderReceivables();
+      renderPayroll();
+      renderReports();
+      renderCurrency();
+      renderHandoffs();
+    }
+
+    function boot() {
+      bindElements();
+      renderAll();
+      els.entitySelect.addEventListener("change", function () {
+        state.entity = els.entitySelect.value;
+        saveState();
+      });
+      els.currencySelect.addEventListener("change", function () {
+        state.currency = els.currencySelect.value;
+        saveState();
+        renderAll();
+      });
+      els.periodSelect.addEventListener("change", function () {
+        state.period = els.periodSelect.value;
+        saveState();
+      });
+      els.refreshBtn.addEventListener("click", renderAll);
+      els.resetBtn.addEventListener("click", resetLocalDemo);
+      els.invoiceBatchBtn.addEventListener("click", createInvoiceBatch);
+      els.importCsvBtn.addEventListener("click", function () { els.expenseCsvInput.click(); });
+      els.expenseCsvInput.addEventListener("change", function () { importExpensesCsv(els.expenseCsvInput.files[0]); });
+      els.addExpenseBtn.addEventListener("click", addCashExpense);
+      els.payrollJournalBtn.addEventListener("click", recordPayrollJournal);
+      els.closePackBtn.addEventListener("click", prepareMonthlyClosePack);
+      els.packetBtn.addEventListener("click", exportAccountantPacket);
+      els.exportPacketBtn.addEventListener("click", exportAccountantPacket);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+  })();
+  </script>
+</body>
+</html>

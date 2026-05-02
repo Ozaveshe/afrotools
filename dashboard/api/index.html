@@ -210,14 +210,14 @@
             <div style="font-size:3rem;margin-bottom:1rem;">🔑</div>
             <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;color:#0A1628;">Developer Dashboard</h1>
             <p style="color:#64748b;margin-bottom:2rem;font-size:0.95rem;">Sign in to manage your API keys, view usage, and access the AfroTools API.</p>
-            <button onclick="AfroAuth.openModal()" style="max-width:300px;margin:0 auto;display:block;font-size:1rem;padding:0.875rem 2rem;border-radius:12px;background:#007AFF;color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;">
+            <a href="/auth/?mode=login&amp;intent=api-key&amp;next=/dashboard/api/" style="max-width:300px;margin:0 auto;display:block;font-size:1rem;padding:0.875rem 2rem;border-radius:12px;background:#007AFF;color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;">
                 Sign in to get started
-            </button>
+            </a>
             <p style="margin-top:1.5rem;font-size:0.85rem;color:#94a3b8;">Free tier: 100 API calls/day. No credit card required.</p>
         </div>
 
         <!-- Dashboard content -->
-        <div id="dashboardSection">
+        <div id="dashboardSection" hidden>
             <div class="page-header">
                 <h1>API Keys</h1>
                 <button class="btn-primary" onclick="openCreateKeyModal()">+ Create New Key</button>
@@ -334,6 +334,7 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/afro-auth.js?v=6"></script>
+    <script src="/assets/js/auth-cookie-upgrade.js?v=2"></script>
     <script src="/assets/js/components/navbar.min.js?v=12cea766"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
@@ -375,13 +376,29 @@
         }
 
         function showAuth() {
-            document.getElementById('authSection').style.display = 'block';
-            document.getElementById('dashboardSection').classList.remove('active');
+            var authSection = document.getElementById('authSection');
+            var dashboardSection = document.getElementById('dashboardSection');
+            if (authSection) {
+                authSection.style.display = 'block';
+                authSection.hidden = false;
+            }
+            if (dashboardSection) {
+                dashboardSection.classList.remove('active');
+                dashboardSection.hidden = true;
+            }
         }
 
         function showDashboard() {
-            document.getElementById('authSection').style.display = 'none';
-            document.getElementById('dashboardSection').classList.add('active');
+            var authSection = document.getElementById('authSection');
+            var dashboardSection = document.getElementById('dashboardSection');
+            if (authSection) {
+                authSection.style.display = 'none';
+                authSection.hidden = true;
+            }
+            if (dashboardSection) {
+                dashboardSection.hidden = false;
+                dashboardSection.classList.add('active');
+            }
             loadKeys();
             loadUsage();
         }

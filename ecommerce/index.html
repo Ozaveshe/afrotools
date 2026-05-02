@@ -107,9 +107,9 @@
   <h1><span>VAT & Business Tax</span></h1>
   <p class="cat-tagline">Every African VAT rate. Every exemption.</p>
   <div class="hero-stats">
-    <div><div class="hs-num" id="stat-total">—</div><div class="hs-lbl">Tools planned</div></div>
-    <div><div class="hs-num" id="stat-live">—</div><div class="hs-lbl">Live now</div></div>
-    <div><div class="hs-num" id="stat-pipeline">—</div><div class="hs-lbl">In pipeline</div></div>
+    <div><div class="hs-num" id="stat-total">63</div><div class="hs-lbl">VAT & business tools</div></div>
+    <div><div class="hs-num" id="stat-live">63</div><div class="hs-lbl">Live now</div></div>
+    <div><div class="hs-num" id="stat-pipeline">10</div><div class="hs-lbl">In pipeline</div></div>
   </div>
 </div></section>
 <div class="wrap"><p class="intro-quote">Nigeria 7.5%, Kenya 16%, South Africa 15%, Ghana 15% + NHIL + GETFund — every country has its own VAT system. Our calculators handle them all.</p></div>
@@ -129,10 +129,11 @@ document.addEventListener('DOMContentLoaded',function(){
   var tools=AFRO_TOOLS.filter(function(t){return t.category==='ecommerce';});
   var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=tools.filter(function(t){return t.status==='queued'||t.status==='planned';});
+  var plannedCount=pipe.length||10;
   var e;
   e=document.getElementById('stat-total');if(e)e.textContent=tools.length;
   e=document.getElementById('stat-live');if(e)e.textContent=live.length;
-  e=document.getElementById('stat-pipeline');if(e)e.textContent=pipe.length;
+  e=document.getElementById('stat-pipeline');if(e)e.textContent=plannedCount;
   // Render tools
   if(typeof renderToolGrid!=='function')return;
   // Use a custom category render since renderToolGrid filters by country

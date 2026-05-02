@@ -65,8 +65,9 @@ Use this for finance, tax, business, tool, and country guides that should live u
    - link to the relevant AfroTools calculator or tool
    - add related articles
 5. Add the new card to `blog/index.html`.
-6. Put the newest articles near the top of the article grid.
-7. Only add to the featured row when the topic is strategically important.
+6. Update or regenerate `blog/feed.xml` so RSS contains the new article. Use `npm run blog:feed` for this instead of hand-editing RSS.
+7. Put the newest articles near the top of the article grid.
+8. Only add to the featured row when the topic is strategically important.
 
 ### Main blog content standards
 
@@ -83,6 +84,9 @@ Use this for finance, tax, business, tool, and country guides that should live u
 
 ### Main blog validation
 
+- Confirm `blog/feed.xml` contains the new article slug when the post is meant to be discoverable through RSS.
+- Run `npm run blog:feed:check` to catch feed drift without writing files.
+- Run `npm run blog:verify` for the static blog backend checks: hub count, duplicate cards, canonical routes, JSON-LD validity, RSS item links, and latest-post feed coverage.
 - `npm run check-links` for new article paths and hub links
 - `npm test` when the change is broader than one article card
 
@@ -207,4 +211,5 @@ Each batch should leave behind:
 - the chosen slug
 - the topic and angle
 - source notes for time-sensitive claims
+- RSS/feed inclusion for static main-blog posts
 - any blocker for items that could not be published live

@@ -60,10 +60,12 @@
   <!-- Full CSS loaded async — non-blocking -->
   <link rel="preload" href="/assets/css/tokens.min.css?v=6977389f" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="/assets/css/global.min.css?v=c94dde91" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/assets/css/design-system.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="/assets/css/paye-tool.css?v=e597e3a3" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
+    <link rel="stylesheet" href="/assets/css/design-system.min.css">
     <link rel="stylesheet" href="/assets/css/paye-tool.css?v=e597e3a3">
   </noscript>
 
@@ -1947,7 +1949,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!isLoggedIn()){
       if(typeof AfroAuth!=='undefined'&&AfroAuth.openModal){
         AfroAuth.openModal('login',function(){updateSaveUI();});
-      }else{window.location.href='/dashboard/';}
+      }else{window.location.href='/auth/?mode=login&next=/dashboard/';}
       return;
     }
     try{

@@ -88,15 +88,21 @@
 # Creator Kit — SEO-friendly share URLs
 /tools/creator-kit/view/:token  /tools/creator-kit/view.html?token=:token  200
 
-# Login redirects to dashboard
-/login    /dashboard/   301
-/login/   /dashboard/   301
-/signin   /dashboard/   301
-/signin/  /dashboard/   301
+# Canonical account entrypoints
+/login    /auth/?mode=login&next=/dashboard/   301
+/login/   /auth/?mode=login&next=/dashboard/   301
+/signin   /auth/?mode=login&next=/dashboard/   301
+/signin/  /auth/?mode=login&next=/dashboard/   301
+/signup   /auth/?mode=signup&next=/dashboard/  301
+/signup/  /auth/?mode=signup&next=/dashboard/  301
 
 # Vault shortcut
 /vault    /dashboard/vault/  301
 /vault/   /dashboard/vault/  301
+
+# Canonical tool directory
+/all-tools   /tools/  301
+/all-tools/  /tools/  301
 
 # Admin home → Mission Control
 /admin                /mc-7a2f9x.html  301
@@ -1248,7 +1254,9 @@
 /angola/ao-paye.html  /angola/ao-paye  301
 /angola/ao-vat.html  /angola/ao-vat  301
 /api/pricing.html  /api/pricing  301
-/auth/login.html  /auth/login  301
+/auth/login.html  /auth/?mode=login&next=/dashboard/  301
+/auth/login       /auth/?mode=login&next=/dashboard/  301
+/auth/login/      /auth/?mode=login&next=/dashboard/  301
 /benin/bj-paye.html  /benin/bj-paye  301
 /benin/bj-vat.html  /benin/bj-vat  301
 /botswana/bw-paye.html  /botswana/bw-paye  301

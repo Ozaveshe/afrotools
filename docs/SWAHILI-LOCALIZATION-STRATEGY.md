@@ -4,7 +4,7 @@
 
 This document is the operating system for AfroTools Swahili expansion.
 
-The goal is not "translate all 2,550+ tools." The goal is to turn Swahili into a strong East African product surface with real acquisition value, strong local-language SEO, and a batch process that agents can actually finish.
+The goal is not "translate all 2,594+ tools." The goal is to turn Swahili into a strong East African product surface with real acquisition value, strong local-language SEO, and a batch process that agents can actually finish.
 
 ## Why This Matters
 
@@ -442,6 +442,19 @@ Why this order:
 - the southern cluster extends the Zambia, Malawi, Mozambique, and South Africa salary graph cleanly
 - the Francophone and Central cluster is valuable, but should ride on a more mature Sw salary-hub process
 - the North Africa follow-on batch should happen after the current Morocco pattern is proven stable in multiple adjacent markets
+
+
+### Construction, Engineering, CAD, and Built Environment Pattern
+
+Use `/sw/ujenzi-na-uhandisi/` as the durable Swahili hub for construction, engineering, CAD, floor planning, BOQ, quantities, structural checks, electrical load, concrete, paint, tiles, roofing, water tanks, boreholes, rebar, generator sizing, septic tanks, fencing, pool cost, and architectural fees.
+
+Group the hub in this order: CAD, drawings and floor planning; building cost, BOQ, quantities and architectural fees; structural, rebar, concrete and electrical load; paint, tiles, roofing, fencing and finishes; water tanks, boreholes, septic tanks, pools and site services; generator sizing and links to energy/solar tools; then cross-links to property, permits, PDF/export tools, SME budgeting, VAT/TIN, and developer/design surfaces.
+
+Retain useful terms when they match real forms, drawings or search behavior: CAD, AfroDraft, floor planner, BOQ, Bill of Quantities, structural, load, kW, kVA, rebar, nondo, concrete, cement, aggregate, roofing, borehole, septic tank, generator, architectural fee, PDF, DXF, SVG, PNG and export. Explain them in natural Kiswahili around the retained term.
+
+`/sw/nyumba-na-ardhi/` remains the property, land, permit and renovation surface. `/sw/nishati-na-huduma/` remains the energy, solar, utility, generator-fuel and battery surface. Construction pages should link to those surfaces instead of duplicating solar calculators, home-renovation pages, building-permit pages, land/title pages or utility tools.
+
+Never overclaim professional certification, engineering approval, code compliance, planning approval, structural safety, permit acceptance, exact market prices, supplier availability, contractor quotes, generator sizing accuracy or export fidelity. Structural and electrical pages must clearly say they are planning aids and not substitutes for licensed engineers, electricians, architects, quantity surveyors or local authorities.
 
 ## Swahili SEO Playbook
 
@@ -995,3 +1008,11 @@ Never claim registration approval, name availability, fee accuracy, filing accep
 - Keep ownership boundaries clear: fintech keeps mobile money and payment-fee tools, developer keeps USSD builders and simulators, government keeps ID/KYC/civic documents, and travel/transport keeps travel logistics. Telecom links to those surfaces without duplicating them.
 - Retain search-useful terms where they match provider forms or user search: `SIM`, `eSIM`, `USSD`, `airtime`, `data bundle`, `MTN`, `Airtel`, `Safaricom`, `Vodacom`, `Glo`, `Orange`, `Starlink`, `ISP`, `fiber/fibre`, `LTE`, `5G`, `VSAT`, `Mbps`, `latency`, `roaming`, `bulk SMS`, `WhatsApp Business API`, `KYC`, `NIN`, and `BVN`, with natural Kiswahili explanations.
 - Do not overclaim live data-plan prices, bundle validity, coverage, network speed, Starlink availability, ISP guarantees, TV package prices, roaming rates, SIM approval outcomes, number-porting timelines, or WhatsApp/SMS provider pricing. Use paired English telecom pages for source behavior, scripts, provider framing, country coverage, and disclaimer posture.
+
+### Language, Translation, Transliteration, and African Names Pattern
+
+- `/sw/lugha-na-tafsiri/` is the durable Swahili language and translation hub.
+- Grouping order: Swahili, Yoruba, Hausa, Igbo, Amharic, and Zulu translators; Nigerian Pidgin and Francophone African French; Arabic numerals and transliteration; African name meanings; then links to PDF translation, education, culture, government documents, creator writing, and developer text utilities.
+- Retain search-useful terms where helpful: translation, translator, phrasebook, tone marks, Pidgin, Francophone Africa, Arabic-Indic numerals, transliteration, romanization, Ge'ez, Tifinagh, Unicode, script, pronunciation, and name meaning.
+- PDF translation remains under the Document/PDF workspace, medical report translation remains under health, and baby names/cultural names remain linked from culture rather than duplicated here.
+- Do not claim perfect translation quality, certified translation, legal/medical accuracy, school or immigration acceptance, or final cultural authority. Encourage users to verify with native speakers, qualified translators, family/community authorities, schools, agencies, or professionals when decisions matter.

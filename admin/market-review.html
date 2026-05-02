@@ -51,7 +51,7 @@ body{background:#f6f8fb}
   <div class="mr-banner">
     <h1>AfroPoints Market Review</h1>
     <p>Approve or reject submissions, review payout requests, and qualify buyer leads from one admin surface.</p>
-    <div class="mr-auth"><button id="loginBtn" class="mr-btn">Sign in</button></div>
+    <div class="mr-auth"><a id="loginBtn" class="mr-btn" href="/auth/?mode=login&amp;next=/admin/market-review.html">Sign in</a></div>
   </div>
   <div class="mr-summary">
     <div class="mr-stat"><strong>Pending submissions</strong><span id="summarySubmissions">0</span></div>
@@ -228,9 +228,10 @@ body{background:#f6f8fb}
     }
   });
 
-  document.getElementById('loginBtn').addEventListener('click', function () {
-    if (window.AfroAuth && typeof window.AfroAuth.login === 'function') {
-      window.AfroAuth.login();
+  document.getElementById('loginBtn').addEventListener('click', function (event) {
+    if (window.AfroAuth && typeof window.AfroAuth.openModal === 'function') {
+      event.preventDefault();
+      window.AfroAuth.openModal();
     }
   });
 

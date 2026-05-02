@@ -25,11 +25,13 @@
   <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/design-system.css?v=8c8b64ec">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=6977389f">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=c94dde91">
   <link rel="stylesheet" href="/assets/css/agriculture-taxonomy.css?v=01f9b3bb">
+  <link rel="stylesheet" href="/assets/css/agriculture-hub-polish.css?v=20260502">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -55,32 +57,54 @@
   <div class="agri-shell">
     <header class="agri-hero">
       <div class="agri-hero__inner">
-        <p class="agri-breadcrumb"><a href="/">Home</a> / <span aria-current="page">Agriculture</span></p>
-        <span class="agri-eyebrow">English Agriculture IA</span>
-        <h1>Browse Agriculture through one shared taxonomy.</h1>
-        <p>
-          AfroTools Agriculture is now organized by workflow instead of one oversized category page. Start with flagship tools,
-          follow common farm workflows, jump into real bucket hubs, or search the full registry explorer when you need something specific.
-        </p>
-        <div class="agri-stats">
+        <div class="agri-hero__grid">
+          <div class="agri-hero__copy">
+            <p class="agri-breadcrumb"><a href="/">Home</a> / <span aria-current="page">Agriculture</span></p>
+            <span class="agri-eyebrow">Farm operating layer</span>
+            <h1>Plan crops, costs, livestock, and market moves from one farm cockpit.</h1>
+            <p>
+              Start with the question in front of you: crop yield, input costs, irrigation, livestock, payroll, trade, or agribusiness margins.
+              The Agriculture hub now routes those jobs into connected workflows instead of one oversized list.
+            </p>
+            <div class="agri-hero__actions" aria-label="Agriculture hub shortcuts">
+              <a class="agri-hero__primary" href="#flagship-tools">Open flagship tools</a>
+              <a class="agri-hero__secondary" href="#agri-explorer">Search all tools</a>
+            </div>
+          </div>
+
+          <aside class="agri-hero-card" aria-label="Agriculture workflow preview">
+            <img src="/assets/img/tools/farm-budget.webp" alt="Farm planning dashboard with fields, budget charts, and agriculture inputs" width="800" height="450" loading="eager">
+            <div class="agri-hero-card__body">
+              <span class="agri-hero-card__kicker">Best first workflow</span>
+              <h2>Budget the season before the season budgets you.</h2>
+              <div class="agri-hero-card__steps">
+                <a href="/tools/farm-budget/">Farm budget</a>
+                <a href="/tools/crop-yield-estimator/">Yield estimate</a>
+                <a href="/tools/agric-profit/">Profit check</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="agri-stats" aria-label="Agriculture hub coverage">
           <div class="agri-stat">
             <span class="agri-stat__value" data-agri-stat="total-tools">447</span>
-            <span class="agri-stat__label">Registry-Backed Tools</span>
+            <span class="agri-stat__label">Mapped Tools</span>
           </div>
           <div class="agri-stat">
             <span class="agri-stat__value" data-agri-stat="bucket-count">8</span>
-            <span class="agri-stat__label">Top-Level Buckets</span>
+            <span class="agri-stat__label">Workflow Buckets</span>
           </div>
           <div class="agri-stat">
             <span class="agri-stat__value" data-agri-stat="zero-gap">0</span>
-            <span class="agri-stat__label">Missing or Duplicate Assignments</span>
+            <span class="agri-stat__label">Unmapped Tools</span>
           </div>
         </div>
       </div>
     </header>
 
     <main class="agri-main">
-      <section class="agri-section">
+      <section class="agri-section" id="flagship-tools">
         <div class="agri-section__header">
           <p class="agri-section__eyebrow">Start Here</p>
           <h2 class="agri-section__title">Flagship Agriculture tools</h2>
@@ -93,7 +117,7 @@
         </div>
       </section>
 
-      <section class="agri-section">
+      <section class="agri-section" id="farm-workflows">
         <div class="agri-section__header">
           <p class="agri-section__eyebrow">High-Value Workflows</p>
           <h2 class="agri-section__title">Common journeys, not just tool names</h2>
@@ -106,7 +130,7 @@
         </div>
       </section>
 
-      <section class="agri-section">
+      <section class="agri-section" id="bucket-hubs">
         <div class="agri-section__header">
           <p class="agri-section__eyebrow">Bucket Hubs</p>
           <h2 class="agri-section__title">Eight real sub-hubs for Agriculture</h2>
@@ -120,7 +144,7 @@
         </div>
       </section>
 
-      <section class="agri-section">
+      <section class="agri-section" id="agri-explorer">
         <div class="agri-section__header">
           <p class="agri-section__eyebrow">Full Explorer</p>
           <h2 class="agri-section__title">Search the full Agriculture registry</h2>
@@ -140,7 +164,7 @@
             </div>
             <div class="agri-filter-chips" data-agri-filter-chips></div>
           </div>
-          <p class="agri-results-meta" data-agri-results-count>Loading tools…</p>
+          <p class="agri-results-meta" data-agri-results-count>Loading tools...</p>
           <div class="agri-grid" data-agri-explorer></div>
           <p class="agri-empty" data-agri-empty hidden>No Agriculture tools match the current filter.</p>
           <button class="agri-load-more" data-agri-load-more type="button">Load more tools</button>

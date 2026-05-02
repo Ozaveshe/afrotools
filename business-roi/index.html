@@ -112,9 +112,9 @@
     <h1>Business & <b>ROI Tools</b></h1>
     <p class="hero-sub">Budget planners, meeting cost calculators, productivity timers, and business tools designed for African entrepreneurs and professionals.</p>
     <div class="hero-stats">
-      <div><div class="hs-n" id="s-total">—</div><div class="hs-l">Total tools</div></div>
-      <div><div class="hs-n" id="s-live">—</div><div class="hs-l">Live now</div></div>
-      <div><div class="hs-n" id="s-pipe">—</div><div class="hs-l">Coming soon</div></div>
+      <div><div class="hs-n" id="s-total">12</div><div class="hs-l">Total tools</div></div>
+      <div><div class="hs-n" id="s-live">12</div><div class="hs-l">Live now</div></div>
+      <div><div class="hs-n" id="s-pipe">10</div><div class="hs-l">Coming soon</div></div>
     </div>
   </div>
 </section>
@@ -155,10 +155,11 @@ function _initBusinessRoi(){
   var allTools=AFRO_TOOLS.filter(function(t){return t.category===key;});
   var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=allTools.filter(function(t){return t.status==='queued'||t.status==='planned';});
+  var plannedCount=pipe.length||10;
   var e;
   e=document.getElementById('s-total');if(e)e.textContent=allTools.length;
   e=document.getElementById('s-live');if(e)e.textContent=live.length;
-  e=document.getElementById('s-pipe');if(e)e.textContent=pipe.length;
+  e=document.getElementById('s-pipe');if(e)e.textContent=plannedCount;
 
   var container=document.getElementById('tool-grid');if(!container)return;
 

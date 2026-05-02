@@ -29,6 +29,7 @@ const BUNDLE_DEFS = {
     'assets/js/lib/dark-mode.js',
     'assets/js/lib/a11y.js',
     'assets/js/components/cookie-consent.js',
+    'assets/js/components/ai-consent.js',
   ],
   'tool-page': [
     'assets/js/lib/save-state.js',
@@ -47,6 +48,9 @@ const BUNDLE_DEFS = {
 };
 
 const LEGACY_BUNDLE_ALIASES = {
+  core: [
+    'core.6b2634cc.min.js',
+  ],
   // Some generated and country-level salary/tax pages still reference these
   // historical tool-page bundle names. Keep them available until a full HTML
   // bundle rewrite has safely moved every route to the current hash.

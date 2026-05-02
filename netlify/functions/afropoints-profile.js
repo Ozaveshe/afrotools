@@ -1,4 +1,5 @@
 const { getAllowedOrigin } = require('./utils/cors');
+const { getUserFromEvent } = require('./_shared/browser-session-auth');
 const { SUPABASE_URL, SUPABASE_KEY, sbRequest, cleanText } = require('./_shared/market-data');
 
 const PAYOUT_METHODS = ['mobile_money', 'bank_transfer', 'crypto_wallet', 'pro_credit'];
@@ -11,12 +12,24 @@ function corsHeaders(event) {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Content-Type': 'application/json',
-    'Vary': 'Origin'
+    'Cache-Control': 'private, no-store, max-age=0',
+    'Vary': 'Origin, Authorization, Cookie'
   };
 }
 
-function reply(statusCode, body, headers) {
-  return { statusCode, headers, body: JSON.stringify(body) };
+function reply(statusCode, body, headers, responseMeta) {
+  const meta = responseMeta || {};
+  const response = {
+    statusCode,
+    headers: Object.assign({}, headers, meta.headers || {}),
+    body: JSON.stringify(body)
+  };
+
+  if (meta.multiValueHeaders && Object.keys(meta.multiValueHeaders).length) {
+    response.multiValueHeaders = meta.multiValueHeaders;
+  }
+
+  return response;
 }
 
 function normalizeStringArray(value) {
@@ -72,22 +85,6 @@ function normalizePayoutDetails(method, details) {
   return { error: 'Unsupported payout preference' };
 }
 
-async function getUser(event) {
-  const auth = event.headers?.authorization || event.headers?.Authorization || '';
-  if (!auth.startsWith('Bearer ')) return null;
-  const token = auth.slice(7);
-  try {
-    const res = await fetch(SUPABASE_URL + '/auth/v1/user', {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + token }
-    });
-    if (!res.ok) return null;
-    const user = await res.json();
-    return { id: user.id, email: user.email };
-  } catch {
-    return null;
-  }
-}
-
 async function getProfile(userId) {
   const rows = await sbRequest('GET', 'points_profiles?user_id=eq.' + userId);
   if (Array.isArray(rows) && rows[0]) return rows[0];
@@ -133,19 +130,21 @@ exports.handler = async function (event) {
     return reply(200, badges, headers);
   }
 
-  const user = await getUser(event);
-  if (!user) return reply(401, { error: 'Authentication required' }, headers);
+  const authResult = await getUserFromEvent(event);
+  const user = authResult && authResult.user ? authResult.user : null;
+  const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
+  if (!user) return reply(401, { error: 'Authentication required' }, headers, sessionResponse);
 
   try {
     if (event.httpMethod === 'GET') {
       if (action === 'profile' || action === 'onboarding') {
-        return reply(200, await getProfile(user.id), headers);
+        return reply(200, await getProfile(user.id), headers, sessionResponse);
       }
 
       if (action === 'activity') {
         const limit = Math.min(parseInt(params.limit, 10) || 10, 50);
         const ledger = await sbRequest('GET', 'points_ledger?user_id=eq.' + user.id + '&order=created_at.desc&limit=' + limit);
-        return reply(200, ledger, headers);
+        return reply(200, ledger, headers, sessionResponse);
       }
 
       if (action === 'contributions') {
@@ -154,32 +153,32 @@ exports.handler = async function (event) {
         let path = 'contributions?user_id=eq.' + user.id + '&order=submitted_at.desc&limit=' + limit;
         if (subtype) path += '&data_category=eq.' + encodeURIComponent(subtype);
         const contribs = await sbRequest('GET', path);
-        return reply(200, contribs, headers);
+        return reply(200, contribs, headers, sessionResponse);
       }
 
-      return reply(400, { error: 'Unknown action' }, headers);
+      return reply(400, { error: 'Unknown action' }, headers, sessionResponse);
     }
 
     if (event.httpMethod !== 'POST') {
-      return reply(405, { error: 'Method not allowed' }, headers);
+      return reply(405, { error: 'Method not allowed' }, headers, sessionResponse);
     }
 
     let body;
     try {
       body = JSON.parse(event.body || '{}');
     } catch {
-      return reply(400, { error: 'Invalid JSON' }, headers);
+      return reply(400, { error: 'Invalid JSON' }, headers, sessionResponse);
     }
 
     if ((body.action || 'onboarding') !== 'onboarding') {
-      return reply(400, { error: 'Unknown action' }, headers);
+      return reply(400, { error: 'Unknown action' }, headers, sessionResponse);
     }
 
     const existingProfile = await getProfile(user.id);
     const payoutPreference = cleanText(body.payout_preference);
     const payoutValidation = normalizePayoutDetails(payoutPreference, body.payout_details);
     if (payoutValidation.error) {
-      return reply(400, { error: payoutValidation.error }, headers);
+      return reply(400, { error: payoutValidation.error }, headers, sessionResponse);
     }
     const nowIso = new Date().toISOString();
     const payload = {
@@ -229,9 +228,9 @@ exports.handler = async function (event) {
         ...payload,
         user_id: user.id
       }
-    }, headers);
+    }, headers, sessionResponse);
   } catch (error) {
     console.error('AfroPoints profile error:', error);
-    return reply(500, { error: 'Internal server error' }, headers);
+    return reply(500, { error: 'Internal server error' }, headers, sessionResponse);
   }
 };

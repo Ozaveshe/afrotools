@@ -24,6 +24,21 @@ function json(status, body) {
   return { statusCode: status, headers: CORS, body: JSON.stringify(body) };
 }
 
+function parseBody(event) {
+  var contentType = String((event.headers && (event.headers['content-type'] || event.headers['Content-Type'])) || '').toLowerCase();
+  var raw = event.body || '';
+  if (event.isBase64Encoded) {
+    try { raw = Buffer.from(raw, 'base64').toString('utf8'); } catch (e) { raw = ''; }
+  }
+  if (contentType.indexOf('application/x-www-form-urlencoded') !== -1 || contentType.indexOf('multipart/form-data') !== -1) {
+    var formBody = {};
+    var params = new URLSearchParams(raw);
+    params.forEach(function(value, key) { formBody[key] = value; });
+    return formBody;
+  }
+  return JSON.parse(raw || '{}');
+}
+
 function clientIp(event) {
   var headers = event.headers || {};
   return String(
@@ -44,7 +59,7 @@ exports.handler = async function(event) {
   }
 
   var body;
-  try { body = JSON.parse(event.body); } catch(e) { return json(400, { error: 'Invalid JSON' }); }
+  try { body = parseBody(event); } catch(e) { return json(400, { error: 'Invalid request body' }); }
 
   var email = (body.email || '').trim().toLowerCase();
   if (!email || !email.includes('@')) {

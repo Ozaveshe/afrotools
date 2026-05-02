@@ -6,7 +6,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AfroRates — African Central Bank Rate Tracker | AfroTools</title>
-<meta name="description" content="Track policy rates, inflation, real interest rates, T-bill yields, and MPC calendars for all 54 African countries. Live data from central banks across the continent.">
+<meta name="description" content="Track latest available policy rates, inflation, real interest rates, T-bill yields, and MPC calendars for African countries with source and freshness labels.">
 <link rel="canonical" href="https://afrotools.com/tools/afrorates/">
 <meta property="og:title" content="AfroRates — African Central Bank Rate Tracker">
 <meta property="og:description" content="Policy rates, inflation, and treasury yields for 54 African countries. Sortable tables, real rate rankings, and MPC meeting calendars.">
@@ -34,6 +34,7 @@
 <!-- AfroTools shared JS -->
 <script src="/assets/js/components/related-tools-data.min.js?v=34121d56" defer></script>
 <script src="/assets/js/lib/live-data.js?v=bd400bd7"></script>
+<script src="/assets/js/components/live-data-status.js?v=20260502"></script>
 <script src="/assets/js/components/navbar.min.js?v=12cea766" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=0697e631" defer></script>
@@ -1803,7 +1804,7 @@ body {
     </nav>
     <div class="hero-eyebrow">🏦 Central Bank Rates</div>
     <h1>AfroRates — African Central Bank <em>Rate Tracker</em></h1>
-    <p class="hero-sub">Track policy rates, inflation, real yields, and upcoming MPC meetings across all 54 African markets.</p>
+    <p class="hero-sub">Track latest available policy rates, inflation, real yields, and upcoming MPC meetings with visible source and freshness labels.</p>
   </div>
 </section>
 
@@ -1829,22 +1830,22 @@ body {
   <div class="stats-row" id="stats-row">
     <div class="stat-card">
       <div class="stat-label">Median Policy Rate</div>
-      <div class="stat-value" id="stat-median-rate">—</div>
+      <div class="stat-value" id="stat-median-rate">Checking</div>
       <div class="stat-sub">Across all 54 countries</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Avg Headline Inflation</div>
-      <div class="stat-value" id="stat-avg-inflation">—</div>
+      <div class="stat-value" id="stat-avg-inflation">Checking</div>
       <div class="stat-sub">Continental average</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Countries in Tightening</div>
-      <div class="stat-value" id="stat-hawks">—</div>
+      <div class="stat-value" id="stat-hawks">Checking</div>
       <div class="stat-sub">Hawkish stance</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Upcoming MPC Meetings</div>
-      <div class="stat-value" id="stat-mpc-count">—</div>
+      <div class="stat-value" id="stat-mpc-count">Checking</div>
       <div class="stat-sub">Next 60 days</div>
     </div>
   </div>
@@ -1869,27 +1870,27 @@ body {
   <div class="highlights-grid" id="highlights-grid">
     <article class="highlight-card">
       <div class="highlight-kicker">Highest Policy Rate</div>
-      <div class="highlight-value">--</div>
-      <div class="highlight-name">Loading...</div>
-      <div class="highlight-meta">Scanning the latest country data.</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
     </article>
     <article class="highlight-card">
       <div class="highlight-kicker">Best Real Rate</div>
-      <div class="highlight-value">--</div>
-      <div class="highlight-name">Loading...</div>
-      <div class="highlight-meta">Scanning the latest country data.</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
     </article>
     <article class="highlight-card">
       <div class="highlight-kicker">Lowest Inflation</div>
-      <div class="highlight-value">--</div>
-      <div class="highlight-name">Loading...</div>
-      <div class="highlight-meta">Scanning the latest country data.</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
     </article>
     <article class="highlight-card">
       <div class="highlight-kicker">Next MPC Meeting</div>
-      <div class="highlight-value">--</div>
-      <div class="highlight-name">Loading...</div>
-      <div class="highlight-meta">Scanning the latest country data.</div>
+      <div class="highlight-value">Checking</div>
+      <div class="highlight-name">Checking latest available data</div>
+      <div class="highlight-meta">Source and freshness will appear below.</div>
     </article>
   </div>
 
@@ -1899,7 +1900,7 @@ body {
         <h2 class="section-title">Policy Rate Dashboard</h2>
         <p class="section-sub">All 54 African countries — searchable, sortable, and exportable.</p>
       </div>
-      <div class="last-updated" id="last-updated">Loading...</div>
+      <div class="last-updated live-data-status" id="last-updated">Checking latest available central bank data...</div>
     </div>
 
     <div class="table-controls">
@@ -1959,7 +1960,7 @@ body {
         </tbody>
       </table>
     </div>
-    <p class="table-footer" id="table-count">Loading data...</p>
+    <p class="table-footer" id="table-count">Checking latest available data...</p>
   </div>
 
 
@@ -2089,7 +2090,7 @@ body {
   <div style="margin-bottom:48px">
     <afro-api-cta
       data-api-name="AfroRates API"
-      data-description="Live central bank policy rates, inflation data, T-bill yields, and MPC schedules for 54 African countries. JSON format, updated daily."
+  data-description="Latest available central bank policy rates, inflation data, T-bill yields, and MPC schedules with freshness timestamps. JSON format."
       data-docs-url="/docs/api/"
       data-signup-url="/docs/api/#signup"
     ></afro-api-cta>
@@ -3470,6 +3471,72 @@ body {
   /* ════════════════════════════════════════════════════════════════
      INITIALIZATION — Called when data is fetched or loaded from cache
      ════════════════════════════════════════════════════════════════ */
+  function setRatesStatus(state, options) {
+    options = options || {};
+    var el = document.getElementById('last-updated');
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    if (status && el) {
+      status.update(el, {
+        state: state,
+        timestamp: options.timestamp,
+        source: options.source || 'Central bank data feed',
+        message: options.message,
+        retryLabel: options.retryLabel,
+        onRetry: options.onRetry
+      });
+      return;
+    }
+    if (el) {
+      el.textContent = options.message || 'Latest available central bank data';
+    }
+  }
+
+  function fetchRatesJson(url) {
+    return fetch(url, { cache: 'no-cache' }).then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
+  }
+
+  function loadStaticRatesFallback(reason) {
+    return fetchRatesJson('/data/rates/latest.json').then(function(json) {
+      json._statusSource = 'Static central bank snapshot';
+      json._statusFallback = true;
+      json._statusReason = reason || '';
+      onDataReady(json);
+    }).catch(function(err) {
+      console.warn('AfroRates: static fallback unavailable', err);
+      setRatesStatus('error', {
+        source: 'AfroTools rates feed',
+        message: 'Central bank data unavailable. Please retry shortly.',
+        retryLabel: 'Retry',
+        onRetry: fetchRatesData
+      });
+      document.getElementById('table-count').textContent = 'Central bank data unavailable. Please retry shortly.';
+      document.getElementById('highlights-grid').innerHTML =
+        '<article class="highlight-card"><div class="highlight-kicker">Data unavailable</div><div class="highlight-value">Unavailable</div><div class="highlight-name">No latest snapshot could be loaded</div><div class="highlight-meta">Retry the data feed or open the API docs.</div></article>';
+    });
+  }
+
+  function fetchRatesData() {
+    setRatesStatus('loading', {
+      source: 'AfroTools rates API',
+      message: 'Checking latest available central bank data'
+    });
+    return fetchRatesJson('/api/rates').then(function(json) {
+      if (!json || !Array.isArray(json.countries) || json.countries.length < 30) {
+        var count = json && json.countries ? json.countries.length : 0;
+        throw new Error('Rates API returned partial coverage (' + count + ' markets)');
+      }
+      json._statusSource = 'AfroTools rates API';
+      json._statusFallback = false;
+      onDataReady(json);
+    }).catch(function(err) {
+      console.warn('AfroRates: live API unavailable or partial, using static snapshot', err);
+      return loadStaticRatesFallback(err.message);
+    });
+  }
+
   function onDataReady(json) {
     var data = json.countries || json;
     allCountries = data;
@@ -3497,6 +3564,23 @@ body {
       }
       document.getElementById('last-updated').textContent = label;
     }
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    var timestamp = json.timestamp || null;
+    var state = json._statusFallback
+      ? (status && status.stateForTimestamp(timestamp, { liveMinutes: 24 * 60, staleMinutes: 45 * 24 * 60 }) === 'stale' ? 'stale' : 'cached')
+      : (status ? status.stateForTimestamp(timestamp, { liveMinutes: 24 * 60, staleMinutes: 45 * 24 * 60 }) : 'live');
+    var statusMessage = json._statusFallback ? 'Showing latest available reference snapshot' : 'Latest central bank feed loaded';
+    if (json._statusReason) {
+      statusMessage += ' after live API returned partial coverage';
+    }
+    if (json._verification && json._verification.verified_count) {
+      statusMessage += ' - ' + json._verification.verified_count + ' official records verified';
+    }
+    setRatesStatus(state, {
+      timestamp: timestamp,
+      source: json._statusSource || json.source || 'Central bank data feed',
+      message: statusMessage
+    });
 
     // Render all sections
     renderStats(data);
@@ -3516,23 +3600,8 @@ body {
      DATA FETCHING — LiveData with 12-hour refresh and caching
      ════════════════════════════════════════════════════════════════ */
   var TWELVE_HOURS = 12 * 60 * 60 * 1000;
-
-  var liveData = new AfroTools.LiveData('/data/rates/latest.json', {
-    refreshInterval: TWELVE_HOURS,
-    cacheTTL: TWELVE_HOURS,
-    cacheKey: 'afro-rates-latest',
-    onUpdate: onDataReady,
-    onError: function (err) {
-      console.warn('AfroRates: fetch failed, falling back to cached data', err);
-      var cached = liveData.getData();
-      if (cached) {
-        onDataReady(cached);
-      }
-    }
-  });
-
-  // Start the data fetch and auto-refresh cycle
-  liveData.start();
+  fetchRatesData();
+  setInterval(fetchRatesData, TWELVE_HOURS);
 
 })();
 </script>

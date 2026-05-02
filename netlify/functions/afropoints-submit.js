@@ -1,4 +1,5 @@
 const { getAllowedOrigin } = require('./utils/cors');
+const { getUserFromEvent } = require('./_shared/browser-session-auth');
 const {
   SUPABASE_URL,
   SUPABASE_KEY,
@@ -27,12 +28,24 @@ function corsHeaders(event) {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json',
-    'Vary': 'Origin'
+    'Cache-Control': 'private, no-store, max-age=0',
+    'Vary': 'Origin, Authorization, Cookie'
   };
 }
 
-function reply(statusCode, body, headers) {
-  return { statusCode, headers, body: JSON.stringify(body) };
+function reply(statusCode, body, headers, responseMeta) {
+  const meta = responseMeta || {};
+  const response = {
+    statusCode,
+    headers: Object.assign({}, headers, meta.headers || {}),
+    body: JSON.stringify(body)
+  };
+
+  if (meta.multiValueHeaders && Object.keys(meta.multiValueHeaders).length) {
+    response.multiValueHeaders = meta.multiValueHeaders;
+  }
+
+  return response;
 }
 
 function mergeUnique(existing, nextValue) {
@@ -92,26 +105,6 @@ function validateContributionGate(profile, submission) {
   return null;
 }
 
-async function getUser(event) {
-  const auth = event.headers?.authorization || event.headers?.Authorization || '';
-  if (!auth.startsWith('Bearer ')) return null;
-
-  const token = auth.slice(7);
-  try {
-    const response = await fetch(SUPABASE_URL + '/auth/v1/user', {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: 'Bearer ' + token
-      }
-    });
-    if (!response.ok) return null;
-    const user = await response.json();
-    return { id: user.id, token };
-  } catch {
-    return null;
-  }
-}
-
 async function fetchProfile(userId) {
   const rows = await sbRequest('GET', 'points_profiles?user_id=eq.' + userId);
   return Array.isArray(rows) && rows[0] ? rows[0] : null;
@@ -159,28 +152,30 @@ exports.handler = async function (event) {
   if (event.httpMethod !== 'POST') return reply(405, { error: 'Method not allowed' }, headers);
   if (!SUPABASE_KEY) return reply(500, { error: 'Server not configured' }, headers);
 
-  const user = await getUser(event);
-  if (!user) return reply(401, { error: 'Authentication required' }, headers);
+  const authResult = await getUserFromEvent(event);
+  const user = authResult && authResult.user ? authResult.user : null;
+  const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
+  if (!user) return reply(401, { error: 'Authentication required' }, headers, sessionResponse);
 
   let body;
   try {
     body = JSON.parse(event.body || '{}');
   } catch {
-    return reply(400, { error: 'Invalid JSON' }, headers);
+    return reply(400, { error: 'Invalid JSON' }, headers, sessionResponse);
   }
 
   const normalized = normalizeSubmission(body);
-  if (normalized.error) return reply(400, { error: normalized.error }, headers);
+  if (normalized.error) return reply(400, { error: normalized.error }, headers, sessionResponse);
 
   try {
     const submission = normalized.submission;
     const existingProfile = await fetchProfile(user.id);
     const gateError = validateContributionGate(existingProfile, submission);
-    if (gateError) return reply(403, { error: gateError, action: 'profile_required' }, headers);
+    if (gateError) return reply(403, { error: gateError, action: 'profile_required' }, headers, sessionResponse);
 
     const hasCapacity = await ensureDailyCapacity(user.id, submission.subtype);
     if (!hasCapacity) {
-      return reply(429, { error: 'Daily limit reached for this category (20/day)' }, headers);
+      return reply(429, { error: 'Daily limit reached for this category (20/day)' }, headers, sessionResponse);
     }
 
     const baseline = await getRecentBaseline(submission, 40);
@@ -193,7 +188,7 @@ exports.handler = async function (event) {
     });
 
     if (!Array.isArray(inserted) || !inserted[0]) {
-      return reply(500, { error: 'Failed to save contribution' }, headers);
+      return reply(500, { error: 'Failed to save contribution' }, headers, sessionResponse);
     }
 
     const savedContribution = inserted[0];
@@ -341,9 +336,9 @@ exports.handler = async function (event) {
       review_reason: reviewReason,
       baseline_value: baseline.baselineValue,
       change_pct: baseline.changePct
-    }, headers);
+    }, headers, sessionResponse);
   } catch (error) {
     console.error('AfroPoints submit error:', error);
-    return reply(500, { error: 'Internal server error' }, headers);
+    return reply(500, { error: 'Internal server error' }, headers, sessionResponse);
   }
 };

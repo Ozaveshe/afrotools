@@ -96,6 +96,8 @@
         /* Dashboard */
         .dashboard { display: none; }
         .dashboard.active { display: block; }
+        .auth-container[hidden],
+        .dashboard[hidden] { display: none !important; }
 
         /* ===================== PROFILE HEADER ===================== */
         .profile-header {
@@ -2126,17 +2128,21 @@
             <div style="width:64px;height:64px;margin:0 auto 1.25rem;background:var(--dash-accent-pale,#EBF4FF);border-radius:16px;display:flex;align-items:center;justify-content:center;">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--dash-accent,#007AFF)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
-            <h1 style="font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;color:var(--dash-text-primary,#0A1628);letter-spacing:-.02em;">Sign in to your dashboard</h1>
-            <p style="color:var(--dash-text-secondary,#5B6B82);margin-bottom:2rem;font-size:0.92rem;line-height:1.5;">Access your saved calculations, favorite tools, workspace items, and AfroPoints contribution status from one account dashboard.</p>
-            <button onclick="AfroAuth.openModal()" style="max-width:300px;margin:0 auto;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:var(--dash-accent,#007AFF);color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(0,122,255,.2);transition:all 220ms ease;">
+            <h1 id="authStateTitle" style="font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;color:var(--dash-text-primary,#0A1628);letter-spacing:-.02em;">Sign in to your dashboard</h1>
+            <p id="authStateMessage" role="status" aria-live="polite" style="color:var(--dash-text-secondary,#5B6B82);margin-bottom:1rem;font-size:0.92rem;line-height:1.5;">Access your saved calculations, favorite tools, workspace items, and AfroPoints contribution status from one account dashboard.</p>
+            <div id="authStateError" role="alert" hidden style="margin:0 auto 1rem;max-width:340px;padding:0.85rem 1rem;border:1px solid #F59E0B;border-radius:10px;background:#FFFBEB;color:#92400E;font-size:0.86rem;line-height:1.45;"></div>
+            <a href="/auth/?mode=login&amp;next=/dashboard/" style="max-width:300px;margin:0 auto;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:var(--dash-accent,#007AFF);color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(0,122,255,.2);transition:all 220ms ease;text-decoration:none;">
                 Sign in to get started
-            </button>
+            </a>
+            <a href="/auth/?mode=signup&amp;next=/dashboard/" style="max-width:300px;margin:0.75rem auto 0;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:#fff;color:var(--dash-accent,#007AFF);border:1px solid var(--dash-accent,#007AFF);font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;">
+                Create a free account
+            </a>
             <p style="margin-top:1.5rem;font-size:0.82rem;color:var(--dash-text-muted,#8E9BB3);">Free forever. No credit card required.</p>
             <div id="authTradePackNudge" class="auth-local-nudge" style="display:none;"></div>
         </div>
 
         <!-- Dashboard Section -->
-        <div id="dashboardSection" class="dashboard">
+        <div id="dashboardSection" class="dashboard" hidden>
 
             <!-- Unified Header (replaces old profile-header + mn-header) -->
             <div class="profile-header" id="unifiedHeader">
@@ -2479,6 +2485,7 @@
     <script src="/assets/js/components/tool-registry.min.js?v=902d9469" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
     <script src="/assets/js/components/auth-modal.js?v=f9a5f563"></script>
+    <script src="/assets/js/auth-cookie-upgrade.js?v=2"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
     <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
     <script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
@@ -2487,8 +2494,7 @@
     <script src="/dashboard/dashboard-alerts-hardened.js?v=f4f833ce"></script>
     <script src="/engines/afropoints-engine.js?v=2"></script>
     <script src="/dashboard/dashboard-app.js?v=05100b7e"></script>
-    <script src="/dashboard/afropoints-lane.js?v=275de35a"></script>
-    <script src="/dashboard/afropoints-lane-hardened.js?v=93d16642"></script>
+    <script src="/dashboard/afropoints-lane-account.js?v=20260502a"></script>
     <script src="/assets/js/components/navbar.min.js?v=12cea766"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
@@ -2500,6 +2506,15 @@
         let editorOpen = false;
         let dashboardCache = { forex: null, fuel: null, rates: null };
         let dashboardWorkspaceState = { status: 'idle', count: null, items: [], loadedAt: null };
+        const DASHBOARD_AUTH_STATES = {
+            loadingSession: 'loadingSession',
+            signedOut: 'signedOut',
+            signedIn: 'signedIn',
+            sessionError: 'sessionError'
+        };
+        let dashboardAuthState = null;
+        let dashboardAuthCheckId = 0;
+        let dashboardListenersBound = false;
 
         const COUNTRY_CURRENCY_MAP = {
             'NG':'NGN','KE':'KES','ZA':'ZAR','GH':'GHS','EG':'EGP','TZ':'TZS','UG':'UGX','RW':'RWF',
@@ -3063,6 +3078,7 @@
 
         // ===================== AUTH FLOW =====================
         function waitForAuth() {
+            setDashboardAuthState(DASHBOARD_AUTH_STATES.loadingSession);
             if (window.AfroAuth) {
                 AfroAuth.onReady(function() { init(); });
             } else {
@@ -3074,51 +3090,238 @@
                         AfroAuth.onReady(function() { init(); });
                     } else if (attempts > 50) {
                         clearInterval(check);
-                        showAuth();
+                        showAuth({
+                            message: 'Sign in to continue. Your dashboard stays private until the account session can be checked.'
+                        });
                     }
                 }, 100);
             }
         }
 
         function init() {
-            isLoggedIn = AfroAuth.isLoggedIn();
-            if (isLoggedIn) {
-                currentUser = AfroAuth.getUser();
-                showDashboard();
-            } else {
-                var isOAuthCallback = new URLSearchParams(window.location.search).get('auth') === 'callback' || window.location.hash.indexOf('access_token') > -1;
-                if (!isOAuthCallback) showAuth();
-                var retries = 0;
-                var maxRetries = isOAuthCallback ? 20 : 8;
-                var recheck = setInterval(function() {
-                    retries++;
-                    if (AfroAuth.isLoggedIn()) {
-                        clearInterval(recheck);
-                        isLoggedIn = true;
-                        currentUser = AfroAuth.getUser();
-                        showDashboard();
-                        if (isOAuthCallback) {
-                            var cleanUrl = window.location.pathname;
-                            window.history.replaceState({}, '', cleanUrl);
-                        }
-                    } else if (retries >= maxRetries) {
-                        clearInterval(recheck);
-                        if (isOAuthCallback) showAuth();
-                    }
-                }, 500);
-            }
             setupEventListeners();
+            var isOAuthCallback = new URLSearchParams(window.location.search).get('auth') === 'callback' || window.location.hash.indexOf('access_token') > -1;
+            runDashboardSessionCheck({ oauthCallback: isOAuthCallback });
         }
 
-        function showAuth() {
-            document.getElementById('authSection').style.display = 'block';
-            document.getElementById('dashboardSection').classList.remove('active');
-            renderAuthTradePackNudge();
+        function setDashboardAuthState(nextState, options) {
+            options = options || {};
+            var previousState = dashboardAuthState;
+            dashboardAuthState = nextState;
+
+            if (document.documentElement) document.documentElement.setAttribute('data-dashboard-auth-state', nextState);
+            if (document.body) document.body.setAttribute('data-dashboard-auth-state', nextState);
+
+            var authSection = document.getElementById('authSection');
+            var dashboardSection = document.getElementById('dashboardSection');
+            var isSignedIn = nextState === DASHBOARD_AUTH_STATES.signedIn;
+            var isLoading = nextState === DASHBOARD_AUTH_STATES.loadingSession;
+            var isError = nextState === DASHBOARD_AUTH_STATES.sessionError;
+
+            if (authSection) {
+                authSection.style.display = isSignedIn ? 'none' : 'block';
+                authSection.hidden = isSignedIn;
+                authSection.setAttribute('aria-hidden', isSignedIn ? 'true' : 'false');
+                try { authSection.inert = isSignedIn; } catch(e) {}
+            }
+            if (dashboardSection) {
+                dashboardSection.classList.toggle('active', isSignedIn);
+                dashboardSection.hidden = !isSignedIn;
+                dashboardSection.setAttribute('aria-hidden', isSignedIn ? 'false' : 'true');
+                try { dashboardSection.inert = !isSignedIn; } catch(e) {}
+            }
+
+            var title = 'Sign in to your dashboard';
+            var message = 'Access your saved calculations, favorite tools, workspace items, and AfroPoints contribution status from one account dashboard.';
+            if (isLoading) {
+                title = 'Checking your session';
+                message = 'We are checking your account session before showing dashboard details.';
+            } else if (isError) {
+                message = 'We could not verify your dashboard session. Sign in again to continue.';
+            }
+            updateAuthStateCopy(options.title || title, options.message || message, options.error || '');
+
+            if (!isSignedIn) {
+                try { closeProfileEditor(); } catch(e) {}
+                renderAuthTradePackNudge();
+            }
+
+            if (previousState !== nextState) {
+                trackDashboardAuthTransition(previousState, nextState);
+            }
         }
 
-        function showDashboard() {
-            document.getElementById('authSection').style.display = 'none';
-            document.getElementById('dashboardSection').classList.add('active');
+        function updateAuthStateCopy(title, message, error) {
+            var titleEl = document.getElementById('authStateTitle');
+            var messageEl = document.getElementById('authStateMessage');
+            var errorEl = document.getElementById('authStateError');
+            if (titleEl) titleEl.textContent = title;
+            if (messageEl) messageEl.textContent = message;
+            if (errorEl) {
+                if (error) {
+                    errorEl.textContent = error;
+                    errorEl.hidden = false;
+                } else {
+                    errorEl.textContent = '';
+                    errorEl.hidden = true;
+                }
+            }
+        }
+
+        function trackDashboardAuthTransition(previousState, nextState) {
+            var payload = {
+                state: nextState,
+                previous_state: previousState || 'none',
+                page_path: window.location.pathname
+            };
+            try {
+                window.dispatchEvent(new CustomEvent('dashboard-auth-state-change', {
+                    detail: { state: nextState, previousState: previousState || null }
+                }));
+            } catch(e) {}
+            setTimeout(function() {
+                try {
+                    if (typeof window.gtag === 'function') {
+                        window.gtag('event', 'dashboard_auth_state', payload);
+                    } else {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push(['event', 'dashboard_auth_state', payload]);
+                    }
+                } catch(e) {}
+            }, 0);
+        }
+
+        function normalizeDashboardUser(user) {
+            if (!user || !user.id || !user.email) return null;
+            return {
+                id: user.id,
+                email: user.email,
+                name: user.name || (user.email ? user.email.split('@')[0] : 'AfroTools user'),
+                country: user.country || '',
+                tier: user.tier || 'free',
+                createdAt: user.createdAt || user.created_at || new Date().toISOString()
+            };
+        }
+
+        function getCachedDashboardUser() {
+            try {
+                return window.AfroAuth && AfroAuth.getUser ? normalizeDashboardUser(AfroAuth.getUser()) : null;
+            } catch(e) {
+                return null;
+            }
+        }
+
+        function cacheDashboardUser(user) {
+            try {
+                if (user) localStorage.setItem('afro_auth_v2', JSON.stringify(user));
+            } catch(e) {}
+        }
+
+        function delay(ms) {
+            return new Promise(function(resolve) { setTimeout(resolve, ms); });
+        }
+
+        async function fetchDashboardSession() {
+            try {
+                var res = await withTimeout(fetch('/api/auth/session', {
+                    credentials: 'same-origin',
+                    cache: 'no-store',
+                    headers: { 'Accept': 'application/json' }
+                }), 7000);
+                var data = {};
+                try { data = await res.json(); } catch(e) {}
+                if (!res.ok) {
+                    return {
+                        ok: false,
+                        state: DASHBOARD_AUTH_STATES.sessionError,
+                        error: (data && (data.message || data.error)) || 'Your session could not be verified. Sign in again to continue.'
+                    };
+                }
+                if (data && data.authenticated && data.user) {
+                    var sessionUser = normalizeDashboardUser(data.user);
+                    if (sessionUser) return { ok: true, user: sessionUser };
+                }
+                return { ok: false, state: DASHBOARD_AUTH_STATES.signedOut };
+            } catch(e) {
+                return {
+                    ok: false,
+                    state: DASHBOARD_AUTH_STATES.sessionError,
+                    error: 'Dashboard session check failed. Sign in again before viewing account details.'
+                };
+            }
+        }
+
+        async function resolveDashboardSession() {
+            var cachedUser = getCachedDashboardUser();
+            var session = await fetchDashboardSession();
+            if (session.ok) return session;
+            if (session.state === DASHBOARD_AUTH_STATES.signedOut && cachedUser) {
+                return {
+                    ok: false,
+                    state: DASHBOARD_AUTH_STATES.sessionError,
+                    error: 'Your saved sign-in has expired. Sign in again to reopen your dashboard.'
+                };
+            }
+            return session;
+        }
+
+        async function runDashboardSessionCheck(options) {
+            options = options || {};
+            var checkId = ++dashboardAuthCheckId;
+            setDashboardAuthState(DASHBOARD_AUTH_STATES.loadingSession);
+
+            var maxAttempts = options.oauthCallback ? 20 : 1;
+            for (var attempt = 0; attempt < maxAttempts; attempt++) {
+                var result = await resolveDashboardSession();
+                if (checkId !== dashboardAuthCheckId) return;
+                if (result.ok && result.user) {
+                    isLoggedIn = true;
+                    currentUser = result.user;
+                    cacheDashboardUser(currentUser);
+                    showDashboard(currentUser);
+                    if (options.oauthCallback) {
+                        window.history.replaceState({}, '', window.location.pathname);
+                    }
+                    return;
+                }
+                if (!options.oauthCallback || attempt === maxAttempts - 1) {
+                    isLoggedIn = false;
+                    currentUser = null;
+                    if (result.state === DASHBOARD_AUTH_STATES.sessionError) {
+                        showAuth({
+                            state: DASHBOARD_AUTH_STATES.sessionError,
+                            error: result.error || 'We could not verify your dashboard session. Sign in again to continue.'
+                        });
+                    } else {
+                        showAuth();
+                    }
+                    return;
+                }
+                await delay(500);
+            }
+        }
+
+        function showAuth(options) {
+            options = options || {};
+            var state = options.state || DASHBOARD_AUTH_STATES.signedOut;
+            if (state !== DASHBOARD_AUTH_STATES.loadingSession) {
+                isLoggedIn = false;
+                currentUser = null;
+            }
+            setDashboardAuthState(state, options);
+        }
+
+        function showDashboard(user) {
+            currentUser = normalizeDashboardUser(user || currentUser);
+            if (!currentUser) {
+                showAuth({
+                    state: DASHBOARD_AUTH_STATES.sessionError,
+                    error: 'We could not load a valid dashboard profile. Sign in again to continue.'
+                });
+                return;
+            }
+            isLoggedIn = true;
+            setDashboardAuthState(DASHBOARD_AUTH_STATES.signedIn);
             // Init "My Numbers" command center
             if (window.DashboardApp) {
                 try { DashboardApp.init(); } catch(e) { console.warn('DashboardApp:', e); }
@@ -3143,6 +3346,7 @@
             var tradePacks = dashReadJson('afrotools:trade-dashboard-items', []);
             if (!Array.isArray(tradePacks)) tradePacks = [];
             var legalWorkflows = dashGetLegalWorkflows();
+            var documentPdfWaiting = getDocumentPdfReportsLocal().length + getDocumentPdfHandoffsLocal().length + getDocumentPdfRecipesLocal().length + getDocumentPdfReadinessLocal().length + getDocumentPdfAuditPacketsLocal().length;
             var blocks = [];
 
             if (legalWorkflows.length > 0) {
@@ -3159,6 +3363,13 @@
                 blocks.push('<div class="auth-local-nudge-block"><strong>' + dashEscapeHtml(count + ' local trade pack' + (count === 1 ? '' : 's') + ' waiting') + '</strong>' +
                     '<span>' + dashEscapeHtml('Your Trade Pack is saved on this device. Sign in to sync it across devices, or continue from ' + (latest.tool || latest.title || 'the Trade suite') + '.') + '</span>' +
                     '<a href="' + dashSafeTradeHref(latest.sourceHref || latest.href || '/trade/') + '">Continue trade work</a></div>');
+            }
+
+            if (documentPdfWaiting > 0) {
+                var latestPdf = getDocumentPdfHandoffsLocal()[0] || getDocumentPdfRecipesLocal()[0] || getDocumentPdfReportsLocal()[0] || {};
+                blocks.push('<div class="auth-local-nudge-block"><strong>' + dashEscapeHtml(documentPdfWaiting + ' local PDF workspace item' + (documentPdfWaiting === 1 ? '' : 's') + ' waiting') + '</strong>' +
+                    '<span>' + dashEscapeHtml('Your Document & PDF reports, handoffs, recipes, readiness boards, or audit packets are saved on this device. Sign in to sync them across devices, or continue from ' + (latestPdf.title || latestPdf.toolName || 'the PDF workspace') + '.') + '</span>' +
+                    '<a href="' + dashSafeHref(latestPdf.href || '/document-pdf/') + '">Continue PDF work</a></div>');
             }
 
             if (!blocks.length) {
@@ -3212,6 +3423,8 @@
         }
 
         function setupEventListeners() {
+            if (dashboardListenersBound) return;
+            dashboardListenersBound = true;
             document.getElementById('editProfileBtn').addEventListener('click', openProfileEditor);
             document.getElementById('logoutBtn').addEventListener('click', handleLogout);
             document.getElementById('cancelEditBtn').addEventListener('click', closeProfileEditor);
@@ -3225,13 +3438,13 @@
 
             // Auth change listener
             function handleAuthChange() {
-                var wasLoggedIn = isLoggedIn;
-                isLoggedIn = AfroAuth.isLoggedIn();
-                if (isLoggedIn && !wasLoggedIn) {
-                    currentUser = AfroAuth.getUser();
-                    showDashboard();
-                } else if (!isLoggedIn && wasLoggedIn) {
-                    showAuth();
+                var nextUser = getCachedDashboardUser();
+                if (nextUser) {
+                    runDashboardSessionCheck({ reason: 'authChange' });
+                } else {
+                    showAuth({
+                        message: 'You are signed out. Sign in to view saved calculations, workspace items, and account details.'
+                    });
                 }
             }
             window.addEventListener('afro-auth-change', handleAuthChange);
@@ -3256,7 +3469,9 @@
             extendedProfile = {};
             selectedInterests = [];
             closeProfileEditor();
-            showAuth();
+            showAuth({
+                message: 'You are signed out. Sign in to view saved calculations, workspace items, and account details.'
+            });
         }
 
         // ===================== LOAD DASHBOARD DATA =====================
@@ -3492,6 +3707,118 @@
             });
         }
 
+        function getSalaryReadinessLocal() {
+            var items = dashReadJson('afro_salary_run_readiness_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'salary-run-readiness' || item.toolSlug === 'salary-tax-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getSalaryAuditPacketsLocal() {
+            var items = dashReadJson('afro_salary_audit_packets_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'salary-audit-packet' || item.toolSlug === 'salary-tax-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.createdAt || b.exportedAt || 0).getTime() - new Date(a.createdAt || a.exportedAt || 0).getTime();
+            });
+        }
+
+        function getSalaryAuditPacketsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'salary-audit-packet' || item.itemType === 'salary-audit-packet');
+            });
+        }
+
+        function getDocumentPdfReportsLocal() {
+            var items = dashReadJson('afro_document_pdf_reports_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'document-pdf-report' || item.toolSlug);
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.savedAt || 0).getTime() - new Date(a.updatedAt || a.savedAt || 0).getTime();
+            });
+        }
+
+        function getDocumentPdfReportsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'document-pdf-report' || item.itemType === 'document-pdf-report');
+            });
+        }
+
+        function getDocumentPdfHandoffsLocal() {
+            var items = dashReadJson('afro_document_pdf_handoff_briefs_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'document-pdf-handoff' || item.toolSlug === 'document-pdf-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getDocumentPdfHandoffsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'document-pdf-handoff' || item.itemType === 'document-pdf-handoff');
+            });
+        }
+
+        function getDocumentPdfRecipesLocal() {
+            var items = dashReadJson('afro_document_pdf_recipes_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'document-pdf-recipe' || item.toolSlug === 'document-pdf-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getDocumentPdfRecipesCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'document-pdf-recipe' || item.itemType === 'document-pdf-recipe');
+            });
+        }
+
+        function getDocumentPdfReadinessLocal() {
+            var items = dashReadJson('afro_document_pdf_readiness_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'document-pdf-readiness' || item.toolSlug === 'document-pdf-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || 0).getTime();
+            });
+        }
+
+        function getDocumentPdfReadinessCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'document-pdf-readiness' || item.itemType === 'document-pdf-readiness');
+            });
+        }
+
+        function getDocumentPdfAuditPacketsLocal() {
+            var items = dashReadJson('afro_document_pdf_audit_packets_v1', []);
+            if (!Array.isArray(items)) items = [];
+            return items.filter(function(item) {
+                return item && (item.itemType === 'document-pdf-audit-packet' || item.toolSlug === 'document-pdf-workflow');
+            }).sort(function(a, b) {
+                return new Date(b.createdAt || b.exportedAt || 0).getTime() - new Date(a.createdAt || a.exportedAt || 0).getTime();
+            });
+        }
+
+        function getDocumentPdfAuditPacketsCloud() {
+            var items = dashboardWorkspaceState && Array.isArray(dashboardWorkspaceState.items) ? dashboardWorkspaceState.items : [];
+            return items.filter(function(item) {
+                return item && (item.item_type === 'document-pdf-audit-packet' || item.itemType === 'document-pdf-audit-packet');
+            });
+        }
+
         function getReligiousCulturalPlansLocal() {
             var items = dashReadJson('afro_religious_cultural_workspace', []);
             if (!Array.isArray(items)) items = [];
@@ -3549,6 +3876,13 @@
             var sportsReports = getSportsReportsLocal();
             var salaryReports = getSalaryReportsLocal();
             var salaryHandoffs = getSalaryHandoffsLocal();
+            var salaryReadiness = getSalaryReadinessLocal();
+            var salaryAuditPackets = getSalaryAuditPacketsLocal();
+            var documentPdfReports = getDocumentPdfReportsLocal();
+            var documentPdfHandoffs = getDocumentPdfHandoffsLocal();
+            var documentPdfRecipes = getDocumentPdfRecipesLocal();
+            var documentPdfReadiness = getDocumentPdfReadinessLocal();
+            var documentPdfAuditPackets = getDocumentPdfAuditPacketsLocal();
 
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
 
@@ -3565,7 +3899,7 @@
                 }
             } catch(e) {}
 
-            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + salaryReports.length + salaryHandoffs.length + religiousCulturalPlans.length + healthPlans.length;
+            var localTotal = favorites.length + cvs.length + plans.length + tradePacks.length + telecomItems.length + engineeringPacks.length + engineeringWorkflows.length + docs + savedCalcs + africanWorkflows.length + energyReports.length + climateReports.length + sportsReports.length + salaryReports.length + salaryHandoffs.length + salaryReadiness.length + salaryAuditPackets.length + documentPdfReports.length + documentPdfHandoffs.length + documentPdfRecipes.length + documentPdfReadiness.length + documentPdfAuditPackets.length + religiousCulturalPlans.length + healthPlans.length;
             var cloudTotal = typeof dashboardWorkspaceState.count === 'number' ? dashboardWorkspaceState.count : null;
             return {
                 favorites: favorites.length,
@@ -3584,6 +3918,13 @@
                 sportsReports: sportsReports.length,
                 salaryReports: salaryReports.length,
                 salaryHandoffs: salaryHandoffs.length,
+                salaryReadiness: salaryReadiness.length,
+                salaryAuditPackets: salaryAuditPackets.length,
+                documentPdfReports: documentPdfReports.length,
+                documentPdfHandoffs: documentPdfHandoffs.length,
+                documentPdfRecipes: documentPdfRecipes.length,
+                documentPdfReadiness: documentPdfReadiness.length,
+                documentPdfAuditPackets: documentPdfAuditPackets.length,
                 religiousCulturalPlans: religiousCulturalPlans.length,
                 healthPlans: healthPlans.length,
                 localTotal: localTotal,
@@ -3810,6 +4151,61 @@
                     label: dashPlural(counts.salaryHandoffs, 'payroll handoff'),
                     detail: 'Continue local Salary & PAYE planner briefs into payroll workspace or client follow-up.',
                     cta: 'Open salary workspace',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.salaryAuditPackets > 0 || counts.salaryReadiness > 0) {
+                add({
+                    key: 'salary-audit',
+                    tag: 'Salary',
+                    label: dashPlural(counts.salaryAuditPackets || counts.salaryReadiness, counts.salaryAuditPackets ? 'audit packet' : 'readiness board'),
+                    detail: 'Review Salary & PAYE readiness scores, exception queues, approvals, and audit metadata packets.',
+                    cta: 'Open salary workspace',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.documentPdfReports > 0) {
+                add({
+                    key: 'document-pdf-reports',
+                    tag: 'PDF',
+                    label: dashPlural(counts.documentPdfReports, 'document report'),
+                    detail: 'Open saved PDF and document export trails captured after gated downloads.',
+                    cta: 'Open PDF workspace',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.documentPdfHandoffs > 0) {
+                add({
+                    key: 'document-pdf-handoffs',
+                    tag: 'PDF',
+                    label: dashPlural(counts.documentPdfHandoffs, 'category handoff'),
+                    detail: 'Continue Document & PDF briefs into dashboard, salary, payroll, legal, trade, or image workflows.',
+                    cta: 'Open PDF workspace',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.documentPdfRecipes > 0) {
+                add({
+                    key: 'document-pdf-recipes',
+                    tag: 'PDF',
+                    label: dashPlural(counts.documentPdfRecipes, 'workflow recipe'),
+                    detail: 'Reuse saved Document & PDF routes for repeated client, legal, payroll, business, or career packets.',
+                    cta: 'Open PDF workspace',
+                    href: '#myWorkspace'
+                });
+            }
+
+            if (counts.documentPdfAuditPackets > 0 || counts.documentPdfReadiness > 0) {
+                add({
+                    key: 'document-pdf-audit',
+                    tag: 'PDF',
+                    label: dashPlural(counts.documentPdfAuditPackets || counts.documentPdfReadiness, counts.documentPdfAuditPackets ? 'audit packet' : 'readiness board'),
+                    detail: 'Review Document & PDF readiness checks, privacy exceptions, handoffs, and metadata audit packets.',
+                    cta: 'Open PDF workspace',
                     href: '#myWorkspace'
                 });
             }
@@ -4796,14 +5192,88 @@
             });
         }
 
+        function getSalaryReadinessItems() {
+            return getSalaryReadinessLocal().slice(0, 12);
+        }
+
+        function getSalaryAuditPacketItems() {
+            var merged = {};
+            getSalaryAuditPacketsLocal().forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key || '';
+                if (!id) return;
+                merged[id] = item;
+            });
+            getSalaryAuditPacketsCloud().forEach(function(item) {
+                if (!item) return;
+                var id = item.item_key || item.itemKey || item.id || '';
+                if (!id || merged[id]) return;
+                merged[id] = {
+                    id: id,
+                    itemType: 'salary-audit-packet',
+                    toolSlug: item.tool_slug || item.toolSlug || 'salary-tax-workflow',
+                    title: item.title || 'Salary audit packet',
+                    summary: item.summary || 'Saved Salary & PAYE audit metadata packet.',
+                    href: item.href || '/salary-tax/',
+                    sourceReportTitle: item.payload && item.payload.sourceReportTitle || '',
+                    sourceHandoffTitle: item.payload && item.payload.sourceHandoffTitle || '',
+                    readinessScore: item.payload && item.payload.readinessScore || 0,
+                    readinessStatus: item.payload && item.payload.readinessStatus || '',
+                    countryCode: item.meta && (item.meta.country || item.meta.countryCode) || '',
+                    currency: item.meta && item.meta.currency || '',
+                    intent: item.meta && item.meta.intent || '',
+                    createdAt: item.created_at || item.createdAt,
+                    synced: true
+                };
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.createdAt || b.exportedAt || 0).getTime() - new Date(a.createdAt || a.exportedAt || 0).getTime();
+            });
+        }
+
         function renderSalaryReportWorkspace(container, items) {
             if (!container) return;
             var reportList = getSalaryReportItems(items).slice(0, 12);
             var handoffList = getSalaryHandoffItems().slice(0, 12);
-            if (!reportList.length && !handoffList.length) {
-                container.innerHTML = '<div class="ws-empty">No Salary & PAYE reports or handoff briefs saved yet. Run an upgraded PAYE calculator, download the PDF, or use the Salary hub planner.</div>';
+            var readinessList = getSalaryReadinessItems();
+            var auditList = getSalaryAuditPacketItems().slice(0, 12);
+            if (!reportList.length && !handoffList.length && !readinessList.length && !auditList.length) {
+                container.innerHTML = '<div class="ws-empty">No Salary & PAYE reports, handoffs, readiness boards, or audit packets saved yet. Run an upgraded PAYE calculator or use the Salary hub planner.</div>';
                 return;
             }
+            var readinessHtml = readinessList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var detail = [item.countryCode || item.countryName || 'Salary & PAYE', item.intentLabel || item.intent || 'readiness', item.status || 'draft', saved].filter(Boolean).join(' | ');
+                var exceptions = Array.isArray(item.exceptions) ? item.exceptions.length : 0;
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Salary readiness board') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml((item.score || 0) + '% ready' + (exceptions ? ' | ' + exceptions + ' open exception' + (exceptions === 1 ? '' : 's') : ' | no open exceptions')) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="/salary-tax/">Open planner</a>' +
+                        '<button class="btn-small" type="button" data-salary-readiness-remove="' + dashEscapeHtml(item.id || item.itemKey || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var auditHtml = auditList.map(function(item) {
+                var saved = dashTimeAgo(item.createdAt || item.exportedAt);
+                var detail = [item.countryCode || item.countryName || 'Salary & PAYE', item.intentLabel || item.intent || 'audit', item.readinessScore != null ? item.readinessScore + '% ready' : '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Salary audit packet') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Saved Salary & PAYE audit metadata packet') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="/salary-tax/">Open planner</a>' +
+                        '<button class="btn-small" type="button" data-salary-audit-remove="' + dashEscapeHtml(item.id || item.itemKey || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
             var reportHtml = reportList.map(function(item) {
                 var saved = dashTimeAgo(item.savedAt || item.generatedAt || item.createdAt);
                 var href = dashSafeHref(item.href || '/salary-tax/');
@@ -4841,7 +5311,9 @@
                 '</article>';
             }).join('');
 
-            container.innerHTML = (handoffHtml ? '<div class="ws-subhead">Payroll handoffs</div>' + handoffHtml : '') +
+            container.innerHTML = (readinessHtml ? '<div class="ws-subhead">Readiness boards</div>' + readinessHtml : '') +
+                (auditHtml ? '<div class="ws-subhead">Audit packets</div>' + auditHtml : '') +
+                (handoffHtml ? '<div class="ws-subhead">Payroll handoffs</div>' + handoffHtml : '') +
                 (reportHtml ? '<div class="ws-subhead">Report trails</div>' + reportHtml : '');
 
             container.querySelectorAll('[data-salary-report-remove]').forEach(function(btn) {
@@ -4862,6 +5334,37 @@
                 });
             });
 
+            container.querySelectorAll('[data-salary-readiness-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-salary-readiness-remove');
+                    if (!id || !confirm('Remove this Salary & PAYE readiness board?')) return;
+                    var current = dashReadJson('afro_salary_run_readiness_v1', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_salary_run_readiness_v1', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                });
+            });
+
+            container.querySelectorAll('[data-salary-audit-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-salary-audit-remove');
+                    if (!id || !confirm('Remove this Salary & PAYE audit packet?')) return;
+                    var current = dashReadJson('afro_salary_audit_packets_v1', []);
+                    if (!Array.isArray(current)) current = [];
+                    current = current.filter(function(item) { return item && item.id !== id; });
+                    try { localStorage.setItem('afro_salary_audit_packets_v1', JSON.stringify(current)); } catch(e) {}
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                        AfroWorkspace.remove({ itemType: 'salary-audit-packet', itemKey: id }).catch(function(e) {
+                            console.warn('[Dashboard] salary audit packet delete sync failed:', e.message || e);
+                        });
+                    }
+                });
+            });
+
             container.querySelectorAll('[data-salary-handoff-remove]').forEach(function(btn) {
                 btn.addEventListener('click', function() {
                     var id = btn.getAttribute('data-salary-handoff-remove');
@@ -4877,6 +5380,251 @@
                             console.warn('[Dashboard] salary handoff delete sync failed:', e.message || e);
                         });
                     }
+                });
+            });
+        }
+
+        function mergeDocumentPdfWorkspaceItems(localItems, cloudItems, itemType) {
+            var merged = {};
+            (localItems || []).forEach(function(item) {
+                if (!item) return;
+                var id = item.id || item.itemKey || item.item_key;
+                if (!id) return;
+                merged[id] = Object.assign({}, item, { id: id, itemType: item.itemType || itemType, synced: item.synced === true || item.localOnly === false });
+            });
+            (cloudItems || []).forEach(function(item) {
+                if (!item) return;
+                var payload = item.payload || {};
+                var meta = item.meta || {};
+                var id = item.item_key || item.itemKey || item.id;
+                if (!id) return;
+                merged[id] = Object.assign({}, merged[id] || {}, {
+                    id: id,
+                    itemType: item.item_type || item.itemType || itemType,
+                    toolSlug: item.tool_slug || item.toolSlug || payload.toolSlug || 'document-pdf-workflow',
+                    title: item.title || payload.title || (merged[id] && merged[id].title) || 'Document & PDF workspace item',
+                    summary: item.summary || payload.summary || (merged[id] && merged[id].summary) || '',
+                    href: item.href || payload.href || (merged[id] && merged[id].href) || '/document-pdf/',
+                    primaryHref: payload.primaryHref || (merged[id] && merged[id].primaryHref) || '',
+                    targetHref: payload.targetHref || (merged[id] && merged[id].targetHref) || '',
+                    workflow: meta.workflow || payload.workflow || (merged[id] && merged[id].workflow) || '',
+                    workflowLabel: payload.workflowLabel || (merged[id] && merged[id].workflowLabel) || '',
+                    target: meta.target || payload.target || (merged[id] && merged[id].target) || '',
+                    targetLabel: payload.targetLabel || (merged[id] && merged[id].targetLabel) || '',
+                    targetCategory: meta.targetCategory || payload.targetCategory || (merged[id] && merged[id].targetCategory) || '',
+                    planTier: meta.planTier || payload.planTier || (merged[id] && merged[id].planTier) || '',
+                    profile: payload.profile || (merged[id] && merged[id].profile) || null,
+                    fileName: payload.fileName || (merged[id] && merged[id].fileName) || '',
+                    ref: payload.ref || (merged[id] && merged[id].ref) || '',
+                    sourceReportTitle: payload.sourceReportTitle || (merged[id] && merged[id].sourceReportTitle) || '',
+                    readinessScore: payload.readinessScore || (merged[id] && merged[id].readinessScore) || 0,
+                    readinessStatus: payload.readinessStatus || (merged[id] && merged[id].readinessStatus) || '',
+                    exceptions: payload.exceptions || (merged[id] && merged[id].exceptions) || [],
+                    createdAt: item.created_at || payload.createdAt || (merged[id] && merged[id].createdAt) || '',
+                    updatedAt: item.updated_at || payload.updatedAt || payload.savedAt || payload.exportedAt || (merged[id] && (merged[id].updatedAt || merged[id].savedAt || merged[id].createdAt)) || '',
+                    synced: true
+                });
+            });
+            return Object.keys(merged).map(function(id) { return merged[id]; }).sort(function(a, b) {
+                return new Date(b.updatedAt || b.createdAt || b.savedAt || b.exportedAt || 0).getTime() - new Date(a.updatedAt || a.createdAt || a.savedAt || a.exportedAt || 0).getTime();
+            });
+        }
+
+        function getDocumentPdfReportItems(localItems) {
+            return mergeDocumentPdfWorkspaceItems(localItems || getDocumentPdfReportsLocal(), getDocumentPdfReportsCloud(), 'document-pdf-report');
+        }
+
+        function getDocumentPdfHandoffItems() {
+            return mergeDocumentPdfWorkspaceItems(getDocumentPdfHandoffsLocal(), getDocumentPdfHandoffsCloud(), 'document-pdf-handoff');
+        }
+
+        function getDocumentPdfRecipeItems() {
+            return mergeDocumentPdfWorkspaceItems(getDocumentPdfRecipesLocal(), getDocumentPdfRecipesCloud(), 'document-pdf-recipe');
+        }
+
+        function getDocumentPdfReadinessItems() {
+            return mergeDocumentPdfWorkspaceItems(getDocumentPdfReadinessLocal(), getDocumentPdfReadinessCloud(), 'document-pdf-readiness');
+        }
+
+        function getDocumentPdfAuditPacketItems() {
+            return mergeDocumentPdfWorkspaceItems(getDocumentPdfAuditPacketsLocal(), getDocumentPdfAuditPacketsCloud(), 'document-pdf-audit-packet');
+        }
+
+        function removeDocumentPdfLocalItem(storageKey, id) {
+            var current = dashReadJson(storageKey, []);
+            if (!Array.isArray(current)) current = [];
+            current = current.filter(function(item) { return item && item.id !== id; });
+            try { localStorage.setItem(storageKey, JSON.stringify(current)); } catch(e) {}
+        }
+
+        function removeDocumentPdfWorkspaceItem(itemType, id) {
+            if (window.AfroWorkspace && AfroWorkspace.isSignedIn && AfroWorkspace.isSignedIn()) {
+                AfroWorkspace.remove({ itemType: itemType, itemKey: id }).catch(function(e) {
+                    console.warn('[Dashboard] Document & PDF workspace delete sync failed:', e.message || e);
+                });
+            }
+        }
+
+        function renderDocumentPdfWorkspace(container, items) {
+            if (!container) return;
+            var reportList = getDocumentPdfReportItems(items).slice(0, 14);
+            var handoffList = getDocumentPdfHandoffItems().slice(0, 14);
+            var recipeList = getDocumentPdfRecipeItems().slice(0, 14);
+            var readinessList = getDocumentPdfReadinessItems().slice(0, 14);
+            var auditList = getDocumentPdfAuditPacketItems().slice(0, 14);
+            if (!reportList.length && !handoffList.length && !recipeList.length && !readinessList.length && !auditList.length) {
+                container.innerHTML = '<div class="ws-empty">No Document & PDF reports, handoffs, recipes, readiness boards, or audit packets saved yet. Use the PDF hub planner or download a generated PDF-category output.</div>';
+                return;
+            }
+
+            var readinessHtml = readinessList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var exceptions = Array.isArray(item.exceptions) ? item.exceptions.length : 0;
+                var detail = [item.workflowLabel || item.workflow || 'Document & PDF', item.targetLabel || item.target || 'handoff', item.status || item.readinessStatus || 'draft', saved].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Document & PDF readiness board') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml((item.score || item.readinessScore || 0) + '% ready' + (exceptions ? ' | ' + exceptions + ' open exception' + (exceptions === 1 ? '' : 's') : ' | no open exceptions')) + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="/document-pdf/">Open planner</a>' +
+                        '<button class="btn-small" type="button" data-docpdf-readiness-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var auditHtml = auditList.map(function(item) {
+                var saved = dashTimeAgo(item.createdAt || item.exportedAt || item.updatedAt);
+                var detail = [item.workflowLabel || item.workflow || 'Document & PDF', item.targetLabel || item.target || 'audit', item.readinessScore != null ? item.readinessScore + '% ready' : '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Document & PDF audit packet') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Saved Document & PDF audit metadata packet') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="/document-pdf/">Open planner</a>' +
+                        '<button class="btn-small" type="button" data-docpdf-audit-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var recipeHtml = recipeList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var href = dashSafeHref(item.primaryHref || item.href || '/document-pdf/');
+                var targetHref = dashSafeHref(item.targetHref || '/document-pdf/');
+                var profile = item.profile || {};
+                var detail = [item.workflowLabel || item.workflow || 'Document & PDF', item.targetLabel || item.target || 'recipe', profile.level ? profile.level + ' risk' : '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Document & PDF workflow recipe') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Reusable Document & PDF workflow route') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open route</a>' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(targetHref) + '">Destination</a>' +
+                        '<button class="btn-small" type="button" data-docpdf-recipe-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var handoffHtml = handoffList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.createdAt);
+                var href = dashSafeHref(item.href || item.targetHref || '/document-pdf/');
+                var source = item.sourceReportTitle ? ' | Source: ' + item.sourceReportTitle : '';
+                var detail = [item.workflowLabel || item.workflow || 'Document & PDF', item.targetLabel || item.target || 'handoff', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Document & PDF handoff') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Saved inter-category handoff brief') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail + source) + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Continue</a>' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(dashSafeHref(item.primaryHref || '/document-pdf/')) + '">Open route</a>' +
+                        '<button class="btn-small" type="button" data-docpdf-handoff-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            var reportHtml = reportList.map(function(item) {
+                var saved = dashTimeAgo(item.updatedAt || item.savedAt || item.createdAt);
+                var href = dashSafeHref(item.href || '/document-pdf/');
+                var detail = [item.toolName || item.toolSlug || 'Document & PDF', item.fileName || '', saved, item.synced ? 'Synced' : 'Local'].filter(Boolean).join(' | ');
+                return '<article class="saved-item">' +
+                    '<div class="saved-content">' +
+                        '<h3>' + dashEscapeHtml(item.title || 'Document & PDF report') + '</h3>' +
+                        '<div class="saved-value">' + dashEscapeHtml(item.summary || 'Generated PDF-category export trail') + '</div>' +
+                        '<div class="saved-meta">' + dashEscapeHtml(detail) + (item.ref ? ' | ' + dashEscapeHtml(item.ref) : '') + '</div>' +
+                    '</div>' +
+                    '<div class="saved-actions">' +
+                        '<a class="btn-small" href="' + dashEscapeHtml(href) + '">Open tool</a>' +
+                        '<a class="btn-small" href="/document-pdf/">PDF hub</a>' +
+                        '<button class="btn-small" type="button" data-docpdf-report-remove="' + dashEscapeHtml(item.id || '') + '">Remove</button>' +
+                    '</div>' +
+                '</article>';
+            }).join('');
+
+            container.innerHTML = (readinessHtml ? '<div class="ws-subhead">Readiness boards</div>' + readinessHtml : '') +
+                (auditHtml ? '<div class="ws-subhead">Audit packets</div>' + auditHtml : '') +
+                (recipeHtml ? '<div class="ws-subhead">Reusable recipes</div>' + recipeHtml : '') +
+                (handoffHtml ? '<div class="ws-subhead">Category handoffs</div>' + handoffHtml : '') +
+                (reportHtml ? '<div class="ws-subhead">Report trails</div>' + reportHtml : '');
+
+            container.querySelectorAll('[data-docpdf-report-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-docpdf-report-remove');
+                    if (!id || !confirm('Remove this Document & PDF report?')) return;
+                    removeDocumentPdfLocalItem('afro_document_pdf_reports_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeDocumentPdfWorkspaceItem('document-pdf-report', id);
+                });
+            });
+
+            container.querySelectorAll('[data-docpdf-readiness-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-docpdf-readiness-remove');
+                    if (!id || !confirm('Remove this Document & PDF readiness board?')) return;
+                    removeDocumentPdfLocalItem('afro_document_pdf_readiness_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeDocumentPdfWorkspaceItem('document-pdf-readiness', id);
+                });
+            });
+
+            container.querySelectorAll('[data-docpdf-audit-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-docpdf-audit-remove');
+                    if (!id || !confirm('Remove this Document & PDF audit packet?')) return;
+                    removeDocumentPdfLocalItem('afro_document_pdf_audit_packets_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeDocumentPdfWorkspaceItem('document-pdf-audit-packet', id);
+                });
+            });
+
+            container.querySelectorAll('[data-docpdf-recipe-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-docpdf-recipe-remove');
+                    if (!id || !confirm('Remove this Document & PDF workflow recipe?')) return;
+                    removeDocumentPdfLocalItem('afro_document_pdf_recipes_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeDocumentPdfWorkspaceItem('document-pdf-recipe', id);
+                });
+            });
+
+            container.querySelectorAll('[data-docpdf-handoff-remove]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = btn.getAttribute('data-docpdf-handoff-remove');
+                    if (!id || !confirm('Remove this Document & PDF handoff?')) return;
+                    removeDocumentPdfLocalItem('afro_document_pdf_handoff_briefs_v1', id);
+                    renderMyWorkspace();
+                    renderActionCenter();
+                    removeDocumentPdfWorkspaceItem('document-pdf-handoff', id);
                 });
             });
         }
@@ -4978,7 +5726,16 @@
 
             var salaryReports = getSalaryReportsLocal();
             var salaryHandoffs = getSalaryHandoffsLocal();
-            if (salaryReports.length > 0 || salaryHandoffs.length > 0 || getSalaryReportsCloud().length > 0 || getSalaryHandoffsCloud().length > 0) tabs.push({ id: 'ws-salary', label: 'Salary Workspace', icon: 'PAY' });
+            var salaryReadiness = getSalaryReadinessLocal();
+            var salaryAuditPackets = getSalaryAuditPacketsLocal();
+            if (salaryReports.length > 0 || salaryHandoffs.length > 0 || salaryReadiness.length > 0 || salaryAuditPackets.length > 0 || getSalaryReportsCloud().length > 0 || getSalaryHandoffsCloud().length > 0 || getSalaryAuditPacketsCloud().length > 0) tabs.push({ id: 'ws-salary', label: 'Salary Workspace', icon: 'PAY' });
+
+            var documentPdfReports = getDocumentPdfReportsLocal();
+            var documentPdfHandoffs = getDocumentPdfHandoffsLocal();
+            var documentPdfRecipes = getDocumentPdfRecipesLocal();
+            var documentPdfReadiness = getDocumentPdfReadinessLocal();
+            var documentPdfAuditPackets = getDocumentPdfAuditPacketsLocal();
+            if (documentPdfReports.length > 0 || documentPdfHandoffs.length > 0 || documentPdfRecipes.length > 0 || documentPdfReadiness.length > 0 || documentPdfAuditPackets.length > 0 || getDocumentPdfReportsCloud().length > 0 || getDocumentPdfHandoffsCloud().length > 0 || getDocumentPdfRecipesCloud().length > 0 || getDocumentPdfReadinessCloud().length > 0 || getDocumentPdfAuditPacketsCloud().length > 0) tabs.push({ id: 'ws-document-pdf', label: 'PDF Workspace', icon: 'PDF' });
 
             var religiousCulturalPlans = getReligiousCulturalPlansLocal();
             if (religiousCulturalPlans.length > 0 || getReligiousCulturalPlansCloud().length > 0) tabs.push({ id: 'ws-religious-cultural', label: 'Faith & Culture', icon: 'CUL' });
@@ -5071,6 +5828,9 @@
             }
             if (document.getElementById('ws-salary')) {
                 renderSalaryReportWorkspace(document.getElementById('ws-salary'), salaryReports);
+            }
+            if (document.getElementById('ws-document-pdf')) {
+                renderDocumentPdfWorkspace(document.getElementById('ws-document-pdf'), documentPdfReports);
             }
             if (document.getElementById('ws-religious-cultural')) {
                 renderReligiousCulturalWorkspace(document.getElementById('ws-religious-cultural'), religiousCulturalPlans);
@@ -5343,8 +6103,12 @@
                 }
             } catch(e) {}
 
+            getDocumentPdfReportsLocal().slice(0, 4).forEach(function(item) {
+                docs.push({ type: 'PDF Report', icon: '\uD83D\uDCC4', name: item.title || 'Document & PDF report', detail: item.summary || item.toolName || 'Generated PDF-category export trail', href: item.href || '/document-pdf/', color: '#EFF6FF', saved: item.updatedAt || item.savedAt ? dashTimeAgo(item.updatedAt || item.savedAt) : 'Recent' });
+            });
+
             var statDocs = document.getElementById('stat-docs');
-            if (statDocs) statDocs.textContent = docs.length + dashGetLegalWorkflows().length;
+            if (statDocs) statDocs.textContent = docs.length + dashGetLegalWorkflows().length + getDocumentPdfHandoffsLocal().length + getDocumentPdfRecipesLocal().length + getDocumentPdfReadinessLocal().length + getDocumentPdfAuditPacketsLocal().length;
 
             if (docs.length === 0) {
                 container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">&#x1F4C2;</div>PDFs and documents you generate will appear here.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, PAYE Calculator, or a Legal app PDF checklist to get started.</span></div>';
@@ -5386,6 +6150,7 @@
                     ['afro_invoice_draft', 'afro_cv_data', 'cv_builder_data', 'afro_paye_saved', 'afro_markdown_draft', 'markdown_content'].forEach(function(key) {
                         if (dashReadText(key)) docsCount += 1;
                     });
+                    docsCount += getDocumentPdfReportsLocal().length + getDocumentPdfHandoffsLocal().length + getDocumentPdfRecipesLocal().length + getDocumentPdfReadinessLocal().length + getDocumentPdfAuditPacketsLocal().length;
                     statDocs.textContent = docsCount;
                 }
 
@@ -5690,7 +6455,7 @@
     <button class="close-btn" onclick="toggleAiPanel()">&times;</button>
   </div>
   <div class="ai-panel-msgs" id="aiPanelMsgs">
-    <div class="ai-msg bot">Hi! I'm your AfroTools assistant. Ask me anything about tax, finance, or your recent calculations.</div>
+    <div class="ai-msg bot">Hi! I'm your AfroTools assistant. Ask me about AfroTools, tax, finance, or finding the right tool.</div>
   </div>
   <div class="ai-panel-input">
     <input id="aiPanelIn" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendAiChat()">
@@ -5735,8 +6500,8 @@ async function sendAiChat() {
 
   // Build user context from profile
   var userContext = null;
-  if (window.AfroAuth && AfroAuth.isLoggedIn && AfroAuth.isLoggedIn()) {
-    var profile = AfroAuth.getProfile ? AfroAuth.getProfile() : null;
+  if (typeof dashboardAuthState !== 'undefined' && dashboardAuthState === DASHBOARD_AUTH_STATES.signedIn && currentUser) {
+    var profile = (extendedProfile && Object.keys(extendedProfile).length) ? extendedProfile : currentUser;
     if (profile) {
       userContext = {
         country: profile.country_code || profile.country,

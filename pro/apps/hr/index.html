@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AfroHR People OS | AfroTools Pro</title>
+  <meta name="description" content="AfroHR People OS is a Pro HR workflow shell for employee records, onboarding, documents, leave, payroll readiness, and people operations across African teams.">
+  <meta name="robots" content="noindex, follow">
+  <meta name="tool-id" content="afrohr-people-os">
+  <meta name="tool-category" content="pro">
+  <meta name="pro-required" content="afrotools-pro">
+  <link rel="canonical" href="https://afrotools.com/pro/apps/hr/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=1">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=1">
+  <script src="/assets/js/afro-auth.js?v=6"></script>
+  <script src="/assets/js/pro-gate.js?v=20260502a"></script>
+  <style>
+    :root{
+      --hr-bg:var(--color-bg,#F8FAFD);
+      --hr-surface:#ffffff;
+      --hr-soft:#F8FAFC;
+      --hr-ink:var(--color-text,#0f172a);
+      --hr-muted:var(--color-text-muted,#64748b);
+      --hr-subtle:var(--color-text-subtle,#94a3af);
+      --hr-line:var(--color-border,#e2e8f0);
+      --hr-line-strong:var(--color-border-strong,#cbd5e1);
+      --hr-blue:var(--color-primary,#0062CC);
+      --hr-blue-soft:var(--color-primary-pale,rgba(0,122,255,.08));
+      --hr-gold:var(--color-gold,#F5A623);
+      --hr-gold-soft:var(--color-gold-pale,#fff3cd);
+      --hr-green:#047857;
+      --hr-green-soft:#ECFDF5;
+      --hr-amber:#A16207;
+      --hr-amber-soft:#FFFBEB;
+      --hr-red:#B91C1C;
+      --hr-red-soft:#FEF2F2;
+      --hr-purple:#6D28D9;
+      --hr-purple-soft:#F5F3FF;
+      --hr-radius:var(--radius-sm,6px);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--hr-bg);color:var(--hr-ink);font-family:var(--font-body,"DM Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);font-size:14px;line-height:1.45;overflow-x:hidden}
+    button,a,input,select{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .hr-shell h1,.hr-shell h2,.hr-shell h3,.hr-shell h4{font-family:var(--font-body,"DM Sans",system-ui,sans-serif);letter-spacing:0}
+    .hr-shell{min-height:100vh;display:grid;grid-template-columns:240px minmax(0,1fr);background:var(--hr-bg)}
+    .hr-side{position:sticky;top:0;height:100vh;background:#fff;border-right:1px solid var(--hr-line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;z-index:10}
+    .hr-brand{display:flex;align-items:center;gap:10px;padding:8px 8px 12px;border-bottom:1px solid var(--hr-line)}
+    .hr-brand-mark{width:34px;height:34px;border-radius:var(--hr-radius);display:flex;align-items:center;justify-content:center;background:var(--hr-blue);color:#fff;font-size:12px;font-weight:900}
+    .hr-brand-title{font-size:13px;font-weight:900;line-height:1.15}
+    .hr-brand-meta{font-size:11px;color:var(--hr-muted);margin-top:2px}
+    .hr-nav{display:grid;gap:4px}
+    .hr-nav a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;padding:8px 9px;border-radius:var(--hr-radius);text-decoration:none;color:#334155;font-size:13px;font-weight:800}
+    .hr-nav a:hover,.hr-nav a:focus-visible{background:var(--hr-blue-soft);color:var(--hr-blue)}
+    .hr-nav span{font-size:11px;color:var(--hr-subtle);font-weight:800}
+    .hr-side-box{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:var(--hr-soft);padding:10px;display:grid;gap:8px}
+    .hr-side-box strong{font-size:12px;font-weight:900}
+    .hr-side-box p{font-size:11px;line-height:1.45;color:var(--hr-muted);margin:0}
+    .hr-side-foot{margin-top:auto;display:grid;gap:8px;padding-top:12px;border-top:1px solid var(--hr-line)}
+    .hr-main{min-width:0}
+    .hr-topbar{position:sticky;top:0;z-index:9;min-height:64px;border-bottom:1px solid var(--hr-line);background:rgba(248,250,253,.94);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px}
+    .hr-context{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap}
+    .hr-field{display:grid;gap:3px;min-width:220px}
+    .hr-label{font-size:11px;font-weight:900;color:var(--hr-muted)}
+    .hr-select{height:36px;border:1px solid var(--hr-line-strong);border-radius:var(--hr-radius);background:#fff;color:var(--hr-ink);padding:0 10px;font-size:13px;font-weight:800}
+    .hr-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .hr-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;border:1px solid var(--hr-line-strong);border-radius:var(--hr-radius);background:#fff;color:var(--hr-ink);padding:8px 11px;text-decoration:none;font-size:12px;font-weight:900;line-height:1.1}
+    .hr-btn:hover{border-color:var(--hr-blue);color:var(--hr-blue);background:var(--hr-blue-soft)}
+    .hr-btn.primary{background:var(--hr-blue);border-color:var(--hr-blue);color:#fff}
+    .hr-btn.primary:hover{background:#004BA0;color:#fff}
+    .hr-btn.warn{border-color:#FDE68A;background:var(--hr-amber-soft);color:#78350F}
+    .hr-btn:disabled{opacity:.58;cursor:not-allowed}
+    .hr-content{padding:18px;max-width:1480px;margin:0 auto}
+    .hr-command-grid{display:grid;grid-template-columns:minmax(0,1.5fr) 380px;gap:12px;margin-bottom:12px}
+    .hr-command,.hr-panel,.hr-card,.hr-metric,.hr-row,.hr-workflow,.hr-note-card,.hr-doc,.hr-letter{background:var(--hr-surface);border:1px solid var(--hr-line);border-radius:var(--hr-radius);box-shadow:0 1px 0 rgba(15,23,42,.03)}
+    .hr-command{padding:16px;display:grid;gap:12px}
+    .hr-kicker{font-size:11px;font-weight:900;color:var(--hr-blue);margin-bottom:4px}
+    .hr-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .hr-title{font-size:28px;line-height:1.1;margin:0 0 6px;font-weight:900;color:var(--hr-ink)}
+    .hr-subtitle{font-size:13px;line-height:1.55;color:var(--hr-muted);max-width:830px;margin:0}
+    .hr-pill{display:inline-flex;align-items:center;justify-content:center;min-height:22px;border-radius:999px;padding:4px 8px;border:1px solid var(--hr-line);background:var(--hr-soft);color:#475569;font-size:10px;font-weight:900;white-space:nowrap}
+    .hr-pill.ready,.hr-pill.active,.hr-pill.complete{background:var(--hr-green-soft);border-color:#A7F3D0;color:#065F46}
+    .hr-pill.open,.hr-pill.progress{background:var(--hr-blue-soft);border-color:#BFDBFE;color:#1E40AF}
+    .hr-pill.review,.hr-pill.leave{background:var(--hr-amber-soft);border-color:#FDE68A;color:#92400E}
+    .hr-pill.missing,.hr-pill.blocked{background:var(--hr-red-soft);border-color:#FECACA;color:#991B1B}
+    .hr-pill.shell{background:var(--hr-purple-soft);border-color:#DDD6FE;color:#5B21B6}
+    .hr-snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .hr-snap{border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:var(--hr-soft);padding:10px;min-height:80px}
+    .hr-snap strong{display:block;font-size:20px;line-height:1;font-weight:900}
+    .hr-snap span{display:block;font-size:11px;font-weight:800;color:var(--hr-muted);margin-top:6px}
+    .hr-boundary{padding:14px;display:grid;gap:10px;background:var(--hr-amber-soft);border-color:#FDE68A;color:#78350F}
+    .hr-boundary h2{font-size:16px;margin:0;font-weight:900}
+    .hr-boundary p{font-size:12px;line-height:1.5;color:#78350F;margin:0}
+    .hr-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .hr-metric{padding:12px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
+    .hr-metric strong{display:block;font-size:23px;line-height:1;font-weight:900}
+    .hr-metric span{display:block;font-size:11px;color:var(--hr-muted);font-weight:900;margin-top:7px}
+    .hr-metric small{display:block;font-size:11px;color:var(--hr-subtle);line-height:1.35;margin-top:4px}
+    .hr-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+    .hr-panel{overflow:hidden;margin-bottom:12px}
+    .hr-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 13px;border-bottom:1px solid var(--hr-line);background:#fff}
+    .hr-panel-body{padding:12px 13px}
+    .hr-h2{font-size:17px;font-weight:900;line-height:1.2;margin:0}
+    .hr-note{font-size:12px;line-height:1.45;color:var(--hr-muted);margin:3px 0 0;max-width:780px}
+    .hr-workflows{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .hr-workflow{padding:12px;display:grid;gap:8px;min-height:168px}
+    .hr-workflow h3{font-size:14px;line-height:1.2;margin:0;font-weight:900}
+    .hr-workflow p{font-size:11px;line-height:1.42;color:var(--hr-muted);margin:0}
+    .hr-list{display:grid;gap:8px}
+    .hr-row,.hr-doc,.hr-letter,.hr-note-card{padding:10px 11px}
+    .hr-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+    .hr-row-title{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .hr-row-meta{font-size:11px;color:var(--hr-muted);line-height:1.42;margin-top:3px}
+    .hr-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .hr-table-wrap{overflow:auto;border:1px solid var(--hr-line);border-radius:var(--hr-radius);background:#fff}
+    .hr-table{width:100%;border-collapse:collapse;min-width:760px}
+    .hr-table th,.hr-table td{padding:9px 10px;border-bottom:1px solid var(--hr-line);text-align:left;vertical-align:top;font-size:12px}
+    .hr-table th{background:var(--hr-soft);color:#475569;font-size:11px;font-weight:900}
+    .hr-table tr:last-child td{border-bottom:0}
+    .hr-table strong{font-weight:900}
+    .hr-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .hr-doc h3,.hr-letter h3,.hr-note-card h3{font-size:13px;font-weight:900;line-height:1.25;margin:0}
+    .hr-doc p,.hr-letter p,.hr-note-card p{font-size:11px;line-height:1.42;color:var(--hr-muted);margin:4px 0 0}
+    .hr-empty{border:1px dashed var(--hr-line-strong);border-radius:var(--hr-radius);padding:14px;background:#fff;color:var(--hr-muted);font-size:12px;line-height:1.5;text-align:center}
+    .hr-note-box{border:1px solid #FDE68A;background:var(--hr-amber-soft);color:#78350F;border-radius:var(--hr-radius);padding:10px 11px;font-size:12px;line-height:1.48}
+    .hr-spaced{margin-top:10px}
+    @media(max-width:1280px){
+      .hr-workflows{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .hr-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media(max-width:1040px){
+      .hr-shell{grid-template-columns:1fr}
+      .hr-side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--hr-line)}
+      .hr-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .hr-layout,.hr-command-grid{grid-template-columns:1fr}
+      .hr-topbar{position:relative;align-items:flex-start;flex-direction:column}
+      .hr-actions{justify-content:flex-start}
+    }
+    @media(max-width:760px){
+      .hr-content{padding:12px}
+      .hr-title{font-size:24px}
+      .hr-nav,.hr-workflows,.hr-metrics,.hr-snapshot,.hr-grid-2{grid-template-columns:1fr}
+      .hr-field{min-width:0;width:100%}
+      .hr-row{grid-template-columns:1fr}
+      .hr-row-actions{justify-content:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <main class="hr-shell pro-gated-content">
+    <aside class="hr-side" aria-label="AfroHR navigation">
+      <div class="hr-brand">
+        <div class="hr-brand-mark" aria-hidden="true">HR</div>
+        <div>
+          <div class="hr-brand-title">AfroHR People OS</div>
+          <div class="hr-brand-meta">Pro app shell</div>
+        </div>
+      </div>
+      <nav class="hr-nav" aria-label="People OS sections">
+        <a href="#overview">Overview <span>00</span></a>
+        <a href="#workflows">Workflows <span>05</span></a>
+        <a href="#employees">Employees <span id="navEmployeeCount">0</span></a>
+        <a href="#missing-details">Missing details <span id="navMissingCount">0</span></a>
+        <a href="#documents">Vault <span id="navDocCount">0</span></a>
+        <a href="/pro/workspace/">Pro control <span>Back</span></a>
+        <a href="/pro/apps/">Browse apps <span>Index</span></a>
+        <a href="/dashboard/">Account <span>Acct</span></a>
+      </nav>
+      <div class="hr-side-box">
+        <strong>Payroll companion</strong>
+        <p>AfroHR reads Payroll employee-master data when present, but this shell does not write back into payroll storage automatically.</p>
+      </div>
+      <div class="hr-side-foot">
+        <a class="hr-btn" href="/pro/apps/">Browse Pro Apps</a>
+        <a class="hr-btn" href="/dashboard/">Account</a>
+        <a class="hr-btn primary" href="/tools/afropayroll-os/workspace.html">Open AfroPayroll</a>
+        <a class="hr-btn" href="/tools/leave-calculator/">Leave calculator</a>
+      </div>
+    </aside>
+
+    <section class="hr-main" aria-label="AfroHR People OS dashboard">
+      <header class="hr-topbar">
+        <div class="hr-context">
+          <div class="hr-field">
+            <label class="hr-label" for="orgSelect">Organisation or client</label>
+            <select class="hr-select" id="orgSelect">
+              <option value="sme">SME team</option>
+              <option value="school">School staff book</option>
+              <option value="clinic">Clinic roster</option>
+              <option value="ngo">NGO field team</option>
+              <option value="accountant">Accountant client book</option>
+            </select>
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="countrySelect">Primary country</label>
+            <select class="hr-select" id="countrySelect">
+              <option value="NG">Nigeria</option>
+              <option value="KE">Kenya</option>
+              <option value="GH">Ghana</option>
+              <option value="ZA">South Africa</option>
+              <option value="RW">Rwanda</option>
+              <option value="SN">Senegal</option>
+              <option value="CM">Cameroon</option>
+              <option value="EG">Egypt</option>
+            </select>
+          </div>
+          <div class="hr-field">
+            <label class="hr-label" for="periodSelect">People period</label>
+            <select class="hr-select" id="periodSelect">
+              <option value="2026-05">May 2026</option>
+              <option value="2026-06">June 2026</option>
+              <option value="2026-Q2">Q2 2026</option>
+              <option value="2026-YTD">2026 year to date</option>
+            </select>
+          </div>
+        </div>
+        <div class="hr-actions">
+          <a class="hr-btn" href="/pro/workspace/">Pro workspace</a>
+          <a class="hr-btn" href="/pro/apps/">Browse apps</a>
+          <a class="hr-btn" href="/dashboard/">Account</a>
+          <button class="hr-btn" type="button" id="refreshBtn">Refresh</button>
+          <button class="hr-btn warn" type="button" id="resetBtn">Reset local HR demo</button>
+          <button class="hr-btn primary" type="button" id="sendPayrollTopBtn">Send to payroll</button>
+        </div>
+      </header>
+
+      <div class="hr-content">
+        <section class="hr-command-grid" id="overview" aria-label="People command center">
+          <article class="hr-command">
+            <div class="hr-title-row">
+              <div>
+                <div class="hr-kicker">Payroll readiness</div>
+                <h1 class="hr-title">AfroHR People OS</h1>
+                <p class="hr-subtitle">A Pro HR companion to AfroPayroll for employee records, onboarding, contracts, leave, document vaults, payroll readiness, and missing employee details. Sensitive HR shell data stays in this browser unless a future account-backed API is explicitly added.</p>
+              </div>
+              <span class="hr-pill shell" id="modePill">localStorage only</span>
+            </div>
+            <div class="hr-snapshot">
+              <div class="hr-snap"><strong id="snapEmployees">0</strong><span>Total employee records</span></div>
+              <div class="hr-snap"><strong id="snapPayrollReadiness">0%</strong><span>Payroll readiness</span></div>
+              <div class="hr-snap"><strong id="snapMissing">0</strong><span>Missing details</span></div>
+              <div class="hr-snap"><strong id="snapPayrollSource">Not read</strong><span>Payroll master source</span></div>
+            </div>
+          </article>
+          <article class="hr-boundary">
+            <div>
+              <div class="hr-kicker">Sensitive data boundary</div>
+              <h2>HR shell is local-only</h2>
+            </div>
+            <p>AfroHR stores demo onboarding, letters, leave, vault, and handoff state in localStorage. It reads Payroll employee-master records if present, but does not mutate Payroll storage automatically.</p>
+            <div class="hr-actions">
+              <a class="hr-btn" href="/tools/afropayroll-os/workspace.html">AfroPayroll</a>
+              <a class="hr-btn" href="/tools/leave-calculator/">Leave calculator</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="hr-metrics" aria-label="People metrics">
+          <div class="hr-metric"><strong id="metricLocalEmployees">0</strong><span>HR local records</span><small>AfroHR demo state</small></div>
+          <div class="hr-metric"><strong id="metricPayrollEmployees">0</strong><span>Payroll records read</span><small>Read-only employee master</small></div>
+          <div class="hr-metric"><strong id="metricLetters">0</strong><span>Contracts and letters</span><small>Local draft letters</small></div>
+          <div class="hr-metric"><strong id="metricLeave">0</strong><span>Leave items</span><small>Local attendance log</small></div>
+          <div class="hr-metric"><strong id="metricDocs">0</strong><span>Vault records</span><small>Metadata only</small></div>
+        </section>
+
+        <section class="hr-panel" id="workflows" aria-labelledby="workflowTitle">
+          <div class="hr-panel-head">
+            <div>
+              <div class="hr-kicker">Workflow cards</div>
+              <h2 class="hr-h2" id="workflowTitle">People operations launcher</h2>
+              <p class="hr-note">Actions write only to AfroHR local demo state. Payroll employee-master data stays read-only unless a future user-approved sync flow is built.</p>
+            </div>
+          </div>
+          <div class="hr-panel-body">
+            <div class="hr-workflows">
+              <article class="hr-workflow">
+                <span class="hr-pill progress">Onboarding</span>
+                <h3>Onboard employee</h3>
+                <p>Create a local HR employee record with onboarding tasks and missing payroll fields.</p>
+                <button class="hr-btn primary" type="button" id="onboardBtn">Onboard employee</button>
+              </article>
+              <article class="hr-workflow">
+                <span class="hr-pill missing">Payroll details</span>
+                <h3>Request missing payroll details</h3>
+                <p>Queue a local request for tax ID, social security, bank or mobile-money route, and emergency contact.</p>
+                <button class="hr-btn" type="button" id="requestDetailsBtn">Request details</button>
+              </article>
+              <article class="hr-workflow">
+                <span class="hr-pill open">Letter</span>
+                <h3>Generate employment letter</h3>
+                <p>Create a local employment-letter draft manifest for review before sending.</p>
+                <button class="hr-btn" type="button" id="letterBtn">Generate letter</button>
+              </article>
+              <article class="hr-workflow">
+                <span class="hr-pill leave">Leave</span>
+                <h3>Track leave</h3>
+                <p>Add leave or attendance item and link out to the leave calculator for deeper estimates.</p>
+                <button class="hr-btn" type="button" id="leaveBtn">Track leave</button>
+              </article>
+              <article class="hr-workflow">
+                <span class="hr-pill shell">Payroll handoff</span>
+                <h3>Send to payroll</h3>
+                <p>Create a local payroll-readiness handoff note. This does not write to Payroll storage.</p>
+                <button class="hr-btn" type="button" id="sendPayrollBtn">Send to payroll</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <div class="hr-layout">
+          <div>
+            <section class="hr-panel" id="employees" aria-labelledby="employeeTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">Employee records</div>
+                  <h2 class="hr-h2" id="employeeTitle">People records and payroll profile</h2>
+                  <p class="hr-note">Combines HR local demo records with read-only Payroll employee-master records when available.</p>
+                </div>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-table-wrap">
+                  <table class="hr-table" aria-label="Employee records">
+                    <thead>
+                      <tr><th>Employee</th><th>Country</th><th>Role</th><th>Source</th><th>Payroll readiness</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="employeeBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="hr-panel" id="missing-details" aria-labelledby="missingTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">Missing employee details</div>
+                  <h2 class="hr-h2" id="missingTitle">Payroll blockers and people data gaps</h2>
+                  <p class="hr-note">Missing fields are computed from local HR records and read-only Payroll employee-master records.</p>
+                </div>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-list" id="missingList"></div>
+              </div>
+            </section>
+
+            <section class="hr-panel" id="letters" aria-labelledby="letterTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">Contracts and letters</div>
+                  <h2 class="hr-h2" id="letterTitle">Employment letter drafts</h2>
+                  <p class="hr-note">Draft manifests only. Final legal review and signature flow are not active yet.</p>
+                </div>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-grid-2" id="letterGrid"></div>
+              </div>
+            </section>
+          </div>
+
+          <aside>
+            <section class="hr-panel" id="leave" aria-labelledby="leaveTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">Leave and attendance</div>
+                  <h2 class="hr-h2" id="leaveTitle">Leave tracker</h2>
+                  <p class="hr-note">Local leave log with a link to the public leave calculator.</p>
+                </div>
+                <a class="hr-btn" href="/tools/leave-calculator/">Open calculator</a>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-list" id="leaveList"></div>
+              </div>
+            </section>
+
+            <section class="hr-panel" id="onboarding" aria-labelledby="onboardingTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">Onboarding checklist</div>
+                  <h2 class="hr-h2" id="onboardingTitle">Starter tasks</h2>
+                  <p class="hr-note">Checklist status is saved in AfroHR local demo state.</p>
+                </div>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-list" id="onboardingList"></div>
+              </div>
+            </section>
+
+            <section class="hr-panel" id="documents" aria-labelledby="docTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">Document vault</div>
+                  <h2 class="hr-h2" id="docTitle">Vault metadata</h2>
+                  <p class="hr-note">Metadata only. No files are uploaded or stored by this shell.</p>
+                </div>
+                <button class="hr-btn" type="button" id="addDocBtn">Add vault note</button>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-grid-2" id="docGrid"></div>
+              </div>
+            </section>
+
+            <section class="hr-panel" id="compliance" aria-labelledby="complianceTitle">
+              <div class="hr-panel-head">
+                <div>
+                  <div class="hr-kicker">HR compliance notes</div>
+                  <h2 class="hr-h2" id="complianceTitle">Review notes</h2>
+                  <p class="hr-note">Country and role notes are prompts for professional review, not compliance guarantees.</p>
+                </div>
+              </div>
+              <div class="hr-panel-body">
+                <div class="hr-list" id="complianceList"></div>
+                <div class="hr-note-box hr-spaced">AfroHR does not certify contracts, immigration status, labor-law compliance, payroll filing, or employee data consent. This shell is local workflow scaffolding.</div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    "use strict";
+
+    var STORAGE_KEY = "afrohr_people_os_demo_v1";
+    var PAYROLL_EMPLOYEE_KEY = "afropayroll_pro_employee_master";
+    var REQUIRED_FIELDS = ["name", "email", "phone", "taxId", "socialSecurityId", "bankAccountOrMobile", "employmentType"];
+    var ONBOARDING_TASKS = [
+      ["identity", "Identity and contact captured"],
+      ["contract", "Contract or appointment letter prepared"],
+      ["payroll", "Payroll statutory details collected"],
+      ["payment", "Bank or mobile-money route confirmed"],
+      ["policy", "Policy acknowledgement recorded"]
+    ];
+
+    var els = {};
+
+    function byId(id) {
+      return document.getElementById(id);
+    }
+
+    function create(tag, className, content) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (content !== undefined && content !== null) node.textContent = String(content);
+      return node;
+    }
+
+    function clear(node) {
+      if (!node) return;
+      while (node.firstChild) node.removeChild(node.firstChild);
+    }
+
+    function readJson(key, fallback) {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (err) {
+        return fallback;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function asArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function text(value, fallback) {
+      value = value === undefined || value === null ? "" : String(value);
+      return value.trim() || fallback || "";
+    }
+
+    function todayIso() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function dateLabel(value) {
+      if (!value) return "-";
+      var date = new Date(value + "T00:00:00");
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+    }
+
+    function stampLabel(value) {
+      if (!value) return "Not generated";
+      var date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString(undefined, { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function pill(label, tone) {
+      return create("span", "hr-pill " + (tone || ""), label);
+    }
+
+    function defaultState() {
+      return {
+        org: "sme",
+        country: "NG",
+        period: "2026-05",
+        employees: [],
+        letters: [],
+        leave: [],
+        documents: [
+          { id: "id-proof", title: "Identity proof", status: "missing", note: "Collect national ID, passport, or business-approved identity proof." },
+          { id: "contract", title: "Contract folder", status: "open", note: "Employment letter, contract, role note, and policy acknowledgement." },
+          { id: "payroll-details", title: "Payroll details", status: "missing", note: "Tax ID, pension/social security, bank or mobile-money route." }
+        ],
+        onboarding: {},
+        requests: [],
+        handoffs: []
+      };
+    }
+
+    var state = Object.assign(defaultState(), readJson(STORAGE_KEY, {}));
+    state.employees = asArray(state.employees);
+    state.letters = asArray(state.letters);
+    state.leave = asArray(state.leave);
+    state.documents = asArray(state.documents).length ? state.documents : defaultState().documents;
+    state.requests = asArray(state.requests);
+    state.handoffs = asArray(state.handoffs);
+    state.onboarding = Object.assign({}, state.onboarding || {});
+
+    function normalizePayrollEmployee(raw, index) {
+      raw = raw || {};
+      return {
+        id: text(raw.id || raw.employeeRecordId || raw.employeeId || raw.employeeCode, "payroll-" + index),
+        name: text(raw.name || raw.fullName || raw.full_name, "Payroll employee " + (index + 1)),
+        email: text(raw.email, ""),
+        phone: text(raw.phone, ""),
+        country: text(raw.country || raw.countryCode || raw.country_code, ""),
+        role: text(raw.role || raw.roleTitle || raw.jobTitle || raw.role_title, ""),
+        department: text(raw.department, ""),
+        taxId: text(raw.taxId || raw.taxID || raw.tax_id, ""),
+        socialSecurityId: text(raw.socialSecurityId || raw.pensionSocialSecurityId || raw.pensionId || raw.social_id, ""),
+        bankAccountOrMobile: text(raw.bankAccountOrMobile || raw.bankAccount || raw.accountNumber || raw.mobileMoney || raw.account_or_mobile, ""),
+        employmentType: text(raw.employmentType || raw.type, ""),
+        status: text(raw.status, "active"),
+        source: "Payroll employee master"
+      };
+    }
+
+    function payrollEmployees() {
+      var store = readJson(PAYROLL_EMPLOYEE_KEY, []);
+      if (Array.isArray(store)) return store.map(normalizePayrollEmployee);
+      if (store && Array.isArray(store.employees)) return store.employees.map(normalizePayrollEmployee);
+      if (store && Array.isArray(store.records)) return store.records.map(normalizePayrollEmployee);
+      if (store && typeof store === "object") {
+        return Object.keys(store).map(function (key, index) {
+          return normalizePayrollEmployee(store[key], index);
+        });
+      }
+      return [];
+    }
+
+    function hrEmployee(index) {
+      var names = ["Amina Okafor", "Brian Otieno", "Nandi Mensah", "Musa Diallo", "Lerato Mokoena"];
+      var roles = ["Operations assistant", "Payroll clerk", "Clinic administrator", "Teacher", "Field officer"];
+      var name = names[index % names.length];
+      return {
+        id: "hr-" + Date.now(),
+        name: name,
+        email: index % 2 ? "" : name.toLowerCase().replace(/\s+/g, ".") + "@example.com",
+        phone: "",
+        country: state.country,
+        role: roles[index % roles.length],
+        department: index % 2 ? "Operations" : "Admin",
+        taxId: "",
+        socialSecurityId: "",
+        bankAccountOrMobile: "",
+        employmentType: "employee",
+        status: "onboarding",
+        source: "AfroHR local"
+      };
+    }
+
+    function allEmployees() {
+      return state.employees.concat(payrollEmployees());
+    }
+
+    function missingFields(employee) {
+      return REQUIRED_FIELDS.filter(function (field) {
+        return !text(employee[field], "");
+      });
+    }
+
+    function readiness(employee) {
+      var missing = missingFields(employee).length;
+      return Math.round(((REQUIRED_FIELDS.length - missing) / REQUIRED_FIELDS.length) * 100);
+    }
+
+    function overallReadiness() {
+      var employees = allEmployees();
+      if (!employees.length) return 0;
+      var total = employees.reduce(function (sum, employee) {
+        return sum + readiness(employee);
+      }, 0);
+      return Math.round(total / employees.length);
+    }
+
+    function missingEmployeeCount() {
+      return allEmployees().filter(function (employee) {
+        return missingFields(employee).length > 0;
+      }).length;
+    }
+
+    function bindElements() {
+      [
+        "orgSelect", "countrySelect", "periodSelect", "refreshBtn", "resetBtn", "sendPayrollTopBtn",
+        "onboardBtn", "requestDetailsBtn", "letterBtn", "leaveBtn", "sendPayrollBtn", "addDocBtn",
+        "snapEmployees", "snapPayrollReadiness", "snapMissing", "snapPayrollSource", "metricLocalEmployees",
+        "metricPayrollEmployees", "metricLetters", "metricLeave", "metricDocs", "navEmployeeCount",
+        "navMissingCount", "navDocCount", "employeeBody", "missingList", "letterGrid", "leaveList",
+        "onboardingList", "docGrid", "complianceList"
+      ].forEach(function (id) {
+        els[id] = byId(id);
+      });
+    }
+
+    function renderSelectors() {
+      els.orgSelect.value = state.org || "sme";
+      els.countrySelect.value = state.country || "NG";
+      els.periodSelect.value = state.period || "2026-05";
+    }
+
+    function renderMetrics() {
+      var payroll = payrollEmployees();
+      var employees = allEmployees();
+      var missing = missingEmployeeCount();
+      els.snapEmployees.textContent = String(employees.length);
+      els.snapPayrollReadiness.textContent = String(overallReadiness()) + "%";
+      els.snapMissing.textContent = String(missing);
+      els.snapPayrollSource.textContent = payroll.length ? "Read" : "Not found";
+      els.metricLocalEmployees.textContent = String(state.employees.length);
+      els.metricPayrollEmployees.textContent = String(payroll.length);
+      els.metricLetters.textContent = String(state.letters.length);
+      els.metricLeave.textContent = String(state.leave.length);
+      els.metricDocs.textContent = String(state.documents.length);
+      els.navEmployeeCount.textContent = String(employees.length);
+      els.navMissingCount.textContent = String(missing);
+      els.navDocCount.textContent = String(state.documents.length);
+    }
+
+    function tableEmpty(tbody, cols, message) {
+      var tr = document.createElement("tr");
+      var td = document.createElement("td");
+      td.colSpan = cols;
+      td.appendChild(create("div", "hr-empty", message));
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    }
+
+    function renderEmployees() {
+      clear(els.employeeBody);
+      var employees = allEmployees();
+      if (!employees.length) {
+        tableEmpty(els.employeeBody, 6, "No HR local records and no Payroll employee-master records found in this browser.");
+        return;
+      }
+      employees.forEach(function (employee) {
+        var tr = document.createElement("tr");
+        [
+          employee.name,
+          employee.country || state.country,
+          employee.role || employee.department || "-",
+          employee.source,
+          readiness(employee) + "%",
+          employee.status || "active"
+        ].forEach(function (value, index) {
+          var td = document.createElement("td");
+          if (index === 0) td.appendChild(create("strong", "", value));
+          else if (index === 4) td.appendChild(pill(value, Number.parseInt(value, 10) >= 80 ? "ready" : "review"));
+          else if (index === 5) td.appendChild(pill(value, value === "active" ? "active" : "progress"));
+          else td.textContent = value;
+          tr.appendChild(td);
+        });
+        els.employeeBody.appendChild(tr);
+      });
+    }
+
+    function renderMissing() {
+      clear(els.missingList);
+      var employees = allEmployees().filter(function (employee) {
+        return missingFields(employee).length > 0;
+      });
+      if (!employees.length) {
+        els.missingList.appendChild(create("div", "hr-empty", "No missing employee-detail warnings in the current local view."));
+        return;
+      }
+      employees.slice(0, 10).forEach(function (employee) {
+        var row = create("article", "hr-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "hr-row-title", employee.name));
+        copy.appendChild(create("div", "hr-row-meta", "Missing: " + missingFields(employee).join(", ") + ". Source: " + employee.source + "."));
+        row.appendChild(copy);
+        var actions = create("div", "hr-row-actions");
+        actions.appendChild(pill(String(missingFields(employee).length) + " fields", "missing"));
+        row.appendChild(actions);
+        els.missingList.appendChild(row);
+      });
+    }
+
+    function renderLetters() {
+      clear(els.letterGrid);
+      if (!state.letters.length) {
+        els.letterGrid.appendChild(create("div", "hr-empty", "No contract or employment-letter drafts yet."));
+        return;
+      }
+      state.letters.slice().reverse().forEach(function (letter) {
+        var card = create("article", "hr-letter");
+        var top = create("div", "hr-title-row");
+        top.appendChild(create("h3", "", letter.title));
+        top.appendChild(pill(letter.status, letter.status));
+        card.appendChild(top);
+        card.appendChild(create("p", "", letter.note + " Created " + stampLabel(letter.createdAt) + "."));
+        els.letterGrid.appendChild(card);
+      });
+    }
+
+    function renderLeave() {
+      clear(els.leaveList);
+      if (!state.leave.length) {
+        els.leaveList.appendChild(create("div", "hr-empty", "No local leave or attendance items yet. Use Track leave or open the leave calculator."));
+        return;
+      }
+      state.leave.slice().reverse().forEach(function (item) {
+        var row = create("article", "hr-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "hr-row-title", item.employee));
+        copy.appendChild(create("div", "hr-row-meta", item.type + " - " + item.days + " days - " + dateLabel(item.date)));
+        row.appendChild(copy);
+        var actions = create("div", "hr-row-actions");
+        actions.appendChild(pill(item.status, "leave"));
+        row.appendChild(actions);
+        els.leaveList.appendChild(row);
+      });
+    }
+
+    function renderOnboarding() {
+      clear(els.onboardingList);
+      ONBOARDING_TASKS.forEach(function (task) {
+        var done = !!state.onboarding[task[0]];
+        var row = create("article", "hr-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "hr-row-title", task[1]));
+        copy.appendChild(create("div", "hr-row-meta", done ? "Marked complete in local HR shell." : "Open local onboarding task."));
+        row.appendChild(copy);
+        var actions = create("div", "hr-row-actions");
+        var button = create("button", "hr-btn", done ? "Reopen" : "Complete");
+        button.type = "button";
+        button.setAttribute("data-task", task[0]);
+        actions.appendChild(pill(done ? "done" : "open", done ? "complete" : "open"));
+        actions.appendChild(button);
+        row.appendChild(actions);
+        els.onboardingList.appendChild(row);
+      });
+      document.querySelectorAll("[data-task]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var key = button.getAttribute("data-task");
+          state.onboarding[key] = !state.onboarding[key];
+          saveState();
+          renderAll();
+        });
+      });
+    }
+
+    function renderDocs() {
+      clear(els.docGrid);
+      state.documents.forEach(function (doc) {
+        var card = create("article", "hr-doc");
+        var top = create("div", "hr-title-row");
+        top.appendChild(create("h3", "", doc.title));
+        top.appendChild(pill(doc.status, doc.status === "ready" ? "ready" : doc.status === "missing" ? "missing" : "open"));
+        card.appendChild(top);
+        card.appendChild(create("p", "", doc.note));
+        els.docGrid.appendChild(card);
+      });
+    }
+
+    function renderCompliance() {
+      clear(els.complianceList);
+      [
+        ["Employment terms", "Confirm contract terms, probation, hours, and notice rules with local counsel.", "review"],
+        ["Leave policy", "Use the leave calculator for estimates, then review country-specific policy before issuing.", "leave"],
+        ["Payroll data consent", "Collect only needed payroll and HR fields, and document staff consent outside this shell.", "missing"],
+        ["Cross-border teams", "Remote work, contractor status, and benefits may need country-specific review.", "review"]
+      ].forEach(function (item) {
+        var row = create("article", "hr-row");
+        var copy = create("div", "");
+        copy.appendChild(create("h3", "hr-row-title", item[0]));
+        copy.appendChild(create("div", "hr-row-meta", item[1]));
+        row.appendChild(copy);
+        var actions = create("div", "hr-row-actions");
+        actions.appendChild(pill("review", item[2]));
+        row.appendChild(actions);
+        els.complianceList.appendChild(row);
+      });
+    }
+
+    function onboardEmployee() {
+      state.employees.push(hrEmployee(state.employees.length));
+      state.onboarding.identity = true;
+      saveState();
+      renderAll();
+    }
+
+    function requestMissingDetails() {
+      var employees = allEmployees().filter(function (employee) {
+        return missingFields(employee).length > 0;
+      });
+      state.requests.push({
+        id: "REQ-" + String(state.requests.length + 1).padStart(3, "0"),
+        createdAt: new Date().toISOString(),
+        count: employees.length,
+        note: "Local request queued for missing payroll details. No email, SMS, or Payroll write occurred."
+      });
+      state.documents.push({
+        id: "request-" + Date.now(),
+        title: "Missing payroll details request",
+        status: employees.length ? "open" : "ready",
+        note: employees.length + " employees need detail follow-up. Stored as HR local metadata only."
+      });
+      saveState();
+      renderAll();
+    }
+
+    function generateLetter() {
+      var employee = allEmployees()[0] || hrEmployee(0);
+      state.letters.push({
+        id: "LETTER-" + String(state.letters.length + 1).padStart(3, "0"),
+        title: "Employment letter - " + employee.name,
+        status: "open",
+        createdAt: new Date().toISOString(),
+        note: "Draft manifest for " + (employee.role || "employee") + ". Requires human legal and HR review."
+      });
+      state.onboarding.contract = true;
+      saveState();
+      renderAll();
+    }
+
+    function trackLeave() {
+      var employee = allEmployees()[0] || hrEmployee(0);
+      state.leave.push({
+        id: "LEAVE-" + String(state.leave.length + 1).padStart(3, "0"),
+        employee: employee.name,
+        type: state.leave.length % 2 ? "attendance note" : "annual leave",
+        days: state.leave.length % 2 ? 1 : 3,
+        date: todayIso(),
+        status: "review"
+      });
+      saveState();
+      renderAll();
+    }
+
+    function sendToPayroll() {
+      var employees = allEmployees();
+      state.handoffs.push({
+        id: "PAY-HANDOFF-" + String(state.handoffs.length + 1).padStart(3, "0"),
+        createdAt: new Date().toISOString(),
+        employees: employees.length,
+        missing: missingEmployeeCount(),
+        note: "Local payroll-readiness handoff created. AfroHR did not write to " + PAYROLL_EMPLOYEE_KEY + "."
+      });
+      state.documents.push({
+        id: "handoff-" + Date.now(),
+        title: "Payroll readiness handoff",
+        status: missingEmployeeCount() ? "open" : "ready",
+        note: employees.length + " employee records reviewed, " + missingEmployeeCount() + " records still missing details."
+      });
+      saveState();
+      renderAll();
+    }
+
+    function addDocNote() {
+      state.documents.push({
+        id: "doc-" + Date.now(),
+        title: "Vault review note " + (state.documents.length + 1),
+        status: "open",
+        note: "Local metadata placeholder. No document file was uploaded or stored."
+      });
+      saveState();
+      renderAll();
+    }
+
+    function resetLocalDemo() {
+      localStorage.removeItem(STORAGE_KEY);
+      state = defaultState();
+      saveState();
+      renderAll();
+    }
+
+    function renderAll() {
+      renderSelectors();
+      renderMetrics();
+      renderEmployees();
+      renderMissing();
+      renderLetters();
+      renderLeave();
+      renderOnboarding();
+      renderDocs();
+      renderCompliance();
+    }
+
+    function boot() {
+      bindElements();
+      renderAll();
+      els.orgSelect.addEventListener("change", function () {
+        state.org = els.orgSelect.value;
+        saveState();
+      });
+      els.countrySelect.addEventListener("change", function () {
+        state.country = els.countrySelect.value;
+        saveState();
+        renderAll();
+      });
+      els.periodSelect.addEventListener("change", function () {
+        state.period = els.periodSelect.value;
+        saveState();
+      });
+      els.refreshBtn.addEventListener("click", renderAll);
+      els.resetBtn.addEventListener("click", resetLocalDemo);
+      els.onboardBtn.addEventListener("click", onboardEmployee);
+      els.requestDetailsBtn.addEventListener("click", requestMissingDetails);
+      els.letterBtn.addEventListener("click", generateLetter);
+      els.leaveBtn.addEventListener("click", trackLeave);
+      els.sendPayrollBtn.addEventListener("click", sendToPayroll);
+      els.sendPayrollTopBtn.addEventListener("click", sendToPayroll);
+      els.addDocBtn.addEventListener("click", addDocNote);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+  })();
+  </script>
+</body>
+</html>

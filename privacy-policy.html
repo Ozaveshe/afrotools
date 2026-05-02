@@ -6,10 +6,10 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy — AfroTools</title>
-<meta name="description" content="AfroTools privacy policy. How we handle your data, email subscriptions, and calculator usage. Your calculations never leave your browser.">
+<meta name="description" content="AfroTools privacy policy. How we handle local tools, AI Advisor requests, account sync, analytics, cookies, forms, and PDF processing.">
 <link rel="canonical" href="https://afrotools.com/privacy-policy">
 <meta property="og:title" content="Privacy Policy — AfroTools">
-<meta property="og:description" content="AfroTools privacy policy — your calculations never leave your browser.">
+<meta property="og:description" content="Feature-specific privacy states for local tools, AI Advisor, account sync, forms, analytics, and PDF processing.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -266,6 +266,26 @@
     margin: 0;
     line-height: 1.5;
   }
+  .data-flow-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.78rem;
+    color: #374151;
+  }
+  .data-flow-table th,
+  .data-flow-table td {
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .data-flow-table th {
+    background: #f8fafc;
+    color: #111827;
+    font-weight: 700;
+  }
 
   @media (max-width: 760px) {
     .layout { grid-template-columns: 1fr; }
@@ -282,7 +302,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Privacy Policy — AfroTools">
-<meta name="twitter:description" content="AfroTools privacy policy — your calculations never leave your browser.">
+<meta name="twitter:description" content="Feature-specific privacy states for local tools, AI Advisor, account sync, forms, analytics, and PDF processing.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="article:modified_time" content="2026-03-28">
 </head>
@@ -307,7 +327,7 @@
   <div class="pledge-strip">
     <div class="pledge-item">
       <div class="pledge-icon">🔒</div>
-      Your calculations never leave your browser
+      Local tools stay on device by default
     </div>
     <div class="pledge-item">
       <div class="pledge-icon">🚫</div>
@@ -358,7 +378,7 @@
       <ul>
         <li><strong>Email address</strong> — only when you voluntarily subscribe to updates or request a PDF report. We never require an account to use any tool.</li>
         <li><strong>Usage data</strong> — anonymised page views via Google Analytics (no personal identifiers linked to browsing behaviour).</li>
-        <li><strong>Calculator inputs</strong> — salary and tax inputs are processed entirely in your browser using JavaScript. We do not store or transmit your financial data to our servers.</li>
+        <li><strong>Calculator inputs</strong> &mdash; local-only tools process salary, tax, health, and financial inputs in your browser. AI-assisted tools send a calculation summary and your question only after you continue from the AI notice. Saved scenarios are stored only when you use account sync.</li>
         <li><strong>Contact form submissions</strong> — when you use the contact form, your name, email, and message are stored securely by Netlify Forms for the purpose of replying to you.</li>
       </ul>
     </div>
@@ -407,11 +427,23 @@
           <h2>Your Calculator Data</h2>
         </div>
       </div>
-      <p>This is our strongest privacy commitment: <strong>all calculations happen locally in your browser</strong> using JavaScript.</p>
-      <p>Your salary figures, tax inputs, health data, and results are never sent to our servers. When you download a PDF report, it is generated entirely in your browser and saved directly to your device — no data passes through our servers.</p>
+      <p>AfroTools labels privacy by feature, because not every workflow has the same data flow. Local calculators and local PDF tools stay in the browser by default. AI Advisor, account sync, email delivery, contact forms, analytics, and payments use the limited services described below.</p>
+      <table class="data-flow-table">
+        <thead>
+          <tr><th>Feature</th><th>Where processed</th><th>Third party</th><th>Retention</th><th>User control</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Local calculators</td><td>Browser JavaScript</td><td>None unless you choose AI or account sync</td><td>Browser session or localStorage only</td><td>Clear the page or browser storage</td></tr>
+          <tr><td>AI Advisor</td><td>AfroTools function, then Anthropic</td><td>Anthropic Claude API</td><td>No saved calculation record by AfroTools unless you separately save to your account</td><td>Continue or cancel at the AI notice before the request is sent</td></tr>
+          <tr><td>Cloud sync and dashboard</td><td>AfroTools account services</td><td>Supabase</td><td>While your account or saved scenario exists</td><td>Delete saved data or request account deletion</td></tr>
+          <tr><td>Contact, newsletter, and email reports</td><td>AfroTools forms and email workflows</td><td>Netlify or email provider</td><td>Only as long as needed for the stated purpose</td><td>Unsubscribe or request deletion</td></tr>
+          <tr><td>PDF Workspace</td><td>Browser by default</td><td>None for local processing</td><td>Tab memory and local downloads</td><td>Close the tab and delete downloaded files</td></tr>
+          <tr><td>Analytics and fonts</td><td>Browser request metadata</td><td>Google Analytics 4 and Google Fonts</td><td>GA4 retention is 14 months</td><td>Cookie controls and browser privacy settings</td></tr>
+        </tbody>
+      </table>
       <div class="highlight-box">
         <span class="highlight-box-icon">🛡️</span>
-        <p>Closing your browser tab deletes all your calculation inputs permanently. We have no record of them.</p>
+        <p>Local-only means no server upload. AI-assisted, cloud sync, contact, email, analytics, payment, and font services are labeled separately so you can decide before data moves.</p>
       </div>
     </div>
 
@@ -424,8 +456,9 @@
         </div>
       </div>
       <ul>
-        <li><strong>Netlify</strong> — we host AfroTools on Netlify. Netlify processes form submissions and may log basic request metadata. <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify Privacy Policy →</a></li>
-        <li><strong>Anthropic Claude API</strong> — the AI Advisor features send your anonymised calculation summary (not your name, email, or personal identifiers) to Anthropic's API to generate advice. <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy →</a></li>
+        <li><strong>Supabase</strong> &mdash; provides authentication and database services for AfroTools accounts and saved scenarios.</li>
+        <li><strong>Netlify</strong> &mdash; we host AfroTools on Netlify. Netlify processes form submissions and may log basic request metadata. <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify Privacy Policy</a></li>
+        <li><strong>Anthropic Claude API</strong> &mdash; the AI Advisor features send your anonymised calculation summary and your question (not your name, email, or personal identifiers) only after you continue from the AI notice. <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy</a></li>
         <li><strong>Google Analytics</strong> — anonymised usage statistics. No cross-site tracking enabled. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy →</a></li>
         <li><strong>Google Fonts</strong> — typography is loaded from Google's CDN. Google may log the request IP address. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy →</a></li>
       </ul>

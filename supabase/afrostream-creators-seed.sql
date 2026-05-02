@@ -752,6 +752,16 @@ FROM (VALUES
   ('ryan-hd', '/assets/img/afrostream/creators/ryan-hd.webp'),
   ('saad-lamjarred', '/assets/img/afrostream/creators/saad-lamjarred.webp'),
   ('soolking', '/assets/img/afrostream/creators/soolking.webp'),
-  ('william-last-krm', '/assets/img/afrostream/creators/william-last-krm.webp')
+  ('william-last-krm', '/assets/img/afrostream/creators/william-last-krm.webp'),
+  ('noel-deyzel', '/assets/img/afrostream/creators/noel-deyzel-avatar.webp'),
+  ('agbaps', '/assets/img/afrostream/creators/agbaps-avatar.webp'),
+  ('kana-tv', '/assets/img/afrostream/creators/kana-tv-avatar.webp'),
+  ('caspar-lee', '/assets/img/afrostream/creators/caspar-lee-avatar.webp'),
+  ('rayvanny', '/assets/img/afrostream/creators/rayvanny-avatar.webp'),
+  ('harmonize', '/assets/img/afrostream/creators/harmonize-avatar.webp'),
+  ('burna-boy', '/assets/img/afrostream/creators/burna-boy-avatar.webp'),
+  ('dzjoker', '/assets/img/afrostream/creators/dzjoker-avatar.webp'),
+  ('rema', '/assets/img/afrostream/creators/rema-avatar.webp'),
+  ('davido', '/assets/img/afrostream/creators/davido-avatar.webp')
 ) AS v(slug, avatar)
 WHERE c.slug = v.slug;

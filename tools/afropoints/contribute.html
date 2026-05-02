@@ -591,6 +591,16 @@ function showToast(msg, type) {
   setTimeout(function () { t.className = 'ap-toast'; }, 3500);
 }
 
+function notifyAccountChanged(action) {
+  try {
+    localStorage.removeItem('ap_profile');
+    localStorage.removeItem('afropoints_dashboard_lane_cache');
+  } catch (err) {}
+  try {
+    window.dispatchEvent(new CustomEvent('afropoints-account-change', { detail: { action: action || 'contribution' } }));
+  } catch (err) {}
+}
+
 async function submitData() {
   var AP = window.AfroPointsEngine;
   if (!window.AfroAuth || !AfroAuth.isLoggedIn()) {
@@ -656,6 +666,7 @@ async function submitData() {
     }
     desc += 'New balance: ' + AP.formatPoints(result.new_balance || 0) + ' pts.';
     document.getElementById('successDesc').textContent = desc;
+    notifyAccountChanged('contribution');
     document.getElementById('successOverlay').classList.add('show');
 
   } catch (err) {

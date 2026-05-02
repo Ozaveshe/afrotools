@@ -7,6 +7,7 @@ AfroPoints is a hybrid static-plus-serverless product:
 - Static contributor cockpit, workflow, payout, leaderboard, guide, and buyer pages live in `tools/afropoints/`
 - Client runtime lives in `engines/afropoints-engine.js`
 - Server state lives in Netlify functions:
+  - `netlify/functions/afropoints-account.js`
   - `netlify/functions/afropoints-submit.js`
   - `netlify/functions/afropoints-profile.js`
   - `netlify/functions/afropoints-leaderboard.js`
@@ -79,13 +80,23 @@ Highest-value additional product data:
 
 ## Reality Check
 
-As of the latest live Supabase inspection:
+As of the 2026-05-02 live Supabase inspection:
 
 - AfroPoints schema exists
 - badges are seeded
-- `contributions`, `points_profiles`, `points_ledger`, `cashout_requests`, and `leaderboard_cache` are empty
+- RLS is enabled on account tables, including `points_profiles`, `points_ledger`, `contributions`, and `cashout_requests`
+- live counts were small but no longer all empty: `points_profiles = 1`, `points_ledger = 2`, `contributions = 1`, `cashout_requests = 0`
 
 That means the product foundation exists, but growth loops and monetization still depend on getting real contribution volume.
+
+## Account Snapshot Contract
+
+Use `/.netlify/functions/afropoints-account` as the preferred signed-in account snapshot endpoint when a page needs profile, recent activity, recent contributions, and cashout history together.
+
+- It verifies the user with the shared browser-session auth helper so bearer tokens and secure session cookies follow the same path.
+- It returns account data from Supabase in one backend round trip, reducing repeated `/auth/v1/user` checks and duplicate table reads.
+- Dashboard and cockpit views should call this endpoint first, then fall back to narrower function calls only if the snapshot endpoint is unavailable.
+- After contribution, profile setup, or cashout actions, pages should clear `ap_profile` and `afropoints_dashboard_lane_cache`, then dispatch `afropoints-account-change` so open account modules refresh quickly.
 
 ## Account Product Standard
 

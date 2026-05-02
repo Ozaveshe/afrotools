@@ -1,43 +1,39 @@
 /**
  * AfroTools — Profile Save API
  *
- * POST /api/profile — save profile data (requires auth token)
- * GET  /api/profile — get profile data (requires auth token)
+ * POST /api/profile — save profile data (requires auth session)
+ * GET  /api/profile — get profile data (requires auth session)
  *
  * Uses the AUTH Supabase instance (zpclagtgczsygrgztlts) with service role key
  * to reliably update profiles without browser proxy/ad-blocker issues.
  */
 
 const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
-if (!SUPABASE_ANON_KEY) console.warn('[api-profile] Missing SUPABASE_ANON_KEY_AUTH env var');
 const { getAllowedOrigin } = require('./utils/cors');
+const { getUserFromEvent } = require('./_shared/browser-session-auth');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Content-Type': 'application/json',
+  'Cache-Control': 'private, no-store, max-age=0',
+  'Vary': 'Origin, Authorization, Cookie',
 };
 
-function jsonResponse(statusCode, body) {
-  return { statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) };
-}
+function jsonResponse(statusCode, body, responseMeta) {
+  const meta = responseMeta || {};
+  const response = {
+    statusCode,
+    headers: Object.assign({}, CORS_HEADERS, meta.headers || {}),
+    body: JSON.stringify(body),
+  };
 
-async function getUserFromToken(authHeader) {
-  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
-  const token = authHeader.replace('Bearer ', '');
+  if (meta.multiValueHeaders && Object.keys(meta.multiValueHeaders).length) {
+    response.multiValueHeaders = meta.multiValueHeaders;
+  }
 
-  // Verify token by calling Supabase Auth API
-  const res = await fetch(`${SUPABASE_AUTH_URL}/auth/v1/user`, {
-    headers: {
-      apikey: SUPABASE_ANON_KEY,
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!res.ok) return null;
-  const user = await res.json();
-  return user && user.id ? user : null;
+  return response;
 }
 
 exports.handler = async function (event) {
@@ -46,15 +42,17 @@ exports.handler = async function (event) {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
 
-  // Auth check
-  const user = await getUserFromToken(event.headers['authorization'] || event.headers['Authorization']);
+  // Auth check. Supports both bearer tokens and secure session cookies.
+  const authResult = await getUserFromEvent(event);
+  const user = authResult && authResult.user ? authResult.user : null;
+  const sessionResponse = authResult && authResult.sessionResponse ? authResult.sessionResponse : null;
   if (!user) {
-    return jsonResponse(401, { error: 'Unauthorized', synced: false });
+    return jsonResponse(401, { error: 'Unauthorized', synced: false }, sessionResponse);
   }
 
   const serviceKey = process.env.SUPABASE_AUTH_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY;
   if (!serviceKey) {
-    return jsonResponse(500, { error: 'Server config error', synced: false });
+    return jsonResponse(500, { error: 'Server config error', synced: false }, sessionResponse);
   }
 
   // GET: fetch profile
@@ -69,13 +67,13 @@ exports.handler = async function (event) {
       }
     );
     const data = await res.json();
-    return jsonResponse(200, { profile: Array.isArray(data) && data[0] ? data[0] : null });
+    return jsonResponse(200, { profile: Array.isArray(data) && data[0] ? data[0] : null }, sessionResponse);
   }
 
   // POST: save profile
   if (event.httpMethod === 'POST') {
     let body;
-    try { body = JSON.parse(event.body); } catch { return jsonResponse(400, { error: 'Invalid JSON' }); }
+    try { body = JSON.parse(event.body); } catch { return jsonResponse(400, { error: 'Invalid JSON' }, sessionResponse); }
 
     // Sanitize — only allow known profile fields
     const allowed = [
@@ -101,7 +99,7 @@ exports.handler = async function (event) {
     });
 
     if (Object.keys(profileData).length === 0) {
-      return jsonResponse(400, { error: 'No valid fields to update' });
+      return jsonResponse(400, { error: 'No valid fields to update' }, sessionResponse);
     }
 
     // Use UPSERT (POST with on_conflict) so it works whether the row exists or not
@@ -122,7 +120,7 @@ exports.handler = async function (event) {
 
     if (res.ok) {
       const updated = await res.json();
-      return jsonResponse(200, { ok: true, synced: true, profile: updated[0] || null });
+      return jsonResponse(200, { ok: true, synced: true, profile: updated[0] || null }, sessionResponse);
     }
 
     // If full upsert fails (columns don't exist), try basic fields only
@@ -145,13 +143,13 @@ exports.handler = async function (event) {
         }
       );
       if (fallback.ok) {
-        return jsonResponse(200, { ok: true, synced: true, partial: true });
+        return jsonResponse(200, { ok: true, synced: true, partial: true }, sessionResponse);
       }
     }
 
     const errText = await res.text();
-    return jsonResponse(200, { ok: false, synced: false, error: errText });
+    return jsonResponse(200, { ok: false, synced: false, error: errText }, sessionResponse);
   }
 
-  return jsonResponse(405, { error: 'Method not allowed' });
+  return jsonResponse(405, { error: 'Method not allowed' }, sessionResponse);
 };

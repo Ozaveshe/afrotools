@@ -291,6 +291,16 @@
     return headers;
   }
 
+  function notifyAccountChanged(action) {
+    try {
+      localStorage.removeItem('ap_profile');
+      localStorage.removeItem('afropoints_dashboard_lane_cache');
+    } catch (err) {}
+    try {
+      window.dispatchEvent(new CustomEvent('afropoints-account-change', { detail: { action: action || 'profile' } }));
+    } catch (err) {}
+  }
+
   async function saveOnboarding(payload) {
     var response = await fetch(AP.API_BASE + '/afropoints-profile', {
       method: 'POST',
@@ -390,6 +400,7 @@
         return;
       }
 
+      notifyAccountChanged('profile');
       document.getElementById('playbookSuccess').style.display = 'block';
       toast('Contributor setup saved', 'success');
     } catch (error) {

@@ -9,11 +9,13 @@ const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqh
 const SUPABASE_DATA_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_AUTH_KEY = process.env.SUPABASE_AUTH_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY;
-const DEFAULT_ANTHROPIC_INPUT_CHAR_LIMIT = 500000;
+// Keep request input under Anthropic's standard 200K-token ceiling.
+// Character count is only a proxy, so the env override is capped conservatively.
+const DEFAULT_ANTHROPIC_INPUT_CHAR_LIMIT = 420000;
 const ANTHROPIC_INPUT_CHAR_LIMIT = Math.max(
   50000,
   Math.min(
-    700000,
+    520000,
     Number(process.env.ANTHROPIC_INPUT_CHAR_LIMIT || DEFAULT_ANTHROPIC_INPUT_CHAR_LIMIT)
   )
 );
@@ -1030,6 +1032,33 @@ function trimMessagesForAnthropic(messages, budget) {
   return trimmed.length ? trimmed : messages.slice(-1);
 }
 
+function getHeader(headers, name) {
+  if (!headers) return '';
+  const direct = headers[name] || headers[name.toLowerCase()] || headers[name.toUpperCase()];
+  if (direct) return direct;
+  const key = Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase());
+  return key ? headers[key] : '';
+}
+
+function hasAiAdvisorConsent(event, body) {
+  const headerConsent = getHeader(event.headers || {}, 'x-afrotools-ai-consent');
+  const bodyConsent = body && (body.aiConsent || body.ai_advisor_consent || body.consent?.aiAdvisor);
+  return String(headerConsent || bodyConsent || '').toLowerCase() === 'accepted';
+}
+
+function aiConsentRequiredResponse(headers) {
+  const reply = 'AI Advisor was not contacted. Review the AI data notice and continue only if you agree.';
+  return {
+    statusCode: 428,
+    headers,
+    body: JSON.stringify({
+      error: 'ai_consent_required',
+      reply,
+      text: reply
+    })
+  };
+}
+
 exports.handler = async function(event) {
   // CORS: allow production + Netlify preview deployments + localhost dev
   const origin = event.headers?.origin || event.headers?.Origin || "";
@@ -1044,7 +1073,7 @@ exports.handler = async function(event) {
 
   const headers = {
     "Access-Control-Allow-Origin": corsOrigin,
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-AfroTools-AI-Consent",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json",
     "Vary": "Origin"
@@ -1055,6 +1084,14 @@ exports.handler = async function(event) {
   }
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
+  }
+
+  let body;
+  try { body = JSON.parse(event.body || '{}'); }
+  catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
+
+  if (!hasAiAdvisorConsent(event, body)) {
+    return aiConsentRequiredResponse(headers);
   }
 
   if (!ANTHROPIC_API_KEY) {
@@ -1085,10 +1122,6 @@ exports.handler = async function(event) {
   // Include rate limit info in response headers
   headers['X-RateLimit-Remaining'] = String(rateResult.remaining);
   headers['X-RateLimit-Limit'] = String(rateResult.limit);
-
-  let body;
-  try { body = JSON.parse(event.body); }
-  catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
 
   const { message, messages, tool, context, system: clientSystem, userContext: clientUserCtx, lang: clientLang } = body;
 

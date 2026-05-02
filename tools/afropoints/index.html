@@ -324,7 +324,7 @@
           </div>
           <h2 class="ap-auth-title">Start Earning Points</h2>
           <p class="ap-auth-desc">Sign in to contribute data from your city and earn points redeemable for real cash.</p>
-          <button class="ap-cta" onclick="AfroAuth.login && AfroAuth.login()">Sign In to Start</button>
+          <a class="ap-cta" href="/auth/?mode=login&amp;next=/tools/afropoints/">Sign In to Start</a>
         </div>
       </div>
 
@@ -459,6 +459,8 @@
   'use strict';
   var AP = window.AfroPointsEngine;
   if (!AP) return;
+  var accountSnapshotCache = null;
+  var accountSnapshotPromise = null;
 
   function $(id) { return document.getElementById(id); }
   function fmt(n) { return AP.formatPoints(n); }
@@ -483,6 +485,16 @@
         return json;
       });
     });
+  }
+  function fetchAccountSnapshot() {
+    if (accountSnapshotPromise) return accountSnapshotPromise;
+    accountSnapshotPromise = fetchAccountPath('/afropoints-account?activity_limit=8&contribution_limit=6&cashout_limit=20').then(function (snapshot) {
+      accountSnapshotCache = snapshot || null;
+      return snapshot;
+    }).finally(function () {
+      accountSnapshotPromise = null;
+    });
+    return accountSnapshotPromise;
   }
   function hasPayoutSetup(p) {
     var method = p && p.payout_preference;
@@ -668,23 +680,36 @@
       return;
     }
     body.innerHTML = '<div class="ap-state-note">Loading AfroPoints account state...</div>';
-    Promise.allSettled([
-      AP.getProfile(),
-      AP.getActivity(6),
-      fetchAccountPath('/afropoints-profile?action=contributions&limit=6'),
-      AP.getCashoutHistory()
-    ]).then(function (results) {
-      var profile = results[0].status === 'fulfilled' ? results[0].value : null;
-      if (!profile || profile.error) {
+    fetchAccountSnapshot().then(function (snapshot) {
+      if (!snapshot || !snapshot.profile || snapshot.profile.error) {
         body.innerHTML = '<div class="ap-state-note">AfroPoints account data is unavailable right now. You can still open the submit and guide pages.</div>';
         return;
       }
       renderCockpitLoggedIn(
-        profile,
-        results[1].status === 'fulfilled' && Array.isArray(results[1].value) ? results[1].value : [],
-        results[2].status === 'fulfilled' && Array.isArray(results[2].value) ? results[2].value : [],
-        results[3].status === 'fulfilled' && Array.isArray(results[3].value) ? results[3].value : []
+        snapshot.profile,
+        Array.isArray(snapshot.activity) ? snapshot.activity : [],
+        Array.isArray(snapshot.contributions) ? snapshot.contributions : [],
+        Array.isArray(snapshot.cashouts) ? snapshot.cashouts : []
       );
+    }).catch(function () {
+      Promise.allSettled([
+        AP.getProfile(),
+        AP.getActivity(6),
+        fetchAccountPath('/afropoints-profile?action=contributions&limit=6'),
+        AP.getCashoutHistory()
+      ]).then(function (results) {
+        var profile = results[0].status === 'fulfilled' ? results[0].value : null;
+        if (!profile || profile.error) {
+          body.innerHTML = '<div class="ap-state-note">AfroPoints account data is unavailable right now. You can still open the submit and guide pages.</div>';
+          return;
+        }
+        renderCockpitLoggedIn(
+          profile,
+          results[1].status === 'fulfilled' && Array.isArray(results[1].value) ? results[1].value : [],
+          results[2].status === 'fulfilled' && Array.isArray(results[2].value) ? results[2].value : [],
+          results[3].status === 'fulfilled' && Array.isArray(results[3].value) ? results[3].value : []
+        );
+      });
     });
   }
 
@@ -765,8 +790,7 @@
     $('activityCard').style.display = '';
     $('dashTitle').textContent = 'Your Dashboard';
 
-    // Load profile
-    AP.getProfile().then(function (p) {
+    function renderProfileStats(p) {
       if (!p || p.error) return;
       $('statBalance').textContent = fmt(p.current_balance || 0);
       $('statEarned').textContent = fmt(p.total_earned || 0);
@@ -791,10 +815,9 @@
         var el = document.querySelector('[data-badge="' + bid + '"]');
         if (el) { el.classList.remove('locked'); el.classList.add('earned'); }
       });
-    });
+    }
 
-    // Load activity
-    AP.getActivity(8).then(function (items) {
+    function renderActivityFeed(items) {
       if (!Array.isArray(items) || items.length === 0) return;
       var feed = $('activityFeed');
       feed.innerHTML = '';
@@ -812,7 +835,21 @@
           '<div class="ap-activity-pts ' + (isPos ? 'pos' : 'neg') + '">' + (isPos ? '+' : '') + item.amount + ' pts</div>';
         feed.appendChild(d);
       });
-    });
+    }
+
+    var snapshot = accountSnapshotCache;
+    if (snapshot && snapshot.profile) {
+      renderProfileStats(snapshot.profile);
+      renderActivityFeed(snapshot.activity);
+    } else {
+      fetchAccountSnapshot().then(function (freshSnapshot) {
+        renderProfileStats(freshSnapshot && freshSnapshot.profile);
+        renderActivityFeed(freshSnapshot && freshSnapshot.activity);
+      }).catch(function () {
+        AP.getProfile().then(renderProfileStats);
+        AP.getActivity(8).then(renderActivityFeed);
+      });
+    }
   }
 
   // Init

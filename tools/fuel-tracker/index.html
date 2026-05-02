@@ -6,10 +6,10 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AfroFuel — Pan-African Fuel Price Tracker | AfroTools</title>
-<meta name="description" content="Live petrol, diesel, and LPG prices for all 54 African countries. Compare fuel costs, view interactive maps, calculate generator running costs. Updated weekly.">
+<meta name="description" content="Latest available petrol, diesel, and LPG price snapshots for all 54 African countries. Compare fuel costs, view interactive maps, calculate generator running costs, and see data freshness.">
 <link rel="canonical" href="https://afrotools.com/tools/fuel-tracker/">
 <meta property="og:title" content="AfroFuel — Pan-African Fuel Price Tracker">
-<meta property="og:description" content="Live petrol, diesel, and LPG prices for all 54 African countries. Interactive map, comparison table, and generator cost calculator.">
+<meta property="og:description" content="Latest available petrol, diesel, and LPG price snapshots for all 54 African countries with freshness labels, comparison table, and generator cost calculator.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -29,6 +29,7 @@
 <script src="/assets/js/lib/live-data.js?v=bd400bd7"></script>
 <script defer src="/assets/js/lib/data-freshness.js?v=ab79d040" data-category="fuel"></script>
 <script defer src="/assets/js/lib/crowdsource-bridge.js?v=7fe9deaf" data-category="fuel_price"></script>
+<script src="/assets/js/components/live-data-status.js?v=20260502"></script>
 <script src="/assets/js/lib/sparkline.js?v=87cb45a1"></script>
 <script src="/assets/js/components/navbar.min.js?v=12cea766" defer></script>
 <script src="/assets/js/components/footer.min.js?v=d0d64671" defer></script>
@@ -244,7 +245,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:title" content="AfroFuel — Pan-African Fuel Price Tracker">
-<meta name="twitter:description" content="Live petrol, diesel, and LPG prices for all 54 African countries. Interactive map, comparison table, and generator cost calculator.">
+<meta name="twitter:description" content="Latest available petrol, diesel, and LPG price snapshots for all 54 African countries with freshness labels, comparison table, and generator cost calculator.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <script type="application/ld+json">
 {
@@ -287,9 +288,9 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       <a href="/all-tools/">Tools</a><span>/</span>
       AfroFuel Tracker
     </nav>
-    <div class="hero-badge">Live Data &bull; Updated Weekly</div>
+    <div class="hero-badge">Latest Available Data &bull; Weekly Review</div>
     <h1>AfroFuel &mdash; Pan-African <em>Fuel Price</em> Tracker</h1>
-    <p class="hero-sub">Live petrol, diesel, and LPG prices for all 54 African countries. Updated weekly from national petroleum regulators and market data providers.</p>
+    <p class="hero-sub">Latest available petrol, diesel, and LPG price snapshots for all 54 African countries, with source and freshness labels.</p>
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-val">54</div>
@@ -304,7 +305,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         <div class="hero-stat-label" id="avg-price-label">Avg USD/Litre</div>
       </div>
     </div>
-    <div class="last-updated" id="last-updated">Last updated: Loading...</div>
+    <div class="last-updated live-data-status" id="last-updated">Checking latest available fuel prices...</div>
   </div>
 </section>
 
@@ -387,7 +388,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         </tr>
       </thead>
       <tbody id="price-table-body">
-        <tr><td colspan="8" class="table-empty">Loading fuel prices...</td></tr>
+          <tr><td colspan="8" class="table-empty">Checking latest available fuel prices...</td></tr>
       </tbody>
     </table>
   </div>
@@ -516,26 +517,26 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       <div class="calc-results" id="calc-results">
         <div class="result-hero">
           <div class="result-hero-label">Monthly Fuel Cost</div>
-          <div class="result-hero-val" id="result-monthly">--</div>
-          <div class="result-hero-sub" id="result-litres">-- litres/month</div>
+          <div class="result-hero-val" id="result-monthly">Waiting for inputs</div>
+          <div class="result-hero-sub" id="result-litres">Fuel estimate will appear here</div>
         </div>
 
         <div class="result-grid">
           <div class="result-item">
             <div class="result-item-label">Annual Cost</div>
-            <div class="result-item-val" id="result-annual">--</div>
+            <div class="result-item-val" id="result-annual">Waiting</div>
           </div>
           <div class="result-item">
             <div class="result-item-label">Cost per kWh</div>
-            <div class="result-item-val" id="result-kwh">--</div>
+            <div class="result-item-val" id="result-kwh">Waiting</div>
           </div>
           <div class="result-item">
             <div class="result-item-label">Daily Cost</div>
-            <div class="result-item-val" id="result-daily">--</div>
+            <div class="result-item-val" id="result-daily">Waiting</div>
           </div>
           <div class="result-item">
             <div class="result-item-label">Litres/Month</div>
-            <div class="result-item-val" id="result-litres-num">--</div>
+            <div class="result-item-val" id="result-litres-num">Waiting</div>
           </div>
         </div>
 
@@ -550,19 +551,19 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         <div class="comparison-title">Compared to Alternatives</div>
         <div id="cmp-grid-label" class="comparison-row">
           <span class="comparison-label">&#9889; Grid Electricity</span>
-          <span class="comparison-val" id="cmp-grid">--</span>
+          <span class="comparison-val" id="cmp-grid">Waiting</span>
         </div>
         <div class="comparison-row">
           <span class="comparison-label">&#9728;&#65039; Solar (amortized)</span>
-          <span class="comparison-val" id="cmp-solar">--</span>
+          <span class="comparison-val" id="cmp-solar">Waiting</span>
         </div>
         <div class="comparison-row">
           <span class="comparison-label">&#9201; Solar break-even</span>
-          <span class="comparison-val" id="cmp-breakeven">--</span>
+          <span class="comparison-val" id="cmp-breakeven">Waiting</span>
         </div>
         <div class="comparison-row">
           <span class="comparison-label">&#127758; USD Equivalent</span>
-          <span class="comparison-val" id="cmp-usd">--</span>
+          <span class="comparison-val" id="cmp-usd">Waiting</span>
         </div>
       </div>
     </div>
@@ -583,7 +584,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 <!-- ── API CTA ── -->
 <afro-api-cta
   data-api-name="AfroFuel API"
-  data-description="Live and historical fuel price data for all 54 African countries. Weekly updates, JSON format."
+  data-description="Latest available and historical fuel price snapshots for all 54 African countries. Source labels, freshness timestamps, JSON format."
   data-docs-url="/docs/api/"
   data-signup-url="/docs/api/#signup">
 </afro-api-cta>
@@ -799,6 +800,8 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
      STATE
      ═══════════════════════════════════════════════════════════ */
   let fuelData = null;
+  let fuelDataSource = 'AfroTools fuel API';
+  let fuelDataFallback = false;
   let activeFuel = 'petrol';
   let activeRegion = 'all';
   let searchQuery = '';
@@ -850,6 +853,72 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     return data;
   }
 
+  function setFuelStatus(state, options) {
+    options = options || {};
+    var el = document.getElementById('last-updated');
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    var timestamp = options.timestamp || (fuelData && (fuelData.updated || fuelData.timestamp));
+    var source = options.source || fuelDataSource || 'AfroTools fuel feed';
+    if (status && el) {
+      status.update(el, {
+        state: state,
+        timestamp: timestamp,
+        source: source,
+        message: options.message,
+        retryLabel: options.retryLabel,
+        onRetry: options.onRetry
+      });
+      return;
+    }
+    if (el) {
+      el.textContent = options.message || 'Latest available fuel prices';
+    }
+  }
+
+  function setFuelData(data, source, fallback) {
+    fuelData = data;
+    fuelDataSource = source || 'AfroTools fuel feed';
+    fuelDataFallback = !!fallback;
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
+    var state = fallback ? 'cached' : (status ? status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) : 'live');
+    if (fallback && status && status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) === 'stale') {
+      state = 'stale';
+    }
+    setFuelStatus(state, {
+      timestamp: timestamp,
+      source: fuelDataSource,
+      message: fallback ? 'Showing latest fallback fuel snapshot' : 'Latest fuel price feed loaded'
+    });
+    render();
+  }
+
+  function useGeneratedFallback(reason) {
+    var fallback = generateFallbackData();
+    if (!fallback.updated) fallback.updated = new Date().toISOString();
+    console.warn('AfroFuel: using generated fallback data.', reason || '');
+    setFuelData(fallback, 'Built-in fallback estimates', true);
+  }
+
+  function loadStaticFuelFallback(reason) {
+    fetch('/data/fuel/latest.json', { cache: 'no-cache' })
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        data = normalizeApiData(data);
+        if (isValidFuelData(data)) {
+          setFuelData(data, 'Static fuel snapshot', true);
+        } else {
+          useGeneratedFallback(reason || 'Static fallback invalid');
+        }
+      })
+      .catch(function(err) {
+        useGeneratedFallback(err && err.message ? err.message : reason);
+      });
+  }
+
   function getFuelUnitKey(fuel) {
     return fuel === 'lpg' ? 'kg' : 'liter';
   }
@@ -887,24 +956,38 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       });
   }
 
-  const liveData = new AfroTools.LiveData('/.netlify/functions/api-fuel', {
+  setFuelStatus('loading', {
+    source: 'AfroTools fuel API',
+    message: 'Checking latest available fuel prices'
+  });
+
+  const liveData = new AfroTools.LiveData('/api/fuel', {
     refreshInterval: 6 * 60 * 60 * 1000,
     cacheKey: 'afro-fuel-latest-v2',
     cacheTTL: 6 * 60 * 60 * 1000,
     onUpdate: function(data) {
       data = normalizeApiData(data);
       if (isValidFuelData(data)) {
-        fuelData = data;
-        render();
+        setFuelData(data, 'AfroTools fuel API', false);
       } else {
-        fuelData = generateFallbackData();
-        render();
+        loadStaticFuelFallback('API returned invalid fuel data');
       }
     },
-    onError: function() {
+    onError: function(err) {
+      setFuelStatus('error', {
+        source: fuelDataSource,
+        timestamp: fuelData && (fuelData.updated || fuelData.timestamp),
+        message: 'Fuel API unavailable. Checking fallback snapshot',
+        retryLabel: 'Retry',
+        onRetry: function() { liveData.refresh(); }
+      });
       if (!isValidFuelData(fuelData)) {
-        fuelData = generateFallbackData();
-        render();
+        var cached = normalizeApiData(liveData.getData && liveData.getData());
+        if (isValidFuelData(cached)) {
+          setFuelData(cached, 'Cached AfroTools fuel API response', true);
+        } else {
+          loadStaticFuelFallback(err && err.message ? err.message : 'Fuel API unavailable');
+        }
       }
     }
   });
@@ -914,8 +997,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
   // If no valid data within 2s, use fallback
   setTimeout(function() {
     if (!isValidFuelData(fuelData)) {
-      fuelData = generateFallbackData();
-      render();
+      loadStaticFuelFallback('Fuel API did not respond in time');
     }
   }, 2000);
 
@@ -937,11 +1019,17 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 
   /* ── Timestamp ── */
   function updateTimestamp() {
-    var el = document.getElementById('last-updated');
-    if (fuelData.updated) {
-      var d = new Date(fuelData.updated);
-      el.textContent = 'Last updated: ' + d.toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
+    var timestamp = fuelData && (fuelData.updated || fuelData.timestamp);
+    var status = window.AfroTools && window.AfroTools.LiveDataStatus;
+    var state = fuelDataFallback ? 'cached' : (status ? status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) : 'live');
+    if (fuelDataFallback && status && status.stateForTimestamp(timestamp, { liveMinutes: 6 * 60, staleMinutes: 14 * 24 * 60 }) === 'stale') {
+      state = 'stale';
     }
+    setFuelStatus(state, {
+      timestamp: timestamp,
+      source: fuelDataSource,
+      message: fuelDataFallback ? 'Showing fallback fuel snapshot' : 'Latest fuel price feed loaded'
+    });
   }
 
   /* ── Average Price ── */
@@ -957,7 +1045,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
         count++;
       }
     }
-    el.textContent = count ? '$' + (total / count).toFixed(2) : '$--';
+    el.textContent = count ? '$' + (total / count).toFixed(2) : 'Unavailable';
     if (labelEl) {
       labelEl.textContent = activeFuel === 'lpg' ? 'Avg USD/kg' : 'Avg USD/Litre';
     }
@@ -1050,8 +1138,8 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
       html += '<tr>' +
         '<td>' + (i + 1) + '</td>' +
         '<td><div class="country-cell"><span class="country-flag">' + row.flag + '</span>' + row.name + '</div></td>' +
-        '<td>' + row.symbol + ' ' + (row.petrol_local || '--') + '</td>' +
-        '<td>' + row.symbol + ' ' + (row.diesel_local || '--') + '</td>' +
+        '<td>' + row.symbol + ' ' + (row.petrol_local || 'Unavailable') + '</td>' +
+        '<td>' + row.symbol + ' ' + (row.diesel_local || 'Unavailable') + '</td>' +
         '<td><strong>$' + (row[key] || 0).toFixed(2) + '</strong></td>' +
         '<td><span class="' + trendClass + '">' + trendSymbol + ' ' + Math.abs(row.change).toFixed(1) + '%</span></td>' +
         '<td><span class="badge-regulated ' + regClass + '">' + regLabel + '</span></td>' +
@@ -1312,7 +1400,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
     var solarInstallCostLocal = genSizeKVA * 350000 * (getLocalMultiplier(code) / getLocalMultiplier('NG'));
     var monthlySavingLocal = monthlyCostLocal - solarMonthlyCostLocal;
     var breakEvenMonths = monthlySavingLocal > 0 ? Math.ceil(solarInstallCostLocal / monthlySavingLocal) : 0;
-    document.getElementById('cmp-breakeven').textContent = breakEvenMonths > 0 && breakEvenMonths < 600 ? breakEvenMonths + ' months (' + (breakEvenMonths/12).toFixed(1) + ' yrs)' : '--';
+    document.getElementById('cmp-breakeven').textContent = breakEvenMonths > 0 && breakEvenMonths < 600 ? breakEvenMonths + ' months (' + (breakEvenMonths/12).toFixed(1) + ' yrs)' : 'Not available';
 
     // USD equivalent
     var monthlyUSD = convertCurrency(monthlyCostLocal, localCurrency, 'USD');
@@ -1376,7 +1464,7 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 
   function formatNum(n, decimals) {
     if (typeof decimals === 'undefined') decimals = 0;
-    if (!n || isNaN(n)) return '--';
+    if (!n || isNaN(n)) return 'Unavailable';
     if (Math.abs(n) >= 1000000) return (n/1000000).toFixed(1) + 'M';
     return n.toLocaleString('en', {minimumFractionDigits: decimals, maximumFractionDigits: Math.max(decimals, 0)});
   }
@@ -1419,8 +1507,8 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7
 
     el.innerHTML =
       card('&#9981;', '$' + avg.toFixed(2), 'Avg ' + activeFuel + ' price/' + getFuelUnitShort(activeFuel), count + ' countries tracked', 'insight-neutral') +
-      card(cheapC ? cheapC.flag : '&#127758;', '$' + (cheapest ? cheapest.price.toFixed(2) : '--'), 'Cheapest: ' + (cheapC ? cheapC.name : '--'), '', '') +
-      card(expC ? expC.flag : '&#127758;', '$' + (expensive ? expensive.price.toFixed(2) : '--'), 'Most Expensive: ' + (expC ? expC.name : '--'), '', '') +
+      card(cheapC ? cheapC.flag : '&#127758;', cheapest ? '$' + cheapest.price.toFixed(2) : 'Unavailable', 'Cheapest: ' + (cheapC ? cheapC.name : 'Unavailable'), '', '') +
+      card(expC ? expC.flag : '&#127758;', expensive ? '$' + expensive.price.toFixed(2) : 'Unavailable', 'Most Expensive: ' + (expC ? expC.name : 'Unavailable'), '', '') +
       card('&#128200;', (biggestUp ? biggestUp.change.toFixed(1) : '0') + '%', 'Biggest Price Rise', biggestUp && COUNTRIES[biggestUp.code] ? COUNTRIES[biggestUp.code].name : '', 'insight-up');
   }
 

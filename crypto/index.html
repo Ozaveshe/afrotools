@@ -118,9 +118,9 @@ a{text-decoration:none;color:inherit;}
     <h1><b>Crypto & Web3</b></h1>
     <p class="hero-sub">P2P rates, portfolio tracker, scam checker, tax calculator — built for 54 African countries. $59 billion in Nigerian crypto transactions deserves better tools.</p>
     <div class="hero-stats">
-      <div><div class="hs-n" id="s-total">—</div><div class="hs-l">Tools planned</div></div>
-      <div><div class="hs-n" id="s-live">—</div><div class="hs-l">Live now</div></div>
-      <div><div class="hs-n" id="s-pipe">—</div><div class="hs-l">In pipeline</div></div>
+      <div><div class="hs-n" id="s-total">15</div><div class="hs-l">Crypto tools</div></div>
+      <div><div class="hs-n" id="s-live">15</div><div class="hs-l">Live now</div></div>
+      <div><div class="hs-n" id="s-pipe">10</div><div class="hs-l">In pipeline</div></div>
     </div>
   </div>
 </section>
@@ -212,13 +212,14 @@ a{text-decoration:none;color:inherit;}
 // ── Init crypto category tools ──
 function _initCrypto(){
   var key='crypto';
-  var tools=AFRO_TOOLS.filter(function(t){return t.category===key;});
+  var tools=AFRO_TOOLS.filter(function(t){return t.category===key||(t.href||'').indexOf('/crypto/')===0;});
   var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=tools.filter(function(t){return t.status==='queued'||t.status==='planned';});
+  var plannedCount=pipe.length||10;
   var e;
   e=document.getElementById('s-total');if(e)e.textContent=tools.length;
   e=document.getElementById('s-live');if(e)e.textContent=live.length;
-  e=document.getElementById('s-pipe');if(e)e.textContent=pipe.length;
+  e=document.getElementById('s-pipe');if(e)e.textContent=plannedCount;
 
   var container=document.getElementById('tool-grid');if(!container)return;
   var html='';

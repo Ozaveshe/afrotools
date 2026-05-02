@@ -10,7 +10,24 @@ This document turns scattered design guidance into one operating reference for C
 
 ## Visual Thesis
 
-AfroTools should feel precise, modern, and authored. The product language is not playful SaaS chrome. It mixes editorial confidence with calm utility.
+AfroTools should feel precise, modern, trust-first, and authored. The default product language is a quiet financial-product interface: calm surfaces, clear hierarchy, restrained color, reliable controls, and content that proves local expertise.
+
+African specificity should come from country selectors, local currency, tax years, language, regulatory references, examples, and source links. Do not rely on excessive flags, emoji, loud gradients, novelty illustrations, or decorative "African" visual tropes to communicate relevance.
+
+The system should feel boring in the best way: one type scale, one spacing scale, one button system, one card system, one form system, one badge system, one color palette, one radius/shadow language, and one page shell.
+
+## System Contract
+
+- **Page shell:** use `.page-shell`, `.page-header`, `.page-title`, `.page-description`, `.container`, and `.section` before inventing a new page frame.
+- **Typography:** use `DM Sans` for product UI, dense tools, labels, controls, and cards. Reserve `Instrument Serif` for large editorial or brand moments only, using `.headline-editorial` when that treatment is intentional.
+- **Spacing:** use `--space-*`, `--space-section`, `--page-gutter`, and `--card-padding`. Do not use arbitrary margins to force rhythm.
+- **Buttons:** use `.btn` plus `.btn-primary`, `.btn-secondary`, `.btn-ghost`, or `.btn-danger`. Buttons are sentence case by default, not all caps.
+- **Cards:** use `.card`, `.card-header`, `.card-title`, and `.card-description`. Cards are quiet surfaces for grouping or interaction, not a default page-section wrapper.
+- **Forms:** use `.form-field`, `.form-label`, `.form-input`, `.form-select`, `.form-help`, and `.form-error` for new forms.
+- **Badges:** use badges only for real state such as Live, Updated, Private, Official source, No upload, AI explanation, or warning. Do not use badges as decoration.
+- **Color:** blue is the action and focus color. Gold is a rare accent. Neutral surfaces should carry most pages.
+- **Shadows and radius:** use tokenized shadows and radii. Prefer subtle borders and light elevation over glow-heavy panels.
+- **Motion:** use motion only for clarity, reveal, and feedback. Respect `prefers-reduced-motion`.
 
 ## Core Rules
 
@@ -31,6 +48,7 @@ AfroTools should feel precise, modern, and authored. The product language is not
 - Default to the existing blue token family for action, state, and focus.
 - Use gold sparingly for emphasis, signal, or premium moments.
 - Avoid introducing extra accent colors unless the surface already has a strong reason.
+- Avoid dark blue gradient panels as the default page answer. Use neutral surfaces and local content first.
 
 ### 4. Composition before components
 
@@ -57,6 +75,7 @@ AfroTools should feel precise, modern, and authored. The product language is not
 - Prefer SVG or typographic marks over emoji icons.
 - Use a single visual language for icons on a given page.
 - If an icon does not improve scanning, remove it.
+- Flags should support country selection or identification, not decorate every card.
 
 ### 8. Glass and softness are tools, not defaults
 
