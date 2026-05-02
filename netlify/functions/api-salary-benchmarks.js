@@ -9,7 +9,17 @@
 var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
 var { getAllowedOrigin } = require('./utils/cors');
 
-const SUPABASE_DATA_URL = 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_URL =
+  process.env.SUPABASE_DATA_URL ||
+  process.env.SUPABASE_URL ||
+  'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_KEY =
+  process.env.SUPABASE_DATA_ANON_KEY ||
+  process.env.SUPABASE_ANON_KEY_DATA ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY;
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -57,16 +67,17 @@ exports.handler = async function (event) {
   }
 
   try {
-    const key = process.env.SUPABASE_DATA_ANON_KEY;
-    if (!key) throw new Error('Missing SUPABASE_DATA_ANON_KEY');
+    if (!SUPABASE_DATA_KEY) {
+      throw new Error('Missing Supabase data credentials');
+    }
 
     // Query the pre-aggregated table (role_category & experience_level are null for overall benchmarks)
     const url = `${SUPABASE_DATA_URL}/rest/v1/salary_benchmarks?country_code=eq.${country}&period=eq.${period}&role_category=is.null&experience_level=is.null&limit=1`;
 
     const res = await fetch(url, {
       headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
+        apikey: SUPABASE_DATA_KEY,
+        Authorization: `Bearer ${SUPABASE_DATA_KEY}`,
       },
     });
 

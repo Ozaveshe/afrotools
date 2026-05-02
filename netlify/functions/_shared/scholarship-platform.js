@@ -15,10 +15,13 @@ const AUTH_SERVICE_KEY =
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.SUPABASE_SERVICE_KEY;
 const DATA_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const DATA_ANON =
+const DATA_READ_KEY =
   process.env.SUPABASE_DATA_ANON_KEY ||
   process.env.SUPABASE_ANON_KEY_DATA ||
-  process.env.SUPABASE_ANON_KEY;
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_DATA_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY;
 
 const CACHE_KEY = 'scholarships-latest';
 const DEFAULT_REMINDER_OFFSETS = [30, 14, 7, 1, 0];
@@ -237,23 +240,26 @@ function buildFeedMeta(rows, options) {
   const lastCheckedAt = (options && options.lastCheckedAt) || maxTimestamp(rows);
   const count = Array.isArray(rows) ? rows.length : 0;
   const lastCheckedLabel = formatTimestamp(lastCheckedAt);
-  const isDegraded = mode === 'cached' || mode === 'fallback';
+  const hasSourceError = !!(options && options.error);
+  const isDegraded = mode === 'cached' || mode === 'fallback' || hasSourceError;
 
   let label = 'Live feed';
   let message = 'Live scholarship feed refreshed.';
-  let tone = 'ok';
+  let tone = isDegraded ? 'warn' : 'ok';
 
   if (mode === 'curated') {
-    label = 'Curated feed';
+    label = hasSourceError ? 'Curated fallback feed' : 'Curated feed';
     message = 'Showing the curated AfroTools scholarship catalog' + (lastCheckedLabel ? ' last checked on ' + lastCheckedLabel + '.' : '.');
+    if (hasSourceError) {
+      message = 'Live scholarship refresh is unavailable. Showing the curated AfroTools scholarship catalog instead' +
+        (lastCheckedLabel ? ' last checked on ' + lastCheckedLabel + '.' : '.');
+    }
   } else if (mode === 'cached') {
     label = 'Cached feed';
     message = 'Live scholarship refresh is unavailable. Showing cached scholarship data' + (lastCheckedLabel ? ' last checked on ' + lastCheckedLabel + '.' : '.');
-    tone = 'warn';
   } else if (mode === 'fallback') {
     label = 'Fallback feed';
     message = 'Live scholarship pipeline is unavailable. Showing the narrower fallback scholarship dataset instead.';
-    tone = 'warn';
   } else {
     message = 'Live scholarship feed refreshed' + (lastCheckedLabel ? ' on ' + lastCheckedLabel + '.' : '.');
   }
@@ -384,12 +390,14 @@ async function fetchMirrorRows(client) {
 }
 
 async function fetchDataInstanceScholarships() {
-  if (!DATA_ANON) throw new Error('SUPABASE_DATA_ANON_KEY or SUPABASE_ANON_KEY_DATA not configured');
+  if (!DATA_READ_KEY) {
+    throw new Error('No Supabase data credentials configured for scholarship import');
+  }
 
   const response = await fetch(DATA_URL + '/rest/v1/scholarships?is_active=eq.true&select=*', {
     headers: {
-      apikey: DATA_ANON,
-      Authorization: 'Bearer ' + DATA_ANON
+      apikey: DATA_READ_KEY,
+      Authorization: 'Bearer ' + DATA_READ_KEY
     }
   });
 
