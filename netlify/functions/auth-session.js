@@ -17,10 +17,13 @@
  */
 
 const { corsHeaders, corsResponse, getAllowedOrigin } = require('./utils/cors');
+const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
+const { sendLifecycleEmail } = require('./_shared/lifecycle-email');
 
 const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
 const IS_PROD = process.env.URL && process.env.URL.includes('afrotools.com');
+const MARKETING_SUPABASE = getMarketingSupabaseConfig();
 
 // Cookie settings
 const COOKIE_OPTS = {
@@ -201,6 +204,64 @@ async function supaFetch(path, opts) {
   return { status: res.status, data: await res.json() };
 }
 
+async function profileEmailState(userId) {
+  if (!userId || !MARKETING_SUPABASE.serviceKey) return null;
+  try {
+    var res = await fetch(
+      MARKETING_SUPABASE.url + '/rest/v1/profiles?id=eq.' + encodeURIComponent(userId) + '&select=email_unsubscribe_token,email_digest_enabled,email_welcome_sent_at&limit=1',
+      {
+        headers: {
+          apikey: MARKETING_SUPABASE.serviceKey,
+          Authorization: 'Bearer ' + MARKETING_SUPABASE.serviceKey,
+        },
+      }
+    );
+    if (!res.ok) return null;
+    var rows = await res.json();
+    return rows && rows[0] ? rows[0] : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function markSignupWelcomeSent(userId) {
+  if (!userId || !MARKETING_SUPABASE.serviceKey) return;
+  try {
+    await fetch(
+      MARKETING_SUPABASE.url + '/rest/v1/profiles?id=eq.' + encodeURIComponent(userId),
+      {
+        method: 'PATCH',
+        headers: {
+          apikey: MARKETING_SUPABASE.serviceKey,
+          Authorization: 'Bearer ' + MARKETING_SUPABASE.serviceKey,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ email_welcome_sent_at: new Date().toISOString() }),
+      }
+    );
+  } catch (e) {
+    console.warn('[auth-session] welcome email status update skipped:', e && e.message ? e.message : e);
+  }
+}
+
+async function sendSignupWelcome(user, body) {
+  if (!user || !user.email) return;
+  try {
+    var state = await profileEmailState(user.id);
+    if (state && (state.email_digest_enabled === false || state.email_welcome_sent_at)) return;
+    var token = state && state.email_unsubscribe_token;
+    var result = await sendLifecycleEmail('signup_welcome', {
+      email: user.email,
+      name: user.name || body.name || '',
+      unsubscribeUrl: token ? 'https://afrotools.com/api/email/unsubscribe?token=' + encodeURIComponent(token) : '',
+    });
+    if (result.ok) await markSignupWelcomeSent(user.id);
+  } catch (e) {
+    console.warn('[auth-session] welcome email skipped:', e && e.message ? e.message : e);
+  }
+}
+
 exports.handler = async function (event) {
   var cors = corsHeaders(event);
 
@@ -285,6 +346,9 @@ exports.handler = async function (event) {
 
     var session = result.data;
     var user = buildUser(session.user);
+    if (!body.skipWelcome && !body.skip_welcome) {
+      await sendSignupWelcome(user, body);
+    }
 
     if (session.access_token) {
       var respHeaders = Object.assign({}, cors);

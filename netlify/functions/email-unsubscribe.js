@@ -7,14 +7,17 @@
  * returns a simple confirmation HTML page.
  */
 const { createClient } = require('@supabase/supabase-js');
+const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const MARKETING_SUPABASE = getMarketingSupabaseConfig();
+const SUPABASE_URL = MARKETING_SUPABASE.url;
+const SUPABASE_SERVICE_KEY = MARKETING_SUPABASE.serviceKey;
 
 exports.handler = async function (event) {
   const token = event.queryStringParameters && event.queryStringParameters.token;
+  const leadToken = event.queryStringParameters && event.queryStringParameters.lead_token;
 
-  if (!token) {
+  if (!token && !leadToken) {
     return {
       statusCode: 400,
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
@@ -32,6 +35,32 @@ exports.handler = async function (event) {
   }
 
   const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+
+  if (leadToken) {
+    const { data, error } = await sb
+      .from('email_leads')
+      .update({ opt_in_digest: false, email_status: 'unsubscribed', updated_at: new Date().toISOString() })
+      .eq('email_unsubscribe_token', leadToken)
+      .select('id')
+      .single();
+
+    if (error || !data) {
+      return {
+        statusCode: 404,
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+        body: htmlPage('Not Found', 'This unsubscribe link is invalid or has already been used.'),
+      };
+    }
+
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      body: htmlPage(
+        'Unsubscribed',
+        "You've been unsubscribed from AfroTools digest and follow-up emails."
+      ),
+    };
+  }
 
   // Look up profile by unsubscribe token
   const { data, error } = await sb

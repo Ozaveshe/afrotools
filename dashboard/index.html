@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/assets/css/design-system.css?v=df6f3e05">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=21a946c0">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=b0e455ea">
-    <link rel="stylesheet" href="/assets/css/dashboard.css?v=844a7bfe">
+  <link rel="stylesheet" href="/assets/css/dashboard.css?v=20260503a">
     <script src="/assets/js/components/country-selector.js?v=1" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2148,11 +2148,14 @@
                 <p class="dashboard-country-hint">Your dashboard will open with local salary, tax, currency, legal and business tools first.</p>
             </div>
             <div id="authStateError" role="alert" hidden style="margin:0 auto 1rem;max-width:340px;padding:0.85rem 1rem;border:1px solid #F59E0B;border-radius:10px;background:#FFFBEB;color:#92400E;font-size:0.86rem;line-height:1.45;"></div>
-            <a href="/auth/?mode=login&amp;next=/dashboard/" style="max-width:300px;margin:0 auto;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:var(--dash-accent,#007AFF);color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(0,122,255,.2);transition:all 220ms ease;text-decoration:none;">
+            <a href="/auth/?mode=login&amp;next=/dashboard/" data-dashboard-auth-link="login" style="max-width:300px;margin:0 auto;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:var(--dash-accent,#007AFF);color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(0,122,255,.2);transition:all 220ms ease;text-decoration:none;">
                 Sign in to get started
             </a>
-            <a href="/auth/?mode=signup&amp;next=/dashboard/" style="max-width:300px;margin:0.75rem auto 0;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:#fff;color:var(--dash-accent,#007AFF);border:1px solid var(--dash-accent,#007AFF);font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;">
+            <a href="/auth/?mode=signup&amp;next=/dashboard/" data-dashboard-auth-link="signup" style="max-width:300px;margin:0.75rem auto 0;display:block;font-size:0.95rem;padding:0.875rem 2rem;border-radius:12px;background:#fff;color:var(--dash-accent,#007AFF);border:1px solid var(--dash-accent,#007AFF);font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;text-decoration:none;">
                 Create a free account
+            </a>
+            <a href="/auth/?mode=reset&amp;next=/dashboard/" data-dashboard-auth-link="reset" style="display:inline-block;margin-top:0.85rem;font-size:0.82rem;font-weight:700;color:var(--dash-accent,#007AFF);text-decoration:none;">
+                Forgot password?
             </a>
             <p style="margin:1rem auto 0;max-width:360px;font-size:0.84rem;line-height:1.5;color:#526173;">Need Pro? Sign in first, then use the blue Pro button in the navbar or <a href="/pro/" style="color:var(--dash-accent,#007AFF);font-weight:700;text-decoration:none;">choose a Pro plan</a>.</p>
             <p style="margin-top:1.5rem;font-size:0.82rem;color:var(--dash-text-muted,#8E9BB3);">Free forever. No credit card required.</p>
@@ -2191,8 +2194,8 @@
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn-edit-profile" id="editProfileBtn">Edit Profile</button>
-                    <button class="btn-logout" id="logoutBtn">Log Out</button>
+                    <button class="btn-edit-profile" id="editProfileBtn" type="button">Edit Profile</button>
+                    <button class="btn-logout" id="logoutBtn" type="button">Sign Out</button>
                 </div>
             </div>
 
@@ -2354,8 +2357,8 @@
                 </div>
 
                 <div class="editor-actions">
-                    <button class="btn-cancel" id="cancelEditBtn">Cancel</button>
-                    <button class="btn-save" id="saveProfileBtn">
+                    <button class="btn-cancel" id="cancelEditBtn" type="button">Cancel</button>
+                    <button class="btn-save" id="saveProfileBtn" type="button">
                         <span class="spinner"></span>
                         Save Changes
                     </button>
@@ -2508,8 +2511,8 @@
     <script src="/assets/js/data/african-countries.js?v=89be6305"></script>
     <script src="/assets/js/components/tool-registry.min.js?v=256d7664" defer></script>
     <script src="/assets/js/afro-auth.js?v=6"></script>
-    <script src="/assets/js/components/auth-modal.js?v=3f65305a"></script>
-    <script src="/assets/js/auth-cookie-upgrade.js?v=aa714656"></script>
+    <script src="/assets/js/components/auth-modal.js?v=45323b31"></script>
+    <script src="/assets/js/auth-cookie-upgrade.js?v=5f8a65c3"></script>
     <script src="/assets/js/afro-history.js?v=6ecf1296"></script>
     <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
     <script src="/assets/js/lib/workspace-sync.js?v=20260417a" defer></script>
@@ -2519,7 +2522,7 @@
     <script src="/engines/afropoints-engine.js?v=2"></script>
     <script src="/dashboard/dashboard-app.js?v=05100b7e"></script>
     <script src="/dashboard/afropoints-lane-account.js?v=20260502a"></script>
-    <script src="/assets/js/components/navbar.min.js?v=68fe75f9"></script>
+    <script src="/assets/js/components/navbar.min.js?v=de4fc4a7"></script>
     <script src="/assets/js/components/footer.min.js?v=d0d64671"></script>
 
     <script>
@@ -2539,6 +2542,7 @@
         let dashboardAuthState = null;
         let dashboardAuthCheckId = 0;
         let dashboardListenersBound = false;
+        let dashboardLogoutInProgress = false;
 
         const COUNTRY_CURRENCY_MAP = {
             'NG':'NGN','KE':'KES','ZA':'ZAR','GH':'GHS','EG':'EGP','TZ':'TZS','UG':'UGX','RW':'RWF',
@@ -3516,6 +3520,7 @@
 
             // Auth change listener
             function handleAuthChange() {
+                if (dashboardLogoutInProgress) return;
                 var nextUser = getCachedDashboardUser();
                 if (nextUser) {
                     runDashboardSessionCheck({ reason: 'authChange' });
@@ -3541,12 +3546,34 @@
         }
 
         async function handleLogout() {
-            try { await withTimeout(AfroAuth.logout(), 4000); } catch(e) { console.warn('[Dashboard] logout error:', e); }
+            var btn = document.getElementById('logoutBtn');
+            var originalLabel = btn ? btn.textContent : '';
+            if (btn && btn.disabled) return;
+            dashboardLogoutInProgress = true;
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Signing out...';
+            }
+            try {
+                if (window.AfroAuth && typeof AfroAuth.logout === 'function') {
+                    await withTimeout(Promise.resolve(AfroAuth.logout()), 5000);
+                } else {
+                    clearDashboardAuthCache('dashboard-signout');
+                }
+            } catch(e) {
+                console.warn('[Dashboard] logout error:', e);
+                clearDashboardAuthCache('dashboard-signout-timeout');
+            }
             isLoggedIn = false;
             currentUser = null;
             extendedProfile = {};
             selectedInterests = [];
             closeProfileEditor();
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = originalLabel || 'Sign Out';
+            }
+            dashboardLogoutInProgress = false;
             showAuth({
                 message: 'You are signed out. Sign in to view saved calculations, workspace items, and account details.'
             });
@@ -4221,7 +4248,8 @@
                     label: dashPlural(counts.salaryReports, 'salary report'),
                     detail: 'Open saved Salary & PAYE PDF report trails from upgraded payroll calculators.',
                     cta: 'Open salary reports',
-                    href: '#myWorkspace'
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-salary'
                 });
             }
 
@@ -4232,7 +4260,8 @@
                     label: dashPlural(counts.salaryHandoffs, 'payroll handoff'),
                     detail: 'Continue local Salary & PAYE planner briefs into payroll workspace or client follow-up.',
                     cta: 'Open salary workspace',
-                    href: '#myWorkspace'
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-salary'
                 });
             }
 
@@ -4243,7 +4272,8 @@
                     label: dashPlural(counts.salaryAuditPackets || counts.salaryReadiness, counts.salaryAuditPackets ? 'audit packet' : 'readiness board'),
                     detail: 'Review Salary & PAYE readiness scores, exception queues, approvals, and audit metadata packets.',
                     cta: 'Open salary workspace',
-                    href: '#myWorkspace'
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-salary'
                 });
             }
 
@@ -4254,7 +4284,8 @@
                     label: dashPlural(counts.documentPdfReports, 'document report'),
                     detail: 'Open saved PDF and document export trails captured after gated downloads.',
                     cta: 'Open PDF workspace',
-                    href: '#myWorkspace'
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-document-pdf'
                 });
             }
 
@@ -4265,7 +4296,8 @@
                     label: dashPlural(counts.documentPdfHandoffs, 'category handoff'),
                     detail: 'Continue Document & PDF briefs into dashboard, salary, payroll, legal, trade, or image workflows.',
                     cta: 'Open PDF workspace',
-                    href: '#myWorkspace'
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-document-pdf'
                 });
             }
 
@@ -4276,7 +4308,8 @@
                     label: dashPlural(counts.documentPdfRecipes, 'workflow recipe'),
                     detail: 'Reuse saved Document & PDF routes for repeated client, legal, payroll, business, or career packets.',
                     cta: 'Open PDF workspace',
-                    href: '#myWorkspace'
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-document-pdf'
                 });
             }
 
@@ -4287,7 +4320,8 @@
                     label: dashPlural(counts.documentPdfAuditPackets || counts.documentPdfReadiness, counts.documentPdfAuditPackets ? 'audit packet' : 'readiness board'),
                     detail: 'Review Document & PDF readiness checks, privacy exceptions, handoffs, and metadata audit packets.',
                     cta: 'Open PDF workspace',
-                    href: '#myWorkspace'
+                    href: '#myWorkspace',
+                    workspaceTarget: 'ws-document-pdf'
                 });
             }
 
@@ -4374,9 +4408,10 @@
 
         function renderDashboardAction(action) {
             var toneClass = action.tone === 'primary' ? ' primary' : '';
+            var workspaceTarget = action.workspaceTarget ? ' data-workspace-target="' + dashEscapeHtml(action.workspaceTarget) + '"' : '';
             var cta = action.action === 'profile'
                 ? '<button type="button" class="dash-action-cta" onclick="openProfileEditor()">' + dashEscapeHtml(action.cta) + '</button>'
-                : '<a class="dash-action-cta" href="' + dashSafeHref(action.href) + '">' + dashEscapeHtml(action.cta) + '</a>';
+                : '<a class="dash-action-cta" href="' + dashSafeHref(action.href) + '"' + workspaceTarget + '>' + dashEscapeHtml(action.cta) + '</a>';
 
             return '<article class="dash-action-item' + toneClass + '">' +
                 '<div>' +
@@ -4386,6 +4421,47 @@
                 '</div>' +
                 cta +
             '</article>';
+        }
+
+        function activateDashboardWorkspacePanel(panelId) {
+            if (!panelId) return false;
+            var container = document.getElementById('myWorkspaceContent');
+            if (!container) return false;
+            var tab = container.querySelector('.ws-tab[data-ws="' + panelId + '"]');
+            var panel = container.querySelector('[data-ws-panel="' + panelId + '"]') || document.getElementById(panelId);
+            if (!tab || !panel) return false;
+            container.querySelectorAll('.ws-tab').forEach(function(item) { item.classList.remove('active'); });
+            container.querySelectorAll('.ws-panel').forEach(function(item) { item.classList.remove('active'); });
+            tab.classList.add('active');
+            panel.classList.add('active');
+            return true;
+        }
+
+        function openDashboardWorkspacePanel(panelId) {
+            var section = document.getElementById('myWorkspace');
+            var fullTargets = {
+                'ws-salary': true,
+                'ws-document-pdf': true
+            };
+            var renderWorkspace = fullTargets[panelId] && typeof window.renderFullDashboardWorkspace === 'function'
+                ? window.renderFullDashboardWorkspace
+                : (typeof window.renderMyWorkspace === 'function' ? window.renderMyWorkspace : renderMyWorkspace);
+            var result;
+            try {
+                result = renderWorkspace({ activeTab: panelId });
+            } catch(e) {
+                console.warn('[Dashboard] workspace render failed:', e.message || e);
+            }
+            Promise.resolve(result).then(function() {
+                if (!activateDashboardWorkspacePanel(panelId) && panelId === 'ws-document-pdf' && typeof window.renderMyWorkspace === 'function') {
+                    return Promise.resolve(window.renderMyWorkspace({ activeTab: 'ws-docs' })).then(function() {
+                        activateDashboardWorkspacePanel('ws-docs');
+                    });
+                }
+                return null;
+            }).finally(function() {
+                if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
         }
 
         function renderActionCenter() {
@@ -4413,6 +4489,12 @@
             }).join('');
 
             listEl.innerHTML = buildDashboardActions(pct, counts).map(renderDashboardAction).join('');
+            listEl.querySelectorAll('[data-workspace-target]').forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    openDashboardWorkspacePanel(link.getAttribute('data-workspace-target'));
+                });
+            });
         }
 
         async function refreshWorkspaceSummary(force) {
@@ -6409,6 +6491,7 @@
         }
 
         // Start
+        window.renderFullDashboardWorkspace = renderMyWorkspace;
         waitForAuth();
     </script>
 <script src="/dashboard/dashboard-sync.js?v=20260417b"></script>

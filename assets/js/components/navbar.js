@@ -875,21 +875,21 @@
     nav.scrolled { box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
 
     .inner {
-      max-width: 1200px; margin: 0 auto; width: 100%;
-      display: flex; align-items: center; gap: 12px;
+      max-width: min(1360px, calc(100vw - 32px)); margin: 0 auto; width: 100%;
+      display: flex; align-items: center; gap: 10px;
     }
 
     /* LOGO */
     .logo {
       display: flex; align-items: center; gap: 9px;
-      text-decoration: none; flex-shrink: 0; margin-right: 12px;
+      text-decoration: none; flex-shrink: 0; margin-right: 8px;
     }
     .logo-name { font-size: 1rem; font-weight: 800; letter-spacing: 0.02em; color: #111827; }
     .logo-name b { color: #0062CC; }
     .logo-tag { font-size: 0.44rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #9ca3af; display: block; margin-top: 2px; }
 
     /* NAV LINKS */
-    .nav-links { display: flex; align-items: center; justify-content: center; list-style: none; flex: 1; gap: 4px; overflow: hidden; min-width: 0; }
+    .nav-links { display: flex; align-items: center; justify-content: flex-start; list-style: none; flex: 1 1 auto; gap: 4px; overflow: hidden; min-width: 0; }
     li { position: relative; }
 
     .lnk {
@@ -1049,6 +1049,48 @@
       min-height: 40px;
     }
     .btn-login:hover { border-color: #0062CC; color: #0062CC; }
+    .btn-login.is-user {
+      width: 42px;
+      min-width: 42px;
+      padding: 0;
+      gap: 0;
+      border-color: rgba(0,0,0,0.12);
+      background: #f8fafc;
+    }
+    .btn-login.is-user:hover {
+      background: #EEF4FF;
+      border-color: #0062CC;
+    }
+    .nav-user-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #0062CC;
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .nav-user-name {
+      display: none;
+    }
+    .ap-nav-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      min-height: 32px;
+      background: rgba(245,158,11,0.12);
+      color: #B45309;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 100px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
 
     .btn-pro {
       display: inline-flex; align-items: center; justify-content: center;
@@ -1255,6 +1297,21 @@
 
     /* RESPONSIVE — progressive collapse */
     .pill-54 { display: none; }
+    @media (max-width: 1320px) {
+      .inner { gap: 8px; }
+      .logo { margin-right: 4px; }
+      .lnk { padding-left: 10px; padding-right: 10px; }
+      .right { gap: 6px; }
+      .country-control-shell { width: 148px; flex-basis: 148px; }
+      .search-btn .search-kbd { display: none; }
+      .btn-pro { padding-left: 12px; padding-right: 12px; }
+    }
+    @media (max-width: 1180px) {
+      .nav-links li:nth-child(6) { display: none; }
+    }
+    @media (max-width: 1120px) {
+      .nav-links li:nth-child(5) { display: none; }
+    }
     @media (max-width: 1100px) {
       .country-control-shell { display: none; }
       .cta { display: none; }
@@ -2462,7 +2519,7 @@
         var _isPro = isProUser(user);
         var _hasUser = !!(user && user.id);
         var _label = _isPro
-          ? (_lang === 'fr' ? 'Continuer Pro' : 'Continue Pro work')
+          ? (_lang === 'fr' ? 'Espace Pro' : 'Pro Workspace')
           : _hasUser
             ? (_lang === 'sw' ? 'Pata Pro' : _lang === 'fr' ? 'Passer Pro' : 'Upgrade Pro')
             : 'Pro';
@@ -2525,8 +2582,11 @@
           // Not logged in — show Sign in (i18n)
           var _signLabel = _lang === 'sw' ? 'Ingia' : _lang === 'fr' ? 'Connexion' : 'Sign in';
           if (loginBtn) {
+            loginBtn.className = 'btn-login';
             loginBtn.textContent = _signLabel;
             loginBtn.href = _authHref;
+            loginBtn.removeAttribute('aria-label');
+            loginBtn.removeAttribute('title');
             loginBtn.onclick = function(e) { if (typeof AfroAuth !== 'undefined' && AfroAuth.openModal) { e.preventDefault(); AfroAuth.openModal(); } };
           }
           if (mobLoginBtn) {
@@ -2545,8 +2605,12 @@
         const initial = this._escapeHtml((name[0] || 'D').toUpperCase());
         // Desktop: show avatar initial + first name
         if (loginBtn) {
+          loginBtn.className = 'btn-login is-user';
           loginBtn.href = _dashboardHref;
-          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0062CC;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + safeName + '</span>';
+          loginBtn.onclick = null;
+          loginBtn.setAttribute('aria-label', displayName + ' - ' + _dashboardLabel);
+          loginBtn.setAttribute('title', displayName + ' - ' + _dashboardLabel);
+          loginBtn.innerHTML = '<span class="nav-user-avatar" aria-hidden="true">' + initial + '</span><span class="nav-user-name user-menu-name">' + safeName + '</span>';
         }
         // AfroPoints badge — show points balance next to avatar (once only)
         if (!_apBadgeLoaded) {
@@ -2574,7 +2638,6 @@
                   badge.href = '/tools/afropoints/';
                   badge.className = 'ap-nav-badge';
                   badge.title = 'AfroPoints Balance';
-                  badge.style.cssText = 'display:inline-flex;align-items:center;gap:3px;background:rgba(245,158,11,0.12);color:#F59E0B;font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:100px;margin-left:6px;text-decoration:none;white-space:nowrap;';
                   var pts = p.current_balance || 0;
                   var display = pts >= 10000 ? (pts / 1000).toFixed(1) + 'k' : pts.toLocaleString();
                   badge.textContent = '🎯 ' + display;
@@ -2589,6 +2652,7 @@
         // Mobile: show name + vault link
         if (mobLoginBtn) {
           mobLoginBtn.href = _dashboardHref;
+          mobLoginBtn.onclick = null;
           mobLoginBtn.textContent = name + ' \u2014 ' + _dashboardLabel;
         }
         if (mobVaultLink) mobVaultLink.style.display = '';

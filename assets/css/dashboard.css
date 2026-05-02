@@ -809,14 +809,18 @@
   background: var(--dash-bg-card);
   border: 1px solid var(--dash-border);
   border-radius: var(--dash-radius);
-  padding: 22px;
-  min-width: 210px;
+  padding: 22px 24px 20px;
+  min-width: 218px;
+  min-height: 150px;
   flex: 1;
   scroll-snap-align: start;
   box-shadow: var(--dash-shadow-sm);
   transition: all var(--dash-transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 /* Subtle top accent bar on summary cards */
 .mn-summary-card::before {
@@ -844,17 +848,36 @@
   margin-bottom: 10px;
 }
 .mn-card-value {
-  font-size: 1.75rem;
+  font-size: 1.68rem;
   font-weight: 800;
   color: var(--dash-text-primary);
   line-height: 1.1;
-  letter-spacing: -.02em;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.mn-summary-card:first-child {
+  min-width: 240px;
+}
+.mn-summary-card:first-child .mn-card-value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px 6px;
+  flex-wrap: wrap;
+  overflow-wrap: normal;
 }
 .mn-card-period {
-  font-size: .88rem;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--dash-bg-subtle);
+  font-size: .72rem;
+  font-weight: 800;
   color: var(--dash-text-muted);
-  margin-left: 2px;
+  margin-left: 0;
+  white-space: nowrap;
 }
 .mn-card-sub {
   font-size: .73rem;
@@ -864,9 +887,20 @@
 .mn-card-value-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
 }
-.mn-donut { flex-shrink: 0; }
+.mn-donut {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--dash-bg-subtle);
+}
+.mn-donut svg { display: block; }
 .mn-card-empty {
   display: flex;
   flex-direction: column;
@@ -1324,6 +1358,7 @@
   .mn-header-focus { width: 100%; max-width: none; min-width: 0; }
   .mn-header-action { width: 100%; min-height: 44px; }
   .mn-summary-card { min-width: 180px; }
+  .mn-summary-card:first-child { min-width: 205px; }
   .mn-card-value { font-size: 1.5rem; }
   .mn-activity-row { padding: 14px 16px; }
   .mn-activity-topline { flex-wrap: wrap; }
@@ -1337,5 +1372,6 @@
 @media (max-width: 380px) {
   .mn-currency-badge { display: none; }
   .mn-summary-card { min-width: 155px; }
+  .mn-summary-card:first-child { min-width: 185px; }
   .mn-qa-grid { grid-template-columns: 1fr 1fr; }
 }

@@ -9,11 +9,13 @@
  *     schedule = "0 8 1 * *"
  */
 const { createClient } = require('@supabase/supabase-js');
+const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
+const { sendEmail } = require('./_shared/email-adapter');
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const MARKETING_SUPABASE = getMarketingSupabaseConfig();
+const SUPABASE_URL = MARKETING_SUPABASE.url;
+const SUPABASE_SERVICE_KEY = MARKETING_SUPABASE.serviceKey;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const EMAIL_FROM = process.env.EMAIL_FROM || 'AfroTools <hello@afrotools.com>';
 const BATCH_SIZE = 50;
 
 const MONTH_NAMES = [
@@ -46,12 +48,12 @@ exports.handler = async function (event) {
   var hasMore = true;
 
   while (hasMore) {
-    // Fetch batch of users who opted in and completed onboarding
+    // Fetch batch of opted-in users. They do not need full onboarding to get a
+    // useful starter digest.
     var { data: users, error: fetchErr } = await sb
       .from('profiles')
-      .select('id, name, country_code, currency, email_unsubscribe_token')
+      .select('id, email, name, country_code, currency, email_unsubscribe_token')
       .eq('email_digest_enabled', true)
-      .eq('onboarding_completed', true)
       .range(offset, offset + BATCH_SIZE - 1)
       .order('id');
 
@@ -69,10 +71,12 @@ exports.handler = async function (event) {
       var user = users[i];
 
       try {
-        // Get user email from auth.users via service role
-        var { data: authUser } = await sb.auth.admin.getUserById(user.id);
-        if (!authUser || !authUser.user || !authUser.user.email) continue;
-        var email = authUser.user.email;
+        var email = user.email;
+        if (!email) {
+          var { data: authUser } = await sb.auth.admin.getUserById(user.id);
+          if (!authUser || !authUser.user || !authUser.user.email) continue;
+          email = authUser.user.email;
+        }
 
         // Fetch last month's calculations
         var { data: calcs } = await sb
@@ -120,20 +124,11 @@ exports.handler = async function (event) {
           ? buildDigestText(displayName, monthName, year, lastMonthName, calcs, fxData, benchmarkData, unsubUrl)
           : buildGetStartedText(displayName, monthName, year, unsubUrl);
 
-        // Send via Resend
-        var res = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + RESEND_API_KEY,
-          },
-          body: JSON.stringify({
-            from: EMAIL_FROM,
-            to: email,
-            subject: 'Your ' + monthName + ' ' + year + ' Financial Summary \u2014 AfroTools',
-            html: html,
-            text: text,
-          }),
+        var res = await sendEmail({
+          to: email,
+          subject: 'Your ' + monthName + ' ' + year + ' Financial Summary - AfroTools',
+          html: html,
+          text: text,
         });
 
         if (res.ok) {
@@ -144,8 +139,7 @@ exports.handler = async function (event) {
             .update({ email_last_digest_at: now.toISOString() })
             .eq('id', user.id);
         } else {
-          var errBody = await res.text();
-          console.error('[digest] Resend error for ' + user.id + ':', errBody);
+          console.error('[digest] Resend error for ' + user.id + ':', res.error || res.providerStatus);
           errors++;
         }
       } catch (err) {

@@ -28,7 +28,7 @@ This keeps the path toward 100 plus Pro apps realistic. Each vertical should be 
 
 | Priority | App | Route | First build slice |
 | --- | --- | --- | --- |
-| 1 | AfroSeller Social Commerce OS | `/pro/apps/seller/` | Catalog, orders, stock alerts, customer balances, receipts |
+| 1 | AfroSeller Social Commerce OS | `/pro/apps/seller/` | Catalog, orders, stock alerts, customer balances, WhatsApp templates, local exports |
 | 2 | AfroEvents & Ceremony OS | `/pro/apps/events/` | Event profile, guest list, vendor tracker, budget board, handoff packet |
 | 3 | AfroBeauty Booking OS | `/pro/apps/beauty/` | Service menu, booking board, client cards, deposits, commission summary |
 | 4 | AfroFood & Kitchen OS | `/pro/apps/food-kitchen/` | Menu items, recipe costing, stock count, prep board, daily close |
@@ -62,6 +62,13 @@ Read competitor product pages before implementation: Bumpa, Shopify, Ecwid, Ligh
 Keep the UI mobile-first, Africa-first, WhatsApp-friendly, local/export-ready, and honest about local-only state.
 Validation: node --check assets/js/lib/pro-daily-os-registry.js assets/js/lib/pro-daily-os-shell.js; parse inline scripts for pro/apps/seller/index.html; npm run audit; npm run check-links.
 ```
+
+Current implementation note (2026-05-03):
+
+- `/pro/apps/seller/` is now a local-only Pro workspace, not just the shared Daily OS shell.
+- The workspace covers business setup, product catalog, order book, customer balance CRM, dashboard metrics, CSV exports, Markdown receipt or handoff note, and WhatsApp copy templates.
+- Browser persistence uses localStorage key `afroseller_social_commerce_os_v1`.
+- Still shell-only or deliberately absent: account sync, Supabase storage, connected payments, storefront publishing, delivery integrations, and WhatsApp API sending.
 
 ### Agent 2: AfroEvents & Ceremony OS
 
